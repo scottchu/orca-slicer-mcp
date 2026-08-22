@@ -1,0 +1,30 @@
+# Local secrets and environment overrides
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/
+*~
+
+# Logs, temporary files, and local runtime state
+*.log
+tmp/
+var/
+runtime/
+
+# Common dependency and tool caches; lockfiles remain tracked
+node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.py[cod]
+
+# Generated build and coverage output
+build/
+dist/
+coverage/
+.coverage
