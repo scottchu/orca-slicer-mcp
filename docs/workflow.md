@@ -32,6 +32,8 @@ storage model, security boundary, or product behavior.
 - Use short-lived branches for trunk-bound work and deliver through a pull
   request unless the user explicitly overrides that route for a specific
   change.
+- Run required validation locally before delivery. Do not configure or wait
+  for hosted validation workflows.
 - Keep commits focused on one coherent change.
 - Do not commit secrets, local printer data, camera recordings, user models or
   projects, private profiles, custom G-code, local paths, temporary artifacts,

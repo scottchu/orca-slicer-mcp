@@ -25,11 +25,13 @@ remains pending.
   evidence is recorded without issuing a command or G-code;
 - repository contract, shell syntax, whitespace, Markdown links, and current
   terminology checks pass after reconciliation onto `ba18104`.
+- hosted repository validation was removed; required checks run locally before
+  delivery.
 
 ## Changed paths
 
-See the branch diff. The product contract, architecture, requirements, roadmap,
-environment inventory, continuity records, and active iteration are in scope.
+See the branch diff. The hosted workflow, delivery guidance, continuity
+records, and validation history are in scope.
 
 ## Unresolved risks
 

@@ -61,6 +61,12 @@
   rerun and passed after the same update.
 - Authoritative terminology scan found no `Printer Management`, deferred-Orca,
   or MCP-as-system framing in current Markdown records.
+- `bash -n scripts/check-repository.sh`: passed after hosted validation removal.
+- `./scripts/check-repository.sh`: passed locally with
+  `repository contract: ok` after hosted validation removal.
+- `git diff --check`: passed after hosted validation removal.
+- Repository scan for the removed automation terms, triggers, and job name:
+  returned no matches.
 
 ## Requirement evidence
 
