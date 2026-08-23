@@ -24,7 +24,8 @@ Keep a lightweight continuity system in the repository:
 - `BRIEF.md`, `VALIDATION.md`, and `HANDOFF.md` for material iterations;
 - four distinct evidence layers: static/software, protocol/simulator, real
   printer, and user outcome;
-- a technology-neutral repository structure check in local workflow and CI.
+- a technology-neutral repository structure check in the local developer
+  workflow before delivery.
 
 Use pull requests for trunk-bound work by default. Do not require GitHub
 Projects or reproduce raw conversation transcripts in repository records.

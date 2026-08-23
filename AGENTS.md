@@ -57,6 +57,8 @@ Before stopping or handing off material work:
 - Develop trunk-bound changes on a non-`main` branch and deliver them through a
   pull request unless the user explicitly overrides that route for a specific
   change.
+- Run required repository validation locally. Do not configure or wait for
+  hosted validation workflows.
 - Keep pull requests concise and point to repository records for detailed
   rationale and evidence.
 - GitHub Projects are not required for planning or delivery.

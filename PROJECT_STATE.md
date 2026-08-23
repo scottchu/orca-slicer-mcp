@@ -54,6 +54,8 @@ Last updated: 2026-08-23
 
 - Static/software: repository foundation and dual-subsystem product contract
   checks passed on the working branch; no product runtime exists.
+- Delivery validation is local-only; no hosted validation workflow is
+  configured or required.
 - Protocol/simulator: live Moonraker read-only response shapes, WebSocket
   upgrade, and server notifications were observed; printer-object subscription,
   fixtures, and reconnect tests are pending.

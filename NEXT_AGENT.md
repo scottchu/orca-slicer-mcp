@@ -39,6 +39,8 @@ handoff questions have enough evidence.
 
 ## Preserve
 
+- Run repository validation locally and do not configure or wait for hosted
+  validation workflows.
 - Orca Preparation and Printer Operations are peer subsystems.
 - A prepared print job is the preparation aggregate; a print session is the
   execution aggregate.
