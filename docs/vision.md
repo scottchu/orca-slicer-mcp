@@ -2,13 +2,35 @@
 
 ## One-sentence definition
 
-A real-time, agent-operated control and monitoring layer that gives a user
-remote presence at their 3D printer with guarded agency.
+An agent-operated 3D-printing product that prepares jobs through OrcaSlicer and
+provides guarded, real-time presence throughout printer execution.
+
+## Product structure
+
+The product has two peer subsystems:
+
+1. **Orca Preparation** turns an identified model or project plus explicit
+   printer, filament, and process configuration into an inspected, traceable
+   prepared print job.
+2. **Printer Operations** turns an observed printer job into a persistent print
+   session with telemetry, camera evidence, events, notifications, authorized
+   commands, and verification.
+
+Neither subsystem is an adapter around the other. OrcaSlicer is an adapter
+inside Preparation; vendor, camera, and notification integrations are adapters
+inside Operations. A versioned handoff joins prepared-job provenance to the
+observed print session.
 
 ## The problem
 
-Preparing a file is only the beginning of a print. During execution, users
-still need answers to operational questions:
+Preparing a reliable file and operating the resulting print are distinct parts
+of one workflow. Users need preparation answers such as:
+
+- Which printer, filament, and process profiles produced this artifact?
+- Which overrides, warnings, estimates, and OrcaSlicer version apply?
+- Did slicing create and validate the intended output without mutating input?
+
+During execution, users still need answers to operational questions:
 
 - Is the printer healthy and still making progress?
 - Is the first layer adhering correctly?
@@ -16,16 +38,33 @@ still need answers to operational questions:
 - Does an alert require attention now?
 - Can the problem be corrected safely without restarting?
 
-The main pain is uncertainty and required supervision during the print, not
-only the work required to slice it.
+The product addresses both reproducible preparation and uncertainty during the
+print. A successful slice does not prove a safe or successful physical print.
 
 ## Product promise
 
-The system should let an agent look, explain, notify, and act within explicit
-boundaries. The user should be able to stop babysitting routine progress while
-retaining control over consequential interventions.
+The system should let an agent prepare a traceable job, surface configuration
+and slicing results for inspection, then look, explain, notify, and act during
+execution within explicit boundaries. The user should be able to trust what was
+prepared and stop babysitting routine progress while retaining control over
+consequential interventions.
 
-## Central domain concept: print session
+## Domain concepts and handoff
+
+### Prepared print job
+
+A prepared print job joins:
+
+- source model or project identity;
+- OrcaSlicer and adapter versions;
+- printer, filament, and process profile identities;
+- explicit overrides, warnings, and estimates;
+- output artifact identity, hash, and validation state.
+
+The prepared print job is the aggregate. Its prepared artifact and versioned
+manifest are the payload passed across the handoff boundary.
+
+### Print session
 
 A print session joins the things needed to understand an active print:
 
@@ -37,7 +76,22 @@ A print session joins the things needed to understand an active print:
 - verification after an intervention;
 - outcome and session history.
 
-## Trust ladder
+The handoff links these aggregates without collapsing their states:
+
+```text
+source -> prepare -> slice -> inspect -> staged artifact
+                                             |
+                                             v
+                              authorize upload or start
+                                             |
+                                             v
+                              observe printer job -> session
+```
+
+Prepared does not mean uploaded; uploaded does not mean started; an accepted
+start command does not mean printing was observed.
+
+## Operations trust ladder
 
 Capability should advance in this order:
 
@@ -61,5 +115,7 @@ Each level depends on evidence from the levels before it.
   results remain associated with the relevant session event.
 - **Reversible actions first.** Prefer bounded, observable interventions and
   make stop conditions explicit.
-- **Slicing is an adapter.** OrcaSlicer can be one preparation path without
-  defining the product boundary.
+- **Two peer subsystems.** Preparation and Operations can progress on different
+  schedules, but neither is a later add-on to the other.
+- **Explicit provenance.** A physical session links back to the exact prepared
+  artifact and configuration when that handoff is available.

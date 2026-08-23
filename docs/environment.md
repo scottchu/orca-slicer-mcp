@@ -1,14 +1,27 @@
 # Target environment
 
-This file records observed facts for the first supported environment. Do not
-commit credentials, local addresses, serial numbers, access codes, camera
-recordings, or other identifying data.
+This file records observed facts for the first supported preparation and
+operations environments. Do not commit credentials, local addresses, serial
+numbers, access codes, camera recordings, user models, custom profiles, or
+other identifying data.
 
 ## Current status
 
-No printer environment has been selected for M0. Information from another
-project or workshop is context only and does not establish this product's first
-target.
+No OrcaSlicer or printer environment has been selected for the active
+foundation iteration. Information from another project or workshop is context
+only and does not establish this product's first target.
+
+## Orca Preparation
+
+- OrcaSlicer edition and version: unknown
+- Executable or invocation path: unknown
+- Supported headless or automation interface: unknown
+- Accepted input formats and project behavior: unknown
+- Printer, filament, and process profile sources: unknown
+- Configuration precedence and embedded project conflicts: unknown
+- Output formats, diagnostics, estimates, and preview access: unknown
+- Temporary-file, overwrite, and resource-limit behavior: unknown
+- Custom G-code handling and trust boundary: unknown
 
 ## Printer
 
@@ -50,8 +63,19 @@ target.
 - Authorized users or agents: unknown
 - Audit and retention expectations: unknown
 
+## Preparation-to-operations handoff
+
+- Prepared artifact and manifest schema: unknown
+- Target-printer compatibility check: unknown
+- Upload ownership and transport: unknown
+- Queue or selection semantics: unknown
+- Print-start ownership and authorization: unknown
+- Printer-job-to-session correlation: unknown
+
 ## Evidence log
 
-Add only redacted, reproducible observations. Each entry should name the date,
-method, firmware or endpoint context, observed capability, and evidence path in
-the active iteration. Unknowns remain unknown until checked.
+Add only redacted, reproducible observations. Preparation entries name the
+date, exact OrcaSlicer version, profile and fixture identities, method, command
+result, input/output hashes, observed capability, and evidence path. Operations
+entries name the date, method, firmware or endpoint context, observed
+capability, and evidence path. Unknowns remain unknown until checked.

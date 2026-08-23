@@ -3,7 +3,7 @@
 - Iteration ID: `2026-08-22-m0-first-printer-discovery`
 - Date opened: 2026-08-22
 - Baseline: `main` at `26affbb`
-- Status: active
+- Status: superseded by `2026-08-23-f0-dual-subsystem-foundation`
 
 ## Outcome
 

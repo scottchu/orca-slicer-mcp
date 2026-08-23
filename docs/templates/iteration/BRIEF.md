@@ -4,6 +4,7 @@
 - Date opened:
 - Exact baseline revision:
 - Status: planned / active / review / blocked / complete
+- Subsystem(s) and boundary: Orca Preparation / handoff boundary / Printer Operations
 
 ## Outcome
 
@@ -17,7 +18,7 @@
 
 ## Planned evidence
 
-Separate static/software, protocol/simulator, real-printer, and user-outcome
-targets.
+Separate static/software targets, including labeled real-Orca tool integration,
+from protocol/simulator, real-printer, and user-outcome targets.
 
 ## Exit gate

@@ -3,6 +3,7 @@
 ## Environment and candidate
 
 - Revision or candidate fingerprint:
+- OrcaSlicer version, profiles, fixture, and artifact fingerprint:
 - Printer and firmware, when applicable:
 - Validator:
 

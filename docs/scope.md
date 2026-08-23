@@ -5,8 +5,24 @@ narrower than the long-term vision.
 
 ## First useful scope
 
-The first end-to-end release should support one known printer setup and one
-local operator. It should:
+The first end-to-end release should support one known OrcaSlicer setup, one
+known printer setup, and one local operator.
+
+### Orca Preparation
+
+It should:
+
+- accept a supported model or project without overwriting the input;
+- identify the selected printer, filament, and process profiles;
+- record explicit configuration overrides and conflicts;
+- invoke a known OrcaSlicer version through a bounded adapter;
+- distinguish invocation success, artifact creation, and artifact validation;
+- report warnings, estimates, and an identifiable output artifact;
+- retain enough provenance to reproduce or explain the prepared job.
+
+### Printer Operations
+
+It should:
 
 - discover or configure a printer connection;
 - expose a capability inventory for that printer;
@@ -18,12 +34,20 @@ local operator. It should:
 - allow explicit user-directed pause, resume, and cancel commands;
 - verify the observed state after every command.
 
-The exact printer, protocol, camera source, and notification channel have not
-yet been selected.
+### Handoff
+
+The first integrated release should link the prepared artifact and manifest to
+an observed printer job and subsequent print session. Upload, selection or
+queueing, start, and observation remain distinct. The exact ownership of upload
+and start across the subsystem boundary is still a discovery question.
+
+The exact OrcaSlicer invocation path, profile sources, printer, protocol,
+camera source, and notification channel have not yet been selected.
 
 ## Later scope
 
-- uploading, slicing, and printer-specific job configuration;
+- richer project editing, plate arrangement, and preview workflows;
+- multiple OrcaSlicer versions and profile repositories;
 - speed, fan, temperature, flow, and live Z-offset adjustment where supported;
 - camera-assisted first-layer and failure assessment;
 - bounded, pre-authorized intervention policies;
@@ -35,6 +59,8 @@ yet been selected.
 - fully autonomous printer operation;
 - unattended camera-based Z-offset correction;
 - universal support for every printer or slicer;
+- silent profile selection or arbitrary custom G-code execution;
+- bundling slice, upload, and start into one implicit action;
 - bypassing printer firmware limits or built-in safety controls;
 - exposing printer control directly to the public internet;
 - claiming a successful command without post-command observation;
@@ -55,6 +81,10 @@ These are product requirements, not optional implementation details:
 7. Emergency stop, pause, and cancel semantics are printer-specific and must be
    tested on the target hardware before being relied upon.
 8. Camera data and printer identifiers are private local data by default.
+9. User models, projects, profiles, custom G-code, generated artifacts, and
+   temporary paths are private and potentially safety-relevant.
+10. Preparation never authorizes upload or print start implicitly, and Printer
+    Operations never mutates preparation profiles silently.
 
 ## Example: live Z-offset
 
@@ -73,10 +103,12 @@ recommendation, not an autonomous trigger.
 
 ## Definition of evidence
 
-- **Unit or simulated evidence:** useful for software behavior, not hardware
-  safety.
-- **Protocol evidence:** proves the observed behavior of a specific API or
-  firmware version.
+- **Static/software evidence:** deterministic code and unit checks, including a
+  separately labeled real-tool integration subtype. A named OrcaSlicer version
+  producing and validating an artifact for recorded inputs and profiles does
+  not prove printer compatibility, printability, or physical success.
+- **Protocol/simulator evidence:** proves behavior against fixtures, emulators,
+  controlled endpoints, or a specific observed API or firmware version.
 - **Physical-printer evidence:** proves behavior only for the tested printer,
   configuration, and conditions.
 - **User outcome evidence:** shows that alerts or interventions actually reduce

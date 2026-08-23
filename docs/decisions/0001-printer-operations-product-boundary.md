@@ -1,6 +1,6 @@
 # 0001 — Printer operations is the product boundary
 
-- Status: accepted
+- Status: superseded by [0003](0003-two-peer-subsystems.md)
 - Date: 2026-08-21
 - Owners: project maintainers
 
