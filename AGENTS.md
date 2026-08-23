@@ -7,14 +7,7 @@ provisional architecture as an implementation commitment.
 
 ## Working rules
 
-- Treat Orca Preparation and Printer Operations as peer subsystems. A prepared
-  print job is the preparation aggregate; a print session is the execution
-  aggregate.
-- Keep their handoff explicit and traceable. Slicing, upload, start, command
-  acknowledgement, and observed printing are distinct states and evidence.
-- Keep OrcaSlicer behind the preparation boundary and printer-specific behavior
-  behind the operations adapter boundary; neither subsystem is an adapter
-  around the other.
+- Treat a print session, not a sliced file, as the central product concept.
 - Keep printer-specific behavior behind an adapter boundary.
 - Separate observation, recommendation, authorization, action, and
   verification in both design and implementation.
@@ -24,17 +17,15 @@ provisional architecture as an implementation commitment.
   complete.
 - Do not claim that simulation, mocks, or protocol tests prove safe behavior on
   physical hardware.
-- Never commit credentials, camera recordings, local printer identifiers, user
-  models or projects, private profiles, custom G-code, generated artifacts,
-  temporary paths, or runtime data.
+- Never commit credentials, camera recordings, local printer identifiers, or
+  generated runtime data.
 - Treat repository files as durable project memory. Chat history can help find
   evidence, but it does not replace current repository records.
 - Before material work, read `PROJECT_STATE.md`, `NEXT_AGENT.md`,
   `docs/requirements.md`, and the iteration named by
   `docs/iterations/CURRENT`.
-- Keep static/software evidence, including labeled real-Orca tool integration,
-  separate from protocol/simulator, real-printer, and user-outcome evidence.
-  Passing an earlier layer never proves a later one.
+- Keep static/software, protocol/simulator, real-printer, and user-outcome
+  evidence separate. Passing an earlier layer never proves a later one.
 - When a user changes execution order, update the active iteration and follow
   the new order immediately instead of continuing a stale plan.
 - Do not copy raw conversations into the repository. Preserve decisions,

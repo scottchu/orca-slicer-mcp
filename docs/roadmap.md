@@ -67,13 +67,17 @@ and invalid-artifact paths without silent profile selection or input mutation.
 - resident service lifecycle and configuration;
 - printer connection and reconnection behavior;
 - normalized state and capability inventory;
+- surface-independent application ports and versioned monitor contracts;
+- initial snapshots, ordered subscription deltas, visible freshness, and full
+  resynchronization after reconnect;
 - print-session state machine and event log;
 - on-demand status and camera snapshot through MCP;
 - fixture or simulator tests plus a real-printer observation run.
 
 **Exit evidence:** the service tracks a complete real print from start to final
 state, survives a tested reconnect scenario, and records no impossible state
-transitions.
+transitions. Domain tests run without an MCP transport, and an adapter contract
+test proves MCP is not the only possible inbound surface.
 
 ### O2 — Notifications
 

@@ -12,28 +12,30 @@ Do not use prior chat history as authority when it conflicts with these files.
 
 ## Exact baseline
 
-- Main baseline: `26affbb`
-- Working baseline: `be883d3`
+- Branch point from `main`: `ba18104`
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
 - Product runtime: none
-- Product evidence: planning, repository workflow, and product-boundary records
-  only
+- Product evidence: planning and product-boundary records plus redacted,
+  read-only Moonraker HTTP, WebSocket, and webcam observations
 
 ## Immediate task
 
-Gather both concrete environments:
+Current execution order is Printer Operations discovery first. Continue with:
 
-1. OrcaSlicer edition/version, invocation path, supported automation behavior,
+1. A compatible `printer.objects.subscribe` client, reconnect and freshness
+   behavior, exact printer model, always-on host, notification destination, and
+   network/authentication boundary.
+2. OrcaSlicer edition/version, invocation path, supported automation behavior,
    input/output formats, and printer/filament/process profile sources.
-2. Printer model/firmware, connection path, camera, always-on host,
-   notification destination, and network boundary.
 
 Draft the prepared-artifact manifest and upload/start ownership questions from
 observed behavior. Record facts in `docs/environment.md` and evidence in the
 active iteration's `VALIDATION.md`.
 
-Do not scaffold either runtime or select adapters until F0 identifies the first
-concrete environments and an evidence-backed handoff boundary.
+The first printer target, read-only HTTP status, camera snapshot, object
+inventory, and WebSocket transport are already recorded. Do not issue printer
+commands. Do not scaffold either runtime until the remaining F0 environment and
+handoff questions have enough evidence.
 
 ## Preserve
 
@@ -45,6 +47,10 @@ concrete environments and an evidence-backed handoff boundary.
 - Consequential or uncertain actions default to explicit user authorization.
 - OrcaSlicer is an adapter inside Preparation, not a later add-on around Printer
   Operations.
+- MCP is only an inbound surface. Preserve the ontology and application ports
+  so HTTP, CLI, or an extracted Elixir monitor daemon can reuse the same core.
+- Preserve the hybrid monitoring model: full initial snapshot, ordered deltas,
+  visible freshness, and full resynchronization after reconnect.
 - Slicing, artifact validation, upload, start acknowledgement, and observed
   printing remain distinct states and evidence.
 - Repository records capture durable decisions and evidence; raw conversation
@@ -74,4 +80,6 @@ labeled real-Orca tool integration, separate from protocol/simulator,
 real-printer, and user-outcome evidence. Do not choose runtimes or implement
 consequential actions until the F0 environment, handoff, and safety boundaries
 are established.
+Treat MCP as a replaceable inbound surface and preserve the versioned monitor
+contract so HTTP, CLI, and a possible Elixir daemon can reuse the same core.
 ```

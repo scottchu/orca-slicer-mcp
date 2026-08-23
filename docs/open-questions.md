@@ -20,9 +20,8 @@ cover the two peer subsystems and their handoff.
 
 ## Printer Operations environment
 
-- What exact printer model and firmware version should be supported first?
-- How is it currently connected: LAN, USB, vendor cloud, OctoPrint, Moonraker,
-  MQTT, or something else?
+- Which exact printer model and vendor firmware expose the observed private-LAN
+  Fluidd/Moonraker-compatible surface and should be supported first?
 - Which commands are available during an active print, especially live Z-offset?
 - Are command changes temporary for the session or persisted to the printer?
 - What camera already exists, and what angle and lighting can it provide?
@@ -52,8 +51,10 @@ cover the two peer subsystems and their handoff.
 
 ## Runtime and data
 
-- Should the first Printer Operations service and MCP interface be one
-  deployable process, and should Preparation share that deployment?
+- Should the first Bun deployment keep the Printer Operations monitor
+  in-process, and what evidence would justify extracting it to an Elixir daemon?
+- Which inbound surfaces follow MCP first, and which contract test proves HTTP
+  or CLI can use the same application core?
 - Where will it run: workstation, Raspberry Pi, NAS, or another always-on host?
 - How much session history and camera evidence should be retained?
 - Is local-only storage a requirement or merely the default?

@@ -35,6 +35,8 @@ autonomous control, or unattended-safe printer operation.
 - [Working agreement](docs/workflow.md)
 - [Project continuity](docs/continuity.md)
 - [Working requirements](docs/requirements.md)
+- [Domain ontology](docs/ontology.md)
+- [Monitoring model](docs/monitoring-model.md)
 - [Environment boundary](docs/environment.md)
 - [Open questions](docs/open-questions.md)
 - [Decision records](docs/decisions/README.md)

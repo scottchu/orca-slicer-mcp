@@ -2,10 +2,11 @@
 
 ## Current status
 
-The static product contract is corrected and independently reviewed in this
-branch as one product with two peer subsystems: Orca Preparation and Printer
-Operations. They are joined by an explicit prepared-job/session handoff. No
-product runtime or environment evidence exists.
+The product contract remains one product with two peer subsystems: Orca
+Preparation and Printer Operations. A redacted LAN Fluidd/Moonraker target,
+read-only status, WebSocket transport, and live snapshot have been observed for
+Printer Operations. No product runtime exists, and Orca Preparation discovery
+remains pending.
 
 ## Completed work
 
@@ -15,7 +16,15 @@ product runtime or environment evidence exists.
 - authoritative records are aligned to the peer-subsystem model;
 - repository contract, shell syntax, whitespace, link, and terminology checks
   pass;
-- independent product and architecture reviewers passed the repaired contract.
+- independent product and architecture reviewers passed the repaired contract;
+- decisions 0004 through 0006 separate API surfaces, keep MCP replaceable, and
+  define hybrid snapshot-plus-subscription monitoring;
+- the ontology and monitoring model define runtime-neutral ports, freshness,
+  connection epochs, and a possible later Elixir monitor daemon;
+- read-only Moonraker status, temperature, object, auth, webcam, and WebSocket
+  evidence is recorded without issuing a command or G-code;
+- repository contract, shell syntax, whitespace, Markdown links, and current
+  terminology checks pass after reconciliation onto `ba18104`.
 
 ## Changed paths
 
@@ -25,19 +34,25 @@ environment inventory, continuity records, and active iteration are in scope.
 ## Unresolved risks
 
 - exact OrcaSlicer environment and automation behavior are unknown;
-- exact printer environment and protocol remain unknown;
+- exact printer model and remaining environment details are unknown;
+- the current LAN client is trusted by Moonraker, so product authorization and
+  network boundaries remain unresolved;
+- WebSocket transport works, but object subscription, reconnect, and freshness
+  behavior remain unverified;
+- the observed camera frame was too dark for reliable diagnosis;
 - manifest shape, compatibility checks, and upload/start ownership are open;
 - all implementation, protocol, printer, and user-outcome acceptance is pending.
 
 ## Next smallest action
 
-Gather the exact OrcaSlicer and printer environments through non-destructive
-discovery and record the results in `docs/environment.md` and this iteration's
-validation log. Begin with version/help/capability inspection; do not slice user
-models, create production artifacts, or issue printer commands.
+Continue Printer Operations read-only discovery with a compatible object
+subscription, reconnect behavior, exact model, host, notifications, and network
+boundary. Then gather the OrcaSlicer environment and provisional handoff. Do
+not slice user models, create production artifacts, or issue printer commands.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decision 0003. Do not infer that one subsystem is
-secondary from the current execution order, and do not implement or issue
-consequential actions before F0 discovery establishes the relevant contracts.
+Follow `NEXT_AGENT.md` and decisions 0003 through 0006. Do not infer that one
+subsystem is secondary from the current execution order, and do not implement
+or issue consequential actions before F0 discovery establishes the relevant
+contracts.

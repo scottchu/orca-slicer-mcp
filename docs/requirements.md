@@ -17,10 +17,20 @@ printer environments support the described behavior.
   are distinguishable from current ones.
 - **OBS-003:** Loss of connectivity or telemetry produces an explicit unknown or
   offline state, never an inferred success state.
+- **OBS-004:** Dynamic state begins from a complete source snapshot and merges
+  ordered subscription deltas without treating omitted fields as cleared.
+- **OBS-005:** Reconnect creates a new connection epoch and obtains a complete
+  snapshot before accepting new subscription deltas.
+- **OBS-006:** Normal inbound status queries read application current state with
+  source time and freshness; only an explicit refresh use case requests a new
+  upstream snapshot.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
   evidence rather than autonomous triggers.
+- **CAM-003:** Camera images are separately timestamped on-demand,
+  event-triggered, or bounded-interval observations; continuous video ingestion
+  is not required for the first monitor.
 
 ## Events and notifications
 
@@ -68,6 +78,35 @@ printer environments support the described behavior.
 - **AUTH-001:** The responsible boundary authenticates callers and records
   action-specific authority for upload, queue or selection changes, print start,
   and runtime commands regardless of which subsystem owns the action.
+
+## API surfaces
+
+- **API-001:** Monitor tools use an explicit read-only allowlist for status,
+  capabilities, subscriptions, camera observations, health, and approved
+  history reads.
+- **API-002:** Control tools are separate from Monitor tools and enforce
+  capability, state, authorization, correlation, and verification contracts.
+- **API-003:** The first release exposes no Admin surface and no generic HTTP,
+  JSON-RPC, or G-code passthrough.
+- **API-004:** File, queue, database, webcam-configuration, account, service,
+  update, and power mutations are classified as writes even when they do not
+  immediately move or heat the printer.
+
+## Architecture and ontology
+
+- **ARCH-001:** Domain and application modules do not depend on MCP, HTTP, CLI,
+  Bun, Elixir, OrcaSlicer, Moonraker, or database framework types.
+- **ARCH-002:** MCP, HTTP API, CLI, and future inbound surfaces invoke the same
+  application use cases and safety policies through explicit ports.
+- **ARCH-003:** The operations monitor can move from an in-process component to
+  a separate daemon through versioned, language-neutral contracts without
+  changing domain semantics.
+- **ONTO-001:** Prepared print job, printer, capability, print session,
+  observation, event, recommendation, authorization, command intent, command
+  result, verification, and outcome use the meanings defined in
+  `docs/ontology.md` and decision 0003.
+- **ONTO-002:** Observe, Recommend, Authorize, Act, Verify, and Administer remain
+  distinct categories in interfaces, events, and tests.
 
 ## Orca Preparation
 

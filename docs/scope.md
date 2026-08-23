@@ -85,6 +85,11 @@ These are product requirements, not optional implementation details:
    temporary paths are private and potentially safety-relevant.
 10. Preparation never authorizes upload or print start implicitly, and Printer
     Operations never mutates preparation profiles silently.
+11. Monitor, Control, and Admin operations remain separate product surfaces.
+12. The first release provides no generic HTTP, JSON-RPC, or G-code passthrough
+    and exposes no host-administration tools.
+13. MCP is an inbound adapter, not the system core; HTTP, CLI, and future
+    surfaces reuse the same application use cases and policies.
 
 ## Example: live Z-offset
 
