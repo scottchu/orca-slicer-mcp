@@ -11,6 +11,8 @@ The documents here separate durable decisions from current hypotheses.
 | [Workflow](workflow.md) | How changes and evidence are handled | Working agreement |
 | [Continuity](continuity.md) | Durable state, iterations, and handoff | Working agreement |
 | [Requirements](requirements.md) | Stable product and safety requirement IDs | Working draft |
+| [Ontology](ontology.md) | Surface-independent domain vocabulary and operation categories | Working contract |
+| [Monitoring model](monitoring-model.md) | Direct-query, subscription, freshness, and reconnect semantics | Working contract |
 | [Environment](environment.md) | Target OrcaSlicer, hardware, and deployment facts | Discovery record |
 | [Open questions](open-questions.md) | Decisions that still need evidence | Active backlog |
 | [Decision records](decisions/README.md) | Durable choices and their context | Append-only history |

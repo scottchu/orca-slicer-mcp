@@ -5,7 +5,11 @@ This is a hypothesis to guide discovery, not an implementation commitment.
 ```text
                          User / agent / automation
                                     |
-                              MCP interface
+                    MCP / HTTP API / CLI / future UI
+                                    |
+                            inbound adapters
+                                    |
+                 application use cases and ontology
                       /                             \
           Orca Preparation                    Printer Operations
  source + profiles -> OrcaSlicer        resident service <-> event store
@@ -32,16 +36,21 @@ This is a hypothesis to guide discovery, not an implementation commitment.
 The two top-level subsystems are peers. The handoff between them is a contract,
 not shared mutable ownership.
 
-## Runtime shape
+## Runtime shape and surface boundary
+
+MCP is one replaceable inbound adapter, not the system boundary. HTTP, CLI, and
+future surfaces translate into the same application use cases and domain
+results. They do not call OrcaSlicer, Moonraker, or a printer directly and do
+not duplicate safety or authorization policy.
 
 MCP provides request/response tools for an agent, but monitoring must continue
 when no agent turn is active. A persistent local service is therefore expected
 to own printer connections, consume telemetry, track sessions, evaluate event
 rules, and deliver notifications.
 
-The MCP interface may expose both subsystems to agents. It should not be the
-only process keeping a print alive or monitored. Preparation may initially be
-on demand; discovery must not assume it needs the same resident lifecycle.
+Inbound surfaces may expose both subsystems to agents or users. None should be
+the only process keeping a print alive or monitored. Preparation may initially
+be on demand; discovery must not assume it needs the same resident lifecycle.
 
 ## Orca Preparation components
 
@@ -63,6 +72,19 @@ artifacts are not automatically uploaded or started.
 
 Owns print-session state, command authorization, command correlation,
 post-action verification, and event generation.
+
+The service exposes application ports rather than MCP-specific handlers. A
+first deployment may keep the monitor in one Bun and TypeScript process. The
+monitor boundary remains language-neutral so a later Elixir daemon can satisfy
+the same contract without changing domain semantics or inbound surfaces.
+
+### Monitor port
+
+Defines observation source, subscription, health, and storage contracts. It
+follows `docs/monitoring-model.md`: bootstrap with complete direct queries,
+maintain dynamic state through subscriptions, expose freshness, and
+resynchronize from a new snapshot after reconnect. Inbound surfaces read the
+application's reconstructed current state rather than bypassing it.
 
 ### Printer adapter
 
@@ -86,12 +108,18 @@ Retains state transitions, observations, recommendations, authorizations,
 commands, results, and outcomes. The initial implementation may be local and
 single-user.
 
-## Shared MCP interface
+## Replaceable inbound surfaces
 
-Offers narrow Preparation tools for inputs, profiles, slice requests, and
-result inspection plus Operations tools for printers, sessions, observations,
-authorized commands, and event history. Long-running monitoring belongs to the
-operations service.
+MCP initially offers narrow Preparation tools for inputs, profiles, slice
+requests, and result inspection plus Operations tools for printers, sessions,
+observations, authorized commands, and event history. Equivalent HTTP API, CLI,
+or future interfaces invoke the same application ports. Long-running monitoring
+belongs to the operations service.
+
+Monitor, Control, and Admin are separate product surfaces. The first release
+exposes read-only Monitor operations, keeps Control behind distinct explicit
+authorization, and exposes no Admin surface or generic HTTP, JSON-RPC, or
+G-code passthrough.
 
 ## Handoff contract
 
@@ -111,13 +139,14 @@ the first OrcaSlicer and printer environments are known.
 
 ## Boundaries still to validate
 
-- whether the first printer is best served by a vendor API, Moonraker, OctoPrint,
-  MQTT, or another protocol;
+- whether the first adapter should target the observed Moonraker-compatible
+  surface directly and how vendor extensions affect that boundary;
 - how the first supported OrcaSlicer version can be invoked and which project,
   profile, preview, and output operations are actually available;
 - how embedded project configuration and external profile sources are resolved;
 - where upload and start belong without coupling either subsystem to one vendor;
-- whether the operations service and MCP server should initially be one process;
+- whether the first Bun deployment keeps the monitor in-process and what
+  evidence would justify extracting it to an Elixir daemon;
 - required event-store durability and replay semantics;
 - camera transport and storage policy;
 - local-only versus remote-access deployment;
