@@ -1,0 +1,13 @@
+[trunk_delivery]
+branch = "main"
+pull_request_required = true
+github_project_item_required = false
+override_authority = "explicit-user-per-change"
+server_enforcement_claimed = false
+
+[continuity]
+project_state = "PROJECT_STATE.md"
+next_agent = "NEXT_AGENT.md"
+active_iteration_pointer = "docs/iterations/CURRENT"
+required_iteration_files = ["BRIEF.md", "VALIDATION.md", "HANDOFF.md"]
+acceptance_layers = ["static/software", "protocol/simulator", "real printer", "user outcome"]

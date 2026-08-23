@@ -19,11 +19,16 @@ control.
 
 ## Start here
 
+- [Current project state](PROJECT_STATE.md)
+- [Next-agent restart route](NEXT_AGENT.md)
 - [Product vision](docs/vision.md)
 - [Scope and safety boundary](docs/scope.md)
 - [Roadmap](docs/roadmap.md)
 - [Provisional architecture](docs/architecture.md)
 - [Working agreement](docs/workflow.md)
+- [Project continuity](docs/continuity.md)
+- [Working requirements](docs/requirements.md)
+- [Environment boundary](docs/environment.md)
 - [Open questions](docs/open-questions.md)
 - [Decision records](docs/decisions/README.md)
 
@@ -38,3 +43,9 @@ resident local service can observe one real print session reliably. See the
 This repository intentionally contains documentation before implementation.
 The runtime, language, deployment model, printer protocol, camera source, and
 notification channel remain open decisions.
+
+Run the technology-neutral repository contract check with:
+
+```bash
+./scripts/check-repository.sh
+```

@@ -8,6 +8,7 @@ silently changed.
 | ID | Decision | Status |
 | --- | --- | --- |
 | [0001](0001-printer-operations-product-boundary.md) | Printer operations is the product boundary | Accepted |
+| [0002](0002-repository-continuity-workflow.md) | Use lightweight repository continuity records | Accepted |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.
