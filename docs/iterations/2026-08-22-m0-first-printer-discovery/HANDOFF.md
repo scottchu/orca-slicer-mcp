@@ -16,7 +16,8 @@ selected, and no product code exists.
 
 ## Changed paths
 
-See the pull request delivering the continuity workflow. No runtime source,
+The continuity workflow is delivered for review in
+[PR #1](https://github.com/scottchu/orca-slicer-mcp/pull/1). No runtime source,
 printer configuration, or credentials are part of this iteration yet.
 
 ## Unresolved risks

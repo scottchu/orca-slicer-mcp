@@ -12,6 +12,8 @@
 - `./scripts/check-repository.sh`: passed with `repository contract: ok` on
   2026-08-22.
 - `git diff --check`: passed on 2026-08-22.
+- GitHub Actions `repository-contract`: passed for workflow commit `7b41fb0` in
+  [PR #1](https://github.com/scottchu/orca-slicer-mcp/pull/1).
 - Git status and remote synchronization: verified before opening this iteration.
 
 ## Requirement evidence
