@@ -14,6 +14,7 @@ The documents here separate durable decisions from current hypotheses.
 | [Ontology](ontology.md) | Surface-independent domain vocabulary and operation categories | Working contract |
 | [Monitoring model](monitoring-model.md) | Direct-query, subscription, freshness, and reconnect semantics | Working contract |
 | [Environment](environment.md) | Target OrcaSlicer, hardware, and deployment facts | Discovery record |
+| [Orca Preparation findings](orca-preparation-findings.md) | Observed CLI, profile, preview, and manual-support behavior | Discovery record |
 | [Open questions](open-questions.md) | Decisions that still need evidence | Active backlog |
 | [Decision records](decisions/README.md) | Durable choices and their context | Append-only history |
 

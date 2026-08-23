@@ -7,22 +7,38 @@ other identifying data.
 
 ## Current status
 
-The first OrcaSlicer environment remains unknown. A first Printer Operations
-target is reachable on the user's private LAN. The address is intentionally not
-recorded. Read-only Fluidd/Moonraker and camera checks succeeded on 2026-08-23;
-the exact printer model and remaining operating environment are incomplete.
+Two local Orca Preparation candidates are observed, but the first supported
+backend is not selected. A first Printer Operations target is reachable on the
+user's private LAN. The address is intentionally not recorded. Read-only
+Fluidd/Moonraker and camera checks succeeded on 2026-08-23; the exact printer
+model and remaining operating environment are incomplete.
 
 ## Orca Preparation
 
-- OrcaSlicer edition and version: unknown
-- Executable or invocation path: unknown
-- Supported headless or automation interface: unknown
-- Accepted input formats and project behavior: unknown
-- Printer, filament, and process profile sources: unknown
-- Configuration precedence and embedded project conflicts: unknown
-- Output formats, diagnostics, estimates, and preview access: unknown
-- Temporary-file, overwrite, and resource-limit behavior: unknown
-- Custom G-code handling and trust boundary: unknown
+- Editions and versions: upstream OrcaSlicer `2.4.2`; Snapmaker Orca `2.3.5`
+- Invocation paths: standard macOS app-bundle executables recorded in
+  `docs/orca-preparation-findings.md`; first backend not selected
+- Supported automation interface: both expose preparation CLI help; neither
+  observed CLI exposes printer upload, start, or monitoring commands
+- Accepted inputs advertised: STL and 3MF; real fixture loading remains untested
+- Profile sources: bundled Snapmaker machine, process, and filament JSON plus
+  embedded 3MF settings are observed; complete inheritance resolution remains
+  untested
+- Configuration precedence: command line, then loaded settings and filaments,
+  then embedded 3MF; conflict reporting remains untested
+- Outputs advertised: plate G-code plus 3MF, settings, slice-data, and STL
+  exports; real output, estimates, and GUI parity remain untested
+- Diagnostics: process exit and stdout or stderr are available; advertised
+  progress pipe and `result.json` are Linux-only in the reviewed sources and
+  cannot be assumed on macOS
+- Preview boundary: matching-GUI review of the exact plate G-code is proposed;
+  opening the editable 3MF and reslicing creates a new revision
+- Manual support: enforcer and blocker volumes plus per-triangle annotations
+  are represented in Orca 3MF; no round-trip fixture has run
+- Temporary-file, overwrite, timeout, and resource-limit behavior: untested;
+  isolated data and output directories are required for the first fixture
+- Custom G-code: CLI post-processing scripts are unsupported; embedded or
+  profile custom G-code remains untrusted and untested
 
 ## Printer
 
@@ -95,3 +111,8 @@ capability, and evidence path. Unknowns remain unknown until checked.
   and vendor-specific objects. WebSocket upgrade and server notifications were
   observed. See the active iteration's `CAPABILITY_MATRIX.md`; no printer
   command or G-code was executed.
+- **2026-08-23:** local upstream OrcaSlicer `2.4.2` and Snapmaker Orca `2.3.5`
+  executables were fingerprinted and their help, profile resources, macOS CLI
+  behavior, and official source boundaries were inspected. No model was sliced
+  and no artifact was sent to a printer. See
+  `docs/orca-preparation-findings.md`.

@@ -12,29 +12,37 @@ Do not use prior chat history as authority when it conflicts with these files.
 
 ## Exact baseline
 
-- Branch point from `main`: `ba18104`
+- Branch point from `main`: `32762dd`
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
 - Product runtime: none
-- Product evidence: planning and product-boundary records plus redacted,
-  read-only Moonraker HTTP, WebSocket, and webcam observations
+- Product evidence: planning and product-boundary records; local, non-mutating
+  Orca and Snapmaker Orca discovery; plus redacted, read-only Moonraker HTTP,
+  WebSocket, and webcam observations
 
 ## Immediate task
 
-Current execution order is Printer Operations discovery first. Continue with:
+Current execution order is Orca Preparation discovery first. Continue with:
 
-1. A compatible `printer.objects.subscribe` client, reconnect and freshness
-   behavior, exact printer model, always-on host, notification destination, and
-   network/authentication boundary.
-2. OrcaSlicer edition/version, invocation path, supported automation behavior,
-   input/output formats, and printer/filament/process profile sources.
+1. Select upstream OrcaSlicer `2.4.2` or Snapmaker Orca `2.3.5` for one
+   non-user fixture and explicit complete profile.
+2. Dry-run, slice, statically validate, and assemble a revisioned review bundle
+   for preview in the matching GUI. Do not upload or start it.
+3. Exercise support-enforcer and blocker round-trip only after the baseline
+   fixture passes. Preserve user-painted support projects but do not synthesize
+   facet painting without golden round-trip fixtures.
+4. Resume Printer Operations with a compatible `printer.objects.subscribe`
+   client, reconnect and freshness behavior, exact printer model, always-on
+   host, notification destination, and network/authentication boundary.
 
-Draft the prepared-artifact manifest and upload/start ownership questions from
-observed behavior. Record facts in `docs/environment.md` and evidence in the
-active iteration's `VALIDATION.md`.
+Use `docs/orca-preparation-findings.md` as the discovery boundary. Draft the
+review-bundle and prepared-artifact manifest from observed output, then record
+facts in `docs/environment.md` and evidence in the active iteration's
+`VALIDATION.md`.
 
-The first printer target, read-only HTTP status, camera snapshot, object
-inventory, and WebSocket transport are already recorded. Do not issue printer
-commands. Do not scaffold either runtime until the remaining F0 environment and
+The candidate Orca executables and first printer read-only status, camera
+snapshot, object inventory, and WebSocket transport are already recorded. No
+real slice, support round-trip, printer command, upload, or print start has been
+accepted. Do not scaffold either runtime until the remaining F0 environment and
 handoff questions have enough evidence.
 
 ## Preserve
@@ -84,4 +92,6 @@ consequential actions until the F0 environment, handoff, and safety boundaries
 are established.
 Treat MCP as a replaceable inbound surface and preserve the versioned monitor
 contract so HTTP, CLI, and a possible Elixir daemon can reuse the same core.
+For Orca Preparation, bind review to the exact backend, project and G-code
+hashes. Treat any reslice or support change as a new review revision.
 ```

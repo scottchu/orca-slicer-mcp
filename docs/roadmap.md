@@ -52,11 +52,18 @@ handoff.
 - profile inheritance and embedded-project precedence;
 - explicit overrides and conflict reporting;
 - richer target compatibility and custom G-code preflight;
+- a revisioned review bundle containing the editable project, exact plate
+  artifact, manifest, and static validation result;
+- matching-edition preview and user acceptance bound to backend, plate, and
+  artifact identities;
+- inspectable support settings, enforcer or blocker volumes, and preserved
+  facet annotations without silent remapping across mesh revisions;
 - plate, preview, and estimate access where the discovered Orca boundary allows;
 - stable preparation states and result inspection through MCP.
 
 **Exit evidence:** fixtures cover accepted, rejected, conflicting, timed-out,
-and invalid-artifact paths without silent profile selection or input mutation.
+invalid-artifact, support-revision, and renewed-review paths without silent
+profile selection, input mutation, or reuse of stale acceptance.
 
 ## Printer Operations track
 

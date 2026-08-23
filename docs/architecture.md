@@ -66,6 +66,20 @@ Retains source identity, profile versions, overrides, warnings, estimates,
 OrcaSlicer version, and output hashes. Inputs are not overwritten, and staged
 artifacts are not automatically uploaded or started.
 
+### Collaborative preparation review
+
+Preparation may produce an editable project, exact plate G-code, manifest, and
+static validation result as one revisioned review bundle. The user reviews the
+exact G-code in the matching Orca edition and reports acceptance or rejection
+against the bundle and plate identity. Opening the project and reslicing is a
+new preparation revision rather than review of the prior G-code.
+
+Manual support intent may be represented by automatic support configuration,
+support-enforcer or blocker volumes, or mesh-facet annotations. These
+representations remain inspectable and tied to the source mesh hash. Ordinary
+solid geometry is not substituted for slicer support unless the user
+explicitly requests designed breakaway geometry.
+
 ## Printer Operations components
 
 ### Printer operations service

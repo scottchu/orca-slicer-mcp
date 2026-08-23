@@ -5,18 +5,22 @@ cover the two peer subsystems and their handoff.
 
 ## Orca Preparation environment
 
-- Which OrcaSlicer edition and exact version should be supported first?
-- Which supported CLI, GUI automation, project, or other invocation boundary is
-  actually available in that version?
+- Should upstream OrcaSlicer `2.4.2` or Snapmaker Orca `2.3.5` be the first
+  supported backend, and which target printer or workflow decides the choice?
+- Which discovered CLI subset passes a real fixture slice and GUI-versus-CLI
+  parity check for the selected backend?
 - Which model/project input and output formats are required first?
 - Where do printer, filament, and process profiles come from, and how are their
   versions or fingerprints captured?
 - How are embedded project settings, profile inheritance, explicit overrides,
   and conflicts resolved and shown?
-- Which warnings, estimates, thumbnails, previews, or plate data can be obtained
-  reproducibly?
+- Which warnings, estimates, thumbnails, previews, or plate data can be
+  obtained reproducibly on macOS without the Linux-only progress pipe and
+  result file?
 - How are custom G-code, local paths, temporary files, output overwrite, and
   resource exhaustion bounded?
+- Should the first manual-support slice support only enforcer and blocker
+  volumes, or also generate Orca's mesh-facet painting bitstream?
 
 ## Printer Operations environment
 

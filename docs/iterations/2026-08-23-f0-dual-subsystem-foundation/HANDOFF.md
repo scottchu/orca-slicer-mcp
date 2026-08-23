@@ -5,8 +5,8 @@
 The product contract remains one product with two peer subsystems: Orca
 Preparation and Printer Operations. A redacted LAN Fluidd/Moonraker target,
 read-only status, WebSocket transport, and live snapshot have been observed for
-Printer Operations. No product runtime exists, and Orca Preparation discovery
-remains pending.
+Printer Operations. Upstream OrcaSlicer `2.4.2` and Snapmaker Orca `2.3.5`
+were inspected locally without slicing a user model. No product runtime exists.
 
 ## Completed work
 
@@ -27,15 +27,26 @@ remains pending.
   terminology checks pass after reconciliation onto `ba18104`.
 - hosted repository validation was removed; required checks run locally before
   delivery.
+- the current execution order moved to Orca Preparation discovery after the
+  user's redirect; this does not make Printer Operations secondary;
+- `docs/orca-preparation-findings.md` records executable fingerprints, CLI and
+  macOS limitations, profile precedence, Snapmaker boundaries, collaborative
+  preview, and manual-support representations;
+- requirements now bind visual review to exact backend and artifact revisions
+  and distinguish support settings, enforcer or blocker volumes, facet paint,
+  and designed breakaway geometry.
 
 ## Changed paths
 
-See the branch diff. The hosted workflow, delivery guidance, continuity
-records, and validation history are in scope.
+See the branch diff. Repository guidance, Orca discovery, environment, scope,
+architecture, roadmap, requirements, open questions, continuity records, and
+the active iteration evidence are in scope. No runtime, user model, private
+profile, generated G-code, printer address, or printer command is included.
 
 ## Unresolved risks
 
-- exact OrcaSlicer environment and automation behavior are unknown;
+- the first Orca backend is unselected, and fixture slicing, GUI parity,
+  support round-trip, estimates, and validation behavior remain untested;
 - exact printer model and remaining environment details are unknown;
 - the current LAN client is trusted by Moonraker, so product authorization and
   network boundaries remain unresolved;
@@ -47,10 +58,11 @@ records, and validation history are in scope.
 
 ## Next smallest action
 
-Continue Printer Operations read-only discovery with a compatible object
-subscription, reconnect behavior, exact model, host, notifications, and network
-boundary. Then gather the OrcaSlicer environment and provisional handoff. Do
-not slice user models, create production artifacts, or issue printer commands.
+Select one observed Orca backend and run one isolated non-user fixture with an
+explicit complete profile. Produce a revisioned review bundle, validate its
+exact G-code, and preview it in the matching GUI without upload or start. Then
+exercise an enforcer or blocker round-trip before returning to Printer
+Operations subscription and reconnect discovery.
 
 ## Restart instructions
 

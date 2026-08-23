@@ -116,6 +116,17 @@ printer environments support the described behavior.
   filament, and process profiles plus their resolvable versions or fingerprints.
 - **PREP-003:** Embedded project settings, inherited profile values, explicit
   overrides, and conflicts remain distinguishable and inspectable.
+- **PREP-004:** A review bundle exposes the editable project representation,
+  exact generated plate artifact, preparation manifest, and validation result
+  without treating visual review as printer authorization.
+- **PREP-005:** User review identifies the slicer edition and version, plate,
+  project or artifact hash, and accepted or rejected revision. Reslicing,
+  changing support annotations, or changing any bound input creates a new
+  revision that requires renewed review.
+- **PREP-006:** Support intent distinguishes automatic support settings,
+  support-enforcer or blocker geometry, painted mesh facets, and intentionally
+  modeled breakaway geometry. Facet annotations remain bound to the exact mesh
+  identity and are not silently carried across remeshing.
 - **ORCA-001:** Every invocation records the exact OrcaSlicer edition and
   version, bounded inputs and outputs, exit result, and captured diagnostics.
 - **ORCA-002:** Invocation success, output creation, and output validation are
@@ -130,6 +141,9 @@ printer environments support the described behavior.
   credentials, gain unbounded file access, or execute unapproved host actions.
 - **ORCA-005:** A successful slice is software-integration evidence only. It
   does not prove target compatibility, printability, safety, or physical success.
+- **ORCA-006:** Backend selection is explicit per preparation request. The
+  system does not silently substitute OrcaSlicer for Snapmaker Orca, or the
+  reverse, and records the executable fingerprint and discovered capabilities.
 
 ## Preparation-to-operations handoff
 

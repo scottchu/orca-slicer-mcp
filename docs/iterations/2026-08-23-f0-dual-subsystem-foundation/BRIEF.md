@@ -2,11 +2,12 @@
 
 - Iteration ID: `2026-08-23-f0-dual-subsystem-foundation`
 - Date opened: 2026-08-23
-- Working baseline: `ba18104`
+- Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: Printer Operations read-only discovery first; Orca
-  Preparation remains pending and is not secondary
+- Current execution order: Orca Preparation discovery first after the user's
+  redirect; Printer Operations evidence is preserved and remains pending, not
+  secondary
 
 ## Outcome
 
@@ -29,8 +30,8 @@ that can be validated without guessing.
 
 ## Requirements
 
-Primary discovery targets: `PREP-001` through `PREP-003`, `ORCA-001` through
-`ORCA-005`, `HANDOFF-001` through `HANDOFF-006`, `SESSION-001`, `OBS-001`
+Primary discovery targets: `PREP-001` through `PREP-006`, `ORCA-001` through
+`ORCA-006`, `HANDOFF-001` through `HANDOFF-006`, `SESSION-001`, `OBS-001`
 through `OBS-006`, `CAM-001` through `CAM-003`, `CTRL-001`, `SAFE-001`,
 `DATA-001` through `DATA-003`, `AUTH-001`, `API-001` through `API-004`,
 `ARCH-001` through `ARCH-003`, `ONTO-001` through `ONTO-002`, and `PORT-001`
@@ -62,8 +63,13 @@ in `docs/requirements.md`.
 ## Risks and unknowns
 
 - actual OrcaSlicer automation capabilities may differ by edition and version;
+- upstream OrcaSlicer and Snapmaker Orca may accept the same CLI shape while
+  producing edition-specific output or interpreting vendor project data
+  differently;
 - profile inheritance, embedded project configuration, and custom G-code may
   create safety or provenance conflicts;
+- facet-painted support data is tied to exact mesh triangle identity and may be
+  invalidated by remeshing;
 - printer protocols may couple upload/start behavior to one vendor;
 - a shared MCP facade could accidentally obscure subsystem ownership;
 - the current LAN client is trusted by Moonraker, so upstream access does not
@@ -77,6 +83,8 @@ in `docs/requirements.md`.
 - terminology scan for superseded product claims;
 - independent architecture and consistency reviews;
 - redacted real-tool and read-only protocol discovery recorded here;
+- local upstream OrcaSlicer and Snapmaker Orca capability discovery with
+  executable fingerprints and explicit unvalidated behavior;
 - `CAPABILITY_MATRIX.md` tied to the first printer protocol and evidence state;
 - ontology, API surface, and hybrid monitoring decisions with static checks.
 
