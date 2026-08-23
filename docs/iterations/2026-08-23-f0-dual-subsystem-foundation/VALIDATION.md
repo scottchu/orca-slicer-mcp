@@ -2,8 +2,9 @@
 
 ## Environment
 
-- Working baseline: `ba18104`
-- OrcaSlicer environment: not selected
+- Working baseline: `32762dd`
+- OrcaSlicer environment: upstream OrcaSlicer `2.4.2` and Snapmaker Orca
+  `2.3.5` observed as local candidates; first backend not selected
 - Printer: redacted private-LAN Fluidd/Moonraker device; exact model unknown
 - Observed software: Moonraker `1.5.2`, API `1.4.0`, printer software
   `1.5.2.13_20260722102206`
@@ -67,6 +68,36 @@
 - `git diff --check`: passed after hosted validation removal.
 - Repository scan for the removed automation terms, triggers, and job name:
   returned no matches.
+- Plist inspection plus each executable's `--help`: upstream bundle and banner
+  reported `2.4.2`; Snapmaker bundle reported `2.3.5` and its CLI banner
+  reported `01.10.01.50`. Both help commands returned `0`.
+- Each executable's `--version`: both reported an invalid option and returned
+  `254`, confirming that discovery must not require a conventional version
+  flag.
+- `shasum -a 256` on both executables: recorded the fingerprints in
+  `docs/orca-preparation-findings.md`; `file` reported universal `arm64` and
+  `x86_64` Mach-O executables.
+- `jq` inspection of each bundled `profiles/Snapmaker.json`: both reported 19
+  model variants; upstream profile bundle version `02.04.00.07`, Snapmaker Orca
+  profile bundle version `02.02.50.02`.
+- `python3 .../gcode_tool.py discover`: found upstream OrcaSlicer at the
+  standard app-bundle path and did not discover Snapmaker Orca. This checks the
+  external helper only; it is not product runtime evidence.
+- Official v2.4.2 and v2.3.5 CLI source review confirmed macOS cannot rely on
+  the Linux-only progress pipe or `result.json`; source review also identified
+  support-enforcer and blocker volume types plus facet annotation serialization.
+- No input model was loaded, no slice was run, no generated artifact was
+  retained, and no printer request was issued during Orca discovery.
+- `bash -n scripts/check-repository.sh`: passed after recording Orca findings,
+  collaborative preview, support representations, and the execution-order
+  redirect.
+- `./scripts/check-repository.sh`: passed locally with
+  `repository contract: ok` after the same update.
+- `git diff --check`: passed after the same update.
+- Relative Markdown link extraction plus filesystem checks: passed after the
+  new Orca Preparation discovery record was linked into the documentation map.
+- Current-authority scan found no remaining print-session-as-product-center,
+  Printer-Operations-first, or Orca-environment-unknown regression.
 
 ## Requirement evidence
 
@@ -84,12 +115,18 @@
   `ONTO-002`, `OBS-004` through `OBS-006`, and `CAM-003` are accepted as static
   contracts. No runtime exists to prove enforcement or behavior.
 - Orca Preparation, handoff, notification, control, and user-outcome
-  requirements remain unvalidated.
+  runtime requirements remain unvalidated.
+- `PREP-004` through `PREP-006` and `ORCA-006` are accepted as static working
+  requirements. Local discovery partially supports the feasibility of multiple
+  explicit backends and Orca support representations, but no review bundle,
+  support round-trip, or user acceptance record exists.
 
 ## Acceptance state
 
-- Static/software: dual-subsystem, ontology, surface, and monitoring contracts
-  are documented; no runtime behavior was tested.
+- Static/software: dual-subsystem, ontology, surface, monitoring, collaborative
+  preparation review, and manual-support contracts are documented. Real
+  installed CLI help and source boundaries were inspected; slicing runtime
+  behavior was not tested.
 - Protocol/simulator: live Moonraker HTTP response shapes, WebSocket upgrade,
   and server notifications were observed; no fixture, simulator, object
   subscription, or reconnect test exists.
@@ -108,3 +145,6 @@
   not send the Fluidd origin. A manual Upgrade request with the target origin
   succeeded. This isolates the failure to client handshake compatibility, but a
   full subscription client test is still required.
+- A later Moonraker branch changed the root guidance back to a print-session
+  central framing. The current update restores the accepted peer-subsystem
+  contract without removing the useful monitoring records.

@@ -18,6 +18,10 @@ It should:
 - invoke a known OrcaSlicer version through a bounded adapter;
 - distinguish invocation success, artifact creation, and artifact validation;
 - report warnings, estimates, and an identifiable output artifact;
+- produce a revisioned project, exact plate artifact, manifest, and validation
+  result that the user can inspect in the matching Orca edition;
+- preserve or propose explicit support intent without silently remapping facet
+  annotations across mesh changes;
 - retain enough provenance to reproduce or explain the prepared job.
 
 ### Printer Operations
@@ -41,12 +45,14 @@ an observed printer job and subsequent print session. Upload, selection or
 queueing, start, and observation remain distinct. The exact ownership of upload
 and start across the subsystem boundary is still a discovery question.
 
-The exact OrcaSlicer invocation path, profile sources, printer, protocol,
-camera source, and notification channel have not yet been selected.
+Two Orca invocation candidates are observed, but the first supported edition,
+complete profile source, printer, protocol, camera source, and notification
+channel have not yet been selected.
 
 ## Later scope
 
-- richer project editing, plate arrangement, and preview workflows;
+- richer project editing, plate arrangement, support painting, and preview
+  workflows beyond the first revisioned review bundle;
 - multiple OrcaSlicer versions and profile repositories;
 - speed, fan, temperature, flow, and live Z-offset adjustment where supported;
 - camera-assisted first-layer and failure assessment;
@@ -90,6 +96,9 @@ These are product requirements, not optional implementation details:
     and exposes no host-administration tools.
 13. MCP is an inbound adapter, not the system core; HTTP, CLI, and future
     surfaces reuse the same application use cases and policies.
+14. Visual preparation review is bound to exact backend and artifact identities;
+    any reslice or support change creates a new revision and does not preserve
+    prior acceptance implicitly.
 
 ## Example: live Z-offset
 

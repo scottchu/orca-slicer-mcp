@@ -5,7 +5,7 @@ Last updated: 2026-08-23
 ## Baseline
 
 - Canonical repository: `scottchu/orca-slicer-mcp` (private).
-- Branch point from `main`: `ba18104`.
+- Branch point from `main`: `32762dd`.
 - Product boundary: one product with two peer subsystems, Orca Preparation and
   Printer Operations, joined by an explicit prepared-job/session handoff.
 - Runtime implementation: none.
@@ -13,17 +13,21 @@ Last updated: 2026-08-23
 ## Active iteration
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`
-- Status: active dual-environment discovery; Printer Operations read-only
-  discovery is currently first in execution order.
+- Status: active dual-environment discovery; Orca Preparation discovery is
+  currently first in execution order after the user's redirect.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
 
 ## Capability state
 
 ### Orca Preparation
 
-- OrcaSlicer version and invocation boundary: not selected or implemented.
-- Model/project intake and profile resolution: not implemented.
-- Slicing, inspection, artifact validation, and manifest: not implemented.
+- Candidate environments observed: upstream OrcaSlicer `2.4.2` and Snapmaker
+  Orca `2.3.5` on macOS; the first supported backend is not yet selected.
+- CLI help, executable fingerprints, profile boundary, macOS diagnostics
+  limitations, and manual-support 3MF representations are documented in
+  `docs/orca-preparation-findings.md`.
+- Model/project intake, resolved profile loading, slicing, inspection, artifact
+  validation, review bundles, and manifest remain unimplemented.
 
 ### Preparation-to-operations handoff
 
@@ -53,7 +57,8 @@ Last updated: 2026-08-23
 ## Acceptance state
 
 - Static/software: repository foundation and dual-subsystem product contract
-  checks passed on the working branch; no product runtime exists.
+  checks passed; real installed Orca executables were inspected without slicing
+  a user model or creating a production artifact. No product runtime exists.
 - Delivery validation is local-only; no hosted validation workflow is
   configured or required.
 - Protocol/simulator: live Moonraker read-only response shapes, WebSocket
@@ -65,8 +70,9 @@ Last updated: 2026-08-23
 
 ## Open risks and unknowns
 
-- First OrcaSlicer edition, version, invocation path, profile sources, and
-  supported automation behavior are unknown.
+- The first Orca backend remains unselected between the two observed editions;
+  real fixture slicing, profile completeness, GUI parity, and support
+  round-tripping are unverified.
 - Exact first printer model is unknown; a Moonraker-compatible firmware and
   connection path are now observed.
 - Prepared-artifact schema and upload/start ownership are unknown.
@@ -79,7 +85,8 @@ Last updated: 2026-08-23
 
 ## Next action
 
-Continue Printer Operations read-only discovery with an actual object
-subscription, reconnect semantics, exact printer model, authentication boundary,
-always-on host, and notification destination. Then complete the OrcaSlicer
-environment and provisional handoff contract before implementing either track.
+Run the smallest no-printer Orca Preparation experiment: select one observed
+backend, one non-user fixture, and one explicit complete profile; produce and
+statically validate a revisioned review bundle for matching-GUI preview. Do not
+upload or start it. Printer Operations subscription, reconnect, exact-model,
+host, notification, and network-boundary discovery remain pending afterward.
