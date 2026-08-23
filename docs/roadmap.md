@@ -1,25 +1,66 @@
 # Roadmap
 
-The roadmap is ordered by risk reduction and trust, not feature count. A
-milestone is complete only when its exit evidence is recorded.
+The product has two peer delivery tracks plus an integration gate. Milestone
+labels express dependencies and evidence boundaries, not product hierarchy.
+Preparation and Operations may advance in parallel or in a user-directed order.
+A milestone is complete only when its exit evidence is recorded.
 
-## M0 — Product and hardware discovery
+## F0 — Dual-environment and contract discovery
 
-**Goal:** choose the first concrete environment and remove foundational
-unknowns.
+**Goal:** identify the first concrete OrcaSlicer and printer environments and
+define the preparation-to-operations boundary without guessing.
 
-- identify the first printer model and firmware version;
-- inventory its local and vendor APIs and live-control capabilities;
-- identify the camera source and network topology;
-- choose the first notification destination;
-- decide local-only versus remote-access expectations;
-- document the command safety and authorization policy.
+- identify the OrcaSlicer edition, version, invocation path, profile sources,
+  supported input/output behavior, and automation limitations;
+- identify the first printer model, firmware, protocol, and capability set;
+- identify camera, notification, operations host, and network boundaries;
+- define the provisional prepared-artifact manifest and target compatibility
+  checks;
+- decide where upload and start belong while keeping them separate and
+  explicitly authorized;
+- document file, credential, custom G-code, command, and privacy boundaries.
 
-**Exit evidence:** a tested connection spike or protocol capture, a capability
-matrix, and accepted decision records for the initial adapter and deployment
-boundary.
+**Exit evidence:** reproducible read-only discovery against a named OrcaSlicer
+version and printer environment, capability matrices, a proposed handoff
+contract, and accepted decisions for the first adapter boundaries. Discovery
+does not prove a prepared artifact is printable or a printer is safe to control.
 
-## M1 — Persistent observation spine
+## Orca Preparation track
+
+### P1 — Safe on-demand vertical slice
+
+**Goal:** turn one supported input and explicit profile set into a staged,
+traceable artifact without upload or print start.
+
+- isolated, non-destructive input handling;
+- explicit printer, filament, and process profile identities;
+- bounded invocation of a pinned OrcaSlicer version;
+- captured exit state, diagnostics, warnings, and estimates;
+- artifact validation, hashing, and preparation manifest;
+- minimum target-identity compatibility checks required before handoff;
+- deterministic failure for missing, stale, or invalid output.
+
+**Exit evidence:** a real OrcaSlicer integration run is reproducible from the
+recorded fixture and profiles and produces a validated artifact plus manifest.
+This is software-integration evidence only.
+
+### P2 — Configuration and inspection workflow
+
+**Goal:** make configuration choices and preparation results inspectable before
+handoff.
+
+- profile inheritance and embedded-project precedence;
+- explicit overrides and conflict reporting;
+- richer target compatibility and custom G-code preflight;
+- plate, preview, and estimate access where the discovered Orca boundary allows;
+- stable preparation states and result inspection through MCP.
+
+**Exit evidence:** fixtures cover accepted, rejected, conflicting, timed-out,
+and invalid-artifact paths without silent profile selection or input mutation.
+
+## Printer Operations track
+
+### O1 — Persistent observation spine
 
 **Goal:** observe one real printer reliably without controlling it.
 
@@ -34,7 +75,7 @@ boundary.
 state, survives a tested reconnect scenario, and records no impossible state
 transitions.
 
-## M2 — Notifications
+### O2 — Notifications
 
 **Goal:** remove the need to poll routine print progress.
 
@@ -46,7 +87,7 @@ transitions.
 **Exit evidence:** controlled scenarios produce one timely, actionable message
 each, with retries and duplicates accounted for.
 
-## M3 — Human-directed control
+### O3 — Human-directed control
 
 **Goal:** execute explicit commands safely and verify their effects.
 
@@ -59,7 +100,7 @@ each, with retries and duplicates accounted for.
 **Exit evidence:** a hardware test matrix demonstrates accepted, rejected,
 timed-out, and disconnected command paths without false success reports.
 
-## M4 — Assisted diagnosis
+### O4 — Assisted diagnosis
 
 **Goal:** turn telemetry, images, and user feedback into cautious
 recommendations.
@@ -73,7 +114,7 @@ recommendations.
 **Exit evidence:** an evaluation set establishes where recommendations are
 useful and where the system must abstain. No autonomous correction is implied.
 
-## M5 — Guarded interventions
+### O5 — Guarded interventions
 
 **Goal:** apply pre-authorized, bounded adjustments and verify their effects.
 
@@ -86,14 +127,34 @@ useful and where the system must abstain. No autonomous correction is implied.
 **Exit evidence:** controlled physical tests show bounded behavior, reliable
 verification, and safe abstention under lost or ambiguous observations.
 
-## M6 — Preparation and ecosystem expansion
+## I1 — Prepared-job to print-session handoff
 
-**Goal:** add slicing and broader integrations without changing the core model.
+**Goal:** connect the peer subsystems without turning slice, upload, start, and
+observed printing into one implicit action.
 
-- OrcaSlicer adapter and job configuration;
-- upload and start workflow;
-- additional printer, camera, and notification adapters;
-- multi-printer operations and richer automations.
+- artifact and manifest identity across the boundary;
+- target compatibility and capability checks;
+- separate upload and start intents, authorization, results, and retries;
+- printer-job correlation and post-start observation;
+- print session linked to the exact manifest and artifact hash. Sessions that
+  originate outside I1 record unavailable or unknown provenance separately.
 
-**Exit evidence:** each adapter satisfies the same session, capability,
-authorization, and verification contracts.
+**Dependency gate:** requires P1 including its minimum compatibility check, O1,
+and an accepted handoff/authorization contract. Richer P2 and O2 work may
+proceed independently where their own dependencies are met.
+
+**Exit evidence:** controlled integration and physical-printer tests show each
+state transition and failure path without false success. An upload or start
+acknowledgement alone is protocol evidence, not observed printing.
+
+## E1 — Ecosystem expansion
+
+**Goal:** add broader integrations without weakening either subsystem contract.
+
+- richer Orca project and profile workflows;
+- additional printer, camera, slicer, and notification adapters;
+- multiple printers, users, and preparation environments;
+- richer automation and historical analysis.
+
+**Exit evidence:** each adapter satisfies the relevant preparation, handoff,
+session, capability, authorization, and verification contracts.

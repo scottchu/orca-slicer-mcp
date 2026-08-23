@@ -9,9 +9,11 @@ required_files=(
   "AGENTS.md"
   "PROJECT_STATE.md"
   "NEXT_AGENT.md"
+  "docs/architecture.md"
   "docs/continuity.md"
   "docs/environment.md"
   "docs/requirements.md"
+  "docs/roadmap.md"
   "docs/iterations/CURRENT"
   "docs/decisions/README.md"
   ".github/pull_request_template.md"
@@ -39,6 +41,20 @@ for iteration_file in BRIEF.md VALIDATION.md HANDOFF.md; do
   fi
 done
 
+active_count=0
+active_brief=""
+for brief in docs/iterations/*/BRIEF.md; do
+  if grep -Fxq -- '- Status: active' "$brief"; then
+    active_count=$((active_count + 1))
+    active_brief="$brief"
+  fi
+done
+
+if [[ "$active_count" -ne 1 || "$active_brief" != "$iteration_root/BRIEF.md" ]]; then
+  echo "exactly the CURRENT iteration must have Status: active" >&2
+  exit 1
+fi
+
 for heading in "## Baseline" "## Active iteration" "## Acceptance state" "## Next action"; do
   if ! grep -Fq "$heading" PROJECT_STATE.md; then
     echo "PROJECT_STATE.md is missing heading: $heading" >&2
@@ -53,12 +69,24 @@ for phrase in "Static/software" "Protocol/simulator" "Real printer" "User outcom
   fi
 done
 
-for requirement in SESSION-001 OBS-001 CTRL-001 SAFE-001 DATA-001; do
+for requirement in PREP-001 ORCA-001 HANDOFF-001 SESSION-001 OBS-001 CTRL-001 SAFE-001 DATA-001; do
   if ! grep -Fq "$requirement" docs/requirements.md; then
     echo "docs/requirements.md is missing core requirement: $requirement" >&2
     exit 1
   fi
 done
+
+for phrase in "Orca Preparation" "Printer Operations" "peer subsystems"; do
+  if ! grep -Fqi "$phrase" README.md; then
+    echo "README.md is missing product-boundary phrase: $phrase" >&2
+    exit 1
+  fi
+done
+
+if ! grep -Fq '0003-two-peer-subsystems.md' docs/decisions/README.md; then
+  echo "decision index is missing the active product-boundary ADR" >&2
+  exit 1
+fi
 
 if ! grep -Fq 'pull_request_required = true' .github/repository-policy.toml; then
   echo "repository policy must require pull requests by default" >&2

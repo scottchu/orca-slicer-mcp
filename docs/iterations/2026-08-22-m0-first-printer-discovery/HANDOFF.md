@@ -1,5 +1,9 @@
 # M0 first-printer discovery handoff
 
+> Historical iteration. Superseded on 2026-08-23 by
+> `2026-08-23-f0-dual-subsystem-foundation` and decision 0003. The original
+> body below records the earlier product framing; it is not current authority.
+
 ## Current status
 
 The product boundary, safety posture, roadmap, working requirements, and

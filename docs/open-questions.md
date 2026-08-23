@@ -1,9 +1,24 @@
 # Open questions
 
-These are discovery prompts, not an implementation backlog. The first group is
-the immediate priority.
+These are discovery prompts, not an implementation backlog. The first groups
+cover the two peer subsystems and their handoff.
 
-## First environment
+## Orca Preparation environment
+
+- Which OrcaSlicer edition and exact version should be supported first?
+- Which supported CLI, GUI automation, project, or other invocation boundary is
+  actually available in that version?
+- Which model/project input and output formats are required first?
+- Where do printer, filament, and process profiles come from, and how are their
+  versions or fingerprints captured?
+- How are embedded project settings, profile inheritance, explicit overrides,
+  and conflicts resolved and shown?
+- Which warnings, estimates, thumbnails, previews, or plate data can be obtained
+  reproducibly?
+- How are custom G-code, local paths, temporary files, output overwrite, and
+  resource exhaustion bounded?
+
+## Printer Operations environment
 
 - What exact printer model and firmware version should be supported first?
 - How is it currently connected: LAN, USB, vendor cloud, OctoPrint, Moonraker,
@@ -13,6 +28,18 @@ the immediate priority.
 - What camera already exists, and what angle and lighting can it provide?
 - Must control work away from the home network in the first release?
 - Where should the first notifications arrive?
+
+## Preparation-to-operations handoff
+
+- What is the minimum prepared-artifact manifest and versioning scheme?
+- Which compatibility checks must pass before upload or start is offered?
+- Does upload belong to Preparation, Operations, or a handoff coordinator for
+  the first environment?
+- How are upload, queue or selection, start, acknowledgement, and observed
+  printing represented as separate states?
+- How is the prepared artifact correlated to the printer's job identity and
+  eventual print session?
+- Which retries are idempotent, and which require renewed authorization?
 
 ## Product behavior
 
@@ -25,7 +52,8 @@ the immediate priority.
 
 ## Runtime and data
 
-- Should the first service and MCP interface be one deployable process?
+- Should the first Printer Operations service and MCP interface be one
+  deployable process, and should Preparation share that deployment?
 - Where will it run: workstation, Raspberry Pi, NAS, or another always-on host?
 - How much session history and camera evidence should be retained?
 - Is local-only storage a requirement or merely the default?
@@ -43,7 +71,7 @@ the immediate priority.
 
 ## Naming
 
-- What product name reflects printer operations without implying OrcaSlicer is
-  the core?
+- What product name reflects both Orca Preparation and Printer Operations
+  without implying that either peer subsystem is the whole product?
 - Should this repository be renamed after the first architecture decision, or
   only once an implementation direction is proven?

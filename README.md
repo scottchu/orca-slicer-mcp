@@ -1,21 +1,28 @@
-# Printer Operations Layer
+# Orca Preparation and Printer Operations
 
-> Working title. The repository directory still uses the earlier
-> `orca-slicer-mcp` name while the product boundary is being clarified.
+This project is exploring one 3D-printing product with two peer subsystems:
 
-This project is exploring a real-time, agent-operated control and monitoring
-layer for 3D printers. Slicing and model preparation are capabilities of the
-system, not its center.
+- **Orca Preparation** owns model or project intake, printer, filament, and
+  process configuration, slicing, result inspection, and production of an
+  identifiable prepared print job. OrcaSlicer is an adapter and tool boundary
+  inside this subsystem.
+- **Printer Operations** owns persistent print sessions, live observation,
+  notifications, authorized control, and post-action verification.
 
-The intended product loop is:
+The subsystems meet at an explicit print-job-to-print-session handoff. That
+handoff preserves artifact and configuration provenance, separates slicing,
+upload, start, and observed printing, and never treats an acknowledgement as
+proof of a physical result.
+
+The intended operations loop is:
 
 ```text
 observe -> explain -> notify or propose -> authorize -> act -> verify
 ```
 
 The project is currently in discovery and foundation work. There is no working
-printer integration yet, and no claim of autonomous or unattended-safe printer
-control.
+OrcaSlicer or printer integration yet, and no claim of printable output,
+autonomous control, or unattended-safe printer operation.
 
 ## Start here
 
@@ -34,15 +41,17 @@ control.
 
 ## Current milestone
 
-Choose the first supported printer and connection path, then prove that a
-resident local service can observe one real print session reliably. See the
-[roadmap](docs/roadmap.md) for the exit criteria.
+Define the first concrete OrcaSlicer and printer environments plus their
+handoff contract. Current discovery may advance one track before the other;
+that execution order does not make either subsystem secondary. See the
+[roadmap](docs/roadmap.md) for dependency gates and exit criteria.
 
 ## Repository status
 
 This repository intentionally contains documentation before implementation.
-The runtime, language, deployment model, printer protocol, camera source, and
-notification channel remain open decisions.
+The OrcaSlicer invocation boundary, runtime, language, deployment model,
+printer protocol, camera source, notification channel, and upload/start
+ownership remain open decisions.
 
 Run the technology-neutral repository contract check with:
 

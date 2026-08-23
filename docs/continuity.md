@@ -7,9 +7,9 @@ summaries are useful context, but another agent must be able to determine the
 baseline, intent, evidence, risks, and next action from repository files alone.
 
 This workflow is intentionally lighter than the continuity system used by
-multi-project CAD repositories. It applies to one printer-operations product
-and becomes more detailed only when the risk or implementation scope requires
-it.
+multi-project CAD repositories. It applies to one product with Orca Preparation
+and Printer Operations subsystems and becomes more detailed only when the risk
+or implementation scope requires it.
 
 ## Stable and current records
 
@@ -18,8 +18,8 @@ it.
 - `docs/requirements.md` gives stable IDs to working product and safety
   requirements.
 - `docs/decisions/` preserves durable decisions and superseded rationale.
-- `docs/environment.md` records the concrete printer and deployment facts that
-  were actually observed.
+- `docs/environment.md` records the concrete OrcaSlicer, printer, and deployment
+  facts that were actually observed.
 - `PROJECT_STATE.md` is the concise current-state index.
 - `NEXT_AGENT.md` is the shortest restart route and copy-paste handoff prompt.
 - `docs/iterations/CURRENT` names the active iteration directory.
@@ -30,6 +30,7 @@ Open or identify an iteration before work that does any of the following:
 
 - selects a runtime, protocol, printer adapter, storage model, or security
   boundary;
+- selects an OrcaSlicer invocation, profile, artifact, or handoff contract;
 - implements a vertical product slice;
 - adds or changes a command that can affect an active print;
 - evaluates camera-based diagnosis or agent intervention;
@@ -70,6 +71,10 @@ an inference. Human feedback is valuable physical evidence but does not
 silently change product requirements. Contradictions stay visible until they
 are resolved.
 
+A real OrcaSlicer invocation is recorded as software/tool-integration evidence
+inside the first layer. It is stronger than a mock for the named tool version,
+but it does not establish printer compatibility or physical behavior.
+
 ## During work
 
 - Record material changes in direction when they happen. If the user redirects
@@ -78,6 +83,8 @@ are resolved.
 - Preserve failed approaches that could otherwise be repeated.
 - Tie protocol and real-printer claims to the tested firmware, capability set,
   configuration, and relevant commit or candidate fingerprint.
+- Tie real-Orca claims to the exact executable version, input fixture, profile
+  identities, overrides, command, exit result, and output hash.
 - Keep credentials, local addresses, camera recordings, and printer identifiers
   out of Git. Use redacted labels where identity is not essential.
 

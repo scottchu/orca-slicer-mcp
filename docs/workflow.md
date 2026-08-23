@@ -2,14 +2,16 @@
 
 ## Development posture
 
-Work in small vertical slices. A useful slice crosses the necessary boundaries
-to answer one real question—for example, printer telemetry through the resident
-service and MCP tool—without building unrelated framework.
+Work in small vertical slices. A useful slice answers one real question inside
+Orca Preparation, Printer Operations, or their handoff—for example, a bounded
+Orca invocation producing a traceable artifact, or printer telemetry through
+the resident service and MCP tool—without building unrelated framework.
 
 Execution order is part of the active contract. If the user changes the
-priority—for example, from implementation to protocol discovery or from camera
-inference to real-printer observation—record the pivot and stop work on the
-superseded phase.
+priority—for example, between the two subsystem tracks, from implementation to
+protocol discovery, or from camera inference to real-printer observation—record
+the pivot and stop work on the superseded phase. Execution order does not
+silently redefine the peer product boundary.
 
 ## Before implementation
 
@@ -31,8 +33,9 @@ storage model, security boundary, or product behavior.
   request unless the user explicitly overrides that route for a specific
   change.
 - Keep commits focused on one coherent change.
-- Do not commit secrets, local printer data, camera recordings, logs, caches, or
-  unrelated generated artifacts.
+- Do not commit secrets, local printer data, camera recordings, user models or
+  projects, private profiles, custom G-code, local paths, temporary artifacts,
+  logs, caches, or unrelated generated artifacts.
 - Include generated artifacts only when they are intentional deliverables and
   their source and regeneration path are documented.
 - Do not introduce a lockfile-free dependency setup; once a runtime is chosen,
@@ -49,6 +52,10 @@ Report evidence with its actual boundary:
 - user-observed outcome.
 
 Passing a lower level never implies that a higher one passed.
+
+A real OrcaSlicer invocation is a separately labeled subtype of the
+Static/software layer. A controlled printer endpoint belongs to the
+Protocol/simulator layer. Neither is Real printer evidence.
 
 Use these four acceptance layers consistently:
 
@@ -72,6 +79,10 @@ effect. Lost or ambiguous telemetry is not success.
 - Is sensitive local data minimized and excluded from Git?
 - Are timeout, retry, duplication, and reconnection behaviors explicit?
 - Is the evidence sufficient for the claim being made?
+- Does a preparation claim name the OrcaSlicer version, profiles, overrides,
+  invocation result, and artifact identity?
+- Are prepared, uploaded, start acknowledged, and observed printing kept
+  distinct with authorization and provenance across the handoff?
 - Did the change resolve an open question or create a new one?
 
 ## Decision records
