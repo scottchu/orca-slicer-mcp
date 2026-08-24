@@ -99,9 +99,11 @@ without recording addresses, keys, or credentials.
 
 - capture a successful `printer.objects.subscribe` response with an explicit
   compatible WebSocket client and verify diff notifications;
-- observe a real print from start through final state;
+- capture a future print through a product-compatible subscription client from
+  initial snapshot through final state; one pilot's layer progress and
+  completion were observed manually but not through the proposed runtime;
 - test safe disconnect and reconnect handling without stopping a print;
-- determine the exact printer model and vendor-specific object semantics;
+- determine the Snapmaker U1 vendor-specific object semantics;
 - define and test authorization separately from Moonraker trusted-client status;
 - test control and live adjustment only under an approved hardware matrix.
 

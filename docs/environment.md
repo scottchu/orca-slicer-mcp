@@ -7,27 +7,33 @@ other identifying data.
 
 ## Current status
 
-Two local Orca Preparation candidates are observed, but the first supported
-backend is not selected. A first Printer Operations target is reachable on the
-user's private LAN. The address is intentionally not recorded. Read-only
-Fluidd/Moonraker and camera checks succeeded on 2026-08-23; the exact printer
-model and remaining operating environment are incomplete.
+Two local Orca Preparation candidates are observed, and Snapmaker Orca `2.3.5`
+was used for one user-authorized Snapmaker U1 print pilot. That pilot is
+evidence for a candidate path, not selection of the first supported product
+backend. The Printer Operations target is reachable on the user's private LAN;
+the address is intentionally not recorded. Read-only Fluidd/Moonraker checks
+and one later U1 print completed on 2026-08-23. Remaining operating and product
+authorization boundaries are incomplete.
 
 ## Orca Preparation
 
 - Editions and versions: upstream OrcaSlicer `2.4.2`; Snapmaker Orca `2.3.5`
 - Invocation paths: standard macOS app-bundle executables recorded in
-  `docs/orca-preparation-findings.md`; first backend not selected
+  `docs/orca-preparation-findings.md`; Snapmaker Orca was used for one pilot,
+  but the first product backend is not selected
 - Supported automation interface: both expose preparation CLI help; neither
   observed CLI exposes printer upload, start, or monitoring commands
-- Accepted inputs advertised: STL and 3MF; real fixture loading remains untested
+- Accepted inputs advertised: STL and 3MF; two temporary STL inputs sliced in
+  the pilot, while direct private multi-plate 3MF slicing crashed and synthetic
+  fixture coverage remains pending
 - Profile sources: bundled Snapmaker machine, process, and filament JSON plus
-  embedded 3MF settings are observed; complete inheritance resolution remains
-  untested
+  embedded 3MF settings are observed; the pilot required complete resolved
+  machine, process, and four-slot filament profiles
 - Configuration precedence: command line, then loaded settings and filaments,
   then embedded 3MF; conflict reporting remains untested
 - Outputs advertised: plate G-code plus 3MF, settings, slice-data, and STL
-  exports; real output, estimates, and GUI parity remain untested
+  exports; one real G-code artifact was validated and printed, while estimates,
+  synthetic fixtures, and GUI parity remain untested
 - Diagnostics: process exit and stdout or stderr are available; advertised
   progress pipe and `result.json` are Linux-only in the reviewed sources and
   cannot be assumed on macOS
@@ -43,7 +49,7 @@ model and remaining operating environment are incomplete.
 ## Printer
 
 - Redacted label: first LAN target
-- Vendor and model: unknown
+- Vendor and model: Snapmaker U1 for the observed pilot
 - Firmware and version: Moonraker `1.5.2`, API `1.4.0`; printer software reports
   `1.5.2.13_20260722102206`; exact vendor firmware identity remains unknown
 - Connection path: private-LAN HTTP through Fluidd/nginx to Moonraker
@@ -114,5 +120,11 @@ capability, and evidence path. Unknowns remain unknown until checked.
 - **2026-08-23:** local upstream OrcaSlicer `2.4.2` and Snapmaker Orca `2.3.5`
   executables were fingerprinted and their help, profile resources, macOS CLI
   behavior, and official source boundaries were inspected. No model was sliced
-  and no artifact was sent to a printer. See
+  and no artifact was sent to a printer during that initial discovery. See
   `docs/orca-preparation-findings.md`.
+- **2026-08-23, later user-authorized pilot:** Snapmaker Orca `2.3.5` sliced two
+  isolated objects for a Snapmaker U1 after repeated CLI and profile failures.
+  The artifact was verified for logical tool `T2`, uploaded, started, observed
+  printing, and observed complete at `22/22` layers. See the chronological
+  [pilot log](logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md) and its
+  separate [provisional knowledge](knowledge/snapmaker-orca-cli-preparation.md).

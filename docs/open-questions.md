@@ -24,8 +24,8 @@ cover the two peer subsystems and their handoff.
 
 ## Printer Operations environment
 
-- Which exact printer model and vendor firmware expose the observed private-LAN
-  Fluidd/Moonraker-compatible surface and should be supported first?
+- Which exact Snapmaker U1 firmware behaviors and vendor-specific semantics
+  apply to the observed private-LAN Fluidd/Moonraker-compatible surface?
 - Which commands are available during an active print, especially live Z-offset?
 - Are command changes temporary for the session or persisted to the printer?
 - What camera already exists, and what angle and lighting can it provide?
