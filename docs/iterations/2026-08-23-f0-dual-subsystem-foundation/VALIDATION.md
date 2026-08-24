@@ -4,8 +4,9 @@
 
 - Working baseline: `32762dd`
 - OrcaSlicer environment: upstream OrcaSlicer `2.4.2` and Snapmaker Orca
-  `2.3.5` observed as local candidates; first backend not selected
-- Printer: redacted private-LAN Fluidd/Moonraker device; exact model unknown
+  `2.3.5` observed as local candidates; Snapmaker Orca was used for one pilot,
+  but the first product backend is not selected
+- Printer: redacted private-LAN Snapmaker U1 with Fluidd/Moonraker
 - Observed software: Moonraker `1.5.2`, API `1.4.0`, printer software
   `1.5.2.13_20260722102206`
 - Validators: primary agent plus independent product and architecture agents
@@ -87,7 +88,8 @@
   the Linux-only progress pipe or `result.json`; source review also identified
   support-enforcer and blocker volume types plus facet annotation serialization.
 - No input model was loaded, no slice was run, no generated artifact was
-  retained, and no printer request was issued during Orca discovery.
+  retained, and no printer request was issued during the initial Orca
+  discovery. A later user-authorized pilot is recorded below.
 - `bash -n scripts/check-repository.sh`: passed after recording Orca findings,
   collaborative preview, support representations, and the execution-order
   redirect.
@@ -98,6 +100,54 @@
   new Orca Preparation discovery record was linked into the documentation map.
 - Current-authority scan found no remaining print-session-as-product-center,
   Printer-Operations-first, or Orca-environment-unknown regression.
+
+### Later user-authorized Snapmaker Orca pilot
+
+This evidence occurred after the initial non-mutating discovery. Private input
+files, resolved profiles, generated G-code, temporary paths, printer
+identifiers, and runtime data are intentionally not retained.
+
+- Direct private multi-plate 3MF attempts returned exits `232` and `253`; the
+  correctly formed `--allow-newer-file --slice 2` attempt crashed with exit
+  `139`.
+- Reduced-input probes returned exits `205`, `239`, `254`, `232`, and `139`
+  under different missing, incomplete, or invalid profile/export conditions.
+- A resolved process retaining `wipe_tower_filament: "0"` crashed with exit
+  `139`; removing or correcting it allowed this observed CLI path to proceed.
+  Reproduction with a non-user negative fixture is still pending.
+- Filament-slot profiles missing `filament_diameter` and
+  `filament_is_support` collapsed the resolved physical-extruder count to one
+  and selected `T0` despite explicit filament IDs.
+- Adding complete required fields to all four filament slots restored four
+  physical extruders and logical tool `T2` for physical extruder 3.
+- The successful Snapmaker Orca invocation used two isolated STL objects,
+  complete resolved machine/process settings, four complete filament profiles,
+  explicit filament IDs `3,3`, and an isolated output directory. It returned
+  exit `0`.
+- Static inspection confirmed `T2` and the accepted core process and
+  temperature settings before printer actions.
+- Generated G-code SHA-256:
+  `057f7e06d7d3da28329fe4588d1039c925c4bba74d23783573204448622d2d36`.
+- With explicit user authorization, upload, start acknowledgement, observed
+  printing, and completion were reached as distinct states. The printer
+  reported `22/22` layers, `827.288` seconds, and no printer errors.
+- The user later handled and assembled the physical parts. This proves a
+  physical output for the pilot, while separate fit and mechanism failures
+  prevent any CAD or mechanism acceptance claim.
+- One zsh diagnostic wrapper assigned to the read-only `status` parameter and
+  returned exit `1` even though its child slicer had completed. Future wrappers
+  must capture and report wrapper and child exits separately.
+- Full chronology: [pilot log](../../logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md).
+- Derived, still-provisional guidance:
+  [Snapmaker Orca CLI preparation knowledge](../../knowledge/snapmaker-orca-cli-preparation.md).
+- `./scripts/check-repository.sh`: passed with `repository contract: ok` after
+  adding the separate log, knowledge, current-state, validation, and handoff
+  records.
+- `git diff --check`: passed after the same update.
+- Current-authority scan found only explicitly historical initial-discovery
+  statements, not a current claim that no real slice or print occurred.
+- Privacy scan of the new log and knowledge records found no absolute user or
+  temporary paths and no private-LAN address literals.
 
 ## Requirement evidence
 
@@ -114,8 +164,13 @@
 - `API-001` through `API-004`, `ARCH-001` through `ARCH-003`, `ONTO-001` through
   `ONTO-002`, `OBS-004` through `OBS-006`, and `CAM-003` are accepted as static
   contracts. No runtime exists to prove enforcement or behavior.
-- Orca Preparation, handoff, notification, control, and user-outcome
-  runtime requirements remain unvalidated.
+- The later pilot partially supports `ORCA-001`, `ORCA-002`, `ORCA-005`,
+  `ORCA-006`, and the state separation in `HANDOFF-002`. It does not prove a
+  product implementation because no manifest, product adapter, review bundle,
+  authorization runtime, or session correlation exists.
+- Notification and control runtime requirements remain unvalidated. The user
+  outcome of obtaining two printed pieces was observed once; a repeatable
+  preparation product outcome remains unvalidated.
 - `PREP-004` through `PREP-006` and `ORCA-006` are accepted as static working
   requirements. Local discovery partially supports the feasibility of multiple
   explicit backends and Orca support representations, but no review bundle,
@@ -125,14 +180,19 @@
 
 - Static/software: dual-subsystem, ontology, surface, monitoring, collaborative
   preparation review, and manual-support contracts are documented. Real
-  installed CLI help and source boundaries were inspected; slicing runtime
-  behavior was not tested.
+  installed CLI help and source boundaries were inspected. One later real
+  Snapmaker Orca slice succeeded after multiple recorded crash and profile
+  failures; no product runtime exists.
 - Protocol/simulator: live Moonraker HTTP response shapes, WebSocket upgrade,
   and server notifications were observed; no fixture, simulator, object
   subscription, or reconnect test exists.
-- Real printer: ready/standby telemetry and image transport were observed on one
-  device; no active print, command, reconnect, or physical outcome was tested.
-- User outcome: not evaluated.
+- Real printer: ready/standby telemetry, image transport, and one
+  user-authorized U1 print through reported completion were observed. Product
+  subscription, reconnect, command correlation, and safety behavior remain
+  untested.
+- User outcome: the two requested printed pieces were obtained once. Their
+  later mechanism failure is separate physical-design evidence and the slow
+  manual CLI debugging means the workflow itself is not accepted.
 
 ## Failures, repairs, and reruns
 
@@ -148,3 +208,7 @@
 - A later Moonraker branch changed the root guidance back to a print-session
   central framing. The current update restores the accepted peer-subsystem
   contract without removing the useful monitoring records.
+- The later Snapmaker Orca pilot repeatedly crashed or rejected incomplete
+  configurations before a complete resolved-profile path succeeded. Its
+  chronology and provisional guards are now preserved separately so the next
+  agent must reproduce them before implementing automation.

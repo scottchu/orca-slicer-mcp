@@ -16,22 +16,32 @@ Do not use prior chat history as authority when it conflicts with these files.
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
 - Product runtime: none
 - Product evidence: planning and product-boundary records; local, non-mutating
-  Orca and Snapmaker Orca discovery; plus redacted, read-only Moonraker HTTP,
-  WebSocket, and webcam observations
+  Orca and Snapmaker Orca discovery; one later user-authorized Snapmaker U1
+  slice and completed print; plus redacted Moonraker HTTP, WebSocket, and webcam
+  observations
 
 ## Immediate task
 
 Current execution order is Orca Preparation discovery first. Continue with:
 
-1. Select upstream OrcaSlicer `2.4.2` or Snapmaker Orca `2.3.5` for one
-   non-user fixture and explicit complete profile.
-2. Dry-run, slice, statically validate, and assemble a revisioned review bundle
-   for preview in the matching GUI. Do not upload or start it.
-3. Exercise support-enforcer and blocker round-trip only after the baseline
-   fixture passes. Preserve user-painted support projects but do not synthesize
+1. Read the [pilot log](docs/logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md)
+   as chronology, then the separate
+   [provisional knowledge](docs/knowledge/snapmaker-orca-cli-preparation.md).
+2. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
+   with explicit complete profiles. Record it as a new log. Do not upload or
+   start it.
+3. Run non-user negative fixtures for `wipe_tower_filament: "0"` and missing
+   inherited filament fields. Determine whether exit `139` and tool-inventory
+   collapse reproduce; do not encode one-run correlations as universal rules.
+4. Repeat successful dry slices, explain any hash differences, and build a
+   regression matrix. Only then begin reusable preparation code. A skill must
+   orchestrate tested code, and MCP comes after stable preparation and
+   operations contracts.
+5. Exercise support-enforcer and blocker round-trip only after the baseline
+   fixtures pass. Preserve user-painted support projects but do not synthesize
    facet painting without golden round-trip fixtures.
-4. Resume Printer Operations with a compatible `printer.objects.subscribe`
-   client, reconnect and freshness behavior, exact printer model, always-on
+6. Resume Printer Operations with a compatible `printer.objects.subscribe`
+   client, reconnect and freshness behavior, U1 vendor semantics, always-on
    host, notification destination, and network/authentication boundary.
 
 Use `docs/orca-preparation-findings.md` as the discovery boundary. Draft the
@@ -39,11 +49,12 @@ review-bundle and prepared-artifact manifest from observed output, then record
 facts in `docs/environment.md` and evidence in the active iteration's
 `VALIDATION.md`.
 
-The candidate Orca executables and first printer read-only status, camera
-snapshot, object inventory, and WebSocket transport are already recorded. No
-real slice, support round-trip, printer command, upload, or print start has been
-accepted. Do not scaffold either runtime until the remaining F0 environment and
-handoff questions have enough evidence.
+The candidate Orca executables, first printer status, camera snapshot, object
+inventory, and WebSocket transport are recorded. One real slice, upload, start,
+observed print, and completion also occurred under explicit user direction, but
+not through product code. No support round-trip or reusable preparation runtime
+has been accepted. Do not scaffold either product subsystem until repeated
+fixtures establish stable preparation and handoff behavior.
 
 ## Preserve
 
@@ -63,6 +74,8 @@ handoff questions have enough evidence.
   visible freshness, and full resynchronization after reconnect.
 - Slicing, artifact validation, upload, start acknowledgement, and observed
   printing remain distinct states and evidence.
+- Preserve the maturation order: log, knowledge, repeated evidence, code,
+  skill, then MCP.
 - Repository records capture durable decisions and evidence; raw conversation
   transcripts do not.
 
@@ -90,6 +103,11 @@ labeled real-Orca tool integration, separate from protocol/simulator,
 real-printer, and user-outcome evidence. Do not choose runtimes or implement
 consequential actions until the F0 environment, handoff, and safety boundaries
 are established.
+Read the 2026-08-23 Snapmaker Orca pilot log as chronological evidence and its
+knowledge document as provisional guidance. Repeat the synthetic dry-slice and
+negative fixtures before writing reusable code. Do not upload or start future
+artifacts without fresh explicit authorization. Preserve the order: log,
+knowledge, repeated evidence, code, skill, then MCP.
 Treat MCP as a replaceable inbound surface and preserve the versioned monitor
 contract so HTTP, CLI, and a possible Elixir daemon can reuse the same core.
 For Orca Preparation, bind review to the exact backend, project and G-code

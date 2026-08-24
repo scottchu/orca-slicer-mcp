@@ -1,10 +1,12 @@
 # Orca Preparation discovery findings
 
 - Observed: 2026-08-23
-- Scope: local, non-mutating capability discovery and official-source review
-- Evidence class: labeled real-Orca tool integration plus static source review
-- Excluded: user models, production slicing, printer upload, print start, and
-  physical-print claims
+- Scope: initial local capability discovery and official-source review, plus a
+  separately logged later user-authorized pilot
+- Evidence class: labeled real-Orca tool integration, static source review, and
+  one real slice-to-print observation
+- Excluded from repository retention: user models, private profiles, generated
+  G-code, printer identifiers, and raw runtime data
 
 ## Observed local candidates
 
@@ -170,20 +172,45 @@ Official references:
 - <https://github.com/Snapmaker/u1-moonraker>
 - <https://github.com/Snapmaker/Snapmaker-SACP/blob/main/docs/README.md>
 
-## Unvalidated claims and next experiment
+## Later user-authorized Snapmaker U1 pilot
 
-No real slice was executed during this discovery, so the following remain open:
+After the non-mutating discovery above, Snapmaker Orca `2.3.5` was used for one
+user-authorized U1 PETG slice and print. Direct multi-plate 3MF attempts failed
+with version/argument exits and a repeatable exit `139`. The successful path
+used two isolated STL objects, complete resolved machine and process data, four
+complete filament-slot profiles, and explicit filament assignment.
 
-- successful slicing of one non-user fixture with an explicit complete profile;
-- output naming, estimates, warnings, and static validation on the observed
-  macOS binaries;
+The investigation found two correctness boundaries that the earlier source
+review did not prove:
+
+- incomplete inherited filament profiles collapsed the resolved physical
+  extruder count and selected `T0` instead of the requested physical extruder 3
+  (`T2`);
+- `wipe_tower_filament: "0"` correlated with exit `139` in this observed
+  backend/version path.
+
+The final artifact was checked for `T2`, uploaded and started with user
+authorization, observed printing, and observed complete at `22/22` layers with
+no printer error. These are pilot observations, not a product runtime or a
+general backend acceptance. See the
+[chronological log](logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md) and
+[provisional knowledge](knowledge/snapmaker-orca-cli-preparation.md).
+
+## Remaining unvalidated claims and next experiment
+
+No real slice was executed during the initial discovery; the later pilot
+closed only one narrow path. The following remain open:
+
+- repeatable slicing of non-user fixtures with explicit complete profiles;
+- output naming, estimates, warnings, and deterministic behavior across repeated
+  runs on the observed macOS binary;
 - GUI-versus-CLI parity for the selected backend and profile;
 - Snapmaker-specific Full Spectrum or multi-toolhead behavior through CLI;
 - 3MF support-enforcer and blocker round-trip plus resulting G-code paths;
 - preservation, not synthesis, of a user-painted support project;
-- any upload, start, monitoring, or physical-print behavior.
+- product-managed upload, start, monitoring, or physical-print behavior.
 
-The smallest next experiment is a no-printer review bundle from one synthetic
-fixture and an explicit profile, using isolated data and output directories.
-Run dry-run, slice, static G-code validation, and matching-GUI preview without
-uploading the artifact.
+The smallest next experiments are the non-user repetitions in
+`docs/knowledge/snapmaker-orca-cli-preparation.md`. Start with the synthetic
+two-object dry slice and negative crash guards. Do not upload or start future
+artifacts without fresh explicit authorization.

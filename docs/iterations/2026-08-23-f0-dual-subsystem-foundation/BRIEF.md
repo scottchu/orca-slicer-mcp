@@ -8,6 +8,8 @@
 - Current execution order: Orca Preparation discovery first after the user's
   redirect; Printer Operations evidence is preserved and remains pending, not
   secondary
+- Current evidence-maturation order: chronological log, reviewed knowledge,
+  repeated fixtures, then code, skill, and MCP
 
 ## Outcome
 
@@ -50,13 +52,13 @@ in `docs/requirements.md`.
 - MCP remains a replaceable surface around shared application use cases;
 - implementation and hardware acceptance remain explicitly unclaimed.
 
-## Explicit non-goals
+## Initial explicit non-goals and later scope change
 
 - selecting a runtime or scaffolding either subsystem;
-- slicing user models or creating production artifacts; non-mutating version,
-  help, capability, and fixture discovery is allowed;
-- issuing printer commands, G-code, or other mutating requests; redacted
-  read-only connection and protocol discovery is allowed;
+- the original foundation pass excluded slicing user models and printer
+  actions; a later explicit user request authorized one narrow slice-and-print
+  pilot, now recorded separately without retaining private artifacts;
+- future printer actions remain excluded without fresh explicit authorization;
 - deciding upload/start ownership without observed environment evidence;
 - claiming that documentation proves software, protocol, or hardware behavior.
 
