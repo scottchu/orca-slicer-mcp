@@ -496,7 +496,7 @@ identifiers, and runtime data are intentionally not retained.
   data, and `IEND`, and includes no printer URL, public image URL, camera bytes,
   or control affordance.
 - A contract test decoded the remote render result, verified the standard PNG
-  signature, and read dimensions of 1200 by 760. A separate contract test
+  signature, and read dimensions of 1200 by 1500. A separate contract test
   proves the remote refresh result does not add an image.
 - A fresh real-printer observation was rendered locally and visually inspected.
   It showed `complete`, 100%, 188/188 layers, inactive storage, the observed
@@ -529,3 +529,25 @@ identifiers, and runtime data are intentionally not retained.
   returned a fresh reachable `complete` observation, and returned only text in
   `content`. This confirms the working local desktop path did not acquire a
   duplicate PNG; it does not prove a new desktop host mounted the component.
+- The first Codex mobile PNG rendering was user-visible and visually accepted;
+  the user specifically liked the pixel style and requested that it be a little
+  larger. The follow-up portrait layout preserves that style while changing the
+  four metrics from one compact row to a larger 2-by-2 grid. The new layout
+  requires a fresh visual inspection and phone-host confirmation below.
+- A fresh real-printer observation was rendered through the revised 1200 by
+  1500 path and visually inspected. The larger state, percentage, progress bar,
+  two-row metrics, truncated file identity, observation timestamp, and refresh
+  hint all fit without clipping. This is local visual evidence; phone-host
+  sizing remains the user's next confirmation.
+- The loopback service was restarted against the revised source. The first
+  immediate public health probe returned a transient HTTP 502 during restart;
+  the next probe returned HTTP 200 with the personal-OAuth marker and the new
+  process remained running.
+- Plugin Creator validation passed for the repository source, synchronized
+  personal source, and exact installed cache. The portrait update was
+  reinstalled as `0.2.0+codex.20260825211428`.
+- SHA-256 for the rebuilt stdio bundle matched across all three locations at
+  `6dfa78e49bbf81775ca3e62bd518f7399fff1a2c494583aae4032cc5f3e9c49d`.
+- An exact installed-cache stdio smoke again listed only the three read-only
+  tools, returned reachable `complete` telemetry, and kept local content
+  text-only so the desktop widget path remains unchanged.

@@ -189,7 +189,7 @@ describe("U1 status MCP App contract", () => {
       Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])
     );
     expect(bytes.readUInt32BE(16)).toBe(1200);
-    expect(bytes.readUInt32BE(20)).toBe(760);
+    expect(bytes.readUInt32BE(20)).toBe(1500);
   });
 
   test("keeps the remote refresh result data-only", async () => {

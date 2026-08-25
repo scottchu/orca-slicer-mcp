@@ -104,21 +104,25 @@ is not yet an accepted product backend.
   with inactive fully consumed storage, no exception, parked tools, and zero
   heater targets. Phone layout and relayed-camera rendering remain visual
   checks rather than inferred outcomes.
-- decision 0012 adds a portable 1200 by 760 PNG status projection to remote
+- decision 0012 adds a portable 1200 by 1500 PNG status projection to remote
   `show_u1_status` results for Codex hosts that do not mount MCP Apps
   components. It uses the same normalized observation as the widget, exposes
   no URL or control, and leaves local stdio plus remote refresh data-only. A
   live complete observation was rendered and visually inspected locally;
   Codex-mobile display remains a user-visible check.
+- after the first phone rendering was visually accepted, the user asked for a
+  slightly larger presentation. The fallback now uses a portrait 2-by-2 metric
+  layout and larger pixel type so the host can devote more vertical space to it
+  on a phone without changing the data or safety contract.
 - `docs/u1-print-studio-plugin-architecture.md` maps the current package,
   transports, OAuth boundary, observation adapter, presenters, MCP fields, and
   read-only runtime slice to the stable domain ontology. It explicitly records
   that the prototype still calls its observation adapter directly rather than
   implementing the planned application use case and persistent monitor ports.
 - the synchronized and installed plugin is
-  `0.2.0+codex.20260825203920`. Its repository, personal-source, and installed
+  `0.2.0+codex.20260825211428`. Its repository, personal-source, and installed
   bundles share SHA-256
-  `acba2fc887c68249a9552a485f3ae9995936ff015da808858d2dfd53fef2b522`;
+  `6dfa78e49bbf81775ca3e62bd518f7399fff1a2c494583aae4032cc5f3e9c49d`;
   an installed-cache stdio smoke preserved the three-tool inventory and
   text-only local render result.
 - the plugin now includes `u1-mobile-status-setup`, which discovers each user's
