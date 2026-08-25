@@ -102,18 +102,23 @@ is not yet an accepted product backend.
   exposed exactly the three read-only tools and an authenticated
   `show_u1_status` call returned fresh `complete` telemetry at 100% (188/188),
   with inactive fully consumed storage, no exception, parked tools, and zero
-  heater targets. Phone layout and relayed-camera rendering remain visual
-  checks rather than inferred outcomes.
+  heater targets. At that point, phone layout and relayed-camera rendering
+  remained visual checks rather than inferred outcomes.
 - decision 0012 adds a portable 1200 by 1500 PNG status projection to remote
   `show_u1_status` results for Codex hosts that do not mount MCP Apps
   components. It uses the same normalized observation as the widget, exposes
   no URL or control, and leaves local stdio plus remote refresh data-only. A
   live complete observation was rendered and visually inspected locally;
-  Codex-mobile display remains a user-visible check.
+  Codex-mobile display remained a user-visible check until the later user
+  confirmation below.
 - after the first phone rendering was visually accepted, the user asked for a
   slightly larger presentation. The fallback now uses a portrait 2-by-2 metric
   layout and larger pixel type so the host can devote more vertical space to it
   on a phone without changing the data or safety contract.
+- the larger portrait PNG was subsequently displayed in Codex mobile and the
+  user confirmed that it was good. This closes the static image host check; it
+  does not validate the interactive component, relayed camera, PiP, fullscreen,
+  or adaptive refresh.
 - `docs/u1-print-studio-plugin-architecture.md` maps the current package,
   transports, OAuth boundary, observation adapter, presenters, MCP fields, and
   read-only runtime slice to the stable domain ontology. It explicitly records
@@ -166,9 +171,9 @@ included.
   bounded system-curl adapter worked; portability remains unknown;
 - the local stdio plugin is desktop-local. The selected personal Funnel and
   OAuth backend now passes an authenticated remote tool call, and the remote
-  result carries an inline image fallback. Actual image display on Codex mobile
-  and interactive camera rendering remain separately unverified visual
-  evidence;
+  result carries an inline image fallback. Actual image display is now
+  user-confirmed for the larger portrait PNG in Codex mobile; interactive
+  camera rendering remains separately unverified visual evidence;
 - the snapshot endpoint was intermittently slow. One bounded retry recovered a
   packaged real-frame smoke, and one later frame took 12.9 seconds. The longer
   bounded relay now passes installed-cache transport checks, but repeated
@@ -181,12 +186,12 @@ included.
 
 ## Next smallest action
 
-Start a new Codex mobile conversation and visually verify the inline status
-image from `show_u1_status`. If that host mounts the interactive component,
-verify the relayed snapshot and controls as a separate host capability. Record
-each result separately, then resume synthetic non-user dry-slice and negative
-fixtures. Do not expose Moonraker or build a shared CLI merely because the
-manual commands exist.
+Run one synthetic two-object dry-slice repetition with explicit complete
+Snapmaker Orca `2.3.5` profiles, then run non-user negative fixtures for
+`wipe_tower_filament: "0"` and missing inherited filament fields. Do not upload
+or start an artifact. If a host mounts the interactive component, verify its
+relayed snapshot and controls as a separate capability. Do not expose Moonraker
+or build a shared CLI merely because the manual commands exist.
 
 ## Restart instructions
 

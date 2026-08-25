@@ -25,8 +25,8 @@ Do not use prior chat history as authority when it conflicts with these files.
 
 ## Immediate task
 
-Current execution order is the user-directed status-view host validation pass.
-Continue with:
+Current execution order is the synthetic Orca Preparation fixture pass after
+the user accepted the larger portrait PNG in Codex mobile. Continue with:
 
 1. Read the [pilot log](docs/logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md)
    as chronology, then the separate
@@ -54,9 +54,10 @@ Continue with:
    `get_u1_status`, and `get_u1_camera_frame`, and an authenticated
    `show_u1_status` call returned fresh complete telemetry. The remote render
    result now adds a standard inline PNG derived from the same observation, so
-   non-component Codex hosts do not need an external dashboard. Start a new
-   phone conversation and visually confirm that image. Test the relayed camera
-   and interactive controls separately only if that host mounts the MCP Apps
+   non-component Codex hosts do not need an external dashboard. The user later
+   confirmed that the larger portrait PNG displayed in Codex mobile was good.
+   This closes the static image host check, not the relayed camera or interactive
+   component checks. Test those separately only if that host mounts the MCP Apps
    component. Never expose Moonraker or its camera directly.
 5. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
    with explicit complete profiles. Record it as a new log. Do not upload or

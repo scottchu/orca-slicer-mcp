@@ -74,8 +74,9 @@ Last updated: 2026-08-25
   completion telemetry. Decision 0012 now adds a dependency-free inline PNG
   status projection to the remote render result while preserving the existing
   local desktop widget path. The PNG was generated and visually inspected from
-  a fresh real-printer observation; display inside Codex mobile remains pending
-  user-visible host evidence.
+  a fresh real-printer observation. The later larger portrait projection was
+  displayed in Codex mobile and the user confirmed that it was good; this is
+  user-reported host evidence, separate from interactive component behavior.
 - Persistent monitoring: not implemented. The accepted runtime model still
   combines a full direct snapshot with ordered subscription deltas and
   reconnect resync.
@@ -113,8 +114,9 @@ Last updated: 2026-08-25
   behavior remain untested.
 - User outcome: the PETG pieces were obtained once, and the first PLA result was
   physically accepted by the user. The second PLA job is telemetry-complete but
-  still awaits physical handling. The long manual CLI path is not accepted as
-  a repeatable product workflow.
+  still awaits physical handling. The larger portrait PNG status projection was
+  accepted by the user in Codex mobile. The long manual CLI path is not accepted
+  as a repeatable product workflow.
 
 ## Open risks and unknowns
 
@@ -141,9 +143,9 @@ Last updated: 2026-08-25
   edition requires an always-on LAN agent per printer owner. A self-hosted
   distribution versus hosted MCP plus outbound LAN connector remains undecided;
   authenticated mobile tool connectivity now works. A standard MCP image
-  fallback no longer depends on component mounting, but actual Codex-mobile
-  image display and interactive camera rendering still require separate
-  user-visible validation.
+  fallback no longer depends on component mounting, and its larger portrait
+  presentation is user-confirmed in Codex mobile. Interactive camera rendering
+  still requires separate user-visible validation.
 - Notification destination is unknown.
 - Live command capabilities and persistence semantics, including Z-offset, are
   unknown for the target hardware.
@@ -153,10 +155,11 @@ Last updated: 2026-08-25
 
 ## Next action
 
-Start a new Codex mobile conversation and visually verify that
-`show_u1_status` displays the inline PNG status card. Record that result
-separately from the already-passing authenticated telemetry and local PNG
-inspection. If a host mounts the interactive component, validate its camera and
-controls as a separate capability; the PNG itself is intentionally static. Do
-not expose Moonraker directly, add control tools, or build a shared CLI until
-the relevant authorization and repeated-use evidence exists.
+Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
+with explicit complete profiles, then run non-user negative fixtures for
+`wipe_tower_filament: "0"` and missing inherited filament fields. Record the
+results as preparation evidence without uploading or starting an artifact. If
+a host mounts the interactive component, validate its camera and controls as a
+separate capability. Do not expose Moonraker directly, add control tools, or
+build a shared CLI until the relevant authorization and repeated-use evidence
+exists.

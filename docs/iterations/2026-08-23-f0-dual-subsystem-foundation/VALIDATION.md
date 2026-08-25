@@ -516,9 +516,9 @@ identifiers, and runtime data are intentionally not retained.
 - The LaunchAgent was restarted against the changed repository source and the
   standard-HTTPS public health route returned the personal-OAuth marker. This
   proves service restart and routing, not an authenticated remote image call.
-- Codex mobile image display remains user-visible host evidence. The current
-  local Codex tool connection intentionally follows the stdio path and returned
-  text plus the interactive-widget contract without a duplicate PNG.
+- At this point, Codex mobile image display remained user-visible host evidence.
+  The local Codex tool connection intentionally followed the stdio path and
+  returned text plus the interactive-widget contract without a duplicate PNG.
 - Plugin Creator validation passed for the synchronized personal source and the
   exact installed cache. The plugin was reinstalled as
   `0.2.0+codex.20260825203920`.
@@ -533,12 +533,13 @@ identifiers, and runtime data are intentionally not retained.
   the user specifically liked the pixel style and requested that it be a little
   larger. The follow-up portrait layout preserves that style while changing the
   four metrics from one compact row to a larger 2-by-2 grid. The new layout
-  requires a fresh visual inspection and phone-host confirmation below.
+  required a fresh visual inspection and phone-host confirmation, later closed
+  below.
 - A fresh real-printer observation was rendered through the revised 1200 by
   1500 path and visually inspected. The larger state, percentage, progress bar,
   two-row metrics, truncated file identity, observation timestamp, and refresh
-  hint all fit without clipping. This is local visual evidence; phone-host
-  sizing remains the user's next confirmation.
+  hint all fit without clipping. This was local visual evidence; phone-host
+  sizing still required the later user confirmation below.
 - The loopback service was restarted against the revised source. The first
   immediate public health probe returned a transient HTTP 502 during restart;
   the next probe returned HTTP 200 with the personal-OAuth marker and the new
@@ -551,3 +552,7 @@ identifiers, and runtime data are intentionally not retained.
 - An exact installed-cache stdio smoke again listed only the three read-only
   tools, returned reachable `complete` telemetry, and kept local content
   text-only so the desktop widget path remains unchanged.
+- In a subsequent Codex mobile host check, the larger portrait PNG displayed
+  and the user confirmed that it was good. This is user-reported visual outcome
+  evidence for the static image fallback only; the interactive component,
+  relayed camera, PiP, fullscreen, and adaptive refresh remain unverified.
