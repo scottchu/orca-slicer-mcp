@@ -14,33 +14,42 @@ Do not use prior chat history as authority when it conflicts with these files.
 
 - Branch point from `main`: `32762dd`
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
-- Product runtime: none
-- Product evidence: planning and product-boundary records; local, non-mutating
-  Orca and Snapmaker Orca discovery; one user-authorized Snapmaker U1 slice and
-  completed print; one later separately authorized job observed in `printing`;
-  plus redacted Moonraker HTTP, WebSocket, and webcam observations
+- Product runtime: one repo-local read-only MCP Apps status-view prototype;
+  preparation, control, and persistent monitoring remain unimplemented
+- Product evidence: planning and product-boundary records; local Orca and
+  Snapmaker Orca discovery; one PETG and two PLA jobs through distinct
+  preparation, handoff, observation, and telemetry-completion evidence; plus
+  redacted Moonraker HTTP, WebSocket, and webcam observations
 
 ## Immediate task
 
-Current execution order is Orca Preparation discovery first. Continue with:
+Current execution order is the user-directed status-view host validation pass.
+Continue with:
 
 1. Read the [pilot log](docs/logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md)
    as chronology, then the separate
    [provisional knowledge](docs/knowledge/snapmaker-orca-cli-preparation.md).
-2. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
+2. Read decisions 0007 and 0008, both 2026-08-25 journals, and the plugin under
+   `plugins/u1-print-studio/`. The skills remain workflow guidance; only the
+   read-only status view is a runtime prototype.
+3. Refresh the plugin in a new Codex thread. Open `show_u1_status` and visually
+   test snapshot, `Go Live`, `Close`, PiP, fullscreen, manual refresh, and one
+   adaptive `get_u1_status` refresh. Record exact host evidence and failures.
+4. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
    with explicit complete profiles. Record it as a new log. Do not upload or
    start it.
-3. Run non-user negative fixtures for `wipe_tower_filament: "0"` and missing
+5. Run non-user negative fixtures for `wipe_tower_filament: "0"` and missing
    inherited filament fields. Determine whether exit `139` and tool-inventory
    collapse reproduce; do not encode one-run correlations as universal rules.
-4. Repeat successful dry slices, explain any hash differences, and build a
-   regression matrix. Only then begin reusable preparation code. A skill must
-   orchestrate tested code, and MCP comes after stable preparation and
-   operations contracts.
-5. Exercise support-enforcer and blocker round-trip only after the baseline
+6. Repeat successful dry slices, explain any hash differences, and build a
+   regression matrix. Use the thin skills on repeated requests and record where
+   they reduce confusion or still require ad hoc work. Build a shared CLI only
+   after that evidence proves it useful; broader MCP and control surfaces remain
+   later.
+7. Exercise support-enforcer and blocker round-trip only after the baseline
    fixtures pass. Preserve user-painted support projects but do not synthesize
    facet painting without golden round-trip fixtures.
-6. Resume Printer Operations with a compatible `printer.objects.subscribe`
+8. Resume Printer Operations with a compatible `printer.objects.subscribe`
    client, reconnect and freshness behavior, U1 vendor semantics, always-on
    host, notification destination, and network/authentication boundary.
 
@@ -74,8 +83,9 @@ fixtures establish stable preparation and handoff behavior.
   visible freshness, and full resynchronization after reconnect.
 - Slicing, artifact validation, upload, start acknowledgement, and observed
   printing remain distinct states and evidence.
-- Preserve the maturation order: log, knowledge, repeated evidence, code,
-  skill, then MCP.
+- Preserve the current maturation order: journal, knowledge, thin skills, the
+  explicitly authorized read-only status-view prototype, repeated host
+  evidence, then a shared CLI only if useful.
 - Repository records capture durable decisions and evidence; raw conversation
   transcripts do not.
 
@@ -103,11 +113,13 @@ labeled real-Orca tool integration, separate from protocol/simulator,
 real-printer, and user-outcome evidence. Do not choose runtimes or implement
 consequential actions until the F0 environment, handoff, and safety boundaries
 are established.
-Read the 2026-08-23 Snapmaker Orca pilot log as chronological evidence and its
-knowledge document as provisional guidance. Repeat the synthetic dry-slice and
-negative fixtures before writing reusable code. Do not upload or start future
-artifacts without fresh explicit authorization. Preserve the order: log,
-knowledge, repeated evidence, code, skill, then MCP.
+Read the 2026-08-23 Snapmaker Orca pilot and 2026-08-25 PLA repetition journals
+as chronological evidence and the knowledge document as provisional guidance.
+Use the three thin u1-print-studio skills and visually validate the explicitly
+authorized read-only status-view prototype. Then repeat synthetic dry-slice and
+negative fixtures before writing reusable preparation code. Do not upload or
+start future artifacts without fresh explicit authorization. Build a shared
+CLI only if repeated use proves it useful.
 Treat MCP as a replaceable inbound surface and preserve the versioned monitor
 contract so HTTP, CLI, and a possible Elixir daemon can reuse the same core.
 For Orca Preparation, bind review to the exact backend, project and G-code

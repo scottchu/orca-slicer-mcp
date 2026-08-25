@@ -1,9 +1,12 @@
 # Snapmaker Orca CLI preparation knowledge
 
-- Derived from: [2026-08-23 Snapmaker Orca U1 PETG print pilot](../logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md)
-- Status: provisional knowledge from one successful physical-print pilot
-- Promotion gate: repeat with non-user fixtures before encoding as product code,
-  a Codex skill, or MCP tools
+- Derived from the [2026-08-23 PETG pilot](../logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md)
+  and [2026-08-25 PLA repetitions](../logs/2026-08-25-snapmaker-u1-pla-print-repetitions.md)
+- Status: provisional knowledge from three successful printer handoffs and two
+  telemetry-verified PLA completions
+- Promotion gate: use the thin skills repeatedly before deciding whether a
+  shared CLI would improve the workflow; retain non-user fixtures as the gate
+  for universal guards or product-runtime claims
 
 ## What is currently known
 
@@ -16,8 +19,8 @@ For the observed four-extruder U1 path:
 1. Machine, process, and filament inheritance must be resolved before launch.
 2. All physical filament slots must retain required base fields; otherwise the
    slicer's tool inventory can collapse and change the requested tool.
-3. Physical extruder 3 must be verified as logical G-code tool `T2` in the
-   generated artifact.
+3. Physical tool head `N` must be verified as zero-based logical G-code tool
+   `T(N-1)` in the generated artifact and in per-tool filament use.
 4. Process exit, artifact creation, and semantic artifact validation are three
    different checks.
 5. Upload, start acknowledgement, printing observation, completion, and
@@ -36,6 +39,9 @@ candidates rather than universal Orca behavior:
 | Flag `wipe_tower_filament: "0"` for this backend/version | The observed CLI path crashed with exit `139` until this value was removed or corrected. |
 | Verify resolved extruder count | Requested filament IDs alone did not prevent an incorrect one-extruder result. |
 | Inspect G-code tool commands | Exit `0` cannot prove that physical extruder 3 became `T2`. |
+| Inspect object-level process overrides | A selected plate retained four-wall object overrides despite a different global wall count. |
+| Preserve and verify the selected bed type | A successful slice with `55 C` filament hot-plate fields still emitted `M140 S0` and `M190 S0` when the bed type was absent. |
+| Treat direct multi-plate coordinates as provisional | A selected plate retained global coordinates outside the U1 bed; isolated selected geometry arranged successfully. |
 | Use a wrapper variable such as `rc`, never zsh `status` | `status` is read-only and created a false wrapper failure. |
 
 An exit `139` should be retained as a slicer crash with the bounded invocation
@@ -64,6 +70,9 @@ After the process exits:
 - hash the artifact;
 - statically inspect tool commands, temperatures, layer count, and core process
   values;
+- inspect actual `M140` and `M190` commands rather than relying on filament
+  temperature metadata;
+- verify selected object count and any object-level wall or support overrides;
 - fail the preparation request if the actual tool does not match the requested
   physical extruder;
 - create a new revision for every reslice or configuration change.
@@ -89,26 +98,44 @@ Printer upload or print-start repetitions require fresh explicit authorization
 for the exact artifact and target. Dry-slice repetitions do not prove physical
 printing.
 
-## Promotion path
+## Current promotion path
 
 The evidence should mature in this order:
 
 ```text
 chronological run logs
   -> reviewed knowledge and explicit unknowns
-  -> repeated fixtures and a regression matrix
-  -> reusable preparation code with tests
-  -> a skill that orchestrates the tested code
+  -> thin preparation, start, and monitoring skills
+  -> repeated real use plus non-user fixtures and a regression matrix
+  -> reusable CLI code only where repeated use proves value
   -> MCP tools that expose preparation and operations through separate,
      authorization-aware boundaries
 ```
 
-Code should own deterministic profile resolution, preflight, invocation,
-diagnostic capture, and artifact validation. A skill should explain and
-orchestrate that code rather than reimplementing shell logic in prose. MCP
-should be added only after the preparation result and printer-operation
-contracts are stable; it must not collapse slice, upload, start, and observed
-printing into one opaque action.
+Decision 0007 intentionally introduces thin skills before shared code so their
+use can reveal which operations are stable and worth automating. The skills
+must not present manual shell sequences as a supported runtime. If a shared CLI
+is later justified, code should own deterministic profile resolution,
+preflight, invocation, diagnostics, artifact validation, and operations
+correlation. MCP still comes only after those contracts are stable and must not
+collapse slice, upload, start, and observed printing into one opaque action.
+
+## Handoff and monitoring knowledge
+
+- An upload response shape can vary. Verify remote file metadata independently
+  before start.
+- A correct remote size is insufficient; verify material slot use, actual bed
+  and nozzle temperatures, layers, and estimate.
+- Start acknowledgement and fresh `printing` observation remain distinct.
+- Monitoring chooses the next check after every sample. Stable middle sections
+  tolerate longer intervals; final minutes require progressively shorter ones.
+- `N/N` layers is not completion while state remains `printing`; end G-code can
+  still be moving, heating, or parking.
+- Camera and telemetry transports can fail independently. State camera
+  confidence and retry without converting a snapshot failure into a printer
+  error.
+- Final camera views can lose the part when the bed lowers. Preserve earlier
+  visual evidence and keep physical acceptance separate.
 
 ## Still unknown
 
@@ -123,3 +150,6 @@ printing into one opaque action.
 - timeout, cancellation, resource-limit, and concurrent-run behavior;
 - a complete prepared-job manifest and explicit Preparation-to-Operations
   handoff implementation.
+- which manual operations remain frequent and stable enough to justify a
+  shared CLI;
+- a calibrated remaining-time estimator for adaptive monitoring.

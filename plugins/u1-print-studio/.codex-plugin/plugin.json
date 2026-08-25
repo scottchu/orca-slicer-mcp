@@ -1,0 +1,30 @@
+{
+  "name": "u1-print-studio",
+  "version": "0.2.0",
+  "description": "Prepare, start, and monitor Snapmaker U1 prints with an interactive read-only camera and telemetry dashboard.",
+  "author": {
+    "name": "Scott Chu"
+  },
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "U1 Print Studio",
+    "shortDescription": "Live, beautiful, evidence-backed U1 status.",
+    "longDescription": "U1 Print Studio keeps preparation and authorized print start separate while adding a read-only live camera and telemetry dashboard with adaptive refresh, Picture in Picture, and fullscreen modes.",
+    "developerName": "Scott Chu",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Prepare",
+      "Print",
+      "Monitor",
+      "Interactive",
+      "Picture in Picture"
+    ],
+    "defaultPrompt": [
+      "Prepare this model for my Snapmaker U1.",
+      "Start this validated U1 print after safety checks.",
+      "Monitor my U1 print with adaptive status cards."
+    ],
+    "brandColor": "#14B8A6"
+  }
+}

@@ -7,8 +7,11 @@ Preparation and Printer Operations. A redacted LAN Fluidd/Moonraker target,
 read-only status, WebSocket transport, and live snapshot have been observed for
 Printer Operations. Upstream OrcaSlicer `2.4.2` and Snapmaker Orca `2.3.5`
 were inspected locally. A later user-authorized Snapmaker U1 pilot sliced two
-parts and completed a PETG print after substantial CLI debugging. No product
-runtime exists, and Snapmaker Orca is not yet an accepted product backend.
+parts and completed a PETG print after substantial CLI debugging. Two later PLA
+jobs also reached telemetry-verified completion. The repo-local plugin contains
+three thin workflow skills and a read-only MCP Apps status-view prototype. No
+preparation, control, or persistent-monitor runtime exists, and Snapmaker Orca
+is not yet an accepted product backend.
 
 ## Completed work
 
@@ -40,21 +43,30 @@ runtime exists, and Snapmaker Orca is not yet an accepted product backend.
 - `docs/logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md` preserves the
   later pilot chronology, crash exits, recovered `T2` mapping, artifact hash,
   and distinct upload/start/observed-completion evidence;
-- `docs/knowledge/snapmaker-orca-cli-preparation.md` promotes only provisional
-  guards and defines repeated non-user fixtures as the gate before code, skill,
-  or MCP work.
-- a later user-authorized PLA artifact was uploaded and started through the
-  direct LAN Moonraker path after explicit reachability, complete-upload, and
-  post-start state checks. The printer reported logical `T3`, corresponding to
-  physical tool head 4, active and `printing`; completion was not observed in
-  this iteration.
+- `docs/knowledge/snapmaker-orca-cli-preparation.md` now incorporates only the
+  repeatable lessons from the PETG pilot and two PLA repetitions.
+- `docs/logs/2026-08-25-snapmaker-u1-pla-print-repetitions.md` records two PLA
+  jobs, including object-level wall overrides, physical-to-logical tool
+  mapping, bed-type loss, direct-3MF coordinate failure, and adaptive end-of-job
+  monitoring. Both reached telemetry-verified completion; the first was
+  physically accepted and the second awaits handling.
+- decision 0007 and `plugins/u1-print-studio/` implement the user's revised
+  order as three thin skills plus a concise Markdown status fallback;
+- decision 0008 and
+  `docs/logs/2026-08-25-u1-status-view-prototype.md` record the later explicit
+  request for a read-only HTML status view before a shared CLI;
+- the plugin now includes an MCP Apps server with `show_u1_status` and
+  `get_u1_status`, a camera-first HTML/CSS widget, adaptive refresh, WebRTC
+  `Go Live` and `Close`, PiP, and fullscreen. TypeScript, HTTP MCP, stdio MCP,
+  current telemetry, and widget resource metadata passed local validation.
 
 ## Changed paths
 
 See the branch diff. Repository guidance, Orca discovery, environment, scope,
-architecture, roadmap, requirements, open questions, continuity records, and
-the active iteration evidence are in scope. No runtime, user model, private
-profile, generated G-code, printer address, or printer command is included.
+architecture, roadmap, requirements, open questions, continuity records, the
+read-only plugin runtime, and active iteration evidence are in scope. No user
+model, private profile, generated G-code, printer address, or printer command is
+included.
 
 ## Unresolved risks
 
@@ -71,25 +83,29 @@ profile, generated G-code, printer address, or printer command is included.
   network boundaries remain unresolved;
 - WebSocket transport works, but object subscription, reconnect, and freshness
   behavior remain unverified;
-- the observed camera frame was too dark for reliable diagnosis;
+- camera reliability, lighting, and final lowered-bed visibility remain
+  environment-dependent despite one usable in-progress PLA frame;
+- no connected browser was available for this run, so host-rendered snapshot,
+  WebRTC, close behavior, PiP, fullscreen, and adaptive refresh are unverified;
+- Bun and Node direct local-network sockets failed on this macOS host while the
+  bounded system-curl adapter worked; portability remains unknown;
 - manifest shape, compatibility checks, and upload/start ownership are open;
-- one physical print completed, but product implementation, repeatable workflow,
+- multiple physical jobs completed, but product implementation, repeatable workflow,
   protocol, safety, and general user-outcome acceptance remain pending.
-- a second real job started, but its manual direct-LAN handoff and in-progress
-  state do not establish completion or an accepted operations adapter.
+- the latest PLA job is telemetry-complete, but its output has not been handled
+  and the final lowered-bed camera frame did not show the parts.
 
 ## Next smallest action
 
-Use Snapmaker Orca `2.3.5` to run the synthetic two-object dry-slice fixture
-defined in `docs/knowledge/snapmaker-orca-cli-preparation.md`. Record a new log,
-then run the negative profile and `wipe_tower_filament` fixtures. Do not upload
-or start them. Only after several runs distinguish stable guards from one-off
-observations should reusable preparation code begin; skill and MCP packaging
-come after that tested code.
+Refresh the plugin in a new Codex thread and visually test the HTML dashboard,
+snapshot, WebRTC `Go Live` and `Close`, PiP, fullscreen, manual refresh, and one
+adaptive refresh. Record each host result separately. Then resume the synthetic
+non-user dry-slice and negative fixtures. Do not build a shared CLI merely
+because the manual commands exist.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0006. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0008. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.

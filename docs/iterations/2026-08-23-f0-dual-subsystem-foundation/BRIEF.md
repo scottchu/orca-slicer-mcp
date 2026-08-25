@@ -8,8 +8,10 @@
 - Current execution order: Orca Preparation discovery first after the user's
   redirect; Printer Operations evidence is preserved and remains pending, not
   secondary
-- Current evidence-maturation order: chronological log, reviewed knowledge,
-  repeated fixtures, then code, skill, and MCP
+- Current evidence-maturation order: chronological journal, reviewed knowledge,
+  thin workflow skills, the explicitly requested read-only status-view
+  prototype, repeated host use and non-user fixtures, then a shared CLI only if
+  it proves useful
 
 ## Outcome
 

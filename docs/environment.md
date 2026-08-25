@@ -11,9 +11,10 @@ Two local Orca Preparation candidates are observed, and Snapmaker Orca `2.3.5`
 was used for one user-authorized Snapmaker U1 print pilot. That pilot is
 evidence for a candidate path, not selection of the first supported product
 backend. The Printer Operations target is reachable on the user's private LAN;
-the address is intentionally not recorded. Read-only Fluidd/Moonraker checks
-and one later U1 print completed on 2026-08-23. Remaining operating and product
-authorization boundaries are incomplete.
+the address is intentionally not recorded. Read-only Fluidd/Moonraker checks,
+one PETG print, and two later PLA prints reached telemetry-verified completion.
+A read-only local MCP Apps status-view prototype now returns current telemetry.
+Remaining operating and product authorization boundaries are incomplete.
 
 ## Orca Preparation
 
@@ -65,7 +66,12 @@ authorization boundaries are incomplete.
 - Placement and field of view: unknown
 - Lighting conditions: unknown
 - Snapshot or stream access: snapshot returned JPEG `1920x1080`; WebRTC stream
-  is advertised but was not exercised
+  is advertised but was not exercised. Later PLA snapshots were usable for
+  in-progress diagnosis, while the lowered bed moved finished parts out of the
+  final frame
+- Advertised target frame rate: 15 FPS during the status-view prototype. The
+  user reports installed hardware encoding capable of 30 FPS; that capability
+  was not advertised or benchmarked in this run, and the view does not cap it
 - Retention and privacy constraints: unknown
 
 ## Operations host
@@ -74,6 +80,9 @@ authorization boundaries are incomplete.
 - Always-on expectation: unknown
 - Printer network relationship: current validation client and printer are on a
   reachable private LAN; exact segmentation is unknown
+- Validation-host networking: system `curl` reached the printer, while direct
+  Bun and Node sockets failed. The prototype uses a bounded, no-shell curl
+  adapter for fixed read-only routes; cause and portability remain unknown
 - Service supervision and restart behavior: unknown
 - Local storage constraints: unknown
 
@@ -128,3 +137,17 @@ capability, and evidence path. Unknowns remain unknown until checked.
   printing, and observed complete at `22/22` layers. See the chronological
   [pilot log](logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md) and its
   separate [provisional knowledge](knowledge/snapmaker-orca-cli-preparation.md).
+- **2026-08-25, user-authorized PLA repetitions:** two U1 PLA jobs reached
+  telemetry-verified completion with distinct slice, validation, upload, start
+  acknowledgement, observed-printing, and completion evidence. The first was
+  physically accepted by the user. The second used physical tool head 2, three
+  wall loops, no support, and adaptive monitoring; its output awaits handling.
+  See the redacted
+  [chronological journal](logs/2026-08-25-snapmaker-u1-pla-print-repetitions.md).
+- **2026-08-25, read-only status-view prototype:** a local MCP Apps server
+  returned current U1 telemetry and advertised camera availability through HTTP
+  and plugin stdio paths. Its widget includes snapshot, WebRTC `Go Live` and
+  `Close`, PiP, fullscreen, and adaptive refresh, but no browser connection was
+  available for host visual validation. See the
+  [implementation journal](logs/2026-08-25-u1-status-view-prototype.md) and
+  [derived knowledge](knowledge/u1-status-view.md).

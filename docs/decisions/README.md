@@ -13,6 +13,8 @@ silently changed.
 | [0004](0004-separate-monitor-control-and-admin-api-surfaces.md) | Separate monitor, control, and admin API surfaces | Accepted |
 | [0005](0005-mcp-is-a-replaceable-inbound-surface.md) | MCP is a replaceable inbound surface | Accepted |
 | [0006](0006-use-hybrid-snapshot-and-subscription-monitoring.md) | Use hybrid snapshot and subscription monitoring | Accepted |
+| [0007](0007-prototype-skills-before-shared-cli.md) | Prototype skills before a shared CLI | Partially superseded by 0008 |
+| [0008](0008-build-read-only-status-view-before-shared-cli.md) | Build the read-only status view before a shared CLI | Accepted |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.

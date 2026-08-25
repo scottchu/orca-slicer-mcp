@@ -169,14 +169,16 @@ identifiers, and runtime data are intentionally not retained.
 - `OBS-002`: not yet supported by product code; the source returned event time,
   but no durable observation or stale-state implementation exists.
 - `OBS-003`: not tested; disconnect and reconnect behavior remain unknown.
-- `CAM-001`: transport partially supported by one live snapshot; session
-  association and timestamp persistence are not implemented.
+- `CAM-001`: transport is supported by prior snapshots and the current camera
+  advertisement. Host-rendered live view, session association, and timestamp
+  persistence are not validated.
 - `AUTH-001`: not supported by Moonraker trust alone. The current client is a
   trusted LAN client, so application-level caller authorization is still
   required before any control slice.
 - `API-001` through `API-004`, `ARCH-001` through `ARCH-003`, `ONTO-001` through
   `ONTO-002`, `OBS-004` through `OBS-006`, and `CAM-003` are accepted as static
-  contracts. No runtime exists to prove enforcement or behavior.
+  contracts. The narrow read-only status prototype does not prove their full
+  enforcement or behavior.
 - The later pilot partially supports `ORCA-001`, `ORCA-002`, `ORCA-005`,
   `ORCA-006`, and the state separation in `HANDOFF-002`. It does not prove a
   product implementation because no manifest, product adapter, review bundle,
@@ -195,17 +197,19 @@ identifiers, and runtime data are intentionally not retained.
   preparation review, and manual-support contracts are documented. Real
   installed CLI help and source boundaries were inspected. One later real
   Snapmaker Orca slice succeeded after multiple recorded crash and profile
-  failures; no product runtime exists.
+  failures. A read-only MCP Apps monitor prototype exists; no preparation,
+  control, or persistent-monitor runtime exists.
 - Protocol/simulator: live Moonraker HTTP response shapes, WebSocket upgrade,
   and server notifications were observed; no fixture, simulator, object
   subscription, or reconnect test exists.
-- Real printer: ready/standby telemetry, image transport, and one
-  user-authorized U1 print through reported completion were observed. Product
+- Real printer: ready/standby telemetry, image transport, and three
+  user-authorized U1 jobs through reported completion were observed. Product
   subscription, reconnect, command correlation, and safety behavior remain
   untested.
-- User outcome: the two requested printed pieces were obtained once. Their
-  later mechanism failure is separate physical-design evidence and the slow
-  manual CLI debugging means the workflow itself is not accepted.
+- User outcome: the PETG pieces were obtained once, and the first later PLA
+  output was physically accepted. The second PLA job is telemetry-complete but
+  awaits handling. The slow manual CLI debugging means the workflow itself is
+  not accepted.
 
 ## Failures, repairs, and reruns
 
@@ -225,3 +229,64 @@ identifiers, and runtime data are intentionally not retained.
   configurations before a complete resolved-profile path succeeded. Its
   chronology and provisional guards are now preserved separately so the next
   agent must reproduce them before implementing automation.
+
+## 2026-08-25 user-directed skill-first prototype
+
+- Two PLA repetitions are recorded in a redacted chronological journal. Both
+  reached `complete` with inactive virtual storage, full file progress, no
+  exception, parked tools, and heater targets at zero. The first was physically
+  accepted by the user; the second awaits handling.
+- The second repetition separately verified physical tool head 2 as logical
+  `T1`, three wall loops at global and object scope, support off, four objects,
+  `188` layers, `220 C` nozzle, and `55 C` bed. A first prepared artifact with
+  zero bed heat was uploaded for metadata inspection but was never started; the
+  corrected artifact was separately validated and authorized.
+- Direct multi-plate project slicing retained incompatible coordinates after
+  profile resolution. Isolating the exact selected mesh, preserving four
+  instances, and arranging them for the U1 produced a valid artifact.
+- Monitoring used a fresh full telemetry and camera observation at each
+  iteration, then chose the next check from state, recent progress, and
+  estimated remaining time. `188/188` was not accepted as completion while the
+  printer still reported `printing`.
+- Decision 0007 records the user's revised maturation order. At that stage, the
+  repo-local `u1-print-studio` plugin contained three thin skills and one visual
+  status-card template but no runtime; the later status-view section records the
+  explicitly authorized change.
+- `uv run --no-project --with pyyaml python .../quick_validate.py <skill>`:
+  passed for all three skills with `Skill is valid!`.
+- `uv run --no-project --with pyyaml python .../validate_plugin.py
+  plugins/u1-print-studio`: passed.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok`.
+- `git diff --check`: passed.
+- Relative Markdown link validation with a read-only Ruby scan: passed.
+- Privacy and placeholder scans found no retained printer address, private
+  model name, absolute user or temporary path, or unfinished plugin marker.
+
+## 2026-08-25 read-only status-view prototype
+
+- `bun install`: installed the MCP Apps, MCP SDK, TypeScript, and Node type
+  dependencies and wrote the tracked Bun lockfile.
+- `bun run check`: passed TypeScript compilation with no emit.
+- HTTP `initialize` returned server `u1-print-studio` version `0.2.0`; HTTP
+  `tools/list` returned only `show_u1_status` and `get_u1_status`, both marked
+  read-only, non-destructive, closed-world, and idempotent.
+- HTTP `tools/call` for `get_u1_status` returned a fresh real-printer
+  observation with `complete`, `100%`, `188/188`, physical tool 2, camera
+  availability, and no control action.
+- HTTP `resources/read` returned `ui://u1-print-studio/status-v1.html` as
+  `text/html;profile=mcp-app`, with the widget description and one runtime-only
+  printer origin in each connect, resource, and frame CSP list.
+- An MCP SDK stdio client launched the exact command represented by the plugin
+  `.mcp.json`, listed both tools, and called `get_u1_status`. It returned the
+  current complete state and camera availability.
+- Direct Bun and Node local-network probes failed on the validation host while
+  system `curl` succeeded. The implementation now calls `curl` without a shell,
+  with a fixed base, fixed read-only routes, and bounded timeouts.
+- Concurrent telemetry and webcam-list requests could contend. Serializing the
+  telemetry read before webcam discovery repaired the stdio observation.
+- Official Apps SDK reference material confirmed `requestDisplayMode` support
+  for inline, Picture in Picture, and fullscreen. The widget feature-detects the
+  host API and retains the MCP Apps bridge path.
+- Browser visual QA was attempted, but this Codex session reported no available
+  browser connection. Host rendering, camera load, live connection and close,
+  PiP, fullscreen, and mounted adaptive refresh remain unverified.
