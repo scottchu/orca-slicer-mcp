@@ -1,7 +1,9 @@
 # U1 Print Studio app
 
-This is the read-only MCP Apps dashboard for the repo-local U1 Print Studio
-plugin. It does not slice, upload, start, pause, cancel, or send G-code.
+This is the read-only MCP Apps dashboard for U1 Print Studio. It supports the
+desktop-local stdio plugin and an OAuth-protected Streamable HTTP endpoint for
+personal mobile developer testing. It does not slice, upload, start, pause,
+cancel, or send G-code.
 
 ## Local development
 
@@ -15,8 +17,57 @@ bun run bundle
 bun run start
 ```
 
-The HTTP development endpoint is `http://localhost:8787/mcp`. The plugin uses
-the separate stdio entry point declared in `../.mcp.json`.
+The local HTTP development endpoint is `http://127.0.0.1:8787/mcp`. The desktop
+plugin uses the separate stdio entry point declared in `../.mcp.json`.
+
+## Personal mobile status endpoint
+
+Set these untracked root `.env` values in addition to `MOONRAKER_BASE_URL`:
+
+```dotenv
+U1_REMOTE_AUTH=personal
+U1_PUBLIC_BASE_URL=https://your-device.example.ts.net:8443
+U1_OWNER_NAME=Your name
+```
+
+`U1_PUBLIC_BASE_URL` must be HTTPS. A dedicated Funnel port keeps OAuth
+well-known metadata at the origin root without disturbing another service on
+port 443. The server remains bound to `127.0.0.1`; Tailscale Funnel terminates
+public TLS:
+
+```sh
+tailscale funnel --bg --https=8443 --yes http://127.0.0.1:8787
+```
+
+On first start, the local service log prints the owner-only path containing one
+one-time enrollment URL. Open the URL from that file on the intended iPhone and
+create a passkey with user verification. After enrollment, the URL file is
+removed. Runtime signing keys, the passkey public credential, and dynamically
+registered OAuth
+clients are written outside the repository under
+`~/.local/share/u1-print-studio/` by default. Override the location with
+`U1_AUTH_STATE_DIR`.
+
+Before adding the endpoint, use ChatGPT on desktop or the web and enable
+**Developer mode** under **Settings → Security and login**. Then open
+`https://chatgpt.com/plugins`, select the plus button, and add the public URL
+with `/mcp` appended, for example:
+
+```text
+https://your-device.example.ts.net:8443/mcp
+```
+
+Developer mode availability can depend on account and workspace policy. The
+Codex iPhone app does not expose these developer controls in its Security page;
+register the connection on desktop or the web while signed into the same
+account. Availability of that private developer connection in Codex mobile is
+a separate product-surface check.
+
+The personal authorization server provides OAuth authorization code plus PKCE,
+dynamic client registration restricted to approved redirect origins,
+protected-resource metadata, issuer identification, audience-bound JWT access
+tokens, and the single `u1.monitor` scope. This is a one-user developer path,
+not a public-distribution identity architecture.
 
 `bun run bundle` creates a self-contained ignored deployment artifact at
 `dist/stdio.js`; local marketplace installation can use that bundle without
@@ -40,10 +91,11 @@ not the camera's advertised full-frame-rate WebRTC stream. This keeps the
 private LAN origin out of the component and provides a portable fallback for
 sandboxed desktop and mobile hosts.
 
-The local plugin uses a stdio MCP process and therefore remains desktop-local.
-Cross-device iOS use also requires the HTTP MCP server to be connected through
-an authenticated private path such as OpenAI Secure MCP Tunnel. Do not expose
-Moonraker or the printer camera directly to the public internet.
+The local plugin uses a stdio MCP process and remains desktop-local. The
+OAuth-protected HTTP MCP connection is the cross-device test path; its
+availability and card rendering in Codex on iPhone must be verified separately.
+Moonraker and the printer camera remain private LAN dependencies; Funnel must
+never proxy either one directly.
 
 The current macOS validation host allows the system `curl` process to reach the
 printer but denies direct Bun and Node local-network sockets. The telemetry

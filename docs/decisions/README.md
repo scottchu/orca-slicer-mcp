@@ -16,6 +16,7 @@ silently changed.
 | [0007](0007-prototype-skills-before-shared-cli.md) | Prototype skills before a shared CLI | Partially superseded by 0008 |
 | [0008](0008-build-read-only-status-view-before-shared-cli.md) | Build the read-only status view before a shared CLI | Partially superseded by 0009 |
 | [0009](0009-relay-camera-frames-through-monitor-boundary.md) | Relay camera frames through the monitor boundary | Accepted |
+| [0010](0010-mobile-status-card-over-personal-oauth-and-funnel.md) | Deliver the mobile status card over personal OAuth and Funnel | Accepted for personal developer testing |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.

@@ -403,3 +403,44 @@ identifiers, and runtime data are intentionally not retained.
   thread remains required to prove mounted desktop rendering. iOS additionally
   requires an authenticated reachable MCP backend on an always-on host with a
   private route to the printer; no such backend or tunnel was configured.
+
+### Personal mobile OAuth and setup skill
+
+- Decision 0010 records the selected personal-developer boundary: a dedicated
+  Tailscale Funnel HTTPS origin forwards to a loopback-only Streamable HTTP MCP
+  server. Moonraker and its camera are not Funnel targets.
+- OAuth tests cover the RFC 7636 PKCE vector, root and path-aware discovery,
+  approved and rejected dynamic registrations, unauthenticated challenges,
+  accepted signed tokens, wrong audiences, and missing scopes.
+- `bun run check` and `bun test src/*.test.ts` passed before the onboarding-skill
+  addition with 17 tests and 74 assertions. Final rerun evidence follows in the
+  delivery record.
+- The public health endpoint returned HTTP 200. Protected-resource metadata
+  named the exact `/mcp` resource and only `u1.monitor`; an unauthenticated MCP
+  initialize returned HTTP 401 with the expected `WWW-Authenticate` metadata
+  URL and scope.
+- Tailscale Funnel status showed an existing port-443 root proxy preserved and
+  the dedicated U1 port-8443 root proxy mapped only to `127.0.0.1:8787`.
+- The macOS LaunchAgent was running with umask `077`, using the ignored local
+  environment. OAuth state and the enrollment-link file were owner-only and
+  outside the repository.
+- The intended phone completed user-verified passkey enrollment. Local state
+  reported enrollment without displaying credential material, and the one-time
+  enrollment-link file was absent afterward.
+- `u1-mobile-status-setup` passed Skill Creator validation. The full plugin also
+  passed Plugin Creator validation with four skills.
+- ChatGPT Developer mode, authenticated connection, exact remote tool
+  discovery, and iOS card rendering remain user-interface evidence still to be
+  completed. The Codex iPhone Security and Plugins screens did not expose the
+  desktop/web developer controls.
+- Final local delivery rerun: `bun run bundle`, `bun run check`, and
+  `bun test src/*.test.ts` passed with 17 tests and 74 assertions;
+  `./scripts/check-repository.sh` passed with `repository contract: ok`; and
+  `git diff --check` passed.
+- Skill Creator validation passed for the installed
+  `u1-mobile-status-setup`; Plugin Creator validation passed for the personal
+  marketplace source. The plugin was reinstalled as
+  `0.2.0+codex.20260825200215`.
+- SHA-256 for the bundled stdio artifact matched across the repository,
+  personal marketplace source, and installed cache. This proves exact local
+  packaging, not authenticated remote or iOS behavior.

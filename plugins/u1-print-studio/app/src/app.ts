@@ -8,6 +8,7 @@ import {
   RESOURCE_MIME_TYPE,
 } from "@modelcontextprotocol/ext-apps/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 
 import {
   readU1CameraFrame,
@@ -65,12 +66,22 @@ export function createAppServer(
   dependencies: {
     readStatus?: StatusReader;
     readCameraFrame?: CameraFrameReader;
+  } = {},
+  options: {
+    oauthScopes?: string[];
   } = {}
 ): McpServer {
   const readStatus = dependencies.readStatus ?? readU1Status;
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
   const server = new McpServer({ name: "u1-print-studio", version: "0.2.0" });
+  const securitySchemes = options.oauthScopes
+    ? [{ type: "oauth2" as const, scopes: options.oauthScopes }]
+    : undefined;
+  const securityConfig = securitySchemes ? { securitySchemes } : {};
+  const securityMetadata = securitySchemes
+    ? { securitySchemes }
+    : {};
 
   registerAppResource(
     server,
@@ -110,6 +121,7 @@ export function createAppServer(
       description:
         "Use this when the user wants to open the visual Snapmaker U1 status dashboard.",
       inputSchema: {},
+      ...securityConfig,
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -117,6 +129,7 @@ export function createAppServer(
         idempotentHint: true,
       },
       _meta: {
+        ...securityMetadata,
         ui: { resourceUri: WIDGET_URI },
         "openai/outputTemplate": WIDGET_URI,
         "openai/toolInvocation/invoking": "Reading U1 status",
@@ -137,6 +150,7 @@ export function createAppServer(
       description:
         "Use this when the U1 dashboard or user needs a fresh read-only printer observation without reopening the widget.",
       inputSchema: {},
+      ...securityConfig,
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -144,6 +158,7 @@ export function createAppServer(
         idempotentHint: true,
       },
       _meta: {
+        ...securityMetadata,
         "openai/toolInvocation/invoking": "Refreshing U1 status",
         "openai/toolInvocation/invoked": "U1 status refreshed",
       },
@@ -162,6 +177,7 @@ export function createAppServer(
       description:
         "Use this when the U1 dashboard needs a fresh read-only camera frame relayed through the printer operations boundary.",
       inputSchema: {},
+      ...securityConfig,
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -169,6 +185,7 @@ export function createAppServer(
         idempotentHint: true,
       },
       _meta: {
+        ...securityMetadata,
         "openai/toolInvocation/invoking": "Refreshing U1 camera",
         "openai/toolInvocation/invoked": "U1 camera refreshed",
       },
@@ -178,6 +195,71 @@ export function createAppServer(
       return cameraFramePayload(frame, metadata);
     }
   );
+
+  // The current MCP SDK preserves the compatibility mirror in `_meta` but
+  // omits the newer top-level field from tools/list. Remote plugin clients
+  // require both, so provide the exact descriptor list at the transport edge.
+  if (securitySchemes) {
+    const emptyInputSchema = {
+      type: "object" as const,
+      properties: {},
+      additionalProperties: false,
+    };
+    const readOnlyAnnotations = {
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: false,
+      idempotentHint: true,
+    };
+    server.server.setRequestHandler(ListToolsRequestSchema, async () => ({
+      tools: [
+        {
+          name: "show_u1_status",
+          title: "Show U1 status",
+          description:
+            "Use this when the user wants to open the visual Snapmaker U1 status dashboard.",
+          inputSchema: emptyInputSchema,
+          annotations: readOnlyAnnotations,
+          securitySchemes,
+          _meta: {
+            securitySchemes,
+            ui: { resourceUri: WIDGET_URI },
+            "openai/outputTemplate": WIDGET_URI,
+            "openai/toolInvocation/invoking": "Reading U1 status",
+            "openai/toolInvocation/invoked": "U1 dashboard ready",
+          },
+        },
+        {
+          name: "get_u1_status",
+          title: "Refresh U1 status",
+          description:
+            "Use this when the U1 dashboard or user needs a fresh read-only printer observation without reopening the widget.",
+          inputSchema: emptyInputSchema,
+          annotations: readOnlyAnnotations,
+          securitySchemes,
+          _meta: {
+            securitySchemes,
+            "openai/toolInvocation/invoking": "Refreshing U1 status",
+            "openai/toolInvocation/invoked": "U1 status refreshed",
+          },
+        },
+        {
+          name: "get_u1_camera_frame",
+          title: "Refresh U1 camera frame",
+          description:
+            "Use this when the U1 dashboard needs a fresh read-only camera frame relayed through the printer operations boundary.",
+          inputSchema: emptyInputSchema,
+          annotations: readOnlyAnnotations,
+          securitySchemes,
+          _meta: {
+            securitySchemes,
+            "openai/toolInvocation/invoking": "Refreshing U1 camera",
+            "openai/toolInvocation/invoked": "U1 camera refreshed",
+          },
+        },
+      ],
+    }));
+  }
 
   return server;
 }

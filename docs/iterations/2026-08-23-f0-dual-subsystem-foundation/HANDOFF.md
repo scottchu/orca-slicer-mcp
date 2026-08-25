@@ -9,7 +9,7 @@ Printer Operations. Upstream OrcaSlicer `2.4.2` and Snapmaker Orca `2.3.5`
 were inspected locally. A later user-authorized Snapmaker U1 pilot sliced two
 parts and completed a PETG print after substantial CLI debugging. Two later PLA
 jobs also reached telemetry-verified completion. The repo-local plugin contains
-three thin workflow skills and a read-only MCP Apps status-view prototype. No
+four thin workflow skills and a read-only MCP Apps status-view prototype. No
 preparation, control, or persistent-monitor runtime exists, and Snapmaker Orca
 is not yet an accepted product backend.
 
@@ -86,6 +86,19 @@ is not yet an accepted product backend.
   `0.2.0+codex.20260825144906` passed validation. Its stdio smoke listed all
   three tools, returned reachable `complete` telemetry, and relayed a valid
   149,695-byte JPEG in private metadata.
+- decision 0010 adds a personal-developer mobile boundary: the HTTP MCP service
+  binds loopback, a dedicated Tailscale Funnel HTTPS origin forwards only to
+  that service, and personal OAuth protects the single `u1.monitor` scope with
+  authorization code, PKCE, dynamic-registration allowlisting, audience-bound
+  tokens, and a user-verified passkey. Moonraker remains private.
+- the intended iPhone passkey was enrolled and its one-time enrollment file was
+  removed. Public health and OAuth metadata return successfully, while an
+  unauthenticated public MCP request returns HTTP 401 with the expected
+  protected-resource challenge.
+- the plugin now includes `u1-mobile-status-setup`, which discovers each user's
+  Tailscale MagicDNS hostname, preserves unrelated Funnel handlers, guides
+  phone passkey enrollment and desktop Developer mode, verifies the exact
+  three-tool read-only inventory, and keeps all control actions out of setup.
 
 ## Changed paths
 
@@ -121,10 +134,10 @@ included.
   direct component validation;
 - Bun and Node direct local-network sockets failed on this macOS host while the
   bounded system-curl adapter worked; portability remains unknown;
-- the local stdio plugin is desktop-local. Mobile iOS use requires an
-  authenticated reachable MCP backend, an always-on LAN host, and a separately
-  verified product surface. Secure MCP Tunnel is the preferred private
-  candidate but is not configured;
+- the local stdio plugin is desktop-local. The selected personal Funnel and
+  OAuth backend is reachable, but authenticated ChatGPT connection and the iOS
+  product surface remain separately unverified. Private developer connection
+  availability in Codex mobile must be observed rather than assumed;
 - the snapshot endpoint was intermittently slow. One bounded retry recovered a
   packaged real-frame smoke, and one later frame took 12.9 seconds. The longer
   bounded relay now passes installed-cache transport checks, but repeated
@@ -137,17 +150,19 @@ included.
 
 ## Next smallest action
 
-Open the refreshed plugin in a new desktop Codex thread and call
-`show_u1_status` directly. Visually test the HTML dashboard, relayed snapshot,
-`Go Live` and `Close`, PiP, fullscreen, manual refresh, and one adaptive refresh.
-Record each host result separately. Then choose an authenticated always-on host
-and Secure MCP Tunnel setup before repeating the loop on iOS. Resume synthetic
+On desktop or the web, enable ChatGPT Developer mode, add the remote `/mcp`
+connection from the Plugins page, complete the enrolled passkey login, and
+verify the exact three read-only tools. Then check whether that private
+developer connection appears in Codex on iPhone. Where available, call
+`show_u1_status` in a new conversation and visually test the HTML dashboard,
+relayed snapshot, `Go Live` and `Close`, PiP, fullscreen, manual refresh, and
+one adaptive refresh. Record each host result separately. Resume synthetic
 non-user dry-slice and negative fixtures afterward. Do not expose Moonraker or
 build a shared CLI merely because the manual commands exist.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0009. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0010. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.

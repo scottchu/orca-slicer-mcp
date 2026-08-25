@@ -37,8 +37,9 @@ Last updated: 2026-08-25
   `139`; its [log](docs/logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md)
   and [provisional knowledge](docs/knowledge/snapmaker-orca-cli-preparation.md)
   are durable.
-- A repo-local `u1-print-studio` plugin describes preparation, authorized start,
-  and adaptive monitoring as three thin skills. It now also contains a
+- A repo-local `u1-print-studio` plugin describes mobile status setup,
+  preparation, authorized start, and adaptive monitoring as four thin skills.
+  It now also contains a
   read-only MCP Apps monitor, but no slicer, preparation, upload, start, control,
   or persistent-monitor runtime. Model/project intake, profile resolution,
   slicing, inspection, artifact validation, review bundles, and manifest remain
@@ -63,7 +64,11 @@ Last updated: 2026-08-25
   integration tests. A later offline card was traced to a stale in-thread MCP
   process despite current LAN reachability; the slow-camera budget was repaired
   and the exact refreshed installed bundle passed telemetry and JPEG relay
-  smoke. Desktop and iOS host-rendered camera validation remains pending.
+  smoke. A dedicated Tailscale Funnel origin now exposes the same three
+  read-only tools through personal OAuth, PKCE, audience-bound tokens, and an
+  enrolled user-verified phone passkey. Public reachability and authentication
+  rejection pass; authenticated ChatGPT connection and iOS host-rendered camera
+  validation remain pending.
 - Persistent monitoring: not implemented. The accepted runtime model still
   combines a full direct snapshot with ordered subscription deltas and
   reconnect resync.
@@ -117,28 +122,31 @@ Last updated: 2026-08-25
 - Prepared-artifact schema and upload/start ownership are unknown.
 - Always-on host, camera placement and lighting, and network boundary are
   unknown.
-- Direct camera loading, WebRTC, PiP, fullscreen, and adaptive refresh have not
+- Relayed camera loading, PiP, fullscreen, and adaptive refresh have not
   been exercised successfully inside a connected Codex host. The direct WebRTC
   iframe is no longer the portable baseline; a server-relayed near-live preview
   now passes MCP and real-camera tests under a bounded slow-source budget, but
   source responsiveness and valid JPEG payloads do not prove desktop or iOS
   rendering. Existing conversations do not hot-reload refreshed MCP tools.
-- The local stdio plugin cannot itself provide a cross-device iOS backend.
-  Authenticated Secure MCP Tunnel configuration, an always-on LAN host, and
-  actual mobile product-surface validation remain undecided.
+- The local stdio plugin cannot itself provide a cross-device iOS backend. A
+  personal developer backend now runs on the always-on Mac Mini behind a
+  dedicated Tailscale Funnel origin and personal OAuth. Public distribution and
+  actual mobile product-surface validation remain undecided or pending.
 - Notification destination is unknown.
 - Live command capabilities and persistence semantics, including Z-offset, are
   unknown for the target hardware.
-- Authentication, authorization, and remote-access boundaries are undecided.
+- Monitor authentication and remote access are implemented for personal
+  developer testing. Control authorization remains unimplemented; OAuth login
+  alone must never authorize upload, start, cancel, or another printer action.
 
 ## Next action
 
-Open installed `u1-print-studio` version
-`0.2.0+codex.20260825144906` in a new desktop Codex
-thread, call `show_u1_status` directly, and visually exercise the HTML
-dashboard, relayed snapshot, `Go Live` and `Close`, PiP, fullscreen, manual
-refresh, and one adaptive refresh. Record each host-loop result separately.
-Then decide the authenticated always-on host and Secure MCP Tunnel setup before
-attempting the same visual loop on iOS. Do not expose Moonraker directly or
-build a shared CLI until repeated use demonstrates a stable command shape and a
-meaningful reduction in effort.
+Enable ChatGPT Developer mode, add the authenticated remote MCP URL from the
+Plugins page, complete the passkey login, and confirm discovery of exactly the
+three `u1.monitor` read-only tools. Then check whether the private developer
+connection appears in Codex on iPhone. If it does, call `show_u1_status` in a
+new conversation and visually exercise the HTML dashboard, relayed snapshot,
+`Go Live` and `Close`, PiP, fullscreen, manual refresh, and one adaptive
+refresh. Record each host-loop result separately. Do not expose Moonraker
+directly, add control tools, or build a shared CLI until the relevant
+authorization and repeated-use evidence exists.

@@ -14,7 +14,8 @@ Do not use prior chat history as authority when it conflicts with these files.
 
 - Branch point from `main`: `32762dd`
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
-- Product runtime: one repo-local read-only MCP Apps status-view prototype;
+- Product runtime: one repo-local read-only MCP Apps status-view prototype with
+  desktop stdio and a personal OAuth-protected Tailscale Funnel endpoint;
   preparation, control, and persistent monitoring remain unimplemented
 - Product evidence: planning and product-boundary records; local Orca and
   Snapmaker Orca discovery; one PETG and two PLA jobs through distinct
@@ -37,16 +38,20 @@ Continue with:
    read-only `get_u1_camera_frame` tool. A later mounted offline card was traced
    to a stale in-thread MCP process despite successful current LAN probes. The
    slow-camera budget is now 20 seconds plus one 10-second retry under a
-   40-second MCP timeout. Twelve tests with 54 assertions pass, and installed
-   version `0.2.0+codex.20260825144906` returned reachable status plus a real
-   relayed JPEG. Start a new desktop Codex thread, call `show_u1_status`
-   directly, and visually test the
-   relayed snapshot, `Go Live`, `Close`, PiP, fullscreen, manual refresh, and
-   one adaptive status refresh. Record exact host evidence and failures.
-4. Treat iOS as a separate backend and host loop. The responsive component is
-   implemented, but the local stdio process is desktop-only. Decide an
-   authenticated always-on host and Secure MCP Tunnel configuration before an
-   iOS test; never expose Moonraker or its camera directly.
+   40-second MCP timeout. Twelve status tests with 54 assertions passed before
+   the remote-auth slice, and an installed bundle returned reachable status plus
+   a real relayed JPEG.
+4. Treat iOS as a separate backend and host loop. Decision 0010 selects a
+   personal OAuth-protected Tailscale Funnel endpoint for developer testing.
+   The Mac Mini endpoint is live, rejects unauthenticated MCP requests, and the
+   intended phone passkey is enrolled. Enable ChatGPT Developer mode, add the
+   remote `/mcp` connection from the Plugins page, complete OAuth login, and
+   confirm exactly `show_u1_status`, `get_u1_status`, and
+   `get_u1_camera_frame`, all read-only with `u1.monitor`. Then check whether
+   the private developer connection appears in Codex on iPhone. If it does,
+   call `show_u1_status` in a new conversation and visually test the relayed
+   snapshot, `Go Live`, `Close`, PiP, fullscreen, manual refresh, and one
+   adaptive refresh. Never expose Moonraker or its camera directly.
 5. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
    with explicit complete profiles. Record it as a new log. Do not upload or
    start it.
@@ -127,7 +132,7 @@ consequential actions until the F0 environment, handoff, and safety boundaries
 are established.
 Read the 2026-08-23 Snapmaker Orca pilot and 2026-08-25 PLA repetition journals
 as chronological evidence and the knowledge document as provisional guidance.
-Use the three thin u1-print-studio skills and visually validate the explicitly
+Use the four thin u1-print-studio skills and visually validate the explicitly
 authorized read-only status-view prototype. Then repeat synthetic dry-slice and
 negative fixtures before writing reusable preparation code. Do not upload or
 start future artifacts without fresh explicit authorization. Build a shared

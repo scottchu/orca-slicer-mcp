@@ -5,9 +5,10 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: Orca Preparation discovery first after the user's
-  redirect; Printer Operations evidence is preserved and remains pending, not
-  secondary
+- Current execution order: make the existing read-only status card work in the
+  iOS host through authenticated remote MCP before implementing passkey-gated
+  upload, start, or cancel. Orca Preparation discovery and Printer Operations
+  evidence remain preserved; neither subsystem becomes secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
