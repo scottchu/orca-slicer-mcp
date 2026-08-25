@@ -1,6 +1,6 @@
 # 0008 — Build the read-only status view before a shared CLI
 
-- Status: accepted
+- Status: partially superseded by 0009
 - Date: 2026-08-25
 - Owners: project maintainers
 

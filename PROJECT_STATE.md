@@ -55,11 +55,13 @@ Last updated: 2026-08-25
 - Printer connection: a redacted LAN Fluidd/Moonraker target is reachable;
   Moonraker HTTP and WebSocket paths are observed, but no adapter is implemented.
 - Interactive monitoring: a local MCP Apps prototype exposes read-only
-  `show_u1_status` and `get_u1_status` tools, an HTML camera-first dashboard,
-  adaptive refresh, PiP, and fullscreen. The render descriptor now advertises
-  both standard and compatibility template metadata and has integration tests;
-  host-rendered camera and interaction validation remains pending in a new
-  conversation because the repair thread could not hot-reload the component.
+  `show_u1_status`, `get_u1_status`, and `get_u1_camera_frame` tools, an HTML
+  camera-first dashboard, adaptive refresh, PiP, and fullscreen. After the
+  direct private-LAN camera iframe failed in the desktop host, status widget v2
+  now relays validated JPEG frames through the read-only MCP boundary and has a
+  responsive iOS-safe layout. The descriptor and widget contracts have
+  integration tests; desktop and iOS host-rendered camera validation remains
+  pending because no browser surface was available for this run.
 - Persistent monitoring: not implemented. The accepted runtime model still
   combines a full direct snapshot with ordered subscription deltas and
   reconnect resync.
@@ -114,8 +116,13 @@ Last updated: 2026-08-25
 - Always-on host, camera placement and lighting, and network boundary are
   unknown.
 - Direct camera loading, WebRTC, PiP, fullscreen, and adaptive refresh have not
-  been exercised inside a connected Codex host. MCP resource success does not
-  prove their rendered behavior.
+  been exercised successfully inside a connected Codex host. The direct WebRTC
+  iframe is no longer the portable baseline; a server-relayed near-live preview
+  now passes MCP and real-camera tests, but source responsiveness and valid JPEG
+  payloads do not prove desktop or iOS rendering.
+- The local stdio plugin cannot itself provide a cross-device iOS backend.
+  Authenticated Secure MCP Tunnel configuration, an always-on LAN host, and
+  actual mobile product-surface validation remain undecided.
 - Notification destination is unknown.
 - Live command capabilities and persistence semantics, including Z-offset, are
   unknown for the target hardware.
@@ -123,9 +130,11 @@ Last updated: 2026-08-25
 
 ## Next action
 
-Open the refreshed repo-local `u1-print-studio` plugin in a new Codex thread,
-call `show_u1_status` directly, and visually exercise the HTML dashboard,
-snapshot, WebRTC `Go Live` and `Close`, PiP, fullscreen, manual refresh, and one
-adaptive refresh. Record each host-loop result separately. Do not build a shared
-CLI until repeated use demonstrates a stable command shape and a meaningful
-reduction in effort.
+Open the refreshed repo-local `u1-print-studio` plugin in a new desktop Codex
+thread, call `show_u1_status` directly, and visually exercise the HTML
+dashboard, relayed snapshot, `Go Live` and `Close`, PiP, fullscreen, manual
+refresh, and one adaptive refresh. Record each host-loop result separately.
+Then decide the authenticated always-on host and Secure MCP Tunnel setup before
+attempting the same visual loop on iOS. Do not expose Moonraker directly or
+build a shared CLI until repeated use demonstrates a stable command shape and a
+meaningful reduction in effort.

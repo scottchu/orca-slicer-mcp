@@ -32,27 +32,32 @@ Continue with:
 2. Read decisions 0007 and 0008, both 2026-08-25 journals, and the plugin under
    `plugins/u1-print-studio/`. The skills remain workflow guidance; only the
    read-only status view is a runtime prototype.
-3. The plugin was refreshed after repairing descriptor-level template metadata
-   and adding four passing tests. Start a new Codex thread, call
-   `show_u1_status` directly, and visually test snapshot, `Go Live`, `Close`,
-   PiP, fullscreen, manual refresh, and one adaptive `get_u1_status` refresh.
-   Record exact host evidence and failures; the repair thread could not
-   hot-reload or mount the component.
-4. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
+3. The direct private-LAN camera iframe failed in the desktop component. The
+   plugin now uses decision 0009's same-origin server relay and a third
+   read-only `get_u1_camera_frame` tool. Ten tests with 52 assertions pass,
+   and the bundled stdio server returned a real JPEG data URL. Start a new
+   desktop Codex thread, call `show_u1_status` directly, and visually test the
+   relayed snapshot, `Go Live`, `Close`, PiP, fullscreen, manual refresh, and
+   one adaptive status refresh. Record exact host evidence and failures.
+4. Treat iOS as a separate backend and host loop. The responsive component is
+   implemented, but the local stdio process is desktop-only. Decide an
+   authenticated always-on host and Secure MCP Tunnel configuration before an
+   iOS test; never expose Moonraker or its camera directly.
+5. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
    with explicit complete profiles. Record it as a new log. Do not upload or
    start it.
-5. Run non-user negative fixtures for `wipe_tower_filament: "0"` and missing
+6. Run non-user negative fixtures for `wipe_tower_filament: "0"` and missing
    inherited filament fields. Determine whether exit `139` and tool-inventory
    collapse reproduce; do not encode one-run correlations as universal rules.
-6. Repeat successful dry slices, explain any hash differences, and build a
+7. Repeat successful dry slices, explain any hash differences, and build a
    regression matrix. Use the thin skills on repeated requests and record where
    they reduce confusion or still require ad hoc work. Build a shared CLI only
    after that evidence proves it useful; broader MCP and control surfaces remain
    later.
-7. Exercise support-enforcer and blocker round-trip only after the baseline
+8. Exercise support-enforcer and blocker round-trip only after the baseline
    fixtures pass. Preserve user-painted support projects but do not synthesize
    facet painting without golden round-trip fixtures.
-8. Resume Printer Operations with a compatible `printer.objects.subscribe`
+9. Resume Printer Operations with a compatible `printer.objects.subscribe`
    client, reconnect and freshness behavior, U1 vendor semantics, always-on
    host, notification destination, and network/authentication boundary.
 

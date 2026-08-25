@@ -63,6 +63,18 @@ is not yet an accepted product backend.
   the OpenAI compatibility output template on its descriptor. Four integration
   and widget-contract tests pass, and the refreshed installed bundle plus both
   camera endpoints passed read-only smoke checks.
+- decision 0009 replaces direct private-LAN media loading with a self-contained
+  widget and read-only `get_u1_camera_frame` relay. Ten tests with 52
+  assertions pass, and a bundled stdio smoke returned a valid real JPEG data
+  URL after bounded retry.
+- the same widget now has dynamic mobile viewport sizing, iOS safe-area support,
+  44-pixel touch targets, compact breakpoints, and host intrinsic-height
+  notification. Cross-device MCP connectivity and actual iOS rendering remain
+  separate evidence.
+- the cache-busted installed plugin
+  `0.2.0+codex.20260825142747` passed descriptor, resource, current status, and
+  real relayed-camera stdio smoke checks; the installed frame was a valid
+  148,142-byte JPEG data URL kept in widget-private metadata.
 
 ## Changed paths
 
@@ -90,13 +102,21 @@ included.
 - camera reliability, lighting, and final lowered-bed visibility remain
   environment-dependent despite one usable in-progress PLA frame;
 - no connected browser was available for this run, so host-rendered snapshot,
-  WebRTC, close behavior, PiP, fullscreen, and adaptive refresh are unverified;
+  relayed preview, close behavior, PiP, fullscreen, and adaptive refresh are
+  unverified;
 - the same conversation could not hot-reload the refreshed plugin metadata and
   exposed `show_u1_status` only through a programmatic wrapper, which returned
   text but did not mount the MCP App. A new conversation remains required for
   direct component validation;
 - Bun and Node direct local-network sockets failed on this macOS host while the
   bounded system-curl adapter worked; portability remains unknown;
+- the local stdio plugin is desktop-local. Mobile iOS use requires an
+  authenticated reachable MCP backend, an always-on LAN host, and a separately
+  verified product surface. Secure MCP Tunnel is the preferred private
+  candidate but is not configured;
+- the snapshot endpoint was intermittently slow. One bounded retry recovered a
+  packaged real-frame smoke, but repeated live-preview reliability is not yet
+  host-validated;
 - manifest shape, compatibility checks, and upload/start ownership are open;
 - multiple physical jobs completed, but product implementation, repeatable workflow,
   protocol, safety, and general user-outcome acceptance remain pending.
@@ -105,12 +125,13 @@ included.
 
 ## Next smallest action
 
-Open the refreshed plugin in a new Codex thread and call `show_u1_status`
-directly. Visually test the HTML dashboard, snapshot, WebRTC `Go Live` and
-`Close`, PiP, fullscreen, manual refresh, and one adaptive refresh. Record each
-host result separately. Then resume the synthetic non-user dry-slice and
-negative fixtures. Do not build a shared CLI merely because the manual commands
-exist.
+Open the refreshed plugin in a new desktop Codex thread and call
+`show_u1_status` directly. Visually test the HTML dashboard, relayed snapshot,
+`Go Live` and `Close`, PiP, fullscreen, manual refresh, and one adaptive refresh.
+Record each host result separately. Then choose an authenticated always-on host
+and Secure MCP Tunnel setup before repeating the loop on iOS. Resume synthetic
+non-user dry-slice and negative fixtures afterward. Do not expose Moonraker or
+build a shared CLI merely because the manual commands exist.
 
 ## Restart instructions
 

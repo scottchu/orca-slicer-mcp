@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>U1 Print Studio</title>
     <style>
       :root {
@@ -19,6 +19,10 @@
         --amber: #f2a93b;
         --red: #e05252;
         --radius: 26px;
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-right: env(safe-area-inset-right, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-left: env(safe-area-inset-left, 0px);
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
@@ -31,7 +35,12 @@
       body {
         margin: 0;
         min-height: 100vh;
-        padding: 12px;
+        min-height: 100dvh;
+        padding:
+          calc(12px + var(--safe-top))
+          calc(12px + var(--safe-right))
+          calc(12px + var(--safe-bottom))
+          calc(12px + var(--safe-left));
         color: var(--ink);
         background:
           radial-gradient(circle at 12% -10%, rgba(185, 246, 69, 0.28), transparent 34%),
@@ -43,6 +52,8 @@
         border: 0;
         color: inherit;
         font: inherit;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
       }
 
       button:not(:disabled) {
@@ -67,6 +78,7 @@
 
       .camera {
         position: relative;
+        aspect-ratio: 16 / 9;
         min-height: 238px;
         overflow: hidden;
         isolation: isolate;
@@ -88,8 +100,7 @@
         background-size: auto, 42px 42px, 42px 42px;
       }
 
-      .camera img,
-      .camera iframe {
+      .camera img {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -106,17 +117,6 @@
 
       .camera.has-snapshot img {
         opacity: 1;
-      }
-
-      .camera iframe {
-        z-index: 1;
-        display: none;
-        background: #07110e;
-      }
-
-      .camera[data-camera-mode="connecting"] iframe,
-      .camera[data-camera-mode="live"] iframe {
-        display: block;
       }
 
       .camera-empty {
@@ -136,8 +136,7 @@
         opacity: 0.8;
       }
 
-      .camera.has-snapshot .camera-empty,
-      .camera[data-camera-mode="live"] .camera-empty {
+      .camera.has-snapshot .camera-empty {
         display: none;
       }
 
@@ -228,7 +227,7 @@
       .refresh-button,
       .toggle {
         display: inline-flex;
-        min-height: 40px;
+        min-height: 44px;
         align-items: center;
         justify-content: center;
         border-radius: 999px;
@@ -255,10 +254,6 @@
         min-width: auto;
         color: white;
         background: rgba(9, 18, 15, 0.78);
-      }
-
-      .camera[data-camera-mode="connecting"] .camera-button.go-live {
-        opacity: 0.7;
       }
 
       .camera[data-camera-mode="live"] .camera-button.go-live {
@@ -308,7 +303,7 @@
       }
 
       .icon-button {
-        width: 40px;
+        width: 44px;
         padding: 0;
         border: 1px solid var(--line);
         color: var(--muted);
@@ -494,7 +489,7 @@
       }
 
       .refresh-button {
-        width: 40px;
+        width: 44px;
         padding: 0;
         color: white;
         background: var(--green-deep);
@@ -533,14 +528,28 @@
       }
 
       @media (max-width: 540px) {
-        body { padding: 0; background: var(--surface); }
+        body {
+          padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+          background: var(--surface);
+        }
         .dashboard { border: 0; border-radius: 0; box-shadow: none; }
-        .camera { min-height: 220px; }
+        .camera { min-height: 0; }
         .content { padding: 18px; }
         .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .metric:first-child { grid-column: 1 / -1; }
         .footer { align-items: flex-start; flex-direction: column; }
-        .footer-actions { width: 100%; justify-content: flex-end; }
+        .footer-actions { width: 100%; justify-content: space-between; }
+        .toggle { flex: 1; }
+      }
+
+      @media (max-width: 380px) {
+        .camera-top,
+        .camera-bottom { right: 12px; left: 12px; }
+        .camera-copy { max-width: 54%; }
+        .camera-copy strong { font-size: 17px; }
+        .content { gap: 15px; padding: 16px; }
+        .metrics { grid-template-columns: 1fr; }
+        .metric:first-child { grid-column: auto; }
       }
 
       body[data-display-mode="pip"] {
@@ -594,7 +603,6 @@
           <span>Waiting for camera snapshot</span>
         </div>
         <img id="snapshot" alt="Latest Snapmaker U1 camera snapshot" />
-        <iframe id="live-stream" title="Snapmaker U1 live camera" allow="autoplay; fullscreen"></iframe>
 
         <div class="camera-top">
           <span class="camera-label"><span class="pulse"></span> U1 Camera</span>
@@ -608,7 +616,7 @@
           </div>
           <div class="camera-actions">
             <button class="camera-button go-live" id="go-live" type="button">Go Live</button>
-            <button class="camera-button close" id="close-live" type="button" aria-label="Close live stream">Close</button>
+            <button class="camera-button close" id="close-live" type="button" aria-label="Close live preview">Close</button>
           </div>
         </div>
       </section>
@@ -691,7 +699,6 @@
         dashboard: document.querySelector("#dashboard"),
         camera: document.querySelector("#camera"),
         snapshot: document.querySelector("#snapshot"),
-        liveStream: document.querySelector("#live-stream"),
         cameraTitle: document.querySelector("#camera-title"),
         cameraDetail: document.querySelector("#camera-detail"),
         goLive: document.querySelector("#go-live"),
@@ -718,12 +725,14 @@
       };
 
       let toolOutput = null;
-      let toolMetadata = null;
       let autoRefresh = window.openai?.widgetState?.autoRefresh ?? true;
       let refreshTimer = null;
       let refreshDeadline = null;
       let refreshTicker = null;
+      let liveTimer = null;
       let refreshing = false;
+      let cameraRefreshing = false;
+      let livePreview = false;
       let rpcId = 0;
       const pendingRequests = new Map();
       const hosted = window.parent !== window;
@@ -770,32 +779,20 @@
         elements.notice.classList.toggle("is-visible", Boolean(message));
       };
 
-      const cameraMetadata = () => toolMetadata?.camera ?? {};
-
       const closeLive = () => {
-        elements.liveStream.src = "about:blank";
+        livePreview = false;
+        clearTimeout(liveTimer);
         elements.camera.dataset.cameraMode = "snapshot";
         elements.cameraTitle.textContent = "Build plate view";
-        elements.cameraDetail.textContent = "Snapshot refreshes with printer status";
+        elements.cameraDetail.textContent = "Secure snapshot relayed by U1 Print Studio";
       };
 
       const renderCamera = () => {
-        const camera = cameraMetadata();
-        const snapshotUrl = camera.snapshotUrl;
-        const streamUrl = camera.streamUrl;
-        const fps = toolOutput?.camera?.targetFps;
-
-        elements.goLive.disabled = !streamUrl;
-        elements.goLive.title = streamUrl ? "Open the U1 live stream" : "Live stream unavailable";
-
-        if (snapshotUrl && elements.camera.dataset.cameraMode === "snapshot") {
-          const separator = snapshotUrl.includes("?") ? "&" : "?";
-          elements.snapshot.src = `${snapshotUrl}${separator}t=${Date.now()}`;
-        }
-
-        if (elements.camera.dataset.cameraMode === "live") {
-          elements.cameraDetail.textContent = fps ? `WebRTC · printer target ${fps} FPS` : "WebRTC live stream";
-        }
+        const available = Boolean(toolOutput?.camera?.available);
+        elements.goLive.disabled = !available;
+        elements.goLive.title = available
+          ? "Start a secure relayed live preview"
+          : "Camera unavailable";
       };
 
       elements.snapshot.addEventListener("load", () => {
@@ -804,14 +801,7 @@
 
       elements.snapshot.addEventListener("error", () => {
         elements.camera.classList.remove("has-snapshot");
-      });
-
-      elements.liveStream.addEventListener("load", () => {
-        if (elements.camera.dataset.cameraMode !== "connecting") return;
-        elements.camera.dataset.cameraMode = "live";
-        elements.cameraTitle.textContent = "Live build plate";
-        const fps = toolOutput?.camera?.targetFps;
-        elements.cameraDetail.textContent = fps ? `WebRTC · printer target ${fps} FPS` : "WebRTC live stream";
+        elements.cameraDetail.textContent = "Camera image could not be displayed";
       });
 
       const render = () => {
@@ -866,10 +856,33 @@
         window.parent.postMessage({ jsonrpc: "2.0", id, method, params }, "*");
       });
 
-      const applyToolResult = (result) => {
+      const applyStatusResult = (result) => {
         toolOutput = result?.structuredContent ?? result ?? toolOutput;
-        toolMetadata = result?._meta ?? result?.meta ?? window.openai?.toolResponseMetadata ?? toolMetadata;
         render();
+        if (hosted && !livePreview) {
+          queueMicrotask(() => void refreshCameraFrame());
+        }
+      };
+
+      const applyCameraFrame = (result) => {
+        const frame = result?.structuredContent ?? {};
+        const metadata = result?._meta ?? result?.meta ?? {};
+        const dataUrl = metadata?.cameraFrame?.dataUrl;
+
+        if (frame.available && typeof dataUrl === "string" && dataUrl.startsWith("data:image/jpeg;base64,")) {
+          elements.snapshot.src = dataUrl;
+          const observedDate = new Date(frame.observedAt);
+          const observedLabel = Number.isNaN(observedDate.valueOf())
+            ? "just now"
+            : observedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+          elements.cameraDetail.textContent = livePreview
+            ? `Secure live preview · frame ${observedLabel}`
+            : `Secure snapshot · ${observedLabel}`;
+          return;
+        }
+
+        elements.camera.classList.remove("has-snapshot");
+        elements.cameraDetail.textContent = frame.reason ?? "Camera unavailable";
       };
 
       window.addEventListener("message", (event) => {
@@ -886,14 +899,32 @@
         }
 
         if (message.method === "ui/notifications/tool-result") {
-          applyToolResult(message.params);
+          const payload = message.params?.structuredContent ?? message.params;
+          if (payload?.mediaType !== undefined) {
+            applyCameraFrame(message.params);
+          } else {
+            applyStatusResult(message.params);
+          }
         }
 
         if (message.method === "ui/notifications/host-context-changed") {
-          const mode = message.params?.displayMode;
-          if (mode) document.body.dataset.displayMode = mode;
+          applyHostContext(message.params);
         }
       }, { passive: true });
+
+      const applyHostContext = (context = {}) => {
+        const mode = context.displayMode ?? window.openai?.displayMode;
+        if (mode) document.body.dataset.displayMode = mode;
+
+        const safeArea = context.safeArea ?? window.openai?.safeArea;
+        const insets = safeArea?.insets ?? safeArea ?? {};
+        for (const side of ["top", "right", "bottom", "left"]) {
+          const value = Number(insets[side]);
+          if (Number.isFinite(value) && value >= 0) {
+            document.documentElement.style.setProperty(`--safe-${side}`, `${value}px`);
+          }
+        }
+      };
 
       const initializeBridge = async () => {
         if (!hosted) return null;
@@ -903,8 +934,7 @@
           protocolVersion: "2026-01-26",
         });
         rpcNotify("ui/notifications/initialized", {});
-        const mode = result?.hostContext?.displayMode ?? window.openai?.displayMode;
-        if (mode) document.body.dataset.displayMode = mode;
+        applyHostContext(result?.hostContext);
         return result;
       };
 
@@ -912,6 +942,26 @@
         setNotice(`Host bridge unavailable: ${error?.message ?? "unknown error"}`);
         return null;
       });
+
+      const refreshCameraFrame = async () => {
+        if (cameraRefreshing || !hosted || !toolOutput?.camera?.available) return;
+        cameraRefreshing = true;
+        try {
+          await bridgeReady;
+          const response = await rpcRequest("tools/call", {
+            name: "get_u1_camera_frame",
+            arguments: {},
+          });
+          applyCameraFrame(response);
+        } catch (error) {
+          elements.cameraDetail.textContent = `Camera refresh failed: ${error?.message ?? "unknown error"}`;
+        } finally {
+          cameraRefreshing = false;
+          clearTimeout(liveTimer);
+          if (livePreview) liveTimer = setTimeout(refreshCameraFrame, 1500);
+          window.openai?.notifyIntrinsicHeight?.();
+        }
+      };
 
       const refreshStatus = async () => {
         if (refreshing || !hosted) return;
@@ -924,7 +974,8 @@
             name: "get_u1_status",
             arguments: {},
           });
-          applyToolResult(response);
+          applyStatusResult(response);
+          if (!livePreview) void refreshCameraFrame();
         } catch (error) {
           setNotice(`Refresh failed: ${error?.message ?? "unknown error"}`);
           scheduleRefresh(15);
@@ -967,12 +1018,12 @@
       elements.refresh.addEventListener("click", refreshStatus);
 
       elements.goLive.addEventListener("click", () => {
-        const streamUrl = cameraMetadata().streamUrl;
-        if (!streamUrl) return;
-        elements.camera.dataset.cameraMode = "connecting";
-        elements.cameraTitle.textContent = "Connecting live camera…";
-        elements.cameraDetail.textContent = "Negotiating WebRTC stream";
-        elements.liveStream.src = streamUrl;
+        if (!toolOutput?.camera?.available) return;
+        livePreview = true;
+        elements.camera.dataset.cameraMode = "live";
+        elements.cameraTitle.textContent = "Live build plate";
+        elements.cameraDetail.textContent = "Starting secure live preview…";
+        void refreshCameraFrame();
       });
 
       elements.closeLive.addEventListener("click", closeLive);
@@ -995,14 +1046,16 @@
       elements.fullscreen.addEventListener("click", () => requestDisplayMode("fullscreen"));
 
       elements.autoRefresh.setAttribute("aria-pressed", String(autoRefresh));
+      applyHostContext();
 
       if (window.openai?.toolOutput) {
-        applyToolResult({
+        applyStatusResult({
           structuredContent: window.openai.toolOutput,
           _meta: window.openai.toolResponseMetadata,
         });
+        void bridgeReady.then(() => refreshCameraFrame());
       } else if (!hosted || new URLSearchParams(location.search).has("demo")) {
-        applyToolResult({ structuredContent: demoStatus, _meta: { camera: {} } });
+        applyStatusResult({ structuredContent: demoStatus, _meta: {} });
       }
     </script>
   </body>

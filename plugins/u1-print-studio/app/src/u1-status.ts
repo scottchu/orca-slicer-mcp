@@ -1,7 +1,13 @@
+import { execFile, spawn } from "node:child_process";
+import { promisify } from "node:util";
+
+const execFileAsync = promisify(execFile);
+
 const QUERY_ROUTE =
   "/printer/objects/query?print_stats&virtual_sdcard&display_status&" +
   "heater_bed&extruder&extruder1&extruder2&extruder3&toolhead&webhooks";
 const WEBCAMS_ROUTE = "/server/webcams/list";
+let cachedSnapshotUrl: URL | null = null;
 
 type JsonObject = Record<string, unknown>;
 
@@ -48,10 +54,18 @@ export type U1Status = {
 };
 
 export type U1WidgetMetadata = {
-  camera: {
-    snapshotUrl: string | null;
-    streamUrl: string | null;
+  cameraFrame?: {
+    dataUrl: string;
   };
+};
+
+export type U1CameraFrame = {
+  schemaVersion: 1;
+  observedAt: string;
+  available: boolean;
+  mediaType: "image/jpeg" | null;
+  byteLength: number;
+  reason: string | null;
 };
 
 function asObject(value: unknown): JsonObject {
@@ -83,14 +97,6 @@ function printerBaseUrl(): URL {
     throw new Error("MOONRAKER_BASE_URL must use http or https");
   }
   return url;
-}
-
-export function configuredPrinterOrigin(): string | null {
-  try {
-    return printerBaseUrl().origin;
-  } catch {
-    return null;
-  }
 }
 
 async function fetchJson(route: string, maxTimeSeconds = 6): Promise<JsonObject> {
@@ -150,9 +156,126 @@ function stateLabel(state: string, reachable: boolean): string {
   return labels[state] ?? state.replace(/^./, (letter) => letter.toUpperCase());
 }
 
-function resolveCameraUrl(value: unknown): string | null {
+export function resolveCameraUrl(value: unknown): URL | null {
   const route = asString(value).trim();
-  return route ? new URL(route, printerBaseUrl()).toString() : null;
+  if (!route) return null;
+
+  const printerUrl = printerBaseUrl();
+  const cameraUrl = new URL(route, printerUrl);
+  return cameraUrl.origin === printerUrl.origin ? cameraUrl : null;
+}
+
+export function extractFirstJpeg(bytes: Buffer): Buffer | null {
+  if (bytes.length < 4 || bytes[0] !== 0xff || bytes[1] !== 0xd8) return null;
+  const end = bytes.indexOf(Buffer.from([0xff, 0xd9]), 2);
+  return end === -1 ? null : bytes.subarray(0, end + 2);
+}
+
+async function fetchJpeg(url: URL, maxTimeSeconds = 10): Promise<Buffer> {
+  return await new Promise<Buffer>((resolve, reject) => {
+    const child = spawn(
+      "curl",
+      [
+        "--fail-with-body",
+        "--silent",
+        "--show-error",
+        "--connect-timeout",
+        "3",
+        "--max-time",
+        String(maxTimeSeconds),
+        url.toString(),
+      ],
+      { stdio: ["ignore", "pipe", "ignore"] }
+    );
+    let settled = false;
+    let body = Buffer.alloc(0);
+    const timer = setTimeout(() => finish(), maxTimeSeconds * 1000);
+
+    const finish = (jpeg?: Buffer) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      if (!child.killed) child.kill("SIGTERM");
+      if (jpeg) {
+        resolve(jpeg);
+      } else {
+        reject(new Error("Printer camera request failed"));
+      }
+    };
+
+    child.stdout.on("data", (chunk: Buffer) => {
+      if (settled) return;
+      body = Buffer.concat([body, chunk]);
+      if (body.length > 4 * 1024 * 1024) {
+        finish();
+        return;
+      }
+      const jpeg = extractFirstJpeg(body);
+      if (jpeg) finish(jpeg);
+    });
+    child.on("error", () => finish());
+    child.on("close", () => finish(extractFirstJpeg(body) ?? undefined));
+  });
+}
+
+export async function readU1CameraFrame(): Promise<{
+  frame: U1CameraFrame;
+  metadata: U1WidgetMetadata;
+}> {
+  const observedAt = new Date().toISOString();
+
+  try {
+    let snapshotUrl = cachedSnapshotUrl;
+    if (!snapshotUrl) {
+      const webcamPayload = await fetchJson(WEBCAMS_ROUTE, 3);
+      const webcamResult = asObject(webcamPayload.result);
+      const webcams = Array.isArray(webcamResult.webcams)
+        ? webcamResult.webcams
+        : [];
+      const webcam =
+        webcams.map(asObject).find((item) => item.enabled !== false) ?? {};
+      snapshotUrl = resolveCameraUrl(webcam.snapshot_url);
+      cachedSnapshotUrl = snapshotUrl;
+    }
+    if (!snapshotUrl) throw new Error("Printer camera snapshot unavailable");
+
+    let bytes: Buffer | null = null;
+    const attemptTimeouts = [10, 3];
+    for (const timeout of attemptTimeouts) {
+      if (bytes) break;
+      bytes = await fetchJpeg(snapshotUrl, timeout).catch(() => null);
+    }
+    if (!bytes) throw new Error("Printer camera request failed");
+
+    return {
+      frame: {
+        schemaVersion: 1,
+        observedAt,
+        available: true,
+        mediaType: "image/jpeg",
+        byteLength: bytes.length,
+        reason: null,
+      },
+      metadata: {
+        cameraFrame: {
+          dataUrl: `data:image/jpeg;base64,${bytes.toString("base64")}`,
+        },
+      },
+    };
+  } catch (error) {
+    return {
+      frame: {
+        schemaVersion: 1,
+        observedAt,
+        available: false,
+        mediaType: null,
+        byteLength: 0,
+        reason:
+          error instanceof Error ? error.message : "Printer camera unavailable",
+      },
+      metadata: {},
+    };
+  }
 }
 
 export async function readU1Status(): Promise<{
@@ -208,6 +331,7 @@ export async function readU1Status(): Promise<{
     const webcam = webcams.map(asObject).find((item) => item.enabled !== false) ?? {};
     const snapshotUrl = resolveCameraUrl(webcam.snapshot_url);
     const streamUrl = resolveCameraUrl(webcam.stream_url);
+    if (snapshotUrl) cachedSnapshotUrl = snapshotUrl;
 
     return {
       status: {
@@ -255,12 +379,7 @@ export async function readU1Status(): Promise<{
             typeof webcam.target_fps === "number" ? webcam.target_fps : null,
         },
       },
-      metadata: {
-        camera: {
-          snapshotUrl,
-          streamUrl,
-        },
-      },
+      metadata: {},
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Printer unavailable";
@@ -287,11 +406,7 @@ export async function readU1Status(): Promise<{
         exception: true,
         camera: { available: false, service: null, targetFps: null },
       },
-      metadata: { camera: { snapshotUrl: null, streamUrl: null } },
+      metadata: {},
     };
   }
 }
-import { execFile } from "node:child_process";
-import { promisify } from "node:util";
-
-const execFileAsync = promisify(execFile);

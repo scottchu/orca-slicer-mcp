@@ -95,3 +95,48 @@ could not be substituted. The installed fix therefore has stronger static,
 protocol, and real-endpoint evidence, but a new conversation with a direct MCP
 App tool call is still required before claiming that the card, live camera, or
 controls render in Codex.
+
+## Mobile and camera transport repair
+
+The user then reported that the local card appeared on desktop but not iOS and
+that the live camera was unavailable even in the desktop widget. This separated
+two failures: the component needed a narrow-viewport layout, while the local
+stdio MCP process and private LAN camera origin were not a cross-device media
+path.
+
+Decision 0009 replaced direct private-LAN image and iframe loading with a
+server-relayed camera frame. `get_u1_camera_frame` resolves only the
+printer-advertised same-origin snapshot route, fetches a bounded JPEG, validates
+its signature, and returns the data URL only in widget-private result metadata.
+The widget's external CSP allowlists are now empty. Its user-started near-live
+loop waits 1.5 seconds after each completed frame request and stops on `Close`;
+it is not described as the advertised 15 FPS WebRTC stream.
+
+The same widget now uses `viewport-fit=cover`, dynamic viewport height, CSS and
+host-provided safe-area insets, 44-pixel touch targets, compact one-column
+metrics below 380 pixels, and intrinsic-height notification. Official plugin
+guidance supports mobile inline cards, but actual iOS use still needs an
+authenticated reachable MCP backend. Secure MCP Tunnel is the current private
+connectivity candidate; it was not configured during this repair.
+
+TypeScript compilation passed. Ten Bun tests with 52 assertions passed for
+tool/resource metadata, the relayed-frame privacy contract, same-origin and
+protocol rejection, the near-live loop, iPhone layout contracts, and host
+display APIs. A direct real-camera call returned a valid JPEG data URL, and the
+bundled stdio server returned current `complete` status plus a relayed JPEG of
+148,023 bytes after bounded retry. The camera endpoint was observed to time out
+intermittently and sometimes kept a chunked JPEG response open. Route caching,
+one retry, and first-complete-JPEG stream parsing were added; the live loop
+remains non-overlapping.
+
+The tested marketplace source was cache-busted and reinstalled as
+`0.2.0+codex.20260825142747`. An exact installed-cache stdio smoke listed all
+three tools, served `status-v2` with the MCP App MIME type and empty external
+CSP lists, confirmed the mobile and relay source contracts, returned reachable
+printer telemetry, and returned a valid 148,142-byte JPEG data URL in private
+camera-frame metadata.
+
+The in-app browser was unavailable. Two bounded local headless-Chrome render
+attempts also failed to produce screenshots and their spawned processes were
+stopped. Therefore desktop appearance, iOS appearance, actual image rendering,
+PiP, fullscreen, and mounted interaction remain unverified host evidence.

@@ -7,7 +7,11 @@ import {
   WIDGET_HTML,
   WIDGET_URI,
 } from "./app.js";
-import type { U1Status, U1WidgetMetadata } from "./u1-status.js";
+import type {
+  U1CameraFrame,
+  U1Status,
+  U1WidgetMetadata,
+} from "./u1-status.js";
 
 const status: U1Status = {
   schemaVersion: 1,
@@ -44,10 +48,20 @@ const status: U1Status = {
   },
 };
 
-const metadata: U1WidgetMetadata = {
-  camera: {
-    snapshotUrl: "http://printer.test/webcam/snapshot.jpg",
-    streamUrl: "http://printer.test/webcam/webrtc",
+const metadata: U1WidgetMetadata = {};
+
+const cameraFrame: U1CameraFrame = {
+  schemaVersion: 1,
+  observedAt: "2026-08-25T13:21:02.688Z",
+  available: true,
+  mediaType: "image/jpeg",
+  byteLength: 4,
+  reason: null,
+};
+
+const cameraMetadata: U1WidgetMetadata = {
+  cameraFrame: {
+    dataUrl: "data:image/jpeg;base64,/9j/2Q==",
   },
 };
 
@@ -60,7 +74,10 @@ afterEach(async () => {
 async function connectClient() {
   const server = createAppServer({
     readStatus: async () => ({ status, metadata }),
-    printerOrigin: () => "http://printer.test",
+    readCameraFrame: async () => ({
+      frame: cameraFrame,
+      metadata: cameraMetadata,
+    }),
   });
   const client = new Client({ name: "u1-print-studio-test", version: "1.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
@@ -83,6 +100,9 @@ describe("U1 status MCP App contract", () => {
     const listed = await client.listTools();
     const show = listed.tools.find((tool) => tool.name === "show_u1_status");
     const refresh = listed.tools.find((tool) => tool.name === "get_u1_status");
+    const camera = listed.tools.find(
+      (tool) => tool.name === "get_u1_camera_frame"
+    );
 
     expect(show).toBeDefined();
     expect(show?.annotations).toMatchObject({
@@ -94,9 +114,15 @@ describe("U1 status MCP App contract", () => {
     expect(show?._meta?.["openai/outputTemplate"]).toBe(WIDGET_URI);
     expect(refresh?._meta?.ui).toBeUndefined();
     expect(refresh?._meta?.["openai/outputTemplate"]).toBeUndefined();
+    expect(camera?.annotations).toMatchObject({
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+    });
+    expect(camera?._meta?.ui).toBeUndefined();
   });
 
-  test("serves an MCP App resource with the printer origin allowlisted", async () => {
+  test("serves a self-contained MCP App resource without LAN origins", async () => {
     const client = await connectClient();
     const result = await client.readResource({ uri: WIDGET_URI });
     const resource = result.contents[0];
@@ -106,15 +132,15 @@ describe("U1 status MCP App contract", () => {
     expect(resource?._meta?.ui).toMatchObject({
       prefersBorder: false,
       csp: {
-        connectDomains: ["http://printer.test"],
-        resourceDomains: ["http://printer.test"],
-        frameDomains: ["http://printer.test"],
+        connectDomains: [],
+        resourceDomains: [],
+        frameDomains: [],
       },
     });
     expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
   });
 
-  test("returns model-readable status and camera URLs only in result metadata", async () => {
+  test("returns model-readable status without private camera URLs", async () => {
     const client = await connectClient();
     const result = await client.callTool({ name: "show_u1_status", arguments: {} });
 
@@ -125,23 +151,53 @@ describe("U1 status MCP App contract", () => {
       { type: "text", text: "U1 is printing at 67.4%." },
     ]);
   });
+
+  test("returns a relayed JPEG only in camera-frame result metadata", async () => {
+    const client = await connectClient();
+    const result = await client.callTool({
+      name: "get_u1_camera_frame",
+      arguments: {},
+    });
+
+    expect(result.structuredContent).toEqual(cameraFrame);
+    expect(result._meta).toEqual(cameraMetadata);
+    expect(result.content).toEqual([
+      { type: "text", text: "U1 camera frame refreshed." },
+    ]);
+    expect(JSON.stringify(result.structuredContent)).not.toContain("base64");
+  });
 });
 
 describe("camera-first widget contract", () => {
-  test("keeps snapshot, live, close, refresh, PiP, and fullscreen paths", () => {
+  test("keeps relayed snapshot, live preview, close, refresh, PiP, and fullscreen paths", () => {
     const cameraIndex = WIDGET_HTML.indexOf('class="camera"');
     const contentIndex = WIDGET_HTML.indexOf('class="content"');
 
     expect(cameraIndex).toBeGreaterThan(-1);
     expect(cameraIndex).toBeLessThan(contentIndex);
     expect(WIDGET_HTML).toContain('id="snapshot"');
-    expect(WIDGET_HTML).toContain('id="live-stream"');
     expect(WIDGET_HTML).toContain('id="go-live"');
     expect(WIDGET_HTML).toContain('id="close-live"');
-    expect(WIDGET_HTML).toContain('elements.liveStream.src = streamUrl');
-    expect(WIDGET_HTML).toContain('elements.liveStream.src = "about:blank"');
+    expect(WIDGET_HTML).toContain('name: "get_u1_camera_frame"');
+    expect(WIDGET_HTML).toContain('data:image/jpeg;base64,');
+    expect(WIDGET_HTML).toContain('liveTimer = setTimeout(refreshCameraFrame, 1500)');
     expect(WIDGET_HTML).toContain('name: "get_u1_status"');
     expect(WIDGET_HTML).toContain('requestDisplayMode("pip")');
     expect(WIDGET_HTML).toContain('requestDisplayMode("fullscreen")');
+    expect(WIDGET_HTML).not.toContain('id="live-stream"');
+    expect(WIDGET_HTML).not.toContain("snapshotUrl");
+    expect(WIDGET_HTML).not.toContain("streamUrl");
+  });
+
+  test("supports iPhone viewports, safe areas, and touch targets", () => {
+    expect(WIDGET_HTML).toContain("viewport-fit=cover");
+    expect(WIDGET_HTML).toContain("min-height: 100dvh");
+    expect(WIDGET_HTML).toContain("env(safe-area-inset-top, 0px)");
+    expect(WIDGET_HTML).toContain('@media (max-width: 540px)');
+    expect(WIDGET_HTML).toContain('@media (max-width: 380px)');
+    expect(WIDGET_HTML).toContain("min-height: 44px");
+    expect(WIDGET_HTML).toContain("touch-action: manipulation");
+    expect(WIDGET_HTML).toContain("window.openai?.safeArea");
+    expect(WIDGET_HTML).toContain("notifyIntrinsicHeight");
   });
 });

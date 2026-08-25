@@ -24,15 +24,26 @@ copying `node_modules`.
 
 The widget provides:
 
-- a camera snapshot at the top;
-- a `Go Live` button for the printer's advertised WebRTC view;
-- a `Close` button that disconnects the live iframe and returns to snapshot;
+- a server-relayed camera snapshot at the top without exposing the printer URL
+  to the component;
+- a `Go Live` button for a secure near-live preview refreshed through the
+  read-only MCP boundary;
+- a `Close` button that stops frame requests and returns to snapshot mode;
 - printer progress, layer, active physical tool, temperatures, and time;
 - adaptive read-only refresh through `get_u1_status`;
-- inline, Picture in Picture, and fullscreen display modes.
+- inline, Picture in Picture, and fullscreen display modes;
+- one responsive layout with iOS safe areas, dynamic viewport height, and
+  touch-sized controls.
 
-The live view uses the camera's advertised target frame rate. The UI does not
-cap it at a fixed value.
+The relayed preview waits 1.5 seconds after each completed frame request. It is
+not the camera's advertised full-frame-rate WebRTC stream. This keeps the
+private LAN origin out of the component and provides a portable fallback for
+sandboxed desktop and mobile hosts.
+
+The local plugin uses a stdio MCP process and therefore remains desktop-local.
+Cross-device iOS use also requires the HTTP MCP server to be connected through
+an authenticated private path such as OpenAI Secure MCP Tunnel. Do not expose
+Moonraker or the printer camera directly to the public internet.
 
 The current macOS validation host allows the system `curl` process to reach the
 printer but denies direct Bun and Node local-network sockets. The telemetry

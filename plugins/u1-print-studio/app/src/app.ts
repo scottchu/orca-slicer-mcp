@@ -10,15 +10,16 @@ import {
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 import {
-  configuredPrinterOrigin,
+  readU1CameraFrame,
   readU1Status,
+  type U1CameraFrame,
   type U1Status,
   type U1WidgetMetadata,
 } from "./u1-status.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = path.resolve(currentDirectory, "..");
-export const WIDGET_URI = "ui://u1-print-studio/status-v1.html";
+export const WIDGET_URI = "ui://u1-print-studio/status-v2.html";
 export const WIDGET_HTML = readFileSync(
   path.join(APP_ROOT, "public", "widget.html"),
   "utf8"
@@ -40,15 +41,35 @@ export function resultPayload(
 }
 
 type StatusReader = typeof readU1Status;
+type CameraFrameReader = typeof readU1CameraFrame;
+
+function cameraFramePayload(
+  frame: U1CameraFrame,
+  metadata: U1WidgetMetadata
+) {
+  return {
+    content: [
+      {
+        type: "text" as const,
+        text: frame.available
+          ? "U1 camera frame refreshed."
+          : `U1 camera frame unavailable: ${frame.reason ?? "unknown error"}.`,
+      },
+    ],
+    structuredContent: frame,
+    _meta: metadata,
+  };
+}
 
 export function createAppServer(
   dependencies: {
     readStatus?: StatusReader;
-    printerOrigin?: () => string | null;
+    readCameraFrame?: CameraFrameReader;
   } = {}
 ): McpServer {
   const readStatus = dependencies.readStatus ?? readU1Status;
-  const printerOrigin = dependencies.printerOrigin ?? configuredPrinterOrigin;
+  const readCameraFrame =
+    dependencies.readCameraFrame ?? readU1CameraFrame;
   const server = new McpServer({ name: "u1-print-studio", version: "0.2.0" });
 
   registerAppResource(
@@ -57,9 +78,6 @@ export function createAppServer(
     WIDGET_URI,
     {},
     async () => {
-      const origin = printerOrigin();
-      const allowedOrigins = origin ? [origin] : [];
-
       return {
         contents: [
           {
@@ -70,9 +88,9 @@ export function createAppServer(
               ui: {
                 prefersBorder: false,
                 csp: {
-                  connectDomains: allowedOrigins,
-                  resourceDomains: allowedOrigins,
-                  frameDomains: allowedOrigins,
+                  connectDomains: [],
+                  resourceDomains: [],
+                  frameDomains: [],
                 },
               },
               "openai/widgetDescription":
@@ -133,6 +151,31 @@ export function createAppServer(
     async () => {
       const { status, metadata } = await readStatus();
       return resultPayload(status, metadata);
+    }
+  );
+
+  registerAppTool(
+    server,
+    "get_u1_camera_frame",
+    {
+      title: "Refresh U1 camera frame",
+      description:
+        "Use this when the U1 dashboard needs a fresh read-only camera frame relayed through the printer operations boundary.",
+      inputSchema: {},
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+        idempotentHint: true,
+      },
+      _meta: {
+        "openai/toolInvocation/invoking": "Refreshing U1 camera",
+        "openai/toolInvocation/invoked": "U1 camera refreshed",
+      },
+    },
+    async () => {
+      const { frame, metadata } = await readCameraFrame();
+      return cameraFramePayload(frame, metadata);
     }
   );
 

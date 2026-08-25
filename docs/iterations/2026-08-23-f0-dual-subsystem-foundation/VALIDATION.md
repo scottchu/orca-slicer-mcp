@@ -319,3 +319,46 @@ identifiers, and runtime data are intentionally not retained.
 - The in-app browser inventory was empty. Snapshot rendering, `Go Live`,
   `Close`, PiP, fullscreen, and mounted adaptive refresh remain unverified and
   require a new conversation with the refreshed plugin enabled.
+
+### Mobile layout and relayed-camera repair
+
+- Official OpenAI plugin documentation confirmed that plugins can be used in
+  ChatGPT Chat or Work on mobile, that inline cards can expand to the mobile
+  display area without nested scrolling, and that mobile PiP may be presented
+  as fullscreen. This is product-surface guidance, not evidence for this local
+  plugin on iOS.
+- The desktop component's direct private-LAN camera path was replaced by a
+  read-only `get_u1_camera_frame` MCP tool. The widget no longer receives
+  printer URLs or embeds a nested camera iframe; its CSP external origin lists
+  are empty.
+- `bun run check`: passed after the relay and responsive-layout change.
+- `bun test src/*.test.ts`: passed 10 tests and 52 assertions covering the MCP
+  render descriptor, three read-only tools, self-contained MCP App resource,
+  private frame metadata, same-origin and protocol rejection,
+  first-complete-JPEG stream extraction, relayed preview start/stop, mobile
+  breakpoints, safe areas, touch targets, and host display APIs.
+- `bun run bundle`: rebuilt the self-contained stdio artifact with widget URI
+  `ui://u1-print-studio/status-v2.html`.
+- A real read-only source call returned a valid JPEG data URL. The snapshot was
+  146,574 bytes in that observation; its base64 payload was not printed.
+- A bundled stdio MCP smoke called `get_u1_status` and
+  `get_u1_camera_frame` without calling `show_u1_status`. It returned current
+  `complete` telemetry and a valid relayed JPEG data URL of 148,023 bytes.
+- The camera snapshot endpoint timed out intermittently during repeated smoke
+  calls and sometimes kept a chunked JPEG response open after sending partial
+  bytes. The adapter now caches the printer-advertised same-origin route,
+  extracts the first complete JPEG without waiting for connection close, and
+  retries a frame at most once; the widget's 1.5-second loop never overlaps
+  calls.
+- The marketplace source and installed cache were validated after reinstall as
+  `0.2.0+codex.20260825142747`. An exact installed-cache stdio smoke listed all
+  three tools, served `status-v2` as `text/html;profile=mcp-app` with empty
+  external CSP lists, confirmed the mobile/relay source contracts, returned
+  reachable telemetry, and returned a valid 148,142-byte JPEG data URL in
+  widget-private metadata.
+- The in-app browser was unavailable. Two local headless-Chrome render attempts
+  also failed to produce screenshots and were stopped. Responsive source,
+  contracts, and valid JPEG transport do not prove desktop or iOS rendering.
+- No Secure MCP Tunnel, public endpoint, or iOS host was configured. Cross-device
+  connectivity and visual validation remain pending, and Moonraker was not
+  exposed.
