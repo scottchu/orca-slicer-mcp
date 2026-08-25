@@ -16,9 +16,9 @@ Do not use prior chat history as authority when it conflicts with these files.
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
 - Product runtime: none
 - Product evidence: planning and product-boundary records; local, non-mutating
-  Orca and Snapmaker Orca discovery; one later user-authorized Snapmaker U1
-  slice and completed print; plus redacted Moonraker HTTP, WebSocket, and webcam
-  observations
+  Orca and Snapmaker Orca discovery; one user-authorized Snapmaker U1 slice and
+  completed print; one later separately authorized job observed in `printing`;
+  plus redacted Moonraker HTTP, WebSocket, and webcam observations
 
 ## Immediate task
 
