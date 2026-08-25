@@ -34,9 +34,13 @@ Continue with:
    read-only status view is a runtime prototype.
 3. The direct private-LAN camera iframe failed in the desktop component. The
    plugin now uses decision 0009's same-origin server relay and a third
-   read-only `get_u1_camera_frame` tool. Ten tests with 52 assertions pass,
-   and the bundled stdio server returned a real JPEG data URL. Start a new
-   desktop Codex thread, call `show_u1_status` directly, and visually test the
+   read-only `get_u1_camera_frame` tool. A later mounted offline card was traced
+   to a stale in-thread MCP process despite successful current LAN probes. The
+   slow-camera budget is now 20 seconds plus one 10-second retry under a
+   40-second MCP timeout. Twelve tests with 54 assertions pass, and installed
+   version `0.2.0+codex.20260825144906` returned reachable status plus a real
+   relayed JPEG. Start a new desktop Codex thread, call `show_u1_status`
+   directly, and visually test the
    relayed snapshot, `Go Live`, `Close`, PiP, fullscreen, manual refresh, and
    one adaptive status refresh. Record exact host evidence and failures.
 4. Treat iOS as a separate backend and host loop. The responsive component is

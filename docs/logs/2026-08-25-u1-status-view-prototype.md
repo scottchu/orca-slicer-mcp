@@ -140,3 +140,38 @@ The in-app browser was unavailable. Two bounded local headless-Chrome render
 attempts also failed to produce screenshots and their spawned processes were
 stopped. Therefore desktop appearance, iOS appearance, actual image rendering,
 PiP, fullscreen, and mounted interaction remain unverified host evidence.
+
+## LAN reachability and slow-camera repair
+
+The user later supplied a mounted-card screenshot showing `Offline`, `Printer
+telemetry request failed`, and a camera still waiting for its first snapshot.
+Read-only probes from the current laptop then returned HTTP 200 for both the
+configured private-LAN Moonraker status route and webcam inventory. The
+laptop's separate private-overlay address identifies the laptop, not the
+printer origin used by the adapter. The current Codex thread still returned an
+offline status and exposed only the two older tools, while the refreshed plugin
+contract includes the third `get_u1_camera_frame` tool. This isolates the
+mounted failure to a stale in-thread MCP process rather than current LAN
+reachability.
+
+The built-in `webrtc-camerastreamer` advertised the same-origin snapshot and
+WebRTC routes. One direct JPEG observation returned HTTP 200 with 150,523 bytes
+but took 12.9 seconds, longer than the relay's old 10-second first-attempt
+budget and close to the old 15-second MCP tool timeout. The bounded relay was
+changed to a 20-second first attempt and one 10-second retry, and the MCP tool
+budget was raised to 40 seconds. A contract test now requires the host tool
+budget to exceed webcam discovery plus both bounded frame attempts.
+
+Twelve Bun tests with 54 assertions and TypeScript compilation passed. A fresh
+source relay returned a valid 143,387-byte JPEG in 4.7 seconds. The personal
+marketplace source was then synchronized, validated, cache-busted, and
+reinstalled as `0.2.0+codex.20260825144906`. An exact installed-cache stdio
+smoke listed all three tools, returned reachable `complete` telemetry with the
+camera available, and relayed a valid 149,695-byte JPEG in private metadata.
+The current conversation cannot prove the mounted repair because plugin tools
+do not hot-reload in place; the next visual test must start in a new thread.
+
+For iOS, the responsive widget is only the frontend. A reachable authenticated
+MCP backend must run on an always-on machine that can reach the private-LAN
+printer and relay frames. The phone does not need direct access to Moonraker,
+and neither Moonraker nor its camera should be exposed publicly.

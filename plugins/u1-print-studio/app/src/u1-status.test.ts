@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, test } from "bun:test";
 
-import { extractFirstJpeg, resolveCameraUrl } from "./u1-status.js";
+import {
+  CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS,
+  extractFirstJpeg,
+  resolveCameraUrl,
+} from "./u1-status.js";
 
 const originalPrinterUrl = process.env.MOONRAKER_BASE_URL;
 
@@ -36,6 +40,10 @@ describe("camera URL boundary", () => {
 });
 
 describe("streamed JPEG extraction", () => {
+  test("budgets a slow first snapshot before bounded retry", () => {
+    expect(CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS).toEqual([20, 10]);
+  });
+
   test("returns the first complete JPEG without waiting for the response to close", () => {
     const bytes = Buffer.from([
       0xff, 0xd8, 0xff, 0xe0, 0x00, 0x01, 0xff, 0xd9,

@@ -362,3 +362,44 @@ identifiers, and runtime data are intentionally not retained.
 - No Secure MCP Tunnel, public endpoint, or iOS host was configured. Cross-device
   connectivity and visual validation remain pending, and Moonraker was not
   exposed.
+
+### LAN reachability and slow-camera repair
+
+- Read-only system-`curl` probes from the current laptop returned HTTP 200 for
+  the configured Moonraker `/server/info` and `/server/webcams/list` routes.
+  Route inspection selected the current Wi-Fi interface. No printer identifier
+  or private address is retained here.
+- The mounted card still reported offline through the current Codex MCP
+  connection, and that connection listed only `show_u1_status` and
+  `get_u1_status`. The refreshed contract requires the additional
+  `get_u1_camera_frame` tool, so this is stale host-process evidence rather than
+  a current LAN failure.
+- Webcam inventory advertised the built-in `webrtc-camerastreamer`, a
+  same-origin snapshot route, and a same-origin WebRTC route. A direct bounded
+  snapshot probe returned HTTP 200, `image/jpeg`, and 150,523 bytes in 12.9
+  seconds.
+- The camera relay now allows a 20-second first attempt and one 10-second retry;
+  `.mcp.json` allows 40 seconds. A test asserts that the MCP tool budget exceeds
+  webcam discovery plus both bounded frame attempts.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 12 tests with 54 assertions.
+- `bun run bundle`: rebuilt the self-contained stdio artifact.
+- A source-level real-camera call returned a valid 143,387-byte JPEG in 4.7
+  seconds without printing its payload.
+- `uv run --no-project --with pyyaml python .../validate_plugin.py
+  /Users/scottchu/plugins/u1-print-studio`: passed for the synchronized personal
+  marketplace source.
+- The cache-busted plugin was reinstalled as
+  `0.2.0+codex.20260825144906`. An exact installed-cache stdio smoke listed all
+  three tools, returned reachable `complete` status with camera availability,
+  and returned a valid 149,695-byte JPEG data URL in widget-private metadata.
+- `uv run --no-project --with pyyaml python .../validate_plugin.py
+  plugins/u1-print-studio`: passed for the durable repository source.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok` and
+  reran the 12 tests with 54 assertions.
+- `git diff --check`: passed.
+- A private-address scan across repository records and plugin source was clean.
+- The current thread cannot hot-reload its already-connected MCP process. A new
+  thread remains required to prove mounted desktop rendering. iOS additionally
+  requires an authenticated reachable MCP backend on an always-on host with a
+  private route to the printer; no such backend or tunnel was configured.

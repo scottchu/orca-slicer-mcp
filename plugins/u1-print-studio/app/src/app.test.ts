@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test";
+import { readFileSync } from "node:fs";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 
@@ -12,6 +13,11 @@ import type {
   U1Status,
   U1WidgetMetadata,
 } from "./u1-status.js";
+import { CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS } from "./u1-status.js";
+
+const MCP_CONFIG = JSON.parse(
+  readFileSync(new URL("../../.mcp.json", import.meta.url), "utf8")
+);
 
 const status: U1Status = {
   schemaVersion: 1,
@@ -95,6 +101,17 @@ async function connectClient() {
 }
 
 describe("U1 status MCP App contract", () => {
+  test("keeps the MCP tool budget above the bounded camera relay budget", () => {
+    const serverConfig = MCP_CONFIG.mcpServers["u1-print-studio"];
+    const cameraBudgetSeconds =
+      3 + CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS.reduce(
+        (total, seconds) => total + seconds,
+        0
+      );
+
+    expect(serverConfig.tool_timeout_sec).toBeGreaterThan(cameraBudgetSeconds);
+  });
+
   test("advertises the dashboard template on the render tool descriptor", async () => {
     const client = await connectClient();
     const listed = await client.listTools();

@@ -60,8 +60,10 @@ Last updated: 2026-08-25
   direct private-LAN camera iframe failed in the desktop host, status widget v2
   now relays validated JPEG frames through the read-only MCP boundary and has a
   responsive iOS-safe layout. The descriptor and widget contracts have
-  integration tests; desktop and iOS host-rendered camera validation remains
-  pending because no browser surface was available for this run.
+  integration tests. A later offline card was traced to a stale in-thread MCP
+  process despite current LAN reachability; the slow-camera budget was repaired
+  and the exact refreshed installed bundle passed telemetry and JPEG relay
+  smoke. Desktop and iOS host-rendered camera validation remains pending.
 - Persistent monitoring: not implemented. The accepted runtime model still
   combines a full direct snapshot with ordered subscription deltas and
   reconnect resync.
@@ -118,8 +120,9 @@ Last updated: 2026-08-25
 - Direct camera loading, WebRTC, PiP, fullscreen, and adaptive refresh have not
   been exercised successfully inside a connected Codex host. The direct WebRTC
   iframe is no longer the portable baseline; a server-relayed near-live preview
-  now passes MCP and real-camera tests, but source responsiveness and valid JPEG
-  payloads do not prove desktop or iOS rendering.
+  now passes MCP and real-camera tests under a bounded slow-source budget, but
+  source responsiveness and valid JPEG payloads do not prove desktop or iOS
+  rendering. Existing conversations do not hot-reload refreshed MCP tools.
 - The local stdio plugin cannot itself provide a cross-device iOS backend.
   Authenticated Secure MCP Tunnel configuration, an always-on LAN host, and
   actual mobile product-surface validation remain undecided.
@@ -130,7 +133,8 @@ Last updated: 2026-08-25
 
 ## Next action
 
-Open the refreshed repo-local `u1-print-studio` plugin in a new desktop Codex
+Open installed `u1-print-studio` version
+`0.2.0+codex.20260825144906` in a new desktop Codex
 thread, call `show_u1_status` directly, and visually exercise the HTML
 dashboard, relayed snapshot, `Go Live` and `Close`, PiP, fullscreen, manual
 refresh, and one adaptive refresh. Record each host-loop result separately.

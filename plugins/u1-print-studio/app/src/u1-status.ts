@@ -7,6 +7,7 @@ const QUERY_ROUTE =
   "/printer/objects/query?print_stats&virtual_sdcard&display_status&" +
   "heater_bed&extruder&extruder1&extruder2&extruder3&toolhead&webhooks";
 const WEBCAMS_ROUTE = "/server/webcams/list";
+export const CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS = [20, 10] as const;
 let cachedSnapshotUrl: URL | null = null;
 
 type JsonObject = Record<string, unknown>;
@@ -240,8 +241,7 @@ export async function readU1CameraFrame(): Promise<{
     if (!snapshotUrl) throw new Error("Printer camera snapshot unavailable");
 
     let bytes: Buffer | null = null;
-    const attemptTimeouts = [10, 3];
-    for (const timeout of attemptTimeouts) {
+    for (const timeout of CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS) {
       if (bytes) break;
       bytes = await fetchJpeg(snapshotUrl, timeout).catch(() => null);
     }

@@ -75,6 +75,17 @@ is not yet an accepted product backend.
   `0.2.0+codex.20260825142747` passed descriptor, resource, current status, and
   real relayed-camera stdio smoke checks; the installed frame was a valid
   148,142-byte JPEG data URL kept in widget-private metadata.
+- a later mounted card reported offline even though read-only probes from the
+  laptop reached the configured private-LAN Moonraker status and webcam routes.
+  The current thread exposed only the two older tools, identifying a stale
+  in-thread MCP process rather than a current LAN outage;
+- one real snapshot took 12.9 seconds, so the relay now uses bounded 20-second
+  and 10-second attempts under a 40-second MCP tool budget. Twelve tests with
+  54 assertions enforce the updated contract;
+- the synchronized personal-marketplace source and exact installed cache
+  `0.2.0+codex.20260825144906` passed validation. Its stdio smoke listed all
+  three tools, returned reachable `complete` telemetry, and relayed a valid
+  149,695-byte JPEG in private metadata.
 
 ## Changed paths
 
@@ -115,8 +126,9 @@ included.
   verified product surface. Secure MCP Tunnel is the preferred private
   candidate but is not configured;
 - the snapshot endpoint was intermittently slow. One bounded retry recovered a
-  packaged real-frame smoke, but repeated live-preview reliability is not yet
-  host-validated;
+  packaged real-frame smoke, and one later frame took 12.9 seconds. The longer
+  bounded relay now passes installed-cache transport checks, but repeated
+  live-preview reliability is not yet host-validated;
 - manifest shape, compatibility checks, and upload/start ownership are open;
 - multiple physical jobs completed, but product implementation, repeatable workflow,
   protocol, safety, and general user-outcome acceptance remain pending.
@@ -135,7 +147,7 @@ build a shared CLI merely because the manual commands exist.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0008. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0009. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.
