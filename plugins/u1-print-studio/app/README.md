@@ -11,11 +11,16 @@ The repository root `.env` supplies `MOONRAKER_BASE_URL`. Keep that file local.
 cd plugins/u1-print-studio/app
 bun install
 bun run check
+bun run bundle
 bun run start
 ```
 
 The HTTP development endpoint is `http://localhost:8787/mcp`. The plugin uses
 the separate stdio entry point declared in `../.mcp.json`.
+
+`bun run bundle` creates a self-contained ignored deployment artifact at
+`dist/stdio.js`; local marketplace installation can use that bundle without
+copying `node_modules`.
 
 The widget provides:
 

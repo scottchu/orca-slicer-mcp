@@ -6,6 +6,7 @@
     "dev": "bun --env-file=../../../.env --watch src/server.ts",
     "start": "bun --env-file=../../../.env run src/server.ts",
     "stdio": "bun --env-file=../../../.env run src/stdio.ts",
+    "bundle": "bun build src/stdio.ts --target=bun --outfile=dist/stdio.js",
     "check": "tsc --noEmit"
   },
   "dependencies": {
