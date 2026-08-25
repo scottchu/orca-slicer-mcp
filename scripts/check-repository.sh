@@ -98,4 +98,17 @@ if ! grep -Fq 'server_enforcement_claimed = false' .github/repository-policy.tom
   exit 1
 fi
 
+plugin_app_root="plugins/u1-print-studio/app"
+if [[ -d "$plugin_app_root" ]]; then
+  if ! command -v bun >/dev/null 2>&1; then
+    echo "bun is required to validate the U1 Print Studio app" >&2
+    exit 1
+  fi
+  (
+    cd "$plugin_app_root"
+    bun run check
+    bun test src/*.test.ts
+  )
+fi
+
 echo "repository contract: ok"

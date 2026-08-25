@@ -1,0 +1,4 @@
+interface:
+  display_name: "U1 Prepare Print"
+  short_description: "Slice and validate a traceable U1 artifact"
+  default_prompt: "Use $u1-prepare-print to prepare this model for my Snapmaker U1."

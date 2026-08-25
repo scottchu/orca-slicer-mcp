@@ -14,35 +14,71 @@ Do not use prior chat history as authority when it conflicts with these files.
 
 - Branch point from `main`: `32762dd`
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
-- Product runtime: none
-- Product evidence: planning and product-boundary records; local, non-mutating
-  Orca and Snapmaker Orca discovery; one user-authorized Snapmaker U1 slice and
-  completed print; one later separately authorized job observed in `printing`;
-  plus redacted Moonraker HTTP, WebSocket, and webcam observations
+- Product runtime: one repo-local read-only MCP Apps status-view prototype with
+  desktop stdio and a personal OAuth-protected standard-HTTPS Tailscale Funnel
+  endpoint;
+  preparation, control, and persistent monitoring remain unimplemented
+- Product evidence: planning and product-boundary records; local Orca and
+  Snapmaker Orca discovery; one PETG and two PLA jobs through distinct
+  preparation, handoff, observation, and telemetry-completion evidence; plus
+  redacted Moonraker HTTP, WebSocket, and webcam observations
 
 ## Immediate task
 
-Current execution order is Orca Preparation discovery first. Continue with:
+Current execution order is the user-directed status-view host validation pass.
+Continue with:
 
 1. Read the [pilot log](docs/logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md)
    as chronology, then the separate
    [provisional knowledge](docs/knowledge/snapmaker-orca-cli-preparation.md).
-2. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
+2. Read decisions 0007 and 0008, both 2026-08-25 journals, and the plugin under
+   `plugins/u1-print-studio/`. The skills remain workflow guidance; only the
+   read-only status view is a runtime prototype.
+3. The direct private-LAN camera iframe failed in the desktop component. The
+   plugin now uses decision 0009's same-origin server relay and a third
+   read-only `get_u1_camera_frame` tool. A later mounted offline card was traced
+   to a stale in-thread MCP process despite successful current LAN probes. The
+   slow-camera budget is now 20 seconds plus one 10-second retry under a
+   40-second MCP timeout. Twelve status tests with 54 assertions passed before
+   the remote-auth slice, and an installed bundle returned reachable status plus
+   a real relayed JPEG.
+4. Treat iOS as a separate backend and host loop. Decisions 0010 through 0012 select
+   a personal OAuth-protected Tailscale Funnel endpoint on standard HTTPS for
+   developer testing.
+   The Mac Mini endpoint is live, rejects unauthenticated MCP requests, and the
+   intended phone passkey is enrolled. A first ChatGPT fetch against `:8443`
+   failed before OAuth despite healthy public-edge probes. Exact port-443 path
+   handlers now preserve the existing root service and pass public metadata and
+   unauthenticated-challenge checks. The user then completed the standard-port
+   OAuth connection: the host exposed exactly `show_u1_status`,
+   `get_u1_status`, and `get_u1_camera_frame`, and an authenticated
+   `show_u1_status` call returned fresh complete telemetry. The remote render
+   result now adds a standard inline PNG derived from the same observation, so
+   non-component Codex hosts do not need an external dashboard. Start a new
+   phone conversation and visually confirm that image. Test the relayed camera
+   and interactive controls separately only if that host mounts the MCP Apps
+   component. Never expose Moonraker or its camera directly.
+5. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
    with explicit complete profiles. Record it as a new log. Do not upload or
    start it.
-3. Run non-user negative fixtures for `wipe_tower_filament: "0"` and missing
+6. Run non-user negative fixtures for `wipe_tower_filament: "0"` and missing
    inherited filament fields. Determine whether exit `139` and tool-inventory
    collapse reproduce; do not encode one-run correlations as universal rules.
-4. Repeat successful dry slices, explain any hash differences, and build a
-   regression matrix. Only then begin reusable preparation code. A skill must
-   orchestrate tested code, and MCP comes after stable preparation and
-   operations contracts.
-5. Exercise support-enforcer and blocker round-trip only after the baseline
+7. Repeat successful dry slices, explain any hash differences, and build a
+   regression matrix. Use the thin skills on repeated requests and record where
+   they reduce confusion or still require ad hoc work. Build a shared CLI only
+   after that evidence proves it useful; broader MCP and control surfaces remain
+   later.
+8. Exercise support-enforcer and blocker round-trip only after the baseline
    fixtures pass. Preserve user-painted support projects but do not synthesize
    facet painting without golden round-trip fixtures.
-6. Resume Printer Operations with a compatible `printer.objects.subscribe`
+9. Resume Printer Operations with a compatible `printer.objects.subscribe`
    client, reconnect and freshness behavior, U1 vendor semantics, always-on
    host, notification destination, and network/authentication boundary.
+10. Keep the production distribution model open. The current self-hosted
+    edition needs one always-on LAN agent per printer owner. Compare that with a
+    hosted MCP and identity service plus a per-owner outbound LAN connector;
+    do not mistake Secure MCP Tunnel for a public distribution endpoint.
 
 Use `docs/orca-preparation-findings.md` as the discovery boundary. Draft the
 review-bundle and prepared-artifact manifest from observed output, then record
@@ -74,8 +110,9 @@ fixtures establish stable preparation and handoff behavior.
   visible freshness, and full resynchronization after reconnect.
 - Slicing, artifact validation, upload, start acknowledgement, and observed
   printing remain distinct states and evidence.
-- Preserve the maturation order: log, knowledge, repeated evidence, code,
-  skill, then MCP.
+- Preserve the current maturation order: journal, knowledge, thin skills, the
+  explicitly authorized read-only status-view prototype, repeated host
+  evidence, then a shared CLI only if useful.
 - Repository records capture durable decisions and evidence; raw conversation
   transcripts do not.
 
@@ -103,11 +140,13 @@ labeled real-Orca tool integration, separate from protocol/simulator,
 real-printer, and user-outcome evidence. Do not choose runtimes or implement
 consequential actions until the F0 environment, handoff, and safety boundaries
 are established.
-Read the 2026-08-23 Snapmaker Orca pilot log as chronological evidence and its
-knowledge document as provisional guidance. Repeat the synthetic dry-slice and
-negative fixtures before writing reusable code. Do not upload or start future
-artifacts without fresh explicit authorization. Preserve the order: log,
-knowledge, repeated evidence, code, skill, then MCP.
+Read the 2026-08-23 Snapmaker Orca pilot and 2026-08-25 PLA repetition journals
+as chronological evidence and the knowledge document as provisional guidance.
+Use the four thin u1-print-studio skills and visually validate the explicitly
+authorized read-only status-view prototype. Then repeat synthetic dry-slice and
+negative fixtures before writing reusable preparation code. Do not upload or
+start future artifacts without fresh explicit authorization. Build a shared
+CLI only if repeated use proves it useful.
 Treat MCP as a replaceable inbound surface and preserve the versioned monitor
 contract so HTTP, CLI, and a possible Elixir daemon can reuse the same core.
 For Orca Preparation, bind review to the exact backend, project and G-code

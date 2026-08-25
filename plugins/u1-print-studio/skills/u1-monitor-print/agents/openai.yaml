@@ -1,0 +1,4 @@
+interface:
+  display_name: "U1 Monitor Print"
+  short_description: "Adaptive U1 monitoring with visual status cards"
+  default_prompt: "Use $u1-monitor-print to monitor this U1 print through verified completion."

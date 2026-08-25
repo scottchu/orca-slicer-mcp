@@ -17,6 +17,7 @@ The documents here separate durable decisions from current hypotheses.
 | [Orca Preparation findings](orca-preparation-findings.md) | Observed CLI, profile, preview, and manual-support behavior | Discovery record |
 | [Experiment logs](logs/) | Chronological commands, failures, observations, and outcomes | Append-only evidence |
 | [Preparation knowledge](knowledge/snapmaker-orca-cli-preparation.md) | Reviewed lessons promoted from experiment evidence | Provisional knowledge |
+| [Status-view knowledge](knowledge/u1-status-view.md) | Read-only widget, camera, refresh, and host-loop findings | Provisional knowledge |
 | [Open questions](open-questions.md) | Decisions that still need evidence | Active backlog |
 | [Decision records](decisions/README.md) | Durable choices and their context | Append-only history |
 

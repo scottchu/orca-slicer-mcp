@@ -1,0 +1,4 @@
+interface:
+  display_name: "U1 Start Print"
+  short_description: "Safely upload and start one validated U1 job"
+  default_prompt: "Use $u1-start-print to start this validated U1 artifact after preflight checks."

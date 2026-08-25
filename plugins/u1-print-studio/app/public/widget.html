@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>U1 Print Studio</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --ink: #18231f;
+        --muted: #64716c;
+        --surface: rgba(248, 251, 249, 0.94);
+        --surface-strong: #ffffff;
+        --line: rgba(23, 45, 36, 0.1);
+        --shadow: 0 24px 70px rgba(17, 45, 34, 0.16);
+        --green: #10a779;
+        --green-deep: #08785a;
+        --lime: #b9f645;
+        --amber: #f2a93b;
+        --red: #e05252;
+        --radius: 26px;
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-right: env(safe-area-inset-right, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-left: env(safe-area-inset-left, 0px);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding:
+          calc(12px + var(--safe-top))
+          calc(12px + var(--safe-right))
+          calc(12px + var(--safe-bottom))
+          calc(12px + var(--safe-left));
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% -10%, rgba(185, 246, 69, 0.28), transparent 34%),
+          radial-gradient(circle at 94% 2%, rgba(16, 167, 121, 0.22), transparent 32%),
+          #eaf1ed;
+      }
+
+      button {
+        border: 0;
+        color: inherit;
+        font: inherit;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      button:not(:disabled) {
+        cursor: pointer;
+      }
+
+      button:focus-visible {
+        outline: 3px solid rgba(185, 246, 69, 0.88);
+        outline-offset: 2px;
+      }
+
+      .dashboard {
+        width: min(100%, 720px);
+        margin: 0 auto;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(22px);
+      }
+
+      .camera {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        min-height: 238px;
+        overflow: hidden;
+        isolation: isolate;
+        background:
+          linear-gradient(135deg, rgba(9, 32, 24, 0.22), rgba(9, 20, 17, 0.78)),
+          radial-gradient(circle at 62% 18%, #3d5b4f 0, #14241e 56%, #07110e 100%);
+      }
+
+      .camera::after {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        content: "";
+        background:
+          linear-gradient(180deg, rgba(5, 14, 11, 0.5), transparent 30%, transparent 60%, rgba(5, 14, 11, 0.76)),
+          linear-gradient(90deg, rgba(185, 246, 69, 0.08) 1px, transparent 1px),
+          linear-gradient(rgba(185, 246, 69, 0.08) 1px, transparent 1px);
+        background-size: auto, 42px 42px, 42px 42px;
+      }
+
+      .camera img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        object-fit: cover;
+      }
+
+      .camera img {
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 240ms ease;
+      }
+
+      .camera.has-snapshot img {
+        opacity: 1;
+      }
+
+      .camera-empty {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        z-index: 0;
+        place-content: center;
+        gap: 10px;
+        color: rgba(240, 250, 245, 0.72);
+        text-align: center;
+      }
+
+      .camera-empty svg {
+        width: 42px;
+        margin: auto;
+        opacity: 0.8;
+      }
+
+      .camera.has-snapshot .camera-empty {
+        display: none;
+      }
+
+      .camera-top,
+      .camera-bottom {
+        position: absolute;
+        right: 18px;
+        left: 18px;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .camera-top {
+        top: 16px;
+      }
+
+      .camera-bottom {
+        bottom: 16px;
+        align-items: flex-end;
+      }
+
+      .camera-label,
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 30px;
+        padding: 6px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        color: #f4fff9;
+        background: rgba(5, 15, 11, 0.58);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        font-size: 12px;
+        font-weight: 750;
+        letter-spacing: 0.04em;
+        backdrop-filter: blur(12px);
+      }
+
+      .live-badge {
+        display: none;
+        color: #0b271d;
+        background: var(--lime);
+      }
+
+      .camera[data-camera-mode="live"] .live-badge {
+        display: inline-flex;
+      }
+
+      .pulse {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+        box-shadow: 0 0 0 5px rgba(185, 246, 69, 0.16);
+      }
+
+      .camera-copy {
+        max-width: 62%;
+        color: white;
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.44);
+      }
+
+      .camera-copy strong {
+        display: block;
+        font-size: 20px;
+        line-height: 1.2;
+      }
+
+      .camera-copy span {
+        display: block;
+        margin-top: 4px;
+        color: rgba(244, 255, 249, 0.74);
+        font-size: 12px;
+      }
+
+      .camera-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .camera-button,
+      .icon-button,
+      .refresh-button,
+      .toggle {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        font-weight: 760;
+        transition: transform 140ms ease, opacity 140ms ease, background 140ms ease;
+      }
+
+      .camera-button:hover:not(:disabled),
+      .icon-button:hover:not(:disabled),
+      .refresh-button:hover:not(:disabled) {
+        transform: translateY(-1px);
+      }
+
+      .camera-button {
+        min-width: 98px;
+        padding: 9px 14px;
+        color: #0d281e;
+        background: var(--lime);
+        box-shadow: 0 8px 26px rgba(185, 246, 69, 0.25);
+      }
+
+      .camera-button.close {
+        display: none;
+        min-width: auto;
+        color: white;
+        background: rgba(9, 18, 15, 0.78);
+      }
+
+      .camera[data-camera-mode="live"] .camera-button.go-live {
+        display: none;
+      }
+
+      .camera[data-camera-mode="live"] .camera-button.close {
+        display: inline-flex;
+      }
+
+      .camera-button:disabled {
+        opacity: 0.46;
+      }
+
+      .content {
+        display: grid;
+        gap: 18px;
+        padding: 22px;
+      }
+
+      .headline {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .eyebrow {
+        margin: 0 0 6px;
+        color: var(--green-deep);
+        font-size: 11px;
+        font-weight: 820;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(24px, 5vw, 34px);
+        letter-spacing: -0.045em;
+        line-height: 1.05;
+      }
+
+      .host-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .icon-button {
+        width: 44px;
+        padding: 0;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        background: var(--surface-strong);
+      }
+
+      .icon-button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .status-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        width: max-content;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        color: var(--green-deep);
+        background: rgba(16, 167, 121, 0.11);
+        font-size: 13px;
+        font-weight: 780;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 5px rgba(16, 167, 121, 0.12);
+      }
+
+      .dashboard[data-state="error"] .status-pill,
+      .dashboard[data-state="offline"] .status-pill {
+        color: var(--red);
+        background: rgba(224, 82, 82, 0.11);
+      }
+
+      .dashboard[data-state="error"] .status-dot,
+      .dashboard[data-state="offline"] .status-dot {
+        background: var(--red);
+        box-shadow: 0 0 0 5px rgba(224, 82, 82, 0.12);
+      }
+
+      .dashboard[data-state="paused"] .status-pill {
+        color: #9a610b;
+        background: rgba(242, 169, 59, 0.14);
+      }
+
+      .dashboard[data-state="paused"] .status-dot {
+        background: var(--amber);
+      }
+
+      .percent {
+        font-size: 24px;
+        font-weight: 840;
+        letter-spacing: -0.04em;
+      }
+
+      .progress-track {
+        position: relative;
+        height: 14px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(23, 45, 36, 0.08);
+        box-shadow: inset 0 1px 2px rgba(17, 45, 34, 0.08);
+      }
+
+      .progress-fill {
+        width: 0;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--green-deep), var(--green) 62%, var(--lime));
+        box-shadow: 0 0 18px rgba(16, 167, 121, 0.3);
+        transition: width 480ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .progress-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .metric {
+        min-width: 0;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.62);
+      }
+
+      .metric-label {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 740;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .metric-value {
+        display: block;
+        overflow: hidden;
+        font-size: 18px;
+        font-weight: 820;
+        letter-spacing: -0.025em;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .metric-subvalue {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-top: 2px;
+      }
+
+      .freshness {
+        min-width: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .freshness strong {
+        color: var(--ink);
+      }
+
+      .footer-actions {
+        display: flex;
+        flex: none;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .toggle {
+        gap: 7px;
+        padding: 8px 11px;
+        color: var(--green-deep);
+        background: rgba(16, 167, 121, 0.1);
+        font-size: 12px;
+      }
+
+      .toggle::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        content: "";
+      }
+
+      .toggle[aria-pressed="false"] {
+        color: var(--muted);
+        background: rgba(23, 45, 36, 0.07);
+      }
+
+      .toggle[aria-pressed="false"]::before {
+        background: #9ca7a2;
+      }
+
+      .refresh-button {
+        width: 44px;
+        padding: 0;
+        color: white;
+        background: var(--green-deep);
+      }
+
+      .refresh-button svg {
+        width: 17px;
+      }
+
+      .refresh-button.is-refreshing svg {
+        animation: spin 0.8s linear infinite;
+      }
+
+      .notice {
+        display: none;
+        padding: 11px 13px;
+        border-radius: 14px;
+        color: #8b281f;
+        background: rgba(224, 82, 82, 0.11);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .notice.is-visible {
+        display: block;
+      }
+
+      .physical-boundary {
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      @media (max-width: 540px) {
+        body {
+          padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+          background: var(--surface);
+        }
+        .dashboard { border: 0; border-radius: 0; box-shadow: none; }
+        .camera { min-height: 0; }
+        .content { padding: 18px; }
+        .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .metric:first-child { grid-column: 1 / -1; }
+        .footer { align-items: flex-start; flex-direction: column; }
+        .footer-actions { width: 100%; justify-content: space-between; }
+        .toggle { flex: 1; }
+      }
+
+      @media (max-width: 380px) {
+        .camera-top,
+        .camera-bottom { right: 12px; left: 12px; }
+        .camera-copy { max-width: 54%; }
+        .camera-copy strong { font-size: 17px; }
+        .content { gap: 15px; padding: 16px; }
+        .metrics { grid-template-columns: 1fr; }
+        .metric:first-child { grid-column: auto; }
+      }
+
+      body[data-display-mode="pip"] {
+        padding: 0;
+        background: transparent;
+      }
+
+      body[data-display-mode="pip"] .dashboard {
+        border-radius: 20px;
+      }
+
+      body[data-display-mode="pip"] .camera {
+        min-height: 170px;
+      }
+
+      body[data-display-mode="pip"] .content {
+        gap: 12px;
+        padding: 15px;
+      }
+
+      body[data-display-mode="pip"] .metrics,
+      body[data-display-mode="pip"] .physical-boundary,
+      body[data-display-mode="pip"] .eyebrow,
+      body[data-display-mode="pip"] .fullscreen-button {
+        display: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --ink: #edf8f2;
+          --muted: #9fb0a8;
+          --surface: rgba(14, 25, 21, 0.95);
+          --surface-strong: #1a2b24;
+          --line: rgba(224, 244, 235, 0.1);
+          --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+        }
+        body { background: #09120f; }
+        .metric { background: rgba(255, 255, 255, 0.035); }
+        .progress-track { background: rgba(255, 255, 255, 0.09); }
+      }
+    </style>
+  </head>
+  <body data-display-mode="inline">
+    <main class="dashboard" id="dashboard" data-state="loading">
+      <section class="camera" id="camera" data-camera-mode="snapshot" aria-label="Printer camera">
+        <div class="camera-empty" id="camera-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
+            <circle cx="12" cy="13" r="3.5" />
+          </svg>
+          <span>Waiting for camera snapshot</span>
+        </div>
+        <img id="snapshot" alt="Latest Snapmaker U1 camera snapshot" />
+
+        <div class="camera-top">
+          <span class="camera-label"><span class="pulse"></span> U1 Camera</span>
+          <span class="live-badge"><span class="pulse"></span> Live</span>
+        </div>
+
+        <div class="camera-bottom">
+          <div class="camera-copy">
+            <strong id="camera-title">Build plate view</strong>
+            <span id="camera-detail">Snapshot refreshes with printer status</span>
+          </div>
+          <div class="camera-actions">
+            <button class="camera-button go-live" id="go-live" type="button">Go Live</button>
+            <button class="camera-button close" id="close-live" type="button" aria-label="Close live preview">Close</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="headline">
+          <div>
+            <p class="eyebrow">Snapmaker U1 · Read only</p>
+            <h1>Print status</h1>
+          </div>
+          <div class="host-actions">
+            <button class="icon-button pip-button" id="pip" type="button" title="Picture in Picture" aria-label="Open Picture in Picture">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <rect x="12" y="11" width="7" height="5" rx="1" fill="currentColor" stroke="none" />
+              </svg>
+            </button>
+            <button class="icon-button fullscreen-button" id="fullscreen" type="button" title="Fullscreen" aria-label="Open fullscreen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="status-row">
+          <span class="status-pill"><span class="status-dot"></span><span id="state-label">Loading</span></span>
+          <span class="percent" id="percent">—</span>
+        </div>
+
+        <div class="progress-track" role="progressbar" aria-label="Print progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-meta">
+          <span id="layer">Layer —</span>
+          <span id="filename">No active file</span>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-label">Tool</span>
+            <span class="metric-value" id="tool">—</span>
+            <span class="metric-subvalue" id="tool-temp">No active tool</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Bed</span>
+            <span class="metric-value" id="bed">—</span>
+            <span class="metric-subvalue" id="bed-target">Target —</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Time</span>
+            <span class="metric-value" id="elapsed">—</span>
+            <span class="metric-subvalue" id="remaining">Remaining —</span>
+          </div>
+        </div>
+
+        <div class="notice" id="notice" role="alert"></div>
+
+        <div class="footer">
+          <div class="freshness">
+            <strong id="observed">Waiting for observation</strong><br />
+            <span id="next-check">Adaptive refresh will start when connected</span>
+          </div>
+          <div class="footer-actions">
+            <button class="toggle" id="auto-refresh" type="button" aria-pressed="true">Auto</button>
+            <button class="refresh-button" id="refresh" type="button" title="Refresh now" aria-label="Refresh now">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="physical-boundary">Telemetry can verify printer completion. Physical part acceptance still requires your inspection.</div>
+      </section>
+    </main>
+
+    <script type="module">
+      const elements = {
+        dashboard: document.querySelector("#dashboard"),
+        camera: document.querySelector("#camera"),
+        snapshot: document.querySelector("#snapshot"),
+        cameraTitle: document.querySelector("#camera-title"),
+        cameraDetail: document.querySelector("#camera-detail"),
+        goLive: document.querySelector("#go-live"),
+        closeLive: document.querySelector("#close-live"),
+        pip: document.querySelector("#pip"),
+        fullscreen: document.querySelector("#fullscreen"),
+        stateLabel: document.querySelector("#state-label"),
+        percent: document.querySelector("#percent"),
+        progressTrack: document.querySelector("#progress-track"),
+        progressFill: document.querySelector("#progress-fill"),
+        layer: document.querySelector("#layer"),
+        filename: document.querySelector("#filename"),
+        tool: document.querySelector("#tool"),
+        toolTemp: document.querySelector("#tool-temp"),
+        bed: document.querySelector("#bed"),
+        bedTarget: document.querySelector("#bed-target"),
+        elapsed: document.querySelector("#elapsed"),
+        remaining: document.querySelector("#remaining"),
+        notice: document.querySelector("#notice"),
+        observed: document.querySelector("#observed"),
+        nextCheck: document.querySelector("#next-check"),
+        autoRefresh: document.querySelector("#auto-refresh"),
+        refresh: document.querySelector("#refresh"),
+      };
+
+      let toolOutput = null;
+      let autoRefresh = window.openai?.widgetState?.autoRefresh ?? true;
+      let refreshTimer = null;
+      let refreshDeadline = null;
+      let refreshTicker = null;
+      let liveTimer = null;
+      let refreshing = false;
+      let cameraRefreshing = false;
+      let livePreview = false;
+      let rpcId = 0;
+      const pendingRequests = new Map();
+      const hosted = window.parent !== window;
+
+      const demoStatus = {
+        schemaVersion: 1,
+        stateVersion: Date.now(),
+        observedAt: new Date().toISOString(),
+        reachable: true,
+        state: "printing",
+        stateLabel: "Printing",
+        progressPercent: 67.4,
+        currentLayer: 126,
+        totalLayers: 188,
+        elapsedSeconds: 1260,
+        remainingSeconds: 610,
+        refreshAfterSeconds: 90,
+        filename: "u1-demo.gcode",
+        activePhysicalTool: 2,
+        tools: [{ physicalTool: 2, temperature: 220, target: 220, state: "ACTIVE", active: true }],
+        bed: { temperature: 55, target: 55 },
+        storage: { active: true, filePosition: 674, fileSize: 1000 },
+        printerMessage: null,
+        exception: false,
+        camera: { available: false, service: null, targetFps: null },
+      };
+
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const rounded = (value) => Number.isFinite(value) ? Math.round(value) : 0;
+
+      const formatDuration = (seconds) => {
+        if (!Number.isFinite(seconds)) return "—";
+        const totalMinutes = Math.max(0, Math.round(seconds / 60));
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return hours ? `${hours}h ${minutes}m` : `${minutes}m`;
+      };
+
+      const formatTemperature = (value) =>
+        Number.isFinite(value) ? `${Math.round(value)}°` : "—";
+
+      const setNotice = (message = "") => {
+        elements.notice.textContent = message;
+        elements.notice.classList.toggle("is-visible", Boolean(message));
+      };
+
+      const closeLive = () => {
+        livePreview = false;
+        clearTimeout(liveTimer);
+        elements.camera.dataset.cameraMode = "snapshot";
+        elements.cameraTitle.textContent = "Build plate view";
+        elements.cameraDetail.textContent = "Secure snapshot relayed by U1 Print Studio";
+      };
+
+      const renderCamera = () => {
+        const available = Boolean(toolOutput?.camera?.available);
+        elements.goLive.disabled = !available;
+        elements.goLive.title = available
+          ? "Start a secure relayed live preview"
+          : "Camera unavailable";
+      };
+
+      elements.snapshot.addEventListener("load", () => {
+        elements.camera.classList.add("has-snapshot");
+      });
+
+      elements.snapshot.addEventListener("error", () => {
+        elements.camera.classList.remove("has-snapshot");
+        elements.cameraDetail.textContent = "Camera image could not be displayed";
+      });
+
+      const render = () => {
+        const status = toolOutput;
+        if (!status) return;
+
+        const progress = clamp(Number(status.progressPercent) || 0, 0, 100);
+        const activeTool = status.tools?.find((tool) => tool.active) ??
+          status.tools?.find((tool) => tool.physicalTool === status.activePhysicalTool);
+
+        elements.dashboard.dataset.state = status.state ?? "offline";
+        elements.stateLabel.textContent = status.stateLabel ?? "Unknown";
+        elements.percent.textContent = `${progress.toFixed(progress % 1 ? 1 : 0)}%`;
+        elements.progressFill.style.width = `${progress}%`;
+        elements.progressTrack.setAttribute("aria-valuenow", String(progress));
+        elements.layer.textContent =
+          status.currentLayer !== null && status.totalLayers !== null
+            ? `Layer ${status.currentLayer} / ${status.totalLayers}`
+            : "Layer —";
+        elements.filename.textContent = status.filename ?? "No active file";
+        elements.filename.title = status.filename ?? "";
+        elements.tool.textContent = status.activePhysicalTool ? `Tool ${status.activePhysicalTool}` : "Parked";
+        elements.toolTemp.textContent = activeTool
+          ? `${formatTemperature(activeTool.temperature)} / ${formatTemperature(activeTool.target)} · ${activeTool.state}`
+          : "No active tool";
+        elements.bed.textContent = formatTemperature(status.bed?.temperature);
+        elements.bedTarget.textContent = `Target ${formatTemperature(status.bed?.target)}`;
+        elements.elapsed.textContent = formatDuration(status.elapsedSeconds);
+        elements.remaining.textContent = status.remainingSeconds === null
+          ? "Remaining —"
+          : status.state === "complete"
+            ? "Finished"
+            : `About ${formatDuration(status.remainingSeconds)} left`;
+
+        const observedDate = new Date(status.observedAt);
+        elements.observed.textContent = Number.isNaN(observedDate.valueOf())
+          ? "Fresh observation"
+          : `Updated ${observedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`;
+
+        setNotice(status.exception || !status.reachable ? status.printerMessage || "Printer unavailable" : "");
+        renderCamera();
+        scheduleRefresh(status.refreshAfterSeconds);
+      };
+
+      const rpcNotify = (method, params) => {
+        window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
+      };
+
+      const rpcRequest = (method, params) => new Promise((resolve, reject) => {
+        const id = ++rpcId;
+        pendingRequests.set(id, { resolve, reject });
+        window.parent.postMessage({ jsonrpc: "2.0", id, method, params }, "*");
+      });
+
+      const applyStatusResult = (result) => {
+        toolOutput = result?.structuredContent ?? result ?? toolOutput;
+        render();
+        if (hosted && !livePreview) {
+          queueMicrotask(() => void refreshCameraFrame());
+        }
+      };
+
+      const applyCameraFrame = (result) => {
+        const frame = result?.structuredContent ?? {};
+        const metadata = result?._meta ?? result?.meta ?? {};
+        const dataUrl = metadata?.cameraFrame?.dataUrl;
+
+        if (frame.available && typeof dataUrl === "string" && dataUrl.startsWith("data:image/jpeg;base64,")) {
+          elements.snapshot.src = dataUrl;
+          const observedDate = new Date(frame.observedAt);
+          const observedLabel = Number.isNaN(observedDate.valueOf())
+            ? "just now"
+            : observedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+          elements.cameraDetail.textContent = livePreview
+            ? `Secure live preview · frame ${observedLabel}`
+            : `Secure snapshot · ${observedLabel}`;
+          return;
+        }
+
+        elements.camera.classList.remove("has-snapshot");
+        elements.cameraDetail.textContent = frame.reason ?? "Camera unavailable";
+      };
+
+      window.addEventListener("message", (event) => {
+        if (event.source !== window.parent) return;
+        const message = event.data;
+        if (!message || message.jsonrpc !== "2.0") return;
+
+        if (typeof message.id === "number") {
+          const pending = pendingRequests.get(message.id);
+          if (!pending) return;
+          pendingRequests.delete(message.id);
+          message.error ? pending.reject(message.error) : pending.resolve(message.result);
+          return;
+        }
+
+        if (message.method === "ui/notifications/tool-result") {
+          const payload = message.params?.structuredContent ?? message.params;
+          if (payload?.mediaType !== undefined) {
+            applyCameraFrame(message.params);
+          } else {
+            applyStatusResult(message.params);
+          }
+        }
+
+        if (message.method === "ui/notifications/host-context-changed") {
+          applyHostContext(message.params);
+        }
+      }, { passive: true });
+
+      const applyHostContext = (context = {}) => {
+        const mode = context.displayMode ?? window.openai?.displayMode;
+        if (mode) document.body.dataset.displayMode = mode;
+
+        const safeArea = context.safeArea ?? window.openai?.safeArea;
+        const insets = safeArea?.insets ?? safeArea ?? {};
+        for (const side of ["top", "right", "bottom", "left"]) {
+          const value = Number(insets[side]);
+          if (Number.isFinite(value) && value >= 0) {
+            document.documentElement.style.setProperty(`--safe-${side}`, `${value}px`);
+          }
+        }
+      };
+
+      const initializeBridge = async () => {
+        if (!hosted) return null;
+        const result = await rpcRequest("ui/initialize", {
+          appInfo: { name: "u1-print-studio-widget", version: "0.2.0" },
+          appCapabilities: {},
+          protocolVersion: "2026-01-26",
+        });
+        rpcNotify("ui/notifications/initialized", {});
+        applyHostContext(result?.hostContext);
+        return result;
+      };
+
+      const bridgeReady = initializeBridge().catch((error) => {
+        setNotice(`Host bridge unavailable: ${error?.message ?? "unknown error"}`);
+        return null;
+      });
+
+      const refreshCameraFrame = async () => {
+        if (cameraRefreshing || !hosted || !toolOutput?.camera?.available) return;
+        cameraRefreshing = true;
+        try {
+          await bridgeReady;
+          const response = await rpcRequest("tools/call", {
+            name: "get_u1_camera_frame",
+            arguments: {},
+          });
+          applyCameraFrame(response);
+        } catch (error) {
+          elements.cameraDetail.textContent = `Camera refresh failed: ${error?.message ?? "unknown error"}`;
+        } finally {
+          cameraRefreshing = false;
+          clearTimeout(liveTimer);
+          if (livePreview) liveTimer = setTimeout(refreshCameraFrame, 1500);
+          window.openai?.notifyIntrinsicHeight?.();
+        }
+      };
+
+      const refreshStatus = async () => {
+        if (refreshing || !hosted) return;
+        refreshing = true;
+        elements.refresh.classList.add("is-refreshing");
+        setNotice("");
+        try {
+          await bridgeReady;
+          const response = await rpcRequest("tools/call", {
+            name: "get_u1_status",
+            arguments: {},
+          });
+          applyStatusResult(response);
+          if (!livePreview) void refreshCameraFrame();
+        } catch (error) {
+          setNotice(`Refresh failed: ${error?.message ?? "unknown error"}`);
+          scheduleRefresh(15);
+        } finally {
+          refreshing = false;
+          elements.refresh.classList.remove("is-refreshing");
+        }
+      };
+
+      const updateCountdown = () => {
+        if (!autoRefresh || !refreshDeadline) {
+          elements.nextCheck.textContent = "Automatic refresh paused";
+          return;
+        }
+        const seconds = Math.max(0, Math.ceil((refreshDeadline - Date.now()) / 1000));
+        elements.nextCheck.textContent = `Next adaptive check in ${seconds}s`;
+      };
+
+      function scheduleRefresh(seconds) {
+        clearTimeout(refreshTimer);
+        clearInterval(refreshTicker);
+        const delay = clamp(Number(seconds) || 30, 10, 600);
+        refreshDeadline = Date.now() + delay * 1000;
+        updateCountdown();
+        refreshTicker = setInterval(updateCountdown, 1000);
+        if (autoRefresh && hosted) refreshTimer = setTimeout(refreshStatus, delay * 1000);
+      }
+
+      const persistUiState = () => {
+        window.openai?.setWidgetState?.({ autoRefresh });
+      };
+
+      elements.autoRefresh.addEventListener("click", () => {
+        autoRefresh = !autoRefresh;
+        elements.autoRefresh.setAttribute("aria-pressed", String(autoRefresh));
+        persistUiState();
+        scheduleRefresh(toolOutput?.refreshAfterSeconds ?? 30);
+      });
+
+      elements.refresh.addEventListener("click", refreshStatus);
+
+      elements.goLive.addEventListener("click", () => {
+        if (!toolOutput?.camera?.available) return;
+        livePreview = true;
+        elements.camera.dataset.cameraMode = "live";
+        elements.cameraTitle.textContent = "Live build plate";
+        elements.cameraDetail.textContent = "Starting secure live preview…";
+        void refreshCameraFrame();
+      });
+
+      elements.closeLive.addEventListener("click", closeLive);
+
+      const requestDisplayMode = async (mode) => {
+        try {
+          if (window.openai?.requestDisplayMode) {
+            await window.openai.requestDisplayMode({ mode });
+          } else {
+            await bridgeReady;
+            await rpcRequest("ui/request-display-mode", { mode });
+          }
+          document.body.dataset.displayMode = mode;
+        } catch (error) {
+          setNotice(`${mode === "pip" ? "Picture in Picture" : "Fullscreen"} is not available in this host.`);
+        }
+      };
+
+      elements.pip.addEventListener("click", () => requestDisplayMode("pip"));
+      elements.fullscreen.addEventListener("click", () => requestDisplayMode("fullscreen"));
+
+      elements.autoRefresh.setAttribute("aria-pressed", String(autoRefresh));
+      applyHostContext();
+
+      if (window.openai?.toolOutput) {
+        applyStatusResult({
+          structuredContent: window.openai.toolOutput,
+          _meta: window.openai.toolResponseMetadata,
+        });
+        void bridgeReady.then(() => refreshCameraFrame());
+      } else if (!hosted || new URLSearchParams(location.search).has("demo")) {
+        applyStatusResult({ structuredContent: demoStatus, _meta: {} });
+      }
+    </script>
+  </body>
+</html>
