@@ -1,6 +1,6 @@
 # 0010 — Deliver the mobile status card over personal OAuth and Funnel
 
-- Status: accepted for personal developer testing
+- Status: partially superseded by 0011
 - Date: 2026-08-25
 - Owners: project maintainers
 

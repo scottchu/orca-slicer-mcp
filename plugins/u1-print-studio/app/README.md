@@ -26,18 +26,25 @@ Set these untracked root `.env` values in addition to `MOONRAKER_BASE_URL`:
 
 ```dotenv
 U1_REMOTE_AUTH=personal
-U1_PUBLIC_BASE_URL=https://your-device.example.ts.net:8443
+U1_PUBLIC_BASE_URL=https://your-device.example.ts.net
 U1_OWNER_NAME=Your name
 ```
 
-`U1_PUBLIC_BASE_URL` must be HTTPS. A dedicated Funnel port keeps OAuth
-well-known metadata at the origin root without disturbing another service on
-port 443. The server remains bound to `127.0.0.1`; Tailscale Funnel terminates
-public TLS:
+`U1_PUBLIC_BASE_URL` must use standard HTTPS port 443. The server remains bound
+to `127.0.0.1`; Tailscale Funnel terminates public TLS. If the hostname is free,
+proxy its root to the U1 service:
 
 ```sh
-tailscale funnel --bg --https=8443 --yes http://127.0.0.1:8787
+tailscale funnel --bg --https=443 --yes http://127.0.0.1:8787
 ```
+
+If another root service already uses that hostname, preserve it and add exact
+handlers for `/.well-known`, `/oauth`, `/auth`, and `/mcp`, each pointing to the
+same path on `127.0.0.1:8787`. Tailscale strips a matched incoming prefix unless
+the proxy target includes it. Re-read `tailscale funnel status --json` and
+verify the existing root handler is unchanged. A healthy public Funnel on
+`:8443` failed ChatGPT OAuth discovery in the personal test, so do not use a
+nonstandard port without a successful ChatGPT registration check.
 
 On first start, the local service log prints the owner-only path containing one
 one-time enrollment URL. Open the URL from that file on the intended iPhone and
@@ -54,7 +61,7 @@ Before adding the endpoint, use ChatGPT on desktop or the web and enable
 with `/mcp` appended, for example:
 
 ```text
-https://your-device.example.ts.net:8443/mcp
+https://your-device.example.ts.net/mcp
 ```
 
 Developer mode availability can depend on account and workspace policy. The
@@ -62,6 +69,12 @@ Codex iPhone app does not expose these developer controls in its Security page;
 register the connection on desktop or the web while signed into the same
 account. Availability of that private developer connection in Codex mobile is
 a separate product-surface check.
+
+In the New Plugin form select **Server URL** and **OAuth**, leave discovered
+Advanced OAuth settings unchanged, acknowledge the custom-server warning, and
+create the connection. **Tunnel** means OpenAI Secure MCP Tunnel, not Tailscale
+Funnel. Secure MCP Tunnel is useful for private development but is not a public
+plugin distribution endpoint.
 
 The personal authorization server provides OAuth authorization code plus PKCE,
 dynamic client registration restricted to approved redirect origins,
@@ -96,6 +109,12 @@ OAuth-protected HTTP MCP connection is the cross-device test path; its
 availability and card rendering in Codex on iPhone must be verified separately.
 Moonraker and the printer camera remain private LAN dependencies; Funnel must
 never proxy either one directly.
+
+This is a self-hosted edition: each printer owner needs one always-on agent in
+the printer's LAN. That agent may run on a desktop, NAS, or small server. A
+future public product could instead use one hosted MCP service plus a per-owner
+outbound LAN connector, but that is a separate architecture and operations
+commitment.
 
 The current macOS validation host allows the system `curl` process to reach the
 printer but denies direct Bun and Node local-network sockets. The telemetry

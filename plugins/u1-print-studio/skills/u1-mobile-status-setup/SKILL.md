@@ -1,6 +1,6 @@
 ---
 name: u1-mobile-status-setup
-description: Set up the U1 Print Studio read-only status card on a new user's phone through a dedicated Tailscale Funnel HTTPS origin, personal OAuth, and phone passkey enrollment. Use when a user asks to configure, install, connect, onboard, or troubleshoot the U1 mobile status widget, Tailscale address, Funnel endpoint, OAuth login, Face ID, or passkey. Do not enable upload, start, cancel, or other printer controls.
+description: Set up the U1 Print Studio read-only status card on a new user's phone through a standard-HTTPS Tailscale Funnel endpoint, personal OAuth, and phone passkey enrollment. Use when a user asks to configure, install, connect, onboard, or troubleshoot the U1 mobile status widget, Tailscale address, Funnel endpoint, OAuth login, Face ID, passkey, Server URL, or Tunnel choice. Do not enable upload, start, cancel, or other printer controls.
 ---
 
 # U1 Mobile Status Setup
@@ -16,6 +16,7 @@ Set up one user's read-only U1 status card without exposing their printer direct
 - A passkey is enrolled on the user's intended phone. It is not a password or secret string to collect.
 - Call the public Tailscale value a MagicDNS hostname, not an IP address. Funnel TLS uses the hostname.
 - Preserve every unrelated Tailscale Serve or Funnel route. Never use a blanket reset as part of setup or rollback.
+- Use standard HTTPS port 443 for ChatGPT registration. Tailscale Funnel supports other ports, but a real ChatGPT OAuth-discovery attempt against `:8443` failed before reaching the otherwise healthy public edge.
 - Keep authentication mandatory on every public MCP request. If passkey recovery is needed, perform local re-enrollment; never add a public unauthenticated bypass.
 
 ## Evidence boundaries
@@ -51,12 +52,12 @@ Do not replace an existing `MOONRAKER_BASE_URL` unless the user asks.
 
 Run `tailscale status --json` and read `Self.DNSName`, removing its final dot. If it is missing, stop and help the user enable MagicDNS or sign in to Tailscale.
 
-Run `tailscale funnel status --json` and save the current routing state for comparison. Choose a dedicated HTTPS port supported by Funnel: prefer `8443`, otherwise use `10000`, and use `443` only when it will not collide with an existing service. A dedicated origin is required so OAuth well-known metadata remains at that origin's root.
+Run `tailscale funnel status --json` and save the current routing state for comparison. Prefer a dedicated hostname on HTTPS port 443. If the hostname already has a root service on port 443, preserve it and add exact path handlers for `/.well-known`, `/oauth`, `/auth`, and `/mcp`; `/health` is optional. Tailscale path handlers strip their matched prefix unless the proxy target includes it, so map each incoming prefix to the same backend prefix and verify the result. Do not replace the root handler.
 
 Set:
 
 ```text
-U1_PUBLIC_BASE_URL=https://<magicdns-hostname>:<chosen-port>
+U1_PUBLIC_BASE_URL=https://<magicdns-hostname>
 ```
 
 Do not append `/mcp` to `U1_PUBLIC_BASE_URL`.
@@ -71,7 +72,7 @@ For a persistent macOS setup, create a user LaunchAgent from the user's actual p
 
 ### 3. Add one Funnel route
 
-Map only the selected public HTTPS port to the local loopback service. Re-read `tailscale funnel status --json` and verify all pre-existing handlers remain unchanged.
+Map only the required standard-HTTPS origin or exact path handlers to the local loopback service. Re-read `tailscale funnel status --json` and verify all pre-existing handlers remain unchanged. When sharing an origin, verify that `/mcp` reaches backend `/mcp`, `/.well-known` reaches backend `/.well-known`, `/oauth` reaches backend `/oauth`, and `/auth` reaches backend `/auth` rather than backend `/`.
 
 Through the public origin, verify:
 
@@ -94,10 +95,12 @@ Wait for the user to complete enrollment. Then verify locally that the OAuth sta
 Guide the user through the current ChatGPT developer/plugin connection flow documented by OpenAI on desktop or the web. The remote MCP URL is:
 
 ```text
-https://<magicdns-hostname>:<chosen-port>/mcp
+https://<magicdns-hostname>/mcp
 ```
 
 The OAuth login should redirect to the personal authorization page. Ask the user to approve with the enrolled passkey. Do not substitute an OpenAI API key or a ChatGPT subscription credential; neither authenticates this personal MCP endpoint.
+
+In the New Plugin form choose **Server URL**, not **Tunnel**. Choose **OAuth**, keep dynamically discovered OAuth settings, acknowledge the custom-server warning, and create the connection. Secure MCP Tunnel is a separate OpenAI Platform path for private development and does not support public plugin submission.
 
 After connection, verify that the authenticated inventory contains exactly:
 
@@ -133,4 +136,4 @@ Record which checks were observed by the user. Do not infer visual acceptance fr
 
 ## Completion report
 
-Report the discovered MagicDNS hostname, chosen public port, MCP URL, three-tool inventory, and each evidence boundary. Redact credentials and tokens. End with the smallest unresolved phone action, if any, and keep control actions explicitly deferred.
+Report the discovered MagicDNS hostname, standard-HTTPS MCP URL, preserved Funnel handlers, three-tool inventory, and each evidence boundary. Redact credentials and tokens. State that this self-hosted edition requires an always-on LAN agent per printer owner; it may run on a desktop, NAS, or small server. Keep a future hosted broker plus local outbound connector as a separate product decision rather than implying this developer setup is already a plug-and-play public product. End with the smallest unresolved phone action, if any, and keep control actions explicitly deferred.

@@ -87,14 +87,23 @@ is not yet an accepted product backend.
   three tools, returned reachable `complete` telemetry, and relayed a valid
   149,695-byte JPEG in private metadata.
 - decision 0010 adds a personal-developer mobile boundary: the HTTP MCP service
-  binds loopback, a dedicated Tailscale Funnel HTTPS origin forwards only to
-  that service, and personal OAuth protects the single `u1.monitor` scope with
+  binds loopback and personal OAuth protects the single `u1.monitor` scope with
   authorization code, PKCE, dynamic-registration allowlisting, audience-bound
   tokens, and a user-verified passkey. Moonraker remains private.
+- decision 0011 records the observed ChatGPT failure against an otherwise
+  healthy `:8443` Funnel endpoint and moves the personal connection to standard
+  HTTPS. Exact U1 paths route to loopback while the existing root service stays
+  intact. It also keeps self-hosted versus hosted production distribution open.
 - the intended iPhone passkey was enrolled and its one-time enrollment file was
   removed. Public health and OAuth metadata return successfully, while an
   unauthenticated public MCP request returns HTTP 401 with the expected
   protected-resource challenge.
+- after the user completed the corrected standard-port connection, the host
+  exposed exactly the three read-only tools and an authenticated
+  `show_u1_status` call returned fresh `complete` telemetry at 100% (188/188),
+  with inactive fully consumed storage, no exception, parked tools, and zero
+  heater targets. Phone layout and relayed-camera rendering remain visual
+  checks rather than inferred outcomes.
 - the plugin now includes `u1-mobile-status-setup`, which discovers each user's
   Tailscale MagicDNS hostname, preserves unrelated Funnel handlers, guides
   phone passkey enrollment and desktop Developer mode, verifies the exact
@@ -135,9 +144,8 @@ included.
 - Bun and Node direct local-network sockets failed on this macOS host while the
   bounded system-curl adapter worked; portability remains unknown;
 - the local stdio plugin is desktop-local. The selected personal Funnel and
-  OAuth backend is reachable, but authenticated ChatGPT connection and the iOS
-  product surface remain separately unverified. Private developer connection
-  availability in Codex mobile must be observed rather than assumed;
+  OAuth backend now passes an authenticated remote tool call, but phone card
+  layout and camera rendering remain separately unverified visual evidence;
 - the snapshot endpoint was intermittently slow. One bounded retry recovered a
   packaged real-frame smoke, and one later frame took 12.9 seconds. The longer
   bounded relay now passes installed-cache transport checks, but repeated
@@ -150,19 +158,16 @@ included.
 
 ## Next smallest action
 
-On desktop or the web, enable ChatGPT Developer mode, add the remote `/mcp`
-connection from the Plugins page, complete the enrolled passkey login, and
-verify the exact three read-only tools. Then check whether that private
-developer connection appears in Codex on iPhone. Where available, call
-`show_u1_status` in a new conversation and visually test the HTML dashboard,
-relayed snapshot, `Go Live` and `Close`, PiP, fullscreen, manual refresh, and
-one adaptive refresh. Record each host result separately. Resume synthetic
-non-user dry-slice and negative fixtures afterward. Do not expose Moonraker or
-build a shared CLI merely because the manual commands exist.
+Visually verify the mounted phone card from the successful authenticated
+`show_u1_status` call, including the relayed snapshot, `Go Live` and `Close`,
+PiP, fullscreen, manual refresh, and one adaptive refresh. Record each host
+result separately. Resume synthetic non-user dry-slice and negative fixtures
+afterward. Do not expose Moonraker or build a shared CLI merely because the
+manual commands exist.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0010. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0011. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.

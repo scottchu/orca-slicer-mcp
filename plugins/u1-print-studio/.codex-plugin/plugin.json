@@ -1,6 +1,6 @@
 {
   "name": "u1-print-studio",
-  "version": "0.2.0+codex.20260825200215",
+  "version": "0.2.0+codex.20260825201641",
   "description": "Set up, prepare, start, and monitor Snapmaker U1 prints with an interactive read-only camera and telemetry dashboard.",
   "author": {
     "name": "Scott Chu"

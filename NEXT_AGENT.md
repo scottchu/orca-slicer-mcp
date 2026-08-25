@@ -15,7 +15,8 @@ Do not use prior chat history as authority when it conflicts with these files.
 - Branch point from `main`: `32762dd`
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
 - Product runtime: one repo-local read-only MCP Apps status-view prototype with
-  desktop stdio and a personal OAuth-protected Tailscale Funnel endpoint;
+  desktop stdio and a personal OAuth-protected standard-HTTPS Tailscale Funnel
+  endpoint;
   preparation, control, and persistent monitoring remain unimplemented
 - Product evidence: planning and product-boundary records; local Orca and
   Snapmaker Orca discovery; one PETG and two PLA jobs through distinct
@@ -41,17 +42,20 @@ Continue with:
    40-second MCP timeout. Twelve status tests with 54 assertions passed before
    the remote-auth slice, and an installed bundle returned reachable status plus
    a real relayed JPEG.
-4. Treat iOS as a separate backend and host loop. Decision 0010 selects a
-   personal OAuth-protected Tailscale Funnel endpoint for developer testing.
+4. Treat iOS as a separate backend and host loop. Decisions 0010 and 0011 select
+   a personal OAuth-protected Tailscale Funnel endpoint on standard HTTPS for
+   developer testing.
    The Mac Mini endpoint is live, rejects unauthenticated MCP requests, and the
-   intended phone passkey is enrolled. Enable ChatGPT Developer mode, add the
-   remote `/mcp` connection from the Plugins page, complete OAuth login, and
-   confirm exactly `show_u1_status`, `get_u1_status`, and
-   `get_u1_camera_frame`, all read-only with `u1.monitor`. Then check whether
-   the private developer connection appears in Codex on iPhone. If it does,
-   call `show_u1_status` in a new conversation and visually test the relayed
-   snapshot, `Go Live`, `Close`, PiP, fullscreen, manual refresh, and one
-   adaptive refresh. Never expose Moonraker or its camera directly.
+   intended phone passkey is enrolled. A first ChatGPT fetch against `:8443`
+   failed before OAuth despite healthy public-edge probes. Exact port-443 path
+   handlers now preserve the existing root service and pass public metadata and
+   unauthenticated-challenge checks. The user then completed the standard-port
+   OAuth connection: the host exposed exactly `show_u1_status`,
+   `get_u1_status`, and `get_u1_camera_frame`, and an authenticated
+   `show_u1_status` call returned fresh complete telemetry. Visually test the
+   mounted phone card, relayed snapshot, `Go Live`, `Close`, PiP, fullscreen,
+   manual refresh, and one adaptive refresh. Never expose Moonraker or its
+   camera directly.
 5. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
    with explicit complete profiles. Record it as a new log. Do not upload or
    start it.
@@ -69,6 +73,10 @@ Continue with:
 9. Resume Printer Operations with a compatible `printer.objects.subscribe`
    client, reconnect and freshness behavior, U1 vendor semantics, always-on
    host, notification destination, and network/authentication boundary.
+10. Keep the production distribution model open. The current self-hosted
+    edition needs one always-on LAN agent per printer owner. Compare that with a
+    hosted MCP and identity service plus a per-owner outbound LAN connector;
+    do not mistake Secure MCP Tunnel for a public distribution endpoint.
 
 Use `docs/orca-preparation-findings.md` as the discovery boundary. Draft the
 review-bundle and prepared-artifact manifest from observed output, then record

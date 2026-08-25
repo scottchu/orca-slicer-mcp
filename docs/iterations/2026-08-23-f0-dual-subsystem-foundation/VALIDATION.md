@@ -444,3 +444,44 @@ identifiers, and runtime data are intentionally not retained.
 - SHA-256 for the bundled stdio artifact matched across the repository,
   personal marketplace source, and installed cache. This proves exact local
   packaging, not authenticated remote or iOS behavior.
+
+### Standard-HTTPS OAuth discovery repair
+
+- ChatGPT's New Plugin form selected Server URL and OAuth for the correct
+  `:8443/mcp` endpoint, then failed before OAuth with `Cannot connect to host
+  ...:8443 ssl:default [None]`.
+- Public DNS returned Tailscale Funnel edge addresses. Direct TLS requests to
+  two public IPv4 edge addresses returned HTTP 200 for `/health`, proving the
+  failure was not general Funnel reachability.
+- Decision 0011 moves the personal endpoint to standard HTTPS port 443 while
+  preserving the existing root handler. Exact `/.well-known`, `/oauth`,
+  `/auth`, `/mcp`, and `/health` handlers route to the loopback U1 service.
+- The first path-handler configuration stripped the matched prefix and returned
+  the backend root or HTTP 404. Targets were corrected to retain each backend
+  prefix; this is preserved as setup-skill guidance rather than hidden repair.
+- Through a public Funnel edge on standard port 443, `/health` returned the
+  personal-OAuth marker; authorization-server metadata named the standard-port
+  issuer, endpoints, PKCE S256, and `u1.monitor`; protected-resource metadata
+  named the exact `/mcp` resource; and unauthenticated MCP returned HTTP 401
+  with the correct metadata URL and scope.
+- The unrelated root handler continued returning HTTP 200. The old port-8443
+  handler was removed only after the standard-port public checks passed.
+- The existing passkey remained enrolled because the relying-party ID hostname
+  did not change, and the one-time enrollment-link file remained absent.
+- After the user completed the standard-port registration and passkey flow, the
+  connected host exposed exactly `show_u1_status`, `get_u1_status`, and
+  `get_u1_camera_frame`. An authenticated `show_u1_status` call succeeded and
+  returned a fresh reachable `complete` observation at 100% (188/188 layers),
+  inactive storage at full file position, no exception, all four tools parked,
+  and zero heater targets. This proves the authenticated read-only tool path;
+  user-visible iOS layout and relayed-camera behavior remain separate visual
+  evidence.
+- Delivery rerun after recording that evidence: `bun run bundle`, `bun run
+  check`, and `bun test src/*.test.ts` passed with 17 tests and 74 assertions;
+  setup-skill validation passed; `./scripts/check-repository.sh` returned
+  `repository contract: ok`; repository and personal-source Plugin Creator
+  validation passed; and `git diff --check` passed.
+- The synchronized plugin was reinstalled as
+  `0.2.0+codex.20260825201641`. SHA-256 for `app/dist/stdio.js` matched the
+  repository, personal marketplace source, and installed cache at
+  `d259b492d097c55e7c0a56ff2adf27866c168dd593d4037611a44acb2dcc9944`.

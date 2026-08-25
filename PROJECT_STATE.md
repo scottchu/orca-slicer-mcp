@@ -64,11 +64,15 @@ Last updated: 2026-08-25
   integration tests. A later offline card was traced to a stale in-thread MCP
   process despite current LAN reachability; the slow-camera budget was repaired
   and the exact refreshed installed bundle passed telemetry and JPEG relay
-  smoke. A dedicated Tailscale Funnel origin now exposes the same three
-  read-only tools through personal OAuth, PKCE, audience-bound tokens, and an
-  enrolled user-verified phone passkey. Public reachability and authentication
-  rejection pass; authenticated ChatGPT connection and iOS host-rendered camera
-  validation remain pending.
+  smoke. Standard HTTPS Funnel handlers now expose the same three read-only
+  tools and OAuth paths without replacing an existing root service. Personal
+  OAuth, PKCE, audience-bound tokens, and an enrolled user-verified phone
+  passkey protect the endpoint. Public reachability and authentication rejection
+  pass; a nonstandard-port ChatGPT fetch failed, while the repaired
+  standard-port connection completed personal OAuth and exposed exactly the
+  three read-only tools. An authenticated `show_u1_status` call returned fresh
+  completion telemetry. iOS layout and host-rendered camera validation remain
+  pending visual evidence.
 - Persistent monitoring: not implemented. The accepted runtime model still
   combines a full direct snapshot with ordered subscription deltas and
   reconnect resync.
@@ -129,9 +133,12 @@ Last updated: 2026-08-25
   source responsiveness and valid JPEG payloads do not prove desktop or iOS
   rendering. Existing conversations do not hot-reload refreshed MCP tools.
 - The local stdio plugin cannot itself provide a cross-device iOS backend. A
-  personal developer backend now runs on the always-on Mac Mini behind a
-  dedicated Tailscale Funnel origin and personal OAuth. Public distribution and
-  actual mobile product-surface validation remain undecided or pending.
+  personal developer backend now runs on the always-on Mac Mini behind
+  standard-HTTPS Tailscale Funnel path handlers and personal OAuth. The current
+  edition requires an always-on LAN agent per printer owner. A self-hosted
+  distribution versus hosted MCP plus outbound LAN connector remains undecided;
+  authenticated mobile tool connectivity now works, while actual card layout
+  and camera rendering still require user-visible validation.
 - Notification destination is unknown.
 - Live command capabilities and persistence semantics, including Z-offset, are
   unknown for the target hardware.
@@ -141,12 +148,9 @@ Last updated: 2026-08-25
 
 ## Next action
 
-Enable ChatGPT Developer mode, add the authenticated remote MCP URL from the
-Plugins page, complete the passkey login, and confirm discovery of exactly the
-three `u1.monitor` read-only tools. Then check whether the private developer
-connection appears in Codex on iPhone. If it does, call `show_u1_status` in a
-new conversation and visually exercise the HTML dashboard, relayed snapshot,
-`Go Live` and `Close`, PiP, fullscreen, manual refresh, and one adaptive
-refresh. Record each host-loop result separately. Do not expose Moonraker
-directly, add control tools, or build a shared CLI until the relevant
-authorization and repeated-use evidence exists.
+On the connected phone host, visually verify the mounted `show_u1_status` card,
+its relayed snapshot, `Go Live` and `Close`, PiP, fullscreen, manual refresh,
+and one adaptive refresh. Record layout and camera evidence separately from the
+already-passing authenticated telemetry call. Do not expose Moonraker directly,
+add control tools, or build a shared CLI until the relevant authorization and
+repeated-use evidence exists.
