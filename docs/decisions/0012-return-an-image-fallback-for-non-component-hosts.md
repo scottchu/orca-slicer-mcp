@@ -51,7 +51,7 @@ inbound adapter, not a new domain concept.
 ## Validation
 
 Contract tests must prove that remote `show_u1_status` returns text, the
-normalized status object, and a valid 1200 by 760 PNG; local
+normalized status object, and a valid mobile-first 1200 by 1500 PNG; local
 `show_u1_status` and remote `get_u1_status` must remain data-only. Visual
 inspection must use fresh real-printer telemetry. The user must separately
 confirm that a new Codex mobile conversation displays the image.

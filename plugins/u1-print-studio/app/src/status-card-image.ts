@@ -3,7 +3,7 @@ import { deflateSync } from "node:zlib";
 import type { U1Status } from "./u1-status.js";
 
 const WIDTH = 1200;
-const HEIGHT = 760;
+const HEIGHT = 1500;
 
 type Color = readonly [number, number, number, number];
 
@@ -203,7 +203,9 @@ function safeFilename(filename: string | null): string {
   const value = (filename ?? "NO ACTIVE FILE")
     .replace(/[^a-zA-Z0-9._ -]/g, "?")
     .trim();
-  return (value || "NO ACTIVE FILE").slice(0, 52);
+  const safe = value || "NO ACTIVE FILE";
+  if (safe.length <= 36) return safe;
+  return `${safe.slice(0, 24)}...${safe.slice(-9)}`;
 }
 
 function observedTime(value: string): string {
@@ -225,44 +227,45 @@ function stateColor(status: U1Status): Color {
 function metricCard(
   pixels: Uint8Array,
   x: number,
+  y: number,
   label: string,
   primary: string,
   secondary: string
 ): void {
-  rectangle(pixels, x, 325, 258, 176, COLORS.panel);
-  rectangle(pixels, x, 325, 258, 3, COLORS.border);
-  text(pixels, label, x + 24, 354, 3, COLORS.muted);
-  text(pixels, primary, x + 24, 404, 5, COLORS.ink);
-  text(pixels, secondary, x + 24, 461, 2, COLORS.muted);
+  rectangle(pixels, x, y, 520, 255, COLORS.panel);
+  rectangle(pixels, x, y, 520, 4, COLORS.border);
+  text(pixels, label, x + 32, y + 35, 4, COLORS.muted);
+  text(pixels, primary, x + 32, y + 102, 8, COLORS.ink);
+  text(pixels, secondary, x + 32, y + 204, 4, COLORS.muted);
 }
 
 export function renderStatusCardPng(status: U1Status): Buffer {
   const pixels = new Uint8Array(WIDTH * HEIGHT * 4);
   rectangle(pixels, 0, 0, WIDTH, HEIGHT, COLORS.background);
-  rectangle(pixels, 0, 0, WIDTH, 255, COLORS.forest);
+  rectangle(pixels, 0, 0, WIDTH, 420, COLORS.forest);
 
-  text(pixels, "SNAPMAKER U1 | READ ONLY", 56, 42, 4, COLORS.lime);
-  circle(pixels, 1122, 55, 13, status.reachable ? COLORS.green : COLORS.danger);
+  text(pixels, "SNAPMAKER U1 | READ ONLY", 56, 60, 5, COLORS.lime);
+  circle(pixels, 1118, 79, 18, status.reachable ? COLORS.green : COLORS.danger);
 
   const state = status.stateLabel.slice(0, 14).toUpperCase();
-  text(pixels, state, 56, 105, 8, COLORS.white);
+  text(pixels, state, 56, 160, 10, COLORS.white);
   const progress = `${Math.round(status.progressPercent)}%`;
   text(
     pixels,
     progress,
-    WIDTH - 56 - textWidth(progress, 9),
-    101,
-    9,
+    WIDTH - 56 - textWidth(progress, 10),
+    160,
+    10,
     COLORS.white
   );
 
-  rectangle(pixels, 56, 208, WIDTH - 112, 18, [41, 116, 94, 255]);
+  rectangle(pixels, 56, 342, WIDTH - 112, 26, [41, 116, 94, 255]);
   rectangle(
     pixels,
     56,
-    208,
+    342,
     Math.round((WIDTH - 112) * Math.min(100, Math.max(0, status.progressPercent)) / 100),
-    18,
+    26,
     stateColor(status)
   );
 
@@ -283,37 +286,45 @@ export function renderStatusCardPng(status: U1Status): Buffer {
     : duration(status.remainingSeconds);
   const timeSecondary = status.state === "complete" ? "ELAPSED" : "REMAINING";
 
-  metricCard(pixels, 56, "TOOL", activeTool, toolTemperatures);
+  metricCard(pixels, 56, 485, "TOOL", activeTool, toolTemperatures);
   metricCard(
     pixels,
-    339,
+    624,
+    485,
     "BED",
     `${Math.round(status.bed.temperature)}C`,
     `TARGET ${Math.round(status.bed.target)}C`
   );
-  metricCard(pixels, 622, "TIME", timePrimary, timeSecondary);
-  metricCard(pixels, 905, "LAYER", layer, status.storage.active ? "STORAGE ACTIVE" : "STORAGE IDLE");
+  metricCard(pixels, 56, 780, "TIME", timePrimary, timeSecondary);
+  metricCard(
+    pixels,
+    624,
+    780,
+    "LAYER",
+    layer,
+    status.storage.active ? "STORAGE ACTIVE" : "STORAGE IDLE"
+  );
 
-  text(pixels, "FILE", 56, 548, 3, COLORS.muted);
-  text(pixels, safeFilename(status.filename), 56, 590, 4, COLORS.ink);
+  text(pixels, "FILE", 56, 1095, 4, COLORS.muted);
+  text(pixels, safeFilename(status.filename), 56, 1160, 5, COLORS.ink);
 
-  rectangle(pixels, 56, 652, WIDTH - 112, 2, COLORS.border);
+  rectangle(pixels, 56, 1280, WIDTH - 112, 3, COLORS.border);
   const camera = status.camera.available ? "CAMERA READY" : "CAMERA UNAVAILABLE";
   text(
     pixels,
     `OBSERVED ${observedTime(status.observedAt)} | ${camera}`,
     56,
-    682,
-    3,
+    1325,
+    4,
     COLORS.muted
   );
   const refresh = `FRESH SNAPSHOT | NEXT CHECK ${status.refreshAfterSeconds}S`;
   text(
     pixels,
     refresh,
-    WIDTH - 56 - textWidth(refresh, 3),
-    720,
-    3,
+    WIDTH - 56 - textWidth(refresh, 4),
+    1410,
+    4,
     COLORS.forest
   );
 
