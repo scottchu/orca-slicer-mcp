@@ -34,10 +34,11 @@ import {
 } from "jose";
 
 export const MONITOR_SCOPE = "u1.monitor";
-const STATE_VERSION = 1;
+const STATE_VERSION = 2;
 const AUTH_REQUEST_TTL_MS = 5 * 60_000;
 const AUTH_CODE_TTL_MS = 60_000;
 const ACCESS_TOKEN_TTL_SECONDS = 15 * 60;
+const REFRESH_TOKEN_TTL_MS = 30 * 24 * 60 * 60_000;
 const MAX_BODY_BYTES = 128 * 1024;
 
 type StoredCredential = {
@@ -54,12 +55,29 @@ type RegisteredClient = {
   createdAt: string;
 };
 
-type StoredState = {
+type StoredRefreshToken = {
+  clientId: string;
+  scope: string;
+  resource: string;
+  createdAt: string;
+  expiresAt: number;
+};
+
+type LegacyStoredState = {
   version: 1;
   signingPrivateJwk: JWK;
   signingPublicJwk: JWK;
   credential?: StoredCredential;
   clients: Record<string, RegisteredClient>;
+};
+
+type StoredState = {
+  version: 2;
+  signingPrivateJwk: JWK;
+  signingPublicJwk: JWK;
+  credential?: StoredCredential;
+  clients: Record<string, RegisteredClient>;
+  refreshTokens: Record<string, StoredRefreshToken>;
 };
 
 type PendingAuthorization = {
@@ -81,6 +99,12 @@ type AuthorizationCode = {
   resource: string;
   codeChallenge: string;
   expiresAt: number;
+};
+
+type TokenBinding = {
+  clientId: string;
+  scope: string;
+  resource: string;
 };
 
 export type PersonalOAuthConfig = {
@@ -119,6 +143,10 @@ function secureEqual(left: string, right: string): boolean {
   const leftBytes = sha256(left);
   const rightBytes = sha256(right);
   return timingSafeEqual(leftBytes, rightBytes);
+}
+
+function refreshTokenKey(value: string): string {
+  return base64url(sha256(value));
 }
 
 function html(value: string): string {
@@ -319,10 +347,26 @@ export class PersonalOAuthService {
     let state: StoredState;
 
     try {
-      state = JSON.parse(readFileSync(statePath, "utf8")) as StoredState;
-      if (state.version !== STATE_VERSION) throw new Error("Unsupported auth state");
+      const stored = JSON.parse(readFileSync(statePath, "utf8")) as
+        | LegacyStoredState
+        | StoredState;
+      if (stored.version === 1) {
+        state = {
+          ...stored,
+          version: STATE_VERSION,
+          refreshTokens: {},
+        };
+        PersonalOAuthService.persistState(statePath, state);
+      } else if (stored.version === STATE_VERSION) {
+        state = {
+          ...stored,
+          refreshTokens: stored.refreshTokens ?? {},
+        };
+      } else {
+        throw new Error("Unsupported auth state");
+      }
     } catch (error) {
-      if (error instanceof SyntaxError) throw error;
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
       const { privateKey, publicKey } = await generateKeyPair("ES256", {
         extractable: true,
       });
@@ -340,6 +384,7 @@ export class PersonalOAuthService {
         signingPrivateJwk,
         signingPublicJwk,
         clients: {},
+        refreshTokens: {},
       };
       PersonalOAuthService.persistState(statePath, state);
     }
@@ -378,6 +423,11 @@ export class PersonalOAuthService {
     PersonalOAuthService.persistState(this.statePath, this.state);
   }
 
+  private commitState(state: StoredState): void {
+    PersonalOAuthService.persistState(this.statePath, state);
+    this.state = state;
+  }
+
   protectedResourceMetadata() {
     return {
       resource: this.resource,
@@ -406,7 +456,7 @@ export class PersonalOAuthService {
         this.publicBaseUrl.origin
       ).toString(),
       response_types_supported: ["code"],
-      grant_types_supported: ["authorization_code"],
+      grant_types_supported: ["authorization_code", "refresh_token"],
       code_challenge_methods_supported: ["S256"],
       token_endpoint_auth_methods_supported: ["none"],
       scopes_supported: [MONITOR_SCOPE],
@@ -455,6 +505,105 @@ export class PersonalOAuthService {
     for (const [code, value] of this.codes) {
       if (value.expiresAt <= now) this.codes.delete(code);
     }
+    const refreshTokens = { ...this.state.refreshTokens };
+    let changed = false;
+    for (const [key, value] of Object.entries(refreshTokens)) {
+      if (value.expiresAt <= now) {
+        delete refreshTokens[key];
+        changed = true;
+      }
+    }
+    if (changed) {
+      this.commitState({ ...this.state, refreshTokens });
+    }
+  }
+
+  private async mintAccessToken(binding: TokenBinding): Promise<string> {
+    const issuedAt = Math.floor(this.now() / 1000);
+    return await new SignJWT({
+      scope: binding.scope,
+      client_id: binding.clientId,
+    })
+      .setProtectedHeader({
+        alg: "ES256",
+        kid: this.state.signingPublicJwk.kid,
+        typ: "at+jwt",
+      })
+      .setIssuer(this.issuer)
+      .setAudience(binding.resource)
+      .setSubject("owner")
+      .setIssuedAt(issuedAt)
+      .setExpirationTime(issuedAt + ACCESS_TOKEN_TTL_SECONDS)
+      .setJti(randomUUID())
+      .sign(this.signingKey);
+  }
+
+  private replaceRefreshToken(
+    binding: TokenBinding,
+    previousKey: string | null,
+    revokeClientTokens: boolean
+  ): string {
+    const refreshToken = `u1r_${base64url(randomBytes(32))}`;
+    const refreshTokens = { ...this.state.refreshTokens };
+    if (previousKey) {
+      if (!refreshTokens[previousKey]) throw new Error("Invalid refresh token");
+      delete refreshTokens[previousKey];
+    }
+    if (revokeClientTokens) {
+      for (const [key, value] of Object.entries(refreshTokens)) {
+        if (value.clientId === binding.clientId && value.resource === binding.resource) {
+          delete refreshTokens[key];
+        }
+      }
+    }
+    refreshTokens[refreshTokenKey(refreshToken)] = {
+      ...binding,
+      createdAt: new Date(this.now()).toISOString(),
+      expiresAt: this.now() + REFRESH_TOKEN_TTL_MS,
+    };
+    this.commitState({ ...this.state, refreshTokens });
+    return refreshToken;
+  }
+
+  private validateRefreshGrant(form: URLSearchParams): {
+    binding: TokenBinding;
+    tokenKey: string;
+  } {
+    const tokenValue = form.get("refresh_token") ?? "";
+    const tokenKey = refreshTokenKey(tokenValue);
+    const stored = this.state.refreshTokens[tokenKey];
+    if (!tokenValue || !stored || stored.expiresAt <= this.now()) {
+      throw new Error("Invalid refresh token");
+    }
+    if (
+      form.get("client_id") !== stored.clientId ||
+      form.get("resource") !== stored.resource
+    ) {
+      throw new Error("Refresh token binding mismatch");
+    }
+    const requestedScope = form.get("scope");
+    if (requestedScope !== null) {
+      const requestedScopes = requestedScope.split(/\s+/).filter(Boolean);
+      const grantedScopes = new Set(stored.scope.split(/\s+/).filter(Boolean));
+      if (
+        !requestedScopes.length ||
+        requestedScopes.some((scope) => !grantedScopes.has(scope))
+      ) {
+        throw new Error("Refresh scope exceeds original grant");
+      }
+      return {
+        binding: { ...stored, scope: requestedScopes.join(" ") },
+        tokenKey,
+      };
+    }
+    return {
+      binding: {
+        clientId: stored.clientId,
+        scope: stored.scope,
+        resource: stored.resource,
+      },
+      tokenKey,
+    };
   }
 
   private redirectAllowed(value: string): boolean {
@@ -640,7 +789,7 @@ button.addEventListener("click", async () => {
           client_id_issued_at: Math.floor(this.now() / 1000),
           redirect_uris: client.redirectUris,
           token_endpoint_auth_method: "none",
-          grant_types: ["authorization_code"],
+          grant_types: ["authorization_code", "refresh_token"],
           response_types: ["code"],
         });
       } catch (error) {
@@ -731,47 +880,53 @@ button.addEventListener("click", async () => {
     if (req.method === "POST" && externalPath === "/oauth/token") {
       try {
         const form = await readForm(req);
-        if (form.get("grant_type") !== "authorization_code") {
+        const grantType = form.get("grant_type");
+        if (grantType === "authorization_code") {
+          const codeValue = form.get("code") ?? "";
+          const code = this.codes.get(codeValue);
+          if (!code || code.expiresAt <= this.now()) {
+            throw new Error("Invalid authorization code");
+          }
+          if (
+            form.get("client_id") !== code.clientId ||
+            form.get("redirect_uri") !== code.redirectUri ||
+            form.get("resource") !== code.resource
+          ) {
+            throw new Error("Authorization code binding mismatch");
+          }
+          const verifier = form.get("code_verifier") ?? "";
+          if (!secureEqual(pkceChallenge(verifier), code.codeChallenge)) {
+            throw new Error("PKCE verification failed");
+          }
+          this.codes.delete(codeValue);
+          const binding: TokenBinding = {
+            clientId: code.clientId,
+            scope: code.scope,
+            resource: code.resource,
+          };
+          const accessToken = await this.mintAccessToken(binding);
+          const refreshToken = this.replaceRefreshToken(binding, null, true);
+          writeJson(res, 200, {
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            token_type: "Bearer",
+            expires_in: ACCESS_TOKEN_TTL_SECONDS,
+            scope: code.scope,
+          });
+        } else if (grantType === "refresh_token") {
+          const { binding, tokenKey } = this.validateRefreshGrant(form);
+          const accessToken = await this.mintAccessToken(binding);
+          const refreshToken = this.replaceRefreshToken(binding, tokenKey, false);
+          writeJson(res, 200, {
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            token_type: "Bearer",
+            expires_in: ACCESS_TOKEN_TTL_SECONDS,
+            scope: binding.scope,
+          });
+        } else {
           throw new Error("Unsupported grant type");
         }
-        const codeValue = form.get("code") ?? "";
-        const code = this.codes.get(codeValue);
-        if (!code || code.expiresAt <= this.now()) throw new Error("Invalid authorization code");
-        if (
-          form.get("client_id") !== code.clientId ||
-          form.get("redirect_uri") !== code.redirectUri ||
-          form.get("resource") !== code.resource
-        ) {
-          throw new Error("Authorization code binding mismatch");
-        }
-        const verifier = form.get("code_verifier") ?? "";
-        if (!secureEqual(pkceChallenge(verifier), code.codeChallenge)) {
-          throw new Error("PKCE verification failed");
-        }
-        this.codes.delete(codeValue);
-        const issuedAt = Math.floor(this.now() / 1000);
-        const accessToken = await new SignJWT({
-          scope: code.scope,
-          client_id: code.clientId,
-        })
-          .setProtectedHeader({
-            alg: "ES256",
-            kid: this.state.signingPublicJwk.kid,
-            typ: "at+jwt",
-          })
-          .setIssuer(this.issuer)
-          .setAudience(code.resource)
-          .setSubject("owner")
-          .setIssuedAt(issuedAt)
-          .setExpirationTime(issuedAt + ACCESS_TOKEN_TTL_SECONDS)
-          .setJti(randomUUID())
-          .sign(this.signingKey);
-        writeJson(res, 200, {
-          access_token: accessToken,
-          token_type: "Bearer",
-          expires_in: ACCESS_TOKEN_TTL_SECONDS,
-          scope: code.scope,
-        });
       } catch (error) {
         writeJson(res, 400, {
           error: "invalid_grant",

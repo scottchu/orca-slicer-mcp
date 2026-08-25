@@ -5,10 +5,11 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: make the existing read-only status card work in the
-  iOS host through authenticated remote MCP before implementing passkey-gated
-  upload, start, or cancel. Orca Preparation discovery and Printer Operations
-  evidence remain preserved; neither subsystem becomes secondary.
+- Current execution order: repair renewable authorization for the existing
+  read-only iOS status path, then verify that a newly linked Codex connection
+  remains usable after its first access token expires. Do not implement
+  passkey-gated upload, start, or cancel. Orca Preparation discovery and Printer
+  Operations evidence remain preserved; neither subsystem becomes secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
@@ -38,7 +39,7 @@ that can be validated without guessing.
 Primary discovery targets: `PREP-001` through `PREP-006`, `ORCA-001` through
 `ORCA-006`, `HANDOFF-001` through `HANDOFF-006`, `SESSION-001`, `OBS-001`
 through `OBS-006`, `CAM-001` through `CAM-003`, `CTRL-001`, `SAFE-001`,
-`DATA-001` through `DATA-003`, `AUTH-001`, `API-001` through `API-004`,
+`DATA-001` through `DATA-003`, `AUTH-001` through `AUTH-002`, `API-001` through `API-004`,
 `ARCH-001` through `ARCH-003`, `ONTO-001` through `ONTO-002`, and `PORT-001`
 in `docs/requirements.md`.
 

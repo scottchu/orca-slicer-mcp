@@ -114,6 +114,24 @@ is not yet an accepted product backend.
   slightly larger presentation. The fallback now uses a portrait 2-by-2 metric
   layout and larger pixel type so the host can devote more vertical space to it
   on a phone without changing the data or safety contract.
+- decision 0013 records why that previously working connection later failed:
+  its 15-minute access token expired and the personal authorization server had
+  issued no refresh token. Public health, OAuth discovery, and the MCP challenge
+  remained healthy, isolating the failure to renewal rather than Funnel, MCP,
+  or printer reachability.
+- the authorization server now issues 30-day rotating refresh tokens bound to
+  the client, exact MCP resource, and `u1.monitor` scope, persists only derived
+  lookup hashes, rejects sequential and concurrent replay, and cannot expand
+  scope. Version-1 state migrated in place while preserving the signing key,
+  registered clients, and enrolled passkey; an owner-only dated backup was made
+  outside the repository before the service restart.
+- the repaired public endpoint advertises both `authorization_code` and
+  `refresh_token`, continues to return the expected unauthenticated HTTP 401 MCP
+  challenge, and exposes no additional tools or printer controls. The plugin was
+  reinstalled as `0.2.0+codex.20260825234015`. Existing pre-repair host links
+  must reconnect once. The user confirmed the repaired connection works
+  immediately; successful host renewal after more than 15 minutes remains
+  pending user-visible evidence.
 - `docs/u1-print-studio-plugin-architecture.md` maps the current package,
   transports, OAuth boundary, observation adapter, presenters, MCP fields, and
   read-only runtime slice to the stable domain ontology. It explicitly records
@@ -165,10 +183,11 @@ included.
 - Bun and Node direct local-network sockets failed on this macOS host while the
   bounded system-curl adapter worked; portability remains unknown;
 - the local stdio plugin is desktop-local. The selected personal Funnel and
-  OAuth backend now passes an authenticated remote tool call, and the remote
-  result carries an inline image fallback. Actual image display on Codex mobile
-  and interactive camera rendering remain separately unverified visual
-  evidence;
+  OAuth backend now supports rotating refresh tokens, and the remote result
+  carries an inline image fallback. The repaired connection now works
+  immediately, but a successful status call after more than 15 minutes remains
+  required to prove host renewal. Interactive camera rendering remains
+  separately unverified visual evidence;
 - the snapshot endpoint was intermittently slow. One bounded retry recovered a
   packaged real-frame smoke, and one later frame took 12.9 seconds. The longer
   bounded relay now passes installed-cache transport checks, but repeated
@@ -181,16 +200,16 @@ included.
 
 ## Next smallest action
 
-Start a new Codex mobile conversation and visually verify the inline status
-image from `show_u1_status`. If that host mounts the interactive component,
-verify the relayed snapshot and controls as a separate host capability. Record
-each result separately, then resume synthetic non-user dry-slice and negative
+Repeat the now-working phone `show_u1_status` call after more than 15 minutes to
+prove real-host refresh. If that host mounts the interactive component, verify
+the relayed snapshot and controls as a separate host capability. Record each
+result separately, then resume synthetic non-user dry-slice and negative
 fixtures. Do not expose Moonraker or build a shared CLI merely because the
 manual commands exist.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0011. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0013. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.

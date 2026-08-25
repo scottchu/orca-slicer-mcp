@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test";
 import { createServer, type Server } from "node:http";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -15,23 +15,28 @@ afterEach(async () => {
   for (const cleanup of cleanups.splice(0).reverse()) await cleanup();
 });
 
-async function fixture() {
+async function serve(oauth: PersonalOAuthService) {
+  const server = createServer(createRequestHandler(oauth));
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  cleanups.push(() => close(server));
+  const address = server.address();
+  if (!address || typeof address === "string") throw new Error("Missing test address");
+  return `http://127.0.0.1:${address.port}${oauth.basePath}`;
+}
+
+async function fixture(config: { now?: () => number } = {}) {
   const stateDirectory = mkdtempSync(path.join(tmpdir(), "u1-oauth-test-"));
   cleanups.push(() => rmSync(stateDirectory, { recursive: true, force: true }));
   const oauth = await PersonalOAuthService.create({
     publicBaseUrl: "https://status.example/u1",
     stateDirectory,
     enrollmentToken: "fixture-enrollment-token",
+    now: config.now,
   });
-  const server = createServer(createRequestHandler(oauth));
-  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
-  cleanups.push(() => close(server));
-  const address = server.address();
-  if (!address || typeof address === "string") throw new Error("Missing test address");
   return {
     oauth,
     stateDirectory,
-    localBaseUrl: `http://127.0.0.1:${address.port}/u1`,
+    localBaseUrl: await serve(oauth),
   };
 }
 
@@ -87,6 +92,87 @@ async function mcpPost(url: string, token: string | null, body: unknown) {
   });
 }
 
+async function registerClient(localBaseUrl: string): Promise<string> {
+  const response = await fetch(`${localBaseUrl}/oauth/register`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      client_name: "ChatGPT",
+      redirect_uris: ["https://chatgpt.com/connector_platform_oauth_redirect"],
+      token_endpoint_auth_method: "none",
+    }),
+  });
+  expect(response.status).toBe(201);
+  return ((await response.json()) as { client_id: string }).client_id;
+}
+
+function seedAuthorizationCode(
+  oauth: PersonalOAuthService,
+  args: { code: string; clientId: string; verifier: string; now?: number }
+): void {
+  const codes = (oauth as unknown as {
+    codes: Map<string, {
+      clientId: string;
+      redirectUri: string;
+      scope: string;
+      resource: string;
+      codeChallenge: string;
+      expiresAt: number;
+    }>;
+  }).codes;
+  codes.set(args.code, {
+    clientId: args.clientId,
+    redirectUri: "https://chatgpt.com/connector_platform_oauth_redirect",
+    scope: "u1.monitor",
+    resource: oauth.resource,
+    codeChallenge: pkceChallenge(args.verifier),
+    expiresAt: (args.now ?? Date.now()) + 60_000,
+  });
+}
+
+async function exchangeCode(args: {
+  localBaseUrl: string;
+  oauth: PersonalOAuthService;
+  code: string;
+  clientId: string;
+  verifier: string;
+}) {
+  return await fetch(`${args.localBaseUrl}/oauth/token`, {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "authorization_code",
+      code: args.code,
+      client_id: args.clientId,
+      redirect_uri: "https://chatgpt.com/connector_platform_oauth_redirect",
+      resource: args.oauth.resource,
+      code_verifier: args.verifier,
+    }),
+  });
+}
+
+async function refresh(args: {
+  localBaseUrl: string;
+  oauth: PersonalOAuthService;
+  refreshToken: string;
+  clientId: string;
+  resource?: string;
+  scope?: string;
+}) {
+  const body = new URLSearchParams({
+    grant_type: "refresh_token",
+    refresh_token: args.refreshToken,
+    client_id: args.clientId,
+    resource: args.resource ?? args.oauth.resource,
+  });
+  if (args.scope !== undefined) body.set("scope", args.scope);
+  return await fetch(`${args.localBaseUrl}/oauth/token`, {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body,
+  });
+}
+
 describe("personal OAuth discovery and boundary", () => {
   test("derives the RFC 7636 S256 PKCE challenge", () => {
     expect(pkceChallenge("dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk")).toBe(
@@ -134,6 +220,7 @@ describe("personal OAuth discovery and boundary", () => {
       authorization_endpoint: "https://status.example/u1/oauth/authorize",
       token_endpoint: "https://status.example/u1/oauth/token",
       registration_endpoint: "https://status.example/u1/oauth/register",
+      grant_types_supported: ["authorization_code", "refresh_token"],
       code_challenge_methods_supported: ["S256"],
       token_endpoint_auth_methods_supported: ["none"],
       authorization_response_iss_parameter_supported: true,
@@ -164,9 +251,200 @@ describe("personal OAuth discovery and boundary", () => {
     expect(accepted.status).toBe(201);
     expect(await accepted.json()).toMatchObject({
       token_endpoint_auth_method: "none",
-      grant_types: ["authorization_code"],
+      grant_types: ["authorization_code", "refresh_token"],
       response_types: ["code"],
     });
+  });
+
+  test("migrates version 1 state without replacing keys or clients", async () => {
+    const { stateDirectory, localBaseUrl } = await fixture();
+    const clientId = await registerClient(localBaseUrl);
+    const statePath = path.join(stateDirectory, "personal-oauth.json");
+    const current = JSON.parse(readFileSync(statePath, "utf8")) as Record<string, unknown>;
+    const signingKid = (current.signingPublicJwk as JWK).kid;
+    current.version = 1;
+    delete current.refreshTokens;
+    writeFileSync(statePath, `${JSON.stringify(current, null, 2)}\n`, { mode: 0o600 });
+
+    await PersonalOAuthService.create({
+      publicBaseUrl: "https://status.example/u1",
+      stateDirectory,
+      enrollmentToken: "fixture-enrollment-token",
+    });
+
+    const migrated = JSON.parse(readFileSync(statePath, "utf8")) as {
+      version: number;
+      signingPublicJwk: JWK;
+      clients: Record<string, unknown>;
+      refreshTokens: Record<string, unknown>;
+    };
+    expect(migrated.version).toBe(2);
+    expect(migrated.signingPublicJwk.kid).toBe(signingKid);
+    expect(migrated.clients[clientId]).toBeDefined();
+    expect(migrated.refreshTokens).toEqual({});
+  });
+
+  test("issues, persists, binds, and rotates refresh tokens without storing plaintext", async () => {
+    const { oauth, stateDirectory, localBaseUrl } = await fixture();
+    const clientId = await registerClient(localBaseUrl);
+    const verifier = "refresh-token-fixture-verifier-with-43-characters";
+    const code = "fixture-authorization-code";
+    seedAuthorizationCode(oauth, { code, clientId, verifier });
+
+    const initialResponse = await exchangeCode({
+      localBaseUrl,
+      oauth,
+      code,
+      clientId,
+      verifier,
+    });
+    expect(initialResponse.status).toBe(200);
+    const initial = (await initialResponse.json()) as {
+      access_token: string;
+      refresh_token: string;
+      token_type: string;
+      expires_in: number;
+      scope: string;
+    };
+    expect(initial.refresh_token).toStartWith("u1r_");
+    expect(initial.expires_in).toBe(15 * 60);
+    expect(initial.scope).toBe("u1.monitor");
+
+    const codeReplay = await exchangeCode({
+      localBaseUrl,
+      oauth,
+      code,
+      clientId,
+      verifier,
+    });
+    expect(codeReplay.status).toBe(400);
+
+    const statePath = path.join(stateDirectory, "personal-oauth.json");
+    const persisted = readFileSync(statePath, "utf8");
+    expect(persisted).not.toContain(initial.refresh_token);
+    expect(Object.keys((JSON.parse(persisted) as { refreshTokens: object }).refreshTokens)).toHaveLength(1);
+    expect(statSync(statePath).mode & 0o777).toBe(0o600);
+
+    const restarted = await PersonalOAuthService.create({
+      publicBaseUrl: "https://status.example/u1",
+      stateDirectory,
+      enrollmentToken: "fixture-enrollment-token",
+    });
+    const restartedBaseUrl = await serve(restarted);
+
+    expect((await refresh({
+      localBaseUrl: restartedBaseUrl,
+      oauth: restarted,
+      refreshToken: initial.refresh_token,
+      clientId: "wrong-client",
+    })).status).toBe(400);
+    expect((await refresh({
+      localBaseUrl: restartedBaseUrl,
+      oauth: restarted,
+      refreshToken: initial.refresh_token,
+      clientId,
+      resource: "https://status.example/other",
+    })).status).toBe(400);
+    expect((await refresh({
+      localBaseUrl: restartedBaseUrl,
+      oauth: restarted,
+      refreshToken: initial.refresh_token,
+      clientId,
+      scope: "u1.control",
+    })).status).toBe(400);
+
+    const rotatedResponse = await refresh({
+      localBaseUrl: restartedBaseUrl,
+      oauth: restarted,
+      refreshToken: initial.refresh_token,
+      clientId,
+    });
+    expect(rotatedResponse.status).toBe(200);
+    const rotated = (await rotatedResponse.json()) as {
+      access_token: string;
+      refresh_token: string;
+      scope: string;
+    };
+    expect(rotated.refresh_token).not.toBe(initial.refresh_token);
+    expect(rotated.scope).toBe("u1.monitor");
+
+    const replay = await refresh({
+      localBaseUrl: restartedBaseUrl,
+      oauth: restarted,
+      refreshToken: initial.refresh_token,
+      clientId,
+    });
+    expect(replay.status).toBe(400);
+    expect(await replay.json()).toMatchObject({ error: "invalid_grant" });
+
+    const initialize = {
+      jsonrpc: "2.0",
+      id: 1,
+      method: "initialize",
+      params: {
+        protocolVersion: "2025-06-18",
+        capabilities: {},
+        clientInfo: { name: "refresh-test", version: "1.0.0" },
+      },
+    };
+    expect((await mcpPost(restartedBaseUrl, rotated.access_token, initialize)).status).toBe(200);
+
+    const concurrent = await Promise.all([
+      refresh({
+        localBaseUrl: restartedBaseUrl,
+        oauth: restarted,
+        refreshToken: rotated.refresh_token,
+        clientId,
+      }),
+      refresh({
+        localBaseUrl: restartedBaseUrl,
+        oauth: restarted,
+        refreshToken: rotated.refresh_token,
+        clientId,
+      }),
+    ]);
+    expect(concurrent.map((response) => response.status).sort()).toEqual([200, 400]);
+    const concurrentSuccess = concurrent.find((response) => response.status === 200);
+    expect(concurrentSuccess).toBeDefined();
+    const concurrentToken = ((await concurrentSuccess!.json()) as {
+      refresh_token: string;
+    }).refresh_token;
+
+    const rotatedState = readFileSync(statePath, "utf8");
+    expect(rotatedState).not.toContain(initial.refresh_token);
+    expect(rotatedState).not.toContain(rotated.refresh_token);
+    expect(rotatedState).not.toContain(concurrentToken);
+    expect(Object.keys((JSON.parse(rotatedState) as { refreshTokens: object }).refreshTokens)).toHaveLength(1);
+  });
+
+  test("expires persisted refresh tokens", async () => {
+    let now = Date.parse("2026-08-25T20:00:00Z");
+    const { oauth, stateDirectory, localBaseUrl } = await fixture({ now: () => now });
+    const clientId = await registerClient(localBaseUrl);
+    const verifier = "expiring-refresh-token-verifier-with-43-characters";
+    const code = "expiring-authorization-code";
+    seedAuthorizationCode(oauth, { code, clientId, verifier, now });
+    const issuedResponse = await exchangeCode({
+      localBaseUrl,
+      oauth,
+      code,
+      clientId,
+      verifier,
+    });
+    const issued = (await issuedResponse.json()) as { refresh_token: string };
+    now += 31 * 24 * 60 * 60_000;
+
+    const expired = await refresh({
+      localBaseUrl,
+      oauth,
+      refreshToken: issued.refresh_token,
+      clientId,
+    });
+    expect(expired.status).toBe(400);
+    const state = JSON.parse(
+      readFileSync(path.join(stateDirectory, "personal-oauth.json"), "utf8")
+    ) as { refreshTokens: Record<string, unknown> };
+    expect(state.refreshTokens).toEqual({});
   });
 
   test("challenges unauthenticated MCP and accepts an audience-bound monitor token", async () => {

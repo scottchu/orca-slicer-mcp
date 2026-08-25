@@ -138,6 +138,12 @@ Record which checks were observed by the user. Do not infer visual acceptance fr
 
 ## Recovery and rollback
 
+- If Codex reports `oauth_refresh_token_missing` for a connection created by an
+  older U1 service, update and restart the service while preserving OAuth state,
+  then reconnect once from ChatGPT desktop or web. Do not delete the enrolled
+  passkey. If a newly linked connection repeats the failure, confirm discovery
+  advertises `refresh_token` and exercise one bounded refresh exchange without
+  printing or recording either token.
 - If the passkey is lost, require local access to create a new one-time enrollment and invalidate the old credential. Keep the public endpoint authenticated throughout recovery.
 - If the service fails, inspect loopback health and local logs before changing Funnel.
 - To roll back, remove only the exact U1 Funnel port or handler created by this workflow, then compare status with the saved pre-change routing state.

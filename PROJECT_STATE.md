@@ -74,8 +74,16 @@ Last updated: 2026-08-25
   completion telemetry. Decision 0012 now adds a dependency-free inline PNG
   status projection to the remote render result while preserving the existing
   local desktop widget path. The PNG was generated and visually inspected from
-  a fresh real-printer observation; display inside Codex mobile remains pending
-  user-visible host evidence.
+  a fresh real-printer observation. The first phone render was accepted and
+  enlarged in the current portrait layout. A later connection failure was
+  isolated to the original authorization server issuing only a 15-minute access
+  token: Codex reported `oauth_refresh_token_missing` while the public service
+  and OAuth discovery remained healthy. Decision 0013 adds 30-day rotating,
+  hashed, client/resource/scope-bound refresh tokens, migrates the existing
+  owner-only state without replacing the signing key, passkey, or clients, and
+  is deployed on the public endpoint. The user confirmed that the repaired
+  connection works immediately. Real-host renewal after the first 15-minute
+  access-token lifetime remains pending evidence.
 - Persistent monitoring: not implemented. The accepted runtime model still
   combines a full direct snapshot with ordered subscription deltas and
   reconnect resync.
@@ -100,7 +108,9 @@ Last updated: 2026-08-25
   checks passed; real installed Orca executables were inspected, and one later
   user-authorized Snapmaker Orca slice succeeded after recorded failures. The
   read-only status-view prototype compiles and its HTTP and stdio MCP paths
-  return current telemetry; no preparation or control runtime exists.
+  return current telemetry. Twenty-two OAuth/status contract tests cover refresh
+  issuance, persisted-hash recovery, binding, rotation, replay, expiry, and
+  refreshed MCP authentication; no preparation or control runtime exists.
 - Delivery validation is local-only; no hosted validation workflow is
   configured or required.
 - Protocol/simulator: live Moonraker read-only response shapes, WebSocket
@@ -140,10 +150,11 @@ Last updated: 2026-08-25
   standard-HTTPS Tailscale Funnel path handlers and personal OAuth. The current
   edition requires an always-on LAN agent per printer owner. A self-hosted
   distribution versus hosted MCP plus outbound LAN connector remains undecided;
-  authenticated mobile tool connectivity now works. A standard MCP image
-  fallback no longer depends on component mounting, but actual Codex-mobile
-  image display and interactive camera rendering still require separate
-  user-visible validation.
+  the backend now supports renewable authenticated connectivity, and the user
+  confirmed the repaired connection works immediately. A standard MCP image
+  fallback no longer depends on component mounting, but refreshed Codex-host
+  access after more than 15 minutes and interactive camera rendering still
+  require separate user-visible validation.
 - Notification destination is unknown.
 - Live command capabilities and persistence semantics, including Z-offset, are
   unknown for the target hardware.
@@ -153,10 +164,9 @@ Last updated: 2026-08-25
 
 ## Next action
 
-Start a new Codex mobile conversation and visually verify that
-`show_u1_status` displays the inline PNG status card. Record that result
-separately from the already-passing authenticated telemetry and local PNG
-inspection. If a host mounts the interactive component, validate its camera and
-controls as a separate capability; the PNG itself is intentionally static. Do
-not expose Moonraker directly, add control tools, or build a shared CLI until
-the relevant authorization and repeated-use evidence exists.
+After more than 15 minutes from the repaired connection, make another read-only
+status call to prove the host actually renewed its access token. The user has
+already confirmed immediate access. Record delayed renewal, inline PNG display,
+and any mounted interactive camera behavior as separate evidence. Do not expose
+Moonraker directly, add control tools, or build a shared CLI until the relevant
+authorization and repeated-use evidence exists.
