@@ -59,6 +59,10 @@ is not yet an accepted product backend.
   `get_u1_status`, a camera-first HTML/CSS widget, adaptive refresh, WebRTC
   `Go Live` and `Close`, PiP, and fullscreen. TypeScript, HTTP MCP, stdio MCP,
   current telemetry, and widget resource metadata passed local validation.
+- the render tool now advertises both the standard MCP Apps resource URI and
+  the OpenAI compatibility output template on its descriptor. Four integration
+  and widget-contract tests pass, and the refreshed installed bundle plus both
+  camera endpoints passed read-only smoke checks.
 
 ## Changed paths
 
@@ -87,6 +91,10 @@ included.
   environment-dependent despite one usable in-progress PLA frame;
 - no connected browser was available for this run, so host-rendered snapshot,
   WebRTC, close behavior, PiP, fullscreen, and adaptive refresh are unverified;
+- the same conversation could not hot-reload the refreshed plugin metadata and
+  exposed `show_u1_status` only through a programmatic wrapper, which returned
+  text but did not mount the MCP App. A new conversation remains required for
+  direct component validation;
 - Bun and Node direct local-network sockets failed on this macOS host while the
   bounded system-curl adapter worked; portability remains unknown;
 - manifest shape, compatibility checks, and upload/start ownership are open;
@@ -97,11 +105,12 @@ included.
 
 ## Next smallest action
 
-Refresh the plugin in a new Codex thread and visually test the HTML dashboard,
-snapshot, WebRTC `Go Live` and `Close`, PiP, fullscreen, manual refresh, and one
-adaptive refresh. Record each host result separately. Then resume the synthetic
-non-user dry-slice and negative fixtures. Do not build a shared CLI merely
-because the manual commands exist.
+Open the refreshed plugin in a new Codex thread and call `show_u1_status`
+directly. Visually test the HTML dashboard, snapshot, WebRTC `Go Live` and
+`Close`, PiP, fullscreen, manual refresh, and one adaptive refresh. Record each
+host result separately. Then resume the synthetic non-user dry-slice and
+negative fixtures. Do not build a shared CLI merely because the manual commands
+exist.
 
 ## Restart instructions
 

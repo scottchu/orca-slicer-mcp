@@ -32,9 +32,12 @@ Continue with:
 2. Read decisions 0007 and 0008, both 2026-08-25 journals, and the plugin under
    `plugins/u1-print-studio/`. The skills remain workflow guidance; only the
    read-only status view is a runtime prototype.
-3. Refresh the plugin in a new Codex thread. Open `show_u1_status` and visually
-   test snapshot, `Go Live`, `Close`, PiP, fullscreen, manual refresh, and one
-   adaptive `get_u1_status` refresh. Record exact host evidence and failures.
+3. The plugin was refreshed after repairing descriptor-level template metadata
+   and adding four passing tests. Start a new Codex thread, call
+   `show_u1_status` directly, and visually test snapshot, `Go Live`, `Close`,
+   PiP, fullscreen, manual refresh, and one adaptive `get_u1_status` refresh.
+   Record exact host evidence and failures; the repair thread could not
+   hot-reload or mount the component.
 4. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
    with explicit complete profiles. Record it as a new log. Do not upload or
    start it.

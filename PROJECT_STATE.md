@@ -56,8 +56,10 @@ Last updated: 2026-08-25
   Moonraker HTTP and WebSocket paths are observed, but no adapter is implemented.
 - Interactive monitoring: a local MCP Apps prototype exposes read-only
   `show_u1_status` and `get_u1_status` tools, an HTML camera-first dashboard,
-  adaptive refresh, PiP, and fullscreen. Host-rendered camera and interaction
-  validation remains pending.
+  adaptive refresh, PiP, and fullscreen. The render descriptor now advertises
+  both standard and compatibility template metadata and has integration tests;
+  host-rendered camera and interaction validation remains pending in a new
+  conversation because the repair thread could not hot-reload the component.
 - Persistent monitoring: not implemented. The accepted runtime model still
   combines a full direct snapshot with ordered subscription deltas and
   reconnect resync.
@@ -121,8 +123,9 @@ Last updated: 2026-08-25
 
 ## Next action
 
-Install or refresh the repo-local `u1-print-studio` plugin in a new Codex thread
-and visually exercise the HTML dashboard, snapshot, WebRTC `Go Live` and
-`Close`, PiP, fullscreen, manual refresh, and one adaptive refresh. Record each
-host-loop result separately. Do not build a shared CLI until repeated use
-demonstrates a stable command shape and a meaningful reduction in effort.
+Open the refreshed repo-local `u1-print-studio` plugin in a new Codex thread,
+call `show_u1_status` directly, and visually exercise the HTML dashboard,
+snapshot, WebRTC `Go Live` and `Close`, PiP, fullscreen, manual refresh, and one
+adaptive refresh. Record each host-loop result separately. Do not build a shared
+CLI until repeated use demonstrates a stable command shape and a meaningful
+reduction in effort.

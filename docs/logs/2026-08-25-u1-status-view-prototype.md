@@ -64,3 +64,34 @@ No browser connection was available in this Codex session. The host-rendered
 appearance, direct camera snapshot, WebRTC iframe, close transition, PiP,
 fullscreen, and repeated mounted-widget refresh still require visual host-loop
 validation. This is not inferred from source or MCP success.
+
+## Host-loop repair attempt
+
+A later same-day Codex thread called `show_u1_status` through the host's
+programmatic tool wrapper. The tool returned model-readable telemetry but no
+mounted component. Inspection found that the standard `_meta.ui.resourceUri`
+was present on the tool descriptor, while the OpenAI compatibility
+`openai/outputTemplate` key was incorrectly returned as result metadata instead
+of being advertised on the descriptor.
+
+The render tool now advertises both descriptor keys and result metadata contains
+only the camera routes intended for the widget. Four Bun tests cover tool
+annotations and template discovery, MCP App resource MIME and CSP, model-visible
+status plus widget-only camera metadata, and the camera-first snapshot, live,
+close, refresh, PiP, and fullscreen paths. TypeScript compilation, bundling,
+plugin validation, repository validation, and the tests passed.
+
+The refreshed installed stdio bundle listed both tools, advertised both template
+keys, served the MCP App resource, returned current `complete` telemetry, and
+reported both snapshot and stream routes. Separate read-only camera probes
+returned HTTP 200 for a `1920x1080` JPEG snapshot and HTTP 200 for the advertised
+stream page.
+
+This existing conversation remained bound to its pre-refresh programmatic tool
+surface and did not mount the component. A later call through that stale surface
+also reported a telemetry transport failure while the exact refreshed installed
+bundle succeeded. The in-app browser inventory was empty, so visual browser QA
+could not be substituted. The installed fix therefore has stronger static,
+protocol, and real-endpoint evidence, but a new conversation with a direct MCP
+App tool call is still required before claiming that the card, live camera, or
+controls render in Codex.

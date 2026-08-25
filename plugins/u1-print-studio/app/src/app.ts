@@ -18,16 +18,15 @@ import {
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = path.resolve(currentDirectory, "..");
-const WIDGET_URI = "ui://u1-print-studio/status-v1.html";
+export const WIDGET_URI = "ui://u1-print-studio/status-v1.html";
 export const WIDGET_HTML = readFileSync(
   path.join(APP_ROOT, "public", "widget.html"),
   "utf8"
 );
 
-function resultPayload(
+export function resultPayload(
   status: U1Status,
-  metadata: U1WidgetMetadata,
-  includeTemplate: boolean
+  metadata: U1WidgetMetadata
 ) {
   const summary = status.reachable
     ? `U1 is ${status.stateLabel.toLowerCase()} at ${status.progressPercent}%.`
@@ -36,14 +35,20 @@ function resultPayload(
   return {
     content: [{ type: "text" as const, text: summary }],
     structuredContent: status,
-    _meta: {
-      ...metadata,
-      ...(includeTemplate ? { "openai/outputTemplate": WIDGET_URI } : {}),
-    },
+    _meta: metadata,
   };
 }
 
-export function createAppServer(): McpServer {
+type StatusReader = typeof readU1Status;
+
+export function createAppServer(
+  dependencies: {
+    readStatus?: StatusReader;
+    printerOrigin?: () => string | null;
+  } = {}
+): McpServer {
+  const readStatus = dependencies.readStatus ?? readU1Status;
+  const printerOrigin = dependencies.printerOrigin ?? configuredPrinterOrigin;
   const server = new McpServer({ name: "u1-print-studio", version: "0.2.0" });
 
   registerAppResource(
@@ -52,8 +57,8 @@ export function createAppServer(): McpServer {
     WIDGET_URI,
     {},
     async () => {
-      const printerOrigin = configuredPrinterOrigin();
-      const allowedOrigins = printerOrigin ? [printerOrigin] : [];
+      const origin = printerOrigin();
+      const allowedOrigins = origin ? [origin] : [];
 
       return {
         contents: [
@@ -95,13 +100,14 @@ export function createAppServer(): McpServer {
       },
       _meta: {
         ui: { resourceUri: WIDGET_URI },
+        "openai/outputTemplate": WIDGET_URI,
         "openai/toolInvocation/invoking": "Reading U1 status",
         "openai/toolInvocation/invoked": "U1 dashboard ready",
       },
     },
     async () => {
-      const { status, metadata } = await readU1Status();
-      return resultPayload(status, metadata, true);
+      const { status, metadata } = await readStatus();
+      return resultPayload(status, metadata);
     }
   );
 
@@ -125,8 +131,8 @@ export function createAppServer(): McpServer {
       },
     },
     async () => {
-      const { status, metadata } = await readU1Status();
-      return resultPayload(status, metadata, false);
+      const { status, metadata } = await readStatus();
+      return resultPayload(status, metadata);
     }
   );
 

@@ -290,3 +290,32 @@ identifiers, and runtime data are intentionally not retained.
 - Browser visual QA was attempted, but this Codex session reported no available
   browser connection. Host rendering, camera load, live connection and close,
   PiP, fullscreen, and mounted adaptive refresh remain unverified.
+
+### Same-day host-loop metadata repair
+
+- `bun test src/*.test.ts`: passed `4` tests and `25` assertions covering the
+  render-tool descriptor, read-only annotations, MCP App resource and CSP,
+  result metadata separation, and camera-first widget control paths.
+- `bun run check`: passed TypeScript compilation with the Bun test types.
+- `bun run bundle`: rebuilt the self-contained stdio deployment artifact.
+- `uv run --with pyyaml python .../validate_plugin.py
+  plugins/u1-print-studio`: passed.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok`; the
+  required local check now runs the U1 app TypeScript and Bun test suites.
+- `git diff --check`: passed.
+- The refreshed installed stdio bundle's `tools/list` advertised
+  `_meta.ui.resourceUri` and the descriptor-level compatibility
+  `openai/outputTemplate` on `show_u1_status`, while `get_u1_status` remained
+  data-only.
+- The same installed-bundle smoke test read the resource as
+  `text/html;profile=mcp-app`, returned current `complete` and `100%` telemetry,
+  and reported both camera routes without issuing a printer command.
+- Separate bounded read-only camera requests returned HTTP 200 for a valid
+  `1920x1080` JPEG snapshot and HTTP 200 for the advertised stream page.
+- The existing conversation exposed the plugin only through a programmatic
+  wrapper and did not mount the component after reinstall. Its stale tool
+  surface later returned a telemetry transport failure even though the exact
+  refreshed stdio bundle succeeded.
+- The in-app browser inventory was empty. Snapshot rendering, `Go Live`,
+  `Close`, PiP, fullscreen, and mounted adaptive refresh remain unverified and
+  require a new conversation with the refreshed plugin enabled.
