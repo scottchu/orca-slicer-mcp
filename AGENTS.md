@@ -29,6 +29,9 @@ provisional architecture as an implementation commitment.
   temporary paths, or runtime data.
 - Treat repository files as durable project memory. Chat history can help find
   evidence, but it does not replace current repository records.
+- Use `uv` for every Python invocation and dependency operation in this
+  repository. Run Python tools through `uv run`; do not call `python` or
+  `python3` directly.
 - Before material work, read `PROJECT_STATE.md`, `NEXT_AGENT.md`,
   `docs/requirements.md`, and the iteration named by
   `docs/iterations/CURRENT`.

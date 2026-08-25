@@ -43,6 +43,11 @@ runtime exists, and Snapmaker Orca is not yet an accepted product backend.
 - `docs/knowledge/snapmaker-orca-cli-preparation.md` promotes only provisional
   guards and defines repeated non-user fixtures as the gate before code, skill,
   or MCP work.
+- a later user-authorized PLA artifact was uploaded and started through the
+  direct LAN Moonraker path after explicit reachability, complete-upload, and
+  post-start state checks. The printer reported logical `T3`, corresponding to
+  physical tool head 4, active and `printing`; completion was not observed in
+  this iteration.
 
 ## Changed paths
 
@@ -70,6 +75,8 @@ profile, generated G-code, printer address, or printer command is included.
 - manifest shape, compatibility checks, and upload/start ownership are open;
 - one physical print completed, but product implementation, repeatable workflow,
   protocol, safety, and general user-outcome acceptance remain pending.
+- a second real job started, but its manual direct-LAN handoff and in-progress
+  state do not establish completion or an accepted operations adapter.
 
 ## Next smallest action
 

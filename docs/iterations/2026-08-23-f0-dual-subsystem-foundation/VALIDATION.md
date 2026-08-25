@@ -140,6 +140,19 @@ identifiers, and runtime data are intentionally not retained.
 - Full chronology: [pilot log](../../logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md).
 - Derived, still-provisional guidance:
   [Snapmaker Orca CLI preparation knowledge](../../knowledge/snapmaker-orca-cli-preparation.md).
+- A later user-authorized PLA job provided a second real-printer handoff
+  observation. The validated artifact was uploaded through direct LAN
+  Moonraker only after its backend port was observed reachable; the upload
+  response reported the complete artifact size, the start acknowledgement was
+  recorded separately, and a fresh object query then reported `printing` with
+  logical `T3`, corresponding to physical tool head 4, active. This remains
+  manual operational evidence, not reusable product code or proof of print
+  completion.
+- During that later handoff, the reverse-proxy route and a temporarily
+  unreachable direct backend produced misleading upload failures. Future
+  operational clients must distinguish route reachability, bytes fully
+  accepted, start acknowledgement, and observed printer state instead of
+  treating one failed route as a preparation failure.
 - `./scripts/check-repository.sh`: passed with `repository contract: ok` after
   adding the separate log, knowledge, current-state, validation, and handoff
   records.

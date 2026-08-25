@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-08-23
+Last updated: 2026-08-24
 
 ## Baseline
 
@@ -74,10 +74,12 @@ Last updated: 2026-08-23
 - Protocol/simulator: live Moonraker read-only response shapes, WebSocket
   upgrade, and server notifications were observed; printer-object subscription,
   fixtures, and reconnect tests are pending.
-- Real printer: ready/standby telemetry, one live camera frame, and one
-  user-authorized U1 print through reported `22/22` completion were observed.
-  Product subscription, reconnect, and command-correlation behavior remain
-  untested.
+- Real printer: ready/standby telemetry, live camera frames, one
+  user-authorized U1 print through reported `22/22` completion, and a later
+  separate job through observed `printing` were recorded. The later job's
+  upload completion, start acknowledgement, and active state were checked
+  separately; its completion is not yet evidence. Product subscription,
+  reconnect, and command-correlation behavior remain untested.
 - User outcome: two requested PETG parts were obtained once. The long CLI
   debugging path is not accepted as a repeatable workflow, and later fit and
   mechanism failures are separate design evidence.
