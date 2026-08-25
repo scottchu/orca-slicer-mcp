@@ -77,14 +77,14 @@ afterEach(async () => {
   await Promise.all(closeCallbacks.splice(0).map((close) => close()));
 });
 
-async function connectClient() {
+async function connectClient(options: { oauth?: boolean } = {}) {
   const server = createAppServer({
     readStatus: async () => ({ status, metadata }),
     readCameraFrame: async () => ({
       frame: cameraFrame,
       metadata: cameraMetadata,
     }),
-  });
+  }, options.oauth ? { oauthScopes: ["u1.monitor"] } : {});
   const client = new Client({ name: "u1-print-studio-test", version: "1.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
@@ -164,6 +164,38 @@ describe("U1 status MCP App contract", () => {
     expect(result.structuredContent).toEqual(status);
     expect(result._meta).toEqual(metadata);
     expect(result._meta?.["openai/outputTemplate"]).toBeUndefined();
+    expect(result.content).toEqual([
+      { type: "text", text: "U1 is printing at 67.4%." },
+    ]);
+  });
+
+  test("adds a portable PNG status card to the remote render result", async () => {
+    const client = await connectClient({ oauth: true });
+    const result = await client.callTool({ name: "show_u1_status", arguments: {} });
+
+    expect(result.structuredContent).toEqual(status);
+    expect(Array.isArray(result.content)).toBe(true);
+    if (!Array.isArray(result.content)) throw new Error("Expected tool content");
+    expect(result.content[0]).toEqual({
+      type: "text",
+      text: "U1 is printing at 67.4%.",
+    });
+    const image = result.content[1];
+    expect(image?.type).toBe("image");
+    if (image?.type !== "image") throw new Error("Expected image content");
+    expect(image.mimeType).toBe("image/png");
+    const bytes = Buffer.from(image.data, "base64");
+    expect(bytes.subarray(0, 8)).toEqual(
+      Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])
+    );
+    expect(bytes.readUInt32BE(16)).toBe(1200);
+    expect(bytes.readUInt32BE(20)).toBe(760);
+  });
+
+  test("keeps the remote refresh result data-only", async () => {
+    const client = await connectClient({ oauth: true });
+    const result = await client.callTool({ name: "get_u1_status", arguments: {} });
+
     expect(result.content).toEqual([
       { type: "text", text: "U1 is printing at 67.4%." },
     ]);

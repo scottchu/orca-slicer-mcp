@@ -485,3 +485,47 @@ identifiers, and runtime data are intentionally not retained.
   `0.2.0+codex.20260825201641`. SHA-256 for `app/dist/stdio.js` matched the
   repository, personal marketplace source, and installed cache at
   `d259b492d097c55e7c0a56ff2adf27866c168dd593d4037611a44acb2dcc9944`.
+
+### Codex mobile image fallback
+
+- Decision 0012 records a host-compatible representation change rather than a
+  new dashboard: remote OAuth calls to `show_u1_status` include a self-contained
+  PNG generated from the same normalized observation in `structuredContent`.
+  Local stdio calls and remote `get_u1_status` refresh calls remain data-only.
+- The PNG renderer is dependency-free, emits only `IHDR`, compressed pixel
+  data, and `IEND`, and includes no printer URL, public image URL, camera bytes,
+  or control affordance.
+- A contract test decoded the remote render result, verified the standard PNG
+  signature, and read dimensions of 1200 by 760. A separate contract test
+  proves the remote refresh result does not add an image.
+- A fresh real-printer observation was rendered locally and visually inspected.
+  It showed `complete`, 100%, 188/188 layers, inactive storage, the observed
+  parked tool and zero heater targets, elapsed time, file identity, observation
+  time, and camera availability. The generated inspection artifact was kept
+  outside the repository.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 19 tests with 83 assertions.
+- `bun run bundle`: rebuilt the self-contained stdio artifact.
+- `uv run --no-project --with pyyaml python .../quick_validate.py
+  ../skills/u1-mobile-status-setup`: passed with `Skill is valid!`.
+- `uv run --no-project --with pyyaml python .../validate_plugin.py ..`: passed
+  for the repository plugin source.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok` and
+  reran the 19 tests with 83 assertions.
+- `git diff --check`: passed.
+- The LaunchAgent was restarted against the changed repository source and the
+  standard-HTTPS public health route returned the personal-OAuth marker. This
+  proves service restart and routing, not an authenticated remote image call.
+- Codex mobile image display remains user-visible host evidence. The current
+  local Codex tool connection intentionally follows the stdio path and returned
+  text plus the interactive-widget contract without a duplicate PNG.
+- Plugin Creator validation passed for the synchronized personal source and the
+  exact installed cache. The plugin was reinstalled as
+  `0.2.0+codex.20260825203920`.
+- SHA-256 for the bundled stdio artifact matched across the repository,
+  personal marketplace source, and installed cache at
+  `acba2fc887c68249a9552a485f3ae9995936ff015da808858d2dfd53fef2b522`.
+- An exact installed-cache stdio smoke listed only the three expected tools,
+  returned a fresh reachable `complete` observation, and returned only text in
+  `content`. This confirms the working local desktop path did not acquire a
+  duplicate PNG; it does not prove a new desktop host mounted the component.

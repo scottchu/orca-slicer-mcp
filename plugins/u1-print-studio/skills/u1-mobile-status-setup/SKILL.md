@@ -27,7 +27,9 @@ Report these separately:
 2. Public-edge evidence: HTTPS health, OAuth discovery, and unauthenticated rejection work through Funnel.
 3. MCP evidence: the authenticated client discovers exactly the three read-only tools.
 4. Printer evidence: returned telemetry and camera data came from the configured real printer.
-5. iOS evidence: the card visibly mounted and its controls worked on the user's phone.
+5. iOS evidence: the host visibly rendered either the interactive component or
+   the inline PNG fallback; interactive controls are evidence only on hosts
+   that mounted the component.
 
 An earlier layer never proves a later one. Do not call the iOS setup complete until the user confirms the rendered card on the phone.
 
@@ -118,11 +120,19 @@ OpenAI documents public plugins as shared across ChatGPT and Codex, but says loc
 
 Start a new phone conversation and ask to show the U1 monitor widget. Verify, in order:
 
-1. the widget itself renders rather than only a text summary;
+1. the host renders either the interactive widget or the inline PNG status
+   card rather than only a text summary;
 2. printer telemetry is current and internally consistent;
-3. a camera snapshot loads when the printer provides one;
-4. refresh and adaptive timing behave correctly;
-5. Go Live, Close, Picture in Picture, and fullscreen are tested separately where supported.
+3. if the interactive widget mounted, a camera snapshot loads when the printer
+   provides one;
+4. if the interactive widget mounted, refresh and adaptive timing behave
+   correctly;
+5. Go Live, Close, Picture in Picture, and fullscreen are tested separately
+   only on component-capable hosts.
+
+The PNG is a static projection of one observation, not a degraded interactive
+dashboard. Refresh it with a new `show_u1_status` call. Do not expect camera
+pixels or controls inside the PNG.
 
 Record which checks were observed by the user. Do not infer visual acceptance from a successful MCP response or a desktop rendering.
 

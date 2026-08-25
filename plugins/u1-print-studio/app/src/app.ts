@@ -17,6 +17,7 @@ import {
   type U1Status,
   type U1WidgetMetadata,
 } from "./u1-status.js";
+import { statusCardImageContent } from "./status-card-image.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = path.resolve(currentDirectory, "..");
@@ -28,14 +29,18 @@ export const WIDGET_HTML = readFileSync(
 
 export function resultPayload(
   status: U1Status,
-  metadata: U1WidgetMetadata
+  metadata: U1WidgetMetadata,
+  options: { includeImageCard?: boolean } = {}
 ) {
   const summary = status.reachable
     ? `U1 is ${status.stateLabel.toLowerCase()} at ${status.progressPercent}%.`
     : `U1 status is unavailable: ${status.printerMessage ?? "unknown error"}.`;
 
   return {
-    content: [{ type: "text" as const, text: summary }],
+    content: [
+      { type: "text" as const, text: summary },
+      ...(options.includeImageCard ? [statusCardImageContent(status)] : []),
+    ],
     structuredContent: status,
     _meta: metadata,
   };
@@ -119,7 +124,7 @@ export function createAppServer(
     {
       title: "Show U1 status",
       description:
-        "Use this when the user wants to open the visual Snapmaker U1 status dashboard.",
+        "Show the current Snapmaker U1 observation as a visual status card; component-capable hosts also open the interactive dashboard.",
       inputSchema: {},
       ...securityConfig,
       annotations: {
@@ -138,7 +143,9 @@ export function createAppServer(
     },
     async () => {
       const { status, metadata } = await readStatus();
-      return resultPayload(status, metadata);
+      return resultPayload(status, metadata, {
+        includeImageCard: Boolean(securitySchemes),
+      });
     }
   );
 
@@ -217,7 +224,7 @@ export function createAppServer(
           name: "show_u1_status",
           title: "Show U1 status",
           description:
-            "Use this when the user wants to open the visual Snapmaker U1 status dashboard.",
+            "Show the current Snapmaker U1 observation as a visual status card; component-capable hosts also open the interactive dashboard.",
           inputSchema: emptyInputSchema,
           annotations: readOnlyAnnotations,
           securitySchemes,

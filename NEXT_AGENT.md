@@ -42,7 +42,7 @@ Continue with:
    40-second MCP timeout. Twelve status tests with 54 assertions passed before
    the remote-auth slice, and an installed bundle returned reachable status plus
    a real relayed JPEG.
-4. Treat iOS as a separate backend and host loop. Decisions 0010 and 0011 select
+4. Treat iOS as a separate backend and host loop. Decisions 0010 through 0012 select
    a personal OAuth-protected Tailscale Funnel endpoint on standard HTTPS for
    developer testing.
    The Mac Mini endpoint is live, rejects unauthenticated MCP requests, and the
@@ -52,10 +52,12 @@ Continue with:
    unauthenticated-challenge checks. The user then completed the standard-port
    OAuth connection: the host exposed exactly `show_u1_status`,
    `get_u1_status`, and `get_u1_camera_frame`, and an authenticated
-   `show_u1_status` call returned fresh complete telemetry. Visually test the
-   mounted phone card, relayed snapshot, `Go Live`, `Close`, PiP, fullscreen,
-   manual refresh, and one adaptive refresh. Never expose Moonraker or its
-   camera directly.
+   `show_u1_status` call returned fresh complete telemetry. The remote render
+   result now adds a standard inline PNG derived from the same observation, so
+   non-component Codex hosts do not need an external dashboard. Start a new
+   phone conversation and visually confirm that image. Test the relayed camera
+   and interactive controls separately only if that host mounts the MCP Apps
+   component. Never expose Moonraker or its camera directly.
 5. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
    with explicit complete profiles. Record it as a new log. Do not upload or
    start it.

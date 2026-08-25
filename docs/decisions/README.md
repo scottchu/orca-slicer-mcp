@@ -18,6 +18,7 @@ silently changed.
 | [0009](0009-relay-camera-frames-through-monitor-boundary.md) | Relay camera frames through the monitor boundary | Accepted |
 | [0010](0010-mobile-status-card-over-personal-oauth-and-funnel.md) | Deliver the mobile status card over personal OAuth and Funnel | Partially superseded by 0011 |
 | [0011](0011-use-standard-https-and-keep-distribution-model-open.md) | Use standard HTTPS and keep the distribution model open | Accepted for personal developer testing |
+| [0012](0012-return-an-image-fallback-for-non-component-hosts.md) | Return an image fallback for non-component hosts | Accepted for the read-only prototype |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.

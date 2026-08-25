@@ -71,8 +71,11 @@ Last updated: 2026-08-25
   pass; a nonstandard-port ChatGPT fetch failed, while the repaired
   standard-port connection completed personal OAuth and exposed exactly the
   three read-only tools. An authenticated `show_u1_status` call returned fresh
-  completion telemetry. iOS layout and host-rendered camera validation remain
-  pending visual evidence.
+  completion telemetry. Decision 0012 now adds a dependency-free inline PNG
+  status projection to the remote render result while preserving the existing
+  local desktop widget path. The PNG was generated and visually inspected from
+  a fresh real-printer observation; display inside Codex mobile remains pending
+  user-visible host evidence.
 - Persistent monitoring: not implemented. The accepted runtime model still
   combines a full direct snapshot with ordered subscription deltas and
   reconnect resync.
@@ -137,8 +140,10 @@ Last updated: 2026-08-25
   standard-HTTPS Tailscale Funnel path handlers and personal OAuth. The current
   edition requires an always-on LAN agent per printer owner. A self-hosted
   distribution versus hosted MCP plus outbound LAN connector remains undecided;
-  authenticated mobile tool connectivity now works, while actual card layout
-  and camera rendering still require user-visible validation.
+  authenticated mobile tool connectivity now works. A standard MCP image
+  fallback no longer depends on component mounting, but actual Codex-mobile
+  image display and interactive camera rendering still require separate
+  user-visible validation.
 - Notification destination is unknown.
 - Live command capabilities and persistence semantics, including Z-offset, are
   unknown for the target hardware.
@@ -148,9 +153,10 @@ Last updated: 2026-08-25
 
 ## Next action
 
-On the connected phone host, visually verify the mounted `show_u1_status` card,
-its relayed snapshot, `Go Live` and `Close`, PiP, fullscreen, manual refresh,
-and one adaptive refresh. Record layout and camera evidence separately from the
-already-passing authenticated telemetry call. Do not expose Moonraker directly,
-add control tools, or build a shared CLI until the relevant authorization and
-repeated-use evidence exists.
+Start a new Codex mobile conversation and visually verify that
+`show_u1_status` displays the inline PNG status card. Record that result
+separately from the already-passing authenticated telemetry and local PNG
+inspection. If a host mounts the interactive component, validate its camera and
+controls as a separate capability; the PNG itself is intentionally static. Do
+not expose Moonraker directly, add control tools, or build a shared CLI until
+the relevant authorization and repeated-use evidence exists.

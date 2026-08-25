@@ -36,6 +36,7 @@ autonomous control, or unattended-safe printer operation.
 - [Project continuity](docs/continuity.md)
 - [Working requirements](docs/requirements.md)
 - [Domain ontology](docs/ontology.md)
+- [U1 Print Studio plugin architecture](docs/u1-print-studio-plugin-architecture.md)
 - [Monitoring model](docs/monitoring-model.md)
 - [Environment boundary](docs/environment.md)
 - [Open questions](docs/open-questions.md)

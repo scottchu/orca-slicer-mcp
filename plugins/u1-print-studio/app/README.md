@@ -5,6 +5,12 @@ desktop-local stdio plugin and an OAuth-protected Streamable HTTP endpoint for
 personal mobile developer testing. It does not slice, upload, start, pause,
 cancel, or send G-code.
 
+The remote `show_u1_status` result also includes a self-contained PNG status
+card. This lets a Codex host display the same fresh observation when it can call
+MCP tools but cannot mount an MCP Apps component. It is an inline tool result,
+not an external dashboard or public image URL. The local desktop stdio result
+keeps the interactive-widget path without adding a duplicate PNG.
+
 ## Local development
 
 The repository root `.env` supplies `MOONRAKER_BASE_URL`. Keep that file local.
@@ -98,6 +104,11 @@ The widget provides:
 - inline, Picture in Picture, and fullscreen display modes;
 - one responsive layout with iOS safe areas, dynamic viewport height, and
   touch-sized controls.
+
+The PNG fallback provides current progress, layer, tool, bed, time, file,
+camera availability, and observation time. It is static and intentionally has
+no camera pixels or controls. A new tool call produces a new observation and
+image.
 
 The relayed preview waits 1.5 seconds after each completed frame request. It is
 not the camera's advertised full-frame-rate WebRTC stream. This keeps the

@@ -1,7 +1,7 @@
 {
   "name": "u1-print-studio",
-  "version": "0.2.0+codex.20260825201641",
-  "description": "Set up, prepare, start, and monitor Snapmaker U1 prints with an interactive read-only camera and telemetry dashboard.",
+  "version": "0.2.0+codex.20260825203920",
+  "description": "Set up, prepare, start, and monitor Snapmaker U1 prints with read-only interactive and inline-image status cards.",
   "author": {
     "name": "Scott Chu"
   },
@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "U1 Print Studio",
     "shortDescription": "Live, beautiful, evidence-backed U1 status.",
-    "longDescription": "U1 Print Studio walks a new user through a personal Tailscale and passkey connection, keeps preparation and authorized print start separate, and adds a read-only live camera and telemetry dashboard with adaptive refresh, Picture in Picture, and fullscreen modes.",
+    "longDescription": "U1 Print Studio walks a new user through a personal Tailscale and passkey connection, keeps preparation and authorized print start separate, and adds read-only U1 status as an interactive camera dashboard or a portable inline image for non-component hosts.",
     "developerName": "Scott Chu",
     "category": "Developer Tools",
     "capabilities": [
@@ -20,6 +20,7 @@
       "Mobile setup",
       "Passkey authentication",
       "Interactive",
+      "Inline image fallback",
       "Picture in Picture"
     ],
     "defaultPrompt": [
