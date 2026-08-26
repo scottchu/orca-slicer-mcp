@@ -597,3 +597,56 @@ identifiers, and runtime data are intentionally not retained.
   immediately. Another call after more than 15 minutes remains the separate
   real-host renewal gate. No printer command was issued during diagnosis,
   implementation, deployment, or validation.
+
+### Continuous read-only camera relay
+
+- The moved diff and backup stash were inspected before editing. The stash
+  `move-u1-camera-media-relay-to-orca-worktree` remained untouched and was not
+  reapplied.
+- `bun install --frozen-lockfile` restored missing worktree dependencies without
+  changing `bun.lock`.
+- `bun run check`: passed after the final source-budget correction.
+- `bun test`: passed 29 tests with 144 assertions across application ticket and
+  lease policy, exact multipart HTTP routing, MCP result privacy, local and
+  remote PNG contracts, OAuth, widget fallback, and raw JPEG validation.
+- Skill Creator `quick_validate.py` passed for
+  `u1-mobile-status-setup` and `u1-monitor-print` using `uv run`.
+- `bun run bundle` produced the self-contained stdio artifact. Plugin Creator
+  validation passed for repository source, synchronized personal source, and
+  installed cache.
+- The plugin cachebuster helper replaced the prior suffix and the final
+  reinstall produced `0.2.0+codex.20260826005742`. Repository, personal-source,
+  and installed bundles share SHA-256
+  `6913657ebe92cbcfe372170023545080390953a2e96f9c65412a068e17b31fd1`.
+- An exact installed-cache stdio smoke listed the three local read-only tools,
+  returned a fresh reachable observation, and returned `text` plus a valid
+  1200 by 1500 PNG. The HTTP-only stream tool is intentionally absent from
+  stdio.
+- The first real-camera harness used a provisional 3-second plus 3-second frame
+  budget and did not deliver two frames within its 30-second lease. The
+  temporary harness was stopped. Reusing the established 20-second plus
+  10-second bounded source policy then delivered two complete JPEGs over one
+  multipart response in 1.9 seconds, HTTP 200, with the exact boundary and
+  430,390 transferred bytes. After abort-listener and backpressure-close
+  cleanup, the final synchronized source repeated the proof in 2.6 seconds with
+  428,954 bytes. No image was retained.
+- The live LaunchAgent was moved only from the canonical checkout to the
+  synchronized personal plugin source. Owner-only plist and OAuth-state backups
+  were created outside the repository, and OAuth state remained byte-for-byte
+  unchanged across restart.
+- Tailscale Funnel retained the unrelated root plus exact `/.well-known`,
+  `/auth`, `/health`, `/mcp`, and `/oauth` handlers. Deployment added only
+  `/media` mapped to the same loopback prefix.
+- Local and public health returned HTTP 200. Public OAuth metadata retained
+  authorization code, refresh token, PKCE S256, and only `u1.monitor`.
+  Unauthenticated MCP returned HTTP 401; exact media without a ticket returned
+  HTTP 401; an unknown media path returned HTTP 404; the unrelated root still
+  returned HTTP 200.
+- The current Codex conversation retained its pre-reinstall three-tool MCP
+  surface and later returned a stale offline observation. That is not treated
+  as current deployment or printer evidence. A new thread is required to prove
+  the remote four-tool inventory and mounted widget.
+- Static/software, exact public protocol, and real-printer JPEG evidence pass.
+  Mounted desktop and iOS continuous rendering, fallback behavior, Close, PiP,
+  fullscreen, and real-host OAuth renewal remain separate user-visible gates.
+- No printer control or G-code was implemented or invoked.

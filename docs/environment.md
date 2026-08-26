@@ -66,9 +66,11 @@ Remaining operating and product authorization boundaries are incomplete.
 - Placement and field of view: unknown
 - Lighting conditions: unknown
 - Snapshot or stream access: snapshot returned JPEG `1920x1080`; WebRTC stream
-  is advertised but was not exercised. Later PLA snapshots were usable for
-  in-progress diagnosis, while the lowered bed moved finished parts out of the
-  final frame
+  is advertised but was not exercised. A later bounded application relay
+  returned two complete validated snapshot JPEGs over one multipart response;
+  this does not establish WebRTC frame rate or mounted-host rendering. Later
+  PLA snapshots were usable for in-progress diagnosis, while the lowered bed
+  moved finished parts out of the final frame
 - Advertised target frame rate: 15 FPS during the status-view prototype. The
   user reports installed hardware encoding capable of 30 FPS; that capability
   was not advertised or benchmarked in this run, and the view does not cap it
@@ -76,14 +78,18 @@ Remaining operating and product authorization boundaries are incomplete.
 
 ## Operations host
 
-- Host type and operating system: unknown
-- Always-on expectation: unknown
+- Host type and operating system: personal macOS Mac Mini for the current
+  developer deployment; broader supported hosts remain unknown
+- Always-on expectation: the current self-hosted mobile path requires the Mac
+  Mini LaunchAgent and Tailscale Funnel to remain available
 - Printer network relationship: current validation client and printer are on a
   reachable private LAN; exact segmentation is unknown
 - Validation-host networking: system `curl` reached the printer, while direct
   Bun and Node sockets failed. The prototype uses a bounded, no-shell curl
   adapter for fixed read-only routes; cause and portability remain unknown
-- Service supervision and restart behavior: unknown
+- Service supervision and restart behavior: a user LaunchAgent runs the Bun
+  HTTP service from the synchronized personal plugin source on loopback; a
+  controlled restart preserved the owner-only OAuth state
 - Local storage constraints: unknown
 
 ## User communication
@@ -94,11 +100,16 @@ Remaining operating and product authorization boundaries are incomplete.
 
 ## Access boundary
 
-- Local-only versus remote access: unknown
-- Authentication mechanism: tested read-only endpoints returned successfully
-  without credentials; `/access/info` reports the current LAN client as trusted
-  with login not required. Control authorization and trust rules are untested
-- Authorized users or agents: unknown
+- Local-only versus remote access: Moonraker remains private LAN. A personal
+  standard-HTTPS Tailscale Funnel exposes exact U1 service paths, including the
+  ticketed `/media` prefix, while preserving an unrelated root service
+- Authentication mechanism: personal OAuth protects MCP with one `u1.monitor`
+  scope, short-lived access tokens, rotating refresh tokens, and an enrolled
+  user-verified passkey. Camera media requires a short-lived one-time ticket
+  minted by the authenticated Monitor tool. The trusted LAN Moonraker boundary
+  is not treated as product authorization
+- Authorized users or agents: one enrolled owner for the current personal
+  developer deployment; broader identity architecture is undecided
 - Audit and retention expectations: unknown
 
 ## Preparation-to-operations handoff
@@ -151,3 +162,9 @@ capability, and evidence path. Unknowns remain unknown until checked.
   available for host visual validation. See the
   [implementation journal](logs/2026-08-25-u1-status-view-prototype.md) and
   [derived knowledge](knowledge/u1-status-view.md).
+- **2026-08-25, continuous read-only camera relay:** an application-owned
+  one-time ticket and bounded lease drove two validated real-camera JPEGs over
+  one exact multipart HTTP route. The public deployment added only the
+  ticketed `/media` handler and preserved the existing root and OAuth/MCP
+  routes. See the
+  [chronological journal](logs/2026-08-25-u1-continuous-camera-relay.md).

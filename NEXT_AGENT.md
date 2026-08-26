@@ -12,12 +12,13 @@ Do not use prior chat history as authority when it conflicts with these files.
 
 ## Exact baseline
 
-- Branch point from `main`: `e4a7495`
+- Branch point from `main`: `317dfd1`
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
 - Product runtime: one repo-local read-only MCP Apps status-view prototype with
   desktop stdio and a personal OAuth-protected standard-HTTPS Tailscale Funnel
-  endpoint;
-  preparation, control, and persistent monitoring remain unimplemented
+  endpoint. The remote surface has a bounded continuous camera relay whose
+  application policy is separate from MCP and exact-route HTTP; preparation,
+  control, and persistent monitoring remain unimplemented
 - Product evidence: planning and product-boundary records; local Orca and
   Snapmaker Orca discovery; one PETG and two PLA jobs through distinct
   preparation, handoff, observation, and telemetry-completion evidence; plus
@@ -25,66 +26,47 @@ Do not use prior chat history as authority when it conflicts with these files.
 
 ## Immediate task
 
-Current execution order is the user-directed status-view host validation pass.
-Continue with:
+Current execution order is the user-directed continuous-camera host validation
+pass. Continue with:
 
-1. Read the [pilot log](docs/logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md)
-   as chronology, then the separate
-   [provisional knowledge](docs/knowledge/snapmaker-orca-cli-preparation.md).
-2. Read decisions 0007 and 0008, both 2026-08-25 journals, and the plugin under
-   `plugins/u1-print-studio/`. The skills remain workflow guidance; only the
-   read-only status view is a runtime prototype.
-3. The direct private-LAN camera iframe failed in the desktop component. The
-   plugin now uses decision 0009's same-origin server relay and a third
-   read-only `get_u1_camera_frame` tool. A later mounted offline card was traced
-   to a stale in-thread MCP process despite successful current LAN probes. The
-   slow-camera budget is now 20 seconds plus one 10-second retry under a
-   40-second MCP timeout. Twelve status tests with 54 assertions passed before
-   the remote-auth slice, and an installed bundle returned reachable status plus
-   a real relayed JPEG.
-4. Treat iOS as a separate backend and host loop. Decisions 0010 through 0013 select
-   a personal OAuth-protected Tailscale Funnel endpoint on standard HTTPS for
-   developer testing.
-   The Mac Mini endpoint is live, rejects unauthenticated MCP requests, and the
-   intended phone passkey is enrolled. A first ChatGPT fetch against `:8443`
-   failed before OAuth despite healthy public-edge probes. Exact port-443 path
-   handlers now preserve the existing root service and pass public metadata and
-   unauthenticated-challenge checks. The user then completed the standard-port
-   OAuth connection: the host exposed exactly `show_u1_status`,
-   `get_u1_status`, and `get_u1_camera_frame`, and an authenticated
-   `show_u1_status` call returned fresh complete telemetry. The remote render
-   result now adds a standard inline PNG derived from the same observation, so
-   non-component Codex hosts do not need an external dashboard. The original
-   authorization server then stranded that connection after its 15-minute
-   access token expired because it issued no refresh token. Decision 0013 adds
-   rotating persisted refresh tokens without expanding `u1.monitor`; the live
-   backend is upgraded and its original signing key, clients, and passkey were
-   preserved. The user confirmed that the repaired connection works
-   immediately. Repeat a read-only status call after more than 15 minutes to
-   prove host refresh. Test the relayed camera and interactive controls
-   separately only if that host mounts the MCP Apps component. Never expose
-   Moonraker or its camera directly.
-5. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
-   with explicit complete profiles. Record it as a new log. Do not upload or
-   start it.
-6. Run non-user negative fixtures for `wipe_tower_filament: "0"` and missing
+1. Read decision 0014 and the
+   [continuous-relay journal](docs/logs/2026-08-25-u1-continuous-camera-relay.md),
+   then inspect the plugin. The application service owns tickets, leases,
+   concurrency, duration, and serial iteration; MCP only grants a private URL;
+   exact-route HTTP only frames multipart JPEG; and `u1-status` only supplies
+   validated raw JPEG observations.
+2. The deployed personal plugin is
+   `0.2.0+codex.20260826005742`. Its exact `/media` Funnel handler preserves the
+   unrelated root and existing OAuth/MCP routes. Missing tickets return 401,
+   unknown media paths return 404, OAuth state survived restart unchanged, and
+   one bounded real-printer proof delivered two JPEGs over one multipart
+   response. Do not expose Moonraker or its camera directly.
+3. Start a fresh authenticated desktop or mobile thread because the prior
+   conversation cannot hot-reload tools. Confirm exactly four remote read-only
+   tools: `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
+   `open_u1_camera_stream`. Stop if any control tool is present.
+4. If the component mounts, test one `Go Live` intent and record continuous
+   rendering, snapshot fallback if exercised, Close, PiP, and fullscreen as
+   separate host evidence. Record desktop and iOS outcomes separately. If only
+   the PNG appears, that is a valid non-component result but not camera evidence.
+5. Make another read-only status call after the access-token lifetime to close
+   the real-host refresh-token gate. Do not infer renewal from local tests or
+   immediate access.
+6. Then use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice
+   repetition with explicit complete profiles. Record it as a new log. Do not
+   upload or start it.
+7. Run non-user negative fixtures for `wipe_tower_filament: "0"` and missing
    inherited filament fields. Determine whether exit `139` and tool-inventory
    collapse reproduce; do not encode one-run correlations as universal rules.
-7. Repeat successful dry slices, explain any hash differences, and build a
-   regression matrix. Use the thin skills on repeated requests and record where
-   they reduce confusion or still require ad hoc work. Build a shared CLI only
-   after that evidence proves it useful; broader MCP and control surfaces remain
-   later.
-8. Exercise support-enforcer and blocker round-trip only after the baseline
-   fixtures pass. Preserve user-painted support projects but do not synthesize
-   facet painting without golden round-trip fixtures.
-9. Resume Printer Operations with a compatible `printer.objects.subscribe`
-   client, reconnect and freshness behavior, U1 vendor semantics, always-on
-   host, notification destination, and network/authentication boundary.
+8. Repeat successful dry slices, explain hash differences, and build a
+   regression matrix. Exercise support-enforcer and blocker round-trip only
+   after baseline fixtures pass; preserve user-painted support projects.
+9. Resume Printer Operations with `printer.objects.subscribe`, reconnect and
+   freshness behavior, U1 vendor semantics, notification destination, and the
+   remaining persistent-monitor boundary.
 10. Keep the production distribution model open. The current self-hosted
-    edition needs one always-on LAN agent per printer owner. Compare that with a
-    hosted MCP and identity service plus a per-owner outbound LAN connector;
-    do not mistake Secure MCP Tunnel for a public distribution endpoint.
+    edition needs one always-on LAN agent per printer owner; a hosted MCP plus
+    outbound LAN connector remains a separate decision.
 
 Use `docs/orca-preparation-findings.md` as the discovery boundary. Draft the
 review-bundle and prepared-artifact manifest from observed output, then record

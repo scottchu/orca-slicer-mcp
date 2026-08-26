@@ -602,7 +602,7 @@
           </svg>
           <span>Waiting for camera snapshot</span>
         </div>
-        <img id="snapshot" alt="Latest Snapmaker U1 camera snapshot" />
+        <img id="snapshot" alt="Latest Snapmaker U1 camera snapshot" referrerpolicy="no-referrer" />
 
         <div class="camera-top">
           <span class="camera-label"><span class="pulse"></span> U1 Camera</span>
@@ -729,10 +729,11 @@
       let refreshTimer = null;
       let refreshDeadline = null;
       let refreshTicker = null;
-      let liveTimer = null;
+      let snapshotFallbackTimer = null;
       let refreshing = false;
       let cameraRefreshing = false;
       let livePreview = false;
+      let relayRendering = false;
       let rpcId = 0;
       const pendingRequests = new Map();
       const hosted = window.parent !== window;
@@ -781,10 +782,13 @@
 
       const closeLive = () => {
         livePreview = false;
-        clearTimeout(liveTimer);
+        relayRendering = false;
+        clearTimeout(snapshotFallbackTimer);
+        elements.snapshot.removeAttribute("src");
         elements.camera.dataset.cameraMode = "snapshot";
         elements.cameraTitle.textContent = "Build plate view";
         elements.cameraDetail.textContent = "Secure snapshot relayed by U1 Print Studio";
+        if (hosted && toolOutput?.camera?.available) void refreshCameraFrame();
       };
 
       const renderCamera = () => {
@@ -800,6 +804,12 @@
       });
 
       elements.snapshot.addEventListener("error", () => {
+        if (livePreview && relayRendering) {
+          relayRendering = false;
+          elements.cameraDetail.textContent = "Continuous relay unavailable · using snapshot fallback";
+          void refreshCameraFrame();
+          return;
+        }
         elements.camera.classList.remove("has-snapshot");
         elements.cameraDetail.textContent = "Camera image could not be displayed";
       });
@@ -902,6 +912,8 @@
           const payload = message.params?.structuredContent ?? message.params;
           if (payload?.mediaType !== undefined) {
             applyCameraFrame(message.params);
+          } else if (payload?.maxDurationSeconds !== undefined) {
+            // The direct Go Live request owns this one-time stream grant.
           } else {
             applyStatusResult(message.params);
           }
@@ -957,9 +969,47 @@
           elements.cameraDetail.textContent = `Camera refresh failed: ${error?.message ?? "unknown error"}`;
         } finally {
           cameraRefreshing = false;
-          clearTimeout(liveTimer);
-          if (livePreview) liveTimer = setTimeout(refreshCameraFrame, 1500);
+          clearTimeout(snapshotFallbackTimer);
+          if (livePreview && !relayRendering) {
+            snapshotFallbackTimer = setTimeout(refreshCameraFrame, 1500);
+          }
           window.openai?.notifyIntrinsicHeight?.();
+        }
+      };
+
+      const openCameraStream = async () => {
+        if (!hosted || !toolOutput?.camera?.available) return;
+        livePreview = true;
+        relayRendering = false;
+        clearTimeout(snapshotFallbackTimer);
+        elements.camera.dataset.cameraMode = "live";
+        elements.cameraTitle.textContent = "Live build plate";
+        elements.cameraDetail.textContent = "Opening secure continuous relay…";
+
+        try {
+          await bridgeReady;
+          const response = await rpcRequest("tools/call", {
+            name: "open_u1_camera_stream",
+            arguments: {},
+          });
+          if (!livePreview) return;
+          const stream = response?._meta?.cameraStream ?? response?.meta?.cameraStream;
+          const streamUrl = stream?.url;
+          if (
+            response?.structuredContent?.available !== true ||
+            typeof streamUrl !== "string" ||
+            !streamUrl.startsWith("https://")
+          ) {
+            throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
+          }
+          relayRendering = true;
+          elements.cameraDetail.textContent = "Secure continuous camera relay";
+          elements.snapshot.src = streamUrl;
+        } catch {
+          if (!livePreview) return;
+          relayRendering = false;
+          elements.cameraDetail.textContent = "Continuous relay unavailable · using snapshot fallback";
+          void refreshCameraFrame();
         }
       };
 
@@ -1017,14 +1067,7 @@
 
       elements.refresh.addEventListener("click", refreshStatus);
 
-      elements.goLive.addEventListener("click", () => {
-        if (!toolOutput?.camera?.available) return;
-        livePreview = true;
-        elements.camera.dataset.cameraMode = "live";
-        elements.cameraTitle.textContent = "Live build plate";
-        elements.cameraDetail.textContent = "Starting secure live preview…";
-        void refreshCameraFrame();
-      });
+      elements.goLive.addEventListener("click", openCameraStream);
 
       elements.closeLive.addEventListener("click", closeLive);
 

@@ -26,7 +26,19 @@ normalized U1Status observation
         +--> structuredContent for the model and widget
         +--> text summary for every host
         +--> MCP Apps HTML resource for component-capable hosts
-        +--> PNG status projection for remote non-component hosts
+        +--> PNG status projection for any non-component host
+
+user Go Live intent
+        |
+        | one authenticated MCP call; URL stays in result _meta
+        v
+camera relay application service
+  one-time ticket -> lease -> bounded serial frame iteration
+        |                                      ^
+        | application ports                    | validated raw JPEG
+        v                                      |
+exact media HTTP adapter              u1-status camera adapter
+  GET /media/camera.mjpeg             fixed private Moonraker route
 ```
 
 The same observation has multiple representations. The HTML widget and PNG
@@ -43,27 +55,34 @@ inbound protocol, not the core product boundary.
 | Remote transport | `app/src/server.ts` | Terminates Streamable HTTP after the OAuth boundary and invokes the same MCP app |
 | Identity boundary | `app/src/personal-oauth.ts` | Personal authorization code, PKCE, passkey verification, token audience, and `u1.monitor` scope |
 | Observation adapter | `app/src/u1-status.ts` | Queries the allowlisted Moonraker status and camera paths and normalizes their response |
+| Camera relay application service | `app/src/application/camera-relay.ts` | Owns ticket, lease, concurrency, duration, and serial frame-iteration policy without MCP or HTTP types |
+| Media inbound adapter | `app/src/adapters/camera-media-http.ts` | Serves only the exact ticketed multipart MJPEG route and maps HTTP outcomes |
+| Ticket codec adapter | `app/src/adapters/camera-ticket-codec.ts` | Issues opaque random ticket material and hashes it for in-memory lookup |
 | Domain-shaped projection | `U1Status` | One versioned, timestamped current observation used by all presenters |
 | Interactive presenter | `public/widget.html` | Renders and refreshes status in MCP Apps hosts and requests relayed camera frames |
 | Static presenter | `status-card-image.ts` | Renders a portable PNG from one `U1Status` snapshot |
 | Workflow skills | `skills/` | Guide setup, preparation, authorized start, and monitoring without becoming runtime authority |
 
-The important present limitation is that `app.ts` calls `readU1Status`
-directly. The prototype has a typed dependency seam for tests, but it does not
-yet implement the full `QueryCurrentPrinterState` application use case,
-resident monitor, observation store, or `ObservationSource` port described in
-the target architecture.
+The camera relay is the first implemented application service with explicit
+transport-independent ports. The important present limitation is that
+`app.ts` still calls `readU1Status` directly for telemetry. The prototype has a
+typed dependency seam for tests, but it does not yet implement the full
+`QueryCurrentPrinterState` application use case, resident monitor, observation
+store, or `ObservationSource` port described in the target architecture.
 
 ## MCP interface
 
-The MCP surface has one UI resource and exactly three read-only tools.
+The remote HTTP MCP surface has one UI resource and exactly four read-only
+tools. The desktop stdio surface omits the stream-opening tool because it has no
+HTTPS media route and keeps the three status/snapshot tools.
 
 | MCP member | Semantic category | Result contract |
 | --- | --- | --- |
-| `show_u1_status` | Observe and present | Text plus `U1Status`; links the HTML resource; remote OAuth calls also receive a PNG card |
+| `show_u1_status` | Observe and present | Text, `U1Status`, and a PNG card; links the HTML resource |
 | `get_u1_status` | Observe | Text plus fresh `U1Status`; no UI resource and no image, so widget refresh stays quiet |
 | `get_u1_camera_frame` | Observe | Camera acquisition facts in structured data; JPEG bytes stay in widget-private result metadata |
-| `ui://u1-print-studio/status-v2.html` | Presentation resource | Self-contained MCP Apps HTML with no private LAN origins |
+| `open_u1_camera_stream` | Observe | Remote-only one-time relay grant; expiry and duration are model-readable while the URL stays in widget-private result metadata |
+| `ui://u1-print-studio/status-v3.html` | Presentation resource | Self-contained MCP Apps HTML with only the public media origin in its resource CSP |
 
 `structuredContent` is the stable machine-readable projection. `content` is
 what a model or ordinary chat host can consume. Result `_meta` carries
@@ -75,8 +94,9 @@ The local route is:
 
 ```text
 Codex desktop -> stdio MCP -> show_u1_status
-              -> text + U1Status + UI resource link
-              -> desktop mounts the interactive widget
+              -> text + U1Status + PNG + UI resource link
+              -> desktop mounts the widget or displays the PNG
+              -> Go Live falls back to get_u1_camera_frame snapshots
 ```
 
 The cross-device route is:
@@ -86,6 +106,8 @@ Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
               -> show_u1_status
               -> text + U1Status + PNG + UI resource link
               -> host mounts the widget if supported, otherwise shows the PNG
+              -> Go Live calls open_u1_camera_stream once
+              -> widget loads one-time /media/camera.mjpeg URL
 ```
 
 Tailscale Funnel provides public TLS routing. OAuth authenticates and scopes the
@@ -134,6 +156,12 @@ does not implement Preparation or Control.
   status rather than vendor response bodies.
 - Printer and camera addresses remain private; the widget never connects to
   them directly.
+- MCP maps an authenticated `Go Live` request to an application use case but
+  does not own tickets, leases, concurrency, timing, or frame iteration.
+- The media HTTP adapter knows multipart framing and status codes but not how
+  tickets are issued or which printer route supplies frames.
+- The printer adapter yields validated raw JPEG observations but knows nothing
+  about MCP tools, browser URLs, HTTP responses, or relay leases.
 - OAuth identity and scope answer who may call Monitor. A future upload, start,
   pause, resume, or cancel must still have a separate action-specific
   authorization, command intent, adapter result, and post-action observation.

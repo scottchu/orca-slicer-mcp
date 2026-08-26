@@ -77,14 +77,28 @@ afterEach(async () => {
   await Promise.all(closeCallbacks.splice(0).map((close) => close()));
 });
 
-async function connectClient(options: { oauth?: boolean } = {}) {
+async function connectClient(options: { oauth?: boolean; relay?: boolean } = {}) {
   const server = createAppServer({
     readStatus: async () => ({ status, metadata }),
     readCameraFrame: async () => ({
       frame: cameraFrame,
       metadata: cameraMetadata,
     }),
-  }, options.oauth ? { oauthScopes: ["u1.monitor"] } : {});
+    ...(options.relay
+      ? {
+          openCameraStream: () => ({
+            url: "https://u1.example/media/camera.mjpeg?ticket=private-ticket",
+            expiresAt: "2026-08-25T13:22:02.688Z",
+            maxDurationSeconds: 1800,
+          }),
+        }
+      : {}),
+  }, options.oauth
+    ? {
+        oauthScopes: ["u1.monitor"],
+        ...(options.relay ? { cameraResourceOrigin: "https://u1.example" } : {}),
+      }
+    : {});
   const client = new Client({ name: "u1-print-studio-test", version: "1.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
@@ -157,16 +171,40 @@ describe("U1 status MCP App contract", () => {
     expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
   });
 
-  test("returns model-readable status without private camera URLs", async () => {
+  test("advertises only the public media origin when the remote relay is composed", async () => {
+    const client = await connectClient({ oauth: true, relay: true });
+    const result = await client.readResource({ uri: WIDGET_URI });
+    const resource = result.contents[0];
+
+    expect(resource?._meta?.ui).toMatchObject({
+      csp: {
+        connectDomains: [],
+        resourceDomains: ["https://u1.example"],
+        frameDomains: [],
+      },
+    });
+    expect("text" in resource ? resource.text : "").not.toContain(
+      "MOONRAKER_BASE_URL"
+    );
+  });
+
+  test("returns model-readable status and a portable PNG locally", async () => {
     const client = await connectClient();
     const result = await client.callTool({ name: "show_u1_status", arguments: {} });
 
     expect(result.structuredContent).toEqual(status);
     expect(result._meta).toEqual(metadata);
     expect(result._meta?.["openai/outputTemplate"]).toBeUndefined();
-    expect(result.content).toEqual([
-      { type: "text", text: "U1 is printing at 67.4%." },
-    ]);
+    expect(Array.isArray(result.content)).toBe(true);
+    if (!Array.isArray(result.content)) throw new Error("Expected tool content");
+    expect(result.content[0]).toEqual({
+      type: "text",
+      text: "U1 is printing at 67.4%.",
+    });
+    const image = result.content[1];
+    expect(image?.type).toBe("image");
+    if (image?.type !== "image") throw new Error("Expected image content");
+    expect(image.mimeType).toBe("image/png");
   });
 
   test("adds a portable PNG status card to the remote render result", async () => {
@@ -215,10 +253,48 @@ describe("U1 status MCP App contract", () => {
     ]);
     expect(JSON.stringify(result.structuredContent)).not.toContain("base64");
   });
+
+  test("keeps the one-time camera stream URL out of model-readable output", async () => {
+    const client = await connectClient({ oauth: true, relay: true });
+    const listed = await client.listTools();
+    const stream = listed.tools.find(
+      (tool) => tool.name === "open_u1_camera_stream"
+    );
+    expect(listed.tools.map((tool) => tool.name)).toEqual([
+      "show_u1_status",
+      "get_u1_status",
+      "get_u1_camera_frame",
+      "open_u1_camera_stream",
+    ]);
+    expect(stream?.annotations).toMatchObject({
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: false,
+    });
+
+    const result = await client.callTool({
+      name: "open_u1_camera_stream",
+      arguments: {},
+    });
+    expect(result.structuredContent).toEqual({
+      schemaVersion: 1,
+      available: true,
+      expiresAt: "2026-08-25T13:22:02.688Z",
+      maxDurationSeconds: 1800,
+      reason: null,
+    });
+    expect(result._meta).toEqual({
+      cameraStream: {
+        url: "https://u1.example/media/camera.mjpeg?ticket=private-ticket",
+      },
+    });
+    expect(JSON.stringify(result.content)).not.toContain("private-ticket");
+    expect(JSON.stringify(result.structuredContent)).not.toContain("private-ticket");
+  });
 });
 
 describe("camera-first widget contract", () => {
-  test("keeps relayed snapshot, live preview, close, refresh, PiP, and fullscreen paths", () => {
+  test("keeps snapshot fallback and opens one continuous relay per live intent", () => {
     const cameraIndex = WIDGET_HTML.indexOf('class="camera"');
     const contentIndex = WIDGET_HTML.indexOf('class="content"');
 
@@ -228,14 +304,17 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain('id="go-live"');
     expect(WIDGET_HTML).toContain('id="close-live"');
     expect(WIDGET_HTML).toContain('name: "get_u1_camera_frame"');
+    expect(WIDGET_HTML).toContain('name: "open_u1_camera_stream"');
     expect(WIDGET_HTML).toContain('data:image/jpeg;base64,');
-    expect(WIDGET_HTML).toContain('liveTimer = setTimeout(refreshCameraFrame, 1500)');
+    expect(WIDGET_HTML).toContain('snapshotFallbackTimer = setTimeout(refreshCameraFrame, 1500)');
+    expect(WIDGET_HTML).toContain('elements.snapshot.src = streamUrl');
+    expect(WIDGET_HTML).toContain('referrerpolicy="no-referrer"');
     expect(WIDGET_HTML).toContain('name: "get_u1_status"');
     expect(WIDGET_HTML).toContain('requestDisplayMode("pip")');
     expect(WIDGET_HTML).toContain('requestDisplayMode("fullscreen")');
     expect(WIDGET_HTML).not.toContain('id="live-stream"');
     expect(WIDGET_HTML).not.toContain("snapshotUrl");
-    expect(WIDGET_HTML).not.toContain("streamUrl");
+    expect(WIDGET_HTML).not.toContain("MOONRAKER_BASE_URL");
   });
 
   test("supports iPhone viewports, safe areas, and touch targets", () => {
