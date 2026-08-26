@@ -357,6 +357,9 @@ describe("camera-first widget contract", () => {
     );
     expect(WIDGET_HTML).toContain('class="camera-mode" id="camera-detail"');
     expect(WIDGET_HTML).toContain('justify-content: space-between;');
+    expect(WIDGET_HTML).toContain(
+      "align-items: center;\n        gap: 8px;\n        padding: 0 12px;"
+    );
     expect(WIDGET_HTML).toContain('Snapshot fallback · ${observedLabel}');
     expect(WIDGET_HTML).toContain('Live · ${fpsLabel} FPS');
     expect(WIDGET_HTML).toContain('setCameraMode(relayRendering ? "live" : "fallback")');
