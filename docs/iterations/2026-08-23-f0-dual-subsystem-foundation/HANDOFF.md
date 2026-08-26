@@ -104,10 +104,11 @@ is not yet an accepted product backend.
   with inactive fully consumed storage, no exception, parked tools, and zero
   heater targets. Phone layout and relayed-camera rendering remain visual
   checks rather than inferred outcomes.
-- decision 0012 adds a portable 1200 by 1500 PNG status projection to remote
-  `show_u1_status` results for Codex hosts that do not mount MCP Apps
+- decision 0012 adds a portable 1200 by 1500 PNG status projection to every
+  `show_u1_status` result for Codex hosts that do not mount MCP Apps
   components. It uses the same normalized observation as the widget, exposes
-  no URL or control, and leaves local stdio plus remote refresh data-only. A
+  no URL or control, and leaves `get_u1_status` refresh data-only. OAuth is not
+  used as a proxy for iframe capability. A
   live complete observation was rendered and visually inspected locally;
   Codex-mobile display remains a user-visible check.
 - after the first phone rendering was visually accepted, the user asked for a

@@ -54,7 +54,10 @@ Continue with:
    `get_u1_status`, and `get_u1_camera_frame`, and an authenticated
    `show_u1_status` call returned fresh complete telemetry. The remote render
    result now adds a standard inline PNG derived from the same observation, so
-   non-component Codex hosts do not need an external dashboard. The original
+   non-component Codex hosts do not need an external dashboard. Local stdio
+   `show_u1_status` now carries the same fallback because OAuth presence does
+   not identify whether a host can mount the iframe; `get_u1_status` remains
+   data-only. The original
    authorization server then stranded that connection after its 15-minute
    access token expired because it issued no refresh token. Decision 0013 adds
    rotating persisted refresh tokens without expanding `u1.monitor`; the live

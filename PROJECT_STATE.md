@@ -72,9 +72,11 @@ Last updated: 2026-08-25
   standard-port connection completed personal OAuth and exposed exactly the
   three read-only tools. An authenticated `show_u1_status` call returned fresh
   completion telemetry. Decision 0012 now adds a dependency-free inline PNG
-  status projection to the remote render result while preserving the existing
-  local desktop widget path. The PNG was generated and visually inspected from
-  a fresh real-printer observation. The first phone render was accepted and
+  status projection to every `show_u1_status` render result while preserving
+  the interactive widget path. OAuth is not treated as a proxy for component
+  support: hosts that cannot mount the iframe can render the same-observation
+  PNG fallback. The PNG was generated and visually inspected from a fresh
+  real-printer observation. The first phone render was accepted and
   enlarged in the current portrait layout. A later connection failure was
   isolated to the original authorization server issuing only a 15-minute access
   token: Codex reported `oauth_refresh_token_missing` while the public service
