@@ -2,28 +2,34 @@ import { readFileSync } from "node:fs";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import embeddedDashboardHostFile from "../public/status-dashboard-host.html" with { type: "file" };
 
 import {
   cameraFramePayload,
   cameraStreamPayload,
   resultPayload,
 } from "./app.js";
-import type { OpenedCameraStream } from "./application/camera-relay.js";
+import type {
+  CameraIceCandidate,
+  CameraWebRtcSessionController,
+} from "./application/camera-webrtc.js";
 import {
   readU1CameraFrame,
   readU1Status,
 } from "./u1-status.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
+const IS_COMPILED = currentDirectory.startsWith("/$bunfs/");
 const DASHBOARD_HOST_PATH = path.resolve(
-  currentDirectory,
-  "..",
+  currentDirectory.startsWith("/$bunfs/")
+    ? currentDirectory
+    : path.resolve(currentDirectory, ".."),
   "public",
   "status-dashboard-host.html"
 );
 const DASHBOARD_PATH = "/dashboard";
 const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
-const MAX_REQUEST_BYTES = 4 * 1024;
+const MAX_REQUEST_BYTES = 128 * 1024;
 
 type StatusReader = typeof readU1Status;
 type CameraFrameReader = typeof readU1CameraFrame;
@@ -31,7 +37,7 @@ type CameraFrameReader = typeof readU1CameraFrame;
 export type StatusDashboardDependencies = {
   readStatus?: StatusReader;
   readCameraFrame?: CameraFrameReader;
-  openCameraStream?: () => OpenedCameraStream;
+  cameraSessions?: CameraWebRtcSessionController;
 };
 
 function json(
@@ -88,7 +94,14 @@ export function createStatusDashboardHandler(
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
       });
-      res.end(readFileSync(DASHBOARD_HOST_PATH, "utf8"));
+      res.end(
+        IS_COMPILED
+          ? readFileSync(
+              embeddedDashboardHostFile as unknown as string,
+              "utf8"
+            )
+          : readFileSync(DASHBOARD_HOST_PATH, "utf8")
+      );
       return true;
     }
 
@@ -105,6 +118,16 @@ export function createStatusDashboardHandler(
         body && typeof body === "object" && "name" in body
           ? (body as { name?: unknown }).name
           : null;
+      const argumentsValue =
+        body && typeof body === "object" && "arguments" in body
+          ? (body as { arguments?: unknown }).arguments
+          : {};
+      const argumentsObject =
+        argumentsValue &&
+        typeof argumentsValue === "object" &&
+        !Array.isArray(argumentsValue)
+          ? (argumentsValue as Record<string, unknown>)
+          : {};
 
       if (name === "get_u1_status") {
         const { status, metadata } = await readStatus();
@@ -116,8 +139,45 @@ export function createStatusDashboardHandler(
         json(res, 200, cameraFramePayload(frame, metadata));
         return true;
       }
-      if (name === "open_u1_camera_stream" && dependencies.openCameraStream) {
-        json(res, 200, cameraStreamPayload(dependencies.openCameraStream()));
+      if (name === "open_u1_camera_stream" && dependencies.cameraSessions) {
+        json(res, 200, cameraStreamPayload(await dependencies.cameraSessions.open()));
+        return true;
+      }
+      if (name === "answer_u1_camera_stream" && dependencies.cameraSessions) {
+        json(
+          res,
+          200,
+          await dependencies.cameraSessions.answer(
+            String(argumentsObject.sessionId ?? ""),
+            String(argumentsObject.sdp ?? "")
+          )
+        );
+        return true;
+      }
+      if (
+        name === "add_u1_camera_ice_candidates" &&
+        dependencies.cameraSessions
+      ) {
+        json(
+          res,
+          200,
+          await dependencies.cameraSessions.addCandidates(
+            String(argumentsObject.sessionId ?? ""),
+            Array.isArray(argumentsObject.candidates)
+              ? argumentsObject.candidates as CameraIceCandidate[]
+              : []
+          )
+        );
+        return true;
+      }
+      if (name === "close_u1_camera_stream" && dependencies.cameraSessions) {
+        json(
+          res,
+          200,
+          dependencies.cameraSessions.close(
+            String(argumentsObject.sessionId ?? "")
+          )
+        );
         return true;
       }
 

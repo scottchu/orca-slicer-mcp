@@ -61,11 +61,22 @@ async function startFixture() {
       },
       metadata: { cameraFrame: { dataUrl: "data:image/jpeg;base64,/9j/2Q==" } },
     }),
-    openCameraStream: () => ({
-      url: "http://127.0.0.1:8788/media/camera.webrtc?ticket=dashboard-ticket",
-      expiresAt: "2026-08-26T12:01:00.000Z",
-      maxDurationSeconds: 1800,
-    }),
+    cameraSessions: {
+      open: async () => ({
+        sessionId: "dashboard-session-token",
+        type: "offer",
+        sdp: "v=0\r\ndashboard-offer\r\n",
+        iceServers: [],
+        expiresAt: "2026-08-26T12:01:00.000Z",
+        maxDurationSeconds: 1800,
+      }),
+      answer: async () => ({ accepted: true }),
+      addCandidates: async (_sessionId, candidates) => ({
+        accepted: true,
+        candidateCount: candidates.length,
+      }),
+      close: () => ({ closed: true }),
+    },
   });
   const server = createServer(async (req, res) => {
     const url = new URL(req.url ?? "/", "http://127.0.0.1");
@@ -136,11 +147,11 @@ describe("standalone status dashboard", () => {
 
   test("exposes only the widget's read-only status and camera calls", async () => {
     const origin = await startFixture();
-    const call = async (name: string) => {
+    const call = async (name: string, argumentsValue = {}) => {
       const response = await fetch(`${origin}/dashboard/tools/call`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, arguments: argumentsValue }),
       });
       return { response, body: await response.json() };
     };
@@ -157,9 +168,27 @@ describe("standalone status dashboard", () => {
 
     const stream = await call("open_u1_camera_stream");
     expect(stream.response.status).toBe(200);
-    expect(stream.body._meta.cameraStream.url).toStartWith(
-      "http://127.0.0.1:8788/media/camera.webrtc"
-    );
+    expect(stream.body._meta.cameraStream).toMatchObject({
+      transport: "mcp-apps-tools",
+      sessionId: "dashboard-session-token",
+    });
+
+    const answer = await call("answer_u1_camera_stream", {
+      sessionId: "dashboard-session-token",
+      sdp: "v=0\r\nanswer\r\n",
+    });
+    expect(answer.response.status).toBe(200);
+
+    const candidates = await call("add_u1_camera_ice_candidates", {
+      sessionId: "dashboard-session-token",
+      candidates: [{ candidate: "candidate:fixture" }],
+    });
+    expect(candidates.response.status).toBe(200);
+
+    const close = await call("close_u1_camera_stream", {
+      sessionId: "dashboard-session-token",
+    });
+    expect(close.response.status).toBe(200);
 
     const control = await call("start_print");
     expect(control.response.status).toBe(400);

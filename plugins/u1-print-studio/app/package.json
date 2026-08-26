@@ -7,8 +7,11 @@
     "dashboard": "U1_STATUS_DASHBOARD=1 PORT=8788 bun --env-file=../../../.env --watch src/server.ts",
     "dashboard:tailscale": "U1_STATUS_DASHBOARD=1 U1_DASHBOARD_TAILSCALE_PORT=8444 PORT=8788 bun --env-file=../../../.env --watch src/server.ts",
     "start": "bun --env-file=../../../.env run src/server.ts",
-    "stdio": "bun --env-file=../../../.env run src/stdio.ts",
-    "bundle": "bun build src/stdio.ts --target=bun --outfile=dist/stdio.js",
+    "stdio": "bun --env-file=../../../.env run src/stdio-main.ts",
+    "bundle": "bun build src/stdio-main.ts --target=bun --outdir=dist --entry-naming=stdio.js --asset-naming=[name].[ext]",
+    "bundle:runtime": "bun run src/build-runtime.ts",
+    "setup": "bun run src/cli.ts setup",
+    "doctor": "bun run src/cli.ts doctor",
     "check": "tsc --noEmit",
     "test": "bun test src/*.test.ts"
   },
@@ -16,7 +19,8 @@
     "@modelcontextprotocol/ext-apps": "^1.0.1",
     "@modelcontextprotocol/sdk": "^1.20.2",
     "@simplewebauthn/server": "^13.3.2",
-    "jose": "^6.2.10"
+    "jose": "^6.2.10",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/bun": "^1.4.0",

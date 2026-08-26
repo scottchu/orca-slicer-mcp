@@ -21,7 +21,8 @@ silently changed.
 | [0012](0012-return-an-image-fallback-for-non-component-hosts.md) | Return an image fallback for non-component hosts | Partially superseded by 0014 |
 | [0013](0013-rotate-personal-oauth-refresh-tokens.md) | Rotate personal OAuth refresh tokens | Accepted for personal developer testing |
 | [0014](0014-separate-continuous-camera-relay-from-mcp-and-http.md) | Separate the continuous camera relay from MCP and HTTP | Partially superseded by 0015 |
-| [0015](0015-use-webrtc-camerastreamer-for-live-presentation.md) | Use webrtc-camerastreamer for live camera presentation | Accepted for the read-only prototype |
+| [0015](0015-use-webrtc-camerastreamer-for-live-presentation.md) | Use webrtc-camerastreamer for live camera presentation | Partially superseded by 0016 |
+| [0016](0016-use-local-connector-and-mcp-apps-bridge.md) | Use a local connector and the MCP Apps bridge for hosted signaling | Accepted for the F0 local-first rollout slice |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.

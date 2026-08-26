@@ -20,9 +20,10 @@ The intended operations loop is:
 observe -> explain -> notify or propose -> authorize -> act -> verify
 ```
 
-The project is currently in discovery and foundation work. There is no working
-OrcaSlicer or printer integration yet, and no claim of printable output,
-autonomous control, or unattended-safe printer operation.
+The project is currently in discovery and foundation work. A narrow
+desktop-local read-only U1 status, snapshot, and camera-signaling connector now
+exists; no reusable Orca Preparation runtime, printer-control runtime,
+autonomous control, or unattended-safe printer operation is claimed.
 
 ## Start here
 
@@ -51,10 +52,11 @@ that execution order does not make either subsystem secondary. See the
 
 ## Repository status
 
-This repository intentionally contains documentation before implementation.
-The OrcaSlicer invocation boundary, runtime, language, deployment model,
-printer protocol, camera source, notification channel, and upload/start
-ownership remain open decisions.
+This repository intentionally keeps implementation behind evidence and
+decision records. The local-first read-only connector is one F0 slice, not a
+commitment for the full product runtime. The first Orca backend, signed
+distribution targets, persistent monitor, notification channel, prepared-job
+manifest, and upload/start ownership remain open decisions.
 
 Run the technology-neutral repository contract check with:
 

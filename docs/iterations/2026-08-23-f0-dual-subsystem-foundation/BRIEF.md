@@ -5,12 +5,17 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: complete the user-requested read-only continuous U1
-  camera relay with MCP, HTTP, application, and printer-adapter boundaries kept
-  explicit; validate and deploy only its exact media handler; then collect live
-  relay and mounted-host evidence separately. Do not implement passkey-gated
-  upload, start, or cancel. Orca Preparation discovery and the renewable-session
-  evidence remain preserved; neither subsystem becomes secondary.
+- Current execution order: implement the user-directed local-first open-source
+  U1 Print Studio rollout before further host, preparation, or printer work.
+  The smallest slice is a desktop-local connector plus hosted MCP App widget:
+  all hosted status, snapshot, and WebRTC signaling requests cross the MCP Apps
+  `tools/call` bridge, while printer access remains behind the Printer
+  Operations adapter. Normal users must not need Tailscale, MagicDNS, public
+  DNS, manual OAuth, environment-file editing, or Bun. Preserve the standalone
+  exact-HTTP signaling adapter only as an optional developer path. Do not
+  publish a package or contact physical hardware during this implementation.
+  Orca Preparation discovery remains preserved and neither subsystem becomes
+  secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
@@ -39,7 +44,7 @@ that can be validated without guessing.
 
 Primary discovery targets: `PREP-001` through `PREP-006`, `ORCA-001` through
 `ORCA-006`, `HANDOFF-001` through `HANDOFF-006`, `SESSION-001`, `OBS-001`
-through `OBS-006`, `CAM-001` through `CAM-004`, `CTRL-001`, `SAFE-001`,
+through `OBS-006`, `CAM-001` through `CAM-005`, `CTRL-001`, `SAFE-001`,
 `DATA-001` through `DATA-003`, `AUTH-001` through `AUTH-003`, `API-001` through `API-004`,
 `ARCH-001` through `ARCH-004`, `ONTO-001` through `ONTO-002`, and `PORT-001`
 in `docs/requirements.md`.
@@ -56,13 +61,48 @@ in `docs/requirements.md`.
   behavior without treating command discovery as authorization;
 - MCP remains a replaceable surface around shared application use cases;
 - implementation and hardware acceptance remain explicitly unclaimed.
-- a transport-independent camera relay application service owns one-time
-  tickets, leases, concurrency, and serial iteration; MCP and exact-route HTTP
-  adapters contain no relay business policy;
-- the public relay exposes only one ticketed multipart MJPEG route, preserves
-  all prior Funnel handlers, and adds no printer-control capability;
-- tests and live evidence keep local software, public protocol, real-printer
-  JPEG acquisition, and mounted desktop/iOS rendering separate.
+- decision 0016 records the local-first bridge direction and supersedes only
+  decision 0015's requirement that a hosted widget signal through exact HTTP;
+- the hosted widget has no LAN, Tailscale, or media HTTP fetch path and declares
+  empty external connect, resource, and frame CSP allowlists;
+- the local connector reaches only fixed read-only status, snapshot, and
+  `webrtc-camerastreamer` operations through the Printer Operations adapter;
+- application-owned WebRTC sessions expose opaque session IDs and bounded
+  offer, answer, ICE-candidate, expiry, concurrency, and idempotent close
+  semantics without exposing the printer peer ID or a caller-selected URL;
+- the MCP Apps bridge is the hosted signaling path; the existing exact HTTP
+  adapter may remain for the standalone developer dashboard but is not a
+  normal-user dependency;
+- snapshot fallback still works, the existing status/snapshot tool contracts
+  remain read-only, and every `show_u1_status` result retains its 1200 by 1500
+  PNG fallback;
+- Marketplace, Homebrew, and npm packaging point to one setup and doctor
+  contract. Setup writes validated local configuration without manual
+  environment-file editing, and release packaging has a self-contained-runtime
+  direction so Bun is a build-time concern rather than a user prerequisite;
+- local tests prove the static/software and simulated protocol boundaries.
+  They do not claim physical-printer, mounted-host, package-installation, or
+  user-outcome evidence;
+- no upload, start, pause, resume, cancel, G-code, generic proxy, Control, or
+  Admin tool exists; no external package or service is published or changed.
+
+## Local-first safety boundary
+
+- This slice is Monitor-only and read-only with respect to printer and user
+  data. Signaling may create and tear down only bounded in-memory presentation
+  sessions.
+- Hosted widget code receives no printer URL, Tailscale URL, printer peer ID,
+  credential, or generic network target. Session capabilities stay in
+  widget-private tool metadata and expire automatically.
+- The connector accepts one validated private or loopback printer origin and a
+  fixed operation allowlist. It does not expose arbitrary HTTP, JSON-RPC, file,
+  shell, or G-code access.
+- Setup and doctor must not probe hardware during repository validation.
+  Physical-printer access requires fresh explicit authorization and remains a
+  separate evidence layer.
+- Packaging work ends at local manifests, scripts, and ephemeral validation
+  artifacts. Marketplace, npm, Homebrew, hosted services, OAuth state, and
+  installed plugins are not changed by this iteration slice.
 
 ## Initial explicit non-goals and later scope change
 

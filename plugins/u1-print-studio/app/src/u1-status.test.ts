@@ -18,23 +18,23 @@ afterEach(() => {
 
 describe("camera URL boundary", () => {
   test("accepts only HTTP camera routes on the configured printer origin", () => {
-    process.env.MOONRAKER_BASE_URL = "http://printer.test:7125/";
+    process.env.MOONRAKER_BASE_URL = "http://printer.local:7125/";
 
     expect(resolveCameraUrl("/webcam/snapshot.jpg")?.toString()).toBe(
-      "http://printer.test:7125/webcam/snapshot.jpg"
+      "http://printer.local:7125/webcam/snapshot.jpg"
     );
     expect(
-      resolveCameraUrl("http://printer.test:7125/webcam/snapshot.jpg")?.toString()
-    ).toBe("http://printer.test:7125/webcam/snapshot.jpg");
+      resolveCameraUrl("http://printer.local:7125/webcam/snapshot.jpg")?.toString()
+    ).toBe("http://printer.local:7125/webcam/snapshot.jpg");
     expect(resolveCameraUrl("http://other.test/webcam/snapshot.jpg")).toBeNull();
-    expect(resolveCameraUrl("https://printer.test:7125/webcam/snapshot.jpg")).toBeNull();
+    expect(resolveCameraUrl("https://printer.local:7125/webcam/snapshot.jpg")).toBeNull();
     expect(resolveCameraUrl(123)).toBeNull();
   });
 
   test("rejects unsupported printer base protocols", () => {
     process.env.MOONRAKER_BASE_URL = "file:///private/printer";
     expect(() => resolveCameraUrl("/webcam/snapshot.jpg")).toThrow(
-      "MOONRAKER_BASE_URL must use http or https"
+      "Printer URL must use http or https"
     );
   });
 });

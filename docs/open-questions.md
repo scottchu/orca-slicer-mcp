@@ -55,11 +55,21 @@ cover the two peer subsystems and their handoff.
 
 ## Runtime and data
 
-- Should the first Bun deployment keep the Printer Operations monitor
-  in-process, and what evidence would justify extracting it to an Elixir daemon?
-- Which inbound surfaces follow MCP first, and which contract test proves HTTP
-  or CLI can use the same application core?
-- Where will it run: workstation, Raspberry Pi, NAS, or another always-on host?
+- Which signed and notarized platform targets are required after the proven
+  macOS arm64 self-contained-runtime slice, and how will checksums, upgrade,
+  and rollback be verified across Marketplace, Homebrew, and npm adapters?
+- Which open-source license should the owner select, and which third-party
+  notices are required before any external source or binary publication?
+- Can the fixed-route printer adapter move from the platform `curl` executable
+  to an embedded networking implementation without regressing the current
+  macOS local-network permission boundary?
+- What evidence would justify extracting the in-process Printer Operations
+  monitor from the desktop connector to an Elixir daemon?
+- Which additional inbound surfaces should follow the desktop-local MCP and
+  shared CLI first, and which contract proves they use the same application
+  core?
+- Beyond the normal-user workstation connector, is an optional Raspberry Pi,
+  NAS, or another always-on host needed?
 - How much session history and camera evidence should be retained?
 - Is local-only storage a requirement or merely the default?
 - What authentication boundary protects printer control and remote access?

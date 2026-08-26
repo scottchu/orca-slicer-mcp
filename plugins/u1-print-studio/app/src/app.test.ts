@@ -86,17 +86,27 @@ async function connectClient(options: { oauth?: boolean; relay?: boolean } = {})
     }),
     ...(options.relay
       ? {
-          openCameraStream: () => ({
-            url: "https://u1.example/media/camera.webrtc?ticket=private-ticket",
+          cameraSessions: {
+            open: async () => ({
+            sessionId: "private-session-token",
+            type: "offer" as const,
+            sdp: "v=0\r\nfixture-offer\r\n",
+            iceServers: [],
             expiresAt: "2026-08-25T13:22:02.688Z",
             maxDurationSeconds: 1800,
-          }),
+            }),
+            answer: async () => ({ accepted: true as const }),
+            addCandidates: async (_sessionId, candidates) => ({
+              accepted: true as const,
+              candidateCount: candidates.length,
+            }),
+            close: () => ({ closed: true }),
+          },
         }
       : {}),
   }, options.oauth
     ? {
         oauthScopes: ["u1.monitor"],
-        ...(options.relay ? { cameraResourceOrigin: "https://u1.example" } : {}),
       }
     : {});
   const client = new Client({ name: "u1-print-studio-test", version: "1.0.0" });
@@ -171,15 +181,15 @@ describe("U1 status MCP App contract", () => {
     expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
   });
 
-  test("advertises only the public media origin when the remote relay is composed", async () => {
+  test("keeps external CSP empty when hosted signaling is composed", async () => {
     const client = await connectClient({ oauth: true, relay: true });
     const result = await client.readResource({ uri: WIDGET_URI });
     const resource = result.contents[0];
 
     expect(resource?._meta?.ui).toMatchObject({
       csp: {
-        connectDomains: ["https://u1.example"],
-        resourceDomains: ["https://u1.example"],
+        connectDomains: [],
+        resourceDomains: [],
         frameDomains: [],
       },
     });
@@ -254,17 +264,32 @@ describe("U1 status MCP App contract", () => {
     expect(JSON.stringify(result.structuredContent)).not.toContain("base64");
   });
 
-  test("keeps the one-time camera stream URL out of model-readable output", async () => {
+  test("keeps bounded signaling private and app-only helpers hidden from the model", async () => {
     const client = await connectClient({ oauth: true, relay: true });
     const listed = await client.listTools();
     const stream = listed.tools.find(
       (tool) => tool.name === "open_u1_camera_stream"
     );
-    expect(listed.tools.map((tool) => tool.name)).toEqual([
+    const visibility = (tool: (typeof listed.tools)[number]): string[] | undefined =>
+      (tool._meta?.ui as { visibility?: string[] } | undefined)?.visibility;
+    const modelVisible = listed.tools.filter((tool) =>
+      !visibility(tool) || visibility(tool)?.includes("model")
+    );
+    expect(modelVisible.map((tool) => tool.name)).toEqual([
       "show_u1_status",
       "get_u1_status",
       "get_u1_camera_frame",
       "open_u1_camera_stream",
+    ]);
+    expect(
+      listed.tools
+        .filter((tool) => visibility(tool)?.includes("app") &&
+          !visibility(tool)?.includes("model"))
+        .map((tool) => tool.name)
+    ).toEqual([
+      "answer_u1_camera_stream",
+      "add_u1_camera_ice_candidates",
+      "close_u1_camera_stream",
     ]);
     expect(stream?.annotations).toMatchObject({
       readOnlyHint: true,
@@ -277,7 +302,7 @@ describe("U1 status MCP App contract", () => {
       arguments: {},
     });
     expect(result.structuredContent).toEqual({
-      schemaVersion: 1,
+      schemaVersion: 2,
       available: true,
       expiresAt: "2026-08-25T13:22:02.688Z",
       maxDurationSeconds: 1800,
@@ -285,11 +310,14 @@ describe("U1 status MCP App contract", () => {
     });
     expect(result._meta).toEqual({
       cameraStream: {
-        url: "https://u1.example/media/camera.webrtc?ticket=private-ticket",
+        transport: "mcp-apps-tools",
+        sessionId: "private-session-token",
+        offer: { type: "offer", sdp: "v=0\r\nfixture-offer\r\n" },
+        iceServers: [],
       },
     });
-    expect(JSON.stringify(result.content)).not.toContain("private-ticket");
-    expect(JSON.stringify(result.structuredContent)).not.toContain("private-ticket");
+    expect(JSON.stringify(result.content)).not.toContain("private-session-token");
+    expect(JSON.stringify(result.structuredContent)).not.toContain("private-session-token");
   });
 });
 
@@ -307,7 +335,10 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain('name: "open_u1_camera_stream"');
     expect(WIDGET_HTML).toContain('data:image/jpeg;base64,');
     expect(WIDGET_HTML).toContain('snapshotFallbackTimer = setTimeout(refreshCameraFrame, 1500)');
-    expect(WIDGET_HTML).toContain('const response = await fetch(streamUrl, {');
+    expect(WIDGET_HTML).toContain('name: "answer_u1_camera_stream"');
+    expect(WIDGET_HTML).toContain('name: "add_u1_camera_ice_candidates"');
+    expect(WIDGET_HTML).toContain('name: "close_u1_camera_stream"');
+    expect(WIDGET_HTML).not.toContain("fetch(");
     expect(WIDGET_HTML).toContain('elements.snapshot.src = dataUrl');
     expect(WIDGET_HTML).toContain('referrerpolicy="no-referrer"');
     expect(WIDGET_HTML).toContain('name: "get_u1_status"');
@@ -391,7 +422,7 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain('class="camera-mode-live-dot"');
     expect(WIDGET_HTML).toContain('class="camera-mode-disconnected"');
     expect(WIDGET_HTML).toContain('@keyframes live-pulse');
-    expect(WIDGET_HTML).toContain('fetch(streamUrl, {');
+    expect(WIDGET_HTML).not.toContain("fetch(");
     expect(WIDGET_HTML).toContain('recordLiveFrame');
     expect(WIDGET_HTML).toContain('performance.now()');
     expect(WIDGET_HTML).toContain('new RTCPeerConnection({');

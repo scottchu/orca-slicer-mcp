@@ -5,16 +5,19 @@ import type { AuthInfo } from "@modelcontextprotocol/sdk/server/auth/types.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 
 import { createAppServer, readWidgetHtml } from "./app.js";
-import { createCameraTicketCodec } from "./adapters/camera-ticket-codec.js";
 import {
   createCameraStreamLocator,
   createCameraWebRtcHandler,
 } from "./adapters/camera-webrtc-http.js";
-import type { CameraWebRtcSignalingSource } from "./application/camera-webrtc.js";
-import {
+import type {
+  CameraWebRtcSessionController,
+  CameraWebRtcSessionService,
+} from "./application/camera-webrtc.js";
+import type {
   CameraRelayService,
-  type CameraStreamLocator,
+  CameraStreamLocator,
 } from "./application/camera-relay.js";
+import { createCameraRuntime } from "./camera-runtime.js";
 import {
   createPersonalOAuthFromEnvironment,
   MONITOR_SCOPE,
@@ -27,7 +30,6 @@ import {
 import {
   readU1CameraFrame,
   readU1Status,
-  u1CameraWebRtcSignaling,
 } from "./u1-status.js";
 
 const MCP_PATH = "/mcp";
@@ -81,7 +83,8 @@ function unauthorized(res: ServerResponse, oauth: PersonalOAuthService): void {
 type CameraRelayDependencies = {
   relay: CameraRelayService;
   locator: CameraStreamLocator;
-  signaling: CameraWebRtcSignalingSource;
+  sessions: CameraWebRtcSessionService;
+  controller: CameraWebRtcSessionController;
 };
 
 export function createRequestHandler(
@@ -90,7 +93,7 @@ export function createRequestHandler(
   statusDashboard: StatusDashboardDependencies | null = null
 ) {
   const handleCameraWebRtc = cameraRelay
-    ? createCameraWebRtcHandler(cameraRelay.relay, cameraRelay.signaling)
+    ? createCameraWebRtcHandler(cameraRelay.relay, cameraRelay.sessions)
     : null;
   const handleStatusDashboard = statusDashboard
     ? createStatusDashboardHandler(statusDashboard)
@@ -178,12 +181,11 @@ export function createRequestHandler(
 
       const server = createAppServer(
         cameraRelay
-          ? { openCameraStream: () => cameraRelay.relay.open(cameraRelay.locator) }
+          ? { cameraSessions: cameraRelay.controller }
           : {},
         oauth
           ? {
               oauthScopes: [MONITOR_SCOPE],
-              cameraResourceOrigin: oauth.publicBaseUrl.origin,
             }
           : {}
       );
@@ -225,20 +227,23 @@ export async function startServer() {
   const dashboardBaseUrl = statusDashboardEnabled
     ? statusDashboardBaseUrl(port)
     : null;
-  const cameraRelay = oauth || statusDashboardEnabled
-    ? {
-        relay: new CameraRelayService(createCameraTicketCodec()),
-        locator: createCameraStreamLocator(
-          oauth?.publicBaseUrl ?? dashboardBaseUrl!
-        ),
-        signaling: u1CameraWebRtcSignaling,
-      }
-    : null;
+  const cameraRelay = (() => {
+    if (!oauth && !statusDashboardEnabled) return null;
+    const { relay, sessions, controller } = createCameraRuntime();
+    return {
+      relay,
+      sessions,
+      controller,
+      locator: createCameraStreamLocator(
+        oauth?.publicBaseUrl ?? dashboardBaseUrl!
+      ),
+    };
+  })();
   const statusDashboard = statusDashboardEnabled && cameraRelay
     ? {
         readStatus: readU1Status,
         readCameraFrame: readU1CameraFrame,
-        openCameraStream: () => cameraRelay.relay.open(cameraRelay.locator),
+        cameraSessions: cameraRelay.controller,
       }
     : null;
   const server = createServer(

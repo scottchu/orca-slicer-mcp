@@ -5,181 +5,171 @@ Last updated: 2026-08-26
 ## Baseline
 
 - Canonical repository: `scottchu/orca-slicer-mcp` (private).
-- Branch point from `main`: `317dfd1`.
-- Product boundary: one product with two peer subsystems, Orca Preparation and
-  Printer Operations, joined by an explicit prepared-job/session handoff.
-- Runtime implementation: a repo-local, read-only U1 MCP Apps status-view
-  prototype exists; preparation and printer-control runtimes do not.
+- Product boundary: Orca Preparation and Printer Operations are peer
+  subsystems joined by an explicit prepared-job/print-session handoff.
 
 ## Active iteration
 
-- Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`
-- Status: active dual-environment discovery with a user-directed thin-skill
-  layer and read-only interactive monitoring prototype.
+- Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
-- Evidence-maturation order: chronological journal, reviewed knowledge, thin
-  skills, then the explicitly requested read-only status-view prototype and
-  repeated host use. A shared CLI remains later and requires demonstrated
-  value.
+- User-directed execution order: finish the local-first open-source U1 Print
+  Studio rollout before further host, preparation, or printer work.
+- Decision 0016 supersedes decision 0015 only for hosted signaling transport:
+  the hosted widget now uses the MCP Apps bridge rather than directly calling
+  the exact media HTTP route.
+
+## Implemented local-first slice
+
+The repository contains the smallest desktop-local read-only connector slice:
+
+- one shared `u1-print-studio setup`, `doctor`, and `mcp` CLI contract;
+- owner-only versioned configuration accepting only private, link-local,
+  loopback, or `.local` printer origins with no credentials, query, fragment,
+  or proxy-shaped path;
+- fixed-route status, snapshot, and `webrtc-camerastreamer` operations behind
+  the U1 Printer Operations adapter;
+- one self-contained MCP Apps widget with empty external CSP domains and no
+  direct `fetch` call;
+- hosted offer, answer, ICE-candidate, and close signaling through MCP Apps
+  `tools/call`;
+- application-owned opaque WebRTC sessions with offer/answer/candidate size
+  limits, per-call and cumulative candidate budgets, duration, expiry,
+  concurrency, failure teardown, answer idempotency, and idempotent close;
+- snapshot fallback and the existing 1200 by 1500 PNG status result;
+- one release MCP manifest pointing to a staged standalone executable;
+- one documented Marketplace/Homebrew/npm packaging contract around the same
+  runtime and onboarding path;
+- an ephemeral macOS arm64 executable that embeds its widget, disables
+  automatic dotenv/bunfig loading, and runs without a Bun executable at
+  runtime.
+
+The self-contained artifact is local validation evidence only. Its ad-hoc
+signature is not suitable for distribution. No package, marketplace entry,
+installed plugin, OAuth state, or hosted service was changed.
+
+## MCP surface
+
+Model-visible read-only tools:
+
+1. `show_u1_status`
+2. `get_u1_status`
+3. `get_u1_camera_frame`
+4. `open_u1_camera_stream`
+
+App-only read-only signaling helpers:
+
+1. `answer_u1_camera_stream`
+2. `add_u1_camera_ice_candidates`
+3. `close_u1_camera_stream`
+
+There is no upload, start, pause, resume, cancel, G-code, generic proxy,
+Control, or Admin tool in the runtime. Preparation and authorized-start skills
+remain procedural guidance; they are not runtime authority.
+
+## Packaging and onboarding boundary
+
+- Normal users do not need Tailscale, MagicDNS, public DNS, manual OAuth,
+  environment-file editing, or Bun.
+- `plugins/u1-print-studio/.mcp.release.json` starts
+  `./app/runtime/u1-print-studio mcp`.
+- `plugins/u1-print-studio/.mcp.json` remains a Bun and env-file source
+  adapter for repository development only.
+- Marketplace, Homebrew, and npm are future delivery adapters. This slice does
+  not claim installation, upgrades, rollback, signing, notarization, or
+  cross-platform acceptance.
+- The current printer adapter still invokes the platform `curl` executable
+  with a fixed route and argument allowlist. Replacing that platform dependency
+  remains an explicit runtime-hardening question.
+- Tailscale Serve/Funnel, personal OAuth, and the exact
+  `/media/camera.webrtc` adapter remain optional developer compatibility
+  paths, never normal-user requirements.
 
 ## Capability state
 
 ### Orca Preparation
 
-- Candidate environments observed: upstream OrcaSlicer `2.4.2` and Snapmaker
-  Orca `2.3.5` on macOS. One later Snapmaker Orca U1 pilot succeeded, but the
-  first supported product backend is not yet selected.
-- CLI help, executable fingerprints, profile boundary, macOS diagnostics
-  limitations, and manual-support 3MF representations are documented in
-  `docs/orca-preparation-findings.md`.
-- The pilot required resolved machine/process data, four complete filament-slot
-  profiles, and post-slice `T2` verification after repeated exits including
-  `139`; its [log](docs/logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md)
-  and [provisional knowledge](docs/knowledge/snapmaker-orca-cli-preparation.md)
-  are durable.
-- A repo-local `u1-print-studio` plugin describes mobile status setup,
-  preparation, authorized start, and adaptive monitoring as four thin skills.
-  It now also contains a
-  read-only MCP Apps monitor, but no slicer, preparation, upload, start, control,
-  or persistent-monitor runtime. Model/project intake, profile resolution,
-  slicing, inspection, artifact validation, review bundles, and manifest remain
-  unimplemented as product code.
+- Upstream OrcaSlicer `2.4.2` and Snapmaker Orca `2.3.5` were observed on
+  macOS; the first supported backend remains unselected.
+- One user-authorized Snapmaker Orca U1 PETG pilot and two PLA repetitions are
+  recorded in `docs/logs/`. Those runs do not establish a reusable
+  preparation runtime.
+- Model/project intake, profile resolution, slicing, artifact validation,
+  review bundles, and prepared-job manifests remain unimplemented product code.
 
 ### Preparation-to-operations handoff
 
-- Artifact/manifest contract: not defined or implemented.
-- Target compatibility, upload ownership, and start ownership: undecided.
-- Printer-job/session correlation: not implemented.
+- The prepared-artifact/manifest schema is not defined.
+- Target compatibility, upload ownership, start ownership, and
+  printer-job/session correlation remain open.
 
 ### Printer Operations
 
-- Printer connection: a redacted LAN Fluidd/Moonraker target is reachable;
-  Moonraker HTTP and WebSocket paths are observed, but no adapter is implemented.
-- Interactive monitoring: the local stdio MCP Apps prototype exposes three
-  read-only status/snapshot tools, an HTML camera-first dashboard, adaptive
-  refresh, PiP, fullscreen, and a 1200 by 1500 PNG on every
-  `show_u1_status` result. The OAuth-protected HTTP surface conditionally adds a
-  fourth read-only `open_u1_camera_stream` tool. Its one-time URL is
-  widget-private; the widget makes one call per `Go Live` intent and retains
-  non-overlapping snapshot polling only as fallback. Decision 0015 supersedes
-  the former serial-JPEG live transport: ticket, lease, concurrency, and
-  duration remain in the application service; the printer adapter performs an
-  allowlisted `webrtc-camerastreamer` offer/answer/ICE exchange; and the widget
-  receives persistent H264 media through a browser `RTCPeerConnection`. The
-  exact HTTP adapter carries signaling, hides the printer peer ID, and is not a
-  generic proxy. The public service now has one exact
-  `/media` Funnel handler in addition to the preserved root and OAuth/MCP paths.
-  Personal OAuth, PKCE, renewable audience-bound tokens, and the enrolled
-  user-verified passkey remain unchanged. Public 401/404 boundaries pass, and a
-  bounded real-printer proof negotiated H264 and decoded frames over a
-  persistent peer connection. An opt-in status dashboard now mounts the exact production widget and
-  emulates its read-only MCP Apps bridge on port 8788 for rapid iteration. It
-  stays on loopback and is available to the tailnet through private Tailscale
-  Serve HTTPS on port 8444. It is absent from the normal service and is not
-  routed through Funnel. The current widget uses icon-only camera/live controls,
-  keeps its grid above both snapshot and continuous imagery, and exposes
-  independent skeleton states for camera, status/progress, each metric, and
-  freshness. Its top camera icon is visually neutral across states, while a
-  camera mode row reports timestamped snapshot, snapshot fallback, or live on
-  the left and keeps the live/close action on the right. Snapshot and fallback
-  show a red disconnected-camera icon; live shows a pulsing green dot and the
-  browser-presented frame rate over a rolling five-second window. The card
-  palette now uses the official Snapmaker U1 charcoal, warm white, yellow, and
-  orange identity colors while reserving green for positive/connected states
-  and red for negative/disconnected states in both light and dark schemes. A fresh
-  authenticated four-tool inventory and mounted desktop/iOS rendering remain
-  separate host evidence.
-- Persistent monitoring: not implemented. The accepted runtime model still
-  combines a full direct snapshot with ordered subscription deltas and
-  reconnect resync.
-- Camera observation: later PLA monitoring acquired usable in-progress frames
-  showing attached upright parts without visible spaghetti. The final lowered
-  bed moved the parts out of frame, and no persistent capture exists.
-- Notifications and human-directed control: not implemented.
-- Agent recommendations or guarded corrections: not implemented.
-- API exposure: Monitor, Control, and Admin are separate surfaces. Monitor is an
-  explicit read-only allowlist; Admin and generic protocol or G-code passthrough
-  are excluded from the first release.
-- Application boundary: MCP is a replaceable inbound adapter. The camera relay
-  is the first implemented transport-independent application service; status
-  queries still call the observation adapter directly. Domain ontology,
-  policies, and planned monitor ports remain surface- and runtime-independent.
-- Runtime direction: the read-only status prototype uses Bun, TypeScript, MCP
-  Apps, and a dependency-free widget. An extracted Elixir monitor daemon remains
-  possible through a versioned, language-neutral contract; no persistent or
-  control runtime has been scaffolded.
+- The read-only U1 status, snapshot, PNG, and camera signaling slice is
+  implemented.
+- Persistent subscription monitoring, reconnect epochs, durable observations,
+  notifications, recommendations, and control are not implemented.
+- Status calls still invoke the observation adapter directly; the WebRTC
+  session path is the first transport-independent application service.
 
 ## Acceptance state
 
-- Static/software: repository foundation and dual-subsystem product contract
-  checks passed; real installed Orca executables were inspected, and one later
-  user-authorized Snapmaker Orca slice succeeded after recorded failures. The
-  read-only status-view prototype compiles. Thirty-eight tests with 220
-  assertions cover OAuth renewal, status and PNG contracts, application-owned
-  camera tickets and leases, exact WebRTC signaling, peer-ID privacy,
-  answer/ICE forwarding, snapshot fallback, the opt-in read-only dashboard boundary, and the
-  neutral camera indicator, explicit bottom-right camera modes, and the
-  Snapmaker card-theme contract; no preparation or control runtime exists.
-- Delivery validation is local-only; no hosted validation workflow is
-  configured or required.
-- Protocol/simulator: live Moonraker read-only response shapes, WebSocket
-  upgrade, server notifications, and exact ticketed WebRTC signaling were
-  observed; printer-object subscription, fixtures, and reconnect tests are
-  pending.
-- Real printer: ready/standby telemetry, snapshots, and H264 WebRTC frames over
-  a persistent peer connection, plus one PETG job and
-  two later PLA jobs reached telemetry-verified completion. Upload, start
-  acknowledgement, observed printing, and completion were kept distinct for
-  the PLA repetitions. Product subscription, reconnect, and command-correlation
-  behavior remain untested.
-- User outcome: the PETG pieces were obtained once, and the first PLA result was
-  physically accepted by the user. The second PLA job is telemetry-complete but
-  still awaits physical handling. The long manual CLI path is not accepted as
-  a repeatable product workflow.
+### Static/software
 
-## Open risks and unknowns
+- TypeScript checks pass.
+- Forty-seven tests with 271 assertions pass across MCP resource/tool
+  contracts, PNG dimensions/signature, widget no-fetch/CSP, snapshot fallback
+  wiring, local configuration, packaging manifests, session bounds/privacy,
+  exact HTTP compatibility, OAuth regression, and dashboard allowlists.
+- The source stdio bundle emits `stdio.js` plus its widget asset.
+- The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
+  signature, prints help, writes a `0600` config, and passes
+  `doctor --offline` without contacting hardware.
 
-- The first product Orca backend remains unselected between the two observed
-  editions. One Snapmaker Orca path worked, but synthetic-fixture
-  repeatability, complete-profile schema, deterministic behavior, GUI parity,
-  and support round-tripping are unverified.
-- The pilot printer is a Snapmaker U1 with a Moonraker-compatible connection
-  path; broader target acceptance is unverified.
-- The observed exit `139` guard and incomplete-filament tool collapse have not
-  yet been reproduced with clean negative fixtures.
-- Prepared-artifact schema and upload/start ownership are unknown.
-- The personal always-on host and network boundary are observed, but camera
-  placement, lighting, portability to other hosts, and production distribution
-  remain unknown.
-- WebRTC loading, snapshot fallback, Close, PiP, fullscreen, and
-  adaptive refresh have not been exercised on the newly deployed four-tool
-  surface inside a fresh connected Codex host. Exact public routing and valid
-  real JPEGs do not prove desktop or iOS rendering. The private-tailnet status
-  dashboard accelerates widget work but does not prove ChatGPT desktop or iOS
-  rendering. Existing conversations do not hot-reload refreshed MCP tools.
-- The local stdio plugin cannot itself provide a cross-device iOS backend. A
-  personal developer backend now runs on the always-on Mac Mini behind
-  standard-HTTPS Tailscale Funnel path handlers and personal OAuth. The current
-  edition requires an always-on LAN agent per printer owner. A self-hosted
-  distribution versus hosted MCP plus outbound LAN connector remains undecided;
-  the backend now supports renewable authenticated connectivity, and the user
-  confirmed the repaired connection works immediately. A standard MCP image
-  fallback no longer depends on component mounting, but refreshed Codex-host
-  access after more than 15 minutes and interactive camera rendering still
-  require separate user-visible validation.
-- Notification destination is unknown.
-- Live command capabilities and persistence semantics, including Z-offset, are
-  unknown for the target hardware.
-- Monitor authentication and remote access are implemented for personal
-  developer testing. Control authorization remains unimplemented; OAuth login
-  alone must never authorize upload, start, cancel, or another printer action.
+The active iteration's `VALIDATION.md` is authoritative for exact commands
+and final repository-check results.
+
+### Protocol/simulator
+
+- Tests use in-memory MCP transports, loopback HTTP fixtures, and fake printer
+  signaling. They prove contract behavior, not a real printer or mounted host.
+- Earlier repository evidence records real read-only Moonraker and H264
+  observations. It is not evidence for this newly composed local connector.
+
+### Physical printer
+
+- No physical printer was accessed or controlled for this rollout.
+- Earlier authorized print and camera observations remain historical evidence
+  in their dated logs and do not prove this slice.
+
+### User outcome
+
+- Marketplace, Homebrew, npm, fresh-host widget mounting, installation on
+  another machine, iOS rendering, and normal-user onboarding are unverified.
+
+## Open risks and F0 questions
+
+- Distribution targets, Developer ID signing, notarization, checksums, upgrade,
+  rollback, and cross-platform packaging are unresolved.
+- The private repository has no license file; license selection and
+  third-party notice review block any claim or publication of an open-source
+  distribution.
+- The system-`curl` dependency and macOS local-network permission behavior
+  need a dedicated portability decision.
+- Native hosted-widget WebRTC rendering, Close, PiP, fullscreen, and fallback
+  need fresh host evidence after explicit authorization to contact a printer.
+- The first Orca backend and the prepared-job/session handoff remain open.
+- Subscription, freshness, reconnect, history, notification destination, and
+  remote identity/distribution boundaries remain open.
+- A browser peer connection may receive network candidates in SDP as required
+  for media; the prohibited behavior is direct iframe URL fetching or
+  signaling, not the negotiated read-only WebRTC media path preserved by
+  decision 0015.
 
 ## Next action
 
-Start a fresh authenticated host thread, confirm exactly the four remote
-read-only tools, and test one `Go Live` intent. Record WebRTC rendering,
-snapshot fallback if exercised, Close, PiP, fullscreen, desktop mount, and iOS
-mount separately. A status call after the access-token lifetime still needs to
-prove real-host renewal. Do not expose Moonraker directly, add control tools, or
-build a shared CLI until the relevant authorization and repeated-use evidence
-exists. Follow decisions 0003 through 0015.
+Review the local-first pull request and repository records. Do not publish or
+install it externally. The next smallest implementation gate is a reproducible
+signed packaging fixture for one channel or removal of the system-`curl`
+runtime dependency, chosen from new evidence. Mounted-host or real-printer
+validation requires fresh explicit authorization and must be recorded in its
+own evidence layer.

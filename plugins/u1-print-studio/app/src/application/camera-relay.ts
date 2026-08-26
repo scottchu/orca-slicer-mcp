@@ -88,6 +88,14 @@ export class CameraRelayService {
     }
 
     this.pendingTickets.delete(digest);
+    return this.claimDirect();
+  }
+
+  claimDirect(): CameraStreamLease {
+    if (this.activeStreams >= this.maxConcurrentStreams) {
+      throw new CameraRelayClaimError("busy");
+    }
+
     this.activeStreams += 1;
     const expiresAt = this.now() + this.maxStreamDurationMilliseconds;
     let released = false;

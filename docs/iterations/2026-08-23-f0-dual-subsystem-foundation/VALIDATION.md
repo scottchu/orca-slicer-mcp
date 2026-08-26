@@ -846,3 +846,80 @@ identifiers, and runtime data are intentionally not retained.
   unchanged.
 - `bun run check`, `bun test src/*.test.ts`, and `bun run bundle`: passed 38
   tests with 222 assertions, including absence of both dot selectors.
+
+## Local-first connector and MCP Apps signaling bridge — 2026-08-26
+
+### Acceptance and safety boundary
+
+- Milestone: F0 dual-environment and contract discovery.
+- Open questions addressed: the first normal-user Printer Operations host and
+  network boundary, reuse of one application session service from MCP and
+  optional HTTP adapters, and the smallest packaging/onboarding evidence.
+- Decision 0016 and the active brief recorded acceptance criteria before code
+  implementation. Decision 0016 partially supersedes 0015 only for hosted
+  signaling transport.
+- This validation is read-only static/software and simulated protocol evidence.
+  It does not prove a mounted host, another machine, package installation,
+  physical-printer behavior, or user outcome.
+- No printer, installed plugin, marketplace, package registry, Homebrew tap,
+  OAuth state, Tailscale service, or other hosted service was accessed or
+  changed.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 47 tests with 271 assertions across nine
+  files. Coverage includes empty hosted CSP, no widget `fetch(` call, MCP Apps
+  signaling tool names, app-only helper visibility, private session metadata,
+  snapshot fallback wiring, existing status/snapshot/PNG contracts, fixed HTTP
+  adapter routes, offer/answer/ICE bounds, expiry, concurrency, cumulative
+  candidate teardown, configuration permissions, and release packaging.
+- `bun run bundle`: passed and emitted ignored `dist/stdio.js` plus the embedded
+  `dist/widget.html` asset. An earlier run failed because the old `--outfile`
+  form cannot emit both files; the script now uses an explicit output directory
+  and deterministic entry/asset names.
+- `bun run bundle:runtime`: passed with Bun 1.3.12 and produced an ignored
+  macOS arm64 standalone executable. The builder disables automatic dotenv and
+  bunfig loading, embeds the widget, removes Bun's invalid emitted signature on
+  this macOS 26.5.2 host, applies an ad-hoc local signature, and verifies it.
+- `./dist/u1-print-studio --help`: passed without invoking a Bun executable.
+- `./dist/u1-print-studio setup --printer-url http://127.0.0.1:7125 --config
+  <temporary-directory>/config.json --json`: passed and wrote the temporary
+  configuration.
+- `./dist/u1-print-studio doctor --offline --config
+  <temporary-directory>/config.json --json`: passed with
+  `printerObservation: skipped-offline`; it did not contact hardware.
+- `stat -f '%Sp %N' <temporary-directory>/config.json`: reported `-rw-------`.
+- `codesign -vvv --verify ./dist/u1-print-studio`: reported valid on disk and
+  satisfied its designated requirement for the ad-hoc validation signature.
+
+From the repository root:
+
+- `uv run --no-project --with pyyaml python
+  /Users/scottchu/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py
+  plugins/u1-print-studio`: passed.
+- `git diff --check`: passed before final record updates.
+- `./scripts/check-repository.sh`: initially identified the required
+  `PROJECT_STATE.md` headings after that file was condensed. The headings were
+  restored. A subsequent run exposed a millisecond-boundary test flake where a
+  nominal 30-second lease displayed as 29 seconds; the presentation duration
+  now rounds up while the absolute expiry remains authoritative.
+- Final `./scripts/check-repository.sh`: passed, including TypeScript and all 47
+  tests with 271 assertions.
+- Final `git diff --check`: passed.
+
+### Packaging evidence boundary
+
+- `.mcp.release.json` invokes only the staged executable's `mcp` subcommand and
+  contains no Bun, env-file, Tailscale, DNS, or OAuth setup.
+- `PACKAGING.md` maps Marketplace, Homebrew, and npm to the same setup/doctor
+  contract. No channel metadata was published or installed.
+- The ephemeral macOS executable and all temporary configuration/build smoke
+  files were removed after validation. Source and manifests are the delivered
+  artifacts.
+- Developer ID signing, notarization, checksums, cross-platform builds,
+  installation, upgrades, rollback, owner-selected licensing and third-party
+  notices, and elimination of the platform `curl` dependency remain unverified
+  gates.

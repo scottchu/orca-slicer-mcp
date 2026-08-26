@@ -1,5 +1,66 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-26 local-first rollout handoff
+
+The user changed the execution order to the local-first open-source U1 Print
+Studio rollout. Decision 0016 is accepted and partially supersedes decision
+0015: the hosted MCP App now carries offer, answer, ICE candidates, and close
+through the MCP Apps `tools/call` bridge. The widget contains no direct
+`fetch(` call and declares empty external CSP domains. The exact HTTP signaling
+adapter remains only for the standalone developer dashboard.
+
+The smallest end-to-end desktop-local slice is implemented:
+
+- `u1-print-studio setup`, `doctor`, and `mcp` form one onboarding/runtime
+  contract for future Marketplace, Homebrew, and npm adapters;
+- setup writes a `0600` versioned config and accepts only private, link-local,
+  loopback, or `.local` printer origins without credentials or proxy paths;
+- the connector invokes fixed read-only status, snapshot, and WebRTC signaling
+  operations through the U1 Printer Operations adapter;
+- the application service owns opaque sessions, peer-ID hiding, bounded offer,
+  answer, per-call and cumulative ICE candidates, concurrency, expiry, abort,
+  failure teardown, and idempotent close;
+- snapshot fallback, read-only annotations, and the 1200 by 1500 PNG contract
+  remain intact;
+- `.mcp.release.json` starts a staged standalone executable without Bun or an
+  env file, while `.mcp.json` remains the source developer adapter;
+- `PACKAGING.md` records one setup/doctor path, current macOS arm64 evidence,
+  and the unimplemented signing, notarization, cross-platform, update, and
+  rollback gates.
+
+The runtime contains exactly four model-visible read-only tools and three
+app-only read-only signaling helpers as listed in `PROJECT_STATE.md`. It adds no
+upload, start, pause, resume, cancel, G-code, generic proxy, Control, or Admin
+tool.
+
+Changed implementation paths are under `plugins/u1-print-studio/app/`, plus
+the plugin release manifest, packaging contract, architecture/requirements,
+decision 0016, and continuity records. See the branch diff for the exact set.
+
+Validation is local-only. Forty-seven tests with 271 assertions currently pass,
+the standalone macOS arm64 runtime runs without Bun, and offline setup/doctor
+smoke passed without hardware access. Exact final commands and repository
+checks are recorded in `VALIDATION.md`.
+
+No physical printer, installed plugin, marketplace, OAuth state, package
+registry, Homebrew tap, or hosted service was accessed or changed. Earlier
+printer, Funnel, OAuth, and installed-plugin entries below are historical
+evidence, not instructions for the normal-user path.
+
+Unresolved risks are production signing/notarization, cross-platform artifacts,
+channel installation/upgrade/rollback, the platform-`curl` dependency, and
+fresh mounted-host WebRTC rendering. The private repository also has no license
+file, so owner license selection and third-party notice review block any claim
+or publication of an open-source distribution. Real-host or printer testing
+requires new explicit authorization and must remain a separate evidence layer.
+
+The next smallest action after review is either a reproducible unpublished
+signed macOS packaging fixture or removal of the platform-`curl` runtime
+dependency, selected from current evidence. Do not return to Tailscale/OAuth as
+the normal path and do not publish or contact hardware.
+
+## Historical iteration handoff
+
 ## Current status
 
 The product contract remains one product with two peer subsystems: Orca
