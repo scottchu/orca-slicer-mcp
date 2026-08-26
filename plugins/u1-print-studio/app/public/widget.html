@@ -7,17 +7,19 @@
     <style>
       :root {
         color-scheme: light dark;
-        --ink: #18231f;
-        --muted: #64716c;
-        --surface: rgba(248, 251, 249, 0.94);
+        --ink: #1c1e20;
+        --muted: #5c5c5c;
+        --surface: rgba(245, 245, 245, 0.97);
         --surface-strong: #ffffff;
-        --line: rgba(23, 45, 36, 0.1);
-        --shadow: 0 24px 70px rgba(17, 45, 34, 0.16);
-        --green: #10a779;
-        --green-deep: #08785a;
-        --lime: #b9f645;
-        --amber: #f2a93b;
-        --red: #e05252;
+        --line: rgba(28, 30, 32, 0.12);
+        --shadow: 0 24px 70px rgba(28, 30, 32, 0.18);
+        --brand: #ffcd00;
+        --brand-strong: #f5ce00;
+        --brand-warm: #ff5f28;
+        --positive: #32c86e;
+        --negative: #ff6161;
+        --skeleton-base: rgba(28, 30, 32, 0.09);
+        --skeleton-glow: rgba(255, 255, 255, 0.72);
         --radius: 26px;
         --safe-top: env(safe-area-inset-top, 0px);
         --safe-right: env(safe-area-inset-right, 0px);
@@ -42,10 +44,7 @@
           calc(12px + var(--safe-bottom))
           calc(12px + var(--safe-left));
         color: var(--ink);
-        background:
-          radial-gradient(circle at 12% -10%, rgba(185, 246, 69, 0.28), transparent 34%),
-          radial-gradient(circle at 94% 2%, rgba(16, 167, 121, 0.22), transparent 32%),
-          #eaf1ed;
+        background: #d9d9d7;
       }
 
       button {
@@ -61,7 +60,7 @@
       }
 
       button:focus-visible {
-        outline: 3px solid rgba(185, 246, 69, 0.88);
+        outline: 3px solid rgba(255, 205, 0, 0.92);
         outline-offset: 2px;
       }
 
@@ -69,7 +68,7 @@
         width: min(100%, 720px);
         margin: 0 auto;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(32, 34, 35, 0.18);
         border-radius: var(--radius);
         background: var(--surface);
         box-shadow: var(--shadow);
@@ -83,24 +82,35 @@
         overflow: hidden;
         isolation: isolate;
         background:
-          linear-gradient(135deg, rgba(9, 32, 24, 0.22), rgba(9, 20, 17, 0.78)),
-          radial-gradient(circle at 62% 18%, #3d5b4f 0, #14241e 56%, #07110e 100%);
+          linear-gradient(135deg, rgba(65, 67, 68, 0.3), rgba(24, 26, 27, 0.82)),
+          #1c1e20;
       }
 
+      .camera::before,
       .camera::after {
         position: absolute;
         inset: 0;
-        z-index: 2;
         pointer-events: none;
         content: "";
-        background:
-          linear-gradient(180deg, rgba(5, 14, 11, 0.5), transparent 30%, transparent 60%, rgba(5, 14, 11, 0.76)),
-          linear-gradient(90deg, rgba(185, 246, 69, 0.08) 1px, transparent 1px),
-          linear-gradient(rgba(185, 246, 69, 0.08) 1px, transparent 1px);
-        background-size: auto, 42px 42px, 42px 42px;
       }
 
-      .camera img {
+      .camera::before {
+        z-index: 3;
+        opacity: 0.72;
+        background:
+          linear-gradient(90deg, rgba(255, 205, 0, 0.16) 1px, transparent 1px),
+          linear-gradient(rgba(255, 205, 0, 0.16) 1px, transparent 1px);
+        background-size: 42px 42px;
+      }
+
+      .camera::after {
+        z-index: 1;
+        background:
+          linear-gradient(180deg, rgba(20, 22, 23, 0.52), transparent 30%, transparent 60%, rgba(20, 22, 23, 0.78));
+      }
+
+      .camera img,
+      .camera video {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -109,13 +119,15 @@
         object-fit: cover;
       }
 
-      .camera img {
+      .camera img,
+      .camera video {
         z-index: 0;
         opacity: 0;
         transition: opacity 240ms ease;
       }
 
-      .camera.has-snapshot img {
+      .camera.has-snapshot:not(.has-live) img,
+      .camera.has-live video {
         opacity: 1;
       }
 
@@ -126,8 +138,52 @@
         z-index: 0;
         place-content: center;
         gap: 10px;
-        color: rgba(240, 250, 245, 0.72);
+        color: rgba(255, 255, 255, 0.72);
         text-align: center;
+      }
+
+      .camera-skeleton {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: grid;
+        align-content: end;
+        gap: 10px;
+        padding: 24px;
+        opacity: 0;
+        visibility: hidden;
+        background: linear-gradient(135deg, rgba(54, 56, 57, 0.96), rgba(24, 26, 27, 0.99));
+        transition: opacity 180ms ease, visibility 180ms ease;
+      }
+
+      .camera-skeleton span {
+        position: relative;
+        width: min(58%, 260px);
+        height: 13px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.13);
+      }
+
+      .camera-skeleton span:last-child {
+        width: min(40%, 180px);
+        height: 9px;
+      }
+
+      .camera-skeleton span::after,
+      [data-loading="true"].skeleton-target::after,
+      [data-loading="true"] .skeleton-target::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        background: linear-gradient(100deg, transparent 18%, var(--skeleton-glow) 48%, transparent 78%);
+        transform: translateX(-110%);
+        animation: skeleton-sweep 1.35s ease-in-out infinite;
+      }
+
+      .camera[data-camera-loading="true"]:not(.has-snapshot) .camera-skeleton {
+        opacity: 1;
+        visibility: visible;
       }
 
       .camera-empty svg {
@@ -136,7 +192,8 @@
         opacity: 0.8;
       }
 
-      .camera.has-snapshot .camera-empty {
+      .camera.has-snapshot .camera-empty,
+      .camera.has-live .camera-empty {
         display: none;
       }
 
@@ -145,7 +202,7 @@
         position: absolute;
         right: 18px;
         left: 18px;
-        z-index: 3;
+        z-index: 4;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -159,67 +216,90 @@
       .camera-bottom {
         bottom: 16px;
         align-items: flex-end;
+        justify-content: flex-end;
       }
 
-      .camera-label,
-      .live-badge {
+      .camera-status {
+        position: relative;
         display: inline-flex;
         align-items: center;
-        gap: 7px;
-        min-height: 30px;
-        padding: 6px 10px;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
         border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 999px;
+        border-radius: 50%;
         color: #f4fff9;
         background: rgba(5, 15, 11, 0.58);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-        font-size: 12px;
-        font-weight: 750;
-        letter-spacing: 0.04em;
         backdrop-filter: blur(12px);
       }
 
-      .live-badge {
-        display: none;
-        color: #0b271d;
-        background: var(--lime);
-      }
-
-      .camera[data-camera-mode="live"] .live-badge {
-        display: inline-flex;
-      }
-
-      .pulse {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: currentColor;
-        box-shadow: 0 0 0 5px rgba(185, 246, 69, 0.16);
-      }
-
-      .camera-copy {
-        max-width: 62%;
-        color: white;
-        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.44);
-      }
-
-      .camera-copy strong {
-        display: block;
-        font-size: 20px;
-        line-height: 1.2;
-      }
-
-      .camera-copy span {
-        display: block;
-        margin-top: 4px;
-        color: rgba(244, 255, 249, 0.74);
-        font-size: 12px;
+      .camera-status svg {
+        width: 19px;
+        height: 19px;
       }
 
       .camera-actions {
         display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .camera-mode {
+        display: inline-flex;
+        min-height: 32px;
         align-items: center;
         gap: 8px;
+        padding: 0 12px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        color: rgba(244, 255, 249, 0.9);
+        background: rgba(5, 15, 11, 0.64);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        font-size: 11px;
+        font-weight: 780;
+        letter-spacing: 0.08em;
+        line-height: 1;
+        text-transform: uppercase;
+        white-space: nowrap;
+        backdrop-filter: blur(12px);
+      }
+
+      .camera-mode-indicator {
+        display: inline-flex;
+        width: 15px;
+        height: 15px;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .camera-mode-live-dot {
+        display: none;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--positive);
+      }
+
+      .camera-mode-disconnected {
+        display: none;
+        width: 15px;
+        height: 15px;
+        color: var(--negative);
+      }
+
+      .camera-mode[data-mode="live"] .camera-mode-live-dot {
+        display: block;
+        animation: live-pulse 1.4s ease-out infinite;
+      }
+
+      .camera-mode[data-mode="snapshot"] .camera-mode-disconnected,
+      .camera-mode[data-mode="fallback"] .camera-mode-disconnected,
+      .camera-mode[data-mode="unavailable"] .camera-mode-disconnected {
+        display: block;
       }
 
       .camera-button,
@@ -242,18 +322,18 @@
       }
 
       .camera-button {
-        min-width: 98px;
-        padding: 9px 14px;
-        color: #0d281e;
-        background: var(--lime);
-        box-shadow: 0 8px 26px rgba(185, 246, 69, 0.25);
+        width: 44px;
+        min-width: 44px;
+        padding: 0;
+        color: #1c1e20;
+        background: var(--brand);
+        box-shadow: 0 8px 26px rgba(255, 205, 0, 0.28);
       }
 
       .camera-button.close {
         display: none;
-        min-width: auto;
         color: white;
-        background: rgba(9, 18, 15, 0.78);
+        background: rgba(32, 34, 35, 0.86);
       }
 
       .camera[data-camera-mode="live"] .camera-button.go-live {
@@ -268,10 +348,16 @@
         opacity: 0.46;
       }
 
+      .camera-button svg {
+        width: 20px;
+        height: 20px;
+      }
+
       .content {
         display: grid;
         gap: 18px;
         padding: 22px;
+        border-top: 5px solid var(--brand);
       }
 
       .headline {
@@ -283,7 +369,7 @@
 
       .eyebrow {
         margin: 0 0 6px;
-        color: var(--green-deep);
+        color: var(--muted);
         font-size: 11px;
         font-weight: 820;
         letter-spacing: 0.14em;
@@ -322,6 +408,11 @@
         align-items: center;
       }
 
+      .progress-section {
+        display: grid;
+        gap: 10px;
+      }
+
       .status-pill {
         display: inline-flex;
         width: max-content;
@@ -329,8 +420,8 @@
         gap: 8px;
         padding: 8px 12px;
         border-radius: 999px;
-        color: var(--green-deep);
-        background: rgba(16, 167, 121, 0.11);
+        color: var(--positive);
+        background: rgba(50, 200, 110, 0.13);
         font-size: 13px;
         font-weight: 780;
       }
@@ -339,29 +430,29 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: var(--green);
-        box-shadow: 0 0 0 5px rgba(16, 167, 121, 0.12);
+        background: var(--positive);
+        box-shadow: 0 0 0 5px rgba(50, 200, 110, 0.14);
       }
 
       .dashboard[data-state="error"] .status-pill,
       .dashboard[data-state="offline"] .status-pill {
-        color: var(--red);
-        background: rgba(224, 82, 82, 0.11);
+        color: var(--negative);
+        background: rgba(255, 97, 97, 0.12);
       }
 
       .dashboard[data-state="error"] .status-dot,
       .dashboard[data-state="offline"] .status-dot {
-        background: var(--red);
-        box-shadow: 0 0 0 5px rgba(224, 82, 82, 0.12);
+        background: var(--negative);
+        box-shadow: 0 0 0 5px rgba(255, 97, 97, 0.13);
       }
 
       .dashboard[data-state="paused"] .status-pill {
-        color: #9a610b;
-        background: rgba(242, 169, 59, 0.14);
+        color: #9c3614;
+        background: rgba(233, 87, 33, 0.14);
       }
 
       .dashboard[data-state="paused"] .status-dot {
-        background: var(--amber);
+        background: var(--brand-warm);
       }
 
       .percent {
@@ -375,16 +466,16 @@
         height: 14px;
         overflow: hidden;
         border-radius: 999px;
-        background: rgba(23, 45, 36, 0.08);
-        box-shadow: inset 0 1px 2px rgba(17, 45, 34, 0.08);
+        background: rgba(32, 34, 35, 0.1);
+        box-shadow: inset 0 1px 2px rgba(32, 34, 35, 0.1);
       }
 
       .progress-fill {
         width: 0;
         height: 100%;
         border-radius: inherit;
-        background: linear-gradient(90deg, var(--green-deep), var(--green) 62%, var(--lime));
-        box-shadow: 0 0 18px rgba(16, 167, 121, 0.3);
+        background: var(--brand);
+        box-shadow: 0 0 18px rgba(255, 205, 0, 0.3);
         transition: width 480ms cubic-bezier(0.2, 0.8, 0.2, 1);
       }
 
@@ -407,7 +498,7 @@
         padding: 14px;
         border: 1px solid var(--line);
         border-radius: 18px;
-        background: rgba(255, 255, 255, 0.62);
+        background: rgba(255, 255, 255, 0.78);
       }
 
       .metric-label {
@@ -437,6 +528,50 @@
         font-size: 11px;
       }
 
+      .skeleton-target {
+        position: relative;
+        overflow: hidden;
+      }
+
+      [data-loading="true"].skeleton-target,
+      [data-loading="true"] .skeleton-target {
+        min-height: 12px;
+        border-color: transparent !important;
+        color: transparent !important;
+        text-shadow: none !important;
+        background: var(--skeleton-base) !important;
+        box-shadow: none !important;
+      }
+
+      [data-loading="true"].skeleton-target > *,
+      [data-loading="true"] .skeleton-target > * {
+        opacity: 0;
+      }
+
+      .status-row[data-loading="true"] .status-pill {
+        width: 104px;
+      }
+
+      .status-row[data-loading="true"] .percent {
+        width: 62px;
+        border-radius: 10px;
+      }
+
+      .progress-section[data-loading="true"] .progress-meta span {
+        width: 30%;
+        border-radius: 7px;
+      }
+
+      .metric[data-loading="true"] {
+        min-height: 104px;
+      }
+
+      .freshness[data-loading="true"] {
+        width: min(62%, 260px);
+        min-height: 38px;
+        border-radius: 10px;
+      }
+
       .footer {
         display: flex;
         align-items: center;
@@ -464,35 +599,27 @@
       }
 
       .toggle {
-        gap: 7px;
-        padding: 8px 11px;
-        color: var(--green-deep);
-        background: rgba(16, 167, 121, 0.1);
-        font-size: 12px;
-      }
-
-      .toggle::before {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--green);
-        content: "";
+        width: 44px;
+        padding: 0;
+        color: var(--positive);
+        background: rgba(50, 200, 110, 0.12);
       }
 
       .toggle[aria-pressed="false"] {
         color: var(--muted);
-        background: rgba(23, 45, 36, 0.07);
+        background: rgba(32, 34, 35, 0.07);
       }
 
-      .toggle[aria-pressed="false"]::before {
-        background: #9ca7a2;
+      .toggle svg {
+        width: 18px;
+        height: 18px;
       }
 
       .refresh-button {
         width: 44px;
         padding: 0;
-        color: white;
-        background: var(--green-deep);
+        color: #1c1e20;
+        background: var(--brand);
       }
 
       .refresh-button svg {
@@ -527,6 +654,37 @@
         to { transform: rotate(360deg); }
       }
 
+      @keyframes skeleton-sweep {
+        to { transform: translateX(110%); }
+      }
+
+      @keyframes live-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(50, 200, 110, 0.5); }
+        75%, 100% { box-shadow: 0 0 0 6px rgba(50, 200, 110, 0); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .camera-skeleton span::after,
+        [data-loading="true"].skeleton-target::after,
+        [data-loading="true"] .skeleton-target::after,
+        .camera-mode-live-dot,
+        .refresh-button.is-refreshing svg {
+          animation: none;
+        }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
       @media (max-width: 540px) {
         body {
           padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
@@ -538,15 +696,13 @@
         .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .metric:first-child { grid-column: 1 / -1; }
         .footer { align-items: flex-start; flex-direction: column; }
-        .footer-actions { width: 100%; justify-content: space-between; }
-        .toggle { flex: 1; }
+        .footer-actions { width: 100%; justify-content: flex-end; }
       }
 
       @media (max-width: 380px) {
         .camera-top,
         .camera-bottom { right: 12px; left: 12px; }
-        .camera-copy { max-width: 54%; }
-        .camera-copy strong { font-size: 17px; }
+        .camera-mode { max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
         .content { gap: 15px; padding: 16px; }
         .metrics { grid-template-columns: 1fr; }
         .metric:first-child { grid-column: auto; }
@@ -579,44 +735,70 @@
 
       @media (prefers-color-scheme: dark) {
         :root {
-          --ink: #edf8f2;
-          --muted: #9fb0a8;
-          --surface: rgba(14, 25, 21, 0.95);
-          --surface-strong: #1a2b24;
-          --line: rgba(224, 244, 235, 0.1);
+          --ink: #f7f7f4;
+          --muted: #b6b7b5;
+          --surface: rgba(31, 31, 31, 0.97);
+          --surface-strong: #242424;
+          --line: rgba(255, 255, 255, 0.12);
           --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+          --skeleton-base: rgba(255, 255, 255, 0.09);
+          --skeleton-glow: rgba(255, 255, 255, 0.22);
         }
-        body { background: #09120f; }
-        .metric { background: rgba(255, 255, 255, 0.035); }
+        body { background: #191919; }
+        .dashboard { border-color: rgba(255, 205, 0, 0.34); }
+        .metric { background: rgba(255, 255, 255, 0.045); }
         .progress-track { background: rgba(255, 255, 255, 0.09); }
       }
     </style>
   </head>
   <body data-display-mode="inline">
     <main class="dashboard" id="dashboard" data-state="loading">
-      <section class="camera" id="camera" data-camera-mode="snapshot" aria-label="Printer camera">
+      <section class="camera" id="camera" data-camera-mode="snapshot" data-camera-status="loading" data-camera-loading="true" aria-label="Printer camera">
         <div class="camera-empty" id="camera-empty">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
             <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
             <circle cx="12" cy="13" r="3.5" />
           </svg>
-          <span>Waiting for camera snapshot</span>
+          <span class="sr-only">Waiting for camera snapshot</span>
         </div>
+        <div class="camera-skeleton" aria-hidden="true"><span></span><span></span></div>
         <img id="snapshot" alt="Latest Snapmaker U1 camera snapshot" referrerpolicy="no-referrer" />
+        <video id="live-stream" aria-label="Live Snapmaker U1 camera" autoplay muted playsinline></video>
 
         <div class="camera-top">
-          <span class="camera-label"><span class="pulse"></span> U1 Camera</span>
-          <span class="live-badge"><span class="pulse"></span> Live</span>
+          <span class="camera-status" id="camera-status" role="status" aria-live="polite" aria-label="Camera loading" title="Camera loading">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
+              <circle cx="12" cy="13" r="3.5" />
+            </svg>
+          </span>
         </div>
 
         <div class="camera-bottom">
-          <div class="camera-copy">
-            <strong id="camera-title">Build plate view</strong>
-            <span id="camera-detail">Snapshot refreshes with printer status</span>
-          </div>
           <div class="camera-actions">
-            <button class="camera-button go-live" id="go-live" type="button">Go Live</button>
-            <button class="camera-button close" id="close-live" type="button" aria-label="Close live preview">Close</button>
+            <span class="camera-mode" id="camera-detail" data-mode="loading" role="status" aria-live="polite">
+              <span class="camera-mode-indicator" aria-hidden="true">
+                <span class="camera-mode-live-dot"></span>
+                <svg class="camera-mode-disconnected" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
+                  <circle cx="12" cy="13" r="3.5" />
+                  <path d="M4 4l16 16" />
+                </svg>
+              </span>
+              <span id="camera-detail-label">Connecting</span>
+            </span>
+            <button class="camera-button go-live" id="go-live" type="button" title="Open live camera" aria-label="Open live camera">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <rect x="3" y="6" width="13" height="12" rx="3" />
+                <path d="M16 10l5-3v10l-5-3z" fill="currentColor" stroke="none" />
+                <path d="M8.5 9.5l4 2.5-4 2.5z" fill="currentColor" stroke="none" />
+              </svg>
+            </button>
+            <button class="camera-button close" id="close-live" type="button" title="Close live camera" aria-label="Close live camera">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
           </div>
         </div>
       </section>
@@ -642,31 +824,33 @@
           </div>
         </div>
 
-        <div class="status-row">
-          <span class="status-pill"><span class="status-dot"></span><span id="state-label">Loading</span></span>
-          <span class="percent" id="percent">—</span>
+        <div class="status-row" id="status-row" data-loading="true">
+          <span class="status-pill skeleton-target"><span class="status-dot"></span><span id="state-label">Loading</span></span>
+          <span class="percent skeleton-target" id="percent">—</span>
         </div>
 
-        <div class="progress-track" role="progressbar" aria-label="Print progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-        <div class="progress-meta">
-          <span id="layer">Layer —</span>
-          <span id="filename">No active file</span>
+        <div class="progress-section" id="progress-section" data-loading="true">
+          <div class="progress-track skeleton-target" role="progressbar" aria-label="Print progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="progress-meta">
+            <span class="skeleton-target" id="layer">Layer —</span>
+            <span class="skeleton-target" id="filename">No active file</span>
+          </div>
         </div>
 
         <div class="metrics">
-          <div class="metric">
+          <div class="metric skeleton-target" data-loading="true">
             <span class="metric-label">Tool</span>
             <span class="metric-value" id="tool">—</span>
             <span class="metric-subvalue" id="tool-temp">No active tool</span>
           </div>
-          <div class="metric">
+          <div class="metric skeleton-target" data-loading="true">
             <span class="metric-label">Bed</span>
             <span class="metric-value" id="bed">—</span>
             <span class="metric-subvalue" id="bed-target">Target —</span>
           </div>
-          <div class="metric">
+          <div class="metric skeleton-target" data-loading="true">
             <span class="metric-label">Time</span>
             <span class="metric-value" id="elapsed">—</span>
             <span class="metric-subvalue" id="remaining">Remaining —</span>
@@ -676,12 +860,18 @@
         <div class="notice" id="notice" role="alert"></div>
 
         <div class="footer">
-          <div class="freshness">
+          <div class="freshness skeleton-target" id="freshness" data-loading="true">
             <strong id="observed">Waiting for observation</strong><br />
             <span id="next-check">Adaptive refresh will start when connected</span>
           </div>
           <div class="footer-actions">
-            <button class="toggle" id="auto-refresh" type="button" aria-pressed="true">Auto</button>
+            <button class="toggle" id="auto-refresh" type="button" aria-pressed="true" title="Automatic refresh on" aria-label="Turn automatic refresh off">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+                <path d="M20 11a8 8 0 0 0-14.7-4.4L3 10" />
+                <path d="M3 4v6h6M4 13a8 8 0 0 0 14.7 4.4L21 14" />
+                <path d="M21 20v-6h-6" />
+              </svg>
+            </button>
             <button class="refresh-button" id="refresh" type="button" title="Refresh now" aria-label="Refresh now">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6" />
@@ -699,12 +889,17 @@
         dashboard: document.querySelector("#dashboard"),
         camera: document.querySelector("#camera"),
         snapshot: document.querySelector("#snapshot"),
-        cameraTitle: document.querySelector("#camera-title"),
+        liveStream: document.querySelector("#live-stream"),
+        cameraStatus: document.querySelector("#camera-status"),
         cameraDetail: document.querySelector("#camera-detail"),
+        cameraDetailLabel: document.querySelector("#camera-detail-label"),
         goLive: document.querySelector("#go-live"),
         closeLive: document.querySelector("#close-live"),
         pip: document.querySelector("#pip"),
         fullscreen: document.querySelector("#fullscreen"),
+        statusRow: document.querySelector("#status-row"),
+        progressSection: document.querySelector("#progress-section"),
+        metrics: [...document.querySelectorAll(".metric")],
         stateLabel: document.querySelector("#state-label"),
         percent: document.querySelector("#percent"),
         progressTrack: document.querySelector("#progress-track"),
@@ -720,6 +915,7 @@
         notice: document.querySelector("#notice"),
         observed: document.querySelector("#observed"),
         nextCheck: document.querySelector("#next-check"),
+        freshness: document.querySelector("#freshness"),
         autoRefresh: document.querySelector("#auto-refresh"),
         refresh: document.querySelector("#refresh"),
       };
@@ -734,6 +930,14 @@
       let cameraRefreshing = false;
       let livePreview = false;
       let relayRendering = false;
+      let liveSignalAbortController = null;
+      let livePeerConnection = null;
+      let liveStreamUrl = null;
+      let liveFrameCallback = null;
+      let liveFpsTimer = null;
+      let liveConnectionFallbackTimer = null;
+      let liveFrameTimes = [];
+      let measuredLiveFps = null;
       let rpcId = 0;
       const pendingRequests = new Map();
       const hosted = window.parent !== window;
@@ -780,38 +984,157 @@
         elements.notice.classList.toggle("is-visible", Boolean(message));
       };
 
+      const setStatusLoading = (loading) => {
+        const value = String(Boolean(loading));
+        elements.statusRow.dataset.loading = value;
+        elements.progressSection.dataset.loading = value;
+        for (const metric of elements.metrics) metric.dataset.loading = value;
+        elements.freshness.dataset.loading = value;
+      };
+
+      const setCameraState = (state, loading = false) => {
+        const labels = {
+          loading: "Camera loading",
+          snapshot: "Camera snapshot ready",
+          fallback: "Camera snapshot fallback active",
+          live: "Live camera active",
+          unavailable: "Camera unavailable",
+        };
+        const label = labels[state] ?? labels.unavailable;
+        elements.camera.dataset.cameraStatus = state;
+        elements.camera.dataset.cameraLoading = String(Boolean(loading));
+        elements.cameraStatus.setAttribute("aria-label", label);
+        elements.cameraStatus.title = label;
+      };
+
+      const formatCameraTime = (observedAt) => {
+        const observedDate = new Date(observedAt);
+        return Number.isNaN(observedDate.valueOf())
+          ? null
+          : observedDate.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            });
+      };
+
+      const setCameraMode = (mode, observedAt = null) => {
+        const observedLabel = observedAt ? formatCameraTime(observedAt) : null;
+        const fpsLabel = Number.isFinite(measuredLiveFps)
+          ? (measuredLiveFps >= 10 ? measuredLiveFps.toFixed(0) : measuredLiveFps.toFixed(1))
+          : null;
+        const labels = {
+          loading: "Connecting",
+          snapshot: observedLabel ? `Snapshot · ${observedLabel}` : "Snapshot",
+          fallback: observedLabel
+            ? `Snapshot fallback · ${observedLabel}`
+            : "Snapshot fallback",
+          live: fpsLabel ? `Live · ${fpsLabel} FPS` : "Live · measuring FPS",
+          unavailable: "Camera unavailable",
+        };
+        elements.cameraDetail.dataset.mode = mode;
+        elements.cameraDetailLabel.textContent = labels[mode] ?? labels.unavailable;
+      };
+
+      const closeSignalingSession = (url) => {
+        if (!url) return;
+        void fetch(url, {
+          method: "DELETE",
+          cache: "no-store",
+          credentials: "omit",
+          referrerPolicy: "no-referrer",
+        }).catch(() => {});
+      };
+
+      const stopLiveStream = () => {
+        clearTimeout(liveConnectionFallbackTimer);
+        liveConnectionFallbackTimer = null;
+        liveSignalAbortController?.abort();
+        liveSignalAbortController = null;
+        if (liveFrameCallback !== null && elements.liveStream.cancelVideoFrameCallback) {
+          elements.liveStream.cancelVideoFrameCallback(liveFrameCallback);
+        }
+        liveFrameCallback = null;
+        clearInterval(liveFpsTimer);
+        liveFpsTimer = null;
+        const peer = livePeerConnection;
+        livePeerConnection = null;
+        peer?.close();
+        const stream = elements.liveStream.srcObject;
+        if (stream instanceof MediaStream) {
+          for (const track of stream.getTracks()) track.stop();
+        }
+        elements.liveStream.srcObject = null;
+        elements.camera.classList.remove("has-live");
+        closeSignalingSession(liveStreamUrl);
+        liveStreamUrl = null;
+        liveFrameTimes = [];
+        measuredLiveFps = null;
+      };
+
+      const syncAutoRefreshControl = () => {
+        const label = autoRefresh
+          ? "Turn automatic refresh off"
+          : "Turn automatic refresh on";
+        elements.autoRefresh.setAttribute("aria-pressed", String(autoRefresh));
+        elements.autoRefresh.setAttribute("aria-label", label);
+        elements.autoRefresh.title = autoRefresh
+          ? "Automatic refresh on"
+          : "Automatic refresh off";
+      };
+
       const closeLive = () => {
         livePreview = false;
         relayRendering = false;
+        stopLiveStream();
         clearTimeout(snapshotFallbackTimer);
         elements.snapshot.removeAttribute("src");
+        elements.camera.classList.remove("has-snapshot");
         elements.camera.dataset.cameraMode = "snapshot";
-        elements.cameraTitle.textContent = "Build plate view";
-        elements.cameraDetail.textContent = "Secure snapshot relayed by U1 Print Studio";
+        setCameraState("loading", true);
+        setCameraMode("loading");
         if (hosted && toolOutput?.camera?.available) void refreshCameraFrame();
       };
 
       const renderCamera = () => {
         const available = Boolean(toolOutput?.camera?.available);
         elements.goLive.disabled = !available;
-        elements.goLive.title = available
-          ? "Start a secure relayed live preview"
-          : "Camera unavailable";
+        const actionLabel = available ? "Open live camera" : "Camera unavailable";
+        elements.goLive.title = actionLabel;
+        elements.goLive.setAttribute("aria-label", actionLabel);
+        if (!available) {
+          livePreview = false;
+          relayRendering = false;
+          stopLiveStream();
+          elements.camera.dataset.cameraMode = "snapshot";
+          elements.camera.classList.remove("has-snapshot");
+          setCameraState("unavailable");
+          setCameraMode("unavailable");
+        } else if (livePreview && elements.camera.classList.contains("has-live")) {
+          setCameraState("live");
+          setCameraMode("live");
+        } else if (livePreview && elements.camera.classList.contains("has-snapshot")) {
+          setCameraState("fallback");
+          setCameraMode("fallback");
+        } else if (elements.camera.classList.contains("has-snapshot")) {
+          setCameraState("snapshot");
+        } else {
+          setCameraState("loading", true);
+        }
       };
 
       elements.snapshot.addEventListener("load", () => {
         elements.camera.classList.add("has-snapshot");
+        const mode = livePreview ? (relayRendering ? "live" : "fallback") : "snapshot";
+        setCameraState(mode);
+        if (mode === "live") setCameraMode("live");
       });
 
       elements.snapshot.addEventListener("error", () => {
-        if (livePreview && relayRendering) {
-          relayRendering = false;
-          elements.cameraDetail.textContent = "Continuous relay unavailable · using snapshot fallback";
-          void refreshCameraFrame();
-          return;
-        }
+        if (livePreview && relayRendering) return;
         elements.camera.classList.remove("has-snapshot");
-        elements.cameraDetail.textContent = "Camera image could not be displayed";
+        setCameraMode("unavailable");
+        setCameraState("unavailable");
       });
 
       const render = () => {
@@ -852,6 +1175,7 @@
           : `Updated ${observedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`;
 
         setNotice(status.exception || !status.reachable ? status.printerMessage || "Printer unavailable" : "");
+        setStatusLoading(false);
         renderCamera();
         scheduleRefresh(status.refreshAfterSeconds);
       };
@@ -880,19 +1204,15 @@
         const dataUrl = metadata?.cameraFrame?.dataUrl;
 
         if (frame.available && typeof dataUrl === "string" && dataUrl.startsWith("data:image/jpeg;base64,")) {
+          setCameraState("loading", true);
           elements.snapshot.src = dataUrl;
-          const observedDate = new Date(frame.observedAt);
-          const observedLabel = Number.isNaN(observedDate.valueOf())
-            ? "just now"
-            : observedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-          elements.cameraDetail.textContent = livePreview
-            ? `Secure live preview · frame ${observedLabel}`
-            : `Secure snapshot · ${observedLabel}`;
+          setCameraMode(livePreview ? "fallback" : "snapshot", frame.observedAt);
           return;
         }
 
         elements.camera.classList.remove("has-snapshot");
-        elements.cameraDetail.textContent = frame.reason ?? "Camera unavailable";
+        setCameraMode("unavailable");
+        setCameraState("unavailable");
       };
 
       window.addEventListener("message", (event) => {
@@ -952,12 +1272,14 @@
 
       const bridgeReady = initializeBridge().catch((error) => {
         setNotice(`Host bridge unavailable: ${error?.message ?? "unknown error"}`);
+        setStatusLoading(false);
         return null;
       });
 
       const refreshCameraFrame = async () => {
         if (cameraRefreshing || !hosted || !toolOutput?.camera?.available) return;
         cameraRefreshing = true;
+        setCameraState("loading", true);
         try {
           await bridgeReady;
           const response = await rpcRequest("tools/call", {
@@ -966,7 +1288,10 @@
           });
           applyCameraFrame(response);
         } catch (error) {
-          elements.cameraDetail.textContent = `Camera refresh failed: ${error?.message ?? "unknown error"}`;
+          if (!elements.camera.classList.contains("has-snapshot")) {
+            setCameraMode("unavailable");
+            setCameraState("unavailable");
+          }
         } finally {
           cameraRefreshing = false;
           clearTimeout(snapshotFallbackTimer);
@@ -977,14 +1302,81 @@
         }
       };
 
+      const recordLiveFrame = (now = performance.now()) => {
+        liveFrameTimes.push(now);
+        const windowStart = now - 5000;
+        liveFrameTimes = liveFrameTimes.filter((observed) => observed >= windowStart);
+        if (liveFrameTimes.length >= 2) {
+          const elapsed = liveFrameTimes.at(-1) - liveFrameTimes[0];
+          if (elapsed > 0) {
+            measuredLiveFps = (liveFrameTimes.length - 1) * 1000 / elapsed;
+          }
+        }
+        setCameraMode("live");
+      };
+
+      const startLiveFpsMeasurement = () => {
+        if (typeof elements.liveStream.requestVideoFrameCallback === "function") {
+          const observeFrame = (now) => {
+            if (!livePreview || !relayRendering) return;
+            recordLiveFrame(now);
+            liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
+          };
+          liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
+          return;
+        }
+
+        let previousFrames = 0;
+        let previousTime = performance.now();
+        liveFpsTimer = setInterval(() => {
+          if (!livePreview || !relayRendering) return;
+          const quality = elements.liveStream.getVideoPlaybackQuality?.();
+          const totalFrames = quality?.totalVideoFrames ??
+            elements.liveStream.webkitDecodedFrameCount ?? 0;
+          const now = performance.now();
+          if (totalFrames > previousFrames && now > previousTime) {
+            measuredLiveFps = (totalFrames - previousFrames) * 1000 / (now - previousTime);
+            setCameraMode("live");
+          }
+          previousFrames = totalFrames;
+          previousTime = now;
+        }, 1_000);
+      };
+
+      const signalCamera = async (streamUrl, payload, signal) => {
+        const response = await fetch(streamUrl, {
+          method: "POST",
+          cache: "no-store",
+          credentials: "omit",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
+          referrerPolicy: "no-referrer",
+          signal,
+        });
+        if (!response.ok) {
+          throw new Error(`Camera signaling returned HTTP ${response.status}`);
+        }
+        return response.json();
+      };
+
+      const activateSnapshotFallback = () => {
+        if (!livePreview) return;
+        relayRendering = false;
+        stopLiveStream();
+        setCameraMode("fallback");
+        setCameraState("loading", true);
+        void refreshCameraFrame();
+      };
+
       const openCameraStream = async () => {
         if (!hosted || !toolOutput?.camera?.available) return;
         livePreview = true;
         relayRendering = false;
+        stopLiveStream();
         clearTimeout(snapshotFallbackTimer);
         elements.camera.dataset.cameraMode = "live";
-        elements.cameraTitle.textContent = "Live build plate";
-        elements.cameraDetail.textContent = "Opening secure continuous relay…";
+        setCameraState("loading", true);
+        setCameraMode("loading");
 
         try {
           await bridgeReady;
@@ -995,27 +1387,111 @@
           if (!livePreview) return;
           const stream = response?._meta?.cameraStream ?? response?.meta?.cameraStream;
           const streamUrl = stream?.url;
+          const standaloneSameOriginStream = (() => {
+            if (!new URLSearchParams(location.search).has("standalone")) return false;
+            try {
+              const parsed = new URL(streamUrl);
+              return parsed.protocol === "http:" &&
+                parsed.hostname === location.hostname;
+            } catch {
+              return false;
+            }
+          })();
           if (
             response?.structuredContent?.available !== true ||
             typeof streamUrl !== "string" ||
-            !streamUrl.startsWith("https://")
+            (!streamUrl.startsWith("https://") && !standaloneSameOriginStream)
           ) {
             throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
           }
-          relayRendering = true;
-          elements.cameraDetail.textContent = "Secure continuous camera relay";
-          elements.snapshot.src = streamUrl;
+          liveStreamUrl = streamUrl;
+          liveSignalAbortController = new AbortController();
+          const signal = liveSignalAbortController.signal;
+          const offer = await signalCamera(
+            streamUrl,
+            { type: "request" },
+            signal
+          );
+          if (
+            !livePreview ||
+            offer?.type !== "offer" ||
+            typeof offer?.sdp !== "string"
+          ) {
+            throw new Error("Camera WebRTC offer unavailable");
+          }
+
+          const peer = new RTCPeerConnection({
+            sdpSemantics: "unified-plan",
+            iceServers: Array.isArray(offer.iceServers) ? offer.iceServers : [],
+          });
+          livePeerConnection = peer;
+          peer.addTransceiver("video", { direction: "recvonly" });
+
+          peer.ondatachannel = (event) => {
+            if (event.channel.label === "keepalive") {
+              event.channel.onmessage = () => event.channel.send("pong");
+            }
+          };
+
+          peer.onicecandidate = (event) => {
+            if (!event.candidate || livePeerConnection !== peer || !liveStreamUrl) return;
+            void signalCamera(
+              liveStreamUrl,
+              {
+                type: "remote_candidate",
+                candidates: [event.candidate.toJSON()],
+              },
+              signal
+            ).catch(activateSnapshotFallback);
+          };
+
+          peer.ontrack = (event) => {
+            if (livePeerConnection !== peer || !livePreview) return;
+            const stream = event.streams[0] ?? new MediaStream([event.track]);
+            elements.liveStream.srcObject = stream;
+            void elements.liveStream.play().catch(() => {});
+            elements.camera.classList.add("has-live");
+            relayRendering = true;
+            clearTimeout(snapshotFallbackTimer);
+            setCameraState("live");
+            setCameraMode("live");
+            startLiveFpsMeasurement();
+          };
+
+          peer.onconnectionstatechange = () => {
+            if (livePeerConnection !== peer || !livePreview) return;
+            if (peer.connectionState === "connected") {
+              clearTimeout(liveConnectionFallbackTimer);
+              liveConnectionFallbackTimer = null;
+            } else if (peer.connectionState === "failed") {
+              activateSnapshotFallback();
+            } else if (peer.connectionState === "disconnected") {
+              clearTimeout(liveConnectionFallbackTimer);
+              liveConnectionFallbackTimer = setTimeout(() => {
+                if (peer.connectionState !== "connected") activateSnapshotFallback();
+              }, 3_000);
+            }
+          };
+
+          await peer.setRemoteDescription({ type: "offer", sdp: offer.sdp });
+          const answer = await peer.createAnswer();
+          await peer.setLocalDescription(answer);
+          await signalCamera(
+            streamUrl,
+            { type: "answer", sdp: peer.localDescription?.sdp },
+            signal
+          );
         } catch {
           if (!livePreview) return;
-          relayRendering = false;
-          elements.cameraDetail.textContent = "Continuous relay unavailable · using snapshot fallback";
-          void refreshCameraFrame();
+          activateSnapshotFallback();
         }
       };
 
       const refreshStatus = async () => {
         if (refreshing || !hosted) return;
+        const showSkeletons = !toolOutput;
         refreshing = true;
+        if (showSkeletons) setStatusLoading(true);
         elements.refresh.classList.add("is-refreshing");
         setNotice("");
         try {
@@ -1031,6 +1507,7 @@
           scheduleRefresh(15);
         } finally {
           refreshing = false;
+          if (showSkeletons) setStatusLoading(false);
           elements.refresh.classList.remove("is-refreshing");
         }
       };
@@ -1060,7 +1537,7 @@
 
       elements.autoRefresh.addEventListener("click", () => {
         autoRefresh = !autoRefresh;
-        elements.autoRefresh.setAttribute("aria-pressed", String(autoRefresh));
+        syncAutoRefreshControl();
         persistUiState();
         scheduleRefresh(toolOutput?.refreshAfterSeconds ?? 30);
       });
@@ -1088,7 +1565,7 @@
       elements.pip.addEventListener("click", () => requestDisplayMode("pip"));
       elements.fullscreen.addEventListener("click", () => requestDisplayMode("fullscreen"));
 
-      elements.autoRefresh.setAttribute("aria-pressed", String(autoRefresh));
+      syncAutoRefreshControl();
       applyHostContext();
 
       if (window.openai?.toolOutput) {

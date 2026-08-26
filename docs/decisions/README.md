@@ -20,7 +20,8 @@ silently changed.
 | [0011](0011-use-standard-https-and-keep-distribution-model-open.md) | Use standard HTTPS and keep the distribution model open | Accepted for personal developer testing |
 | [0012](0012-return-an-image-fallback-for-non-component-hosts.md) | Return an image fallback for non-component hosts | Partially superseded by 0014 |
 | [0013](0013-rotate-personal-oauth-refresh-tokens.md) | Rotate personal OAuth refresh tokens | Accepted for personal developer testing |
-| [0014](0014-separate-continuous-camera-relay-from-mcp-and-http.md) | Separate the continuous camera relay from MCP and HTTP | Accepted for the read-only prototype |
+| [0014](0014-separate-continuous-camera-relay-from-mcp-and-http.md) | Separate the continuous camera relay from MCP and HTTP | Partially superseded by 0015 |
+| [0015](0015-use-webrtc-camerastreamer-for-live-presentation.md) | Use webrtc-camerastreamer for live camera presentation | Accepted for the read-only prototype |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.

@@ -33,12 +33,15 @@ user Go Live intent
         | one authenticated MCP call; URL stays in result _meta
         v
 camera relay application service
-  one-time ticket -> lease -> bounded serial frame iteration
+  one-time ticket -> lease -> bounded signaling session
         |                                      ^
-        | application ports                    | validated raw JPEG
+        | application ports                    | allowlisted offer/answer/ICE
         v                                      |
 exact media HTTP adapter              u1-status camera adapter
-  GET /media/camera.mjpeg             fixed private Moonraker route
+  POST/DELETE /media/camera.webrtc    fixed private WebRTC route
+        |
+        v
+browser RTCPeerConnection <====== H264 media ======> webrtc-camerastreamer
 ```
 
 The same observation has multiple representations. The HTML widget and PNG
@@ -55,8 +58,9 @@ inbound protocol, not the core product boundary.
 | Remote transport | `app/src/server.ts` | Terminates Streamable HTTP after the OAuth boundary and invokes the same MCP app |
 | Identity boundary | `app/src/personal-oauth.ts` | Personal authorization code, PKCE, passkey verification, token audience, and `u1.monitor` scope |
 | Observation adapter | `app/src/u1-status.ts` | Queries the allowlisted Moonraker status and camera paths and normalizes their response |
-| Camera relay application service | `app/src/application/camera-relay.ts` | Owns ticket, lease, concurrency, duration, and serial frame-iteration policy without MCP or HTTP types |
-| Media inbound adapter | `app/src/adapters/camera-media-http.ts` | Serves only the exact ticketed multipart MJPEG route and maps HTTP outcomes |
+| Camera relay application service | `app/src/application/camera-relay.ts` | Owns ticket, lease, concurrency, and duration policy without MCP or HTTP types |
+| WebRTC signaling port | `app/src/application/camera-webrtc.ts` | Defines transport-independent offer, answer, ICE candidate, and session-release contracts |
+| Media inbound adapter | `app/src/adapters/camera-webrtc-http.ts` | Serves only the exact ticketed WebRTC signaling route and maps HTTP outcomes without exposing the printer peer ID |
 | Ticket codec adapter | `app/src/adapters/camera-ticket-codec.ts` | Issues opaque random ticket material and hashes it for in-memory lookup |
 | Domain-shaped projection | `U1Status` | One versioned, timestamped current observation used by all presenters |
 | Interactive presenter | `public/widget.html` | Renders and refreshes status in MCP Apps hosts and requests relayed camera frames |
@@ -107,7 +111,8 @@ Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
               -> text + U1Status + PNG + UI resource link
               -> host mounts the widget if supported, otherwise shows the PNG
               -> Go Live calls open_u1_camera_stream once
-              -> widget loads one-time /media/camera.mjpeg URL
+              -> widget exchanges one-time /media/camera.webrtc grant
+              -> browser and printer negotiate an H264 RTCPeerConnection
 ```
 
 Tailscale Funnel provides public TLS routing. OAuth authenticates and scopes the
@@ -157,11 +162,12 @@ does not implement Preparation or Control.
 - Printer and camera addresses remain private; the widget never connects to
   them directly.
 - MCP maps an authenticated `Go Live` request to an application use case but
-  does not own tickets, leases, concurrency, timing, or frame iteration.
-- The media HTTP adapter knows multipart framing and status codes but not how
-  tickets are issued or which printer route supplies frames.
-- The printer adapter yields validated raw JPEG observations but knows nothing
-  about MCP tools, browser URLs, HTTP responses, or relay leases.
+  does not own tickets, leases, concurrency, duration, or signaling policy.
+- The media HTTP adapter knows the exact signaling message allowlist and HTTP
+  status codes but not how tickets are issued or which printer route is used.
+- The printer adapter performs fixed-route WebRTC signaling and separately
+  yields validated snapshot observations; it knows nothing about MCP tools,
+  browser URLs, HTTP responses, or relay leases.
 - OAuth identity and scope answer who may call Monitor. A future upload, start,
   pause, resume, or cancel must still have a separate action-specific
   authorization, command intent, adapter result, and post-action observation.

@@ -674,3 +674,175 @@ identifiers, and runtime data are intentionally not retained.
   Mounted desktop and iOS continuous rendering, fallback behavior, Close, PiP,
   fullscreen, and real-host OAuth renewal remain separate user-visible gates.
 - No printer control or G-code was implemented or invoked.
+
+### Standalone read-only status dashboard
+
+- `bun install --frozen-lockfile` restored this worktree's missing app
+  dependencies without changing `bun.lock`.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 34 tests with 161 assertions. The added
+  contracts prove the production widget is hosted by the harness, only
+  status/snapshot/stream calls are accepted, a control-shaped call is rejected,
+  `/dashboard` is absent unless explicitly enabled, a derived external origin
+  must be a private MagicDNS HTTPS hostname on a dedicated non-443 port, and
+  the dashboard-only process returns 404 for the ordinary `/mcp` route.
+- A dedicated status-dashboard process stayed bound to `127.0.0.1:8788`
+  without changing or restarting the installed loopback 8787 service. Private
+  Tailscale Serve HTTPS on port 8444 proxies only the tailnet to that process;
+  the existing public port-443 Funnel routes were preserved and port 8444 has
+  no Funnel permission.
+- The user could not open the earlier raw tailnet-IP port. Tailscale reported
+  the iPhone online and active, but ping used DERP and did not establish a
+  direct connection. That observation motivated replacing the raw app bind
+  with loopback plus Tailscale Serve; it does not by itself prove whether the
+  failed TCP connection was an ACL, firewall, or path issue.
+- The exact private HTTPS `/dashboard` route returned the bridge host and live
+  reachable `complete` telemetry with camera available. A one-time HTTPS relay
+  delivered two multipart JPEG parts, HTTP 200, in 1.42 seconds with 144,083
+  transferred bytes. No image was saved.
+- The in-app browser runtime was unavailable, so the harness was not visually
+  inspected in this run. HTTP integration and real-printer camera evidence do
+  not prove browser layout quality or ChatGPT host rendering.
+- The dashboard is opt-in and read-only. The app remains on loopback, is absent
+  from the normal service, and its dedicated Tailscale Serve port must not be
+  Funnel-enabled. No printer control or G-code was implemented or invoked.
+- `bun run bundle` rebuilt the ignored local stdio artifact successfully.
+  Plugin Creator validation passed with its transient YAML dependency. No
+  cachebuster, marketplace edit, reinstall, or deployed-service replacement
+  was performed because the harness runs directly from the branch.
+
+### Icon controls, persistent grid, and component skeletons
+
+- Acceptance boundary: this refinement changes only the read-only widget UI.
+  It must not add a printer command, expand the standalone bridge tool allowlist,
+  or expose a camera URL to model-readable output.
+- `bun test src/*.test.ts`: passed 35 tests with 174 assertions, including the
+  icon-only control, persistent-grid, and component-loading-state contract.
+- `bun run check`: passed TypeScript validation.
+- Plugin Creator `validate_plugin.py` passed through
+  `uv run --with pyyaml`; the transient dependency did not change project
+  dependencies.
+- Loopback `GET /widget?standalone=1` served the new icon/grid/skeleton source.
+  Loopback and private Tailscale HTTPS `GET /dashboard` both returned HTTP 200.
+- Live read-only bridge calls completed, but the printer was offline at that
+  observation: status was `offline` with camera unavailable, and the camera
+  frame result was unavailable with zero bytes. This verifies the unavailable
+  state path, not live camera rendering or printer reachability.
+- No browser was connected to the in-app browser runtime, so visual layout,
+  animation quality, and live/snapshot transitions remain user-visible review
+  gates. No cachebuster, plugin reinstall, printer command, or G-code action was
+  performed.
+
+### Neutral camera indicator and explicit presentation mode
+
+- Acceptance boundary: the persistent camera grid remains unchanged; the
+  top-left camera icon has no state dot, slash, pulse, or state-dependent
+  color; and the bottom-right overlay is the sole visible camera-mode text.
+- Snapshot mode now reports `Snapshot` with the frame time, snapshot fallback
+  reports `Snapshot fallback`, and continuous mode reports `Live` with the
+  configured rate as an honest `up to 15 FPS` ceiling rather than measured FPS.
+  The old build-plate title and secure-snapshot caption were removed.
+- `bun test src/*.test.ts`: passed 36 tests with 185 assertions, including the
+  neutral-icon and bottom-right mode-label contract.
+- `bun run check`, `bun run bundle`, Plugin Creator validation through
+  `uv run --no-project --with pyyaml`, `./scripts/check-repository.sh`, and
+  `git diff --check`: passed.
+- The exact private HTTPS widget source contains the new mode labels and none
+  of the removed title, secure-snapshot caption, or camera-status dot. Private
+  HTTPS `/dashboard` returned HTTP 200, and its read-only status bridge returned
+  reachable `complete` telemetry with camera available and a configured target
+  of 15 FPS.
+- The browser-control runtime reported no available browser, so the refreshed
+  snapshot, fallback, and live layouts remain a user-visible review gate. No
+  cachebuster, plugin reinstall, printer command, or G-code action was
+  performed.
+
+### Snapmaker card theme
+
+- Acceptance boundary: this pass changes only the existing read-only card's
+  visual tokens. Layout, copy, camera relay behavior, bridge calls, tools, and
+  printer behavior remain unchanged.
+- A user-supplied Snapmaker U1 website screenshot established the palette:
+  charcoal and warm white form the base, Snapmaker yellow identifies the card,
+  orange is reserved for paused or attention state, and red remains reserved
+  for faults. The implementation applies yellow to the camera grid, live and
+  refresh actions, status treatment, progress fill, and the camera/content
+  divider in light and dark color schemes.
+- `bun test src/*.test.ts`: passed 37 tests with 192 assertions, including the
+  Snapmaker theme-token contract. `bun run check`, `bun run bundle`, Plugin
+  Creator validation through `uv run --no-project --with pyyaml`,
+  `./scripts/check-repository.sh`, and `git diff --check`: passed.
+- Private HTTPS `/dashboard?reload=5` returned HTTP 200. The exact served widget
+  contained the yellow and orange tokens plus branded divider and no legacy
+  green or lime token declarations.
+- Product Design QA is recorded in `design-qa.md` with `final result: blocked`.
+  The source reference was inspected, but the in-app browser runtime reported
+  no connected browser, so no implementation screenshot, visual comparison,
+  interaction check, or console check was available. No cachebuster, plugin
+  reinstall, printer command, or G-code action was performed.
+
+### Semantic camera modes and measured relay FPS
+
+- Acceptance boundary: camera mode status is left-aligned and the mode action
+  is right-aligned; snapshot/fallback displays a red disconnected-camera icon;
+  live displays a pulsing green dot; and the FPS label reflects observed frame
+  presentation rather than the configured relay ceiling. The camera remains
+  read-only and no printer-control surface is added.
+- The widget now fetches the exact one-time media URL permitted by the MCP
+  result, parses complete JPEG frames from the multipart byte stream, presents
+  them through the existing snapshot element, and computes FPS from frame
+  observations in a rolling five-second window. Until two frames arrive it
+  reports `Live · measuring FPS`.
+- The exact private relay delivered four complete frames at an observed 1.4 FPS
+  during the smoke check. This is transport/presentation evidence, not a claim
+  about the camera sensor's native frame rate.
+- `bun test src/*.test.ts`: passed 38 tests with 207 assertions.
+- `bun run check`, `bun run bundle`, and an independent parse of the inline
+  widget module: passed. Private HTTPS `/dashboard?reload=6` returned HTTP 200
+  and served the measured-FPS widget source.
+- Plugin Creator validation through `uv run --no-project --with pyyaml`,
+  `./scripts/check-repository.sh`, and `git diff --check`: passed.
+- The identity palette is grounded in the official Snapmaker U1 page stylesheet:
+  charcoal `#1c1e20`, `#1f1f1f`, and `#242424`; yellow `#ffcd00`; orange
+  `#ff5f28`; and warm white surfaces. Semantic green `#32c86e` and red
+  `#ff6161` are deliberately outside the brand palette and communicate
+  positive/connected versus negative/disconnected state.
+- Browser-rendered comparison and interaction QA remain blocked because the
+  configured browser-control runtime reported no connected browser. No plugin
+  reinstall, printer command, or G-code action was performed.
+
+### Actual WebRTC camera presentation
+
+- Acceptance boundary: `Go Live` must negotiate the printer's advertised
+  `webrtc-camerastreamer`; no repeated snapshot transport may be called live;
+  snapshots remain an explicitly labeled fallback; printer controls and a
+  generic proxy remain absent.
+- `bun run check` and `bun test src/*.test.ts`: passed 38 tests with 220
+  assertions. The contracts cover a real `<video>` element,
+  `RTCPeerConnection`, H264 offer handling, answer and ICE forwarding,
+  printer-peer-ID privacy, ticket replay rejection, bounded lease teardown,
+  CORS, and removal of the old MJPEG route and JPEG stream parser.
+- `bun run bundle`, Plugin Creator validation through
+  `uv run --no-project --with pyyaml`, `./scripts/check-repository.sh`, and
+  `git diff --check`: passed.
+- The private dashboard's exact ticketed signaling route returned an H264 offer
+  of 981 bytes plus the reference STUN server without exposing the printer peer ID, and session deletion
+  released the lease. A separate `aiortc` receiver reached `connected`, decoded
+  frames over the persistent peer connection, and closed the session without
+  retaining media. Software-decoder samples varied from 0.2 to 24.8 FPS; that
+  variability is not native-browser performance evidence.
+- Plugin `0.2.0+codex.20260826165531` was validated, reinstalled, and both the
+  protected service and private dashboard were restarted. Public
+  `/media/camera.mjpeg` returns 404, invalid WebRTC tickets return 401, and
+  private `/dashboard?reload=10` returns 200 while serving the WebRTC widget.
+- No connected browser was available to the control runtime, so visible native
+  playback, browser-measured FPS, and ChatGPT/iOS mounting remain separate
+  user-visible acceptance evidence. No printer control or G-code action ran.
+
+### Automatic-refresh icon cleanup
+
+- Removed the decorative status-dot pseudo-element from the automatic-refresh
+  button. Enabled and paused behavior, accessible labels, and icon color remain
+  unchanged.
+- `bun run check`, `bun test src/*.test.ts`, and `bun run bundle`: passed 38
+  tests with 222 assertions, including absence of both dot selectors.

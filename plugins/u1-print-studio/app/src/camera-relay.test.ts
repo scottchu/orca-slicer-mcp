@@ -19,21 +19,20 @@ function codec(tokens: string[]): CameraTicketCodec {
 
 const locator = {
   locate: (token: string) =>
-    `https://relay.example/media/camera.mjpeg?ticket=${token}`,
+    `https://relay.example/media/camera.webrtc?ticket=${token}`,
 };
 
 describe("camera relay application service", () => {
   test("issues a short-lived ticket that can be claimed only once", () => {
     let now = Date.parse("2026-08-25T20:00:00.000Z");
     const relay = new CameraRelayService(
-      { readFrame: async () => ({ bytes: new Uint8Array([1]), observedAt: "now" }) },
       codec(["one-time"]),
       { now: () => now, ticketTtlMilliseconds: 1_000 }
     );
 
     const opened = relay.open(locator);
     expect(opened).toEqual({
-      url: "https://relay.example/media/camera.mjpeg?ticket=one-time",
+      url: "https://relay.example/media/camera.webrtc?ticket=one-time",
       expiresAt: "2026-08-25T20:00:01.000Z",
       maxDurationSeconds: 1800,
     });
@@ -46,7 +45,6 @@ describe("camera relay application service", () => {
   test("distinguishes expired tickets and preserves a ticket while capacity is busy", () => {
     let now = 1_000;
     const relay = new CameraRelayService(
-      { readFrame: async () => ({ bytes: new Uint8Array([1]), observedAt: "now" }) },
       codec(["first", "second", "expired"]),
       {
         now: () => now,
@@ -72,45 +70,16 @@ describe("camera relay application service", () => {
     );
   });
 
-  test("serializes frame reads and waits between completed observations", async () => {
-    let reads = 0;
-    let concurrent = 0;
-    let maximumConcurrent = 0;
-    const waits: number[] = [];
-    const relay = new CameraRelayService(
-      {
-        readFrame: async () => {
-          concurrent += 1;
-          maximumConcurrent = Math.max(maximumConcurrent, concurrent);
-          concurrent -= 1;
-          reads += 1;
-          return {
-            bytes: new Uint8Array([reads]),
-            observedAt: `frame-${reads}`,
-          };
-        },
-      },
-      codec(["stream"]),
-      {
-        frameIntervalMilliseconds: 250,
-        wait: async (milliseconds, signal) => {
-          waits.push(milliseconds);
-          if (waits.length === 2) signal.throwIfAborted();
-        },
-      }
-    );
+  test("bounds the active lease duration", () => {
+    let now = Date.parse("2026-08-26T16:00:00.000Z");
+    const relay = new CameraRelayService(codec(["stream"]), {
+      now: () => now,
+      maxStreamDurationMilliseconds: 30_000,
+    });
     relay.open(locator);
     const lease = relay.claim("stream");
-    const abortController = new AbortController();
-    const frames: number[] = [];
-    for await (const frame of lease.frames(abortController.signal)) {
-      frames.push(frame.bytes[0] ?? 0);
-      if (frames.length === 3) abortController.abort();
-    }
+    expect(lease.expiresAt).toBe("2026-08-26T16:00:30.000Z");
     lease.release();
-
-    expect(frames).toEqual([1, 2, 3]);
-    expect(waits).toEqual([250, 250]);
-    expect(maximumConcurrent).toBe(1);
+    now += 30_000;
   });
 });

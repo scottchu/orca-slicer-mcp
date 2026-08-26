@@ -1,14 +1,16 @@
+import { execFileSync } from "node:child_process";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 
 import type { AuthInfo } from "@modelcontextprotocol/sdk/server/auth/types.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 
-import { createAppServer, WIDGET_HTML } from "./app.js";
+import { createAppServer, readWidgetHtml } from "./app.js";
 import { createCameraTicketCodec } from "./adapters/camera-ticket-codec.js";
 import {
-  createCameraMediaHandler,
   createCameraStreamLocator,
-} from "./adapters/camera-media-http.js";
+  createCameraWebRtcHandler,
+} from "./adapters/camera-webrtc-http.js";
+import type { CameraWebRtcSignalingSource } from "./application/camera-webrtc.js";
 import {
   CameraRelayService,
   type CameraStreamLocator,
@@ -18,9 +20,46 @@ import {
   MONITOR_SCOPE,
   type PersonalOAuthService,
 } from "./personal-oauth.js";
-import { readU1CameraJpeg } from "./u1-status.js";
+import {
+  createStatusDashboardHandler,
+  type StatusDashboardDependencies,
+} from "./status-dashboard.js";
+import {
+  readU1CameraFrame,
+  readU1Status,
+  u1CameraWebRtcSignaling,
+} from "./u1-status.js";
 
 const MCP_PATH = "/mcp";
+
+export function tailscaleDashboardBaseUrl(
+  status: unknown,
+  port: number
+): URL {
+  const self = status && typeof status === "object" && "Self" in status
+    ? (status as { Self?: unknown }).Self
+    : null;
+  const dnsName = self && typeof self === "object" && "DNSName" in self
+    ? (self as { DNSName?: unknown }).DNSName
+    : null;
+  const host = typeof dnsName === "string" ? dnsName.replace(/\.$/, "") : "";
+  if (!host.endsWith(".ts.net")) {
+    throw new Error("A private Tailscale MagicDNS hostname is required");
+  }
+  if (!Number.isInteger(port) || port < 1024 || port > 65_535 || port === 443) {
+    throw new Error("A dedicated nonstandard Tailscale Serve HTTPS port is required");
+  }
+  return new URL(`https://${host}:${port}`);
+}
+
+function statusDashboardBaseUrl(localPort: number): URL {
+  const servePortRaw = process.env.U1_DASHBOARD_TAILSCALE_PORT?.trim();
+  if (!servePortRaw) return new URL(`http://127.0.0.1:${localPort}`);
+  const status = JSON.parse(
+    execFileSync("tailscale", ["status", "--json"], { encoding: "utf8" })
+  );
+  return tailscaleDashboardBaseUrl(status, Number(servePortRaw));
+}
 
 function localPath(url: URL, oauth: PersonalOAuthService | null): string {
   const prefix = oauth?.basePath ?? "";
@@ -42,14 +81,19 @@ function unauthorized(res: ServerResponse, oauth: PersonalOAuthService): void {
 type CameraRelayDependencies = {
   relay: CameraRelayService;
   locator: CameraStreamLocator;
+  signaling: CameraWebRtcSignalingSource;
 };
 
 export function createRequestHandler(
   oauth: PersonalOAuthService | null,
-  cameraRelay: CameraRelayDependencies | null = null
+  cameraRelay: CameraRelayDependencies | null = null,
+  statusDashboard: StatusDashboardDependencies | null = null
 ) {
-  const handleCameraMedia = cameraRelay
-    ? createCameraMediaHandler(cameraRelay.relay)
+  const handleCameraWebRtc = cameraRelay
+    ? createCameraWebRtcHandler(cameraRelay.relay, cameraRelay.signaling)
+    : null;
+  const handleStatusDashboard = statusDashboard
+    ? createStatusDashboardHandler(statusDashboard)
     : null;
   return async (req: IncomingMessage, res: ServerResponse) => {
     if (!req.url) {
@@ -62,13 +106,24 @@ export function createRequestHandler(
 
     const pathname = localPath(url, oauth);
     if (
-      handleCameraMedia &&
-      (await handleCameraMedia(req, res, pathname, url))
+      handleStatusDashboard &&
+      (await handleStatusDashboard(req, res, pathname))
+    ) {
+      return;
+    }
+    if (
+      handleCameraWebRtc &&
+      (await handleCameraWebRtc(req, res, pathname, url))
     ) {
       return;
     }
     const isMcpRoute =
       pathname === MCP_PATH || pathname.startsWith(MCP_PATH + "/");
+
+    if (statusDashboard && isMcpRoute) {
+      res.writeHead(404).end("Not Found");
+      return;
+    }
 
     if (req.method === "OPTIONS" && isMcpRoute) {
       res.writeHead(204, {
@@ -102,7 +157,7 @@ export function createRequestHandler(
       res.writeHead(200, {
         "cache-control": "no-store",
         "content-type": "text/html; charset=utf-8",
-      }).end(WIDGET_HTML);
+      }).end(readWidgetHtml());
       return;
     }
 
@@ -161,24 +216,43 @@ export function createRequestHandler(
 }
 
 export async function startServer() {
-  const oauth = await createPersonalOAuthFromEnvironment();
+  const statusDashboardEnabled = process.env.U1_STATUS_DASHBOARD === "1";
+  const oauth = statusDashboardEnabled
+    ? null
+    : await createPersonalOAuthFromEnvironment();
   const port = Number(process.env.PORT ?? "8787");
   const host = "127.0.0.1";
-  const cameraRelay = oauth
+  const dashboardBaseUrl = statusDashboardEnabled
+    ? statusDashboardBaseUrl(port)
+    : null;
+  const cameraRelay = oauth || statusDashboardEnabled
     ? {
-        relay: new CameraRelayService(
-          {
-            readFrame: (signal) => readU1CameraJpeg(signal),
-          },
-          createCameraTicketCodec()
+        relay: new CameraRelayService(createCameraTicketCodec()),
+        locator: createCameraStreamLocator(
+          oauth?.publicBaseUrl ?? dashboardBaseUrl!
         ),
-        locator: createCameraStreamLocator(oauth.publicBaseUrl),
+        signaling: u1CameraWebRtcSignaling,
       }
     : null;
-  const server = createServer(createRequestHandler(oauth, cameraRelay));
+  const statusDashboard = statusDashboardEnabled && cameraRelay
+    ? {
+        readStatus: readU1Status,
+        readCameraFrame: readU1CameraFrame,
+        openCameraStream: () => cameraRelay.relay.open(cameraRelay.locator),
+      }
+    : null;
+  const server = createServer(
+    createRequestHandler(oauth, cameraRelay, statusDashboard)
+  );
 
   await new Promise<void>((resolve) => server.listen(port, host, resolve));
-  console.log(`U1 Print Studio MCP server listening on http://${host}:${port}${MCP_PATH}`);
+  if (statusDashboardEnabled) {
+    console.log(
+      `U1 Status Dashboard: ${new URL("/dashboard", dashboardBaseUrl!).toString()}`
+    );
+  } else {
+    console.log(`U1 Print Studio MCP server listening on http://${host}:${port}${MCP_PATH}`);
+  }
   if (oauth) {
     console.log(`Remote resource: ${oauth.resource}`);
     if (oauth.enrollmentUrl) {

@@ -31,9 +31,12 @@ printer environments support the described behavior.
 - **CAM-003:** Camera images are separately timestamped on-demand,
   event-triggered, or bounded-interval observations; continuous video ingestion
   is not required for the first monitor.
-- **CAM-004:** A user-opened continuous camera presentation iterates validated,
-  timestamped snapshot observations serially through a bounded relay. It does
-  not imply full-frame-rate video, persistent ingestion, or diagnostic quality.
+- **CAM-004:** A user-opened continuous camera presentation exchanges an
+  authenticated, single-use grant for a bounded WebRTC signaling session with
+  the printer-advertised, same-origin `webrtc-camerastreamer`. Video frames flow
+  over the negotiated peer connection and presentation FPS is measured in the
+  browser. Validated snapshots remain an explicit fallback. This does not imply
+  persistent ingestion or diagnostic quality.
 
 ## Events and notifications
 
@@ -114,9 +117,10 @@ printer environments support the described behavior.
   a separate daemon through versioned, language-neutral contracts without
   changing domain semantics.
 - **ARCH-004:** MCP and media HTTP adapters do not own camera ticket, lease,
-  concurrency, or frame-iteration policy. Those policies remain in an
-  application service behind transport-independent ports, while the
-  printer-specific adapter supplies validated camera observations.
+  concurrency, or duration policy. Those policies remain in an application
+  service behind transport-independent ports. The printer-specific adapter
+  owns the allowlisted WebRTC signaling exchange, and the HTTP adapter exposes
+  neither printer URLs nor a generic proxy.
 - **ONTO-001:** Prepared print job, printer, capability, print session,
   observation, event, recommendation, authorization, command intent, command
   result, verification, and outcome use the meanings defined in

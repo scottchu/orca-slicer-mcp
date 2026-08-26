@@ -23,10 +23,9 @@ import type { OpenedCameraStream } from "./application/camera-relay.js";
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = path.resolve(currentDirectory, "..");
 export const WIDGET_URI = "ui://u1-print-studio/status-v3.html";
-export const WIDGET_HTML = readFileSync(
-  path.join(APP_ROOT, "public", "widget.html"),
-  "utf8"
-);
+const WIDGET_PATH = path.join(APP_ROOT, "public", "widget.html");
+export const readWidgetHtml = () => readFileSync(WIDGET_PATH, "utf8");
+export const WIDGET_HTML = readWidgetHtml();
 
 export function resultPayload(
   status: U1Status,
@@ -51,7 +50,7 @@ type StatusReader = typeof readU1Status;
 type CameraFrameReader = typeof readU1CameraFrame;
 type CameraStreamOpener = () => OpenedCameraStream;
 
-function cameraFramePayload(
+export function cameraFramePayload(
   frame: U1CameraFrame,
   metadata: U1WidgetMetadata
 ) {
@@ -69,7 +68,7 @@ function cameraFramePayload(
   };
 }
 
-function cameraStreamPayload(opened: OpenedCameraStream) {
+export function cameraStreamPayload(opened: OpenedCameraStream) {
   return {
     content: [
       {
@@ -129,7 +128,9 @@ export function createAppServer(
               ui: {
                 prefersBorder: false,
                 csp: {
-                  connectDomains: [],
+                  connectDomains: options.cameraResourceOrigin
+                    ? [options.cameraResourceOrigin]
+                    : [],
                   resourceDomains: options.cameraResourceOrigin
                     ? [options.cameraResourceOrigin]
                     : [],

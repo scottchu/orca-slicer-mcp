@@ -26,6 +26,40 @@ bun run start
 The local HTTP development endpoint is `http://127.0.0.1:8787/mcp`. The desktop
 plugin uses the separate stdio entry point declared in `../.mcp.json`.
 
+For fast widget iteration without a ChatGPT host or plugin reinstall, start the
+opt-in standalone status dashboard on its separate loopback port:
+
+```sh
+bun run dashboard
+```
+
+Open `http://127.0.0.1:8788/dashboard`. The page embeds the production widget and
+emulates only the MCP Apps host calls that the widget uses: current status,
+camera snapshot, and the user-clicked continuous camera relay. It deliberately
+has no printer-control call. **Reload widget** rereads `public/widget.html`
+directly from disk, so HTML and CSS edits need only a page reload; Bun watch
+restarts the process for TypeScript changes.
+
+To test from a phone on the same tailnet, keep the app on loopback and add a
+private Tailscale Serve HTTPS listener on port 8444:
+
+```sh
+tailscale serve --bg --https=8444 --yes http://127.0.0.1:8788
+bun run dashboard:tailscale
+```
+
+The startup log prints the exact private
+`https://<magicdns-hostname>:8444/dashboard` URL. The app still binds only to
+`127.0.0.1`; Tailscale Serve owns the tailnet listener and TLS. The phone must
+have Tailscale connected.
+
+`U1_STATUS_DASHBOARD=1` disables personal OAuth composition for that process and
+enables the dashboard routes only on the dedicated service. The normal service
+does not serve `/dashboard`, the dashboard-only process does not serve `/mcp`,
+and port 8444 must remain Tailscale Serve-only rather than Funnel-enabled. This
+is a development harness, not the public dashboard rejected by decision 0012
+and not evidence of rendering inside a real ChatGPT host.
+
 ## Personal mobile status endpoint
 
 Set these untracked root `.env` values in addition to `MOONRAKER_BASE_URL`:
@@ -47,7 +81,7 @@ tailscale funnel --bg --https=443 --yes http://127.0.0.1:8787
 If another root service already uses that hostname, preserve it and add exact
 handlers for `/.well-known`, `/oauth`, `/auth`, `/mcp`, and `/media`, each
 pointing to the same path on `127.0.0.1:8787`. The `/media` handler exposes only
-the app's exact `/media/camera.mjpeg` route; it is not a printer or generic HTTP
+the app's exact `/media/camera.webrtc` route; it is not a printer or generic HTTP
 proxy. Tailscale strips a matched incoming prefix unless the proxy target
 includes it. Re-read `tailscale funnel status --json` and verify the existing
 root handler is unchanged. A healthy public Funnel on `:8443` failed ChatGPT
@@ -106,9 +140,10 @@ The widget provides:
 
 - a server-relayed camera snapshot at the top without exposing the printer URL
   to the component;
-- a `Go Live` button that calls `open_u1_camera_stream` once, then loads a
-  short-lived continuous multipart MJPEG relay URL kept in tool-result `_meta`;
-- a `Close` button that stops frame requests and returns to snapshot mode;
+- a `Go Live` button that calls `open_u1_camera_stream` once, then negotiates a
+  short-lived H264 WebRTC peer connection through a URL kept in tool-result
+  `_meta`;
+- a `Close` button that closes the peer and returns to snapshot mode;
 - printer progress, layer, active physical tool, temperatures, and time;
 - adaptive read-only refresh through `get_u1_status`;
 - inline, Picture in Picture, and fullscreen display modes;
@@ -121,17 +156,18 @@ no camera pixels or controls. A new tool call produces a new observation and
 image.
 
 The HTTP service owns short-lived one-time tickets, bounded leases, concurrency,
-and serial frame iteration in an application service that does not depend on
-MCP or HTTP types. The media adapter serves only exact `GET
-/media/camera.mjpeg`; it validates the ticket, writes multipart JPEG parts, and
-does not proxy caller-selected URLs. Each upstream frame remains a validated
-raw JPEG acquired through the fixed read-only camera adapter.
+and duration in an application service that does not depend on MCP or HTTP
+types. The media adapter serves only exact `POST` and `DELETE
+/media/camera.webrtc`; it validates the ticket, forwards only the fixed WebRTC
+offer/answer/ICE message set, hides the printer peer identifier, and does not
+proxy caller-selected URLs. H264 media flows directly over the negotiated peer
+connection rather than through a server-side snapshot loop.
 
-If a host cannot open the continuous relay, the widget falls back to the
+If a host cannot open the WebRTC session, the widget falls back to the
 existing `get_u1_camera_frame` loop and waits 1.5 seconds after each completed
-request. Neither path is the camera's advertised full-frame-rate WebRTC stream.
-This keeps the private LAN origin out of the component and avoids overlapping
-camera reads.
+request. Only that fallback pulls snapshots. The live path measures frames
+actually presented by the browser and reports that observed FPS. The private
+printer URL stays out of the component.
 
 The local plugin uses a stdio MCP process and remains desktop-local. It exposes
 the three status/snapshot tools and uses snapshot fallback because it has no

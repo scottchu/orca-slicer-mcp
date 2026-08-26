@@ -19,13 +19,14 @@
 - The remote HTTP surface adds `open_u1_camera_stream`; local stdio omits it
   because it has no HTTPS media route. The tool's model-readable result carries
   only expiry and duration while `_meta` carries the one-time URL.
-- Ticket, lease, concurrency, duration, and serial frame iteration belong to an
-  application service without MCP or HTTP dependencies. Raw JPEG acquisition
-  stays in the printer adapter, and the media adapter serves only exact
-  `GET /media/camera.mjpeg`.
+- Ticket, lease, concurrency, and duration belong to an application service
+  without MCP or HTTP dependencies. Allowlisted WebRTC signaling stays in the
+  printer adapter, and the media adapter serves only exact `POST` and `DELETE
+  /media/camera.webrtc` without exposing the printer peer ID.
 - PiP and fullscreen are host display modes for the whole widget. `Go Live`
-  makes one MCP call and loads the continuous multipart relay; if that fails,
-  the old non-overlapping snapshot loop is the fallback.
+  makes one MCP call, negotiates an H264 RTCPeerConnection, and reports browser-
+  presented FPS; if that fails, the old non-overlapping snapshot loop is the
+  fallback.
 - Closing live view removes the media source and returns to snapshot mode. It
   does not affect the printer camera service.
 - Every `show_u1_status` result carries a portable PNG. `get_u1_status` remains
@@ -34,10 +35,10 @@
 ## Current environment findings
 
 - The current camera advertises `webrtc-camerastreamer`, a snapshot route, a
-  WebRTC view, and a 15 FPS target. The user's hardware encoder may support 30
-  FPS, but 30 FPS was not advertised or benchmarked in this run. The multipart
-  relay iterates snapshot observations and must not be described as WebRTC or
-  as proof of the advertised frame rate.
+  WebRTC signaling route, and a 15 FPS target. A real offer negotiated H264 and
+  produced video frames over a persistent peer connection. Independent
+  software-decoder measurements varied from 0.2 to 24.8 FPS, so only the
+  browser-presented counter should be treated as the current viewing FPS.
 - On the current macOS host, direct Bun and Node local-network sockets failed
   while system `curl` succeeded. The provisional adapter executes `curl` with
   an argument array, no shell, fixed routes, and timeouts.

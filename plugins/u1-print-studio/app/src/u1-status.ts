@@ -1,6 +1,13 @@
 import { execFile, spawn } from "node:child_process";
 import { promisify } from "node:util";
 
+import type {
+  CameraIceCandidate,
+  CameraIceServer,
+  CameraWebRtcOffer,
+  CameraWebRtcSignalingSource,
+} from "./application/camera-webrtc.js";
+
 const execFileAsync = promisify(execFile);
 
 const QUERY_ROUTE =
@@ -8,7 +15,11 @@ const QUERY_ROUTE =
   "heater_bed&extruder&extruder1&extruder2&extruder3&toolhead&webhooks";
 const WEBCAMS_ROUTE = "/server/webcams/list";
 export const CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS = [20, 10] as const;
+const CAMERA_ICE_SERVERS: CameraIceServer[] = [
+  { urls: ["stun:stun.l.google.com:19302"] },
+];
 let cachedSnapshotUrl: URL | null = null;
+let cachedStreamUrl: URL | null = null;
 
 type JsonObject = Record<string, unknown>;
 
@@ -130,6 +141,72 @@ async function fetchJson(route: string, maxTimeSeconds = 6): Promise<JsonObject>
   }
 }
 
+async function postJson(
+  url: URL,
+  payload: JsonObject,
+  maxTimeSeconds = 8,
+  signal?: AbortSignal
+): Promise<JsonObject> {
+  return await new Promise<JsonObject>((resolve, reject) => {
+    const child = spawn(
+      "curl",
+      [
+        "--fail-with-body",
+        "--silent",
+        "--show-error",
+        "--connect-timeout",
+        "3",
+        "--max-time",
+        String(maxTimeSeconds),
+        "--header",
+        "content-type: application/json",
+        "--data-binary",
+        JSON.stringify(payload),
+        url.toString(),
+      ],
+      { stdio: ["ignore", "pipe", "ignore"] }
+    );
+    let settled = false;
+    const chunks: Buffer[] = [];
+    let bytes = 0;
+    const timer = setTimeout(() => finish(), maxTimeSeconds * 1_000);
+
+    const abort = () => finish();
+    signal?.addEventListener("abort", abort, { once: true });
+
+    const finish = (value?: JsonObject) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      signal?.removeEventListener("abort", abort);
+      if (!child.killed) child.kill("SIGTERM");
+      value ? resolve(value) : reject(new Error("Printer WebRTC signaling failed"));
+    };
+
+    child.stdout.on("data", (chunk: Buffer) => {
+      if (settled) return;
+      bytes += chunk.byteLength;
+      if (bytes > 256 * 1024) {
+        finish();
+        return;
+      }
+      chunks.push(chunk);
+    });
+    child.on("error", () => finish());
+    child.on("close", (code) => {
+      if (code !== 0) {
+        finish();
+        return;
+      }
+      try {
+        finish(asObject(JSON.parse(Buffer.concat(chunks).toString("utf8"))));
+      } catch {
+        finish();
+      }
+    });
+  });
+}
+
 function basename(filename: string): string | null {
   const cleaned = filename.trim().replaceAll("\\", "/");
   return cleaned ? cleaned.split("/").at(-1) ?? null : null;
@@ -249,6 +326,94 @@ async function cameraSnapshotUrl(): Promise<URL> {
   return snapshotUrl;
 }
 
+async function cameraWebRtcUrl(): Promise<URL> {
+  let streamUrl = cachedStreamUrl;
+  if (!streamUrl) {
+    const webcamPayload = await fetchJson(WEBCAMS_ROUTE, 3);
+    const webcamResult = asObject(webcamPayload.result);
+    const webcams = Array.isArray(webcamResult.webcams)
+      ? webcamResult.webcams
+      : [];
+    const webcam =
+      webcams.map(asObject).find((item) => item.enabled !== false) ?? {};
+    if (asString(webcam.service) !== "webrtc-camerastreamer") {
+      throw new Error("Printer WebRTC camera unavailable");
+    }
+    streamUrl = resolveCameraUrl(webcam.stream_url);
+    cachedStreamUrl = streamUrl;
+  }
+  if (!streamUrl) throw new Error("Printer WebRTC camera unavailable");
+  return streamUrl;
+}
+
+function cameraIceServers(value: unknown): CameraIceServer[] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((candidate) => {
+    const object = asObject(candidate);
+    const rawUrls = object.urls;
+    const urls = typeof rawUrls === "string"
+      ? rawUrls
+      : Array.isArray(rawUrls) && rawUrls.every((url) => typeof url === "string")
+        ? rawUrls as string[]
+        : null;
+    if (!urls) return [];
+    const server: CameraIceServer = { urls };
+    if (typeof object.username === "string") server.username = object.username;
+    if (typeof object.credential === "string") server.credential = object.credential;
+    return [server];
+  });
+}
+
+export const u1CameraWebRtcSignaling: CameraWebRtcSignalingSource = {
+  async requestOffer(signal) {
+    const response = await postJson(
+      await cameraWebRtcUrl(),
+      {
+        type: "request",
+        // Match the printer's own webrtc-camerastreamer client so both peers
+        // can gather server-reflexive candidates when the network permits it.
+        iceServers: CAMERA_ICE_SERVERS,
+        keepAlive: true,
+        timeout_s: 1_800,
+      },
+      8,
+      signal
+    );
+    if (
+      asString(response.type) !== "offer" ||
+      !asString(response.id) ||
+      !asString(response.sdp)
+    ) {
+      throw new Error("Printer WebRTC offer invalid");
+    }
+    const iceServers = cameraIceServers(response.iceServers);
+    return {
+      type: "offer",
+      id: asString(response.id),
+      sdp: asString(response.sdp),
+      iceServers: iceServers.length > 0 ? iceServers : CAMERA_ICE_SERVERS,
+    } satisfies CameraWebRtcOffer;
+  },
+
+  async sendAnswer(id, sdp, signal) {
+    await postJson(
+      await cameraWebRtcUrl(),
+      { type: "answer", id, sdp },
+      8,
+      signal
+    );
+  },
+
+  async sendCandidates(id, candidates: CameraIceCandidate[], signal) {
+    await postJson(
+      await cameraWebRtcUrl(),
+      { type: "remote_candidate", id, candidates },
+      8,
+      signal
+    );
+  },
+};
+
 export async function readU1CameraJpeg(
   signal?: AbortSignal,
   attemptTimeoutsSeconds: readonly number[] = CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS
@@ -360,6 +525,9 @@ export async function readU1Status(): Promise<{
     const snapshotUrl = resolveCameraUrl(webcam.snapshot_url);
     const streamUrl = resolveCameraUrl(webcam.stream_url);
     if (snapshotUrl) cachedSnapshotUrl = snapshotUrl;
+    if (streamUrl && asString(webcam.service) === "webrtc-camerastreamer") {
+      cachedStreamUrl = streamUrl;
+    }
 
     return {
       status: {

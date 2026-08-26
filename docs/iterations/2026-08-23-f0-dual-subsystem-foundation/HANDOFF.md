@@ -4,7 +4,8 @@
 
 The product contract remains one product with two peer subsystems: Orca
 Preparation and Printer Operations. A redacted LAN Fluidd/Moonraker target,
-read-only status, WebSocket transport, and live snapshot have been observed for
+read-only status, WebSocket transport, snapshots, and H264 WebRTC have been
+observed for
 Printer Operations. Upstream OrcaSlicer `2.4.2` and Snapmaker Orca `2.3.5`
 were inspected locally. A later user-authorized Snapmaker U1 pilot sliced two
 parts and completed a PETG print after substantial CLI debugging. Two later PLA
@@ -12,8 +13,12 @@ jobs also reached telemetry-verified completion. The repo-local plugin contains
 four thin workflow skills and a read-only MCP Apps status-view prototype. No
 preparation, control, or persistent-monitor runtime exists, and Snapmaker Orca
 is not yet an accepted product backend. The remote read-only prototype now adds
-a bounded continuous camera relay through an application service; MCP, exact
-media HTTP, and the printer JPEG adapter remain separate layers.
+a bounded WebRTC camera presentation through an application service; MCP,
+exact signaling HTTP, and the printer adapter remain separate layers. An opt-in
+status dashboard now mounts the exact production widget and emulates only its
+read-only bridge calls on loopback port 8788. Private Tailscale Serve HTTPS
+exposes it to the tailnet on port 8444; it is not a public dashboard or
+real-host rendering evidence.
 
 ## Completed work
 
@@ -153,14 +158,15 @@ media HTTP, and the printer JPEG adapter remain separate layers.
   phone passkey enrollment and desktop Developer mode, verifies the exact
   four-tool remote read-only inventory, and keeps all control actions out of
   setup.
-- decision 0014 adds the first transport-independent camera relay application
-  service. It owns one-time tickets, leases, concurrency, duration, and serial
-  frame iteration; `u1-status` yields validated raw JPEGs; and the HTTP adapter
-  serves only exact `GET /media/camera.mjpeg`.
+- decision 0015 supersedes the serial-JPEG live transport from decision 0014.
+  The application service still owns one-time tickets, leases, concurrency,
+  and duration; `u1-status` now performs allowlisted WebRTC signaling; the HTTP
+  adapter serves only exact `POST`/`DELETE /media/camera.webrtc`; and H264 media
+  flows through the browser peer connection.
 - the remote HTTP MCP surface conditionally adds
   `open_u1_camera_stream`. Its one-time URL exists only in result `_meta`; the
-  widget calls it once per `Go Live` intent and retains the old snapshot loop as
-  fallback. Local stdio remains a three-tool surface because it has no HTTPS
+  widget calls it once per `Go Live` intent and retains the old snapshot loop
+  only as fallback. Local stdio remains a three-tool surface because it has no HTTPS
   media endpoint.
 - the concurrent local PNG contract is preserved: every `show_u1_status` result
   carries the 1200 by 1500 PNG, while `get_u1_status` stays data-only.
@@ -175,6 +181,49 @@ media HTTP, and the printer JPEG adapter remain separate layers.
   JPEGs over one multipart response in a final 2.6-second run. This proves the source,
   application iteration, and adapter path together, not mounted desktop or iOS
   rendering.
+- the current branch passes 35 tests with 174 assertions after adding the
+  status dashboard. `bun run dashboard` serves it on loopback, while
+  `bun run dashboard:tailscale` derives a validated private MagicDNS HTTPS
+  origin for the existing Serve listener. The normal service returns 404 for
+  `/dashboard`, the dashboard service returns 404 for `/mcp`, and port 8444
+  must never be Funnel-enabled.
+- a real-printer smoke through private Tailscale Serve HTTPS on port 8444
+  returned reachable status with camera available and delivered two multipart
+  JPEG parts over the one-time relay in 1.42 seconds. No image was saved, and
+  the unavailable in-app browser means visual layout quality remains
+  unverified.
+- the latest widget refinement replaces visible live, close, and automatic
+  refresh labels with accessible icon controls, adds an icon camera-state
+  indicator, keeps the grid above snapshot and continuous imagery, and gives
+  camera, status/progress, each metric, and freshness independent skeleton
+  states. Source, TypeScript, plugin, loopback, and private-HTTPS checks pass;
+  no connected browser was available for visual inspection.
+- the camera indicator is now deliberately neutral: its state dot, slash,
+  pulse, and state-dependent colors are gone. The lower descriptive camera
+  caption is replaced by a bottom-right mode chip for timestamped `Snapshot`,
+  `Snapshot fallback`, or `Live` with the configured `up to 15 FPS` ceiling.
+  Thirty-six tests with 185 assertions, TypeScript, bundling, plugin validation,
+  the repository contract, and the currently served private widget source pass.
+  Browser visual inspection is still pending because no browser runtime was
+  connected.
+- the card now uses the user-selected Snapmaker U1 palette: charcoal and warm
+  white surfaces, yellow identity accents, orange paused or attention states,
+  and red faults. The existing layout and read-only behavior are unchanged.
+  Thirty-seven tests with 192 assertions, TypeScript, bundling, plugin
+  validation, the repository contract, and private HTTPS source checks pass.
+  `design-qa.md` remains blocked because no browser-rendered implementation
+  screenshot was available for comparison with the supplied reference.
+- the camera overlay now places presentation status on the left and the
+  live/close icon on the right. Snapshot and snapshot-fallback states show a
+  red disconnected-camera icon; live shows a pulsing green dot. Live FPS is no
+  longer copied from the configured ceiling: the widget parses relayed JPEG
+  frames and reports the observed presentation rate over a rolling five-second
+  window. The exact one-time relay smoke delivered four frames at about 1.4 FPS.
+  The official Snapmaker U1 stylesheet established the identity tokens
+  (`#1c1e20`, `#1f1f1f`, `#242424`, `#ffcd00`, `#ff5f28`, and warm whites),
+  while green and red remain separate semantic colors. Thirty-eight tests with
+  207 assertions, TypeScript, bundling, and inline widget parsing pass; final
+  plugin and repository checks are recorded in `VALIDATION.md`.
 
 ## Changed paths
 
@@ -232,9 +281,32 @@ included.
 - the latest PLA job is telemetry-complete, but its output has not been handled
   and the final lowered-bed camera frame did not show the parts.
 
+### Actual WebRTC live transport
+
+- The old multipart snapshot loop and exact `/media/camera.mjpeg` route are
+  removed from the live path. Snapshot acquisition remains only for explicit
+  snapshot mode and degraded fallback.
+- The widget now uses a receive-only browser `RTCPeerConnection`, a real
+  `<video autoplay muted playsinline>` surface, printer keepalive responses,
+  offer/answer/ICE signaling, and actual browser-presented frame counting.
+- The live dashboard returned a private-ID-free H264 offer through the exact
+  one-time signaling route. A separate decoder reached `connected` and received
+  frames over the persistent peer connection; samples varied from 0.2 to 24.8
+  FPS and therefore do not establish native-browser FPS.
+- The protected service and private dashboard were restarted from synchronized
+  source. Public old-MJPEG returned 404, invalid WebRTC ticket returned 401,
+  and the private dashboard returned 200.
+- TypeScript, 38 tests with 222 assertions, bundle, plugin validation,
+  repository checks, and diff whitespace validation passed. Mounted browser
+  playback remains the user-visible acceptance gate because no browser-control
+  connection was available.
+- The automatic-refresh button no longer renders a separate dot; enabled and
+  paused behavior and accessible labels are unchanged.
+
 ## Next smallest action
 
-Start a fresh authenticated host thread and verify the exact four-tool remote
+Reload the private dashboard and verify the native browser's `Live` state and
+measured FPS, then start a fresh authenticated host thread and verify the exact four-tool remote
 inventory. If the component mounts, invoke `Go Live` once and separately record
 continuous rendering, snapshot fallback if exercised, `Close`, PiP, fullscreen,
 and iOS behavior. Also repeat `show_u1_status` after the access-token lifetime
@@ -244,7 +316,7 @@ because the manual commands exist.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0014. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0015. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.

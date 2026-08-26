@@ -1,12 +1,3 @@
-export type CameraJpeg = {
-  bytes: Uint8Array;
-  observedAt: string;
-};
-
-export type CameraFrameSource = {
-  readFrame(signal?: AbortSignal): Promise<CameraJpeg>;
-};
-
 export type CameraTicketCodec = {
   issue(): { token: string; digest: string };
   digest(token: string): string;
@@ -23,18 +14,16 @@ export type OpenedCameraStream = {
 };
 
 export type CameraStreamLease = {
-  frames(signal: AbortSignal): AsyncGenerator<CameraJpeg>;
+  expiresAt: string;
   release(): void;
 };
 
 export type CameraRelayOptions = {
   ticketTtlMilliseconds?: number;
-  frameIntervalMilliseconds?: number;
   maxStreamDurationMilliseconds?: number;
   maxConcurrentStreams?: number;
   maxPendingTickets?: number;
   now?: () => number;
-  wait?: (milliseconds: number, signal: AbortSignal) => Promise<void>;
 };
 
 export type CameraRelayClaimFailure = "invalid" | "expired" | "busy";
@@ -49,49 +38,25 @@ type PendingTicket = {
   expiresAt: number;
 };
 
-function defaultWait(milliseconds: number, signal: AbortSignal): Promise<void> {
-  return new Promise((resolve) => {
-    if (signal.aborted) {
-      resolve();
-      return;
-    }
-    let settled = false;
-    const finish = () => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      signal.removeEventListener("abort", finish);
-      resolve();
-    };
-    const timer = setTimeout(finish, milliseconds);
-    signal.addEventListener("abort", finish, { once: true });
-  });
-}
-
 export class CameraRelayService {
   private readonly pendingTickets = new Map<string, PendingTicket>();
   private readonly ticketTtlMilliseconds: number;
-  private readonly frameIntervalMilliseconds: number;
   private readonly maxStreamDurationMilliseconds: number;
   private readonly maxConcurrentStreams: number;
   private readonly maxPendingTickets: number;
   private readonly now: () => number;
-  private readonly wait: (milliseconds: number, signal: AbortSignal) => Promise<void>;
   private activeStreams = 0;
 
   constructor(
-    private readonly frameSource: CameraFrameSource,
     private readonly ticketCodec: CameraTicketCodec,
     options: CameraRelayOptions = {}
   ) {
     this.ticketTtlMilliseconds = options.ticketTtlMilliseconds ?? 60_000;
-    this.frameIntervalMilliseconds = options.frameIntervalMilliseconds ?? 250;
     this.maxStreamDurationMilliseconds =
       options.maxStreamDurationMilliseconds ?? 30 * 60_000;
     this.maxConcurrentStreams = options.maxConcurrentStreams ?? 2;
     this.maxPendingTickets = options.maxPendingTickets ?? 8;
     this.now = options.now ?? Date.now;
-    this.wait = options.wait ?? defaultWait;
   }
 
   open(locator: CameraStreamLocator): OpenedCameraStream {
@@ -124,29 +89,16 @@ export class CameraRelayService {
 
     this.pendingTickets.delete(digest);
     this.activeStreams += 1;
+    const expiresAt = this.now() + this.maxStreamDurationMilliseconds;
     let released = false;
     return {
-      frames: (signal) => this.frames(signal),
+      expiresAt: new Date(expiresAt).toISOString(),
       release: () => {
         if (released) return;
         released = true;
         this.activeStreams -= 1;
       },
     };
-  }
-
-  private async *frames(signal: AbortSignal): AsyncGenerator<CameraJpeg> {
-    const deadline = this.now() + this.maxStreamDurationMilliseconds;
-    while (!signal.aborted && this.now() < deadline) {
-      try {
-        yield await this.frameSource.readFrame(signal);
-      } catch {
-        if (signal.aborted) return;
-      }
-      if (!signal.aborted && this.now() < deadline) {
-        await this.wait(this.frameIntervalMilliseconds, signal);
-      }
-    }
   }
 
   private removeExpiredTickets(): void {
