@@ -598,6 +598,30 @@ identifiers, and runtime data are intentionally not retained.
   real-host renewal gate. No printer command was issued during diagnosis,
   implementation, deployment, or validation.
 
+### Transport-independent image fallback and third PLA completion
+
+- A current-thread local stdio `show_u1_status` call returned fresh normalized
+  telemetry but only text content. Source inspection isolated the omission to
+  `includeImageCard: Boolean(securitySchemes)`: OAuth presence had been used as
+  a proxy for host iframe capability.
+- Decision 0012 was corrected so every `show_u1_status` result carries the
+  same-observation 1200 by 1500 PNG fallback. `get_u1_status` remains data-only
+  for mounted-widget refreshes.
+- Local and remote render contract tests passed with 9 tests and 56 assertions;
+  the local test now requires `image/png`. TypeScript validation passed after
+  restoring the personal source's locked dependencies.
+- Plugin Creator validation passed for the personal marketplace source. The
+  exact installed cache `0.2.0+codex.20260826003532` reran the 9 render tests
+  successfully. Existing conversations still do not hot-reload replaced MCP
+  processes; a new conversation remains the pickup boundary.
+- During the same read-only monitoring session, a user-authorized third PLA job
+  reached fresh telemetry-verified completion at 98/98 layers: state
+  `complete`, inactive virtual storage at full file position, no exception,
+  all four tools parked, and all heater targets zero. The strongest earlier
+  camera frame showed five attached upright objects without visible spaghetti.
+  The final frame was dark after the bed lowered and lights turned off, so no
+  unseen physical-result claim is made.
+
 ### Continuous read-only camera relay
 
 - The moved diff and backup stash were inspected before editing. The stash
