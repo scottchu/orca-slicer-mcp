@@ -215,6 +215,7 @@
       .camera-bottom {
         bottom: 16px;
         align-items: flex-end;
+        justify-content: flex-end;
       }
 
       .camera-status {
@@ -237,71 +238,30 @@
         height: 19px;
       }
 
-      .camera-status-dot {
-        position: absolute;
-        top: 1px;
-        left: 29px;
-        width: 9px;
-        height: 9px;
-        border: 2px solid rgba(5, 15, 11, 0.9);
-        border-radius: 50%;
-        background: var(--amber);
-      }
-
-      .camera-status-slash {
-        display: none;
-      }
-
-      .camera[data-camera-status="snapshot"] .camera-status-dot {
-        background: var(--green);
-      }
-
-      .camera[data-camera-status="live"] .camera-status {
-        color: #0b271d;
-        background: var(--lime);
-      }
-
-      .camera[data-camera-status="live"] .camera-status-dot {
-        background: #0b271d;
-        animation: camera-pulse 1.4s ease-out infinite;
-      }
-
-      .camera[data-camera-status="unavailable"] .camera-status {
-        color: #fff;
-        background: rgba(110, 24, 24, 0.82);
-      }
-
-      .camera[data-camera-status="unavailable"] .camera-status-dot {
-        background: var(--red);
-      }
-
-      .camera[data-camera-status="unavailable"] .camera-status-slash {
-        display: block;
-      }
-
-      .camera-copy {
-        max-width: 62%;
-        color: white;
-        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.44);
-      }
-
-      .camera-copy strong {
-        display: block;
-        font-size: 20px;
-        line-height: 1.2;
-      }
-
-      .camera-copy span {
-        display: block;
-        margin-top: 4px;
-        color: rgba(244, 255, 249, 0.74);
-        font-size: 12px;
-      }
-
       .camera-actions {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: 8px;
+      }
+
+      .camera-mode {
+        display: inline-flex;
+        min-height: 32px;
+        align-items: center;
+        padding: 0 12px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        color: rgba(244, 255, 249, 0.9);
+        background: rgba(5, 15, 11, 0.64);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        font-size: 11px;
+        font-weight: 780;
+        letter-spacing: 0.08em;
+        line-height: 1;
+        text-transform: uppercase;
+        white-space: nowrap;
+        backdrop-filter: blur(12px);
       }
 
       .camera-button,
@@ -672,16 +632,10 @@
         to { transform: translateX(110%); }
       }
 
-      @keyframes camera-pulse {
-        0% { box-shadow: 0 0 0 0 rgba(11, 39, 29, 0.42); }
-        75%, 100% { box-shadow: 0 0 0 7px rgba(11, 39, 29, 0); }
-      }
-
       @media (prefers-reduced-motion: reduce) {
         .camera-skeleton span::after,
         [data-loading="true"].skeleton-target::after,
         [data-loading="true"] .skeleton-target::after,
-        .camera[data-camera-status="live"] .camera-status-dot,
         .refresh-button.is-refreshing svg {
           animation: none;
         }
@@ -716,8 +670,7 @@
       @media (max-width: 380px) {
         .camera-top,
         .camera-bottom { right: 12px; left: 12px; }
-        .camera-copy { max-width: 54%; }
-        .camera-copy strong { font-size: 17px; }
+        .camera-mode { max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
         .content { gap: 15px; padding: 16px; }
         .metrics { grid-template-columns: 1fr; }
         .metric:first-child { grid-column: auto; }
@@ -783,17 +736,11 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
               <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
               <circle cx="12" cy="13" r="3.5" />
-              <path class="camera-status-slash" d="M4 4l16 16" />
             </svg>
-            <span class="camera-status-dot" aria-hidden="true"></span>
           </span>
         </div>
 
         <div class="camera-bottom">
-          <div class="camera-copy">
-            <strong id="camera-title">Build plate view</strong>
-            <span id="camera-detail">Snapshot refreshes with printer status</span>
-          </div>
           <div class="camera-actions">
             <button class="camera-button go-live" id="go-live" type="button" title="Open live camera" aria-label="Open live camera">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -807,6 +754,7 @@
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
             </button>
+            <span class="camera-mode" id="camera-detail" role="status" aria-live="polite">Connecting</span>
           </div>
         </div>
       </section>
@@ -898,7 +846,6 @@
         camera: document.querySelector("#camera"),
         snapshot: document.querySelector("#snapshot"),
         cameraStatus: document.querySelector("#camera-status"),
-        cameraTitle: document.querySelector("#camera-title"),
         cameraDetail: document.querySelector("#camera-detail"),
         goLive: document.querySelector("#go-live"),
         closeLive: document.querySelector("#close-live"),
@@ -995,6 +942,7 @@
         const labels = {
           loading: "Camera loading",
           snapshot: "Camera snapshot ready",
+          fallback: "Camera snapshot fallback active",
           live: "Live camera active",
           unavailable: "Camera unavailable",
         };
@@ -1003,6 +951,34 @@
         elements.camera.dataset.cameraLoading = String(Boolean(loading));
         elements.cameraStatus.setAttribute("aria-label", label);
         elements.cameraStatus.title = label;
+      };
+
+      const formatCameraTime = (observedAt) => {
+        const observedDate = new Date(observedAt);
+        return Number.isNaN(observedDate.valueOf())
+          ? null
+          : observedDate.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            });
+      };
+
+      const setCameraMode = (mode, observedAt = null) => {
+        const observedLabel = observedAt ? formatCameraTime(observedAt) : null;
+        const fps = Number(toolOutput?.camera?.targetFps);
+        const labels = {
+          loading: "Connecting",
+          snapshot: observedLabel ? `Snapshot · ${observedLabel}` : "Snapshot",
+          fallback: observedLabel
+            ? `Snapshot fallback · ${observedLabel}`
+            : "Snapshot fallback",
+          live: Number.isFinite(fps) && fps > 0
+            ? `Live · up to ${Math.round(fps)} FPS`
+            : "Live",
+          unavailable: "Camera unavailable",
+        };
+        elements.cameraDetail.textContent = labels[mode] ?? labels.unavailable;
       };
 
       const syncAutoRefreshControl = () => {
@@ -1024,8 +1000,7 @@
         elements.camera.classList.remove("has-snapshot");
         elements.camera.dataset.cameraMode = "snapshot";
         setCameraState("loading", true);
-        elements.cameraTitle.textContent = "Build plate view";
-        elements.cameraDetail.textContent = "Secure snapshot relayed by U1 Print Studio";
+        setCameraMode("loading");
         if (hosted && toolOutput?.camera?.available) void refreshCameraFrame();
       };
 
@@ -1038,8 +1013,10 @@
         if (!available) {
           elements.camera.classList.remove("has-snapshot");
           setCameraState("unavailable");
+          setCameraMode("unavailable");
         } else if (livePreview && elements.camera.classList.contains("has-snapshot")) {
-          setCameraState("live");
+          setCameraState(relayRendering ? "live" : "fallback");
+          setCameraMode(relayRendering ? "live" : "fallback");
         } else if (elements.camera.classList.contains("has-snapshot")) {
           setCameraState("snapshot");
         } else {
@@ -1049,19 +1026,21 @@
 
       elements.snapshot.addEventListener("load", () => {
         elements.camera.classList.add("has-snapshot");
-        setCameraState(livePreview ? "live" : "snapshot");
+        const mode = livePreview ? (relayRendering ? "live" : "fallback") : "snapshot";
+        setCameraState(mode);
+        if (mode === "live") setCameraMode("live");
       });
 
       elements.snapshot.addEventListener("error", () => {
         if (livePreview && relayRendering) {
           relayRendering = false;
-          elements.cameraDetail.textContent = "Continuous relay unavailable · using snapshot fallback";
+          setCameraMode("fallback");
           setCameraState("loading", true);
           void refreshCameraFrame();
           return;
         }
         elements.camera.classList.remove("has-snapshot");
-        elements.cameraDetail.textContent = "Camera image could not be displayed";
+        setCameraMode("unavailable");
         setCameraState("unavailable");
       });
 
@@ -1134,18 +1113,12 @@
         if (frame.available && typeof dataUrl === "string" && dataUrl.startsWith("data:image/jpeg;base64,")) {
           setCameraState("loading", true);
           elements.snapshot.src = dataUrl;
-          const observedDate = new Date(frame.observedAt);
-          const observedLabel = Number.isNaN(observedDate.valueOf())
-            ? "just now"
-            : observedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-          elements.cameraDetail.textContent = livePreview
-            ? `Secure live preview · frame ${observedLabel}`
-            : `Secure snapshot · ${observedLabel}`;
+          setCameraMode(livePreview ? "fallback" : "snapshot", frame.observedAt);
           return;
         }
 
         elements.camera.classList.remove("has-snapshot");
-        elements.cameraDetail.textContent = frame.reason ?? "Camera unavailable";
+        setCameraMode("unavailable");
         setCameraState("unavailable");
       };
 
@@ -1222,8 +1195,8 @@
           });
           applyCameraFrame(response);
         } catch (error) {
-          elements.cameraDetail.textContent = `Camera refresh failed: ${error?.message ?? "unknown error"}`;
           if (!elements.camera.classList.contains("has-snapshot")) {
+            setCameraMode("unavailable");
             setCameraState("unavailable");
           }
         } finally {
@@ -1243,8 +1216,7 @@
         clearTimeout(snapshotFallbackTimer);
         elements.camera.dataset.cameraMode = "live";
         setCameraState("loading", true);
-        elements.cameraTitle.textContent = "Live build plate";
-        elements.cameraDetail.textContent = "Opening secure continuous relay…";
+        setCameraMode("loading");
 
         try {
           await bridgeReady;
@@ -1273,12 +1245,12 @@
             throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
           }
           relayRendering = true;
-          elements.cameraDetail.textContent = "Secure continuous camera relay";
+          setCameraMode("live");
           elements.snapshot.src = streamUrl;
         } catch {
           if (!livePreview) return;
           relayRendering = false;
-          elements.cameraDetail.textContent = "Continuous relay unavailable · using snapshot fallback";
+          setCameraMode("fallback");
           void refreshCameraFrame();
         }
       };

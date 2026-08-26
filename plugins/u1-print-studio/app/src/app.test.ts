@@ -344,4 +344,20 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain("setStatusLoading");
     expect(WIDGET_HTML).toContain("setCameraState");
   });
+
+  test("uses a neutral camera icon and a bottom-right camera mode label", () => {
+    expect(WIDGET_HTML).not.toContain('class="camera-status-dot"');
+    expect(WIDGET_HTML).not.toContain('class="camera-status-slash"');
+    expect(WIDGET_HTML).not.toContain('id="camera-title"');
+    expect(WIDGET_HTML).not.toContain("Build plate view");
+    expect(WIDGET_HTML).not.toContain("Secure snapshot");
+    expect(WIDGET_HTML).not.toContain(
+      '.camera[data-camera-status="live"] .camera-status'
+    );
+    expect(WIDGET_HTML).toContain('class="camera-mode" id="camera-detail"');
+    expect(WIDGET_HTML).toContain('justify-content: flex-end;');
+    expect(WIDGET_HTML).toContain('Snapshot fallback · ${observedLabel}');
+    expect(WIDGET_HTML).toContain('Live · up to ${Math.round(fps)} FPS');
+    expect(WIDGET_HTML).toContain('setCameraMode(relayRendering ? "live" : "fallback")');
+  });
 });

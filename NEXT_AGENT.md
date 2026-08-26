@@ -48,8 +48,10 @@ pass. Continue with:
    `bun run dashboard:tailscale`, then open the printed `/dashboard` URL. Never
    Funnel-enable port 8444, and do not count the harness as real ChatGPT-host
    rendering evidence. The branch widget now has icon-only live/close/refresh
-   controls, an icon camera-state indicator, a persistent camera grid, and
-   independent component skeletons; keep those behaviors when iterating.
+   controls, a persistent camera grid, and independent component skeletons. Its
+   top-left camera icon is visually neutral across states, and its bottom-right
+   mode chip reports timestamped `Snapshot`, `Snapshot fallback`, or `Live`
+   with the configured FPS ceiling; keep those behaviors when iterating.
 3. Start a fresh authenticated desktop or mobile thread because the prior
    conversation cannot hot-reload tools. Confirm exactly four remote read-only
    tools: `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and

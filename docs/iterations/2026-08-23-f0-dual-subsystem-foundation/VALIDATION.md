@@ -732,3 +732,27 @@ identifiers, and runtime data are intentionally not retained.
   animation quality, and live/snapshot transitions remain user-visible review
   gates. No cachebuster, plugin reinstall, printer command, or G-code action was
   performed.
+
+### Neutral camera indicator and explicit presentation mode
+
+- Acceptance boundary: the persistent camera grid remains unchanged; the
+  top-left camera icon has no state dot, slash, pulse, or state-dependent
+  color; and the bottom-right overlay is the sole visible camera-mode text.
+- Snapshot mode now reports `Snapshot` with the frame time, snapshot fallback
+  reports `Snapshot fallback`, and continuous mode reports `Live` with the
+  configured rate as an honest `up to 15 FPS` ceiling rather than measured FPS.
+  The old build-plate title and secure-snapshot caption were removed.
+- `bun test src/*.test.ts`: passed 36 tests with 185 assertions, including the
+  neutral-icon and bottom-right mode-label contract.
+- `bun run check`, `bun run bundle`, Plugin Creator validation through
+  `uv run --no-project --with pyyaml`, `./scripts/check-repository.sh`, and
+  `git diff --check`: passed.
+- The exact private HTTPS widget source contains the new mode labels and none
+  of the removed title, secure-snapshot caption, or camera-status dot. Private
+  HTTPS `/dashboard` returned HTTP 200, and its read-only status bridge returned
+  reachable `complete` telemetry with camera available and a configured target
+  of 15 FPS.
+- The browser-control runtime reported no available browser, so the refreshed
+  snapshot, fallback, and live layouts remain a user-visible review gate. No
+  cachebuster, plugin reinstall, printer command, or G-code action was
+  performed.

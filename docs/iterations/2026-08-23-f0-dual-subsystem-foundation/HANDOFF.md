@@ -196,6 +196,14 @@ real-host rendering evidence.
   camera, status/progress, each metric, and freshness independent skeleton
   states. Source, TypeScript, plugin, loopback, and private-HTTPS checks pass;
   no connected browser was available for visual inspection.
+- the camera indicator is now deliberately neutral: its state dot, slash,
+  pulse, and state-dependent colors are gone. The lower descriptive camera
+  caption is replaced by a bottom-right mode chip for timestamped `Snapshot`,
+  `Snapshot fallback`, or `Live` with the configured `up to 15 FPS` ceiling.
+  Thirty-six tests with 185 assertions, TypeScript, bundling, plugin validation,
+  the repository contract, and the currently served private widget source pass.
+  Browser visual inspection is still pending because no browser runtime was
+  connected.
 
 ## Changed paths
 
