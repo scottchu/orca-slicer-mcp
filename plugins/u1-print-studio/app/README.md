@@ -85,8 +85,16 @@ plugin distribution endpoint.
 The personal authorization server provides OAuth authorization code plus PKCE,
 dynamic client registration restricted to approved redirect origins,
 protected-resource metadata, issuer identification, audience-bound JWT access
-tokens, and the single `u1.monitor` scope. This is a one-user developer path,
-not a public-distribution identity architecture.
+tokens, rotating opaque refresh tokens, and the single `u1.monitor` scope.
+Access tokens last 15 minutes. Refresh tokens are bound to the client, resource,
+and granted scope, stored only as hashes, rotated after one successful use, and
+expire after 30 days without a successful rotation. This is a one-user developer
+path, not a public-distribution identity architecture.
+
+Connections created by an older server that did not issue refresh tokens must
+link once more after updating and restarting the service. Preserve the OAuth
+state and enrolled passkey; deleting state or re-enrolling the phone is not part
+of this repair.
 
 `bun run bundle` creates a self-contained ignored deployment artifact at
 `dist/stdio.js`; local marketplace installation can use that bundle without

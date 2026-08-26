@@ -78,6 +78,11 @@ printer environments support the described behavior.
 - **AUTH-001:** The responsible boundary authenticates callers and records
   action-specific authority for upload, queue or selection changes, print start,
   and runtime commands regardless of which subsystem owns the action.
+- **AUTH-002:** Remote Monitor sessions use short-lived audience- and
+  scope-bound access tokens plus renewable sessions. Refresh tokens are opaque,
+  stored only as hashes, bound to the original client, resource, and granted
+  scope, rotated after one successful use, and expired without expanding
+  authority.
 
 ## API surfaces
 

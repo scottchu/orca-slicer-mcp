@@ -551,3 +551,49 @@ identifiers, and runtime data are intentionally not retained.
 - An exact installed-cache stdio smoke again listed only the three read-only
   tools, returned reachable `complete` telemetry, and kept local content
   text-only so the desktop widget path remains unchanged.
+
+### Renewable personal OAuth repair
+
+- A live Codex call failed before tool execution with `UNAUTHORIZED`,
+  `oauth_refresh_token_missing`, and a reauthentication action. The phone's
+  additional-access flow then reported that it could not connect to U1 Print
+  Studio.
+- Concurrent public probes still returned HTTP 200 for `/health`, protected
+  resource metadata, and authorization-server metadata. Unauthenticated `/mcp`
+  returned the expected HTTP 401 challenge. Source inspection then showed a
+  15-minute access token, authorization-code-only discovery, and no refresh
+  token in the token response. This supports a renewal failure, not a general
+  service, Funnel, printer, or camera outage.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 22 tests with 115 assertions. The added
+  contracts cover version-1 state migration, discovery and DCR metadata,
+  initial issuance, authorization-code replay, owner-only hashed persistence,
+  restart recovery, client/resource/scope binding, rotation, sequential and
+  concurrent replay, 30-day expiry, and MCP authentication with a refreshed
+  access token.
+- `bun run bundle`: rebuilt the self-contained stdio artifact; remote personal
+  OAuth remains an HTTP-service concern and did not alter the stdio tool bundle.
+- The setup skill, repository plugin source, synchronized personal source, and
+  exact installed cache passed their respective Skill Creator and Plugin
+  Creator validation. `./scripts/check-repository.sh` returned `repository
+  contract: ok`, and `git diff --check` passed.
+- The plugin cachebuster and reinstall flow produced
+  `0.2.0+codex.20260825234015`. SHA-256 for `app/dist/stdio.js` remained matched
+  across repository, personal source, and installed cache at
+  `6dfa78e49bbf81775ca3e62bd518f7399fff1a2c494583aae4032cc5f3e9c49d`.
+- Before restart, the live authorization state was version 1 with two registered
+  clients and an enrolled credential. An owner-only dated backup was created
+  outside the repository. Restart migrated the state to version 2 while
+  preserving the signing key identifier, both clients, and the credential.
+  No secret or private runtime path is recorded here.
+- Post-deployment public health and both discovery documents returned HTTP 200;
+  authorization-server metadata now advertises `authorization_code` and
+  `refresh_token`, PKCE S256, the standard-HTTPS issuer, and only `u1.monitor`.
+  The protected resource still names the exact `/mcp` audience, and
+  unauthenticated MCP still returns HTTP 401 with the expected challenge.
+- This satisfies static/software and public-protocol evidence for `AUTH-002`.
+  A pre-repair connection cannot gain a refresh token retroactively. After
+  deployment, the user confirmed that the repaired connection works
+  immediately. Another call after more than 15 minutes remains the separate
+  real-host renewal gate. No printer command was issued during diagnosis,
+  implementation, deployment, or validation.

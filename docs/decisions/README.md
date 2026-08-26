@@ -19,6 +19,7 @@ silently changed.
 | [0010](0010-mobile-status-card-over-personal-oauth-and-funnel.md) | Deliver the mobile status card over personal OAuth and Funnel | Partially superseded by 0011 |
 | [0011](0011-use-standard-https-and-keep-distribution-model-open.md) | Use standard HTTPS and keep the distribution model open | Accepted for personal developer testing |
 | [0012](0012-return-an-image-fallback-for-non-component-hosts.md) | Return an image fallback for non-component hosts | Accepted for the read-only prototype |
+| [0013](0013-rotate-personal-oauth-refresh-tokens.md) | Rotate personal OAuth refresh tokens | Accepted for personal developer testing |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.

@@ -12,7 +12,7 @@ Do not use prior chat history as authority when it conflicts with these files.
 
 ## Exact baseline
 
-- Branch point from `main`: `32762dd`
+- Branch point from `main`: `e4a7495`
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
 - Product runtime: one repo-local read-only MCP Apps status-view prototype with
   desktop stdio and a personal OAuth-protected standard-HTTPS Tailscale Funnel
@@ -42,7 +42,7 @@ Continue with:
    40-second MCP timeout. Twelve status tests with 54 assertions passed before
    the remote-auth slice, and an installed bundle returned reachable status plus
    a real relayed JPEG.
-4. Treat iOS as a separate backend and host loop. Decisions 0010 through 0012 select
+4. Treat iOS as a separate backend and host loop. Decisions 0010 through 0013 select
    a personal OAuth-protected Tailscale Funnel endpoint on standard HTTPS for
    developer testing.
    The Mac Mini endpoint is live, rejects unauthenticated MCP requests, and the
@@ -54,10 +54,16 @@ Continue with:
    `get_u1_status`, and `get_u1_camera_frame`, and an authenticated
    `show_u1_status` call returned fresh complete telemetry. The remote render
    result now adds a standard inline PNG derived from the same observation, so
-   non-component Codex hosts do not need an external dashboard. Start a new
-   phone conversation and visually confirm that image. Test the relayed camera
-   and interactive controls separately only if that host mounts the MCP Apps
-   component. Never expose Moonraker or its camera directly.
+   non-component Codex hosts do not need an external dashboard. The original
+   authorization server then stranded that connection after its 15-minute
+   access token expired because it issued no refresh token. Decision 0013 adds
+   rotating persisted refresh tokens without expanding `u1.monitor`; the live
+   backend is upgraded and its original signing key, clients, and passkey were
+   preserved. The user confirmed that the repaired connection works
+   immediately. Repeat a read-only status call after more than 15 minutes to
+   prove host refresh. Test the relayed camera and interactive controls
+   separately only if that host mounts the MCP Apps component. Never expose
+   Moonraker or its camera directly.
 5. Use Snapmaker Orca `2.3.5` for one synthetic two-object dry-slice repetition
    with explicit complete profiles. Record it as a new log. Do not upload or
    start it.
