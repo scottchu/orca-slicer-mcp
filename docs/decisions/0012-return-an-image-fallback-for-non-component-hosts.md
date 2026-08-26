@@ -19,10 +19,12 @@ conversation.
 ## Decision
 
 Keep the HTML MCP Apps widget as the rich representation for component-capable
-hosts. For the OAuth-protected remote form of `show_u1_status`, also return a
+hosts. For every transport form of `show_u1_status`, also return a
 self-contained PNG status card in the standard MCP tool-result `content` array.
 Generate the PNG from the same normalized `U1Status` observation returned in
-`structuredContent`.
+`structuredContent`. OAuth presence is not a host-capability signal: both local
+and remote clients may fail to mount the iframe, and the server cannot reliably
+infer component support from the transport.
 
 Do not add a dashboard URL, public image URL, camera URL, printer address, or
 control action. The PNG contains only raster pixels and standard PNG framing;
@@ -30,16 +32,15 @@ it has no metadata fields carrying dynamic source values. Keep
 `get_u1_status` data-only so an interactive widget can refresh without adding a
 new image to every internal tool call.
 
-The desktop-local stdio form does not add the PNG because that host already
-mounts the widget. The remote OAuth form adds it because it is the path used by
-cross-device and non-component clients. This is presentation negotiation at an
-inbound adapter, not a new domain concept.
+Component-capable hosts may mount the widget and suppress or de-emphasize the
+fallback. Non-component hosts can display the PNG directly. This is a portable
+presentation fallback at an inbound adapter, not a new domain concept.
 
 ## Consequences
 
 - Codex mobile can display a current visual status even when it cannot mount an
   MCP Apps iframe.
-- Component-capable remote hosts may receive both representations; host-level
+- Component-capable hosts may receive both representations; host-level
   suppression or explicit capability negotiation can be evaluated later.
 - The fallback is a static observation. It has no live controls, camera image,
   adaptive refresh loop, Picture in Picture, or fullscreen behavior.
@@ -50,8 +51,8 @@ inbound adapter, not a new domain concept.
 
 ## Validation
 
-Contract tests must prove that remote `show_u1_status` returns text, the
-normalized status object, and a valid mobile-first 1200 by 1500 PNG; local
-`show_u1_status` and remote `get_u1_status` must remain data-only. Visual
-inspection must use fresh real-printer telemetry. The user must separately
-confirm that a new Codex mobile conversation displays the image.
+Contract tests must prove that local and remote `show_u1_status` return text,
+the normalized status object, and a valid mobile-first 1200 by 1500 PNG;
+`get_u1_status` must remain data-only. Visual inspection must use fresh
+real-printer telemetry. The user must separately confirm that each target host
+displays either the widget or the fallback image.

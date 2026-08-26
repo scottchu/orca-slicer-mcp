@@ -1,6 +1,6 @@
 {
   "name": "u1-print-studio",
-  "version": "0.2.0+codex.20260825234015",
+  "version": "0.2.0+codex.20260826004147",
   "description": "Set up, prepare, start, and monitor Snapmaker U1 prints with read-only interactive and inline-image status cards.",
   "author": {
     "name": "Scott Chu"

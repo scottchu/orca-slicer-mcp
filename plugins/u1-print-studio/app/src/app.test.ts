@@ -157,16 +157,23 @@ describe("U1 status MCP App contract", () => {
     expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
   });
 
-  test("returns model-readable status without private camera URLs", async () => {
+  test("returns model-readable status and a portable PNG locally", async () => {
     const client = await connectClient();
     const result = await client.callTool({ name: "show_u1_status", arguments: {} });
 
     expect(result.structuredContent).toEqual(status);
     expect(result._meta).toEqual(metadata);
     expect(result._meta?.["openai/outputTemplate"]).toBeUndefined();
-    expect(result.content).toEqual([
-      { type: "text", text: "U1 is printing at 67.4%." },
-    ]);
+    expect(Array.isArray(result.content)).toBe(true);
+    if (!Array.isArray(result.content)) throw new Error("Expected tool content");
+    expect(result.content[0]).toEqual({
+      type: "text",
+      text: "U1 is printing at 67.4%.",
+    });
+    const image = result.content[1];
+    expect(image?.type).toBe("image");
+    if (image?.type !== "image") throw new Error("Expected image content");
+    expect(image.mimeType).toBe("image/png");
   });
 
   test("adds a portable PNG status card to the remote render result", async () => {

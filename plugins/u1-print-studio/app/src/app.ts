@@ -144,7 +144,7 @@ export function createAppServer(
     async () => {
       const { status, metadata } = await readStatus();
       return resultPayload(status, metadata, {
-        includeImageCard: Boolean(securitySchemes),
+        includeImageCard: true,
       });
     }
   );
