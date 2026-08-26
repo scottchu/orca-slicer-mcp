@@ -995,10 +995,20 @@
           if (!livePreview) return;
           const stream = response?._meta?.cameraStream ?? response?.meta?.cameraStream;
           const streamUrl = stream?.url;
+          const debugSameOriginStream = (() => {
+            if (!new URLSearchParams(location.search).has("debug")) return false;
+            try {
+              const parsed = new URL(streamUrl);
+              return parsed.protocol === "http:" &&
+                parsed.hostname === location.hostname;
+            } catch {
+              return false;
+            }
+          })();
           if (
             response?.structuredContent?.available !== true ||
             typeof streamUrl !== "string" ||
-            !streamUrl.startsWith("https://")
+            (!streamUrl.startsWith("https://") && !debugSameOriginStream)
           ) {
             throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
           }

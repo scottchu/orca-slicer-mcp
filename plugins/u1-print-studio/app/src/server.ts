@@ -1,9 +1,10 @@
+import { execFileSync } from "node:child_process";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 
 import type { AuthInfo } from "@modelcontextprotocol/sdk/server/auth/types.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 
-import { createAppServer, WIDGET_HTML } from "./app.js";
+import { createAppServer, readWidgetHtml } from "./app.js";
 import { createCameraTicketCodec } from "./adapters/camera-ticket-codec.js";
 import {
   createCameraMediaHandler,
@@ -18,9 +19,37 @@ import {
   MONITOR_SCOPE,
   type PersonalOAuthService,
 } from "./personal-oauth.js";
-import { readU1CameraJpeg } from "./u1-status.js";
+import {
+  createDebugDashboardHandler,
+  type DebugDashboardDependencies,
+} from "./debug-dashboard.js";
+import {
+  readU1CameraFrame,
+  readU1CameraJpeg,
+  readU1Status,
+} from "./u1-status.js";
 
 const MCP_PATH = "/mcp";
+
+export function isTailscaleIPv4(value: string): boolean {
+  const octets = value.split(".").map(Number);
+  return octets.length === 4 &&
+    octets.every((octet) => Number.isInteger(octet) && octet >= 0 && octet <= 255) &&
+    octets[0] === 100 &&
+    octets[1]! >= 64 &&
+    octets[1]! <= 127;
+}
+
+function debugBindHost(): string {
+  if (process.env.U1_DEBUG_TAILSCALE !== "1") return "127.0.0.1";
+  const host = execFileSync("tailscale", ["ip", "-4"], {
+    encoding: "utf8",
+  }).trim().split(/\s+/)[0] ?? "";
+  if (!isTailscaleIPv4(host)) {
+    throw new Error("A private Tailscale IPv4 address is required for debug binding");
+  }
+  return host;
+}
 
 function localPath(url: URL, oauth: PersonalOAuthService | null): string {
   const prefix = oauth?.basePath ?? "";
@@ -46,10 +75,14 @@ type CameraRelayDependencies = {
 
 export function createRequestHandler(
   oauth: PersonalOAuthService | null,
-  cameraRelay: CameraRelayDependencies | null = null
+  cameraRelay: CameraRelayDependencies | null = null,
+  debugDashboard: DebugDashboardDependencies | null = null
 ) {
   const handleCameraMedia = cameraRelay
     ? createCameraMediaHandler(cameraRelay.relay)
+    : null;
+  const handleDebugDashboard = debugDashboard
+    ? createDebugDashboardHandler(debugDashboard)
     : null;
   return async (req: IncomingMessage, res: ServerResponse) => {
     if (!req.url) {
@@ -62,6 +95,12 @@ export function createRequestHandler(
 
     const pathname = localPath(url, oauth);
     if (
+      handleDebugDashboard &&
+      (await handleDebugDashboard(req, res, pathname))
+    ) {
+      return;
+    }
+    if (
       handleCameraMedia &&
       (await handleCameraMedia(req, res, pathname, url))
     ) {
@@ -69,6 +108,11 @@ export function createRequestHandler(
     }
     const isMcpRoute =
       pathname === MCP_PATH || pathname.startsWith(MCP_PATH + "/");
+
+    if (debugDashboard && isMcpRoute) {
+      res.writeHead(404).end("Not Found");
+      return;
+    }
 
     if (req.method === "OPTIONS" && isMcpRoute) {
       res.writeHead(204, {
@@ -102,7 +146,7 @@ export function createRequestHandler(
       res.writeHead(200, {
         "cache-control": "no-store",
         "content-type": "text/html; charset=utf-8",
-      }).end(WIDGET_HTML);
+      }).end(readWidgetHtml());
       return;
     }
 
@@ -161,10 +205,13 @@ export function createRequestHandler(
 }
 
 export async function startServer() {
-  const oauth = await createPersonalOAuthFromEnvironment();
+  const debugDashboardEnabled = process.env.U1_DEBUG_DASHBOARD === "1";
+  const oauth = debugDashboardEnabled
+    ? null
+    : await createPersonalOAuthFromEnvironment();
   const port = Number(process.env.PORT ?? "8787");
-  const host = "127.0.0.1";
-  const cameraRelay = oauth
+  const host = debugDashboardEnabled ? debugBindHost() : "127.0.0.1";
+  const cameraRelay = oauth || debugDashboardEnabled
     ? {
         relay: new CameraRelayService(
           {
@@ -172,13 +219,28 @@ export async function startServer() {
           },
           createCameraTicketCodec()
         ),
-        locator: createCameraStreamLocator(oauth.publicBaseUrl),
+        locator: createCameraStreamLocator(
+          oauth?.publicBaseUrl ?? new URL(`http://${host}:${port}`)
+        ),
       }
     : null;
-  const server = createServer(createRequestHandler(oauth, cameraRelay));
+  const debugDashboard = debugDashboardEnabled && cameraRelay
+    ? {
+        readStatus: readU1Status,
+        readCameraFrame: readU1CameraFrame,
+        openCameraStream: () => cameraRelay.relay.open(cameraRelay.locator),
+      }
+    : null;
+  const server = createServer(
+    createRequestHandler(oauth, cameraRelay, debugDashboard)
+  );
 
   await new Promise<void>((resolve) => server.listen(port, host, resolve));
-  console.log(`U1 Print Studio MCP server listening on http://${host}:${port}${MCP_PATH}`);
+  if (debugDashboardEnabled) {
+    console.log(`Standalone debug dashboard: http://${host}:${port}/debug`);
+  } else {
+    console.log(`U1 Print Studio MCP server listening on http://${host}:${port}${MCP_PATH}`);
+  }
   if (oauth) {
     console.log(`Remote resource: ${oauth.resource}`);
     if (oauth.enrollmentUrl) {

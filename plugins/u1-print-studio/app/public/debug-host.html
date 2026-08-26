@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>U1 Print Studio Debug Host</title>
+    <style>
+      :root { color-scheme: dark; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: #080a0d; color: #e9edf2; }
+      header {
+        min-height: 44px; padding: 8px 12px; display: flex; align-items: center;
+        gap: 10px; border-bottom: 1px solid #252a31; background: #111419;
+      }
+      strong { font-size: 13px; letter-spacing: .01em; }
+      #bridge-state { color: #8f9aa8; font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .spacer { flex: 1; }
+      button {
+        min-height: 30px; padding: 4px 10px; border: 1px solid #3b424d;
+        border-radius: 8px; color: inherit; background: #20252c; cursor: pointer;
+      }
+      iframe { display: block; width: 100%; height: calc(100vh - 45px); border: 0; background: #fff; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>Standalone debug host</strong>
+      <span id="bridge-state">starting</span>
+      <span class="spacer"></span>
+      <button id="reload" type="button">Reload widget</button>
+    </header>
+    <iframe id="widget" src="/widget?debug=1" title="U1 Print Studio status widget"></iframe>
+    <script>
+      const frame = document.querySelector("#widget");
+      const bridgeState = document.querySelector("#bridge-state");
+      const reply = (id, result, error) => {
+        frame.contentWindow?.postMessage({ jsonrpc: "2.0", id, ...(error ? { error } : { result }) }, location.origin);
+      };
+      const notifyToolResult = (result) => {
+        frame.contentWindow?.postMessage({
+          jsonrpc: "2.0",
+          method: "ui/notifications/tool-result",
+          params: result,
+        }, location.origin);
+      };
+      const callTool = async (name) => {
+        bridgeState.textContent = `calling ${name}`;
+        const response = await fetch("/debug/tools/call", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ name }),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error ?? `HTTP ${response.status}`);
+        bridgeState.textContent = "bridge ready · live read-only data";
+        return result;
+      };
+
+      window.addEventListener("message", async (event) => {
+        if (event.source !== frame.contentWindow) return;
+        const message = event.data;
+        if (!message || message.jsonrpc !== "2.0") return;
+
+        if (message.method === "ui/initialize" && typeof message.id === "number") {
+          reply(message.id, {
+            protocolVersion: "2026-01-26",
+            hostInfo: { name: "u1-debug-host", version: "1.0.0" },
+            hostContext: { displayMode: "inline", safeArea: { insets: { top: 0, right: 0, bottom: 0, left: 0 } } },
+          });
+          return;
+        }
+
+        if (message.method === "ui/notifications/initialized") {
+          try {
+            notifyToolResult(await callTool("get_u1_status"));
+          } catch (error) {
+            bridgeState.textContent = `initial status failed · ${error.message}`;
+          }
+          return;
+        }
+
+        if (message.method === "tools/call" && typeof message.id === "number") {
+          try {
+            reply(message.id, await callTool(message.params?.name));
+          } catch (error) {
+            reply(message.id, null, { code: -32000, message: error.message });
+            bridgeState.textContent = `tool failed · ${error.message}`;
+          }
+          return;
+        }
+
+        if (message.method === "ui/request-display-mode" && typeof message.id === "number") {
+          reply(message.id, { displayMode: message.params?.mode ?? "inline" });
+        }
+      });
+
+      document.querySelector("#reload").addEventListener("click", () => {
+        bridgeState.textContent = "reloading";
+        frame.src = `/widget?debug=1&t=${Date.now()}`;
+      });
+    </script>
+  </body>
+</html>

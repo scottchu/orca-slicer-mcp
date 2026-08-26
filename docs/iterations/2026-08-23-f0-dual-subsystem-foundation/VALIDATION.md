@@ -674,3 +674,34 @@ identifiers, and runtime data are intentionally not retained.
   Mounted desktop and iOS continuous rendering, fallback behavior, Close, PiP,
   fullscreen, and real-host OAuth renewal remain separate user-visible gates.
 - No printer control or G-code was implemented or invoked.
+
+### Standalone read-only widget debug host
+
+- `bun install --frozen-lockfile` restored this worktree's missing app
+  dependencies without changing `bun.lock`.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 34 tests with 163 assertions. The added
+  contracts prove the production widget is hosted by the harness, only
+  status/snapshot/stream calls are accepted, a control-shaped call is rejected,
+  `/debug` is absent unless explicitly enabled, and a Tailscale bind must stay
+  inside private `100.64.0.0/10` rather than a wildcard interface. The
+  debug-only process returns 404 for the ordinary `/mcp` route.
+- A dedicated debug process ran on a private Tailscale IPv4 address at port
+  8788 without changing or restarting the installed loopback 8787 service.
+  `GET /debug` returned the bridge host, and a live read-only status request
+  returned reachable `complete` telemetry with camera available.
+- A one-time relay opened through that exact tailnet address and delivered two
+  multipart JPEG parts, HTTP 200, in 1.34 seconds with 138,911 transferred
+  bytes. An earlier loopback smoke returned one 136,498-byte private JPEG data
+  URL and two multipart parts. No image was saved.
+- The in-app browser runtime was unavailable, so the harness was not visually
+  inspected in this run. HTTP integration and real-printer camera evidence do
+  not prove browser layout quality or ChatGPT host rendering.
+- The harness is opt-in and read-only. It binds either loopback or one validated
+  private Tailscale IPv4 address, is absent from the normal service, and must
+  not be added to Funnel. No printer control or G-code was implemented or
+  invoked.
+- `bun run bundle` rebuilt the ignored local stdio artifact successfully.
+  Plugin Creator validation passed with its transient YAML dependency. No
+  cachebuster, marketplace edit, reinstall, or deployed-service replacement
+  was performed because the harness runs directly from the branch.
