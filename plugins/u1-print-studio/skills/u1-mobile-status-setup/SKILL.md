@@ -9,7 +9,8 @@ Set up one user's read-only U1 status card without exposing their printer direct
 
 ## Safety and scope
 
-- Configure only the three read-only tools: `show_u1_status`, `get_u1_status`, and `get_u1_camera_frame`.
+- Configure only the four read-only tools: `show_u1_status`, `get_u1_status`,
+  `get_u1_camera_frame`, and `open_u1_camera_stream`.
 - Keep upload, start, cancel, pause, resume, and printer commands out of this setup. Those require a separate implementation and a fresh per-action authorization boundary.
 - Bind the MCP service to `127.0.0.1`; expose it only through Tailscale Funnel.
 - Never ask the user to paste printer credentials, private profiles, OAuth signing keys, passkey credential material, enrollment state, or bearer tokens into chat.
@@ -25,7 +26,7 @@ Report these separately:
 
 1. Local software evidence: server checks and tests pass on the Mac.
 2. Public-edge evidence: HTTPS health, OAuth discovery, and unauthenticated rejection work through Funnel.
-3. MCP evidence: the authenticated client discovers exactly the three read-only tools.
+3. MCP evidence: the authenticated client discovers exactly the four read-only tools.
 4. Printer evidence: returned telemetry and camera data came from the configured real printer.
 5. iOS evidence: the host visibly rendered either the interactive component or
    the inline PNG fallback; interactive controls are evidence only on hosts
@@ -54,7 +55,15 @@ Do not replace an existing `MOONRAKER_BASE_URL` unless the user asks.
 
 Run `tailscale status --json` and read `Self.DNSName`, removing its final dot. If it is missing, stop and help the user enable MagicDNS or sign in to Tailscale.
 
-Run `tailscale funnel status --json` and save the current routing state for comparison. Prefer a dedicated hostname on HTTPS port 443. If the hostname already has a root service on port 443, preserve it and add exact path handlers for `/.well-known`, `/oauth`, `/auth`, and `/mcp`; `/health` is optional. Tailscale path handlers strip their matched prefix unless the proxy target includes it, so map each incoming prefix to the same backend prefix and verify the result. Do not replace the root handler.
+Run `tailscale funnel status --json` and save the current routing state for
+comparison. Prefer a dedicated hostname on HTTPS port 443. If the hostname
+already has a root service on port 443, preserve it and add exact path handlers
+for `/.well-known`, `/oauth`, `/auth`, `/mcp`, and `/media`; `/health` is
+optional. The `/media` prefix must map back to backend `/media`, where the
+application accepts only exact `GET /media/camera.mjpeg` with a short-lived
+one-time ticket. Tailscale path handlers strip their matched prefix unless the
+proxy target includes it, so map each incoming prefix to the same backend
+prefix and verify the result. Do not replace the root handler.
 
 Set:
 
@@ -74,7 +83,13 @@ For a persistent macOS setup, create a user LaunchAgent from the user's actual p
 
 ### 3. Add one Funnel route
 
-Map only the required standard-HTTPS origin or exact path handlers to the local loopback service. Re-read `tailscale funnel status --json` and verify all pre-existing handlers remain unchanged. When sharing an origin, verify that `/mcp` reaches backend `/mcp`, `/.well-known` reaches backend `/.well-known`, `/oauth` reaches backend `/oauth`, and `/auth` reaches backend `/auth` rather than backend `/`.
+Map only the required standard-HTTPS origin or exact path handlers to the local
+loopback service. Re-read `tailscale funnel status --json` and verify all
+pre-existing handlers remain unchanged. When sharing an origin, verify that
+`/mcp` reaches backend `/mcp`, `/.well-known` reaches backend `/.well-known`,
+`/oauth` reaches backend `/oauth`, `/auth` reaches backend `/auth`, and
+`/media` reaches backend `/media` rather than backend `/`. Verify an
+unrecognized `/media` path returns HTTP 404; do not expose a generic proxy.
 
 Through the public origin, verify:
 
@@ -110,6 +125,7 @@ After connection, verify that the authenticated inventory contains exactly:
 show_u1_status
 get_u1_status
 get_u1_camera_frame
+open_u1_camera_stream
 ```
 
 Each tool must be read-only and require `u1.monitor`. Stop if any control tool is present.
@@ -125,10 +141,12 @@ Start a new phone conversation and ask to show the U1 monitor widget. Verify, in
 2. printer telemetry is current and internally consistent;
 3. if the interactive widget mounted, a camera snapshot loads when the printer
    provides one;
-4. if the interactive widget mounted, refresh and adaptive timing behave
+4. `Go Live` makes one MCP call and then displays the continuous relay, or
+   visibly falls back to non-overlapping per-frame snapshots;
+5. if the interactive widget mounted, refresh and adaptive timing behave
    correctly;
-5. Go Live, Close, Picture in Picture, and fullscreen are tested separately
-   only on component-capable hosts.
+6. Close, Picture in Picture, and fullscreen are tested separately only on
+   component-capable hosts.
 
 The PNG is a static projection of one observation, not a degraded interactive
 dashboard. Refresh it with a new `show_u1_status` call. Do not expect camera
@@ -152,4 +170,11 @@ Record which checks were observed by the user. Do not infer visual acceptance fr
 
 ## Completion report
 
-Report the discovered MagicDNS hostname, standard-HTTPS MCP URL, preserved Funnel handlers, three-tool inventory, and each evidence boundary. Redact credentials and tokens. State that this self-hosted edition requires an always-on LAN agent per printer owner; it may run on a desktop, NAS, or small server. Keep a future hosted broker plus local outbound connector as a separate product decision rather than implying this developer setup is already a plug-and-play public product. End with the smallest unresolved phone action, if any, and keep control actions explicitly deferred.
+Report the discovered MagicDNS hostname, standard-HTTPS MCP URL, preserved
+Funnel handlers, four-tool inventory, and each evidence boundary. Redact
+credentials and tokens. State that this self-hosted edition requires an
+always-on LAN agent per printer owner; it may run on a desktop, NAS, or small
+server. Keep a future hosted broker plus local outbound connector as a separate
+product decision rather than implying this developer setup is already a
+plug-and-play public product. End with the smallest unresolved phone action, if
+any, and keep control actions explicitly deferred.

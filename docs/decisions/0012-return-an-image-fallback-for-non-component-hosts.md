@@ -1,6 +1,6 @@
 # 0012 — Return an image fallback for non-component hosts
 
-- Status: accepted for the read-only prototype
+- Status: partially superseded by 0014
 - Date: 2026-08-25
 - Owners: project maintainers
 

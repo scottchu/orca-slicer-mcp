@@ -79,12 +79,16 @@ profile selection, input mutation, or reuse of stale acceptance.
   resynchronization after reconnect;
 - print-session state machine and event log;
 - on-demand status and camera snapshot through MCP;
+- a user-opened, bounded continuous camera presentation whose ticket, lease,
+  concurrency, and serial-iteration policy is independent of MCP and HTTP;
 - fixture or simulator tests plus a real-printer observation run.
 
 **Exit evidence:** the service tracks a complete real print from start to final
 state, survives a tested reconnect scenario, and records no impossible state
-transitions. Domain tests run without an MCP transport, and an adapter contract
-test proves MCP is not the only possible inbound surface.
+transitions. Domain tests run without an MCP transport, an adapter contract test
+proves MCP is not the only possible inbound surface, and continuous camera
+presentation evidence separates application policy, exact-route protocol,
+real-printer frames, and mounted-host rendering.
 
 ### O2 — Notifications
 

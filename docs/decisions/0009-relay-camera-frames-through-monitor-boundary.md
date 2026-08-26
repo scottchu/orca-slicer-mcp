@@ -1,6 +1,6 @@
 # 0009 — Relay camera frames through the monitor boundary
 
-- Status: accepted
+- Status: partially superseded by 0014
 - Date: 2026-08-25
 - Owners: project maintainers
 

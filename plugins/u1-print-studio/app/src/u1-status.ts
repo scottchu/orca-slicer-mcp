@@ -69,6 +69,11 @@ export type U1CameraFrame = {
   reason: string | null;
 };
 
+export type U1CameraJpeg = {
+  bytes: Buffer;
+  observedAt: string;
+};
+
 function asObject(value: unknown): JsonObject {
   return value && typeof value === "object" && !Array.isArray(value)
     ? (value as JsonObject)
@@ -172,7 +177,11 @@ export function extractFirstJpeg(bytes: Buffer): Buffer | null {
   return end === -1 ? null : bytes.subarray(0, end + 2);
 }
 
-async function fetchJpeg(url: URL, maxTimeSeconds = 10): Promise<Buffer> {
+async function fetchJpeg(
+  url: URL,
+  maxTimeSeconds = 10,
+  signal?: AbortSignal
+): Promise<Buffer> {
   return await new Promise<Buffer>((resolve, reject) => {
     const child = spawn(
       "curl",
@@ -192,10 +201,14 @@ async function fetchJpeg(url: URL, maxTimeSeconds = 10): Promise<Buffer> {
     let body = Buffer.alloc(0);
     const timer = setTimeout(() => finish(), maxTimeSeconds * 1000);
 
+    const abort = () => finish();
+    signal?.addEventListener("abort", abort, { once: true });
+
     const finish = (jpeg?: Buffer) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
+      signal?.removeEventListener("abort", abort);
       if (!child.killed) child.kill("SIGTERM");
       if (jpeg) {
         resolve(jpeg);
@@ -219,6 +232,40 @@ async function fetchJpeg(url: URL, maxTimeSeconds = 10): Promise<Buffer> {
   });
 }
 
+async function cameraSnapshotUrl(): Promise<URL> {
+  let snapshotUrl = cachedSnapshotUrl;
+  if (!snapshotUrl) {
+    const webcamPayload = await fetchJson(WEBCAMS_ROUTE, 3);
+    const webcamResult = asObject(webcamPayload.result);
+    const webcams = Array.isArray(webcamResult.webcams)
+      ? webcamResult.webcams
+      : [];
+    const webcam =
+      webcams.map(asObject).find((item) => item.enabled !== false) ?? {};
+    snapshotUrl = resolveCameraUrl(webcam.snapshot_url);
+    cachedSnapshotUrl = snapshotUrl;
+  }
+  if (!snapshotUrl) throw new Error("Printer camera snapshot unavailable");
+  return snapshotUrl;
+}
+
+export async function readU1CameraJpeg(
+  signal?: AbortSignal,
+  attemptTimeoutsSeconds: readonly number[] = CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS
+): Promise<U1CameraJpeg> {
+  if (signal?.aborted) throw new Error("Printer camera request aborted");
+  const snapshotUrl = await cameraSnapshotUrl();
+  for (const timeout of attemptTimeoutsSeconds) {
+    if (signal?.aborted) break;
+    const bytes = await fetchJpeg(snapshotUrl, timeout, signal).catch(() => null);
+    if (bytes) {
+      return { bytes, observedAt: new Date().toISOString() };
+    }
+    if (signal?.aborted) break;
+  }
+  throw new Error("Printer camera request failed");
+}
+
 export async function readU1CameraFrame(): Promise<{
   frame: U1CameraFrame;
   metadata: U1WidgetMetadata;
@@ -226,26 +273,7 @@ export async function readU1CameraFrame(): Promise<{
   const observedAt = new Date().toISOString();
 
   try {
-    let snapshotUrl = cachedSnapshotUrl;
-    if (!snapshotUrl) {
-      const webcamPayload = await fetchJson(WEBCAMS_ROUTE, 3);
-      const webcamResult = asObject(webcamPayload.result);
-      const webcams = Array.isArray(webcamResult.webcams)
-        ? webcamResult.webcams
-        : [];
-      const webcam =
-        webcams.map(asObject).find((item) => item.enabled !== false) ?? {};
-      snapshotUrl = resolveCameraUrl(webcam.snapshot_url);
-      cachedSnapshotUrl = snapshotUrl;
-    }
-    if (!snapshotUrl) throw new Error("Printer camera snapshot unavailable");
-
-    let bytes: Buffer | null = null;
-    for (const timeout of CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS) {
-      if (bytes) break;
-      bytes = await fetchJpeg(snapshotUrl, timeout).catch(() => null);
-    }
-    if (!bytes) throw new Error("Printer camera request failed");
+    const { bytes } = await readU1CameraJpeg();
 
     return {
       frame: {

@@ -5,7 +5,7 @@ Last updated: 2026-08-25
 ## Baseline
 
 - Canonical repository: `scottchu/orca-slicer-mcp` (private).
-- Branch point from `main`: `32762dd`.
+- Branch point from `main`: `317dfd1`.
 - Product boundary: one product with two peer subsystems, Orca Preparation and
   Printer Operations, joined by an explicit prepared-job/session handoff.
 - Runtime implementation: a repo-local, read-only U1 MCP Apps status-view
@@ -55,37 +55,22 @@ Last updated: 2026-08-25
 
 - Printer connection: a redacted LAN Fluidd/Moonraker target is reachable;
   Moonraker HTTP and WebSocket paths are observed, but no adapter is implemented.
-- Interactive monitoring: a local MCP Apps prototype exposes read-only
-  `show_u1_status`, `get_u1_status`, and `get_u1_camera_frame` tools, an HTML
-  camera-first dashboard, adaptive refresh, PiP, and fullscreen. After the
-  direct private-LAN camera iframe failed in the desktop host, status widget v2
-  now relays validated JPEG frames through the read-only MCP boundary and has a
-  responsive iOS-safe layout. The descriptor and widget contracts have
-  integration tests. A later offline card was traced to a stale in-thread MCP
-  process despite current LAN reachability; the slow-camera budget was repaired
-  and the exact refreshed installed bundle passed telemetry and JPEG relay
-  smoke. Standard HTTPS Funnel handlers now expose the same three read-only
-  tools and OAuth paths without replacing an existing root service. Personal
-  OAuth, PKCE, audience-bound tokens, and an enrolled user-verified phone
-  passkey protect the endpoint. Public reachability and authentication rejection
-  pass; a nonstandard-port ChatGPT fetch failed, while the repaired
-  standard-port connection completed personal OAuth and exposed exactly the
-  three read-only tools. An authenticated `show_u1_status` call returned fresh
-  completion telemetry. Decision 0012 now adds a dependency-free inline PNG
-  status projection to every `show_u1_status` render result while preserving
-  the interactive widget path. OAuth is not treated as a proxy for component
-  support: hosts that cannot mount the iframe can render the same-observation
-  PNG fallback. The PNG was generated and visually inspected from a fresh
-  real-printer observation. The first phone render was accepted and
-  enlarged in the current portrait layout. A later connection failure was
-  isolated to the original authorization server issuing only a 15-minute access
-  token: Codex reported `oauth_refresh_token_missing` while the public service
-  and OAuth discovery remained healthy. Decision 0013 adds 30-day rotating,
-  hashed, client/resource/scope-bound refresh tokens, migrates the existing
-  owner-only state without replacing the signing key, passkey, or clients, and
-  is deployed on the public endpoint. The user confirmed that the repaired
-  connection works immediately. Real-host renewal after the first 15-minute
-  access-token lifetime remains pending evidence.
+- Interactive monitoring: the local stdio MCP Apps prototype exposes three
+  read-only status/snapshot tools, an HTML camera-first dashboard, adaptive
+  refresh, PiP, fullscreen, and a 1200 by 1500 PNG on every
+  `show_u1_status` result. The OAuth-protected HTTP surface conditionally adds a
+  fourth read-only `open_u1_camera_stream` tool. Its one-time URL is
+  widget-private; the widget makes one call per `Go Live` intent and retains
+  non-overlapping snapshot polling as fallback. Decision 0014 keeps ticket,
+  lease, concurrency, duration, and serial iteration in an application service,
+  validated raw JPEG acquisition in the printer adapter, and exact multipart
+  response handling in an HTTP adapter. The public service now has one exact
+  `/media` Funnel handler in addition to the preserved root and OAuth/MCP paths.
+  Personal OAuth, PKCE, renewable audience-bound tokens, and the enrolled
+  user-verified passkey remain unchanged. Public 401/404 boundaries pass, and a
+  bounded real-printer proof delivered two complete JPEGs over one multipart
+  response. A fresh authenticated four-tool inventory and mounted desktop/iOS
+  rendering remain separate host evidence.
 - Persistent monitoring: not implemented. The accepted runtime model still
   combines a full direct snapshot with ordered subscription deltas and
   reconnect resync.
@@ -97,8 +82,10 @@ Last updated: 2026-08-25
 - API exposure: Monitor, Control, and Admin are separate surfaces. Monitor is an
   explicit read-only allowlist; Admin and generic protocol or G-code passthrough
   are excluded from the first release.
-- Application boundary: MCP is a replaceable inbound adapter. Domain ontology,
-  policies, and monitor ports are surface- and runtime-independent.
+- Application boundary: MCP is a replaceable inbound adapter. The camera relay
+  is the first implemented transport-independent application service; status
+  queries still call the observation adapter directly. Domain ontology,
+  policies, and planned monitor ports remain surface- and runtime-independent.
 - Runtime direction: the read-only status prototype uses Bun, TypeScript, MCP
   Apps, and a dependency-free widget. An extracted Elixir monitor daemon remains
   possible through a versioned, language-neutral contract; no persistent or
@@ -109,16 +96,18 @@ Last updated: 2026-08-25
 - Static/software: repository foundation and dual-subsystem product contract
   checks passed; real installed Orca executables were inspected, and one later
   user-authorized Snapmaker Orca slice succeeded after recorded failures. The
-  read-only status-view prototype compiles and its HTTP and stdio MCP paths
-  return current telemetry. Twenty-two OAuth/status contract tests cover refresh
-  issuance, persisted-hash recovery, binding, rotation, replay, expiry, and
-  refreshed MCP authentication; no preparation or control runtime exists.
+  read-only status-view prototype compiles. Twenty-nine tests with 144
+  assertions cover OAuth renewal, status and PNG contracts, application-owned
+  camera tickets and leases, exact multipart routing, URL privacy, serial frame
+  reads, and snapshot fallback; no preparation or control runtime exists.
 - Delivery validation is local-only; no hosted validation workflow is
   configured or required.
 - Protocol/simulator: live Moonraker read-only response shapes, WebSocket
-  upgrade, and server notifications were observed; printer-object subscription,
-  fixtures, and reconnect tests are pending.
-- Real printer: ready/standby telemetry, live camera frames, one PETG job and
+  upgrade, server notifications, and exact ticketed multipart behavior were
+  observed; printer-object subscription, fixtures, and reconnect tests are
+  pending.
+- Real printer: ready/standby telemetry, live camera frames including two
+  complete JPEGs in one bounded multipart relay, one PETG job and
   two later PLA jobs reached telemetry-verified completion. Upload, start
   acknowledgement, observed printing, and completion were kept distinct for
   the PLA repetitions. Product subscription, reconnect, and command-correlation
@@ -139,14 +128,14 @@ Last updated: 2026-08-25
 - The observed exit `139` guard and incomplete-filament tool collapse have not
   yet been reproduced with clean negative fixtures.
 - Prepared-artifact schema and upload/start ownership are unknown.
-- Always-on host, camera placement and lighting, and network boundary are
-  unknown.
-- Relayed camera loading, PiP, fullscreen, and adaptive refresh have not
-  been exercised successfully inside a connected Codex host. The direct WebRTC
-  iframe is no longer the portable baseline; a server-relayed near-live preview
-  now passes MCP and real-camera tests under a bounded slow-source budget, but
-  source responsiveness and valid JPEG payloads do not prove desktop or iOS
-  rendering. Existing conversations do not hot-reload refreshed MCP tools.
+- The personal always-on host and network boundary are observed, but camera
+  placement, lighting, portability to other hosts, and production distribution
+  remain unknown.
+- Continuous relay loading, snapshot fallback, Close, PiP, fullscreen, and
+  adaptive refresh have not been exercised on the newly deployed four-tool
+  surface inside a fresh connected Codex host. Exact public routing and valid
+  real JPEGs do not prove desktop or iOS rendering. Existing conversations do
+  not hot-reload refreshed MCP tools.
 - The local stdio plugin cannot itself provide a cross-device iOS backend. A
   personal developer backend now runs on the always-on Mac Mini behind
   standard-HTTPS Tailscale Funnel path handlers and personal OAuth. The current
@@ -166,9 +155,10 @@ Last updated: 2026-08-25
 
 ## Next action
 
-After more than 15 minutes from the repaired connection, make another read-only
-status call to prove the host actually renewed its access token. The user has
-already confirmed immediate access. Record delayed renewal, inline PNG display,
-and any mounted interactive camera behavior as separate evidence. Do not expose
-Moonraker directly, add control tools, or build a shared CLI until the relevant
-authorization and repeated-use evidence exists.
+Start a fresh authenticated host thread, confirm exactly the four remote
+read-only tools, and test one `Go Live` intent. Record continuous relay,
+snapshot fallback if exercised, Close, PiP, fullscreen, desktop mount, and iOS
+mount separately. A status call after the access-token lifetime still needs to
+prove real-host renewal. Do not expose Moonraker directly, add control tools, or
+build a shared CLI until the relevant authorization and repeated-use evidence
+exists.

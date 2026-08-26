@@ -18,10 +18,11 @@ import {
   type U1WidgetMetadata,
 } from "./u1-status.js";
 import { statusCardImageContent } from "./status-card-image.js";
+import type { OpenedCameraStream } from "./application/camera-relay.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = path.resolve(currentDirectory, "..");
-export const WIDGET_URI = "ui://u1-print-studio/status-v2.html";
+export const WIDGET_URI = "ui://u1-print-studio/status-v3.html";
 export const WIDGET_HTML = readFileSync(
   path.join(APP_ROOT, "public", "widget.html"),
   "utf8"
@@ -48,6 +49,7 @@ export function resultPayload(
 
 type StatusReader = typeof readU1Status;
 type CameraFrameReader = typeof readU1CameraFrame;
+type CameraStreamOpener = () => OpenedCameraStream;
 
 function cameraFramePayload(
   frame: U1CameraFrame,
@@ -67,13 +69,36 @@ function cameraFramePayload(
   };
 }
 
+function cameraStreamPayload(opened: OpenedCameraStream) {
+  return {
+    content: [
+      {
+        type: "text" as const,
+        text: "A short-lived read-only U1 camera relay session is ready.",
+      },
+    ],
+    structuredContent: {
+      schemaVersion: 1,
+      available: true,
+      expiresAt: opened.expiresAt,
+      maxDurationSeconds: opened.maxDurationSeconds,
+      reason: null,
+    },
+    _meta: {
+      cameraStream: { url: opened.url },
+    },
+  };
+}
+
 export function createAppServer(
   dependencies: {
     readStatus?: StatusReader;
     readCameraFrame?: CameraFrameReader;
+    openCameraStream?: CameraStreamOpener;
   } = {},
   options: {
     oauthScopes?: string[];
+    cameraResourceOrigin?: string;
   } = {}
 ): McpServer {
   const readStatus = dependencies.readStatus ?? readU1Status;
@@ -105,7 +130,9 @@ export function createAppServer(
                 prefersBorder: false,
                 csp: {
                   connectDomains: [],
-                  resourceDomains: [],
+                  resourceDomains: options.cameraResourceOrigin
+                    ? [options.cameraResourceOrigin]
+                    : [],
                   frameDomains: [],
                 },
               },
@@ -148,6 +175,32 @@ export function createAppServer(
       });
     }
   );
+
+  if (dependencies.openCameraStream) {
+    registerAppTool(
+      server,
+      "open_u1_camera_stream",
+      {
+        title: "Open U1 camera stream",
+        description:
+          "Use this when the U1 dashboard starts a user-requested continuous read-only camera relay session.",
+        inputSchema: {},
+        ...securityConfig,
+        annotations: {
+          readOnlyHint: true,
+          destructiveHint: false,
+          openWorldHint: false,
+          idempotentHint: false,
+        },
+        _meta: {
+          ...securityMetadata,
+          "openai/toolInvocation/invoking": "Opening U1 camera relay",
+          "openai/toolInvocation/invoked": "U1 camera relay ready",
+        },
+      },
+      async () => cameraStreamPayload(dependencies.openCameraStream!())
+    );
+  }
 
   registerAppTool(
     server,
@@ -264,6 +317,27 @@ export function createAppServer(
             "openai/toolInvocation/invoked": "U1 camera refreshed",
           },
         },
+        ...(dependencies.openCameraStream
+          ? [
+              {
+                name: "open_u1_camera_stream",
+                title: "Open U1 camera stream",
+                description:
+                  "Use this when the U1 dashboard starts a user-requested continuous read-only camera relay session.",
+                inputSchema: emptyInputSchema,
+                annotations: {
+                  ...readOnlyAnnotations,
+                  idempotentHint: false,
+                },
+                securitySchemes,
+                _meta: {
+                  securitySchemes,
+                  "openai/toolInvocation/invoking": "Opening U1 camera relay",
+                  "openai/toolInvocation/invoked": "U1 camera relay ready",
+                },
+              },
+            ]
+          : []),
       ],
     }));
   }

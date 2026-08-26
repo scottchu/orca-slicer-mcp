@@ -11,7 +11,9 @@ parts and completed a PETG print after substantial CLI debugging. Two later PLA
 jobs also reached telemetry-verified completion. The repo-local plugin contains
 four thin workflow skills and a read-only MCP Apps status-view prototype. No
 preparation, control, or persistent-monitor runtime exists, and Snapmaker Orca
-is not yet an accepted product backend.
+is not yet an accepted product backend. The remote read-only prototype now adds
+a bounded continuous camera relay through an application service; MCP, exact
+media HTTP, and the printer JPEG adapter remain separate layers.
 
 ## Completed work
 
@@ -98,17 +100,18 @@ is not yet an accepted product backend.
   removed. Public health and OAuth metadata return successfully, while an
   unauthenticated public MCP request returns HTTP 401 with the expected
   protected-resource challenge.
-- after the user completed the corrected standard-port connection, the host
-  exposed exactly the three read-only tools and an authenticated
+- before decision 0014, after the user completed the corrected standard-port
+  connection, the host exposed exactly the then-current three read-only tools
+  and an authenticated
   `show_u1_status` call returned fresh `complete` telemetry at 100% (188/188),
   with inactive fully consumed storage, no exception, parked tools, and zero
   heater targets. Phone layout and relayed-camera rendering remain visual
   checks rather than inferred outcomes.
-- decision 0012 adds a portable 1200 by 1500 PNG status projection to every
-  `show_u1_status` result for Codex hosts that do not mount MCP Apps
+- decision 0012 adds a portable 1200 by 1500 PNG status projection to remote
+  `show_u1_status` results for Codex hosts that do not mount MCP Apps
   components. It uses the same normalized observation as the widget, exposes
-  no URL or control, and leaves `get_u1_status` refresh data-only. OAuth is not
-  used as a proxy for iframe capability. A
+  no URL or control, and at that stage left local stdio plus remote refresh
+  data-only. Decision 0014 later supersedes the local exclusion. A
   live complete observation was rendered and visually inspected locally;
   Codex-mobile display remains a user-visible check.
 - after the first phone rendering was visually accepted, the user asked for a
@@ -128,7 +131,8 @@ is not yet an accepted product backend.
   outside the repository before the service restart.
 - the repaired public endpoint advertises both `authorization_code` and
   `refresh_token`, continues to return the expected unauthenticated HTTP 401 MCP
-  challenge, and exposes no additional tools or printer controls. The plugin was
+  challenge, and at that stage exposed no additional tools or printer controls.
+  The plugin was
   reinstalled as `0.2.0+codex.20260825234015`. Existing pre-repair host links
   must reconnect once. The user confirmed the repaired connection works
   immediately; successful host renewal after more than 15 minutes remains
@@ -138,16 +142,39 @@ is not yet an accepted product backend.
   read-only runtime slice to the stable domain ontology. It explicitly records
   that the prototype still calls its observation adapter directly rather than
   implementing the planned application use case and persistent monitor ports.
-- the synchronized and installed plugin is
+- an earlier synchronized and installed plugin was
   `0.2.0+codex.20260825211428`. Its repository, personal-source, and installed
   bundles share SHA-256
   `6dfa78e49bbf81775ca3e62bd518f7399fff1a2c494583aae4032cc5f3e9c49d`;
-  an installed-cache stdio smoke preserved the three-tool inventory and
-  text-only local render result.
+  an installed-cache stdio smoke preserved the then-current three-tool
+  inventory and text-only local render result.
 - the plugin now includes `u1-mobile-status-setup`, which discovers each user's
   Tailscale MagicDNS hostname, preserves unrelated Funnel handlers, guides
   phone passkey enrollment and desktop Developer mode, verifies the exact
-  three-tool read-only inventory, and keeps all control actions out of setup.
+  four-tool remote read-only inventory, and keeps all control actions out of
+  setup.
+- decision 0014 adds the first transport-independent camera relay application
+  service. It owns one-time tickets, leases, concurrency, duration, and serial
+  frame iteration; `u1-status` yields validated raw JPEGs; and the HTTP adapter
+  serves only exact `GET /media/camera.mjpeg`.
+- the remote HTTP MCP surface conditionally adds
+  `open_u1_camera_stream`. Its one-time URL exists only in result `_meta`; the
+  widget calls it once per `Go Live` intent and retains the old snapshot loop as
+  fallback. Local stdio remains a three-tool surface because it has no HTTPS
+  media endpoint.
+- the concurrent local PNG contract is preserved: every `show_u1_status` result
+  carries the 1200 by 1500 PNG, while `get_u1_status` stays data-only.
+- 29 tests with 144 assertions pass. The repository, synchronized personal
+  source, and installed cache validate at
+  `0.2.0+codex.20260826005742`; their stdio bundle hashes match.
+- the live personal service now runs from the synchronized plugin source with
+  OAuth state preserved. The exact `/media` Funnel handler was added without
+  changing the unrelated root or existing OAuth/MCP handlers. Public missing
+  ticket and unknown-path checks return 401 and 404 respectively.
+- a bounded real-printer relay observation delivered two complete validated
+  JPEGs over one multipart response in a final 2.6-second run. This proves the source,
+  application iteration, and adapter path together, not mounted desktop or iOS
+  rendering.
 
 ## Changed paths
 
@@ -192,7 +219,13 @@ included.
 - the snapshot endpoint was intermittently slow. One bounded retry recovered a
   packaged real-frame smoke, and one later frame took 12.9 seconds. The longer
   bounded relay now passes installed-cache transport checks, but repeated
-  live-preview reliability is not yet host-validated;
+  live-preview reliability is not yet host-validated. A provisional 3+3-second
+  continuous-source budget failed to produce the two-frame proof and was
+  replaced by the established 20+10-second bounded policy;
+- the current Codex conversation retains a stale pre-reinstall three-tool MCP
+  surface. It cannot prove the newly deployed remote four-tool inventory or
+  mounted continuous relay; use a fresh thread and keep iOS visual evidence
+  separate;
 - manifest shape, compatibility checks, and upload/start ownership are open;
 - multiple physical jobs completed, but product implementation, repeatable workflow,
   protocol, safety, and general user-outcome acceptance remain pending.
@@ -201,16 +234,17 @@ included.
 
 ## Next smallest action
 
-Repeat the now-working phone `show_u1_status` call after more than 15 minutes to
-prove real-host refresh. If that host mounts the interactive component, verify
-the relayed snapshot and controls as a separate host capability. Record each
-result separately, then resume synthetic non-user dry-slice and negative
-fixtures. Do not expose Moonraker or build a shared CLI merely because the
-manual commands exist.
+Start a fresh authenticated host thread and verify the exact four-tool remote
+inventory. If the component mounts, invoke `Go Live` once and separately record
+continuous rendering, snapshot fallback if exercised, `Close`, PiP, fullscreen,
+and iOS behavior. Also repeat `show_u1_status` after the access-token lifetime
+to close the real-host renewal gate. Then resume synthetic non-user dry-slice
+and negative fixtures. Do not expose Moonraker or build a shared CLI merely
+because the manual commands exist.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0013. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0014. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.
