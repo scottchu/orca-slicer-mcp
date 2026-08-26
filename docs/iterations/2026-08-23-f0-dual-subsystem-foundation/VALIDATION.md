@@ -710,3 +710,25 @@ identifiers, and runtime data are intentionally not retained.
   Plugin Creator validation passed with its transient YAML dependency. No
   cachebuster, marketplace edit, reinstall, or deployed-service replacement
   was performed because the harness runs directly from the branch.
+
+### Icon controls, persistent grid, and component skeletons
+
+- Acceptance boundary: this refinement changes only the read-only widget UI.
+  It must not add a printer command, expand the standalone bridge tool allowlist,
+  or expose a camera URL to model-readable output.
+- `bun test src/*.test.ts`: passed 35 tests with 174 assertions, including the
+  icon-only control, persistent-grid, and component-loading-state contract.
+- `bun run check`: passed TypeScript validation.
+- Plugin Creator `validate_plugin.py` passed through
+  `uv run --with pyyaml`; the transient dependency did not change project
+  dependencies.
+- Loopback `GET /widget?standalone=1` served the new icon/grid/skeleton source.
+  Loopback and private Tailscale HTTPS `GET /dashboard` both returned HTTP 200.
+- Live read-only bridge calls completed, but the printer was offline at that
+  observation: status was `offline` with camera unavailable, and the camera
+  frame result was unavailable with zero bytes. This verifies the unavailable
+  state path, not live camera rendering or printer reachability.
+- No browser was connected to the in-app browser runtime, so visual layout,
+  animation quality, and live/snapshot transitions remain user-visible review
+  gates. No cachebuster, plugin reinstall, printer command, or G-code action was
+  performed.

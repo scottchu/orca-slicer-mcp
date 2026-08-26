@@ -328,4 +328,20 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain("window.openai?.safeArea");
     expect(WIDGET_HTML).toContain("notifyIntrinsicHeight");
   });
+
+  test("keeps camera controls icon-only and gives major components loading states", () => {
+    expect(WIDGET_HTML).toContain('id="camera-status"');
+    expect(WIDGET_HTML).toContain('aria-label="Open live camera"');
+    expect(WIDGET_HTML).toContain('aria-label="Close live camera"');
+    expect(WIDGET_HTML).not.toContain(">Go Live</button>");
+    expect(WIDGET_HTML).not.toContain(">Close</button>");
+    expect(WIDGET_HTML).not.toContain(">Auto</button>");
+    expect(WIDGET_HTML).toContain(".camera::before");
+    expect(WIDGET_HTML).toContain('data-camera-loading="true"');
+    expect(WIDGET_HTML).toContain('id="status-row" data-loading="true"');
+    expect(WIDGET_HTML).toContain('id="progress-section" data-loading="true"');
+    expect(WIDGET_HTML).toContain('id="freshness" data-loading="true"');
+    expect(WIDGET_HTML).toContain("setStatusLoading");
+    expect(WIDGET_HTML).toContain("setCameraState");
+  });
 });

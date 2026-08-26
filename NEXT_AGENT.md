@@ -47,7 +47,9 @@ pass. Continue with:
    same tailnet, preserve the private Serve listener on port 8444 and run
    `bun run dashboard:tailscale`, then open the printed `/dashboard` URL. Never
    Funnel-enable port 8444, and do not count the harness as real ChatGPT-host
-   rendering evidence.
+   rendering evidence. The branch widget now has icon-only live/close/refresh
+   controls, an icon camera-state indicator, a persistent camera grid, and
+   independent component skeletons; keep those behaviors when iterating.
 3. Start a fresh authenticated desktop or mobile thread because the prior
    conversation cannot hot-reload tools. Confirm exactly four remote read-only
    tools: `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and

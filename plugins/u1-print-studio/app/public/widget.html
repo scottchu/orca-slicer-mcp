@@ -18,6 +18,8 @@
         --lime: #b9f645;
         --amber: #f2a93b;
         --red: #e05252;
+        --skeleton-base: rgba(23, 45, 36, 0.09);
+        --skeleton-glow: rgba(255, 255, 255, 0.72);
         --radius: 26px;
         --safe-top: env(safe-area-inset-top, 0px);
         --safe-right: env(safe-area-inset-right, 0px);
@@ -87,17 +89,27 @@
           radial-gradient(circle at 62% 18%, #3d5b4f 0, #14241e 56%, #07110e 100%);
       }
 
+      .camera::before,
       .camera::after {
         position: absolute;
         inset: 0;
-        z-index: 2;
         pointer-events: none;
         content: "";
+      }
+
+      .camera::before {
+        z-index: 3;
+        opacity: 0.72;
         background:
-          linear-gradient(180deg, rgba(5, 14, 11, 0.5), transparent 30%, transparent 60%, rgba(5, 14, 11, 0.76)),
-          linear-gradient(90deg, rgba(185, 246, 69, 0.08) 1px, transparent 1px),
-          linear-gradient(rgba(185, 246, 69, 0.08) 1px, transparent 1px);
-        background-size: auto, 42px 42px, 42px 42px;
+          linear-gradient(90deg, rgba(185, 246, 69, 0.14) 1px, transparent 1px),
+          linear-gradient(rgba(185, 246, 69, 0.14) 1px, transparent 1px);
+        background-size: 42px 42px;
+      }
+
+      .camera::after {
+        z-index: 1;
+        background:
+          linear-gradient(180deg, rgba(5, 14, 11, 0.5), transparent 30%, transparent 60%, rgba(5, 14, 11, 0.76));
       }
 
       .camera img {
@@ -130,6 +142,50 @@
         text-align: center;
       }
 
+      .camera-skeleton {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: grid;
+        align-content: end;
+        gap: 10px;
+        padding: 24px;
+        opacity: 0;
+        visibility: hidden;
+        background: linear-gradient(135deg, rgba(25, 48, 39, 0.94), rgba(7, 17, 14, 0.98));
+        transition: opacity 180ms ease, visibility 180ms ease;
+      }
+
+      .camera-skeleton span {
+        position: relative;
+        width: min(58%, 260px);
+        height: 13px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(232, 248, 240, 0.13);
+      }
+
+      .camera-skeleton span:last-child {
+        width: min(40%, 180px);
+        height: 9px;
+      }
+
+      .camera-skeleton span::after,
+      [data-loading="true"].skeleton-target::after,
+      [data-loading="true"] .skeleton-target::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        background: linear-gradient(100deg, transparent 18%, var(--skeleton-glow) 48%, transparent 78%);
+        transform: translateX(-110%);
+        animation: skeleton-sweep 1.35s ease-in-out infinite;
+      }
+
+      .camera[data-camera-loading="true"]:not(.has-snapshot) .camera-skeleton {
+        opacity: 1;
+        visibility: visible;
+      }
+
       .camera-empty svg {
         width: 42px;
         margin: auto;
@@ -145,7 +201,7 @@
         position: absolute;
         right: 18px;
         left: 18px;
-        z-index: 3;
+        z-index: 4;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -161,40 +217,66 @@
         align-items: flex-end;
       }
 
-      .camera-label,
-      .live-badge {
+      .camera-status {
+        position: relative;
         display: inline-flex;
         align-items: center;
-        gap: 7px;
-        min-height: 30px;
-        padding: 6px 10px;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
         border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 999px;
+        border-radius: 50%;
         color: #f4fff9;
         background: rgba(5, 15, 11, 0.58);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-        font-size: 12px;
-        font-weight: 750;
-        letter-spacing: 0.04em;
         backdrop-filter: blur(12px);
       }
 
-      .live-badge {
+      .camera-status svg {
+        width: 19px;
+        height: 19px;
+      }
+
+      .camera-status-dot {
+        position: absolute;
+        top: 1px;
+        left: 29px;
+        width: 9px;
+        height: 9px;
+        border: 2px solid rgba(5, 15, 11, 0.9);
+        border-radius: 50%;
+        background: var(--amber);
+      }
+
+      .camera-status-slash {
         display: none;
+      }
+
+      .camera[data-camera-status="snapshot"] .camera-status-dot {
+        background: var(--green);
+      }
+
+      .camera[data-camera-status="live"] .camera-status {
         color: #0b271d;
         background: var(--lime);
       }
 
-      .camera[data-camera-mode="live"] .live-badge {
-        display: inline-flex;
+      .camera[data-camera-status="live"] .camera-status-dot {
+        background: #0b271d;
+        animation: camera-pulse 1.4s ease-out infinite;
       }
 
-      .pulse {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: currentColor;
-        box-shadow: 0 0 0 5px rgba(185, 246, 69, 0.16);
+      .camera[data-camera-status="unavailable"] .camera-status {
+        color: #fff;
+        background: rgba(110, 24, 24, 0.82);
+      }
+
+      .camera[data-camera-status="unavailable"] .camera-status-dot {
+        background: var(--red);
+      }
+
+      .camera[data-camera-status="unavailable"] .camera-status-slash {
+        display: block;
       }
 
       .camera-copy {
@@ -242,8 +324,9 @@
       }
 
       .camera-button {
-        min-width: 98px;
-        padding: 9px 14px;
+        width: 44px;
+        min-width: 44px;
+        padding: 0;
         color: #0d281e;
         background: var(--lime);
         box-shadow: 0 8px 26px rgba(185, 246, 69, 0.25);
@@ -251,7 +334,6 @@
 
       .camera-button.close {
         display: none;
-        min-width: auto;
         color: white;
         background: rgba(9, 18, 15, 0.78);
       }
@@ -266,6 +348,11 @@
 
       .camera-button:disabled {
         opacity: 0.46;
+      }
+
+      .camera-button svg {
+        width: 20px;
+        height: 20px;
       }
 
       .content {
@@ -320,6 +407,11 @@
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 12px;
         align-items: center;
+      }
+
+      .progress-section {
+        display: grid;
+        gap: 10px;
       }
 
       .status-pill {
@@ -437,6 +529,50 @@
         font-size: 11px;
       }
 
+      .skeleton-target {
+        position: relative;
+        overflow: hidden;
+      }
+
+      [data-loading="true"].skeleton-target,
+      [data-loading="true"] .skeleton-target {
+        min-height: 12px;
+        border-color: transparent !important;
+        color: transparent !important;
+        text-shadow: none !important;
+        background: var(--skeleton-base) !important;
+        box-shadow: none !important;
+      }
+
+      [data-loading="true"].skeleton-target > *,
+      [data-loading="true"] .skeleton-target > * {
+        opacity: 0;
+      }
+
+      .status-row[data-loading="true"] .status-pill {
+        width: 104px;
+      }
+
+      .status-row[data-loading="true"] .percent {
+        width: 62px;
+        border-radius: 10px;
+      }
+
+      .progress-section[data-loading="true"] .progress-meta span {
+        width: 30%;
+        border-radius: 7px;
+      }
+
+      .metric[data-loading="true"] {
+        min-height: 104px;
+      }
+
+      .freshness[data-loading="true"] {
+        width: min(62%, 260px);
+        min-height: 38px;
+        border-radius: 10px;
+      }
+
       .footer {
         display: flex;
         align-items: center;
@@ -464,11 +600,11 @@
       }
 
       .toggle {
-        gap: 7px;
-        padding: 8px 11px;
+        width: 44px;
+        padding: 0;
+        gap: 5px;
         color: var(--green-deep);
         background: rgba(16, 167, 121, 0.1);
-        font-size: 12px;
       }
 
       .toggle::before {
@@ -486,6 +622,11 @@
 
       .toggle[aria-pressed="false"]::before {
         background: #9ca7a2;
+      }
+
+      .toggle svg {
+        width: 18px;
+        height: 18px;
       }
 
       .refresh-button {
@@ -527,6 +668,37 @@
         to { transform: rotate(360deg); }
       }
 
+      @keyframes skeleton-sweep {
+        to { transform: translateX(110%); }
+      }
+
+      @keyframes camera-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(11, 39, 29, 0.42); }
+        75%, 100% { box-shadow: 0 0 0 7px rgba(11, 39, 29, 0); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .camera-skeleton span::after,
+        [data-loading="true"].skeleton-target::after,
+        [data-loading="true"] .skeleton-target::after,
+        .camera[data-camera-status="live"] .camera-status-dot,
+        .refresh-button.is-refreshing svg {
+          animation: none;
+        }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
       @media (max-width: 540px) {
         body {
           padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
@@ -538,8 +710,7 @@
         .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .metric:first-child { grid-column: 1 / -1; }
         .footer { align-items: flex-start; flex-direction: column; }
-        .footer-actions { width: 100%; justify-content: space-between; }
-        .toggle { flex: 1; }
+        .footer-actions { width: 100%; justify-content: flex-end; }
       }
 
       @media (max-width: 380px) {
@@ -585,6 +756,8 @@
           --surface-strong: #1a2b24;
           --line: rgba(224, 244, 235, 0.1);
           --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+          --skeleton-base: rgba(255, 255, 255, 0.09);
+          --skeleton-glow: rgba(255, 255, 255, 0.22);
         }
         body { background: #09120f; }
         .metric { background: rgba(255, 255, 255, 0.035); }
@@ -594,19 +767,26 @@
   </head>
   <body data-display-mode="inline">
     <main class="dashboard" id="dashboard" data-state="loading">
-      <section class="camera" id="camera" data-camera-mode="snapshot" aria-label="Printer camera">
+      <section class="camera" id="camera" data-camera-mode="snapshot" data-camera-status="loading" data-camera-loading="true" aria-label="Printer camera">
         <div class="camera-empty" id="camera-empty">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
             <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
             <circle cx="12" cy="13" r="3.5" />
           </svg>
-          <span>Waiting for camera snapshot</span>
+          <span class="sr-only">Waiting for camera snapshot</span>
         </div>
+        <div class="camera-skeleton" aria-hidden="true"><span></span><span></span></div>
         <img id="snapshot" alt="Latest Snapmaker U1 camera snapshot" referrerpolicy="no-referrer" />
 
         <div class="camera-top">
-          <span class="camera-label"><span class="pulse"></span> U1 Camera</span>
-          <span class="live-badge"><span class="pulse"></span> Live</span>
+          <span class="camera-status" id="camera-status" role="status" aria-live="polite" aria-label="Camera loading" title="Camera loading">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
+              <circle cx="12" cy="13" r="3.5" />
+              <path class="camera-status-slash" d="M4 4l16 16" />
+            </svg>
+            <span class="camera-status-dot" aria-hidden="true"></span>
+          </span>
         </div>
 
         <div class="camera-bottom">
@@ -615,8 +795,18 @@
             <span id="camera-detail">Snapshot refreshes with printer status</span>
           </div>
           <div class="camera-actions">
-            <button class="camera-button go-live" id="go-live" type="button">Go Live</button>
-            <button class="camera-button close" id="close-live" type="button" aria-label="Close live preview">Close</button>
+            <button class="camera-button go-live" id="go-live" type="button" title="Open live camera" aria-label="Open live camera">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <rect x="3" y="6" width="13" height="12" rx="3" />
+                <path d="M16 10l5-3v10l-5-3z" fill="currentColor" stroke="none" />
+                <path d="M8.5 9.5l4 2.5-4 2.5z" fill="currentColor" stroke="none" />
+              </svg>
+            </button>
+            <button class="camera-button close" id="close-live" type="button" title="Close live camera" aria-label="Close live camera">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
           </div>
         </div>
       </section>
@@ -642,31 +832,33 @@
           </div>
         </div>
 
-        <div class="status-row">
-          <span class="status-pill"><span class="status-dot"></span><span id="state-label">Loading</span></span>
-          <span class="percent" id="percent">—</span>
+        <div class="status-row" id="status-row" data-loading="true">
+          <span class="status-pill skeleton-target"><span class="status-dot"></span><span id="state-label">Loading</span></span>
+          <span class="percent skeleton-target" id="percent">—</span>
         </div>
 
-        <div class="progress-track" role="progressbar" aria-label="Print progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-        <div class="progress-meta">
-          <span id="layer">Layer —</span>
-          <span id="filename">No active file</span>
+        <div class="progress-section" id="progress-section" data-loading="true">
+          <div class="progress-track skeleton-target" role="progressbar" aria-label="Print progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="progress-meta">
+            <span class="skeleton-target" id="layer">Layer —</span>
+            <span class="skeleton-target" id="filename">No active file</span>
+          </div>
         </div>
 
         <div class="metrics">
-          <div class="metric">
+          <div class="metric skeleton-target" data-loading="true">
             <span class="metric-label">Tool</span>
             <span class="metric-value" id="tool">—</span>
             <span class="metric-subvalue" id="tool-temp">No active tool</span>
           </div>
-          <div class="metric">
+          <div class="metric skeleton-target" data-loading="true">
             <span class="metric-label">Bed</span>
             <span class="metric-value" id="bed">—</span>
             <span class="metric-subvalue" id="bed-target">Target —</span>
           </div>
-          <div class="metric">
+          <div class="metric skeleton-target" data-loading="true">
             <span class="metric-label">Time</span>
             <span class="metric-value" id="elapsed">—</span>
             <span class="metric-subvalue" id="remaining">Remaining —</span>
@@ -676,12 +868,18 @@
         <div class="notice" id="notice" role="alert"></div>
 
         <div class="footer">
-          <div class="freshness">
+          <div class="freshness skeleton-target" id="freshness" data-loading="true">
             <strong id="observed">Waiting for observation</strong><br />
             <span id="next-check">Adaptive refresh will start when connected</span>
           </div>
           <div class="footer-actions">
-            <button class="toggle" id="auto-refresh" type="button" aria-pressed="true">Auto</button>
+            <button class="toggle" id="auto-refresh" type="button" aria-pressed="true" title="Automatic refresh on" aria-label="Turn automatic refresh off">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+                <path d="M20 11a8 8 0 0 0-14.7-4.4L3 10" />
+                <path d="M3 4v6h6M4 13a8 8 0 0 0 14.7 4.4L21 14" />
+                <path d="M21 20v-6h-6" />
+              </svg>
+            </button>
             <button class="refresh-button" id="refresh" type="button" title="Refresh now" aria-label="Refresh now">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6" />
@@ -699,12 +897,16 @@
         dashboard: document.querySelector("#dashboard"),
         camera: document.querySelector("#camera"),
         snapshot: document.querySelector("#snapshot"),
+        cameraStatus: document.querySelector("#camera-status"),
         cameraTitle: document.querySelector("#camera-title"),
         cameraDetail: document.querySelector("#camera-detail"),
         goLive: document.querySelector("#go-live"),
         closeLive: document.querySelector("#close-live"),
         pip: document.querySelector("#pip"),
         fullscreen: document.querySelector("#fullscreen"),
+        statusRow: document.querySelector("#status-row"),
+        progressSection: document.querySelector("#progress-section"),
+        metrics: [...document.querySelectorAll(".metric")],
         stateLabel: document.querySelector("#state-label"),
         percent: document.querySelector("#percent"),
         progressTrack: document.querySelector("#progress-track"),
@@ -720,6 +922,7 @@
         notice: document.querySelector("#notice"),
         observed: document.querySelector("#observed"),
         nextCheck: document.querySelector("#next-check"),
+        freshness: document.querySelector("#freshness"),
         autoRefresh: document.querySelector("#auto-refresh"),
         refresh: document.querySelector("#refresh"),
       };
@@ -780,12 +983,47 @@
         elements.notice.classList.toggle("is-visible", Boolean(message));
       };
 
+      const setStatusLoading = (loading) => {
+        const value = String(Boolean(loading));
+        elements.statusRow.dataset.loading = value;
+        elements.progressSection.dataset.loading = value;
+        for (const metric of elements.metrics) metric.dataset.loading = value;
+        elements.freshness.dataset.loading = value;
+      };
+
+      const setCameraState = (state, loading = false) => {
+        const labels = {
+          loading: "Camera loading",
+          snapshot: "Camera snapshot ready",
+          live: "Live camera active",
+          unavailable: "Camera unavailable",
+        };
+        const label = labels[state] ?? labels.unavailable;
+        elements.camera.dataset.cameraStatus = state;
+        elements.camera.dataset.cameraLoading = String(Boolean(loading));
+        elements.cameraStatus.setAttribute("aria-label", label);
+        elements.cameraStatus.title = label;
+      };
+
+      const syncAutoRefreshControl = () => {
+        const label = autoRefresh
+          ? "Turn automatic refresh off"
+          : "Turn automatic refresh on";
+        elements.autoRefresh.setAttribute("aria-pressed", String(autoRefresh));
+        elements.autoRefresh.setAttribute("aria-label", label);
+        elements.autoRefresh.title = autoRefresh
+          ? "Automatic refresh on"
+          : "Automatic refresh off";
+      };
+
       const closeLive = () => {
         livePreview = false;
         relayRendering = false;
         clearTimeout(snapshotFallbackTimer);
         elements.snapshot.removeAttribute("src");
+        elements.camera.classList.remove("has-snapshot");
         elements.camera.dataset.cameraMode = "snapshot";
+        setCameraState("loading", true);
         elements.cameraTitle.textContent = "Build plate view";
         elements.cameraDetail.textContent = "Secure snapshot relayed by U1 Print Studio";
         if (hosted && toolOutput?.camera?.available) void refreshCameraFrame();
@@ -794,24 +1032,37 @@
       const renderCamera = () => {
         const available = Boolean(toolOutput?.camera?.available);
         elements.goLive.disabled = !available;
-        elements.goLive.title = available
-          ? "Start a secure relayed live preview"
-          : "Camera unavailable";
+        const actionLabel = available ? "Open live camera" : "Camera unavailable";
+        elements.goLive.title = actionLabel;
+        elements.goLive.setAttribute("aria-label", actionLabel);
+        if (!available) {
+          elements.camera.classList.remove("has-snapshot");
+          setCameraState("unavailable");
+        } else if (livePreview && elements.camera.classList.contains("has-snapshot")) {
+          setCameraState("live");
+        } else if (elements.camera.classList.contains("has-snapshot")) {
+          setCameraState("snapshot");
+        } else {
+          setCameraState("loading", true);
+        }
       };
 
       elements.snapshot.addEventListener("load", () => {
         elements.camera.classList.add("has-snapshot");
+        setCameraState(livePreview ? "live" : "snapshot");
       });
 
       elements.snapshot.addEventListener("error", () => {
         if (livePreview && relayRendering) {
           relayRendering = false;
           elements.cameraDetail.textContent = "Continuous relay unavailable · using snapshot fallback";
+          setCameraState("loading", true);
           void refreshCameraFrame();
           return;
         }
         elements.camera.classList.remove("has-snapshot");
         elements.cameraDetail.textContent = "Camera image could not be displayed";
+        setCameraState("unavailable");
       });
 
       const render = () => {
@@ -852,6 +1103,7 @@
           : `Updated ${observedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`;
 
         setNotice(status.exception || !status.reachable ? status.printerMessage || "Printer unavailable" : "");
+        setStatusLoading(false);
         renderCamera();
         scheduleRefresh(status.refreshAfterSeconds);
       };
@@ -880,6 +1132,7 @@
         const dataUrl = metadata?.cameraFrame?.dataUrl;
 
         if (frame.available && typeof dataUrl === "string" && dataUrl.startsWith("data:image/jpeg;base64,")) {
+          setCameraState("loading", true);
           elements.snapshot.src = dataUrl;
           const observedDate = new Date(frame.observedAt);
           const observedLabel = Number.isNaN(observedDate.valueOf())
@@ -893,6 +1146,7 @@
 
         elements.camera.classList.remove("has-snapshot");
         elements.cameraDetail.textContent = frame.reason ?? "Camera unavailable";
+        setCameraState("unavailable");
       };
 
       window.addEventListener("message", (event) => {
@@ -952,12 +1206,14 @@
 
       const bridgeReady = initializeBridge().catch((error) => {
         setNotice(`Host bridge unavailable: ${error?.message ?? "unknown error"}`);
+        setStatusLoading(false);
         return null;
       });
 
       const refreshCameraFrame = async () => {
         if (cameraRefreshing || !hosted || !toolOutput?.camera?.available) return;
         cameraRefreshing = true;
+        setCameraState("loading", true);
         try {
           await bridgeReady;
           const response = await rpcRequest("tools/call", {
@@ -967,6 +1223,9 @@
           applyCameraFrame(response);
         } catch (error) {
           elements.cameraDetail.textContent = `Camera refresh failed: ${error?.message ?? "unknown error"}`;
+          if (!elements.camera.classList.contains("has-snapshot")) {
+            setCameraState("unavailable");
+          }
         } finally {
           cameraRefreshing = false;
           clearTimeout(snapshotFallbackTimer);
@@ -983,6 +1242,7 @@
         relayRendering = false;
         clearTimeout(snapshotFallbackTimer);
         elements.camera.dataset.cameraMode = "live";
+        setCameraState("loading", true);
         elements.cameraTitle.textContent = "Live build plate";
         elements.cameraDetail.textContent = "Opening secure continuous relay…";
 
@@ -1025,7 +1285,9 @@
 
       const refreshStatus = async () => {
         if (refreshing || !hosted) return;
+        const showSkeletons = !toolOutput;
         refreshing = true;
+        if (showSkeletons) setStatusLoading(true);
         elements.refresh.classList.add("is-refreshing");
         setNotice("");
         try {
@@ -1041,6 +1303,7 @@
           scheduleRefresh(15);
         } finally {
           refreshing = false;
+          if (showSkeletons) setStatusLoading(false);
           elements.refresh.classList.remove("is-refreshing");
         }
       };
@@ -1070,7 +1333,7 @@
 
       elements.autoRefresh.addEventListener("click", () => {
         autoRefresh = !autoRefresh;
-        elements.autoRefresh.setAttribute("aria-pressed", String(autoRefresh));
+        syncAutoRefreshControl();
         persistUiState();
         scheduleRefresh(toolOutput?.refreshAfterSeconds ?? 30);
       });
@@ -1098,7 +1361,7 @@
       elements.pip.addEventListener("click", () => requestDisplayMode("pip"));
       elements.fullscreen.addEventListener("click", () => requestDisplayMode("fullscreen"));
 
-      elements.autoRefresh.setAttribute("aria-pressed", String(autoRefresh));
+      syncAutoRefreshControl();
       applyHostContext();
 
       if (window.openai?.toolOutput) {

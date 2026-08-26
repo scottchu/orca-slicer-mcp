@@ -179,7 +179,7 @@ real-host rendering evidence.
   JPEGs over one multipart response in a final 2.6-second run. This proves the source,
   application iteration, and adapter path together, not mounted desktop or iOS
   rendering.
-- the current branch passes 34 tests with 161 assertions after adding the
+- the current branch passes 35 tests with 174 assertions after adding the
   status dashboard. `bun run dashboard` serves it on loopback, while
   `bun run dashboard:tailscale` derives a validated private MagicDNS HTTPS
   origin for the existing Serve listener. The normal service returns 404 for
@@ -190,6 +190,12 @@ real-host rendering evidence.
   JPEG parts over the one-time relay in 1.42 seconds. No image was saved, and
   the unavailable in-app browser means visual layout quality remains
   unverified.
+- the latest widget refinement replaces visible live, close, and automatic
+  refresh labels with accessible icon controls, adds an icon camera-state
+  indicator, keeps the grid above snapshot and continuous imagery, and gives
+  camera, status/progress, each metric, and freshness independent skeleton
+  states. Source, TypeScript, plugin, loopback, and private-HTTPS checks pass;
+  no connected browser was available for visual inspection.
 
 ## Changed paths
 

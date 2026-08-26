@@ -73,7 +73,10 @@ Last updated: 2026-08-26
   emulates its read-only MCP Apps bridge on port 8788 for rapid iteration. It
   stays on loopback and is available to the tailnet through private Tailscale
   Serve HTTPS on port 8444. It is absent from the normal service and is not
-  routed through Funnel. A fresh
+  routed through Funnel. The current widget uses icon-only camera/live controls,
+  keeps its grid above both snapshot and continuous imagery, and exposes
+  independent skeleton states for camera, status/progress, each metric, and
+  freshness. A fresh
   authenticated four-tool inventory and mounted desktop/iOS rendering remain
   separate host evidence.
 - Persistent monitoring: not implemented. The accepted runtime model still
@@ -101,7 +104,7 @@ Last updated: 2026-08-26
 - Static/software: repository foundation and dual-subsystem product contract
   checks passed; real installed Orca executables were inspected, and one later
   user-authorized Snapmaker Orca slice succeeded after recorded failures. The
-  read-only status-view prototype compiles. Thirty-four tests with 161
+  read-only status-view prototype compiles. Thirty-five tests with 174
   assertions cover OAuth renewal, status and PNG contracts, application-owned
   camera tickets and leases, exact multipart routing, URL privacy, serial frame
   reads, snapshot fallback, and the opt-in read-only dashboard boundary; no
