@@ -86,6 +86,7 @@ describe("camera media HTTP adapter", () => {
     const streamResult = await new Promise<{
       status: number;
       contentType: string;
+      accessControlAllowOrigin: string;
       bytes: Buffer;
     }>((resolve, reject) => {
       get(opened.url, (response) => {
@@ -98,6 +99,9 @@ describe("camera media HTTP adapter", () => {
             const value = {
               status: response.statusCode ?? 0,
               contentType: String(response.headers["content-type"]),
+              accessControlAllowOrigin: String(
+                response.headers["access-control-allow-origin"]
+              ),
               bytes,
             };
             response.once("close", () => resolve(value));
@@ -111,6 +115,7 @@ describe("camera media HTTP adapter", () => {
     expect(streamResult.contentType).toBe(
       "multipart/x-mixed-replace; boundary=u1-camera-frame"
     );
+    expect(streamResult.accessControlAllowOrigin).toBe("*");
     expect(
       streamResult.bytes.indexOf(Buffer.from([0xff, 0xd8, 1, 0xff, 0xd9]))
     ).toBeGreaterThanOrEqual(0);

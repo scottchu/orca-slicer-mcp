@@ -128,7 +128,9 @@ export function createAppServer(
               ui: {
                 prefersBorder: false,
                 csp: {
-                  connectDomains: [],
+                  connectDomains: options.cameraResourceOrigin
+                    ? [options.cameraResourceOrigin]
+                    : [],
                   resourceDomains: options.cameraResourceOrigin
                     ? [options.cameraResourceOrigin]
                     : [],

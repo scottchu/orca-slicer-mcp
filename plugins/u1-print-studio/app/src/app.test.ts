@@ -178,7 +178,7 @@ describe("U1 status MCP App contract", () => {
 
     expect(resource?._meta?.ui).toMatchObject({
       csp: {
-        connectDomains: [],
+        connectDomains: ["https://u1.example"],
         resourceDomains: ["https://u1.example"],
         frameDomains: [],
       },
@@ -307,7 +307,8 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain('name: "open_u1_camera_stream"');
     expect(WIDGET_HTML).toContain('data:image/jpeg;base64,');
     expect(WIDGET_HTML).toContain('snapshotFallbackTimer = setTimeout(refreshCameraFrame, 1500)');
-    expect(WIDGET_HTML).toContain('elements.snapshot.src = streamUrl');
+    expect(WIDGET_HTML).toContain('const response = await fetch(streamUrl, {');
+    expect(WIDGET_HTML).toContain('elements.snapshot.src = dataUrl');
     expect(WIDGET_HTML).toContain('referrerpolicy="no-referrer"');
     expect(WIDGET_HTML).toContain('name: "get_u1_status"');
     expect(WIDGET_HTML).toContain('requestDisplayMode("pip")');
@@ -345,7 +346,7 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain("setCameraState");
   });
 
-  test("uses a neutral camera icon and a bottom-right camera mode label", () => {
+  test("uses a neutral camera icon and an explicit camera mode label", () => {
     expect(WIDGET_HTML).not.toContain('class="camera-status-dot"');
     expect(WIDGET_HTML).not.toContain('class="camera-status-slash"');
     expect(WIDGET_HTML).not.toContain('id="camera-title"');
@@ -355,9 +356,38 @@ describe("camera-first widget contract", () => {
       '.camera[data-camera-status="live"] .camera-status'
     );
     expect(WIDGET_HTML).toContain('class="camera-mode" id="camera-detail"');
-    expect(WIDGET_HTML).toContain('justify-content: flex-end;');
+    expect(WIDGET_HTML).toContain('justify-content: space-between;');
     expect(WIDGET_HTML).toContain('Snapshot fallback · ${observedLabel}');
-    expect(WIDGET_HTML).toContain('Live · up to ${Math.round(fps)} FPS');
+    expect(WIDGET_HTML).toContain('Live · ${fpsLabel} FPS');
     expect(WIDGET_HTML).toContain('setCameraMode(relayRendering ? "live" : "fallback")');
+  });
+
+  test("uses the Snapmaker charcoal and yellow card theme", () => {
+    expect(WIDGET_HTML).toContain("--ink: #1c1e20;");
+    expect(WIDGET_HTML).toContain("--brand: #ffcd00;");
+    expect(WIDGET_HTML).toContain("--brand-warm: #ff5f28;");
+    expect(WIDGET_HTML).toContain("border-top: 5px solid var(--brand);");
+    expect(WIDGET_HTML).toContain("background: var(--brand);");
+    expect(WIDGET_HTML).toContain("body { background: #191919; }");
+    expect(WIDGET_HTML).not.toContain("--green:");
+    expect(WIDGET_HTML).not.toContain("--lime:");
+  });
+
+  test("keeps semantic connectivity separate and measures delivered live FPS", () => {
+    const modeIndex = WIDGET_HTML.indexOf('id="camera-detail"');
+    const actionIndex = WIDGET_HTML.indexOf('id="go-live"');
+
+    expect(modeIndex).toBeGreaterThan(-1);
+    expect(modeIndex).toBeLessThan(actionIndex);
+    expect(WIDGET_HTML).toContain("--positive: #32c86e;");
+    expect(WIDGET_HTML).toContain("--negative: #ff6161;");
+    expect(WIDGET_HTML).toContain('class="camera-mode-live-dot"');
+    expect(WIDGET_HTML).toContain('class="camera-mode-disconnected"');
+    expect(WIDGET_HTML).toContain('@keyframes live-pulse');
+    expect(WIDGET_HTML).toContain('fetch(streamUrl, {');
+    expect(WIDGET_HTML).toContain('recordLiveFrame');
+    expect(WIDGET_HTML).toContain('performance.now()');
+    expect(WIDGET_HTML).toContain('Live · measuring FPS');
+    expect(WIDGET_HTML).not.toContain("up to ${Math.round(fps)} FPS");
   });
 });

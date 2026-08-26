@@ -756,3 +756,57 @@ identifiers, and runtime data are intentionally not retained.
   snapshot, fallback, and live layouts remain a user-visible review gate. No
   cachebuster, plugin reinstall, printer command, or G-code action was
   performed.
+
+### Snapmaker card theme
+
+- Acceptance boundary: this pass changes only the existing read-only card's
+  visual tokens. Layout, copy, camera relay behavior, bridge calls, tools, and
+  printer behavior remain unchanged.
+- A user-supplied Snapmaker U1 website screenshot established the palette:
+  charcoal and warm white form the base, Snapmaker yellow identifies the card,
+  orange is reserved for paused or attention state, and red remains reserved
+  for faults. The implementation applies yellow to the camera grid, live and
+  refresh actions, status treatment, progress fill, and the camera/content
+  divider in light and dark color schemes.
+- `bun test src/*.test.ts`: passed 37 tests with 192 assertions, including the
+  Snapmaker theme-token contract. `bun run check`, `bun run bundle`, Plugin
+  Creator validation through `uv run --no-project --with pyyaml`,
+  `./scripts/check-repository.sh`, and `git diff --check`: passed.
+- Private HTTPS `/dashboard?reload=5` returned HTTP 200. The exact served widget
+  contained the yellow and orange tokens plus branded divider and no legacy
+  green or lime token declarations.
+- Product Design QA is recorded in `design-qa.md` with `final result: blocked`.
+  The source reference was inspected, but the in-app browser runtime reported
+  no connected browser, so no implementation screenshot, visual comparison,
+  interaction check, or console check was available. No cachebuster, plugin
+  reinstall, printer command, or G-code action was performed.
+
+### Semantic camera modes and measured relay FPS
+
+- Acceptance boundary: camera mode status is left-aligned and the mode action
+  is right-aligned; snapshot/fallback displays a red disconnected-camera icon;
+  live displays a pulsing green dot; and the FPS label reflects observed frame
+  presentation rather than the configured relay ceiling. The camera remains
+  read-only and no printer-control surface is added.
+- The widget now fetches the exact one-time media URL permitted by the MCP
+  result, parses complete JPEG frames from the multipart byte stream, presents
+  them through the existing snapshot element, and computes FPS from frame
+  observations in a rolling five-second window. Until two frames arrive it
+  reports `Live · measuring FPS`.
+- The exact private relay delivered four complete frames at an observed 1.4 FPS
+  during the smoke check. This is transport/presentation evidence, not a claim
+  about the camera sensor's native frame rate.
+- `bun test src/*.test.ts`: passed 38 tests with 207 assertions.
+- `bun run check`, `bun run bundle`, and an independent parse of the inline
+  widget module: passed. Private HTTPS `/dashboard?reload=6` returned HTTP 200
+  and served the measured-FPS widget source.
+- Plugin Creator validation through `uv run --no-project --with pyyaml`,
+  `./scripts/check-repository.sh`, and `git diff --check`: passed.
+- The identity palette is grounded in the official Snapmaker U1 page stylesheet:
+  charcoal `#1c1e20`, `#1f1f1f`, and `#242424`; yellow `#ffcd00`; orange
+  `#ff5f28`; and warm white surfaces. Semantic green `#32c86e` and red
+  `#ff6161` are deliberately outside the brand palette and communicate
+  positive/connected versus negative/disconnected state.
+- Browser-rendered comparison and interaction QA remain blocked because the
+  configured browser-control runtime reported no connected browser. No plugin
+  reinstall, printer command, or G-code action was performed.

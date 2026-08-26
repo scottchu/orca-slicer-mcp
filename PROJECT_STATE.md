@@ -77,8 +77,13 @@ Last updated: 2026-08-26
   keeps its grid above both snapshot and continuous imagery, and exposes
   independent skeleton states for camera, status/progress, each metric, and
   freshness. Its top camera icon is visually neutral across states, while a
-  bottom-right mode chip reports timestamped snapshot, snapshot fallback, or
-  live with the configured FPS ceiling. A fresh
+  camera mode row reports timestamped snapshot, snapshot fallback, or live on
+  the left and keeps the live/close action on the right. Snapshot and fallback
+  show a red disconnected-camera icon; live shows a pulsing green dot and the
+  measured JPEG delivery rate over a rolling five-second window. The card
+  palette now uses the official Snapmaker U1 charcoal, warm white, yellow, and
+  orange identity colors while reserving green for positive/connected states
+  and red for negative/disconnected states in both light and dark schemes. A fresh
   authenticated four-tool inventory and mounted desktop/iOS rendering remain
   separate host evidence.
 - Persistent monitoring: not implemented. The accepted runtime model still
@@ -106,12 +111,12 @@ Last updated: 2026-08-26
 - Static/software: repository foundation and dual-subsystem product contract
   checks passed; real installed Orca executables were inspected, and one later
   user-authorized Snapmaker Orca slice succeeded after recorded failures. The
-  read-only status-view prototype compiles. Thirty-six tests with 185
+  read-only status-view prototype compiles. Thirty-seven tests with 192
   assertions cover OAuth renewal, status and PNG contracts, application-owned
   camera tickets and leases, exact multipart routing, URL privacy, serial frame
   reads, snapshot fallback, the opt-in read-only dashboard boundary, and the
-  neutral camera indicator plus explicit bottom-right camera modes; no
-  preparation or control runtime exists.
+  neutral camera indicator, explicit bottom-right camera modes, and the
+  Snapmaker card-theme contract; no preparation or control runtime exists.
 - Delivery validation is local-only; no hosted validation workflow is
   configured or required.
 - Protocol/simulator: live Moonraker read-only response shapes, WebSocket

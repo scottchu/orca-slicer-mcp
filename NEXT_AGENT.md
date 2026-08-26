@@ -49,9 +49,15 @@ pass. Continue with:
    Funnel-enable port 8444, and do not count the harness as real ChatGPT-host
    rendering evidence. The branch widget now has icon-only live/close/refresh
    controls, a persistent camera grid, and independent component skeletons. Its
-   top-left camera icon is visually neutral across states, and its bottom-right
-   mode chip reports timestamped `Snapshot`, `Snapshot fallback`, or `Live`
-   with the configured FPS ceiling; keep those behaviors when iterating.
+   top-left camera icon is visually neutral across states. The bottom camera
+   row puts the timestamped `Snapshot`, `Snapshot fallback`, or measured-FPS
+   `Live` status on the left and its live/close action on the right. Snapshot
+   and fallback show a red disconnected-camera icon; live shows a pulsing green
+   dot. The current identity palette is official Snapmaker charcoal, warm white,
+   yellow, and orange; semantic green and red remain reserved for positive and
+   negative connection/state feedback. Keep those behaviors when iterating.
+   `design-qa.md` remains blocked until a
+   browser-rendered screenshot can be compared with the supplied reference.
 3. Start a fresh authenticated desktop or mobile thread because the prior
    conversation cannot hot-reload tools. Confirm exactly four remote read-only
    tools: `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and

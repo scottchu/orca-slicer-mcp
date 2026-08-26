@@ -24,6 +24,7 @@ export function createCameraStreamLocator(publicBaseUrl: URL): CameraStreamLocat
 
 function reject(res: ServerResponse, status: number, message: string): void {
   res.writeHead(status, {
+    "access-control-allow-origin": "*",
     "cache-control": "no-store",
     "content-type": "application/json; charset=utf-8",
     "referrer-policy": "no-referrer",
@@ -87,6 +88,7 @@ export function createCameraMediaHandler(relay: CameraRelayService) {
     req.once("aborted", () => abortController.abort());
     res.once("close", () => abortController.abort());
     res.writeHead(200, {
+      "access-control-allow-origin": "*",
       "cache-control": "no-store, no-cache, must-revalidate",
       connection: "keep-alive",
       "content-type": `multipart/x-mixed-replace; boundary=${BOUNDARY}`,

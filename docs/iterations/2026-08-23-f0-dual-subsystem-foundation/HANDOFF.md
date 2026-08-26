@@ -204,6 +204,24 @@ real-host rendering evidence.
   the repository contract, and the currently served private widget source pass.
   Browser visual inspection is still pending because no browser runtime was
   connected.
+- the card now uses the user-selected Snapmaker U1 palette: charcoal and warm
+  white surfaces, yellow identity accents, orange paused or attention states,
+  and red faults. The existing layout and read-only behavior are unchanged.
+  Thirty-seven tests with 192 assertions, TypeScript, bundling, plugin
+  validation, the repository contract, and private HTTPS source checks pass.
+  `design-qa.md` remains blocked because no browser-rendered implementation
+  screenshot was available for comparison with the supplied reference.
+- the camera overlay now places presentation status on the left and the
+  live/close icon on the right. Snapshot and snapshot-fallback states show a
+  red disconnected-camera icon; live shows a pulsing green dot. Live FPS is no
+  longer copied from the configured ceiling: the widget parses relayed JPEG
+  frames and reports the observed presentation rate over a rolling five-second
+  window. The exact one-time relay smoke delivered four frames at about 1.4 FPS.
+  The official Snapmaker U1 stylesheet established the identity tokens
+  (`#1c1e20`, `#1f1f1f`, `#242424`, `#ffcd00`, `#ff5f28`, and warm whites),
+  while green and red remain separate semantic colors. Thirty-eight tests with
+  207 assertions, TypeScript, bundling, and inline widget parsing pass; final
+  plugin and repository checks are recorded in `VALIDATION.md`.
 
 ## Changed paths
 
