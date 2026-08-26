@@ -9,6 +9,9 @@ through the MCP Apps `tools/call` bridge. The widget contains no direct
 `fetch(` call and declares empty external CSP domains. The exact HTTP signaling
 adapter remains only for the standalone developer dashboard.
 
+Delivery is pull request https://github.com/scottchu/orca-slicer-mcp/pull/15
+on branch `scottchu/local-first-rollout`.
+
 The smallest end-to-end desktop-local slice is implemented:
 
 - `u1-print-studio setup`, `doctor`, and `mcp` form one onboarding/runtime

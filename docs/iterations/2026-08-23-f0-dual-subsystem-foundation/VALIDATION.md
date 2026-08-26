@@ -923,3 +923,10 @@ From the repository root:
   installation, upgrades, rollback, owner-selected licensing and third-party
   notices, and elimination of the platform `curl` dependency remain unverified
   gates.
+
+### Delivery
+
+- Implementation commit: `3145a77` on non-main branch
+  `scottchu/local-first-rollout`.
+- Pull request: https://github.com/scottchu/orca-slicer-mcp/pull/15.
+- No hosted validation workflow was configured or awaited.

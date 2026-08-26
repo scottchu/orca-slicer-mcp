@@ -17,6 +17,8 @@ Last updated: 2026-08-26
 - Decision 0016 supersedes decision 0015 only for hosted signaling transport:
   the hosted widget now uses the MCP Apps bridge rather than directly calling
   the exact media HTTP route.
+- Delivery: branch `scottchu/local-first-rollout`, pull request
+  https://github.com/scottchu/orca-slicer-mcp/pull/15.
 
 ## Implemented local-first slice
 

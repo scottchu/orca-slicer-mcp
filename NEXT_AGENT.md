@@ -17,6 +17,9 @@ Resume from repository records, not chat history.
 The user-directed priority is the local-first open-source U1 Print Studio
 rollout under F0. Decision 0016 is the current architecture record.
 
+Delivery is pull request https://github.com/scottchu/orca-slicer-mcp/pull/15
+from branch `scottchu/local-first-rollout`.
+
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
 editing, or Bun. Do not restore the stale direct-HTTP hosted widget path from
