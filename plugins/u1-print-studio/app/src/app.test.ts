@@ -369,6 +369,7 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain("--ink: #1c1e20;");
     expect(WIDGET_HTML).toContain("--brand: #ffcd00;");
     expect(WIDGET_HTML).toContain("--brand-warm: #ff5f28;");
+    expect(WIDGET_HTML).toContain(".eyebrow {\n        margin: 0 0 6px;\n        color: var(--muted);");
     expect(WIDGET_HTML).toContain("border-top: 5px solid var(--brand);");
     expect(WIDGET_HTML).toContain("background: var(--brand);");
     expect(WIDGET_HTML).toContain("body { background: #191919; }");
