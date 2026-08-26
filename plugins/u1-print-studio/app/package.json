@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun --env-file=../../../.env --watch src/server.ts",
-    "debug": "U1_DEBUG_DASHBOARD=1 PORT=8788 bun --env-file=../../../.env --watch src/server.ts",
-    "debug:tailscale": "U1_DEBUG_DASHBOARD=1 U1_DEBUG_TAILSCALE=1 PORT=8788 bun --env-file=../../../.env --watch src/server.ts",
+    "dashboard": "U1_STATUS_DASHBOARD=1 PORT=8788 bun --env-file=../../../.env --watch src/server.ts",
+    "dashboard:tailscale": "U1_STATUS_DASHBOARD=1 U1_DASHBOARD_TAILSCALE_PORT=8444 PORT=8788 bun --env-file=../../../.env --watch src/server.ts",
     "start": "bun --env-file=../../../.env run src/server.ts",
     "stdio": "bun --env-file=../../../.env run src/stdio.ts",
     "bundle": "bun build src/stdio.ts --target=bun --outfile=dist/stdio.js",

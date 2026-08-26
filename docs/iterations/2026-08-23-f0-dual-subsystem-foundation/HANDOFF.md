@@ -14,10 +14,10 @@ preparation, control, or persistent-monitor runtime exists, and Snapmaker Orca
 is not yet an accepted product backend. The remote read-only prototype now adds
 a bounded continuous camera relay through an application service; MCP, exact
 media HTTP, and the printer JPEG adapter remain separate layers. An opt-in
-debug host now mounts the exact production widget and emulates only its
-read-only bridge calls on port 8788. It can bind to loopback or one validated
-private Tailscale IPv4 address; it is not a public dashboard or real-host
-rendering evidence.
+status dashboard now mounts the exact production widget and emulates only its
+read-only bridge calls on loopback port 8788. Private Tailscale Serve HTTPS
+exposes it to the tailnet on port 8444; it is not a public dashboard or
+real-host rendering evidence.
 
 ## Completed work
 
@@ -179,15 +179,15 @@ rendering evidence.
   JPEGs over one multipart response in a final 2.6-second run. This proves the source,
   application iteration, and adapter path together, not mounted desktop or iOS
   rendering.
-- the current branch passes 34 tests with 163 assertions after adding the debug
-  host. `bun run debug` serves it on loopback, while `bun run debug:tailscale`
-  resolves and validates a private `100.64.0.0/10` address without binding a
-  wildcard interface. The normal service returns 404 for `/debug`, the debug
-  service returns 404 for `/mcp`, and port 8788 must never be routed through
-  Funnel.
-- a real-printer smoke through the private Tailscale address on port 8788
+- the current branch passes 34 tests with 161 assertions after adding the
+  status dashboard. `bun run dashboard` serves it on loopback, while
+  `bun run dashboard:tailscale` derives a validated private MagicDNS HTTPS
+  origin for the existing Serve listener. The normal service returns 404 for
+  `/dashboard`, the dashboard service returns 404 for `/mcp`, and port 8444
+  must never be Funnel-enabled.
+- a real-printer smoke through private Tailscale Serve HTTPS on port 8444
   returned reachable status with camera available and delivered two multipart
-  JPEG parts over the one-time relay in 1.34 seconds. No image was saved, and
+  JPEG parts over the one-time relay in 1.42 seconds. No image was saved, and
   the unavailable in-app browser means visual layout quality remains
   unverified.
 

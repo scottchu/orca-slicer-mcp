@@ -995,8 +995,8 @@
           if (!livePreview) return;
           const stream = response?._meta?.cameraStream ?? response?.meta?.cameraStream;
           const streamUrl = stream?.url;
-          const debugSameOriginStream = (() => {
-            if (!new URLSearchParams(location.search).has("debug")) return false;
+          const standaloneSameOriginStream = (() => {
+            if (!new URLSearchParams(location.search).has("standalone")) return false;
             try {
               const parsed = new URL(streamUrl);
               return parsed.protocol === "http:" &&
@@ -1008,7 +1008,7 @@
           if (
             response?.structuredContent?.available !== true ||
             typeof streamUrl !== "string" ||
-            (!streamUrl.startsWith("https://") && !debugSameOriginStream)
+            (!streamUrl.startsWith("https://") && !standaloneSameOriginStream)
           ) {
             throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
           }

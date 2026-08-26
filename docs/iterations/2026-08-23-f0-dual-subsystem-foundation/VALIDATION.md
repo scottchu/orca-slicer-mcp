@@ -675,32 +675,37 @@ identifiers, and runtime data are intentionally not retained.
   fullscreen, and real-host OAuth renewal remain separate user-visible gates.
 - No printer control or G-code was implemented or invoked.
 
-### Standalone read-only widget debug host
+### Standalone read-only status dashboard
 
 - `bun install --frozen-lockfile` restored this worktree's missing app
   dependencies without changing `bun.lock`.
 - `bun run check`: passed.
-- `bun test src/*.test.ts`: passed 34 tests with 163 assertions. The added
+- `bun test src/*.test.ts`: passed 34 tests with 161 assertions. The added
   contracts prove the production widget is hosted by the harness, only
   status/snapshot/stream calls are accepted, a control-shaped call is rejected,
-  `/debug` is absent unless explicitly enabled, and a Tailscale bind must stay
-  inside private `100.64.0.0/10` rather than a wildcard interface. The
-  debug-only process returns 404 for the ordinary `/mcp` route.
-- A dedicated debug process ran on a private Tailscale IPv4 address at port
-  8788 without changing or restarting the installed loopback 8787 service.
-  `GET /debug` returned the bridge host, and a live read-only status request
-  returned reachable `complete` telemetry with camera available.
-- A one-time relay opened through that exact tailnet address and delivered two
-  multipart JPEG parts, HTTP 200, in 1.34 seconds with 138,911 transferred
-  bytes. An earlier loopback smoke returned one 136,498-byte private JPEG data
-  URL and two multipart parts. No image was saved.
+  `/dashboard` is absent unless explicitly enabled, a derived external origin
+  must be a private MagicDNS HTTPS hostname on a dedicated non-443 port, and
+  the dashboard-only process returns 404 for the ordinary `/mcp` route.
+- A dedicated status-dashboard process stayed bound to `127.0.0.1:8788`
+  without changing or restarting the installed loopback 8787 service. Private
+  Tailscale Serve HTTPS on port 8444 proxies only the tailnet to that process;
+  the existing public port-443 Funnel routes were preserved and port 8444 has
+  no Funnel permission.
+- The user could not open the earlier raw tailnet-IP port. Tailscale reported
+  the iPhone online and active, but ping used DERP and did not establish a
+  direct connection. That observation motivated replacing the raw app bind
+  with loopback plus Tailscale Serve; it does not by itself prove whether the
+  failed TCP connection was an ACL, firewall, or path issue.
+- The exact private HTTPS `/dashboard` route returned the bridge host and live
+  reachable `complete` telemetry with camera available. A one-time HTTPS relay
+  delivered two multipart JPEG parts, HTTP 200, in 1.42 seconds with 144,083
+  transferred bytes. No image was saved.
 - The in-app browser runtime was unavailable, so the harness was not visually
   inspected in this run. HTTP integration and real-printer camera evidence do
   not prove browser layout quality or ChatGPT host rendering.
-- The harness is opt-in and read-only. It binds either loopback or one validated
-  private Tailscale IPv4 address, is absent from the normal service, and must
-  not be added to Funnel. No printer control or G-code was implemented or
-  invoked.
+- The dashboard is opt-in and read-only. The app remains on loopback, is absent
+  from the normal service, and its dedicated Tailscale Serve port must not be
+  Funnel-enabled. No printer control or G-code was implemented or invoked.
 - `bun run bundle` rebuilt the ignored local stdio artifact successfully.
   Plugin Creator validation passed with its transient YAML dependency. No
   cachebuster, marketplace edit, reinstall, or deployed-service replacement

@@ -15,20 +15,20 @@ import {
 } from "./u1-status.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
-const DEBUG_HOST_PATH = path.resolve(
+const DASHBOARD_HOST_PATH = path.resolve(
   currentDirectory,
   "..",
   "public",
-  "debug-host.html"
+  "status-dashboard-host.html"
 );
-const DEBUG_PATH = "/debug";
-const DEBUG_TOOL_PATH = "/debug/tools/call";
+const DASHBOARD_PATH = "/dashboard";
+const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
 const MAX_REQUEST_BYTES = 4 * 1024;
 
 type StatusReader = typeof readU1Status;
 type CameraFrameReader = typeof readU1CameraFrame;
 
-export type DebugDashboardDependencies = {
+export type StatusDashboardDependencies = {
   readStatus?: StatusReader;
   readCameraFrame?: CameraFrameReader;
   openCameraStream?: () => OpenedCameraStream;
@@ -60,8 +60,8 @@ async function readJsonBody(req: IncomingMessage): Promise<unknown> {
   return JSON.parse(Buffer.concat(chunks).toString("utf8"));
 }
 
-export function createDebugDashboardHandler(
-  dependencies: DebugDashboardDependencies = {}
+export function createStatusDashboardHandler(
+  dependencies: StatusDashboardDependencies = {}
 ) {
   const readStatus = dependencies.readStatus ?? readU1Status;
   const readCameraFrame =
@@ -72,7 +72,7 @@ export function createDebugDashboardHandler(
     res: ServerResponse,
     pathname: string
   ): Promise<boolean> => {
-    if (pathname === DEBUG_PATH) {
+    if (pathname === DASHBOARD_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -88,11 +88,11 @@ export function createDebugDashboardHandler(
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
       });
-      res.end(readFileSync(DEBUG_HOST_PATH, "utf8"));
+      res.end(readFileSync(DASHBOARD_HOST_PATH, "utf8"));
       return true;
     }
 
-    if (pathname !== DEBUG_TOOL_PATH) return false;
+    if (pathname !== DASHBOARD_TOOL_PATH) return false;
     if (req.method !== "POST") {
       res.setHeader("allow", "POST");
       json(res, 405, { error: "method_not_allowed" });

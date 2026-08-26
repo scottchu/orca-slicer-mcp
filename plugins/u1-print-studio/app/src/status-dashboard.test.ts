@@ -2,8 +2,8 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 
-import { createDebugDashboardHandler } from "./debug-dashboard.js";
-import { createRequestHandler, isTailscaleIPv4 } from "./server.js";
+import { createStatusDashboardHandler } from "./status-dashboard.js";
+import { createRequestHandler, tailscaleDashboardBaseUrl } from "./server.js";
 import type { U1Status } from "./u1-status.js";
 
 const status: U1Status = {
@@ -19,7 +19,7 @@ const status: U1Status = {
   elapsedSeconds: 600,
   remainingSeconds: 900,
   refreshAfterSeconds: 90,
-  filename: "debug-fixture.gcode",
+  filename: "dashboard-fixture.gcode",
   activePhysicalTool: 1,
   tools: [
     {
@@ -48,7 +48,7 @@ afterEach(async () => {
 });
 
 async function startFixture() {
-  const handle = createDebugDashboardHandler({
+  const handle = createStatusDashboardHandler({
     readStatus: async () => ({ status, metadata: {} }),
     readCameraFrame: async () => ({
       frame: {
@@ -62,7 +62,7 @@ async function startFixture() {
       metadata: { cameraFrame: { dataUrl: "data:image/jpeg;base64,/9j/2Q==" } },
     }),
     openCameraStream: () => ({
-      url: "http://127.0.0.1:8788/media/camera.mjpeg?ticket=debug-ticket",
+      url: "http://127.0.0.1:8788/media/camera.mjpeg?ticket=dashboard-ticket",
       expiresAt: "2026-08-26T12:01:00.000Z",
       maxDurationSeconds: 1800,
     }),
@@ -77,13 +77,26 @@ async function startFixture() {
   return `http://127.0.0.1:${port}`;
 }
 
-describe("standalone debug dashboard", () => {
-  test("accepts only the private Tailscale IPv4 range for tailnet binding", () => {
-    expect(isTailscaleIPv4("100.64.0.1")).toBe(true);
-    expect(isTailscaleIPv4("100.127.255.255")).toBe(true);
-    expect(isTailscaleIPv4("100.128.0.1")).toBe(false);
-    expect(isTailscaleIPv4("0.0.0.0")).toBe(false);
-    expect(isTailscaleIPv4("192.168.1.2")).toBe(false);
+describe("standalone status dashboard", () => {
+  test("builds a private Tailscale Serve HTTPS origin without accepting arbitrary DNS", () => {
+    expect(
+      tailscaleDashboardBaseUrl(
+        { Self: { DNSName: "u1-host.example-tailnet.ts.net." } },
+        8444
+      ).toString()
+    ).toBe("https://u1-host.example-tailnet.ts.net:8444/");
+    expect(() =>
+      tailscaleDashboardBaseUrl(
+        { Self: { DNSName: "attacker.example.com." } },
+        8444
+      )
+    ).toThrow();
+    expect(() =>
+      tailscaleDashboardBaseUrl(
+        { Self: { DNSName: "u1-host.example-tailnet.ts.net." } },
+        443
+      )
+    ).toThrow();
   });
 
   test("is absent from the normal local server unless explicitly enabled", async () => {
@@ -92,11 +105,11 @@ describe("standalone debug dashboard", () => {
     servers.push(server);
     const port = (server.address() as AddressInfo).port;
 
-    const response = await fetch(`http://127.0.0.1:${port}/debug`);
+    const response = await fetch(`http://127.0.0.1:${port}/dashboard`);
     expect(response.status).toBe(404);
   });
 
-  test("does not expose the ordinary MCP route from the debug-only process", async () => {
+  test("does not expose the ordinary MCP route from the dashboard-only process", async () => {
     const server = createServer(
       createRequestHandler(null, null, {
         readStatus: async () => ({ status, metadata: {} }),
@@ -112,19 +125,19 @@ describe("standalone debug dashboard", () => {
 
   test("serves a host bridge around the production widget", async () => {
     const origin = await startFixture();
-    const response = await fetch(`${origin}/debug`);
+    const response = await fetch(`${origin}/dashboard`);
     const html = await response.text();
 
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
-    expect(html).toContain('src="/widget?debug=1"');
+    expect(html).toContain('src="/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
   });
 
   test("exposes only the widget's read-only status and camera calls", async () => {
     const origin = await startFixture();
     const call = async (name: string) => {
-      const response = await fetch(`${origin}/debug/tools/call`, {
+      const response = await fetch(`${origin}/dashboard/tools/call`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ name }),

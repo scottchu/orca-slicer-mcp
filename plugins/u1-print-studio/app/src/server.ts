@@ -20,9 +20,9 @@ import {
   type PersonalOAuthService,
 } from "./personal-oauth.js";
 import {
-  createDebugDashboardHandler,
-  type DebugDashboardDependencies,
-} from "./debug-dashboard.js";
+  createStatusDashboardHandler,
+  type StatusDashboardDependencies,
+} from "./status-dashboard.js";
 import {
   readU1CameraFrame,
   readU1CameraJpeg,
@@ -31,24 +31,33 @@ import {
 
 const MCP_PATH = "/mcp";
 
-export function isTailscaleIPv4(value: string): boolean {
-  const octets = value.split(".").map(Number);
-  return octets.length === 4 &&
-    octets.every((octet) => Number.isInteger(octet) && octet >= 0 && octet <= 255) &&
-    octets[0] === 100 &&
-    octets[1]! >= 64 &&
-    octets[1]! <= 127;
+export function tailscaleDashboardBaseUrl(
+  status: unknown,
+  port: number
+): URL {
+  const self = status && typeof status === "object" && "Self" in status
+    ? (status as { Self?: unknown }).Self
+    : null;
+  const dnsName = self && typeof self === "object" && "DNSName" in self
+    ? (self as { DNSName?: unknown }).DNSName
+    : null;
+  const host = typeof dnsName === "string" ? dnsName.replace(/\.$/, "") : "";
+  if (!host.endsWith(".ts.net")) {
+    throw new Error("A private Tailscale MagicDNS hostname is required");
+  }
+  if (!Number.isInteger(port) || port < 1024 || port > 65_535 || port === 443) {
+    throw new Error("A dedicated nonstandard Tailscale Serve HTTPS port is required");
+  }
+  return new URL(`https://${host}:${port}`);
 }
 
-function debugBindHost(): string {
-  if (process.env.U1_DEBUG_TAILSCALE !== "1") return "127.0.0.1";
-  const host = execFileSync("tailscale", ["ip", "-4"], {
-    encoding: "utf8",
-  }).trim().split(/\s+/)[0] ?? "";
-  if (!isTailscaleIPv4(host)) {
-    throw new Error("A private Tailscale IPv4 address is required for debug binding");
-  }
-  return host;
+function statusDashboardBaseUrl(localPort: number): URL {
+  const servePortRaw = process.env.U1_DASHBOARD_TAILSCALE_PORT?.trim();
+  if (!servePortRaw) return new URL(`http://127.0.0.1:${localPort}`);
+  const status = JSON.parse(
+    execFileSync("tailscale", ["status", "--json"], { encoding: "utf8" })
+  );
+  return tailscaleDashboardBaseUrl(status, Number(servePortRaw));
 }
 
 function localPath(url: URL, oauth: PersonalOAuthService | null): string {
@@ -76,13 +85,13 @@ type CameraRelayDependencies = {
 export function createRequestHandler(
   oauth: PersonalOAuthService | null,
   cameraRelay: CameraRelayDependencies | null = null,
-  debugDashboard: DebugDashboardDependencies | null = null
+  statusDashboard: StatusDashboardDependencies | null = null
 ) {
   const handleCameraMedia = cameraRelay
     ? createCameraMediaHandler(cameraRelay.relay)
     : null;
-  const handleDebugDashboard = debugDashboard
-    ? createDebugDashboardHandler(debugDashboard)
+  const handleStatusDashboard = statusDashboard
+    ? createStatusDashboardHandler(statusDashboard)
     : null;
   return async (req: IncomingMessage, res: ServerResponse) => {
     if (!req.url) {
@@ -95,8 +104,8 @@ export function createRequestHandler(
 
     const pathname = localPath(url, oauth);
     if (
-      handleDebugDashboard &&
-      (await handleDebugDashboard(req, res, pathname))
+      handleStatusDashboard &&
+      (await handleStatusDashboard(req, res, pathname))
     ) {
       return;
     }
@@ -109,7 +118,7 @@ export function createRequestHandler(
     const isMcpRoute =
       pathname === MCP_PATH || pathname.startsWith(MCP_PATH + "/");
 
-    if (debugDashboard && isMcpRoute) {
+    if (statusDashboard && isMcpRoute) {
       res.writeHead(404).end("Not Found");
       return;
     }
@@ -205,13 +214,16 @@ export function createRequestHandler(
 }
 
 export async function startServer() {
-  const debugDashboardEnabled = process.env.U1_DEBUG_DASHBOARD === "1";
-  const oauth = debugDashboardEnabled
+  const statusDashboardEnabled = process.env.U1_STATUS_DASHBOARD === "1";
+  const oauth = statusDashboardEnabled
     ? null
     : await createPersonalOAuthFromEnvironment();
   const port = Number(process.env.PORT ?? "8787");
-  const host = debugDashboardEnabled ? debugBindHost() : "127.0.0.1";
-  const cameraRelay = oauth || debugDashboardEnabled
+  const host = "127.0.0.1";
+  const dashboardBaseUrl = statusDashboardEnabled
+    ? statusDashboardBaseUrl(port)
+    : null;
+  const cameraRelay = oauth || statusDashboardEnabled
     ? {
         relay: new CameraRelayService(
           {
@@ -220,11 +232,11 @@ export async function startServer() {
           createCameraTicketCodec()
         ),
         locator: createCameraStreamLocator(
-          oauth?.publicBaseUrl ?? new URL(`http://${host}:${port}`)
+          oauth?.publicBaseUrl ?? dashboardBaseUrl!
         ),
       }
     : null;
-  const debugDashboard = debugDashboardEnabled && cameraRelay
+  const statusDashboard = statusDashboardEnabled && cameraRelay
     ? {
         readStatus: readU1Status,
         readCameraFrame: readU1CameraFrame,
@@ -232,12 +244,14 @@ export async function startServer() {
       }
     : null;
   const server = createServer(
-    createRequestHandler(oauth, cameraRelay, debugDashboard)
+    createRequestHandler(oauth, cameraRelay, statusDashboard)
   );
 
   await new Promise<void>((resolve) => server.listen(port, host, resolve));
-  if (debugDashboardEnabled) {
-    console.log(`Standalone debug dashboard: http://${host}:${port}/debug`);
+  if (statusDashboardEnabled) {
+    console.log(
+      `U1 Status Dashboard: ${new URL("/dashboard", dashboardBaseUrl!).toString()}`
+    );
   } else {
     console.log(`U1 Print Studio MCP server listening on http://${host}:${port}${MCP_PATH}`);
   }

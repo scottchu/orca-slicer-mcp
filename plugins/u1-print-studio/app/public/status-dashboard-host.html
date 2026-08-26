@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>U1 Print Studio Debug Host</title>
+    <title>U1 Status Dashboard</title>
     <style>
       :root { color-scheme: dark; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
       * { box-sizing: border-box; }
@@ -24,12 +24,12 @@
   </head>
   <body>
     <header>
-      <strong>Standalone debug host</strong>
+      <strong>U1 Status Dashboard</strong>
       <span id="bridge-state">starting</span>
       <span class="spacer"></span>
       <button id="reload" type="button">Reload widget</button>
     </header>
-    <iframe id="widget" src="/widget?debug=1" title="U1 Print Studio status widget"></iframe>
+    <iframe id="widget" src="/widget?standalone=1" title="U1 Print Studio status widget"></iframe>
     <script>
       const frame = document.querySelector("#widget");
       const bridgeState = document.querySelector("#bridge-state");
@@ -45,7 +45,7 @@
       };
       const callTool = async (name) => {
         bridgeState.textContent = `calling ${name}`;
-        const response = await fetch("/debug/tools/call", {
+        const response = await fetch("/dashboard/tools/call", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ name }),
@@ -64,7 +64,7 @@
         if (message.method === "ui/initialize" && typeof message.id === "number") {
           reply(message.id, {
             protocolVersion: "2026-01-26",
-            hostInfo: { name: "u1-debug-host", version: "1.0.0" },
+            hostInfo: { name: "u1-status-dashboard", version: "1.0.0" },
             hostContext: { displayMode: "inline", safeArea: { insets: { top: 0, right: 0, bottom: 0, left: 0 } } },
           });
           return;
@@ -96,7 +96,7 @@
 
       document.querySelector("#reload").addEventListener("click", () => {
         bridgeState.textContent = "reloading";
-        frame.src = `/widget?debug=1&t=${Date.now()}`;
+        frame.src = `/widget?standalone=1&t=${Date.now()}`;
       });
     </script>
   </body>

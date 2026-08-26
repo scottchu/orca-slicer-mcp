@@ -18,9 +18,9 @@ Do not use prior chat history as authority when it conflicts with these files.
   desktop stdio and a personal OAuth-protected standard-HTTPS Tailscale Funnel
   endpoint. The remote surface has a bounded continuous camera relay whose
   application policy is separate from MCP and exact-route HTTP; preparation,
-  control, and persistent monitoring remain unimplemented. An opt-in debug host
-  on port 8788 mounts the exact widget and emulates only its read-only bridge;
-  it can bind to loopback or private Tailscale IPv4 and is not a public surface
+  control, and persistent monitoring remain unimplemented. An opt-in status
+  dashboard on loopback port 8788 mounts the exact widget and emulates only its
+  read-only bridge; private Tailscale Serve HTTPS exposes it on port 8444
 - Product evidence: planning and product-boundary records; local Orca and
   Snapmaker Orca discovery; one PETG and two PLA jobs through distinct
   preparation, handoff, observation, and telemetry-completion evidence; plus
@@ -43,10 +43,11 @@ pass. Continue with:
    unknown media paths return 404, OAuth state survived restart unchanged, and
    one bounded real-printer proof delivered two JPEGs over one multipart
    response. Do not expose Moonraker or its camera directly.
-   For rapid UI work, run `bun run debug` for loopback or
-   `bun run debug:tailscale` for a phone on the same tailnet, then open the
-   printed `/debug` URL. Never add port 8788 or `/debug` to Funnel, and do not
-   count the harness as real ChatGPT-host rendering evidence.
+   For rapid UI work, run `bun run dashboard` for loopback. For a phone on the
+   same tailnet, preserve the private Serve listener on port 8444 and run
+   `bun run dashboard:tailscale`, then open the printed `/dashboard` URL. Never
+   Funnel-enable port 8444, and do not count the harness as real ChatGPT-host
+   rendering evidence.
 3. Start a fresh authenticated desktop or mobile thread because the prior
    conversation cannot hot-reload tools. Confirm exactly four remote read-only
    tools: `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and

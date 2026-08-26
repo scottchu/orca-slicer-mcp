@@ -27,35 +27,38 @@ The local HTTP development endpoint is `http://127.0.0.1:8787/mcp`. The desktop
 plugin uses the separate stdio entry point declared in `../.mcp.json`.
 
 For fast widget iteration without a ChatGPT host or plugin reinstall, start the
-opt-in standalone debug host on its separate loopback port:
+opt-in standalone status dashboard on its separate loopback port:
 
 ```sh
-bun run debug
+bun run dashboard
 ```
 
-Open `http://127.0.0.1:8788/debug`. The page embeds the production widget and
+Open `http://127.0.0.1:8788/dashboard`. The page embeds the production widget and
 emulates only the MCP Apps host calls that the widget uses: current status,
 camera snapshot, and the user-clicked continuous camera relay. It deliberately
 has no printer-control call. **Reload widget** rereads `public/widget.html`
 directly from disk, so HTML and CSS edits need only a page reload; Bun watch
 restarts the process for TypeScript changes.
 
-To test from a phone on the same tailnet, use the private Tailscale binding:
+To test from a phone on the same tailnet, keep the app on loopback and add a
+private Tailscale Serve HTTPS listener on port 8444:
 
 ```sh
-bun run debug:tailscale
+tailscale serve --bg --https=8444 --yes http://127.0.0.1:8788
+bun run dashboard:tailscale
 ```
 
-The startup log prints the exact private `http://100.x.y.z:8788/debug` URL.
-This mode accepts only an address in Tailscale's private `100.64.0.0/10` range;
-it never binds a wildcard interface. The phone must have Tailscale connected.
+The startup log prints the exact private
+`https://<magicdns-hostname>:8444/dashboard` URL. The app still binds only to
+`127.0.0.1`; Tailscale Serve owns the tailnet listener and TLS. The phone must
+have Tailscale connected.
 
-`U1_DEBUG_DASHBOARD=1` disables personal OAuth composition for that process and
-enables the debug routes only on the dedicated service. The normal service does
-not serve `/debug`, the debug-only process does not serve `/mcp`, and Funnel
-must not proxy the debug port or paths. This is a development harness, not the
-external dashboard rejected by decision 0012 and not evidence of rendering
-inside a real ChatGPT host.
+`U1_STATUS_DASHBOARD=1` disables personal OAuth composition for that process and
+enables the dashboard routes only on the dedicated service. The normal service
+does not serve `/dashboard`, the dashboard-only process does not serve `/mcp`,
+and port 8444 must remain Tailscale Serve-only rather than Funnel-enabled. This
+is a development harness, not the public dashboard rejected by decision 0012
+and not evidence of rendering inside a real ChatGPT host.
 
 ## Personal mobile status endpoint
 
