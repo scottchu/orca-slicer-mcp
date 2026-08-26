@@ -831,10 +831,18 @@ identifiers, and runtime data are intentionally not retained.
   frames over the persistent peer connection, and closed the session without
   retaining media. Software-decoder samples varied from 0.2 to 24.8 FPS; that
   variability is not native-browser performance evidence.
-- Plugin `0.2.0+codex.20260826164858` was validated, reinstalled, and both the
+- Plugin `0.2.0+codex.20260826165531` was validated, reinstalled, and both the
   protected service and private dashboard were restarted. Public
   `/media/camera.mjpeg` returns 404, invalid WebRTC tickets return 401, and
   private `/dashboard?reload=10` returns 200 while serving the WebRTC widget.
 - No connected browser was available to the control runtime, so visible native
   playback, browser-measured FPS, and ChatGPT/iOS mounting remain separate
   user-visible acceptance evidence. No printer control or G-code action ran.
+
+### Automatic-refresh icon cleanup
+
+- Removed the decorative status-dot pseudo-element from the automatic-refresh
+  button. Enabled and paused behavior, accessible labels, and icon color remain
+  unchanged.
+- `bun run check`, `bun test src/*.test.ts`, and `bun run bundle`: passed 38
+  tests with 222 assertions, including absence of both dot selectors.

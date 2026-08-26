@@ -296,10 +296,12 @@ included.
 - The protected service and private dashboard were restarted from synchronized
   source. Public old-MJPEG returned 404, invalid WebRTC ticket returned 401,
   and the private dashboard returned 200.
-- TypeScript, 38 tests with 220 assertions, bundle, plugin validation,
+- TypeScript, 38 tests with 222 assertions, bundle, plugin validation,
   repository checks, and diff whitespace validation passed. Mounted browser
   playback remains the user-visible acceptance gate because no browser-control
   connection was available.
+- The automatic-refresh button no longer renders a separate dot; enabled and
+  paused behavior and accessible labels are unchanged.
 
 ## Next smallest action
 

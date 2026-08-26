@@ -337,6 +337,8 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).not.toContain(">Go Live</button>");
     expect(WIDGET_HTML).not.toContain(">Close</button>");
     expect(WIDGET_HTML).not.toContain(">Auto</button>");
+    expect(WIDGET_HTML).not.toContain(".toggle::before");
+    expect(WIDGET_HTML).not.toContain('.toggle[aria-pressed="false"]::before');
     expect(WIDGET_HTML).toContain(".camera::before");
     expect(WIDGET_HTML).toContain('data-camera-loading="true"');
     expect(WIDGET_HTML).toContain('id="status-row" data-loading="true"');
