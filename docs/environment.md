@@ -65,10 +65,10 @@ Remaining operating and product authorization boundaries are incomplete.
 - Source and protocol: built-in camera through `webrtc-camerastreamer`
 - Placement and field of view: unknown
 - Lighting conditions: unknown
-- Snapshot or stream access: snapshot returned JPEG `1920x1080`; WebRTC stream
-  is advertised but was not exercised. A later bounded application relay
-  returned two complete validated snapshot JPEGs over one multipart response;
-  this does not establish WebRTC frame rate or mounted-host rendering. Later
+- Snapshot or stream access: snapshot returned JPEG `1920x1080`; a real
+  WebRTC exchange returned an H264 offer and decoded frames over a persistent
+  peer connection. Independent software-decoder samples varied from 0.2 to
+  24.8 FPS, so this does not establish mounted-browser performance. Later
   PLA snapshots were usable for in-progress diagnosis, while the lowered bed
   moved finished parts out of the final frame
 - Advertised target frame rate: 15 FPS during the status-view prototype. The
@@ -162,9 +162,10 @@ capability, and evidence path. Unknowns remain unknown until checked.
   available for host visual validation. See the
   [implementation journal](logs/2026-08-25-u1-status-view-prototype.md) and
   [derived knowledge](knowledge/u1-status-view.md).
-- **2026-08-25, continuous read-only camera relay:** an application-owned
-  one-time ticket and bounded lease drove two validated real-camera JPEGs over
-  one exact multipart HTTP route. The public deployment added only the
-  ticketed `/media` handler and preserved the existing root and OAuth/MCP
-  routes. See the
+- **2026-08-26, WebRTC camera presentation:** decision 0015 supersedes the
+  serial-JPEG live transport. An application-owned one-time grant and bounded
+  lease now gate exact WebRTC signaling while H264 media flows through a
+  browser peer connection. The snapshot tool remains fallback. The public
+  deployment preserves the ticketed `/media` boundary and existing root and
+  OAuth/MCP routes. Historical multipart evidence remains in the
   [chronological journal](logs/2026-08-25-u1-continuous-camera-relay.md).

@@ -61,15 +61,18 @@ Last updated: 2026-08-26
   `show_u1_status` result. The OAuth-protected HTTP surface conditionally adds a
   fourth read-only `open_u1_camera_stream` tool. Its one-time URL is
   widget-private; the widget makes one call per `Go Live` intent and retains
-  non-overlapping snapshot polling as fallback. Decision 0014 keeps ticket,
-  lease, concurrency, duration, and serial iteration in an application service,
-  validated raw JPEG acquisition in the printer adapter, and exact multipart
-  response handling in an HTTP adapter. The public service now has one exact
+  non-overlapping snapshot polling only as fallback. Decision 0015 supersedes
+  the former serial-JPEG live transport: ticket, lease, concurrency, and
+  duration remain in the application service; the printer adapter performs an
+  allowlisted `webrtc-camerastreamer` offer/answer/ICE exchange; and the widget
+  receives persistent H264 media through a browser `RTCPeerConnection`. The
+  exact HTTP adapter carries signaling, hides the printer peer ID, and is not a
+  generic proxy. The public service now has one exact
   `/media` Funnel handler in addition to the preserved root and OAuth/MCP paths.
   Personal OAuth, PKCE, renewable audience-bound tokens, and the enrolled
   user-verified passkey remain unchanged. Public 401/404 boundaries pass, and a
-  bounded real-printer proof delivered two complete JPEGs over one multipart
-  response. An opt-in status dashboard now mounts the exact production widget and
+  bounded real-printer proof negotiated H264 and decoded frames over a
+  persistent peer connection. An opt-in status dashboard now mounts the exact production widget and
   emulates its read-only MCP Apps bridge on port 8788 for rapid iteration. It
   stays on loopback and is available to the tailnet through private Tailscale
   Serve HTTPS on port 8444. It is absent from the normal service and is not
@@ -80,7 +83,7 @@ Last updated: 2026-08-26
   camera mode row reports timestamped snapshot, snapshot fallback, or live on
   the left and keeps the live/close action on the right. Snapshot and fallback
   show a red disconnected-camera icon; live shows a pulsing green dot and the
-  measured JPEG delivery rate over a rolling five-second window. The card
+  browser-presented frame rate over a rolling five-second window. The card
   palette now uses the official Snapmaker U1 charcoal, warm white, yellow, and
   orange identity colors while reserving green for positive/connected states
   and red for negative/disconnected states in both light and dark schemes. A fresh
@@ -111,20 +114,20 @@ Last updated: 2026-08-26
 - Static/software: repository foundation and dual-subsystem product contract
   checks passed; real installed Orca executables were inspected, and one later
   user-authorized Snapmaker Orca slice succeeded after recorded failures. The
-  read-only status-view prototype compiles. Thirty-seven tests with 192
+  read-only status-view prototype compiles. Thirty-eight tests with 220
   assertions cover OAuth renewal, status and PNG contracts, application-owned
-  camera tickets and leases, exact multipart routing, URL privacy, serial frame
-  reads, snapshot fallback, the opt-in read-only dashboard boundary, and the
+  camera tickets and leases, exact WebRTC signaling, peer-ID privacy,
+  answer/ICE forwarding, snapshot fallback, the opt-in read-only dashboard boundary, and the
   neutral camera indicator, explicit bottom-right camera modes, and the
   Snapmaker card-theme contract; no preparation or control runtime exists.
 - Delivery validation is local-only; no hosted validation workflow is
   configured or required.
 - Protocol/simulator: live Moonraker read-only response shapes, WebSocket
-  upgrade, server notifications, and exact ticketed multipart behavior were
+  upgrade, server notifications, and exact ticketed WebRTC signaling were
   observed; printer-object subscription, fixtures, and reconnect tests are
   pending.
-- Real printer: ready/standby telemetry, live camera frames including two
-  complete JPEGs in one bounded multipart relay, one PETG job and
+- Real printer: ready/standby telemetry, snapshots, and H264 WebRTC frames over
+  a persistent peer connection, plus one PETG job and
   two later PLA jobs reached telemetry-verified completion. Upload, start
   acknowledgement, observed printing, and completion were kept distinct for
   the PLA repetitions. Product subscription, reconnect, and command-correlation
@@ -148,7 +151,7 @@ Last updated: 2026-08-26
 - The personal always-on host and network boundary are observed, but camera
   placement, lighting, portability to other hosts, and production distribution
   remain unknown.
-- Continuous relay loading, snapshot fallback, Close, PiP, fullscreen, and
+- WebRTC loading, snapshot fallback, Close, PiP, fullscreen, and
   adaptive refresh have not been exercised on the newly deployed four-tool
   surface inside a fresh connected Codex host. Exact public routing and valid
   real JPEGs do not prove desktop or iOS rendering. The private-tailnet status
@@ -174,9 +177,9 @@ Last updated: 2026-08-26
 ## Next action
 
 Start a fresh authenticated host thread, confirm exactly the four remote
-read-only tools, and test one `Go Live` intent. Record continuous relay,
+read-only tools, and test one `Go Live` intent. Record WebRTC rendering,
 snapshot fallback if exercised, Close, PiP, fullscreen, desktop mount, and iOS
 mount separately. A status call after the access-token lifetime still needs to
 prove real-host renewal. Do not expose Moonraker directly, add control tools, or
 build a shared CLI until the relevant authorization and repeated-use evidence
-exists.
+exists. Follow decisions 0003 through 0015.

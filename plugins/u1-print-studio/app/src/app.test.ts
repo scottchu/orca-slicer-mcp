@@ -87,7 +87,7 @@ async function connectClient(options: { oauth?: boolean; relay?: boolean } = {})
     ...(options.relay
       ? {
           openCameraStream: () => ({
-            url: "https://u1.example/media/camera.mjpeg?ticket=private-ticket",
+            url: "https://u1.example/media/camera.webrtc?ticket=private-ticket",
             expiresAt: "2026-08-25T13:22:02.688Z",
             maxDurationSeconds: 1800,
           }),
@@ -285,7 +285,7 @@ describe("U1 status MCP App contract", () => {
     });
     expect(result._meta).toEqual({
       cameraStream: {
-        url: "https://u1.example/media/camera.mjpeg?ticket=private-ticket",
+        url: "https://u1.example/media/camera.webrtc?ticket=private-ticket",
       },
     });
     expect(JSON.stringify(result.content)).not.toContain("private-ticket");
@@ -313,7 +313,7 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain('name: "get_u1_status"');
     expect(WIDGET_HTML).toContain('requestDisplayMode("pip")');
     expect(WIDGET_HTML).toContain('requestDisplayMode("fullscreen")');
-    expect(WIDGET_HTML).not.toContain('id="live-stream"');
+    expect(WIDGET_HTML).toContain('id="live-stream"');
     expect(WIDGET_HTML).not.toContain("snapshotUrl");
     expect(WIDGET_HTML).not.toContain("MOONRAKER_BASE_URL");
   });
@@ -362,7 +362,8 @@ describe("camera-first widget contract", () => {
     );
     expect(WIDGET_HTML).toContain('Snapshot fallback · ${observedLabel}');
     expect(WIDGET_HTML).toContain('Live · ${fpsLabel} FPS');
-    expect(WIDGET_HTML).toContain('setCameraMode(relayRendering ? "live" : "fallback")');
+    expect(WIDGET_HTML).toContain('setCameraMode("fallback")');
+    expect(WIDGET_HTML).toContain('setCameraMode("live")');
   });
 
   test("uses the Snapmaker charcoal and yellow card theme", () => {
@@ -391,7 +392,13 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).toContain('fetch(streamUrl, {');
     expect(WIDGET_HTML).toContain('recordLiveFrame');
     expect(WIDGET_HTML).toContain('performance.now()');
+    expect(WIDGET_HTML).toContain('new RTCPeerConnection({');
+    expect(WIDGET_HTML).toContain('peer.setRemoteDescription');
+    expect(WIDGET_HTML).toContain('peer.ontrack');
+    expect(WIDGET_HTML).toContain('requestVideoFrameCallback');
     expect(WIDGET_HTML).toContain('Live · measuring FPS');
+    expect(WIDGET_HTML).not.toContain('findMarker');
+    expect(WIDGET_HTML).not.toContain('jpegDataUrl');
     expect(WIDGET_HTML).not.toContain("up to ${Math.round(fps)} FPS");
   });
 });

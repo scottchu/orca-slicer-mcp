@@ -7,9 +7,10 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { createAppServer, readWidgetHtml } from "./app.js";
 import { createCameraTicketCodec } from "./adapters/camera-ticket-codec.js";
 import {
-  createCameraMediaHandler,
   createCameraStreamLocator,
-} from "./adapters/camera-media-http.js";
+  createCameraWebRtcHandler,
+} from "./adapters/camera-webrtc-http.js";
+import type { CameraWebRtcSignalingSource } from "./application/camera-webrtc.js";
 import {
   CameraRelayService,
   type CameraStreamLocator,
@@ -25,8 +26,8 @@ import {
 } from "./status-dashboard.js";
 import {
   readU1CameraFrame,
-  readU1CameraJpeg,
   readU1Status,
+  u1CameraWebRtcSignaling,
 } from "./u1-status.js";
 
 const MCP_PATH = "/mcp";
@@ -80,6 +81,7 @@ function unauthorized(res: ServerResponse, oauth: PersonalOAuthService): void {
 type CameraRelayDependencies = {
   relay: CameraRelayService;
   locator: CameraStreamLocator;
+  signaling: CameraWebRtcSignalingSource;
 };
 
 export function createRequestHandler(
@@ -87,8 +89,8 @@ export function createRequestHandler(
   cameraRelay: CameraRelayDependencies | null = null,
   statusDashboard: StatusDashboardDependencies | null = null
 ) {
-  const handleCameraMedia = cameraRelay
-    ? createCameraMediaHandler(cameraRelay.relay)
+  const handleCameraWebRtc = cameraRelay
+    ? createCameraWebRtcHandler(cameraRelay.relay, cameraRelay.signaling)
     : null;
   const handleStatusDashboard = statusDashboard
     ? createStatusDashboardHandler(statusDashboard)
@@ -110,8 +112,8 @@ export function createRequestHandler(
       return;
     }
     if (
-      handleCameraMedia &&
-      (await handleCameraMedia(req, res, pathname, url))
+      handleCameraWebRtc &&
+      (await handleCameraWebRtc(req, res, pathname, url))
     ) {
       return;
     }
@@ -225,15 +227,11 @@ export async function startServer() {
     : null;
   const cameraRelay = oauth || statusDashboardEnabled
     ? {
-        relay: new CameraRelayService(
-          {
-            readFrame: (signal) => readU1CameraJpeg(signal),
-          },
-          createCameraTicketCodec()
-        ),
+        relay: new CameraRelayService(createCameraTicketCodec()),
         locator: createCameraStreamLocator(
           oauth?.publicBaseUrl ?? dashboardBaseUrl!
         ),
+        signaling: u1CameraWebRtcSignaling,
       }
     : null;
   const statusDashboard = statusDashboardEnabled && cameraRelay

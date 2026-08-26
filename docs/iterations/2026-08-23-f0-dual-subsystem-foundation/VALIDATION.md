@@ -810,3 +810,31 @@ identifiers, and runtime data are intentionally not retained.
 - Browser-rendered comparison and interaction QA remain blocked because the
   configured browser-control runtime reported no connected browser. No plugin
   reinstall, printer command, or G-code action was performed.
+
+### Actual WebRTC camera presentation
+
+- Acceptance boundary: `Go Live` must negotiate the printer's advertised
+  `webrtc-camerastreamer`; no repeated snapshot transport may be called live;
+  snapshots remain an explicitly labeled fallback; printer controls and a
+  generic proxy remain absent.
+- `bun run check` and `bun test src/*.test.ts`: passed 38 tests with 220
+  assertions. The contracts cover a real `<video>` element,
+  `RTCPeerConnection`, H264 offer handling, answer and ICE forwarding,
+  printer-peer-ID privacy, ticket replay rejection, bounded lease teardown,
+  CORS, and removal of the old MJPEG route and JPEG stream parser.
+- `bun run bundle`, Plugin Creator validation through
+  `uv run --no-project --with pyyaml`, `./scripts/check-repository.sh`, and
+  `git diff --check`: passed.
+- The private dashboard's exact ticketed signaling route returned an H264 offer
+  of 981 bytes plus the reference STUN server without exposing the printer peer ID, and session deletion
+  released the lease. A separate `aiortc` receiver reached `connected`, decoded
+  frames over the persistent peer connection, and closed the session without
+  retaining media. Software-decoder samples varied from 0.2 to 24.8 FPS; that
+  variability is not native-browser performance evidence.
+- Plugin `0.2.0+codex.20260826164858` was validated, reinstalled, and both the
+  protected service and private dashboard were restarted. Public
+  `/media/camera.mjpeg` returns 404, invalid WebRTC tickets return 401, and
+  private `/dashboard?reload=10` returns 200 while serving the WebRTC widget.
+- No connected browser was available to the control runtime, so visible native
+  playback, browser-measured FPS, and ChatGPT/iOS mounting remain separate
+  user-visible acceptance evidence. No printer control or G-code action ran.

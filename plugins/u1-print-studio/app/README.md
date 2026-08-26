@@ -81,7 +81,7 @@ tailscale funnel --bg --https=443 --yes http://127.0.0.1:8787
 If another root service already uses that hostname, preserve it and add exact
 handlers for `/.well-known`, `/oauth`, `/auth`, `/mcp`, and `/media`, each
 pointing to the same path on `127.0.0.1:8787`. The `/media` handler exposes only
-the app's exact `/media/camera.mjpeg` route; it is not a printer or generic HTTP
+the app's exact `/media/camera.webrtc` route; it is not a printer or generic HTTP
 proxy. Tailscale strips a matched incoming prefix unless the proxy target
 includes it. Re-read `tailscale funnel status --json` and verify the existing
 root handler is unchanged. A healthy public Funnel on `:8443` failed ChatGPT
@@ -140,9 +140,10 @@ The widget provides:
 
 - a server-relayed camera snapshot at the top without exposing the printer URL
   to the component;
-- a `Go Live` button that calls `open_u1_camera_stream` once, then loads a
-  short-lived continuous multipart MJPEG relay URL kept in tool-result `_meta`;
-- a `Close` button that stops frame requests and returns to snapshot mode;
+- a `Go Live` button that calls `open_u1_camera_stream` once, then negotiates a
+  short-lived H264 WebRTC peer connection through a URL kept in tool-result
+  `_meta`;
+- a `Close` button that closes the peer and returns to snapshot mode;
 - printer progress, layer, active physical tool, temperatures, and time;
 - adaptive read-only refresh through `get_u1_status`;
 - inline, Picture in Picture, and fullscreen display modes;
@@ -155,17 +156,18 @@ no camera pixels or controls. A new tool call produces a new observation and
 image.
 
 The HTTP service owns short-lived one-time tickets, bounded leases, concurrency,
-and serial frame iteration in an application service that does not depend on
-MCP or HTTP types. The media adapter serves only exact `GET
-/media/camera.mjpeg`; it validates the ticket, writes multipart JPEG parts, and
-does not proxy caller-selected URLs. Each upstream frame remains a validated
-raw JPEG acquired through the fixed read-only camera adapter.
+and duration in an application service that does not depend on MCP or HTTP
+types. The media adapter serves only exact `POST` and `DELETE
+/media/camera.webrtc`; it validates the ticket, forwards only the fixed WebRTC
+offer/answer/ICE message set, hides the printer peer identifier, and does not
+proxy caller-selected URLs. H264 media flows directly over the negotiated peer
+connection rather than through a server-side snapshot loop.
 
-If a host cannot open the continuous relay, the widget falls back to the
+If a host cannot open the WebRTC session, the widget falls back to the
 existing `get_u1_camera_frame` loop and waits 1.5 seconds after each completed
-request. Neither path is the camera's advertised full-frame-rate WebRTC stream.
-This keeps the private LAN origin out of the component and avoids overlapping
-camera reads.
+request. Only that fallback pulls snapshots. The live path measures frames
+actually presented by the browser and reports that observed FPS. The private
+printer URL stays out of the component.
 
 The local plugin uses a stdio MCP process and remains desktop-local. It exposes
 the three status/snapshot tools and uses snapshot fallback because it has no

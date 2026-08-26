@@ -62,7 +62,7 @@ async function startFixture() {
       metadata: { cameraFrame: { dataUrl: "data:image/jpeg;base64,/9j/2Q==" } },
     }),
     openCameraStream: () => ({
-      url: "http://127.0.0.1:8788/media/camera.mjpeg?ticket=dashboard-ticket",
+      url: "http://127.0.0.1:8788/media/camera.webrtc?ticket=dashboard-ticket",
       expiresAt: "2026-08-26T12:01:00.000Z",
       maxDurationSeconds: 1800,
     }),
@@ -158,7 +158,7 @@ describe("standalone status dashboard", () => {
     const stream = await call("open_u1_camera_stream");
     expect(stream.response.status).toBe(200);
     expect(stream.body._meta.cameraStream.url).toStartWith(
-      "http://127.0.0.1:8788/media/camera.mjpeg"
+      "http://127.0.0.1:8788/media/camera.webrtc"
     );
 
     const control = await call("start_print");

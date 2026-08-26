@@ -109,7 +109,8 @@
           linear-gradient(180deg, rgba(20, 22, 23, 0.52), transparent 30%, transparent 60%, rgba(20, 22, 23, 0.78));
       }
 
-      .camera img {
+      .camera img,
+      .camera video {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -118,13 +119,15 @@
         object-fit: cover;
       }
 
-      .camera img {
+      .camera img,
+      .camera video {
         z-index: 0;
         opacity: 0;
         transition: opacity 240ms ease;
       }
 
-      .camera.has-snapshot img {
+      .camera.has-snapshot:not(.has-live) img,
+      .camera.has-live video {
         opacity: 1;
       }
 
@@ -189,7 +192,8 @@
         opacity: 0.8;
       }
 
-      .camera.has-snapshot .camera-empty {
+      .camera.has-snapshot .camera-empty,
+      .camera.has-live .camera-empty {
         display: none;
       }
 
@@ -772,6 +776,7 @@
         </div>
         <div class="camera-skeleton" aria-hidden="true"><span></span><span></span></div>
         <img id="snapshot" alt="Latest Snapmaker U1 camera snapshot" referrerpolicy="no-referrer" />
+        <video id="live-stream" aria-label="Live Snapmaker U1 camera" autoplay muted playsinline></video>
 
         <div class="camera-top">
           <span class="camera-status" id="camera-status" role="status" aria-live="polite" aria-label="Camera loading" title="Camera loading">
@@ -897,6 +902,7 @@
         dashboard: document.querySelector("#dashboard"),
         camera: document.querySelector("#camera"),
         snapshot: document.querySelector("#snapshot"),
+        liveStream: document.querySelector("#live-stream"),
         cameraStatus: document.querySelector("#camera-status"),
         cameraDetail: document.querySelector("#camera-detail"),
         cameraDetailLabel: document.querySelector("#camera-detail-label"),
@@ -937,7 +943,12 @@
       let cameraRefreshing = false;
       let livePreview = false;
       let relayRendering = false;
-      let liveStreamAbortController = null;
+      let liveSignalAbortController = null;
+      let livePeerConnection = null;
+      let liveStreamUrl = null;
+      let liveFrameCallback = null;
+      let liveFpsTimer = null;
+      let liveConnectionFallbackTimer = null;
       let liveFrameTimes = [];
       let measuredLiveFps = null;
       let rpcId = 0;
@@ -1038,9 +1049,38 @@
         elements.cameraDetailLabel.textContent = labels[mode] ?? labels.unavailable;
       };
 
+      const closeSignalingSession = (url) => {
+        if (!url) return;
+        void fetch(url, {
+          method: "DELETE",
+          cache: "no-store",
+          credentials: "omit",
+          referrerPolicy: "no-referrer",
+        }).catch(() => {});
+      };
+
       const stopLiveStream = () => {
-        liveStreamAbortController?.abort();
-        liveStreamAbortController = null;
+        clearTimeout(liveConnectionFallbackTimer);
+        liveConnectionFallbackTimer = null;
+        liveSignalAbortController?.abort();
+        liveSignalAbortController = null;
+        if (liveFrameCallback !== null && elements.liveStream.cancelVideoFrameCallback) {
+          elements.liveStream.cancelVideoFrameCallback(liveFrameCallback);
+        }
+        liveFrameCallback = null;
+        clearInterval(liveFpsTimer);
+        liveFpsTimer = null;
+        const peer = livePeerConnection;
+        livePeerConnection = null;
+        peer?.close();
+        const stream = elements.liveStream.srcObject;
+        if (stream instanceof MediaStream) {
+          for (const track of stream.getTracks()) track.stop();
+        }
+        elements.liveStream.srcObject = null;
+        elements.camera.classList.remove("has-live");
+        closeSignalingSession(liveStreamUrl);
+        liveStreamUrl = null;
         liveFrameTimes = [];
         measuredLiveFps = null;
       };
@@ -1083,9 +1123,12 @@
           elements.camera.classList.remove("has-snapshot");
           setCameraState("unavailable");
           setCameraMode("unavailable");
+        } else if (livePreview && elements.camera.classList.contains("has-live")) {
+          setCameraState("live");
+          setCameraMode("live");
         } else if (livePreview && elements.camera.classList.contains("has-snapshot")) {
-          setCameraState(relayRendering ? "live" : "fallback");
-          setCameraMode(relayRendering ? "live" : "fallback");
+          setCameraState("fallback");
+          setCameraMode("fallback");
         } else if (elements.camera.classList.contains("has-snapshot")) {
           setCameraState("snapshot");
         } else {
@@ -1101,14 +1144,7 @@
       });
 
       elements.snapshot.addEventListener("error", () => {
-        if (livePreview && relayRendering) {
-          relayRendering = false;
-          stopLiveStream();
-          setCameraMode("fallback");
-          setCameraState("loading", true);
-          void refreshCameraFrame();
-          return;
-        }
+        if (livePreview && relayRendering) return;
         elements.camera.classList.remove("has-snapshot");
         setCameraMode("unavailable");
         setCameraState("unavailable");
@@ -1279,29 +1315,7 @@
         }
       };
 
-      const appendBytes = (left, right) => {
-        const combined = new Uint8Array(left.byteLength + right.byteLength);
-        combined.set(left);
-        combined.set(right, left.byteLength);
-        return combined;
-      };
-
-      const findMarker = (bytes, first, second, from = 0) => {
-        for (let index = from; index < bytes.byteLength - 1; index += 1) {
-          if (bytes[index] === first && bytes[index + 1] === second) return index;
-        }
-        return -1;
-      };
-
-      const jpegDataUrl = (bytes) => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.addEventListener("load", () => resolve(reader.result), { once: true });
-        reader.addEventListener("error", () => reject(reader.error), { once: true });
-        reader.readAsDataURL(new Blob([bytes], { type: "image/jpeg" }));
-      });
-
-      const recordLiveFrame = () => {
-        const now = performance.now();
+      const recordLiveFrame = (now = performance.now()) => {
         liveFrameTimes.push(now);
         const windowStart = now - 5000;
         liveFrameTimes = liveFrameTimes.filter((observed) => observed >= windowStart);
@@ -1314,57 +1328,57 @@
         setCameraMode("live");
       };
 
-      const consumeCameraStream = async (streamUrl, signal) => {
+      const startLiveFpsMeasurement = () => {
+        if (typeof elements.liveStream.requestVideoFrameCallback === "function") {
+          const observeFrame = (now) => {
+            if (!livePreview || !relayRendering) return;
+            recordLiveFrame(now);
+            liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
+          };
+          liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
+          return;
+        }
+
+        let previousFrames = 0;
+        let previousTime = performance.now();
+        liveFpsTimer = setInterval(() => {
+          if (!livePreview || !relayRendering) return;
+          const quality = elements.liveStream.getVideoPlaybackQuality?.();
+          const totalFrames = quality?.totalVideoFrames ??
+            elements.liveStream.webkitDecodedFrameCount ?? 0;
+          const now = performance.now();
+          if (totalFrames > previousFrames && now > previousTime) {
+            measuredLiveFps = (totalFrames - previousFrames) * 1000 / (now - previousTime);
+            setCameraMode("live");
+          }
+          previousFrames = totalFrames;
+          previousTime = now;
+        }, 1_000);
+      };
+
+      const signalCamera = async (streamUrl, payload, signal) => {
         const response = await fetch(streamUrl, {
+          method: "POST",
           cache: "no-store",
           credentials: "omit",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
           referrerPolicy: "no-referrer",
           signal,
         });
-        if (!response.ok || !response.body) {
-          throw new Error(`Camera relay returned HTTP ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`Camera signaling returned HTTP ${response.status}`);
         }
+        return response.json();
+      };
 
-        const reader = response.body.getReader();
-        let pending = new Uint8Array();
-        try {
-          while (!signal.aborted && livePreview) {
-            const { value, done } = await reader.read();
-            if (done) break;
-            pending = appendBytes(pending, value);
-
-            while (!signal.aborted && livePreview) {
-              const start = findMarker(pending, 0xff, 0xd8);
-              if (start < 0) {
-                pending = pending.at(-1) === 0xff
-                  ? pending.slice(-1)
-                  : new Uint8Array();
-                break;
-              }
-              if (start > 0) pending = pending.slice(start);
-              const end = findMarker(pending, 0xff, 0xd9, 2);
-              if (end < 0) {
-                if (pending.byteLength > 8 * 1024 * 1024) {
-                  throw new Error("Camera frame exceeded the display buffer");
-                }
-                break;
-              }
-
-              const frame = pending.slice(0, end + 2);
-              pending = pending.slice(end + 2);
-              const dataUrl = await jpegDataUrl(frame);
-              if (signal.aborted || !livePreview) return;
-              elements.snapshot.src = dataUrl;
-              recordLiveFrame();
-            }
-          }
-        } finally {
-          await reader.cancel().catch(() => {});
-        }
-
-        if (!signal.aborted && livePreview) {
-          throw new Error("Camera relay ended");
-        }
+      const activateSnapshotFallback = () => {
+        if (!livePreview) return;
+        relayRendering = false;
+        stopLiveStream();
+        setCameraMode("fallback");
+        setCameraState("loading", true);
+        void refreshCameraFrame();
       };
 
       const openCameraStream = async () => {
@@ -1403,25 +1417,86 @@
           ) {
             throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
           }
-          relayRendering = true;
-          liveStreamAbortController = new AbortController();
-          setCameraMode("live");
-          void consumeCameraStream(
+          liveStreamUrl = streamUrl;
+          liveSignalAbortController = new AbortController();
+          const signal = liveSignalAbortController.signal;
+          const offer = await signalCamera(
             streamUrl,
-            liveStreamAbortController.signal
-          ).catch(() => {
-            if (!livePreview) return;
-            relayRendering = false;
-            stopLiveStream();
-            setCameraMode("fallback");
-            void refreshCameraFrame();
+            { type: "request" },
+            signal
+          );
+          if (
+            !livePreview ||
+            offer?.type !== "offer" ||
+            typeof offer?.sdp !== "string"
+          ) {
+            throw new Error("Camera WebRTC offer unavailable");
+          }
+
+          const peer = new RTCPeerConnection({
+            sdpSemantics: "unified-plan",
+            iceServers: Array.isArray(offer.iceServers) ? offer.iceServers : [],
           });
+          livePeerConnection = peer;
+          peer.addTransceiver("video", { direction: "recvonly" });
+
+          peer.ondatachannel = (event) => {
+            if (event.channel.label === "keepalive") {
+              event.channel.onmessage = () => event.channel.send("pong");
+            }
+          };
+
+          peer.onicecandidate = (event) => {
+            if (!event.candidate || livePeerConnection !== peer || !liveStreamUrl) return;
+            void signalCamera(
+              liveStreamUrl,
+              {
+                type: "remote_candidate",
+                candidates: [event.candidate.toJSON()],
+              },
+              signal
+            ).catch(activateSnapshotFallback);
+          };
+
+          peer.ontrack = (event) => {
+            if (livePeerConnection !== peer || !livePreview) return;
+            const stream = event.streams[0] ?? new MediaStream([event.track]);
+            elements.liveStream.srcObject = stream;
+            void elements.liveStream.play().catch(() => {});
+            elements.camera.classList.add("has-live");
+            relayRendering = true;
+            clearTimeout(snapshotFallbackTimer);
+            setCameraState("live");
+            setCameraMode("live");
+            startLiveFpsMeasurement();
+          };
+
+          peer.onconnectionstatechange = () => {
+            if (livePeerConnection !== peer || !livePreview) return;
+            if (peer.connectionState === "connected") {
+              clearTimeout(liveConnectionFallbackTimer);
+              liveConnectionFallbackTimer = null;
+            } else if (peer.connectionState === "failed") {
+              activateSnapshotFallback();
+            } else if (peer.connectionState === "disconnected") {
+              clearTimeout(liveConnectionFallbackTimer);
+              liveConnectionFallbackTimer = setTimeout(() => {
+                if (peer.connectionState !== "connected") activateSnapshotFallback();
+              }, 3_000);
+            }
+          };
+
+          await peer.setRemoteDescription({ type: "offer", sdp: offer.sdp });
+          const answer = await peer.createAnswer();
+          await peer.setLocalDescription(answer);
+          await signalCamera(
+            streamUrl,
+            { type: "answer", sdp: peer.localDescription?.sdp },
+            signal
+          );
         } catch {
           if (!livePreview) return;
-          relayRendering = false;
-          stopLiveStream();
-          setCameraMode("fallback");
-          void refreshCameraFrame();
+          activateSnapshotFallback();
         }
       };
 

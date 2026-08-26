@@ -16,7 +16,7 @@ Do not use prior chat history as authority when it conflicts with these files.
 - Active iteration: `2026-08-23-f0-dual-subsystem-foundation`
 - Product runtime: one repo-local read-only MCP Apps status-view prototype with
   desktop stdio and a personal OAuth-protected standard-HTTPS Tailscale Funnel
-  endpoint. The remote surface has a bounded continuous camera relay whose
+  endpoint. The remote surface has a bounded WebRTC camera presentation whose
   application policy is separate from MCP and exact-route HTTP; preparation,
   control, and persistent monitoring remain unimplemented. An opt-in status
   dashboard on loopback port 8788 mounts the exact widget and emulates only its
@@ -31,18 +31,18 @@ Do not use prior chat history as authority when it conflicts with these files.
 Current execution order is the user-directed continuous-camera host validation
 pass. Continue with:
 
-1. Read decision 0014 and the
-   [continuous-relay journal](docs/logs/2026-08-25-u1-continuous-camera-relay.md),
-   then inspect the plugin. The application service owns tickets, leases,
-   concurrency, duration, and serial iteration; MCP only grants a private URL;
-   exact-route HTTP only frames multipart JPEG; and `u1-status` only supplies
-   validated raw JPEG observations.
+1. Read decisions 0014 and 0015, then inspect the plugin. Decision 0015
+   supersedes the old serial-JPEG live transport. The application service owns
+   tickets, leases, concurrency, and duration; MCP only grants a private URL;
+   exact-route HTTP forwards an allowlisted offer/answer/ICE exchange; and the
+   widget receives H264 through a browser `RTCPeerConnection`. Snapshots remain
+   only the explicit snapshot and degraded fallback path.
 2. The deployed personal plugin is
    `0.2.0+codex.20260826005742`. Its exact `/media` Funnel handler preserves the
    unrelated root and existing OAuth/MCP routes. Missing tickets return 401,
    unknown media paths return 404, OAuth state survived restart unchanged, and
-   one bounded real-printer proof delivered two JPEGs over one multipart
-   response. Do not expose Moonraker or its camera directly.
+   a real-printer proof negotiated an H264 offer and decoded frames over a
+   persistent peer connection. Do not expose Moonraker or its camera directly.
    For rapid UI work, run `bun run dashboard` for loopback. For a phone on the
    same tailnet, preserve the private Serve listener on port 8444 and run
    `bun run dashboard:tailscale`, then open the printed `/dashboard` URL. Never
@@ -62,7 +62,7 @@ pass. Continue with:
    conversation cannot hot-reload tools. Confirm exactly four remote read-only
    tools: `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
    `open_u1_camera_stream`. Stop if any control tool is present.
-4. If the component mounts, test one `Go Live` intent and record continuous
+4. If the component mounts, test one `Go Live` intent and record WebRTC
    rendering, snapshot fallback if exercised, Close, PiP, and fullscreen as
    separate host evidence. Record desktop and iOS outcomes separately. If only
    the PNG appears, that is a valid non-component result but not camera evidence.
