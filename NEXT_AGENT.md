@@ -18,9 +18,10 @@ The user-directed priority is the secure remote U1 Print Studio Monitor slice
 under F0. Decision 0017 is current and preserves decision 0016's local-first
 normal-user direction.
 
-Delivery is the non-main branch `scottchu/secure-remote-mcp-stream`. Do not
-deploy, merge, publish, reinstall, or alter live routes without coordinator
-approval.
+The secure source and deployment records are merged. The current follow-up is
+`scottchu/fix-u1-app-loading`; the user authorized merge, reinstall, restart,
+and read-only testing. Preserve OAuth state and every existing Serve/Funnel
+route.
 
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
@@ -36,6 +37,9 @@ decision 0015.
 - `u1-print-studio mcp` starts the desktop stdio connector.
 - The hosted widget contains no `fetch(` call and declares empty external CSP
   domains.
+- Current descriptors point to `status-v4.html`; `status-v3.html` is served as
+  a compatibility resource for retained cards. Plugin upgrades still require
+  a new task for the current installed MCP process.
 - Live offer, answer, ICE candidates, and close use MCP Apps `tools/call`.
 - The connector alone invokes the U1's fixed Printer Operations adapter.
 - The WebRTC application service owns opaque sessions, peer-ID hiding, input
@@ -77,7 +81,7 @@ proxy, Control, or Admin behavior appears.
 ## Validation boundary
 
 The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 60 passing tests with 324 assertions. The macOS arm64
+software suite has 61 passing tests with 329 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
@@ -118,12 +122,12 @@ TURN service or shared secret is configured.
 
 ## Next smallest action
 
-Open a fresh Codex or ChatGPT task so the cache-busted plugin surface loads, then
-invoke the status card and Go Live once. Record mounted playback, Close,
-fallback if exercised, PiP, and fullscreen separately. If host-only ICE still
-fails, provision owner-approved TURN REST-compatible URLs and a shared secret,
-verify a real relay allocation, and repeat both hosts. Do not claim reliable
-remote media from STUN or fixture credentials alone.
+Merge the compatibility-resource follow-up, release-stage and reinstall it,
+restart only the exact U1 public service, and verify both `status-v4.html` and
+`status-v3.html` through the deployed MCP server. Then open a fresh Codex or
+ChatGPT task, invoke the status card and Go Live once, and record mounted
+playback separately. The private `:8444` dashboard needs its own supervised
+process; its 502 is not an MCP or printer failure.
 
 ## Preserve
 

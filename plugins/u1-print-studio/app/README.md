@@ -60,6 +60,17 @@ existing `get_u1_camera_frame` snapshot loop remains available.
 `show_u1_status` still includes a 1200 x 1500 PNG status card for hosts that
 cannot mount an MCP Apps component.
 
+### Upgrade behavior
+
+After installing or upgrading the Marketplace plugin, start a new ChatGPT or
+Codex task before testing it. Existing tasks may still refer to the previous
+installed MCP process and widget URI. The current tool descriptor always points
+to `ui://u1-print-studio/status-v4.html`; the server also serves the preceding
+`status-v3.html` URI as a compatibility alias for cards created before the
+upgrade. A failure from an old task is not evidence that the current staged
+runtime is missing; verify the installed descriptor, executable, and a fresh
+task separately.
+
 ## Source development
 
 Bun and the untracked root `.env` are developer-only conveniences:
@@ -77,6 +88,11 @@ The source `../.mcp.json` is intentionally a Bun adapter. For widget work
 without a host, `bun run dashboard` serves the standalone loopback dashboard
 at `http://127.0.0.1:8788/dashboard`. It uses the same tool-call shape while
 retaining the exact HTTP signaling adapter for development coverage.
+
+The standalone dashboard is a separate opt-in process. A Tailscale Serve route
+to port 8788 returns 502 whenever that process is not supervised and running;
+the public MCP service on port 8787 does not implicitly start it. Treat this
+dashboard as developer diagnostics, not as the plugin's mounted UI.
 
 ## Secure remote developer adapter
 

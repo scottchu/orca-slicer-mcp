@@ -17,8 +17,9 @@ Last updated: 2026-08-27
 - Decision 0017 adds a private enrollment listener plus explicit STUN and
   short-lived TURN REST boundaries while preserving decision 0016's local-first
   normal-user direction and MCP Apps signaling bridge.
-- Current delivery branch: `scottchu/secure-remote-mcp-stream`. No deployment,
-  merge, publication, or pull request has occurred for this slice.
+- Current recovery branch: `scottchu/fix-u1-app-loading`. The secure remote
+  source and deployment records are already merged; this follow-up has not yet
+  been merged or reinstalled.
 
 ## Implemented local-first slice
 
@@ -32,6 +33,8 @@ The repository contains the smallest desktop-local read-only connector slice:
   the U1 Printer Operations adapter;
 - one self-contained MCP Apps widget with empty external CSP domains and no
   direct `fetch` call;
+- the current `status-v4.html` widget plus a `status-v3.html` compatibility
+  resource for cards retained across an upgrade;
 - hosted offer, answer, ICE-candidate, and close signaling through MCP Apps
   `tools/call`;
 - application-owned opaque WebRTC sessions with offer/answer/candidate size
@@ -138,7 +141,7 @@ remain procedural guidance; they are not runtime authority.
 ### Static/software
 
 - TypeScript checks pass.
-- Sixty tests with 324 assertions pass across MCP resource/tool contracts,
+- Sixty-one tests with 329 assertions pass across MCP resource/tool contracts,
   enrollment isolation and restart behavior, standard HTTPS, exact four-plus-
   three visibility, STUN/TURN parsing and derivation, model privacy, env-only
   HTTP compatibility, config migration/preservation, PNG, fallback, session
@@ -208,8 +211,8 @@ and final repository-check results.
 
 ## Next action
 
-Use a fresh mounted ChatGPT or Codex task to validate the cache-busted widget and
-Go Live path. If host-only ICE fails, obtain owner-approved TURN REST service
-details and verify a real relay allocation before retrying both hosts. Keep
-mounted playback, TURN, printer protocol, and user outcome as separate evidence
-layers.
+Deliver and reinstall the compatibility-resource follow-up, restart only the
+exact U1 service while preserving OAuth state, and use a fresh ChatGPT or Codex
+task to validate the cache-busted widget and Go Live path. Keep the old-task
+MCP snapshot, optional private dashboard process, mounted playback, TURN,
+printer protocol, and user outcome as separate evidence layers.

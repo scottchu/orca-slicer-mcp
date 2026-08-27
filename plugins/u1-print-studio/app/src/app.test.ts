@@ -5,6 +5,7 @@ import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 
 import {
   createAppServer,
+  LEGACY_WIDGET_URIS,
   WIDGET_HTML,
   WIDGET_URI,
 } from "./app.js";
@@ -176,6 +177,28 @@ describe("U1 status MCP App contract", () => {
     expect(resource?.mimeType).toBe("text/html;profile=mcp-app");
     expect(resource?._meta?.ui).toMatchObject({
       prefersBorder: false,
+      csp: {
+        connectDomains: [],
+        resourceDomains: [],
+        frameDomains: [],
+      },
+    });
+    expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
+  });
+
+  test("keeps the previous widget URI readable for mounted cards during upgrades", async () => {
+    const client = await connectClient();
+    const legacyUri = LEGACY_WIDGET_URIS[0];
+    const listed = await client.listResources();
+    const result = await client.readResource({ uri: legacyUri });
+    const resource = result.contents[0];
+
+    expect(listed.resources.map(({ uri }) => uri)).toEqual(
+      expect.arrayContaining([WIDGET_URI, legacyUri])
+    );
+    expect(resource?.uri).toBe(legacyUri);
+    expect(resource?.mimeType).toBe("text/html;profile=mcp-app");
+    expect(resource?._meta?.ui).toMatchObject({
       csp: {
         connectDomains: [],
         resourceDomains: [],

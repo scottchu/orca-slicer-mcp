@@ -32,6 +32,9 @@ const APP_ROOT = currentDirectory.startsWith("/$bunfs/")
   : path.resolve(currentDirectory, "..");
 const IS_COMPILED = currentDirectory.startsWith("/$bunfs/");
 export const WIDGET_URI = "ui://u1-print-studio/status-v4.html";
+export const LEGACY_WIDGET_URIS = [
+  "ui://u1-print-studio/status-v3.html",
+] as const;
 const WIDGET_PATH = path.join(APP_ROOT, "public", "widget.html");
 export const readWidgetHtml = () =>
   IS_COMPILED
@@ -127,16 +130,16 @@ export function createAppServer(
     ? { securitySchemes }
     : {};
 
-  registerAppResource(
-    server,
-    "u1-status-widget",
-    WIDGET_URI,
-    {},
-    async () => {
-      return {
+  for (const [index, widgetUri] of [WIDGET_URI, ...LEGACY_WIDGET_URIS].entries()) {
+    registerAppResource(
+      server,
+      index === 0 ? "u1-status-widget" : `u1-status-widget-legacy-${index}`,
+      widgetUri,
+      {},
+      async () => ({
         contents: [
           {
-            uri: WIDGET_URI,
+            uri: widgetUri,
             mimeType: RESOURCE_MIME_TYPE,
             text: WIDGET_HTML,
             _meta: {
@@ -153,9 +156,9 @@ export function createAppServer(
             },
           },
         ],
-      };
-    }
-  );
+      })
+    );
+  }
 
   registerAppTool(
     server,
