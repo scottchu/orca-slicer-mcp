@@ -167,16 +167,19 @@ and final repository-check results.
 
 ### Physical printer
 
-- No physical printer was accessed or controlled for the secure remote source
-  slice.
+- Post-merge read-only validation contacted the configured printer for status,
+  one JPEG, and bounded H264 offers. No upload, start, pause, resume, cancel,
+  G-code, or other printer-control action ran.
 - Earlier authorized print and camera observations remain historical evidence
   in their dated logs and do not prove this slice.
 
 ### User outcome
 
-- Earlier same-machine personal Marketplace installation is verified for the
-  prior local-first artifact. This secure remote source is not installed or
-  deployed; ChatGPT/Codex playback and user outcome remain unverified.
+- The secure remote source is merged, installed as
+  `0.2.0+codex.20260827202019`, and deployed with public authenticated MCP plus
+  tailnet-only enrollment. Public/private route and installed-client checks
+  passed. Mounted ChatGPT/Codex playback and user outcome remain unverified
+  because no browser-control surface was connected.
 
 ## Open risks and F0 questions
 
@@ -193,9 +196,8 @@ and final repository-check results.
   media remains blocked on external provisioning plus observed allocation and
   mounted playback. Explicit STUN is only a compatibility step and discloses
   peer network metadata to its provider.
-- Deployment must preserve every existing Tailscale handler, keep enrollment
-  Funnel-disabled, and use an unused private Serve port plus distinct loopback
-  listener port.
+- The deployed route uses tailnet-only Serve 8447 to loopback 8789; Funnel is
+  still enabled only on 443 and existing handlers were preserved.
 - The first Orca backend and the prepared-job/session handoff remain open.
 - Subscription, freshness, reconnect, history, notification destination, and
   remote identity/distribution boundaries remain open.
@@ -206,10 +208,8 @@ and final repository-check results.
 
 ## Next action
 
-Wait for coordinator approval and TURN REST provisioning. Deployment must
-snapshot existing routing
-and service state, stage without replacing OAuth state, verify both loopback
-listeners, add only one unused tailnet-only Serve handler with Funnel disabled,
-and preserve every public handler. Public-edge, TURN, printer, mounted ChatGPT,
-mounted Codex, and user-outcome checks remain separate evidence gates. Do not
-deploy, merge, publish, or contact hardware from repository validation alone.
+Use a fresh mounted ChatGPT or Codex task to validate the cache-busted widget and
+Go Live path. If host-only ICE fails, obtain owner-approved TURN REST service
+details and verify a real relay allocation before retrying both hosts. Keep
+mounted playback, TURN, printer protocol, and user outcome as separate evidence
+layers.

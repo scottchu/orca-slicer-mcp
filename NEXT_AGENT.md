@@ -102,31 +102,28 @@ broader-permission config and for closing a valid camera session when the rest
 of its stream envelope is malformed. Both fixes are included in the passing
 suite.
 
-After merge, the user authorized installation and read-only testing. Personal
-Marketplace version `0.2.0+codex.20260827152101` installed from a release-staged
-standalone executable. Setup created the default owner-only config, live doctor
-reported the printer reachable, and a direct installed-cache MCP client verified
-the seven-tool inventory, status, JPEG snapshot relay, WebRTC offer, and explicit
-session close. No printer-control tool or action ran. The current Codex task did
-not hot-reload the newly installed MCP surface, so mounted iframe behavior still
-requires a fresh task.
+Pull request 18 merged the secure remote slice as `e298885`. Personal
+Marketplace version `0.2.0+codex.20260827202019` is installed; the exact staged
+and installed standalone runtime hash is recorded in `VALIDATION.md`. The
+owner-only schema-2 config uses explicit STUN. The protected public service and
+separate enrollment listener are healthy; tailnet-only Serve 8447 reaches only
+the enrollment listener and Funnel remains enabled only on 443. OAuth state was
+preserved. Public enrollment is 404 and unauthenticated MCP is 401.
+
+An exact installed-cache client verified the four model-visible plus three
+app-only read-only tools, reachable status, a real JPEG, H264 offer, and close.
+The printer offer still advertised only host candidates. No browser-control
+surface was connected, so mounted ChatGPT/Codex playback is not accepted. No
+TURN service or shared secret is configured.
 
 ## Next smallest action
 
-Wait for coordinator approval and external TURN REST-compatible URLs/shared
-secret. Then capture current Serve/Funnel and LaunchAgent state, choose an
-unused private Serve HTTPS port and distinct loopback enrollment port, stage
-the executable and owner config without replacing OAuth state, and restart only
-the U1 service. Verify both loopback listeners first. Preserve every public
-handler, keep public `/auth` routed to the rejecting backend, add only the new
-private Serve handler, and keep Funnel disabled on that port. Compare routing
-against the saved state.
-
-Then record public discovery/401/enrollment rejection, private health and
-enrollment state, the exact authenticated four-plus-three inventory, explicit
-STUN if selected, a real TURN allocation, real-printer offer/media, and mounted
-ChatGPT and Codex playback as separate evidence layers. Rollback restores the
-previous runtime/env and removes only the newly added private Serve handler.
+Open a fresh Codex or ChatGPT task so the cache-busted plugin surface loads, then
+invoke the status card and Go Live once. Record mounted playback, Close,
+fallback if exercised, PiP, and fullscreen separately. If host-only ICE still
+fails, provision owner-approved TURN REST-compatible URLs and a shared secret,
+verify a real relay allocation, and repeat both hosts. Do not claim reliable
+remote media from STUN or fixture credentials alone.
 
 ## Preserve
 

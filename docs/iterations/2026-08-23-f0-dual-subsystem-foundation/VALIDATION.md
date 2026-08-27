@@ -1095,3 +1095,51 @@ From the repository root:
 - No printer or mounted host was contacted. ChatGPT and Codex WebRTC playback,
   snapshot fallback, Close, PiP, fullscreen, and user outcome remain
   unobserved. No mounted-host success is claimed.
+
+## Post-merge secure remote deployment — 2026-08-27
+
+### Delivery and installation
+
+- Pull request 18 merged the secure source slice as `e298885`. Independent
+  reruns passed the repository contract with 60 Bun tests and 324 assertions,
+  both bundles, the setup skill validator, the plugin validator, signature
+  verification, and whitespace checks.
+- Personal Marketplace version `0.2.0+codex.20260827202019` was release-staged
+  and installed. Source, staged, and installed standalone runtimes shared
+  SHA-256 `d6f5f23f90c532e86acb0b3c7a0fc32f10d7deeede73bb267be66c13ec33fac1`.
+  The prior personal source is recoverable from Trash at
+  `u1-print-studio-personal-source-20260827T201915Z`.
+- The owner config migrated from schema 1 to schema 2 with mode `0600` and one
+  explicit STUN URL. Offline doctor reported `explicit-stun-only`; no printer
+  origin or credential was recorded here.
+
+### Live public and private boundaries
+
+- OAuth state SHA-256 was unchanged across the service reload. The LaunchAgent
+  now runs the merged repository app rather than the replaceable Marketplace
+  staging source; its previous plist is recoverable from Trash at
+  `com.scottchu.u1-print-studio.plist.20260827T202600Z`.
+- Loopback public and enrollment health returned 200 on ports 8787 and 8789.
+  Public standard-HTTPS health returned 200, public enrollment returned 404,
+  and unauthenticated public MCP returned 401 with `u1.monitor` resource
+  metadata. OAuth discovery published only standard-HTTPS endpoints.
+- Existing Serve/Funnel routes were preserved. Tailnet-only Serve port 8447
+  proxies only to the enrollment listener; private health returned 200 while
+  private MCP, token, media, widget, and enrolled-state enrollment routes all
+  returned 404. Funnel remained enabled only on port 443.
+
+### Installed and real-printer read-only evidence
+
+- An exact installed-cache stdio client listed seven tools: four model-visible
+  read-only tools and three app-only signaling helpers. Status reported the
+  printer reachable, a relayed JPEG observation reported 124,642 bytes, an
+  H264 offer included one configured ICE server, and explicit local session
+  close returned true. No printer-control tool or action ran.
+- A direct bounded printer offer confirmed the STUN config reached the printer,
+  but its SDP still contained only `host` candidates and no server-reflexive or
+  relay candidate. This does not prove internet-routable media.
+- Browser discovery returned no connected browser surface. Mounted ChatGPT and
+  Codex playback, fallback, PiP, fullscreen, and user-visible success therefore
+  remain unverified. No TURN REST service URL or shared secret was supplied, so
+  a real relay allocation and reliable arbitrary-network playback remain
+  externally blocked.

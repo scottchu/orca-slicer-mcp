@@ -423,16 +423,35 @@ included.
 - The automatic-refresh button no longer renders a separate dot; enabled and
   paused behavior and accessible labels are unchanged.
 
+## Secure remote deployment — 2026-08-27
+
+Pull request 18 merged as `e298885`. Personal Marketplace version
+`0.2.0+codex.20260827202019` is installed with a source/stage/cache runtime hash
+recorded in `VALIDATION.md`. The owner config is schema 2 and `0600` with one
+explicit STUN URL. OAuth state was preserved across reload.
+
+The public service is standard HTTPS and authenticated; health is 200, public
+enrollment is 404, and unauthenticated MCP is 401. A separate loopback
+enrollment listener is exposed only through tailnet Serve 8447. Its health is
+200 and its MCP, OAuth-token, media, widget, and enrolled-state enrollment
+routes are 404. Funnel remains enabled only on 443 and all prior handlers were
+preserved.
+
+The exact installed runtime verified four model-visible plus three app-only
+read-only tools, reachable status, a 124,642-byte JPEG observation, H264 offer,
+one configured ICE server, and explicit session close. The printer offer still
+contained only host candidates. No browser surface was connected and no TURN
+service was supplied, so mounted playback and robust arbitrary-network media
+remain open evidence gates.
+
 ## Next smallest action
 
-Reload the private dashboard and verify the native browser's `Live` state and
-measured FPS, then start a fresh authenticated host thread and verify the exact four-tool remote
-inventory. If the component mounts, invoke `Go Live` once and separately record
-continuous rendering, snapshot fallback if exercised, `Close`, PiP, fullscreen,
-and iOS behavior. Also repeat `show_u1_status` after the access-token lifetime
-to close the real-host renewal gate. Then resume synthetic non-user dry-slice
-and negative fixtures. Do not expose Moonraker or build a shared CLI merely
-because the manual commands exist.
+Start a fresh authenticated Codex or ChatGPT task so it loads the cache-busted
+plugin. Verify the four model-visible tools, mount the status card, invoke Go
+Live once, and record continuous rendering, Close, fallback if exercised, PiP,
+fullscreen, and iOS separately. If host-only ICE fails, provision an
+owner-approved TURN REST service and verify a real relay allocation before
+retrying. Do not expose Moonraker or add printer controls.
 
 ## Restart instructions
 
