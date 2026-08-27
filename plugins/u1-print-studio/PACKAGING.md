@@ -54,6 +54,14 @@ A same-machine personal Marketplace installation has now exercised this staging
 contract. Publication, another-machine installation, Homebrew, and npm remain
 unverified.
 
+Plugin installation and upgrades take effect in a new ChatGPT or Codex task.
+Existing tasks can retain the prior installed MCP process and widget resource
+URI, so they are not an upgrade acceptance surface. The server keeps the
+immediately preceding widget URI readable as a compatibility alias so already
+rendered cards can recover their UI resource while users move to a new task.
+Do not replace the portable relative runtime command with a machine-specific
+absolute path to make an old task appear current.
+
 This private repository currently has no license file. Do not describe or
 publish an artifact as an open-source distribution until the owner selects a
 license and repository ownership/dependency notices are reviewed. License

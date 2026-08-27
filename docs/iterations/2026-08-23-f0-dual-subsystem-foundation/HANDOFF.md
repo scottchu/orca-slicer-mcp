@@ -1,5 +1,28 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-27 mounted-app recovery follow-up
+
+The screenshots exposed three independent states: an old Codex task retained a
+pre-upgrade local MCP snapshot, the registered remote connection requested the
+old `status-v3.html` URI, and the optional private `:8444` dashboard had no
+process listening behind its Serve route. The current installed standalone
+binary exists, has a valid ad-hoc signature, resolves from the plugin-root cwd,
+and starts from a clean environment; no machine-specific absolute command was
+added.
+
+The recovery branch `scottchu/fix-u1-app-loading` keeps current descriptors on
+`status-v4.html` and registers `status-v3.html` as a compatibility resource
+serving the exact same self-contained widget and empty external CSP. Packaging
+and app documentation now require a new task after installation or upgrade and
+explain that the standalone dashboard is separately supervised. The monitor
+skill now describes the actual MCP Apps signaling bridge rather than a stale
+relay-URL path.
+
+TypeScript, 61 tests with 329 assertions, both bundles, compiled-resource smoke,
+signature verification, plugin validation, both touched skill validators, and
+whitespace checks pass. No printer command, control tool, live route change,
+OAuth mutation, or mounted-host success is claimed by this source validation.
+
 ## 2026-08-27 secure remote Monitor handoff
 
 The user changed execution order to the secure remote U1 Print Studio Monitor

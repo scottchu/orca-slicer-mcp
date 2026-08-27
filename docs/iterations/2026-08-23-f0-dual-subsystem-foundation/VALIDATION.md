@@ -1,5 +1,42 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-27 mounted-app recovery source validation
+
+### Acceptance and evidence boundary
+
+- Milestone: F0 dual-environment and contract discovery.
+- Keep current tool descriptors on `status-v4.html`, read the immediately
+  preceding `status-v3.html` URI for retained cards, and preserve empty external
+  CSP plus the exact four model-visible and three app-only read-only tools.
+- Keep the release runtime command relative to the installed plugin root. A
+  machine-specific absolute path is not an acceptable open-source packaging
+  repair.
+- Static/software and simulated MCP evidence do not prove mounted playback.
+  The private `:8444` standalone dashboard is a separately supervised developer
+  adapter and its 502 does not prove an MCP or printer failure.
+
+### Diagnosis and commands
+
+- The exact installed cache executable existed, was arm64 Mach-O, passed
+  `codesign -vvv --verify`, and printed help from both its plugin-root cwd and a
+  minimal clean environment.
+- `codex mcp list` resolved the current release command to the exact installed
+  plugin-root cwd. The failing task requested `status-v3.html`, identifying a
+  retained pre-upgrade task snapshot rather than a missing current executable.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 61 tests with 329 assertions. The new
+  regression lists and reads both resource URIs and proves identical widget
+  HTML, MCP Apps MIME type, and empty external CSP.
+- `bun run bundle` and `bun run bundle:runtime`: passed. The standalone runtime
+  passed signature verification and printed help.
+- An exact compiled stdio client launched the standalone runtime with `/tmp` as
+  its cwd, listed v4 and v3, read both resources at 52,470 bytes, and proved
+  their text identical.
+- Plugin Creator validation passed. Skill Creator validation passed for
+  `u1-monitor-print` and `u1-mobile-status-setup`. `git diff --check` passed.
+- No live service, OAuth state, Serve/Funnel route, printer, or installed plugin
+  was changed during source validation.
+
 ## Environment
 
 - Working baseline: `32762dd`

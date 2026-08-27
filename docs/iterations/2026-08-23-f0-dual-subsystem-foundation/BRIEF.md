@@ -22,6 +22,22 @@
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
   it proves useful
 
+## 2026-08-27 mounted-app recovery acceptance
+
+- Keep `status-v4.html` as the only URI advertised by current tool descriptors,
+  but serve `status-v3.html` as a compatibility resource for cards retained by
+  an older task.
+- Prove both resource URIs return the exact same self-contained widget and
+  preserve empty external CSP domains.
+- Keep the release executable path portable and relative to the installed
+  plugin root. Diagnose an old task separately from the current installed
+  runtime; plugin upgrade acceptance requires a new task.
+- Treat the private `:8444` standalone dashboard as a separately supervised
+  developer adapter. A 502 there must not be reported as an MCP, printer, or
+  mounted-widget failure.
+- Preserve exactly four model-visible and three app-only read-only tools. No
+  printer control or media URL is added.
+
 ## Outcome
 
 Correct the durable product contract to two peer subsystems, then identify the
