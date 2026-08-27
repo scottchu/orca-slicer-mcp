@@ -1,5 +1,36 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-27 mounted-app recovery rollout
+
+Pull request 20 merged the compatibility-resource repair as `4d4ea2f`.
+Personal Marketplace version `0.2.0+codex.20260827215815` is installed from a
+validated standalone arm64 executable. The exact installed-cache MCP smoke
+listed and read identical v4 and v3 widget resources, retained exactly four
+model-visible plus three app-only read-only tools, observed the configured
+printer, obtained a JPEG and camera offer, and explicitly closed the session.
+The prior personal source remains recoverable from Trash.
+
+The public service was restarted after merge. Existing authenticated OAuth MCP
+calls still return fresh status and JPEG metadata; public health is 200,
+unauthenticated MCP is 401, public enrollment is 404, and private enrollment
+health is 200. No OAuth replacement was required.
+
+The private 8444 dashboard 502 was a separate process-supervision failure, not
+an MCP, printer, or camera failure. A dedicated owner LaunchAgent now supervises
+the loopback dashboard listener. Its first start exposed a missing Tailscale CLI
+directory in the restricted `PATH`; that was repaired and re-bootstrapped.
+Both the local listener and private HTTPS dashboard now return 200. A live
+dashboard bridge smoke produced a 981-byte SDP offer with one ICE server and
+then closed the bounded session. Existing Tailscale public, private, and
+unrelated handlers were preserved.
+
+The remaining acceptance gate is visual, not server-side: no browser-control
+surface was connected, so visible playback, FPS, UI-triggered Close, PiP,
+fullscreen, and mounted Codex/ChatGPT behavior are not accepted. Use a fresh
+task after plugin upgrade, then reload the private dashboard and invoke Go Live
+once. Keep snapshot and signaling evidence separate from visible playback
+evidence.
+
 ## 2026-08-27 mounted-app recovery follow-up
 
 The screenshots exposed three independent states: an old Codex task retained a
@@ -10,13 +41,13 @@ binary exists, has a valid ad-hoc signature, resolves from the plugin-root cwd,
 and starts from a clean environment; no machine-specific absolute command was
 added.
 
-The recovery branch `scottchu/fix-u1-app-loading` keeps current descriptors on
-`status-v4.html` and registers `status-v3.html` as a compatibility resource
-serving the exact same self-contained widget and empty external CSP. Packaging
-and app documentation now require a new task after installation or upgrade and
-explain that the standalone dashboard is separately supervised. The monitor
-skill now describes the actual MCP Apps signaling bridge rather than a stale
-relay-URL path.
+At the pre-merge source stage, branch `scottchu/fix-u1-app-loading` kept current
+descriptors on `status-v4.html` and registered `status-v3.html` as a
+compatibility resource serving the exact same self-contained widget and empty
+external CSP. Packaging and app documentation now require a new task after
+installation or upgrade and explain that the standalone dashboard is
+separately supervised. The monitor skill now describes the actual MCP Apps
+signaling bridge rather than a stale relay-URL path.
 
 TypeScript, 61 tests with 329 assertions, both bundles, compiled-resource smoke,
 signature verification, plugin validation, both touched skill validators, and

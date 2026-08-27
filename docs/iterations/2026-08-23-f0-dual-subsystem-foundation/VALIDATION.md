@@ -1,5 +1,60 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-27 post-merge app recovery and live read-only acceptance
+
+### Delivery and installed runtime
+
+- Pull request 20 merged the compatibility-resource repair as `4d4ea2f`.
+- Personal Marketplace version `0.2.0+codex.20260827215815` was release-staged,
+  validated, and installed. The staged and installed standalone executables
+  both had SHA-256
+  `2f9398965871c3eefbfac872e6829583ee37a54089a2450f2550d614b8011c12`;
+  the installed arm64 Mach-O passed ad-hoc signature verification.
+- `codex mcp get u1-print-studio` resolved the portable relative release
+  command from the exact installed plugin-root cwd. No user-specific absolute
+  path was introduced.
+- An exact installed-cache stdio client listed the four model-visible plus
+  three app-only read-only tools, listed and read both `status-v4.html` and
+  `status-v3.html` with identical content, observed standby status, obtained a
+  259,389-byte JPEG, opened one bounded camera offer with one ICE server, and
+  explicitly closed it.
+- The replaced personal source was moved to a recoverable Trash quarantine.
+  Its machine-local path is intentionally not recorded in the repository.
+
+### Deployed service and evidence boundary
+
+- The existing public service was restarted only after the merge. Its
+  LaunchAgent and the new separately supervised dashboard LaunchAgent both
+  reported `running`.
+- Public health, private dashboard page and health, and private enrollment
+  health each returned HTTP 200. Unauthenticated MCP returned 401 and public
+  enrollment returned 404.
+- The existing authenticated remote MCP connection remained usable after the
+  restart: it observed standby status and fresh snapshot metadata reporting an
+  available 255,860-byte `image/jpeg`.
+- The private dashboard bridge opened a real read-only camera session with a
+  981-byte SDP offer and one ICE server, then returned `closed: true` for the
+  explicit close.
+- Existing Tailscale handlers were inspected after deployment. Public 443
+  still maps only the prior exact public handlers, private 8444 maps to the
+  dashboard listener, private 8447 maps to the enrollment listener, and
+  unrelated 8445/8446 handlers remain present. This recovery did not mutate
+  routing.
+- The first dashboard LaunchAgent start failed because its restricted `PATH`
+  omitted the installed Tailscale CLI directory. Adding that fixed path and
+  re-bootstrapping the exact dashboard agent repaired the 502; the service now
+  listens on loopback and the private HTTPS dashboard returns 200.
+- No connected browser-control surface was available. Server-side
+  offer/session/close and snapshot transport are accepted, but visible mounted
+  video, FPS, UI-triggered Close, PiP, and fullscreen remain unaccepted
+  user-outcome evidence.
+- No upload, start, pause, resume, cancel, G-code, route mutation, credential
+  replacement, or other printer-control action ran.
+- `./scripts/check-repository.sh` reran after recording deployment evidence:
+  TypeScript passed, 61 tests with 329 assertions passed, and the repository
+  contract reported `ok`.
+- `git diff --check` passed after the same record update.
+
 ## 2026-08-27 mounted-app recovery source validation
 
 ### Acceptance and evidence boundary
