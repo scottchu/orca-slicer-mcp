@@ -996,6 +996,7 @@ From the repository root:
   `get_u1_camera_frame` returned relayed `image/jpeg` data;
   `open_u1_camera_stream` returned an MCP Apps offer; and
   `close_u1_camera_stream` confirmed explicit teardown.
-- The previous installed cache version remains available as a rollback
-  artifact. A mistakenly resolved, unused staging copy was moved to
-  a dated Trash quarantine outside the repository rather than deleted.
+- The installer replaced the previous cache version; rollback requires
+  restaging a prior Git version rather than selecting an old cache directory.
+  A mistakenly resolved, unused staging copy was moved to a dated Trash
+  quarantine outside the repository rather than deleted.
