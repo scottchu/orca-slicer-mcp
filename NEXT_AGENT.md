@@ -86,20 +86,29 @@ broader-permission config and for closing a valid camera session when the rest
 of its stream envelope is malformed. Both fixes are included in the passing
 suite.
 
+After merge, the user authorized installation and read-only testing. Personal
+Marketplace version `0.2.0+codex.20260827152101` installed from a release-staged
+standalone executable. Setup created the default owner-only config, live doctor
+reported the printer reachable, and a direct installed-cache MCP client verified
+the seven-tool inventory, status, JPEG snapshot relay, WebRTC offer, and explicit
+session close. No printer-control tool or action ran. The current Codex task did
+not hot-reload the newly installed MCP surface, so mounted iframe behavior still
+requires a fresh task.
+
 ## Next smallest action
 
-First review the delivered pull request and confirm all repository checks still
-pass. Then choose one evidence-backed follow-up:
+First open a fresh Codex task and verify that the installed plugin mounts the
+status widget and that Go Live, Close, PiP, fullscreen, and fallback behave as
+expected. Then choose one evidence-backed packaging follow-up:
 
 1. create a reproducible signed/notarized macOS packaging fixture without
    publishing it; or
 2. remove the platform-`curl` runtime dependency while preserving fixed
    routes and macOS local-network behavior.
 
-Do not publish, update an installed plugin, mutate a marketplace, or contact a
-printer without a new explicit user request. If the user authorizes mounted
-host or printer validation, keep host rendering, read-only protocol evidence,
-physical-printer evidence, and user outcome in separate records.
+Do not publish or contact a printer again without a new explicit user request.
+Keep host rendering, read-only protocol evidence, physical-printer evidence,
+and user outcome in separate records.
 
 ## Preserve
 
