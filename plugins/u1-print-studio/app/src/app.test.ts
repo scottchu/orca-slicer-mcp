@@ -91,7 +91,11 @@ async function connectClient(options: { oauth?: boolean; relay?: boolean } = {})
             sessionId: "private-session-token",
             type: "offer" as const,
             sdp: "v=0\r\nfixture-offer\r\n",
-            iceServers: [],
+            iceServers: [{
+              urls: ["turns:relay.example:5349?transport=tcp"],
+              username: "1700001800:fixture-nonce",
+              credential: "derived-turn-credential",
+            }],
             expiresAt: "2026-08-25T13:22:02.688Z",
             maxDurationSeconds: 1800,
             }),
@@ -313,11 +317,19 @@ describe("U1 status MCP App contract", () => {
         transport: "mcp-apps-tools",
         sessionId: "private-session-token",
         offer: { type: "offer", sdp: "v=0\r\nfixture-offer\r\n" },
-        iceServers: [],
+        iceServers: [{
+          urls: ["turns:relay.example:5349?transport=tcp"],
+          username: "1700001800:fixture-nonce",
+          credential: "derived-turn-credential",
+        }],
       },
     });
     expect(JSON.stringify(result.content)).not.toContain("private-session-token");
     expect(JSON.stringify(result.structuredContent)).not.toContain("private-session-token");
+    expect(JSON.stringify(result.content)).not.toContain("derived-turn-credential");
+    expect(JSON.stringify(result.structuredContent)).not.toContain(
+      "derived-turn-credential"
+    );
   });
 });
 

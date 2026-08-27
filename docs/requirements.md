@@ -36,14 +36,24 @@ printer environments support the described behavior.
   `webrtc-camerastreamer` behind the host and connector boundary. An optional
   exact HTTP adapter may exchange an authenticated single-use grant for that
   same application session. Video frames flow over the negotiated peer
-  connection and presentation FPS is measured in the browser. Validated
-  snapshots remain an explicit fallback. This does not imply persistent
-  ingestion or diagnostic quality.
+  connection and presentation FPS is measured in the browser. ICE configuration
+  defaults empty. A bounded explicit STUN list may be supplied as an external
+  privacy and availability dependency; robust remote use prefers per-session
+  RFC5766 TURN REST credentials derived from a server-only shared secret.
+  Validated snapshots remain an explicit fallback. This does not imply
+  persistent ingestion or diagnostic quality.
 - **CAM-005:** A hosted MCP App iframe performs no direct fetch to a LAN,
   Tailscale, or media-signaling URL. Offer, answer, bounded ICE candidates, and
   close cross the MCP Apps `tools/call` bridge; opaque session and offer data
   remain component-private. The local connector alone invokes the
   printer-advertised fixed signaling route.
+- **CAM-006:** The printer camera peer and mounted widget receive the same
+  bounded ICE-server set for a camera session. TURN usernames contain a bounded
+  expiry and nonce, TURN credentials are derived with HMAC-SHA1 from a
+  server-only shared secret, and only derived credentials enter widget-private
+  metadata. Printer origins, printer peer IDs, session capabilities, TURN
+  secrets, and derived TURN credentials remain absent from model-readable
+  content and structured content.
 
 ## Events and notifications
 
@@ -100,6 +110,15 @@ printer environments support the described behavior.
   call that issues a short-lived, single-use media capability. The capability
   is absent from model-readable results and is bounded by lease duration and
   concurrency without expanding `u1.monitor`.
+- **AUTH-004:** Public passkey enrollment routes reject every request. Passkey
+  registration is served only from a distinct loopback listener intended for a
+  tailnet-only Tailscale Serve HTTPS origin on a nonstandard port. The public
+  and enrollment origins share one hostname and WebAuthn relying-party ID but
+  verify their distinct origins. Public OAuth authorization and passkey
+  assertion remain on standard HTTPS port 443. When the private origin is
+  configured, its listener remains available for health checks even after
+  enrollment; enrollment itself then returns 404 until a local reset creates a
+  new one-time flow.
 
 ## API surfaces
 
@@ -113,6 +132,11 @@ printer environments support the described behavior.
 - **API-004:** File, queue, database, webcam-configuration, account, service,
   update, and power mutations are classified as writes even when they do not
   immediately move or heat the printer.
+- **API-005:** The remote Monitor inventory contains exactly four model-visible
+  tools (`show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
+  `open_u1_camera_stream`) plus exactly three app-only signaling helpers
+  (`answer_u1_camera_stream`, `add_u1_camera_ice_candidates`, and
+  `close_u1_camera_stream`). All seven are read-only and require `u1.monitor`.
 
 ## Architecture and ontology
 

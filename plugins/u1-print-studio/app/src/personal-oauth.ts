@@ -109,6 +109,7 @@ type TokenBinding = {
 
 export type PersonalOAuthConfig = {
   publicBaseUrl: string;
+  enrollmentBaseUrl?: string;
   stateDirectory?: string;
   ownerName?: string;
   enrollmentToken?: string;
@@ -116,14 +117,39 @@ export type PersonalOAuthConfig = {
   now?: () => number;
 };
 
-function normalizedBaseUrl(value: string): URL {
+function normalizedHttpsBaseUrl(value: string, label: string): URL {
   const url = new URL(value);
   if (url.protocol !== "https:") {
-    throw new Error("U1_PUBLIC_BASE_URL must use https");
+    throw new Error(`${label} must use https`);
+  }
+  if (url.username || url.password || url.search || url.hash) {
+    throw new Error(`${label} must be an HTTPS base URL without credentials`);
   }
   url.hash = "";
   url.search = "";
   url.pathname = url.pathname.replace(/\/$/, "");
+  return url;
+}
+
+function normalizedPublicBaseUrl(value: string): URL {
+  const url = normalizedHttpsBaseUrl(value, "U1_PUBLIC_BASE_URL");
+  if (url.port) {
+    throw new Error("U1_PUBLIC_BASE_URL must use standard HTTPS port 443");
+  }
+  return url;
+}
+
+function normalizedEnrollmentBaseUrl(value: string, publicBaseUrl: URL): URL {
+  const url = normalizedHttpsBaseUrl(value, "U1_ENROLLMENT_BASE_URL");
+  if (url.hostname !== publicBaseUrl.hostname) {
+    throw new Error("Enrollment and public OAuth must use the same hostname");
+  }
+  if (url.origin === publicBaseUrl.origin || !url.port || url.port === "443") {
+    throw new Error("Enrollment must use a distinct nonstandard HTTPS origin");
+  }
+  if (url.pathname !== "/") {
+    throw new Error("Enrollment base URL must identify an origin without a path");
+  }
   return url;
 }
 
@@ -287,6 +313,8 @@ export class PersonalOAuthService {
   readonly resource: string;
   readonly rpId: string;
   readonly expectedOrigin: string;
+  readonly enrollmentExpectedOrigin: string | null;
+  readonly enrollmentBaseUrl: URL | null;
   readonly enrollmentUrl: string | null;
   readonly enrollmentLinkPath: string;
 
@@ -311,7 +339,13 @@ export class PersonalOAuthService {
     signingKey: CryptoKey | Uint8Array;
     verificationKey: CryptoKey | Uint8Array;
   }) {
-    this.publicBaseUrl = normalizedBaseUrl(args.config.publicBaseUrl);
+    this.publicBaseUrl = normalizedPublicBaseUrl(args.config.publicBaseUrl);
+    this.enrollmentBaseUrl = args.config.enrollmentBaseUrl
+      ? normalizedEnrollmentBaseUrl(
+          args.config.enrollmentBaseUrl,
+          this.publicBaseUrl
+        )
+      : null;
     this.basePath = this.publicBaseUrl.pathname === "/"
       ? ""
       : this.publicBaseUrl.pathname;
@@ -319,16 +353,22 @@ export class PersonalOAuthService {
     this.resource = new URL(`${this.basePath}/mcp`, this.publicBaseUrl.origin).toString();
     this.rpId = this.publicBaseUrl.hostname;
     this.expectedOrigin = this.publicBaseUrl.origin;
+    this.enrollmentExpectedOrigin = this.enrollmentBaseUrl?.origin ?? null;
     this.ownerName = args.config.ownerName ?? "U1 owner";
     this.state = args.state;
     this.statePath = args.statePath;
     this.enrollmentLinkPath = args.enrollmentLinkPath;
     this.enrollmentToken = args.enrollmentToken;
+    if (!this.state.credential && this.enrollmentToken && !this.enrollmentBaseUrl) {
+      throw new Error(
+        "U1_ENROLLMENT_BASE_URL is required before passkey enrollment"
+      );
+    }
     this.enrollmentUrl = this.state.credential || !this.enrollmentToken
       ? null
       : new URL(
-          `${this.basePath}/auth/enroll?token=${encodeURIComponent(this.enrollmentToken)}`,
-          this.publicBaseUrl.origin
+          `/auth/enroll?token=${encodeURIComponent(this.enrollmentToken)}`,
+          this.enrollmentBaseUrl!
         ).toString();
     this.allowedRedirectOrigins = new Set(
       args.config.allowedRedirectOrigins ?? ["https://chatgpt.com"]
@@ -717,8 +757,8 @@ button.addEventListener("click", async () => {
   }
 
   private enrollmentPage(token: string): string {
-    const optionsPath = `${this.basePath}/auth/enroll/options?token=${encodeURIComponent(token)}`;
-    const verifyPath = `${this.basePath}/auth/enroll/verify?token=${encodeURIComponent(token)}`;
+    const optionsPath = `/auth/enroll/options?token=${encodeURIComponent(token)}`;
+    const verifyPath = `/auth/enroll/verify?token=${encodeURIComponent(token)}`;
     return page(
       "Enroll U1 passkey",
       `<p>U1 PRINT STUDIO</p><h1>Enroll this device</h1><p>Create the personal passkey used to connect the read-only iPhone status card. Keep this device available for recovery.</p><button id="enroll">Create passkey</button><p id="message" role="status"></p>`,
@@ -764,6 +804,14 @@ button.addEventListener("click", async () => {
     const externalPath = prefix && localPath.startsWith(prefix)
       ? localPath.slice(prefix.length) || "/"
       : localPath;
+
+    if (
+      externalPath === "/auth/enroll" ||
+      externalPath.startsWith("/auth/enroll/")
+    ) {
+      writeJson(res, 404, { error: "not_found" });
+      return true;
+    }
 
     if (
       req.method === "GET" &&
@@ -935,6 +983,16 @@ button.addEventListener("click", async () => {
       }
       return true;
     }
+    return false;
+  }
+
+  async handleEnrollment(
+    req: IncomingMessage,
+    res: ServerResponse,
+    url: URL
+  ): Promise<boolean> {
+    this.cleanExpired();
+    const externalPath = url.pathname;
     if (req.method === "GET" && externalPath === "/auth/enroll") {
       const token = url.searchParams.get("token") ?? "";
       if (!this.enrollmentTokenValid(token)) {
@@ -979,7 +1037,7 @@ button.addEventListener("click", async () => {
         const verification = await verifyRegistrationResponse({
           response,
           expectedChallenge: this.enrollmentChallenge,
-          expectedOrigin: this.expectedOrigin,
+          expectedOrigin: this.enrollmentExpectedOrigin!,
           expectedRPID: this.rpId,
           requireUserVerification: true,
         });
@@ -1014,6 +1072,7 @@ export async function createPersonalOAuthFromEnvironment(): Promise<PersonalOAut
   if (!publicBaseUrl) throw new Error("U1_PUBLIC_BASE_URL is required for personal remote auth");
   return await PersonalOAuthService.create({
     publicBaseUrl,
+    enrollmentBaseUrl: process.env.U1_ENROLLMENT_BASE_URL?.trim() || undefined,
     stateDirectory: process.env.U1_AUTH_STATE_DIR?.trim() || undefined,
     ownerName: process.env.U1_OWNER_NAME?.trim() || undefined,
     enrollmentToken: process.env.U1_ENROLLMENT_TOKEN?.trim() || undefined,

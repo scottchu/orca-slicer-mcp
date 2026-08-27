@@ -2,6 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 
 import {
   CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS,
+  createCameraOfferRequest,
   extractFirstJpeg,
   resolveCameraUrl,
 } from "./u1-status.js";
@@ -36,6 +37,24 @@ describe("camera URL boundary", () => {
     expect(() => resolveCameraUrl("/webcam/snapshot.jpg")).toThrow(
       "Printer URL must use http or https"
     );
+  });
+});
+
+describe("camera ICE handoff", () => {
+  test("sends the exact issued ephemeral servers to the printer request", () => {
+    const issued = [{
+      urls: ["turn:relay.example:3478"],
+      username: "1700001800:nonce",
+      credential: "derived-credential",
+    }];
+    const request = createCameraOfferRequest({
+      hasStun: false,
+      hasTurn: true,
+      turnCredentialTtlSeconds: 1800,
+      issue: () => issued,
+    });
+    expect(request.iceServers).toBe(issued);
+    expect(request.payload.iceServers).toBe(issued);
   });
 });
 

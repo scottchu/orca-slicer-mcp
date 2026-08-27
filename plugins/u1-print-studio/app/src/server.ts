@@ -5,6 +5,7 @@ import type { AuthInfo } from "@modelcontextprotocol/sdk/server/auth/types.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 
 import { createAppServer, readWidgetHtml } from "./app.js";
+import { createCameraIceServerProvider } from "./camera-ice-config.js";
 import {
   createCameraStreamLocator,
   createCameraWebRtcHandler,
@@ -18,6 +19,7 @@ import type {
   CameraStreamLocator,
 } from "./application/camera-relay.js";
 import { createCameraRuntime } from "./camera-runtime.js";
+import { defaultConfigPath, readOptionalLocalConfig } from "./local-config.js";
 import {
   createPersonalOAuthFromEnvironment,
   MONITOR_SCOPE,
@@ -217,6 +219,52 @@ export function createRequestHandler(
   };
 }
 
+export function createEnrollmentRequestHandler(oauth: PersonalOAuthService) {
+  return async (req: IncomingMessage, res: ServerResponse) => {
+    if (!req.url) {
+      res.writeHead(400).end("Missing URL");
+      return;
+    }
+    const url = new URL(req.url, "http://" + (req.headers.host ?? "localhost"));
+    if (req.method === "GET" && url.pathname === "/health") {
+      res.writeHead(200, {
+        "cache-control": "no-store",
+        "content-type": "application/json; charset=utf-8",
+      }).end(JSON.stringify({ ok: true, surface: "passkey-enrollment" }));
+      return;
+    }
+    if (await oauth.handleEnrollment(req, res, url)) return;
+    res.writeHead(404).end("Not Found");
+  };
+}
+
+export function createServerCameraIceServerProvider(
+  environment: NodeJS.ProcessEnv = process.env
+) {
+  const localConfig = readOptionalLocalConfig(defaultConfigPath(environment));
+  return createCameraIceServerProvider(environment, {
+    configuredStunUrls: localConfig?.camera.stunUrls ?? [],
+  });
+}
+
+export function enrollmentPortFromEnvironment(
+  publicPort: number,
+  environment: NodeJS.ProcessEnv = process.env
+): number {
+  const enrollmentPort = Number(environment.U1_ENROLLMENT_PORT?.trim());
+  if (
+    !Number.isInteger(enrollmentPort) ||
+    enrollmentPort < 1_024 ||
+    enrollmentPort > 65_535 ||
+    enrollmentPort === publicPort
+  ) {
+    throw new Error(
+      "U1_ENROLLMENT_PORT must be a distinct loopback port from 1024 to 65535"
+    );
+  }
+  return enrollmentPort;
+}
+
 export async function startServer() {
   const statusDashboardEnabled = process.env.U1_STATUS_DASHBOARD === "1";
   const oauth = statusDashboardEnabled
@@ -227,9 +275,12 @@ export async function startServer() {
   const dashboardBaseUrl = statusDashboardEnabled
     ? statusDashboardBaseUrl(port)
     : null;
+  const iceServerProvider = createServerCameraIceServerProvider();
   const cameraRelay = (() => {
     if (!oauth && !statusDashboardEnabled) return null;
-    const { relay, sessions, controller } = createCameraRuntime();
+    const { relay, sessions, controller } = createCameraRuntime({
+      iceServerProvider,
+    });
     return {
       relay,
       sessions,
@@ -251,6 +302,29 @@ export async function startServer() {
   );
 
   await new Promise<void>((resolve) => server.listen(port, host, resolve));
+  if (oauth?.enrollmentBaseUrl) {
+    let enrollmentPort: number;
+    try {
+      enrollmentPort = enrollmentPortFromEnvironment(port);
+    } catch (error) {
+      server.close();
+      throw error;
+    }
+    const enrollmentServer = createServer(createEnrollmentRequestHandler(oauth));
+    try {
+      await new Promise<void>((resolve, reject) => {
+        enrollmentServer.once("error", reject);
+        enrollmentServer.listen(enrollmentPort, host, resolve);
+      });
+    } catch (error) {
+      server.close();
+      throw error;
+    }
+    server.once("close", () => enrollmentServer.close());
+    console.log(
+      `U1 passkey enrollment listener bound to http://${host}:${enrollmentPort}`
+    );
+  }
   if (statusDashboardEnabled) {
     console.log(
       `U1 Status Dashboard: ${new URL("/dashboard", dashboardBaseUrl!).toString()}`

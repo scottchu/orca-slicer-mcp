@@ -13,6 +13,7 @@ import path from "node:path";
 import {
   normalizePrinterBaseUrl,
   readLocalConfig,
+  readOptionalLocalConfig,
   writeLocalConfig,
 } from "./local-config.js";
 
@@ -43,20 +44,56 @@ describe("local-first setup configuration", () => {
     const configPath = path.join(directory, "nested", "config.json");
 
     expect(writeLocalConfig("http://127.0.0.1:7125", configPath)).toEqual({
-      schemaVersion: 1,
+      schemaVersion: 2,
       printer: { baseUrl: "http://127.0.0.1:7125/" },
+      camera: { stunUrls: [] },
     });
     expect(readLocalConfig(configPath)).toEqual({
-      schemaVersion: 1,
+      schemaVersion: 2,
       printer: { baseUrl: "http://127.0.0.1:7125/" },
+      camera: { stunUrls: [] },
     });
     expect(JSON.parse(readFileSync(configPath, "utf8"))).toEqual({
-      schemaVersion: 1,
+      schemaVersion: 2,
       printer: { baseUrl: "http://127.0.0.1:7125/" },
+      camera: { stunUrls: [] },
     });
     if (process.platform !== "win32") {
       expect(statSync(configPath).mode & 0o777).toBe(0o600);
     }
+  });
+
+  test("migrates schema 1 in memory and preserves explicit STUN on setup rewrites", () => {
+    const directory = mkdtempSync(path.join(tmpdir(), "u1-config-stun-test-"));
+    temporaryDirectories.push(directory);
+    const configPath = path.join(directory, "config.json");
+    writeFileSync(configPath, JSON.stringify({
+      schemaVersion: 1,
+      printer: { baseUrl: "http://127.0.0.1:7125" },
+    }), { mode: 0o600 });
+    expect(readLocalConfig(configPath).camera.stunUrls).toEqual([]);
+
+    writeLocalConfig("http://127.0.0.1:7125", configPath, {
+      stunUrls: ["stun:stun.example:3478"],
+    });
+    writeLocalConfig("http://u1.local:7125", configPath);
+
+    expect(readLocalConfig(configPath)).toEqual({
+      schemaVersion: 2,
+      printer: { baseUrl: "http://u1.local:7125/" },
+      camera: { stunUrls: ["stun:stun.example:3478"] },
+    });
+  });
+
+  test("returns null only when an optional server config is absent", () => {
+    const directory = mkdtempSync(path.join(tmpdir(), "u1-config-optional-test-"));
+    temporaryDirectories.push(directory);
+    const configPath = path.join(directory, "missing.json");
+    expect(readOptionalLocalConfig(configPath)).toBeNull();
+    writeFileSync(configPath, "not json\n", { mode: 0o600 });
+    expect(() => readOptionalLocalConfig(configPath)).toThrow(
+      "configuration is not valid JSON"
+    );
   });
 
   test("tightens an existing configuration file to owner-only permissions", () => {

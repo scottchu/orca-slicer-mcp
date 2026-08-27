@@ -5,17 +5,18 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: implement the user-directed local-first open-source
-  U1 Print Studio rollout before further host, preparation, or printer work.
-  The smallest slice is a desktop-local connector plus hosted MCP App widget:
-  all hosted status, snapshot, and WebRTC signaling requests cross the MCP Apps
-  `tools/call` bridge, while printer access remains behind the Printer
-  Operations adapter. Normal users must not need Tailscale, MagicDNS, public
-  DNS, manual OAuth, environment-file editing, or Bun. Preserve the standalone
-  exact-HTTP signaling adapter only as an optional developer path. Do not
-  publish a package or contact physical hardware during this implementation.
-  Orca Preparation discovery remains preserved and neither subsystem becomes
-  secondary.
+- Current execution order: implement the user-authorized U1 Print Studio secure
+  remote Monitor slice before further host, preparation, or printer work. Keep
+  the public Streamable HTTP MCP and OAuth/passkey assertion path on standard
+  HTTPS, move passkey enrollment to a distinct tailnet-only Tailscale Serve
+  origin and loopback listener, restore only explicitly configured bounded STUN
+  where needed, and add RFC5766 TURN REST credentials as the preferred remote
+  WebRTC reliability path. Preserve exactly four
+  model-visible read-only tools and three app-only signaling helpers. Do not
+  mutate the live LaunchAgent, Funnel, Serve, OAuth state, or printer; deployment
+  waits for repository validation and coordinator approval. The local-first
+  normal-user direction from decision 0016 remains preserved. Orca Preparation
+  discovery remains preserved and neither subsystem becomes secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
@@ -44,8 +45,8 @@ that can be validated without guessing.
 
 Primary discovery targets: `PREP-001` through `PREP-006`, `ORCA-001` through
 `ORCA-006`, `HANDOFF-001` through `HANDOFF-006`, `SESSION-001`, `OBS-001`
-through `OBS-006`, `CAM-001` through `CAM-005`, `CTRL-001`, `SAFE-001`,
-`DATA-001` through `DATA-003`, `AUTH-001` through `AUTH-003`, `API-001` through `API-004`,
+through `OBS-006`, `CAM-001` through `CAM-006`, `CTRL-001`, `SAFE-001`,
+`DATA-001` through `DATA-003`, `AUTH-001` through `AUTH-004`, `API-001` through `API-005`,
 `ARCH-001` through `ARCH-004`, `ONTO-001` through `ONTO-002`, and `PORT-001`
 in `docs/requirements.md`.
 
@@ -85,6 +86,22 @@ in `docs/requirements.md`.
   user-outcome evidence;
 - no upload, start, pause, resume, cancel, G-code, generic proxy, Control, or
   Admin tool exists; no external package or service is published or changed.
+- decision 0017 records the separate private enrollment listener and
+  configurable authenticated TURN boundary without changing the four plus
+  three read-only tool inventory;
+- public enrollment routes reject, while a separate loopback listener serves
+  only enrollment and minimal health for a distinct tailnet-only Serve HTTPS
+  origin sharing the public OAuth hostname and WebAuthn RP ID;
+- public MCP and app signaling require OAuth `u1.monitor`, optional exact HTTP
+  media signaling retains short-lived single-use capability authentication,
+  and no generic public media route exists;
+- bounded explicitly configured STUN plus short-lived TURN REST credentials
+  reach the printer peer and only widget-private metadata; model-readable
+  content contains no TURN credential, shared secret, printer origin, peer ID,
+  or session capability;
+- local fixtures prove static/software and simulated protocol behavior only.
+  Public routing, TURN allocation, real-printer media, mounted ChatGPT/Codex
+  playback, and user outcome remain unclaimed.
 
 ## Local-first safety boundary
 
@@ -103,6 +120,14 @@ in `docs/requirements.md`.
 - Packaging work ends at local manifests, scripts, and ephemeral validation
   artifacts. Marketplace, npm, Homebrew, hosted services, OAuth state, and
   installed plugins are not changed by this iteration slice.
+- Passkey enrollment is absent from the public handler even when a one-time
+  token exists. Its dedicated listener binds loopback and is safe to expose only
+  through a distinct non-Funnel Tailscale Serve HTTPS origin.
+- STUN and TURN configuration is supplied outside the repository and defaults
+  empty. Public STUN is an explicit privacy and availability dependency. The
+  TURN shared secret stays server-only; only bounded derived credentials may
+  enter the WebRTC protocol path to the printer peer and widget-private tool
+  metadata.
 
 ## Initial explicit non-goals and later scope change
 

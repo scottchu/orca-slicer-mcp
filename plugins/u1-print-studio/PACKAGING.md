@@ -35,6 +35,20 @@ writes an owner-only versioned configuration file. It rejects credentials,
 queries, fragments, non-root paths, and public hosts. `doctor --offline`
 validates configuration and safety contracts without touching hardware;
 ordinary `doctor` adds one read-only observation through the connector.
+Repeatable `--stun-url` values are optional, bounded, stored in that same
+owner-only configuration, and preserved by later setup rewrites. This is the
+standalone Marketplace/Homebrew/npm path for explicit STUN because the runtime
+does not load a repository `.env`. No STUN default is embedded. Public STUN is
+an external privacy and availability dependency; authenticated TURN REST is the
+preferred robust remote path and remains a separately provisioned server-side
+deployment concern.
+Repeatable `--stun-url` values are optional, bounded, stored in that same
+owner-only configuration, and preserved by later setup rewrites. This is the
+standalone Marketplace/Homebrew/npm path for explicit STUN because the runtime
+does not load a repository `.env`. No STUN default is embedded. Public STUN is
+an external privacy and availability dependency; authenticated TURN REST is the
+preferred robust remote path and remains a separately provisioned server-side
+deployment concern.
 
 A same-machine personal Marketplace installation has now exercised this staging
 contract. Publication, another-machine installation, Homebrew, and npm remain

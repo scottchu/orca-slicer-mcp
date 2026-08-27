@@ -6,8 +6,13 @@ import path from "node:path";
 
 import { importJWK, SignJWT, type JWK } from "jose";
 
+import { createCameraRuntime } from "./camera-runtime.js";
 import { PersonalOAuthService, pkceChallenge } from "./personal-oauth.js";
-import { createRequestHandler } from "./server.js";
+import {
+  createEnrollmentRequestHandler,
+  createRequestHandler,
+  enrollmentPortFromEnvironment,
+} from "./server.js";
 
 const cleanups: Array<() => Promise<void> | void> = [];
 
@@ -16,7 +21,22 @@ afterEach(async () => {
 });
 
 async function serve(oauth: PersonalOAuthService) {
-  const server = createServer(createRequestHandler(oauth));
+  const camera = createCameraRuntime({
+    signaling: {
+      requestOffer: async () => ({
+        type: "offer",
+        id: "private-peer",
+        sdp: "v=0\r\nfixture-offer\r\n",
+        iceServers: [],
+      }),
+      sendAnswer: async () => {},
+      sendCandidates: async () => {},
+    },
+  });
+  const server = createServer(createRequestHandler(oauth, {
+    ...camera,
+    locator: { locate: (token) => `https://status.example/media?ticket=${token}` },
+  }));
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
   cleanups.push(() => close(server));
   const address = server.address();
@@ -24,11 +44,21 @@ async function serve(oauth: PersonalOAuthService) {
   return `http://127.0.0.1:${address.port}${oauth.basePath}`;
 }
 
+async function serveEnrollment(oauth: PersonalOAuthService) {
+  const server = createServer(createEnrollmentRequestHandler(oauth));
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  cleanups.push(() => close(server));
+  const address = server.address();
+  if (!address || typeof address === "string") throw new Error("Missing test address");
+  return `http://127.0.0.1:${address.port}`;
+}
+
 async function fixture(config: { now?: () => number } = {}) {
   const stateDirectory = mkdtempSync(path.join(tmpdir(), "u1-oauth-test-"));
   cleanups.push(() => rmSync(stateDirectory, { recursive: true, force: true }));
   const oauth = await PersonalOAuthService.create({
     publicBaseUrl: "https://status.example/u1",
+    enrollmentBaseUrl: "https://status.example:8445",
     stateDirectory,
     enrollmentToken: "fixture-enrollment-token",
     now: config.now,
@@ -37,6 +67,7 @@ async function fixture(config: { now?: () => number } = {}) {
     oauth,
     stateDirectory,
     localBaseUrl: await serve(oauth),
+    localEnrollmentBaseUrl: await serveEnrollment(oauth),
   };
 }
 
@@ -180,22 +211,113 @@ describe("personal OAuth discovery and boundary", () => {
     );
   });
 
-  test("keeps root-hosted endpoints on the configured origin", async () => {
+  test("keeps root-hosted endpoints on standard HTTPS", async () => {
     const stateDirectory = mkdtempSync(path.join(tmpdir(), "u1-oauth-root-test-"));
     cleanups.push(() => rmSync(stateDirectory, { recursive: true, force: true }));
     const oauth = await PersonalOAuthService.create({
-      publicBaseUrl: "https://status.example:8443",
+      publicBaseUrl: "https://status.example",
+      enrollmentBaseUrl: "https://status.example:8445",
       stateDirectory,
       enrollmentToken: "fixture-enrollment-token",
     });
 
-    expect(oauth.issuer).toBe("https://status.example:8443/");
-    expect(oauth.resource).toBe("https://status.example:8443/mcp");
+    expect(oauth.issuer).toBe("https://status.example/");
+    expect(oauth.resource).toBe("https://status.example/mcp");
+    expect(oauth.enrollmentUrl).toBe(
+      "https://status.example:8445/auth/enroll?token=fixture-enrollment-token"
+    );
     expect(oauth.authorizationServerMetadata()).toMatchObject({
-      authorization_endpoint: "https://status.example:8443/oauth/authorize",
-      token_endpoint: "https://status.example:8443/oauth/token",
-      registration_endpoint: "https://status.example:8443/oauth/register",
+      authorization_endpoint: "https://status.example/oauth/authorize",
+      token_endpoint: "https://status.example/oauth/token",
+      registration_endpoint: "https://status.example/oauth/register",
     });
+    const nonstandardDirectory = mkdtempSync(
+      path.join(tmpdir(), "u1-oauth-port-test-")
+    );
+    cleanups.push(() =>
+      rmSync(nonstandardDirectory, { recursive: true, force: true })
+    );
+    await expect(PersonalOAuthService.create({
+      publicBaseUrl: "https://status.example:8443",
+      enrollmentBaseUrl: "https://status.example:8445",
+      stateDirectory: nonstandardDirectory,
+    })).rejects.toThrow("standard HTTPS port 443");
+  });
+
+  test("rejects public enrollment and exposes only enrollment on the private listener", async () => {
+    const { oauth, localBaseUrl, localEnrollmentBaseUrl } = await fixture();
+    for (const path of [
+      "/auth/enroll?token=fixture-enrollment-token",
+      "/auth/enroll/options?token=fixture-enrollment-token",
+      "/auth/enroll/verify?token=fixture-enrollment-token",
+    ]) {
+      const publicResponse = await fetch(`${localBaseUrl}${path}`, {
+        method: path.includes("verify") ? "POST" : "GET",
+      });
+      expect(publicResponse.status).toBe(404);
+    }
+
+    const privateEnrollment = await fetch(
+      `${localEnrollmentBaseUrl}/auth/enroll?token=fixture-enrollment-token`
+    );
+    expect(privateEnrollment.status).toBe(200);
+    expect(await privateEnrollment.text()).toContain("Create passkey");
+    expect((await fetch(`${localEnrollmentBaseUrl}/health`)).status).toBe(200);
+    for (const path of ["/mcp", "/oauth/token", "/media/camera.webrtc", "/widget"]) {
+      expect((await fetch(`${localEnrollmentBaseUrl}${path}`)).status).toBe(404);
+    }
+    expect(oauth.rpId).toBe("status.example");
+    expect(oauth.expectedOrigin).toBe("https://status.example");
+    expect(oauth.enrollmentExpectedOrigin).toBe("https://status.example:8445");
+  });
+
+  test("requires enrollment HTTPS to share the RP ID but use a distinct origin", async () => {
+    const stateDirectory = mkdtempSync(path.join(tmpdir(), "u1-oauth-origin-test-"));
+    cleanups.push(() => rmSync(stateDirectory, { recursive: true, force: true }));
+    await expect(PersonalOAuthService.create({
+      publicBaseUrl: "https://status.example",
+      enrollmentBaseUrl: "https://attacker.example:8445",
+      stateDirectory,
+    })).rejects.toThrow("same hostname");
+    await expect(PersonalOAuthService.create({
+      publicBaseUrl: "https://status.example",
+      enrollmentBaseUrl: "https://status.example",
+      stateDirectory,
+    })).rejects.toThrow("distinct nonstandard HTTPS origin");
+  });
+
+  test("requires a distinct loopback port for a configured enrollment origin", () => {
+    expect(() => enrollmentPortFromEnvironment(8787, {})).toThrow(
+      "U1_ENROLLMENT_PORT"
+    );
+    expect(() => enrollmentPortFromEnvironment(8787, {
+      U1_ENROLLMENT_PORT: "8787",
+    })).toThrow("distinct loopback port");
+    expect(enrollmentPortFromEnvironment(8787, {
+      U1_ENROLLMENT_PORT: "8789",
+    })).toBe(8789);
+  });
+
+  test("keeps private health available while enrolled routes reject after restart", async () => {
+    const { stateDirectory } = await fixture();
+    const statePath = path.join(stateDirectory, "personal-oauth.json");
+    const state = JSON.parse(readFileSync(statePath, "utf8")) as Record<string, unknown>;
+    state.credential = {
+      id: "stored-credential-id",
+      publicKey: "AA",
+      counter: 0,
+    };
+    writeFileSync(statePath, `${JSON.stringify(state, null, 2)}\n`, { mode: 0o600 });
+    const restarted = await PersonalOAuthService.create({
+      publicBaseUrl: "https://status.example/u1",
+      enrollmentBaseUrl: "https://status.example:8445",
+      stateDirectory,
+    });
+    expect(restarted.enrollmentUrl).toBeNull();
+    expect(restarted.enrollmentBaseUrl?.origin).toBe("https://status.example:8445");
+    const privateOrigin = await serveEnrollment(restarted);
+    expect((await fetch(`${privateOrigin}/health`)).status).toBe(200);
+    expect((await fetch(`${privateOrigin}/auth/enroll?token=anything`)).status).toBe(404);
   });
 
   test("publishes path-aware OAuth and protected-resource metadata", async () => {
@@ -268,6 +390,7 @@ describe("personal OAuth discovery and boundary", () => {
 
     await PersonalOAuthService.create({
       publicBaseUrl: "https://status.example/u1",
+      enrollmentBaseUrl: "https://status.example:8445",
       stateDirectory,
       enrollmentToken: "fixture-enrollment-token",
     });
@@ -327,6 +450,7 @@ describe("personal OAuth discovery and boundary", () => {
 
     const restarted = await PersonalOAuthService.create({
       publicBaseUrl: "https://status.example/u1",
+      enrollmentBaseUrl: "https://status.example:8445",
       stateDirectory,
       enrollmentToken: "fixture-enrollment-token",
     });
@@ -495,6 +619,21 @@ describe("personal OAuth discovery and boundary", () => {
       "show_u1_status",
       "get_u1_status",
       "get_u1_camera_frame",
+      "open_u1_camera_stream",
+      "answer_u1_camera_stream",
+      "add_u1_camera_ice_candidates",
+      "close_u1_camera_stream",
+    ]);
+    const modelVisible = toolsBody.result.tools.filter((tool) => {
+      const visibility = (tool as { _meta?: { ui?: { visibility?: string[] } } })
+        ._meta?.ui?.visibility;
+      return !visibility || visibility.includes("model");
+    });
+    expect(modelVisible.map((tool) => tool.name)).toEqual([
+      "show_u1_status",
+      "get_u1_status",
+      "get_u1_camera_frame",
+      "open_u1_camera_stream",
     ]);
     expect(toolsBody.result.tools[0]?.securitySchemes).toEqual([
       { type: "oauth2", scopes: ["u1.monitor"] },

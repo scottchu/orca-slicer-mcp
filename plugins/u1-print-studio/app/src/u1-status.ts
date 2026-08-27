@@ -7,6 +7,7 @@ import type {
   CameraWebRtcOffer,
   CameraWebRtcSignalingSource,
 } from "./application/camera-webrtc.js";
+import type { CameraIceServerProvider } from "./camera-ice-config.js";
 import { normalizePrinterBaseUrl, readLocalConfig } from "./local-config.js";
 
 const execFileAsync = promisify(execFile);
@@ -16,10 +17,6 @@ const QUERY_ROUTE =
   "heater_bed&extruder&extruder1&extruder2&extruder3&toolhead&webhooks";
 const WEBCAMS_ROUTE = "/server/webcams/list";
 export const CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS = [20, 10] as const;
-// LAN host candidates are the zero-dependency local-first default. If the
-// printer explicitly advertises bounded STUN/TURN configuration, the session
-// service validates and forwards it without making it a normal-user dependency.
-const CAMERA_ICE_SERVERS: CameraIceServer[] = [];
 let cachedSnapshotUrl: URL | null = null;
 let cachedStreamUrl: URL | null = null;
 
@@ -341,36 +338,22 @@ async function cameraWebRtcUrl(): Promise<URL> {
   return streamUrl;
 }
 
-function cameraIceServers(value: unknown): CameraIceServer[] {
-  if (!Array.isArray(value)) return [];
-  return value.flatMap((candidate) => {
-    const object = asObject(candidate);
-    const rawUrls = object.urls;
-    const urls = typeof rawUrls === "string"
-      ? rawUrls
-      : Array.isArray(rawUrls) && rawUrls.every((url) => typeof url === "string")
-        ? rawUrls as string[]
-        : null;
-    if (!urls) return [];
-    const server: CameraIceServer = { urls };
-    if (typeof object.username === "string") server.username = object.username;
-    if (typeof object.credential === "string") server.credential = object.credential;
-    return [server];
-  });
-}
+const EMPTY_ICE_SERVER_PROVIDER: CameraIceServerProvider = {
+  hasStun: false,
+  hasTurn: false,
+  turnCredentialTtlSeconds: null,
+  issue: () => [],
+};
 
-export const u1CameraWebRtcSignaling: CameraWebRtcSignalingSource = {
+export function createU1CameraWebRtcSignaling(
+  iceServerProvider: CameraIceServerProvider = EMPTY_ICE_SERVER_PROVIDER
+): CameraWebRtcSignalingSource {
+  return {
   async requestOffer(signal) {
+    const { iceServers, payload } = createCameraOfferRequest(iceServerProvider);
     const response = await postJson(
       await cameraWebRtcUrl(),
-      {
-        type: "request",
-        // Match the printer's own webrtc-camerastreamer client so both peers
-        // can gather server-reflexive candidates when the network permits it.
-        iceServers: CAMERA_ICE_SERVERS,
-        keepAlive: true,
-        timeout_s: 1_800,
-      },
+      payload,
       8,
       signal
     );
@@ -381,12 +364,11 @@ export const u1CameraWebRtcSignaling: CameraWebRtcSignalingSource = {
     ) {
       throw new Error("Printer WebRTC offer invalid");
     }
-    const iceServers = cameraIceServers(response.iceServers);
     return {
       type: "offer",
       id: asString(response.id),
       sdp: asString(response.sdp),
-      iceServers: iceServers.length > 0 ? iceServers : CAMERA_ICE_SERVERS,
+      iceServers,
     } satisfies CameraWebRtcOffer;
   },
 
@@ -407,7 +389,28 @@ export const u1CameraWebRtcSignaling: CameraWebRtcSignalingSource = {
       signal
     );
   },
-};
+  };
+}
+
+export function createCameraOfferRequest(
+  iceServerProvider: CameraIceServerProvider
+): { iceServers: CameraIceServer[]; payload: JsonObject } {
+  const iceServers = iceServerProvider.issue();
+  return {
+    iceServers,
+    payload: {
+      type: "request",
+      // Both peers receive the same explicit STUN list and per-request TURN
+      // REST credentials. The server-side shared secret never enters this
+      // printer request or the MCP result.
+      iceServers,
+      keepAlive: true,
+      timeout_s: 1_800,
+    },
+  };
+}
+
+export const u1CameraWebRtcSignaling = createU1CameraWebRtcSignaling();
 
 export async function readU1CameraJpeg(
   signal?: AbortSignal,

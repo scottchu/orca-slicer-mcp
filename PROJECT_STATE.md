@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-08-26
+Last updated: 2026-08-27
 
 ## Baseline
 
@@ -12,13 +12,13 @@ Last updated: 2026-08-26
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
-- User-directed execution order: finish the local-first open-source U1 Print
-  Studio rollout before further host, preparation, or printer work.
-- Decision 0016 supersedes decision 0015 only for hosted signaling transport:
-  the hosted widget now uses the MCP Apps bridge rather than directly calling
-  the exact media HTTP route.
-- Delivery: branch `scottchu/local-first-rollout`, pull request
-  https://github.com/scottchu/orca-slicer-mcp/pull/15.
+- User-directed execution order: finish the secure remote U1 Print Studio
+  Monitor slice before further host, preparation, or printer work.
+- Decision 0017 adds a private enrollment listener plus explicit STUN and
+  short-lived TURN REST boundaries while preserving decision 0016's local-first
+  normal-user direction and MCP Apps signaling bridge.
+- Current delivery branch: `scottchu/secure-remote-mcp-stream`. No deployment,
+  merge, publication, or pull request has occurred for this slice.
 
 ## Implemented local-first slice
 
@@ -49,6 +49,24 @@ The self-contained artifact is local validation evidence only. Its ad-hoc
 signature is not suitable for distribution. No package, marketplace entry,
 installed plugin, OAuth state, or hosted service was changed.
 
+## Implemented secure remote source slice
+
+- Public personal OAuth and Streamable HTTP MCP require standard HTTPS and
+  `u1.monitor`; public passkey enrollment routes return 404.
+- A separately configured enrollment origin binds a distinct loopback-only
+  listener with private health and exact enrollment routes. It stays bound
+  after enrollment while enrollment itself returns 404.
+- ICE defaults empty. Explicit bounded STUN may come from HTTP env or the
+  standalone owner-only schema-2 config; setup preserves STUN on later rewrites.
+- Preferred remote TURN uses bounded URLs plus a server-only shared secret.
+  Each camera open derives an `expiry:nonce` username and base64 HMAC-SHA1
+  credential shared only with the printer peer and widget-private metadata.
+- The HTTP server keeps env-only deployment compatibility when no standalone
+  config exists. An existing malformed optional config and partial TURN
+  configuration fail closed.
+- No live process, LaunchAgent, Serve/Funnel route, OAuth state, installed
+  plugin, printer, or external service was changed.
+
 ## MCP surface
 
 Model-visible read-only tools:
@@ -76,6 +94,8 @@ remain procedural guidance; they are not runtime authority.
   `./app/runtime/u1-print-studio mcp`.
 - `plugins/u1-print-studio/.mcp.json` remains a Bun and env-file source
   adapter for repository development only.
+- The owner-only schema-2 config is the standalone path for optional explicit
+  STUN because the packaged runtime does not load the repository `.env`.
 - Marketplace, Homebrew, and npm are future delivery adapters. This slice does
   not claim installation, upgrades, rollback, signing, notarization, or
   cross-platform acceptance.
@@ -118,16 +138,16 @@ remain procedural guidance; they are not runtime authority.
 ### Static/software
 
 - TypeScript checks pass.
-- Forty-nine tests with 275 assertions pass across MCP resource/tool
-  contracts, PNG dimensions/signature, widget no-fetch/CSP, snapshot fallback
-  wiring, local configuration, packaging manifests, session bounds/privacy,
-  exact HTTP compatibility, OAuth regression, and dashboard allowlists.
+- Sixty tests with 324 assertions pass across MCP resource/tool contracts,
+  enrollment isolation and restart behavior, standard HTTPS, exact four-plus-
+  three visibility, STUN/TURN parsing and derivation, model privacy, env-only
+  HTTP compatibility, config migration/preservation, PNG, fallback, session
+  bounds, exact HTTP compatibility, OAuth, packaging, and dashboard allowlists.
 - The source stdio bundle emits `stdio.js` plus its widget asset.
 - The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
-  signature, prints help, writes a `0600` config, and passes
-  `doctor --offline` without contacting hardware. Rewriting an existing config
-  now explicitly tightens its mode to `0600`, and malformed camera stream
-  envelopes retain any valid session ID long enough for bounded teardown.
+  signature, prints help, writes a schema-2 `0600` config, preserves explicit
+  STUN on setup rewrite, and passes `doctor --offline` without contacting
+  hardware. Malformed ICE URLs and partial TURN configuration fail closed.
 - Personal Marketplace staging and installation passed on this macOS arm64
   machine. The installed cache used the standalone executable, matched the
   staged SHA-256, passed signature verification, reached the configured printer
@@ -140,21 +160,23 @@ and final repository-check results.
 ### Protocol/simulator
 
 - Tests use in-memory MCP transports, loopback HTTP fixtures, and fake printer
-  signaling. They prove contract behavior, not a real printer or mounted host.
+  signaling. They prove contract behavior, not public routing, a TURN
+  allocation, a real printer, or a mounted host.
 - Earlier repository evidence records real read-only Moonraker and H264
   observations. It is not evidence for this newly composed local connector.
 
 ### Physical printer
 
-- No physical printer was accessed or controlled for this rollout.
+- No physical printer was accessed or controlled for the secure remote source
+  slice.
 - Earlier authorized print and camera observations remain historical evidence
   in their dated logs and do not prove this slice.
 
 ### User outcome
 
-- Same-machine personal Marketplace installation is verified. Publication,
-  Homebrew, npm, fresh-host widget mounting, installation on another machine,
-  iOS rendering, and normal-user onboarding remain unverified.
+- Earlier same-machine personal Marketplace installation is verified for the
+  prior local-first artifact. This secure remote source is not installed or
+  deployed; ChatGPT/Codex playback and user outcome remain unverified.
 
 ## Open risks and F0 questions
 
@@ -167,6 +189,13 @@ and final repository-check results.
   need a dedicated portability decision.
 - Native hosted-widget WebRTC rendering, Close, PiP, fullscreen, and fallback
   need fresh host evidence after explicit authorization to contact a printer.
+- No TURN REST service URLs or shared secret were supplied. Reliable remote
+  media remains blocked on external provisioning plus observed allocation and
+  mounted playback. Explicit STUN is only a compatibility step and discloses
+  peer network metadata to its provider.
+- Deployment must preserve every existing Tailscale handler, keep enrollment
+  Funnel-disabled, and use an unused private Serve port plus distinct loopback
+  listener port.
 - The first Orca backend and the prepared-job/session handoff remain open.
 - Subscription, freshness, reconnect, history, notification destination, and
   remote identity/distribution boundaries remain open.
@@ -177,9 +206,10 @@ and final repository-check results.
 
 ## Next action
 
-Review the local-first pull request and repository records. Do not publish or
-install it externally. The next smallest implementation gate is a reproducible
-signed packaging fixture for one channel or removal of the system-`curl`
-runtime dependency, chosen from new evidence. Mounted-host or real-printer
-validation requires fresh explicit authorization and must be recorded in its
-own evidence layer.
+Wait for coordinator approval and TURN REST provisioning. Deployment must
+snapshot existing routing
+and service state, stage without replacing OAuth state, verify both loopback
+listeners, add only one unused tailnet-only Serve handler with Funnel disabled,
+and preserve every public handler. Public-edge, TURN, printer, mounted ChatGPT,
+mounted Codex, and user-outcome checks remain separate evidence gates. Do not
+deploy, merge, publish, or contact hardware from repository validation alone.

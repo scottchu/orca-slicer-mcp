@@ -1000,3 +1000,98 @@ From the repository root:
   restaging a prior Git version rather than selecting an old cache directory.
   A mistakenly resolved, unused staging copy was moved to a dated Trash
   quarantine outside the repository rather than deleted.
+
+## Secure remote Monitor source slice — 2026-08-27
+
+### Acceptance and safety boundary
+
+- Milestone: F0 dual-environment and contract discovery.
+- Decision 0017 records the user-authorized slice: standard-HTTPS public OAuth
+  and Streamable HTTP MCP, a separate loopback enrollment listener for a
+  tailnet-only Serve origin, explicit bounded STUN, and preferred per-session
+  RFC5766 TURN REST credentials.
+- The public inventory remains exactly four model-visible read-only tools and
+  three app-only read-only signaling helpers. No upload, start, pause, resume,
+  cancel, G-code, generic proxy, Control, or Admin capability was added.
+- This run is static/software and simulated-protocol evidence only. It did not
+  restart or inspect the live process, alter the LaunchAgent, Tailscale Serve or
+  Funnel, OAuth state, installed plugin, or contact a printer. Coordinator
+  diagnostics were treated as pre-change constraints, not revalidated or
+  mutated deployment evidence.
+
+### Implemented contracts
+
+- Public `/auth/enroll` and descendants return 404. The enrollment-only handler
+  exposes only private `/health` plus exact enrollment routes; MCP, OAuth token,
+  media, widget, and unknown routes return 404.
+- `U1_ENROLLMENT_BASE_URL` must use the public OAuth hostname on a distinct
+  nonstandard HTTPS origin. Configuring it requires a distinct loopback
+  `U1_ENROLLMENT_PORT`. The listener remains bound after restart with an
+  existing credential: private health remains available and enrollment stays
+  404 until a local reset creates a new one-time flow.
+- Public OAuth is restricted to standard HTTPS port 443. Public MCP continues
+  to require audience- and scope-bound `u1.monitor` tokens; optional exact HTTP
+  signaling retains its single-use capability authentication.
+- ICE defaults empty. The standalone owner-only schema-2 config accepts and
+  preserves bounded repeatable `--stun-url` values; schema 1 reads with an empty
+  STUN migration. The HTTP server can use env ICE configuration without any
+  standalone config and fails if an existing optional config is malformed.
+- TURN configuration accepts bounded `turn:` and `turns:` URLs plus a
+  server-only shared secret and a 1800-to-3600-second TTL. Each camera request
+  derives `expiry:nonce` plus base64 HMAC-SHA1 credentials and gives the exact
+  same ephemeral ICE set to the printer offer and widget-private result
+  metadata. The shared secret never leaves the server; derived credentials,
+  sessions, printer URLs, and printer peer IDs remain outside model-readable
+  content and structured content.
+- Malformed ICE coverage rejects wrong schemes, empty TURN addresses,
+  credential-bearing URLs, unsupported query parameters, duplicate or
+  oversized lists, partial TURN configuration, invalid secret lengths, and
+  invalid or out-of-range TTLs and ports.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun install --frozen-lockfile`: passed and restored this worktree's missing
+  dependencies without changing the lockfile.
+- `bun run check`: passed TypeScript compilation with no emit.
+- `bun test src/*.test.ts`: passed 60 tests with 324 assertions across ten
+  files. Coverage includes the enrollment split and post-enrollment restart,
+  env-only HTTP compatibility, owner-config STUN preservation, malformed ICE
+  rejection, deterministic TURN REST derivation, exact printer/browser ICE
+  handoff, model-result privacy, authenticated four-plus-three tool inventory,
+  bounded sessions, fallback, PNG, packaging, and existing status contracts.
+- `bun run bundle`: passed and emitted the ignored stdio bundle plus widget.
+- `bun run bundle:runtime`: passed and produced the ignored macOS arm64
+  standalone executable; its ad-hoc validation signature verified.
+- Standalone `--help`: passed and advertised repeatable `--stun-url` setup.
+- Standalone `setup` against a temporary loopback printer origin with one
+  fixture STUN URL: passed and wrote schema 2. A second setup changed only the
+  fixture printer origin and preserved STUN. `doctor --offline --json` passed
+  with `iceTraversal: explicit-stun-only` and skipped printer observation.
+  The temporary config mode was `0600`; it contained no TURN setting or secret.
+  The temporary directory was removed after the smoke check.
+- `codesign -vvv --verify ./dist/u1-print-studio`: passed.
+
+From the repository root:
+
+- U1 mobile setup `quick_validate.py` through
+  `uv run --no-project --with pyyaml`: passed with `Skill is valid!`.
+- Plugin Creator `validate_plugin.py` through
+  `uv run --no-project --with pyyaml`: passed.
+- `./scripts/check-repository.sh`: passed, including TypeScript and all 60 Bun
+  tests with 324 assertions; final output was `repository contract: ok`.
+- `git diff --check`: passed.
+
+### Unverified later layers and blocker
+
+- No public-edge request was made, so standard-HTTPS discovery, public
+  enrollment rejection, private Serve health, preserved live handlers, and
+  unauthenticated public rejection remain deployment evidence gates.
+- No TURN service URL or shared secret was supplied. A real TURN allocation,
+  credential expiry/refresh behavior, bandwidth, and relay availability remain
+  externally blocked. Explicit STUN can be a compatibility deployment step but
+  does not prove reliable remote media.
+- No printer or mounted host was contacted. ChatGPT and Codex WebRTC playback,
+  snapshot fallback, Close, PiP, fullscreen, and user outcome remain
+  unobserved. No mounted-host success is claimed.
