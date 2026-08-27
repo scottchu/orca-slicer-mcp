@@ -63,7 +63,7 @@ proxy, Control, or Admin behavior appears.
 ## Validation boundary
 
 The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 47 passing tests with 271 assertions. The macOS arm64
+software suite has 49 passing tests with 275 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a `0600` configuration,
 and passes offline doctor without Bun on its invocation path.
@@ -80,6 +80,11 @@ not prove:
 - physical safety or user outcome.
 
 No physical printer was contacted for this rollout.
+
+Independent pre-merge review added regressions for rewriting a previously
+broader-permission config and for closing a valid camera session when the rest
+of its stream envelope is malformed. Both fixes are included in the passing
+suite.
 
 ## Next smallest action
 

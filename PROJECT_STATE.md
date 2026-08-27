@@ -118,14 +118,16 @@ remain procedural guidance; they are not runtime authority.
 ### Static/software
 
 - TypeScript checks pass.
-- Forty-seven tests with 271 assertions pass across MCP resource/tool
+- Forty-nine tests with 275 assertions pass across MCP resource/tool
   contracts, PNG dimensions/signature, widget no-fetch/CSP, snapshot fallback
   wiring, local configuration, packaging manifests, session bounds/privacy,
   exact HTTP compatibility, OAuth regression, and dashboard allowlists.
 - The source stdio bundle emits `stdio.js` plus its widget asset.
 - The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
   signature, prints help, writes a `0600` config, and passes
-  `doctor --offline` without contacting hardware.
+  `doctor --offline` without contacting hardware. Rewriting an existing config
+  now explicitly tightens its mode to `0600`, and malformed camera stream
+  envelopes retain any valid session ID long enough for bounded teardown.
 
 The active iteration's `VALIDATION.md` is authoritative for exact commands
 and final repository-check results.

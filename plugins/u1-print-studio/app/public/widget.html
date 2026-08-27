@@ -1371,6 +1371,9 @@
             closeSignalingSession(sessionId);
             return;
           }
+          if (typeof sessionId === "string") {
+            liveSessionId = sessionId;
+          }
           if (
             response?.structuredContent?.available !== true ||
             stream?.transport !== "mcp-apps-tools" ||
@@ -1380,7 +1383,6 @@
           ) {
             throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
           }
-          liveSessionId = sessionId;
 
           const peer = new RTCPeerConnection({
             sdpSemantics: "unified-plan",

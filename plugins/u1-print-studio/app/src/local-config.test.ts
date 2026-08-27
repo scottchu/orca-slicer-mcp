@@ -1,5 +1,12 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { mkdtempSync, readFileSync, rmSync, statSync } from "node:fs";
+import {
+  chmodSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -50,5 +57,18 @@ describe("local-first setup configuration", () => {
     if (process.platform !== "win32") {
       expect(statSync(configPath).mode & 0o777).toBe(0o600);
     }
+  });
+
+  test("tightens an existing configuration file to owner-only permissions", () => {
+    if (process.platform === "win32") return;
+    const directory = mkdtempSync(path.join(tmpdir(), "u1-config-mode-test-"));
+    temporaryDirectories.push(directory);
+    const configPath = path.join(directory, "config.json");
+    writeFileSync(configPath, "{}\n", { encoding: "utf8", mode: 0o644 });
+    chmodSync(configPath, 0o644);
+
+    writeLocalConfig("http://127.0.0.1:7125", configPath);
+
+    expect(statSync(configPath).mode & 0o777).toBe(0o600);
   });
 });

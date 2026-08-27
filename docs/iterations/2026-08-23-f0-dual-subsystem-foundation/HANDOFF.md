@@ -40,10 +40,15 @@ Changed implementation paths are under `plugins/u1-print-studio/app/`, plus
 the plugin release manifest, packaging contract, architecture/requirements,
 decision 0016, and continuity records. See the branch diff for the exact set.
 
-Validation is local-only. Forty-seven tests with 271 assertions currently pass,
+Validation is local-only. Forty-nine tests with 275 assertions currently pass,
 the standalone macOS arm64 runtime runs without Bun, and offline setup/doctor
 smoke passed without hardware access. Exact final commands and repository
 checks are recorded in `VALIDATION.md`.
+
+Independent pre-merge review also verified that rewriting an existing config
+tightens its permissions to `0600` and that a valid camera signaling session ID
+is retained before stream-envelope validation so malformed responses still
+take the bounded close path.
 
 No physical printer, installed plugin, marketplace, OAuth state, package
 registry, Homebrew tap, or hosted service was accessed or changed. Earlier

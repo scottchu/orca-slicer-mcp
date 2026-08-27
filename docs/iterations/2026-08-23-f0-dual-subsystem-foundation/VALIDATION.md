@@ -870,7 +870,7 @@ identifiers, and runtime data are intentionally not retained.
 From `plugins/u1-print-studio/app`:
 
 - `bun run check`: passed.
-- `bun test src/*.test.ts`: passed 47 tests with 271 assertions across nine
+- `bun test src/*.test.ts`: passed 49 tests with 275 assertions across nine
   files. Coverage includes empty hosted CSP, no widget `fetch(` call, MCP Apps
   signaling tool names, app-only helper visibility, private session metadata,
   snapshot fallback wiring, existing status/snapshot/PNG contracts, fixed HTTP
@@ -906,9 +906,27 @@ From the repository root:
   restored. A subsequent run exposed a millisecond-boundary test flake where a
   nominal 30-second lease displayed as 29 seconds; the presentation duration
   now rounds up while the absolute expiry remains authoritative.
-- Final `./scripts/check-repository.sh`: passed, including TypeScript and all 47
-  tests with 271 assertions.
+- Final `./scripts/check-repository.sh`: passed, including TypeScript and all 49
+  tests with 275 assertions.
 - Final `git diff --check`: passed.
+
+### Independent pre-merge review
+
+- A pre-existing config file could retain broader permissions because the
+  creation mode passed to `writeFileSync` only applies when a file is created.
+  The writer now explicitly applies `0600` after every non-Windows write, and a
+  regression starts from an existing `0644` file.
+- A malformed camera stream envelope could contain a valid session ID but fail
+  validation before the widget retained it for teardown. The widget now retains
+  a valid ID before envelope validation, so snapshot fallback closes the
+  bounded session; a widget contract regression enforces that ordering.
+- `bun test src/local-config.test.ts src/app.test.ts`: passed 19 tests with 140
+  assertions.
+- `bun run bundle` and `bun run bundle:runtime`: passed; the regenerated macOS
+  arm64 executable remained valid on disk and satisfied its designated
+  requirement.
+- Plugin validation passed with `uv run --no-project --with pyyaml`, and
+  `git diff --check` passed before these record updates.
 
 ### Packaging evidence boundary
 

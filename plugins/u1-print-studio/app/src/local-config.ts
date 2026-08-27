@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { isIP } from "node:net";
 import { homedir, platform } from "node:os";
 import path from "node:path";
@@ -119,5 +119,8 @@ export function writeLocalConfig(
     encoding: "utf8",
     mode: 0o600,
   });
+  if (platform() !== "win32") {
+    chmodSync(configPath, 0o600);
+  }
   return config;
 }

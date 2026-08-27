@@ -434,4 +434,17 @@ describe("camera-first widget contract", () => {
     expect(WIDGET_HTML).not.toContain('jpegDataUrl');
     expect(WIDGET_HTML).not.toContain("up to ${Math.round(fps)} FPS");
   });
+
+  test("retains a valid signaling session id before validating the stream envelope", () => {
+    const sessionAssignmentIndex = WIDGET_HTML.indexOf(
+      'if (typeof sessionId === "string") {\n            liveSessionId = sessionId;'
+    );
+    const streamValidationIndex = WIDGET_HTML.indexOf(
+      "response?.structuredContent?.available !== true"
+    );
+
+    expect(sessionAssignmentIndex).toBeGreaterThan(-1);
+    expect(streamValidationIndex).toBeGreaterThan(-1);
+    expect(sessionAssignmentIndex).toBeLessThan(streamValidationIndex);
+  });
 });
