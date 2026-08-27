@@ -43,12 +43,12 @@
           params: result,
         }, location.origin);
       };
-      const callTool = async (name) => {
+      const callTool = async (name, arguments = {}) => {
         bridgeState.textContent = `calling ${name}`;
         const response = await fetch("/dashboard/tools/call", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ name }),
+          body: JSON.stringify({ name, arguments }),
         });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error ?? `HTTP ${response.status}`);
@@ -81,7 +81,13 @@
 
         if (message.method === "tools/call" && typeof message.id === "number") {
           try {
-            reply(message.id, await callTool(message.params?.name));
+            reply(
+              message.id,
+              await callTool(
+                message.params?.name,
+                message.params?.arguments ?? {}
+              )
+            );
           } catch (error) {
             reply(message.id, null, { code: -32000, message: error.message });
             bridgeState.textContent = `tool failed · ${error.message}`;

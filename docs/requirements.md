@@ -31,12 +31,19 @@ printer environments support the described behavior.
 - **CAM-003:** Camera images are separately timestamped on-demand,
   event-triggered, or bounded-interval observations; continuous video ingestion
   is not required for the first monitor.
-- **CAM-004:** A user-opened continuous camera presentation exchanges an
-  authenticated, single-use grant for a bounded WebRTC signaling session with
-  the printer-advertised, same-origin `webrtc-camerastreamer`. Video frames flow
-  over the negotiated peer connection and presentation FPS is measured in the
-  browser. Validated snapshots remain an explicit fallback. This does not imply
-  persistent ingestion or diagnostic quality.
+- **CAM-004:** A user-opened continuous camera presentation creates an opaque,
+  bounded WebRTC signaling session with the printer-advertised, same-origin
+  `webrtc-camerastreamer` behind the host and connector boundary. An optional
+  exact HTTP adapter may exchange an authenticated single-use grant for that
+  same application session. Video frames flow over the negotiated peer
+  connection and presentation FPS is measured in the browser. Validated
+  snapshots remain an explicit fallback. This does not imply persistent
+  ingestion or diagnostic quality.
+- **CAM-005:** A hosted MCP App iframe performs no direct fetch to a LAN,
+  Tailscale, or media-signaling URL. Offer, answer, bounded ICE candidates, and
+  close cross the MCP Apps `tools/call` bridge; opaque session and offer data
+  remain component-private. The local connector alone invokes the
+  printer-advertised fixed signaling route.
 
 ## Events and notifications
 
@@ -116,11 +123,12 @@ printer environments support the described behavior.
 - **ARCH-003:** The operations monitor can move from an in-process component to
   a separate daemon through versioned, language-neutral contracts without
   changing domain semantics.
-- **ARCH-004:** MCP and media HTTP adapters do not own camera ticket, lease,
-  concurrency, or duration policy. Those policies remain in an application
-  service behind transport-independent ports. The printer-specific adapter
-  owns the allowlisted WebRTC signaling exchange, and the HTTP adapter exposes
-  neither printer URLs nor a generic proxy.
+- **ARCH-004:** MCP and optional media HTTP adapters do not own camera ticket,
+  session, lease, concurrency, duration, or signaling-size policy. Those
+  policies remain in an application service behind transport-independent
+  ports. The printer-specific adapter owns the allowlisted WebRTC signaling
+  exchange, and neither inbound adapter exposes printer URLs, printer peer
+  identifiers, or a generic proxy.
 - **ONTO-001:** Prepared print job, printer, capability, print session,
   observation, event, recommendation, authorization, command intent, command
   result, verification, and outcome use the meanings defined in

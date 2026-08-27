@@ -930,9 +930,8 @@
       let cameraRefreshing = false;
       let livePreview = false;
       let relayRendering = false;
-      let liveSignalAbortController = null;
       let livePeerConnection = null;
-      let liveStreamUrl = null;
+      let liveSessionId = null;
       let liveFrameCallback = null;
       let liveFpsTimer = null;
       let liveConnectionFallbackTimer = null;
@@ -1036,21 +1035,17 @@
         elements.cameraDetailLabel.textContent = labels[mode] ?? labels.unavailable;
       };
 
-      const closeSignalingSession = (url) => {
-        if (!url) return;
-        void fetch(url, {
-          method: "DELETE",
-          cache: "no-store",
-          credentials: "omit",
-          referrerPolicy: "no-referrer",
-        }).catch(() => {});
+      const closeSignalingSession = (sessionId) => {
+        if (!sessionId || !hosted) return;
+        void bridgeReady.then(() => rpcRequest("tools/call", {
+          name: "close_u1_camera_stream",
+          arguments: { sessionId },
+        })).catch(() => {});
       };
 
       const stopLiveStream = () => {
         clearTimeout(liveConnectionFallbackTimer);
         liveConnectionFallbackTimer = null;
-        liveSignalAbortController?.abort();
-        liveSignalAbortController = null;
         if (liveFrameCallback !== null && elements.liveStream.cancelVideoFrameCallback) {
           elements.liveStream.cancelVideoFrameCallback(liveFrameCallback);
         }
@@ -1066,8 +1061,9 @@
         }
         elements.liveStream.srcObject = null;
         elements.camera.classList.remove("has-live");
-        closeSignalingSession(liveStreamUrl);
-        liveStreamUrl = null;
+        const sessionId = liveSessionId;
+        liveSessionId = null;
+        closeSignalingSession(sessionId);
         liveFrameTimes = [];
         measuredLiveFps = null;
       };
@@ -1343,22 +1339,6 @@
         }, 1_000);
       };
 
-      const signalCamera = async (streamUrl, payload, signal) => {
-        const response = await fetch(streamUrl, {
-          method: "POST",
-          cache: "no-store",
-          credentials: "omit",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(payload),
-          referrerPolicy: "no-referrer",
-          signal,
-        });
-        if (!response.ok) {
-          throw new Error(`Camera signaling returned HTTP ${response.status}`);
-        }
-        return response.json();
-      };
-
       const activateSnapshotFallback = () => {
         if (!livePreview) return;
         relayRendering = false;
@@ -1384,45 +1364,29 @@
             name: "open_u1_camera_stream",
             arguments: {},
           });
-          if (!livePreview) return;
           const stream = response?._meta?.cameraStream ?? response?.meta?.cameraStream;
-          const streamUrl = stream?.url;
-          const standaloneSameOriginStream = (() => {
-            if (!new URLSearchParams(location.search).has("standalone")) return false;
-            try {
-              const parsed = new URL(streamUrl);
-              return parsed.protocol === "http:" &&
-                parsed.hostname === location.hostname;
-            } catch {
-              return false;
-            }
-          })();
+          const sessionId = stream?.sessionId;
+          const offer = stream?.offer;
+          if (!livePreview) {
+            closeSignalingSession(sessionId);
+            return;
+          }
+          if (typeof sessionId === "string") {
+            liveSessionId = sessionId;
+          }
           if (
             response?.structuredContent?.available !== true ||
-            typeof streamUrl !== "string" ||
-            (!streamUrl.startsWith("https://") && !standaloneSameOriginStream)
-          ) {
-            throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
-          }
-          liveStreamUrl = streamUrl;
-          liveSignalAbortController = new AbortController();
-          const signal = liveSignalAbortController.signal;
-          const offer = await signalCamera(
-            streamUrl,
-            { type: "request" },
-            signal
-          );
-          if (
-            !livePreview ||
+            stream?.transport !== "mcp-apps-tools" ||
+            typeof sessionId !== "string" ||
             offer?.type !== "offer" ||
             typeof offer?.sdp !== "string"
           ) {
-            throw new Error("Camera WebRTC offer unavailable");
+            throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
           }
 
           const peer = new RTCPeerConnection({
             sdpSemantics: "unified-plan",
-            iceServers: Array.isArray(offer.iceServers) ? offer.iceServers : [],
+            iceServers: Array.isArray(stream.iceServers) ? stream.iceServers : [],
           });
           livePeerConnection = peer;
           peer.addTransceiver("video", { direction: "recvonly" });
@@ -1434,15 +1398,14 @@
           };
 
           peer.onicecandidate = (event) => {
-            if (!event.candidate || livePeerConnection !== peer || !liveStreamUrl) return;
-            void signalCamera(
-              liveStreamUrl,
-              {
-                type: "remote_candidate",
+            if (!event.candidate || livePeerConnection !== peer || !liveSessionId) return;
+            void rpcRequest("tools/call", {
+              name: "add_u1_camera_ice_candidates",
+              arguments: {
+                sessionId: liveSessionId,
                 candidates: [event.candidate.toJSON()],
               },
-              signal
-            ).catch(activateSnapshotFallback);
+            }).catch(activateSnapshotFallback);
           };
 
           peer.ontrack = (event) => {
@@ -1476,11 +1439,13 @@
           await peer.setRemoteDescription({ type: "offer", sdp: offer.sdp });
           const answer = await peer.createAnswer();
           await peer.setLocalDescription(answer);
-          await signalCamera(
-            streamUrl,
-            { type: "answer", sdp: peer.localDescription?.sdp },
-            signal
-          );
+          await rpcRequest("tools/call", {
+            name: "answer_u1_camera_stream",
+            arguments: {
+              sessionId,
+              sdp: peer.localDescription?.sdp,
+            },
+          });
         } catch {
           if (!livePreview) return;
           activateSnapshotFallback();

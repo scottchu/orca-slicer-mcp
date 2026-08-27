@@ -9,6 +9,7 @@ import type {
   CameraIceCandidate,
   CameraWebRtcSignalingSource,
 } from "./application/camera-webrtc.js";
+import { CameraWebRtcSessionService } from "./application/camera-webrtc.js";
 import { CameraRelayService } from "./application/camera-relay.js";
 
 const servers: Server[] = [];
@@ -42,17 +43,19 @@ async function startWebRtcServer() {
       candidateBatches.push({ id, candidates });
     },
   };
-  const relay = new CameraRelayService(
-    {
+  const codec = {
       issue: () => {
         const token = `webrtc-ticket-${++nextToken}`;
         return { token, digest: `digest:${token}` };
       },
-      digest: (token) => `digest:${token}`,
-    },
+      digest: (token: string) => `digest:${token}`,
+    };
+  const relay = new CameraRelayService(
+    codec,
     { maxConcurrentStreams: 1, maxStreamDurationMilliseconds: 10_000 }
   );
-  const handler = createCameraWebRtcHandler(relay, signaling);
+  const sessions = new CameraWebRtcSessionService(codec, signaling);
+  const handler = createCameraWebRtcHandler(relay, sessions);
   const server = createServer(async (req, res) => {
     const url = new URL(req.url ?? "/", "http://localhost");
     if (!(await handler(req, res, url.pathname, url))) res.writeHead(404).end();
@@ -147,6 +150,6 @@ describe("camera WebRTC HTTP adapter", () => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ type: "configure_camera" }),
     });
-    expect(arbitrary.status).toBe(401);
+    expect(arbitrary.status).toBe(400);
   });
 });

@@ -1,19 +1,16 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 
-import type {
-  CameraIceCandidate,
-  CameraWebRtcSignalingSource,
+import {
+  CameraWebRtcSessionError,
+  type CameraWebRtcSessionService,
 } from "../application/camera-webrtc.js";
 import {
   CameraRelayClaimError,
   type CameraRelayService,
-  type CameraStreamLease,
 } from "../application/camera-relay.js";
 
 export const CAMERA_WEBRTC_PATH = "/media/camera.webrtc";
 const MAX_SIGNAL_BYTES = 128 * 1024;
-const MAX_SDP_BYTES = 96 * 1024;
-const MAX_CANDIDATES = 16;
 
 export function createCameraStreamLocator(publicBaseUrl: URL) {
   const basePath = publicBaseUrl.pathname === "/"
@@ -27,13 +24,6 @@ export function createCameraStreamLocator(publicBaseUrl: URL) {
     },
   };
 }
-
-type ActiveSession = {
-  lease: CameraStreamLease;
-  remoteId: string;
-  abortController: AbortController;
-  timeout: ReturnType<typeof setTimeout>;
-};
 
 function respond(
   res: ServerResponse,
@@ -68,60 +58,27 @@ async function readJsonBody(req: IncomingMessage): Promise<Record<string, unknow
   return parsed as Record<string, unknown>;
 }
 
-function sanitizeCandidates(value: unknown): CameraIceCandidate[] {
-  if (!Array.isArray(value) || value.length === 0 || value.length > MAX_CANDIDATES) {
-    throw new Error("invalid_candidates");
-  }
-  return value.map((candidate) => {
-    if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) {
-      throw new Error("invalid_candidates");
-    }
-    const object = candidate as Record<string, unknown>;
-    if (typeof object.candidate !== "string" || object.candidate.length > 8_192) {
-      throw new Error("invalid_candidates");
-    }
-    return {
-      candidate: object.candidate,
-      sdpMid: typeof object.sdpMid === "string" ? object.sdpMid : null,
-      sdpMLineIndex:
-        typeof object.sdpMLineIndex === "number" ? object.sdpMLineIndex : null,
-      usernameFragment:
-        typeof object.usernameFragment === "string"
-          ? object.usernameFragment
-          : null,
-    };
-  });
-}
-
-function claimError(res: ServerResponse, error: unknown): void {
+function signalingError(res: ServerResponse, error: unknown): void {
   if (error instanceof CameraRelayClaimError && error.reason === "busy") {
     respond(res, 429, { error: "camera_stream_busy" });
-  } else if (
-    error instanceof CameraRelayClaimError &&
-    error.reason === "expired"
-  ) {
-    respond(res, 410, { error: "camera_stream_expired" });
-  } else {
-    respond(res, 401, { error: "invalid_camera_stream_ticket" });
+    return;
   }
+  if (error instanceof CameraRelayClaimError && error.reason === "expired") {
+    respond(res, 410, { error: "camera_stream_expired" });
+    return;
+  }
+  if (error instanceof CameraWebRtcSessionError) {
+    const status = error.reason === "expired_session" ? 410 : 400;
+    respond(res, status, { error: error.reason });
+    return;
+  }
+  respond(res, 401, { error: "invalid_camera_stream_ticket" });
 }
 
 export function createCameraWebRtcHandler(
   relay: CameraRelayService,
-  signaling: CameraWebRtcSignalingSource
+  sessions: CameraWebRtcSessionService
 ) {
-  const sessions = new Map<string, ActiveSession>();
-
-  const closeSession = (token: string) => {
-    const session = sessions.get(token);
-    if (!session) return false;
-    sessions.delete(token);
-    clearTimeout(session.timeout);
-    session.abortController.abort();
-    session.lease.release();
-    return true;
-  };
-
   return async (
     req: IncomingMessage,
     res: ServerResponse,
@@ -143,10 +100,11 @@ export function createCameraWebRtcHandler(
 
     const token = url.searchParams.get("ticket") ?? "";
     if (req.method === "DELETE") {
-      if (!closeSession(token)) {
+      const result = sessions.close(token);
+      if (!result.closed) {
         respond(res, 401, { error: "invalid_camera_stream_session" });
       } else {
-        respond(res, 200, { closed: true });
+        respond(res, 200, result);
       }
       return true;
     }
@@ -161,88 +119,38 @@ export function createCameraWebRtcHandler(
     try {
       body = await readJsonBody(req);
     } catch (error) {
-      respond(res, error instanceof Error && error.message === "signal_too_large" ? 413 : 400, {
-        error: error instanceof Error ? error.message : "invalid_signal",
-      });
+      respond(
+        res,
+        error instanceof Error && error.message === "signal_too_large" ? 413 : 400,
+        { error: error instanceof Error ? error.message : "invalid_signal" }
+      );
       return true;
     }
 
     const type = typeof body.type === "string" ? body.type : "";
-    if (type === "request") {
-      if (sessions.has(token)) {
-        respond(res, 409, { error: "camera_stream_already_open" });
-        return true;
-      }
-
-      let lease: CameraStreamLease;
-      try {
-        lease = relay.claim(token);
-      } catch (error) {
-        claimError(res, error);
-        return true;
-      }
-
-      const abortController = new AbortController();
-      try {
-        const offer = await signaling.requestOffer(abortController.signal);
-        const remaining = Math.max(0, Date.parse(lease.expiresAt) - Date.now());
-        const timeout = setTimeout(() => closeSession(token), remaining);
-        sessions.set(token, {
-          lease,
-          remoteId: offer.id,
-          abortController,
-          timeout,
-        });
-        respond(res, 200, {
-          type: offer.type,
-          sdp: offer.sdp,
-          iceServers: offer.iceServers,
-          expiresAt: lease.expiresAt,
-        });
-      } catch {
-        abortController.abort();
-        lease.release();
-        respond(res, 502, { error: "camera_webrtc_offer_failed" });
-      }
-      return true;
-    }
-
-    const session = sessions.get(token);
-    if (!session) {
-      respond(res, 401, { error: "invalid_camera_stream_session" });
-      return true;
-    }
-
     try {
+      if (type === "request") {
+        const opened = await sessions.open(relay.claim(token), token);
+        respond(res, 200, {
+          type: opened.type,
+          sdp: opened.sdp,
+          iceServers: opened.iceServers,
+          expiresAt: opened.expiresAt,
+        });
+        return true;
+      }
       if (type === "answer") {
-        const sdp = typeof body.sdp === "string" ? body.sdp : "";
-        if (!sdp || Buffer.byteLength(sdp) > MAX_SDP_BYTES) {
-          throw new Error("invalid_answer");
-        }
-        await signaling.sendAnswer(
-          session.remoteId,
-          sdp,
-          session.abortController.signal
-        );
-        respond(res, 200, { accepted: true });
+        respond(res, 200, await sessions.answer(token, body.sdp));
         return true;
       }
-
       if (type === "remote_candidate") {
-        await signaling.sendCandidates(
-          session.remoteId,
-          sanitizeCandidates(body.candidates),
-          session.abortController.signal
-        );
-        respond(res, 200, { accepted: true });
+        const result = await sessions.addCandidates(token, body.candidates);
+        respond(res, 200, { accepted: result.accepted });
         return true;
       }
-
       respond(res, 400, { error: "unsupported_signal_type" });
     } catch (error) {
-      respond(res, 400, {
-        error: error instanceof Error ? error.message : "invalid_signal",
-      });
+      signalingError(res, error);
     }
     return true;
   };

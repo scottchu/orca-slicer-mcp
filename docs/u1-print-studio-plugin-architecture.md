@@ -30,15 +30,15 @@ normalized U1Status observation
 
 user Go Live intent
         |
-        | one authenticated MCP call; URL stays in result _meta
+        | MCP Apps tools/call; no iframe network request
         v
-camera relay application service
-  one-time ticket -> lease -> bounded signaling session
+camera session application service
+  opaque session -> lease -> bounded answer/ICE/close
         |                                      ^
         | application ports                    | allowlisted offer/answer/ICE
         v                                      |
-exact media HTTP adapter              u1-status camera adapter
-  POST/DELETE /media/camera.webrtc    fixed private WebRTC route
+MCP app-only signaling tools          u1-status camera adapter
+  answer / candidates / close         fixed private WebRTC route
         |
         v
 browser RTCPeerConnection <====== H264 media ======> webrtc-camerastreamer
@@ -55,12 +55,13 @@ inbound protocol, not the core product boundary.
 | Plugin package | `.codex-plugin/plugin.json` | Discovery metadata, skills, and MCP server declaration |
 | Inbound adapter | `app/src/app.ts` | Declares tools and resources, maps calls to results, and chooses host representations |
 | Local transport | `app/src/stdio.ts` | Runs the MCP server as a desktop-local child process |
+| Local onboarding | `app/src/cli.ts` and `local-config.ts` | Provides the shared `setup`, `doctor`, and `mcp` contract without environment-file editing |
 | Remote transport | `app/src/server.ts` | Terminates Streamable HTTP after the OAuth boundary and invokes the same MCP app |
 | Identity boundary | `app/src/personal-oauth.ts` | Personal authorization code, PKCE, passkey verification, token audience, and `u1.monitor` scope |
 | Observation adapter | `app/src/u1-status.ts` | Queries the allowlisted Moonraker status and camera paths and normalizes their response |
-| Camera relay application service | `app/src/application/camera-relay.ts` | Owns ticket, lease, concurrency, and duration policy without MCP or HTTP types |
-| WebRTC signaling port | `app/src/application/camera-webrtc.ts` | Defines transport-independent offer, answer, ICE candidate, and session-release contracts |
-| Media inbound adapter | `app/src/adapters/camera-webrtc-http.ts` | Serves only the exact ticketed WebRTC signaling route and maps HTTP outcomes without exposing the printer peer ID |
+| Camera relay application service | `app/src/application/camera-relay.ts` | Owns ticket or direct lease, concurrency, and duration policy without MCP or HTTP types |
+| WebRTC session service | `app/src/application/camera-webrtc.ts` | Owns opaque sessions and bounded offer, answer, ICE candidate, expiry, and close semantics |
+| Optional media inbound adapter | `app/src/adapters/camera-webrtc-http.ts` | Retains the standalone dashboard's exact ticketed HTTP signaling route over the same application service |
 | Ticket codec adapter | `app/src/adapters/camera-ticket-codec.ts` | Issues opaque random ticket material and hashes it for in-memory lookup |
 | Domain-shaped projection | `U1Status` | One versioned, timestamped current observation used by all presenters |
 | Interactive presenter | `public/widget.html` | Renders and refreshes status in MCP Apps hosts and requests relayed camera frames |
@@ -76,17 +77,21 @@ store, or `ObservationSource` port described in the target architecture.
 
 ## MCP interface
 
-The remote HTTP MCP surface has one UI resource and exactly four read-only
-tools. The desktop stdio surface omits the stream-opening tool because it has no
-HTTPS media route and keeps the three status/snapshot tools.
+The desktop-local and optional HTTP MCP surfaces share one UI resource, four
+model-visible read-only tools, and three app-only signaling helpers. The hosted
+widget has no external fetch capability; both transports route signaling
+through the host's MCP Apps bridge.
 
 | MCP member | Semantic category | Result contract |
 | --- | --- | --- |
 | `show_u1_status` | Observe and present | Text, `U1Status`, and a PNG card; links the HTML resource |
 | `get_u1_status` | Observe | Text plus fresh `U1Status`; no UI resource and no image, so widget refresh stays quiet |
 | `get_u1_camera_frame` | Observe | Camera acquisition facts in structured data; JPEG bytes stay in widget-private result metadata |
-| `open_u1_camera_stream` | Observe | Remote-only one-time relay grant; expiry and duration are model-readable while the URL stays in widget-private result metadata |
-| `ui://u1-print-studio/status-v3.html` | Presentation resource | Self-contained MCP Apps HTML with only the public media origin in its resource CSP |
+| `open_u1_camera_stream` | Observe | Creates an opaque bounded session; expiry and duration are model-readable while offer and session material stay in widget-private result metadata |
+| `answer_u1_camera_stream` | Observe, app-only | Accepts one bounded, idempotent WebRTC answer for the active session |
+| `add_u1_camera_ice_candidates` | Observe, app-only | Accepts bounded and deduplicated ICE candidate batches |
+| `close_u1_camera_stream` | Observe, app-only | Idempotently closes the session and releases its lease |
+| `ui://u1-print-studio/status-v4.html` | Presentation resource | Self-contained MCP Apps HTML with empty external CSP domains |
 
 `structuredContent` is the stable machine-readable projection. `content` is
 what a model or ordinary chat host can consume. Result `_meta` carries
@@ -94,16 +99,18 @@ component-private data such as a relayed camera frame. Descriptor `_meta`
 links `show_u1_status` to its UI resource. These fields solve different
 problems and must not be conflated.
 
-The local route is:
+The normal local-first route is:
 
 ```text
 Codex desktop -> stdio MCP -> show_u1_status
               -> text + U1Status + PNG + UI resource link
               -> desktop mounts the widget or displays the PNG
-              -> Go Live falls back to get_u1_camera_frame snapshots
+              -> Go Live uses MCP Apps tools/call for bounded signaling
+              -> connector alone calls the U1's fixed private route
+              -> negotiation failure falls back to camera snapshots
 ```
 
-The cross-device route is:
+The optional developer HTTP route is:
 
 ```text
 Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
@@ -111,13 +118,14 @@ Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
               -> text + U1Status + PNG + UI resource link
               -> host mounts the widget if supported, otherwise shows the PNG
               -> Go Live calls open_u1_camera_stream once
-              -> widget exchanges one-time /media/camera.webrtc grant
+              -> answer, ICE, and close stay on the MCP Apps tools/call bridge
               -> browser and printer negotiate an H264 RTCPeerConnection
 ```
 
-Tailscale Funnel provides public TLS routing. OAuth authenticates and scopes the
-caller. Neither one supplies printer semantics, and neither authorizes future
-control actions merely because login succeeded.
+The standalone dashboard may retain the exact `/media/camera.webrtc` HTTP
+adapter for development compatibility. Tailscale and personal OAuth remain
+optional developer adapters; neither is part of normal setup or packaging and
+neither authorizes future control actions merely because login succeeded.
 
 ## Ontology
 
@@ -161,8 +169,11 @@ does not implement Preparation or Control.
   status rather than vendor response bodies.
 - Printer and camera addresses remain private; the widget never connects to
   them directly.
-- MCP maps an authenticated `Go Live` request to an application use case but
-  does not own tickets, leases, concurrency, duration, or signaling policy.
+- MCP maps a `Go Live` request and its app-only signaling calls to an
+  application use case but does not own sessions, leases, concurrency,
+  duration, or signaling policy.
+- The hosted iframe has empty external CSP domains and never fetches LAN,
+  Tailscale, or media signaling URLs directly.
 - The media HTTP adapter knows the exact signaling message allowlist and HTTP
   status codes but not how tickets are issued or which printer route is used.
 - The printer adapter performs fixed-route WebRTC signaling and separately

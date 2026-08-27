@@ -1,0 +1,43 @@
+# Local-first packaging contract
+
+Marketplace, Homebrew, and npm are delivery adapters around one executable and
+one onboarding contract. This repository does not publish any of them.
+
+| Channel | Runtime payload | Setup | Verification |
+| --- | --- | --- | --- |
+| Marketplace | platform executable staged at `app/runtime/u1-print-studio` | `u1-print-studio setup` | `u1-print-studio doctor` |
+| Homebrew | the same platform executable | `u1-print-studio setup` | `u1-print-studio doctor` |
+| npm | a platform package or launcher for the same executable contract | `u1-print-studio setup` | `u1-print-studio doctor` |
+
+The current evidence supports an ephemeral macOS arm64 self-contained
+executable built with `bun run bundle:runtime`. The build disables automatic
+`.env` and `bunfig.toml` loading, embeds the widget resource, and replaces Bun
+1.3.12's invalid emitted macOS signature with an ad-hoc signature for local
+execution. Bun is a build and test dependency, not a runtime prerequisite for
+that artifact. The read-only printer adapter currently invokes the platform
+`curl` binary with a fixed route and argument allowlist; eliminating that
+platform dependency is a separate runtime-hardening gate.
+
+The ad-hoc signature is validation-only. Cross-platform binaries, Developer ID
+signing, notarization, checksums, channel metadata, upgrades, rollback, and
+actual installation are future evidence gates.
+
+The source-tree `.mcp.json` remains a Bun-based developer adapter. A Marketplace
+release stages the executable and uses `.mcp.release.json`; it must not rewrite
+user configuration or require an environment file. Homebrew and npm packaging
+must invoke the same `setup`, `doctor`, and `mcp` subcommands rather than adding
+channel-specific onboarding logic.
+
+`setup` accepts one private, link-local, or loopback HTTP(S) printer origin and
+writes an owner-only versioned configuration file. It rejects credentials,
+queries, fragments, non-root paths, and public hosts. `doctor --offline`
+validates configuration and safety contracts without touching hardware;
+ordinary `doctor` adds one read-only observation through the connector.
+
+No Marketplace, Homebrew, npm, plugin cache, or external service is mutated by
+this packaging slice.
+
+This private repository currently has no license file. Do not describe or
+publish an artifact as an open-source distribution until the owner selects a
+license and repository ownership/dependency notices are reviewed. License
+selection is a release gate, not an implementation detail to infer here.

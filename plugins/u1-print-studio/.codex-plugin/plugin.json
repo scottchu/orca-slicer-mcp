@@ -1,7 +1,7 @@
 {
   "name": "u1-print-studio",
   "version": "0.2.0+codex.20260826165531",
-  "description": "Set up, prepare, start, and monitor Snapmaker U1 prints with read-only interactive and inline-image status cards.",
+  "description": "Prepare Snapmaker U1 work and monitor it through a desktop-local read-only connector with interactive and inline-image status cards.",
   "author": {
     "name": "Scott Chu"
   },
@@ -9,22 +9,22 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "U1 Print Studio",
-    "shortDescription": "Live, beautiful, evidence-backed U1 status.",
-    "longDescription": "U1 Print Studio walks a new user through a personal Tailscale and passkey connection, keeps preparation and authorized print start separate, and adds read-only U1 status as an interactive camera dashboard or a portable inline image for non-component hosts.",
+    "shortDescription": "Local-first, evidence-backed U1 status.",
+    "longDescription": "U1 Print Studio uses one desktop-local setup and doctor path with no normal-user Tailscale, DNS, OAuth, environment-file, or Bun requirement. It keeps preparation and authorized print start separate while exposing read-only U1 status, snapshots, and bounded live camera signaling through the MCP Apps bridge.",
     "developerName": "Scott Chu",
     "category": "Developer Tools",
     "capabilities": [
       "Prepare",
       "Print",
       "Monitor",
-      "Mobile setup",
-      "Passkey authentication",
+      "Local-first setup",
+      "Read-only live camera",
       "Interactive",
       "Inline image fallback",
       "Picture in Picture"
     ],
     "defaultPrompt": [
-      "Connect my read-only U1 status card to my phone.",
+      "Set up my desktop-local read-only U1 status card.",
       "Prepare this model for my Snapmaker U1.",
       "Start this validated U1 print after safety checks.",
       "Monitor my U1 print with adaptive status cards."

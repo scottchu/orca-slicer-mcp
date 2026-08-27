@@ -7,6 +7,7 @@ import type {
   CameraWebRtcOffer,
   CameraWebRtcSignalingSource,
 } from "./application/camera-webrtc.js";
+import { normalizePrinterBaseUrl, readLocalConfig } from "./local-config.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -15,9 +16,10 @@ const QUERY_ROUTE =
   "heater_bed&extruder&extruder1&extruder2&extruder3&toolhead&webhooks";
 const WEBCAMS_ROUTE = "/server/webcams/list";
 export const CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS = [20, 10] as const;
-const CAMERA_ICE_SERVERS: CameraIceServer[] = [
-  { urls: ["stun:stun.l.google.com:19302"] },
-];
+// LAN host candidates are the zero-dependency local-first default. If the
+// printer explicitly advertises bounded STUN/TURN configuration, the session
+// service validates and forwards it without making it a normal-user dependency.
+const CAMERA_ICE_SERVERS: CameraIceServer[] = [];
 let cachedSnapshotUrl: URL | null = null;
 let cachedStreamUrl: URL | null = null;
 
@@ -104,16 +106,9 @@ function asBoolean(value: unknown): boolean {
 }
 
 function printerBaseUrl(): URL {
-  const raw = process.env.MOONRAKER_BASE_URL?.trim();
-  if (!raw) {
-    throw new Error("MOONRAKER_BASE_URL is not configured");
-  }
-
-  const url = new URL(raw);
-  if (url.protocol !== "http:" && url.protocol !== "https:") {
-    throw new Error("MOONRAKER_BASE_URL must use http or https");
-  }
-  return url;
+  const raw = process.env.MOONRAKER_BASE_URL?.trim() ||
+    readLocalConfig().printer.baseUrl;
+  return new URL(normalizePrinterBaseUrl(raw));
 }
 
 async function fetchJson(route: string, maxTimeSeconds = 6): Promise<JsonObject> {
