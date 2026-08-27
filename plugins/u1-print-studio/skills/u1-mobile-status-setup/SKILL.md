@@ -19,6 +19,12 @@ Set up one user's read-only U1 status card without exposing their printer direct
 - Preserve every unrelated Tailscale Serve or Funnel route. Never use a blanket reset as part of setup or rollback.
 - Use standard HTTPS port 443 for ChatGPT registration. Tailscale Funnel supports other ports, but a real ChatGPT OAuth-discovery attempt against `:8443` failed before reaching the otherwise healthy public edge.
 - Keep authentication mandatory on every public MCP request. If passkey recovery is needed, perform local re-enrollment; never add a public unauthenticated bypass.
+- Keep every public `/auth/enroll` route rejecting. Serve enrollment and its
+  health check only from a second loopback listener through a distinct
+  tailnet-only Tailscale Serve HTTPS port with Funnel disabled.
+- Do not assume a default STUN service. Configure bounded STUN explicitly for a
+  compatibility test and prefer short-lived RFC5766 TURN REST credentials for
+  robust remote media. Never collect or display the TURN shared secret.
 
 ## Evidence boundaries
 
@@ -48,6 +54,8 @@ Inspect, but do not print secrets from, the existing environment configuration. 
 MOONRAKER_BASE_URL=<private printer endpoint>
 U1_REMOTE_AUTH=personal
 U1_PUBLIC_BASE_URL=<public Funnel origin>
+U1_ENROLLMENT_BASE_URL=https://<same-magicdns-hostname>:<private-serve-port>
+U1_ENROLLMENT_PORT=<distinct-loopback-port>
 U1_OWNER_NAME=<display name>
 ```
 
@@ -73,11 +81,31 @@ U1_PUBLIC_BASE_URL=https://<magicdns-hostname>
 
 Do not append `/mcp` to `U1_PUBLIC_BASE_URL`.
 
+Choose a currently unused nonstandard Serve HTTPS port for the enrollment
+origin and a distinct loopback backend port. Preserve every current Serve and
+Funnel handler. Never reuse an occupied private port or enable Funnel on the
+enrollment port. The enrollment hostname must match the public hostname so the
+two origins share one WebAuthn RP ID.
+
+For the installed standalone runtime, add any explicit compatibility STUN URL
+through repeatable `u1-print-studio setup --stun-url <url>` arguments; setup
+preserves valid STUN entries. For the HTTP service, `U1_STUN_URLS_JSON` is an
+explicit override. Record that public STUN observes peer network metadata and
+adds an availability dependency. For robust remote use provision TURN URLs and
+a server-held shared secret through `U1_TURN_URLS_JSON`,
+`U1_TURN_SHARED_SECRET`, and a bounded
+`U1_TURN_CREDENTIAL_TTL_SECONDS`. Partial TURN configuration must stop startup.
+
 ### 2. Prove the service locally
 
 Install dependencies and run the checks described in `app/README.md`. In this repository use Bun for the TypeScript app and `uv run` for every Python command.
 
 Start the HTTP service on loopback and verify its local health endpoint before creating a public route. Confirm an unauthenticated local MCP request is rejected with HTTP 401 and a `WWW-Authenticate` header referring to the protected-resource metadata.
+
+Confirm the separate enrollment listener is also bound to loopback. Its
+`/health` must identify only the enrollment surface; `/mcp`, `/oauth`, `/media`,
+and `/widget` must return 404. The public listener must return 404 for
+`/auth/enroll` and all descendants even when a one-time token exists.
 
 For a persistent macOS setup, create a user LaunchAgent from the user's actual plugin path. Do not hard-code another user's home directory. Give runtime directories, state, and logs owner-only permissions. The service must continue to bind only to `127.0.0.1`.
 
@@ -101,9 +129,19 @@ Through the public origin, verify:
 
 Do not publish the endpoint until these checks pass.
 
+Add the enrollment listener only to the chosen tailnet-only Serve HTTPS port.
+Verify `/health` through that private origin, verify Funnel is disabled on the
+port, and compare all unrelated handlers with the saved routing state. Keep the
+public `/auth` handler mapped to the public backend so enrollment attempts are
+rejected rather than falling through to an unrelated root service.
+
 ### 4. Enroll the intended phone
 
-Find the one-time enrollment URL in the owner-only runtime file named by `app/README.md`. Show that URL only to the user who owns the service and ask them to open it on the iPhone they intend to use. Explain that iOS will create a passkey and normally confirm it with Face ID or the device passcode.
+Find the one-time enrollment URL in the owner-only runtime file named by
+`app/README.md`. Confirm it uses the private Serve origin, not the public Funnel
+origin. Show that URL only to the user who owns the service and ask them to open
+it on the iPhone they intend to use. Explain that iOS will create a passkey and
+normally confirm it with Face ID or the device passcode.
 
 Wait for the user to complete enrollment. Then verify locally that the OAuth state contains an enrolled credential without displaying the credential material. Confirm the one-time enrollment link has been removed or is invalid. Do not restart the service while enrollment is pending unless a new link is intentionally required; a restart can invalidate an earlier link.
 
@@ -154,6 +192,11 @@ pixels or controls inside the PNG.
 
 Record which checks were observed by the user. Do not infer visual acceptance from a successful MCP response or a desktop rendering.
 
+For remote live acceptance, distinguish local candidates, explicit STUN, and
+TURN-relayed evidence. STUN success does not prove TURN. Do not claim reliable
+ChatGPT and Codex playback until a real allocation using a derived short-lived
+TURN REST credential and mounted playback on each host are observed.
+
 ## Recovery and rollback
 
 - If Codex reports `oauth_refresh_token_missing` for a connection created by an
@@ -171,7 +214,8 @@ Record which checks were observed by the user. Do not infer visual acceptance fr
 ## Completion report
 
 Report the discovered MagicDNS hostname, standard-HTTPS MCP URL, preserved
-Funnel handlers, four-tool inventory, and each evidence boundary. Redact
+Funnel and Serve handlers, private enrollment health, four-tool inventory, ICE
+mode (local candidates, explicit STUN, or TURN REST), and each evidence boundary. Redact
 credentials and tokens. State that this self-hosted edition requires an
 always-on LAN agent per printer owner; it may run on a desktop, NAS, or small
 server. Keep a future hosted broker plus local outbound connector as a separate

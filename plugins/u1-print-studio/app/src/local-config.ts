@@ -2,11 +2,15 @@ import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "n
 import { isIP } from "node:net";
 import { homedir, platform } from "node:os";
 import path from "node:path";
+import { normalizeStunUrls } from "./camera-ice-config.js";
 
 export type U1LocalConfig = {
-  schemaVersion: 1;
+  schemaVersion: 2;
   printer: {
     baseUrl: string;
+  };
+  camera: {
+    stunUrls: string[];
   };
 };
 
@@ -97,22 +101,52 @@ export function readLocalConfig(configPath = defaultConfigPath()): U1LocalConfig
   const printer = object.printer && typeof object.printer === "object"
     ? object.printer as Record<string, unknown>
     : {};
-  if (object.schemaVersion !== 1 || typeof printer.baseUrl !== "string") {
+  const camera = object.camera && typeof object.camera === "object"
+    ? object.camera as Record<string, unknown>
+    : {};
+  if (
+    (object.schemaVersion !== 1 && object.schemaVersion !== 2) ||
+    typeof printer.baseUrl !== "string"
+  ) {
     throw new Error("U1 Print Studio configuration schema is invalid");
   }
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     printer: { baseUrl: normalizePrinterBaseUrl(printer.baseUrl) },
+    camera: {
+      stunUrls: object.schemaVersion === 1
+        ? []
+        : normalizeStunUrls(camera.stunUrls ?? []),
+    },
   };
+}
+
+export function readOptionalLocalConfig(
+  configPath = defaultConfigPath()
+): U1LocalConfig | null {
+  return existsSync(configPath) ? readLocalConfig(configPath) : null;
 }
 
 export function writeLocalConfig(
   printerUrl: string,
-  configPath = defaultConfigPath()
+  configPath = defaultConfigPath(),
+  options: { stunUrls?: string[] } = {}
 ): U1LocalConfig {
+  let preservedStunUrls: string[] = [];
+  if (options.stunUrls === undefined && existsSync(configPath)) {
+    try {
+      preservedStunUrls = readLocalConfig(configPath).camera.stunUrls;
+    } catch {
+      // An invalid legacy file has no trusted camera configuration to preserve.
+      preservedStunUrls = [];
+    }
+  }
   const config: U1LocalConfig = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     printer: { baseUrl: normalizePrinterBaseUrl(printerUrl) },
+    camera: {
+      stunUrls: normalizeStunUrls(options.stunUrls ?? preservedStunUrls),
+    },
   };
   mkdirSync(path.dirname(configPath), { recursive: true, mode: 0o700 });
   writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, {

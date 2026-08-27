@@ -8,6 +8,7 @@ import {
   writeLocalConfig,
 } from "./local-config.js";
 import { startStdioConnector } from "./stdio.js";
+import { createCameraIceServerProvider } from "./camera-ice-config.js";
 import { readU1Status } from "./u1-status.js";
 
 type ParsedArguments = {
@@ -16,6 +17,7 @@ type ParsedArguments = {
   configPath?: string;
   offline: boolean;
   json: boolean;
+  stunUrls: string[];
 };
 
 function parseArguments(argv: string[]): ParsedArguments {
@@ -23,6 +25,7 @@ function parseArguments(argv: string[]): ParsedArguments {
     command: argv[0] ?? "help",
     offline: false,
     json: false,
+    stunUrls: [],
   };
   for (let index = 1; index < argv.length; index += 1) {
     const argument = argv[index];
@@ -30,6 +33,7 @@ function parseArguments(argv: string[]): ParsedArguments {
     else if (argument === "--json") parsed.json = true;
     else if (argument === "--printer-url") parsed.printerUrl = argv[++index];
     else if (argument === "--config") parsed.configPath = argv[++index];
+    else if (argument === "--stun-url") parsed.stunUrls.push(argv[++index] ?? "");
     else throw new Error(`Unknown argument: ${argument}`);
   }
   return parsed;
@@ -53,7 +57,9 @@ async function requestedPrinterUrl(value?: string): Promise<string> {
 async function setup(args: ParsedArguments): Promise<void> {
   const configPath = args.configPath ?? defaultConfigPath();
   const printerUrl = await requestedPrinterUrl(args.printerUrl);
-  writeLocalConfig(printerUrl, configPath);
+  writeLocalConfig(printerUrl, configPath, {
+    stunUrls: args.stunUrls.length > 0 ? args.stunUrls : undefined,
+  });
   readLocalConfig(configPath);
   const doctorCommand = args.configPath
     ? `u1-print-studio doctor --config ${JSON.stringify(configPath)}`
@@ -73,13 +79,21 @@ async function setup(args: ParsedArguments): Promise<void> {
 
 async function doctor(args: ParsedArguments): Promise<void> {
   const configPath = args.configPath ?? defaultConfigPath();
-  readLocalConfig(configPath);
+  const config = readLocalConfig(configPath);
+  const iceServers = createCameraIceServerProvider(process.env, {
+    configuredStunUrls: config.camera.stunUrls,
+  });
   const checks: Record<string, string> = {
     configuration: "ok",
     printerOrigin: "private-or-loopback",
     operations: "fixed-read-only-allowlist",
     hostedSignaling: "mcp-apps-tools-call",
     externalWidgetFetch: "disabled",
+    iceTraversal: iceServers.hasTurn
+      ? "turn-rest"
+      : iceServers.hasStun
+        ? "explicit-stun-only"
+        : "local-candidates-only",
   };
   if (!args.offline) {
     const previousConfigPath = process.env.U1_PRINT_STUDIO_CONFIG;
@@ -120,11 +134,12 @@ function help(): void {
   console.log(`U1 Print Studio
 
 Usage:
-  u1-print-studio setup [--printer-url URL] [--config PATH] [--json]
+  u1-print-studio setup [--printer-url URL] [--stun-url URL]... [--config PATH] [--json]
   u1-print-studio doctor [--offline] [--config PATH] [--json]
   u1-print-studio mcp
 
 setup and doctor are shared by Marketplace, Homebrew, and npm packages.
+Optional STUN URLs are explicit, bounded, and stored in the owner-only config.
 The connector exposes read-only status, snapshot, and bounded live signaling.`);
 }
 

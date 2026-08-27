@@ -19,6 +19,10 @@ u1-print-studio doctor
 `setup` asks for one private, link-local, loopback, or `.local` printer
 origin and writes a versioned owner-only configuration. It rejects embedded
 credentials, public hosts, queries, fragments, and proxy-shaped paths.
+Optional repeatable `--stun-url` values add a bounded explicit STUN list to the
+same owner-only config and survive later setup rewrites. The default remains
+empty; no public STUN service is a hidden normal-user dependency. A configured
+STUN service learns peer network metadata and adds an availability dependency.
 `doctor --offline` validates the local contract without contacting a printer;
 ordinary `doctor` adds one read-only status observation.
 
@@ -74,9 +78,56 @@ without a host, `bun run dashboard` serves the standalone loopback dashboard
 at `http://127.0.0.1:8788/dashboard`. It uses the same tool-call shape while
 retaining the exact HTTP signaling adapter for development coverage.
 
-Tailscale Serve/Funnel and personal OAuth remain optional legacy developer
-adapters in `server.ts`; they are not part of installation, setup, doctor, or
-the normal-user architecture.
+## Secure remote developer adapter
+
+The user-authorized personal remote slice keeps Streamable HTTP MCP plus OAuth
+authorization, PKCE, refresh tokens, and passkey assertion on
+`U1_PUBLIC_BASE_URL`, which must use standard HTTPS port 443. Every MCP request
+requires `u1.monitor`. Optional exact HTTP WebRTC signaling remains protected by
+the short-lived single-use capability issued from an authenticated Monitor
+request.
+
+Passkey enrollment is not part of the public surface. Public
+`/auth/enroll` and descendant routes always return 404. Configure the private
+surface with both:
+
+```text
+U1_ENROLLMENT_BASE_URL=https://<same-magicdns-hostname>:<private-serve-port>
+U1_ENROLLMENT_PORT=<distinct-loopback-port>
+```
+
+The process binds a second enrollment-only listener to `127.0.0.1`. That
+listener serves only `/health` and the exact enrollment routes and must be
+exposed only through a separate tailnet-only Tailscale Serve HTTPS port with
+Funnel disabled. It remains bound after enrollment so private health can be
+verified; enrollment routes then return 404 until a local reset creates a new
+one-time flow. The public and private origins share a hostname and WebAuthn RP
+ID but verify their distinct origins. The one-time private URL remains in the
+owner-only runtime link file.
+
+ICE configuration is explicit. `U1_STUN_URLS_JSON` overrides owner-config STUN
+for the HTTP service. Robust remote use should additionally configure:
+
+```text
+U1_TURN_URLS_JSON=["turn:relay.example:3478?transport=udp","turns:relay.example:5349?transport=tcp"]
+U1_TURN_SHARED_SECRET=<server-side secret>
+U1_TURN_CREDENTIAL_TTL_SECONDS=1800
+```
+
+Do not commit or print the shared secret. Each camera open derives a bounded
+RFC5766 TURN REST username (`expiry:nonce`) and base64 HMAC-SHA1 credential. The
+shared secret never leaves the server. The same derived credential reaches the
+printer peer and widget-private metadata; neither it nor printer URLs, peer IDs,
+or session capabilities enter model-readable results. Partial TURN
+configuration and invalid TTLs fail closed. STUN-only is a compatibility path,
+not evidence of reliable remote media; real TURN allocation and mounted
+ChatGPT/Codex playback require separate observation.
+
+Tailscale Serve/Funnel and personal OAuth remain optional developer adapters;
+they are not part of installation, setup, doctor, or the normal-user
+architecture. Never reset Tailscale routing. Preserve unrelated handlers and
+do not change a live LaunchAgent, Funnel, Serve route, OAuth state, or installed
+plugin until source checks pass and the coordinator approves an exact plan.
 
 ## Self-contained runtime evidence
 

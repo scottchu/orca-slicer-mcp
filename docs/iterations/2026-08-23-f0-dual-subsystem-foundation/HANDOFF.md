@@ -1,5 +1,48 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-27 secure remote Monitor handoff
+
+The user changed execution order to the secure remote U1 Print Studio Monitor
+slice. Decision 0017 is accepted for this slice and preserves decision 0016's
+local-first normal-user direction. Source now keeps standard-HTTPS public OAuth
+and Streamable HTTP MCP while moving passkey enrollment to a distinct
+loopback-only listener intended for a tailnet-only Tailscale Serve origin.
+
+The public runtime retains exactly four model-visible read-only tools and three
+app-only read-only helpers. Public enrollment always rejects. A configured
+private enrollment origin requires a distinct loopback port and stays healthy
+after an existing credential suppresses enrollment. ICE defaults empty;
+explicit STUN is available from HTTP env or the standalone owner-only config,
+and robust remote use prefers per-session RFC5766 TURN REST credentials derived
+from a server-only secret.
+
+Implementation paths include `camera-ice-config.ts`, OAuth/server enrollment
+composition, schema-2 local configuration and CLI setup, WebRTC offer handoff,
+tests, decision/requirements/architecture records, packaging/app documentation,
+and the mobile setup skill. Exact validation is in `VALIDATION.md`: TypeScript,
+60 tests with 324 assertions, source and standalone bundles, offline standalone
+STUN-preservation smoke, skill/plugin validation, repository checks, code
+signature verification, and whitespace checks pass.
+
+No live service, LaunchAgent, Tailscale route, OAuth state, installed plugin,
+printer, or external service was changed. Public-edge, private Serve, TURN,
+printer, mounted ChatGPT/Codex, and user-outcome evidence remain unclaimed.
+
+The next action requires coordinator approval and external TURN provisioning.
+Before deployment, capture the existing Serve/Funnel and LaunchAgent state,
+choose an unused private Serve HTTPS port plus distinct loopback enrollment
+port, and obtain TURN REST-compatible URLs/shared secret. Stage the executable
+and owner config without replacing OAuth state. Restart only the exact U1
+service; verify both loopback listeners first. Preserve every public handler,
+keep public `/auth` mapped to the rejecting backend, add only the new private
+Serve handler with Funnel disabled, and compare routing with the saved state.
+Then verify public discovery/401/enrollment rejection, private health/enrollment
+state, exact four-plus-three authenticated inventory, explicit STUN if chosen,
+a real TURN allocation, and mounted playback separately in ChatGPT and Codex.
+Rollback restores the prior runtime/env and removes only the newly added private
+Serve handler. Do not deploy, merge, publish, or claim host success from this
+handoff alone.
+
 ## 2026-08-26 local-first rollout handoff
 
 The user changed the execution order to the local-first open-source U1 Print

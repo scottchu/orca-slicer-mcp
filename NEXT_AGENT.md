@@ -8,17 +8,19 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014, 0015, and 0016
+5. decisions 0014 through 0017
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
 
-The user-directed priority is the local-first open-source U1 Print Studio
-rollout under F0. Decision 0016 is the current architecture record.
+The user-directed priority is the secure remote U1 Print Studio Monitor slice
+under F0. Decision 0017 is current and preserves decision 0016's local-first
+normal-user direction.
 
-Delivery is pull request https://github.com/scottchu/orca-slicer-mcp/pull/15
-from branch `scottchu/local-first-rollout`.
+Delivery is the non-main branch `scottchu/secure-remote-mcp-stream`. Do not
+deploy, merge, publish, reinstall, or alter live routes without coordinator
+approval.
 
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
@@ -28,7 +30,7 @@ decision 0015.
 ## Current implementation
 
 - `u1-print-studio setup` writes one owner-only local config containing a
-  validated private printer origin.
+  validated private printer origin and optional bounded explicit STUN URLs.
 - `u1-print-studio doctor --offline` checks the configuration and safety
   contract without hardware access.
 - `u1-print-studio mcp` starts the desktop stdio connector.
@@ -43,6 +45,18 @@ decision 0015.
   development compatibility.
 - `.mcp.release.json` points to a staged self-contained executable; the source
   `.mcp.json` remains a Bun/env-file developer adapter.
+- Public OAuth and MCP require standard HTTPS and `u1.monitor`; public
+  `/auth/enroll*` rejects.
+- A configured same-hostname private enrollment origin requires a distinct
+  loopback port and binds an enrollment-only listener. Its health remains
+  available after restart with an existing credential while enrollment returns
+  404.
+- HTTP env STUN overrides optional owner-config STUN. ICE defaults empty.
+- TURN REST derives bounded per-session credentials from configured TURN URLs
+  and a server-only shared secret. The secret never leaves the server; derived
+  credentials remain widget-private and also reach the printer peer.
+- The HTTP service may run from env without a standalone config. The stdio
+  standalone continues to require its owner-only config.
 
 Model-visible tools are exactly:
 
@@ -63,10 +77,11 @@ proxy, Control, or Admin behavior appears.
 ## Validation boundary
 
 The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 49 passing tests with 275 assertions. The macOS arm64
+software suite has 60 passing tests with 324 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
-validation-only ad-hoc signature, prints help, writes a `0600` configuration,
-and passes offline doctor without Bun on its invocation path.
+validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
+configuration, preserves explicit STUN, and passes offline doctor without Bun
+on its invocation path.
 
 This proves local static/software and simulated protocol behavior only. It does
 not prove:
@@ -75,11 +90,12 @@ not prove:
 - production signing, notarization, update, or rollback;
 - an owner-selected open-source license or third-party notice review;
 - another OS or architecture;
+- public routing or a real TURN allocation;
 - a mounted desktop or mobile MCP App;
 - real-printer connectivity or browser playback;
 - physical safety or user outcome.
 
-No physical printer was contacted for this rollout.
+No physical printer or live deployment was contacted for this slice.
 
 Independent pre-merge review added regressions for rewriting a previously
 broader-permission config and for closing a valid camera session when the rest
@@ -97,18 +113,20 @@ requires a fresh task.
 
 ## Next smallest action
 
-First open a fresh Codex task and verify that the installed plugin mounts the
-status widget and that Go Live, Close, PiP, fullscreen, and fallback behave as
-expected. Then choose one evidence-backed packaging follow-up:
+Wait for coordinator approval and external TURN REST-compatible URLs/shared
+secret. Then capture current Serve/Funnel and LaunchAgent state, choose an
+unused private Serve HTTPS port and distinct loopback enrollment port, stage
+the executable and owner config without replacing OAuth state, and restart only
+the U1 service. Verify both loopback listeners first. Preserve every public
+handler, keep public `/auth` routed to the rejecting backend, add only the new
+private Serve handler, and keep Funnel disabled on that port. Compare routing
+against the saved state.
 
-1. create a reproducible signed/notarized macOS packaging fixture without
-   publishing it; or
-2. remove the platform-`curl` runtime dependency while preserving fixed
-   routes and macOS local-network behavior.
-
-Do not publish or contact a printer again without a new explicit user request.
-Keep host rendering, read-only protocol evidence, physical-printer evidence,
-and user outcome in separate records.
+Then record public discovery/401/enrollment rejection, private health and
+enrollment state, the exact authenticated four-plus-three inventory, explicit
+STUN if selected, a real TURN allocation, real-printer offer/media, and mounted
+ChatGPT and Codex playback as separate evidence layers. Rollback restores the
+previous runtime/env and removes only the newly added private Serve handler.
 
 ## Preserve
 
@@ -121,18 +139,20 @@ and user outcome in separate records.
   distinct.
 - Slicing, artifact validation, upload, start acknowledgement, observed
   printing, and physical acceptance remain separate evidence.
-- Tailscale and personal OAuth may remain optional developer adapters, never
-  normal-user requirements.
+- Tailscale and personal OAuth remain optional developer adapters, never
+  normal-user requirements. Enrollment is tailnet-only and TURN secrets stay
+  server-side.
 - Repository records are durable project memory.
 
 ## Copy-paste restart prompt
 
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
-docs/requirements.md, the active iteration, and decisions 0014 through 0016.
-Treat the local-first read-only connector and MCP Apps tools/call signaling
-bridge as the current F0 execution order. Do not reintroduce direct iframe
-fetches, normal-user Tailscale/OAuth/env/Bun requirements, printer controls, or
-generic proxy behavior. Run local validation only. Do not publish or contact a
-physical printer without fresh explicit authorization.
+docs/requirements.md, the active iteration, and decisions 0014 through 0017.
+Treat the secure remote Monitor source slice as current: standard-HTTPS public
+OAuth/MCP, public enrollment rejection, a separate tailnet-only enrollment
+listener, explicit STUN, and preferred short-lived TURN REST credentials.
+Preserve exactly four model-visible tools and three app-only helpers. Do not
+mutate live services/routes, merge, publish, or contact a physical printer
+without fresh approval.
 ```

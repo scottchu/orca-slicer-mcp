@@ -57,7 +57,9 @@ inbound protocol, not the core product boundary.
 | Local transport | `app/src/stdio.ts` | Runs the MCP server as a desktop-local child process |
 | Local onboarding | `app/src/cli.ts` and `local-config.ts` | Provides the shared `setup`, `doctor`, and `mcp` contract without environment-file editing |
 | Remote transport | `app/src/server.ts` | Terminates Streamable HTTP after the OAuth boundary and invokes the same MCP app |
-| Identity boundary | `app/src/personal-oauth.ts` | Personal authorization code, PKCE, passkey verification, token audience, and `u1.monitor` scope |
+| Enrollment transport | `app/src/server.ts` | Binds a second loopback-only listener for private health and exact passkey enrollment routes; it exposes no MCP, OAuth token, media, or widget route |
+| Identity boundary | `app/src/personal-oauth.ts` | Personal authorization code, PKCE, distinct public assertion/private enrollment origins, token audience, and `u1.monitor` scope |
+| ICE credential boundary | `app/src/camera-ice-config.ts` | Reads explicit bounded STUN and derives per-session RFC5766 TURN REST credentials from a server-only shared secret |
 | Observation adapter | `app/src/u1-status.ts` | Queries the allowlisted Moonraker status and camera paths and normalizes their response |
 | Camera relay application service | `app/src/application/camera-relay.ts` | Owns ticket or direct lease, concurrency, and duration policy without MCP or HTTP types |
 | WebRTC session service | `app/src/application/camera-webrtc.ts` | Owns opaque sessions and bounded offer, answer, ICE candidate, expiry, and close semantics |
@@ -95,7 +97,8 @@ through the host's MCP Apps bridge.
 
 `structuredContent` is the stable machine-readable projection. `content` is
 what a model or ordinary chat host can consume. Result `_meta` carries
-component-private data such as a relayed camera frame. Descriptor `_meta`
+component-private data such as a relayed camera frame or short-lived ICE
+credentials. Descriptor `_meta`
 links `show_u1_status` to its UI resource. These fields solve different
 problems and must not be conflated.
 
@@ -119,7 +122,16 @@ Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
               -> host mounts the widget if supported, otherwise shows the PNG
               -> Go Live calls open_u1_camera_stream once
               -> answer, ICE, and close stay on the MCP Apps tools/call bridge
+              -> explicit STUN or derived TURN REST credentials reach both peers
               -> browser and printer negotiate an H264 RTCPeerConnection
+```
+
+Passkey enrollment is a separate route graph:
+
+```text
+tailnet client -> private Serve HTTPS port -> enrollment-only loopback listener
+               -> private health or one-time passkey registration
+public Funnel -> public loopback listener -> /auth/enroll* always 404
 ```
 
 The standalone dashboard may retain the exact `/media/camera.webrtc` HTTP
@@ -174,6 +186,12 @@ does not implement Preparation or Control.
   duration, or signaling policy.
 - The hosted iframe has empty external CSP domains and never fetches LAN,
   Tailscale, or media signaling URLs directly.
+- Public OAuth and MCP use standard HTTPS. Passkey enrollment uses a distinct
+  same-hostname, nonstandard private Serve origin and loopback listener; public
+  enrollment always rejects.
+- ICE defaults empty. Explicit STUN is a disclosed privacy and availability
+  dependency. TURN REST derives bounded credentials per camera request; the
+  shared secret stays server-side and derived credentials stay model-private.
 - The media HTTP adapter knows the exact signaling message allowlist and HTTP
   status codes but not how tickets are issued or which printer route is used.
 - The printer adapter performs fixed-route WebRTC signaling and separately
