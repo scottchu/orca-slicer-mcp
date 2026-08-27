@@ -17,9 +17,9 @@ Last updated: 2026-08-27
 - Decision 0017 adds a private enrollment listener plus explicit STUN and
   short-lived TURN REST boundaries while preserving decision 0016's local-first
   normal-user direction and MCP Apps signaling bridge.
-- Current recovery branch: `scottchu/fix-u1-app-loading`. The secure remote
-  source and deployment records are already merged; this follow-up has not yet
-  been merged or reinstalled.
+- Pull request 20 merged the mounted-app compatibility repair as `4d4ea2f`.
+  Personal Marketplace version `0.2.0+codex.20260827215815` is installed and
+  the public service plus private dashboard are healthy.
 
 ## Implemented local-first slice
 
@@ -179,10 +179,12 @@ and final repository-check results.
 ### User outcome
 
 - The secure remote source is merged, installed as
-  `0.2.0+codex.20260827202019`, and deployed with public authenticated MCP plus
-  tailnet-only enrollment. Public/private route and installed-client checks
-  passed. Mounted ChatGPT/Codex playback and user outcome remain unverified
-  because no browser-control surface was connected.
+  `0.2.0+codex.20260827215815`, and deployed with public authenticated MCP plus
+  tailnet-only enrollment. Public/private routes, both supervised services,
+  installed-client resources, authenticated status and JPEG metadata, and
+  bounded WebRTC offer/close checks passed. Mounted ChatGPT/Codex playback and
+  visible browser video remain unverified because no browser-control surface
+  was connected.
 
 ## Open risks and F0 questions
 
@@ -193,8 +195,9 @@ and final repository-check results.
   distribution.
 - The system-`curl` dependency and macOS local-network permission behavior
   need a dedicated portability decision.
-- Native hosted-widget WebRTC rendering, Close, PiP, fullscreen, and fallback
-  need fresh host evidence after explicit authorization to contact a printer.
+- Native hosted-widget WebRTC rendering, FPS, UI-triggered Close, PiP,
+  fullscreen, and fallback need fresh visual host evidence. Server-side open
+  and close now pass against the real read-only camera path.
 - No TURN REST service URLs or shared secret were supplied. Reliable remote
   media remains blocked on external provisioning plus observed allocation and
   mounted playback. Explicit STUN is only a compatibility step and discloses
@@ -211,8 +214,8 @@ and final repository-check results.
 
 ## Next action
 
-Deliver and reinstall the compatibility-resource follow-up, restart only the
-exact U1 service while preserving OAuth state, and use a fresh ChatGPT or Codex
-task to validate the cache-busted widget and Go Live path. Keep the old-task
-MCP snapshot, optional private dashboard process, mounted playback, TURN,
-printer protocol, and user outcome as separate evidence layers.
+Use a fresh ChatGPT or Codex task to validate the cache-busted mounted widget,
+then reload the private dashboard and record visible Go Live playback, FPS,
+UI-triggered Close, PiP, and fullscreen separately. Keep the old-task MCP
+snapshot, server-side signaling, mounted playback, TURN, printer protocol, and
+user outcome as separate evidence layers.

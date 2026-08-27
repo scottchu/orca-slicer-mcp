@@ -18,10 +18,11 @@ The user-directed priority is the secure remote U1 Print Studio Monitor slice
 under F0. Decision 0017 is current and preserves decision 0016's local-first
 normal-user direction.
 
-The secure source and deployment records are merged. The current follow-up is
-`scottchu/fix-u1-app-loading`; the user authorized merge, reinstall, restart,
-and read-only testing. Preserve OAuth state and every existing Serve/Funnel
-route.
+The secure source and compatibility repair are merged. Pull request 20 is
+`4d4ea2f`; Personal Marketplace version
+`0.2.0+codex.20260827215815` is installed. The public service and separate
+private dashboard LaunchAgents are running. Preserve OAuth state and every
+existing Serve/Funnel route.
 
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
@@ -87,47 +88,54 @@ validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
 on its invocation path.
 
-This proves local static/software and simulated protocol behavior only. It does
-not prove:
+The software/source suite alone proves local static/software and simulated
+protocol behavior only. It does not prove:
 
-- a Marketplace, Homebrew, or npm installation;
+- Homebrew or npm installation;
 - production signing, notarization, update, or rollback;
 - an owner-selected open-source license or third-party notice review;
 - another OS or architecture;
-- public routing or a real TURN allocation;
+- a real TURN allocation;
 - a mounted desktop or mobile MCP App;
-- real-printer connectivity or browser playback;
+- browser playback;
 - physical safety or user outcome.
 
-No physical printer or live deployment was contacted for this slice.
+Separate post-merge evidence below accepts this machine's Personal Marketplace
+installation, live public/private routing, and bounded read-only real-printer
+status, snapshot metadata, offer, and close. It does not extend the source-suite
+proof to other machines, distribution channels, control actions, or visible
+playback.
 
 Independent pre-merge review added regressions for rewriting a previously
 broader-permission config and for closing a valid camera session when the rest
 of its stream envelope is malformed. Both fixes are included in the passing
 suite.
 
-Pull request 18 merged the secure remote slice as `e298885`. Personal
-Marketplace version `0.2.0+codex.20260827202019` is installed; the exact staged
-and installed standalone runtime hash is recorded in `VALIDATION.md`. The
-owner-only schema-2 config uses explicit STUN. The protected public service and
+Pull request 18 merged the secure remote slice as `e298885`; pull request 20
+merged the resource/lifecycle repair as `4d4ea2f`. Personal Marketplace version
+`0.2.0+codex.20260827215815` is installed; the exact staged and installed
+standalone runtime hash is recorded in `VALIDATION.md`. The owner-only schema-2
+config uses explicit STUN. The protected public service, private dashboard, and
 separate enrollment listener are healthy; tailnet-only Serve 8447 reaches only
-the enrollment listener and Funnel remains enabled only on 443. OAuth state was
-preserved. Public enrollment is 404 and unauthenticated MCP is 401.
+the enrollment listener and Funnel remains enabled only on 443. Existing OAuth
+still authorizes remote status and snapshot calls. Public enrollment is 404 and
+unauthenticated MCP is 401.
 
 An exact installed-cache client verified the four model-visible plus three
-app-only read-only tools, reachable status, a real JPEG, H264 offer, and close.
-The printer offer still advertised only host candidates. No browser-control
-surface was connected, so mounted ChatGPT/Codex playback is not accepted. No
-TURN service or shared secret is configured.
+app-only read-only tools, both current and compatibility widget resources,
+reachable status, a real JPEG, H264 offer, and close. The private dashboard
+also returned 200 and completed a real offer/close bridge smoke. No
+browser-control surface was connected, so visible dashboard video and mounted
+ChatGPT/Codex playback are not accepted. No TURN service or shared secret is
+configured.
 
 ## Next smallest action
 
-Merge the compatibility-resource follow-up, release-stage and reinstall it,
-restart only the exact U1 public service, and verify both `status-v4.html` and
-`status-v3.html` through the deployed MCP server. Then open a fresh Codex or
-ChatGPT task, invoke the status card and Go Live once, and record mounted
-playback separately. The private `:8444` dashboard needs its own supervised
-process; its 502 is not an MCP or printer failure.
+Open a fresh Codex or ChatGPT task, invoke the status card and Go Live once,
+then separately reload the private dashboard and record whether visible video,
+FPS, Close, PiP, and fullscreen work. The server, authentication, snapshot,
+widget-resource, offer, and close layers already pass; do not collapse them
+into the remaining mounted/visible user-outcome gate.
 
 ## Preserve
 
