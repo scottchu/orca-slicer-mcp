@@ -128,6 +128,11 @@ remain procedural guidance; they are not runtime authority.
   `doctor --offline` without contacting hardware. Rewriting an existing config
   now explicitly tightens its mode to `0600`, and malformed camera stream
   envelopes retain any valid session ID long enough for bounded teardown.
+- Personal Marketplace staging and installation passed on this macOS arm64
+  machine. The installed cache used the standalone executable, matched the
+  staged SHA-256, passed signature verification, reached the configured printer
+  read-only, returned a JPEG snapshot and WebRTC offer, and explicitly closed
+  the bounded camera session.
 
 The active iteration's `VALIDATION.md` is authoritative for exact commands
 and final repository-check results.
@@ -147,8 +152,9 @@ and final repository-check results.
 
 ### User outcome
 
-- Marketplace, Homebrew, npm, fresh-host widget mounting, installation on
-  another machine, iOS rendering, and normal-user onboarding are unverified.
+- Same-machine personal Marketplace installation is verified. Publication,
+  Homebrew, npm, fresh-host widget mounting, installation on another machine,
+  iOS rendering, and normal-user onboarding remain unverified.
 
 ## Open risks and F0 questions
 

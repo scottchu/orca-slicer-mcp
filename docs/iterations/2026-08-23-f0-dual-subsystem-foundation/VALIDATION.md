@@ -948,3 +948,54 @@ From the repository root:
   `scottchu/local-first-rollout`.
 - Pull request: https://github.com/scottchu/orca-slicer-mcp/pull/15.
 - No hosted validation workflow was configured or awaited.
+
+## Post-merge personal Marketplace installation — 2026-08-27
+
+### Authorization and evidence boundary
+
+- The user explicitly authorized merge, install, and test after independent
+  review. Pull request 15 merged as `d5a734e65b04a5af9b458cc310f45cb40dcfbd40`.
+- This is same-machine installation plus real-printer read-only protocol
+  evidence. No upload, start, pause, resume, cancel, G-code, or other printer
+  control tool or action ran.
+- The current Codex task could not hot-reload the reinstalled plugin, so mounted
+  iframe rendering, Go Live playback, PiP, fullscreen, and fallback remain a
+  separate fresh-task user-outcome gate.
+
+### Release staging and installation
+
+- The merged plugin source was copied into the personal Marketplace source.
+  The standalone macOS arm64 executable was staged at
+  `app/runtime/u1-print-studio`.
+- Codex plugin validation requires the MCP descriptor at `.mcp.json`. The
+  release staging copy therefore replaced the developer descriptor with the
+  contents of `.mcp.release.json`; it did not install Bun or an environment-file
+  dependency.
+- Plugin validation passed, `--help` passed, and the plugin-creator cachebuster
+  advanced the staged version to `0.2.0+codex.20260827152101`.
+- `codex plugin add u1-print-studio@personal`: passed. `codex plugin list`
+  reported the new version installed and enabled.
+- The staged and installed executables had the same SHA-256
+  `624957b927e930bce975f714de1729381b20f67a598654010453dcbc9e1e8d52`.
+  The installed executable passed `codesign -vvv --verify`.
+- Installed-runtime setup and offline doctor passed against a temporary
+  loopback config; its mode was `0600`. The temporary smoke directory was moved
+  to Trash after validation.
+
+### Installed read-only smoke
+
+- Setup migrated the existing private printer origin into the default local
+  config without printing or persisting that identifier in the repository.
+- Installed-runtime `doctor --json`: passed with configuration, fixed
+  read-only allowlist, MCP Apps signaling, and external-widget-fetch checks all
+  healthy; `printerObservation` was `reachable`.
+- A direct MCP stdio client launched the exact installed standalone executable.
+  `tools/list` returned four model-visible tools and the three app-only bounded
+  signaling helpers.
+- `get_u1_status` returned a reachable printer and available camera;
+  `get_u1_camera_frame` returned relayed `image/jpeg` data;
+  `open_u1_camera_stream` returned an MCP Apps offer; and
+  `close_u1_camera_stream` confirmed explicit teardown.
+- The previous installed cache version remains available as a rollback
+  artifact. A mistakenly resolved, unused staging copy was moved to
+  a dated Trash quarantine outside the repository rather than deleted.

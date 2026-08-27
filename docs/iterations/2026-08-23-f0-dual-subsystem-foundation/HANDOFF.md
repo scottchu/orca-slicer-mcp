@@ -55,6 +55,14 @@ registry, Homebrew tap, or hosted service was accessed or changed. Earlier
 printer, Funnel, OAuth, and installed-plugin entries below are historical
 evidence, not instructions for the normal-user path.
 
+That boundary applies to the pre-merge rollout. After merge, the user explicitly
+authorized a same-machine personal Marketplace install and read-only test.
+Version `0.2.0+codex.20260827152101` installed with the staged standalone
+runtime; live doctor reached the configured printer, and installed-cache MCP
+smoke verified status, snapshot, WebRTC offer, and explicit close without any
+printer control. Mounted Codex host rendering remains unverified because the
+current task cannot hot-reload a reinstalled plugin.
+
 Unresolved risks are production signing/notarization, cross-platform artifacts,
 channel installation/upgrade/rollback, the platform-`curl` dependency, and
 fresh mounted-host WebRTC rendering. The private repository also has no license

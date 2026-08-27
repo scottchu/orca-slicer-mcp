@@ -23,10 +23,12 @@ signing, notarization, checksums, channel metadata, upgrades, rollback, and
 actual installation are future evidence gates.
 
 The source-tree `.mcp.json` remains a Bun-based developer adapter. A Marketplace
-release stages the executable and uses `.mcp.release.json`; it must not rewrite
-user configuration or require an environment file. Homebrew and npm packaging
-must invoke the same `setup`, `doctor`, and `mcp` subcommands rather than adding
-channel-specific onboarding logic.
+release stages the executable and copies the `.mcp.release.json` descriptor into
+the staged plugin's required `.mcp.json` path; the Codex plugin validator does
+not accept an alternate MCP descriptor filename. The release staging process
+must not rewrite user configuration or require an environment file. Homebrew
+and npm packaging must invoke the same `setup`, `doctor`, and `mcp` subcommands
+rather than adding channel-specific onboarding logic.
 
 `setup` accepts one private, link-local, or loopback HTTP(S) printer origin and
 writes an owner-only versioned configuration file. It rejects credentials,
@@ -34,8 +36,9 @@ queries, fragments, non-root paths, and public hosts. `doctor --offline`
 validates configuration and safety contracts without touching hardware;
 ordinary `doctor` adds one read-only observation through the connector.
 
-No Marketplace, Homebrew, npm, plugin cache, or external service is mutated by
-this packaging slice.
+A same-machine personal Marketplace installation has now exercised this staging
+contract. Publication, another-machine installation, Homebrew, and npm remain
+unverified.
 
 This private repository currently has no license file. Do not describe or
 publish an artifact as an open-source distribution until the owner selects a
