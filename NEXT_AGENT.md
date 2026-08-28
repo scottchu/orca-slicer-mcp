@@ -19,16 +19,17 @@ under F0. Decision 0017 is current and preserves decision 0016's local-first
 normal-user direction.
 
 The secure source and compatibility repair are merged. Pull request 20 is
-`4d4ea2f`; Personal Marketplace version
-`0.2.0+codex.20260827215815` is installed. The public service and separate
-private dashboard LaunchAgents are running. Preserve OAuth state and every
-existing Serve/Funnel route.
+`4d4ea2f`; pull request 22 adds the camera-only presentation as `333bebe`.
+Personal Marketplace version `0.2.0+codex.20260828194545` is installed. The
+public service and separate private dashboard LaunchAgents are running.
+Preserve OAuth state and every existing Serve/Funnel route.
 
-The camera-only source slice is implemented on
-`scottchu/camera-only-widget` but is not yet merged or installed. Decision 0018
-adds `open_printer_camera`, `camera-v1.html`, and the opt-in
-`/dashboard/camera` test host. Do not treat the currently installed older
-runtime as evidence for that new interface.
+The camera-only source slice merged through pull request 22 as `333bebe`.
+Personal Marketplace version `0.2.0+codex.20260828194545` is installed and its
+runtime hash matches the staged source. Decision 0018 adds
+`open_printer_camera`, `camera-v1.html`, and the opt-in `/dashboard/camera`
+test host. Existing Codex/ChatGPT tasks still require a new task to load the
+new descriptor.
 
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
@@ -128,30 +129,29 @@ of its stream envelope is malformed. Both fixes are included in the passing
 suite.
 
 Pull request 18 merged the secure remote slice as `e298885`; pull request 20
-merged the resource/lifecycle repair as `4d4ea2f`. Personal Marketplace version
-`0.2.0+codex.20260827215815` is installed; the exact staged and installed
+merged the resource/lifecycle repair as `4d4ea2f`; pull request 22 merged the
+camera-only presentation as `333bebe`. Personal Marketplace version
+`0.2.0+codex.20260828194545` is installed; the exact staged and installed
 standalone runtime hash is recorded in `VALIDATION.md`. The owner-only schema-2
 config uses explicit STUN. The protected public service, private dashboard, and
 separate enrollment listener are healthy; tailnet-only Serve 8447 reaches only
-the enrollment listener and Funnel remains enabled only on 443. Existing OAuth
-still authorizes remote status and snapshot calls. Public enrollment is 404 and
-unauthenticated MCP is 401.
+the enrollment listener and Funnel remains enabled only on 443.
 
-An exact installed-cache client verified the four model-visible plus three
-app-only read-only tools, both current and compatibility widget resources,
-reachable status, a real JPEG, H264 offer, and close. The private dashboard
-also returned 200 and completed a real offer/close bridge smoke. No
-browser-control surface was connected, so visible dashboard video and mounted
-ChatGPT/Codex playback are not accepted. No TURN service or shared secret is
+An exact installed-cache client verified four model-visible plus four app-only
+read-only tools and all three widget resources. The deployed private
+`/dashboard/camera` displayed a real snapshot, rendered `Live · 25 FPS`, and
+returned to snapshot after Close. Tailscale configuration stayed byte-stable
+across service restart. Mounted ChatGPT/Codex playback is not yet accepted
+because it requires a fresh task. No TURN service or shared secret is
 configured.
 
 ## Next smallest action
 
-Open a fresh Codex or ChatGPT task, invoke the status card and Go Live once,
-then separately reload the private dashboard and record whether visible video,
-FPS, Close, PiP, and fullscreen work. The server, authentication, snapshot,
-widget-resource, offer, and close layers already pass; do not collapse them
-into the remaining mounted/visible user-outcome gate.
+Open a fresh Codex or ChatGPT task and invoke `open_printer_camera`. Verify that
+the camera-only resource mounts, then record snapshot, Go Live, rendered video,
+Close, and fallback if exercised. The installed cache and deployed private
+dashboard already pass; do not collapse them into the remaining mounted-host
+and mobile user-outcome gates.
 
 ## Preserve
 
