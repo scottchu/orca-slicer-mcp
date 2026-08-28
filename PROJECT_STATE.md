@@ -33,6 +33,14 @@ Last updated: 2026-08-28
   widget must mint a one-time private activation before stream allocation, and
   unanswered offers release their lease after 15 seconds. Health exposes tool
   schema 3 and camera widget v2 for rollout coherence.
+- Pull request 24 merged decision 0019 as `62acd4c`. Personal Marketplace
+  version `0.2.0+codex.20260828211031` is installed from that merge with
+  runtime SHA-256
+  `74f5f654de2a52c21a33577ffd6520f1054eb71439668885986114177faa2398`.
+  Both existing U1 LaunchAgents run schema 3/camera-v2. OAuth state and
+  Tailscale routing hashes were unchanged across restart. The deployed private
+  dashboard showed Snapshot, rendered `Live · 24 FPS`, and returned to Snapshot
+  after Close.
 
 ## Implemented local-first slice
 
@@ -64,8 +72,9 @@ The repository contains the smallest desktop-local read-only connector slice:
 Decision 0019 source validation passes with 71 tests and 417 assertions,
 TypeScript, both bundles, ad-hoc signature verification, plugin validation,
 both touched skill validators, the repository contract, and whitespace checks.
-Install, service restart, public edge, private dashboard, and mounted-host
-evidence remain separate until recorded below.
+Install, service restart, public edge, and private-dashboard evidence are
+recorded in the active iteration. Mounted Codex/ChatGPT and mobile remain
+separate fresh-task evidence gates.
 
 The self-contained artifact is local validation evidence only. Its ad-hoc
 signature is not suitable for distribution. No package, marketplace entry,
