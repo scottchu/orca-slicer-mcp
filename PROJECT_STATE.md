@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-08-27
+Last updated: 2026-08-28
 
 ## Baseline
 
@@ -20,6 +20,11 @@ Last updated: 2026-08-27
 - Pull request 20 merged the mounted-app compatibility repair as `4d4ea2f`.
   Personal Marketplace version `0.2.0+codex.20260827215815` is installed and
   the public service plus private dashboard are healthy.
+- Decision 0018 accepts a dedicated snapshot-first camera presentation:
+  `open_printer_camera` links `camera-v1.html`, while WebRTC allocation and
+  follow-up signaling are app-only widget actions. The source slice is on
+  `scottchu/camera-only-widget` pending pull-request delivery; it has not yet
+  changed the installed plugin or live services.
 
 ## Implemented local-first slice
 
@@ -31,8 +36,8 @@ The repository contains the smallest desktop-local read-only connector slice:
   or proxy-shaped path;
 - fixed-route status, snapshot, and `webrtc-camerastreamer` operations behind
   the U1 Printer Operations adapter;
-- one self-contained MCP Apps widget with empty external CSP domains and no
-  direct `fetch` call;
+- self-contained status and camera MCP Apps widgets with empty external CSP
+  domains and no direct `fetch` call;
 - the current `status-v4.html` widget plus a `status-v3.html` compatibility
   resource for cards retained across an upgrade;
 - hosted offer, answer, ICE-candidate, and close signaling through MCP Apps
@@ -77,13 +82,14 @@ Model-visible read-only tools:
 1. `show_u1_status`
 2. `get_u1_status`
 3. `get_u1_camera_frame`
-4. `open_u1_camera_stream`
+4. `open_printer_camera`
 
 App-only read-only signaling helpers:
 
-1. `answer_u1_camera_stream`
-2. `add_u1_camera_ice_candidates`
-3. `close_u1_camera_stream`
+1. `open_u1_camera_stream`
+2. `answer_u1_camera_stream`
+3. `add_u1_camera_ice_candidates`
+4. `close_u1_camera_stream`
 
 There is no upload, start, pause, resume, cancel, G-code, generic proxy,
 Control, or Admin tool in the runtime. Preparation and authorized-start skills
@@ -141,12 +147,13 @@ remain procedural guidance; they are not runtime authority.
 ### Static/software
 
 - TypeScript checks pass.
-- Sixty-one tests with 329 assertions pass across MCP resource/tool contracts,
+- Sixty-nine tests with 398 assertions pass across MCP resource/tool contracts,
   enrollment isolation and restart behavior, standard HTTPS, exact four-plus-
-  three visibility, STUN/TURN parsing and derivation, model privacy, env-only
-  HTTP compatibility, config migration/preservation, PNG, fallback, session
-  bounds, exact HTTP compatibility, OAuth, packaging, and dashboard allowlists.
-- The source stdio bundle emits `stdio.js` plus its widget asset.
+  four visibility, STUN/TURN parsing and derivation, model privacy, env-only
+  HTTP compatibility, config migration/preservation, PNG, rendered-frame live
+  gating, fallback, session bounds, exact HTTP compatibility, OAuth, packaging,
+  and dashboard allowlists.
+- The source stdio bundle emits `stdio.js` plus status and camera widget assets.
 - The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
   signature, prints help, writes a schema-2 `0600` config, preserves explicit
   STUN on setup rewrite, and passes `doctor --offline` without contacting

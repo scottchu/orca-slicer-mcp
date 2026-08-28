@@ -134,9 +134,12 @@ printer environments support the described behavior.
   immediately move or heat the printer.
 - **API-005:** The remote Monitor inventory contains exactly four model-visible
   tools (`show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
-  `open_u1_camera_stream`) plus exactly three app-only signaling helpers
-  (`answer_u1_camera_stream`, `add_u1_camera_ice_candidates`, and
-  `close_u1_camera_stream`). All seven are read-only and require `u1.monitor`.
+  `open_printer_camera`) plus exactly four app-only signaling helpers
+  (`open_u1_camera_stream`, `answer_u1_camera_stream`,
+  `add_u1_camera_ice_candidates`, and `close_u1_camera_stream`). All eight are
+  read-only and require `u1.monitor`. Opening the printer camera presents a
+  snapshot-first widget; only an explicit Go Live interaction allocates a
+  bounded stream session.
 
 ## Architecture and ontology
 

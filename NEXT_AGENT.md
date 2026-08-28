@@ -8,7 +8,7 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0017
+5. decisions 0014 through 0018
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
@@ -23,6 +23,12 @@ The secure source and compatibility repair are merged. Pull request 20 is
 `0.2.0+codex.20260827215815` is installed. The public service and separate
 private dashboard LaunchAgents are running. Preserve OAuth state and every
 existing Serve/Funnel route.
+
+The camera-only source slice is implemented on
+`scottchu/camera-only-widget` but is not yet merged or installed. Decision 0018
+adds `open_printer_camera`, `camera-v1.html`, and the opt-in
+`/dashboard/camera` test host. Do not treat the currently installed older
+runtime as evidence for that new interface.
 
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
@@ -68,13 +74,14 @@ Model-visible tools are exactly:
 1. `show_u1_status`
 2. `get_u1_status`
 3. `get_u1_camera_frame`
-4. `open_u1_camera_stream`
+4. `open_printer_camera`
 
-App-only tools are exactly:
+App-only tools in the decision-0018 source slice are exactly:
 
-1. `answer_u1_camera_stream`
-2. `add_u1_camera_ice_candidates`
-3. `close_u1_camera_stream`
+1. `open_u1_camera_stream`
+2. `answer_u1_camera_stream`
+3. `add_u1_camera_ice_candidates`
+4. `close_u1_camera_stream`
 
 All are read-only. Stop if upload, start, pause, resume, cancel, G-code, generic
 proxy, Control, or Admin behavior appears.
@@ -82,11 +89,20 @@ proxy, Control, or Admin behavior appears.
 ## Validation boundary
 
 The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 61 passing tests with 329 assertions. The macOS arm64
+software suite has 69 passing tests with 398 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
 on its invocation path.
+
+The decision-0018 source suite has 69 passing Bun tests with 398 assertions.
+Its compiled camera asset is embedded in the standalone runtime. A private
+loopback source dashboard mounted the exact current camera component, obtained
+a real snapshot, rendered live video at an observed 23 FPS, and returned to
+snapshot after Close. Live state is gated on an actually rendered frame; play
+rejection, no first frame, track termination, stall, and video error activate
+snapshot fallback. This is private-browser/real-printer evidence, not installed
+MCP-host evidence.
 
 The software/source suite alone proves local static/software and simulated
 protocol behavior only. It does not prove:
@@ -157,11 +173,11 @@ into the remaining mounted/visible user-outcome gate.
 
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
-docs/requirements.md, the active iteration, and decisions 0014 through 0017.
+docs/requirements.md, the active iteration, and decisions 0014 through 0018.
 Treat the secure remote Monitor source slice as current: standard-HTTPS public
 OAuth/MCP, public enrollment rejection, a separate tailnet-only enrollment
 listener, explicit STUN, and preferred short-lived TURN REST credentials.
-Preserve exactly four model-visible tools and three app-only helpers. Do not
+Preserve exactly four model-visible tools and four app-only helpers. Do not
 mutate live services/routes, merge, publish, or contact a physical printer
 without fresh approval.
 ```

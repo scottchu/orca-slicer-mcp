@@ -2,9 +2,11 @@ import { readFileSync } from "node:fs";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import embeddedCameraDashboardHostFile from "../public/camera-dashboard-host.html" with { type: "file" };
 import embeddedDashboardHostFile from "../public/status-dashboard-host.html" with { type: "file" };
 
 import {
+  readCameraWidgetHtml,
   cameraFramePayload,
   cameraStreamPayload,
   resultPayload,
@@ -27,7 +29,16 @@ const DASHBOARD_HOST_PATH = path.resolve(
   "public",
   "status-dashboard-host.html"
 );
+const CAMERA_DASHBOARD_HOST_PATH = path.resolve(
+  currentDirectory.startsWith("/$bunfs/")
+    ? currentDirectory
+    : path.resolve(currentDirectory, ".."),
+  "public",
+  "camera-dashboard-host.html"
+);
 const DASHBOARD_PATH = "/dashboard";
+const CAMERA_DASHBOARD_PATH = "/dashboard/camera";
+const CAMERA_WIDGET_PATH = "/camera-widget";
 const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
 const MAX_REQUEST_BYTES = 128 * 1024;
 
@@ -78,7 +89,7 @@ export function createStatusDashboardHandler(
     res: ServerResponse,
     pathname: string
   ): Promise<boolean> => {
-    if (pathname === DASHBOARD_PATH) {
+    if (pathname === DASHBOARD_PATH || pathname === CAMERA_DASHBOARD_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -97,11 +108,37 @@ export function createStatusDashboardHandler(
       res.end(
         IS_COMPILED
           ? readFileSync(
-              embeddedDashboardHostFile as unknown as string,
+              (pathname === CAMERA_DASHBOARD_PATH
+                ? embeddedCameraDashboardHostFile
+                : embeddedDashboardHostFile) as unknown as string,
               "utf8"
             )
-          : readFileSync(DASHBOARD_HOST_PATH, "utf8")
+          : readFileSync(
+              pathname === CAMERA_DASHBOARD_PATH
+                ? CAMERA_DASHBOARD_HOST_PATH
+                : DASHBOARD_HOST_PATH,
+              "utf8"
+            )
       );
+      return true;
+    }
+
+    if (pathname === CAMERA_WIDGET_PATH) {
+      if (req.method !== "GET") {
+        res.setHeader("allow", "GET");
+        json(res, 405, { error: "method_not_allowed" });
+        return true;
+      }
+      res.writeHead(200, {
+        "cache-control": "no-store",
+        "content-security-policy":
+          "default-src 'none'; img-src data:; media-src blob:; " +
+          "script-src 'unsafe-inline'; style-src 'unsafe-inline'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+      });
+      res.end(readCameraWidgetHtml());
       return true;
     }
 

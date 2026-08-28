@@ -1,6 +1,6 @@
 {
   "name": "u1-print-studio",
-  "version": "0.2.0+codex.20260826165531",
+  "version": "0.2.0+codex.20260828194545",
   "description": "Prepare Snapmaker U1 work and monitor it through a desktop-local read-only connector with interactive and inline-image status cards.",
   "author": {
     "name": "Scott Chu"

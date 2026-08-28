@@ -11,8 +11,9 @@
   HTTPS, move passkey enrollment to a distinct tailnet-only Tailscale Serve
   origin and loopback listener, restore only explicitly configured bounded STUN
   where needed, and add RFC5766 TURN REST credentials as the preferred remote
-  WebRTC reliability path. Preserve exactly four
-  model-visible read-only tools and three app-only signaling helpers. Do not
+  WebRTC reliability path. Preserve exactly four model-visible read-only tools;
+  decision 0018 intentionally makes stream allocation a widget-only action and
+  therefore uses four app-only signaling helpers. Do not
   mutate the live LaunchAgent, Funnel, Serve, OAuth state, or printer; deployment
   waits for repository validation and coordinator approval. The local-first
   normal-user direction from decision 0016 remains preserved. Orca Preparation
@@ -35,8 +36,23 @@
 - Treat the private `:8444` standalone dashboard as a separately supervised
   developer adapter. A 502 there must not be reported as an MCP, printer, or
   mounted-widget failure.
-- Preserve exactly four model-visible and three app-only read-only tools. No
-  printer control or media URL is added.
+- For that mounted-app recovery slice, preserve exactly four model-visible and
+  three app-only read-only tools. Decision 0018 below supersedes the current
+  inventory with four app-only helpers. No printer control or media URL is
+  added.
+
+## 2026-08-28 camera-only presentation acceptance
+
+- Add `open_printer_camera` as the stable presentation intent and remove
+  `open_u1_camera_stream` from model visibility.
+- Mount one snapshot-first `camera-v1.html` resource; Go Live, bounded stream
+  signaling, Close, and automatic snapshot fallback stay inside the widget.
+- Serve the exact camera widget at `/dashboard/camera` only when the private
+  dashboard adapter is explicitly enabled.
+- Preserve exactly four model-visible and now four app-only read-only tools.
+  Do not add printer control or a direct media URL.
+- Treat focused route success, mounted-host playback, TURN allocation, and
+  user-visible success as separate evidence layers.
 
 ## Outcome
 

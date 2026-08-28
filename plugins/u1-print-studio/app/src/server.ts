@@ -329,6 +329,9 @@ export async function startServer() {
     console.log(
       `U1 Status Dashboard: ${new URL("/dashboard", dashboardBaseUrl!).toString()}`
     );
+    console.log(
+      `U1 Camera Dashboard: ${new URL("/dashboard/camera", dashboardBaseUrl!).toString()}`
+    );
   } else {
     console.log(`U1 Print Studio MCP server listening on http://${host}:${port}${MCP_PATH}`);
   }
