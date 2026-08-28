@@ -560,9 +560,36 @@ browser remains open on that private test page for user inspection. Mounted
 Codex/ChatGPT playback still requires a fresh task; fallback under an actual
 failure, mobile playback, and a real TURN allocation remain open.
 
+## 2026-08-28 camera workflow repair source handoff
+
+Decision 0019 addresses the stale-descriptor and leaked-lease failure observed
+across ChatGPT, Codex, and the optional public/private services. The current
+source exposes three model-visible read-only tools, with
+`open_printer_camera` as the only camera action. `get_u1_camera_frame` and the
+four signaling calls are app-only widget helpers.
+
+Go Live now obtains one widget-private, one-time activation from the frame
+helper and must consume it when opening the WebRTC session. An empty, replayed,
+expired, or fabricated stream call fails before printer signaling or lease
+allocation. A successfully opened offer that is not answered within 15 seconds
+aborts and releases its lease automatically. Answered sessions retain bounded
+duration, failure teardown, and explicit idempotent Close.
+
+The focused resource is now `camera-v2.html`; `camera-v1.html` remains a
+compatibility alias serving the exact current asset. `/health` and standalone
+`doctor --json` expose runtime 0.2.0, tool schema 3, and camera widget v2 so a
+rollout can distinguish process liveness from version coherence.
+
+Static/software validation passes with TypeScript, 71 Bun tests and 417
+assertions, both bundles, ad-hoc signature verification, plugin validation,
+both touched skill validators, the repository contract, and whitespace checks.
+No live service, OAuth state, Tailscale route, installed plugin, printer, or
+mounted host was changed during this source gate. Delivery and each later
+evidence layer must be recorded separately.
+
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0018. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0019. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.

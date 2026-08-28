@@ -1342,3 +1342,47 @@ From the repository root:
   mobile playback.
 - No printer control, preparation, upload, start, pause, resume, cancel, G-code,
   generic proxy, or Admin action ran.
+
+## Camera workflow repair source validation — 2026-08-28
+
+### Acceptance and safety boundary
+
+- Decision 0019 makes `open_printer_camera` the only model-visible camera
+  action. The complete inventory is three model-visible plus five app-only
+  read-only tools under the existing `u1.monitor` boundary.
+- A one-time widget-private activation is required before stream allocation;
+  stale direct stream calls fail before printer access or capacity use.
+- Unanswered offers release after 15 seconds. Answered sessions retain the
+  existing maximum duration and explicit Close behavior.
+- This section is source/software and simulated-protocol evidence only. It did
+  not mutate an installed plugin, LaunchAgent, OAuth state, Tailscale route, or
+  printer.
+
+### Commands and results
+
+- `bun install --frozen-lockfile`: restored worktree dependencies without
+  changing the lockfile.
+- `bun run check`: passed TypeScript compilation.
+- `bun test src/*.test.ts`: passed 71 tests with 417 assertions. Regressions
+  cover model/app visibility, private activation, rejection before allocation,
+  one-time replay failure, unanswered-session cleanup, v2/v1 resource parity,
+  widget Go Live flow, and runtime health schema.
+- `bun run bundle` and `bun run bundle:runtime`: passed. The standalone macOS
+  arm64 runtime received its validation-only ad-hoc signature.
+- `codesign -vvv --verify ./dist/u1-print-studio`: reported valid on disk and
+  satisfied its designated requirement.
+- Plugin Creator validation passed through `uv run --no-project --with
+  pyyaml`. Skill Creator validation passed for `u1-monitor-print` and
+  `u1-mobile-status-setup` through the same `uv` boundary.
+- `./scripts/check-repository.sh`: passed, including TypeScript and all 71 tests
+  with 417 assertions; final output was `repository contract: ok`.
+- `git diff --check`: passed.
+
+### Unverified later layers
+
+- Release staging, Personal Marketplace cache-busting/install, exact
+  installed-cache MCP, public health/OAuth, private dashboard, real-printer
+  snapshot/offer, mounted Codex/ChatGPT, and mobile behavior remain separate
+  gates until explicitly recorded.
+- No TURN server is configured, so arbitrary-network relay behavior remains
+  unproven. No printer control was added or invoked.

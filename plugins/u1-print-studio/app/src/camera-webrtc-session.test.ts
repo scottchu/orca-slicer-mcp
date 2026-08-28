@@ -3,6 +3,7 @@ import { describe, expect, test } from "bun:test";
 import {
   CameraWebRtcSessionError,
   CameraWebRtcSessionService,
+  createCameraWebRtcSessionController,
   type CameraIceCandidate,
   type CameraWebRtcSignalingSource,
 } from "./application/camera-webrtc.js";
@@ -24,6 +25,65 @@ function codec(tokens: string[]): CameraTicketCodec {
 }
 
 describe("camera WebRTC session application service", () => {
+  test("requires a one-time widget activation before allocating a session", async () => {
+    const signaling: CameraWebRtcSignalingSource = {
+      requestOffer: async () => ({
+        type: "offer",
+        id: "peer",
+        sdp: "offer",
+        iceServers: [],
+      }),
+      sendAnswer: async () => {},
+      sendCandidates: async () => {},
+    };
+    const ticketCodec = codec([
+      "opaque-widget-activation",
+      "opaque-session-from-widget",
+    ]);
+    const relay = new CameraRelayService(ticketCodec);
+    const sessions = new CameraWebRtcSessionService(ticketCodec, signaling);
+    const controller = createCameraWebRtcSessionController(relay, sessions);
+
+    await expect(controller.open("stale-empty-call")).rejects.toThrow(
+      new CameraRelayClaimError("invalid")
+    );
+    const activation = controller.authorize();
+    const opened = await controller.open(activation.token);
+    expect(opened.sessionId).toBe("opaque-session-from-widget");
+    await expect(controller.open(activation.token)).rejects.toThrow(
+      new CameraRelayClaimError("invalid")
+    );
+    expect(controller.close(opened.sessionId)).toEqual({ closed: true });
+  });
+
+  test("automatically releases an unanswered session", async () => {
+    const signaling: CameraWebRtcSignalingSource = {
+      requestOffer: async () => ({
+        type: "offer",
+        id: "peer",
+        sdp: "offer",
+        iceServers: [],
+      }),
+      sendAnswer: async () => {},
+      sendCandidates: async () => {},
+    };
+    const ticketCodec = codec(["unanswered-session"]);
+    const relay = new CameraRelayService(ticketCodec, {
+      maxConcurrentStreams: 1,
+    });
+    const sessions = new CameraWebRtcSessionService(ticketCodec, signaling, {
+      answerTimeoutMilliseconds: 10,
+    });
+    const opened = await sessions.open(relay.claimDirect());
+    expect(() => relay.claimDirect()).toThrow(new CameraRelayClaimError("busy"));
+
+    await new Promise((resolve) => setTimeout(resolve, 20));
+
+    expect(sessions.close(opened.sessionId)).toEqual({ closed: false });
+    const released = relay.claimDirect();
+    released.release();
+  });
+
   test("bounds offer, answer, candidates, close, and printer peer privacy", async () => {
     const answers: Array<{ id: string; sdp: string }> = [];
     const candidateBatches: CameraIceCandidate[][] = [];

@@ -63,14 +63,21 @@ async function startFixture() {
       metadata: { cameraFrame: { dataUrl: "data:image/jpeg;base64,/9j/2Q==" } },
     }),
     cameraSessions: {
-      open: async () => ({
+      authorize: () => ({
+        token: "private-activation-token",
+        expiresAt: "2026-08-25T13:21:32.688Z",
+      }),
+      open: async (activationToken) => {
+        expect(activationToken).toBe("private-activation-token");
+        return ({
         sessionId: "dashboard-session-token",
         type: "offer",
         sdp: "v=0\r\ndashboard-offer\r\n",
         iceServers: [],
         expiresAt: "2026-08-26T12:01:00.000Z",
         maxDurationSeconds: 1800,
-      }),
+        });
+      },
       answer: async () => ({ accepted: true }),
       addCandidates: async (_sessionId, candidates) => ({
         accepted: true,
@@ -125,6 +132,13 @@ describe("standalone status dashboard", () => {
     expect(
       (await fetch(`http://127.0.0.1:${port}/camera-widget`)).status
     ).toBe(404);
+    expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
+      ok: true,
+      auth: "local-only",
+      runtimeVersion: "0.2.0",
+      toolSchemaVersion: 3,
+      cameraWidgetVersion: "camera-v2",
+    });
   });
 
   test("does not expose the ordinary MCP route from the dashboard-only process", async () => {
@@ -189,13 +203,18 @@ describe("standalone status dashboard", () => {
     expect(current.response.status).toBe(200);
     expect(current.body.structuredContent).toEqual(status);
 
-    const frame = await call("get_u1_camera_frame");
+    const frame = await call("get_u1_camera_frame", { authorizeLive: true });
     expect(frame.response.status).toBe(200);
     expect(frame.body._meta.cameraFrame.dataUrl).toBe(
       "data:image/jpeg;base64,/9j/2Q=="
     );
+    expect(frame.body._meta.cameraActivation.token).toBe(
+      "private-activation-token"
+    );
 
-    const stream = await call("open_u1_camera_stream");
+    const stream = await call("open_u1_camera_stream", {
+      activationToken: frame.body._meta.cameraActivation.token,
+    });
     expect(stream.response.status).toBe(200);
     expect(stream.body._meta.cameraStream).toMatchObject({
       transport: "mcp-apps-tools",

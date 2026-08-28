@@ -54,6 +54,12 @@ A same-machine personal Marketplace installation has now exercised this staging
 contract. Publication, another-machine installation, Homebrew, and npm remain
 unverified.
 
+Every channel's `doctor --json` reports one runtime contract containing the
+base runtime version, tool-schema version, and camera-widget version. The
+optional personal HTTP service returns the same contract from `/health`.
+Upgrade verification must compare these values with the intended source before
+asking a user to test a fresh task; process liveness alone is insufficient.
+
 Plugin installation and upgrades take effect in a new ChatGPT or Codex task.
 Existing tasks can retain the prior installed MCP process and widget resource
 URI, so they are not an upgrade acceptance surface. The server keeps the

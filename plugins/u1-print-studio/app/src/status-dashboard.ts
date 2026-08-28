@@ -173,11 +173,23 @@ export function createStatusDashboardHandler(
       }
       if (name === "get_u1_camera_frame") {
         const { frame, metadata } = await readCameraFrame();
-        json(res, 200, cameraFramePayload(frame, metadata));
+        const activation =
+          argumentsObject.authorizeLive === true && dependencies.cameraSessions
+            ? dependencies.cameraSessions.authorize()
+            : undefined;
+        json(res, 200, cameraFramePayload(frame, metadata, activation));
         return true;
       }
       if (name === "open_u1_camera_stream" && dependencies.cameraSessions) {
-        json(res, 200, cameraStreamPayload(await dependencies.cameraSessions.open()));
+        json(
+          res,
+          200,
+          cameraStreamPayload(
+            await dependencies.cameraSessions.open(
+              String(argumentsObject.activationToken ?? "")
+            )
+          )
+        );
         return true;
       }
       if (name === "answer_u1_camera_stream" && dependencies.cameraSessions) {

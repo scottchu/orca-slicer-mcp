@@ -2,6 +2,7 @@ import type {
   CameraRelayService,
   CameraTicketCodec,
   CameraStreamLease,
+  CameraStreamActivation,
 } from "./camera-relay.js";
 
 export type CameraIceServer = {
@@ -56,11 +57,13 @@ export type CameraWebRtcSessionOptions = {
   maxCandidatesPerCall?: number;
   maxCandidatesPerSession?: number;
   maxCandidateBytes?: number;
+  answerTimeoutMilliseconds?: number;
   now?: () => number;
 };
 
 export type CameraWebRtcSessionController = {
-  open(): Promise<OpenedCameraWebRtcSession>;
+  authorize(): CameraStreamActivation;
+  open(activationToken: string): Promise<OpenedCameraWebRtcSession>;
   answer(sessionId: string, sdp: string): Promise<{ accepted: true }>;
   addCandidates(
     sessionId: string,
@@ -88,6 +91,7 @@ type ActiveSession = {
   lease: CameraStreamLease;
   abortController: AbortController;
   timeout: ReturnType<typeof setTimeout>;
+  answerTimeout: ReturnType<typeof setTimeout>;
   answer: string | null;
   candidateKeys: Set<string>;
 };
@@ -107,6 +111,7 @@ export class CameraWebRtcSessionService {
   private readonly maxCandidatesPerCall: number;
   private readonly maxCandidatesPerSession: number;
   private readonly maxCandidateBytes: number;
+  private readonly answerTimeoutMilliseconds: number;
   private readonly now: () => number;
 
   constructor(
@@ -121,6 +126,7 @@ export class CameraWebRtcSessionService {
       options.maxCandidatesPerSession ?? DEFAULT_MAX_CANDIDATES_PER_SESSION;
     this.maxCandidateBytes =
       options.maxCandidateBytes ?? DEFAULT_MAX_CANDIDATE_BYTES;
+    this.answerTimeoutMilliseconds = options.answerTimeoutMilliseconds ?? 15_000;
     this.now = options.now ?? Date.now;
   }
 
@@ -154,11 +160,18 @@ export class CameraWebRtcSessionService {
         throw new CameraWebRtcSessionError("expired_session");
       }
       const timeout = setTimeout(() => this.closeDigest(issued.digest), remaining);
+      const answerTimeout = setTimeout(
+        () => this.closeDigest(issued.digest),
+        Math.min(remaining, this.answerTimeoutMilliseconds)
+      );
+      (timeout as ReturnType<typeof setTimeout> & { unref?: () => void }).unref?.();
+      (answerTimeout as ReturnType<typeof setTimeout> & { unref?: () => void }).unref?.();
       this.sessions.set(issued.digest, {
         remoteId: offer.id,
         lease,
         abortController,
         timeout,
+        answerTimeout,
         answer: null,
         candidateKeys: new Set(),
       });
@@ -194,6 +207,7 @@ export class CameraWebRtcSessionService {
         session.abortController.signal
       );
       session.answer = sdp;
+      clearTimeout(session.answerTimeout);
       return { accepted: true };
     } catch (error) {
       this.close(sessionId);
@@ -343,6 +357,7 @@ export class CameraWebRtcSessionService {
     if (!session) return false;
     this.sessions.delete(digest);
     clearTimeout(session.timeout);
+    clearTimeout(session.answerTimeout);
     session.abortController.abort();
     session.lease.release();
     return true;
@@ -354,7 +369,9 @@ export function createCameraWebRtcSessionController(
   sessions: CameraWebRtcSessionService
 ): CameraWebRtcSessionController {
   return {
-    open: async () => await sessions.open(relay.claimDirect()),
+    authorize: () => relay.authorize(),
+    open: async (activationToken) =>
+      await sessions.open(relay.claim(activationToken)),
     answer: async (sessionId, sdp) => await sessions.answer(sessionId, sdp),
     addCandidates: async (sessionId, candidates) =>
       await sessions.addCandidates(sessionId, candidates),
