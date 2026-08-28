@@ -46,9 +46,10 @@ say so and preserve the strongest earlier visual evidence instead of claiming
 an unseen physical result.
 
 When `show_u1_status` is available, use it to open the read-only HTML dashboard.
-The mounted widget refreshes through `get_u1_status`, shows the camera first,
+Use `open_printer_camera` when the user wants the focused snapshot-first camera
+surface. The mounted status widget refreshes through `get_u1_status`, shows the camera first,
 and offers inline, Picture in Picture, and fullscreen modes. On the remote HTTP
-surface, `Go Live` may call `open_u1_camera_stream` once and exchange bounded
+surface, `Go Live` may call app-only `open_u1_camera_stream` once and exchange bounded
 offer, answer, ICE candidates, and close messages through the MCP Apps
 `tools/call` bridge; if that fails, the widget may fall back to non-overlapping
 `get_u1_camera_frame` snapshots. `Close` must disconnect the relay and return to

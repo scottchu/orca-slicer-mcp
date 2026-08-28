@@ -507,6 +507,38 @@ fullscreen, and iOS separately. If host-only ICE fails, provision an
 owner-approved TURN REST service and verify a real relay allocation before
 retrying. Do not expose Moonraker or add printer controls.
 
+## Camera-only presentation source slice — 2026-08-28
+
+Decision 0018 separates user intent from transport. The model-visible
+presentation tool is now `open_printer_camera`; it reads one snapshot and links
+`ui://u1-print-studio/camera-v1.html` without allocating a WebRTC session.
+`open_u1_camera_stream` moved to app-only visibility beside answer, ICE, and
+close, leaving exactly four model-visible and four app-only read-only tools.
+
+The new camera-only resource reuses the current status widget camera section
+markup exactly. It retains the same 16:9 surface, grid overlay, loading
+skeleton, camera icon, mode pill, icon-only Go Live/Close controls, snapshot,
+live FPS, and fallback presentation without the printer status/progress body.
+The exact same HTML is mounted by the explicitly composed
+`/dashboard/camera` host; ordinary server mode returns 404 for both focused
+routes.
+
+Independent review found that the first implementation treated `ontrack` as
+rendering success. The accepted implementation gates Live on the first browser-
+rendered video frame. Playback rejection, eight seconds without a first frame,
+track termination, stall, video error, connection failure, or prolonged
+disconnect closes the bounded session and activates the 1500 ms snapshot
+fallback. Review also found and resolved one stale three-helper statement.
+
+Source validation passes with 69 Bun tests and 398 assertions, TypeScript,
+plugin/skill validation, runtime bundle, ad-hoc signature verification,
+repository contract, and whitespace checks. A private loopback source
+dashboard then obtained a real snapshot, rendered live video at an observed
+23 FPS, and returned to snapshot after Close. This proves the private test host
+and real-printer read-only path on this machine only. The source branch is not
+yet merged or installed; mounted Codex/ChatGPT playback, fallback under an
+actual failure, and real TURN allocation remain open.
+
 ## Restart instructions
 
 Follow `NEXT_AGENT.md` and decisions 0003 through 0015. Do not infer that one

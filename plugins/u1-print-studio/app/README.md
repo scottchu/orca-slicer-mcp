@@ -42,7 +42,8 @@ The widget is a self-contained MCP Apps resource with empty external
 `connectDomains`, `resourceDomains`, and `frameDomains`. It never fetches a
 LAN, Tailscale, or media URL.
 
-When the user requests live video, the widget sends `tools/call` messages
+`open_printer_camera` mounts the camera-only resource with one relayed snapshot.
+When the user then selects Go Live, the widget sends `tools/call` messages
 through the MCP Apps host bridge:
 
 1. `open_u1_camera_stream` creates an opaque, duration- and concurrency-bounded
@@ -51,7 +52,8 @@ through the MCP Apps host bridge:
 3. `add_u1_camera_ice_candidates` accepts bounded, deduplicated candidates.
 4. `close_u1_camera_stream` idempotently releases the session.
 
-The last three helpers are app-only tools hidden from model-visible inventory.
+All four signaling helpers are app-only tools hidden from model-visible
+inventory.
 The connector alone talks to the U1's fixed signaling route; the printer peer
 identifier and origin never enter widget or model-readable data. Video flows
 over the negotiated read-only peer connection. If negotiation fails, the
@@ -85,9 +87,11 @@ bun run start
 ```
 
 The source `../.mcp.json` is intentionally a Bun adapter. For widget work
-without a host, `bun run dashboard` serves the standalone loopback dashboard
-at `http://127.0.0.1:8788/dashboard`. It uses the same tool-call shape while
-retaining the exact HTTP signaling adapter for development coverage.
+without a host, `bun run dashboard` serves the standalone loopback status
+dashboard at `http://127.0.0.1:8788/dashboard` and the focused camera widget at
+`http://127.0.0.1:8788/dashboard/camera`. The camera route mounts the same HTML
+as `ui://u1-print-studio/camera-v1.html`. Both use the same tool-call shape
+while retaining the exact HTTP signaling adapter for development coverage.
 
 The standalone dashboard is a separate opt-in process. A Tailscale Serve route
 to port 8788 returns 502 whenever that process is not supervised and running;

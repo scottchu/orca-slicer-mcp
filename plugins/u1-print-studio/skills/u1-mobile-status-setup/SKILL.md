@@ -10,7 +10,8 @@ Set up one user's read-only U1 status card without exposing their printer direct
 ## Safety and scope
 
 - Configure only the four read-only tools: `show_u1_status`, `get_u1_status`,
-  `get_u1_camera_frame`, and `open_u1_camera_stream`.
+  `get_u1_camera_frame`, and `open_printer_camera`. Stream allocation and its
+  three follow-up signaling operations are app-only widget helpers.
 - Keep upload, start, cancel, pause, resume, and printer commands out of this setup. Those require a separate implementation and a fresh per-action authorization boundary.
 - Bind the MCP service to `127.0.0.1`; expose it only through Tailscale Funnel.
 - Never ask the user to paste printer credentials, private profiles, OAuth signing keys, passkey credential material, enrollment state, or bearer tokens into chat.
@@ -163,7 +164,7 @@ After connection, verify that the authenticated inventory contains exactly:
 show_u1_status
 get_u1_status
 get_u1_camera_frame
-open_u1_camera_stream
+open_printer_camera
 ```
 
 Each tool must be read-only and require `u1.monitor`. Stop if any control tool is present.

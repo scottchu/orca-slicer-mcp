@@ -10,6 +10,7 @@ import {
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+import embeddedCameraWidgetFile from "../public/camera-widget.html" with { type: "file" };
 import embeddedWidgetFile from "../public/widget.html" with { type: "file" };
 
 import {
@@ -32,15 +33,22 @@ const APP_ROOT = currentDirectory.startsWith("/$bunfs/")
   : path.resolve(currentDirectory, "..");
 const IS_COMPILED = currentDirectory.startsWith("/$bunfs/");
 export const WIDGET_URI = "ui://u1-print-studio/status-v4.html";
+export const CAMERA_WIDGET_URI = "ui://u1-print-studio/camera-v1.html";
 export const LEGACY_WIDGET_URIS = [
   "ui://u1-print-studio/status-v3.html",
 ] as const;
 const WIDGET_PATH = path.join(APP_ROOT, "public", "widget.html");
+const CAMERA_WIDGET_PATH = path.join(APP_ROOT, "public", "camera-widget.html");
 export const readWidgetHtml = () =>
   IS_COMPILED
     ? readFileSync(embeddedWidgetFile as unknown as string, "utf8")
     : readFileSync(WIDGET_PATH, "utf8");
 export const WIDGET_HTML = readWidgetHtml();
+export const readCameraWidgetHtml = () =>
+  IS_COMPILED
+    ? readFileSync(embeddedCameraWidgetFile as unknown as string, "utf8")
+    : readFileSync(CAMERA_WIDGET_PATH, "utf8");
+export const CAMERA_WIDGET_HTML = readCameraWidgetHtml();
 
 export function resultPayload(
   status: U1Status,
@@ -160,6 +168,34 @@ export function createAppServer(
     );
   }
 
+  registerAppResource(
+    server,
+    "u1-camera-widget",
+    CAMERA_WIDGET_URI,
+    {},
+    async () => ({
+      contents: [
+        {
+          uri: CAMERA_WIDGET_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: CAMERA_WIDGET_HTML,
+          _meta: {
+            ui: {
+              prefersBorder: false,
+              csp: {
+                connectDomains: [],
+                resourceDomains: [],
+                frameDomains: [],
+              },
+            },
+            "openai/widgetDescription":
+              "A camera-only Snapmaker U1 view with a relayed snapshot, user-requested read-only live video, and an automatic snapshot fallback.",
+          },
+        },
+      ],
+    })
+  );
+
   registerAppTool(
     server,
     "show_u1_status",
@@ -198,7 +234,7 @@ export function createAppServer(
       {
         title: "Open U1 camera stream",
         description:
-          "Use this when the U1 dashboard starts a user-requested continuous read-only camera relay session.",
+          "Use this only from the camera widget after the user selects Go Live to start a bounded read-only relay session.",
         inputSchema: {},
         ...securityConfig,
         annotations: {
@@ -209,7 +245,8 @@ export function createAppServer(
         },
         _meta: {
           ...securityMetadata,
-          ui: { visibility: ["model", "app"] },
+          ui: { visibility: ["app"] },
+          "openai/visibility": "private",
           "openai/toolInvocation/invoking": "Opening U1 camera relay",
           "openai/toolInvocation/invoked": "U1 camera relay ready",
         },
@@ -362,6 +399,35 @@ export function createAppServer(
     }
   );
 
+  registerAppTool(
+    server,
+    "open_printer_camera",
+    {
+      title: "Open camera",
+      description:
+        "Open the read-only U1 camera widget. It begins with a snapshot and lets the user choose live video, with automatic snapshot fallback.",
+      inputSchema: {},
+      ...securityConfig,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+        idempotentHint: true,
+      },
+      _meta: {
+        ...securityMetadata,
+        ui: { resourceUri: CAMERA_WIDGET_URI },
+        "openai/outputTemplate": CAMERA_WIDGET_URI,
+        "openai/toolInvocation/invoking": "Opening U1 camera",
+        "openai/toolInvocation/invoked": "U1 camera ready",
+      },
+    },
+    async () => {
+      const { frame, metadata } = await readCameraFrame();
+      return cameraFramePayload(frame, metadata);
+    }
+  );
+
   // The current MCP SDK preserves the compatibility mirror in `_meta` but
   // omits the newer top-level field from tools/list. Remote plugin clients
   // require both, so provide the exact descriptor list at the transport edge.
@@ -423,13 +489,29 @@ export function createAppServer(
             "openai/toolInvocation/invoked": "U1 camera refreshed",
           },
         },
+        {
+          name: "open_printer_camera",
+          title: "Open camera",
+          description:
+            "Open the read-only U1 camera widget. It begins with a snapshot and lets the user choose live video, with automatic snapshot fallback.",
+          inputSchema: emptyInputSchema,
+          annotations: readOnlyAnnotations,
+          securitySchemes,
+          _meta: {
+            securitySchemes,
+            ui: { resourceUri: CAMERA_WIDGET_URI },
+            "openai/outputTemplate": CAMERA_WIDGET_URI,
+            "openai/toolInvocation/invoking": "Opening U1 camera",
+            "openai/toolInvocation/invoked": "U1 camera ready",
+          },
+        },
         ...(dependencies.cameraSessions
           ? [
               {
                 name: "open_u1_camera_stream",
                 title: "Open U1 camera stream",
                 description:
-                  "Use this when the U1 dashboard starts a user-requested continuous read-only camera relay session.",
+                  "Use this only from the camera widget after the user selects Go Live to start a bounded read-only relay session.",
                 inputSchema: emptyInputSchema,
                 annotations: {
                   ...readOnlyAnnotations,
@@ -438,7 +520,8 @@ export function createAppServer(
                 securitySchemes,
                 _meta: {
                   securitySchemes,
-                  ui: { visibility: ["model", "app"] },
+                  ui: { visibility: ["app"] },
+                  "openai/visibility": "private",
                   "openai/toolInvocation/invoking": "Opening U1 camera relay",
                   "openai/toolInvocation/invoked": "U1 camera relay ready",
                 },

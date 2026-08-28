@@ -79,27 +79,29 @@ store, or `ObservationSource` port described in the target architecture.
 
 ## MCP interface
 
-The desktop-local and optional HTTP MCP surfaces share one UI resource, four
-model-visible read-only tools, and three app-only signaling helpers. The hosted
-widget has no external fetch capability; both transports route signaling
-through the host's MCP Apps bridge.
+The desktop-local and optional HTTP MCP surfaces share status and camera UI
+resources, four model-visible read-only tools, and four app-only signaling
+helpers. Hosted widgets have no external fetch capability; both transports
+route signaling through the host's MCP Apps bridge.
 
 | MCP member | Semantic category | Result contract |
 | --- | --- | --- |
 | `show_u1_status` | Observe and present | Text, `U1Status`, and a PNG card; links the HTML resource |
 | `get_u1_status` | Observe | Text plus fresh `U1Status`; no UI resource and no image, so widget refresh stays quiet |
 | `get_u1_camera_frame` | Observe | Camera acquisition facts in structured data; JPEG bytes stay in widget-private result metadata |
-| `open_u1_camera_stream` | Observe | Creates an opaque bounded session; expiry and duration are model-readable while offer and session material stay in widget-private result metadata |
+| `open_printer_camera` | Observe and present | Reads one relayed snapshot and links the camera-only widget without allocating a stream session |
+| `open_u1_camera_stream` | Observe, app-only | After Go Live, creates an opaque bounded session; offer and session material stay in widget-private result metadata |
 | `answer_u1_camera_stream` | Observe, app-only | Accepts one bounded, idempotent WebRTC answer for the active session |
 | `add_u1_camera_ice_candidates` | Observe, app-only | Accepts bounded and deduplicated ICE candidate batches |
 | `close_u1_camera_stream` | Observe, app-only | Idempotently closes the session and releases its lease |
 | `ui://u1-print-studio/status-v4.html` | Presentation resource | Self-contained MCP Apps HTML with empty external CSP domains |
+| `ui://u1-print-studio/camera-v1.html` | Presentation resource | Snapshot-first camera-only MCP Apps HTML with live and automatic snapshot-fallback states |
 
 `structuredContent` is the stable machine-readable projection. `content` is
 what a model or ordinary chat host can consume. Result `_meta` carries
 component-private data such as a relayed camera frame or short-lived ICE
 credentials. Descriptor `_meta`
-links `show_u1_status` to its UI resource. These fields solve different
+links `show_u1_status` and `open_printer_camera` to their UI resources. These fields solve different
 problems and must not be conflated.
 
 The normal local-first route is:
@@ -120,7 +122,8 @@ Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
               -> show_u1_status
               -> text + U1Status + PNG + UI resource link
               -> host mounts the widget if supported, otherwise shows the PNG
-              -> Go Live calls open_u1_camera_stream once
+              -> open_printer_camera mounts the snapshot-first camera widget
+              -> Go Live calls app-only open_u1_camera_stream once
               -> answer, ICE, and close stay on the MCP Apps tools/call bridge
               -> explicit STUN or derived TURN REST credentials reach both peers
               -> browser and printer negotiate an H264 RTCPeerConnection

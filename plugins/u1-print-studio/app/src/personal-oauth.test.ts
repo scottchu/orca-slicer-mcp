@@ -619,6 +619,7 @@ describe("personal OAuth discovery and boundary", () => {
       "show_u1_status",
       "get_u1_status",
       "get_u1_camera_frame",
+      "open_printer_camera",
       "open_u1_camera_stream",
       "answer_u1_camera_stream",
       "add_u1_camera_ice_candidates",
@@ -633,7 +634,7 @@ describe("personal OAuth discovery and boundary", () => {
       "show_u1_status",
       "get_u1_status",
       "get_u1_camera_frame",
-      "open_u1_camera_stream",
+      "open_printer_camera",
     ]);
     expect(toolsBody.result.tools[0]?.securitySchemes).toEqual([
       { type: "oauth2", scopes: ["u1.monitor"] },

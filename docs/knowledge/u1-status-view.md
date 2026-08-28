@@ -10,15 +10,17 @@
 
 - Monitoring is read-only. Rendering and refresh tools must never expose
   upload, start, pause, cancel, tuning, arbitrary URL, or G-code behavior.
-- `show_u1_status` owns widget creation. `get_u1_status` owns a fresh data
-  snapshot without a template so repeated refresh does not remount the widget.
+- `show_u1_status` owns status-widget creation and `open_printer_camera` owns
+  camera-only widget creation. `get_u1_status` owns a fresh data snapshot
+  without a template so repeated refresh does not remount the widget.
 - `structuredContent` contains concise model-visible telemetry. Camera bytes
   and one-time media URLs remain in widget-only result metadata.
-- The widget resource uses `text/html;profile=mcp-app`, a versioned URI, and a
-  runtime CSP restricted to the public relay origin, never the printer origin.
-- The remote HTTP surface adds `open_u1_camera_stream`; local stdio omits it
-  because it has no HTTPS media route. The tool's model-readable result carries
-  only expiry and duration while `_meta` carries the one-time URL.
+- Widget resources use `text/html;profile=mcp-app`, versioned URIs, and empty
+  external CSP domains. Camera data and signaling cross only the MCP Apps
+  bridge, never a printer, LAN, Tailscale, or media URL fetched by the widget.
+- `open_printer_camera` is model-visible and snapshot-first. The app-only
+  `open_u1_camera_stream` helper is composed when a relay exists and runs only
+  after Go Live. Its `_meta` carries the bounded offer and session material.
 - Ticket, lease, concurrency, and duration belong to an application service
   without MCP or HTTP dependencies. Allowlisted WebRTC signaling stays in the
   printer adapter, and the media adapter serves only exact `POST` and `DELETE

@@ -4,6 +4,8 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 
 import {
+  CAMERA_WIDGET_HTML,
+  CAMERA_WIDGET_URI,
   createAppServer,
   LEGACY_WIDGET_URIS,
   WIDGET_HTML,
@@ -78,7 +80,11 @@ afterEach(async () => {
   await Promise.all(closeCallbacks.splice(0).map((close) => close()));
 });
 
-async function connectClient(options: { oauth?: boolean; relay?: boolean } = {}) {
+async function connectClient(options: {
+  oauth?: boolean;
+  relay?: boolean;
+  onSessionOpen?: () => void;
+} = {}) {
   const server = createAppServer({
     readStatus: async () => ({ status, metadata }),
     readCameraFrame: async () => ({
@@ -88,18 +94,21 @@ async function connectClient(options: { oauth?: boolean; relay?: boolean } = {})
     ...(options.relay
       ? {
           cameraSessions: {
-            open: async () => ({
-            sessionId: "private-session-token",
-            type: "offer" as const,
-            sdp: "v=0\r\nfixture-offer\r\n",
-            iceServers: [{
-              urls: ["turns:relay.example:5349?transport=tcp"],
-              username: "1700001800:fixture-nonce",
-              credential: "derived-turn-credential",
-            }],
-            expiresAt: "2026-08-25T13:22:02.688Z",
-            maxDurationSeconds: 1800,
-            }),
+            open: async () => {
+              options.onSessionOpen?.();
+              return {
+                sessionId: "private-session-token",
+                type: "offer" as const,
+                sdp: "v=0\r\nfixture-offer\r\n",
+                iceServers: [{
+                  urls: ["turns:relay.example:5349?transport=tcp"],
+                  username: "1700001800:fixture-nonce",
+                  credential: "derived-turn-credential",
+                }],
+                expiresAt: "2026-08-25T13:22:02.688Z",
+                maxDurationSeconds: 1800,
+              };
+            },
             answer: async () => ({ accepted: true as const }),
             addCandidates: async (_sessionId, candidates) => ({
               accepted: true as const,
@@ -184,6 +193,26 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
+  });
+
+  test("serves a dedicated camera-only MCP App resource", async () => {
+    const client = await connectClient({ oauth: true, relay: true });
+    const listed = await client.listResources();
+    const result = await client.readResource({ uri: CAMERA_WIDGET_URI });
+    const resource = result.contents[0];
+
+    expect(listed.resources.map(({ uri }) => uri)).toContain(CAMERA_WIDGET_URI);
+    expect(resource?.uri).toBe(CAMERA_WIDGET_URI);
+    expect(resource?.mimeType).toBe("text/html;profile=mcp-app");
+    expect(resource?._meta?.ui).toMatchObject({
+      prefersBorder: false,
+      csp: {
+        connectDomains: [],
+        resourceDomains: [],
+        frameDomains: [],
+      },
+    });
+    expect("text" in resource ? resource.text : "").toBe(CAMERA_WIDGET_HTML);
   });
 
   test("keeps the previous widget URI readable for mounted cards during upgrades", async () => {
@@ -292,10 +321,18 @@ describe("U1 status MCP App contract", () => {
   });
 
   test("keeps bounded signaling private and app-only helpers hidden from the model", async () => {
-    const client = await connectClient({ oauth: true, relay: true });
+    let sessionOpenCount = 0;
+    const client = await connectClient({
+      oauth: true,
+      relay: true,
+      onSessionOpen: () => { sessionOpenCount += 1; },
+    });
     const listed = await client.listTools();
     const stream = listed.tools.find(
       (tool) => tool.name === "open_u1_camera_stream"
+    );
+    const openCamera = listed.tools.find(
+      (tool) => tool.name === "open_printer_camera"
     );
     const visibility = (tool: (typeof listed.tools)[number]): string[] | undefined =>
       (tool._meta?.ui as { visibility?: string[] } | undefined)?.visibility;
@@ -306,7 +343,7 @@ describe("U1 status MCP App contract", () => {
       "show_u1_status",
       "get_u1_status",
       "get_u1_camera_frame",
-      "open_u1_camera_stream",
+      "open_printer_camera",
     ]);
     expect(
       listed.tools
@@ -314,6 +351,7 @@ describe("U1 status MCP App contract", () => {
           !visibility(tool)?.includes("model"))
         .map((tool) => tool.name)
     ).toEqual([
+      "open_u1_camera_stream",
       "answer_u1_camera_stream",
       "add_u1_camera_ice_candidates",
       "close_u1_camera_stream",
@@ -323,11 +361,33 @@ describe("U1 status MCP App contract", () => {
       destructiveHint: false,
       idempotentHint: false,
     });
+    expect(stream?._meta?.ui).toEqual({ visibility: ["app"] });
+    expect(stream?._meta?.["openai/outputTemplate"]).toBeUndefined();
+    expect(openCamera?.annotations).toMatchObject({
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+    });
+    expect(openCamera?._meta?.ui).toEqual({
+      resourceUri: CAMERA_WIDGET_URI,
+    });
+    expect(openCamera?._meta?.["openai/outputTemplate"]).toBe(
+      CAMERA_WIDGET_URI
+    );
+
+    const openedCamera = await client.callTool({
+      name: "open_printer_camera",
+      arguments: {},
+    });
+    expect(openedCamera.structuredContent).toEqual(cameraFrame);
+    expect(openedCamera._meta).toEqual(cameraMetadata);
+    expect(sessionOpenCount).toBe(0);
 
     const result = await client.callTool({
       name: "open_u1_camera_stream",
       arguments: {},
     });
+    expect(sessionOpenCount).toBe(1);
     expect(result.structuredContent).toEqual({
       schemaVersion: 2,
       available: true,
@@ -352,6 +412,103 @@ describe("U1 status MCP App contract", () => {
     expect(JSON.stringify(result.content)).not.toContain("derived-turn-credential");
     expect(JSON.stringify(result.structuredContent)).not.toContain(
       "derived-turn-credential"
+    );
+  });
+});
+
+describe("camera-only widget contract", () => {
+  test("parses its module script under strict-mode semantics", () => {
+    const scriptStart = CAMERA_WIDGET_HTML.indexOf('<script type="module">');
+    const sourceStart = scriptStart + '<script type="module">'.length;
+    const scriptEnd = CAMERA_WIDGET_HTML.indexOf("</script>", sourceStart);
+    const source = CAMERA_WIDGET_HTML.slice(sourceStart, scriptEnd);
+
+    expect(scriptStart).toBeGreaterThan(-1);
+    expect(scriptEnd).toBeGreaterThan(sourceStart);
+    expect(() => new Function(`"use strict";\n${source}`)).not.toThrow();
+  });
+
+  test("contains only the snapshot, stream, and fallback camera experience", () => {
+    expect(CAMERA_WIDGET_HTML).toContain('id="snapshot"');
+    expect(CAMERA_WIDGET_HTML).toContain('id="live-stream"');
+    expect(CAMERA_WIDGET_HTML).toContain('id="go-live"');
+    expect(CAMERA_WIDGET_HTML).toContain('id="close-live"');
+    expect(CAMERA_WIDGET_HTML).toContain('data-camera-mode="snapshot"');
+    expect(CAMERA_WIDGET_HTML).toContain('setCameraMode("fallback"');
+    expect(CAMERA_WIDGET_HTML).toContain(
+      "snapshotFallbackTimer = setTimeout(refreshCameraFrame, 1500)"
+    );
+    expect(CAMERA_WIDGET_HTML).not.toContain('id="progress-section"');
+    expect(CAMERA_WIDGET_HTML).not.toContain('name: "get_u1_status"');
+  });
+
+  test("reuses the exact current camera component markup", () => {
+    const cameraSection = (html: string) => {
+      const start = html.indexOf('<section class="camera"');
+      const end = html.indexOf("</section>", start);
+      return html.slice(start, end + "</section>".length);
+    };
+
+    expect(cameraSection(CAMERA_WIDGET_HTML)).toBe(cameraSection(WIDGET_HTML));
+    expect(CAMERA_WIDGET_HTML).toContain("--brand: #ffcd00;");
+    expect(CAMERA_WIDGET_HTML).toContain("width: min(100%, 720px);");
+    expect(CAMERA_WIDGET_HTML).toContain("background-size: 42px 42px;");
+    expect(CAMERA_WIDGET_HTML).toContain('aria-label="Open live camera"');
+    expect(CAMERA_WIDGET_HTML).not.toContain(">Go Live</button>");
+  });
+
+  test("uses only the MCP Apps bridge for camera data and signaling", () => {
+    expect(CAMERA_WIDGET_HTML).toContain('rpcRequest("tools/call"');
+    expect(CAMERA_WIDGET_HTML).toContain('callTool("get_u1_camera_frame"');
+    expect(CAMERA_WIDGET_HTML).toContain('callTool("open_u1_camera_stream"');
+    expect(CAMERA_WIDGET_HTML).toContain('callTool("answer_u1_camera_stream"');
+    expect(CAMERA_WIDGET_HTML).toContain('callTool("add_u1_camera_ice_candidates"');
+    expect(CAMERA_WIDGET_HTML).toContain('callTool("close_u1_camera_stream"');
+    expect(CAMERA_WIDGET_HTML).not.toContain("fetch(");
+    expect(CAMERA_WIDGET_HTML).not.toContain("MOONRAKER_BASE_URL");
+    expect(CAMERA_WIDGET_HTML).not.toContain("snapshotUrl");
+  });
+
+  test("hydrates the opening snapshot from compatibility result envelopes", () => {
+    expect(CAMERA_WIDGET_HTML).toContain("window.openai?.toolResponseMetadata");
+    expect(CAMERA_WIDGET_HTML).toContain("metadata?.mcp_tool_result");
+    expect(CAMERA_WIDGET_HTML).toContain("metadata?.call_tool_result");
+    expect(CAMERA_WIDGET_HTML).toContain(
+      "initial?.structuredContent?.mediaType !== undefined"
+    );
+    expect(CAMERA_WIDGET_HTML).toContain("applyCameraFrame(initial)");
+    expect(CAMERA_WIDGET_HTML).not.toContain(
+      "void openCameraStream(initial)"
+    );
+    const sessionAssignment = CAMERA_WIDGET_HTML.indexOf(
+      'if (typeof sessionId === "string") liveSessionId = sessionId;'
+    );
+    const validation = CAMERA_WIDGET_HTML.indexOf(
+      'response?.structuredContent?.available !== true'
+    );
+    expect(sessionAssignment).toBeGreaterThan(-1);
+    expect(validation).toBeGreaterThan(sessionAssignment);
+  });
+
+  test("gates live state on a rendered frame and falls back when playback fails", () => {
+    const onTrackStart = CAMERA_WIDGET_HTML.indexOf("peer.ontrack = (event)");
+    const connectionStateStart = CAMERA_WIDGET_HTML.indexOf(
+      "peer.onconnectionstatechange",
+      onTrackStart
+    );
+    const onTrackSource = CAMERA_WIDGET_HTML.slice(
+      onTrackStart,
+      connectionStateStart
+    );
+
+    expect(CAMERA_WIDGET_HTML).toContain("markFirstRenderedFrame");
+    expect(CAMERA_WIDGET_HTML).toContain("requestVideoFrameCallback");
+    expect(CAMERA_WIDGET_HTML).toContain("no rendered video frames");
+    expect(CAMERA_WIDGET_HTML).toContain("video playback rejected");
+    expect(CAMERA_WIDGET_HTML).toContain("video track ended");
+    expect(CAMERA_WIDGET_HTML).toContain('addEventListener("stalled"');
+    expect(onTrackSource).not.toContain(
+      'elements.camera.classList.add("has-live")'
     );
   });
 });

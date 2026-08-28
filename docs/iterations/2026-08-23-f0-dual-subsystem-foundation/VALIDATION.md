@@ -1235,3 +1235,59 @@ From the repository root:
   remain unverified. No TURN REST service URL or shared secret was supplied, so
   a real relay allocation and reliable arbitrary-network playback remain
   externally blocked.
+
+## Camera-only presentation source validation — 2026-08-28
+
+### Static, software, and simulated protocol evidence
+
+- `bun run check`: passed.
+- `bun test src/app.test.ts src/status-dashboard.test.ts`: passed after the
+  final visual/lifecycle corrections with 30 focused tests.
+- `./scripts/check-repository.sh`: passed with 69 Bun tests and 398 assertions;
+  final output was `repository contract: ok`.
+- `git diff --check`: passed.
+- Both edited plugin skills passed Skill Creator `quick_validate.py` through
+  `uv run --no-project --with pyyaml`.
+- Plugin Creator `validate_plugin.py` passed through
+  `uv run --no-project --with pyyaml`.
+- `bun run bundle`: passed and emitted `camera-widget.html` as a distinct
+  embedded asset alongside `widget.html`.
+- `bun run bundle:runtime`: passed; the macOS arm64 standalone runtime was
+  ad-hoc signed and `codesign` reported it valid on disk and satisfying its
+  designated requirement.
+- A compiled-runtime stdio client listed exactly four model-visible tools
+  (`show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
+  `open_printer_camera`) plus four app-only helpers
+  (`open_u1_camera_stream`, answer, candidate, and close), listed
+  `camera-v1.html`, and read a camera-only embedded resource.
+- Regression tests prove `open_printer_camera` returns a snapshot without
+  opening a session, both MCP and `/dashboard/camera` serve the same HTML,
+  focused routes are absent from ordinary server mode, external CSP lists are
+  empty, the widget has no `fetch(` or caller-selected URL, camera markup is
+  exactly equal to the current status widget camera section, the module script
+  parses under strict semantics, and Live requires a rendered frame.
+
+### Private browser and real-printer read-only evidence
+
+- A separate source dashboard ran on loopback port 8791 without changing the
+  installed plugin, LaunchAgents, OAuth state, or Tailscale routes.
+- The in-app browser opened `/dashboard/camera`; the host reported its bridge
+  ready and the focused widget displayed a current real camera snapshot using
+  the exact existing camera component presentation.
+- One user-authorized read-only Go Live interaction negotiated successfully.
+  The widget did not label the connection Live until a rendered frame callback,
+  then reported an observed `Live · 23 FPS`. Close released the session and
+  returned the same component to Snapshot.
+- The temporary source server was stopped after the check.
+
+### Evidence boundary
+
+- The private loopback source dashboard proves this machine's test host,
+  bridge, real snapshot, rendered live path, and Close behavior. It does not
+  prove the not-yet-installed plugin, mounted Codex/ChatGPT resources, mobile
+  playback, arbitrary-network traversal, or snapshot fallback under a real
+  failure.
+- No TURN server is configured. No live TURN allocation or relay candidate was
+  observed, so robust remote mounted playback remains unproven.
+- No printer control, upload, start, pause, resume, cancel, G-code, generic
+  proxy, or Admin action ran.

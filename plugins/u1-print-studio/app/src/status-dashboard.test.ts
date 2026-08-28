@@ -2,6 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 
+import { CAMERA_WIDGET_HTML } from "./app.js";
 import { createStatusDashboardHandler } from "./status-dashboard.js";
 import { createRequestHandler, tailscaleDashboardBaseUrl } from "./server.js";
 import type { U1Status } from "./u1-status.js";
@@ -118,6 +119,12 @@ describe("standalone status dashboard", () => {
 
     const response = await fetch(`http://127.0.0.1:${port}/dashboard`);
     expect(response.status).toBe(404);
+    expect(
+      (await fetch(`http://127.0.0.1:${port}/dashboard/camera`)).status
+    ).toBe(404);
+    expect(
+      (await fetch(`http://127.0.0.1:${port}/camera-widget`)).status
+    ).toBe(404);
   });
 
   test("does not expose the ordinary MCP route from the dashboard-only process", async () => {
@@ -143,6 +150,28 @@ describe("standalone status dashboard", () => {
     expect(response.headers.get("cache-control")).toBe("no-store");
     expect(html).toContain('src="/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
+  });
+
+  test("serves the same camera-only widget behind a focused test host", async () => {
+    const origin = await startFixture();
+    const hostResponse = await fetch(`${origin}/dashboard/camera`);
+    const hostHtml = await hostResponse.text();
+    const widgetResponse = await fetch(`${origin}/camera-widget`);
+    const widgetHtml = await widgetResponse.text();
+
+    expect(hostResponse.status).toBe(200);
+    expect(hostResponse.headers.get("cache-control")).toBe("no-store");
+    expect(hostHtml).toContain('src="/camera-widget?standalone=1"');
+    expect(hostHtml).toContain('message.method === "tools/call"');
+    expect(widgetResponse.status).toBe(200);
+    expect(widgetResponse.headers.get("cache-control")).toBe("no-store");
+    expect(widgetResponse.headers.get("content-security-policy")).toContain(
+      "default-src 'none'"
+    );
+    expect(widgetHtml).toBe(CAMERA_WIDGET_HTML);
+    expect(widgetHtml).toContain('id="snapshot"');
+    expect(widgetHtml).toContain('id="live-stream"');
+    expect(widgetHtml).not.toContain("fetch(");
   });
 
   test("exposes only the widget's read-only status and camera calls", async () => {
