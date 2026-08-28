@@ -1291,3 +1291,54 @@ From the repository root:
   observed, so robust remote mounted playback remains unproven.
 - No printer control, upload, start, pause, resume, cancel, G-code, generic
   proxy, or Admin action ran.
+
+## Camera-only post-merge install and private deployment — 2026-08-28
+
+### Delivery and installation
+
+- Pull request 22 merged the source slice as `333bebe`.
+- Plugin Creator cache-busted and validated Personal Marketplace version
+  `0.2.0+codex.20260828194545`. Release staging came from the exact merged Git
+  tree, replaced the developer MCP descriptor with `.mcp.release.json`, and
+  embedded the validated standalone runtime. No `.env`, `node_modules`, or
+  `dist` directory entered the staged plugin.
+- The prior personal plugin source was moved, not deleted, to recoverable Trash
+  quarantine `u1-print-studio-personal-source-20260828T195024Z`.
+- `codex plugin add u1-print-studio@personal` installed the cache-busted
+  version. Staged and installed runtimes shared SHA-256
+  `b7c0151f01faaddf57aba04f884819ebef92c3254cdae74a09c7c88416af5be1`.
+  `codex mcp get u1-print-studio` resolved the portable relative runtime command
+  in the installed cache.
+- An exact installed-cache stdio client listed model-visible
+  `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
+  `open_printer_camera`; app-only stream open, answer, ICE, and close; and
+  status-v4, status-v3, and camera-v1 resources. The camera resource was 29,785
+  bytes and contained the rendered-frame gate without printer-status markup.
+
+### Existing-service restart and deployed private test
+
+- The canonical clean `main` checkout fast-forwarded to `333bebe`. Existing
+  `com.scottchu.u1-print-studio` and
+  `com.scottchu.u1-print-studio-dashboard` LaunchAgents were restarted with
+  their already loaded configuration; no plist, OAuth, enrollment, or
+  Tailscale command changed configuration.
+- Public health returned 200. Private `/dashboard/camera` and
+  `/camera-widget` returned 200. The Tailscale Serve/Funnel status SHA-256 was
+  `7dac599f0a80ff45802a7812dda5b67ac2042bc9f66121d18968a83c15d5eebe`
+  both before and after restart.
+- The deployed private camera host reported its bridge ready and displayed a
+  fresh real snapshot. Go Live reached the rendered-frame gate and reported
+  `Live · 25 FPS`; Close returned to Snapshot. The test used only read-only
+  camera calls.
+
+### Remaining evidence boundary
+
+- Installed-cache MCP contracts and the deployed private browser are verified.
+  A fresh Codex or ChatGPT task is still required to prove the new
+  `open_printer_camera` mounted resource in those hosts; this existing task
+  cannot hot-load the reinstalled descriptor.
+- No TURN server or relay allocation was added. The successful private browser
+  path does not prove arbitrary-network mounted playback, failure fallback, or
+  mobile playback.
+- No printer control, preparation, upload, start, pause, resume, cancel, G-code,
+  generic proxy, or Admin action ran.

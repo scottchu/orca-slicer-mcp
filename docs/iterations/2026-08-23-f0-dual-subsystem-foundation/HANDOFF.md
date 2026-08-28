@@ -501,9 +501,9 @@ remain open evidence gates.
 ## Next smallest action
 
 Start a fresh authenticated Codex or ChatGPT task so it loads the cache-busted
-plugin. Verify the four model-visible tools, mount the status card, invoke Go
-Live once, and record continuous rendering, Close, fallback if exercised, PiP,
-fullscreen, and iOS separately. If host-only ICE fails, provision an
+plugin. Invoke `open_printer_camera`, verify the camera-only resource mounts,
+then record snapshot, Go Live, continuous rendering, Close, and fallback if
+exercised. Test mobile separately. If host-only ICE fails, provision an
 owner-approved TURN REST service and verify a real relay allocation before
 retrying. Do not expose Moonraker or add printer controls.
 
@@ -535,13 +535,34 @@ plugin/skill validation, runtime bundle, ad-hoc signature verification,
 repository contract, and whitespace checks. A private loopback source
 dashboard then obtained a real snapshot, rendered live video at an observed
 23 FPS, and returned to snapshot after Close. This proves the private test host
-and real-printer read-only path on this machine only. The source branch is not
-yet merged or installed; mounted Codex/ChatGPT playback, fallback under an
-actual failure, and real TURN allocation remain open.
+and real-printer read-only path on this machine only.
+
+### Post-merge installation and deployed private test
+
+Pull request 22 merged as `333bebe`. Personal Marketplace version
+`0.2.0+codex.20260828194545` was release-staged and installed. Source, personal
+stage, and installed runtime SHA-256 were
+`b7c0151f01faaddf57aba04f884819ebef92c3254cdae74a09c7c88416af5be1`.
+The replaced personal source remains recoverable from Trash at
+`u1-print-studio-personal-source-20260828T195024Z`.
+
+The exact installed-cache MCP client listed four model-visible and four
+app-only tools, listed `camera-v1.html`, and read its 29,785-byte embedded
+camera resource. Canonical `main` fast-forwarded to the merge, and the existing
+public and private dashboard LaunchAgents restarted from the merged source.
+Public health, private `/dashboard/camera`, and private `/camera-widget`
+returned 200. The Tailscale Serve/Funnel configuration hash was identical
+before and after restart.
+
+The deployed private dashboard displayed a real snapshot, reached an actually
+rendered `Live · 25 FPS`, and returned to snapshot after Close. The in-app
+browser remains open on that private test page for user inspection. Mounted
+Codex/ChatGPT playback still requires a fresh task; fallback under an actual
+failure, mobile playback, and a real TURN allocation remain open.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0015. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0018. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.

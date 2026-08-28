@@ -18,13 +18,15 @@ Last updated: 2026-08-28
   short-lived TURN REST boundaries while preserving decision 0016's local-first
   normal-user direction and MCP Apps signaling bridge.
 - Pull request 20 merged the mounted-app compatibility repair as `4d4ea2f`.
-  Personal Marketplace version `0.2.0+codex.20260827215815` is installed and
-  the public service plus private dashboard are healthy.
+  Its status-v3/status-v4 compatibility boundary remains in the current
+  installed runtime.
 - Decision 0018 accepts a dedicated snapshot-first camera presentation:
   `open_printer_camera` links `camera-v1.html`, while WebRTC allocation and
-  follow-up signaling are app-only widget actions. The source slice is on
-  `scottchu/camera-only-widget` pending pull-request delivery; it has not yet
-  changed the installed plugin or live services.
+  follow-up signaling are app-only widget actions. Pull request 22 merged as
+  `333bebe`; Personal Marketplace version
+  `0.2.0+codex.20260828194545` is installed. The public service and private
+  dashboard were restarted from merged source without changing Tailscale
+  routing.
 
 ## Implemented local-first slice
 
@@ -185,13 +187,13 @@ and final repository-check results.
 
 ### User outcome
 
-- The secure remote source is merged, installed as
-  `0.2.0+codex.20260827215815`, and deployed with public authenticated MCP plus
+- The secure remote and camera-only source is merged, installed as
+  `0.2.0+codex.20260828194545`, and deployed with public authenticated MCP plus
   tailnet-only enrollment. Public/private routes, both supervised services,
-  installed-client resources, authenticated status and JPEG metadata, and
-  bounded WebRTC offer/close checks passed. Mounted ChatGPT/Codex playback and
-  visible browser video remain unverified because no browser-control surface
-  was connected.
+  installed-client resources, camera-v1, authenticated status and JPEG
+  metadata, bounded WebRTC signaling, and deployed private-browser rendered
+  video/Close checks passed. Mounted ChatGPT/Codex and mobile playback remain
+  unverified because installed descriptors require a fresh task.
 
 ## Open risks and F0 questions
 
