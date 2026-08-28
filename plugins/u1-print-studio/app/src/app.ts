@@ -26,6 +26,11 @@ import type {
   CameraWebRtcSessionController,
   OpenedCameraWebRtcSession,
 } from "./application/camera-webrtc.js";
+import {
+  U1_CAMERA_WIDGET_VERSION,
+  U1_RUNTIME_VERSION,
+  U1_TOOL_SCHEMA_VERSION,
+} from "./runtime-contract.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = currentDirectory.startsWith("/$bunfs/")
@@ -33,7 +38,10 @@ const APP_ROOT = currentDirectory.startsWith("/$bunfs/")
   : path.resolve(currentDirectory, "..");
 const IS_COMPILED = currentDirectory.startsWith("/$bunfs/");
 export const WIDGET_URI = "ui://u1-print-studio/status-v4.html";
-export const CAMERA_WIDGET_URI = "ui://u1-print-studio/camera-v1.html";
+export const CAMERA_WIDGET_URI = "ui://u1-print-studio/camera-v2.html";
+export const LEGACY_CAMERA_WIDGET_URIS = [
+  "ui://u1-print-studio/camera-v1.html",
+] as const;
 export const LEGACY_WIDGET_URIS = [
   "ui://u1-print-studio/status-v3.html",
 ] as const;
@@ -74,7 +82,8 @@ type CameraFrameReader = typeof readU1CameraFrame;
 
 export function cameraFramePayload(
   frame: U1CameraFrame,
-  metadata: U1WidgetMetadata
+  metadata: U1WidgetMetadata,
+  activation?: { token: string; expiresAt: string }
 ) {
   return {
     content: [
@@ -86,7 +95,18 @@ export function cameraFramePayload(
       },
     ],
     structuredContent: frame,
-    _meta: metadata,
+    _meta: {
+      ...metadata,
+      ...(activation
+        ? {
+            cameraActivation: {
+              schemaVersion: U1_TOOL_SCHEMA_VERSION,
+              token: activation.token,
+              expiresAt: activation.expiresAt,
+            },
+          }
+        : {}),
+    },
   };
 }
 
@@ -129,7 +149,10 @@ export function createAppServer(
   const readStatus = dependencies.readStatus ?? readU1Status;
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
-  const server = new McpServer({ name: "u1-print-studio", version: "0.2.0" });
+  const server = new McpServer({
+    name: "u1-print-studio",
+    version: U1_RUNTIME_VERSION,
+  });
   const securitySchemes = options.oauthScopes
     ? [{ type: "oauth2" as const, scopes: options.oauthScopes }]
     : undefined;
@@ -168,33 +191,38 @@ export function createAppServer(
     );
   }
 
-  registerAppResource(
-    server,
-    "u1-camera-widget",
+  for (const [index, widgetUri] of [
     CAMERA_WIDGET_URI,
-    {},
-    async () => ({
-      contents: [
-        {
-          uri: CAMERA_WIDGET_URI,
-          mimeType: RESOURCE_MIME_TYPE,
-          text: CAMERA_WIDGET_HTML,
-          _meta: {
-            ui: {
-              prefersBorder: false,
-              csp: {
-                connectDomains: [],
-                resourceDomains: [],
-                frameDomains: [],
+    ...LEGACY_CAMERA_WIDGET_URIS,
+  ].entries()) {
+    registerAppResource(
+      server,
+      index === 0 ? "u1-camera-widget" : `u1-camera-widget-legacy-${index}`,
+      widgetUri,
+      {},
+      async () => ({
+        contents: [
+          {
+            uri: widgetUri,
+            mimeType: RESOURCE_MIME_TYPE,
+            text: CAMERA_WIDGET_HTML,
+            _meta: {
+              ui: {
+                prefersBorder: false,
+                csp: {
+                  connectDomains: [],
+                  resourceDomains: [],
+                  frameDomains: [],
+                },
               },
+              "openai/widgetDescription":
+                `A camera-only Snapmaker U1 view (${U1_CAMERA_WIDGET_VERSION}) with a relayed snapshot, user-requested read-only live video, and an automatic snapshot fallback.`,
             },
-            "openai/widgetDescription":
-              "A camera-only Snapmaker U1 view with a relayed snapshot, user-requested read-only live video, and an automatic snapshot fallback.",
           },
-        },
-      ],
-    })
-  );
+        ],
+      })
+    );
+  }
 
   registerAppTool(
     server,
@@ -231,11 +259,13 @@ export function createAppServer(
     registerAppTool(
       server,
       "open_u1_camera_stream",
-      {
+      ({
         title: "Open U1 camera stream",
         description:
           "Use this only from the camera widget after the user selects Go Live to start a bounded read-only relay session.",
-        inputSchema: {},
+        inputSchema: {
+          activationToken: z.string().min(16).max(512),
+        },
         ...securityConfig,
         annotations: {
           readOnlyHint: true,
@@ -250,8 +280,11 @@ export function createAppServer(
           "openai/toolInvocation/invoking": "Opening U1 camera relay",
           "openai/toolInvocation/invoked": "U1 camera relay ready",
         },
-      },
-      async () => cameraStreamPayload(await dependencies.cameraSessions!.open())
+      } as any),
+      (async ({ activationToken }: { activationToken: string }) =>
+        cameraStreamPayload(
+          await dependencies.cameraSessions!.open(activationToken)
+        )) as any
     );
 
     const privateToolMetadata = {
@@ -375,11 +408,13 @@ export function createAppServer(
   registerAppTool(
     server,
     "get_u1_camera_frame",
-    {
+    ({
       title: "Refresh U1 camera frame",
       description:
         "Use this when the U1 dashboard needs a fresh read-only camera frame relayed through the printer operations boundary.",
-      inputSchema: {},
+      inputSchema: {
+        authorizeLive: z.boolean().optional(),
+      },
       ...securityConfig,
       annotations: {
         readOnlyHint: true,
@@ -389,21 +424,27 @@ export function createAppServer(
       },
       _meta: {
         ...securityMetadata,
+        ui: { visibility: ["app"] },
+        "openai/visibility": "private",
         "openai/toolInvocation/invoking": "Refreshing U1 camera",
         "openai/toolInvocation/invoked": "U1 camera refreshed",
       },
-    },
-    async () => {
+    } as any),
+    (async ({ authorizeLive = false }: { authorizeLive?: boolean }) => {
       const { frame, metadata } = await readCameraFrame();
-      return cameraFramePayload(frame, metadata);
-    }
+      const activation =
+        authorizeLive && dependencies.cameraSessions
+          ? dependencies.cameraSessions.authorize()
+          : undefined;
+      return cameraFramePayload(frame, metadata, activation);
+    }) as any
   );
 
   registerAppTool(
     server,
     "open_printer_camera",
     {
-      title: "Open camera",
+      title: "Open printer camera",
       description:
         "Open the read-only U1 camera widget. It begins with a snapshot and lets the user choose live video, with automatic snapshot fallback.",
       inputSchema: {},
@@ -480,18 +521,24 @@ export function createAppServer(
           title: "Refresh U1 camera frame",
           description:
             "Use this when the U1 dashboard needs a fresh read-only camera frame relayed through the printer operations boundary.",
-          inputSchema: emptyInputSchema,
+          inputSchema: {
+            type: "object",
+            properties: { authorizeLive: { type: "boolean" } },
+            additionalProperties: false,
+          },
           annotations: readOnlyAnnotations,
           securitySchemes,
           _meta: {
             securitySchemes,
+            ui: { visibility: ["app"] },
+            "openai/visibility": "private",
             "openai/toolInvocation/invoking": "Refreshing U1 camera",
             "openai/toolInvocation/invoked": "U1 camera refreshed",
           },
         },
         {
           name: "open_printer_camera",
-          title: "Open camera",
+          title: "Open printer camera",
           description:
             "Open the read-only U1 camera widget. It begins with a snapshot and lets the user choose live video, with automatic snapshot fallback.",
           inputSchema: emptyInputSchema,
@@ -512,7 +559,18 @@ export function createAppServer(
                 title: "Open U1 camera stream",
                 description:
                   "Use this only from the camera widget after the user selects Go Live to start a bounded read-only relay session.",
-                inputSchema: emptyInputSchema,
+                inputSchema: {
+                  type: "object",
+                  properties: {
+                    activationToken: {
+                      type: "string",
+                      minLength: 16,
+                      maxLength: 512,
+                    },
+                  },
+                  required: ["activationToken"],
+                  additionalProperties: false,
+                },
                 annotations: {
                   ...readOnlyAnnotations,
                   idempotentHint: false,

@@ -722,7 +722,18 @@
         setCameraState("loading", true);
         setCameraMode("loading");
         try {
-          await connectStreamResult(await callTool("open_u1_camera_stream"));
+          const activationResult = await callTool("get_u1_camera_frame", {
+            authorizeLive: true,
+          });
+          applyCameraFrame(activationResult);
+          const activation = activationResult?._meta?.cameraActivation ??
+            activationResult?.meta?.cameraActivation;
+          if (typeof activation?.token !== "string") {
+            throw new Error("camera activation unavailable");
+          }
+          await connectStreamResult(await callTool("open_u1_camera_stream", {
+            activationToken: activation.token,
+          }));
         } catch (error) {
           activateSnapshotFallback(error?.message ?? "relay unavailable");
         }
@@ -786,7 +797,7 @@
       const initializeBridge = async () => {
         if (!hosted) return null;
         const result = await rpcRequest("ui/initialize", {
-          appInfo: { name: "u1-camera-widget", version: "0.2.0" },
+          appInfo: { name: "u1-camera-widget", version: "0.2.0-camera-v2" },
           appCapabilities: {},
           protocolVersion: "2026-01-26",
         });

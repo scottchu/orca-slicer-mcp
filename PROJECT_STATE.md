@@ -27,6 +27,12 @@ Last updated: 2026-08-28
   `0.2.0+codex.20260828194545` is installed. The public service and private
   dashboard were restarted from merged source without changing Tailscale
   routing.
+- Decision 0019 is the active user-authorized workflow repair.
+  `open_printer_camera` is the only model-visible camera command and links
+  `camera-v2.html`; v1 remains readable as a compatibility alias. A current
+  widget must mint a one-time private activation before stream allocation, and
+  unanswered offers release their lease after 15 seconds. Health exposes tool
+  schema 3 and camera widget v2 for rollout coherence.
 
 ## Implemented local-first slice
 
@@ -54,6 +60,12 @@ The repository contains the smallest desktop-local read-only connector slice:
 - an ephemeral macOS arm64 executable that embeds its widget, disables
   automatic dotenv/bunfig loading, and runs without a Bun executable at
   runtime.
+
+Decision 0019 source validation passes with 71 tests and 417 assertions,
+TypeScript, both bundles, ad-hoc signature verification, plugin validation,
+both touched skill validators, the repository contract, and whitespace checks.
+Install, service restart, public edge, private dashboard, and mounted-host
+evidence remain separate until recorded below.
 
 The self-contained artifact is local validation evidence only. Its ad-hoc
 signature is not suitable for distribution. No package, marketplace entry,
@@ -83,15 +95,15 @@ Model-visible read-only tools:
 
 1. `show_u1_status`
 2. `get_u1_status`
-3. `get_u1_camera_frame`
-4. `open_printer_camera`
+3. `open_printer_camera`
 
-App-only read-only signaling helpers:
+App-only read-only camera helpers:
 
-1. `open_u1_camera_stream`
-2. `answer_u1_camera_stream`
-3. `add_u1_camera_ice_candidates`
-4. `close_u1_camera_stream`
+1. `get_u1_camera_frame`
+2. `open_u1_camera_stream`
+3. `answer_u1_camera_stream`
+4. `add_u1_camera_ice_candidates`
+5. `close_u1_camera_stream`
 
 There is no upload, start, pause, resume, cancel, G-code, generic proxy,
 Control, or Admin tool in the runtime. Preparation and authorized-start skills

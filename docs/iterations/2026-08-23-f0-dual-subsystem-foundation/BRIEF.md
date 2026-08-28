@@ -11,9 +11,10 @@
   HTTPS, move passkey enrollment to a distinct tailnet-only Tailscale Serve
   origin and loopback listener, restore only explicitly configured bounded STUN
   where needed, and add RFC5766 TURN REST credentials as the preferred remote
-  WebRTC reliability path. Preserve exactly four model-visible read-only tools;
-  decision 0018 intentionally makes stream allocation a widget-only action and
-  therefore uses four app-only signaling helpers. Do not
+  WebRTC reliability path. Decision 0019 is the current repair: preserve three
+  model-visible read-only tools with `open_printer_camera` as the only camera
+  action, plus five app-only camera helpers. Require a current one-time widget
+  activation and rapid unanswered-offer cleanup before stream allocation. Do not
   mutate the live LaunchAgent, Funnel, Serve, OAuth state, or printer; deployment
   waits for repository validation and coordinator approval. The local-first
   normal-user direction from decision 0016 remains preserved. Orca Preparation
@@ -53,6 +54,22 @@
   Do not add printer control or a direct media URL.
 - Treat focused route success, mounted-host playback, TURN allocation, and
   user-visible success as separate evidence layers.
+
+## 2026-08-28 camera workflow repair acceptance
+
+- Keep exactly one model-visible camera command: `open_printer_camera`.
+  Snapshot refresh, activation, stream open, answer, ICE, and Close remain
+  app-only widget implementation details.
+- Require a one-time private activation minted only after explicit Go Live.
+  Stale direct stream calls must fail before printer access or lease allocation.
+- Release unanswered WebRTC offers within 15 seconds and retain the existing
+  explicit Close plus maximum-duration bounds for answered sessions.
+- Advertise `camera-v2.html`, retain v1 as a current-asset compatibility alias,
+  and expose tool schema 3 plus camera widget v2 from health and doctor.
+- Validate, merge, stage, install, and restart only the existing U1 services.
+  Preserve OAuth state and every Tailscale Serve/Funnel handler byte-for-byte,
+  and keep source/software, installed runtime, public edge, private dashboard,
+  mounted host, and user outcome as separate evidence.
 
 ## Outcome
 

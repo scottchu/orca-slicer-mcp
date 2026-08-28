@@ -132,14 +132,15 @@ printer environments support the described behavior.
 - **API-004:** File, queue, database, webcam-configuration, account, service,
   update, and power mutations are classified as writes even when they do not
   immediately move or heat the printer.
-- **API-005:** The remote Monitor inventory contains exactly four model-visible
-  tools (`show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
-  `open_printer_camera`) plus exactly four app-only signaling helpers
-  (`open_u1_camera_stream`, `answer_u1_camera_stream`,
-  `add_u1_camera_ice_candidates`, and `close_u1_camera_stream`). All eight are
-  read-only and require `u1.monitor`. Opening the printer camera presents a
-  snapshot-first widget; only an explicit Go Live interaction allocates a
-  bounded stream session.
+- **API-005:** The remote Monitor inventory contains exactly three
+  model-visible tools (`show_u1_status`, `get_u1_status`, and
+  `open_printer_camera`) plus exactly five app-only camera helpers
+  (`get_u1_camera_frame`, `open_u1_camera_stream`,
+  `answer_u1_camera_stream`, `add_u1_camera_ice_candidates`, and
+  `close_u1_camera_stream`). All eight are read-only and require `u1.monitor`.
+  Opening the printer camera presents a snapshot-first widget. Only an explicit
+  Go Live interaction may mint and consume a one-time widget-private activation
+  before allocating a bounded stream session.
 
 ## Architecture and ontology
 
@@ -156,6 +157,10 @@ printer environments support the described behavior.
   ports. The printer-specific adapter owns the allowlisted WebRTC signaling
   exchange, and neither inbound adapter exposes printer URLs, printer peer
   identifiers, or a generic proxy.
+- **ARCH-005:** Host tool visibility is presentation metadata, not sufficient
+  authorization. Camera stream allocation requires a current one-time
+  widget-private application capability, and unanswered offers release their
+  leases automatically within a bounded interval.
 - **ONTO-001:** Prepared print job, printer, capability, print session,
   observation, event, recommendation, authorization, command intent, command
   result, verification, and outcome use the meanings defined in

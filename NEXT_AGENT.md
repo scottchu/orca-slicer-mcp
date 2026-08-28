@@ -8,15 +8,15 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0018
+5. decisions 0014 through 0019
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
 
-The user-directed priority is the secure remote U1 Print Studio Monitor slice
-under F0. Decision 0017 is current and preserves decision 0016's local-first
-normal-user direction.
+The user-directed priority is the U1 camera workflow repair under F0. Decision
+0019 is current and preserves decision 0017's secure remote boundary plus
+decision 0016's local-first normal-user direction.
 
 The secure source and compatibility repair are merged. Pull request 20 is
 `4d4ea2f`; pull request 22 adds the camera-only presentation as `333bebe`.
@@ -30,6 +30,14 @@ runtime hash matches the staged source. Decision 0018 adds
 `open_printer_camera`, `camera-v1.html`, and the opt-in `/dashboard/camera`
 test host. Existing Codex/ChatGPT tasks still require a new task to load the
 new descriptor.
+
+The decision-0019 source repair makes `open_printer_camera` the only
+model-visible camera action. The app-only frame helper mints a one-time private
+activation only after Go Live; stream open consumes it, and unanswered offers
+release after 15 seconds. The focused descriptor is `camera-v2.html` with v1
+served as a current-asset compatibility alias. Health and doctor report runtime
+0.2.0, tool schema 3, and camera widget v2. Source validation passes with 71
+tests and 417 assertions; delivery/install evidence is recorded separately.
 
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
@@ -74,15 +82,15 @@ Model-visible tools are exactly:
 
 1. `show_u1_status`
 2. `get_u1_status`
-3. `get_u1_camera_frame`
-4. `open_printer_camera`
+3. `open_printer_camera`
 
-App-only tools in the decision-0018 source slice are exactly:
+App-only tools in the decision-0019 workflow repair are exactly:
 
-1. `open_u1_camera_stream`
-2. `answer_u1_camera_stream`
-3. `add_u1_camera_ice_candidates`
-4. `close_u1_camera_stream`
+1. `get_u1_camera_frame`
+2. `open_u1_camera_stream`
+3. `answer_u1_camera_stream`
+4. `add_u1_camera_ice_candidates`
+5. `close_u1_camera_stream`
 
 All are read-only. Stop if upload, start, pause, resume, cancel, G-code, generic
 proxy, Control, or Admin behavior appears.
@@ -90,13 +98,13 @@ proxy, Control, or Admin behavior appears.
 ## Validation boundary
 
 The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 69 passing tests with 398 assertions. The macOS arm64
+software suite has 71 passing tests with 417 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
 on its invocation path.
 
-The decision-0018 source suite has 69 passing Bun tests with 398 assertions.
+The decision-0019 source suite has 71 passing Bun tests with 417 assertions.
 Its compiled camera asset is embedded in the standalone runtime. A private
 loopback source dashboard mounted the exact current camera component, obtained
 a real snapshot, rendered live video at an observed 23 FPS, and returned to
@@ -173,11 +181,11 @@ and mobile user-outcome gates.
 
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
-docs/requirements.md, the active iteration, and decisions 0014 through 0018.
+docs/requirements.md, the active iteration, and decisions 0014 through 0019.
 Treat the secure remote Monitor source slice as current: standard-HTTPS public
 OAuth/MCP, public enrollment rejection, a separate tailnet-only enrollment
 listener, explicit STUN, and preferred short-lived TURN REST credentials.
-Preserve exactly four model-visible tools and four app-only helpers. Do not
+Preserve exactly three model-visible tools and five app-only helpers. Do not
 mutate live services/routes, merge, publish, or contact a physical printer
 without fresh approval.
 ```

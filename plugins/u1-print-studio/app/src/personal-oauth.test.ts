@@ -633,7 +633,6 @@ describe("personal OAuth discovery and boundary", () => {
     expect(modelVisible.map((tool) => tool.name)).toEqual([
       "show_u1_status",
       "get_u1_status",
-      "get_u1_camera_frame",
       "open_printer_camera",
     ]);
     expect(toolsBody.result.tools[0]?.securitySchemes).toEqual([

@@ -13,6 +13,11 @@ export type OpenedCameraStream = {
   maxDurationSeconds: number;
 };
 
+export type CameraStreamActivation = {
+  token: string;
+  expiresAt: string;
+};
+
 export type CameraStreamLease = {
   expiresAt: string;
   release(): void;
@@ -60,6 +65,15 @@ export class CameraRelayService {
   }
 
   open(locator: CameraStreamLocator): OpenedCameraStream {
+    const activation = this.authorize();
+    return {
+      url: locator.locate(activation.token),
+      expiresAt: activation.expiresAt,
+      maxDurationSeconds: Math.floor(this.maxStreamDurationMilliseconds / 1000),
+    };
+  }
+
+  authorize(): CameraStreamActivation {
     this.removeExpiredTickets();
     if (this.pendingTickets.size >= this.maxPendingTickets) {
       throw new CameraRelayClaimError("busy");
@@ -69,9 +83,8 @@ export class CameraRelayService {
     const expiresAt = this.now() + this.ticketTtlMilliseconds;
     this.pendingTickets.set(issued.digest, { expiresAt });
     return {
-      url: locator.locate(issued.token),
+      token: issued.token,
       expiresAt: new Date(expiresAt).toISOString(),
-      maxDurationSeconds: Math.floor(this.maxStreamDurationMilliseconds / 1000),
     };
   }
 

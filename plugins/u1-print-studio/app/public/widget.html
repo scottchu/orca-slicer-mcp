@@ -1360,9 +1360,19 @@
 
         try {
           await bridgeReady;
+          const activationResult = await rpcRequest("tools/call", {
+            name: "get_u1_camera_frame",
+            arguments: { authorizeLive: true },
+          });
+          applyCameraFrame(activationResult);
+          const activation = activationResult?._meta?.cameraActivation ??
+            activationResult?.meta?.cameraActivation;
+          if (typeof activation?.token !== "string") {
+            throw new Error("camera activation unavailable");
+          }
           const response = await rpcRequest("tools/call", {
             name: "open_u1_camera_stream",
-            arguments: {},
+            arguments: { activationToken: activation.token },
           });
           const stream = response?._meta?.cameraStream ?? response?.meta?.cameraStream;
           const sessionId = stream?.sessionId;

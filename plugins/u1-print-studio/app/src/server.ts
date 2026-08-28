@@ -33,6 +33,7 @@ import {
   readU1CameraFrame,
   readU1Status,
 } from "./u1-status.js";
+import { runtimeHealth } from "./runtime-contract.js";
 
 const MCP_PATH = "/mcp";
 
@@ -154,7 +155,11 @@ export function createRequestHandler(
       res.writeHead(200, {
         "cache-control": "no-store",
         "content-type": "application/json; charset=utf-8",
-      }).end(JSON.stringify({ ok: true, auth: oauth ? "personal-oauth" : "local-only" }));
+      }).end(
+        JSON.stringify(
+          runtimeHealth(oauth ? "personal-oauth" : "local-only")
+        )
+      );
       return;
     }
 

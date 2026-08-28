@@ -7,6 +7,7 @@ import {
   CAMERA_WIDGET_HTML,
   CAMERA_WIDGET_URI,
   createAppServer,
+  LEGACY_CAMERA_WIDGET_URIS,
   LEGACY_WIDGET_URIS,
   WIDGET_HTML,
   WIDGET_URI,
@@ -94,6 +95,10 @@ async function connectClient(options: {
     ...(options.relay
       ? {
           cameraSessions: {
+            authorize: () => ({
+              token: "private-activation-token",
+              expiresAt: "2026-08-25T13:21:32.688Z",
+            }),
             open: async () => {
               options.onSessionOpen?.();
               return {
@@ -174,7 +179,7 @@ describe("U1 status MCP App contract", () => {
       destructiveHint: false,
       idempotentHint: true,
     });
-    expect(camera?._meta?.ui).toBeUndefined();
+    expect(camera?._meta?.ui).toEqual({ visibility: ["app"] });
   });
 
   test("serves a self-contained MCP App resource without LAN origins", async () => {
@@ -213,6 +218,14 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(CAMERA_WIDGET_HTML);
+
+    const legacyUri = LEGACY_CAMERA_WIDGET_URIS[0];
+    const legacy = await client.readResource({ uri: legacyUri });
+    expect(listed.resources.map(({ uri }) => uri)).toContain(legacyUri);
+    expect(legacy.contents[0]?.uri).toBe(legacyUri);
+    expect(
+      "text" in legacy.contents[0]! ? legacy.contents[0].text : ""
+    ).toBe(CAMERA_WIDGET_HTML);
   });
 
   test("keeps the previous widget URI readable for mounted cards during upgrades", async () => {
@@ -342,7 +355,6 @@ describe("U1 status MCP App contract", () => {
     expect(modelVisible.map((tool) => tool.name)).toEqual([
       "show_u1_status",
       "get_u1_status",
-      "get_u1_camera_frame",
       "open_printer_camera",
     ]);
     expect(
@@ -351,6 +363,7 @@ describe("U1 status MCP App contract", () => {
           !visibility(tool)?.includes("model"))
         .map((tool) => tool.name)
     ).toEqual([
+      "get_u1_camera_frame",
       "open_u1_camera_stream",
       "answer_u1_camera_stream",
       "add_u1_camera_ice_candidates",
@@ -383,9 +396,32 @@ describe("U1 status MCP App contract", () => {
     expect(openedCamera._meta).toEqual(cameraMetadata);
     expect(sessionOpenCount).toBe(0);
 
-    const result = await client.callTool({
+    const staleResult = await client.callTool({
       name: "open_u1_camera_stream",
       arguments: {},
+    });
+    expect(staleResult.isError).toBe(true);
+    expect(sessionOpenCount).toBe(0);
+
+    const activationResult = await client.callTool({
+      name: "get_u1_camera_frame",
+      arguments: { authorizeLive: true },
+    });
+    expect(activationResult._meta?.cameraActivation).toEqual({
+      schemaVersion: 3,
+      token: "private-activation-token",
+      expiresAt: "2026-08-25T13:21:32.688Z",
+    });
+    expect(JSON.stringify(activationResult.content)).not.toContain(
+      "private-activation-token"
+    );
+    expect(JSON.stringify(activationResult.structuredContent)).not.toContain(
+      "private-activation-token"
+    );
+
+    const result = await client.callTool({
+      name: "open_u1_camera_stream",
+      arguments: { activationToken: "private-activation-token" },
     });
     expect(sessionOpenCount).toBe(1);
     expect(result.structuredContent).toEqual({
@@ -460,6 +496,8 @@ describe("camera-only widget contract", () => {
   test("uses only the MCP Apps bridge for camera data and signaling", () => {
     expect(CAMERA_WIDGET_HTML).toContain('rpcRequest("tools/call"');
     expect(CAMERA_WIDGET_HTML).toContain('callTool("get_u1_camera_frame"');
+    expect(CAMERA_WIDGET_HTML).toContain("authorizeLive: true");
+    expect(CAMERA_WIDGET_HTML).toContain("activationToken: activation.token");
     expect(CAMERA_WIDGET_HTML).toContain('callTool("open_u1_camera_stream"');
     expect(CAMERA_WIDGET_HTML).toContain('callTool("answer_u1_camera_stream"');
     expect(CAMERA_WIDGET_HTML).toContain('callTool("add_u1_camera_ice_candidates"');
