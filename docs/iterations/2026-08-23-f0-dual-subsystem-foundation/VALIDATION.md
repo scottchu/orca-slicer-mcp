@@ -1386,3 +1386,63 @@ From the repository root:
   gates until explicitly recorded.
 - No TURN server is configured, so arbitrary-network relay behavior remains
   unproven. No printer control was added or invoked.
+
+## Camera workflow repair post-merge rollout — 2026-08-28
+
+### Delivery and installed runtime
+
+- Pull request 24 merged as `62acd4c`. Canonical `main` fast-forwarded to that
+  merge before release staging.
+- The exact merged source rebuilt and ad-hoc signed the standalone runtime.
+  Plugin Creator cache-busted the staged personal source to
+  `0.2.0+codex.20260828211031`; validation and standalone help passed before
+  replacement. The prior source moved to recoverable Trash quarantine
+  `u1-print-studio-personal-source-20260828T211017Z`.
+- `codex plugin add u1-print-studio@personal` installed and enabled the new
+  version. Source, stage, and cache executables share SHA-256
+  `74f5f654de2a52c21a33577ffd6520f1054eb71439668885986114177faa2398`;
+  the installed executable passed `codesign -vvv --verify`.
+- Exact installed `doctor --offline --json` reported runtime 0.2.0, tool schema
+  3, camera widget v2, valid owner configuration, explicit STUN, fixed
+  read-only operations, MCP Apps signaling, and disabled external widget fetch.
+
+### Installed-cache and real-printer read-only evidence
+
+- The exact installed standalone MCP listed model-visible
+  `show_u1_status`, `get_u1_status`, and `open_printer_camera`; app-only frame,
+  stream open, answer, ICE, and close helpers; and status-v4/status-v3 plus
+  camera-v2/camera-v1 resources. Camera-v2 read as 30,282 bytes.
+- Calling the old `open_u1_camera_stream` shape with empty arguments returned an
+  MCP error and allocated no session. A current app-only frame call then minted
+  an activation and returned a 135,547-byte real JPEG. Consuming the activation
+  produced one bounded MCP Apps offer with one ICE server; explicit Close
+  returned true. No token, session ID, credential, or SDP was printed.
+
+### Service restart and edge verification
+
+- Only the existing `com.scottchu.u1-print-studio` and
+  `com.scottchu.u1-print-studio-dashboard` LaunchAgents were restarted. Both
+  returned to `running`.
+- Loopback public health and dashboard health returned runtime 0.2.0, tool
+  schema 3, and camera widget v2. Public standard-HTTPS health returned the same
+  contract. Public enrollment returned 404, unauthenticated MCP returned 401,
+  private dashboard camera and widget returned 200, and private enrollment
+  health returned 200.
+- OAuth state SHA-256 was
+  `91072185057645f9fa776714b354638b2e4e5855ef48553c1dcaf5244c5a7df0`
+  before and after restart. Tailscale Serve/Funnel JSON SHA-256 was
+  `7dac599f0a80ff45802a7812dda5b67ac2042bc9f66121d18968a83c15d5eebe`
+  before and after restart. No OAuth, passkey, enrollment, LaunchAgent plist, or
+  Tailscale configuration was replaced.
+
+### Private browser evidence and remaining gates
+
+- The deployed private camera dashboard displayed a real Snapshot. One Go Live
+  click passed the browser-rendered-frame gate and reported `Live · 24 FPS`.
+  Close returned the same widget to Snapshot.
+- This proves the private dashboard host, real-printer read-only path, current
+  widget activation, rendered live media, and UI Close on this machine. It does
+  not prove mounted Codex/ChatGPT, mobile, a real TURN allocation, or arbitrary
+  network traversal; those require fresh separate tasks.
+- No upload, start, pause, resume, cancel, G-code, generic proxy, Control, or
+  Admin action ran.

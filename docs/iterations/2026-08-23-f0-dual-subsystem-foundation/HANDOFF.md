@@ -587,6 +587,38 @@ No live service, OAuth state, Tailscale route, installed plugin, printer, or
 mounted host was changed during this source gate. Delivery and each later
 evidence layer must be recorded separately.
 
+## Camera workflow repair post-merge rollout
+
+Pull request 24 merged as `62acd4c`. The exact merge commit rebuilt the
+standalone runtime and release-staged Personal Marketplace version
+`0.2.0+codex.20260828211031`. Source, personal stage, and installed cache share
+SHA-256
+`74f5f654de2a52c21a33577ffd6520f1054eb71439668885986114177faa2398`.
+The prior personal source is recoverable from Trash at
+`u1-print-studio-personal-source-20260828T211017Z`.
+
+Offline installed doctor reports runtime 0.2.0, tool schema 3, camera widget
+v2, explicit STUN, fixed read-only operations, and disabled external widget
+fetch. The exact installed MCP client listed three model-visible tools and five
+app-only helpers, listed status v4/v3 plus camera v2/v1, rejected the stale
+empty stream call without allocation, obtained a real 135,547-byte JPEG,
+opened one bounded offer with one ICE server through a current activation, and
+explicitly closed it.
+
+The existing public and private dashboard LaunchAgents restarted from merged
+source. Public and loopback dashboard health both report schema 3/camera-v2.
+Public enrollment is 404, unauthenticated MCP is 401, private dashboard camera
+and widget are 200, and private enrollment health is 200. OAuth state SHA-256
+remained
+`91072185057645f9fa776714b354638b2e4e5855ef48553c1dcaf5244c5a7df0`;
+Tailscale Serve/Funnel status remained
+`7dac599f0a80ff45802a7812dda5b67ac2042bc9f66121d18968a83c15d5eebe`.
+
+The deployed private in-app browser showed a real Snapshot, passed the actual
+rendered-frame gate at `Live · 24 FPS`, and returned to Snapshot after Close.
+Mounted Codex/ChatGPT and mobile still require fresh tasks and are not inferred
+from private-dashboard success. No printer control or route/auth mutation ran.
+
 ## Restart instructions
 
 Follow `NEXT_AGENT.md` and decisions 0003 through 0019. Do not infer that one

@@ -39,6 +39,16 @@ served as a current-asset compatibility alias. Health and doctor report runtime
 0.2.0, tool schema 3, and camera widget v2. Source validation passes with 71
 tests and 417 assertions; delivery/install evidence is recorded separately.
 
+Pull request 24 merged as `62acd4c`. Personal Marketplace version
+`0.2.0+codex.20260828211031` is installed with source/stage/cache runtime hash
+`74f5f654de2a52c21a33577ffd6520f1054eb71439668885986114177faa2398`.
+The exact installed client verified three model-visible plus five app-only
+tools, both camera-v2 and v1 resources, rejection of an old empty stream call,
+a 135,547-byte real JPEG, one bounded offer with one ICE server, and explicit
+Close. Public and dashboard health report schema 3/camera-v2; OAuth state and
+Tailscale routing hashes stayed unchanged across restart. The private browser
+rendered `Live · 24 FPS` and returned to Snapshot after Close.
+
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
 editing, or Bun. Do not restore the stale direct-HTTP hosted widget path from
