@@ -142,6 +142,106 @@ function asPeer(value: object): RTCPeerConnection {
   return value as RTCPeerConnection;
 }
 
+type PeerConnectionState =
+  | "closed"
+  | "disconnected"
+  | "new"
+  | "connected"
+  | "failed"
+  | "connecting";
+
+function actualUpstreamPeer(connectionState: PeerConnectionState) {
+  const track = new MediaStreamTrack({ kind: "video", remote: true });
+  const trackEvent = new Event<[MediaStreamTrack]>();
+  const connectionEvent = new Event<[PeerConnectionState]>();
+  const codec = useH264({
+    payloadType: 102,
+    parameters: "profile-level-id=640c33;packetization-mode=1",
+  });
+  const receiver = {
+    track,
+    sendRtcpPLI: async () => {},
+  };
+  let localDescription: { type: "answer"; sdp: string } | undefined;
+  let closeCount = 0;
+  return {
+    track,
+    connectionEvent,
+    closeCount: () => closeCount,
+    peer: asPeer({
+      connectionState,
+      onTrack: trackEvent,
+      connectionStateChange: connectionEvent,
+      addTransceiver: () => ({}),
+      setRemoteDescription: async () => trackEvent.execute(track),
+      createAnswer: async () => ({ type: "answer", sdp: "answer" }),
+      setLocalDescription: async (description: {
+        type: "answer";
+        sdp: string;
+      }) => {
+        localDescription = description;
+      },
+      get localDescription() {
+        return localDescription;
+      },
+      getTransceivers: () => [{ receiver, codecs: [codec] }],
+      close: async () => {
+        closeCount += 1;
+      },
+    }),
+  };
+}
+
+function actualViewerPeer(connectionState: PeerConnectionState) {
+  const pli = new Event<[]>();
+  const connectionEvent = new Event<[PeerConnectionState]>();
+  let localDescription: { type: "offer"; sdp: string } | undefined;
+  let closeCount = 0;
+  return {
+    connectionEvent,
+    closeCount: () => closeCount,
+    peer: asPeer({
+      connectionState,
+      connectionStateChange: connectionEvent,
+      addTransceiver: () => ({
+        sender: {
+          onPictureLossIndication: pli,
+          replaceTrack: async () => {},
+        },
+      }),
+      createOffer: async () => ({ type: "offer", sdp: "viewer-offer" }),
+      setLocalDescription: async (description: {
+        type: "offer";
+        sdp: string;
+      }) => {
+        localDescription = description;
+      },
+      get localDescription() {
+        return localDescription;
+      },
+      setRemoteDescription: async () => {},
+      addIceCandidate: async () => {},
+      close: async () => {
+        closeCount += 1;
+      },
+    }),
+  };
+}
+
+function signalingWithFirstRtp(track: MediaStreamTrack) {
+  return {
+    ...signaling,
+    sendAnswer: async () => {
+      track.onReceiveRtp.execute(
+        new RtpPacket(
+          new RtpHeader({ payloadType: 102, ssrc: 0x1234 }),
+          Buffer.from([1])
+        )
+      );
+    },
+  } satisfies CameraWebRtcSignalingSource;
+}
+
 describe("server-terminated camera fan-out", () => {
   test("shares one private upstream across independent bounded viewers", async () => {
     const fixture = fanoutFixture();
@@ -442,6 +542,59 @@ describe("werift camera fan-out adapter", () => {
     ).rejects.toThrow("sendAnswer failed");
     expect(trackEvent.length).toBe(0);
     expect(track.onReceiveRtp.length).toBe(baselineRtpListeners);
+  });
+
+  test("rejects an upstream already failed before termination registration", async () => {
+    const upstreamPeer = actualUpstreamPeer("failed");
+    const peerFactory = createWeriftCameraFanoutPeerFactory({
+      createPeer: () => upstreamPeer.peer,
+    });
+    const ticketCodec = codec(["already-failed-upstream"]);
+    const relay = new CameraRelayService(ticketCodec);
+    const sessions = new CameraFanoutSessionService(
+      ticketCodec,
+      signalingWithFirstRtp(upstreamPeer.track),
+      { issue: () => [] },
+      peerFactory
+    );
+
+    await expect(sessions.open(relay.claimDirect())).rejects.toThrow(
+      "invalid_offer"
+    );
+    expect(sessions.close("already-failed-upstream")).toEqual({ closed: false });
+    expect(upstreamPeer.closeCount()).toBe(1);
+    expect(upstreamPeer.connectionEvent.length).toBe(0);
+    const released = relay.claimDirect();
+    released.release();
+  });
+
+  test("rejects a viewer already closed before termination registration", async () => {
+    const upstreamPeer = actualUpstreamPeer("connected");
+    const viewerPeer = actualViewerPeer("closed");
+    let peerIndex = 0;
+    const peerFactory = createWeriftCameraFanoutPeerFactory({
+      createPeer: () =>
+        peerIndex++ === 0 ? upstreamPeer.peer : viewerPeer.peer,
+    });
+    const ticketCodec = codec(["already-closed-viewer"]);
+    const relay = new CameraRelayService(ticketCodec);
+    const sessions = new CameraFanoutSessionService(
+      ticketCodec,
+      signalingWithFirstRtp(upstreamPeer.track),
+      { issue: () => [] },
+      peerFactory
+    );
+
+    await expect(sessions.open(relay.claimDirect())).rejects.toThrow(
+      "invalid_offer"
+    );
+    expect(sessions.close("already-closed-viewer")).toEqual({ closed: false });
+    expect(viewerPeer.closeCount()).toBe(1);
+    expect(upstreamPeer.closeCount()).toBe(1);
+    expect(viewerPeer.connectionEvent.length).toBe(0);
+    expect(upstreamPeer.connectionEvent.length).toBe(0);
+    const released = relay.claimDirect();
+    released.release();
   });
 
   test("coalesces viewer PLIs onto the selected upstream receiver without closing peers", async () => {

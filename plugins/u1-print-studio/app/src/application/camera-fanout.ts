@@ -689,10 +689,26 @@ class CoalescedPliBridge {
 }
 
 function terminationSubscription(peer: RTCPeerConnection, callback: () => void) {
+  let active = true;
+  let notified = false;
+  const notify = () => {
+    if (!active || notified) return;
+    notified = true;
+    callback();
+  };
   const subscription = peer.connectionStateChange.subscribe((state) => {
-    if (state === "failed" || state === "closed") callback();
+    if (state === "failed" || state === "closed") notify();
   });
-  return subscription.unSubscribe;
+  // Connection state is level-triggered here: werift may have entered a
+  // terminal state before the observer was installed and emit no later event.
+  if (peer.connectionState === "failed" || peer.connectionState === "closed") {
+    notify();
+  }
+  return () => {
+    if (!active) return;
+    active = false;
+    subscription.unSubscribe();
+  };
 }
 
 export function createWeriftCameraFanoutPeerFactory(

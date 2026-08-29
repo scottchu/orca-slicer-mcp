@@ -58,10 +58,12 @@ server Tailscale host candidates, independent Close, a 15-second answer
 deadline, and last-viewer upstream release. `U1_CAMERA_MAX_VIEWERS` defaults to
 16 and accepts 1 through 64. The first received RTP payload type selects the
 exact H264 fmtp; downstream PLI feedback is coalesced onto the upstream
-receiver; explicit generations reject peers that terminate during async open.
-Camera v2 and v1 remain aliases. Public status, camera bytes, diagnostics, MCP,
-and exact HTTP envelopes exclude printer identity, upstream signaling, raw
-errors, and JPEG metadata. No live runtime or route has been changed.
+receiver; explicit generations reject peers that terminate during async open;
+subscribe-then-inspect termination observers reject werift peers already
+failed/closed before registration. Camera v2 and v1 remain aliases. Public
+status, camera bytes, diagnostics, MCP, and exact HTTP envelopes exclude
+printer identity, upstream signaling, raw errors, and JPEG metadata. No live
+runtime or route has been changed.
 
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
@@ -85,7 +87,8 @@ decision 0015.
 - The fan-out application service owns one private H264 printer upstream plus
   opaque downstream viewers, exact first-RTP codec selection, bounded upstream
   PLI feedback, peer-ID hiding, input bounds, concurrency, duration, expiry,
-  abort, generation-safe opening, and independent close.
+  abort, generation-safe opening, level-triggered terminal-state observation,
+  and independent close.
 - Snapshot fallback and the existing 1200 by 1500 PNG remain intact.
 - The standalone dashboard may retain the exact HTTP signaling adapter for
   development compatibility.
@@ -125,7 +128,7 @@ proxy, Control, or Admin behavior appears.
 ## Validation boundary
 
 The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 87 passing tests with 547 assertions. The macOS arm64
+software suite has 89 passing tests with 557 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun

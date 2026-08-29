@@ -48,9 +48,10 @@ Last updated: 2026-08-29
   envelopes use closed vocabularies, strip JPEG metadata, and exclude printer
   identity and upstream signaling. Independent media-core review additionally
   requires exact first-RTP H264 payload/profile selection, rate-limited shared
-  upstream PLI feedback, and async termination cleanup. The slice has not
-  changed any installed plugin, service, OAuth state, Tailscale route, or
-  printer.
+  upstream PLI feedback, async termination cleanup, and level-triggered
+  rejection of werift peers already failed/closed before observer registration.
+  The slice has not changed any installed plugin, service, OAuth state,
+  Tailscale route, or printer.
 
 ## Implemented local-first slice
 
@@ -79,7 +80,7 @@ The repository contains the smallest desktop-local read-only connector slice:
   automatic dotenv/bunfig loading, and runs without a Bun executable at
   runtime.
 
-Decision 0020 source validation passes with 87 tests and 547 assertions,
+Decision 0020 source validation passes with 89 tests and 557 assertions,
 TypeScript, both bundles, ad-hoc signature verification, plugin validation,
 the repository contract, and whitespace checks.
 Its bundle, signature, plugin, skill, repository, and whitespace results are
@@ -182,11 +183,12 @@ remain procedural guidance; they are not runtime authority.
 ### Static/software
 
 - TypeScript checks pass.
-- Eighty-seven tests with 547 assertions pass across MCP resource/tool contracts,
+- Eighty-nine tests with 557 assertions pass across MCP resource/tool contracts,
   enrollment isolation, standard HTTPS, three-plus-five visibility, distinct
   upstream/downstream ICE, bounded multi-viewer fan-out, exact H264 payload
-  selection, coalesced PLI feedback, termination races, model and printer
-  identity privacy, JPEG metadata stripping, config migration, PNG,
+  selection, coalesced PLI feedback, termination races, already-terminal peer
+  rejection, model and printer identity privacy, JPEG metadata stripping,
+  config migration, PNG,
   rendered-frame gating and fallback, exact HTTP compatibility, OAuth,
   packaging, and dashboard allowlists.
 - The source stdio bundle emits `stdio.js` plus status and camera widget assets.

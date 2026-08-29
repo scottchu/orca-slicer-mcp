@@ -1572,8 +1572,8 @@ From `plugins/u1-print-studio/app`:
 - `bun install --frozen-lockfile`: passed with 152 installs across 146 packages
   and no change.
 - `bun run check`: passed TypeScript.
-- `bun test src/camera-fanout.test.ts`: passed 10 tests with 67 assertions.
-- `bun test src/*.test.ts`: passed 87 tests with 547 assertions across 12
+- `bun test src/camera-fanout.test.ts`: passed 12 tests with 82 assertions.
+- `bun test src/*.test.ts`: passed 89 tests with 557 assertions across 12
   files.
 - `bun run bundle`: passed from 588 modules; emitted a 2.73 MB `stdio.js`,
   33.73 KB camera asset, and 57.45 KB status asset.
@@ -1592,8 +1592,8 @@ From the repository root:
   --with pyyaml` for `plugins/u1-print-studio`.
 - Skill Creator `quick_validate.py` passed through the same `uv` boundary for
   all four plugin skills: mobile setup, monitor, prepare, and authorized start.
-- `./scripts/check-repository.sh`: passed, including TypeScript and all 87 tests
-  with 547 assertions; final output was `repository contract: ok`.
+- `./scripts/check-repository.sh`: passed, including TypeScript and all 89 tests
+  with 557 assertions; final output was `repository contract: ok`.
 - `git diff --check`: passed.
 
 ### Regression evidence
@@ -1613,6 +1613,10 @@ From the repository root:
 - Invalid SDP and `sendAnswer` failure fixtures prove track and first-RTP event
   subscriptions return to baseline. A direct 60-second track wait cancellation
   also removes its subscription immediately rather than retaining its timer.
+- Actual-factory fixtures begin with an upstream already `failed` and a viewer
+  already `closed`, emit no later connection event, and prove both opens fail
+  without publishing a session. Each peer closes once, both leases release,
+  and every termination subscription is removed.
 
 ### Unverified later layers
 

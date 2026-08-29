@@ -693,3 +693,10 @@ received, two viewer PLI sources, and deferred termination/failure fixtures.
 The final full suite and repository validators are recorded in
 `VALIDATION.md`. No live deployment, service, route, OAuth state, installed
 plugin, printer, mobile client, or TURN endpoint was contacted or changed.
+
+Targeted re-review then found one remaining concrete-adapter race: a werift
+peer could already be terminal before `onTerminated` registration and emit no
+later event. The adapter now subscribes first, synchronously inspects current
+connection state, invokes termination at most once, and returns an idempotent
+unsubscriber. Actual-factory regressions cover an already-failed upstream and
+an already-closed viewer; neither is published and both clean up fully.

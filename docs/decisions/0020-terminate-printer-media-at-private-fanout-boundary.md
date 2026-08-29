@@ -46,6 +46,9 @@ separate media daemon on their computer.
   teardown. Explicit upstream generations and viewer-alive checks prevent a
   peer that terminated during async opening from being inserted. The last
   viewer releases the single printer upstream.
+- Werift termination observers subscribe before inspecting current connection
+  state. An already `failed` or `closed` peer is reported exactly once even if
+  no later state-change event arrives; unsubscription is idempotent.
 - The optional exact `/media/camera.webrtc` compatibility adapter may accept
   only a session store branded `server-terminated-fanout`; it cannot be wired to
   the old direct printer session service. Its original one-time public ticket
@@ -94,7 +97,8 @@ must prove one upstream for multiple viewers, unique downstream ICE
 credentials, independent Close, last-viewer release, answer timeout, viewer
 capacity, Tailscale candidate discovery, H264-only forwarding boundaries,
 first-RTP payload/profile selection, coalesced upstream PLI feedback, async
-termination-race cleanup, cancellable track/RTP waits,
+termination-race cleanup, already-terminal peer rejection, cancellable
+track/RTP waits,
 legacy HTTP fan-out branding, repeated camera presentations, widget URI
 compatibility, closed public diagnostics, JPEG metadata stripping, and sentinel
 absence across public MCP/HTTP envelopes.
