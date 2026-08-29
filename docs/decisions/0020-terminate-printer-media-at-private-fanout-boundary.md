@@ -28,8 +28,13 @@ separate media daemon on their computer.
   forwards encoded H264 RTP from the shared upstream. Each viewer receives a
   dedicated forwarding track with cloned RTP packet headers; no sender reuses
   or mutates the shared upstream track and no transcoding is implied.
-- The downstream offer advertises the exact negotiated upstream H264 codec and
-  profile. VP8 is not advertised because the connector does not transcode.
+- The downstream offer advertises the exact upstream H264 codec and profile
+  selected by the payload type of the first received media RTP packet.
+  Ambiguous or unsupported payload mappings fail closed. VP8 is not advertised
+  because the connector does not transcode.
+- Picture-loss feedback from every downstream sender is bridged to the shared
+  upstream receiver. Viewer PLIs are coalesced and rate-limited so simultaneous
+  cards do not amplify RTCP traffic; feedback failure does not close peers.
 - Each downstream viewer receives its own ICE/TURN REST credentials. The
   printer's upstream ICE set is never reused downstream. The connector
   explicitly adds discovered Tailscale host addresses so a tailnet-connected
@@ -38,7 +43,9 @@ separate media daemon on their computer.
 - `U1_CAMERA_MAX_VIEWERS` bounds viewer fan-out from 1 through 64 and defaults
   to 16. Each viewer retains a one-time activation, 15-second answer deadline,
   bounded lease, candidate budgets, independent idempotent Close, and failure
-  teardown. The last viewer releases the single printer upstream.
+  teardown. Explicit upstream generations and viewer-alive checks prevent a
+  peer that terminated during async opening from being inserted. The last
+  viewer releases the single printer upstream.
 - The optional exact `/media/camera.webrtc` compatibility adapter may accept
   only a session store branded `server-terminated-fanout`; it cannot be wired to
   the old direct printer session service. Its original one-time public ticket
@@ -86,6 +93,8 @@ and touched-skill validation, repository checks, and whitespace checks. Tests
 must prove one upstream for multiple viewers, unique downstream ICE
 credentials, independent Close, last-viewer release, answer timeout, viewer
 capacity, Tailscale candidate discovery, H264-only forwarding boundaries,
+first-RTP payload/profile selection, coalesced upstream PLI feedback, async
+termination-race cleanup, cancellable track/RTP waits,
 legacy HTTP fan-out branding, repeated camera presentations, widget URI
 compatibility, closed public diagnostics, JPEG metadata stripping, and sentinel
 absence across public MCP/HTTP envelopes.

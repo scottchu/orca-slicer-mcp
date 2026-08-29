@@ -671,5 +671,25 @@ Local static/software and simulated-protocol checks are recorded in
 `VALIDATION.md`. No real printer, live service, installed plugin, OAuth state,
 Tailscale route, mounted ChatGPT/Codex host, mobile viewer, or TURN allocation
 was changed or accepted. The next delivery step is independent review and a
-pull request from the single validated branch commit; post-merge
+pull request from the validated branch commits; post-merge
 install/restart requires fresh authorization.
+
+## Decision 0020 independent media-core repair — 2026-08-29
+
+Independent review blocked the first fan-out commit on four concrete media
+core gaps. The follow-up keeps the same privacy and product boundary while:
+
+- subscribing every downstream sender's picture-loss indication to one shared
+  upstream receiver PLI bridge, coalesced and rate-limited to 500 ms;
+- choosing the exact H264 fmtp by the first received RTP payload type and
+  rejecting duplicate or unsupported mappings;
+- binding every viewer reservation to an explicit live upstream generation and
+  rejecting upstream/viewer termination during awaited opening or insertion;
+- making track and first-RTP waits cancellable, with timers and event listeners
+  removed on invalid SDP, signaling failure, success, timeout, or close.
+
+Concrete werift adapter tests use two H264 payload types with the second one
+received, two viewer PLI sources, and deferred termination/failure fixtures.
+The final full suite and repository validators are recorded in
+`VALIDATION.md`. No live deployment, service, route, OAuth state, installed
+plugin, printer, mobile client, or TURN endpoint was contacted or changed.

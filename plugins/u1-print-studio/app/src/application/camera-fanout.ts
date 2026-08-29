@@ -3,6 +3,8 @@ import {
   RTCPeerConnection,
   type RTCIceCandidateInit,
   type RTCRtpCodecParameters,
+  type RTCRtpReceiver,
+  type RtpPacket,
   useH264,
 } from "werift";
 
@@ -30,6 +32,7 @@ const DEFAULT_MAX_CANDIDATE_BYTES = 8 * 1024;
 const DEFAULT_MAX_ICE_FIELD_BYTES = 1_024;
 const DEFAULT_TRACK_TIMEOUT_MILLISECONDS = 12_000;
 const DEFAULT_ANSWER_TIMEOUT_MILLISECONDS = 15_000;
+const DEFAULT_PLI_INTERVAL_MILLISECONDS = 500;
 
 /** Opaque to application policy; the concrete adapter uses a werift track. */
 export type CameraFanoutTrack = object;
@@ -60,11 +63,15 @@ export type CameraFanoutPeerFactory = {
 };
 
 type SharedUpstream = CameraFanoutUpstream & {
+  generation: number;
+  alive: boolean;
+  closed: boolean;
   viewers: number;
   unsubscribeTermination: () => void;
 };
 
 type ActiveViewer = {
+  upstream: SharedUpstream;
   lease: CameraStreamLease;
   viewer: CameraFanoutViewer;
   expiryTimeout: ReturnType<typeof setTimeout>;
@@ -110,6 +117,8 @@ export class CameraFanoutSessionService implements CameraViewerSessionStore {
   private readonly sessions = new Map<string, ActiveViewer>();
   private upstream: SharedUpstream | null = null;
   private upstreamOpening: Promise<SharedUpstream> | null = null;
+  private nextUpstreamGeneration = 0;
+  private activeUpstreamGeneration = 0;
   private readonly maxSdpBytes: number;
   private readonly maxCandidatesPerCall: number;
   private readonly maxCandidatesPerSession: number;
@@ -149,38 +158,53 @@ export class CameraFanoutSessionService implements CameraViewerSessionStore {
     }
 
     let upstream: SharedUpstream | null = null;
+    let viewer: CameraFanoutViewer | null = null;
+    let viewerAlive = true;
+    let sessionStored = false;
+    let unsubscribeTermination = () => {};
+    let expiryTimeout: ReturnType<typeof setTimeout> | null = null;
+    let answerTimeout: ReturnType<typeof setTimeout> | null = null;
     try {
       upstream = await this.acquireUpstream();
       // TURN REST usernames are per viewer. Never reuse the printer peer's ICE
       // credential set for downstream viewers.
       const iceServers = this.viewerIceServerProvider.issue();
-      const viewer = await this.peers.openViewer(upstream.track, iceServers);
+      viewer = await this.peers.openViewer(upstream.track, iceServers);
+      if (!this.isCurrentUpstream(upstream)) {
+        throw new CameraWebRtcSessionError("invalid_offer");
+      }
       if (
         !viewer.offerSdp ||
         Buffer.byteLength(viewer.offerSdp) > this.maxSdpBytes
       ) {
-        viewer.close();
         throw new CameraWebRtcSessionError("invalid_offer");
       }
       const remaining = Math.max(0, Date.parse(lease.expiresAt) - this.now());
       if (remaining <= 0) {
-        viewer.close();
         throw new CameraWebRtcSessionError("expired_session");
       }
-      const expiryTimeout = setTimeout(
+      expiryTimeout = setTimeout(
         () => this.closeDigest(issued.digest),
         remaining
       );
-      const answerTimeout = setTimeout(
+      answerTimeout = setTimeout(
         () => this.closeDigest(issued.digest),
         Math.min(remaining, this.answerTimeoutMilliseconds)
       );
       expiryTimeout.unref?.();
       answerTimeout.unref?.();
-      const unsubscribeTermination = viewer.onTerminated(() => {
+      unsubscribeTermination = viewer.onTerminated(() => {
+        viewerAlive = false;
         this.closeDigest(issued.digest);
       });
+      // A peer can fail synchronously while its termination observer is being
+      // installed. Never publish a dead viewer, nor a viewer whose reserved
+      // upstream generation was replaced while openViewer was awaiting.
+      if (!viewerAlive || !this.isCurrentUpstream(upstream)) {
+        throw new CameraWebRtcSessionError("invalid_offer");
+      }
       this.sessions.set(issued.digest, {
+        upstream,
         lease,
         viewer,
         expiryTimeout,
@@ -189,6 +213,11 @@ export class CameraFanoutSessionService implements CameraViewerSessionStore {
         answer: null,
         candidateKeys: new Set(),
       });
+      sessionStored = true;
+      if (!viewerAlive || !this.isCurrentUpstream(upstream)) {
+        this.closeDigest(issued.digest);
+        throw new CameraWebRtcSessionError("invalid_offer");
+      }
       return {
         sessionId: issued.token,
         type: "offer",
@@ -198,8 +227,16 @@ export class CameraFanoutSessionService implements CameraViewerSessionStore {
         maxDurationSeconds: Math.ceil(remaining / 1_000),
       };
     } catch (error) {
-      if (upstream) this.releaseUpstream();
-      lease.release();
+      if (sessionStored) {
+        this.closeDigest(issued.digest);
+      } else {
+        if (expiryTimeout) clearTimeout(expiryTimeout);
+        if (answerTimeout) clearTimeout(answerTimeout);
+        unsubscribeTermination();
+        viewer?.close();
+        if (upstream) this.releaseUpstream(upstream);
+        lease.release();
+      }
       throw error;
     }
   }
@@ -252,23 +289,29 @@ export class CameraFanoutSessionService implements CameraViewerSessionStore {
   }
 
   private async acquireUpstream(): Promise<SharedUpstream> {
-    if (this.upstream) {
+    if (this.upstream && this.isCurrentUpstream(this.upstream)) {
       this.upstream.viewers += 1;
       return this.upstream;
     }
     if (!this.upstreamOpening) {
       const abortController = new AbortController();
-      this.upstreamOpening = this.peers
+      const generation = ++this.nextUpstreamGeneration;
+      const opening = this.peers
         .openUpstream(this.signaling, abortController.signal)
         .then((opened) => {
           const shared = {
             ...opened,
+            generation,
+            alive: true,
+            closed: false,
             viewers: 0,
             unsubscribeTermination: () => {},
           } satisfies SharedUpstream;
-          shared.unsubscribeTermination = opened.onTerminated(() => {
-            this.closeSessionsForUpstream(shared);
+          const unsubscribeTermination = opened.onTerminated(() => {
+            this.terminateUpstream(shared);
           });
+          shared.unsubscribeTermination = unsubscribeTermination;
+          if (!shared.alive) unsubscribeTermination();
           return shared;
         })
         .catch((error) => {
@@ -276,30 +319,64 @@ export class CameraFanoutSessionService implements CameraViewerSessionStore {
           throw error;
         })
         .finally(() => {
-          this.upstreamOpening = null;
+          if (this.upstreamOpening === opening) this.upstreamOpening = null;
         });
+      this.upstreamOpening = opening;
     }
     const opened = await this.upstreamOpening;
-    this.upstream ??= opened;
-    this.upstream.viewers += 1;
-    return this.upstream;
+    if (!opened.alive) {
+      this.closeSharedUpstream(opened);
+      throw new CameraWebRtcSessionError("invalid_offer");
+    }
+    if (!this.upstream) {
+      this.upstream = opened;
+      this.activeUpstreamGeneration = opened.generation;
+    }
+    if (!this.isCurrentUpstream(opened)) {
+      this.closeSharedUpstream(opened);
+      throw new CameraWebRtcSessionError("invalid_offer");
+    }
+    opened.viewers += 1;
+    return opened;
   }
 
-  private releaseUpstream(): void {
-    if (!this.upstream) return;
-    this.upstream.viewers = Math.max(0, this.upstream.viewers - 1);
-    if (this.upstream.viewers > 0) return;
-    const upstream = this.upstream;
-    this.upstream = null;
+  private releaseUpstream(upstream: SharedUpstream): void {
+    upstream.viewers = Math.max(0, upstream.viewers - 1);
+    if (upstream.viewers > 0) return;
+    this.closeSharedUpstream(upstream);
+  }
+
+  private closeSharedUpstream(upstream: SharedUpstream): void {
+    if (upstream.closed) return;
+    upstream.closed = true;
+    upstream.alive = false;
+    if (this.upstream === upstream) {
+      this.upstream = null;
+      this.activeUpstreamGeneration = 0;
+    }
     upstream.unsubscribeTermination();
     upstream.close();
   }
 
-  private closeSessionsForUpstream(upstream: SharedUpstream): void {
-    if (this.upstream !== upstream) return;
-    for (const digest of [...this.sessions.keys()]) {
-      this.closeDigest(digest);
+  private terminateUpstream(upstream: SharedUpstream): void {
+    if (!upstream.alive) return;
+    upstream.alive = false;
+    if (this.upstream === upstream) {
+      this.upstream = null;
+      this.activeUpstreamGeneration = 0;
     }
+    for (const [digest, session] of [...this.sessions.entries()]) {
+      if (session.upstream === upstream) this.closeDigest(digest);
+    }
+    this.closeSharedUpstream(upstream);
+  }
+
+  private isCurrentUpstream(upstream: SharedUpstream): boolean {
+    return (
+      upstream.alive &&
+      this.upstream === upstream &&
+      this.activeUpstreamGeneration === upstream.generation
+    );
   }
 
   private requireSession(sessionId: string): ActiveViewer {
@@ -369,25 +446,101 @@ export class CameraFanoutSessionService implements CameraViewerSessionStore {
     session.unsubscribeTermination();
     session.viewer.close();
     session.lease.release();
-    this.releaseUpstream();
+    this.releaseUpstream(session.upstream);
     return true;
   }
 }
 
-function waitForTrack(
+export type CancellableTrackWait = {
+  promise: Promise<MediaStreamTrack>;
+  cancel(): void;
+};
+
+/**
+ * A track wait owns both its event subscription and timer. Callers must cancel
+ * it whenever SDP/signaling exits before the track arrives.
+ */
+export function waitForTrack(
   peer: RTCPeerConnection,
   timeoutMilliseconds = DEFAULT_TRACK_TIMEOUT_MILLISECONDS
-): Promise<MediaStreamTrack> {
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(
-      () => reject(new Error("Printer WebRTC track unavailable")),
-      timeoutMilliseconds
-    );
-    peer.onTrack.once((track) => {
-      clearTimeout(timeout);
+): CancellableTrackWait {
+  let settled = false;
+  let unsubscribe = () => {};
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  const cleanup = () => {
+    if (timeout) clearTimeout(timeout);
+    timeout = null;
+    unsubscribe();
+    unsubscribe = () => {};
+  };
+  const promise = new Promise<MediaStreamTrack>((resolve, reject) => {
+    const subscription = peer.onTrack.subscribe((track) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
       resolve(track);
     });
+    unsubscribe = subscription.unSubscribe;
+    timeout = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      reject(new Error("Printer WebRTC track unavailable"));
+    }, timeoutMilliseconds);
+    timeout.unref?.();
   });
+  return {
+    promise,
+    cancel: () => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+    },
+  };
+}
+
+type CancellableRtpWait = {
+  promise: Promise<RtpPacket>;
+  cancel(): void;
+};
+
+function waitForFirstRtp(
+  track: MediaStreamTrack,
+  timeoutMilliseconds = DEFAULT_TRACK_TIMEOUT_MILLISECONDS
+): CancellableRtpWait {
+  let settled = false;
+  let unsubscribe = () => {};
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  const cleanup = () => {
+    if (timeout) clearTimeout(timeout);
+    timeout = null;
+    unsubscribe();
+    unsubscribe = () => {};
+  };
+  const promise = new Promise<RtpPacket>((resolve, reject) => {
+    const subscription = track.onReceiveRtp.subscribe((packet) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      resolve(packet);
+    });
+    unsubscribe = subscription.unSubscribe;
+    timeout = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      reject(new Error("Printer WebRTC RTP unavailable"));
+    }, timeoutMilliseconds);
+    timeout.unref?.();
+  });
+  return {
+    promise,
+    cancel: () => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+    },
+  };
 }
 
 function createPeer(
@@ -414,29 +567,125 @@ function cloneCodec(codec: RTCRtpCodecParameters): RTCRtpCodecParameters {
 }
 
 class WeriftCameraFanoutSource {
+  private readonly pli: CoalescedPliBridge;
+  private readonly trackSourceSubscription: { unSubscribe(): void };
+  private mediaSsrc: number;
+
   constructor(
     readonly track: MediaStreamTrack,
-    readonly codec: RTCRtpCodecParameters
-  ) {}
+    readonly codec: RTCRtpCodecParameters,
+    receiver: Pick<RTCRtpReceiver, "sendRtcpPLI">,
+    mediaSsrc: number,
+    pliIntervalMilliseconds = DEFAULT_PLI_INTERVAL_MILLISECONDS
+  ) {
+    this.mediaSsrc = mediaSsrc;
+    this.trackSourceSubscription = track.onReceiveRtp.subscribe((packet) => {
+      this.mediaSsrc = packet.header.ssrc;
+    });
+    this.pli = new CoalescedPliBridge(
+      () => receiver.sendRtcpPLI(this.mediaSsrc),
+      pliIntervalMilliseconds
+    );
+  }
+
+  requestKeyFrame(): void {
+    this.pli.request();
+  }
+
+  close(): void {
+    this.pli.close();
+    this.trackSourceSubscription.unSubscribe();
+  }
 }
 
-function requireNegotiatedH264(
-  peer: RTCPeerConnection,
-  track: MediaStreamTrack
+export function selectH264CodecByPayloadType(
+  codecs: RTCRtpCodecParameters[],
+  payloadType: number
 ): RTCRtpCodecParameters {
-  // Receiver tracks do not receive `track.codec` during SDP negotiation in
-  // werift. Read the negotiated remote codec from the owning transceiver so
-  // the downstream offer preserves the printer's exact H264 profile/fmtp.
-  const codec = peer
-    .getTransceivers()
-    .find((transceiver) => transceiver.receiver.track === track)
-    ?.codecs.find(
-      (candidate) => candidate.mimeType.toLowerCase() === "video/h264"
-    );
-  if (!codec || codec.mimeType.toLowerCase() !== "video/h264") {
-    throw new Error("Printer WebRTC did not negotiate H264");
+  const matching = codecs.filter(
+    (candidate) => candidate.payloadType === payloadType
+  );
+  if (
+    matching.length !== 1 ||
+    matching[0]?.mimeType.toLowerCase() !== "video/h264"
+  ) {
+    throw new Error("Printer RTP payload type is ambiguous or unsupported");
   }
-  return cloneCodec(codec);
+  return cloneCodec(matching[0]);
+}
+
+function requireUpstreamBinding(
+  peer: RTCPeerConnection,
+  track: MediaStreamTrack,
+  firstPacket: RtpPacket
+): {
+  codec: RTCRtpCodecParameters;
+  receiver: RTCRtpReceiver;
+  mediaSsrc: number;
+} {
+  const owning = peer
+    .getTransceivers()
+    .filter((transceiver) => transceiver.receiver.track === track);
+  if (owning.length !== 1 || !owning[0]) {
+    throw new Error("Printer WebRTC track binding is ambiguous");
+  }
+  return {
+    codec: selectH264CodecByPayloadType(
+      owning[0].codecs,
+      firstPacket.header.payloadType
+    ),
+    receiver: owning[0].receiver,
+    mediaSsrc: firstPacket.header.ssrc,
+  };
+}
+
+/** Shared, bounded RTCP feedback path for every viewer of one upstream. */
+class CoalescedPliBridge {
+  private lastSentAt: number | null = null;
+  private pending: ReturnType<typeof setTimeout> | null = null;
+  private closed = false;
+
+  constructor(
+    private readonly send: () => Promise<void> | void,
+    private readonly intervalMilliseconds = DEFAULT_PLI_INTERVAL_MILLISECONDS,
+    private readonly now: () => number = Date.now
+  ) {}
+
+  request(): void {
+    if (this.closed || this.pending) return;
+    const elapsed =
+      this.lastSentAt === null
+        ? this.intervalMilliseconds
+        : this.now() - this.lastSentAt;
+    if (elapsed >= this.intervalMilliseconds) {
+      this.flush();
+      return;
+    }
+    this.pending = setTimeout(
+      () => {
+        this.pending = null;
+        this.flush();
+      },
+      Math.max(0, this.intervalMilliseconds - elapsed)
+    );
+    this.pending.unref?.();
+  }
+
+  close(): void {
+    this.closed = true;
+    if (this.pending) clearTimeout(this.pending);
+    this.pending = null;
+  }
+
+  private flush(): void {
+    if (this.closed) return;
+    this.lastSentAt = this.now();
+    try {
+      void Promise.resolve(this.send()).catch(() => {});
+    } catch {
+      // Feedback failure must not tear down any viewer or the upstream media.
+    }
+  }
 }
 
 function terminationSubscription(peer: RTCPeerConnection, callback: () => void) {
@@ -447,41 +696,59 @@ function terminationSubscription(peer: RTCPeerConnection, callback: () => void) 
 }
 
 export function createWeriftCameraFanoutPeerFactory(
-  options: { downstreamAdditionalHostAddresses?: string[] } = {}
+  options: {
+    downstreamAdditionalHostAddresses?: string[];
+    createPeer?: typeof createPeer;
+    pliIntervalMilliseconds?: number;
+  } = {}
 ): CameraFanoutPeerFactory {
   const downstreamAdditionalHostAddresses =
     options.downstreamAdditionalHostAddresses ?? [];
+  const peerFactory = options.createPeer ?? createPeer;
   return {
     async openUpstream(signaling, signal) {
       const offer = await signaling.requestOffer(signal);
       // The upstream is receive-only and H264-only. Fan-out forwards encoded RTP;
       // it does not transcode between codecs or H264 profiles.
-      const peer = createPeer(offer.iceServers, [useH264()]);
-      const trackPromise = waitForTrack(peer);
-      peer.addTransceiver("video", { direction: "recvonly" });
-      peer.ondatachannel = ({ channel }) => {
-        if (channel.label !== "keepalive") return;
-        channel.onmessage = () => channel.send("pong");
-      };
+      const peer = peerFactory(offer.iceServers, [useH264()]);
+      const trackWait = waitForTrack(peer);
+      let rtpWait: CancellableRtpWait | null = null;
       try {
+        peer.addTransceiver("video", { direction: "recvonly" });
+        peer.ondatachannel = ({ channel }) => {
+          if (channel.label !== "keepalive") return;
+          channel.onmessage = () => channel.send("pong");
+        };
         await peer.setRemoteDescription({ type: "offer", sdp: offer.sdp });
+        const track = await trackWait.promise;
+        rtpWait = waitForFirstRtp(track);
         await peer.setLocalDescription(await peer.createAnswer());
         const answerSdp = peer.localDescription?.sdp;
         if (!answerSdp) throw new Error("Printer WebRTC answer unavailable");
         // setLocalDescription waits for ICE gathering in werift, so the answer
         // contains the server's gathered host/STUN/TURN candidates.
         await signaling.sendAnswer(offer.id, answerSdp, signal);
-        const track = await trackPromise;
-        const codec = requireNegotiatedH264(peer, track);
+        const firstPacket = await rtpWait.promise;
+        const binding = requireUpstreamBinding(peer, track, firstPacket);
+        const source = new WeriftCameraFanoutSource(
+          track,
+          binding.codec,
+          binding.receiver,
+          binding.mediaSsrc,
+          options.pliIntervalMilliseconds
+        );
         return {
-          track: new WeriftCameraFanoutSource(track, codec),
+          track: source,
           close: () => {
+            source.close();
             track.stop();
             void peer.close();
           },
           onTerminated: (callback) => terminationSubscription(peer, callback),
         };
       } catch (error) {
+        trackWait.cancel();
+        rtpWait?.cancel();
         void peer.close();
         throw error;
       }
@@ -493,7 +760,7 @@ export function createWeriftCameraFanoutPeerFactory(
       }
       const upstreamTrack = value.track;
       const codec = cloneCodec(value.codec);
-      const peer = createPeer(
+      const peer = peerFactory(
         iceServers,
         [codec],
         downstreamAdditionalHostAddresses
@@ -508,6 +775,9 @@ export function createWeriftCameraFanoutPeerFactory(
       const transceiver = peer.addTransceiver("video", {
         direction: "sendonly",
       });
+      const feedback = transceiver.sender.onPictureLossIndication.subscribe(
+        () => value.requestKeyFrame()
+      );
       try {
         await transceiver.sender.replaceTrack(forwardingTrack);
         await peer.setLocalDescription(await peer.createOffer());
@@ -517,6 +787,7 @@ export function createWeriftCameraFanoutPeerFactory(
         const close = () => {
           if (closed) return;
           closed = true;
+          feedback.unSubscribe();
           forwarding.unSubscribe();
           forwardingTrack.stop();
           void peer.close();
@@ -535,6 +806,7 @@ export function createWeriftCameraFanoutPeerFactory(
           onTerminated: (callback) => terminationSubscription(peer, callback),
         };
       } catch (error) {
+        feedback.unSubscribe();
         forwarding.unSubscribe();
         forwardingTrack.stop();
         void peer.close();

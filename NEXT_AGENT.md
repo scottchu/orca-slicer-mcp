@@ -56,10 +56,12 @@ private H264 printer upstream in the connector. Bounded independent downstream
 viewer peers receive cloned RTP headers, separate ICE credentials, explicit
 server Tailscale host candidates, independent Close, a 15-second answer
 deadline, and last-viewer upstream release. `U1_CAMERA_MAX_VIEWERS` defaults to
-16 and accepts 1 through 64. Camera v2 and v1 remain aliases. Public status,
-camera bytes, diagnostics, MCP, and exact HTTP envelopes exclude printer
-identity, upstream signaling, raw errors, and JPEG metadata. No live runtime or
-route has been changed.
+16 and accepts 1 through 64. The first received RTP payload type selects the
+exact H264 fmtp; downstream PLI feedback is coalesced onto the upstream
+receiver; explicit generations reject peers that terminate during async open.
+Camera v2 and v1 remain aliases. Public status, camera bytes, diagnostics, MCP,
+and exact HTTP envelopes exclude printer identity, upstream signaling, raw
+errors, and JPEG metadata. No live runtime or route has been changed.
 
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
@@ -81,8 +83,9 @@ decision 0015.
 - Live offer, answer, ICE candidates, and close use MCP Apps `tools/call`.
 - The connector alone invokes the U1's fixed Printer Operations adapter.
 - The fan-out application service owns one private H264 printer upstream plus
-  opaque downstream viewers, peer-ID hiding, input bounds, concurrency,
-  duration, expiry, abort, and independent close.
+  opaque downstream viewers, exact first-RTP codec selection, bounded upstream
+  PLI feedback, peer-ID hiding, input bounds, concurrency, duration, expiry,
+  abort, generation-safe opening, and independent close.
 - Snapshot fallback and the existing 1200 by 1500 PNG remain intact.
 - The standalone dashboard may retain the exact HTTP signaling adapter for
   development compatibility.
@@ -122,7 +125,7 @@ proxy, Control, or Admin behavior appears.
 ## Validation boundary
 
 The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 81 passing tests with 513 assertions. The macOS arm64
+software suite has 87 passing tests with 547 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
@@ -179,7 +182,8 @@ configured.
 
 ## Next smallest action
 
-Independently review and deliver decision 0020 through a pull request. Do not
+Review the follow-up media-core repair commit and deliver decision 0020 through
+a pull request. Do not
 install or restart anything until merge and a fresh rollout authorization.
 Post-rollout acceptance must separately observe one real printer upstream
 shared by two viewers, closing one without interrupting the other, final

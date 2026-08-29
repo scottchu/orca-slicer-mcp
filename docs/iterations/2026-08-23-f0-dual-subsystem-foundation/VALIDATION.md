@@ -1548,3 +1548,80 @@ From the repository root:
   license selection and third-party notice review remain publication gates.
 - No release cache-buster, install, service restart, merge, push, or public
   rollout occurred in this validation.
+
+## Decision 0020 independent media-core repair validation — 2026-08-29
+
+### Acceptance and safety boundary
+
+- This follow-up addresses independent review findings without changing the
+  accepted connector-termination, camera-v3, read-only, or printer-identity
+  privacy boundary.
+- Software evidence must show downstream PLI feedback reaches the shared
+  upstream receiver without amplification, the first RTP payload type selects
+  one exact H264 fmtp, and peers that terminate during async opening never enter
+  the active session store.
+- All checks remained local and offline. No printer, installed plugin,
+  LaunchAgent, OAuth/passkey/enrollment state, Tailscale route, public edge,
+  mounted host, mobile client, STUN endpoint, or TURN endpoint was contacted or
+  changed.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun install --frozen-lockfile`: passed with 152 installs across 146 packages
+  and no change.
+- `bun run check`: passed TypeScript.
+- `bun test src/camera-fanout.test.ts`: passed 10 tests with 67 assertions.
+- `bun test src/*.test.ts`: passed 87 tests with 547 assertions across 12
+  files.
+- `bun run bundle`: passed from 588 modules; emitted a 2.73 MB `stdio.js`,
+  33.73 KB camera asset, and 57.45 KB status asset.
+- `bun run bundle:runtime`: passed, compiled the standalone runtime, and
+  applied its validation-only ad-hoc signature.
+
+From the repository root:
+
+- The standalone runtime passed `--help` and `codesign -vvv --verify`.
+- Through `env -i PATH=/usr/bin:/bin`, the standalone runtime completed two
+  `setup` calls against a temporary loopback fixture and `doctor --offline
+  --json`. The rewrite preserved explicit STUN, the config mode was `0600`, and
+  doctor reported schema 4/camera-v3 with `printerObservation:
+  skipped-offline`. The temporary config was removed.
+- Plugin Creator `validate_plugin.py` passed through `uv run --no-project
+  --with pyyaml` for `plugins/u1-print-studio`.
+- Skill Creator `quick_validate.py` passed through the same `uv` boundary for
+  all four plugin skills: mobile setup, monitor, prepare, and authorized start.
+- `./scripts/check-repository.sh`: passed, including TypeScript and all 87 tests
+  with 547 assertions; final output was `repository contract: ok`.
+- `git diff --check`: passed.
+
+### Regression evidence
+
+- A concrete werift adapter fixture negotiates two H264 payload types and sends
+  the first RTP packet on the second. The downstream source preserves that
+  payload type and its exact profile/fmtp; duplicate or non-H264 mappings fail
+  closed.
+- Two concrete downstream sender PLI events produce one immediate and one
+  coalesced upstream receiver PLI. Closing the first viewer unsubscribes only
+  its feedback path; the second viewer continues requesting keyframes and is
+  not closed. The production interval is 500 ms.
+- Deferred fixtures terminate the upstream while `openViewer` is awaiting and
+  return a viewer that already terminated during its awaited open. Explicit
+  generations/alive rechecks reject both, release leases, and close the shared
+  upstream once.
+- Invalid SDP and `sendAnswer` failure fixtures prove track and first-RTP event
+  subscriptions return to baseline. A direct 60-second track wait cancellation
+  also removes its subscription immediately rather than retaining its timer.
+
+### Unverified later layers
+
+- A real U1 may use different H264 payload/fmtp behavior; real receiver PLI,
+  sustained fan-out, peer failure, and reconnect remain unobserved.
+- No real two-viewer playback, mounted camera-v3 host, iPhone/mobile path,
+  tailnet-direct ICE selection, real STUN traversal, H264 browser decode, or
+  TURN allocation is accepted by these fixtures.
+- The deployed direct private-path screenshot remains evidence only for the
+  decision-0019 predecessor. It does not accept this fan-out repair.
+- No push, merge, release staging, install, service restart, route/auth change,
+  or printer control occurred.
