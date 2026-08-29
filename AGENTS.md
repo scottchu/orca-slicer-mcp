@@ -43,6 +43,21 @@ provisional architecture as an implementation commitment.
   observations, failures, commands, and unresolved risks that can affect later
   work.
 
+## Agent orchestration
+
+- The primary agent coordinates the work: observe current reality, clarify the
+  expected reality and gaps with the user, assign bounded work, integrate the
+  resulting evidence, and remain available for user conversation.
+- Delegate all material design, implementation, validation, and independent
+  review to role-separated agents. The primary agent must not silently replace
+  any of those roles or present its own check as independent review.
+- The primary agent may inspect read-only evidence, facilitate decisions,
+  coordinate dependencies, and orchestrate integration and delivery of agent
+  outputs.
+- If the required agents or capacity are unavailable, disclose that constraint
+  and wait or ask the user how to proceed instead of performing the material
+  work directly.
+
 ## Change workflow
 
 Before a substantial implementation change:

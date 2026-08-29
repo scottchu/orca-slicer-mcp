@@ -34,14 +34,20 @@ user Go Live intent
         v
 camera session application service
   opaque session -> lease -> bounded answer/ICE/close
+        |                                      |
+        | application ports                    | private upstream signaling
+        v                                      v
+MCP app-only signaling tools        server-terminated fan-out
+  answer / candidates / close       one U1 peer -> viewer tracks
         |                                      ^
-        | application ports                    | allowlisted offer/answer/ICE
         v                                      |
-MCP app-only signaling tools          u1-status camera adapter
-  answer / candidates / close         fixed private WebRTC route
-        |
-        v
-browser RTCPeerConnection <====== H264 media ======> webrtc-camerastreamer
+browser RTCPeerConnection <==== H264 media ====+
+                                               |
+                                    u1-status camera adapter
+                                    fixed private WebRTC route
+                                               |
+                                               v
+                                    webrtc-camerastreamer
 ```
 
 The same observation has multiple representations. The HTML widget and PNG
@@ -63,6 +69,7 @@ inbound protocol, not the core product boundary.
 | Observation adapter | `app/src/u1-status.ts` | Queries the allowlisted Moonraker status and camera paths and normalizes their response |
 | Camera relay application service | `app/src/application/camera-relay.ts` | Owns ticket or direct lease, concurrency, and duration policy without MCP or HTTP types |
 | WebRTC session service | `app/src/application/camera-webrtc.ts` | Owns opaque sessions and bounded offer, answer, ICE candidate, expiry, and close semantics |
+| Camera fan-out service | `app/src/application/camera-fanout.ts` | Terminates one private H264 printer peer, creates independent downstream viewer peers, and owns shared-upstream release |
 | Optional media inbound adapter | `app/src/adapters/camera-webrtc-http.ts` | Retains the standalone dashboard's exact ticketed HTTP signaling route over the same application service |
 | Ticket codec adapter | `app/src/adapters/camera-ticket-codec.ts` | Issues opaque random ticket material and hashes it for in-memory lookup |
 | Domain-shaped projection | `U1Status` | One versioned, timestamped current observation used by all presenters |
@@ -95,7 +102,7 @@ route snapshots and signaling through the host's MCP Apps bridge.
 | `add_u1_camera_ice_candidates` | Observe, app-only | Accepts bounded and deduplicated ICE candidate batches |
 | `close_u1_camera_stream` | Observe, app-only | Idempotently closes the session and releases its lease |
 | `ui://u1-print-studio/status-v4.html` | Presentation resource | Self-contained MCP Apps HTML with empty external CSP domains |
-| `ui://u1-print-studio/camera-v2.html` | Presentation resource | Snapshot-first camera-only MCP Apps HTML with capability-gated live and automatic snapshot-fallback states; v1 is a compatibility alias |
+| `ui://u1-print-studio/camera-v3.html` | Presentation resource | Snapshot-first camera-only MCP Apps HTML with repeated-open presentation identity, capability-gated live, and privacy-safe fallback diagnostics; v2 and v1 are compatibility aliases |
 
 `structuredContent` is the stable machine-readable projection. `content` is
 what a model or ordinary chat host can consume. Result `_meta` carries
@@ -111,9 +118,18 @@ Codex desktop -> stdio MCP -> show_u1_status
               -> text + U1Status + PNG + UI resource link
               -> desktop mounts the widget or displays the PNG
               -> Go Live uses MCP Apps tools/call for bounded signaling
-              -> connector alone calls the U1's fixed private route
+              -> connector terminates one private H264 U1 peer
+              -> connector fans cloned RTP into independent viewer peers
               -> negotiation failure falls back to camera snapshots
 ```
+
+The U1 is never the widget's WebRTC peer. Printer SDP, candidates, ICE
+credentials, peer IDs, routes, and errors stop at the private operations
+adapter. Each downstream viewer receives a server-owned offer and its own ICE
+credentials. The runtime adds discovered Tailscale host addresses to downstream
+candidate gathering so a tailnet-connected viewer may connect directly; TURN
+is an optional fallback. `U1_CAMERA_MAX_VIEWERS` defaults to 16 and accepts only
+1 through 64. Closing the final viewer closes the single printer upstream.
 
 The optional developer HTTP route is:
 
@@ -125,8 +141,9 @@ Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
               -> open_printer_camera mounts the snapshot-first camera widget
               -> Go Live calls app-only open_u1_camera_stream once
               -> answer, ICE, and close stay on the MCP Apps tools/call bridge
-              -> explicit STUN or derived TURN REST credentials reach both peers
-              -> browser and printer negotiate an H264 RTCPeerConnection
+              -> connector terminates one private H264 printer peer
+              -> connector issues separate ICE credentials and a downstream offer
+              -> browser negotiates an H264 RTCPeerConnection with the connector
 ```
 
 Passkey enrollment is a separate route graph:

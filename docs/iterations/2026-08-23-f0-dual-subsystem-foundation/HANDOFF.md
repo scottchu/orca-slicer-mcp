@@ -621,7 +621,55 @@ from private-dashboard success. No printer control or route/auth mutation ran.
 
 ## Restart instructions
 
-Follow `NEXT_AGENT.md` and decisions 0003 through 0019. Do not infer that one
+Follow `NEXT_AGENT.md` and decisions 0003 through 0020. Do not infer that one
 subsystem is secondary from the current execution order, and do not implement
 or issue consequential actions before F0 discovery establishes the relevant
 contracts.
+
+## Decision 0020 camera fan-out source handoff — 2026-08-28
+
+The current feature worktree implements decision 0020 without changing the
+installed plugin or any live process. `open_printer_camera` now links the
+camera-v3 camera-only resource, marks repeated presentation intent as
+non-idempotent, and returns a fresh opaque presentation ID. Camera v2 and v1
+remain readable aliases. The full status render tool explicitly excludes
+camera-only requests.
+
+The runtime terminates one H264 printer WebRTC peer privately with bundled
+pure-TypeScript `werift` and fans cloned encoded RTP packets into dedicated
+downstream tracks. Each viewer receives a server-owned offer, separately issued
+ICE credentials, discovered Tailscale host candidates, a 15-second answer
+deadline, bounded lease/candidate budgets, and independent Close. Viewer count
+defaults to 16 and is bounded from 1 through 64 by
+`U1_CAMERA_MAX_VIEWERS`. The last viewer releases the only printer upstream.
+The optional exact HTTP adapter accepts only a branded server-terminated fan-out
+store and cannot be wired to the old direct printer session implementation.
+
+Public status and camera envelopes use closed state/error/capability
+vocabularies. JPEG APP0-APP15, COM, and trailing metadata are removed. Sentinel
+tests exclude printer host/IP/MAC/device identity, Moonraker/camera routes,
+upstream SDP/candidates/peer IDs/tickets/credentials, and raw upstream errors
+from MCP and HTTP results. Visible widget diagnostics show only ICE mode,
+candidate types/protocol, and allowlisted fallback reasons.
+
+Final finisher review also replaced the remaining public status/frame object
+spreads with exact field projections, so newly added or unexpected adapter
+fields fail closed instead of silently entering MCP or dashboard results.
+Current architecture, packaging, app, project-state, and restart records now
+describe connector-terminated media and distinct upstream/viewer credentials
+consistently. All four plugin skills and the plugin package validate.
+
+A user screenshot of the still-deployed decision-0019 direct private path
+showed Snapshot, a misleading immediate Fallback label during about three
+seconds of ordinary ICE negotiation, and then rendered `Live · 28 FPS`. Both
+source widgets now keep the retained snapshot in `Connecting` until the first
+rendered frame and enter Fallback only after a terminal failure or timeout. The
+screenshot is direct-path evidence only; neither it nor this source-only UI fix
+accepts the new fan-out runtime.
+
+Local static/software and simulated-protocol checks are recorded in
+`VALIDATION.md`. No real printer, live service, installed plugin, OAuth state,
+Tailscale route, mounted ChatGPT/Codex host, mobile viewer, or TURN allocation
+was changed or accepted. The next delivery step is independent review and a
+pull request from the single validated branch commit; post-merge
+install/restart requires fresh authorization.

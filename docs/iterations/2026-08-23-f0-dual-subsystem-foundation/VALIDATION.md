@@ -1440,9 +1440,111 @@ From the repository root:
 - The deployed private camera dashboard displayed a real Snapshot. One Go Live
   click passed the browser-rendered-frame gate and reported `Live · 24 FPS`.
   Close returned the same widget to Snapshot.
+- A later user screenshot of that still-deployed decision-0019 direct path
+  showed Snapshot, an incorrect immediate Fallback label during roughly three
+  seconds of ordinary ICE setup, and then rendered `Live · 28 FPS`. This is
+  additional real evidence that the current direct private path can render; it
+  is not decision-0020 fan-out acceptance. The source widgets now retain the
+  snapshot while labeling this pre-frame state `Connecting` and reserve
+  Fallback for an actual terminal failure or timeout. That UI repair remains
+  source-only until a later authorized rollout.
 - This proves the private dashboard host, real-printer read-only path, current
   widget activation, rendered live media, and UI Close on this machine. It does
   not prove mounted Codex/ChatGPT, mobile, a real TURN allocation, or arbitrary
   network traversal; those require fresh separate tasks.
 - No upload, start, pause, resume, cancel, G-code, generic proxy, Control, or
   Admin action ran.
+
+## Decision 0020 camera fan-out source validation — 2026-08-28
+
+### Acceptance and safety boundary
+
+- Camera v3 is the only current focused descriptor. Every explicit
+  `open_printer_camera` call produces a fresh presentation ID; camera v2 and v1
+  read the same current camera-only asset.
+- The connector owns one private H264 upstream and independent bounded
+  downstream viewers. Printer signaling and identity never cross the inbound
+  MCP/HTTP boundary. Each viewer has separate ICE credentials and Close; final
+  viewer release closes the upstream.
+- This is static/software and simulated-protocol evidence. No installed plugin,
+  LaunchAgent, OAuth/passkey/enrollment state, Tailscale route, public service,
+  real printer, mounted host, mobile client, or TURN server was contacted or
+  changed.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun install --frozen-lockfile`: passed with 152 installs across 146 packages
+  and no lockfile change.
+- `bun run check`: passed TypeScript.
+- `bun test src/*.test.ts`: passed 81 tests with 513 assertions across 12 files.
+- `bun run bundle`: passed; emitted a 2.72 MB `stdio.js`, 33.73 KB camera asset,
+  and 57.45 KB status asset from 588 modules.
+- `bun run bundle:runtime`: passed; compiled and ad-hoc signed the standalone
+  validation runtime.
+
+From the repository root:
+
+- `./plugins/u1-print-studio/app/dist/u1-print-studio --help`: passed and
+  reported the shared setup, doctor, and MCP commands.
+- `codesign -vvv --verify
+  ./plugins/u1-print-studio/app/dist/u1-print-studio`: reported valid on disk
+  and satisfied its designated requirement.
+- The standalone runtime was invoked through `env -i PATH=/usr/bin:/bin` for
+  `--help`, two `setup` calls against temporary loopback origins, and
+  `doctor --offline --json`. The second setup preserved the explicit fixture
+  STUN URL, doctor reported schema 4/camera-v3 with
+  `printerObservation: skipped-offline`, and the temporary schema-2 config was
+  mode `0600`. No Bun executable or printer access was used on that invocation
+  path; the temporary config was removed after validation.
+- Plugin Creator `validate_plugin.py` through `uv run --no-project --with
+  pyyaml`: passed for `plugins/u1-print-studio`.
+- Skill Creator `quick_validate.py` through the same `uv` boundary passed for
+  all four plugin skills: mobile setup, monitor, prepare, and authorized start.
+- `./scripts/check-repository.sh`: passed, including TypeScript and all 81 tests
+  with 513 assertions; final output was `repository contract: ok`.
+- `git diff --check`: passed.
+
+### Regression evidence
+
+- Fan-out fixtures prove two viewers share one upstream, receive different
+  downstream ICE credentials, close independently, and release the upstream
+  only after the final close. Capacity, 15-second unanswered cleanup, upstream
+  termination, and opaque HTTP ticket session IDs are bounded.
+- Runtime fixtures prove viewer capacity defaults to 16 and rejects values
+  outside 1 through 64. Only Tailscale CGNAT/IPv6 interface addresses are added
+  as explicit downstream host candidates.
+- The concrete adapter is H264-only, uses the exact negotiated codec/profile,
+  creates a dedicated forwarding track per viewer, and clones each RTP packet
+  header. No VP8 or transcoding path is advertised.
+- The exact HTTP adapter accepts only a branded
+  `server-terminated-fanout` session store. MCP and HTTP sentinel tests exclude
+  printer hostname/IP/MAC/device/peer identity, upstream SDP/ICE/credentials,
+  and raw upstream failures from public responses.
+- Status/tool/camera service fields use closed vocabularies. JPEG regression
+  tests remove APP0-APP15, COM, and trailing identity metadata before widget
+  `_meta`. Widget/dashboard failures use allowlisted public diagnostics.
+- Widget regressions prove an activation-time frame refresh retains the
+  existing snapshot as `Connecting`, not Fallback, in both camera-only and
+  status widgets. Both wait for a rendered frame before Live and enter Fallback
+  only through an explicit failure or the bounded no-frame timeout.
+- Final finisher review replaced public status/frame object spreads with exact
+  field projections. The privacy regression injects unexpected host, MAC,
+  route, and peer fields and proves they are absent alongside known-field and
+  JPEG sentinels. TypeScript, all tests, both bundles, standalone/offline
+  smoke, plugin/skill validators, the repository contract, and whitespace were
+  rerun after that repair.
+
+### Unverified later layers
+
+- No real U1 H264 offer was terminated by `werift`; codec/profile compatibility
+  and sustained packet forwarding remain unverified on hardware.
+- The 28 FPS screenshot belongs to the deployed direct-session predecessor and
+  does not prove the server-terminated fan-out or camera-v3 state machine.
+- No two real viewers, camera-v3 mounted host, tailnet-direct mobile candidate
+  selection, real STUN path, or TURN allocation was observed.
+- The bundled `werift` dependency adds no separate user install, but owner
+  license selection and third-party notice review remain publication gates.
+- No release cache-buster, install, service restart, merge, push, or public
+  rollout occurred in this validation.

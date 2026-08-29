@@ -53,7 +53,7 @@ const status: U1Status = {
   exception: false,
   camera: {
     available: true,
-    service: "webrtc-camerastreamer",
+    service: "webrtc",
     targetFps: 15,
   },
 };
@@ -85,10 +85,13 @@ async function connectClient(options: {
   oauth?: boolean;
   relay?: boolean;
   onSessionOpen?: () => void;
+  statusResult?: U1Status;
+  cameraResult?: { frame: U1CameraFrame; metadata: U1WidgetMetadata };
+  sessionFailure?: Error;
 } = {}) {
   const server = createAppServer({
-    readStatus: async () => ({ status, metadata }),
-    readCameraFrame: async () => ({
+    readStatus: async () => ({ status: options.statusResult ?? status, metadata }),
+    readCameraFrame: async () => options.cameraResult ?? ({
       frame: cameraFrame,
       metadata: cameraMetadata,
     }),
@@ -101,6 +104,7 @@ async function connectClient(options: {
             }),
             open: async () => {
               options.onSessionOpen?.();
+              if (options.sessionFailure) throw options.sessionFailure;
               return {
                 sessionId: "private-session-token",
                 type: "offer" as const,
@@ -219,13 +223,14 @@ describe("U1 status MCP App contract", () => {
     });
     expect("text" in resource ? resource.text : "").toBe(CAMERA_WIDGET_HTML);
 
-    const legacyUri = LEGACY_CAMERA_WIDGET_URIS[0];
-    const legacy = await client.readResource({ uri: legacyUri });
-    expect(listed.resources.map(({ uri }) => uri)).toContain(legacyUri);
-    expect(legacy.contents[0]?.uri).toBe(legacyUri);
-    expect(
-      "text" in legacy.contents[0]! ? legacy.contents[0].text : ""
-    ).toBe(CAMERA_WIDGET_HTML);
+    for (const legacyUri of LEGACY_CAMERA_WIDGET_URIS) {
+      const legacy = await client.readResource({ uri: legacyUri });
+      expect(listed.resources.map(({ uri }) => uri)).toContain(legacyUri);
+      expect(legacy.contents[0]?.uri).toBe(legacyUri);
+      expect(
+        "text" in legacy.contents[0]! ? legacy.contents[0].text : ""
+      ).toBe(CAMERA_WIDGET_HTML);
+    }
   });
 
   test("keeps the previous widget URI readable for mounted cards during upgrades", async () => {
@@ -379,7 +384,7 @@ describe("U1 status MCP App contract", () => {
     expect(openCamera?.annotations).toMatchObject({
       readOnlyHint: true,
       destructiveHint: false,
-      idempotentHint: true,
+      idempotentHint: false,
     });
     expect(openCamera?._meta?.ui).toEqual({
       resourceUri: CAMERA_WIDGET_URI,
@@ -387,13 +392,36 @@ describe("U1 status MCP App contract", () => {
     expect(openCamera?._meta?.["openai/outputTemplate"]).toBe(
       CAMERA_WIDGET_URI
     );
+    expect(openCamera?.description).toContain("every explicit open");
+    expect(openCamera?.description).toContain("camera-only");
+    expect(
+      listed.tools.find((tool) => tool.name === "show_u1_status")?.description
+    ).toContain("do not use it for camera-only");
 
     const openedCamera = await client.callTool({
       name: "open_printer_camera",
       arguments: {},
     });
-    expect(openedCamera.structuredContent).toEqual(cameraFrame);
+    expect(openedCamera.structuredContent).toMatchObject(cameraFrame);
+    const openedPresentation = openedCamera.structuredContent as
+      | { presentationId?: string }
+      | undefined;
+    expect(openedPresentation?.presentationId).toEqual(
+      expect.any(String)
+    );
     expect(openedCamera._meta).toEqual(cameraMetadata);
+    expect(sessionOpenCount).toBe(0);
+
+    const reopenedCamera = await client.callTool({
+      name: "open_printer_camera",
+      arguments: {},
+    });
+    const reopenedPresentation = reopenedCamera.structuredContent as
+      | { presentationId?: string }
+      | undefined;
+    expect(reopenedPresentation?.presentationId).not.toBe(
+      openedPresentation?.presentationId
+    );
     expect(sessionOpenCount).toBe(0);
 
     const staleResult = await client.callTool({
@@ -408,7 +436,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 3,
+      schemaVersion: 4,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });
@@ -429,6 +457,7 @@ describe("U1 status MCP App contract", () => {
       available: true,
       expiresAt: "2026-08-25T13:22:02.688Z",
       maxDurationSeconds: 1800,
+      iceMode: "turn",
       reason: null,
     });
     expect(result._meta).toEqual({
@@ -449,6 +478,102 @@ describe("U1 status MCP App contract", () => {
     expect(JSON.stringify(result.structuredContent)).not.toContain(
       "derived-turn-credential"
     );
+  });
+
+  test("removes printer identity from status, JPEG metadata, and failure envelopes", async () => {
+    const sentinels = [
+      "printer.local",
+      "192.168.50.44",
+      "aa:bb:cc:dd:ee:ff",
+      "private-printer-peer-id",
+      "device-serial-private",
+      "v=0-private-upstream-sdp",
+    ];
+    const appSegment = (marker: number, value: string) => {
+      const payload = Buffer.from(value);
+      const header = Buffer.alloc(4);
+      header[0] = 0xff;
+      header[1] = marker;
+      header.writeUInt16BE(payload.length + 2, 2);
+      return Buffer.concat([header, payload]);
+    };
+    const hostileJpeg = Buffer.concat([
+      Buffer.from([0xff, 0xd8]),
+      appSegment(0xe1, sentinels.join(" ")),
+      Buffer.from([0xff, 0xd9]),
+    ]);
+    const client = await connectClient({
+      oauth: true,
+      relay: true,
+      statusResult: {
+        ...status,
+        printerHost: sentinels[0],
+        state: sentinels[0]!,
+        stateLabel: sentinels[1]!,
+        printerMessage: sentinels.join(" "),
+        tools: status.tools.map((tool) => ({
+          ...tool,
+          state: sentinels[2]!,
+          printerMac: sentinels[2],
+        })),
+        camera: {
+          ...status.camera,
+          service: sentinels[4]!,
+          upstreamRoute: sentinels[5],
+        },
+      } as U1Status,
+      cameraResult: {
+        frame: {
+          ...cameraFrame,
+          byteLength: hostileJpeg.length,
+          upstreamPeerId: sentinels[3],
+        } as U1CameraFrame,
+        metadata: {
+          cameraFrame: {
+            dataUrl:
+              `data:image/jpeg;base64,${hostileJpeg.toString("base64")}`,
+          },
+        },
+      },
+      sessionFailure: new Error(sentinels.join(" ")),
+    });
+
+    const statusResult = await client.callTool({
+      name: "get_u1_status",
+      arguments: {},
+    });
+    const cameraResult = await client.callTool({
+      name: "open_printer_camera",
+      arguments: {},
+    });
+    const activation = await client.callTool({
+      name: "get_u1_camera_frame",
+      arguments: { authorizeLive: true },
+    });
+    const activationToken = (
+      activation._meta?.cameraActivation as { token?: string } | undefined
+    )?.token;
+    const streamFailure = await client.callTool({
+      name: "open_u1_camera_stream",
+      arguments: { activationToken },
+    });
+
+    const publicEnvelope = JSON.stringify([
+      statusResult,
+      cameraResult,
+      streamFailure,
+    ]);
+    for (const sentinel of sentinels) {
+      expect(publicEnvelope).not.toContain(sentinel);
+    }
+    expect(statusResult.structuredContent).toMatchObject({
+      state: "unknown",
+      stateLabel: "Unknown",
+      printerMessage: "Printer reported a status message.",
+      camera: { service: null },
+    });
+    expect(streamFailure.isError).toBe(true);
+    expect(publicEnvelope).toContain("camera_stream_unavailable");
   });
 });
 
@@ -548,6 +673,31 @@ describe("camera-only widget contract", () => {
     expect(onTrackSource).not.toContain(
       'elements.camera.classList.add("has-live")'
     );
+  });
+
+  test("keeps activation snapshots in connecting state until success or failure", () => {
+    for (const html of [CAMERA_WIDGET_HTML, WIDGET_HTML]) {
+      const frameStart = html.indexOf("const applyCameraFrame = (result)");
+      const frameEnd = html.indexOf("window.addEventListener", frameStart);
+      const frameSource = html.slice(frameStart, frameEnd);
+      const trackStart = html.indexOf("peer.ontrack = (event)");
+      const trackEnd = html.indexOf("peer.onconnectionstatechange", trackStart);
+      const trackSource = html.slice(trackStart, trackEnd);
+
+      expect(frameSource).toContain(
+        'livePreview ? (fallbackDetail ? "fallback" : "loading") : "snapshot"'
+      );
+      expect(frameSource).not.toContain('livePreview ? "fallback" : "snapshot"');
+      expect(frameSource).toContain(
+        'livePreview && elements.camera.classList.contains("has-snapshot")'
+      );
+      expect(html).toContain('fallbackDetail\n              ? "fallback"\n              : "loading"');
+      expect(html).toContain("markFirstRenderedFrame");
+      expect(html).toContain("no rendered video frames");
+      expect(trackSource).not.toContain(
+        'elements.camera.classList.add("has-live")'
+      );
+    }
   });
 });
 

@@ -73,8 +73,8 @@
         if (message.method === "ui/notifications/initialized") {
           try {
             notifyToolResult(await callTool("get_u1_status"));
-          } catch (error) {
-            bridgeState.textContent = `initial status failed · ${error.message}`;
+          } catch {
+            bridgeState.textContent = "initial status failed";
           }
           return;
         }
@@ -88,9 +88,9 @@
                 message.params?.arguments ?? {}
               )
             );
-          } catch (error) {
-            reply(message.id, null, { code: -32000, message: error.message });
-            bridgeState.textContent = `tool failed · ${error.message}`;
+          } catch {
+            reply(message.id, null, { code: -32000, message: "tool_failed" });
+            bridgeState.textContent = "tool failed";
           }
           return;
         }

@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,6 +17,9 @@ import embeddedWidgetFile from "../public/widget.html" with { type: "file" };
 import {
   readU1CameraFrame,
   readU1Status,
+  normalizedPrintState,
+  normalizedToolState,
+  stripJpegMetadata,
   type U1CameraFrame,
   type U1Status,
   type U1WidgetMetadata,
@@ -26,6 +30,8 @@ import type {
   CameraWebRtcSessionController,
   OpenedCameraWebRtcSession,
 } from "./application/camera-webrtc.js";
+import { CameraWebRtcSessionError } from "./application/camera-webrtc.js";
+import { CameraRelayClaimError } from "./application/camera-relay.js";
 import {
   U1_CAMERA_WIDGET_VERSION,
   U1_RUNTIME_VERSION,
@@ -38,8 +44,9 @@ const APP_ROOT = currentDirectory.startsWith("/$bunfs/")
   : path.resolve(currentDirectory, "..");
 const IS_COMPILED = currentDirectory.startsWith("/$bunfs/");
 export const WIDGET_URI = "ui://u1-print-studio/status-v4.html";
-export const CAMERA_WIDGET_URI = "ui://u1-print-studio/camera-v2.html";
+export const CAMERA_WIDGET_URI = "ui://u1-print-studio/camera-v3.html";
 export const LEGACY_CAMERA_WIDGET_URIS = [
+  "ui://u1-print-studio/camera-v2.html",
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_WIDGET_URIS = [
@@ -63,18 +70,98 @@ export function resultPayload(
   metadata: U1WidgetMetadata,
   options: { includeImageCard?: boolean } = {}
 ) {
-  const summary = status.reachable
-    ? `U1 is ${status.stateLabel.toLowerCase()} at ${status.progressPercent}%.`
-    : `U1 status is unavailable: ${status.printerMessage ?? "unknown error"}.`;
+  const publicState = status.reachable
+    ? normalizedPrintState(status.state)
+    : "offline";
+  const publicStatus: U1Status = {
+    schemaVersion: 1,
+    stateVersion: status.stateVersion,
+    observedAt: status.observedAt,
+    reachable: status.reachable,
+    state: publicState,
+    stateLabel: status.reachable
+      ? {
+          standby: "Ready",
+          printing: "Printing",
+          paused: "Paused",
+          complete: "Complete",
+          cancelled: "Cancelled",
+          error: "Error",
+          unknown: "Unknown",
+        }[publicState] ?? "Unknown"
+      : "Offline",
+    progressPercent: status.progressPercent,
+    currentLayer: status.currentLayer,
+    totalLayers: status.totalLayers,
+    elapsedSeconds: status.elapsedSeconds,
+    remainingSeconds: status.remainingSeconds,
+    refreshAfterSeconds: status.refreshAfterSeconds,
+    filename: status.filename,
+    activePhysicalTool: status.activePhysicalTool,
+    tools: status.tools.map((tool) => ({
+      physicalTool: tool.physicalTool,
+      temperature: tool.temperature,
+      target: tool.target,
+      state: normalizedToolState(tool.state),
+      active: tool.active,
+    })),
+    bed: {
+      temperature: status.bed.temperature,
+      target: status.bed.target,
+    },
+    storage: {
+      active: status.storage.active,
+      filePosition: status.storage.filePosition,
+      fileSize: status.storage.fileSize,
+    },
+    printerMessage: status.printerMessage
+      ? status.reachable
+        ? status.exception
+          ? "Printer reported an exception."
+          : "Printer reported a status message."
+        : "Printer unavailable"
+      : null,
+    exception: status.exception,
+    camera: {
+      available: status.camera.available,
+      service:
+        status.camera.service === "webrtc" ||
+          status.camera.service === "snapshot"
+          ? status.camera.service
+          : null,
+      targetFps: status.camera.targetFps,
+    },
+  };
+  const summary = publicStatus.reachable
+    ? `U1 is ${publicStatus.stateLabel.toLowerCase()} at ${publicStatus.progressPercent}%.`
+    : "U1 status is unavailable.";
 
   return {
     content: [
       { type: "text" as const, text: summary },
-      ...(options.includeImageCard ? [statusCardImageContent(status)] : []),
+      ...(options.includeImageCard ? [statusCardImageContent(publicStatus)] : []),
     ],
-    structuredContent: status,
-    _meta: metadata,
+    structuredContent: publicStatus,
+    _meta: sanitizeCameraMetadata(metadata),
   };
+}
+
+function sanitizeCameraMetadata(metadata: U1WidgetMetadata): U1WidgetMetadata {
+  const dataUrl = metadata.cameraFrame?.dataUrl;
+  const prefix = "data:image/jpeg;base64,";
+  if (!dataUrl?.startsWith(prefix)) return {};
+  try {
+    const bytes = stripJpegMetadata(
+      Buffer.from(dataUrl.slice(prefix.length), "base64")
+    );
+    return {
+      cameraFrame: {
+        dataUrl: `${prefix}${bytes.toString("base64")}`,
+      },
+    };
+  } catch {
+    return {};
+  }
 }
 
 type StatusReader = typeof readU1Status;
@@ -85,18 +172,37 @@ export function cameraFramePayload(
   metadata: U1WidgetMetadata,
   activation?: { token: string; expiresAt: string }
 ) {
+  const publicMetadata = sanitizeCameraMetadata(metadata);
+  const sanitizedBytes = publicMetadata.cameraFrame
+    ? Buffer.from(
+        publicMetadata.cameraFrame.dataUrl.slice(
+          "data:image/jpeg;base64,".length
+        ),
+        "base64"
+      ).length
+    : 0;
+  const publicFrame: U1CameraFrame = {
+    schemaVersion: 1,
+    observedAt: frame.observedAt,
+    available: frame.available && sanitizedBytes > 0,
+    mediaType:
+      frame.available && sanitizedBytes > 0 ? "image/jpeg" as const : null,
+    byteLength: frame.available && sanitizedBytes > 0 ? sanitizedBytes : 0,
+    reason:
+      frame.available && sanitizedBytes > 0 ? null : "camera_unavailable",
+  };
   return {
     content: [
       {
         type: "text" as const,
-        text: frame.available
+        text: publicFrame.available
           ? "U1 camera frame refreshed."
-          : `U1 camera frame unavailable: ${frame.reason ?? "unknown error"}.`,
+          : "U1 camera frame unavailable.",
       },
     ],
-    structuredContent: frame,
+    structuredContent: publicFrame,
     _meta: {
-      ...metadata,
+      ...publicMetadata,
       ...(activation
         ? {
             cameraActivation: {
@@ -111,6 +217,14 @@ export function cameraFramePayload(
 }
 
 export function cameraStreamPayload(opened: OpenedCameraWebRtcSession) {
+  const iceUrls = opened.iceServers.flatMap(({ urls }) =>
+    Array.isArray(urls) ? urls : [urls]
+  );
+  const iceMode = iceUrls.some((url) => /^turns?:/i.test(url))
+    ? "turn"
+    : iceUrls.some((url) => /^stuns?:/i.test(url))
+      ? "stun"
+      : "local";
   return {
     content: [
       {
@@ -123,6 +237,7 @@ export function cameraStreamPayload(opened: OpenedCameraWebRtcSession) {
       available: true,
       expiresAt: opened.expiresAt,
       maxDurationSeconds: opened.maxDurationSeconds,
+      iceMode,
       reason: null,
     },
     _meta: {
@@ -134,6 +249,27 @@ export function cameraStreamPayload(opened: OpenedCameraWebRtcSession) {
       },
     },
   };
+}
+
+function publicCameraFailure(error: unknown): string {
+  if (error instanceof CameraRelayClaimError) {
+    if (error.reason === "busy") return "camera_capacity_reached";
+    if (error.reason === "expired") return "camera_activation_expired";
+    return "camera_activation_invalid";
+  }
+  if (error instanceof CameraWebRtcSessionError) {
+    if (error.reason === "expired_session") return "camera_session_expired";
+    if (error.reason === "invalid_session") return "camera_session_invalid";
+  }
+  return "camera_stream_unavailable";
+}
+
+async function safeCameraAction<T>(action: () => Promise<T>): Promise<T> {
+  try {
+    return await action();
+  } catch (error) {
+    throw new Error(publicCameraFailure(error));
+  }
 }
 
 export function createAppServer(
@@ -230,7 +366,7 @@ export function createAppServer(
     {
       title: "Show U1 status",
       description:
-        "Show the current Snapmaker U1 observation as a visual status card; component-capable hosts also open the interactive dashboard.",
+        "Show the current Snapmaker U1 status and monitoring dashboard. Use only for printer-status or print-monitoring requests; do not use it for camera-only, open-camera, reopen-camera, or additional-camera requests.",
       inputSchema: {},
       ...securityConfig,
       annotations: {
@@ -282,9 +418,9 @@ export function createAppServer(
         },
       } as any),
       (async ({ activationToken }: { activationToken: string }) =>
-        cameraStreamPayload(
-          await dependencies.cameraSessions!.open(activationToken)
-        )) as any
+        cameraStreamPayload(await safeCameraAction(
+          () => dependencies.cameraSessions!.open(activationToken)
+        ))) as any
     );
 
     const privateToolMetadata = {
@@ -312,9 +448,8 @@ export function createAppServer(
       } as any,
       (async ({ sessionId, sdp }: { sessionId: string; sdp: string }) => ({
         content: [{ type: "text" as const, text: "Camera answer accepted." }],
-        structuredContent: await dependencies.cameraSessions!.answer(
-          sessionId,
-          sdp
+        structuredContent: await safeCameraAction(
+          () => dependencies.cameraSessions!.answer(sessionId, sdp)
         ),
       })) as any
     );
@@ -348,9 +483,11 @@ export function createAppServer(
         candidates: CameraIceCandidate[];
       }) => ({
         content: [{ type: "text" as const, text: "Camera candidates accepted." }],
-        structuredContent: await dependencies.cameraSessions!.addCandidates(
-          sessionId,
-          candidates
+        structuredContent: await safeCameraAction(
+          () => dependencies.cameraSessions!.addCandidates(
+            sessionId,
+            candidates
+          )
         ),
       })) as any
     );
@@ -371,10 +508,16 @@ export function createAppServer(
         },
         _meta: privateToolMetadata,
       } as any,
-      (async ({ sessionId }: { sessionId: string }) => ({
-        content: [{ type: "text" as const, text: "Camera session closed." }],
-        structuredContent: dependencies.cameraSessions!.close(sessionId),
-      })) as any
+      (async ({ sessionId }: { sessionId: string }) => {
+        try {
+          return {
+            content: [{ type: "text" as const, text: "Camera session closed." }],
+            structuredContent: dependencies.cameraSessions!.close(sessionId),
+          };
+        } catch {
+          throw new Error("camera_stream_unavailable");
+        }
+      }) as any
     );
   }
 
@@ -432,10 +575,14 @@ export function createAppServer(
     } as any),
     (async ({ authorizeLive = false }: { authorizeLive?: boolean }) => {
       const { frame, metadata } = await readCameraFrame();
-      const activation =
-        authorizeLive && dependencies.cameraSessions
-          ? dependencies.cameraSessions.authorize()
-          : undefined;
+      let activation: { token: string; expiresAt: string } | undefined;
+      if (authorizeLive && dependencies.cameraSessions) {
+        try {
+          activation = dependencies.cameraSessions.authorize();
+        } catch {
+          activation = undefined;
+        }
+      }
       return cameraFramePayload(frame, metadata, activation);
     }) as any
   );
@@ -446,14 +593,14 @@ export function createAppServer(
     {
       title: "Open printer camera",
       description:
-        "Open the read-only U1 camera widget. It begins with a snapshot and lets the user choose live video, with automatic snapshot fallback.",
+        "Open a new read-only, camera-only U1 widget. Use this for every explicit open, view, reopen, or additional printer-camera request, even when an earlier camera or status widget is already present. Do not substitute the full status dashboard. The widget begins with a snapshot and owns live video, close, retry, and automatic snapshot fallback.",
       inputSchema: {},
       ...securityConfig,
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
         openWorldHint: false,
-        idempotentHint: true,
+        idempotentHint: false,
       },
       _meta: {
         ...securityMetadata,
@@ -465,7 +612,14 @@ export function createAppServer(
     },
     async () => {
       const { frame, metadata } = await readCameraFrame();
-      return cameraFramePayload(frame, metadata);
+      const result = cameraFramePayload(frame, metadata);
+      return {
+        ...result,
+        structuredContent: {
+          ...result.structuredContent,
+          presentationId: randomUUID(),
+        },
+      };
     }
   );
 
@@ -490,7 +644,7 @@ export function createAppServer(
           name: "show_u1_status",
           title: "Show U1 status",
           description:
-            "Show the current Snapmaker U1 observation as a visual status card; component-capable hosts also open the interactive dashboard.",
+            "Show the current Snapmaker U1 status and monitoring dashboard. Use only for printer-status or print-monitoring requests; do not use it for camera-only, open-camera, reopen-camera, or additional-camera requests.",
           inputSchema: emptyInputSchema,
           annotations: readOnlyAnnotations,
           securitySchemes,
@@ -540,9 +694,12 @@ export function createAppServer(
           name: "open_printer_camera",
           title: "Open printer camera",
           description:
-            "Open the read-only U1 camera widget. It begins with a snapshot and lets the user choose live video, with automatic snapshot fallback.",
+            "Open a new read-only, camera-only U1 widget. Use this for every explicit open, view, reopen, or additional printer-camera request, even when an earlier camera or status widget is already present. Do not substitute the full status dashboard. The widget begins with a snapshot and owns live video, close, retry, and automatic snapshot fallback.",
           inputSchema: emptyInputSchema,
-          annotations: readOnlyAnnotations,
+          annotations: {
+            ...readOnlyAnnotations,
+            idempotentHint: false,
+          },
           securitySchemes,
           _meta: {
             securitySchemes,

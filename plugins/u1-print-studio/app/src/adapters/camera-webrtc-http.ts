@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 
 import {
   CameraWebRtcSessionError,
-  type CameraWebRtcSessionService,
+  type CameraViewerSessionStore,
 } from "../application/camera-webrtc.js";
 import {
   CameraRelayClaimError,
@@ -77,7 +77,7 @@ function signalingError(res: ServerResponse, error: unknown): void {
 
 export function createCameraWebRtcHandler(
   relay: CameraRelayService,
-  sessions: CameraWebRtcSessionService
+  sessions: CameraViewerSessionStore
 ) {
   return async (
     req: IncomingMessage,

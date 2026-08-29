@@ -41,6 +41,13 @@ Last updated: 2026-08-28
   Tailscale routing hashes were unchanged across restart. The deployed private
   dashboard showed Snapshot, rendered `Live · 24 FPS`, and returned to Snapshot
   after Close.
+- Decision 0020 is the current unmerged source slice. It replaces direct
+  printer-to-viewer sessions with one private server-terminated H264 upstream
+  and bounded independent downstream peers. Camera v3 is a fresh repeated-open
+  camera-only resource; v2 and v1 remain current-asset aliases. Public
+  envelopes use closed vocabularies, strip JPEG metadata, and exclude printer
+  identity and upstream signaling. The slice has not changed any installed
+  plugin, service, OAuth state, Tailscale route, or printer.
 
 ## Implemented local-first slice
 
@@ -69,12 +76,13 @@ The repository contains the smallest desktop-local read-only connector slice:
   automatic dotenv/bunfig loading, and runs without a Bun executable at
   runtime.
 
-Decision 0019 source validation passes with 71 tests and 417 assertions,
+Decision 0020 source validation passes with 81 tests and 513 assertions,
 TypeScript, both bundles, ad-hoc signature verification, plugin validation,
-both touched skill validators, the repository contract, and whitespace checks.
-Install, service restart, public edge, and private-dashboard evidence are
-recorded in the active iteration. Mounted Codex/ChatGPT and mobile remain
-separate fresh-task evidence gates.
+the repository contract, and whitespace checks.
+Its bundle, signature, plugin, skill, repository, and whitespace results are
+recorded separately in the active iteration. Install, service restart, public
+edge, real-printer fan-out, mounted Codex/ChatGPT, and mobile remain later
+evidence gates.
 
 The self-contained artifact is local validation evidence only. Its ad-hoc
 signature is not suitable for distribution. No package, marketplace entry,
@@ -90,8 +98,9 @@ installed plugin, OAuth state, or hosted service was changed.
 - ICE defaults empty. Explicit bounded STUN may come from HTTP env or the
   standalone owner-only schema-2 config; setup preserves STUN on later rewrites.
 - Preferred remote TURN uses bounded URLs plus a server-only shared secret.
-  Each camera open derives an `expiry:nonce` username and base64 HMAC-SHA1
-  credential shared only with the printer peer and widget-private metadata.
+  The printer upstream and every downstream viewer derive separate
+  `expiry:nonce` usernames and base64 HMAC-SHA1 credentials. Only a viewer's
+  credential enters its widget-private metadata.
 - The HTTP server keeps env-only deployment compatibility when no standalone
   config exists. An existing malformed optional config and partial TURN
   configuration fail closed.
@@ -170,22 +179,23 @@ remain procedural guidance; they are not runtime authority.
 ### Static/software
 
 - TypeScript checks pass.
-- Sixty-nine tests with 398 assertions pass across MCP resource/tool contracts,
-  enrollment isolation and restart behavior, standard HTTPS, exact four-plus-
-  four visibility, STUN/TURN parsing and derivation, model privacy, env-only
-  HTTP compatibility, config migration/preservation, PNG, rendered-frame live
-  gating, fallback, session bounds, exact HTTP compatibility, OAuth, packaging,
-  and dashboard allowlists.
+- Eighty-one tests with 513 assertions pass across MCP resource/tool contracts,
+  enrollment isolation, standard HTTPS, three-plus-five visibility, distinct
+  upstream/downstream ICE, bounded multi-viewer fan-out, model and printer
+  identity privacy, JPEG metadata stripping, config migration, PNG,
+  rendered-frame gating and fallback, exact HTTP compatibility, OAuth,
+  packaging, and dashboard allowlists.
 - The source stdio bundle emits `stdio.js` plus status and camera widget assets.
 - The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
   signature, prints help, writes a schema-2 `0600` config, preserves explicit
   STUN on setup rewrite, and passes `doctor --offline` without contacting
   hardware. Malformed ICE URLs and partial TURN configuration fail closed.
 - Personal Marketplace staging and installation passed on this macOS arm64
-  machine. The installed cache used the standalone executable, matched the
-  staged SHA-256, passed signature verification, reached the configured printer
-  read-only, returned a JPEG snapshot and WebRTC offer, and explicitly closed
-  the bounded camera session.
+  machine for the earlier decision-0019 direct-session runtime. That installed
+  cache matched its staged SHA-256, passed signature verification, reached the
+  configured printer read-only, returned a JPEG snapshot and WebRTC offer, and
+  explicitly closed its bounded session. It is not installation or
+  real-printer evidence for the unmerged decision-0020 fan-out runtime.
 
 The active iteration's `VALIDATION.md` is authoritative for exact commands
 and final repository-check results.
@@ -244,8 +254,9 @@ and final repository-check results.
 
 ## Next action
 
-Use a fresh ChatGPT or Codex task to validate the cache-busted mounted widget,
-then reload the private dashboard and record visible Go Live playback, FPS,
-UI-triggered Close, PiP, and fullscreen separately. Keep the old-task MCP
-snapshot, server-side signaling, mounted playback, TURN, printer protocol, and
-user outcome as separate evidence layers.
+Review and deliver decision 0020 through a pull request. Only after merge and
+fresh rollout authorization should the exact staged runtime be installed or
+existing services restarted. Then verify one real printer upstream shared by
+at least two independent viewers, per-viewer Close, final upstream release,
+camera-v3 repeated mounts, tailnet-direct mobile ICE, and optional TURN as
+separate evidence. Do not infer these outcomes from the source suite.

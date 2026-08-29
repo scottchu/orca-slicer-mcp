@@ -57,9 +57,10 @@ through the MCP Apps host bridge:
 
 All five camera helpers are app-only tools hidden from model-visible inventory.
 The connector alone talks to the U1's fixed signaling route; the printer peer
-identifier and origin never enter widget or model-readable data. Video flows
-over the negotiated read-only peer connection. If negotiation fails, the
-existing `get_u1_camera_frame` snapshot loop remains available.
+identifier and origin never enter widget or model-readable data. The connector
+terminates that private H264 peer and creates an independent read-only peer for
+each viewer. If downstream negotiation fails, the existing
+`get_u1_camera_frame` snapshot loop remains available.
 
 `show_u1_status` still includes a 1200 x 1500 PNG status card for hosts that
 cannot mount an MCP Apps component.
@@ -92,9 +93,17 @@ The source `../.mcp.json` is intentionally a Bun adapter. For widget work
 without a host, `bun run dashboard` serves the standalone loopback status
 dashboard at `http://127.0.0.1:8788/dashboard` and the focused camera widget at
 `http://127.0.0.1:8788/dashboard/camera`. The camera route mounts the same HTML
-as `ui://u1-print-studio/camera-v2.html` (with v1 retained as a compatibility
-alias). Both use the same tool-call shape
+as `ui://u1-print-studio/camera-v3.html` (with v2 and v1 retained as
+compatibility aliases). Both use the same tool-call shape
 while retaining the exact HTTP signaling adapter for development coverage.
+
+The runtime uses bundled pure-TypeScript `werift` peers to terminate one H264
+printer stream locally and fan it out to independent downstream viewers. No
+separate media service is installed. `U1_CAMERA_MAX_VIEWERS` defaults to 16 and
+accepts 1 through 64. Discovered Tailscale host addresses are advertised only
+on downstream server-owned offers; optional STUN/TURN configuration provides
+additional paths. Printer offer SDP, candidates, peer identity, and LAN
+addresses never enter a public response.
 
 The standalone dashboard is a separate opt-in process. A Tailscale Serve route
 to port 8788 returns 502 whenever that process is not supervised and running;
@@ -139,9 +148,10 @@ U1_TURN_CREDENTIAL_TTL_SECONDS=1800
 
 Do not commit or print the shared secret. Each camera open derives a bounded
 RFC5766 TURN REST username (`expiry:nonce`) and base64 HMAC-SHA1 credential. The
-shared secret never leaves the server. The same derived credential reaches the
-printer peer and widget-private metadata; neither it nor printer URLs, peer IDs,
-or session capabilities enter model-readable results. Partial TURN
+shared secret never leaves the server. The printer upstream and each downstream
+viewer receive separate derived credentials; only the downstream viewer's
+credential enters widget-private metadata. No derived credential, printer URL,
+peer ID, or session capability enters model-readable results. Partial TURN
 configuration and invalid TTLs fail closed. STUN-only is a compatibility path,
 not evidence of reliable remote media; real TURN allocation and mounted
 ChatGPT/Codex playback require separate observation.

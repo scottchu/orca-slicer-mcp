@@ -24,6 +24,9 @@ silently changed.
 | [0015](0015-use-webrtc-camerastreamer-for-live-presentation.md) | Use webrtc-camerastreamer for live camera presentation | Partially superseded by 0016 |
 | [0016](0016-use-local-connector-and-mcp-apps-bridge.md) | Use a local connector and the MCP Apps bridge for hosted signaling | Accepted for the F0 local-first rollout slice |
 | [0017](0017-secure-remote-monitor-enrollment-and-turn-boundaries.md) | Separate remote enrollment and require configurable TURN credentials | Accepted for the user-authorized F0 secure remote monitor slice |
+| [0018](0018-separate-camera-presentation-from-live-signaling.md) | Separate camera presentation from live signaling | Partially superseded by 0019 |
+| [0019](0019-gate-camera-sessions-behind-mounted-widget-activation.md) | Gate camera sessions behind mounted-widget activation | Partially superseded by 0020 |
+| [0020](0020-terminate-printer-media-at-private-fanout-boundary.md) | Terminate printer media at a private fan-out boundary | Accepted for the user-authorized multi-viewer camera repair |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.

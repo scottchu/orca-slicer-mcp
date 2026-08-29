@@ -11,14 +11,16 @@
   HTTPS, move passkey enrollment to a distinct tailnet-only Tailscale Serve
   origin and loopback listener, restore only explicitly configured bounded STUN
   where needed, and add RFC5766 TURN REST credentials as the preferred remote
-  WebRTC reliability path. Decision 0019 is the current repair: preserve three
+  WebRTC reliability path. Decision 0020 is the current repair: preserve three
   model-visible read-only tools with `open_printer_camera` as the only camera
-  action, plus five app-only camera helpers. Require a current one-time widget
-  activation and rapid unanswered-offer cleanup before stream allocation. Do not
-  mutate the live LaunchAgent, Funnel, Serve, OAuth state, or printer; deployment
-  waits for repository validation and coordinator approval. The local-first
-  normal-user direction from decision 0016 remains preserved. Orca Preparation
-  discovery remains preserved and neither subsystem becomes secondary.
+  action, plus five app-only camera helpers, while terminating one private H264
+  printer peer at the connector and fanning it out to bounded independent
+  viewers. Preserve decision 0019's current one-time widget activation and
+  rapid unanswered-offer cleanup. Do not mutate the live LaunchAgent, Funnel,
+  Serve, OAuth state, or printer; deployment waits for repository validation
+  and coordinator approval. The local-first normal-user direction from
+  decision 0016 remains preserved. Orca Preparation discovery remains
+  preserved and neither subsystem becomes secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
@@ -94,9 +96,9 @@ that can be validated without guessing.
 
 Primary discovery targets: `PREP-001` through `PREP-006`, `ORCA-001` through
 `ORCA-006`, `HANDOFF-001` through `HANDOFF-006`, `SESSION-001`, `OBS-001`
-through `OBS-006`, `CAM-001` through `CAM-006`, `CTRL-001`, `SAFE-001`,
-`DATA-001` through `DATA-003`, `AUTH-001` through `AUTH-004`, `API-001` through `API-005`,
-`ARCH-001` through `ARCH-004`, `ONTO-001` through `ONTO-002`, and `PORT-001`
+through `OBS-006`, `CAM-001` through `CAM-007`, `CTRL-001`, `SAFE-001`,
+`DATA-001` through `DATA-004`, `AUTH-001` through `AUTH-004`, `API-001` through `API-005`,
+`ARCH-001` through `ARCH-005`, `ONTO-001` through `ONTO-002`, and `PORT-001`
 in `docs/requirements.md`.
 
 ## Acceptance criteria
@@ -221,3 +223,22 @@ in `docs/requirements.md`.
 The documentation correction is complete only when current records agree and
 independent review passes. F0 discovery remains active until both concrete
 environments and the provisional handoff have observed evidence.
+
+## Decision 0020 fan-out acceptance addendum
+
+- Every explicit camera open or reopen links a fresh camera-v3 camera-only
+  presentation; camera v2 and v1 remain current-asset aliases.
+- The connector terminates exactly one private H264 printer upstream while one
+  or more bounded viewers are active. Each viewer has a separate downstream
+  peer, ICE credential set, answer deadline, candidate budget, lease, and
+  idempotent Close. Closing the last viewer releases the upstream.
+- Downstream forwarding clones RTP packet headers into a dedicated track and
+  advertises only the negotiated H264 profile. The slice does not transcode.
+- Discovered server Tailscale addresses are explicit downstream host
+  candidates. Direct tailnet ICE may succeed without TURN; optional TURN remains
+  a separately provisioned fallback.
+- No public or model-readable surface exposes printer identity, private routes,
+  upstream signaling/ICE/credentials/tickets, raw errors, or JPEG metadata.
+- Acceptance requires local contract proof and later separate real-printer,
+  two-viewer, mounted-host, mobile ICE, and optional TURN evidence. Source tests
+  do not authorize deployment or prove those later layers.

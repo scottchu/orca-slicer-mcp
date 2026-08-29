@@ -8,15 +8,16 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0019
+5. decisions 0014 through 0020
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
 
-The user-directed priority is the U1 camera workflow repair under F0. Decision
-0019 is current and preserves decision 0017's secure remote boundary plus
-decision 0016's local-first normal-user direction.
+The user-directed priority is the U1 camera fan-out and privacy repair under
+F0. Decision 0020 is current and preserves decision 0019's mounted-widget
+activation, decision 0017's secure remote boundary, and decision 0016's
+local-first normal-user direction.
 
 The secure source and compatibility repair are merged. Pull request 20 is
 `4d4ea2f`; pull request 22 adds the camera-only presentation as `333bebe`.
@@ -49,6 +50,17 @@ Close. Public and dashboard health report schema 3/camera-v2; OAuth state and
 Tailscale routing hashes stayed unchanged across restart. The private browser
 rendered `Live · 24 FPS` and returned to Snapshot after Close.
 
+Decision 0020 is implemented only in the current feature worktree. It adds
+camera-v3 repeated-open camera-only presentation semantics and terminates one
+private H264 printer upstream in the connector. Bounded independent downstream
+viewer peers receive cloned RTP headers, separate ICE credentials, explicit
+server Tailscale host candidates, independent Close, a 15-second answer
+deadline, and last-viewer upstream release. `U1_CAMERA_MAX_VIEWERS` defaults to
+16 and accepts 1 through 64. Camera v2 and v1 remain aliases. Public status,
+camera bytes, diagnostics, MCP, and exact HTTP envelopes exclude printer
+identity, upstream signaling, raw errors, and JPEG metadata. No live runtime or
+route has been changed.
+
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
 editing, or Bun. Do not restore the stale direct-HTTP hosted widget path from
@@ -68,8 +80,9 @@ decision 0015.
   a new task for the current installed MCP process.
 - Live offer, answer, ICE candidates, and close use MCP Apps `tools/call`.
 - The connector alone invokes the U1's fixed Printer Operations adapter.
-- The WebRTC application service owns opaque sessions, peer-ID hiding, input
-  bounds, concurrency, duration, expiry, abort, and close.
+- The fan-out application service owns one private H264 printer upstream plus
+  opaque downstream viewers, peer-ID hiding, input bounds, concurrency,
+  duration, expiry, abort, and independent close.
 - Snapshot fallback and the existing 1200 by 1500 PNG remain intact.
 - The standalone dashboard may retain the exact HTTP signaling adapter for
   development compatibility.
@@ -82,9 +95,10 @@ decision 0015.
   available after restart with an existing credential while enrollment returns
   404.
 - HTTP env STUN overrides optional owner-config STUN. ICE defaults empty.
-- TURN REST derives bounded per-session credentials from configured TURN URLs
+- TURN REST derives bounded per-peer credentials from configured TURN URLs
   and a server-only shared secret. The secret never leaves the server; derived
-  credentials remain widget-private and also reach the printer peer.
+  credentials remain widget-private. Upstream printer ICE and downstream viewer
+  ICE are distinct; reachable Tailscale host candidates can avoid TURN.
 - The HTTP service may run from env without a standalone config. The stdio
   standalone continues to require its owner-only config.
 
@@ -108,7 +122,7 @@ proxy, Control, or Admin behavior appears.
 ## Validation boundary
 
 The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 71 passing tests with 417 assertions. The macOS arm64
+software suite has 81 passing tests with 513 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
@@ -165,11 +179,12 @@ configured.
 
 ## Next smallest action
 
-Open a fresh Codex or ChatGPT task and invoke `open_printer_camera`. Verify that
-the camera-only resource mounts, then record snapshot, Go Live, rendered video,
-Close, and fallback if exercised. The installed cache and deployed private
-dashboard already pass; do not collapse them into the remaining mounted-host
-and mobile user-outcome gates.
+Independently review and deliver decision 0020 through a pull request. Do not
+install or restart anything until merge and a fresh rollout authorization.
+Post-rollout acceptance must separately observe one real printer upstream
+shared by two viewers, closing one without interrupting the other, final
+upstream release, camera-v3 repeated mounts, mobile tailnet-direct ICE, and TURN
+only if an owner-approved relay is configured.
 
 ## Preserve
 
@@ -191,11 +206,12 @@ and mobile user-outcome gates.
 
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
-docs/requirements.md, the active iteration, and decisions 0014 through 0019.
-Treat the secure remote Monitor source slice as current: standard-HTTPS public
-OAuth/MCP, public enrollment rejection, a separate tailnet-only enrollment
-listener, explicit STUN, and preferred short-lived TURN REST credentials.
-Preserve exactly three model-visible tools and five app-only helpers. Do not
-mutate live services/routes, merge, publish, or contact a physical printer
-without fresh approval.
+docs/requirements.md, the active iteration, and decisions 0014 through 0020.
+Treat the decision-0020 camera fan-out and privacy source slice as current: one
+private server-terminated H264 printer upstream, bounded independent downstream
+viewers, distinct upstream/viewer ICE credentials, camera-v3, standard-HTTPS
+public OAuth/MCP, public enrollment rejection, and a separate tailnet-only
+enrollment listener. Preserve exactly three model-visible tools and five
+app-only helpers. Do not mutate live services/routes, merge, publish, or contact
+a physical printer without fresh approval.
 ```
