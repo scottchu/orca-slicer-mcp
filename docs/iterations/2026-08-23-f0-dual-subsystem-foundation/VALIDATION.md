@@ -1629,3 +1629,59 @@ From the repository root:
   decision-0019 predecessor. It does not accept this fan-out repair.
 - No push, merge, release staging, install, service restart, route/auth change,
   or printer control occurred.
+
+## Decision 0021 focused observation source validation — 2026-08-30
+
+### Acceptance and safety boundary
+
+- The source implements the selected Instrument Strips direction, exact two-
+  intent model-visible surface, shared explicit-refresh observation store,
+  selected-module projections, missing-value/provenance semantics, focused-view
+  inventory, and frozen compatibility resources.
+- Plain presentation calls are cache-only. Explicit due refreshes are the only
+  upstream reads, concurrent refreshes coalesce, and refresh failure retains
+  last reachable values as stale with the original source time. Overview stays
+  unavailable until all focused modules are accepted.
+- No printer, installed plugin, LaunchAgent, OAuth/passkey/enrollment state,
+  Tailscale route, public edge, mounted host, mobile client, STUN endpoint, or
+  TURN endpoint was contacted or changed.
+
+### Commands and results
+
+- From `plugins/u1-print-studio/app`, `bun run check` passed TypeScript;
+  `bun test src/*.test.ts` passed 101 tests with 594 assertions; `bun run bundle`
+  and `bun run bundle:runtime` passed.
+- `dist/stdio.js` is SHA-256
+  `be255f625137079a64b17031b36ffb5e2ba4a46264e6ac56679448bcb04fac16`;
+  the ad-hoc-signed macOS arm64 `dist/u1-print-studio` is SHA-256
+  `062e7cf9c826198db82457401ea8b28aae8eaa347b2485e245556fdc04971ddf`.
+  Standalone help and `codesign -vvv --verify` passed.
+- Current observation/camera assets are SHA-256
+  `128975091b192369a83476f5d8664da494d4d4fa968ef5e7fc29fe730fd51d3f`
+  and `2cc7c28f7d692ff7880bfc5cd400d2032b05765ce1bb142ea5dac205c349bc8b`.
+  Frozen status v4/v3 bytes remain 57,450 bytes at
+  `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437`;
+  frozen camera v3/v2/v1 bytes remain 33,725 bytes at
+  `c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203`.
+- Plugin Creator validation and Skill Creator validation for all five plugin
+  skills passed through the repository's `uv` boundary.
+- `./scripts/check-repository.sh` passed, including TypeScript and all 101 tests
+  with 594 assertions; final output was `repository contract: ok`.
+- `git diff --check` passed. A focused consistency scan confirmed the exact
+  two-visible/eight-app-only inventory, required eight-view enum,
+  observation-v2/camera-v4 contract, frozen legacy resources, and deferred
+  overview across durable records.
+- Local browser fixture review at roughly 589 by 844 pixels accepted the focused
+  Progress, Thermals, Heads, and separate Camera presentations. Captures remain
+  outside the repository.
+
+### Unverified later layers
+
+- Live mappings remain unresolved for cavity, filament material/color and
+  sensors, jobs/history, queue, fans/purifier, and bed mesh. Their known-value
+  semantics are not accepted by static fixtures.
+- No fresh mounted Codex/ChatGPT task, mobile host, live normalized observation,
+  overview composition, accessibility audit, or user ten-second comprehension
+  gate is accepted by this source evidence.
+- No release staging, installation, service restart, route/auth mutation,
+  printer contact, printer control, merge, or publication occurred.

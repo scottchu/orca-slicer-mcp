@@ -24,6 +24,12 @@ printer environments support the described behavior.
 - **OBS-006:** Normal inbound status queries read application current state with
   source time and freshness; only an explicit refresh use case requests a new
   upstream snapshot.
+- **OBS-007:** Every focused printer view is a pure read-only projection of one
+  normalized current observation carrying source and receive times, freshness,
+  connection epoch, session identity, provenance, capability evidence, and
+  domain values. MCP, HTTP, CLI, widgets, and a later overview do not query or
+  normalize the printer independently. Camera frames retain their own
+  acquisition time.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -145,17 +151,20 @@ printer environments support the described behavior.
 - **API-004:** File, queue, database, webcam-configuration, account, service,
   update, and power mutations are classified as writes even when they do not
   immediately move or heat the printer.
-- **API-005:** The remote Monitor inventory contains exactly three
-  model-visible tools (`show_u1_status`, `get_u1_status`, and
-  `open_printer_camera`) plus exactly five app-only camera helpers
-  (`get_u1_camera_frame`, `open_u1_camera_stream`,
-  `answer_u1_camera_stream`, `add_u1_camera_ice_candidates`, and
-  `close_u1_camera_stream`). All eight are read-only and require `u1.monitor`.
-  Opening the printer camera presents a snapshot-first widget. Only an explicit
-  Go Live interaction may mint and consume a one-time widget-private activation
-  before allocating a bounded stream session. Every explicit open or reopen
-  creates a fresh camera-v3 presentation; snapshot, live, retry, Close, and
+- **API-005:** The source remote Monitor inventory contains exactly two
+  model-visible presentation intents: `observe_printer`, with one required
+  closed `view` enum, and `open_printer_camera`. The enum is exactly `overview`,
+  `progress`, `thermals`, `heads`, `jobs`, `queue`, `fans`, and `bed_mesh`;
+  unknown values and generic selector fields fail closed. Exactly eight
+  app-only calls remain hidden: `refresh_printer_observation`, the temporary
+  `show_u1_status` and `get_u1_status` compatibility aliases, and the five
+  camera frame/signaling helpers. All observation tools are read-only and
+  require `u1.monitor` where remote OAuth applies. `observation-v2` is the
+  focused presentation resource. Every explicit camera open or reopen creates
+  a fresh snapshot-first `camera-v4` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
+  Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
+  for retained mounted tasks without becoming a second observation path.
 
 ## Architecture and ontology
 

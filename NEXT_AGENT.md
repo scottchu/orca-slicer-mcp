@@ -8,16 +8,18 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0020
+5. decisions 0014 through 0021
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
 
-The user-directed priority is the U1 camera fan-out and privacy repair under
-F0. Decision 0020 is current and preserves decision 0019's mounted-widget
-activation, decision 0017's secure remote boundary, and decision 0016's
-local-first normal-user direction.
+The user-directed priority is the composable read-only U1 observation feedback
+loop under F0. Decision 0021's source slice is implemented and locally
+validated: focused 720-pixel Instrument Strips, camera as a separate strip, and
+no giant machine map. Preserve decision 0020's private fan-out, decision 0019's
+mounted-widget activation, decision 0017's secure remote boundary, and decision
+0016's local-first normal-user direction.
 
 The secure source and compatibility repair are merged. Pull request 20 is
 `4d4ea2f`; pull request 22 adds the camera-only presentation as `333bebe`.
@@ -65,6 +67,18 @@ status, camera bytes, diagnostics, MCP, and exact HTTP envelopes exclude
 printer identity, upstream signaling, raw errors, and JPEG metadata. No live
 runtime or route has been changed.
 
+The decision-0021 implementation adds one shared in-process observation store.
+Plain presentation reads are cache-only; explicit due refreshes call the
+upstream adapter, concurrent refreshes coalesce, and failed/offline refreshes
+retain the last reachable values as stale with their original source time.
+Every `observe_printer` call projects only its selected module. Progress,
+thermals, and heads are implemented from normalized fields; jobs current state
+is limited, and queue, fans, bed mesh, cavity, filament material/color, and
+history remain honest unknown/unavailable values pending live mapping evidence.
+Overview is deferred. Current resources are observation-v2 and camera-v4;
+observation-v1 is a current-asset alias, while status v4/v3 and camera v3/v2/v1
+serve frozen legacy bytes.
+
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
 editing, or Bun. Do not restore the stale direct-HTTP hosted widget path from
@@ -79,9 +93,10 @@ decision 0015.
 - `u1-print-studio mcp` starts the desktop stdio connector.
 - The hosted widget contains no `fetch(` call and declares empty external CSP
   domains.
-- Current descriptors point to `status-v4.html`; `status-v3.html` is served as
-  a compatibility resource for retained cards. Plugin upgrades still require
-  a new task for the current installed MCP process.
+- Current descriptors point to `observation-v2.html` and `camera-v4.html`.
+  Frozen status-v4/status-v3 and camera-v3/v2/v1 resources remain readable for
+  retained cards. Plugin upgrades still require a new task for the current
+  installed MCP process.
 - Live offer, answer, ICE candidates, and close use MCP Apps `tools/call`.
 - The connector alone invokes the U1's fixed Printer Operations adapter.
 - The fan-out application service owns one private H264 printer upstream plus
@@ -108,31 +123,48 @@ decision 0015.
 - The HTTP service may run from env without a standalone config. The stdio
   standalone continues to require its owner-only config.
 
-Model-visible tools are exactly:
+Current source model-visible tools are exactly:
 
-1. `show_u1_status`
-2. `get_u1_status`
-3. `open_printer_camera`
+1. `observe_printer`, with required view `overview`, `progress`, `thermals`,
+   `heads`, `jobs`, `queue`, `fans`, or `bed_mesh`
+2. `open_printer_camera`
 
-App-only tools in the decision-0019 workflow repair are exactly:
+Current source app-only tools are exactly:
 
-1. `get_u1_camera_frame`
-2. `open_u1_camera_stream`
-3. `answer_u1_camera_stream`
-4. `add_u1_camera_ice_candidates`
-5. `close_u1_camera_stream`
+1. `refresh_printer_observation`
+2. `show_u1_status`
+3. `get_u1_status`
+4. `get_u1_camera_frame`
+5. `open_u1_camera_stream`
+6. `answer_u1_camera_stream`
+7. `add_u1_camera_ice_candidates`
+8. `close_u1_camera_stream`
 
 All are read-only. Stop if upload, start, pause, resume, cancel, G-code, generic
 proxy, Control, or Admin behavior appears.
 
+`show_u1_status` and `get_u1_status` are compatibility aliases only, not model
+intents. Every non-camera view projects the same normalized observation and
+preserves time, freshness, connection epoch, session identity, provenance, and
+capability evidence. Camera retains its separate acquisition time and camera-v4
+lifecycle. The one user-facing procedural observation skill is
+`$u1-observe-printer`. The installed decision-0019 runtime is still the older
+schema-3/camera-v2 three-visible/five-app-only surface until a fresh authorized
+rollout; do not conflate it with current source.
+
 ## Validation boundary
 
-The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 89 passing tests with 557 assertions. The macOS arm64
+The active iteration's `VALIDATION.md` records the exact commands. The final
+software suite has 101 passing tests with 594 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
 on its invocation path.
+
+Browser fixture review accepted Progress, Thermals, Heads, and separate Camera
+at a narrow inline viewport. This, the bundles, and the full suite are static or
+fixture-only evidence. No live printer, install, service, OAuth state, or route
+was contacted or changed for decision 0021.
 
 The decision-0019 source suite has 71 passing Bun tests with 417 assertions.
 Its compiled camera asset is embedded in the standalone runtime. A private
@@ -185,13 +217,11 @@ configured.
 
 ## Next smallest action
 
-Review the follow-up media-core repair commit and deliver decision 0020 through
-a pull request. Do not
-install or restart anything until merge and a fresh rollout authorization.
-Post-rollout acceptance must separately observe one real printer upstream
-shared by two viewers, closing one without interrupting the other, final
-upstream release, camera-v3 repeated mounts, mobile tailnet-direct ICE, and TURN
-only if an owner-approved relay is configured.
+Independently review and deliver the completed decision-0021 source slice through
+a pull request. Do not install, restart, contact the live printer, or mutate
+routes/auth state without fresh authorization. Then establish live read-only
+mappings for unresolved domains, accept each focused module, and only afterward
+compose overview and run the mounted user-outcome gate.
 
 ## Preserve
 
@@ -213,12 +243,14 @@ only if an owner-approved relay is configured.
 
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
-docs/requirements.md, the active iteration, and decisions 0014 through 0020.
-Treat the decision-0020 camera fan-out and privacy source slice as current: one
-private server-terminated H264 printer upstream, bounded independent downstream
-viewers, distinct upstream/viewer ICE credentials, camera-v3, standard-HTTPS
-public OAuth/MCP, public enrollment rejection, and a separate tailnet-only
-enrollment listener. Preserve exactly three model-visible tools and five
-app-only helpers. Do not mutate live services/routes, merge, publish, or contact
-a physical printer without fresh approval.
+docs/requirements.md, the active iteration, and decisions 0014 through 0021.
+Review and deliver the completed decision-0021 source slice. Source exposes
+exactly `observe_printer` with its closed eight-view enum plus
+`open_printer_camera`; app-only refresh, legacy aliases, and five camera helpers
+remain hidden. It uses observation-v2, camera-v4, frozen legacy resources, one
+explicit-refresh/coalescing/stale-retention store, and selected-module
+projections. Camera is separate and overview is deferred. Preserve decision
+0020 fan-out and the secure remote boundaries. Do not mutate live
+services/routes, install, publish, or contact a physical printer without fresh
+approval.
 ```

@@ -48,9 +48,12 @@ afterEach(async () => {
   );
 });
 
-async function startFixture() {
+async function startFixture(onStatusRead?: () => void) {
   const handle = createStatusDashboardHandler({
-    readStatus: async () => ({ status, metadata: {} }),
+    readStatus: async () => {
+      onStatusRead?.();
+      return { status, metadata: {} };
+    },
     readCameraFrame: async () => ({
       frame: {
         schemaVersion: 1,
@@ -135,9 +138,10 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.2.0",
-      toolSchemaVersion: 4,
-      cameraWidgetVersion: "camera-v3",
+      runtimeVersion: "0.3.0",
+      toolSchemaVersion: 5,
+      observationWidgetVersion: "observation-v2",
+      cameraWidgetVersion: "camera-v4",
     });
   });
 
@@ -188,8 +192,9 @@ describe("standalone status dashboard", () => {
     expect(widgetHtml).not.toContain("fetch(");
   });
 
-  test("exposes only the widget's read-only status and camera calls", async () => {
-    const origin = await startFixture();
+  test("exposes only the widget's read-only observation and camera calls", async () => {
+    let statusReads = 0;
+    const origin = await startFixture(() => { statusReads += 1; });
     const call = async (name: string, argumentsValue = {}) => {
       const response = await fetch(`${origin}/dashboard/tools/call`, {
         method: "POST",
@@ -199,9 +204,27 @@ describe("standalone status dashboard", () => {
       return { response, body: await response.json() };
     };
 
-    const current = await call("get_u1_status");
+    const current = await call("refresh_printer_observation", {
+      view: "overview",
+    });
     expect(current.response.status).toBe(200);
-    expect(current.body.structuredContent).toEqual(status);
+    expect(current.body.structuredContent).toMatchObject({
+      view: "overview",
+      printerState: "printing",
+      module: { kind: "overview", state: "unavailable", status: "deferred" },
+    });
+
+    const selector = await call("refresh_printer_observation", {
+      view: "progress",
+      selector: "printer.objects.query",
+    });
+    expect(selector.response.status).toBe(400);
+    expect(selector.body).toEqual({ error: "invalid_observation_view" });
+
+    const legacy = await call("get_u1_status");
+    expect(legacy.response.status).toBe(200);
+    expect(legacy.body.structuredContent).toMatchObject({ state: "printing" });
+    expect(statusReads).toBe(1);
 
     const frame = await call("get_u1_camera_frame", { authorizeLive: true });
     expect(frame.response.status).toBe(200);

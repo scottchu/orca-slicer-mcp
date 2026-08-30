@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-08-29
+Last updated: 2026-08-30
 
 ## Baseline
 
@@ -12,8 +12,8 @@ Last updated: 2026-08-29
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
-- User-directed execution order: finish the secure remote U1 Print Studio
-  Monitor slice before further host, preparation, or printer work.
+- User-directed execution order: build the composable read-only U1 observation
+  feedback loop before further deployment, host, preparation, or printer work.
 - Decision 0017 adds a private enrollment listener plus explicit STUN and
   short-lived TURN REST boundaries while preserving decision 0016's local-first
   normal-user direction and MCP Apps signaling bridge.
@@ -52,6 +52,17 @@ Last updated: 2026-08-29
   rejection of werift peers already failed/closed before observer registration.
   The slice has not changed any installed plugin, service, OAuth state,
   Tailscale route, or printer.
+- Decision 0021 is implemented in the current source slice. The user selected
+  720-pixel Instrument Strips, rejected a giant machine map, and requires camera
+  as its own focused strip. Exactly `observe_printer`, with the closed views
+  `overview`, `progress`, `thermals`, `heads`, `jobs`, `queue`, `fans`, and
+  `bed_mesh`, plus `open_printer_camera` are the two model-visible presentation
+  intents. Every non-camera view projects one shared normalized observation.
+  `$u1-observe-printer` is the single procedural skill routing natural language
+  to that surface. Focused progress, thermals, heads, and camera presentations
+  passed local browser-fixture review; overview remains intentionally deferred
+  until the focused module set is accepted. No installed or live runtime has
+  this source contract yet.
 
 ## Implemented local-first slice
 
@@ -63,10 +74,17 @@ The repository contains the smallest desktop-local read-only connector slice:
   or proxy-shaped path;
 - fixed-route status, snapshot, and `webrtc-camerastreamer` operations behind
   the U1 Printer Operations adapter;
-- self-contained status and camera MCP Apps widgets with empty external CSP
+- one shared observation store: plain reads are cache-only, explicit refreshes
+  call the upstream adapter only when due, concurrent refreshes coalesce, and a
+  failed refresh retains last reachable values as stale with their source time;
+- focused observation and camera MCP Apps widgets with empty external CSP
   domains and no direct `fetch` call;
-- the current `status-v4.html` widget plus a `status-v3.html` compatibility
-  resource for cards retained across an upgrade;
+- current `observation-v2.html` and `camera-v4.html` resources, an
+  `observation-v1.html` current-asset alias, and exact frozen legacy status
+  v4/v3 and camera v3/v2/v1 bytes for retained tasks;
+- selected-module projections for progress, thermals, and heads; unsupported or
+  not-yet-mapped domains remain explicit `unknown`/`unavailable`, and overview
+  remains deferred rather than reconstructing the retired large card;
 - hosted offer, answer, ICE-candidate, and close signaling through MCP Apps
   `tools/call`;
 - application-owned opaque WebRTC sessions with offer/answer/candidate size
@@ -80,13 +98,14 @@ The repository contains the smallest desktop-local read-only connector slice:
   automatic dotenv/bunfig loading, and runs without a Bun executable at
   runtime.
 
-Decision 0020 source validation passes with 89 tests and 557 assertions,
-TypeScript, both bundles, ad-hoc signature verification, plugin validation,
-the repository contract, and whitespace checks.
-Its bundle, signature, plugin, skill, repository, and whitespace results are
-recorded separately in the active iteration. Install, service restart, public
-edge, real-printer fan-out, mounted Codex/ChatGPT, and mobile remain later
-evidence gates.
+The final decision-0021 source validation passes with 101 tests and 594
+assertions, TypeScript, both bundles, ad-hoc signature verification, plugin and
+skill validation, the repository contract, and whitespace checks. Browser
+fixture review accepted the focused Progress, Thermals, Heads, and Camera
+presentations at a narrow inline viewport. Exact hashes and commands are
+recorded in the active iteration. All evidence is static/software or fixture
+only; install, service restart, public edge, real-printer observation, mounted
+Codex/ChatGPT, and mobile remain later evidence gates.
 
 The self-contained artifact is local validation evidence only. Its ad-hoc
 signature is not suitable for distribution. No package, marketplace entry,
@@ -111,25 +130,37 @@ installed plugin, OAuth state, or hosted service was changed.
 - No live process, LaunchAgent, Serve/Funnel route, OAuth state, installed
   plugin, printer, or external service was changed.
 
-## MCP surface
+## Current source MCP surface
 
 Model-visible read-only tools:
 
-1. `show_u1_status`
-2. `get_u1_status`
-3. `open_printer_camera`
+1. `observe_printer`, requiring `overview`, `progress`, `thermals`, `heads`,
+   `jobs`, `queue`, `fans`, or `bed_mesh`
+2. `open_printer_camera`
 
-App-only read-only camera helpers:
+App-only read-only tools:
 
-1. `get_u1_camera_frame`
-2. `open_u1_camera_stream`
-3. `answer_u1_camera_stream`
-4. `add_u1_camera_ice_candidates`
-5. `close_u1_camera_stream`
+1. `refresh_printer_observation`
+2. `show_u1_status` (legacy alias)
+3. `get_u1_status` (legacy alias)
+4. `get_u1_camera_frame`
+5. `open_u1_camera_stream`
+6. `answer_u1_camera_stream`
+7. `add_u1_camera_ice_candidates`
+8. `close_u1_camera_stream`
 
 There is no upload, start, pause, resume, cancel, G-code, generic proxy,
 Control, or Admin tool in the runtime. Preparation and authorized-start skills
 remain procedural guidance; they are not runtime authority.
+
+The current source reports runtime `0.3.0`, tool schema `5`, observation widget
+`observation-v2`, and camera widget `camera-v4`. `show_u1_status` and
+`get_u1_status` are superseded model intents and survive only as app-only
+compatibility aliases. Frozen status-v4/status-v3 and camera-v3/v2/v1 resources
+remain byte-identical for retained tasks. The currently installed
+decision-0019 runtime remains schema 3/camera-v2 with its earlier three-visible,
+five-app-only inventory until a separately authorized rollout; it is not
+evidence for this source surface.
 
 ## Packaging and onboarding boundary
 
@@ -171,27 +202,33 @@ remain procedural guidance; they are not runtime authority.
 
 ### Printer Operations
 
-- The read-only U1 status, snapshot, PNG, and camera signaling slice is
-  implemented.
-- Persistent subscription monitoring, reconnect epochs, durable observations,
-  notifications, recommendations, and control are not implemented.
-- Status calls still invoke the observation adapter directly; the WebRTC
-  session path is the first transport-independent application service.
+- The read-only U1 observation, focused projection, snapshot, PNG, and camera
+  signaling slice is implemented.
+- One in-process observation store preserves freshness, connection epochs, and
+  stale last-reachable values across explicit, due, coalesced refreshes. Plain
+  presentation reads do not contact the printer.
+- Persistent subscription monitoring, process-restart persistence, durable
+  history, notifications, recommendations, and control are not implemented.
+- Jobs history, queue, fans, bed mesh, cavity, filament material/color, and
+  sensor mappings remain unknown until separately evidenced against live
+  read-only data.
 
 ## Acceptance state
 
 ### Static/software
 
 - TypeScript checks pass.
-- Eighty-nine tests with 557 assertions pass across MCP resource/tool contracts,
-  enrollment isolation, standard HTTPS, three-plus-five visibility, distinct
-  upstream/downstream ICE, bounded multi-viewer fan-out, exact H264 payload
-  selection, coalesced PLI feedback, termination races, already-terminal peer
-  rejection, model and printer identity privacy, JPEG metadata stripping,
-  config migration, PNG,
-  rendered-frame gating and fallback, exact HTTP compatibility, OAuth,
-  packaging, and dashboard allowlists.
-- The source stdio bundle emits `stdio.js` plus status and camera widget assets.
+- One hundred one tests with 594 assertions pass across the prior camera,
+  security, packaging, and dashboard boundaries plus exact two-visible/eight-
+  app-only tool visibility, view-enum closure, selected-module projection,
+  explicit-refresh coalescing, stale retention, provenance, and current/frozen
+  resource compatibility.
+- The source stdio bundle emits `stdio.js` plus current observation/camera and
+  frozen legacy status/camera widget assets. Runtime, tool, observation, and
+  camera versions are `0.3.0`, `5`, `observation-v2`, and `camera-v4`.
+- Local browser fixture review at a roughly 589 by 844 viewport accepted the
+  focused Progress, Thermals, Heads, and separate Camera presentations. Captures
+  were not added to the repository.
 - The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
   signature, prints help, writes a schema-2 `0600` config, preserves explicit
   STUN on setup rewrite, and passes `doctor --offline` without contacting
@@ -201,7 +238,8 @@ remain procedural guidance; they are not runtime authority.
   cache matched its staged SHA-256, passed signature verification, reached the
   configured printer read-only, returned a JPEG snapshot and WebRTC offer, and
   explicitly closed its bounded session. It is not installation or
-  real-printer evidence for the unmerged decision-0020 fan-out runtime.
+  real-printer evidence for the decision-0020 fan-out or decision-0021 focused
+  observation source.
 
 The active iteration's `VALIDATION.md` is authoritative for exact commands
 and final repository-check results.
@@ -224,13 +262,12 @@ and final repository-check results.
 
 ### User outcome
 
-- The secure remote and camera-only source is merged, installed as
-  `0.2.0+codex.20260828194545`, and deployed with public authenticated MCP plus
-  tailnet-only enrollment. Public/private routes, both supervised services,
-  installed-client resources, camera-v1, authenticated status and JPEG
-  metadata, bounded WebRTC signaling, and deployed private-browser rendered
-  video/Close checks passed. Mounted ChatGPT/Codex and mobile playback remain
-  unverified because installed descriptors require a fresh task.
+- The earlier secure remote and direct camera runtime remains installed and has
+  its separately recorded live/private-browser outcome evidence.
+- The focused Progress, Thermals, Heads, and Camera layouts passed local browser
+  fixture review only. A new mounted task, live normalized values, overview,
+  mobile behavior, and the user's quick-comprehension feedback loop remain
+  unverified outcomes.
 
 ## Open risks and F0 questions
 
@@ -251,8 +288,15 @@ and final repository-check results.
 - The deployed route uses tailnet-only Serve 8447 to loopback 8789; Funnel is
   still enabled only on 443 and existing handlers were preserved.
 - The first Orca backend and the prepared-job/session handoff remain open.
-- Subscription, freshness, reconnect, history, notification destination, and
-  remote identity/distribution boundaries remain open.
+- Live mappings remain unresolved for cavity, filament material/color and
+  sensors, jobs/history, queue, fans/purifier, and bed mesh. Those views must
+  remain honest `unknown`/`unavailable` until read-only adapter evidence exists.
+- The overview remains deferred until every focused module is accepted, and a
+  fresh mounted task plus the user's ten-second comprehension gate remain open.
+- Subscription transport, process-restart persistence, durable history,
+  notification destination, and remote identity/distribution boundaries remain
+  open. The implemented store is explicit-refresh application state, not a
+  resident monitor.
 - A browser peer connection may receive network candidates in SDP as required
   for media; the prohibited behavior is direct iframe URL fetching or
   signaling, not the negotiated read-only WebRTC media path preserved by
@@ -260,9 +304,8 @@ and final repository-check results.
 
 ## Next action
 
-Review and deliver decision 0020 through a pull request. Only after merge and
-fresh rollout authorization should the exact staged runtime be installed or
-existing services restarted. Then verify one real printer upstream shared by
-at least two independent viewers, per-viewer Close, final upstream release,
-camera-v3 repeated mounts, tailnet-direct mobile ICE, and optional TURN as
-separate evidence. Do not infer these outcomes from the source suite.
+Independently review and deliver the completed decision-0021 source slice by the
+repository pull-request route. Do not stage, install, restart, or contact the
+live printer without fresh authorization. Separately establish read-only live
+data mappings for the unresolved domains, then accept each focused module
+before composing overview and running the mounted user-outcome gate.

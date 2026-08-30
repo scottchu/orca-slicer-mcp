@@ -5,22 +5,14 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: implement the user-authorized U1 Print Studio secure
-  remote Monitor slice before further host, preparation, or printer work. Keep
-  the public Streamable HTTP MCP and OAuth/passkey assertion path on standard
-  HTTPS, move passkey enrollment to a distinct tailnet-only Tailscale Serve
-  origin and loopback listener, restore only explicitly configured bounded STUN
-  where needed, and add RFC5766 TURN REST credentials as the preferred remote
-  WebRTC reliability path. Decision 0020 is the current repair: preserve three
-  model-visible read-only tools with `open_printer_camera` as the only camera
-  action, plus five app-only camera helpers, while terminating one private H264
-  printer peer at the connector and fanning it out to bounded independent
-  viewers. Preserve decision 0019's current one-time widget activation and
-  rapid unanswered-offer cleanup. Do not mutate the live LaunchAgent, Funnel,
-  Serve, OAuth state, or printer; deployment waits for repository validation
-  and coordinator approval. The local-first normal-user direction from
-  decision 0016 remains preserved. Orca Preparation discovery remains
-  preserved and neither subsystem becomes secondary.
+- Current execution order: review and deliver the implemented decision-0021
+  composable read-only observation source slice before any rollout or broader
+  Printer Operations work. Preserve the decision-0020 private H264 fan-out,
+  decision-0019 activation, and decision-0016 local-first boundaries. Do not
+  mutate a live LaunchAgent, Funnel, Serve, OAuth state, installed plugin, or
+  printer; rollout waits for repository validation, review, merge, and fresh
+  authorization. Orca Preparation discovery remains preserved and neither
+  subsystem becomes secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
@@ -72,6 +64,39 @@
   Preserve OAuth state and every Tailscale Serve/Funnel handler byte-for-byte,
   and keep source/software, installed runtime, public edge, private dashboard,
   mounted host, and user outcome as separate evidence.
+
+## 2026-08-29 composable observation acceptance
+
+- Follow decision 0021 and the user-selected Instrument Strips direction. The
+  camera is a separate focused strip in the same 720-pixel visual system; do
+  not build the rejected giant machine map.
+- Expose exactly two model-visible presentation intents:
+  `observe_printer`, with required enum values `overview`, `progress`,
+  `thermals`, `heads`, `jobs`, `queue`, `fans`, and `bed_mesh`; and
+  `open_printer_camera`. Keep refresh, camera frame, activation, signaling,
+  retry, and Close helpers app-only.
+- Use `u1-observe-printer` as the one user-facing observation skill. It routes
+  natural language to those exact intents and does not add runtime authority.
+- Project every non-camera view from one normalized current observation with
+  source time, freshness, connection epoch, session identity, provenance,
+  capability evidence, and domain values. Focused views must not own printer
+  calls, normalization, or independent refresh loops.
+- Treat camera acquisition time separately and preserve camera-v4
+  snapshot-first, explicit Go Live/Close, repeated-open, fan-out, and privacy
+  behavior. Camera v3/v2/v1 remain byte-preserving compatibility resources.
+- Accept implemented `progress`, `thermals`, and `heads` projections from
+  already normalized data and the aligned focused camera. Keep unnormalized
+  cavity, materials/color, history, queue, fans/purifier, and bed-mesh values
+  explicitly unknown until their live read-only source semantics are mapped.
+- Render `Unavailable`, `Unknown`, `Stale`, and `Offline` explicitly. Do not
+  turn missing fields into zero, infer filament color/material from a profile,
+  or treat advertised object presence as runtime acceptance.
+- Keep the exact former `status-v4.html` and `status-v3.html` bytes readable for
+  mounted tasks. The new `overview` remains unavailable until all focused
+  modules pass, then composes those exact projections with no second data path.
+- This source slice remains static/fixture-only. It does not authorize
+  live-printer contact, installation, service restart, routing/authentication
+  changes, printer control, or publication.
 
 ## Outcome
 

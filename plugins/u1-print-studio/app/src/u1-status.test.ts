@@ -122,6 +122,8 @@ describe("streamed JPEG extraction", () => {
 describe("closed public printer vocabulary", () => {
   test("maps upstream state and service strings to normalized values", () => {
     expect(normalizedPrintState("printing")).toBe("printing");
+    expect(normalizedPrintState(undefined)).toBe("unknown");
+    expect(normalizedPrintState("")).toBe("unknown");
     expect(normalizedPrintState("printer.local 192.168.50.44")).toBe("unknown");
     expect(normalizedToolState("PARKED")).toBe("PARKED");
     expect(normalizedToolState("device-serial-private")).toBe("UNKNOWN");

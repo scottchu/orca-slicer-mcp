@@ -700,3 +700,80 @@ later event. The adapter now subscribes first, synchronously inspects current
 connection state, invokes termination at most once, and returns an idempotent
 unsubscriber. Actual-factory regressions cover an already-failed upstream and
 an already-closed viewer; neither is published and both clean up fully.
+
+## Decision 0021 composable observation design handoff — 2026-08-29
+
+The user selected the Instrument Strips direction for the first shared
+human-agent observation feedback loop. The target is a family of focused
+720-pixel read-only widgets, not a giant machine map. Camera is a separate
+focused strip in the same visual language. The current large overview is
+retained for compatibility during construction and is composed from accepted
+focused modules only after all of them exist.
+
+Decision 0021 supersedes the exact current presentation inventory. The target
+model-visible surface is exactly `observe_printer`, requiring one closed view
+from `overview`, `progress`, `thermals`, `heads`, `jobs`, `queue`, `fans`, or
+`bed_mesh`, plus `open_printer_camera`. Refresh and camera implementation calls
+stay app-only. `show_u1_status` and `get_u1_status` leave model visibility at
+the schema cutover; retained-task aliases may exist only as bounded app-only
+compatibility paths.
+
+Every non-camera view is a pure projection of one normalized current
+observation with source time, freshness, connection epoch, session identity,
+provenance, capability evidence, and domain values. A focused widget does not
+query Moonraker or own polling, merging, or freshness. Camera keeps its own
+acquisition time and the decision-0019/0020 activation, fan-out, retry, fallback,
+and Close behavior.
+
+The first implementation gate is the shared projection contract plus
+`progress`, `thermals`, and `heads`, using already normalized fields. Cavity,
+fans/purifier, filament material/color and sensors, jobs/history, queue, and bed
+mesh require separate read-only adapter evidence before known values are shown.
+Missing or conflicting data renders `Unavailable`, `Unknown`, `Stale`, or
+`Offline`, never numeric zero or optimistic provenance.
+
+Changed design/planning paths are decision 0021, its index, working
+requirements, this active brief/handoff/validation set, `PROJECT_STATE.md`, and
+`NEXT_AGENT.md`. No app code, skill, live printer, installed plugin, service,
+OAuth state, or Tailscale route was changed by the design slice.
+
+## Decision 0021 focused observation implementation handoff — 2026-08-30
+
+The final source surface has exactly two model-visible read-only presentation
+intents: `observe_printer` with required closed view `overview`, `progress`,
+`thermals`, `heads`, `jobs`, `queue`, `fans`, or `bed_mesh`; and
+`open_printer_camera`. Exactly eight implementation calls are app-only:
+`refresh_printer_observation`, legacy `show_u1_status`/`get_u1_status`, and the
+five frame/open/answer/ICE/close camera helpers. `$u1-observe-printer` is the
+single procedural observation skill.
+
+One shared in-process store owns the current normalized observation. Plain
+presentation reads are cache-only; an explicit due refresh is the only upstream
+read, concurrent refreshes coalesce, and failed/offline refreshes retain the last
+reachable values as stale with their original source time and connection epoch.
+Each request projects only its selected module. Progress, thermals, heads, and
+the separate camera strip have accepted focused fixture presentations. Jobs is
+limited to currently normalized state. Cavity, filament material/color and
+sensors, jobs history, queue, fans/purifier, and bed mesh remain explicit
+unknown/unavailable pending live read-only mapping evidence. Overview remains
+deferred until every focused module is accepted.
+
+The source contract is runtime `0.3.0`, schema `5`, `observation-v2`, and
+`camera-v4`. `observation-v1` is a current-asset alias. Retained tasks receive
+frozen status v4/v3 bytes (57,450 bytes, SHA-256
+`da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437`)
+and camera v3/v2/v1 bytes (33,725 bytes, SHA-256
+`c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203`).
+The current observation and camera assets hash to
+`128975091b192369a83476f5d8664da494d4d4fa968ef5e7fc29fe730fd51d3f`
+and `2cc7c28f7d692ff7880bfc5cd400d2032b05765ce1bb142ea5dac205c349bc8b`.
+
+Final local validation passes TypeScript, 101 tests with 594 assertions, both
+bundles, ad-hoc standalone signature verification, plugin/skill validation, the
+repository contract, and whitespace checks. Browser fixture review at a narrow
+inline viewport accepted Progress, Thermals, Heads, and Camera. This is
+static/software and fixture-only evidence. No live printer, installation,
+service, OAuth state, Tailscale route, mounted host, or user-outcome gate was
+contacted or accepted. Next deliver the source through independent review and a
+pull request; live mapping, overview composition, fresh-task mounting, and the
+user's ten-second comprehension gate remain separate later work.

@@ -249,7 +249,9 @@ export function renderStatusCardPng(status: U1Status): Buffer {
 
   const state = status.stateLabel.slice(0, 14).toUpperCase();
   text(pixels, state, 56, 160, 10, COLORS.white);
-  const progress = `${Math.round(status.progressPercent)}%`;
+  const progress = status.progressPercent === null
+    ? "UNKNOWN"
+    : `${Math.round(status.progressPercent)}%`;
   text(
     pixels,
     progress,
@@ -264,7 +266,12 @@ export function renderStatusCardPng(status: U1Status): Buffer {
     pixels,
     56,
     342,
-    Math.round((WIDTH - 112) * Math.min(100, Math.max(0, status.progressPercent)) / 100),
+    status.progressPercent === null
+      ? 0
+      : Math.round(
+          (WIDTH - 112) *
+            Math.min(100, Math.max(0, status.progressPercent)) / 100
+        ),
     26,
     stateColor(status)
   );
@@ -273,7 +280,9 @@ export function renderStatusCardPng(status: U1Status): Buffer {
     ? "PARKED"
     : `TOOL ${status.activePhysicalTool}`;
   const activeToolReading = status.tools.find((tool) => tool.active) ?? status.tools[0];
-  const toolTemperatures = activeToolReading
+  const toolTemperatures = activeToolReading &&
+      activeToolReading.temperature !== null &&
+      activeToolReading.target !== null
     ? `${Math.round(activeToolReading.temperature)}C / ${Math.round(activeToolReading.target)}C`
     : "NO READING";
   const layer = status.currentLayer === null
@@ -292,8 +301,12 @@ export function renderStatusCardPng(status: U1Status): Buffer {
     624,
     485,
     "BED",
-    `${Math.round(status.bed.temperature)}C`,
-    `TARGET ${Math.round(status.bed.target)}C`
+    status.bed.temperature === null
+      ? "UNAVAILABLE"
+      : `${Math.round(status.bed.temperature)}C`,
+    status.bed.target === null
+      ? "TARGET UNKNOWN"
+      : `TARGET ${Math.round(status.bed.target)}C`
   );
   metricCard(pixels, 56, 780, "TIME", timePrimary, timeSecondary);
   metricCard(

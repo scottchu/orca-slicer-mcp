@@ -9,8 +9,14 @@ import {
   readCameraWidgetHtml,
   cameraFramePayload,
   cameraStreamPayload,
+  observationPayload,
   resultPayload,
 } from "./app.js";
+import {
+  OBSERVATION_VIEWS,
+  type ObservationView,
+} from "./observation-presentation.js";
+import { PrinterObservationStore } from "./observation-store.js";
 import type {
   CameraIceCandidate,
   CameraWebRtcSessionController,
@@ -83,6 +89,7 @@ export function createStatusDashboardHandler(
   const readStatus = dependencies.readStatus ?? readU1Status;
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
+  const observations = new PrinterObservationStore(readStatus);
 
   return async (
     req: IncomingMessage,
@@ -167,8 +174,27 @@ export function createStatusDashboardHandler(
           : {};
 
       if (name === "get_u1_status") {
-        const { status, metadata } = await readStatus();
-        json(res, 200, resultPayload(status, metadata));
+        const snapshot = await observations.current({ refresh: true });
+        json(res, 200, resultPayload(snapshot.status, snapshot.metadata));
+        return true;
+      }
+      if (name === "refresh_printer_observation") {
+        const view = argumentsObject.view;
+        if (
+          !OBSERVATION_VIEWS.includes(view as ObservationView) ||
+          Object.keys(argumentsObject).some((key) => key !== "view")
+        ) {
+          json(res, 400, { error: "invalid_observation_view" });
+          return true;
+        }
+        json(
+          res,
+          200,
+          observationPayload(
+            await observations.current({ refresh: true }),
+            view as ObservationView
+          )
+        );
         return true;
       }
       if (name === "get_u1_camera_frame") {

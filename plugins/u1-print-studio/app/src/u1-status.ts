@@ -24,10 +24,10 @@ type JsonObject = Record<string, unknown>;
 
 type ToolheadStatus = {
   physicalTool: number;
-  temperature: number;
-  target: number;
-  state: string;
-  active: boolean;
+  temperature: number | null;
+  target: number | null;
+  state: string | null;
+  active: boolean | null;
 };
 
 export type U1Status = {
@@ -37,23 +37,23 @@ export type U1Status = {
   reachable: boolean;
   state: string;
   stateLabel: string;
-  progressPercent: number;
+  progressPercent: number | null;
   currentLayer: number | null;
   totalLayers: number | null;
-  elapsedSeconds: number;
+  elapsedSeconds: number | null;
   remainingSeconds: number | null;
   refreshAfterSeconds: number;
   filename: string | null;
   activePhysicalTool: number | null;
   tools: ToolheadStatus[];
   bed: {
-    temperature: number;
-    target: number;
+    temperature: number | null;
+    target: number | null;
   };
   storage: {
-    active: boolean;
-    filePosition: number;
-    fileSize: number;
+    active: boolean | null;
+    filePosition: number | null;
+    fileSize: number | null;
   };
   printerMessage: string | null;
   exception: boolean;
@@ -169,6 +169,10 @@ function asObject(value: unknown): JsonObject {
 
 function asNumber(value: unknown, fallback = 0): number {
   return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+}
+
+function asOptionalNumber(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
 function asString(value: unknown): string {
@@ -319,7 +323,7 @@ const PRINT_STATES = new Set([
 
 export function normalizedPrintState(value: unknown): string {
   const state = asString(value).trim().toLowerCase();
-  return PRINT_STATES.has(state) ? state : state ? "unknown" : "standby";
+  return PRINT_STATES.has(state) ? state : "unknown";
 }
 
 const TOOL_STATES = new Set([
@@ -611,13 +615,15 @@ export async function readU1Status(): Promise<{
     const toolhead = asObject(objects.toolhead);
     const activeExtruder = asString(toolhead.extruder);
     const state = normalizedPrintState(printStats.state);
-    const progress = Math.max(
-      0,
-      Math.min(1, asNumber(display.progress, asNumber(virtualSd.progress)))
-    );
-    const elapsedSeconds = asNumber(printStats.print_duration);
+    const rawProgress = asOptionalNumber(display.progress) ??
+      asOptionalNumber(virtualSd.progress);
+    const progress = rawProgress === null
+      ? null
+      : Math.max(0, Math.min(1, rawProgress));
+    const elapsedSeconds = asOptionalNumber(printStats.print_duration);
     const remainingSeconds =
-      state === "printing" && progress > 0
+      state === "printing" && progress !== null && progress > 0 &&
+          elapsedSeconds !== null
         ? Math.max(0, elapsedSeconds * ((1 - progress) / progress))
         : state === "complete"
           ? 0
@@ -627,12 +633,17 @@ export async function readU1Status(): Promise<{
     const tools = ["extruder", "extruder1", "extruder2", "extruder3"].map(
       (objectName, index): ToolheadStatus => {
         const object = asObject(objects[objectName]);
+        const objectObserved = Object.keys(object).length > 0;
         return {
           physicalTool: index + 1,
-          temperature: asNumber(object.temperature),
-          target: asNumber(object.target),
-          state: normalizedToolState(object.state),
-          active: activeExtruder === objectName,
+          temperature: asOptionalNumber(object.temperature),
+          target: asOptionalNumber(object.target),
+          state: typeof object.state === "string"
+            ? normalizedToolState(object.state)
+            : null,
+          active: objectObserved && activeExtruder
+            ? activeExtruder === objectName
+            : null,
         };
       }
     );
@@ -655,7 +666,9 @@ export async function readU1Status(): Promise<{
         reachable: true,
         state,
         stateLabel: stateLabel(state, true),
-        progressPercent: Math.round(progress * 1_000) / 10,
+        progressPercent: progress === null
+          ? null
+          : Math.round(progress * 1_000) / 10,
         currentLayer:
           typeof info.current_layer === "number" ? info.current_layer : null,
         totalLayers: typeof info.total_layer === "number" ? info.total_layer : null,
@@ -663,7 +676,7 @@ export async function readU1Status(): Promise<{
         remainingSeconds,
         refreshAfterSeconds: recommendedRefreshSeconds(
           state,
-          progress,
+          progress ?? 0,
           remainingSeconds,
           exception
         ),
@@ -676,13 +689,15 @@ export async function readU1Status(): Promise<{
               : null,
         tools,
         bed: {
-          temperature: asNumber(bed.temperature),
-          target: asNumber(bed.target),
+          temperature: asOptionalNumber(bed.temperature),
+          target: asOptionalNumber(bed.target),
         },
         storage: {
-          active: asBoolean(virtualSd.is_active),
-          filePosition: asNumber(virtualSd.file_position),
-          fileSize: asNumber(virtualSd.file_size),
+          active: typeof virtualSd.is_active === "boolean"
+            ? virtualSd.is_active
+            : null,
+          filePosition: asOptionalNumber(virtualSd.file_position),
+          fileSize: asOptionalNumber(virtualSd.file_size),
         },
         printerMessage: asString(printStats.message)
           ? exception
@@ -712,17 +727,17 @@ export async function readU1Status(): Promise<{
         reachable: false,
         state: "offline",
         stateLabel: stateLabel("offline", false),
-        progressPercent: 0,
+        progressPercent: null,
         currentLayer: null,
         totalLayers: null,
-        elapsedSeconds: 0,
+        elapsedSeconds: null,
         remainingSeconds: null,
         refreshAfterSeconds: 15,
         filename: null,
         activePhysicalTool: null,
         tools: [],
-        bed: { temperature: 0, target: 0 },
-        storage: { active: false, filePosition: 0, fileSize: 0 },
+        bed: { temperature: null, target: null },
+        storage: { active: null, filePosition: null, fileSize: null },
         printerMessage: "Printer unavailable",
         exception: true,
         camera: { available: false, service: null, targetFps: null },

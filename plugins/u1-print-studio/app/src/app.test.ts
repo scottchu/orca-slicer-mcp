@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
@@ -8,6 +9,9 @@ import {
   CAMERA_WIDGET_URI,
   createAppServer,
   LEGACY_CAMERA_WIDGET_URIS,
+  LEGACY_CAMERA_WIDGET_HTML,
+  LEGACY_FOCUSED_WIDGET_URIS,
+  LEGACY_WIDGET_HTML,
   LEGACY_WIDGET_URIS,
   WIDGET_HTML,
   WIDGET_URI,
@@ -85,12 +89,16 @@ async function connectClient(options: {
   oauth?: boolean;
   relay?: boolean;
   onSessionOpen?: () => void;
+  onStatusRead?: () => void;
   statusResult?: U1Status;
   cameraResult?: { frame: U1CameraFrame; metadata: U1WidgetMetadata };
   sessionFailure?: Error;
 } = {}) {
   const server = createAppServer({
-    readStatus: async () => ({ status: options.statusResult ?? status, metadata }),
+    readStatus: async () => {
+      options.onStatusRead?.();
+      return { status: options.statusResult ?? status, metadata };
+    },
     readCameraFrame: async () => options.cameraResult ?? ({
       frame: cameraFrame,
       metadata: cameraMetadata,
@@ -159,24 +167,42 @@ describe("U1 status MCP App contract", () => {
     expect(serverConfig.tool_timeout_sec).toBeGreaterThan(cameraBudgetSeconds);
   });
 
-  test("advertises the dashboard template on the render tool descriptor", async () => {
+  test("advertises one focused observation tool and app-only refresh", async () => {
     const client = await connectClient();
     const listed = await client.listTools();
-    const show = listed.tools.find((tool) => tool.name === "show_u1_status");
-    const refresh = listed.tools.find((tool) => tool.name === "get_u1_status");
+    const observe = listed.tools.find((tool) => tool.name === "observe_printer");
+    const refresh = listed.tools.find(
+      (tool) => tool.name === "refresh_printer_observation"
+    );
     const camera = listed.tools.find(
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(show).toBeDefined();
-    expect(show?.annotations).toMatchObject({
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v2.html");
+    expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
+      "ui://u1-print-studio/observation-v1.html",
+    ]);
+
+    expect(observe).toBeDefined();
+    expect(observe?.annotations).toMatchObject({
       readOnlyHint: true,
       destructiveHint: false,
       idempotentHint: true,
     });
-    expect(show?._meta?.ui).toEqual({ resourceUri: WIDGET_URI });
-    expect(show?._meta?.["openai/outputTemplate"]).toBe(WIDGET_URI);
-    expect(refresh?._meta?.ui).toBeUndefined();
+    expect(observe?._meta?.ui).toEqual({ resourceUri: WIDGET_URI });
+    expect(observe?._meta?.["openai/outputTemplate"]).toBe(WIDGET_URI);
+    expect(observe?.inputSchema).toMatchObject({
+      required: ["view"],
+      properties: {
+        view: {
+          enum: [
+            "overview", "progress", "thermals", "heads", "jobs", "queue",
+            "fans", "bed_mesh",
+          ],
+        },
+      },
+    });
+    expect(refresh?._meta?.ui).toEqual({ visibility: ["app"] });
     expect(refresh?._meta?.["openai/outputTemplate"]).toBeUndefined();
     expect(camera?.annotations).toMatchObject({
       readOnlyHint: true,
@@ -184,6 +210,21 @@ describe("U1 status MCP App contract", () => {
       idempotentHint: true,
     });
     expect(camera?._meta?.ui).toEqual({ visibility: ["app"] });
+  });
+
+  test("fails closed for unknown views and generic selector fields", async () => {
+    const client = await connectClient();
+    const unknown = await client.callTool({
+      name: "observe_printer",
+      arguments: { view: "camera" },
+    });
+    const generic = await client.callTool({
+      name: "observe_printer",
+      arguments: { view: "progress", selector: "printer.objects.query" },
+    });
+
+    expect(unknown.isError).toBe(true);
+    expect(generic.isError).toBe(true);
   });
 
   test("serves a self-contained MCP App resource without LAN origins", async () => {
@@ -202,6 +243,17 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
+    expect(LEGACY_WIDGET_HTML).not.toBe(WIDGET_HTML);
+    expect(createHash("sha256").update(LEGACY_WIDGET_HTML).digest("hex")).toBe(
+      "da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437"
+    );
+    const focusedLegacy = await client.readResource({
+      uri: LEGACY_FOCUSED_WIDGET_URIS[0],
+    });
+    expect(focusedLegacy.contents[0]).toMatchObject({
+      uri: LEGACY_FOCUSED_WIDGET_URIS[0],
+      text: WIDGET_HTML,
+    });
   });
 
   test("serves a dedicated camera-only MCP App resource", async () => {
@@ -222,6 +274,14 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(CAMERA_WIDGET_HTML);
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v4.html");
+    expect(LEGACY_CAMERA_WIDGET_URIS[0]).toBe(
+      "ui://u1-print-studio/camera-v3.html"
+    );
+    expect(LEGACY_CAMERA_WIDGET_HTML).not.toBe(CAMERA_WIDGET_HTML);
+    expect(
+      createHash("sha256").update(LEGACY_CAMERA_WIDGET_HTML).digest("hex")
+    ).toBe("c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203");
 
     for (const legacyUri of LEGACY_CAMERA_WIDGET_URIS) {
       const legacy = await client.readResource({ uri: legacyUri });
@@ -229,7 +289,7 @@ describe("U1 status MCP App contract", () => {
       expect(legacy.contents[0]?.uri).toBe(legacyUri);
       expect(
         "text" in legacy.contents[0]! ? legacy.contents[0].text : ""
-      ).toBe(CAMERA_WIDGET_HTML);
+      ).toBe(LEGACY_CAMERA_WIDGET_HTML);
     }
   });
 
@@ -252,7 +312,7 @@ describe("U1 status MCP App contract", () => {
         frameDomains: [],
       },
     });
-    expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
+    expect("text" in resource ? resource.text : "").toBe(LEGACY_WIDGET_HTML);
   });
 
   test("keeps external CSP empty when hosted signaling is composed", async () => {
@@ -272,55 +332,83 @@ describe("U1 status MCP App contract", () => {
     );
   });
 
-  test("returns model-readable status and a portable PNG locally", async () => {
+  test("returns focused model-readable observations without a large PNG card", async () => {
     const client = await connectClient();
-    const result = await client.callTool({ name: "show_u1_status", arguments: {} });
-
-    expect(result.structuredContent).toEqual(status);
-    expect(result._meta).toEqual(metadata);
-    expect(result._meta?.["openai/outputTemplate"]).toBeUndefined();
-    expect(Array.isArray(result.content)).toBe(true);
-    if (!Array.isArray(result.content)) throw new Error("Expected tool content");
-    expect(result.content[0]).toEqual({
-      type: "text",
-      text: "U1 is printing at 67.4%.",
+    const result = await client.callTool({
+      name: "observe_printer",
+      arguments: { view: "thermals" },
     });
-    const image = result.content[1];
-    expect(image?.type).toBe("image");
-    if (image?.type !== "image") throw new Error("Expected image content");
-    expect(image.mimeType).toBe("image/png");
-  });
-
-  test("adds a portable PNG status card to the remote render result", async () => {
-    const client = await connectClient({ oauth: true });
-    const result = await client.callTool({ name: "show_u1_status", arguments: {} });
-
-    expect(result.structuredContent).toEqual(status);
-    expect(Array.isArray(result.content)).toBe(true);
-    if (!Array.isArray(result.content)) throw new Error("Expected tool content");
-    expect(result.content[0]).toEqual({
-      type: "text",
-      text: "U1 is printing at 67.4%.",
+    expect(result.structuredContent).toMatchObject({
+      schemaVersion: 2,
+      view: "thermals",
+      freshness: "fresh",
+      connectionEpoch: 1,
+      module: {
+        kind: "thermals",
+        state: "known",
+        readings: expect.arrayContaining([
+          expect.objectContaining({
+            id: "tool-2",
+            actual: { state: "known", value: 220 },
+            target: { state: "known", value: 220 },
+          }),
+          expect.objectContaining({
+            id: "cavity",
+            state: "unknown",
+            capabilityEvidence: "advertised",
+          }),
+        ]),
+      },
     });
-    const image = result.content[1];
-    expect(image?.type).toBe("image");
-    if (image?.type !== "image") throw new Error("Expected image content");
-    expect(image.mimeType).toBe("image/png");
-    const bytes = Buffer.from(image.data, "base64");
-    expect(bytes.subarray(0, 8)).toEqual(
-      Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])
-    );
-    expect(bytes.readUInt32BE(16)).toBe(1200);
-    expect(bytes.readUInt32BE(20)).toBe(1500);
-  });
-
-  test("keeps the remote refresh result data-only", async () => {
-    const client = await connectClient({ oauth: true });
-    const result = await client.callTool({ name: "get_u1_status", arguments: {} });
-
     expect(result.content).toEqual([
-      { type: "text", text: "U1 is printing at 67.4%." },
+      { type: "text", text: "U1 thermals observation is known." },
     ]);
+    expect(result.structuredContent).not.toHaveProperty("capabilityEvidence");
+    expect(JSON.stringify(result.content)).not.toContain('"type":"image"');
+    expect(JSON.stringify(result.structuredContent)).not.toContain('"actual":0');
+  });
+
+  test("keeps the widget refresh focused and data-only", async () => {
+    const client = await connectClient({ oauth: true });
+    const result = await client.callTool({
+      name: "refresh_printer_observation",
+      arguments: { view: "queue" },
+    });
+    expect(result.structuredContent).toMatchObject({
+      view: "queue",
+      module: {
+        kind: "queue",
+        state: "unknown",
+        capabilityEvidence: "advertised",
+        items: [],
+      },
+    });
+    expect(result.content).toEqual([
+      { type: "text", text: "U1 queue observation is unknown." },
+    ]);
+  });
+
+  test("projects multiple focused cards from one shared snapshot", async () => {
+    let reads = 0;
+    const client = await connectClient({ onStatusRead: () => { reads += 1; } });
+    const progress = await client.callTool({
+      name: "observe_printer",
+      arguments: { view: "progress" },
+    });
+    const thermals = await client.callTool({
+      name: "observe_printer",
+      arguments: { view: "thermals" },
+    });
+    const refreshed = await client.callTool({
+      name: "refresh_printer_observation",
+      arguments: { view: "heads" },
+    });
+    const versions = [progress, thermals, refreshed].map((result) =>
+      (result.structuredContent as { observationVersion?: number })
+        .observationVersion
+    );
+    expect(reads).toBe(1);
+    expect(new Set(versions)).toEqual(new Set([1]));
   });
 
   test("returns a relayed JPEG only in camera-frame result metadata", async () => {
@@ -358,8 +446,7 @@ describe("U1 status MCP App contract", () => {
       !visibility(tool) || visibility(tool)?.includes("model")
     );
     expect(modelVisible.map((tool) => tool.name)).toEqual([
-      "show_u1_status",
-      "get_u1_status",
+      "observe_printer",
       "open_printer_camera",
     ]);
     expect(
@@ -368,6 +455,9 @@ describe("U1 status MCP App contract", () => {
           !visibility(tool)?.includes("model"))
         .map((tool) => tool.name)
     ).toEqual([
+      "refresh_printer_observation",
+      "show_u1_status",
+      "get_u1_status",
       "get_u1_camera_frame",
       "open_u1_camera_stream",
       "answer_u1_camera_stream",
@@ -395,8 +485,21 @@ describe("U1 status MCP App contract", () => {
     expect(openCamera?.description).toContain("every explicit open");
     expect(openCamera?.description).toContain("camera-only");
     expect(
-      listed.tools.find((tool) => tool.name === "show_u1_status")?.description
-    ).toContain("do not use it for camera-only");
+      listed.tools.find((tool) => tool.name === "observe_printer")?.description
+    ).toContain("focused");
+
+    const legacyShow = await client.callTool({
+      name: "show_u1_status",
+      arguments: {},
+    });
+    const legacyRefresh = await client.callTool({
+      name: "get_u1_status",
+      arguments: {},
+    });
+    expect(legacyShow.structuredContent).toMatchObject({ state: "printing" });
+    expect(JSON.stringify(legacyShow.content)).toContain('"type":"image"');
+    expect(legacyRefresh.structuredContent).toMatchObject({ state: "printing" });
+    expect(JSON.stringify(legacyRefresh.content)).not.toContain('"type":"image"');
 
     const openedCamera = await client.callTool({
       name: "open_printer_camera",
@@ -436,7 +539,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 4,
+      schemaVersion: 5,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });
@@ -539,8 +642,8 @@ describe("U1 status MCP App contract", () => {
     });
 
     const statusResult = await client.callTool({
-      name: "get_u1_status",
-      arguments: {},
+      name: "observe_printer",
+      arguments: { view: "overview" },
     });
     const cameraResult = await client.callTool({
       name: "open_printer_camera",
@@ -567,10 +670,9 @@ describe("U1 status MCP App contract", () => {
       expect(publicEnvelope).not.toContain(sentinel);
     }
     expect(statusResult.structuredContent).toMatchObject({
-      state: "unknown",
-      stateLabel: "Unknown",
-      printerMessage: "Printer reported a status message.",
-      camera: { service: null },
+      printerState: "unknown",
+      printerStateLabel: "Unknown",
+      module: { kind: "overview", state: "unavailable" },
     });
     expect(streamFailure.isError).toBe(true);
     expect(publicEnvelope).toContain("camera_stream_unavailable");
@@ -594,7 +696,7 @@ describe("camera-only widget contract", () => {
     expect(CAMERA_WIDGET_HTML).toContain('id="live-stream"');
     expect(CAMERA_WIDGET_HTML).toContain('id="go-live"');
     expect(CAMERA_WIDGET_HTML).toContain('id="close-live"');
-    expect(CAMERA_WIDGET_HTML).toContain('data-camera-mode="snapshot"');
+    expect(CAMERA_WIDGET_HTML).toContain('data-camera-mode="loading"');
     expect(CAMERA_WIDGET_HTML).toContain('setCameraMode("fallback"');
     expect(CAMERA_WIDGET_HTML).toContain(
       "snapshotFallbackTimer = setTimeout(refreshCameraFrame, 1500)"
@@ -603,19 +705,17 @@ describe("camera-only widget contract", () => {
     expect(CAMERA_WIDGET_HTML).not.toContain('name: "get_u1_status"');
   });
 
-  test("reuses the exact current camera component markup", () => {
-    const cameraSection = (html: string) => {
-      const start = html.indexOf('<section class="camera"');
-      const end = html.indexOf("</section>", start);
-      return html.slice(start, end + "</section>".length);
-    };
-
-    expect(cameraSection(CAMERA_WIDGET_HTML)).toBe(cameraSection(WIDGET_HTML));
+  test("uses the focused Instrument Strips camera shell", () => {
+    expect(CAMERA_WIDGET_HTML).toContain('class="dashboard"');
+    expect(CAMERA_WIDGET_HTML).toContain('<header class="camera-heading">');
+    expect(CAMERA_WIDGET_HTML).toContain("<h1>Printer Camera</h1>");
+    expect(CAMERA_WIDGET_HTML).toContain("Read only");
     expect(CAMERA_WIDGET_HTML).toContain("--brand: #ffcd00;");
     expect(CAMERA_WIDGET_HTML).toContain("width: min(100%, 720px);");
     expect(CAMERA_WIDGET_HTML).toContain("background-size: 42px 42px;");
     expect(CAMERA_WIDGET_HTML).toContain('aria-label="Open live camera"');
     expect(CAMERA_WIDGET_HTML).not.toContain(">Go Live</button>");
+    expect(WIDGET_HTML).not.toContain('class="camera"');
   });
 
   test("uses only the MCP Apps bridge for camera data and signaling", () => {
@@ -676,7 +776,7 @@ describe("camera-only widget contract", () => {
   });
 
   test("keeps activation snapshots in connecting state until success or failure", () => {
-    for (const html of [CAMERA_WIDGET_HTML, WIDGET_HTML]) {
+    for (const html of [CAMERA_WIDGET_HTML]) {
       const frameStart = html.indexOf("const applyCameraFrame = (result)");
       const frameEnd = html.indexOf("window.addEventListener", frameStart);
       const frameSource = html.slice(frameStart, frameEnd);
@@ -699,132 +799,105 @@ describe("camera-only widget contract", () => {
       );
     }
   });
+
+  test("shows one coherent waiting or unavailable state and gates Go Live on a usable snapshot", () => {
+    expect(CAMERA_WIDGET_HTML).toContain(
+      'id="camera-empty-message" role="status" aria-live="polite">Waiting for camera'
+    );
+    expect(CAMERA_WIDGET_HTML).toContain(
+      'id="go-live" type="button" title="Open live camera" aria-label="Open live camera" disabled hidden'
+    );
+    expect(CAMERA_WIDGET_HTML).toContain(
+      'state === "snapshot" &&\n          elements.camera.classList.contains("has-snapshot") && !livePreview'
+    );
+    expect(CAMERA_WIDGET_HTML).toContain(
+      'elements.goLive.disabled = !canGoLive;'
+    );
+    expect(CAMERA_WIDGET_HTML).toContain(
+      'elements.goLive.hidden = !canGoLive;'
+    );
+    expect(CAMERA_WIDGET_HTML).toContain(
+      'state === "unavailable"\n          ? "Camera unavailable"\n          : "Waiting for camera"'
+    );
+    expect(CAMERA_WIDGET_HTML).toContain(
+      '.camera[data-camera-status="unavailable"] .camera-bottom { display: none; }'
+    );
+  });
 });
 
-describe("camera-first widget contract", () => {
-  test("keeps snapshot fallback and opens one continuous relay per live intent", () => {
-    const cameraIndex = WIDGET_HTML.indexOf('class="camera"');
-    const contentIndex = WIDGET_HTML.indexOf('class="content"');
+describe("instrument-strip observation widget contract", () => {
+  test("parses its module script under strict-mode semantics", () => {
+    const scriptStart = WIDGET_HTML.indexOf('<script type="module">');
+    const sourceStart = scriptStart + '<script type="module">'.length;
+    const scriptEnd = WIDGET_HTML.indexOf("</script>", sourceStart);
+    const source = WIDGET_HTML.slice(sourceStart, scriptEnd);
 
-    expect(cameraIndex).toBeGreaterThan(-1);
-    expect(cameraIndex).toBeLessThan(contentIndex);
-    expect(WIDGET_HTML).toContain('id="snapshot"');
-    expect(WIDGET_HTML).toContain('id="go-live"');
-    expect(WIDGET_HTML).toContain('id="close-live"');
-    expect(WIDGET_HTML).toContain('name: "get_u1_camera_frame"');
-    expect(WIDGET_HTML).toContain('name: "open_u1_camera_stream"');
-    expect(WIDGET_HTML).toContain('data:image/jpeg;base64,');
-    expect(WIDGET_HTML).toContain('snapshotFallbackTimer = setTimeout(refreshCameraFrame, 1500)');
-    expect(WIDGET_HTML).toContain('name: "answer_u1_camera_stream"');
-    expect(WIDGET_HTML).toContain('name: "add_u1_camera_ice_candidates"');
-    expect(WIDGET_HTML).toContain('name: "close_u1_camera_stream"');
-    expect(WIDGET_HTML).not.toContain("fetch(");
-    expect(WIDGET_HTML).toContain('elements.snapshot.src = dataUrl');
-    expect(WIDGET_HTML).toContain('referrerpolicy="no-referrer"');
-    expect(WIDGET_HTML).toContain('name: "get_u1_status"');
-    expect(WIDGET_HTML).toContain('requestDisplayMode("pip")');
-    expect(WIDGET_HTML).toContain('requestDisplayMode("fullscreen")');
-    expect(WIDGET_HTML).toContain('id="live-stream"');
-    expect(WIDGET_HTML).not.toContain("snapshotUrl");
-    expect(WIDGET_HTML).not.toContain("MOONRAKER_BASE_URL");
+    expect(scriptStart).toBeGreaterThan(-1);
+    expect(scriptEnd).toBeGreaterThan(sourceStart);
+    expect(() => new Function(`"use strict";\n${source}`)).not.toThrow();
+  });
+
+  test("renders exactly one focused module and keeps overview deferred", () => {
+    expect(WIDGET_HTML).toContain('const VIEWS = ["overview", "progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"]');
+    expect(WIDGET_HTML).toContain("const renderers = {");
+    expect(WIDGET_HTML).toContain("progress: renderProgress");
+    expect(WIDGET_HTML).toContain("thermals: renderThermals");
+    expect(WIDGET_HTML).toContain("bed_mesh: renderBedMesh");
+    expect(WIDGET_HTML).toContain("overview: renderOverview");
+    expect(WIDGET_HTML).toContain("renderers[view](observation.module)");
+    expect(WIDGET_HTML).not.toContain("VIEWS.slice(1)");
+    expect(WIDGET_HTML).not.toContain("refreshTimer");
+    expect(WIDGET_HTML).not.toContain("setTimeout(() => void refresh()");
+    expect(WIDGET_HTML).toContain('name: "refresh_printer_observation"');
+    expect(WIDGET_HTML).not.toContain('id="snapshot"');
+    expect(WIDGET_HTML).not.toContain('open_u1_camera_stream');
+  });
+
+  test("renders missing and advertised-only semantics as unknown", () => {
+    expect(WIDGET_HTML).toContain("Material unknown");
+    expect(WIDGET_HTML).toContain("Color unknown");
+    expect(WIDGET_HTML).toContain("History unknown");
+    expect(WIDGET_HTML).toContain("Queue");
+    expect(WIDGET_HTML).toContain("Fans & Air");
+    expect(WIDGET_HTML).toContain("Bed Mesh");
+    expect(WIDGET_HTML).toContain("provenance");
+  });
+
+  test("uses plain readable source and freshness labels without technical provenance", () => {
+    expect(WIDGET_HTML).toContain("Printer telemetry");
+    expect(WIDGET_HTML).toContain("Calculated from printer telemetry");
+    expect(WIDGET_HTML).toContain("No accepted source reading");
+    expect(WIDGET_HTML).toContain("Current reading");
+    expect(WIDGET_HTML).toContain("Stored reading");
+    expect(WIDGET_HTML).toContain(
+      "Read only · Source and freshness are shown with each view"
+    );
+    expect(WIDGET_HTML).not.toContain("Missing evidence stays Unknown");
+    expect(WIDGET_HTML).not.toContain("value?.detail ?? \"Provenance unavailable\"");
+    expect(WIDGET_HTML).not.toContain('<div class="provenance"><code>');
+    expect(WIDGET_HTML).toContain("font-size: 12px; font-weight: 560; line-height: 1.5;");
+  });
+
+  test("keeps tool badges but renders bed and cavity as aligned text-only zones", () => {
+    expect(WIDGET_HTML).toContain('const toolReading = reading.id.startsWith("tool-")');
+    expect(WIDGET_HTML).toContain('toolReading ? `<span class="roundel">T');
+    expect(WIDGET_HTML).toContain('toolReading ? "" : " zone-row"');
+    expect(WIDGET_HTML).toContain(".strip.zone-row .identity { padding-left: 8px; }");
+    expect(WIDGET_HTML).not.toContain('reading.id === "heater-bed" ? "BED" : "CAV"');
   });
 
   test("supports iPhone viewports, safe areas, and touch targets", () => {
     expect(WIDGET_HTML).toContain("viewport-fit=cover");
     expect(WIDGET_HTML).toContain("min-height: 100dvh");
     expect(WIDGET_HTML).toContain("env(safe-area-inset-top, 0px)");
-    expect(WIDGET_HTML).toContain('@media (max-width: 540px)');
-    expect(WIDGET_HTML).toContain('@media (max-width: 380px)');
+    expect(WIDGET_HTML).toContain('@media (max-width: 620px)');
+    expect(WIDGET_HTML).toContain('@media (max-width: 390px)');
     expect(WIDGET_HTML).toContain("min-height: 44px");
     expect(WIDGET_HTML).toContain("touch-action: manipulation");
-    expect(WIDGET_HTML).toContain("window.openai?.safeArea");
     expect(WIDGET_HTML).toContain("notifyIntrinsicHeight");
-  });
-
-  test("keeps camera controls icon-only and gives major components loading states", () => {
-    expect(WIDGET_HTML).toContain('id="camera-status"');
-    expect(WIDGET_HTML).toContain('aria-label="Open live camera"');
-    expect(WIDGET_HTML).toContain('aria-label="Close live camera"');
-    expect(WIDGET_HTML).not.toContain(">Go Live</button>");
-    expect(WIDGET_HTML).not.toContain(">Close</button>");
-    expect(WIDGET_HTML).not.toContain(">Auto</button>");
-    expect(WIDGET_HTML).not.toContain(".toggle::before");
-    expect(WIDGET_HTML).not.toContain('.toggle[aria-pressed="false"]::before');
-    expect(WIDGET_HTML).toContain(".camera::before");
-    expect(WIDGET_HTML).toContain('data-camera-loading="true"');
-    expect(WIDGET_HTML).toContain('id="status-row" data-loading="true"');
-    expect(WIDGET_HTML).toContain('id="progress-section" data-loading="true"');
-    expect(WIDGET_HTML).toContain('id="freshness" data-loading="true"');
-    expect(WIDGET_HTML).toContain("setStatusLoading");
-    expect(WIDGET_HTML).toContain("setCameraState");
-  });
-
-  test("uses a neutral camera icon and an explicit camera mode label", () => {
-    expect(WIDGET_HTML).not.toContain('class="camera-status-dot"');
-    expect(WIDGET_HTML).not.toContain('class="camera-status-slash"');
-    expect(WIDGET_HTML).not.toContain('id="camera-title"');
-    expect(WIDGET_HTML).not.toContain("Build plate view");
-    expect(WIDGET_HTML).not.toContain("Secure snapshot");
-    expect(WIDGET_HTML).not.toContain(
-      '.camera[data-camera-status="live"] .camera-status'
-    );
-    expect(WIDGET_HTML).toContain('class="camera-mode" id="camera-detail"');
-    expect(WIDGET_HTML).toContain('justify-content: space-between;');
-    expect(WIDGET_HTML).toContain(
-      "align-items: center;\n        gap: 8px;\n        padding: 0 12px;"
-    );
-    expect(WIDGET_HTML).toContain('Snapshot fallback · ${observedLabel}');
-    expect(WIDGET_HTML).toContain('Live · ${fpsLabel} FPS');
-    expect(WIDGET_HTML).toContain('setCameraMode("fallback")');
-    expect(WIDGET_HTML).toContain('setCameraMode("live")');
-  });
-
-  test("uses the Snapmaker charcoal and yellow card theme", () => {
     expect(WIDGET_HTML).toContain("--ink: #1c1e20;");
     expect(WIDGET_HTML).toContain("--brand: #ffcd00;");
-    expect(WIDGET_HTML).toContain("--brand-warm: #ff5f28;");
-    expect(WIDGET_HTML).toContain(".eyebrow {\n        margin: 0 0 6px;\n        color: var(--muted);");
-    expect(WIDGET_HTML).toContain("border-top: 5px solid var(--brand);");
-    expect(WIDGET_HTML).toContain("background: var(--brand);");
-    expect(WIDGET_HTML).toContain("body { background: #191919; }");
-    expect(WIDGET_HTML).not.toContain("--green:");
-    expect(WIDGET_HTML).not.toContain("--lime:");
-  });
-
-  test("keeps semantic connectivity separate and measures delivered live FPS", () => {
-    const modeIndex = WIDGET_HTML.indexOf('id="camera-detail"');
-    const actionIndex = WIDGET_HTML.indexOf('id="go-live"');
-
-    expect(modeIndex).toBeGreaterThan(-1);
-    expect(modeIndex).toBeLessThan(actionIndex);
-    expect(WIDGET_HTML).toContain("--positive: #32c86e;");
-    expect(WIDGET_HTML).toContain("--negative: #ff6161;");
-    expect(WIDGET_HTML).toContain('class="camera-mode-live-dot"');
-    expect(WIDGET_HTML).toContain('class="camera-mode-disconnected"');
-    expect(WIDGET_HTML).toContain('@keyframes live-pulse');
     expect(WIDGET_HTML).not.toContain("fetch(");
-    expect(WIDGET_HTML).toContain('recordLiveFrame');
-    expect(WIDGET_HTML).toContain('performance.now()');
-    expect(WIDGET_HTML).toContain('new RTCPeerConnection({');
-    expect(WIDGET_HTML).toContain('peer.setRemoteDescription');
-    expect(WIDGET_HTML).toContain('peer.ontrack');
-    expect(WIDGET_HTML).toContain('requestVideoFrameCallback');
-    expect(WIDGET_HTML).toContain('Live · measuring FPS');
-    expect(WIDGET_HTML).not.toContain('findMarker');
-    expect(WIDGET_HTML).not.toContain('jpegDataUrl');
-    expect(WIDGET_HTML).not.toContain("up to ${Math.round(fps)} FPS");
-  });
-
-  test("retains a valid signaling session id before validating the stream envelope", () => {
-    const sessionAssignmentIndex = WIDGET_HTML.indexOf(
-      'if (typeof sessionId === "string") {\n            liveSessionId = sessionId;'
-    );
-    const streamValidationIndex = WIDGET_HTML.indexOf(
-      "response?.structuredContent?.available !== true"
-    );
-
-    expect(sessionAssignmentIndex).toBeGreaterThan(-1);
-    expect(streamValidationIndex).toBeGreaterThan(-1);
-    expect(sessionAssignmentIndex).toBeLessThan(streamValidationIndex);
+    expect(WIDGET_HTML).not.toContain("MOONRAKER_BASE_URL");
   });
 });

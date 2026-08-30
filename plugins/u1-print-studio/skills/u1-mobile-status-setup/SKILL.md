@@ -1,18 +1,20 @@
 ---
 name: u1-mobile-status-setup
-description: Set up the U1 Print Studio read-only status card on a new user's phone through a standard-HTTPS Tailscale Funnel endpoint, personal OAuth, and phone passkey enrollment. Use when a user asks to configure, install, connect, onboard, or troubleshoot the U1 mobile status widget, Tailscale address, Funnel endpoint, OAuth login, Face ID, passkey, Server URL, or Tunnel choice. Do not enable upload, start, cancel, or other printer controls.
+description: Set up U1 Print Studio read-only observation widgets on a new user's phone through a standard-HTTPS Tailscale Funnel endpoint, personal OAuth, and phone passkey enrollment. Use when a user asks to configure, install, connect, onboard, or troubleshoot U1 mobile views, the Tailscale address, Funnel endpoint, OAuth login, Face ID, passkey, Server URL, or Tunnel choice. Do not enable upload, start, cancel, or other printer controls.
 ---
 
 # U1 Mobile Status Setup
 
-Set up one user's read-only U1 status card without exposing their printer directly or weakening authentication. Walk the user through the few phone interactions that cannot be completed on their behalf.
+Set up one user's read-only U1 observation views without exposing their printer
+directly or weakening authentication. Walk the user through the few phone
+interactions that cannot be completed on their behalf.
 
 ## Safety and scope
 
-- Configure only the three model-visible read-only tools:
-  `show_u1_status`, `get_u1_status`, and `open_printer_camera`. Snapshot
-  acquisition, one-time stream activation, and signaling are app-only widget
-  helpers.
+- Configure only the two model-visible read-only presentation tools:
+  `observe_printer` and `open_printer_camera`. Focused observation refresh,
+  snapshot acquisition, one-time stream activation, and signaling are app-only
+  widget helpers.
 - Keep upload, start, cancel, pause, resume, and printer commands out of this setup. Those require a separate implementation and a fresh per-action authorization boundary.
 - Bind the MCP service to `127.0.0.1`; expose it only through Tailscale Funnel.
 - Never ask the user to paste printer credentials, private profiles, OAuth signing keys, passkey credential material, enrollment state, or bearer tokens into chat.
@@ -34,7 +36,8 @@ Report these separately:
 
 1. Local software evidence: server checks and tests pass on the Mac.
 2. Public-edge evidence: HTTPS health, OAuth discovery, and unauthenticated rejection work through Funnel.
-3. MCP evidence: the authenticated client discovers exactly the four read-only tools.
+3. MCP evidence: the authenticated client discovers exactly the two
+   model-visible read-only presentation tools.
 4. Printer evidence: returned telemetry and camera data came from the configured real printer.
 5. iOS evidence: the host visibly rendered either the interactive component or
    the inline PNG fallback; interactive controls are evidence only on hosts
@@ -68,12 +71,12 @@ Run `tailscale status --json` and read `Self.DNSName`, removing its final dot. I
 Run `tailscale funnel status --json` and save the current routing state for
 comparison. Prefer a dedicated hostname on HTTPS port 443. If the hostname
 already has a root service on port 443, preserve it and add exact path handlers
-for `/.well-known`, `/oauth`, `/auth`, `/mcp`, and `/media`; `/health` is
-optional. The `/media` prefix must map back to backend `/media`, where the
-application accepts only exact `GET /media/camera.mjpeg` with a short-lived
-one-time ticket. Tailscale path handlers strip their matched prefix unless the
-proxy target includes it, so map each incoming prefix to the same backend
-prefix and verify the result. Do not replace the root handler.
+for `/.well-known`, `/oauth`, `/auth`, and `/mcp`; `/health` is optional.
+Snapshot and bounded WebRTC signaling cross the authenticated MCP Apps bridge;
+do not add a public generic media proxy. Tailscale path handlers strip their
+matched prefix unless the proxy target includes it, so map each incoming prefix
+to the same backend prefix and verify the result. Do not replace the root
+handler.
 
 Set:
 
@@ -117,9 +120,8 @@ Map only the required standard-HTTPS origin or exact path handlers to the local
 loopback service. Re-read `tailscale funnel status --json` and verify all
 pre-existing handlers remain unchanged. When sharing an origin, verify that
 `/mcp` reaches backend `/mcp`, `/.well-known` reaches backend `/.well-known`,
-`/oauth` reaches backend `/oauth`, `/auth` reaches backend `/auth`, and
-`/media` reaches backend `/media` rather than backend `/`. Verify an
-unrecognized `/media` path returns HTTP 404; do not expose a generic proxy.
+`/oauth` reaches backend `/oauth`, and `/auth` reaches backend `/auth`. Verify
+that no generic media or printer proxy is exposed.
 
 Through the public origin, verify:
 
@@ -162,8 +164,7 @@ In the New Plugin form choose **Server URL**, not **Tunnel**. Choose **OAuth**, 
 After connection, verify that the authenticated inventory contains exactly:
 
 ```text
-show_u1_status
-get_u1_status
+observe_printer
 open_printer_camera
 ```
 
@@ -173,10 +174,11 @@ OpenAI documents public plugins as shared across ChatGPT and Codex, but says loc
 
 ### 6. Verify the real iOS card
 
-Start a new phone conversation and ask to show the U1 monitor widget. Verify, in order:
+Start a new phone conversation and ask for one focused observation such as print
+progress, then open the printer camera separately. Verify, in order:
 
-1. the host renders either the interactive widget or the inline PNG status
-   card rather than only a text summary;
+1. the host renders the requested focused widget or its inline fallback rather
+   than substituting a large combined status dashboard;
 2. printer telemetry is current and internally consistent;
 3. if the interactive widget mounted, a camera snapshot loads when the printer
    provides one;
@@ -187,9 +189,9 @@ Start a new phone conversation and ask to show the U1 monitor widget. Verify, in
 6. Close, Picture in Picture, and fullscreen are tested separately only on
    component-capable hosts.
 
-The PNG is a static projection of one observation, not a degraded interactive
-dashboard. Refresh it with a new `show_u1_status` call. Do not expect camera
-pixels or controls inside the PNG.
+An inline image is a static projection of one observation, not a degraded
+interactive dashboard. Refresh it with a new `observe_printer` call using the
+same view. Do not expect camera pixels or controls inside a non-camera image.
 
 Record which checks were observed by the user. Do not infer visual acceptance from a successful MCP response or a desktop rendering.
 
@@ -215,9 +217,9 @@ TURN REST credential and mounted playback on each host are observed.
 ## Completion report
 
 Report the discovered MagicDNS hostname, standard-HTTPS MCP URL, preserved
-Funnel and Serve handlers, private enrollment health, four-tool inventory, ICE
-mode (local candidates, explicit STUN, or TURN REST), and each evidence boundary. Redact
-credentials and tokens. State that this self-hosted edition requires an
+Funnel and Serve handlers, private enrollment health, two-tool model-visible
+inventory, ICE mode (local candidates, explicit STUN, or TURN REST), and each
+evidence boundary. Redact credentials and tokens. State that this self-hosted edition requires an
 always-on LAN agent per printer owner; it may run on a desktop, NAS, or small
 server. Keep a future hosted broker plus local outbound connector as a separate
 product decision rather than implying this developer setup is already a
