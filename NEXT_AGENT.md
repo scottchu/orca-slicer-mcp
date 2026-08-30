@@ -20,17 +20,10 @@ activation, decision 0017's secure remote boundary, and decision 0016's
 local-first normal-user direction.
 
 The secure source and compatibility repair are merged. Pull request 20 is
-`4d4ea2f`; pull request 22 adds the camera-only presentation as `333bebe`.
-Personal Marketplace version `0.2.0+codex.20260828194545` is installed. The
-public service and separate private dashboard LaunchAgents are running.
-Preserve OAuth state and every existing Serve/Funnel route.
-
-The camera-only source slice merged through pull request 22 as `333bebe`.
-Personal Marketplace version `0.2.0+codex.20260828194545` is installed and its
-runtime hash matches the staged source. Decision 0018 adds
-`open_printer_camera`, `camera-v1.html`, and the opt-in `/dashboard/camera`
-test host. Existing Codex/ChatGPT tasks still require a new task to load the
-new descriptor.
+`4d4ea2f`; pull request 22 adds the camera-only presentation as `333bebe`;
+pull request 24 adds the activation repair as `62acd4c`; and pull request 26
+merges decision 0020 as `4f9041c`. Preserve OAuth state and every existing
+Serve/Funnel route.
 
 The decision-0019 source repair makes `open_printer_camera` the only
 model-visible camera action. The app-only frame helper mints a one-time private
@@ -40,30 +33,26 @@ served as a current-asset compatibility alias. Health and doctor report runtime
 0.2.0, tool schema 3, and camera widget v2. Source validation passes with 71
 tests and 417 assertions; delivery/install evidence is recorded separately.
 
-Pull request 24 merged as `62acd4c`. Personal Marketplace version
-`0.2.0+codex.20260828211031` is installed with source/stage/cache runtime hash
-`74f5f654de2a52c21a33577ffd6520f1054eb71439668885986114177faa2398`.
-The exact installed client verified three model-visible plus five app-only
-tools, both camera-v2 and v1 resources, rejection of an old empty stream call,
-a 135,547-byte real JPEG, one bounded offer with one ICE server, and explicit
-Close. Public and dashboard health report schema 3/camera-v2; OAuth state and
-Tailscale routing hashes stayed unchanged across restart. The private browser
-rendered `Live · 24 FPS` and returned to Snapshot after Close.
+Decision 0020 is installed from pull request 26 as Personal Marketplace version
+`0.2.0+codex.20260830013924`. Both existing services restarted and report tool
+schema 4 plus camera-v3; OAuth state and Tailscale routing stayed unchanged.
+The installed surface remains exactly three model-visible tools and five
+app-only helpers. Camera-v3 adds repeated-open camera-only presentation
+semantics and one private H264 printer upstream with bounded independent
+downstream peers, exact H264 payload selection, coalesced PLI feedback,
+termination-race cleanup, distinct ICE credentials, independent Close, and
+last-viewer upstream release.
 
-Decision 0020 is implemented only in the current feature worktree. It adds
-camera-v3 repeated-open camera-only presentation semantics and terminates one
-private H264 printer upstream in the connector. Bounded independent downstream
-viewer peers receive cloned RTP headers, separate ICE credentials, explicit
-server Tailscale host candidates, independent Close, a 15-second answer
-deadline, and last-viewer upstream release. `U1_CAMERA_MAX_VIEWERS` defaults to
-16 and accepts 1 through 64. The first received RTP payload type selects the
-exact H264 fmtp; downstream PLI feedback is coalesced onto the upstream
-receiver; explicit generations reject peers that terminate during async open;
-subscribe-then-inspect termination observers reject werift peers already
-failed/closed before registration. Camera v2 and v1 remain aliases. Public
-status, camera bytes, diagnostics, MCP, and exact HTTP envelopes exclude
-printer identity, upstream signaling, raw errors, and JPEG metadata. No live
-runtime or route has been changed.
+The first user test after installation created a new conversation inside a
+Codex Desktop process that still predated the reinstall. That process did not
+expose `open_printer_camera`; the model selected `u1-monitor-print` and
+substituted `show_u1_status`, mounting the entire status card. Treat this as an
+unaccepted stale-host and guidance regression, not a camera-v3 widget build
+result. The source guidance now routes standalone camera requests only to
+`open_printer_camera`; if it is missing or its resource cannot load, report the
+stale/unavailable connection and stop. Never call status, frame, or stream
+helpers as a substitute. A full Codex Desktop quit and relaunch is required
+before mounted acceptance.
 
 The implementation is a desktop-local read-only connector. A normal user must
 not need Tailscale, MagicDNS, public DNS, manual OAuth, environment-file
@@ -80,8 +69,9 @@ decision 0015.
 - The hosted widget contains no `fetch(` call and declares empty external CSP
   domains.
 - Current descriptors point to `status-v4.html`; `status-v3.html` is served as
-  a compatibility resource for retained cards. Plugin upgrades still require
-  a new task for the current installed MCP process.
+  a compatibility resource for retained cards. A plugin upgrade can require a
+  full host-process quit and relaunch; a new task alone did not replace the MCP
+  process retained by Codex Desktop in the observed regression.
 - Live offer, answer, ICE candidates, and close use MCP Apps `tools/call`.
 - The connector alone invokes the U1's fixed Printer Operations adapter.
 - The fan-out application service owns one private H264 printer upstream plus
@@ -128,7 +118,7 @@ proxy, Control, or Admin behavior appears.
 ## Validation boundary
 
 The active iteration's `VALIDATION.md` records the exact commands. The current
-software suite has 89 passing tests with 557 assertions. The macOS arm64
+software suite has 93 passing tests with 569 assertions. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
@@ -166,32 +156,23 @@ broader-permission config and for closing a valid camera session when the rest
 of its stream envelope is malformed. Both fixes are included in the passing
 suite.
 
-Pull request 18 merged the secure remote slice as `e298885`; pull request 20
-merged the resource/lifecycle repair as `4d4ea2f`; pull request 22 merged the
-camera-only presentation as `333bebe`. Personal Marketplace version
-`0.2.0+codex.20260828194545` is installed; the exact staged and installed
-standalone runtime hash is recorded in `VALIDATION.md`. The owner-only schema-2
-config uses explicit STUN. The protected public service, private dashboard, and
-separate enrollment listener are healthy; tailnet-only Serve 8447 reaches only
-the enrollment listener and Funnel remains enabled only on 443.
-
-An exact installed-cache client verified four model-visible plus four app-only
-read-only tools and all three widget resources. The deployed private
-`/dashboard/camera` displayed a real snapshot, rendered `Live · 25 FPS`, and
-returned to snapshot after Close. Tailscale configuration stayed byte-stable
-across service restart. Mounted ChatGPT/Codex playback is not yet accepted
-because it requires a fresh task. No TURN service or shared secret is
-configured.
+Pull request 26 merged decision 0020 as `4f9041c`; Personal Marketplace version
+`0.2.0+codex.20260830013924` is installed and both services report schema
+4/camera-v3. The exact inventory is three model-visible tools plus five app-only
+helpers. Earlier private-dashboard Live results belong to direct-session
+predecessors and do not prove the installed fan-out or mounted host. No TURN
+service or shared secret is configured.
 
 ## Next smallest action
 
-Review the follow-up media-core repair commit and deliver decision 0020 through
-a pull request. Do not
-install or restart anything until merge and a fresh rollout authorization.
-Post-rollout acceptance must separately observe one real printer upstream
-shared by two viewers, closing one without interrupting the other, final
-upstream release, camera-v3 repeated mounts, mobile tailnet-direct ICE, and TURN
-only if an owner-approved relay is configured.
+Deliver the independently approved standalone-camera routing guard through a
+pull request. Do not reinstall or restart anything without fresh rollout
+authorization. After rollout, fully quit and relaunch the host before invoking
+`open_printer_camera`; a status-card substitution is failure. Separately observe
+one real printer upstream shared by two viewers, closing one without
+interrupting the other, final upstream release, camera-v3 repeated mounts,
+mobile tailnet-direct ICE, and TURN only if an owner-approved relay is
+configured.
 
 ## Preserve
 

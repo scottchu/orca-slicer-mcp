@@ -41,7 +41,7 @@ Last updated: 2026-08-29
   Tailscale routing hashes were unchanged across restart. The deployed private
   dashboard showed Snapshot, rendered `Live · 24 FPS`, and returned to Snapshot
   after Close.
-- Decision 0020 is the current unmerged source slice. It replaces direct
+- Decision 0020 merged through pull request 26 as `4f9041c`. It replaces direct
   printer-to-viewer sessions with one private server-terminated H264 upstream
   and bounded independent downstream peers. Camera v3 is a fresh repeated-open
   camera-only resource; v2 and v1 remain current-asset aliases. Public
@@ -50,8 +50,17 @@ Last updated: 2026-08-29
   requires exact first-RTP H264 payload/profile selection, rate-limited shared
   upstream PLI feedback, async termination cleanup, and level-triggered
   rejection of werift peers already failed/closed before observer registration.
-  The slice has not changed any installed plugin, service, OAuth state,
-  Tailscale route, or printer.
+  Personal Marketplace version `0.2.0+codex.20260830013924` was rebuilt from
+  the merge and installed; both existing services restarted on schema 4 and
+  camera-v3 without changing OAuth state or Tailscale routing.
+- A fresh conversation in the still-running pre-install Codex Desktop process
+  did not expose `open_printer_camera`. The model selected the monitoring skill
+  and substituted `show_u1_status`, mounting the entire status card. That is a
+  stale host-process descriptor plus a procedural-routing regression, not
+  evidence that the rebuilt camera-v3 resource contains status markup. Current
+  source now requires standalone camera requests to call only
+  `open_printer_camera` and fail closed when it is unavailable; a full host quit
+  and relaunch remains required for mounted acceptance.
 
 ## Implemented local-first slice
 
@@ -83,14 +92,12 @@ The repository contains the smallest desktop-local read-only connector slice:
 Decision 0020 source validation passes with 89 tests and 557 assertions,
 TypeScript, both bundles, ad-hoc signature verification, plugin validation,
 the repository contract, and whitespace checks.
-Its bundle, signature, plugin, skill, repository, and whitespace results are
-recorded separately in the active iteration. Install, service restart, public
-edge, real-printer fan-out, mounted Codex/ChatGPT, and mobile remain later
-evidence gates.
+Its merge, exact Personal Marketplace installation, and existing-service
+restart are recorded separately in the active iteration. Real-printer fan-out,
+mounted Codex/ChatGPT, and mobile remain later evidence gates.
 
-The self-contained artifact is local validation evidence only. Its ad-hoc
-signature is not suitable for distribution. No package, marketplace entry,
-installed plugin, OAuth state, or hosted service was changed.
+The self-contained artifact remains locally and ad-hoc signed and is not
+suitable for publication. No Homebrew or npm package was published.
 
 ## Implemented secure remote source slice
 
@@ -183,25 +190,25 @@ remain procedural guidance; they are not runtime authority.
 ### Static/software
 
 - TypeScript checks pass.
-- Eighty-nine tests with 557 assertions pass across MCP resource/tool contracts,
+- Ninety-three tests with 569 assertions pass across MCP resource/tool contracts,
   enrollment isolation, standard HTTPS, three-plus-five visibility, distinct
   upstream/downstream ICE, bounded multi-viewer fan-out, exact H264 payload
   selection, coalesced PLI feedback, termination races, already-terminal peer
   rejection, model and printer identity privacy, JPEG metadata stripping,
   config migration, PNG,
   rendered-frame gating and fallback, exact HTTP compatibility, OAuth,
-  packaging, and dashboard allowlists.
+  packaging, dashboard allowlists, exclusive standalone-camera guidance, and
+  plugin starter-prompt metadata.
 - The source stdio bundle emits `stdio.js` plus status and camera widget assets.
 - The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
   signature, prints help, writes a schema-2 `0600` config, preserves explicit
   STUN on setup rewrite, and passes `doctor --offline` without contacting
   hardware. Malformed ICE URLs and partial TURN configuration fail closed.
 - Personal Marketplace staging and installation passed on this macOS arm64
-  machine for the earlier decision-0019 direct-session runtime. That installed
-  cache matched its staged SHA-256, passed signature verification, reached the
-  configured printer read-only, returned a JPEG snapshot and WebRTC offer, and
-  explicitly closed its bounded session. It is not installation or
-  real-printer evidence for the unmerged decision-0020 fan-out runtime.
+  machine for decision 0020 as version
+  `0.2.0+codex.20260830013924`. Both existing services report schema 4 and
+  camera-v3. That is installed-runtime and service evidence, not mounted-host,
+  mobile, or real multi-viewer fan-out acceptance.
 
 The active iteration's `VALIDATION.md` is authoritative for exact commands
 and final repository-check results.
@@ -224,13 +231,12 @@ and final repository-check results.
 
 ### User outcome
 
-- The secure remote and camera-only source is merged, installed as
-  `0.2.0+codex.20260828194545`, and deployed with public authenticated MCP plus
-  tailnet-only enrollment. Public/private routes, both supervised services,
-  installed-client resources, camera-v1, authenticated status and JPEG
-  metadata, bounded WebRTC signaling, and deployed private-browser rendered
-  video/Close checks passed. Mounted ChatGPT/Codex and mobile playback remain
-  unverified because installed descriptors require a fresh task.
+- Decision 0020 is merged and installed as
+  `0.2.0+codex.20260830013924` with schema 4/camera-v3. The first post-install
+  attempt still ran inside a Codex Desktop process started before the reinstall;
+  it lacked `open_printer_camera` and incorrectly mounted the status card as a
+  substitute. Mounted camera-v3, full host-process reload, real multi-viewer
+  fan-out, ChatGPT, and mobile playback remain unverified.
 
 ## Open risks and F0 questions
 
@@ -244,6 +250,10 @@ and final repository-check results.
 - Native hosted-widget WebRTC rendering, FPS, UI-triggered Close, PiP,
   fullscreen, and fallback need fresh visual host evidence. Server-side open
   and close now pass against the real read-only camera path.
+- Creating a new conversation does not refresh an MCP process retained by an
+  already-running desktop host. Camera-v3 acceptance requires fully quitting
+  and relaunching that host; procedural guidance now fails closed instead of
+  substituting a status card when `open_printer_camera` is absent.
 - No TURN REST service URLs or shared secret were supplied. Reliable remote
   media remains blocked on external provisioning plus observed allocation and
   mounted playback. Explicit STUN is only a compatibility step and discloses
@@ -260,9 +270,10 @@ and final repository-check results.
 
 ## Next action
 
-Review and deliver decision 0020 through a pull request. Only after merge and
-fresh rollout authorization should the exact staged runtime be installed or
-existing services restarted. Then verify one real printer upstream shared by
-at least two independent viewers, per-viewer Close, final upstream release,
-camera-v3 repeated mounts, tailnet-direct mobile ICE, and optional TURN as
-separate evidence. Do not infer these outcomes from the source suite.
+Deliver the independently approved standalone-camera routing guard through a
+pull request. After a separately authorized reinstall, fully quit and relaunch
+Codex Desktop before testing `open_printer_camera`; never accept a status-card
+substitution. Then verify one real printer upstream shared by at least two
+independent viewers, per-viewer Close, final upstream release, camera-v3
+repeated mounts, tailnet-direct mobile ICE, and optional TURN as separate
+evidence. Do not infer these outcomes from source or service-health checks.
