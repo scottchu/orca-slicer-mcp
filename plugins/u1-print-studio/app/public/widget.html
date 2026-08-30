@@ -935,8 +935,12 @@
       let liveFrameCallback = null;
       let liveFpsTimer = null;
       let liveConnectionFallbackTimer = null;
+      let firstRenderedFrameTimer = null;
       let liveFrameTimes = [];
       let measuredLiveFps = null;
+      let configuredIceMode = "unknown";
+      let selectedIcePath = null;
+      let fallbackDetail = null;
       let rpcId = 0;
       const pendingRequests = new Map();
       const hosted = window.parent !== window;
@@ -1023,12 +1027,20 @@
           ? (measuredLiveFps >= 10 ? measuredLiveFps.toFixed(0) : measuredLiveFps.toFixed(1))
           : null;
         const labels = {
-          loading: "Connecting",
+          loading: elements.camera.classList.contains("has-snapshot")
+            ? "Connecting · snapshot"
+            : "Connecting",
           snapshot: observedLabel ? `Snapshot · ${observedLabel}` : "Snapshot",
-          fallback: observedLabel
-            ? `Snapshot fallback · ${observedLabel}`
-            : "Snapshot fallback",
-          live: fpsLabel ? `Live · ${fpsLabel} FPS` : "Live · measuring FPS",
+          fallback: fallbackDetail
+            ? `Fallback · ${fallbackDetail}`
+            : observedLabel
+              ? `Snapshot fallback · ${observedLabel}`
+              : "Snapshot fallback",
+          live: selectedIcePath
+            ? `Live · ${selectedIcePath}${fpsLabel ? ` · ${fpsLabel} FPS` : ""}`
+            : fpsLabel
+              ? `Live · ${fpsLabel} FPS`
+              : "Live · measuring FPS",
           unavailable: "Camera unavailable",
         };
         elements.cameraDetail.dataset.mode = mode;
@@ -1046,6 +1058,8 @@
       const stopLiveStream = () => {
         clearTimeout(liveConnectionFallbackTimer);
         liveConnectionFallbackTimer = null;
+        clearTimeout(firstRenderedFrameTimer);
+        firstRenderedFrameTimer = null;
         if (liveFrameCallback !== null && elements.liveStream.cancelVideoFrameCallback) {
           elements.liveStream.cancelVideoFrameCallback(liveFrameCallback);
         }
@@ -1110,8 +1124,9 @@
           setCameraState("live");
           setCameraMode("live");
         } else if (livePreview && elements.camera.classList.contains("has-snapshot")) {
-          setCameraState("fallback");
-          setCameraMode("fallback");
+          const mode = fallbackDetail ? "fallback" : "loading";
+          setCameraState(mode, mode === "loading");
+          setCameraMode(mode);
         } else if (elements.camera.classList.contains("has-snapshot")) {
           setCameraState("snapshot");
         } else {
@@ -1121,9 +1136,15 @@
 
       elements.snapshot.addEventListener("load", () => {
         elements.camera.classList.add("has-snapshot");
-        const mode = livePreview ? (relayRendering ? "live" : "fallback") : "snapshot";
-        setCameraState(mode);
-        if (mode === "live") setCameraMode("live");
+        const mode = livePreview
+          ? relayRendering
+            ? "live"
+            : fallbackDetail
+              ? "fallback"
+              : "loading"
+          : "snapshot";
+        setCameraState(mode, mode === "loading");
+        setCameraMode(mode);
       });
 
       elements.snapshot.addEventListener("error", () => {
@@ -1202,7 +1223,17 @@
         if (frame.available && typeof dataUrl === "string" && dataUrl.startsWith("data:image/jpeg;base64,")) {
           setCameraState("loading", true);
           elements.snapshot.src = dataUrl;
-          setCameraMode(livePreview ? "fallback" : "snapshot", frame.observedAt);
+          setCameraMode(
+            livePreview ? (fallbackDetail ? "fallback" : "loading") : "snapshot",
+            frame.observedAt
+          );
+          return;
+        }
+
+        if (livePreview && elements.camera.classList.contains("has-snapshot")) {
+          const mode = fallbackDetail ? "fallback" : "loading";
+          setCameraMode(mode);
+          setCameraState(mode, mode === "loading");
           return;
         }
 
@@ -1266,8 +1297,8 @@
         return result;
       };
 
-      const bridgeReady = initializeBridge().catch((error) => {
-        setNotice(`Host bridge unavailable: ${error?.message ?? "unknown error"}`);
+      const bridgeReady = initializeBridge().catch(() => {
+        setNotice("Host bridge unavailable");
         setStatusLoading(false);
         return null;
       });
@@ -1311,11 +1342,23 @@
         setCameraMode("live");
       };
 
+      const markFirstRenderedFrame = (now = performance.now()) => {
+        if (!livePreview || !livePeerConnection || relayRendering) return false;
+        relayRendering = true;
+        clearTimeout(firstRenderedFrameTimer);
+        firstRenderedFrameTimer = null;
+        clearTimeout(snapshotFallbackTimer);
+        elements.camera.classList.add("has-live");
+        setCameraState("live");
+        recordLiveFrame(now);
+        return true;
+      };
+
       const startLiveFpsMeasurement = () => {
         if (typeof elements.liveStream.requestVideoFrameCallback === "function") {
           const observeFrame = (now) => {
-            if (!livePreview || !relayRendering) return;
-            recordLiveFrame(now);
+            if (!livePreview || !livePeerConnection) return;
+            if (!markFirstRenderedFrame(now)) recordLiveFrame(now);
             liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
           };
           liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
@@ -1325,22 +1368,76 @@
         let previousFrames = 0;
         let previousTime = performance.now();
         liveFpsTimer = setInterval(() => {
-          if (!livePreview || !relayRendering) return;
+          if (!livePreview || !livePeerConnection) return;
           const quality = elements.liveStream.getVideoPlaybackQuality?.();
           const totalFrames = quality?.totalVideoFrames ??
             elements.liveStream.webkitDecodedFrameCount ?? 0;
           const now = performance.now();
           if (totalFrames > previousFrames && now > previousTime) {
-            measuredLiveFps = (totalFrames - previousFrames) * 1000 / (now - previousTime);
-            setCameraMode("live");
+            if (!markFirstRenderedFrame(now)) {
+              measuredLiveFps =
+                (totalFrames - previousFrames) * 1000 / (now - previousTime);
+              setCameraMode("live");
+            }
           }
           previousFrames = totalFrames;
           previousTime = now;
         }, 1_000);
       };
 
-      const activateSnapshotFallback = () => {
+      const fallbackMessage = (reason) => {
+        const normalized = String(reason || "relay unavailable").toLowerCase();
+        if (normalized.includes("busy") || normalized.includes("active")) {
+          return "camera session busy";
+        }
+        if (normalized.includes("activation")) return "activation expired";
+        if (
+          normalized.includes("ice") ||
+          normalized.includes("connection") ||
+          normalized.includes("rendered video")
+        ) {
+          return configuredIceMode === "turn"
+            ? "ICE path failed (TURN configured)"
+            : configuredIceMode === "stun"
+              ? "ICE path failed (STUN-only)"
+              : "ICE path failed (direct-only)";
+        }
+        if (normalized.includes("playback")) return "video playback blocked";
+        if (normalized.includes("track ended")) return "video track ended";
+        return "stream unavailable";
+      };
+
+      const readSelectedIcePath = async (peer) => {
+        try {
+          const stats = await peer.getStats();
+          let pair = null;
+          for (const report of stats.values()) {
+            if (report.type === "transport" && report.selectedCandidatePairId) {
+              pair = stats.get(report.selectedCandidatePairId);
+              break;
+            }
+            if (report.type === "candidate-pair" && report.nominated && report.state === "succeeded") {
+              pair = report;
+            }
+          }
+          const local = pair?.localCandidateId ? stats.get(pair.localCandidateId) : null;
+          const remote = pair?.remoteCandidateId ? stats.get(pair.remoteCandidateId) : null;
+          const localType = local?.candidateType;
+          const remoteType = remote?.candidateType;
+          const protocol = local?.protocol;
+          if (localType || remoteType) {
+            selectedIcePath = [localType, remoteType].filter(Boolean).join("→");
+            if (protocol) selectedIcePath += `/${protocol}`;
+            setCameraMode("live");
+          }
+        } catch {
+          // Connection remains usable when the host withholds WebRTC stats.
+        }
+      };
+
+      const activateSnapshotFallback = (reason = "relay unavailable") => {
         if (!livePreview) return;
+        fallbackDetail = fallbackMessage(reason);
         relayRendering = false;
         stopLiveStream();
         setCameraMode("fallback");
@@ -1352,6 +1449,9 @@
         if (!hosted || !toolOutput?.camera?.available) return;
         livePreview = true;
         relayRendering = false;
+        configuredIceMode = "unknown";
+        selectedIcePath = null;
+        fallbackDetail = null;
         stopLiveStream();
         clearTimeout(snapshotFallbackTimer);
         elements.camera.dataset.cameraMode = "live";
@@ -1393,6 +1493,7 @@
           ) {
             throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
           }
+          configuredIceMode = response?.structuredContent?.iceMode ?? "unknown";
 
           const peer = new RTCPeerConnection({
             sdpSemantics: "unified-plan",
@@ -1415,19 +1516,21 @@
                 sessionId: liveSessionId,
                 candidates: [event.candidate.toJSON()],
               },
-            }).catch(activateSnapshotFallback);
+            }).catch(() => activateSnapshotFallback("ICE candidate relay failed"));
           };
 
           peer.ontrack = (event) => {
             if (livePeerConnection !== peer || !livePreview) return;
             const stream = event.streams[0] ?? new MediaStream([event.track]);
             elements.liveStream.srcObject = stream;
-            void elements.liveStream.play().catch(() => {});
-            elements.camera.classList.add("has-live");
-            relayRendering = true;
-            clearTimeout(snapshotFallbackTimer);
-            setCameraState("live");
-            setCameraMode("live");
+            event.track.addEventListener(
+              "ended",
+              () => activateSnapshotFallback("video track ended"),
+              { once: true }
+            );
+            void elements.liveStream.play().catch(() => {
+              activateSnapshotFallback("video playback rejected");
+            });
             startLiveFpsMeasurement();
           };
 
@@ -1436,12 +1539,15 @@
             if (peer.connectionState === "connected") {
               clearTimeout(liveConnectionFallbackTimer);
               liveConnectionFallbackTimer = null;
+              void readSelectedIcePath(peer);
             } else if (peer.connectionState === "failed") {
-              activateSnapshotFallback();
+              activateSnapshotFallback("connection failed");
             } else if (peer.connectionState === "disconnected") {
               clearTimeout(liveConnectionFallbackTimer);
               liveConnectionFallbackTimer = setTimeout(() => {
-                if (peer.connectionState !== "connected") activateSnapshotFallback();
+                if (peer.connectionState !== "connected") {
+                  activateSnapshotFallback("connection disconnected");
+                }
               }, 3_000);
             }
           };
@@ -1456,9 +1562,16 @@
               sdp: peer.localDescription?.sdp,
             },
           });
-        } catch {
+          if (!relayRendering) {
+            firstRenderedFrameTimer = setTimeout(() => {
+              if (!relayRendering) {
+                activateSnapshotFallback("no rendered video frames");
+              }
+            }, 8000);
+          }
+        } catch (error) {
           if (!livePreview) return;
-          activateSnapshotFallback();
+          activateSnapshotFallback(error?.message ?? "relay unavailable");
         }
       };
 
@@ -1477,8 +1590,8 @@
           });
           applyStatusResult(response);
           if (!livePreview) void refreshCameraFrame();
-        } catch (error) {
-          setNotice(`Refresh failed: ${error?.message ?? "unknown error"}`);
+        } catch {
+          setNotice("Refresh failed");
           scheduleRefresh(15);
         } finally {
           refreshing = false;

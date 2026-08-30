@@ -7,9 +7,8 @@ import {
 } from "./adapters/camera-webrtc-http.js";
 import type {
   CameraIceCandidate,
-  CameraWebRtcSignalingSource,
+  CameraViewerSessionStore,
 } from "./application/camera-webrtc.js";
-import { CameraWebRtcSessionService } from "./application/camera-webrtc.js";
 import { CameraRelayService } from "./application/camera-relay.js";
 
 const servers: Server[] = [];
@@ -29,20 +28,6 @@ async function startWebRtcServer() {
     id: string;
     candidates: CameraIceCandidate[];
   }> = [];
-  const signaling: CameraWebRtcSignalingSource = {
-    requestOffer: async () => ({
-      type: "offer",
-      id: "printer-peer-1",
-      sdp: "v=0\r\nm=video 9 UDP/TLS/RTP/SAVPF 96\r\n",
-      iceServers: [],
-    }),
-    sendAnswer: async (id, sdp) => {
-      answers.push({ id, sdp });
-    },
-    sendCandidates: async (id, candidates) => {
-      candidateBatches.push({ id, candidates });
-    },
-  };
   const codec = {
       issue: () => {
         const token = `webrtc-ticket-${++nextToken}`;
@@ -54,7 +39,46 @@ async function startWebRtcServer() {
     codec,
     { maxConcurrentStreams: 1, maxStreamDurationMilliseconds: 10_000 }
   );
-  const sessions = new CameraWebRtcSessionService(codec, signaling);
+  let activeSession: string | null = null;
+  const sessions: CameraViewerSessionStore = {
+    privacyBoundary: "server-terminated-fanout",
+    open: async (lease, existingSessionId) => {
+      if (!existingSessionId || activeSession) throw new Error("invalid_session");
+      activeSession = existingSessionId;
+      return {
+        sessionId: existingSessionId,
+        type: "offer",
+        sdp:
+          "v=0\r\nm=video 9 UDP/TLS/RTP/SAVPF 96\r\n" +
+          "a=candidate:1 1 UDP 1 100.91.2.3 50000 typ host\r\n",
+        iceServers: [],
+        expiresAt: lease.expiresAt,
+        maxDurationSeconds: 10,
+      };
+    },
+    answer: async (sessionId, sdp) => {
+      if (sessionId !== activeSession || typeof sdp !== "string") {
+        throw new Error("invalid_session");
+      }
+      answers.push({ id: sessionId, sdp });
+      return { accepted: true };
+    },
+    addCandidates: async (sessionId, candidates) => {
+      if (sessionId !== activeSession || !Array.isArray(candidates)) {
+        throw new Error("invalid_session");
+      }
+      candidateBatches.push({
+        id: sessionId,
+        candidates: candidates as CameraIceCandidate[],
+      });
+      return { accepted: true, candidateCount: candidates.length };
+    },
+    close: (sessionId) => {
+      if (sessionId !== activeSession) return { closed: false };
+      activeSession = null;
+      return { closed: true };
+    },
+  };
   const handler = createCameraWebRtcHandler(relay, sessions);
   const server = createServer(async (req, res) => {
     const url = new URL(req.url ?? "/", "http://localhost");
@@ -87,10 +111,19 @@ describe("camera WebRTC HTTP adapter", () => {
     const offer = await offerResponse.json();
     expect(offer).toMatchObject({
       type: "offer",
-      sdp: "v=0\r\nm=video 9 UDP/TLS/RTP/SAVPF 96\r\n",
+      sdp:
+        "v=0\r\nm=video 9 UDP/TLS/RTP/SAVPF 96\r\n" +
+        "a=candidate:1 1 UDP 1 100.91.2.3 50000 typ host\r\n",
       iceServers: [],
     });
-    expect(JSON.stringify(offer)).not.toContain("printer-peer-1");
+    for (const upstreamValue of [
+      "printer.local",
+      "192.168.50.44",
+      "printer-peer-1",
+      "private-upstream-credential",
+    ]) {
+      expect(JSON.stringify(offer)).not.toContain(upstreamValue);
+    }
 
     const answer = await fetch(opened.url, {
       method: "POST",
@@ -99,7 +132,7 @@ describe("camera WebRTC HTTP adapter", () => {
     });
     expect(answer.status).toBe(200);
     expect(answers).toEqual([
-      { id: "printer-peer-1", sdp: "v=0\r\nanswer\r\n" },
+      { id: "webrtc-ticket-1", sdp: "v=0\r\nanswer\r\n" },
     ]);
 
     const candidate = {
@@ -118,8 +151,8 @@ describe("camera WebRTC HTTP adapter", () => {
     expect(candidates.status).toBe(200);
     expect(candidateBatches).toEqual([
       {
-        id: "printer-peer-1",
-        candidates: [{ ...candidate, usernameFragment: null }],
+        id: "webrtc-ticket-1",
+        candidates: [candidate],
       },
     ]);
 

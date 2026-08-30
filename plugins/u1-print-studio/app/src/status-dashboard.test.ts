@@ -35,7 +35,7 @@ const status: U1Status = {
   storage: { active: true, filePosition: 42, fileSize: 100 },
   printerMessage: null,
   exception: false,
-  camera: { available: true, service: "fixture", targetFps: 15 },
+  camera: { available: true, service: "snapshot", targetFps: 15 },
 };
 
 const servers: Server[] = [];
@@ -136,8 +136,8 @@ describe("standalone status dashboard", () => {
       ok: true,
       auth: "local-only",
       runtimeVersion: "0.2.0",
-      toolSchemaVersion: 3,
-      cameraWidgetVersion: "camera-v2",
+      toolSchemaVersion: 4,
+      cameraWidgetVersion: "camera-v3",
     });
   });
 

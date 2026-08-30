@@ -42,13 +42,6 @@ does not load a repository `.env`. No STUN default is embedded. Public STUN is
 an external privacy and availability dependency; authenticated TURN REST is the
 preferred robust remote path and remains a separately provisioned server-side
 deployment concern.
-Repeatable `--stun-url` values are optional, bounded, stored in that same
-owner-only configuration, and preserved by later setup rewrites. This is the
-standalone Marketplace/Homebrew/npm path for explicit STUN because the runtime
-does not load a repository `.env`. No STUN default is embedded. Public STUN is
-an external privacy and availability dependency; authenticated TURN REST is the
-preferred robust remote path and remains a separately provisioned server-side
-deployment concern.
 
 A same-machine personal Marketplace installation has now exercised this staging
 contract. Publication, another-machine installation, Homebrew, and npm remain
@@ -72,3 +65,8 @@ This private repository currently has no license file. Do not describe or
 publish an artifact as an open-source distribution until the owner selects a
 license and repository ownership/dependency notices are reviewed. License
 selection is a release gate, not an implementation detail to infer here.
+
+The camera fan-out implementation adds the MIT-licensed pure-TypeScript
+`werift` dependency to the bundled runtime. It does not add a normal-user
+daemon or package-install step, but `werift` and its transitive dependency
+notices must be included in the ownership/dependency review before publication.

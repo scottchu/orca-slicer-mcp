@@ -12,13 +12,17 @@ import {
 } from "./adapters/camera-webrtc-http.js";
 import type {
   CameraWebRtcSessionController,
-  CameraWebRtcSessionService,
+  CameraViewerSessionStore,
 } from "./application/camera-webrtc.js";
 import type {
   CameraRelayService,
   CameraStreamLocator,
 } from "./application/camera-relay.js";
-import { createCameraRuntime } from "./camera-runtime.js";
+import {
+  cameraMaxViewersFromEnvironment,
+  createCameraRuntime,
+  tailscaleHostAddresses,
+} from "./camera-runtime.js";
 import { defaultConfigPath, readOptionalLocalConfig } from "./local-config.js";
 import {
   createPersonalOAuthFromEnvironment,
@@ -86,7 +90,7 @@ function unauthorized(res: ServerResponse, oauth: PersonalOAuthService): void {
 type CameraRelayDependencies = {
   relay: CameraRelayService;
   locator: CameraStreamLocator;
-  sessions: CameraWebRtcSessionService;
+  sessions: CameraViewerSessionStore;
   controller: CameraWebRtcSessionController;
 };
 
@@ -285,6 +289,8 @@ export async function startServer() {
     if (!oauth && !statusDashboardEnabled) return null;
     const { relay, sessions, controller } = createCameraRuntime({
       iceServerProvider,
+      maxViewers: cameraMaxViewersFromEnvironment(),
+      downstreamAdditionalHostAddresses: tailscaleHostAddresses(),
     });
     return {
       relay,

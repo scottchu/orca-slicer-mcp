@@ -72,6 +72,30 @@ export type CameraWebRtcSessionController = {
   close(sessionId: string): { closed: boolean };
 };
 
+/**
+ * Transport-neutral session store used by both the MCP Apps signaling helpers
+ * and the optional exact HTTP signaling adapter. The HTTP adapter supplies its
+ * already-issued one-time ticket as the public session id; the MCP Apps path
+ * lets the store issue a distinct opaque session id.
+ */
+export type CameraWebRtcSessionStore = {
+  open(
+    lease: CameraStreamLease,
+    existingSessionId?: string
+  ): Promise<OpenedCameraWebRtcSession>;
+  answer(sessionId: string, sdp: unknown): Promise<{ accepted: true }>;
+  addCandidates(
+    sessionId: string,
+    candidates: unknown
+  ): Promise<{ accepted: true; candidateCount: number }>;
+  close(sessionId: string): { closed: boolean };
+};
+
+/** Only server-owned downstream offers may cross the public HTTP boundary. */
+export type CameraViewerSessionStore = CameraWebRtcSessionStore & {
+  readonly privacyBoundary: "server-terminated-fanout";
+};
+
 export type CameraWebRtcSessionFailure =
   | "invalid_session"
   | "expired_session"

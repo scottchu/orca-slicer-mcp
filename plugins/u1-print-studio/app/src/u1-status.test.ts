@@ -4,7 +4,11 @@ import {
   CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS,
   createCameraOfferRequest,
   extractFirstJpeg,
+  normalizedCameraService,
+  normalizedPrintState,
+  normalizedToolState,
   resolveCameraUrl,
+  stripJpegMetadata,
 } from "./u1-status.js";
 
 const originalPrinterUrl = process.env.MOONRAKER_BASE_URL;
@@ -75,5 +79,57 @@ describe("streamed JPEG extraction", () => {
   test("waits for a complete, correctly framed JPEG", () => {
     expect(extractFirstJpeg(Buffer.from([0xff, 0xd8, 0x01]))).toBeNull();
     expect(extractFirstJpeg(Buffer.from([0x00, 0xff, 0xd8, 0xff, 0xd9]))).toBeNull();
+  });
+
+  test("strips EXIF, application, comments, and trailing identity metadata", () => {
+    const segment = (marker: number, payload: Buffer) => {
+      const header = Buffer.alloc(4);
+      header[0] = 0xff;
+      header[1] = marker;
+      header.writeUInt16BE(payload.length + 2, 2);
+      return Buffer.concat([header, payload]);
+    };
+    const jpeg = Buffer.concat([
+      Buffer.from([0xff, 0xd8]),
+      segment(0xe1, Buffer.from("Exif printer.local 192.168.50.44")),
+      segment(0xe2, Buffer.from("device-serial-private")),
+      segment(0xfe, Buffer.from("printer-mac-aa:bb:cc:dd:ee:ff")),
+      segment(0xdb, Buffer.from([0x00, 0x01])),
+      segment(0xda, Buffer.from([0x01, 0x01, 0x00, 0x00, 0x3f, 0x00])),
+      Buffer.from([0x01, 0x02, 0xff, 0x00, 0x03, 0xff, 0xd0, 0x04]),
+      Buffer.from([0xff, 0xd9]),
+      Buffer.from("trailing-private-device-id"),
+    ]);
+
+    const stripped = stripJpegMetadata(jpeg);
+    const text = stripped.toString("latin1");
+    expect(stripped.subarray(0, 2)).toEqual(Buffer.from([0xff, 0xd8]));
+    expect(stripped.subarray(-2)).toEqual(Buffer.from([0xff, 0xd9]));
+    expect(stripped.indexOf(Buffer.from([0xff, 0xdb]))).toBeGreaterThan(-1);
+    expect(stripped.indexOf(Buffer.from([0xff, 0xda]))).toBeGreaterThan(-1);
+    for (const privateValue of [
+      "printer.local",
+      "192.168.50.44",
+      "device-serial-private",
+      "aa:bb:cc:dd:ee:ff",
+      "trailing-private-device-id",
+    ]) {
+      expect(text).not.toContain(privateValue);
+    }
+  });
+});
+
+describe("closed public printer vocabulary", () => {
+  test("maps upstream state and service strings to normalized values", () => {
+    expect(normalizedPrintState("printing")).toBe("printing");
+    expect(normalizedPrintState("printer.local 192.168.50.44")).toBe("unknown");
+    expect(normalizedToolState("PARKED")).toBe("PARKED");
+    expect(normalizedToolState("device-serial-private")).toBe("UNKNOWN");
+    expect(normalizedCameraService("webrtc-camerastreamer", true, true)).toBe(
+      "webrtc"
+    );
+    expect(normalizedCameraService("printer.local/private-camera", true, true))
+      .toBe("snapshot");
+    expect(normalizedCameraService("device-serial-private", false, true)).toBeNull();
   });
 });

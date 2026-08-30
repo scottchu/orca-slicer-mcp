@@ -32,28 +32,36 @@ printer environments support the described behavior.
   event-triggered, or bounded-interval observations; continuous video ingestion
   is not required for the first monitor.
 - **CAM-004:** A user-opened continuous camera presentation creates an opaque,
-  bounded WebRTC signaling session with the printer-advertised, same-origin
-  `webrtc-camerastreamer` behind the host and connector boundary. An optional
-  exact HTTP adapter may exchange an authenticated single-use grant for that
-  same application session. Video frames flow over the negotiated peer
-  connection and presentation FPS is measured in the browser. ICE configuration
-  defaults empty. A bounded explicit STUN list may be supplied as an external
-  privacy and availability dependency; robust remote use prefers per-session
-  RFC5766 TURN REST credentials derived from a server-only shared secret.
-  Validated snapshots remain an explicit fallback. This does not imply
-  persistent ingestion or diagnostic quality.
+  bounded downstream WebRTC signaling session with the connector. The
+  connector terminates one shared H264 peer with the printer-advertised,
+  same-origin `webrtc-camerastreamer` behind the private operations boundary
+  and fans cloned encoded RTP packets into independent per-viewer tracks. An
+  optional exact HTTP adapter may exchange an authenticated single-use grant
+  for one such downstream session. Presentation FPS is measured in the browser.
+  Viewer count, answer time, duration, candidates, and Close are independently
+  bounded. ICE configuration defaults empty. A bounded explicit STUN list may
+  be supplied as an external privacy and availability dependency; robust remote
+  use may use per-viewer RFC5766 TURN REST credentials derived from a server-only
+  shared secret. Validated snapshots remain an explicit fallback. This does not
+  imply transcoding, persistent ingestion, or diagnostic quality.
 - **CAM-005:** A hosted MCP App iframe performs no direct fetch to a LAN,
   Tailscale, or media-signaling URL. Offer, answer, bounded ICE candidates, and
   close cross the MCP Apps `tools/call` bridge; opaque session and offer data
   remain component-private. The local connector alone invokes the
   printer-advertised fixed signaling route.
-- **CAM-006:** The printer camera peer and mounted widget receive the same
-  bounded ICE-server set for a camera session. TURN usernames contain a bounded
-  expiry and nonce, TURN credentials are derived with HMAC-SHA1 from a
-  server-only shared secret, and only derived credentials enter widget-private
-  metadata. Printer origins, printer peer IDs, session capabilities, TURN
-  secrets, and derived TURN credentials remain absent from model-readable
-  content and structured content.
+- **CAM-006:** The printer upstream and viewer downstream use distinct bounded
+  ICE-server sets. Each downstream viewer receives separately issued
+  credentials and may use an explicitly advertised server Tailscale host
+  candidate, STUN, or TURN. TURN usernames contain a bounded expiry and nonce,
+  credentials are derived with HMAC-SHA1 from a server-only shared secret, and
+  only downstream-derived credentials enter widget-private metadata. Printer
+  origins, upstream SDP/candidates/peer IDs/tickets/credentials, session
+  capabilities, and TURN secrets remain absent from every public or
+  model-readable envelope.
+- **CAM-007:** Closing or failing one viewer does not interrupt another. The
+  shared printer upstream closes when the last viewer closes or fails. TURN is
+  a fallback, not a prerequisite when a direct server host candidate is
+  reachable.
 
 ## Events and notifications
 
@@ -98,6 +106,11 @@ printer environments support the described behavior.
 - **DATA-002:** Printer control is not exposed directly to the public internet.
 - **DATA-003:** User models, projects, profiles, custom G-code, generated
   artifacts, local paths, and temporary files are private local data by default.
+- **DATA-004:** The printer is never a public API, MCP resource, or widget peer.
+  Public MCP, HTTP, health, widget, dashboard, and failure envelopes exclude
+  printer IP/hostname/MAC/serial/device identity, Moonraker/camera URLs,
+  upstream WebRTC SDP/candidates/peer IDs, printer credentials/tickets, raw
+  upstream errors/stacks, and JPEG application/comment/trailing metadata.
 - **AUTH-001:** The responsible boundary authenticates callers and records
   action-specific authority for upload, queue or selection changes, print start,
   and runtime commands regardless of which subsystem owns the action.
@@ -140,7 +153,9 @@ printer environments support the described behavior.
   `close_u1_camera_stream`). All eight are read-only and require `u1.monitor`.
   Opening the printer camera presents a snapshot-first widget. Only an explicit
   Go Live interaction may mint and consume a one-time widget-private activation
-  before allocating a bounded stream session.
+  before allocating a bounded stream session. Every explicit open or reopen
+  creates a fresh camera-v3 presentation; snapshot, live, retry, Close, and
+  fallback remain widget functionality rather than additional model commands.
 
 ## Architecture and ontology
 
@@ -154,9 +169,10 @@ printer environments support the described behavior.
 - **ARCH-004:** MCP and optional media HTTP adapters do not own camera ticket,
   session, lease, concurrency, duration, or signaling-size policy. Those
   policies remain in an application service behind transport-independent
-  ports. The printer-specific adapter owns the allowlisted WebRTC signaling
-  exchange, and neither inbound adapter exposes printer URLs, printer peer
-  identifiers, or a generic proxy.
+  ports. The printer-specific adapter owns the allowlisted upstream WebRTC
+  exchange. A server-terminated fan-out service owns the shared upstream and
+  independent downstream peers. Neither inbound adapter exposes a printer URL,
+  upstream identity or signaling envelope, or generic proxy.
 - **ARCH-005:** Host tool visibility is presentation metadata, not sufficient
   authorization. Camera stream allocation requires a current one-time
   widget-private application capability, and unanswered offers release their

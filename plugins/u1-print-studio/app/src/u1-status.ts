@@ -84,6 +84,83 @@ export type U1CameraJpeg = {
   observedAt: string;
 };
 
+/**
+ * Removes APP0-APP15, COM, and bytes trailing the first complete JPEG. Camera
+ * identity can otherwise leak through EXIF, XMP, ICC/application segments, or
+ * comments even when the pixels themselves are safe to relay.
+ */
+export function stripJpegMetadata(input: Buffer): Buffer {
+  if (input.length < 4 || input[0] !== 0xff || input[1] !== 0xd8) {
+    throw new Error("Printer camera image invalid");
+  }
+  const chunks: Buffer[] = [input.subarray(0, 2)];
+  let offset = 2;
+  let inEntropyData = false;
+
+  while (offset < input.length) {
+    if (inEntropyData) {
+      let cursor = offset;
+      let markerStart = -1;
+      while (cursor < input.length) {
+        if (input[cursor] !== 0xff) {
+          cursor += 1;
+          continue;
+        }
+        const candidateStart = cursor;
+        while (cursor < input.length && input[cursor] === 0xff) cursor += 1;
+        if (cursor >= input.length) break;
+        const marker = input[cursor];
+        if (marker === 0x00 || (marker >= 0xd0 && marker <= 0xd7)) {
+          cursor += 1;
+          continue;
+        }
+        markerStart = candidateStart;
+        break;
+      }
+      if (markerStart < 0) throw new Error("Printer camera image invalid");
+      chunks.push(input.subarray(offset, markerStart));
+      offset = markerStart;
+      inEntropyData = false;
+      continue;
+    }
+
+    if (input[offset] !== 0xff) {
+      throw new Error("Printer camera image invalid");
+    }
+    const markerStart = offset;
+    while (offset < input.length && input[offset] === 0xff) offset += 1;
+    if (offset >= input.length) throw new Error("Printer camera image invalid");
+    const marker = input[offset];
+    offset += 1;
+
+    if (marker === 0xd9) {
+      chunks.push(Buffer.from([0xff, 0xd9]));
+      return Buffer.concat(chunks);
+    }
+    if (marker === 0xd8 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) {
+      chunks.push(input.subarray(markerStart, offset));
+      continue;
+    }
+    if (offset + 2 > input.length) {
+      throw new Error("Printer camera image invalid");
+    }
+    const segmentLength = input.readUInt16BE(offset);
+    if (segmentLength < 2 || offset + segmentLength > input.length) {
+      throw new Error("Printer camera image invalid");
+    }
+    const segmentEnd = offset + segmentLength;
+    const isApplicationMetadata = marker >= 0xe0 && marker <= 0xef;
+    const isComment = marker === 0xfe;
+    if (!isApplicationMetadata && !isComment) {
+      chunks.push(input.subarray(markerStart, segmentEnd));
+    }
+    offset = segmentEnd;
+    if (marker === 0xda) inEntropyData = true;
+  }
+
+  throw new Error("Printer camera image invalid");
+}
+
 function asObject(value: unknown): JsonObject {
   return value && typeof value === "object" && !Array.isArray(value)
     ? (value as JsonObject)
@@ -228,7 +305,47 @@ function stateLabel(state: string, reachable: boolean): string {
     cancelled: "Cancelled",
     error: "Error",
   };
-  return labels[state] ?? state.replace(/^./, (letter) => letter.toUpperCase());
+  return labels[state] ?? "Unknown";
+}
+
+const PRINT_STATES = new Set([
+  "standby",
+  "printing",
+  "paused",
+  "complete",
+  "cancelled",
+  "error",
+]);
+
+export function normalizedPrintState(value: unknown): string {
+  const state = asString(value).trim().toLowerCase();
+  return PRINT_STATES.has(state) ? state : state ? "unknown" : "standby";
+}
+
+const TOOL_STATES = new Set([
+  "ACTIVE",
+  "PARKED",
+  "HEATING",
+  "COOLING",
+  "STANDBY",
+  "IDLE",
+  "UNKNOWN",
+]);
+
+export function normalizedToolState(value: unknown): string {
+  const state = asString(value).trim().toUpperCase();
+  return TOOL_STATES.has(state) ? state : "UNKNOWN";
+}
+
+export function normalizedCameraService(
+  value: unknown,
+  snapshotAvailable: boolean,
+  streamAvailable: boolean
+): string | null {
+  if (streamAvailable && asString(value) === "webrtc-camerastreamer") {
+    return "webrtc";
+  }
+  return snapshotAvailable ? "snapshot" : null;
 }
 
 export function resolveCameraUrl(value: unknown): URL | null {
@@ -400,9 +517,10 @@ export function createCameraOfferRequest(
     iceServers,
     payload: {
       type: "request",
-      // Both peers receive the same explicit STUN list and per-request TURN
-      // REST credentials. The server-side shared secret never enters this
-      // printer request or the MCP result.
+      // This issue is private to the upstream printer peer. The fan-out service
+      // obtains a separate issue for every downstream viewer, so credentials
+      // are never shared across the upstream/downstream boundary. The
+      // server-side shared secret enters neither request nor MCP results.
       iceServers,
       keepAlive: true,
       timeout_s: 1_800,
@@ -422,7 +540,10 @@ export async function readU1CameraJpeg(
     if (signal?.aborted) break;
     const bytes = await fetchJpeg(snapshotUrl, timeout, signal).catch(() => null);
     if (bytes) {
-      return { bytes, observedAt: new Date().toISOString() };
+      return {
+        bytes: stripJpegMetadata(bytes),
+        observedAt: new Date().toISOString(),
+      };
     }
     if (signal?.aborted) break;
   }
@@ -461,8 +582,7 @@ export async function readU1CameraFrame(): Promise<{
         available: false,
         mediaType: null,
         byteLength: 0,
-        reason:
-          error instanceof Error ? error.message : "Printer camera unavailable",
+        reason: "Printer camera unavailable",
       },
       metadata: {},
     };
@@ -490,16 +610,16 @@ export async function readU1Status(): Promise<{
     const bed = asObject(objects.heater_bed);
     const toolhead = asObject(objects.toolhead);
     const activeExtruder = asString(toolhead.extruder);
-    const rawState = asString(printStats.state) || "standby";
+    const state = normalizedPrintState(printStats.state);
     const progress = Math.max(
       0,
       Math.min(1, asNumber(display.progress, asNumber(virtualSd.progress)))
     );
     const elapsedSeconds = asNumber(printStats.print_duration);
     const remainingSeconds =
-      rawState === "printing" && progress > 0
+      state === "printing" && progress > 0
         ? Math.max(0, elapsedSeconds * ((1 - progress) / progress))
-        : rawState === "complete"
+        : state === "complete"
           ? 0
           : null;
     const exception = Object.keys(asObject(printStats.exception)).length > 0;
@@ -511,7 +631,7 @@ export async function readU1Status(): Promise<{
           physicalTool: index + 1,
           temperature: asNumber(object.temperature),
           target: asNumber(object.target),
-          state: asString(object.state) || "UNKNOWN",
+          state: normalizedToolState(object.state),
           active: activeExtruder === objectName,
         };
       }
@@ -533,8 +653,8 @@ export async function readU1Status(): Promise<{
         stateVersion: Date.now(),
         observedAt,
         reachable: true,
-        state: rawState,
-        stateLabel: stateLabel(rawState, true),
+        state,
+        stateLabel: stateLabel(state, true),
         progressPercent: Math.round(progress * 1_000) / 10,
         currentLayer:
           typeof info.current_layer === "number" ? info.current_layer : null,
@@ -542,7 +662,7 @@ export async function readU1Status(): Promise<{
         elapsedSeconds,
         remainingSeconds,
         refreshAfterSeconds: recommendedRefreshSeconds(
-          rawState,
+          state,
           progress,
           remainingSeconds,
           exception
@@ -564,11 +684,19 @@ export async function readU1Status(): Promise<{
           filePosition: asNumber(virtualSd.file_position),
           fileSize: asNumber(virtualSd.file_size),
         },
-        printerMessage: asString(printStats.message) || null,
+        printerMessage: asString(printStats.message)
+          ? exception
+            ? "Printer reported an exception."
+            : "Printer reported a status message."
+          : null,
         exception,
         camera: {
           available: Boolean(snapshotUrl || streamUrl),
-          service: asString(webcam.service) || null,
+          service: normalizedCameraService(
+            webcam.service,
+            Boolean(snapshotUrl),
+            Boolean(streamUrl)
+          ),
           targetFps:
             typeof webcam.target_fps === "number" ? webcam.target_fps : null,
         },
@@ -576,7 +704,6 @@ export async function readU1Status(): Promise<{
       metadata: {},
     };
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Printer unavailable";
     return {
       status: {
         schemaVersion: 1,
@@ -596,7 +723,7 @@ export async function readU1Status(): Promise<{
         tools: [],
         bed: { temperature: 0, target: 0 },
         storage: { active: false, filePosition: 0, fileSize: 0 },
-        printerMessage: message,
+        printerMessage: "Printer unavailable",
         exception: true,
         camera: { available: false, service: null, targetFps: null },
       },

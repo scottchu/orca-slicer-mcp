@@ -2,7 +2,11 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 
 import { createAppServer } from "./app.js";
 import { createCameraIceServerProvider } from "./camera-ice-config.js";
-import { createCameraRuntime } from "./camera-runtime.js";
+import {
+  cameraMaxViewersFromEnvironment,
+  createCameraRuntime,
+  tailscaleHostAddresses,
+} from "./camera-runtime.js";
 import { readLocalConfig } from "./local-config.js";
 
 export async function startStdioConnector(): Promise<void> {
@@ -11,6 +15,8 @@ export async function startStdioConnector(): Promise<void> {
     iceServerProvider: createCameraIceServerProvider(process.env, {
       configuredStunUrls: config.camera.stunUrls,
     }),
+    maxViewers: cameraMaxViewersFromEnvironment(),
+    downstreamAdditionalHostAddresses: tailscaleHostAddresses(),
   });
   const server = createAppServer({ cameraSessions: camera.controller });
   const transport = new StdioServerTransport();

@@ -80,9 +80,9 @@
               message.id,
               await callTool(message.params?.name, message.params?.arguments ?? {})
             );
-          } catch (error) {
-            reply(message.id, null, { code: -32000, message: error.message });
-            bridgeState.textContent = `tool failed · ${error.message}`;
+          } catch {
+            reply(message.id, null, { code: -32000, message: "tool_failed" });
+            bridgeState.textContent = "tool failed";
           }
           return;
         }

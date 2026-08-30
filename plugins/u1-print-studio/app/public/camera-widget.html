@@ -437,6 +437,9 @@
       let liveFrameCallback = null;
       let liveFrameTimes = [];
       let measuredLiveFps = null;
+      let configuredIceMode = "unknown";
+      let selectedIcePath = null;
+      let fallbackDetail = null;
 
       const rpcNotify = (method, params) => {
         window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
@@ -485,12 +488,20 @@
           ? (measuredLiveFps >= 10 ? measuredLiveFps.toFixed(0) : measuredLiveFps.toFixed(1))
           : null;
         const labels = {
-          loading: "Connecting",
+          loading: elements.camera.classList.contains("has-snapshot")
+            ? "Connecting · snapshot"
+            : "Connecting",
           snapshot: observedLabel ? `Snapshot · ${observedLabel}` : "Snapshot",
-          fallback: observedLabel
-            ? `Snapshot fallback · ${observedLabel}`
-            : "Snapshot fallback",
-          live: fpsLabel ? `Live · ${fpsLabel} FPS` : "Live · measuring FPS",
+          fallback: fallbackDetail
+            ? `Fallback · ${fallbackDetail}`
+            : observedLabel
+              ? `Snapshot fallback · ${observedLabel}`
+              : "Snapshot fallback",
+          live: selectedIcePath
+            ? `Live · ${selectedIcePath}${fpsLabel ? ` · ${fpsLabel} FPS` : ""}`
+            : fpsLabel
+              ? `Live · ${fpsLabel} FPS`
+              : "Live · measuring FPS",
           unavailable: "Camera unavailable",
         };
         elements.cameraDetail.dataset.mode = mode;
@@ -508,8 +519,17 @@
         ) {
           elements.snapshot.src = dataUrl;
           setCameraState("loading", true);
-          setCameraMode(livePreview ? "fallback" : "snapshot", frame.observedAt);
+          setCameraMode(
+            livePreview ? (fallbackDetail ? "fallback" : "loading") : "snapshot",
+            frame.observedAt
+          );
           return true;
+        }
+        if (livePreview && elements.camera.classList.contains("has-snapshot")) {
+          const mode = fallbackDetail ? "fallback" : "loading";
+          setCameraMode(mode);
+          setCameraState(mode, mode === "loading");
+          return false;
         }
         if (!relayRendering) elements.camera.classList.remove("has-snapshot");
         setCameraMode("unavailable");
@@ -519,9 +539,15 @@
 
       elements.snapshot.addEventListener("load", () => {
         elements.camera.classList.add("has-snapshot");
-        const mode = livePreview ? (relayRendering ? "live" : "fallback") : "snapshot";
-        setCameraState(mode);
-        if (mode === "live") setCameraMode("live");
+        const mode = livePreview
+          ? relayRendering
+            ? "live"
+            : fallbackDetail
+              ? "fallback"
+              : "loading"
+          : "snapshot";
+        setCameraState(mode, mode === "loading");
+        setCameraMode(mode);
       });
       elements.snapshot.addEventListener("error", () => {
         if (livePreview && relayRendering) return;
@@ -624,13 +650,64 @@
         );
       };
 
+      const fallbackMessage = (reason) => {
+        const normalized = String(reason || "relay unavailable").toLowerCase();
+        if (normalized.includes("busy") || normalized.includes("active")) {
+          return "camera session busy";
+        }
+        if (normalized.includes("activation")) return "activation expired";
+        if (
+          normalized.includes("ice") ||
+          normalized.includes("connection") ||
+          normalized.includes("rendered video")
+        ) {
+          return configuredIceMode === "turn"
+            ? "ICE path failed (TURN configured)"
+            : configuredIceMode === "stun"
+              ? "ICE path failed (STUN-only)"
+              : "ICE path failed (direct-only)";
+        }
+        if (normalized.includes("playback")) return "video playback blocked";
+        if (normalized.includes("track ended")) return "video track ended";
+        return "stream unavailable";
+      };
+
+      const readSelectedIcePath = async (peer) => {
+        try {
+          const stats = await peer.getStats();
+          let pair = null;
+          for (const report of stats.values()) {
+            if (report.type === "transport" && report.selectedCandidatePairId) {
+              pair = stats.get(report.selectedCandidatePairId);
+              break;
+            }
+            if (report.type === "candidate-pair" && report.nominated && report.state === "succeeded") {
+              pair = report;
+            }
+          }
+          const local = pair?.localCandidateId ? stats.get(pair.localCandidateId) : null;
+          const remote = pair?.remoteCandidateId ? stats.get(pair.remoteCandidateId) : null;
+          const localType = local?.candidateType;
+          const remoteType = remote?.candidateType;
+          const protocol = local?.protocol;
+          if (localType || remoteType) {
+            selectedIcePath = [localType, remoteType].filter(Boolean).join("→");
+            if (protocol) selectedIcePath += `/${protocol}`;
+            setCameraMode("live");
+          }
+        } catch {
+          // Connection remains usable when the host withholds WebRTC stats.
+        }
+      };
+
       const activateSnapshotFallback = (reason = "relay unavailable") => {
         if (!livePreview) return;
+        fallbackDetail = fallbackMessage(reason);
         stopLiveStream();
         elements.camera.dataset.cameraMode = "live";
         setCameraState("loading", true);
         setCameraMode("fallback");
-        elements.cameraStatus.title = `Camera snapshot fallback active: ${reason}`;
+        elements.cameraStatus.title = `Camera snapshot fallback active: ${fallbackDetail}`;
         void refreshCameraFrame();
       };
 
@@ -652,6 +729,7 @@
         ) {
           throw new Error(response?.structuredContent?.reason ?? "relay unavailable");
         }
+        configuredIceMode = response?.structuredContent?.iceMode ?? "unknown";
 
         const peer = new RTCPeerConnection({
           sdpSemantics: "unified-plan",
@@ -687,7 +765,11 @@
         };
         peer.onconnectionstatechange = () => {
           if (livePeerConnection !== peer || !livePreview) return;
-          if (peer.connectionState === "failed") {
+          if (peer.connectionState === "connected") {
+            clearTimeout(liveConnectionFallbackTimer);
+            liveConnectionFallbackTimer = null;
+            void readSelectedIcePath(peer);
+          } else if (peer.connectionState === "failed") {
             activateSnapshotFallback("connection failed");
           } else if (peer.connectionState === "disconnected") {
             clearTimeout(liveConnectionFallbackTimer);
@@ -717,6 +799,9 @@
         if (!hosted || livePreview) return;
         livePreview = true;
         relayRendering = false;
+        configuredIceMode = "unknown";
+        selectedIcePath = null;
+        fallbackDetail = null;
         elements.camera.dataset.cameraMode = "live";
         clearTimeout(snapshotFallbackTimer);
         setCameraState("loading", true);
@@ -797,7 +882,7 @@
       const initializeBridge = async () => {
         if (!hosted) return null;
         const result = await rpcRequest("ui/initialize", {
-          appInfo: { name: "u1-camera-widget", version: "0.2.0-camera-v2" },
+          appInfo: { name: "u1-camera-widget", version: "0.2.0-camera-v3" },
           appCapabilities: {},
           protocolVersion: "2026-01-26",
         });
