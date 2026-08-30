@@ -165,7 +165,7 @@ service or shared secret is configured.
 
 ## Next smallest action
 
-Independently review and deliver the standalone-camera routing guard through a
+Deliver the independently approved standalone-camera routing guard through a
 pull request. Do not reinstall or restart anything without fresh rollout
 authorization. After rollout, fully quit and relaunch the host before invoking
 `open_printer_camera`; a status-card substitution is failure. Separately observe

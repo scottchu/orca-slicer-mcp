@@ -270,7 +270,7 @@ and final repository-check results.
 
 ## Next action
 
-Independently review and deliver the standalone-camera routing guard through a
+Deliver the independently approved standalone-camera routing guard through a
 pull request. After a separately authorized reinstall, fully quit and relaunch
 Codex Desktop before testing `open_printer_camera`; never accept a status-card
 substitution. Then verify one real printer upstream shared by at least two

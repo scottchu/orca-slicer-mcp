@@ -1709,9 +1709,27 @@ From the repository root:
 
 ### Unverified later layers
 
-- The exact source has not been independently reviewed, pushed, merged,
+- The exact source is independently approved but has not been merged,
   release-staged, reinstalled, or loaded by a freshly relaunched host.
 - A full Codex Desktop quit/relaunch and an actual `open_printer_camera` call
   remain the next mounted-host gate. Any status-card substitution is a failure.
 - Real U1 fan-out, two simultaneous viewers, mobile ICE, and TURN remain
   separate evidence gates. No printer-control action is authorized.
+
+### Independent review
+
+- Role: independent code and documentation reviewer, separate from the
+  implementation role.
+- Exact reviewed commit:
+  `4045f352729720d51d46ad8aa308c7e84c47d33a`.
+- Verdict: **APPROVE**, with no findings.
+- The reviewer independently verified `bun run check`, the full 93-test and
+  569-assertion suite, `bun run bundle`, `bun run bundle:runtime`, standalone
+  `codesign` verification, Plugin Creator validation, both touched Skill
+  Creator validations, `./scripts/check-repository.sh`, and
+  `git diff --check`.
+- This approval accepts the source routing guard, manifest-supported prompt,
+  three-plus-five inventory wording, test contract, and durable records. It
+  does not accept mounted-host behavior, the live camera, a new installed
+  plugin, or user outcome. Those remain blocked on a full Codex Desktop quit
+  and relaunch followed by an observed `open_printer_camera` mount.
