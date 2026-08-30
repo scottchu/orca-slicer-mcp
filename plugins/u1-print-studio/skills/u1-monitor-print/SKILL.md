@@ -36,6 +36,20 @@ Immediately alert on printer errors, connectivity loss, detached objects,
 spaghetti, or another visually obvious failure. Describe evidence and
 uncertainty; do not infer success from silence.
 
+## Standalone camera requests
+
+Treat a request such as "Open printer camera" as a focused camera presentation,
+not as a request to open or refresh the monitoring dashboard. For standalone
+camera requests, call only model-visible `open_printer_camera`; never substitute
+`show_u1_status`, `get_u1_status`, app-only `get_u1_camera_frame`, or app-only
+`open_u1_camera_stream`.
+
+If `open_printer_camera` is missing from the current tool inventory or its
+camera resource cannot be loaded, report that the current MCP
+connection/descriptor is stale or unavailable and stop. Ask the user to reload
+the plugin connection or fully quit and relaunch the host before retrying. Never
+open the status card as a camera fallback.
+
 ## Completion
 
 Layer `N/N` is insufficient while state remains `printing`. Completion requires

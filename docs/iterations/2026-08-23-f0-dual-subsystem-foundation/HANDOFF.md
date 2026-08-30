@@ -700,3 +700,40 @@ later event. The adapter now subscribes first, synchronously inspects current
 connection state, invokes termination at most once, and returns an idempotent
 unsubscriber. Actual-factory regressions cover an already-failed upstream and
 an already-closed viewer; neither is published and both clean up fully.
+
+## Standalone camera routing regression source handoff — 2026-08-29
+
+Pull request 26 merged decision 0020 as `4f9041c`, and Personal Marketplace
+version `0.2.0+codex.20260830013924` was installed with both existing services
+on schema 4/camera-v3. The first user attempt then created a new conversation
+inside a Codex Desktop process that predated the reinstall. That process did
+not expose `open_printer_camera`; the model selected `u1-monitor-print` and
+substituted `show_u1_status`, so the whole status card mounted.
+
+This branch applies the smallest source repair without changing camera-v3 or
+the live runtime. Standalone camera requests in both monitor and mobile-setup
+guidance must call only `open_printer_camera`. If the tool or resource is
+unavailable, the guidance reports a stale/unavailable MCP connection, asks for
+a plugin reload or full host relaunch, and stops. It explicitly prohibits
+status, frame, or stream-helper substitution. Packaging now records that a new
+conversation alone did not replace the retained desktop MCP process.
+
+The plugin manifest uses the already-supported `interface.defaultPrompt`
+field, keeps the supported maximum of three entries, and puts `Open my printer
+camera.` first. Mobile setup now consistently reports the three model-visible
+plus five app-only inventory. A focused Bun contract locks routing, fail-closed
+behavior, inventory, starter prompts, and full-host reload guidance.
+
+Changed paths are limited to the two procedural skills, plugin manifest,
+packaging guidance, the focused contract test, and current continuity/
+iteration records. TypeScript, 93 tests with 569 assertions, both bundles,
+standalone signature verification, plugin validation, and both touched skill
+validators pass. No printer, installed plugin, service, OAuth state, Tailscale
+route, or mounted host was contacted or changed.
+
+The exact-tree repository contract and whitespace check also pass. Next: obtain
+independent review and deliver this non-main branch through a pull request. Do
+not reinstall or restart without fresh rollout authorization. After rollout,
+fully quit and relaunch Codex Desktop before invoking `open_printer_camera`;
+reject any status-card substitution. Real multi-viewer, mobile, and TURN
+acceptance remain separate gates.

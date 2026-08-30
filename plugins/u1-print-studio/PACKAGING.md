@@ -53,13 +53,15 @@ optional personal HTTP service returns the same contract from `/health`.
 Upgrade verification must compare these values with the intended source before
 asking a user to test a fresh task; process liveness alone is insufficient.
 
-Plugin installation and upgrades take effect in a new ChatGPT or Codex task.
-Existing tasks can retain the prior installed MCP process and widget resource
-URI, so they are not an upgrade acceptance surface. The server keeps the
-immediately preceding widget URI readable as a compatibility alias so already
-rendered cards can recover their UI resource while users move to a new task.
-Do not replace the portable relative runtime command with a machine-specific
-absolute path to make an old task appear current.
+Plugin installation and upgrades require a newly loaded MCP process. Existing
+tasks can retain the prior process and widget URI, and one observed Codex
+Desktop process retained them even after a new conversation. Fully quit and
+relaunch a host that predates the install before upgrade acceptance; a new task
+alone is not sufficient evidence. The server keeps the immediately preceding
+widget URI readable as a compatibility alias so already rendered cards can
+recover while the host reloads. Do not replace the portable relative runtime
+command with a machine-specific absolute path to make an old process appear
+current.
 
 This private repository currently has no license file. Do not describe or
 publish an artifact as an open-source distribution until the owner selects a

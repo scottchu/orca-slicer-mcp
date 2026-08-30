@@ -1629,3 +1629,89 @@ From the repository root:
   decision-0019 predecessor. It does not accept this fan-out repair.
 - No push, merge, release staging, install, service restart, route/auth change,
   or printer control occurred.
+
+## Standalone camera routing regression source validation — 2026-08-29
+
+### Acceptance and safety boundary
+
+- Milestone: F0 dual-environment and contract discovery. The open question is
+  whether a standalone "Open printer camera" request can ever be redirected to
+  the status workflow when the current camera descriptor is unavailable.
+- Acceptance requires both monitor and setup guidance to call only the
+  model-visible `open_printer_camera` tool for that intent. Missing tools or
+  resource-read failures must be reported as stale/unavailable connection state;
+  `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
+  `open_u1_camera_stream` are prohibited substitutes.
+- The inventory remains exactly three model-visible tools plus five app-only
+  helpers. Camera-v3, fan-out, privacy, OAuth, enrollment, ICE, and read-only
+  boundaries are unchanged.
+- This change is local source/software evidence only. It did not push, merge,
+  reinstall, restart, mutate a service or route, contact a printer, or verify a
+  mounted host.
+
+### Prior rollout and observed regression
+
+- Pull request 26 previously merged decision 0020 as `4f9041c`. Personal
+  Marketplace version `0.2.0+codex.20260830013924` was rebuilt from that merge
+  and installed; both existing services restarted on schema 4/camera-v3 while
+  OAuth state and Tailscale routing stayed unchanged.
+- A new conversation inside a Codex Desktop process started before that
+  reinstall still lacked `open_printer_camera`. It selected the monitor skill
+  and called `show_u1_status`, mounting the entire status card. This is
+  stale-host-process and guidance-regression evidence. It is not evidence that
+  the rebuilt camera-v3 resource includes status-card markup.
+- The packaging record now requires a fully new host process for upgrade
+  acceptance when the host predates installation. A new conversation alone is
+  not sufficient evidence.
+
+### Implemented contract
+
+- `u1-monitor-print` and `u1-mobile-status-setup` contain the same exclusive
+  routing guard and fail-closed reload guidance.
+- Mobile setup wording now names exactly three model-visible tools and five
+  app-only helpers; stale four-tool completion wording is absent.
+- Plugin Creator's supported `interface.defaultPrompt` array now has three
+  entries, within the schema's three-prompt limit, with `Open my printer
+  camera.` first. No unsupported manifest field was added.
+- `camera-routing-contract.test.ts` locks the exclusive routing text, failure
+  behavior, inventory, supported starter prompts, and fresh-host-process
+  packaging guidance.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun install --frozen-lockfile`: passed with 145 packages installed and no
+  lockfile change.
+- `bun test src/camera-routing-contract.test.ts`: passed 4 tests with 12
+  assertions.
+- `bun run check`: passed TypeScript compilation.
+- `bun test src/*.test.ts`: passed 93 tests with 569 assertions across 13
+  files.
+- `bun run bundle`: passed from 588 modules and emitted the 2.73 MB stdio
+  bundle plus 33.73 KB camera and 57.45 KB status assets.
+- `bun run bundle:runtime`: passed and produced the validation-only ad-hoc
+  signed standalone runtime.
+- `codesign -vvv --verify ./dist/u1-print-studio`: reported valid on disk and
+  satisfied its designated requirement.
+
+From the repository root:
+
+- Plugin Creator validation through `uv run --no-project --with pyyaml`:
+  passed.
+- Skill Creator validation through the same `uv` boundary passed for both
+  touched skills: `u1-monitor-print` and `u1-mobile-status-setup`.
+
+- `./scripts/check-repository.sh`: passed on the exact documented tree,
+  including TypeScript and all 93 tests with 569 assertions; final output was
+  `repository contract: ok`.
+- `git diff --check`: passed on the same tree.
+
+### Unverified later layers
+
+- The exact source has not been independently reviewed, pushed, merged,
+  release-staged, reinstalled, or loaded by a freshly relaunched host.
+- A full Codex Desktop quit/relaunch and an actual `open_printer_camera` call
+  remain the next mounted-host gate. Any status-card substitution is a failure.
+- Real U1 fan-out, two simultaneous viewers, mobile ICE, and TURN remain
+  separate evidence gates. No printer-control action is authorized.
