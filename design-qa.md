@@ -1,5 +1,39 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Current placement: information above, actions below
+
+Scoped result: passed, with no blocking findings. The user's latest rule and
+decision 0023's supersession govern this review. Earlier observation-footer
+timestamps and bottom-left camera information in the records below are
+historical accepted placements, now superseded rather than rules to restore.
+Product Design review guidance informed inspection of all ten current captures.
+
+1. **Observation information and actions — passed.** Progress, Heads and
+   Thermals captures at 320/390 pixels show observation time under the title
+   and only Refresh at the bottom. The 720-pixel stale view and 320-pixel
+   refresh-failure view retain readable top feedback without clipping. Domain
+   content and segmented-layer rendering remain intact; no removed permission
+   or provenance boilerplate returns.
+2. **Failed loading — passed.** The actual deadline capture keeps explanatory
+   text above bottom Retry and invents no observation time. Separate browser
+   checks cover all eight shared observation layouts, Retry recovery, and
+   preservation of pending state/top errors during segmented regrouping.
+3. **Camera information stack — passed.** Snapshot/live information sits at
+   the top, display rejection flows below it, and unavailable text is top-aligned
+   with only the decorative camera icon centered. Bottom-right display/live
+   controls remain distinct, full-sized and unobstructed. The validator also
+   checks narrow rejection stacking and loading without actionable controls.
+
+The reviewer independently passed 71 focused tests/1,576 assertions and
+verified identical camera JavaScript and layer-calculation bytes against the
+prior source. Exact reviewed observation/camera HTML hashes are
+`3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b` and
+`0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483`.
+The external `info-layout-captures` collection and iteration `VALIDATION.md`
+record exact synthetic-browser evidence. This accepts source and scoped rendered
+layout, not deployment, actual mobile-host/PiP, full accessibility compliance,
+new printer mappings or physical/user acceptance.
+
 ## Camera bottom-right controls — independent rendered review
 
 Scoped result: passed against decision 0023's latest placement refinement,

@@ -85,13 +85,20 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
 }
 
 describe("camera widget presentation runtime", () => {
-  test("groups existing display and live controls beside the bottom timestamp", () => {
+  test("separates top camera information from bottom display and live controls", () => {
     const body = html.split("<body")[1]!.split('<script type="module">')[0]!;
     const cluster = body.match(/<div class="camera-controls">([\s\S]*?)<\/div>/)![1]!;
     const ids = [...cluster.matchAll(/<button[^>]+id="([^"]+)"/g)].map(match => match[1]);
     expect(ids).toEqual(["picture-in-picture", "fullscreen", "go-live", "close-live"]);
     expect(body.indexOf('class="camera-controls"')).toBeGreaterThan(body.indexOf('class="camera-bottom"'));
     expect(body.indexOf('class="camera-controls"')).toBeGreaterThan(body.indexOf('id="camera-detail-label"'));
+    const information = body.split('<div class="camera-info">')[1]!.split('<div class="camera-bottom">')[0]!;
+    const actions = body.split('<div class="camera-bottom">')[1]!;
+    for (const id of ["camera-empty-message", "camera-detail", "camera-detail-label", "display-feedback"]) {
+      expect(information).toContain(`id="${id}"`);
+      expect(actions).not.toContain(`id="${id}"`);
+    }
+    expect(information).not.toContain("<button");
     expect(body.match(/id="picture-in-picture"/g)).toHaveLength(1);
     expect(body.match(/id="fullscreen"/g)).toHaveLength(1);
     expect(html).not.toContain("camera-top");
@@ -104,7 +111,13 @@ describe("camera widget presentation runtime", () => {
     expect(displayStyle).toContain("width: 44px;");
     expect(displayStyle).toContain("height: 44px;");
     expect(displayStyle).toContain("flex: none;");
-    expect(html.match(/\.display-feedback \{([^}]+)\}/)![1]).toContain("top: 12px;");
+    const informationStyle = html.match(/\.camera-info \{([^}]+)\}/)![1]!;
+    expect(informationStyle).toContain("top: 12px;");
+    expect(informationStyle).toContain("flex-direction: column;");
+    expect(informationStyle).toContain("gap: 8px;");
+    expect(html.match(/\.display-feedback \{([^}]+)\}/)![1]).not.toContain("position:");
+    expect(html).toContain('.camera.has-snapshot .camera-info-message,');
+    expect(html).toContain('.camera[data-camera-status="unavailable"] .camera-mode { display: none; }');
     expect(html).toContain('.display-button[hidden] { display: none; }');
     expect(html).toContain('.camera-button[hidden] { display: none; }');
   });

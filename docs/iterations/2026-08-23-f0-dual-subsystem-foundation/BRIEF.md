@@ -5,7 +5,21 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: group camera fullscreen and picture-in-picture
+- Current execution order: apply the user's latest principle, information
+  above and actionable buttons below, across current observation and camera
+  widgets. Decision 0023's newest supersession and OBS-008/CAM-008 replace the
+  earlier timestamp-at-bottom requirement: observation time/freshness/errors
+  join the top title area; Refresh/Retry alone remain at the bottom right.
+  Camera state/time/feedback move to a top stack, while PiP/Fullscreen/Live
+  stay bottom right. Preserve all data, segmented-layer semantics and camera
+  media behavior. Independent validation passes 144 app tests/1,931 assertions,
+  21 lifecycle tests, repository/TypeScript/bundle/signature/asset checks and
+  ten browser captures. Independent code/visual review approves without
+  findings, with 71 tests/1,576 assertions passing. Update the same PR32.
+  No deployment, merge, plugin/service, auth/routing or printer action is
+  authorized by this layout refinement.
+- Previous source follow-up, delivered as `081929e`: group camera fullscreen and picture-in-picture
+  (its bottom status/time placement is superseded by the current principle)
   beside Go Live/Close at the bottom right, per decision 0023's newest dated
   refinement. Keep status/time left, accessible targets, responsive wrapping,
   and existing media/display behavior; no runtime signaling change. Validate

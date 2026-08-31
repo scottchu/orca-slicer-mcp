@@ -1,5 +1,87 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 top-information and bottom-actions validation
+
+The user's newest direction supersedes the earlier bottom-timestamp placement:
+observation time, freshness and refresh errors now belong beneath the title;
+only actions remain in the footer. Camera information occupies a top stack,
+including loading/unavailable text and display feedback; its previously
+reviewed control cluster remains at bottom right. Earlier entries below record
+historical acceptance, not instructions to restore the superseded placement.
+
+- The independent `./scripts/check-repository.sh` run passed TypeScript,
+  **144 app tests / 1,931 assertions**, **21 lifecycle tests**, and the repository
+  contract. Existing segmented-layer and camera behavior regressions passed
+  alongside the new header/footer and loading-guidance structure tests.
+- All three bundle commands, standalone signature verification, and exact
+  source/bundled comparisons for both current widget assets passed. The
+  camera module script exactly matches `081929e`; both frozen legacy HTML
+  files remain unchanged. Current observation and camera HTML intentionally
+  changed, so their earlier whole-file hashes are not claimed unchanged.
+  `git diff --check` passed.
+- A reused, inspected loopback fixture served exact production HTML to fresh
+  isolated Chrome `152.0.7977.65` contexts through Playwright 1.55.0. Captures
+  used device scale factor 1, `en-GB`, UTC and selected light/dark themes.
+  Camera JPEG/canvas-video data and host signaling were synthetic; an RTC
+  substitute prevented real media-peer creation. Requests were restricted to
+  the loopback fixture/data URLs, with service workers and background
+  networking disabled. Zero external requests and console/page errors were
+  recorded.
+- **Ten screenshots** cover Progress at 390/light, Heads at 390/dark,
+  Thermals at 320/light, stale Progress at 720/dark, refresh failure at
+  320/dark, loading failure at 390/light, and camera Snapshot at 320, Live at
+  390, display rejection at 720 and unavailable state at 320. The validator
+  opened and inspected all ten actual captures. Every checked layout fits
+  without horizontal overflow; informational content precedes actions.
+- **Fourteen additional DOM/behavior cases passed.** Eight verify each
+  shared observation view independently: exactly one timestamp in its header,
+  refresh errors in the header, one action-only footer, 44-pixel controls,
+  and none of the removed read-only/current-reading/provenance copy. These
+  capture-only mounts made no tool calls.
+- The remaining six cases cover: a real 15-second loading deadline with
+  guidance above the Retry-only footer and recovery to supplied data;
+  pending/error resize preservation; camera Live-to-Close placement;
+  narrow display-rejection stacking; camera loading information at the top
+  without controls; and a complete missing-time camera label at the top.
+- The resize check inspects the **actual browser DOM**, not the VM test's
+  stand-in node. After an explicit synthetic refresh, 390-to-720 regrouping
+  preserved the disabled button and header time. After a supplied failure,
+  720-to-390 regrouping preserved the exact visible header error and time.
+  There was only the one explicitly requested fixture refresh.
+- Camera information and the three unchanged bottom controls do not overlap.
+  Display feedback flows below the top status pill at both 720 and 320 pixels.
+  At 320, `Snapshot · Time unavailable` remains fully visible at the top,
+  without clipping, with all three 44-pixel actions below it. Loading and
+  unavailable messages are top information; only the decorative empty-camera
+  icon remains centered.
+
+Actual commands were `bun --no-env-file --config=/dev/null run
+fixture-server.ts`, `U1_INFO_FIXTURE_ORIGIN=<loopback-fixture-origin> node
+capture-info-layout.mjs`, and the bounded supplementary
+`check-info-missing-time.mjs` command with the same origin. App checks used
+`bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+`codesign -vvv --verify dist/u1-print-studio`, and `cmp` for both HTML assets.
+An exact module-script extraction/comparison against Git confirmed camera
+JavaScript identity; `git diff --exit-code 081929e --` with the two legacy
+asset paths confirmed their identity. Reports and captures remain outside Git.
+All browser contexts and the fixture server were closed after verification.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Observation widget | `3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b` |
+| Camera widget | `0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483` |
+| Unchanged camera module script | `2d53b9ab7c30456f6ccfdc6519b05a442f92df2a5ab605fa859c5fe968b44811` |
+| Private logical information-layout report | `6d30d233c106079c12b3d759f3fc9bb70a486dd4c9610c41391d13d6114ccc78` |
+| `info-progress-fresh-390-light.png` | `403be51ca8072fb9c26e74b24aded1a11e3ff47aaa1deb4328d82ba9428d7eb3` |
+| `info-camera-snapshot-320.png` | `058577994e74208d7c13b23981d8a16a5aa680f4d8a50588d4ab9eae8ab38707` |
+| `info-progress-loading-failure-390-light.png` | `3fefde548ce8f0093acd18e7f225718c703a5179f49bfc1f5013e2b1c9066ad4` |
+
+This accepts source/software and rendered synthetic fixtures. Independent
+formal/design review owns its own verdict. No real printer, production service,
+live private URL, plugin, authentication state or routing was accessed or
+changed. Merge, deployment, actual mobile-host behavior and user acceptance
+remain separate for this newest PR32 refinement.
+
 ## 2026-08-31 bottom camera-control cluster validation
 
 The independent validator checked the narrow presentation follow-up that

@@ -1,6 +1,32 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 camera-control grouping — current source handoff
+## 2026-08-31 information above, actions below — current source handoff
+
+The user's latest principle supersedes earlier bottom observation-time and
+bottom-left camera-status placement. Current source puts title/time/freshness
+and failure information above content/actions; observation footers contain
+only Refresh/Retry. Camera state/time/feedback form a top group, and
+PiP/Fullscreen/Go Live/Close remain bottom right. Removed permission/source/
+current-reading boilerplate stays absent. Layer math and camera JavaScript
+remain unchanged; observation rendering and both HTML layouts change.
+
+Current observation HTML SHA-256 is
+`3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b`;
+camera HTML SHA-256 is
+`0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483`.
+Author checks pass 59 tests/1,315 assertions. Independent validation passes
+144 app tests/1,931 assertions, 21 lifecycle tests, TypeScript, repository
+checks, all bundles/signatures, exact asset comparisons and ten captures.
+Browser cases cover all eight observation headers/action footers, top refresh
+failure through resize, actual bounded loading/retry recovery, and camera top
+information with bottom controls at 320/390/720 without overlap. Independent
+code and all-ten-capture visual review approve without findings; the reviewer
+passes 71 tests/1,576 assertions. Next update existing PR32. This is not
+deployed; prior merge/rollout authority does not carry forward. The earlier
+handoffs below preserve their own evidence, not the current layout contract.
+No new tool, plugin, service, auth/routing or printer action is included.
+
+## 2026-08-31 camera-control grouping — previous PR32 source handoff
 
 The existing open PR32 now has a source follow-up grouping PiP, fullscreen,
 and Go Live/Close at the bottom right. Status/time stays left and wraps above

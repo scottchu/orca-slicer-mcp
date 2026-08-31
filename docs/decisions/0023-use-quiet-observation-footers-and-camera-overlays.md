@@ -222,3 +222,62 @@ right. This supersedes only this decision's earlier upper-right placement.
 - Deliver this layout-only follow-up in existing PR32, preserving the reviewed
   segmented-progress asset and tests. No new merge, deployment, installation,
   service change, authentication/routing change, or printer action is included.
+
+## 2026-08-31 supersession — information above, actions below
+
+The user's latest explicit layout principle is that information belongs above
+and actionable buttons belong at the bottom. This supersedes the earlier
+request in this decision to put observation time beside bottom Refresh, and
+the subsequent bottom-left camera status/time placement. Those earlier
+sections remain historical intent and evidence, not the current placement
+contract. OBS-008 and CAM-008 now state this principle directly.
+
+### Observation cards
+
+- Keep useful titles and existing domain content. Under the title, place a
+  compact 12-pixel tabular observation-time/freshness line with an 8-pixel gap.
+  Missing time remains explicit; exceptional freshness and refresh errors wrap
+  fully in this top information area rather than truncating or moving below
+  controls. Fresh observations need no redundant current-reading label.
+- Keep only the existing Refresh action in a bottom-right action-only footer,
+  retaining its 44-pixel minimum target and current busy/disabled behavior.
+  The existing divider/insets may remain. Do not repeat timestamp, source,
+  freshness, permission or error text in that footer.
+- For loading and failed delivery, put the explanatory pending/error/reopen
+  information above the action area. If the existing workflow permits Retry,
+  place that one action at the bottom right. Do not invent an observation time,
+  add a refresh authority, or turn a reopen instruction into a new host action.
+- Preserve read-only enforcement while keeping Read only, Current reading,
+  Printer telemetry, and duplicate provenance boilerplate absent. Preserve
+  segmented-layer math, reported percent, domain values and all existing
+  bridge/refresh/initialization behavior.
+
+### Camera
+
+- The camera remains image-only. Its top information group contains the
+  existing truthful state/time pill followed by existing display-rejection
+  feedback when present. Use a vertical stack with an 8-pixel gap, top inset
+  12 pixels, and the existing 18-pixel side insets (12 on narrow views).
+  Feedback flows below the pill, not absolutely over it. Pending/unavailable
+  explanatory text also belongs at the top; an empty-image decorative icon
+  may remain centered.
+- The bottom contains only the right-aligned PiP, Fullscreen, Go Live/Close
+  cluster with unchanged 44-pixel targets and 8-pixel gaps. Moving information
+  away removes the need for status and controls to share or wrap within that
+  bottom row. Unsupported controls remain absent.
+- Preserve all element identities and media/display logic, accepted-frame
+  clocks, feature detection, feedback wording and accessibility semantics.
+  Long or missing-time information must remain readable without overlapping
+  bottom controls at 320 pixels. Do not add a heading, caption, refresh,
+  observation footer, debug text, or new action to the camera.
+
+### Acceptance and delivery
+
+Check every focused observation view plus camera at narrow/wide sizes and
+light/dark themes. Verify top timestamp/freshness and refresh failure,
+loading/malformed delivery, bottom-only Refresh/Retry, camera status/feedback
+stack, missing time, supported/hidden controls, and no collision or overflow.
+Source and synthetic rendering remain distinct from physical-printer,
+deployed-server and actual mobile-host/PiP acceptance. Update the same open
+PR32 after independent validation/review; no merge, deployment, plugin/service,
+authentication/routing or printer change is authorized by this layout rule.

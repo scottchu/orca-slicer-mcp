@@ -215,15 +215,40 @@ describe("production observation widget host boundary", () => {
     expect(card.button.attributes["aria-busy"]).toBe("false");
   });
 
-  test("each focused card owns one bottom timestamp and refresh without permission chrome", () => {
+  test("each focused card puts information in its header and only refresh in its footer", () => {
     for (const view of ["overview", "progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"]) {
       const card = mount({ toolOutput: fixture(view) });
       const markup = card.modules.innerHTML;
       expect((markup.match(/<footer /g) ?? []).length).toBe(1);
       expect((markup.match(/aria-label="Refresh observation"/g) ?? []).length).toBe(1);
       expect(markup.indexOf("<footer ")).toBeGreaterThan(markup.indexOf("</header>"));
+      const header = markup.match(/<header [\s\S]*?<\/header>/)![0];
+      const footer = markup.match(/<footer [\s\S]*?<\/footer>/)![0];
+      expect(header).toContain("Observed ");
+      expect(header).toContain('class="refresh-error" role="status"');
+      expect(header).not.toContain("<button");
+      expect(footer).toMatch(/^<footer class="instrument-footer"><button[\s\S]*<\/button><\/footer>$/);
+      expect(footer).not.toMatch(/<time|Observed|refresh-error|freshness-warning|role="status"/);
       expect(markup).toContain("Observed ");
       expect(markup).not.toMatch(/Read only|Current reading|Printer telemetry/);
+    }
+  });
+
+  test("loading failure information stays above retry without inventing observation time", async () => {
+    for (const hasView of [false, true]) {
+      const card = mount(hasView ? { toolInput: { view: "progress" } } : {});
+      await card.initialize();
+      await card.advance(15001);
+      const markup = card.modules.innerHTML;
+      expect(markup).toContain("Couldn’t load this view");
+      expect(markup).not.toMatch(/<time|Observed|Observation time unavailable/);
+      if (hasView) {
+        expect(markup.indexOf("Try loading the view again.")).toBeLessThan(markup.indexOf("<footer"));
+        expect(markup.match(/<footer [\s\S]*?<\/footer>/)![0]).toBe('<footer class="instrument-footer"><button class="refresh" type="button" aria-label="Retry loading observation">Retry</button></footer>');
+      } else {
+        expect(markup).toContain("Reopen this card from the conversation");
+        expect(markup).not.toContain("<footer");
+      }
     }
   });
 
@@ -356,10 +381,11 @@ describe("segmented layer progress", () => {
     }
   });
 
-  test("responsive regrouping preserves refresh state, footer errors and no extra calls", async () => {
+  test("responsive regrouping preserves refresh state, header errors and no extra calls", async () => {
     const card = progress(126, 461);
     await card.initialize();
     const footer = card.modules.innerHTML.split("<footer ")[1];
+    const header = card.modules.innerHTML.split("</header>")[0];
     const refresh = card.controls.refresh();
     await tick();
     const requests = card.sent.length;
@@ -368,6 +394,7 @@ describe("segmented layer progress", () => {
     expect(card.button.disabled).toBe(true);
     expect(card.button.attributes["aria-busy"]).toBe("true");
     expect(card.modules.innerHTML.split("<footer ")[1]).toBe(footer);
+    expect(card.modules.innerHTML.split("</header>")[0]).toBe(header);
     expect(card.sent).toHaveLength(requests);
     await card.advance(15001);
     await refresh;
@@ -376,6 +403,7 @@ describe("segmented layer progress", () => {
     card.resize(390);
     expect(fills(card.modules.innerHTML)).toHaveLength(24);
     expect(card.error.textContent).toBe(failure);
+    expect(card.modules.innerHTML.split("</header>")[0]).toBe(header);
     expect(card.button.disabled).toBe(false);
     expect(card.modules.innerHTML.split("<footer ")[1]).toBe(footer);
     expect(card.sent).toHaveLength(requests);

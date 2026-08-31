@@ -115,8 +115,8 @@ MCP Apps bridge.
 | `answer_u1_camera_stream` | Observe, app-only | Accepts one bounded, idempotent WebRTC answer for the active session |
 | `add_u1_camera_ice_candidates` | Observe, app-only | Accepts bounded and deduplicated ICE candidate batches |
 | `close_u1_camera_stream` | Observe, app-only | Idempotently closes the session and releases its lease |
-| `ui://u1-print-studio/observation-v3.html` | Current observation resource | Self-contained focused Instrument Strip with a bottom timestamp/refresh footer and empty external CSP; observation-v2/v1 are current aliases |
-| `ui://u1-print-studio/camera-v5.html` | Current camera resource | Image-only snapshot/live/fallback time overlay and feature-detected display controls; camera-v4 is a current alias, network diagnostics stay internal |
+| `ui://u1-print-studio/observation-v3.html` | Current observation resource | Self-contained focused Instrument Strip with top timestamp/freshness/feedback, bottom-only refresh/retry actions, and empty external CSP; observation-v2/v1 are current aliases |
+| `ui://u1-print-studio/camera-v5.html` | Current camera resource | Image-only top snapshot/live/fallback time and feedback, with feature-detected display/live controls at bottom right; camera-v4 is a current alias, network diagnostics stay internal |
 | `ui://u1-print-studio/status-v4.html` and `status-v3.html` | Frozen status resources | Exact former large-card bytes for mounted-task compatibility only |
 | `ui://u1-print-studio/camera-v3.html`, `camera-v2.html`, and `camera-v1.html` | Frozen camera resources | Exact former camera bytes for mounted-task compatibility only |
 

@@ -10,7 +10,20 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-- Current task: camera PiP and fullscreen now sit beside Go Live/Close in one
+- Current task: the user's latest information-above/actions-below principle
+  is implemented in source across current focused widgets. Observation time,
+  freshness and refresh failures are at the top; bottom footers contain only
+  Refresh/Retry. Camera status/time/feedback are at the top and display/live
+  controls stay bottom right. This explicitly supersedes earlier bottom-time
+  placement; historical evidence below is not current layout guidance.
+  Layer calculations and camera JavaScript remain unchanged, though both HTML
+  asset hashes change. Independent validation passes 144 app tests/1,931
+  assertions, 21 lifecycle tests, TypeScript, repository/bundle/signature checks,
+  exact asset comparisons and ten browser captures. Independent code/visual
+  review approves without findings, with 71 tests/1,576 assertions passing.
+  Next update the same PR32 with this reviewed source.
+  Source remains undeployed, with no new merge/rollout authority.
+- Previous PR32 follow-up, delivered as `081929e`: camera PiP and fullscreen sit beside Go Live/Close in one
   bottom-right cluster, with status/time left and narrow-screen wrapping.
   Source-only DOM/CSS changes preserve camera JavaScript and the reviewed
   segmented-progress bytes. Independent validation passes 143 app tests/1,865
@@ -471,10 +484,10 @@ and final repository-check results.
 
 ## Next action
 
-The segmented source is delivered in PR32. Camera-control placement now passes
-independent validation and code/visual review; update that same PR without rollout.
+Earlier refinements are delivered in PR32. Top information/bottom actions now
+pass independent validation and code/visual review; update that same PR without rollout.
 Current widget SHA-256 is
-`974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb`;
+`3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b`;
 it is source-only, despite retaining the deployed baseline's version labels.
 Any later merge/rollout requires separate authorization. The following
 paragraph preserves completed deployment evidence, not instructions to repeat it.

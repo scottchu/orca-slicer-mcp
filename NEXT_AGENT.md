@@ -14,7 +14,19 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Current source follow-up in existing PR32 moves camera PiP/fullscreen beside
+Current source in PR32 follows the user's latest principle: information above,
+actions below. Observation title/time/freshness/errors are at the top;
+Refresh/Retry alone occupy the footer. Camera status/time/feedback are at the
+top, with display/live controls bottom right. This supersedes prior bottom-time
+instructions. Layer math and camera JavaScript are unchanged, but both HTML
+hashes change. Independent validation passes 144 app tests/1,931 assertions,
+21 lifecycle tests, TypeScript, repository/bundle/signature checks, exact asset
+comparisons and ten browser captures. Code/visual review approves without
+findings, with 71 tests/1,576 assertions independently passing. Update PR32.
+No deployment or merge authority is included. Prior records below describe
+earlier accepted states, not placement instructions for the current source.
+
+The previous source follow-up, delivered as `081929e` in PR32, moves camera PiP/fullscreen beside
 Go Live/Close, preserving 44-pixel controls and complete timestamps through
 narrow wrapping. Camera JavaScript and segmented-progress bytes are unchanged.
 Independent validation passes 143 app tests/1,865 assertions, 21 lifecycle
@@ -280,16 +292,17 @@ service or shared secret is configured.
 
 ## Next smallest action
 
-Deliver approved camera placement in existing PR32 while retaining its
-approved segmented source. The source widget SHA-256 is
-`974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb`;
-the companion observation-test SHA-256 is
-`038438f1e4d8e781a31c7272c43a3beaf18e9b423d6158d396e79b8ce5b3b0ef`.
+Deliver the independently validated and approved information/action layout in
+existing PR32. Current observation HTML SHA-256 is
+`3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b`;
+camera HTML SHA-256 is
+`0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483`.
 Do not infer new deployment from unchanged version strings or the baseline
 rollout record. Any merge/service/plugin rollout is a separate authorization.
 
 PR30 merge `48a106d` and paired rollout are complete with independent approval;
-the newest `VALIDATION.md` entry records the actual deployed checks. Next obtain
+the `2026-08-31 authorized merged-service rollout validation` entry in
+`VALIDATION.md` records those deployed checks. Next obtain
 user feedback on the directory and focused widgets. Preserve OAuth state,
 private env/config, every Serve/Funnel route, and unrelated canonical-checkout
 documentation. Use health/static reads only for this gate; opening a focused
@@ -334,18 +347,21 @@ remain separate scope/evidence gates. Mac login/power remains deferred.
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
 docs/requirements.md, the active iteration, and decisions 0014 through 0024.
-Current source task is decision0023's dated segmented-layer refinement. Author
+The earlier source task was decision0023's dated segmented-layer refinement. Author
 implementation and independent validation pass142app/1849assertions21lifecycle,
 12screenshots8browsercases. Independentcode/visualreviewAPPROVES with58tests/
-1441assertions passing; it is delivered in PR32. CurrentcameraDOM/CSSfollowup
-passes143tests1865assertions21lifecycle5capturesandindependentcode/visualreview;
-updateSAMEPR32. Neitherassetisdeployed;
+1441assertions passing; it is delivered in PR32. The camera-controls follow-up
+081929e is also delivered. CURRENT principle supersedes bottomtime: information
+TOP,actionsBOTTOM across observation/camera. Independent144tests1931assertions,
+21lifecycle10captures andcode/visualapproval71tests1576assertions pass.
+UpdateSAMEPR32. Neitherassetisdeployed;
 unchanged0.3.1/schema5/observation-v3 labels do not establish exact installed bytes.
 Prior merge/rollout authority is complete and does not authorize this new slice.
 PR30 merged as48a106d after explicit merge+two-service-rollout authorization.
 Decisions0023/0024 source and isolated visual fixtures independently pass.
 Paired HTTP deployment and independent health/static/preservation checks pass;
-consult the newest VALIDATION entry. Directory-only live browser captures pass.
+consult the named authorized merged-service rollout VALIDATION entry.
+Directory-only live browser captures pass.
 Obtain actual user feedback separately; do not repeat the completed rollout.
 Use exact existing owner LaunchAgents, versioned release/pinned Bun, a static
 eight-link private directory, fixed focused routes, and one store per process.
