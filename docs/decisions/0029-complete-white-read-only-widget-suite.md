@@ -1,7 +1,7 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: A deployed in PR41; Heads refinement implemented at 0.4.2, review/shipment pending; visual acceptance unverified
+- Status: A deployed in PR41; exact approved Heads refinement deployed in PR45 at 0.4.2; visual acceptance unverified
 - Scope: F0/O1, OBS-007/008/010/011, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution

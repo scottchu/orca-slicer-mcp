@@ -12,12 +12,15 @@
   Source 0.4.2/schema 8/observation-v8/camera-v8 (eighteen resources) passes
   author 106 tests/2,290 assertions and TypeScript; independent 200 app/2,855,
   21 lifecycle, 22 shipping, 86 fixtures/751 and bundles/exact assets pass.
-  Initial review has no findings; exact-SHA approval and shipment remain
-  pending. Order is A/F (deployed) → Heads
-  refinement → B → C → D → E, with no unfinished track cancelled. Follow the
-  standing independently reviewed merge/deploy/BOTH-service restart/verify
-  sequence; unavailable browser and actual-device visual acceptance stay
-  unverified. Earlier next-Queue wording is superseded by this bounded priority.
+  PR45 reviewed `e369ca4` was approved and merged as `90d9f9d`; exact release
+  `20260831-90d9f9d-pr45-20260831T152746-190348` is deployed. BOTH services were
+  explicitly restarted and are loaded/healthy/integrity verified; fourteen
+  static and sixteen security checks pass, config/auth/routes preserved,
+  no rollback. Independent manifests/three health/seven static checks, one fresh
+  four-head/material read and 35 exact served-widget VM assertions pass. Order is now
+  A/F/Heads (deployed) → B → C → D → E; Queue integration is next. Browser/device
+  visual and native clipboard acceptance remain unverified. These docs-only
+  rollout records require no redeployment of unchanged application bytes.
 - Current result (2026-08-31): PR43 reviewed head `41546d9` merged as `92a62c0`
   and shipped exact release `20260831-92a62c0-pr43-20260831T150042-2e7c64`.
   BOTH services were explicitly restarted and are loaded/healthy/integrity
