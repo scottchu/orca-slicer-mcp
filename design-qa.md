@@ -1,5 +1,37 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Camera bottom status and single frame observer — independent review
+
+Scoped source and rendered review: passed. The latest CAM-008 exception moves
+camera state/FPS/time bottom-left while preserving bottom-right controls;
+earlier top-status camera reviews below are historical placements. Observation
+cards retain their information-above/actions-below structure.
+
+1. **Bottom layout — passed.** Product Design audit guidance informed opening
+   all six final native-media captures. Live 320/dark wraps its complete pill
+   above the right-aligned controls; 390/dark and 720/dark fit both groups in
+   one row. Snapshot and rejection 320/dark remain readable; rejection feedback
+   stays above and does not overlap either bottom group. The controls retain
+   their 44-pixel targets, with no visible clipping or horizontal overflow.
+2. **Repeated setup — passed.** The reviewer compared the native 390-pixel
+   before/after images and actual callback report: repeated same-peer setup
+   previously duplicated frame counts and removed FPS while video continued;
+   the fixed capture retains 31 FPS with unique native presented-frame counts.
+   This confirms a reproducible product defect, not its occurrence on the
+   user's inaccessible device. Canvas media was local; no printer or RTC
+   network was involved and frame counters/timestamps were not fabricated.
+3. **Regression boundary — passed.** Independent camera/app checks passed
+   46 tests and 365 assertions. Prior callbacks and decoded intervals are
+   cancelled; generation checks reject queued callbacks from older same-peer
+   observers. Frame measurement, stale expiry, snapshot clocks, display
+   rejection and signaling authority retain their existing boundaries.
+
+Reviewed camera SHA-256:
+`1f706d665a5f811793160b2afb2cd620bb381903673bc5047e159c1948ba6cac`.
+Iteration `VALIDATION.md` owns full native-browser, fixture and packaging
+evidence. This accepts source and isolated browser behavior, not deployment,
+actual phone playback, the user's FPS symptom resolution or physical safety.
+
 ## Live-only measured FPS — independent source and rendered review
 
 Scoped result: passed against decision 0023's latest FPS supersession and

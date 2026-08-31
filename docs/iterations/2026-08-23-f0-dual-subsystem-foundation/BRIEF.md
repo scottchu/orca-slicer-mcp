@@ -5,13 +5,24 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current result and next action: the measured live-FPS slice is reviewed and
+- Current execution order: bottom-left camera information and bottom-right
+  controls are implemented. Repeated same-peer track events reproducibly started
+  duplicate watchers and reset the FPS window; cancellation/generation guards
+  now prevent that defect. Author evidence: 83 tests/862 assertions and TypeScript.
+  Independent native-browser evidence: six captures and stable approximately
+  30/31 FPS after repeated tracks in synthetic playback. The user's device cause and actual printer
+  stream remain unverified. Source 0.3.5/schema 7/observation-v5/camera-v7
+  (v6/v5/v4 aliases, fourteen resources) is not deployed. Complete independent
+  exact-source review and the authorized merge/deploy/restart-both/
+  verify workflow. PR37 rollout records are merged in main `a65ded0`; queue
+  and minimal-progress work remain deferred.
+- Previous completed result: the measured live-FPS slice is reviewed and
   shipped in PR36 (`40d359b` reviewed, `3fc918e` merged), release
   `20260831-3fc918e-pr36-20260831T124701-e914a1`. Both U1 services were
   explicitly restarted and verified at runtime 0.3.4/schema 7/observation-v5/
   camera-v6. Fourteen static and sixteen security checks pass, private
   configuration/authentication/routes are preserved, and no rollback was needed.
-  Finish only the docs-only rollout-record PR; no second deployment for
+  Its docs-only rollout record is merged without a second deployment for
   unchanged app bytes. Actual phone/live-video acceptance and queue/minimal-
   progress work remain separate pending tasks.
 - Previous completed result: PR34's exact reviewed head `97b5106` merged

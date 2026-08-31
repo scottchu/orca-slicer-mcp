@@ -87,10 +87,13 @@ printer environments support the described behavior.
   shared printer upstream closes when the last viewer closes or fails. TURN is
   a fallback, not a prerequisite when a direct server host candidate is
   reachable.
-- **CAM-008:** Current camera chrome is image-only with state/time and feedback
-  grouped at the top, and user-requested display/live controls grouped at the
-  bottom right. Information and action groups do not overlap or truncate
-  timestamps on narrow views. Snapshot/fallback time belongs to the
+- **CAM-008:** Current camera chrome is image-only. As an explicit camera-only
+  exception to information-above/actions-below, state/FPS/time sit bottom left
+  and display/live controls sit bottom right; rejection feedback stays above.
+  When both groups cannot fit in one row, the information wraps to a preceding
+  left-aligned row above the complete right-aligned control cluster. Do not
+  overlap or truncate time/FPS or shrink 44-pixel controls on narrow views.
+  Snapshot/fallback time belongs to the
   accepted displayed JPEG's server receipt time; live time belongs to evidenced
   local rendered/decoded frames and freezes when they stop. Neither is claimed
   as sensor capture time. Only while live, an integer FPS value may appear
@@ -197,9 +200,9 @@ printer environments support the described behavior.
   camera frame/signaling helpers. All observation tools are read-only and
   require `u1.monitor` where remote OAuth applies. `observation-v5` is the
   focused presentation resource. Every explicit camera open or reopen creates
-  a fresh snapshot-first `camera-v6` presentation; Go Live, retry, Close, and
+  a fresh snapshot-first `camera-v7` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v4/v3/v2/v1 and camera-v5/v4 are current-asset compatibility aliases.
+  Observation-v4/v3/v2/v1 and camera-v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
 

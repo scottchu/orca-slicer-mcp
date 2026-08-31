@@ -10,6 +10,19 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
+- Current task: bottom-left camera information and bottom-right controls are
+  implemented with narrow wrapping. A reproduced product defect let repeated
+  same-peer track events start duplicate frame watchers, repeatedly resetting
+  the FPS window. The fix cancels prior watchers and rejects old-generation
+  callbacks; the user's device-specific cause remains unverified. Author
+  checks pass 83 tests/862 assertions and TypeScript. Independent native-browser
+  evidence includes six captures and playback retaining approximately 30/31 FPS
+  after repetition.
+  Source is 0.3.5/schema 7/observation-v5/camera-v7, with camera-v6/v5/v4 aliases
+  and fourteen resources. Independent acceptance and shipment are pending through the established
+  exact-review/merge/deploy/restart-both/verify workflow. PR37's rollout records
+  are merged in main `a65ded0`; do not repeat that documentation task. Queue
+  and minimal-progress work remain deferred.
 - Current result: live-only measured FPS is reviewed, merged in PR36 and
   deployed through `u1-ship`. Reviewed head `40d359bd81df3523a32726172f64b045ab027e86`
   merged as `3fc918e5c64b401f497f97144d9c81423877d852`; installed release
@@ -18,8 +31,8 @@ Last updated: 2026-08-31
   healthy/integrity verified; fourteen static and sixteen security checks
   passed with OAuth/configuration/routes preserved. No rollback was needed.
   Source fixtures validate measured FPS, not actual phone/live-video playback.
-  Finish only the docs-only rollout record; unchanged application bytes need
-  no second deployment. Queue and minimal-progress work remain deferred.
+  Its docs-only rollout record is merged without a second app deployment.
+  This is the deployed baseline for the new camera refinement above.
 - Previous result (2026-08-31): PR34 is merged and deployed. Independently
   reviewed head `97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1` merged as
   `7194361d4a8d7a2291bcc64f1d053eae51a8d99c`; `$u1-ship` completed the

@@ -413,6 +413,11 @@ export function createAppServer(
       version: U1_CAMERA_WIDGET_VERSION,
     },
     {
+      uri: "ui://u1-print-studio/camera-v6.html",
+      html: CAMERA_WIDGET_HTML,
+      version: "camera-v6",
+    },
+    {
       uri: "ui://u1-print-studio/camera-v5.html",
       html: CAMERA_WIDGET_HTML,
       version: "camera-v5",

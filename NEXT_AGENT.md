@@ -14,13 +14,25 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Bottom-left camera information and bottom-right controls are implemented.
+The reproduced missing-FPS defect is duplicate frame watchers after repeated
+same-peer track events; prior watchers are now cancelled and stale callbacks
+generation-guarded. Author checks pass 83 tests/862 assertions and TypeScript.
+Independent native-browser evidence includes six captures and synthetic
+playback retaining about 30/31 FPS after repetition. This is not proof of the user's device-specific cause
+or an actual printer stream. Source 0.3.5/schema 7/observation-v5/camera-v7
+(v6/v5/v4 aliases, fourteen resources) awaits independent acceptance and
+shipment. Validate/review, then ship the exact merged build through the authorized
+restart-both/verify workflow. PR37 records are merged in main `a65ded0`;
+no old docs-only delivery remains. Queue/minimal-progress work stays separate.
+
 The live-only FPS slice is shipped in PR36: reviewed `40d359b`, merged
 `3fc918e`, release `20260831-3fc918e-pr36-20260831T124701-e914a1`. Both U1
 services were explicitly restarted and verified at 0.3.4/schema 7/
 observation-v5/camera-v6, with fourteen static and sixteen security checks
 passing and private configuration/authentication/routes preserved. No rollback
-was needed. Finish the docs-only rollout record through review/merge; do not
-redeploy unchanged app bytes. Queue/minimal-progress work and actual phone/
+was needed. Its docs-only rollout record is merged without redeploying unchanged
+app bytes. Queue/minimal-progress work and actual phone/
 live-video acceptance remain separate pending tasks.
 
 Previous PR34 rollout: reviewed head

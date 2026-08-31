@@ -118,7 +118,7 @@ one onboarding contract. This repository does not publish any of them.
 The current evidence supports an ephemeral macOS arm64 self-contained
 executable built with `bun run bundle:runtime`. The build disables automatic
 `.env` and `bunfig.toml` loading, embeds the current observation-v5 and
-camera-v6 resources plus frozen legacy status and camera resources, and replaces
+camera-v7 resources plus frozen legacy status and camera resources, and replaces
 Bun 1.3.12's invalid emitted macOS signature with an ad-hoc signature for local
 execution. Bun is a build and test dependency, not a runtime prerequisite for
 that artifact. The read-only printer adapter currently invokes the platform
@@ -156,13 +156,12 @@ unverified.
 
 Every channel's `doctor --json` reports one runtime contract containing the
 base runtime version, tool-schema version, observation-widget version, and
-camera-widget version. The current source contract is runtime `0.3.4`, tool
-schema `7`, observation widget `observation-v5`, and camera widget `camera-v6`.
-These source versions match the verified PR36 service rollout. Documentation-
-only rollout records do not require another deployment of unchanged app bytes.
-Observation-v4/v3/v2/v1 and camera-v5/v4 remain current-asset aliases.
+camera-widget version. The current source contract is runtime `0.3.5`, tool
+schema `7`, observation widget `observation-v5`, and camera widget `camera-v7`.
+This source follow-up is separate from the verified PR36 service rollout.
+Observation-v4/v3/v2/v1 and camera-v6/v5/v4 remain current-asset aliases.
 The expanded closed enum has nine values; two model-visible/eight app-only tool
-counts are unchanged. Thirteen resource URIs retain current/frozen compatibility.
+counts are unchanged. Fourteen resource URIs retain current/frozen compatibility.
 The optional personal HTTP service returns the same contract from `/health`.
 Upgrade verification must compare these values with the intended source before
 asking a user to test a fresh task; process liveness alone is insufficient.
@@ -172,8 +171,8 @@ tasks can retain the prior process and widget URI, and one observed Codex
 Desktop process retained them even after a new conversation. Fully quit and
 relaunch a host that predates the install before upgrade acceptance; a new task
 alone is not sufficient evidence. The source server exposes
-`observation-v4`, `observation-v3`, `observation-v2`, `observation-v1`, and `camera-v5`/`camera-v4` as current-asset aliases
-while fresh descriptors advertise observation-v5 and camera-v6.
+`observation-v4`, `observation-v3`, `observation-v2`, `observation-v1`, and `camera-v6`/`camera-v5`/`camera-v4` as current-asset aliases
+while fresh descriptors advertise observation-v5 and camera-v7.
 For mounted-task compatibility it also preserves exact legacy bytes for status
 v4/v3 (`57,450` bytes, SHA-256
 `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437`)

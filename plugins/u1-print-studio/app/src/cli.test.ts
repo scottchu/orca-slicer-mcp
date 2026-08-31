@@ -31,15 +31,15 @@ describe("doctor contract reporting", () => {
         contract: Record<string, unknown>;
       };
       expect(json.contract).toEqual({
-        runtimeVersion: "0.3.4",
+        runtimeVersion: "0.3.5",
         toolSchemaVersion: 7,
         observationWidgetVersion: "observation-v5",
-        cameraWidgetVersion: "camera-v6",
+        cameraWidgetVersion: "camera-v7",
       });
 
       await runCli(["doctor", "--offline", "--config", configPath]);
       expect(output.join("\n")).toContain(
-        "0.3.4 / tool schema 7 / observation-v5 / camera-v6"
+        "0.3.5 / tool schema 7 / observation-v5 / camera-v7"
       );
     } finally {
       console.log = originalLog;

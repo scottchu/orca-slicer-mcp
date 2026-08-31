@@ -1,5 +1,66 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 Bottom camera status and native frame-observer regression
+
+The user's bottom-left camera information request is a camera-only layout
+exception. Observation-card anatomy is unchanged. The missing-FPS report was
+investigated with real browser media/frame callbacks, separately from the
+earlier manually supplied counter fixtures and without contacting the printer.
+
+### Reproduced mechanism and repair
+
+- The independent `capture-native.mjs` fixture used a local canvas video
+  stream with the browser's native `requestVideoFrameCallback` timestamps and
+  `presentedFrames` metadata. It did not override clocks, counters, video
+  playback state, or frame-callback scheduling. Only peer signaling and MCP
+  host replies were synthetic; no RTC network or printer media was used.
+- On the previous camera source, ordinary native playback correctly showed
+  about 30 FPS at 320/390/720 pixels. Repeating the same peer's `ontrack` event
+  reproduced missing FPS while video remained live. Actual callback metadata
+  showed duplicate counter pairs, for example 46/46, 47/47 through 55/55.
+  Multiple observer chains repeatedly invalidated the FPS baseline. This is
+  reproduced software-defect evidence, not proof of the user's phone cause.
+- On the final source, retiring the previous observer and generation-guarding
+  callbacks preserved FPS after the same repeated-track event. The native
+  regression displayed 31 FPS rather than losing the rate; normal runs were
+  approximately 30.2–30.4 presented frames per second and displayed 30 FPS.
+
+### Final independent gates
+
+- `./scripts/check-repository.sh`: **172 app tests / 2,253 assertions**, **21
+  lifecycle tests**, **22 shipping tests**, TypeScript and repository contract
+  passed. Source is **0.3.5 / schema 7 / observation v5 / camera v7**; camera
+  v6/v5/v4 remain current aliases, with fourteen total resource URIs.
+- App commands `bun --no-env-file --config=/dev/null run bundle`,
+  `run bundle:server`, `run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, and current camera source/dist
+  `cmp` passed. Observation HTML and both frozen legacy HTML assets remain
+  byte-identical to the merged baseline. `git diff --check` passed.
+- `node capture-native.mjs <FIXTURE_ORIGIN> --final` and the same command with
+  `--duplicate --final` passed on the frozen source. Six final review images
+  were opened: native live at 320/390/720, snapshot and rejected display mode
+  at 320, and repeated-track playback at 390. Native measured rates matched
+  the displayed rounded FPS; the complete timestamps, bottom-left status and
+  bottom-right 44-pixel controls had no overlap or horizontal overflow.
+  Narrow widths wrapped the information above the intact control cluster.
+- The additional `--fallback --final` run checked native live-to-fallback
+  behavior at 320 pixels in the actual DOM. Fallback kept its full snapshot
+  time, omitted FPS, and preserved all three 44-pixel controls without overlap.
+  All native runs reported zero external requests and zero page errors.
+- Browser contexts closed in `finally`. The exact owned fixture server was
+  identified and stopped after validation. No user browser profile, real
+  camera acquisition, service mutation, authentication/routing change or
+  printer command was involved. Actual user-device confirmation and exact
+  merged-build deployment remain separate gates.
+
+SHA-256 fingerprints (reports and images remain outside Git):
+
+- Final camera: `1f706d665a5f811793160b2afb2cd620bb381903673bc5047e159c1948ba6cac`
+- Native pre-fix reproduction: `57ca2da36c04df8099d770d8ec5d62f637332692b1ebcb9aa1b6181d2ce853e6`
+- Final native/layout report: `10749eadf74b25c0b8fe09e98eef8b12070f35542c5f19492fc9212ca22261a6`
+- Final repeated-track report: `a6d759172ed3ed1452509a236e2150dce7bd7cf9d3c1bc5c1b7293d4be5fcff0`
+- Final fallback DOM report: `e94291541f112d61bc09cc66fc5ee4fb962626db7db1795c8ab7283840bd7d56`
+
 ## 2026-08-31 PR36 FPS deployment verification
 
 The operator's successful shipping workflow merged reviewed head
