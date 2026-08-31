@@ -1,0 +1,4 @@
+interface:
+  display_name: "U1 Observe Printer"
+  short_description: "Show one focused read-only U1 view"
+  default_prompt: "Use $u1-observe-printer to show my U1 print progress."

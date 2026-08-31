@@ -12,7 +12,19 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import embeddedCameraWidgetFile from "../public/camera-widget.html" with { type: "file" };
+import embeddedLegacyCameraWidgetFile from "../public/legacy-camera-widget.html" with { type: "file" };
+import embeddedLegacyWidgetFile from "../public/legacy-widget.html" with { type: "file" };
 import embeddedWidgetFile from "../public/widget.html" with { type: "file" };
+
+import {
+  createObservationPresentation,
+  OBSERVATION_VIEWS,
+  type ObservationView,
+} from "./observation-presentation.js";
+import {
+  PrinterObservationStore,
+  type ObservationSnapshot,
+} from "./observation-store.js";
 
 import {
   readU1CameraFrame,
@@ -34,6 +46,7 @@ import { CameraWebRtcSessionError } from "./application/camera-webrtc.js";
 import { CameraRelayClaimError } from "./application/camera-relay.js";
 import {
   U1_CAMERA_WIDGET_VERSION,
+  U1_OBSERVATION_WIDGET_VERSION,
   U1_RUNTIME_VERSION,
   U1_TOOL_SCHEMA_VERSION,
 } from "./runtime-contract.js";
@@ -43,27 +56,66 @@ const APP_ROOT = currentDirectory.startsWith("/$bunfs/")
   ? currentDirectory
   : path.resolve(currentDirectory, "..");
 const IS_COMPILED = currentDirectory.startsWith("/$bunfs/");
-export const WIDGET_URI = "ui://u1-print-studio/status-v4.html";
-export const CAMERA_WIDGET_URI = "ui://u1-print-studio/camera-v3.html";
+export const WIDGET_URI = `ui://u1-print-studio/${U1_OBSERVATION_WIDGET_VERSION}.html`;
+export const CAMERA_WIDGET_URI =
+  `ui://u1-print-studio/${U1_CAMERA_WIDGET_VERSION}.html`;
 export const LEGACY_CAMERA_WIDGET_URIS = [
+  "ui://u1-print-studio/camera-v3.html",
   "ui://u1-print-studio/camera-v2.html",
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
+export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v1.html",
+] as const;
 export const LEGACY_WIDGET_URIS = [
+  "ui://u1-print-studio/status-v4.html",
   "ui://u1-print-studio/status-v3.html",
 ] as const;
 const WIDGET_PATH = path.join(APP_ROOT, "public", "widget.html");
+const LEGACY_WIDGET_PATH = path.join(APP_ROOT, "public", "legacy-widget.html");
 const CAMERA_WIDGET_PATH = path.join(APP_ROOT, "public", "camera-widget.html");
+const LEGACY_CAMERA_WIDGET_PATH = path.join(
+  APP_ROOT,
+  "public",
+  "legacy-camera-widget.html"
+);
 export const readWidgetHtml = () =>
   IS_COMPILED
     ? readFileSync(embeddedWidgetFile as unknown as string, "utf8")
     : readFileSync(WIDGET_PATH, "utf8");
 export const WIDGET_HTML = readWidgetHtml();
+export const readLegacyWidgetHtml = () =>
+  IS_COMPILED
+    ? readFileSync(embeddedLegacyWidgetFile as unknown as string, "utf8")
+    : readFileSync(LEGACY_WIDGET_PATH, "utf8");
+export const LEGACY_WIDGET_HTML = readLegacyWidgetHtml();
 export const readCameraWidgetHtml = () =>
   IS_COMPILED
     ? readFileSync(embeddedCameraWidgetFile as unknown as string, "utf8")
     : readFileSync(CAMERA_WIDGET_PATH, "utf8");
 export const CAMERA_WIDGET_HTML = readCameraWidgetHtml();
+export const readLegacyCameraWidgetHtml = () =>
+  IS_COMPILED
+    ? readFileSync(embeddedLegacyCameraWidgetFile as unknown as string, "utf8")
+    : readFileSync(LEGACY_CAMERA_WIDGET_PATH, "utf8");
+export const LEGACY_CAMERA_WIDGET_HTML = readLegacyCameraWidgetHtml();
+
+export function observationPayload(
+  snapshot: ObservationSnapshot,
+  view: ObservationView
+) {
+  const presentation = createObservationPresentation(snapshot, view);
+  const module = view === "bed_mesh" ? "bed mesh" : view;
+  const state = presentation.module.state;
+  return {
+    content: [{
+      type: "text" as const,
+      text: `U1 ${module} observation is ${state}.`,
+    }],
+    structuredContent: presentation,
+    _meta: {},
+  };
+}
 
 export function resultPayload(
   status: U1Status,
@@ -102,7 +154,7 @@ export function resultPayload(
       physicalTool: tool.physicalTool,
       temperature: tool.temperature,
       target: tool.target,
-      state: normalizedToolState(tool.state),
+      state: tool.state === null ? null : normalizedToolState(tool.state),
       active: tool.active,
     })),
     bed: {
@@ -133,7 +185,9 @@ export function resultPayload(
     },
   };
   const summary = publicStatus.reachable
-    ? `U1 is ${publicStatus.stateLabel.toLowerCase()} at ${publicStatus.progressPercent}%.`
+    ? publicStatus.progressPercent === null
+      ? `U1 is ${publicStatus.stateLabel.toLowerCase()}; progress is unknown.`
+      : `U1 is ${publicStatus.stateLabel.toLowerCase()} at ${publicStatus.progressPercent}%.`
     : "U1 status is unavailable.";
 
   return {
@@ -275,6 +329,7 @@ async function safeCameraAction<T>(action: () => Promise<T>): Promise<T> {
 export function createAppServer(
   dependencies: {
     readStatus?: StatusReader;
+    observations?: PrinterObservationStore;
     readCameraFrame?: CameraFrameReader;
     cameraSessions?: CameraWebRtcSessionController;
   } = {},
@@ -285,6 +340,7 @@ export function createAppServer(
   const readStatus = dependencies.readStatus ?? readU1Status;
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
+  const observations = dependencies.observations ?? new PrinterObservationStore(readStatus);
   const server = new McpServer({
     name: "u1-print-studio",
     version: U1_RUNTIME_VERSION,
@@ -297,7 +353,21 @@ export function createAppServer(
     ? { securitySchemes }
     : {};
 
-  for (const [index, widgetUri] of [WIDGET_URI, ...LEGACY_WIDGET_URIS].entries()) {
+  const observationResources = [
+    { uri: WIDGET_URI, html: WIDGET_HTML, focused: true },
+    ...LEGACY_FOCUSED_WIDGET_URIS.map((uri) => ({
+      uri,
+      html: WIDGET_HTML,
+      focused: true,
+    })),
+    ...LEGACY_WIDGET_URIS.map((uri) => ({
+      uri,
+      html: LEGACY_WIDGET_HTML,
+      focused: false,
+    })),
+  ];
+  for (const [index, resource] of observationResources.entries()) {
+    const { uri: widgetUri, html, focused } = resource;
     registerAppResource(
       server,
       index === 0 ? "u1-status-widget" : `u1-status-widget-legacy-${index}`,
@@ -308,7 +378,7 @@ export function createAppServer(
           {
             uri: widgetUri,
             mimeType: RESOURCE_MIME_TYPE,
-            text: WIDGET_HTML,
+            text: html,
             _meta: {
               ui: {
                 prefersBorder: false,
@@ -319,7 +389,9 @@ export function createAppServer(
                 },
               },
               "openai/widgetDescription":
-                "A read-only live Snapmaker U1 dashboard with camera, progress, temperatures, adaptive refresh, and PiP/fullscreen controls.",
+                focused
+                  ? "A compact read-only Snapmaker U1 focused instrument strip."
+                  : "The preserved legacy read-only Snapmaker U1 status dashboard.",
             },
           },
         ],
@@ -327,10 +399,20 @@ export function createAppServer(
     );
   }
 
-  for (const [index, widgetUri] of [
-    CAMERA_WIDGET_URI,
-    ...LEGACY_CAMERA_WIDGET_URIS,
-  ].entries()) {
+  const cameraResources = [
+    {
+      uri: CAMERA_WIDGET_URI,
+      html: CAMERA_WIDGET_HTML,
+      version: U1_CAMERA_WIDGET_VERSION,
+    },
+    ...LEGACY_CAMERA_WIDGET_URIS.map((uri) => ({
+      uri,
+      html: LEGACY_CAMERA_WIDGET_HTML,
+      version: uri.slice(uri.lastIndexOf("/") + 1, -".html".length),
+    })),
+  ];
+  for (const [index, resource] of cameraResources.entries()) {
+    const { uri: widgetUri, html, version } = resource;
     registerAppResource(
       server,
       index === 0 ? "u1-camera-widget" : `u1-camera-widget-legacy-${index}`,
@@ -341,7 +423,7 @@ export function createAppServer(
           {
             uri: widgetUri,
             mimeType: RESOURCE_MIME_TYPE,
-            text: CAMERA_WIDGET_HTML,
+            text: html,
             _meta: {
               ui: {
                 prefersBorder: false,
@@ -352,7 +434,7 @@ export function createAppServer(
                 },
               },
               "openai/widgetDescription":
-                `A camera-only Snapmaker U1 view (${U1_CAMERA_WIDGET_VERSION}) with a relayed snapshot, user-requested read-only live video, and an automatic snapshot fallback.`,
+                `A camera-only Snapmaker U1 view (${version}) with a relayed snapshot, user-requested read-only live video, and an automatic snapshot fallback.`,
             },
           },
         ],
@@ -360,14 +442,16 @@ export function createAppServer(
     );
   }
 
+  const observationViewSchema = z.enum(OBSERVATION_VIEWS);
+  const observationInputSchema = z.object({ view: observationViewSchema }).strict();
   registerAppTool(
     server,
-    "show_u1_status",
-    {
-      title: "Show U1 status",
+    "observe_printer",
+    ({
+      title: "Observe printer",
       description:
-        "Show the current Snapmaker U1 status and monitoring dashboard. Use only for printer-status or print-monitoring requests; do not use it for camera-only, open-camera, reopen-camera, or additional-camera requests.",
-      inputSchema: {},
+        "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs, queue, fans, or bed_mesh. Missing or advertised-only evidence remains explicitly unknown; use open_printer_camera for camera viewing.",
+      inputSchema: observationInputSchema,
       ...securityConfig,
       annotations: {
         readOnlyHint: true,
@@ -379,16 +463,104 @@ export function createAppServer(
         ...securityMetadata,
         ui: { resourceUri: WIDGET_URI },
         "openai/outputTemplate": WIDGET_URI,
-        "openai/toolInvocation/invoking": "Reading U1 status",
-        "openai/toolInvocation/invoked": "U1 dashboard ready",
+        "openai/toolInvocation/invoking": "Reading U1 observation",
+        "openai/toolInvocation/invoked": "U1 observation ready",
       },
+    } as any),
+    (async ({ view }: { view: ObservationView }) => {
+      return observationPayload(
+        await observations.current({ refresh: true }),
+        view
+      );
+    }) as any
+  );
+
+  registerAppTool(
+    server,
+    "refresh_printer_observation",
+    ({
+      title: "Refresh printer observation",
+      description:
+        "Use this only from the mounted observation widget to refresh its selected read-only instrument strip without opening another widget.",
+      inputSchema: observationInputSchema,
+      ...securityConfig,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+        idempotentHint: true,
+      },
+      _meta: {
+        ...securityMetadata,
+        ui: { visibility: ["app"] },
+        "openai/visibility": "private",
+      },
+    } as any),
+    (async ({ view }: { view: ObservationView }) => {
+      return observationPayload(
+        await observations.current({ refresh: true }),
+        view
+      );
+    }) as any
+  );
+
+  const legacyInputSchema = z.object({}).strict();
+  const legacyToolMeta = {
+    ...securityMetadata,
+    ui: {
+      visibility: ["app"],
+      resourceUri: LEGACY_WIDGET_URIS[0],
     },
-    async () => {
-      const { status, metadata } = await readStatus();
-      return resultPayload(status, metadata, {
+    "openai/visibility": "private",
+    "openai/outputTemplate": LEGACY_WIDGET_URIS[0],
+  };
+  registerAppTool(
+    server,
+    "show_u1_status",
+    ({
+      title: "Show legacy U1 status",
+      description: "Temporary app-only compatibility alias for retained status cards.",
+      inputSchema: legacyInputSchema,
+      ...securityConfig,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+        idempotentHint: true,
+      },
+      _meta: legacyToolMeta,
+    } as any),
+    (async () => {
+      const snapshot = await observations.current({ refresh: true });
+      return resultPayload(snapshot.status, snapshot.metadata, {
         includeImageCard: true,
       });
-    }
+    }) as any
+  );
+  registerAppTool(
+    server,
+    "get_u1_status",
+    ({
+      title: "Refresh legacy U1 status",
+      description: "Temporary app-only compatibility refresh for retained status cards.",
+      inputSchema: legacyInputSchema,
+      ...securityConfig,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+        idempotentHint: true,
+      },
+      _meta: {
+        ...securityMetadata,
+        ui: { visibility: ["app"] },
+        "openai/visibility": "private",
+      },
+    } as any),
+    (async () => {
+      const snapshot = await observations.current({ refresh: true });
+      return resultPayload(snapshot.status, snapshot.metadata);
+    }) as any
   );
 
   if (dependencies.cameraSessions) {
@@ -523,33 +695,6 @@ export function createAppServer(
 
   registerAppTool(
     server,
-    "get_u1_status",
-    {
-      title: "Refresh U1 status",
-      description:
-        "Use this when the U1 dashboard or user needs a fresh read-only printer observation without reopening the widget.",
-      inputSchema: {},
-      ...securityConfig,
-      annotations: {
-        readOnlyHint: true,
-        destructiveHint: false,
-        openWorldHint: false,
-        idempotentHint: true,
-      },
-      _meta: {
-        ...securityMetadata,
-        "openai/toolInvocation/invoking": "Refreshing U1 status",
-        "openai/toolInvocation/invoked": "U1 status refreshed",
-      },
-    },
-    async () => {
-      const { status, metadata } = await readStatus();
-      return resultPayload(status, metadata);
-    }
-  );
-
-  registerAppTool(
-    server,
     "get_u1_camera_frame",
     ({
       title: "Refresh U1 camera frame",
@@ -641,33 +786,79 @@ export function createAppServer(
     server.server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools: [
         {
-          name: "show_u1_status",
-          title: "Show U1 status",
+          name: "observe_printer",
+          title: "Observe printer",
           description:
-            "Show the current Snapmaker U1 status and monitoring dashboard. Use only for printer-status or print-monitoring requests; do not use it for camera-only, open-camera, reopen-camera, or additional-camera requests.",
-          inputSchema: emptyInputSchema,
+            "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs, queue, fans, or bed_mesh. Missing or advertised-only evidence remains explicitly unknown; use open_printer_camera for camera viewing.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              view: { type: "string", enum: [...OBSERVATION_VIEWS] },
+            },
+            required: ["view"],
+            additionalProperties: false,
+          },
           annotations: readOnlyAnnotations,
           securitySchemes,
           _meta: {
             securitySchemes,
             ui: { resourceUri: WIDGET_URI },
             "openai/outputTemplate": WIDGET_URI,
-            "openai/toolInvocation/invoking": "Reading U1 status",
-            "openai/toolInvocation/invoked": "U1 dashboard ready",
+            "openai/toolInvocation/invoking": "Reading U1 observation",
+            "openai/toolInvocation/invoked": "U1 observation ready",
           },
         },
         {
-          name: "get_u1_status",
-          title: "Refresh U1 status",
+          name: "refresh_printer_observation",
+          title: "Refresh printer observation",
           description:
-            "Use this when the U1 dashboard or user needs a fresh read-only printer observation without reopening the widget.",
+            "Use this only from the mounted observation widget to refresh its selected read-only instrument strip without opening another widget.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              view: { type: "string", enum: [...OBSERVATION_VIEWS] },
+            },
+            required: ["view"],
+            additionalProperties: false,
+          },
+          annotations: readOnlyAnnotations,
+          securitySchemes,
+          _meta: {
+            securitySchemes,
+            ui: { visibility: ["app"] },
+            "openai/visibility": "private",
+          },
+        },
+        {
+          name: "show_u1_status",
+          title: "Show legacy U1 status",
+          description:
+            "Temporary app-only compatibility alias for retained status cards.",
           inputSchema: emptyInputSchema,
           annotations: readOnlyAnnotations,
           securitySchemes,
           _meta: {
             securitySchemes,
-            "openai/toolInvocation/invoking": "Refreshing U1 status",
-            "openai/toolInvocation/invoked": "U1 status refreshed",
+            ui: {
+              visibility: ["app"],
+              resourceUri: LEGACY_WIDGET_URIS[0],
+            },
+            "openai/visibility": "private",
+            "openai/outputTemplate": LEGACY_WIDGET_URIS[0],
+          },
+        },
+        {
+          name: "get_u1_status",
+          title: "Refresh legacy U1 status",
+          description:
+            "Temporary app-only compatibility refresh for retained status cards.",
+          inputSchema: emptyInputSchema,
+          annotations: readOnlyAnnotations,
+          securitySchemes,
+          _meta: {
+            securitySchemes,
+            ui: { visibility: ["app"] },
+            "openai/visibility": "private",
           },
         },
         {

@@ -1,4 +1,4 @@
 interface:
   display_name: "U1 Mobile Status Setup"
-  short_description: "Connect the read-only U1 card to a phone"
-  default_prompt: "Use $u1-mobile-status-setup to connect my read-only U1 status card through Tailscale and enroll my phone passkey."
+  short_description: "Connect read-only U1 views to a phone"
+  default_prompt: "Use $u1-mobile-status-setup to connect my read-only U1 observation views through Tailscale and enroll my phone passkey."

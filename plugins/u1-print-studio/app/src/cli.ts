@@ -12,6 +12,7 @@ import { createCameraIceServerProvider } from "./camera-ice-config.js";
 import { readU1Status } from "./u1-status.js";
 import {
   U1_CAMERA_WIDGET_VERSION,
+  U1_OBSERVATION_WIDGET_VERSION,
   U1_RUNTIME_VERSION,
   U1_TOOL_SCHEMA_VERSION,
 } from "./runtime-contract.js";
@@ -127,6 +128,7 @@ async function doctor(args: ParsedArguments): Promise<void> {
     contract: {
       runtimeVersion: U1_RUNTIME_VERSION,
       toolSchemaVersion: U1_TOOL_SCHEMA_VERSION,
+      observationWidgetVersion: U1_OBSERVATION_WIDGET_VERSION,
       cameraWidgetVersion: U1_CAMERA_WIDGET_VERSION,
     },
     checks,
@@ -135,7 +137,7 @@ async function doctor(args: ParsedArguments): Promise<void> {
   else {
     console.log("U1 Print Studio doctor: ok");
     console.log(
-      `- runtime contract: ${U1_RUNTIME_VERSION} / tool schema ${U1_TOOL_SCHEMA_VERSION} / ${U1_CAMERA_WIDGET_VERSION}`
+      `- runtime contract: ${U1_RUNTIME_VERSION} / tool schema ${U1_TOOL_SCHEMA_VERSION} / ${U1_OBSERVATION_WIDGET_VERSION} / ${U1_CAMERA_WIDGET_VERSION}`
     );
     for (const [name, value] of Object.entries(checks)) {
       console.log(`- ${name}: ${value}`);

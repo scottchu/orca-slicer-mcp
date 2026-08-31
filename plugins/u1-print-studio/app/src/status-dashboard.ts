@@ -9,8 +9,14 @@ import {
   readCameraWidgetHtml,
   cameraFramePayload,
   cameraStreamPayload,
+  observationPayload,
   resultPayload,
 } from "./app.js";
+import {
+  OBSERVATION_VIEWS,
+  type ObservationView,
+} from "./observation-presentation.js";
+import { PrinterObservationStore } from "./observation-store.js";
 import type {
   CameraIceCandidate,
   CameraWebRtcSessionController,
@@ -37,6 +43,15 @@ const CAMERA_DASHBOARD_HOST_PATH = path.resolve(
   "camera-dashboard-host.html"
 );
 const DASHBOARD_PATH = "/dashboard";
+const FOCUSED_DASHBOARD_PATHS = new Set([
+  "/dashboard/progress",
+  "/dashboard/thermals",
+  "/dashboard/heads",
+  "/dashboard/jobs",
+  "/dashboard/queue",
+  "/dashboard/fans",
+  "/dashboard/bed_mesh",
+]);
 const CAMERA_DASHBOARD_PATH = "/dashboard/camera";
 const CAMERA_WIDGET_PATH = "/camera-widget";
 const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
@@ -47,6 +62,7 @@ type CameraFrameReader = typeof readU1CameraFrame;
 
 export type StatusDashboardDependencies = {
   readStatus?: StatusReader;
+  observations?: PrinterObservationStore;
   readCameraFrame?: CameraFrameReader;
   cameraSessions?: CameraWebRtcSessionController;
 };
@@ -83,16 +99,25 @@ export function createStatusDashboardHandler(
   const readStatus = dependencies.readStatus ?? readU1Status;
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
+  const observations = dependencies.observations ?? new PrinterObservationStore(readStatus);
 
   return async (
     req: IncomingMessage,
     res: ServerResponse,
     pathname: string
   ): Promise<boolean> => {
-    if (pathname === DASHBOARD_PATH || pathname === CAMERA_DASHBOARD_PATH) {
+    if (pathname === DASHBOARD_PATH || FOCUSED_DASHBOARD_PATHS.has(pathname) ||
+        pathname === CAMERA_DASHBOARD_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
+        return true;
+      }
+      if (pathname === DASHBOARD_PATH) {
+        res.writeHead(307, {
+          location: "/dashboard/progress",
+          "cache-control": "no-store",
+        }).end();
         return true;
       }
       res.writeHead(200, {
@@ -167,8 +192,27 @@ export function createStatusDashboardHandler(
           : {};
 
       if (name === "get_u1_status") {
-        const { status, metadata } = await readStatus();
-        json(res, 200, resultPayload(status, metadata));
+        const snapshot = await observations.current({ refresh: true });
+        json(res, 200, resultPayload(snapshot.status, snapshot.metadata));
+        return true;
+      }
+      if (name === "refresh_printer_observation") {
+        const view = argumentsObject.view;
+        if (
+          !OBSERVATION_VIEWS.includes(view as ObservationView) ||
+          Object.keys(argumentsObject).some((key) => key !== "view")
+        ) {
+          json(res, 400, { error: "invalid_observation_view" });
+          return true;
+        }
+        json(
+          res,
+          200,
+          observationPayload(
+            await observations.current({ refresh: true }),
+            view as ObservationView
+          )
+        );
         return true;
       }
       if (name === "get_u1_camera_frame") {

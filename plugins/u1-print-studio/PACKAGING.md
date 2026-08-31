@@ -1,5 +1,72 @@
 # Local-first packaging contract
 
+## Personal persistent HTTP adapter
+
+Decision [0022](../../docs/decisions/0022-supervise-versioned-personal-http-services.md)
+adds a separate personal deployment path: bundle the HTTP entry point and
+exact public assets into an owner-only versioned release, copy/fingerprint the
+existing Bun executable into that release, and reuse the two existing user LaunchAgents. This is
+not the self-contained stdio executable below and does not change its portable
+Marketplace manifest.
+
+The local lifecycle tool stages, installs, reports status, starts, stops,
+restarts, and rolls back only those known services. It preserves their private
+env-file, environment values, OAuth state, logs, and existing routing. Stage
+and readiness checks use fixture data or loopback health/static routes, never
+implicit printer observations. Prior plist/release records remain recoverable.
+The operator procedure and actual acceptance evidence belong in the active
+iteration; accepted design alone does not prove deployment.
+
+The implemented operator entry point is `scripts/u1_service.py`, always run
+through `uv run --no-project`. Its default state root is
+`~/Library/Application Support/U1 Print Studio/service`; `--state-root` accepts
+an explicit absolute alternative before the subcommand. Stage requires a
+clean, committed app source and a new release identifier:
+
+```sh
+uv run --no-project scripts/u1_service.py stage --source /absolute/repository --bun /absolute/bun --release RELEASE_ID
+uv run --no-project scripts/u1_service.py install --release RELEASE_ID --dry-run
+uv run --no-project scripts/u1_service.py install --release RELEASE_ID
+uv run --no-project scripts/u1_service.py status
+uv run --no-project scripts/u1_service.py restart --service all
+uv run --no-project scripts/u1_service.py stop --service dashboard
+uv run --no-project scripts/u1_service.py start --service dashboard
+uv run --no-project scripts/u1_service.py rollback --snapshot SNAPSHOT_ID
+```
+
+Replace placeholders with inspected local values, not values copied from
+another machine. `start`, `stop`, and `restart` accept only `all`, `public`, or
+`dashboard`; installation covers the two existing services together. Retain
+the returned `rollbackSnapshot` identifier. Neither staging nor `--dry-run`
+stops a service, but staging creates local release files.
+
+A release contains `bin/bun`, `dist/server.js` and its emitted assets, the six
+fixed production HTML assets under `public/`, an empty `bunfig.toml`, and
+`manifest.json` with source revision, runtime/asset hashes, and expected health
+versions. Release files are owner-readable, with owner execute only for Bun and
+directories. The original Bun path is not required after the verified copy;
+the release itself must remain present. `bun run bundle:server` provides the
+standalone HTTP build command for source validation.
+
+Install retains the explicit existing `--env-file`, preserves plist environment
+and logging fields, disables ambient dotenv/bunfig loading, and preflights
+effective auth/config paths before stopping either service. Relative private
+state/config paths fail closed instead of silently moving state when the
+working directory changes. Failed readiness restores the exact saved plists
+and prior loaded states, or reports a recovery failure and snapshot identifier.
+
+Private stable entries are `/dashboard/progress`, `/dashboard/thermals`,
+`/dashboard/heads`, `/dashboard/jobs`, `/dashboard/queue`, `/dashboard/fans`,
+`/dashboard/bed_mesh`, and `/dashboard/camera`. `/dashboard` defaults to
+progress by redirect. The HTTP overview route stays absent; the MCP overview
+view stays explicitly deferred. Public dashboard routes remain unavailable. Every process shares
+one observation store across its HTTP calls, not across other services or
+restarts. A cold store acquires its first observation on demand; later plain
+reads use the cache and explicit due refreshes coalesce. User login and host availability are dependencies; automatic
+login/power settings, a root daemon, and log rotation are not part of this slice.
+
+## Portable stdio distribution
+
 Marketplace, Homebrew, and npm are delivery adapters around one executable and
 one onboarding contract. This repository does not publish any of them.
 
@@ -11,8 +78,9 @@ one onboarding contract. This repository does not publish any of them.
 
 The current evidence supports an ephemeral macOS arm64 self-contained
 executable built with `bun run bundle:runtime`. The build disables automatic
-`.env` and `bunfig.toml` loading, embeds the widget resource, and replaces Bun
-1.3.12's invalid emitted macOS signature with an ad-hoc signature for local
+`.env` and `bunfig.toml` loading, embeds the current observation-v2 and
+camera-v4 resources plus frozen legacy status and camera resources, and replaces
+Bun 1.3.12's invalid emitted macOS signature with an ad-hoc signature for local
 execution. Bun is a build and test dependency, not a runtime prerequisite for
 that artifact. The read-only printer adapter currently invokes the platform
 `curl` binary with a fixed route and argument allowlist; eliminating that
@@ -48,8 +116,10 @@ contract. Publication, another-machine installation, Homebrew, and npm remain
 unverified.
 
 Every channel's `doctor --json` reports one runtime contract containing the
-base runtime version, tool-schema version, and camera-widget version. The
-optional personal HTTP service returns the same contract from `/health`.
+base runtime version, tool-schema version, observation-widget version, and
+camera-widget version. The current source contract is runtime `0.3.0`, tool
+schema `5`, observation widget `observation-v2`, and camera widget `camera-v4`.
+The optional personal HTTP service returns the same contract from `/health`.
 Upgrade verification must compare these values with the intended source before
 asking a user to test a fresh task; process liveness alone is insufficient.
 
@@ -57,11 +127,27 @@ Plugin installation and upgrades require a newly loaded MCP process. Existing
 tasks can retain the prior process and widget URI, and one observed Codex
 Desktop process retained them even after a new conversation. Fully quit and
 relaunch a host that predates the install before upgrade acceptance; a new task
-alone is not sufficient evidence. The server keeps the immediately preceding
-widget URI readable as a compatibility alias so already rendered cards can
-recover while the host reloads. Do not replace the portable relative runtime
-command with a machine-specific absolute path to make an old process appear
-current.
+alone is not sufficient evidence. The source server exposes
+`observation-v1` as a current-asset alias while the focused surface converges.
+For mounted-task compatibility it also preserves exact legacy bytes for status
+v4/v3 (`57,450` bytes, SHA-256
+`da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437`)
+and camera v3/v2/v1 (`33,725` bytes, SHA-256
+`c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203`).
+The legacy status tool aliases are app-only and must not expand the exact two
+model-visible presentation intents. Do not replace the portable relative
+runtime command with a machine-specific absolute path to make an old task
+appear current.
+
+The pre-integration decision-0021 source build emitted `dist/stdio.js` at SHA-256
+`be255f625137079a64b17031b36ffb5e2ba4a46264e6ac56679448bcb04fac16`
+and the macOS arm64 `dist/u1-print-studio` at SHA-256
+`062e7cf9c826198db82457401ea8b28aae8eaa347b2485e245556fdc04971ddf`.
+Its current observation and camera assets hash to
+`128975091b192369a83476f5d8664da494d4d4fa968ef5e7fc29fe730fd51d3f`
+and `2cc7c28f7d692ff7880bfc5cd400d2032b05765ce1bb142ea5dac205c349bc8b`.
+These are ignored local static/software artifacts only: no release staging,
+installation, service restart, or publication occurred.
 
 This private repository currently has no license file. Do not describe or
 publish an artifact as an open-source distribution until the owner selects a

@@ -1,11 +1,14 @@
 import { afterEach, describe, expect, test } from "bun:test";
 import { createServer, type Server } from "node:http";
+import { readFileSync } from "node:fs";
 import type { AddressInfo } from "node:net";
+import { runInNewContext } from "node:vm";
 
 import { CAMERA_WIDGET_HTML } from "./app.js";
 import { createStatusDashboardHandler } from "./status-dashboard.js";
 import { createRequestHandler, tailscaleDashboardBaseUrl } from "./server.js";
 import type { U1Status } from "./u1-status.js";
+import { PrinterObservationStore } from "./observation-store.js";
 
 const status: U1Status = {
   schemaVersion: 1,
@@ -48,9 +51,12 @@ afterEach(async () => {
   );
 });
 
-async function startFixture() {
+async function startFixture(onStatusRead?: () => void) {
   const handle = createStatusDashboardHandler({
-    readStatus: async () => ({ status, metadata: {} }),
+    readStatus: async () => {
+      onStatusRead?.();
+      return { status, metadata: {} };
+    },
     readCameraFrame: async () => ({
       frame: {
         schemaVersion: 1,
@@ -135,9 +141,10 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.2.0",
-      toolSchemaVersion: 4,
-      cameraWidgetVersion: "camera-v3",
+      runtimeVersion: "0.3.0",
+      toolSchemaVersion: 5,
+      observationWidgetVersion: "observation-v2",
+      cameraWidgetVersion: "camera-v4",
     });
   });
 
@@ -156,7 +163,11 @@ describe("standalone status dashboard", () => {
   });
 
   test("serves a host bridge around the production widget", async () => {
-    const origin = await startFixture();
+    let reads = 0;
+    const origin = await startFixture(() => { reads += 1; });
+    const root = await fetch(`${origin}/dashboard`, { redirect: "manual" });
+    expect(root.status).toBe(307);
+    expect(root.headers.get("location")).toBe("/dashboard/progress");
     const response = await fetch(`${origin}/dashboard`);
     const html = await response.text();
 
@@ -164,6 +175,13 @@ describe("standalone status dashboard", () => {
     expect(response.headers.get("cache-control")).toBe("no-store");
     expect(html).toContain('src="/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
+    for (const view of ["progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"]) {
+      expect((await fetch(`${origin}/dashboard/${view}`)).status).toBe(200);
+    }
+    for (const view of ["overview", "unknown", "progress/more", "%70rogress"]) {
+      expect((await fetch(`${origin}/dashboard/${view}`)).status).toBe(404);
+    }
+    expect(reads).toBe(0);
   });
 
   test("serves the same camera-only widget behind a focused test host", async () => {
@@ -188,8 +206,9 @@ describe("standalone status dashboard", () => {
     expect(widgetHtml).not.toContain("fetch(");
   });
 
-  test("exposes only the widget's read-only status and camera calls", async () => {
-    const origin = await startFixture();
+  test("exposes only the widget's read-only observation and camera calls", async () => {
+    let statusReads = 0;
+    const origin = await startFixture(() => { statusReads += 1; });
     const call = async (name: string, argumentsValue = {}) => {
       const response = await fetch(`${origin}/dashboard/tools/call`, {
         method: "POST",
@@ -199,9 +218,27 @@ describe("standalone status dashboard", () => {
       return { response, body: await response.json() };
     };
 
-    const current = await call("get_u1_status");
+    const current = await call("refresh_printer_observation", {
+      view: "overview",
+    });
     expect(current.response.status).toBe(200);
-    expect(current.body.structuredContent).toEqual(status);
+    expect(current.body.structuredContent).toMatchObject({
+      view: "overview",
+      printerState: "printing",
+      module: { kind: "overview", state: "unavailable", status: "deferred" },
+    });
+
+    const selector = await call("refresh_printer_observation", {
+      view: "progress",
+      selector: "printer.objects.query",
+    });
+    expect(selector.response.status).toBe(400);
+    expect(selector.body).toEqual({ error: "invalid_observation_view" });
+
+    const legacy = await call("get_u1_status");
+    expect(legacy.response.status).toBe(200);
+    expect(legacy.body.structuredContent).toMatchObject({ state: "printing" });
+    expect(statusReads).toBe(1);
 
     const frame = await call("get_u1_camera_frame", { authorizeLive: true });
     expect(frame.response.status).toBe(200);
@@ -241,5 +278,169 @@ describe("standalone status dashboard", () => {
     const control = await call("start_print");
     expect(control.response.status).toBe(400);
     expect(control.body).toEqual({ error: "unsupported_read_only_tool" });
+  });
+
+  test("shares an injected observation across dashboard requests and callers", async () => {
+    let reads = 0;
+    const observations = new PrinterObservationStore(async () => {
+      reads += 1;
+      return { status, metadata: {} };
+    });
+    const first = await observations.current({ refresh: true });
+    const server = createServer(createRequestHandler(null, null, {
+      observations,
+      readStatus: async () => { throw new Error("must use shared store"); },
+    }));
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    servers.push(server);
+    const port = (server.address() as AddressInfo).port;
+    const call = async (view: string) => (await fetch(`http://127.0.0.1:${port}/dashboard/tools/call`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name: "refresh_printer_observation", arguments: { view } }),
+    })).json();
+    const [progress, thermals] = await Promise.all([call("progress"), call("thermals")]);
+    expect(reads).toBe(1);
+    expect(progress.structuredContent.observationVersion).toBe(first.observationVersion);
+    expect(thermals.structuredContent.observationVersion).toBe(first.observationVersion);
+  });
+
+  test("keeps one due-aware observation across distinct HTTP MCP requests", async () => {
+    let reads = 0;
+    let now = new Date("2026-08-30T12:00:00.000Z");
+    const observations = new PrinterObservationStore(async () => {
+      reads += 1;
+      await new Promise<void>((resolve) => setTimeout(resolve, 15));
+      return { status, metadata: {} };
+    }, () => now);
+    const server = createServer(createRequestHandler(null, null, null, observations));
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    servers.push(server);
+    const port = (server.address() as AddressInfo).port;
+    const origin = `http://127.0.0.1:${port}`;
+    await fetch(`${origin}/health`);
+    await fetch(`${origin}/widget`);
+    expect(reads).toBe(0);
+    const call = async (view: string) => {
+      const response = await fetch(`${origin}/mcp`, {
+        method: "POST",
+        headers: {
+          accept: "application/json, text/event-stream",
+          "content-type": "application/json",
+          "mcp-protocol-version": "2025-06-18",
+        },
+        body: JSON.stringify({ jsonrpc: "2.0", id: view, method: "tools/call",
+          params: { name: "observe_printer", arguments: { view } } }),
+      });
+      expect(response.status).toBe(200);
+      return (await response.json()).result.structuredContent;
+    };
+    const [progress, thermals] = await Promise.all([call("progress"), call("thermals")]);
+    expect(reads).toBe(1);
+    expect(progress.observationVersion).toBe(1);
+    expect(thermals.observationVersion).toBe(1);
+    expect(progress.receivedAt).toBe(thermals.receivedAt);
+    expect((await call("heads")).observationVersion).toBe(1);
+    expect(reads).toBe(1);
+    now = new Date("2026-08-30T12:01:31.000Z");
+    const [newProgress, newThermals] = await Promise.all([call("progress"), call("thermals")]);
+    expect(reads).toBe(2);
+    expect(newProgress.observationVersion).toBe(2);
+    expect(newThermals.observationVersion).toBe(2);
+  });
+});
+
+function hostFixture(pathname: string, fetchResult: () => Promise<unknown>) {
+  const html = readFileSync(new URL("../public/status-dashboard-host.html", import.meta.url), "utf8");
+  const script = html.match(/<script>([\s\S]*?)<\/script>/)![1]!;
+  const messages: any[] = [];
+  const requests: any[] = [];
+  const origin = "http://127.0.0.1:12345";
+  const frame = {
+    src: "/widget?standalone=1",
+    contentWindow: { postMessage: (message: unknown, targetOrigin: string) => {
+      expect(targetOrigin).toBe(origin);
+      messages.push(message);
+    } },
+  };
+  const bridge = { textContent: "" };
+  const title = { textContent: "" };
+  let onMessage: (event: unknown) => Promise<void> = async () => {};
+  let reload = () => {};
+  runInNewContext(script, {
+    location: { origin, pathname, search: "?view=overview&tool=start_print" },
+    document: { title: "", querySelector: (selector: string) => {
+      if (selector === "#widget") return frame;
+      if (selector === "#bridge-state") return bridge;
+      if (selector === "#view-title") return title;
+      return { addEventListener: (_name: string, handler: () => void) => { reload = handler; } };
+    } },
+    window: { addEventListener: (_name: string, handler: typeof onMessage) => { onMessage = handler; } },
+    fetch: async (_url: string, options: { body: string }) => {
+      requests.push(JSON.parse(options.body));
+      const result = await fetchResult();
+      return { ok: true, json: async () => result };
+    },
+  });
+  return {
+    messages, requests, frame, bridge, title,
+    reload: () => reload(),
+    send: (data: unknown, eventOrigin = origin, source: unknown = frame.contentWindow) =>
+      onMessage({ source, origin: eventOrigin, data: { jsonrpc: "2.0", ...data as object } }),
+  };
+}
+
+describe("focused dashboard host bridge", () => {
+  test("routes initial and widget refresh only to the selected closed view", async () => {
+    for (const view of ["progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"]) {
+      const result = { structuredContent: { view } };
+      const host = hostFixture(`/dashboard/${view}`, async () => result);
+      await host.send({ method: "ui/notifications/initialized" }, "https://attacker.example");
+      await host.send({ method: "ui/notifications/initialized" }, undefined, {});
+      expect(host.requests).toHaveLength(0);
+      await host.send({ method: "ui/initialize", id: 1 });
+      await host.send({ method: "ui/notifications/initialized" });
+      await host.send({ method: "ui/notifications/initialized" });
+      expect(host.requests).toEqual([{ name: "refresh_printer_observation", arguments: { view } }]);
+      expect(host.messages.at(-1)).toMatchObject({ method: "ui/notifications/tool-result", params: result });
+      await host.send({ method: "tools/call", id: 2, params: {
+        name: "refresh_printer_observation", arguments: { view },
+      } });
+      expect(host.requests).toHaveLength(2);
+      for (const params of [
+        { name: "start_print", arguments: { view } },
+        { name: "get_u1_status", arguments: {} },
+        { name: "refresh_printer_observation", arguments: { view: "overview" } },
+        { name: "refresh_printer_observation", arguments: { view, selector: "anything" } },
+      ]) {
+        await host.send({ method: "tools/call", id: 3, params });
+        expect(host.messages.at(-1)).toMatchObject({ id: 3, error: { message: "tool_failed" } });
+      }
+      expect(host.requests).toHaveLength(2);
+    }
+  });
+
+  test("shows initial service failure and permits explicit reload retry", async () => {
+    let attempts = 0;
+    const host = hostFixture("/dashboard/thermals", async () => {
+      if (++attempts === 1) throw new Error("private failure must not be shown");
+      return { structuredContent: { view: "thermals", freshness: "offline" } };
+    });
+    await host.send({ method: "ui/notifications/initialized" });
+    expect(host.bridge.textContent).toBe("Service unavailable — use Reload widget to retry");
+    expect(host.messages).toHaveLength(0);
+    host.reload();
+    expect(host.frame.src).toContain("/widget?standalone=1&t=");
+    await host.send({ method: "ui/notifications/initialized" });
+    expect(attempts).toBe(2);
+    expect(host.messages.at(-1).params.structuredContent.freshness).toBe("offline");
+    expect(host.bridge.textContent).toBe("Read-only · observation received");
+  });
+
+  test("does not derive a view from unknown routes or query parameters", async () => {
+    const host = hostFixture("/dashboard/overview", async () => ({}));
+    await host.send({ method: "ui/notifications/initialized" });
+    expect(host.requests).toHaveLength(0);
+    expect(host.title.textContent).toBe("View unavailable");
   });
 });

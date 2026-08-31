@@ -59,20 +59,22 @@ Take a final camera snapshot. If the lowered bed moves the parts out of frame,
 say so and preserve the strongest earlier visual evidence instead of claiming
 an unseen physical result.
 
-When `show_u1_status` is available, use it to open the read-only HTML dashboard.
-Use `open_printer_camera` when the user wants the focused snapshot-first camera
-surface. The mounted status widget refreshes through `get_u1_status`, shows the
-camera first, and offers inline, Picture in Picture, and fullscreen modes. The
-only model-visible camera command is `open_printer_camera`; snapshot acquisition
-and live signaling are internal widget operations. On Go Live, the widget uses
-app-only `get_u1_camera_frame` to mint a one-time private activation, consumes
-it with app-only `open_u1_camera_stream`, and exchanges bounded answer, ICE, and
-close messages through the MCP Apps `tools/call` bridge. An unanswered offer is
-released automatically after 15 seconds. If live negotiation fails, the widget
-falls back to non-overlapping snapshots. `Close` must disconnect the relay and
-return to snapshot mode. Neither path is evidence of the printer-advertised
-full frame rate, and these controls do not authorize printer actions.
+Use `observe_printer` with `view: "progress"` for the routine focused progress
+card. Use `view: "overview"` only when the user requests a general overview or
+the monitoring decision genuinely needs cross-domain state. Other focused
+views may be requested separately without reopening a large combined dashboard.
 
-Use [status-card.md](../../references/status-card.md) as the compact Markdown
-fallback when the app host or widget is unavailable. Always explain why the
+Use `open_printer_camera` when the user wants the focused snapshot-first camera
+surface. Snapshot acquisition and live signaling are internal widget
+operations. On Go Live, the widget uses app-only `get_u1_camera_frame` to mint a
+one-time private activation, consumes it with app-only
+`open_u1_camera_stream`, and exchanges bounded answer, ICE, and close messages
+through the MCP Apps `tools/call` bridge. An unanswered offer is released
+automatically after 15 seconds. If live negotiation fails, the widget falls
+back to non-overlapping snapshots. `Close` must disconnect the relay and return
+to snapshot mode. Neither path is evidence of the printer-advertised full frame
+rate, and these controls do not authorize printer actions.
+
+When the app host or widget is unavailable, report the same focused observation
+through its structured, text, or inline-image fallback. Always explain why the
 next check time is appropriate.

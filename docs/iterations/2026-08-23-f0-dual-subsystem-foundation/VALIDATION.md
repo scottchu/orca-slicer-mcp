@@ -1,5 +1,54 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-30 persistence integration — current evidence
+
+- Milestone: F0. Decision 0022 addresses durable personal HTTP entry points,
+  process-scoped shared observations, and recoverable versioned deployment.
+- User authorization covers PR28 integration/merge and installed/server
+  rollout. Mac login/power, routing/auth changes, and printer controls remain
+  excluded. Existing unrelated canonical-checkout edits are preserved.
+- Read-only configuration inspection confirmed two existing owner LaunchAgents
+  with `RunAtLoad=true` and `KeepAlive=true`, both launching source TypeScript
+  through a pinned Bun. The private dashboard uses loopback 8788; protected MCP
+  defaults to 8787; private enrollment is configured on 8789. Secrets and local
+  printer identifiers were neither printed nor recorded.
+- Integrator ran `bun install --frozen-lockfile`, `bun run check`, and the full
+  Bun test suite after resolving PR27/PR28 conflicts: **105 tests, 606
+  assertions passed**. This is the pre-persistence combined baseline only.
+- Final `bun run check` and `bun test src/*.test.ts`: **110 tests, 759
+  assertions passed**. `bun run bundle` and `bun run bundle:runtime` passed;
+  the local standalone ad-hoc signature is valid. `bun run bundle:server`
+  emits the separate bundled HTTP entry and production assets.
+- `uv run --no-project scripts/test_u1_service.py`: **19 fixture tests
+  passed**. CLI `--help` and `stage --help` matched the documented flags.
+  Fixtures cover plist/env preservation, no-stop dry-run, hash/inventory/Bun
+  integrity rejection, owner-only/symlink/path checks, loaded-state reporting,
+  lifecycle locking, readiness versions, failed-install restoration, explicit
+  rollback recovery, stage copying/immutability, and Bun env precedence.
+- `./scripts/check-repository.sh`: passed TypeScript, the 110-test/759-assertion
+  app suite, all 19 lifecycle tests, and `repository contract: ok`.
+  `git diff --check`, plugin validation, and touched skill validation passed.
+- Independent final reviewer: **APPROVE**, no blocking findings. Independently
+  ran the repository check and verified the exact 10 bundled static host/asset
+  responses, progress redirect, and health in an isolated loopback smoke with
+  **zero synthetic printer-reader calls**. Verified real Bun explicit env-file
+  and plist environment precedence, no ambient dotenv loading, and rejection
+  of relative private auth/config paths. This is source/software and fixture
+  evidence, not an installed service or mounted-browser result.
+- Focused route tests prove the seven named views, public rejection, unknown
+  paths, and selected-route-only initialization/refresh. VM bridge tests prove
+  source/origin validation, no query-derived selectors, visible initial failure,
+  and explicit reload retry. Distinct sequential and concurrent HTTP MCP
+  requests share one due-aware snapshot/version; dashboard injection uses that
+  same store contract. Frozen status and camera hashes remain unchanged.
+- A cold `current()` still acquires the initial observation on demand. Only
+  subsequent plain reads are cache-only. Health/static requests never call it;
+  this source slice does not add acquisition at startup or a background loop.
+- Live deployment, controlled service restart, auth/routing preservation,
+  focused HTML/version readiness, mounted host, real printer, and user outcome
+  require separate results. Browser control is currently unavailable and no
+  visual acceptance is inferred from HTTP success.
+
 ## 2026-08-27 post-merge app recovery and live read-only acceptance
 
 ### Delivery and installed runtime
@@ -1630,6 +1679,61 @@ From the repository root:
 - No push, merge, release staging, install, service restart, route/auth change,
   or printer control occurred.
 
+## Decision 0021 focused observation source validation — 2026-08-30
+
+### Acceptance and safety boundary
+
+- The source implements the selected Instrument Strips direction, exact two-
+  intent model-visible surface, shared explicit-refresh observation store,
+  selected-module projections, missing-value/provenance semantics, focused-view
+  inventory, and frozen compatibility resources.
+- Plain presentation calls are cache-only. Explicit due refreshes are the only
+  upstream reads, concurrent refreshes coalesce, and refresh failure retains
+  last reachable values as stale with the original source time. Overview stays
+  unavailable until all focused modules are accepted.
+- No printer, installed plugin, LaunchAgent, OAuth/passkey/enrollment state,
+  Tailscale route, public edge, mounted host, mobile client, STUN endpoint, or
+  TURN endpoint was contacted or changed.
+
+### Commands and results
+
+- From `plugins/u1-print-studio/app`, `bun run check` passed TypeScript;
+  `bun test src/*.test.ts` passed 101 tests with 594 assertions; `bun run bundle`
+  and `bun run bundle:runtime` passed.
+- `dist/stdio.js` is SHA-256
+  `be255f625137079a64b17031b36ffb5e2ba4a46264e6ac56679448bcb04fac16`;
+  the ad-hoc-signed macOS arm64 `dist/u1-print-studio` is SHA-256
+  `062e7cf9c826198db82457401ea8b28aae8eaa347b2485e245556fdc04971ddf`.
+  Standalone help and `codesign -vvv --verify` passed.
+- Current observation/camera assets are SHA-256
+  `128975091b192369a83476f5d8664da494d4d4fa968ef5e7fc29fe730fd51d3f`
+  and `2cc7c28f7d692ff7880bfc5cd400d2032b05765ce1bb142ea5dac205c349bc8b`.
+  Frozen status v4/v3 bytes remain 57,450 bytes at
+  `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437`;
+  frozen camera v3/v2/v1 bytes remain 33,725 bytes at
+  `c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203`.
+- Plugin Creator validation and Skill Creator validation for all five plugin
+  skills passed through the repository's `uv` boundary.
+- `./scripts/check-repository.sh` passed, including TypeScript and all 101 tests
+  with 594 assertions; final output was `repository contract: ok`.
+- `git diff --check` passed. A focused consistency scan confirmed the exact
+  two-visible/eight-app-only inventory, required eight-view enum,
+  observation-v2/camera-v4 contract, frozen legacy resources, and deferred
+  overview across durable records.
+- Local browser fixture review at roughly 589 by 844 pixels accepted the focused
+  Progress, Thermals, Heads, and separate Camera presentations. Captures remain
+  outside the repository.
+
+### Unverified later layers
+
+- Live mappings remain unresolved for cavity, filament material/color and
+  sensors, jobs/history, queue, fans/purifier, and bed mesh. Their known-value
+  semantics are not accepted by static fixtures.
+- No fresh mounted Codex/ChatGPT task, mobile host, live normalized observation,
+  overview composition, accessibility audit, or user ten-second comprehension
+  gate is accepted by this source evidence.
+- No release staging, installation, service restart, route/auth mutation,
+  printer contact, printer control, merge, or publication occurred.
 ## Standalone camera routing regression source validation — 2026-08-29
 
 ### Acceptance and safety boundary
