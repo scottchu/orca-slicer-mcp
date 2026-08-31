@@ -14,10 +14,14 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-The user now authorizes integration/merge of PR28 and the persistent personal
-HTTP rollout in decision 0022. First combine PR27's exclusive camera routing
-with decision 0021's focused widgets, then validate/review/merge and deploy only
-the existing two owner LaunchAgents from a versioned release with copied pinned Bun.
+PR28 merged as `2160492a4ce63d1409673786ea02b253d7cfaace`, combining PR27's
+exclusive camera routing with focused widgets and decision-0022 persistence.
+Personal Marketplace version `0.2.0+codex.20260831033612` is installed from that
+merge with exact runtime, production HTML, and all five skill folders verified.
+The runtime source/stage/cache SHA-256 is
+`c4029f18678e1839c0b005e37bc7401bf84bcc6ed7ef3d19155286253c2f018b`.
+Prior personal source remains recoverable locally. The user authorized only
+the existing two owner LaunchAgents with a versioned release/copied pinned Bun.
 Mac automatic login/power, routing/auth changes, and printer controls remain
 out of scope. Preserve decision 0020 fan-out, decision 0019 activation, decision
 0017 secure remote access, and decision 0016's local-first normal-user direction.
@@ -41,10 +45,10 @@ served as a current-asset compatibility alias. Health and doctor report runtime
 0.2.0, tool schema 3, and camera widget v2. Source validation passes with 71
 tests and 417 assertions; delivery/install evidence is recorded separately.
 
-Decision 0020 is installed from pull request 26 as Personal Marketplace version
-`0.2.0+codex.20260830013924`. Both existing services restarted and report tool
+Historically, decision 0020 was installed from pull request 26 as Personal Marketplace version
+`0.2.0+codex.20260830013924`. Both existing services then restarted and reported tool
 schema 4 plus camera-v3; OAuth state and Tailscale routing stayed unchanged.
-The installed surface remains exactly three model-visible tools and five
+That earlier installed surface had exactly three model-visible tools and five
 app-only helpers. Camera-v3 adds repeated-open camera-only presentation
 semantics and one private H264 printer upstream with bounded independent
 downstream peers, exact H264 payload selection, coalesced PLI feedback,
@@ -144,9 +148,9 @@ intents. Every non-camera view projects the same normalized observation and
 preserves time, freshness, connection epoch, session identity, provenance, and
 capability evidence. Camera retains its separate acquisition time and camera-v4
 lifecycle. The one user-facing procedural observation skill is
-`$u1-observe-printer`. The last recorded installed decision-0020 runtime is the
-older schema-4/camera-v3 three-visible/five-app-only surface; verify actual
-installed state separately and do not conflate it with current source.
+`$u1-observe-printer`. The current installed plugin carries schema 5,
+observation-v2, camera-v4, and the same two-visible/eight-app-only inventory.
+Earlier decision-0020 records are historical, not current installation claims.
 
 ## Validation boundary
 
@@ -156,10 +160,11 @@ camera routing slice passed 93 tests with 569 assertions on its separate tree.
 The combined baseline passed TypeScript and 105 tests with 606 assertions before
 persistence changes. The implemented focused-route/shared-store tree passes
 TypeScript, 110 tests with 759 assertions, both stdio/runtime bundles, and local
-signature checks. The lifecycle CLI passes 19 fixture tests. Independent final
-review approved the combined source with no blocking findings, including the
+signature checks. The pre-rollout lifecycle CLI passed 19 fixture tests;
+the final race-repaired CLI passes 21. Independent review approved the combined source with no blocking findings, including the
 repository contract and bundled health/static smoke with zero synthetic
-printer reads. Merge/install/live rollout remain pending. The macOS arm64
+printer reads. Post-merge installed/service evidence is recorded separately in
+the active iteration. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
@@ -202,18 +207,27 @@ broader-permission config and for closing a valid camera session when the rest
 of its stream envelope is malformed. Both fixes are included in the passing
 suite.
 
-Pull request 26 merged decision 0020 as `4f9041c`; Personal Marketplace version
-`0.2.0+codex.20260830013924` is installed and both services report schema
-4/camera-v3. The exact inventory is three model-visible tools plus five app-only
+Historically, pull request 26 merged decision 0020 as `4f9041c`; Personal Marketplace version
+`0.2.0+codex.20260830013924` was installed and both services then reported schema
+4/camera-v3. That inventory was three model-visible tools plus five app-only
 helpers. Earlier private-dashboard Live results belong to direct-session
 predecessors and do not prove the installed fan-out or mounted host. No TURN
 service or shared secret is configured.
 
 ## Next smallest action
 
-Commit the validated, independently approved decision-0022 source and lifecycle
-script, then merge PR28 and roll out the versioned HTTP release to the two existing
-owner LaunchAgents under the user's explicit authorization. Preserve OAuth
+PR28 and its installed app revision `2160492` are delivered. Independent
+post-repair restart/KeepAlive checks pass. Deliver the CLI race
+repair plus accurate rollout records in a small follow-up PR. The first
+controlled restart failed public readiness after initially successful install;
+an explicit public start recovered it. The repaired `stop_one` now waits for
+exact-label disappearance, bounded to 30 seconds, before bootstrap. Its 21
+lifecycle tests and independent review pass; this script-only fix does not
+change the deployed HTTP app or installed plugin. Final repository validation
+passes 110 app tests/759 assertions and 21 lifecycle tests. Both services are
+loaded/healthy/integrity-verified; ten static paths, access rejections, and
+env/OAuth/config/routing preservation pass. Separate bounded progress/thermals
+and snapshot checks passed without camera activation/video/control. Preserve OAuth
 state, every Serve/Funnel route, and the canonical checkout's unrelated dirty
 documentation. Read health/static routes for service evidence without implicit
 printer acquisition. Browser control is unavailable, so rendering acceptance
@@ -233,6 +247,9 @@ After rollout, fully quit and relaunch the host before invoking
 `open_printer_camera`; a status-card substitution is failure. Separately verify
 read-only live mappings, two-viewer fan-out, mounted focused widgets, and mobile
 behavior. Accept focused modules before composing overview.
+Once the repair follow-up is merged, the next user action is a full host reload
+and visual acceptance of the focused widgets; then scope the remaining unknown
+live mappings rather than repeating the completed rollout.
 
 ## Preserve
 
@@ -255,7 +272,10 @@ behavior. Accept focused modules before composing overview.
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
 docs/requirements.md, the active iteration, and decisions 0014 through 0022.
-Finish the user-authorized PR28 merge and persistent personal HTTP delivery.
+PR28 is merged and app revision2160492 is deployed; verify the latest rollout
+record, then finish delivery of the independently reviewed lifecycle race fix.
+If its follow-up is already merged, proceed to full host reload and user visual
+acceptance of focused widgets, then scope the remaining unknown live mappings.
 Use exact existing owner LaunchAgents, versioned release/pinned Bun, fixed
 focused routes defaulting to progress, and one observation store per process.
 Preserve existing OAuth state, private env, routes, and unrelated dirty docs.
