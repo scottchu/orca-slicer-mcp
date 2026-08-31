@@ -1,30 +1,47 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 C Fans & Chamber — authoritative current handoff
+## 2026-08-31 C Fans & Chamber — shipped handoff
+
+PR49 exact head `c14e92cfc655d0b7a6e7d0138650d7937789d7d1` was formally
+and independently approved without findings and merged as
+`3ab4ed7813a8f2ba45ac63b3093480183c428f28` at
+`2026-08-31T22:21:37Z`. Exact release
+`20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` was installed after a
+successful retry pinned the actual Bun 1.3.12 executable. Rollback snapshot
+`20260831T182614-2d2722` exists; no rollback was required. BOTH services were
+explicitly restarted and are loaded, healthy and integrity verified at runtime
+0.4.4/tool schema 10/observation-v10/camera-v8. Sixteen security checks pass;
+configuration, OAuth and routing were preserved. Frozen widget/index SHA-256 are
+`af27b363c91934a69962e18f84f0a0cc16f231d3d5e93f51d1e652dea89d4f3d`
+and `7381f1d19a25ba139328013b9456949ddd4e9a62d860b484f1477859eeb6b4b9`.
+Tailnet index, Fans and Thermals each return 200.
+
+Scoped verification made exactly one Fans and one Thermals POST. Both share
+source observation time `2026-08-31T22:27:06.974Z`: Fans is known/fresh; Tool 1
+reports speed 1 and 9131.8476 RPM, Tools 2–4 report zero speed/zero RPM, Cavity
+fan reports speed 0.698039 and 2400.5964 RPM, purifier power detection is false
+with null mode, and purifier fan rows are `not_reported`. Thermals environment is
+known/fresh with Cavity 33°C. These are telemetry facts only, not proof of fan or
+sensor accuracy, purifier installation, health, safety or physical acceptance.
+No browser/device visual pass exists.
+
+Two guarded-delivery failures preceded the successful install. Running the ship
+wrapper after manual merge refused preflight with `PR must be open...` and made
+no changes. The first post-merge stage selected an ASDF shim; dry-run failed with
+`bun exit127`, performed no install or rollback, and left the old 0.4.3 services
+verified. Staged release
+`20260831-3ab4ed7-pr49-resume-20260831T182443-ab31ae` remained staged but
+inactive and was never installed. The pinned Bun retry above succeeded. These
+documentation-only rollout records do not
+redeploy unchanged app bytes. Next: D Current Job/real History, then E Overview.
+
+### Previous C source checkpoint
 
 Decision 0029/OBS-013 define one shared, fixed read-only environment observation
-for independently invokable Thermals and Fans & Air. Exact raw object/field
-allowlist, physical fan mapping, numerical bounds, purifier detection/modes,
-component/domain states, 15-second attempt TTL/coalescing/stale retention and
-white compact presentation are durable there. Cavity is an actual-only Thermals
-row with independent time; Fans groups Tools 1–4 part cooling and Cavity/purifier
-air handling. No controls, health verdicts, background polling or unrelated
-acquisition. Target source is 0.4.4/schema 10/observation-v10/camera-v8 with
-twenty resources, observation-v9 retained and unchanged two-visible/eight-app-
-only tools.
-
-Design scope is decision 0029, requirements, PROJECT_STATE, NEXT_AGENT,
-design-qa and this iteration's BRIEF/HANDOFF/VALIDATION/WIDGET_TRACKS. Application
-scope/results are owned separately by implementation and independent validation.
-No current physical capability result is claimed from pinned source/config or
-the historical read. No C merge/deployment/service/printer/device action has
-occurred. Browser visual QA is blocked/unverified, not passed.
-
-Next: freeze author bytes, independent validation and exact-SHA approval, then
-use the standing guarded PR merge → exact-build deploy → explicit restart of
-BOTH services → scoped C verification. Preserve auth/config/routes and all
-shipped widgets; proceed to D Current Job/History then E overview. Postrelease
-records are docs-only and require no second deployment if app bytes are unchanged.
+for independently invokable Thermals and Fans & Air. Exact allowlist, mapping,
+bounds, state taxonomy, 15-second TTL/coalescing/stale retention and white compact
+presentation remain durable. The predeployment checkpoint claimed no live or
+visual evidence; the scoped rollout evidence above supersedes that status only.
 
 ## 2026-08-31 B Queue integration — shipped handoff
 
@@ -151,11 +168,12 @@ returns a known/fresh active 11 by 11 mesh at `2026-08-31T19:03:22.696Z`;
 visual/device acceptance remains unverified. VALIDATION records
 the actual commands and exact source/merged/release identities.
 
-The user's newest Fluidd Bed Mesh reference prioritizes a bounded interactive
+At the earlier Bed Mesh checkpoint, the user's Fluidd reference prioritized a bounded interactive
 3D reported-height surface inside the existing white card. Decision 0030 and
 OBS-009 supersede only the 2D-only presentation and prior release ordering.
-Current order is A/F (deployed) → B Queue → C fans/chamber → D Current Job/
-History → E overview. Keep all unfinished tracks, independent invocation and
+The order recorded then was A/F (deployed) → B Queue → C fans/chamber → D
+Current Job/History → E overview. The authoritative top section now records B/C
+shipped and D next. Keep all unfinished tracks, independent invocation and
 the Current Job/History split. A's exact deployment receipt is preserved below;
 it is not acceptance of the new F source.
 

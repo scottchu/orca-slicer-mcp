@@ -1,6 +1,41 @@
 # F0 dual-subsystem foundation validation
 
-## 2026-08-31 C Fans & Chamber — design/source work active
+## 2026-08-31 C Fans & Chamber — PR49 deployed
+
+Exact PR49 head `c14e92cfc655d0b7a6e7d0138650d7937789d7d1` passed formal
+and independent approval without findings and merged as
+`3ab4ed7813a8f2ba45ac63b3093480183c428f28` at
+`2026-08-31T22:21:37Z`. Exact release
+`20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` and rollback snapshot
+`20260831T182614-2d2722` were produced with the actual pinned Bun 1.3.12 runtime.
+BOTH services were explicitly restarted and are loaded, healthy and integrity
+verified at **0.4.4/schema 10/observation-v10/camera-v8**. Sixteen security checks
+pass; configuration, OAuth and routing were preserved and no rollback occurred.
+Widget/index SHA-256 values are
+`af27b363c91934a69962e18f84f0a0cc16f231d3d5e93f51d1e652dea89d4f3d`
+and `7381f1d19a25ba139328013b9456949ddd4e9a62d860b484f1477859eeb6b4b9`.
+Tailnet index, Fans and Thermals each returned 200.
+
+Exactly **one Fans POST and one Thermals POST** shared
+`sourceObservedAt=2026-08-31T22:27:06.974Z`. Fans was known/fresh: Tool 1 speed
+1/RPM 9131.8476; Tools 2–4 speed 0/RPM 0; Cavity fan speed 0.698039/RPM
+2400.5964; purifier `powerDetected=false`, mode null, exhaust/inner fan rows
+`not_reported`. Thermals environment was known/fresh and Cavity was known at
+33°C. This proves only the bounded telemetry projection at that instant. It does
+not prove sensor/RPM accuracy, fan or purifier health, safety, installation or
+physical acceptance. Browser/device rendering and visual acceptance remain
+unverified.
+
+Deployment chronology preserves two non-installing failures. The ship wrapper,
+invoked after manual merge, refused preflight with `PR must be open...` and made
+no changes. A first post-merge stage selected an ASDF shim; dry-run failed
+`bun exit127`, made no install or rollback, and the old 0.4.3 services remained
+verified. Bad staged release
+`20260831-3ab4ed7-pr49-resume-20260831T182443-ab31ae` remained staged but
+inactive and was never installed. Retrying with the actual Bun 1.3.12 executable
+produced the successful release above.
+
+## 2026-08-31 C Fans & Chamber — frozen source evidence
 
 The design role read current contracts/source and inspected pinned primary
 sources without contacting the printer:
@@ -21,10 +56,16 @@ object availability, purifier installation, sensor accuracy, fan operation or
 physical safety. The temporary clone is outside the repository. Historical
 cavity/fan/purifier results below are not reused as current evidence.
 
-Current target: runtime 0.4.4/schema 10/observation-v10/camera-v8, twenty
+The source target was runtime 0.4.4/schema 10/observation-v10/camera-v8, twenty
 resources with observation-v9 retained and unchanged two-visible/eight-app-only
-tools. Author, independent, exact-SHA, release and scoped live evidence remain
-pending. No app/Git/service/printer mutation occurred in this design pass.
+tools. The design pass made no app/Git/service/printer mutation; source approval,
+release and scoped live evidence subsequently completed in the rollout above.
+Author gates passed 234 tests/3,263 assertions, TypeScript and the required
+build/signing checks. Independent validation passed 18 focused tests/1,134
+assertions including the exact production widget VM and 120 race orders, plus
+the repository, lifecycle, shipping, three-bundle/code-signing and six exact-
+asset gates. Formal and independent review approved the exact PR49 head recorded
+above without findings. Source validation used software fixtures only.
 The allowed browser remains unavailable; no screenshot, interaction, device or
 visual pass is claimed. `git diff --check` is the only design-record hygiene
 gate and will be recorded after initial freeze.

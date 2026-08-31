@@ -12,19 +12,19 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
-**C Fans & Chamber is active.** Decision 0029/OBS-013 fix one bounded shared
-environment read demanded only by `thermals` or `fans`: Cavity temperature joins
-Thermals with independent time; Fans & Air shows physical Tools 1–4 part cooling,
-Cavity fan and detected purifier exhaust/inner facts. Zero/off/stopped, RPM not
-measured, purifier not detected, component not reported, endpoint unsupported,
-unavailable and stale remain distinct; no health/fault inference or controls.
-Source target is runtime 0.4.4/tool schema 10/observation-v10/camera-v8 with
-twenty resources and observation-v9 retained, while the two-visible/eight-app-
-only tool inventory stays fixed. Implementation/validation are active; no C
-merge, deployment, real-printer evidence or visual pass is claimed. Allowed
-browser discovery remains unavailable. Preserve A/F/Heads/B and continue D
-Current Job/History → E overview after the standing reviewed merge/exact-build/
-BOTH-service restart/scoped-verification sequence.
+**C Fans & Chamber is shipped.** PR49 exact head
+`c14e92cfc655d0b7a6e7d0138650d7937789d7d1` was formally and independently
+approved, then merged as `3ab4ed7813a8f2ba45ac63b3093480183c428f28` at
+`2026-08-31T22:21:37Z`. Exact release
+`20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` runs on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at runtime 0.4.4/tool
+schema 10/observation-v10/camera-v8. Sixteen security checks pass; configuration,
+OAuth and routing were preserved. Tailnet index, Fans and Thermals return 200;
+served widget/index hashes match frozen source. Exactly one Fans and one Thermals
+POST shared source time `2026-08-31T22:27:06.974Z` and returned known/fresh
+environment facts, including Cavity 33°C. These are telemetry facts, not sensor-
+accuracy, health or safety proof. Browser/device visual acceptance is unverified.
+Preserve A/F/Heads/B/C and continue **D Current Job/real History → E Overview**.
 
 ### Previous shipped Queue checkpoint
 
@@ -121,13 +121,14 @@ physical heads, and a structurally valid real 1920 × 1080 JPEG snapshot.
 The user requests all pending widgets and a unified refined white style.
 Decisions 0029/0030 and the active iteration's `WIDGET_TRACKS.md` own the durable
 queue: A materials + white cards/index + latest camera + continuous progress
-(deployed); F interactive reported Bed Mesh surface (deployed); B Queue; C fans/chamber;
-D Current Job/real History; E composed overview. The latest Fluidd Bed Mesh
+(deployed); F interactive reported Bed Mesh surface (deployed); B Queue
+(deployed); C Fans & Chamber (deployed); D Current Job/real History; E composed
+Overview. The latest Fluidd Bed Mesh
 reference prioritizes an orbitable 3D height surface inside the existing white
 card, not its dark dashboard or printer/profile controls. Independently
 invokable skills and the Current Job/History split stay intact. New feedback
-does not cancel unfinished tracks. B–E remain active; A/F visual acceptance is
-still pending. Old deferral wording
+does not cancel unfinished tracks. D–E remain active; A/F/B/C visual acceptance
+is still pending. Old deferral wording
 below is historical. F0/O1 milestone completion is not claimed.
 
 F's bounded design is recorded in decision 0030. The 0.4.1/schema 8/

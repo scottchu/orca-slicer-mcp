@@ -1,6 +1,6 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
-## Current C Fans & Chamber: visual acceptance unverified
+## C Fans & Chamber deployed: visual acceptance unverified
 
 final result: blocked
 
@@ -11,10 +11,17 @@ Cavity fan and detected purifier exhaust/inner facts. Percent/RPM remain labeled
 text, not decorative gauges or inferred health. Information stays above one
 bottom Refresh action.
 
+PR49 exact head `c14e92cfc655d0b7a6e7d0138650d7937789d7d1` was formally
+and independently approved; exact release
+`20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` is deployed to BOTH
+explicitly restarted services. Tailnet index, Fans and Thermals return 200; one
+Fans and one Thermals POST confirm bounded known/fresh data semantics. This is
+deployment and telemetry evidence, not rendered presentation evidence.
+
 No implementation screenshot, matched viewport/state comparison, browser
-interaction, keyboard result or console inspection exists. Fresh allowed-browser
-discovery remains unavailable. Historical widget captures do not accept changed
-Thermals/Fans assets. Typography/wrapping, spacing/layout, color/contrast, icon
+interaction, keyboard result or console inspection exists for this rollout.
+Historical widget captures do not accept changed Thermals/Fans assets.
+Typography/wrapping, spacing/layout, color/contrast, icon
 fidelity and content remain visually unverified.
 
 When available, capture both cards at 320/390/720 pixels with mixed nonzero,

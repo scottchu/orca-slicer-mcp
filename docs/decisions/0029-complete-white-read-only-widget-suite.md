@@ -1,7 +1,7 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: A/Heads and B Queue deployed; C fans/chamber active; visual acceptance unverified
+- Status: A/Heads, B Queue and C Fans & Chamber deployed; D Current Job/History next; visual acceptance unverified
 - Scope: F0/O1, OBS-007/008/010/011/013, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution
@@ -107,6 +107,16 @@ These pinned source/config facts define adapter semantics, not the connected
 printer's current firmware, object availability, sensor accuracy, fan operation,
 purifier installation, environmental safety or physical acceptance. Historical
 2026-08-31 capability results are not reused as current proof.
+
+C shipped in PR49. Exact reviewed head
+`c14e92cfc655d0b7a6e7d0138650d7937789d7d1` merged as
+`3ab4ed7813a8f2ba45ac63b3093480183c428f28`; exact release
+`20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` runs on BOTH explicitly
+restarted and verified services at 0.4.4/schema 10/observation-v10/camera-v8.
+Exactly one Fans and one Thermals POST shared a source observation time and
+confirmed the bounded known/fresh projections. That is deployment/telemetry
+evidence only; browser/device visual, sensor accuracy, health and safety remain
+unverified. D Current Job/History is next, then E Overview.
 
 ## B Queue integration (2026-08-31)
 
