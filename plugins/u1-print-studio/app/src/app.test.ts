@@ -178,8 +178,9 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v5.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v6.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
+      "ui://u1-print-studio/observation-v5.html",
       "ui://u1-print-studio/observation-v4.html",
       "ui://u1-print-studio/observation-v3.html",
       "ui://u1-print-studio/observation-v2.html",
@@ -277,7 +278,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(CAMERA_WIDGET_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v7.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v8.html");
     expect(LEGACY_CAMERA_WIDGET_URIS[0]).toBe(
       "ui://u1-print-studio/camera-v3.html"
     );
@@ -293,6 +294,21 @@ describe("U1 status MCP App contract", () => {
       expect(
         "text" in legacy.contents[0]! ? legacy.contents[0].text : ""
       ).toBe(LEGACY_CAMERA_WIDGET_HTML);
+    }
+  });
+
+  test("retains previous current observation and camera aliases with exact frozen legacy resources", async () => {
+    const client = await connectClient();
+    const listed = await client.listResources();
+    expect(listed.resources).toHaveLength(16);
+    for (const uri of [...LEGACY_FOCUSED_WIDGET_URIS,
+      "ui://u1-print-studio/camera-v7.html", "ui://u1-print-studio/camera-v6.html",
+      "ui://u1-print-studio/camera-v5.html", "ui://u1-print-studio/camera-v4.html",
+    ]) {
+      expect(listed.resources.map(resource => resource.uri)).toContain(uri);
+      const result = await client.readResource({ uri });
+      const resource = result.contents[0]!;
+      expect("text" in resource ? resource.text : "").toBe(uri.includes("camera-") ? CAMERA_WIDGET_HTML : WIDGET_HTML);
     }
   });
 
@@ -542,7 +558,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 7,
+      schemaVersion: 8,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });
@@ -708,16 +724,18 @@ describe("camera-only widget contract", () => {
     expect(CAMERA_WIDGET_HTML).not.toContain('name: "get_u1_status"');
   });
 
-  test("uses the focused Instrument Strips camera shell", () => {
+  test("uses the selected white camera shell without artificial image overlays", () => {
     expect(CAMERA_WIDGET_HTML).toContain('class="dashboard"');
     expect(CAMERA_WIDGET_HTML).not.toContain('<header class="camera-heading">');
     expect(CAMERA_WIDGET_HTML).not.toContain("<h1>Printer Camera</h1>");
     expect(CAMERA_WIDGET_HTML).not.toContain("Read only");
     expect(CAMERA_WIDGET_HTML).toContain('id="fullscreen"');
     expect(CAMERA_WIDGET_HTML).toContain('id="picture-in-picture"');
-    expect(CAMERA_WIDGET_HTML).toContain("--brand: #ffcd00;");
-    expect(CAMERA_WIDGET_HTML).toContain("width: min(100%, 720px);");
-    expect(CAMERA_WIDGET_HTML).toContain("background-size: 42px 42px;");
+    expect(CAMERA_WIDGET_HTML).toContain("--brand: #f4b927;");
+    expect(CAMERA_WIDGET_HTML).toContain("width: min(100%, 1120px);");
+    expect(CAMERA_WIDGET_HTML).not.toContain("background-size: 42px 42px;");
+    expect(CAMERA_WIDGET_HTML).toContain('<header class="camera-header">');
+    expect(CAMERA_WIDGET_HTML).toContain("<h1>U1 Camera</h1>");
     expect(CAMERA_WIDGET_HTML).toContain('aria-label="Open live camera"');
     expect(CAMERA_WIDGET_HTML).not.toContain(">Go Live</button>");
     expect(WIDGET_HTML).not.toContain('class="camera"');
@@ -782,7 +800,7 @@ describe("camera-only widget contract", () => {
 
   test("keeps activation snapshots in connecting state until success or failure", () => {
     for (const html of [CAMERA_WIDGET_HTML]) {
-      const frameStart = html.indexOf("const applyCameraFrame = (result)");
+      const frameStart = html.indexOf("const applyCameraFrame = (result,");
       const frameEnd = html.indexOf("window.addEventListener", frameStart);
       const frameSource = html.slice(frameStart, frameEnd);
       const trackStart = html.indexOf("peer.ontrack = (event)");
@@ -824,9 +842,10 @@ describe("camera-only widget contract", () => {
     expect(CAMERA_WIDGET_HTML).toContain(
       'state === "unavailable"\n          ? "Camera unavailable"\n          : "Waiting for camera"'
     );
-    expect(CAMERA_WIDGET_HTML).toContain(
+    expect(CAMERA_WIDGET_HTML).not.toContain(
       '.camera[data-camera-status="unavailable"] .camera-bottom { display: none; }'
     );
+    expect(CAMERA_WIDGET_HTML).toContain('id="refresh-snapshot"');
   });
 });
 
@@ -882,7 +901,7 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain('stale: "Stale"');
     expect(WIDGET_HTML).toContain('offline: "Offline"');
     expect(WIDGET_HTML).toContain('--negative: #b83232;');
-    expect(WIDGET_HTML).toContain('--negative: #ff8585;');
+    expect(WIDGET_HTML).not.toContain('--negative: #ff8585;');
     expect(WIDGET_HTML).not.toContain("Read only");
     expect(WIDGET_HTML).not.toContain("Current reading");
     expect(WIDGET_HTML).not.toContain("Missing evidence stays Unknown");
@@ -913,7 +932,7 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain("touch-action: manipulation");
     expect(WIDGET_HTML).toContain("notifyIntrinsicHeight");
     expect(WIDGET_HTML).toContain("--ink: #1c1e20;");
-    expect(WIDGET_HTML).toContain("--brand: #ffcd00;");
+    expect(WIDGET_HTML).toContain("--brand: #f4b927;");
     expect(WIDGET_HTML).not.toContain("fetch(");
     expect(WIDGET_HTML).not.toContain("MOONRAKER_BASE_URL");
   });

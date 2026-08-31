@@ -10,6 +10,43 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
+### Authoritative current work: complete all U1 widgets (2026-08-31)
+
+The user requests all pending widgets and a unified refined white style.
+Decision 0029 and the active iteration's `WIDGET_TRACKS.md` own the durable
+queue: A materials + white cards/index + latest camera + continuous progress;
+B Queue; C fans/chamber; D Current Job/real History; E composed overview.
+Bed Mesh's existing behavior is retained and its source is restyled. Independently
+invokable skills and the Current Job/History split stay intact. New feedback
+does not cancel unfinished tracks. All are active; old deferral wording below
+is historical. F0/O1 milestone completion is not claimed.
+
+Release A source is implemented and frozen for independent validation at
+0.4.0/schema 8/observation-v6/camera-v8, sixteen resources. It adds real
+printer-reported materials and white focused cards/index, camera information
+outside the image with working snapshot feedback/native fullscreen, and
+continuous reported-percent progress. The lower progress row contains only
+elapsed time; other reference metrics are not projected and are not fabricated.
+Frame/FPS watcher semantics are unchanged. Independent software gates pass:
+189 app tests/1,757 assertions, 21 lifecycle, 22 shipping, 20 isolated tests/
+399 assertions, TypeScript, bundles/signature, exact assets and frozen-source
+integrity. Formal review is pending; `design-qa.md` is blocked because no allowed browser is available
+and isolated headless permission has not been granted. Do not merge or deploy
+before required QA. Starting main is `bf3eb26`; both existing services were
+freshly checked by the coordinator and still report 0.3.5/schema 7/
+observation-v5/camera-v7 (PR38 `b565eec`), without restart or rollout.
+Every release still requires independent exact-SHA review, PR, guarded shipping,
+both-service restart, and meaningful deployed-widget verification. Keep source,
+deployed, real-printer, and user-device evidence separate. Queue foundation is
+active on `feat/u1-queue-completion`: adapter/model/tests only, not an integrated
+widget. Tracks B–E remain active while the visual gate awaits permission.
+Read-only capability research confirms Queue/History/cavity/fans endpoints can
+return real data; they are software gaps, not proven unsupported hardware.
+No printer controls, preset/project writes, auth/Tailscale changes, plugin
+reinstall, or previously deferred Mac login work is authorized by this scope.
+
+### Historical delivered checkpoints
+
 - Current result: bottom-left camera information and bottom-right controls are
   implemented with narrow wrapping. A reproduced product defect let repeated
   same-peer track events start duplicate frame watchers, repeatedly resetting

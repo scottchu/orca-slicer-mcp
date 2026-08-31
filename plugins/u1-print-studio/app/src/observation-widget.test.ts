@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import vm from "node:vm";
 import { normalizeBedMeshResponse, BED_MESH_MAX_DIMENSION } from "./adapters/moonraker-bed-mesh.js";
 import { unavailableBedMesh } from "./application/bed-mesh-observation.js";
+import { normalizeMaterialResponse } from "./adapters/moonraker-materials.js";
 
 // Execute the exact production script against a deterministic host/DOM boundary.
 // This is protocol/software evidence, not a browser-layout or mobile test.
@@ -345,7 +346,7 @@ describe("reported bed mesh widget", () => {
     expect(markup).toContain("X (mm)"); expect(markup).toContain("Y (mm)");
     const top = markup.match(/<header [\s\S]*?<\/header>/)![0];
     expect(top).toContain("Observed "); expect(top).not.toContain("Offline");
-    expect(markup.match(/<rect /g)).toHaveLength(6);
+    expect(markup.match(/<rect class="mesh-cell" /g)).toHaveLength(6);
     expect(markup).not.toContain("tabindex");
     expect(markup.match(/<footer [\s\S]*?<\/footer>/)![0]).not.toMatch(/Observed|mm|grid|Stale/);
     const pending = card.controls.refresh(); await tick();
@@ -358,9 +359,9 @@ describe("reported bed mesh widget", () => {
     expect(zero).toContain("0.000 mm"); expect(zero).not.toMatch(/NaN|Infinity|unavailable/);
     expect(new Set([...zero.matchAll(/fill="(hsl[^\"]+)"/g)].map(match => match[1])).size).toBe(1);
     const largest = mount({ toolOutput: data(mesh(Array.from({ length: BED_MESH_MAX_DIMENSION }, () => Array(BED_MESH_MAX_DIMENSION).fill(0)))) }).modules.innerHTML;
-    expect(largest.match(/<rect /g)).toHaveLength(4096);
+    expect(largest.match(/<rect class="mesh-cell" /g)).toHaveLength(4096);
     const invalid = mount({ toolOutput: data(mesh([[0, 0], [0, NaN]])) }).modules.innerHTML;
-    expect(invalid).toContain("Bed mesh unavailable"); expect(invalid).not.toContain("<rect ");
+    expect(invalid).toContain("Bed mesh unavailable"); expect(invalid).not.toContain('<rect class="mesh-cell"');
   });
   test("compacts extreme axis labels while preserving exact accessible bounds and quiet visible content", () => {
     const value = mesh();
@@ -384,24 +385,24 @@ describe("reported bed mesh widget", () => {
     ];
     for (const [module, expected] of cases) {
       const markup = mount({ toolOutput: data(module) }).modules.innerHTML;
-      expect(markup).toContain(expected); expect(markup).not.toContain("<rect ");
+      expect(markup).toContain(expected); expect(markup).not.toContain('<rect class="mesh-cell"');
       if (!module.sourceObservedAt) expect(markup).toContain("Observation time unavailable");
     }
     const stale = mount({ toolOutput: data({ ...mesh(), state: "stale", freshness: "stale", reason: "network" }) }).modules.innerHTML;
     expect(stale.match(/<header [\s\S]*?<\/header>/)![0]).toContain("Refresh unavailable");
-    expect(stale).toContain("Stale"); expect(stale.match(/<rect /g)).toHaveLength(6);
+    expect(stale).toContain("Stale"); expect(stale.match(/<rect class="mesh-cell" /g)).toHaveLength(6);
   });
   test("untrusted malformed grids and profile injection fail closed without breaking the view", () => {
     for (const matrix of [null, [], [[0, 1]], [[0, 1], [2]], Array.from({ length: 65 }, () => [0, 0]), [[0, 0], [0, Infinity]]]) {
       const markup = mount({ toolOutput: data({ ...mesh(), matrix }) }).modules.innerHTML;
-      expect(markup).toContain("Bed mesh unavailable"); expect(markup).not.toContain("<rect ");
+      expect(markup).toContain("Bed mesh unavailable"); expect(markup).not.toContain('<rect class="mesh-cell"');
     }
     const markup = mount({ toolOutput: data({ ...mesh(), profile: '<img src=x onerror="evil()">' }) }).modules.innerHTML;
     expect(markup).not.toContain("evil"); expect(markup).toContain("Reported probe grid");
   });
 });
 
-describe("segmented layer progress", () => {
+describe("continuous reported print progress", () => {
   function progress(current: unknown, total: unknown, percent: unknown = 67.4, width = 390) {
     const data = fixture("progress");
     data.module.fields.currentLayer.value = current;
@@ -409,128 +410,151 @@ describe("segmented layer progress", () => {
     data.module.fields.percent.value = percent;
     return mount({ toolOutput: data }, width);
   }
-  const fills = (markup: string) => [...markup.matchAll(/class="progress-block-fill" style="width:([\d.e+-]+)%"/g)].map(match => Number(match[1]));
+  const fills = (markup: string) => [...markup.matchAll(/class="progress-fill" style="width:([\d.e+-]+)%"/g)].map(match => Number(match[1]));
 
-  test("uses one block per layer for small totals without rounding forward", () => {
-    for (const [current, total, width] of [[0, 5, 390], [1, 5, 390], [3, 5, 390], [5, 5, 390], [1, 1, 390], [23, 24, 480], [47, 48, 481]]) {
-      const markup = progress(current, total, 67.4, width).modules.innerHTML;
-      expect(fills(markup)).toEqual(Array.from({ length: total }, (_, index) => index < current ? 100 : 0));
-      expect(markup).toContain(`Layer ${current} / ${total}`);
-      expect(markup).toContain(`aria-valuemax="${total}" aria-valuenow="${current}"`);
-      expect(markup).toContain(`aria-valuetext="Layer ${current} of ${total}"`);
-      expect(markup).not.toContain("Grouped into");
+  test("one continuous bar uses only reported percentage at every viewport and layer position", () => {
+    for (const width of [320, 390, 720]) for (const current of [0, 1, 126, 460, 461]) {
+      const markup = progress(current, 461, 67.4, width).modules.innerHTML;
+      expect(fills(markup)).toEqual([67.4]);
+      expect(markup).toContain('aria-valuemax="100" aria-valuenow="67.4"');
+      expect(markup).toContain(`Layer <strong class="layer-current">${current}</strong> / 461`);
+      expect(markup.match(/role="progressbar"/g)).toHaveLength(1);
+      expect(markup).not.toMatch(/progress-block|Grouped into/);
     }
+    expect(fills(progress(461, 461, 0).modules.innerHTML)).toEqual([0]);
+    expect(fills(progress(0, 461, 100).modules.innerHTML)).toEqual([100]);
+    expect(fills(progress(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, 2).modules.innerHTML)).toEqual([2]);
   });
 
-  test("caps grouped blocks and represents only the current group fraction", () => {
-    for (const width of [390, 720]) {
-      const count = width === 390 ? 24 : 48;
-      for (const current of [0, 1, 19, 20, 126, 460, 461]) {
-        const markup = progress(current, 461, 67.4, width).modules.innerHTML;
-        const actual = fills(markup);
-        expect(actual).toHaveLength(count);
-        for (let index = 0; index < count; index++) {
-          const start = Math.floor(index * 461 / count);
-          const end = Math.floor((index + 1) * 461 / count);
-          expect(actual[index]).toBeCloseTo(Math.max(0, Math.min(1, (current - start) / (end - start))) * 100, 10);
-        }
-        expect(actual.filter(fill => fill > 0 && fill < 100).length).toBeLessThanOrEqual(1);
-        expect(markup.match(/role="progressbar"/g)).toHaveLength(1);
-        expect(markup.match(/class="progress-block" aria-hidden="true"/g)).toHaveLength(count);
-        expect(markup).toContain(`aria-valuetext="Layer ${current} of 461. Grouped into ${count} blocks"`);
-        expect(markup).toContain('class="progress-percent">67.4%</strong>');
-        expect(markup).toContain(`Layer ${current} / 461`);
-      }
-    }
-  });
-
-  test("supports huge safe totals with bounded DOM and exact integer group boundaries", () => {
-    const total = Number.MAX_SAFE_INTEGER;
-    const current = Number(BigInt(total) * 23n / 48n);
-    const markup = progress(current, total, 2, 720).modules.innerHTML;
-    const actual = fills(markup);
-    expect(actual).toHaveLength(48);
-    for (let index = 0; index < 48; index++) {
-      const start = Number(BigInt(index) * BigInt(total) / 48n);
-      const end = Number(BigInt(index + 1) * BigInt(total) / 48n);
-      expect(actual[index]).toBeCloseTo(Math.max(0, Math.min(1, (current - start) / (end - start))) * 100, 10);
-    }
-    expect(actual.slice(0, 23)).toEqual(Array(23).fill(100));
-    expect(actual.slice(23)).toEqual(Array(25).fill(0));
-    expect(fills(progress(total, total, 100, 720).modules.innerHTML)).toEqual(Array(48).fill(100));
-  });
-
-  test("invalid or missing layers remain unavailable despite a reported percentage", () => {
-    for (const [current, total] of [[null, 461], [126, null], [0, 0], [-1, 461], [462, 461], [1.5, 461], [1, 4.5], ["126", 461], [126, "461"], [NaN, 461], [1, Infinity], [1, Number.MAX_SAFE_INTEGER + 1], [undefined, undefined]]) {
-      const markup = progress(current, total, 100).modules.innerHTML;
-      expect(markup).toContain('class="progress-track unavailable"');
-      expect(markup).toContain('aria-valuetext="Layer progress unavailable"');
-      expect(markup).toContain('<span>Layer progress unavailable</span>');
-      expect(markup).not.toContain("aria-valuenow");
-      expect(fills(markup)).toEqual([]);
-      expect(markup).toContain('class="progress-percent">100%</strong>');
-      expect(markup).toContain("Observed ");
-      expect(markup).not.toContain("Waiting");
-    }
-    const unknown = fixture("progress");
-    unknown.module.fields.currentLayer.state = "unknown";
-    expect(mount({ toolOutput: unknown }).modules.innerHTML).toContain("Layer progress unavailable");
-    delete unknown.module.fields;
-    expect(mount({ toolOutput: unknown }).modules.innerHTML).toContain("Layer progress unavailable");
-  });
-
-  test("keeps reported percentage independent and tolerates malformed percentage fields", () => {
+  test("invalid or absent percentage remains unknown independently of valid layers", () => {
     for (const percent of [null, NaN, Infinity, "42", -1, 101, {}]) {
       const markup = progress(3, 5, percent).modules.innerHTML;
-      expect(fills(markup)).toEqual([100, 100, 100, 0, 0]);
-      expect(markup).toContain('class="progress-percent">Unknown</strong>');
-      expect(markup).toContain('aria-valuenow="3"');
+      expect(fills(markup)).toEqual([]);
+      expect(markup).toContain('class="progress-percent unknown">Unknown</strong>');
+      expect(markup).toContain('aria-valuetext="Reported progress unavailable"');
+      expect(markup).not.toContain("aria-valuenow");
+      expect(markup).toContain('Layer <strong class="layer-current">3</strong> / 5');
     }
-    expect(fills(progress(0, 461, 100).modules.innerHTML)).toEqual(Array(24).fill(0));
-    expect(fills(progress(461, 461, 0).modules.innerHTML)).toEqual(Array(24).fill(100));
-    const missing = fixture("progress");
-    delete missing.module.fields.percent.value;
-    expect(mount({ toolOutput: missing }).modules.innerHTML).toContain('class="progress-percent">Unknown</strong>');
+    const missing = fixture("progress"); delete missing.module.fields.percent.value;
+    expect(mount({ toolOutput: missing }).modules.innerHTML).toContain('class="progress-percent unknown">Unknown</strong>');
   });
 
-  test("feature-detects media-query listeners without blocking initial widget render", () => {
-    for (const mode of ["legacy", "static", "absent"] as const) {
-      const card = mount({ toolOutput: fixture("progress") }, 390, mode);
-      expect(fills(card.modules.innerHTML)).toHaveLength(mode === "absent" ? 48 : 24);
-      expect(card.modules.innerHTML).toContain("Observed ");
-      const requests = card.sent.length;
-      card.resize(720);
-      expect(fills(card.modules.innerHTML)).toHaveLength(mode === "static" ? 24 : 48);
-      expect(card.sent).toHaveLength(requests);
+  test("invalid layers remain explicit without suppressing a valid reported percentage", () => {
+    for (const [current, total] of [[null, 461], [126, null], [0, 0], [-1, 461], [462, 461], [1.5, 461], [1, 4.5], ["126", 461], [126, "461"], [NaN, 461], [1, Infinity], [1, Number.MAX_SAFE_INTEGER + 1]]) {
+      const markup = progress(current, total, 100).modules.innerHTML;
+      expect(fills(markup)).toEqual([100]); expect(markup).toContain("Layer progress unavailable");
+    }
+    const missing = fixture("progress"); delete missing.module.fields;
+    expect(mount({ toolOutput: missing }).modules.innerHTML).toContain("Layer progress unavailable");
+  });
+
+  test("100 percent never invents completion and only supported lower metrics appear", () => {
+    const data = fixture("progress"); data.module.fields.percent.value = 100;
+    let markup = mount({ toolOutput: data }).modules.innerHTML;
+    expect(markup).toContain('class="progress-state">Printing</span>'); expect(markup).not.toContain(">Complete<");
+    expect(markup).toContain(">Elapsed</dt>"); expect(markup).toContain("<dd>10m</dd>");
+    expect(markup).not.toMatch(/>Speed<|>Height<|>Nozzle<|>Bed</);
+    data.printerStateLabel = "Complete";
+    markup = mount({ toolOutput: data }).modules.innerHTML;
+    expect(markup).toContain('class="progress-state">Complete</span>');
+    data.module.fields.elapsedSeconds.value = null; data.module.fields.estimatedRemainingSeconds.value = -10;
+    markup = mount({ toolOutput: data }).modules.innerHTML;
+    expect(markup).not.toContain('class="progress-metrics"'); expect(markup).toContain("Estimate unknown");
+  });
+
+  test("white surface, library icons and thin track remain stable in a dark host", () => {
+    expect(html).toContain("color-scheme: light;"); expect(html).not.toContain("prefers-color-scheme: dark");
+    expect(html).toContain("--surface: #fff;"); expect(html).toContain(".progress-track { height: 8px;");
+    expect(html).toContain("Feather Icons v4.29.2"); expect(html).toContain("Copyright (c) 2013-2023 Cole Bemis");
+    const markup = progress(3, 5).modules.innerHTML;
+    expect(markup).toContain('data-icon="feather-printer"');
+  });
+
+  test("resizing leaves state, source time, refresh failures and request count unchanged", async () => {
+    const card = progress(126, 461); await card.initialize();
+    const initial = card.modules.innerHTML;
+    const refresh = card.controls.refresh(); await tick();
+    const requests = card.sent.length; card.resize(720);
+    expect(fills(card.modules.innerHTML)).toEqual([67.4]); expect(card.button.disabled).toBe(true);
+    expect(card.modules.innerHTML).toBe(initial); expect(card.sent).toHaveLength(requests);
+    await card.advance(15001); await refresh;
+    const failure = card.error.textContent; expect(failure).toMatch(/Refresh failed/);
+    card.resize(390); expect(card.error.textContent).toBe(failure); expect(card.button.disabled).toBe(false);
+    expect(card.modules.innerHTML).toBe(initial); expect(card.sent).toHaveLength(requests);
+  });
+});
+
+describe("printer-reported material widget", () => {
+  const materialFixture = (state = "known", reason: string | null = null) => {
+    const materials = normalizeMaterialResponse({ result: { status: { print_task_config: {
+      filament_exist: [true, false, true, null], filament_vendor: ["Fixture", "NONE", "Generic", "Other"],
+      filament_type: ["PLA", "NONE", "PETG", "ABS"], filament_sub_type: ["Matte", "NONE", "", ""],
+      filament_color_rgba: ["FFFFFFFF", "00000000", "000000FF", "6F4C2FFF"],
+    } } } }, "2026-08-31T10:00:00.000Z");
+    const field = (value: unknown) => ({ state: value === null ? "unknown" : state, value });
+    return fixture("heads", { module: {
+      kind: "heads", state: "known", materials: { ...materials, state, reason },
+      items: materials.items.map((item) => ({
+        physicalTool: item.physicalTool,
+        material: field(item.type ? [item.vendor, item.type, item.subtype].filter(Boolean).join(" ") : null),
+        vendor: field(item.vendor), materialType: field(item.type), subtype: field(item.subtype), color: field(item.color), reportedPresence: field(item.reportedPresence),
+        temperature: { state: "known", value: 220 }, target: { state: "known", value: 220 },
+        active: { state: "known", value: item.physicalTool === 1 }, headState: { state: "known", value: "PARKED" },
+      })),
+    } });
+  };
+
+  test("renders four physical slots, metadata, safe visible colors and reported presence with its own time", () => {
+    const card = mount({ toolOutput: materialFixture() });
+    const rendered = card.modules.innerHTML;
+    expect((rendered.match(/class="head-card/g) ?? [])).toHaveLength(4);
+    for (const label of ["T1", "T2", "T3", "T4", "Fixture PLA Matte", "Generic PETG", "Other ABS", "Material unknown", "#FFFFFFFF", "#000000FF", "#6F4C2FFF", "No filament reported", "Presence unknown", "Active"]) expect(rendered).toContain(label);
+    expect(rendered).toContain("Printer-reported material");
+    expect(rendered).toContain('style="background-color:#FFFFFFFF"');
+    expect(rendered).not.toContain("NONE");
+    const expectedTime = new Date("2026-08-31T10:00:00.000Z").toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    expect(rendered).toContain(`Printer-reported material · Observed ${expectedTime}`);
+    expect(rendered.indexOf("Printer-reported material")).toBeLessThan(rendered.indexOf("<footer"));
+  });
+
+  test("fresh thermals do not hide stale material or refresh failure", () => {
+    const rendered = mount({ toolOutput: materialFixture("stale", "network") }).modules.innerHTML;
+    expect(rendered).toContain("Stale material data");
+    expect(rendered).toContain("Refresh failed; last observation retained");
+    expect(rendered).toContain("Fixture PLA Matte");
+    expect(rendered).toContain("220°");
+    for (const state of ["unknown", "unsupported", "unavailable"]) {
+      const data = materialFixture(); data.module.materials = { state, sourceObservedAt: null }; data.module.items = [];
+      const missing = mount({ toolOutput: data }).modules.innerHTML;
+      expect(missing).toContain(`Material data ${state}`);
+      expect(missing).toContain("Printer-reported material · Observation time unavailable");
+      expect((missing.match(/Material unknown/g) ?? [])).toHaveLength(4);
     }
   });
 
-  test("responsive regrouping preserves refresh state, header errors and no extra calls", async () => {
-    const card = progress(126, 461);
+  test("partial labels retain the reported subtype and explicitly name missing vendor and material", () => {
+    const data = materialFixture();
+    data.module.items[0].vendor.value = null;
+    data.module.items[0].materialType.value = null;
+    expect(mount({ toolOutput: data }).modules.innerHTML).toContain("Vendor unknown Material unknown Matte");
+    data.module.items[0].materialType.value = "PLA";
+    expect(mount({ toolOutput: data }).modules.innerHTML).toContain("Vendor unknown PLA Matte");
+  });
+
+  test("malicious host-delivered colors are not CSS and labels cannot inject HTML", async () => {
+    const data = materialFixture();
+    data.module.items[0].color.value = "#ff0000;background-image:url(https://private.invalid)";
+    data.module.items[0].vendor.value = '<img src="https://private.invalid" onerror="alert(1)">';
+    data.module.items[1].physicalTool = '<img onerror="alert(1)">';
+    const card = mount({ toolOutput: data });
+    expect(card.modules.innerHTML).toContain("Color unknown");
+    expect(card.modules.innerHTML).toContain("&lt;img");
+    expect(card.modules.innerHTML).not.toMatch(/background-image|<img|onerror="|class="material-swatch"[^>]*https:/);
     await card.initialize();
-    const footer = card.modules.innerHTML.split("<footer ")[1];
-    const header = card.modules.innerHTML.split("</header>")[0];
-    const refresh = card.controls.refresh();
-    await tick();
-    const requests = card.sent.length;
-    card.resize(720);
-    expect(fills(card.modules.innerHTML)).toHaveLength(48);
-    expect(card.button.disabled).toBe(true);
-    expect(card.button.attributes["aria-busy"]).toBe("true");
-    expect(card.modules.innerHTML.split("<footer ")[1]).toBe(footer);
-    expect(card.modules.innerHTML.split("</header>")[0]).toBe(header);
-    expect(card.sent).toHaveLength(requests);
-    await card.advance(15001);
-    await refresh;
-    const failure = card.error.textContent;
-    expect(failure).toMatch(/Refresh failed/);
-    card.resize(390);
-    expect(fills(card.modules.innerHTML)).toHaveLength(24);
-    expect(card.error.textContent).toBe(failure);
-    expect(card.modules.innerHTML.split("</header>")[0]).toBe(header);
-    expect(card.button.disabled).toBe(false);
-    expect(card.modules.innerHTML.split("<footer ")[1]).toBe(footer);
-    expect(card.sent).toHaveLength(requests);
-    expect(card.modules.innerHTML).not.toMatch(/Read only|Current reading|Printer telemetry/);
+    const refreshing = card.controls.refresh(); await tick();
+    const request = card.sent.find(item => item.method === "tools/call")!;
+    expect(request.params).toEqual({ name: "refresh_printer_observation", arguments: { view: "heads" } });
+    card.respond(request, { structuredContent: materialFixture() }); await refreshing;
+    expect(card.modules.innerHTML).toContain("Fixture PLA Matte");
   });
 });

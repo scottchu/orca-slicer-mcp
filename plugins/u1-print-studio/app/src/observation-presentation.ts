@@ -5,6 +5,7 @@ import type {
 } from "./observation-store.js";
 import { normalizedPrintState, normalizedToolState } from "./u1-status.js";
 import { unavailableBedMesh, type BedMeshObservation } from "./application/bed-mesh-observation.js";
+import { unavailableMaterials, type MaterialObservation } from "./application/material-observation.js";
 
 export const OBSERVATION_VIEWS = [
   "overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans",
@@ -63,6 +64,7 @@ type ThermalsModule = ModuleBase & {
 };
 type HeadsModule = ModuleBase & {
   kind: "heads";
+  materials: Omit<MaterialObservation, "items">;
   items: Array<{
     physicalTool: number;
     state: EvidenceState;
@@ -72,6 +74,11 @@ type HeadsModule = ModuleBase & {
     target: Field<number>;
     material: Field<string>;
     color: Field<string>;
+    vendor: Field<string>;
+    materialType: Field<string>;
+    subtype: Field<string>;
+    reportedPresence: Field<boolean>;
+    materialProvenance: Provenance;
     provenance: Provenance;
   }>;
 };
@@ -270,12 +277,24 @@ function projectThermals(snapshot: ObservationSnapshot): ThermalsModule {
 
 function projectHeads(snapshot: ObservationSnapshot): HeadsModule {
   const status = snapshot.status;
+  const { items: reportedMaterials, ...materials } = snapshot.materials ?? unavailableMaterials("not_requested");
+  const materialSlots = new Map(reportedMaterials.map(material => [material.physicalTool, material]));
+  const materialField = <T>(value: T | null): Field<T> => ({
+    state: value === null ? "unknown" : materials.state === "stale" ? "stale" : "known", value,
+  });
+  const materialProvenance: Provenance = {
+    source: materials.sourceObservedAt === null ? "not_observed" : "moonraker",
+    sourceObservedAt: materials.sourceObservedAt,
+    detail: "Printer-reported material metadata by physical head; not an Orca preset or profile sync",
+  };
   const tools = new Map(status.tools.map((tool) => [tool.physicalTool, tool]));
   const items = [1, 2, 3, 4].map((physicalTool) => {
     const tool = tools.get(physicalTool);
     const temperature = finiteOrNull(tool?.temperature);
     const target = finiteOrNull(tool?.target);
     const known = status.reachable && (temperature !== null || target !== null);
+    const material = materialSlots.get(physicalTool);
+    const materialName = material?.type ? [material.vendor, material.type, material.subtype].filter(Boolean).join(" ") : null;
     return {
       physicalTool,
       state: stateForKnown(snapshot, known),
@@ -285,11 +304,16 @@ function projectHeads(snapshot: ObservationSnapshot): HeadsModule {
         : field<string>(snapshot, null),
       temperature: field(snapshot, temperature),
       target: field(snapshot, target),
-      material: field<string>(snapshot, null),
-      color: field<string>(snapshot, null),
+      material: materialField(materialName),
+      color: materialField(material?.color ?? null),
+      vendor: materialField(material?.vendor ?? null),
+      materialType: materialField(material?.type ?? null),
+      subtype: materialField(material?.subtype ?? null),
+      reportedPresence: materialField(material?.reportedPresence ?? null),
+      materialProvenance,
       provenance: known
-        ? provenance(snapshot, "Head state and temperature only; material/color remain unknown")
-        : unknownProvenance("No accepted head, material, or color evidence was observed"),
+        ? provenance(snapshot, "Head state and temperature; material has an independent observation time")
+        : unknownProvenance("No accepted head state or temperature was observed"),
     };
   });
   const known = items.some((item) => item.state === "known" || item.state === "stale");
@@ -297,6 +321,7 @@ function projectHeads(snapshot: ObservationSnapshot): HeadsModule {
     ...moduleBase(snapshot, "heads", known, snapshot.capabilityEvidence.heads,
       "Four physical head slots from one cached observation"),
     kind: "heads",
+    materials,
     items,
   };
 }

@@ -8,11 +8,51 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0025, 0027, and 0028 (0026 is reserved for paused queue work)
+5. decisions 0014 through 0025, 0027 through 0029 (0026 is reserved for earlier Queue work)
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
+
+The authoritative queue is the current iteration's `WIDGET_TRACKS.md` and
+decision 0029. Complete **all** pending widgets; newer feedback does not erase
+earlier requests. Sequential independently shipped slices are A materials +
+white cards/index + selected camera + continuous progress, B real Queue,
+C fans/chamber, D Current Job/real History, and E composed overview. Retheme
+existing Bed Mesh with A and preserve independently invokable skills and the
+jobs/history split. Keep incomplete index labels truthful. Preserve unrelated
+checkouts; inspect and integrate any earlier Queue WIP explicitly.
+
+The latest selected camera has status/FPS/frame time in a white header outside
+the genuine image, superseding prior bottom-information overlays. Progress is
+continuous amber with slim green reported percentage, not layer blocks. Do not
+invent speed/height or other metrics. Material reads use the prefixed
+`print_task_config` fields in decision 0029 and physical array index + 1, not
+print mapping or local preset sync. Keep independent domain times/freshness.
+
+Release A source from main `bf3eb26` is frozen at 0.4.0/schema 8/observation-v6/
+camera-v8 with sixteen resources. Materials, white cards/index, camera header,
+snapshot feedback/native fullscreen, and continuous progress are implemented;
+progress's lower row is elapsed-only because other metrics are not projected.
+Independent full software validation passes (189 app/1,757 assertions,
+21 lifecycle, 22 shipping, 20 isolated/399 assertions, TypeScript, bundles/
+signature/exact assets and frozen-source integrity). Formal review and visual
+acceptance remain pending. `design-qa.md` is blocked: allowed browser discovery
+found no clients, and isolated headless permission is requested but not granted.
+A source checkpoint commit/draft PR may record the software-only state. Obtain
+that permission or an allowed browser, then capture/compare and review the exact
+candidate before any PR merge/ship. In particular, visually assess camera's
+muted combined state/FPS/time label against the reference's differentiated
+text and vertical separators; no 1:1 fidelity claim is established by tests.
+Both live services were checked and remain 0.3.5/schema 7/observation-v5/camera-v7
+(PR38 `b565eec`); no new deployment or restart occurred. Queue foundation is
+separately active on `feat/u1-queue-completion` (adapter/model/tests only);
+it has no integrated widget or rollout. Retain B–E in the queue while blocked.
+Never claim an old design-QA pass for new assets. No printer control,
+queue/history mutation, preset/project
+write, auth/Tailscale change, plugin reinstall, or Mac login work is included.
+
+## Historical execution checkpoints
 
 Bottom-left camera information and bottom-right controls are implemented.
 The reproduced missing-FPS defect is duplicate frame watchers after repeated

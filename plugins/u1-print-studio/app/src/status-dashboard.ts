@@ -28,6 +28,7 @@ import {
   readU1CameraFrame,
   readU1Status,
   readU1BedMesh,
+  readU1Materials,
 } from "./u1-status.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -68,6 +69,7 @@ type CameraFrameReader = typeof readU1CameraFrame;
 export type StatusDashboardDependencies = {
   readStatus?: StatusReader;
   readBedMesh?: typeof readU1BedMesh;
+  readMaterials?: typeof readU1Materials;
   observations?: PrinterObservationStore;
   readCameraFrame?: CameraFrameReader;
   cameraSessions?: CameraWebRtcSessionController;
@@ -106,7 +108,8 @@ export function createStatusDashboardHandler(
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
   const observations = dependencies.observations ?? new PrinterObservationStore(
-    readStatus, undefined, dependencies.readBedMesh ?? (readStatus === readU1Status ? readU1BedMesh : undefined)
+    readStatus, undefined, dependencies.readBedMesh ?? (readStatus === readU1Status ? readU1BedMesh : undefined),
+    dependencies.readMaterials ?? (readStatus === readU1Status ? readU1Materials : undefined)
   );
 
   return async (
@@ -221,7 +224,7 @@ export function createStatusDashboardHandler(
           res,
           200,
           observationPayload(
-            await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" }),
+            await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads" }),
             view as ObservationView
           )
         );

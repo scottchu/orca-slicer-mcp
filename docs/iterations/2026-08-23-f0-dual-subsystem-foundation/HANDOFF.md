@@ -1,5 +1,54 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 all-widget completion — authoritative current handoff
+
+The user wants every pending read-only widget completed and all cards/index
+restyled to the selected white reference. Decision 0029 and `WIDGET_TRACKS.md`
+freeze this direction and supersede older deferrals/overlays below. Release A
+combines material metadata, shared white foundation, selected camera and
+continuous progress; B Queue, C fans/chamber, D Current Job/History, E overview
+follow sequentially, with all unfinished rows retained as active. Existing
+Bed Mesh is restyled with A. Invokable skills and jobs/history separation stay.
+
+Release A source is frozen at 0.4.0/schema 8/observation-v6/camera-v8, sixteen
+resources, from main `bf3eb26`. Changed application scope: fixed material
+adapter/model, shared store/Heads projection, app/server/dashboard plumbing,
+white focused/camera/index/host HTML, runtime contract and associated tests.
+Docs scope: decision 0029, requirements, project/next-agent state and current
+iteration records/track matrix; the validator owns the current blocked
+`design-qa.md`. The design role changed docs only and no frozen source bytes.
+Camera uses genuine media, header information, working snapshot feedback and
+native fullscreen on the card; frame/FPS watcher semantics remain unchanged.
+Progress lower metrics are elapsed-only because nozzle/bed/speed/height are
+not projected. Feather icons retain local MIT attribution; firmware material
+labels are not Orca presets. Independent final software gates pass: 189 app/
+1,757 assertions, 21 lifecycle, 22 shipping, 20 isolated/399 assertions,
+TypeScript, three bundles/signature, six exact HTML comparisons and unchanged
+62-file source manifest. VALIDATION records hashes and precise boundaries.
+Formal review and visual acceptance remain pending.
+
+Both live services were checked by the coordinator and still report
+0.3.5/schema 7/observation-v5/camera-v7 (PR38 `b565eec`), without restart or
+rollout. Browser discovery found no allowed client; isolated headless permission
+is requested but not granted. `design-qa.md` is blocked and old passes do not
+accept new bytes. No merge or deployment before required visual QA and exact-SHA
+independent review. Thereafter use guarded ship, both-service restart, exact
+assets/integrity and meaningful deployed behavior verification.
+
+Next smallest action: record the software checkpoint/draft PR, obtain browser
+permission/access, then reference-to-render QA and formal review. Camera's
+combined muted state/FPS/time text differs from the reference's differentiated
+text/dividers and needs visual classification; do not claim 1:1 fidelity from
+source/fixture results. Direct accessible controls are an allowed design choice.
+Queue's
+adapter/model/test foundation is active separately on `feat/u1-queue-completion`,
+without widget integration, merge or deployment. B–E remain active.
+Preserve other dirty checkouts. No printer controls, queue/history mutation,
+preset/project sync/write, auth/Tailscale change, plugin reinstall, or previously
+deferred Mac login work enters this request. Other risks: independent material
+freshness/privacy, unsupported versus unimplemented meaning, media regression,
+and exact source-versus-deployed tracking for every release.
+
 ## 2026-08-31 bottom-left camera information and FPS repair — shipped in PR38
 
 The user requests camera state/FPS/time bottom left because the top overlay

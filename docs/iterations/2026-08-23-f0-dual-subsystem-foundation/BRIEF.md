@@ -5,6 +5,27 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
+- Authoritative current work (2026-08-31): complete all pending read-only U1
+  widgets and apply the selected white style. Decision 0029 and
+  `WIDGET_TRACKS.md` supersede prior Queue/progress deferrals and camera overlay
+  directions below. Release order: A materials + white cards/index + latest
+  camera + continuous progress, B Queue, C fans/chamber, D Current Job/History,
+  E composed overview. Bed Mesh is restyled with A; retain independent
+  invocation and truthful coverage labels. New feedback never silently cancels
+  outstanding tracks. Release A source is implemented/frozen from `bf3eb26` at
+  0.4.0/schema 8/observation-v6/camera-v8, sixteen resources. Progress lower
+  metrics are elapsed-only, never fabricated from the reference. Independent
+  full software gates pass (189 app/1,757 assertions, 21 lifecycle, 22 shipping,
+  20 isolated/399 assertions plus bundles/asset/integrity checks); formal
+  review/merge/rollout remain pending.
+  Both live services were checked and remain PR38 `b565eec` at 0.3.5/schema 7/
+  observation-v5/camera-v7, without restart. `design-qa.md` is blocked awaiting
+  allowed-browser access or requested but ungranted headless permission; no
+  merge/deployment before required QA. Queue adapter/model/test foundation is
+  active separately on `feat/u1-queue-completion`, not an integrated widget.
+  Ship every accepted slice through the existing guarded PR/review/exact-build/
+  both-service restart and verification workflow. F0/O1 are not complete.
+- Historical checkpoints follow; they are not the current execution queue.
 - Current result and next action: bottom-left camera information and bottom-right
   controls are implemented. Repeated same-peer track events reproducibly started
   duplicate watchers and reset the FPS window; cancellation/generation guards

@@ -49,6 +49,25 @@ printer environments support the described behavior.
   profile mutation is permitted. The compact 2D view preserves XY orientation,
   explicit mm units, accessible numerical summaries, and top information with
   bottom refresh. Decision 0027 specifies adapter, normalization, and limits.
+- **OBS-010:** Heads show bounded printer-reported vendor, type, subtype, color
+  and presence from a fixed `print_task_config` read, mapped by physical array
+  index + 1. Material has independent time/freshness, coalesced bounded demand,
+  and stale last-success retention; fresh thermals cannot refresh its evidence.
+  Missing fields/object remain unknown, endpoint unsupported and acquisition
+  failure stay distinct, and arbitrary raw configuration never reaches public
+  envelopes. This is firmware metadata, not an Orca preset or sync/write action.
+  Decision 0029 fixes selected field names, normalization and acceptance.
+- **OBS-011:** All pending focused widgets remain in the active iteration's
+  durable completion matrix when new feedback arrives. Apply the selected white
+  visual language to all current cards and the directory; preserve real content,
+  known/unknown/stale/failure semantics and independently invokable views.
+  Progress uses a continuous strip of valid reported percent with independent
+  layers/ETA, not rejected layer blocks or invented speed/height/completion.
+  Real Queue, fans/chamber and History precede overview composition. Unsupported
+  firmware and unimplemented software must never be conflated. Each release
+  requires reviewed source, guarded shipment, both-service restart and scoped
+  meaningful verification under decision 0028; earlier evidence is not reused
+  as acceptance of changed bytes.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -87,13 +106,15 @@ printer environments support the described behavior.
   shared printer upstream closes when the last viewer closes or fails. TURN is
   a fallback, not a prerequisite when a direct server host candidate is
   reachable.
-- **CAM-008:** Current camera chrome is image-only. As an explicit camera-only
-  exception to information-above/actions-below, state/FPS/time sit bottom left
-  and display/live controls sit bottom right; rejection feedback stays above.
-  When both groups cannot fit in one row, the information wraps to a preceding
-  left-aligned row above the complete right-aligned control cluster. Do not
-  overlap or truncate time/FPS or shrink 44-pixel controls on narrow views.
-  Snapshot/fallback time belongs to the
+- **CAM-008:** Camera uses the latest selected white rounded-card reference:
+  small camera-icon tile/title at top left; state/measured FPS/frame time in the
+  white header above and outside the genuine image, with readable narrow
+  wrapping. Display/live/snapshot controls stay bottom right and remain working
+  and accessible; any overflow menu exposes real PiP/Go Live/Close actions.
+  Rejection feedback stays above. No grid, tint, photo information overlay or
+  redundant snapshot footer is added. This supersedes the former bottom-left
+  information exception; information is above actions. Do not truncate time/FPS
+  or shrink 44-pixel controls on narrow views. Snapshot/fallback time belongs to the
   accepted displayed JPEG's server receipt time; live time belongs to evidenced
   local rendered/decoded frames and freezes when they stop. Neither is claimed
   as sensor capture time. Only while live, an integer FPS value may appear
@@ -198,13 +219,15 @@ printer environments support the described behavior.
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v5` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v6` is the
   focused presentation resource. Every explicit camera open or reopen creates
-  a fresh snapshot-first `camera-v7` presentation; Go Live, retry, Close, and
+  a fresh snapshot-first `camera-v8` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v4/v3/v2/v1 and camera-v6/v5/v4 are current-asset compatibility aliases.
+  Observation-v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
+  Source is runtime 0.4.0/tool schema 8 with sixteen resources; this source
+  contract does not claim deployment of those bytes to existing services.
 
 ## Architecture and ontology
 
