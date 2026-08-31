@@ -7,7 +7,21 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
-Latest priority: Heads reference refinement, a presentation-only follow-up to
+Current priority: **B Queue integration** after PR46's merged Heads rollout
+records (`bd7abc8`). Decision 0029's Queue addendum/OBS-012 bind the existing
+reviewed foundation to the shared store, independent receipt/attempt TTL,
+safe bounded projection and white focused card/index. No new Queue release is
+claimed until the runtime 0.4.3/tool schema 9/observation-v9/camera-v8 candidate
+with nineteen resources and retained observation-v8 passes exact review, merge,
+deployment, BOTH-service restart and scoped verification. A/F/Heads remain deployed; C fans/chamber, D Current Job/
+History and E overview remain active afterward. Browser/device acceptance is
+unverified; the standing deployment-first user-review order remains.
+Author checks pass 223 app tests/3,150 assertions. Independent validation passes
+those plus 21 lifecycle, 22 shipping and 15 focused tests/7,046 assertions,
+TypeScript/diff checks, three bundles/code signing and six exact emitted assets;
+exact-SHA review remains open.
+
+Previous shipped priority: Heads reference refinement, a presentation-only follow-up to
 A1/A2 under decision 0029. Use actual-filament-color soft washes inside the white
 container with exact swatch/hex and accessible Copy; preserve real state and
 independent material freshness. This slice precedes Queue without cancelling
@@ -73,7 +87,7 @@ track is cancelled by the new priority.
 | A4 Continuous progress | Contrast correction, continuous bar/layers/ETA/elapsed deployed | User visual review, without fabricated metrics/completion | Deployed in PR41; visual acceptance pending |
 | A5 Heads reference refinement | Deployed in PR45 at 0.4.2: actual-color soft wash, exact swatch/hex and Copy; material acquisition retained | User visual/native-clipboard review | Both-service and independent live-read/served-widget checks pass; visual/device acceptance unverified |
 | F Bed Mesh | Interactive same-sample surface and retained 2D grid deployed in PR43 at 0.4.1 | User visual review of XYZ/legend/exaggeration, pointer/keyboard orbit/reset and 2D fallback | P2 corrected; reviewed and shipped, visual/device acceptance pending |
-| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Integrate bounded store/projection/widget without queue mutations | Foundation source/protocol approved; widget integration active next |
+| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Independent receipt/attempt TTL, safe bounded rows/omissions, known-empty versus failure states and white card/index; no queue mutations | Store/projection/widget integration active now under decision 0029/OBS-012; review and rollout pending |
 | C Fans and chamber | Fans/purifier unimplemented; chamber thermal unknown | Real fixed fan/purifier/cavity reads, measured units and independent missing/power states; no controls | Active, after Queue |
 | D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, after fans/chamber |
 | E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |
@@ -131,6 +145,12 @@ private attachment paths/images are not committed.
 - Bed mesh, thermals, heads, jobs/history, queue, fans, overview, and directory
   use the same visual vocabulary without replacing real domain content with
   decorative gauges or implied healthy empty states.
+- Queue: reported queue state and total count above an ordered safe-basename
+  list, with optional Added and observed waiting duration (not ETA/live clock).
+  Show at most 100 rows plus explicit omitted count; wrap long filenames.
+  Independent receipt/freshness/failure information stays above bottom Refresh.
+  Valid known zero rows means empty; stale zero rows means last observed empty.
+  Unknown/unsupported/unavailable never becomes empty or a fabricated timestamp.
 - Bed Mesh surface (decision 0030): default oblique interactive 3D chart on
   white, retaining every reported sample at its existing XY bounds. Connect
   adjacent points only, with no resampling/smoothing or `mesh_matrix` fallback.

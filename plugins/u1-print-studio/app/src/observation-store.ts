@@ -1,6 +1,7 @@
 import type { U1Status, U1WidgetMetadata } from "./u1-status.js";
 import { BED_MESH_TTL_MS, unavailableBedMesh, type BedMeshObservation, type BedMeshReader } from "./application/bed-mesh-observation.js";
 import { MATERIAL_TTL_MS, unavailableMaterials, type MaterialObservation, type MaterialReader } from "./application/material-observation.js";
+import { QUEUE_TTL_MS, unavailableQueue, type QueueObservation, type QueueReader } from "./application/queue-observation.js";
 
 export type Freshness = "fresh" | "stale" | "offline" | "unknown";
 export type CapabilityEvidence =
@@ -38,6 +39,7 @@ export type ObservationSnapshot = {
   metadata: U1WidgetMetadata;
   bedMesh?: BedMeshObservation;
   materials?: MaterialObservation;
+  queue?: QueueObservation;
 };
 
 type StatusReader = () => Promise<{
@@ -67,7 +69,7 @@ function capabilityEvidence(status: U1Status): ObservationSnapshot["capabilityEv
     materials: "unknown",
     jobs: status.reachable && status.filename ? "observed" : "unknown",
     history: "advertised",
-    queue: "advertised",
+    queue: "unknown",
     fans: "advertised",
     purifier: "advertised",
     bedMesh: "advertised",
@@ -85,30 +87,66 @@ export class PrinterObservationStore {
   private bedMeshInFlight: Promise<void> | null = null;
   private materials = unavailableMaterials("not_requested");
   private materialsInFlight: Promise<void> | null = null;
+  private queue = unavailableQueue("not_requested");
+  private queueInFlight: Promise<void> | null = null;
 
   constructor(
     private readonly readStatus: StatusReader,
     private readonly now: () => Date = () => new Date(),
     private readonly readBedMesh?: BedMeshReader,
-    private readonly readMaterials?: MaterialReader
+    private readonly readMaterials?: MaterialReader,
+    private readonly readQueue?: QueueReader
   ) {}
 
-  async current(options: { refresh?: boolean; includeBedMesh?: boolean; includeMaterials?: boolean } = {}): Promise<ObservationSnapshot> {
+  async current(options: { refresh?: boolean; includeBedMesh?: boolean; includeMaterials?: boolean; includeQueue?: boolean } = {}): Promise<ObservationSnapshot> {
     await Promise.all([
       this.currentStatus(options),
       options.includeBedMesh ? this.currentBedMesh(options.refresh === true) : Promise.resolve(),
       options.includeMaterials ? this.currentMaterials(options.refresh === true) : Promise.resolve(),
+      options.includeQueue ? this.currentQueue(options.refresh === true) : Promise.resolve(),
     ]);
     // A concurrent status or mesh receipt may have advanced the shared version.
     // Attach the latest independent domain instead of a captured older snapshot.
     const bedMesh = this.bedMeshWithCurrentFreshness();
     const materials = this.materialsWithCurrentFreshness();
+    const queue = this.queueWithCurrentFreshness();
     const snapshot = this.withCurrentFreshness(this.snapshot!);
-    return { ...snapshot, bedMesh, materials, capabilityEvidence: {
+    return { ...snapshot, bedMesh, materials, queue, capabilityEvidence: {
       ...snapshot.capabilityEvidence,
       bedMesh: bedMesh.sourceObservedAt !== null ? "observed" : bedMesh.state === "unsupported" ? "unsupported" : "unknown",
       materials: materials.sourceObservedAt !== null ? "observed" : materials.state === "unsupported" ? "unsupported" : "unknown",
+      queue: queue.sourceObservedAt !== null ? "observed" : queue.state === "unsupported" ? "unsupported" : "unknown",
     } };
+  }
+
+  private async currentQueue(refresh: boolean): Promise<void> {
+    const checked = Date.parse(this.queue.checkedAt ?? "");
+    const due = !Number.isFinite(checked) || this.now().valueOf() - checked >= QUEUE_TTL_MS;
+    if (this.queue.checkedAt !== null && (!refresh || !due)) return;
+    if (!this.readQueue) return;
+    if (!this.queueInFlight) {
+      this.queueInFlight = (async () => {
+        let result: QueueObservation;
+        try { result = await this.readQueue!(); }
+        catch { result = unavailableQueue("network", this.now().toISOString()); }
+        if (result.state === "known") this.queue = result;
+        else if (this.queue.sourceObservedAt !== null) this.queue = {
+          ...this.queue, state: "stale", freshness: "stale",
+          checkedAt: result.checkedAt ?? this.now().toISOString(), reason: result.reason,
+        };
+        else this.queue = { ...result, checkedAt: result.checkedAt ?? this.now().toISOString() };
+        const version = ++this.observationVersion;
+        if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
+      })().finally(() => { this.queueInFlight = null; });
+    }
+    await this.queueInFlight;
+  }
+
+  private queueWithCurrentFreshness(): QueueObservation {
+    if (this.queue.state !== "known") return this.queue;
+    const observed = Date.parse(this.queue.sourceObservedAt ?? "");
+    return !Number.isFinite(observed) || this.now().valueOf() - observed >= QUEUE_TTL_MS
+      ? { ...this.queue, state: "stale", freshness: "stale" } : this.queue;
   }
 
   private async currentMaterials(refresh: boolean): Promise<void> {

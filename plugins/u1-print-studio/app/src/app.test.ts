@@ -178,8 +178,9 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v8.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v9.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
+      "ui://u1-print-studio/observation-v8.html",
       "ui://u1-print-studio/observation-v7.html",
       "ui://u1-print-studio/observation-v6.html",
       "ui://u1-print-studio/observation-v5.html",
@@ -302,8 +303,8 @@ describe("U1 status MCP App contract", () => {
   test("retains previous current observation and camera aliases with exact frozen legacy resources", async () => {
     const client = await connectClient();
     const listed = await client.listResources();
-    expect(listed.resources).toHaveLength(18);
-    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v7.html");
+    expect(listed.resources).toHaveLength(19);
+    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v8.html");
     for (const uri of [...LEGACY_FOCUSED_WIDGET_URIS,
       "ui://u1-print-studio/camera-v7.html", "ui://u1-print-studio/camera-v6.html",
       "ui://u1-print-studio/camera-v5.html", "ui://u1-print-studio/camera-v4.html",
@@ -401,7 +402,7 @@ describe("U1 status MCP App contract", () => {
       module: {
         kind: "queue",
         state: "unknown",
-        capabilityEvidence: "advertised",
+        capabilityEvidence: "unknown",
         items: [],
       },
     });
@@ -561,7 +562,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 8,
+      schemaVersion: 9,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });

@@ -12,6 +12,26 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
+The user's continuation resumes **B Queue integration** after PR46 merged the
+Heads rollout records at `bd7abc8f07f7bbe1fdd47e45eabaf41b8b7110b2`.
+Decision 0029's Queue addendum and OBS-012 bound the existing foundation's
+store/projection/widget integration: independent receipt/freshness/15-second
+attempt TTL, bounded ordered safe filenames, truthful empty/stale/failure
+states, top information and bottom Refresh, without Queue mutations. Source
+candidate is runtime 0.4.3/tool schema 9/observation-v9/camera-v8 with nineteen
+resources and observation-v8 retained; validation and exact-candidate review
+are active. Author checks pass 223 app tests/3,150 assertions; independent
+validation passes those plus 21 lifecycle, 22 shipping and 15 focused tests/
+7,046 assertions, TypeScript, diff checks, three bundles/code signing and six
+exact emitted assets. No integrated Queue release, new deployment or visual pass is
+claimed yet. Preserve shipped A/F/Heads and the order B → C fans/chamber →
+D Current Job/History → E overview, plus independent invocation. The latest
+allowed-browser discovery remains unavailable. The standing exact-review → PR
+merge → exact-build deploy → restart BOTH services → verify sequence remains
+authorized for the user's subsequent visual review.
+
+### Previous shipped Heads checkpoint
+
 Latest user priority is the Heads reference refinement in decision 0029:
 soft actual-filament-color tool-card washes inside the white container, real
 state/material/temperature, exact swatch/hex and accessible Copy, with Refresh

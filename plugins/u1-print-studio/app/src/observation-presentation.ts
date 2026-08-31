@@ -6,6 +6,7 @@ import type {
 import { normalizedPrintState, normalizedToolState } from "./u1-status.js";
 import { unavailableBedMesh, type BedMeshObservation } from "./application/bed-mesh-observation.js";
 import { unavailableMaterials, type MaterialObservation } from "./application/material-observation.js";
+import { unavailableQueue, type QueueObservation } from "./application/queue-observation.js";
 
 export const OBSERVATION_VIEWS = [
   "overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans",
@@ -98,7 +99,7 @@ type JobHistoryModule = ModuleBase & {
   status: "not_implemented";
   items: never[];
 };
-type QueueModule = ModuleBase & { kind: "queue"; items: never[] };
+type QueueModule = ModuleBase & QueueObservation & { kind: "queue" };
 type FansModule = ModuleBase & {
   kind: "fans";
   items: never[];
@@ -359,10 +360,9 @@ function projectJobHistory(snapshot: ObservationSnapshot): JobHistoryModule {
 
 function projectUnknown(
   snapshot: ObservationSnapshot,
-  view: "queue" | "fans"
-): QueueModule | FansModule {
+  view: "fans"
+): FansModule {
   const detail = {
-    queue: "Queue was advertised but has no accepted read-only normalization",
     fans: "Fans and purifier were advertised but their semantics are not normalized",
   }[view];
   const capability = snapshot.capabilityEvidence[view];
@@ -370,7 +370,6 @@ function projectUnknown(
     ...moduleBase(snapshot, view, false, capability, detail),
     state: "unknown" as const,
   };
-  if (view === "queue") return { ...base, kind: "queue", items: [] };
   return {
       ...base,
       kind: "fans",
@@ -379,6 +378,19 @@ function projectUnknown(
         state: "unknown",
         capabilityEvidence: snapshot.capabilityEvidence.purifier,
       },
+  };
+}
+
+function projectQueue(snapshot: ObservationSnapshot): QueueModule {
+  const queue = snapshot.queue ?? unavailableQueue("not_requested");
+  return {
+    ...queue, kind: "queue",
+    capabilityEvidence: queue.sourceObservedAt !== null ? "observed" : queue.state === "unsupported" ? "unsupported" : "unknown",
+    provenance: {
+      source: queue.sourceObservedAt === null ? "not_observed" : "moonraker",
+      sourceObservedAt: queue.sourceObservedAt,
+      detail: "Server receipt of reported queue order and waiting times, not print start acknowledgement or a print ETA",
+    },
   };
 }
 
@@ -403,6 +415,7 @@ function projectModule(snapshot: ObservationSnapshot, view: ObservationView) {
   if (view === "jobs") return projectJobs(snapshot);
   if (view === "job_history") return projectJobHistory(snapshot);
   if (view === "bed_mesh") return projectBedMesh(snapshot);
+  if (view === "queue") return projectQueue(snapshot);
   return projectUnknown(snapshot, view);
 }
 
