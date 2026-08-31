@@ -1,5 +1,37 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 Shipping build-scratch guard follow-up
+
+The operator's first authorized PR34 shipping attempt at reviewed head
+`5a73932476e93e271fd91c4e0f3611696a3c6337` passed its local gates, then stopped
+at the clean-tree merge-edge guard because the pinned Bun compiler left a
+generated runtime scratch copy in the app directory. The operator reported
+no merge or service mutation; this was a safe stop, not a deployment success.
+
+The follow-up ignores only that app-local compiler filename pattern:
+a dot, sixteen lowercase hexadecimal digits, a hyphen, eight hexadecimal
+digits, and `.bun-build`. It does not ignore unrelated files, similarly named
+files elsewhere, malformed names or tracked changes. The shipping script and
+its clean-tree guard are unchanged.
+
+- Independent `uv run --no-project scripts/test_u1_ship.py` passed **22 tests**,
+  including a real isolated Git regression for the precise ignore pattern and
+  retained dirty-tree rejection.
+- Independent `./scripts/check-repository.sh` passed again: **165 app tests /
+  2,200 assertions**, **21 lifecycle tests**, **22 shipping tests**, TypeScript
+  and the repository contract. Earlier 21-test shipping counts below record
+  the earlier frozen gate rather than this follow-up.
+- The implementation role separately reported a successful 594-module
+  `bundle:runtime` and signature check using the actual pinned release-local
+  Bun, with the generated scratch no longer appearing as unexpected Git dirt.
+  This does not claim that the next guarded shipping attempt has run.
+- Current SHA-256: `.gitignore`
+  `eca2c77db6f8af1b3ea42b87a58c97e09813b705bd610df35c3470b7dcebfbd6`;
+  shipping tests
+  `538029f89ca01614d91c821bdea77aef973b112109917545b28c938ac5298fc8`;
+  unchanged shipping script
+  `49448de3ca32ba52917ec900d478901e2ec3590c887fa5cabddf4e67c9254978`.
+
 ## 2026-08-31 Independent reported Bed Mesh validation
 
 This gate validates the isolated Bed Mesh source slice on baseline `7b9c4d4`.

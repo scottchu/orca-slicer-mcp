@@ -2,6 +2,7 @@
 from copy import deepcopy
 import json
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import Mock, patch
@@ -229,6 +230,37 @@ class MechanicalGuardTests(unittest.TestCase):
         other.chmod(0o700)
         ops.bun = other
         with self.assertRaisesRegex(ShipError, "bare bun"): ops.preflight()
+
+    def test_bun_compile_scratch_ignore_is_narrow_and_clean_guard_remains(self):
+        # Real Git semantics in an isolated local fixture; no remote or services.
+        def git(*args):
+            return subprocess.run(["git", *args], cwd=self.root, check=True, capture_output=True, text=True).stdout.strip()
+        git("init", "--quiet")
+        (self.root / ".gitignore").write_bytes((Path(__file__).resolve().parent.parent / ".gitignore").read_bytes())
+        app = self.root / APP
+        app.mkdir(parents=True)
+        tracked = app / "tracked.ts"
+        tracked.write_text("original")
+        git("add", ".gitignore", "bun", str(APP / "tracked.ts"))
+        git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "commit", "--quiet", "-m", "fixture")
+        scratch = app / ".18d0efb87e9ffd7a-00000000.bun-build"
+        scratch.write_bytes(self.bun.read_bytes())
+        self.assertEqual(git("check-ignore", str(scratch.relative_to(self.root))), str(scratch.relative_to(self.root)))
+        self.assertEqual(git("status", "--porcelain", "--untracked-files=normal"), "")
+        unrelated = app / ".unrelated-local-file"
+        unrelated.write_text("must block")
+        outside = self.root / ".elsewhere.bun-build"
+        outside.write_text("must also block")
+        malformed = app / ".not-a-runtime.bun-build"
+        malformed.write_text("must also block")
+        tracked.write_text("changed")
+        status = git("status", "--porcelain", "--untracked-files=normal")
+        self.assertIn(".unrelated-local-file", status)
+        self.assertIn(".elsewhere.bun-build", status)
+        self.assertIn(".not-a-runtime.bun-build", status)
+        self.assertIn("tracked.ts", status)
+        with self.assertRaisesRegex(ShipError, "clean"):
+            self.preflight_ops({("status", "--porcelain", "--untracked-files=normal"): status}).preflight()
 
     def test_stage_rejects_wrong_revision_or_asset(self):
         ops = self.preflight_ops()

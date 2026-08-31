@@ -24,6 +24,8 @@ __pycache__/
 *.py[cod]
 
 # Generated build and coverage output
+# Bun compile temporary runtime copies: exactly 16 hex digits, hyphen, 8 hex digits
+/plugins/u1-print-studio/app/.[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].bun-build
 build/
 dist/
 coverage/

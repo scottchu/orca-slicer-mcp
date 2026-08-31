@@ -62,6 +62,19 @@ not real printer data, camera streaming, physical safety, or an iPhone render.
 
 ## Failure and recovery
 
+The first authorized PR34 execution passed local validation but stopped safely
+at the merge-edge clean-tree guard: Bun's compile step left one hidden
+`.bun-build` scratch executable in the app directory. Its 61,405,888 bytes
+matched the exact pinned Bun executable; tracked source was unchanged. Neither
+merge nor deployment occurred. Classify only
+`/plugins/u1-print-studio/app/.*.bun-build` as ignored generated compiler
+scratch, alongside existing build artifacts. Keep the clean-tree guard intact
+for tracked changes and all other untracked files. Do not globally ignore
+hidden files, suppress untracked-file checks, delete the scratch automatically,
+or include it in release assets. A regression must distinguish this scratch
+from an unrelated untracked app file and a tracked modification. The fix needs
+a new exact reviewed commit before retrying the shipping command.
+
 Stop on the first failed phase. Before installation, do not mutate services.
 The existing lifecycle helper owns failed-install restoration. Once installation
 has succeeded, any restart or final verification failure triggers at most one

@@ -1,5 +1,20 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 PR34 shipping guard stopped before merge
+
+The authorized shipping execution passed local validation, then stopped at
+the merge-edge clean-tree guard. Bun compilation generated one hidden
+`.bun-build` executable in the app directory (61,405,888 bytes, exactly the
+pinned Bun bytes); tracked source remained unchanged. PR34 was not merged,
+no installation/restart occurred, and verified PR33 remains deployed.
+Decision 0028's bounded repair is to ignore only the app-directory compiler
+scratch pattern while preserving every tracked/unrelated-untracked guard.
+Keep the generated local copy out of Git and release assets; do not delete it
+as part of the repair. Next validate the narrow ignore regression, obtain
+independent approval for the new exact commit, and rerun the authorized
+shipping workflow. Previous source validation does not by itself approve the
+new revision or prove rollout completion.
+
 ## 2026-08-31 PR33 deployed; Bed Mesh and reusable shipping workflow next
 
 The urgent already-merged PR33 rollout is complete at `7b9c4d4`, release
