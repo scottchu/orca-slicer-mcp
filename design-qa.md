@@ -1,5 +1,40 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Current Job and Job History — independent rendered review
+
+Scoped result: passed against decision 0025, with no blocking source or visual
+findings. Product Design review guidance informed inspection of all six actual
+captures in the current `jobs-captures` collection, not earlier widget images.
+
+1. **Current Job — passed.** The 390/light known-job card contains filename and
+   storage only; the 320/dark missing-identity card explicitly says identity is
+   unknown. Neither has a history panel or claims the printer is idle.
+2. **Job History — passed.** The 390/light and 720/dark cards show the separate
+   title, unavailable observation time and explicit not-implemented message.
+   No current filename, fabricated history row or known-empty success appears.
+   Both card types retain information above content and a single 44-pixel
+   Refresh action below, with no clipping or removed boilerplate.
+3. **Directory — passed.** The 320/light and 720/dark captures show nine
+   readable entries, including adjacent Current Job and Job History with
+   distinct Partial/Not implemented labels. The validator's actual-browser
+   checks separately verify tab order, visible focus and history navigation.
+
+The reviewer independently ran the projection/widget suites: 30 tests and
+1,085 assertions passed, including stale/unknown facts, selected-view refresh,
+escaping and existing layer/bridge behavior. Camera and frozen legacy assets
+are unchanged from `47bfd37`. The validator records nine additional cases,
+30 route checks and zero acquisition, external-request or error counters in
+the private report; iteration `VALIDATION.md` owns the full validation record.
+
+Reviewed SHA-256: observation HTML
+`96bc93a05960f8a9af1923d93ceda0db0a33814eac5a3ef1a5e8e5e42554b572`;
+directory HTML
+`267acf63214c9ab23df92007a3fd3667b247d66f7d76fcb3c9116c1ed75acbc2`;
+projection source
+`2ec8a9b17c76d7d4d7d0ec6e3a995408a35c4855076fed173d0e124abbe63d7e`.
+This accepts source and scoped synthetic rendering, not implemented history,
+deployment, actual mobile/MCP-host behavior or full accessibility compliance.
+
 ## Current placement: information above, actions below
 
 Scoped result: passed, with no blocking findings. The user's latest rule and

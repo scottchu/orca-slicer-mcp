@@ -131,7 +131,7 @@ describe("standalone status dashboard", () => {
     const port = (server.address() as AddressInfo).port;
 
     for (const route of ["/dashboard", "/dashboard/", "/dashboard/progress",
-      "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs",
+      "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs", "/dashboard/job_history",
       "/dashboard/queue", "/dashboard/fans", "/dashboard/bed_mesh", "/dashboard/camera"]) {
       expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
     }
@@ -141,9 +141,9 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.3.1",
-      toolSchemaVersion: 5,
-      observationWidgetVersion: "observation-v3",
+      runtimeVersion: "0.3.2",
+      toolSchemaVersion: 6,
+      observationWidgetVersion: "observation-v4",
       cameraWidgetVersion: "camera-v5",
     });
   });
@@ -184,7 +184,7 @@ describe("standalone status dashboard", () => {
     servers.push(server);
     const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
     const expected = readFileSync(new URL("../public/dashboard-index.html", import.meta.url), "utf8");
-    const routes = ["progress", "camera", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"];
+    const routes = ["progress", "camera", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"];
     for (const route of ["/dashboard", "/dashboard/", "/dashboard/?view=overview&tool=start_print"]) {
       const response = await fetch(origin + route, { redirect: "manual" });
       expect(response.status).toBe(200);
@@ -201,7 +201,7 @@ describe("standalone status dashboard", () => {
         .toEqual(routes.map((view) => `/dashboard/${view}`));
       expect(html.match(/>Implemented<\/span>/g)).toHaveLength(2);
       expect(html.match(/>Partial<\/span>/g)).toHaveLength(3);
-      expect(html.match(/>Not implemented<\/span>/g)).toHaveLength(3);
+      expect(html.match(/>Not implemented<\/span>/g)).toHaveLength(4);
       expect(html).toContain("Availability describes this release, not printer status.");
       expect(html).not.toMatch(/<script|<iframe|<img|<video|<audio|<form|<button|fetch\(|setInterval|setTimeout|target=|Read.only|Current reading|Printer telemetry|Observed/i);
     }
@@ -224,7 +224,7 @@ describe("standalone status dashboard", () => {
     expect(response.headers.get("cache-control")).toBe("no-store");
     expect(html).toContain('src="/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
-    for (const view of ["progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"]) {
+    for (const view of ["progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]) {
       expect((await fetch(`${origin}/dashboard/${view}`)).status).toBe(200);
     }
     for (const view of ["overview", "unknown", "progress/more", "%70rogress", "index.html", "progress/", "/"]) {
@@ -441,7 +441,7 @@ function hostFixture(pathname: string, fetchResult: () => Promise<unknown>) {
 
 describe("focused dashboard host bridge", () => {
   test("routes initial and widget refresh only to the selected closed view", async () => {
-    for (const view of ["progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"]) {
+    for (const view of ["progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]) {
       const result = { structuredContent: { view } };
       const host = hostFixture(`/dashboard/${view}`, async () => result);
       await host.send({ method: "ui/notifications/initialized" }, "https://attacker.example");

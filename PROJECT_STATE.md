@@ -10,7 +10,29 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-- Current task: the user's latest information-above/actions-below principle
+- Current task: decision 0025's independently callable Current Job and Job
+  History views are implemented in source. Stable `jobs` and `/dashboard/jobs`
+  now present only Current Job; `job_history` and its private path present
+  explicitly unimplemented history, not an empty success or observed history
+  time. The static directory has nine entries. Source is runtime `0.3.2`,
+  schema `6`, observation-v4 with v3/v2/v1 aliases, camera-v5 unchanged, eleven
+  resource URIs, nine observation enum values, and unchanged two-visible/eight-
+  app-only tool counts. Independent validation passes 148 app tests/2,011
+  assertions, 21 lifecycle tests, TypeScript, repository checks, all bundles/
+  signatures, widget comparisons and skill validation. Six rendered captures,
+  nine browser cases and thirty route checks pass with zero external requests,
+  browser errors or fixture acquisitions. Independent code/visual review
+  approves without findings; the reviewer passes 30 tests/1,085 assertions and
+  inspects all six captures. Deliver
+  through a new PR and merge after those gates under the user's merge-as-we-go
+  authorization. Deployment, plugin installation, services, auth/routes and
+  printer access/history-backend work remain excluded.
+- PR32 is merged as `47bfd37fdc0959d67ec5c717718899692b688310`; PR31's
+  rollout records are also merged as `16169c0`. Their older pending-delivery
+  wording below is historical, not current execution guidance. The live
+  release remains `20260831-48a106d-widgets`, runtime `0.3.1`, schema `5`,
+  observation-v3/camera-v5. Source merge does not update that release.
+- Merged PR32 baseline: the user's latest information-above/actions-below principle
   is implemented in source across current focused widgets. Observation time,
   freshness and refresh failures are at the top; bottom footers contain only
   Refresh/Retry. Camera status/time/feedback are at the top and display/live
@@ -188,17 +210,18 @@ Last updated: 2026-08-31
   merged as `473e482`, requires standalone camera requests to call only
   `open_printer_camera` and fail closed when it is unavailable; a full host quit
   and relaunch remains required for mounted acceptance.
-- Decision 0021 is implemented in the current source slice. The user selected
+- Historical decision-0021 baseline, now extended by decision 0025: the user selected
   720-pixel Instrument Strips, rejected a giant machine map, and requires camera
-  as its own focused strip. Exactly `observe_printer`, with the closed views
+  as its own focused strip. At that stage `observe_printer`, with the closed views
   `overview`, `progress`, `thermals`, `heads`, `jobs`, `queue`, `fans`, and
   `bed_mesh`, plus `open_printer_camera` are the two model-visible presentation
   intents. Every non-camera view projects one shared normalized observation.
   `$u1-observe-printer` is the single procedural skill routing natural language
   to that surface. Focused progress, thermals, heads, and camera presentations
   passed local browser-fixture review; overview remains intentionally deferred
-  until the focused module set is accepted. PR28 and the installed plugin now
-  carry this contract; live and mounted acceptance are separately recorded.
+  until the focused module set is accepted. PR28 and the installed plugin
+  carried this earlier contract; current source additionally has `job_history`.
+  Live and mounted acceptance are separately recorded.
 
 ## Implemented local-first slice
 
@@ -215,8 +238,8 @@ The repository contains the smallest desktop-local read-only connector slice:
   failed refresh retains last reachable values as stale with their source time;
 - focused observation and camera MCP Apps widgets with empty external CSP
   domains and no direct `fetch` call;
-- current `observation-v3.html` and `camera-v5.html` resources,
-  observation-v2/v1 and camera-v4 current-asset aliases, and exact frozen legacy status
+- current `observation-v4.html` and `camera-v5.html` resources,
+  observation-v3/v2/v1 and camera-v4 current-asset aliases, and exact frozen legacy status
   v4/v3 and camera v3/v2/v1 bytes for retained tasks;
 - selected-module projections for progress, thermals, and heads; unsupported or
   not-yet-mapped domains remain explicit `unknown`/`unavailable`, and overview
@@ -290,7 +313,7 @@ suitable for publication. No Homebrew or npm package was published.
 Model-visible read-only tools:
 
 1. `observe_printer`, requiring `overview`, `progress`, `thermals`, `heads`,
-   `jobs`, `queue`, `fans`, or `bed_mesh`
+   `jobs`, `job_history`, `queue`, `fans`, or `bed_mesh`
 2. `open_printer_camera`
 
 App-only read-only tools:
@@ -308,13 +331,14 @@ There is no upload, start, pause, resume, cancel, G-code, generic proxy,
 Control, or Admin tool in the runtime. Preparation and authorized-start skills
 remain procedural guidance; they are not runtime authority.
 
-The current source reports runtime `0.3.1`, tool schema `5`, observation widget
-`observation-v3`, and camera widget `camera-v5`. `show_u1_status` and
+The current source reports runtime `0.3.2`, tool schema `6`, observation widget
+`observation-v4`, and camera widget `camera-v5`. `show_u1_status` and
 `get_u1_status` are superseded model intents and survive only as app-only
 compatibility aliases. Frozen status-v4/status-v3 and camera-v3/v2/v1 resources
-remain byte-identical for retained tasks. The current installed plugin has the
-same schema-5 tools, but remains observation-v2/camera-v4 until a separately
-authorized rollout. Historical schema-4/camera-v3 records below describe
+remain byte-identical for retained tasks. The installed plugin retains the
+schema-5 enum without `job_history`, and observation-v2/camera-v4 until a
+separately authorized rollout. Tool counts remain two-visible/eight-app-only.
+Historical schema-4/camera-v3 records below describe
 earlier deployments, not the current plugin.
 
 ## Packaging and onboarding boundary
@@ -393,7 +417,7 @@ earlier deployments, not the current plugin.
   resource compatibility.
 - The source stdio bundle emits `stdio.js` plus current observation/camera and
   frozen legacy status/camera widget assets. Runtime, tool, observation, and
-  current source camera versions are `0.3.1`, `5`, `observation-v3`, and `camera-v5`.
+  current source camera versions are `0.3.2`, `6`, `observation-v4`, and `camera-v5`.
 - Earlier local browser fixture review at a roughly 589 by 844 viewport accepted the
   focused Progress, Thermals, Heads, and separate Camera presentations. Captures
   were not added to the repository. That review predates decision 0023 and
@@ -484,13 +508,13 @@ and final repository-check results.
 
 ## Next action
 
-Earlier refinements are delivered in PR32. Top information/bottom actions now
-pass independent validation and code/visual review; update that same PR without rollout.
-Current widget SHA-256 is
-`3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b`;
-it is source-only, despite retaining the deployed baseline's version labels.
-Any later merge/rollout requires separate authorization. The following
-paragraph preserves completed deployment evidence, not instructions to repeat it.
+Decision 0025's job split passes independent validation and code/visual review.
+Deliver a new PR and merge the approved source under the user's explicit
+merge-as-we-go instruction. Source is `0.3.2`/schema `6`/observation-v4; the
+still-installed `0.3.1` release is not updated by source delivery or merge.
+No rollout, service restart, plugin installation or printer access is included.
+The following paragraph preserves completed deployment evidence, not
+instructions to repeat it.
 
 PR30 `48a106d` is merged and its paired HTTP-service rollout independently
 accepted for health, exact directory/focused assets, access boundaries and

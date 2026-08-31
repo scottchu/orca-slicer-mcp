@@ -65,6 +65,7 @@ export const LEGACY_CAMERA_WIDGET_URIS = [
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v3.html",
   "ui://u1-print-studio/observation-v2.html",
   "ui://u1-print-studio/observation-v1.html",
 ] as const;
@@ -456,7 +457,7 @@ export function createAppServer(
     ({
       title: "Observe printer",
       description:
-        "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs, queue, fans, or bed_mesh. Missing or advertised-only evidence remains explicitly unknown; use open_printer_camera for camera viewing.",
+        "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs (current job only), job_history, queue, fans, or bed_mesh. Job history is not implemented yet; missing or advertised-only evidence remains explicit. Use open_printer_camera for camera viewing.",
       inputSchema: observationInputSchema,
       ...securityConfig,
       annotations: {
@@ -795,7 +796,7 @@ export function createAppServer(
           name: "observe_printer",
           title: "Observe printer",
           description:
-            "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs, queue, fans, or bed_mesh. Missing or advertised-only evidence remains explicitly unknown; use open_printer_camera for camera viewing.",
+            "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs (current job only), job_history, queue, fans, or bed_mesh. Job history is not implemented yet; missing or advertised-only evidence remains explicit. Use open_printer_camera for camera viewing.",
           inputSchema: {
             type: "object",
             properties: {

@@ -6,7 +6,7 @@ import type {
 import { normalizedPrintState, normalizedToolState } from "./u1-status.js";
 
 export const OBSERVATION_VIEWS = [
-  "overview", "progress", "thermals", "heads", "jobs", "queue", "fans",
+  "overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans",
   "bed_mesh",
 ] as const;
 export type ObservationView = (typeof OBSERVATION_VIEWS)[number];
@@ -84,12 +84,11 @@ type JobsModule = ModuleBase & {
     fileSize: Field<number>;
     provenance: Provenance;
   };
-  history: {
-    state: EvidenceState;
-    capabilityEvidence: CapabilityEvidence;
-    items: never[];
-    provenance: Provenance;
-  };
+};
+type JobHistoryModule = ModuleBase & {
+  kind: "job_history";
+  status: "not_implemented";
+  items: never[];
 };
 type QueueModule = ModuleBase & { kind: "queue"; items: never[] };
 type FansModule = ModuleBase & {
@@ -118,7 +117,7 @@ export type PrinterObservationPresentation = {
   session: ObservationSnapshot["session"];
   module:
     | OverviewModule | ProgressModule | ThermalsModule | HeadsModule
-    | JobsModule | QueueModule | FansModule | BedMeshModule;
+    | JobsModule | JobHistoryModule | QueueModule | FansModule | BedMeshModule;
 };
 
 function finiteOrNull(value: number | null | undefined): number | null {
@@ -320,14 +319,17 @@ function projectJobs(snapshot: ObservationSnapshot): JobsModule {
           provenance: provenance(snapshot, "Moonraker print_stats and virtual_sdcard"),
         }
       : null,
-    history: {
-      state: "unknown",
-      capabilityEvidence: snapshot.capabilityEvidence.history,
-      items: [],
-      provenance: unknownProvenance(
-        "Job history was advertised but has no accepted normalization"
-      ),
-    },
+  };
+}
+
+function projectJobHistory(snapshot: ObservationSnapshot): JobHistoryModule {
+  return {
+    ...moduleBase(snapshot, "job_history", false, snapshot.capabilityEvidence.history,
+      "Job history has no implemented read-only normalization"),
+    kind: "job_history",
+    state: "unknown",
+    status: "not_implemented",
+    items: [],
   };
 }
 
@@ -368,6 +370,7 @@ function projectModule(snapshot: ObservationSnapshot, view: ObservationView) {
   if (view === "thermals") return projectThermals(snapshot);
   if (view === "heads") return projectHeads(snapshot);
   if (view === "jobs") return projectJobs(snapshot);
+  if (view === "job_history") return projectJobHistory(snapshot);
   return projectUnknown(snapshot, view);
 }
 

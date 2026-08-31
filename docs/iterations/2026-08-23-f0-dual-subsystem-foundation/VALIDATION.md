@@ -1,5 +1,94 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 Current Job and Job History split validation
+
+This source-only change preserves `jobs` as Current Job and adds the separate
+`job_history` view. History normalization remains unimplemented; a widget and
+route are not evidence that previous jobs were acquired. Information remains
+at the top and actions at the bottom. No service deployment, plugin change,
+real-printer observation, or hardware acceptance was performed in this gate.
+
+- Independent `./scripts/check-repository.sh` passed TypeScript, **148 app
+  tests / 2,011 assertions**, **21 lifecycle tests**, and the repository
+  contract. This includes current/history projection separation, explicit
+  unknown history provenance, missing-current-identity semantics, selected
+  refresh isolation, the closed route/tool inventory and compatibility
+  resources, plus existing segmented-progress and camera regressions.
+  Runtime reports are **0.3.2 / schema 6 / observation v4 / camera v5**;
+  observation v3/v2/v1 aliases remain readable. The inventory is eleven
+  resource URIs and two model-visible plus eight app-only tools.
+- `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, and both current-widget
+  source/dist `cmp` checks passed. A separate Bun assertion decoded the
+  HTTP bundle's embedded directory string and compared it exactly with its
+  source. The segmented layer-position/render/update block exactly matches
+  merge baseline `47bfd37`; current camera HTML and both frozen legacy HTML
+  files are unchanged against that baseline. `git diff --check` passed.
+- Skill validation initially reported missing `yaml` in the no-project
+  interpreter. The bounded offline retry succeeded without installation or
+  live plugin mutation, from `plugins/u1-print-studio/app`:
+  `uv run --offline --no-project --with pyyaml
+  <SKILL_CREATOR>/scripts/quick_validate.py
+  ../skills/u1-observe-printer`.
+  `<SKILL_CREATOR>` replaces the local installed skill path in this sanitized
+  command record.
+  The source routes current/active/unqualified Jobs requests to `jobs` and
+  previous-job/history requests to `job_history`.
+- The independent `jobs-server.ts` loopback fixture used the actual source
+  HTTP handler and exact production widget HTML. Its injected printer-status,
+  camera-frame and five camera-session operations throw if called; all seven
+  counters remained **zero**. Synthetic current-job data was passed through
+  the actual projection factory. The inspected fixture host supplied bridge
+  responses; it did not call an operations adapter or access printer media.
+- `node capture-jobs.mjs <loopback-fixture-origin>` passed **30 HTTP route
+  checks**: both directory roots return exact source with no-store/CSP;
+  POST on either root returns 405; all nine focused hosts return exact
+  production host HTML with hidden host chrome; both roots and all nine
+  focused routes return 404 from the public-disabled handler; six invalid
+  paths, including the unintroduced `current_job` alias, fail closed.
+- **Six actual screenshots**, all opened and visually inspected, cover
+  Current Job at 390/light, unknown current identity at 320/dark, Job History
+  at 390/light and 720/dark, and the nine-link directory at 320/light and
+  720/dark. Fresh isolated Chrome **152.0.7977.65**, Playwright **1.55.0**,
+  device scale 1, `en-GB` and UTC were used. All layouts fit without
+  horizontal overflow, and controls/links meet 44-pixel targets. History
+  displays “Not implemented yet” and an unavailable observation time, not
+  an empty-history success or the current job's filename.
+- **Nine additional checks** passed: three projection assertions; selected
+  refresh and foreign-view-result isolation for each of the two cards; and
+  complete nine-link keyboard order, visible focus and a stubbed history-link
+  destination at each directory width. The history module contains no
+  current-job data and has `unknown` / `not_implemented`, `not_observed`
+  provenance and null source time. Missing current identity remains unknown,
+  not “No active job”. Each click emits exactly its own selected-view refresh.
+  No initial observation-widget tool calls, external requests, or console/page
+  errors occurred in these fixtures. The shared observation envelope is not
+  claimed as proof that history was obtained.
+- Fresh browser contexts and the browser closed through the harness cleanup;
+  the exact validator-owned fixture process was terminated and its session
+  exited successfully. Repeated transient exec-spawn “Too many open files”
+  failures delayed validation, but no user process was killed. One initial
+  harness assertion incorrectly expected a `data-view` attribute; it was
+  corrected to exact host-source comparison. A literal bundle comparison
+  also needed JavaScript escape decoding. Neither was a production defect.
+  All required gates subsequently completed on the frozen source below.
+
+Artifact fingerprints (SHA-256; fixture files and captures remain outside Git):
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Current observation HTML | `96bc93a05960f8a9af1923d93ceda0db0a33814eac5a3ef1a5e8e5e42554b572` |
+| Observation projection | `2ec8a9b17c76d7d4d7d0ec6e3a995408a35c4855076fed173d0e124abbe63d7e` |
+| Directory HTML | `267acf63214c9ab23df92007a3fd3667b247d66f7d76fcb3c9116c1ed75acbc2` |
+| Unchanged current camera HTML | `0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483` |
+| Independent jobs capture report | `1f382ab0b7e211bf3c47ae31177fc9257d417f64e901ead7f904a6e46b16e1d8` |
+| Current Job, 390/light | `81bca4f7ec4ee524d5d866b82df1f2a293ee5b818ec72e08f74648b85f05c3dd` |
+| Unknown current identity, 320/dark | `fe9c66f89462f194c7601fce8033842b51f45c99cd95a2d6f736148257985438` |
+| Job History, 390/light | `0c36d9b334316c9375a0896bc62040a3e99304e99a40bd2de0ec4cdf5a9b91cd` |
+| Job History, 720/dark | `e344d9cc08a47bd37958b8612de2df578c7dc6888acf44ec72f7d2198366c077` |
+| Directory, 320/light | `3b4e7c6b472e020339ed9c6af6c603985c0b5c67fb5f9ff853e7f42dcfc19d32` |
+| Directory, 720/dark | `ca2eb4d29857496eb7c781c9b97b3131d784630d7f8d6e241a257a60cda68716` |
+
 ## 2026-08-31 top-information and bottom-actions validation
 
 The user's newest direction supersedes the earlier bottom-timestamp placement:
