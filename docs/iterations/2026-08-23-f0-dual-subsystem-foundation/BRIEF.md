@@ -5,6 +5,15 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
+- Current explicit authority (2026-08-31): the user requests **merge → deploy →
+  verify now** so they can open the delivered widgets and visually review them.
+  This supersedes the predeployment automated-browser/visual-QA gate only;
+  it does not claim a visual pass or waive local validation, exact-SHA source
+  review, shipping guards, or safety boundaries. Ship PR41 through `u1-ship`,
+  explicitly restart BOTH existing public/dashboard services, and verify health,
+  release integrity, exact served assets and scoped meaningful behavior. Record
+  user visual review separately after deployment. All other widget tracks remain
+  open; no printer control, auth/routing change or plugin reinstall is authorized.
 - Latest source checkpoint: local `acdb2e3` corrects progress text contrast to
   3.293:1 (`#499e69`), with 31 author tests/448 assertions and TypeScript passing.
   Independent full revalidation passes 190 app/1,761 assertions, 21 lifecycle,
