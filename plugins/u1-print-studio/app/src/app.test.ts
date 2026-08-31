@@ -178,8 +178,9 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v3.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v4.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
+      "ui://u1-print-studio/observation-v3.html",
       "ui://u1-print-studio/observation-v2.html",
       "ui://u1-print-studio/observation-v1.html",
     ]);
@@ -197,7 +198,7 @@ describe("U1 status MCP App contract", () => {
       properties: {
         view: {
           enum: [
-            "overview", "progress", "thermals", "heads", "jobs", "queue",
+            "overview", "progress", "thermals", "heads", "jobs", "job_history", "queue",
             "fans", "bed_mesh",
           ],
         },
@@ -540,7 +541,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 5,
+      schemaVersion: 6,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });
@@ -841,7 +842,7 @@ describe("instrument-strip observation widget contract", () => {
   });
 
   test("renders exactly one focused module and keeps overview deferred", () => {
-    expect(WIDGET_HTML).toContain('const VIEWS = ["overview", "progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"]');
+    expect(WIDGET_HTML).toContain('const VIEWS = ["overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]');
     expect(WIDGET_HTML).toContain("const renderers = {");
     expect(WIDGET_HTML).toContain("progress: renderProgress");
     expect(WIDGET_HTML).toContain("thermals: renderThermals");
@@ -859,9 +860,10 @@ describe("instrument-strip observation widget contract", () => {
   test("renders missing and advertised-only semantics as unknown", () => {
     expect(WIDGET_HTML).toContain("Material unknown");
     expect(WIDGET_HTML).toContain("Color unknown");
-    expect(WIDGET_HTML).toContain("History not implemented");
-    expect(WIDGET_HTML).toContain("Previous jobs aren’t available in this view yet.");
-    expect(WIDGET_HTML).toContain("<span>Current job</span>");
+    expect(WIDGET_HTML).toContain('header("Current Job")');
+    expect(WIDGET_HTML).toContain('header("Job History", true, null)');
+    expect(WIDGET_HTML).toContain("Previous jobs aren’t available yet.");
+    expect(WIDGET_HTML).not.toContain("<span>Current job</span>");
     expect(WIDGET_HTML).not.toContain("${escapeHtml(data.current.state)}");
     expect(WIDGET_HTML).not.toContain("Advertised history has no accepted normalization.");
     expect(WIDGET_HTML).toContain("Queue");

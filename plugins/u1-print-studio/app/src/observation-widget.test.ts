@@ -102,6 +102,53 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
 }
 
 describe("production observation widget host boundary", () => {
+  test("current job and history have separate content and selected-view refresh", async () => {
+    const current = fixture("jobs");
+    current.module.current = { state: "known", filename: { state: "known", value: "current-only.gcode" }, storageActive: { state: "known", value: true } };
+    current.module.history = { items: [{ filename: "old-history.gcode" }] }; // Old payloads must not restore the combined panel.
+    const history = fixture("job_history");
+    history.module.current = current.module.current; // A foreign field must not leak into this focused view.
+    history.module.items = [{ filename: "invented-history.gcode" }];
+    for (const data of [current, history]) {
+      const card = mount({ toolOutput: data });
+      await card.initialize();
+      const before = card.modules.innerHTML;
+      if (data.view === "jobs") {
+        expect(before).toContain("Current Job");
+        expect(before).toContain("current-only.gcode");
+        expect(before).not.toMatch(/History|history|Previous jobs|old-history.gcode/);
+      } else {
+        expect(before).toContain("Job History");
+        expect(before).toContain("Not implemented yet");
+        expect(before).toContain("Observation time unavailable");
+        expect(before).not.toMatch(/Observed |current-only.gcode|invented-history.gcode|class="job-current"|No jobs|0 jobs/);
+      }
+      const refresh = card.controls.refresh();
+      await tick();
+      const request = card.sent.find(item => item.method === "tools/call")!;
+      expect(request.params).toEqual({ name: "refresh_printer_observation", arguments: { view: data.view } });
+      card.respond(request, { structuredContent: data });
+      await refresh;
+      expect(card.modules.innerHTML).toBe(before);
+      expect(card.sent.filter(item => item.method === "tools/call")).toHaveLength(1);
+    }
+  });
+
+  test("current job preserves escaped unknown and stale facts without a history panel", () => {
+    const data = fixture("jobs", { freshness: "stale" });
+    data.module.current = { state: "stale", filename: { state: "stale", value: '<script>unsafe</script>.gcode' }, storageActive: { state: "unknown", value: null } };
+    const markup = mount({ toolOutput: data }).modules.innerHTML;
+    expect(markup).toContain("&lt;script&gt;unsafe&lt;/script&gt;.gcode");
+    expect(markup).not.toContain("<script>");
+    expect(markup).toContain("Storage unknown");
+    expect(markup).toContain("Stale");
+    expect(markup).not.toContain("History");
+    data.module.current = null;
+    const missing = mount({ toolOutput: data }).modules.innerHTML;
+    expect(missing).toContain("Current job identity is unknown.");
+    expect(missing).not.toMatch(/No active job|Idle|No jobs/);
+  });
+
   test("cold mount completes a request/response initialization before announcing ready", async () => {
     const card = mount();
     expect(card.sent).toHaveLength(1);
@@ -155,7 +202,7 @@ describe("production observation widget host boundary", () => {
     cards.forEach((card, index) => card.deliver({ structuredContent: fixture(["progress", "thermals", "jobs"][index]) }));
     expect(cards[0]!.modules.innerHTML).toContain("Print Progress");
     expect(cards[1]!.modules.innerHTML).toContain("Thermals");
-    expect(cards[2]!.modules.innerHTML).toContain("Jobs");
+    expect(cards[2]!.modules.innerHTML).toContain("Current Job");
     cards[0]!.deliver({ structuredContent: fixture("heads") });
     expect(cards[0]!.modules.innerHTML).toContain("Print Progress");
     expect(cards[0]!.modules.innerHTML).not.toContain("Heads &amp; Filaments");
@@ -216,7 +263,7 @@ describe("production observation widget host boundary", () => {
   });
 
   test("each focused card puts information in its header and only refresh in its footer", () => {
-    for (const view of ["overview", "progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"]) {
+    for (const view of ["overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]) {
       const card = mount({ toolOutput: fixture(view) });
       const markup = card.modules.innerHTML;
       expect((markup.match(/<footer /g) ?? []).length).toBe(1);
@@ -224,12 +271,12 @@ describe("production observation widget host boundary", () => {
       expect(markup.indexOf("<footer ")).toBeGreaterThan(markup.indexOf("</header>"));
       const header = markup.match(/<header [\s\S]*?<\/header>/)![0];
       const footer = markup.match(/<footer [\s\S]*?<\/footer>/)![0];
-      expect(header).toContain("Observed ");
+      expect(header).toContain(view === "job_history" ? "Observation time unavailable" : "Observed ");
       expect(header).toContain('class="refresh-error" role="status"');
       expect(header).not.toContain("<button");
       expect(footer).toMatch(/^<footer class="instrument-footer"><button[\s\S]*<\/button><\/footer>$/);
       expect(footer).not.toMatch(/<time|Observed|refresh-error|freshness-warning|role="status"/);
-      expect(markup).toContain("Observed ");
+      expect(markup).toContain(view === "job_history" ? "Observation time unavailable" : "Observed ");
       expect(markup).not.toMatch(/Read only|Current reading|Printer telemetry/);
     }
   });

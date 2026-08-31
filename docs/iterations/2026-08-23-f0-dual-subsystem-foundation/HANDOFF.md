@@ -1,5 +1,45 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 separate job widgets — current source handoff
+
+Decision 0025 splits the Jobs presentation into independently callable Current
+Job (`jobs`, existing private path) and Job History (`job_history`, new private
+path). Each receives only its selected domain. History is explicitly unknown/
+unimplemented with no observed history time or fabricated empty-list success;
+this slice does not implement history acquisition. The directory now has nine
+static links. Information remains above bottom-only actions.
+
+Current source reports runtime `0.3.2`, schema `6`, observation-v4 with current
+v3/v2/v1 aliases, unchanged camera-v5 and eleven readable resource URIs. Nine
+observation enum values do not add tools: two model-visible and eight app-only
+calls remain. Frozen legacy resources and media behavior stay unchanged.
+Author checks pass 70 tests/1,596 assertions. Independent validation passes
+148 app tests/2,011 assertions, 21 lifecycle tests, TypeScript, repository
+checks, all three bundles/signatures, exact widget comparisons and offline
+skill validation. Six actual browser captures, nine behavior cases and thirty
+route checks pass across 320/390/720 light/dark fixtures, with zero external
+requests, console/page errors and all seven acquisition counters at zero.
+Independent code/visual review approves without findings; the reviewer passes
+30 tests/1,085 assertions and inspects all six captures. Exact commands, hashes and evidence boundaries
+belong in `VALIDATION.md`.
+
+The runtime/test scope is the observation projections and rendering, exact
+view/route/resource/version contracts, static directory, supporting regression
+expectations and observation-skill routing. Documentation adds decision 0025,
+requirements, architecture and continuity updates. No generic query, printer
+write, history endpoint or independent refresh/normalization path is added.
+
+Next deliver a new PR and merge the independently approved source under
+the user's explicit merge-as-we-go instruction. PR32 already merged as
+`47bfd37fdc0959d67ec5c717718899692b688310`, and PR31 records are merged as
+`16169c0`; their older pending-delivery statements below are historical.
+The live release remains `20260831-48a106d-widgets` at runtime `0.3.1`, schema
+`5`, observation-v3/camera-v5. No rollout, plugin install, service restart,
+auth/routing change, printer access or actual history integration is authorized
+by this split. Source merge and simulated rendering are not deployed or
+physical-printer acceptance. Unrelated canonical-checkout documents remain
+untouched.
+
 ## 2026-08-31 information above, actions below — current source handoff
 
 The user's latest principle supersedes earlier bottom observation-time and

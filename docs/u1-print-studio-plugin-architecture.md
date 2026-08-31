@@ -28,7 +28,7 @@ shared observation store
 focused observation projector
   observation-presentation.ts
         |
-        +--> one requested observation-v3 Instrument Strip
+        +--> one requested observation-v4 Instrument Strip
         +--> matching structuredContent and text summary
         +--> frozen legacy status projection for retained tasks
 
@@ -79,9 +79,9 @@ inbound protocol, not the core product boundary.
 | Optional media inbound adapter | `app/src/adapters/camera-webrtc-http.ts` | Retains the standalone dashboard's exact ticketed HTTP signaling route over the same application service |
 | Ticket codec adapter | `app/src/adapters/camera-ticket-codec.ts` | Issues opaque random ticket material and hashes it for in-memory lookup |
 | Adapter-shaped status | `U1Status` | Normalized input captured by the shared observation store; not itself the public focused schema |
-| Interactive observation presenter | `public/widget.html` | Renders one observation-v3 Instrument Strip and requests only app-private refresh for its selected view |
+| Interactive observation presenter | `public/widget.html` | Renders one observation-v4 Instrument Strip and requests only app-private refresh for its selected view |
 | Interactive camera presenter | `public/camera-widget.html` | Renders the separate camera-v5 snapshot-first Instrument Strip and owns Go Live, Close, retry, and fallback |
-| Private widget directory | `public/dashboard-index.html` | Static eight-link navigation at both dashboard roots; reports implementation coverage without acquiring observations or media; inlined in the HTTP bundle |
+| Private widget directory | `public/dashboard-index.html` | Static nine-link navigation at both dashboard roots, including separate Current Job and Job History; reports implementation coverage without acquiring observations or media; inlined in the HTTP bundle |
 | Frozen compatibility presenters | `public/legacy-widget.html` and `legacy-camera-widget.html` | Preserve exact former status-v4/v3 and camera-v3/v2/v1 bytes for retained mounted tasks |
 | Static presenter | `status-card-image.ts` | Renders a portable PNG from one `U1Status` snapshot |
 | Workflow skills | `skills/` | Route focused one-shot observation through `u1-observe-printer` and guide setup, monitoring, preparation, and authorized start without becoming runtime authority |
@@ -105,7 +105,7 @@ MCP Apps bridge.
 
 | MCP member | Semantic category | Result contract |
 | --- | --- | --- |
-| `observe_printer` | Observe and present, model-visible | Requires one closed view from overview, progress, thermals, heads, jobs, queue, fans, or bed_mesh; returns one observation-v3 projection |
+| `observe_printer` | Observe and present, model-visible | Requires one closed view from overview, progress, thermals, heads, jobs, job_history, queue, fans, or bed_mesh; jobs selects Current Job and job_history selects separate Job History; returns one observation-v4 projection |
 | `open_printer_camera` | Observe and present, model-visible | Reads one relayed snapshot and links a fresh camera-v5 camera-only presentation without allocating a stream session |
 | `refresh_printer_observation` | Observe, app-only | Refreshes the mounted strip through the same store and projector without opening another widget |
 | `show_u1_status` | Observe and present, app-only compatibility | Frozen retained-card alias returning the prior status payload, PNG, and status-v4 resource |
@@ -115,7 +115,7 @@ MCP Apps bridge.
 | `answer_u1_camera_stream` | Observe, app-only | Accepts one bounded, idempotent WebRTC answer for the active session |
 | `add_u1_camera_ice_candidates` | Observe, app-only | Accepts bounded and deduplicated ICE candidate batches |
 | `close_u1_camera_stream` | Observe, app-only | Idempotently closes the session and releases its lease |
-| `ui://u1-print-studio/observation-v3.html` | Current observation resource | Self-contained focused Instrument Strip with top timestamp/freshness/feedback, bottom-only refresh/retry actions, and empty external CSP; observation-v2/v1 are current aliases |
+| `ui://u1-print-studio/observation-v4.html` | Current observation resource | Self-contained focused Instrument Strip with top timestamp/freshness/feedback, bottom-only refresh/retry actions, and empty external CSP; observation-v3/v2/v1 are current aliases |
 | `ui://u1-print-studio/camera-v5.html` | Current camera resource | Image-only top snapshot/live/fallback time and feedback, with feature-detected display/live controls at bottom right; camera-v4 is a current alias, network diagnostics stay internal |
 | `ui://u1-print-studio/status-v4.html` and `status-v3.html` | Frozen status resources | Exact former large-card bytes for mounted-task compatibility only |
 | `ui://u1-print-studio/camera-v3.html`, `camera-v2.html`, and `camera-v1.html` | Frozen camera resources | Exact former camera bytes for mounted-task compatibility only |
@@ -133,7 +133,7 @@ The normal local-first route is:
 ```text
 Codex desktop -> stdio MCP -> observe_printer(view)
               -> shared store -> one focused structured projection
-              -> desktop mounts observation-v3
+              -> desktop mounts observation-v4
               -> app-only refresh returns the same selected projection
               -> open_printer_camera mounts camera-v5 separately
               -> Go Live uses MCP Apps tools/call for bounded signaling
@@ -155,7 +155,7 @@ The optional developer HTTP route is:
 ```text
 Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
               -> observe_printer(view)
-              -> text + focused structured projection + observation-v3 link
+              -> text + focused structured projection + observation-v4 link
               -> open_printer_camera mounts the snapshot-first camera-v5 widget
               -> Go Live calls app-only open_u1_camera_stream once
               -> answer, ICE, and close stay on the MCP Apps tools/call bridge
@@ -198,7 +198,9 @@ PreparedPrintJob --authorized Handoff--> PrintSession --targets--> Printer
 The current plugin implements a narrow shared current observation of `Printer`
 plus separately timestamped camera acquisition. `U1Status` normalizes raw
 Moonraker fields; the store adds freshness, connection epoch, and session
-provenance; observation-v3 projects one selected module. None is yet a durable
+provenance; observation-v4 projects one selected module. Current Job and Job
+History are separate projections, and history remains explicitly unimplemented
+with no observed history timestamp. None is yet a durable
 event, correlated print session, outcome, or verification record.
 
 The process ontology is:

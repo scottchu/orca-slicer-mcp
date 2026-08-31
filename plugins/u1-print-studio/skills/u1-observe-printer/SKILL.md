@@ -1,6 +1,6 @@
 ---
 name: u1-observe-printer
-description: Show one focused read-only Snapmaker U1 observation view for a one-shot inspection. Use for overview, progress, thermals, heads and filaments, jobs, queue, fans, bed mesh, or camera; use u1-monitor-print for ongoing monitoring and separate skills for preparation or start.
+description: Show one focused read-only Snapmaker U1 observation view for a one-shot inspection. Use for overview, progress, thermals, heads and filaments, current job, job history, queue, fans, bed mesh, or camera; use u1-monitor-print for ongoing monitoring and separate skills for preparation or start.
 ---
 
 # U1 Observe Printer
@@ -19,11 +19,17 @@ they want rather than silently opening an overview.
 - `thermals`: reported chamber, bed, and heater readings and targets.
 - `heads`: available print-head state, temperatures, and reported filament
   material or color.
-- `jobs`: current or recent reported job facts.
+- `jobs`: Current Job, showing only current reported filename and storage facts.
+- `job_history`: Job History, a separate view whose data mapping is not
+  implemented yet. Never substitute the current job or report an empty history
+  as if previous jobs had been checked.
 - `queue`: read-only queued-job state.
 - `fans`: available fan and purifier readings.
 - `bed_mesh`: the currently reported bed-mesh or calibration facts.
 - `camera`: the focused snapshot-first camera surface.
+
+Route current/active job or an unqualified Jobs request to `jobs`; route
+previous jobs or history to `job_history`.
 
 If the user requests several views, keep them composable: make one focused call
 per requested view in the requested order. Do not replace them with the legacy

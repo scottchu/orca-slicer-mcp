@@ -5,7 +5,24 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: apply the user's latest principle, information
+- Current execution order: validate and deliver decision 0025's implemented Current Job and
+  Job History widgets. Keep stable `jobs` for Current Job and add `job_history`
+  for independently callable history; directory entries become separate.
+  History remains explicitly unimplemented, without fabricated empty success
+  or acquisition time. Preserve information above/actions below and source
+  safety boundaries. Advance source to runtime 0.3.2/schema 6/observation-v4
+  while retaining old observation aliases and frozen resources. Independent
+  validation passes 148 app tests/2,011 assertions, 21 lifecycle tests,
+  TypeScript/repository/bundle/signature/asset checks and skill validation.
+  Six rendered captures, nine browser cases and thirty route checks pass with
+  zero external requests/errors/acquisitions. Independent code/visual review
+  approves without findings, with 30 tests/1,085 assertions and all six
+  captures checked. Deliver through a new PR, then merge the validated
+  slice under the user's latest merge-as-we-go authorization. PR32 is already
+  merged as `47bfd37`; do not reopen its delivery task. No deployment, plugin
+  install, service restart, auth/routing change, printer access or actual
+  history-backend integration is authorized by this presentation split.
+- Previous source slice, merged in PR32: apply the user's principle, information
   above and actionable buttons below, across current observation and camera
   widgets. Decision 0023's newest supersession and OBS-008/CAM-008 replace the
   earlier timestamp-at-bottom requirement: observation time/freshness/errors

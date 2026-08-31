@@ -66,6 +66,35 @@ function snapshot(overrides: Partial<ObservationSnapshot> = {}): ObservationSnap
 }
 
 describe("printer observation presentation", () => {
+  test("separates current-job fields from the unimplemented history projection", () => {
+    for (const freshness of ["fresh", "stale", "offline"] as const) {
+      const source = snapshot({ freshness });
+      const current = createObservationPresentation(source, "jobs");
+      const history = createObservationPresentation(source, "job_history");
+      expect(current.module).toMatchObject({ kind: "jobs", current: { filename: { value: "fixture.gcode" } } });
+      expect(current.module).not.toHaveProperty("history");
+      expect(history.module).toEqual({
+        kind: "job_history", state: "unknown", status: "not_implemented",
+        capabilityEvidence: "advertised", items: [],
+        provenance: { source: "not_observed", sourceObservedAt: null,
+          detail: "Job history has no implemented read-only normalization" },
+      });
+      expect(history.module).not.toHaveProperty("current");
+      expect(JSON.stringify(history)).not.toContain("fixture.gcode");
+      expect(JSON.stringify(history.module)).not.toMatch(/filename|storage|filePosition|fileSize/);
+      expect(history.observationVersion).toBe(current.observationVersion);
+      expect(history.sourceObservedAt).toBe(current.sourceObservedAt);
+      expect(history.freshness).toBe(freshness);
+    }
+  });
+
+  test("missing current identity remains unknown, not proof that no active job exists", () => {
+    const current = createObservationPresentation(snapshot({ status: { ...status, filename: null } }), "jobs");
+    expect(current.module).toMatchObject({ kind: "jobs", state: "unknown", current: null });
+    expect(current.module).not.toHaveProperty("history");
+    expect(current.printerState).toBe("printing");
+  });
+
   test("returns only the requested thermal module and shared envelope", () => {
     const result = createObservationPresentation(snapshot(), "thermals");
     expect(result).toMatchObject({

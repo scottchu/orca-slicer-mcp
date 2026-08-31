@@ -172,16 +172,20 @@ printer environments support the described behavior.
 - **API-005:** The source remote Monitor inventory contains exactly two
   model-visible presentation intents: `observe_printer`, with one required
   closed `view` enum, and `open_printer_camera`. The enum is exactly `overview`,
-  `progress`, `thermals`, `heads`, `jobs`, `queue`, `fans`, and `bed_mesh`;
+  `progress`, `thermals`, `heads`, `jobs`, `job_history`, `queue`, `fans`, and
+  `bed_mesh`; `jobs` remains the stable Current Job selector while
+  `job_history` independently selects Job History. Their selected modules do
+  not combine current-job and history fields. Unimplemented history stays
+  explicitly unknown, not an empty successful result or observed history time;
   unknown values and generic selector fields fail closed. Exactly eight
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v3` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v4` is the
   focused presentation resource. Every explicit camera open or reopen creates
   a fresh snapshot-first `camera-v5` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v2/v1 and camera-v4 are current-asset compatibility aliases.
+  Observation-v3/v2/v1 and camera-v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
 
@@ -193,7 +197,9 @@ printer environments support the described behavior.
   checks, and recoverable configuration switching. Lifecycle tooling remains
   local and allowlisted; no generic service or MCP Admin surface is added.
 - **DEPLOY-002:** Private `/dashboard` and `/dashboard/` serve one static
-  navigation directory for the eight accepted focused routes. Each entry
+  navigation directory for the nine accepted focused routes, including
+  separate Current Job and Job History links. Existing `/dashboard/jobs`
+  remains Current Job; `/dashboard/job_history` opens Job History. Each entry
   distinguishes implemented, partial, or unimplemented data coverage without
   implying live printer health. Focused routes select only accepted closed
   views; overview remains deferred. Public services do not expose these

@@ -31,6 +31,7 @@ silently changed.
 | [0022](0022-supervise-versioned-personal-http-services.md) | Supervise versioned personal HTTP services | Accepted for the user-authorized personal service-persistence slice |
 | [0023](0023-use-quiet-observation-footers-and-camera-overlays.md) | Use quiet observation footers and camera overlays | Accepted design; source validation and rendered acceptance tracked separately |
 | [0024](0024-add-private-widget-directory.md) | Add a private widget directory | Accepted for the user-requested navigation-only source slice |
+| [0025](0025-separate-current-job-and-job-history.md) | Separate Current Job and Job History | Accepted for the user-requested independently callable job views |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.

@@ -51,6 +51,7 @@ const FOCUSED_DASHBOARD_PATHS = new Set([
   "/dashboard/thermals",
   "/dashboard/heads",
   "/dashboard/jobs",
+  "/dashboard/job_history",
   "/dashboard/queue",
   "/dashboard/fans",
   "/dashboard/bed_mesh",

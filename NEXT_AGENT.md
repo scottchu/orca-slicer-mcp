@@ -8,13 +8,36 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0024
+5. decisions 0014 through 0025
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
 
-Current source in PR32 follows the user's latest principle: information above,
+Decision 0025's Current Job/Job History split is implemented in source.
+Preserve `jobs` for Current Job and add only `job_history`, with separate
+projections and directory entries. Unknown history must not become an empty
+successful result, a current-job leak or a fabricated history timestamp.
+Current source is runtime `0.3.2`, schema `6`, observation-v4; v3/v2/v1 are
+current aliases, camera-v5 and frozen legacy bytes are unchanged. There are
+nine observation values, nine directory links, eleven resources and unchanged
+two-visible/eight-app-only tools. Independent validation passes 148 app tests/
+2,011 assertions, 21 lifecycle tests, TypeScript, repository checks, all bundles/
+signatures, widget comparisons and skill validation. Six rendered captures,
+nine browser cases and thirty route checks pass with zero external requests,
+browser errors or fixture acquisitions. Independent code/visual review approves
+without findings, with 30 tests/1,085 assertions and all six captures checked.
+Deliver a new
+PR and merge after approval as the user authorized. Do not deploy, reinstall,
+restart services, change auth/routes, contact the printer or implement history
+acquisition under this split request. Information remains above actions.
+
+PR32 merged as `47bfd37`; PR31 rollout records merged as `16169c0`. Do not
+resume their old pending-delivery instructions below. Live services still run
+release `20260831-48a106d-widgets` at `0.3.1`/schema `5`/observation-v3/camera-v5;
+merged source and deployed bytes are distinct evidence layers.
+
+Merged source in PR32 follows the user's latest principle: information above,
 actions below. Observation title/time/freshness/errors are at the top;
 Refresh/Retry alone occupy the footer. Camera status/time/feedback are at the
 top, with display/live controls bottom right. This supersedes prior bottom-time
@@ -149,8 +172,8 @@ Every `observe_printer` call projects only its selected module. Progress,
 thermals, and heads are implemented from normalized fields; jobs current state
 is limited, and queue, fans, bed mesh, cavity, filament material/color, and
 history remain honest unknown/unavailable values pending live mapping evidence.
-Overview is deferred. Current source resources are observation-v3 and camera-v5;
-observation-v2/v1 and camera-v4 are current-asset aliases, while status v4/v3 and camera v3/v2/v1
+Overview is deferred. Current source resources are observation-v4 and camera-v5;
+observation-v3/v2/v1 and camera-v4 are current-asset aliases, while status v4/v3 and camera v3/v2/v1
 serve frozen legacy bytes.
 
 The implementation is a desktop-local read-only connector. A normal user must
@@ -167,8 +190,8 @@ decision 0015.
 - `u1-print-studio mcp` starts the desktop stdio connector.
 - The hosted widget contains no `fetch(` call and declares empty external CSP
   domains.
-- Current source descriptors point to `observation-v3.html` and `camera-v5.html`.
-  Observation-v2/v1 and camera-v4 are current aliases.
+- Current source descriptors point to `observation-v4.html` and `camera-v5.html`.
+  Observation-v3/v2/v1 and camera-v4 are current aliases.
   Frozen status-v4/status-v3 and camera-v3/v2/v1 resources remain readable for
   retained cards. A plugin upgrade can require a
   full host-process quit and relaunch; a new task alone did not replace the MCP
@@ -202,7 +225,7 @@ decision 0015.
 Current source model-visible tools are exactly:
 
 1. `observe_printer`, with required view `overview`, `progress`, `thermals`,
-   `heads`, `jobs`, `queue`, `fans`, or `bed_mesh`
+   `heads`, `jobs`, `job_history`, `queue`, `fans`, or `bed_mesh`
 2. `open_printer_camera`
 
 Current source app-only tools are exactly:
@@ -292,13 +315,12 @@ service or shared secret is configured.
 
 ## Next smallest action
 
-Deliver the independently validated and approved information/action layout in
-existing PR32. Current observation HTML SHA-256 is
-`3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b`;
-camera HTML SHA-256 is
-`0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483`.
-Do not infer new deployment from unchanged version strings or the baseline
-rollout record. Any merge/service/plugin rollout is a separate authorization.
+Current Job and Job History pass independent validation and code/visual review.
+Deliver a new PR and merge the approved slice under the
+user's merge-as-we-go instruction. Use source runtime `0.3.2`, schema `6`,
+observation-v4 and exact asset hashes from this slice's validation record.
+Neither merge nor directory availability proves new deployed bytes or history
+integration. Service/plugin rollout still requires separate authorization.
 
 PR30 merge `48a106d` and paired rollout are complete with independent approval;
 the `2026-08-31 authorized merged-service rollout validation` entry in
@@ -346,7 +368,14 @@ remain separate scope/evidence gates. Mac login/power remains deferred.
 
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
-docs/requirements.md, the active iteration, and decisions 0014 through 0024.
+docs/requirements.md, the active iteration, and decisions 0014 through 0025.
+CURRENT: source-ready0025splitsjobs(CurrentJob)andjob_history;0.3.2/schema6/
+observation-v4,aliases3/2/1,camera5,9views9directorylinks11resources,tools2+8.
+Independent148tests2011assertions21lifecycle/allbundles/skillvalidationpass;
+6captures9browsercases30routechecksalsopass; independentcode/visualreview
+APPROVES30tests1085assertionsandall6captures,no findings. DelivernewPR,
+thenmergeasexplicitlyauthorized. No deployment/plugin/services/printeraction.
+PR32merged47bfd37andPR31recordsmerged16169c0;followingrecordsarehistorical.
 The earlier source task was decision0023's dated segmented-layer refinement. Author
 implementation and independent validation pass142app/1849assertions21lifecycle,
 12screenshots8browsercases. Independentcode/visualreviewAPPROVES with58tests/
@@ -368,9 +397,9 @@ eight-link private directory, fixed focused routes, and one store per process.
 Preserve existing OAuth state, private env, routes, and unrelated dirty docs.
 Do not reinstall the personal plugin, change Mac power/login, auth or routes,
 contact the printer, or implement missing mappings under this rollout. Source exposes
-exactly `observe_printer` with its closed eight-view enum plus
+exactly `observe_printer` with its closed nine-view enum plus
 `open_printer_camera`; app-only refresh, legacy aliases, and five camera helpers
-remain hidden. Source uses observation-v3, camera-v5, frozen legacy resources, one
+remain hidden. Source uses observation-v4, camera-v5, frozen legacy resources, one
 explicit-refresh/coalescing/stale-retention store, and selected-module
 projections. Camera is separate and overview is deferred. Preserve decision
 0020 fan-out and the secure remote boundaries. The personal plugin remains its
