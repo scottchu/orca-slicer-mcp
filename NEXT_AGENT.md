@@ -14,6 +14,15 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Latest local source is `acdb2e38553418b395269bf71814ec3a5f21af04`, correcting
+progress text to `#499e69`/3.293:1 with a computed regression. Independent full
+validation passes 190 app/1,761 assertions, 21 lifecycle, 22 shipping,
+20 isolated/399 assertions, TypeScript, bundles/signature and six HTML checks.
+Exact-SHA source-only review approves without findings (31 tests/448 assertions);
+approval excludes uncommitted docs, visual QA and release approval. The new
+62-file manifest is `dca09a45ac122919bcc3621d2cfe182455bb4bfaf98375565d168ba5766e1ca0`.
+PR41's confirmed open/draft remote head is `acdb2e3`.
+
 The authoritative queue is the current iteration's `WIDGET_TRACKS.md` and
 decision 0029. Complete **all** pending widgets; newer feedback does not erase
 earlier requests. Sequential independently shipped slices are A materials +
@@ -30,24 +39,31 @@ invent speed/height or other metrics. Material reads use the prefixed
 `print_task_config` fields in decision 0029 and physical array index + 1, not
 print mapping or local preset sync. Keep independent domain times/freshness.
 
-Release A source from main `bf3eb26` is frozen at 0.4.0/schema 8/observation-v6/
+Release A checkpoint `acdb2e38553418b395269bf71814ec3a5f21af04` from main
+`bf3eb26` is pushed as [draft PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41),
+with open/draft status and remote head confirmed. Source is 0.4.0/schema 8/observation-v6/
 camera-v8 with sixteen resources. Materials, white cards/index, camera header,
 snapshot feedback/native fullscreen, and continuous progress are implemented;
 progress's lower row is elapsed-only because other metrics are not projected.
-Independent full software validation passes (189 app/1,757 assertions,
-21 lifecycle, 22 shipping, 20 isolated/399 assertions, TypeScript, bundles/
-signature/exact assets and frozen-source integrity). Formal review and visual
-acceptance remain pending. `design-qa.md` is blocked: allowed browser discovery
+The prior contrast P2 is resolved and source-only review approves `acdb2e3`.
+Visual acceptance remains pending. `design-qa.md` is
+blocked: allowed browser discovery
 found no clients, and isolated headless permission is requested but not granted.
-A source checkpoint commit/draft PR may record the software-only state. Obtain
+The source checkpoint/draft PR is complete, not the release. Obtain
 that permission or an allowed browser, then capture/compare and review the exact
 candidate before any PR merge/ship. In particular, visually assess camera's
 muted combined state/FPS/time label against the reference's differentiated
 text and vertical separators; no 1:1 fidelity claim is established by tests.
 Both live services were checked and remain 0.3.5/schema 7/observation-v5/camera-v7
-(PR38 `b565eec`); no new deployment or restart occurred. Queue foundation is
-separately active on `feat/u1-queue-completion` (adapter/model/tests only);
-it has no integrated widget or rollout. Retain B–E in the queue while blocked.
+(PR38 `b565eec`); no new deployment or restart occurred. Queue's three-file
+standalone adapter/model/test foundation is locally committed as
+`4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`.
+Independent bounded source/protocol review approves it, closing the prior
+credential-basename P2. TypeScript, 40 tests/461 assertions and six independent
+tests/68 assertions pass. Next integrate its store/projection/widget.
+Continue source work in stacked B–E branches while A's visual permission is
+pending; sequential reviewed release order remains A→B→C→D→E;
+there is no integrated Queue widget or rollout. Retain B–E in the queue.
 Never claim an old design-QA pass for new assets. No printer control,
 queue/history mutation, preset/project
 write, auth/Tailscale change, plugin reinstall, or Mac login work is included.

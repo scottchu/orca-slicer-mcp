@@ -2,6 +2,46 @@
 
 ## 2026-08-31 release A frozen source checkpoint — visual gate blocked
 
+Latest local correction: `acdb2e38553418b395269bf71814ec3a5f21af04` changes
+percentage text to `#499e69`, computed contrast 3.293:1, and adds its regression
+test. Author reports **31 tests/448 assertions** and TypeScript passing.
+New focused HTML SHA-256:
+`3c97b730290f9b4f35065fd57bcd8f7dbe0680bc0d5339c79a8c6212537fbd9b`.
+Independent full revalidation of this exact commit passes:
+
+- `./scripts/check-repository.sh`: **190 app tests/1,761 assertions**, **21
+  lifecycle**, **22 shipping**, TypeScript and repository contract.
+- The same three isolated independent fixture files named below: **20 tests/
+  399 assertions**. All three bundles/signature, runtime help/offline doctor,
+  six source/dist HTML comparisons and diff check pass.
+- Actual CSS text contrast independently computes **3.292557043498492:1**.
+  The 62-file manifest is identical before/after:
+  `dca09a45ac122919bcc3621d2cfe182455bb4bfaf98375565d168ba5766e1ca0`.
+  Camera/directory hashes below are unchanged; focused widget uses the new
+  hash above. Compiled runtime SHA-256:
+  `5dde3102cb7859095c8d7b3d6146d37396b5586455eb898ba8a3e76ae652df20`.
+- Independent exact-SHA **source-only review approved**, no findings;
+  reviewer checks pass **31 tests/448 assertions**, including contrast.
+  Approval excludes uncommitted documentation changes, blocked visual QA and
+  exact-release approval. No browser/printer/service operation is inferred.
+
+PR41's confirmed open/draft remote head is `acdb2e3`. The
+prior findings/test counts/manifest below are historical checkpoint evidence,
+not unresolved contrast findings or current-source hashes.
+
+### Historical prior A checkpoint, superseded by approved acdb2e3
+
+Committed/pushed checkpoint: `a8ac630550b4b193d1538810f45f5eb5aac7a56a`,
+[draft PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41). The coordinator
+confirmed `OPEN`, draft status and the exact remote head. Independent exact-SHA
+source review: **changes requested**, one P2 percentage-text contrast finding
+in `app/public/widget.html`: `#60b982` on white measures 2.397:1, below the 3:1
+large-text threshold. Reviewer synthetic checks pass **59 tests/671 assertions**
+(camera/observation 51/581, material normalization/store 8/90), and its 62-file
+manifest matches the frozen value below. No other bounded material/privacy/
+concurrency/compatibility blocker was found. Correct and re-review a new exact
+candidate; this is neither visual acceptance nor release approval.
+
 Source contract: runtime 0.4.0/tool schema 8/observation-v6/camera-v8, sixteen
 resources with retained aliases. Material read/store/Heads and white
 focused/camera/index/host presentation are implemented. Progress's lower row is
@@ -36,6 +76,8 @@ The independent validator ran on the frozen source:
   - camera: `32c8038a4abe5d8f9277294a5fd50584930dd4a24ea2bfc2546af32d8c847f4e`;
   - directory: `0e0daa7448d981c0e4115c3f19871f2802bdaf7347f774d0e215f894273f301e`.
 
+### Shared observation and deployment boundaries
+
 Separate real-printer evidence: the fixed selected-fields `print_task_config`
 GET succeeded at `2026-08-31T17:28:34.793Z` with valid material metadata for all
 four physical heads. No real per-head labels/colors/raw payload are committed.
@@ -55,11 +97,23 @@ visual approval or actual-device acceptance. The combined muted camera
 state/FPS/time label still differs from the reference's differentiated text and
 vertical separators; visual QA must assess that fidelity gap. Direct controls
 are an allowed design choice, not a claim of exact visual identity.
-A source checkpoint/draft PR may
-record this software-only state; merge/ship must wait for required visual QA
-and independent exact-candidate review. Queue foundation on
-`feat/u1-queue-completion` is separate adapter/model/test work, not an integrated
-or deployed Queue widget. Tracks B–E stay active.
+Draft PR41 records this software-only state; merge/ship must wait for required
+visual QA and exact-release review. Queue foundation is locally committed as
+`4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`:
+standalone adapter/model/tests, three files only. Independent bounded
+source/protocol review **approves**, closing the prior provider-shaped
+credential-basename P2 from `c4e0754`. Independently rerun TypeScript,
+**40 tests/461 assertions** and the unchanged six independent fixtures
+(**68 assertions**) pass; exact HEAD, clean worktree and diff check confirmed.
+The explicit provider-pattern checks run before filename truncation.
+
+Final adapter SHA-256: `416d6084ee81e052d12f2c53e87788a5d17e2f79ebbbc376579ce9d45d670f59`;
+test SHA-256: `fd9b9aeaa9714804523996e595207bfe89dd3f06d801ae497d282d908ab06596`;
+unchanged private fixture SHA-256:
+`7a67caa07842a26728b6bb7c51071a75178eb5aeae3053cdea261610384b4a28`.
+No store/projection/widget integration, visual/release/deployment or printer
+acceptance is implied. B–E source work may continue in stacked branches during A's visual
+permission wait; sequential independently reviewed release order is unchanged.
 
 ## 2026-08-31 all-widget completion design checkpoint
 

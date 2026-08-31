@@ -1,7 +1,7 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: release A software validated; visual QA blocked, formal review/delivery pending
+- Status: release A `acdb2e3` software validated and source-only approved; visual/release gates blocked
 - Scope: F0/O1, OBS-007/008/010/011, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution
@@ -119,6 +119,13 @@ These sources establish adapter conventions, not the current printer's firmware
 version, actual loaded spools, profile compatibility, or physical acceptance.
 
 ## Release A source checkpoint
+
+Exact correction `acdb2e38553418b395269bf71814ec3a5f21af04` passes independent
+full validation and source-only review without findings (190 app/1,761
+assertions, 21 lifecycle, 22 shipping, 20 isolated/399 assertions; reviewer
+31/448). Approval excludes uncommitted docs, visual QA and release approval.
+Stacked B–E source work may continue while A awaits browser permission, without
+changing sequential reviewed release order or bypassing QA/shipping gates.
 
 Source is 0.4.0/schema 8/observation-v6/camera-v8 with sixteen resources and
 retained current/frozen aliases. Materials and the white presentation are

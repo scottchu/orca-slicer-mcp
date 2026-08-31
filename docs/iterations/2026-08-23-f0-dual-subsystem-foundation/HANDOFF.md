@@ -2,6 +2,19 @@
 
 ## 2026-08-31 all-widget completion — authoritative current handoff
 
+Latest local correction is `acdb2e38553418b395269bf71814ec3a5f21af04`: progress
+text `#499e69` computes 3.293:1 and has a regression test. Author checks pass
+31 tests/448 assertions and TypeScript. Independent full revalidation passes
+190 app/1,761 assertions, 21 lifecycle, 22 shipping, 20 isolated/399 assertions,
+TypeScript, all bundles/signature and six HTML comparisons. Exact-SHA source-only
+review approves without findings (31 tests/448 assertions), excluding these
+uncommitted docs, visual QA and release approval. Only focused HTML and its
+test changed from prior checkpoint.
+Focused HTML SHA-256 is `3c97b730290f9b4f35065fd57bcd8f7dbe0680bc0d5339c79a8c6212537fbd9b`.
+The new 62-file manifest, identical before/after checks, is
+`dca09a45ac122919bcc3621d2cfe182455bb4bfaf98375565d168ba5766e1ca0`.
+PR41's confirmed open/draft remote head is `acdb2e3`.
+
 The user wants every pending read-only widget completed and all cards/index
 restyled to the selected white reference. Decision 0029 and `WIDGET_TRACKS.md`
 freeze this direction and supersede older deferrals/overlays below. Release A
@@ -10,7 +23,10 @@ continuous progress; B Queue, C fans/chamber, D Current Job/History, E overview
 follow sequentially, with all unfinished rows retained as active. Existing
 Bed Mesh is restyled with A. Invokable skills and jobs/history separation stay.
 
-Release A source is frozen at 0.4.0/schema 8/observation-v6/camera-v8, sixteen
+Release A checkpoint `acdb2e38553418b395269bf71814ec3a5f21af04` is committed
+and pushed as [draft PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41);
+coordinator verified open/draft status and exact remote head. Source is frozen
+at 0.4.0/schema 8/observation-v6/camera-v8, sixteen
 resources, from main `bf3eb26`. Changed application scope: fixed material
 adapter/model, shared store/Heads projection, app/server/dashboard plumbing,
 white focused/camera/index/host HTML, runtime contract and associated tests.
@@ -21,11 +37,9 @@ Camera uses genuine media, header information, working snapshot feedback and
 native fullscreen on the card; frame/FPS watcher semantics remain unchanged.
 Progress lower metrics are elapsed-only because nozzle/bed/speed/height are
 not projected. Feather icons retain local MIT attribution; firmware material
-labels are not Orca presets. Independent final software gates pass: 189 app/
-1,757 assertions, 21 lifecycle, 22 shipping, 20 isolated/399 assertions,
-TypeScript, three bundles/signature, six exact HTML comparisons and unchanged
-62-file source manifest. VALIDATION records hashes and precise boundaries.
-Formal review and visual acceptance remain pending.
+labels are not Orca presets. VALIDATION records current approved-source hashes,
+prior checkpoint findings and precise evidence boundaries. The earlier contrast
+P2 is resolved; visual acceptance remains pending.
 
 Both live services were checked by the coordinator and still report
 0.3.5/schema 7/observation-v5/camera-v7 (PR38 `b565eec`), without restart or
@@ -35,14 +49,19 @@ accept new bytes. No merge or deployment before required visual QA and exact-SHA
 independent review. Thereafter use guarded ship, both-service restart, exact
 assets/integrity and meaningful deployed behavior verification.
 
-Next smallest action: record the software checkpoint/draft PR, obtain browser
-permission/access, then reference-to-render QA and formal review. Camera's
+The source checkpoint/draft PR is complete. Obtain browser
+permission/access, then reference-to-render QA and final exact-candidate review.
+Camera's
 combined muted state/FPS/time text differs from the reference's differentiated
 text/dividers and needs visual classification; do not claim 1:1 fidelity from
 source/fixture results. Direct accessible controls are an allowed design choice.
-Queue's
-adapter/model/test foundation is active separately on `feat/u1-queue-completion`,
-without widget integration, merge or deployment. B–E remain active.
+Queue's standalone three-file adapter/model/test foundation is locally committed
+as `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`.
+Independent bounded source/protocol review approves, closing the prior P2;
+TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
+Store/projection/widget integration is next; no integration, merge or deployment
+is claimed. B–E source work may continue in stacked branches while
+A's visual permission is pending; sequential reviewed release order is unchanged.
 Preserve other dirty checkouts. No printer controls, queue/history mutation,
 preset/project sync/write, auth/Tailscale change, plugin reinstall, or previously
 deferred Mac login work enters this request. Other risks: independent material

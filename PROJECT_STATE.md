@@ -12,6 +12,15 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
+Latest local source is contrast correction `acdb2e38553418b395269bf71814ec3a5f21af04`:
+green percentage text is now `#499e69` (3.293:1), with a computed regression.
+Independent full revalidation passes: 190 app tests/1,761 assertions,
+21 lifecycle, 22 shipping, 20 isolated/399 assertions, TypeScript, bundles and
+six exact HTML comparisons. Exact-SHA source-only review is approved without
+findings (31 reviewer tests/448 assertions). This excludes these uncommitted
+documentation updates, visual QA and release approval. PR41's confirmed open/
+draft remote head is `acdb2e3`. No new rollout occurred.
+
 The user requests all pending widgets and a unified refined white style.
 Decision 0029 and the active iteration's `WIDGET_TRACKS.md` own the durable
 queue: A materials + white cards/index + latest camera + continuous progress;
@@ -21,16 +30,19 @@ invokable skills and the Current Job/History split stay intact. New feedback
 does not cancel unfinished tracks. All are active; old deferral wording below
 is historical. F0/O1 milestone completion is not claimed.
 
-Release A source is implemented and frozen for independent validation at
+Release A source checkpoint `acdb2e38553418b395269bf71814ec3a5f21af04` is pushed
+as [draft PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41); the
+coordinator confirmed its open/draft status and exact remote head. Source is
 0.4.0/schema 8/observation-v6/camera-v8, sixteen resources. It adds real
 printer-reported materials and white focused cards/index, camera information
 outside the image with working snapshot feedback/native fullscreen, and
 continuous reported-percent progress. The lower progress row contains only
 elapsed time; other reference metrics are not projected and are not fabricated.
-Frame/FPS watcher semantics are unchanged. Independent software gates pass:
-189 app tests/1,757 assertions, 21 lifecycle, 22 shipping, 20 isolated tests/
-399 assertions, TypeScript, bundles/signature, exact assets and frozen-source
-integrity. Formal review is pending; `design-qa.md` is blocked because no allowed browser is available
+Frame/FPS watcher semantics are unchanged. The prior P2 contrast finding is
+resolved in approved source `acdb2e3`; its new 62-file manifest is
+`dca09a45ac122919bcc3621d2cfe182455bb4bfaf98375565d168ba5766e1ca0`.
+`design-qa.md` is
+blocked because no allowed browser is available
 and isolated headless permission has not been granted. Do not merge or deploy
 before required QA. Starting main is `bf3eb26`; both existing services were
 freshly checked by the coordinator and still report 0.3.5/schema 7/
@@ -38,8 +50,13 @@ observation-v5/camera-v7 (PR38 `b565eec`), without restart or rollout.
 Every release still requires independent exact-SHA review, PR, guarded shipping,
 both-service restart, and meaningful deployed-widget verification. Keep source,
 deployed, real-printer, and user-device evidence separate. Queue foundation is
-active on `feat/u1-queue-completion`: adapter/model/tests only, not an integrated
-widget. Tracks B–E remain active while the visual gate awaits permission.
+locally committed as `4fbb96c7201398c125006cafc5050b84a875af1e` on
+`feat/u1-queue-completion`: standalone adapter/model/tests only. Independent
+bounded source/protocol approval closes the prior credential-basename P2;
+TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
+Store/projection/widget integration is next, without any merge or deployment.
+Source work may continue in stacked B–E branches while A's visual gate awaits
+permission; sequential independently reviewed release order is unchanged.
 Read-only capability research confirms Queue/History/cavity/fans endpoints can
 return real data; they are software gaps, not proven unsupported hardware.
 No printer controls, preset/project writes, auth/Tailscale changes, plugin
