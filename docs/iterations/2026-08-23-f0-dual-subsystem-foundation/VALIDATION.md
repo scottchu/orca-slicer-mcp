@@ -130,6 +130,25 @@ overflow, console inspection, and mounted fullscreen/PiP remain blocked.
 the old layout and failure, not acceptance of the new code. No release install,
 service restart, or live test of the changed assets is established here.
 
+### Source review and draft delivery
+
+- Independent formal reviewer verdict: **APPROVE, source-only**, with no
+  unresolved findings. Its targeted suite passed 59 tests / 415 assertions,
+  and the reviewer verified the exact final observation/camera fingerprints
+  above plus the independent 134-test/931-assertion and 21-lifecycle-test gate.
+- Source commit `db4e250` is pushed and delivered in
+  [draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
+  At initial delivery, `gh pr view 30 --json url,isDraft,state,headRefOid`
+  returned an open draft at source commit `db4e250`; a documentation-only
+  follow-up does not change reviewed implementation bytes. This completes source delivery,
+  not merge, rendered acceptance, installation, or service rollout.
+- Next action is an authorized visual-validation path while the supported
+  browser remains unavailable, followed by separately scoped rollout after
+  acceptance. Unimplemented backend mappings remain unimplemented.
+- The delivery-record follow-up changes only `PROJECT_STATE.md`,
+  `NEXT_AGENT.md`, this validation record and the current `HANDOFF.md`;
+  `git diff --check` passes without changing accepted implementation bytes.
+
 ## 2026-08-30 post-merge persistence rollout and restart repair
 
 ### Delivery and installed plugin

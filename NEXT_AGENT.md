@@ -22,8 +22,11 @@ bytes remain identical. Keep the exact two-visible/eight-app-only tool inventory
 Ten resources retain old descriptors without promising old cached HTML updates.
 Independent executable synthetic-host/clock/frame tests are source evidence,
 not rendered or mounted iPhone acceptance. The browser visual gate is blocked.
-Finish independent source review and draft-PR delivery, then obtain an
-authorized visual-validation path. Do not repeat the historical install or
+Source commit `db4e250` is pushed and delivered in
+[draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
+Independent formal review approves source-only with no unresolved findings;
+source delivery is complete. Next obtain an authorized visual-validation path,
+then separately scope rollout after acceptance. Do not repeat the historical install or
 restart below, and do not infer authorization to map missing domains.
 
 PR28 merged as `2160492a4ce63d1409673786ea02b253d7cfaace`, combining PR27's
@@ -286,7 +289,8 @@ live mappings rather than repeating the completed rollout.
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
 docs/requirements.md, the active iteration, and decisions 0014 through 0023.
 PR28/PR29 persistence delivery is historical completed work. Current decision0023
-source needs final independent review, draft PR, and rendered visual acceptance.
+source commitdb4e250 has independent source-only approval and draftPR30 delivery.
+Rendered visual acceptance remains blocked and is the next action.
 The available browser list is empty; obtain an authorized visual-validation path
 and do not claim iPhone/fullscreen/PiP or deployed acceptance from source tests.
 Use exact existing owner LaunchAgents, versioned release/pinned Bun, fixed

@@ -53,9 +53,13 @@ not the current changes.
 
 The available browser inventory is empty, so rendered viewport/layout,
 fullscreen/PiP, and iPhone acceptance remain blocked and explicit in
-`design-qa.md`. Next: finish independent source review and deliver a draft PR;
-obtain an authorized visual-validation path before treating the redesign as
-accepted. Do not deploy or implement missing backend domains as an implicit
+`design-qa.md`. Source commit `db4e250` is pushed and delivered in
+[draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
+Independent formal review approves source-only with no unresolved findings,
+including a separate targeted 59-test/415-assertion rerun and verification of
+the final widget fingerprints. Source delivery is complete. Next obtain an
+authorized visual-validation path before treating the redesign as accepted,
+then separately scope rollout. Do not deploy or implement missing backend domains as an implicit
 extension. Historical persistence delivery below must not be repeated.
 
 ## 2026-08-30 persistence integration — current handoff

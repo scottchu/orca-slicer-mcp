@@ -12,6 +12,10 @@ Last updated: 2026-08-31
 
 - Current source slice: decision 0023's user-requested quiet footers,
   image-only camera overlay/display controls, and bounded host-loading repair.
+  Source commit `db4e250` is pushed and delivered in
+  [draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
+  Independent formal review approves the source-only change with no unresolved
+  findings. Source delivery is complete; rendered acceptance remains blocked.
   Source reports runtime `0.3.1`, schema `5`, observation-v3/camera-v5;
   observation-v2/v1 and camera-v4 remain current aliases, and all previously
   frozen legacy bytes remain unchanged. Two model-visible/eight app-only
@@ -30,7 +34,7 @@ Last updated: 2026-08-31
   actual widget scripts with synthetic hosts/frames. Rendered screenshots,
   mounted mobile fullscreen/PiP, service rollout, and physical acceptance are
   unclaimed. See `design-qa.md` and current iteration validation for the blocked
-  visual gate; deliver this as source for review, not a live fix.
+  visual gate; the draft PR is delivered source, not a deployed live fix.
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
@@ -393,8 +397,8 @@ and final repository-check results.
 
 ## Next action
 
-First finish decision 0023's independent source review and deliver a draft PR.
-Rendered visual validation needs an available browser or explicit permission
+Decision 0023 source commit `db4e250` has independent source-only approval and
+is delivered in draft PR30. Next, rendered visual validation needs an available browser or explicit permission
 for an isolated alternative. Test all focused cards and camera snapshot/live/
 fallback/fullscreen/PiP at phone widths before user-facing acceptance. Do not
 install, restart services, mutate OAuth/routes, or implement missing data
