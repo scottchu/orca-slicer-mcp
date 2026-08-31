@@ -21,18 +21,28 @@ checks pass 106 tests/2,290 assertions and TypeScript. VALIDATION records exact
 commands and frozen hashes; camera/index/acquisition/shipping bytes are unchanged.
 Independent validation passes 200 app/2,855 assertions, 21 lifecycle, 22 shipping,
 86 fixtures/751 assertions and TypeScript/repository/bundles/signature/exact
-assets. Initial formal review has no findings and passes 41 widget/1,537;
-exact-candidate approval remains pending. Fresh
+assets. Exact formal review approved `e369ca4d53867b1904af5326b38f4b92b82ea3b0`
+without findings and passes 41 widget/1,537. PR45 merged it as
+`90d9f9d353c7bca2c299ab7ae949ad81e7d4faca` at `2026-08-31T19:27:56Z`;
+guarded shipping installed `20260831-90d9f9d-pr45-20260831T152746-190348`.
+BOTH services were explicitly restarted and are loaded/healthy/integrity
+verified at 0.4.2/schema 8/observation-v8/camera-v8. Fourteen static and sixteen
+security checks pass, config/auth/routes preserved, no rollback. Independent
+postdeployment verification passes both fifteen-file manifests, three health/
+seven exact static checks, one fresh four-head/material read and 35 exact
+served-widget VM assertions. VALIDATION records independent status/material
+receipt times and actual commands. Fresh
 allowed-browser discovery is unavailable, so the current visual QA is blocked,
-not passed. Actual-device acceptance is also unverified.
+not passed. Actual-device/native clipboard acceptance is also unverified.
 
-Next smallest action: freeze the commit and obtain exact-candidate approval,
-then use guarded PR merge → exact-build deploy
-→ explicitly restart BOTH public/dashboard services → verify. The user's
-standing deployment-first visual-review order remains authorized; it does not
-waive source review/shipping guards or establish browser acceptance. Then resume
-Queue store/projection/widget integration. Preserve auth/config/routes, frozen
-assets and all unrelated widget tracks; no plugin reinstall or printer control.
+Next smallest action: merge these docs-only rollout records without another
+application deployment, then resume Queue store/projection/widget integration.
+The user has the live Heads review link; no visual pass is inferred from delivery.
+Retain the guarded PR/exact-review/deploy/BOTH-service restart/verification
+sequence for each later app change. This follow-up changes only eight rollout
+record files, not requirements or the deployed nine application paths above.
+Preserve auth/config/routes, frozen assets and all unrelated widget tracks;
+no plugin reinstall or printer control.
 
 ## 2026-08-31 F reported Bed Mesh surface — previous shipped handoff
 

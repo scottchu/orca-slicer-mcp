@@ -20,6 +20,13 @@ copy/content. Existing system fonts and Feather icons are retained; no generated
 image is required for native data colors. Source fixtures are not visual proof.
 The frozen 0.4.2/observation-v8 source has author test evidence recorded in
 VALIDATION; it does not alter this visual disposition.
+PR45 is now merged and exact release
+`20260831-90d9f9d-pr45-20260831T152746-190348` is deployed. BOTH services were
+explicitly restarted and pass health/integrity/static/security checks. The user
+has the live Heads review link. This supplies no screenshot or actual-device
+native clipboard evidence; this report remains blocked, not passed.
+Independent one-shot Heads acquisition and 35 exact served-widget VM assertions
+pass; matching source behavior and calculated contrast are not rendered QA.
 
 When available, capture the actual Heads view at 320/390/720 and four-column
 widths with valid white/black/brown colors, unknown/invalid color, mixed real

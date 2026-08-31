@@ -14,9 +14,15 @@ independent material freshness. This slice precedes Queue without cancelling
 B–E. Source 0.4.2/schema 8/observation-v8/camera-v8 (eighteen resources) passes
 author 106 tests/2,290 assertions and TypeScript. Independent checks pass 200 app/
 2,855, 21 lifecycle, 22 shipping, 86 fixtures/751 and all bundles/exact assets.
-Initial review has no findings; exact-SHA approval/shipment remain pending;
-historical release evidence below
-is not acceptance of the changed assets.
+Exact reviewed `e369ca4` was approved and merged in PR45 as
+`90d9f9d353c7bca2c299ab7ae949ad81e7d4faca`; installed release
+`20260831-90d9f9d-pr45-20260831T152746-190348` runs on BOTH explicitly restarted,
+loaded/healthy/integrity-verified services. Fourteen static and sixteen security
+checks pass; config/auth/routes preserved, no rollback. Independent postrelease
+verification passes both fifteen-file manifests, three health/seven static
+checks, one fresh four-head/material read and 35 exact served-widget VM
+assertions. Visual/device and native clipboard acceptance remain
+unverified; Queue integration is next.
 
 F is deployed in [PR43](https://github.com/scottchu/orca-slicer-mcp/pull/43):
 reviewed `41546d9e3ea841bdd23279694079719327f39f39` merged as
@@ -28,7 +34,7 @@ checks pass, OAuth/environment/config/routes preserved, no rollback. Independent
 exact-release/manifest, fourteen local/thirteen tailnet static and tailnet-health
 checks pass. One private refresh returns a known/fresh active 11 by 11 mesh at
 `2026-08-31T19:03:22.696Z`; visual/device acceptance remains unverified.
-Heads refinement is next, then Queue integration. Docs-only rollout
+Heads refinement is deployed; Queue integration is next. Docs-only rollout
 records do not redeploy unchanged application bytes.
 
 Previous release A was deployed in [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41):
@@ -49,13 +55,13 @@ structurally valid real JPEG. They do not establish visual/device acceptance.
 The user's latest Fluidd Bed Mesh screenshot prioritizes decision 0030's
 interactive reported-height surface inside the existing white card. It does
 not request Fluidd's dark dashboard, interpolated-matrix selector or printer
-controls. Current release order is A/F (deployed) → Heads refinement → B → C → D → E.
+controls. Current release order is A/F/Heads (deployed) → B → C → D → E.
 F0/O1 and B–E remain unfinished; A/F visual acceptance remains open. Preserve unrelated checkouts;
 any reuse needs explicit integration review. Queue foundation is locally committed as
 `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`;
 independent bounded source/protocol review approves and closes the prior P2.
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
-Store/widget integration follows Heads refinement. Stacked
+Store/widget integration is next after the shipped Heads refinement. Stacked
 B–E source work may continue while the user visually reviews A; no unfinished
 track is cancelled by the new priority.
 
@@ -65,9 +71,9 @@ track is cancelled by the new priority.
 | A2 White foundation and index | White focused cards/index/host assets and local attributed icons deployed; truthful coverage labels | Reference-matched rendering, states and accessibility | Deployed in PR41; user visual acceptance pending |
 | A3 Camera reference | Header outside genuine media, direct controls, snapshot feedback/card fullscreen deployed; watchers retained | Rendered/native snapshot/live/close/PiP/fullscreen acceptance | Deployed in PR41; user/device acceptance pending |
 | A4 Continuous progress | Contrast correction, continuous bar/layers/ETA/elapsed deployed | User visual review, without fabricated metrics/completion | Deployed in PR41; visual acceptance pending |
-| A5 Heads reference refinement | Implemented at 0.4.2: actual-color soft wash, exact swatch/hex and Copy; existing material acquisition retained | Exact-SHA approval, guarded shipment and meaningful scoped verification | Independent software checks pass; initial review has no findings; shipment/visual gates pending |
+| A5 Heads reference refinement | Deployed in PR45 at 0.4.2: actual-color soft wash, exact swatch/hex and Copy; material acquisition retained | User visual/native-clipboard review | Both-service and independent live-read/served-widget checks pass; visual/device acceptance unverified |
 | F Bed Mesh | Interactive same-sample surface and retained 2D grid deployed in PR43 at 0.4.1 | User visual review of XYZ/legend/exaggeration, pointer/keyboard orbit/reset and 2D fallback | P2 corrected; reviewed and shipped, visual/device acceptance pending |
-| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Integrate bounded store/projection/widget without queue mutations | Foundation source/protocol approved; widget integration after Heads refinement |
+| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Integrate bounded store/projection/widget without queue mutations | Foundation source/protocol approved; widget integration active next |
 | C Fans and chamber | Fans/purifier unimplemented; chamber thermal unknown | Real fixed fan/purifier/cavity reads, measured units and independent missing/power states; no controls | Active, after Queue |
 | D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, after fans/chamber |
 | E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |

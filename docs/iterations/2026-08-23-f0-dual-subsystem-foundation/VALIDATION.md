@@ -1,6 +1,58 @@
 # F0 dual-subsystem foundation validation
 
-## 2026-08-31 Heads reference refinement — frozen source checkpoint
+## 2026-08-31 Heads reference refinement — PR45 deployed
+
+Independent formal review approved exact head
+`e369ca4d53867b1904af5326b38f4b92b82ea3b0` without findings, independently
+passing 41 widget tests/1,537 assertions. Guarded execution merged PR45 at
+`2026-08-31T19:27:56Z` as `90d9f9d353c7bca2c299ab7ae949ad81e7d4faca` and
+installed `20260831-90d9f9d-pr45-20260831T152746-190348`. Actual operator command
+(private pinned runtime path redacted):
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 45 --reviewed-sha e369ca4d53867b1904af5326b38f4b92b82ea3b0 --bun <ABSOLUTE_PINNED_BUN> --execute
+```
+
+Execution completed in 18.3 seconds. BOTH public/dashboard services were
+explicitly restarted and are loaded, healthy and integrity verified at
+**0.4.2/schema 8/observation-v8/camera-v8**. **Fourteen exact static and sixteen
+security checks pass**; configuration/authentication/routes were preserved,
+no rollback. Installed widget matches
+`419ec788ea4b9546e93c31a46419ed13b4490b57a64f337e7e7ccc6d8ad43214`;
+camera and index bytes are unchanged. Independent postdeployment verification
+passes, with actual read-only commands:
+
+```sh
+uv run --no-project scripts/u1_service.py status
+plutil -convert json -o - <PRIVATE_SERVICE_PLIST>
+tailscale serve status --json
+```
+
+The plist command ran for both existing services. Inline Node file/crypto
+checks independently hash all **fifteen manifest files per service** and confirm
+both selected releases/source match the merged identity above. Inline Node
+HTTP/HTTPS requests pass **three health checks** (both local services and private
+tailnet dashboard) and **seven exact static checks** (public widget, plus local/
+tailnet widget, directory and Heads route). No on-disk validation script/report
+was created.
+
+Exactly **one** private `POST /dashboard/tools/call` invoked
+`refresh_printer_observation` with `{view: heads}`: all **four physical heads**
+are known, status is fresh at `2026-08-31T19:30:19.879Z`, and material is
+independently known/fresh at `2026-08-31T19:30:20.028Z`. The exact served widget
+executed against that payload in an inline Node VM passes **35 assertions**:
+all four valid colors derive matching wash/swatch/hex/copy data, while physical
+identity, active state and independent freshness are retained. Calculated
+secondary-text contrast is at least **5.51:1**. This proves deployed bytes and
+production-script behavior against a real read-only payload, not browser layout
+or native clipboard behavior. No further acquisition, copy, camera/mesh/control,
+service/auth/routing mutation or file edit occurred in this independent pass;
+raw payload/palette never reached disk/log and were discarded from retained
+Node state. The user has the live Heads review link; browser/device visual and
+native clipboard acceptance remain unverified. These docs-only rollout records
+change no application bytes and require no new deployment.
+
+## 2026-08-31 Heads reference refinement — historical frozen source checkpoint
 
 The design role opened the exact selected 1554 × 1012 Heads image and read the
 current contract/iteration. Decision 0029's addendum and OBS-010 record the

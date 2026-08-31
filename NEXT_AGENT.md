@@ -14,20 +14,24 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Prioritize the user's Heads reference refinement before Queue. Decision 0029's
+The user's Heads reference refinement is shipped in PR45. Decision 0029's
 addendum fixes actual-color 6% white washes, exact solid swatch/hex and accessible
 Copy, real tool/state/material/temperature, bottom Refresh and unchanged physical
 mapping/presence/independent material freshness. Source is frozen at 0.4.2/schema
 8/observation-v8/camera-v8 with eighteen resources; author checks pass 106 tests/
 2,290 assertions and TypeScript. Independent validation passes 200 app/2,855,
 21 lifecycle, 22 shipping, 86 fixtures/751 assertions and all bundles/exact
-assets; initial formal review has no findings. Finish exact-SHA approval
-(see VALIDATION for hashes/commands), then guarded
-merge → exact-build deploy → explicitly restart BOTH services → verify. No new
-Heads acceptance is established by the historical A/F receipts below. Browser
-and actual-device visual acceptance remain unverified; the user's deployment-
-first order is retained. Resume B Queue after this refinement, then C → D → E;
-do not discard any pending widget work.
+assets. Exact reviewed `e369ca4` was approved without findings and merged as
+`90d9f9d353c7bca2c299ab7ae949ad81e7d4faca`; installed release
+`20260831-90d9f9d-pr45-20260831T152746-190348` runs on BOTH explicitly restarted
+services. Loaded health/integrity, fourteen static and sixteen security checks
+pass with config/auth/routes preserved and no rollback. Independent postrelease
+checks pass both fifteen-file manifests, three health/seven exact static checks,
+one fresh four-head/material read and 35 exact served-widget VM assertions.
+Browser/device visual and native clipboard acceptance
+remain unverified. Merge these docs-only rollout records without redeploying
+unchanged application bytes, then resume B Queue → C → D → E. Keep every pending
+track and the standing guarded delivery sequence for future application changes.
 
 F is now shipped: PR43 reviewed `41546d9e3ea841bdd23279694079719327f39f39`
 merged as `92a62c04c22600ee802d7be3c0b27285135f6d33`; installed release

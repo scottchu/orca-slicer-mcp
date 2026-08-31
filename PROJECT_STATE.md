@@ -15,18 +15,25 @@ Last updated: 2026-08-31
 Latest user priority is the Heads reference refinement in decision 0029:
 soft actual-filament-color tool-card washes inside the white container, real
 state/material/temperature, exact swatch/hex and accessible Copy, with Refresh
-remaining below information. This presentation-only slice is now before Queue;
-current order is A/F (deployed) → Heads refinement → B → C → D → E.
+remaining below information. This presentation-only slice is deployed in
+[PR45](https://github.com/scottchu/orca-slicer-mcp/pull/45); current order is
+A/F/Heads (deployed) → B Queue → C → D → E.
 Mapping, independent material freshness and all unfinished tracks are preserved.
 Source is 0.4.2/schema 8/observation-v8/camera-v8 with eighteen resources;
 author checks pass 106 tests/2,290 assertions and TypeScript. Independent checks
 pass 200 app/2,855 assertions, 21 lifecycle, 22 shipping, 86 fixtures/751
-assertions, TypeScript/repository/bundles/signature/exact assets. Initial review
-has no findings; exact-SHA approval remains pending. Historical A/F evidence below
-does not accept changed Heads bytes. No Heads merge/deployment is claimed.
-Keep the standing reviewed PR →
-exact-build deploy → explicitly restart BOTH → verify sequence; automated and
-actual-device visual acceptance remain unverified, not passed.
+assertions, TypeScript/repository/bundles/signature/exact assets. Exact reviewed
+`e369ca4d53867b1904af5326b38f4b92b82ea3b0` merged as
+`90d9f9d353c7bca2c299ab7ae949ad81e7d4faca`; exact release
+`20260831-90d9f9d-pr45-20260831T152746-190348` was deployed and BOTH services
+explicitly restarted. Both are loaded/healthy/integrity verified; fourteen
+static and sixteen security checks pass, configuration/auth/routes preserved,
+no rollback. Independent postdeployment verification passes: fifteen manifest
+files per service, three health/seven exact static checks, and one fresh Heads
+read with independent material time; exact served-widget VM behavior passes
+35 assertions for all four heads. Automated/
+actual-device visual and native clipboard acceptance remain unverified. These
+docs-only rollout records need no app redeployment; Queue integration is next.
 
 F Bed Mesh is shipped in [PR43](https://github.com/scottchu/orca-slicer-mcp/pull/43):
 reviewed `41546d9e3ea841bdd23279694079719327f39f39` merged as
