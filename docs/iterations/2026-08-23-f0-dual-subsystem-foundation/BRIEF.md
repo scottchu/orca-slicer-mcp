@@ -5,22 +5,20 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current explicit authority (2026-08-31): the user requests **merge → deploy →
-  verify now** so they can open the delivered widgets and visually review them.
-  This supersedes the predeployment automated-browser/visual-QA gate only;
-  it does not claim a visual pass or waive local validation, exact-SHA source
-  review, shipping guards, or safety boundaries. Ship PR41 through `u1-ship`,
-  explicitly restart BOTH existing public/dashboard services, and verify health,
-  release integrity, exact served assets and scoped meaningful behavior. Record
-  user visual review separately after deployment. All other widget tracks remain
-  open; no printer control, auth/routing change or plugin reinstall is authorized.
-- Latest source checkpoint: local `acdb2e3` corrects progress text contrast to
-  3.293:1 (`#499e69`), with 31 author tests/448 assertions and TypeScript passing.
-  Independent full revalidation passes 190 app/1,761 assertions, 21 lifecycle,
-  22 shipping, 20 isolated/399 assertions, TypeScript/bundles/six HTML checks.
-  Exact-SHA source-only review approves without findings (31/448); uncommitted
-  docs, visual QA and release approval are excluded. PR41's confirmed open/draft
-  remote head is `acdb2e3`.
+- Current result (2026-08-31): PR41 reviewed head `744f7d0` merged as `b6142de`
+  and shipped via `u1-ship`, release `20260831-b6142de-pr41-20260831T140555-84d50f`.
+  BOTH public/dashboard services were explicitly restarted and are loaded,
+  healthy and integrity verified at 0.4.0/schema 8/observation-v6/camera-v8.
+  Fourteen static and sixteen security checks pass; OAuth/environment/config/
+  routes are preserved and no rollback was needed. The user explicitly
+  authorized merge → deploy → verify before automated browser QA so they can
+  visually review the result; visual/actual-device acceptance is not claimed.
+  Source validation and exact-SHA review were not waived. A preliminary plan
+  stopped on a dirty BRIEF edit without external mutation; a scoped commit,
+  renewed exact-SHA review and successful final read-only plan resolved it.
+  Independent verification confirms the exact installed release, twelve exact
+  asset comparisons, four user-facing pages, fresh four-head material metadata
+  and one structurally valid real JPEG; no visual/phone/live-video pass is claimed.
 - Authoritative current work (2026-08-31): complete all pending read-only U1
   widgets and apply the selected white style. Decision 0029 and
   `WIDGET_TRACKS.md` supersede prior Queue/progress deferrals and camera overlay
@@ -28,24 +26,21 @@
   camera + continuous progress, B Queue, C fans/chamber, D Current Job/History,
   E composed overview. Bed Mesh is restyled with A; retain independent
   invocation and truthful coverage labels. New feedback never silently cancels
-  outstanding tracks. Release A checkpoint `acdb2e3` is committed/pushed as
-  [draft PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41), exact remote
-  head confirmed; source from `bf3eb26` is
-  0.4.0/schema 8/observation-v6/camera-v8, sixteen resources. Progress lower
+  outstanding tracks. [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41)
+  delivers A with sixteen resources. Progress lower
   metrics are elapsed-only, never fabricated from the reference. Independent
-  software checks and source review of `acdb2e3` resolve the prior contrast P2;
-  visual QA, merge and rollout remain pending.
-  Both live services were checked and remain PR38 `b565eec` at 0.3.5/schema 7/
-  observation-v5/camera-v7, without restart. `design-qa.md` is blocked awaiting
-  allowed-browser access or requested but ungranted headless permission; no
-  merge/deployment before required QA. Queue adapter/model/test foundation is
+  software checks (190 app/1,761 assertions, 21 lifecycle, 22 shipping,
+  20 isolated/399 assertions) and source review resolve the prior contrast P2;
+  rendered visual QA remains unverified. Queue adapter/model/test foundation is
   locally committed as `4fbb96c` on `feat/u1-queue-completion` (three files);
   independent bounded source/protocol review approves, closing the prior P2.
   TypeScript, 40/461 and independent six/68 pass. Store/widget integration is
   next. Stacked B–E source work may continue during
-  A's visual-permission wait; sequential reviewed release order is unchanged.
+  A's user visual-review wait; sequential reviewed release order is unchanged.
   Ship every accepted slice through the existing guarded PR/review/exact-build/
-  both-service restart and verification workflow. F0/O1 are not complete.
+  both-service restart and verification workflow. These docs-only rollout
+  records need no redeployment. Next integrate Queue while the user reviews A.
+  F0/O1 are not complete.
 - Historical checkpoints follow; they are not the current execution queue.
 - Current result and next action: bottom-left camera information and bottom-right
   controls are implemented. Repeated same-peer track events reproducibly started
