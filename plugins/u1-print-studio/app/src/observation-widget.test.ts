@@ -54,6 +54,25 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
     setAttribute(name: string, value: string) { this.attributes[name] = value; },
   };
   const error = { textContent: "" };
+  const node = (dataset: Payload = {}) => {
+    const listeners = new Map<string, (event: Payload) => void>();
+    return { dataset, attributes: {} as Payload, value: "100", disabled: false, listeners,
+      addEventListener: (name: string, callback: (event: Payload) => void) => listeners.set(name, callback),
+      setAttribute(name: string, value: string) { this.attributes[name] = value; },
+      setPointerCapture() {},
+      emit(name: string, event: Payload = {}) { listeners.get(name)?.({ preventDefault() {}, ...event }); },
+    };
+  };
+  const mode3d = node({ meshMode: "3d" }); const mode2d = node({ meshMode: "2d" });
+  const height = node(); const reset = node();
+  const chartPattern = /(<div class="mesh-chart"[^>]*>)[\s\S]*?(<\/div><div class="mesh-legend")/;
+  const chart = { ...node(),
+    get innerHTML() { return modules.innerHTML.match(chartPattern)?.[0] ?? ""; },
+    set innerHTML(value: string) { modules.innerHTML = modules.innerHTML.replace(chartPattern, `$1${value}$2`); },
+  };
+  const help = {
+    set textContent(value: string) { modules.innerHTML = modules.innerHTML.replace(/(<p class="mesh-help">)[\s\S]*?(<\/p>)/, `$1${value}$2`); },
+  };
   const trackPattern = /<div class="progress-track[\s\S]*?(?=<div class="progress-meta")/;
   const track = {
     get outerHTML() { return modules.innerHTML.match(trackPattern)?.[0] ?? ""; },
@@ -61,8 +80,8 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
   };
   const modules = {
     innerHTML: "Waiting for printer observation…",
-    querySelectorAll: () => [button],
-    querySelector: (selector: string) => selector === ".refresh-error" ? error : selector === ".progress-track" ? track : button,
+    querySelectorAll: (selector: string) => selector === ".refresh" ? [button] : selector === "[data-mesh-mode]" && modules.innerHTML.includes('class="mesh-chart"') ? [mode3d, mode2d] : [],
+    querySelector: (selector: string) => selector === ".refresh-error" ? error : selector === ".progress-track" ? track : ({ ".mesh-chart": chart, ".mesh-height": height, ".mesh-reset": reset, ".mesh-help": help } as Payload)[selector] ?? button,
   };
   let onMediaChange = () => {};
   const media: Payload = { matches: width <= 480 };
@@ -81,12 +100,12 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
     },
     clearTimeout: (id: number) => timers.delete(id),
   });
-  vm.runInContext(`${source}\n__controls.refresh = refresh; __controls.retry = retryLoad;`, context);
+  vm.runInContext(`${source}\n__controls.refresh = refresh; __controls.retry = retryLoad; __controls.meshView = meshView; __controls.meshGeometry = () => meshGeometry; __controls.meshProjection = meshProjection;`, context);
   const message = (data: Payload, sender: unknown = parent) => events.get("message")?.({ data, source: sender });
   const deliver = (result: Payload, sender?: unknown) => message({ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: result }, sender);
   const respond = (request: Payload, result: Payload = {}) => message({ jsonrpc: "2.0", id: request.id, result });
   return {
-    sent, modules, button, error, controls, message, deliver, respond,
+    sent, modules, button, error, controls, message, deliver, respond, chart, mode3d, mode2d, height, reset,
     resize(nextWidth: number) { const matches = nextWidth <= 480; if (media.matches !== matches) { media.matches = matches; onMediaChange(); } },
     globals: (globals: Payload) => events.get("openai:set_globals")?.({ detail: { globals } }),
     async initialize() {
@@ -337,6 +356,7 @@ describe("reported bed mesh widget", () => {
   test("renders reported rectangular grid in XY orientation with own receipt and numeric summary", async () => {
     const card = mount({ toolOutput: data(mesh()) });
     await card.initialize();
+    card.mode2d.emit("click");
     const markup = card.modules.innerHTML;
     expect(markup).toContain("Reported probe grid · 3 × 2");
     expect(markup).toContain("-0.200 mm"); expect(markup).toContain("0.400 mm"); expect(markup).toContain("0.600 mm");
@@ -347,8 +367,8 @@ describe("reported bed mesh widget", () => {
     const top = markup.match(/<header [\s\S]*?<\/header>/)![0];
     expect(top).toContain("Observed "); expect(top).not.toContain("Offline");
     expect(markup.match(/<rect class="mesh-cell" /g)).toHaveLength(6);
-    expect(markup).not.toContain("tabindex");
-    expect(markup.match(/<footer [\s\S]*?<\/footer>/)![0]).not.toMatch(/Observed|mm|grid|Stale/);
+    expect(markup).toContain('tabindex="0"');
+    expect(markup.match(/<footer [\s\S]*?<\/footer>/)![0]).not.toMatch(/Observed|mm|Stale/);
     const pending = card.controls.refresh(); await tick();
     const request = card.sent.find(item => item.method === "tools/call")!;
     expect(request.params).toEqual({ name: "refresh_printer_observation", arguments: { view: "bed_mesh" } });
@@ -359,14 +379,16 @@ describe("reported bed mesh widget", () => {
     expect(zero).toContain("0.000 mm"); expect(zero).not.toMatch(/NaN|Infinity|unavailable/);
     expect(new Set([...zero.matchAll(/fill="(hsl[^\"]+)"/g)].map(match => match[1])).size).toBe(1);
     const largest = mount({ toolOutput: data(mesh(Array.from({ length: BED_MESH_MAX_DIMENSION }, () => Array(BED_MESH_MAX_DIMENSION).fill(0)))) }).modules.innerHTML;
-    expect(largest.match(/<rect class="mesh-cell" /g)).toHaveLength(4096);
+    expect(largest.match(/<circle class="mesh-vertex" /g)).toHaveLength(4096);
+    expect(largest.match(/<polygon class="mesh-face" /g)).toHaveLength(7938);
     const invalid = mount({ toolOutput: data(mesh([[0, 0], [0, NaN]])) }).modules.innerHTML;
     expect(invalid).toContain("Bed mesh unavailable"); expect(invalid).not.toContain('<rect class="mesh-cell"');
   });
   test("compacts extreme axis labels while preserving exact accessible bounds and quiet visible content", () => {
     const value = mesh();
     value.bounds = { xMin: -999999.123456, xMax: 999999.987654, yMin: -999999.123456, yMax: 999999.987654 };
-    const markup = mount({ toolOutput: data(value) }, 320).modules.innerHTML;
+    const card = mount({ toolOutput: data(value) }, 320); card.mode2d.emit("click");
+    const markup = card.modules.innerHTML;
     const labels = [...markup.matchAll(/<text [^>]*>([^<]+)<\/text>/g)].map(match => match[1]);
     expect(labels).toEqual(["1.00e6", "-1.00e6", "Y (mm)", "-1.00e6", "1.00e6", "X (mm)"]);
     expect(markup).toContain("X -999999.123456 to 999999.987654 mm, Y -999999.123456 to 999999.987654 mm");
@@ -390,7 +412,7 @@ describe("reported bed mesh widget", () => {
     }
     const stale = mount({ toolOutput: data({ ...mesh(), state: "stale", freshness: "stale", reason: "network" }) }).modules.innerHTML;
     expect(stale.match(/<header [\s\S]*?<\/header>/)![0]).toContain("Refresh unavailable");
-    expect(stale).toContain("Stale"); expect(stale.match(/<rect class="mesh-cell" /g)).toHaveLength(6);
+    expect(stale).toContain("Stale"); expect(stale.match(/<circle class="mesh-vertex" /g)).toHaveLength(6);
   });
   test("untrusted malformed grids and profile injection fail closed without breaking the view", () => {
     for (const matrix of [null, [], [[0, 1]], [[0, 1], [2]], Array.from({ length: 65 }, () => [0, 0]), [[0, 0], [0, Infinity]]]) {
@@ -399,6 +421,111 @@ describe("reported bed mesh widget", () => {
     }
     const markup = mount({ toolOutput: data({ ...mesh(), profile: '<img src=x onerror="evil()">' }) }).modules.innerHTML;
     expect(markup).not.toContain("evil"); expect(markup).toContain("Reported probe grid");
+  });
+  test("surface uses only adjacent reported vertices and exposes actual XYZ with height disclosure", () => {
+    const card = mount({ toolOutput: data(mesh()) }); const markup = card.modules.innerHTML;
+    expect(markup).toContain('class="mesh-surface"');
+    expect(markup.match(/class="mesh-face"/g)).toHaveLength(4);
+    expect(markup.match(/class="mesh-vertex"/g)).toHaveLength(6);
+    expect(markup).toContain("X 10.000 mm, Y 20.000 mm, Z -0.200 mm");
+    expect(markup).toContain("X 110.000 mm, Y 220.000 mm, Z 0.400 mm");
+    expect(markup).toContain("Height exaggerated 100x"); expect(markup).toContain("Z (mm)");
+    expect(markup).toContain("Surface connects reported points; it adds no measurements.");
+    const geometry = card.controls.meshGeometry();
+    expect(geometry.vertices.map((p: Payload) => [p.x, p.y, p.z])).toEqual([[10, 20, -0.2], [60, 20, 0], [110, 20, 0.1], [10, 220, 0.3], [60, 220, -0.1], [110, 220, 0.4]]);
+    for (const match of markup.matchAll(/data-vertices="([\d,]+)"/g)) {
+      const indices = match[1]!.split(",").map(Number);
+      expect(indices).toHaveLength(3); expect(indices.every(i => i >= 0 && i < 6)).toBe(true);
+    }
+  });
+  test("local bottom controls, pointer and keyboard retain camera state across refresh without acquisition", async () => {
+    const card = mount({ toolOutput: data(mesh()) }); await card.initialize();
+    const before = card.chart.innerHTML;
+    card.chart.emit("keydown", { key: "ArrowRight" }); expect(card.chart.innerHTML).not.toBe(before);
+    card.height.emit("change", { target: { value: "300" } }); expect(card.modules.innerHTML).toContain("Height exaggerated 300x");
+    const state = { ...card.controls.meshView };
+    card.deliver({ structuredContent: data(mesh()) }); expect(card.controls.meshView).toEqual(state);
+    card.mode2d.emit("click"); expect(card.height.disabled).toBe(true); expect(card.modules.innerHTML).toContain('class="mesh-map"');
+    card.mode3d.emit("click"); expect(card.height.disabled).toBe(false);
+    card.chart.emit("pointerdown", { pointerId: 1, button: 0, clientX: 50, clientY: 50 });
+    card.chart.emit("pointermove", { pointerId: 1, clientX: 75, clientY: 35 });
+    expect(card.controls.meshView.yaw).not.toBe(state.yaw);
+    card.chart.emit("pointerup");
+    for (let i = 0; i < 50; i++) card.chart.emit("keydown", { key: "ArrowUp" });
+    expect(card.controls.meshView.pitch).toBeCloseTo(5 * Math.PI / 12);
+    for (let i = 0; i < 50; i++) card.chart.emit("keydown", { key: "ArrowDown" });
+    expect(card.controls.meshView.pitch).toBeCloseTo(Math.PI / 12);
+    card.chart.emit("keydown", { key: "Home" }); expect(card.controls.meshView).toEqual({ mode: "3d", height: 100, yaw: -0.65, pitch: 0.55 });
+    card.height.emit("change", { target: { value: "1" } }); expect(card.modules.innerHTML).toContain("Height scale 1x");
+    card.reset.emit("click"); expect(card.controls.meshView.height).toBe(100);
+    expect(card.sent.filter(item => item.method === "tools/call")).toHaveLength(0);
+    const refresh = card.controls.refresh(); await tick();
+    const request = card.sent.find(item => item.method === "tools/call")!;
+    expect(request.params).toEqual({ name: "refresh_printer_observation", arguments: { view: "bed_mesh" } });
+    card.respond(request, { structuredContent: data(mesh()) }); await refresh;
+    expect(card.sent.filter(item => item.method === "tools/call")).toHaveLength(1);
+  });
+  test("projection stays finite and fits extreme or tiny accepted coordinates at every height scale", () => {
+    for (const bounds of [
+      { xMin: -1000000, xMax: 1000000, yMin: -0.00001, yMax: 0.00001 },
+      { xMin: 0, xMax: Number.MIN_VALUE, yMin: 0, yMax: Number.MIN_VALUE },
+    ]) for (const heights of [[[0, 0], [0, 0]], [[-1000000, 1000000], [0, 0.5]]]) {
+      const card = mount({ toolOutput: data({ ...mesh(heights), bounds }) });
+      for (const height of [1, 100, 300]) {
+        card.height.emit("change", { target: { value: String(height) } });
+        expect(card.chart.innerHTML).not.toMatch(/NaN|Infinity/);
+        const p = card.controls.meshProjection(card.controls.meshGeometry(), card.controls.meshView);
+        for (const vertex of p.vertices) {
+          expect(Number.isFinite(vertex.x) && Number.isFinite(vertex.y) && Number.isFinite(vertex.depth)).toBe(true);
+          expect(vertex.x).toBeGreaterThanOrEqual(67); expect(vertex.x).toBeLessThanOrEqual(305);
+          expect(vertex.y).toBeGreaterThanOrEqual(42); expect(vertex.y).toBeLessThanOrEqual(224);
+        }
+      }
+    }
+  });
+  test("height-field painter order puts the nearest triangle last at overlapping screen points", () => {
+    const matrix = [[-0.5, 0.8, 0.2], [0.9, -0.9, 0.7], [-0.3, -0.9, -0.9]];
+    const card = mount({ toolOutput: data({ ...mesh(matrix), bounds: { xMin: 0, xMax: 200, yMin: 0, yMax: 200 } }) });
+    card.height.emit("change", { target: { value: "300" } });
+    const hitsAt = (x: number, y: number) => {
+      const geometry = card.controls.meshGeometry();
+      const projected = card.controls.meshProjection(geometry, card.controls.meshView).vertices;
+      const hits: Array<{ indices: string; depth: number }> = [];
+      // Inspect actual SVG draw order; interpolate depth at this pixel, never at centroids.
+      for (const match of card.chart.innerHTML.matchAll(/class="mesh-face" data-vertices="([\d,]+)"/g)) {
+        const [a, b, c] = match[1]!.split(",").map((i: string) => projected[Number(i)]) as Payload[];
+        const area = (b!.y - c!.y) * (a!.x - c!.x) + (c!.x - b!.x) * (a!.y - c!.y);
+        if (Math.abs(area) < 1e-10) continue;
+        const u = ((b!.y - c!.y) * (x - c!.x) + (c!.x - b!.x) * (y - c!.y)) / area;
+        const v = ((c!.y - a!.y) * (x - c!.x) + (a!.x - c!.x) * (y - c!.y)) / area;
+        const w = 1 - u - v;
+        if (Math.min(u, v, w) > 1e-7) hits.push({ indices: match[1]!, depth: u * a!.depth + v * b!.depth + w * c!.depth });
+      }
+      return hits;
+    };
+    const regression = hitsAt(172, 63);
+    expect(regression.map(hit => hit.indices)).toEqual(["1,2,5", "1,5,4"]);
+    expect(regression[1]!.depth).toBeGreaterThan(regression[0]!.depth);
+    let overlaps = 0;
+    for (const [xMax, yMax] of [[200, 200], [80, 320], [320, 80]]) {
+      Object.assign(card.controls.meshGeometry().bounds, { xMax, yMax });
+      const geometry = card.controls.meshGeometry();
+      for (const p of geometry.vertices) { p.x = p.column * xMax! / 2; p.y = p.row * yMax! / 2; }
+      for (const yaw of [-0.65, 0, Math.PI / 4, Math.PI / 2, Math.PI, 3 * Math.PI / 2, 5.1]) {
+        card.controls.meshView.yaw = yaw;
+        for (const pitch of [Math.PI / 12, 0.55, 5 * Math.PI / 12]) {
+          card.controls.meshView.pitch = pitch;
+          card.height.emit("change", { target: { value: "300" } });
+          for (let x = 73; x <= 301; x += 19) for (let y = 47; y <= 219; y += 17) {
+            const hits = hitsAt(x, y);
+            if (hits.length < 2) continue;
+            overlaps++;
+            expect(hits.at(-1)!.depth).toBeCloseTo(Math.max(...hits.map(hit => hit.depth)), 9);
+          }
+        }
+      }
+    }
+    expect(overlaps).toBeGreaterThan(100);
   });
 });
 

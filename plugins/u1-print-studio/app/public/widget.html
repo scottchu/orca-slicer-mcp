@@ -108,6 +108,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .mesh-caption { margin: 0 0 12px; color: var(--muted); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
       .mesh-map { display: block; width: min(100%, 320px); margin: 0 auto 12px; color: var(--muted); }
       .mesh-map text { fill: currentColor; font-family: inherit; font-size: 11px; }
+      .mesh-chart { border-radius: 14px; outline-offset: 3px; }
+      .mesh-chart[data-mode="3d"] { touch-action: pan-y; cursor: grab; }
+      .mesh-chart:focus-visible { outline: 3px solid var(--brand); }
+      .mesh-surface { display: block; width: 100%; max-height: 390px; color: #646a73; overflow: visible; }
+      .mesh-surface text { fill: currentColor; font-family: inherit; font-size: 12px; }
+      .mesh-legend { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px 10px; margin: 8px 0 2px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+      .mesh-legend > span:first-child { grid-column: 1 / -1; }
+      .mesh-legend > span:nth-child(2) { grid-row: 3; }
+      .mesh-legend > span:last-child { grid-row: 3; text-align: right; }
+      .mesh-colors { display: flex; grid-column: 1 / -1; grid-row: 2; height: 8px; overflow: hidden; border-radius: 5px; }
+      .mesh-colors span { flex: 1; }
+      .mesh-help { margin: 10px 0 16px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .mesh-controls { flex-wrap: wrap; gap: 8px; }
+      .mesh-controls button:not(.refresh), .mesh-controls select { min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); color: var(--ink); font: inherit; font-size: 12px; }
+      .mesh-controls button[aria-pressed="true"] { border-color: #64748b; background: #edf2f6; }
+      .mesh-controls label { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
+      .mesh-controls select:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+      .mesh-controls .refresh { margin-left: auto; }
       .mesh-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; }
       .mesh-summary dt { color: var(--muted); font-size: 12px; }
       .mesh-summary dd { margin: 5px 0 0; font-size: clamp(14px, 3.6vw, 20px); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
@@ -222,7 +240,139 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const renderJobHistory = () => `<section class="instrument">${header("Job History", true, null)}<div class="empty-panel"><strong>Not implemented yet</strong>Previous jobs aren’t available yet.</div>${provenance()}</section>`;
       const renderQueue = (data) => unknown("Queue", data);
       const renderFans = (data) => unknown("Fans & Air", data);
+      // Presentation state is local to this mounted card, never printer state or a tool argument.
+      const meshView = { mode: "3d", height: 100, yaw: -0.65, pitch: 0.55 };
+      let meshGeometry = null;
+      let meshFallback = false;
+      const meshMm = value => `${(Object.is(value, -0) ? 0 : value).toFixed(3)} mm`;
+      const meshAxis = value => value === 0 ? "0" : Math.abs(value) >= 10000 || Math.abs(value) < 0.01
+        ? value.toExponential(2).replace("e+", "e") : String(Number(value.toPrecision(4)));
+      const meshColor = (z, min, range) => `hsl(${230 - (range === 0 ? 0.5 : (z - min) / range) * 190} 68% 58%)`;
+      const meshProjection = (geometry, view) => {
+        const { bounds, min, max, vertices } = geometry;
+        const xSpan = bounds.xMax - bounds.xMin; const ySpan = bounds.yMax - bounds.yMin;
+        // One XY unit scale preserves physical aspect ratio; only Z uses the explicit height multiplier.
+        const unit = Math.max(xSpan, ySpan, (max - min) * view.height);
+        const rotate = ({ x, y, z }) => {
+          const nx = ((x - bounds.xMin) - xSpan / 2) / unit;
+          const ny = ((y - bounds.yMin) - ySpan / 2) / unit;
+          const nz = ((z - min) - (max - min) / 2) / unit * view.height;
+          const horizontal = nx * Math.cos(view.yaw) - ny * Math.sin(view.yaw);
+          const depth = nx * Math.sin(view.yaw) + ny * Math.cos(view.yaw);
+          return { x: horizontal, y: depth * Math.sin(view.pitch) - nz * Math.cos(view.pitch), depth: depth * Math.cos(view.pitch) + nz * Math.sin(view.pitch) };
+        };
+        const corners = [bounds.xMin, bounds.xMax].flatMap(x => [bounds.yMin, bounds.yMax].flatMap(y => [min, max].map(z => ({ x, y, z }))));
+        const rotated = [...vertices, ...corners].map(rotate);
+        const left = Math.min(...rotated.map(p => p.x)); const right = Math.max(...rotated.map(p => p.x));
+        const top = Math.min(...rotated.map(p => p.y)); const bottom = Math.max(...rotated.map(p => p.y));
+        const scale = Math.min(238 / Math.max(right - left, 1e-12), 182 / Math.max(bottom - top, 1e-12));
+        const project = point => { const p = rotate(point); return { x: 186 + (p.x - (left + right) / 2) * scale, y: 133 + (p.y - (top + bottom) / 2) * scale, depth: p.depth }; };
+        return { project, vertices: vertices.map(project), scale, unit };
+      };
+      const meshSurface = geometry => {
+        const { bounds, rows, columns, min, max, range, vertices, summary } = geometry;
+        const { project, vertices: projected } = meshProjection(geometry, meshView);
+        const point = p => `${p.x.toFixed(3)},${p.y.toFixed(3)}`;
+        const line = (a, b, color = "#cdd3d9") => { const p = project(a); const q = project(b); return `<line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="${color}" stroke-width="1"/>`; };
+        const label = (p, text, dx = 0, dy = 0) => { const q = project(p); return `<text x="${q.x + dx}" y="${q.y + dy}" text-anchor="middle">${text}</text>`; };
+        const origin = { x: bounds.xMin, y: bounds.yMin, z: min };
+        const xEnd = { ...origin, x: bounds.xMax }; const yEnd = { ...origin, y: bounds.yMax };
+        const zBase = { ...origin, y: bounds.yMax }; const zEnd = { ...zBase, z: max };
+        const base = Array.from({ length: 5 }, (_, i) => {
+          const x = bounds.xMin + (bounds.xMax - bounds.xMin) * i / 4;
+          const y = bounds.yMin + (bounds.yMax - bounds.yMin) * i / 4;
+          return line({ x, y: bounds.yMin, z: min }, { x, y: bounds.yMax, z: min }, "#e8ebef") + line({ x: bounds.xMin, y, z: min }, { x: bounds.xMax, y, z: min }, "#e8ebef");
+        }).join("");
+        // A viewing ray advances monotonically through this single-valued XY height field.
+        // Traverse its grid cells far to near, then the two halves of each cell in ray order.
+        // Unlike centroid depth, this ordering remains valid when projected faces overlap.
+        const directionX = Math.sin(meshView.yaw); const directionY = Math.cos(meshView.yaw);
+        const cellRows = Array.from({ length: rows - 1 }, (_, i) => directionY >= 0 ? i : rows - 2 - i);
+        const cellColumns = Array.from({ length: columns - 1 }, (_, i) => directionX >= 0 ? i : columns - 2 - i);
+        const xySpan = Math.max(bounds.xMax - bounds.xMin, bounds.yMax - bounds.yMin);
+        // Normalize before division so accepted subnormal spans cannot overflow or both underflow.
+        const cellX = (bounds.xMax - bounds.xMin) / xySpan / (columns - 1);
+        const cellY = (bounds.yMax - bounds.yMin) / xySpan / (rows - 1);
+        const lowerHalfNearer = directionX * cellY - directionY * cellX >= 0;
+        const faces = [];
+        for (const y of cellRows) for (const x of cellColumns) {
+          const a = y * columns + x; const b = a + 1; const c = a + columns; const d = c + 1;
+          faces.push(...(lowerHalfNearer ? [[a, d, c], [a, b, d]] : [[a, b, d], [a, d, c]]));
+        }
+        // Paint each reported point after its last incident face, not through nearer surface faces.
+        const lastFace = Array(vertices.length).fill(-1);
+        faces.forEach((indices, face) => indices.forEach(i => { lastFace[i] = face; }));
+        const probe = i => { const p = vertices[i]; return `<circle class="mesh-vertex" data-row="${p.row}" data-column="${p.column}" cx="${projected[i].x}" cy="${projected[i].y}" r="${vertices.length > 400 ? 0.65 : 1.8}" fill="${meshColor(p.z, min, range)}"><title>X ${meshMm(p.x)}, Y ${meshMm(p.y)}, Z ${meshMm(p.z)}</title></circle>`; };
+        const surface = faces.map((indices, face) => {
+          const z = indices.reduce((sum, i) => sum + vertices[i].z, 0) / 3;
+          const color = meshColor(z, min, range);
+          return `<polygon class="mesh-face" data-vertices="${indices.join(",")}" points="${indices.map(i => point(projected[i])).join(" ")}" fill="${color}" stroke="${color}" stroke-width="0.4"/>${indices.filter(i => lastFace[i] === face).map(probe).join("")}`;
+        }).join("");
+        const axes = line(origin, xEnd) + line(origin, yEnd) + line(zBase, zEnd) +
+          label(origin, meshAxis(bounds.xMin), 0, 18) + label(xEnd, meshAxis(bounds.xMax), 0, 18) + label({ ...origin, x: (bounds.xMin + bounds.xMax) / 2 }, "X (mm)", 0, 34) +
+          label(origin, meshAxis(bounds.yMin), -24, -6) + label(yEnd, meshAxis(bounds.yMax), -20, -6) + label({ ...origin, y: (bounds.yMin + bounds.yMax) / 2 }, "Y (mm)", -30, -12) +
+          label(zEnd, `Z ${meshAxis(max)} mm`, 0, -14) + (range > 0 ? label(zBase, meshAxis(min), 26, 10) : "");
+        return `<svg class="mesh-surface" viewBox="0 0 360 282" role="img" aria-label="${escapeHtml(summary)} Height display multiplied by ${meshView.height}; axis and legend values are actual millimetres.">${base}${surface}${axes}</svg>`;
+      };
+      const meshGrid = geometry => {
+        const { bounds, rows, columns, matrix, min, range, summary } = geometry;
+        const cells = matrix.map((row, y) => row.map((z, x) => {
+          const xpos = bounds.xMin + x / (columns - 1) * (bounds.xMax - bounds.xMin);
+          const ypos = bounds.yMin + y / (rows - 1) * (bounds.yMax - bounds.yMin);
+          return `<rect class="mesh-cell" data-row="${y}" data-column="${x}" x="${60 + x * 244 / columns}" y="${18 + (rows - 1 - y) * 190 / rows}" width="${244 / columns}" height="${190 / rows}" fill="${meshColor(z, min, range)}"><title>X ${meshMm(xpos)}, Y ${meshMm(ypos)}, Z ${meshMm(z)}</title></rect>`;
+        }).join("")).join("");
+        return `<svg class="mesh-map" viewBox="0 0 320 260" role="img" aria-label="${escapeHtml(summary)} Maximum Y is at the top.">${cells}<text x="54" y="26" text-anchor="end">${meshAxis(bounds.yMax)}</text><text x="54" y="208" text-anchor="end">${meshAxis(bounds.yMin)}</text><text x="26" y="120" text-anchor="middle" transform="rotate(-90 26 120)">Y (mm)</text><text x="60" y="230">${meshAxis(bounds.xMin)}</text><text x="304" y="230" text-anchor="end">${meshAxis(bounds.xMax)}</text><text x="182" y="252" text-anchor="middle">X (mm)</text></svg>`;
+      };
+      const meshPlot = () => {
+        if (meshView.mode === "2d") return meshGrid(meshGeometry);
+        try { const plot = meshSurface(meshGeometry); meshFallback = false; return plot; }
+        catch { meshFallback = true; meshView.mode = "2d"; return meshGrid(meshGeometry); }
+      };
+      const meshInstructions = () => `${meshFallback ? "3D display unavailable; showing the 2D grid. " : ""}${meshView.mode === "3d" ? `${meshView.height === 1 ? "Height scale 1x" : `Height exaggerated ${meshView.height}x`}. Drag / arrow keys to rotate · Home to reset. ` : "Maximum Y is at the top. "}Surface connects reported points; it adds no measurements.`;
+      const redrawMesh = () => {
+        const chart = modulesElement.querySelector(".mesh-chart");
+        if (!chart || !meshGeometry) return;
+        chart.innerHTML = meshPlot(); chart.dataset.mode = meshView.mode;
+        chart.setAttribute("aria-label", meshView.mode === "3d" ? "3D bed mesh. Drag horizontally to rotate; arrow keys rotate and tilt; Home resets view." : "2D bed mesh grid. Maximum Y is at the top.");
+        const help = modulesElement.querySelector(".mesh-help"); if (help) help.textContent = meshInstructions();
+        modulesElement.querySelectorAll("[data-mesh-mode]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.meshMode === meshView.mode)));
+        const height = modulesElement.querySelector(".mesh-height");
+        if (height) { height.value = String(meshView.height); height.disabled = meshView.mode === "2d"; }
+      };
+      const resetMeshView = () => { Object.assign(meshView, { height: 100, yaw: -0.65, pitch: 0.55 }); redrawMesh(); };
+      const orbitMesh = (yaw, pitch) => {
+        meshView.yaw = ((meshView.yaw + yaw) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+        meshView.pitch = Math.max(Math.PI / 12, Math.min(5 * Math.PI / 12, meshView.pitch + pitch)); redrawMesh();
+      };
+      const bindMeshControls = () => {
+        const chart = modulesElement.querySelector(".mesh-chart"); if (!meshGeometry || !chart) return;
+        modulesElement.querySelectorAll("[data-mesh-mode]").forEach(button => button.addEventListener("click", () => { meshView.mode = button.dataset.meshMode === "2d" ? "2d" : "3d"; redrawMesh(); }));
+        modulesElement.querySelector(".mesh-height")?.addEventListener("change", event => { const height = Number(event.target.value); if (meshView.mode === "3d" && [1, 100, 300].includes(height)) { meshView.height = height; redrawMesh(); } });
+        modulesElement.querySelector(".mesh-reset")?.addEventListener("click", resetMeshView);
+        chart.addEventListener("keydown", event => {
+          if (event.key === "Home") { event.preventDefault(); resetMeshView(); return; }
+          if (meshView.mode !== "3d") return;
+          const delta = { ArrowLeft: [-0.12, 0], ArrowRight: [0.12, 0], ArrowUp: [0, 0.08], ArrowDown: [0, -0.08] }[event.key];
+          if (delta) { event.preventDefault(); orbitMesh(...delta); }
+        });
+        let drag = null;
+        chart.addEventListener("pointerdown", event => {
+          if (meshView.mode !== "3d" || event.button !== 0 || event.isPrimary === false) return;
+          drag = { id: event.pointerId, x: event.clientX, y: event.clientY, touch: event.pointerType === "touch" };
+          chart.setPointerCapture?.(event.pointerId);
+        });
+        chart.addEventListener("pointermove", event => {
+          if (!drag || drag.id !== event.pointerId) return;
+          const dx = event.clientX - drag.x; const dy = event.clientY - drag.y;
+          // Vertical touch motion remains browser scrolling; keyboard supplies tilt on touch devices.
+          if (validNumber(dx) && validNumber(dy)) orbitMesh(dx * 0.012, drag.touch ? 0 : -dy * 0.008);
+          drag.x = event.clientX; drag.y = event.clientY;
+        });
+        const stop = () => { drag = null; };
+        chart.addEventListener("pointerup", stop); chart.addEventListener("pointercancel", stop); chart.addEventListener("lostpointercapture", stop);
+      };
       const renderBedMesh = (data) => {
+        meshGeometry = null;
         const known = data?.state === "known" || data?.state === "stale";
         const stale = data?.state === "stale" || data?.freshness === "stale";
         const heading = header("Bed Mesh", true, data?.sourceObservedAt ?? null, data?.freshness ?? "unknown", stale && data?.reason ? "Refresh unavailable · showing the last observed mesh state" : "");
@@ -237,22 +387,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (!valid) return empty(data?.state === "unsupported" ? "Bed mesh not reported" : data?.state === "unknown" ? "Bed mesh not observed" : "Bed mesh unavailable", "No reported probe grid is available. Refresh to check again.");
         const rows = matrix.length; const columns = matrix[0].length;
         const values = matrix.flat(); const min = Math.min(...values); const max = Math.max(...values); const range = max - min;
-        const mm = value => `${(Object.is(value, -0) ? 0 : value).toFixed(3)} mm`;
-        const axis = value => value === 0 ? "0" : Math.abs(value) >= 10000 || Math.abs(value) < 0.01
-          ? value.toExponential(2).replace("e+", "e") : String(Number(value.toPrecision(4)));
-        const cells = matrix.map((row, y) => row.map((z, x) => {
-          const shade = range === 0 ? 58 : 25 + (z - min) / range * 55;
-          const xpos = bounds.xMin + x / (columns - 1) * (bounds.xMax - bounds.xMin);
-          const ypos = bounds.yMin + y / (rows - 1) * (bounds.yMax - bounds.yMin);
-          return `<rect class="mesh-cell" data-row="${y}" data-column="${x}" x="${60 + x * 244 / columns}" y="${18 + (rows - 1 - y) * 190 / rows}" width="${244 / columns}" height="${190 / rows}" fill="hsl(205 18% ${shade}%)"><title>X ${mm(xpos)}, Y ${mm(ypos)}, Z ${mm(z)}</title></rect>`;
-        }).join("")).join("");
-        const summary = `${columns} by ${rows} reported probe grid. Minimum ${mm(min)}, maximum ${mm(max)}, range ${mm(range)}. X ${bounds.xMin} to ${bounds.xMax} mm, Y ${bounds.yMin} to ${bounds.yMax} mm. Maximum Y is at the top. Observation time is the server receipt, not a new calibration or probe capture time.`;
+        const summary = `${columns} by ${rows} reported probe grid. Minimum ${meshMm(min)}, maximum ${meshMm(max)}, range ${meshMm(range)}. X ${bounds.xMin} to ${bounds.xMax} mm, Y ${bounds.yMin} to ${bounds.yMax} mm. Observation time is the server receipt, not a new calibration or probe capture time.`;
+        const vertices = matrix.flatMap((row, y) => row.map((z, x) => ({ x: bounds.xMin + x / (columns - 1) * (bounds.xMax - bounds.xMin), y: bounds.yMin + y / (rows - 1) * (bounds.yMax - bounds.yMin), z, row: y, column: x })));
+        meshGeometry = { matrix, bounds, rows, columns, min, max, range, vertices, summary };
         const profile = typeof data.profile === "string" && /^[\p{L}\p{N} _.-]{1,80}$/u.test(data.profile) ? ` · ${escapeHtml(data.profile)}` : "";
-        return `<section class="instrument">${heading}<div class="mesh-body"><p class="mesh-caption">Reported probe grid · ${columns} × ${rows}${profile}</p><svg class="mesh-map" viewBox="0 0 320 260" role="img" aria-label="${escapeHtml(summary)}">${cells}<text x="54" y="26" text-anchor="end">${axis(bounds.yMax)}</text><text x="54" y="208" text-anchor="end">${axis(bounds.yMin)}</text><text x="26" y="120" text-anchor="middle" transform="rotate(-90 26 120)">Y (mm)</text><text x="60" y="230">${axis(bounds.xMin)}</text><text x="304" y="230" text-anchor="end">${axis(bounds.xMax)}</text><text x="182" y="252" text-anchor="middle">X (mm)</text></svg><dl class="mesh-summary"><div><dt>Minimum</dt><dd>${mm(min)}</dd></div><div><dt>Maximum</dt><dd>${mm(max)}</dd></div><div><dt>Range</dt><dd>${mm(range)}</dd></div></dl></div>${provenance()}</section>`;
+        const plot = meshPlot();
+        const legend = `<div class="mesh-legend" aria-label="Height color scale: ${meshMm(min)} to ${meshMm(max)}"><span>Z (mm)</span><span>${meshMm(min)}</span><span class="mesh-colors" aria-hidden="true">${Array.from({ length: 16 }, (_, i) => `<span style="background:${meshColor(min + range * i / 15, min, range)}"></span>`).join("")}</span><span>${meshMm(max)}</span></div>`;
+        const controls = `<footer class="instrument-footer mesh-controls"><button type="button" data-mesh-mode="3d" aria-pressed="${meshView.mode === "3d"}">3D surface</button><button type="button" data-mesh-mode="2d" aria-pressed="${meshView.mode === "2d"}">2D grid</button><label>Height × <select class="mesh-height" aria-label="Height display multiplier"${meshView.mode === "2d" ? " disabled" : ""}>${[1, 100, 300].map(n => `<option value="${n}"${meshView.height === n ? " selected" : ""}>${n}x</option>`).join("")}</select></label><button type="button" class="mesh-reset">Reset view</button><button class="refresh" type="button" title="Refresh observation" aria-label="Refresh observation">${icon("refresh-cw")}</button></footer>`;
+        return `<section class="instrument">${heading}<div class="mesh-body"><p class="mesh-caption">Reported probe grid · ${columns} × ${rows}${profile}</p><div class="mesh-chart" data-mode="${meshView.mode}" tabindex="0" role="group" aria-label="Bed mesh view. Drag to rotate; arrow keys rotate and tilt; Home resets view.">${plot}</div>${legend}<p class="mesh-help">${meshInstructions()}</p><dl class="mesh-summary"><div><dt>Minimum</dt><dd>${meshMm(min)}</dd></div><div><dt>Maximum</dt><dd>${meshMm(max)}</dd></div><div><dt>Range</dt><dd>${meshMm(range)}</dd></div></dl></div>${controls}</section>`;
       };
       const renderOverview = (data) => unknown("Overview", data);
       const renderers = { overview: renderOverview, progress: renderProgress, thermals: renderThermals, heads: renderHeads, jobs: renderJobs, job_history: renderJobHistory, queue: renderQueue, fans: renderFans, bed_mesh: renderBedMesh };
-      const render = () => { if (!observation?.module) return; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); window.openai?.notifyIntrinsicHeight?.(); };
+      const render = () => { if (!observation?.module) return; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); if (view === "bed_mesh") bindMeshControls(); window.openai?.notifyIntrinsicHeight?.(); };
       const rpcNotify = (method, params) => window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
       const rpcRequest = (method, params) => new Promise((resolve, reject) => {
         const id = ++rpcId;
@@ -303,7 +449,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       };
       const initializeBridge = async () => {
-        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.0" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
+        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.1" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
         rpcNotify("ui/notifications/initialized", {});
         return result;
       };

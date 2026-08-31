@@ -1,5 +1,150 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 F reported Bed Mesh surface — current source checkpoint
+
+Decision 0030 and OBS-009 record the user's selected Fluidd surface interaction
+inside the delivered white card. Current order is A (deployed) → F → B → C →
+D → E; all other widget tracks remain active. F implementation
+targets 0.4.1/schema 8/observation-v7/camera-v8 with seventeen resources.
+The **P2 centroid-depth-sort occlusion defect is corrected**. On intermediate
+corrected widget `ae8df4d02fe9f2bd117262925c6201b1597252c7d9d79306dc4d7df8d980d34f`,
+formal review provisionally approved source, with independent
+per-point geometry checks reporting **1,134 scenes/26,185 overlapping points,
+zero wrong front faces**. The separate validator's sweep reports **810 scenes,
+115,560 points, 17,751 overlapping points, zero wrong front faces**, and the
+original reproducer passes. These are numerical/software checks, not browser
+captures or an exhaustive proof over all possible input data. Final corrected
+source validation is recorded below; exact-candidate-commit approval remains pending.
+No merge, deployment, service restart or real-printer result is established by
+this source checkpoint. The confirmed deployed baseline remains the release A
+receipt below; its evidence does not validate changed F bytes.
+
+### Final corrected source — independently validated, exact-commit review pending
+
+The final small correction places each reported point after its last incident
+face so point marks do not draw through nearer surface faces. Frozen widget
+SHA-256 is
+`c800447957bf8b7b386ddba7666941f625170db92107d31230c5f382378d77f6`;
+observation-widget test SHA-256 is
+`7cf184f1b356e39d6b67b5f35680ab2aad69486eb5d2f6b9d1363a10779977c6`.
+The author reports **35 widget tests/1,415 assertions**, TypeScript and
+`git diff --check` passing on this final freeze. The separate validator completed
+the final rerun on those exact widget/test hashes:
+
+- `PATH=<PINNED_BUN_DIR>:$PATH ./scripts/check-repository.sh`: **194 app tests/
+  2,731 assertions**, **21 lifecycle**, **22 shipping**, TypeScript and repository
+  checks pass.
+- The four private fixture test commands shown in the historical baseline
+  command block below were rerun unchanged: **22 tests/1,162 assertions** pass.
+  Geometry covers **810 scenes/115,560 probe points/17,751 overlapping points**
+  with **zero wrong front faces**; original P2 reproducer and independent
+  marker-last-incident-face order both pass. Also covered: 64 by 64 data
+  (**4,096 vertices/7,938 faces**), zero/nonzero flat grids, extreme/subnormal
+  bounds, local controls with zero acquisition calls, state and privacy.
+- All seventeen resources return exact bytes with empty external CSP and zero
+  acquisition. Two visible/eight app-only tools and 0.4.1/schema 8/observation-v7/
+  camera-v8 pass. Camera bytes remain unchanged.
+- All three bundle commands, compiled `--help`, offline doctor, `codesign`
+  verification and the private bundle verifier in the command block below were
+  rerun successfully. Six exact source/dist HTML comparisons and embedded-index
+  equality pass, as does `git diff --check`.
+- Before/after 62-file tracked app/script manifest is identical:
+  `5c4b01132e21c49672fcb778a22be0b2edc6c32ae48bfbd94419d95e57fe9620`.
+  Compiled runtime SHA-256:
+  `a348749a6f52aaa7cb801848e4a245c7bfad11a0e88277b278139692e77fe98f`;
+  server bundle:
+  `424a855bdeab500d11cb27efdb7433f6f91499c05383d49415e71352a68c59c9`;
+  stdio bundle:
+  `fb95d3f6775e55bf1d445758b4d171fdbbef71eb7d8c197baa565f486ac33d1b`.
+  Index remains `6e195671cee0ee8aad37a20aa9582472796a7cffff5ee8f88f455467600397af`;
+  camera remains `32c8038a4abe5d8f9277294a5fd50584930dd4a24ea2bfc2546af32d8c847f4e`.
+
+The independent reviewer provisionally approves final `c800447` source without
+blockers; its checks pass **75 tests/1,807 assertions**, with **1,134 scenes**
+and **884 strict marker/face-center checks**. Earlier intermediate overlapping-
+point checks are identified above; these are scoped runs, not additive totals.
+No unresolved software finding remains. Exact-commit review still must bind the
+committed candidate including these records. Validator private fixtures stay
+outside Git; no hardware, service, Git, authentication or routing mutation was
+performed by validation. Browser/design/device/live/deployment acceptance is
+not established. The earlier 99-test author run and pre-fix green counts below
+are historical only; they do not replace this final rerun.
+
+### Historical provisional evidence — occlusion defect subsequently corrected
+
+The author ran the following with the pinned runtime; the absolute runtime
+path is deliberately redacted. Working directory was `plugins/u1-print-studio/app`:
+
+```sh
+<ABSOLUTE_PINNED_BUN> --no-env-file --config=/dev/null test src/observation-widget.test.ts src/bed-mesh.test.ts src/app.test.ts src/cli.test.ts src/status-dashboard.test.ts src/personal-oauth.test.ts
+<ABSOLUTE_PINNED_BUN> --no-env-file --config=/dev/null run check
+git diff --check
+```
+
+Results: **99 tests/1,484 assertions**, TypeScript and diff check pass. These
+author checks do not resolve the subsequently identified occlusion defect and
+are not independent acceptance of the corrected candidate. Provisional hashes:
+
+- widget: `9bcf4cf0f952e6613819a2665c528b57fe1d33ae5fdcecbbccca12ff0d1c90dd`;
+- index: `6e195671cee0ee8aad37a20aa9582472796a7cffff5ee8f88f455467600397af`.
+
+Do not freeze or ship these bytes based on this passing test count. The separate
+validator subsequently reported a pre-fix baseline pass: **193 app tests/2,049
+assertions**, **21 lifecycle**, **22 shipping**, TypeScript/repository checks,
+**19 independent tests/1,133 assertions**, three bundles and ad-hoc signature.
+Its 62-file manifest was
+`602e7d2db11fea5ac33a5056d9b7a7b1c229fabdcaba279faa5d0cdbd4daec78`.
+This was provisional, not final acceptance: the centroid-order assertion did
+not establish correct per-point face occlusion. The added regression and
+post-fix geometry results above supersede that earlier claim.
+
+Actual independent baseline commands, with private paths redacted:
+
+```sh
+PATH=<PINNED_BUN_DIR>:$PATH ./scripts/check-repository.sh
+bun --no-env-file --config=/dev/null test <PRIVATE_VALIDATION_DIR>/independent-state.test.ts <PRIVATE_VALIDATION_DIR>/independent-math.test.ts <PRIVATE_VALIDATION_DIR>/independent-controls.test.ts <PRIVATE_VALIDATION_DIR>/independent-compatibility.test.ts
+# The three bundle commands ran from plugins/u1-print-studio/app.
+bun --no-env-file --config=/dev/null run bundle
+bun --no-env-file --config=/dev/null run bundle:server
+bun --no-env-file --config=/dev/null run bundle:runtime
+<COMPILED_RUNTIME> --help
+<COMPILED_RUNTIME> doctor --offline --config <PRIVATE_FIXTURE_CONFIG> --json
+codesign -vvv --verify <COMPILED_RUNTIME>
+bun --no-env-file --config=/dev/null run <PRIVATE_VALIDATION_DIR>/verify-bundles.ts
+git diff --check
+```
+
+The bundle verifier confirmed six exact assets and the embedded index. After
+adding the per-point occlusion assertion, the independent math run instead
+reported **6 pass/1 fail, 914 assertions** and reproduced a nearer surface
+being overdrawn by a farther surface. This failing regression supersedes the
+earlier passing depth-order claim. The subsequent correction passes this
+regression; neither source acceptance nor release follows from those historical
+green counts alone.
+
+Design-role actions actually completed: read the selected reference, current
+renderer/model/projection and decisions 0027/0029; record decision 0030 and
+update OBS-009/BRIEF/WIDGET_TRACKS. The Product Design saved-context preflight
+ran read-only through `uv run --no-project` and reported no saved context.
+This is design/source inspection, not implementation or independent validation.
+
+Validated software gates cover exact reported vertices/XY mapping, triangulation
+without resampling, true disclosed Z multiplier, finite projection/fitting,
+numerical axes/legend, asymmetric/flat/extreme/maximum-size fixtures,
+pointer/keyboard/reset/mode behavior, 2D fallback and unchanged acquisition,
+state/privacy/compatibility/camera boundaries. The separate validator's actual
+commands and frozen source hashes are recorded above; synthetic-DOM or
+production-script VM results are software evidence, not rendered-browser QA.
+
+The coordinator's fresh in-app browser selection failed and subsequent browser
+discovery returned none. Browser/design/device acceptance is **unverified**.
+The user's standing sequence permits exact-SHA review → PR merge → exact-build
+deploy → explicitly restart BOTH existing services → verify for their visual
+review without re-blocking on unavailable automated browser access. Preserve
+shipping guards and record actual operator/deployed behavior separately when
+performed. No F release evidence exists yet; no calibration, printer control,
+auth/routing change or plugin reinstall is authorized.
+
 ## 2026-08-31 release A deployed — operator verification
 
 The user explicitly authorized merge → deploy → verify before automated browser

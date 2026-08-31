@@ -46,9 +46,14 @@ printer environments support the described behavior.
   active reported probe grid (including all-zero data). Only bounded complete
   `probed_matrix` data is shown; no interpolated substitution, saved-profile
   inventory, invented probe time, physical quality verdict, or calibration or
-  profile mutation is permitted. The compact 2D view preserves XY orientation,
-  explicit mm units, accessible numerical summaries, and top information with
-  bottom refresh. Decision 0027 specifies adapter, normalization, and limits.
+  profile mutation is permitted. The default interactive 3D height surface and
+  retained 2D grid use the same reported samples and XY bounds. Connecting
+  faces are visualization, not new measurements; no resampling or smoothing
+  invents data. Preserve explicit XYZ mm units, height legend, numerical
+  min/max/range, XY orientation and bounded, visibly disclosed Z exaggeration.
+  Provide pointer/keyboard orbit/reset and a usable 2D fallback, with information
+  above bottom local-view controls and Refresh. Decision 0027 retains adapter,
+  normalization and state limits; decision 0030 supersedes its 2D-only display.
 - **OBS-010:** Heads show bounded printer-reported vendor, type, subtype, color
   and presence from a fixed `print_task_config` read, mapped by physical array
   index + 1. Material has independent time/freshness, coalesced bounded demand,
@@ -219,14 +224,14 @@ printer environments support the described behavior.
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v6` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v7` is the
   focused presentation resource. Every explicit camera open or reopen creates
   a fresh snapshot-first `camera-v8` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
+  Observation-v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
-  Source is runtime 0.4.0/tool schema 8 with sixteen resources; this source
+  Source is runtime 0.4.1/tool schema 8 with seventeen resources; this source
   contract does not claim deployment of those bytes to existing services.
 
 ## Architecture and ontology

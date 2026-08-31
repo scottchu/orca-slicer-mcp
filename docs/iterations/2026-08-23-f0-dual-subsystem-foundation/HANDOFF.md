@@ -1,6 +1,63 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 all-widget completion — authoritative current handoff
+## 2026-08-31 F reported Bed Mesh surface — authoritative current handoff
+
+The user's newest Fluidd Bed Mesh reference prioritizes a bounded interactive
+3D reported-height surface inside the existing white card. Decision 0030 and
+OBS-009 supersede only the 2D-only presentation and prior release ordering.
+Current order is A (deployed) → F → B Queue → C fans/chamber → D Current Job/
+History → E overview. Keep all unfinished tracks, independent invocation and
+the Current Job/History split. A's exact deployment receipt is preserved below;
+it is not acceptance of the new F source.
+
+Implementation is 0.4.1/schema 8/observation-v7/camera-v8 with seventeen
+resources. Formal review's P2 centroid-sort occlusion defect is corrected in
+widget source. Final author freeze is
+`c800447957bf8b7b386ddba7666941f625170db92107d31230c5f382378d77f6`, including
+corrected reported-point draw order; author widget checks pass 35/1,415.
+Independent final validation passes 194 app/2,731 assertions, 21 lifecycle,
+22 shipping, 22 independent/1,162 assertions, TypeScript/repository and all
+bundles/exact assets. Geometry sweeps, the original regression and point-order
+checks pass; final source is provisionally reviewed without blockers.
+Exact-commit approval remains pending. Numerical geometry
+checks do not establish rendered-browser or user-device acceptance.
+F's required behavior: same reported matrix/bounds, adjacent-point surface,
+XYZ mm axes and numerical height legend, min/max/range/grid size, explicit
+height exaggeration, pointer/keyboard orbit/reset, and retained 2D fallback.
+No resampling, `mesh_matrix` substitution, extra acquisitions or printer/profile
+controls. Preserve every valid vertex plus flat/inactive/unknown/stale states
+and independent observation time; connecting faces add no measurements.
+Bottom local controls are 3D/2D, height 1x/100x/300x (default 100x), Reset view
+and existing Refresh. Keep copy compact, actions below information and
+accessible narrow layouts. No camera, Queue or other-domain redesign is part
+of this F slice.
+
+Changed documentation: decision 0030, `docs/requirements.md`, this iteration's
+`BRIEF.md`, `WIDGET_TRACKS.md`, `VALIDATION.md`, `HANDOFF.md`, `PROJECT_STATE.md`
+and `NEXT_AGENT.md`; `design-qa.md` now explicitly records F as visually blocked/
+unverified rather than borrowing an earlier result. Application scope is ten
+paths under `plugins/u1-print-studio/app/`: `public/dashboard-index.html`,
+`public/widget.html`, `src/app.test.ts`, `src/app.ts`, `src/bed-mesh.test.ts`,
+`src/cli.test.ts`, `src/observation-widget.test.ts`, `src/personal-oauth.test.ts`,
+`src/runtime-contract.ts`, and `src/status-dashboard.test.ts`. Camera bytes are
+unchanged. Current corrected-source evidence and historical failed-checkpoint hashes
+are in VALIDATION. Exact-SHA approval, PR merge, deployment and restart/verification
+remain pending. The primary coordinator owns release integration and the
+actual operator evidence; the design role owns these continuity records.
+
+Next smallest action: commit/freeze the corrected exact candidate and obtain
+independent exact-SHA approval. Follow
+the standing guarded merge → exact merged-build deploy → explicitly restart
+BOTH public/dashboard services → verify sequence for user visual review.
+Fresh allowed-browser discovery is unavailable, so rendered/browser/device
+acceptance remains unverified rather than blocking this authorized order.
+Source, simulator, real-printer acquisition, deployed behavior and physical
+acceptance remain separate. No new release has been performed at this
+checkpoint. Preserve OAuth/environment/config/routes and all shipping guards;
+no printer controls, profile/queue/history writes, plugin reinstall or deferred
+Mac administration is authorized.
+
+## 2026-08-31 release A — previous shipped handoff
 
 Release A is shipped. [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41)
 merged reviewed `744f7d06607526a10997b926d91b18087c4030cf` as
