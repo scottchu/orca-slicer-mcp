@@ -57,7 +57,9 @@ export function normalizeEnvironmentResponse(payload: unknown, observedAt: strin
     const power = typeof raw.power_detected === "boolean" ? raw.power_detected : null;
     purifier = { state: power === null ? "not_reported" : "known", powerDetected: power, mode: null };
     if (power === true) {
-      purifier.mode = ({ 0: "idle", 1: "cool_chamber", 2: "preheat_chamber", 3: "hot_chamber" } as const)[String(raw.mode) as "0" | "1" | "2" | "3"] ?? null;
+      purifier.mode = typeof raw.mode === "number" && Number.isFinite(raw.mode) && Number.isInteger(raw.mode)
+        ? ({ 0: "idle", 1: "cool_chamber", 2: "preheat_chamber", 3: "hot_chamber" } as const)[raw.mode as 0 | 1 | 2 | 3] ?? null
+        : null;
       for (const [index, key] of [[5, "exhaust_fan"], [6, "inner_fan"]] as const) {
         if (!present(raw, key)) continue;
         const nested = object(raw[key]);

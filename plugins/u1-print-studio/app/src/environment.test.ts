@@ -75,6 +75,18 @@ describe("bounded fixed environment normalization", () => {
     expect(JSON.stringify(result)).not.toContain("private");
   });
 
+  test("maps only finite numeric purifier mode integers zero through three", () => {
+    const expected = ["idle", "cool_chamber", "preheat_chamber", "hot_chamber"] as const;
+    for (const [mode, label] of expected.entries()) {
+      expect(normalizeEnvironmentResponse(raw({ purifier: { power_detected: true, mode } }), receipt).purifier.mode).toBe(label);
+    }
+    for (const mode of ["1", NaN, Infinity, -Infinity, 1.5, -1, 4, undefined]) {
+      expect(normalizeEnvironmentResponse(raw({ purifier: { power_detected: true, mode } }), receipt).purifier).toMatchObject({
+        state: "known", powerDetected: true, mode: null,
+      });
+    }
+  });
+
   test("rejects malformed structures, explicit nonnullable nulls and numeric bounds", () => {
     for (const payload of [null, {}, { result: {} }, { result: { status: [] } },
       raw({ fan: null }), raw({ fan: { speed: null } }), raw({ fan: { speed: -0.1 } }),
