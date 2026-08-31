@@ -1,6 +1,41 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 PR34 shipping guard stopped before merge
+## 2026-08-31 PR34 shipped and independently verified — current handoff
+
+The repository `u1-ship` workflow successfully shipped PR34 after independent
+approval of `97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1`. The guarded merge
+produced `7194361d4a8d7a2291bcc64f1d053eae51a8d99c`; staged and installed
+release `20260831-7194361-pr34-20260831T121439-3ba53f` contains that exact
+merged application. Both public and dashboard services were explicitly
+restarted and are loaded/healthy/integrity verified at runtime 0.3.3/schema 7/
+observation-v5/camera-v5. Fourteen static and sixteen security checks pass.
+OAuth, environment, configuration, routes and preserved plist fields are
+unchanged. The coordinator and independent validator separately verified the
+result. The exact rollback snapshot and operation receipt remain private;
+no rollback was required.
+
+Actual operator commands (the runtime path is deliberately a placeholder):
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 34 --reviewed-sha 97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1 --bun <ABSOLUTE_PINNED_BUN>
+uv run --no-project scripts/u1_ship.py --pr 34 --reviewed-sha 97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1 --bun <ABSOLUTE_PINNED_BUN> --execute
+```
+
+Independent live observation reads one known/fresh active reported Bed Mesh:
+11 × 11 points, minimum -0.340833 mm, maximum 0.066667 mm, range 0.407500 mm.
+A 269,416-byte real JPEG was opened and visually inspected as a coherent
+printer interior. These prove read-only acquisition, not new calibration,
+bed-quality/print-safety acceptance, mounted-phone UI, or live-video playback.
+No printer controls, probing/calibration, live stream, or plugin reinstall
+occurred. Commands and exact evidence boundaries are in `VALIDATION.md`.
+
+Next review and merge this docs-only rollout record. Application bytes are
+unchanged from the installed release, so do not redeploy for this record.
+Queue work remains paused and isolated; minimal-progress design and
+mounted-phone/live-video verification remain pending. Earlier failed-attempt
+and pre-rollout instructions below are historical, not the next action.
+
+## 2026-08-31 first PR34 shipping guard stop — resolved
 
 The authorized shipping execution passed local validation, then stopped at
 the merge-edge clean-tree guard. Bun compilation generated one hidden

@@ -10,7 +10,25 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-- Current task (2026-08-31): decision 0028's repository-only shipping skill/
+- Current result (2026-08-31): PR34 is merged and deployed. Independently
+  reviewed head `97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1` merged as
+  `7194361d4a8d7a2291bcc64f1d053eae51a8d99c`; `$u1-ship` completed the
+  guarded merge, exact-build deployment, explicit restart of BOTH services,
+  and verification. Installed release
+  `20260831-7194361-pr34-20260831T121439-3ba53f` reports runtime 0.3.3/schema 7/
+  observation-v5/camera-v5. Both services are loaded, healthy, and integrity
+  verified; fourteen static and sixteen security checks pass with OAuth,
+  configuration and routes preserved. The coordinator and independent validator
+  separately confirm the deployed state. Rollback material remains private.
+- Independent live evidence: one read-only Bed Mesh observation is known,
+  fresh and active, with an 11 × 11 reported grid, minimum -0.340833 mm,
+  maximum 0.066667 mm and range 0.407500 mm. A 269,416-byte camera JPEG was
+  visually inspected and shows a coherent printer interior. No calibration,
+  printer control, live-video session, or phone visual acceptance occurred.
+  Queue remains paused in its separate checkout; minimal-progress design and
+  mounted-phone/live-video verification remain pending. Complete only the
+  docs-only rollout-record PR now; unchanged app bytes need no second deployment.
+- Previous pre-rollout checkpoint: decision 0028's repository-only shipping skill/
   script and decision 0027's real read-only Bed Mesh slice are implemented and
   software-validated, ready for final exact-commit review and PR delivery.
   Validation passes 165 app tests/2,200 assertions, 21 lifecycle tests,

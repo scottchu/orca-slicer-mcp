@@ -5,12 +5,24 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current release attempt: PR34's authorized shipping run stopped safely before
+- Current result and next action: PR34's exact reviewed head `97b5106` merged
+  as `7194361` and the repository shipping workflow completed deployment,
+  explicit restart of BOTH U1 services, and verification. Installed release
+  `20260831-7194361-pr34-20260831T121439-3ba53f` reports 0.3.3/schema 7/
+  observation-v5/camera-v5; both services are loaded, healthy and integrity
+  verified. Fourteen static and sixteen security checks pass with private
+  configuration/authentication/routing preserved. Independent live checks
+  confirm a known/fresh active 11 × 11 Bed Mesh (range 0.407500 mm) and a
+  visually inspected real JPEG snapshot. No calibration, printer control,
+  mounted-phone or live-video acceptance is claimed. Finish only the docs-only
+  rollout-record PR; unchanged app bytes need no second deployment. Queue WIP,
+  minimal-progress redesign and phone/live-video verification remain pending.
+- Historical first release attempt, resolved: PR34's shipping run stopped before
   merge because Bun compilation left a generated hidden `.bun-build` app file.
   Apply decision 0028's narrowly scoped ignore/regression repair, independently
   approve the new exact head, then retry shipping. Do not relax other clean-tree
   guards. No new deployment occurred; verified PR33 is still running.
-- Current execution order (2026-08-31, latest user request): the urgent rollout
+- Previous execution order (before successful PR34 shipment): the urgent rollout
   of already-merged PR33 is complete. Both public and dashboard services run
   release `20260831-7b9c4d4-widgets`, runtime 0.3.2/schema 6/observation-v4/
   camera-v5, explicitly restarted and healthy/integrity verified; fourteen

@@ -75,9 +75,9 @@ Observation-v4/v3/v2/v1 and camera-v4 serve current-asset compatibility aliases;
 status-v4/v3 and camera-v3/v2/v1 preserve frozen older presentation bytes.
 The source contract is runtime 0.3.3/schema 7, with twelve resources, nine
 observation selectors, and unchanged two-visible/eight-app-only tool counts.
-Bed Mesh is software-validated, pending final exact-commit review and shipping;
-the deployed PR33 services remain runtime 0.3.2/schema 6/observation-v4/camera-v5
-until the next verified rollout. A failure from an old task is not evidence that the current staged
+Bed Mesh and the shipping workflow are reviewed and deployed through PR34;
+both services are verified at runtime 0.3.3/schema 7/observation-v5/camera-v5,
+with a separately successful read-only live mesh acquisition. A failure from an old task is not evidence that the current staged
 runtime is missing; verify the installed descriptor, executable, and a fresh
 task separately.
 
@@ -113,7 +113,7 @@ addresses never enter a public response.
 The repository-only `$u1-ship` skill and `scripts/u1_ship.py` define a guarded
 operator sequence for locally validated review, merge, exact-build deployment,
 restart of both services, verification, and bounded rollback. The new script
-is software-validated, pending final exact-commit review. It reuses `scripts/u1_service.py`, requires
+successfully shipped PR34. It reuses `scripts/u1_service.py`, requires
 explicit task authority, and is not installed as part of the printer plugin.
 
 The standalone dashboard is a separate opt-in process. A Tailscale Serve route
@@ -186,6 +186,6 @@ Developer ID signing, notarization, release checksums, installers, upgrades,
 rollback, and external channel publication remain later evidence gates.
 
 Source fixtures do not access or control physical printer hardware. Separately,
-the deployed PR33 release has a verified real JPEG snapshot; that evidence is
+the deployed PR34 release has verified real JPEG and Bed Mesh observations; that evidence is
 recorded in the active iteration and does not prove mounted-phone/live-video
-behavior or pending Bed Mesh data.
+behavior, calibration quality, or physical print acceptance.

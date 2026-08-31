@@ -14,6 +14,28 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+PR34 is merged and deployed: reviewed head
+`97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1`, merged revision
+`7194361d4a8d7a2291bcc64f1d053eae51a8d99c`, release
+`20260831-7194361-pr34-20260831T121439-3ba53f`. The repository shipping workflow
+completed local validation, guarded merge, exact-build install, explicit
+restart of both U1 services, and verification. Both report 0.3.3/schema 7/
+observation-v5/camera-v5, loaded/healthy/integrity verified. Fourteen static
+and sixteen security checks pass; OAuth/configuration/routing are unchanged.
+Independent live verification reads one known/fresh active 11 × 11 Bed Mesh
+(-0.340833 to 0.066667 mm; range 0.407500 mm) and visually checks a real
+269,416-byte JPEG. Neither establishes calibration quality or phone/live-video
+acceptance; no printer controls or live stream were invoked.
+
+Next deliver the docs-only rollout record through review/PR/merge; no second
+service deployment is needed for unchanged app bytes. Preserve rollback
+material privately. Queue WIP remains in its separate checkout, while minimal
+progress redesign and mounted-phone/live-video verification remain pending.
+Do not resume an old failed shipping attempt or redeploy PR33 from the
+historical instructions below.
+
+## Pre-rollout checkpoint (superseded by successful PR34 shipment)
+
 The repository-only `u1-ship` skill/script (decision 0028) and real read-only
 Bed Mesh slice (0027) are implemented and software-validated. Finish final
 independent approval of the exact committed head, create its PR, and use the
