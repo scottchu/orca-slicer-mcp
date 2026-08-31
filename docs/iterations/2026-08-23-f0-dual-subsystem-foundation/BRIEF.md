@@ -5,26 +5,26 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: the user has explicitly authorized isolated
-  headless-browser validation of decision 0023's reviewed widget source after
-  the supported browser was unavailable. Exercise actual current assets with
-  synthetic observations/media, inspect phone-width screenshots and display
-  controls, and repair only bounded discovered presentation defects. The
-  validator's final pass covers 67 observation and 22 camera captures with
-  no overflow or console errors. Three screenshot-based P2 corrections address
-  thermal numeric contrast, footer warning contrast, and Jobs wording.
-  Independent follow-up review and scoped visual QA pass; the follow-up source
-  and evidence are pushed as `643b5dd` through draft PR30. Next obtain separate
-  authorization for merge/rollout and actual mounted-phone validation. Keep
-  independent implementation, validation, and visual-review roles. Source is
-  already delivered in draft PR30; the final independent visual disposition is
-  in `design-qa.md`. This approval does not include merge, deployment, installation,
-  services, printer access, or missing backend mappings. PR28/PR29 and the
-  persistence rollout are historical
-  delivered work, not tasks to repeat. No service, installation, OAuth,
-  routing, Mac login/power, or printer-control change is included in this
-  presentation slice. Orca Preparation discovery remains preserved and neither
-  subsystem becomes secondary.
+- Current execution order: decision 0024's private widget-directory source is
+  implemented and independently validated before any rollout. Both source dashboard roots serve
+  a navigation-only catalog of eight focused views with honest implementation
+  coverage; no composed overview or automatic observation/media acquisition.
+  Preserve decision 0023's reviewed bottom timestamp/refresh footers and
+  removal of read-only/current-reading/provenance chrome. Its source and
+  isolated headless follow-up already pass independent review; the older
+  deployed widgets do not contain those changes yet. Deliver the bounded
+  directory and local route/browser evidence through existing draft PR30.
+  Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
+  tests, six directory captures, 20 route checks, 12 keyboard checks and
+  packaged inclusion with zero acquisition; code/visual review reports no
+  findings. Separate design, author, validation, and review roles are preserved.
+  Next obtain separate merge/rollout authorization and actual user validation. This
+  request does not authorize merge, deployment, plugin installation, services,
+  authentication/routing changes, printer access, or missing backend mappings.
+  PR28/PR29 and persistence rollout are historical delivered work, not tasks to
+  repeat. Mac login/power and printer-control changes remain excluded. Orca
+  Preparation discovery remains preserved and neither subsystem becomes
+  secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
@@ -159,6 +159,25 @@
   iPhone acceptance. Browser inventory is currently unavailable; source and
   HTTP checks cannot accept screenshots, fullscreen/PiP behavior, or the
   user's visual outcome.
+
+## 2026-08-31 private widget-directory acceptance
+
+- Follow decision 0024 and updated DEPLOY-002: private `/dashboard` and
+  `/dashboard/` serve the same static directory, replacing only the earlier
+  root-to-Progress redirect. All eight focused URLs remain unchanged.
+- List Progress and Camera as implemented; Thermals, Heads & Filaments, and
+  Jobs as partial with their missing domains named; Queue, Fans, and Bed Mesh
+  as unimplemented data capabilities whose explanatory views remain openable.
+  These labels describe release coverage, never live printer health.
+- Use existing 720-pixel light/dark styling and compact keyboard-accessible
+  links. No giant map, embedded widget, refresh/observation/permission chrome,
+  search/filter system, external assets, or new client-side dependency.
+- Prove root/focused routing, public rejection, exact hrefs, zero directory
+  acquisition, no overflow at 320/390/720 pixels, and visible keyboard focus.
+  Preserve quiet focused-card footer and camera behavior regressions.
+- Source and synthetic browser evidence do not deploy the feature or prove
+  mobile-host, printer, missing-domain, or user-outcome acceptance. Separate
+  authorization remains necessary before merge or rollout.
 
 ## Outcome
 

@@ -1,5 +1,42 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Private widget directory — independent rendered review
+
+Scoped result: passed against decision 0024, with no blocking visual findings.
+The independent formal reviewer opened all six current screenshots captured by
+the separate validator: 320, 390 and 720 CSS pixels, each in light and dark mode.
+Product Design review guidance informed inspection of hierarchy, readability,
+wrapping and interaction affordances; this is not a new redesign.
+
+1. **Narrow directory, 320 pixels — passed in both themes.** The heading and
+   release-coverage explanation fit without clipping. All eight whole-card
+   links have readable titles, text labels and naturally wrapped descriptions.
+   Partial/unimplemented entries remain visually openable; they do not imply
+   live printer health or appear disabled.
+2. **Phone-width directory, 390 pixels — passed in both themes.** The one-column
+   rhythm and inset cards remain consistent. Heads & Filaments and the longer
+   unavailable-domain descriptions fit without collisions or truncated copy.
+3. **Wide directory, 720 pixels — passed in both themes.** Two columns preserve
+   row-major reading order and clear whole-card link affordances. Spacing,
+   rounded surfaces and muted secondary text match the existing visual system.
+
+No timestamps, refresh controls, permission/provenance captions or fabricated
+previews appear. Coverage labels use text, not color alone. Semantic anchors
+and focus CSS were inspected; the validator separately records all-eight
+keyboard order, first-link activation and zero overflow/acquisition.
+
+Evidence remains outside Git under the logical `directory-captures` collection.
+The reviewed HTML SHA-256 is
+`1ffc53eefa9842d0741680f1e14d636bb8b2c84401a8382d8c222f39bc263d1b`;
+the matching report SHA-256 is
+`985905efc0ac9a4436a22f7220b5949d28c2a7951291a0621583c70cc4c40aa3`.
+Capture conditions and representative fingerprints are in `VALIDATION.md`.
+Focused destinations during keyboard activation were synthetic stubs. This
+accepts rendered navigation only, not full accessibility, deployed routing,
+iPhone behavior, real printer/camera reachability, missing mappings or the user's
+final outcome. Existing focused-widget QA and its heater-state follow-up remain
+unchanged below.
+
 ## Current gate: isolated headless rendered fixtures
 
 Scoped result: passed. No actionable P0/P1/P2 findings remain in the inspected

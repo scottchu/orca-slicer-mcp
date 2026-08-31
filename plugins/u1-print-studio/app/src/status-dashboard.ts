@@ -4,6 +4,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import embeddedCameraDashboardHostFile from "../public/camera-dashboard-host.html" with { type: "file" };
 import embeddedDashboardHostFile from "../public/status-dashboard-host.html" with { type: "file" };
+// Inline this static page in bundles so existing supervised releases keep their
+// fixed asset inventory and remain verifiable rollback targets.
+import dashboardIndexHtml from "../public/dashboard-index.html" with { type: "text" };
 
 import {
   readCameraWidgetHtml,
@@ -106,18 +109,22 @@ export function createStatusDashboardHandler(
     res: ServerResponse,
     pathname: string
   ): Promise<boolean> => {
-    if (pathname === DASHBOARD_PATH || FOCUSED_DASHBOARD_PATHS.has(pathname) ||
+    const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";
+    if (isIndex || FOCUSED_DASHBOARD_PATHS.has(pathname) ||
         pathname === CAMERA_DASHBOARD_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
         return true;
       }
-      if (pathname === DASHBOARD_PATH) {
-        res.writeHead(307, {
-          location: "/dashboard/progress",
+      if (isIndex) {
+        res.writeHead(200, {
           "cache-control": "no-store",
-        }).end();
+          "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+          "content-type": "text/html; charset=utf-8",
+          "referrer-policy": "no-referrer",
+          "x-content-type-options": "nosniff",
+        }).end(dashboardIndexHtml);
         return true;
       }
       res.writeHead(200, {

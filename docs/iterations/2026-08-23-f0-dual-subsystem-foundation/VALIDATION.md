@@ -1,5 +1,90 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 private widget directory validation
+
+Decision 0024's directory was checked against the exact production HTML and
+private HTTP handler, without production service, printer, camera, plugin,
+authentication, routing, merge, or deployment changes. Both private roots now
+serve navigation rather than acquiring observations or composing an overview.
+The isolated headless path continues the user's explicit approval recorded
+below; it does not establish deployed or mounted-phone acceptance.
+
+### Static routes and rendered interaction
+
+- The independent fixture ran the production `createRequestHandler` on an
+  ephemeral loopback listener. Injected status, frame, authorization, stream
+  open, answer, candidates and close functions counted and rejected any call.
+  Every acquisition counter remained **zero** through all checks.
+- Twenty independent route checks passed: both roots returned 200 with exact
+  source HTML, no redirect, `no-store`, and restrictive CSP; POST returned 405
+  with `Allow: GET`; six unknown/encoded/nested paths returned 404; and the
+  disabled/public handler rejected both roots and all eight focused paths.
+  This tests handler boundaries locally, not the production public edge.
+- Chrome `152.0.7977.65`, Playwright 1.55.0, fresh isolated contexts,
+  device scale factor 1, `en-GB` and UTC captured **six screenshots** at
+  320, 390 and 720 CSS pixels in light and dark modes. Only the fixture origin
+  and data URLs were allowed, service workers were blocked, and background
+  networking was disabled. No external page requests or console/page errors
+  were recorded.
+- All captures fit their viewport without horizontal overflow. Each page had
+  exactly eight ordinary same-tab links in the prescribed order; every anchor
+  was at least 44 by 44 CSS pixels. There were no scripts, iframes, buttons,
+  timestamps, removed permission/provenance copy, or automatic widget loads.
+- Twelve keyboard checks passed across the six cases: Tab reached the first
+  anchor with a visible outline, Enter navigated to its fixed path, and all
+  eight anchors were subsequently reached in order. Destination documents were
+  intercepted synthetic stubs, not live widget/printer pages. The independent
+  design verdict belongs to `design-qa.md`, not these layout assertions.
+
+### Repository and distribution checks
+
+- `./scripts/check-repository.sh` passed TypeScript, **135 app tests / 1,006
+  assertions**, **21 lifecycle tests**, and the repository contract. The
+  durable dashboard suite covers exact links/content, both roots, method and
+  private/public boundaries, focused routes, and zero acquisition.
+- In the app directory, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, and `codesign -vvv --verify dist/u1-print-studio`
+  all passed. `git diff --check` passed.
+- A second isolated fixture imported the actual HTTP bundle copied into a
+  release-shaped directory containing only the preexisting six public assets.
+  No `dashboard-index.html` file was supplied. Both roots still returned exact
+  source HTML, all eight focused static paths returned 200, and all acquisition
+  counters stayed zero. This proves the text import embeds the index in the
+  HTTP bundle rather than creating a new external runtime-file requirement.
+- `git diff --exit-code 00d2c95 -- scripts/u1_service.py
+  scripts/test_u1_service.py` passed. Lifecycle asset requirements and manifest
+  verification remain unchanged; the existing offline lifecycle suite passed.
+  No real old release or rollback was operated. The CLI/stdio runtime does not
+  serve HTTP routes, so its unchanged bytes do not need to include this index.
+- Current observation and camera source hashes remain unchanged from the
+  accepted quiet-footer/camera-overlay pass below. Directory work did not
+  restore removed chrome or change those widget behaviors.
+
+Actual harness command forms were `bun --no-env-file --config=/dev/null run
+directory-server.ts`, `U1_DIRECTORY_ORIGIN=<loopback-fixture-origin> node
+capture-directory.mjs`, and the same fixture with
+`U1_DIRECTORY_ENTRY=<isolated-http-bundle>`. A Node assertion checked the copied
+bundle's two exact root responses, eight focused paths and acquisition counts.
+Temporary adapters, reports and screenshots remain outside Git. Only logical
+names and fingerprints are retained here.
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Directory HTML | `1ffc53eefa9842d0741680f1e14d636bb8b2c84401a8382d8c222f39bc263d1b` |
+| HTTP bundle | `71277c30c02f56efce570b2cabf9ea72c29d5810d873b4604b4b22bd6cc7aa31` |
+| Unchanged stdio bundle | `aed5f6143babb067b0b9460d1d25fe3c1eb2fbbba32a27e7e73622bc115f58ce` |
+| Unchanged standalone CLI | `c6719c0844ca83f50168a2a1ba1ba4dfd5bc22ba4faf8d7a00b45b115019cb15` |
+| Private logical directory report | `985905efc0ac9a4436a22f7220b5949d28c2a7951291a0621583c70cc4c40aa3` |
+| `directory-320-light.png` | `a3744c3623f7be0e5eb0c15ca684ba80f8d58344311c89e698eb18a1a5b4de82` |
+| `directory-390-dark.png` | `02af7f5bed9ce11f7df650504908de592ab91b6f40facc805bc0cf50f302a33f` |
+| `directory-720-light.png` | `9f270609574295e446c6d37bcabb553826a5738323bf451073da050efbd1bb9d` |
+
+This accepts source/software and isolated rendered navigation only. The live
+dashboard remains on the prior release until separately authorized rollout;
+missing telemetry domains, the composed overview, real-printer behavior and
+the user's actual phone experience remain unimplemented or unaccepted as
+previously recorded.
+
 ## 2026-08-31 authorized isolated headless-browser validation
 
 Source/evidence delivery is complete at commit

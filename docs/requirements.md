@@ -187,10 +187,14 @@ printer environments support the described behavior.
   source checkout, with pinned runtime, file fingerprints, bounded readiness
   checks, and recoverable configuration switching. Lifecycle tooling remains
   local and allowlisted; no generic service or MCP Admin surface is added.
-- **DEPLOY-002:** Private focused dashboard routes select only accepted closed
-  views and default to progress, not unavailable overview. Public services do
-  not expose those private routes. Health/static asset checks never implicitly
-  acquire printer status, snapshots, or video.
+- **DEPLOY-002:** Private `/dashboard` and `/dashboard/` serve one static
+  navigation directory for the eight accepted focused routes. Each entry
+  distinguishes implemented, partial, or unimplemented data coverage without
+  implying live printer health. Focused routes select only accepted closed
+  views; overview remains deferred. Public services do not expose these
+  private routes. Directory loading and health/static asset checks never
+  implicitly mount widgets, invoke tools, or acquire printer status, snapshots,
+  or video.
 - **DEPLOY-003:** All HTTP requests in one service process share one application
   observation store. Process restarts, separate services, and host-owned stdio
   connectors remain separate state scopes; service liveness does not establish

@@ -130,11 +130,11 @@ describe("standalone status dashboard", () => {
     servers.push(server);
     const port = (server.address() as AddressInfo).port;
 
-    const response = await fetch(`http://127.0.0.1:${port}/dashboard`);
-    expect(response.status).toBe(404);
-    expect(
-      (await fetch(`http://127.0.0.1:${port}/dashboard/camera`)).status
-    ).toBe(404);
+    for (const route of ["/dashboard", "/dashboard/", "/dashboard/progress",
+      "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs",
+      "/dashboard/queue", "/dashboard/fans", "/dashboard/bed_mesh", "/dashboard/camera"]) {
+      expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
+    }
     expect(
       (await fetch(`http://127.0.0.1:${port}/camera-widget`)).status
     ).toBe(404);
@@ -162,13 +162,62 @@ describe("standalone status dashboard", () => {
     expect(response.status).toBe(404);
   });
 
-  test("serves a host bridge around the production widget", async () => {
+  test("serves a static directory without acquiring observations or camera media", async () => {
+    const calls: string[] = [];
+    const forbidden = (name: string) => () => {
+      calls.push(name);
+      throw new Error("Static directory must not acquire printer data");
+    };
+    const observations = new PrinterObservationStore(forbidden("status"));
+    observations.current = forbidden("observation");
+    const server = createServer(createRequestHandler(null, null, {
+      observations,
+      readStatus: forbidden("status"),
+      readCameraFrame: forbidden("camera-frame"),
+      cameraSessions: {
+        authorize: forbidden("authorize"), open: forbidden("open"),
+        answer: forbidden("answer"), addCandidates: forbidden("candidates"),
+        close: forbidden("close"),
+      },
+    }));
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    servers.push(server);
+    const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+    const expected = readFileSync(new URL("../public/dashboard-index.html", import.meta.url), "utf8");
+    const routes = ["progress", "camera", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"];
+    for (const route of ["/dashboard", "/dashboard/", "/dashboard/?view=overview&tool=start_print"]) {
+      const response = await fetch(origin + route, { redirect: "manual" });
+      expect(response.status).toBe(200);
+      expect(response.headers.get("location")).toBeNull();
+      expect(response.headers.get("cache-control")).toBe("no-store");
+      expect(response.headers.get("content-type")).toBe("text/html; charset=utf-8");
+      expect(response.headers.get("content-security-policy")).toContain("default-src 'none'");
+      expect(response.headers.get("content-security-policy")).not.toContain("script-src");
+      expect(response.headers.get("referrer-policy")).toBe("no-referrer");
+      expect(response.headers.get("x-content-type-options")).toBe("nosniff");
+      const html = await response.text();
+      expect(html).toBe(expected);
+      expect([...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1]))
+        .toEqual(routes.map((view) => `/dashboard/${view}`));
+      expect(html.match(/>Implemented<\/span>/g)).toHaveLength(2);
+      expect(html.match(/>Partial<\/span>/g)).toHaveLength(3);
+      expect(html.match(/>Not implemented<\/span>/g)).toHaveLength(3);
+      expect(html).toContain("Availability describes this release, not printer status.");
+      expect(html).not.toMatch(/<script|<iframe|<img|<video|<audio|<form|<button|fetch\(|setInterval|setTimeout|target=|Read.only|Current reading|Printer telemetry|Observed/i);
+    }
+    for (const route of ["/dashboard", "/dashboard/"]) {
+      const response = await fetch(origin + route, { method: "POST" });
+      expect(response.status).toBe(405);
+      expect(response.headers.get("allow")).toBe("GET");
+    }
+    for (const view of routes) expect((await fetch(`${origin}/dashboard/${view}`)).status).toBe(200);
+    expect(calls).toEqual([]);
+  });
+
+  test("serves a host bridge around each focused production widget", async () => {
     let reads = 0;
     const origin = await startFixture(() => { reads += 1; });
-    const root = await fetch(`${origin}/dashboard`, { redirect: "manual" });
-    expect(root.status).toBe(307);
-    expect(root.headers.get("location")).toBe("/dashboard/progress");
-    const response = await fetch(`${origin}/dashboard`);
+    const response = await fetch(`${origin}/dashboard/progress`);
     const html = await response.text();
 
     expect(response.status).toBe(200);
@@ -178,7 +227,7 @@ describe("standalone status dashboard", () => {
     for (const view of ["progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"]) {
       expect((await fetch(`${origin}/dashboard/${view}`)).status).toBe(200);
     }
-    for (const view of ["overview", "unknown", "progress/more", "%70rogress"]) {
+    for (const view of ["overview", "unknown", "progress/more", "%70rogress", "index.html", "progress/", "/"]) {
       expect((await fetch(`${origin}/dashboard/${view}`)).status).toBe(404);
     }
     expect(reads).toBe(0);

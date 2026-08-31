@@ -8,13 +8,29 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0023
+5. decisions 0014 through 0024
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
 
-Decision 0023 presentation polish and finite host-loading repair now come first.
+Decision 0024's user-requested private widget directory now comes first.
+Both dashboard roots serve static eight-link navigation in current source,
+with honest implementation-coverage labels and no data/media acquisition.
+Exact focused routes and public rejection remain unchanged. The directory
+HTML is imported as text into the HTTP bundle; do not add a new mandatory
+external asset that invalidates previously staged rollback releases.
+Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
+tests, TypeScript, repository checks, all bundles/signing, six directory
+captures, 20 route checks and 12 keyboard checks with zero acquisition.
+The copied HTTP bundle serves exact directory bytes without an external index
+asset. Independent code/visual review reports no findings; see `design-qa.md`.
+The directory source and validated evidence are included in this PR30 follow-up.
+Next obtain separate merge/rollout authorization, then validate the actual user
+view. No deployment or installation occurred; missing-domain implementation
+also needs separate scope. Decision 0023's footer/chrome fixes remain intact.
+
+Decision 0023 presentation polish and finite host-loading repair are preserved.
 Read its design contract and `design-qa.md`. Current source is runtime `0.3.1`,
 schema `5`, observation-v3/camera-v5; deployed services/local plugin are not
 changed. Observation-v2/v1 and camera-v4 are current aliases and legacy frozen
@@ -37,7 +53,8 @@ The follow-up source/evidence is pushed as `643b5dd` through existing draft
 PR30; remote branch and open draft head matched at the delivery check.
 Next obtain separate authorization for merge/rollout, followed by
 mounted iPhone validation. Private focused URLs still serve runtime0.3.0;
-`/dashboard` redirects to progress and is not the deferred overview. Static
+the deployed `/dashboard` redirects to progress and is not the source directory
+or the deferred overview. Static
 route success is not data-mapping or new-version acceptance. Do not repeat the historical install or
 restart below, and do not infer authorization to map missing domains.
 

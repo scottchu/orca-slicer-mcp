@@ -10,6 +10,23 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
+- Current source task: decision 0024 adds a private widget directory at both
+  `/dashboard` and `/dashboard/`, replacing the source root redirect while
+  preserving all eight focused paths. It labels Progress/Camera implemented,
+  Thermals/Heads/Jobs partial, and Queue/Fans/Bed Mesh not implemented. These
+  describe software coverage, not printer health. The static page has no
+  script, iframe, polling, or observation/camera acquisition. It is inlined
+  into the HTTP bundle; lifecycle asset requirements remain unchanged for
+  older-release rollback compatibility. Decision 0023's bottom footer and
+  removed redundant chrome are preserved without additional widget changes.
+  Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
+  tests, TypeScript, repository checks, bundles/signing, six rendered directory
+  captures, 20 route checks and 12 keyboard checks with zero acquisition.
+  A release-shaped copy of the HTTP bundle serves the exact directory without
+  an external index file. Independent code/visual review reports no findings;
+  its scoped disposition is in `design-qa.md`. This source and validated
+  evidence are included in the PR30 follow-up, not deployed. Next obtain
+  separate merge/rollout authorization and validate the actual user view.
 - Current source slice: decision 0023's user-requested quiet footers,
   image-only camera overlay/display controls, and bounded host-loading repair.
   Source commit `db4e250` is pushed and delivered in
@@ -52,7 +69,8 @@ Last updated: 2026-08-31
 - Existing private focused URLs serve the previously deployed runtime 0.3.0;
   `/dashboard` redirects to progress, not a composed overview. Static HTTP
   success proves route availability only, not missing-domain mappings or
-  deployment of this PR. No private hostname is retained here.
+  deployment of this PR or decision 0024's source directory. No private
+  hostname is retained here.
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.

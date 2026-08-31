@@ -75,10 +75,18 @@ private env/OAuth/config/routing and preserved plist fields unchanged. The
 script-only repair does not change the deployed app
 revision or its widget hashes.
 
+Decision 0024's `public/dashboard-index.html` is imported as text and inlined
+in the HTTP bundle; it is not a seventh required external release asset.
+The fixed lifecycle asset inventory and its fingerprint verification stay
+unchanged so previously staged releases remain valid rollback targets.
+
 Private stable entries are `/dashboard/progress`, `/dashboard/thermals`,
 `/dashboard/heads`, `/dashboard/jobs`, `/dashboard/queue`, `/dashboard/fans`,
-`/dashboard/bed_mesh`, and `/dashboard/camera`. `/dashboard` defaults to
-progress by redirect. The HTTP overview route stays absent; the MCP overview
+`/dashboard/bed_mesh`, and `/dashboard/camera`. In the current source,
+`/dashboard` and `/dashboard/` serve the same static widget directory with
+implementation-coverage labels. It loads no observations, widgets, or camera
+media. The currently deployed older release still redirects to Progress until
+a separately authorized rollout. The HTTP overview route stays absent; the MCP overview
 view stays explicitly deferred. Public dashboard routes remain unavailable. Every process shares
 one observation store across its HTTP calls, not across other services or
 restarts. A cold store acquires its first observation on demand; later plain

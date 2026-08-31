@@ -1,5 +1,42 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 private widget directory — current handoff
+
+Decision 0024 implements the user's requested navigation entry point, not the
+deferred composed overview. Source GETs for `/dashboard` and `/dashboard/`
+return identical static HTML with exactly eight existing focused links and
+truthful implementation labels. It does not acquire observations, mount
+iframes, poll, or open camera media. Focused URLs, public rejection, MCP tools,
+current widgets, and frozen compatibility bytes remain unchanged.
+
+Changed runtime/test paths are `app/public/dashboard-index.html`,
+`app/src/status-dashboard.ts`, and `app/src/status-dashboard.test.ts` under
+`plugins/u1-print-studio`. The page is a Bun text import, so its bytes are
+inlined into the HTTP bundle without changing the lifecycle tool's mandatory
+external asset inventory or invalidating old rollback releases. Packaging and
+architecture docs explain that choice; decision/requirements/BRIEF records
+describe the product contract. Canonical checkout's unrelated changes remain
+untouched.
+
+Author verification ran `bun --no-env-file --config=/dev/null test
+src/status-dashboard.test.ts` (12 passed, 261 assertions) and
+`bun --no-env-file --config=/dev/null run check` (passed). These are software
+and synthetic local-HTTP evidence, not deployed or physical-printer evidence.
+Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
+tests, TypeScript, repository checks, all bundles/signing, six directory
+captures, 20 route checks and 12 keyboard checks with zero acquisition.
+The copied HTTP bundle serves both roots with exact source HTML and all eight
+focused static paths without an external index file. Independent code/visual
+review inspected all six captures and reran 62 tests/651 assertions with no
+findings. Its scoped visual disposition is in `design-qa.md`; actual validation
+commands and artifact fingerprints are in `VALIDATION.md`.
+
+The directory source and validated evidence are included in this PR30 follow-up.
+Next obtain separate merge/rollout authorization, then confirm the actual user
+view. No merge/deployment/plugin install, service restart, auth/Tailscale
+changes, or real-printer access occurred. Local rendered navigation is not
+deployed or actual phone acceptance.
+
 ## 2026-08-31 authorized headless follow-up — current handoff
 
 After draft PR30 source delivery, the user explicitly authorized isolated

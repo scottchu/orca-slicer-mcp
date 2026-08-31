@@ -81,6 +81,7 @@ inbound protocol, not the core product boundary.
 | Adapter-shaped status | `U1Status` | Normalized input captured by the shared observation store; not itself the public focused schema |
 | Interactive observation presenter | `public/widget.html` | Renders one observation-v3 Instrument Strip and requests only app-private refresh for its selected view |
 | Interactive camera presenter | `public/camera-widget.html` | Renders the separate camera-v5 snapshot-first Instrument Strip and owns Go Live, Close, retry, and fallback |
+| Private widget directory | `public/dashboard-index.html` | Static eight-link navigation at both dashboard roots; reports implementation coverage without acquiring observations or media; inlined in the HTTP bundle |
 | Frozen compatibility presenters | `public/legacy-widget.html` and `legacy-camera-widget.html` | Preserve exact former status-v4/v3 and camera-v3/v2/v1 bytes for retained mounted tasks |
 | Static presenter | `status-card-image.ts` | Renders a portable PNG from one `U1Status` snapshot |
 | Workflow skills | `skills/` | Route focused one-shot observation through `u1-observe-printer` and guide setup, monitoring, preparation, and authorized start without becoming runtime authority |
