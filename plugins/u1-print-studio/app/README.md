@@ -70,14 +70,15 @@ cannot mount an MCP Apps component.
 After installing or upgrading the Marketplace plugin, start a new ChatGPT or
 Codex task before testing it. Existing tasks may still refer to the previous
 installed MCP process and widget URI. Current source descriptors point to
-`ui://u1-print-studio/observation-v5.html` and the separate `camera-v7.html`.
-Observation-v4/v3/v2/v1 and camera-v6/v5/v4 serve current-asset compatibility aliases;
+`ui://u1-print-studio/observation-v12.html` and the separate `camera-v8.html`.
+Observation-v11 through v1 and camera-v7/v6/v5/v4 serve current-asset compatibility aliases;
 status-v4/v3 and camera-v3/v2/v1 preserve frozen older presentation bytes.
-The source contract is runtime 0.3.5/schema 7, with fourteen resources, nine
+The source contract is runtime 0.4.6/schema 12, with twenty-two resources, nine
 observation selectors, and unchanged two-visible/eight-app-only tool counts.
-The bottom-status/FPS repair is reviewed and deployed through PR38; both
-services are verified at runtime 0.3.5/schema 7/observation-v5/camera-v7. Earlier PR34
-evidence separately confirms read-only live mesh acquisition. A failure from an old task is not evidence that the current staged
+The private source directory has ten entries including the composed Overview.
+The previously verified PR51 deployment remains runtime 0.4.5/schema 11/
+observation-v11/camera-v8 until this source is separately merged and shipped.
+A failure from an old task is not evidence that the current staged
 runtime is missing; verify the installed descriptor, executable, and a fresh
 task separately.
 

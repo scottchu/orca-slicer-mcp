@@ -12,6 +12,21 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
+**E compact Overview is source-complete and under final validation.** Explicit
+Overview demand composes the exact eight accepted focused projections while
+concurrently requesting main status plus Materials, Environment, Queue, Bed
+Mesh, Current Job and Job History through their existing independent receipts,
+15-second attempt TTLs, coalescing, stale retention and fixture isolation. It
+adds no reader, cache, timer or normalizer. The structured and visible result is
+one privacy-minimized headline module, not nested full cards or a giant map;
+every tile preserves its own state/time/freshness/reason and the header status
+time remains main-status-only. Camera stays separate. Target is 0.4.6/schema 12/
+observation-v12/camera-v8 with 22 resources and observation-v11 retained; tools
+remain two visible plus eight app-only. Application source and durable tests are
+implemented; deployment, live-printer and visual/device acceptance are not yet
+claimed. Preserve A/F/Heads/B/C/D and complete exact review → PR merge → exact-
+build deploy → restart BOTH → scoped verify.
+
 **D Current Job/real History is shipped.** PR51 exact head
 `30f1c7bb407d08d19d390acf2b5704a30eff010f` was approved by the formal reviewer
 and independent validator, then merged as
@@ -25,7 +40,7 @@ reported a completed terminal job with inactive storage; exactly one sanitized
 History read was known/fresh with 20 returned rows. This proves bounded telemetry
 semantics only, not filenames/projects, a currently active job, grand-total
 history, visual/device behavior or user acceptance. Preserve A/F/Heads/B/C/D;
-**E Overview is next**.
+**E Overview source validation and delivery are next**.
 
 ### Previous shipped C checkpoint
 
@@ -756,11 +771,13 @@ and final repository-check results.
 - The deployed route uses tailnet-only Serve 8447 to loopback 8789; Funnel is
   still enabled only on 443 and existing handlers were preserved.
 - The first Orca backend and the prepared-job/session handoff remain open.
-- Live mappings remain unresolved for cavity, filament material/color and
-  sensors, jobs/history, queue, fans/purifier, and bed mesh. Those views must
-  remain honest `unknown`/`unavailable` until read-only adapter evidence exists.
-- The overview remains deferred until every focused module is accepted, and a
-  fresh mounted task plus the user's ten-second comprehension gate remain open.
+- Bounded read-only mappings now exist for cavity, filament material/color and
+  sensors, jobs/history, queue, fans/purifier, and bed mesh. Their reported
+  facts remain telemetry evidence, not sensor-accuracy, printer-health or
+  physical-safety proof.
+- The compact Overview is implemented in source from the accepted focused
+  projections; deployment, a fresh mounted task and the user's ten-second
+  comprehension gate remain open.
 - Subscription transport, process-restart persistence, durable history,
   notification destination, and remote identity/distribution boundaries remain
   open. The implemented store is explicit-refresh application state, not a

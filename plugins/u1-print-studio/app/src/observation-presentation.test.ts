@@ -159,15 +159,75 @@ describe("printer observation presentation", () => {
     });
   });
 
-  test("keeps overview explicitly deferred", () => {
-    expect(createObservationPresentation(snapshot(), "overview").module).toEqual(
-      expect.objectContaining({
-        kind: "overview",
-        state: "unavailable",
-        capabilityEvidence: "unsupported",
-        status: "deferred",
-      })
-    );
+  test("composes eight privacy-minimized overview headlines with independent receipts and coverage", () => {
+    const result = createObservationPresentation(snapshot({
+      materials: {
+        state: "known", freshness: "fresh", sourceObservedAt: "2026-08-29T21:40:52.000Z",
+        receivedAt: "2026-08-29T21:40:52.000Z", checkedAt: "2026-08-29T21:40:52.000Z",
+        items: [{ physicalTool: 2, vendor: "Snapmaker", type: "PLA", subtype: "Matte",
+          color: "#F4B927", reportedPresence: true }], reason: null,
+      },
+      environment: {
+        state: "known", freshness: "fresh", sourceObservedAt: "2026-08-29T21:40:53.000Z",
+        receivedAt: "2026-08-29T21:40:53.000Z", checkedAt: "2026-08-29T21:40:53.000Z",
+        cavity: { state: "known", temperatureC: 31.5 },
+        fans: [
+          ["tool-1-part", "Tool 1 part cooling", "part_cooling"],
+          ["tool-2-part", "Tool 2 part cooling", "part_cooling"],
+          ["tool-3-part", "Tool 3 part cooling", "part_cooling"],
+          ["tool-4-part", "Tool 4 part cooling", "part_cooling"],
+          ["cavity", "Cavity fan", "air_handling"],
+          ["purifier-exhaust", "Purifier exhaust", "air_handling"],
+          ["purifier-inner", "Purifier inner fan", "air_handling"],
+        ].map(([id, label, group]) => ({ id, label, group, state: "not_reported",
+          speedReported: false, speedFraction: null, rpmReported: false, rpm: null })) as any,
+        purifier: { state: "known", powerDetected: true, mode: "cool_chamber" }, reason: null,
+      },
+      queue: {
+        state: "known", freshness: "fresh", sourceObservedAt: "2026-08-29T21:40:54.000Z",
+        receivedAt: "2026-08-29T21:40:54.000Z", checkedAt: "2026-08-29T21:40:54.000Z",
+        queueState: "ready", items: [], totalCount: 0, truncated: false, reason: null,
+      },
+      bedMesh: {
+        state: "known", freshness: "fresh", status: "no_active_mesh",
+        sourceObservedAt: "2026-08-29T21:40:55.000Z", receivedAt: "2026-08-29T21:40:55.000Z",
+        checkedAt: "2026-08-29T21:40:55.000Z", matrix: null, bounds: null, summary: null,
+        reason: null,
+      },
+    }), "overview");
+    expect(result.module).toMatchObject({
+      kind: "overview", state: "known", coverage: "complete",
+      tiles: [
+        { id: "progress", receipts: { status: { sourceObservedAt: status.observedAt } } },
+        { id: "thermals", cavityActualC: 31.5, receipts: {
+          status: { sourceObservedAt: status.observedAt },
+          environment: { sourceObservedAt: "2026-08-29T21:40:53.000Z" },
+        } },
+        { id: "heads", activeTool: 2, material: "Snapmaker PLA Matte", color: "#F4B927",
+          reportedPresence: true, receipts: { materials: { sourceObservedAt: "2026-08-29T21:40:52.000Z" } } },
+        { id: "jobs", printState: "printing", storageActive: true },
+        { id: "job_history", pageCount: 1, statusCounts: { completed: 1 } },
+        { id: "queue", queueState: "ready", totalCount: 0 },
+        { id: "fans", reportedFanCount: 0, purifierPowerDetected: true, purifierMode: "cool_chamber" },
+        { id: "bed_mesh", active: false, rows: null, columns: null, rangeMillimeters: null },
+      ],
+    });
+    const structured = JSON.stringify(result.module);
+    for (const privateValue of ["fixture.gcode", "history-only.gcode", "filePositionBytes",
+      "fileSizeBytes", '"items"', '"matrix"', '"profile"']) expect(structured).not.toContain(privateValue);
+
+    expect(createObservationPresentation(snapshot(), "overview").module).toMatchObject({
+      kind: "overview", coverage: "partial",
+    });
+    const offlineStatus: U1Status = {
+      ...status, reachable: false, state: "", progressPercent: null, currentLayer: null,
+      totalLayers: null, elapsedSeconds: null, remainingSeconds: null, tools: [],
+      bed: { temperature: null, target: null },
+    };
+    expect(createObservationPresentation(snapshot({ status: offlineStatus, currentJob: undefined,
+      jobHistory: undefined }), "overview").module).toMatchObject({
+      kind: "overview", state: "unknown", coverage: "none",
+    });
   });
 
   test("keeps missing live values unknown and retained values stale", () => {

@@ -1,6 +1,6 @@
 # 0021 — Compose focused read-only observation widgets
 
-- Status: accepted for the user-selected observation feedback loop
+- Status: accepted; focused suite shipped through D and Overview composition active
 - Date: 2026-08-29
 - Owners: project maintainers
 
@@ -70,9 +70,10 @@ The `observe_printer` enum contains exactly:
 3. `thermals`
 4. `heads`
 5. `jobs`
-6. `queue`
-7. `fans`
-8. `bed_mesh`
+6. `job_history`
+7. `queue`
+8. `fans`
+9. `bed_mesh`
 
 Unknown view values fail closed. The tool is not a generic query language, URL,
 object-name, JSON-RPC, HTTP, G-code, or field-selection surface.
@@ -100,8 +101,12 @@ another runtime tool, printer-protocol adapter, or source of authority.
   target, material, text-labeled color, and available motion, entanglement, or
   load-sensor facts. Printer observation and preparation-manifest identity
   remain distinct provenance sources.
-- `jobs`: the active job plus bounded chronological history with outcome,
-  duration, filament use when observed, and provenance. Reprint is excluded.
+- `jobs`: the contextual current or last-reported job with bounded state,
+  storage, duration and filament facts. A persisted filename never implies an
+  active print. Reprint is excluded.
+- `job_history`: the bounded latest returned page with safe basenames,
+  normalized outcome, duration and filament facts. It never claims grand total,
+  pagination or current-job authority.
 - `queue`: position, source, estimate, and state only. Add, remove, reorder,
   select, or start remain writes and are excluded.
 - `fans`: named part, cavity, exhaust, or purifier rows with commanded power,
@@ -180,7 +185,63 @@ resource compatibility.
 - The enum and pure projections keep the public MCP surface small, but every
   newly normalized domain still requires explicit privacy and allowlist review.
 - The overview is intentionally later. This avoids recreating the current
-  monolith before the composable feedback loop has been accepted.
+monolith before the composable feedback loop has been accepted.
+
+## Overview completion addendum (2026-08-31)
+
+All eight focused projections are now accepted, so `overview` may advance from
+deferred to composition. An explicit Overview call or Refresh acquires main
+status plus Materials, Environment, Queue, Bed Mesh, Current Job and Job History
+concurrently. It reuses those domains' existing readers, receipts, 15-second
+attempt TTLs, coalescing, stale-last-success retention, atomic merge and fixture
+isolation. It adds no adapter, cache, timer or normalizer. Static, directory,
+health and unrelated focused requests never trigger this fan-out; Camera remains
+a separate observation and presentation.
+
+Overview composes the exact Progress, Thermals, Heads, Current Job, Job History,
+Queue, Fans and Bed Mesh projectors from one observation version. One domain's
+failure cannot suppress or restamp another. Every headline tile retains its own
+state, source time, freshness and reason. The header printer state and time are
+explicitly main-status facts. `complete`, `partial` and `none` describe only
+projection coverage: respectively all, some or none of the eight projections
+have known or retained stale data. They are never a synthetic health, safety or
+freshness verdict; known-empty and known-inactive domains still count as
+available coverage.
+
+The visible result is one compact white card with a two-column headline grid
+that collapses to one column. It does not embed the full focused cards:
+
+- Progress shows printer state, percent, layer and ETA, never filename.
+- Thermals shows active tool, bed and Cavity facts.
+- Heads shows active physical tool plus material, color and presence, retaining
+  the independent material receipt.
+- Current Job shows contextual reported state and storage only, never filename
+  or bytes.
+- Job History shows returned-page count and normalized status aggregate, never
+  names, IDs, times, raw rows or a total claim.
+- Queue shows queue state and count, never filenames.
+- Fans shows reported component count and purifier detection/mode facts without
+  a health inference.
+- Bed Mesh shows active/inactive, dimensions and range, never the surface or
+  profile identity.
+
+Information remains above exactly one 44-pixel bottom Refresh. There is no tile
+navigation or action, pagination, chart, 3D surface, control, camera/media,
+filename, project/model identity, raw row/path/ID/metadata or runtime detail.
+The structured result is a privacy-minimized headline composition of the exact
+projector outputs, not an alternate normalization.
+
+A status-plus-material Overview was rejected because it would omit accepted
+Queue, History, Fans and Mesh projections while falsely completing the promised
+composition. Embedding all full cards was rejected because it recreates the
+giant map the user explicitly declined. The compact headline composition is the
+smallest contract that satisfies both boundaries.
+
+Implementation adds private `/dashboard/overview` and its truthful directory
+entry. The payload target is runtime 0.4.6/tool schema 12/observation-v12/
+camera-v8 with twenty-two resources and observation-v11 retained. The exact two
+model-visible and eight app-only tools remain unchanged. Source acceptance does
+not establish deployment or browser/device visual acceptance.
 
 ## Validation
 
@@ -189,7 +250,7 @@ Before implementation is accepted:
 1. Tool discovery exposes exactly `observe_printer` and
    `open_printer_camera` as model-visible presentation intents; app-only refresh
    and signaling helpers remain hidden.
-2. `observe_printer` requires and validates the exact eight-value enum and
+2. `observe_printer` requires and validates the exact nine-value enum and
    rejects extra view names and generic selector fields.
 3. Progress, thermals, and heads fixtures rendered together carry the same
    observation version, source time, freshness, connection epoch, and session

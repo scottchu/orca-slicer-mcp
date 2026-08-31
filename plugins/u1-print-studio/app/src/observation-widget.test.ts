@@ -23,7 +23,27 @@ function fixture(view = "queue", extra: Payload = {}): Payload {
     provenance: { source: "not_observed", sourceObservedAt: null, detail: "Data mapping is not implemented." },
     items: [], points: [], current: null, readings: [],
   };
-  if (view === "overview") Object.assign(module, { state: "unavailable", status: "deferred", detail: "Overview is deferred." });
+  if (view === "overview") {
+    const statusReceipt = { state: "known", sourceObservedAt: "2026-08-31T11:00:00.000Z", freshness: "fresh" };
+    const domainReceipt = { state: "known", sourceObservedAt: "2026-08-31T11:00:01.000Z", freshness: "fresh", reason: null };
+    Object.assign(module, { state: "known", coverage: "complete", tiles: [
+      { id: "progress", state: "known", receipts: { status: statusReceipt }, printState: "printing",
+        percent: 42, currentLayer: 21, totalLayers: 50, estimatedRemainingSeconds: 828 },
+      { id: "thermals", state: "known", receipts: { status: statusReceipt, environment: domainReceipt },
+        activeTool: 2, activeActualC: 220, activeTargetC: 220, bedActualC: 55, bedTargetC: 55, cavityActualC: 31.5 },
+      { id: "heads", state: "known", receipts: { status: statusReceipt, materials: domainReceipt },
+        activeTool: 2, material: "Snapmaker PLA Matte", color: "#F4B927", reportedPresence: true },
+      { id: "jobs", state: "known", receipts: { currentJob: domainReceipt }, printState: "printing", storageActive: true },
+      { id: "job_history", state: "known", receipts: { jobHistory: domainReceipt }, pageCount: 2,
+        statusCounts: { in_progress: 0, completed: 1, cancelled: 1, error: 0, klippy_shutdown: 0,
+          klippy_disconnect: 0, interrupted: 0, unknown: 0 } },
+      { id: "queue", state: "known", receipts: { queue: domainReceipt }, queueState: "ready", totalCount: 0 },
+      { id: "fans", state: "known", receipts: { environment: domainReceipt }, reportedFanCount: 5,
+        purifierPowerDetected: true, purifierMode: "cool_chamber" },
+      { id: "bed_mesh", state: "known", receipts: { bedMesh: domainReceipt }, active: true,
+        rows: 9, columns: 9, rangeMillimeters: 0.4075 },
+    ] });
+  }
   if (view === "progress") Object.assign(module, {
     state: "known", fields: {
       percent: field(42), currentLayer: field(21), totalLayers: field(50),
@@ -379,10 +399,32 @@ describe("production observation widget host boundary", () => {
     expect(offline.modules.innerHTML).toContain("Offline");
   });
 
-  test("unimplemented overview and unobserved Fans are explicit, not empty success or synthetic charts", () => {
+  test("overview renders eight compact privacy-minimized headlines in one card", () => {
     const overview = mount({ toolOutput: fixture("overview") }).modules.innerHTML;
-    expect(overview).toMatch(/Unavailable|deferred/i);
-    expect(overview).not.toMatch(/Waiting|mesh-placeholder/);
+    for (const text of ["Overview", "Coverage complete", "Progress", "Thermals",
+      "Heads &amp; Filaments", "Current Job", "Job History", "Queue", "Fans &amp; Air",
+      "Bed Mesh", "42%", "Layer 21 / 50", "T2 220° / 220°", "Cavity 32°",
+      "Snapmaker PLA Matte", "Filament reported present", "2 jobs returned",
+      "1 completed · 1 cancelled", "0 jobs queued", "5 of 7 fans reported",
+      "Purifier detected · Cool chamber", "9 × 9 · 0.407 mm range"]) expect(overview).toContain(text);
+    expect((overview.match(/data-overview-tile=/g) ?? []).length).toBe(8);
+    expect((overview.match(/<section class="instrument/g) ?? []).length).toBe(1);
+    expect((overview.match(/aria-label="Refresh observation"/g) ?? []).length).toBe(1);
+    expect(overview).not.toMatch(/fixture\.gcode|history-only\.gcode|file position|file size|mesh-surface|camera|health/i);
+    expect(html).toContain("@media (max-width: 480px) { .overview-grid { grid-template-columns: minmax(0, 1fr); } }");
+
+    const malformed = fixture("overview");
+    malformed.module.tiles[2].material = "secret/access_token/private";
+    malformed.module.tiles[4].pageCount = 21;
+    const isolated = mount({ toolOutput: malformed }).modules.innerHTML;
+    expect((isolated.match(/Data could not be read/g) ?? []).length).toBe(2);
+    expect(isolated).toContain("Coverage partial");
+    expect(isolated).toContain("42%");
+    expect(isolated).toContain("0 jobs queued");
+    expect(isolated).not.toContain("secret/access_token/private");
+  });
+
+  test("unobserved Fans remain explicit, not empty success or synthetic charts", () => {
     const fans = mount({ toolOutput: fixture("fans") }).modules.innerHTML;
     expect(fans).toContain("Fans not observed");
     expect(fans).toContain("Refresh to request fan and purifier readings.");

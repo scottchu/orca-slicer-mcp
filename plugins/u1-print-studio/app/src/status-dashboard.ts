@@ -53,6 +53,7 @@ const CAMERA_DASHBOARD_HOST_PATH = path.resolve(
 );
 const DASHBOARD_PATH = "/dashboard";
 const FOCUSED_DASHBOARD_PATHS = new Set([
+  "/dashboard/overview",
   "/dashboard/progress",
   "/dashboard/thermals",
   "/dashboard/heads",
@@ -236,7 +237,7 @@ export function createStatusDashboardHandler(
           res,
           200,
           observationPayload(
-            await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans", includeCurrentJob: view === "jobs", includeJobHistory: view === "job_history" }),
+            await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" || view === "overview", includeMaterials: view === "heads" || view === "overview", includeQueue: view === "queue" || view === "overview", includeEnvironment: view === "thermals" || view === "fans" || view === "overview", includeCurrentJob: view === "jobs" || view === "overview", includeJobHistory: view === "job_history" || view === "overview" }),
             view as ObservationView
           )
         );

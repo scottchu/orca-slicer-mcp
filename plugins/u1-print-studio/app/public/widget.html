@@ -141,6 +141,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .fan-group { margin: 0 24px 8px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
       .fan-group + .strip-list { margin-bottom: 22px; }
       .fan-state { color: var(--muted); font-size: 12px; }
+      .overview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 0 24px 18px; }
+      .overview-tile { min-width: 0; padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: var(--soft); }
+      .overview-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+      .overview-heading h3 { margin: 0; font-size: 15px; font-weight: 630; letter-spacing: -.02em; }
+      .coverage { flex: none; color: var(--muted); font-size: 10px; font-weight: 720; letter-spacing: .05em; text-transform: uppercase; }
+      .coverage.complete { color: #346c49; }
+      .overview-coverage { flex: none; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+      .overview-primary { margin: 0; font-size: 18px; font-weight: 580; line-height: 1.35; overflow-wrap: anywhere; }
+      .overview-secondary { margin: 6px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+      .overview-receipts { display: grid; gap: 3px; margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; line-height: 1.45; overflow-wrap: anywhere; }
       .mesh-body { padding: 0 24px 20px; }
       .mesh-caption { margin: 0 0 12px; color: var(--muted); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
       .mesh-map { display: block; width: min(100%, 320px); margin: 0 auto 12px; color: var(--muted); }
@@ -174,6 +184,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       @keyframes spin { to { transform: rotate(360deg); } }
       @media (prefers-reduced-motion: reduce) { .refresh[aria-busy="true"] svg { animation: none; } }
       @media (max-width: 760px) { .head-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (max-width: 480px) { .overview-grid { grid-template-columns: minmax(0, 1fr); } }
       @media (max-width: 620px) {
         body { padding: calc(10px + var(--safe-top)) calc(8px + var(--safe-right)) calc(10px + var(--safe-bottom)) calc(8px + var(--safe-left)); }
         .modules { gap: 10px; }
@@ -196,6 +207,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         .job-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .history-heading { display: block; }
         .history-status { display: block; margin-top: 5px; }
+        .overview-grid { padding-right: 18px; padding-left: 18px; }
       }
       @media (max-width: 620px) {
         .icon-tile { width: 44px; height: 52px; border-radius: 12px; }
@@ -238,7 +250,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const titleIcons = Object.freeze({ "Print Progress": "printer", Thermals: "thermometer", "Heads & Filaments": "layers", "Current Job": "file-text", "Job History": "clock", Queue: "list", "Fans & Air": "wind", "Bed Mesh": "grid", Overview: "activity" });
       const provenance = () => `<footer class="instrument-footer"><button class="refresh" type="button" title="Refresh observation" aria-label="Refresh observation">${icon("refresh-cw")}</button></footer>`;
       const header = (title, showObservation = true, sourceObservedAt = observation?.sourceObservedAt, freshness = observation?.freshness, message = "", trailing = "") => `<header class="instrument-header"><span class="icon-tile" aria-hidden="true">${icon(titleIcons[title])}</span><div class="instrument-title"><h2>${escapeHtml(title)}</h2>${showObservation ? observationInfo(sourceObservedAt, freshness) : ""}${message ? `<div class="domain-warning" role="status">${escapeHtml(message)}</div>` : ""}</div>${trailing}</header>`;
-      const unknown = (title, data) => `<section class="instrument">${header(title)}<div class="empty-panel"><strong>${data?.kind === "overview" ? "Overview deferred" : "Not implemented yet"}</strong>${data?.kind === "overview" ? "The combined overview is not implemented." : "This view’s printer-data mapping is not implemented. Values are unknown."}</div>${provenance(data?.provenance)}</section>`;
       const layerPosition = (fields) => {
         const current = valueOf(fields?.currentLayer); const total = valueOf(fields?.totalLayers);
         return Number.isSafeInteger(current) && Number.isSafeInteger(total) && total > 0 && current >= 0 && current <= total ? { current, total } : null;
@@ -568,7 +579,73 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         const controls = `<footer class="instrument-footer mesh-controls"><button type="button" data-mesh-mode="3d" aria-pressed="${meshView.mode === "3d"}">3D surface</button><button type="button" data-mesh-mode="2d" aria-pressed="${meshView.mode === "2d"}">2D grid</button><label>Height × <select class="mesh-height" aria-label="Height display multiplier"${meshView.mode === "2d" ? " disabled" : ""}>${[1, 100, 300].map(n => `<option value="${n}"${meshView.height === n ? " selected" : ""}>${n}x</option>`).join("")}</select></label><button type="button" class="mesh-reset">Reset view</button><button class="refresh" type="button" title="Refresh observation" aria-label="Refresh observation">${icon("refresh-cw")}</button></footer>`;
         return `<section class="instrument">${heading}<div class="mesh-body"><p class="mesh-caption">Reported probe grid · ${columns} × ${rows}${profile}</p><div class="mesh-chart" data-mode="${meshView.mode}" tabindex="0" role="group" aria-label="Bed mesh view. Drag to rotate; arrow keys rotate and tilt; Home resets view.">${plot}</div>${legend}<p class="mesh-help">${meshInstructions()}</p><dl class="mesh-summary"><div><dt>Minimum</dt><dd>${meshMm(min)}</dd></div><div><dt>Maximum</dt><dd>${meshMm(max)}</dd></div><div><dt>Range</dt><dd>${meshMm(range)}</dd></div></dl></div>${controls}</section>`;
       };
-      const renderOverview = (data) => unknown("Overview", data);
+      const overviewStates = ["known", "stale", "unknown", "unsupported", "unavailable"];
+      const overviewReasons = ["not_requested", "not_reported", "unsupported", "unauthorized", "http_error", "timeout", "network", "malformed", "too_large", "not_configured", null];
+      const validOverviewTime = value => { if (typeof value !== "string" || value.length > 40) return false; const milliseconds = new Date(value).valueOf(); return Number.isFinite(milliseconds) && milliseconds >= 0 && milliseconds <= 253402300799000; };
+      const validOverviewReceipt = (receipt, status = false) => {
+        if (!receipt || !overviewStates.includes(receipt.state) || !overviewReasons.includes(receipt.reason ?? null)) return false;
+        if (receipt.state === "known") return receipt.freshness === "fresh" && validOverviewTime(receipt.sourceObservedAt);
+        if (receipt.state === "stale") return receipt.freshness === "stale" && validOverviewTime(receipt.sourceObservedAt);
+        if (status && receipt.state === "unavailable") return ["offline", "unknown"].includes(receipt.freshness) && (receipt.sourceObservedAt === null || validOverviewTime(receipt.sourceObservedAt));
+        return receipt.freshness === "unknown" && receipt.sourceObservedAt === null;
+      };
+      const exactKeys = (value, keys) => value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).sort().join("|") === [...keys].sort().join("|");
+      const safeHeadline = value => typeof value === "string" && value.length > 0 && Array.from(value).length <= 160 && !/[\\/\r\n]/.test(value) && !/(?:gh[pousr]_[a-z0-9]{16,255}|github_pat_[a-z0-9_]{16,255}|glpat-[a-z0-9_-]{16,255}|xox[baprs]-[a-z0-9-]{16,255}|(?:AKIA|ASIA)[a-z0-9]{16})/i.test(value) && !/\b(?:bearer|basic)\s+|\b(?:api[-_ ]?key|(?:access|refresh)[-_ ]?token|password|secret|credential)[ _.-]+\S|\bsk-(?:proj-)?[a-z0-9_-]{8,}|\beyJ[a-z0-9_-]+\.[a-z0-9_-]+\.[a-z0-9_-]+/i.test(value);
+      const validOverviewTileBase = (tile, id) => tile?.id === id && overviewStates.includes(tile.state);
+      const validOverviewModule = data => {
+        const ids = ["progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"];
+        if (!data || data.kind !== "overview" || !overviewStates.includes(data.state) || !["complete", "partial", "none"].includes(data.coverage) || !Array.isArray(data.tiles) || data.tiles.length !== ids.length || !data.tiles.every((tile, index) => validOverviewTileBase(tile, ids[index]))) return false;
+        const available = data.tiles.filter(tile => tile.state === "known" || tile.state === "stale").length;
+        const expectedCoverage = available === 0 ? "none" : available === data.tiles.length ? "complete" : "partial";
+        return data.coverage === expectedCoverage;
+      };
+      const validOverviewTile = (tile, index) => {
+        const printStates = ["standby", "printing", "paused", "complete", "cancelled", "error", "unknown"];
+        const nullableNumber = (value, min, max) => value === null || validNumber(value) && value >= min && value <= max;
+        const safeLayer = value => value === null || Number.isSafeInteger(value) && value >= 0 && value <= 1000000;
+        const tool = value => value === null || Number.isSafeInteger(value) && value >= 1 && value <= 4;
+        const temperature = value => nullableNumber(value, -273.15, 999);
+        const historyStatuses = ["in_progress", "completed", "cancelled", "error", "klippy_shutdown", "klippy_disconnect", "interrupted", "unknown"];
+        const queueStates = ["ready", "loading", "starting", "paused"];
+        const purifierModes = ["idle", "cool_chamber", "preheat_chamber", "hot_chamber", null];
+        const dimension = value => value === null || Number.isSafeInteger(value) && value >= 2 && value <= 64;
+        const receipt = (keys, statusKey = null) => exactKeys(tile.receipts, keys) && keys.every(key => validOverviewReceipt(tile.receipts[key], key === statusKey)) && (!statusKey || tile.receipts[statusKey].sourceObservedAt === observation?.sourceObservedAt && tile.receipts[statusKey].freshness === observation?.freshness);
+        if (index === 0) return receipt(["status"], "status") && printStates.includes(tile.printState) && nullableNumber(tile.percent, 0, 100) && safeLayer(tile.currentLayer) && safeLayer(tile.totalLayers) && nullableNumber(tile.estimatedRemainingSeconds, 0, Number.MAX_SAFE_INTEGER) && !(tile.currentLayer !== null && tile.totalLayers !== null && tile.currentLayer > tile.totalLayers);
+        if (index === 1) { const values = [tile.activeTool, tile.activeActualC, tile.activeTargetC, tile.bedActualC, tile.bedTargetC, tile.cavityActualC]; return receipt(["status", "environment"], "status") && tool(tile.activeTool) && values.slice(1).every(temperature) && !(tile.activeTool === null && (tile.activeActualC !== null || tile.activeTargetC !== null)); }
+        if (index === 2) { const color = tile.color === null || typeof tile.color === "string" && /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i.test(tile.color); return receipt(["status", "materials"], "status") && tool(tile.activeTool) && (tile.material === null || safeHeadline(tile.material)) && color && (tile.reportedPresence === null || typeof tile.reportedPresence === "boolean") && !(tile.activeTool === null && (tile.material !== null || tile.color !== null || tile.reportedPresence !== null)); }
+        if (index === 3) return receipt(["currentJob"]) && (tile.printState === null || printStates.includes(tile.printState)) && (tile.storageActive === null || typeof tile.storageActive === "boolean");
+        if (index === 4) return receipt(["jobHistory"]) && (tile.pageCount === null || Number.isSafeInteger(tile.pageCount) && tile.pageCount >= 0 && tile.pageCount <= 20) && (tile.pageCount === null ? tile.statusCounts === null : exactKeys(tile.statusCounts, historyStatuses) && historyStatuses.every(status => Number.isSafeInteger(tile.statusCounts[status]) && tile.statusCounts[status] >= 0 && tile.statusCounts[status] <= 20) && historyStatuses.reduce((sum, status) => sum + tile.statusCounts[status], 0) === tile.pageCount);
+        if (index === 5) return receipt(["queue"]) && (tile.queueState === null || queueStates.includes(tile.queueState)) && (tile.totalCount === null || Number.isSafeInteger(tile.totalCount) && tile.totalCount >= 0 && tile.totalCount <= 1000);
+        if (index === 6) return receipt(["environment"]) && (tile.reportedFanCount === null || Number.isSafeInteger(tile.reportedFanCount) && tile.reportedFanCount >= 0 && tile.reportedFanCount <= 7) && (tile.purifierPowerDetected === null || typeof tile.purifierPowerDetected === "boolean") && purifierModes.includes(tile.purifierMode) && !(tile.purifierPowerDetected !== true && tile.purifierMode !== null);
+        return receipt(["bedMesh"]) && (tile.active === null || typeof tile.active === "boolean") && dimension(tile.rows) && dimension(tile.columns) && nullableNumber(tile.rangeMillimeters, 0, 2000000) && !(tile.active === false && (tile.rows !== null || tile.columns !== null || tile.rangeMillimeters !== null)) && !(tile.active === null && (tile.rows !== null || tile.columns !== null || tile.rangeMillimeters !== null)) && !(tile.active === true && (tile.rows === null || tile.columns === null || tile.rangeMillimeters === null));
+      };
+      const overviewReceipt = (label, receipt) => {
+        const state = ({ unknown: "Not observed", unsupported: "Unsupported", unavailable: "Unavailable" })[receipt.state];
+        const freshness = freshnessLabel(receipt.freshness);
+        return `<span>${escapeHtml(label)} · ${state ? escapeHtml(state) : escapeHtml(observedLabel(receipt.sourceObservedAt))}${freshness ? ` · ${escapeHtml(freshness)}` : ""}</span>`;
+      };
+      const overviewTile = (tile, title, primary, secondary, receipts) => { const state = ({ known: "Available", stale: "Stale", unknown: "Not observed", unsupported: "Unsupported", unavailable: "Unavailable" })[tile.state]; return `<article class="overview-tile" data-overview-tile="${tile.id}"><div class="overview-heading"><h3>${escapeHtml(title)}</h3><span class="coverage ${tile.state === "known" ? "complete" : ""}">${escapeHtml(state)}</span></div><p class="overview-primary">${primary}</p>${secondary ? `<p class="overview-secondary">${secondary}</p>` : ""}<div class="overview-receipts">${receipts}</div></article>`; };
+      const invalidOverviewTile = (tile, title) => `<article class="overview-tile" data-overview-tile="${tile.id}"><div class="overview-heading"><h3>${escapeHtml(title)}</h3><span class="coverage">Unavailable</span></div><p class="overview-primary">Data could not be read</p><p class="overview-secondary">This headline was rejected; the other domains remain available.</p><div class="overview-receipts"><span>Observation unavailable</span></div></article>`;
+      const renderOverview = data => {
+        if (!validOverviewModule(data)) return `<section class="instrument">${header("Overview", true, null, "unknown", "Overview data could not be read.")}<div class="empty-panel"><strong>Overview unavailable</strong>No current overview headlines are available.</div>${provenance()}</section>`;
+        const [progress, thermals, heads, jobs, history, queue, fans, mesh] = data.tiles;
+        const valid = data.tiles.map(validOverviewTile);
+        const time = seconds => seconds === null ? "Estimate unknown" : `About ${escapeHtml(formatDuration({ state: "known", value: seconds }))} left`;
+        const statusLabel = value => ({ in_progress: "in progress", completed: "completed", cancelled: "cancelled", error: "error", klippy_shutdown: "Klippy shutdown", klippy_disconnect: "Klippy disconnected", interrupted: "interrupted", unknown: "unknown" })[value];
+        const tiles = [
+          valid[0] ? (() => { const primary = progress.percent === null ? "Progress unknown" : `${progress.percent.toFixed(progress.percent % 1 ? 1 : 0)}% · ${escapeHtml(({ standby: "Ready", printing: "Printing", paused: "Paused", complete: "Complete", cancelled: "Cancelled", error: "Error", unknown: "Unknown" })[progress.printState])}`; const secondary = progress.currentLayer !== null && progress.totalLayers !== null ? `Layer ${progress.currentLayer} / ${progress.totalLayers} · ${time(progress.estimatedRemainingSeconds)}` : time(progress.estimatedRemainingSeconds); return overviewTile(progress, "Progress", primary, secondary, overviewReceipt("Printer", progress.receipts.status)); })() : invalidOverviewTile(progress, "Progress"),
+          valid[1] ? (() => { const primary = thermals.activeTool === null ? "Active tool unknown" : `T${thermals.activeTool} ${thermals.activeActualC === null ? "Unknown" : `${Math.round(thermals.activeActualC)}°`} / ${thermals.activeTargetC === null ? "Unknown" : `${Math.round(thermals.activeTargetC)}°`}`; const secondary = `Bed ${thermals.bedActualC === null ? "Unknown" : `${Math.round(thermals.bedActualC)}°`} / ${thermals.bedTargetC === null ? "Unknown" : `${Math.round(thermals.bedTargetC)}°`} · Cavity ${thermals.cavityActualC === null ? "Unknown" : `${Math.round(thermals.cavityActualC)}°`}`; return overviewTile(thermals, "Thermals", primary, secondary, overviewReceipt("Printer", thermals.receipts.status) + overviewReceipt("Cavity", thermals.receipts.environment)); })() : invalidOverviewTile(thermals, "Thermals"),
+          valid[2] ? (() => { const color = heads.color === null ? "" : `<span class="material-swatch" aria-hidden="true" style="display:inline-block;vertical-align:-4px;margin-right:7px;background-color:${heads.color}"></span>`; const primary = heads.activeTool === null ? "Active head unknown" : `T${heads.activeTool} · ${heads.material === null ? "Material unknown" : escapeHtml(heads.material)}`; const presence = heads.reportedPresence === null ? "Presence unknown" : heads.reportedPresence ? "Filament reported present" : "No filament reported"; return overviewTile(heads, "Heads & Filaments", `${color}${primary}`, presence, overviewReceipt("Printer", heads.receipts.status) + overviewReceipt("Material", heads.receipts.materials)); })() : invalidOverviewTile(heads, "Heads & Filaments"),
+          valid[3] ? (() => { const state = jobs.printState === null ? "State not reported" : ({ standby: "Standby", printing: "Printing", paused: "Paused", complete: "Complete", error: "Error", cancelled: "Cancelled", unknown: "Unknown" })[jobs.printState]; const storage = jobs.storageActive === null ? "Storage not reported" : jobs.storageActive ? "Storage active" : "Storage inactive"; return overviewTile(jobs, "Current Job", escapeHtml(state), escapeHtml(storage), overviewReceipt("Current Job", jobs.receipts.currentJob)); })() : invalidOverviewTile(jobs, "Current Job"),
+          valid[4] ? (() => { const secondary = history.statusCounts === null ? "Status aggregate unavailable" : Object.entries(history.statusCounts).filter(([, count]) => count > 0).map(([status, count]) => `${count} ${statusLabel(status)}`).join(" · ") || "No statuses returned"; return overviewTile(history, "Job History", history.pageCount === null ? "Page not observed" : `${history.pageCount} ${history.pageCount === 1 ? "job" : "jobs"} returned`, escapeHtml(secondary), overviewReceipt("History", history.receipts.jobHistory)); })() : invalidOverviewTile(history, "Job History"),
+          valid[5] ? (() => { const state = queue.queueState === null ? "State unknown" : ({ ready: "Ready", loading: "Loading", starting: "Starting", paused: "Paused" })[queue.queueState]; return overviewTile(queue, "Queue", escapeHtml(state), queue.totalCount === null ? "Count unknown" : `${queue.totalCount} ${queue.totalCount === 1 ? "job" : "jobs"} queued`, overviewReceipt("Queue", queue.receipts.queue)); })() : invalidOverviewTile(queue, "Queue"),
+          valid[6] ? (() => { const mode = fans.purifierPowerDetected !== true ? "" : ` · ${({ idle: "Idle", cool_chamber: "Cool chamber", preheat_chamber: "Preheat chamber", hot_chamber: "Hot chamber" })[fans.purifierMode] ?? "Mode unknown"}`; const purifier = fans.purifierPowerDetected === null ? "Purifier not reported" : fans.purifierPowerDetected ? `Purifier detected${mode}` : "Purifier not detected"; return overviewTile(fans, "Fans & Air", fans.reportedFanCount === null ? "Fans not observed" : `${fans.reportedFanCount} of 7 fans reported`, escapeHtml(purifier), overviewReceipt("Environment", fans.receipts.environment)); })() : invalidOverviewTile(fans, "Fans & Air"),
+          valid[7] ? (() => { const primary = mesh.active === null ? "Mesh state unknown" : mesh.active ? "Active mesh" : "No active mesh"; const secondary = mesh.active === true ? `${mesh.columns} × ${mesh.rows} · ${mesh.rangeMillimeters.toFixed(3)} mm range` : ""; return overviewTile(mesh, "Bed Mesh", primary, secondary, overviewReceipt("Bed Mesh", mesh.receipts.bedMesh)); })() : invalidOverviewTile(mesh, "Bed Mesh"),
+        ].join("");
+        const available = data.tiles.filter((tile, index) => valid[index] && (tile.state === "known" || tile.state === "stale")).length;
+        const renderedCoverage = available === 0 ? "none" : available === data.tiles.length ? "complete" : "partial";
+        return `<section class="instrument overview-instrument">${header("Overview", true, observation.sourceObservedAt, observation.freshness, "", `<span class="overview-coverage">Coverage ${renderedCoverage}</span>`)}<div class="overview-grid">${tiles}</div>${provenance()}</section>`;
+      };
       const renderers = { overview: renderOverview, progress: renderProgress, thermals: renderThermals, heads: renderHeads, jobs: renderJobs, job_history: renderJobHistory, queue: renderQueue, fans: renderFans, bed_mesh: renderBedMesh };
       const render = () => { if (!observation?.module) return; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); if (view === "bed_mesh") bindMeshControls(); if (view === "heads") bindMaterialCopy(); window.openai?.notifyIntrinsicHeight?.(); };
       const rpcNotify = (method, params) => window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
@@ -621,7 +698,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       };
       const initializeBridge = async () => {
-        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.5" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
+        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.6" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
         rpcNotify("ui/notifications/initialized", {});
         return result;
       };

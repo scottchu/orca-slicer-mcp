@@ -71,6 +71,7 @@ export const LEGACY_CAMERA_WIDGET_URIS = [
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v11.html",
   "ui://u1-print-studio/observation-v10.html",
   "ui://u1-print-studio/observation-v9.html",
   "ui://u1-print-studio/observation-v8.html",
@@ -517,7 +518,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans", includeCurrentJob: view === "jobs", includeJobHistory: view === "job_history" }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" || view === "overview", includeMaterials: view === "heads" || view === "overview", includeQueue: view === "queue" || view === "overview", includeEnvironment: view === "thermals" || view === "fans" || view === "overview", includeCurrentJob: view === "jobs" || view === "overview", includeJobHistory: view === "job_history" || view === "overview" }),
         view
       );
     }) as any
@@ -546,7 +547,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans", includeCurrentJob: view === "jobs", includeJobHistory: view === "job_history" }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" || view === "overview", includeMaterials: view === "heads" || view === "overview", includeQueue: view === "queue" || view === "overview", includeEnvironment: view === "thermals" || view === "fans" || view === "overview", includeCurrentJob: view === "jobs" || view === "overview", includeJobHistory: view === "job_history" || view === "overview" }),
         view
       );
     }) as any

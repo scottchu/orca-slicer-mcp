@@ -117,6 +117,23 @@ printer environments support the described behavior.
   unavailable and stale remain distinct. Each compact white card keeps its own
   information/freshness above one bottom Refresh; no pagination, row action,
   mutation or printer control is added. Decision 0025 fixes exact semantics.
+- **OBS-015:** Overview is one compact read-only composition of the exact eight
+  accepted focused projections: Progress, Thermals, Heads, Current Job, Job
+  History, Queue, Fans and Bed Mesh. Explicit Overview demand acquires main
+  status plus the six independent non-camera domains concurrently through their
+  existing readers, receipts, 15-second attempt TTLs, coalescing, stale
+  retention and fixture isolation. It adds no adapter, cache, timer or
+  normalization path; static/index/health and unrelated focused views never
+  fan out, and Camera remains separate. Each headline tile preserves its own
+  state, source time, freshness and reason, while the header printer state/time
+  belongs only to main status. Coverage is `complete` when all eight projections
+  have known or retained stale data, `partial` when some but not all do, and
+  `none` when none do; this is coverage, never overall health or freshness.
+  Render one compact responsive white card with privacy-minimized headline
+  facts, two columns collapsing to one and exactly one bottom Refresh. Do not
+  embed full cards, lists, charts, mesh surfaces, navigation, pagination,
+  controls, Camera/media, filenames, projects, IDs, raw rows or metadata.
+  Decision 0021 fixes the projection and presentation boundary.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -262,21 +279,20 @@ printer environments support the described behavior.
   `progress`, `thermals`, `heads`, `jobs`, `job_history`, `queue`, `fans`, and
   `bed_mesh`; `jobs` remains the stable Current Job selector while
   `job_history` independently selects Job History. Their selected modules do
-  not combine current-job and history fields. Until OBS-014 integration ships,
-  unimplemented history stays explicitly unknown, not an empty successful
-  result or observed history time;
+  not combine current-job and history fields. Current Job and History retain
+  independent acquisition, receipts and projections;
   unknown values and generic selector fields fail closed. Exactly eight
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v11` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v12` is the
   focused presentation resource. Every explicit camera open or reopen creates
   a fresh snapshot-first `camera-v8` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v10/v9/v8/v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
+  Observation-v11/v10/v9/v8/v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
-  Source target is runtime 0.4.5/tool schema 11 with twenty-one resources; this source
+  Source target is runtime 0.4.6/tool schema 12 with twenty-two resources; this source
   contract does not claim deployment of those bytes to existing services.
 
 ## Architecture and ontology
@@ -287,13 +303,14 @@ printer environments support the described behavior.
   checks, and recoverable configuration switching. Lifecycle tooling remains
   local and allowlisted; no generic service or MCP Admin surface is added.
 - **DEPLOY-002:** Private `/dashboard` and `/dashboard/` serve one static
-  navigation directory for the nine accepted focused routes, including
+  navigation directory for the ten accepted observation routes, including
   separate Current Job and Job History links. Existing `/dashboard/jobs`
   remains Current Job; `/dashboard/job_history` opens Job History. Each entry
   distinguishes implemented, partial, or unimplemented data coverage without
   implying live printer health. Focused routes select only accepted closed
-  views; overview remains deferred. Public services do not expose these
-  private routes. Directory loading and health/static asset checks never
+  views. Public services do not expose these private routes. The implemented
+  Overview uses `/dashboard/overview` and appears in the directory only with
+  coverage-backed composition. Directory loading and health/static asset checks never
   implicitly mount widgets, invoke tools, or acquire printer status, snapshots,
   or video.
 - **DEPLOY-003:** All HTTP requests in one service process share one application

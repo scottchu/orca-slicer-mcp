@@ -22,6 +22,13 @@ import type {
   U1WidgetMetadata,
 } from "./u1-status.js";
 import { CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS } from "./u1-status.js";
+import { PrinterObservationStore } from "./observation-store.js";
+import { unavailableBedMesh } from "./application/bed-mesh-observation.js";
+import { unavailableMaterials } from "./application/material-observation.js";
+import { unavailableQueue } from "./application/queue-observation.js";
+import { unavailableEnvironment } from "./application/environment-observation.js";
+import { unavailableCurrentJob } from "./application/current-job-observation.js";
+import { unavailableJobHistory } from "./application/job-history-observation.js";
 
 const MCP_CONFIG = JSON.parse(
   readFileSync(new URL("../../.mcp.json", import.meta.url), "utf8")
@@ -93,6 +100,7 @@ async function connectClient(options: {
   statusResult?: U1Status;
   cameraResult?: { frame: U1CameraFrame; metadata: U1WidgetMetadata };
   sessionFailure?: Error;
+  observations?: PrinterObservationStore;
 } = {}) {
   const server = createAppServer({
     readStatus: async () => {
@@ -103,6 +111,7 @@ async function connectClient(options: {
       frame: cameraFrame,
       metadata: cameraMetadata,
     }),
+    ...(options.observations ? { observations: options.observations } : {}),
     ...(options.relay
       ? {
           cameraSessions: {
@@ -156,6 +165,52 @@ async function connectClient(options: {
 }
 
 describe("U1 status MCP App contract", () => {
+  test("Overview alone acquires and coalesces all six optional domains without leaking demand to focused or static reads", async () => {
+    const counts = { status: 0, mesh: 0, materials: 0, queue: 0, environment: 0, current: 0, history: 0 };
+    const receipt = "2026-08-31T23:30:00.000Z";
+    const store = new PrinterObservationStore(
+      async () => { counts.status++; return { status, metadata }; },
+      () => new Date(receipt),
+      async () => { counts.mesh++; return unavailableBedMesh("not_reported", receipt); },
+      async () => { counts.materials++; return unavailableMaterials("not_reported", receipt); },
+      async () => { counts.queue++; return unavailableQueue("network", receipt); },
+      async () => { counts.environment++; return unavailableEnvironment("network", receipt); },
+      async () => { counts.current++; return unavailableCurrentJob("network", receipt); },
+      async () => { counts.history++; return unavailableJobHistory("network", receipt); },
+    );
+    const client = await connectClient({ observations: store });
+    const [first, second] = await Promise.all([1, 2].map(() => client.callTool({
+      name: "observe_printer", arguments: { view: "overview" },
+    })));
+    expect(counts).toEqual({ status: 1, mesh: 1, materials: 1, queue: 1,
+      environment: 1, current: 1, history: 1 });
+    for (const result of [first, second]) expect(result.structuredContent).toMatchObject({
+      view: "overview", module: { kind: "overview", tiles: [
+        { id: "progress" }, { id: "thermals" }, { id: "heads" }, { id: "jobs" },
+        { id: "job_history" }, { id: "queue" }, { id: "fans" }, { id: "bed_mesh" },
+      ] },
+    });
+    await client.callTool({ name: "observe_printer", arguments: { view: "progress" } });
+    await client.listResources();
+    expect(counts).toEqual({ status: 1, mesh: 1, materials: 1, queue: 1,
+      environment: 1, current: 1, history: 1 });
+
+    let isolatedReads = 0;
+    const isolated = new PrinterObservationStore(async () => {
+      isolatedReads++; return { status, metadata };
+    }, () => new Date(receipt));
+    const isolatedClient = await connectClient({ observations: isolated });
+    const isolatedResult = await isolatedClient.callTool({ name: "observe_printer", arguments: { view: "overview" } });
+    expect(isolatedReads).toBe(1);
+    expect(isolatedResult.structuredContent).toMatchObject({
+      module: { kind: "overview", coverage: "partial", tiles: expect.arrayContaining([
+        expect.objectContaining({ id: "queue", state: "unknown" }),
+        expect.objectContaining({ id: "fans", state: "unknown" }),
+        expect.objectContaining({ id: "bed_mesh", state: "unknown" }),
+      ]) },
+    });
+  });
+
   test("keeps the MCP tool budget above the bounded camera relay budget", () => {
     const serverConfig = MCP_CONFIG.mcpServers["u1-print-studio"];
     const cameraBudgetSeconds =
@@ -178,8 +233,9 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v11.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v12.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
+      "ui://u1-print-studio/observation-v11.html",
       "ui://u1-print-studio/observation-v10.html",
       "ui://u1-print-studio/observation-v9.html",
       "ui://u1-print-studio/observation-v8.html",
@@ -305,8 +361,8 @@ describe("U1 status MCP App contract", () => {
   test("retains previous current observation and camera aliases with exact frozen legacy resources", async () => {
     const client = await connectClient();
     const listed = await client.listResources();
-    expect(listed.resources).toHaveLength(21);
-    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v10.html");
+    expect(listed.resources).toHaveLength(22);
+    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v11.html");
     for (const uri of [...LEGACY_FOCUSED_WIDGET_URIS,
       "ui://u1-print-studio/camera-v7.html", "ui://u1-print-studio/camera-v6.html",
       "ui://u1-print-studio/camera-v5.html", "ui://u1-print-studio/camera-v4.html",
@@ -564,7 +620,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 11,
+      schemaVersion: 12,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });
@@ -697,7 +753,7 @@ describe("U1 status MCP App contract", () => {
     expect(statusResult.structuredContent).toMatchObject({
       printerState: "unknown",
       printerStateLabel: "Unknown",
-      module: { kind: "overview", state: "unavailable" },
+      module: { kind: "overview", state: "known", coverage: "partial" },
     });
     expect(streamFailure.isError).toBe(true);
     expect(publicEnvelope).toContain("camera_stream_unavailable");
@@ -867,7 +923,7 @@ describe("instrument-strip observation widget contract", () => {
     expect(() => new Function(`"use strict";\n${source}`)).not.toThrow();
   });
 
-  test("renders exactly one focused module and keeps overview deferred", () => {
+  test("renders exactly one selected focused or composed Overview module", () => {
     expect(WIDGET_HTML).toContain('const VIEWS = ["overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]');
     expect(WIDGET_HTML).toContain("const renderers = {");
     expect(WIDGET_HTML).toContain("progress: renderProgress");

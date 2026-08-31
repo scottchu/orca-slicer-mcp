@@ -36,10 +36,81 @@ type ModuleBase = {
   provenance: Provenance;
 };
 
+type OverviewCoverage = "complete" | "partial" | "none";
+type OverviewReceipt = {
+  state: EvidenceState;
+  sourceObservedAt: string | null;
+  freshness: Freshness;
+  reason?: string | null;
+};
+type OverviewTileBase = {
+  state: EvidenceState;
+};
 type OverviewModule = ModuleBase & {
   kind: "overview";
-  status: "deferred";
-  detail: string;
+  coverage: OverviewCoverage;
+  tiles: [
+    OverviewTileBase & {
+      id: "progress";
+      receipts: { status: OverviewReceipt };
+      printState: string;
+      percent: number | null;
+      currentLayer: number | null;
+      totalLayers: number | null;
+      estimatedRemainingSeconds: number | null;
+    },
+    OverviewTileBase & {
+      id: "thermals";
+      receipts: { status: OverviewReceipt; environment: OverviewReceipt };
+      activeTool: number | null;
+      activeActualC: number | null;
+      activeTargetC: number | null;
+      bedActualC: number | null;
+      bedTargetC: number | null;
+      cavityActualC: number | null;
+    },
+    OverviewTileBase & {
+      id: "heads";
+      receipts: { status: OverviewReceipt; materials: OverviewReceipt };
+      activeTool: number | null;
+      material: string | null;
+      color: string | null;
+      reportedPresence: boolean | null;
+    },
+    OverviewTileBase & {
+      id: "jobs";
+      receipts: { currentJob: OverviewReceipt };
+      printState: CurrentJobObservation["printState"]["value"];
+      storageActive: boolean | null;
+    },
+    OverviewTileBase & {
+      id: "job_history";
+      receipts: { jobHistory: OverviewReceipt };
+      pageCount: number | null;
+      statusCounts: Record<JobHistoryObservation["items"][number]["status"], number> | null;
+    },
+    OverviewTileBase & {
+      id: "queue";
+      receipts: { queue: OverviewReceipt };
+      queueState: QueueObservation["queueState"];
+      totalCount: number | null;
+    },
+    OverviewTileBase & {
+      id: "fans";
+      receipts: { environment: OverviewReceipt };
+      reportedFanCount: number | null;
+      purifierPowerDetected: boolean | null;
+      purifierMode: EnvironmentObservation["purifier"]["mode"];
+    },
+    OverviewTileBase & {
+      id: "bed_mesh";
+      receipts: { bedMesh: OverviewReceipt };
+      active: boolean | null;
+      rows: number | null;
+      columns: number | null;
+      rangeMillimeters: number | null;
+    },
+  ];
 };
 type ProgressModule = ModuleBase & {
   kind: "progress";
@@ -174,14 +245,27 @@ function moduleBase(
   };
 }
 
-function projectOverview(snapshot: ObservationSnapshot): OverviewModule {
-  const detail = "Overview composition is deferred until every focused module is accepted";
+function statusReceipt(snapshot: ObservationSnapshot): OverviewReceipt {
   return {
-    ...moduleBase(snapshot, "overview", false, "unsupported", detail),
-    kind: "overview",
-    state: "unavailable",
-    status: "deferred",
-    detail: "Use one focused view; overview is not accepted yet",
+    state: snapshot.status.reachable
+      ? snapshot.freshness === "stale" ? "stale" : "known"
+      : "unavailable",
+    sourceObservedAt: snapshot.sourceObservedAt,
+    freshness: snapshot.freshness,
+  };
+}
+
+function domainReceipt(domain: {
+  state: EvidenceState;
+  sourceObservedAt: string | null;
+  freshness: "fresh" | "stale" | "unknown";
+  reason: string | null;
+}): OverviewReceipt {
+  return {
+    state: domain.state,
+    sourceObservedAt: domain.sourceObservedAt,
+    freshness: domain.freshness,
+    reason: domain.reason,
   };
 }
 
@@ -391,6 +475,111 @@ function projectBedMesh(snapshot: ObservationSnapshot): BedMeshModule {
       sourceObservedAt: mesh.sourceObservedAt,
       detail: "Server receipt of the reported probe grid, not calibration or probe capture time; rows Y and columns X ascend in millimeters",
     },
+  };
+}
+
+function projectOverview(snapshot: ObservationSnapshot): OverviewModule {
+  // Overview deliberately composes the accepted focused projectors. It does not
+  // re-normalize adapter data or embed their privacy-sensitive rows and samples.
+  const progress = projectProgress(snapshot);
+  const thermals = projectThermals(snapshot);
+  const heads = projectHeads(snapshot);
+  const jobs = projectJobs(snapshot);
+  const history = projectJobHistory(snapshot);
+  const queue = projectQueue(snapshot);
+  const fans = projectFans(snapshot);
+  const mesh = projectBedMesh(snapshot);
+
+  const activeThermal = thermals.readings.find(reading => reading.active?.value === true);
+  const bed = thermals.readings.find(reading => reading.id === "heater-bed");
+  const cavity = thermals.readings.find(reading => reading.id === "cavity");
+  const activeHead = heads.items.find(item => item.active.value === true);
+  const currentValues = [
+    jobs.printState.reported ? jobs.printState.value : null,
+    jobs.storageActive.reported ? jobs.storageActive.value : null,
+  ];
+  const historyStatuses = [
+    "in_progress", "completed", "cancelled", "error", "klippy_shutdown",
+    "klippy_disconnect", "interrupted", "unknown",
+  ] as const;
+  const statusCounts = history.pageCount === null ? null : Object.fromEntries(
+    historyStatuses.map(status => [status, history.items.filter(item => item.status === status).length])
+  ) as Record<(typeof historyStatuses)[number], number>;
+  const reportedFanCount = fans.state === "known" || fans.state === "stale"
+    ? fans.items.filter(item => item.state === "known").length
+    : null;
+  const purifierKnown = fans.purifier.state === "known";
+  const meshActive = mesh.status === "active" ? true : mesh.status === "no_active_mesh" ? false : null;
+  const status = statusReceipt(snapshot);
+  const projected = [progress, thermals, heads, jobs, history, queue, fans, mesh];
+  const available = projected.filter(module => module.state === "known" || module.state === "stale").length;
+  const overviewCoverage: OverviewCoverage = available === 0 ? "none" : available === projected.length ? "complete" : "partial";
+
+  return {
+    ...moduleBase(snapshot, "overview", snapshot.status.reachable,
+      snapshot.sourceObservedAt === null ? "unknown" : "observed",
+      "Privacy-minimized headlines composed from eight accepted focused projections"),
+    kind: "overview",
+    coverage: overviewCoverage,
+    tiles: [
+      {
+        id: "progress", state: progress.state,
+        receipts: { status }, printState: normalizedPrintState(snapshot.status.state),
+        percent: progress.fields.percent.value,
+        currentLayer: progress.fields.currentLayer.value,
+        totalLayers: progress.fields.totalLayers.value,
+        estimatedRemainingSeconds: progress.fields.estimatedRemainingSeconds.value,
+      },
+      {
+        id: "thermals", state: thermals.state,
+        receipts: { status, environment: domainReceipt(thermals.environment) },
+        activeTool: activeThermal ? Number(activeThermal.id.slice(5)) : null,
+        activeActualC: activeThermal?.actual.value ?? null,
+        activeTargetC: activeThermal?.target?.value ?? null,
+        bedActualC: bed?.actual.value ?? null,
+        bedTargetC: bed?.target?.value ?? null,
+        cavityActualC: cavity?.actual.value ?? null,
+      },
+      {
+        id: "heads", state: heads.state,
+        receipts: { status, materials: domainReceipt(heads.materials) },
+        activeTool: activeHead?.physicalTool ?? null,
+        material: activeHead?.material.value ?? null,
+        color: activeHead?.color.value ?? null,
+        reportedPresence: activeHead?.reportedPresence.value ?? null,
+      },
+      {
+        id: "jobs", state: jobs.state,
+        receipts: { currentJob: domainReceipt(jobs) },
+        printState: currentValues[0] as CurrentJobObservation["printState"]["value"],
+        storageActive: currentValues[1] as boolean | null,
+      },
+      {
+        id: "job_history", state: history.state,
+        receipts: { jobHistory: domainReceipt(history) },
+        pageCount: history.pageCount, statusCounts,
+      },
+      {
+        id: "queue", state: queue.state,
+        receipts: { queue: domainReceipt(queue) },
+        queueState: queue.queueState, totalCount: queue.totalCount,
+      },
+      {
+        id: "fans", state: fans.state,
+        receipts: { environment: domainReceipt(thermals.environment) },
+        reportedFanCount,
+        purifierPowerDetected: purifierKnown ? fans.purifier.powerDetected : null,
+        purifierMode: purifierKnown ? fans.purifier.mode : null,
+      },
+      {
+        id: "bed_mesh", state: mesh.state,
+        receipts: { bedMesh: domainReceipt(mesh) },
+        active: meshActive,
+        rows: mesh.summary?.rows ?? null,
+        columns: mesh.summary?.columns ?? null,
+        rangeMillimeters: mesh.summary?.range ?? null,
+      },
+    ],
   };
 }
 

@@ -164,8 +164,13 @@ describe("environment inbound composition", () => {
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
     try {
-      for (const view of ["progress", "heads", "jobs", "job_history", "queue", "bed_mesh", "overview"] as const) await client.callTool({ name: "observe_printer", arguments: { view } });
+      for (const view of ["progress", "heads", "jobs", "job_history", "queue", "bed_mesh"] as const) await client.callTool({ name: "observe_printer", arguments: { view } });
       expect(reads).toBe(0);
+      const overview = (await client.callTool({ name: "observe_printer", arguments: { view: "overview" } })).structuredContent as
+        { view: string; module: { tiles: Array<{ id: string }> } };
+      expect(overview.view).toBe("overview");
+      expect(overview.module.tiles.map(tile => tile.id)).toEqual(expect.arrayContaining(["thermals", "fans"]));
+      expect(reads).toBe(1);
       expect((await client.callTool({ name: "observe_printer", arguments: { view: "thermals" } })).structuredContent).toMatchObject({ module: { environment: { state: "known" } } });
       expect((await client.callTool({ name: "observe_printer", arguments: { view: "fans" } })).structuredContent).toMatchObject({ module: { state: "known" } });
       expect(reads).toBe(1);
