@@ -490,10 +490,16 @@ function projectOverview(snapshot: ObservationSnapshot): OverviewModule {
   const fans = projectFans(snapshot);
   const mesh = projectBedMesh(snapshot);
 
-  const activeThermal = thermals.readings.find(reading => reading.active?.value === true);
+  const status = statusReceipt(snapshot);
+  const statusAvailable = status.state === "known" || status.state === "stale";
+  const activeThermal = statusAvailable
+    ? thermals.readings.find(reading => reading.active?.value === true)
+    : undefined;
   const bed = thermals.readings.find(reading => reading.id === "heater-bed");
   const cavity = thermals.readings.find(reading => reading.id === "cavity");
-  const activeHead = heads.items.find(item => item.active.value === true);
+  const activeHead = statusAvailable
+    ? heads.items.find(item => item.active.value === true)
+    : undefined;
   const currentValues = [
     jobs.printState.reported ? jobs.printState.value : null,
     jobs.storageActive.reported ? jobs.storageActive.value : null,
@@ -510,43 +516,51 @@ function projectOverview(snapshot: ObservationSnapshot): OverviewModule {
     : null;
   const purifierKnown = fans.purifier.state === "known";
   const meshActive = mesh.status === "active" ? true : mesh.status === "no_active_mesh" ? false : null;
-  const status = statusReceipt(snapshot);
-  const projected = [progress, thermals, heads, jobs, history, queue, fans, mesh];
-  const available = projected.filter(module => module.state === "known" || module.state === "stale").length;
-  const overviewCoverage: OverviewCoverage = available === 0 ? "none" : available === projected.length ? "complete" : "partial";
-
-  return {
-    ...moduleBase(snapshot, "overview", snapshot.status.reachable,
-      snapshot.sourceObservedAt === null ? "unknown" : "observed",
-      "Privacy-minimized headlines composed from eight accepted focused projections"),
-    kind: "overview",
-    coverage: overviewCoverage,
-    tiles: [
+  const environmentReceipt = domainReceipt(thermals.environment);
+  const statusThermalValues = [
+    activeThermal?.actual.value ?? null,
+    activeThermal?.target?.value ?? null,
+    statusAvailable ? bed?.actual.value ?? null : null,
+    statusAvailable ? bed?.target?.value ?? null : null,
+  ];
+  const cavityActualC = cavity?.actual.value ?? null;
+  const thermalsState: EvidenceState = statusThermalValues.some(value => value !== null)
+    ? status.state
+    : cavityActualC !== null && (environmentReceipt.state === "known" || environmentReceipt.state === "stale")
+      ? environmentReceipt.state
+      : "unknown";
+  const headValues = [
+    activeHead?.physicalTool ?? null,
+    activeHead?.material.value ?? null,
+    activeHead?.color.value ?? null,
+    activeHead?.reportedPresence.value ?? null,
+  ];
+  const tiles: OverviewModule["tiles"] = [
       {
-        id: "progress", state: progress.state,
-        receipts: { status }, printState: normalizedPrintState(snapshot.status.state),
-        percent: progress.fields.percent.value,
-        currentLayer: progress.fields.currentLayer.value,
-        totalLayers: progress.fields.totalLayers.value,
-        estimatedRemainingSeconds: progress.fields.estimatedRemainingSeconds.value,
+        id: "progress", state: statusAvailable ? progress.state : "unknown",
+        receipts: { status }, printState: statusAvailable ? normalizedPrintState(snapshot.status.state) : "unknown",
+        percent: statusAvailable ? progress.fields.percent.value : null,
+        currentLayer: statusAvailable ? progress.fields.currentLayer.value : null,
+        totalLayers: statusAvailable ? progress.fields.totalLayers.value : null,
+        estimatedRemainingSeconds: statusAvailable ? progress.fields.estimatedRemainingSeconds.value : null,
       },
       {
-        id: "thermals", state: thermals.state,
-        receipts: { status, environment: domainReceipt(thermals.environment) },
+        id: "thermals", state: thermalsState,
+        receipts: { status, environment: environmentReceipt },
         activeTool: activeThermal ? Number(activeThermal.id.slice(5)) : null,
         activeActualC: activeThermal?.actual.value ?? null,
         activeTargetC: activeThermal?.target?.value ?? null,
-        bedActualC: bed?.actual.value ?? null,
-        bedTargetC: bed?.target?.value ?? null,
-        cavityActualC: cavity?.actual.value ?? null,
+        bedActualC: statusAvailable ? bed?.actual.value ?? null : null,
+        bedTargetC: statusAvailable ? bed?.target?.value ?? null : null,
+        cavityActualC,
       },
       {
-        id: "heads", state: heads.state,
+        id: "heads", state: statusAvailable && headValues.some(value => value !== null) ? status.state : "unknown",
         receipts: { status, materials: domainReceipt(heads.materials) },
-        activeTool: activeHead?.physicalTool ?? null,
-        material: activeHead?.material.value ?? null,
-        color: activeHead?.color.value ?? null,
-        reportedPresence: activeHead?.reportedPresence.value ?? null,
+        activeTool: headValues[0] as number | null,
+        material: headValues[1] as string | null,
+        color: headValues[2] as string | null,
+        reportedPresence: headValues[3] as boolean | null,
       },
       {
         id: "jobs", state: jobs.state,
@@ -579,7 +593,17 @@ function projectOverview(snapshot: ObservationSnapshot): OverviewModule {
         columns: mesh.summary?.columns ?? null,
         rangeMillimeters: mesh.summary?.range ?? null,
       },
-    ],
+    ];
+  const available = tiles.filter(tile => tile.state === "known" || tile.state === "stale").length;
+  const overviewCoverage: OverviewCoverage = available === 0 ? "none" : available === tiles.length ? "complete" : "partial";
+
+  return {
+    ...moduleBase(snapshot, "overview", snapshot.status.reachable,
+      snapshot.sourceObservedAt === null ? "unknown" : "observed",
+      "Privacy-minimized headlines composed from eight accepted focused projections"),
+    kind: "overview",
+    coverage: overviewCoverage,
+    tiles,
   };
 }
 

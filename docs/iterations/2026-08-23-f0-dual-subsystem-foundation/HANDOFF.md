@@ -13,10 +13,12 @@ existing adapters remain intact.
 Changed application scope is `plugins/u1-print-studio/app` presentation,
 widget, route/runtime wiring and durable tests, plus its `README.md` and plugin
 `PACKAGING.md`. Current records and decisions describe the same frozen contract.
-Repository checks pass 249 app tests/3,466 assertions, 21 lifecycle tests, 22
+Repository checks pass 253 app tests/3,559 assertions, 21 lifecycle tests, 22
 shipping tests, TypeScript and repository policy; all three bundles, standalone
 help/signature and six exact asset comparisons pass. Independent validation
-reports 844 assertions green. No runtime, service, auth, printer or browser was
+reports 926 assertions green, including hostile state/receipt/fact isolation,
+mapped failure reasons and real initial/retained-offline composition. No
+runtime, service, auth, printer or browser was
 contacted. Next: exact candidate review and commit/PR delivery, followed by the
 already-authorized exact-build deployment, explicit BOTH-service restart and
 scoped verification. Visual/device and user acceptance remain open.

@@ -10,18 +10,22 @@ The private index and `/dashboard/overview` route are implemented at runtime
 0.4.6/schema 12/observation-v12/camera-v8 with observation-v11 retained, 22
 resources and the unchanged two-visible/eight-app-only tools.
 
-`./scripts/check-repository.sh` passed TypeScript, **249 app tests with 3,466
+`./scripts/check-repository.sh` passed TypeScript, **253 app tests with 3,559
 assertions**, **21 lifecycle tests**, **22 shipping tests** and the repository
 contract. Focused optional-domain regressions pass **48 tests/494 assertions**.
 All three bundles built; standalone `--help` and `codesign -vvv --verify`
 passed; six emitted HTML assets exactly match source. SHA-256 is
-`f1736819538510b2d1fe96698aa7f34856c4fab677ae6ae7be29f0771e0522f7`
+`a8a4ac06c136cb2769c0c7c51db323fa61e5c4c47251f97804c80d93ad2c22b4`
 for `public/widget.html`,
 `49a523c56dc00963c2e060e3be23b608b9f866b92ff8e0f8d780716e638d40b4`
 for `public/dashboard-index.html`, and
-`166dc86e05673ed4dd8b05fbf4300502dd4d2bdb2fc0104e2afc5ebebbbe895c`
-for the validation-only signed runtime. Independent validation reports **844
-assertions** green with no remaining source finding.
+`9f5596444b47d4290d2f5425ebcba0251bec181945eda5f4dfe5b212dcc35754`
+for the validation-only signed runtime. Independent validation reports **926
+assertions** green with no remaining source finding. This includes hostile
+tile-state/receipt/headline mismatches, bounded mapped reasons, all 720 domain
+completion orders, and real store→projection→widget initial/retained-offline
+cases. Offline status-backed headlines are neutralized while independent stale
+or fresh cavity evidence remains renderable.
 
 This is static/software and local fixture evidence only. No Git delivery,
 service, auth, Tailscale, printer, mounted-host, browser/device visual or user
