@@ -1,5 +1,56 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 Independent live-camera FPS validation
+
+The user-requested FPS restoration was validated against the exact current
+camera source, using synthetic local frame counts and media only. This gate
+did not contact a real camera, mutate services, or establish phone/live-video
+acceptance. Network-path diagnostics remain absent from visible camera chrome.
+
+- Independent `./scripts/check-repository.sh` passed TypeScript, **170 app
+  tests / 2,247 assertions**, **21 lifecycle tests**, **22 shipping tests**, and
+  the repository contract. The source reports runtime **0.3.4**, schema **7**,
+  observation **v5**, camera **v6**, with camera-v5/v4 current aliases and
+  thirteen total resource URIs.
+- From the app directory, `bun --no-env-file --config=/dev/null run bundle`,
+  `run bundle:server`, `run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, and
+  `cmp public/camera-widget.html dist/camera-widget.html` passed. Current
+  observation HTML and both frozen legacy HTML files are unchanged from the
+  merged baseline. `git diff --check` passed.
+- The independent command `node capture.mjs <FIXTURE_ORIGIN>` captured **five
+  actual-widget images**, all opened by the validator, and passed **twelve
+  browser behavior cases**. The isolated host served exact production HTML;
+  its media and MCP replies were synthetic and no real peer network existed.
+  Screens covered snapshot at 320/dark, rVFC 29 FPS at 320/dark, rVFC 30 FPS at
+  390/light, fallback at 320/light and decoded-counter 30 FPS at 720/dark.
+- Controlled `presentedFrames` deltas produced 29 and rounded 30 FPS only
+  after the one-second measurement window. Both playback-quality and WebKit
+  decoded-counter fallbacks measured frame deltas, not four polling ticks per
+  second. Repeated counters did not fabricate new frames. Missing, reset,
+  invalid and backward counters/times cleared the estimate; missing rVFC
+  metadata never switched to an unrelated decoded-counter value.
+- The real 1.5-second no-frame expiry hid FPS without advancing the displayed
+  time or prematurely entering the existing stall fallback. Close/reopen
+  discarded the previous window, and a captured old-peer callback could not
+  relabel a newly opened session. Snapshot, loading, unavailable, fallback and
+  paused video showed no FPS. Selected ICE fixture stats deliberately included
+  `prflx`, `host` and `udp`; none appeared in the visible mode label.
+- Narrow screenshots retained the complete time and the existing bottom-right
+  44-pixel PiP/fullscreen/Live-or-Close controls without information/action
+  overlap or horizontal overflow. The browser report records **zero external
+  requests, zero unexpected fixture requests and zero page errors**. Browser
+  contexts closed in `finally`; the exact owned fixture server was stopped
+  after validation. No user browser profile was used.
+
+Camera HTML SHA-256:
+`375bcbefbee47e1d01a958ad2441594e66b95ff65aa55242d5b058709dcc6182`.
+Outside-repository browser report SHA-256:
+`0f6ac34282a2e1cfda0e419b0ccacff4576b3098c8dc572b3a8544f5f023d3f1`.
+These are source/software and synthetic-rendering results. Exact merged-build
+deployment and served-asset verification must be recorded separately; neither
+would prove real camera FPS or a mounted phone's display behavior.
+
 ## 2026-08-31 PR34 deployed-source and real-observation verification
 
 After the authorized shipping workflow merged

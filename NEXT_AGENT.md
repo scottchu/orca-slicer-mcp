@@ -14,6 +14,15 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+The user's live-only FPS request is implemented (decision 0023/CAM-008): measured
+`Live · FPS · time` above unchanged bottom controls, no network diagnostics,
+no polling-derived or stale FPS. Source runtime is 0.3.4/camera-v6 with v5/v4
+current aliases; observation-v5/schema 7 and tool/view counts stay unchanged.
+Thirteen resources include the new camera cache key. Author validation passes
+81 tests/856 assertions and TypeScript. Finish independent validation
+and approve the exact commit, then use the already authorized repository
+merge/deploy/restart-both/verify workflow. This slice is not yet delivered.
+
 PR34 is merged and deployed: reviewed head
 `97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1`, merged revision
 `7194361d4a8d7a2291bcc64f1d053eae51a8d99c`, release
@@ -27,8 +36,8 @@ Independent live verification reads one known/fresh active 11 × 11 Bed Mesh
 269,416-byte JPEG. Neither establishes calibration quality or phone/live-video
 acceptance; no printer controls or live stream were invoked.
 
-Next deliver the docs-only rollout record through review/PR/merge; no second
-service deployment is needed for unchanged app bytes. Preserve rollback
+The docs-only rollout record is merged in main `3eeb926`; no second service
+deployment was needed for unchanged app bytes. Preserve rollback
 material privately. Queue WIP remains in its separate checkout, while minimal
 progress redesign and mounted-phone/live-video verification remain pending.
 Do not resume an old failed shipping attempt or redeploy PR33 from the

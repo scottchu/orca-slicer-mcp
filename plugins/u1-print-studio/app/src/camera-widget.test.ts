@@ -18,7 +18,7 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
   const messages: any[] = [];
   const handlers = new Map<string, (event: any) => void>();
   const images: any[] = [];
-  const callbacks = new Map<number, (time: number) => void>();
+  const callbacks = new Map<number, (time: number, metadata?: { presentedFrames: number }) => void>();
   let frameId = 0;
   const nodes: Record<string, any> = {};
   const node = (id: string) => nodes[id] ??= {
@@ -36,7 +36,7 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
   };
   const live = node("#live-stream");
   if (options.frameCallbacks !== false) {
-    live.requestVideoFrameCallback = (callback: (time: number) => void) => { callbacks.set(++frameId, callback); return frameId; };
+    live.requestVideoFrameCallback = (callback: (time: number, metadata?: { presentedFrames: number }) => void) => { callbacks.set(++frameId, callback); return frameId; };
     live.cancelVideoFrameCallback = (id: number) => callbacks.delete(id);
   }
   live.play = async () => {};
@@ -62,7 +62,7 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
     applyCameraFrame, setCameraMode, closeLive, applyHostContext, requestCameraDisplay, readSelectedIcePath,
     prepareLive: () => { livePreview = true; livePeerConnection = { close() {} }; observeRenderedFrames(); },
     fallback: activateSnapshotFallback,
-    state: () => ({ snapshotObservedAt, liveObservedAt, relayRendering, selectedIcePath }),
+    state: () => ({ snapshotObservedAt, liveObservedAt, relayRendering, selectedIcePath, measuredLiveFps }),
   };`, sandbox);
   const flush = async () => { for (let count = 0; count < 8; count++) await Promise.resolve(); };
   const reply = async (request: any, result: any) => {
@@ -79,7 +79,7 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
   };
   return {
     api: sandbox.api, node, document, window, images, messages, timers, callbacks, flush, reply, advance,
-    renderFrame: () => { const [id, callback] = [...callbacks][0]!; callbacks.delete(id); callback(clock); },
+    renderFrame: (presentedFrames?: number) => { const [id, callback] = [...callbacks][0]!; callbacks.delete(id); callback(clock, presentedFrames === undefined ? undefined : { presentedFrames }); },
     acceptSnapshot: (result = frame()) => { sandbox.api.applyCameraFrame(result); images.at(-1).onload(); },
   };
 }
@@ -126,7 +126,7 @@ describe("camera widget presentation runtime", () => {
     expect(html).not.toContain("Read only");
     expect(html).not.toContain('class="camera-heading"');
     expect(html).not.toContain('id="camera-observed"');
-    expect(html).not.toContain(" FPS`");
+    expect(html).not.toContain("Live · ${selectedIcePath}");
     expect(html).toContain('id="camera-detail" data-mode="loading">');
     expect(html).toContain('id="camera-status" role="status" aria-live="polite"');
   });
@@ -229,6 +229,94 @@ describe("camera widget presentation runtime", () => {
     expect(host.api.state().liveObservedAt).toBe(time);
     host.api.closeLive();
     expect(host.callbacks.size).toBe(0);
+  });
+
+  test("Live FPS uses presented-frame deltas after one second and expires before the stall fallback", () => {
+    const host = cameraHost(); host.acceptSnapshot(); host.api.prepareLive();
+    host.renderFrame(10);
+    expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+    host.advance(500); host.renderFrame(25);
+    expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+    host.advance(500); host.renderFrame(40);
+    expect(host.node("#camera-detail-label").textContent).toStartWith("Live · 30 FPS · ");
+    const observedAt = host.api.state().liveObservedAt;
+    host.advance(1501, true);
+    expect(host.api.state().relayRendering).toBe(true);
+    expect(host.api.state().liveObservedAt).toBe(observedAt);
+    expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+    host.advance(3500, true);
+    expect(host.node("#camera-detail-label").textContent).toStartWith("Fallback · ");
+    expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+  });
+
+  test("decoded fallback measures frame count deltas, never its four polling ticks per second", () => {
+    for (const quality of [true, false]) {
+      const host = cameraHost({ frameCallbacks: false }); let count = 0;
+      if (quality) host.node("#live-stream").getVideoPlaybackQuality = () => ({ totalVideoFrames: count });
+      else Object.defineProperty(host.node("#live-stream"), "webkitDecodedFrameCount", { get: () => count });
+      host.acceptSnapshot(); host.api.prepareLive(); count = 1; host.advance(250, true);
+      expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+      for (let tick = 0; tick < 4; tick++) { count += 7; host.advance(250, true); }
+      expect(host.node("#camera-detail-label").textContent).toStartWith("Live · 28 FPS · ");
+      count = NaN; host.advance(250, true);
+      expect(host.node("#camera-detail-label").textContent).not.toMatch(/FPS|NaN|Infinity/);
+      count = 0; host.advance(250, true); count = 1; host.advance(250, true);
+      expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+      count = 30; host.advance(1000, true);
+      expect(host.node("#camera-detail-label").textContent).toStartWith("Live · 29 FPS · ");
+      host.api.closeLive();
+      expect(host.node("#camera-detail-label").textContent).toStartWith("Snapshot · ");
+      expect(host.api.state().measuredLiveFps).toBeNull();
+    }
+  });
+
+  test("missing/reset/invalid counters cannot invent FPS or mix presented and decoded counters", () => {
+    for (const reset of [undefined, NaN, Infinity, -1, 3]) {
+      const host = cameraHost(); host.acceptSnapshot(); host.api.prepareLive();
+      host.node("#live-stream").getVideoPlaybackQuality = () => ({ totalVideoFrames: 10000 });
+      host.renderFrame(100); host.advance(1000); host.renderFrame(129);
+      expect(host.node("#camera-detail-label").textContent).toContain("29 FPS");
+      host.advance(1000); host.renderFrame(reset);
+      expect(host.node("#camera-detail-label").textContent).not.toMatch(/FPS|NaN|Infinity/);
+      host.advance(100); host.renderFrame(10);
+      expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+    }
+    const missing = cameraHost(); missing.acceptSnapshot(); missing.api.prepareLive();
+    missing.renderFrame(); missing.advance(1000); missing.renderFrame();
+    expect(missing.api.state().relayRendering).toBe(true);
+    expect(missing.node("#camera-detail-label").textContent).not.toContain("FPS");
+  });
+
+  test("decoded counter families never switch during a peer session", () => {
+    const host = cameraHost({ frameCallbacks: false }); let count: number | undefined = 0;
+    host.node("#live-stream").getVideoPlaybackQuality = () => ({ totalVideoFrames: count });
+    host.node("#live-stream").webkitDecodedFrameCount = 10000;
+    host.acceptSnapshot(); host.api.prepareLive(); count = 1; host.advance(250, true);
+    count = 30; host.advance(1000, true);
+    expect(host.node("#camera-detail-label").textContent).toContain("29 FPS");
+    count = undefined; host.advance(250, true);
+    expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+    host.node("#live-stream").webkitDecodedFrameCount = 20000;
+    host.advance(1000, true);
+    expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+  });
+
+  test("pause, close and reopening reset FPS, and an old peer callback cannot restore it", () => {
+    const host = cameraHost(); host.acceptSnapshot(); host.api.prepareLive();
+    host.renderFrame(1); host.advance(1000); host.renderFrame(30);
+    expect(host.node("#camera-detail-label").textContent).toContain("29 FPS");
+    host.node("#live-stream").paused = true;
+    host.node("#live-stream").events.get("pause")();
+    expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+    host.node("#live-stream").paused = false;
+    host.renderFrame(31); host.advance(1000); host.renderFrame(60);
+    const oldCallback = [...host.callbacks.values()][0]!;
+    host.api.closeLive(); host.api.prepareLive();
+    oldCallback(999999, { presentedFrames: 999999 });
+    expect(host.api.state().relayRendering).toBe(false);
+    expect(host.api.state().measuredLiveFps).toBeNull();
+    host.renderFrame(100);
+    expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
   });
 
   test("unsupported display controls are absent; rejected requests preserve camera", async () => {

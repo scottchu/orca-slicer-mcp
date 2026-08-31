@@ -281,3 +281,43 @@ Source and synthetic rendering remain distinct from physical-printer,
 deployed-server and actual mobile-host/PiP acceptance. Update the same open
 PR32 after independent validation/review; no merge, deployment, plugin/service,
 authentication/routing or printer change is authorized by this layout rule.
+
+## 2026-08-31 supersession — measured FPS while live only
+
+The user now explicitly requests FPS in the live camera view. This narrowly
+supersedes the earlier prohibition on visible FPS, not the prohibition on
+network diagnostics or the information-above/actions-below layout.
+
+- Keep one top pill: `Live · 29 FPS · HH:MM:SS`. Round a valid measured rate to
+  the nearest integer. Omit FPS entirely during startup, when no trustworthy
+  count is available, and outside live mode; do not invent zero or a dash value.
+- Measure actual presented-frame metadata or an advancing decoded-frame
+  counter over elapsed monotonic time, with at least one second of evidence
+  and a bounded approximately five-second window. Decoded fallback uses frame
+  count deltas, never the number of 250-ms polling callbacks. A rendered-frame
+  callback without a counter can evidence live time, but not an FPS estimate.
+  Invalid/decreasing/reset counters discard the FPS baseline rather than
+  carrying a rate into a new stream. Scope callbacks/state to the current peer.
+- Remove displayed FPS after 1.5 seconds without advancing frame evidence,
+  immediately on pause/end/close/fallback, and when resetting a connection.
+  Preserve the last evidenced live timestamp and existing five-second stalled
+  stream fallback; a timer may hide stale FPS but never manufacture frames or
+  advance the observation clock. Snapshot/fallback timestamps are unchanged.
+- Keep ICE paths, candidate types, `prflx`, host/UDP and configured transport
+  diagnostics hidden. No new heading, caption, action, refresh or debug panel.
+  Wrap the top information if necessary at 320 px, without hiding the full
+  time or overlapping bottom PiP/Fullscreen/Live/Close targets.
+- Use runtime 0.3.4 and a new camera-v6 cache identity; camera-v5/v4 remain
+  current-asset aliases, frozen camera resources stay frozen. Observation-v5,
+  schema 7, nine views and two-visible/eight-app-only tools are unchanged;
+  the extra camera alias makes thirteen resources. The existing verified
+  0.3.3/camera-v5 service remains the deployment baseline until this new slice
+  passes independent exact-commit review and the authorized shipping workflow.
+
+Acceptance includes genuine presented/decoded counter rates, no false 4-FPS
+polling rate, startup/invalid/reset/absent evidence, stale expiry, peer changes,
+non-live states, existing truthful clocks and signaling/display behavior, and
+actual source screenshots at narrow/wide light/dark sizes. Source fixtures do
+not prove live printer FPS or phone playback. The current task's established
+reviewed merge/deploy/restart-both/verify sequence applies through `u1-ship`;
+no plugin reinstall, printer control or authentication/routing change is added.

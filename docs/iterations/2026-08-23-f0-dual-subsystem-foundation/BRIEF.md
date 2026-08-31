@@ -5,7 +5,17 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current result and next action: PR34's exact reviewed head `97b5106` merged
+- Current execution order: measured FPS is implemented only in the live camera's top
+  state/time pill (decision 0023's latest supersession, CAM-008), preserving
+  hidden network diagnostics, truthful clocks and bottom controls. Use actual
+  frame-counter deltas, omit startup/unknown/reset/stale rates, and preserve
+  existing fallback. Source runtime is 0.3.4/camera-v6 with v5/v4 aliases;
+  observation-v5/schema 7 stay unchanged. After independent exact-commit
+  approval, ship through the authorized merge/deploy/restart-both/verify
+  workflow. Author checks pass 81 tests/856 assertions and TypeScript;
+  independent acceptance and rollout are pending. Queue and minimal
+  progress remain deferred. The PR34 record is merged in main `3eeb926`.
+- Previous completed result: PR34's exact reviewed head `97b5106` merged
   as `7194361` and the repository shipping workflow completed deployment,
   explicit restart of BOTH U1 services, and verification. Installed release
   `20260831-7194361-pr34-20260831T121439-3ba53f` reports 0.3.3/schema 7/
@@ -14,8 +24,8 @@
   configuration/authentication/routing preserved. Independent live checks
   confirm a known/fresh active 11 × 11 Bed Mesh (range 0.407500 mm) and a
   visually inspected real JPEG snapshot. No calibration, printer control,
-  mounted-phone or live-video acceptance is claimed. Finish only the docs-only
-  rollout-record PR; unchanged app bytes need no second deployment. Queue WIP,
+  mounted-phone or live-video acceptance is claimed. Its docs-only rollout
+  record needed no second deployment. Queue WIP,
   minimal-progress redesign and phone/live-video verification remain pending.
 - Historical first release attempt, resolved: PR34's shipping run stopped before
   merge because Bun compilation left a generated hidden `.bun-build` app file.
