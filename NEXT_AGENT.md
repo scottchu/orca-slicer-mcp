@@ -14,6 +14,28 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Resume **B Queue** from PR46 merged base
+`bd7abc8f07f7bbe1fdd47e45eabaf41b8b7110b2`. Decision 0029's Queue addendum and
+OBS-012 specify the focused integration of foundation `4fbb96c`: application
+store/independent receipt and attempt TTL, safe bounded projection and white
+Queue card/index, top information with bottom Refresh, explicit empty/stale/
+unknown/unsupported/unavailable semantics. Application implementation and
+independent acceptance target runtime 0.4.3/tool schema 9/observation-v9/
+camera-v8 with nineteen resources and observation-v8 retained. No new Queue
+merge or deployment is claimed. Author checks pass 223 app tests/3,150
+assertions. Independent checks pass the repository suites plus 21 lifecycle,
+22 shipping and 15 focused tests/7,049 assertions, TypeScript/diff checks, three
+bundles/code signing and six exact emitted assets. Formal review's singular-
+summary grammar finding is corrected; renewed author and independent gates are
+green with no findings. Proceed to exact-SHA review.
+Preserve A/F/Heads, independent invocation and C fans/chamber → D Current Job/
+History → E overview. Use exact-SHA approval and the unchanged guarded shipping
+workflow to merge, deploy, restart BOTH services and verify scoped behavior.
+Browser discovery remains unavailable; visual/device acceptance is unverified,
+not an automatic block on the user's deployment-first review order.
+
+### Previous shipped Heads checkpoint
+
 The user's Heads reference refinement is shipped in PR45. Decision 0029's
 addendum fixes actual-color 6% white washes, exact solid swatch/hex and accessible
 Copy, real tool/state/material/temperature, bottom Refresh and unchanged physical

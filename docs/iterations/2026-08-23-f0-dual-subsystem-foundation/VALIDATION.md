@@ -1,5 +1,54 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 B Queue integration — design/source work active
+
+The design role read current contracts and active records, then inspected the
+reviewed foundation using these actual read-only commands:
+
+```sh
+git show --stat 4fbb96c7201398c125006cafc5050b84a875af1e
+git show 4fbb96c:plugins/u1-print-studio/app/src/application/queue-observation.ts
+git show 4fbb96c:plugins/u1-print-studio/app/src/adapters/moonraker-queue.ts
+```
+
+Decision 0029's Queue addendum and OBS-012 now specify focused integration and
+software/protocol acceptance without broadening read authority. Foundation
+evidence below remains historical source/protocol evidence, not proof of the
+new integrated widget. The candidate contract is runtime 0.4.3/tool schema 9/
+observation-v9/camera-v8 with nineteen resources, retaining observation-v8 and
+prior aliases without adding tools. Author checks pass **223 app tests/3,150
+assertions**. Independent validation passes those repository suites plus **21
+lifecycle, 22 shipping and 15 focused tests/7,049 assertions**, TypeScript/diff
+checks, all three bundles/code signing and six exact emitted HTML assets. The
+three foundation files match `4fbb96c`. Frozen widget SHA-256 is
+`76d356cc287f11e400f896640162134bcabf8ca8b0ce883a2e46ed1024564092`;
+index is `626348d296d8748e83c7a4e7732656694de3b1dc3ece259fb1e92bb1ce32c0b6`.
+Formal review found the prior singular summary `1 jobs`; author changed only
+the widget and focused test to render `1 job is not displayed` while preserving
+the plural form. Focused author checks pass 44 tests/1,565 assertions; full
+223/3,150, TypeScript/diff, three-bundle and code-signing gates reran green.
+Focused test SHA-256 is
+`5448fa6d6b57f02c95e2f2381957751c85006e95143550ac807827437945b51f`.
+Renewed independent validation specifically covers singular 1, plural 2 and
+large-count 900 omission summaries, finds no issues, and made no runtime calls.
+Exact-SHA review and release receipts remain pending; no Queue acquisition,
+merge, service deployment/restart or visual/device pass is claimed here.
+
+Boundary correction: during final contract inspection the validator ran the
+compiled `dist/u1-print-studio doctor --json`; that command unintentionally
+performed **one general read-only status observation** and reported reachable.
+It performed no Queue, camera or mesh read; no control, service, auth or config
+mutation; and retained no payload. Runtime commands stopped afterward. The
+source validation results above remain fixture-backed, and this event does not
+replace or consume the one scoped postdeployment Queue observation still due.
+
+The coordinator reports fresh allowed-browser runtime URL selection failed and
+browser inventory was empty. Rendered/layout/keyboard/browser acceptance remains
+unverified. The user's standing exact-review/merge/deploy/BOTH-service restart/
+verification order allows their own visual review after delivery; software and
+deployed-byte evidence must stay separate from it. No raw Queue payload,
+private basename or local identifier is retained in repository records.
+
 ## 2026-08-31 Heads reference refinement — PR45 deployed
 
 Independent formal review approved exact head

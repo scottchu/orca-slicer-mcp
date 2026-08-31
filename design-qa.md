@@ -1,5 +1,34 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Current B Queue integration: visual acceptance unverified
+
+final result: blocked
+
+Decision 0029/OBS-012 reuse the delivered white focused-card language rather
+than adding a new visual direction. Target: top title/independent receipt,
+freshness and queue-state/count summary; bounded ordered filename/Added/observed
+waiting rows; explicit omission and empty/stale/failure states; bottom Refresh.
+Author and independent software checks pass after formal review found
+one singular omission-summary grammar defect. The minimal two-file correction
+passes 44 focused tests/1,565 assertions and the full author gates. Renewed
+independent checks cover 1/2/900 summaries and find no issue. Full evidence: 223 app
+tests/3,150 assertions, 21 lifecycle, 22 shipping, 15 focused tests/7,049
+assertions, TypeScript/diff checks, three bundles/code signing and six exact
+emitted assets. No screenshot,
+matched viewport/state comparison, keyboard interaction or console inspection
+exists for the new Queue widget. Fresh allowed-browser discovery is unavailable.
+Historical Heads/Bed Mesh/other-widget evidence does not accept changed Queue
+assets. Typography/wrapping, spacing/layout, rendered contrast, icon fidelity
+and copy/content remain visually unverified.
+
+When browser access exists, capture 320/390/720-pixel layouts for known empty,
+one and 100 displayed rows, long safe basenames, truncation, independently stale
+and unavailable/unsupported states. Check complete readable names, no horizontal
+overflow, omission clarity, focus/44-pixel Refresh and truthful waiting copy.
+The user authorizes reviewed merge → deploy → restart BOTH services → verify
+before their visual review; this changes ordering, never turns this report into
+a visual/device pass.
+
 ## Current Heads reference refinement: visual acceptance unverified
 
 final result: blocked

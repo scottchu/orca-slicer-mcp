@@ -305,12 +305,12 @@ describe("production observation widget host boundary", () => {
       expect(markup.indexOf("<footer ")).toBeGreaterThan(markup.indexOf("</header>"));
       const header = markup.match(/<header [\s\S]*?<\/header>/)![0];
       const footer = markup.match(/<footer [\s\S]*?<\/footer>/)![0];
-      expect(header).toContain(view === "job_history" || view === "bed_mesh" ? "Observation time unavailable" : "Observed ");
+      expect(header).toContain(view === "job_history" || view === "bed_mesh" || view === "queue" ? "Observation time unavailable" : "Observed ");
       expect(header).toContain('class="refresh-error" role="status"');
       expect(header).not.toContain("<button");
       expect(footer).toMatch(/^<footer class="instrument-footer"><button[\s\S]*<\/button><\/footer>$/);
       expect(footer).not.toMatch(/<time|Observed|refresh-error|freshness-warning|role="status"/);
-      expect(markup).toContain(view === "job_history" || view === "bed_mesh" ? "Observation time unavailable" : "Observed ");
+      expect(markup).toContain(view === "job_history" || view === "bed_mesh" || view === "queue" ? "Observation time unavailable" : "Observed ");
       expect(markup).not.toMatch(/Read only|Current reading|Printer telemetry/);
     }
   });
@@ -345,7 +345,7 @@ describe("production observation widget host boundary", () => {
   });
 
   test("unimplemented domains are named, not empty success or synthetic charts", () => {
-    for (const view of ["queue", "fans", "overview"]) {
+    for (const view of ["fans", "overview"]) {
       const markup = mount({ toolOutput: fixture(view) }).modules.innerHTML;
       expect(markup).toMatch(/Unknown|Unavailable|not implemented|deferred/i);
       if (view !== "overview") expect(markup).toContain("Not implemented yet");
@@ -355,6 +355,58 @@ describe("production observation widget host boundary", () => {
     const thermal = mount({ toolOutput: fixture("thermals") }).modules.innerHTML;
     expect(thermal).not.toContain('class="trace');
     expect(thermal).toContain("220°");
+  });
+
+  test("Queue renders trusted FIFO receipts, duplicates, truncation and bottom-only Refresh", () => {
+    const payload = fixture("queue");
+    Object.assign(payload.module, {
+      state: "known", freshness: "fresh", sourceObservedAt: "2026-08-31T12:00:00.000Z",
+      checkedAt: "2026-08-31T12:00:00.000Z", receivedAt: "2026-08-31T12:00:00.000Z",
+      queueState: "paused", totalCount: 101, truncated: true, reason: null,
+      items: Array.from({ length: 100 }, (_, index) => ({ position: index + 1,
+        filename: index < 2 ? "duplicate.gcode" : `fixture ${index + 1}.gcode`,
+        timeAdded: index === 0 ? "2026-08-31T11:59:00.000Z" : null,
+        timeInQueueSeconds: index === 0 ? 60 : null,
+      })),
+    });
+    const markup = mount({ toolOutput: payload }).modules.innerHTML;
+    expect(markup).toContain("Queue state"); expect(markup).toContain("Paused");
+    expect(markup).toContain("101 jobs"); expect(markup).toContain("Showing 100 of 101");
+    expect(markup).toContain("1 job is not displayed");
+    expect((markup.match(/duplicate\.gcode/g) ?? []).length).toBe(2);
+    expect(markup).toContain("Waited at observation 1m"); expect(markup).not.toMatch(/ETA|starts? in|live clock/i);
+    expect(markup.indexOf("Observed ")).toBeLessThan(markup.indexOf("duplicate.gcode"));
+    expect(markup.indexOf("duplicate.gcode")).toBeLessThan(markup.indexOf("<footer"));
+  });
+
+  test("Queue distinguishes observed empty, retained stale empty and all non-observations", () => {
+    const empty = fixture("queue"); Object.assign(empty.module, { state: "known", freshness: "fresh", sourceObservedAt: "2026-08-31T12:00:00.000Z", queueState: "ready", totalCount: 0, truncated: false, reason: null });
+    expect(mount({ toolOutput: empty }).modules.innerHTML).toContain("Queue empty");
+    const stale = structuredClone(empty); Object.assign(stale.module, { state: "stale", freshness: "stale", reason: "timeout" });
+    const staleMarkup = mount({ toolOutput: stale }).modules.innerHTML;
+    expect(staleMarkup).toContain("Last observed queue was empty"); expect(staleMarkup).toContain("last observed queue");
+    for (const [state, reason, label] of [["unknown", "not_requested", "Queue not observed"], ["unsupported", "unsupported", "Queue unsupported"], ["unavailable", "network", "Queue unavailable"]]) {
+      const unavailable = fixture("queue"); Object.assign(unavailable.module, { state, reason, sourceObservedAt: null, queueState: null, totalCount: null, truncated: false, items: [] });
+      const markup = mount({ toolOutput: unavailable }).modules.innerHTML;
+      expect(markup).toContain(label); expect(markup).not.toContain("Queue empty");
+    }
+  });
+
+  test("Queue fails closed for malformed host payloads and escapes filenames", () => {
+    const unsafe = fixture("queue"); Object.assign(unsafe.module, { state: "known", freshness: "fresh", sourceObservedAt: "2026-08-31T12:00:00.000Z", queueState: "ready", totalCount: 1, truncated: false, reason: null,
+      items: [{ position: 1, filename: '<img src=x onerror="private()">.gcode', timeAdded: null, timeInQueueSeconds: 0 }],
+    });
+    const escaped = mount({ toolOutput: unsafe }).modules.innerHTML;
+    expect(escaped).toContain("Queue unavailable"); expect(escaped).not.toContain("&lt;img"); expect(escaped).not.toContain("<img src=x");
+    for (const mutation of [{ totalCount: -1 }, { totalCount: 1, items: [] }, { queueState: "idle" }, { totalCount: 1, items: [{ position: 2, filename: "a.gcode" }] }]) {
+      const malformed = structuredClone(unsafe); Object.assign(malformed.module, mutation);
+      const markup = mount({ toolOutput: malformed }).modules.innerHTML;
+      expect(markup).toContain("Queue unavailable"); expect(markup).not.toContain("Queue empty");
+    }
+    const unsupported = fixture("queue"); Object.assign(unsupported.module, { state: "unsupported", reason: "unsupported", sourceObservedAt: null, queueState: null, totalCount: null, truncated: false, items: [] });
+    const unsupportedMarkup = mount({ toolOutput: unsupported }).modules.innerHTML;
+    expect(unsupportedMarkup).toContain("attempted Queue endpoint was unsupported");
+    expect(unsupportedMarkup).not.toMatch(/printer (?:does not|did not) support/i);
   });
 });
 

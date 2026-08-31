@@ -13,6 +13,8 @@ import { readMoonrakerBedMesh } from "./adapters/moonraker-bed-mesh.js";
 import { unavailableBedMesh, type BedMeshObservation } from "./application/bed-mesh-observation.js";
 import { readMoonrakerMaterials } from "./adapters/moonraker-materials.js";
 import { unavailableMaterials, type MaterialObservation } from "./application/material-observation.js";
+import { readMoonrakerQueue } from "./adapters/moonraker-queue.js";
+import { unavailableQueue, type QueueObservation } from "./application/queue-observation.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -201,6 +203,11 @@ export async function readU1BedMesh(): Promise<BedMeshObservation> {
 export async function readU1Materials(): Promise<MaterialObservation> {
   try { return await readMoonrakerMaterials(printerBaseUrl()); }
   catch { return unavailableMaterials("not_configured", new Date().toISOString()); }
+}
+
+export async function readU1Queue(): Promise<QueueObservation> {
+  try { return await readMoonrakerQueue(printerBaseUrl()); }
+  catch { return unavailableQueue("not_configured", new Date().toISOString()); }
 }
 
 async function fetchJson(route: string, maxTimeSeconds = 6): Promise<JsonObject> {

@@ -1,7 +1,7 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: A deployed in PR41; exact approved Heads refinement deployed in PR45 at 0.4.2; visual acceptance unverified
+- Status: A/Heads deployed; B Queue integration active after PR46 rollout records; visual acceptance unverified
 - Scope: F0/O1, OBS-007/008/010/011, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution
@@ -20,6 +20,75 @@ refinement; then overview. Each slice passes local and independent exact-SHA
 review, PR merge, decision 0028 shipping, explicit restart of both existing
 services, and exact assets plus meaningful widget verification. Preserve source,
 protocol/browser, deployment, real-printer, and user-device evidence separately.
+
+## B Queue integration (2026-08-31)
+
+After the shipped Heads refinement and PR46's rollout records, resume B without
+cancelling C fans/chamber, D Current Job/History, or E overview. Integrate only
+the reviewed Queue adapter/model/test foundation at `4fbb96c` into the existing
+store, projection, focused widget and truthful directory coverage. Keep the
+existing `queue` selector and private route; no new tool, generic query or
+second normalization path is needed. This addresses F0/O1's outstanding Queue
+observation gap, not full-session, reconnect or physical-print acceptance.
+The payload extension advances source to runtime 0.4.3/tool schema 9/
+observation-v9/camera-v8 with nineteen resources, retaining observation-v8 and
+all prior aliases; it does not add a model-visible or app-only tool.
+
+Retain the foundation's fixed `GET /server/job_queue/status`, six-second request,
+512-KiB body, 1,000 raw-row limit and validation of every raw row, including
+undisplayed rows. At most 100 ordered safe basenames leave normalization; expose
+the original total and an explicit omission count. Preserve credential-shaped
+basename rejection before truncation, length/character bounds, no URLs or
+upstream paths, and omission of job IDs, raw metadata and raw failure details.
+No real filenames or private Queue payloads are committed to source/evidence.
+
+Queue owns independent receipt time because this endpoint supplies no snapshot
+timestamp. Reuse the application-owned 15-second attempt TTL, concurrent-demand
+coalescing, checked-at/failure state and last-success stale retention pattern.
+Status/material/mesh freshness never restamps Queue. Merge results into the
+latest shared snapshot so concurrent domain receipts do not overwrite one
+another. Only focused Queue demand enables acquisition initially; directory,
+health, static routes and unrelated views never request Queue. Injected fixture
+status must not fall through to a real Queue reader. No background polling is
+added by the view.
+
+Use the current white card, list icon, system typography and restrained dividers,
+not a new dashboard design. Information above actions includes title, independent
+observation receipt/freshness, actual queue state and total-count summary. Render
+Ready/Loading/Starting/Paused as reported Queue states, never as an inference
+about the current print; reported Loading is not an indefinitely pending widget.
+Rows show position and safe basename, optional reported added time and waiting
+duration explicitly qualified as observed waiting, not print ETA or a live
+counter. Long names wrap without forcing horizontal overflow. Show `Showing
+100 of N` and omitted count when bounded; do not suggest unseen rows are absent.
+Keep the single accessible 44-pixel Refresh action at the bottom.
+
+Only a valid known zero-row snapshot is `Queue empty`; retained stale zero-row
+data says the last observed queue was empty. Unknown/not-requested or missing
+reader, unsupported attempted endpoint (404/405), and unavailable auth,
+transport, malformed or oversized data stay distinct. A failed refresh retains
+prior rows/count/state with their old receipt and explicit stale/failure copy.
+Endpoint unsupported is not proof the printer cannot queue jobs. No queue
+enqueue, pause/resume, reorder, delete, file-open/download or printer controls
+are presented. Current Job and History remain separate projections.
+
+Source/isolated protocol gates cover normalization/privacy bounds, all states,
+zero/maximum/truncated/invalid-hidden rows, independent time, TTL including
+failures, coalescing, out-of-order domain completion, fixture isolation, escaped
+display, exact selector/resource/route inventory and zero unrelated acquisition.
+Directory coverage becomes implemented only with the integrated data path; C/D/E
+labels remain truthful. Preserve camera, Heads, Bed Mesh, shipping/auth routes
+and frozen resources. Actual narrow-layout/keyboard/browser QA remains unverified
+while the allowed browser is unavailable; reviewed merge, exact-build deploy,
+BOTH-service restart and scoped live verification precede the user's own visual
+review under the standing order, without inventing a visual pass.
+
+Primary semantics come from Moonraker's
+[Job Queue API](https://moonraker.readthedocs.io/en/latest/external_api/job_queue/):
+the status endpoint reports FIFO ordered `queued_jobs`, four queue states,
+Unix `time_added`, and cumulative `time_in_queue`; duplicate filenames are
+permitted. These fields do not establish ETA, unique job identity or permission
+to invoke the API's mutation endpoints.
 
 ## Heads reference refinement (2026-08-31)
 

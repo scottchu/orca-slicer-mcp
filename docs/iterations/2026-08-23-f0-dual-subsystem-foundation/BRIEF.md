@@ -5,7 +5,26 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Latest priority (2026-08-31): bounded Heads reference refinement before Queue,
+- Latest priority (2026-08-31): resume B Queue after PR46's merged Heads rollout
+  records. Decision 0029/OBS-012 define the smallest end-to-end slice: existing
+  fixed bounded Queue adapter → independent shared-store domain → safe focused
+  projection → white Queue card and truthful directory label. Acceptance covers
+  actual queue state/order/count, bounded safe filenames/omissions, independent
+  receipt/15-second attempt TTL/coalescing/failure retention and explicit empty,
+  stale, unknown, unsupported or unavailable outcomes. Information is above
+  bottom Refresh; no queue/file/printer controls. Source work and independent
+  validation/review target runtime 0.4.3/tool schema 9/observation-v9/camera-v8,
+  nineteen resources and a retained observation-v8 alias, then precede PR merge,
+  exact-build deploy, BOTH-service restart
+  and meaningful scoped verification for user review. Browser/device acceptance
+  remains unverified; A/F/Heads remain shipped and C/D/E remain active afterward.
+  Author checks pass 223 app tests/3,150 assertions. Independent validation
+  passes those plus 21 lifecycle, 22 shipping and 15 focused tests/7,049
+  assertions, TypeScript/diff checks, three bundles/code signing and six exact
+  emitted assets. Formal review's singular-summary grammar defect is corrected
+  in only widget/test bytes; renewed author and independent gates pass without
+  findings. Exact-candidate review remains open.
+- Previous shipped priority (2026-08-31): bounded Heads reference refinement before Queue,
   under decision 0029/OBS-010. Preserve the white outer card; use soft 6% washes
   from actual valid filament colors, exact swatch/hex and accessible Copy, real
   tool/state/material/temperature, bottom Refresh and independent freshness.

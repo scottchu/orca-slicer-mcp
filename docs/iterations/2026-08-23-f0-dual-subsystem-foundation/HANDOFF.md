@@ -1,6 +1,53 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 Heads reference refinement — authoritative current handoff
+## 2026-08-31 B Queue integration — authoritative current handoff
+
+The user continues the full widget track after PR46 merged the Heads rollout
+records at `bd7abc8f07f7bbe1fdd47e45eabaf41b8b7110b2`. Resume B Queue, preserving
+deployed A/F/Heads and next C fans/chamber, D Current Job/History and E overview.
+Decision 0029's integration addendum and OBS-012 record the design/acceptance
+boundary: reuse foundation `4fbb96c`, independent receipt/attempt TTL/coalescing/
+retained stale data, safe ordered bounded rows and omitted-count disclosure,
+truthful empty/unknown/unsupported/unavailable states, white card with top
+information and bottom Refresh. Candidate source is runtime 0.4.3/tool schema 9/
+observation-v9/camera-v8 with nineteen resources and observation-v8 retained.
+No new query surface, tool or queue/file control is added.
+Author checks pass 223 app tests/3,150 assertions. Independent validation passes
+those plus 21 lifecycle, 22 shipping and 15 focused tests/7,049 assertions,
+TypeScript/diff checks, all three bundles/code signing and six exact emitted
+assets. Formal review then found one singular omission-summary grammar defect;
+the minimal correction changes only the widget and focused widget test. Renewed
+author checks pass 44 focused tests/1,565 assertions and the full suite/build
+gates above. Frozen widget/index SHA-256 values are respectively
+`76d356cc287f11e400f896640162134bcabf8ca8b0ce883a2e46ed1024564092` and
+`626348d296d8748e83c7a4e7732656694de3b1dc3ece259fb1e92bb1ce32c0b6`;
+focused widget-test SHA-256 is
+`5448fa6d6b57f02c95e2f2381957751c85006e95143550ac807827437945b51f`.
+The three foundation files match `4fbb96c`. Renewed independent validation finds
+no issues and made no runtime call; exact-SHA review remains open.
+
+Design-record changes: decision 0029, requirements, PROJECT_STATE, NEXT_AGENT,
+this iteration's BRIEF/WIDGET_TRACKS/VALIDATION/HANDOFF, and design-qa. App code
+is owned separately by implementation; final changed paths are frozen in the
+candidate and passing source evidence is recorded above. No exact source approval,
+Queue merge, deployment or browser/device pass is claimed by this checkpoint.
+
+Next smallest action: finish store/projection/widget integration, validate and
+independently approve the exact candidate, then use unchanged guarded PR merge,
+exact-build deploy, explicit restart of BOTH existing services and scoped Queue
+verification. The allowed browser remains unavailable; the user's deployment-
+first review order does not create visual acceptance. Preserve auth/config/
+routes, frozen assets and unrelated checkouts. Keep raw filenames, jobs and
+private runtime receipts outside Git; no camera/Heads/Bed Mesh acquisition or
+controls are required for this Queue slice.
+
+Independent validation intended fixture-only predeployment work, but executing
+the compiled `doctor --json` once caused one unintended general read-only status
+observation and reported reachable. It did not query Queue/camera/mesh, mutate
+printer/service/auth/config state, or retain the payload; runtime commands then
+stopped. This does not consume the later one scoped postdeployment Queue check.
+
+## 2026-08-31 Heads reference refinement — previous shipped handoff
 
 The user prioritizes the selected Heads design before Queue: a white outer
 container, softly washed actual filament colors per tool, real tool/state and

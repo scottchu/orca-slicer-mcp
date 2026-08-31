@@ -126,15 +126,12 @@ describe("printer observation presentation", () => {
     expect(JSON.stringify(result)).not.toContain('"actual":{"state":"known","value":0}');
   });
 
-  test("marks advertised but unnormalized domains unknown", () => {
-    for (const view of ["queue", "fans"] as const) {
-      const result = createObservationPresentation(snapshot(), view);
-      expect(result.module).toMatchObject({
-        kind: view,
-        state: "unknown",
-        capabilityEvidence: "advertised",
-      });
-    }
+  test("marks only still-unnormalized domains advertised but unknown", () => {
+    const result = createObservationPresentation(snapshot(), "fans");
+    expect(result.module).toMatchObject({ kind: "fans", state: "unknown", capabilityEvidence: "advertised" });
+    expect(createObservationPresentation(snapshot(), "queue").module).toMatchObject({
+      kind: "queue", state: "unknown", capabilityEvidence: "unknown", reason: "not_requested",
+    });
   });
 
   test("keeps overview explicitly deferred", () => {

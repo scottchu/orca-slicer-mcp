@@ -78,6 +78,18 @@ printer environments support the described behavior.
   requires reviewed source, guarded shipment, both-service restart and scoped
   meaningful verification under decision 0028; earlier evidence is not reused
   as acceptance of changed bytes.
+- **OBS-012:** Queue is an independently timed, read-only application-store
+  domain acquired only by focused Queue demand through the fixed bounded
+  operations-adapter endpoint. Retain the 15-second attempt TTL, coalescing,
+  last-success stale retention and atomic concurrent-domain merge; fresh status
+  cannot restamp Queue. Distinguish valid empty, retained stale empty, unknown,
+  unsupported endpoint and unavailable acquisition. Show reported queue state,
+  total count, at most 100 ordered safe basename rows, explicit omissions,
+  optional reported added time and observed waiting duration, never print ETA
+  or an advancing clock. Receipt/freshness/failure information is above the
+  bottom Refresh action. Reject invalid or unsafe data even in hidden rows;
+  IDs, paths, raw metadata/failures and credentials do not leave the adapter.
+  Decision 0029 fixes integration/acceptance; no queue or file mutation is added.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -229,14 +241,14 @@ printer environments support the described behavior.
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v8` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v9` is the
   focused presentation resource. Every explicit camera open or reopen creates
   a fresh snapshot-first `camera-v8` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
+  Observation-v8/v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
-  Source is runtime 0.4.2/tool schema 8 with eighteen resources; this source
+  Source is runtime 0.4.3/tool schema 9 with nineteen resources; this source
   contract does not claim deployment of those bytes to existing services.
 
 ## Architecture and ontology

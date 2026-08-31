@@ -117,6 +117,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .job-current { margin: 0 18px 12px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; }
       .job-current strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .job-meta { display: flex; gap: 12px; margin-top: 8px; color: var(--muted); font-size: 12px; }
+      .queue-summary { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 24px 18px; color: var(--muted); font-size: 14px; }
+      .queue-summary strong { color: var(--ink); font-weight: 600; }
+      .queue-list { list-style: none; margin: 0 24px 18px; padding: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+      .queue-item { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; padding: 18px; border-bottom: 1px solid var(--line); }
+      .queue-item:last-child { border-bottom: 0; }
+      .queue-position { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+      .queue-name { display: block; font-size: 15px; font-weight: 550; line-height: 1.4; overflow-wrap: anywhere; }
+      .queue-times { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .queue-note { margin: 0 24px 18px; color: var(--muted); font-size: 12px; line-height: 1.5; }
       .mesh-body { padding: 0 24px 20px; }
       .mesh-caption { margin: 0 0 12px; color: var(--muted); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
       .mesh-map { display: block; width: min(100%, 320px); margin: 0 auto 12px; color: var(--muted); }
@@ -279,7 +288,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
       const renderJobs = (data) => { const current = data?.current ? `<div class="job-current"><strong>${escapeHtml(valueOf(data.current.filename) ?? "Filename unknown")}</strong><div class="job-meta"><span>${valueOf(data.current.storageActive) === null ? "Storage unknown" : valueOf(data.current.storageActive) ? "Storage active" : "Storage inactive"}</span></div></div>` : '<div class="empty-panel"><strong>No current job observed</strong>Current job identity is unknown.</div>'; return `<section class="instrument">${header("Current Job")}${current}${provenance(data?.provenance)}</section>`; };
       const renderJobHistory = () => `<section class="instrument">${header("Job History", true, null)}<div class="empty-panel"><strong>Not implemented yet</strong>Previous jobs aren’t available yet.</div>${provenance()}</section>`;
-      const renderQueue = (data) => unknown("Queue", data);
+      const renderQueue = (data) => {
+        const stateLabel = ({ ready: "Ready", loading: "Loading", starting: "Starting", paused: "Paused" })[data?.queueState];
+        const retained = data?.state === "stale";
+        const safeFilename = value => typeof value === "string" && value.length > 0 && Array.from(value).length <= 160 && /^[\p{L}\p{M}\p{N} ._()+-]+$/u.test(value) && !/(?:^|[^a-z0-9])(?:gh[pousr]_[a-z0-9]{16,255}|github_pat_[a-z0-9_]{16,255}|glpat-[a-z0-9_-]{16,255}|xox[baprs]-[a-z0-9-]{16,255}|(?:AKIA|ASIA)[a-z0-9]{16})/i.test(value) && !/\b(?:bearer|basic)\s+|\b(?:api[-_ ]?key|(?:access|refresh)[-_ ]?token|password|secret|credential)[ _.-]+\S|\bsk-(?:proj-)?[a-z0-9_-]{8,}|\beyJ[a-z0-9_-]+\.[a-z0-9_-]+\.[a-z0-9_-]+/i.test(value);
+        const valid = (data?.state === "known" || retained) && Boolean(stateLabel) && Number.isSafeInteger(data?.totalCount) && data.totalCount >= 0 && data.totalCount <= 1000 && Array.isArray(data.items) && data.items.length === Math.min(data.totalCount, 100) && data.truncated === (data.totalCount > 100) && data.items.every((item, index) => item?.position === index + 1 && safeFilename(item.filename));
+        const reasons = { unsupported: "This queue endpoint is not supported.", unauthorized: "Queue access was denied.", timeout: "The queue request timed out.", malformed: "The queue response could not be read.", too_large: "The queue response exceeded the supported limit.", not_configured: "Queue connection is not configured.", network: "Couldn’t reach the queue.", http_error: "The queue request failed." };
+        const reason = reasons[data?.reason] ?? "";
+        const warning = retained && valid ? `${reason ? `${reason} ` : ""}Showing the last observed queue; it may have changed.` : reason;
+        const dateLabel = value => { const date = typeof value === "string" && value ? new Date(value) : null; return date && Number.isFinite(date.valueOf()) ? date.toLocaleString([], { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "Unknown"; };
+        const waitLabel = value => validNumber(value) && value >= 0 ? (value < 60 ? `${Math.floor(value)}s` : formatDuration({ state: "known", value })) : "Unknown";
+        let body;
+        if (valid) {
+          const countLabel = `${data.totalCount} ${data.totalCount === 1 ? "job" : "jobs"}`;
+          body = `<div class="queue-summary"><span>${retained ? "Last observed state" : "Queue state"} <strong>${stateLabel}</strong></span><span>${retained ? "Last observed count" : "Queued"} <strong>${countLabel}</strong></span></div>`;
+          body += data.totalCount === 0 ? `<div class="empty-panel"><strong>${retained ? "Last observed queue was empty" : "Queue empty"}</strong>${retained ? "Refresh to check the current queue." : "No jobs were queued at this observation."}</div>` : `<ol class="queue-list" aria-label="Reported queue order">${data.items.map(item => `<li class="queue-item"><span class="queue-position" aria-hidden="true">${item.position}</span><div><strong class="queue-name">${escapeHtml(item.filename)}</strong><div class="queue-times"><span>Added ${escapeHtml(dateLabel(item.timeAdded))}</span><span>Waited at observation ${escapeHtml(waitLabel(item.timeInQueueSeconds))}</span></div></div></li>`).join("")}</ol>`;
+          if (data.truncated) { const omitted = data.totalCount - data.items.length; body += `<p class="queue-note">Showing 100 of ${data.totalCount} queued jobs. ${omitted} ${omitted === 1 ? "job is" : "jobs are"} not displayed.</p>`; }
+        } else {
+          const unknown = data?.state === "unknown";
+          const unsupported = data?.state === "unsupported";
+          body = `<div class="empty-panel"><strong>${unknown ? "Queue not observed" : unsupported ? "Queue unsupported" : "Queue unavailable"}</strong>${unknown ? "Refresh to request the queue." : unsupported ? "The attempted Queue endpoint was unsupported." : "No current queue values are available."}</div>`;
+        }
+        return `<section class="instrument">${header("Queue", true, valid ? data.sourceObservedAt : null, valid ? retained ? "stale" : data.freshness : "unknown", warning)}${body}${provenance()}</section>`;
+      };
       const renderFans = (data) => unknown("Fans & Air", data);
       // Presentation state is local to this mounted card, never printer state or a tool argument.
       const meshView = { mode: "3d", height: 100, yaw: -0.65, pitch: 0.55 };
@@ -490,7 +521,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       };
       const initializeBridge = async () => {
-        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.2" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
+        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.3" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
         rpcNotify("ui/notifications/initialized", {});
         return result;
       };
