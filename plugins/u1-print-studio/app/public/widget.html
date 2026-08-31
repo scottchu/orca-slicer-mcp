@@ -343,7 +343,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const renderJobHistory = (data) => {
         const observed = data?.state === "known" || data?.state === "stale"; const retained = data?.state === "stale";
         const statuses = ["in_progress", "completed", "cancelled", "error", "klippy_shutdown", "klippy_disconnect", "interrupted", "unknown"];
-        const validTime = value => value === null || typeof value === "string" && value.length <= 40 && Number.isFinite(new Date(value).valueOf());
+        const validTime = value => { if (value === null) return true; if (typeof value !== "string" || value.length > 40) return false; const milliseconds = new Date(value).valueOf(); return Number.isFinite(milliseconds) && milliseconds >= 0 && milliseconds <= 253402300799000; };
         const validItem = (item, index) => item?.position === index + 1 && safeFilename(item.filename) && statuses.includes(item.status) && validTime(item.startTime) && validTime(item.endTime) && [item.printDurationSeconds, item.totalDurationSeconds, item.filamentUsedMillimeters].every(value => value === null || boundedFact(value));
         const valid = observed && validReceipt(data) && Number.isSafeInteger(data.pageCount) && data.pageCount >= 0 && data.pageCount <= 20 && Array.isArray(data.items) && data.items.length === data.pageCount && data.items.every(validItem);
         const reason = historyReasons[data?.reason] ?? ""; const warning = retained && valid ? `${reason ? `${reason} ` : ""}Showing the last observed History page.` : reason;

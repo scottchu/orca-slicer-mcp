@@ -200,6 +200,24 @@ describe("production observation widget host boundary", () => {
     expect(missing).not.toMatch(/No active job|Idle|No jobs/);
   });
 
+  test("History accepts the exact Unix timestamp maximum and rejects max-plus-one fail closed", () => {
+    const maximum = fixture("job_history");
+    maximum.module.items[0].startTime = "9999-12-31T23:59:59.000Z";
+    maximum.module.items[0].endTime = "9999-12-31T23:59:59.000Z";
+    const accepted = mount({ toolOutput: maximum }).modules.innerHTML;
+    expect(accepted).toContain("history-only.gcode");
+    expect(accepted).not.toContain("Job History not observed");
+
+    for (const field of ["startTime", "endTime"] as const) {
+      const beyond = fixture("job_history");
+      beyond.module.items[0][field] = "+010000-01-01T00:00:00.000Z";
+      const rejected = mount({ toolOutput: beyond }).modules.innerHTML;
+      expect(rejected).toContain("Job History not observed");
+      expect(rejected).toContain("Observation time unavailable");
+      expect(rejected).not.toContain("history-only.gcode");
+    }
+  });
+
   test("cold mount completes a request/response initialization before announcing ready", async () => {
     const card = mount();
     expect(card.sent).toHaveLength(1);
