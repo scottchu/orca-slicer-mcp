@@ -1,24 +1,30 @@
 <!doctype html>
 <html lang="en">
+<!-- Feather Icons v4.29.2 (https://feathericons.com), MIT License.
+Copyright (c) 2013-2023 Cole Bemis
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>U1 Printer Observation</title>
     <style>
       :root {
-        color-scheme: light dark;
+        color-scheme: light;
         --ink: #1c1e20;
-        --muted: #737475;
+        --muted: #6b7077;
         --faint: #8b8d8e;
-        --surface: rgba(255, 255, 255, 0.96);
-        --canvas: #f2f2f0;
-        --line: rgba(28, 30, 32, 0.13);
-        --soft: #f3f3f2;
-        --brand: #ffcd00;
+        --surface: #fff;
+        --canvas: #fdfdfd;
+        --line: #eceef0;
+        --soft: #f8f9fa;
+        --brand: #f4b927;
         --brand-warm: #ff5f28;
-        --positive: #20bd68;
+        --positive: #499e69;
         --negative: #b83232;
-        --shadow: 0 18px 48px rgba(28, 30, 32, 0.1);
+        --shadow: 0 5px 24px rgba(28, 30, 32, 0.055);
         --radius: 24px;
         --safe-top: env(safe-area-inset-top, 0px);
         --safe-right: env(safe-area-inset-right, 0px);
@@ -33,21 +39,21 @@
         min-height: 100dvh;
         padding: calc(22px + var(--safe-top)) calc(18px + var(--safe-right)) calc(22px + var(--safe-bottom)) calc(18px + var(--safe-left));
         color: var(--ink);
-        background: radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.96), transparent 48%), var(--canvas);
+        background: var(--canvas);
       }
       button { color: inherit; font: inherit; touch-action: manipulation; }
       button:not(:disabled) { cursor: pointer; }
       button:focus-visible { outline: 3px solid rgba(255, 205, 0, 0.9); outline-offset: 3px; }
       .shell { width: min(100%, 820px); margin: 0 auto; }
       .modules { display: grid; gap: 16px; }
-      .instrument { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); backdrop-filter: blur(18px); }
-      .instrument-header { display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px 18px; }
+      .instrument { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+      .instrument-header { display: flex; align-items: center; gap: 18px; padding: 32px 32px 26px; }
       .instrument-title { min-width: 0; flex: 1; }
       .instrument-info { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
       .instrument-info time { display: block; font-variant-numeric: tabular-nums; }
       .refresh-error { display: block; }
       .loading-guidance { margin: 12px 0 0; font-size: 12px; line-height: 1.5; }
-      h2 { margin: 0; font-size: clamp(22px, 5vw, 30px); line-height: 1.04; letter-spacing: -0.035em; }
+      h2 { margin: 0; font-size: clamp(20px, 3.7vw, 27px); font-weight: 620; line-height: 1.2; letter-spacing: -0.035em; }
       .refresh { display: inline-grid; width: 44px; min-width: 44px; min-height: 44px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--soft); }
       .refresh svg { width: 18px; height: 18px; }
       .refresh[aria-busy="true"] svg { animation: spin 0.8s linear infinite; }
@@ -57,7 +63,7 @@
       .strip.active { box-shadow: inset 5px 0 0 var(--brand); }
       .identity { display: flex; min-width: 0; align-items: center; gap: 14px; }
       .strip.zone-row .identity { padding-left: 8px; }
-      .roundel { display: grid; width: 52px; height: 52px; flex: none; place-items: center; border-radius: 50%; background: linear-gradient(145deg, #fafafa, #e6e6e5); font-size: 19px; font-weight: 800; }
+      .roundel { display: grid; width: 52px; height: 52px; flex: none; place-items: center; border-radius: 50%; background: var(--soft); font-size: 19px; font-weight: 800; }
       .active .roundel { background: var(--brand); }
       .identity strong { display: block; font-size: 15px; }
       .micro { margin-top: 5px; color: var(--muted); font-size: 11px; font-weight: 740; letter-spacing: 0.08em; text-transform: uppercase; }
@@ -66,22 +72,31 @@
       .reading strong { font-size: clamp(22px, 5vw, 30px); font-weight: 640; letter-spacing: -0.035em; }
       .reading.unavailable strong { color: var(--muted); font-size: 15px; font-weight: 540; letter-spacing: 0; }
       .active .reading strong { color: var(--ink); }
-      .progress-body { padding: 0 24px 22px; }
-      .progress-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-      .state-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; color: #107d48; background: #ddf6e9; font-size: 14px; font-weight: 720; }
-      .state-pill::before { width: 9px; height: 9px; border-radius: 50%; background: var(--positive); content: ""; }
-      .state-pill.offline { color: var(--muted); background: var(--soft); }
-      .state-pill.offline::before { background: var(--faint); }
-      .progress-percent { font-size: clamp(32px, 8vw, 46px); font-weight: 780; letter-spacing: -0.045em; }
-      .progress-track { display: grid; grid-template-columns: repeat(var(--blocks, 1), minmax(0, 1fr)); gap: 2px; height: 14px; margin: 14px 0 10px; overflow: hidden; border-radius: 2px; --empty-block: #e7e7e6; }
-      .progress-block, .progress-track.unavailable { background: var(--empty-block); }
-      .progress-block { min-width: 0; overflow: hidden; border-radius: 2px; }
-      .progress-block-fill { height: 100%; background: var(--brand); }
-      .progress-meta { display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font-size: 13px; }
+      .icon-tile { display: grid; place-items: center; flex: none; width: 64px; height: 72px; border: 1px solid var(--line); border-radius: 16px; background: #fdfdfd; }
+      .icon-tile svg { width: 28px; height: 28px; stroke-width: 1.7; }
+      .metric-icon { display: inline-flex; vertical-align: middle; }
+      .metric-icon svg { width: 18px; height: 18px; }
+      .progress-body { padding: 12px 32px 18px; }
+      .progress-result { flex: none; min-width: 0; text-align: right; }
+      .progress-percent { display: block; color: var(--positive); font-size: clamp(44px, 9vw, 72px); line-height: 1; font-weight: 300; letter-spacing: -0.065em; font-variant-numeric: tabular-nums; }
+      .progress-percent.unknown { font-size: 24px; color: var(--muted); letter-spacing: -0.02em; }
+      .progress-state { display: block; margin-top: 8px; color: var(--muted); font-size: 15px; }
+      .progress-track { height: 8px; margin: 10px 0 26px; overflow: hidden; border-radius: 999px; background: #f1f2f3; }
+      .progress-fill { height: 100%; border-radius: inherit; background: var(--brand); }
+      .progress-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; color: var(--muted); font-size: 14px; }
+      .progress-meta > span { display: inline-flex; align-items: center; gap: 7px; }
+      .layer-current { color: #a16d00; font-weight: 500; }
+      .progress-metrics { display: flex; flex-wrap: wrap; gap: 20px; margin: 30px 0 0; padding-top: 24px; border-top: 1px solid var(--line); }
+      .progress-metrics > div { min-width: 100px; }
+      .progress-metrics dt { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; }
+      .progress-metrics dd { margin: 12px 0 0 26px; font-size: 20px; font-variant-numeric: tabular-nums; }
       .head-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 0 18px 18px; }
       .head-card { min-height: 148px; padding: 16px 12px; border: 1px solid var(--line); border-radius: 18px; text-align: center; }
       .head-card .roundel { width: 42px; height: 42px; margin: 0 auto 12px; font-size: 16px; }
-      .head-card .material { min-height: 38px; color: var(--muted); font-size: 13px; }
+      .head-card .material { min-height: 38px; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+      .material-info { margin: 0 18px 14px; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+      .material-color { display: flex; align-items: center; gap: 5px; overflow-wrap: anywhere; }
+      .material-swatch { flex: 0 0 12px; width: 12px; height: 12px; border: 1px solid var(--muted); border-radius: 50%; }
       .head-card .temperature { margin-top: 7px; font-size: 12px; }
       .head-card.active { box-shadow: inset 0 4px 0 var(--brand); }
       .empty-panel { margin: 0 18px 18px; padding: 24px; border: 1px dashed var(--line); border-radius: 18px; color: var(--muted); background: rgba(245, 245, 244, 0.62); }
@@ -104,9 +119,10 @@
       @keyframes spin { to { transform: rotate(360deg); } }
       @media (prefers-reduced-motion: reduce) { .refresh[aria-busy="true"] svg { animation: none; } }
       @media (max-width: 620px) {
-        body { padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); background: var(--surface); }
+        body { padding: calc(10px + var(--safe-top)) calc(8px + var(--safe-right)) calc(10px + var(--safe-bottom)) calc(8px + var(--safe-left)); }
         .modules { gap: 10px; }
-        .instrument { border-right: 0; border-left: 0; border-radius: 0; box-shadow: none; }
+        .instrument { border-radius: 20px; }
+        .instrument-header { padding: 24px 20px 20px; gap: 12px; }
         .strip { grid-template-columns: minmax(150px, 1.2fr) repeat(2, minmax(74px, 0.7fr)); }
         .head-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .instrument-footer { margin-right: 18px; margin-left: 18px; }
@@ -119,13 +135,16 @@
         .roundel { width: 44px; height: 44px; }
         .progress-body { padding-right: 18px; padding-left: 18px; }
       }
-      @media (prefers-color-scheme: dark) {
-        :root { --ink: #f7f7f4; --muted: #b7b8b4; --faint: #969792; --surface: rgba(31, 31, 31, 0.98); --canvas: #191919; --line: rgba(255, 255, 255, 0.13); --soft: #292a29; --negative: #ff8585; --shadow: 0 18px 48px rgba(0, 0, 0, 0.3); }
-        .roundel { background: linear-gradient(145deg, #3a3b3a, #282928); }
-        .active .roundel { color: #1c1e20; background: var(--brand); }
-        .progress-track { --empty-block: #343533; }
-        .state-pill { color: #66e5a5; background: #173a2a; }
-        .empty-panel { background: rgba(41, 42, 41, 0.55); }
+      @media (max-width: 620px) {
+        .icon-tile { width: 44px; height: 52px; border-radius: 12px; }
+        .icon-tile svg { width: 24px; height: 24px; }
+        .progress-body { padding: 4px 20px 14px; }
+        .progress-result { margin-left: auto; }
+        .progress-state { font-size: 12px; }
+        .progress-percent { font-size: 48px; }
+        .progress-instrument .instrument-header { flex-wrap: wrap; }
+        .progress-instrument .instrument-title { flex-basis: calc(100% - 60px); }
+        .progress-metrics { margin-top: 24px; padding-top: 20px; }
       }
     </style>
   </head>
@@ -151,45 +170,54 @@
       const observedLabel = (value) => { const date = typeof value === "string" && value ? new Date(value) : null; return !date || Number.isNaN(date.valueOf()) ? "Observation time unavailable" : `Observed ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`; };
       const freshnessLabel = (state) => ({ fresh: "", stale: "Stale", offline: "Offline", unknown: "Freshness unknown" })[state] ?? "Freshness unknown";
       const observationInfo = (sourceObservedAt = observation?.sourceObservedAt, freshnessState = observation?.freshness) => { const freshness = freshnessLabel(freshnessState); return `<div class="instrument-info"><time>${escapeHtml(observedLabel(sourceObservedAt))}${freshness ? ` <span class="freshness-warning">· ${escapeHtml(freshness)}</span>` : ""}</time><span class="refresh-error" role="status"></span></div>`; };
-      const provenance = () => `<footer class="instrument-footer"><button class="refresh" type="button" title="Refresh observation" aria-label="Refresh observation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.7-4.4L3 10"/><path d="M3 4v6h6M4 13a8 8 0 0 0 14.7 4.4L21 14"/><path d="M21 20v-6h-6"/></svg></button></footer>`;
-      const header = (title, showObservation = true, sourceObservedAt = observation?.sourceObservedAt, freshness = observation?.freshness, message = "") => `<header class="instrument-header"><div class="instrument-title"><h2>${escapeHtml(title)}</h2>${showObservation ? observationInfo(sourceObservedAt, freshness) : ""}${message ? `<div class="domain-warning" role="status">${escapeHtml(message)}</div>` : ""}</div></header>`;
+      // Feather Icons 4.29.2, MIT; full notice is bundled in this document.
+      const icons = Object.freeze({"printer":"<svg aria-hidden=\"true\" data-icon=\"feather-printer\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 6 2 18 2 18 9\"/><path d=\"M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2\"/><rect x=\"6\" y=\"14\" width=\"12\" height=\"8\"/></svg>","clock":"<svg aria-hidden=\"true\" data-icon=\"feather-clock\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><polyline points=\"12 6 12 12 16 14\"/></svg>","thermometer":"<svg aria-hidden=\"true\" data-icon=\"feather-thermometer\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z\"/></svg>","layers":"<svg aria-hidden=\"true\" data-icon=\"feather-layers\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"12 2 2 7 12 12 22 7 12 2\"/><polyline points=\"2 17 12 22 22 17\"/><polyline points=\"2 12 12 17 22 12\"/></svg>","file-text":"<svg aria-hidden=\"true\" data-icon=\"feather-file-text\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"/><polyline points=\"14 2 14 8 20 8\"/><line x1=\"16\" y1=\"13\" x2=\"8\" y2=\"13\"/><line x1=\"16\" y1=\"17\" x2=\"8\" y2=\"17\"/><polyline points=\"10 9 9 9 8 9\"/></svg>","list":"<svg aria-hidden=\"true\" data-icon=\"feather-list\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"8\" y1=\"6\" x2=\"21\" y2=\"6\"/><line x1=\"8\" y1=\"12\" x2=\"21\" y2=\"12\"/><line x1=\"8\" y1=\"18\" x2=\"21\" y2=\"18\"/><line x1=\"3\" y1=\"6\" x2=\"3.01\" y2=\"6\"/><line x1=\"3\" y1=\"12\" x2=\"3.01\" y2=\"12\"/><line x1=\"3\" y1=\"18\" x2=\"3.01\" y2=\"18\"/></svg>","wind":"<svg aria-hidden=\"true\" data-icon=\"feather-wind\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2\"/></svg>","grid":"<svg aria-hidden=\"true\" data-icon=\"feather-grid\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\"/></svg>","activity":"<svg aria-hidden=\"true\" data-icon=\"feather-activity\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\"/></svg>","refresh-cw":"<svg aria-hidden=\"true\" data-icon=\"feather-refresh-cw\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"23 4 23 10 17 10\"/><polyline points=\"1 20 1 14 7 14\"/><path d=\"M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15\"/></svg>"});
+      const icon = (name) => icons[name] ?? icons.activity;
+      const titleIcons = Object.freeze({ "Print Progress": "printer", Thermals: "thermometer", "Heads & Filaments": "layers", "Current Job": "file-text", "Job History": "clock", Queue: "list", "Fans & Air": "wind", "Bed Mesh": "grid", Overview: "activity" });
+      const provenance = () => `<footer class="instrument-footer"><button class="refresh" type="button" title="Refresh observation" aria-label="Refresh observation">${icon("refresh-cw")}</button></footer>`;
+      const header = (title, showObservation = true, sourceObservedAt = observation?.sourceObservedAt, freshness = observation?.freshness, message = "", trailing = "") => `<header class="instrument-header"><span class="icon-tile" aria-hidden="true">${icon(titleIcons[title])}</span><div class="instrument-title"><h2>${escapeHtml(title)}</h2>${showObservation ? observationInfo(sourceObservedAt, freshness) : ""}${message ? `<div class="domain-warning" role="status">${escapeHtml(message)}</div>` : ""}</div>${trailing}</header>`;
       const unknown = (title, data) => `<section class="instrument">${header(title)}<div class="empty-panel"><strong>${data?.kind === "overview" ? "Overview deferred" : "Not implemented yet"}</strong>${data?.kind === "overview" ? "The combined overview is not implemented." : "This view’s printer-data mapping is not implemented. Values are unknown."}</div>${provenance(data?.provenance)}</section>`;
-      const compactProgress = window.matchMedia?.("(max-width: 480px)");
       const layerPosition = (fields) => {
         const current = valueOf(fields?.currentLayer); const total = valueOf(fields?.totalLayers);
         return Number.isSafeInteger(current) && Number.isSafeInteger(total) && total > 0 && current >= 0 && current <= total ? { current, total } : null;
       };
-      const renderLayerTrack = (position) => {
-        if (!position) return '<div class="progress-track unavailable" role="progressbar" aria-label="Layer progress" aria-valuetext="Layer progress unavailable"></div>';
-        const { current, total } = position;
-        const count = Math.min(total, compactProgress?.matches ? 24 : 48);
-        // Equivalent to floor(index * total / count), without overflowing safe integer multiplication.
-        const boundary = (index) => index * Math.floor(total / count) + Math.floor(index * (total % count) / count);
-        const blocks = Array.from({ length: count }, (_, index) => {
-          const start = boundary(index); const end = boundary(index + 1);
-          const filled = current <= start ? 0 : current >= end ? 100 : (current - start) / (end - start) * 100;
-          return `<div class="progress-block" aria-hidden="true"><div class="progress-block-fill" style="width:${filled}%"></div></div>`;
-        }).join("");
-        const text = `Layer ${current} of ${total}${total > count ? `. Grouped into ${count} blocks` : ""}`;
-        return `<div class="progress-track" style="--blocks:${count}" role="progressbar" aria-label="Layer progress" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${current}" aria-valuetext="${text}">${blocks}</div>`;
-      };
-      const updateLayerTrack = () => {
-        if (observation?.view !== "progress") return;
-        const track = modulesElement.querySelector(".progress-track");
-        // Resize only this fixed-height track, preserving refresh state and error messages.
-        if (track) track.outerHTML = renderLayerTrack(layerPosition(observation.module?.fields));
-      };
-      if (typeof compactProgress?.addEventListener === "function") compactProgress.addEventListener("change", updateLayerTrack);
-      else if (typeof compactProgress?.addListener === "function") compactProgress.addListener(updateLayerTrack);
       const renderProgress = (data) => {
-        const fields = data?.fields; const rawPercent = valueOf(fields?.percent); const percent = validNumber(rawPercent) && rawPercent >= 0 && rawPercent <= 100 ? rawPercent : null; const position = layerPosition(fields); const layers = position ? `Layer ${position.current} / ${position.total}` : "Layer progress unavailable";
-        return `<section class="instrument">${header("Print Progress")}<div class="progress-body"><div class="progress-top"><span class="state-pill${observation.reachable ? "" : " offline"}">${escapeHtml(observation.printerStateLabel)}</span><strong class="progress-percent">${percent === null ? "Unknown" : `${percent.toFixed(percent % 1 ? 1 : 0)}%`}</strong></div>${renderLayerTrack(position)}<div class="progress-meta"><span>${escapeHtml(layers)}</span><span>${valueOf(fields?.estimatedRemainingSeconds) === null ? "Estimate unknown" : `About ${escapeHtml(formatDuration(fields.estimatedRemainingSeconds))} left`}</span></div></div>${provenance(data?.provenance)}</section>`;
+        const fields = data?.fields; const rawPercent = valueOf(fields?.percent);
+        const percent = validNumber(rawPercent) && rawPercent >= 0 && rawPercent <= 100 ? rawPercent : null;
+        const position = layerPosition(fields);
+        const layers = position ? `Layer <strong class="layer-current">${position.current}</strong> / ${position.total}` : "Layer progress unavailable";
+        const result = `<div class="progress-result"><strong class="progress-percent${percent === null ? " unknown" : ""}">${percent === null ? "Unknown" : `${percent.toFixed(percent % 1 ? 1 : 0)}%`}</strong><span class="progress-state">${escapeHtml(observation.printerStateLabel)}</span></div>`;
+        const track = percent === null
+          ? '<div class="progress-track unavailable" role="progressbar" aria-label="Reported print progress" aria-valuetext="Reported progress unavailable"></div>'
+          : `<div class="progress-track" role="progressbar" aria-label="Reported print progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="progress-fill" style="width:${percent}%"></div></div>`;
+        const elapsed = valueOf(fields?.elapsedSeconds);
+        const metrics = validNumber(elapsed) && elapsed >= 0 ? `<dl class="progress-metrics"><div><dt><span class="metric-icon">${icon("clock")}</span>Elapsed</dt><dd>${escapeHtml(formatDuration(fields.elapsedSeconds))}</dd></div></dl>` : "";
+        const remaining = valueOf(fields?.estimatedRemainingSeconds);
+        const eta = validNumber(remaining) && remaining >= 0 ? `About ${escapeHtml(formatDuration(fields.estimatedRemainingSeconds))} left` : "Estimate unknown";
+        return `<section class="instrument progress-instrument">${header("Print Progress", true, observation.sourceObservedAt, observation.freshness, "", result)}<div class="progress-body">${track}<div class="progress-meta"><span>${layers}</span><span><span class="metric-icon">${icon("clock")}</span>${eta}</span></div>${metrics}</div>${provenance()}</section>`;
       };
       const renderThermals = (data) => {
         const rows = (data?.readings ?? []).map((reading) => { const known = reading.state === "known" || reading.state === "stale"; const active = valueOf(reading.active) === true; const toolReading = reading.id.startsWith("tool-"); const badge = toolReading ? `<span class="roundel">T${escapeHtml(reading.id.slice(-1))}</span>` : ""; return `<div class="strip${active ? " active" : ""}${toolReading ? "" : " zone-row"}"><div class="identity">${badge}<span><strong>${escapeHtml(reading.label)}</strong><span class="micro">${active ? '<span class="dot"></span>Active' : escapeHtml(valueOf(reading.heaterState) ?? "Unknown")}</span></span></div><div class="reading${known ? "" : " unavailable"}"><small>Actual</small><strong>${escapeHtml(formatTemperature(reading.actual))}</strong></div><div class="reading${known ? "" : " unavailable"}"><small>Target</small><strong>${escapeHtml(formatTemperature(reading.target))}</strong></div></div>`; }).join("");
         return `<section class="instrument">${header("Thermals")}<div class="strip-list">${rows}</div>${provenance(data?.provenance)}</section>`;
       };
-      const renderHeads = (data) => { const cards = (data?.items ?? []).map((head) => { const active = valueOf(head.active) === true; return `<article class="head-card${active ? " active" : ""}"><span class="roundel">T${head.physicalTool}</span><strong>Tool ${head.physicalTool}</strong><div class="material">Material unknown<br/>Color unknown</div><div class="temperature">${escapeHtml(formatTemperature(head.temperature))}${valueOf(head.target) !== null ? ` / ${escapeHtml(formatTemperature(head.target))}` : ""}</div>${active ? '<span class="micro"><span class="dot"></span>Active</span>' : `<span class="micro">${escapeHtml(valueOf(head.headState) ?? "Unknown")}</span>`}</article>`; }).join(""); return `<section class="instrument">${header("Heads & Filaments")}<div class="head-grid">${cards}</div>${provenance(data?.provenance)}</section>`; };
+      const renderHeads = (data) => {
+        const materialData = data?.materials;
+        const materialState = materialData?.state ?? "unknown";
+        const materialStatus = ({ unknown: "Material data unknown", unsupported: "Material data unsupported", unavailable: "Material data unavailable", stale: "Stale material data" })[materialState] ?? "";
+        const materialTime = observedLabel(materialData?.sourceObservedAt);
+        const failed = materialState === "stale" && materialData?.reason ? " · Refresh failed; last observation retained" : "";
+        const cards = [1, 2, 3, 4].map((physicalTool) => {
+          const head = (data?.items ?? []).find(item => item.physicalTool === physicalTool) ?? {};
+          const active = valueOf(head.active) === true;
+          const rawColor = valueOf(head.color);
+          const color = typeof rawColor === "string" && /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i.test(rawColor) ? rawColor.toUpperCase() : null;
+          const presence = valueOf(head.reportedPresence);
+          const presenceText = presence === true ? "Filament reported present" : presence === false ? "No filament reported" : "Presence unknown";
+          const material = [valueOf(head.vendor) ?? "Vendor unknown", valueOf(head.materialType) ?? "Material unknown", valueOf(head.subtype)].filter(Boolean).join(" ");
+          return `<article class="head-card${active ? " active" : ""}"><span class="roundel">T${physicalTool}</span><strong>Tool ${physicalTool}</strong><div class="material">${escapeHtml(material)}<div class="material-color">${color ? `<span class="material-swatch" aria-hidden="true" style="background-color:${color}"></span>${color}` : "Color unknown"}</div><span class="micro">${presenceText}</span></div><div class="temperature">${escapeHtml(formatTemperature(head.temperature))}${valueOf(head.target) !== null ? ` / ${escapeHtml(formatTemperature(head.target))}` : ""}</div>${active ? '<span class="micro"><span class="dot"></span>Active</span>' : `<span class="micro">${escapeHtml(valueOf(head.headState) ?? "Unknown")}</span>`}</article>`;
+        }).join("");
+        return `<section class="instrument">${header("Heads & Filaments")}<p class="material-info">Printer-reported material · ${escapeHtml(materialTime)}${materialStatus ? ` · ${escapeHtml(materialStatus)}` : ""}${failed}</p><div class="head-grid">${cards}</div>${provenance(data?.provenance)}</section>`;
+      };
       const renderJobs = (data) => { const current = data?.current ? `<div class="job-current"><strong>${escapeHtml(valueOf(data.current.filename) ?? "Filename unknown")}</strong><div class="job-meta"><span>${valueOf(data.current.storageActive) === null ? "Storage unknown" : valueOf(data.current.storageActive) ? "Storage active" : "Storage inactive"}</span></div></div>` : '<div class="empty-panel"><strong>No current job observed</strong>Current job identity is unknown.</div>'; return `<section class="instrument">${header("Current Job")}${current}${provenance(data?.provenance)}</section>`; };
       const renderJobHistory = () => `<section class="instrument">${header("Job History", true, null)}<div class="empty-panel"><strong>Not implemented yet</strong>Previous jobs aren’t available yet.</div>${provenance()}</section>`;
       const renderQueue = (data) => unknown("Queue", data);
@@ -275,7 +303,7 @@
         }
       };
       const initializeBridge = async () => {
-        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.3.3" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
+        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.0" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
         rpcNotify("ui/notifications/initialized", {});
         return result;
       };

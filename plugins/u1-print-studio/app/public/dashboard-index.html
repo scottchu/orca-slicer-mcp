@@ -1,19 +1,25 @@
 <!doctype html>
 <html lang="en">
+<!-- Feather Icons v4.29.2 (https://feathericons.com), MIT License.
+Copyright (c) 2013-2023 Cole Bemis
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Printer widgets · U1 Print Studio</title>
     <style>
       :root {
-        color-scheme: light dark;
+        color-scheme: light;
         --ink: #1c1e20;
         --muted: #68696a;
         --surface: #fff;
-        --canvas: #f2f2f0;
-        --line: rgba(28, 30, 32, 0.16);
-        --soft: #f3f3f2;
-        --brand: #ffcd00;
+        --canvas: #fdfdfd;
+        --line: #eceef0;
+        --soft: #f8f9fa;
+        --brand: #f4b927;
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
       * { box-sizing: border-box; }
@@ -24,21 +30,21 @@
       header p { max-width: 48ch; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
       ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
       li { min-width: 0; }
-      a { display: grid; grid-template-columns: minmax(0, 1fr) 16px; gap: 10px 12px; height: 100%; min-height: 150px; padding: 20px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); color: inherit; text-decoration: none; }
+      a { display: grid; grid-template-columns: minmax(0, 1fr) 16px; gap: 10px 12px; height: 100%; min-height: 150px; padding: 20px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); color: inherit; text-decoration: none; box-shadow: 0 4px 16px rgba(28,30,32,.035); }
       a:hover { border-color: var(--ink); }
       a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 6px var(--brand); }
       .identity { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
       h2 { margin: 0; font-size: 18px; line-height: 1.25; letter-spacing: -0.025em; }
       .badge { padding: 4px 8px; border-radius: 7px; background: var(--soft); color: var(--muted); font-size: 11px; font-weight: 650; line-height: 1.35; white-space: nowrap; }
-      .implemented { color: #1c1e20; background: #ffed9c; }
-      .chevron { align-self: center; width: 8px; height: 8px; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); color: var(--muted); }
+      .implemented { color: #346c49; background: #eff8f1; }
+      .chevron { align-self: center; color: var(--muted); }
+      .chevron svg { width: 16px; height: 16px; }
+      .icon-tile { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 10px; background: var(--soft); }
+      .icon-tile svg { width: 19px; height: 19px; stroke-width: 1.7; }
       .description { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
       @media (max-width: 560px) {
         ul { grid-template-columns: 1fr; gap: 10px; }
         a { min-height: 110px; padding: 18px; border-radius: 18px; }
-      }
-      @media (prefers-color-scheme: dark) {
-        :root { --ink: #f7f7f4; --muted: #b7b8b4; --surface: #1f1f1f; --canvas: #191919; --line: rgba(255, 255, 255, 0.18); --soft: #292a29; }
       }
     </style>
   </head>
@@ -51,39 +57,39 @@
       <nav aria-label="Printer widgets">
         <ul>
           <li><a href="/dashboard/progress">
-            <div class="identity"><h2>Progress</h2><span class="badge implemented">Implemented</span></div><span class="chevron" aria-hidden="true"></span>
+            <div class="identity"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-printer" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span><h2>Progress</h2><span class="badge implemented">Implemented</span></div><span class="chevron" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-chevron-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             <p class="description">Print state, progress, layers and remaining time.</p>
           </a></li>
           <li><a href="/dashboard/camera">
-            <div class="identity"><h2>Camera</h2><span class="badge implemented">Implemented</span></div><span class="chevron" aria-hidden="true"></span>
+            <div class="identity"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-camera" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span><h2>Camera</h2><span class="badge implemented">Implemented</span></div><span class="chevron" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-chevron-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             <p class="description">Snapshots and live view.</p>
           </a></li>
           <li><a href="/dashboard/thermals">
-            <div class="identity"><h2>Thermals</h2><span class="badge">Partial</span></div><span class="chevron" aria-hidden="true"></span>
+            <div class="identity"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-thermometer" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span><h2>Thermals</h2><span class="badge">Partial</span></div><span class="chevron" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-chevron-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             <p class="description">Extruder and bed temperatures. Chamber readings are not implemented yet.</p>
           </a></li>
           <li><a href="/dashboard/heads">
-            <div class="identity"><h2>Heads &amp; Filaments</h2><span class="badge">Partial</span></div><span class="chevron" aria-hidden="true"></span>
-            <p class="description">Head state and temperatures. Filament material and color are not implemented yet.</p>
+            <div class="identity"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-layers" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span><h2>Heads &amp; Filaments</h2><span class="badge">Partial</span></div><span class="chevron" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-chevron-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+            <p class="description">Head state, temperatures and printer-reported filament vendor, material, color and presence. Independent filament sensors remain unavailable.</p>
           </a></li>
           <li><a href="/dashboard/jobs">
-            <div class="identity"><h2>Current Job</h2><span class="badge">Partial</span></div><span class="chevron" aria-hidden="true"></span>
+            <div class="identity"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-file-text" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span><h2>Current Job</h2><span class="badge">Partial</span></div><span class="chevron" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-chevron-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             <p class="description">Current filename and storage details only.</p>
           </a></li>
           <li><a href="/dashboard/job_history">
-            <div class="identity"><h2>Job History</h2><span class="badge">Not implemented</span></div><span class="chevron" aria-hidden="true"></span>
+            <div class="identity"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-clock" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><h2>Job History</h2><span class="badge">Not implemented</span></div><span class="chevron" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-chevron-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             <p class="description">View available; job history is not implemented yet.</p>
           </a></li>
           <li><a href="/dashboard/queue">
-            <div class="identity"><h2>Queue</h2><span class="badge">Not implemented</span></div><span class="chevron" aria-hidden="true"></span>
+            <div class="identity"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-list" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span><h2>Queue</h2><span class="badge">Not implemented</span></div><span class="chevron" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-chevron-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             <p class="description">View available; queue data is not implemented yet.</p>
           </a></li>
           <li><a href="/dashboard/fans">
-            <div class="identity"><h2>Fans</h2><span class="badge">Not implemented</span></div><span class="chevron" aria-hidden="true"></span>
+            <div class="identity"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-wind" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></span><h2>Fans</h2><span class="badge">Not implemented</span></div><span class="chevron" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-chevron-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             <p class="description">View available; fan and purifier readings are not implemented yet.</p>
           </a></li>
           <li><a href="/dashboard/bed_mesh">
-            <div class="identity"><h2>Bed Mesh</h2><span class="badge">Implemented</span></div><span class="chevron" aria-hidden="true"></span>
+            <div class="identity"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-grid" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span><h2>Bed Mesh</h2><span class="badge">Implemented</span></div><span class="chevron" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-chevron-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             <p class="description">Reported probe grid, bounds and height range.</p>
           </a></li>
         </ul>

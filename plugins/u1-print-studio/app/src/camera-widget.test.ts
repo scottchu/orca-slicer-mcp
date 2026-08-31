@@ -87,54 +87,63 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
 }
 
 describe("camera widget presentation runtime", () => {
-  test("keeps status bottom-left, controls bottom-right, and feedback at the top", () => {
+  test("keeps title, state and feedback in the white header outside genuine media", () => {
     const body = html.split("<body")[1]!.split('<script type="module">')[0]!;
+    const mediaStart = body.indexOf('<section class="camera"');
+    const beforeMedia = body.slice(0, mediaStart); const media = body.slice(mediaStart);
+    expect(beforeMedia).toContain("<h1>U1 Camera</h1>");
+    for (const id of ["camera-detail", "camera-detail-label", "camera-empty-message", "display-feedback"]) {
+      expect(beforeMedia).toContain(`id="${id}"`); expect(media).not.toContain(`id="${id}"`);
+    }
+    expect(beforeMedia).not.toContain("<button");
     const cluster = body.match(/<div class="camera-controls">([\s\S]*?)<\/div>/)![1]!;
-    const ids = [...cluster.matchAll(/<button[^>]+id="([^"]+)"/g)].map(match => match[1]);
-    expect(ids).toEqual(["picture-in-picture", "fullscreen", "go-live", "close-live"]);
-    expect(body.indexOf('class="camera-controls"')).toBeGreaterThan(body.indexOf('class="camera-bottom"'));
-    expect(body.indexOf('class="camera-controls"')).toBeGreaterThan(body.indexOf('id="camera-detail-label"'));
-    const information = body.split('<div class="camera-info">')[1]!.split('<div class="camera-bottom">')[0]!;
-    const actions = body.split('<div class="camera-bottom">')[1]!;
-    for (const id of ["camera-empty-message", "display-feedback"]) {
-      expect(information).toContain(`id="${id}"`);
-      expect(actions).not.toContain(`id="${id}"`);
-    }
-    for (const id of ["camera-detail", "camera-detail-label"]) {
-      expect(actions).toContain(`id="${id}"`);
-      expect(information).not.toContain(`id="${id}"`);
-    }
-    expect(information).not.toContain("<button");
-    expect(body.match(/id="picture-in-picture"/g)).toHaveLength(1);
-    expect(body.match(/id="fullscreen"/g)).toHaveLength(1);
-    expect(html).not.toContain("camera-top");
-    const controlsStyle = html.match(/\.camera-controls \{([^}]+)\}/)![1]!;
-    expect(controlsStyle).toContain("flex: none;");
-    expect(controlsStyle).toContain("gap: 8px;");
-    expect(controlsStyle).toContain("margin-left: auto;");
-    expect(html.match(/\.camera-actions \{([^}]+)\}/)![1]).toContain("flex-wrap: wrap;");
-    const displayStyle = html.match(/\.display-button \{([^}]+)\}/)![1]!;
-    expect(displayStyle).toContain("width: 44px;");
-    expect(displayStyle).toContain("height: 44px;");
-    expect(displayStyle).toContain("flex: none;");
-    const informationStyle = html.match(/\.camera-info \{([^}]+)\}/)![1]!;
-    expect(informationStyle).toContain("top: 12px;");
-    expect(informationStyle).toContain("flex-direction: column;");
-    expect(informationStyle).toContain("gap: 8px;");
-    expect(html.match(/\.display-feedback \{([^}]+)\}/)![1]).not.toContain("position:");
-    expect(html).toContain('.camera.has-snapshot .camera-info-message,');
-    expect(html).toContain('.camera[data-camera-status="unavailable"] .camera-mode { display: none; }');
-    expect(html).toContain('.display-button[hidden] { display: none; }');
-    expect(html).toContain('.camera-button[hidden] { display: none; }');
+    expect([...cluster.matchAll(/<button[^>]+id="([^"]+)"/g)].map(match => match[1]))
+      .toEqual(["picture-in-picture", "fullscreen", "refresh-snapshot", "go-live", "close-live"]);
+    expect(media).toContain('id="snapshot"'); expect(media).toContain('id="live-stream"');
+    expect(html).not.toMatch(/camera::before|camera::after|linear-gradient|prefers-color-scheme: dark/);
+    expect(html).toContain("color-scheme: light;"); expect(html).toContain("--surface: #fff;");
+    expect(html).toContain("min-width: 44px; min-height: 44px;");
+    expect(html).toContain(".camera-mode { flex-basis: 100%;");
+    expect(html).toContain('data-icon="feather-camera"'); expect(html).toContain("Copyright (c) 2013-2023 Cole Bemis");
+    expect(html).toContain(".dashboard:fullscreen .camera");
   });
 
-  test("uses image-only chrome and does not announce each changing clock", () => {
+  test("does not announce every changing clock or expose ICE details", () => {
     expect(html).not.toContain("Read only");
-    expect(html).not.toContain('class="camera-heading"');
     expect(html).not.toContain('id="camera-observed"');
     expect(html).not.toContain("Live · ${selectedIcePath}");
     expect(html).toContain('id="camera-detail" data-mode="loading">');
     expect(html).toContain('id="camera-status" role="status" aria-live="polite"');
+    expect(html).not.toContain('id="camera-detail-label" aria-live');
+  });
+
+  test("snapshot refresh is a working bounded host request and announces decoded success while retaining live", async () => {
+    const host = cameraHost();
+    expect(host.node("#refresh-snapshot").disabled).toBe(true);
+    await host.reply(host.messages[0], { hostContext: {} });
+    // Initial automatic snapshot acquisition is separate from explicit refresh.
+    let request = host.messages.find((m: any) => m.params?.name === "get_u1_camera_frame");
+    await host.reply(request, frame()); host.images.at(-1).onload(); await host.flush();
+    host.api.prepareLive(); host.renderFrame(1);
+    host.node("#refresh-snapshot").events.get("click")(); await host.flush();
+    expect(host.node("#refresh-snapshot").disabled).toBe(true);
+    expect(host.node("#display-feedback").textContent).toBe("Refreshing snapshot…");
+    request = host.messages.filter((m: any) => m.params?.name === "get_u1_camera_frame").at(-1);
+    await host.reply(request, frame(nextSnapshotTime, "fresh"));
+    expect(host.node("#display-feedback").textContent).not.toContain("Snapshot refreshed");
+    host.images.at(-1).onload();
+    expect(host.node("#display-feedback").textContent).toContain("Snapshot refreshed. Live view continues");
+    expect(host.api.state().relayRendering).toBe(true);
+    expect(host.api.state().snapshotObservedAt).toBe(nextSnapshotTime);
+    expect(host.messages.filter((m: any) => m.params?.name === "close_u1_camera_stream")).toHaveLength(0);
+  });
+
+  test("failed user snapshot decode keeps the prior frame and reports failure", () => {
+    const host = cameraHost(); host.acceptSnapshot();
+    host.api.applyCameraFrame(frame(nextSnapshotTime, "bad"), true);
+    host.images.at(-1).onerror();
+    expect(host.api.state().snapshotObservedAt).toBe(snapshotTime);
+    expect(host.node("#display-feedback").textContent).toContain("Snapshot refresh failed");
   });
 
   test("commits time only after JPEG decode and retains it through mode changes", () => {
@@ -390,7 +399,7 @@ describe("camera widget presentation runtime", () => {
     const host = cameraHost();
     host.acceptSnapshot();
     host.document.fullscreenEnabled = true;
-    host.node("#camera").requestFullscreen = async () => { host.document.fullscreenElement = host.node("#camera"); };
+    host.node("#dashboard").requestFullscreen = async () => { host.document.fullscreenElement = host.node("#dashboard"); };
     host.document.exitFullscreen = async () => { host.document.fullscreenElement = null; };
     host.document.pictureInPictureEnabled = true;
     host.node("#live-stream").requestPictureInPicture = async () => { host.document.pictureInPictureElement = host.node("#live-stream"); };

@@ -1,5 +1,33 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Current release A: white widget foundation and printer-reported materials
+
+final result: blocked
+
+Decision 0029 and the active iteration's `WIDGET_TRACKS.md` define the current
+reference: white cards and directory, camera state/measured FPS/frame time in
+the header outside genuine media, and continuous reported-percent progress.
+They supersede the historical camera-bottom and segmented-progress reviews
+below. No historical pass accepts the new source or assets.
+
+The coordinator's allowed-browser discovery found no available in-app or
+Chrome client. Isolated headless-browser permission has been requested but
+not granted. No current reference-to-render comparison, screenshot, browser
+interaction result, accessibility pass, or visual approval is claimed.
+Source inspection and deterministic DOM/media fixtures are software evidence
+only; they do not substitute for this visual gate.
+
+Resume with an allowed browser, or explicit permission for an isolated
+headless browser, against the frozen release-A source. Capture the selected
+reference and actual widgets at matching state and viewport, including
+320/390/720 pixels, white-on-dark-host, unknown/stale/loading/failure states,
+and snapshot/live/Close/PiP/fullscreen plus keyboard/focus behavior. Keep
+private reference attachments and real camera evidence outside Git. Then
+record a new scoped disposition; exact-SHA independent review, shipping,
+deployed behavior, and actual-device acceptance remain separate gates.
+
+## Historical dispositions — not acceptance of current release A
+
 ## Camera bottom status and single frame observer — independent review
 
 Scoped source and rendered review: passed. The latest CAM-008 exception moves

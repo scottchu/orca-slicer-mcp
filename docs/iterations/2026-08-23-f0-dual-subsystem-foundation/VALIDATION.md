@@ -1,5 +1,154 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 release A frozen source checkpoint — visual gate blocked
+
+Latest local correction: `acdb2e38553418b395269bf71814ec3a5f21af04` changes
+percentage text to `#499e69`, computed contrast 3.293:1, and adds its regression
+test. Author reports **31 tests/448 assertions** and TypeScript passing.
+New focused HTML SHA-256:
+`3c97b730290f9b4f35065fd57bcd8f7dbe0680bc0d5339c79a8c6212537fbd9b`.
+Independent full revalidation of this exact commit passes:
+
+- `./scripts/check-repository.sh`: **190 app tests/1,761 assertions**, **21
+  lifecycle**, **22 shipping**, TypeScript and repository contract.
+- The same three isolated independent fixture files named below: **20 tests/
+  399 assertions**. All three bundles/signature, runtime help/offline doctor,
+  six source/dist HTML comparisons and diff check pass.
+- Actual CSS text contrast independently computes **3.292557043498492:1**.
+  The 62-file manifest is identical before/after:
+  `dca09a45ac122919bcc3621d2cfe182455bb4bfaf98375565d168ba5766e1ca0`.
+  Camera/directory hashes below are unchanged; focused widget uses the new
+  hash above. Compiled runtime SHA-256:
+  `5dde3102cb7859095c8d7b3d6146d37396b5586455eb898ba8a3e76ae652df20`.
+- Independent exact-SHA **source-only review approved**, no findings;
+  reviewer checks pass **31 tests/448 assertions**, including contrast.
+  Approval excludes uncommitted documentation changes, blocked visual QA and
+  exact-release approval. No browser/printer/service operation is inferred.
+
+PR41's confirmed open/draft remote head is `acdb2e3`. The
+prior findings/test counts/manifest below are historical checkpoint evidence,
+not unresolved contrast findings or current-source hashes.
+
+### Historical prior A checkpoint, superseded by approved acdb2e3
+
+Committed/pushed checkpoint: `a8ac630550b4b193d1538810f45f5eb5aac7a56a`,
+[draft PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41). The coordinator
+confirmed `OPEN`, draft status and the exact remote head. Independent exact-SHA
+source review: **changes requested**, one P2 percentage-text contrast finding
+in `app/public/widget.html`: `#60b982` on white measures 2.397:1, below the 3:1
+large-text threshold. Reviewer synthetic checks pass **59 tests/671 assertions**
+(camera/observation 51/581, material normalization/store 8/90), and its 62-file
+manifest matches the frozen value below. No other bounded material/privacy/
+concurrency/compatibility blocker was found. Correct and re-review a new exact
+candidate; this is neither visual acceptance nor release approval.
+
+Source contract: runtime 0.4.0/tool schema 8/observation-v6/camera-v8, sixteen
+resources with retained aliases. Material read/store/Heads and white
+focused/camera/index/host presentation are implemented. Progress's lower row is
+elapsed-only because no other reference metric is projected; camera uses direct
+controls, truthful snapshot refresh feedback and card-level native fullscreen,
+with frame/FPS watcher semantics unchanged. This is not merged/deployed source.
+
+Author-reported software evidence: materials 23 tests/202 assertions, Heads
+4/40, app 14/120; UI 79/832 and TypeScript pass. Earlier independent exploratory
+passes were material 36/459 and UI 6/105. These are scoped runs, not additive
+full-suite counts and not browser/physical evidence.
+
+The independent validator ran on the frozen source:
+
+- `./scripts/check-repository.sh`: TypeScript, **189 app tests/1,757 assertions**,
+  **21 lifecycle tests**, **22 shipping tests**, and repository contract pass.
+- Separate isolated synthetic fixtures: **20 tests/399 assertions** pass via
+  `bun --no-env-file --config=/dev/null test <PRIVATE_VALIDATION_DIR>/independent-materials.test.ts <PRIVATE_VALIDATION_DIR>/independent-widget.test.ts <PRIVATE_VALIDATION_DIR>/independent-bundled-static.test.ts`.
+  The placeholder redacts actual private paths; generated results remain outside Git.
+- All three bundle commands, compiled-binary `codesign` verification, runtime
+  `--help`, `doctor --offline`, and six source/dist HTML byte comparisons
+  pass. App inventory tests establish the sixteen-resource contract.
+- Bundled HTTP checks cover thirteen exact asset routes, health and two
+  rejected routes (33 assertions), with zero status/material/mesh/camera
+  acquisitions. These are isolated static-route tests, not deployed behavior.
+- The 62 app/script-file frozen source manifest SHA-256 is
+  `59ee92a7b2180a225b451f13f9ff54db3721634a004437316594bb241bf157f0`.
+  It is identical before/after all runs. No formal exact-commit approval is
+  claimed here. Final source asset SHA-256 values:
+
+  - focused widget: `fc03a24c48ede9fea1ae22607e74fa31c5ca1c07cb92856efe7e1cc7e9c2bf2b`;
+  - camera: `32c8038a4abe5d8f9277294a5fd50584930dd4a24ea2bfc2546af32d8c847f4e`;
+  - directory: `0e0daa7448d981c0e4115c3f19871f2802bdaf7347f774d0e215f894273f301e`.
+
+### Shared observation and deployment boundaries
+
+Separate real-printer evidence: the fixed selected-fields `print_task_config`
+GET succeeded at `2026-08-31T17:28:34.793Z` with valid material metadata for all
+four physical heads. No real per-head labels/colors/raw payload are committed.
+This proves read-only data acquisition, not correct mounted-widget rendering,
+local Orca preset matching, loaded-spool compatibility or physical acceptance.
+
+Separate deployed baseline: coordinator checked both existing service health
+responses and both still report **0.3.5/schema 7/observation-v5/camera-v7**.
+No new deployment, restart, GitHub merge, authentication/routing change, printer
+control or plugin reinstall occurred during this checkpoint.
+
+The coordinator's browser runtime could not obtain `iab`; after troubleshooting
+the browser list was empty. Isolated headless permission was requested but is
+not granted. The validator's current `design-qa.md` explicitly says **blocked**.
+There are no current reference-to-render captures, browser interaction results,
+visual approval or actual-device acceptance. The combined muted camera
+state/FPS/time label still differs from the reference's differentiated text and
+vertical separators; visual QA must assess that fidelity gap. Direct controls
+are an allowed design choice, not a claim of exact visual identity.
+Draft PR41 records this software-only state; merge/ship must wait for required
+visual QA and exact-release review. Queue foundation is locally committed as
+`4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`:
+standalone adapter/model/tests, three files only. Independent bounded
+source/protocol review **approves**, closing the prior provider-shaped
+credential-basename P2 from `c4e0754`. Independently rerun TypeScript,
+**40 tests/461 assertions** and the unchanged six independent fixtures
+(**68 assertions**) pass; exact HEAD, clean worktree and diff check confirmed.
+The explicit provider-pattern checks run before filename truncation.
+
+Final adapter SHA-256: `416d6084ee81e052d12f2c53e87788a5d17e2f79ebbbc376579ce9d45d670f59`;
+test SHA-256: `fd9b9aeaa9714804523996e595207bfe89dd3f06d801ae497d282d908ab06596`;
+unchanged private fixture SHA-256:
+`7a67caa07842a26728b6bb7c51071a75178eb5aeae3053cdea261610384b4a28`.
+No store/projection/widget integration, visual/release/deployment or printer
+acceptance is implied. B–E source work may continue in stacked branches during A's visual
+permission wait; sequential independently reviewed release order is unchanged.
+
+## 2026-08-31 all-widget completion design checkpoint
+
+Design-role evidence only; no new implementation, independent review, merged
+source, deployment, restart or mounted-device acceptance is established here.
+
+- Read repository guidance/current state/requirements/iteration, roadmap,
+  bed-mesh adapter/store/projection and accepted decisions 0025/0027/0028.
+  `git log -3 --oneline` confirmed starting main `bf3eb26` and its policy merge.
+- Read Product Design image-to-code/router/critical/user-context instructions;
+  `uv run <PRODUCT_DESIGN_SKILL>/scripts/user_context_preflight.py` returned
+  no saved user context. Skill root is redacted here, not a repository artifact.
+  Opened both selected camera/progress references; retained genuine camera
+  media and froze white/header/continuous-progress anatomy in the track matrix.
+- Read pinned primary source through HTTPS: OrcaSlicer `82cedc0`
+  `SnapmakerPrinterAgent.cpp` and Snapmaker `761718a` `SSWCP.cpp` (decision 0029
+  links). Confirmed actual `filament_`-prefixed arrays, positional slots,
+  RRGGBBAA, and legacy integer low-24-bit color. This is source-contract
+  evidence, not a current firmware/version or spool observation.
+- Coordinator reports browser discovery found neither in-app nor Chrome
+  availability; isolated headless permission was requested. Visual capture,
+  interaction checks and new design-QA acceptance remain pending.
+- A separate read-only capability researcher reports at
+  `2026-08-31T17:24:39Z`: `GET /server/job_queue/status` succeeded with paused
+  state and zero rows; `GET /server/history/list?limit=3&start=0&order=desc`
+  returned three completed rows; fixed cavity/fan/purifier object queries
+  returned 25 C, zero speed/RPM and purifier power not detected respectively.
+  These are observed-data capability checks, not implemented widgets or
+  physical-print acceptance. No private row names/IDs/raw data are recorded.
+- `git diff --check` passed after the design records/requirements were updated.
+  This is whitespace hygiene only, not independent software or visual review.
+
+All new release gates in `WIDGET_TRACKS.md` are pending until their owning
+implementer, validator, reviewer and operator record commands actually run.
+
 ## 2026-08-31 PR38 bottom-status/FPS deployment verification
 
 After the operator shipped reviewed head

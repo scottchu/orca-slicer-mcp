@@ -1,461 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Feather Icons v4.29.2 (https://feathericons.com), MIT License.
+Copyright (c) 2013-2023 Cole Bemis
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>U1 Printer Camera</title>
     <style>
       :root {
-        color-scheme: light dark;
-        --ink: #1c1e20;
-        --surface: rgba(245, 245, 245, 0.97);
-        --shadow: 0 24px 70px rgba(28, 30, 32, 0.18);
-        --brand: #ffcd00;
-        --positive: #32c86e;
-        --negative: #ff6161;
-        --skeleton-glow: rgba(255, 255, 255, 0.72);
-        --radius: 26px;
-        --safe-top: env(safe-area-inset-top, 0px);
-        --safe-right: env(safe-area-inset-right, 0px);
-        --safe-bottom: env(safe-area-inset-bottom, 0px);
-        --safe-left: env(safe-area-inset-left, 0px);
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
+        color-scheme: light;
+        --ink: #202832; --muted: #707987; --surface: #fff; --line: #eceef1;
+        --positive: #23c96a; --negative: #b83232; --brand: #f4b927; --radius: 24px;
+        --safe-top: env(safe-area-inset-top, 0px); --safe-right: env(safe-area-inset-right, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px); --safe-left: env(safe-area-inset-left, 0px);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
-
       * { box-sizing: border-box; }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        min-height: 100dvh;
-        padding:
-          calc(12px + var(--safe-top))
-          calc(12px + var(--safe-right))
-          calc(12px + var(--safe-bottom))
-          calc(12px + var(--safe-left));
-        color: var(--ink);
-        background: #d9d9d7;
-      }
-
-      button {
-        border: 0;
-        color: inherit;
-        font: inherit;
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: transparent;
-      }
-
+      body { margin: 0; min-height: 100vh; min-height: 100dvh; padding: calc(18px + var(--safe-top)) calc(16px + var(--safe-right)) calc(18px + var(--safe-bottom)) calc(16px + var(--safe-left)); color: var(--ink); background: #fdfdfd; }
+      button { border: 0; color: inherit; font: inherit; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
       button:not(:disabled) { cursor: pointer; }
-      button:focus-visible {
-        outline: 3px solid rgba(255, 205, 0, 0.92);
-        outline-offset: 2px;
-      }
-
-      .dashboard {
-        width: min(100%, 720px);
-        margin: 0 auto;
-        padding: 0;
-        overflow: hidden;
-        border: 1px solid rgba(32, 34, 35, 0.18);
-        border-radius: var(--radius);
-        background: var(--surface);
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(22px);
-      }
-
-      .camera {
-        position: relative;
-        aspect-ratio: 16 / 9;
-        min-height: 238px;
-        overflow: hidden;
-        isolation: isolate;
-        border-radius: 18px;
-        background:
-          linear-gradient(135deg, rgba(65, 67, 68, 0.3), rgba(24, 26, 27, 0.82)),
-          #1c1e20;
-      }
-
-      .camera::before,
-      .camera::after {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        content: "";
-      }
-
-      .camera::before {
-        z-index: 3;
-        opacity: 0.72;
-        background:
-          linear-gradient(90deg, rgba(255, 205, 0, 0.16) 1px, transparent 1px),
-          linear-gradient(rgba(255, 205, 0, 0.16) 1px, transparent 1px);
-        background-size: 42px 42px;
-      }
-
-      .camera::after {
-        z-index: 1;
-        background:
-          linear-gradient(180deg, rgba(20, 22, 23, 0.52), transparent 30%, transparent 60%, rgba(20, 22, 23, 0.78));
-      }
-
-      .camera img,
-      .camera video {
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        width: 100%;
-        height: 100%;
-        border: 0;
-        object-fit: cover;
-        opacity: 0;
-        transition: opacity 240ms ease;
-      }
-
-      .camera.has-snapshot:not(.has-live) img,
-      .camera.has-live video { opacity: 1; }
-
-      .camera-empty {
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        display: grid;
-        place-content: center;
-        gap: 10px;
-        color: rgba(255, 255, 255, 0.72);
-        text-align: center;
-      }
-
-      .camera-empty svg {
-        width: 42px;
-        margin: auto;
-        opacity: 0.8;
-      }
-
-      .camera-info-message {
-        padding: 8px 12px;
-        border-radius: 12px;
-        color: #fff;
-        background: rgba(5, 15, 11, 0.85);
-        font-size: 14px;
-        font-weight: 680;
-        letter-spacing: 0.01em;
-      }
-
-      .camera.has-snapshot .camera-empty,
-      .camera.has-live .camera-empty,
-      .camera.has-snapshot .camera-info-message,
-      .camera.has-live .camera-info-message { display: none; }
-
-      .camera-skeleton {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        display: grid;
-        align-content: end;
-        gap: 10px;
-        padding: 24px;
-        opacity: 0;
-        visibility: hidden;
-        background: linear-gradient(135deg, rgba(54, 56, 57, 0.96), rgba(24, 26, 27, 0.99));
-        transition: opacity 180ms ease, visibility 180ms ease;
-      }
-
-      .camera-skeleton span {
-        position: relative;
-        width: min(58%, 260px);
-        height: 13px;
-        overflow: hidden;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.13);
-      }
-
-      .camera-skeleton span:last-child {
-        width: min(40%, 180px);
-        height: 9px;
-      }
-
-      .camera-skeleton span::after {
-        position: absolute;
-        inset: 0;
-        content: "";
-        background: linear-gradient(100deg, transparent 18%, var(--skeleton-glow) 48%, transparent 78%);
-        transform: translateX(-110%);
-        animation: skeleton-sweep 1.35s ease-in-out infinite;
-      }
-
-      .camera[data-camera-loading="true"]:not(.has-snapshot) .camera-skeleton {
-        display: none;
-      }
-
-      .camera[data-camera-status="loading"]:not(.has-snapshot) .camera-bottom,
-      .camera[data-camera-status="unavailable"] .camera-bottom { display: none; }
-      .camera[data-camera-status="loading"]:not(.has-snapshot) .camera-mode,
-      .camera[data-camera-status="unavailable"] .camera-mode { display: none; }
-
-      .camera-info {
-        position: absolute;
-        top: 12px;
-        right: 18px;
-        left: 18px;
-        z-index: 5;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-
-      .camera-bottom {
-        position: absolute;
-        right: 18px;
-        left: 18px;
-        z-index: 4;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-      }
-
-      .camera-bottom {
-        bottom: 16px;
-        align-items: flex-end;
-        justify-content: flex-end;
-      }
-
-      .display-button {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 44px;
-        height: 44px;
-        flex: none;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 50%;
-        color: #f4fff9;
-        background: rgba(5, 15, 11, 0.58);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-        backdrop-filter: blur(12px);
-      }
-
-      .display-button svg { width: 19px; height: 19px; }
+      button:focus-visible { outline: 3px solid #bf8400; outline-offset: 3px; }
+      .dashboard { width: min(100%, 1120px); margin: 0 auto; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: 0 5px 24px rgba(28,30,32,.055); }
+      .camera-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 20px; margin-bottom: 18px; }
+      .camera-heading { display: flex; align-items: center; gap: 15px; min-width: 0; }
+      .camera-heading h1 { margin: 0; font-size: clamp(18px, 2.6vw, 24px); font-weight: 600; letter-spacing: -.02em; }
+      .icon-tile { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 12px; background: #fafbfc; }
+      .icon-tile svg { width: 23px; height: 23px; stroke-width: 1.7; }
+      .camera-mode { display: inline-flex; max-width: 100%; align-items: center; gap: 9px; margin-left: auto; color: var(--muted); font-size: clamp(12px, 1.8vw, 16px); line-height: 1.65; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+      .camera-mode-indicator { display: inline-flex; flex: none; width: 8px; height: 8px; }
+      .camera-mode-live-dot { display: block; width: 8px; height: 8px; border-radius: 50%; background: #929aa5; }
+      .camera-mode[data-mode="live"] .camera-mode-live-dot { background: var(--positive); }
+      .camera-mode[data-mode="unavailable"] .camera-mode-live-dot { background: var(--negative); }
+      .camera-info { display: flex; flex-direction: column; gap: 8px; }
+      .camera-info-message, .display-feedback { margin: 0 0 12px; color: var(--negative); font-size: 12px; font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
+      .display-feedback:empty, .camera-info-message[hidden] { display: none; }
+      .camera { position: relative; aspect-ratio: 16 / 9; overflow: hidden; isolation: isolate; border-radius: 16px; background: #202327; }
+      .camera img, .camera video { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; border: 0; object-fit: contain; opacity: 0; }
+      .camera.has-snapshot:not(.has-live) img, .camera.has-live video { opacity: 1; }
+      .camera-empty { position: absolute; inset: 0; display: grid; place-content: center; color: #b4bbc4; }
+      .camera-empty svg { width: 38px; height: 38px; }
+      .camera.has-snapshot .camera-empty, .camera.has-live .camera-empty { display: none; }
+      .camera-bottom { position: absolute; right: 16px; bottom: 16px; left: 16px; z-index: 4; display: flex; justify-content: flex-end; }
+      .camera-controls { display: flex; flex-wrap: wrap; flex: none; max-width: 100%; justify-content: flex-end; align-items: center; gap: 8px; margin-left: auto; }
+      .display-button, .camera-button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex: none; padding: 0; border: 1px solid rgba(255,255,255,.75); border-radius: 50%; color: var(--ink); background: rgba(255,255,255,.93); box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+      .display-button svg, .camera-button svg { width: 20px; height: 20px; stroke-width: 1.8; }
       .display-button[hidden] { display: none; }
-      .display-button[aria-pressed="true"] { border-color: var(--brand); }
-      .display-button:disabled { opacity: 0.5; }
-      .display-feedback { max-width: 100%; padding: 8px 12px; border-radius: 12px; color: #fff; background: rgba(5, 15, 11, 0.85); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
-      .display-feedback:empty { display: none; }
-
-      .camera-actions {
-        display: flex;
-        flex-wrap: wrap;
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-      }
-
-      .camera-controls {
-        display: flex;
-        flex: none;
-        align-items: center;
-        gap: 8px;
-        margin-left: auto;
-      }
-
-      .camera-mode {
-        display: inline-flex;
-        min-height: 32px;
-        max-width: 100%;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 999px;
-        color: rgba(244, 255, 249, 0.9);
-        background: rgba(5, 15, 11, 0.64);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-        font-size: 11px;
-        font-weight: 780;
-        letter-spacing: 0.01em;
-        line-height: 1.35;
-        overflow-wrap: anywhere;
-        backdrop-filter: blur(12px);
-        font-variant-numeric: tabular-nums;
-      }
-
-      .camera-mode-indicator {
-        display: inline-flex;
-        width: 15px;
-        height: 15px;
-        flex: none;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .camera-mode-live-dot {
-        display: none;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--positive);
-      }
-
-      .camera-mode-disconnected {
-        display: none;
-        width: 15px;
-        height: 15px;
-        color: var(--negative);
-      }
-
-      .camera-mode[data-mode="live"] .camera-mode-live-dot {
-        display: block;
-        animation: live-pulse 1.4s ease-out infinite;
-      }
-
-      .camera-mode[data-mode="snapshot"] .camera-mode-disconnected,
-      .camera-mode[data-mode="fallback"] .camera-mode-disconnected,
-      .camera-mode[data-mode="unavailable"] .camera-mode-disconnected {
-        display: block;
-      }
-
-      .camera-button {
-        display: inline-flex;
-        width: 44px;
-        min-width: 44px;
-        min-height: 44px;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-        border-radius: 999px;
-        color: #1c1e20;
-        background: var(--brand);
-        box-shadow: 0 8px 26px rgba(255, 205, 0, 0.28);
-        font-weight: 760;
-        transition: transform 140ms ease, opacity 140ms ease, background 140ms ease;
-      }
-
-      .camera-button:hover:not(:disabled) { transform: translateY(-1px); }
-      .camera-button.close {
-        display: none;
-        color: white;
-        background: rgba(32, 34, 35, 0.86);
-      }
+      .camera-button[hidden] { display: none; }
+      .display-button[aria-pressed="true"] { outline: 2px solid var(--brand); }
+      .display-button:disabled, .camera-button:disabled { opacity: .55; }
+      .camera-button.close { display: none; }
       .camera[data-camera-mode="live"] .camera-button.go-live { display: none; }
       .camera[data-camera-mode="live"] .camera-button.close { display: inline-flex; }
-      .camera-button:disabled { opacity: 0.46; }
-      .camera-button[hidden] { display: none; }
-      .camera-button svg { width: 20px; height: 20px; }
-
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-
-      @keyframes skeleton-sweep { to { transform: translateX(110%); } }
-      @keyframes live-pulse {
-        0% { box-shadow: 0 0 0 0 rgba(50, 200, 110, 0.5); }
-        75%, 100% { box-shadow: 0 0 0 6px rgba(50, 200, 110, 0); }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .camera-skeleton span::after,
-        .camera-mode-live-dot { animation: none; }
-      }
-
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
       @media (max-width: 540px) {
-        body {
-          padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
-          background: var(--surface);
-        }
-        .dashboard { padding: 0; border: 0; border-radius: 18px; box-shadow: none; }
-        .camera { min-height: 0; }
+        body { padding: calc(10px + var(--safe-top)) calc(8px + var(--safe-right)) calc(10px + var(--safe-bottom)) calc(8px + var(--safe-left)); }
+        .dashboard { padding: 14px; border-radius: 20px; }
+        .camera-header { gap: 10px; margin-bottom: 14px; }
+        .camera-heading { gap: 12px; }
+        .camera-mode { flex-basis: 100%; margin-left: 0; }
+        .camera { border-radius: 12px; }
+        .camera-bottom { right: 10px; bottom: 10px; left: 10px; }
+        .camera-controls { gap: 6px; }
       }
-
-      @media (max-width: 380px) {
-        .camera-info,
-        .camera-bottom { right: 12px; left: 12px; }
-        .camera-mode { gap: 5px; padding: 8px; font-size: 10px; }
-      }
-
-      body[data-display-mode="pip"] {
-        padding: 0;
-        background: transparent;
-      }
-      body[data-display-mode="pip"] .dashboard { border-radius: 20px; }
-      body[data-display-mode="pip"] .camera { min-height: 170px; }
-      body[data-display-mode="fullscreen"] { display: grid; align-content: center; padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); background: #111; }
+      body[data-display-mode="pip"] { padding: 0; background: #fff; }
+      body[data-display-mode="pip"] .dashboard { padding: 10px; }
+      body[data-display-mode="fullscreen"] { display: grid; align-content: center; padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); background: #fff; }
       body[data-display-mode="fullscreen"] .dashboard { width: 100%; border: 0; box-shadow: none; }
-      .camera:fullscreen { width: 100vw; height: 100vh; border-radius: 0; }
-      .camera:fullscreen img, .camera:fullscreen video { object-fit: contain; }
-
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --ink: #f7f7f4;
-          --surface: rgba(31, 31, 31, 0.97);
-          --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
-          --skeleton-glow: rgba(255, 255, 255, 0.22);
-        }
-        body { background: #191919; }
-        .dashboard { border-color: rgba(255, 205, 0, 0.34); }
-      }
+      .dashboard:fullscreen { display: flex; flex-direction: column; width: 100vw; height: 100vh; border-radius: 0; }
+      .dashboard:fullscreen .camera { flex: 1; min-height: 0; aspect-ratio: auto; }
+      .dashboard:fullscreen img, .dashboard:fullscreen video { object-fit: contain; }
     </style>
   </head>
   <body data-display-mode="inline">
     <main class="dashboard" id="dashboard">
+      <header class="camera-header">
+        <div class="camera-heading"><span class="icon-tile" aria-hidden="true"><svg aria-hidden="true" data-icon="feather-camera" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span><h1>U1 Camera</h1></div>
+        <span class="camera-mode" id="camera-detail" data-mode="loading">
+          <span class="camera-mode-indicator" aria-hidden="true"><span class="camera-mode-live-dot"></span></span>
+          <span id="camera-detail-label">Connecting</span>
+        </span>
+      </header>
+      <span class="sr-only" id="camera-status" role="status" aria-live="polite">Camera loading</span>
+      <div class="camera-info">
+        <strong class="camera-info-message" id="camera-empty-message" role="status" aria-live="polite">Waiting for camera</strong>
+        <div class="display-feedback" id="display-feedback" role="status" aria-live="polite"></div>
+      </div>
       <section class="camera" id="camera" data-camera-mode="loading" data-camera-status="loading" data-camera-loading="true" aria-label="Printer camera">
-        <div class="camera-empty" id="camera-empty">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-            <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
-            <circle cx="12" cy="13" r="3.5" />
-          </svg>
-        </div>
-        <div class="camera-skeleton" aria-hidden="true"><span></span><span></span></div>
+        <div class="camera-empty" id="camera-empty"><svg aria-hidden="true" data-icon="feather-camera" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
         <img id="snapshot" alt="Latest Snapmaker U1 camera snapshot" referrerpolicy="no-referrer" />
         <video id="live-stream" aria-label="Live Snapmaker U1 camera" autoplay muted playsinline></video>
-
-        <span class="sr-only" id="camera-status" role="status" aria-live="polite">Camera loading</span>
-        <div class="camera-info">
-            <strong class="camera-info-message" id="camera-empty-message" role="status" aria-live="polite">Waiting for camera</strong>
-            <div class="display-feedback" id="display-feedback" role="status" aria-live="polite"></div>
-        </div>
-
         <div class="camera-bottom">
-          <div class="camera-actions">
-            <span class="camera-mode" id="camera-detail" data-mode="loading">
-              <span class="camera-mode-indicator" aria-hidden="true">
-                <span class="camera-mode-live-dot"></span>
-                <svg class="camera-mode-disconnected" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
-                  <circle cx="12" cy="13" r="3.5" />
-                  <path d="M4 4l16 16" />
-                </svg>
-              </span>
-              <span id="camera-detail-label">Connecting</span>
-            </span>
-            <div class="camera-controls">
-              <button class="display-button" id="picture-in-picture" type="button" aria-label="Picture in picture" title="Picture in picture" aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="6" rx="1" fill="currentColor"/></svg></button>
-              <button class="display-button" id="fullscreen" type="button" aria-label="Fullscreen" title="Fullscreen" aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M21 15v6h-6M9 21H3v-6"/></svg></button>
-              <button class="camera-button go-live" id="go-live" type="button" title="Open live camera" aria-label="Open live camera" disabled hidden>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                  <rect x="3" y="6" width="13" height="12" rx="3" />
-                  <path d="M16 10l5-3v10l-5-3z" fill="currentColor" stroke="none" />
-                  <path d="M8.5 9.5l4 2.5-4 2.5z" fill="currentColor" stroke="none" />
-                </svg>
-              </button>
-              <button class="camera-button close" id="close-live" type="button" title="Close live camera" aria-label="Close live camera">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M6 6l12 12M18 6L6 18" />
-                </svg>
-              </button>
-            </div>
+          <div class="camera-controls">
+            <button class="display-button" id="picture-in-picture" type="button" aria-label="Picture in picture" title="Picture in picture" aria-pressed="false" hidden><svg aria-hidden="true" data-icon="feather-copy" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            <button class="display-button" id="fullscreen" type="button" aria-label="Fullscreen" title="Fullscreen" aria-pressed="false" hidden><svg aria-hidden="true" data-icon="feather-maximize" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+            <button class="display-button" id="refresh-snapshot" type="button" aria-label="Refresh snapshot" title="Refresh snapshot" disabled><svg aria-hidden="true" data-icon="feather-camera" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></button>
+            <button class="camera-button go-live" id="go-live" type="button" title="Open live camera" aria-label="Open live camera" disabled hidden><svg aria-hidden="true" data-icon="feather-video" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></button>
+            <button class="camera-button close" id="close-live" type="button" title="Close live camera" aria-label="Close live camera"><svg aria-hidden="true" data-icon="feather-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
         </div>
       </section>
@@ -464,6 +108,7 @@
     <script type="module">
       const hosted = window.parent !== window;
       const elements = {
+        dashboard: document.querySelector("#dashboard"),
         camera: document.querySelector("#camera"),
         snapshot: document.querySelector("#snapshot"),
         liveStream: document.querySelector("#live-stream"),
@@ -476,6 +121,7 @@
         displayFeedback: document.querySelector("#display-feedback"),
         goLive: document.querySelector("#go-live"),
         closeLive: document.querySelector("#close-live"),
+        refreshSnapshot: document.querySelector("#refresh-snapshot"),
       };
       const pendingRequests = new Map();
       let rpcId = 0;
@@ -537,6 +183,7 @@
           elements.camera.classList.contains("has-snapshot") && !livePreview;
         elements.goLive.disabled = !canGoLive;
         elements.goLive.hidden = !canGoLive;
+        elements.cameraEmptyMessage.hidden = elements.camera.classList.contains("has-snapshot") || relayRendering;
         updateDisplayControls();
         window.openai?.notifyIntrinsicHeight?.();
       };
@@ -574,7 +221,7 @@
           : "Snapshot time is server image receipt time, not camera capture time";
       };
 
-      const applyCameraFrame = (result) => {
+      const applyCameraFrame = (result, announceRefresh = false) => {
         const frame = result?.structuredContent ?? {};
         const metadata = result?._meta ?? result?.meta ?? {};
         const dataUrl = metadata?.cameraFrame?.dataUrl;
@@ -597,9 +244,14 @@
               : "snapshot";
             setCameraState(mode, mode === "loading");
             setCameraMode(mode);
+            if (announceRefresh) elements.displayFeedback.textContent = relayRendering
+              ? "Snapshot refreshed. Live view continues; Close live camera to view the snapshot."
+              : "Snapshot refreshed.";
           };
           image.onerror = () => {
-            if (generation !== snapshotGeneration || relayRendering) return;
+            if (generation !== snapshotGeneration) return;
+            if (announceRefresh) elements.displayFeedback.textContent = "Snapshot refresh failed. The last accepted camera view is retained.";
+            if (relayRendering) return;
             if (elements.camera.classList.contains("has-snapshot")) {
               const mode = livePreview ? (fallbackDetail ? "fallback" : "loading") : "snapshot";
               setCameraState(mode);
@@ -632,22 +284,28 @@
         setCameraState("unavailable");
       });
 
-      const refreshCameraFrame = async () => {
+      const refreshCameraFrame = async (announceRefresh = false) => {
         if (cameraRefreshing || !hosted) return;
         cameraRefreshing = true;
+        if (announceRefresh) elements.displayFeedback.textContent = "Refreshing snapshot…";
+        elements.refreshSnapshot.setAttribute("aria-busy", "true");
+        updateDisplayControls();
         if (!elements.camera.classList.contains("has-snapshot")) {
           setCameraState("loading", true);
           setCameraMode("loading");
         }
         try {
-          applyCameraFrame(await callTool("get_u1_camera_frame"));
+          if (!applyCameraFrame(await callTool("get_u1_camera_frame"), announceRefresh)) elements.displayFeedback.textContent = "Snapshot unavailable. The last accepted camera view is retained when possible.";
         } catch {
+          if (announceRefresh) elements.displayFeedback.textContent = "Snapshot refresh failed. The last accepted camera view is retained.";
           if (!elements.camera.classList.contains("has-snapshot")) {
             setCameraMode("unavailable");
             setCameraState("unavailable");
           }
         } finally {
           cameraRefreshing = false;
+          elements.refreshSnapshot.setAttribute("aria-busy", "false");
+          updateDisplayControls();
           clearTimeout(snapshotFallbackTimer);
           if (livePreview && !relayRendering) {
             snapshotFallbackTimer = setTimeout(refreshCameraFrame, 1500);
@@ -1007,10 +665,11 @@
         elements.liveStream.webkitSupportsPresentationMode?.("picture-in-picture") === true
       );
       const updateDisplayControls = () => {
+        elements.refreshSnapshot.disabled = cameraRefreshing || !hostBridgeAvailable;
         const mode = document.body.dataset.displayMode;
         const fullscreenActive = mode === "fullscreen" || Boolean(document.fullscreenElement) || elements.liveStream.webkitDisplayingFullscreen === true;
         const pipActive = mode === "pip" || document.pictureInPictureElement === elements.liveStream || elements.liveStream.webkitPresentationMode === "picture-in-picture";
-        elements.fullscreen.hidden = !fullscreenActive && !hostSupports("fullscreen") && !(document.fullscreenEnabled && typeof elements.camera.requestFullscreen === "function") && !(relayRendering && typeof elements.liveStream.webkitEnterFullscreen === "function");
+        elements.fullscreen.hidden = !fullscreenActive && !hostSupports("fullscreen") && !(document.fullscreenEnabled && typeof elements.dashboard.requestFullscreen === "function") && !(relayRendering && typeof elements.liveStream.webkitEnterFullscreen === "function");
         elements.pip.hidden = !pipActive && !hostSupports("pip") && !canNativePip();
         elements.fullscreen.setAttribute("aria-pressed", String(fullscreenActive));
         elements.pip.setAttribute("aria-pressed", String(pipActive));
@@ -1038,7 +697,7 @@
           } else if (requestedMode === "fullscreen") {
             if (document.fullscreenElement) await document.exitFullscreen();
             else if (elements.liveStream.webkitDisplayingFullscreen) elements.liveStream.webkitExitFullscreen();
-            else if (document.fullscreenEnabled && elements.camera.requestFullscreen) await elements.camera.requestFullscreen();
+            else if (document.fullscreenEnabled && elements.dashboard.requestFullscreen) await elements.dashboard.requestFullscreen();
             else if (relayRendering && elements.liveStream.webkitEnterFullscreen) elements.liveStream.webkitEnterFullscreen();
             else throw new Error("Unsupported fullscreen");
           } else {
@@ -1077,7 +736,7 @@
       const initializeBridge = async () => {
         if (!hosted) return null;
         const result = await rpcRequest("ui/initialize", {
-          appInfo: { name: "u1-camera-widget", version: "0.3.5-camera-v7" },
+          appInfo: { name: "u1-camera-widget", version: "0.4.0-camera-v8" },
           appCapabilities: {},
           protocolVersion: "2026-01-26",
         });
@@ -1102,6 +761,7 @@
         };
       };
 
+      elements.refreshSnapshot.addEventListener("click", () => void refreshCameraFrame(true));
       elements.goLive.addEventListener("click", openCameraStream);
       elements.closeLive.addEventListener("click", closeLive);
       elements.liveStream.addEventListener("pause", clearLiveFps);

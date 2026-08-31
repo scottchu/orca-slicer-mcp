@@ -30,6 +30,7 @@ import {
   readU1CameraFrame,
   readU1Status,
   readU1BedMesh,
+  readU1Materials,
   normalizedPrintState,
   normalizedToolState,
   stripJpegMetadata,
@@ -66,6 +67,7 @@ export const LEGACY_CAMERA_WIDGET_URIS = [
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v5.html",
   "ui://u1-print-studio/observation-v4.html",
   "ui://u1-print-studio/observation-v3.html",
   "ui://u1-print-studio/observation-v2.html",
@@ -334,6 +336,7 @@ export function createAppServer(
   dependencies: {
     readStatus?: StatusReader;
     readBedMesh?: typeof readU1BedMesh;
+    readMaterials?: typeof readU1Materials;
     observations?: PrinterObservationStore;
     readCameraFrame?: CameraFrameReader;
     cameraSessions?: CameraWebRtcSessionController;
@@ -346,7 +349,8 @@ export function createAppServer(
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
   const observations = dependencies.observations ?? new PrinterObservationStore(
-    readStatus, undefined, dependencies.readBedMesh ?? (readStatus === readU1Status ? readU1BedMesh : undefined)
+    readStatus, undefined, dependencies.readBedMesh ?? (readStatus === readU1Status ? readU1BedMesh : undefined),
+    dependencies.readMaterials ?? (readStatus === readU1Status ? readU1Materials : undefined)
   );
   const server = new McpServer({
     name: "u1-print-studio",
@@ -411,6 +415,11 @@ export function createAppServer(
       uri: CAMERA_WIDGET_URI,
       html: CAMERA_WIDGET_HTML,
       version: U1_CAMERA_WIDGET_VERSION,
+    },
+    {
+      uri: "ui://u1-print-studio/camera-v7.html",
+      html: CAMERA_WIDGET_HTML,
+      version: "camera-v7",
     },
     {
       uri: "ui://u1-print-studio/camera-v6.html",
@@ -491,7 +500,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads" }),
         view
       );
     }) as any
@@ -520,7 +529,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads" }),
         view
       );
     }) as any
