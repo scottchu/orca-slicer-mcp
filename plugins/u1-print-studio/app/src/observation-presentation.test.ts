@@ -61,37 +61,57 @@ function snapshot(overrides: Partial<ObservationSnapshot> = {}): ObservationSnap
     },
     status,
     metadata: {},
+    currentJob: {
+      state: "known", freshness: "fresh", sourceObservedAt: "2026-08-29T21:40:50.000Z",
+      receivedAt: "2026-08-29T21:40:50.000Z", checkedAt: "2026-08-29T21:40:50.000Z",
+      printState: { reported: true, value: "printing" },
+      filename: { reported: true, value: "fixture.gcode" },
+      storageActive: { reported: true, value: true },
+      filePositionBytes: { reported: true, value: 420 },
+      fileSizeBytes: { reported: true, value: 1000 },
+      totalDurationSeconds: { reported: true, value: 600 },
+      printDurationSeconds: { reported: true, value: 590 },
+      filamentUsedMillimeters: { reported: true, value: 1200 }, reason: null,
+    },
+    jobHistory: {
+      state: "known", freshness: "fresh", sourceObservedAt: "2026-08-29T21:40:51.000Z",
+      receivedAt: "2026-08-29T21:40:51.000Z", checkedAt: "2026-08-29T21:40:51.000Z",
+      items: [{ position: 1, filename: "history-only.gcode", status: "completed",
+        startTime: "2026-08-29T20:00:00.000Z", endTime: "2026-08-29T21:00:00.000Z",
+        printDurationSeconds: 3500, totalDurationSeconds: 3600, filamentUsedMillimeters: 1234 }],
+      pageCount: 1, reason: null,
+    },
     ...overrides,
   };
 }
 
 describe("printer observation presentation", () => {
-  test("separates current-job fields from the unimplemented history projection", () => {
+  test("separates independently observed Current Job and History projections", () => {
     for (const freshness of ["fresh", "stale", "offline"] as const) {
       const source = snapshot({ freshness });
       const current = createObservationPresentation(source, "jobs");
       const history = createObservationPresentation(source, "job_history");
-      expect(current.module).toMatchObject({ kind: "jobs", current: { filename: { value: "fixture.gcode" } } });
+      expect(current.module).toMatchObject({ kind: "jobs", filename: { value: "fixture.gcode" } });
       expect(current.module).not.toHaveProperty("history");
-      expect(history.module).toEqual({
-        kind: "job_history", state: "unknown", status: "not_implemented",
-        capabilityEvidence: "advertised", items: [],
-        provenance: { source: "not_observed", sourceObservedAt: null,
-          detail: "Job history has no implemented read-only normalization" },
-      });
+      expect(history.module).toMatchObject({ kind: "job_history", state: "known", pageCount: 1,
+        items: [{ filename: "history-only.gcode", status: "completed" }],
+        provenance: { source: "moonraker", sourceObservedAt: "2026-08-29T21:40:51.000Z" } });
       expect(history.module).not.toHaveProperty("current");
       expect(JSON.stringify(history)).not.toContain("fixture.gcode");
-      expect(JSON.stringify(history.module)).not.toMatch(/filename|storage|filePosition|fileSize/);
+      expect(JSON.stringify(current.module)).not.toContain("history-only.gcode");
+      expect(JSON.stringify(history.module)).not.toMatch(/storage|filePosition|fileSize/);
       expect(history.observationVersion).toBe(current.observationVersion);
       expect(history.sourceObservedAt).toBe(current.sourceObservedAt);
       expect(history.freshness).toBe(freshness);
     }
   });
 
-  test("missing current identity remains unknown, not proof that no active job exists", () => {
-    const current = createObservationPresentation(snapshot({ status: { ...status, filename: null } }), "jobs");
-    expect(current.module).toMatchObject({ kind: "jobs", state: "unknown", current: null });
+  test("unrequested Current Job remains unknown and does not reuse main status filename", () => {
+    const current = createObservationPresentation(snapshot({ currentJob: undefined }), "jobs");
+    expect(current.module).toMatchObject({ kind: "jobs", state: "unknown",
+      filename: { reported: false, value: null }, reason: "not_requested" });
     expect(current.module).not.toHaveProperty("history");
+    expect(JSON.stringify(current.module)).not.toContain("fixture.gcode");
     expect(current.printerState).toBe("printing");
   });
 
@@ -216,13 +236,18 @@ describe("printer observation presentation", () => {
         headState: { state: "unknown", value: null },
       })]),
     });
-    const jobs = createObservationPresentation(snapshot({ status: missingStatus }), "jobs");
+    const jobs = createObservationPresentation(snapshot({ status: missingStatus, currentJob: {
+      state: "known", freshness: "fresh", sourceObservedAt: "2026-08-29T21:40:50.000Z",
+      receivedAt: "2026-08-29T21:40:50.000Z", checkedAt: "2026-08-29T21:40:50.000Z",
+      printState: { reported: false, value: null }, filename: { reported: false, value: null },
+      storageActive: { reported: false, value: null }, filePositionBytes: { reported: false, value: null },
+      fileSizeBytes: { reported: false, value: null }, totalDurationSeconds: { reported: false, value: null },
+      printDurationSeconds: { reported: false, value: null }, filamentUsedMillimeters: { reported: false, value: null }, reason: null,
+    } }), "jobs");
     expect(jobs.module).toMatchObject({
       kind: "jobs",
-      current: {
-        storageActive: { state: "unknown", value: null },
-        filePosition: { state: "unknown", value: null },
-      },
+      storageActive: { reported: false, value: null },
+      filePositionBytes: { reported: false, value: null },
     });
     expect(jobs).not.toHaveProperty("capabilityEvidence");
   });

@@ -14,13 +14,25 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Implement **D Current Job/real History** next, then E Overview. Preserve shipped
-A/F/Heads/B/C and the closed selectors, independent receipts, bounded private
-projections, compact white top-information/bottom-action cards and no-control
-boundary. Keep Current Job and History independently invokable; do not present
-fixture/empty history as implemented history. Use the standing exact review →
-PR merge → exact-build deployment → explicit BOTH-service restart → scoped
-verification sequence. Browser/device visual acceptance remains unverified.
+Implement **D Current Job/real History** under decision 0025's real-data
+addendum, decision 0029 and OBS-014, then E Overview. Use only the fixed Current
+Job print_stats/virtual_sdcard query and fixed descending latest-20 History
+query. Keep independent receipts, 15-second attempt TTLs, coalescing, stale
+retention, atomic merges and fixture isolation; selection of one domain must not
+acquire/restamp the other. Reuse Queue's safe-basename boundary. Never expose
+history paths, IDs, user, metadata, auxiliary data or `exists`.
+
+Only printing/paused means active. Present persisted filenames contextually for
+standby, terminal and unknown states; storage activity is a separate fact.
+History count is returned-page length only, zero means no entries returned, and
+order/duplicates remain intact. Normalize all seven documented history statuses
+plus nonraw Unknown for future values. Keep two compact white information-first
+cards with exactly one bottom Refresh each and no pagination/row action/control.
+Target 0.4.5/schema 11/observation-v11/camera-v8, 21 resources plus retained
+observation-v10 and unchanged two-visible/eight-app-only tools. Complete source
+and independent exact-candidate review, guarded PR merge/deploy, explicit BOTH-
+service restart and scoped verification. Browser/device visual acceptance stays
+unverified; preserve shipped A/F/Heads/B/C.
 
 ### Shipped C Fans & Chamber checkpoint
 

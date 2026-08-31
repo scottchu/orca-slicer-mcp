@@ -1,5 +1,51 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 D Current Job/real History — design/source checkpoint
+
+The design role read current repository contracts and exact source with these
+read-only commands:
+
+```sh
+git status --short
+git rev-parse HEAD
+cat AGENTS.md
+cat docs/iterations/CURRENT
+cat docs/decisions/0025-separate-current-job-and-job-history.md
+sed -n '1,180p' docs/decisions/0029-complete-white-read-only-widget-suite.md
+sed -n '1,150p' docs/requirements.md
+sed -n '225,290p' docs/requirements.md
+rg -n "job_history|Current Job|Job History|jobs" plugins/u1-print-studio/app/src
+```
+
+Exact base was `517f1de05c27d6ad32bc3c2a4d702ecf29b77033`. Current source
+projects `jobs` only from shared status filename/storage and hard-codes
+`job_history` as unknown/not implemented; it has no independent receipt or real
+history normalization. Queue already provides the bounded private filename
+pattern but not a shared Current/History reader. These findings define the gap;
+they are not implementation or runtime evidence.
+
+The official Moonraker History API, Printer query API and printer-object
+reference were inspected at their current documentation URLs. They establish:
+history `count` is rows returned, the fixed list parameters, seven statuses and
+the private/raw response fields; print_stats and virtual_sdcard field units and
+their persistence after pause/completion/error until reset or a new job. They do
+not establish the connected U1's current objects, history availability, data
+accuracy, printer health or physical acceptance.
+
+Decision 0025's addendum, decision 0029 and OBS-014 now freeze: exact fixed GETs,
+separate receipts/15-second attempt TTL/coalescing/stale retention/fixture
+isolation; safe-basename/private-field exclusion; contextual persisted-filename
+semantics; all current/history statuses; page-only count/order/duplicates; exact
+bounds/units and empty/partial/unsupported/unavailable states; and two compact
+top-information/single-bottom-Refresh cards with no controls. Target is 0.4.5/
+schema 11/observation-v11/camera-v8, 21 resources with observation-v10 retained
+and unchanged two-visible/eight-app-only tools.
+
+No app/test/Git/service/printer/browser mutation occurred. Source, independent,
+exact-SHA, release, scoped live, rendered visual and user acceptance remain
+pending and must be recorded separately. `git diff --check` is the only design-
+record hygiene gate and will be recorded after this freeze.
+
 ## 2026-08-31 C Fans & Chamber — PR49 deployed
 
 Exact PR49 head `c14e92cfc655d0b7a6e7d0138650d7937789d7d1` passed formal

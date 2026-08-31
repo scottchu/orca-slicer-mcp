@@ -18,7 +18,7 @@ const seconds = (value: unknown): number | null =>
 // the basename; the raw filename already has a strict 4,096-character bound.
 const providerCredential = /(?:^|[^a-z0-9])(?:gh[pousr]_[a-z0-9]{16,255}|github_pat_[a-z0-9_]{16,255}|glpat-[a-z0-9_-]{16,255}|xox[baprs]-[a-z0-9-]{16,255}|(?:AKIA|ASIA)[a-z0-9]{16})/i;
 
-function displayFilename(value: unknown): string | null {
+export function safeDisplayFilename(value: unknown): string | null {
   if (typeof value !== "string" || !value.trim() || value.length > 4096 ||
       /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(value)) return null;
   const path = value.trim().replaceAll("\\", "/");
@@ -42,7 +42,7 @@ export function normalizeQueueResponse(payload: unknown, observedAt: string): Qu
   // Validate even hidden rows; invalid data must not masquerade as an empty or partial success.
   for (const [index, value] of result.queued_jobs.entries()) {
     const job = object(value);
-    const filename = displayFilename(job?.filename);
+    const filename = safeDisplayFilename(job?.filename);
     if (filename === null) return unavailableQueue("malformed", observedAt);
     const added = seconds(job?.time_added);
     const date = added === null ? null : new Date(added * 1000);

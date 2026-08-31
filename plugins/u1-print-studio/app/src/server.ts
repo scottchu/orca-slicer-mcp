@@ -40,6 +40,8 @@ import {
   readU1Materials,
   readU1Queue,
   readU1Environment,
+  readU1CurrentJob,
+  readU1JobHistory,
 } from "./u1-status.js";
 import { runtimeHealth } from "./runtime-contract.js";
 import { PrinterObservationStore } from "./observation-store.js";
@@ -109,7 +111,9 @@ export function createRequestHandler(
       statusDashboard?.readBedMesh ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1BedMesh : undefined),
       statusDashboard?.readMaterials ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1Materials : undefined),
       statusDashboard?.readQueue ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1Queue : undefined),
-      statusDashboard?.readEnvironment ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1Environment : undefined)
+      statusDashboard?.readEnvironment ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1Environment : undefined),
+      statusDashboard?.readCurrentJob ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1CurrentJob : undefined),
+      statusDashboard?.readJobHistory ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1JobHistory : undefined)
     )
 ) {
   const handleCameraWebRtc = cameraRelay
@@ -322,6 +326,8 @@ export async function startServer() {
         readMaterials: readU1Materials,
         readQueue: readU1Queue,
         readEnvironment: readU1Environment,
+        readCurrentJob: readU1CurrentJob,
+        readJobHistory: readU1JobHistory,
         readCameraFrame: readU1CameraFrame,
         cameraSessions: cameraRelay.controller,
       }

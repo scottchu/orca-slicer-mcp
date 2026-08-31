@@ -101,6 +101,22 @@ printer environments support the described behavior.
   infer fan health/fault from commanded speed versus RPM or use purifier desired
   temperature as a Cavity target. Information and independent freshness stay
   above one bottom Refresh; no fan/purifier/thermal control is added.
+- **OBS-014:** Current Job and Job History are separate independently timed,
+  demand-only application-store domains. `jobs` uses only the fixed bounded
+  print_stats/virtual_sdcard query; `job_history` uses only the fixed descending
+  first page of 20 history rows. Each has its own 15-second attempt TTL,
+  coalescing, stale last-success retention, atomic merge and fixture isolation;
+  neither acquires or restamps the other. Current Job treats only printing and
+  paused as active and labels persisted filenames without implying a terminal or
+  standby file is current. History preserves returned order/duplicates and
+  treats count as returned-page length, not total; valid zero means no entries
+  returned, not no past jobs. Only validated safe basenames and bounded
+  allowlisted state/time/duration/filament/storage facts leave adapters. Raw
+  paths, IDs, user, metadata, auxiliary data, file-existence and raw future
+  statuses never do. Missing/partial, unknown, known empty, unsupported,
+  unavailable and stale remain distinct. Each compact white card keeps its own
+  information/freshness above one bottom Refresh; no pagination, row action,
+  mutation or printer control is added. Decision 0025 fixes exact semantics.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -246,20 +262,21 @@ printer environments support the described behavior.
   `progress`, `thermals`, `heads`, `jobs`, `job_history`, `queue`, `fans`, and
   `bed_mesh`; `jobs` remains the stable Current Job selector while
   `job_history` independently selects Job History. Their selected modules do
-  not combine current-job and history fields. Unimplemented history stays
-  explicitly unknown, not an empty successful result or observed history time;
+  not combine current-job and history fields. Until OBS-014 integration ships,
+  unimplemented history stays explicitly unknown, not an empty successful
+  result or observed history time;
   unknown values and generic selector fields fail closed. Exactly eight
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v10` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v11` is the
   focused presentation resource. Every explicit camera open or reopen creates
   a fresh snapshot-first `camera-v8` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v9/v8/v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
+  Observation-v10/v9/v8/v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
-  Source target is runtime 0.4.4/tool schema 10 with twenty resources; this source
+  Source target is runtime 0.4.5/tool schema 11 with twenty-one resources; this source
   contract does not claim deployment of those bytes to existing services.
 
 ## Architecture and ontology

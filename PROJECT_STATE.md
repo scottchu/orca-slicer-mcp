@@ -12,6 +12,24 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
+**D Current Job/real History is active.** Decision 0025's real-data addendum,
+decision 0029 and OBS-014 replace only the limited shared-status/unimplemented
+data paths while preserving the shipped independent `jobs`/`job_history`
+selectors and routes. Current Job and History use separate fixed bounded reads,
+receipts and 15-second demand caches; neither acquires or restamps the other.
+Only printing/paused establishes an active job; persisted filenames are labeled
+as loaded, last reported or merely reported according to state. History returns
+at most the latest 20 ordered rows and page count only, with safe basenames and
+no raw paths, IDs, user, metadata, auxiliary data or `exists`. Information and
+independent freshness remain above one bottom Refresh per compact white card;
+no pagination, row action, mutation or control. Target is runtime 0.4.5/schema
+11/observation-v11/camera-v8, 21 resources with observation-v10 retained and
+the two-visible/eight-app-only tool inventory unchanged. Source, independent,
+exact-review, deployment, live and visual evidence remain separate and pending.
+Preserve A/F/Heads/B/C; E Overview follows D.
+
+### Previous shipped C checkpoint
+
 **C Fans & Chamber is shipped.** PR49 exact head
 `c14e92cfc655d0b7a6e7d0138650d7937789d7d1` was formally and independently
 approved, then merged as `3ab4ed7813a8f2ba45ac63b3093480183c428f28` at

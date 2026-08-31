@@ -8,10 +8,17 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 ## Scope and current reality
 
 Current priority: **D Current Job/real History**, then E Overview. Keep Current
-Job and History independently invokable and distinguish current, empty,
-unimplemented, unavailable and stale data; preserve the shared white compact
-top-information/bottom-action language and no-control boundary. A/F/Heads/B/C
-are deployed; their browser/device visual acceptance remains open.
+Job and History independently invokable with fixed separate reads, receipts and
+15-second demand caches. Current uses contextual state/file/storage facts so a
+persisted filename cannot imply activity. History shows at most the descending
+20 rows returned, preserving order/duplicates and treating count as page length,
+not total. Safe basenames are the only identity; raw paths, IDs, user, metadata,
+auxiliary data and `exists` remain private. Distinguish known empty, partial,
+unknown, unsupported, unavailable and stale. Preserve compact white information-
+first cards with exactly one bottom Refresh and no pagination/row action/control.
+Target 0.4.5/schema 11/observation-v11/camera-v8 with 21 resources,
+observation-v10 retained and unchanged tool inventory. A/F/Heads/B/C are
+deployed; their browser/device visual acceptance remains open.
 
 Previous shipped priority: **C Fans & Chamber**. Exact PR49 head `c14e92c` was
 formally and independently approved and merged as `3ab4ed7`; exact release
@@ -122,7 +129,7 @@ no unfinished track is cancelled by the new priority.
 | F Bed Mesh | Interactive same-sample surface and retained 2D grid deployed in PR43 at 0.4.1 | User visual review of XYZ/legend/exaggeration, pointer/keyboard orbit/reset and 2D fallback | P2 corrected; reviewed and shipped, visual/device acceptance pending |
 | B Queue | Fixed bounded adapter, independent store/projection and white Queue card/index shipped in PR47 | User visual review; preserve no-mutation boundary | Deployed to both restarted services; exact/static/scoped verification recorded separately, visual/device acceptance unverified |
 | C Fans and chamber | Fixed environment route, independent store/projection and two focused cards shipped in PR49 | User visual review; preserve distinct commanded-percent/RPM/state semantics and no controls/health inference | Deployed to both restarted services; scoped one-Fans/one-Thermals telemetry verification passes, visual/device acceptance unverified |
-| D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, next |
+| D Current Job and History | Independent selectors/routes delivered; current data is shared-status limited and history is unimplemented | Integrate fixed independent Current/History reads, safe contextual identity, latest-20 page semantics and two white cards; no controls | Exact contract frozen in decision 0025/OBS-014; implementation and independent acceptance active |
 | E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |
 | G Invokable skills and routes | Focused observation and camera skills delivered | Retain closed selectors and existing invocation; update source guidance/coverage as domains ship, without plugin reinstall | Active acceptance across releases |
 
@@ -175,6 +182,13 @@ private attachment paths/images are not committed.
   only: nozzle/bed/speed/height are not in the focused progress projection and
   must not be invented to match reference labels. No assumed-layer-thickness
   height calculation. Missing/stale states stay explicit.
+- Current Job and History: keep separate cards and receipts. Current uses a
+  contextual identity label—Printing/Paused, Loaded file, Last reported job or
+  Reported file—and separately labeled state/storage/duration/filament/byte
+  facts. History uses `Latest jobs returned`, a page-only count and at most 20
+  ordered rows with safe basename, status and reported time/duration/filament.
+  Use plain lists/dividers and readable wrapping, not charts or a giant map.
+  Neither card has pagination or row actions; each has one bottom Refresh.
 - Bed mesh, thermals, heads, jobs/history, queue, fans, overview, and directory
   use the same visual vocabulary without replacing real domain content with
   decorative gauges or implied healthy empty states.

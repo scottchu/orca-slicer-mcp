@@ -8,6 +8,8 @@ import { unavailableBedMesh, type BedMeshObservation } from "./application/bed-m
 import { unavailableMaterials, type MaterialObservation } from "./application/material-observation.js";
 import { unavailableQueue, type QueueObservation } from "./application/queue-observation.js";
 import { unavailableEnvironment, type EnvironmentFan, type EnvironmentObservation } from "./application/environment-observation.js";
+import { unavailableCurrentJob, type CurrentJobObservation } from "./application/current-job-observation.js";
+import { unavailableJobHistory, type JobHistoryObservation } from "./application/job-history-observation.js";
 
 export const OBSERVATION_VIEWS = [
   "overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans",
@@ -86,22 +88,8 @@ type HeadsModule = ModuleBase & {
     provenance: Provenance;
   }>;
 };
-type JobsModule = ModuleBase & {
-  kind: "jobs";
-  current: null | {
-    state: EvidenceState;
-    filename: Field<string>;
-    storageActive: Field<boolean>;
-    filePosition: Field<number>;
-    fileSize: Field<number>;
-    provenance: Provenance;
-  };
-};
-type JobHistoryModule = ModuleBase & {
-  kind: "job_history";
-  status: "not_implemented";
-  items: never[];
-};
+type JobsModule = ModuleBase & CurrentJobObservation & { kind: "jobs" };
+type JobHistoryModule = ModuleBase & JobHistoryObservation & { kind: "job_history" };
 type QueueModule = ModuleBase & QueueObservation & { kind: "queue" };
 type FansModule = ModuleBase & {
   kind: "fans";
@@ -339,33 +327,30 @@ function projectHeads(snapshot: ObservationSnapshot): HeadsModule {
 }
 
 function projectJobs(snapshot: ObservationSnapshot): JobsModule {
-  const status = snapshot.status;
-  const known = status.reachable && Boolean(status.filename);
+  const current = snapshot.currentJob ?? unavailableCurrentJob("not_requested");
   return {
-    ...moduleBase(snapshot, "jobs", known, snapshot.capabilityEvidence.jobs,
-      "Current printer job only; prepared-job correlation is not available"),
+    ...current,
     kind: "jobs",
-    current: known
-      ? {
-          state: stateForKnown(snapshot, true),
-          filename: field(snapshot, status.filename),
-          storageActive: field(snapshot, status.storage.active),
-          filePosition: field(snapshot, finiteOrNull(status.storage.filePosition)),
-          fileSize: field(snapshot, finiteOrNull(status.storage.fileSize)),
-          provenance: provenance(snapshot, "Moonraker print_stats and virtual_sdcard"),
-        }
-      : null,
+    capabilityEvidence: current.sourceObservedAt !== null ? "observed" : current.state === "unsupported" ? "unsupported" : "unknown",
+    provenance: {
+      source: current.sourceObservedAt === null ? "not_observed" : "moonraker",
+      sourceObservedAt: current.sourceObservedAt,
+      detail: "Server receipt of the fixed Current Job print_stats and virtual_sdcard query",
+    },
   };
 }
 
 function projectJobHistory(snapshot: ObservationSnapshot): JobHistoryModule {
+  const history = snapshot.jobHistory ?? unavailableJobHistory("not_requested");
   return {
-    ...moduleBase(snapshot, "job_history", false, snapshot.capabilityEvidence.history,
-      "Job history has no implemented read-only normalization"),
+    ...history,
     kind: "job_history",
-    state: "unknown",
-    status: "not_implemented",
-    items: [],
+    capabilityEvidence: history.sourceObservedAt !== null ? "observed" : history.state === "unsupported" ? "unsupported" : "unknown",
+    provenance: {
+      source: history.sourceObservedAt === null ? "not_observed" : "moonraker",
+      sourceObservedAt: history.sourceObservedAt,
+      detail: "Server receipt of the fixed latest-20 descending History query",
+    },
   };
 }
 

@@ -1,5 +1,33 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Current D Current Job and real History: visual acceptance unverified
+
+final result: blocked
+
+Decision 0025's addendum/OBS-014 retain the existing white focused-card system,
+not a new visual direction. Current Job uses contextual file identity so a
+persisted filename cannot look active: Printing/Paused, Loaded file, Last
+reported job or Reported file. State, storage, duration, filament and byte facts
+stay separately labeled. Job History uses `Latest jobs returned`, at most 20
+rows in returned order, and page count only. Each row shows safe basename,
+normalized status and reported time/duration/filament without IDs or actions.
+Each card's own observation/freshness is above exactly one bottom Refresh.
+
+No D implementation screenshot, matched viewport/state comparison, browser
+interaction, keyboard result or console inspection exists. Source fixtures or
+historical unimplemented-widget captures cannot accept changed assets. Typography,
+wrapping, row density, spacing, contrast, icon fidelity, focus and content remain
+visually unverified.
+
+When available, capture both cards at 320/390/720 pixels: Current printing,
+paused, standby-empty, persisted terminal, partial, stale, unsupported and
+unavailable; History zero/one/20 rows, long safe names, every status, unknown
+future status, null end, partial, stale, unsupported and unavailable. Verify no
+horizontal overflow, false active/total/empty claims, raw/private fields, charts,
+pagination or row actions; confirm 44-pixel bottom Refresh and visible focus.
+Reviewed deployment/data checks precede the user's visual review but cannot turn
+this result into a visual pass.
+
 ## C Fans & Chamber deployed: visual acceptance unverified
 
 final result: blocked

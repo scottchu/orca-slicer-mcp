@@ -1,8 +1,8 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: A/Heads, B Queue and C Fans & Chamber deployed; D Current Job/History next; visual acceptance unverified
-- Scope: F0/O1, OBS-007/008/010/011/013, CAM-008, API-005, decisions 0021/0025/0028
+- Status: A/Heads/B/C deployed; D Current Job/real History active; visual acceptance unverified
+- Scope: F0/O1, OBS-007/008/010/011/013/014, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution
 
@@ -20,6 +20,30 @@ refinement; then overview. Each slice passes local and independent exact-SHA
 review, PR merge, decision 0028 shipping, explicit restart of both existing
 services, and exact assets plus meaningful widget verification. Preserve source,
 protocol/browser, deployment, real-printer, and user-device evidence separately.
+
+## D Current Job and real History integration (2026-08-31)
+
+Decision 0025's real-data addendum and OBS-014 are authoritative. Preserve the
+already shipped independent `jobs` and `job_history` intents and replace only
+their limited shared-status/unimplemented projections with two independently
+timed, demand-only domains. Current Job uses the exact bounded print_stats/
+virtual_sdcard query; History uses the exact latest-20 descending history query.
+Neither domain acquires or restamps the other.
+
+Current Job treats printing/paused as the only active states and labels persisted
+filenames contextually for standby, terminal and unknown states. History exposes
+only a safe basename, normalized status, bounded timestamps, durations and
+filament. Page count never becomes a grand total; returned order and duplicates
+remain intact; zero rows means only that this query returned none. Raw paths,
+IDs, user, metadata, auxiliary data and `exists` stay adapter-private. Each white
+card keeps information and its own freshness above exactly one bottom Refresh,
+with no pagination, row action, mutation or control.
+
+Target runtime is 0.4.5/schema 11/observation-v11/camera-v8 with 21 resources and
+observation-v10 retained; tools/selectors/routes remain fixed. Complete D through
+independent exact-candidate approval, guarded merge/deploy, explicit BOTH-service
+restart and scoped verification. E Overview follows. Browser/device visual
+acceptance remains a separate unverified gate.
 
 ## C Fans & Chamber integration (2026-08-31)
 

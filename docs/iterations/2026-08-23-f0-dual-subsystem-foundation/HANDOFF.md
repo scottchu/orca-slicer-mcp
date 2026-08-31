@@ -1,5 +1,36 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 D Current Job/real History — authoritative current handoff
+
+Decision 0025's real-data addendum, decision 0029 and OBS-014 freeze D. Preserve
+stable separate `jobs` and `job_history` intents/routes. Add two independent
+demand-only domains: Current Job reads only the fixed print_stats/virtual_sdcard
+allowlist; History reads only
+`/server/history/list?limit=20&start=0&order=desc`. Each owns receipt/failure,
+15-second attempt TTL/coalescing/stale retention and fixture isolation; neither
+acquires/restamps the other or main status.
+
+Reuse Queue's exact safe-basename boundary. Raw paths, history IDs/user/metadata/
+auxiliary data/`exists` and raw future statuses remain adapter-private. Only
+printing/paused means active; filename persistence is presented as Loaded file,
+Last reported job or Reported file according to state. History count is page
+length only, preserves returned order/duplicates and has no omission/total/
+pagination claim. A valid zero page says only no entries returned. All seven
+documented statuses plus nonraw Unknown, null end-time non-inference, finite
+units/bounds and partial/unsupported/unavailable/stale states are durable in the
+ADR. Each white card has information/own freshness above one bottom Refresh and
+no row action or control.
+
+Target 0.4.5/schema 11/observation-v11/camera-v8 with 21 resources,
+observation-v10 retained and unchanged two-visible/eight-app-only tools. App
+scope belongs to implementation; exact candidate acceptance belongs to the
+independent validator/reviewer. This design pass changed documentation only and
+made no app/test/Git/service/printer/browser mutation. No D source, deployment,
+live telemetry, rendered visual or user acceptance is claimed. Next: implement
+the smallest exact slice, independently validate/review its SHA, then use the
+standing guarded PR merge → exact-build deploy → explicit BOTH-service restart
+→ scoped D verification. Preserve A/F/Heads/B/C; E Overview follows.
+
 ## 2026-08-31 C Fans & Chamber — shipped handoff
 
 PR49 exact head `c14e92cfc655d0b7a6e7d0138650d7937789d7d1` was formally
