@@ -10,18 +10,17 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-- Current task: measured FPS is implemented only in the live camera's top state/time
-  pill, per decision 0023's latest supersession and CAM-008. Keep network
-  diagnostics hidden and bottom controls unchanged. Actual frame counters,
-  startup/reset handling and stale expiry must prevent invented or retained
-  rates. Source is runtime 0.3.4/camera-v6, with camera-v5/v4 aliases,
-  observation-v5/schema 7 unchanged and thirteen resources. Author validation
-  passes 81 tests/856 assertions and TypeScript; independent acceptance and
-  shipment are pending. After exact-commit review,
-  use the established authorized merge/deploy/restart-both/verify workflow.
-  PR34 remains the verified live baseline; its rollout-record PR is already
-  merged in main `3eeb926`. Queue and minimal-progress work remain deferred.
-- Current result (2026-08-31): PR34 is merged and deployed. Independently
+- Current result: live-only measured FPS is reviewed, merged in PR36 and
+  deployed through `u1-ship`. Reviewed head `40d359bd81df3523a32726172f64b045ab027e86`
+  merged as `3fc918e5c64b401f497f97144d9c81423877d852`; installed release
+  `20260831-3fc918e-pr36-20260831T124701-e914a1` reports runtime 0.3.4/schema 7/
+  observation-v5/camera-v6. Both U1 services were explicitly restarted and are
+  healthy/integrity verified; fourteen static and sixteen security checks
+  passed with OAuth/configuration/routes preserved. No rollback was needed.
+  Source fixtures validate measured FPS, not actual phone/live-video playback.
+  Finish only the docs-only rollout record; unchanged application bytes need
+  no second deployment. Queue and minimal-progress work remain deferred.
+- Previous result (2026-08-31): PR34 is merged and deployed. Independently
   reviewed head `97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1` merged as
   `7194361d4a8d7a2291bcc64f1d053eae51a8d99c`; `$u1-ship` completed the
   guarded merge, exact-build deployment, explicit restart of BOTH services,
