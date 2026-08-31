@@ -9,6 +9,7 @@
     "start": "bun --env-file=../../../.env run src/server.ts",
     "stdio": "bun --env-file=../../../.env run src/stdio-main.ts",
     "bundle": "bun build src/stdio-main.ts --target=bun --outdir=dist --entry-naming=stdio.js --asset-naming=[name].[ext]",
+    "bundle:server": "bun build src/server.ts --target=bun --outdir=dist --entry-naming=server.js --asset-naming=[name].[ext]",
     "bundle:runtime": "bun run src/build-runtime.ts",
     "setup": "bun run src/cli.ts setup",
     "doctor": "bun run src/cli.ts doctor",

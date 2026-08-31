@@ -36,8 +36,8 @@ Report these separately:
 
 1. Local software evidence: server checks and tests pass on the Mac.
 2. Public-edge evidence: HTTPS health, OAuth discovery, and unauthenticated rejection work through Funnel.
-3. MCP evidence: the authenticated client discovers exactly the two
-   model-visible read-only presentation tools.
+3. MCP evidence: the authenticated client discovers exactly two model-visible
+   tools and exactly eight app-only helpers, all read-only.
 4. Printer evidence: returned telemetry and camera data came from the configured real printer.
 5. iOS evidence: the host visibly rendered either the interactive component or
    the inline PNG fallback; interactive controls are evidence only on hosts
@@ -170,6 +170,15 @@ open_printer_camera
 
 Each tool must be read-only and require `u1.monitor`. Stop if any control tool is present.
 
+For standalone camera requests, call only model-visible
+`open_printer_camera`; never substitute `show_u1_status`, `get_u1_status`,
+app-only `get_u1_camera_frame`, or app-only `open_u1_camera_stream`. If
+`open_printer_camera` is missing from the current tool inventory or its camera
+resource cannot be loaded, report that the current MCP connection/descriptor
+is stale or unavailable and stop. Ask the user to reload the plugin connection
+or fully quit and relaunch the host before retrying. Never open the status card
+as a camera fallback.
+
 OpenAI documents public plugins as shared across ChatGPT and Codex, but says local and repository marketplace availability can vary by surface. Treat the private developer connection's appearance in Codex on iPhone as a separate observation, not an assumption. If it does not appear after registration and refresh on the same account, report that private developer testing works in ChatGPT but Codex mobile requires a supported distribution path; do not weaken authentication or publish publicly merely to bypass that limitation.
 
 ### 6. Verify the real iOS card
@@ -217,9 +226,10 @@ TURN REST credential and mounted playback on each host are observed.
 ## Completion report
 
 Report the discovered MagicDNS hostname, standard-HTTPS MCP URL, preserved
-Funnel and Serve handlers, private enrollment health, two-tool model-visible
-inventory, ICE mode (local candidates, explicit STUN, or TURN REST), and each
-evidence boundary. Redact credentials and tokens. State that this self-hosted edition requires an
+Funnel and Serve handlers, private enrollment health, the exact two
+model-visible plus eight app-only inventory, ICE mode (local candidates,
+explicit STUN, or TURN REST), and each evidence boundary. Redact
+credentials and tokens. State that this self-hosted edition requires an
 always-on LAN agent per printer owner; it may run on a desktop, NAS, or small
 server. Keep a future hosted broker plus local outbound connector as a separate
 product decision rather than implying this developer setup is already a

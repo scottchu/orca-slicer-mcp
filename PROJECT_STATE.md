@@ -12,8 +12,16 @@ Last updated: 2026-08-30
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
-- User-directed execution order: build the composable read-only U1 observation
-  feedback loop before further deployment, host, preparation, or printer work.
+- User-directed execution order: integrate PR27 with the focused-widget PR28,
+  validate and independently review, merge, and deliver decision 0022's
+  persistent personal HTTP services. The user authorizes the installed/server
+  rollout, not Mac login/power changes, printer controls, or route/auth changes.
+- Decision 0022 reuses the two existing owner LaunchAgents with versioned
+  bundled HTTP releases and a release-local pinned Bun copy. Stable private focused routes default
+  to progress. One observation store is shared across HTTP requests within
+  each process; separate services/stdio and process restarts remain separate
+  state scopes. Implementation and rollout evidence are tracked below and in
+  the active iteration, not inferred from this accepted design.
 - Decision 0017 adds a private enrollment listener plus explicit STUN and
   short-lived TURN REST boundaries while preserving decision 0016's local-first
   normal-user direction and MCP Apps signaling bridge.
@@ -41,7 +49,7 @@ Last updated: 2026-08-30
   Tailscale routing hashes were unchanged across restart. The deployed private
   dashboard showed Snapshot, rendered `Live · 24 FPS`, and returned to Snapshot
   after Close.
-- Decision 0020 is the current unmerged source slice. It replaces direct
+- Decision 0020 merged through pull request 26 as `4f9041c`. It replaces direct
   printer-to-viewer sessions with one private server-terminated H264 upstream
   and bounded independent downstream peers. Camera v3 is a fresh repeated-open
   camera-only resource; v2 and v1 remain current-asset aliases. Public
@@ -50,8 +58,17 @@ Last updated: 2026-08-30
   requires exact first-RTP H264 payload/profile selection, rate-limited shared
   upstream PLI feedback, async termination cleanup, and level-triggered
   rejection of werift peers already failed/closed before observer registration.
-  The slice has not changed any installed plugin, service, OAuth state,
-  Tailscale route, or printer.
+  Personal Marketplace version `0.2.0+codex.20260830013924` was rebuilt from
+  the merge and installed; both existing services restarted on schema 4 and
+  camera-v3 without changing OAuth state or Tailscale routing.
+- A fresh conversation in the still-running pre-install Codex Desktop process
+  did not expose `open_printer_camera`. The model selected the monitoring skill
+  and substituted `show_u1_status`, mounting the entire status card. That is a
+  stale host-process descriptor plus a procedural-routing regression, not
+  evidence that the rebuilt camera-v3 resource contains status markup. PR27,
+  merged as `473e482`, requires standalone camera requests to call only
+  `open_printer_camera` and fail closed when it is unavailable; a full host quit
+  and relaunch remains required for mounted acceptance.
 - Decision 0021 is implemented in the current source slice. The user selected
   720-pixel Instrument Strips, rejected a giant machine map, and requires camera
   as its own focused strip. Exactly `observe_printer`, with the closed views
@@ -74,7 +91,7 @@ The repository contains the smallest desktop-local read-only connector slice:
   or proxy-shaped path;
 - fixed-route status, snapshot, and `webrtc-camerastreamer` operations behind
   the U1 Printer Operations adapter;
-- one shared observation store: plain reads are cache-only, explicit refreshes
+- one shared observation store: after initial acquisition, plain reads are cache-only, explicit refreshes
   call the upstream adapter only when due, concurrent refreshes coalesce, and a
   failed refresh retains last reachable values as stale with their source time;
 - focused observation and camera MCP Apps widgets with empty external CSP
@@ -98,18 +115,25 @@ The repository contains the smallest desktop-local read-only connector slice:
   automatic dotenv/bunfig loading, and runs without a Bun executable at
   runtime.
 
-The final decision-0021 source validation passes with 101 tests and 594
-assertions, TypeScript, both bundles, ad-hoc signature verification, plugin and
+The pre-integration decision-0021 source validation passed with 101 tests and
+594 assertions, TypeScript, both bundles, ad-hoc signature verification, plugin and
 skill validation, the repository contract, and whitespace checks. Browser
 fixture review accepted the focused Progress, Thermals, Heads, and Camera
 presentations at a narrow inline viewport. Exact hashes and commands are
 recorded in the active iteration. All evidence is static/software or fixture
 only; install, service restart, public edge, real-printer observation, mounted
 Codex/ChatGPT, and mobile remain later evidence gates.
+PR27's separate tree passed 93 tests with 569 assertions. The combined baseline
+passed TypeScript and 105 tests with 606 assertions before persistence changes.
+The implemented focused-route/shared-store slice passes TypeScript and 110
+tests with 759 assertions, stdio/runtime bundles, and local signature checks.
+The lifecycle CLI passes 19 local fixture tests. Independent final review
+approved the combined source with no blocking findings and verified the
+repository contract plus isolated bundled health/static readiness with zero
+synthetic printer reads. Merge/install/live rollout remain separate evidence.
 
-The self-contained artifact is local validation evidence only. Its ad-hoc
-signature is not suitable for distribution. No package, marketplace entry,
-installed plugin, OAuth state, or hosted service was changed.
+The self-contained artifact remains locally and ad-hoc signed and is not
+suitable for publication. No Homebrew or npm package was published.
 
 ## Implemented secure remote source slice
 
@@ -157,13 +181,24 @@ The current source reports runtime `0.3.0`, tool schema `5`, observation widget
 `observation-v2`, and camera widget `camera-v4`. `show_u1_status` and
 `get_u1_status` are superseded model intents and survive only as app-only
 compatibility aliases. Frozen status-v4/status-v3 and camera-v3/v2/v1 resources
-remain byte-identical for retained tasks. The currently installed
-decision-0019 runtime remains schema 3/camera-v2 with its earlier three-visible,
-five-app-only inventory until a separately authorized rollout; it is not
-evidence for this source surface.
+remain byte-identical for retained tasks. Earlier installed-runtime records
+describe schema 4/camera-v3 and a three-visible/five-app-only inventory;
+reverify actual installation during the authorized rollout rather than treating
+historical records as evidence for this source surface.
 
 ## Packaging and onboarding boundary
 
+- Personal HTTP lifecycle is implemented by `scripts/u1_service.py`: stage a
+  clean committed source, dry-run/install one versioned release, report status,
+  start/stop/restart the two allowlisted services, and rollback by snapshot ID.
+  The default owner-only state root is `~/Library/Application Support/U1 Print
+  Studio/service`. Releases include a copied `bin/bun`, bundled HTTP entry,
+  exact assets, empty bunfig, and hash/version manifest. The original Bun path
+  can change without removing the release copy. Explicit private env is
+  preserved; ambient dotenv/bunfig loading and relative auth/config paths are
+  rejected before service replacement. See `plugins/u1-print-studio/PACKAGING.md`
+  for exact CLI syntax. This personal adapter does not establish public
+  distribution, live rollout, or Mac boot/login/sleep acceptance.
 - Normal users do not need Tailscale, MagicDNS, public DNS, manual OAuth,
   environment-file editing, or Bun.
 - `plugins/u1-print-studio/.mcp.release.json` starts
@@ -206,7 +241,8 @@ evidence for this source surface.
   signaling slice is implemented.
 - One in-process observation store preserves freshness, connection epochs, and
   stale last-reachable values across explicit, due, coalesced refreshes. Plain
-  presentation reads do not contact the printer.
+  presentation reads after initial acquisition do not contact the printer;
+  a cold `current()` still bootstraps one acquisition on demand.
 - Persistent subscription monitoring, process-restart persistence, durable
   history, notifications, recommendations, and control are not implemented.
 - Jobs history, queue, fans, bed mesh, cavity, filament material/color, and
@@ -218,7 +254,7 @@ evidence for this source surface.
 ### Static/software
 
 - TypeScript checks pass.
-- One hundred one tests with 594 assertions pass across the prior camera,
+- Before integration, 101 tests with 594 assertions passed across the prior camera,
   security, packaging, and dashboard boundaries plus exact two-visible/eight-
   app-only tool visibility, view-enum closure, selected-module projection,
   explicit-refresh coalescing, stale retention, provenance, and current/frozen
@@ -229,17 +265,17 @@ evidence for this source surface.
 - Local browser fixture review at a roughly 589 by 844 viewport accepted the
   focused Progress, Thermals, Heads, and separate Camera presentations. Captures
   were not added to the repository.
+- PR27 adds regressions for exclusive standalone-camera guidance, fail-closed
+  stale-host behavior, plugin starter prompts, and full host-process reload.
 - The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
   signature, prints help, writes a schema-2 `0600` config, preserves explicit
   STUN on setup rewrite, and passes `doctor --offline` without contacting
   hardware. Malformed ICE URLs and partial TURN configuration fail closed.
 - Personal Marketplace staging and installation passed on this macOS arm64
-  machine for the earlier decision-0019 direct-session runtime. That installed
-  cache matched its staged SHA-256, passed signature verification, reached the
-  configured printer read-only, returned a JPEG snapshot and WebRTC offer, and
-  explicitly closed its bounded session. It is not installation or
-  real-printer evidence for the decision-0020 fan-out or decision-0021 focused
-  observation source.
+  machine for decision 0020 as version
+  `0.2.0+codex.20260830013924`. Both existing services report schema 4 and
+  camera-v3. That is installed-runtime and service evidence, not mounted-host,
+  mobile, or real multi-viewer fan-out acceptance.
 
 The active iteration's `VALIDATION.md` is authoritative for exact commands
 and final repository-check results.
@@ -262,8 +298,9 @@ and final repository-check results.
 
 ### User outcome
 
-- The earlier secure remote and direct camera runtime remains installed and has
-  its separately recorded live/private-browser outcome evidence.
+- The last recorded installed runtime is decision 0020 schema 4/camera-v3.
+  Its first mounted attempt retained a stale host descriptor and incorrectly
+  substituted a status card; installed/service health is not mounted acceptance.
 - The focused Progress, Thermals, Heads, and Camera layouts passed local browser
   fixture review only. A new mounted task, live normalized values, overview,
   mobile behavior, and the user's quick-comprehension feedback loop remain
@@ -281,6 +318,10 @@ and final repository-check results.
 - Native hosted-widget WebRTC rendering, FPS, UI-triggered Close, PiP,
   fullscreen, and fallback need fresh visual host evidence. Server-side open
   and close now pass against the real read-only camera path.
+- Creating a new conversation does not refresh an MCP process retained by an
+  already-running desktop host. Camera-v3 acceptance requires fully quitting
+  and relaunching that host; procedural guidance now fails closed instead of
+  substituting a status card when `open_printer_camera` is absent.
 - No TURN REST service URLs or shared secret were supplied. Reliable remote
   media remains blocked on external provisioning plus observed allocation and
   mounted playback. Explicit STUN is only a compatibility step and discloses
@@ -304,8 +345,11 @@ and final repository-check results.
 
 ## Next action
 
-Independently review and deliver the completed decision-0021 source slice by the
-repository pull-request route. Do not stage, install, restart, or contact the
-live printer without fresh authorization. Separately establish read-only live
-data mappings for the unresolved domains, then accept each focused module
-before composing overview and running the mounted user-outcome gate.
+Commit and merge decision 0022's validated, independently approved lifecycle
+and focused-route/store slice through
+PR28, then perform the user-authorized installed/server rollout. Preserve all
+OAuth state and Serve/Funnel routes and the separate task's canonical-checkout
+dirty documentation. Mac automatic login and power changes are deferred.
+Browser control is currently unavailable; static HTTP success does not accept
+visual rendering. Mounted focused widgets, live mappings, two-viewer fan-out,
+mobile ICE, and overview composition remain separate evidence gates.

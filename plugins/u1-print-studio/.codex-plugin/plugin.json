@@ -24,9 +24,8 @@
       "Picture in Picture"
     ],
     "defaultPrompt": [
-      "Set up my desktop-local read-only U1 status card.",
+      "Open my printer camera.",
       "Prepare this model for my Snapmaker U1.",
-      "Start this validated U1 print after safety checks.",
       "Monitor my U1 print with adaptive status cards."
     ],
     "brandColor": "#14B8A6"

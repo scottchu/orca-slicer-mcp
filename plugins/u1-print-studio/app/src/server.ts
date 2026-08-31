@@ -38,6 +38,7 @@ import {
   readU1Status,
 } from "./u1-status.js";
 import { runtimeHealth } from "./runtime-contract.js";
+import { PrinterObservationStore } from "./observation-store.js";
 
 const MCP_PATH = "/mcp";
 
@@ -97,13 +98,15 @@ type CameraRelayDependencies = {
 export function createRequestHandler(
   oauth: PersonalOAuthService | null,
   cameraRelay: CameraRelayDependencies | null = null,
-  statusDashboard: StatusDashboardDependencies | null = null
+  statusDashboard: StatusDashboardDependencies | null = null,
+  observations = statusDashboard?.observations ??
+    new PrinterObservationStore(statusDashboard?.readStatus ?? readU1Status)
 ) {
   const handleCameraWebRtc = cameraRelay
     ? createCameraWebRtcHandler(cameraRelay.relay, cameraRelay.sessions)
     : null;
   const handleStatusDashboard = statusDashboard
-    ? createStatusDashboardHandler(statusDashboard)
+    ? createStatusDashboardHandler({ ...statusDashboard, observations })
     : null;
   return async (req: IncomingMessage, res: ServerResponse) => {
     if (!req.url) {
@@ -191,9 +194,10 @@ export function createRequestHandler(
       res.setHeader("Access-Control-Expose-Headers", "Mcp-Session-Id, WWW-Authenticate");
 
       const server = createAppServer(
-        cameraRelay
-          ? { cameraSessions: cameraRelay.controller }
-          : {},
+        {
+          observations,
+          ...(cameraRelay ? { cameraSessions: cameraRelay.controller } : {}),
+        },
         oauth
           ? {
               oauthScopes: [MONITOR_SCOPE],

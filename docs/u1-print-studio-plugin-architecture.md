@@ -86,7 +86,7 @@ inbound protocol, not the core product boundary.
 | Workflow skills | `skills/` | Route focused one-shot observation through `u1-observe-printer` and guide setup, monitoring, preparation, and authorized start without becoming runtime authority |
 
 The store implements the bounded current-state portion of
-`QueryCurrentPrinterObservation`: plain reads are cache-only, explicit refresh
+`QueryCurrentPrinterObservation`: after initial acquisition, plain reads are cache-only, explicit refresh
 captures upstream only when the shared snapshot is due, concurrent callers
 coalesce onto one read and observation identity, and failed/offline refreshes
 retain the last reachable values as stale with their original source time.

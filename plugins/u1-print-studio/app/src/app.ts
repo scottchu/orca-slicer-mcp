@@ -329,6 +329,7 @@ async function safeCameraAction<T>(action: () => Promise<T>): Promise<T> {
 export function createAppServer(
   dependencies: {
     readStatus?: StatusReader;
+    observations?: PrinterObservationStore;
     readCameraFrame?: CameraFrameReader;
     cameraSessions?: CameraWebRtcSessionController;
   } = {},
@@ -339,7 +340,7 @@ export function createAppServer(
   const readStatus = dependencies.readStatus ?? readU1Status;
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
-  const observations = new PrinterObservationStore(readStatus);
+  const observations = dependencies.observations ?? new PrinterObservationStore(readStatus);
   const server = new McpServer({
     name: "u1-print-studio",
     version: U1_RUNTIME_VERSION,

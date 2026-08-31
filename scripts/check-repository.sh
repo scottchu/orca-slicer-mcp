@@ -111,4 +111,6 @@ if [[ -d "$plugin_app_root" ]]; then
   )
 fi
 
+uv run --no-project scripts/test_u1_service.py
+
 echo "repository contract: ok"

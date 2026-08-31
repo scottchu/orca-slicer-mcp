@@ -8,31 +8,30 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0021
+5. decisions 0014 through 0022
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
 
-The user-directed priority is the composable read-only U1 observation feedback
-loop under F0. Decision 0021's source slice is implemented and locally
-validated: focused 720-pixel Instrument Strips, camera as a separate strip, and
-no giant machine map. Preserve decision 0020's private fan-out, decision 0019's
-mounted-widget activation, decision 0017's secure remote boundary, and decision
-0016's local-first normal-user direction.
+The user now authorizes integration/merge of PR28 and the persistent personal
+HTTP rollout in decision 0022. First combine PR27's exclusive camera routing
+with decision 0021's focused widgets, then validate/review/merge and deploy only
+the existing two owner LaunchAgents from a versioned release with copied pinned Bun.
+Mac automatic login/power, routing/auth changes, and printer controls remain
+out of scope. Preserve decision 0020 fan-out, decision 0019 activation, decision
+0017 secure remote access, and decision 0016's local-first normal-user direction.
+
+Decision 0022 adds fixed private focused routes defaulting to progress and a
+shared observation store across HTTP calls within each process. It does not
+create cross-process/restart storage, subscriptions, background camera, a root
+daemon, or an MCP Admin tool. Health/static routes must not contact the printer.
 
 The secure source and compatibility repair are merged. Pull request 20 is
-`4d4ea2f`; pull request 22 adds the camera-only presentation as `333bebe`.
-Personal Marketplace version `0.2.0+codex.20260828194545` is installed. The
-public service and separate private dashboard LaunchAgents are running.
-Preserve OAuth state and every existing Serve/Funnel route.
-
-The camera-only source slice merged through pull request 22 as `333bebe`.
-Personal Marketplace version `0.2.0+codex.20260828194545` is installed and its
-runtime hash matches the staged source. Decision 0018 adds
-`open_printer_camera`, `camera-v1.html`, and the opt-in `/dashboard/camera`
-test host. Existing Codex/ChatGPT tasks still require a new task to load the
-new descriptor.
+`4d4ea2f`; pull request 22 adds the camera-only presentation as `333bebe`;
+pull request 24 adds the activation repair as `62acd4c`; and pull request 26
+merges decision 0020 as `4f9041c`. Preserve OAuth state and every existing
+Serve/Funnel route.
 
 The decision-0019 source repair makes `open_printer_camera` the only
 model-visible camera action. The app-only frame helper mints a one-time private
@@ -42,33 +41,29 @@ served as a current-asset compatibility alias. Health and doctor report runtime
 0.2.0, tool schema 3, and camera widget v2. Source validation passes with 71
 tests and 417 assertions; delivery/install evidence is recorded separately.
 
-Pull request 24 merged as `62acd4c`. Personal Marketplace version
-`0.2.0+codex.20260828211031` is installed with source/stage/cache runtime hash
-`74f5f654de2a52c21a33577ffd6520f1054eb71439668885986114177faa2398`.
-The exact installed client verified three model-visible plus five app-only
-tools, both camera-v2 and v1 resources, rejection of an old empty stream call,
-a 135,547-byte real JPEG, one bounded offer with one ICE server, and explicit
-Close. Public and dashboard health report schema 3/camera-v2; OAuth state and
-Tailscale routing hashes stayed unchanged across restart. The private browser
-rendered `Live · 24 FPS` and returned to Snapshot after Close.
+Decision 0020 is installed from pull request 26 as Personal Marketplace version
+`0.2.0+codex.20260830013924`. Both existing services restarted and report tool
+schema 4 plus camera-v3; OAuth state and Tailscale routing stayed unchanged.
+The installed surface remains exactly three model-visible tools and five
+app-only helpers. Camera-v3 adds repeated-open camera-only presentation
+semantics and one private H264 printer upstream with bounded independent
+downstream peers, exact H264 payload selection, coalesced PLI feedback,
+termination-race cleanup, distinct ICE credentials, independent Close, and
+last-viewer upstream release.
 
-Decision 0020 is implemented only in the current feature worktree. It adds
-camera-v3 repeated-open camera-only presentation semantics and terminates one
-private H264 printer upstream in the connector. Bounded independent downstream
-viewer peers receive cloned RTP headers, separate ICE credentials, explicit
-server Tailscale host candidates, independent Close, a 15-second answer
-deadline, and last-viewer upstream release. `U1_CAMERA_MAX_VIEWERS` defaults to
-16 and accepts 1 through 64. The first received RTP payload type selects the
-exact H264 fmtp; downstream PLI feedback is coalesced onto the upstream
-receiver; explicit generations reject peers that terminate during async open;
-subscribe-then-inspect termination observers reject werift peers already
-failed/closed before registration. Camera v2 and v1 remain aliases. Public
-status, camera bytes, diagnostics, MCP, and exact HTTP envelopes exclude
-printer identity, upstream signaling, raw errors, and JPEG metadata. No live
-runtime or route has been changed.
+The first user test after installation created a new conversation inside a
+Codex Desktop process that still predated the reinstall. That process did not
+expose `open_printer_camera`; the model selected `u1-monitor-print` and
+substituted `show_u1_status`, mounting the entire status card. Treat this as an
+unaccepted stale-host and guidance regression, not a camera-v3 widget build
+result. The source guidance now routes standalone camera requests only to
+`open_printer_camera`; if it is missing or its resource cannot load, report the
+stale/unavailable connection and stop. Never call status, frame, or stream
+helpers as a substitute. A full Codex Desktop quit and relaunch is required
+before mounted acceptance.
 
 The decision-0021 implementation adds one shared in-process observation store.
-Plain presentation reads are cache-only; explicit due refreshes call the
+After initial acquisition, plain presentation reads are cache-only; explicit due refreshes call the
 upstream adapter, concurrent refreshes coalesce, and failed/offline refreshes
 retain the last reachable values as stale with their original source time.
 Every `observe_printer` call projects only its selected module. Progress,
@@ -95,8 +90,9 @@ decision 0015.
   domains.
 - Current descriptors point to `observation-v2.html` and `camera-v4.html`.
   Frozen status-v4/status-v3 and camera-v3/v2/v1 resources remain readable for
-  retained cards. Plugin upgrades still require a new task for the current
-  installed MCP process.
+  retained cards. A plugin upgrade can require a
+  full host-process quit and relaunch; a new task alone did not replace the MCP
+  process retained by Codex Desktop in the observed regression.
 - Live offer, answer, ICE candidates, and close use MCP Apps `tools/call`.
 - The connector alone invokes the U1's fixed Printer Operations adapter.
 - The fan-out application service owns one private H264 printer upstream plus
@@ -148,14 +144,22 @@ intents. Every non-camera view projects the same normalized observation and
 preserves time, freshness, connection epoch, session identity, provenance, and
 capability evidence. Camera retains its separate acquisition time and camera-v4
 lifecycle. The one user-facing procedural observation skill is
-`$u1-observe-printer`. The installed decision-0019 runtime is still the older
-schema-3/camera-v2 three-visible/five-app-only surface until a fresh authorized
-rollout; do not conflate it with current source.
+`$u1-observe-printer`. The last recorded installed decision-0020 runtime is the
+older schema-4/camera-v3 three-visible/five-app-only surface; verify actual
+installed state separately and do not conflate it with current source.
 
 ## Validation boundary
 
-The active iteration's `VALIDATION.md` records the exact commands. The final
-software suite has 101 passing tests with 594 assertions. The macOS arm64
+The active iteration's `VALIDATION.md` records the exact commands. Decision
+0021 passed 101 tests with 594 assertions before integration; PR27's standalone
+camera routing slice passed 93 tests with 569 assertions on its separate tree.
+The combined baseline passed TypeScript and 105 tests with 606 assertions before
+persistence changes. The implemented focused-route/shared-store tree passes
+TypeScript, 110 tests with 759 assertions, both stdio/runtime bundles, and local
+signature checks. The lifecycle CLI passes 19 fixture tests. Independent final
+review approved the combined source with no blocking findings, including the
+repository contract and bundled health/static smoke with zero synthetic
+printer reads. Merge/install/live rollout remain pending. The macOS arm64
 standalone runtime builds with dotenv/bunfig autoload disabled, receives a
 validation-only ad-hoc signature, prints help, writes a schema-2 `0600`
 configuration, preserves explicit STUN, and passes offline doctor without Bun
@@ -198,30 +202,37 @@ broader-permission config and for closing a valid camera session when the rest
 of its stream envelope is malformed. Both fixes are included in the passing
 suite.
 
-Pull request 18 merged the secure remote slice as `e298885`; pull request 20
-merged the resource/lifecycle repair as `4d4ea2f`; pull request 22 merged the
-camera-only presentation as `333bebe`. Personal Marketplace version
-`0.2.0+codex.20260828194545` is installed; the exact staged and installed
-standalone runtime hash is recorded in `VALIDATION.md`. The owner-only schema-2
-config uses explicit STUN. The protected public service, private dashboard, and
-separate enrollment listener are healthy; tailnet-only Serve 8447 reaches only
-the enrollment listener and Funnel remains enabled only on 443.
-
-An exact installed-cache client verified four model-visible plus four app-only
-read-only tools and all three widget resources. The deployed private
-`/dashboard/camera` displayed a real snapshot, rendered `Live · 25 FPS`, and
-returned to snapshot after Close. Tailscale configuration stayed byte-stable
-across service restart. Mounted ChatGPT/Codex playback is not yet accepted
-because it requires a fresh task. No TURN service or shared secret is
-configured.
+Pull request 26 merged decision 0020 as `4f9041c`; Personal Marketplace version
+`0.2.0+codex.20260830013924` is installed and both services report schema
+4/camera-v3. The exact inventory is three model-visible tools plus five app-only
+helpers. Earlier private-dashboard Live results belong to direct-session
+predecessors and do not prove the installed fan-out or mounted host. No TURN
+service or shared secret is configured.
 
 ## Next smallest action
 
-Independently review and deliver the completed decision-0021 source slice through
-a pull request. Do not install, restart, contact the live printer, or mutate
-routes/auth state without fresh authorization. Then establish live read-only
-mappings for unresolved domains, accept each focused module, and only afterward
-compose overview and run the mounted user-outcome gate.
+Commit the validated, independently approved decision-0022 source and lifecycle
+script, then merge PR28 and roll out the versioned HTTP release to the two existing
+owner LaunchAgents under the user's explicit authorization. Preserve OAuth
+state, every Serve/Funnel route, and the canonical checkout's unrelated dirty
+documentation. Read health/static routes for service evidence without implicit
+printer acquisition. Browser control is unavailable, so rendering acceptance
+remains pending. Mac automatic login and power changes remain deferred.
+Use `uv run --no-project scripts/u1_service.py`: first
+`stage --source ABS --bun ABS --release ID`, then
+`install --release ID --dry-run`, then authorized `install --release ID`.
+The source must be clean/committed. Follow with `status` and the intended
+`start|stop|restart --service all|public|dashboard`; recover with
+`rollback --snapshot ID` from the install result. The default state root is
+`~/Library/Application Support/U1 Print Studio/service`, and releases copy Bun
+to `bin/bun`; they do not depend on the original Bun binary remaining present.
+Explicit private env is preserved, ambient dotenv/bunfig loading is disabled,
+and relative effective auth/config paths fail before stops. A cold store still
+acquires once on first demand; health/static requests never acquire.
+After rollout, fully quit and relaunch the host before invoking
+`open_printer_camera`; a status-card substitution is failure. Separately verify
+read-only live mappings, two-viewer fan-out, mounted focused widgets, and mobile
+behavior. Accept focused modules before composing overview.
 
 ## Preserve
 
@@ -243,14 +254,17 @@ compose overview and run the mounted user-outcome gate.
 
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
-docs/requirements.md, the active iteration, and decisions 0014 through 0021.
-Review and deliver the completed decision-0021 source slice. Source exposes
+docs/requirements.md, the active iteration, and decisions 0014 through 0022.
+Finish the user-authorized PR28 merge and persistent personal HTTP delivery.
+Use exact existing owner LaunchAgents, versioned release/pinned Bun, fixed
+focused routes defaulting to progress, and one observation store per process.
+Preserve existing OAuth state, private env, routes, and unrelated dirty docs.
+Do not change Mac power/login or issue printer controls. Source exposes
 exactly `observe_printer` with its closed eight-view enum plus
 `open_printer_camera`; app-only refresh, legacy aliases, and five camera helpers
 remain hidden. It uses observation-v2, camera-v4, frozen legacy resources, one
 explicit-refresh/coalescing/stale-retention store, and selected-module
 projections. Camera is separate and overview is deferred. Preserve decision
-0020 fan-out and the secure remote boundaries. Do not mutate live
-services/routes, install, publish, or contact a physical printer without fresh
-approval.
+0020 fan-out and the secure remote boundaries. Service rollout is authorized;
+publication, route/auth changes, and physical-printer acceptance are not.
 ```

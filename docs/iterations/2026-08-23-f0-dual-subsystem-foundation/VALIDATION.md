@@ -1,5 +1,54 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-30 persistence integration — current evidence
+
+- Milestone: F0. Decision 0022 addresses durable personal HTTP entry points,
+  process-scoped shared observations, and recoverable versioned deployment.
+- User authorization covers PR28 integration/merge and installed/server
+  rollout. Mac login/power, routing/auth changes, and printer controls remain
+  excluded. Existing unrelated canonical-checkout edits are preserved.
+- Read-only configuration inspection confirmed two existing owner LaunchAgents
+  with `RunAtLoad=true` and `KeepAlive=true`, both launching source TypeScript
+  through a pinned Bun. The private dashboard uses loopback 8788; protected MCP
+  defaults to 8787; private enrollment is configured on 8789. Secrets and local
+  printer identifiers were neither printed nor recorded.
+- Integrator ran `bun install --frozen-lockfile`, `bun run check`, and the full
+  Bun test suite after resolving PR27/PR28 conflicts: **105 tests, 606
+  assertions passed**. This is the pre-persistence combined baseline only.
+- Final `bun run check` and `bun test src/*.test.ts`: **110 tests, 759
+  assertions passed**. `bun run bundle` and `bun run bundle:runtime` passed;
+  the local standalone ad-hoc signature is valid. `bun run bundle:server`
+  emits the separate bundled HTTP entry and production assets.
+- `uv run --no-project scripts/test_u1_service.py`: **19 fixture tests
+  passed**. CLI `--help` and `stage --help` matched the documented flags.
+  Fixtures cover plist/env preservation, no-stop dry-run, hash/inventory/Bun
+  integrity rejection, owner-only/symlink/path checks, loaded-state reporting,
+  lifecycle locking, readiness versions, failed-install restoration, explicit
+  rollback recovery, stage copying/immutability, and Bun env precedence.
+- `./scripts/check-repository.sh`: passed TypeScript, the 110-test/759-assertion
+  app suite, all 19 lifecycle tests, and `repository contract: ok`.
+  `git diff --check`, plugin validation, and touched skill validation passed.
+- Independent final reviewer: **APPROVE**, no blocking findings. Independently
+  ran the repository check and verified the exact 10 bundled static host/asset
+  responses, progress redirect, and health in an isolated loopback smoke with
+  **zero synthetic printer-reader calls**. Verified real Bun explicit env-file
+  and plist environment precedence, no ambient dotenv loading, and rejection
+  of relative private auth/config paths. This is source/software and fixture
+  evidence, not an installed service or mounted-browser result.
+- Focused route tests prove the seven named views, public rejection, unknown
+  paths, and selected-route-only initialization/refresh. VM bridge tests prove
+  source/origin validation, no query-derived selectors, visible initial failure,
+  and explicit reload retry. Distinct sequential and concurrent HTTP MCP
+  requests share one due-aware snapshot/version; dashboard injection uses that
+  same store contract. Frozen status and camera hashes remain unchanged.
+- A cold `current()` still acquires the initial observation on demand. Only
+  subsequent plain reads are cache-only. Health/static requests never call it;
+  this source slice does not add acquisition at startup or a background loop.
+- Live deployment, controlled service restart, auth/routing preservation,
+  focused HTML/version readiness, mounted host, real printer, and user outcome
+  require separate results. Browser control is currently unavailable and no
+  visual acceptance is inferred from HTTP success.
+
 ## 2026-08-27 post-merge app recovery and live read-only acceptance
 
 ### Delivery and installed runtime
@@ -1685,3 +1734,106 @@ From the repository root:
   gate is accepted by this source evidence.
 - No release staging, installation, service restart, route/auth mutation,
   printer contact, printer control, merge, or publication occurred.
+## Standalone camera routing regression source validation — 2026-08-29
+
+### Acceptance and safety boundary
+
+- Milestone: F0 dual-environment and contract discovery. The open question is
+  whether a standalone "Open printer camera" request can ever be redirected to
+  the status workflow when the current camera descriptor is unavailable.
+- Acceptance requires both monitor and setup guidance to call only the
+  model-visible `open_printer_camera` tool for that intent. Missing tools or
+  resource-read failures must be reported as stale/unavailable connection state;
+  `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
+  `open_u1_camera_stream` are prohibited substitutes.
+- The inventory remains exactly three model-visible tools plus five app-only
+  helpers. Camera-v3, fan-out, privacy, OAuth, enrollment, ICE, and read-only
+  boundaries are unchanged.
+- This change is local source/software evidence only. It did not push, merge,
+  reinstall, restart, mutate a service or route, contact a printer, or verify a
+  mounted host.
+
+### Prior rollout and observed regression
+
+- Pull request 26 previously merged decision 0020 as `4f9041c`. Personal
+  Marketplace version `0.2.0+codex.20260830013924` was rebuilt from that merge
+  and installed; both existing services restarted on schema 4/camera-v3 while
+  OAuth state and Tailscale routing stayed unchanged.
+- A new conversation inside a Codex Desktop process started before that
+  reinstall still lacked `open_printer_camera`. It selected the monitor skill
+  and called `show_u1_status`, mounting the entire status card. This is
+  stale-host-process and guidance-regression evidence. It is not evidence that
+  the rebuilt camera-v3 resource includes status-card markup.
+- The packaging record now requires a fully new host process for upgrade
+  acceptance when the host predates installation. A new conversation alone is
+  not sufficient evidence.
+
+### Implemented contract
+
+- `u1-monitor-print` and `u1-mobile-status-setup` contain the same exclusive
+  routing guard and fail-closed reload guidance.
+- Mobile setup wording now names exactly three model-visible tools and five
+  app-only helpers; stale four-tool completion wording is absent.
+- Plugin Creator's supported `interface.defaultPrompt` array now has three
+  entries, within the schema's three-prompt limit, with `Open my printer
+  camera.` first. No unsupported manifest field was added.
+- `camera-routing-contract.test.ts` locks the exclusive routing text, failure
+  behavior, inventory, supported starter prompts, and fresh-host-process
+  packaging guidance.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun install --frozen-lockfile`: passed with 145 packages installed and no
+  lockfile change.
+- `bun test src/camera-routing-contract.test.ts`: passed 4 tests with 12
+  assertions.
+- `bun run check`: passed TypeScript compilation.
+- `bun test src/*.test.ts`: passed 93 tests with 569 assertions across 13
+  files.
+- `bun run bundle`: passed from 588 modules and emitted the 2.73 MB stdio
+  bundle plus 33.73 KB camera and 57.45 KB status assets.
+- `bun run bundle:runtime`: passed and produced the validation-only ad-hoc
+  signed standalone runtime.
+- `codesign -vvv --verify ./dist/u1-print-studio`: reported valid on disk and
+  satisfied its designated requirement.
+
+From the repository root:
+
+- Plugin Creator validation through `uv run --no-project --with pyyaml`:
+  passed.
+- Skill Creator validation through the same `uv` boundary passed for both
+  touched skills: `u1-monitor-print` and `u1-mobile-status-setup`.
+
+- `./scripts/check-repository.sh`: passed on the exact documented tree,
+  including TypeScript and all 93 tests with 569 assertions; final output was
+  `repository contract: ok`.
+- `git diff --check`: passed on the same tree.
+
+### Unverified later layers
+
+- The exact source is independently approved but has not been merged,
+  release-staged, reinstalled, or loaded by a freshly relaunched host.
+- A full Codex Desktop quit/relaunch and an actual `open_printer_camera` call
+  remain the next mounted-host gate. Any status-card substitution is a failure.
+- Real U1 fan-out, two simultaneous viewers, mobile ICE, and TURN remain
+  separate evidence gates. No printer-control action is authorized.
+
+### Independent review
+
+- Role: independent code and documentation reviewer, separate from the
+  implementation role.
+- Exact reviewed commit:
+  `4045f352729720d51d46ad8aa308c7e84c47d33a`.
+- Verdict: **APPROVE**, with no findings.
+- The reviewer independently verified `bun run check`, the full 93-test and
+  569-assertion suite, `bun run bundle`, `bun run bundle:runtime`, standalone
+  `codesign` verification, Plugin Creator validation, both touched Skill
+  Creator validations, `./scripts/check-repository.sh`, and
+  `git diff --check`.
+- This approval accepts the source routing guard, manifest-supported prompt,
+  three-plus-five inventory wording, test contract, and durable records. It
+  does not accept mounted-host behavior, the live camera, a new installed
+  plugin, or user outcome. Those remain blocked on a full Codex Desktop quit
+  and relaunch followed by an observed `open_printer_camera` mount.

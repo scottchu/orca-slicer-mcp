@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>U1 Status Dashboard</title>
+    <title>U1 Printer Observation</title>
     <style>
       :root { color-scheme: dark; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
       * { box-sizing: border-box; }
@@ -24,15 +24,30 @@
   </head>
   <body>
     <header>
-      <strong>U1 Status Dashboard</strong>
-      <span id="bridge-state">starting</span>
+      <strong id="view-title">U1 Printer Observation</strong>
+      <span id="bridge-state" role="status" aria-live="polite">starting</span>
       <span class="spacer"></span>
       <button id="reload" type="button">Reload widget</button>
     </header>
-    <iframe id="widget" src="/widget?standalone=1" title="U1 Print Studio status widget"></iframe>
+    <iframe id="widget" src="/widget?standalone=1" title="U1 Print Studio observation widget"></iframe>
     <script>
+      "use strict";
+      const routes = Object.freeze({
+        "/dashboard/progress": ["progress", "Print progress"],
+        "/dashboard/thermals": ["thermals", "Thermals"],
+        "/dashboard/heads": ["heads", "Heads and filaments"],
+        "/dashboard/jobs": ["jobs", "Jobs"],
+        "/dashboard/queue": ["queue", "Queue"],
+        "/dashboard/fans": ["fans", "Fans"],
+        "/dashboard/bed_mesh": ["bed_mesh", "Bed mesh"],
+      });
+      const selected = Object.hasOwn(routes, location.pathname) ? routes[location.pathname] : null;
+      const selectedView = selected?.[0];
       const frame = document.querySelector("#widget");
       const bridgeState = document.querySelector("#bridge-state");
+      document.querySelector("#view-title").textContent = selected?.[1] ?? "View unavailable";
+      document.title = selected ? `U1 · ${selected[1]}` : "U1 · View unavailable";
+      let initialized = false;
       const reply = (id, result, error) => {
         frame.contentWindow?.postMessage({ jsonrpc: "2.0", id, ...(error ? { error } : { result }) }, location.origin);
       };
@@ -43,21 +58,26 @@
           params: result,
         }, location.origin);
       };
-      const callTool = async (name, arguments = {}) => {
-        bridgeState.textContent = `calling ${name}`;
+      const callTool = async (name, argumentsValue = {}) => {
+        if (!selectedView || name !== "refresh_printer_observation" ||
+            argumentsValue?.view !== selectedView ||
+            Object.keys(argumentsValue).some(key => key !== "view")) {
+          throw new Error("unsupported_focused_request");
+        }
+        bridgeState.textContent = "Reading printer…";
         const response = await fetch("/dashboard/tools/call", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ name, arguments }),
+          body: JSON.stringify({ name, arguments: { view: selectedView } }),
         });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error ?? `HTTP ${response.status}`);
-        bridgeState.textContent = "bridge ready · live read-only data";
+        bridgeState.textContent = "Read-only · observation received";
         return result;
       };
 
       window.addEventListener("message", async (event) => {
-        if (event.source !== frame.contentWindow) return;
+        if (event.source !== frame.contentWindow || event.origin !== location.origin) return;
         const message = event.data;
         if (!message || message.jsonrpc !== "2.0") return;
 
@@ -71,10 +91,12 @@
         }
 
         if (message.method === "ui/notifications/initialized") {
+          if (initialized) return;
+          initialized = true;
           try {
-            notifyToolResult(await callTool("refresh_printer_observation", { view: "overview" }));
+            notifyToolResult(await callTool("refresh_printer_observation", { view: selectedView }));
           } catch {
-            bridgeState.textContent = "initial status failed";
+            bridgeState.textContent = "Service unavailable — use Reload widget to retry";
           }
           return;
         }
@@ -90,7 +112,7 @@
             );
           } catch {
             reply(message.id, null, { code: -32000, message: "tool_failed" });
-            bridgeState.textContent = "tool failed";
+            bridgeState.textContent = "Refresh failed — use Reload widget to retry";
           }
           return;
         }
@@ -101,6 +123,7 @@
       });
 
       document.querySelector("#reload").addEventListener("click", () => {
+        initialized = false;
         bridgeState.textContent = "reloading";
         frame.src = `/widget?standalone=1&t=${Date.now()}`;
       });

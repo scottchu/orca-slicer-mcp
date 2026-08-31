@@ -5,14 +5,13 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: review and deliver the implemented decision-0021
-  composable read-only observation source slice before any rollout or broader
-  Printer Operations work. Preserve the decision-0020 private H264 fan-out,
-  decision-0019 activation, and decision-0016 local-first boundaries. Do not
-  mutate a live LaunchAgent, Funnel, Serve, OAuth state, installed plugin, or
-  printer; rollout waits for repository validation, review, merge, and fresh
-  authorization. Orca Preparation discovery remains preserved and neither
-  subsystem becomes secondary.
+- Current execution order: integrate PR27's camera-routing guard with PR28's
+  focused widgets, validate and independently review, merge, then deliver
+  decision 0022's persistent personal HTTP services. The user has authorized
+  this merge and installed/server rollout. Reuse only the existing two owner
+  LaunchAgents, preserve OAuth state and all Serve/Funnel routes, and do not
+  change Mac login/power settings or issue printer controls. Orca Preparation
+  discovery remains preserved and neither subsystem becomes secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
@@ -97,6 +96,32 @@
 - This source slice remains static/fixture-only. It does not authorize
   live-printer contact, installation, service restart, routing/authentication
   changes, printer control, or publication.
+
+## 2026-08-30 personal service persistence acceptance
+
+- Decision 0022 addresses F0's deployment-lifetime question: a temporary design
+  preview is not a persistent user entry point. Reuse the existing supervised
+  protected HTTP and private dashboard services, not a new root daemon.
+- Stage versioned bundled HTTP code/assets and copy the existing Bun runtime
+  into release-local `bin/bun`. Use `scripts/u1_service.py` through `uv run`
+  for stage/install/status/start/stop/restart/rollback; `install --dry-run`
+  validates the staged release and effective private paths before any stop.
+  Preserve private env configuration, OAuth state, exact labels, logs, and
+  current routes. Provide bounded local install/status/start/stop/restart and
+  rollback procedures; no MCP Admin surface or generic service manager.
+- Serve exact private focused paths for progress, thermals, heads, jobs, queue,
+  fans, bed mesh, and camera. Default `/dashboard` to progress; overview stays
+  deferred. Public `/dashboard*` remains unavailable.
+- Share one observation store across requests within each service process.
+  A cold store performs its first acquisition on demand; subsequent plain reads
+  use cached state and explicit due refreshes coalesce. Disable ambient
+  dotenv/bunfig loading while preserving the explicit existing env-file.
+  Do not claim cross-process/restart storage, subscriptions, background camera,
+  automatic log rotation, boot-before-login, or availability while asleep.
+- Repository/fixture acceptance precedes merge and authorized rollout. Local
+  readiness checks use health/static routes only, without printer status or
+  camera acquisition. Record deployed process, assets, route/auth preservation,
+  mounted host, real-printer, and user outcome as distinct evidence layers.
 
 ## Outcome
 

@@ -168,6 +168,26 @@ printer environments support the described behavior.
 
 ## Architecture and ontology
 
+- **DEPLOY-001:** The optional personal HTTP deployment uses the existing
+  owner-scoped process supervisor and a versioned release outside the mutable
+  source checkout, with pinned runtime, file fingerprints, bounded readiness
+  checks, and recoverable configuration switching. Lifecycle tooling remains
+  local and allowlisted; no generic service or MCP Admin surface is added.
+- **DEPLOY-002:** Private focused dashboard routes select only accepted closed
+  views and default to progress, not unavailable overview. Public services do
+  not expose those private routes. Health/static asset checks never implicitly
+  acquire printer status, snapshots, or video.
+- **DEPLOY-003:** All HTTP requests in one service process share one application
+  observation store. Process restarts, separate services, and host-owned stdio
+  connectors remain separate state scopes; service liveness does not establish
+  printer freshness, durable history, login, sleep, or physical acceptance.
+
+Implementation qualification: the current store bootstraps one acquisition on
+its first `current()` demand. After initial acquisition, plain reads use the
+cache and explicit due refreshes coalesce. Construction, health checks, and
+static routes do not acquire printer data. This is not a subscription or
+durable-monitor claim.
+
 - **ARCH-001:** Domain and application modules do not depend on MCP, HTTP, CLI,
   Bun, Elixir, OrcaSlicer, Moonraker, or database framework types.
 - **ARCH-002:** MCP, HTTP API, CLI, and future inbound surfaces invoke the same

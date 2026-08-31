@@ -1,5 +1,63 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-30 persistence integration — current handoff
+
+The user explicitly authorized PR28 merge and persistent installed/server
+delivery, while deferring Mac automatic login and power. Integration reconciles
+PR27's standalone-camera fail-closed routing/full-host-reload instructions with
+decision 0021's two-visible/eight-app-only focused surface. The canonical
+checkout has unrelated dirty documentation and is preserved; integration work
+occurs in a separate worktree.
+
+Decision 0022 accepts reuse of the exact two existing owner LaunchAgents,
+versioned bundled HTTP code/assets plus a release-local pinned Bun copy, preserved env/OAuth/routes,
+fixed private focused routes defaulting to progress, and one observation store
+per HTTP process. It adds no MCP Admin, root daemon, printer control, shared
+cross-process storage, or background media. Existing logging is retained;
+automatic rotation remains deferred.
+
+Design/docs scope: decision 0022/index, requirements, packaging, active
+brief/validation/handoff, project state, and next-agent record. Code scope is
+HTTP/store injection, dashboard host/routes, and allowlisted local service
+packaging/lifecycle tooling with fixtures. The combined pre-persistence baseline
+passed TypeScript and 105 tests with 606 assertions. Final source acceptance
+passes TypeScript, 110 app tests with 759 assertions, 19 lifecycle fixture tests,
+the repository contract, stdio/runtime/HTTP bundles, signature verification,
+plugin/skill validation, and whitespace checks. Independent final review
+approved the source with no blocking findings; merge/install/live rollout
+remain pending.
+
+The implemented operator is `scripts/u1_service.py` with
+`stage --source ABS --bun ABS --release ID`, `install --release ID --dry-run`,
+`install --release ID`, `status`, `start|stop|restart --service
+all|public|dashboard`, and `rollback --snapshot ID`, always through `uv run
+--no-project`. The default root is `~/Library/Application Support/U1 Print
+Studio/service`. Releases copy `bin/bun`, bundle `dist/server.js`, retain six
+exact `public/` HTML assets plus emitted build assets, and contain an empty
+bunfig and version/hash manifest. Source must be clean and committed. Explicit
+private env and plist fields remain preserved; ambient dotenv/bunfig is
+disabled and relative effective auth/config paths are rejected before stops.
+Install returns a recoverable snapshot ID and restores exact prior plists and
+loaded states on failure, or explicitly reports incomplete recovery.
+
+Cold `current()` retains its existing initial acquisition behavior. After that
+first demand, plain reads are cache-only; explicit due refreshes coalesce across
+requests of one process. Constructing the handler, reading health, or fetching
+static host/widget HTML performs no printer acquisition. `/dashboard` redirects
+to progress; seven exact focused paths exist, camera remains separate, and
+unknown/overview HTTP paths return 404. MCP overview remains explicitly deferred.
+
+Next: commit and merge the independently approved tree, stage/install the
+versioned release with recoverable prior configuration, and
+verify loopback health/version/static routes while proving OAuth/routing
+preservation. Do not open a live widget as a hidden health check: initialization
+can acquire a printer observation. Browser control is currently unavailable;
+mounted visual, real-printer, mobile, reboot/login/sleep, and user-outcome gates
+remain distinct and unaccepted.
+
+The following entries are chronological historical evidence, not current
+installation/version assertions or additional authorization.
+
 ## 2026-08-27 mounted-app recovery rollout
 
 Pull request 20 merged the compatibility-resource repair as `4d4ea2f`.
@@ -777,3 +835,46 @@ service, OAuth state, Tailscale route, mounted host, or user-outcome gate was
 contacted or accepted. Next deliver the source through independent review and a
 pull request; live mapping, overview composition, fresh-task mounting, and the
 user's ten-second comprehension gate remain separate later work.
+## Standalone camera routing regression source handoff — 2026-08-29
+
+Pull request 26 merged decision 0020 as `4f9041c`, and Personal Marketplace
+version `0.2.0+codex.20260830013924` was installed with both existing services
+on schema 4/camera-v3. The first user attempt then created a new conversation
+inside a Codex Desktop process that predated the reinstall. That process did
+not expose `open_printer_camera`; the model selected `u1-monitor-print` and
+substituted `show_u1_status`, so the whole status card mounted.
+
+This branch applies the smallest source repair without changing camera-v3 or
+the live runtime. Standalone camera requests in both monitor and mobile-setup
+guidance must call only `open_printer_camera`. If the tool or resource is
+unavailable, the guidance reports a stale/unavailable MCP connection, asks for
+a plugin reload or full host relaunch, and stops. It explicitly prohibits
+status, frame, or stream-helper substitution. Packaging now records that a new
+conversation alone did not replace the retained desktop MCP process.
+
+The plugin manifest uses the already-supported `interface.defaultPrompt`
+field, keeps the supported maximum of three entries, and puts `Open my printer
+camera.` first. Mobile setup now consistently reports the three model-visible
+plus five app-only inventory. A focused Bun contract locks routing, fail-closed
+behavior, inventory, starter prompts, and full-host reload guidance.
+
+Changed paths are limited to the two procedural skills, plugin manifest,
+packaging guidance, the focused contract test, and current continuity/
+iteration records. TypeScript, 93 tests with 569 assertions, both bundles,
+standalone signature verification, plugin validation, and both touched skill
+validators pass. No printer, installed plugin, service, OAuth state, Tailscale
+route, or mounted host was contacted or changed.
+
+The exact-tree repository contract and whitespace check also pass. An
+independent code and documentation reviewer reviewed exact commit
+`4045f352729720d51d46ad8aa308c7e84c47d33a`, reran TypeScript, 93 tests with
+569 assertions, both bundles, standalone signature verification, plugin and
+both skill validators, the repository contract, and the whitespace check, then
+returned **APPROVE** with no findings.
+
+Next: deliver this approved non-main branch through a pull request. Do not
+reinstall or restart without fresh rollout authorization. After rollout, fully
+quit and relaunch Codex Desktop before invoking `open_printer_camera`; reject
+any status-card substitution. Independent source approval does not accept the
+mounted host or live camera. Real multi-viewer, mobile, and TURN acceptance
+remain separate gates.
