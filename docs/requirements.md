@@ -90,6 +90,17 @@ printer environments support the described behavior.
   bottom Refresh action. Reject invalid or unsafe data even in hidden rows;
   IDs, paths, raw metadata/failures and credentials do not leave the adapter.
   Decision 0029 fixes integration/acceptance; no queue or file mutation is added.
+- **OBS-013:** One independently timed, demand-only environment observation
+  supplies Cavity temperature to `thermals` and fixed part/cavity/purifier fan
+  facts to `fans`. It uses the exact decision-0029 object/field allowlist,
+  physical Tool 1–4 mapping, finite °C/commanded-percent/RPM bounds, 15-second
+  attempt TTL, coalescing, stale last-success retention, atomic domain merge and
+  fixture isolation. Fresh printer status cannot restamp it. Distinguish known
+  zero/off/stopped, nullable RPM not measured, purifier power not detected,
+  component not reported, endpoint unsupported, unavailable and stale. Never
+  infer fan health/fault from commanded speed versus RPM or use purifier desired
+  temperature as a Cavity target. Information and independent freshness stay
+  above one bottom Refresh; no fan/purifier/thermal control is added.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -241,14 +252,14 @@ printer environments support the described behavior.
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v9` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v10` is the
   focused presentation resource. Every explicit camera open or reopen creates
   a fresh snapshot-first `camera-v8` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v8/v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
+  Observation-v9/v8/v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
-  Source is runtime 0.4.3/tool schema 9 with nineteen resources; this source
+  Source target is runtime 0.4.4/tool schema 10 with twenty resources; this source
   contract does not claim deployment of those bytes to existing services.
 
 ## Architecture and ontology

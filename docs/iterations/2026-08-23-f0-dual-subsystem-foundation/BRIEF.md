@@ -5,7 +5,18 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Latest priority (2026-08-31): B Queue is shipped in PR47. Reviewed `1068add`
+- Latest priority (2026-08-31): implement C Fans & Chamber through one fixed,
+  bounded, shared environment observation under decision 0029/OBS-013. Cavity
+  joins Thermals with independent time/freshness and no invented target; Fans
+  & Air owns physical Tool 1–4 part-cooling, Cavity fan and purifier exhaust/
+  inner commanded-percent/RPM facts. Distinguish zero/off/stopped, not measured,
+  purifier not detected, component not reported, unsupported, unavailable and
+  stale without health/fault inference or controls. Target 0.4.4/schema 10/
+  observation-v10/camera-v8, twenty resources with observation-v9 retained and
+  unchanged tool inventory. Source/independent/exact review precedes guarded
+  merge/deploy/BOTH restart/scoped verification; visual QA remains unverified.
+  Preserve A/F/Heads/B and next D Current Job/History → E overview.
+- Previous shipped priority (2026-08-31): B Queue is shipped in PR47. Reviewed `1068add`
   merged as `6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; exact release
   `20260831-6d76f9a-pr47-20260831T172710-645971` runs on BOTH explicitly restarted,
   loaded/healthy/integrity-verified services at 0.4.3/schema 9/observation-v9/

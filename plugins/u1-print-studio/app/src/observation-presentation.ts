@@ -7,6 +7,7 @@ import { normalizedPrintState, normalizedToolState } from "./u1-status.js";
 import { unavailableBedMesh, type BedMeshObservation } from "./application/bed-mesh-observation.js";
 import { unavailableMaterials, type MaterialObservation } from "./application/material-observation.js";
 import { unavailableQueue, type QueueObservation } from "./application/queue-observation.js";
+import { unavailableEnvironment, type EnvironmentFan, type EnvironmentObservation } from "./application/environment-observation.js";
 
 export const OBSERVATION_VIEWS = [
   "overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans",
@@ -51,15 +52,17 @@ type ProgressModule = ModuleBase & {
 };
 type ThermalsModule = ModuleBase & {
   kind: "thermals";
+  environment: Pick<EnvironmentObservation, "state" | "freshness" | "sourceObservedAt" | "receivedAt" | "checkedAt" | "reason">;
   readings: Array<{
     id: string;
     label: string;
     state: EvidenceState;
+    reportedState?: "known" | "not_reported";
     capabilityEvidence: CapabilityEvidence;
     actual: Field<number>;
-    target: Field<number>;
-    heaterState: Field<string>;
-    active: Field<boolean>;
+    target?: Field<number>;
+    heaterState?: Field<string>;
+    active?: Field<boolean>;
     provenance: Provenance;
   }>;
 };
@@ -102,8 +105,12 @@ type JobHistoryModule = ModuleBase & {
 type QueueModule = ModuleBase & QueueObservation & { kind: "queue" };
 type FansModule = ModuleBase & {
   kind: "fans";
-  items: never[];
-  purifier: { state: EvidenceState; capabilityEvidence: CapabilityEvidence };
+  freshness: EnvironmentObservation["freshness"];
+  receivedAt: string | null;
+  checkedAt: string | null;
+  reason: EnvironmentObservation["reason"];
+  items: EnvironmentFan[];
+  purifier: EnvironmentObservation["purifier"] & { capabilityEvidence: CapabilityEvidence };
 };
 type BedMeshModule = ModuleBase & BedMeshObservation & {
   kind: "bed_mesh";
@@ -214,6 +221,7 @@ function projectProgress(snapshot: ObservationSnapshot): ProgressModule {
 
 function projectThermals(snapshot: ObservationSnapshot): ThermalsModule {
   const status = snapshot.status;
+  const environment = snapshot.environment ?? unavailableEnvironment("not_requested");
   const tools = new Map(status.tools.map((tool) => [tool.physicalTool, tool]));
   const readings: ThermalsModule["readings"] = [1, 2, 3, 4].map((physicalTool) => {
     const tool = tools.get(physicalTool);
@@ -252,26 +260,29 @@ function projectThermals(snapshot: ObservationSnapshot): ThermalsModule {
       ? provenance(snapshot, "Moonraker heater_bed; heater power/state is not normalized")
       : unknownProvenance("No current bed thermal reading was normalized"),
   });
+  const cavityKnown = environment.cavity.state === "known" && environment.cavity.temperatureC !== null;
   readings.push({
     id: "cavity",
     label: "Cavity",
-    state: "unknown",
+    state: cavityKnown ? environment.state === "stale" ? "stale" : "known" : "unknown",
+    reportedState: environment.cavity.state,
     capabilityEvidence: snapshot.capabilityEvidence.cavity,
-    actual: field<number>(snapshot, null),
-    target: field<number>(snapshot, null),
-    heaterState: field<string>(snapshot, null),
-    active: field<boolean>(snapshot, null),
-    provenance: unknownProvenance(
-      "Cavity telemetry was advertised but has no accepted normalization"
-    ),
+    actual: { state: cavityKnown ? environment.state === "stale" ? "stale" : "known" : "unknown", value: environment.cavity.temperatureC },
+    provenance: cavityKnown ? { source: "moonraker", sourceObservedAt: environment.sourceObservedAt,
+      detail: "Server receipt of temperature_sensor cavity; no cavity target was reported" } :
+      unknownProvenance("Cavity temperature was not reported by the fixed environment query"),
   });
   const known = readings.some((reading) =>
     reading.state === "known" || reading.state === "stale"
   );
   return {
-    ...moduleBase(snapshot, "thermals", known, snapshot.capabilityEvidence.thermals,
+    ...moduleBase(snapshot, "thermals", known, known ? "observed" : snapshot.capabilityEvidence.thermals,
       "Four tool slots and heater bed share one cached observation"),
     kind: "thermals",
+    environment: {
+      state: environment.state, freshness: environment.freshness, sourceObservedAt: environment.sourceObservedAt,
+      receivedAt: environment.receivedAt, checkedAt: environment.checkedAt, reason: environment.reason,
+    },
     readings,
   };
 }
@@ -358,26 +369,17 @@ function projectJobHistory(snapshot: ObservationSnapshot): JobHistoryModule {
   };
 }
 
-function projectUnknown(
-  snapshot: ObservationSnapshot,
-  view: "fans"
-): FansModule {
-  const detail = {
-    fans: "Fans and purifier were advertised but their semantics are not normalized",
-  }[view];
-  const capability = snapshot.capabilityEvidence[view];
-  const base = {
-    ...moduleBase(snapshot, view, false, capability, detail),
-    state: "unknown" as const,
-  };
+function projectFans(snapshot: ObservationSnapshot): FansModule {
+  const environment = snapshot.environment ?? unavailableEnvironment("not_requested");
   return {
-      ...base,
-      kind: "fans",
-      items: [],
-      purifier: {
-        state: "unknown",
-        capabilityEvidence: snapshot.capabilityEvidence.purifier,
-      },
+    kind: "fans", state: environment.state, freshness: environment.freshness,
+    capabilityEvidence: environment.sourceObservedAt !== null ? "observed" : environment.state === "unsupported" ? "unsupported" : "unknown",
+    provenance: { source: environment.sourceObservedAt === null ? "not_observed" : "moonraker",
+      sourceObservedAt: environment.sourceObservedAt,
+      detail: "Server receipt of fixed fan and purifier status; speed is commanded power and RPM is separately reported" },
+    receivedAt: environment.receivedAt, checkedAt: environment.checkedAt, reason: environment.reason,
+    items: environment.fans,
+    purifier: { ...environment.purifier, capabilityEvidence: snapshot.capabilityEvidence.purifier },
   };
 }
 
@@ -416,7 +418,7 @@ function projectModule(snapshot: ObservationSnapshot, view: ObservationView) {
   if (view === "job_history") return projectJobHistory(snapshot);
   if (view === "bed_mesh") return projectBedMesh(snapshot);
   if (view === "queue") return projectQueue(snapshot);
-  return projectUnknown(snapshot, view);
+  return projectFans(snapshot);
 }
 
 export function createObservationPresentation(

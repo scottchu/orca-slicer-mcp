@@ -4,6 +4,7 @@ import vm from "node:vm";
 import { normalizeBedMeshResponse, BED_MESH_MAX_DIMENSION } from "./adapters/moonraker-bed-mesh.js";
 import { unavailableBedMesh } from "./application/bed-mesh-observation.js";
 import { normalizeMaterialResponse } from "./adapters/moonraker-materials.js";
+import { normalizeEnvironmentResponse } from "./adapters/moonraker-environment.js";
 
 // Execute the exact production script against a deterministic host/DOM boundary.
 // This is protocol/software evidence, not a browser-layout or mobile test.
@@ -305,12 +306,12 @@ describe("production observation widget host boundary", () => {
       expect(markup.indexOf("<footer ")).toBeGreaterThan(markup.indexOf("</header>"));
       const header = markup.match(/<header [\s\S]*?<\/header>/)![0];
       const footer = markup.match(/<footer [\s\S]*?<\/footer>/)![0];
-      expect(header).toContain(view === "job_history" || view === "bed_mesh" || view === "queue" ? "Observation time unavailable" : "Observed ");
+      expect(header).toContain(view === "job_history" || view === "bed_mesh" || view === "queue" || view === "fans" ? "Observation time unavailable" : "Observed ");
       expect(header).toContain('class="refresh-error" role="status"');
       expect(header).not.toContain("<button");
       expect(footer).toMatch(/^<footer class="instrument-footer"><button[\s\S]*<\/button><\/footer>$/);
       expect(footer).not.toMatch(/<time|Observed|refresh-error|freshness-warning|role="status"/);
-      expect(markup).toContain(view === "job_history" || view === "bed_mesh" || view === "queue" ? "Observation time unavailable" : "Observed ");
+      expect(markup).toContain(view === "job_history" || view === "bed_mesh" || view === "queue" || view === "fans" ? "Observation time unavailable" : "Observed ");
       expect(markup).not.toMatch(/Read only|Current reading|Printer telemetry/);
     }
   });
@@ -344,17 +345,71 @@ describe("production observation widget host boundary", () => {
     expect(offline.modules.innerHTML).toContain("Offline");
   });
 
-  test("unimplemented domains are named, not empty success or synthetic charts", () => {
-    for (const view of ["fans", "overview"]) {
-      const markup = mount({ toolOutput: fixture(view) }).modules.innerHTML;
-      expect(markup).toMatch(/Unknown|Unavailable|not implemented|deferred/i);
-      if (view !== "overview") expect(markup).toContain("Not implemented yet");
-      expect(markup).not.toContain("Waiting");
-      expect(markup).not.toContain("mesh-placeholder");
-    }
+  test("unimplemented overview and unobserved Fans are explicit, not empty success or synthetic charts", () => {
+    const overview = mount({ toolOutput: fixture("overview") }).modules.innerHTML;
+    expect(overview).toMatch(/Unavailable|deferred/i);
+    expect(overview).not.toMatch(/Waiting|mesh-placeholder/);
+    const fans = mount({ toolOutput: fixture("fans") }).modules.innerHTML;
+    expect(fans).toContain("Fans not observed");
+    expect(fans).toContain("Refresh to request fan and purifier readings.");
+    expect(fans).not.toMatch(/Not implemented|Waiting|mesh-placeholder/);
     const thermal = mount({ toolOutput: fixture("thermals") }).modules.innerHTML;
     expect(thermal).not.toContain('class="trace');
     expect(thermal).toContain("220°");
+  });
+
+  test("Fans renders only the exact reported fixed set with independent receipt and distinct missing, null and zero facts", () => {
+    const observedAt = "2026-08-31T12:00:00.000Z";
+    const environment = normalizeEnvironmentResponse({ result: { status: {
+      fan: { speed: 0.5, rpm: 1200 }, "fan_generic e1_fan": { speed: 0, rpm: 0 },
+      "fan_generic e2_fan": { speed: 0.25, rpm: null }, "fan_generic e3_fan": {},
+      "fan_generic cavity_fan": { speed: 1 }, purifier: { power_detected: true, mode: 1,
+        exhaust_fan: { speed: 0.4 }, inner_fan_rpm: null },
+    } } }, observedAt);
+    const data = fixture("fans");
+    Object.assign(data.module, { kind: "fans", state: "known", freshness: "fresh",
+      provenance: { source: "moonraker", sourceObservedAt: observedAt, detail: "fixed" },
+      receivedAt: observedAt, checkedAt: observedAt, reason: null, items: environment.fans,
+      purifier: { ...environment.purifier, capabilityEvidence: "observed" } });
+    const markup = mount({ toolOutput: data }).modules.innerHTML;
+    for (const text of ["Fans &amp; Air", "Part cooling", "Air handling", "Tool 1 part cooling",
+      "Tool 4 part cooling", "Cavity fan", "Purifier exhaust", "Purifier inner fan", "50%",
+      "Off", "0 RPM · Stopped", "Not measured", "Not reported", "Cool chamber", "Detected"]) expect(markup).toContain(text);
+    const expectedTime = new Date(observedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    expect(markup).toContain(`Observed ${expectedTime}`);
+    expect(markup).not.toMatch(/Control|View only|health|fault/i);
+    expect(markup.indexOf("Observed ")).toBeLessThan(markup.indexOf("Part cooling"));
+    expect(markup.indexOf('aria-label="Refresh observation"')).toBeGreaterThan(markup.indexOf("Air handling"));
+
+    for (const mutate of [
+      (value: Payload) => value.module.items.pop(),
+      (value: Payload) => { value.module.items[0].id = "private-fan"; },
+      (value: Payload) => { value.module.items[0].label = "<img src=private>"; },
+      (value: Payload) => { value.module.items[0].rpm = 1_000_001; },
+      (value: Payload) => { value.module.items[0].state = "known"; value.module.items[0].speedReported = false; value.module.items[0].rpmReported = false; value.module.items[0].speedFraction = null; value.module.items[0].rpm = null; },
+      (value: Payload) => { value.module.purifier.state = "known"; value.module.purifier.powerDetected = null; },
+      (value: Payload) => { value.module.provenance.sourceObservedAt = null; },
+    ]) {
+      const malformed = structuredClone(data); mutate(malformed);
+      const rejected = mount({ toolOutput: malformed }).modules.innerHTML;
+      expect(rejected).toContain("Fan and purifier data could not be read.");
+      expect(rejected).not.toMatch(/private-fan|<img|Tool 1 part cooling/);
+    }
+  });
+
+  test("Thermals associates cavity receipt with an actual-only row and names omitted cavity explicitly", () => {
+    const observedAt = "2026-08-31T12:00:00.000Z";
+    const data = fixture("thermals");
+    data.module.environment = { state: "known", freshness: "fresh", sourceObservedAt: observedAt,
+      receivedAt: observedAt, checkedAt: observedAt, reason: null };
+    data.module.readings.push({ id: "cavity", label: "Cavity", state: "known",
+      reportedState: "known", actual: { state: "known", value: 31.5 } });
+    const markup = mount({ toolOutput: data }).modules.innerHTML;
+    const cavity = markup.match(/<div class="strip zone-row"><div class="identity"><span><strong>Cavity<\/strong>[\s\S]*?<\/div><\/div>/)?.[0] ?? "";
+    expect(cavity).toContain("32°"); expect(cavity).toContain("Observed ");
+    expect(cavity).not.toContain("Target");
+    data.module.readings.at(-1).state = "unknown"; data.module.readings.at(-1).reportedState = "not_reported"; data.module.readings.at(-1).actual = { state: "unknown", value: null };
+    expect(mount({ toolOutput: data }).modules.innerHTML).toContain("Temperature not reported");
   });
 
   test("Queue renders trusted FIFO receipts, duplicates, truncation and bottom-only Refresh", () => {

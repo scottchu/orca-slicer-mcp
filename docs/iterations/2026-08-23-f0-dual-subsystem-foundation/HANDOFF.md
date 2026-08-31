@@ -1,5 +1,31 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 C Fans & Chamber — authoritative current handoff
+
+Decision 0029/OBS-013 define one shared, fixed read-only environment observation
+for independently invokable Thermals and Fans & Air. Exact raw object/field
+allowlist, physical fan mapping, numerical bounds, purifier detection/modes,
+component/domain states, 15-second attempt TTL/coalescing/stale retention and
+white compact presentation are durable there. Cavity is an actual-only Thermals
+row with independent time; Fans groups Tools 1–4 part cooling and Cavity/purifier
+air handling. No controls, health verdicts, background polling or unrelated
+acquisition. Target source is 0.4.4/schema 10/observation-v10/camera-v8 with
+twenty resources, observation-v9 retained and unchanged two-visible/eight-app-
+only tools.
+
+Design scope is decision 0029, requirements, PROJECT_STATE, NEXT_AGENT,
+design-qa and this iteration's BRIEF/HANDOFF/VALIDATION/WIDGET_TRACKS. Application
+scope/results are owned separately by implementation and independent validation.
+No current physical capability result is claimed from pinned source/config or
+the historical read. No C merge/deployment/service/printer/device action has
+occurred. Browser visual QA is blocked/unverified, not passed.
+
+Next: freeze author bytes, independent validation and exact-SHA approval, then
+use the standing guarded PR merge → exact-build deploy → explicit restart of
+BOTH services → scoped C verification. Preserve auth/config/routes and all
+shipped widgets; proceed to D Current Job/History then E overview. Postrelease
+records are docs-only and require no second deployment if app bytes are unchanged.
+
 ## 2026-08-31 B Queue integration — shipped handoff
 
 PR47 shipped B Queue. Exact reviewed `1068add` was approved without findings

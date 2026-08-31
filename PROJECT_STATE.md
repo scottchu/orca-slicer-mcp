@@ -12,6 +12,22 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
+**C Fans & Chamber is active.** Decision 0029/OBS-013 fix one bounded shared
+environment read demanded only by `thermals` or `fans`: Cavity temperature joins
+Thermals with independent time; Fans & Air shows physical Tools 1–4 part cooling,
+Cavity fan and detected purifier exhaust/inner facts. Zero/off/stopped, RPM not
+measured, purifier not detected, component not reported, endpoint unsupported,
+unavailable and stale remain distinct; no health/fault inference or controls.
+Source target is runtime 0.4.4/tool schema 10/observation-v10/camera-v8 with
+twenty resources and observation-v9 retained, while the two-visible/eight-app-
+only tool inventory stays fixed. Implementation/validation are active; no C
+merge, deployment, real-printer evidence or visual pass is claimed. Allowed
+browser discovery remains unavailable. Preserve A/F/Heads/B and continue D
+Current Job/History → E overview after the standing reviewed merge/exact-build/
+BOTH-service restart/scoped-verification sequence.
+
+### Previous shipped Queue checkpoint
+
 **B Queue is shipped.** PR47's reviewed `1068add` was approved without findings
 and merged as `6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; guarded shipping installed
 `20260831-6d76f9a-pr47-20260831T172710-645971`. BOTH services were explicitly

@@ -14,7 +14,24 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Resume **C fans/chamber**. B Queue is shipped in PR47: exact reviewed `1068add`
+Implement **C Fans & Chamber** under decision 0029/OBS-013. Use only the exact
+fixed environment query and normalized fields recorded there. One independent
+15-second demand cache serves focused `thermals` (Cavity actual °C with its own
+time/freshness, no target) and `fans` (Tools 1–4 part cooling, Cavity fan,
+purifier exhaust/inner). Keep commanded percent distinct from measured RPM;
+power not detected is known purifier absence, not Off/unsupported. Preserve
+explicit component-not-reported/unsupported/unavailable/stale states, white
+compact top-information/bottom-Refresh cards and no health claims or controls.
+Target runtime 0.4.4/schema 10/observation-v10/camera-v8, twenty resources and
+retained observation-v9 with unchanged two-visible/eight-app-only tools.
+Complete independent validation/exact-SHA review, then guarded PR merge,
+exact-build deploy, explicit BOTH-service restart and scoped live verification.
+Browser/device visual acceptance remains unverified. Preserve shipped A/F/
+Heads/B and continue D Current Job/History → E overview afterward.
+
+### Previous shipped Queue checkpoint
+
+B Queue is shipped in PR47: exact reviewed `1068add`
 was approved without findings and merged as
 `6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; guarded shipping installed
 `20260831-6d76f9a-pr47-20260831T172710-645971`. BOTH services were explicitly

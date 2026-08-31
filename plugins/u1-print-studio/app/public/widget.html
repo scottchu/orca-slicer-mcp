@@ -126,6 +126,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .queue-name { display: block; font-size: 15px; font-weight: 550; line-height: 1.4; overflow-wrap: anywhere; }
       .queue-times { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.5; }
       .queue-note { margin: 0 24px 18px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .fan-group { margin: 0 24px 8px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+      .fan-group + .strip-list { margin-bottom: 22px; }
+      .fan-state { color: var(--muted); font-size: 12px; }
       .mesh-body { padding: 0 24px 20px; }
       .mesh-caption { margin: 0 0 12px; color: var(--muted); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
       .mesh-map { display: block; width: min(100%, 320px); margin: 0 auto 12px; color: var(--muted); }
@@ -240,7 +243,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return `<section class="instrument progress-instrument">${header("Print Progress", true, observation.sourceObservedAt, observation.freshness, "", result)}<div class="progress-body">${track}<div class="progress-meta"><span>${layers}</span><span><span class="metric-icon">${icon("clock")}</span>${eta}</span></div>${metrics}</div>${provenance()}</section>`;
       };
       const renderThermals = (data) => {
-        const rows = (data?.readings ?? []).map((reading) => { const known = reading.state === "known" || reading.state === "stale"; const active = valueOf(reading.active) === true; const toolReading = reading.id.startsWith("tool-"); const badge = toolReading ? `<span class="roundel">T${escapeHtml(reading.id.slice(-1))}</span>` : ""; return `<div class="strip${active ? " active" : ""}${toolReading ? "" : " zone-row"}"><div class="identity">${badge}<span><strong>${escapeHtml(reading.label)}</strong><span class="micro">${active ? '<span class="dot"></span>Active' : escapeHtml(valueOf(reading.heaterState) ?? "Unknown")}</span></span></div><div class="reading${known ? "" : " unavailable"}"><small>Actual</small><strong>${escapeHtml(formatTemperature(reading.actual))}</strong></div><div class="reading${known ? "" : " unavailable"}"><small>Target</small><strong>${escapeHtml(formatTemperature(reading.target))}</strong></div></div>`; }).join("");
+        const environment = data?.environment; const environmentState = environment?.state ?? "unknown";
+        const cavity = (data?.readings ?? []).find(reading => reading?.id === "cavity");
+        const reasons = { unsupported: "Attempted environment endpoint unsupported", unauthorized: "Environment access denied", timeout: "Environment request timed out", malformed: "Environment response unreadable", too_large: "Environment response too large", not_configured: "Environment connection not configured", network: "Environment endpoint unreachable", http_error: "Environment request failed" };
+        const environmentStatus = environmentState === "known" && cavity?.reportedState === "not_reported" ? "Temperature not reported" : environmentState === "unknown" ? "Not observed" : environmentState === "unsupported" ? reasons.unsupported : environmentState === "unavailable" ? reasons[environment?.reason] ?? "Unavailable" : environmentState === "stale" ? `${reasons[environment?.reason] ?? "Refresh failed"}; last observation retained` : "";
+        const rows = (data?.readings ?? []).map((reading) => {
+          const known = reading.state === "known" || reading.state === "stale"; const toolReading = reading.id.startsWith("tool-");
+          if (reading.id === "cavity") { const detail = known ? `${observedLabel(environment?.sourceObservedAt)}${environmentState === "stale" ? " · Stale" : ""}` : `${environmentStatus || "Not reported"}${environment?.sourceObservedAt ? ` · ${observedLabel(environment.sourceObservedAt)}` : ""}`; return `<div class="strip zone-row"><div class="identity"><span><strong>Cavity</strong><span class="micro">${escapeHtml(detail)}</span></span></div><div class="reading${known ? "" : " unavailable"}"><small>Actual</small><strong>${escapeHtml(formatTemperature(reading.actual))}</strong></div></div>`; }
+          const active = valueOf(reading.active) === true; const badge = toolReading ? `<span class="roundel">T${escapeHtml(reading.id.slice(-1))}</span>` : "";
+          return `<div class="strip${active ? " active" : ""}${toolReading ? "" : " zone-row"}"><div class="identity">${badge}<span><strong>${escapeHtml(reading.label)}</strong><span class="micro">${active ? '<span class="dot"></span>Active' : escapeHtml(valueOf(reading.heaterState) ?? "Unknown")}</span></span></div><div class="reading${known ? "" : " unavailable"}"><small>Actual</small><strong>${escapeHtml(formatTemperature(reading.actual))}</strong></div><div class="reading${known ? "" : " unavailable"}"><small>Target</small><strong>${escapeHtml(formatTemperature(reading.target))}</strong></div></div>`;
+        }).join("");
         return `<section class="instrument">${header("Thermals")}<div class="strip-list">${rows}</div>${provenance(data?.provenance)}</section>`;
       };
       const materialColor = (raw) => typeof raw === "string" && /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i.test(raw) ? raw.toUpperCase() : null;
@@ -311,7 +323,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
         return `<section class="instrument">${header("Queue", true, valid ? data.sourceObservedAt : null, valid ? retained ? "stale" : data.freshness : "unknown", warning)}${body}${provenance()}</section>`;
       };
-      const renderFans = (data) => unknown("Fans & Air", data);
+      const renderFans = (data) => {
+        const observed = data?.state === "known" || data?.state === "stale";
+        const retained = data?.state === "stale";
+        const reasons = { unsupported: "The attempted environment endpoint was unsupported.", unauthorized: "Environment access was denied.", timeout: "The environment request timed out.", malformed: "The environment response could not be read.", too_large: "The environment response exceeded the supported limit.", not_configured: "Environment connection is not configured.", network: "Couldn’t reach the environment endpoint.", http_error: "The environment request failed." };
+        const reason = reasons[data?.reason] ?? "";
+        const warning = retained ? `${reason ? `${reason} ` : ""}Showing the last observed fan and purifier readings.` : reason;
+        if (!observed) {
+          const title = data?.state === "unsupported" ? "Environment endpoint unsupported" : data?.state === "unavailable" ? "Fans unavailable" : "Fans not observed";
+          const detail = data?.state === "unsupported" ? "The attempted endpoint was unsupported; this does not establish a hardware limitation." : data?.state === "unavailable" ? "No current fan or purifier readings are available." : "Refresh to request fan and purifier readings.";
+          return `<section class="instrument">${header("Fans & Air", true, null, "unknown", warning)}<div class="empty-panel"><strong>${title}</strong>${detail}</div>${provenance()}</section>`;
+        }
+        const fanDefinitions = [
+          ["tool-1-part", "Tool 1 part cooling", "part_cooling"], ["tool-2-part", "Tool 2 part cooling", "part_cooling"],
+          ["tool-3-part", "Tool 3 part cooling", "part_cooling"], ["tool-4-part", "Tool 4 part cooling", "part_cooling"],
+          ["cavity", "Cavity fan", "air_handling"], ["purifier-exhaust", "Purifier exhaust", "air_handling"],
+          ["purifier-inner", "Purifier inner fan", "air_handling"],
+        ];
+        const validFan = (fan, definition) => fan?.id === definition[0] && fan?.label === definition[1] && fan?.group === definition[2] && (fan.state === "known" || fan.state === "not_reported") && typeof fan.speedReported === "boolean" && typeof fan.rpmReported === "boolean" && (fan.speedFraction === null || validNumber(fan.speedFraction) && fan.speedFraction >= 0 && fan.speedFraction <= 1) && (fan.rpm === null || validNumber(fan.rpm) && fan.rpm >= 0 && fan.rpm <= 1000000) && (!fan.speedReported ? fan.speedFraction === null : fan.speedFraction !== null) && (!fan.rpmReported ? fan.rpm === null : true) && (fan.state === "known" ? fan.speedReported || fan.rpmReported : !fan.speedReported && !fan.rpmReported);
+        const validPurifier = data?.purifier && (data.purifier.state === "known" || data.purifier.state === "not_reported") && (data.purifier.powerDetected === true || data.purifier.powerDetected === false || data.purifier.powerDetected === null) && ["idle", "cool_chamber", "preheat_chamber", "hot_chamber", null].includes(data.purifier.mode) && (data.purifier.state === "known" ? typeof data.purifier.powerDetected === "boolean" : data.purifier.powerDetected === null && data.purifier.mode === null) && (data.purifier.powerDetected === true || data.purifier.mode === null);
+        const sourceTime = data?.provenance?.sourceObservedAt; const validReceipt = typeof sourceTime === "string" && sourceTime.length <= 40 && Number.isFinite(new Date(sourceTime).valueOf()) && data.provenance?.source === "moonraker" && (data.freshness === "fresh" || data.freshness === "stale") && (data.state === "stale") === (data.freshness === "stale");
+        const valid = observed && validReceipt && Array.isArray(data.items) && data.items.length === fanDefinitions.length && data.items.every((fan, index) => validFan(fan, fanDefinitions[index])) && validPurifier;
+        if (!valid) return `<section class="instrument">${header("Fans & Air", true, null, "unknown", "Fan and purifier data could not be read.")}<div class="empty-panel"><strong>Fans unavailable</strong>No current fan or purifier readings are available.</div>${provenance()}</section>`;
+        const formatFan = fan => {
+          const known = fan.state === "known";
+          const speed = known && fan.speedReported ? fan.speedFraction : null;
+          const rpm = known && fan.rpmReported ? fan.rpm : null;
+          const status = !known ? "Not reported" : !fan.speedReported ? "Command not reported" : speed === 0 ? "Off" : "Commanded";
+          const rpmLabel = !known || !fan.rpmReported ? "Not reported" : rpm === null ? "Not measured" : rpm === 0 ? "0 RPM · Stopped" : `${Math.round(rpm)} RPM`;
+          return `<div class="strip zone-row"><div class="identity"><span><strong>${escapeHtml(fan.label)}</strong><span class="micro">${escapeHtml(status)}</span></span></div><div class="reading${speed === null ? " unavailable" : ""}"><small>Commanded</small><strong>${!known || !fan.speedReported ? "Not reported" : `${Math.round(speed * 100)}%`}</strong></div><div class="reading${rpm === null ? " unavailable" : ""}"><small>Measured</small><strong>${rpmLabel}</strong></div></div>`;
+        };
+        const purifier = data?.purifier ?? {}; const power = purifier.state === "known" ? purifier.powerDetected : null;
+        const mode = power === true ? ({ idle: "Idle", cool_chamber: "Cool chamber", preheat_chamber: "Preheat chamber", hot_chamber: "Hot chamber" })[purifier.mode] ?? "Mode unknown" : "Mode unknown";
+        const powerLabel = power === true ? "Detected" : power === false ? "Not detected" : "Not reported";
+        const purifierRow = `<div class="strip zone-row"><div class="identity"><span><strong>Purifier</strong><span class="micro">Air handling</span></span></div><div class="reading${power === true ? "" : " unavailable"}"><small>Mode</small><strong>${escapeHtml(mode)}</strong></div><div class="reading${power === null ? " unavailable" : ""}"><small>Power</small><strong>${powerLabel}</strong></div></div>`;
+        const part = (data.items ?? []).filter(item => item.group === "part_cooling").map(formatFan).join("");
+        const air = (data.items ?? []).filter(item => item.group === "air_handling").map(formatFan).join("");
+        return `<section class="instrument">${header("Fans & Air", true, data.provenance?.sourceObservedAt, retained ? "stale" : data.freshness, warning)}<h3 class="fan-group">Part cooling</h3><div class="strip-list">${part}</div><h3 class="fan-group">Air handling</h3><div class="strip-list">${purifierRow}${air}</div>${provenance()}</section>`;
+      };
       // Presentation state is local to this mounted card, never printer state or a tool argument.
       const meshView = { mode: "3d", height: 100, yaw: -0.65, pitch: 0.55 };
       let meshGeometry = null;
@@ -521,7 +570,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       };
       const initializeBridge = async () => {
-        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.3" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
+        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.4" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
         rpcNotify("ui/notifications/initialized", {});
         return result;
       };

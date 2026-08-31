@@ -1,8 +1,8 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: A/Heads and B Queue deployed; C fans/chamber next; visual acceptance unverified
-- Scope: F0/O1, OBS-007/008/010/011, CAM-008, API-005, decisions 0021/0025/0028
+- Status: A/Heads and B Queue deployed; C fans/chamber active; visual acceptance unverified
+- Scope: F0/O1, OBS-007/008/010/011/013, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution
 
@@ -20,6 +20,93 @@ refinement; then overview. Each slice passes local and independent exact-SHA
 review, PR merge, decision 0028 shipping, explicit restart of both existing
 services, and exact assets plus meaningful widget verification. Preserve source,
 protocol/browser, deployment, real-printer, and user-device evidence separately.
+
+## C Fans & Chamber integration (2026-08-31)
+
+After shipped B Queue, complete C as two independently invokable focused cards
+using one shared environment observation: Cavity extends `thermals`; part,
+cavity and purifier airflow belong to `fans`. This preserves the user's refined
+Fluidd-like composition without a giant map or a second Thermals selector.
+Keep the existing closed tools/routes and shared white-card system. The payload
+extension targets runtime 0.4.4/tool schema 10/observation-v10/camera-v8 with
+twenty resources, retaining observation-v9 and all prior aliases; model-visible
+and app-only tool counts remain exactly two and eight.
+
+The operations adapter may issue only this fixed read:
+
+`GET /printer/objects/query?temperature_sensor%20cavity=temperature&fan=speed,rpm&fan_generic%20e1_fan=speed,rpm&fan_generic%20e2_fan=speed,rpm&fan_generic%20e3_fan=speed,rpm&fan_generic%20cavity_fan=speed,rpm&purifier=power_detected,mode,exhaust_fan,inner_fan,inner_fan_rpm`
+
+Map `fan` to Tool 1 part cooling, `fan_generic e1_fan` through `e3_fan`
+to physical Tools 2–4, and `fan_generic cavity_fan` to Cavity fan. The `purifier`
+object contributes only `power_detected`, bounded mode, exhaust/inner commanded
+speed and inner measured RPM. Do not query heater/nozzle fans, raw purifier
+power voltage, thresholds, delays, work time, desired/critical temperatures,
+configuration or arbitrary loaded objects. Use the existing no-redirect/no-proxy,
+three-second connect/six-second total and 512-KiB response bounds.
+
+Normalize each fan's commanded speed only as finite 0–1 and display 0–100%;
+normalize RPM as null/not measured or finite 0–1,000,000 RPM. Known zero speed
+means commanded Off and known zero RPM means measured Stopped. A nonzero command
+with zero RPM remains two reported facts, never a fault, health or safety verdict.
+Normalize Cavity temperature only as a finite -273.15–999 °C reading, matching
+the pinned configuration bounds. It has no reported target or heater state;
+never borrow purifier desired chamber temperature as a thermal target. Cavity's
+independent receipt/freshness appears on its Thermals row so fresh tool/bed
+status cannot restamp it.
+
+`power_detected: false` is a known `Not detected` purifier state, distinct from
+Off, unsupported and unavailable; do not use accompanying idle/zero defaults to
+claim a present purifier. When true, map modes 0–3 to Idle, Cool chamber,
+Preheat chamber and Hot chamber. Other/missing modes are unknown. Only a detected
+purifier may expose its exhaust/inner speed and inner RPM. A successful response
+with an omitted object/field marks that component `not reported`; it does not
+prove endpoint or hardware unsupported. Whole-request 404/405 is unsupported
+for the attempted endpoint. Authentication, transport, timeout, malformed or
+oversized failures are unavailable. A successful partial snapshot replaces old
+component values atomically rather than mixing observations.
+
+One application-owned environment reader serves only focused `thermals` or
+`fans` demand. It has an independent receipt time, 15-second attempt TTL
+including failures, concurrent-demand coalescing, checked-at/failure state,
+retained whole last-success stale data without restamping, and atomic merge into
+the latest shared observation. Static/directory/health and unrelated focused
+views never acquire it; injected fixtures cannot fall through to the printer.
+No background polling, history or secondary normalization path is added.
+
+Thermals keeps its compact tool/bed rows and replaces only the Cavity unknown
+placeholder with actual °C, independent time/freshness or explicit component
+state. Fans & Air uses a compact white list grouped as Part cooling (Tools 1–4)
+and Air handling (Cavity fan and purifier exhaust/inner), with commanded percent
+and measured RPM as separate labeled facts. Information, freshness and failure
+copy stay above one 44-pixel bottom Refresh action. Use restrained dividers,
+plain text and existing local icons; no decorative gauges, spinning animations,
+green health claims, raw diagnostics or controls. Zero, not measured, not
+detected, not reported, stale, unsupported and unavailable remain visibly
+distinct. Narrow rows wrap without horizontal overflow.
+
+Acceptance covers the exact route/field allowlist and physical mapping, bounds,
+zero/null/partial/invalid values, purifier detection and all modes, independent
+time/TTL/failure retention/coalescing/concurrent domains, fixture isolation,
+zero unrelated acquisition, HTML escaping, responsive/accessibility structure,
+exact resources/aliases/tools/routes and regression of Queue, Heads, Camera,
+Bed Mesh and Progress. Browser/device visual review remains unverified while no
+allowed browser is available. The standing exact-review → PR merge → exact-build
+deploy → restart BOTH services → scoped verification order still enables the
+user's later visual review without converting software checks into a visual pass.
+No fan/purifier command, thermal target, calibration, auth/routing change,
+plugin reinstall or other printer control is authorized.
+
+Primary source grounding:
+
+- [Snapmaker U1 pinned printer configuration](https://github.com/Snapmaker/u1-klipper/blob/10f2f69714c059f1dee0423db4f515b8a01f5388/lava/printer.cfg) fixes the named cavity sensor, four part-cooling fans, cavity fan and purifier objects/configuration.
+- [Snapmaker U1 pinned fan status](https://github.com/Snapmaker/u1-klipper/blob/10f2f69714c059f1dee0423db4f515b8a01f5388/klippy/extras/fan.py) reports separate commanded speed and nullable measured RPM.
+- [Snapmaker U1 pinned purifier status](https://github.com/Snapmaker/u1-klipper/blob/10f2f69714c059f1dee0423db4f515b8a01f5388/klippy/extras/purifier.py) defines power detection, modes and exhaust/inner status fields.
+- [Moonraker printer-object reference](https://github.com/Arksine/moonraker/blob/master/docs/printer_objects.md) defines standard fan, generic-fan and temperature-sensor field units.
+
+These pinned source/config facts define adapter semantics, not the connected
+printer's current firmware, object availability, sensor accuracy, fan operation,
+purifier installation, environmental safety or physical acceptance. Historical
+2026-08-31 capability results are not reused as current proof.
 
 ## B Queue integration (2026-08-31)
 

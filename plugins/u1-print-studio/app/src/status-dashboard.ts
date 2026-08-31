@@ -30,6 +30,7 @@ import {
   readU1BedMesh,
   readU1Materials,
   readU1Queue,
+  readU1Environment,
 } from "./u1-status.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -72,6 +73,7 @@ export type StatusDashboardDependencies = {
   readBedMesh?: typeof readU1BedMesh;
   readMaterials?: typeof readU1Materials;
   readQueue?: typeof readU1Queue;
+  readEnvironment?: typeof readU1Environment;
   observations?: PrinterObservationStore;
   readCameraFrame?: CameraFrameReader;
   cameraSessions?: CameraWebRtcSessionController;
@@ -112,7 +114,8 @@ export function createStatusDashboardHandler(
   const observations = dependencies.observations ?? new PrinterObservationStore(
     readStatus, undefined, dependencies.readBedMesh ?? (readStatus === readU1Status ? readU1BedMesh : undefined),
     dependencies.readMaterials ?? (readStatus === readU1Status ? readU1Materials : undefined),
-    dependencies.readQueue ?? (readStatus === readU1Status ? readU1Queue : undefined)
+    dependencies.readQueue ?? (readStatus === readU1Status ? readU1Queue : undefined),
+    dependencies.readEnvironment ?? (readStatus === readU1Status ? readU1Environment : undefined)
   );
 
   return async (
@@ -227,7 +230,7 @@ export function createStatusDashboardHandler(
           res,
           200,
           observationPayload(
-            await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue" }),
+            await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans" }),
             view as ObservationView
           )
         );
