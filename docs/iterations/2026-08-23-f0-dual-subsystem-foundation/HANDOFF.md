@@ -1,6 +1,6 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 live-only measured FPS — current work
+## 2026-08-31 live-only measured FPS — shipped in PR36
 
 The user requests FPS back only while live. Decision 0023/CAM-008 now permit
 `Live · 29 FPS · time` in the top information pill, while network diagnostics
@@ -10,13 +10,16 @@ rates, clear on exit/peer change, and retain truthful frame/snapshot clocks.
 The implemented source is runtime 0.3.4/camera-v6 (v5/v4 aliases), observation-v5/
 schema 7 unchanged, thirteen resources and unchanged tool/view counts.
 
-Author checks pass 81 tests/856 assertions and TypeScript. Independent
-acceptance and shipment remain pending. Next review the exact
-candidate and use the established authorized `u1-ship` merge/deploy/restart-
-both/verify sequence; do not claim this new presentation is deployed yet.
-PR34 is still the verified installed baseline, and its docs-only record is
-merged in main `3eeb926`. Queue WIP and minimal-progress changes remain
-separate, as do actual phone/live-video acceptance and printer control.
+Independent review approved `40d359bd81df3523a32726172f64b045ab027e86`;
+`u1-ship` merged PR36 as `3fc918e5c64b401f497f97144d9c81423877d852` and deployed
+release `20260831-3fc918e-pr36-20260831T124701-e914a1`. Both U1 services were
+explicitly restarted and are healthy/integrity verified at the contract above.
+Fourteen static and sixteen security checks pass; OAuth/configuration/routes
+are unchanged and no rollback was needed. `VALIDATION.md` records independent
+source and post-shipment evidence; these checks do not prove phone/live-video
+playback. Next review/merge only this docs-only rollout record, with no second
+deployment for unchanged app bytes. Queue WIP and minimal-progress changes
+remain deferred. No printer control or plugin reinstall was performed.
 
 ## 2026-08-31 PR34 shipped and independently verified — current handoff
 

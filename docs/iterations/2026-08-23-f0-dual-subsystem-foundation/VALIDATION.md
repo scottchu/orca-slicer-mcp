@@ -1,5 +1,33 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 PR36 FPS deployment verification
+
+The operator's successful shipping workflow merged reviewed head
+`40d359bd81df3523a32726172f64b045ab027e86` as
+`3fc918e5c64b401f497f97144d9c81423877d852` and restarted both services.
+The independent validator then ran
+`bun --no-env-file --config=/dev/null run verify-live.ts` from the isolated
+outside-repository verification directory.
+
+- Both live health endpoints returned 200 and **runtime 0.3.4 / schema 7 /
+  observation v5 / camera v6**.
+- The private served camera widget returned 200 with exact reviewed SHA-256
+  `375bcbefbee47e1d01a958ad2441594e66b95ff65aa55242d5b058709dcc6182`.
+  The existing private tailnet `/dashboard/camera` page also returned 200.
+- An initial verification assumption expected the public camera-asset path to
+  be available; it correctly returned 404. The corrected verifier checks the
+  intended private camera asset. No runtime or routing change was needed.
+- Every probe was a health or static GET. No tool call, snapshot acquisition,
+  stream allocation, printer operation, authentication/configuration change,
+  or service mutation was performed by the validator.
+
+The redacted outside-repository report SHA-256 is
+`090530662d0aad25b86a16c620e5df539aab945df992ed206bfbf389a85511af`.
+This verifies deployed contract/asset availability, not real-camera FPS,
+live-video playback or mounted-phone behavior. The operator's complete
+14-static/16-security, integrity and preservation checks are separate evidence;
+the independent synthetic FPS checks below remain the measured display proof.
+
 ## 2026-08-31 Independent live-camera FPS validation
 
 The user-requested FPS restoration was validated against the exact current

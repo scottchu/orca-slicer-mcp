@@ -9,10 +9,10 @@ Current source is runtime 0.3.4/schema 7/observation-v5/camera-v6: thirteen
 resources, nine observation selectors and nine directory links, with two
 model-visible/eight app-only tools. Bed Mesh's end-to-end implementation and
 the new repository shipping workflow are reviewed and deployed through PR34.
-The FPS source contract above is pending shipment. Both deployed PR34 services
-are verified at runtime 0.3.3/schema 7/observation-v5/camera-v5; independent
-read-only live mesh and JPEG acquisition succeeds on that release, without
-phone/live-video or calibration claims.
+The FPS contract above is reviewed and deployed through PR36; both restarted
+services are healthy/integrity verified at runtime 0.3.4/schema 7/
+observation-v5/camera-v6. Earlier PR34 evidence separately confirms live mesh
+and JPEG acquisition, without phone/live-video or calibration claims.
 
 ## One plugin, several layers
 

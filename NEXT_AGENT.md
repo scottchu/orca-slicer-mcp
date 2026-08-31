@@ -14,16 +14,16 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-The user's live-only FPS request is implemented (decision 0023/CAM-008): measured
-`Live · FPS · time` above unchanged bottom controls, no network diagnostics,
-no polling-derived or stale FPS. Source runtime is 0.3.4/camera-v6 with v5/v4
-current aliases; observation-v5/schema 7 and tool/view counts stay unchanged.
-Thirteen resources include the new camera cache key. Author validation passes
-81 tests/856 assertions and TypeScript. Finish independent validation
-and approve the exact commit, then use the already authorized repository
-merge/deploy/restart-both/verify workflow. This slice is not yet delivered.
+The live-only FPS slice is shipped in PR36: reviewed `40d359b`, merged
+`3fc918e`, release `20260831-3fc918e-pr36-20260831T124701-e914a1`. Both U1
+services were explicitly restarted and verified at 0.3.4/schema 7/
+observation-v5/camera-v6, with fourteen static and sixteen security checks
+passing and private configuration/authentication/routes preserved. No rollback
+was needed. Finish the docs-only rollout record through review/merge; do not
+redeploy unchanged app bytes. Queue/minimal-progress work and actual phone/
+live-video acceptance remain separate pending tasks.
 
-PR34 is merged and deployed: reviewed head
+Previous PR34 rollout: reviewed head
 `97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1`, merged revision
 `7194361d4a8d7a2291bcc64f1d053eae51a8d99c`, release
 `20260831-7194361-pr34-20260831T121439-3ba53f`. The repository shipping workflow

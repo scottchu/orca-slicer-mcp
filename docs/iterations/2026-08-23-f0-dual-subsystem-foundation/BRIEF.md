@@ -5,16 +5,15 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: measured FPS is implemented only in the live camera's top
-  state/time pill (decision 0023's latest supersession, CAM-008), preserving
-  hidden network diagnostics, truthful clocks and bottom controls. Use actual
-  frame-counter deltas, omit startup/unknown/reset/stale rates, and preserve
-  existing fallback. Source runtime is 0.3.4/camera-v6 with v5/v4 aliases;
-  observation-v5/schema 7 stay unchanged. After independent exact-commit
-  approval, ship through the authorized merge/deploy/restart-both/verify
-  workflow. Author checks pass 81 tests/856 assertions and TypeScript;
-  independent acceptance and rollout are pending. Queue and minimal
-  progress remain deferred. The PR34 record is merged in main `3eeb926`.
+- Current result and next action: the measured live-FPS slice is reviewed and
+  shipped in PR36 (`40d359b` reviewed, `3fc918e` merged), release
+  `20260831-3fc918e-pr36-20260831T124701-e914a1`. Both U1 services were
+  explicitly restarted and verified at runtime 0.3.4/schema 7/observation-v5/
+  camera-v6. Fourteen static and sixteen security checks pass, private
+  configuration/authentication/routes are preserved, and no rollback was needed.
+  Finish only the docs-only rollout-record PR; no second deployment for
+  unchanged app bytes. Actual phone/live-video acceptance and queue/minimal-
+  progress work remain separate pending tasks.
 - Previous completed result: PR34's exact reviewed head `97b5106` merged
   as `7194361` and the repository shipping workflow completed deployment,
   explicit restart of BOTH U1 services, and verification. Installed release
