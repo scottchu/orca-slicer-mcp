@@ -12,10 +12,26 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
-Release A is merged and deployed. [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41)
+F Bed Mesh is shipped in [PR43](https://github.com/scottchu/orca-slicer-mcp/pull/43):
+reviewed `41546d9e3ea841bdd23279694079719327f39f39` merged as
+`92a62c04c22600ee802d7be3c0b27285135f6d33`; installed release
+`20260831-92a62c0-pr43-20260831T150042-2e7c64` runs 0.4.1/schema 8/
+observation-v7/camera-v8. The read-only shipping plan passed, then the operator
+deployed the exact merged build and explicitly restarted BOTH services.
+Both are loaded/healthy/integrity verified; fourteen exact static and sixteen
+security checks pass, OAuth/environment/config/routes preserved, no rollback.
+Independent checks confirm both exact installed releases/source, fifteen
+manifest files per release, fourteen local and thirteen tailnet exact static
+checks plus tailnet health. Exactly one private Bed Mesh refresh returns a
+known/fresh active 11 by 11 grid at `2026-08-31T19:03:22.696Z`, with valid bounds/
+summary. Visual/device acceptance remains unverified; the user has the live review link.
+These docs-only rollout records do not change application bytes or require
+another deployment. Queue store/projection/widget integration is next.
+
+Previous release A was merged and deployed in [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41), which
 merged reviewed `744f7d06607526a10997b926d91b18087c4030cf` as
 `b6142de6241cb2e1b6ac70b509f2d0b0e836f1d8`; installed release
-`20260831-b6142de-pr41-20260831T140555-84d50f` runs 0.4.0/schema 8/
+`20260831-b6142de-pr41-20260831T140555-84d50f` ran 0.4.0/schema 8/
 observation-v6/camera-v8. Both public/dashboard services were explicitly
 restarted and are loaded, healthy and integrity verified. Fourteen static and
 sixteen security checks pass, preserving OAuth/environment/config/routes;
@@ -29,24 +45,24 @@ physical heads, and a structurally valid real 1920 × 1080 JPEG snapshot.
 The user requests all pending widgets and a unified refined white style.
 Decisions 0029/0030 and the active iteration's `WIDGET_TRACKS.md` own the durable
 queue: A materials + white cards/index + latest camera + continuous progress
-(deployed); F interactive reported Bed Mesh surface; B Queue; C fans/chamber;
+(deployed); F interactive reported Bed Mesh surface (deployed); B Queue; C fans/chamber;
 D Current Job/real History; E composed overview. The latest Fluidd Bed Mesh
 reference prioritizes an orbitable 3D height surface inside the existing white
 card, not its dark dashboard or printer/profile controls. Independently
 invokable skills and the Current Job/History split stay intact. New feedback
-does not cancel unfinished tracks. F and B–E are active; old deferral wording
+does not cancel unfinished tracks. B–E remain active; A/F visual acceptance is
+still pending. Old deferral wording
 below is historical. F0/O1 milestone completion is not claimed.
 
 F's bounded design is recorded in decision 0030. The 0.4.1/schema 8/
-observation-v7/camera-v8 source has seventeen resources; it is not deployed.
+observation-v7/camera-v8 source has seventeen resources and is deployed in PR43.
 Formal review's P2 centroid-sort occlusion defect is corrected; independent
 per-point geometry sweeps and the original regression pass on final widget
 `c800447957bf8b7b386ddba7666941f625170db92107d31230c5f382378d77f6`.
 Independent final validation passes 194 app tests/2,731 assertions, 21 lifecycle,
 22 shipping, 22 independent tests/1,162 assertions, TypeScript, repository and
-all bundles/exact assets. The reviewer provisionally approves the final source
-without blockers. Exact-commit approval, merge, deployment and post-release
-verification remain pending. These software checks are not rendered-browser
+all bundles/exact assets. The reviewer approved exact head `41546d9` without
+blockers before shipment. These software checks are not rendered-browser
 acceptance. The surface uses the same normalized
 reported grid and XY bounds with no new acquisitions, resampling or
 `mesh_matrix` substitution. It adds XYZ mm axes/height legend, explicit bounded
@@ -71,18 +87,17 @@ candidate preserves that application manifest. A preliminary read-only ship
 plan stopped on an uncommitted BRIEF edit; scoped commit and renewed exact-SHA
 review resolved it without bypassing guards or external mutation. The final
 read-only plan passed before execution. These rollout records change no
-application bytes and need no extra deployment. Next freeze F's exact candidate,
-complete independent commit review and guarded delivery while the user reviews
-A. Keep software, deployed, real-printer and user-device evidence distinct.
+application bytes and need no extra deployment. Next integrate Queue while
+the user reviews A/F. Keep software, deployed, real-printer and user-device evidence distinct.
 Queue foundation is
 locally committed as `4fbb96c7201398c125006cafc5050b84a875af1e` on
 `feat/u1-queue-completion`: standalone adapter/model/tests only. Independent
 bounded source/protocol approval closes the prior credential-basename P2;
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
-Store/projection/widget integration remains active after F, without any Queue
+Store/projection/widget integration is active next, without any Queue
 merge or deployment.
 Source work may continue in stacked B–E branches while the user reviews A;
-current independently reviewed release order is A (deployed) → F → B → C → D → E.
+current independently reviewed release order is A/F (deployed) → B → C → D → E.
 Read-only capability research confirms Queue/History/cavity/fans endpoints can
 return real data; they are software gaps, not proven unsupported hardware.
 No printer controls, preset/project writes, auth/Tailscale changes, plugin

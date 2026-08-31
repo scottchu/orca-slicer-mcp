@@ -2,10 +2,23 @@
 
 ## 2026-08-31 F reported Bed Mesh surface — authoritative current handoff
 
+F is shipped in PR43: reviewed `41546d9e3ea841bdd23279694079719327f39f39`
+merged as `92a62c04c22600ee802d7be3c0b27285135f6d33` at
+`2026-08-31T19:00:51Z`. The read-only plan passed and guarded execution installed
+`20260831-92a62c0-pr43-20260831T150042-2e7c64`. BOTH public/dashboard services
+were explicitly restarted and are loaded/healthy/integrity verified at
+0.4.1/schema 8/observation-v7/camera-v8. Fourteen exact static and sixteen
+security checks pass; OAuth/environment/config/routes are preserved, no
+rollback needed. Independent exact-release/manifest, fourteen local/thirteen
+tailnet static and tailnet-health checks pass. Exactly one private refresh
+returns a known/fresh active 11 by 11 mesh at `2026-08-31T19:03:22.696Z`;
+visual/device acceptance remains unverified. VALIDATION records
+the actual commands and exact source/merged/release identities.
+
 The user's newest Fluidd Bed Mesh reference prioritizes a bounded interactive
 3D reported-height surface inside the existing white card. Decision 0030 and
 OBS-009 supersede only the 2D-only presentation and prior release ordering.
-Current order is A (deployed) → F → B Queue → C fans/chamber → D Current Job/
+Current order is A/F (deployed) → B Queue → C fans/chamber → D Current Job/
 History → E overview. Keep all unfinished tracks, independent invocation and
 the Current Job/History split. A's exact deployment receipt is preserved below;
 it is not acceptance of the new F source.
@@ -18,8 +31,8 @@ corrected reported-point draw order; author widget checks pass 35/1,415.
 Independent final validation passes 194 app/2,731 assertions, 21 lifecycle,
 22 shipping, 22 independent/1,162 assertions, TypeScript/repository and all
 bundles/exact assets. Geometry sweeps, the original regression and point-order
-checks pass; final source is provisionally reviewed without blockers.
-Exact-commit approval remains pending. Numerical geometry
+checks pass; exact head `41546d9` was independently approved without blockers
+before shipment. Numerical geometry
 checks do not establish rendered-browser or user-device acceptance.
 F's required behavior: same reported matrix/bounds, adjacent-point surface,
 XYZ mm axes and numerical height legend, min/max/range/grid size, explicit
@@ -41,19 +54,18 @@ paths under `plugins/u1-print-studio/app/`: `public/dashboard-index.html`,
 `src/cli.test.ts`, `src/observation-widget.test.ts`, `src/personal-oauth.test.ts`,
 `src/runtime-contract.ts`, and `src/status-dashboard.test.ts`. Camera bytes are
 unchanged. Current corrected-source evidence and historical failed-checkpoint hashes
-are in VALIDATION. Exact-SHA approval, PR merge, deployment and restart/verification
-remain pending. The primary coordinator owns release integration and the
-actual operator evidence; the design role owns these continuity records.
+are in VALIDATION. This follow-up changes rollout documentation only, not the
+merged application. The design role owns these records; the operator and
+independent validator supply actual deployment/domain evidence.
 
-Next smallest action: commit/freeze the corrected exact candidate and obtain
-independent exact-SHA approval. Follow
-the standing guarded merge → exact merged-build deploy → explicitly restart
-BOTH public/dashboard services → verify sequence for user visual review.
+Next smallest action: review/merge these docs-only rollout records without a
+second application deployment, then integrate Queue's store/projection/widget
+while the user reviews F. Retain the standing guarded exact-review/merge/deploy/
+BOTH-service restart/verification sequence for each later application release.
 Fresh allowed-browser discovery is unavailable, so rendered/browser/device
 acceptance remains unverified rather than blocking this authorized order.
 Source, simulator, real-printer acquisition, deployed behavior and physical
-acceptance remain separate. No new release has been performed at this
-checkpoint. Preserve OAuth/environment/config/routes and all shipping guards;
+acceptance remain separate. Preserve OAuth/environment/config/routes and all shipping guards;
 no printer controls, profile/queue/history writes, plugin reinstall or deferred
 Mac administration is authorized.
 

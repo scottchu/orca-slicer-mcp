@@ -31,8 +31,11 @@ The user authorizes merge → deploy → explicitly restart BOTH services → ve
 for their visual review. This overrides predeployment visual-QA ordering only;
 the unavailable browser does not re-block that sequence or convert this result
 to passed. Exact-SHA source approval, shipping guards, installed-byte and scoped
-behavior verification remain separate requirements. Merge/deployment and
-actual-device acceptance are pending at this source checkpoint.
+behavior verification remain separate requirements. PR43 is now merged and
+deployed as `20260831-92a62c0-pr43-20260831T150042-2e7c64`; both services were
+restarted and passed operator health/integrity/static/security checks. This
+does not supply rendered-browser evidence. Actual-device/visual acceptance
+remains unverified, and this report remains blocked, not passed.
 
 ## Release A: deployed white foundation, visual acceptance still unverified
 

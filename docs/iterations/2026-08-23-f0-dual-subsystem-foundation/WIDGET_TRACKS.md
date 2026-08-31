@@ -7,10 +7,23 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
-Release A is deployed: [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41)
+F is deployed in [PR43](https://github.com/scottchu/orca-slicer-mcp/pull/43):
+reviewed `41546d9e3ea841bdd23279694079719327f39f39` merged as
+`92a62c04c22600ee802d7be3c0b27285135f6d33`; exact release
+`20260831-92a62c0-pr43-20260831T150042-2e7c64` runs 0.4.1/schema 8/
+observation-v7/camera-v8. Both services were explicitly restarted and are
+loaded/healthy/integrity verified; fourteen exact static and sixteen security
+checks pass, OAuth/environment/config/routes preserved, no rollback. Independent
+exact-release/manifest, fourteen local/thirteen tailnet static and tailnet-health
+checks pass. One private refresh returns a known/fresh active 11 by 11 mesh at
+`2026-08-31T19:03:22.696Z`; visual/device acceptance remains unverified.
+Queue integration is next. Docs-only rollout
+records do not redeploy unchanged application bytes.
+
+Previous release A was deployed in [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41):
 reviewed `744f7d06607526a10997b926d91b18087c4030cf` merged as
 `b6142de6241cb2e1b6ac70b509f2d0b0e836f1d8`; installed release
-`20260831-b6142de-pr41-20260831T140555-84d50f` runs 0.4.0/schema 8/
+`20260831-b6142de-pr41-20260831T140555-84d50f` ran 0.4.0/schema 8/
 observation-v6/camera-v8 with sixteen resources. Both services were explicitly
 restarted and are loaded/healthy/integrity verified; fourteen static and sixteen
 security checks pass, OAuth/environment/config/routes preserved, no rollback.
@@ -25,13 +38,13 @@ structurally valid real JPEG. They do not establish visual/device acceptance.
 The user's latest Fluidd Bed Mesh screenshot prioritizes decision 0030's
 interactive reported-height surface inside the existing white card. It does
 not request Fluidd's dark dashboard, interpolated-matrix selector or printer
-controls. Current release order is A (deployed) → F surface → B → C → D → E.
-F0/O1, the new F surface and B–E remain unfinished. Preserve unrelated checkouts;
+controls. Current release order is A/F (deployed) → B → C → D → E.
+F0/O1 and B–E remain unfinished; A/F visual acceptance remains open. Preserve unrelated checkouts;
 any reuse needs explicit integration review. Queue foundation is locally committed as
 `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`;
 independent bounded source/protocol review approves and closes the prior P2.
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
-Store/widget integration remains active after the bounded F surface. Stacked
+Store/widget integration is active next. Stacked
 B–E source work may continue while the user visually reviews A; no unfinished
 track is cancelled by the new priority.
 
@@ -41,8 +54,8 @@ track is cancelled by the new priority.
 | A2 White foundation and index | White focused cards/index/host assets and local attributed icons deployed; truthful coverage labels | Reference-matched rendering, states and accessibility | Deployed in PR41; user visual acceptance pending |
 | A3 Camera reference | Header outside genuine media, direct controls, snapshot feedback/card fullscreen deployed; watchers retained | Rendered/native snapshot/live/close/PiP/fullscreen acceptance | Deployed in PR41; user/device acceptance pending |
 | A4 Continuous progress | Contrast correction, continuous bar/layers/ETA/elapsed deployed | User visual review, without fabricated metrics/completion | Deployed in PR41; visual acceptance pending |
-| F Bed Mesh | Interactive same-sample surface and retained 2D grid implemented and software-validated in 0.4.1 source; prior white 2D view deployed in A | XYZ/height legend/exaggeration, pointer/keyboard orbit/reset, 2D fallback; decision 0030 | P2 corrected; final source provisionally approved, exact-commit review and release pending |
-| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Integrate bounded store/projection/widget without queue mutations | Foundation source/protocol approved; widget integration remains active after F surface |
+| F Bed Mesh | Interactive same-sample surface and retained 2D grid deployed in PR43 at 0.4.1 | User visual review of XYZ/legend/exaggeration, pointer/keyboard orbit/reset and 2D fallback | P2 corrected; reviewed and shipped, visual/device acceptance pending |
+| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Integrate bounded store/projection/widget without queue mutations | Foundation source/protocol approved; widget integration active next |
 | C Fans and chamber | Fans/purifier unimplemented; chamber thermal unknown | Real fixed fan/purifier/cavity reads, measured units and independent missing/power states; no controls | Active, after Queue |
 | D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, after fans/chamber |
 | E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |
@@ -51,7 +64,7 @@ track is cancelled by the new priority.
 Releases A, F surface, B, C, D, and E are independently shippable end-to-end slices.
 A includes the shared visual foundation and material projection because their
 Heads/card changes need coordinated integration. F's white restyle shipped
-with A; the new F surface is a separate next release. G is checked
+with A; the new F surface shipped separately in PR43. G is checked
 for every release. A new user priority may reorder the queue, but each remaining
 row stays active with a next action or an explicit user-approved pause.
 
@@ -118,8 +131,8 @@ The table above records release A, not acceptance of F's changed bytes. For the
 new F surface, implementation and the P2 occlusion correction pass final
 independent software validation: 194 app/2,731 assertions, 21 lifecycle,
 22 shipping, 22 independent/1,162 assertions, TypeScript/repository/bundles and
-exact assets. Final source is provisionally approved without blockers;
-exact-commit review and rollout remain pending. Browser/device visual acceptance
+exact assets. Exact source `41546d9` was approved without blockers and shipped
+in PR43; the current receipt is above. Browser/device visual acceptance
 is unverified. Asymmetric,
 flat, stale, inactive, invalid and maximum-size fixtures verify software
 geometry, units, local controls and unchanged acquisition/state semantics. The standing
