@@ -14,7 +14,23 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Resume **B Queue** from PR46 merged base
+Resume **C fans/chamber**. B Queue is shipped in PR47: exact reviewed `1068add`
+was approved without findings and merged as
+`6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; guarded shipping installed
+`20260831-6d76f9a-pr47-20260831T172710-645971`. BOTH services were explicitly
+restarted and are loaded/healthy/integrity verified at 0.4.3/schema 9/
+observation-v9/camera-v8. Fourteen static and sixteen security checks pass with
+configuration/auth/routes preserved and no rollback. Independent postdeployment
+checks confirm 15 exact manifest files, both service targets, three health/seven
+exact local-tailnet static checks, and exactly one known/fresh paused-empty Queue
+refresh at `2026-08-31T21:31:36.003Z`; exact served-widget semantics pass.
+visual/browser/device acceptance remains unverified. Preserve the Queue contract
+and continue C → D Current Job/History → E overview through the same guarded
+delivery sequence.
+
+### Previous Queue source checkpoint
+
+B Queue began from PR46 merged base
 `bd7abc8f07f7bbe1fdd47e45eabaf41b8b7110b2`. Decision 0029's Queue addendum and
 OBS-012 specify the focused integration of foundation `4fbb96c`: application
 store/independent receipt and attempt TTL, safe bounded projection and white

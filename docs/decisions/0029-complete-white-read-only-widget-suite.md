@@ -1,7 +1,7 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: A/Heads deployed; B Queue integration active after PR46 rollout records; visual acceptance unverified
+- Status: A/Heads and B Queue deployed; C fans/chamber next; visual acceptance unverified
 - Scope: F0/O1, OBS-007/008/010/011, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution

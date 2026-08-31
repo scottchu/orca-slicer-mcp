@@ -1,6 +1,24 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 B Queue integration — authoritative current handoff
+## 2026-08-31 B Queue integration — shipped handoff
+
+PR47 shipped B Queue. Exact reviewed `1068add` was approved without findings
+and merged as `6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; guarded shipping installed
+`20260831-6d76f9a-pr47-20260831T172710-645971`. BOTH public/dashboard services
+were explicitly restarted and are loaded/healthy/integrity verified at 0.4.3/
+schema 9/observation-v9/camera-v8. Fourteen static and sixteen security checks
+pass, config/auth/routes are preserved, no rollback occurred, and installed
+widget/index hashes match the frozen source. Independent checks confirm all 15
+manifest files, both service targets, three health/seven exact local-tailnet
+static checks, and exactly one known/fresh paused-empty Queue observation at
+`2026-08-31T21:31:36.003Z`; exact served-widget semantics pass. Browser/
+device visual acceptance remains unverified; the user has the live Queue link.
+These rollout-record changes are documentation-only and require no second
+deployment. Next implement C fans/chamber, preserving D/E. No raw Queue names,
+IDs or payload were logged or retained; the postrelease check made no camera,
+mesh, other-view, control, service, auth, routing or file mutation.
+
+### Previous Queue source checkpoint
 
 The user continues the full widget track after PR46 merged the Heads rollout
 records at `bd7abc8f07f7bbe1fdd47e45eabaf41b8b7110b2`. Resume B Queue, preserving
@@ -24,7 +42,8 @@ gates above. Frozen widget/index SHA-256 values are respectively
 focused widget-test SHA-256 is
 `5448fa6d6b57f02c95e2f2381957751c85006e95143550ac807827437945b51f`.
 The three foundation files match `4fbb96c`. Renewed independent validation finds
-no issues and made no runtime call; exact-SHA review remains open.
+no issues and made no runtime call; exact-SHA review was open at this source
+checkpoint and completed in the PR47 rollout above.
 
 Design-record changes: decision 0029, requirements, PROJECT_STATE, NEXT_AGENT,
 this iteration's BRIEF/WIDGET_TRACKS/VALIDATION/HANDOFF, and design-qa. App code

@@ -7,7 +7,17 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
-Current priority: **B Queue integration** after PR46's merged Heads rollout
+Current priority: **C fans/chamber** after B Queue shipped in PR47. Exact
+reviewed `1068add` merged as `6d76f9a`; release
+`20260831-6d76f9a-pr47-20260831T172710-645971` runs on BOTH explicitly restarted,
+healthy/integrity-verified services at 0.4.3/schema 9/observation-v9/camera-v8.
+Fourteen static and sixteen security checks pass with config/auth/routes
+preserved and no rollback. Independent checks confirm 15 exact manifest files,
+both service targets, three health/seven static checks, one known/fresh paused-
+empty Queue observation and exact served-widget semantics. Full evidence is in VALIDATION;
+visual/browser/device acceptance remains unverified. Continue C → D → E.
+
+Previous priority: **B Queue integration** after PR46's merged Heads rollout
 records (`bd7abc8`). Decision 0029's Queue addendum/OBS-012 bind the existing
 reviewed foundation to the shared store, independent receipt/attempt TTL,
 safe bounded projection and white focused card/index. No new Queue release is
@@ -20,7 +30,8 @@ Author checks pass 223 app tests/3,150 assertions. Independent validation passes
 those plus 21 lifecycle, 22 shipping and 15 focused tests/7,049 assertions,
 TypeScript/diff checks, three bundles/code signing and six exact emitted assets.
 Formal review's singular-summary grammar correction passes renewed author and
-independent gates without findings; exact-SHA review remains open.
+independent gates without findings; exact-SHA review was open at this source
+checkpoint and completed in the PR47 rollout above.
 
 Previous shipped priority: Heads reference refinement, a presentation-only follow-up to
 A1/A2 under decision 0029. Use actual-filament-color soft washes inside the white
@@ -88,7 +99,7 @@ track is cancelled by the new priority.
 | A4 Continuous progress | Contrast correction, continuous bar/layers/ETA/elapsed deployed | User visual review, without fabricated metrics/completion | Deployed in PR41; visual acceptance pending |
 | A5 Heads reference refinement | Deployed in PR45 at 0.4.2: actual-color soft wash, exact swatch/hex and Copy; material acquisition retained | User visual/native-clipboard review | Both-service and independent live-read/served-widget checks pass; visual/device acceptance unverified |
 | F Bed Mesh | Interactive same-sample surface and retained 2D grid deployed in PR43 at 0.4.1 | User visual review of XYZ/legend/exaggeration, pointer/keyboard orbit/reset and 2D fallback | P2 corrected; reviewed and shipped, visual/device acceptance pending |
-| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Independent receipt/attempt TTL, safe bounded rows/omissions, known-empty versus failure states and white card/index; no queue mutations | Store/projection/widget integration active now under decision 0029/OBS-012; review and rollout pending |
+| B Queue | Fixed bounded adapter, independent store/projection and white Queue card/index shipped in PR47 | User visual review; preserve no-mutation boundary | Deployed to both restarted services; exact/static/scoped verification recorded separately, visual/device acceptance unverified |
 | C Fans and chamber | Fans/purifier unimplemented; chamber thermal unknown | Real fixed fan/purifier/cavity reads, measured units and independent missing/power states; no controls | Active, after Queue |
 | D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, after fans/chamber |
 | E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |

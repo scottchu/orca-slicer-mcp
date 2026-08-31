@@ -12,7 +12,22 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
-The user's continuation resumes **B Queue integration** after PR46 merged the
+**B Queue is shipped.** PR47's reviewed `1068add` was approved without findings
+and merged as `6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; guarded shipping installed
+`20260831-6d76f9a-pr47-20260831T172710-645971`. BOTH services were explicitly
+restarted and are loaded/healthy/integrity verified at runtime 0.4.3/tool schema
+9/observation-v9/camera-v8. Fourteen static and sixteen security checks pass;
+configuration/auth/routes are preserved and no rollback occurred. Independent
+verification confirms 15 exact manifest files, both service targets, three
+health/seven exact local-tailnet static checks and exactly one private Queue
+refresh: known/fresh paused empty at `2026-08-31T21:31:36.003Z`. The exact served
+widget passes current-empty/state/time/no-ETA/bounds/top-information/single-bottom-
+Refresh behavior. User/browser/device visual acceptance remains unverified.
+Next is **C fans/chamber**, then D Current Job/History and E overview.
+
+### Previous Queue source checkpoint
+
+The user's continuation resumed **B Queue integration** after PR46 merged the
 Heads rollout records at `bd7abc8f07f7bbe1fdd47e45eabaf41b8b7110b2`.
 Decision 0029's Queue addendum and OBS-012 bound the existing foundation's
 store/projection/widget integration: independent receipt/freshness/15-second
@@ -25,8 +40,8 @@ validation passes those plus 21 lifecycle, 22 shipping and 15 focused tests/
 7,049 assertions, TypeScript, diff checks, three bundles/code signing and six
 exact emitted assets. Formal review's singular-summary grammar finding is fixed
 in only widget/test bytes; renewed author and independent checks pass with no
-findings, while exact-candidate review remains pending. No integrated Queue release, new deployment or visual pass is
-claimed yet. Preserve shipped A/F/Heads and the order B → C fans/chamber →
+findings. This source was subsequently approved and shipped as recorded above.
+Preserve shipped A/F/Heads and the order C fans/chamber →
 D Current Job/History → E overview, plus independent invocation. The latest
 allowed-browser discovery remains unavailable. The standing exact-review → PR
 merge → exact-build deploy → restart BOTH services → verify sequence remains

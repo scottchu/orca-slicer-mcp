@@ -1,6 +1,32 @@
 # F0 dual-subsystem foundation validation
 
-## 2026-08-31 B Queue integration — design/source work active
+## 2026-08-31 B Queue integration — PR47 deployed
+
+Formal review approved exact head `1068add` without findings. PR47 merged it as
+`6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; guarded shipping installed exact
+release `20260831-6d76f9a-pr47-20260831T172710-645971`. BOTH public/dashboard
+services were explicitly restarted and are loaded, healthy and integrity
+verified at **0.4.3/schema 9/observation-v9/camera-v8**. **Fourteen exact static
+and sixteen security checks pass**; configuration/authentication/routes were
+preserved and no rollback occurred. Installed widget/index match frozen hashes
+`76d356cc287f11e400f896640162134bcabf8ca8b0ce883a2e46ed1024564092`
+and `626348d296d8748e83c7a4e7732656694de3b1dc3ece259fb1e92bb1ce32c0b6`.
+Independent postdeployment verification confirms all **15 manifest files** and
+both service targets match merged source/release; both are loaded/healthy/
+integrity verified. **Three health and seven exact local/tailnet static checks**
+pass, including widget, directory and Queue host assets.
+
+Exactly **one** private Queue refresh returned a **known/fresh, paused, empty**
+Queue with source/checked time `2026-08-31T21:31:36.003Z`, total/displayed count
+zero, not truncated, at observation version 2. The exact served widget executed
+in a transient VM and verifies truthful current-empty/state/time semantics, no
+ETA, bounded rows, information above one bottom Refresh, and corrected grammar.
+No raw filename, job ID or payload was persisted/logged; no camera, mesh, other-
+view, control, service, auth, routing or file mutation occurred in this pass.
+Visual/browser/device acceptance remains unverified. This docs-only rollout
+record does not require another deployment.
+
+## 2026-08-31 B Queue integration — frozen source evidence
 
 The design role read current contracts and active records, then inspected the
 reviewed foundation using these actual read-only commands:
@@ -31,8 +57,9 @@ Focused test SHA-256 is
 `5448fa6d6b57f02c95e2f2381957751c85006e95143550ac807827437945b51f`.
 Renewed independent validation specifically covers singular 1, plural 2 and
 large-count 900 omission summaries, finds no issues, and made no runtime calls.
-Exact-SHA review and release receipts remain pending; no Queue acquisition,
-merge, service deployment/restart or visual/device pass is claimed here.
+Exact-SHA review and release receipts were pending at this source checkpoint
+and completed in the rollout above; no Queue acquisition, merge, service
+deployment/restart or visual/device pass is claimed by the source evidence alone.
 
 Boundary correction: during final contract inspection the validator ran the
 compiled `dist/u1-print-studio doctor --json`; that command unintentionally
