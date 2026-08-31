@@ -85,20 +85,18 @@ in the HTTP bundle; it is not a seventh required external release asset.
 The fixed lifecycle asset inventory and its fingerprint verification stay
 unchanged so previously staged releases remain valid rollback targets.
 
-Private stable entries are `/dashboard/progress`, `/dashboard/thermals`,
+Private stable entries are `/dashboard/overview`, `/dashboard/progress`, `/dashboard/thermals`,
 `/dashboard/heads`, `/dashboard/jobs`, `/dashboard/job_history`, `/dashboard/queue`, `/dashboard/fans`,
 `/dashboard/bed_mesh`, and `/dashboard/camera`. In the current source,
 `/dashboard` and `/dashboard/` serve the same static widget directory with
 implementation-coverage labels. It loads no observations, widgets, or camera
-media. Source decision 0025 lists nine focused entries, with `/dashboard/jobs`
-retained for Current Job and `/dashboard/job_history` separately exposing
-unimplemented history. PR38 is deployed as
-`20260831-b565eec-pr38-20260831T130407-2e3c85`, serving the nine-entry directory
-at runtime 0.3.5/schema 7/observation-v5/camera-v7. Both services are restarted
-and verified; earlier PR34 evidence separately confirms read-only Bed Mesh acquisition.
-Source merge alone never updates loaded services.
-The HTTP overview route stays absent; the MCP overview
-view stays explicitly deferred. Public dashboard routes remain unavailable. Every process shares
+media. Current source lists ten entries; `/dashboard/jobs` remains Current Job,
+`/dashboard/job_history` remains its separate bounded History view, and
+`/dashboard/overview` is the compact composed headline view. The previously
+verified PR51 deployment remains runtime 0.4.5/schema 11/observation-v11/
+camera-v8 until this source is separately merged and shipped. Source merge alone
+never updates loaded services. The source HTTP Overview route and MCP Overview
+selector are implemented; public dashboard routes remain unavailable. Every process shares
 one observation store across its HTTP calls, not across other services or
 restarts. A cold store acquires its first observation on demand; later plain
 reads use the cache and explicit due refreshes coalesce. User login and host availability are dependencies; automatic
@@ -156,13 +154,13 @@ unverified.
 
 Every channel's `doctor --json` reports one runtime contract containing the
 base runtime version, tool-schema version, observation-widget version, and
-camera-widget version. The current source contract is runtime `0.3.5`, tool
-schema `7`, observation widget `observation-v5`, and camera widget `camera-v7`.
-These versions match the verified PR38 service rollout; documentation-only
-records need no redeployment of unchanged application bytes.
-Observation-v4/v3/v2/v1 and camera-v6/v5/v4 remain current-asset aliases.
+camera-widget version. The current source contract is runtime `0.4.6`, tool
+schema `12`, observation widget `observation-v12`, and camera widget `camera-v8`.
+The previously verified deployment remains 0.4.5/schema 11/observation-v11/
+camera-v8 until a guarded rollout installs these changed bytes.
+Observation-v11 through v1 and camera-v7/v6/v5/v4 remain current-asset aliases.
 The expanded closed enum has nine values; two model-visible/eight app-only tool
-counts are unchanged. Fourteen resource URIs retain current/frozen compatibility.
+counts are unchanged. Twenty-two resource URIs retain current/frozen compatibility.
 The optional personal HTTP service returns the same contract from `/health`.
 Upgrade verification must compare these values with the intended source before
 asking a user to test a fresh task; process liveness alone is insufficient.

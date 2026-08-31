@@ -5,6 +5,9 @@ import { normalizeBedMeshResponse, BED_MESH_MAX_DIMENSION } from "./adapters/moo
 import { unavailableBedMesh } from "./application/bed-mesh-observation.js";
 import { normalizeMaterialResponse } from "./adapters/moonraker-materials.js";
 import { normalizeEnvironmentResponse } from "./adapters/moonraker-environment.js";
+import { PrinterObservationStore } from "./observation-store.js";
+import { createObservationPresentation } from "./observation-presentation.js";
+import type { U1Status } from "./u1-status.js";
 
 // Execute the exact production script against a deterministic host/DOM boundary.
 // This is protocol/software evidence, not a browser-layout or mobile test.
@@ -16,6 +19,20 @@ const tick = async () => {
   await new Promise<void>(resolve => setImmediate(resolve));
 };
 
+const overviewStatus = (reachable: boolean, observedAt: string): U1Status => ({
+  schemaVersion: 1, stateVersion: 1, observedAt: reachable ? observedAt : "", reachable,
+  state: reachable ? "printing" : "offline", stateLabel: reachable ? "Printing" : "Offline",
+  progressPercent: reachable ? 42 : null, currentLayer: reachable ? 21 : null,
+  totalLayers: reachable ? 50 : null, elapsedSeconds: reachable ? 600 : null,
+  remainingSeconds: reachable ? 828 : null, refreshAfterSeconds: 15,
+  filename: reachable ? "must-not-render.gcode" : null, activePhysicalTool: reachable ? 1 : null,
+  tools: reachable ? [{ physicalTool: 1, temperature: 220, target: 220, active: true, state: "active" }] : [],
+  bed: { temperature: reachable ? 55 : null, target: reachable ? 55 : null },
+  storage: { active: reachable ? true : null, filePosition: null, fileSize: null },
+  printerMessage: null, exception: false,
+  camera: { available: false, service: null, targetFps: null },
+});
+
 function fixture(view = "queue", extra: Payload = {}): Payload {
   const field = (value: unknown) => ({ state: value === null ? "unknown" : "known", value });
   const module: Payload = {
@@ -23,7 +40,27 @@ function fixture(view = "queue", extra: Payload = {}): Payload {
     provenance: { source: "not_observed", sourceObservedAt: null, detail: "Data mapping is not implemented." },
     items: [], points: [], current: null, readings: [],
   };
-  if (view === "overview") Object.assign(module, { state: "unavailable", status: "deferred", detail: "Overview is deferred." });
+  if (view === "overview") {
+    const statusReceipt = { state: "known", sourceObservedAt: "2026-08-31T11:00:00.000Z", freshness: "fresh" };
+    const domainReceipt = { state: "known", sourceObservedAt: "2026-08-31T11:00:01.000Z", freshness: "fresh", reason: null };
+    Object.assign(module, { state: "known", coverage: "complete", tiles: [
+      { id: "progress", state: "known", receipts: { status: statusReceipt }, printState: "printing",
+        percent: 42, currentLayer: 21, totalLayers: 50, estimatedRemainingSeconds: 828 },
+      { id: "thermals", state: "known", receipts: { status: statusReceipt, environment: domainReceipt },
+        activeTool: 2, activeActualC: 220, activeTargetC: 220, bedActualC: 55, bedTargetC: 55, cavityActualC: 31.5 },
+      { id: "heads", state: "known", receipts: { status: statusReceipt, materials: domainReceipt },
+        activeTool: 2, material: "Snapmaker PLA Matte", color: "#F4B927", reportedPresence: true },
+      { id: "jobs", state: "known", receipts: { currentJob: domainReceipt }, printState: "printing", storageActive: true },
+      { id: "job_history", state: "known", receipts: { jobHistory: domainReceipt }, pageCount: 2,
+        statusCounts: { in_progress: 0, completed: 1, cancelled: 1, error: 0, klippy_shutdown: 0,
+          klippy_disconnect: 0, interrupted: 0, unknown: 0 } },
+      { id: "queue", state: "known", receipts: { queue: domainReceipt }, queueState: "ready", totalCount: 0 },
+      { id: "fans", state: "known", receipts: { environment: domainReceipt }, reportedFanCount: 5,
+        purifierPowerDetected: true, purifierMode: "cool_chamber" },
+      { id: "bed_mesh", state: "known", receipts: { bedMesh: domainReceipt }, active: true,
+        rows: 9, columns: 9, rangeMillimeters: 0.4075 },
+    ] });
+  }
   if (view === "progress") Object.assign(module, {
     state: "known", fields: {
       percent: field(42), currentLayer: field(21), totalLayers: field(50),
@@ -379,10 +416,157 @@ describe("production observation widget host boundary", () => {
     expect(offline.modules.innerHTML).toContain("Offline");
   });
 
-  test("unimplemented overview and unobserved Fans are explicit, not empty success or synthetic charts", () => {
+  test("overview renders eight compact privacy-minimized headlines in one card", () => {
     const overview = mount({ toolOutput: fixture("overview") }).modules.innerHTML;
-    expect(overview).toMatch(/Unavailable|deferred/i);
-    expect(overview).not.toMatch(/Waiting|mesh-placeholder/);
+    for (const text of ["Overview", "Coverage complete", "Progress", "Thermals",
+      "Heads &amp; Filaments", "Current Job", "Job History", "Queue", "Fans &amp; Air",
+      "Bed Mesh", "42%", "Layer 21 / 50", "T2 220° / 220°", "Cavity 32°",
+      "Snapmaker PLA Matte", "Filament reported present", "2 jobs returned",
+      "1 completed · 1 cancelled", "0 jobs queued", "5 of 7 fans reported",
+      "Purifier detected · Cool chamber", "9 × 9 · 0.407 mm range"]) expect(overview).toContain(text);
+    expect((overview.match(/data-overview-tile=/g) ?? []).length).toBe(8);
+    expect((overview.match(/<section class="instrument/g) ?? []).length).toBe(1);
+    expect((overview.match(/aria-label="Refresh observation"/g) ?? []).length).toBe(1);
+    expect(overview).not.toMatch(/fixture\.gcode|history-only\.gcode|file position|file size|mesh-surface|camera|health/i);
+    expect(html).toContain("@media (max-width: 480px) { .overview-grid { grid-template-columns: minmax(0, 1fr); } }");
+
+    const malformed = fixture("overview");
+    malformed.module.tiles[2].material = "secret/access_token/private";
+    malformed.module.tiles[4].pageCount = 21;
+    const isolated = mount({ toolOutput: malformed }).modules.innerHTML;
+    expect((isolated.match(/Data could not be read/g) ?? []).length).toBe(2);
+    expect(isolated).toContain("Coverage partial");
+    expect(isolated).toContain("42%");
+    expect(isolated).toContain("0 jobs queued");
+    expect(isolated).not.toContain("secret/access_token/private");
+  });
+
+  test("Overview rejects state, receipt and headline mismatches one tile at a time", () => {
+    const cases: Array<{ id: string; leak: string; mutate: (tile: Payload) => void }> = [
+      { id: "progress", leak: "42%", mutate: tile => { tile.state = "unknown"; } },
+      { id: "progress", leak: "42%", mutate: tile => { tile.state = "unsupported"; tile.receipts.status = { state: "unsupported", sourceObservedAt: null, freshness: "unknown", reason: "unsupported" }; } },
+      { id: "thermals", leak: "T2 220°", mutate: tile => { tile.state = "unavailable"; tile.receipts.status = { state: "unavailable", sourceObservedAt: null, freshness: "unknown", reason: "timeout" }; } },
+      { id: "thermals", leak: "T2 220°", mutate: tile => { tile.state = "stale"; } },
+      { id: "heads", leak: "Snapmaker PLA Matte", mutate: tile => { tile.state = "unsupported"; tile.receipts.status = { state: "unsupported", sourceObservedAt: null, freshness: "unknown", reason: "unsupported" }; } },
+      { id: "heads", leak: "Snapmaker PLA Matte", mutate: tile => { tile.receipts.materials = { state: "unavailable", sourceObservedAt: null, freshness: "unknown", reason: "network" }; } },
+      { id: "jobs", leak: "Storage active", mutate: tile => { tile.state = "unavailable"; tile.receipts.currentJob = { state: "unavailable", sourceObservedAt: null, freshness: "unknown", reason: "timeout" }; } },
+      { id: "job_history", leak: "2 jobs returned", mutate: tile => { tile.state = "unknown"; tile.receipts.jobHistory = { state: "unknown", sourceObservedAt: null, freshness: "unknown", reason: "not_reported" }; } },
+      { id: "queue", leak: "0 jobs queued", mutate: tile => { tile.state = "stale"; } },
+      { id: "fans", leak: "5 of 7 fans reported", mutate: tile => { tile.state = "unsupported"; tile.receipts.environment = { state: "unsupported", sourceObservedAt: null, freshness: "unknown", reason: "unsupported" }; } },
+      { id: "bed_mesh", leak: "9 × 9", mutate: tile => { tile.state = "unavailable"; tile.receipts.bedMesh = { state: "unavailable", sourceObservedAt: null, freshness: "unknown", reason: "malformed" }; } },
+    ];
+    for (const hostile of cases) {
+      const data = fixture("overview");
+      const tile = data.module.tiles.find((candidate: Payload) => candidate.id === hostile.id)!;
+      hostile.mutate(tile);
+      const available = data.module.tiles.filter((candidate: Payload) => candidate.state === "known" || candidate.state === "stale").length;
+      data.module.coverage = available === 0 ? "none" : available === 8 ? "complete" : "partial";
+      const markup = mount({ toolOutput: data }).modules.innerHTML;
+      expect((markup.match(/Data could not be read/g) ?? []).length).toBe(1);
+      expect(markup).toContain("Coverage partial");
+      expect(markup).toContain("Current Job");
+      expect(markup).not.toContain(hostile.leak);
+    }
+  });
+
+  test("Overview receipt lines show complete bounded time, freshness and mapped reasons", () => {
+    const unavailableReasons = {
+      timeout: "Timed out", unauthorized: "Authorization required", malformed: "Invalid response",
+      too_large: "Response too large", network: "Network unavailable", not_configured: "Not configured",
+      http_error: "Service error",
+    };
+    for (const [reason, label] of Object.entries(unavailableReasons)) {
+      const data = fixture("overview");
+      const jobs = data.module.tiles[3];
+      Object.assign(jobs, { state: "unavailable", printState: null, storageActive: null,
+        receipts: { currentJob: { state: "unavailable", sourceObservedAt: null, freshness: "unknown", reason } } });
+      data.module.coverage = "partial";
+      const markup = mount({ toolOutput: data }).modules.innerHTML;
+      expect(markup).toContain(`Current Job · Unavailable · Observation time unavailable · Freshness unknown · ${label}`);
+      expect(markup).not.toContain(reason);
+      expect((markup.match(/Data could not be read/g) ?? []).length).toBe(0);
+    }
+
+    const states = fixture("overview");
+    Object.assign(states.module.tiles[3], { state: "stale", receipts: { currentJob: {
+      state: "stale", sourceObservedAt: "2026-08-31T11:00:01.000Z", freshness: "stale", reason: "network",
+    } } });
+    Object.assign(states.module.tiles[4], { state: "unknown", pageCount: null, statusCounts: null,
+      receipts: { jobHistory: { state: "unknown", sourceObservedAt: null, freshness: "unknown", reason: "not_requested" } } });
+    Object.assign(states.module.tiles[5], { state: "unsupported", queueState: null, totalCount: null,
+      receipts: { queue: { state: "unsupported", sourceObservedAt: null, freshness: "unknown", reason: "unsupported" } } });
+    Object.assign(states.module.tiles[6], { state: "unknown", reportedFanCount: null, purifierPowerDetected: null, purifierMode: null,
+      receipts: { environment: { state: "unknown", sourceObservedAt: null, freshness: "unknown", reason: "not_reported" } } });
+    states.module.coverage = "partial";
+    const markup = mount({ toolOutput: states }).modules.innerHTML;
+    for (const line of [
+      "Current Job · Stale · Observed ", " · Stale · Network unavailable",
+      "History · Not observed · Observation time unavailable · Freshness unknown · Not requested",
+      "Queue · Unsupported · Observation time unavailable · Freshness unknown · Endpoint unsupported",
+      "Environment · Not observed · Observation time unavailable · Freshness unknown · Not reported",
+    ]) expect(markup).toContain(line);
+    expect((markup.match(/Data could not be read/g) ?? []).length).toBe(0);
+    expect(html).toContain("overflow-wrap: anywhere");
+  });
+
+  test("Overview accepts initial and retained-offline status receipts without restoring headline facts", () => {
+    const cases = [
+      { freshness: "offline", sourceObservedAt: null },
+      { freshness: "stale", sourceObservedAt: "2026-08-31T11:00:00.000Z" },
+    ];
+    for (const retained of cases) {
+      const data = fixture("overview", { freshness: retained.freshness, sourceObservedAt: retained.sourceObservedAt, reachable: false });
+      Object.assign(data.module.tiles[0], { state: "unknown", printState: "unknown", percent: null,
+        currentLayer: null, totalLayers: null, estimatedRemainingSeconds: null,
+        receipts: { status: { state: "unavailable", sourceObservedAt: retained.sourceObservedAt, freshness: retained.freshness } } });
+      data.module.coverage = "partial";
+      const markup = mount({ toolOutput: data }).modules.innerHTML;
+      const progress = markup.match(/<article class="overview-tile" data-overview-tile="progress">[\s\S]*?<\/article>/)![0];
+      expect(progress).toContain("Not observed");
+      expect(progress).not.toContain("Data could not be read");
+      expect(progress).not.toMatch(/42%|Layer 21|Printing/);
+      expect(progress).toContain(retained.freshness === "stale" ? "Observed " : "Observation time unavailable");
+      expect(progress).toContain(retained.freshness === "stale" ? "Stale" : "Offline");
+    }
+  });
+
+  test("real store projections keep offline status facts neutral while preserving independent cavity evidence", async () => {
+    const start = new Date("2026-08-31T11:00:00.000Z");
+    const environment = (receipt: string) => normalizeEnvironmentResponse({ result: { status: {
+      "temperature_sensor cavity": { temperature: 31.5 }, fan: {}, "fan_generic e1_fan": {},
+      "fan_generic e2_fan": {}, "fan_generic e3_fan": {}, "fan_generic cavity_fan": {},
+      purifier: { power_detected: false },
+    } } }, receipt);
+
+    let now = start;
+    const firstFailure = new PrinterObservationStore(async () => { throw new Error("private"); }, () => now,
+      undefined, undefined, undefined, async () => environment(now.toISOString()));
+    const initial = createObservationPresentation(await firstFailure.current({ includeEnvironment: true }), "overview");
+    const initialMarkup = mount({ toolOutput: initial }).modules.innerHTML;
+    expect(initialMarkup).toContain("Cavity 32°");
+    expect(initialMarkup).toContain("Cavity · Known · Observed ");
+    expect(initialMarkup).not.toMatch(/42%|Layer 21|T1 220°|Data could not be read|must-not-render/);
+
+    for (const withEnvironment of [false, true]) {
+      now = start;
+      let statusReads = 0;
+      const store = new PrinterObservationStore(async () => ({
+        status: overviewStatus(statusReads++ === 0, start.toISOString()), metadata: {},
+      }), () => now, undefined, undefined, undefined,
+      withEnvironment ? async () => environment(now.toISOString()) : undefined);
+      await store.current({ includeEnvironment: withEnvironment });
+      now = new Date(start.valueOf() + 16_000);
+      const retained = createObservationPresentation(await store.current({ refresh: true, includeEnvironment: withEnvironment }), "overview");
+      const markup = mount({ toolOutput: retained }).modules.innerHTML;
+      expect(markup).not.toMatch(/42%|Layer 21|T1 220°|Bed 55°|must-not-render|Data could not be read/);
+      expect(markup).toContain("Printer · Unavailable · Observed ");
+      expect(markup).toContain(" · Stale");
+      if (withEnvironment) expect(markup).toContain("Cavity 32°");
+      else expect(markup).toContain("Cavity Unknown");
+    }
+  });
+
+  test("unobserved Fans remain explicit, not empty success or synthetic charts", () => {
     const fans = mount({ toolOutput: fixture("fans") }).modules.innerHTML;
     expect(fans).toContain("Fans not observed");
     expect(fans).toContain("Refresh to request fan and purifier readings.");

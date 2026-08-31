@@ -1,5 +1,61 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 E compact Overview — source-complete handoff
+
+The smallest E source slice is implemented and locally validated: exact
+eight-projector privacy-minimized headlines, per-domain receipts and overall
+coverage, explicit all-domain Overview demand through existing stores, one
+responsive white card with one bottom Refresh, private route/index coverage,
+and runtime 0.4.6/schema 12/observation-v12 plus observation-v11 compatibility.
+Focused cards, Camera, the two-visible/eight-app-only tool inventory and all
+existing adapters remain intact.
+
+Changed application scope is `plugins/u1-print-studio/app` presentation,
+widget, route/runtime wiring and durable tests, plus its `README.md` and plugin
+`PACKAGING.md`. Current records and decisions describe the same frozen contract.
+Repository checks pass 253 app tests/3,559 assertions, 21 lifecycle tests, 22
+shipping tests, TypeScript and repository policy; all three bundles, standalone
+help/signature and six exact asset comparisons pass. Independent validation
+reports 926 assertions green, including hostile state/receipt/fact isolation,
+mapped failure reasons and real initial/retained-offline composition. No
+runtime, service, auth, printer or browser was
+contacted. Next: exact candidate review and commit/PR delivery, followed by the
+already-authorized exact-build deployment, explicit BOTH-service restart and
+scoped verification. Visual/device and user acceptance remain open.
+
+## 2026-08-31 E compact Overview — design handoff
+
+Decision 0021's completion addendum, decision 0029 and OBS-015 freeze the final
+composition boundary. Explicit Overview call/Refresh acquires main status plus
+Materials, Environment, Queue, Bed Mesh, Current Job and Job History concurrently
+through their existing independent readers, receipts, 15-second attempt TTLs,
+coalescing, stale retention, atomic merge and fixture isolation. No adapter,
+cache, timer or normalizer is added. Static/index/health and unrelated focused
+views never fan out; Camera remains separate.
+
+Build one privacy-minimized `OverviewModule` from the exact Progress, Thermals,
+Heads, Current Job, Job History, Queue, Fans and Bed Mesh projector outputs. It
+must not carry full nested modules and leave privacy to the DOM. Each tile has
+explicit receipts keyed by contributor: Progress status; Thermals status plus
+environment; Heads status plus materials; Current Job currentJob; History
+jobHistory; Queue queue; Fans environment; Bed Mesh bedMesh. Header provenance
+is status-only. Coverage complete/partial/none means all/some/none of the eight
+have known or retained stale data; it is not freshness, health or safety.
+
+Render one responsive compact white card with two headline columns collapsing
+to one and exactly one bottom Refresh. Use only the bounded headline facts fixed
+in decision 0021. Exclude full lists/cards, charts, mesh surface, filename,
+project/model identity, bytes, IDs, raw rows/times/metadata, history-total claim,
+Queue rows, profile, camera/media, navigation, pagination and controls.
+
+Target private `/dashboard/overview`, a truthful directory entry, runtime 0.4.6/
+schema 12/observation-v12/camera-v8, 22 resources with observation-v11 retained,
+and unchanged two-visible/eight-app-only tools. Exact base for this docs pass is
+`e7262d7426ab94dca264e04a9d7a32276f287ea1`. No E app/test/Git/service/printer/
+browser mutation or implementation/deployment/live/visual evidence occurred.
+Next: smallest source slice, independent fixtures and exact-candidate review,
+then guarded PR merge/deploy, explicit BOTH-service restart and scoped verify.
+
 ## 2026-08-31 D Current Job/real History — shipped handoff
 
 PR51 exact head `30f1c7bb407d08d19d390acf2b5704a30eff010f` passed formal and

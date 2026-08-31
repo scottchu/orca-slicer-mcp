@@ -196,12 +196,17 @@ describe("Current Job and History inbound composition", () => {
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
     try {
-      for (const view of ["progress", "thermals", "heads", "queue", "fans", "bed_mesh", "overview"] as const)
+      for (const view of ["progress", "thermals", "heads", "queue", "fans", "bed_mesh"] as const)
         await client.callTool({ name: "observe_printer", arguments: { view } });
       expect(currentReads).toBe(0); expect(historyReads).toBe(0);
+      const overview = (await client.callTool({ name: "observe_printer", arguments: { view: "overview" } })).structuredContent as
+        { view: string; module: { tiles: Array<{ id: string }> } };
+      expect(overview.view).toBe("overview");
+      expect(overview.module.tiles.map(tile => tile.id)).toEqual(expect.arrayContaining(["jobs", "job_history"]));
+      expect(currentReads).toBe(1); expect(historyReads).toBe(1);
       expect((await client.callTool({ name: "observe_printer", arguments: { view: "jobs" } })).structuredContent)
         .toMatchObject({ view: "jobs", module: { state: "known", filename: { value: "current.gcode" } } });
-      expect(currentReads).toBe(1); expect(historyReads).toBe(0);
+      expect(currentReads).toBe(1); expect(historyReads).toBe(1);
       expect((await client.callTool({ name: "observe_printer", arguments: { view: "job_history" } })).structuredContent)
         .toMatchObject({ view: "job_history", module: { state: "known", pageCount: 1 } });
       expect(currentReads).toBe(1); expect(historyReads).toBe(1);

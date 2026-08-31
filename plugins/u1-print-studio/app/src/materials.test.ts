@@ -185,8 +185,13 @@ describe("material inbound composition", () => {
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
     try {
-      for (const view of ["progress", "thermals", "bed_mesh", "jobs", "job_history", "queue", "fans", "overview"]) await client.callTool({ name: "observe_printer", arguments: { view } });
+      for (const view of ["progress", "thermals", "bed_mesh", "jobs", "job_history", "queue", "fans"]) await client.callTool({ name: "observe_printer", arguments: { view } });
       expect(reads).toBe(0);
+      const overview = await client.callTool({ name: "observe_printer", arguments: { view: "overview" } });
+      const overviewContent = overview.structuredContent as { view: string; module: { tiles: Array<{ id: string }> } };
+      expect(overviewContent.view).toBe("overview");
+      expect(overviewContent.module.tiles.map(tile => tile.id)).toContain("heads");
+      expect(reads).toBe(1);
       const result = await client.callTool({ name: "observe_printer", arguments: { view: "heads" } });
       expect(result.structuredContent).toMatchObject({ view: "heads", module: { materials: { state: "known" } } });
       const module = (result.structuredContent as { module: { items: unknown[] } }).module;

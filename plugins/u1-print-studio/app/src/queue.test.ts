@@ -77,8 +77,13 @@ describe("queue inbound composition", () => {
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
     try {
-      for (const view of ["progress", "thermals", "heads", "bed_mesh", "jobs", "job_history", "fans", "overview"] as const) await client.callTool({ name: "observe_printer", arguments: { view } });
+      for (const view of ["progress", "thermals", "heads", "bed_mesh", "jobs", "job_history", "fans"] as const) await client.callTool({ name: "observe_printer", arguments: { view } });
       expect(reads).toBe(0);
+      const overview = (await client.callTool({ name: "observe_printer", arguments: { view: "overview" } })).structuredContent as
+        { view: string; module: { tiles: Array<{ id: string }> } };
+      expect(overview.view).toBe("overview");
+      expect(overview.module.tiles.map(tile => tile.id)).toContain("queue");
+      expect(reads).toBe(1);
       const result = await client.callTool({ name: "observe_printer", arguments: { view: "queue" } });
       expect(result.structuredContent).toMatchObject({ view: "queue", module: { state: "known", queueState: "paused", totalCount: 2 } });
       expect(reads).toBe(1);

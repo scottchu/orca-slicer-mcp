@@ -1,5 +1,32 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## E compact Overview design frozen: implementation/visual acceptance pending
+
+final result: blocked
+
+Decision 0021's completion addendum and OBS-015 select one compact white
+headline card rather than a status-only shortcut or eight embedded focused
+cards. Explicit Overview demand composes Progress, Thermals, Heads, Current Job,
+Job History, Queue, Fans and Bed Mesh while preserving each tile's own state,
+time, freshness and reason. Two columns collapse to one; the header printer
+state/time is main-status-only and one 44-pixel Refresh stays at the bottom.
+
+The structured Overview module is itself privacy-minimized; rendering is not the
+privacy boundary. It excludes filenames, project/model identity, IDs, raw rows,
+history-total claims, Queue rows, mesh samples/profile, camera/media and runtime
+details. Complete/partial/none means data coverage only, not overall health,
+safety or freshness. Known empty/inactive counts as available coverage.
+
+No E implementation screenshot, matched viewport/state comparison, browser
+interaction, keyboard result, console inspection, deployment or live-printer
+evidence exists. When source exists, capture at 320/390/720 pixels with complete,
+partial and none coverage; mixed fresh/stale/empty/unsupported/unavailable tiles;
+long localized labels; and zero/nonzero headline values. Verify no horizontal
+overflow, clipped reason/time, hidden private identity, nested full cards, giant
+map, decorative chart/surface, tile actions or false overall verdict. Confirm
+visible focus and the single bottom Refresh. Source/deployment checks cannot turn
+this result into a visual pass.
+
 ## D Current Job and real History deployed: visual acceptance unverified
 
 final result: blocked

@@ -14,13 +14,23 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Implement **E Overview** next. Compose only accepted focused-domain projections
-from shared normalized state; do not add another query, normalization path,
-freshness clock, control surface or giant map. Preserve independently invokable
-A/F/Heads/B/C/D cards and their domain-specific unknown/stale/failure semantics.
-Use the standing exact review → PR merge → exact-build deployment → explicit
-BOTH-service restart → scoped verification sequence. Browser/device visual
-acceptance remains unverified.
+Validate and deliver the source-complete **E Overview** next. It composes only accepted focused-domain projections
+from shared normalized state. Explicit Overview demand concurrently requests
+main status plus all six independent non-camera domains through their existing
+readers/receipts/15-second TTLs/coalescing/stale retention; no static, index,
+health or unrelated focused request may fan out. Produce one privacy-minimized
+`OverviewModule` headline structure from the exact eight projectors—never embed
+full modules and hide private data only in the DOM. Render one compact two-column
+white card collapsing to one column, with per-tile state/time/freshness/reason
+and one bottom Refresh. Camera remains separate. Do not add another query,
+normalizer, cache, timer, synthetic health/freshness verdict, control surface or
+giant map. Preserve independently invokable A/F/Heads/B/C/D cards and their
+domain semantics. Target 0.4.6/schema 12/observation-v12/camera-v8, 22 resources
+plus observation-v11 compatibility and unchanged two-visible/eight-app-only
+tools. Source and durable tests are implemented; do not reopen design or add a
+parallel acquisition path. Complete exact review → PR merge → exact-build deployment → explicit
+BOTH-service restart → scoped verification. Browser/device visual acceptance
+remains unverified.
 
 ### Shipped D Current Job/real History checkpoint
 

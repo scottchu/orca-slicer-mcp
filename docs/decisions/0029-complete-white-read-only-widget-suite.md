@@ -1,8 +1,8 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: A/Heads/B/C/D deployed; E Overview next; visual acceptance unverified
-- Scope: F0/O1, OBS-007/008/010/011/013/014, CAM-008, API-005, decisions 0021/0025/0028
+- Status: A/Heads/B/C/D deployed; E Overview design frozen; visual acceptance unverified
+- Scope: F0/O1, OBS-007/008/010/011/013/014/015, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution
 
@@ -20,6 +20,34 @@ refinement; then overview. Each slice passes local and independent exact-SHA
 review, PR merge, decision 0028 shipping, explicit restart of both existing
 services, and exact assets plus meaningful widget verification. Preserve source,
 protocol/browser, deployment, real-printer, and user-device evidence separately.
+
+## E compact Overview composition (2026-08-31)
+
+Decision 0021's completion addendum and OBS-015 are authoritative. Explicit
+Overview demand composes the exact eight accepted focused projections and
+concurrently requests main status plus all six independent non-camera domains.
+It reuses their existing readers, receipts, 15-second attempt TTLs, coalescing,
+stale retention, fixture isolation and atomic merge. It adds no adapter, cache,
+timer or normalizer; static/index/health and unrelated focused requests never
+fan out, and Camera remains separate.
+
+Render one compact responsive white card, not eight embedded cards or a giant
+map. Two headline columns collapse to one. Progress, Thermals, Heads, Current
+Job, Job History, Queue, Fans and Bed Mesh expose only the privacy-minimized
+facts fixed by decision 0021. Each tile keeps its own state, time, freshness and
+reason; the header printer state/time belongs only to main status. Complete,
+partial and none describe data coverage only and never synthesize overall
+freshness, health or safety. Known empty/inactive remains known coverage.
+
+All information stays above exactly one bottom Refresh. No tile navigation,
+full list, chart, mesh surface, filename, project/model identity, ID, raw row,
+metadata, pagination, camera/media or control is added. Target runtime is 0.4.6/
+schema 12/observation-v12/camera-v8 with 22 resources and observation-v11
+retained; the exact two-visible/eight-app-only tools remain unchanged. Add
+private `/dashboard/overview` and its truthful directory entry only with the
+implemented composition. Exact source and independent review, guarded merge/
+deploy, explicit BOTH-service restart and scoped verification precede user
+review. Browser/device visual acceptance remains separate and unverified.
 
 ## D Current Job and real History integration (2026-08-31)
 

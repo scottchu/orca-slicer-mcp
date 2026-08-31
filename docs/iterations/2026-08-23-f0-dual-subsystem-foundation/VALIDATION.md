@@ -1,5 +1,59 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 E compact Overview — source-complete candidate
+
+The application candidate implements the frozen E contract without a new
+reader, cache, timer or normalizer. Explicit Overview demand reuses main status
+and all six independent optional stores concurrently, then produces only the
+eight privacy-minimized headline projections with their contributor receipts.
+The private index and `/dashboard/overview` route are implemented at runtime
+0.4.6/schema 12/observation-v12/camera-v8 with observation-v11 retained, 22
+resources and the unchanged two-visible/eight-app-only tools.
+
+`./scripts/check-repository.sh` passed TypeScript, **253 app tests with 3,559
+assertions**, **21 lifecycle tests**, **22 shipping tests** and the repository
+contract. Focused optional-domain regressions pass **48 tests/494 assertions**.
+All three bundles built; standalone `--help` and `codesign -vvv --verify`
+passed; six emitted HTML assets exactly match source. SHA-256 is
+`a8a4ac06c136cb2769c0c7c51db323fa61e5c4c47251f97804c80d93ad2c22b4`
+for `public/widget.html`,
+`49a523c56dc00963c2e060e3be23b608b9f866b92ff8e0f8d780716e638d40b4`
+for `public/dashboard-index.html`, and
+`9f5596444b47d4290d2f5425ebcba0251bec181945eda5f4dfe5b212dcc35754`
+for the validation-only signed runtime. Independent validation reports **926
+assertions** green with no remaining source finding. This includes hostile
+tile-state/receipt/headline mismatches, bounded mapped reasons, all 720 domain
+completion orders, and real store→projection→widget initial/retained-offline
+cases. Offline status-backed headlines are neutralized while independent stale
+or fresh cavity evidence remains renderable.
+
+This is static/software and local fixture evidence only. No Git delivery,
+service, auth, Tailscale, printer, mounted-host, browser/device visual or user
+acceptance is claimed.
+
+## 2026-08-31 E compact Overview — design/source checkpoint
+
+The design role inspected current repository contracts and exact source with
+read-only `git status`, `git rev-parse`, `cat`, `sed` and `rg` commands. Exact
+base was `e7262d7426ab94dca264e04a9d7a32276f287ea1`. Current source still projects
+Overview as deferred while already maintaining six independently timed domains
+for Materials, Environment, Queue, Bed Mesh, Current Job and Job History. This
+establishes the implementation gap and reuse boundary; it is not runtime proof.
+
+Decision 0021's completion addendum, decision 0029 and OBS-015 freeze explicit
+Overview fan-out to main status plus those six domains, exact reuse of the eight
+accepted projectors, per-domain receipts, privacy-minimized structured content,
+coverage-only complete/partial/none and one compact top-information/single-bottom-
+Refresh card. No new reader/cache/timer/normalizer, giant map, nested full card,
+camera/media, private job/Queue/mesh detail, navigation or control is accepted.
+Target is 0.4.6/schema 12/observation-v12/camera-v8, 22 resources with
+observation-v11 retained and unchanged two-visible/eight-app-only tools.
+
+No app/test/Git/service/printer/browser mutation occurred in this design pass.
+No E software, protocol, exact-SHA, deployment, live-printer, rendered visual or
+user acceptance is claimed. `git diff --check` is the only design-record gate;
+all later evidence must be recorded separately.
+
 ## 2026-08-31 D Current Job/real History — PR51 deployed
 
 Exact PR51 head `30f1c7bb407d08d19d390acf2b5704a30eff010f` passed formal and

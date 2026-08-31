@@ -5,7 +5,26 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Latest priority (2026-08-31): implement D Current Job/real History as two
+- Latest priority (2026-08-31): implement E compact Overview under decision
+  0021's completion addendum, decision 0029 and OBS-015. Explicit Overview
+  demand concurrently requests main status plus all six independent non-camera
+  domains through their existing readers, receipts, 15-second attempt TTLs,
+  coalescing, stale retention and fixture isolation. Compose the exact eight
+  accepted projectors into one privacy-minimized headline module; do not embed
+  full cards or rely on the renderer to hide filenames, rows, IDs, mesh samples
+  or metadata. Preserve per-tile source state/time/freshness/reason, status-only
+  header provenance, coverage-only complete/partial/none, one compact responsive
+  white card and exactly one bottom Refresh. No new adapter, cache, timer,
+  normalizer, camera/media, navigation or controls. Target 0.4.6/schema 12/
+  observation-v12/camera-v8, 22 resources with observation-v11 retained and
+  unchanged tools. Source/independent/exact review precedes guarded merge/deploy/
+  BOTH restart/scoped verification; visual QA remains unverified.
+- Previous shipped priority (2026-08-31): D Current Job/real History shipped in
+  PR51; exact release `20260831-23f07e3-pr51-resume-20260831T191106-be85c4`
+  runs on BOTH explicitly restarted services at 0.4.5/schema 11/observation-v11/
+  camera-v8. Exact sanitized evidence is recorded in VALIDATION; browser/device
+  visual acceptance remains unverified.
+- Previous design priority (2026-08-31): implement D Current Job/real History as two
   independently timed demand-only domains under decision 0025's addendum,
   decision 0029 and OBS-014. Use only the fixed bounded print_stats/
   virtual_sdcard and latest-20 descending history reads. Preserve safe basenames,

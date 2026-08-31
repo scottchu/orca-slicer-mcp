@@ -8,10 +8,17 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 ## Scope and current reality
 
 Current priority: **E Overview**. Compose accepted focused projections from the
-shared normalized snapshot; do not add another query, normalizer, freshness clock,
-generic map or control. Preserve independently invokable A/F/Heads/B/C/D and
-their truthful empty/partial/unknown/unsupported/unavailable/stale states. All
-deployed cards still require browser/device visual acceptance.
+shared normalized snapshot. Explicit demand concurrently requests main status
+plus all six existing independent non-camera domains, then produces one
+privacy-minimized headline module from the exact eight projectors. Per-tile
+receipts remain explicit; header time is status-only and complete/partial/none
+means coverage only. Render one compact responsive white card with one bottom
+Refresh—not nested full cards or a giant map. Do not add another reader,
+normalizer, cache, timer, camera/media, navigation or control. Target 0.4.6/
+schema 12/observation-v12/camera-v8, 22 resources with observation-v11 retained
+and unchanged tools. Preserve independently invokable A/F/Heads/B/C/D and their
+truthful empty/partial/unknown/unsupported/unavailable/stale states. All deployed
+cards still require browser/device visual acceptance.
 
 Previous shipped priority: **D Current Job/real History**. PR51 exact approved
 head `30f1c7b` merged as `23f07e3`; release
@@ -134,7 +141,7 @@ no unfinished track is cancelled by the new priority.
 | B Queue | Fixed bounded adapter, independent store/projection and white Queue card/index shipped in PR47 | User visual review; preserve no-mutation boundary | Deployed to both restarted services; exact/static/scoped verification recorded separately, visual/device acceptance unverified |
 | C Fans and chamber | Fixed environment route, independent store/projection and two focused cards shipped in PR49 | User visual review; preserve distinct commanded-percent/RPM/state semantics and no controls/health inference | Deployed to both restarted services; scoped one-Fans/one-Thermals telemetry verification passes, visual/device acceptance unverified |
 | D Current Job and History | Fixed independent Current/History reads, stores, projections and white cards shipped in PR51 | User visual review; preserve privacy, contextual identity, page-only count and no-control boundary | Deployed to both restarted services; sanitized scoped telemetry verification passes, visual/device acceptance unverified |
-| E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, next |
+| E Overview | Design-frozen explicit fan-out over existing domains and privacy-minimized composition of eight accepted projectors | One compact responsive white headline card, per-domain receipts and coverage-only summary; no alternate normalization/acquisition path or giant map | Active implementation; source/deployment/visual acceptance pending |
 | G Invokable skills and routes | Focused observation and camera skills delivered | Retain closed selectors and existing invocation; update source guidance/coverage as domains ship, without plugin reinstall | Active acceptance across releases |
 
 Releases A, F surface, B, C, D, and E are independently shippable end-to-end slices.
