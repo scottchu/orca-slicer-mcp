@@ -31,14 +31,16 @@ passing on these bytes. Exact commands and evidence boundaries remain in
 `VALIDATION.md`; screenshots and temporary fixture artifacts are not committed.
 
 The initial implementation/source-only review is delivered in draft PR30 at
-`db4e250`, followed by delivery-record commit `41c4715`. This bounded follow-up
-and its continuity records remain uncommitted at this handoff. Next finish
-coordinator delivery of the follow-up to that existing draft PR. Independent
+`db4e250`, followed by delivery-record commit `41c4715`. The bounded follow-up
+source and evidence are committed and pushed as `643b5dd` through the existing
+draft PR30. Independent
 formal review approves the follow-up with no new findings and scoped visual
 QA passes. The reviewer independently checked the 39-test/337-assertion
 targeted suite, 67 observation/22 camera captures, 13 camera plus three
 keyboard/unavailable behavior checks, 91 manifest hashes, and final screenshots.
-Coordinator push is pending at this record update. Merge,
+The remote branch and open draft PR head matched `643b5dd` at the source
+delivery check. Next obtain separate authorization for merge/rollout and
+actual mounted-phone validation. Merge,
 installation, services, routes/auth, and printer access were not authorized
 by headless validation and are unchanged; separately scope rollout and actual
 mounted mobile acceptance afterward.

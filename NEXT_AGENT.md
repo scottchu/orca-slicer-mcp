@@ -33,8 +33,9 @@ Source commit `db4e250` is pushed and delivered in
 Independent formal review approves source-only with no unresolved findings;
 initial source delivery is complete. The bounded headless follow-up has
 independent formal approval with no new findings and scoped visual QA passes.
-Coordinator delivery through existing draft PR30 is pending at this record
-update; merge/rollout require separate authorization, followed by
+The follow-up source/evidence is pushed as `643b5dd` through existing draft
+PR30; remote branch and open draft head matched at the delivery check.
+Next obtain separate authorization for merge/rollout, followed by
 mounted iPhone validation. Private focused URLs still serve runtime0.3.0;
 `/dashboard` redirects to progress and is not the deferred overview. Static
 route success is not data-mapping or new-version acceptance. Do not repeat the historical install or
@@ -302,8 +303,9 @@ docs/requirements.md, the active iteration, and decisions 0014 through 0023.
 PR28/PR29 persistence delivery is historical completed work. Current decision0023
 source commitdb4e250 has independent source-only approval and draftPR30 delivery.
 Authorized isolated headless validation and scoped visual QA now pass, with
-independent formal approval. Coordinator delivery of the three bounded fixes
-and evidence through existing draftPR30 is pending. The supported browser list was
+independent formal approval. The three bounded fixes and evidence are pushed
+as643b5dd through existing draftPR30. Next obtain separate authorization for
+merge/rollout and actualphone validation. The supported browser list was
 empty, and actual iPhone/fullscreen/PiP or deployed acceptance remains separate.
 Use exact existing owner LaunchAgents, versioned release/pinned Bun, fixed
 focused routes defaulting to progress, and one observation store per process.

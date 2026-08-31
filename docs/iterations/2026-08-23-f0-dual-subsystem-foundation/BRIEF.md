@@ -12,9 +12,10 @@
   controls, and repair only bounded discovered presentation defects. The
   validator's final pass covers 67 observation and 22 camera captures with
   no overflow or console errors. Three screenshot-based P2 corrections address
-  thermal numeric contrast, footer warning contrast, and Jobs wording. Finish
-  independent follow-up review and draft-PR delivery; mounted phone and rollout
-  acceptance remain separate. Keep
+  thermal numeric contrast, footer warning contrast, and Jobs wording.
+  Independent follow-up review and scoped visual QA pass; the follow-up source
+  and evidence are pushed as `643b5dd` through draft PR30. Next obtain separate
+  authorization for merge/rollout and actual mounted-phone validation. Keep
   independent implementation, validation, and visual-review roles. Source is
   already delivered in draft PR30; the final independent visual disposition is
   in `design-qa.md`. This approval does not include merge, deployment, installation,

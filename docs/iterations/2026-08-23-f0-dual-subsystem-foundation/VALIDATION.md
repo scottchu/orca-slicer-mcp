@@ -2,6 +2,14 @@
 
 ## 2026-08-31 authorized isolated headless-browser validation
 
+Source/evidence delivery is complete at commit
+`643b5dde19d55f6ebed8c572033f726d97599d32`. The coordinator verified the
+successful push, matching origin branch and PR30 head, `state: OPEN`, and
+`isDraft: true`; the source tree was clean after delivery. This records the
+actual source delivery check, not a claim that a later documentation-only
+commit has the same hash. Merge, deployment, and actual phone acceptance
+remain separately authorized gates.
+
 After the supported browser proved unavailable, the user explicitly approved
 an isolated headless-browser check. The validator used a temporary browser
 profile/context, the installed Chrome executable, Playwright 1.55.0 installed

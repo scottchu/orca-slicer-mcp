@@ -18,11 +18,12 @@ Last updated: 2026-08-31
   findings. Initial source delivery is complete. The user then explicitly
   authorized isolated headless-browser validation, now completed against
   synthetic observations/media; actual mobile-host and deployment acceptance
-  remain separate. The three screenshot-grounded follow-up fixes below have
-  not been committed or deployed at this record update.
+  remain separate. The three screenshot-grounded follow-up fixes and evidence
+  are committed and pushed as `643b5dd`; they are not deployed.
   Independent formal review now approves the headless follow-up with no new
-  findings, and scoped visual QA passes. Coordinator delivery through the
-  existing draft PR30 is pending at this record update.
+  findings, and scoped visual QA passes. Delivery through existing draft PR30
+  is complete; the source delivery check verified its open draft head at
+  `643b5dd`, matching the remote branch.
   Source reports runtime `0.3.1`, schema `5`, observation-v3/camera-v5;
   observation-v2/v1 and camera-v4 remain current aliases, and all previously
   frozen legacy bytes remain unchanged. Two model-visible/eight app-only
@@ -417,8 +418,8 @@ and final repository-check results.
 Decision 0023 source commit `db4e250` has independent source-only approval and
 is delivered in draft PR30. The authorized isolated headless pass is now
 complete, with independent follow-up approval and scoped visual QA passing.
-Next the coordinator delivers its three bounded fixes and evidence through
-existing draft PR30. Merge/rollout require separate authorization, followed by actual
+The three bounded fixes and evidence are pushed as `643b5dd` through existing
+draft PR30. Next obtain separate authorization for merge/rollout, followed by actual
 mounted iPhone acceptance of snapshot/live/fallback/fullscreen/PiP. Do not
 install, restart services, mutate OAuth/routes, or implement missing data
 domains as an implicit extension of this presentation change. The persistence
