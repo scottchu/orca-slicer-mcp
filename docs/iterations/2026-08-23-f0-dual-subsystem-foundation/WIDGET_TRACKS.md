@@ -7,16 +7,21 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
-Current priority: **C Fans & Chamber** under decision 0029/OBS-013. One fixed
-environment acquisition serves focused Thermals and Fans & Air only. Thermals
-adds actual-only Cavity with independent time/freshness; Fans groups physical
-Tool 1–4 part cooling and Cavity/purifier air handling with distinct commanded
-percent and measured RPM. Preserve explicit zero/not-measured/not-detected/not-
-reported/unsupported/unavailable/stale states, no health inference or controls.
-Target 0.4.4/schema 10/observation-v10/camera-v8 with twenty resources, retained
-observation-v9 and unchanged tool inventory. Implementation, independent review,
-merge/deploy/BOTH restart/scoped verification and visual acceptance are pending.
-Preserve shipped A/F/Heads/B; continue D Current Job/History → E overview.
+Current priority: **D Current Job/real History**, then E Overview. Keep Current
+Job and History independently invokable and distinguish current, empty,
+unimplemented, unavailable and stale data; preserve the shared white compact
+top-information/bottom-action language and no-control boundary. A/F/Heads/B/C
+are deployed; their browser/device visual acceptance remains open.
+
+Previous shipped priority: **C Fans & Chamber**. Exact PR49 head `c14e92c` was
+formally and independently approved and merged as `3ab4ed7`; exact release
+`20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` runs on BOTH explicitly
+restarted, healthy/integrity-verified services at 0.4.4/schema 10/observation-v10/
+camera-v8. Sixteen security checks pass with config/OAuth/routes preserved.
+Tailnet index/Fans/Thermals return 200. Exactly one Fans and one Thermals POST at
+shared source time `2026-08-31T22:27:06.974Z` confirms bounded known/fresh
+environment projections. This is telemetry, not health/safety/accuracy or visual
+evidence. Full delivery chronology and evidence are in VALIDATION.
 
 Previous priority: C began after B Queue shipped in PR47. Exact
 reviewed `1068add` merged as `6d76f9a`; release
@@ -26,13 +31,14 @@ Fourteen static and sixteen security checks pass with config/auth/routes
 preserved and no rollback. Independent checks confirm 15 exact manifest files,
 both service targets, three health/seven static checks, one known/fresh paused-
 empty Queue observation and exact served-widget semantics. Full evidence is in VALIDATION;
-visual/browser/device acceptance remains unverified. Continue C → D → E.
+visual/browser/device acceptance remains unverified. That checkpoint's order was
+C → D → E; the authoritative top section now records C shipped and D next.
 
 Previous priority: **B Queue integration** after PR46's merged Heads rollout
 records (`bd7abc8`). Decision 0029's Queue addendum/OBS-012 bind the existing
 reviewed foundation to the shared store, independent receipt/attempt TTL,
 safe bounded projection and white focused card/index. No new Queue release is
-claimed until the runtime 0.4.3/tool schema 9/observation-v9/camera-v8 candidate
+claimed at this historical checkpoint until the runtime 0.4.3/tool schema 9/observation-v9/camera-v8 candidate
 with nineteen resources and retained observation-v8 passes exact review, merge,
 deployment, BOTH-service restart and scoped verification. A/F/Heads remain deployed; C fans/chamber, D Current Job/
 History and E overview remain active afterward. Browser/device acceptance is
@@ -95,14 +101,15 @@ interactive reported-height surface inside the existing white card. It does
 not request Fluidd's dark dashboard, interpolated-matrix selector or printer
 controls. At that checkpoint the release order was A/F/Heads (deployed) → B →
 C → D → E, B–E were unfinished, and Queue store/widget integration was next.
-The current top section and matrix supersede that history: B is shipped and C
-is next. F0/O1 and C–E remain unfinished; A/F/B visual acceptance remains open. Preserve unrelated checkouts;
+The current top section and matrix supersede that history: B and C are shipped,
+and D is next. F0/O1 and D–E remain unfinished; A/F/B/C visual acceptance remains
+open. Preserve unrelated checkouts;
 any reuse needs explicit integration review. Queue foundation is locally committed as
 `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`;
 independent bounded source/protocol review approves and closes the prior P2.
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
 That standalone foundation was subsequently integrated and shipped in PR47 as
-recorded above. C–E work may continue while the user visually reviews A/F/B;
+recorded above. D–E work may continue while the user visually reviews A/F/B/C;
 no unfinished track is cancelled by the new priority.
 
 | Track | Current source coverage | Required delivery | State |
@@ -114,8 +121,8 @@ no unfinished track is cancelled by the new priority.
 | A5 Heads reference refinement | Deployed in PR45 at 0.4.2: actual-color soft wash, exact swatch/hex and Copy; material acquisition retained | User visual/native-clipboard review | Both-service and independent live-read/served-widget checks pass; visual/device acceptance unverified |
 | F Bed Mesh | Interactive same-sample surface and retained 2D grid deployed in PR43 at 0.4.1 | User visual review of XYZ/legend/exaggeration, pointer/keyboard orbit/reset and 2D fallback | P2 corrected; reviewed and shipped, visual/device acceptance pending |
 | B Queue | Fixed bounded adapter, independent store/projection and white Queue card/index shipped in PR47 | User visual review; preserve no-mutation boundary | Deployed to both restarted services; exact/static/scoped verification recorded separately, visual/device acceptance unverified |
-| C Fans and chamber | Exact fixed environment route/normalization and two-card contract frozen in decision 0029/OBS-013 | Cavity actual + independent time in Thermals; compact Tool 1–4/Cavity/purifier commanded-percent/RPM rows in Fans; no controls/health inference | Implementation and independent acceptance active |
-| D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, after fans/chamber |
+| C Fans and chamber | Fixed environment route, independent store/projection and two focused cards shipped in PR49 | User visual review; preserve distinct commanded-percent/RPM/state semantics and no controls/health inference | Deployed to both restarted services; scoped one-Fans/one-Thermals telemetry verification passes, visual/device acceptance unverified |
+| D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, next |
 | E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |
 | G Invokable skills and routes | Focused observation and camera skills delivered | Retain closed selectors and existing invocation; update source guidance/coverage as domains ship, without plugin reinstall | Active acceptance across releases |
 

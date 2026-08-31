@@ -14,20 +14,26 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Implement **C Fans & Chamber** under decision 0029/OBS-013. Use only the exact
-fixed environment query and normalized fields recorded there. One independent
-15-second demand cache serves focused `thermals` (Cavity actual °C with its own
-time/freshness, no target) and `fans` (Tools 1–4 part cooling, Cavity fan,
-purifier exhaust/inner). Keep commanded percent distinct from measured RPM;
-power not detected is known purifier absence, not Off/unsupported. Preserve
-explicit component-not-reported/unsupported/unavailable/stale states, white
-compact top-information/bottom-Refresh cards and no health claims or controls.
-Target runtime 0.4.4/schema 10/observation-v10/camera-v8, twenty resources and
-retained observation-v9 with unchanged two-visible/eight-app-only tools.
-Complete independent validation/exact-SHA review, then guarded PR merge,
-exact-build deploy, explicit BOTH-service restart and scoped live verification.
-Browser/device visual acceptance remains unverified. Preserve shipped A/F/
-Heads/B and continue D Current Job/History → E overview afterward.
+Implement **D Current Job/real History** next, then E Overview. Preserve shipped
+A/F/Heads/B/C and the closed selectors, independent receipts, bounded private
+projections, compact white top-information/bottom-action cards and no-control
+boundary. Keep Current Job and History independently invokable; do not present
+fixture/empty history as implemented history. Use the standing exact review →
+PR merge → exact-build deployment → explicit BOTH-service restart → scoped
+verification sequence. Browser/device visual acceptance remains unverified.
+
+### Shipped C Fans & Chamber checkpoint
+
+PR49 exact head `c14e92cfc655d0b7a6e7d0138650d7937789d7d1` was formally
+and independently approved and merged as
+`3ab4ed7813a8f2ba45ac63b3093480183c428f28`. Release
+`20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` runs on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at 0.4.4/schema 10/
+observation-v10/camera-v8. Sixteen security checks pass with config/OAuth/routes
+preserved. Tailnet index/Fans/Thermals return 200. Exactly one Fans and one
+Thermals POST at shared source time `2026-08-31T22:27:06.974Z` returned
+known/fresh environment telemetry; browser/device visual acceptance, sensor
+accuracy, health and safety remain unverified.
 
 ### Previous shipped Queue checkpoint
 
@@ -41,9 +47,9 @@ configuration/auth/routes preserved and no rollback. Independent postdeployment
 checks confirm 15 exact manifest files, both service targets, three health/seven
 exact local-tailnet static checks, and exactly one known/fresh paused-empty Queue
 refresh at `2026-08-31T21:31:36.003Z`; exact served-widget semantics pass.
-visual/browser/device acceptance remains unverified. Preserve the Queue contract
-and continue C → D Current Job/History → E overview through the same guarded
-delivery sequence.
+visual/browser/device acceptance remains unverified. At that checkpoint the
+recorded order was C → D Current Job/History → E overview; the authoritative top
+section now records C shipped and D next.
 
 ### Previous Queue source checkpoint
 
@@ -61,9 +67,9 @@ assertions. Independent checks pass the repository suites plus 21 lifecycle,
 bundles/code signing and six exact emitted assets. Formal review's singular-
 summary grammar finding is corrected; renewed author and independent gates are
 green with no findings. Proceed to exact-SHA review.
-Preserve A/F/Heads, independent invocation and C fans/chamber → D Current Job/
-History → E overview. Use exact-SHA approval and the unchanged guarded shipping
-workflow to merge, deploy, restart BOTH services and verify scoped behavior.
+At this historical source checkpoint, preserve A/F/Heads and the planned C → D
+→ E order. Exact-SHA approval and guarded shipping subsequently completed for B
+and C as recorded above.
 Browser discovery remains unavailable; visual/device acceptance is unverified,
 not an automatic block on the user's deployment-first review order.
 
