@@ -141,9 +141,9 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.3.2",
-      toolSchemaVersion: 6,
-      observationWidgetVersion: "observation-v4",
+      runtimeVersion: "0.3.3",
+      toolSchemaVersion: 7,
+      observationWidgetVersion: "observation-v5",
       cameraWidgetVersion: "camera-v5",
     });
   });
@@ -199,9 +199,9 @@ describe("standalone status dashboard", () => {
       expect(html).toBe(expected);
       expect([...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1]))
         .toEqual(routes.map((view) => `/dashboard/${view}`));
-      expect(html.match(/>Implemented<\/span>/g)).toHaveLength(2);
+      expect(html.match(/>Implemented<\/span>/g)).toHaveLength(3);
       expect(html.match(/>Partial<\/span>/g)).toHaveLength(3);
-      expect(html.match(/>Not implemented<\/span>/g)).toHaveLength(4);
+      expect(html.match(/>Not implemented<\/span>/g)).toHaveLength(3);
       expect(html).toContain("Availability describes this release, not printer status.");
       expect(html).not.toMatch(/<script|<iframe|<img|<video|<audio|<form|<button|fetch\(|setInterval|setTimeout|target=|Read.only|Current reading|Printer telemetry|Observed/i);
     }

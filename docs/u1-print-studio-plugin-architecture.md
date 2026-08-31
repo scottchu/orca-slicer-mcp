@@ -5,6 +5,13 @@ project's stable architecture and ontology. The code is intentionally smaller
 than the target architecture. Where it shortcuts an intended boundary, that is
 called out rather than presented as finished product structure.
 
+Current source is runtime 0.3.3/schema 7/observation-v5/camera-v5: twelve
+resources, nine observation selectors and nine directory links, with two
+model-visible/eight app-only tools. Bed Mesh's end-to-end implementation and
+the new repository shipping workflow are software-validated, pending final
+exact-commit review and shipping.
+Deployed PR33 remains 0.3.2/schema 6/observation-v4/camera-v5 until rollout.
+
 ## One plugin, several layers
 
 ```text
@@ -28,7 +35,7 @@ shared observation store
 focused observation projector
   observation-presentation.ts
         |
-        +--> one requested observation-v4 Instrument Strip
+        +--> one requested observation-v5 Instrument Strip
         +--> matching structuredContent and text summary
         +--> frozen legacy status projection for retained tasks
 
@@ -71,6 +78,7 @@ inbound protocol, not the core product boundary.
 | Identity boundary | `app/src/personal-oauth.ts` | Personal authorization code, PKCE, distinct public assertion/private enrollment origins, token audience, and `u1.monitor` scope |
 | ICE credential boundary | `app/src/camera-ice-config.ts` | Reads explicit bounded STUN and derives per-session RFC5766 TURN REST credentials from a server-only shared secret |
 | Observation adapter | `app/src/u1-status.ts` | Queries the allowlisted Moonraker status and camera paths and normalizes their response |
+| Bed-mesh adapter/domain | `app/src/adapters/moonraker-bed-mesh.ts` and `application/bed-mesh-observation.ts` | Fixed selected-field GET, bounded reported probe grid and explicit active/inactive/unavailable evidence; never calibrates or loads profiles |
 | Shared observation store | `app/src/observation-store.ts` | Owns the current snapshot identity, explicit due refresh, concurrent-read coalescing, stale retention, and connection epochs |
 | Focused projector | `app/src/observation-presentation.ts` | Produces exactly one requested read-only module plus the shared observation envelope and explicit evidence states |
 | Camera relay application service | `app/src/application/camera-relay.ts` | Owns ticket or direct lease, concurrency, and duration policy without MCP or HTTP types |
@@ -79,18 +87,27 @@ inbound protocol, not the core product boundary.
 | Optional media inbound adapter | `app/src/adapters/camera-webrtc-http.ts` | Retains the standalone dashboard's exact ticketed HTTP signaling route over the same application service |
 | Ticket codec adapter | `app/src/adapters/camera-ticket-codec.ts` | Issues opaque random ticket material and hashes it for in-memory lookup |
 | Adapter-shaped status | `U1Status` | Normalized input captured by the shared observation store; not itself the public focused schema |
-| Interactive observation presenter | `public/widget.html` | Renders one observation-v4 Instrument Strip and requests only app-private refresh for its selected view |
+| Interactive observation presenter | `public/widget.html` | Renders one observation-v5 Instrument Strip and requests only app-private refresh for its selected view |
 | Interactive camera presenter | `public/camera-widget.html` | Renders the separate camera-v5 snapshot-first Instrument Strip and owns Go Live, Close, retry, and fallback |
 | Private widget directory | `public/dashboard-index.html` | Static nine-link navigation at both dashboard roots, including separate Current Job and Job History; reports implementation coverage without acquiring observations or media; inlined in the HTTP bundle |
 | Frozen compatibility presenters | `public/legacy-widget.html` and `legacy-camera-widget.html` | Preserve exact former status-v4/v3 and camera-v3/v2/v1 bytes for retained mounted tasks |
 | Static presenter | `status-card-image.ts` | Renders a portable PNG from one `U1Status` snapshot |
 | Workflow skills | `skills/` | Route focused one-shot observation through `u1-observe-printer` and guide setup, monitoring, preparation, and authorized start without becoming runtime authority |
+| Repository shipping workflow | Root `.agents/skills/u1-ship` and `scripts/u1_ship.py` | Explicitly authorized operator validation/merge/deployment/restart/verification through `u1_service.py`; not a plugin skill or MCP Admin tool; final exact-commit review pending |
 
 The store implements the bounded current-state portion of
 `QueryCurrentPrinterObservation`: after initial acquisition, plain reads are cache-only, explicit refresh
 captures upstream only when the shared snapshot is due, concurrent callers
 coalesce onto one read and observation identity, and failed/offline refreshes
 retain the last reachable values as stale with their original source time.
+Focused Bed Mesh demand additionally uses the same store's dedicated reader,
+independent 15-second attempt bound, coalescing, receipt clock, and stale
+retention. Other views and static/health reads never acquire a mesh. A valid
+inactive mesh clears prior data; failed acquisition cannot restamp old data or
+inherit unrelated status freshness. The small reported-grid view preserves XY
+orientation, mm summaries and valid all-zero data without interpolated fallback
+or a physical-level/safety verdict. This source path passed software validation,
+with final exact-commit review pending; it is not verified against the real printer.
 This is not yet the decision-0006 resident subscription monitor, durable event
 history, or full reconnect bootstrap; those remain later architecture gates.
 
@@ -105,7 +122,7 @@ MCP Apps bridge.
 
 | MCP member | Semantic category | Result contract |
 | --- | --- | --- |
-| `observe_printer` | Observe and present, model-visible | Requires one closed view from overview, progress, thermals, heads, jobs, job_history, queue, fans, or bed_mesh; jobs selects Current Job and job_history selects separate Job History; returns one observation-v4 projection |
+| `observe_printer` | Observe and present, model-visible | Requires one closed view from overview, progress, thermals, heads, jobs, job_history, queue, fans, or bed_mesh; jobs selects Current Job and job_history selects separate Job History; returns one observation-v5 projection |
 | `open_printer_camera` | Observe and present, model-visible | Reads one relayed snapshot and links a fresh camera-v5 camera-only presentation without allocating a stream session |
 | `refresh_printer_observation` | Observe, app-only | Refreshes the mounted strip through the same store and projector without opening another widget |
 | `show_u1_status` | Observe and present, app-only compatibility | Frozen retained-card alias returning the prior status payload, PNG, and status-v4 resource |
@@ -115,7 +132,7 @@ MCP Apps bridge.
 | `answer_u1_camera_stream` | Observe, app-only | Accepts one bounded, idempotent WebRTC answer for the active session |
 | `add_u1_camera_ice_candidates` | Observe, app-only | Accepts bounded and deduplicated ICE candidate batches |
 | `close_u1_camera_stream` | Observe, app-only | Idempotently closes the session and releases its lease |
-| `ui://u1-print-studio/observation-v4.html` | Current observation resource | Self-contained focused Instrument Strip with top timestamp/freshness/feedback, bottom-only refresh/retry actions, and empty external CSP; observation-v3/v2/v1 are current aliases |
+| `ui://u1-print-studio/observation-v5.html` | Current observation resource | Self-contained focused Instrument Strip with top timestamp/freshness/feedback, bottom-only refresh/retry actions, and empty external CSP; observation-v4/v3/v2/v1 are current aliases |
 | `ui://u1-print-studio/camera-v5.html` | Current camera resource | Image-only top snapshot/live/fallback time and feedback, with feature-detected display/live controls at bottom right; camera-v4 is a current alias, network diagnostics stay internal |
 | `ui://u1-print-studio/status-v4.html` and `status-v3.html` | Frozen status resources | Exact former large-card bytes for mounted-task compatibility only |
 | `ui://u1-print-studio/camera-v3.html`, `camera-v2.html`, and `camera-v1.html` | Frozen camera resources | Exact former camera bytes for mounted-task compatibility only |
@@ -133,7 +150,7 @@ The normal local-first route is:
 ```text
 Codex desktop -> stdio MCP -> observe_printer(view)
               -> shared store -> one focused structured projection
-              -> desktop mounts observation-v4
+              -> desktop mounts observation-v5
               -> app-only refresh returns the same selected projection
               -> open_printer_camera mounts camera-v5 separately
               -> Go Live uses MCP Apps tools/call for bounded signaling
@@ -155,7 +172,7 @@ The optional developer HTTP route is:
 ```text
 Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
               -> observe_printer(view)
-              -> text + focused structured projection + observation-v4 link
+              -> text + focused structured projection + observation-v5 link
               -> open_printer_camera mounts the snapshot-first camera-v5 widget
               -> Go Live calls app-only open_u1_camera_stream once
               -> answer, ICE, and close stay on the MCP Apps tools/call bridge
@@ -198,7 +215,7 @@ PreparedPrintJob --authorized Handoff--> PrintSession --targets--> Printer
 The current plugin implements a narrow shared current observation of `Printer`
 plus separately timestamped camera acquisition. `U1Status` normalizes raw
 Moonraker fields; the store adds freshness, connection epoch, and session
-provenance; observation-v4 projects one selected module. Current Job and Job
+provenance; observation-v5 projects one selected module. Current Job and Job
 History are separate projections, and history remains explicitly unimplemented
 with no observed history timestamp. None is yet a durable
 event, correlated print session, outcome, or verification record.
@@ -223,8 +240,10 @@ does not implement Preparation or Control.
 - Focused projectors never call Moonraker. They consume one store snapshot and
   preserve observation version, source time, receive time, freshness,
   connection epoch, session provenance, and capability evidence.
-- Cavity, material/color, history, queue, fan/purifier, and bed-mesh objects
-  remain advertised or unknown until their live read-only mappings are accepted.
+- Cavity, material/color, history, queue, and fan/purifier objects remain
+  advertised or unknown until their read-only mappings are accepted. Bed Mesh
+  now has a software-validated bounded source mapping, pending final
+  exact-commit review and separate live-data verification.
 - Printer and camera addresses remain private; the widget never connects to
   them directly.
 - MCP maps a `Go Live` request and its app-only signaling calls to an
@@ -256,9 +275,11 @@ does not implement Preparation or Control.
 
 ## Intended next abstraction step
 
-Map the still-advertised live domains through explicit read-only adapter
-fixtures, then add accepted focused projectors for jobs/history, queue,
-fans/purifier, and bed mesh. Compose overview only after every focused module
+Complete independent Bed Mesh and operator-workflow acceptance, then the
+authorized exact-source rollout. Map remaining domains through explicit
+read-only adapter fixtures: history, queue, cavity/materials and fans/purifier.
+Current Job is already a separate limited projection; history stays unknown.
+Compose overview only after every focused module
 passes. A resident monitor and event store come later, when subscription,
 reconnect bootstrap, durable history, and multi-turn monitoring are implemented
 and validated; the current explicit-refresh store does not claim those outcomes.

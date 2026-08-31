@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
+import { normalizeBedMeshResponse, BED_MESH_MAX_DIMENSION } from "./adapters/moonraker-bed-mesh.js";
+import { unavailableBedMesh } from "./application/bed-mesh-observation.js";
 
 // Execute the exact production script against a deterministic host/DOM boundary.
 // This is protocol/software evidence, not a browser-layout or mobile test.
@@ -271,12 +273,12 @@ describe("production observation widget host boundary", () => {
       expect(markup.indexOf("<footer ")).toBeGreaterThan(markup.indexOf("</header>"));
       const header = markup.match(/<header [\s\S]*?<\/header>/)![0];
       const footer = markup.match(/<footer [\s\S]*?<\/footer>/)![0];
-      expect(header).toContain(view === "job_history" ? "Observation time unavailable" : "Observed ");
+      expect(header).toContain(view === "job_history" || view === "bed_mesh" ? "Observation time unavailable" : "Observed ");
       expect(header).toContain('class="refresh-error" role="status"');
       expect(header).not.toContain("<button");
       expect(footer).toMatch(/^<footer class="instrument-footer"><button[\s\S]*<\/button><\/footer>$/);
       expect(footer).not.toMatch(/<time|Observed|refresh-error|freshness-warning|role="status"/);
-      expect(markup).toContain(view === "job_history" ? "Observation time unavailable" : "Observed ");
+      expect(markup).toContain(view === "job_history" || view === "bed_mesh" ? "Observation time unavailable" : "Observed ");
       expect(markup).not.toMatch(/Read only|Current reading|Printer telemetry/);
     }
   });
@@ -311,7 +313,7 @@ describe("production observation widget host boundary", () => {
   });
 
   test("unimplemented domains are named, not empty success or synthetic charts", () => {
-    for (const view of ["queue", "fans", "bed_mesh", "overview"]) {
+    for (const view of ["queue", "fans", "overview"]) {
       const markup = mount({ toolOutput: fixture(view) }).modules.innerHTML;
       expect(markup).toMatch(/Unknown|Unavailable|not implemented|deferred/i);
       if (view !== "overview") expect(markup).toContain("Not implemented yet");
@@ -321,6 +323,81 @@ describe("production observation widget host boundary", () => {
     const thermal = mount({ toolOutput: fixture("thermals") }).modules.innerHTML;
     expect(thermal).not.toContain('class="trace');
     expect(thermal).toContain("220°");
+  });
+});
+
+describe("reported bed mesh widget", () => {
+  const receipt = "2026-08-31T12:34:56.000Z";
+  const mesh = (matrix: unknown = [[-0.2, 0, 0.1], [0.3, -0.1, 0.4]]) => normalizeBedMeshResponse({ result: { status: { bed_mesh: {
+    profile_name: "Fixture", mesh_min: [10, 20], mesh_max: [110, 220], probed_matrix: matrix,
+  } } } }, receipt);
+  const data = (module: Payload) => fixture("bed_mesh", { freshness: "offline", sourceObservedAt: null, module: { ...module, kind: "bed_mesh" } });
+
+  test("renders reported rectangular grid in XY orientation with own receipt and numeric summary", async () => {
+    const card = mount({ toolOutput: data(mesh()) });
+    await card.initialize();
+    const markup = card.modules.innerHTML;
+    expect(markup).toContain("Reported probe grid · 3 × 2");
+    expect(markup).toContain("-0.200 mm"); expect(markup).toContain("0.400 mm"); expect(markup).toContain("0.600 mm");
+    expect(markup).toContain('data-row="1" data-column="0" x="60" y="18"');
+    expect(markup).toContain('data-row="0" data-column="0" x="60" y="113"');
+    expect(markup).toContain("X 10.000 mm, Y 220.000 mm, Z 0.300 mm");
+    expect(markup).toContain("X (mm)"); expect(markup).toContain("Y (mm)");
+    const top = markup.match(/<header [\s\S]*?<\/header>/)![0];
+    expect(top).toContain("Observed "); expect(top).not.toContain("Offline");
+    expect(markup.match(/<rect /g)).toHaveLength(6);
+    expect(markup).not.toContain("tabindex");
+    expect(markup.match(/<footer [\s\S]*?<\/footer>/)![0]).not.toMatch(/Observed|mm|grid|Stale/);
+    const pending = card.controls.refresh(); await tick();
+    const request = card.sent.find(item => item.method === "tools/call")!;
+    expect(request.params).toEqual({ name: "refresh_printer_observation", arguments: { view: "bed_mesh" } });
+    card.respond(request, { structuredContent: data(mesh()) }); await pending;
+  });
+  test("all-zero is uniform valid data and maximum matrix remains bounded", () => {
+    const zero = mount({ toolOutput: data(mesh([[0, 0], [0, 0]])) }).modules.innerHTML;
+    expect(zero).toContain("0.000 mm"); expect(zero).not.toMatch(/NaN|Infinity|unavailable/);
+    expect(new Set([...zero.matchAll(/fill="(hsl[^\"]+)"/g)].map(match => match[1])).size).toBe(1);
+    const largest = mount({ toolOutput: data(mesh(Array.from({ length: BED_MESH_MAX_DIMENSION }, () => Array(BED_MESH_MAX_DIMENSION).fill(0)))) }).modules.innerHTML;
+    expect(largest.match(/<rect /g)).toHaveLength(4096);
+    const invalid = mount({ toolOutput: data(mesh([[0, 0], [0, NaN]])) }).modules.innerHTML;
+    expect(invalid).toContain("Bed mesh unavailable"); expect(invalid).not.toContain("<rect ");
+  });
+  test("compacts extreme axis labels while preserving exact accessible bounds and quiet visible content", () => {
+    const value = mesh();
+    value.bounds = { xMin: -999999.123456, xMax: 999999.987654, yMin: -999999.123456, yMax: 999999.987654 };
+    const markup = mount({ toolOutput: data(value) }, 320).modules.innerHTML;
+    const labels = [...markup.matchAll(/<text [^>]*>([^<]+)<\/text>/g)].map(match => match[1]);
+    expect(labels).toEqual(["1.00e6", "-1.00e6", "Y (mm)", "-1.00e6", "1.00e6", "X (mm)"]);
+    expect(markup).toContain("X -999999.123456 to 999999.987654 mm, Y -999999.123456 to 999999.987654 mm");
+    expect(markup).toContain("Observation time is the server receipt, not a new calibration or probe capture time.");
+    expect(markup).not.toContain('class="mesh-note"');
+    expect(markup).not.toContain("<p>Reported grid values");
+  });
+  test("inactive, stale inactive, unsupported and unknown never become flat measured grids", () => {
+    const inactive = { ...mesh(), status: "no_active_mesh", matrix: null, bounds: null, summary: null };
+    const cases: Array<[Payload, string]> = [
+      [inactive, "No active mesh"],
+      [{ ...inactive, state: "stale", freshness: "stale", reason: "network" }, "Last observation: no active mesh"],
+      [unavailableBedMesh("not_reported"), "Bed mesh not reported"],
+      [unavailableBedMesh("not_requested"), "Bed mesh not observed"],
+      [unavailableBedMesh("network"), "Bed mesh unavailable"],
+    ];
+    for (const [module, expected] of cases) {
+      const markup = mount({ toolOutput: data(module) }).modules.innerHTML;
+      expect(markup).toContain(expected); expect(markup).not.toContain("<rect ");
+      if (!module.sourceObservedAt) expect(markup).toContain("Observation time unavailable");
+    }
+    const stale = mount({ toolOutput: data({ ...mesh(), state: "stale", freshness: "stale", reason: "network" }) }).modules.innerHTML;
+    expect(stale.match(/<header [\s\S]*?<\/header>/)![0]).toContain("Refresh unavailable");
+    expect(stale).toContain("Stale"); expect(stale.match(/<rect /g)).toHaveLength(6);
+  });
+  test("untrusted malformed grids and profile injection fail closed without breaking the view", () => {
+    for (const matrix of [null, [], [[0, 1]], [[0, 1], [2]], Array.from({ length: 65 }, () => [0, 0]), [[0, 0], [0, Infinity]]]) {
+      const markup = mount({ toolOutput: data({ ...mesh(), matrix }) }).modules.innerHTML;
+      expect(markup).toContain("Bed mesh unavailable"); expect(markup).not.toContain("<rect ");
+    }
+    const markup = mount({ toolOutput: data({ ...mesh(), profile: '<img src=x onerror="evil()">' }) }).modules.innerHTML;
+    expect(markup).not.toContain("evil"); expect(markup).toContain("Reported probe grid");
   });
 });
 

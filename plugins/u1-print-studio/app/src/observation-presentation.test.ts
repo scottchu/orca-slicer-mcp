@@ -127,7 +127,7 @@ describe("printer observation presentation", () => {
   });
 
   test("marks advertised but unnormalized domains unknown", () => {
-    for (const view of ["queue", "fans", "bed_mesh"] as const) {
+    for (const view of ["queue", "fans"] as const) {
       const result = createObservationPresentation(snapshot(), view);
       expect(result.module).toMatchObject({
         kind: view,

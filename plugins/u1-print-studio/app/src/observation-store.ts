@@ -1,4 +1,5 @@
 import type { U1Status, U1WidgetMetadata } from "./u1-status.js";
+import { BED_MESH_TTL_MS, unavailableBedMesh, type BedMeshObservation, type BedMeshReader } from "./application/bed-mesh-observation.js";
 
 export type Freshness = "fresh" | "stale" | "offline" | "unknown";
 export type CapabilityEvidence =
@@ -34,6 +35,7 @@ export type ObservationSnapshot = {
   };
   status: U1Status;
   metadata: U1WidgetMetadata;
+  bedMesh?: BedMeshObservation;
 };
 
 type StatusReader = () => Promise<{
@@ -77,13 +79,61 @@ export class PrinterObservationStore {
   private observationVersion = 0;
   private connectionEpoch = 0;
   private previouslyReachable = false;
+  private bedMesh = unavailableBedMesh("not_requested");
+  private bedMeshInFlight: Promise<void> | null = null;
 
   constructor(
     private readonly readStatus: StatusReader,
-    private readonly now: () => Date = () => new Date()
+    private readonly now: () => Date = () => new Date(),
+    private readonly readBedMesh?: BedMeshReader
   ) {}
 
-  async current(options: { refresh?: boolean } = {}): Promise<ObservationSnapshot> {
+  async current(options: { refresh?: boolean; includeBedMesh?: boolean } = {}): Promise<ObservationSnapshot> {
+    await Promise.all([
+      this.currentStatus(options),
+      options.includeBedMesh ? this.currentBedMesh(options.refresh === true) : Promise.resolve(),
+    ]);
+    // A concurrent status or mesh receipt may have advanced the shared version.
+    // Attach the latest independent domain instead of a captured older snapshot.
+    const bedMesh = this.bedMeshWithCurrentFreshness();
+    const snapshot = this.withCurrentFreshness(this.snapshot!);
+    return { ...snapshot, bedMesh, capabilityEvidence: {
+      ...snapshot.capabilityEvidence,
+      bedMesh: bedMesh.sourceObservedAt !== null ? "observed" : bedMesh.state === "unsupported" ? "unsupported" : "unknown",
+    } };
+  }
+
+  private async currentBedMesh(refresh: boolean): Promise<void> {
+    const checked = Date.parse(this.bedMesh.checkedAt ?? "");
+    const due = !Number.isFinite(checked) || this.now().valueOf() - checked >= BED_MESH_TTL_MS;
+    if (this.bedMesh.checkedAt !== null && (!refresh || !due)) return;
+    if (!this.readBedMesh) return;
+    if (!this.bedMeshInFlight) {
+      this.bedMeshInFlight = (async () => {
+        let result: BedMeshObservation;
+        try { result = await this.readBedMesh!(); }
+        catch { result = unavailableBedMesh("network", this.now().toISOString()); }
+        if (result.state === "known") this.bedMesh = result;
+        else if (this.bedMesh.sourceObservedAt !== null) this.bedMesh = {
+          ...this.bedMesh, state: "stale", freshness: "stale",
+          checkedAt: result.checkedAt ?? this.now().toISOString(), reason: result.reason,
+        };
+        else this.bedMesh = { ...result, checkedAt: result.checkedAt ?? this.now().toISOString() };
+        const version = ++this.observationVersion;
+        if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
+      })().finally(() => { this.bedMeshInFlight = null; });
+    }
+    await this.bedMeshInFlight;
+  }
+
+  private bedMeshWithCurrentFreshness(): BedMeshObservation {
+    if (this.bedMesh.state !== "known") return this.bedMesh;
+    const observed = Date.parse(this.bedMesh.sourceObservedAt ?? "");
+    return !Number.isFinite(observed) || this.now().valueOf() - observed >= BED_MESH_TTL_MS
+      ? { ...this.bedMesh, state: "stale", freshness: "stale" } : this.bedMesh;
+  }
+
+  private async currentStatus(options: { refresh?: boolean } = {}): Promise<ObservationSnapshot> {
     if (this.snapshot && (!options.refresh || !this.isDue(this.snapshot))) {
       return this.withCurrentFreshness(this.snapshot);
     }
@@ -122,7 +172,24 @@ export class PrinterObservationStore {
   }
 
   private async load(): Promise<ObservationSnapshot> {
-    const result = await this.readStatus();
+    // A failed first status read must not discard an independently successful
+    // mesh receipt. Normalize the absent status; never surface upstream errors.
+    const result = await this.readStatus().catch((error: unknown) => {
+      if (this.snapshot) throw error;
+      return {
+      status: {
+        schemaVersion: 1, stateVersion: 0, observedAt: "", reachable: false,
+        state: "offline", stateLabel: "Offline", progressPercent: null,
+        currentLayer: null, totalLayers: null, elapsedSeconds: null, remainingSeconds: null,
+        refreshAfterSeconds: 15, filename: null, activePhysicalTool: null, tools: [],
+        bed: { temperature: null, target: null },
+        storage: { active: null, filePosition: null, fileSize: null },
+        printerMessage: null, exception: false,
+        camera: { available: false, service: null, targetFps: null },
+      } satisfies U1Status,
+      metadata: {},
+      };
+    });
     const reachableBasis = this.lastReachableSnapshot;
     const retainedOffline = !result.status.reachable && reachableBasis !== null;
     const status = retainedOffline

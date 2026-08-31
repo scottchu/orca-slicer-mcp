@@ -1,5 +1,189 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 Shipping build-scratch guard follow-up
+
+The operator's first authorized PR34 shipping attempt at reviewed head
+`5a73932476e93e271fd91c4e0f3611696a3c6337` passed its local gates, then stopped
+at the clean-tree merge-edge guard because the pinned Bun compiler left a
+generated runtime scratch copy in the app directory. The operator reported
+no merge or service mutation; this was a safe stop, not a deployment success.
+
+The follow-up ignores only that app-local compiler filename pattern:
+a dot, sixteen lowercase hexadecimal digits, a hyphen, eight hexadecimal
+digits, and `.bun-build`. It does not ignore unrelated files, similarly named
+files elsewhere, malformed names or tracked changes. The shipping script and
+its clean-tree guard are unchanged.
+
+- Independent `uv run --no-project scripts/test_u1_ship.py` passed **22 tests**,
+  including a real isolated Git regression for the precise ignore pattern and
+  retained dirty-tree rejection.
+- Independent `./scripts/check-repository.sh` passed again: **165 app tests /
+  2,200 assertions**, **21 lifecycle tests**, **22 shipping tests**, TypeScript
+  and the repository contract. Earlier 21-test shipping counts below record
+  the earlier frozen gate rather than this follow-up.
+- The implementation role separately reported a successful 594-module
+  `bundle:runtime` and signature check using the actual pinned release-local
+  Bun, with the generated scratch no longer appearing as unexpected Git dirt.
+  This does not claim that the next guarded shipping attempt has run.
+- Current SHA-256: `.gitignore`
+  `eca2c77db6f8af1b3ea42b87a58c97e09813b705bd610df35c3470b7dcebfbd6`;
+  shipping tests
+  `538029f89ca01614d91c821bdea77aef973b112109917545b28c938ac5298fc8`;
+  unchanged shipping script
+  `49448de3ca32ba52917ec900d478901e2ec3590c887fa5cabddf4e67c9254978`.
+
+## 2026-08-31 Independent reported Bed Mesh validation
+
+This gate validates the isolated Bed Mesh source slice on baseline `7b9c4d4`.
+The paused queue worktree was not tested or changed. Bed Mesh production
+deployment and real-printer acceptance are not inferred from these fixtures;
+the separate PR33 live check below concerns the previously deployed release.
+
+### Source, protocol and packaging
+
+- `./scripts/check-repository.sh` passed TypeScript, **165 app tests / 2,200
+  assertions**, **21 lifecycle tests**, **21 shipping-script tests**, and the
+  repository contract on the final source below.
+- The independent outside-repository command
+  `bun --no-env-file --config=/dev/null test independent.test.ts` passed
+  **24 tests / 228 assertions**. Six tests exercised the actual curl adapter
+  against an ephemeral loopback HTTP fixture: the exact probed-only GET,
+  receipt timestamps, no redirects, HTTP/auth/error classification, malformed
+  and oversized bodies, disconnection, the real six-second deadline, and
+  rejected origins. No printer or real camera was contacted.
+- Normalization checks covered asymmetric 2-by-3 orientation, valid all-zero
+  data, the complete no-active sentinel, absent versus malformed objects,
+  rejection of interpolated fallback, rectangular/finite/coordinate/64-by-64
+  limits, and omission of path/control/bidi/private profile information.
+- Application checks covered independent 15-second mesh versus 300-second
+  status TTL, no background acquisition, cache/coalescing, stale populated
+  and inactive retention without retimestamping, successful inactive clearing,
+  both cross-domain completion orders, projection isolation, and first-ever
+  thrown status failure with a successful fresh mesh.
+- Actual SDK calls and actual HTTP handlers verified selected-view acquisition,
+  absent-reader no-network behavior, and the production default shared-store
+  wiring across separate HTTP MCP app instances. The fixture process pinned
+  its only upstream origin to loopback. Two initial fixture failures were
+  corrected: the full ten-tool SDK inventory requires a camera-controller
+  stub, and Bun's `closeAllConnections()` stopped the timeout fixture listener
+  before the final suite. Neither correction changed product code.
+- `bun --no-env-file --config=/dev/null run bundle`, `run bundle:server`,
+  `run bundle:runtime`, `codesign -vvv --verify dist/u1-print-studio`, and both
+  current-widget source/dist `cmp` checks passed. Independent
+  `bun --no-env-file --config=/dev/null run packaging.ts` compared all six
+  distributed assets, decoded the HTTP bundle's embedded directory exactly,
+  and read all **12 resource URIs** through the SDK with zero acquisitions.
+  Observation v5/v4/v3/v2/v1, preserved status aliases, and all current/legacy
+  camera resources mapped to their expected source bytes.
+- Current camera HTML, both frozen legacy HTML assets, and `u1_service.py`
+  remained byte-identical to `7b9c4d4`. Runtime contract is **0.3.3 / schema 7 /
+  observation v5 / camera v5**, with two model-visible and eight app-only tools.
+
+### Actual isolated browser evidence
+
+`node capture.mjs <FIXTURE_ORIGIN>` loaded the exact source widget through an
+isolated synthetic bridge, not a mock replacement UI. Chrome 152 captured
+**nine images**, all opened by the validator, with **15 behavior checks** and
+**28 private/public/invalid route checks**. Widths 320/390/720 and light/dark
+states covered asymmetric normal, flat, stale, inactive, retained inactive,
+unsupported, malformed, hostile profile and extreme high-precision bounds.
+DOM-only cases additionally covered offline status with fresh mesh, the full
+4,096-cell grid, unknown and unavailable states.
+
+- Four distinct corner titles proved X increases rightward and Y increases
+  upward; min/max/range and the domain's own receipt time matched the fixture.
+  Flat grids had a uniform fill. Unknown/error states had no fabricated grid
+  or timestamp. Selected refresh called only `bed_mesh`; failed widget refresh
+  preserved the grid/time and placed the error in the header.
+- An actual narrow-screen failure exposed clipped long Y-axis labels. The
+  author changed visible axes to bounded compact labels while keeping complete
+  bounds in accessible text and precise per-cell titles. All nine final
+  captures passed axis bounding-box, no-overflow, information-top and
+  44-pixel bottom-action checks. The redundant visible explanatory paragraph
+  was removed; the receipt-versus-probe-time distinction remains accessible.
+- The final browser report records zero external requests, zero console/page
+  errors and zero status/mesh/camera/session-acquisition counters. The static
+  directory has nine links, with Bed Mesh implemented and Queue still not
+  implemented. This is not phone-mounted or physical-bed acceptance.
+- Browser contexts closed in `finally`; the exact owned fixture server was
+  identified and terminated successfully. Artifacts remain outside Git.
+  Intermittent shell process-limit errors were handled through the existing
+  isolated Node execution path, without killing unrelated processes.
+
+Frozen SHA-256 evidence:
+
+- Widget: `23cf86a83143ba7480521baf12c0e05ee7777faea350de29cde055fd63ffbce5`
+- Adapter: `c6522e0429f0b9338292a3c3f90d6be9936bd058754a75ab300bc553f4f2f9cb`
+- Store: `991ba530f1acb5fa65da3ae143ab3be939b781254bbe6e632b240af0c73aa995`
+- Directory: `66fda75a7f849febd35f09c6557027984a363fbbebbf996aaf3387e49b0424be`
+- Browser report: `c7c6409a6bd3c20f82c8c1033faee0991f806381dc5bc99e7dcd6b2158c88908`
+- Independent protocol fixture: `903435cd9eee64dfe6b300e53cdfa95fd69e8d757a61e58df5364e306e2f1df1`
+
+### Repository shipping workflow checks
+
+The final full gate above includes the shipping script's 21 fixture tests.
+The independent command `uv run --no-project ship_independent.py` additionally
+passed **seven method-level tests** outside the repository, rerun after the
+pinned-runtime fix. They invoked the actual `Operations.verify`, `restart`
+and `validate` methods with synthetic lower-level dependencies rather than
+only replacing the complete orchestration methods.
+
+These checks exercised each service's loaded/healthy/integrity/runtime/release
+identity, changed manifests and preserved-configuration rejection, static and
+security failure propagation, exactly both restart targets, and early stop at
+each of six local command failures. They parsed the actual source's **14 static
+assets/routes and 16 security checks**, injected failures at each boundary,
+and verified the HTTP helper's fixed ports/routes, disabled proxies/redirects,
+timeout and bounded response handling. No real GitHub, launchctl, service,
+printer or camera action was used in these fixtures.
+
+Skill Creator's structural check passed via
+`uv run --offline --no-project --with pyyaml
+<SKILL_CREATOR>/scripts/quick_validate.py .agents/skills/u1-ship`.
+`<SKILL_CREATOR>` substitutes for the installed local skill path. Structural
+validation is not a behavioral skill approval; the independent reviewer's
+forward scenarios are separate. The validator did not invoke `--execute`.
+
+Final SHA-256 fingerprints:
+
+- Shipping script: `49448de3ca32ba52917ec900d478901e2ec3590c887fa5cabddf4e67c9254978`
+- Shipping tests: `49c8924b48c6c0aa8c202f0304a0a0f1b074398d54d564088da61958420349a9`
+- Repository gate: `37f0d63ff5308dd0e84f65e2b95f690bf24cae3252da575de29fe3cf9f80f1ad`
+- Shipping skill: `b1d7547e5ccb46f1014be28b351883d5ec45deb2eb3371771e7926c6c9e557e8`
+
+## 2026-08-31 Independent PR33 live verification while Bed Mesh is in progress
+
+After the authorized operator deployed merged PR33 (`7b9c4d4`), the independent
+validator ran `bun --no-env-file --config=/dev/null run verify-pr33.ts` from
+an isolated, outside-repository verification directory. This was a read-only
+check of the already deployed Current Job/Job History release, not acceptance
+of the unmerged Bed Mesh implementation.
+
+- Both service health responses reported **0.3.2 / schema 6 / observation v4 /
+  camera v5**. Thirteen static responses matched the clean merged source
+  byte-for-byte: both directory roots, both current widget assets, and all nine
+  focused hosts.
+- Seven boundary checks passed: public directory, Job History and enrollment
+  routes rejected with 404; unauthenticated public MCP returned 401 with its
+  authentication challenge; private dashboard and enrollment MCP routes
+  returned 404; private enrollment health remained available.
+- One explicitly authorized read-only `get_u1_camera_frame` call through the
+  private dashboard bridge returned an available JPEG. `authorizeLive` was
+  omitted. The validator opened the saved image and confirmed a coherent
+  printer-interior snapshot. No live-view session, camera authorization token,
+  printer control, authentication change, or service mutation was performed.
+- The verifier, redacted report and camera image remain outside Git. The
+  report SHA-256 is
+  `918a39c438c989d9b2a460fe38e1f2af755d0ed32b02227d0902685f3529411a`.
+  Private origins, runtime identifiers and camera contents are not copied
+  into repository records.
+
+This proves the PR33 deployment's service/static/security boundaries and one
+real snapshot response. It does not prove a mounted iPhone/ChatGPT widget,
+live video, ICE/TURN connectivity, Bed Mesh acquisition, or physical-print
+acceptance. Operator-owned configuration/authentication/route-preservation
+evidence is separate from these independent probes.
+
 ## 2026-08-31 Current Job and Job History split validation
 
 This source-only change preserves `jobs` as Current Job and adds the separate

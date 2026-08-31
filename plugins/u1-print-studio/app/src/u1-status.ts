@@ -9,6 +9,8 @@ import type {
 } from "./application/camera-webrtc.js";
 import type { CameraIceServerProvider } from "./camera-ice-config.js";
 import { normalizePrinterBaseUrl, readLocalConfig } from "./local-config.js";
+import { readMoonrakerBedMesh } from "./adapters/moonraker-bed-mesh.js";
+import { unavailableBedMesh, type BedMeshObservation } from "./application/bed-mesh-observation.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -187,6 +189,11 @@ function printerBaseUrl(): URL {
   const raw = process.env.MOONRAKER_BASE_URL?.trim() ||
     readLocalConfig().printer.baseUrl;
   return new URL(normalizePrinterBaseUrl(raw));
+}
+
+export async function readU1BedMesh(): Promise<BedMeshObservation> {
+  try { return await readMoonrakerBedMesh(printerBaseUrl()); }
+  catch { return unavailableBedMesh("not_configured", new Date().toISOString()); }
 }
 
 async function fetchJson(route: string, maxTimeSeconds = 6): Promise<JsonObject> {

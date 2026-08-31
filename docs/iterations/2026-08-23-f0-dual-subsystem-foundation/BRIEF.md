@@ -5,7 +5,43 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: validate and deliver decision 0025's implemented Current Job and
+- Current release attempt: PR34's authorized shipping run stopped safely before
+  merge because Bun compilation left a generated hidden `.bun-build` app file.
+  Apply decision 0028's narrowly scoped ignore/regression repair, independently
+  approve the new exact head, then retry shipping. Do not relax other clean-tree
+  guards. No new deployment occurred; verified PR33 is still running.
+- Current execution order (2026-08-31, latest user request): the urgent rollout
+  of already-merged PR33 is complete. Both public and dashboard services run
+  release `20260831-7b9c4d4-widgets`, runtime 0.3.2/schema 6/observation-v4/
+  camera-v5, explicitly restarted and healthy/integrity verified; fourteen
+  static and six security checks pass. An independent follow-up also passes
+  thirteen exact static/seven security checks and visually verifies a real
+  JPEG snapshot; mounted-phone/live-video acceptance remains separate.
+  Decision 0028's repository shipping skill/script and decision 0027's real
+  read-only Bed Mesh slice are now implemented and software-validated, from a fixed operations-adapter query
+  through independently fresh shared-store state to a compact 2D focused view.
+  Preserve information above/actions below, distinguish inactive/missing/failed
+  data, and accept a valid all-zero reported grid. Validation passes 165 app
+  tests/2,200 assertions, 21 lifecycle and 21 shipping tests, 24 independent
+  focused tests/228 assertions, nine captures/fifteen browser checks/twenty-eight
+  routes, all three bundles/signatures/exact asset comparisons and TypeScript.
+  Seven independent shipping method checks and skill validation also pass.
+  Complete final independent exact-commit approval, then deliver/merge a new
+  PR. The user's subsequent explicit
+  authorization includes deploying that exact merged build, restarting BOTH
+  public and dashboard U1 services, and verifying loaded release integrity and
+  readiness. Preserve OAuth, configuration, and Tailscale routes; do not
+  reinstall the plugin or control the printer.
+  PR33 is already merged at `7b9c4d4`; runtime 0.3.3/schema 7/observation-v5 is
+  this slice's source target, not an installed release. Queue WIP remains
+  paused and excluded; the user's rejected progress styling and reported
+  mounted-phone/live-video behavior remain unresolved; real JPEG acquisition
+  is separately verified above.
+  The previous deployment/restart authority gap is superseded, but rollout
+  completion for Bed Mesh/the new operator workflow remains unverified until
+  performed. The earlier runtime 0.3.1 service check is superseded by the
+  completed PR33 rollout above, not evidence of Bed Mesh deployment.
+- Previous execution order, completed and merged in PR33: decision 0025's Current Job and
   Job History widgets. Keep stable `jobs` for Current Job and add `job_history`
   for independently callable history; directory entries become separate.
   History remains explicitly unimplemented, without fabricated empty success

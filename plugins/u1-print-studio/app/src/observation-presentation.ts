@@ -4,6 +4,7 @@ import type {
   ObservationSnapshot,
 } from "./observation-store.js";
 import { normalizedPrintState, normalizedToolState } from "./u1-status.js";
+import { unavailableBedMesh, type BedMeshObservation } from "./application/bed-mesh-observation.js";
 
 export const OBSERVATION_VIEWS = [
   "overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans",
@@ -96,10 +97,8 @@ type FansModule = ModuleBase & {
   items: never[];
   purifier: { state: EvidenceState; capabilityEvidence: CapabilityEvidence };
 };
-type BedMeshModule = ModuleBase & {
+type BedMeshModule = ModuleBase & BedMeshObservation & {
   kind: "bed_mesh";
-  profile: null;
-  points: never[];
 };
 
 export type PrinterObservationPresentation = {
@@ -335,23 +334,19 @@ function projectJobHistory(snapshot: ObservationSnapshot): JobHistoryModule {
 
 function projectUnknown(
   snapshot: ObservationSnapshot,
-  view: "queue" | "fans" | "bed_mesh"
-): QueueModule | FansModule | BedMeshModule {
+  view: "queue" | "fans"
+): QueueModule | FansModule {
   const detail = {
     queue: "Queue was advertised but has no accepted read-only normalization",
     fans: "Fans and purifier were advertised but their semantics are not normalized",
-    bed_mesh: "Bed mesh was advertised but no accepted profile grid is normalized",
   }[view];
-  const capability = view === "bed_mesh"
-    ? snapshot.capabilityEvidence.bedMesh
-    : snapshot.capabilityEvidence[view];
+  const capability = snapshot.capabilityEvidence[view];
   const base = {
     ...moduleBase(snapshot, view, false, capability, detail),
     state: "unknown" as const,
   };
   if (view === "queue") return { ...base, kind: "queue", items: [] };
-  if (view === "fans") {
-    return {
+  return {
       ...base,
       kind: "fans",
       items: [],
@@ -359,9 +354,20 @@ function projectUnknown(
         state: "unknown",
         capabilityEvidence: snapshot.capabilityEvidence.purifier,
       },
-    };
-  }
-  return { ...base, kind: "bed_mesh", profile: null, points: [] };
+  };
+}
+
+function projectBedMesh(snapshot: ObservationSnapshot): BedMeshModule {
+  const mesh = snapshot.bedMesh ?? unavailableBedMesh("not_requested");
+  return {
+    ...mesh, kind: "bed_mesh",
+    capabilityEvidence: mesh.sourceObservedAt !== null ? "observed" : mesh.state === "unsupported" ? "unsupported" : "unknown",
+    provenance: {
+      source: mesh.sourceObservedAt === null ? "not_observed" : "moonraker",
+      sourceObservedAt: mesh.sourceObservedAt,
+      detail: "Server receipt of the reported probe grid, not calibration or probe capture time; rows Y and columns X ascend in millimeters",
+    },
+  };
 }
 
 function projectModule(snapshot: ObservationSnapshot, view: ObservationView) {
@@ -371,6 +377,7 @@ function projectModule(snapshot: ObservationSnapshot, view: ObservationView) {
   if (view === "heads") return projectHeads(snapshot);
   if (view === "jobs") return projectJobs(snapshot);
   if (view === "job_history") return projectJobHistory(snapshot);
+  if (view === "bed_mesh") return projectBedMesh(snapshot);
   return projectUnknown(snapshot, view);
 }
 

@@ -10,7 +10,37 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-- Current task: decision 0025's independently callable Current Job and Job
+- Current task (2026-08-31): decision 0028's repository-only shipping skill/
+  script and decision 0027's real read-only Bed Mesh slice are implemented and
+  software-validated, ready for final exact-commit review and PR delivery.
+  Validation passes 165 app tests/2,200 assertions, 21 lifecycle tests,
+  21 shipping tests, 24 independent focused tests/228 assertions, nine actual
+  widget captures, fifteen browser checks and twenty-eight routes, with no
+  external requests or unintended acquisitions. Seven independent shipping
+  method checks and skill validation also pass. All three bundles, signatures,
+  exact assets and TypeScript pass. Source is runtime 0.3.3/schema 7/observation-v5
+  with camera-v5 and the existing tool/view inventory unchanged. Queue WIP
+  stays paused in its separate checkout. The user's rejected progress styling
+  remains unresolved; the prior camera report has verified JPEG acquisition
+  but mounted-phone/live-video acceptance is still separate.
+  Explicit task authority covers reviewed merge, exact merged-build deployment,
+  restart of BOTH U1 services, and verification; it does not cover printer
+  controls, plugin reinstall, or authentication/routing changes.
+  New-source merge and rollout have not occurred. Finish independent approval
+  of the exact committed head, then use the repository shipping workflow.
+- PR33 is merged at `7b9c4d4` and its urgent rollout is complete: release
+  `20260831-7b9c4d4-widgets`, runtime 0.3.2/schema 6/observation-v4/camera-v5.
+  Both services were explicitly restarted and are loaded, healthy, and
+  integrity verified. Fourteen static and six security checks pass, with
+  environment, OAuth, configuration, and routes preserved. This is deployed
+  service evidence. A separate independent pass verifies both health contracts,
+  thirteen exact static and seven security checks, plus a real 232,522-byte
+  JPEG observed at `2026-08-31T15:50:03.971Z`; visual inspection shows a coherent
+  printer interior. This proves snapshot acquisition, not mounted-phone or
+  live-video operation, and does not verify pending Bed Mesh data. Historical
+  pending-merge, no-rollout-authority, and live-0.3.1 statements below describe
+  earlier checkpoints and do not override this current state.
+- Previous source checkpoint: decision 0025's independently callable Current Job and Job
   History views are implemented in source. Stable `jobs` and `/dashboard/jobs`
   now present only Current Job; `job_history` and its private path present
   explicitly unimplemented history, not an empty success or observed history
