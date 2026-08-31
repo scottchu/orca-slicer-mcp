@@ -21,10 +21,14 @@ generation-guarded. Author checks pass 83 tests/862 assertions and TypeScript.
 Independent native-browser evidence includes six captures and synthetic
 playback retaining about 30/31 FPS after repetition. This is not proof of the user's device-specific cause
 or an actual printer stream. Source 0.3.5/schema 7/observation-v5/camera-v7
-(v6/v5/v4 aliases, fourteen resources) awaits independent acceptance and
-shipment. Validate/review, then ship the exact merged build through the authorized
-restart-both/verify workflow. PR37 records are merged in main `a65ded0`;
-no old docs-only delivery remains. Queue/minimal-progress work stays separate.
+(v6/v5/v4 aliases, fourteen resources) is now reviewed and deployed in PR38:
+`a35c92c` reviewed, `b565eec` merged, release
+`20260831-b565eec-pr38-20260831T130407-2e3c85`. Both services were explicitly
+restarted and are healthy/integrity verified; fourteen static and sixteen
+security checks pass with private configuration/authentication/routes
+preserved, without rollback. Finish only this docs-only rollout-record merge;
+source/tests are unchanged and need no redeployment. Queue/minimal-progress
+work and actual user-device acceptance remain separate.
 
 The live-only FPS slice is shipped in PR36: reviewed `40d359b`, merged
 `3fc918e`, release `20260831-3fc918e-pr36-20260831T124701-e914a1`. Both U1

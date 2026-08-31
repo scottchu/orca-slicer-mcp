@@ -1,6 +1,6 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 bottom-left camera information and missing FPS — current work
+## 2026-08-31 bottom-left camera information and FPS repair — shipped in PR38
 
 The user requests camera state/FPS/time bottom left because the top overlay
 blocks the view, while display/live controls remain bottom right. CAM-008 and
@@ -18,11 +18,17 @@ native-browser evidence includes six captures at 320/390/720 px. Synthetic playb
 30 FPS to missing after repetition before the fix, and retains roughly 30/31
 FPS afterwards. This does not establish the user's device-specific cause or
 actual printer streaming. Source 0.3.5/schema 7/observation-v5/camera-v7, with
-v6/v5/v4 aliases and fourteen resources, awaits independent acceptance and
-exact-build shipment through `u1-ship`.
-PR36 remains the deployed baseline; PR37 records are merged in main `a65ded0`.
-Do not repeat their docs-only delivery. Queue/minimal-progress work remains
-separate, and no new actual-phone success is claimed.
+v6/v5/v4 aliases and fourteen resources, is independently reviewed and shipped
+through `u1-ship`: reviewed `a35c92c813d669bef696fefbbc87ee7bd5390630`, merged
+`b565eecc30ec394137483f4619a523807b59e538`, release
+`20260831-b565eec-pr38-20260831T130407-2e3c85`. Both services were explicitly
+restarted and are healthy/integrity verified. Fourteen static and sixteen
+security checks pass, private configuration/authentication/routes are unchanged,
+and no rollback was needed. Exact receipts remain private; validator-owned
+`VALIDATION.md` records the source and deployed checks separately.
+Next review/merge only these rollout records: source/tests are unchanged and
+need no second deployment. Queue/minimal-progress work remains separate, and
+no actual-user-device success is claimed from synthetic native playback.
 
 ## 2026-08-31 live-only measured FPS — shipped in PR36
 
