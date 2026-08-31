@@ -7,6 +7,17 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
+Latest priority: Heads reference refinement, a presentation-only follow-up to
+A1/A2 under decision 0029. Use actual-filament-color soft washes inside the white
+container with exact swatch/hex and accessible Copy; preserve real state and
+independent material freshness. This slice precedes Queue without cancelling
+B–E. Source 0.4.2/schema 8/observation-v8/camera-v8 (eighteen resources) passes
+author 106 tests/2,290 assertions and TypeScript. Independent checks pass 200 app/
+2,855, 21 lifecycle, 22 shipping, 86 fixtures/751 and all bundles/exact assets.
+Initial review has no findings; exact-SHA approval/shipment remain pending;
+historical release evidence below
+is not acceptance of the changed assets.
+
 F is deployed in [PR43](https://github.com/scottchu/orca-slicer-mcp/pull/43):
 reviewed `41546d9e3ea841bdd23279694079719327f39f39` merged as
 `92a62c04c22600ee802d7be3c0b27285135f6d33`; exact release
@@ -17,7 +28,7 @@ checks pass, OAuth/environment/config/routes preserved, no rollback. Independent
 exact-release/manifest, fourteen local/thirteen tailnet static and tailnet-health
 checks pass. One private refresh returns a known/fresh active 11 by 11 mesh at
 `2026-08-31T19:03:22.696Z`; visual/device acceptance remains unverified.
-Queue integration is next. Docs-only rollout
+Heads refinement is next, then Queue integration. Docs-only rollout
 records do not redeploy unchanged application bytes.
 
 Previous release A was deployed in [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41):
@@ -38,13 +49,13 @@ structurally valid real JPEG. They do not establish visual/device acceptance.
 The user's latest Fluidd Bed Mesh screenshot prioritizes decision 0030's
 interactive reported-height surface inside the existing white card. It does
 not request Fluidd's dark dashboard, interpolated-matrix selector or printer
-controls. Current release order is A/F (deployed) → B → C → D → E.
+controls. Current release order is A/F (deployed) → Heads refinement → B → C → D → E.
 F0/O1 and B–E remain unfinished; A/F visual acceptance remains open. Preserve unrelated checkouts;
 any reuse needs explicit integration review. Queue foundation is locally committed as
 `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`;
 independent bounded source/protocol review approves and closes the prior P2.
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
-Store/widget integration is active next. Stacked
+Store/widget integration follows Heads refinement. Stacked
 B–E source work may continue while the user visually reviews A; no unfinished
 track is cancelled by the new priority.
 
@@ -54,8 +65,9 @@ track is cancelled by the new priority.
 | A2 White foundation and index | White focused cards/index/host assets and local attributed icons deployed; truthful coverage labels | Reference-matched rendering, states and accessibility | Deployed in PR41; user visual acceptance pending |
 | A3 Camera reference | Header outside genuine media, direct controls, snapshot feedback/card fullscreen deployed; watchers retained | Rendered/native snapshot/live/close/PiP/fullscreen acceptance | Deployed in PR41; user/device acceptance pending |
 | A4 Continuous progress | Contrast correction, continuous bar/layers/ETA/elapsed deployed | User visual review, without fabricated metrics/completion | Deployed in PR41; visual acceptance pending |
+| A5 Heads reference refinement | Implemented at 0.4.2: actual-color soft wash, exact swatch/hex and Copy; existing material acquisition retained | Exact-SHA approval, guarded shipment and meaningful scoped verification | Independent software checks pass; initial review has no findings; shipment/visual gates pending |
 | F Bed Mesh | Interactive same-sample surface and retained 2D grid deployed in PR43 at 0.4.1 | User visual review of XYZ/legend/exaggeration, pointer/keyboard orbit/reset and 2D fallback | P2 corrected; reviewed and shipped, visual/device acceptance pending |
-| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Integrate bounded store/projection/widget without queue mutations | Foundation source/protocol approved; widget integration active next |
+| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Integrate bounded store/projection/widget without queue mutations | Foundation source/protocol approved; widget integration after Heads refinement |
 | C Fans and chamber | Fans/purifier unimplemented; chamber thermal unknown | Real fixed fan/purifier/cavity reads, measured units and independent missing/power states; no controls | Active, after Queue |
 | D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, after fans/chamber |
 | E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |
@@ -86,6 +98,15 @@ private attachment paths/images are not committed.
 - Information sits above actions. Titles, observation times, freshness,
   capability/failure explanations are readable without entering a control menu.
   Actions occupy the bottom, with Refresh/Retry right aligned for focused cards.
+- Heads: four equal inner cards, wrapping to two/one columns; actual tool/state,
+  material label, divided current/target temperature, then exact solid swatch,
+  canonical hex and 44-pixel accessible Copy with truthful outcome feedback.
+  Blend valid color 6% over white, respecting reported alpha, for the solid card
+  wash; white stays white,
+  black becomes pale neutral, unknown stays neutral without invented color/copy.
+  Keep active accents independent and all text opaque/readable. Refresh remains
+  bottom despite its top position in the selected screenshot. Reuse system
+  fonts/Feather icons; no generated assets or hardcoded reference readings.
 - Camera: small camera-icon tile and `U1 Camera` at top left. State dot/text,
   measured live FPS and frame time sit in the white header at right, wrapping
   above the image on narrow widths without truncation. No grid, tint, dark

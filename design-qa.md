@@ -1,5 +1,38 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Current Heads reference refinement: visual acceptance unverified
+
+final result: blocked
+
+Source visual truth is the latest user-selected Heads attachment, opened by the
+design role: 1554 × 1012 pixels, private source path intentionally outside Git.
+Decision 0029's addendum specifies the adapted target: four softly tinted actual-
+color tool cards inside white, exact swatch/hex/Copy, unchanged real state and
+independent freshness. Bottom Refresh intentionally supersedes its top placement
+in the reference; white filament does not inherit the image's amber active wash.
+
+Implementation screenshot/path, CSS viewport, device density and normalization:
+unavailable. No same-state full-view or focused-region comparison, browser
+interaction or console inspection has occurred. Fresh allowed-browser discovery
+returns none. All five fidelity surfaces remain unverified: typography/wrapping,
+spacing/responsive rhythm, colors/contrast, icon/data-swatch fidelity, and
+copy/content. Existing system fonts and Feather icons are retained; no generated
+image is required for native data colors. Source fixtures are not visual proof.
+The frozen 0.4.2/observation-v8 source has author test evidence recorded in
+VALIDATION; it does not alter this visual disposition.
+
+When available, capture the actual Heads view at 320/390/720 and four-column
+widths with valid white/black/brown colors, unknown/invalid color, mixed real
+states and independently stale material. Compare matching source/content
+regions, check the gentle wash and opaque text, Copy keyboard/focus/success/
+denial/unavailable states, bottom Refresh, overflow and console errors. No
+visual mismatch or correction history is invented before captures exist.
+
+The user's standing reviewed merge → exact-build deploy → restart BOTH services
+→ verify order remains in effect for their visual review. This overrides
+predeployment visual ordering only; no source or deployed-service pass converts
+this report into rendered/actual-device acceptance.
+
 ## Current F Bed Mesh surface: visual acceptance unverified
 
 final result: blocked
@@ -628,4 +661,4 @@ mode status on the left and its live/close action on the right.
 
 Historical status-card result: blocked
 
-final result: passed
+Current final result: blocked

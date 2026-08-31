@@ -1,7 +1,7 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: release A `acdb2e3` software validated and source-only approved; visual/release gates blocked
+- Status: A deployed in PR41; Heads refinement implemented at 0.4.2, review/shipment pending; visual acceptance unverified
 - Scope: F0/O1, OBS-007/008/010/011, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution
@@ -20,6 +20,40 @@ refinement; then overview. Each slice passes local and independent exact-SHA
 review, PR merge, decision 0028 shipping, explicit restart of both existing
 services, and exact assets plus meaningful widget verification. Preserve source,
 protocol/browser, deployment, real-printer, and user-device evidence separately.
+
+## Heads reference refinement (2026-08-31)
+
+The latest selected Heads reference changes presentation only and takes the
+next release slot before Queue; all unfinished tracks remain active. Retain the
+white outer card and four physical tool cards, wrapping to two/one columns when
+needed. Each tool card orders its actual tool/state, reported material label,
+divided current/target temperature row, then exact swatch/hex and Copy action.
+Keep Refresh at the bottom under OBS-008 despite its top placement in the image.
+
+Tint each inner card with 6% of its validated reported color over white; for
+eight-digit RGBA multiply that fraction by the reported alpha. Preserve the
+exact six/eight-digit canonical hex and alpha in swatch, text and clipboard.
+This is a solid presentation wash, not blur, a gradient, whole-card
+opacity or an altered material value. White remains white; black becomes pale
+neutral; unknown/invalid color stays neutral and never invents white/black data.
+Active-state accents remain independent of filament color. Retain high-contrast
+text, an exact-color swatch with a visible boundary, and canonical hex text.
+Copy writes only the displayed validated hex on explicit activation, has a
+44-pixel keyboard-accessible target, announces actual success/failure, and is
+unavailable for unknown color. Clipboard capability is not assumed granted.
+
+Reuse the system-font stack and locally attributed Feather icons. This data UI
+needs no generated image assets. Do not copy reference temperatures, colors,
+material labels or states into production. Retain physical index + 1 mapping,
+presence and independent material time/freshness, including retained stale data;
+no acquisition, normalization, tool inventory or printer-control expansion.
+
+Source fixtures must cover tint derivation, valid white/black/color and invalid
+input, unchanged state/freshness, copy success/rejection/unavailability and
+keyboard semantics. Rendered narrow-layout/contrast/reference comparison remains
+unverified while the allowed browser is unavailable. The user's standing
+merge → exact-build deploy → restart BOTH services → verify order still applies;
+it overrides predeployment visual ordering only, never creates a visual pass.
 
 ## Material acquisition boundary
 

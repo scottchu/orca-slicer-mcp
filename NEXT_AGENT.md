@@ -14,6 +14,21 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Prioritize the user's Heads reference refinement before Queue. Decision 0029's
+addendum fixes actual-color 6% white washes, exact solid swatch/hex and accessible
+Copy, real tool/state/material/temperature, bottom Refresh and unchanged physical
+mapping/presence/independent material freshness. Source is frozen at 0.4.2/schema
+8/observation-v8/camera-v8 with eighteen resources; author checks pass 106 tests/
+2,290 assertions and TypeScript. Independent validation passes 200 app/2,855,
+21 lifecycle, 22 shipping, 86 fixtures/751 assertions and all bundles/exact
+assets; initial formal review has no findings. Finish exact-SHA approval
+(see VALIDATION for hashes/commands), then guarded
+merge → exact-build deploy → explicitly restart BOTH services → verify. No new
+Heads acceptance is established by the historical A/F receipts below. Browser
+and actual-device visual acceptance remain unverified; the user's deployment-
+first order is retained. Resume B Queue after this refinement, then C → D → E;
+do not discard any pending widget work.
+
 F is now shipped: PR43 reviewed `41546d9e3ea841bdd23279694079719327f39f39`
 merged as `92a62c04c22600ee802d7be3c0b27285135f6d33`; installed release
 `20260831-92a62c0-pr43-20260831T150042-2e7c64` reports 0.4.1/schema 8/
