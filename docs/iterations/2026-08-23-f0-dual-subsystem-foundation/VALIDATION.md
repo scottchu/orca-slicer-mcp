@@ -1,6 +1,70 @@
 # F0 dual-subsystem foundation validation
 
-## 2026-08-31 release A frozen source checkpoint — visual gate blocked
+## 2026-08-31 release A deployed — operator verification
+
+The user explicitly authorized merge → deploy → verify before automated browser
+QA to perform their own visual review. Only that ordering gate was changed;
+local tests, exact-SHA review, shipping guards and safety boundaries remained.
+The final reviewer approved `744f7d06607526a10997b926d91b18087c4030cf` for guarded
+shipping under this authority, confirming application/scripts unchanged from
+the independently tested source and matching the 62-file manifest below.
+
+An initial **read-only plan** stopped on an uncommitted BRIEF authority edit,
+before any external mutation. A scoped documentation commit and renewed
+exact-SHA review resolved the dirty-tree condition; no guard was bypassed.
+The final read-only plan passed before execution. Actual operator commands
+(the private pinned runtime path is deliberately a placeholder):
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 41 --reviewed-sha 744f7d06607526a10997b926d91b18087c4030cf --bun <ABSOLUTE_PINNED_BUN>
+uv run --no-project scripts/u1_ship.py --pr 41 --reviewed-sha 744f7d06607526a10997b926d91b18087c4030cf --bun <ABSOLUTE_PINNED_BUN> --execute
+```
+
+Execution completed successfully. PR41 merged at `2026-08-31T18:06:04Z` as
+`b6142de6241cb2e1b6ac70b509f2d0b0e836f1d8`; installed release
+`20260831-b6142de-pr41-20260831T140555-84d50f` reports **0.4.0/schema 8/
+observation-v6/camera-v8**. Both public/dashboard services were explicitly
+restarted and are loaded, healthy and integrity verified. **Fourteen static
+asset and sixteen security checks pass**. OAuth/environment/configuration/
+routes are preserved and no rollback was needed. Private receipts remain
+outside Git. No printer controls, auth/routing changes or plugin reinstall
+occurred. Application bytes are unchanged by the subsequent rollout records;
+those docs use a separate PR, not another service deployment.
+
+Independent live verification completed separately using
+`uv run --no-project scripts/u1_service.py status`, read-only plist/release
+verification and
+`bun --no-env-file --config=/dev/null run <PRIVATE_VERIFICATION_DIR>/verify-live.ts`.
+The private verifier path is deliberately redacted. Results:
+
+- Both services are loaded/healthy/integrity verified, with exact installed
+  release `20260831-b6142de-pr41-20260831T140555-84d50f` and merged source
+  `b6142de6241cb2e1b6ac70b509f2d0b0e836f1d8`. Both loopback health endpoints
+  return HTTP 200 and the current version contract.
+- All four user-facing tailnet directory/camera/progress/heads pages return
+  HTTP 200 HTML. Six source-defined assets match exact source bytes on both
+  loopback and tailnet: **twelve independent comparisons**, distinct from the
+  operator's fourteen static checks above.
+- The source-defined private `refresh_printer_observation` request with
+  `view: heads` returns HTTP 200, four physical slots, and **known/fresh**
+  materials observed at `2026-08-31T18:08:02.427Z`. Vendor/type/color/reported
+  presence are available for all four, subtype for one. No real labels,
+  colors, names, identities or raw rows are recorded.
+- The source-defined private `get_u1_camera_frame` request with empty arguments
+  returns HTTP 200, image/jpeg, **253,183 bytes**, **1920 × 1080**, observed at
+  `2026-08-31T18:08:02.952Z`, with valid structural markers. No JPEG was retained,
+  live session activated or printer control invoked. This proves snapshot
+  acquisition, not image quality, playback, browser/phone or physical acceptance.
+- The validator performed no service/auth/routing writes and left no background
+  process. Redacted private report SHA-256:
+  `989c72c510b92c5657c72184d254b7e85f22b84ddf77ce63b5577ebb5494870c`;
+  private script SHA-256:
+  `0fba7b6bf6f7594fb9d39bcea24dd94744cbd4203d318b08ecaa506ed86c008c`.
+
+HTML availability is not a rendered visual, camera playback or actual-device pass.
+The prior automated visual gate remains unverified, not retrospectively passed.
+
+## 2026-08-31 release A source checkpoint — historical predeployment evidence
 
 Latest local correction: `acdb2e38553418b395269bf71814ec3a5f21af04` changes
 percentage text to `#499e69`, computed contrast 3.293:1, and adds its regression
@@ -25,7 +89,7 @@ Independent full revalidation of this exact commit passes:
   Approval excludes uncommitted documentation changes, blocked visual QA and
   exact-release approval. No browser/printer/service operation is inferred.
 
-PR41's confirmed open/draft remote head is `acdb2e3`. The
+At this predeployment checkpoint PR41's open/draft remote head was `acdb2e3`. The
 prior findings/test counts/manifest below are historical checkpoint evidence,
 not unresolved contrast findings or current-source hashes.
 

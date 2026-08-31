@@ -12,14 +12,19 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
-Latest local source is contrast correction `acdb2e38553418b395269bf71814ec3a5f21af04`:
-green percentage text is now `#499e69` (3.293:1), with a computed regression.
-Independent full revalidation passes: 190 app tests/1,761 assertions,
-21 lifecycle, 22 shipping, 20 isolated/399 assertions, TypeScript, bundles and
-six exact HTML comparisons. Exact-SHA source-only review is approved without
-findings (31 reviewer tests/448 assertions). This excludes these uncommitted
-documentation updates, visual QA and release approval. PR41's confirmed open/
-draft remote head is `acdb2e3`. No new rollout occurred.
+Release A is merged and deployed. [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41)
+merged reviewed `744f7d06607526a10997b926d91b18087c4030cf` as
+`b6142de6241cb2e1b6ac70b509f2d0b0e836f1d8`; installed release
+`20260831-b6142de-pr41-20260831T140555-84d50f` runs 0.4.0/schema 8/
+observation-v6/camera-v8. Both public/dashboard services were explicitly
+restarted and are loaded, healthy and integrity verified. Fourteen static and
+sixteen security checks pass, preserving OAuth/environment/config/routes;
+no rollback was needed. The user explicitly authorized deployment before
+automated browser QA so they can visually review the delivered widgets.
+Rendered/actual-device visual acceptance remains unverified, not passed.
+Independent read-only checks confirm the exact installed release, twelve exact
+asset comparisons, four user-facing pages, fresh material metadata for four
+physical heads, and a structurally valid real 1920 × 1080 JPEG snapshot.
 
 The user requests all pending widgets and a unified refined white style.
 Decision 0029 and the active iteration's `WIDGET_TRACKS.md` own the durable
@@ -27,36 +32,31 @@ queue: A materials + white cards/index + latest camera + continuous progress;
 B Queue; C fans/chamber; D Current Job/real History; E composed overview.
 Bed Mesh's existing behavior is retained and its source is restyled. Independently
 invokable skills and the Current Job/History split stay intact. New feedback
-does not cancel unfinished tracks. All are active; old deferral wording below
+does not cancel unfinished tracks. B–E are active; old deferral wording below
 is historical. F0/O1 milestone completion is not claimed.
 
-Release A source checkpoint `acdb2e38553418b395269bf71814ec3a5f21af04` is pushed
-as [draft PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41); the
-coordinator confirmed its open/draft status and exact remote head. Source is
-0.4.0/schema 8/observation-v6/camera-v8, sixteen resources. It adds real
+Release A retains sixteen resources and adds real
 printer-reported materials and white focused cards/index, camera information
 outside the image with working snapshot feedback/native fullscreen, and
 continuous reported-percent progress. The lower progress row contains only
 elapsed time; other reference metrics are not projected and are not fabricated.
-Frame/FPS watcher semantics are unchanged. The prior P2 contrast finding is
-resolved in approved source `acdb2e3`; its new 62-file manifest is
-`dca09a45ac122919bcc3621d2cfe182455bb4bfaf98375565d168ba5766e1ca0`.
-`design-qa.md` is
-blocked because no allowed browser is available
-and isolated headless permission has not been granted. Do not merge or deploy
-before required QA. Starting main is `bf3eb26`; both existing services were
-freshly checked by the coordinator and still report 0.3.5/schema 7/
-observation-v5/camera-v7 (PR38 `b565eec`), without restart or rollout.
-Every release still requires independent exact-SHA review, PR, guarded shipping,
-both-service restart, and meaningful deployed-widget verification. Keep source,
-deployed, real-printer, and user-device evidence separate. Queue foundation is
+Frame/FPS watcher semantics are unchanged and the contrast P2 is resolved.
+Software evidence remains 190 app/1,761 assertions, 21 lifecycle, 22 shipping,
+20 isolated/399 assertions, TypeScript/bundles and exact assets; final reviewed
+candidate preserves that application manifest. A preliminary read-only ship
+plan stopped on an uncommitted BRIEF edit; scoped commit and renewed exact-SHA
+review resolved it without bypassing guards or external mutation. The final
+read-only plan passed before execution. These rollout records change no
+application bytes and need no extra deployment. Next integrate Queue while
+the user reviews A. Keep software,
+deployed, real-printer and user-device evidence distinct. Queue foundation is
 locally committed as `4fbb96c7201398c125006cafc5050b84a875af1e` on
 `feat/u1-queue-completion`: standalone adapter/model/tests only. Independent
 bounded source/protocol approval closes the prior credential-basename P2;
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
 Store/projection/widget integration is next, without any merge or deployment.
-Source work may continue in stacked B–E branches while A's visual gate awaits
-permission; sequential independently reviewed release order is unchanged.
+Source work may continue in stacked B–E branches while the user reviews A;
+sequential independently reviewed release order is unchanged.
 Read-only capability research confirms Queue/History/cavity/fans endpoints can
 return real data; they are software gaps, not proven unsupported hardware.
 No printer controls, preset/project writes, auth/Tailscale changes, plugin

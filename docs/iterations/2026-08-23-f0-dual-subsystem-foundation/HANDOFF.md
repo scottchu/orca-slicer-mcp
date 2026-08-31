@@ -2,18 +2,21 @@
 
 ## 2026-08-31 all-widget completion — authoritative current handoff
 
-Latest local correction is `acdb2e38553418b395269bf71814ec3a5f21af04`: progress
-text `#499e69` computes 3.293:1 and has a regression test. Author checks pass
-31 tests/448 assertions and TypeScript. Independent full revalidation passes
-190 app/1,761 assertions, 21 lifecycle, 22 shipping, 20 isolated/399 assertions,
-TypeScript, all bundles/signature and six HTML comparisons. Exact-SHA source-only
-review approves without findings (31 tests/448 assertions), excluding these
-uncommitted docs, visual QA and release approval. Only focused HTML and its
-test changed from prior checkpoint.
-Focused HTML SHA-256 is `3c97b730290f9b4f35065fd57bcd8f7dbe0680bc0d5339c79a8c6212537fbd9b`.
-The new 62-file manifest, identical before/after checks, is
-`dca09a45ac122919bcc3621d2cfe182455bb4bfaf98375565d168ba5766e1ca0`.
-PR41's confirmed open/draft remote head is `acdb2e3`.
+Release A is shipped. [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41)
+merged reviewed `744f7d06607526a10997b926d91b18087c4030cf` as
+`b6142de6241cb2e1b6ac70b509f2d0b0e836f1d8` at `2026-08-31T18:06:04Z`.
+Installed release `20260831-b6142de-pr41-20260831T140555-84d50f` reports
+0.4.0/schema 8/observation-v6/camera-v8. BOTH public/dashboard services were
+explicitly restarted and are loaded, healthy and integrity verified. Fourteen
+static and sixteen security checks pass, OAuth/environment/config/routes are
+preserved, and no rollback was needed. The user explicitly authorized deployment
+before automated browser QA to visually review it themselves; no rendered or
+actual-device acceptance is claimed. Independent read-only verification confirms
+both exact installed manifests/releases, health and four user-facing pages,
+twelve exact asset comparisons, fresh material metadata for four physical heads
+at `2026-08-31T18:08:02.427Z`, and a structurally valid 253,183-byte 1920 × 1080
+JPEG at `2026-08-31T18:08:02.952Z`. No live activation, image-quality, browser,
+phone or physical acceptance is inferred. Raw metadata/images remain private.
 
 The user wants every pending read-only widget completed and all cards/index
 restyled to the selected white reference. Decision 0029 and `WIDGET_TRACKS.md`
@@ -23,11 +26,7 @@ continuous progress; B Queue, C fans/chamber, D Current Job/History, E overview
 follow sequentially, with all unfinished rows retained as active. Existing
 Bed Mesh is restyled with A. Invokable skills and jobs/history separation stay.
 
-Release A checkpoint `acdb2e38553418b395269bf71814ec3a5f21af04` is committed
-and pushed as [draft PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41);
-coordinator verified open/draft status and exact remote head. Source is frozen
-at 0.4.0/schema 8/observation-v6/camera-v8, sixteen
-resources, from main `bf3eb26`. Changed application scope: fixed material
+The delivered sixteen-resource application changes fixed material
 adapter/model, shared store/Heads projection, app/server/dashboard plumbing,
 white focused/camera/index/host HTML, runtime contract and associated tests.
 Docs scope: decision 0029, requirements, project/next-agent state and current
@@ -41,16 +40,15 @@ labels are not Orca presets. VALIDATION records current approved-source hashes,
 prior checkpoint findings and precise evidence boundaries. The earlier contrast
 P2 is resolved; visual acceptance remains pending.
 
-Both live services were checked by the coordinator and still report
-0.3.5/schema 7/observation-v5/camera-v7 (PR38 `b565eec`), without restart or
-rollout. Browser discovery found no allowed client; isolated headless permission
-is requested but not granted. `design-qa.md` is blocked and old passes do not
-accept new bytes. No merge or deployment before required visual QA and exact-SHA
-independent review. Thereafter use guarded ship, both-service restart, exact
-assets/integrity and meaningful deployed behavior verification.
+The preliminary read-only shipping plan stopped because a scoped BRIEF edit
+was uncommitted; it performed no external mutation. The operator committed that
+note, obtained renewed exact-SHA approval, reran a successful read-only plan,
+then executed `u1-ship`. No guard was bypassed. VALIDATION records the exact
+redacted operator commands and separate source/deployment evidence.
 
-The source checkpoint/draft PR is complete. Obtain browser
-permission/access, then reference-to-render QA and final exact-candidate review.
+These docs-only rollout records on `docs/u1-pr41-rollout` change no application
+bytes and need no new deployment. Next integrate Queue's store/projection/widget
+while the user reviews the delivered A widgets.
 Camera's
 combined muted state/FPS/time text differs from the reference's differentiated
 text/dividers and needs visual classification; do not claim 1:1 fidelity from
@@ -61,7 +59,7 @@ Independent bounded source/protocol review approves, closing the prior P2;
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
 Store/projection/widget integration is next; no integration, merge or deployment
 is claimed. B–E source work may continue in stacked branches while
-A's visual permission is pending; sequential reviewed release order is unchanged.
+A's user visual review is pending; sequential reviewed release order is unchanged.
 Preserve other dirty checkouts. No printer controls, queue/history mutation,
 preset/project sync/write, auth/Tailscale change, plugin reinstall, or previously
 deferred Mac login work enters this request. Other risks: independent material
