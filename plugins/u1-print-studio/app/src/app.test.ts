@@ -277,7 +277,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(CAMERA_WIDGET_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v6.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v7.html");
     expect(LEGACY_CAMERA_WIDGET_URIS[0]).toBe(
       "ui://u1-print-studio/camera-v3.html"
     );

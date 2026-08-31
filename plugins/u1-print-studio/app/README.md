@@ -70,10 +70,10 @@ cannot mount an MCP Apps component.
 After installing or upgrading the Marketplace plugin, start a new ChatGPT or
 Codex task before testing it. Existing tasks may still refer to the previous
 installed MCP process and widget URI. Current source descriptors point to
-`ui://u1-print-studio/observation-v5.html` and the separate `camera-v6.html`.
-Observation-v4/v3/v2/v1 and camera-v5/v4 serve current-asset compatibility aliases;
+`ui://u1-print-studio/observation-v5.html` and the separate `camera-v7.html`.
+Observation-v4/v3/v2/v1 and camera-v6/v5/v4 serve current-asset compatibility aliases;
 status-v4/v3 and camera-v3/v2/v1 preserve frozen older presentation bytes.
-The source contract is runtime 0.3.4/schema 7, with thirteen resources, nine
+The source contract is runtime 0.3.5/schema 7, with fourteen resources, nine
 observation selectors, and unchanged two-visible/eight-app-only tool counts.
 The FPS update is reviewed and deployed through PR36; both services are
 verified at runtime 0.3.4/schema 7/observation-v5/camera-v6. Earlier PR34
@@ -98,7 +98,7 @@ The source `../.mcp.json` is intentionally a Bun adapter. For widget work
 without a host, `bun run dashboard` serves the standalone loopback status
 directory at `http://127.0.0.1:8788/dashboard` and the focused camera widget at
 `http://127.0.0.1:8788/dashboard/camera`. The camera route mounts the same HTML
-as `ui://u1-print-studio/camera-v6.html` (v5/v4 are current aliases; v3/v2/v1
+as `ui://u1-print-studio/camera-v7.html` (v6/v5/v4 are current aliases; v3/v2/v1
 retain frozen compatibility bytes). Both use the same tool-call shape
 while retaining the exact HTTP signaling adapter for development coverage.
 

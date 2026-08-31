@@ -60,6 +60,7 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
   };
   runInNewContext(`${script}\nglobalThis.api = {
     applyCameraFrame, setCameraMode, closeLive, applyHostContext, requestCameraDisplay, readSelectedIcePath,
+    restartFrameObserver: observeRenderedFrames,
     prepareLive: () => { livePreview = true; livePeerConnection = { close() {} }; observeRenderedFrames(); },
     fallback: activateSnapshotFallback,
     state: () => ({ snapshotObservedAt, liveObservedAt, relayRendering, selectedIcePath, measuredLiveFps }),
@@ -80,12 +81,13 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
   return {
     api: sandbox.api, node, document, window, images, messages, timers, callbacks, flush, reply, advance,
     renderFrame: (presentedFrames?: number) => { const [id, callback] = [...callbacks][0]!; callbacks.delete(id); callback(clock, presentedFrames === undefined ? undefined : { presentedFrames }); },
+    renderFrameBatch: (presentedFrames: number) => { const batch = [...callbacks.values()]; callbacks.clear(); for (const callback of batch) callback(clock, { presentedFrames }); },
     acceptSnapshot: (result = frame()) => { sandbox.api.applyCameraFrame(result); images.at(-1).onload(); },
   };
 }
 
 describe("camera widget presentation runtime", () => {
-  test("separates top camera information from bottom display and live controls", () => {
+  test("keeps status bottom-left, controls bottom-right, and feedback at the top", () => {
     const body = html.split("<body")[1]!.split('<script type="module">')[0]!;
     const cluster = body.match(/<div class="camera-controls">([\s\S]*?)<\/div>/)![1]!;
     const ids = [...cluster.matchAll(/<button[^>]+id="([^"]+)"/g)].map(match => match[1]);
@@ -94,9 +96,13 @@ describe("camera widget presentation runtime", () => {
     expect(body.indexOf('class="camera-controls"')).toBeGreaterThan(body.indexOf('id="camera-detail-label"'));
     const information = body.split('<div class="camera-info">')[1]!.split('<div class="camera-bottom">')[0]!;
     const actions = body.split('<div class="camera-bottom">')[1]!;
-    for (const id of ["camera-empty-message", "camera-detail", "camera-detail-label", "display-feedback"]) {
+    for (const id of ["camera-empty-message", "display-feedback"]) {
       expect(information).toContain(`id="${id}"`);
       expect(actions).not.toContain(`id="${id}"`);
+    }
+    for (const id of ["camera-detail", "camera-detail-label"]) {
+      expect(actions).toContain(`id="${id}"`);
+      expect(information).not.toContain(`id="${id}"`);
     }
     expect(information).not.toContain("<button");
     expect(body.match(/id="picture-in-picture"/g)).toHaveLength(1);
@@ -247,6 +253,29 @@ describe("camera widget presentation runtime", () => {
     host.advance(3500, true);
     expect(host.node("#camera-detail-label").textContent).toStartWith("Fallback · ");
     expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+  });
+
+  test("repeated track setup keeps one observer and obsolete same-peer callbacks cannot reset FPS", () => {
+    const host = cameraHost(); host.acceptSnapshot(); host.api.prepareLive();
+    const obsoleteCallback = [...host.callbacks.values()][0]!;
+    host.api.restartFrameObserver();
+    host.renderFrameBatch(1);
+    for (let index = 1; index <= 30; index++) { host.advance(40); host.renderFrameBatch(index + 1); }
+    expect(host.node("#camera-detail-label").textContent).toContain("25 FPS");
+    expect(host.callbacks.size).toBe(1);
+    const before = host.api.state();
+    obsoleteCallback(999999, { presentedFrames: 999999 });
+    expect(host.api.state()).toEqual(before);
+    expect(host.callbacks.size).toBe(1);
+  });
+
+  test("repeated legacy track setup keeps one decoded-counter interval", () => {
+    const host = cameraHost({ frameCallbacks: false }); let count = 0;
+    host.node("#live-stream").getVideoPlaybackQuality = () => ({ totalVideoFrames: count });
+    host.acceptSnapshot(); host.api.prepareLive(); host.api.restartFrameObserver();
+    expect([...host.timers.values()].filter(timer => timer.repeat)).toHaveLength(1);
+    count = 1; host.advance(250, true); count = 30; host.advance(1000, true);
+    expect(host.node("#camera-detail-label").textContent).toContain("29 FPS");
   });
 
   test("decoded fallback measures frame count deltas, never its four polling ticks per second", () => {

@@ -1,5 +1,29 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 bottom-left camera information and missing FPS — current work
+
+The user requests camera state/FPS/time bottom left because the top overlay
+blocks the view, while display/live controls remain bottom right. CAM-008 and
+decision 0023 record this camera-only exception and narrow wrapping: the
+information gets the preceding left-aligned row when necessary, without
+truncating time/FPS or shrinking/overlapping controls. Rejection feedback stays
+at the top; network jargon remains hidden.
+
+The layout and a reproduced missing-FPS product defect are fixed in source:
+repeated same-peer track events previously started duplicate frame watchers,
+whose repeated counters reset the measurement window. Cancelling prior frame
+callbacks/decoded intervals and generation-guarding old callbacks prevents it.
+Author checks pass 83 tests/862 assertions and TypeScript. Independent
+native-browser evidence includes six captures at 320/390/720 px. Synthetic playback went from roughly
+30 FPS to missing after repetition before the fix, and retains roughly 30/31
+FPS afterwards. This does not establish the user's device-specific cause or
+actual printer streaming. Source 0.3.5/schema 7/observation-v5/camera-v7, with
+v6/v5/v4 aliases and fourteen resources, awaits independent acceptance and
+exact-build shipment through `u1-ship`.
+PR36 remains the deployed baseline; PR37 records are merged in main `a65ded0`.
+Do not repeat their docs-only delivery. Queue/minimal-progress work remains
+separate, and no new actual-phone success is claimed.
+
 ## 2026-08-31 live-only measured FPS — shipped in PR36
 
 The user requests FPS back only while live. Decision 0023/CAM-008 now permit
@@ -17,8 +41,8 @@ explicitly restarted and are healthy/integrity verified at the contract above.
 Fourteen static and sixteen security checks pass; OAuth/configuration/routes
 are unchanged and no rollback was needed. `VALIDATION.md` records independent
 source and post-shipment evidence; these checks do not prove phone/live-video
-playback. Next review/merge only this docs-only rollout record, with no second
-deployment for unchanged app bytes. Queue WIP and minimal-progress changes
+playback. Its docs-only rollout record is merged, with no second deployment
+for unchanged app bytes. Queue WIP and minimal-progress changes
 remain deferred. No printer control or plugin reinstall was performed.
 
 ## 2026-08-31 PR34 shipped and independently verified — current handoff

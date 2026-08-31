@@ -321,3 +321,43 @@ actual source screenshots at narrow/wide light/dark sizes. Source fixtures do
 not prove live printer FPS or phone playback. The current task's established
 reviewed merge/deploy/restart-both/verify sequence applies through `u1-ship`;
 no plugin reinstall, printer control or authentication/routing change is added.
+
+## 2026-08-31 supersession — camera information at bottom left
+
+The user reports that the camera's top status pill blocks the view and
+explicitly requests it at bottom left. This is a **camera-only exception** to
+the general information-above/actions-below rule; observation cards keep their
+existing anatomy. It supersedes the top state/FPS/time placement above.
+
+- Move only the camera state/FPS/time pill to bottom left. Keep the complete
+  PiP/Fullscreen/Live-or-Close cluster bottom right and existing display-rejection
+  feedback at the top. Do not add headings, captions or network diagnostics.
+- Use the same bottom overlay region, with one row when space permits. At
+  narrow widths, put the complete information pill on a preceding left-aligned
+  row and controls on the next right-aligned row. Preserve current edge insets,
+  44-pixel targets and at least 8-pixel gaps; never overlap controls, truncate
+  the full timestamp/FPS, or push either group outside the image at 320 px.
+- Preserve truthful snapshot/frame clocks, live-only measured FPS, reset and
+  stale-rate handling, and existing media/display behavior. The user's current
+  screenshot still lacks FPS while labelled Live. That is a reported symptom,
+  not a proven cause: investigate the actual delivery/measurement path before
+  choosing a repair, and do not substitute a fabricated rate.
+- Validate bottom geometry in snapshot/live/fallback and rejection states at
+  narrow/wide sizes, alongside regression evidence for the diagnosed FPS fix.
+  Independent source review and the established exact-build `u1-ship` rollout
+  remain required. Existing PR36 software/service evidence does not by itself
+  establish that this new symptom or layout is fixed on the user's device.
+
+### Reproduced FPS defect and bounded repair
+
+Repeated same-peer track events started duplicate frame watchers; their
+duplicate counters reset the FPS sampling window. Native synthetic playback
+reproduced an initially measured rate disappearing after repetition. The
+bounded repair cancels the previous frame callback/decoded interval and
+generation-guards old callbacks before starting one watcher. Independent native-browser evidence
+retains approximately 30/31 FPS after repetition and covers bottom-overlay
+geometry in six browser captures. This identifies a product defect, not a
+verified cause on the user's inaccessible device or a real printer stream.
+Source runtime 0.3.5/camera-v7 adds camera-v6 to current aliases v5/v4;
+observation-v5/schema 7 stay unchanged, with fourteen resources. Independent
+acceptance and shipment remain pending.

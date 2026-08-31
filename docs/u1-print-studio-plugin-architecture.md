@@ -5,12 +5,13 @@ project's stable architecture and ontology. The code is intentionally smaller
 than the target architecture. Where it shortcuts an intended boundary, that is
 called out rather than presented as finished product structure.
 
-Current source is runtime 0.3.4/schema 7/observation-v5/camera-v6: thirteen
+Current source is runtime 0.3.5/schema 7/observation-v5/camera-v7: fourteen
 resources, nine observation selectors and nine directory links, with two
 model-visible/eight app-only tools. Bed Mesh's end-to-end implementation and
 the new repository shipping workflow are reviewed and deployed through PR34.
-The FPS contract above is reviewed and deployed through PR36; both restarted
-services are healthy/integrity verified at runtime 0.3.4/schema 7/
+The current 0.3.5/camera-v7 source above awaits independent acceptance and
+shipment. The earlier FPS slice is deployed through PR36; both restarted
+services remain healthy/integrity verified at runtime 0.3.4/schema 7/
 observation-v5/camera-v6. Earlier PR34 evidence separately confirms live mesh
 and JPEG acquisition, without phone/live-video or calibration claims.
 
@@ -90,7 +91,7 @@ inbound protocol, not the core product boundary.
 | Ticket codec adapter | `app/src/adapters/camera-ticket-codec.ts` | Issues opaque random ticket material and hashes it for in-memory lookup |
 | Adapter-shaped status | `U1Status` | Normalized input captured by the shared observation store; not itself the public focused schema |
 | Interactive observation presenter | `public/widget.html` | Renders one observation-v5 Instrument Strip and requests only app-private refresh for its selected view |
-| Interactive camera presenter | `public/camera-widget.html` | Renders the separate camera-v6 snapshot-first Instrument Strip and owns Go Live, Close, retry, and fallback |
+| Interactive camera presenter | `public/camera-widget.html` | Renders the separate camera-v7 snapshot-first Instrument Strip and owns Go Live, Close, retry, and fallback |
 | Private widget directory | `public/dashboard-index.html` | Static nine-link navigation at both dashboard roots, including separate Current Job and Job History; reports implementation coverage without acquiring observations or media; inlined in the HTTP bundle |
 | Frozen compatibility presenters | `public/legacy-widget.html` and `legacy-camera-widget.html` | Preserve exact former status-v4/v3 and camera-v3/v2/v1 bytes for retained mounted tasks |
 | Static presenter | `status-card-image.ts` | Renders a portable PNG from one `U1Status` snapshot |
@@ -126,7 +127,7 @@ MCP Apps bridge.
 | MCP member | Semantic category | Result contract |
 | --- | --- | --- |
 | `observe_printer` | Observe and present, model-visible | Requires one closed view from overview, progress, thermals, heads, jobs, job_history, queue, fans, or bed_mesh; jobs selects Current Job and job_history selects separate Job History; returns one observation-v5 projection |
-| `open_printer_camera` | Observe and present, model-visible | Reads one relayed snapshot and links a fresh camera-v6 camera-only presentation without allocating a stream session |
+| `open_printer_camera` | Observe and present, model-visible | Reads one relayed snapshot and links a fresh camera-v7 camera-only presentation without allocating a stream session |
 | `refresh_printer_observation` | Observe, app-only | Refreshes the mounted strip through the same store and projector without opening another widget |
 | `show_u1_status` | Observe and present, app-only compatibility | Frozen retained-card alias returning the prior status payload, PNG, and status-v4 resource |
 | `get_u1_status` | Observe, app-only compatibility | Frozen retained-card refresh alias returning the prior status payload without a new presentation |
@@ -136,7 +137,7 @@ MCP Apps bridge.
 | `add_u1_camera_ice_candidates` | Observe, app-only | Accepts bounded and deduplicated ICE candidate batches |
 | `close_u1_camera_stream` | Observe, app-only | Idempotently closes the session and releases its lease |
 | `ui://u1-print-studio/observation-v5.html` | Current observation resource | Self-contained focused Instrument Strip with top timestamp/freshness/feedback, bottom-only refresh/retry actions, and empty external CSP; observation-v4/v3/v2/v1 are current aliases |
-| `ui://u1-print-studio/camera-v6.html` | Current camera resource | Image-only top snapshot/live/fallback time and measured live FPS, with feature-detected display/live controls at bottom right; camera-v5/v4 are current aliases, network diagnostics stay internal |
+| `ui://u1-print-studio/camera-v7.html` | Current camera resource | Image-only bottom-left snapshot/live/fallback time and measured live FPS, with feature-detected display/live controls at bottom right; camera-v6/v5/v4 are current aliases, network diagnostics stay internal |
 | `ui://u1-print-studio/status-v4.html` and `status-v3.html` | Frozen status resources | Exact former large-card bytes for mounted-task compatibility only |
 | `ui://u1-print-studio/camera-v3.html`, `camera-v2.html`, and `camera-v1.html` | Frozen camera resources | Exact former camera bytes for mounted-task compatibility only |
 
@@ -155,7 +156,7 @@ Codex desktop -> stdio MCP -> observe_printer(view)
               -> shared store -> one focused structured projection
               -> desktop mounts observation-v5
               -> app-only refresh returns the same selected projection
-              -> open_printer_camera mounts camera-v6 separately
+              -> open_printer_camera mounts camera-v7 separately
               -> Go Live uses MCP Apps tools/call for bounded signaling
               -> connector terminates one private H264 U1 peer
               -> connector fans cloned RTP into independent viewer peers
@@ -176,7 +177,7 @@ The optional developer HTTP route is:
 Codex/ChatGPT -> public HTTPS -> OAuth + passkey -> Streamable HTTP MCP
               -> observe_printer(view)
               -> text + focused structured projection + observation-v5 link
-              -> open_printer_camera mounts the snapshot-first camera-v6 widget
+              -> open_printer_camera mounts the snapshot-first camera-v7 widget
               -> Go Live calls app-only open_u1_camera_stream once
               -> answer, ICE, and close stay on the MCP Apps tools/call bridge
               -> connector terminates one private H264 printer peer
