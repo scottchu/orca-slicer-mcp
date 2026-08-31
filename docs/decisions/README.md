@@ -32,8 +32,8 @@ silently changed.
 | [0023](0023-use-quiet-observation-footers-and-camera-overlays.md) | Use quiet observation footers and camera overlays | Accepted design; source validation and rendered acceptance tracked separately |
 | [0024](0024-add-private-widget-directory.md) | Add a private widget directory | Accepted for the user-requested navigation-only source slice |
 | [0025](0025-separate-current-job-and-job-history.md) | Separate Current Job and Job History | Accepted for the user-requested independently callable job views |
-| [0027](0027-observe-reported-bed-mesh-on-demand.md) | Observe the reported bed mesh on demand | Software-validated; final exact-commit review pending |
-| [0028](0028-ship-reviewed-u1-source-through-one-operator-workflow.md) | Ship reviewed U1 source through one operator workflow | Software-validated; final exact-commit review pending |
+| [0027](0027-observe-reported-bed-mesh-on-demand.md) | Observe the reported bed mesh on demand | Accepted; deployed and read-only live acquisition verified |
+| [0028](0028-ship-reviewed-u1-source-through-one-operator-workflow.md) | Ship reviewed U1 source through one operator workflow | Accepted; successful reviewed PR34 shipment verified |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

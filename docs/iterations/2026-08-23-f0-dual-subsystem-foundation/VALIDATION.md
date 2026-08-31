@@ -1,5 +1,47 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 PR34 deployed-source and real-observation verification
+
+After the authorized shipping workflow merged
+`7194361d4a8d7a2291bcc64f1d053eae51a8d99c`, installed that exact merged source
+and restarted both U1 services, the independent validator ran
+`bun --no-env-file --config=/dev/null run verify-bed-mesh-live.ts
+<CLEAN_MERGED_SOURCE> --authorized-postship` from an outside-repository
+verification directory. `<CLEAN_MERGED_SOURCE>` replaces the operator's exact
+private isolated source path; it was not the unmerged author worktree.
+
+- Both live health responses reported **0.3.3 / schema 7 / observation v5 /
+  camera v5**. All **14 static checks** matched the merged source byte-for-byte,
+  including both directory roots, focused hosts and current widgets.
+- All **16 security checks** passed: every public dashboard route remained
+  unavailable, public enrollment remained 404, unauthenticated public MCP
+  returned 401 with its challenge, both private listeners rejected MCP, and
+  private enrollment health remained available. Separate GET checks of the
+  existing private tailnet `/dashboard/` and `/dashboard/bed_mesh` links also
+  returned 200 with exact merged-source bytes.
+- Exactly one private `refresh_printer_observation(view="bed_mesh")` returned
+  **known, fresh, active** reported probe data: **11 × 11**, minimum
+  **-0.340833 mm**, maximum **0.066667 mm**, range **0.4075 mm**. Matrix dimensions,
+  finite values and ascending bounds were checked. This is a real read of the
+  printer's already reported grid, not a new probe, calibration, flatness
+  certification or physical-print acceptance. Its observation timestamp is
+  server receipt time, not the time that the grid was physically measured.
+- Exactly one `get_u1_camera_frame` call, without live authorization, returned
+  an available JPEG. The validator opened the image and confirmed a coherent
+  printer-interior snapshot. This does not prove live video, ICE/TURN, an
+  iPhone/ChatGPT-mounted widget, or user visual acceptance.
+- No printer-control, calibration/probe, plugin, authentication, configuration
+  or service mutation was performed by the validator. Operator-owned restart,
+  integrity and preservation evidence remains distinct from these independent
+  health/static/security/data checks.
+
+The redacted report and camera image remain outside Git; no profile name,
+printer identifier, private origin/path, full matrix or image was committed.
+Report SHA-256:
+`ed409fb9db4be681015dda94b35700beb22f079b743e0e20f40167407c00ec68`.
+These live results supersede the earlier pending-deployment boundary for
+Bed Mesh below; they do not change the paused/unimplemented Queue status.
+
 ## 2026-08-31 Shipping build-scratch guard follow-up
 
 The operator's first authorized PR34 shipping attempt at reviewed head

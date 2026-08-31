@@ -8,9 +8,9 @@ called out rather than presented as finished product structure.
 Current source is runtime 0.3.3/schema 7/observation-v5/camera-v5: twelve
 resources, nine observation selectors and nine directory links, with two
 model-visible/eight app-only tools. Bed Mesh's end-to-end implementation and
-the new repository shipping workflow are software-validated, pending final
-exact-commit review and shipping.
-Deployed PR33 remains 0.3.2/schema 6/observation-v4/camera-v5 until rollout.
+the new repository shipping workflow are reviewed and deployed through PR34.
+Both services are verified at this contract; independent read-only live mesh
+and JPEG acquisition succeeds, without phone/live-video or calibration claims.
 
 ## One plugin, several layers
 
@@ -93,7 +93,7 @@ inbound protocol, not the core product boundary.
 | Frozen compatibility presenters | `public/legacy-widget.html` and `legacy-camera-widget.html` | Preserve exact former status-v4/v3 and camera-v3/v2/v1 bytes for retained mounted tasks |
 | Static presenter | `status-card-image.ts` | Renders a portable PNG from one `U1Status` snapshot |
 | Workflow skills | `skills/` | Route focused one-shot observation through `u1-observe-printer` and guide setup, monitoring, preparation, and authorized start without becoming runtime authority |
-| Repository shipping workflow | Root `.agents/skills/u1-ship` and `scripts/u1_ship.py` | Explicitly authorized operator validation/merge/deployment/restart/verification through `u1_service.py`; not a plugin skill or MCP Admin tool; final exact-commit review pending |
+| Repository shipping workflow | Root `.agents/skills/u1-ship` and `scripts/u1_ship.py` | Explicitly authorized operator validation/merge/deployment/restart/verification through `u1_service.py`; not a plugin skill or MCP Admin tool; reviewed PR34 shipment verified |
 
 The store implements the bounded current-state portion of
 `QueryCurrentPrinterObservation`: after initial acquisition, plain reads are cache-only, explicit refresh
@@ -106,8 +106,9 @@ retention. Other views and static/health reads never acquire a mesh. A valid
 inactive mesh clears prior data; failed acquisition cannot restamp old data or
 inherit unrelated status freshness. The small reported-grid view preserves XY
 orientation, mm summaries and valid all-zero data without interpolated fallback
-or a physical-level/safety verdict. This source path passed software validation,
-with final exact-commit review pending; it is not verified against the real printer.
+or a physical-level/safety verdict. This source path passed software validation
+and independent read-only live acquisition of an active 11 × 11 reported grid;
+neither establishes calibration quality or physical print acceptance.
 This is not yet the decision-0006 resident subscription monitor, durable event
 history, or full reconnect bootstrap; those remain later architecture gates.
 
@@ -242,8 +243,8 @@ does not implement Preparation or Control.
   connection epoch, session provenance, and capability evidence.
 - Cavity, material/color, history, queue, and fan/purifier objects remain
   advertised or unknown until their read-only mappings are accepted. Bed Mesh
-  now has a software-validated bounded source mapping, pending final
-  exact-commit review and separate live-data verification.
+  now has a reviewed/deployed bounded source mapping and independently verified
+  read-only live acquisition; physical quality remains a separate question.
 - Printer and camera addresses remain private; the widget never connects to
   them directly.
 - MCP maps a `Go Live` request and its app-only signaling calls to an
@@ -275,8 +276,8 @@ does not implement Preparation or Control.
 
 ## Intended next abstraction step
 
-Complete independent Bed Mesh and operator-workflow acceptance, then the
-authorized exact-source rollout. Map remaining domains through explicit
+Bed Mesh and the operator workflow have completed source acceptance and the
+authorized verified rollout. Map remaining domains through explicit
 read-only adapter fixtures: history, queue, cavity/materials and fans/purifier.
 Current Job is already a separate limited projection; history stays unknown.
 Compose overview only after every focused module

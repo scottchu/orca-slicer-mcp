@@ -1,7 +1,7 @@
 # 0028: Ship reviewed U1 source through one operator workflow
 
 - Date: 2026-08-31
-- Status: implemented and software-validated; final exact-commit review pending
+- Status: accepted; reviewed and exercised through successful PR34 merge/deploy/restart/verification
 - Scope: repository operator tooling, not the distributed printer plugin
 
 ## Decision and authority
@@ -97,6 +97,16 @@ approval. Only the former may propose `--execute`. Record actual deployment
 separately from script fixture evidence.
 
 ## Current rollout context
+
+The workflow's authorized PR34 execution now completed successfully: exact
+reviewed head `97b5106` merged as `7194361`, was staged/deployed, and both U1
+services explicitly restarted. They report runtime 0.3.3/schema 7/
+observation-v5/camera-v5 with loaded/healthy/integrity verification, fourteen
+static and sixteen security checks passing. Independent verification agrees;
+private configuration and routing are preserved. The prior compiler-scratch
+guard failure is resolved by the narrowly scoped ignore and regression tests,
+not a relaxed clean-tree guard. Recovery material remains private; no rollback
+was required. The following PR33 account is the pre-workflow baseline.
 
 The urgent already-merged PR33 rollout was completed before this automation:
 release `20260831-7b9c4d4-widgets`, runtime 0.3.2/schema 6/observation-v4/camera-v5,

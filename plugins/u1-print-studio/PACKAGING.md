@@ -4,8 +4,8 @@
 
 The repository-only `$u1-ship` skill and `scripts/u1_ship.py` add decision
 0028's guarded validate/merge/deploy/restart-both/verify workflow around the
-lifecycle helper below. Source implementation is software-validated, pending
-final exact-commit review; the skill is not part of the distributed printer plugin.
+lifecycle helper below. The independently reviewed workflow successfully
+shipped PR34; the skill is not part of the distributed printer plugin.
 
 Decision [0022](../../docs/decisions/0022-supervise-versioned-personal-http-services.md)
 adds a separate personal deployment path: bundle the HTTP entry point and
@@ -92,10 +92,11 @@ Private stable entries are `/dashboard/progress`, `/dashboard/thermals`,
 implementation-coverage labels. It loads no observations, widgets, or camera
 media. Source decision 0025 lists nine focused entries, with `/dashboard/jobs`
 retained for Current Job and `/dashboard/job_history` separately exposing
-unimplemented history. PR33 is now deployed as `20260831-7b9c4d4-widgets`,
-serving the nine-entry directory at runtime 0.3.2/schema 6/observation-v4/
-camera-v5. The current source's Bed Mesh adapter/grid is software-validated,
-pending final exact-commit review and deployment. Source merge alone never updates loaded services.
+unimplemented history. PR34 is deployed as
+`20260831-7194361-pr34-20260831T121439-3ba53f`, serving the nine-entry directory
+at runtime 0.3.3/schema 7/observation-v5/camera-v5. Both services are restarted
+and verified, and an independent read-only Bed Mesh acquisition succeeds.
+Source merge alone never updates loaded services.
 The HTTP overview route stays absent; the MCP overview
 view stays explicitly deferred. Public dashboard routes remain unavailable. Every process shares
 one observation store across its HTTP calls, not across other services or
@@ -157,8 +158,9 @@ Every channel's `doctor --json` reports one runtime contract containing the
 base runtime version, tool-schema version, observation-widget version, and
 camera-widget version. The current source contract is runtime `0.3.3`, tool
 schema `7`, observation widget `observation-v5`, and camera widget `camera-v5`.
-These are source versions; deployed PR33 remains 0.3.2/schema 6/observation-v4/
-camera-v5 until the next verified rollout. Observation-v4/v3/v2/v1 and camera-v4 remain current-asset aliases.
+These source versions match the verified PR34 service rollout; unchanged
+application bytes need no redeployment for later documentation-only records.
+Observation-v4/v3/v2/v1 and camera-v4 remain current-asset aliases.
 The expanded closed enum has nine values; two model-visible/eight app-only tool
 counts are unchanged. Twelve resource URIs retain current/frozen compatibility.
 The optional personal HTTP service returns the same contract from `/health`.

@@ -1,7 +1,7 @@
 # 0027: Observe the reported bed mesh on demand
 
 - Date: 2026-08-31
-- Status: accepted design; software validation passed, final exact-commit review pending
+- Status: accepted; reviewed, merged in PR34, deployed and read-only live acquisition verified
 - Scope: F0 read-only observation feedback loop, OBS-007/008/009 and API-005
 
 ## Context and priority
@@ -17,9 +17,12 @@ dashboard U1 services, and verifying them. This supersedes the earlier
 merge-only boundary. Preserve OAuth, configuration, and Tailscale routes; no
 plugin reinstall or printer control is authorized. The subsequent urgent PR33
 rollout now reports runtime 0.3.2/schema 6/observation-v4/camera-v5 on both
-restarted, verified services. Bed Mesh source has passed software validation;
-final exact-commit review, merge and deployment remain pending. A Git merge
-alone never establishes loaded bytes.
+restarted, verified services. Subsequently PR34 merged as `7194361` and the
+shipping workflow deployed runtime 0.3.3/schema 7/observation-v5/camera-v5,
+restarted both services and verified them. One independent read-only live
+observation confirms a known/fresh active 11 × 11 reported mesh. This is not
+calibration quality or physical print acceptance; a Git merge alone never
+establishes loaded bytes.
 
 ## Acquisition and normalized meaning
 
