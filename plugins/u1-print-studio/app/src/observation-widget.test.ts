@@ -470,6 +470,26 @@ describe("continuous reported print progress", () => {
     expect(markup).toContain('data-icon="feather-printer"');
   });
 
+  test("large progress percentage meets 3:1 contrast against the actual card surface", () => {
+    const token = (name: string) => {
+      const value = html.match(new RegExp(`--${name}:\\s*(#[0-9a-f]{3,6});`, "i"))?.[1];
+      expect(value).toBeDefined();
+      return value!;
+    };
+    const luminance = (hex: string) => {
+      const digits = hex.slice(1);
+      const expanded = digits.length === 3 ? [...digits].map(digit => digit + digit).join("") : digits;
+      const channels = expanded.match(/../g)!.map(pair => Number.parseInt(pair, 16) / 255)
+        .map(channel => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
+      return channels.reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index]!, 0);
+    };
+    const foreground = luminance(token("positive"));
+    const background = luminance(token("surface"));
+    const contrast = (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+    expect(html.match(/\.progress-percent \{[^}]+\}/)?.[0]).toContain("color: var(--positive)");
+    expect(contrast).toBeGreaterThanOrEqual(3);
+  });
+
   test("resizing leaves state, source time, refresh failures and request count unchanged", async () => {
     const card = progress(126, 461); await card.initialize();
     const initial = card.modules.innerHTML;
