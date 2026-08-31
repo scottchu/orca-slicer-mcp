@@ -85,6 +85,21 @@ Before stopping or handing off material work:
   change.
 - Run required repository validation locally. Do not configure or wait for
   hosted validation workflows.
+- Standing user authorization for each requested U1 widget change includes
+  completing local tests and independent approval of the exact candidate SHA,
+  merging through a PR, deploying the exact merged build through
+  `.agents/skills/u1-ship` and `scripts/u1_ship.py`, explicitly restarting BOTH
+  existing public and dashboard U1 services, and verifying health, integrity,
+  exact served assets, and scoped meaningful widget behavior before claiming
+  completion. Keep software, deployed-service, real-printer, and actual-device
+  evidence distinct; health/static checks alone do not prove widget behavior.
+- Keep dashboard index implementation labels truthful to delivered coverage;
+  unfinished Queue, Fans, and Job History work remains unfinished. This standing
+  release authorization does not authorize printer controls, authentication or
+  Tailscale changes, or plugin reinstallation. Preserve the existing shipping
+  guards and stop on failures; do not bypass them or infer broader authority.
+  Documentation-only policy or rollout-record changes require no additional
+  service deployment when application bytes are unchanged. See decision 0028.
 - Keep pull requests concise and point to repository records for detailed
   rationale and evidence.
 - GitHub Projects are not required for planning or delivery.
