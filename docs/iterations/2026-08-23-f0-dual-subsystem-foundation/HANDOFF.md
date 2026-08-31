@@ -1,5 +1,53 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 authorized headless follow-up — current handoff
+
+After draft PR30 source delivery, the user explicitly authorized isolated
+headless-browser validation because the supported browser was unavailable.
+The validator exercised the exact current assets with synthetic observations
+and media. Its final pass captured 67 observation and 22 camera states,
+passed 13 camera behavior checks plus three keyboard/unavailable checks,
+and found no final horizontal overflow or console errors. Native headless
+fullscreen passed; synthetic live-clock behavior is not real printer video
+or actual ChatGPT/iPhone PiP support. The independent visual disposition is
+recorded in `design-qa.md`.
+
+Independent screenshot review found three bounded P2 presentation defects,
+now repaired: active thermal readings were low-contrast yellow; small warning
+text lacked light-theme contrast; and Jobs exposed the internal `known` enum
+and normalization jargon. The fixes preserve yellow accents, render readings
+with ink, use contrasting light/dark warning colors, and label the current
+job/history availability in plain language. They do not add a history,
+queue, fan, mesh, cavity, or filament mapping. Runtime changes are limited to
+`public/widget.html`, with eight extra contract assertions in `app.test.ts`.
+
+Final current observation SHA-256:
+`86cf5f4a4e6e29f8aa99cb14c947d20992b7b022c91c75f08642eea0a09837d0`.
+Camera remains unchanged:
+`05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85`.
+The validator reports 134 app tests/939 assertions, 21 lifecycle tests,
+TypeScript, repository contract, all three bundles and signature validation
+passing on these bytes. Exact commands and evidence boundaries remain in
+`VALIDATION.md`; screenshots and temporary fixture artifacts are not committed.
+
+The initial implementation/source-only review is delivered in draft PR30 at
+`db4e250`, followed by delivery-record commit `41c4715`. This bounded follow-up
+and its continuity records remain uncommitted at this handoff. Next finish
+coordinator delivery of the follow-up to that existing draft PR. Independent
+formal review approves the follow-up with no new findings and scoped visual
+QA passes. The reviewer independently checked the 39-test/337-assertion
+targeted suite, 67 observation/22 camera captures, 13 camera plus three
+keyboard/unavailable behavior checks, 91 manifest hashes, and final screenshots.
+Coordinator push is pending at this record update. Merge,
+installation, services, routes/auth, and printer access were not authorized
+by headless validation and are unchanged; separately scope rollout and actual
+mounted mobile acceptance afterward.
+
+Existing private focused URLs still serve deployed runtime 0.3.0. The
+`/dashboard` redirect selects progress rather than the deferred composed
+overview. A static 200 is only route evidence, not successful live mapping or
+proof the polished assets are deployed. No private hostname is retained.
+
 ## 2026-08-31 quiet widget presentation — current handoff
 
 Decision 0023 is the current execution order, refining the user's selected

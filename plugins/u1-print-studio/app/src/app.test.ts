@@ -859,7 +859,11 @@ describe("instrument-strip observation widget contract", () => {
   test("renders missing and advertised-only semantics as unknown", () => {
     expect(WIDGET_HTML).toContain("Material unknown");
     expect(WIDGET_HTML).toContain("Color unknown");
-    expect(WIDGET_HTML).toContain("History unknown");
+    expect(WIDGET_HTML).toContain("History not implemented");
+    expect(WIDGET_HTML).toContain("Previous jobs aren’t available in this view yet.");
+    expect(WIDGET_HTML).toContain("<span>Current job</span>");
+    expect(WIDGET_HTML).not.toContain("${escapeHtml(data.current.state)}");
+    expect(WIDGET_HTML).not.toContain("Advertised history has no accepted normalization.");
     expect(WIDGET_HTML).toContain("Queue");
     expect(WIDGET_HTML).toContain("Fans & Air");
     expect(WIDGET_HTML).toContain("Bed Mesh");
@@ -872,6 +876,8 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain("Observation time unavailable");
     expect(WIDGET_HTML).toContain('stale: "Stale"');
     expect(WIDGET_HTML).toContain('offline: "Offline"');
+    expect(WIDGET_HTML).toContain('--negative: #b83232;');
+    expect(WIDGET_HTML).toContain('--negative: #ff8585;');
     expect(WIDGET_HTML).not.toContain("Read only");
     expect(WIDGET_HTML).not.toContain("Current reading");
     expect(WIDGET_HTML).not.toContain("Missing evidence stays Unknown");
@@ -886,6 +892,8 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain('toolReading ? "" : " zone-row"');
     expect(WIDGET_HTML).toContain(".strip.zone-row .identity { padding-left: 8px; }");
     expect(WIDGET_HTML).not.toContain('reading.id === "heater-bed" ? "BED" : "CAV"');
+    expect(WIDGET_HTML).toContain('.active .reading strong { color: var(--ink); }');
+    expect(WIDGET_HTML).not.toContain('.active .reading strong { color: #e8b600; }');
   });
 
   test("supports iPhone viewports, safe areas, and touch targets", () => {

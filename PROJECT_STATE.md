@@ -15,7 +15,14 @@ Last updated: 2026-08-31
   Source commit `db4e250` is pushed and delivered in
   [draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
   Independent formal review approves the source-only change with no unresolved
-  findings. Source delivery is complete; rendered acceptance remains blocked.
+  findings. Initial source delivery is complete. The user then explicitly
+  authorized isolated headless-browser validation, now completed against
+  synthetic observations/media; actual mobile-host and deployment acceptance
+  remain separate. The three screenshot-grounded follow-up fixes below have
+  not been committed or deployed at this record update.
+  Independent formal review now approves the headless follow-up with no new
+  findings, and scoped visual QA passes. Coordinator delivery through the
+  existing draft PR30 is pending at this record update.
   Source reports runtime `0.3.1`, schema `5`, observation-v3/camera-v5;
   observation-v2/v1 and camera-v4 remain current aliases, and all previously
   frozen legacy bytes remain unchanged. Two model-visible/eight app-only
@@ -30,11 +37,21 @@ Last updated: 2026-08-31
   hydration; source fixes add an awaited request handshake, full-envelope
   hydration, finite loading failure/retry, and retained stale refresh feedback.
   This does not establish the exact cause of the user's phone screenshot.
-- Independent executable observation and implementation camera tests exercise
-  actual widget scripts with synthetic hosts/frames. Rendered screenshots,
-  mounted mobile fullscreen/PiP, service rollout, and physical acceptance are
-  unclaimed. See `design-qa.md` and current iteration validation for the blocked
-  visual gate; the draft PR is delivered source, not a deployed live fix.
+- Isolated headless validation captured 67 observation and 22 camera cases,
+  passed 13 camera behavior checks plus three keyboard/unavailable checks,
+  and found no horizontal overflow or console errors on the final assets.
+  Independent screenshot review identified three bounded P2 fixes: active
+  thermal numbers now use ink color, footer warnings have contrasting
+  light/dark colors, and Jobs uses reader-facing copy instead of internal
+  availability/normalization terminology. The final source gate passes
+  134 app tests/939 assertions, 21 lifecycle tests, all bundles and signature
+  verification. See `design-qa.md` for the independent visual disposition.
+  Synthetic browser/media behavior is not mounted ChatGPT iPhone, real
+  printer, or deployed-version acceptance; those remain unclaimed.
+- Existing private focused URLs serve the previously deployed runtime 0.3.0;
+  `/dashboard` redirects to progress, not a composed overview. Static HTTP
+  success proves route availability only, not missing-domain mappings or
+  deployment of this PR. No private hostname is retained here.
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
@@ -398,9 +415,11 @@ and final repository-check results.
 ## Next action
 
 Decision 0023 source commit `db4e250` has independent source-only approval and
-is delivered in draft PR30. Next, rendered visual validation needs an available browser or explicit permission
-for an isolated alternative. Test all focused cards and camera snapshot/live/
-fallback/fullscreen/PiP at phone widths before user-facing acceptance. Do not
+is delivered in draft PR30. The authorized isolated headless pass is now
+complete, with independent follow-up approval and scoped visual QA passing.
+Next the coordinator delivers its three bounded fixes and evidence through
+existing draft PR30. Merge/rollout require separate authorization, followed by actual
+mounted iPhone acceptance of snapshot/live/fallback/fullscreen/PiP. Do not
 install, restart services, mutate OAuth/routes, or implement missing data
 domains as an implicit extension of this presentation change. The persistence
 delivery actions below are historical and must not be repeated for this slice.

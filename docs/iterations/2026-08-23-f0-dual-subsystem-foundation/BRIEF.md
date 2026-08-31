@@ -5,12 +5,21 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: decision 0023's focused-widget presentation polish
-  and finite host-loading repair now come first, following the user's mounted
-  phone feedback. Preserve the selected Instrument Strips and their current
-  data capabilities; standardize non-camera footers, simplify camera overlays,
-  and feature-detect fullscreen/PiP. Validate and independently review source
-  before PR delivery. PR28/PR29 and the persistence rollout are historical
+- Current execution order: the user has explicitly authorized isolated
+  headless-browser validation of decision 0023's reviewed widget source after
+  the supported browser was unavailable. Exercise actual current assets with
+  synthetic observations/media, inspect phone-width screenshots and display
+  controls, and repair only bounded discovered presentation defects. The
+  validator's final pass covers 67 observation and 22 camera captures with
+  no overflow or console errors. Three screenshot-based P2 corrections address
+  thermal numeric contrast, footer warning contrast, and Jobs wording. Finish
+  independent follow-up review and draft-PR delivery; mounted phone and rollout
+  acceptance remain separate. Keep
+  independent implementation, validation, and visual-review roles. Source is
+  already delivered in draft PR30; the final independent visual disposition is
+  in `design-qa.md`. This approval does not include merge, deployment, installation,
+  services, printer access, or missing backend mappings. PR28/PR29 and the
+  persistence rollout are historical
   delivered work, not tasks to repeat. No service, installation, OAuth,
   routing, Mac login/power, or printer-control change is included in this
   presentation slice. Orca Preparation discovery remains preserved and neither

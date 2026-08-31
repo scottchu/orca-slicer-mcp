@@ -17,7 +17,7 @@
         --brand: #ffcd00;
         --brand-warm: #ff5f28;
         --positive: #20bd68;
-        --negative: #df5454;
+        --negative: #b83232;
         --shadow: 0 18px 48px rgba(28, 30, 32, 0.1);
         --radius: 24px;
         --safe-top: env(safe-area-inset-top, 0px);
@@ -61,7 +61,7 @@
       .reading small { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; }
       .reading strong { font-size: clamp(22px, 5vw, 30px); font-weight: 640; letter-spacing: -0.035em; }
       .reading.unavailable strong { color: var(--muted); font-size: 15px; font-weight: 540; letter-spacing: 0; }
-      .active .reading strong { color: #e8b600; }
+      .active .reading strong { color: var(--ink); }
       .progress-body { padding: 0 24px 22px; }
       .progress-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       .state-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; color: #107d48; background: #ddf6e9; font-size: 14px; font-weight: 720; }
@@ -107,7 +107,7 @@
         .progress-body { padding-right: 18px; padding-left: 18px; }
       }
       @media (prefers-color-scheme: dark) {
-        :root { --ink: #f7f7f4; --muted: #b7b8b4; --faint: #969792; --surface: rgba(31, 31, 31, 0.98); --canvas: #191919; --line: rgba(255, 255, 255, 0.13); --soft: #292a29; --shadow: 0 18px 48px rgba(0, 0, 0, 0.3); }
+        :root { --ink: #f7f7f4; --muted: #b7b8b4; --faint: #969792; --surface: rgba(31, 31, 31, 0.98); --canvas: #191919; --line: rgba(255, 255, 255, 0.13); --soft: #292a29; --negative: #ff8585; --shadow: 0 18px 48px rgba(0, 0, 0, 0.3); }
         .roundel { background: linear-gradient(145deg, #3a3b3a, #282928); }
         .active .roundel { color: #1c1e20; background: var(--brand); }
         .progress-track { background: #343533; }
@@ -149,7 +149,7 @@
         return `<section class="instrument">${header("Thermals")}<div class="strip-list">${rows}</div>${provenance(data?.provenance)}</section>`;
       };
       const renderHeads = (data) => { const cards = (data?.items ?? []).map((head) => { const active = valueOf(head.active) === true; return `<article class="head-card${active ? " active" : ""}"><span class="roundel">T${head.physicalTool}</span><strong>Tool ${head.physicalTool}</strong><div class="material">Material unknown<br/>Color unknown</div><div class="temperature">${escapeHtml(formatTemperature(head.temperature))}${valueOf(head.target) !== null ? ` / ${escapeHtml(formatTemperature(head.target))}` : ""}</div>${active ? '<span class="micro"><span class="dot"></span>Active</span>' : `<span class="micro">${escapeHtml(valueOf(head.headState) ?? "Unknown")}</span>`}</article>`; }).join(""); return `<section class="instrument">${header("Heads & Filaments")}<div class="head-grid">${cards}</div>${provenance(data?.provenance)}</section>`; };
-      const renderJobs = (data) => { const current = data?.current ? `<div class="job-current"><strong>${escapeHtml(valueOf(data.current.filename) ?? "Filename unknown")}</strong><div class="job-meta"><span>${escapeHtml(data.current.state)}</span><span>${valueOf(data.current.storageActive) === null ? "Storage unknown" : valueOf(data.current.storageActive) ? "Storage active" : "Storage inactive"}</span></div></div>` : '<div class="empty-panel"><strong>No current job observed</strong>Current job identity is unknown.</div>'; return `<section class="instrument">${header("Jobs")}${current}<div class="empty-panel"><strong>History unknown</strong>Advertised history has no accepted normalization.</div>${provenance(data?.provenance)}</section>`; };
+      const renderJobs = (data) => { const current = data?.current ? `<div class="job-current"><strong>${escapeHtml(valueOf(data.current.filename) ?? "Filename unknown")}</strong><div class="job-meta"><span>Current job</span><span>${valueOf(data.current.storageActive) === null ? "Storage unknown" : valueOf(data.current.storageActive) ? "Storage active" : "Storage inactive"}</span></div></div>` : '<div class="empty-panel"><strong>No current job observed</strong>Current job identity is unknown.</div>'; return `<section class="instrument">${header("Jobs")}${current}<div class="empty-panel"><strong>History not implemented</strong>Previous jobs aren’t available in this view yet.</div>${provenance(data?.provenance)}</section>`; };
       const renderQueue = (data) => unknown("Queue", data);
       const renderFans = (data) => unknown("Fans & Air", data);
       const renderBedMesh = (data) => unknown("Bed Mesh", data);

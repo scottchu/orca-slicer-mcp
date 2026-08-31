@@ -1,5 +1,103 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 authorized isolated headless-browser validation
+
+After the supported browser proved unavailable, the user explicitly approved
+an isolated headless-browser check. The validator used a temporary browser
+profile/context, the installed Chrome executable, Playwright 1.55.0 installed
+only in a temporary fixture directory, and a loopback-only ephemeral fixture
+server. Exact production HTML bytes were served unchanged. Request routing
+allowed only that fixture origin and data URLs; service workers were blocked,
+browser background networking was disabled, and no non-fixture page request
+was observed. No production service, printer, plugin, auth state, route, merge
+or deployment was changed.
+
+### Captures and behavioral evidence
+
+- Chrome reported `152.0.7977.65`; device scale factor 1, `en-GB`, UTC,
+  light/dark color schemes. All eight focused views were captured at 320,
+  390 and 720 CSS pixels, plus thermal boundary checks at 400 and 410 pixels.
+- Final evidence contains **91 raw screenshots**: 67 final observation
+  captures, 22 camera captures, and two additional keyboard/unavailable
+  captures. The final observation report records the same widget source hash
+  for every capture. Camera bytes remained unchanged throughout the check.
+- Every recorded document width fits its requested viewport. Visible controls
+  in the main capture matrix have at least 44-by-44-pixel targets. These checks
+  do not by themselves constitute a complete accessibility audit.
+- Actual browser behavior exercised fresh, stale, offline, missing time/data,
+  malformed delivery, refresh failure, a real 15-second loading deadline, and
+  retry recovery to a supplied 84-percent observation. Keyboard Tab focused
+  Refresh and Enter successfully invoked the selected-view refresh.
+- Synthetic JPEGs exercised the real browser image decoder. A synthetic canvas
+  stream exercised the production video element and rendered-frame callbacks;
+  an explicitly substituted RTC adapter prevented network peer creation. All
+  six width/theme camera cases advanced time only while frames arrived,
+  froze when frames stopped, and fell back to the accepted JPEG time. This is
+  real browser rendering of synthetic media, not real WebRTC/printer evidence.
+- Host-mode success, rejection and PiP-to-fullscreen coercion were exercised
+  through the fixture bridge. Separately, native Chrome fullscreen entered
+  with an actual non-null `document.fullscreenElement` and exited successfully.
+  Native phone PiP, floating windows and iPhone host behavior remain untested.
+- The recorded 16 explicit boolean interaction checks all passed. Final
+  capture runs reported zero page/console errors and zero external page
+  requests. The initial synthetic-live fixture failed because its cached
+  stream envelope omitted the required transport field; the fixture was
+  corrected and the entire camera matrix was rerun successfully. That failure
+  was not classified as a production defect.
+- Initial captures retained a 1000-pixel fixture viewport, producing blank
+  space below cards. Those originals remain separate. Accepted recaptures size
+  the iframe to the production main content and its padding; no production
+  layout was changed to compensate for a fixture artifact.
+
+The independent designer compared supplied source crops and rendered captures,
+then requested three bounded fixes: active-temperature contrast, internal Jobs
+copy, and warning/error contrast. The author made those changes. The validator
+recaptured the full observation matrix after the last fix. Final computed
+warning colors are `rgb(184, 50, 50)` on the light card and `rgb(255, 133, 133)`
+on the dark card. Paired visual comparisons and the design verdict belong to
+`design-qa.md`; the validator does not substitute assertions for that verdict.
+
+### Final commands and fingerprints
+
+Actual command forms below redact only temporary directory/port values. The
+one-off harness, reports, screenshots and supplied private attachments are
+retained outside Git; durable VM regressions remain in the app test suite.
+
+- In `<isolated-fixture-root>`, `npm install --ignore-scripts --no-audit --no-fund`
+  installed the pinned Playwright dependency without downloading a browser.
+- `bun run fixture-server.ts` started the allowlisted loopback fixture adapter.
+- `U1_FIXTURE_ORIGIN=<loopback-fixture-origin> node capture.mjs` ran the full
+  capture and synthetic-camera interaction matrix.
+- `U1_FIXTURE_ORIGIN=<loopback-fixture-origin> U1_OUTPUT_DIR=<final-capture-dir>
+  U1_OBSERVATIONS_ONLY=1 node capture.mjs` recaptured final observation bytes.
+- `node check-interactions.mjs` checked computed warning colors, keyboard
+  refresh and camera-unavailable behavior. `node make-manifest.mjs` recorded
+  logical screenshot names, pixel sizes and SHA-256 fingerprints.
+- Final `./scripts/check-repository.sh` passed TypeScript,
+  **134 app tests / 939 assertions**, **21 lifecycle tests**, and the repository
+  contract. `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, exact source/bundled-widget
+  `cmp` checks, and `git diff --check` passed after all three visual fixes.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Observation widget | `86cf5f4a4e6e29f8aa99cb14c947d20992b7b022c91c75f08642eea0a09837d0` |
+| Camera widget | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Stdio bundle | `aed5f6143babb067b0b9460d1d25fe3c1eb2fbbba32a27e7e73622bc115f58ce` |
+| HTTP bundle | `30e1127a2d63292fd5141457753681ea4211f0d13c13464736e3b4871eeaaf78` |
+| Standalone validation runtime | `c6719c0844ca83f50168a2a1ba1ba4dfd5bc22ba4faf8d7a00b45b115019cb15` |
+| Private logical capture manifest | `0fd623f3138bcaf3e01dcea84677b87d24ecfe9e49cf4535c1a9ff3a1239a4c7` |
+| `heads-fresh-390-light.png` (390 by 534) | `83c2173063b0bcdf05cf00df94f57c57bc2e0ac4928850cd58fa60ceee6b81b9` |
+| `thermals-fresh-390-light.png` (390 by 899) | `42d9d934d30d7612b0b5d71c9de9e71f93b999ece30c8359ae6c7181e6020212` |
+| `jobs-fresh-320-light.png` (320 by 354) | `2524e4c3a7a0e2efbd6ff0ee88e4319513b65fbb98573b40bd80a368c0d20159` |
+| `progress-refresherror-390-light.png` (390 by 250) | `b50c19ba66be01523e2be4307dd2436f8ac8121096c89cf9922f035ace9c1ff2` |
+| `camera-fresh-390-light-live.png` (390 by 220) | `4066aff1f9ca0aa0740e1e9e23eaea5539f2b0889b05ca44968ef635e7be2b3c` |
+| `camera-fresh-390-light-fallback.png` (390 by 220) | `e51368ca36e5e456130cc1e5300a82848a4bc01e27438b332a340783c4dd59d0` |
+
+This accepts an isolated desktop rendering/fixture layer. Actual mobile MCP
+mounting, public camera transport, native phone PiP, installation and user
+acceptance remain separate gates. Unmapped printer domains remain unimplemented.
+
 ## 2026-08-31 independent widget diagnosis and presentation validation
 
 ### Baseline truth assessment
@@ -120,13 +218,13 @@ These tests use deterministic VM, DOM and host fixtures. They do not emulate
 the actual ChatGPT mobile host, browser layout, accessibility tree, native
 fullscreen/PiP, or camera decoding. They are software/protocol evidence only.
 
-### Rendered and user-outcome boundary
+### Initial rendered and user-outcome boundary before authorized fallback
 
-The supported browser runtime reported no available browser. The root's
+At this initial stage the supported browser runtime reported no available browser. The root's
 supported discovery check returned an empty inventory; no raw browser bypass
 was attempted. Product Design comparison, phone-width screenshots, focus,
-overflow, console inspection, and mounted fullscreen/PiP remain blocked.
-`design-qa.md` records `final result: blocked`. Supplied screenshots establish
+overflow, console inspection, and mounted fullscreen/PiP were blocked.
+`design-qa.md` initially recorded `final result: blocked`. Supplied screenshots establish
 the old layout and failure, not acceptance of the new code. No release install,
 service restart, or live test of the changed assets is established here.
 

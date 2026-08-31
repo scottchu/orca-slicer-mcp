@@ -20,13 +20,24 @@ schema `5`, observation-v3/camera-v5; deployed services/local plugin are not
 changed. Observation-v2/v1 and camera-v4 are current aliases and legacy frozen
 bytes remain identical. Keep the exact two-visible/eight-app-only tool inventory.
 Ten resources retain old descriptors without promising old cached HTML updates.
-Independent executable synthetic-host/clock/frame tests are source evidence,
-not rendered or mounted iPhone acceptance. The browser visual gate is blocked.
+Independent executable synthetic-host/clock/frame tests are source evidence.
+The initially blocked rendered gate was followed by explicitly user-authorized
+isolated headless validation: 67 observation captures, 22 camera captures,
+13 camera behavior checks and three keyboard/unavailable checks passed with
+no final overflow or console errors. This is rendered synthetic-fixture
+evidence, not mounted iPhone or real-printer acceptance. Three screenshot-based
+P2 fixes improve active thermal contrast, footer warning contrast, and Jobs
+copy; current tests pass 134/939 plus 21 lifecycle tests and all bundles/signing.
 Source commit `db4e250` is pushed and delivered in
 [draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
 Independent formal review approves source-only with no unresolved findings;
-source delivery is complete. Next obtain an authorized visual-validation path,
-then separately scope rollout after acceptance. Do not repeat the historical install or
+initial source delivery is complete. The bounded headless follow-up has
+independent formal approval with no new findings and scoped visual QA passes.
+Coordinator delivery through existing draft PR30 is pending at this record
+update; merge/rollout require separate authorization, followed by
+mounted iPhone validation. Private focused URLs still serve runtime0.3.0;
+`/dashboard` redirects to progress and is not the deferred overview. Static
+route success is not data-mapping or new-version acceptance. Do not repeat the historical install or
 restart below, and do not infer authorization to map missing domains.
 
 PR28 merged as `2160492a4ce63d1409673786ea02b253d7cfaace`, combining PR27's
@@ -290,9 +301,10 @@ Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
 docs/requirements.md, the active iteration, and decisions 0014 through 0023.
 PR28/PR29 persistence delivery is historical completed work. Current decision0023
 source commitdb4e250 has independent source-only approval and draftPR30 delivery.
-Rendered visual acceptance remains blocked and is the next action.
-The available browser list is empty; obtain an authorized visual-validation path
-and do not claim iPhone/fullscreen/PiP or deployed acceptance from source tests.
+Authorized isolated headless validation and scoped visual QA now pass, with
+independent formal approval. Coordinator delivery of the three bounded fixes
+and evidence through existing draftPR30 is pending. The supported browser list was
+empty, and actual iPhone/fullscreen/PiP or deployed acceptance remains separate.
 Use exact existing owner LaunchAgents, versioned release/pinned Bun, fixed
 focused routes defaulting to progress, and one observation store per process.
 Preserve existing OAuth state, private env, routes, and unrelated dirty docs.
