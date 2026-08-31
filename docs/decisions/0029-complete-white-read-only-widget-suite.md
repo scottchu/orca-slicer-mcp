@@ -1,7 +1,7 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: A/Heads/B/C deployed; D Current Job/real History active; visual acceptance unverified
+- Status: A/Heads/B/C/D deployed; E Overview next; visual acceptance unverified
 - Scope: F0/O1, OBS-007/008/010/011/013/014, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution
@@ -44,6 +44,15 @@ observation-v10 retained; tools/selectors/routes remain fixed. Complete D throug
 independent exact-candidate approval, guarded merge/deploy, explicit BOTH-service
 restart and scoped verification. E Overview follows. Browser/device visual
 acceptance remains a separate unverified gate.
+
+D shipped in PR51. Exact approved head
+`30f1c7bb407d08d19d390acf2b5704a30eff010f` merged as
+`23f07e37de668fcbf2677a9a9b27bf01448cc8e7`; exact release
+`20260831-23f07e3-pr51-resume-20260831T191106-be85c4` runs on BOTH explicitly
+restarted and verified services at 0.4.5/schema 11/observation-v11/camera-v8.
+One sanitized Current Job and one History read confirm the bounded focused
+projections. They do not expose private job identity, prove an active job or
+history total, or provide browser/device visual acceptance. E Overview is next.
 
 ## C Fans & Chamber integration (2026-08-31)
 

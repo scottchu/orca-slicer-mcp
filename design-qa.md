@@ -1,6 +1,6 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
-## Current D Current Job and real History: visual acceptance unverified
+## D Current Job and real History deployed: visual acceptance unverified
 
 final result: blocked
 
@@ -12,6 +12,14 @@ stay separately labeled. Job History uses `Latest jobs returned`, at most 20
 rows in returned order, and page count only. Each row shows safe basename,
 normalized status and reported time/duration/filament without IDs or actions.
 Each card's own observation/freshness is above exactly one bottom Refresh.
+
+PR51 exact head `30f1c7bb407d08d19d390acf2b5704a30eff010f` passed formal and
+independent approval; exact release
+`20260831-23f07e3-pr51-resume-20260831T191106-be85c4` is deployed to BOTH
+explicitly restarted services. Tailnet index, Current Job and Job History return
+200. One sanitized read of each card confirms known/fresh bounded semantics.
+This is deployed-service and telemetry evidence, not rendered presentation
+evidence.
 
 No D implementation screenshot, matched viewport/state comparison, browser
 interaction, keyboard result or console inspection exists. Source fixtures or

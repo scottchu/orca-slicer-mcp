@@ -1,35 +1,33 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 D Current Job/real History — authoritative current handoff
+## 2026-08-31 D Current Job/real History — shipped handoff
 
-Decision 0025's real-data addendum, decision 0029 and OBS-014 freeze D. Preserve
-stable separate `jobs` and `job_history` intents/routes. Add two independent
-demand-only domains: Current Job reads only the fixed print_stats/virtual_sdcard
-allowlist; History reads only
-`/server/history/list?limit=20&start=0&order=desc`. Each owns receipt/failure,
-15-second attempt TTL/coalescing/stale retention and fixture isolation; neither
-acquires/restamps the other or main status.
+PR51 exact head `30f1c7bb407d08d19d390acf2b5704a30eff010f` passed formal and
+independent approval and merged as
+`23f07e37de668fcbf2677a9a9b27bf01448cc8e7` at
+`2026-08-31T23:10:43Z`. Guarded shipping installed
+`20260831-23f07e3-pr51-resume-20260831T191106-be85c4`; rollback snapshot
+`20260831T191118-908e33` exists and was not needed. No D deployment failure
+occurred. BOTH services were explicitly restarted and are loaded, healthy and
+integrity verified at 0.4.5/schema 11/observation-v11/camera-v8. Sixteen security
+checks pass with config/OAuth/routes preserved. Widget/index hashes have verified
+prefixes `1830fa11…`/`e9847d7c…`; tailnet index/jobs/job_history return 200.
 
-Reuse Queue's exact safe-basename boundary. Raw paths, history IDs/user/metadata/
-auxiliary data/`exists` and raw future statuses remain adapter-private. Only
-printing/paused means active; filename persistence is presented as Loaded file,
-Last reported job or Reported file according to state. History count is page
-length only, preserves returned order/duplicates and has no omission/total/
-pagination claim. A valid zero page says only no entries returned. All seven
-documented statuses plus nonraw Unknown, null end-time non-inference, finite
-units/bounds and partial/unsupported/unavailable/stale states are durable in the
-ADR. Each white card has information/own freshness above one bottom Refresh and
-no row action or control.
+Source evidence passes 247 tests/3,402 assertions, 21 lifecycle, 22 shipping,
+the corrected independent 197-assertion matrix, bundles, signing and exact assets.
+Exactly one sanitized Current Job read was known/fresh and showed a complete
+terminal job with inactive storage and equal reported file position/size.
+Exactly one sanitized History read was known/fresh with 20 returned rows: 17
+Completed and 3 Cancelled, preserving returned order. No filename, project/model,
+job ID, row time, raw numeric runtime, raw row or history-total claim is retained
+in repository evidence. These checks prove bounded telemetry semantics only;
+browser/device visual and user acceptance remain unverified.
 
-Target 0.4.5/schema 11/observation-v11/camera-v8 with 21 resources,
-observation-v10 retained and unchanged two-visible/eight-app-only tools. App
-scope belongs to implementation; exact candidate acceptance belongs to the
-independent validator/reviewer. This design pass changed documentation only and
-made no app/test/Git/service/printer/browser mutation. No D source, deployment,
-live telemetry, rendered visual or user acceptance is claimed. Next: implement
-the smallest exact slice, independently validate/review its SHA, then use the
-standing guarded PR merge → exact-build deploy → explicit BOTH-service restart
-→ scoped D verification. Preserve A/F/Heads/B/C; E Overview follows.
+Decision 0025's addendum/OBS-014 remain the durable privacy, freshness, state and
+presentation contract. These rollout-record edits are documentation-only and do
+not redeploy unchanged app bytes. Preserve A/F/Heads/B/C/D. Next: E Overview,
+composed only from accepted focused-domain projections without another query or
+normalization path.
 
 ## 2026-08-31 C Fans & Chamber — shipped handoff
 
@@ -203,8 +201,8 @@ At the earlier Bed Mesh checkpoint, the user's Fluidd reference prioritized a bo
 3D reported-height surface inside the existing white card. Decision 0030 and
 OBS-009 supersede only the 2D-only presentation and prior release ordering.
 The order recorded then was A/F (deployed) → B Queue → C fans/chamber → D
-Current Job/History → E overview. The authoritative top section now records B/C
-shipped and D next. Keep all unfinished tracks, independent invocation and
+Current Job/History → E overview. The authoritative top section now records B/C/D
+shipped and E next. Keep all unfinished tracks, independent invocation and
 the Current Job/History split. A's exact deployment receipt is preserved below;
 it is not acceptance of the new F source.
 

@@ -1,6 +1,6 @@
 # 0025 — Separate Current Job and Job History
 
-- Status: accepted; stable split shipped; real Current Job/History integration active under the addendum below
+- Status: accepted and deployed in PR51; browser/device visual acceptance unverified
 - Date: 2026-08-31
 - Owners: project maintainers
 
