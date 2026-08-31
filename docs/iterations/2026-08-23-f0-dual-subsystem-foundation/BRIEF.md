@@ -5,17 +5,23 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Latest priority (2026-08-31): implement C Fans & Chamber through one fixed,
-  bounded, shared environment observation under decision 0029/OBS-013. Cavity
-  joins Thermals with independent time/freshness and no invented target; Fans
-  & Air owns physical Tool 1–4 part-cooling, Cavity fan and purifier exhaust/
-  inner commanded-percent/RPM facts. Distinguish zero/off/stopped, not measured,
-  purifier not detected, component not reported, unsupported, unavailable and
-  stale without health/fault inference or controls. Target 0.4.4/schema 10/
-  observation-v10/camera-v8, twenty resources with observation-v9 retained and
-  unchanged tool inventory. Source/independent/exact review precedes guarded
-  merge/deploy/BOTH restart/scoped verification; visual QA remains unverified.
-  Preserve A/F/Heads/B and next D Current Job/History → E overview.
+- Latest priority (2026-08-31): implement D Current Job/real History as two
+  independently timed demand-only domains under decision 0025's addendum,
+  decision 0029 and OBS-014. Use only the fixed bounded print_stats/
+  virtual_sdcard and latest-20 descending history reads. Preserve safe basenames,
+  page-only history count/order/duplicates, contextual persisted-filename copy,
+  all documented statuses plus nonraw Unknown, explicit partial/empty/stale/
+  unsupported/unavailable states and separate 15-second receipts. Each compact
+  white card keeps information above one bottom Refresh; no pagination, row
+  action or control. Target 0.4.5/schema 11/observation-v11/camera-v8, 21
+  resources with observation-v10 retained and unchanged tool inventory. Source/
+  independent/exact review precedes guarded merge/deploy/BOTH restart/scoped
+  verification; visual QA remains unverified. Preserve A/F/Heads/B/C; E follows.
+- Previous shipped priority (2026-08-31): C Fans & Chamber shipped in PR49 and
+  exact release `20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` runs on
+  BOTH explicitly restarted services at 0.4.4/schema 10/observation-v10/
+  camera-v8. Exact scoped telemetry and evidence boundaries are recorded in
+  VALIDATION; browser/device visual acceptance remains unverified.
 - Previous shipped priority (2026-08-31): B Queue is shipped in PR47. Reviewed `1068add`
   merged as `6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; exact release
   `20260831-6d76f9a-pr47-20260831T172710-645971` runs on BOTH explicitly restarted,

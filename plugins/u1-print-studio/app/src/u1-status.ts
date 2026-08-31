@@ -17,6 +17,9 @@ import { readMoonrakerQueue } from "./adapters/moonraker-queue.js";
 import { unavailableQueue, type QueueObservation } from "./application/queue-observation.js";
 import { readMoonrakerEnvironment } from "./adapters/moonraker-environment.js";
 import { unavailableEnvironment, type EnvironmentObservation } from "./application/environment-observation.js";
+import { readMoonrakerCurrentJob, readMoonrakerJobHistory } from "./adapters/moonraker-jobs.js";
+import { unavailableCurrentJob, type CurrentJobObservation } from "./application/current-job-observation.js";
+import { unavailableJobHistory, type JobHistoryObservation } from "./application/job-history-observation.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -215,6 +218,16 @@ export async function readU1Queue(): Promise<QueueObservation> {
 export async function readU1Environment(): Promise<EnvironmentObservation> {
   try { return await readMoonrakerEnvironment(printerBaseUrl()); }
   catch { return unavailableEnvironment("not_configured", new Date().toISOString()); }
+}
+
+export async function readU1CurrentJob(): Promise<CurrentJobObservation> {
+  try { return await readMoonrakerCurrentJob(printerBaseUrl()); }
+  catch { return unavailableCurrentJob("not_configured", new Date().toISOString()); }
+}
+
+export async function readU1JobHistory(): Promise<JobHistoryObservation> {
+  try { return await readMoonrakerJobHistory(printerBaseUrl()); }
+  catch { return unavailableJobHistory("not_configured", new Date().toISOString()); }
 }
 
 async function fetchJson(route: string, maxTimeSeconds = 6): Promise<JsonObject> {

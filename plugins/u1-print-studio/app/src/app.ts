@@ -33,6 +33,8 @@ import {
   readU1Materials,
   readU1Queue,
   readU1Environment,
+  readU1CurrentJob,
+  readU1JobHistory,
   normalizedPrintState,
   normalizedToolState,
   stripJpegMetadata,
@@ -69,6 +71,7 @@ export const LEGACY_CAMERA_WIDGET_URIS = [
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v10.html",
   "ui://u1-print-studio/observation-v9.html",
   "ui://u1-print-studio/observation-v8.html",
   "ui://u1-print-studio/observation-v7.html",
@@ -345,6 +348,8 @@ export function createAppServer(
     readMaterials?: typeof readU1Materials;
     readQueue?: typeof readU1Queue;
     readEnvironment?: typeof readU1Environment;
+    readCurrentJob?: typeof readU1CurrentJob;
+    readJobHistory?: typeof readU1JobHistory;
     observations?: PrinterObservationStore;
     readCameraFrame?: CameraFrameReader;
     cameraSessions?: CameraWebRtcSessionController;
@@ -360,7 +365,9 @@ export function createAppServer(
     readStatus, undefined, dependencies.readBedMesh ?? (readStatus === readU1Status ? readU1BedMesh : undefined),
     dependencies.readMaterials ?? (readStatus === readU1Status ? readU1Materials : undefined),
     dependencies.readQueue ?? (readStatus === readU1Status ? readU1Queue : undefined),
-    dependencies.readEnvironment ?? (readStatus === readU1Status ? readU1Environment : undefined)
+    dependencies.readEnvironment ?? (readStatus === readU1Status ? readU1Environment : undefined),
+    dependencies.readCurrentJob ?? (readStatus === readU1Status ? readU1CurrentJob : undefined),
+    dependencies.readJobHistory ?? (readStatus === readU1Status ? readU1JobHistory : undefined)
   );
   const server = new McpServer({
     name: "u1-print-studio",
@@ -491,7 +498,7 @@ export function createAppServer(
     ({
       title: "Observe printer",
       description:
-        "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs (current job only), job_history, queue, fans, or bed_mesh. Job history is not implemented yet; missing or advertised-only evidence remains explicit. Use open_printer_camera for camera viewing.",
+        "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs (current job only), job_history, queue, fans, or bed_mesh. Current Job and Job History are separate observations. Use open_printer_camera for camera viewing.",
       inputSchema: observationInputSchema,
       ...securityConfig,
       annotations: {
@@ -510,7 +517,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans" }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans", includeCurrentJob: view === "jobs", includeJobHistory: view === "job_history" }),
         view
       );
     }) as any
@@ -539,7 +546,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans" }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans", includeCurrentJob: view === "jobs", includeJobHistory: view === "job_history" }),
         view
       );
     }) as any
@@ -830,7 +837,7 @@ export function createAppServer(
           name: "observe_printer",
           title: "Observe printer",
           description:
-            "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs (current job only), job_history, queue, fans, or bed_mesh. Job history is not implemented yet; missing or advertised-only evidence remains explicit. Use open_printer_camera for camera viewing.",
+            "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs (current job only), job_history, queue, fans, or bed_mesh. Current Job and Job History are separate observations. Use open_printer_camera for camera viewing.",
           inputSchema: {
             type: "object",
             properties: {

@@ -178,8 +178,9 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v10.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v11.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
+      "ui://u1-print-studio/observation-v10.html",
       "ui://u1-print-studio/observation-v9.html",
       "ui://u1-print-studio/observation-v8.html",
       "ui://u1-print-studio/observation-v7.html",
@@ -304,8 +305,8 @@ describe("U1 status MCP App contract", () => {
   test("retains previous current observation and camera aliases with exact frozen legacy resources", async () => {
     const client = await connectClient();
     const listed = await client.listResources();
-    expect(listed.resources).toHaveLength(20);
-    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v9.html");
+    expect(listed.resources).toHaveLength(21);
+    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v10.html");
     for (const uri of [...LEGACY_FOCUSED_WIDGET_URIS,
       "ui://u1-print-studio/camera-v7.html", "ui://u1-print-studio/camera-v6.html",
       "ui://u1-print-studio/camera-v5.html", "ui://u1-print-studio/camera-v4.html",
@@ -563,7 +564,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 10,
+      schemaVersion: 11,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });
@@ -885,9 +886,9 @@ describe("instrument-strip observation widget contract", () => {
   test("renders missing and advertised-only semantics as unknown", () => {
     expect(WIDGET_HTML).toContain("Material unknown");
     expect(WIDGET_HTML).toContain("Color unknown");
-    expect(WIDGET_HTML).toContain('header("Current Job")');
-    expect(WIDGET_HTML).toContain('header("Job History", true, null)');
-    expect(WIDGET_HTML).toContain("Previous jobs aren’t available yet.");
+    expect(WIDGET_HTML).toContain('header("Current Job", true, data.sourceObservedAt');
+    expect(WIDGET_HTML).toContain('header("Job History", true, data.sourceObservedAt');
+    expect(WIDGET_HTML).toContain("No history entries returned");
     expect(WIDGET_HTML).not.toContain("<span>Current job</span>");
     expect(WIDGET_HTML).not.toContain("${escapeHtml(data.current.state)}");
     expect(WIDGET_HTML).not.toContain("Advertised history has no accepted normalization.");

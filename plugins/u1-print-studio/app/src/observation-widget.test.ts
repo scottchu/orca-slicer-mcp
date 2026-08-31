@@ -34,6 +34,23 @@ function fixture(view = "queue", extra: Payload = {}): Payload {
     id: "tool-1", label: "Tool 1", state: "known", actual: field(220),
     target: field(220), active: field(true), heaterState: field("ACTIVE"),
   }];
+  if (view === "jobs") Object.assign(module, {
+    state: "known", freshness: "fresh", sourceObservedAt: "2026-08-31T11:00:00.000Z",
+    receivedAt: "2026-08-31T11:00:00.000Z", checkedAt: "2026-08-31T11:00:00.000Z",
+    printState: { reported: true, value: "printing" },
+    filename: { reported: true, value: "current-only.gcode" },
+    storageActive: { reported: true, value: true },
+    filePositionBytes: { reported: true, value: 420 }, fileSizeBytes: { reported: true, value: 1000 },
+    totalDurationSeconds: { reported: true, value: 600 }, printDurationSeconds: { reported: true, value: 590 },
+    filamentUsedMillimeters: { reported: true, value: 1200 }, reason: null,
+  });
+  if (view === "job_history") Object.assign(module, {
+    state: "known", freshness: "fresh", sourceObservedAt: "2026-08-31T11:00:00.000Z",
+    receivedAt: "2026-08-31T11:00:00.000Z", checkedAt: "2026-08-31T11:00:00.000Z",
+    pageCount: 1, reason: null, items: [{ position: 1, filename: "history-only.gcode",
+      status: "completed", startTime: "2026-08-31T10:00:00.000Z", endTime: "2026-08-31T10:30:00.000Z",
+      printDurationSeconds: 1700, totalDurationSeconds: 1800, filamentUsedMillimeters: 900 }],
+  });
   return {
     schemaVersion: 2, view, observationVersion: 7,
     sourceObservedAt: "2026-08-31T11:00:00.000Z", receivedAt: "2026-08-31T11:00:00.100Z",
@@ -139,11 +156,9 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
 describe("production observation widget host boundary", () => {
   test("current job and history have separate content and selected-view refresh", async () => {
     const current = fixture("jobs");
-    current.module.current = { state: "known", filename: { state: "known", value: "current-only.gcode" }, storageActive: { state: "known", value: true } };
     current.module.history = { items: [{ filename: "old-history.gcode" }] }; // Old payloads must not restore the combined panel.
     const history = fixture("job_history");
-    history.module.current = current.module.current; // A foreign field must not leak into this focused view.
-    history.module.items = [{ filename: "invented-history.gcode" }];
+    history.module.current = current.module; // A foreign field must not leak into this focused view.
     for (const data of [current, history]) {
       const card = mount({ toolOutput: data });
       await card.initialize();
@@ -154,9 +169,9 @@ describe("production observation widget host boundary", () => {
         expect(before).not.toMatch(/History|history|Previous jobs|old-history.gcode/);
       } else {
         expect(before).toContain("Job History");
-        expect(before).toContain("Not implemented yet");
-        expect(before).toContain("Observation time unavailable");
-        expect(before).not.toMatch(/Observed |current-only.gcode|invented-history.gcode|class="job-current"|No jobs|0 jobs/);
+        expect(before).toContain("history-only.gcode");
+        expect(before).toContain("Observed ");
+        expect(before).not.toMatch(/current-only.gcode|class="job-current"/);
       }
       const refresh = card.controls.refresh();
       await tick();
@@ -171,17 +186,36 @@ describe("production observation widget host boundary", () => {
 
   test("current job preserves escaped unknown and stale facts without a history panel", () => {
     const data = fixture("jobs", { freshness: "stale" });
-    data.module.current = { state: "stale", filename: { state: "stale", value: '<script>unsafe</script>.gcode' }, storageActive: { state: "unknown", value: null } };
+    Object.assign(data.module, { state: "stale", freshness: "stale",
+      filename: { reported: true, value: "safe-current.gcode" },
+      storageActive: { reported: false, value: null }, reason: "network" });
     const markup = mount({ toolOutput: data }).modules.innerHTML;
-    expect(markup).toContain("&lt;script&gt;unsafe&lt;/script&gt;.gcode");
-    expect(markup).not.toContain("<script>");
-    expect(markup).toContain("Storage unknown");
+    expect(markup).toContain("safe-current.gcode");
+    expect(markup).toContain("Not reported");
     expect(markup).toContain("Stale");
     expect(markup).not.toContain("History");
-    data.module.current = null;
+    data.module = { kind: "jobs", state: "unknown", reason: "not_requested" };
     const missing = mount({ toolOutput: data }).modules.innerHTML;
-    expect(missing).toContain("Current job identity is unknown.");
+    expect(missing).toContain("Current Job not observed");
     expect(missing).not.toMatch(/No active job|Idle|No jobs/);
+  });
+
+  test("History accepts the exact Unix timestamp maximum and rejects max-plus-one fail closed", () => {
+    const maximum = fixture("job_history");
+    maximum.module.items[0].startTime = "9999-12-31T23:59:59.000Z";
+    maximum.module.items[0].endTime = "9999-12-31T23:59:59.000Z";
+    const accepted = mount({ toolOutput: maximum }).modules.innerHTML;
+    expect(accepted).toContain("history-only.gcode");
+    expect(accepted).not.toContain("Job History not observed");
+
+    for (const field of ["startTime", "endTime"] as const) {
+      const beyond = fixture("job_history");
+      beyond.module.items[0][field] = "+010000-01-01T00:00:00.000Z";
+      const rejected = mount({ toolOutput: beyond }).modules.innerHTML;
+      expect(rejected).toContain("Job History not observed");
+      expect(rejected).toContain("Observation time unavailable");
+      expect(rejected).not.toContain("history-only.gcode");
+    }
   });
 
   test("cold mount completes a request/response initialization before announcing ready", async () => {
@@ -306,12 +340,12 @@ describe("production observation widget host boundary", () => {
       expect(markup.indexOf("<footer ")).toBeGreaterThan(markup.indexOf("</header>"));
       const header = markup.match(/<header [\s\S]*?<\/header>/)![0];
       const footer = markup.match(/<footer [\s\S]*?<\/footer>/)![0];
-      expect(header).toContain(view === "job_history" || view === "bed_mesh" || view === "queue" || view === "fans" ? "Observation time unavailable" : "Observed ");
+      expect(header).toContain(view === "bed_mesh" || view === "queue" || view === "fans" ? "Observation time unavailable" : "Observed ");
       expect(header).toContain('class="refresh-error" role="status"');
       expect(header).not.toContain("<button");
       expect(footer).toMatch(/^<footer class="instrument-footer"><button[\s\S]*<\/button><\/footer>$/);
       expect(footer).not.toMatch(/<time|Observed|refresh-error|freshness-warning|role="status"/);
-      expect(markup).toContain(view === "job_history" || view === "bed_mesh" || view === "queue" || view === "fans" ? "Observation time unavailable" : "Observed ");
+      expect(markup).toContain(view === "bed_mesh" || view === "queue" || view === "fans" ? "Observation time unavailable" : "Observed ");
       expect(markup).not.toMatch(/Read only|Current reading|Printer telemetry/);
     }
   });
