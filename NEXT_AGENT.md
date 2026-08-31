@@ -14,6 +14,24 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+The user's segmented-layer progress strip is the current source slice. Read
+decision 0023's dated refinement. Source implementation is complete in the
+current observation HTML and its VM tests: 24/48 responsive block budgets,
+valid layer-position fill rather than reported print percentage, partial
+current groups, unavailable invalid data, and one accessible progressbar.
+Card layout/footer, MCP/bridge, camera, schema and version labels are unchanged.
+Independent validation passes 142 app tests/1,849 assertions, 21 lifecycle
+tests, TypeScript, repository checks, three bundles/signature checks and exact
+bundled/frozen asset comparisons. Twelve screenshots and eight isolated browser
+behavior cases pass. Independent code and scoped visual review approve without
+blocking findings; the reviewer independently passes 58 tests/1,441 assertions.
+Next deliver the reviewed source through a new PR. Do not merge, deploy, install, restart,
+or contact the printer under the completed PR30 rollout authorization.
+Source and installed baseline both say `0.3.1`/schema `5`/observation-v3/
+camera-v5; require exact asset bytes to distinguish the segmented source from
+the still-continuous deployed strip. The historical rollout paragraphs below
+remain valid evidence, not current execution instructions.
+
 The user authorized PR30 merge and rollout to the two existing HTTP services.
 [PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30) merged as
 `48a106d2f17550bab8dc8648af1c7c247610a228` on 2026-08-31. Clean-source
@@ -253,6 +271,14 @@ service or shared secret is configured.
 
 ## Next smallest action
 
+Deliver the independently validated and code/visually approved segmented
+source in a new PR. The source widget SHA-256 is
+`974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb`;
+the companion observation-test SHA-256 is
+`038438f1e4d8e781a31c7272c43a3beaf18e9b423d6158d396e79b8ce5b3b0ef`.
+Do not infer new deployment from unchanged version strings or the baseline
+rollout record. Any merge/service/plugin rollout is a separate authorization.
+
 PR30 merge `48a106d` and paired rollout are complete with independent approval;
 the newest `VALIDATION.md` entry records the actual deployed checks. Next obtain
 user feedback on the directory and focused widgets. Preserve OAuth state,
@@ -299,11 +325,17 @@ remain separate scope/evidence gates. Mac login/power remains deferred.
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
 docs/requirements.md, the active iteration, and decisions 0014 through 0024.
+Current source task is decision0023's dated segmented-layer refinement. Author
+implementation and independent validation pass142app/1849assertions21lifecycle,
+12screenshots8browsercases. Independentcode/visualreviewAPPROVES with58tests/
+1441assertions passing. Next source PR delivery. The segmented asset is NOT deployed;
+unchanged0.3.1/schema5/observation-v3 labels do not establish exact installed bytes.
+Prior merge/rollout authority is complete and does not authorize this new slice.
 PR30 merged as48a106d after explicit merge+two-service-rollout authorization.
 Decisions0023/0024 source and isolated visual fixtures independently pass.
 Paired HTTP deployment and independent health/static/preservation checks pass;
 consult the newest VALIDATION entry. Directory-only live browser captures pass.
-Next obtain actual user feedback; do not repeat the completed rollout.
+Obtain actual user feedback separately; do not repeat the completed rollout.
 Use exact existing owner LaunchAgents, versioned release/pinned Bun, a static
 eight-link private directory, fixed focused routes, and one store per process.
 Preserve existing OAuth state, private env, routes, and unrelated dirty docs.

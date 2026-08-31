@@ -1,6 +1,50 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 authorized PR30 service rollout — current handoff
+## 2026-08-31 segmented-layer progress — current source handoff
+
+The user requested a segmented layer strip within the existing focused
+progress card. Decision 0023's dated addendum records the bounded design:
+24 blocks on narrow screens or 48 wide, one layer per block for small totals,
+consecutive layer groups for large totals, proportional fill in the current
+group, and a neutral unavailable track for invalid or missing layer values.
+The large reported print percentage remains independent from layer position.
+The quiet bottom observation/refresh footer and surrounding card are retained.
+
+Runtime/test changes are limited to
+`plugins/u1-print-studio/app/public/widget.html` and
+`plugins/u1-print-studio/app/src/observation-widget.test.ts`. Their SHA-256s are
+`974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb` and
+`038438f1e4d8e781a31c7272c43a3beaf18e9b423d6158d396e79b8ce5b3b0ef`.
+Design/continuity records are the decision-0023 addendum, this iteration's
+BRIEF/HANDOFF/VALIDATION, PROJECT_STATE, and NEXT_AGENT. No camera, bridge,
+MCP inventory, resource/schema/version, service, auth/routing or printer
+behavior changes are included.
+
+Author validation passes 19 executable VM tests/954 assertions. Independent
+validation passes 142 app tests/1,849 assertions, 21 lifecycle tests,
+TypeScript, repository checks, all three bundles/signature checks, exact
+bundled observation-HTML comparison, and unchanged camera/frozen assets.
+Twelve isolated rendered captures and eight browser behavior cases pass,
+including differing percent/layer ratios, invalid/missing values, responsive
+boundaries, pending/error resize, and narrow/wide fractional groups.
+Independent code and scoped visual review approve with no blocking findings;
+the reviewer independently passes 58 tests/1,441 assertions and inspects all
+twelve captures, including both fractional-group views and the supplied
+baseline comparison. This accepts the unchanged inner card layout, 14-pixel
+bar position and footer, not pixel identity of outer screenshot crops/padding.
+No acceptance is inferred from earlier PR30 evidence. Actual commands and hashes are in the newest
+`VALIDATION.md` entry.
+
+Next deliver this independently reviewed source change through
+a new PR. It is not deployed: both source and the installed baseline retain
+runtime `0.3.1`, schema `5`, observation-v3/camera-v5, making exact source/asset
+hashes essential. The previously authorized PR30 rollout is completed and its
+records remain preserved below; its permission does not carry forward to a
+new merge, installation, restart, plugin change, or printer acquisition.
+Synthetic rendering does not prove deployed, mounted-phone, or physical-printer
+behavior. No private artifacts or identifiers are committed.
+
+## 2026-08-31 authorized PR30 service rollout — completed baseline handoff
 
 The user explicitly authorized PR30 merge and deployment to the two existing
 owner-supervised HTTP services. PR30 merged as

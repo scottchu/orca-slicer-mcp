@@ -1,5 +1,42 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Segmented layer progress — independent rendered review
+
+Scoped result: passed against decision 0023's dated refinement, with no
+blocking source or visual findings. Product Design review guidance informed
+comparison of the user's continuous-bar reference with the rendered completed
+card, followed by inspection of all twelve current validator screenshots.
+The external screenshot crop and fixture outer padding/background differ;
+pixel-identical screenshot framing is not claimed. The source diff preserves
+the surrounding card layout and footer while replacing the strip itself.
+
+1. **Grouped and completed progress — passed.** The 390-pixel light/dark and
+   882-pixel dark captures retain title, state, percentage, layer/time caption
+   and one bottom timestamp/refresh footer. The 14-pixel yellow/neutral blocks
+   and 2-pixel gaps are distinct, including when every block is filled.
+2. **Missing, zero and small totals — passed.** Missing layers use a neutral
+   track with explicit unavailable text, not a zero observation. Zero retains
+   empty blocks; the ten-layer case shows three filled and seven empty blocks.
+3. **Fractional groups and narrow/wide reflow — passed.** Additional captures
+   at 320/light and 720/dark show layer 126 of 461, a genuinely partly filled
+   group, and an independently unchanged 67.4-percent headline. No clipped
+   card text or overflow was found in the inspected images.
+
+The reviewer independently ran 58 focused tests/1,441 assertions. Source
+review verifies safe integer bins, single layer-progressbar semantics, hidden
+decorative blocks, and bar-only regrouping. A missing media-query listener
+could initially abort rendering; guarded modern/legacy registration and
+fallback tests resolve that review finding. Validator behavior checks separately
+cover pending refresh, retained errors/time, and no additional acquisition.
+
+External evidence uses the logical `layer-captures` collection. Reviewed widget
+SHA-256: `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb`.
+Final report SHA-256:
+`4661992712cfc7bbf9c9506ede4be715ec339fbab1863e0a7fcd0848ef61996a`.
+This is isolated synthetic-browser/source acceptance, not deployment, native
+phone or screen-reader acceptance, real-printer evidence, or physical completion.
+Earlier directory and focused-widget reviews remain unchanged below.
+
 ## Private widget directory — independent rendered review
 
 Scoped result: passed against decision 0024, with no blocking visual findings.

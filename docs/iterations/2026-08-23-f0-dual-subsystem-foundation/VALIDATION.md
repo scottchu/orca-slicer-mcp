@@ -1,5 +1,86 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 segmented layer-progress validation
+
+The independent validator checked decision 0023's segmented-bar addendum
+against the actual current observation HTML, using synthetic observations on
+an isolated loopback host. The user's screenshot was opened as the reference;
+the requested delta is the bar, not a redesign of the card or footer. No
+production service, printer, camera, plugin, authentication or route was read
+or changed during this source slice. Previous PR30 rollout evidence below does
+not accept deployment of this later change.
+
+### Executed source and browser checks
+
+- `./scripts/check-repository.sh` passed TypeScript, **142 app tests / 1,849
+  assertions**, **21 lifecycle tests**, and the repository contract. The
+  author-added executable VM cases cover small and grouped totals, safe-integer
+  boundaries, zero/end positions, unavailable values, independent percentage,
+  accessible values and responsive regrouping. The validator reran that gate
+  independently after the author declared the source ready.
+- In the app directory, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign -vvv --verify dist/u1-print-studio`, and
+  `cmp public/widget.html dist/widget.html` passed. `git diff --check` passed.
+- `git diff --exit-code 16169c0 --` with the current camera and both frozen
+  legacy HTML paths passed. Their SHA-256 values remain unchanged; the slice
+  does not modify camera behavior or retained legacy resources.
+- Chrome `152.0.7977.65` with Playwright 1.55.0, a fresh isolated context,
+  device scale factor 1, `en-US` and `America/Toronto` captured **12 screenshots**
+  of exact production HTML. Service workers were blocked, background networking
+  disabled, and requests restricted to the synthetic loopback fixture/data
+  URLs. Every production-widget response was compared byte-for-byte with the
+  final source. There were zero external requests or console/page errors.
+- Captures cover partial 230/461, complete 461/461 and missing layers at
+  390 pixels in light and dark modes; zero and small totals at 390; partial and
+  complete at an 882-by-290 reference-sized viewport; and differing 126/461
+  layers versus 67.4-percent reported progress at 320/light and 720/dark.
+  Full iframe captures include its actual content height instead of clipping
+  the footer to the viewport. The validator opened the reference and actual
+  partial, complete, mobile, missing-data and fractional-bin images.
+- Every valid track retains 14-pixel height and 2-pixel gaps, has at most
+  24 narrow or 48 wide blocks, and exposes the exact layer count and grouping
+  through one accessible progressbar. Each block's fill was independently
+  checked using BigInt integer-bin boundaries; at most one bin is fractional,
+  without rounding ahead. Decorative blocks are hidden from assistive
+  technology. Zero is empty, 461/461 is full, and a small total has one block
+  per layer rather than a fixed number of decorative blocks.
+- **Eight additional browser cases** passed: differing percentage/layers,
+  invalid over-total layers, unknown percentage with known layers, widths
+  320/480/481/720, and a pending-refresh/error resize sequence. Missing or
+  invalid layers remain an unfilled neutral track with no current-value ARIA
+  attribute and an unavailable caption, even when percentage is known.
+- Resize from 390 to 720 preserved the disabled pending-refresh button and
+  observation time; resize back after a synthetic failure preserved the error
+  and time. Exactly one explicitly clicked fixture refresh occurred, with no
+  resize-triggered data request. All capture-only cases made zero tool calls.
+  Each checked card retained one bottom observation-time/refresh footer and
+  fitted its viewport without horizontal overflow.
+
+Actual private harness commands were `bun --no-env-file --config=/dev/null
+run layer-server.ts` and `U1_LAYER_ORIGIN=<loopback-fixture-origin> node
+capture-layers.mjs`. The final run included the reviewer's two requested
+fractional-bin captures. Private scripts, supplied screenshot, reports and
+captures remain outside Git. The isolated browser/context were closed and
+the fixture listener was stopped after validation. Independent formal/design
+review owns its separate verdict; these assertions alone do not establish it.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Observation widget | `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb` |
+| Unchanged camera widget | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Unchanged frozen legacy status | `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437` |
+| Unchanged frozen legacy camera | `c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203` |
+| Private logical layer report | `4661992712cfc7bbf9c9506ede4be715ec339fbab1863e0a7fcd0848ef61996a` |
+| `layers-partial-882-dark.png` | `19e37ac5f4c2ffd3e4b910bd60bbfe742e6e2b7055fa67c1a53f7c27f00a5284` |
+| `layers-complete-882-dark.png` | `4b5133a8d66699e851c28113ac276b1fa02821a0c4e5166e51526f445f9f231f` |
+| `layers-mismatch-320-light.png` | `9f58b705425110e92e37e717ea240e0de15435d186d2f8578c24737d0f4044c2` |
+| `layers-mismatch-720-dark.png` | `c05f638ff5dd6857a79f4e17f0105686be5f9dbb6cef8a03474c53b9769de2f9` |
+
+This is static/software and rendered synthetic-host evidence only. Reported
+layer position is not proof of completed physical layers or a completed print.
+Merge, deployment, mounted-host behavior, real-printer data and user acceptance
+remain separate gates for this segmented-bar change.
+
 ## 2026-08-31 authorized merged-service rollout validation
 
 The user authorized merging PR30 and deploying it through the two existing

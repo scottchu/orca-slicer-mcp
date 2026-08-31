@@ -142,3 +142,55 @@ and evidence.
    installed runtime, real printer, and mounted user outcomes are reported as
    separate layers. The supplied screenshots identify the requested change;
    they do not prove the new implementation.
+
+## 2026-08-31 refinement — segmented layer progress
+
+The user requests that the existing continuous progress strip become visible
+filled/empty layer blocks. This is a bounded refinement to the same focused
+card, not a new dashboard, telemetry field, or observation path. It addresses
+F0's layer-progress comprehension question. The prior deployed card and quiet
+footer are the baseline; all surrounding layout and copy remain unchanged
+except an unavailable layer caption when valid layer data is absent.
+
+- Preserve the bar's current position and 14-pixel height, with 2-pixel gaps
+  and modest 2-pixel block corners. Filled portions use the current yellow
+  accent; remaining portions use the neutral track color. Do not add labels,
+  legends, tick numbers, animation, tooltips, or controls around the strip.
+- Use at most 24 blocks at viewport widths up to 480 CSS pixels and at most
+  48 above that width. The block count is the smaller of that budget and the
+  valid total layer count. A small count displays one block per layer;
+  hundreds of layers use consecutive groups instead of unreadable hairlines.
+  Responsive regrouping must not fetch data or reset observation freshness.
+- For total `T`, current layer `C`, and block count `B`, block `i` represents
+  the interval from `floor(i * T / B)` to `floor((i + 1) * T / B)`.
+  Its fill is zero before that interval, full at or beyond its end, and the
+  proportional fraction within that one current group. Do not round a partial
+  group upward to imply additional layers. At `C = 0` all blocks are empty;
+  at `C = T` all are filled. This is current reported layer position, not proof
+  that a layer or print has physically completed.
+- The segmented strip uses only current/total layer values. Keep the existing
+  large reported print percentage independently unchanged: file/job progress
+  need not equal layer position. Do not derive one from the other, silently
+  reconcile disagreement, or infer completion from either value.
+- Layer data is valid only when both values are safe integers, total is
+  positive, and current lies inclusively between zero and total. Missing,
+  fractional, negative, over-total, nonfinite, or otherwise invalid values
+  produce an unfilled neutral track and `Layer progress unavailable` in the
+  existing layer-caption position. Do not substitute percentage, clamp
+  invalid values into plausible layer positions, or invent a layer count.
+  The neutral unavailable track is not a zero-layer observation.
+- Expose one `progressbar`, labelled `Layer progress`, with minimum zero,
+  maximum total, current value, and `Layer C of T` value text when valid.
+  When grouping, value text also states `Grouped into B blocks`; individual
+  decorative blocks stay hidden from assistive technology. Unavailable data
+  omits the current-value attribute and explicitly announces unavailable layer
+  progress rather than indeterminate active work. No new keyboard stop or
+  live-region announcement is needed.
+- Acceptance covers small totals, zero/start/end, large grouped totals and
+  partial groups, narrow/wide regrouping, differing percent/layer ratios,
+  missing/invalid values, light/dark contrast, unchanged bottom footers, and
+  absence of overflow at 320/390/720 CSS pixels. Source tests and synthetic
+  browser captures remain separate from deployed or physical-printer proof.
+- This request authorizes source changes and local validation only. Prior
+  PR30 merge/rollout authority is complete, not permission to merge, deploy,
+  install a plugin, restart services, contact the printer, or expand domains.

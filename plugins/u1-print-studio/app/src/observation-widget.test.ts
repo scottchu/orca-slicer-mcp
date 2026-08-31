@@ -37,7 +37,7 @@ function fixture(view = "queue", extra: Payload = {}): Payload {
   };
 }
 
-function mount(openai: Payload = {}) {
+function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy" | "static" | "absent" = "modern") {
   const events = new Map<string, (event: any) => void>();
   const timers = new Map<number, { deadline: number; callback: () => void }>();
   let now = 0;
@@ -51,13 +51,23 @@ function mount(openai: Payload = {}) {
     setAttribute(name: string, value: string) { this.attributes[name] = value; },
   };
   const error = { textContent: "" };
+  const trackPattern = /<div class="progress-track[\s\S]*?(?=<div class="progress-meta")/;
+  const track = {
+    get outerHTML() { return modules.innerHTML.match(trackPattern)?.[0] ?? ""; },
+    set outerHTML(value: string) { modules.innerHTML = modules.innerHTML.replace(trackPattern, value); },
+  };
   const modules = {
     innerHTML: "Waiting for printer observation…",
     querySelectorAll: () => [button],
-    querySelector: (selector: string) => selector === ".refresh-error" ? error : button,
+    querySelector: (selector: string) => selector === ".refresh-error" ? error : selector === ".progress-track" ? track : button,
   };
+  let onMediaChange = () => {};
+  const media: Payload = { matches: width <= 480 };
+  if (mediaMode === "modern") media.addEventListener = (_name: string, callback: () => void) => { onMediaChange = callback; };
+  if (mediaMode === "legacy") media.addListener = (callback: () => void) => { onMediaChange = callback; };
   const window = {
     openai, parent, addEventListener: (name: string, callback: (event: any) => void) => events.set(name, callback),
+    matchMedia: () => mediaMode === "absent" ? undefined : media,
   };
   const context = vm.createContext({
     window, document: { querySelector: () => modules }, __controls: controls,
@@ -74,6 +84,7 @@ function mount(openai: Payload = {}) {
   const respond = (request: Payload, result: Payload = {}) => message({ jsonrpc: "2.0", id: request.id, result });
   return {
     sent, modules, button, error, controls, message, deliver, respond,
+    resize(nextWidth: number) { const matches = nextWidth <= 480; if (media.matches !== matches) { media.matches = matches; onMediaChange(); } },
     globals: (globals: Payload) => events.get("openai:set_globals")?.({ detail: { globals } }),
     async initialize() {
       const request = sent.find(item => item.method === "ui/initialize")!;
@@ -238,5 +249,136 @@ describe("production observation widget host boundary", () => {
     const thermal = mount({ toolOutput: fixture("thermals") }).modules.innerHTML;
     expect(thermal).not.toContain('class="trace');
     expect(thermal).toContain("220°");
+  });
+});
+
+describe("segmented layer progress", () => {
+  function progress(current: unknown, total: unknown, percent: unknown = 67.4, width = 390) {
+    const data = fixture("progress");
+    data.module.fields.currentLayer.value = current;
+    data.module.fields.totalLayers.value = total;
+    data.module.fields.percent.value = percent;
+    return mount({ toolOutput: data }, width);
+  }
+  const fills = (markup: string) => [...markup.matchAll(/class="progress-block-fill" style="width:([\d.e+-]+)%"/g)].map(match => Number(match[1]));
+
+  test("uses one block per layer for small totals without rounding forward", () => {
+    for (const [current, total, width] of [[0, 5, 390], [1, 5, 390], [3, 5, 390], [5, 5, 390], [1, 1, 390], [23, 24, 480], [47, 48, 481]]) {
+      const markup = progress(current, total, 67.4, width).modules.innerHTML;
+      expect(fills(markup)).toEqual(Array.from({ length: total }, (_, index) => index < current ? 100 : 0));
+      expect(markup).toContain(`Layer ${current} / ${total}`);
+      expect(markup).toContain(`aria-valuemax="${total}" aria-valuenow="${current}"`);
+      expect(markup).toContain(`aria-valuetext="Layer ${current} of ${total}"`);
+      expect(markup).not.toContain("Grouped into");
+    }
+  });
+
+  test("caps grouped blocks and represents only the current group fraction", () => {
+    for (const width of [390, 720]) {
+      const count = width === 390 ? 24 : 48;
+      for (const current of [0, 1, 19, 20, 126, 460, 461]) {
+        const markup = progress(current, 461, 67.4, width).modules.innerHTML;
+        const actual = fills(markup);
+        expect(actual).toHaveLength(count);
+        for (let index = 0; index < count; index++) {
+          const start = Math.floor(index * 461 / count);
+          const end = Math.floor((index + 1) * 461 / count);
+          expect(actual[index]).toBeCloseTo(Math.max(0, Math.min(1, (current - start) / (end - start))) * 100, 10);
+        }
+        expect(actual.filter(fill => fill > 0 && fill < 100).length).toBeLessThanOrEqual(1);
+        expect(markup.match(/role="progressbar"/g)).toHaveLength(1);
+        expect(markup.match(/class="progress-block" aria-hidden="true"/g)).toHaveLength(count);
+        expect(markup).toContain(`aria-valuetext="Layer ${current} of 461. Grouped into ${count} blocks"`);
+        expect(markup).toContain('class="progress-percent">67.4%</strong>');
+        expect(markup).toContain(`Layer ${current} / 461`);
+      }
+    }
+  });
+
+  test("supports huge safe totals with bounded DOM and exact integer group boundaries", () => {
+    const total = Number.MAX_SAFE_INTEGER;
+    const current = Number(BigInt(total) * 23n / 48n);
+    const markup = progress(current, total, 2, 720).modules.innerHTML;
+    const actual = fills(markup);
+    expect(actual).toHaveLength(48);
+    for (let index = 0; index < 48; index++) {
+      const start = Number(BigInt(index) * BigInt(total) / 48n);
+      const end = Number(BigInt(index + 1) * BigInt(total) / 48n);
+      expect(actual[index]).toBeCloseTo(Math.max(0, Math.min(1, (current - start) / (end - start))) * 100, 10);
+    }
+    expect(actual.slice(0, 23)).toEqual(Array(23).fill(100));
+    expect(actual.slice(23)).toEqual(Array(25).fill(0));
+    expect(fills(progress(total, total, 100, 720).modules.innerHTML)).toEqual(Array(48).fill(100));
+  });
+
+  test("invalid or missing layers remain unavailable despite a reported percentage", () => {
+    for (const [current, total] of [[null, 461], [126, null], [0, 0], [-1, 461], [462, 461], [1.5, 461], [1, 4.5], ["126", 461], [126, "461"], [NaN, 461], [1, Infinity], [1, Number.MAX_SAFE_INTEGER + 1], [undefined, undefined]]) {
+      const markup = progress(current, total, 100).modules.innerHTML;
+      expect(markup).toContain('class="progress-track unavailable"');
+      expect(markup).toContain('aria-valuetext="Layer progress unavailable"');
+      expect(markup).toContain('<span>Layer progress unavailable</span>');
+      expect(markup).not.toContain("aria-valuenow");
+      expect(fills(markup)).toEqual([]);
+      expect(markup).toContain('class="progress-percent">100%</strong>');
+      expect(markup).toContain("Observed ");
+      expect(markup).not.toContain("Waiting");
+    }
+    const unknown = fixture("progress");
+    unknown.module.fields.currentLayer.state = "unknown";
+    expect(mount({ toolOutput: unknown }).modules.innerHTML).toContain("Layer progress unavailable");
+    delete unknown.module.fields;
+    expect(mount({ toolOutput: unknown }).modules.innerHTML).toContain("Layer progress unavailable");
+  });
+
+  test("keeps reported percentage independent and tolerates malformed percentage fields", () => {
+    for (const percent of [null, NaN, Infinity, "42", -1, 101, {}]) {
+      const markup = progress(3, 5, percent).modules.innerHTML;
+      expect(fills(markup)).toEqual([100, 100, 100, 0, 0]);
+      expect(markup).toContain('class="progress-percent">Unknown</strong>');
+      expect(markup).toContain('aria-valuenow="3"');
+    }
+    expect(fills(progress(0, 461, 100).modules.innerHTML)).toEqual(Array(24).fill(0));
+    expect(fills(progress(461, 461, 0).modules.innerHTML)).toEqual(Array(24).fill(100));
+    const missing = fixture("progress");
+    delete missing.module.fields.percent.value;
+    expect(mount({ toolOutput: missing }).modules.innerHTML).toContain('class="progress-percent">Unknown</strong>');
+  });
+
+  test("feature-detects media-query listeners without blocking initial widget render", () => {
+    for (const mode of ["legacy", "static", "absent"] as const) {
+      const card = mount({ toolOutput: fixture("progress") }, 390, mode);
+      expect(fills(card.modules.innerHTML)).toHaveLength(mode === "absent" ? 48 : 24);
+      expect(card.modules.innerHTML).toContain("Observed ");
+      const requests = card.sent.length;
+      card.resize(720);
+      expect(fills(card.modules.innerHTML)).toHaveLength(mode === "static" ? 24 : 48);
+      expect(card.sent).toHaveLength(requests);
+    }
+  });
+
+  test("responsive regrouping preserves refresh state, footer errors and no extra calls", async () => {
+    const card = progress(126, 461);
+    await card.initialize();
+    const footer = card.modules.innerHTML.split("<footer ")[1];
+    const refresh = card.controls.refresh();
+    await tick();
+    const requests = card.sent.length;
+    card.resize(720);
+    expect(fills(card.modules.innerHTML)).toHaveLength(48);
+    expect(card.button.disabled).toBe(true);
+    expect(card.button.attributes["aria-busy"]).toBe("true");
+    expect(card.modules.innerHTML.split("<footer ")[1]).toBe(footer);
+    expect(card.sent).toHaveLength(requests);
+    await card.advance(15001);
+    await refresh;
+    const failure = card.error.textContent;
+    expect(failure).toMatch(/Refresh failed/);
+    card.resize(390);
+    expect(fills(card.modules.innerHTML)).toHaveLength(24);
+    expect(card.error.textContent).toBe(failure);
+    expect(card.button.disabled).toBe(false);
+    expect(card.modules.innerHTML.split("<footer ")[1]).toBe(footer);
+    expect(card.sent).toHaveLength(requests);
+    expect(card.modules.innerHTML).not.toMatch(/Read only|Current reading|Printer telemetry/);
   });
 });

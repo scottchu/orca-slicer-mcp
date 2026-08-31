@@ -5,26 +5,26 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: the user explicitly authorized PR30 merge and
-  rollout to the two existing owner-supervised HTTP services. PR30 merged as
-  `48a106d2f17550bab8dc8648af1c7c247610a228` on 2026-08-31. Clean-source
-  staging, dry-run and paired installation passed; independent health/static/
-  asset and preservation checks accept runtime `0.3.1`, schema `5`,
-  observation-v3/camera-v5 deployment. Decisions 0023/0024 deliver quiet bottom footers,
-  image-only camera chrome, and a static eight-link private directory without
-  automatic observation/media acquisition. Source approval includes 135 app
-  tests/1,006 assertions, 21 lifecycle tests, six directory captures, 20 route
-  checks, 12 keyboard checks, and packaged inclusion with zero acquisition.
-  Separate deployed directory captures passed at 390/light and 720/dark with
-  no overflow, subrequests, or errors. Next obtain actual user feedback;
-  source/fixture and deployed-directory approval are not actual-phone acceptance.
-  Preserve role-separated deployment, validation, and documentation work.
-  This authorization does not include personal-plugin reinstallation, Mac
-  login/power, authentication/routing changes, printer access/control, or
-  missing backend mappings. Earlier PR28/PR29 delivery remains historical;
-  actual mobile fullscreen/PiP and user comprehension remain separate gates.
-  Orca Preparation discovery remains preserved and neither subsystem becomes
-  secondary.
+- Current execution order: validate and deliver the user's implemented segmented-layer progress
+  refinement under decision 0023's dated addendum. Keep the existing card,
+  reported percentage, and bottom timestamp/refresh footer; replace only the
+  continuous strip with truthful layer-position blocks, responsively grouping
+  large totals. Invalid or absent layers remain explicitly unavailable rather
+  than borrowing print percentage. Separate author, validation, and independent
+  review roles must verify source and rendered synthetic fixtures before PR
+  delivery. Independent validation passes 142 app tests/1,849 assertions,
+  21 lifecycle tests, repository/TypeScript/bundle/signature checks, twelve
+  screenshots and eight browser cases. Independent code/visual review approves
+  without blocking findings, with 58 tests/1,441 assertions independently passing.
+  PR30 merge and rollout are complete historical evidence: release
+  `20260831-48a106d-widgets` serves runtime `0.3.1`, schema `5`,
+  observation-v3/camera-v5, quiet footers and the private eight-link directory.
+  Do not repeat that rollout or treat its authorization as permission for this
+  new source slice. Merge, service deployment/restart, plugin installation,
+  authentication/routing changes, printer access/control, and missing-domain
+  mappings remain excluded. Actual-phone/PiP and user comprehension remain
+  separate gates. Orca Preparation discovery remains preserved and neither
+  subsystem becomes secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if

@@ -69,8 +69,10 @@
       .state-pill.offline { color: var(--muted); background: var(--soft); }
       .state-pill.offline::before { background: var(--faint); }
       .progress-percent { font-size: clamp(32px, 8vw, 46px); font-weight: 780; letter-spacing: -0.045em; }
-      .progress-track { height: 14px; margin: 14px 0 10px; overflow: hidden; border-radius: 999px; background: #e7e7e6; }
-      .progress-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #ffba13, var(--brand)); }
+      .progress-track { display: grid; grid-template-columns: repeat(var(--blocks, 1), minmax(0, 1fr)); gap: 2px; height: 14px; margin: 14px 0 10px; overflow: hidden; border-radius: 2px; --empty-block: #e7e7e6; }
+      .progress-block, .progress-track.unavailable { background: var(--empty-block); }
+      .progress-block { min-width: 0; overflow: hidden; border-radius: 2px; }
+      .progress-block-fill { height: 100%; background: var(--brand); }
       .progress-meta { display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font-size: 13px; }
       .head-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 0 18px 18px; }
       .head-card { min-height: 148px; padding: 16px 12px; border: 1px solid var(--line); border-radius: 18px; text-align: center; }
@@ -110,7 +112,7 @@
         :root { --ink: #f7f7f4; --muted: #b7b8b4; --faint: #969792; --surface: rgba(31, 31, 31, 0.98); --canvas: #191919; --line: rgba(255, 255, 255, 0.13); --soft: #292a29; --negative: #ff8585; --shadow: 0 18px 48px rgba(0, 0, 0, 0.3); }
         .roundel { background: linear-gradient(145deg, #3a3b3a, #282928); }
         .active .roundel { color: #1c1e20; background: var(--brand); }
-        .progress-track { background: #343533; }
+        .progress-track { --empty-block: #343533; }
         .state-pill { color: #66e5a5; background: #173a2a; }
         .empty-panel { background: rgba(41, 42, 41, 0.55); }
       }
@@ -140,9 +142,36 @@
       const provenance = () => { const freshness = freshnessLabel(observation?.freshness); return `<footer class="instrument-footer"><div><time>${escapeHtml(observedLabel(observation?.sourceObservedAt))}${freshness ? ` <span class="freshness-warning">· ${escapeHtml(freshness)}</span>` : ""}</time><span class="refresh-error" role="status"></span></div><button class="refresh" type="button" title="Refresh observation" aria-label="Refresh observation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.7-4.4L3 10"/><path d="M3 4v6h6M4 13a8 8 0 0 0 14.7 4.4L21 14"/><path d="M21 20v-6h-6"/></svg></button></footer>`; };
       const header = (title) => `<header class="instrument-header"><div class="instrument-title"><h2>${escapeHtml(title)}</h2></div></header>`;
       const unknown = (title, data) => `<section class="instrument">${header(title)}<div class="empty-panel"><strong>${data?.kind === "overview" ? "Overview deferred" : "Not implemented yet"}</strong>${data?.kind === "overview" ? "The combined overview is not implemented." : "This view’s printer-data mapping is not implemented. Values are unknown."}</div>${provenance(data?.provenance)}</section>`;
+      const compactProgress = window.matchMedia?.("(max-width: 480px)");
+      const layerPosition = (fields) => {
+        const current = valueOf(fields?.currentLayer); const total = valueOf(fields?.totalLayers);
+        return Number.isSafeInteger(current) && Number.isSafeInteger(total) && total > 0 && current >= 0 && current <= total ? { current, total } : null;
+      };
+      const renderLayerTrack = (position) => {
+        if (!position) return '<div class="progress-track unavailable" role="progressbar" aria-label="Layer progress" aria-valuetext="Layer progress unavailable"></div>';
+        const { current, total } = position;
+        const count = Math.min(total, compactProgress?.matches ? 24 : 48);
+        // Equivalent to floor(index * total / count), without overflowing safe integer multiplication.
+        const boundary = (index) => index * Math.floor(total / count) + Math.floor(index * (total % count) / count);
+        const blocks = Array.from({ length: count }, (_, index) => {
+          const start = boundary(index); const end = boundary(index + 1);
+          const filled = current <= start ? 0 : current >= end ? 100 : (current - start) / (end - start) * 100;
+          return `<div class="progress-block" aria-hidden="true"><div class="progress-block-fill" style="width:${filled}%"></div></div>`;
+        }).join("");
+        const text = `Layer ${current} of ${total}${total > count ? `. Grouped into ${count} blocks` : ""}`;
+        return `<div class="progress-track" style="--blocks:${count}" role="progressbar" aria-label="Layer progress" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${current}" aria-valuetext="${text}">${blocks}</div>`;
+      };
+      const updateLayerTrack = () => {
+        if (observation?.view !== "progress") return;
+        const track = modulesElement.querySelector(".progress-track");
+        // Resize only this fixed-height track, preserving refresh state and footer errors.
+        if (track) track.outerHTML = renderLayerTrack(layerPosition(observation.module?.fields));
+      };
+      if (typeof compactProgress?.addEventListener === "function") compactProgress.addEventListener("change", updateLayerTrack);
+      else if (typeof compactProgress?.addListener === "function") compactProgress.addListener(updateLayerTrack);
       const renderProgress = (data) => {
-        const fields = data?.fields; const percent = valueOf(fields?.percent); const current = valueOf(fields?.currentLayer); const total = valueOf(fields?.totalLayers); const layers = current === null ? "Layer unknown" : `Layer ${current}${total === null ? "" : ` / ${total}`}`; const valueAttribute = percent === null ? 'aria-valuetext="Unknown"' : `aria-valuenow="${percent}"`;
-        return `<section class="instrument">${header("Print Progress")}<div class="progress-body"><div class="progress-top"><span class="state-pill${observation.reachable ? "" : " offline"}">${escapeHtml(observation.printerStateLabel)}</span><strong class="progress-percent">${percent === null ? "Unknown" : `${percent.toFixed(percent % 1 ? 1 : 0)}%`}</strong></div><div class="progress-track" role="progressbar" aria-label="Print progress" aria-valuemin="0" aria-valuemax="100" ${valueAttribute}><div class="progress-fill" style="width:${percent === null ? 0 : percent}%"></div></div><div class="progress-meta"><span>${escapeHtml(layers)}</span><span>${valueOf(fields?.estimatedRemainingSeconds) === null ? "Estimate unknown" : `About ${escapeHtml(formatDuration(fields.estimatedRemainingSeconds))} left`}</span></div></div>${provenance(data?.provenance)}</section>`;
+        const fields = data?.fields; const rawPercent = valueOf(fields?.percent); const percent = validNumber(rawPercent) && rawPercent >= 0 && rawPercent <= 100 ? rawPercent : null; const position = layerPosition(fields); const layers = position ? `Layer ${position.current} / ${position.total}` : "Layer progress unavailable";
+        return `<section class="instrument">${header("Print Progress")}<div class="progress-body"><div class="progress-top"><span class="state-pill${observation.reachable ? "" : " offline"}">${escapeHtml(observation.printerStateLabel)}</span><strong class="progress-percent">${percent === null ? "Unknown" : `${percent.toFixed(percent % 1 ? 1 : 0)}%`}</strong></div>${renderLayerTrack(position)}<div class="progress-meta"><span>${escapeHtml(layers)}</span><span>${valueOf(fields?.estimatedRemainingSeconds) === null ? "Estimate unknown" : `About ${escapeHtml(formatDuration(fields.estimatedRemainingSeconds))} left`}</span></div></div>${provenance(data?.provenance)}</section>`;
       };
       const renderThermals = (data) => {
         const rows = (data?.readings ?? []).map((reading) => { const known = reading.state === "known" || reading.state === "stale"; const active = valueOf(reading.active) === true; const toolReading = reading.id.startsWith("tool-"); const badge = toolReading ? `<span class="roundel">T${escapeHtml(reading.id.slice(-1))}</span>` : ""; return `<div class="strip${active ? " active" : ""}${toolReading ? "" : " zone-row"}"><div class="identity">${badge}<span><strong>${escapeHtml(reading.label)}</strong><span class="micro">${active ? '<span class="dot"></span>Active' : escapeHtml(valueOf(reading.heaterState) ?? "Unknown")}</span></span></div><div class="reading${known ? "" : " unavailable"}"><small>Actual</small><strong>${escapeHtml(formatTemperature(reading.actual))}</strong></div><div class="reading${known ? "" : " unavailable"}"><small>Target</small><strong>${escapeHtml(formatTemperature(reading.target))}</strong></div></div>`; }).join("");

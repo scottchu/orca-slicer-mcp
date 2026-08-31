@@ -10,7 +10,24 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-- Current task: the user authorized PR30 merge and rollout to the two existing
+- Current task: the user's segmented-layer progress refinement is implemented
+  in source under decision 0023's dated addendum. Only the current observation
+  HTML and its VM regressions change at runtime/test level. Layer-position
+  blocks group large totals at 24 narrow or 48 wide, preserve independent
+  reported print percentage and the bottom footer, and explicitly handle
+  invalid/unknown layers. Independent validation passes 142 app tests/1,849
+  assertions, 21 lifecycle tests, TypeScript, repository checks, all three
+  bundles/signature checks, and exact bundled/frozen asset comparisons.
+  Twelve isolated screenshots and eight browser behavior cases pass.
+  Independent code and scoped visual review approve with no blocking findings;
+  the reviewer independently passes 58 tests/1,441 assertions. Next deliver
+  this bounded source slice through a new PR. It is not deployed.
+  Source and deployed baseline both
+  retain runtime `0.3.1`, schema `5`, observation-v3/camera-v5, so version strings
+  alone do not prove segmented assets are installed. Preserve the prior PR30
+  rollout records; that completed authorization does not authorize this
+  slice's merge, deployment, service restart, plugin install, or printer access.
+- Completed baseline: the user authorized PR30 merge and rollout to the two existing
   HTTP services. PR30 merged as `48a106d2f17550bab8dc8648af1c7c247610a228`
   on 2026-08-31. Versioned release `20260831-48a106d-widgets` is installed;
   both services are healthy at runtime `0.3.1`, schema `5`, observation-v3/
@@ -444,6 +461,14 @@ and final repository-check results.
   decision 0015.
 
 ## Next action
+
+Independent source/browser validation and code/visual review pass. Deliver
+the reviewed segmented-layer strip through a new PR.
+Current widget SHA-256 is
+`974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb`;
+it is source-only, despite retaining the deployed baseline's version labels.
+Any later merge/rollout requires separate authorization. The following
+paragraph preserves completed deployment evidence, not instructions to repeat it.
 
 PR30 `48a106d` is merged and its paired HTTP-service rollout independently
 accepted for health, exact directory/focused assets, access boundaries and
