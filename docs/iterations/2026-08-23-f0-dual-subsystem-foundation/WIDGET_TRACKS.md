@@ -78,18 +78,21 @@ Independent live checks confirm exact installed release, twelve exact asset
 comparisons, four user-facing pages, fresh four-head material metadata and a
 structurally valid real JPEG. They do not establish visual/device acceptance.
 
-The user's latest Fluidd Bed Mesh screenshot prioritizes decision 0030's
+Historical pre-Queue checkpoint: the user's Fluidd Bed Mesh screenshot
+prioritized decision 0030's
 interactive reported-height surface inside the existing white card. It does
 not request Fluidd's dark dashboard, interpolated-matrix selector or printer
-controls. Current release order is A/F/Heads (deployed) → B → C → D → E.
-F0/O1 and B–E remain unfinished; A/F visual acceptance remains open. Preserve unrelated checkouts;
+controls. At that checkpoint the release order was A/F/Heads (deployed) → B →
+C → D → E, B–E were unfinished, and Queue store/widget integration was next.
+The current top section and matrix supersede that history: B is shipped and C
+is next. F0/O1 and C–E remain unfinished; A/F/B visual acceptance remains open. Preserve unrelated checkouts;
 any reuse needs explicit integration review. Queue foundation is locally committed as
 `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`;
 independent bounded source/protocol review approves and closes the prior P2.
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
-Store/widget integration is next after the shipped Heads refinement. Stacked
-B–E source work may continue while the user visually reviews A; no unfinished
-track is cancelled by the new priority.
+That standalone foundation was subsequently integrated and shipped in PR47 as
+recorded above. C–E work may continue while the user visually reviews A/F/B;
+no unfinished track is cancelled by the new priority.
 
 | Track | Current source coverage | Required delivery | State |
 | --- | --- | --- | --- |

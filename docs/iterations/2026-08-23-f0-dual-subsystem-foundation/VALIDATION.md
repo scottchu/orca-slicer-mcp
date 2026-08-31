@@ -61,13 +61,14 @@ Exact-SHA review and release receipts were pending at this source checkpoint
 and completed in the rollout above; no Queue acquisition, merge, service
 deployment/restart or visual/device pass is claimed by the source evidence alone.
 
-Boundary correction: during final contract inspection the validator ran the
+Historical predeployment boundary correction: during final contract inspection the validator ran the
 compiled `dist/u1-print-studio doctor --json`; that command unintentionally
 performed **one general read-only status observation** and reported reachable.
 It performed no Queue, camera or mesh read; no control, service, auth or config
 mutation; and retained no payload. Runtime commands stopped afterward. The
 source validation results above remain fixture-backed, and this event does not
-replace or consume the one scoped postdeployment Queue observation still due.
+replace the one scoped postdeployment Queue observation completed in the PR47
+rollout record above.
 
 The coordinator reports fresh allowed-browser runtime URL selection failed and
 browser inventory was empty. Rendered/layout/keyboard/browser acceptance remains
