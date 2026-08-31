@@ -14,25 +14,25 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Implement **D Current Job/real History** under decision 0025's real-data
-addendum, decision 0029 and OBS-014, then E Overview. Use only the fixed Current
-Job print_stats/virtual_sdcard query and fixed descending latest-20 History
-query. Keep independent receipts, 15-second attempt TTLs, coalescing, stale
-retention, atomic merges and fixture isolation; selection of one domain must not
-acquire/restamp the other. Reuse Queue's safe-basename boundary. Never expose
-history paths, IDs, user, metadata, auxiliary data or `exists`.
+Implement **E Overview** next. Compose only accepted focused-domain projections
+from shared normalized state; do not add another query, normalization path,
+freshness clock, control surface or giant map. Preserve independently invokable
+A/F/Heads/B/C/D cards and their domain-specific unknown/stale/failure semantics.
+Use the standing exact review → PR merge → exact-build deployment → explicit
+BOTH-service restart → scoped verification sequence. Browser/device visual
+acceptance remains unverified.
 
-Only printing/paused means active. Present persisted filenames contextually for
-standby, terminal and unknown states; storage activity is a separate fact.
-History count is returned-page length only, zero means no entries returned, and
-order/duplicates remain intact. Normalize all seven documented history statuses
-plus nonraw Unknown for future values. Keep two compact white information-first
-cards with exactly one bottom Refresh each and no pagination/row action/control.
-Target 0.4.5/schema 11/observation-v11/camera-v8, 21 resources plus retained
-observation-v10 and unchanged two-visible/eight-app-only tools. Complete source
-and independent exact-candidate review, guarded PR merge/deploy, explicit BOTH-
-service restart and scoped verification. Browser/device visual acceptance stays
-unverified; preserve shipped A/F/Heads/B/C.
+### Shipped D Current Job/real History checkpoint
+
+PR51 exact head `30f1c7bb407d08d19d390acf2b5704a30eff010f` passed formal and
+independent approval and merged as `23f07e37de668fcbf2677a9a9b27bf01448cc8e7`.
+Release `20260831-23f07e3-pr51-resume-20260831T191106-be85c4` runs on BOTH
+explicitly restarted, loaded, healthy and integrity-verified services at 0.4.5/
+schema 11/observation-v11/camera-v8. Sixteen security checks pass with config,
+OAuth and routes preserved. Tailnet index/jobs/job_history return 200. One
+sanitized Current Job and one History read confirm known/fresh bounded telemetry
+semantics without retaining filenames, projects, IDs, raw rows or a history-
+total claim. Visual/device acceptance remains unverified.
 
 ### Shipped C Fans & Chamber checkpoint
 
@@ -60,8 +60,8 @@ checks confirm 15 exact manifest files, both service targets, three health/seven
 exact local-tailnet static checks, and exactly one known/fresh paused-empty Queue
 refresh at `2026-08-31T21:31:36.003Z`; exact served-widget semantics pass.
 visual/browser/device acceptance remains unverified. At that checkpoint the
-recorded order was C → D Current Job/History → E overview; the authoritative top
-section now records C shipped and D next.
+recorded order was C → D Current Job/History → E Overview; the authoritative top
+section now records C/D shipped and E next.
 
 ### Previous Queue source checkpoint
 

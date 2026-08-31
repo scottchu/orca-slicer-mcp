@@ -7,18 +7,22 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
-Current priority: **D Current Job/real History**, then E Overview. Keep Current
-Job and History independently invokable with fixed separate reads, receipts and
-15-second demand caches. Current uses contextual state/file/storage facts so a
-persisted filename cannot imply activity. History shows at most the descending
-20 rows returned, preserving order/duplicates and treating count as page length,
-not total. Safe basenames are the only identity; raw paths, IDs, user, metadata,
-auxiliary data and `exists` remain private. Distinguish known empty, partial,
-unknown, unsupported, unavailable and stale. Preserve compact white information-
-first cards with exactly one bottom Refresh and no pagination/row action/control.
-Target 0.4.5/schema 11/observation-v11/camera-v8 with 21 resources,
-observation-v10 retained and unchanged tool inventory. A/F/Heads/B/C are
-deployed; their browser/device visual acceptance remains open.
+Current priority: **E Overview**. Compose accepted focused projections from the
+shared normalized snapshot; do not add another query, normalizer, freshness clock,
+generic map or control. Preserve independently invokable A/F/Heads/B/C/D and
+their truthful empty/partial/unknown/unsupported/unavailable/stale states. All
+deployed cards still require browser/device visual acceptance.
+
+Previous shipped priority: **D Current Job/real History**. PR51 exact approved
+head `30f1c7b` merged as `23f07e3`; release
+`20260831-23f07e3-pr51-resume-20260831T191106-be85c4` runs on BOTH explicitly
+restarted, healthy/integrity-verified services at 0.4.5/schema 11/observation-v11/
+camera-v8. Sixteen security checks pass with config/OAuth/routes preserved.
+Tailnet index/jobs/job_history return 200. One sanitized Current read confirms a
+last-reported complete terminal job with inactive storage; one sanitized History
+read confirms a 20-row returned page with order preserved. No private identity,
+raw runtime or history-total claim is retained. Full evidence is in VALIDATION;
+visual/device acceptance remains unverified.
 
 Previous shipped priority: **C Fans & Chamber**. Exact PR49 head `c14e92c` was
 formally and independently approved and merged as `3ab4ed7`; exact release
@@ -39,7 +43,7 @@ preserved and no rollback. Independent checks confirm 15 exact manifest files,
 both service targets, three health/seven static checks, one known/fresh paused-
 empty Queue observation and exact served-widget semantics. Full evidence is in VALIDATION;
 visual/browser/device acceptance remains unverified. That checkpoint's order was
-C → D → E; the authoritative top section now records C shipped and D next.
+C → D → E; the authoritative top section now records C/D shipped and E next.
 
 Previous priority: **B Queue integration** after PR46's merged Heads rollout
 records (`bd7abc8`). Decision 0029's Queue addendum/OBS-012 bind the existing
@@ -108,8 +112,8 @@ interactive reported-height surface inside the existing white card. It does
 not request Fluidd's dark dashboard, interpolated-matrix selector or printer
 controls. At that checkpoint the release order was A/F/Heads (deployed) → B →
 C → D → E, B–E were unfinished, and Queue store/widget integration was next.
-The current top section and matrix supersede that history: B and C are shipped,
-and D is next. F0/O1 and D–E remain unfinished; A/F/B/C visual acceptance remains
+The current top section and matrix supersede that history: B, C and D are shipped,
+and E is next. F0/O1 and E remain unfinished; A/F/B/C/D visual acceptance remains
 open. Preserve unrelated checkouts;
 any reuse needs explicit integration review. Queue foundation is locally committed as
 `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`;
@@ -129,8 +133,8 @@ no unfinished track is cancelled by the new priority.
 | F Bed Mesh | Interactive same-sample surface and retained 2D grid deployed in PR43 at 0.4.1 | User visual review of XYZ/legend/exaggeration, pointer/keyboard orbit/reset and 2D fallback | P2 corrected; reviewed and shipped, visual/device acceptance pending |
 | B Queue | Fixed bounded adapter, independent store/projection and white Queue card/index shipped in PR47 | User visual review; preserve no-mutation boundary | Deployed to both restarted services; exact/static/scoped verification recorded separately, visual/device acceptance unverified |
 | C Fans and chamber | Fixed environment route, independent store/projection and two focused cards shipped in PR49 | User visual review; preserve distinct commanded-percent/RPM/state semantics and no controls/health inference | Deployed to both restarted services; scoped one-Fans/one-Thermals telemetry verification passes, visual/device acceptance unverified |
-| D Current Job and History | Independent selectors/routes delivered; current data is shared-status limited and history is unimplemented | Integrate fixed independent Current/History reads, safe contextual identity, latest-20 page semantics and two white cards; no controls | Exact contract frozen in decision 0025/OBS-014; implementation and independent acceptance active |
-| E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |
+| D Current Job and History | Fixed independent Current/History reads, stores, projections and white cards shipped in PR51 | User visual review; preserve privacy, contextual identity, page-only count and no-control boundary | Deployed to both restarted services; sanitized scoped telemetry verification passes, visual/device acceptance unverified |
+| E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, next |
 | G Invokable skills and routes | Focused observation and camera skills delivered | Retain closed selectors and existing invocation; update source guidance/coverage as domains ship, without plugin reinstall | Active acceptance across releases |
 
 Releases A, F surface, B, C, D, and E are independently shippable end-to-end slices.

@@ -12,21 +12,20 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
-**D Current Job/real History is active.** Decision 0025's real-data addendum,
-decision 0029 and OBS-014 replace only the limited shared-status/unimplemented
-data paths while preserving the shipped independent `jobs`/`job_history`
-selectors and routes. Current Job and History use separate fixed bounded reads,
-receipts and 15-second demand caches; neither acquires or restamps the other.
-Only printing/paused establishes an active job; persisted filenames are labeled
-as loaded, last reported or merely reported according to state. History returns
-at most the latest 20 ordered rows and page count only, with safe basenames and
-no raw paths, IDs, user, metadata, auxiliary data or `exists`. Information and
-independent freshness remain above one bottom Refresh per compact white card;
-no pagination, row action, mutation or control. Target is runtime 0.4.5/schema
-11/observation-v11/camera-v8, 21 resources with observation-v10 retained and
-the two-visible/eight-app-only tool inventory unchanged. Source, independent,
-exact-review, deployment, live and visual evidence remain separate and pending.
-Preserve A/F/Heads/B/C; E Overview follows D.
+**D Current Job/real History is shipped.** PR51 exact head
+`30f1c7bb407d08d19d390acf2b5704a30eff010f` was approved by the formal reviewer
+and independent validator, then merged as
+`23f07e37de668fcbf2677a9a9b27bf01448cc8e7` at `2026-08-31T23:10:43Z`.
+Exact release `20260831-23f07e3-pr51-resume-20260831T191106-be85c4` runs on BOTH
+explicitly restarted, loaded, healthy and integrity-verified services at runtime
+0.4.5/schema 11/observation-v11/camera-v8. Sixteen security checks pass with
+configuration, OAuth and routes preserved. Tailnet index, Current Job and Job
+History return 200. Exactly one sanitized Current Job read was known/fresh and
+reported a completed terminal job with inactive storage; exactly one sanitized
+History read was known/fresh with 20 returned rows. This proves bounded telemetry
+semantics only, not filenames/projects, a currently active job, grand-total
+history, visual/device behavior or user acceptance. Preserve A/F/Heads/B/C/D;
+**E Overview is next**.
 
 ### Previous shipped C checkpoint
 
@@ -42,7 +41,7 @@ served widget/index hashes match frozen source. Exactly one Fans and one Thermal
 POST shared source time `2026-08-31T22:27:06.974Z` and returned known/fresh
 environment facts, including Cavity 33°C. These are telemetry facts, not sensor-
 accuracy, health or safety proof. Browser/device visual acceptance is unverified.
-Preserve A/F/Heads/B/C and continue **D Current Job/real History → E Overview**.
+Preserve A/F/Heads/B/C/D and continue **E Overview**.
 
 ### Previous shipped Queue checkpoint
 
@@ -145,7 +144,7 @@ Overview. The latest Fluidd Bed Mesh
 reference prioritizes an orbitable 3D height surface inside the existing white
 card, not its dark dashboard or printer/profile controls. Independently
 invokable skills and the Current Job/History split stay intact. New feedback
-does not cancel unfinished tracks. D–E remain active; A/F/B/C visual acceptance
+does not cancel unfinished tracks. E remains active; A/F/B/C/D visual acceptance
 is still pending. Old deferral wording
 below is historical. F0/O1 milestone completion is not claimed.
 

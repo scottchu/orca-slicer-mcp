@@ -1,5 +1,38 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 D Current Job/real History — PR51 deployed
+
+Exact PR51 head `30f1c7bb407d08d19d390acf2b5704a30eff010f` passed formal and
+independent approval. It merged as
+`23f07e37de668fcbf2677a9a9b27bf01448cc8e7` at
+`2026-08-31T23:10:43Z`. Guarded shipping installed exact release
+`20260831-23f07e3-pr51-resume-20260831T191106-be85c4` and created rollback
+snapshot `20260831T191118-908e33`; no rollback was required and no D deployment
+failure occurred. BOTH services were explicitly restarted and are loaded,
+healthy and integrity verified at **0.4.5/schema 11/observation-v11/camera-v8**.
+Sixteen security checks pass; configuration, OAuth and routes were preserved.
+Served widget/index SHA-256 prefixes are respectively `1830fa11…` and
+`e9847d7c…`. Tailnet index, Current Job and Job History each returned 200.
+
+Source gates pass **247 tests/3,402 assertions**, **21 lifecycle** and **22
+shipping** checks. The corrected independent matrix passes **197 assertions**,
+not the earlier provisional 213 count. Required bundles, signing and exact-asset
+checks pass.
+
+Exactly **one Current Job POST** returned known/fresh at
+`2026-08-31T23:11:46.006Z`: `printState=complete`, storage inactive and reported
+file position equal to reported file size. No filename, model/project identity or
+raw numeric runtime value is recorded. This proves only a last-reported terminal
+job with no active storage, not a currently active job or job outcome acceptance.
+
+Exactly **one Job History POST** returned known/fresh at
+`2026-08-31T23:11:46.255Z`: page count 20, with 17 Completed and 3 Cancelled rows
+in preserved returned order. No filename, job ID, row time, raw row or grand-
+total claim is recorded. This proves only the bounded returned-page projection at
+that instant. Browser/device visual evidence was unavailable; visual and user
+acceptance remain unverified. These rollout records are documentation-only and
+do not require another deployment.
+
 ## 2026-08-31 D Current Job/real History — design/source checkpoint
 
 The design role read current repository contracts and exact source with these
@@ -41,10 +74,10 @@ top-information/single-bottom-Refresh cards with no controls. Target is 0.4.5/
 schema 11/observation-v11/camera-v8, 21 resources with observation-v10 retained
 and unchanged two-visible/eight-app-only tools.
 
-No app/test/Git/service/printer/browser mutation occurred. Source, independent,
-exact-SHA, release, scoped live, rendered visual and user acceptance remain
-pending and must be recorded separately. `git diff --check` is the only design-
-record hygiene gate and will be recorded after this freeze.
+No app/test/Git/service/printer/browser mutation occurred in that design pass.
+Source, independent, exact-SHA, release and scoped live evidence subsequently
+completed in the rollout above; rendered visual and user acceptance remain
+separate and unverified. `git diff --check` was its only design-record gate.
 
 ## 2026-08-31 C Fans & Chamber — PR49 deployed
 
