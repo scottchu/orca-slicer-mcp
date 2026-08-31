@@ -27,13 +27,37 @@ asset comparisons, four user-facing pages, fresh material metadata for four
 physical heads, and a structurally valid real 1920 × 1080 JPEG snapshot.
 
 The user requests all pending widgets and a unified refined white style.
-Decision 0029 and the active iteration's `WIDGET_TRACKS.md` own the durable
-queue: A materials + white cards/index + latest camera + continuous progress;
-B Queue; C fans/chamber; D Current Job/real History; E composed overview.
-Bed Mesh's existing behavior is retained and its source is restyled. Independently
+Decisions 0029/0030 and the active iteration's `WIDGET_TRACKS.md` own the durable
+queue: A materials + white cards/index + latest camera + continuous progress
+(deployed); F interactive reported Bed Mesh surface; B Queue; C fans/chamber;
+D Current Job/real History; E composed overview. The latest Fluidd Bed Mesh
+reference prioritizes an orbitable 3D height surface inside the existing white
+card, not its dark dashboard or printer/profile controls. Independently
 invokable skills and the Current Job/History split stay intact. New feedback
-does not cancel unfinished tracks. B–E are active; old deferral wording below
-is historical. F0/O1 milestone completion is not claimed.
+does not cancel unfinished tracks. F and B–E are active; old deferral wording
+below is historical. F0/O1 milestone completion is not claimed.
+
+F's bounded design is recorded in decision 0030. The 0.4.1/schema 8/
+observation-v7/camera-v8 source has seventeen resources; it is not deployed.
+Formal review's P2 centroid-sort occlusion defect is corrected; independent
+per-point geometry sweeps and the original regression pass on final widget
+`c800447957bf8b7b386ddba7666941f625170db92107d31230c5f382378d77f6`.
+Independent final validation passes 194 app tests/2,731 assertions, 21 lifecycle,
+22 shipping, 22 independent tests/1,162 assertions, TypeScript, repository and
+all bundles/exact assets. The reviewer provisionally approves the final source
+without blockers. Exact-commit approval, merge, deployment and post-release
+verification remain pending. These software checks are not rendered-browser
+acceptance. The surface uses the same normalized
+reported grid and XY bounds with no new acquisitions, resampling or
+`mesh_matrix` substitution. It adds XYZ mm axes/height legend, explicit bounded
+height exaggeration, pointer/keyboard orbit/reset and a retained 2D fallback.
+Reported points and connecting visualization faces do not establish independent
+physical measurements or bed quality. Flat/inactive/unknown/stale semantics,
+independent time, bottom controls and existing read-only limits remain.
+Follow the standing merge → exact-build deploy → explicitly restart BOTH
+services → verify order for user visual review. Fresh allowed-browser discovery
+is unavailable; visual/browser/device acceptance remains unverified, not a
+source-test pass or a new block on the authorized delivery sequence.
 
 Release A retains sixteen resources and adds real
 printer-reported materials and white focused cards/index, camera information
@@ -47,16 +71,18 @@ candidate preserves that application manifest. A preliminary read-only ship
 plan stopped on an uncommitted BRIEF edit; scoped commit and renewed exact-SHA
 review resolved it without bypassing guards or external mutation. The final
 read-only plan passed before execution. These rollout records change no
-application bytes and need no extra deployment. Next integrate Queue while
-the user reviews A. Keep software,
-deployed, real-printer and user-device evidence distinct. Queue foundation is
+application bytes and need no extra deployment. Next freeze F's exact candidate,
+complete independent commit review and guarded delivery while the user reviews
+A. Keep software, deployed, real-printer and user-device evidence distinct.
+Queue foundation is
 locally committed as `4fbb96c7201398c125006cafc5050b84a875af1e` on
 `feat/u1-queue-completion`: standalone adapter/model/tests only. Independent
 bounded source/protocol approval closes the prior credential-basename P2;
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
-Store/projection/widget integration is next, without any merge or deployment.
+Store/projection/widget integration remains active after F, without any Queue
+merge or deployment.
 Source work may continue in stacked B–E branches while the user reviews A;
-sequential independently reviewed release order is unchanged.
+current independently reviewed release order is A (deployed) → F → B → C → D → E.
 Read-only capability research confirms Queue/History/cavity/fans endpoints can
 return real data; they are software gaps, not proven unsupported hardware.
 No printer controls, preset/project writes, auth/Tailscale changes, plugin

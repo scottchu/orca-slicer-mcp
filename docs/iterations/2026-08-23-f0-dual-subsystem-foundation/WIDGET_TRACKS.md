@@ -22,13 +22,18 @@ Independent live checks confirm exact installed release, twelve exact asset
 comparisons, four user-facing pages, fresh four-head material metadata and a
 structurally valid real JPEG. They do not establish visual/device acceptance.
 
-F0/O1 and B–E remain unfinished. Preserve unrelated checkouts; any reuse needs
-explicit integration review. Queue foundation is locally committed as
+The user's latest Fluidd Bed Mesh screenshot prioritizes decision 0030's
+interactive reported-height surface inside the existing white card. It does
+not request Fluidd's dark dashboard, interpolated-matrix selector or printer
+controls. Current release order is A (deployed) → F surface → B → C → D → E.
+F0/O1, the new F surface and B–E remain unfinished. Preserve unrelated checkouts;
+any reuse needs explicit integration review. Queue foundation is locally committed as
 `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`;
 independent bounded source/protocol review approves and closes the prior P2.
 TypeScript, 40 tests/461 assertions and six independent tests/68 assertions pass.
-Store/widget integration is next. Stacked B–E source work may continue while
-the user visually reviews A; sequential reviewed release order is unchanged.
+Store/widget integration remains active after the bounded F surface. Stacked
+B–E source work may continue while the user visually reviews A; no unfinished
+track is cancelled by the new priority.
 
 | Track | Current source coverage | Required delivery | State |
 | --- | --- | --- | --- |
@@ -36,16 +41,17 @@ the user visually reviews A; sequential reviewed release order is unchanged.
 | A2 White foundation and index | White focused cards/index/host assets and local attributed icons deployed; truthful coverage labels | Reference-matched rendering, states and accessibility | Deployed in PR41; user visual acceptance pending |
 | A3 Camera reference | Header outside genuine media, direct controls, snapshot feedback/card fullscreen deployed; watchers retained | Rendered/native snapshot/live/close/PiP/fullscreen acceptance | Deployed in PR41; user/device acceptance pending |
 | A4 Continuous progress | Contrast correction, continuous bar/layers/ETA/elapsed deployed | User visual review, without fabricated metrics/completion | Deployed in PR41; visual acceptance pending |
-| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Integrate bounded store/projection/widget without queue mutations | Foundation source/protocol approved; widget integration remains active next |
+| F Bed Mesh | Interactive same-sample surface and retained 2D grid implemented and software-validated in 0.4.1 source; prior white 2D view deployed in A | XYZ/height legend/exaggeration, pointer/keyboard orbit/reset, 2D fallback; decision 0030 | P2 corrected; final source provisionally approved, exact-commit review and release pending |
+| B Queue | Three-file standalone adapter/model/test foundation approved locally at `4fbb96c`; prior privacy P2 closed | Integrate bounded store/projection/widget without queue mutations | Foundation source/protocol approved; widget integration remains active after F surface |
 | C Fans and chamber | Fans/purifier unimplemented; chamber thermal unknown | Real fixed fan/purifier/cavity reads, measured units and independent missing/power states; no controls | Active, after Queue |
 | D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, after fans/chamber |
 | E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |
-| F Bed Mesh | Real reported-grid behavior retained; white restyle deployed in A | Visual orientation/units/state verification, no calibration | Deployed in PR41; restyled visual acceptance pending |
 | G Invokable skills and routes | Focused observation and camera skills delivered | Retain closed selectors and existing invocation; update source guidance/coverage as domains ship, without plugin reinstall | Active acceptance across releases |
 
-Releases A, B, C, D, and E are independently shippable end-to-end slices.
+Releases A, F surface, B, C, D, and E are independently shippable end-to-end slices.
 A includes the shared visual foundation and material projection because their
-Heads/card changes need coordinated integration. F ships with A; G is checked
+Heads/card changes need coordinated integration. F's white restyle shipped
+with A; the new F surface is a separate next release. G is checked
 for every release. A new user priority may reorder the queue, but each remaining
 row stays active with a next action or an explicit user-approved pause.
 
@@ -85,6 +91,17 @@ private attachment paths/images are not committed.
 - Bed mesh, thermals, heads, jobs/history, queue, fans, overview, and directory
   use the same visual vocabulary without replacing real domain content with
   decorative gauges or implied healthy empty states.
+- Bed Mesh surface (decision 0030): default oblique interactive 3D chart on
+  white, retaining every reported sample at its existing XY bounds. Connect
+  adjacent points only, with no resampling/smoothing or `mesh_matrix` fallback.
+  Information above actions includes Reported probe grid, XYZ mm axes,
+  numerical low/high height legend, min/max/range, grid size, time/freshness,
+  selected exaggeration and the visualization-only faces explanation. Keep
+  XY's physical aspect ratio; never infer front/back or calibration quality.
+  Bottom controls are 3D/2D mode, Height exaggeration (1x/100x/300x, default
+  100x), Reset view and Refresh. Pointer drag/focused arrows orbit, Home resets;
+  bounded pitch and no autoplay. Retain exact-oriented 2D grid and explicit
+  rendering-failure fallback. Valid flat data is uniformly colored, not empty.
 
 ## Required gates per release
 
@@ -96,6 +113,20 @@ private attachment paths/images are not committed.
 | Merge and deployment | PR, reviewed SHA, exact merged-build `u1-ship`, explicit restart of both public and dashboard services | Complete: PR41 merged `b6142de`, exact release installed and both services restarted |
 | Deployed behavior | Health/integrity/exact served assets plus meaningful scoped widget behavior; preserve OAuth/config/routes | Operator 14-static/16-security pass; independent exact release, 12 assets, four pages, fresh Heads and actual JPEG pass |
 | Real-printer/user outcome | Read-only domain acquisition is recorded separately from rendered fixture, mounted-phone, and physical-print acceptance | Fresh material read for four heads and structural JPEG acquisition pass; no visual/phone/live-video or physical acceptance |
+
+The table above records release A, not acceptance of F's changed bytes. For the
+new F surface, implementation and the P2 occlusion correction pass final
+independent software validation: 194 app/2,731 assertions, 21 lifecycle,
+22 shipping, 22 independent/1,162 assertions, TypeScript/repository/bundles and
+exact assets. Final source is provisionally approved without blockers;
+exact-commit review and rollout remain pending. Browser/device visual acceptance
+is unverified. Asymmetric,
+flat, stale, inactive, invalid and maximum-size fixtures verify software
+geometry, units, local controls and unchanged acquisition/state semantics. The standing
+order is merge → deploy exact merged build → explicitly restart BOTH services
+→ verify for user visual review. Unavailable automated browser access does not
+re-block that order, and never becomes a visual pass. No source/service success
+proves physical-bed quality or safe printing.
 
 Main coordinator found no available in-app or Chrome browser after runtime
 discovery. The user then explicitly requested deployment for their own visual

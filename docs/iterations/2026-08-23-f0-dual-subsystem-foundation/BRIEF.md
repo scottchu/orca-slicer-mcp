@@ -20,11 +20,16 @@
   asset comparisons, four user-facing pages, fresh four-head material metadata
   and one structurally valid real JPEG; no visual/phone/live-video pass is claimed.
 - Authoritative current work (2026-08-31): complete all pending read-only U1
-  widgets and apply the selected white style. Decision 0029 and
+  widgets and apply the selected white style. Decisions 0029/0030 and
   `WIDGET_TRACKS.md` supersede prior Queue/progress deferrals and camera overlay
   directions below. Release order: A materials + white cards/index + latest
-  camera + continuous progress, B Queue, C fans/chamber, D Current Job/History,
-  E composed overview. Bed Mesh is restyled with A; retain independent
+  camera + continuous progress (deployed), F interactive reported Bed Mesh
+  surface, B Queue, C fans/chamber, D Current Job/History, E composed overview.
+  The user's new Fluidd Bed Mesh reference prioritizes its orbitable XYZ
+  surface inside the existing white card; it does not request the dark
+  dashboard or printer/profile controls. Reuse the same reported grid/bounds,
+  explicit units/legend, disclosed bounded height exaggeration and 2D fallback;
+  preserve all existing freshness/inactive/flat states. Retain independent
   invocation and truthful coverage labels. New feedback never silently cancels
   outstanding tracks. [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41)
   delivers A with sixteen resources. Progress lower
@@ -34,12 +39,22 @@
   rendered visual QA remains unverified. Queue adapter/model/test foundation is
   locally committed as `4fbb96c` on `feat/u1-queue-completion` (three files);
   independent bounded source/protocol review approves, closing the prior P2.
-  TypeScript, 40/461 and independent six/68 pass. Store/widget integration is
-  next. Stacked B–E source work may continue during
-  A's user visual-review wait; sequential reviewed release order is unchanged.
+  TypeScript, 40/461 and independent six/68 pass. Queue store/widget integration
+  remains active after the bounded F enhancement. Stacked B–E source work may
+  continue during A's user visual-review wait; the current sequential reviewed
+  release order is A (deployed) → F → B → C → D → E.
   Ship every accepted slice through the existing guarded PR/review/exact-build/
   both-service restart and verification workflow. These docs-only rollout
-  records need no redeployment. Next integrate Queue while the user reviews A.
+  records need no redeployment. Decision 0030's Bed Mesh surface is implemented
+  as 0.4.1/schema 8/observation-v7/camera-v8 with seventeen resources. The P2
+  face-occlusion defect is corrected; final source passes 194 app/2,731
+  assertions, 21 lifecycle, 22 shipping, 22 independent/1,162 assertions and
+  TypeScript/repository/bundles/exact assets. Final source is provisionally
+  approved without blockers; exact-commit review and release remain pending.
+  Next freeze and obtain that exact-commit review.
+  Follow the standing merge → deploy → restart
+  BOTH → verify order for the user's visual review; unavailable automated browser
+  access remains an explicit unverified visual gate, not a new delivery block.
   F0/O1 are not complete.
 - Historical checkpoints follow; they are not the current execution queue.
 - Current result and next action: bottom-left camera information and bottom-right

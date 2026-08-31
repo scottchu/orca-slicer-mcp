@@ -1,6 +1,40 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
-## Current release A: white widget foundation and printer-reported materials
+## Current F Bed Mesh surface: visual acceptance unverified
+
+final result: blocked
+
+Decision 0030 selects the supplied Fluidd Bed Mesh screenshot's orbitable XYZ
+surface inside the existing white card, not its dark dashboard/profile controls.
+The reference was opened by the design role; private attachments are not
+committed. Source target is 0.4.1/schema 8/observation-v7/camera-v8 with seventeen
+resources. The historical 2D Bed Mesh and release A reviews below do not accept
+these changed assets.
+
+There is no rendered F implementation screenshot, matched viewport/state,
+density-normalized comparison, console inspection or browser interaction
+evidence. The coordinator's fresh in-app selection failed and browser discovery
+returned none. Full-view and focused-region visual comparisons are therefore
+unavailable. Software production-script/VM fixtures cannot establish fonts,
+spacing/layout, colors/contrast, chart legibility/asset fidelity or copy/wrapping
+as rendered; all five fidelity surfaces remain visually unverified.
+
+When an allowed browser is available, capture the actual 3D and 2D white card
+at 320/390/720 px with active, flat, stale, inactive and unavailable states.
+Compare the adapted target at matching viewport/state and record image/CSS
+dimensions and density. Check XYZ/height legend and exaggeration, unclipped
+surface, bottom controls, pointer/focused-keyboard orbit, Home/Reset, mode and
+height changes, fallback, focus, narrow wrapping and console errors. No rendered
+F finding or visual pass is asserted before those captures exist.
+
+The user authorizes merge → deploy → explicitly restart BOTH services → verify
+for their visual review. This overrides predeployment visual-QA ordering only;
+the unavailable browser does not re-block that sequence or convert this result
+to passed. Exact-SHA source approval, shipping guards, installed-byte and scoped
+behavior verification remain separate requirements. Merge/deployment and
+actual-device acceptance are pending at this source checkpoint.
+
+## Release A: deployed white foundation, visual acceptance still unverified
 
 final result: blocked
 

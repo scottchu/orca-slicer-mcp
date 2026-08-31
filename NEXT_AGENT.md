@@ -8,7 +8,7 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0025, 0027 through 0029 (0026 is reserved for earlier Queue work)
+5. decisions 0014 through 0025, 0027 through 0030 (0026 is reserved for earlier Queue work)
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
@@ -29,13 +29,34 @@ a structurally valid real JPEG snapshot. This is not live-video or image-quality
 acceptance.
 
 The authoritative queue is the current iteration's `WIDGET_TRACKS.md` and
-decision 0029. Complete **all** pending widgets; newer feedback does not erase
-earlier requests. Sequential independently shipped slices are A materials +
-white cards/index + selected camera + continuous progress, B real Queue,
-C fans/chamber, D Current Job/real History, and E composed overview. Bed Mesh
-was restyled with A; preserve independently invokable skills and the
-jobs/history split. Keep incomplete index labels truthful. Preserve unrelated
+decisions 0029/0030. Complete **all** pending widgets; newer feedback does not
+erase earlier requests. Sequential independently shipped slices are A materials,
+white cards/index, selected camera and continuous progress (deployed),
+F interactive reported Bed Mesh surface, B real Queue, C fans/chamber,
+D Current Job/real History, and E composed overview. Bed Mesh was restyled
+with A; the user's latest Fluidd reference now prioritizes its 3D surface
+inside the white card, without the dark dashboard or printer/profile controls.
+Preserve independently invokable skills and the jobs/history split. Keep
+incomplete index labels truthful. Preserve unrelated
 checkouts; inspect and integrate any earlier Queue WIP explicitly.
+
+Current F checkpoint: source is 0.4.1/schema 8/observation-v7/camera-v8 with
+seventeen resources. Formal review's P2 centroid-sort occlusion defect is
+corrected; final widget `c800447` passes independent geometry/regression checks.
+Final validation passes 194 app tests/2,731 assertions, 21 lifecycle, 22 shipping,
+22 independent tests/1,162 assertions, TypeScript/repository and all bundles/
+exact assets. The reviewer provisionally approves final source without blockers.
+Freeze and obtain exact-candidate-SHA review next. No F
+exact-commit approval,
+merge, deployment or restarted-service verification is yet claimed. Preserve the
+same-sample XYZ chart, visible height multiplier, pointer/keyboard orbit/reset,
+and 2D fallback, preserving flat/inactive/unknown/stale and independent-time
+semantics. Use no new printer reads, resampling or interpolated-matrix fallback.
+Obtain independent exact-SHA approval and follow guarded merge → deploy
+exact merged bytes → explicitly restart BOTH services → verify. Fresh allowed
+browser discovery is unavailable; preserve visual QA as unverified rather than
+re-blocking the user's deployment-first visual-review order. Check VALIDATION
+for actual source evidence before advancing this checkpoint.
 
 The latest selected camera has status/FPS/frame time in a white header outside
 the genuine image, superseding prior bottom-information overlays. Progress is
@@ -48,17 +69,19 @@ The delivered release has sixteen resources, real material metadata, white
 cards/index, camera header/snapshot feedback/native fullscreen and continuous
 progress. The lower progress row is elapsed-only, without invented metrics;
 the contrast P2 is resolved. These docs-only rollout records require no
-redeployment of unchanged application bytes. Next integrate Queue's
-store/projection/widget while the user reviews A. In particular, visually assess camera's
+redeployment of unchanged application bytes. Next finish F's bounded surface
+and its independently reviewed delivery while the user reviews A. In particular,
+visually assess camera's
 muted combined state/FPS/time label against the reference's differentiated
 text and vertical separators; no 1:1 fidelity claim is established by tests.
 Queue's three-file standalone adapter/model/test foundation is locally committed as
 `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`.
 Independent bounded source/protocol review approves it, closing the prior
 credential-basename P2. TypeScript, 40 tests/461 assertions and six independent
-tests/68 assertions pass. Next integrate its store/projection/widget.
+tests/68 assertions pass. Its store/projection/widget integration remains next
+after F's bounded surface.
 Continue source work in stacked B–E branches while A's user visual review is
-pending; sequential reviewed release order remains A→B→C→D→E;
+pending; current sequential reviewed release order is A→F→B→C→D→E;
 there is no integrated Queue widget or rollout. Retain B–E in the queue.
 Never claim an old design-QA pass for new assets. No printer control,
 queue/history mutation, preset/project
