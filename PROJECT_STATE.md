@@ -12,6 +12,22 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
+Latest user priority is the Heads reference refinement in decision 0029:
+soft actual-filament-color tool-card washes inside the white container, real
+state/material/temperature, exact swatch/hex and accessible Copy, with Refresh
+remaining below information. This presentation-only slice is now before Queue;
+current order is A/F (deployed) → Heads refinement → B → C → D → E.
+Mapping, independent material freshness and all unfinished tracks are preserved.
+Source is 0.4.2/schema 8/observation-v8/camera-v8 with eighteen resources;
+author checks pass 106 tests/2,290 assertions and TypeScript. Independent checks
+pass 200 app/2,855 assertions, 21 lifecycle, 22 shipping, 86 fixtures/751
+assertions, TypeScript/repository/bundles/signature/exact assets. Initial review
+has no findings; exact-SHA approval remains pending. Historical A/F evidence below
+does not accept changed Heads bytes. No Heads merge/deployment is claimed.
+Keep the standing reviewed PR →
+exact-build deploy → explicitly restart BOTH → verify sequence; automated and
+actual-device visual acceptance remain unverified, not passed.
+
 F Bed Mesh is shipped in [PR43](https://github.com/scottchu/orca-slicer-mcp/pull/43):
 reviewed `41546d9e3ea841bdd23279694079719327f39f39` merged as
 `92a62c04c22600ee802d7be3c0b27285135f6d33`; installed release

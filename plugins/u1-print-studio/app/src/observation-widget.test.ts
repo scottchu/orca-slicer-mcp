@@ -40,7 +40,7 @@ function fixture(view = "queue", extra: Payload = {}): Payload {
   };
 }
 
-function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy" | "static" | "absent" = "modern") {
+function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy" | "static" | "absent" = "modern", clipboard?: Payload) {
   const events = new Map<string, (event: any) => void>();
   const timers = new Map<number, { deadline: number; callback: () => void }>();
   let now = 0;
@@ -78,9 +78,20 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
     get outerHTML() { return modules.innerHTML.match(trackPattern)?.[0] ?? ""; },
     set outerHTML(value: string) { modules.innerHTML = modules.innerHTML.replace(trackPattern, value); },
   };
+  let copyButtons: Payload[] = [];
   const modules = {
     innerHTML: "Waiting for printer observation…",
-    querySelectorAll: (selector: string) => selector === ".refresh" ? [button] : selector === "[data-mesh-mode]" && modules.innerHTML.includes('class="mesh-chart"') ? [mode3d, mode2d] : [],
+    querySelectorAll: (selector: string) => {
+      if (selector === ".material-copy") {
+        copyButtons.forEach(button => { button.isConnected = false; });
+        copyButtons = [...modules.innerHTML.matchAll(/class="material-copy" data-color="([^"]+)"/g)].map(match => {
+          const feedback = { textContent: "" };
+          return { ...node({ color: match[1] }), feedback, isConnected: true, closest: () => ({ querySelector: () => feedback }) };
+        });
+        return copyButtons;
+      }
+      return selector === ".refresh" ? [button] : selector === "[data-mesh-mode]" && modules.innerHTML.includes('class="mesh-chart"') ? [mode3d, mode2d] : [];
+    },
     querySelector: (selector: string) => selector === ".refresh-error" ? error : selector === ".progress-track" ? track : ({ ".mesh-chart": chart, ".mesh-height": height, ".mesh-reset": reset, ".mesh-help": help } as Payload)[selector] ?? button,
   };
   let onMediaChange = () => {};
@@ -92,7 +103,7 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
     matchMedia: () => mediaMode === "absent" ? undefined : media,
   };
   const context = vm.createContext({
-    window, document: { querySelector: () => modules }, __controls: controls,
+    window, document: { querySelector: () => modules }, navigator: { clipboard }, __controls: controls,
     setTimeout: (callback: () => void, delay: number) => {
       const id = ++nextTimer;
       timers.set(id, { deadline: now + delay, callback });
@@ -106,6 +117,7 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
   const respond = (request: Payload, result: Payload = {}) => message({ jsonrpc: "2.0", id: request.id, result });
   return {
     sent, modules, button, error, controls, message, deliver, respond, chart, mode3d, mode2d, height, reset,
+    get copyButtons() { return copyButtons; },
     resize(nextWidth: number) { const matches = nextWidth <= 480; if (media.matches !== matches) { media.matches = matches; onMediaChange(); } },
     globals: (globals: Payload) => events.get("openai:set_globals")?.({ detail: { globals } }),
     async initialize() {
@@ -703,5 +715,111 @@ describe("printer-reported material widget", () => {
     expect(request.params).toEqual({ name: "refresh_printer_observation", arguments: { view: "heads" } });
     card.respond(request, { structuredContent: materialFixture() }); await refreshing;
     expect(card.modules.innerHTML).toContain("Fixture PLA Matte");
+  });
+
+  test("each actual RGB or RGBA color drives only a weak solid card wash and the exact swatch", () => {
+    const cases = [
+      ["#ffffff", "#FFFFFF"], ["#000000", "#F0F0F0"], ["#6f4c2f", "#F6F4F3"],
+      ["#ff0000", "#FFF0F0"], ["#00ff00", "#F0FFF0"], ["#0000ff", "#F0F0FF"],
+      ["#12345600", "#FFFFFF"], ["#00000080", "#F7F7F7"], ["#FFFFFFFF", "#FFFFFF"],
+    ];
+    for (const [color, tint] of cases) {
+      const data = materialFixture(); data.module.items[0].color.value = color;
+      const rendered = mount({ toolOutput: data }).modules.innerHTML;
+      const card = rendered.match(/<article class="head-card active"[\s\S]*?<\/article>/)![0];
+      expect(card).toContain(`aria-label="Tool 1" style="background-color:${tint}"`);
+      expect(card).toContain(`class="material-swatch" aria-hidden="true" style="background-color:${color!.toUpperCase()}"`);
+      expect(card).toContain(`data-color="${color!.toUpperCase()}"`);
+      expect(card).toContain(`Copy Tool 1 color ${color!.toUpperCase()}`);
+      expect(card).not.toMatch(/opacity|gradient|filter:/);
+    }
+    const data = materialFixture(); data.module.items[0].active.value = false;
+    expect(mount({ toolOutput: data }).modules.innerHTML).toContain('aria-label="Tool 1" style="background-color:#FFFFFF"');
+    expect(html.match(/\.head-card \{[^}]+\}/)?.[0]).toContain("background: var(--soft)");
+    expect(html.match(/\.head-card\.active \{[^}]+\}/)?.[0]).not.toMatch(/background|opacity/);
+  });
+
+  test("missing, invalid and untrusted-state colors stay neutral without a copy action", () => {
+    for (const raw of [null, "red", "#FFF", "#1234567", " #ffffff", "#ffffff\" onclick=\"bad", 123456]) {
+      const data = materialFixture(); data.module.items[0].color.value = raw;
+      const markup = mount({ toolOutput: data }).modules.innerHTML.match(/<article class="head-card active"[\s\S]*?<\/article>/)![0];
+      expect(markup).toContain("Color unknown");
+      expect(markup).not.toMatch(/style=|class="material-copy"|class="material-swatch"/);
+    }
+    const data = materialFixture(); data.module.items[0].color.state = "unknown";
+    expect(mount({ toolOutput: data }).copyButtons).toHaveLength(3);
+  });
+
+  test("reference card hierarchy keeps identity, state, presence and current-target temperatures independent", () => {
+    const data = materialFixture();
+    data.module.items[0].temperature.value = 25; data.module.items[0].target.value = 0;
+    data.module.items[1].temperature.value = null; data.module.items[1].target.value = null;
+    data.module.items[2].active.value = null; data.module.items[2].headState.value = null;
+    const rendered = mount({ toolOutput: data }).modules.innerHTML;
+    const cards = [...rendered.matchAll(/<article class="head-card[\s\S]*?<\/article>/g)].map(match => match[0]);
+    expect(cards[0]).toContain('<strong>T1</strong><span class="head-state">Active</span>');
+    expect(cards[1]).toContain('<span class="head-state">Parked</span>');
+    expect(cards[2]).toContain('<span class="head-state">Unknown</span>');
+    expect(cards[0]).toContain("25° / 0°"); expect(cards[1]).toContain("Unknown / Unknown");
+    expect(cards[0]).toContain('aria-label="Current 25°, target 0° Celsius"');
+    for (const card of cards) {
+      expect(card.indexOf('class="head-heading"')).toBeLessThan(card.indexOf('class="material"'));
+      expect(card.indexOf('class="material"')).toBeLessThan(card.indexOf('class="temperature"'));
+      expect(card.indexOf('class="temperature"')).toBeLessThan(card.indexOf('class="material-color"'));
+    }
+    expect(rendered.indexOf('aria-label="Refresh observation"')).toBeGreaterThan(rendered.lastIndexOf("</article>"));
+    expect(html).toContain('@media (max-width: 760px) { .head-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }');
+    expect(html).toContain('.head-grid { grid-template-columns: minmax(0, 1fr);');
+    expect(html.match(/\.material-copy \{[^}]+\}/)?.[0]).toMatch(/width: 44px; min-height: 44px/);
+    expect(html).toContain('.material-copy:focus-visible { outline: 3px solid #64748b; outline-offset: 3px; }');
+    expect(html).toContain('data-icon="feather-copy"');
+  });
+
+  test("copy writes the exact current normalized color only after a click, then announces actual success", async () => {
+    const writes: string[] = [];
+    let resolveCopy!: () => void;
+    const card = mount({ toolOutput: materialFixture() }, 720, "modern", {
+      writeText: (value: string) => { writes.push(value); return new Promise<void>(resolve => { resolveCopy = resolve; }); },
+    });
+    await card.initialize();
+    expect(writes).toEqual([]);
+    const button = card.copyButtons[3]!;
+    button.emit("click");
+    expect(writes).toEqual(["#6F4C2FFF"]);
+    expect(button.disabled).toBe(true); expect(button.attributes["aria-busy"]).toBe("true");
+    expect(button.feedback.textContent).toBe("Copying color…");
+    button.emit("click"); expect(writes).toHaveLength(1);
+    resolveCopy(); await tick();
+    expect(button.feedback.textContent).toBe("Copied #6F4C2FFF");
+    expect(button.disabled).toBe(false); expect(button.attributes["aria-busy"]).toBe("false");
+    expect(card.sent.filter(item => item.method === "tools/call")).toHaveLength(0);
+    expect(card.modules.innerHTML).toContain('role="status" aria-live="polite"');
+  });
+
+  test("clipboard denial, synchronous failure and absence keep manual-copy guidance without false success", async () => {
+    for (const clipboard of [undefined, {}, { writeText: () => Promise.reject(new Error("Permission denied")) }, { writeText: () => { throw new Error("Permission denied"); } }]) {
+      const card = mount({ toolOutput: materialFixture() }, 390, "modern", clipboard);
+      const button = card.copyButtons[0]!; button.emit("click"); await tick();
+      expect(button.feedback.textContent).toMatch(/Copy unavailable here|Couldn’t copy/);
+      expect(button.feedback.textContent).toContain("Select the color code");
+      expect(button.feedback.textContent).not.toContain("Copied");
+      expect(button.disabled).toBe(false);
+      expect(card.sent.filter(item => item.method === "tools/call")).toHaveLength(0);
+    }
+  });
+
+  test("a late clipboard completion cannot announce success on a newer observation", async () => {
+    let resolveCopy!: () => void;
+    let heightUpdates = 0;
+    const card = mount({ toolOutput: materialFixture(), notifyIntrinsicHeight: () => { heightUpdates++; } }, 720, "modern", {
+      writeText: () => new Promise<void>(resolve => { resolveCopy = resolve; }),
+    });
+    const old = card.copyButtons[0]!; old.emit("click");
+    const replacement = materialFixture(); replacement.module.items[0].color.value = "#123456";
+    card.deliver({ structuredContent: replacement });
+    const current = card.copyButtons[0]!; const before = heightUpdates;
+    resolveCopy(); await tick();
+    expect(current.dataset.color).toBe("#123456"); expect(current.feedback.textContent).toBe("");
+    expect(old.feedback.textContent).toBe("Copying color…"); expect(heightUpdates).toBe(before);
   });
 });

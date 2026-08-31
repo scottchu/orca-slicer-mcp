@@ -62,6 +62,11 @@ printer environments support the described behavior.
   failure stay distinct, and arbitrary raw configuration never reaches public
   envelopes. This is firmware metadata, not an Orca preset or sync/write action.
   Decision 0029 fixes selected field names, normalization and acceptance.
+  Tool cards use a soft 6% wash of validated actual filament color over white
+  (respecting reported alpha), separate from active-state accents; swatch/hex
+  remain exact.
+  Unknown color stays neutral with no copy action; valid hex has an accessible
+  bottom Copy action with truthful feedback. Refresh stays below information.
 - **OBS-011:** All pending focused widgets remain in the active iteration's
   durable completion matrix when new feedback arrives. Apply the selected white
   visual language to all current cards and the directory; preserve real content,
@@ -224,14 +229,14 @@ printer environments support the described behavior.
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v7` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v8` is the
   focused presentation resource. Every explicit camera open or reopen creates
   a fresh snapshot-first `camera-v8` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
+  Observation-v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
-  Source is runtime 0.4.1/tool schema 8 with seventeen resources; this source
+  Source is runtime 0.4.2/tool schema 8 with eighteen resources; this source
   contract does not claim deployment of those bytes to existing services.
 
 ## Architecture and ontology

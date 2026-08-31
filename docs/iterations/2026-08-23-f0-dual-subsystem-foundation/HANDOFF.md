@@ -1,6 +1,40 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 F reported Bed Mesh surface — authoritative current handoff
+## 2026-08-31 Heads reference refinement — authoritative current handoff
+
+The user prioritizes the selected Heads design before Queue: a white outer
+container, softly washed actual filament colors per tool, real tool/state and
+material/temperature rows, exact swatch/hex and accessible Copy. Decision 0029
+records 6% validated color over white respecting alpha, neutral unknowns,
+independent active state, unchanged physical mapping/presence/material freshness
+and bottom Refresh.
+Reuse system fonts and attributed Feather icons; no generated assets or new
+printer reads/controls. A/F remain deployed; B–E remain active after this slice.
+
+Design-record scope: decision 0029, requirements, this iteration's BRIEF,
+WIDGET_TRACKS, VALIDATION and HANDOFF, PROJECT_STATE, NEXT_AGENT and design-qa.
+Application scope is nine paths: `public/widget.html`, `src/app.ts`, and
+`src/{app,bed-mesh,cli,observation-widget,personal-oauth,status-dashboard}.test.ts`,
+plus `src/runtime-contract.ts`, all under `plugins/u1-print-studio/app/`.
+Source is 0.4.2/schema 8/observation-v8/camera-v8, eighteen resources; author
+checks pass 106 tests/2,290 assertions and TypeScript. VALIDATION records exact
+commands and frozen hashes; camera/index/acquisition/shipping bytes are unchanged.
+Independent validation passes 200 app/2,855 assertions, 21 lifecycle, 22 shipping,
+86 fixtures/751 assertions and TypeScript/repository/bundles/signature/exact
+assets. Initial formal review has no findings and passes 41 widget/1,537;
+exact-candidate approval remains pending. Fresh
+allowed-browser discovery is unavailable, so the current visual QA is blocked,
+not passed. Actual-device acceptance is also unverified.
+
+Next smallest action: freeze the commit and obtain exact-candidate approval,
+then use guarded PR merge → exact-build deploy
+→ explicitly restart BOTH public/dashboard services → verify. The user's
+standing deployment-first visual-review order remains authorized; it does not
+waive source review/shipping guards or establish browser acceptance. Then resume
+Queue store/projection/widget integration. Preserve auth/config/routes, frozen
+assets and all unrelated widget tracks; no plugin reinstall or printer control.
+
+## 2026-08-31 F reported Bed Mesh surface — previous shipped handoff
 
 F is shipped in PR43: reviewed `41546d9e3ea841bdd23279694079719327f39f39`
 merged as `92a62c04c22600ee802d7be3c0b27285135f6d33` at

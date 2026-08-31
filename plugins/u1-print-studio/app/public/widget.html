@@ -90,15 +90,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .progress-metrics > div { min-width: 100px; }
       .progress-metrics dt { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; }
       .progress-metrics dd { margin: 12px 0 0 26px; font-size: 20px; font-variant-numeric: tabular-nums; }
-      .head-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 0 18px 18px; }
-      .head-card { min-height: 148px; padding: 16px 12px; border: 1px solid var(--line); border-radius: 18px; text-align: center; }
-      .head-card .roundel { width: 42px; height: 42px; margin: 0 auto 12px; font-size: 16px; }
-      .head-card .material { min-height: 38px; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
-      .material-info { margin: 0 18px 14px; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
-      .material-color { display: flex; align-items: center; gap: 5px; overflow-wrap: anywhere; }
-      .material-swatch { flex: 0 0 12px; width: 12px; height: 12px; border: 1px solid var(--muted); border-radius: 50%; }
-      .head-card .temperature { margin-top: 7px; font-size: 12px; }
-      .head-card.active { box-shadow: inset 0 4px 0 var(--brand); }
+      .head-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 0 24px 18px; }
+      .head-card { display: flex; flex-direction: column; min-width: 0; min-height: 270px; padding: 22px 14px 14px; border: 1px solid var(--line); border-radius: 18px; background: var(--soft); }
+      .head-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+      .head-heading strong { font-size: 23px; font-weight: 650; letter-spacing: -0.035em; }
+      .head-state { display: inline-flex; align-items: center; gap: 6px; color: #4d555e; font-size: 12px; }
+      .head-state::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: #747b83; }
+      .head-card.active .head-state::before { background: var(--brand); }
+      .head-card .material { flex: 1; min-height: 62px; margin: 24px 0 16px; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+      .material-presence { display: block; margin-top: 8px; color: #59616a; font-size: 11px; line-height: 1.4; }
+      .material-info { margin: 0 24px 18px; color: var(--muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+      .head-card .temperature { display: flex; align-items: center; gap: 8px; padding: 18px 0; border-top: 1px solid #e1e4e7; border-bottom: 1px solid #e1e4e7; font-size: 16px; font-variant-numeric: tabular-nums; }
+      .head-card .temperature span:last-child { min-width: 0; overflow-wrap: anywhere; }
+      .material-color { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 60px; padding-top: 12px; }
+      .material-swatch { flex: 0 0 20px; width: 20px; height: 20px; border: 1px solid #6b7077; border-radius: 50%; }
+      .material-hex { color: #4d555e; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; overflow-wrap: anywhere; }
+      .material-copy { display: inline-grid; place-items: center; flex: 0 0 44px; width: 44px; min-height: 44px; margin-left: auto; padding: 0; color: #59616a; border: 1px solid transparent; border-radius: 10px; background: transparent; }
+      .material-copy:hover { background: #fff; border-color: var(--line); }
+      .material-copy:focus-visible { outline: 3px solid #64748b; outline-offset: 3px; }
+      .material-copy svg { width: 18px; height: 18px; }
+      .material-copy-feedback { margin: 0; color: #59616a; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+      .material-copy-feedback:empty { display: none; }
+      .head-card.active { box-shadow: inset 0 -2px 0 var(--brand); }
       .empty-panel { margin: 0 18px 18px; padding: 24px; border: 1px dashed var(--line); border-radius: 18px; color: var(--muted); background: rgba(245, 245, 244, 0.62); }
       .empty-panel strong { display: block; margin-bottom: 5px; color: var(--ink); font-size: 16px; }
       .job-current { margin: 0 18px 12px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; }
@@ -136,6 +149,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .loading { padding: 48px 24px; color: var(--muted); text-align: center; }
       @keyframes spin { to { transform: rotate(360deg); } }
       @media (prefers-reduced-motion: reduce) { .refresh[aria-busy="true"] svg { animation: none; } }
+      @media (max-width: 760px) { .head-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
       @media (max-width: 620px) {
         body { padding: calc(10px + var(--safe-top)) calc(8px + var(--safe-right)) calc(10px + var(--safe-bottom)) calc(8px + var(--safe-left)); }
         .modules { gap: 10px; }
@@ -152,6 +166,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         .strip .identity { grid-column: 1 / -1; }
         .roundel { width: 44px; height: 44px; }
         .progress-body { padding-right: 18px; padding-left: 18px; }
+        .head-grid { grid-template-columns: minmax(0, 1fr); padding-right: 18px; padding-left: 18px; }
+        .material-info { margin-right: 18px; margin-left: 18px; }
       }
       @media (max-width: 620px) {
         .icon-tile { width: 44px; height: 52px; border-radius: 12px; }
@@ -218,6 +234,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         const rows = (data?.readings ?? []).map((reading) => { const known = reading.state === "known" || reading.state === "stale"; const active = valueOf(reading.active) === true; const toolReading = reading.id.startsWith("tool-"); const badge = toolReading ? `<span class="roundel">T${escapeHtml(reading.id.slice(-1))}</span>` : ""; return `<div class="strip${active ? " active" : ""}${toolReading ? "" : " zone-row"}"><div class="identity">${badge}<span><strong>${escapeHtml(reading.label)}</strong><span class="micro">${active ? '<span class="dot"></span>Active' : escapeHtml(valueOf(reading.heaterState) ?? "Unknown")}</span></span></div><div class="reading${known ? "" : " unavailable"}"><small>Actual</small><strong>${escapeHtml(formatTemperature(reading.actual))}</strong></div><div class="reading${known ? "" : " unavailable"}"><small>Target</small><strong>${escapeHtml(formatTemperature(reading.target))}</strong></div></div>`; }).join("");
         return `<section class="instrument">${header("Thermals")}<div class="strip-list">${rows}</div>${provenance(data?.provenance)}</section>`;
       };
+      const materialColor = (raw) => typeof raw === "string" && /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i.test(raw) ? raw.toUpperCase() : null;
+      const materialTint = (color) => {
+        // Preserve the reported RGBA swatch; only the card gets a solid 6% wash on white.
+        const amount = 0.06 * (color.length === 9 ? parseInt(color.slice(7, 9), 16) / 255 : 1);
+        return `#${[1, 3, 5].map(start => Math.round(255 + (parseInt(color.slice(start, start + 2), 16) - 255) * amount).toString(16).padStart(2, "0")).join("").toUpperCase()}`;
+      };
+      // Feather copy, v4.29.2 (MIT); shares the full notice above.
+      const materialCopyIcon = '<svg aria-hidden="true" data-icon="feather-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      const bindMaterialCopy = () => {
+        modulesElement.querySelectorAll(".material-copy").forEach(button => button.addEventListener("click", async () => {
+          const color = materialColor(button.dataset.color);
+          const feedback = button.closest(".head-card")?.querySelector(".material-copy-feedback");
+          if (!color || !feedback || button.disabled) return;
+          const outcome = text => { if (button.isConnected === false) return; feedback.textContent = text; window.openai?.notifyIntrinsicHeight?.(); };
+          const clipboard = globalThis.navigator?.clipboard;
+          if (typeof clipboard?.writeText !== "function") { outcome("Copy unavailable here. Select the color code to copy it manually."); return; }
+          button.disabled = true;
+          button.setAttribute("aria-busy", "true");
+          outcome("Copying color…");
+          try { await clipboard.writeText(color); outcome(`Copied ${color}`); }
+          catch { outcome("Couldn’t copy. Select the color code to copy it manually."); }
+          finally { button.disabled = false; button.setAttribute("aria-busy", "false"); }
+        }));
+      };
       const renderHeads = (data) => {
         const materialData = data?.materials;
         const materialState = materialData?.state ?? "unknown";
@@ -227,12 +267,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         const cards = [1, 2, 3, 4].map((physicalTool) => {
           const head = (data?.items ?? []).find(item => item.physicalTool === physicalTool) ?? {};
           const active = valueOf(head.active) === true;
-          const rawColor = valueOf(head.color);
-          const color = typeof rawColor === "string" && /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i.test(rawColor) ? rawColor.toUpperCase() : null;
+          const color = materialColor(valueOf(head.color));
+          const rawState = valueOf(head.headState);
+          const headState = active ? "Active" : ({ PARKED: "Parked", ACTIVE: "Active", UNKNOWN: "Unknown" })[rawState] ?? rawState ?? "Unknown";
           const presence = valueOf(head.reportedPresence);
           const presenceText = presence === true ? "Filament reported present" : presence === false ? "No filament reported" : "Presence unknown";
           const material = [valueOf(head.vendor) ?? "Vendor unknown", valueOf(head.materialType) ?? "Material unknown", valueOf(head.subtype)].filter(Boolean).join(" ");
-          return `<article class="head-card${active ? " active" : ""}"><span class="roundel">T${physicalTool}</span><strong>Tool ${physicalTool}</strong><div class="material">${escapeHtml(material)}<div class="material-color">${color ? `<span class="material-swatch" aria-hidden="true" style="background-color:${color}"></span>${color}` : "Color unknown"}</div><span class="micro">${presenceText}</span></div><div class="temperature">${escapeHtml(formatTemperature(head.temperature))}${valueOf(head.target) !== null ? ` / ${escapeHtml(formatTemperature(head.target))}` : ""}</div>${active ? '<span class="micro"><span class="dot"></span>Active</span>' : `<span class="micro">${escapeHtml(valueOf(head.headState) ?? "Unknown")}</span>`}</article>`;
+          return `<article class="head-card${active ? " active" : ""}" aria-label="Tool ${physicalTool}"${color ? ` style="background-color:${materialTint(color)}"` : ""}><div class="head-heading"><strong>T${physicalTool}</strong><span class="head-state">${escapeHtml(headState)}</span></div><div class="material">${escapeHtml(material)}<span class="material-presence">${presenceText}</span></div><div class="temperature" aria-label="Current ${escapeHtml(formatTemperature(head.temperature))}, target ${escapeHtml(formatTemperature(head.target))} Celsius"><span class="metric-icon">${icon("thermometer")}</span><span>${escapeHtml(formatTemperature(head.temperature))} / ${escapeHtml(formatTemperature(head.target))}</span></div><div class="material-color">${color ? `<span class="material-swatch" aria-hidden="true" style="background-color:${color}"></span><span class="material-hex">${color}</span><button type="button" class="material-copy" data-color="${color}" aria-label="Copy Tool ${physicalTool} color ${color}" title="Copy color">${materialCopyIcon}</button>` : '<span class="material-hex">Color unknown</span>'}</div><p class="material-copy-feedback" role="status" aria-live="polite"></p></article>`;
         }).join("");
         return `<section class="instrument">${header("Heads & Filaments")}<p class="material-info">Printer-reported material · ${escapeHtml(materialTime)}${materialStatus ? ` · ${escapeHtml(materialStatus)}` : ""}${failed}</p><div class="head-grid">${cards}</div>${provenance(data?.provenance)}</section>`;
       };
@@ -398,7 +439,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
       const renderOverview = (data) => unknown("Overview", data);
       const renderers = { overview: renderOverview, progress: renderProgress, thermals: renderThermals, heads: renderHeads, jobs: renderJobs, job_history: renderJobHistory, queue: renderQueue, fans: renderFans, bed_mesh: renderBedMesh };
-      const render = () => { if (!observation?.module) return; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); if (view === "bed_mesh") bindMeshControls(); window.openai?.notifyIntrinsicHeight?.(); };
+      const render = () => { if (!observation?.module) return; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); if (view === "bed_mesh") bindMeshControls(); if (view === "heads") bindMaterialCopy(); window.openai?.notifyIntrinsicHeight?.(); };
       const rpcNotify = (method, params) => window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
       const rpcRequest = (method, params) => new Promise((resolve, reject) => {
         const id = ++rpcId;
@@ -449,7 +490,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       };
       const initializeBridge = async () => {
-        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.1" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
+        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.4.2" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
         rpcNotify("ui/notifications/initialized", {});
         return result;
       };

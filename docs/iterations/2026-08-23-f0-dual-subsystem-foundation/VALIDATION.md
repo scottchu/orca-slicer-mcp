@@ -1,5 +1,69 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 Heads reference refinement — frozen source checkpoint
+
+The design role opened the exact selected 1554 × 1012 Heads image and read the
+current contract/iteration. Decision 0029's addendum and OBS-010 record the
+bounded actual-color wash/exact-hex-copy contract; no acquisition or controls
+are added. Source is 0.4.2/schema 8/observation-v8/camera-v8, eighteen resources,
+with observation-v7 retained as a current-asset alias. The coordinator
+reports fresh allowed-browser discovery returned no available browser. No
+implementation screenshot, matched comparison, browser interaction or console
+check exists for this refinement. Visual/device acceptance remains unverified.
+The user's standing reviewed merge/deploy/BOTH-service restart/verify order
+remains in effect. Actual design-role checks: Product Design's
+`user_context_preflight.py` ran through `uv run --no-project` and reported no
+saved context; `git diff --check` passed. Unified shell startup failed with
+`Too many open files`; read-only Node file/process access allowed these checks
+without changing service state.
+
+Author checks ran in the app directory with pinned Bun 1.3.12:
+
+```sh
+bun --no-env-file --config=/dev/null install --frozen-lockfile
+bun --no-env-file --config=/dev/null test src/observation-widget.test.ts src/app.test.ts src/bed-mesh.test.ts src/cli.test.ts src/status-dashboard.test.ts src/personal-oauth.test.ts
+bun --no-env-file --config=/dev/null run check
+git diff --check
+```
+
+All pass: **106 tests/2,290 assertions**, TypeScript and whitespace checks.
+The initial observation-v7 alias expectation was corrected, then the complete
+focused command reran. No dependency or lockfile change. Frozen widget SHA-256:
+`419ec788ea4b9546e93c31a46419ed13b4490b57a64f337e7e7ccc6d8ad43214`;
+focused test: `f3eae6a8a5fa36ec1c0117a1822604172b68a4f035421bca818f829480a8ce46`.
+Camera remains unchanged at
+`32c8038a4abe5d8f9277294a5fd50584930dd4a24ea2bfc2546af32d8c847f4e`;
+index, normalized acquisition, mapping, and shipping scripts are unchanged.
+Independent validation on those exact widget/test hashes passes:
+
+```sh
+bash scripts/check-repository.sh
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+git diff --check
+```
+
+The repository command ran from root with pinned Bun 1.3.12 on PATH; bundle and
+signature commands ran from the app directory. Results: **200 app tests/2,855
+assertions, 21 lifecycle, 22 shipping**, TypeScript and repository contracts pass.
+All three bundles/signature checks pass; **six emitted HTML assets plus inlined
+index** compare exactly with source. Six non-widget public assets and Bed Mesh/
+Progress function blocks are byte-identical to baseline `8336c19`.
+
+Separately, the validator executed an inline `node:vm` production-script harness
+through `mcp__node_repl__js` (no on-disk fixture script): **seven scenario groups,
+86 fixtures/751 assertions** pass. Coverage includes 63 RGB/alpha combinations,
+16 invalid inputs, stale/presence/injection/physical slots, accessibility
+structure, and Copy success/rejection/unavailable/duplicate/detached/refresh
+behavior. Worst calculated text contrast is **5.5126:1**. Harness-only grid-regex
+and template-literal decoding corrections did not change product bytes. Initial
+formal source review reports no findings and independently passes **41 widget
+tests/1,537 assertions**; exact committed-candidate approval remains pending.
+These are source/VM/arithmetic checks, not browser or real-printer evidence.
+No Heads merge, deployment or restart is claimed by this source checkpoint.
+
 ## 2026-08-31 F reported Bed Mesh surface — PR43 deployed
 
 Independent exact-head approval bound

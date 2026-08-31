@@ -67,6 +67,7 @@ export const LEGACY_CAMERA_WIDGET_URIS = [
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v7.html",
   "ui://u1-print-studio/observation-v6.html",
   "ui://u1-print-studio/observation-v5.html",
   "ui://u1-print-studio/observation-v4.html",
