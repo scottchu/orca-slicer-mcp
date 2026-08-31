@@ -1,5 +1,345 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 private widget directory validation
+
+Decision 0024's directory was checked against the exact production HTML and
+private HTTP handler, without production service, printer, camera, plugin,
+authentication, routing, merge, or deployment changes. Both private roots now
+serve navigation rather than acquiring observations or composing an overview.
+The isolated headless path continues the user's explicit approval recorded
+below; it does not establish deployed or mounted-phone acceptance.
+
+### Static routes and rendered interaction
+
+- The independent fixture ran the production `createRequestHandler` on an
+  ephemeral loopback listener. Injected status, frame, authorization, stream
+  open, answer, candidates and close functions counted and rejected any call.
+  Every acquisition counter remained **zero** through all checks.
+- Twenty independent route checks passed: both roots returned 200 with exact
+  source HTML, no redirect, `no-store`, and restrictive CSP; POST returned 405
+  with `Allow: GET`; six unknown/encoded/nested paths returned 404; and the
+  disabled/public handler rejected both roots and all eight focused paths.
+  This tests handler boundaries locally, not the production public edge.
+- Chrome `152.0.7977.65`, Playwright 1.55.0, fresh isolated contexts,
+  device scale factor 1, `en-GB` and UTC captured **six screenshots** at
+  320, 390 and 720 CSS pixels in light and dark modes. Only the fixture origin
+  and data URLs were allowed, service workers were blocked, and background
+  networking was disabled. No external page requests or console/page errors
+  were recorded.
+- All captures fit their viewport without horizontal overflow. Each page had
+  exactly eight ordinary same-tab links in the prescribed order; every anchor
+  was at least 44 by 44 CSS pixels. There were no scripts, iframes, buttons,
+  timestamps, removed permission/provenance copy, or automatic widget loads.
+- Twelve keyboard checks passed across the six cases: Tab reached the first
+  anchor with a visible outline, Enter navigated to its fixed path, and all
+  eight anchors were subsequently reached in order. Destination documents were
+  intercepted synthetic stubs, not live widget/printer pages. The independent
+  design verdict belongs to `design-qa.md`, not these layout assertions.
+
+### Repository and distribution checks
+
+- `./scripts/check-repository.sh` passed TypeScript, **135 app tests / 1,006
+  assertions**, **21 lifecycle tests**, and the repository contract. The
+  durable dashboard suite covers exact links/content, both roots, method and
+  private/public boundaries, focused routes, and zero acquisition.
+- In the app directory, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, and `codesign -vvv --verify dist/u1-print-studio`
+  all passed. `git diff --check` passed.
+- A second isolated fixture imported the actual HTTP bundle copied into a
+  release-shaped directory containing only the preexisting six public assets.
+  No `dashboard-index.html` file was supplied. Both roots still returned exact
+  source HTML, all eight focused static paths returned 200, and all acquisition
+  counters stayed zero. This proves the text import embeds the index in the
+  HTTP bundle rather than creating a new external runtime-file requirement.
+- `git diff --exit-code 00d2c95 -- scripts/u1_service.py
+  scripts/test_u1_service.py` passed. Lifecycle asset requirements and manifest
+  verification remain unchanged; the existing offline lifecycle suite passed.
+  No real old release or rollback was operated. The CLI/stdio runtime does not
+  serve HTTP routes, so its unchanged bytes do not need to include this index.
+- Current observation and camera source hashes remain unchanged from the
+  accepted quiet-footer/camera-overlay pass below. Directory work did not
+  restore removed chrome or change those widget behaviors.
+
+Actual harness command forms were `bun --no-env-file --config=/dev/null run
+directory-server.ts`, `U1_DIRECTORY_ORIGIN=<loopback-fixture-origin> node
+capture-directory.mjs`, and the same fixture with
+`U1_DIRECTORY_ENTRY=<isolated-http-bundle>`. A Node assertion checked the copied
+bundle's two exact root responses, eight focused paths and acquisition counts.
+Temporary adapters, reports and screenshots remain outside Git. Only logical
+names and fingerprints are retained here.
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Directory HTML | `1ffc53eefa9842d0741680f1e14d636bb8b2c84401a8382d8c222f39bc263d1b` |
+| HTTP bundle | `71277c30c02f56efce570b2cabf9ea72c29d5810d873b4604b4b22bd6cc7aa31` |
+| Unchanged stdio bundle | `aed5f6143babb067b0b9460d1d25fe3c1eb2fbbba32a27e7e73622bc115f58ce` |
+| Unchanged standalone CLI | `c6719c0844ca83f50168a2a1ba1ba4dfd5bc22ba4faf8d7a00b45b115019cb15` |
+| Private logical directory report | `985905efc0ac9a4436a22f7220b5949d28c2a7951291a0621583c70cc4c40aa3` |
+| `directory-320-light.png` | `a3744c3623f7be0e5eb0c15ca684ba80f8d58344311c89e698eb18a1a5b4de82` |
+| `directory-390-dark.png` | `02af7f5bed9ce11f7df650504908de592ab91b6f40facc805bc0cf50f302a33f` |
+| `directory-720-light.png` | `9f270609574295e446c6d37bcabb553826a5738323bf451073da050efbd1bb9d` |
+
+This accepts source/software and isolated rendered navigation only. The live
+dashboard remains on the prior release until separately authorized rollout;
+missing telemetry domains, the composed overview, real-printer behavior and
+the user's actual phone experience remain unimplemented or unaccepted as
+previously recorded.
+
+## 2026-08-31 authorized isolated headless-browser validation
+
+Source/evidence delivery is complete at commit
+`643b5dde19d55f6ebed8c572033f726d97599d32`. The coordinator verified the
+successful push, matching origin branch and PR30 head, `state: OPEN`, and
+`isDraft: true`; the source tree was clean after delivery. This records the
+actual source delivery check, not a claim that a later documentation-only
+commit has the same hash. Merge, deployment, and actual phone acceptance
+remain separately authorized gates.
+
+After the supported browser proved unavailable, the user explicitly approved
+an isolated headless-browser check. The validator used a temporary browser
+profile/context, the installed Chrome executable, Playwright 1.55.0 installed
+only in a temporary fixture directory, and a loopback-only ephemeral fixture
+server. Exact production HTML bytes were served unchanged. Request routing
+allowed only that fixture origin and data URLs; service workers were blocked,
+browser background networking was disabled, and no non-fixture page request
+was observed. No production service, printer, plugin, auth state, route, merge
+or deployment was changed.
+
+### Captures and behavioral evidence
+
+- Chrome reported `152.0.7977.65`; device scale factor 1, `en-GB`, UTC,
+  light/dark color schemes. All eight focused views were captured at 320,
+  390 and 720 CSS pixels, plus thermal boundary checks at 400 and 410 pixels.
+- Final evidence contains **91 raw screenshots**: 67 final observation
+  captures, 22 camera captures, and two additional keyboard/unavailable
+  captures. The final observation report records the same widget source hash
+  for every capture. Camera bytes remained unchanged throughout the check.
+- Every recorded document width fits its requested viewport. Visible controls
+  in the main capture matrix have at least 44-by-44-pixel targets. These checks
+  do not by themselves constitute a complete accessibility audit.
+- Actual browser behavior exercised fresh, stale, offline, missing time/data,
+  malformed delivery, refresh failure, a real 15-second loading deadline, and
+  retry recovery to a supplied 84-percent observation. Keyboard Tab focused
+  Refresh and Enter successfully invoked the selected-view refresh.
+- Synthetic JPEGs exercised the real browser image decoder. A synthetic canvas
+  stream exercised the production video element and rendered-frame callbacks;
+  an explicitly substituted RTC adapter prevented network peer creation. All
+  six width/theme camera cases advanced time only while frames arrived,
+  froze when frames stopped, and fell back to the accepted JPEG time. This is
+  real browser rendering of synthetic media, not real WebRTC/printer evidence.
+- Host-mode success, rejection and PiP-to-fullscreen coercion were exercised
+  through the fixture bridge. Separately, native Chrome fullscreen entered
+  with an actual non-null `document.fullscreenElement` and exited successfully.
+  Native phone PiP, floating windows and iPhone host behavior remain untested.
+- The recorded 16 explicit boolean interaction checks all passed. Final
+  capture runs reported zero page/console errors and zero external page
+  requests. The initial synthetic-live fixture failed because its cached
+  stream envelope omitted the required transport field; the fixture was
+  corrected and the entire camera matrix was rerun successfully. That failure
+  was not classified as a production defect.
+- Initial captures retained a 1000-pixel fixture viewport, producing blank
+  space below cards. Those originals remain separate. Accepted recaptures size
+  the iframe to the production main content and its padding; no production
+  layout was changed to compensate for a fixture artifact.
+
+The independent designer compared supplied source crops and rendered captures,
+then requested three bounded fixes: active-temperature contrast, internal Jobs
+copy, and warning/error contrast. The author made those changes. The validator
+recaptured the full observation matrix after the last fix. Final computed
+warning colors are `rgb(184, 50, 50)` on the light card and `rgb(255, 133, 133)`
+on the dark card. Paired visual comparisons and the design verdict belong to
+`design-qa.md`; the validator does not substitute assertions for that verdict.
+
+### Final commands and fingerprints
+
+Actual command forms below redact only temporary directory/port values. The
+one-off harness, reports, screenshots and supplied private attachments are
+retained outside Git; durable VM regressions remain in the app test suite.
+
+- In `<isolated-fixture-root>`, `npm install --ignore-scripts --no-audit --no-fund`
+  installed the pinned Playwright dependency without downloading a browser.
+- `bun run fixture-server.ts` started the allowlisted loopback fixture adapter.
+- `U1_FIXTURE_ORIGIN=<loopback-fixture-origin> node capture.mjs` ran the full
+  capture and synthetic-camera interaction matrix.
+- `U1_FIXTURE_ORIGIN=<loopback-fixture-origin> U1_OUTPUT_DIR=<final-capture-dir>
+  U1_OBSERVATIONS_ONLY=1 node capture.mjs` recaptured final observation bytes.
+- `node check-interactions.mjs` checked computed warning colors, keyboard
+  refresh and camera-unavailable behavior. `node make-manifest.mjs` recorded
+  logical screenshot names, pixel sizes and SHA-256 fingerprints.
+- Final `./scripts/check-repository.sh` passed TypeScript,
+  **134 app tests / 939 assertions**, **21 lifecycle tests**, and the repository
+  contract. `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, exact source/bundled-widget
+  `cmp` checks, and `git diff --check` passed after all three visual fixes.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Observation widget | `86cf5f4a4e6e29f8aa99cb14c947d20992b7b022c91c75f08642eea0a09837d0` |
+| Camera widget | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Stdio bundle | `aed5f6143babb067b0b9460d1d25fe3c1eb2fbbba32a27e7e73622bc115f58ce` |
+| HTTP bundle | `30e1127a2d63292fd5141457753681ea4211f0d13c13464736e3b4871eeaaf78` |
+| Standalone validation runtime | `c6719c0844ca83f50168a2a1ba1ba4dfd5bc22ba4faf8d7a00b45b115019cb15` |
+| Private logical capture manifest | `0fd623f3138bcaf3e01dcea84677b87d24ecfe9e49cf4535c1a9ff3a1239a4c7` |
+| `heads-fresh-390-light.png` (390 by 534) | `83c2173063b0bcdf05cf00df94f57c57bc2e0ac4928850cd58fa60ceee6b81b9` |
+| `thermals-fresh-390-light.png` (390 by 899) | `42d9d934d30d7612b0b5d71c9de9e71f93b999ece30c8359ae6c7181e6020212` |
+| `jobs-fresh-320-light.png` (320 by 354) | `2524e4c3a7a0e2efbd6ff0ee88e4319513b65fbb98573b40bd80a368c0d20159` |
+| `progress-refresherror-390-light.png` (390 by 250) | `b50c19ba66be01523e2be4307dd2436f8ac8121096c89cf9922f035ace9c1ff2` |
+| `camera-fresh-390-light-live.png` (390 by 220) | `4066aff1f9ca0aa0740e1e9e23eaea5539f2b0889b05ca44968ef635e7be2b3c` |
+| `camera-fresh-390-light-fallback.png` (390 by 220) | `e51368ca36e5e456130cc1e5300a82848a4bc01e27438b332a340783c4dd59d0` |
+
+This accepts an isolated desktop rendering/fixture layer. Actual mobile MCP
+mounting, public camera transport, native phone PiP, installation and user
+acceptance remain separate gates. Unmapped printer domains remain unimplemented.
+
+## 2026-08-31 independent widget diagnosis and presentation validation
+
+### Baseline truth assessment
+
+The user's supplied phone screenshots show repeated generic waiting shells
+after requesting several focused cards. That is observed user-outcome failure,
+not evidence that every underlying measurement was fabricated. Independent
+read-only inspection of the deployed V2-connected MCP surface returned valid
+schema-2 selected-module results for all eight views. The calls shared
+observation version 4 and source time `2026-08-31T11:33:28.573Z`; the server
+reported reachable/fresh. No camera stream, printer control, authentication,
+service, or routing mutation was performed.
+
+| Focused view | Actual implemented data | Explicit missing implementation |
+| --- | --- | --- |
+| Progress | Real print state, percentage, layers and duration; this read returned 83 percent and layer 371 of 461 | Remaining time is an estimate; no preparation/session correlation |
+| Thermals | Four tool actual/target temperatures and bed actual/target; active tool 220/220 and bed 65/65 degrees C in this read | Cavity, heater power and complete heater-state semantics |
+| Heads and filaments | Four physical tool slots, actual/target temperatures, available head/active state | Filament material, color and sensor mapping |
+| Jobs | Current observed job identity and storage position/size | History and prepared-job correlation |
+| Queue | Named unknown-domain response | Queue acquisition/normalization; an empty array is not an observed empty queue |
+| Fans and purifier | Named unknown-domain response | Fan/purifier acquisition and semantics; no observed zero-speed claim |
+| Bed mesh | Named unknown-domain response | Grid/profile acquisition and normalization; no measured mesh |
+| Overview | Explicit unavailable/deferred response | Composition intentionally deferred until focused modules are accepted |
+
+Code evidence is `observation-presentation.ts` (`projectProgress`,
+`projectThermals`, `projectHeads`, `projectJobs`, `projectUnknown`, and
+`projectOverview`), `observation-store.ts`, and the fixed object-query boundary
+in `u1-status.ts`. The unimplemented mappings are hardcoded unknown/null/empty
+projections, not a finding that the printer cannot provide those domains.
+Private filenames, identifiers, images, and runtime paths are intentionally
+not retained in this record.
+
+### Independently reproduced loading defects
+
+Before production edits, the validator executed the exact inline observation
+script with `bun -e` and `node:vm` against a synthetic parent/DOM boundary.
+Three distinct baseline cases retained `Waiting for printer observation`:
+
+1. A cold mount emitted `ui/initialize` as a notification without a request ID
+   or protocol version, then announced initialized without an acknowledged
+   response. The camera used a request/response handshake instead.
+2. An empty `window.openai.toolOutput` masked a usable structured result in
+   `toolResponseMetadata.mcp_tool_result`.
+3. A later `openai:set_globals` event carrying metadata only was ignored.
+
+A valid preloaded queue result rendered the named Unknown card immediately.
+Thus unsupported domain rendering and the generic waiting shell are separate
+problems. The baseline also had no bounded loading failure or retry feedback.
+The standalone dashboard accepted the initialized notification even without a
+completed handshake, so that permissive fixture did not exercise the cold-host
+failure. These are demonstrated software defects; no device bridge log was
+captured, so the exact iPhone event path remains unproven.
+
+The baseline thermal SVG trace was a fixed decorative waveform, not sampled
+history, and its gray bed-mesh cells did not represent a normalized grid.
+Those data-like decorations are removed rather than counted as implemented
+telemetry.
+
+### Independent executable validation
+
+- `bun install --frozen-lockfile`: passed, 145 packages, no lockfile change.
+- `bun test src/observation-widget.test.ts`: passed 12 tests / 111 assertions
+  against the production inline script. The independent validator owns this
+  regression file; the production author owns the widget changes.
+- Covered: request/response initialization ordering, protocol version and ID;
+  direct/nested/metadata result shapes; empty-output and delayed-metadata
+  recovery; three isolated mounted-script instances; view isolation; foreign
+  and malformed results; finite waiting with reopen/retry guidance; selected
+  app-only retry; failed refresh retaining source time, values and stale label;
+  one footer per view; missing-time/offline semantics; absence of pseudo-charts.
+- Separate formal review found that a new metadata-only event could still be
+  masked by an older valid global output. The author prioritized the event
+  payload, and independent regressions for both metadata-envelope names prove
+  that an existing 42-percent card updates to a supplied 84-percent result.
+  This closes a warm-update defect beyond the original empty-output case.
+- An interim `bun run check` caught the expected observation-resource tuple
+  mismatch while alias/version updates were still in progress. Final full-tree
+  results are recorded below after the author hands off stable source.
+
+### Final source gate after warm-update and narrow-thermal repairs
+
+- From the app directory, `bun run check` passed, then
+  `bun test src/*.test.ts` initially passed 132 tests / 917 assertions before
+  the warm-update and JPEG receipt-time regressions were added. That count is
+  intermediate, not the final acceptance count.
+- From repository root, `./scripts/check-repository.sh` first passed TypeScript,
+  134 app tests / 929 assertions and 21 lifecycle tests after both added
+  regressions. Formal review then found a pre-existing narrow-screen selector
+  that hid the Actual thermal reading below 390 pixels. The author removed
+  that hiding rule and placed the identity above both Actual and Target cells.
+  This is a source-level layout repair, not rendered viewport acceptance.
+- The final repeated `./scripts/check-repository.sh` passed TypeScript,
+  **134 app tests / 931 assertions**, **21 lifecycle tests**, and
+  `repository contract: ok` after the narrow-screen repair and two additional
+  structural assertions. All three bundles and signature checks below were
+  rerun against those final bytes.
+- From the app directory, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, and `codesign -vvv --verify dist/u1-print-studio`
+  passed. Signing is local ad-hoc validation, not distribution signing.
+- `git diff --check` passed. The independent validator did not modify
+  production sources, installed plugins, services, OAuth state or routes.
+
+Validated SHA-256 fingerprints:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Current observation widget | `488d6b44faabed6884dbc214cb4f7b7ff3d7f7f0723b21b042ea1ec8ec3a1fd2` |
+| Current camera widget | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Independent observation VM tests | `c675f15364dbf0e675a25d079ce2600417b4a41304f130388469ef14c00075eb` |
+| Camera VM tests | `196e8097f0c2798058fe1ccfe2e9d6f8abbc2f52ae0376bd6acefec45ee15526` |
+| Frozen legacy status widget | `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437` |
+| Frozen legacy camera widget | `c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203` |
+| Stdio bundle | `aed5f6143babb067b0b9460d1d25fe3c1eb2fbbba32a27e7e73622bc115f58ce` |
+| HTTP bundle | `30e1127a2d63292fd5141457753681ea4211f0d13c13464736e3b4871eeaaf78` |
+| Standalone validation runtime | `4adcc4fc7c92e9435add3a1c5ca0e582f37d98fb9a8a3b632b1ed938d5e0a4d3` |
+
+These tests use deterministic VM, DOM and host fixtures. They do not emulate
+the actual ChatGPT mobile host, browser layout, accessibility tree, native
+fullscreen/PiP, or camera decoding. They are software/protocol evidence only.
+
+### Initial rendered and user-outcome boundary before authorized fallback
+
+At this initial stage the supported browser runtime reported no available browser. The root's
+supported discovery check returned an empty inventory; no raw browser bypass
+was attempted. Product Design comparison, phone-width screenshots, focus,
+overflow, console inspection, and mounted fullscreen/PiP were blocked.
+`design-qa.md` initially recorded `final result: blocked`. Supplied screenshots establish
+the old layout and failure, not acceptance of the new code. No release install,
+service restart, or live test of the changed assets is established here.
+
+### Source review and draft delivery
+
+- Independent formal reviewer verdict: **APPROVE, source-only**, with no
+  unresolved findings. Its targeted suite passed 59 tests / 415 assertions,
+  and the reviewer verified the exact final observation/camera fingerprints
+  above plus the independent 134-test/931-assertion and 21-lifecycle-test gate.
+- Source commit `db4e250` is pushed and delivered in
+  [draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
+  At initial delivery, `gh pr view 30 --json url,isDraft,state,headRefOid`
+  returned an open draft at source commit `db4e250`; a documentation-only
+  follow-up does not change reviewed implementation bytes. This completes source delivery,
+  not merge, rendered acceptance, installation, or service rollout.
+- Next action is an authorized visual-validation path while the supported
+  browser remains unavailable, followed by separately scoped rollout after
+  acceptance. Unimplemented backend mappings remain unimplemented.
+- The delivery-record follow-up changes only `PROJECT_STATE.md`,
+  `NEXT_AGENT.md`, this validation record and the current `HANDOFF.md`;
+  `git diff --check` passes without changing accepted implementation bytes.
+
 ## 2026-08-30 post-merge persistence rollout and restart repair
 
 ### Delivery and installed plugin

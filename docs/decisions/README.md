@@ -29,6 +29,8 @@ silently changed.
 | [0020](0020-terminate-printer-media-at-private-fanout-boundary.md) | Terminate printer media at a private fan-out boundary | Accepted for the user-authorized multi-viewer camera repair |
 | [0021](0021-compose-focused-read-only-observation-widgets.md) | Compose focused read-only observation widgets | Accepted for the user-selected observation feedback loop |
 | [0022](0022-supervise-versioned-personal-http-services.md) | Supervise versioned personal HTTP services | Accepted for the user-authorized personal service-persistence slice |
+| [0023](0023-use-quiet-observation-footers-and-camera-overlays.md) | Use quiet observation footers and camera overlays | Accepted design; source validation and rendered acceptance tracked separately |
+| [0024](0024-add-private-widget-directory.md) | Add a private widget directory | Accepted for the user-requested navigation-only source slice |
 
 Copy [the template](template.md) for new records. Accepted records should be
 superseded by a new record rather than rewritten to change their conclusion.

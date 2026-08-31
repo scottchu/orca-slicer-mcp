@@ -17,7 +17,7 @@
         --brand: #ffcd00;
         --brand-warm: #ff5f28;
         --positive: #20bd68;
-        --negative: #df5454;
+        --negative: #b83232;
         --shadow: 0 18px 48px rgba(28, 30, 32, 0.1);
         --radius: 24px;
         --safe-top: env(safe-area-inset-top, 0px);
@@ -39,20 +39,16 @@
       button:not(:disabled) { cursor: pointer; }
       button:focus-visible { outline: 3px solid rgba(255, 205, 0, 0.9); outline-offset: 3px; }
       .shell { width: min(100%, 820px); margin: 0 auto; }
-      .command-line { margin: 0 0 14px 2px; color: var(--muted); font: 650 12px/1.4 Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.02em; }
       .modules { display: grid; gap: 16px; }
       .instrument { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); backdrop-filter: blur(18px); }
       .instrument-header { display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px 18px; }
       .instrument-title { min-width: 0; flex: 1; }
       h2 { margin: 0; font-size: clamp(22px, 5vw, 30px); line-height: 1.04; letter-spacing: -0.035em; }
-      .read-only { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; color: var(--muted); font-size: 12px; font-weight: 720; letter-spacing: 0.08em; text-transform: uppercase; }
-      .read-only svg { width: 14px; height: 14px; color: var(--faint); }
-      .read-only time { font-weight: 560; letter-spacing: 0.02em; text-transform: none; }
       .refresh { display: inline-grid; width: 44px; min-width: 44px; min-height: 44px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--soft); }
       .refresh svg { width: 18px; height: 18px; }
       .refresh[aria-busy="true"] svg { animation: spin 0.8s linear infinite; }
       .strip-list { margin: 0 18px 18px; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; }
-      .strip { display: grid; grid-template-columns: minmax(170px, 1.25fr) repeat(2, minmax(90px, 0.75fr)) minmax(120px, 0.9fr); align-items: center; min-height: 86px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+      .strip { display: grid; grid-template-columns: minmax(170px, 1.25fr) repeat(2, minmax(90px, 0.75fr)); align-items: center; min-height: 86px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
       .strip:last-child { border-bottom: 0; }
       .strip.active { box-shadow: inset 5px 0 0 var(--brand); }
       .identity { display: flex; min-width: 0; align-items: center; gap: 14px; }
@@ -65,11 +61,7 @@
       .reading small { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; }
       .reading strong { font-size: clamp(22px, 5vw, 30px); font-weight: 640; letter-spacing: -0.035em; }
       .reading.unavailable strong { color: var(--muted); font-size: 15px; font-weight: 540; letter-spacing: 0; }
-      .active .reading strong { color: #e8b600; }
-      .trace { justify-self: end; width: 112px; height: 32px; color: #b9baba; }
-      .trace path { fill: none; stroke: currentColor; stroke-width: 2; vector-effect: non-scaling-stroke; }
-      .active .trace { color: var(--brand); }
-      .trace.unavailable path { stroke-dasharray: 6 5; }
+      .active .reading strong { color: var(--ink); }
       .progress-body { padding: 0 24px 22px; }
       .progress-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       .state-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; color: #107d48; background: #ddf6e9; font-size: 14px; font-weight: 720; }
@@ -91,96 +83,157 @@
       .job-current { margin: 0 18px 12px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; }
       .job-current strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .job-meta { display: flex; gap: 12px; margin-top: 8px; color: var(--muted); font-size: 12px; }
-      .mesh-placeholder { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin: 18px 0; opacity: 0.55; }
-      .mesh-placeholder span { aspect-ratio: 1; border-radius: 4px; background: #dededc; }
-      .provenance { padding: 0 24px 18px; color: var(--muted); font-size: 12px; font-weight: 560; line-height: 1.5; }
+      .instrument-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 24px; padding: 12px 0 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .instrument-footer time { display: block; font-variant-numeric: tabular-nums; }
+      .freshness-warning, .refresh-error { color: var(--negative); }
+      .refresh-error:empty { display: none; }
       .loading { padding: 48px 24px; color: var(--muted); text-align: center; }
-      .global-note { margin: 16px 2px 0; color: var(--muted); font-size: 12px; font-weight: 600; text-align: center; }
       @keyframes spin { to { transform: rotate(360deg); } }
       @media (prefers-reduced-motion: reduce) { .refresh[aria-busy="true"] svg { animation: none; } }
       @media (max-width: 620px) {
         body { padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); background: var(--surface); }
-        .command-line { padding: 14px 16px 0; }
         .modules { gap: 10px; }
         .instrument { border-right: 0; border-left: 0; border-radius: 0; box-shadow: none; }
         .strip { grid-template-columns: minmax(150px, 1.2fr) repeat(2, minmax(74px, 0.7fr)); }
-        .trace { display: none; }
         .head-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .instrument-footer { margin-right: 18px; margin-left: 18px; }
       }
       @media (max-width: 390px) {
         .instrument-header { padding: 20px 18px 16px; }
         .strip-list { margin-right: 12px; margin-left: 12px; }
-        .strip { grid-template-columns: 1fr 0.72fr; gap: 12px; padding: 14px; }
-        .strip .reading:nth-of-type(2) { display: none; }
+        .strip { grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px; }
+        .strip .identity { grid-column: 1 / -1; }
         .roundel { width: 44px; height: 44px; }
         .progress-body { padding-right: 18px; padding-left: 18px; }
       }
       @media (prefers-color-scheme: dark) {
-        :root { --ink: #f7f7f4; --muted: #b7b8b4; --faint: #969792; --surface: rgba(31, 31, 31, 0.98); --canvas: #191919; --line: rgba(255, 255, 255, 0.13); --soft: #292a29; --shadow: 0 18px 48px rgba(0, 0, 0, 0.3); }
+        :root { --ink: #f7f7f4; --muted: #b7b8b4; --faint: #969792; --surface: rgba(31, 31, 31, 0.98); --canvas: #191919; --line: rgba(255, 255, 255, 0.13); --soft: #292a29; --negative: #ff8585; --shadow: 0 18px 48px rgba(0, 0, 0, 0.3); }
         .roundel { background: linear-gradient(145deg, #3a3b3a, #282928); }
         .active .roundel { color: #1c1e20; background: var(--brand); }
         .progress-track { background: #343533; }
         .state-pill { color: #66e5a5; background: #173a2a; }
         .empty-panel { background: rgba(41, 42, 41, 0.55); }
-        .mesh-placeholder span { background: #3a3b39; }
       }
     </style>
   </head>
   <body>
     <main class="shell">
-      <p class="command-line" id="command-line">Printer observation · Waiting</p>
       <div class="modules" id="modules"><div class="instrument loading">Waiting for printer observation…</div></div>
-      <p class="global-note">Read only · Source and freshness are shown with each view</p>
     </main>
     <script type="module">
       const VIEWS = ["overview", "progress", "thermals", "heads", "jobs", "queue", "fans", "bed_mesh"];
       const modulesElement = document.querySelector("#modules");
-      const commandLine = document.querySelector("#command-line");
       const pendingRequests = new Map();
       let rpcId = 0;
       let observation = null;
+      let bridge = null;
+      let loadTimer = null;
+      let refreshPending = false;
+      let selectedView = null;
       const escapeHtml = (value) => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
       const validNumber = (value) => typeof value === "number" && Number.isFinite(value);
       const valueOf = (field) => field?.state === "known" || field?.state === "stale" ? field.value : null;
       const formatTemperature = (field) => validNumber(valueOf(field)) ? `${Math.round(field.value)}°` : "Unknown";
       const formatDuration = (field) => { const seconds = valueOf(field); if (!validNumber(seconds)) return "Unknown"; const minutes = Math.max(0, Math.round(seconds / 60)); return minutes < 60 ? `${minutes}m` : `${Math.floor(minutes / 60)}h ${minutes % 60}m`; };
-      const observedLabel = (value) => { const date = new Date(value); return Number.isNaN(date.valueOf()) ? "Observation time unavailable" : `Observed ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`; };
-      const lockIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
-      const trace = (available) => `<svg class="trace${available ? "" : " unavailable"}" viewBox="0 0 112 32" aria-hidden="true"><path d="M1 19 C8 19 8 10 16 14 S27 22 34 15 S44 10 51 16 S62 22 69 14 S80 12 87 17 S99 18 111 20"/></svg>`;
-      const freshnessLabel = (state) => ({ fresh: "Current reading", stale: "Stored reading", offline: "Printer offline", unknown: "Freshness unknown" })[state] ?? "Freshness unknown";
-      const sourceLabel = (value) => !value?.sourceObservedAt
-        ? "No accepted source reading"
-        : value?.source === "derived"
-          ? "Calculated from printer telemetry"
-          : "Printer telemetry";
-      const provenance = (value) => `<div class="provenance">${escapeHtml(sourceLabel(value))} · ${escapeHtml(freshnessLabel(observation?.freshness))}</div>`;
-      const header = (title) => `<header class="instrument-header"><div class="instrument-title"><h2>${escapeHtml(title)}</h2><div class="read-only">${lockIcon}<span>Read only</span><span>·</span><time>${escapeHtml(observedLabel(observation?.sourceObservedAt))}</time><span>·</span><span>${escapeHtml(freshnessLabel(observation?.freshness))}</span></div></div><button class="refresh" type="button" title="Refresh shared observation" aria-label="Refresh shared observation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.7-4.4L3 10"/><path d="M3 4v6h6M4 13a8 8 0 0 0 14.7 4.4L21 14"/><path d="M21 20v-6h-6"/></svg></button></header>`;
-      const unknown = (title, data, extra = "") => `<section class="instrument">${header(title)}<div class="empty-panel"><strong>${data?.state === "unavailable" ? "Unavailable" : "Unknown"}</strong>${escapeHtml(data?.detail ?? data?.provenance?.detail ?? "Evidence is not normalized")}${extra}</div>${provenance(data?.provenance)}</section>`;
+      const observedLabel = (value) => { const date = typeof value === "string" && value ? new Date(value) : null; return !date || Number.isNaN(date.valueOf()) ? "Observation time unavailable" : `Observed ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`; };
+      const freshnessLabel = (state) => ({ fresh: "", stale: "Stale", offline: "Offline", unknown: "Freshness unknown" })[state] ?? "Freshness unknown";
+      const provenance = () => { const freshness = freshnessLabel(observation?.freshness); return `<footer class="instrument-footer"><div><time>${escapeHtml(observedLabel(observation?.sourceObservedAt))}${freshness ? ` <span class="freshness-warning">· ${escapeHtml(freshness)}</span>` : ""}</time><span class="refresh-error" role="status"></span></div><button class="refresh" type="button" title="Refresh observation" aria-label="Refresh observation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.7-4.4L3 10"/><path d="M3 4v6h6M4 13a8 8 0 0 0 14.7 4.4L21 14"/><path d="M21 20v-6h-6"/></svg></button></footer>`; };
+      const header = (title) => `<header class="instrument-header"><div class="instrument-title"><h2>${escapeHtml(title)}</h2></div></header>`;
+      const unknown = (title, data) => `<section class="instrument">${header(title)}<div class="empty-panel"><strong>${data?.kind === "overview" ? "Overview deferred" : "Not implemented yet"}</strong>${data?.kind === "overview" ? "The combined overview is not implemented." : "This view’s printer-data mapping is not implemented. Values are unknown."}</div>${provenance(data?.provenance)}</section>`;
       const renderProgress = (data) => {
         const fields = data?.fields; const percent = valueOf(fields?.percent); const current = valueOf(fields?.currentLayer); const total = valueOf(fields?.totalLayers); const layers = current === null ? "Layer unknown" : `Layer ${current}${total === null ? "" : ` / ${total}`}`; const valueAttribute = percent === null ? 'aria-valuetext="Unknown"' : `aria-valuenow="${percent}"`;
         return `<section class="instrument">${header("Print Progress")}<div class="progress-body"><div class="progress-top"><span class="state-pill${observation.reachable ? "" : " offline"}">${escapeHtml(observation.printerStateLabel)}</span><strong class="progress-percent">${percent === null ? "Unknown" : `${percent.toFixed(percent % 1 ? 1 : 0)}%`}</strong></div><div class="progress-track" role="progressbar" aria-label="Print progress" aria-valuemin="0" aria-valuemax="100" ${valueAttribute}><div class="progress-fill" style="width:${percent === null ? 0 : percent}%"></div></div><div class="progress-meta"><span>${escapeHtml(layers)}</span><span>${valueOf(fields?.estimatedRemainingSeconds) === null ? "Estimate unknown" : `About ${escapeHtml(formatDuration(fields.estimatedRemainingSeconds))} left`}</span></div></div>${provenance(data?.provenance)}</section>`;
       };
       const renderThermals = (data) => {
-        const rows = (data?.readings ?? []).map((reading) => { const known = reading.state === "known" || reading.state === "stale"; const active = valueOf(reading.active) === true; const toolReading = reading.id.startsWith("tool-"); const badge = toolReading ? `<span class="roundel">T${escapeHtml(reading.id.slice(-1))}</span>` : ""; return `<div class="strip${active ? " active" : ""}${toolReading ? "" : " zone-row"}"><div class="identity">${badge}<span><strong>${escapeHtml(reading.label)}</strong><span class="micro">${active ? '<span class="dot"></span>Active' : escapeHtml(valueOf(reading.heaterState) ?? "Unknown")}</span></span></div><div class="reading${known ? "" : " unavailable"}"><small>Actual</small><strong>${escapeHtml(formatTemperature(reading.actual))}</strong></div><div class="reading${known ? "" : " unavailable"}"><small>Target</small><strong>${escapeHtml(formatTemperature(reading.target))}</strong></div>${trace(known)}</div>`; }).join("");
+        const rows = (data?.readings ?? []).map((reading) => { const known = reading.state === "known" || reading.state === "stale"; const active = valueOf(reading.active) === true; const toolReading = reading.id.startsWith("tool-"); const badge = toolReading ? `<span class="roundel">T${escapeHtml(reading.id.slice(-1))}</span>` : ""; return `<div class="strip${active ? " active" : ""}${toolReading ? "" : " zone-row"}"><div class="identity">${badge}<span><strong>${escapeHtml(reading.label)}</strong><span class="micro">${active ? '<span class="dot"></span>Active' : escapeHtml(valueOf(reading.heaterState) ?? "Unknown")}</span></span></div><div class="reading${known ? "" : " unavailable"}"><small>Actual</small><strong>${escapeHtml(formatTemperature(reading.actual))}</strong></div><div class="reading${known ? "" : " unavailable"}"><small>Target</small><strong>${escapeHtml(formatTemperature(reading.target))}</strong></div></div>`; }).join("");
         return `<section class="instrument">${header("Thermals")}<div class="strip-list">${rows}</div>${provenance(data?.provenance)}</section>`;
       };
       const renderHeads = (data) => { const cards = (data?.items ?? []).map((head) => { const active = valueOf(head.active) === true; return `<article class="head-card${active ? " active" : ""}"><span class="roundel">T${head.physicalTool}</span><strong>Tool ${head.physicalTool}</strong><div class="material">Material unknown<br/>Color unknown</div><div class="temperature">${escapeHtml(formatTemperature(head.temperature))}${valueOf(head.target) !== null ? ` / ${escapeHtml(formatTemperature(head.target))}` : ""}</div>${active ? '<span class="micro"><span class="dot"></span>Active</span>' : `<span class="micro">${escapeHtml(valueOf(head.headState) ?? "Unknown")}</span>`}</article>`; }).join(""); return `<section class="instrument">${header("Heads & Filaments")}<div class="head-grid">${cards}</div>${provenance(data?.provenance)}</section>`; };
-      const renderJobs = (data) => { const current = data?.current ? `<div class="job-current"><strong>${escapeHtml(valueOf(data.current.filename) ?? "Filename unknown")}</strong><div class="job-meta"><span>${escapeHtml(data.current.state)}</span><span>${valueOf(data.current.storageActive) === null ? "Storage unknown" : valueOf(data.current.storageActive) ? "Storage active" : "Storage inactive"}</span></div></div>` : '<div class="empty-panel"><strong>No current job observed</strong>Current job identity is unknown.</div>'; return `<section class="instrument">${header("Jobs")}${current}<div class="empty-panel"><strong>History unknown</strong>Advertised history has no accepted normalization.</div>${provenance(data?.provenance)}</section>`; };
+      const renderJobs = (data) => { const current = data?.current ? `<div class="job-current"><strong>${escapeHtml(valueOf(data.current.filename) ?? "Filename unknown")}</strong><div class="job-meta"><span>Current job</span><span>${valueOf(data.current.storageActive) === null ? "Storage unknown" : valueOf(data.current.storageActive) ? "Storage active" : "Storage inactive"}</span></div></div>` : '<div class="empty-panel"><strong>No current job observed</strong>Current job identity is unknown.</div>'; return `<section class="instrument">${header("Jobs")}${current}<div class="empty-panel"><strong>History not implemented</strong>Previous jobs aren’t available in this view yet.</div>${provenance(data?.provenance)}</section>`; };
       const renderQueue = (data) => unknown("Queue", data);
       const renderFans = (data) => unknown("Fans & Air", data);
-      const renderBedMesh = (data) => { const cells = Array.from({ length: 45 }, () => "<span></span>").join(""); return unknown("Bed Mesh", data, `<div class="mesh-placeholder" aria-hidden="true">${cells}</div>`); };
+      const renderBedMesh = (data) => unknown("Bed Mesh", data);
       const renderOverview = (data) => unknown("Overview", data);
       const renderers = { overview: renderOverview, progress: renderProgress, thermals: renderThermals, heads: renderHeads, jobs: renderJobs, queue: renderQueue, fans: renderFans, bed_mesh: renderBedMesh };
-      const render = () => { if (!observation?.module) return; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; commandLine.textContent = `Printer observation · ${view.replaceAll("_", " ")} · Update ${observation.observationVersion}`; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); window.openai?.notifyIntrinsicHeight?.(); };
+      const render = () => { if (!observation?.module) return; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); window.openai?.notifyIntrinsicHeight?.(); };
       const rpcNotify = (method, params) => window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
-      const rpcRequest = (method, params) => new Promise((resolve, reject) => { const id = ++rpcId; pendingRequests.set(id, { resolve, reject }); window.parent.postMessage({ jsonrpc: "2.0", id, method, params }, "*"); });
-      const applyResult = (result) => { const candidate = result?.structuredContent ?? result?.result?.structuredContent ?? result; if (!candidate?.module) return; observation = candidate; render(); };
-      const refresh = async () => { if (!observation || window.parent === window) return; modulesElement.querySelectorAll(".refresh").forEach((button) => button.setAttribute("aria-busy", "true")); try { applyResult(await rpcRequest("tools/call", { name: "refresh_printer_observation", arguments: { view: observation.view } })); } finally { modulesElement.querySelectorAll(".refresh").forEach((button) => button.setAttribute("aria-busy", "false")); } };
-      const initialResult = () => { const metadata = window.openai?.toolResponseMetadata ?? {}; return window.openai?.toolOutput ?? metadata?.mcp_tool_result ?? metadata?.call_tool_result ?? metadata; };
-      window.addEventListener("message", (event) => { const message = event.data; if (!message || message.jsonrpc !== "2.0") return; if (typeof message.id === "number" && pendingRequests.has(message.id)) { const pending = pendingRequests.get(message.id); pendingRequests.delete(message.id); message.error ? pending.reject(new Error(message.error.message ?? "tool failed")) : pending.resolve(message.result); return; } if (message.method === "ui/notifications/tool-result") applyResult(message.params); });
-      window.addEventListener("openai:set_globals", (event) => applyResult(event.detail?.globals?.toolOutput));
-      applyResult(initialResult());
-      if (window.parent !== window) { rpcNotify("ui/initialize", { appInfo: { name: "u1-observation", version: "1.0.0" }, appCapabilities: {} }); rpcNotify("ui/notifications/initialized", {}); }
+      const rpcRequest = (method, params) => new Promise((resolve, reject) => {
+        const id = ++rpcId;
+        const timer = setTimeout(() => { pendingRequests.delete(id); reject(new Error("Host request timed out")); }, 15000);
+        pendingRequests.set(id, { resolve, reject, timer });
+        window.parent.postMessage({ jsonrpc: "2.0", id, method, params }, "*");
+      });
+      const validObservation = (value) => value && VIEWS.includes(value.view) &&
+        value.module?.kind === value.view && typeof value.module.state === "string";
+      const applyResult = (result) => {
+        const candidates = [result?.structuredContent, result?.result?.structuredContent, result?.mcp_tool_result?.structuredContent, result?.call_tool_result?.structuredContent, result];
+        const candidate = candidates.find(validObservation);
+        if (!candidate || (selectedView && candidate.view !== selectedView)) return false;
+        selectedView = candidate.view;
+        const previous = observation;
+        observation = candidate;
+        try { render(); } catch { observation = previous; return false; }
+        clearTimeout(loadTimer);
+        return true;
+      };
+      const applyGlobals = (globals = {}) => {
+        const metadata = globals.toolResponseMetadata;
+        const requested = globals.toolInput?.view;
+        if (!selectedView && VIEWS.includes(requested)) selectedView = requested;
+        return [globals.toolOutput, metadata?.mcp_tool_result, metadata?.call_tool_result, metadata].some(applyResult);
+      };
+      const showLoadError = () => {
+        if (observation) return;
+        const canRetry = selectedView && window.parent !== window;
+        modulesElement.innerHTML = `<section class="instrument">${header("Couldn’t load this view")}<div class="empty-panel">The widget did not receive a printer observation. No current values are available.</div><footer class="instrument-footer"><span role="status">${canRetry ? "Try loading the view again." : "Reopen this card from the conversation to try again."}</span>${canRetry ? '<button class="refresh" type="button" aria-label="Retry loading observation">Retry</button>' : ""}</footer></section>`;
+        modulesElement.querySelector(".refresh")?.addEventListener("click", () => void retryLoad());
+        window.openai?.notifyIntrinsicHeight?.();
+      };
+      const refresh = async () => {
+        if (!selectedView || refreshPending || window.parent === window) return;
+        refreshPending = true;
+        modulesElement.querySelectorAll(".refresh").forEach((button) => { button.disabled = true; button.setAttribute("aria-busy", "true"); });
+        try {
+          if (!bridge) bridge = await initializeBridge();
+          const result = await rpcRequest("tools/call", { name: "refresh_printer_observation", arguments: { view: selectedView } });
+          if (!applyResult(result)) throw new Error("Observation unavailable");
+        } catch {
+          if (observation) { const error = modulesElement.querySelector(".refresh-error"); if (error) error.textContent = "Refresh failed · showing previous observation"; }
+          else showLoadError();
+        } finally {
+          refreshPending = false;
+          modulesElement.querySelectorAll(".refresh").forEach((button) => { button.disabled = false; button.setAttribute("aria-busy", "false"); });
+        }
+      };
+      const initializeBridge = async () => {
+        const result = await rpcRequest("ui/initialize", { appInfo: { name: "u1-observation", version: "0.3.1" }, appCapabilities: {}, protocolVersion: "2026-01-26" });
+        rpcNotify("ui/notifications/initialized", {});
+        return result;
+      };
+      const retryLoad = async () => {
+        if (applyGlobals(window.openai)) return;
+        if (selectedView) { await refresh(); return; }
+        clearTimeout(loadTimer);
+        loadTimer = setTimeout(showLoadError, 15000);
+        try { bridge = await initializeBridge(); } catch { showLoadError(); }
+      };
+      window.addEventListener("message", (event) => {
+        if (event.source !== window.parent) return;
+        const message = event.data;
+        if (!message || message.jsonrpc !== "2.0") return;
+        if (typeof message.id === "number" && pendingRequests.has(message.id)) {
+          const pending = pendingRequests.get(message.id); pendingRequests.delete(message.id); clearTimeout(pending.timer);
+          message.error ? pending.reject(new Error("Host request failed")) : pending.resolve(message.result); return;
+        }
+        if (message.method === "ui/notifications/tool-input" && VIEWS.includes(message.params?.arguments?.view) && !selectedView) selectedView = message.params.arguments.view;
+        if (message.method === "ui/notifications/tool-result" && !applyResult(message.params) && !observation) showLoadError();
+      });
+      window.addEventListener("openai:set_globals", (event) => {
+        if (!applyGlobals(event.detail?.globals)) applyGlobals(window.openai);
+      });
+      applyGlobals(window.openai);
+      if (!observation) loadTimer = setTimeout(showLoadError, 15000);
+      if (window.parent !== window) void initializeBridge().then((result) => { bridge = result; applyGlobals(window.openai); }).catch(showLoadError);
     </script>
   </body>
 </html>

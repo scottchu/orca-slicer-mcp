@@ -65,6 +65,7 @@ export const LEGACY_CAMERA_WIDGET_URIS = [
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v2.html",
   "ui://u1-print-studio/observation-v1.html",
 ] as const;
 export const LEGACY_WIDGET_URIS = [
@@ -404,6 +405,11 @@ export function createAppServer(
       uri: CAMERA_WIDGET_URI,
       html: CAMERA_WIDGET_HTML,
       version: U1_CAMERA_WIDGET_VERSION,
+    },
+    {
+      uri: "ui://u1-print-studio/camera-v4.html",
+      html: CAMERA_WIDGET_HTML,
+      version: "camera-v4",
     },
     ...LEGACY_CAMERA_WIDGET_URIS.map((uri) => ({
       uri,

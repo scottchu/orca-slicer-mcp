@@ -75,10 +75,18 @@ private env/OAuth/config/routing and preserved plist fields unchanged. The
 script-only repair does not change the deployed app
 revision or its widget hashes.
 
+Decision 0024's `public/dashboard-index.html` is imported as text and inlined
+in the HTTP bundle; it is not a seventh required external release asset.
+The fixed lifecycle asset inventory and its fingerprint verification stay
+unchanged so previously staged releases remain valid rollback targets.
+
 Private stable entries are `/dashboard/progress`, `/dashboard/thermals`,
 `/dashboard/heads`, `/dashboard/jobs`, `/dashboard/queue`, `/dashboard/fans`,
-`/dashboard/bed_mesh`, and `/dashboard/camera`. `/dashboard` defaults to
-progress by redirect. The HTTP overview route stays absent; the MCP overview
+`/dashboard/bed_mesh`, and `/dashboard/camera`. In the current source,
+`/dashboard` and `/dashboard/` serve the same static widget directory with
+implementation-coverage labels. It loads no observations, widgets, or camera
+media. The currently deployed older release still redirects to Progress until
+a separately authorized rollout. The HTTP overview route stays absent; the MCP overview
 view stays explicitly deferred. Public dashboard routes remain unavailable. Every process shares
 one observation store across its HTTP calls, not across other services or
 restarts. A cold store acquires its first observation on demand; later plain
@@ -98,8 +106,8 @@ one onboarding contract. This repository does not publish any of them.
 
 The current evidence supports an ephemeral macOS arm64 self-contained
 executable built with `bun run bundle:runtime`. The build disables automatic
-`.env` and `bunfig.toml` loading, embeds the current observation-v2 and
-camera-v4 resources plus frozen legacy status and camera resources, and replaces
+`.env` and `bunfig.toml` loading, embeds the current observation-v3 and
+camera-v5 resources plus frozen legacy status and camera resources, and replaces
 Bun 1.3.12's invalid emitted macOS signature with an ad-hoc signature for local
 execution. Bun is a build and test dependency, not a runtime prerequisite for
 that artifact. The read-only printer adapter currently invokes the platform
@@ -137,8 +145,10 @@ unverified.
 
 Every channel's `doctor --json` reports one runtime contract containing the
 base runtime version, tool-schema version, observation-widget version, and
-camera-widget version. The current source contract is runtime `0.3.0`, tool
-schema `5`, observation widget `observation-v2`, and camera widget `camera-v4`.
+camera-widget version. The current source contract is runtime `0.3.1`, tool
+schema `5`, observation widget `observation-v3`, and camera widget `camera-v5`.
+These are source versions; the earlier deployed release stays unchanged until
+an explicit rollout. Observation-v2/v1 and camera-v4 remain current-asset aliases.
 The optional personal HTTP service returns the same contract from `/health`.
 Upgrade verification must compare these values with the intended source before
 asking a user to test a fresh task; process liveness alone is insufficient.
@@ -148,7 +158,8 @@ tasks can retain the prior process and widget URI, and one observed Codex
 Desktop process retained them even after a new conversation. Fully quit and
 relaunch a host that predates the install before upgrade acceptance; a new task
 alone is not sufficient evidence. The source server exposes
-`observation-v1` as a current-asset alias while the focused surface converges.
+`observation-v2`, `observation-v1`, and `camera-v4` as current-asset aliases
+while fresh descriptors advertise observation-v3 and camera-v5.
 For mounted-task compatibility it also preserves exact legacy bytes for status
 v4/v3 (`57,450` bytes, SHA-256
 `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437`)

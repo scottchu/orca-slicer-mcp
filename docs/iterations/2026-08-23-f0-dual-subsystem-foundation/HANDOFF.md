@@ -1,5 +1,154 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 private widget directory — current handoff
+
+Decision 0024 implements the user's requested navigation entry point, not the
+deferred composed overview. Source GETs for `/dashboard` and `/dashboard/`
+return identical static HTML with exactly eight existing focused links and
+truthful implementation labels. It does not acquire observations, mount
+iframes, poll, or open camera media. Focused URLs, public rejection, MCP tools,
+current widgets, and frozen compatibility bytes remain unchanged.
+
+Changed runtime/test paths are `app/public/dashboard-index.html`,
+`app/src/status-dashboard.ts`, and `app/src/status-dashboard.test.ts` under
+`plugins/u1-print-studio`. The page is a Bun text import, so its bytes are
+inlined into the HTTP bundle without changing the lifecycle tool's mandatory
+external asset inventory or invalidating old rollback releases. Packaging and
+architecture docs explain that choice; decision/requirements/BRIEF records
+describe the product contract. Canonical checkout's unrelated changes remain
+untouched.
+
+Author verification ran `bun --no-env-file --config=/dev/null test
+src/status-dashboard.test.ts` (12 passed, 261 assertions) and
+`bun --no-env-file --config=/dev/null run check` (passed). These are software
+and synthetic local-HTTP evidence, not deployed or physical-printer evidence.
+Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
+tests, TypeScript, repository checks, all bundles/signing, six directory
+captures, 20 route checks and 12 keyboard checks with zero acquisition.
+The copied HTTP bundle serves both roots with exact source HTML and all eight
+focused static paths without an external index file. Independent code/visual
+review inspected all six captures and reran 62 tests/651 assertions with no
+findings. Its scoped visual disposition is in `design-qa.md`; actual validation
+commands and artifact fingerprints are in `VALIDATION.md`.
+
+The directory source and validated evidence are included in this PR30 follow-up.
+Next obtain separate merge/rollout authorization, then confirm the actual user
+view. No merge/deployment/plugin install, service restart, auth/Tailscale
+changes, or real-printer access occurred. Local rendered navigation is not
+deployed or actual phone acceptance.
+
+## 2026-08-31 authorized headless follow-up — current handoff
+
+After draft PR30 source delivery, the user explicitly authorized isolated
+headless-browser validation because the supported browser was unavailable.
+The validator exercised the exact current assets with synthetic observations
+and media. Its final pass captured 67 observation and 22 camera states,
+passed 13 camera behavior checks plus three keyboard/unavailable checks,
+and found no final horizontal overflow or console errors. Native headless
+fullscreen passed; synthetic live-clock behavior is not real printer video
+or actual ChatGPT/iPhone PiP support. The independent visual disposition is
+recorded in `design-qa.md`.
+
+Independent screenshot review found three bounded P2 presentation defects,
+now repaired: active thermal readings were low-contrast yellow; small warning
+text lacked light-theme contrast; and Jobs exposed the internal `known` enum
+and normalization jargon. The fixes preserve yellow accents, render readings
+with ink, use contrasting light/dark warning colors, and label the current
+job/history availability in plain language. They do not add a history,
+queue, fan, mesh, cavity, or filament mapping. Runtime changes are limited to
+`public/widget.html`, with eight extra contract assertions in `app.test.ts`.
+
+Final current observation SHA-256:
+`86cf5f4a4e6e29f8aa99cb14c947d20992b7b022c91c75f08642eea0a09837d0`.
+Camera remains unchanged:
+`05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85`.
+The validator reports 134 app tests/939 assertions, 21 lifecycle tests,
+TypeScript, repository contract, all three bundles and signature validation
+passing on these bytes. Exact commands and evidence boundaries remain in
+`VALIDATION.md`; screenshots and temporary fixture artifacts are not committed.
+
+The initial implementation/source-only review is delivered in draft PR30 at
+`db4e250`, followed by delivery-record commit `41c4715`. The bounded follow-up
+source and evidence are committed and pushed as `643b5dd` through the existing
+draft PR30. Independent
+formal review approves the follow-up with no new findings and scoped visual
+QA passes. The reviewer independently checked the 39-test/337-assertion
+targeted suite, 67 observation/22 camera captures, 13 camera plus three
+keyboard/unavailable behavior checks, 91 manifest hashes, and final screenshots.
+The remote branch and open draft PR head matched `643b5dd` at the source
+delivery check. Next obtain separate authorization for merge/rollout and
+actual mounted-phone validation. Merge,
+installation, services, routes/auth, and printer access were not authorized
+by headless validation and are unchanged; separately scope rollout and actual
+mounted mobile acceptance afterward.
+
+Existing private focused URLs still serve deployed runtime 0.3.0. The
+`/dashboard` redirect selects progress rather than the deferred composed
+overview. A static 200 is only route evidence, not successful live mapping or
+proof the polished assets are deployed. No private hostname is retained.
+
+## 2026-08-31 quiet widget presentation — current handoff
+
+Decision 0023 is the current execution order, refining the user's selected
+Instrument Strips after mounted phone feedback. Source-only changes remove
+visible read-only and duplicate observation chrome. Non-camera cards retain
+their title/content and one bottom timestamp/refresh footer with exceptional
+stale/offline/unknown and failed-refresh feedback. Camera is the image surface
+with snapshot/fallback/live time overlay, Go Live/Close, and feature-detected
+fullscreen/PiP. No network path or FPS appears in normal chrome.
+
+The observation bridge now awaits a versioned initialize request, handles
+complete initial and late result envelopes (including empty-output and warm
+metadata-only cases), rejects foreign-parent messages, and terminates missing
+or malformed loading with retry/reopen feedback. Independent VM fixtures
+reproduced the baseline failures. They do not establish the exact iPhone host
+failure cause. Real progress, physical heads, extruder/bed temperatures, and
+limited current-job fields remain mapped. Queue/fans/bed-mesh/history/cavity/
+material/color mappings remain unimplemented or unknown. Their shells do not
+prove working capabilities; decorative thermal traces and gray mesh cells
+were removed and unmapped cards say `Not implemented yet`.
+
+Snapshot time propagates the JPEG's successful server receipt time and is
+committed only after image decode; failed or out-of-order images cannot
+retimestamp retained imagery. Live time advances only on rendered callbacks
+or advancing decoded-frame counts and falls back after five seconds without
+frame evidence. Late ICE diagnostics cannot relabel closed/fallback media.
+These clocks are not camera-sensor capture time. Host-granted modes, including
+PiP coercion to fullscreen, are reflected without optimistic state changes;
+unsupported controls are absent and rejection leaves the camera open.
+
+Current source reports runtime `0.3.1`, schema `5`, observation-v3/camera-v5.
+Observation-v2/v1 and camera-v4 remain current-asset aliases. The frozen
+status-v4/v3 and camera-v3/v2/v1 bytes are unchanged; ten resource URIs and
+exactly two model-visible/eight app-only tools preserve compatibility.
+
+Changed implementation scope is the four current HTML widget/host files,
+`app.ts`, runtime contract, camera-frame timestamp forwarding, executable
+camera/observation widget regressions, and related contract expectations.
+Documentation scope is decision 0023/index, requirements, architecture,
+packaging, `design-qa.md`, this iteration and project continuity records.
+The canonical checkout's pre-existing dirty files were not touched.
+
+Independent validation reports TypeScript, 134 app tests/931 assertions, 21
+lifecycle fixtures, repository contract, all three bundles, and ad-hoc
+signature checks passing. Exact commands and hashes are in `VALIDATION.md`.
+The test tiers are static/software plus synthetic host/frame/protocol evidence.
+No new live printer, service, plugin installation, OAuth, Tailscale, or Mac
+login/power mutation occurred. The prior deployed release remains runtime
+0.3.0/observation-v2/camera-v4. User screenshots accept only prior rendering,
+not the current changes.
+
+The available browser inventory is empty, so rendered viewport/layout,
+fullscreen/PiP, and iPhone acceptance remain blocked and explicit in
+`design-qa.md`. Source commit `db4e250` is pushed and delivered in
+[draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
+Independent formal review approves source-only with no unresolved findings,
+including a separate targeted 59-test/415-assertion rerun and verification of
+the final widget fingerprints. Source delivery is complete. Next obtain an
+authorized visual-validation path before treating the redesign as accepted,
+then separately scope rollout. Do not deploy or implement missing backend domains as an implicit
+extension. Historical persistence delivery below must not be repeated.
+
 ## 2026-08-30 persistence integration — current handoff
 
 The user explicitly authorized PR28 merge and persistent installed/server

@@ -56,7 +56,7 @@
       .dashboard {
         width: min(100%, 720px);
         margin: 0 auto;
-        padding: 22px;
+        padding: 0;
         overflow: hidden;
         border: 1px solid rgba(32, 34, 35, 0.18);
         border-radius: var(--radius);
@@ -64,27 +64,6 @@
         box-shadow: var(--shadow);
         backdrop-filter: blur(22px);
       }
-
-      .camera-heading { padding: 0 2px 18px; }
-      .camera-heading h1 {
-        margin: 0;
-        font-size: clamp(24px, 6vw, 32px);
-        line-height: 1.05;
-        letter-spacing: -0.04em;
-      }
-      .camera-heading p {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin: 10px 0 0;
-        color: rgba(82, 83, 83, 0.78);
-        font-size: 11px;
-        font-weight: 760;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-      }
-      .camera-heading p svg { width: 14px; height: 14px; }
-      .camera-heading time { font-weight: 560; letter-spacing: 0.02em; text-transform: none; }
 
       .camera {
         position: relative;
@@ -221,20 +200,20 @@
         gap: 10px;
       }
 
-      .camera-top { top: 16px; }
+      .camera-top { top: 12px; justify-content: flex-end; gap: 8px; }
       .camera-bottom {
         bottom: 16px;
         align-items: flex-end;
         justify-content: flex-end;
       }
 
-      .camera-status {
+      .display-button {
         position: relative;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 38px;
-        height: 38px;
+        width: 44px;
+        height: 44px;
         border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 50%;
         color: #f4fff9;
@@ -243,7 +222,12 @@
         backdrop-filter: blur(12px);
       }
 
-      .camera-status svg { width: 19px; height: 19px; }
+      .display-button svg { width: 19px; height: 19px; }
+      .display-button[hidden] { display: none; }
+      .display-button[aria-pressed="true"] { border-color: var(--brand); }
+      .display-button:disabled { opacity: 0.5; }
+      .display-feedback { position: absolute; top: 64px; right: 12px; left: 12px; z-index: 5; padding: 8px 12px; border-radius: 12px; color: #fff; background: rgba(5, 15, 11, 0.85); font-size: 12px; }
+      .display-feedback:empty { display: none; }
 
       .camera-actions {
         display: flex;
@@ -266,11 +250,11 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
         font-size: 11px;
         font-weight: 780;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.01em;
         line-height: 1;
-        text-transform: uppercase;
         white-space: nowrap;
         backdrop-filter: blur(12px);
+        font-variant-numeric: tabular-nums;
       }
 
       .camera-mode-indicator {
@@ -364,14 +348,14 @@
           padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
           background: var(--surface);
         }
-        .dashboard { padding: 16px; border: 0; border-radius: 0; box-shadow: none; }
+        .dashboard { padding: 0; border: 0; border-radius: 18px; box-shadow: none; }
         .camera { min-height: 0; }
       }
 
       @media (max-width: 380px) {
         .camera-top,
         .camera-bottom { right: 12px; left: 12px; }
-        .camera-mode { max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
+        .camera-mode { gap: 5px; padding: 0 8px; font-size: 10px; }
       }
 
       body[data-display-mode="pip"] {
@@ -380,6 +364,10 @@
       }
       body[data-display-mode="pip"] .dashboard { border-radius: 20px; }
       body[data-display-mode="pip"] .camera { min-height: 170px; }
+      body[data-display-mode="fullscreen"] { display: grid; align-content: center; padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); background: #111; }
+      body[data-display-mode="fullscreen"] .dashboard { width: 100%; border: 0; box-shadow: none; }
+      .camera:fullscreen { width: 100vw; height: 100vh; border-radius: 0; }
+      .camera:fullscreen img, .camera:fullscreen video { object-fit: contain; }
 
       @media (prefers-color-scheme: dark) {
         :root {
@@ -390,19 +378,11 @@
         }
         body { background: #191919; }
         .dashboard { border-color: rgba(255, 205, 0, 0.34); }
-        .camera-heading p { color: rgba(247, 247, 244, 0.62); }
       }
     </style>
   </head>
   <body data-display-mode="inline">
     <main class="dashboard" id="dashboard">
-      <header class="camera-heading">
-        <h1>Printer Camera</h1>
-        <p>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-          <span>Read only</span><span id="camera-observation-meta" hidden><span>·</span> <time id="camera-observed">Waiting for snapshot</time></span>
-        </p>
-      </header>
       <section class="camera" id="camera" data-camera-mode="loading" data-camera-status="loading" data-camera-loading="true" aria-label="Printer camera">
         <div class="camera-empty" id="camera-empty">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
@@ -416,17 +396,15 @@
         <video id="live-stream" aria-label="Live Snapmaker U1 camera" autoplay muted playsinline></video>
 
         <div class="camera-top">
-          <span class="camera-status" id="camera-status" role="status" aria-live="polite" aria-label="Camera loading" title="Camera loading">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path d="M4 7.5h3l1.5-2h7l1.5 2h3v11H4z" />
-              <circle cx="12" cy="13" r="3.5" />
-            </svg>
-          </span>
+          <button class="display-button" id="picture-in-picture" type="button" aria-label="Picture in picture" title="Picture in picture" aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="6" rx="1" fill="currentColor"/></svg></button>
+          <button class="display-button" id="fullscreen" type="button" aria-label="Fullscreen" title="Fullscreen" aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M21 15v6h-6M9 21H3v-6"/></svg></button>
         </div>
+        <span class="sr-only" id="camera-status" role="status" aria-live="polite">Camera loading</span>
+        <div class="display-feedback" id="display-feedback" role="status" aria-live="polite"></div>
 
         <div class="camera-bottom">
           <div class="camera-actions">
-            <span class="camera-mode" id="camera-detail" data-mode="loading" role="status" aria-live="polite">
+            <span class="camera-mode" id="camera-detail" data-mode="loading">
               <span class="camera-mode-indicator" aria-hidden="true">
                 <span class="camera-mode-live-dot"></span>
                 <svg class="camera-mode-disconnected" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -464,8 +442,9 @@
         cameraDetail: document.querySelector("#camera-detail"),
         cameraDetailLabel: document.querySelector("#camera-detail-label"),
         cameraEmptyMessage: document.querySelector("#camera-empty-message"),
-        cameraObservationMeta: document.querySelector("#camera-observation-meta"),
-        cameraObserved: document.querySelector("#camera-observed"),
+        fullscreen: document.querySelector("#fullscreen"),
+        pip: document.querySelector("#picture-in-picture"),
+        displayFeedback: document.querySelector("#display-feedback"),
         goLive: document.querySelector("#go-live"),
         closeLive: document.querySelector("#close-live"),
       };
@@ -485,13 +464,21 @@
       let configuredIceMode = "unknown";
       let selectedIcePath = null;
       let fallbackDetail = null;
+      let snapshotObservedAt = null;
+      let snapshotGeneration = 0;
+      let liveObservedAt = null;
+      let liveFrameWatchdog = null;
+      let decodedFrameTimer = null;
+      let hostContext = {};
+      let hostBridgeAvailable = false;
 
       const rpcNotify = (method, params) => {
         window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
       };
       const rpcRequest = (method, params) => new Promise((resolve, reject) => {
         const id = ++rpcId;
-        pendingRequests.set(id, { resolve, reject });
+        const timer = setTimeout(() => { pendingRequests.delete(id); reject(new Error("Host request timed out")); }, method === "tools/call" ? 40000 : 15000);
+        pendingRequests.set(id, { resolve, reject, timer });
         window.parent.postMessage({ jsonrpc: "2.0", id, method, params }, "*");
       });
       const callTool = async (name, argumentsValue = {}) => {
@@ -511,8 +498,7 @@
         const label = labels[state] ?? labels.unavailable;
         elements.camera.dataset.cameraStatus = state;
         elements.camera.dataset.cameraLoading = String(Boolean(loading));
-        elements.cameraStatus.setAttribute("aria-label", label);
-        elements.cameraStatus.title = label;
+        if (elements.cameraStatus.textContent !== label) elements.cameraStatus.textContent = label;
         elements.cameraEmptyMessage.textContent = state === "unavailable"
           ? "Camera unavailable"
           : "Waiting for camera";
@@ -520,12 +506,12 @@
           elements.camera.classList.contains("has-snapshot") && !livePreview;
         elements.goLive.disabled = !canGoLive;
         elements.goLive.hidden = !canGoLive;
-        elements.cameraObservationMeta.hidden =
-          state === "loading" || state === "unavailable";
+        updateDisplayControls();
         window.openai?.notifyIntrinsicHeight?.();
       };
 
       const formatCameraTime = (observedAt) => {
+        if (typeof observedAt !== "string" || !observedAt) return null;
         const observedDate = new Date(observedAt);
         return Number.isNaN(observedDate.valueOf())
           ? null
@@ -536,55 +522,67 @@
             });
       };
 
-      const setCameraMode = (mode, observedAt = null) => {
-        const observedLabel = observedAt ? formatCameraTime(observedAt) : null;
-        const fpsLabel = Number.isFinite(measuredLiveFps)
-          ? (measuredLiveFps >= 10 ? measuredLiveFps.toFixed(0) : measuredLiveFps.toFixed(1))
-          : null;
+      const setCameraMode = (mode) => {
+        const observedLabel = formatCameraTime(mode === "live" ? liveObservedAt : snapshotObservedAt) ?? "Time unavailable";
         const labels = {
           loading: elements.camera.classList.contains("has-snapshot")
-            ? "Connecting · snapshot"
+            ? `Connecting · ${observedLabel}`
             : "Connecting",
-          snapshot: observedLabel ? `Snapshot · ${observedLabel}` : "Snapshot",
-          fallback: fallbackDetail
-            ? `Fallback · ${fallbackDetail}`
-            : observedLabel
-              ? `Snapshot fallback · ${observedLabel}`
-              : "Snapshot fallback",
-          live: selectedIcePath
-            ? `Live · ${selectedIcePath}${fpsLabel ? ` · ${fpsLabel} FPS` : ""}`
-            : fpsLabel
-              ? `Live · ${fpsLabel} FPS`
-              : "Live · measuring FPS",
+          snapshot: `Snapshot · ${observedLabel}`,
+          fallback: `Fallback · ${observedLabel}`,
+          live: `Live · ${observedLabel}`,
           unavailable: "Camera unavailable",
         };
         elements.cameraDetail.dataset.mode = mode;
-        elements.cameraDetailLabel.textContent = labels[mode] ?? labels.unavailable;
+        const label = labels[mode] ?? labels.unavailable;
+        if (elements.cameraDetailLabel.textContent !== label) elements.cameraDetailLabel.textContent = label;
+        elements.cameraDetail.title = mode === "live"
+          ? "Time of the latest video frame displayed on this device"
+          : mode === "fallback" ? "Live video unavailable. Showing the last accepted snapshot; time is server image receipt time."
+          : "Snapshot time is server image receipt time, not camera capture time";
       };
 
       const applyCameraFrame = (result) => {
         const frame = result?.structuredContent ?? {};
         const metadata = result?._meta ?? result?.meta ?? {};
         const dataUrl = metadata?.cameraFrame?.dataUrl;
-        const observationTime = formatCameraTime(frame.observedAt);
-        elements.cameraObserved.textContent = observationTime
-          ? `Observed ${observationTime}`
-          : "Observation time unavailable";
         if (
           frame.available &&
           typeof dataUrl === "string" &&
           dataUrl.startsWith("data:image/jpeg;base64,")
         ) {
-          elements.snapshot.src = dataUrl;
-          setCameraState("loading", true);
-          setCameraMode(
-            livePreview ? (fallbackDetail ? "fallback" : "loading") : "snapshot",
-            frame.observedAt
-          );
+          // Decode separately: a failed image must not replace or retimestamp
+          // the last accepted image. Only the newest acquisition may win.
+          const generation = ++snapshotGeneration;
+          const image = new Image();
+          image.onload = () => {
+            if (generation !== snapshotGeneration) return;
+            elements.snapshot.src = dataUrl;
+            snapshotObservedAt = formatCameraTime(frame.observedAt) ? frame.observedAt : null;
+            elements.camera.classList.add("has-snapshot");
+            const mode = livePreview
+              ? relayRendering ? "live" : fallbackDetail ? "fallback" : "loading"
+              : "snapshot";
+            setCameraState(mode, mode === "loading");
+            setCameraMode(mode);
+          };
+          image.onerror = () => {
+            if (generation !== snapshotGeneration || relayRendering) return;
+            if (elements.camera.classList.contains("has-snapshot")) {
+              const mode = livePreview ? (fallbackDetail ? "fallback" : "loading") : "snapshot";
+              setCameraState(mode);
+              setCameraMode(mode);
+            } else { setCameraMode("unavailable"); setCameraState("unavailable"); }
+          };
+          image.src = dataUrl;
+          if (!relayRendering) {
+            setCameraState("loading", true);
+            setCameraMode(livePreview ? (fallbackDetail ? "fallback" : "loading") : "loading");
+          }
           return true;
         }
-        if (livePreview && elements.camera.classList.contains("has-snapshot")) {
-          const mode = fallbackDetail ? "fallback" : "loading";
+        if (elements.camera.classList.contains("has-snapshot")) {
+          const mode = relayRendering ? "live" : livePreview ? (fallbackDetail ? "fallback" : "loading") : "snapshot";
           setCameraMode(mode);
           setCameraState(mode, mode === "loading");
           return false;
@@ -595,18 +593,6 @@
         return false;
       };
 
-      elements.snapshot.addEventListener("load", () => {
-        elements.camera.classList.add("has-snapshot");
-        const mode = livePreview
-          ? relayRendering
-            ? "live"
-            : fallbackDetail
-              ? "fallback"
-              : "loading"
-          : "snapshot";
-        setCameraState(mode, mode === "loading");
-        setCameraMode(mode);
-      });
       elements.snapshot.addEventListener("error", () => {
         if (livePreview && relayRendering) return;
         elements.camera.classList.remove("has-snapshot");
@@ -643,6 +629,10 @@
       };
 
       const stopLiveStream = () => {
+        clearTimeout(liveFrameWatchdog);
+        liveFrameWatchdog = null;
+        clearInterval(decodedFrameTimer);
+        decodedFrameTimer = null;
         clearTimeout(liveConnectionFallbackTimer);
         liveConnectionFallbackTimer = null;
         clearTimeout(firstRenderedFrameTimer);
@@ -666,9 +656,15 @@
         closeSignalingSession(sessionId);
         liveFrameTimes = [];
         measuredLiveFps = null;
+        liveObservedAt = null;
       };
 
       const recordLiveFrame = (now = performance.now()) => {
+        liveObservedAt = new Date().toISOString();
+        clearTimeout(liveFrameWatchdog);
+        liveFrameWatchdog = setTimeout(() => {
+          if (livePreview && relayRendering) activateSnapshotFallback("video frames stalled");
+        }, 5000);
         liveFrameTimes.push(now);
         const windowStart = now - 5000;
         liveFrameTimes = liveFrameTimes.filter((observed) => observed >= windowStart);
@@ -692,20 +688,28 @@
       };
 
       const observeRenderedFrames = () => {
+        const peer = livePeerConnection;
         if (typeof elements.liveStream.requestVideoFrameCallback === "function") {
           const observeFrame = (now) => {
-            if (!livePreview || !livePeerConnection) return;
+            if (!livePreview || livePeerConnection !== peer) return;
             if (!markFirstRenderedFrame(now)) recordLiveFrame(now);
             liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
           };
           liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
           return;
         }
-        elements.liveStream.addEventListener(
-          "playing",
-          () => markFirstRenderedFrame(),
-          { once: true }
-        );
+        // Older hosts: only an advancing decoded-frame count is evidence.
+        // `playing` or a wall-clock tick alone must never label black video live.
+        const frameCount = () => elements.liveStream.getVideoPlaybackQuality?.().totalVideoFrames ?? elements.liveStream.webkitDecodedFrameCount;
+        let previous = frameCount();
+        decodedFrameTimer = setInterval(() => {
+          if (!livePreview || livePeerConnection !== peer || elements.liveStream.paused) return;
+          const count = frameCount();
+          if (Number.isFinite(count) && Number.isFinite(previous) && count > previous) {
+            if (!markFirstRenderedFrame()) recordLiveFrame();
+          }
+          previous = count;
+        }, 250);
       };
 
       const fallbackMessage = (reason) => {
@@ -751,7 +755,8 @@
           if (localType || remoteType) {
             selectedIcePath = [localType, remoteType].filter(Boolean).join("→");
             if (protocol) selectedIcePath += `/${protocol}`;
-            setCameraMode("live");
+            // Retain diagnostics internally; connection selection is not
+            // evidence that a video frame has rendered.
           }
         } catch {
           // Connection remains usable when the host withholds WebRTC stats.
@@ -765,7 +770,7 @@
         elements.camera.dataset.cameraMode = "live";
         setCameraState("loading", true);
         setCameraMode("fallback");
-        elements.cameraStatus.title = `Camera snapshot fallback active: ${fallbackDetail}`;
+        elements.cameraStatus.textContent = "Live video unavailable. Showing snapshot fallback.";
         void refreshCameraFrame();
       };
 
@@ -900,13 +905,17 @@
       elements.liveStream.addEventListener("stalled", () => {
         if (livePreview) activateSnapshotFallback("video playback stalled");
       });
+      elements.liveStream.addEventListener("pause", () => {
+        if (livePreview && relayRendering) activateSnapshotFallback("video playback paused");
+      });
       elements.liveStream.addEventListener("error", () => {
         if (livePreview) activateSnapshotFallback("video playback failed");
       });
 
       const applyHostContext = (context = {}) => {
+        hostContext = { ...hostContext, ...context };
         const mode = context.displayMode ?? window.openai?.displayMode;
-        if (mode) document.body.dataset.displayMode = mode;
+        if (["inline", "fullscreen", "pip"].includes(mode)) document.body.dataset.displayMode = mode;
         const safeArea = context.safeArea ?? window.openai?.safeArea;
         const insets = safeArea?.insets ?? safeArea ?? {};
         for (const side of ["top", "right", "bottom", "left"]) {
@@ -915,6 +924,61 @@
             document.documentElement.style.setProperty(`--safe-${side}`, `${value}px`);
           }
         }
+        updateDisplayControls();
+      };
+
+      const hostSupports = (mode) => Array.isArray(hostContext.availableDisplayModes)
+        ? hostContext.availableDisplayModes.includes(mode)
+        : typeof window.openai?.requestDisplayMode === "function";
+      const canNativePip = () => relayRendering && (
+        (document.pictureInPictureEnabled && typeof elements.liveStream.requestPictureInPicture === "function") ||
+        elements.liveStream.webkitSupportsPresentationMode?.("picture-in-picture") === true
+      );
+      const updateDisplayControls = () => {
+        const mode = document.body.dataset.displayMode;
+        const fullscreenActive = mode === "fullscreen" || Boolean(document.fullscreenElement) || elements.liveStream.webkitDisplayingFullscreen === true;
+        const pipActive = mode === "pip" || document.pictureInPictureElement === elements.liveStream || elements.liveStream.webkitPresentationMode === "picture-in-picture";
+        elements.fullscreen.hidden = !fullscreenActive && !hostSupports("fullscreen") && !(document.fullscreenEnabled && typeof elements.camera.requestFullscreen === "function") && !(relayRendering && typeof elements.liveStream.webkitEnterFullscreen === "function");
+        elements.pip.hidden = !pipActive && !hostSupports("pip") && !canNativePip();
+        elements.fullscreen.setAttribute("aria-pressed", String(fullscreenActive));
+        elements.pip.setAttribute("aria-pressed", String(pipActive));
+        elements.fullscreen.setAttribute("aria-label", fullscreenActive ? "Exit fullscreen" : "Fullscreen");
+        elements.pip.setAttribute("aria-label", pipActive ? "Exit picture in picture" : "Picture in picture");
+      };
+      const requestCameraDisplay = async (requestedMode) => {
+        elements.displayFeedback.textContent = "";
+        const button = requestedMode === "pip" ? elements.pip : elements.fullscreen;
+        const exiting = button.getAttribute("aria-pressed") === "true";
+        button.disabled = true;
+        try {
+          const hostModeActive = document.body.dataset.displayMode === requestedMode;
+          if ((hostSupports(requestedMode) && !exiting) || hostModeActive) {
+            const mode = exiting ? "inline" : requestedMode;
+            const result = hostBridgeAvailable && Array.isArray(hostContext.availableDisplayModes)
+              ? await rpcRequest("ui/request-display-mode", { mode })
+              : await window.openai.requestDisplayMode({ mode });
+            const granted = result?.mode;
+            if (!["inline", "fullscreen", "pip"].includes(granted)) throw new Error("No granted mode");
+            applyHostContext({ displayMode: granted });
+            if (granted !== mode) elements.displayFeedback.textContent = granted === "fullscreen" && mode === "pip"
+              ? "This app opened fullscreen instead of picture in picture."
+              : "This display mode is not available in this app.";
+          } else if (requestedMode === "fullscreen") {
+            if (document.fullscreenElement) await document.exitFullscreen();
+            else if (elements.liveStream.webkitDisplayingFullscreen) elements.liveStream.webkitExitFullscreen();
+            else if (document.fullscreenEnabled && elements.camera.requestFullscreen) await elements.camera.requestFullscreen();
+            else if (relayRendering && elements.liveStream.webkitEnterFullscreen) elements.liveStream.webkitEnterFullscreen();
+            else throw new Error("Unsupported fullscreen");
+          } else {
+            if (document.pictureInPictureElement === elements.liveStream) await document.exitPictureInPicture();
+            else if (elements.liveStream.webkitPresentationMode === "picture-in-picture") elements.liveStream.webkitSetPresentationMode("inline");
+            else if (canNativePip() && document.pictureInPictureEnabled) await elements.liveStream.requestPictureInPicture();
+            else if (canNativePip()) elements.liveStream.webkitSetPresentationMode("picture-in-picture");
+            else throw new Error("Unsupported picture in picture");
+          }
+        } catch {
+          elements.displayFeedback.textContent = "This display mode is unavailable here. The camera remains open.";
+        } finally { button.disabled = false; updateDisplayControls(); }
       };
 
       window.addEventListener("message", (event) => {
@@ -925,6 +989,7 @@
           const pending = pendingRequests.get(message.id);
           if (!pending) return;
           pendingRequests.delete(message.id);
+          clearTimeout(pending.timer);
           message.error ? pending.reject(message.error) : pending.resolve(message.result);
           return;
         }
@@ -940,11 +1005,12 @@
       const initializeBridge = async () => {
         if (!hosted) return null;
         const result = await rpcRequest("ui/initialize", {
-          appInfo: { name: "u1-camera-widget", version: "0.3.0-camera-v4" },
+          appInfo: { name: "u1-camera-widget", version: "0.3.1-camera-v5" },
           appCapabilities: {},
           protocolVersion: "2026-01-26",
         });
         rpcNotify("ui/notifications/initialized", {});
+        hostBridgeAvailable = true;
         applyHostContext(result?.hostContext);
         return result;
       };
@@ -966,6 +1032,11 @@
 
       elements.goLive.addEventListener("click", openCameraStream);
       elements.closeLive.addEventListener("click", closeLive);
+      elements.fullscreen.addEventListener("click", () => void requestCameraDisplay("fullscreen"));
+      elements.pip.addEventListener("click", () => void requestCameraDisplay("pip"));
+      document.addEventListener("fullscreenchange", updateDisplayControls);
+      for (const event of ["enterpictureinpicture", "leavepictureinpicture", "webkitpresentationmodechanged", "webkitbeginfullscreen", "webkitendfullscreen"]) elements.liveStream.addEventListener(event, updateDisplayControls);
+      window.addEventListener("openai:set_globals", (event) => applyHostContext(event.detail?.globals));
       window.addEventListener("pagehide", () => {
         livePreview = false;
         stopLiveStream();

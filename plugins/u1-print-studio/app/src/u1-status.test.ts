@@ -1,4 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test";
+import { readFileSync } from "node:fs";
+import { runInNewContext } from "node:vm";
 
 import {
   CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS,
@@ -63,6 +65,24 @@ describe("camera ICE handoff", () => {
 });
 
 describe("streamed JPEG extraction", () => {
+  test("camera frame propagates accepted JPEG receipt time, not request start time", async () => {
+    const source = readFileSync(new URL("./u1-status.ts", import.meta.url), "utf8");
+    const start = source.indexOf("export async function readU1CameraFrame()");
+    const next = source.indexOf("\nexport ", start + 1);
+    const body = source.slice(start, next < 0 ? undefined : next).replace("export async function", "async function");
+    const javascript = new Bun.Transpiler({ loader: "ts" }).transformSync(body);
+    const receivedAt = "2026-08-31T07:30:05.000Z";
+    const context: any = {
+      Buffer,
+      readU1CameraJpeg: async () => ({ bytes: Buffer.from([0xff, 0xd8, 0xff, 0xd9]), observedAt: receivedAt }),
+    };
+    runInNewContext(`${javascript}\nglobalThis.readFrame = readU1CameraFrame;`, context);
+    const result = await context.readFrame();
+    expect(result.frame.observedAt).toBe(receivedAt);
+    expect(result.frame.available).toBe(true);
+    expect(result.metadata.cameraFrame.dataUrl).toStartWith("data:image/jpeg;base64,");
+  });
+
   test("budgets a slow first snapshot before bounded retry", () => {
     expect(CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS).toEqual([20, 10]);
   });

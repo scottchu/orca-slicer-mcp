@@ -8,11 +8,55 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0022
+5. decisions 0014 through 0024
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
+
+Decision 0024's user-requested private widget directory now comes first.
+Both dashboard roots serve static eight-link navigation in current source,
+with honest implementation-coverage labels and no data/media acquisition.
+Exact focused routes and public rejection remain unchanged. The directory
+HTML is imported as text into the HTTP bundle; do not add a new mandatory
+external asset that invalidates previously staged rollback releases.
+Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
+tests, TypeScript, repository checks, all bundles/signing, six directory
+captures, 20 route checks and 12 keyboard checks with zero acquisition.
+The copied HTTP bundle serves exact directory bytes without an external index
+asset. Independent code/visual review reports no findings; see `design-qa.md`.
+The directory source and validated evidence are included in this PR30 follow-up.
+Next obtain separate merge/rollout authorization, then validate the actual user
+view. No deployment or installation occurred; missing-domain implementation
+also needs separate scope. Decision 0023's footer/chrome fixes remain intact.
+
+Decision 0023 presentation polish and finite host-loading repair are preserved.
+Read its design contract and `design-qa.md`. Current source is runtime `0.3.1`,
+schema `5`, observation-v3/camera-v5; deployed services/local plugin are not
+changed. Observation-v2/v1 and camera-v4 are current aliases and legacy frozen
+bytes remain identical. Keep the exact two-visible/eight-app-only tool inventory.
+Ten resources retain old descriptors without promising old cached HTML updates.
+Independent executable synthetic-host/clock/frame tests are source evidence.
+The initially blocked rendered gate was followed by explicitly user-authorized
+isolated headless validation: 67 observation captures, 22 camera captures,
+13 camera behavior checks and three keyboard/unavailable checks passed with
+no final overflow or console errors. This is rendered synthetic-fixture
+evidence, not mounted iPhone or real-printer acceptance. Three screenshot-based
+P2 fixes improve active thermal contrast, footer warning contrast, and Jobs
+copy; current tests pass 134/939 plus 21 lifecycle tests and all bundles/signing.
+Source commit `db4e250` is pushed and delivered in
+[draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
+Independent formal review approves source-only with no unresolved findings;
+initial source delivery is complete. The bounded headless follow-up has
+independent formal approval with no new findings and scoped visual QA passes.
+The follow-up source/evidence is pushed as `643b5dd` through existing draft
+PR30; remote branch and open draft head matched at the delivery check.
+Next obtain separate authorization for merge/rollout, followed by
+mounted iPhone validation. Private focused URLs still serve runtime0.3.0;
+the deployed `/dashboard` redirects to progress and is not the source directory
+or the deferred overview. Static
+route success is not data-mapping or new-version acceptance. Do not repeat the historical install or
+restart below, and do not infer authorization to map missing domains.
 
 PR28 merged as `2160492a4ce63d1409673786ea02b253d7cfaace`, combining PR27's
 exclusive camera routing with focused widgets and decision-0022 persistence.
@@ -74,8 +118,8 @@ Every `observe_printer` call projects only its selected module. Progress,
 thermals, and heads are implemented from normalized fields; jobs current state
 is limited, and queue, fans, bed mesh, cavity, filament material/color, and
 history remain honest unknown/unavailable values pending live mapping evidence.
-Overview is deferred. Current resources are observation-v2 and camera-v4;
-observation-v1 is a current-asset alias, while status v4/v3 and camera v3/v2/v1
+Overview is deferred. Current source resources are observation-v3 and camera-v5;
+observation-v2/v1 and camera-v4 are current-asset aliases, while status v4/v3 and camera v3/v2/v1
 serve frozen legacy bytes.
 
 The implementation is a desktop-local read-only connector. A normal user must
@@ -92,7 +136,8 @@ decision 0015.
 - `u1-print-studio mcp` starts the desktop stdio connector.
 - The hosted widget contains no `fetch(` call and declares empty external CSP
   domains.
-- Current descriptors point to `observation-v2.html` and `camera-v4.html`.
+- Current source descriptors point to `observation-v3.html` and `camera-v5.html`.
+  Observation-v2/v1 and camera-v4 are current aliases.
   Frozen status-v4/status-v3 and camera-v3/v2/v1 resources remain readable for
   retained cards. A plugin upgrade can require a
   full host-process quit and relaunch; a new task alone did not replace the MCP
@@ -146,7 +191,7 @@ proxy, Control, or Admin behavior appears.
 `show_u1_status` and `get_u1_status` are compatibility aliases only, not model
 intents. Every non-camera view projects the same normalized observation and
 preserves time, freshness, connection epoch, session identity, provenance, and
-capability evidence. Camera retains its separate acquisition time and camera-v4
+capability evidence. Camera retains its separate acquisition time and camera-v5
 lifecycle. The one user-facing procedural observation skill is
 `$u1-observe-printer`. The current installed plugin carries schema 5,
 observation-v2, camera-v4, and the same two-visible/eight-app-only inventory.
@@ -271,20 +316,24 @@ live mappings rather than repeating the completed rollout.
 
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
-docs/requirements.md, the active iteration, and decisions 0014 through 0022.
-PR28 is merged and app revision2160492 is deployed; verify the latest rollout
-record, then finish delivery of the independently reviewed lifecycle race fix.
-If its follow-up is already merged, proceed to full host reload and user visual
-acceptance of focused widgets, then scope the remaining unknown live mappings.
+docs/requirements.md, the active iteration, and decisions 0014 through 0023.
+PR28/PR29 persistence delivery is historical completed work. Current decision0023
+source commitdb4e250 has independent source-only approval and draftPR30 delivery.
+Authorized isolated headless validation and scoped visual QA now pass, with
+independent formal approval. The three bounded fixes and evidence are pushed
+as643b5dd through existing draftPR30. Next obtain separate authorization for
+merge/rollout and actualphone validation. The supported browser list was
+empty, and actual iPhone/fullscreen/PiP or deployed acceptance remains separate.
 Use exact existing owner LaunchAgents, versioned release/pinned Bun, fixed
 focused routes defaulting to progress, and one observation store per process.
 Preserve existing OAuth state, private env, routes, and unrelated dirty docs.
 Do not change Mac power/login or issue printer controls. Source exposes
 exactly `observe_printer` with its closed eight-view enum plus
 `open_printer_camera`; app-only refresh, legacy aliases, and five camera helpers
-remain hidden. It uses observation-v2, camera-v4, frozen legacy resources, one
+remain hidden. Source uses observation-v3, camera-v5, frozen legacy resources, one
 explicit-refresh/coalescing/stale-retention store, and selected-module
 projections. Camera is separate and overview is deferred. Preserve decision
-0020 fan-out and the secure remote boundaries. Service rollout is authorized;
-publication, route/auth changes, and physical-printer acceptance are not.
+0020 fan-out and the secure remote boundaries. This slice authorizes source-only
+presentation repair, not new service rollout, publication, route/auth changes,
+missing-domain backend implementation, or physical-printer acceptance.
 ```

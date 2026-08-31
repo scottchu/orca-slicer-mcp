@@ -561,12 +561,12 @@ export async function readU1CameraFrame(): Promise<{
   const observedAt = new Date().toISOString();
 
   try {
-    const { bytes } = await readU1CameraJpeg();
+    const { bytes, observedAt: receivedAt } = await readU1CameraJpeg();
 
     return {
       frame: {
         schemaVersion: 1,
-        observedAt,
+        observedAt: receivedAt,
         available: true,
         mediaType: "image/jpeg",
         byteLength: bytes.length,

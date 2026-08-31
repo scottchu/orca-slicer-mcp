@@ -5,13 +5,26 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: integrate PR27's camera-routing guard with PR28's
-  focused widgets, validate and independently review, merge, then deliver
-  decision 0022's persistent personal HTTP services. The user has authorized
-  this merge and installed/server rollout. Reuse only the existing two owner
-  LaunchAgents, preserve OAuth state and all Serve/Funnel routes, and do not
-  change Mac login/power settings or issue printer controls. Orca Preparation
-  discovery remains preserved and neither subsystem becomes secondary.
+- Current execution order: decision 0024's private widget-directory source is
+  implemented and independently validated before any rollout. Both source dashboard roots serve
+  a navigation-only catalog of eight focused views with honest implementation
+  coverage; no composed overview or automatic observation/media acquisition.
+  Preserve decision 0023's reviewed bottom timestamp/refresh footers and
+  removal of read-only/current-reading/provenance chrome. Its source and
+  isolated headless follow-up already pass independent review; the older
+  deployed widgets do not contain those changes yet. Deliver the bounded
+  directory and local route/browser evidence through existing draft PR30.
+  Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
+  tests, six directory captures, 20 route checks, 12 keyboard checks and
+  packaged inclusion with zero acquisition; code/visual review reports no
+  findings. Separate design, author, validation, and review roles are preserved.
+  Next obtain separate merge/rollout authorization and actual user validation. This
+  request does not authorize merge, deployment, plugin installation, services,
+  authentication/routing changes, printer access, or missing backend mappings.
+  PR28/PR29 and persistence rollout are historical delivered work, not tasks to
+  repeat. Mac login/power and printer-control changes remain excluded. Orca
+  Preparation discovery remains preserved and neither subsystem becomes
+  secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
@@ -122,6 +135,49 @@
   readiness checks use health/static routes only, without printer status or
   camera acquisition. Record deployed process, assets, route/auth preservation,
   mounted host, real-printer, and user outcome as distinct evidence layers.
+
+## 2026-08-31 quiet focused-widget presentation acceptance
+
+- Follow decision 0023. Keep useful titles, content, and head cards; remove
+  visible read-only copy, duplicate provenance/current-reading lines, and
+  command/version chrome. Put source time and one refresh control in a shared
+  non-camera footer. Preserve explicit stale, offline, and unknown states.
+- Camera has no external header/footer, observation line, or refresh control.
+  Its image overlay carries Snapshot, Fallback, or Live with the accepted
+  image/frame time. Network/FPS debug is hidden; fullscreen and PiP remain
+  feature-detected presentation actions, never printer controls.
+- Snapshot time remains bound to the successfully displayed JPEG and uses
+  successful acquisition receipt time. Live time advances only with genuine
+  video-frame evidence, freezes on stall, and is not called printer capture
+  time. Failed refreshes must not retimestamp retained images.
+- Fix finite host initialization/result-delivery states without replacing
+  unknown/unavailable capabilities with demo values. A pending view must end
+  in data or actionable failure. Queue, fans, bed mesh, cavity, filament
+  identity, and job history are not accepted capabilities merely because a
+  view is registered.
+- Separate software/synthetic-host checks from rendered visual and mounted
+  iPhone acceptance. Browser inventory is currently unavailable; source and
+  HTTP checks cannot accept screenshots, fullscreen/PiP behavior, or the
+  user's visual outcome.
+
+## 2026-08-31 private widget-directory acceptance
+
+- Follow decision 0024 and updated DEPLOY-002: private `/dashboard` and
+  `/dashboard/` serve the same static directory, replacing only the earlier
+  root-to-Progress redirect. All eight focused URLs remain unchanged.
+- List Progress and Camera as implemented; Thermals, Heads & Filaments, and
+  Jobs as partial with their missing domains named; Queue, Fans, and Bed Mesh
+  as unimplemented data capabilities whose explanatory views remain openable.
+  These labels describe release coverage, never live printer health.
+- Use existing 720-pixel light/dark styling and compact keyboard-accessible
+  links. No giant map, embedded widget, refresh/observation/permission chrome,
+  search/filter system, external assets, or new client-side dependency.
+- Prove root/focused routing, public rejection, exact hrefs, zero directory
+  acquisition, no overflow at 320/390/720 pixels, and visible keyboard focus.
+  Preserve quiet focused-card footer and camera behavior regressions.
+- Source and synthetic browser evidence do not deploy the feature or prove
+  mobile-host, printer, missing-domain, or user-outcome acceptance. Separate
+  authorization remains necessary before merge or rollout.
 
 ## Outcome
 

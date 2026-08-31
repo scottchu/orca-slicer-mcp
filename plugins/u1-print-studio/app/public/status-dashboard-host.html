@@ -19,11 +19,12 @@
         min-height: 30px; padding: 4px 10px; border: 1px solid #3b424d;
         border-radius: 8px; color: inherit; background: #20252c; cursor: pointer;
       }
-      iframe { display: block; width: 100%; height: calc(100vh - 45px); border: 0; background: #fff; }
+      header[hidden] { display: none; }
+      iframe { display: block; width: 100%; height: 100vh; height: 100dvh; border: 0; background: #fff; }
     </style>
   </head>
   <body>
-    <header>
+    <header hidden>
       <strong id="view-title">U1 Printer Observation</strong>
       <span id="bridge-state" role="status" aria-live="polite">starting</span>
       <span class="spacer"></span>
@@ -72,7 +73,7 @@
         });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error ?? `HTTP ${response.status}`);
-        bridgeState.textContent = "Read-only · observation received";
+        bridgeState.textContent = "Observation received";
         return result;
       };
 
@@ -118,7 +119,7 @@
         }
 
         if (message.method === "ui/request-display-mode" && typeof message.id === "number") {
-          reply(message.id, { displayMode: message.params?.mode ?? "inline" });
+          reply(message.id, { mode: "inline" });
         }
       });
 

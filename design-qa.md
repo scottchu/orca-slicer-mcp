@@ -1,4 +1,271 @@
-# Snapmaker U1 status-card theme QA
+# U1 focused-widget presentation QA — 2026-08-31
+
+## Private widget directory — independent rendered review
+
+Scoped result: passed against decision 0024, with no blocking visual findings.
+The independent formal reviewer opened all six current screenshots captured by
+the separate validator: 320, 390 and 720 CSS pixels, each in light and dark mode.
+Product Design review guidance informed inspection of hierarchy, readability,
+wrapping and interaction affordances; this is not a new redesign.
+
+1. **Narrow directory, 320 pixels — passed in both themes.** The heading and
+   release-coverage explanation fit without clipping. All eight whole-card
+   links have readable titles, text labels and naturally wrapped descriptions.
+   Partial/unimplemented entries remain visually openable; they do not imply
+   live printer health or appear disabled.
+2. **Phone-width directory, 390 pixels — passed in both themes.** The one-column
+   rhythm and inset cards remain consistent. Heads & Filaments and the longer
+   unavailable-domain descriptions fit without collisions or truncated copy.
+3. **Wide directory, 720 pixels — passed in both themes.** Two columns preserve
+   row-major reading order and clear whole-card link affordances. Spacing,
+   rounded surfaces and muted secondary text match the existing visual system.
+
+No timestamps, refresh controls, permission/provenance captions or fabricated
+previews appear. Coverage labels use text, not color alone. Semantic anchors
+and focus CSS were inspected; the validator separately records all-eight
+keyboard order, first-link activation and zero overflow/acquisition.
+
+Evidence remains outside Git under the logical `directory-captures` collection.
+The reviewed HTML SHA-256 is
+`1ffc53eefa9842d0741680f1e14d636bb8b2c84401a8382d8c222f39bc263d1b`;
+the matching report SHA-256 is
+`985905efc0ac9a4436a22f7220b5949d28c2a7951291a0621583c70cc4c40aa3`.
+Capture conditions and representative fingerprints are in `VALIDATION.md`.
+Focused destinations during keyboard activation were synthetic stubs. This
+accepts rendered navigation only, not full accessibility, deployed routing,
+iPhone behavior, real printer/camera reachability, missing mappings or the user's
+final outcome. Existing focused-widget QA and its heater-state follow-up remain
+unchanged below.
+
+## Current gate: isolated headless rendered fixtures
+
+Scoped result: passed. No actionable P0/P1/P2 findings remain in the inspected
+rendered fixture presentation. This accepts the decision-0023 visual refinement
+in isolated desktop Chrome, not a deployed widget, real camera, native iPhone
+PiP, or an implemented printer-data domain.
+
+The user explicitly authorized isolated headless-browser validation after the
+connected-browser gate below was blocked. The independent validator captured
+the production HTML in Chrome 152.0.7977.65 with synthetic observations and
+clearly labeled synthetic JPEG/canvas video. This design reviewer opened those
+captures and paired source/current comparison images; source tests alone were
+not used as visual acceptance.
+
+### Targets, normalization, and evidence locations
+
+- Source visual truth: the supplied Heads and Filaments and Camera phone
+  attachments, plus the explicit requested delta in decision 0023. Removing
+  their header clutter is intentional, not a mismatch to restore.
+- Source visual truth paths: external attachments kept outside Git, identified
+  below by logical name and SHA-256. Both are 590 by 1280 pixels. Their original
+  embedded CSS viewport, screenshot scaling, and device-pixel ratio are unknown.
+- Heads comparison crop: source x=0, y=156, width=590, height=779. Camera crop:
+  source x=0, y=605, width=590, height=445. These remove ChatGPT/phone chrome and
+  the unrelated notification while retaining the old widget headers to show
+  the requested change. Crops are scaled by 390/590 for visual comparison;
+  this is not a claim of exact original CSS density.
+- Implementation screenshot paths: external evidence directories named
+  `captures-accepted` for final observation states, `captures-final` for the
+  unchanged camera, and `design-comparisons` for paired images. Absolute
+  temporary paths and private screenshots are deliberately not committed.
+- Capture CSS widths: 320, 390, and 720; light and dark themes; extra thermal
+  checks at 400 and 410. Device scale factor is 1, locale en-GB, timezone UTC.
+  Final iframe height is fitted to content, not the initial 1000-pixel harness
+  height. Example final images: Heads 390 by 534, live Camera 390 by 220.
+- Heads fixture reproduces the four head identities, active T1, 220/220 and
+  parked 30/0, 31/0, 32/0 temperatures. Timestamp is deliberately fixed fixture
+  data, not the source phone time. Camera uses labeled synthetic artwork and
+  media, not the private printer photograph; comparison accepts image framing,
+  masks, overlays, and control legibility, not actual camera-image quality.
+- Final observation asset SHA-256:
+  `86cf5f4a4e6e29f8aa99cb14c947d20992b7b022c91c75f08642eea0a09837d0`.
+  Camera asset remains
+  `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85`.
+
+Representative evidence manifest (full manifests remain beside external
+captures):
+
+| Logical evidence | SHA-256 |
+| --- | --- |
+| Heads source attachment | `ca9d505c9e3a8799fbe0b1720dbb8a76a85d4659bdb2d5d7149fa261636d638e` |
+| Camera source attachment | `0addbbdb31de6bacd82a90ec3c77fb4bf492330dc1a4ab9883df0d11ed150404` |
+| heads-source-vs-current.png | `7121ed2b9329685aa4932ac16750cbe9dcbe1ce0cd65a402e347a54cdfa19406` |
+| camera-source-vs-current.png | `078b120eeb6b929368b2150db3eb6745863127b887d647cc7f7d8020d678daac` |
+| heads-fresh-390-light.png | `83c2173063b0bcdf05cf00df94f57c57bc2e0ac4928850cd58fa60ceee6b81b9` |
+| jobs-fresh-320-light.png | `2524e4c3a7a0e2efbd6ff0ee88e4319513b65fbb98573b40bd80a368c0d20159` |
+| thermals-fresh-390-light.png | `42d9d934d30d7612b0b5d71c9de9e71f93b999ece30c8359ae6c7181e6020212` |
+| progress-stale-390-light.png | `c1c17de1c1d4a0c2b84285f9178fb86f9a3e6158ab82112be0273f8501cd96c9` |
+| camera-fresh-390-light-live.png | `4066aff1f9ca0aa0740e1e9e23eaea5539f2b0889b05ca44968ef635e7be2b3c` |
+
+### Full-view and focused comparisons
+
+`heads-source-vs-current.png` and `camera-source-vs-current.png` put the source
+and rendered implementation in each same comparison image. The heads comparison
+preserves title, two-column phone/four-column wide layout, four physical
+identities, yellow active marker, and unknown-material text while replacing
+the clutter with one footer. Camera loses the redundant heading and network
+details, gaining a short state/time overlay and display controls.
+
+`heads-t1-focus.png` compares the first head cards at normalized width with
+2x enlargement. `camera-overlay-focus.png` compares the old and new lower image
+overlays at 2x enlargement. These checks made small labels, icon strokes,
+rounded borders, and the requested debug-to-time replacement readable. The
+different camera subject is a deliberate synthetic fixture, not a substituted
+production asset or evidence of real printer video.
+
+### Findings and comparison history
+
+Initial headless inspection found three P2 issues; it did not pass immediately:
+
+1. **P2, resolved: low-contrast active thermal values.**
+   `thermals-fresh-390-light.png` initially displayed yellow numerals on white,
+   approximately 1.89:1 contrast. The author changed numeric text to `--ink`
+   while keeping yellow on the active rail and roundel. Same-state recaptures
+   at phone and wide sizes show clear dark/light numerals. Approximate contrast
+   is now 16.72:1 on white, with the appropriate light ink in dark mode.
+2. **P2, resolved: internal vocabulary in Jobs.**
+   `jobs-fresh-320-light.png` initially exposed bare `known` and an explanation
+   about accepted normalization. The author changed these to `Current job`,
+   `History not implemented`, and `Previous jobs aren't available in this view
+   yet.` Same-width recapture verifies plain, unclipped copy without claiming
+   history exists.
+3. **P2, resolved: low-contrast footer warnings.**
+   Stale/offline/refresh-failure text initially used red with approximately
+   3.79:1 contrast on white. Final same-state light/dark captures and browser
+   computed styles confirm light rgb(184,50,50) and dark rgb(255,133,133),
+   approximately 5.93:1 and 7.02:1 against their card surfaces. The label still
+   communicates state in text, independently of color.
+
+Initial fixture screenshots also included blank space below cards because the
+harness initialized its iframe at 1000 pixels. The validator corrected the
+harness height and recaptured. That was a capture-normalization correction,
+not a product-layout finding or an implementation fix.
+
+**P3 follow-up, nonblocking:** the thermal bed row says `Unknown` for its heater
+state beside valid actual/target values. `Heater state unknown` would clarify
+which fact is missing. Cavity and other unmapped domains remain a separate
+capability task; this pass does not convert them into working measurements.
+
+### Five required fidelity surfaces
+
+- **Fonts and typography:** title/body hierarchy, weights, line heights,
+  tabular time, and head labels remain coherent in paired crops. Final numeric
+  and warning contrasts are corrected. No clipped labels were found in the
+  inspected phone/wide states. Source phone rasterization and exact font
+  density are unknown, so pixel-identical antialiasing is not claimed.
+- **Spacing and layout rhythm:** four head cards retain the selected layout;
+  footer timestamp and 44-pixel refresh align below content. Thermal actual
+  and target stay visible at 320/390 and the 400/410 breakpoint checks. Camera
+  controls and longest missing-time overlay fit 320 pixels without overlap.
+  Desktop rounded surfaces and mobile inset rhythm remain consistent.
+- **Colors and tokens:** charcoal/white surfaces and yellow active markers
+  remain consistent with the source. Live green versus fallback red is also
+  text-labeled. Final warning and value contrast fixes preserve that hierarchy.
+- **Image quality and asset fidelity:** camera mask/radius, overlay placement,
+  icon legibility, and synthetic frame scaling are visually checked. Private
+  source photographs are comparison references only; the fixture does not
+  establish real JPEG sharpness, streaming compression, or physical visibility.
+- **Copy and content:** no visible read-only/header boilerplate, transport/FPS
+  debug, synthetic thermal traces, or mesh grids remain. Missing mappings say
+  `Not implemented yet`; malformed loading has a finite error and Retry.
+  Snapshot/live/fallback times occupy the image, with no separate camera footer.
+
+### Rendered interaction and evidence boundaries
+
+The validator's final observation report records 67 captures with no console
+errors, external requests, or measured horizontal overflow. Camera records
+cover snapshot/live/fallback at all three widths and both themes, missing time,
+display rejection/coercion, and native fullscreen exit. Twelve synthetic
+live-clock advance/stall-freeze checks and a native Chrome fullscreen check
+pass; keyboard Tab reaches Refresh and Enter produces the next fixture result.
+These tests use exact production HTML with a bounded synthetic host/transport.
+
+No fixture acquires printer telemetry or real media. Host PiP is synthetic
+request/response behavior; native iPhone picture-in-picture, actual ChatGPT
+mounting, assistive-technology announcements, real mobile touch, service
+deployment, and unmapped printer data remain unverified. A headless PASS does
+not close those gates or erase the historical blocked checks below.
+
+### Next implementation checklist
+
+- Preserve the final reviewed assets and attach independent formal source
+  review before changing PR delivery state.
+- After separately authorized rollout, verify the actual phone's mounted
+  card, camera timestamp/fallback behavior, fullscreen/PiP, and navigation.
+- Implement missing printer-data domains through their own evidence boundary;
+  do not interpret accepted empty-state presentation as data implementation.
+
+## Historical connected-browser gate before headless authorization
+
+## Current comparison target
+
+- Source visual truth: the user-supplied phone screenshots of Heads and
+  Filaments, snapshot/live Camera, and repeated Waiting cards, together with
+  the requested footer/overlay changes in decision 0023. Attachments remain
+  outside the repository; private camera images are not copied or committed.
+- Source visual truth path: external conversation attachments, deliberately
+  not persisted as repository paths.
+- Source image dimensions: supplied phone captures are 590 by 1280 pixels;
+  the exact embedded card CSS viewport and device scale are not established.
+- Implementation: current `public/widget.html` and `public/camera-widget.html`.
+- Implementation screenshot path: unavailable; no connected supported browser.
+- Intended check viewports: 320, 390, and 720 CSS pixels wide. No implementation
+  screenshot dimensions, device scale, or density normalization are claimed.
+- States: all eight focused projections; missing, stale, offline and failed
+  delivery; camera snapshot, connecting, fallback, live and display-mode exits.
+- Primary interactions tested in a browser: none. VM tests are recorded in the
+  active iteration and are not a rendered interaction check.
+- Browser console errors checked: no; the browser was unavailable.
+
+## Full-view and focused-region comparison
+
+Blocked. The source screenshots were supplied in the conversation, but a
+matching rendered implementation could not be captured. There is no valid
+paired full-view or focused-region comparison, no normalized density match,
+and no basis for claiming pixel fidelity or responsive polish.
+
+## Findings
+
+- [P1] Rendered acceptance unavailable.
+  - Location: observation footer, narrow thermal/head layouts, camera status
+    and display-mode controls.
+  - Evidence: supported browser selection reported no available browser; the
+    root's browser inventory was empty.
+  - Impact: source tests cannot establish readable spacing, no overflow,
+    touch/focus behavior, accessible announcements, or iPhone fullscreen/PiP.
+  - Next check: capture the exact changed assets and compare with the supplied
+    target at matching widths/states, then test the mounted phone host.
+
+## Required fidelity surfaces
+
+- Fonts and typography: rendered family/weight, wrapping, timestamp width and
+  title hierarchy unverified.
+- Spacing and layout rhythm: bottom-footers and image overlays specified by
+  decision 0023; rendered balance and 320-pixel collisions unverified.
+- Colors and tokens: existing tokens retained by design; contrast, fallback
+  signaling and live status distinction not visually accepted.
+- Image quality and asset fidelity: no new camera capture or implementation
+  image inspected; retained JPEG and live-video behavior has separate software
+  tests, not visual fidelity acceptance.
+- Copy and content: independent production-script tests verify no repeated
+  permission chrome and honest missing/unknown states; visual truncation and
+  assistive-technology presentation remain unverified.
+
+## Comparison history and implementation checklist
+
+- Initial current pass: blocked before rendered comparison. No visual
+  correction or post-fix screenshot is claimed.
+- Capture matching light/dark states at phone and strip widths.
+- Compare title/content/footer and camera-only image anatomy together with
+  the supplied source; inspect keyboard/touch focus and overflow.
+- Exercise snapshot load/failure, live-frame stall/fallback, fullscreen/PiP
+  entry/rejection/exit and screen-reader announcements in the actual host.
+- Keep unmapped queue/fan/mesh/cavity/filament/history domains explicit; no
+  chart placeholders may be accepted as measured values.
+
+Historical connected-browser result: blocked
+
+## Historical status-card theme QA
 
 - Source visual truth: external user attachment, `Screenshot 2026-08-26 at 11.40.27 AM.png` (not retained in the repository)
 - Brand source: official Snapmaker U1 page and its served stylesheet, `https://www.snapmaker.com/snapmaker-u1`
@@ -57,4 +324,6 @@ mode status on the left and its live/close action on the right.
   left status/right action order, the semantic indicators, and the measured-FPS
   transition.
 
-final result: blocked
+Historical status-card result: blocked
+
+final result: passed
