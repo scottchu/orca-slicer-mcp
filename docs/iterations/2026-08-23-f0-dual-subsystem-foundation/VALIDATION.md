@@ -1,5 +1,69 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 bottom camera-control cluster validation
+
+The independent validator checked the narrow presentation follow-up that
+moves PiP and fullscreen beside Live/Close. Only the current camera markup and
+styles change; exact module-script comparison against `ba09653` passed with
+the unchanged JavaScript hash recorded below. The segmented observation widget
+and both frozen legacy HTML files also matched `ba09653` exactly. This does
+not alter their previously recorded evidence or deploy either PR32 refinement.
+
+- `./scripts/check-repository.sh` passed TypeScript, **143 app tests / 1,865
+  assertions**, **21 lifecycle tests**, and the repository contract. The
+  independent rerun includes the author-added bottom-cluster regression plus
+  existing camera display, frame-time, live, fallback and visibility tests.
+- `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, and exact source/bundled camera
+  `cmp` passed. `git diff --check` passed.
+- The inspected existing isolated camera fixture served exact production
+  HTML with a synthetic JPEG and a synthetic canvas video track. An explicitly
+  substituted RTC adapter prevented peer/network media creation. Chrome
+  `152.0.7977.65`, Playwright 1.55.0, a fresh context, device scale factor 1,
+  `en-GB`, UTC and dark mode captured **five screenshots**: supported Snapshot
+  controls at 320/390/720 pixels, Live at 390, and rejected display mode at 320.
+  The validator opened all five actual captures for inspection.
+- All supported controls share the same bottom-right parent in PiP,
+  fullscreen, Live/Close order. Measured targets are at least 44 by 44 pixels,
+  with 8-pixel gaps; controls never shrink, wrap internally, overlap the status
+  pill, or leave the image. At 320 pixels the complete status pill stays on a
+  row above the right-aligned cluster. There are no remaining top controls,
+  document overflow, console/page errors, or external requests.
+- **Five focused behavior cases passed**: Live-to-Close retains the cluster;
+  host-bridge fullscreen/PiP each enter and exit through the relocated buttons;
+  genuinely unsupported controls remain hidden when both host and native
+  capabilities are absent in the fixture; rejected display feedback remains
+  above and separate from the bottom controls at 320; and the longer
+  `Snapshot · Time unavailable` pill stays fully visible without clipping,
+  ellipsis or control overlap at 320.
+- The host display responses are simulated grants and the video is synthetic.
+  These checks exercise the existing production handlers and browser layout;
+  they do not establish native phone PiP, actual fullscreen host behavior,
+  printer camera transport or physical acceptance.
+
+Actual commands were `bun --no-env-file --config=/dev/null run
+fixture-server.ts` and `U1_CAMERA_FIXTURE_ORIGIN=<loopback-fixture-origin>
+node capture-camera-controls.mjs`. Requests were restricted to the loopback
+fixture/data URLs, service workers were blocked, and background networking
+was disabled. Private fixture scripts, screenshots and the logical report
+remain outside Git. The browser/context and loopback fixture were stopped
+after the final pass. No production service, private live URL, plugin,
+authentication state, routing or printer was accessed or changed.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Camera widget | `c7691461c0500370f01d5d2a40bd88229045a3e9d1ad4b5a4b9f468ab233c526` |
+| Unchanged camera module script | `2d53b9ab7c30456f6ccfdc6519b05a442f92df2a5ab605fa859c5fe968b44811` |
+| Unchanged segmented observation widget | `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb` |
+| Private logical camera-control report | `38083b9e8e0bba3a93dbd37b4561fdb492566d17ecc7e753a70d82572af64b09` |
+| `camera-controls-320-snapshot.png` | `58b73851b532ed541ffd517f7477262fe88fbfe201bb036d1aaf87d132bc59cc` |
+| `camera-controls-720-snapshot.png` | `93233d2aa707c2048ad93826789925a32892b63267acf41a5dcd766f5ce9bed5` |
+| `camera-controls-320-rejection.png` | `851fed0a44e08a00ca217b58898021c022dbfee3cac094d91b8bc12ffcf9ee3d` |
+
+This accepts source/software and isolated synthetic rendering only. Independent
+formal/design review owns its separate verdict; merge, rollout, actual mounted
+mobile behavior and user acceptance remain separate for this follow-up.
+
 ## 2026-08-31 segmented layer-progress validation
 
 The independent validator checked decision 0023's segmented-bar addendum

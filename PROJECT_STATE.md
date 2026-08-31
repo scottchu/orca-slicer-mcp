@@ -10,7 +10,16 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-- Current task: the user's segmented-layer progress refinement is implemented
+- Current task: camera PiP and fullscreen now sit beside Go Live/Close in one
+  bottom-right cluster, with status/time left and narrow-screen wrapping.
+  Source-only DOM/CSS changes preserve camera JavaScript and the reviewed
+  segmented-progress bytes. Independent validation passes 143 app tests/1,865
+  assertions, 21 lifecycle tests, TypeScript, repository/bundle/signature checks,
+  and five browser captures. Independent code/visual review approves with no
+  findings; the reviewer passes 51 tests/556 assertions. Next update existing
+  PR32, not a new PR. Neither PR32 refinement is deployed;
+  no merge, installation, restart or printer access is authorized here.
+- Delivered PR32 source baseline: the user's segmented-layer progress refinement is implemented
   in source under decision 0023's dated addendum. Only the current observation
   HTML and its VM regressions change at runtime/test level. Layer-position
   blocks group large totals at 24 narrow or 48 wide, preserve independent
@@ -21,7 +30,7 @@ Last updated: 2026-08-31
   Twelve isolated screenshots and eight browser behavior cases pass.
   Independent code and scoped visual review approve with no blocking findings;
   the reviewer independently passes 58 tests/1,441 assertions. Next deliver
-  this bounded source slice through a new PR. It is not deployed.
+  the camera follow-up through the same open PR32. Neither is deployed.
   Source and deployed baseline both
   retain runtime `0.3.1`, schema `5`, observation-v3/camera-v5, so version strings
   alone do not prove segmented assets are installed. Preserve the prior PR30
@@ -462,8 +471,8 @@ and final repository-check results.
 
 ## Next action
 
-Independent source/browser validation and code/visual review pass. Deliver
-the reviewed segmented-layer strip through a new PR.
+The segmented source is delivered in PR32. Camera-control placement now passes
+independent validation and code/visual review; update that same PR without rollout.
 Current widget SHA-256 is
 `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb`;
 it is source-only, despite retaining the deployed baseline's version labels.

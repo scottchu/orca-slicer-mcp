@@ -1,6 +1,29 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 segmented-layer progress — current source handoff
+## 2026-08-31 camera-control grouping — current source handoff
+
+The existing open PR32 now has a source follow-up grouping PiP, fullscreen,
+and Go Live/Close at the bottom right. Status/time stays left and wraps above
+the intact 44-pixel controls when needed; rejection feedback uses the freed
+top inset. Camera HTML and camera VM tests are the only new runtime/test paths;
+camera JavaScript and the reviewed segmented-progress bytes remain unchanged.
+Camera HTML SHA-256 is
+`c7691461c0500370f01d5d2a40bd88229045a3e9d1ad4b5a4b9f468ab233c526`;
+test SHA-256 is `4aab7ffc4134c4ff2d57b34313ba242a6c9411a9c3f03e075af30cc420508e5d`.
+Author checks pass 39 tests/295 assertions. Independent validation passes
+143 app tests/1,865 assertions, 21 lifecycle tests, TypeScript, repository
+checks, all bundles/signatures and asset comparisons. Five browser captures
+pass; code/visual review approves without findings and independently passes
+51 tests/556 assertions. Reviewed 320-pixel wrapping preserves the full
+timestamp and 44-pixel controls with 8-pixel gaps; wider views keep one row,
+Live uses Close last, and rejection feedback stays clear above. Missing-time
+and hidden-control geometry checks also pass. Next update the same PR32.
+Neither this nor its segmented baseline is deployed. Schema/version labels,
+services, plugins, auth/routes and printer state are untouched; prior PR30
+rollout authorization does not carry forward. Source/browser fixtures do not
+prove native phone PiP or real-printer behavior.
+
+## 2026-08-31 segmented-layer progress — delivered PR32 source baseline
 
 The user requested a segmented layer strip within the existing focused
 progress card. Decision 0023's dated addendum records the bounded design:
@@ -35,8 +58,8 @@ bar position and footer, not pixel identity of outer screenshot crops/padding.
 No acceptance is inferred from earlier PR30 evidence. Actual commands and hashes are in the newest
 `VALIDATION.md` entry.
 
-Next deliver this independently reviewed source change through
-a new PR. It is not deployed: both source and the installed baseline retain
+This independently reviewed source is delivered in PR32, now awaiting the
+camera placement follow-up. It is not deployed: source and the installed baseline retain
 runtime `0.3.1`, schema `5`, observation-v3/camera-v5, making exact source/asset
 hashes essential. The previously authorized PR30 rollout is completed and its
 records remain preserved below; its permission does not carry forward to a

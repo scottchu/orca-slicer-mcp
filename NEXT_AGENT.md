@@ -14,7 +14,16 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-The user's segmented-layer progress strip is the current source slice. Read
+Current source follow-up in existing PR32 moves camera PiP/fullscreen beside
+Go Live/Close, preserving 44-pixel controls and complete timestamps through
+narrow wrapping. Camera JavaScript and segmented-progress bytes are unchanged.
+Independent validation passes 143 app tests/1,865 assertions, 21 lifecycle
+tests, TypeScript, repository/bundle/signature checks and five browser captures.
+Independent code/visual review approves without findings, with 51 tests/556
+assertions independently passing. Update PR32, not a new PR.
+Both refinements remain undeployed and require separate merge/rollout authority.
+
+The user's segmented-layer progress strip is the delivered PR32 baseline. Read
 decision 0023's dated refinement. Source implementation is complete in the
 current observation HTML and its VM tests: 24/48 responsive block budgets,
 valid layer-position fill rather than reported print percentage, partial
@@ -25,7 +34,7 @@ tests, TypeScript, repository checks, three bundles/signature checks and exact
 bundled/frozen asset comparisons. Twelve screenshots and eight isolated browser
 behavior cases pass. Independent code and scoped visual review approve without
 blocking findings; the reviewer independently passes 58 tests/1,441 assertions.
-Next deliver the reviewed source through a new PR. Do not merge, deploy, install, restart,
+Update that existing PR with the separately reviewed camera follow-up. Do not merge, deploy, install, restart,
 or contact the printer under the completed PR30 rollout authorization.
 Source and installed baseline both say `0.3.1`/schema `5`/observation-v3/
 camera-v5; require exact asset bytes to distinguish the segmented source from
@@ -271,8 +280,8 @@ service or shared secret is configured.
 
 ## Next smallest action
 
-Deliver the independently validated and code/visually approved segmented
-source in a new PR. The source widget SHA-256 is
+Deliver approved camera placement in existing PR32 while retaining its
+approved segmented source. The source widget SHA-256 is
 `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb`;
 the companion observation-test SHA-256 is
 `038438f1e4d8e781a31c7272c43a3beaf18e9b423d6158d396e79b8ce5b3b0ef`.
@@ -328,7 +337,9 @@ docs/requirements.md, the active iteration, and decisions 0014 through 0024.
 Current source task is decision0023's dated segmented-layer refinement. Author
 implementation and independent validation pass142app/1849assertions21lifecycle,
 12screenshots8browsercases. Independentcode/visualreviewAPPROVES with58tests/
-1441assertions passing. Next source PR delivery. The segmented asset is NOT deployed;
+1441assertions passing; it is delivered in PR32. CurrentcameraDOM/CSSfollowup
+passes143tests1865assertions21lifecycle5capturesandindependentcode/visualreview;
+updateSAMEPR32. Neitherassetisdeployed;
 unchanged0.3.1/schema5/observation-v3 labels do not establish exact installed bytes.
 Prior merge/rollout authority is complete and does not authorize this new slice.
 PR30 merged as48a106d after explicit merge+two-service-rollout authorization.

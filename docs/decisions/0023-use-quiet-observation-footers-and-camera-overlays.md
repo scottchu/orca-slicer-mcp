@@ -194,3 +194,31 @@ except an unavailable layer caption when valid layer data is absent.
 - This request authorizes source changes and local validation only. Prior
   PR30 merge/rollout authority is complete, not permission to merge, deploy,
   install a plugin, restart services, contact the printer, or expand domains.
+
+## 2026-08-31 refinement — group camera controls beside Live
+
+The user requests fullscreen and picture-in-picture beside Live at the lower
+right. This supersedes only this decision's earlier upper-right placement.
+
+- Remove the separate top control row. Use one bottom-right cluster ordered
+  Picture in picture, Fullscreen, then the existing Go Live/Close control.
+  Preserve button identities, feature detection, hidden/pressed/disabled
+  states, accessible names, keyboard behavior, and all media/display logic.
+- Keep each visible button at least 44 by 44 pixels with 8-pixel gaps. The
+  cluster never shrinks or wraps internally; unsupported buttons remain absent.
+  Keep the existing bottom and side insets, icons, colors, and image geometry.
+- Status and truthful timestamp remain at the bottom left. When status plus
+  the full button cluster cannot fit on one row, the status stays left on the
+  preceding line and the entire cluster wraps below it, right-aligned inside
+  the image. At 320 pixels do not hide or truncate the timestamp, squeeze
+  targets, overlap content, or move controls outside the camera.
+- Use the newly free top inset for existing display-rejection feedback so it
+  cannot overlap the narrow two-row bottom overlay. Do not add a caption,
+  heading, observation footer, new control, or new status/debug copy.
+- Check snapshot/live/fallback, all and partially available display controls,
+  rejection feedback, keyboard order, and 320/390/720 light/dark layouts.
+  Source tests and isolated browser captures do not establish actual mobile
+  PiP, production rollout, or real-printer behavior.
+- Deliver this layout-only follow-up in existing PR32, preserving the reviewed
+  segmented-progress asset and tests. No new merge, deployment, installation,
+  service change, authentication/routing change, or printer action is included.

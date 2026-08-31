@@ -1,5 +1,33 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Camera bottom-right controls — independent rendered review
+
+Scoped result: passed against decision 0023's latest placement refinement,
+with no blocking findings. Product Design review guidance informed inspection
+of all five current validator captures and the bounded DOM/CSS change.
+
+1. **Snapshot at 320/390/720 pixels — passed.** PiP, Fullscreen and Go Live
+   form one bottom-right cluster with unchanged icons and 44-pixel targets,
+   separated by 8-pixel gaps. At 320 pixels the complete status/time stays left
+   on the preceding line; the cluster neither shrinks nor wraps internally.
+2. **Synthetic live at 390 pixels — passed.** Close occupies the final position
+   beside the same display controls, with the live state/time retained left.
+3. **Rejection at 320 pixels — passed.** Feedback occupies the freed top inset
+   without touching the two-row bottom overlay or obscuring its controls.
+
+The separate validator report confirms hidden unsupported controls and a full
+missing-time label without overlap. Source review verifies unchanged button
+identities, accessible names and DOM control order; the entire media script
+is byte-identical to the prior reviewed source. The reviewer independently
+passed 51 focused tests/556 assertions. This does not claim a new native-phone
+PiP, keyboard/screen-reader audit, transport test or deployment acceptance.
+
+External evidence remains under the logical `camera-controls-captures`
+collection. Reviewed camera HTML SHA-256:
+`c7691461c0500370f01d5d2a40bd88229045a3e9d1ad4b5a4b9f468ab233c526`.
+The fixture uses synthetic images/video and substituted host/RTC behavior;
+no real camera, printer or service was accessed. Earlier reviews remain below.
+
 ## Segmented layer progress — independent rendered review
 
 Scoped result: passed against decision 0023's dated refinement, with no

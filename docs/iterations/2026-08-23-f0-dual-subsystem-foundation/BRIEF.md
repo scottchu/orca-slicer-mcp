@@ -5,7 +5,19 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: validate and deliver the user's implemented segmented-layer progress
+- Current execution order: group camera fullscreen and picture-in-picture
+  beside Go Live/Close at the bottom right, per decision 0023's newest dated
+  refinement. Keep status/time left, accessible targets, responsive wrapping,
+  and existing media/display behavior; no runtime signaling change. Validate
+  and independently review this implemented layout-only follow-up in existing
+  PR32. Independent validation passes 143 app tests/1,865 assertions,
+  21 lifecycle tests, repository/TypeScript/bundle/signature checks and five
+  captures. Independent code/visual review approves without findings, with
+  51 tests/556 assertions passing. Camera JavaScript is byte-identical.
+  Preserve its already delivered segmented-progress source and tests. No
+  merge, deployment, plugin/service/auth/routing change or printer access is
+  authorized by this request.
+- Completed source baseline in PR32: the user's implemented segmented-layer progress
   refinement under decision 0023's dated addendum. Keep the existing card,
   reported percentage, and bottom timestamp/refresh footer; replace only the
   continuous strip with truthful layer-position blocks, responsively grouping

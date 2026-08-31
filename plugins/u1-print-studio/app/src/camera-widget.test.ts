@@ -85,6 +85,30 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
 }
 
 describe("camera widget presentation runtime", () => {
+  test("groups existing display and live controls beside the bottom timestamp", () => {
+    const body = html.split("<body")[1]!.split('<script type="module">')[0]!;
+    const cluster = body.match(/<div class="camera-controls">([\s\S]*?)<\/div>/)![1]!;
+    const ids = [...cluster.matchAll(/<button[^>]+id="([^"]+)"/g)].map(match => match[1]);
+    expect(ids).toEqual(["picture-in-picture", "fullscreen", "go-live", "close-live"]);
+    expect(body.indexOf('class="camera-controls"')).toBeGreaterThan(body.indexOf('class="camera-bottom"'));
+    expect(body.indexOf('class="camera-controls"')).toBeGreaterThan(body.indexOf('id="camera-detail-label"'));
+    expect(body.match(/id="picture-in-picture"/g)).toHaveLength(1);
+    expect(body.match(/id="fullscreen"/g)).toHaveLength(1);
+    expect(html).not.toContain("camera-top");
+    const controlsStyle = html.match(/\.camera-controls \{([^}]+)\}/)![1]!;
+    expect(controlsStyle).toContain("flex: none;");
+    expect(controlsStyle).toContain("gap: 8px;");
+    expect(controlsStyle).toContain("margin-left: auto;");
+    expect(html.match(/\.camera-actions \{([^}]+)\}/)![1]).toContain("flex-wrap: wrap;");
+    const displayStyle = html.match(/\.display-button \{([^}]+)\}/)![1]!;
+    expect(displayStyle).toContain("width: 44px;");
+    expect(displayStyle).toContain("height: 44px;");
+    expect(displayStyle).toContain("flex: none;");
+    expect(html.match(/\.display-feedback \{([^}]+)\}/)![1]).toContain("top: 12px;");
+    expect(html).toContain('.display-button[hidden] { display: none; }');
+    expect(html).toContain('.camera-button[hidden] { display: none; }');
+  });
+
   test("uses image-only chrome and does not announce each changing clock", () => {
     expect(html).not.toContain("Read only");
     expect(html).not.toContain('class="camera-heading"');
