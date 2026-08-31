@@ -18,11 +18,19 @@ new integrated widget. The candidate contract is runtime 0.4.3/tool schema 9/
 observation-v9/camera-v8 with nineteen resources, retaining observation-v8 and
 prior aliases without adding tools. Author checks pass **223 app tests/3,150
 assertions**. Independent validation passes those repository suites plus **21
-lifecycle, 22 shipping and 15 focused tests/7,046 assertions**, TypeScript/diff
+lifecycle, 22 shipping and 15 focused tests/7,049 assertions**, TypeScript/diff
 checks, all three bundles/code signing and six exact emitted HTML assets. The
 three foundation files match `4fbb96c`. Frozen widget SHA-256 is
-`fc21b09e8523bc9c57be541fed5f5446e78d3593ee33b74f82a4b6b183ba90f5`;
+`76d356cc287f11e400f896640162134bcabf8ca8b0ce883a2e46ed1024564092`;
 index is `626348d296d8748e83c7a4e7732656694de3b1dc3ece259fb1e92bb1ce32c0b6`.
+Formal review found the prior singular summary `1 jobs`; author changed only
+the widget and focused test to render `1 job is not displayed` while preserving
+the plural form. Focused author checks pass 44 tests/1,565 assertions; full
+223/3,150, TypeScript/diff, three-bundle and code-signing gates reran green.
+Focused test SHA-256 is
+`5448fa6d6b57f02c95e2f2381957751c85006e95143550ac807827437945b51f`.
+Renewed independent validation specifically covers singular 1, plural 2 and
+large-count 900 omission summaries, finds no issues, and made no runtime calls.
 Exact-SHA review and release receipts remain pending; no Queue acquisition,
 merge, service deployment/restart or visual/device pass is claimed here.
 

@@ -372,7 +372,7 @@ describe("production observation widget host boundary", () => {
     const markup = mount({ toolOutput: payload }).modules.innerHTML;
     expect(markup).toContain("Queue state"); expect(markup).toContain("Paused");
     expect(markup).toContain("101 jobs"); expect(markup).toContain("Showing 100 of 101");
-    expect(markup).toContain("1 jobs are not displayed");
+    expect(markup).toContain("1 job is not displayed");
     expect((markup.match(/duplicate\.gcode/g) ?? []).length).toBe(2);
     expect(markup).toContain("Waited at observation 1m"); expect(markup).not.toMatch(/ETA|starts? in|live clock/i);
     expect(markup.indexOf("Observed ")).toBeLessThan(markup.indexOf("duplicate.gcode"));

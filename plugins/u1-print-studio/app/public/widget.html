@@ -303,7 +303,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           const countLabel = `${data.totalCount} ${data.totalCount === 1 ? "job" : "jobs"}`;
           body = `<div class="queue-summary"><span>${retained ? "Last observed state" : "Queue state"} <strong>${stateLabel}</strong></span><span>${retained ? "Last observed count" : "Queued"} <strong>${countLabel}</strong></span></div>`;
           body += data.totalCount === 0 ? `<div class="empty-panel"><strong>${retained ? "Last observed queue was empty" : "Queue empty"}</strong>${retained ? "Refresh to check the current queue." : "No jobs were queued at this observation."}</div>` : `<ol class="queue-list" aria-label="Reported queue order">${data.items.map(item => `<li class="queue-item"><span class="queue-position" aria-hidden="true">${item.position}</span><div><strong class="queue-name">${escapeHtml(item.filename)}</strong><div class="queue-times"><span>Added ${escapeHtml(dateLabel(item.timeAdded))}</span><span>Waited at observation ${escapeHtml(waitLabel(item.timeInQueueSeconds))}</span></div></div></li>`).join("")}</ol>`;
-          if (data.truncated) body += `<p class="queue-note">Showing 100 of ${data.totalCount} queued jobs. ${data.totalCount - data.items.length} jobs are not displayed.</p>`;
+          if (data.truncated) { const omitted = data.totalCount - data.items.length; body += `<p class="queue-note">Showing 100 of ${data.totalCount} queued jobs. ${omitted} ${omitted === 1 ? "job is" : "jobs are"} not displayed.</p>`; }
         } else {
           const unknown = data?.state === "unknown";
           const unsupported = data?.state === "unsupported";

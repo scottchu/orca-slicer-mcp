@@ -8,8 +8,11 @@ Decision 0029/OBS-012 reuse the delivered white focused-card language rather
 than adding a new visual direction. Target: top title/independent receipt,
 freshness and queue-state/count summary; bounded ordered filename/Added/observed
 waiting rows; explicit omission and empty/stale/failure states; bottom Refresh.
-Author and independent software checks pass with no code findings: 223 app
-tests/3,150 assertions, 21 lifecycle, 22 shipping, 15 focused tests/7,046
+Author and independent software checks pass after formal review found
+one singular omission-summary grammar defect. The minimal two-file correction
+passes 44 focused tests/1,565 assertions and the full author gates. Renewed
+independent checks cover 1/2/900 summaries and find no issue. Full evidence: 223 app
+tests/3,150 assertions, 21 lifecycle, 22 shipping, 15 focused tests/7,049
 assertions, TypeScript/diff checks, three bundles/code signing and six exact
 emitted assets. No screenshot,
 matched viewport/state comparison, keyboard interaction or console inspection

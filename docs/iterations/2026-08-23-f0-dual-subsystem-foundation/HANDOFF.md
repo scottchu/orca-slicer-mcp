@@ -13,12 +13,18 @@ information and bottom Refresh. Candidate source is runtime 0.4.3/tool schema 9/
 observation-v9/camera-v8 with nineteen resources and observation-v8 retained.
 No new query surface, tool or queue/file control is added.
 Author checks pass 223 app tests/3,150 assertions. Independent validation passes
-those plus 21 lifecycle, 22 shipping and 15 focused tests/7,046 assertions,
+those plus 21 lifecycle, 22 shipping and 15 focused tests/7,049 assertions,
 TypeScript/diff checks, all three bundles/code signing and six exact emitted
-assets. Frozen widget/index SHA-256 values are respectively
-`fc21b09e8523bc9c57be541fed5f5446e78d3593ee33b74f82a4b6b183ba90f5` and
+assets. Formal review then found one singular omission-summary grammar defect;
+the minimal correction changes only the widget and focused widget test. Renewed
+author checks pass 44 focused tests/1,565 assertions and the full suite/build
+gates above. Frozen widget/index SHA-256 values are respectively
+`76d356cc287f11e400f896640162134bcabf8ca8b0ce883a2e46ed1024564092` and
 `626348d296d8748e83c7a4e7732656694de3b1dc3ece259fb1e92bb1ce32c0b6`;
-the three foundation files match `4fbb96c`. Exact-SHA review remains open.
+focused widget-test SHA-256 is
+`5448fa6d6b57f02c95e2f2381957751c85006e95143550ac807827437945b51f`.
+The three foundation files match `4fbb96c`. Renewed independent validation finds
+no issues and made no runtime call; exact-SHA review remains open.
 
 Design-record changes: decision 0029, requirements, PROJECT_STATE, NEXT_AGENT,
 this iteration's BRIEF/WIDGET_TRACKS/VALIDATION/HANDOFF, and design-qa. App code
