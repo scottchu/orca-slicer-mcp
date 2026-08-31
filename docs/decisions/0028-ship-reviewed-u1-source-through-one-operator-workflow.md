@@ -116,3 +116,25 @@ for that deployed release, not proof that the new script or pending Bed Mesh
 source is accepted. Keep the paused queue work in its separate checkout.
 
 Repository skill placement follows [the official skill documentation](https://learn.chatgpt.com/docs/build-skills).
+
+## 2026-08-31 addendum: standing widget delivery authorization
+
+The user explicitly established a standing instruction to merge, redeploy, and
+verify each requested widget change. This authorizes normal U1 widget releases
+without repeating the same release-authorization question; it is not inferred
+blanket authority. Completion requires local validation, independent approval
+of the exact candidate SHA, PR merge, exact merged-build deployment through
+the existing `u1-ship` skill/script, explicit restart of BOTH existing public
+and dashboard services, and verified health, integrity, and exact served assets.
+Separately verify meaningful behavior scoped to the changed widget; distinguish
+software, deployed-service, real-printer, and actual-device evidence rather than
+claiming behavior from health/static checks. Keep index implementation labels
+consistent with delivered coverage; Queue, Fans, and Job History remain
+unfinished until their own implementation and verification are delivered.
+
+All existing identity, review, local-validation, security, preservation, and
+bounded recovery guards remain unchanged: stop on failure. Printer controls,
+authentication or Tailscale changes, and plugin reinstallation remain outside
+this authorization. This addendum changes no shipping code or skill behavior.
+Documentation-only policy or rollout records need no additional service
+deployment when application bytes are unchanged.
