@@ -1,5 +1,84 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 authorized merged-service rollout validation
+
+The user authorized merging PR30 and deploying it through the two existing
+owner-scoped U1 services. The coordinator merged reviewed head
+`1113e05ba0027b80ea6f2cf375a64cfc1704ea47` as
+`48a106d2f17550bab8dc8648af1c7c247610a228` and verified equal source trees.
+The independent validator reran `./scripts/check-repository.sh` on the clean
+reviewed head: TypeScript, **135 app tests / 1,006 assertions**, **21 lifecycle
+tests**, and the repository contract passed. The operator separately staged,
+dry-ran and installed the merged release; this validator performed no lifecycle
+writes, authentication rotation, tool calls or printer acquisition.
+
+### Independently observed deployed result
+
+- Before installation, local public/private and their HTTPS health routes
+  reported runtime `0.3.0`, schema `5`, observation-v2 and camera-v4. The
+  private `/dashboard` returned 307 and `/dashboard/` returned 404. All eight
+  old focused hosts returned 200; old widget asset hashes did not match the
+  reviewed new source. This confirmed the user's screenshots showed the
+  deployed older presentation, not the corrected source awaiting rollout.
+- After the operator reported stable paired installation, the independent
+  check at **2026-08-31 14:02:22 UTC** found all four health responses at
+  runtime `0.3.1`, schema `5`, observation-v3 and camera-v5. Public auth stayed
+  `personal-oauth`; private auth stayed `local-only`.
+- Both private directory roots now returned **200 with exact reviewed HTML**,
+  including all eight fixed links. Each focused static host also returned 200
+  and exactly matched its reviewed observation or camera host. `/widget` and
+  `/camera-widget` were byte-identical to the reviewed quiet-footer and
+  image-only camera assets. `git diff --exit-code 48a106d --
+  plugins/u1-print-studio/app` verified the comparison source still matched
+  the merged application tree.
+- A fresh isolated Chrome browser opened only the deployed static directory
+  at 390 pixels/light and 720 pixels/dark. Both actual HTTPS response bodies
+  matched source; both screenshots showed the eight entries without overflow.
+  The browser recorded only two directory document requests, zero subrequests,
+  zero blocked requests and zero console/page errors. No focused widget,
+  iframe, image, video or tool was loaded. The validator inspected both saved
+  screenshots; this is deployed navigation evidence, not a new comprehensive
+  design review or mounted-phone/printer acceptance.
+- Unauthenticated public MCP remained **401**, public enrollment remained
+  **404**, and private enrollment health remained **200** over both loopback
+  and its existing private HTTPS origin. The public U1 process rejected both
+  directory roots and all eight focused paths with **404**.
+- The shared public HTTPS origin has a preexisting unrelated root handler:
+  `/dashboard` and `/dashboard/` there return its `text-to-cad` document with
+  **200**, not the U1 directory. That content hash was unchanged before/after.
+  Do not incorrectly report a public-edge 404 or rewrite the unrelated root.
+  The private dashboard port remains outside Funnel.
+- Independent before/after SHA-256 comparisons of the existing environment
+  file, OAuth state, local configuration and raw Tailscale Serve JSON were all
+  equal during this check. No values or credentials were printed or committed.
+  Existing Funnel-enabled ports and every Serve route were unchanged.
+
+Actual validation commands were `node check.mjs baseline`, `node check.mjs
+after`, and `node capture-live-directory.mjs` in the isolated validation
+directory. The static adapter used bounded `curl --noproxy '*'` GETs without
+redirects and hashed response bodies; file/Serve comparisons recorded hashes
+only. Private scripts, reports and screenshots remain outside Git. Browser
+contexts and the browser were closed after captures. Both prior loopback
+directory-fixture servers were also stopped; no test server remains running.
+
+| Deployed/check artifact | SHA-256 |
+| --- | --- |
+| Directory response | `1ffc53eefa9842d0741680f1e14d636bb8b2c84401a8382d8c222f39bc263d1b` |
+| Observation widget response | `86cf5f4a4e6e29f8aa99cb14c947d20992b7b022c91c75f08642eea0a09837d0` |
+| Camera widget response | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Private baseline report | `6564c1a6c4478e5f6f5db81d5096f0cbb08d0118a9221f41ad3b92d0ffde5d84` |
+| Private after report | `ffd4586cc234654277f0f313b80c43dcc93f3c3a3ccf5eae4d34da736c8da859` |
+| Private deployed-browser report | `91a065a4d2749d5fec7cae04227de9e0933cc766424682f59264d0275e3123cb` |
+| `deployed-directory-390-light.png` | `2ced4f5fc9ddad88edbab85a7818df20db485fb1dc6e7332ea14cc12a9fde672` |
+| `deployed-directory-720-dark.png` | `e92bcb4b066a65fac4085ce8b59e9335388226f258a4b67d9030987e55b6bdd4` |
+
+This accepts merged-source deployment, static assets, navigation rendering and
+preserved access boundaries. No local plugin reinstallation was performed.
+Actual mounted ChatGPT/iPhone hydration, native phone PiP, real-printer data,
+camera transport and physical/user acceptance remain separate. Queue, fans,
+bed mesh and other previously unmapped domains remain unimplemented; deployment
+does not expand their capability labels into measured data.
+
 ## 2026-08-31 private widget directory validation
 
 Decision 0024's directory was checked against the exact production HTML and

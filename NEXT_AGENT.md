@@ -14,49 +14,40 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Decision 0024's user-requested private widget directory now comes first.
-Both dashboard roots serve static eight-link navigation in current source,
-with honest implementation-coverage labels and no data/media acquisition.
-Exact focused routes and public rejection remain unchanged. The directory
-HTML is imported as text into the HTTP bundle; do not add a new mandatory
-external asset that invalidates previously staged rollback releases.
-Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
-tests, TypeScript, repository checks, all bundles/signing, six directory
-captures, 20 route checks and 12 keyboard checks with zero acquisition.
-The copied HTTP bundle serves exact directory bytes without an external index
-asset. Independent code/visual review reports no findings; see `design-qa.md`.
-The directory source and validated evidence are included in this PR30 follow-up.
-Next obtain separate merge/rollout authorization, then validate the actual user
-view. No deployment or installation occurred; missing-domain implementation
-also needs separate scope. Decision 0023's footer/chrome fixes remain intact.
+The user authorized PR30 merge and rollout to the two existing HTTP services.
+[PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30) merged as
+`48a106d2f17550bab8dc8648af1c7c247610a228` on 2026-08-31. Clean-source
+staging, dry-run and paired installation passed for release
+`20260831-48a106d-widgets`. Independent checks accept both services at runtime
+`0.3.1`, schema `5`, observation-v3/camera-v5, exact static assets and preserved
+private state/access boundaries. Directory-only deployed browser checks passed
+at 390/light and 720/dark with no overflow, subrequests or errors. No plugin
+reinstall occurred; do not repeat the completed rollout. Mac login/power,
+auth/routes, printer access/control and missing-domain implementation remain
+excluded from this authorization.
 
-Decision 0023 presentation polish and finite host-loading repair are preserved.
-Read its design contract and `design-qa.md`. Current source is runtime `0.3.1`,
-schema `5`, observation-v3/camera-v5; deployed services/local plugin are not
-changed. Observation-v2/v1 and camera-v4 are current aliases and legacy frozen
-bytes remain identical. Keep the exact two-visible/eight-app-only tool inventory.
-Ten resources retain old descriptors without promising old cached HTML updates.
-Independent executable synthetic-host/clock/frame tests are source evidence.
-The initially blocked rendered gate was followed by explicitly user-authorized
-isolated headless validation: 67 observation captures, 22 camera captures,
-13 camera behavior checks and three keyboard/unavailable checks passed with
-no final overflow or console errors. This is rendered synthetic-fixture
-evidence, not mounted iPhone or real-printer acceptance. Three screenshot-based
-P2 fixes improve active thermal contrast, footer warning contrast, and Jobs
-copy; current tests pass 134/939 plus 21 lifecycle tests and all bundles/signing.
-Source commit `db4e250` is pushed and delivered in
-[draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
-Independent formal review approves source-only with no unresolved findings;
-initial source delivery is complete. The bounded headless follow-up has
-independent formal approval with no new findings and scoped visual QA passes.
-The follow-up source/evidence is pushed as `643b5dd` through existing draft
-PR30; remote branch and open draft head matched at the delivery check.
-Next obtain separate authorization for merge/rollout, followed by
-mounted iPhone validation. Private focused URLs still serve runtime0.3.0;
-the deployed `/dashboard` redirects to progress and is not the source directory
-or the deferred overview. Static
-route success is not data-mapping or new-version acceptance. Do not repeat the historical install or
-restart below, and do not infer authorization to map missing domains.
+Decisions 0023/0024 are implemented and independently approved: runtime
+`0.3.1`, schema `5`, observation-v3/camera-v5, quiet bottom footers and camera
+overlays, finite host loading, and a static eight-link private directory at
+both dashboard roots. Directory loading never mounts a widget or acquires
+data/media; focused URLs remain unchanged and overview is deferred. The index
+is embedded in the HTTP bundle, preserving older release asset requirements.
+Observation-v2/v1 and camera-v4 are current aliases; frozen legacy bytes, ten
+resource URIs, and two-visible/eight-app-only inventory remain compatible.
+
+Final source validation passes 135 app tests/1,006 assertions, 21 lifecycle
+tests, TypeScript, repository checks, all bundles/signing, six directory
+captures, 20 route checks, and 12 keyboard checks with zero acquisition.
+Earlier decision-0023 isolated fixtures captured 67 observation and 22 camera
+states, with 13 camera behavior and three keyboard/unavailable checks passing.
+Independent code and scoped visual review reports no findings; see
+`design-qa.md`. This accepts source and synthetic rendered fixtures, not actual
+iPhone/PiP, printer behavior, or user comprehension. The separately installed
+personal plugin remains its PR28 version; do not imply the HTTP rollout updates
+the plugin or an already-mounted host.
+
+The following PR28/PR29 records are historical baseline and recovery evidence,
+not instructions to repeat their installation or permission to broaden scope.
 
 PR28 merged as `2160492a4ce63d1409673786ea02b253d7cfaace`, combining PR27's
 exclusive camera routing with focused widgets and decision-0022 persistence.
@@ -70,10 +61,11 @@ Mac automatic login/power, routing/auth changes, and printer controls remain
 out of scope. Preserve decision 0020 fan-out, decision 0019 activation, decision
 0017 secure remote access, and decision 0016's local-first normal-user direction.
 
-Decision 0022 adds fixed private focused routes defaulting to progress and a
+Decision 0022 originally added fixed private focused routes defaulting to progress and a
 shared observation store across HTTP calls within each process. It does not
 create cross-process/restart storage, subscriptions, background camera, a root
 daemon, or an MCP Admin tool. Health/static routes must not contact the printer.
+Decision 0024 supersedes only the root redirect with static navigation.
 
 The secure source and compatibility repair are merged. Pull request 20 is
 `4d4ea2f`; pull request 22 adds the camera-only presentation as `333bebe`;
@@ -261,23 +253,15 @@ service or shared secret is configured.
 
 ## Next smallest action
 
-PR28 and its installed app revision `2160492` are delivered. Independent
-post-repair restart/KeepAlive checks pass. Deliver the CLI race
-repair plus accurate rollout records in a small follow-up PR. The first
-controlled restart failed public readiness after initially successful install;
-an explicit public start recovered it. The repaired `stop_one` now waits for
-exact-label disappearance, bounded to 30 seconds, before bootstrap. Its 21
-lifecycle tests and independent review pass; this script-only fix does not
-change the deployed HTTP app or installed plugin. Final repository validation
-passes 110 app tests/759 assertions and 21 lifecycle tests. Both services are
-loaded/healthy/integrity-verified; ten static paths, access rejections, and
-env/OAuth/config/routing preservation pass. Separate bounded progress/thermals
-and snapshot checks passed without camera activation/video/control. Preserve OAuth
-state, every Serve/Funnel route, and the canonical checkout's unrelated dirty
-documentation. Read health/static routes for service evidence without implicit
-printer acquisition. Browser control is unavailable, so rendering acceptance
-remains pending. Mac automatic login and power changes remain deferred.
-Use `uv run --no-project scripts/u1_service.py`: first
+PR30 merge `48a106d` and paired rollout are complete with independent approval;
+the newest `VALIDATION.md` entry records the actual deployed checks. Next obtain
+user feedback on the directory and focused widgets. Preserve OAuth state,
+private env/config, every Serve/Funnel route, and unrelated canonical-checkout
+documentation. Use health/static reads only for this gate; opening a focused
+widget can acquire printer data and is not a hidden health check. The earlier
+PR29 exact-label restart repair and its 21 lifecycle tests remain intact.
+For a future separately authorized rollout, use
+`uv run --no-project scripts/u1_service.py`: first
 `stage --source ABS --bun ABS --release ID`, then
 `install --release ID --dry-run`, then authorized `install --release ID`.
 The source must be clean/committed. Follow with `status` and the intended
@@ -288,13 +272,11 @@ to `bin/bun`; they do not depend on the original Bun binary remaining present.
 Explicit private env is preserved, ambient dotenv/bunfig loading is disabled,
 and relative effective auth/config paths fail before stops. A cold store still
 acquires once on first demand; health/static requests never acquire.
-After rollout, fully quit and relaunch the host before invoking
-`open_printer_camera`; a status-card substitution is failure. Separately verify
-read-only live mappings, two-viewer fan-out, mounted focused widgets, and mobile
-behavior. Accept focused modules before composing overview.
-Once the repair follow-up is merged, the next user action is a full host reload
-and visual acceptance of the focused widgets; then scope the remaining unknown
-live mappings rather than repeating the completed rollout.
+A separate plugin upgrade may be needed
+before a new MCP-host task has these assets; no plugin reinstall is included
+here. Camera requests must never substitute a status card. Real-phone
+fullscreen/PiP, mounted behavior, live mappings, two-viewer fan-out and overview
+remain separate scope/evidence gates. Mac login/power remains deferred.
 
 ## Preserve
 
@@ -316,24 +298,23 @@ live mappings rather than repeating the completed rollout.
 
 ```text
 Resume this repository from AGENTS.md, PROJECT_STATE.md, NEXT_AGENT.md,
-docs/requirements.md, the active iteration, and decisions 0014 through 0023.
-PR28/PR29 persistence delivery is historical completed work. Current decision0023
-source commitdb4e250 has independent source-only approval and draftPR30 delivery.
-Authorized isolated headless validation and scoped visual QA now pass, with
-independent formal approval. The three bounded fixes and evidence are pushed
-as643b5dd through existing draftPR30. Next obtain separate authorization for
-merge/rollout and actualphone validation. The supported browser list was
-empty, and actual iPhone/fullscreen/PiP or deployed acceptance remains separate.
-Use exact existing owner LaunchAgents, versioned release/pinned Bun, fixed
-focused routes defaulting to progress, and one observation store per process.
+docs/requirements.md, the active iteration, and decisions 0014 through 0024.
+PR30 merged as48a106d after explicit merge+two-service-rollout authorization.
+Decisions0023/0024 source and isolated visual fixtures independently pass.
+Paired HTTP deployment and independent health/static/preservation checks pass;
+consult the newest VALIDATION entry. Directory-only live browser captures pass.
+Next obtain actual user feedback; do not repeat the completed rollout.
+Use exact existing owner LaunchAgents, versioned release/pinned Bun, a static
+eight-link private directory, fixed focused routes, and one store per process.
 Preserve existing OAuth state, private env, routes, and unrelated dirty docs.
-Do not change Mac power/login or issue printer controls. Source exposes
+Do not reinstall the personal plugin, change Mac power/login, auth or routes,
+contact the printer, or implement missing mappings under this rollout. Source exposes
 exactly `observe_printer` with its closed eight-view enum plus
 `open_printer_camera`; app-only refresh, legacy aliases, and five camera helpers
 remain hidden. Source uses observation-v3, camera-v5, frozen legacy resources, one
 explicit-refresh/coalescing/stale-retention store, and selected-module
 projections. Camera is separate and overview is deferred. Preserve decision
-0020 fan-out and the secure remote boundaries. This slice authorizes source-only
-presentation repair, not new service rollout, publication, route/auth changes,
-missing-domain backend implementation, or physical-printer acceptance.
+0020 fan-out and the secure remote boundaries. The personal plugin remains its
+separate PR28 installation. Actual-phone/PiP, mounted widgets, real-printer
+behavior, and user acceptance remain distinct from HTTP asset availability.
 ```

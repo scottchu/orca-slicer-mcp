@@ -1,6 +1,65 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 private widget directory — current handoff
+## 2026-08-31 authorized PR30 service rollout — current handoff
+
+The user explicitly authorized PR30 merge and deployment to the two existing
+owner-supervised HTTP services. PR30 merged as
+`48a106d2f17550bab8dc8648af1c7c247610a228`; the operator staged that clean
+merged tree as release `20260831-48a106d-widgets`, dry-ran and installed the
+pair successfully. Both services now report healthy runtime `0.3.1`, schema
+`5`, observation-v3/camera-v5. HTTP bundle SHA-256 is
+`71277c30c02f56efce570b2cabf9ea72c29d5810d873b4604b4b22bd6cc7aa31`,
+matching the independently reviewed bundle.
+
+The actual operator command forms below redact only private local arguments:
+
+- `uv run --no-project scripts/u1_service.py stage --source <clean-merged-source> --bun <pinned-bun> --release 20260831-48a106d-widgets`
+- `uv run --no-project scripts/u1_service.py install --release 20260831-48a106d-widgets --dry-run`
+- `uv run --no-project scripts/u1_service.py install --release 20260831-48a106d-widgets`
+- `uv run --no-project scripts/u1_service.py status`
+
+All four passed from the clean merged source, without a state-root override.
+Installation retained a recoverable prior-service snapshot;
+its actual ID is kept in the private operator handoff, not Git. If recovery is
+later authorized, use `uv run --no-project scripts/u1_service.py rollback
+--snapshot <retained-install-snapshot-id>`. Rollback was not exercised during
+this successful rollout. No personal-plugin reinstall, Mac login/power,
+auth/route change, printer acquisition/control or new backend mapping occurred.
+
+Independent post-install checks at 2026-08-31 14:02:22 UTC accept all four
+local/HTTPS health contracts, both private directory roots with the exact
+eight links, all eight focused static hosts and both current widget assets.
+The public U1 backend rejects dashboard routes; public MCP remains 401,
+public enrollment 404 and private enrollment health 200. The shared public
+HTTPS origin's unrelated `text-to-cad` root fallback remains unchanged and
+returns 200, not the U1 directory. Existing private env, OAuth, configuration,
+Serve/Funnel routes and access boundaries are preserved.
+
+The validator also opened only the deployed static directory in isolated
+Chrome at 390/light and 720/dark. Both captures passed without overflow,
+subrequests or console/page errors; no focused widget, camera, iframe or tool
+was loaded. This accepts deployed navigation, not mounted iPhone hydration,
+phone fullscreen/PiP, camera transport, printer telemetry or user outcome.
+The merged-source gate remains 135 app tests/1,006 assertions plus 21
+lifecycle tests; actual validator commands and hashes are in `VALIDATION.md`.
+
+This rollout follow-up changes only `PROJECT_STATE.md`, `NEXT_AGENT.md`, and
+the active iteration's `BRIEF.md`, `HANDOFF.md`, and `VALIDATION.md`. Runtime
+source remains the merged tree. The canonical checkout's unrelated dirty docs
+remain untouched. Personal plugin `0.2.0+codex.20260831033612` is still its
+separate PR28 installation with observation-v2/camera-v4; HTTP deployment does
+not update its executable or a retained host process.
+
+Next deliver these rollout records through a docs-only PR, then obtain the
+user's actual directory/focused-widget feedback. Do not repeat deployment or
+silently reinstall the plugin. Queue, fans, bed mesh, cavity, material/color,
+history and other missing mappings remain unimplemented or unknown; overview
+remains deferred. Actual phone/PiP and printer checks need their own evidence.
+
+The entries below preserve earlier source and rollout gates chronologically;
+their pending delivery statements are superseded by this current handoff.
+
+## 2026-08-31 private widget directory — source handoff
 
 Decision 0024 implements the user's requested navigation entry point, not the
 deferred composed overview. Source GETs for `/dashboard` and `/dashboard/`
@@ -37,7 +96,7 @@ view. No merge/deployment/plugin install, service restart, auth/Tailscale
 changes, or real-printer access occurred. Local rendered navigation is not
 deployed or actual phone acceptance.
 
-## 2026-08-31 authorized headless follow-up — current handoff
+## 2026-08-31 authorized headless follow-up — source handoff
 
 After draft PR30 source delivery, the user explicitly authorized isolated
 headless-browser validation because the supported browser was unavailable.
@@ -87,7 +146,7 @@ Existing private focused URLs still serve deployed runtime 0.3.0. The
 overview. A static 200 is only route evidence, not successful live mapping or
 proof the polished assets are deployed. No private hostname is retained.
 
-## 2026-08-31 quiet widget presentation — current handoff
+## 2026-08-31 quiet widget presentation — source handoff
 
 Decision 0023 is the current execution order, refining the user's selected
 Instrument Strips after mounted phone feedback. Source-only changes remove
@@ -149,7 +208,7 @@ authorized visual-validation path before treating the redesign as accepted,
 then separately scope rollout. Do not deploy or implement missing backend domains as an implicit
 extension. Historical persistence delivery below must not be repeated.
 
-## 2026-08-30 persistence integration — current handoff
+## 2026-08-30 persistence integration — historical handoff
 
 The user explicitly authorized PR28 merge and persistent installed/server
 delivery, while deferring Mac automatic login and power. Integration reconciles

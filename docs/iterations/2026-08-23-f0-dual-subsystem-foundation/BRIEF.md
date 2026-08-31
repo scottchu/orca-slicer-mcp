@@ -5,25 +5,25 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: decision 0024's private widget-directory source is
-  implemented and independently validated before any rollout. Both source dashboard roots serve
-  a navigation-only catalog of eight focused views with honest implementation
-  coverage; no composed overview or automatic observation/media acquisition.
-  Preserve decision 0023's reviewed bottom timestamp/refresh footers and
-  removal of read-only/current-reading/provenance chrome. Its source and
-  isolated headless follow-up already pass independent review; the older
-  deployed widgets do not contain those changes yet. Deliver the bounded
-  directory and local route/browser evidence through existing draft PR30.
-  Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
-  tests, six directory captures, 20 route checks, 12 keyboard checks and
-  packaged inclusion with zero acquisition; code/visual review reports no
-  findings. Separate design, author, validation, and review roles are preserved.
-  Next obtain separate merge/rollout authorization and actual user validation. This
-  request does not authorize merge, deployment, plugin installation, services,
-  authentication/routing changes, printer access, or missing backend mappings.
-  PR28/PR29 and persistence rollout are historical delivered work, not tasks to
-  repeat. Mac login/power and printer-control changes remain excluded. Orca
-  Preparation discovery remains preserved and neither subsystem becomes
+- Current execution order: the user explicitly authorized PR30 merge and
+  rollout to the two existing owner-supervised HTTP services. PR30 merged as
+  `48a106d2f17550bab8dc8648af1c7c247610a228` on 2026-08-31. Clean-source
+  staging, dry-run and paired installation passed; independent health/static/
+  asset and preservation checks accept runtime `0.3.1`, schema `5`,
+  observation-v3/camera-v5 deployment. Decisions 0023/0024 deliver quiet bottom footers,
+  image-only camera chrome, and a static eight-link private directory without
+  automatic observation/media acquisition. Source approval includes 135 app
+  tests/1,006 assertions, 21 lifecycle tests, six directory captures, 20 route
+  checks, 12 keyboard checks, and packaged inclusion with zero acquisition.
+  Separate deployed directory captures passed at 390/light and 720/dark with
+  no overflow, subrequests, or errors. Next obtain actual user feedback;
+  source/fixture and deployed-directory approval are not actual-phone acceptance.
+  Preserve role-separated deployment, validation, and documentation work.
+  This authorization does not include personal-plugin reinstallation, Mac
+  login/power, authentication/routing changes, printer access/control, or
+  missing backend mappings. Earlier PR28/PR29 delivery remains historical;
+  actual mobile fullscreen/PiP and user comprehension remain separate gates.
+  Orca Preparation discovery remains preserved and neither subsystem becomes
   secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
