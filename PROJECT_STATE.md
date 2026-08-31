@@ -12,10 +12,17 @@ Last updated: 2026-08-30
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
-- User-directed execution order: integrate PR27 with the focused-widget PR28,
-  validate and independently review, merge, and deliver decision 0022's
-  persistent personal HTTP services. The user authorizes the installed/server
-  rollout, not Mac login/power changes, printer controls, or route/auth changes.
+- PR28 merged the focused widgets, PR27 routing integration, and decision-0022
+  persistence slice as `2160492a4ce63d1409673786ea02b253d7cfaace`.
+  The user authorized the installed/server rollout, not Mac login/power changes,
+  printer controls, or route/auth changes.
+- Personal Marketplace version `0.2.0+codex.20260831033612` is installed from
+  that merge. Source, stage, and installed standalone runtime match SHA-256
+  `c4029f18678e1839c0b005e37bc7401bf84bcc6ed7ef3d19155286253c2f018b`;
+  all production HTML and five skill folders match, including
+  `$u1-observe-printer`. Plugin and ad-hoc signature validation pass. Prior
+  personal source remains in recoverable local Trash; no source/cache was
+  edited by hand and the base plugin version remains `0.2.0`.
 - Decision 0022 reuses the two existing owner LaunchAgents with versioned
   bundled HTTP releases and a release-local pinned Bun copy. Stable private focused routes default
   to progress. One observation store is shared across HTTP requests within
@@ -32,20 +39,20 @@ Last updated: 2026-08-30
   `open_printer_camera` links `camera-v1.html`, while WebRTC allocation and
   follow-up signaling are app-only widget actions. Pull request 22 merged as
   `333bebe`; Personal Marketplace version
-  `0.2.0+codex.20260828194545` is installed. The public service and private
-  dashboard were restarted from merged source without changing Tailscale
+  `0.2.0+codex.20260828194545` was installed then. The public service and private
+  dashboard were restarted at that stage without changing Tailscale
   routing.
-- Decision 0019 is the active user-authorized workflow repair.
+- Decision 0019 records the earlier user-authorized workflow repair.
   `open_printer_camera` is the only model-visible camera command and links
   `camera-v2.html`; v1 remains readable as a compatibility alias. A current
   widget must mint a one-time private activation before stream allocation, and
   unanswered offers release their lease after 15 seconds. Health exposes tool
   schema 3 and camera widget v2 for rollout coherence.
 - Pull request 24 merged decision 0019 as `62acd4c`. Personal Marketplace
-  version `0.2.0+codex.20260828211031` is installed from that merge with
+  version `0.2.0+codex.20260828211031` was installed from that merge with
   runtime SHA-256
   `74f5f654de2a52c21a33577ffd6520f1054eb71439668885986114177faa2398`.
-  Both existing U1 LaunchAgents run schema 3/camera-v2. OAuth state and
+  Both existing U1 LaunchAgents then ran schema 3/camera-v2. OAuth state and
   Tailscale routing hashes were unchanged across restart. The deployed private
   dashboard showed Snapshot, rendered `Live · 24 FPS`, and returned to Snapshot
   after Close.
@@ -78,8 +85,8 @@ Last updated: 2026-08-30
   `$u1-observe-printer` is the single procedural skill routing natural language
   to that surface. Focused progress, thermals, heads, and camera presentations
   passed local browser-fixture review; overview remains intentionally deferred
-  until the focused module set is accepted. No installed or live runtime has
-  this source contract yet.
+  until the focused module set is accepted. PR28 and the installed plugin now
+  carry this contract; live and mounted acceptance are separately recorded.
 
 ## Implemented local-first slice
 
@@ -120,17 +127,28 @@ The pre-integration decision-0021 source validation passed with 101 tests and
 skill validation, the repository contract, and whitespace checks. Browser
 fixture review accepted the focused Progress, Thermals, Heads, and Camera
 presentations at a narrow inline viewport. Exact hashes and commands are
-recorded in the active iteration. All evidence is static/software or fixture
-only; install, service restart, public edge, real-printer observation, mounted
-Codex/ChatGPT, and mobile remain later evidence gates.
+recorded in the active iteration. That pre-integration evidence is static or
+fixture-only; post-merge installed/service evidence is recorded separately.
 PR27's separate tree passed 93 tests with 569 assertions. The combined baseline
 passed TypeScript and 105 tests with 606 assertions before persistence changes.
 The implemented focused-route/shared-store slice passes TypeScript and 110
 tests with 759 assertions, stdio/runtime bundles, and local signature checks.
-The lifecycle CLI passes 19 local fixture tests. Independent final review
-approved the combined source with no blocking findings and verified the
+Before rollout, the lifecycle CLI passed 19 local fixture tests. Independent
+pre-rollout review approved the combined source with no blocking findings and verified the
 repository contract plus isolated bundled health/static readiness with zero
-synthetic printer reads. Merge/install/live rollout remain separate evidence.
+synthetic printer reads. Post-merge rollout evidence is recorded separately.
+
+The post-merge rollout exposed an asynchronous `bootout` race during a real
+controlled restart after initial installation had passed. Public service was
+recovered explicitly. The subsequent CLI-only repair waits for exact-label
+removal before restart, bounded to 30 seconds, and passes 21 lifecycle tests
+with independent approval. It does not change deployed app revision `2160492`.
+Post-repair controlled restart and dashboard-only SIGTERM/KeepAlive recovery
+passed independently. Both services report loaded, healthy, integrity-verified
+runtime `0.3.0`, schema `5`, observation-v2, and camera-v4. Static paths and
+public/private rejection checks pass; private env/OAuth/config/routes and
+preserved plist fields are unchanged. This is tested local service recovery,
+not Mac reboot/login/sleep or mounted-browser acceptance.
 
 The self-contained artifact remains locally and ad-hoc signed and is not
 suitable for publication. No Homebrew or npm package was published.
@@ -151,8 +169,9 @@ suitable for publication. No Homebrew or npm package was published.
 - The HTTP server keeps env-only deployment compatibility when no standalone
   config exists. An existing malformed optional config and partial TURN
   configuration fail closed.
-- No live process, LaunchAgent, Serve/Funnel route, OAuth state, installed
-  plugin, printer, or external service was changed.
+- These source-level contracts do not themselves establish a live outcome;
+  post-merge installed/service checks are recorded separately below and in the
+  active iteration.
 
 ## Current source MCP surface
 
@@ -181,10 +200,9 @@ The current source reports runtime `0.3.0`, tool schema `5`, observation widget
 `observation-v2`, and camera widget `camera-v4`. `show_u1_status` and
 `get_u1_status` are superseded model intents and survive only as app-only
 compatibility aliases. Frozen status-v4/status-v3 and camera-v3/v2/v1 resources
-remain byte-identical for retained tasks. Earlier installed-runtime records
-describe schema 4/camera-v3 and a three-visible/five-app-only inventory;
-reverify actual installation during the authorized rollout rather than treating
-historical records as evidence for this source surface.
+remain byte-identical for retained tasks. The current installed plugin has the
+same schema-5 contract. Historical schema-4/camera-v3 records below describe
+earlier deployments, not the current plugin.
 
 ## Packaging and onboarding boundary
 
@@ -198,7 +216,8 @@ historical records as evidence for this source surface.
   preserved; ambient dotenv/bunfig loading and relative auth/config paths are
   rejected before service replacement. See `plugins/u1-print-studio/PACKAGING.md`
   for exact CLI syntax. This personal adapter does not establish public
-  distribution, live rollout, or Mac boot/login/sleep acceptance.
+  distribution or Mac boot/login/sleep acceptance. Post-merge local rollout
+  evidence remains a separate layer from these source fixtures.
 - Normal users do not need Tailscale, MagicDNS, public DNS, manual OAuth,
   environment-file editing, or Bun.
 - `plugins/u1-print-studio/.mcp.release.json` starts
@@ -271,10 +290,10 @@ historical records as evidence for this source surface.
   signature, prints help, writes a schema-2 `0600` config, preserves explicit
   STUN on setup rewrite, and passes `doctor --offline` without contacting
   hardware. Malformed ICE URLs and partial TURN configuration fail closed.
-- Personal Marketplace staging and installation passed on this macOS arm64
-  machine for decision 0020 as version
-  `0.2.0+codex.20260830013924`. Both existing services report schema 4 and
-  camera-v3. That is installed-runtime and service evidence, not mounted-host,
+- Current Personal Marketplace staging and installation passed on this macOS
+  arm64 machine as `0.2.0+codex.20260831033612` from PR28. A fresh independent
+  MCP client verifies exactly two model tools, eight app-only helpers, and all
+  eight resource hashes. This is installed-runtime evidence, not mounted-host,
   mobile, or real multi-viewer fan-out acceptance.
 
 The active iteration's `VALIDATION.md` is authoritative for exact commands
@@ -290,7 +309,12 @@ and final repository-check results.
 
 ### Physical printer
 
-- Post-merge read-only validation contacted the configured printer for status,
+- Current post-repair bounded read-only checks returned reachable progress and
+  thermals with one shared observation version/source time. Cavity remained
+  unknown. One valid JPEG snapshot returned without activation, live video, or
+  printer control. This is telemetry/snapshot evidence, not print-quality,
+  physical safety, or mounted rendering acceptance.
+- Earlier post-merge read-only validation contacted the configured printer for status,
   one JPEG, and bounded H264 offers. No upload, start, pause, resume, cancel,
   G-code, or other printer-control action ran.
 - Earlier authorized print and camera observations remain historical evidence
@@ -298,11 +322,11 @@ and final repository-check results.
 
 ### User outcome
 
-- The last recorded installed runtime is decision 0020 schema 4/camera-v3.
-  Its first mounted attempt retained a stale host descriptor and incorrectly
-  substituted a status card; installed/service health is not mounted acceptance.
+- The current installed plugin carries schema 5/observation-v2/camera-v4.
+  Earlier host attempts retained a stale descriptor and substituted a status
+  card; the new installed descriptor check is not mounted-widget acceptance.
 - The focused Progress, Thermals, Heads, and Camera layouts passed local browser
-  fixture review only. A new mounted task, live normalized values, overview,
+  fixture review only. A new mounted task, remaining live domain mappings, overview,
   mobile behavior, and the user's quick-comprehension feedback loop remain
   unverified outcomes.
 
@@ -319,7 +343,7 @@ and final repository-check results.
   fullscreen, and fallback need fresh visual host evidence. Server-side open
   and close now pass against the real read-only camera path.
 - Creating a new conversation does not refresh an MCP process retained by an
-  already-running desktop host. Camera-v3 acceptance requires fully quitting
+  already-running desktop host. Current camera acceptance requires fully quitting
   and relaunching that host; procedural guidance now fails closed instead of
   substituting a status card when `open_printer_camera` is absent.
 - No TURN REST service URLs or shared secret were supplied. Reliable remote
@@ -345,9 +369,11 @@ and final repository-check results.
 
 ## Next action
 
-Commit and merge decision 0022's validated, independently approved lifecycle
-and focused-route/store slice through
-PR28, then perform the user-authorized installed/server rollout. Preserve all
+Deliver the independently validated CLI race repair and accurate rollout
+records through a follow-up PR; controlled restart and KeepAlive recovery pass.
+After that follow-up merges, fully reload the host and obtain user visual
+acceptance of focused widgets, then scope the remaining unknown live mappings.
+PR28 and installed app revision `2160492` are already delivered. Preserve all
 OAuth state and Serve/Funnel routes and the separate task's canonical-checkout
 dirty documentation. Mac automatic login and power changes are deferred.
 Browser control is currently unavailable; static HTTP success does not accept

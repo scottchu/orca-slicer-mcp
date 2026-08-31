@@ -20,12 +20,38 @@ Design/docs scope: decision 0022/index, requirements, packaging, active
 brief/validation/handoff, project state, and next-agent record. Code scope is
 HTTP/store injection, dashboard host/routes, and allowlisted local service
 packaging/lifecycle tooling with fixtures. The combined pre-persistence baseline
-passed TypeScript and 105 tests with 606 assertions. Final source acceptance
+passed TypeScript and 105 tests with 606 assertions. Pre-rollout source acceptance
 passes TypeScript, 110 app tests with 759 assertions, 19 lifecycle fixture tests,
 the repository contract, stdio/runtime/HTTP bundles, signature verification,
 plugin/skill validation, and whitespace checks. Independent final review
-approved the source with no blocking findings; merge/install/live rollout
-remain pending.
+approved the source with no blocking findings. PR28 then merged as
+`2160492a4ce63d1409673786ea02b253d7cfaace`. The personal plugin installed as
+`0.2.0+codex.20260831033612`, and the existing HTTP services were staged and
+installed from that app revision. Runtime source/stage/cache SHA-256 is
+`c4029f18678e1839c0b005e37bc7401bf84bcc6ed7ef3d19155286253c2f018b`;
+all production HTML/five skills match. Independent installed MCP checks
+verified the two-visible/eight-app-only surface and eight resource hashes.
+
+Initial install readiness succeeded, but the first independent restart exposed
+an asynchronous `launchctl bootout` race: public bootstrap was skipped while
+the departing label still appeared loaded, and public readiness failed. An
+explicit public start recovered it. The CLI now waits at most 30 seconds for
+that exact label to disappear before a replacement start. Two regressions
+raise lifecycle coverage to 21 tests; the original implementation fails the
+delayed-removal regression. Independent code review approved the repair.
+This script-only repair leaves the deployed app revision above unchanged.
+
+Independent post-repair `restart` then replaced both processes and recovered
+exact health contracts. A dashboard-only `SIGTERM` test recovered automatically
+through KeepAlive without CLI start and without disturbing public service.
+Final status reports both loaded/healthy/integrity-verified. Ten static paths
+match the release, `/dashboard` redirects to progress, and public/private
+rejections remain intact. Env/OAuth/config/routing hashes and preserved plist
+fields are unchanged. Separately bounded progress/thermals reads shared one
+observation version/source time; the printer was reachable, cavity remained
+unknown, and one valid snapshot returned without activation, video, or control.
+The final repository gate passes 110 app tests/759 assertions and 21 lifecycle
+tests with independent approval. Exact commands and limits are in `VALIDATION.md`.
 
 The implemented operator is `scripts/u1_service.py` with
 `stage --source ABS --bun ABS --release ID`, `install --release ID --dry-run`,
@@ -47,13 +73,13 @@ static host/widget HTML performs no printer acquisition. `/dashboard` redirects
 to progress; seven exact focused paths exist, camera remains separate, and
 unknown/overview HTTP paths return 404. MCP overview remains explicitly deferred.
 
-Next: commit and merge the independently approved tree, stage/install the
-versioned release with recoverable prior configuration, and
-verify loopback health/version/static routes while proving OAuth/routing
-preservation. Do not open a live widget as a hidden health check: initialization
+Next: review the repaired CLI plus completed rollout records, and deliver that small
+follow-up through a pull request. Do not open a live widget as a hidden health check: initialization
 can acquire a printer observation. Browser control is currently unavailable;
-mounted visual, real-printer, mobile, reboot/login/sleep, and user-outcome gates
+mounted visual, mobile, reboot/login/sleep, and user-outcome gates
 remain distinct and unaccepted.
+After the follow-up merges, fully reload the host for user visual acceptance
+of the focused widgets, then scope remaining unknown live mappings.
 
 The following entries are chronological historical evidence, not current
 installation/version assertions or additional authorization.

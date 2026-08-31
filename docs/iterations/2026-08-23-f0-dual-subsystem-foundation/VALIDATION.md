@@ -1,6 +1,100 @@
 # F0 dual-subsystem foundation validation
 
-## 2026-08-30 persistence integration — current evidence
+## 2026-08-30 post-merge persistence rollout and restart repair
+
+### Delivery and installed plugin
+
+- PR28 merged as `2160492a4ce63d1409673786ea02b253d7cfaace`. This is the
+  deployed app revision; the subsequent repair changes only local lifecycle
+  tooling and does not require rebuilding or replacing that HTTP release.
+- `bun run bundle:runtime` and `codesign -vvv --verify` passed on the merged
+  source. A tracked-source archive was staged with its standalone executable
+  and the release `.mcp.json` descriptor. Existing personal source was moved
+  to recoverable local Trash before replacement; private backup paths are not
+  recorded here.
+- Plugin Creator `read_marketplace_name.py` returned `personal` and the
+  existing CLI inventory confirmed the intended local source. Its default
+  `update_plugin_cachebuster.py` helper preserved base `0.2.0` and generated
+  `0.2.0+codex.20260831033612`. `codex plugin add u1-print-studio@personal`
+  installed that version. No marketplace or installed-cache file was edited
+  by hand.
+- Source/stage/cache standalone SHA-256 is
+  `c4029f18678e1839c0b005e37bc7401bf84bcc6ed7ef3d19155286253c2f018b`.
+  All six production HTML files and five skill folders match merged source.
+  Plugin Creator validation and Skill Creator validation for the new observation
+  skill passed through the `uv` Python boundary. The installed ad-hoc signature
+  check passed separately through `codesign`.
+- An independent fresh installed-runtime MCP client verified exactly two
+  model-visible and eight app-only tools, all eight resource hashes, and the
+  new observation skill without invoking printer tools. This accepts the
+  installed descriptor/resources, not a host-mounted widget.
+
+### Service installation and observed restart failure
+
+- The operator ran `uv run --no-project scripts/u1_service.py stage`,
+  `install --dry-run`, and `install` with inspected absolute source/Bun paths
+  and local release identifiers. Both existing services initially passed
+  readiness from the immutable merged release, with copied pinned Bun.
+- Independent static checks accepted ten host/asset responses, the progress
+  redirect, health/version contracts, public/private route rejection, and
+  preserved explicit env/plist fields. No printer acquisition was part of
+  those service/static checks.
+- The first independent `uv run --no-project scripts/u1_service.py restart`
+  (defaulting to all services) failed public-service readiness. The public label disappeared
+  after `bootout`; the dashboard was not restarted. A separate explicit
+  `start --service public` recovered public readiness. This was a real
+  lifecycle defect; successful initial installation did not prove restart.
+- Cause: `launchctl bootout` can return before asynchronous job removal.
+  `start_one` saw the still-listed job, skipped bootstrap, and then the old job
+  disappeared. The repair waits for that exact label to become absent, bounded
+  to 30 seconds, before allowing a replacement bootstrap. Timeout fails
+  explicitly rather than claiming restart success.
+- `uv run --no-project scripts/test_u1_service.py` passed **21 lifecycle
+  tests**. Two new tests cover delayed removal and bounded timeout; replacing
+  the method with its original implementation fails the delayed-removal
+  regression. Independent review approved the narrowly scoped CLI repair.
+- Final `./scripts/check-repository.sh` passed TypeScript, **110 app tests /
+  759 assertions**, **21 lifecycle tests**, and `repository contract: ok`.
+  `git diff --check` passed. Independent final review approved the CLI repair
+  and bounded live persistence evidence. Reviewed script SHA-256 is
+  `869630f7bed0c2e82408a4b494e527f612ccb476d8b47375ed34fa5021c9e420`;
+  regression-test SHA-256 is
+  `5a367637bdf8dc0d2716b184ef63cb3841c40ba8ad5c875b8a51ff52670c19c3`.
+
+### Post-repair service and bounded printer evidence
+
+- `uv run --no-project scripts/u1_service.py restart` succeeded after the
+  repair: both services received replacement processes and reached the exact
+  runtime `0.3.0`, schema `5`, observation-v2, and camera-v4 health contracts.
+- The independent validator sent `SIGTERM` to only the exact existing dashboard
+  LaunchAgent with `launchctl kill`. KeepAlive replaced that process and
+  recovered readiness without any CLI start; the public process remained
+  unaffected. This accepts tested process-termination recovery, not reboot,
+  automatic login, sleep, arbitrary crash modes, or continuous availability.
+- Final `uv run --no-project scripts/u1_service.py status` reported both
+  services loaded, healthy, and release integrity verified. Ten static
+  host/asset responses matched merged bytes, `/dashboard` returned a 307
+  progress redirect, public dashboard routes returned 404, unauthenticated
+  public MCP returned 401, and private-dashboard MCP returned 404.
+- Independent before/after hashes for private env, OAuth state, owner config,
+  and Tailscale routing were unchanged; preserved plist fields matched the
+  recovery snapshot. No private values, identifiers, process IDs, or routing
+  hostnames are recorded here.
+- Separately authorized read-only checks posted only the allowlisted
+  `refresh_printer_observation` calls for progress and thermals plus one
+  `get_u1_camera_frame` call with empty arguments to the private bridge.
+  Progress and thermals reused one observation version/source time and
+  reported a reachable printer; cavity stayed explicitly unknown. One valid
+  JPEG snapshot was returned. No camera activation, live stream, or printer
+  control was requested, and no image bytes or job data were retained in Git.
+- A fresh installed MCP client listed/read descriptors and resources only.
+  Browser control was unavailable. Visible rendering, mounted Codex/ChatGPT,
+  mobile, live video/two-viewer fan-out, and user comprehension remain open.
+
+No upload, start-print, pause, resume, cancel, tuning, G-code, route/auth reset,
+Mac automatic login/power change, or mounted-browser acceptance is implied.
+
+## 2026-08-30 persistence integration — pre-rollout evidence
 
 - Milestone: F0. Decision 0022 addresses durable personal HTTP entry points,
   process-scoped shared observations, and recoverable versioned deployment.

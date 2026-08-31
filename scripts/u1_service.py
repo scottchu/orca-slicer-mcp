@@ -26,6 +26,7 @@ LABELS = {"public": "com.scottchu.u1-print-studio", "dashboard": "com.scottchu.u
 ASSETS = ("widget.html", "legacy-widget.html", "camera-widget.html", "legacy-camera-widget.html", "status-dashboard-host.html", "camera-dashboard-host.html")
 ID = re.compile(r"[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}\Z")
 HEALTH_KEYS = ("runtimeVersion", "toolSchemaVersion", "observationWidgetVersion", "cameraWidgetVersion")
+BOOTOUT_WAIT_ATTEMPTS = 300
 
 
 def run(args, **kwargs):
@@ -157,6 +158,16 @@ class ServiceManager:
     def stop_one(self, name):
         if self.loaded(name):
             self.runner(["/bin/launchctl", "bootout", f"{self.domain}/{LABELS[name]}"])
+            # bootout acknowledgement is not evidence that removal completed.
+            # launchctl print can briefly still find the terminating job. Do not
+            # let start_one interpret that transient registration as a running
+            # service and skip bootstrap during restart/install/rollback.
+            for attempt in range(BOOTOUT_WAIT_ATTEMPTS):
+                if not self.loaded(name):
+                    return
+                if attempt != BOOTOUT_WAIT_ATTEMPTS - 1:
+                    time.sleep(0.1)
+            raise RuntimeError(f"{name} stop did not complete; service remains registered")
 
     def start_one(self, name):
         if not self.loaded(name):

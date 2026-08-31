@@ -28,6 +28,8 @@ class LifecycleTests(unittest.TestCase):
         self.bun.write_text("fixture executable")
         self.bun.chmod(0o700)
         self.loaded = set(LABELS)
+        self.bootout_delay = 0
+        self.removing = {}
         self.calls = []
         self.fail_bootstrap = None
         self.relative_state = False
@@ -72,10 +74,19 @@ class LifecycleTests(unittest.TestCase):
         name = next((n for n, label in LABELS.items() if args[-1].endswith("/" + label) or args[-1].endswith("/" + label + ".plist")), None)
         command = args[1]
         if command == "print":
+            if name in self.removing:
+                if self.removing[name] > 0:
+                    self.removing[name] -= 1
+                else:
+                    self.loaded.remove(name)
+                    del self.removing[name]
             if name not in self.loaded:
                 raise RuntimeError("not loaded")
         elif command == "bootout":
-            self.loaded.remove(name)
+            if self.bootout_delay:
+                self.removing[name] = self.bootout_delay
+            else:
+                self.loaded.remove(name)
         elif command == "bootstrap":
             if self.fail_bootstrap == name:
                 self.fail_bootstrap = None
@@ -161,6 +172,25 @@ class LifecycleTests(unittest.TestCase):
         self.manager.lifecycle("start", LABELS)
         self.manager.lifecycle("restart", LABELS)
         self.assertEqual(self.loaded, set(LABELS))
+
+    def test_restart_waits_for_asynchronous_bootout_before_bootstrap(self):
+        self.manager.install("r1")
+        self.calls.clear()
+        self.bootout_delay = 3
+        with patch("u1_service.time.sleep"):
+            self.manager.lifecycle("restart", LABELS)
+        self.assertEqual(self.loaded, set(LABELS))
+        self.assertEqual(self.removing, {})
+        for name, label in LABELS.items():
+            bootstrap = [c for c in self.calls if c[1] == "bootstrap" and c[-1].endswith(label + ".plist")]
+            self.assertEqual(len(bootstrap), 1, name)
+
+    def test_stop_timeout_fails_without_claiming_restart_or_bootstrap(self):
+        self.bootout_delay = 100
+        with patch("u1_service.BOOTOUT_WAIT_ATTEMPTS", 3), patch("u1_service.time.sleep"), self.assertRaisesRegex(RuntimeError, "stop did not complete"):
+            self.manager.lifecycle("restart", ["public"])
+        self.assertFalse(any(c[1] == "bootstrap" for c in self.calls))
+        self.assertIn("dashboard", self.loaded)
 
     def test_status_reports_service_health_without_private_paths(self):
         status = self.manager.status()

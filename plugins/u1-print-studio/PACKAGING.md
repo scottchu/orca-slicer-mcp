@@ -17,6 +17,14 @@ implicit printer observations. Prior plist/release records remain recoverable.
 The operator procedure and actual acceptance evidence belong in the active
 iteration; accepted design alone does not prove deployment.
 
+PR28 merged this workflow as `2160492a4ce63d1409673786ea02b253d7cfaace`.
+The personal plugin was separately rebuilt/staged and installed as
+`0.2.0+codex.20260831033612`; source/stage/cache standalone SHA-256 is
+`c4029f18678e1839c0b005e37bc7401bf84bcc6ed7ef3d19155286253c2f018b`.
+All production HTML and five skills match merged source. Signature and plugin
+validation pass; the previous personal source remains recoverable locally.
+This is installation evidence, not mounted-host or browser acceptance.
+
 The implemented operator entry point is `scripts/u1_service.py`, always run
 through `uv run --no-project`. Its default state root is
 `~/Library/Application Support/U1 Print Studio/service`; `--state-root` accepts
@@ -54,6 +62,18 @@ effective auth/config paths before stopping either service. Relative private
 state/config paths fail closed instead of silently moving state when the
 working directory changes. Failed readiness restores the exact saved plists
 and prior loaded states, or reports a recovery failure and snapshot identifier.
+
+The initial rollout exposed an asynchronous `launchctl bootout` restart race.
+The lifecycle tool now waits for the exact departing label to become absent,
+bounded to 30 seconds, before starting its replacement; timeout reports
+failure. The repair has 21 lifecycle tests and independent code approval.
+Successful installation and service health are not proof of restart recovery;
+actual post-repair controlled restart and dashboard-only SIGTERM/KeepAlive
+recovery passed independently and are recorded separately in the active
+iteration. Both services ended loaded, healthy, and integrity-verified with
+private env/OAuth/config/routing and preserved plist fields unchanged. The
+script-only repair does not change the deployed app
+revision or its widget hashes.
 
 Private stable entries are `/dashboard/progress`, `/dashboard/thermals`,
 `/dashboard/heads`, `/dashboard/jobs`, `/dashboard/queue`, `/dashboard/fans`,
