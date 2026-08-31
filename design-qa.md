@@ -1,6 +1,6 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
-## Current B Queue integration: visual acceptance unverified
+## B Queue integration deployed: visual acceptance unverified
 
 final result: blocked
 
@@ -20,6 +20,15 @@ exists for the new Queue widget. Fresh allowed-browser discovery is unavailable.
 Historical Heads/Bed Mesh/other-widget evidence does not accept changed Queue
 assets. Typography/wrapping, spacing/layout, rendered contrast, icon fidelity
 and copy/content remain visually unverified.
+
+PR47 is merged and exact release
+`20260831-6d76f9a-pr47-20260831T172710-645971` is deployed to BOTH explicitly
+restarted services; health/integrity/static/security checks pass. The user has
+the live Queue link. Deployment and scoped data checks do not supply a rendered
+comparison, keyboard/device evidence or a visual pass; this result stays blocked.
+Independent live evidence is bounded to one known/fresh paused-empty Queue read
+and exact served-widget VM semantics. It confirms data behavior, not rendered
+layout, interaction or user acceptance.
 
 When browser access exists, capture 320/390/720-pixel layouts for known empty,
 one and 100 displayed rows, long safe basenames, truncation, independently stale

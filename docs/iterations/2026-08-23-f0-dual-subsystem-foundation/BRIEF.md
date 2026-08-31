@@ -5,7 +5,17 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Latest priority (2026-08-31): resume B Queue after PR46's merged Heads rollout
+- Latest priority (2026-08-31): B Queue is shipped in PR47. Reviewed `1068add`
+  merged as `6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; exact release
+  `20260831-6d76f9a-pr47-20260831T172710-645971` runs on BOTH explicitly restarted,
+  loaded/healthy/integrity-verified services at 0.4.3/schema 9/observation-v9/
+  camera-v8. Fourteen static and sixteen security checks pass; config/auth/routes
+  are preserved without rollback. Independent checks confirm 15 exact manifest
+  files, both service targets, three health/seven exact static checks, one known/
+  fresh paused-empty Queue observation and exact served-widget semantics.
+  Browser/device visual acceptance remains unverified.
+  Continue C fans/chamber → D Current Job/History → E overview.
+- Previous priority (2026-08-31): resume B Queue after PR46's merged Heads rollout
   records. Decision 0029/OBS-012 define the smallest end-to-end slice: existing
   fixed bounded Queue adapter → independent shared-store domain → safe focused
   projection → white Queue card and truthful directory label. Acceptance covers
