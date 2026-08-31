@@ -7,7 +7,18 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
-Current priority: **C fans/chamber** after B Queue shipped in PR47. Exact
+Current priority: **C Fans & Chamber** under decision 0029/OBS-013. One fixed
+environment acquisition serves focused Thermals and Fans & Air only. Thermals
+adds actual-only Cavity with independent time/freshness; Fans groups physical
+Tool 1–4 part cooling and Cavity/purifier air handling with distinct commanded
+percent and measured RPM. Preserve explicit zero/not-measured/not-detected/not-
+reported/unsupported/unavailable/stale states, no health inference or controls.
+Target 0.4.4/schema 10/observation-v10/camera-v8 with twenty resources, retained
+observation-v9 and unchanged tool inventory. Implementation, independent review,
+merge/deploy/BOTH restart/scoped verification and visual acceptance are pending.
+Preserve shipped A/F/Heads/B; continue D Current Job/History → E overview.
+
+Previous priority: C began after B Queue shipped in PR47. Exact
 reviewed `1068add` merged as `6d76f9a`; release
 `20260831-6d76f9a-pr47-20260831T172710-645971` runs on BOTH explicitly restarted,
 healthy/integrity-verified services at 0.4.3/schema 9/observation-v9/camera-v8.
@@ -103,7 +114,7 @@ no unfinished track is cancelled by the new priority.
 | A5 Heads reference refinement | Deployed in PR45 at 0.4.2: actual-color soft wash, exact swatch/hex and Copy; material acquisition retained | User visual/native-clipboard review | Both-service and independent live-read/served-widget checks pass; visual/device acceptance unverified |
 | F Bed Mesh | Interactive same-sample surface and retained 2D grid deployed in PR43 at 0.4.1 | User visual review of XYZ/legend/exaggeration, pointer/keyboard orbit/reset and 2D fallback | P2 corrected; reviewed and shipped, visual/device acceptance pending |
 | B Queue | Fixed bounded adapter, independent store/projection and white Queue card/index shipped in PR47 | User visual review; preserve no-mutation boundary | Deployed to both restarted services; exact/static/scoped verification recorded separately, visual/device acceptance unverified |
-| C Fans and chamber | Fans/purifier unimplemented; chamber thermal unknown | Real fixed fan/purifier/cavity reads, measured units and independent missing/power states; no controls | Active, after Queue |
+| C Fans and chamber | Exact fixed environment route/normalization and two-card contract frozen in decision 0029/OBS-013 | Cavity actual + independent time in Thermals; compact Tool 1–4/Cavity/purifier commanded-percent/RPM rows in Fans; no controls/health inference | Implementation and independent acceptance active |
 | D Current Job and History | Independently callable split delivered; history unimplemented | Preserve `jobs`/`job_history` split; real bounded history page and useful current-job fields with explicit provenance | Active, after fans/chamber |
 | E Overview | Explicitly deferred composition | Compose accepted focused domains from shared normalized state; no alternate normalization/acquisition path | Active, after focused-domain acceptance |
 | G Invokable skills and routes | Focused observation and camera skills delivered | Retain closed selectors and existing invocation; update source guidance/coverage as domains ship, without plugin reinstall | Active acceptance across releases |
@@ -166,6 +177,13 @@ private attachment paths/images are not committed.
   Independent receipt/freshness/failure information stays above bottom Refresh.
   Valid known zero rows means empty; stale zero rows means last observed empty.
   Unknown/unsupported/unavailable never becomes empty or a fabricated timestamp.
+- Fans & Chamber: retain Thermals as the independently invokable home for
+  actual-only Cavity °C, with environment time/freshness visible on that row.
+  Fans & Air groups four physical part-cooling rows and Cavity/purifier air
+  handling. Show commanded percent and measured RPM as separate facts; no dial,
+  spin animation or healthy/fault color. Purifier `Not detected`, RPM `Not
+  measured`, component `Not reported`, known Off/Stopped, stale, unsupported and
+  unavailable are explicit. Keep one bottom Refresh action on each focused card.
 - Bed Mesh surface (decision 0030): default oblique interactive 3D chart on
   white, retaining every reported sample at its existing XY bounds. Connect
   adjacent points only, with no resampling/smoothing or `mesh_matrix` fallback.

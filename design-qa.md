@@ -1,5 +1,29 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Current C Fans & Chamber: visual acceptance unverified
+
+final result: blocked
+
+Decision 0029/OBS-013 adapt the delivered white focused cards without a new
+visual direction. Thermals gains a compact Cavity actual row with independent
+time/freshness; Fans & Air uses compact grouped lists for four part-cooling fans,
+Cavity fan and detected purifier exhaust/inner facts. Percent/RPM remain labeled
+text, not decorative gauges or inferred health. Information stays above one
+bottom Refresh action.
+
+No implementation screenshot, matched viewport/state comparison, browser
+interaction, keyboard result or console inspection exists. Fresh allowed-browser
+discovery remains unavailable. Historical widget captures do not accept changed
+Thermals/Fans assets. Typography/wrapping, spacing/layout, color/contrast, icon
+fidelity and content remain visually unverified.
+
+When available, capture both cards at 320/390/720 pixels with mixed nonzero,
+zero and null fan readings; purifier detected/not-detected; Cavity known/stale;
+partial/unsupported/unavailable states. Check no overflow, honest units/copy,
+independent times, 44-pixel Refresh/focus and absence of controls/health claims.
+Standing reviewed merge/deploy/BOTH-restart/verify precedes the user's visual
+review but never turns source or deployed-data checks into a visual pass.
+
 ## B Queue integration deployed: visual acceptance unverified
 
 final result: blocked

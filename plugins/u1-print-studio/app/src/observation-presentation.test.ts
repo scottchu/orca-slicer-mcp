@@ -113,9 +113,14 @@ describe("printer observation presentation", () => {
     expect(result.module.readings).toContainEqual(expect.objectContaining({
       id: "cavity",
       state: "unknown",
+      reportedState: "not_reported",
       capabilityEvidence: "advertised",
       actual: { state: "unknown", value: null },
     }));
+    const cavity = result.module.readings.find(reading => reading.id === "cavity")!;
+    expect(cavity).not.toHaveProperty("target");
+    expect(cavity).not.toHaveProperty("heaterState");
+    expect(cavity).not.toHaveProperty("active");
     expect(result.module.readings).toContainEqual(expect.objectContaining({
       id: "heater-bed",
       heaterState: { state: "unknown", value: null },
@@ -126,9 +131,9 @@ describe("printer observation presentation", () => {
     expect(JSON.stringify(result)).not.toContain('"actual":{"state":"known","value":0}');
   });
 
-  test("marks only still-unnormalized domains advertised but unknown", () => {
+  test("keeps unrequested independent domains unknown", () => {
     const result = createObservationPresentation(snapshot(), "fans");
-    expect(result.module).toMatchObject({ kind: "fans", state: "unknown", capabilityEvidence: "advertised" });
+    expect(result.module).toMatchObject({ kind: "fans", state: "unknown", capabilityEvidence: "unknown", reason: "not_requested" });
     expect(createObservationPresentation(snapshot(), "queue").module).toMatchObject({
       kind: "queue", state: "unknown", capabilityEvidence: "unknown", reason: "not_requested",
     });

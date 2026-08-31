@@ -15,6 +15,8 @@ import { readMoonrakerMaterials } from "./adapters/moonraker-materials.js";
 import { unavailableMaterials, type MaterialObservation } from "./application/material-observation.js";
 import { readMoonrakerQueue } from "./adapters/moonraker-queue.js";
 import { unavailableQueue, type QueueObservation } from "./application/queue-observation.js";
+import { readMoonrakerEnvironment } from "./adapters/moonraker-environment.js";
+import { unavailableEnvironment, type EnvironmentObservation } from "./application/environment-observation.js";
 
 const execFileAsync = promisify(execFile);
 
@@ -208,6 +210,11 @@ export async function readU1Materials(): Promise<MaterialObservation> {
 export async function readU1Queue(): Promise<QueueObservation> {
   try { return await readMoonrakerQueue(printerBaseUrl()); }
   catch { return unavailableQueue("not_configured", new Date().toISOString()); }
+}
+
+export async function readU1Environment(): Promise<EnvironmentObservation> {
+  try { return await readMoonrakerEnvironment(printerBaseUrl()); }
+  catch { return unavailableEnvironment("not_configured", new Date().toISOString()); }
 }
 
 async function fetchJson(route: string, maxTimeSeconds = 6): Promise<JsonObject> {

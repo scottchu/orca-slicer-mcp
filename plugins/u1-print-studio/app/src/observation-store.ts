@@ -2,6 +2,7 @@ import type { U1Status, U1WidgetMetadata } from "./u1-status.js";
 import { BED_MESH_TTL_MS, unavailableBedMesh, type BedMeshObservation, type BedMeshReader } from "./application/bed-mesh-observation.js";
 import { MATERIAL_TTL_MS, unavailableMaterials, type MaterialObservation, type MaterialReader } from "./application/material-observation.js";
 import { QUEUE_TTL_MS, unavailableQueue, type QueueObservation, type QueueReader } from "./application/queue-observation.js";
+import { ENVIRONMENT_TTL_MS, unavailableEnvironment, type EnvironmentObservation, type EnvironmentReader } from "./application/environment-observation.js";
 
 export type Freshness = "fresh" | "stale" | "offline" | "unknown";
 export type CapabilityEvidence =
@@ -40,6 +41,7 @@ export type ObservationSnapshot = {
   bedMesh?: BedMeshObservation;
   materials?: MaterialObservation;
   queue?: QueueObservation;
+  environment?: EnvironmentObservation;
 };
 
 type StatusReader = () => Promise<{
@@ -89,34 +91,72 @@ export class PrinterObservationStore {
   private materialsInFlight: Promise<void> | null = null;
   private queue = unavailableQueue("not_requested");
   private queueInFlight: Promise<void> | null = null;
+  private environment = unavailableEnvironment("not_requested");
+  private environmentInFlight: Promise<void> | null = null;
 
   constructor(
     private readonly readStatus: StatusReader,
     private readonly now: () => Date = () => new Date(),
     private readonly readBedMesh?: BedMeshReader,
     private readonly readMaterials?: MaterialReader,
-    private readonly readQueue?: QueueReader
+    private readonly readQueue?: QueueReader,
+    private readonly readEnvironment?: EnvironmentReader
   ) {}
 
-  async current(options: { refresh?: boolean; includeBedMesh?: boolean; includeMaterials?: boolean; includeQueue?: boolean } = {}): Promise<ObservationSnapshot> {
+  async current(options: { refresh?: boolean; includeBedMesh?: boolean; includeMaterials?: boolean; includeQueue?: boolean; includeEnvironment?: boolean } = {}): Promise<ObservationSnapshot> {
     await Promise.all([
       this.currentStatus(options),
       options.includeBedMesh ? this.currentBedMesh(options.refresh === true) : Promise.resolve(),
       options.includeMaterials ? this.currentMaterials(options.refresh === true) : Promise.resolve(),
       options.includeQueue ? this.currentQueue(options.refresh === true) : Promise.resolve(),
+      options.includeEnvironment ? this.currentEnvironment(options.refresh === true) : Promise.resolve(),
     ]);
     // A concurrent status or mesh receipt may have advanced the shared version.
     // Attach the latest independent domain instead of a captured older snapshot.
     const bedMesh = this.bedMeshWithCurrentFreshness();
     const materials = this.materialsWithCurrentFreshness();
     const queue = this.queueWithCurrentFreshness();
+    const environment = this.environmentWithCurrentFreshness();
     const snapshot = this.withCurrentFreshness(this.snapshot!);
-    return { ...snapshot, bedMesh, materials, queue, capabilityEvidence: {
+    return { ...snapshot, bedMesh, materials, queue, environment, capabilityEvidence: {
       ...snapshot.capabilityEvidence,
       bedMesh: bedMesh.sourceObservedAt !== null ? "observed" : bedMesh.state === "unsupported" ? "unsupported" : "unknown",
       materials: materials.sourceObservedAt !== null ? "observed" : materials.state === "unsupported" ? "unsupported" : "unknown",
       queue: queue.sourceObservedAt !== null ? "observed" : queue.state === "unsupported" ? "unsupported" : "unknown",
+      cavity: environment.cavity.state === "known" ? "observed" : environment.state === "unsupported" ? "unsupported" : "unknown",
+      fans: environment.fans.some(fan => fan.state === "known") ? "observed" : environment.state === "unsupported" ? "unsupported" : "unknown",
+      purifier: environment.purifier.state === "known" ? "observed" : environment.state === "unsupported" ? "unsupported" : "unknown",
     } };
+  }
+
+  private async currentEnvironment(refresh: boolean): Promise<void> {
+    const checked = Date.parse(this.environment.checkedAt ?? "");
+    const due = !Number.isFinite(checked) || this.now().valueOf() - checked >= ENVIRONMENT_TTL_MS;
+    if (this.environment.checkedAt !== null && (!refresh || !due)) return;
+    if (!this.readEnvironment) return;
+    if (!this.environmentInFlight) {
+      this.environmentInFlight = (async () => {
+        let result: EnvironmentObservation;
+        try { result = await this.readEnvironment!(); }
+        catch { result = unavailableEnvironment("network", this.now().toISOString()); }
+        if (result.state === "known") this.environment = result;
+        else if (this.environment.sourceObservedAt !== null) this.environment = {
+          ...this.environment, state: "stale", freshness: "stale",
+          checkedAt: result.checkedAt ?? this.now().toISOString(), reason: result.reason,
+        };
+        else this.environment = { ...result, checkedAt: result.checkedAt ?? this.now().toISOString() };
+        const version = ++this.observationVersion;
+        if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
+      })().finally(() => { this.environmentInFlight = null; });
+    }
+    await this.environmentInFlight;
+  }
+
+  private environmentWithCurrentFreshness(): EnvironmentObservation {
+    if (this.environment.state !== "known") return this.environment;
+    const observed = Date.parse(this.environment.sourceObservedAt ?? "");
+    return !Number.isFinite(observed) || this.now().valueOf() - observed >= ENVIRONMENT_TTL_MS
+      ? { ...this.environment, state: "stale", freshness: "stale" } : this.environment;
   }
 
   private async currentQueue(refresh: boolean): Promise<void> {

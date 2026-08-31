@@ -1,5 +1,34 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 C Fans & Chamber — design/source work active
+
+The design role read current contracts/source and inspected pinned primary
+sources without contacting the printer:
+
+```sh
+git clone --depth 1 --filter=blob:none https://github.com/Snapmaker/u1-klipper.git <TEMP>/u1-klipper
+git -C <TEMP>/u1-klipper sparse-checkout set config klippy/extras
+git -C <TEMP>/u1-klipper sparse-checkout add lava
+git -C <TEMP>/u1-klipper rev-parse HEAD
+```
+
+The resolved source was `10f2f69714c059f1dee0423db4f515b8a01f5388`.
+`lava/printer.cfg`, `klippy/extras/fan.py` and `purifier.py`, plus Moonraker's
+printer-object reference, ground decision 0029/OBS-013's exact fixed route,
+names, fields, units and purifier detection/mode semantics. This is public
+source/config evidence, not proof of the connected printer's current firmware,
+object availability, purifier installation, sensor accuracy, fan operation or
+physical safety. The temporary clone is outside the repository. Historical
+cavity/fan/purifier results below are not reused as current evidence.
+
+Current target: runtime 0.4.4/schema 10/observation-v10/camera-v8, twenty
+resources with observation-v9 retained and unchanged two-visible/eight-app-only
+tools. Author, independent, exact-SHA, release and scoped live evidence remain
+pending. No app/Git/service/printer mutation occurred in this design pass.
+The allowed browser remains unavailable; no screenshot, interaction, device or
+visual pass is claimed. `git diff --check` is the only design-record hygiene
+gate and will be recorded after initial freeze.
+
 ## 2026-08-31 B Queue integration — PR47 deployed
 
 Formal review approved exact head `1068add` without findings. PR47 merged it as

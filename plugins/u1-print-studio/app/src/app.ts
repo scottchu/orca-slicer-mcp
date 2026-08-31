@@ -32,6 +32,7 @@ import {
   readU1BedMesh,
   readU1Materials,
   readU1Queue,
+  readU1Environment,
   normalizedPrintState,
   normalizedToolState,
   stripJpegMetadata,
@@ -68,6 +69,7 @@ export const LEGACY_CAMERA_WIDGET_URIS = [
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v9.html",
   "ui://u1-print-studio/observation-v8.html",
   "ui://u1-print-studio/observation-v7.html",
   "ui://u1-print-studio/observation-v6.html",
@@ -341,7 +343,8 @@ export function createAppServer(
     readStatus?: StatusReader;
     readBedMesh?: typeof readU1BedMesh;
     readMaterials?: typeof readU1Materials;
-  readQueue?: typeof readU1Queue;
+    readQueue?: typeof readU1Queue;
+    readEnvironment?: typeof readU1Environment;
     observations?: PrinterObservationStore;
     readCameraFrame?: CameraFrameReader;
     cameraSessions?: CameraWebRtcSessionController;
@@ -356,7 +359,8 @@ export function createAppServer(
   const observations = dependencies.observations ?? new PrinterObservationStore(
     readStatus, undefined, dependencies.readBedMesh ?? (readStatus === readU1Status ? readU1BedMesh : undefined),
     dependencies.readMaterials ?? (readStatus === readU1Status ? readU1Materials : undefined),
-    dependencies.readQueue ?? (readStatus === readU1Status ? readU1Queue : undefined)
+    dependencies.readQueue ?? (readStatus === readU1Status ? readU1Queue : undefined),
+    dependencies.readEnvironment ?? (readStatus === readU1Status ? readU1Environment : undefined)
   );
   const server = new McpServer({
     name: "u1-print-studio",
@@ -506,7 +510,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue" }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans" }),
         view
       );
     }) as any
@@ -535,7 +539,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue" }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh", includeMaterials: view === "heads", includeQueue: view === "queue", includeEnvironment: view === "thermals" || view === "fans" }),
         view
       );
     }) as any
