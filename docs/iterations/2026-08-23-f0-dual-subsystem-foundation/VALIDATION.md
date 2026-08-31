@@ -31,8 +31,9 @@ invoked after manual merge, refused preflight with `PR must be open...` and made
 no changes. A first post-merge stage selected an ASDF shim; dry-run failed
 `bun exit127`, made no install or rollback, and the old 0.4.3 services remained
 verified. Bad staged release
-`20260831-3ab4ed7-pr49-resume-20260831T182443-ab31ae` was quarantined. Retrying
-with the actual Bun 1.3.12 executable produced the successful release above.
+`20260831-3ab4ed7-pr49-resume-20260831T182443-ab31ae` remained staged but
+inactive and was never installed. Retrying with the actual Bun 1.3.12 executable
+produced the successful release above.
 
 ## 2026-08-31 C Fans & Chamber — frozen source evidence
 

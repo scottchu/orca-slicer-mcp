@@ -30,8 +30,9 @@ wrapper after manual merge refused preflight with `PR must be open...` and made
 no changes. The first post-merge stage selected an ASDF shim; dry-run failed with
 `bun exit127`, performed no install or rollback, and left the old 0.4.3 services
 verified. Staged release
-`20260831-3ab4ed7-pr49-resume-20260831T182443-ab31ae` was quarantined. The pinned
-Bun retry above succeeded. These documentation-only rollout records do not
+`20260831-3ab4ed7-pr49-resume-20260831T182443-ab31ae` remained staged but
+inactive and was never installed. The pinned Bun retry above succeeded. These
+documentation-only rollout records do not
 redeploy unchanged app bytes. Next: D Current Job/real History, then E Overview.
 
 ### Previous C source checkpoint
