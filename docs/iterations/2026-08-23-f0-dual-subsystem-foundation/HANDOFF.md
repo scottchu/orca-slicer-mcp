@@ -1,6 +1,158 @@
 # F0 dual-subsystem foundation handoff
 
-## 2026-08-31 private widget directory — current handoff
+## 2026-08-31 information above, actions below — current source handoff
+
+The user's latest principle supersedes earlier bottom observation-time and
+bottom-left camera-status placement. Current source puts title/time/freshness
+and failure information above content/actions; observation footers contain
+only Refresh/Retry. Camera state/time/feedback form a top group, and
+PiP/Fullscreen/Go Live/Close remain bottom right. Removed permission/source/
+current-reading boilerplate stays absent. Layer math and camera JavaScript
+remain unchanged; observation rendering and both HTML layouts change.
+
+Current observation HTML SHA-256 is
+`3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b`;
+camera HTML SHA-256 is
+`0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483`.
+Author checks pass 59 tests/1,315 assertions. Independent validation passes
+144 app tests/1,931 assertions, 21 lifecycle tests, TypeScript, repository
+checks, all bundles/signatures, exact asset comparisons and ten captures.
+Browser cases cover all eight observation headers/action footers, top refresh
+failure through resize, actual bounded loading/retry recovery, and camera top
+information with bottom controls at 320/390/720 without overlap. Independent
+code and all-ten-capture visual review approve without findings; the reviewer
+passes 71 tests/1,576 assertions. Next update existing PR32. This is not
+deployed; prior merge/rollout authority does not carry forward. The earlier
+handoffs below preserve their own evidence, not the current layout contract.
+No new tool, plugin, service, auth/routing or printer action is included.
+
+## 2026-08-31 camera-control grouping — previous PR32 source handoff
+
+The existing open PR32 now has a source follow-up grouping PiP, fullscreen,
+and Go Live/Close at the bottom right. Status/time stays left and wraps above
+the intact 44-pixel controls when needed; rejection feedback uses the freed
+top inset. Camera HTML and camera VM tests are the only new runtime/test paths;
+camera JavaScript and the reviewed segmented-progress bytes remain unchanged.
+Camera HTML SHA-256 is
+`c7691461c0500370f01d5d2a40bd88229045a3e9d1ad4b5a4b9f468ab233c526`;
+test SHA-256 is `4aab7ffc4134c4ff2d57b34313ba242a6c9411a9c3f03e075af30cc420508e5d`.
+Author checks pass 39 tests/295 assertions. Independent validation passes
+143 app tests/1,865 assertions, 21 lifecycle tests, TypeScript, repository
+checks, all bundles/signatures and asset comparisons. Five browser captures
+pass; code/visual review approves without findings and independently passes
+51 tests/556 assertions. Reviewed 320-pixel wrapping preserves the full
+timestamp and 44-pixel controls with 8-pixel gaps; wider views keep one row,
+Live uses Close last, and rejection feedback stays clear above. Missing-time
+and hidden-control geometry checks also pass. Next update the same PR32.
+Neither this nor its segmented baseline is deployed. Schema/version labels,
+services, plugins, auth/routes and printer state are untouched; prior PR30
+rollout authorization does not carry forward. Source/browser fixtures do not
+prove native phone PiP or real-printer behavior.
+
+## 2026-08-31 segmented-layer progress — delivered PR32 source baseline
+
+The user requested a segmented layer strip within the existing focused
+progress card. Decision 0023's dated addendum records the bounded design:
+24 blocks on narrow screens or 48 wide, one layer per block for small totals,
+consecutive layer groups for large totals, proportional fill in the current
+group, and a neutral unavailable track for invalid or missing layer values.
+The large reported print percentage remains independent from layer position.
+The quiet bottom observation/refresh footer and surrounding card are retained.
+
+Runtime/test changes are limited to
+`plugins/u1-print-studio/app/public/widget.html` and
+`plugins/u1-print-studio/app/src/observation-widget.test.ts`. Their SHA-256s are
+`974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb` and
+`038438f1e4d8e781a31c7272c43a3beaf18e9b423d6158d396e79b8ce5b3b0ef`.
+Design/continuity records are the decision-0023 addendum, this iteration's
+BRIEF/HANDOFF/VALIDATION, PROJECT_STATE, and NEXT_AGENT. No camera, bridge,
+MCP inventory, resource/schema/version, service, auth/routing or printer
+behavior changes are included.
+
+Author validation passes 19 executable VM tests/954 assertions. Independent
+validation passes 142 app tests/1,849 assertions, 21 lifecycle tests,
+TypeScript, repository checks, all three bundles/signature checks, exact
+bundled observation-HTML comparison, and unchanged camera/frozen assets.
+Twelve isolated rendered captures and eight browser behavior cases pass,
+including differing percent/layer ratios, invalid/missing values, responsive
+boundaries, pending/error resize, and narrow/wide fractional groups.
+Independent code and scoped visual review approve with no blocking findings;
+the reviewer independently passes 58 tests/1,441 assertions and inspects all
+twelve captures, including both fractional-group views and the supplied
+baseline comparison. This accepts the unchanged inner card layout, 14-pixel
+bar position and footer, not pixel identity of outer screenshot crops/padding.
+No acceptance is inferred from earlier PR30 evidence. Actual commands and hashes are in the newest
+`VALIDATION.md` entry.
+
+This independently reviewed source is delivered in PR32, now awaiting the
+camera placement follow-up. It is not deployed: source and the installed baseline retain
+runtime `0.3.1`, schema `5`, observation-v3/camera-v5, making exact source/asset
+hashes essential. The previously authorized PR30 rollout is completed and its
+records remain preserved below; its permission does not carry forward to a
+new merge, installation, restart, plugin change, or printer acquisition.
+Synthetic rendering does not prove deployed, mounted-phone, or physical-printer
+behavior. No private artifacts or identifiers are committed.
+
+## 2026-08-31 authorized PR30 service rollout — completed baseline handoff
+
+The user explicitly authorized PR30 merge and deployment to the two existing
+owner-supervised HTTP services. PR30 merged as
+`48a106d2f17550bab8dc8648af1c7c247610a228`; the operator staged that clean
+merged tree as release `20260831-48a106d-widgets`, dry-ran and installed the
+pair successfully. Both services now report healthy runtime `0.3.1`, schema
+`5`, observation-v3/camera-v5. HTTP bundle SHA-256 is
+`71277c30c02f56efce570b2cabf9ea72c29d5810d873b4604b4b22bd6cc7aa31`,
+matching the independently reviewed bundle.
+
+The actual operator command forms below redact only private local arguments:
+
+- `uv run --no-project scripts/u1_service.py stage --source <clean-merged-source> --bun <pinned-bun> --release 20260831-48a106d-widgets`
+- `uv run --no-project scripts/u1_service.py install --release 20260831-48a106d-widgets --dry-run`
+- `uv run --no-project scripts/u1_service.py install --release 20260831-48a106d-widgets`
+- `uv run --no-project scripts/u1_service.py status`
+
+All four passed from the clean merged source, without a state-root override.
+Installation retained a recoverable prior-service snapshot;
+its actual ID is kept in the private operator handoff, not Git. If recovery is
+later authorized, use `uv run --no-project scripts/u1_service.py rollback
+--snapshot <retained-install-snapshot-id>`. Rollback was not exercised during
+this successful rollout. No personal-plugin reinstall, Mac login/power,
+auth/route change, printer acquisition/control or new backend mapping occurred.
+
+Independent post-install checks at 2026-08-31 14:02:22 UTC accept all four
+local/HTTPS health contracts, both private directory roots with the exact
+eight links, all eight focused static hosts and both current widget assets.
+The public U1 backend rejects dashboard routes; public MCP remains 401,
+public enrollment 404 and private enrollment health 200. The shared public
+HTTPS origin's unrelated `text-to-cad` root fallback remains unchanged and
+returns 200, not the U1 directory. Existing private env, OAuth, configuration,
+Serve/Funnel routes and access boundaries are preserved.
+
+The validator also opened only the deployed static directory in isolated
+Chrome at 390/light and 720/dark. Both captures passed without overflow,
+subrequests or console/page errors; no focused widget, camera, iframe or tool
+was loaded. This accepts deployed navigation, not mounted iPhone hydration,
+phone fullscreen/PiP, camera transport, printer telemetry or user outcome.
+The merged-source gate remains 135 app tests/1,006 assertions plus 21
+lifecycle tests; actual validator commands and hashes are in `VALIDATION.md`.
+
+This rollout follow-up changes only `PROJECT_STATE.md`, `NEXT_AGENT.md`, and
+the active iteration's `BRIEF.md`, `HANDOFF.md`, and `VALIDATION.md`. Runtime
+source remains the merged tree. The canonical checkout's unrelated dirty docs
+remain untouched. Personal plugin `0.2.0+codex.20260831033612` is still its
+separate PR28 installation with observation-v2/camera-v4; HTTP deployment does
+not update its executable or a retained host process.
+
+Next deliver these rollout records through a docs-only PR, then obtain the
+user's actual directory/focused-widget feedback. Do not repeat deployment or
+silently reinstall the plugin. Queue, fans, bed mesh, cavity, material/color,
+history and other missing mappings remain unimplemented or unknown; overview
+remains deferred. Actual phone/PiP and printer checks need their own evidence.
+
+The entries below preserve earlier source and rollout gates chronologically;
+their pending delivery statements are superseded by this current handoff.
+
+## 2026-08-31 private widget directory — source handoff
 
 Decision 0024 implements the user's requested navigation entry point, not the
 deferred composed overview. Source GETs for `/dashboard` and `/dashboard/`
@@ -37,7 +189,7 @@ view. No merge/deployment/plugin install, service restart, auth/Tailscale
 changes, or real-printer access occurred. Local rendered navigation is not
 deployed or actual phone acceptance.
 
-## 2026-08-31 authorized headless follow-up — current handoff
+## 2026-08-31 authorized headless follow-up — source handoff
 
 After draft PR30 source delivery, the user explicitly authorized isolated
 headless-browser validation because the supported browser was unavailable.
@@ -87,7 +239,7 @@ Existing private focused URLs still serve deployed runtime 0.3.0. The
 overview. A static 200 is only route evidence, not successful live mapping or
 proof the polished assets are deployed. No private hostname is retained.
 
-## 2026-08-31 quiet widget presentation — current handoff
+## 2026-08-31 quiet widget presentation — source handoff
 
 Decision 0023 is the current execution order, refining the user's selected
 Instrument Strips after mounted phone feedback. Source-only changes remove
@@ -149,7 +301,7 @@ authorized visual-validation path before treating the redesign as accepted,
 then separately scope rollout. Do not deploy or implement missing backend domains as an implicit
 extension. Historical persistence delivery below must not be repeated.
 
-## 2026-08-30 persistence integration — current handoff
+## 2026-08-30 persistence integration — historical handoff
 
 The user explicitly authorized PR28 merge and persistent installed/server
 delivery, while deferring Mac automatic login and power. Integration reconciles

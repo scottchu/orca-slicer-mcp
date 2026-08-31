@@ -1,5 +1,311 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 top-information and bottom-actions validation
+
+The user's newest direction supersedes the earlier bottom-timestamp placement:
+observation time, freshness and refresh errors now belong beneath the title;
+only actions remain in the footer. Camera information occupies a top stack,
+including loading/unavailable text and display feedback; its previously
+reviewed control cluster remains at bottom right. Earlier entries below record
+historical acceptance, not instructions to restore the superseded placement.
+
+- The independent `./scripts/check-repository.sh` run passed TypeScript,
+  **144 app tests / 1,931 assertions**, **21 lifecycle tests**, and the repository
+  contract. Existing segmented-layer and camera behavior regressions passed
+  alongside the new header/footer and loading-guidance structure tests.
+- All three bundle commands, standalone signature verification, and exact
+  source/bundled comparisons for both current widget assets passed. The
+  camera module script exactly matches `081929e`; both frozen legacy HTML
+  files remain unchanged. Current observation and camera HTML intentionally
+  changed, so their earlier whole-file hashes are not claimed unchanged.
+  `git diff --check` passed.
+- A reused, inspected loopback fixture served exact production HTML to fresh
+  isolated Chrome `152.0.7977.65` contexts through Playwright 1.55.0. Captures
+  used device scale factor 1, `en-GB`, UTC and selected light/dark themes.
+  Camera JPEG/canvas-video data and host signaling were synthetic; an RTC
+  substitute prevented real media-peer creation. Requests were restricted to
+  the loopback fixture/data URLs, with service workers and background
+  networking disabled. Zero external requests and console/page errors were
+  recorded.
+- **Ten screenshots** cover Progress at 390/light, Heads at 390/dark,
+  Thermals at 320/light, stale Progress at 720/dark, refresh failure at
+  320/dark, loading failure at 390/light, and camera Snapshot at 320, Live at
+  390, display rejection at 720 and unavailable state at 320. The validator
+  opened and inspected all ten actual captures. Every checked layout fits
+  without horizontal overflow; informational content precedes actions.
+- **Fourteen additional DOM/behavior cases passed.** Eight verify each
+  shared observation view independently: exactly one timestamp in its header,
+  refresh errors in the header, one action-only footer, 44-pixel controls,
+  and none of the removed read-only/current-reading/provenance copy. These
+  capture-only mounts made no tool calls.
+- The remaining six cases cover: a real 15-second loading deadline with
+  guidance above the Retry-only footer and recovery to supplied data;
+  pending/error resize preservation; camera Live-to-Close placement;
+  narrow display-rejection stacking; camera loading information at the top
+  without controls; and a complete missing-time camera label at the top.
+- The resize check inspects the **actual browser DOM**, not the VM test's
+  stand-in node. After an explicit synthetic refresh, 390-to-720 regrouping
+  preserved the disabled button and header time. After a supplied failure,
+  720-to-390 regrouping preserved the exact visible header error and time.
+  There was only the one explicitly requested fixture refresh.
+- Camera information and the three unchanged bottom controls do not overlap.
+  Display feedback flows below the top status pill at both 720 and 320 pixels.
+  At 320, `Snapshot · Time unavailable` remains fully visible at the top,
+  without clipping, with all three 44-pixel actions below it. Loading and
+  unavailable messages are top information; only the decorative empty-camera
+  icon remains centered.
+
+Actual commands were `bun --no-env-file --config=/dev/null run
+fixture-server.ts`, `U1_INFO_FIXTURE_ORIGIN=<loopback-fixture-origin> node
+capture-info-layout.mjs`, and the bounded supplementary
+`check-info-missing-time.mjs` command with the same origin. App checks used
+`bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+`codesign -vvv --verify dist/u1-print-studio`, and `cmp` for both HTML assets.
+An exact module-script extraction/comparison against Git confirmed camera
+JavaScript identity; `git diff --exit-code 081929e --` with the two legacy
+asset paths confirmed their identity. Reports and captures remain outside Git.
+All browser contexts and the fixture server were closed after verification.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Observation widget | `3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b` |
+| Camera widget | `0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483` |
+| Unchanged camera module script | `2d53b9ab7c30456f6ccfdc6519b05a442f92df2a5ab605fa859c5fe968b44811` |
+| Private logical information-layout report | `6d30d233c106079c12b3d759f3fc9bb70a486dd4c9610c41391d13d6114ccc78` |
+| `info-progress-fresh-390-light.png` | `403be51ca8072fb9c26e74b24aded1a11e3ff47aaa1deb4328d82ba9428d7eb3` |
+| `info-camera-snapshot-320.png` | `058577994e74208d7c13b23981d8a16a5aa680f4d8a50588d4ab9eae8ab38707` |
+| `info-progress-loading-failure-390-light.png` | `3fefde548ce8f0093acd18e7f225718c703a5179f49bfc1f5013e2b1c9066ad4` |
+
+This accepts source/software and rendered synthetic fixtures. Independent
+formal/design review owns its own verdict. No real printer, production service,
+live private URL, plugin, authentication state or routing was accessed or
+changed. Merge, deployment, actual mobile-host behavior and user acceptance
+remain separate for this newest PR32 refinement.
+
+## 2026-08-31 bottom camera-control cluster validation
+
+The independent validator checked the narrow presentation follow-up that
+moves PiP and fullscreen beside Live/Close. Only the current camera markup and
+styles change; exact module-script comparison against `ba09653` passed with
+the unchanged JavaScript hash recorded below. The segmented observation widget
+and both frozen legacy HTML files also matched `ba09653` exactly. This does
+not alter their previously recorded evidence or deploy either PR32 refinement.
+
+- `./scripts/check-repository.sh` passed TypeScript, **143 app tests / 1,865
+  assertions**, **21 lifecycle tests**, and the repository contract. The
+  independent rerun includes the author-added bottom-cluster regression plus
+  existing camera display, frame-time, live, fallback and visibility tests.
+- `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, and exact source/bundled camera
+  `cmp` passed. `git diff --check` passed.
+- The inspected existing isolated camera fixture served exact production
+  HTML with a synthetic JPEG and a synthetic canvas video track. An explicitly
+  substituted RTC adapter prevented peer/network media creation. Chrome
+  `152.0.7977.65`, Playwright 1.55.0, a fresh context, device scale factor 1,
+  `en-GB`, UTC and dark mode captured **five screenshots**: supported Snapshot
+  controls at 320/390/720 pixels, Live at 390, and rejected display mode at 320.
+  The validator opened all five actual captures for inspection.
+- All supported controls share the same bottom-right parent in PiP,
+  fullscreen, Live/Close order. Measured targets are at least 44 by 44 pixels,
+  with 8-pixel gaps; controls never shrink, wrap internally, overlap the status
+  pill, or leave the image. At 320 pixels the complete status pill stays on a
+  row above the right-aligned cluster. There are no remaining top controls,
+  document overflow, console/page errors, or external requests.
+- **Five focused behavior cases passed**: Live-to-Close retains the cluster;
+  host-bridge fullscreen/PiP each enter and exit through the relocated buttons;
+  genuinely unsupported controls remain hidden when both host and native
+  capabilities are absent in the fixture; rejected display feedback remains
+  above and separate from the bottom controls at 320; and the longer
+  `Snapshot · Time unavailable` pill stays fully visible without clipping,
+  ellipsis or control overlap at 320.
+- The host display responses are simulated grants and the video is synthetic.
+  These checks exercise the existing production handlers and browser layout;
+  they do not establish native phone PiP, actual fullscreen host behavior,
+  printer camera transport or physical acceptance.
+
+Actual commands were `bun --no-env-file --config=/dev/null run
+fixture-server.ts` and `U1_CAMERA_FIXTURE_ORIGIN=<loopback-fixture-origin>
+node capture-camera-controls.mjs`. Requests were restricted to the loopback
+fixture/data URLs, service workers were blocked, and background networking
+was disabled. Private fixture scripts, screenshots and the logical report
+remain outside Git. The browser/context and loopback fixture were stopped
+after the final pass. No production service, private live URL, plugin,
+authentication state, routing or printer was accessed or changed.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Camera widget | `c7691461c0500370f01d5d2a40bd88229045a3e9d1ad4b5a4b9f468ab233c526` |
+| Unchanged camera module script | `2d53b9ab7c30456f6ccfdc6519b05a442f92df2a5ab605fa859c5fe968b44811` |
+| Unchanged segmented observation widget | `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb` |
+| Private logical camera-control report | `38083b9e8e0bba3a93dbd37b4561fdb492566d17ecc7e753a70d82572af64b09` |
+| `camera-controls-320-snapshot.png` | `58b73851b532ed541ffd517f7477262fe88fbfe201bb036d1aaf87d132bc59cc` |
+| `camera-controls-720-snapshot.png` | `93233d2aa707c2048ad93826789925a32892b63267acf41a5dcd766f5ce9bed5` |
+| `camera-controls-320-rejection.png` | `851fed0a44e08a00ca217b58898021c022dbfee3cac094d91b8bc12ffcf9ee3d` |
+
+This accepts source/software and isolated synthetic rendering only. Independent
+formal/design review owns its separate verdict; merge, rollout, actual mounted
+mobile behavior and user acceptance remain separate for this follow-up.
+
+## 2026-08-31 segmented layer-progress validation
+
+The independent validator checked decision 0023's segmented-bar addendum
+against the actual current observation HTML, using synthetic observations on
+an isolated loopback host. The user's screenshot was opened as the reference;
+the requested delta is the bar, not a redesign of the card or footer. No
+production service, printer, camera, plugin, authentication or route was read
+or changed during this source slice. Previous PR30 rollout evidence below does
+not accept deployment of this later change.
+
+### Executed source and browser checks
+
+- `./scripts/check-repository.sh` passed TypeScript, **142 app tests / 1,849
+  assertions**, **21 lifecycle tests**, and the repository contract. The
+  author-added executable VM cases cover small and grouped totals, safe-integer
+  boundaries, zero/end positions, unavailable values, independent percentage,
+  accessible values and responsive regrouping. The validator reran that gate
+  independently after the author declared the source ready.
+- In the app directory, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign -vvv --verify dist/u1-print-studio`, and
+  `cmp public/widget.html dist/widget.html` passed. `git diff --check` passed.
+- `git diff --exit-code 16169c0 --` with the current camera and both frozen
+  legacy HTML paths passed. Their SHA-256 values remain unchanged; the slice
+  does not modify camera behavior or retained legacy resources.
+- Chrome `152.0.7977.65` with Playwright 1.55.0, a fresh isolated context,
+  device scale factor 1, `en-US` and `America/Toronto` captured **12 screenshots**
+  of exact production HTML. Service workers were blocked, background networking
+  disabled, and requests restricted to the synthetic loopback fixture/data
+  URLs. Every production-widget response was compared byte-for-byte with the
+  final source. There were zero external requests or console/page errors.
+- Captures cover partial 230/461, complete 461/461 and missing layers at
+  390 pixels in light and dark modes; zero and small totals at 390; partial and
+  complete at an 882-by-290 reference-sized viewport; and differing 126/461
+  layers versus 67.4-percent reported progress at 320/light and 720/dark.
+  Full iframe captures include its actual content height instead of clipping
+  the footer to the viewport. The validator opened the reference and actual
+  partial, complete, mobile, missing-data and fractional-bin images.
+- Every valid track retains 14-pixel height and 2-pixel gaps, has at most
+  24 narrow or 48 wide blocks, and exposes the exact layer count and grouping
+  through one accessible progressbar. Each block's fill was independently
+  checked using BigInt integer-bin boundaries; at most one bin is fractional,
+  without rounding ahead. Decorative blocks are hidden from assistive
+  technology. Zero is empty, 461/461 is full, and a small total has one block
+  per layer rather than a fixed number of decorative blocks.
+- **Eight additional browser cases** passed: differing percentage/layers,
+  invalid over-total layers, unknown percentage with known layers, widths
+  320/480/481/720, and a pending-refresh/error resize sequence. Missing or
+  invalid layers remain an unfilled neutral track with no current-value ARIA
+  attribute and an unavailable caption, even when percentage is known.
+- Resize from 390 to 720 preserved the disabled pending-refresh button and
+  observation time; resize back after a synthetic failure preserved the error
+  and time. Exactly one explicitly clicked fixture refresh occurred, with no
+  resize-triggered data request. All capture-only cases made zero tool calls.
+  Each checked card retained one bottom observation-time/refresh footer and
+  fitted its viewport without horizontal overflow.
+
+Actual private harness commands were `bun --no-env-file --config=/dev/null
+run layer-server.ts` and `U1_LAYER_ORIGIN=<loopback-fixture-origin> node
+capture-layers.mjs`. The final run included the reviewer's two requested
+fractional-bin captures. Private scripts, supplied screenshot, reports and
+captures remain outside Git. The isolated browser/context were closed and
+the fixture listener was stopped after validation. Independent formal/design
+review owns its separate verdict; these assertions alone do not establish it.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Observation widget | `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb` |
+| Unchanged camera widget | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Unchanged frozen legacy status | `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437` |
+| Unchanged frozen legacy camera | `c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203` |
+| Private logical layer report | `4661992712cfc7bbf9c9506ede4be715ec339fbab1863e0a7fcd0848ef61996a` |
+| `layers-partial-882-dark.png` | `19e37ac5f4c2ffd3e4b910bd60bbfe742e6e2b7055fa67c1a53f7c27f00a5284` |
+| `layers-complete-882-dark.png` | `4b5133a8d66699e851c28113ac276b1fa02821a0c4e5166e51526f445f9f231f` |
+| `layers-mismatch-320-light.png` | `9f58b705425110e92e37e717ea240e0de15435d186d2f8578c24737d0f4044c2` |
+| `layers-mismatch-720-dark.png` | `c05f638ff5dd6857a79f4e17f0105686be5f9dbb6cef8a03474c53b9769de2f9` |
+
+This is static/software and rendered synthetic-host evidence only. Reported
+layer position is not proof of completed physical layers or a completed print.
+Merge, deployment, mounted-host behavior, real-printer data and user acceptance
+remain separate gates for this segmented-bar change.
+
+## 2026-08-31 authorized merged-service rollout validation
+
+The user authorized merging PR30 and deploying it through the two existing
+owner-scoped U1 services. The coordinator merged reviewed head
+`1113e05ba0027b80ea6f2cf375a64cfc1704ea47` as
+`48a106d2f17550bab8dc8648af1c7c247610a228` and verified equal source trees.
+The independent validator reran `./scripts/check-repository.sh` on the clean
+reviewed head: TypeScript, **135 app tests / 1,006 assertions**, **21 lifecycle
+tests**, and the repository contract passed. The operator separately staged,
+dry-ran and installed the merged release; this validator performed no lifecycle
+writes, authentication rotation, tool calls or printer acquisition.
+
+### Independently observed deployed result
+
+- Before installation, local public/private and their HTTPS health routes
+  reported runtime `0.3.0`, schema `5`, observation-v2 and camera-v4. The
+  private `/dashboard` returned 307 and `/dashboard/` returned 404. All eight
+  old focused hosts returned 200; old widget asset hashes did not match the
+  reviewed new source. This confirmed the user's screenshots showed the
+  deployed older presentation, not the corrected source awaiting rollout.
+- After the operator reported stable paired installation, the independent
+  check at **2026-08-31 14:02:22 UTC** found all four health responses at
+  runtime `0.3.1`, schema `5`, observation-v3 and camera-v5. Public auth stayed
+  `personal-oauth`; private auth stayed `local-only`.
+- Both private directory roots now returned **200 with exact reviewed HTML**,
+  including all eight fixed links. Each focused static host also returned 200
+  and exactly matched its reviewed observation or camera host. `/widget` and
+  `/camera-widget` were byte-identical to the reviewed quiet-footer and
+  image-only camera assets. `git diff --exit-code 48a106d --
+  plugins/u1-print-studio/app` verified the comparison source still matched
+  the merged application tree.
+- A fresh isolated Chrome browser opened only the deployed static directory
+  at 390 pixels/light and 720 pixels/dark. Both actual HTTPS response bodies
+  matched source; both screenshots showed the eight entries without overflow.
+  The browser recorded only two directory document requests, zero subrequests,
+  zero blocked requests and zero console/page errors. No focused widget,
+  iframe, image, video or tool was loaded. The validator inspected both saved
+  screenshots; this is deployed navigation evidence, not a new comprehensive
+  design review or mounted-phone/printer acceptance.
+- Unauthenticated public MCP remained **401**, public enrollment remained
+  **404**, and private enrollment health remained **200** over both loopback
+  and its existing private HTTPS origin. The public U1 process rejected both
+  directory roots and all eight focused paths with **404**.
+- The shared public HTTPS origin has a preexisting unrelated root handler:
+  `/dashboard` and `/dashboard/` there return its `text-to-cad` document with
+  **200**, not the U1 directory. That content hash was unchanged before/after.
+  Do not incorrectly report a public-edge 404 or rewrite the unrelated root.
+  The private dashboard port remains outside Funnel.
+- Independent before/after SHA-256 comparisons of the existing environment
+  file, OAuth state, local configuration and raw Tailscale Serve JSON were all
+  equal during this check. No values or credentials were printed or committed.
+  Existing Funnel-enabled ports and every Serve route were unchanged.
+
+Actual validation commands were `node check.mjs baseline`, `node check.mjs
+after`, and `node capture-live-directory.mjs` in the isolated validation
+directory. The static adapter used bounded `curl --noproxy '*'` GETs without
+redirects and hashed response bodies; file/Serve comparisons recorded hashes
+only. Private scripts, reports and screenshots remain outside Git. Browser
+contexts and the browser were closed after captures. Both prior loopback
+directory-fixture servers were also stopped; no test server remains running.
+
+| Deployed/check artifact | SHA-256 |
+| --- | --- |
+| Directory response | `1ffc53eefa9842d0741680f1e14d636bb8b2c84401a8382d8c222f39bc263d1b` |
+| Observation widget response | `86cf5f4a4e6e29f8aa99cb14c947d20992b7b022c91c75f08642eea0a09837d0` |
+| Camera widget response | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Private baseline report | `6564c1a6c4478e5f6f5db81d5096f0cbb08d0118a9221f41ad3b92d0ffde5d84` |
+| Private after report | `ffd4586cc234654277f0f313b80c43dcc93f3c3a3ccf5eae4d34da736c8da859` |
+| Private deployed-browser report | `91a065a4d2749d5fec7cae04227de9e0933cc766424682f59264d0275e3123cb` |
+| `deployed-directory-390-light.png` | `2ced4f5fc9ddad88edbab85a7818df20db485fb1dc6e7332ea14cc12a9fde672` |
+| `deployed-directory-720-dark.png` | `e92bcb4b066a65fac4085ce8b59e9335388226f258a4b67d9030987e55b6bdd4` |
+
+This accepts merged-source deployment, static assets, navigation rendering and
+preserved access boundaries. No local plugin reinstallation was performed.
+Actual mounted ChatGPT/iPhone hydration, native phone PiP, real-printer data,
+camera transport and physical/user acceptance remain separate. Queue, fans,
+bed mesh and other previously unmapped domains remain unimplemented; deployment
+does not expand their capability labels into measured data.
+
 ## 2026-08-31 private widget directory validation
 
 Decision 0024's directory was checked against the exact production HTML and

@@ -870,8 +870,10 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain("provenance");
   });
 
-  test("uses one quiet footer with observation time and exceptional freshness", () => {
+  test("uses header observation information and one actions-only footer", () => {
     expect(WIDGET_HTML).toContain('class="instrument-footer"');
+    expect(WIDGET_HTML).toContain('class="instrument-info"');
+    expect(WIDGET_HTML).toContain('class="instrument-footer"><button');
     expect(WIDGET_HTML).toContain("Observed ${date.toLocaleTimeString");
     expect(WIDGET_HTML).toContain("Observation time unavailable");
     expect(WIDGET_HTML).toContain('stale: "Stale"');

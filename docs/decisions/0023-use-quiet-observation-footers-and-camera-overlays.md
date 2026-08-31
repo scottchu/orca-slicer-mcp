@@ -142,3 +142,142 @@ and evidence.
    installed runtime, real printer, and mounted user outcomes are reported as
    separate layers. The supplied screenshots identify the requested change;
    they do not prove the new implementation.
+
+## 2026-08-31 refinement — segmented layer progress
+
+The user requests that the existing continuous progress strip become visible
+filled/empty layer blocks. This is a bounded refinement to the same focused
+card, not a new dashboard, telemetry field, or observation path. It addresses
+F0's layer-progress comprehension question. The prior deployed card and quiet
+footer are the baseline; all surrounding layout and copy remain unchanged
+except an unavailable layer caption when valid layer data is absent.
+
+- Preserve the bar's current position and 14-pixel height, with 2-pixel gaps
+  and modest 2-pixel block corners. Filled portions use the current yellow
+  accent; remaining portions use the neutral track color. Do not add labels,
+  legends, tick numbers, animation, tooltips, or controls around the strip.
+- Use at most 24 blocks at viewport widths up to 480 CSS pixels and at most
+  48 above that width. The block count is the smaller of that budget and the
+  valid total layer count. A small count displays one block per layer;
+  hundreds of layers use consecutive groups instead of unreadable hairlines.
+  Responsive regrouping must not fetch data or reset observation freshness.
+- For total `T`, current layer `C`, and block count `B`, block `i` represents
+  the interval from `floor(i * T / B)` to `floor((i + 1) * T / B)`.
+  Its fill is zero before that interval, full at or beyond its end, and the
+  proportional fraction within that one current group. Do not round a partial
+  group upward to imply additional layers. At `C = 0` all blocks are empty;
+  at `C = T` all are filled. This is current reported layer position, not proof
+  that a layer or print has physically completed.
+- The segmented strip uses only current/total layer values. Keep the existing
+  large reported print percentage independently unchanged: file/job progress
+  need not equal layer position. Do not derive one from the other, silently
+  reconcile disagreement, or infer completion from either value.
+- Layer data is valid only when both values are safe integers, total is
+  positive, and current lies inclusively between zero and total. Missing,
+  fractional, negative, over-total, nonfinite, or otherwise invalid values
+  produce an unfilled neutral track and `Layer progress unavailable` in the
+  existing layer-caption position. Do not substitute percentage, clamp
+  invalid values into plausible layer positions, or invent a layer count.
+  The neutral unavailable track is not a zero-layer observation.
+- Expose one `progressbar`, labelled `Layer progress`, with minimum zero,
+  maximum total, current value, and `Layer C of T` value text when valid.
+  When grouping, value text also states `Grouped into B blocks`; individual
+  decorative blocks stay hidden from assistive technology. Unavailable data
+  omits the current-value attribute and explicitly announces unavailable layer
+  progress rather than indeterminate active work. No new keyboard stop or
+  live-region announcement is needed.
+- Acceptance covers small totals, zero/start/end, large grouped totals and
+  partial groups, narrow/wide regrouping, differing percent/layer ratios,
+  missing/invalid values, light/dark contrast, unchanged bottom footers, and
+  absence of overflow at 320/390/720 CSS pixels. Source tests and synthetic
+  browser captures remain separate from deployed or physical-printer proof.
+- This request authorizes source changes and local validation only. Prior
+  PR30 merge/rollout authority is complete, not permission to merge, deploy,
+  install a plugin, restart services, contact the printer, or expand domains.
+
+## 2026-08-31 refinement — group camera controls beside Live
+
+The user requests fullscreen and picture-in-picture beside Live at the lower
+right. This supersedes only this decision's earlier upper-right placement.
+
+- Remove the separate top control row. Use one bottom-right cluster ordered
+  Picture in picture, Fullscreen, then the existing Go Live/Close control.
+  Preserve button identities, feature detection, hidden/pressed/disabled
+  states, accessible names, keyboard behavior, and all media/display logic.
+- Keep each visible button at least 44 by 44 pixels with 8-pixel gaps. The
+  cluster never shrinks or wraps internally; unsupported buttons remain absent.
+  Keep the existing bottom and side insets, icons, colors, and image geometry.
+- Status and truthful timestamp remain at the bottom left. When status plus
+  the full button cluster cannot fit on one row, the status stays left on the
+  preceding line and the entire cluster wraps below it, right-aligned inside
+  the image. At 320 pixels do not hide or truncate the timestamp, squeeze
+  targets, overlap content, or move controls outside the camera.
+- Use the newly free top inset for existing display-rejection feedback so it
+  cannot overlap the narrow two-row bottom overlay. Do not add a caption,
+  heading, observation footer, new control, or new status/debug copy.
+- Check snapshot/live/fallback, all and partially available display controls,
+  rejection feedback, keyboard order, and 320/390/720 light/dark layouts.
+  Source tests and isolated browser captures do not establish actual mobile
+  PiP, production rollout, or real-printer behavior.
+- Deliver this layout-only follow-up in existing PR32, preserving the reviewed
+  segmented-progress asset and tests. No new merge, deployment, installation,
+  service change, authentication/routing change, or printer action is included.
+
+## 2026-08-31 supersession — information above, actions below
+
+The user's latest explicit layout principle is that information belongs above
+and actionable buttons belong at the bottom. This supersedes the earlier
+request in this decision to put observation time beside bottom Refresh, and
+the subsequent bottom-left camera status/time placement. Those earlier
+sections remain historical intent and evidence, not the current placement
+contract. OBS-008 and CAM-008 now state this principle directly.
+
+### Observation cards
+
+- Keep useful titles and existing domain content. Under the title, place a
+  compact 12-pixel tabular observation-time/freshness line with an 8-pixel gap.
+  Missing time remains explicit; exceptional freshness and refresh errors wrap
+  fully in this top information area rather than truncating or moving below
+  controls. Fresh observations need no redundant current-reading label.
+- Keep only the existing Refresh action in a bottom-right action-only footer,
+  retaining its 44-pixel minimum target and current busy/disabled behavior.
+  The existing divider/insets may remain. Do not repeat timestamp, source,
+  freshness, permission or error text in that footer.
+- For loading and failed delivery, put the explanatory pending/error/reopen
+  information above the action area. If the existing workflow permits Retry,
+  place that one action at the bottom right. Do not invent an observation time,
+  add a refresh authority, or turn a reopen instruction into a new host action.
+- Preserve read-only enforcement while keeping Read only, Current reading,
+  Printer telemetry, and duplicate provenance boilerplate absent. Preserve
+  segmented-layer math, reported percent, domain values and all existing
+  bridge/refresh/initialization behavior.
+
+### Camera
+
+- The camera remains image-only. Its top information group contains the
+  existing truthful state/time pill followed by existing display-rejection
+  feedback when present. Use a vertical stack with an 8-pixel gap, top inset
+  12 pixels, and the existing 18-pixel side insets (12 on narrow views).
+  Feedback flows below the pill, not absolutely over it. Pending/unavailable
+  explanatory text also belongs at the top; an empty-image decorative icon
+  may remain centered.
+- The bottom contains only the right-aligned PiP, Fullscreen, Go Live/Close
+  cluster with unchanged 44-pixel targets and 8-pixel gaps. Moving information
+  away removes the need for status and controls to share or wrap within that
+  bottom row. Unsupported controls remain absent.
+- Preserve all element identities and media/display logic, accepted-frame
+  clocks, feature detection, feedback wording and accessibility semantics.
+  Long or missing-time information must remain readable without overlapping
+  bottom controls at 320 pixels. Do not add a heading, caption, refresh,
+  observation footer, debug text, or new action to the camera.
+
+### Acceptance and delivery
+
+Check every focused observation view plus camera at narrow/wide sizes and
+light/dark themes. Verify top timestamp/freshness and refresh failure,
+loading/malformed delivery, bottom-only Refresh/Retry, camera status/feedback
+stack, missing time, supported/hidden controls, and no collision or overflow.
+Source and synthetic rendering remain distinct from physical-printer,
+deployed-server and actual mobile-host/PiP acceptance. Update the same open
+PR32 after independent validation/review; no merge, deployment, plugin/service,
+authentication/routing or printer change is authorized by this layout rule.

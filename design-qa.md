@@ -1,5 +1,104 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Current placement: information above, actions below
+
+Scoped result: passed, with no blocking findings. The user's latest rule and
+decision 0023's supersession govern this review. Earlier observation-footer
+timestamps and bottom-left camera information in the records below are
+historical accepted placements, now superseded rather than rules to restore.
+Product Design review guidance informed inspection of all ten current captures.
+
+1. **Observation information and actions — passed.** Progress, Heads and
+   Thermals captures at 320/390 pixels show observation time under the title
+   and only Refresh at the bottom. The 720-pixel stale view and 320-pixel
+   refresh-failure view retain readable top feedback without clipping. Domain
+   content and segmented-layer rendering remain intact; no removed permission
+   or provenance boilerplate returns.
+2. **Failed loading — passed.** The actual deadline capture keeps explanatory
+   text above bottom Retry and invents no observation time. Separate browser
+   checks cover all eight shared observation layouts, Retry recovery, and
+   preservation of pending state/top errors during segmented regrouping.
+3. **Camera information stack — passed.** Snapshot/live information sits at
+   the top, display rejection flows below it, and unavailable text is top-aligned
+   with only the decorative camera icon centered. Bottom-right display/live
+   controls remain distinct, full-sized and unobstructed. The validator also
+   checks narrow rejection stacking and loading without actionable controls.
+
+The reviewer independently passed 71 focused tests/1,576 assertions and
+verified identical camera JavaScript and layer-calculation bytes against the
+prior source. Exact reviewed observation/camera HTML hashes are
+`3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b` and
+`0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483`.
+The external `info-layout-captures` collection and iteration `VALIDATION.md`
+record exact synthetic-browser evidence. This accepts source and scoped rendered
+layout, not deployment, actual mobile-host/PiP, full accessibility compliance,
+new printer mappings or physical/user acceptance.
+
+## Camera bottom-right controls — independent rendered review
+
+Scoped result: passed against decision 0023's latest placement refinement,
+with no blocking findings. Product Design review guidance informed inspection
+of all five current validator captures and the bounded DOM/CSS change.
+
+1. **Snapshot at 320/390/720 pixels — passed.** PiP, Fullscreen and Go Live
+   form one bottom-right cluster with unchanged icons and 44-pixel targets,
+   separated by 8-pixel gaps. At 320 pixels the complete status/time stays left
+   on the preceding line; the cluster neither shrinks nor wraps internally.
+2. **Synthetic live at 390 pixels — passed.** Close occupies the final position
+   beside the same display controls, with the live state/time retained left.
+3. **Rejection at 320 pixels — passed.** Feedback occupies the freed top inset
+   without touching the two-row bottom overlay or obscuring its controls.
+
+The separate validator report confirms hidden unsupported controls and a full
+missing-time label without overlap. Source review verifies unchanged button
+identities, accessible names and DOM control order; the entire media script
+is byte-identical to the prior reviewed source. The reviewer independently
+passed 51 focused tests/556 assertions. This does not claim a new native-phone
+PiP, keyboard/screen-reader audit, transport test or deployment acceptance.
+
+External evidence remains under the logical `camera-controls-captures`
+collection. Reviewed camera HTML SHA-256:
+`c7691461c0500370f01d5d2a40bd88229045a3e9d1ad4b5a4b9f468ab233c526`.
+The fixture uses synthetic images/video and substituted host/RTC behavior;
+no real camera, printer or service was accessed. Earlier reviews remain below.
+
+## Segmented layer progress — independent rendered review
+
+Scoped result: passed against decision 0023's dated refinement, with no
+blocking source or visual findings. Product Design review guidance informed
+comparison of the user's continuous-bar reference with the rendered completed
+card, followed by inspection of all twelve current validator screenshots.
+The external screenshot crop and fixture outer padding/background differ;
+pixel-identical screenshot framing is not claimed. The source diff preserves
+the surrounding card layout and footer while replacing the strip itself.
+
+1. **Grouped and completed progress — passed.** The 390-pixel light/dark and
+   882-pixel dark captures retain title, state, percentage, layer/time caption
+   and one bottom timestamp/refresh footer. The 14-pixel yellow/neutral blocks
+   and 2-pixel gaps are distinct, including when every block is filled.
+2. **Missing, zero and small totals — passed.** Missing layers use a neutral
+   track with explicit unavailable text, not a zero observation. Zero retains
+   empty blocks; the ten-layer case shows three filled and seven empty blocks.
+3. **Fractional groups and narrow/wide reflow — passed.** Additional captures
+   at 320/light and 720/dark show layer 126 of 461, a genuinely partly filled
+   group, and an independently unchanged 67.4-percent headline. No clipped
+   card text or overflow was found in the inspected images.
+
+The reviewer independently ran 58 focused tests/1,441 assertions. Source
+review verifies safe integer bins, single layer-progressbar semantics, hidden
+decorative blocks, and bar-only regrouping. A missing media-query listener
+could initially abort rendering; guarded modern/legacy registration and
+fallback tests resolve that review finding. Validator behavior checks separately
+cover pending refresh, retained errors/time, and no additional acquisition.
+
+External evidence uses the logical `layer-captures` collection. Reviewed widget
+SHA-256: `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb`.
+Final report SHA-256:
+`4661992712cfc7bbf9c9506ede4be715ec339fbab1863e0a7fcd0848ef61996a`.
+This is isolated synthetic-browser/source acceptance, not deployment, native
+phone or screen-reader acceptance, real-printer evidence, or physical completion.
+Earlier directory and focused-widget reviews remain unchanged below.
+
 ## Private widget directory — independent rendered review
 
 Scoped result: passed against decision 0024, with no blocking visual findings.

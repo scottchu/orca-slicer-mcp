@@ -10,7 +10,55 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-- Current source task: decision 0024 adds a private widget directory at both
+- Current task: the user's latest information-above/actions-below principle
+  is implemented in source across current focused widgets. Observation time,
+  freshness and refresh failures are at the top; bottom footers contain only
+  Refresh/Retry. Camera status/time/feedback are at the top and display/live
+  controls stay bottom right. This explicitly supersedes earlier bottom-time
+  placement; historical evidence below is not current layout guidance.
+  Layer calculations and camera JavaScript remain unchanged, though both HTML
+  asset hashes change. Independent validation passes 144 app tests/1,931
+  assertions, 21 lifecycle tests, TypeScript, repository/bundle/signature checks,
+  exact asset comparisons and ten browser captures. Independent code/visual
+  review approves without findings, with 71 tests/1,576 assertions passing.
+  Next update the same PR32 with this reviewed source.
+  Source remains undeployed, with no new merge/rollout authority.
+- Previous PR32 follow-up, delivered as `081929e`: camera PiP and fullscreen sit beside Go Live/Close in one
+  bottom-right cluster, with status/time left and narrow-screen wrapping.
+  Source-only DOM/CSS changes preserve camera JavaScript and the reviewed
+  segmented-progress bytes. Independent validation passes 143 app tests/1,865
+  assertions, 21 lifecycle tests, TypeScript, repository/bundle/signature checks,
+  and five browser captures. Independent code/visual review approves with no
+  findings; the reviewer passes 51 tests/556 assertions. Next update existing
+  PR32, not a new PR. Neither PR32 refinement is deployed;
+  no merge, installation, restart or printer access is authorized here.
+- Delivered PR32 source baseline: the user's segmented-layer progress refinement is implemented
+  in source under decision 0023's dated addendum. Only the current observation
+  HTML and its VM regressions change at runtime/test level. Layer-position
+  blocks group large totals at 24 narrow or 48 wide, preserve independent
+  reported print percentage and the bottom footer, and explicitly handle
+  invalid/unknown layers. Independent validation passes 142 app tests/1,849
+  assertions, 21 lifecycle tests, TypeScript, repository checks, all three
+  bundles/signature checks, and exact bundled/frozen asset comparisons.
+  Twelve isolated screenshots and eight browser behavior cases pass.
+  Independent code and scoped visual review approve with no blocking findings;
+  the reviewer independently passes 58 tests/1,441 assertions. Next deliver
+  the camera follow-up through the same open PR32. Neither is deployed.
+  Source and deployed baseline both
+  retain runtime `0.3.1`, schema `5`, observation-v3/camera-v5, so version strings
+  alone do not prove segmented assets are installed. Preserve the prior PR30
+  rollout records; that completed authorization does not authorize this
+  slice's merge, deployment, service restart, plugin install, or printer access.
+- Completed baseline: the user authorized PR30 merge and rollout to the two existing
+  HTTP services. PR30 merged as `48a106d2f17550bab8dc8648af1c7c247610a228`
+  on 2026-08-31. Versioned release `20260831-48a106d-widgets` is installed;
+  both services are healthy at runtime `0.3.1`, schema `5`, observation-v3/
+  camera-v5. Independent checks confirm exact directory/focused assets and
+  unchanged private configuration and routes. Deployed directory-only browser
+  captures at 390/light and 720/dark passed without overflow, subrequests or
+  errors. No personal-plugin reinstall, Mac login/power, auth/route changes,
+  printer access, or missing-domain work is included in this authorization.
+- Decision 0024 adds a private widget directory at both
   `/dashboard` and `/dashboard/`, replacing the source root redirect while
   preserving all eight focused paths. It labels Progress/Camera implemented,
   Thermals/Heads/Jobs partial, and Queue/Fans/Bed Mesh not implemented. These
@@ -24,29 +72,29 @@ Last updated: 2026-08-31
   captures, 20 route checks and 12 keyboard checks with zero acquisition.
   A release-shaped copy of the HTTP bundle serves the exact directory without
   an external index file. Independent code/visual review reports no findings;
-  its scoped disposition is in `design-qa.md`. This source and validated
-  evidence are included in the PR30 follow-up, not deployed. Next obtain
-  separate merge/rollout authorization and validate the actual user view.
-- Current source slice: decision 0023's user-requested quiet footers,
+  its scoped disposition is in `design-qa.md`. PR30 includes this source and
+  validated evidence. Actual-phone and mounted-host acceptance remain separate.
+- Decision 0023's user-requested quiet footers,
   image-only camera overlay/display controls, and bounded host-loading repair.
-  Source commit `db4e250` is pushed and delivered in
-  [draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
+  Source commit `db4e250` was initially delivered in
+  [PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30), now merged.
   Independent formal review approves the source-only change with no unresolved
   findings. Initial source delivery is complete. The user then explicitly
   authorized isolated headless-browser validation, now completed against
-  synthetic observations/media; actual mobile-host and deployment acceptance
-  remain separate. The three screenshot-grounded follow-up fixes and evidence
-  are committed and pushed as `643b5dd`; they are not deployed.
+  synthetic observations/media. At that stage, actual mobile-host and
+  deployment acceptance were separate and pending; the rollout above now
+  supplies the deployment evidence. The three screenshot-grounded follow-up fixes and evidence
+  were committed and pushed as `643b5dd` before the directory follow-up.
   Independent formal review now approves the headless follow-up with no new
   findings, and scoped visual QA passes. Delivery through existing draft PR30
-  is complete; the source delivery check verified its open draft head at
+  was complete; that source delivery check verified its then-open draft head at
   `643b5dd`, matching the remote branch.
   Source reports runtime `0.3.1`, schema `5`, observation-v3/camera-v5;
   observation-v2/v1 and camera-v4 remain current aliases, and all previously
   frozen legacy bytes remain unchanged. Two model-visible/eight app-only
   read-only tools are unchanged; ten resource URIs preserve compatibility.
-  This source has not been installed or deployed. The deployed release facts
-  below remain historical installed evidence, not this slice's acceptance.
+  The earlier installed-release facts below remain historical evidence, not
+  this slice's deployment or mounted acceptance.
 - Progress, extruder/bed thermals, physical heads, and limited current-job
   fields are mapped. Queue, fans, bed mesh, cavity, material/color, and history
   remain unmapped or unknown; their cards are not implemented data capabilities.
@@ -64,13 +112,14 @@ Last updated: 2026-08-31
   availability/normalization terminology. The final source gate passes
   134 app tests/939 assertions, 21 lifecycle tests, all bundles and signature
   verification. See `design-qa.md` for the independent visual disposition.
-  Synthetic browser/media behavior is not mounted ChatGPT iPhone, real
-  printer, or deployed-version acceptance; those remain unclaimed.
-- Existing private focused URLs serve the previously deployed runtime 0.3.0;
-  `/dashboard` redirects to progress, not a composed overview. Static HTTP
-  success proves route availability only, not missing-domain mappings or
-  deployment of this PR or decision 0024's source directory. No private
-  hostname is retained here.
+  Synthetic browser/media behavior alone is not mounted ChatGPT iPhone,
+  real-printer or deployed-version acceptance. The separate rollout above
+  accepts deployment; mounted-phone and new real-printer outcomes remain unclaimed.
+- Before this rollout, private focused URLs served runtime 0.3.0 and
+  `/dashboard` redirected to progress. The new directory is navigation, not a
+  composed overview. Static HTTP success proves route/asset availability only,
+  not missing-domain mappings or actual-phone rendering. No private hostname
+  is retained here.
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
@@ -86,8 +135,9 @@ Last updated: 2026-08-31
   personal source remains in recoverable local Trash; no source/cache was
   edited by hand and the base plugin version remains `0.2.0`.
 - Decision 0022 reuses the two existing owner LaunchAgents with versioned
-  bundled HTTP releases and a release-local pinned Bun copy. Stable private focused routes default
-  to progress. One observation store is shared across HTTP requests within
+  bundled HTTP releases and a release-local pinned Bun copy. Its original
+  progress-root redirect is superseded by decision 0024's static directory.
+  One observation store is shared across HTTP requests within
   each process; separate services/stdio and process restarts remain separate
   state scopes. Implementation and rollout evidence are tracked below and in
   the active iteration, not inferred from this accepted design.
@@ -200,13 +250,13 @@ pre-rollout review approved the combined source with no blocking findings and ve
 repository contract plus isolated bundled health/static readiness with zero
 synthetic printer reads. Post-merge rollout evidence is recorded separately.
 
-The post-merge rollout exposed an asynchronous `bootout` race during a real
+The earlier PR28/PR29 rollout exposed an asynchronous `bootout` race during a real
 controlled restart after initial installation had passed. Public service was
 recovered explicitly. The subsequent CLI-only repair waits for exact-label
 removal before restart, bounded to 30 seconds, and passes 21 lifecycle tests
 with independent approval. It does not change deployed app revision `2160492`.
 Post-repair controlled restart and dashboard-only SIGTERM/KeepAlive recovery
-passed independently. Both services report loaded, healthy, integrity-verified
+passed independently. At that gate both services reported loaded, healthy, integrity-verified
 runtime `0.3.0`, schema `5`, observation-v2, and camera-v4. Static paths and
 public/private rejection checks pass; private env/OAuth/config/routes and
 preserved plist fields are unchanged. This is tested local service recovery,
@@ -347,7 +397,8 @@ earlier deployments, not the current plugin.
 - Earlier local browser fixture review at a roughly 589 by 844 viewport accepted the
   focused Progress, Thermals, Heads, and separate Camera presentations. Captures
   were not added to the repository. That review predates decision 0023 and
-  does not accept the present polish; the new visual gate remains blocked.
+  does not accept the present polish. Decision 0023/0024 isolated headless
+  visual gates now pass; actual mobile-host rendering remains unaccepted.
 - PR27 adds regressions for exclusive standalone-camera guidance, fail-closed
   stale-host behavior, plugin starter prompts, and full host-process reload.
 - The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
@@ -373,7 +424,7 @@ and final repository-check results.
 
 ### Physical printer
 
-- Current post-repair bounded read-only checks returned reachable progress and
+- Earlier PR28/PR29 post-repair bounded read-only checks returned reachable progress and
   thermals with one shared observation version/source time. Cavity remained
   unknown. One valid JPEG snapshot returned without activation, live video, or
   printer control. This is telemetry/snapshot evidence, not print-quality,
@@ -433,23 +484,21 @@ and final repository-check results.
 
 ## Next action
 
-Decision 0023 source commit `db4e250` has independent source-only approval and
-is delivered in draft PR30. The authorized isolated headless pass is now
-complete, with independent follow-up approval and scoped visual QA passing.
-The three bounded fixes and evidence are pushed as `643b5dd` through existing
-draft PR30. Next obtain separate authorization for merge/rollout, followed by actual
-mounted iPhone acceptance of snapshot/live/fallback/fullscreen/PiP. Do not
-install, restart services, mutate OAuth/routes, or implement missing data
-domains as an implicit extension of this presentation change. The persistence
-delivery actions below are historical and must not be repeated for this slice.
+Earlier refinements are delivered in PR32. Top information/bottom actions now
+pass independent validation and code/visual review; update that same PR without rollout.
+Current widget SHA-256 is
+`3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b`;
+it is source-only, despite retaining the deployed baseline's version labels.
+Any later merge/rollout requires separate authorization. The following
+paragraph preserves completed deployment evidence, not instructions to repeat it.
 
-Deliver the independently validated CLI race repair and accurate rollout
-records through a follow-up PR; controlled restart and KeepAlive recovery pass.
-After that follow-up merges, fully reload the host and obtain user visual
-acceptance of focused widgets, then scope the remaining unknown live mappings.
-PR28 and installed app revision `2160492` are already delivered. Preserve all
-OAuth state and Serve/Funnel routes and the separate task's canonical-checkout
-dirty documentation. Mac automatic login and power changes are deferred.
-Browser control is currently unavailable; static HTTP success does not accept
-visual rendering. Mounted focused widgets, live mappings, two-viewer fan-out,
-mobile ICE, and overview composition remain separate evidence gates.
+PR30 `48a106d` is merged and its paired HTTP-service rollout independently
+accepted for health, exact directory/focused assets, access boundaries and
+private-state preservation. Retain the local rollback snapshot; no rollback
+was needed. The personal plugin was not part of this rollout. Next obtain the
+user's actual directory and focused-widget visual feedback; mounted iPhone snapshot/live/
+fallback/fullscreen/PiP remain separate gates, not consequences of static HTTP
+success. Preserve OAuth state, Serve/Funnel routes, and the canonical checkout's
+unrelated dirty documentation. PR28/PR29 persistence delivery is historical;
+Mac login/power, remaining live mappings, two-viewer fan-out, mobile ICE, and
+overview composition are not implicitly authorized by this deployment.

@@ -5,26 +5,52 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: decision 0024's private widget-directory source is
-  implemented and independently validated before any rollout. Both source dashboard roots serve
-  a navigation-only catalog of eight focused views with honest implementation
-  coverage; no composed overview or automatic observation/media acquisition.
-  Preserve decision 0023's reviewed bottom timestamp/refresh footers and
-  removal of read-only/current-reading/provenance chrome. Its source and
-  isolated headless follow-up already pass independent review; the older
-  deployed widgets do not contain those changes yet. Deliver the bounded
-  directory and local route/browser evidence through existing draft PR30.
-  Independent validation passes 135 app tests/1,006 assertions, 21 lifecycle
-  tests, six directory captures, 20 route checks, 12 keyboard checks and
-  packaged inclusion with zero acquisition; code/visual review reports no
-  findings. Separate design, author, validation, and review roles are preserved.
-  Next obtain separate merge/rollout authorization and actual user validation. This
-  request does not authorize merge, deployment, plugin installation, services,
-  authentication/routing changes, printer access, or missing backend mappings.
-  PR28/PR29 and persistence rollout are historical delivered work, not tasks to
-  repeat. Mac login/power and printer-control changes remain excluded. Orca
-  Preparation discovery remains preserved and neither subsystem becomes
-  secondary.
+- Current execution order: apply the user's latest principle, information
+  above and actionable buttons below, across current observation and camera
+  widgets. Decision 0023's newest supersession and OBS-008/CAM-008 replace the
+  earlier timestamp-at-bottom requirement: observation time/freshness/errors
+  join the top title area; Refresh/Retry alone remain at the bottom right.
+  Camera state/time/feedback move to a top stack, while PiP/Fullscreen/Live
+  stay bottom right. Preserve all data, segmented-layer semantics and camera
+  media behavior. Independent validation passes 144 app tests/1,931 assertions,
+  21 lifecycle tests, repository/TypeScript/bundle/signature/asset checks and
+  ten browser captures. Independent code/visual review approves without
+  findings, with 71 tests/1,576 assertions passing. Update the same PR32.
+  No deployment, merge, plugin/service, auth/routing or printer action is
+  authorized by this layout refinement.
+- Previous source follow-up, delivered as `081929e`: group camera fullscreen and picture-in-picture
+  (its bottom status/time placement is superseded by the current principle)
+  beside Go Live/Close at the bottom right, per decision 0023's newest dated
+  refinement. Keep status/time left, accessible targets, responsive wrapping,
+  and existing media/display behavior; no runtime signaling change. Validate
+  and independently review this implemented layout-only follow-up in existing
+  PR32. Independent validation passes 143 app tests/1,865 assertions,
+  21 lifecycle tests, repository/TypeScript/bundle/signature checks and five
+  captures. Independent code/visual review approves without findings, with
+  51 tests/556 assertions passing. Camera JavaScript is byte-identical.
+  Preserve its already delivered segmented-progress source and tests. No
+  merge, deployment, plugin/service/auth/routing change or printer access is
+  authorized by this request.
+- Completed source baseline in PR32: the user's implemented segmented-layer progress
+  refinement under decision 0023's dated addendum. Keep the existing card,
+  reported percentage, and bottom timestamp/refresh footer; replace only the
+  continuous strip with truthful layer-position blocks, responsively grouping
+  large totals. Invalid or absent layers remain explicitly unavailable rather
+  than borrowing print percentage. Separate author, validation, and independent
+  review roles must verify source and rendered synthetic fixtures before PR
+  delivery. Independent validation passes 142 app tests/1,849 assertions,
+  21 lifecycle tests, repository/TypeScript/bundle/signature checks, twelve
+  screenshots and eight browser cases. Independent code/visual review approves
+  without blocking findings, with 58 tests/1,441 assertions independently passing.
+  PR30 merge and rollout are complete historical evidence: release
+  `20260831-48a106d-widgets` serves runtime `0.3.1`, schema `5`,
+  observation-v3/camera-v5, quiet footers and the private eight-link directory.
+  Do not repeat that rollout or treat its authorization as permission for this
+  new source slice. Merge, service deployment/restart, plugin installation,
+  authentication/routing changes, printer access/control, and missing-domain
+  mappings remain excluded. Actual-phone/PiP and user comprehension remain
+  separate gates. Orca Preparation discovery remains preserved and neither
+  subsystem becomes secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if

@@ -30,12 +30,15 @@ printer environments support the described behavior.
   domain values. MCP, HTTP, CLI, widgets, and a later overview do not query or
   normalize the printer independently. Camera frames retain their own
   acquisition time.
-- **OBS-008:** Current focused cards retain useful titles/content and one bottom
-  observation-time/refresh footer. Permission policy remains enforced without
-  repeated visible read-only labels. Stale/offline/missing source time and
-  refresh failures stay explicit; unimplemented domains do not render
+- **OBS-008:** Current focused cards separate information above actions: useful
+  titles, observation time, freshness, failures, and content are above one
+  bottom action-only refresh/retry footer. Permission policy remains enforced
+  without repeated visible read-only labels or provenance/current-reading
+  boilerplate. Stale/offline/missing source time and refresh failures stay
+  explicit in the information area; unimplemented domains do not render
   decorative charts as measured data. Host loading is bounded and malformed
-  or missing delivery yields a retry/reopen state, not perpetual waiting.
+  or missing delivery yields top-area explanatory/reopen guidance and, when
+  authorized by the existing workflow, a bottom retry action, not perpetual waiting.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -74,8 +77,10 @@ printer environments support the described behavior.
   shared printer upstream closes when the last viewer closes or fails. TURN is
   a fallback, not a prerequisite when a direct server host candidate is
   reachable.
-- **CAM-008:** Current camera chrome is image-only with one state/time overlay
-  and user-requested display controls. Snapshot/fallback time belongs to the
+- **CAM-008:** Current camera chrome is image-only with state/time and feedback
+  grouped at the top, and user-requested display/live controls grouped at the
+  bottom right. Information and action groups do not overlap or truncate
+  timestamps on narrow views. Snapshot/fallback time belongs to the
   accepted displayed JPEG's server receipt time; live time belongs to evidenced
   local rendered/decoded frames and freezes when they stop. Neither is claimed
   as sensor capture time. Network/FPS diagnostics are not normal display copy.
