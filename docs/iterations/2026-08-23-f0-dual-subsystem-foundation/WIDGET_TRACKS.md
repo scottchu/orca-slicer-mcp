@@ -17,9 +17,10 @@ deployment, BOTH-service restart and scoped verification. A/F/Heads remain deplo
 History and E overview remain active afterward. Browser/device acceptance is
 unverified; the standing deployment-first user-review order remains.
 Author checks pass 223 app tests/3,150 assertions. Independent validation passes
-those plus 21 lifecycle, 22 shipping and 15 focused tests/7,046 assertions,
-TypeScript/diff checks, three bundles/code signing and six exact emitted assets;
-exact-SHA review remains open.
+those plus 21 lifecycle, 22 shipping and 15 focused tests/7,049 assertions,
+TypeScript/diff checks, three bundles/code signing and six exact emitted assets.
+Formal review's singular-summary grammar correction passes renewed author and
+independent gates without findings; exact-SHA review remains open.
 
 Previous shipped priority: Heads reference refinement, a presentation-only follow-up to
 A1/A2 under decision 0029. Use actual-filament-color soft washes inside the white

@@ -22,8 +22,10 @@ candidate is runtime 0.4.3/tool schema 9/observation-v9/camera-v8 with nineteen
 resources and observation-v8 retained; validation and exact-candidate review
 are active. Author checks pass 223 app tests/3,150 assertions; independent
 validation passes those plus 21 lifecycle, 22 shipping and 15 focused tests/
-7,046 assertions, TypeScript, diff checks, three bundles/code signing and six
-exact emitted assets. No integrated Queue release, new deployment or visual pass is
+7,049 assertions, TypeScript, diff checks, three bundles/code signing and six
+exact emitted assets. Formal review's singular-summary grammar finding is fixed
+in only widget/test bytes; renewed author and independent checks pass with no
+findings, while exact-candidate review remains pending. No integrated Queue release, new deployment or visual pass is
 claimed yet. Preserve shipped A/F/Heads and the order B → C fans/chamber →
 D Current Job/History → E overview, plus independent invocation. The latest
 allowed-browser discovery remains unavailable. The standing exact-review → PR

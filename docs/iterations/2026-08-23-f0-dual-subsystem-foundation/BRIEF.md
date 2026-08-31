@@ -19,9 +19,11 @@
   and meaningful scoped verification for user review. Browser/device acceptance
   remains unverified; A/F/Heads remain shipped and C/D/E remain active afterward.
   Author checks pass 223 app tests/3,150 assertions. Independent validation
-  passes those plus 21 lifecycle, 22 shipping and 15 focused tests/7,046
+  passes those plus 21 lifecycle, 22 shipping and 15 focused tests/7,049
   assertions, TypeScript/diff checks, three bundles/code signing and six exact
-  emitted assets; exact-candidate review remains open.
+  emitted assets. Formal review's singular-summary grammar defect is corrected
+  in only widget/test bytes; renewed author and independent gates pass without
+  findings. Exact-candidate review remains open.
 - Previous shipped priority (2026-08-31): bounded Heads reference refinement before Queue,
   under decision 0029/OBS-010. Preserve the white outer card; use soft 6% washes
   from actual valid filament colors, exact swatch/hex and accessible Copy, real
