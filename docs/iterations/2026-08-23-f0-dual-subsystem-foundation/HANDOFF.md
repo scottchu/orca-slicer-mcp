@@ -1,5 +1,49 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 PR33 deployed; Bed Mesh and reusable shipping workflow next
+
+The urgent already-merged PR33 rollout is complete at `7b9c4d4`, release
+`20260831-7b9c4d4-widgets`: runtime 0.3.2/schema 6/observation-v4/camera-v5.
+Both public and dashboard U1 services were explicitly restarted and verified
+loaded/healthy with intact release fingerprints. Fourteen static route checks
+and six public/private security checks pass. OAuth, environment, configuration,
+routes and preserved plist fields are unchanged. This is service evidence,
+not printer telemetry, camera streaming, or phone visual acceptance. A later
+independent pass confirms both health contracts, thirteen exact static and
+seven security checks, and a real 232,522-byte JPEG observed at
+`2026-08-31T15:50:03.971Z`. Its coherent printer-interior image was visually
+inspected. This separately verifies snapshot acquisition, not mounted-phone
+or live-video behavior, and does not establish real Bed Mesh data.
+
+Decision 0027's real Bed Mesh slice and decision 0028's repository operator
+skill/script are implemented and software-validated. Passes: 165 app tests/
+2,200 assertions, 21 lifecycle tests, 21 shipping tests, 24 independent focused
+tests/228 assertions, nine actual widget captures, fifteen browser checks,
+twenty-eight routes, and all three bundles/signatures/exact asset comparisons
+and TypeScript. Seven independent shipping method checks and skill validation
+also pass. Browser fixtures show no external requests or unintended
+acquisition. The operator's separate read-only baseline passes both deployed
+PR33 health contracts, fourteen static and sixteen security checks, with
+private configuration preserved. Those baseline checks are not a new rollout.
+
+Next obtain final independent approval of the exact committed candidate,
+deliver the PR, and run the shipping workflow. The latter reuses
+`u1_service.py` for validated merge, exact-build deployment, both-service
+restart, verification and bounded rollback. The user's current explicit
+authority includes that shipping sequence, but not printer control, plugin
+reinstallation, or authentication/routing changes. Source target
+0.3.3/schema 7/observation-v5 is not yet merged or deployed. Queue WIP is
+paused in its separate checkout and must not be imported; unresolved minimal
+progress design and mounted-phone/live-video behavior are not marked complete.
+
+Current documentation scope adds ADR0027/0028, requirements and current
+continuity updates; `.agents/skills/u1-ship` is repository-only and the operator
+script/tests are implemented. Shipping script SHA-256 is
+`49448de3ca32ba52917ec900d478901e2ec3590c887fa5cabddf4e67c9254978`.
+Detailed actual commands, test scope and hashes belong in `VALIDATION.md`.
+Earlier pending-delivery/live-0.3.1/no-
+rollout-authority records below are historical and superseded by this entry.
+
 ## 2026-08-31 separate job widgets — current source handoff
 
 Decision 0025 splits the Jobs presentation into independently callable Current

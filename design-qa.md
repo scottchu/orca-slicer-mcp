@@ -1,5 +1,48 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Reported Bed Mesh and shipping workflow — independent review
+
+Scoped result: passed against decisions 0027 and 0028, with no unresolved
+blocking findings. Product Design audit guidance informed actual inspection
+of all nine final Bed Mesh captures, not acceptance from source alone.
+
+1. **Reported grid — passed.** Normal 390/light, flat 320/light and hostile-
+   profile 720/dark captures show compact rectangular data, readable bounds
+   and minimum/maximum/range. Flat data stays uniformly colored; an unsafe
+   profile is omitted without losing valid readings. Extreme 320/dark axes
+   now fit; compact visible labels retain precise accessible bounds.
+2. **Freshness and absence — passed.** Stale 720/dark, inactive 390/dark,
+   retained-inactive 320/dark, unsupported 320/light and malformed 390/light
+   remain distinguishable. Missing/failed data does not invent a flat grid or
+   observation time. Information and errors stay above the single bottom
+   Refresh action. No clipping was visible in these nine images.
+3. **Acquisition and isolation — passed.** Independent reviewer execution of
+   the adapter/store/projection/widget suites passed 51 tests and 1,303
+   assertions. Review covered fixed bounded GET, whole-matrix validation,
+   own-domain freshness, retained inactive data, races and selected-view-only
+   acquisition. Camera and frozen resources remain outside the change.
+4. **Shipping workflow — passed in isolation.** All 21 script fixtures pass.
+   Three additional mocked CLI forward scenarios cover authorized execution,
+   read-only plan and missing reviewed identity, with no real GitHub/service/
+   HTTP operation. The skill requires exact independent review and fresh
+   full-sequence authority; missing authority stops before execution. The
+   reviewer-found pinned-runtime PATH mismatch is fixed by checking that bare
+   `bun` resolves to the chosen executable. Guards, exact merged-tree staging,
+   both-service verification and single captured-snapshot rollback were reviewed.
+
+Reviewed SHA-256: widget
+`23cf86a83143ba7480521baf12c0e05ee7777faea350de29cde055fd63ffbce5`;
+shipping script
+`49448de3ca32ba52917ec900d478901e2ec3590c887fa5cabddf4e67c9254978`;
+shipping skill
+`b1d7547e5ccb46f1014be28b351883d5ec45deb2eb3371771e7926c6c9e557e8`.
+The validator's final browser report is
+`c7c6409a6bd3c20f82c8c1033faee0991f806381dc5bc99e7dcd6b2158c88908`;
+iteration `VALIDATION.md` records the complete software/protocol gates.
+This accepts source and scoped synthetic rendering, not a new rollout,
+real-printer mesh accuracy, phone-mounted behavior or full accessibility.
+Queue work and rejected progress styling remain excluded and unresolved.
+
 ## Current Job and Job History — independent rendered review
 
 Scoped result: passed against decision 0025, with no blocking source or visual

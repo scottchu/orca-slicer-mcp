@@ -39,6 +39,16 @@ printer environments support the described behavior.
   decorative charts as measured data. Host loading is bounded and malformed
   or missing delivery yields top-area explanatory/reopen guidance and, when
   authorized by the existing workflow, a bottom retry action, not perpetual waiting.
+- **OBS-009:** Bed Mesh is an on-demand operations-adapter read projected through
+  the shared observation store, with independent acquisition time, 15-second
+  attempt bound, freshness, and retained last-success state. It distinguishes
+  unknown, unsupported, unavailable, an observed inactive mesh, and a valid
+  active reported probe grid (including all-zero data). Only bounded complete
+  `probed_matrix` data is shown; no interpolated substitution, saved-profile
+  inventory, invented probe time, physical quality verdict, or calibration or
+  profile mutation is permitted. The compact 2D view preserves XY orientation,
+  explicit mm units, accessible numerical summaries, and top information with
+  bottom refresh. Decision 0027 specifies adapter, normalization, and limits.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -181,11 +191,11 @@ printer environments support the described behavior.
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v4` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v5` is the
   focused presentation resource. Every explicit camera open or reopen creates
   a fresh snapshot-first `camera-v5` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v3/v2/v1 and camera-v4 are current-asset compatibility aliases.
+  Observation-v4/v3/v2/v1 and camera-v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
 

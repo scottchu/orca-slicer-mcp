@@ -8,11 +8,43 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0025
+5. decisions 0014 through 0025, 0027, and 0028 (0026 is reserved for paused queue work)
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
+
+The repository-only `u1-ship` skill/script (decision 0028) and real read-only
+Bed Mesh slice (0027) are implemented and software-validated. Finish final
+independent approval of the exact committed head, create its PR, and use the
+shipping workflow. Validation passes 165 app tests/2,200 assertions, 21
+lifecycle and 21 shipping tests, 24 independent focused tests/228 assertions,
+nine rendered captures, fifteen browser checks and twenty-eight routes,
+with no external requests/unintended acquisitions; all three bundles,
+signatures, asset comparisons and TypeScript pass. Seven independent shipping
+method checks and skill validation also pass. The current task authorizes
+merge, deployment of the merged build, restart of BOTH U1 services, and
+verification; preserve OAuth/configuration/routing and do not reinstall the
+plugin or control the printer. The source target is 0.3.3/schema 7/observation-v5;
+it is not yet merged or deployed. Queue WIP remains excluded in its separate
+checkout; minimal-progress feedback remains unresolved. Camera JPEG acquisition
+is separately verified below, not mounted-phone/live-video behavior.
+
+Urgent PR33 rollout is DONE: merged `7b9c4d4`, installed release
+`20260831-7b9c4d4-widgets`, runtime 0.3.2/schema 6/observation-v4/camera-v5,
+both services explicitly restarted, loaded/healthy/integrity verified.
+Fourteen static and six security checks passed without printer observation,
+control, plugin reinstall, or authentication/routing changes. Record new
+rollouts separately; do not repeat this completed rollout from stale notes.
+An additional independent pass verifies thirteen exact static and seven
+security checks plus a visually inspected real JPEG (232,522 bytes, observed
+`2026-08-31T15:50:03.971Z`). Snapshot acquisition works on this deployed release;
+mounted-phone/live-video behavior and pending Bed Mesh remain separate gates.
+
+## Historical source checkpoints
+
+The pending-delivery, no-rollout-authority and live-0.3.1 wording below records
+earlier checkpoints; it is superseded by the current execution order above.
 
 Decision 0025's Current Job/Job History split is implemented in source.
 Preserve `jobs` for Current Job and add only `job_history`, with separate

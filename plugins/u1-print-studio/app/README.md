@@ -69,10 +69,15 @@ cannot mount an MCP Apps component.
 
 After installing or upgrading the Marketplace plugin, start a new ChatGPT or
 Codex task before testing it. Existing tasks may still refer to the previous
-installed MCP process and widget URI. The current tool descriptor always points
-to `ui://u1-print-studio/status-v4.html`; the server also serves the preceding
-`status-v3.html` URI as a compatibility alias for cards created before the
-upgrade. A failure from an old task is not evidence that the current staged
+installed MCP process and widget URI. Current source descriptors point to
+`ui://u1-print-studio/observation-v5.html` and the separate `camera-v5.html`.
+Observation-v4/v3/v2/v1 and camera-v4 serve current-asset compatibility aliases;
+status-v4/v3 and camera-v3/v2/v1 preserve frozen older presentation bytes.
+The source contract is runtime 0.3.3/schema 7, with twelve resources, nine
+observation selectors, and unchanged two-visible/eight-app-only tool counts.
+Bed Mesh is software-validated, pending final exact-commit review and shipping;
+the deployed PR33 services remain runtime 0.3.2/schema 6/observation-v4/camera-v5
+until the next verified rollout. A failure from an old task is not evidence that the current staged
 runtime is missing; verify the installed descriptor, executable, and a fresh
 task separately.
 
@@ -91,10 +96,10 @@ bun run start
 
 The source `../.mcp.json` is intentionally a Bun adapter. For widget work
 without a host, `bun run dashboard` serves the standalone loopback status
-dashboard at `http://127.0.0.1:8788/dashboard` and the focused camera widget at
+directory at `http://127.0.0.1:8788/dashboard` and the focused camera widget at
 `http://127.0.0.1:8788/dashboard/camera`. The camera route mounts the same HTML
-as `ui://u1-print-studio/camera-v3.html` (with v2 and v1 retained as
-compatibility aliases). Both use the same tool-call shape
+as `ui://u1-print-studio/camera-v5.html` (v4 is a current alias; v3/v2/v1
+retain frozen compatibility bytes). Both use the same tool-call shape
 while retaining the exact HTTP signaling adapter for development coverage.
 
 The runtime uses bundled pure-TypeScript `werift` peers to terminate one H264
@@ -104,6 +109,12 @@ accepts 1 through 64. Discovered Tailscale host addresses are advertised only
 on downstream server-owned offers; optional STUN/TURN configuration provides
 additional paths. Printer offer SDP, candidates, peer identity, and LAN
 addresses never enter a public response.
+
+The repository-only `$u1-ship` skill and `scripts/u1_ship.py` define a guarded
+operator sequence for locally validated review, merge, exact-build deployment,
+restart of both services, verification, and bounded rollback. The new script
+is software-validated, pending final exact-commit review. It reuses `scripts/u1_service.py`, requires
+explicit task authority, and is not installed as part of the printer plugin.
 
 The standalone dashboard is a separate opt-in process. A Tailscale Serve route
 to port 8788 returns 502 whenever that process is not supervised and running;
@@ -174,5 +185,7 @@ The ad-hoc signature is not a distribution signature. Cross-platform builds,
 Developer ID signing, notarization, release checksums, installers, upgrades,
 rollback, and external channel publication remain later evidence gates.
 
-No local validation in this slice accesses or controls physical printer
-hardware.
+Source fixtures do not access or control physical printer hardware. Separately,
+the deployed PR33 release has a verified real JPEG snapshot; that evidence is
+recorded in the active iteration and does not prove mounted-phone/live-video
+behavior or pending Bed Mesh data.

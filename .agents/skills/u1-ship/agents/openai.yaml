@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ship U1"
+  short_description: "Validate, merge, deploy, and verify U1 services"
+  default_prompt: "Use $u1-ship to plan and, after explicit approval, ship the independently reviewed U1 PR and verify both services."

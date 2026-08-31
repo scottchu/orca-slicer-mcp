@@ -29,6 +29,7 @@ import {
 import {
   readU1CameraFrame,
   readU1Status,
+  readU1BedMesh,
   normalizedPrintState,
   normalizedToolState,
   stripJpegMetadata,
@@ -65,6 +66,7 @@ export const LEGACY_CAMERA_WIDGET_URIS = [
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v4.html",
   "ui://u1-print-studio/observation-v3.html",
   "ui://u1-print-studio/observation-v2.html",
   "ui://u1-print-studio/observation-v1.html",
@@ -331,6 +333,7 @@ async function safeCameraAction<T>(action: () => Promise<T>): Promise<T> {
 export function createAppServer(
   dependencies: {
     readStatus?: StatusReader;
+    readBedMesh?: typeof readU1BedMesh;
     observations?: PrinterObservationStore;
     readCameraFrame?: CameraFrameReader;
     cameraSessions?: CameraWebRtcSessionController;
@@ -342,7 +345,9 @@ export function createAppServer(
   const readStatus = dependencies.readStatus ?? readU1Status;
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
-  const observations = dependencies.observations ?? new PrinterObservationStore(readStatus);
+  const observations = dependencies.observations ?? new PrinterObservationStore(
+    readStatus, undefined, dependencies.readBedMesh ?? (readStatus === readU1Status ? readU1BedMesh : undefined)
+  );
   const server = new McpServer({
     name: "u1-print-studio",
     version: U1_RUNTIME_VERSION,
@@ -476,7 +481,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" }),
         view
       );
     }) as any
@@ -505,7 +510,7 @@ export function createAppServer(
     } as any),
     (async ({ view }: { view: ObservationView }) => {
       return observationPayload(
-        await observations.current({ refresh: true }),
+        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" }),
         view
       );
     }) as any
