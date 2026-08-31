@@ -1,4 +1,74 @@
-# Snapmaker U1 status-card theme QA
+# U1 focused-widget presentation QA — 2026-08-31
+
+## Current comparison target
+
+- Source visual truth: the user-supplied phone screenshots of Heads and
+  Filaments, snapshot/live Camera, and repeated Waiting cards, together with
+  the requested footer/overlay changes in decision 0023. Attachments remain
+  outside the repository; private camera images are not copied or committed.
+- Source visual truth path: external conversation attachments, deliberately
+  not persisted as repository paths.
+- Source image dimensions: supplied phone captures are 590 by 1280 pixels;
+  the exact embedded card CSS viewport and device scale are not established.
+- Implementation: current `public/widget.html` and `public/camera-widget.html`.
+- Implementation screenshot path: unavailable; no connected supported browser.
+- Intended check viewports: 320, 390, and 720 CSS pixels wide. No implementation
+  screenshot dimensions, device scale, or density normalization are claimed.
+- States: all eight focused projections; missing, stale, offline and failed
+  delivery; camera snapshot, connecting, fallback, live and display-mode exits.
+- Primary interactions tested in a browser: none. VM tests are recorded in the
+  active iteration and are not a rendered interaction check.
+- Browser console errors checked: no; the browser was unavailable.
+
+## Full-view and focused-region comparison
+
+Blocked. The source screenshots were supplied in the conversation, but a
+matching rendered implementation could not be captured. There is no valid
+paired full-view or focused-region comparison, no normalized density match,
+and no basis for claiming pixel fidelity or responsive polish.
+
+## Findings
+
+- [P1] Rendered acceptance unavailable.
+  - Location: observation footer, narrow thermal/head layouts, camera status
+    and display-mode controls.
+  - Evidence: supported browser selection reported no available browser; the
+    root's browser inventory was empty.
+  - Impact: source tests cannot establish readable spacing, no overflow,
+    touch/focus behavior, accessible announcements, or iPhone fullscreen/PiP.
+  - Next check: capture the exact changed assets and compare with the supplied
+    target at matching widths/states, then test the mounted phone host.
+
+## Required fidelity surfaces
+
+- Fonts and typography: rendered family/weight, wrapping, timestamp width and
+  title hierarchy unverified.
+- Spacing and layout rhythm: bottom-footers and image overlays specified by
+  decision 0023; rendered balance and 320-pixel collisions unverified.
+- Colors and tokens: existing tokens retained by design; contrast, fallback
+  signaling and live status distinction not visually accepted.
+- Image quality and asset fidelity: no new camera capture or implementation
+  image inspected; retained JPEG and live-video behavior has separate software
+  tests, not visual fidelity acceptance.
+- Copy and content: independent production-script tests verify no repeated
+  permission chrome and honest missing/unknown states; visual truncation and
+  assistive-technology presentation remain unverified.
+
+## Comparison history and implementation checklist
+
+- Initial current pass: blocked before rendered comparison. No visual
+  correction or post-fix screenshot is claimed.
+- Capture matching light/dark states at phone and strip widths.
+- Compare title/content/footer and camera-only image anatomy together with
+  the supplied source; inspect keyboard/touch focus and overflow.
+- Exercise snapshot load/failure, live-frame stall/fallback, fullscreen/PiP
+  entry/rejection/exit and screen-reader announcements in the actual host.
+- Keep unmapped queue/fan/mesh/cavity/filament/history domains explicit; no
+  chart placeholders may be accepted as measured values.
+
+Current final result: blocked
+
+## Historical status-card theme QA
 
 - Source visual truth: external user attachment, `Screenshot 2026-08-26 at 11.40.27 AM.png` (not retained in the repository)
 - Brand source: official Snapmaker U1 page and its served stylesheet, `https://www.snapmaker.com/snapmaker-u1`

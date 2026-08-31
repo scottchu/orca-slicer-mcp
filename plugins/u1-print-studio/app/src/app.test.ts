@@ -178,8 +178,9 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v2.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v3.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
+      "ui://u1-print-studio/observation-v2.html",
       "ui://u1-print-studio/observation-v1.html",
     ]);
 
@@ -274,7 +275,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(CAMERA_WIDGET_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v4.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v5.html");
     expect(LEGACY_CAMERA_WIDGET_URIS[0]).toBe(
       "ui://u1-print-studio/camera-v3.html"
     );
@@ -707,9 +708,11 @@ describe("camera-only widget contract", () => {
 
   test("uses the focused Instrument Strips camera shell", () => {
     expect(CAMERA_WIDGET_HTML).toContain('class="dashboard"');
-    expect(CAMERA_WIDGET_HTML).toContain('<header class="camera-heading">');
-    expect(CAMERA_WIDGET_HTML).toContain("<h1>Printer Camera</h1>");
-    expect(CAMERA_WIDGET_HTML).toContain("Read only");
+    expect(CAMERA_WIDGET_HTML).not.toContain('<header class="camera-heading">');
+    expect(CAMERA_WIDGET_HTML).not.toContain("<h1>Printer Camera</h1>");
+    expect(CAMERA_WIDGET_HTML).not.toContain("Read only");
+    expect(CAMERA_WIDGET_HTML).toContain('id="fullscreen"');
+    expect(CAMERA_WIDGET_HTML).toContain('id="picture-in-picture"');
     expect(CAMERA_WIDGET_HTML).toContain("--brand: #ffcd00;");
     expect(CAMERA_WIDGET_HTML).toContain("width: min(100%, 720px);");
     expect(CAMERA_WIDGET_HTML).toContain("background-size: 42px 42px;");
@@ -785,13 +788,13 @@ describe("camera-only widget contract", () => {
       const trackSource = html.slice(trackStart, trackEnd);
 
       expect(frameSource).toContain(
-        'livePreview ? (fallbackDetail ? "fallback" : "loading") : "snapshot"'
+        'livePreview ? (fallbackDetail ? "fallback" : "loading") : "loading"'
       );
       expect(frameSource).not.toContain('livePreview ? "fallback" : "snapshot"');
       expect(frameSource).toContain(
-        'livePreview && elements.camera.classList.contains("has-snapshot")'
+        'elements.camera.classList.contains("has-snapshot")'
       );
-      expect(html).toContain('fallbackDetail\n              ? "fallback"\n              : "loading"');
+      expect(html).toContain('relayRendering ? "live" : fallbackDetail ? "fallback" : "loading"');
       expect(html).toContain("markFirstRenderedFrame");
       expect(html).toContain("no rendered video frames");
       expect(trackSource).not.toContain(
@@ -863,19 +866,18 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain("provenance");
   });
 
-  test("uses plain readable source and freshness labels without technical provenance", () => {
-    expect(WIDGET_HTML).toContain("Printer telemetry");
-    expect(WIDGET_HTML).toContain("Calculated from printer telemetry");
-    expect(WIDGET_HTML).toContain("No accepted source reading");
-    expect(WIDGET_HTML).toContain("Current reading");
-    expect(WIDGET_HTML).toContain("Stored reading");
-    expect(WIDGET_HTML).toContain(
-      "Read only · Source and freshness are shown with each view"
-    );
+  test("uses one quiet footer with observation time and exceptional freshness", () => {
+    expect(WIDGET_HTML).toContain('class="instrument-footer"');
+    expect(WIDGET_HTML).toContain("Observed ${date.toLocaleTimeString");
+    expect(WIDGET_HTML).toContain("Observation time unavailable");
+    expect(WIDGET_HTML).toContain('stale: "Stale"');
+    expect(WIDGET_HTML).toContain('offline: "Offline"');
+    expect(WIDGET_HTML).not.toContain("Read only");
+    expect(WIDGET_HTML).not.toContain("Current reading");
     expect(WIDGET_HTML).not.toContain("Missing evidence stays Unknown");
     expect(WIDGET_HTML).not.toContain("value?.detail ?? \"Provenance unavailable\"");
     expect(WIDGET_HTML).not.toContain('<div class="provenance"><code>');
-    expect(WIDGET_HTML).toContain("font-size: 12px; font-weight: 560; line-height: 1.5;");
+    expect(WIDGET_HTML).toContain("font-size: 12px; line-height: 1.5;");
   });
 
   test("keeps tool badges but renders bed and cavity as aligned text-only zones", () => {
@@ -892,6 +894,8 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain("env(safe-area-inset-top, 0px)");
     expect(WIDGET_HTML).toContain('@media (max-width: 620px)');
     expect(WIDGET_HTML).toContain('@media (max-width: 390px)');
+    expect(WIDGET_HTML).toContain('.strip .identity { grid-column: 1 / -1; }');
+    expect(WIDGET_HTML).not.toContain('.strip .reading:nth-of-type(2) { display: none; }');
     expect(WIDGET_HTML).toContain("min-height: 44px");
     expect(WIDGET_HTML).toContain("touch-action: manipulation");
     expect(WIDGET_HTML).toContain("notifyIntrinsicHeight");

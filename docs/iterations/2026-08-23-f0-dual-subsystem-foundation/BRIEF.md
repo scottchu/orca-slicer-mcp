@@ -5,13 +5,16 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current execution order: integrate PR27's camera-routing guard with PR28's
-  focused widgets, validate and independently review, merge, then deliver
-  decision 0022's persistent personal HTTP services. The user has authorized
-  this merge and installed/server rollout. Reuse only the existing two owner
-  LaunchAgents, preserve OAuth state and all Serve/Funnel routes, and do not
-  change Mac login/power settings or issue printer controls. Orca Preparation
-  discovery remains preserved and neither subsystem becomes secondary.
+- Current execution order: decision 0023's focused-widget presentation polish
+  and finite host-loading repair now come first, following the user's mounted
+  phone feedback. Preserve the selected Instrument Strips and their current
+  data capabilities; standardize non-camera footers, simplify camera overlays,
+  and feature-detect fullscreen/PiP. Validate and independently review source
+  before PR delivery. PR28/PR29 and the persistence rollout are historical
+  delivered work, not tasks to repeat. No service, installation, OAuth,
+  routing, Mac login/power, or printer-control change is included in this
+  presentation slice. Orca Preparation discovery remains preserved and neither
+  subsystem becomes secondary.
 - Current evidence-maturation order: chronological journal, reviewed knowledge,
   thin workflow skills, the explicitly requested read-only status-view
   prototype, repeated host use and non-user fixtures, then a shared CLI only if
@@ -122,6 +125,30 @@
   readiness checks use health/static routes only, without printer status or
   camera acquisition. Record deployed process, assets, route/auth preservation,
   mounted host, real-printer, and user outcome as distinct evidence layers.
+
+## 2026-08-31 quiet focused-widget presentation acceptance
+
+- Follow decision 0023. Keep useful titles, content, and head cards; remove
+  visible read-only copy, duplicate provenance/current-reading lines, and
+  command/version chrome. Put source time and one refresh control in a shared
+  non-camera footer. Preserve explicit stale, offline, and unknown states.
+- Camera has no external header/footer, observation line, or refresh control.
+  Its image overlay carries Snapshot, Fallback, or Live with the accepted
+  image/frame time. Network/FPS debug is hidden; fullscreen and PiP remain
+  feature-detected presentation actions, never printer controls.
+- Snapshot time remains bound to the successfully displayed JPEG and uses
+  successful acquisition receipt time. Live time advances only with genuine
+  video-frame evidence, freezes on stall, and is not called printer capture
+  time. Failed refreshes must not retimestamp retained images.
+- Fix finite host initialization/result-delivery states without replacing
+  unknown/unavailable capabilities with demo values. A pending view must end
+  in data or actionable failure. Queue, fans, bed mesh, cavity, filament
+  identity, and job history are not accepted capabilities merely because a
+  view is registered.
+- Separate software/synthetic-host checks from rendered visual and mounted
+  iPhone acceptance. Browser inventory is currently unavailable; source and
+  HTTP checks cannot accept screenshots, fullscreen/PiP behavior, or the
+  user's visual outcome.
 
 ## Outcome
 

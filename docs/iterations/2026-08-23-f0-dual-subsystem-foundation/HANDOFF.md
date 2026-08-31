@@ -1,5 +1,63 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 quiet widget presentation — current handoff
+
+Decision 0023 is the current execution order, refining the user's selected
+Instrument Strips after mounted phone feedback. Source-only changes remove
+visible read-only and duplicate observation chrome. Non-camera cards retain
+their title/content and one bottom timestamp/refresh footer with exceptional
+stale/offline/unknown and failed-refresh feedback. Camera is the image surface
+with snapshot/fallback/live time overlay, Go Live/Close, and feature-detected
+fullscreen/PiP. No network path or FPS appears in normal chrome.
+
+The observation bridge now awaits a versioned initialize request, handles
+complete initial and late result envelopes (including empty-output and warm
+metadata-only cases), rejects foreign-parent messages, and terminates missing
+or malformed loading with retry/reopen feedback. Independent VM fixtures
+reproduced the baseline failures. They do not establish the exact iPhone host
+failure cause. Real progress, physical heads, extruder/bed temperatures, and
+limited current-job fields remain mapped. Queue/fans/bed-mesh/history/cavity/
+material/color mappings remain unimplemented or unknown. Their shells do not
+prove working capabilities; decorative thermal traces and gray mesh cells
+were removed and unmapped cards say `Not implemented yet`.
+
+Snapshot time propagates the JPEG's successful server receipt time and is
+committed only after image decode; failed or out-of-order images cannot
+retimestamp retained imagery. Live time advances only on rendered callbacks
+or advancing decoded-frame counts and falls back after five seconds without
+frame evidence. Late ICE diagnostics cannot relabel closed/fallback media.
+These clocks are not camera-sensor capture time. Host-granted modes, including
+PiP coercion to fullscreen, are reflected without optimistic state changes;
+unsupported controls are absent and rejection leaves the camera open.
+
+Current source reports runtime `0.3.1`, schema `5`, observation-v3/camera-v5.
+Observation-v2/v1 and camera-v4 remain current-asset aliases. The frozen
+status-v4/v3 and camera-v3/v2/v1 bytes are unchanged; ten resource URIs and
+exactly two model-visible/eight app-only tools preserve compatibility.
+
+Changed implementation scope is the four current HTML widget/host files,
+`app.ts`, runtime contract, camera-frame timestamp forwarding, executable
+camera/observation widget regressions, and related contract expectations.
+Documentation scope is decision 0023/index, requirements, architecture,
+packaging, `design-qa.md`, this iteration and project continuity records.
+The canonical checkout's pre-existing dirty files were not touched.
+
+Independent validation reports TypeScript, 134 app tests/931 assertions, 21
+lifecycle fixtures, repository contract, all three bundles, and ad-hoc
+signature checks passing. Exact commands and hashes are in `VALIDATION.md`.
+The test tiers are static/software plus synthetic host/frame/protocol evidence.
+No new live printer, service, plugin installation, OAuth, Tailscale, or Mac
+login/power mutation occurred. The prior deployed release remains runtime
+0.3.0/observation-v2/camera-v4. User screenshots accept only prior rendering,
+not the current changes.
+
+The available browser inventory is empty, so rendered viewport/layout,
+fullscreen/PiP, and iPhone acceptance remain blocked and explicit in
+`design-qa.md`. Next: finish independent source review and deliver a draft PR;
+obtain an authorized visual-validation path before treating the redesign as
+accepted. Do not deploy or implement missing backend domains as an implicit
+extension. Historical persistence delivery below must not be repeated.
+
 ## 2026-08-30 persistence integration — current handoff
 
 The user explicitly authorized PR28 merge and persistent installed/server

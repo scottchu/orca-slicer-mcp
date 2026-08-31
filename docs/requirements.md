@@ -30,6 +30,12 @@ printer environments support the described behavior.
   domain values. MCP, HTTP, CLI, widgets, and a later overview do not query or
   normalize the printer independently. Camera frames retain their own
   acquisition time.
+- **OBS-008:** Current focused cards retain useful titles/content and one bottom
+  observation-time/refresh footer. Permission policy remains enforced without
+  repeated visible read-only labels. Stale/offline/missing source time and
+  refresh failures stay explicit; unimplemented domains do not render
+  decorative charts as measured data. Host loading is bounded and malformed
+  or missing delivery yields a retry/reopen state, not perpetual waiting.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -68,6 +74,13 @@ printer environments support the described behavior.
   shared printer upstream closes when the last viewer closes or fails. TURN is
   a fallback, not a prerequisite when a direct server host candidate is
   reachable.
+- **CAM-008:** Current camera chrome is image-only with one state/time overlay
+  and user-requested display controls. Snapshot/fallback time belongs to the
+  accepted displayed JPEG's server receipt time; live time belongs to evidenced
+  local rendered/decoded frames and freezes when they stop. Neither is claimed
+  as sensor capture time. Network/FPS diagnostics are not normal display copy.
+  Fullscreen/PiP reflect granted host/native state, with feature detection and
+  explicit rejection handling; API presence does not establish mobile support.
 
 ## Events and notifications
 
@@ -159,10 +172,11 @@ printer environments support the described behavior.
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v2` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v3` is the
   focused presentation resource. Every explicit camera open or reopen creates
-  a fresh snapshot-first `camera-v4` presentation; Go Live, retry, Close, and
+  a fresh snapshot-first `camera-v5` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
+  Observation-v2/v1 and camera-v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
 

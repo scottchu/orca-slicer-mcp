@@ -141,10 +141,10 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.3.0",
+      runtimeVersion: "0.3.1",
       toolSchemaVersion: 5,
-      observationWidgetVersion: "observation-v2",
-      cameraWidgetVersion: "camera-v4",
+      observationWidgetVersion: "observation-v3",
+      cameraWidgetVersion: "camera-v5",
     });
   });
 
@@ -434,7 +434,7 @@ describe("focused dashboard host bridge", () => {
     await host.send({ method: "ui/notifications/initialized" });
     expect(attempts).toBe(2);
     expect(host.messages.at(-1).params.structuredContent.freshness).toBe("offline");
-    expect(host.bridge.textContent).toBe("Read-only · observation received");
+    expect(host.bridge.textContent).toBe("Observation received");
   });
 
   test("does not derive a view from unknown routes or query parameters", async () => {

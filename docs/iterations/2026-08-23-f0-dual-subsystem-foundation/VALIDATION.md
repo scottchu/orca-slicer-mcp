@@ -1,5 +1,135 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 independent widget diagnosis and presentation validation
+
+### Baseline truth assessment
+
+The user's supplied phone screenshots show repeated generic waiting shells
+after requesting several focused cards. That is observed user-outcome failure,
+not evidence that every underlying measurement was fabricated. Independent
+read-only inspection of the deployed V2-connected MCP surface returned valid
+schema-2 selected-module results for all eight views. The calls shared
+observation version 4 and source time `2026-08-31T11:33:28.573Z`; the server
+reported reachable/fresh. No camera stream, printer control, authentication,
+service, or routing mutation was performed.
+
+| Focused view | Actual implemented data | Explicit missing implementation |
+| --- | --- | --- |
+| Progress | Real print state, percentage, layers and duration; this read returned 83 percent and layer 371 of 461 | Remaining time is an estimate; no preparation/session correlation |
+| Thermals | Four tool actual/target temperatures and bed actual/target; active tool 220/220 and bed 65/65 degrees C in this read | Cavity, heater power and complete heater-state semantics |
+| Heads and filaments | Four physical tool slots, actual/target temperatures, available head/active state | Filament material, color and sensor mapping |
+| Jobs | Current observed job identity and storage position/size | History and prepared-job correlation |
+| Queue | Named unknown-domain response | Queue acquisition/normalization; an empty array is not an observed empty queue |
+| Fans and purifier | Named unknown-domain response | Fan/purifier acquisition and semantics; no observed zero-speed claim |
+| Bed mesh | Named unknown-domain response | Grid/profile acquisition and normalization; no measured mesh |
+| Overview | Explicit unavailable/deferred response | Composition intentionally deferred until focused modules are accepted |
+
+Code evidence is `observation-presentation.ts` (`projectProgress`,
+`projectThermals`, `projectHeads`, `projectJobs`, `projectUnknown`, and
+`projectOverview`), `observation-store.ts`, and the fixed object-query boundary
+in `u1-status.ts`. The unimplemented mappings are hardcoded unknown/null/empty
+projections, not a finding that the printer cannot provide those domains.
+Private filenames, identifiers, images, and runtime paths are intentionally
+not retained in this record.
+
+### Independently reproduced loading defects
+
+Before production edits, the validator executed the exact inline observation
+script with `bun -e` and `node:vm` against a synthetic parent/DOM boundary.
+Three distinct baseline cases retained `Waiting for printer observation`:
+
+1. A cold mount emitted `ui/initialize` as a notification without a request ID
+   or protocol version, then announced initialized without an acknowledged
+   response. The camera used a request/response handshake instead.
+2. An empty `window.openai.toolOutput` masked a usable structured result in
+   `toolResponseMetadata.mcp_tool_result`.
+3. A later `openai:set_globals` event carrying metadata only was ignored.
+
+A valid preloaded queue result rendered the named Unknown card immediately.
+Thus unsupported domain rendering and the generic waiting shell are separate
+problems. The baseline also had no bounded loading failure or retry feedback.
+The standalone dashboard accepted the initialized notification even without a
+completed handshake, so that permissive fixture did not exercise the cold-host
+failure. These are demonstrated software defects; no device bridge log was
+captured, so the exact iPhone event path remains unproven.
+
+The baseline thermal SVG trace was a fixed decorative waveform, not sampled
+history, and its gray bed-mesh cells did not represent a normalized grid.
+Those data-like decorations are removed rather than counted as implemented
+telemetry.
+
+### Independent executable validation
+
+- `bun install --frozen-lockfile`: passed, 145 packages, no lockfile change.
+- `bun test src/observation-widget.test.ts`: passed 12 tests / 111 assertions
+  against the production inline script. The independent validator owns this
+  regression file; the production author owns the widget changes.
+- Covered: request/response initialization ordering, protocol version and ID;
+  direct/nested/metadata result shapes; empty-output and delayed-metadata
+  recovery; three isolated mounted-script instances; view isolation; foreign
+  and malformed results; finite waiting with reopen/retry guidance; selected
+  app-only retry; failed refresh retaining source time, values and stale label;
+  one footer per view; missing-time/offline semantics; absence of pseudo-charts.
+- Separate formal review found that a new metadata-only event could still be
+  masked by an older valid global output. The author prioritized the event
+  payload, and independent regressions for both metadata-envelope names prove
+  that an existing 42-percent card updates to a supplied 84-percent result.
+  This closes a warm-update defect beyond the original empty-output case.
+- An interim `bun run check` caught the expected observation-resource tuple
+  mismatch while alias/version updates were still in progress. Final full-tree
+  results are recorded below after the author hands off stable source.
+
+### Final source gate after warm-update and narrow-thermal repairs
+
+- From the app directory, `bun run check` passed, then
+  `bun test src/*.test.ts` initially passed 132 tests / 917 assertions before
+  the warm-update and JPEG receipt-time regressions were added. That count is
+  intermediate, not the final acceptance count.
+- From repository root, `./scripts/check-repository.sh` first passed TypeScript,
+  134 app tests / 929 assertions and 21 lifecycle tests after both added
+  regressions. Formal review then found a pre-existing narrow-screen selector
+  that hid the Actual thermal reading below 390 pixels. The author removed
+  that hiding rule and placed the identity above both Actual and Target cells.
+  This is a source-level layout repair, not rendered viewport acceptance.
+- The final repeated `./scripts/check-repository.sh` passed TypeScript,
+  **134 app tests / 931 assertions**, **21 lifecycle tests**, and
+  `repository contract: ok` after the narrow-screen repair and two additional
+  structural assertions. All three bundles and signature checks below were
+  rerun against those final bytes.
+- From the app directory, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, and `codesign -vvv --verify dist/u1-print-studio`
+  passed. Signing is local ad-hoc validation, not distribution signing.
+- `git diff --check` passed. The independent validator did not modify
+  production sources, installed plugins, services, OAuth state or routes.
+
+Validated SHA-256 fingerprints:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Current observation widget | `488d6b44faabed6884dbc214cb4f7b7ff3d7f7f0723b21b042ea1ec8ec3a1fd2` |
+| Current camera widget | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Independent observation VM tests | `c675f15364dbf0e675a25d079ce2600417b4a41304f130388469ef14c00075eb` |
+| Camera VM tests | `196e8097f0c2798058fe1ccfe2e9d6f8abbc2f52ae0376bd6acefec45ee15526` |
+| Frozen legacy status widget | `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437` |
+| Frozen legacy camera widget | `c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203` |
+| Stdio bundle | `aed5f6143babb067b0b9460d1d25fe3c1eb2fbbba32a27e7e73622bc115f58ce` |
+| HTTP bundle | `30e1127a2d63292fd5141457753681ea4211f0d13c13464736e3b4871eeaaf78` |
+| Standalone validation runtime | `4adcc4fc7c92e9435add3a1c5ca0e582f37d98fb9a8a3b632b1ed938d5e0a4d3` |
+
+These tests use deterministic VM, DOM and host fixtures. They do not emulate
+the actual ChatGPT mobile host, browser layout, accessibility tree, native
+fullscreen/PiP, or camera decoding. They are software/protocol evidence only.
+
+### Rendered and user-outcome boundary
+
+The supported browser runtime reported no available browser. The root's
+supported discovery check returned an empty inventory; no raw browser bypass
+was attempted. Product Design comparison, phone-width screenshots, focus,
+overflow, console inspection, and mounted fullscreen/PiP remain blocked.
+`design-qa.md` records `final result: blocked`. Supplied screenshots establish
+the old layout and failure, not acceptance of the new code. No release install,
+service restart, or live test of the changed assets is established here.
+
 ## 2026-08-30 post-merge persistence rollout and restart repair
 
 ### Delivery and installed plugin

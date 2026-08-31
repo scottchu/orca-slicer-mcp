@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-08-30
+Last updated: 2026-08-31
 
 ## Baseline
 
@@ -9,6 +9,28 @@ Last updated: 2026-08-30
   subsystems joined by an explicit prepared-job/print-session handoff.
 
 ## Active iteration
+
+- Current source slice: decision 0023's user-requested quiet footers,
+  image-only camera overlay/display controls, and bounded host-loading repair.
+  Source reports runtime `0.3.1`, schema `5`, observation-v3/camera-v5;
+  observation-v2/v1 and camera-v4 remain current aliases, and all previously
+  frozen legacy bytes remain unchanged. Two model-visible/eight app-only
+  read-only tools are unchanged; ten resource URIs preserve compatibility.
+  This source has not been installed or deployed. The deployed release facts
+  below remain historical installed evidence, not this slice's acceptance.
+- Progress, extruder/bed thermals, physical heads, and limited current-job
+  fields are mapped. Queue, fans, bed mesh, cavity, material/color, and history
+  remain unmapped or unknown; their cards are not implemented data capabilities.
+  Decorative thermal waves and bed-mesh cells were removed. A strict synthetic
+  host reproduced incorrect observation initialization and missing metadata
+  hydration; source fixes add an awaited request handshake, full-envelope
+  hydration, finite loading failure/retry, and retained stale refresh feedback.
+  This does not establish the exact cause of the user's phone screenshot.
+- Independent executable observation and implementation camera tests exercise
+  actual widget scripts with synthetic hosts/frames. Rendered screenshots,
+  mounted mobile fullscreen/PiP, service rollout, and physical acceptance are
+  unclaimed. See `design-qa.md` and current iteration validation for the blocked
+  visual gate; deliver this as source for review, not a live fix.
 
 - Iteration: `docs/iterations/2026-08-23-f0-dual-subsystem-foundation/`.
 - Roadmap milestone: F0 — Dual-environment and contract discovery.
@@ -103,8 +125,8 @@ The repository contains the smallest desktop-local read-only connector slice:
   failed refresh retains last reachable values as stale with their source time;
 - focused observation and camera MCP Apps widgets with empty external CSP
   domains and no direct `fetch` call;
-- current `observation-v2.html` and `camera-v4.html` resources, an
-  `observation-v1.html` current-asset alias, and exact frozen legacy status
+- current `observation-v3.html` and `camera-v5.html` resources,
+  observation-v2/v1 and camera-v4 current-asset aliases, and exact frozen legacy status
   v4/v3 and camera v3/v2/v1 bytes for retained tasks;
 - selected-module projections for progress, thermals, and heads; unsupported or
   not-yet-mapped domains remain explicit `unknown`/`unavailable`, and overview
@@ -196,12 +218,13 @@ There is no upload, start, pause, resume, cancel, G-code, generic proxy,
 Control, or Admin tool in the runtime. Preparation and authorized-start skills
 remain procedural guidance; they are not runtime authority.
 
-The current source reports runtime `0.3.0`, tool schema `5`, observation widget
-`observation-v2`, and camera widget `camera-v4`. `show_u1_status` and
+The current source reports runtime `0.3.1`, tool schema `5`, observation widget
+`observation-v3`, and camera widget `camera-v5`. `show_u1_status` and
 `get_u1_status` are superseded model intents and survive only as app-only
 compatibility aliases. Frozen status-v4/status-v3 and camera-v3/v2/v1 resources
 remain byte-identical for retained tasks. The current installed plugin has the
-same schema-5 contract. Historical schema-4/camera-v3 records below describe
+same schema-5 tools, but remains observation-v2/camera-v4 until a separately
+authorized rollout. Historical schema-4/camera-v3 records below describe
 earlier deployments, not the current plugin.
 
 ## Packaging and onboarding boundary
@@ -280,10 +303,11 @@ earlier deployments, not the current plugin.
   resource compatibility.
 - The source stdio bundle emits `stdio.js` plus current observation/camera and
   frozen legacy status/camera widget assets. Runtime, tool, observation, and
-  camera versions are `0.3.0`, `5`, `observation-v2`, and `camera-v4`.
-- Local browser fixture review at a roughly 589 by 844 viewport accepted the
+  current source camera versions are `0.3.1`, `5`, `observation-v3`, and `camera-v5`.
+- Earlier local browser fixture review at a roughly 589 by 844 viewport accepted the
   focused Progress, Thermals, Heads, and separate Camera presentations. Captures
-  were not added to the repository.
+  were not added to the repository. That review predates decision 0023 and
+  does not accept the present polish; the new visual gate remains blocked.
 - PR27 adds regressions for exclusive standalone-camera guidance, fail-closed
   stale-host behavior, plugin starter prompts, and full host-process reload.
 - The macOS arm64 standalone runtime builds, verifies under an ad-hoc local
@@ -368,6 +392,14 @@ and final repository-check results.
   decision 0015.
 
 ## Next action
+
+First finish decision 0023's independent source review and deliver a draft PR.
+Rendered visual validation needs an available browser or explicit permission
+for an isolated alternative. Test all focused cards and camera snapshot/live/
+fallback/fullscreen/PiP at phone widths before user-facing acceptance. Do not
+install, restart services, mutate OAuth/routes, or implement missing data
+domains as an implicit extension of this presentation change. The persistence
+delivery actions below are historical and must not be repeated for this slice.
 
 Deliver the independently validated CLI race repair and accurate rollout
 records through a follow-up PR; controlled restart and KeepAlive recovery pass.
