@@ -490,6 +490,7 @@
       let liveFrameCallback = null;
       let liveFrameTimes = [];
       let measuredLiveFps = null;
+      let liveFpsExpiryTimer = null;
       let configuredIceMode = "unknown";
       let selectedIcePath = null;
       let fallbackDetail = null;
@@ -553,13 +554,14 @@
 
       const setCameraMode = (mode) => {
         const observedLabel = formatCameraTime(mode === "live" ? liveObservedAt : snapshotObservedAt) ?? "Time unavailable";
+        const fps = Number.isFinite(measuredLiveFps) && measuredLiveFps > 0 ? Math.round(measuredLiveFps) : 0;
         const labels = {
           loading: elements.camera.classList.contains("has-snapshot")
             ? `Connecting · ${observedLabel}`
             : "Connecting",
           snapshot: `Snapshot · ${observedLabel}`,
           fallback: `Fallback · ${observedLabel}`,
-          live: `Live · ${observedLabel}`,
+          live: `Live · ${fps > 0 ? `${fps} FPS · ` : ""}${observedLabel}`,
           unavailable: "Camera unavailable",
         };
         elements.cameraDetail.dataset.mode = mode;
@@ -657,7 +659,16 @@
         void callTool("close_u1_camera_stream", { sessionId }).catch(() => {});
       };
 
+      const clearLiveFps = () => {
+        clearTimeout(liveFpsExpiryTimer);
+        liveFpsExpiryTimer = null;
+        liveFrameTimes = [];
+        measuredLiveFps = null;
+        if (relayRendering) setCameraMode("live");
+      };
+
       const stopLiveStream = () => {
+        clearLiveFps();
         clearTimeout(liveFrameWatchdog);
         liveFrameWatchdog = null;
         clearInterval(decodedFrameTimer);
@@ -688,23 +699,30 @@
         liveObservedAt = null;
       };
 
-      const recordLiveFrame = (now = performance.now()) => {
+      const recordLiveFrame = (now = performance.now(), count = null) => {
         liveObservedAt = new Date().toISOString();
         clearTimeout(liveFrameWatchdog);
         liveFrameWatchdog = setTimeout(() => {
           if (livePreview && relayRendering) activateSnapshotFallback("video frames stalled");
         }, 5000);
-        liveFrameTimes.push(now);
-        const windowStart = now - 5000;
-        liveFrameTimes = liveFrameTimes.filter((observed) => observed >= windowStart);
-        if (liveFrameTimes.length >= 2) {
-          const elapsed = liveFrameTimes.at(-1) - liveFrameTimes[0];
-          if (elapsed > 0) measuredLiveFps = (liveFrameTimes.length - 1) * 1000 / elapsed;
+        const previous = liveFrameTimes.at(-1);
+        const canMeasure = Number.isSafeInteger(count) && count >= 0 && Number.isFinite(now) &&
+          !elements.liveStream.paused && !["disconnected", "failed", "closed"].includes(livePeerConnection?.connectionState);
+        if (!canMeasure || (previous && (count <= previous.count || now <= previous.now))) clearLiveFps();
+        if (canMeasure) {
+          liveFrameTimes.push({ now, count });
+          liveFrameTimes = liveFrameTimes.filter(sample => sample.now >= now - 5000).slice(-600);
+          const first = liveFrameTimes[0];
+          const elapsed = now - first.now;
+          measuredLiveFps = elapsed >= 1000 && count > first.count ? (count - first.count) * 1000 / elapsed : null;
+          clearTimeout(liveFpsExpiryTimer);
+          const peer = livePeerConnection;
+          liveFpsExpiryTimer = setTimeout(() => { if (livePeerConnection === peer) clearLiveFps(); }, 1500);
         }
         setCameraMode("live");
       };
 
-      const markFirstRenderedFrame = (now = performance.now()) => {
+      const markFirstRenderedFrame = (now = performance.now(), count = null) => {
         if (!livePreview || !livePeerConnection || relayRendering) return false;
         relayRendering = true;
         clearTimeout(firstRenderedFrameTimer);
@@ -712,16 +730,26 @@
         clearTimeout(snapshotFallbackTimer);
         elements.camera.classList.add("has-live");
         setCameraState("live");
-        recordLiveFrame(now);
+        recordLiveFrame(now, count);
         return true;
       };
 
       const observeRenderedFrames = () => {
         const peer = livePeerConnection;
+        clearLiveFps();
+        const decodedCounter = typeof elements.liveStream.getVideoPlaybackQuality === "function"
+          ? () => elements.liveStream.getVideoPlaybackQuality()?.totalVideoFrames
+          : () => elements.liveStream.webkitDecodedFrameCount;
+        const frameCount = () => {
+          try { return decodedCounter(); }
+          catch { return undefined; }
+        };
         if (typeof elements.liveStream.requestVideoFrameCallback === "function") {
-          const observeFrame = (now) => {
+          const observeFrame = (now, metadata) => {
             if (!livePreview || livePeerConnection !== peer) return;
-            if (!markFirstRenderedFrame(now)) recordLiveFrame(now);
+            // Do not mix presented and decoded counter families within a window.
+            const count = metadata?.presentedFrames;
+            if (!markFirstRenderedFrame(now, count)) recordLiveFrame(now, count);
             liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
           };
           liveFrameCallback = elements.liveStream.requestVideoFrameCallback(observeFrame);
@@ -729,13 +757,16 @@
         }
         // Older hosts: only an advancing decoded-frame count is evidence.
         // `playing` or a wall-clock tick alone must never label black video live.
-        const frameCount = () => elements.liveStream.getVideoPlaybackQuality?.().totalVideoFrames ?? elements.liveStream.webkitDecodedFrameCount;
         let previous = frameCount();
         decodedFrameTimer = setInterval(() => {
-          if (!livePreview || livePeerConnection !== peer || elements.liveStream.paused) return;
+          if (!livePreview || livePeerConnection !== peer) return;
+          if (elements.liveStream.paused) { clearLiveFps(); return; }
           const count = frameCount();
-          if (Number.isFinite(count) && Number.isFinite(previous) && count > previous) {
-            if (!markFirstRenderedFrame()) recordLiveFrame();
+          if (Number.isSafeInteger(count) && count >= 0 && Number.isSafeInteger(previous) && previous >= 0 && count > previous) {
+            const now = performance.now();
+            if (!markFirstRenderedFrame(now, count)) recordLiveFrame(now, count);
+          } else if (!Number.isSafeInteger(count) || count < 0 || !Number.isSafeInteger(previous) || count < previous) {
+            clearLiveFps();
           }
           previous = count;
         }, 250);
@@ -864,6 +895,7 @@
           } else if (peer.connectionState === "failed") {
             activateSnapshotFallback("connection failed");
           } else if (peer.connectionState === "disconnected") {
+            clearLiveFps();
             clearTimeout(liveConnectionFallbackTimer);
             liveConnectionFallbackTimer = setTimeout(() => {
               if (peer.connectionState !== "connected") {
@@ -1034,7 +1066,7 @@
       const initializeBridge = async () => {
         if (!hosted) return null;
         const result = await rpcRequest("ui/initialize", {
-          appInfo: { name: "u1-camera-widget", version: "0.3.1-camera-v5" },
+          appInfo: { name: "u1-camera-widget", version: "0.3.4-camera-v6" },
           appCapabilities: {},
           protocolVersion: "2026-01-26",
         });
@@ -1061,6 +1093,8 @@
 
       elements.goLive.addEventListener("click", openCameraStream);
       elements.closeLive.addEventListener("click", closeLive);
+      elements.liveStream.addEventListener("pause", clearLiveFps);
+      elements.liveStream.addEventListener("ended", clearLiveFps);
       elements.fullscreen.addEventListener("click", () => void requestCameraDisplay("fullscreen"));
       elements.pip.addEventListener("click", () => void requestCameraDisplay("pip"));
       document.addEventListener("fullscreenchange", updateDisplayControls);

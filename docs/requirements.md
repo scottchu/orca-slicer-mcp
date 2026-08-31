@@ -93,7 +93,11 @@ printer environments support the described behavior.
   timestamps on narrow views. Snapshot/fallback time belongs to the
   accepted displayed JPEG's server receipt time; live time belongs to evidenced
   local rendered/decoded frames and freezes when they stop. Neither is claimed
-  as sensor capture time. Network/FPS diagnostics are not normal display copy.
+  as sensor capture time. Only while live, an integer FPS value may appear
+  between state and time after at least one second of actual presented/decoded
+  frame-counter evidence. Omit unmeasured, invalid, reset, or stale FPS; timer
+  callbacks are not frame counts. Clear FPS on exit and after 1.5 seconds
+  without advancing frame evidence. Network diagnostics stay hidden.
   Fullscreen/PiP reflect granted host/native state, with feature detection and
   explicit rejection handling; API presence does not establish mobile support.
 
@@ -193,9 +197,9 @@ printer environments support the described behavior.
   camera frame/signaling helpers. All observation tools are read-only and
   require `u1.monitor` where remote OAuth applies. `observation-v5` is the
   focused presentation resource. Every explicit camera open or reopen creates
-  a fresh snapshot-first `camera-v5` presentation; Go Live, retry, Close, and
+  a fresh snapshot-first `camera-v6` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v4/v3/v2/v1 and camera-v4 are current-asset compatibility aliases.
+  Observation-v4/v3/v2/v1 and camera-v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
 

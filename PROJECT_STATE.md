@@ -10,6 +10,17 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
+- Current task: measured FPS is implemented only in the live camera's top state/time
+  pill, per decision 0023's latest supersession and CAM-008. Keep network
+  diagnostics hidden and bottom controls unchanged. Actual frame counters,
+  startup/reset handling and stale expiry must prevent invented or retained
+  rates. Source is runtime 0.3.4/camera-v6, with camera-v5/v4 aliases,
+  observation-v5/schema 7 unchanged and thirteen resources. Author validation
+  passes 81 tests/856 assertions and TypeScript; independent acceptance and
+  shipment are pending. After exact-commit review,
+  use the established authorized merge/deploy/restart-both/verify workflow.
+  PR34 remains the verified live baseline; its rollout-record PR is already
+  merged in main `3eeb926`. Queue and minimal-progress work remain deferred.
 - Current result (2026-08-31): PR34 is merged and deployed. Independently
   reviewed head `97b5106d29e1d5c3d3dde4aa7810724d2d3bcce1` merged as
   `7194361d4a8d7a2291bcc64f1d053eae51a8d99c`; `$u1-ship` completed the
@@ -26,8 +37,8 @@ Last updated: 2026-08-31
   visually inspected and shows a coherent printer interior. No calibration,
   printer control, live-video session, or phone visual acceptance occurred.
   Queue remains paused in its separate checkout; minimal-progress design and
-  mounted-phone/live-video verification remain pending. Complete only the
-  docs-only rollout-record PR now; unchanged app bytes need no second deployment.
+  mounted-phone/live-video verification remain pending. The docs-only rollout
+  record is merged; it did not require another application deployment.
 - Previous pre-rollout checkpoint: decision 0028's repository-only shipping skill/
   script and decision 0027's real read-only Bed Mesh slice are implemented and
   software-validated, ready for final exact-commit review and PR delivery.

@@ -1,5 +1,33 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## Live-only measured FPS — independent source and rendered review
+
+Scoped result: passed against decision 0023's latest FPS supersession and
+CAM-008. Product Design audit guidance informed opening all five final
+synthetic captures; this does not reinstate hidden network diagnostics.
+
+1. **Live information — passed.** Presented-counter 29 FPS at 320/dark and
+   30 FPS at 390/light, plus decoded-counter 30 FPS at 720/dark, keep the full
+   state/rate/time pill readable above unchanged bottom display/live controls.
+2. **Non-live information — passed.** Snapshot 320/dark and fallback 320/light
+   show the accepted snapshot time without FPS. No clipping or overlap with
+   the 44-pixel controls was visible in any reviewed capture.
+3. **Truthful measurement — passed.** The reviewer independently ran the
+   camera/app suites: 44 tests and 359 assertions passed. Presented and decoded
+   counter families no longer mix within one measurement window; missing or
+   invalid metadata cannot invent a spike. Startup, stale expiry, pause,
+   close, peer replacement and the existing stalled-frame fallback are covered.
+   An additional isolated VM probe confirmed missing presented metadata does
+   not substitute an unrelated decoded count. No real camera was accessed.
+
+Reviewed camera SHA-256:
+`375bcbefbee47e1d01a958ad2441594e66b95ff65aa55242d5b058709dcc6182`.
+The validator separately records five actual captures and twelve browser
+behavior checks, with zero unexpected requests/errors. Iteration
+`VALIDATION.md` owns the complete repository and packaging evidence.
+This accepts scoped source and synthetic rendering, not deployed FPS,
+physical camera rate, phone playback, PiP support or full accessibility.
+
 ## Reported Bed Mesh and shipping workflow — independent review
 
 Scoped result: passed against decisions 0027 and 0028, with no unresolved
