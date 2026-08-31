@@ -92,9 +92,9 @@ Private stable entries are `/dashboard/progress`, `/dashboard/thermals`,
 implementation-coverage labels. It loads no observations, widgets, or camera
 media. Source decision 0025 lists nine focused entries, with `/dashboard/jobs`
 retained for Current Job and `/dashboard/job_history` separately exposing
-unimplemented history. PR36 is deployed as
-`20260831-3fc918e-pr36-20260831T124701-e914a1`, serving the nine-entry directory
-at runtime 0.3.4/schema 7/observation-v5/camera-v6. Both services are restarted
+unimplemented history. PR38 is deployed as
+`20260831-b565eec-pr38-20260831T130407-2e3c85`, serving the nine-entry directory
+at runtime 0.3.5/schema 7/observation-v5/camera-v7. Both services are restarted
 and verified; earlier PR34 evidence separately confirms read-only Bed Mesh acquisition.
 Source merge alone never updates loaded services.
 The HTTP overview route stays absent; the MCP overview
@@ -158,7 +158,8 @@ Every channel's `doctor --json` reports one runtime contract containing the
 base runtime version, tool-schema version, observation-widget version, and
 camera-widget version. The current source contract is runtime `0.3.5`, tool
 schema `7`, observation widget `observation-v5`, and camera widget `camera-v7`.
-This source follow-up is separate from the verified PR36 service rollout.
+These versions match the verified PR38 service rollout; documentation-only
+records need no redeployment of unchanged application bytes.
 Observation-v4/v3/v2/v1 and camera-v6/v5/v4 remain current-asset aliases.
 The expanded closed enum has nine values; two model-visible/eight app-only tool
 counts are unchanged. Fourteen resource URIs retain current/frozen compatibility.

@@ -9,10 +9,10 @@ Current source is runtime 0.3.5/schema 7/observation-v5/camera-v7: fourteen
 resources, nine observation selectors and nine directory links, with two
 model-visible/eight app-only tools. Bed Mesh's end-to-end implementation and
 the new repository shipping workflow are reviewed and deployed through PR34.
-The current 0.3.5/camera-v7 source above awaits independent acceptance and
-shipment. The earlier FPS slice is deployed through PR36; both restarted
-services remain healthy/integrity verified at runtime 0.3.4/schema 7/
-observation-v5/camera-v6. Earlier PR34 evidence separately confirms live mesh
+The current 0.3.5/camera-v7 source above is reviewed and deployed through PR38;
+both restarted services are healthy/integrity verified at runtime 0.3.5/schema
+7/observation-v5/camera-v7. Native playback evidence is independent synthetic
+testing, not proof on the user's device. Earlier PR34 evidence confirms live mesh
 and JPEG acquisition, without phone/live-video or calibration claims.
 
 ## One plugin, several layers

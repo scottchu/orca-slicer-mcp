@@ -75,8 +75,8 @@ Observation-v4/v3/v2/v1 and camera-v6/v5/v4 serve current-asset compatibility al
 status-v4/v3 and camera-v3/v2/v1 preserve frozen older presentation bytes.
 The source contract is runtime 0.3.5/schema 7, with fourteen resources, nine
 observation selectors, and unchanged two-visible/eight-app-only tool counts.
-The FPS update is reviewed and deployed through PR36; both services are
-verified at runtime 0.3.4/schema 7/observation-v5/camera-v6. Earlier PR34
+The bottom-status/FPS repair is reviewed and deployed through PR38; both
+services are verified at runtime 0.3.5/schema 7/observation-v5/camera-v7. Earlier PR34
 evidence separately confirms read-only live mesh acquisition. A failure from an old task is not evidence that the current staged
 runtime is missing; verify the installed descriptor, executable, and a fresh
 task separately.

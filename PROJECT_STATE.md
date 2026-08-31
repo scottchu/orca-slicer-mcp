@@ -10,7 +10,7 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-- Current task: bottom-left camera information and bottom-right controls are
+- Current result: bottom-left camera information and bottom-right controls are
   implemented with narrow wrapping. A reproduced product defect let repeated
   same-peer track events start duplicate frame watchers, repeatedly resetting
   the FPS window. The fix cancels prior watchers and rejects old-generation
@@ -19,11 +19,15 @@ Last updated: 2026-08-31
   evidence includes six captures and playback retaining approximately 30/31 FPS
   after repetition.
   Source is 0.3.5/schema 7/observation-v5/camera-v7, with camera-v6/v5/v4 aliases
-  and fourteen resources. Independent acceptance and shipment are pending through the established
-  exact-review/merge/deploy/restart-both/verify workflow. PR37's rollout records
-  are merged in main `a65ded0`; do not repeat that documentation task. Queue
-  and minimal-progress work remain deferred.
-- Current result: live-only measured FPS is reviewed, merged in PR36 and
+  and fourteen resources. PR38 reviewed head `a35c92c813d669bef696fefbbc87ee7bd5390630`
+  merged as `b565eecc30ec394137483f4619a523807b59e538` and shipped through
+  `u1-ship`, release `20260831-b565eec-pr38-20260831T130407-2e3c85`.
+  Both services were explicitly restarted and are healthy/integrity verified;
+  fourteen static and sixteen security checks pass with private configuration,
+  authentication and routes preserved. No rollback was needed. Next merge only
+  these rollout records; source/tests are unchanged and need no redeployment.
+  Queue and minimal-progress work remain deferred.
+- Previous result: live-only measured FPS is reviewed, merged in PR36 and
   deployed through `u1-ship`. Reviewed head `40d359bd81df3523a32726172f64b045ab027e86`
   merged as `3fc918e5c64b401f497f97144d9c81423877d852`; installed release
   `20260831-3fc918e-pr36-20260831T124701-e914a1` reports runtime 0.3.4/schema 7/

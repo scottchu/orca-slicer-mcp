@@ -1,5 +1,30 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 PR38 bottom-status/FPS deployment verification
+
+After the operator shipped reviewed head
+`a35c92c813d669bef696fefbbc87ee7bd5390630`, merged as
+`b565eecc30ec394137483f4619a523807b59e538`, and restarted both services, the
+independent validator ran
+`bun --no-env-file --config=/dev/null run verify-bottom-live.ts` from an
+outside-repository verification directory.
+
+- Both live health responses returned 200 with **runtime 0.3.5 / schema 7 /
+  observation v5 / camera v7**.
+- The private camera asset returned 200 and exact reviewed SHA-256
+  `1f706d665a5f811793160b2afb2cd620bb381903673bc5047e159c1948ba6cac`.
+  The existing private tailnet `/dashboard/camera` page also returned 200.
+- All four probes were health/static GETs. No tool, snapshot, stream, printer
+  operation, service mutation, or authentication/routing change was invoked.
+
+The redacted report remains outside Git, SHA-256
+`f407ec8f7fb4743c8d3c41b39f1db0b9aa4235242b186a62dc32af21a76e76f8`.
+This independently verifies deployed contract and exact asset availability.
+The native-browser regression below proves the software repair with synthetic
+local video; neither layer proves the user's currently mounted device has
+refreshed or that real-printer live FPS is visible there. Operator-owned full
+14-static/16-security, integrity and preservation checks are separate evidence.
+
 ## 2026-08-31 Bottom camera status and native frame-observer regression
 
 The user's bottom-left camera information request is a camera-only layout
