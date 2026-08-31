@@ -5,7 +5,17 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
-- Current result (2026-08-31): PR41 reviewed head `744f7d0` merged as `b6142de`
+- Current result (2026-08-31): PR43 reviewed head `41546d9` merged as `92a62c0`
+  and shipped exact release `20260831-92a62c0-pr43-20260831T150042-2e7c64`.
+  BOTH services were explicitly restarted and are loaded/healthy/integrity
+  verified at 0.4.1/schema 8/observation-v7/camera-v8. Fourteen exact static and
+  sixteen security checks pass; OAuth/environment/config/routes are preserved
+  without rollback. Independent exact-release/manifest, fourteen local/thirteen
+  tailnet static and tailnet-health checks pass; one private refresh returns
+  a known/fresh active 11 by 11 mesh at `2026-08-31T19:03:22.696Z`.
+  Visual/device acceptance remains unverified. Next integrate Queue while the
+  user reviews F. These docs-only rollout records need no app redeployment.
+- Previous result (2026-08-31): PR41 reviewed head `744f7d0` merged as `b6142de`
   and shipped via `u1-ship`, release `20260831-b6142de-pr41-20260831T140555-84d50f`.
   BOTH public/dashboard services were explicitly restarted and are loaded,
   healthy and integrity verified at 0.4.0/schema 8/observation-v6/camera-v8.
@@ -24,7 +34,7 @@
   `WIDGET_TRACKS.md` supersede prior Queue/progress deferrals and camera overlay
   directions below. Release order: A materials + white cards/index + latest
   camera + continuous progress (deployed), F interactive reported Bed Mesh
-  surface, B Queue, C fans/chamber, D Current Job/History, E composed overview.
+  surface (deployed), B Queue, C fans/chamber, D Current Job/History, E composed overview.
   The user's new Fluidd Bed Mesh reference prioritizes its orbitable XYZ
   surface inside the existing white card; it does not request the dark
   dashboard or printer/profile controls. Reuse the same reported grid/bounds,
@@ -49,9 +59,8 @@
   as 0.4.1/schema 8/observation-v7/camera-v8 with seventeen resources. The P2
   face-occlusion defect is corrected; final source passes 194 app/2,731
   assertions, 21 lifecycle, 22 shipping, 22 independent/1,162 assertions and
-  TypeScript/repository/bundles/exact assets. Final source is provisionally
-  approved without blockers; exact-commit review and release remain pending.
-  Next freeze and obtain that exact-commit review.
+  TypeScript/repository/bundles/exact assets. Exact head `41546d9` was approved
+  without blockers and shipped in PR43. Next complete Queue's integration.
   Follow the standing merge → deploy → restart
   BOTH → verify order for the user's visual review; unavailable automated browser
   access remains an explicit unverified visual gate, not a new delivery block.

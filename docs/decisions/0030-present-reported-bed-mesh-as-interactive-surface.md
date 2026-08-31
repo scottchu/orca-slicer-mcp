@@ -1,7 +1,7 @@
 # 0030: Present the reported bed mesh as an interactive surface
 
 - Date: 2026-08-31
-- Status: source validated and provisionally reviewed; exact-commit review and release pending
+- Status: reviewed, merged in PR43 and deployed; visual/device acceptance unverified
 - Scope: F0/O1 read-only observation, OBS-008/009/011 and API-005
 - Supersedes: decision 0027's 2D-only presentation and decision 0029's release
   ordering only; their acquisition, privacy, state and delivery boundaries remain

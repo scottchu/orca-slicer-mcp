@@ -14,10 +14,23 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Release A is deployed, not an open draft: PR41 reviewed head
+F is now shipped: PR43 reviewed `41546d9e3ea841bdd23279694079719327f39f39`
+merged as `92a62c04c22600ee802d7be3c0b27285135f6d33`; installed release
+`20260831-92a62c0-pr43-20260831T150042-2e7c64` reports 0.4.1/schema 8/
+observation-v7/camera-v8. The read-only plan and guarded execution passed;
+BOTH services were explicitly restarted and are loaded/healthy/integrity
+verified. Fourteen exact static and sixteen security checks pass, preserving
+OAuth/environment/config/routes without rollback. Independent exact-release/
+manifest, fourteen local/thirteen tailnet static and tailnet-health checks pass;
+one private refresh returns a known/fresh active 11 by 11 mesh at
+`2026-08-31T19:03:22.696Z`. Browser/device visual acceptance is unverified.
+Merge only these docs-only rollout records without redeploying
+unchanged app bytes, then integrate Queue while the user reviews F.
+
+Previous release A was deployed in PR41: reviewed head
 `744f7d06607526a10997b926d91b18087c4030cf` merged as
 `b6142de6241cb2e1b6ac70b509f2d0b0e836f1d8`. Installed release
-`20260831-b6142de-pr41-20260831T140555-84d50f` reports 0.4.0/schema 8/
+`20260831-b6142de-pr41-20260831T140555-84d50f` reported 0.4.0/schema 8/
 observation-v6/camera-v8 on both explicitly restarted public/dashboard services.
 Loaded health/integrity, fourteen static and sixteen security checks pass;
 OAuth/environment/config/routes are preserved, no rollback needed. User
@@ -32,7 +45,7 @@ The authoritative queue is the current iteration's `WIDGET_TRACKS.md` and
 decisions 0029/0030. Complete **all** pending widgets; newer feedback does not
 erase earlier requests. Sequential independently shipped slices are A materials,
 white cards/index, selected camera and continuous progress (deployed),
-F interactive reported Bed Mesh surface, B real Queue, C fans/chamber,
+F interactive reported Bed Mesh surface (deployed), B real Queue, C fans/chamber,
 D Current Job/real History, and E composed overview. Bed Mesh was restyled
 with A; the user's latest Fluidd reference now prioritizes its 3D surface
 inside the white card, without the dark dashboard or printer/profile controls.
@@ -45,15 +58,13 @@ seventeen resources. Formal review's P2 centroid-sort occlusion defect is
 corrected; final widget `c800447` passes independent geometry/regression checks.
 Final validation passes 194 app tests/2,731 assertions, 21 lifecycle, 22 shipping,
 22 independent tests/1,162 assertions, TypeScript/repository and all bundles/
-exact assets. The reviewer provisionally approves final source without blockers.
-Freeze and obtain exact-candidate-SHA review next. No F
-exact-commit approval,
-merge, deployment or restarted-service verification is yet claimed. Preserve the
+exact assets. Exact head `41546d9` was independently approved and shipped in
+PR43; do not repeat its deployment. Preserve the
 same-sample XYZ chart, visible height multiplier, pointer/keyboard orbit/reset,
 and 2D fallback, preserving flat/inactive/unknown/stale and independent-time
 semantics. Use no new printer reads, resampling or interpolated-matrix fallback.
-Obtain independent exact-SHA approval and follow guarded merge → deploy
-exact merged bytes → explicitly restart BOTH services → verify. Fresh allowed
+For each subsequent widget, retain independent exact-SHA approval and guarded
+merge → deploy exact merged bytes → explicitly restart BOTH services → verify. Fresh allowed
 browser discovery is unavailable; preserve visual QA as unverified rather than
 re-blocking the user's deployment-first visual-review order. Check VALIDATION
 for actual source evidence before advancing this checkpoint.
@@ -65,12 +76,12 @@ invent speed/height or other metrics. Material reads use the prefixed
 `print_task_config` fields in decision 0029 and physical array index + 1, not
 print mapping or local preset sync. Keep independent domain times/freshness.
 
-The delivered release has sixteen resources, real material metadata, white
-cards/index, camera header/snapshot feedback/native fullscreen and continuous
-progress. The lower progress row is elapsed-only, without invented metrics;
+Release A had sixteen resources; F adds observation-v7 for seventeen. Retain
+real material metadata, white cards/index, camera header/snapshot feedback/
+native fullscreen and continuous progress. The lower progress row is elapsed-only, without invented metrics;
 the contrast P2 is resolved. These docs-only rollout records require no
-redeployment of unchanged application bytes. Next finish F's bounded surface
-and its independently reviewed delivery while the user reviews A. In particular,
+redeployment of unchanged application bytes. Next integrate Queue while the
+user reviews A/F. In particular,
 visually assess camera's
 muted combined state/FPS/time label against the reference's differentiated
 text and vertical separators; no 1:1 fidelity claim is established by tests.
@@ -79,9 +90,9 @@ Queue's three-file standalone adapter/model/test foundation is locally committed
 Independent bounded source/protocol review approves it, closing the prior
 credential-basename P2. TypeScript, 40 tests/461 assertions and six independent
 tests/68 assertions pass. Its store/projection/widget integration remains next
-after F's bounded surface.
+now that F is shipped.
 Continue source work in stacked B–E branches while A's user visual review is
-pending; current sequential reviewed release order is A→F→B→C→D→E;
+pending; current sequential reviewed release order is A/F (deployed)→B→C→D→E;
 there is no integrated Queue widget or rollout. Retain B–E in the queue.
 Never claim an old design-QA pass for new assets. No printer control,
 queue/history mutation, preset/project

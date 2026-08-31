@@ -1,6 +1,56 @@
 # F0 dual-subsystem foundation validation
 
-## 2026-08-31 F reported Bed Mesh surface — current source checkpoint
+## 2026-08-31 F reported Bed Mesh surface — PR43 deployed
+
+Independent exact-head approval bound
+`41546d9e3ea841bdd23279694079719327f39f39`. The read-only shipping plan passed,
+then guarded execution merged PR43 at `2026-08-31T19:00:51Z` as
+`92a62c04c22600ee802d7be3c0b27285135f6d33` and installed exact release
+`20260831-92a62c0-pr43-20260831T150042-2e7c64`. Actual operator commands
+(the private pinned runtime path is deliberately redacted):
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 43 --reviewed-sha 41546d9e3ea841bdd23279694079719327f39f39 --bun <ABSOLUTE_PINNED_BUN>
+uv run --no-project scripts/u1_ship.py --pr 43 --reviewed-sha 41546d9e3ea841bdd23279694079719327f39f39 --bun <ABSOLUTE_PINNED_BUN> --execute
+```
+
+Execution completed: BOTH public/dashboard services were explicitly restarted,
+loaded, healthy and integrity verified at **0.4.1/schema 8/observation-v7/
+camera-v8**. **Fourteen exact static and sixteen security checks pass**.
+OAuth/environment/config/routes were preserved; no rollback was needed.
+Installed widget matches `c800447957bf8b7b386ddba7666941f625170db92107d31230c5f382378d77f6`;
+index matches `6e195671cee0ee8aad37a20aa9582472796a7cffff5ee8f88f455467600397af`;
+camera bytes are unchanged. Private receipts remain outside Git.
+
+Separate independent post-release verification passes. Actual read-only
+commands (private paths deliberately redacted):
+
+```sh
+uv run --no-project scripts/u1_service.py status
+uv run --no-project <PRIVATE_VALIDATION_DIR>/verify-live.py
+shasum -a 256 <PRIVATE_VALIDATION_DIR>/verify-live.py <PRIVATE_VALIDATION_DIR>/POSTSHIP_REPORT.json
+```
+
+Both services match the exact release/source above, with **fifteen installed
+manifest files per release** verified. **Fourteen local and thirteen tailnet
+exact static checks**, plus tailnet health, pass. Widget and unchanged camera
+bytes match the expected source. Exactly **one** private Bed Mesh refresh
+returns **known/fresh/active, 11 by 11, 121 vertices**, with its own receipt
+`2026-08-31T19:03:22.696Z` and valid bounds/summary. No raw matrix, labels,
+printer identity or private host is recorded. The validator made zero other
+printer/camera calls and no service/auth/routing writes; only private
+verification files were created outside Git. Redacted report SHA-256:
+`74360c0801ee0bc663fd7073a0ba0edcd1f57e9c72db93cdb864571bdfef1a58`;
+script SHA-256:
+`7c1ba838ba502df3037a0256be148e47193a185e2ad7bc954b95434f7a1b6710`.
+These checks establish deployed bytes and one read-only domain acquisition,
+not rendered chart behavior, calibration quality or device/visual acceptance.
+The user has the live Bed Mesh link for visual review; automated and actual-
+device visual acceptance remain unverified. No printer controls, calibration,
+profile mutation, auth/routing change or plugin reinstall occurred. These
+docs-only rollout records change no app bytes and require no new deployment.
+
+## 2026-08-31 F source checkpoint — historical predeployment evidence
 
 Decision 0030 and OBS-009 record the user's selected Fluidd surface interaction
 inside the delivered white card. Current order is A (deployed) → F → B → C →
