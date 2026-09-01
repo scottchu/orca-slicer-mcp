@@ -11,7 +11,7 @@
   <header><div class="directory-icon"><FlaskConical aria-hidden="true" /></div><div><h1>Observation Lab</h1><p>Synthetic fixture views · private dashboard only</p></div></header>
   <nav aria-label="Observation lab views">
     {#each views as [path, label]}
-      <a href={`/dashboard/lab/${path}`} data-lab-link={path}><span>{label}</span><ArrowRight aria-hidden="true" /></a>
+      <a href={`/dashboard/lab/${path}`} data-sveltekit-reload data-lab-link={path}><span>{label}</span><ArrowRight aria-hidden="true" /></a>
     {/each}
   </nav>
 </main>

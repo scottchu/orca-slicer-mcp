@@ -1,5 +1,21 @@
 # F0 dual-subsystem foundation handoff
 
+## Three-artifact private-lab split author checkpoint
+
+Exact application source `4a6c493` ordinarily merges accepted/deployed Heads
+main `5ffca66`. Changed source
+splits fixtures and build graphs, adds an explicit Bed Mesh Svelte entry, maps
+the exact private Bed route to its own inline bytes, and derives the shipping
+manifest from the three route constants. Light excludes Bed/Three/Orbit; Bed
+excludes other observation, Camera/media, live-adapter and RPC graphs; Camera is
+unchanged. Current outputs are 199,819/629,880/78,795 bytes and 908,494
+aggregate. Author UI335/app296/lifecycle21/shipping24/repository and Chrome164
+gates pass. Independent exact-SHA validation/review remains required. Renewed
+limits are 250,000/700,000/80,000 and 980,000 aggregate, leaving
+50,181 light bytes for the finite Queue/Current Job/History/Progress/Overview
+envelope; Console and thumbnails are excluded. No deployment, printer, auth,
+MCP or public-route change is claimed.
+
 ## Heads implementation checkpoint (unaccepted)
 
 Accepted Bed Mesh main8c5756d is integrated as0bb9ef6 after author checkpoint

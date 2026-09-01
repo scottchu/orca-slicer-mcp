@@ -1,21 +1,26 @@
 import { describe, expect, it } from 'vitest';
 import { assertLabBudgets, assertSelfContained } from '../../../scripts/private-lab-contract';
 
-describe('two-artifact private lab budget and isolation', () => {
+describe('three-artifact private lab budget and isolation', () => {
   it('accepts exact independently reviewed limits', () => {
-    for (const [observation, camera] of [[756_000, 80_000], [755_999, 80_000], [756_000, 79_999]]) expect(() => assertLabBudgets(observation, camera)).not.toThrow();
+    expect(() => assertLabBudgets(250_000, 650_000, 80_000)).not.toThrow();
+    expect(() => assertLabBudgets(250_000, 1, 1)).not.toThrow();
+    expect(() => assertLabBudgets(1, 700_000, 1)).not.toThrow();
+    expect(() => assertLabBudgets(1, 1, 80_000)).not.toThrow();
   });
-  it('rejects individual or invalid sizes, regardless of aggregate room', () => {
-    expect(() => assertLabBudgets(756_001, 1)).toThrow('Observation');
-    expect(() => assertLabBudgets(1, 80_001)).toThrow('Camera');
+  it('rejects each individual cap at exactly plus one byte', () => {
+    expect(() => assertLabBudgets(250_001, 1, 1)).toThrow('Light observation');
+    expect(() => assertLabBudgets(1, 700_001, 1)).toThrow('Bed Mesh');
+    expect(() => assertLabBudgets(1, 1, 80_001)).toThrow('Camera');
+  });
+  it('rejects every invalid position and exact aggregate plus one boundary', () => {
     for (const size of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
-      expect(() => assertLabBudgets(size, 1)).toThrow('Invalid');
-      expect(() => assertLabBudgets(1, size)).toThrow('Invalid');
+      expect(() => assertLabBudgets(size, 1, 1)).toThrow('Invalid');
+      expect(() => assertLabBudgets(1, size, 1)).toThrow('Invalid');
+      expect(() => assertLabBudgets(1, 1, size)).toThrow('Invalid');
     }
-  });
-  it('rejects oversized aggregate bytes without treating each file as a new observation allowance', () => {
-    expect(() => assertLabBudgets(756_000, 80_001)).toThrow('aggregate');
-    expect(() => assertLabBudgets(749_000, 749_000)).toThrow();
+    expect(() => assertLabBudgets(250_000, 650_000, 80_000)).not.toThrow();
+    expect(() => assertLabBudgets(250_000, 650_001, 80_000)).toThrow('aggregate');
   });
   it('rejects runtime script, stylesheet and media URLs', () => {
     for (const html of ['<script src="/module.js">', '<link rel="stylesheet" href="/style.css">', '<video src="https://example.test/feed">']) expect(() => assertSelfContained(html)).toThrow();

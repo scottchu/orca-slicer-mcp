@@ -1,5 +1,19 @@
 # Next agent
 
+## Three-artifact private-lab split candidate — do not ship yet
+
+Continue from exact application source `4a6c493`, which ordinarily merged
+accepted/deployed Heads main `5ffca666e4ffa50c761ff54460f2d7dfc3466ad5`.
+Verify exactly three inline
+lab artifacts: light observation 199,819 bytes, Bed Mesh 629,880 and Camera
+78,795 (908,494 aggregate). Preserve exact route/source-graph isolation and the
+unchanged Camera lifecycle. Author deterministic, full browser and repository
+gates pass; obtain separate exact-SHA validation/review before merge. The independently
+renewed light limit is 250,000 bytes and leaves 50,181 bytes; its finite
+allowance covers only Queue, Current Job, History, Progress and Overview, not
+Console or thumbnails. Never loosen a cap or claim acceptance silently. No
+deployment or cleanup is authorized from this author checkpoint alone.
+
 ## Current checkpoint: Heads candidate after delivered Bed Mesh PR73
 
 Bed Mesh PR73 was independently accepted at source `2e9268`, merged and shipped

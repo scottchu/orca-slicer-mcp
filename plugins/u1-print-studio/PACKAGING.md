@@ -128,16 +128,20 @@ revision or its widget hashes.
 
 Decision 0024's `public/dashboard-index.html` is imported as text and inlined
 in the HTTP bundle; it is not a seventh required external release asset.
-Decision 0032's generated `public/svelte-observation-lab.html` is likewise
-inlined in the private HTTP bundle rather than copied as an external release
-asset. One deterministic self-contained `adapter-static` page selects only the
-exact private `/dashboard/lab` directory or its nine non-camera child routes
-from `window.location.pathname`; it contains synthetic fixtures and no
-acquisition client. Static SSR emits only a neutral zero-size marker; initial
-browser creation selects the exact closed pathname before mount instead of
-rendering the directory first. Raw literal or encoded dot-segment requests are
-rejected before URL normalization. The generic embed scaffold is never part of
-the production build or release manifest.
+Decision 0032's generated private lab HTML is inlined in the private HTTP
+bundle rather than copied as external release assets. Deterministic
+`svelte-observation-lab.html` serves the directory and eight non-Bed,
+non-Camera child routes. Exact `/dashboard/lab/bed_mesh` uses separate
+`svelte-bed-mesh-lab.html`, while Camera retains `svelte-camera-lab.html`.
+The light graph contains no Three.js, OrbitControls, Bed renderer or Bed
+fixture; the Bed graph contains no other observation, Camera/media,
+live-adapter or RPC graph. All three final pages are inline and self-contained
+with no external chunk or dynamic import. Static SSR emits only a neutral
+zero-size marker; initial browser creation selects the exact closed pathname
+before mount. Directory links use document navigation so SvelteKit does not
+acquire route data. Raw literal or encoded dot-segment requests are rejected
+before URL normalization. The generic embed scaffold is never part of the
+production build or release manifest.
 The fixed lifecycle asset inventory and its fingerprint verification stay
 unchanged so previously staged releases remain valid rollback targets.
 

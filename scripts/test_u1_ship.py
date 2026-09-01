@@ -336,9 +336,10 @@ class StaticContractTests(unittest.TestCase):
             app = root / APP
             (app / "src").mkdir(parents=True)
             (app / "public").mkdir()
-            (app / "src/status-dashboard.ts").write_text('const FOCUSED_DASHBOARD_PATHS = new Set(["/dashboard/progress", "/dashboard/new_view"]); const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab", "/dashboard/lab/bed_mesh"]); const CAMERA_LAB_PATH = "/dashboard/lab/camera";')
+            (app / "src/status-dashboard.ts").write_text('const FOCUSED_DASHBOARD_PATHS = new Set(["/dashboard/progress", "/dashboard/new_view"]); const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab"]); const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh"; const CAMERA_LAB_PATH = "/dashboard/lab/camera";')
             for name in ASSETS: (app / "public" / name).write_text(name)
             (app / "public/svelte-observation-lab.html").write_text("lab")
+            (app / "public/svelte-bed-mesh-lab.html").write_text("bed mesh lab")
             (app / "public/svelte-camera-lab.html").write_text("camera lab")
             index = app / "public/dashboard-index.html"
             index.write_text('<a href="/dashboard/progress">Progress</a><a href="/dashboard/new_view">New</a><a href="/dashboard/camera">Camera</a>')
@@ -347,7 +348,7 @@ class StaticContractTests(unittest.TestCase):
             self.assertEqual(contract["8788/dashboard/lab/camera"]["sha256"], digest(app / "public/svelte-camera-lab.html"))
             self.assertEqual(
                 contract["8788/dashboard/lab/bed_mesh"]["sha256"],
-                digest(app / "public/svelte-observation-lab.html"),
+                digest(app / "public/svelte-bed-mesh-lab.html"),
             )
             source = app / "src/status-dashboard.ts"
             source.write_text(source.read_text() + ' const LIVE_FANS_WIDGET_PATH = "/dashboard/fans_widget";')
@@ -382,6 +383,14 @@ class StaticContractTests(unittest.TestCase):
             self.assertEqual(len(camera_contract), len(heads_contract) + 1)
             self.assertEqual(camera_contract["8788/dashboard/camera_widget"]["sha256"], digest(app / "public/svelte-live-camera.html"))
             self.assertNotIn("8787/dashboard/camera_widget", camera_contract)
+            isolated_source = source.read_text()
+            source.write_text(isolated_source.replace('const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab"]);', 'const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab", "/dashboard/lab/bed_mesh"]);'))
+            with self.assertRaisesRegex(ShipError, "Heavy private labs"):
+                static_contract(root)
+            source.write_text(isolated_source.replace('const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh";', 'const UNRECOGNIZED_BED_PATH = "/dashboard/lab/bed_mesh";'))
+            with self.assertRaisesRegex(ShipError, "Bed Mesh lab route"):
+                static_contract(root)
+            source.write_text(isolated_source)
             index.write_text('<a href="https://unexpected.invalid">Wrong</a>')
             with self.assertRaises(ShipError): static_contract(root)
 

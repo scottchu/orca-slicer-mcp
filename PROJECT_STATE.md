@@ -1,5 +1,21 @@
 # Project state
 
+## Three-artifact private-lab split candidate — author gates complete
+
+Accepted and deployed Heads main `5ffca666e4ffa50c761ff54460f2d7dfc3466ad5`
+is ordinarily merged into the split branch. The private lab now builds exactly
+three inline artifacts and maps light observation, Bed Mesh and Camera routes
+to distinct source-derived hashes. Current authored sizes are 199,819,
+629,880 and 78,795 raw UTF-8 bytes (908,494 aggregate). Route, graph and cap
+tests pass locally. UI 335, app 296, lifecycle 21, shipping 24, repository and
+full Chrome 164/164 pass, including zero runtime fetch through all lab controls.
+The independently renewed 250,000-byte light cap leaves 50,181 bytes and the
+980,000 aggregate leaves 71,506. This finite envelope covers Queue, Current Job,
+History, Progress and Overview only; Console and thumbnails are excluded.
+Exact application source is `4a6c493`; independent exact-SHA validation and
+review remain required. Nothing is merged, deployed or accepted by this author
+checkpoint.
+
 ## Current checkpoint: Heads candidate after delivered Bed Mesh PR73
 
 Bed Mesh PR73 was independently accepted at source `2e9268`, merged and shipped

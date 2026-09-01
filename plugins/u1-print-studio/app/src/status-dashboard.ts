@@ -10,6 +10,7 @@ import dashboardIndexHtml from "../public/dashboard-index.html" with { type: "te
 // This deterministic SvelteKit output is self-contained and compiled into the
 // private dashboard bundle. It is not part of the public service or MCP assets.
 import observationLabHtml from "../public/svelte-observation-lab.html" with { type: "text" };
+import bedMeshLabHtml from "../public/svelte-bed-mesh-lab.html" with { type: "text" };
 import liveFansHtml from "../public/svelte-live-fans.html" with { type: "text" };
 import liveThermalsHtml from "../public/svelte-live-thermals.html" with { type: "text" };
 import liveHeadsHtml from "../public/svelte-live-heads.html" with { type: "text" };
@@ -70,8 +71,8 @@ const OBSERVATION_LAB_PATHS = new Set([
   "/dashboard/lab/job_history",
   "/dashboard/lab/queue",
   "/dashboard/lab/fans",
-  "/dashboard/lab/bed_mesh",
 ]);
+const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh";
 const CAMERA_LAB_PATH = "/dashboard/lab/camera";
 const FOCUSED_DASHBOARD_PATHS = new Set([
   "/dashboard/overview",
@@ -191,7 +192,9 @@ export function createStatusDashboardHandler(
     }
     const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";
     const normalizedLabPath = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
-    if (OBSERVATION_LAB_PATHS.has(normalizedLabPath) || normalizedLabPath === CAMERA_LAB_PATH) {
+    if (OBSERVATION_LAB_PATHS.has(normalizedLabPath) ||
+        normalizedLabPath === BED_MESH_LAB_PATH ||
+        normalizedLabPath === CAMERA_LAB_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -207,7 +210,13 @@ export function createStatusDashboardHandler(
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
       });
-      res.end(normalizedLabPath === CAMERA_LAB_PATH ? cameraLabHtml : observationLabHtml);
+      res.end(
+        normalizedLabPath === CAMERA_LAB_PATH
+          ? cameraLabHtml
+          : normalizedLabPath === BED_MESH_LAB_PATH
+            ? bedMeshLabHtml
+            : observationLabHtml
+      );
       return true;
     }
     if (isIndex || FOCUSED_DASHBOARD_PATHS.has(pathname) ||

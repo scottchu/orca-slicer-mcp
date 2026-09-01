@@ -4,7 +4,20 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { assertObservationLabModule } from './scripts/observation-graph-contract';
 
 export default defineConfig({
-  plugins: [sveltekit()],
+  plugins: [sveltekit(), {
+    name: 'light-observation-lab-source-boundary',
+    generateBundle: (_options, bundle) => {
+      for (const value of Object.values(bundle)) {
+        if (value.type !== 'chunk') continue;
+        if (value.dynamicImports.length) throw new Error(`Light observation lab has a dynamic import: ${value.dynamicImports.join(', ')}`);
+        for (const module of Object.keys(value.modules)) {
+          if (/node_modules\/three\/|\/examples\/jsm\/controls\/OrbitControls|\/lib\/bed-mesh\/|\/fixtures\/bed-mesh/.test(module)) {
+            throw new Error(`Light observation lab imports Bed Mesh rendering code: ${module}`);
+          }
+        }
+      }
+    }
+  }],
   resolve: { conditions: ['browser'] },
   build: { rollupOptions: { plugins: [{
     name: 'observation-client-graph-boundary',

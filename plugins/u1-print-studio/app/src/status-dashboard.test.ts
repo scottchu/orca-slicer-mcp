@@ -49,6 +49,8 @@ const LAB_ROUTES = ["/dashboard/lab", "/dashboard/lab/overview", "/dashboard/lab
   "/dashboard/lab/thermals", "/dashboard/lab/heads", "/dashboard/lab/jobs",
   "/dashboard/lab/job_history", "/dashboard/lab/queue", "/dashboard/lab/fans",
   "/dashboard/lab/bed_mesh", "/dashboard/lab/camera"];
+const BED_MESH_LAB_ROUTE = "/dashboard/lab/bed_mesh";
+const CAMERA_LAB_ROUTE = "/dashboard/lab/camera";
 
 afterEach(async () => {
   await Promise.all(
@@ -265,6 +267,8 @@ describe("standalone status dashboard", () => {
     servers.push(server);
     const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
     const expected = readFileSync(new URL("../public/svelte-observation-lab.html", import.meta.url), "utf8");
+    const expectedBedMesh = readFileSync(new URL("../public/svelte-bed-mesh-lab.html", import.meta.url), "utf8");
+    const expectedCamera = readFileSync(new URL("../public/svelte-camera-lab.html", import.meta.url), "utf8");
 
     for (const route of LAB_ROUTES.flatMap((path) => [path, path + "/"])) {
       const response = await fetch(origin + route);
@@ -275,8 +279,14 @@ describe("standalone status dashboard", () => {
       expect(response.headers.get("content-security-policy")).not.toContain("connect-src");
       expect(response.headers.get("referrer-policy")).toBe("no-referrer");
       expect(response.headers.get("x-content-type-options")).toBe("nosniff");
-      expect(await response.text()).toBe(route.replace(/\/$/, '') === '/dashboard/lab/camera'
-        ? readFileSync(new URL('../public/svelte-camera-lab.html', import.meta.url), 'utf8') : expected);
+      const normalizedRoute = route.replace(/\/$/, '');
+      expect(await response.text()).toBe(
+        normalizedRoute === CAMERA_LAB_ROUTE
+          ? expectedCamera
+          : normalizedRoute === BED_MESH_LAB_ROUTE
+            ? expectedBedMesh
+            : expected
+      );
     }
     for (const route of [
       "/dashboard/lab/camera/index.html", "/dashboard/lab/camera/more", "/dashboard/lab/bed_mesh/index.html",
