@@ -255,6 +255,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   const close = () => {
     if (disposed) return;
     liveIntent = false;
+    savedRestoreAttempted = true;
     resumeAfterShow = false;
     ports.persistLiveIntent(false);
     stopLive();
@@ -263,6 +264,18 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   };
   return {
     state: () => state,
+    acceptHostFrame: async (result: CameraFrameResult): Promise<boolean> => {
+      if (disposed || hidden || !result.snapshot) return false;
+      if (state.snapshot?.observedAt && result.snapshot.observedAt && result.snapshot.observedAt <= state.snapshot.observedAt) return false;
+      cancelSnapshot();
+      const generation = snapshotGeneration;
+      publish({ refreshing: true, feedback: null });
+      const accepted = await acceptSnapshot(result, generation);
+      if (disposed || hidden || generation !== snapshotGeneration) return false;
+      publish({ phase: liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error', refreshing: false });
+      scheduleFallback();
+      return accepted;
+    },
     refreshSnapshot,
     goLive: () => { if (!disposed && !hidden) ports.persistLiveIntent(true); return openLive(); },
     restoreSavedIntent: (previouslyAuthorized: boolean) => {

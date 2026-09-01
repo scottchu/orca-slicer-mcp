@@ -17,8 +17,10 @@ authentication, tool inventory or public resource migration.
 - Keep `/dashboard/camera` as the user route. Its existing private host may load
   one exact `/dashboard/camera_widget` self-contained compiled Svelte artifact.
   Preserve current Camera CSP, method/path isolation and source-derived shipping
-  hashes. Measure and review a separate production budget; do not borrow from
-  either lab artifact's individual or aggregate budget.
+  hashes. Independent budget review accepted exactly one production HTML capped
+  at100,000 raw UTF-8 bytes after an89,404-byte measurement. Rebuild final bytes,
+  enforce deterministic checking and negative budget/graph tests; do not borrow
+  from either lab artifact's unchanged individual or aggregate budget.
 - Reuse the independently reviewed shared HostRpc from the real Fans slice.
   One standard MCP Apps initialize/request/notification bridge owns transport;
   existing host compatibility metadata and saved authorized intent remain

@@ -1,5 +1,53 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 real Camera dashboard author gates
+
+Reviewed main `db1c926` is explicitly integrated; its shipped Fans/shared-RPC
+source is unchanged. With pinned Bun1.3.12 and normal Node PATH, actual commands:
+
+- Repository `./scripts/check-repository.sh`: PASS,211 UI units, Svelte/TS/AST
+  zero errors/warnings, exact deterministic Fans/Camera/two-lab packaging,
+  286 app tests/3,345 assertions,21 lifecycle24 shipping tests. This includes
+  the new UTF-8 byte/graph negative tests and exact private/public Camera routes.
+- UI `bun run build:live-camera`, `bun run check`, and
+  `bun run test -- src/lib/camera src/lib/media`: PASS,57 focused tests including
+  prior synthetic tests, real transport/session/peer/controller and playback.
+- UI `bun run test:browser`:129/129 Chrome PASS on the integrated candidate
+  before the final narrow loadedmetadata/playing capability-readiness listeners.
+- UI `bun x playwright test tests/visual/live-camera.spec.ts --workers=1`:
+  final8/8 PASS on current rebuilt bytes, including normal/200% text at
+  320/390/590/720, skeleton-to-ready geometry, snapshot-first host calls,
+  measured local-video FPS, native Chromium fullscreen, local fullscreen with
+  unchanged video/srcObject/track, non-flow snapshot feedback,5s stall fallback,
+  retry and one-time persisted-page restoration. Final cases additionally
+  exercise feature-detected native PiP entry or graceful rejection, emulated
+  Safari presentation API and rejected fullscreen without disconnecting.
+  Normal/enlarged390 screenshots were visually inspected for compact anatomy
+  and readable status. Fixture media is generated only in test source; it is
+  absent from the production graph and does not prove actual printer/device use.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and `dist/u1-print-studio --help`: PASS. Server/runtime/signature/help reran
+  after the final host and presentation source changes.
+- `git diff --check`: PASS.
+
+Final production Camera:89,919 raw UTF-8 bytes, SHA-256
+`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`.
+Independently reviewed cap100,000; one explicit compiled-Svelte entry and no
+runtime imports/assets. Existing Fans85,315 and two labs748,816 +78,795
+=827,611 are byte-unchanged from reviewed main. Their separate caps remain.
+
+One exploratory `bun test src` command selected UI Vitest files in Bun's
+non-DOM runner; it was discarded, not counted as a gate. An intermediate
+repository rerun caught asset mismatch while the author rebuilt mutable Camera
+bytes during its test process; it was also discarded. The final repository
+command above ran against stabilized source/artifact and passed all gates.
+
+Evidence boundary: author software/protocol/local Chrome only. Independent
+validation must run the full129 matrix against the final frozen pin, then formal
+review and guarded release remain mandatory. No real printer/camera acquisition,
+service restart or actual-user-device acceptance occurred in these author gates.
+
 ## 2026-09-01 real Camera typed-port checkpoint
 
 On reviewed PR69 merge `ef5b239`, author ran from the app's ui directory using

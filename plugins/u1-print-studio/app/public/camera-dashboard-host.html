@@ -30,22 +30,32 @@
       <span class="spacer"></span>
       <button id="reload" type="button">Reload widget</button>
     </header>
-    <iframe id="camera-widget" src="/camera-widget?standalone=1" title="U1 Camera" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>
+    <iframe id="camera-widget" title="U1 Camera" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>
     <script>
       const frame = document.querySelector("#camera-widget");
       const bridgeState = document.querySelector("#bridge-state");
+      const widgetSource = "/dashboard/camera_widget";
+      let generation = 0;
+      const allowed = Object.freeze({
+        get_u1_camera_frame: ["authorizeLive"],
+        open_u1_camera_stream: ["activationToken"],
+        answer_u1_camera_stream: ["sessionId", "sdp"],
+        add_u1_camera_ice_candidates: ["sessionId", "candidates"],
+        close_u1_camera_stream: ["sessionId"],
+      });
       const reply = (id, result, error) => {
         frame.contentWindow?.postMessage(
           { jsonrpc: "2.0", id, ...(error ? { error } : { result }) },
           location.origin
         );
       };
-      const callTool = async (name, arguments = {}) => {
-        bridgeState.textContent = `calling ${name}`;
+      const callTool = async (name, argumentsValue = {}) => {
+        if (typeof name !== "string" || !Object.hasOwn(allowed, name) || !argumentsValue || typeof argumentsValue !== "object" || Array.isArray(argumentsValue) || Object.keys(argumentsValue).some(key => !allowed[name].includes(key))) throw new Error("unsupported_camera_request");
+        bridgeState.textContent = "Calling camera";
         const response = await fetch("/dashboard/tools/call", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ name, arguments }),
+          body: JSON.stringify({ name, arguments: argumentsValue }),
         });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error ?? `HTTP ${response.status}`);
@@ -54,11 +64,12 @@
       };
 
       window.addEventListener("message", async (event) => {
-        if (event.source !== frame.contentWindow) return;
+        if (event.source !== frame.contentWindow || event.origin !== location.origin) return;
         const message = event.data;
         if (!message || message.jsonrpc !== "2.0") return;
 
         if (message.method === "ui/initialize" && typeof message.id === "number") {
+          generation += 1;
           reply(message.id, {
             protocolVersion: "2026-01-26",
             hostInfo: { name: "u1-camera-dashboard", version: "1.0.0" },
@@ -77,12 +88,20 @@
         }
 
         if (message.method === "tools/call" && typeof message.id === "number") {
+          const current = generation;
           try {
-            reply(
-              message.id,
-              await callTool(message.params?.name, message.params?.arguments ?? {})
-            );
+            const result = await callTool(message.params?.name, message.params?.arguments ?? {});
+            if (current === generation) reply(message.id, result);
+            else if (message.params?.name === "open_u1_camera_stream") {
+              const sessionId = result?._meta?.cameraStream?.sessionId;
+              if (typeof sessionId === "string" && sessionId.length >= 16 && new TextEncoder().encode(sessionId).length <= 512) {
+                // A child replaced during allocation cannot close its returned
+                // lease. Release that capability only; never forward it onward.
+                void callTool("close_u1_camera_stream", { sessionId }).catch(() => {});
+              }
+            }
           } catch {
+            if (current !== generation) return;
             reply(message.id, null, { code: -32000, message: "tool_failed" });
             bridgeState.textContent = "tool failed";
           }
@@ -95,9 +114,12 @@
       });
 
       document.querySelector("#reload").addEventListener("click", () => {
+        generation += 1;
         bridgeState.textContent = "reloading";
-        frame.src = `/camera-widget?standalone=1&t=${Date.now()}`;
+        frame.src = `${widgetSource}?t=${Date.now()}`;
       });
+      window.addEventListener("pagehide", () => { generation += 1; });
+      frame.src = widgetSource;
     </script>
   </body>
 </html>

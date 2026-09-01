@@ -10,6 +10,30 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Real Camera dashboard candidate — exact review next (2026-09-01)
+
+Reviewed Fans PR70 main `db1c926` is explicitly integrated. Its operator receipt
+reports release `20260901-db1c926-pr70-20260901T162456-cc8038`, BOTH services
+restarted, healthy/integrity verified,27 static/28 security checks passing.
+The shared bridge is delivered; earlier Fans-pending paragraphs are historical.
+
+The real Camera candidate now binds that bridge to strict private frame/offer
+parsers, the bounded session and one persistent generic VideoSurface. Zero-raw
+CameraWidget/LiveCameraRoot replace only the private dashboard child at exact
+`/dashboard/camera_widget`; `/dashboard/camera` remains stable. Existing Camera
+CSP, backend and authorization are unchanged. Legacy `/camera-widget` and MCP
+aliases remain unchanged and pending a separate parity cutover.
+
+Production Camera is89,919 bytes (independently accepted separate100,000 cap),
+with no synthetic media, lab/observation data, tests, Three or runtime assets.
+Lab and production Fans bytes are unchanged. Current author repository gates
+pass211 UI units,286 app/3,345 assertions,21 lifecycle24 ship plus deterministic
+packaging/compiler/AST and bundles/signature/help. Full129 Chrome cases passed
+before the final capability-readiness listener change; final focused8 cases
+also pass on current bytes. Independent exact validation must run the full
+matrix on the frozen pin. No Camera delivery or real-printer/device acceptance
+is claimed. All other WIDGET_TRACKS remain active.
+
 ### Real Camera dashboard migration — typed-port checkpoint (2026-09-01)
 
 Synthetic Camera PR69 is shipped as reviewed merge `ef5b239`. Continue the

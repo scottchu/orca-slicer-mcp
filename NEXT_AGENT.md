@@ -14,6 +14,19 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Next acceptance: the real Camera dashboard candidate on explicitly merged
+reviewed main `db1c926` (Fans PR70 delivered through release
+`20260901-db1c926-pr70-20260901T162456-cc8038`; BOTH restarted/healthy/integrity,
+27 static28 security checks per operator receipt). Camera is now host-wired and
+has an exact private child route, but is not yet independently accepted or
+deployed. Its89,919-byte artifact has a separate100,000-byte cap; existing lab
+and Fans bytes stay unchanged. Newest VALIDATION records actual current gates
+and the full129-before-final/focused8-after-final browser evidence distinction.
+Run independent full-suite validation/source review of the final exact pin,
+then guarded PR merge/deploy/explicit BOTH restart/verify. Keep the unchanged
+legacy Camera/MCP aliases until their separately reviewed replacement. Do not
+resume historical synthetic-Camera or Fans-pending instructions below.
+
 Real Camera implementation is active after shipped synthetic PR69 `ef5b239`.
 Decision0035 records the accepted dashboard-only migration and safety gates.
 The typed-port checkpoint has transport/peer/playback adapters and38 focused
