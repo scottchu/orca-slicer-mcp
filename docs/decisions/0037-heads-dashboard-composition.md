@@ -30,8 +30,9 @@ Acceptance requires strict real DTO tests, zero-raw AST checks, four widths
 geometry, arbitrary long-text readability, retained-refresh/copy geometry and
 focus, independent material/thermal freshness and all nullable/zero/alpha/state
 cases. Exact private asset security and deterministic production packaging are
-required before cutover. A measured separate 100,000-byte production limit is a
-proposal requiring independent approval; lab limits remain 750,000/80,000 and
-830,000 aggregate. No cap is silently widened. Local synthetic evidence is not
+required before cutover. Independent packaging design review accepted a separate
+100,000-byte production limit and the measured decision 0032 addendum revises
+lab limits to 756,000/80,000 and 836,000 aggregate. Exact combined source remains
+subject to independent validation. Local synthetic evidence is not
 real-printer or actual-device acceptance. Exact independent candidate approval
 precedes the existing guarded merge/deploy/BOTH restart/verification workflow.

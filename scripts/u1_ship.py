@@ -105,6 +105,13 @@ def static_contract(source):
         require((8788, live_thermals_match[1]) not in files,
                 "Live Thermals asset must have a distinct private route")
         files[(8788, live_thermals_match[1])] = "svelte-live-thermals.html"
+    live_heads_match = re.search(r'LIVE_HEADS_WIDGET_PATH = "(/dashboard/heads_widget)";', text)
+    require("svelte-live-heads.html" not in text or live_heads_match is not None,
+            "Unsupported live Heads route contract")
+    if live_heads_match:
+        require((8788, live_heads_match[1]) not in files,
+                "Live Heads asset must have a distinct private route")
+        files[(8788, live_heads_match[1])] = "svelte-live-heads.html"
     files[(8788, camera_lab_match[1])] = "svelte-camera-lab.html"
     live_camera_match = re.search(r'LIVE_CAMERA_WIDGET_PATH = "(/dashboard/[a-z_]+)"', text)
     require("svelte-live-camera.html" not in text or live_camera_match is not None,
