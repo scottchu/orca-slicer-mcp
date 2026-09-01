@@ -7,6 +7,25 @@ exact private Queue child route. Decision0034 and OBS-012 preserve independent
 receipt/state/count/first100 rows, duplicate safe names and observed wait, not
 ETA. No pending-branch source copying or generic MCP/backend/control change.
 
+
+Current order: Fans PR70, Camera PR71 and Thermals PR72 are delivered; reviewed
+Thermals main `6325c87` is explicitly merged for this held PR73 renewal. Repair
+the independently reproduced canceled-wheel-zoom regression, retain every 1x
+axis/containment/data/pixel gate and renew exact tests/review before guarded
+delivery. The independently accepted policy separates neutral fit from bounded
+detail zoom; deliberate greater-than1x cropping is not an excuse to relax 1x
+containment. Heads migration is separately owned. All other WIDGET_TRACKS stay
+open. Historical parallel-candidate and delivery claims below are superseded.
+
+## Earlier refinement and execution checkpoints
+
+Current bounded parallel UI-001 refinement: correct the existing private-lab
+Bed Mesh renderer's projected visible-side axes, nondegenerate Z enclosure,
+reactive data updates and rectangular 2D projection. Decision0032's refinement
+records measurable coverage, containment, stable4:3 and disposal gates. This is
+an existing named obligation, not a production migration; Camera/Thermals remain
+separate candidates and exact reviewed integration precedes release. No printer,
+MCP, theme, route, dependency or package-cap expansion is authorized here.
 Current execution order (2026-09-01): PR70 real Fans and PR71 focused Camera are
 shipped; reviewed main is `0aa83a0`. Renew the bounded real Thermals cutover on
 that explicitly integrated baseline, then remaining seven observation migrations before queued

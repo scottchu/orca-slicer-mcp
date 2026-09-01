@@ -23,6 +23,223 @@ bounded initialization and disposal; wait values never tick.
 This is not a packaged UI, route, browser, independent approval, deployment,
 real-printer or actual-device acceptance. Full combined gates remain pending.
 
+## 2026-09-01 PR73 zoom repair — final author evidence, not independent approval
+
+The held `85f89f9` remains rejected: its earlier green suite did not exercise
+wheel zoom. Explicit merge `f0e25ba` integrates independently accepted Thermals
+main `6325c87` without rebasing or replacing the existing Bed Mesh commits.
+The independently reviewed bounded design policy is recorded in decision0032.
+
+Actual commands used pinned Bun1.3.12 and normal Node PATH:
+
+- UI `bun run build`, `bun run package:private-lab` and
+  `bun run scripts/build-state-harness.ts`: PASS. Early combined pre-repair
+  observation output was749,446 bytes; final repaired output is749,560.
+- UI `bun x playwright test tests/visual/bed-mesh-zoom.spec.ts --workers=1`:
+  6/6 PASS. The final full suite also covers the added explicit pinch
+  canvas/control-identity assertion.
+- Repository `./scripts/check-repository.sh`: PASS; zero compiler warnings /
+  errors, zero-new-raw-debt AST contract,266 UI tests in28 files, all five
+  deterministic packages,290 app tests/3,400 assertions,21 lifecycle and24
+  shipping tests; `repository contract: ok`.
+- UI `bun run test:browser`:152/152 Chrome PASS on the combined reviewed
+  Camera/Fans/Thermals baseline and repaired Bed Mesh source. Existing default
+  coverage, all1x rotation/label containment, flat/negative/tiny/rectangular/
+  64×64 updates, actual surface pixels, reactive buffers and disposal, equal
+  2D/3D frame and 200% 3D-text tests are unchanged and pass. The six new cases
+  cover320/590 normal/enlarged wheel, actual packaged route and two-finger
+  browser touch input. Wheel-in increases both projected extent and colored
+  pixel count above1.2×; reverse restores1x;0.75/3.5 clamps hold. Data/resize
+  preserve zoom/orbit and actual canvas/control identity; reset restores1x and
+  default orientation. Two-finger separation/restoration changes extent above
+  1.4× and returns to1x without replacing controls/canvas. Deliberate detail
+  cropping is tested separately, not accepted as normal-view containment.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --deep --strict
+  dist/u1-print-studio`, and executable `--help`: PASS.
+- `git diff --check`: PASS. Author personally inspected final normal320 default,
+  enlarged320 reset,720 orbit and320/590 zoom screenshots: real surfaces/grid
+  remain visible; 1x labels are contained and intentional detail edges crop.
+  A brief reset feedback overlay is non-flow and does not change frame geometry.
+
+| Artifact | Raw UTF-8 bytes | SHA-256 |
+| --- | ---: | --- |
+| Observation lab |749,560|`f1a3328ac5a2f6179d41cc114f4faafdf57808790ba559d52e34bdfb1517ffcc`|
+| Camera lab |78,795|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+| Production Fans |85,654|`ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d`|
+| Production Thermals |86,140|`032fe53863f79e718b51ac5fd5cb43c3f73d79a4b25c196d1bd19a1309e1f22d`|
+| Production Camera |89,919|`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`|
+
+Lab aggregate828,355 remains below830,000; individual750,000/80,000 and
+separate production100,000 bounds are unchanged. All four non-observation
+artifacts retain exact accepted Thermals-main bytes. No new dependency or
+runtime asset is introduced. Test hooks remain test-only. Source/software and
+isolated Chrome evidence do not establish deployed Bed Mesh, real printer,
+iPhone/Safari, keyboard parity or automatic WebGL fallback acceptance.
+Fresh exact independent review/validation precedes guarded PR merge/deploy /
+BOTH restart and served-widget verification. No shipment was made by this author.
+
+## Current checkpoint: held Bed Mesh zoom renewal after delivered Thermals
+
+Thermals PR72 is delivered on independently accepted merge
+`6325c8792fc8cca1f1c73109aae717e774d87076`, tree
+`e9b286b6be673a1d88f04bd5b227a91f40c4cb5b`. The attributed operator receipt
+reports release `20260901-6325c87-pr72-20260901T172710-d336bd`, BOTH existing
+services explicitly restarted, loaded/healthy/integrity verified at
+runtime0.4.8/schema12/observation-v14/camera-v10,29 static/30 security checks
+PASS, preservation true and no rollback. Snapshot `20260901T172800-d68cec`
+is retained. Canonical main and8,689 ignored entries/recovery refs are preserved.
+Camera PR71 and Fans PR70 are also delivered; older pending claims below are
+historical. Independent Thermals postdeployment PASS verifies BOTH exact service
+identities, 15 manifest hashes, seven private HTTPS assets with exact hashes /
+no-store/CSP, 14 isolation/status probes and clean canonical main. Nine Chrome
+checks on actual downloaded host/child bytes and CSP use synthetic responses:
+four widths, normal/200% text, skeleton/retained refresh/time/focus, nullable and
+extreme values and independent Cavity receipt. The validator inspected enlarged
+320 and normal720 captures. External unmatched-root502 remains pre-existing and
+unaccepted; actual printer/phone and stale installed-connector identity remain
+unverified. These are attributed independent deployment/synthetic-browser facts,
+not new author acquisition or device checks. No extra runtime change was made.
+
+Bed Mesh PR73 candidate `85f89f9` is HELD despite137 passing browser cases:
+independent real wheel input showed projected width452.28→448.55 instead of
+the baseline461.84→628.30. Per-render frustum fitting canceled user zoom.
+The accepted renewal fits at neutral1x, then applies independent bounded
+0.75–3.5 detail zoom. Default/reset and all1x orbit containment gates remain
+unchanged; intentional greater-than1x detail viewing may crop geometry/labels
+at the fixed frame boundary. It must not silently refit the user's zoom away.
+After explicit accepted-main merge `f0e25ba`, the author renewal passes 266 UI
+units, 290 app tests/3,400 assertions, 21 lifecycle, 24 shipping and the full
+152-case Chrome suite. All five packages are deterministic and bounded; runtime
+bundles/signature/help and compiler/AST pass. Actual wheel/two-finger browser
+input, pixels, identity, data/resize and reset regressions pass while every 1x
+containment test remains unchanged. Observation lab is 749,560 bytes; its
+440-byte reserve is not permission to raise the cap. Fresh exact independent
+validation/source approval is still required before delivery.
+
+This remains private-lab-only. Production Bed Mesh/MCP, keyboard/Home,
+automatic WebGL-failure fallback and root-scaled2D labels remain open, as do
+all other named WIDGET_TRACKS. No service, printer, authentication, Tailscale
+or plugin action is part of this author repair.
+
+## Historical checkpoints (superseded where noted above)
+
+## 2026-09-01 Bed Mesh combined author gates — independent acceptance pending
+
+Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` was explicitly
+merged after preserving the narrow Bed Mesh checkpoint. Attributed operator
+receipt: Camera release `20260901-0aa83a0-pr71-20260901T170551-59206e`, tree
+`af970729c41d041533d5d6f6c909a3a43d49a21b`, BOTH services restarted and
+health/integrity verified. That prior shipment is not new author printer/device
+evidence and does not claim this Bed Mesh candidate has been deployed.
+
+Actual final commands, pinned Bun 1.3.12 and normal Node PATH:
+
+- Repository `./scripts/check-repository.sh`: PASS, 221 UI units in 23 files,
+  Svelte/TypeScript zero errors/warnings and AST contract pass, deterministic
+  production Fans/Camera and both private labs, 286 app tests / 3,345 assertions,
+  21 lifecycle and 24 shipping tests, `repository contract: ok`.
+- UI `bun run test:browser`: 137/137 Chrome PASS on the combined Camera/Fans/
+  Bed Mesh source and exact packaged bytes. This includes the eight expanded
+  Bed Mesh cases (320/390/590/720, normal and 200% root text): flat zero, flat
+  nonzero, all-negative 3×7, asymmetric rectangular 11×11, tiny-range 2×2 and
+  tilted 64×64 updates; seven quadrant/boundary azimuths at both supported
+  18°/74° polar limits; measured glyph containment/nonoverlap; reset; retained
+  camera/canvas and changed actual geometry/color buffers with disposal.
+  Each data fixture requires actual colored screenshot pixels, not merely an
+  invisible bounding element. The 2D switch retains the identical 4:3 frame;
+  changed data changes its pixels without resize. Surface colors are not
+  required to fill an impossible minimum area in edge-on flat rotations.
+- Four default packaged-route cases within that full suite retain at least
+  70% frame width and 42% height surface coverage, contained 12px axis labels,
+  equal 2D/3D frame DOMRects and no external request or console error.
+- Supplemental UI `bun x playwright test tests/visual/bed-mesh.spec.ts
+  --workers=1`: 4/4 PASS after the full run, same source/bytes. Measured default
+  coverage at 320/390/590/720 is respectively 81.1/84.8/90.5/92.4% width and
+  46.7/48.8/52.1/53.2% height, with exact mode frame equality in every case.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and `dist/u1-print-studio --help`: PASS.
+- `git diff --check`: PASS.
+
+Author personally inspected final default 320/720 full-page captures and the
+320 enlarged reset/orbit plus 720 normal orbit captures. The actual surface,
+floor and two rear grid walls remain visible; true outer-edge labels are
+readable and separated. Captures are local generated test evidence, not checked
+into Git, and the reference screenshots informed structure only, not theme or
+copied measurement values. Existing summaries and controls remain unchanged.
+
+Final raw UTF-8 artifacts (SHA-256):
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| Observation lab | 749,150 | `8233becb8f75a4d2bb48658cd82ecb1f2a59df80f42f6a1dcbb5080cf3a055e1` |
+| Camera lab, unchanged | 78,795 | `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a` |
+| Production Fans, unchanged | 85,315 | `b28ee10c695bb8d0296fa0d161b9962c578fdecabbd0f18ec1b525d408d23be1` |
+| Production Camera, unchanged | 89,919 | `b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10` |
+
+The two labs total 827,945 bytes; unchanged limits remain 750,000 observation,
+80,000 Camera and 830,000 aggregate. No new dependency, route, cap increase,
+unsafe minification or dropped feature was used to fit. The redundant surface
+edge overlay was removed; real grid/axis geometry remains.
+
+The first final repository run failed solely because `private-lab.test.ts`
+still pinned the prior artifact hash; its 285/286 pass is not counted as a full
+pass. The exact rebuilt hash was updated, then the complete gate above passed.
+Earlier real label-overlap/containment and test-harness failures below remain
+recorded and were corrected without weakening the expanded assertions.
+
+Evidence boundary: author static/software, local fixtures and Chrome only.
+Independent exact validation, formal source review, Bed Mesh merge/deployment/
+BOTH restart and served-behavior verification are still required. No actual
+printer, user phone/Safari, live Bed Mesh adapter or MCP cutover is accepted.
+All other migration and named feature tracks remain open.
+
+Preliminary independent source inspection identified existing parity debt,
+explicitly outside this bounded refinement: the lab has no focusable keyboard
+orbit/Home reset contract, no automatic fallback when WebGL creation fails,
+and the 2D canvas labels remain fixed 12px when root text is enlarged. The 200%
+label assertions above apply to projected 3D labels, not 2D canvas text. This
+candidate does not claim full decision-0030 interaction parity; the next live
+chart cutover must address and independently verify all three gaps.
+
+## 2026-09-01 Bed Mesh early author checkpoint — not acceptance
+
+The corrected test harness now exercises actual rendering. Normal320 passes its
+full data/orbit/pixel case. Enlarged320 correctly blocks the checkpoint for
+Z-endpoint collisions and a subsequent extreme-orbit label containment defect;
+measured numeric widths, endpoint offsets and bounded collision/frustum fitting
+are being corrected without weakening assertions. This checkpoint must not ship.
+
+Pinned Bun1.3.12, existing frozen UI/app lockfile installs; no dependency changes.
+Commands actually run: UI `bun run check` (0 errors/0 warnings, AST pass),
+`bun run test -- src/lib/bed-mesh` (16 pass), and `bun run test` (193 pass).
+The direct geometry test verifies exact sample-to-display round trips, topology,
+flat0/nonzero/negative/tiny/tilted/64×64 matrices, asymmetric bounds and14 grid
+uprights across quadrants. Renderer tests capture actual Three buffers and verify
+changed colors/positions, retained camera/canvas, reset-key-only behavior and
+replacement/final disposal; the2D test verifies reactive rectangular cell geometry.
+
+`bun run build`, `bun run package:private-lab` pass. Early observation bytes
+748,711, Camera unchanged78,795, aggregate827,506; these are checkpoint bytes,
+not a frozen candidate. Existing750,000/80,000/830,000 bounds are preserved.
+Four actual Chrome default checks pass at320/390/590/720: same4:3 mode bounds,
+contained12px labels, default surface81.9–92.8%width/47.2–53.4%height. Author
+personally inspected normal320/720 screenshots plus the supplied graph reference;
+subsequent axis-midpoint refinements require renewed visual evidence.
+
+An overbroad filename filter matched the worktree name and started129 tests.
+It was deliberately stopped at the first known new test-harness startup failure:
+114 existing tests passed, one new case timed out, three were interrupted and11
+did not run. The test-only hook incorrectly assumed WebGLRenderer.render lives
+on its prototype. It now captures BufferGeometry and OrbitControls instead.
+An attempted nonbrowser full repository gate later caught a Vitest imported-name
+collision in an arrow-property stub; importing testing-library render under a
+distinct alias fixes it and the focused renderer tests pass again. No failed or
+interrupted run is claimed as a full pass. Final expanded browser and exact full
+repository gates, independent review/validation and guarded delivery remain open.
+No service, printer, real camera, auth, Tailscale or user-device action occurred.
+
 ## Current checkpoint: Thermals renewal after delivered Camera PR71
 
 Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly

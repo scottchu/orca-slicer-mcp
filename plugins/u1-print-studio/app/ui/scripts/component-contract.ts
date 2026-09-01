@@ -27,7 +27,7 @@ export const leaves: Record<string, string[]> = {
   'ui/WidgetHeader.svelte': ['div', 'div', 'div', 'div', 'h1', 'header'],
   'ui/WidgetFooter.svelte': ['div', 'div', 'footer'], 'ui/IconButton.svelte': ['button'],
   'ui/ChartFrame.svelte': ['div', 'div', 'div'],
-  'bed-mesh/BedMesh2D.svelte': ['canvas'], 'bed-mesh/BedMesh3D.svelte': Array(11).fill('div'),
+  'bed-mesh/BedMesh2D.svelte': ['canvas'], 'bed-mesh/BedMesh3D.svelte': ['div', 'span', 'div', 'div'],
 };
 // Untouched ready widgets, route chrome, and compatibility frame remain explicit
 // debt. Exact tag multisets cannot grow. Retire entries when migrated.
