@@ -14,6 +14,28 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+PR67 is shipped and independently post-verified: reviewed `07e1c144`, merged
+`c924bf9`, release `20260901-c924bf9-pr67-20260901T153250-99a666`. BOTH service
+restarts, health/integrity, 25 static routes/assets, 26 security checks and
+preservation passed. The private lab directory and nine routes serve exact
+748,554-byte SHA-256 `83146f52f61fd9225877e3bd4ef7ee08798745083fc7232fa9e932399b007a1a`.
+Independent isolated Chrome on fetched bytes confirms controls/loading/retained
+refresh/source times, announcements and geometry. Actual-device/printer evidence
+is still separate and pending. The earlier PR67-unshipped notes below are history.
+
+Next: complete the already-authorized real Fans migration and Camera integration
+on separate candidate branches, integrating exact reviewed main before their
+acceptance. Do not switch the generic MCP observation resource until all nine
+lossless adapters/alias parity are accepted. Preserve seven remaining ready-shell
+debts and all feature obligations in WIDGET_TRACKS. This docs-only receipt has
+no application change and must not trigger a second deploy/restart.
+
+The approved ten old worktrees and stale nested clone are now recoverably
+quarantined, with independent full-manifest preservation PASS. Do not reuse
+their old paths or empty quarantine. Canonical clean main, original action and
+recovery refs, five archived document edits, and active feature registrations
+were verified. Cleanup does not retire still-needed production widget code.
+
 Use active `WIDGET_TRACKS.md` as the finite unfinished-work checklist. Every
 named feature remains queued after existing consolidation; none is cancelled.
 

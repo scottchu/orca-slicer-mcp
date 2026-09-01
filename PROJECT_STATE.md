@@ -10,6 +10,39 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### All-nine private lab controls/loading shipped — PR67 (2026-09-01)
+
+Independently validated and approved head
+`07e1c144df9debbbb20b92c1bb0b2ad7b10bc03a` merged as
+`c924bf9a0e225f96a1b4163cdb90c83751545e6a`, with identical reviewed tree
+`9198918a05ddb08bf503369413125b8b4bc120cb`. Guarded release
+`20260901-c924bf9-pr67-20260901T153250-99a666` explicitly restarted BOTH
+services; loaded, healthy and integrity verification passed. All 25 static
+asset/route and 26 security checks passed; preservation checks passed, rollback
+was unnecessary, and snapshot `20260901T153330-e4475a` is retained.
+
+Independent post-deployment checks confirmed directory plus nine private lab
+routes return HTTP 200/no-store, exact 748,554-byte artifact SHA-256
+`83146f52f61fd9225877e3bd4ef7ee08798745083fc7232fa9e932399b007a1a`, and
+restrictive CSP. Isolated Chrome on fetched server bytes verified all nine
+control docks, retained refresh/source times, loading without active content,
+one announcement, stable major geometry and no external requests. This is
+deployed-service/synthetic-browser evidence, not the user's phone or printer.
+
+The next existing migration work is separate: real Fans adapter/shared host
+controller and Camera integration. Production observation/camera remain legacy;
+seven ready-shell raw debts remain. Earlier unshipped/rejected PR67 paragraphs
+below are historical. Keep all named WIDGET_TRACKS open until their own evidence
+exists; no second service deployment is needed for this receipt-only update.
+
+Approved source cleanup is also complete and independently preservation-checked:
+ten redundant worktrees were moved intact to recoverable private quarantine,
+with branches, registrations, ignored contents and two diagnostic files retained.
+Canonical `main` is clean at `c924bf9`; all 8,689 remaining ignored entries and
+recovery refs match. Five historical document edits and the separate 315-entry
+nested clone remain archived/recoverable. Active work is not retired; no runtime
+or printer change is part of this cleanup. See the newest VALIDATION receipt.
+
 ### Consolidate, migrate, deliver and clean up — latest user order (2026-09-01)
 
 The finite source/state/cutover/delivery checklist is in the active iteration's
