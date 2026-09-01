@@ -83,6 +83,22 @@ const CAMERA_WIDGET_PATH = "/camera-widget";
 const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
 const MAX_REQUEST_BYTES = 128 * 1024;
 
+function hasRawTraversal(requestTarget: string | undefined): boolean {
+  if (!requestTarget) return false;
+  let candidate = requestTarget.split(/[?#]/, 1)[0] ?? "";
+  for (let pass = 0; pass < 3; pass += 1) {
+    if (candidate.split("/").some((segment) => segment === "..")) return true;
+    try {
+      const decoded = decodeURIComponent(candidate);
+      if (decoded === candidate) break;
+      candidate = decoded;
+    } catch {
+      return true;
+    }
+  }
+  return candidate.split("/").some((segment) => segment === "..");
+}
+
 type StatusReader = typeof readU1Status;
 type CameraFrameReader = typeof readU1CameraFrame;
 
@@ -145,6 +161,9 @@ export function createStatusDashboardHandler(
     res: ServerResponse,
     pathname: string
   ): Promise<boolean> => {
+    // WHATWG URL parsing removes dot segments. Inspect the original request
+    // target first so literal and encoded traversal can never alias a lab URL.
+    if (hasRawTraversal(req.url)) return false;
     const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";
     const normalizedLabPath = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
     if (OBSERVATION_LAB_PATHS.has(normalizedLabPath)) {

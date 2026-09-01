@@ -4,7 +4,7 @@
   import { validateThermals, type ThermalsObservation } from './types';
   let { observation }: { observation: ThermalsObservation } = $props();
   const thermals = $derived(validateThermals(observation));
-  const labels = ['Extruder 1', 'Extruder 2', 'Extruder 3', 'Extruder 4', 'Heater Bed', 'Cavity'];
+  const labels = ['Tool 1', 'Tool 2', 'Tool 3', 'Tool 4', 'Heater bed', 'Cavity'];
 </script>
 
 <ObservationFrame title="Thermals" icon={ThermometerSun} observedAt={thermals.sourceObservedAt} freshness={thermals.freshness}>

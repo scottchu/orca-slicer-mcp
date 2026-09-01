@@ -11,8 +11,8 @@ const packaged = built
   .replace(/[ \t]+$/gm, "")
   .replace(/^ +(?=\t)/gm, "");
 
-if (!packaged.includes('data-private-lab="directory"')) {
-  throw new Error("Observation lab directory marker is missing");
+if (!packaged.includes('data-route-bootstrap')) {
+  throw new Error("Observation lab neutral SSR bootstrap marker is missing");
 }
 for (const marker of ["Overview", "Print Progress", "Thermals", "Heads & Filaments", "Current Job", "Job History", "Print Queue", "Fans & Air", "Bed Mesh", "Pending lifecycle migration"]) {
   if (!packaged.includes(marker)) throw new Error(`Observation lab marker is missing: ${marker}`);

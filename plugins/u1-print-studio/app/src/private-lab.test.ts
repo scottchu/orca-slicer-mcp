@@ -14,9 +14,9 @@ describe("private Svelte observation lab package", () => {
   test("freezes one deterministic self-contained static page", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "0842f9b316421886285e6be74b39a92700e508aa8cba48695b59a3446c1a2f5c"
+      "7be3e2c912c04233299b2089bb9f368bed891e11e0c4d1a28f843b5fe93a14cc"
     );
-    expect(html).toContain('data-private-lab="directory"');
+    expect(html).toContain('data-route-bootstrap');
     for (const marker of [
       "Overview", "Print Progress", "Thermals", "Heads & Filaments",
       "Current Job", "Job History", "Print Queue", "Fans & Air", "Bed Mesh",
@@ -28,6 +28,14 @@ describe("private Svelte observation lab package", () => {
     expect(html).not.toMatch(
       /<(?:img|audio|video|source|iframe)\b[^>]*\bsrc\s*=\s*["'](?!data:)/i
     );
+  });
+
+  test("selects exact private paths synchronously before body layout", () => {
+    const routeSource = readFileSync(new URL("../ui/src/routes/+page.svelte", import.meta.url), "utf8");
+    expect(routeSource).not.toContain("onMount");
+    expect(routeSource).toContain("browser ? viewFromPath(window.location.pathname) : undefined");
+    expect(routeSource).toContain("data-route-bootstrap");
+    expect(routeSource).toContain("SSR emits only a neutral zero-size bootstrap marker");
   });
 
   test("contains no acquisition path or non-local request primitive", () => {

@@ -112,7 +112,9 @@ private dashboard at `/dashboard/lab` and the nine exact non-camera child
 routes `overview`, `progress`, `thermals`, `heads`, `jobs`, `job_history`,
 `queue`, `fans`, and `bed_mesh`. Its own directory marks Camera pending and
 does not link it. The lab is intentionally absent from the ten-entry production
-directory and every MCP widget/resource.
+directory and every MCP widget/resource. Static SSR is a neutral zero-size
+marker; initial browser creation selects the exact closed pathname without a
+post-mount directory-to-widget transition.
 
 `bun run bundle:widget-vendor` is the reproducible widget-asset gate. It injects
 `src/widget-shared.css` byte-for-byte into both self-contained HTML resources

@@ -7,7 +7,7 @@ export function formatDuration(seconds: number): string {
 
 export function formatClock(iso: string): string {
   return new Intl.DateTimeFormat('en-US', {
-    hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'UTC'
+    hour: 'numeric', minute: '2-digit', hour12: true
   }).format(new Date(iso));
 }
 

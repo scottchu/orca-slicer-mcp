@@ -7,8 +7,8 @@ const views = [
   ['queue', 'Print Queue'], ['fans', 'Fans & Air']
 ] as const;
 
-async function geometry(page: Page) {
-  return page.locator('[data-widget-shell]').evaluate((shell) => {
+async function geometry(page: Page, view: string) {
+  return page.locator(`[data-route-panel="${view}"] [data-widget-shell]`).evaluate((shell) => {
     const header = shell.querySelector<HTMLElement>('[data-widget-header]')!;
     const body = shell.querySelector<HTMLElement>('[data-widget-body]')!;
     const footer = shell.querySelector<HTMLElement>('[data-widget-footer]')!;
@@ -35,8 +35,21 @@ async function geometry(page: Page) {
 
 for (const width of widths) {
   test(`observation directory is exhaustive and camera remains pending at ${width}px`, async ({ page }) => {
+    await page.addInitScript(() => {
+      (window as unknown as { __u1LayoutShifts: number[] }).__u1LayoutShifts = [];
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if (!(entry as PerformanceEntry & { hadRecentInput?: boolean }).hadRecentInput) {
+            (window as unknown as { __u1LayoutShifts: number[] }).__u1LayoutShifts.push((entry as PerformanceEntry & { value: number }).value);
+          }
+        }
+      }).observe({ type: 'layout-shift', buffered: true });
+    });
     await page.setViewportSize({ width, height: 1100 });
     await page.goto('/dashboard/lab/', { waitUntil: 'networkidle' });
+    await expect(page).toHaveTitle('Observation Lab');
+    await expect(page.locator('html')).toHaveAttribute('data-u1-lab-route', 'directory');
+    await expect(page.locator('.route-panel:visible')).toHaveCount(1);
     await expect(page.getByRole('heading', { name: 'Observation Lab' })).toBeVisible();
     await expect(page.locator('[data-lab-link]')).toHaveCount(9);
     await expect(page.getByText('Pending lifecycle migration')).toBeVisible();
@@ -45,6 +58,7 @@ for (const width of widths) {
       await expect(page.locator(`[data-lab-link="${path}"]`)).toHaveText(title);
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    expect(await page.evaluate(() => (window as unknown as { __u1LayoutShifts: number[] }).__u1LayoutShifts)).toEqual([]);
     await page.screenshot({ path: `test-results/observation-directory-${width}.png`, fullPage: true });
   });
 
@@ -57,20 +71,34 @@ for (const width of widths) {
         const url = new URL(request.url());
         if (url.hostname !== '127.0.0.1') externalRequests.push(request.url());
       });
+      await page.addInitScript(() => {
+        (window as unknown as { __u1LayoutShifts: number[] }).__u1LayoutShifts = [];
+        new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            if (!(entry as PerformanceEntry & { hadRecentInput?: boolean }).hadRecentInput) {
+              (window as unknown as { __u1LayoutShifts: number[] }).__u1LayoutShifts.push((entry as PerformanceEntry & { value: number }).value);
+            }
+          }
+        }).observe({ type: 'layout-shift', buffered: true });
+      });
       await page.setViewportSize({ width, height: 1100 });
       await page.goto(`/dashboard/lab/${view}`, { waitUntil: 'networkidle' });
-      await expect(page.locator(`[data-private-lab="${view}"]`)).toBeVisible();
+      const panel = page.locator(`[data-route-panel="${view}"]`);
+      await expect(page).toHaveTitle(title);
+      await expect(page.locator('html')).toHaveAttribute('data-u1-lab-route', view);
+      await expect(page.locator('.route-panel:visible')).toHaveCount(1);
+      await expect(panel.locator(`[data-private-lab="${view}"]`)).toBeVisible();
       await expect(page.getByRole('heading', { name: title })).toBeVisible();
       await expect(page.getByText(/Lab fixture/).first()).toBeVisible();
-      await expect(page.locator('[data-widget-shell]')).toHaveCount(1);
-      await expect(page.locator('[data-widget-header]')).toHaveCount(1);
-      await expect(page.locator('[data-widget-body]')).toHaveCount(1);
-      await expect(page.locator('[data-widget-footer]')).toHaveCount(1);
+      await expect(panel.locator('[data-widget-shell]')).toHaveCount(1);
+      await expect(panel.locator('[data-widget-header]')).toHaveCount(1);
+      await expect(panel.locator('[data-widget-body]')).toHaveCount(1);
+      await expect(panel.locator('[data-widget-footer]')).toHaveCount(1);
       const refresh = page.getByRole('button', { name: 'Refresh lab fixture' });
       await expect(refresh).toHaveCount(1);
       await expect(refresh).toHaveCSS('width', '44px');
       await expect(refresh).toHaveCSS('height', '44px');
-      const before = await geometry(page);
+      const before = await geometry(page, view);
       expect(before.shell.width).toBeGreaterThan(250);
       expect(before.shell.height).toBeLessThan(850);
       expect(before.headerInset).toBe(before.tokenInset);
@@ -78,13 +106,32 @@ for (const width of widths) {
       expect(before.footerInset).toBe(before.tokenInset);
       expect(before.body.y).toBeGreaterThanOrEqual(before.header.y + before.header.height - 0.1);
       expect(before.footer.y).toBeGreaterThanOrEqual(before.body.y + before.body.height - 0.1);
-      const observedBefore = await page.locator('[data-widget-header] .meta').textContent();
+      const observedBefore = await panel.locator('[data-widget-header] .meta').textContent();
       await refresh.click();
       await expect(page.getByRole('status')).toHaveText('Lab fixture refreshed');
-      const after = await geometry(page);
+      const after = await geometry(page, view);
       expect(Math.abs(after.shell.height - before.shell.height)).toBeLessThan(0.1);
-      expect(await page.locator('[data-widget-header] .meta').textContent()).toBe(observedBefore);
+      expect(await panel.locator('[data-widget-header] .meta').textContent()).toBe(observedBefore);
+      if (view === 'overview') {
+        const columns = await panel.locator('.overview-grid').evaluate((node) => getComputedStyle(node).gridTemplateColumns.split(' ').length);
+        expect(columns).toBe(width === 320 ? 1 : 2);
+      }
+      if (view === 'heads') {
+        const columns = await panel.locator('.head-grid').evaluate((node) => getComputedStyle(node).gridTemplateColumns.split(' ').length);
+        expect(columns).toBe(2);
+        const reservedHeights = await panel.locator('[data-head-material]').evaluateAll((items) => items.map((item) => getComputedStyle(item).minHeight));
+        expect(reservedHeights).toEqual(['0px', '0px', '0px', '0px']);
+      }
+      if (view === 'thermals') {
+        for (const label of ['Tool 1', 'Tool 2', 'Tool 3', 'Tool 4', 'Heater bed', 'Cavity']) await expect(panel.getByText(label)).toBeVisible();
+      }
+      const clipped = await panel.locator('[data-required-text]').evaluateAll((items) => items.filter((item) => {
+        const element = item as HTMLElement;
+        return element.scrollWidth > element.clientWidth + 1 || element.scrollHeight > element.clientHeight + 1;
+      }).map((item) => item.textContent));
+      expect(clipped).toEqual([]);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+      expect(await page.evaluate(() => (window as unknown as { __u1LayoutShifts: number[] }).__u1LayoutShifts)).toEqual([]);
       await page.screenshot({ path: `test-results/${view}-${width}.png`, fullPage: true });
       expect(consoleErrors).toEqual([]);
       expect(externalRequests).toEqual([]);

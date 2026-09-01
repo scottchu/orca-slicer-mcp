@@ -26,16 +26,25 @@ Existing production dashboard HTML, widget/camera resources, tool inventory,
 observation adapters/stores, auth and public routing are untouched. Components
 accept only strict versioned normalized props and contain no acquisition code.
 
-Author evidence passes 20 UI tests, 40 real-Chrome cases, 275 app tests/3,168
+Formal review blocked exact `8a6df9b` on post-mount route selection, raw
+dot-segment normalization, RGBA rejection, mixed row clocks, responsive
+clipping and overbroad validator claims. The renewal emits a neutral zero-size
+SSR marker and selects the exact pathname during initial browser creation,
+rejects literal/single/double-encoded traversal from the raw target, retains
+normalized RGB/RGBA alpha, uses viewer-local row clocks, and enforces Overview
+1/2 columns, Heads two columns/content-driven height and canonical Thermals
+labels/titles.
+
+Author evidence passes 23 UI tests, 40 real-Chrome cases, 276 app tests/3,175
 assertions, 21 lifecycle and 24 shipping tests, deterministic packaging, all
-three bundles, help and signature. The exact package is 717,295 bytes with
-SHA-256 `0842f9b316421886285e6be74b39a92700e508aa8cba48695b59a3446c1a2f5c`.
-The deliberate risk is bundle weight near the 750 KB bound while local Three.js
-coexists with the eight compact views. A single SSR directory can be present
-until client pathname selection hydrates; browser acceptance covers the stable
-post-hydration view, not first-paint filmstrip timing. No merge/deploy/service/
-printer/camera/auth/Tailscale contact occurred. Next: exact-candidate formal and
-independent review; production cutovers remain separate later slices.
+three bundles, help and signature. The exact package is 713,119 bytes with
+SHA-256 `7be3e2c912c04233299b2089bb9f368bed891e11e0c4d1a28f843b5fe93a14cc`.
+The deliberate risk is the 36,881-byte headroom below 750 KB while local
+Three.js coexists with eight compact views. Chrome measures one visible exact
+route, zero layout shift and no required-text clipping at every frozen width;
+Bed Mesh remains unchanged. No merge/deploy/service/printer/camera/auth/
+Tailscale contact occurred. Next: exact-candidate review; production cutovers
+remain separate later slices.
 
 ## 2026-09-01 Svelte Bed Mesh private lab readability renewal
 

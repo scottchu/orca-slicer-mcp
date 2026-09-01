@@ -23,15 +23,31 @@ service or device was contacted.
 Every new view uses strict versioned synthetic-fixture validation, the shared
 header/body/footer anatomy, compact user-selected visual hierarchy and one
 bottom 44-pixel Refresh with non-flow feedback. Bed Mesh is the merged approved
-component without source changes. Real Chrome passes 40/40 cases at
-320/390/590/720 with zero overflow, console error or nonlocal request and no
-card-height/source-time change under feedback. The package is 717,295 bytes,
-SHA-256 `0842f9b316421886285e6be74b39a92700e508aa8cba48695b59a3446c1a2f5c`.
-Full author gates pass 20 UI tests, 275 app tests/3,168 assertions, 21 lifecycle
-tests, 24 shipping tests, exact private/public isolation, deterministic builds,
-three bundles, help and code signature. Existing production asset hashes remain
-unchanged. This is author fixture/software evidence only; exact independent
-review is next, before any PR, merge, deployment or per-widget cutover.
+component without source changes.
+
+Formal review blocked exact `8a6df9b`: child URLs first rendered the directory
+and switched only after mount; WHATWG normalization could alias raw dot-segment
+requests; Heads rejected canonical RGBA; row clocks mixed UTC and viewer-local
+time; Overview clipped facts; and validator evidence was too broad. The renewed
+source emits a neutral zero-size SSR marker, chooses the exact browser pathname
+during component creation rather than after mount, and synchronously marks the
+closed route. The handler rejects literal/single/double-encoded dot segments
+from the raw target before normalization. Heads retains normalized RGB/RGBA
+alpha, row clocks are viewer-local, Overview is one column at 320 and two
+thereafter, and Heads stays two columns through 720 without reserved material
+height.
+
+Real Chrome passes 40/40 cases at 320/390/590/720 with canonical titles, one
+visible route, zero recorded layout shift, no required-text clipping, overflow,
+console error or nonlocal request, and stable feedback geometry/source time.
+Bed Mesh retains its exact 4:3/equal-mode contract. The package is 713,119
+bytes, 36,881 below the 750 KB bound, with SHA-256
+`7be3e2c912c04233299b2089bb9f368bed891e11e0c4d1a28f843b5fe93a14cc`.
+Full author gates pass 23 UI tests, 276 app tests/3,175 assertions, 21 lifecycle
+tests, 24 shipping tests, deterministic builds, three bundles, help and code
+signature. Production hashes remain unchanged. This is renewed author fixture/
+software evidence only; exact independent review is next before any PR, merge,
+deployment or cutover.
 
 ### Compact widget density and camera continuity shipped in PR58 (2026-09-01)
 

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test } from "bun:test";
 import { createServer, type Server } from "node:http";
 import { readFileSync } from "node:fs";
-import type { AddressInfo } from "node:net";
+import { connect, type AddressInfo } from "node:net";
 import { runInNewContext } from "node:vm";
 
 import { CAMERA_WIDGET_HTML } from "./app.js";
@@ -104,6 +104,20 @@ async function startFixture(onStatusRead?: () => void) {
   servers.push(server);
   const port = (server.address() as AddressInfo).port;
   return `http://127.0.0.1:${port}`;
+}
+
+async function rawGet(origin: string, target: string): Promise<number> {
+  const url = new URL(origin);
+  return await new Promise<number>((resolve, reject) => {
+    let response = "";
+    const socket = connect(Number(url.port), url.hostname, () => {
+      socket.write(`GET ${target} HTTP/1.1\r\nHost: ${url.host}\r\nConnection: close\r\n\r\n`);
+    });
+    socket.setEncoding("utf8");
+    socket.on("data", (chunk) => { response += chunk; });
+    socket.on("end", () => resolve(Number(response.match(/^HTTP\/1\.1 (\d{3})/)?.[1] ?? 0)));
+    socket.on("error", reject);
+  });
 }
 
 describe("standalone status dashboard", () => {
@@ -267,6 +281,10 @@ describe("standalone status dashboard", () => {
     ]) {
       expect((await fetch(origin + route, { redirect: "manual" })).status).toBe(404);
     }
+    for (const route of [
+      "/dashboard/lab/../lab", "/dashboard/lab/%2e%2e/lab",
+      "/dashboard/lab/%252e%252e/lab",
+    ]) expect(await rawGet(origin, route)).toBe(404);
     for (const route of LAB_ROUTES) {
       const rejected = await fetch(origin + route, { method: "POST" });
       expect(rejected.status).toBe(405);

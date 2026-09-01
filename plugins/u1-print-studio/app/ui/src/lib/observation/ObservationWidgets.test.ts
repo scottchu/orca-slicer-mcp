@@ -16,6 +16,7 @@ import {
   validateCurrentJob, validateFans, validateHeads, validateJobHistory,
   validateOverview, validateProgress, validateQueue, validateThermals
 } from './types';
+import { formatClock } from './format';
 
 afterEach(cleanup);
 
@@ -57,6 +58,27 @@ describe('observation lab widgets', () => {
 
     render(QueueWidget, { observation: queueLabFixture });
     expect(screen.getByRole('heading', { name: 'Print Queue' })).toBeInTheDocument();
+    cleanup();
+
+    render(ThermalsWidget, { observation: thermalsLabFixture });
+    for (const label of ['Tool 1', 'Tool 2', 'Tool 3', 'Tool 4', 'Heater bed', 'Cavity']) {
+      expect(screen.getByText(label)).toBeInTheDocument();
+    }
+    expect(screen.queryByText(/Extruder|Heater Bed/)).not.toBeInTheDocument();
+  });
+
+  test('uses viewer-local clocks consistently in history and queue rows', () => {
+    const historyClock = formatClock(jobHistoryLabFixture.items[0].endedAt);
+    const queueClock = formatClock(queueLabFixture.items[0].addedAt);
+    const expectedHistory = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric', minute: '2-digit', hour12: true
+    }).format(new Date(jobHistoryLabFixture.items[0].endedAt));
+    expect(historyClock).toBe(expectedHistory);
+    render(JobHistoryWidget, { observation: jobHistoryLabFixture });
+    expect(screen.getByText(historyClock)).toBeInTheDocument();
+    cleanup();
+    render(QueueWidget, { observation: queueLabFixture });
+    expect(screen.getByText(`Added ${queueClock}`)).toBeInTheDocument();
   });
 
   test('keeps current job and history independent', () => {
@@ -110,5 +132,88 @@ describe('observation bridge validators', () => {
     expect(() => validateQueue(queue)).toThrow();
     const fans = structuredClone(fansLabFixture); fans.items[0].percent = 101;
     expect(() => validateFans(fans)).toThrow();
+  });
+
+  test('accepts canonical RGB/RGBA colors and preserves normalized alpha semantics', () => {
+    const heads = structuredClone(headsLabFixture);
+    heads.items[0].color = '#abcdef80';
+    heads.items[1].color = '#102030ff';
+    const normalized = validateHeads(heads);
+    expect(normalized.items[0].color).toBe('#ABCDEF80');
+    expect(normalized.items[1].color).toBe('#102030FF');
+    expect(normalized.items[2].color).toBe('#3487C8');
+  });
+
+  test('rejects per-view enum, number, time, shape, order and color boundary failures', () => {
+    const changed = <T>(fixture: T, mutate: (draft: Record<string, unknown>) => void): unknown => {
+      const draft = structuredClone(fixture) as Record<string, unknown>;
+      mutate(draft);
+      return draft;
+    };
+    const rejects = (validator: (value: unknown) => unknown, fixture: unknown, mutations: Array<(draft: Record<string, unknown>) => void>) => {
+      for (const mutate of mutations) expect(() => validator(changed(fixture, mutate))).toThrow();
+    };
+
+    rejects(validateProgress, progressLabFixture, [
+      (d) => { d.state = 'moving'; }, (d) => { d.percent = 101; },
+      (d) => { d.currentLayer = 651; }, (d) => { d.elapsedSeconds = -1; },
+      (d) => { d.totalLayers = 1.5; }, (d) => { d.extra = true; }
+    ]);
+    rejects(validateThermals, thermalsLabFixture, [
+      (d) => { (d.readings as Record<string, unknown>[])[0].id = 'tool-2'; },
+      (d) => { (d.readings as unknown[]).pop(); },
+      (d) => { (d.readings as Record<string, unknown>[])[0].active = 'yes'; },
+      (d) => { (d.readings as Record<string, unknown>[])[0].actualC = 401; },
+      (d) => { (d.readings as Record<string, unknown>[])[0].targetC = -1; },
+      (d) => { (d.readings as Record<string, unknown>[])[0].extra = true; }
+    ]);
+    rejects(validateHeads, headsLabFixture, [
+      (d) => { (d.items as Record<string, unknown>[])[0].physicalTool = 2; },
+      (d) => { (d.items as Record<string, unknown>[])[1].active = true; },
+      (d) => { (d.items as Record<string, unknown>[])[0].presence = 'yes'; },
+      (d) => { (d.items as Record<string, unknown>[])[0].color = '#12345'; },
+      (d) => { (d.items as Record<string, unknown>[])[0].color = '#123456789'; },
+      (d) => { (d.items as Record<string, unknown>[])[0].actualC = Infinity; },
+      (d) => { (d.items as Record<string, unknown>[])[0].extra = true; }
+    ]);
+    rejects(validateCurrentJob, currentJobLabFixture, [
+      (d) => { d.state = 'queued'; }, (d) => { d.storageActive = 'yes'; },
+      (d) => { d.progressPercent = -1; }, (d) => { d.elapsedSeconds = 1.5; },
+      (d) => { d.filamentUsedMm = 100_000_001; }, (d) => { d.extra = true; }
+    ]);
+    rejects(validateJobHistory, jobHistoryLabFixture, [
+      (d) => { (d.items as Record<string, unknown>[])[0].status = 'printing'; },
+      (d) => { (d.items as Record<string, unknown>[])[0].position = 2; },
+      (d) => { (d.items as Record<string, unknown>[])[0].endedAt = '2026-09-01'; },
+      (d) => { (d.items as Record<string, unknown>[])[0].durationSeconds = -1; },
+      (d) => { (d.items as Record<string, unknown>[])[0].extra = true; }
+    ]);
+    rejects(validateQueue, queueLabFixture, [
+      (d) => { d.queueState = 'running'; },
+      (d) => { (d.items as Record<string, unknown>[])[0].position = 3; },
+      (d) => { (d.items as Record<string, unknown>[])[0].addedAt = 'not-a-time'; },
+      (d) => { (d.items as Record<string, unknown>[])[0].waitingSeconds = -1; },
+      (d) => { (d.items as Record<string, unknown>[])[0].extra = true; }
+    ]);
+    rejects(validateFans, fansLabFixture, [
+      (d) => { d.purifierMode = 'turbo'; },
+      (d) => { (d.items as Record<string, unknown>[])[0].id = 'cavity'; },
+      (d) => { (d.items as Record<string, unknown>[])[0].percent = -1; },
+      (d) => { (d.items as Record<string, unknown>[])[0].rpm = 100_001; },
+      (d) => { (d.items as Record<string, unknown>[])[0].extra = true; }
+    ]);
+    rejects(validateOverview, overviewLabFixture, [
+      (d) => { (d.progress as Record<string, unknown>).state = 'moving'; },
+      (d) => { (d.progress as Record<string, unknown>).percent = 101; },
+      (d) => { (d.thermals as Record<string, unknown>).nozzleC = NaN; },
+      (d) => { (d.heads as Record<string, unknown>).loaded = 5; },
+      (d) => { (d.heads as Record<string, unknown>).activeTool = 5; },
+      (d) => { (d.jobs as Record<string, unknown>).state = 'queued'; },
+      (d) => { (d.jobHistory as Record<string, unknown>).returned = 21; },
+      (d) => { (d.queue as Record<string, unknown>).count = 101; },
+      (d) => { (d.fans as Record<string, unknown>).active = 8; },
+      (d) => { (d.bedMesh as Record<string, unknown>).rangeMm = -1; },
+      (d) => { (d.progress as Record<string, unknown>).extra = true; }
+    ]);
   });
 });

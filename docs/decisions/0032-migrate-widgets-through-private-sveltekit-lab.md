@@ -215,3 +215,22 @@ Bed Mesh. Bundle size is evidence and a review risk, not permission to split in
 runtime fetches or cut over production. Every observation component remains an
 independently callable candidate; cutover still occurs in separately reviewed
 per-widget slices.
+
+### Formal-review renewal
+
+Exact candidate `8a6df9b` exposed six acceptance gaps. The renewed candidate
+fixes them without expanding runtime scope:
+
+- Static SSR emits a neutral zero-size marker and initial browser creation
+  selects the exact closed pathname before mount; child loads do not render the
+  directory branch or resize after mounting.
+- The private handler examines the raw request target before WHATWG URL
+  normalization and rejects literal, once-encoded and twice-encoded `..`.
+- Heads accepts canonical six/eight-digit hex, normalizes case and retains RGBA
+  alpha. History and Queue clocks use the viewer-local basis of header metadata.
+- Overview is one column at 320 and two at 390/590/720. Heads stays two columns
+  through 720 without reserved material height. Thermals and browser titles use
+  their exact canonical labels.
+- Tests now cover every view's applicable enum, number, time, shape, order,
+  label and color boundaries plus route/title/visibility/layout-shift/columns/
+  clipping at all frozen widths. Bed Mesh acceptance remains unchanged.

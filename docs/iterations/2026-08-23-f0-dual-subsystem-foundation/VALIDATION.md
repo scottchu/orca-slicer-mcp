@@ -1,5 +1,72 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 all-observation Svelte formal-review renewal
+
+Formal review blocked exact `8a6df9b` on initial route rendering, raw traversal,
+RGBA compatibility, clock consistency, responsive readability and overbroad
+validator claims. No service, printer, camera, auth or Tailscale surface was
+contacted while correcting those findings.
+
+Commands actually run after the final correction:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+
+cd ..
+bun run ui:test:browser
+bun run ui:verify
+bun run ui:verify
+bun run check
+bun run test
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_service.py
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes 0/0 and Vitest 23/23. Validators accept bounded canonical
+  fixtures and reject the tested envelope, extra-key, enum, numeric, time,
+  shape, order, unsafe-label, contradictory-presence and malformed-color cases.
+  Heads normalizes six/eight-digit RGB/RGBA uppercase while retaining alpha;
+  this is not a claim about arbitrary untested inputs.
+- Raw TCP requests prove literal `/../`, once-encoded `%2e%2e` and twice-encoded
+  `%252e%252e` cannot normalize into an allowed route. Exact private GET/non-GET,
+  public isolation and zero-acquisition contracts remain green.
+- Real Chrome passes 40/40 at 320/390/590/720. Every direct route has its exact
+  canonical title and route marker, one visible panel, zero recorded layout
+  shift, and no required-text clipping, overflow, console error or nonlocal
+  request. Overview measures one/two columns, Heads two with `0px` material
+  min-height, Thermals labels are exact, feedback preserves geometry/time and
+  Bed Mesh retains paired 4:3 geometry and readable projection.
+- Two sequential builds reproduce one 713,119-byte self-contained page, 36,881
+  bytes below 750 KB, SHA-256
+  `7be3e2c912c04233299b2089bb9f368bed891e11e0c4d1a28f843b5fe93a14cc`.
+- Full gates pass 276 app tests/3,175 assertions, 21 lifecycle and 24 shipping
+  tests. Bundles/signature/help pass: `dist/stdio.js` is 2,811,271 bytes/
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/server.js` is 3,866,842 bytes/
+  `cac1816abc6c4dfc21f9dda2f25b59e1f91b407dbdf983a22f883c68f1de5541`;
+  `dist/u1-print-studio` is 65,229,648 bytes/
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`.
+  Existing production widget/camera/host hashes remain unchanged.
+
+This is renewed author static/software, synthetic-fixture browser and private-
+handler evidence. It does not prove independent approval, deployment, MCP
+cutover, live telemetry, camera/printer behavior, actual-device rendering or
+user acceptance.
+
 ## 2026-09-01 compact widget density and camera continuity — PR58 deployed
 
 PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`. Guarded release

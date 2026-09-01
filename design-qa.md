@@ -1,5 +1,48 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## 2026-09-01 Svelte all-observation lab formal-review renewal
+
+Source visual truth: the user Progress reference at private attachment
+`94609837-90DF-45EC-865D-A405934331EE/1-Pasted-Image-1.jpg` (590 × 1280
+pixels) plus Decision 0032's explicit responsive contracts. Implementation:
+`plugins/u1-print-studio/app/ui/test-results/progress-590.png` (590 × 1100,
+590 CSS-pixel viewport, DPR 1) and the renewed 320/390/590/720 captures for all
+views. The source and implementation were placed together at equal 590-pixel
+display width in `/tmp/u1-progress-qa-comparison.png`; the temporary comparison
+is not committed. Their data states differ (4% production capture versus 64%
+synthetic fixture), so comparison is limited to hierarchy, density and visual
+system rather than value equality.
+
+Full-view comparison confirms the same white card, outlined icon tile, dark
+system typography, lightweight green percentage, continuous amber bar,
+layer/ETA row and bottom Refresh. The lab intentionally removes the reference's
+unused vertical card space and adds the required `Lab fixture` disclosure.
+Focused Progress inspection was sufficient for shared shell/token fidelity;
+separate automated captures cover each domain's content layout.
+
+Required fidelity surfaces: typography preserves the system family and clear
+headline/value hierarchy without clipping; spacing uses one consistent inset
+owner and content-driven body; color tokens preserve white/gray, green state and
+amber progress accents; imagery uses local Lucide interface icons and Bed Mesh's
+real code-rendered data surface with no missing raster asset; copy uses all nine
+canonical titles and the explicit synthetic-fixture disclosure.
+
+Earlier comparison history: formal review found post-mount wrong-screen/height
+transition and Overview label clipping. The fix selects the exact pathname at
+initial browser component creation from neutral SSR and changes Overview to one
+column at 320/two at 390+, with content-driven rows. Post-fix Chrome records one
+visible route, zero layout-shift entries and no required-text clipping at all
+four widths. Heads stays two columns without reserved material height; Bed Mesh
+geometry is unchanged. No actionable P0/P1/P2 visual finding remains. Residual
+P3: the lab disclosure is visually denser than production, intentionally, and
+package weight remains a software risk rather than a visual defect.
+
+Primary interactions tested: every bottom Refresh produces overlay-only
+feedback without changing card height or source time; Bed Mesh 2D/3D controls
+preserve the same frame. Browser console and nonlocal requests are clean.
+
+final result: passed
+
 ## 2026-09-01 Svelte Bed Mesh private lab foundation
 
 final result: author corrections pass; formal and independent renewal required

@@ -87,8 +87,11 @@ inlined in the private HTTP bundle rather than copied as an external release
 asset. One deterministic self-contained `adapter-static` page selects only the
 exact private `/dashboard/lab` directory or its nine non-camera child routes
 from `window.location.pathname`; it contains synthetic fixtures and no
-acquisition client. The generic embed scaffold is never part of the production
-build or release manifest.
+acquisition client. Static SSR emits only a neutral zero-size marker; initial
+browser creation selects the exact closed pathname before mount instead of
+rendering the directory first. Raw literal or encoded dot-segment requests are
+rejected before URL normalization. The generic embed scaffold is never part of
+the production build or release manifest.
 The fixed lifecycle asset inventory and its fingerprint verification stay
 unchanged so previously staged releases remain valid rollback targets.
 

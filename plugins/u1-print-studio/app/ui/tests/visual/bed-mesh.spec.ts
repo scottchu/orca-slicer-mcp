@@ -14,6 +14,9 @@ for (const width of widths) {
     });
     await page.setViewportSize({ width, height: 1100 });
     await page.goto(route, { waitUntil: 'networkidle' });
+    await expect(page).toHaveTitle('Bed Mesh');
+    await expect(page.locator('html')).toHaveAttribute('data-u1-lab-route', 'bed_mesh');
+    await expect(page.locator('.route-panel:visible')).toHaveCount(1);
     const frame = page.locator('[data-chart-frame]');
     const three = page.locator('[data-bed-mesh-3d] canvas');
     await expect(frame).toBeVisible();

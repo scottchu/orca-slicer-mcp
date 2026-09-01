@@ -80,7 +80,7 @@ export type OverviewObservation = LabBase<'overview'> & {
 type RecordValue = Record<string, unknown>;
 const isoTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 const safeMaterial = /^[\p{L}\p{N} _+().-]{1,64}$/u;
-const hexColor = /^#[0-9A-F]{6}$/;
+const hexColor = /^#[0-9A-F]{6}(?:[0-9A-F]{2})?$/i;
 const freshness = new Set<LabFreshness>(['fresh', 'stale', 'offline', 'unknown']);
 
 function record(value: unknown, message = 'Invalid lab observation'): RecordValue {
@@ -170,8 +170,9 @@ export function validateHeads(value: unknown): HeadsObservation {
         (row.color !== null && (typeof row.color !== 'string' || !hexColor.test(row.color)))) throw new Error('Invalid head item');
     const normalizedMaterial = material(row.material);
     if (row.presence === false && (normalizedMaterial !== null || row.color !== null)) throw new Error('Empty head cannot carry material metadata');
+    const normalizedColor = typeof row.color === 'string' ? row.color.toUpperCase() : null;
     return { physicalTool: (index + 1) as 1 | 2 | 3 | 4, active: row.active, presence: row.presence as boolean | null,
-      material: normalizedMaterial, color: row.color as string | null,
+      material: normalizedMaterial, color: normalizedColor,
       actualC: finite(row.actualC, -20, 400), targetC: finite(row.targetC, 0, 400) };
   });
   if (items.filter((head) => head.active).length > 1) throw new Error('Invalid active heads');
