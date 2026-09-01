@@ -2,6 +2,19 @@
 
 ## 2026-09-01 projected Bed Mesh enclosure refinement
 
+Independent interaction validation held the first candidate because its fit
+calculation canceled real wheel zoom. The bounded repair separates neutral 1x
+overview fitting from OrbitControls-owned 0.75–3.5 detail zoom. Default/reset
+and every supported 1x orientation retain full enclosure/label containment.
+Intentional user zoom above 1x may crop surface and correctly projected axis
+labels at the unchanged viewport edge, as the prior interactive renderer did;
+it must not remount, move labels to fictitious anchors or fit the zoom away.
+Wheel-in must enlarge actual projected extent and rendered colored pixels,
+reverse wheel must restore it, limits must clamp, and data/resize preserve zoom
+and orbit. Reset restores the default 1x view. Browser two-finger input provides
+synthetic pinch evidence only, not phone/Safari acceptance. Existing 1x gates
+are unchanged; this design addendum does not itself approve the repaired source.
+
 The existing private-lab Three/OrbitControls renderer gains a genuine floor and
 two camera-far vertical grid walls. Four uprights and the selected axis edges
 remain available for flat and nonflat measurements. A pure reversible transform

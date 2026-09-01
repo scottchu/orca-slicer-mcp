@@ -70,6 +70,10 @@
       const digit = Math.max(...'0123456789'.split('').map((value) => measurement.measureText(value).width));
       const measure = (text: string) => ({ width: Math.ceil(Math.max(measurement.measureText(text).width, [...text].reduce((sum, value) => sum + (/\d/.test(value) ? digit : measurement.measureText(value).width), 0))) + 4, height: Math.ceil(fontSize * 1.2) + 2 });
       const aspect = rect.width / rect.height;
+      // Fit is an overview calculation. OrbitControls owns the independent
+      // detail zoom; including it in the fit would cancel wheel/pinch input.
+      const zoom = camera.zoom;
+      camera.zoom = 1;
       let view = 0.48;
       let shiftX = 0;
       let shiftY = 0;
@@ -97,6 +101,13 @@
         shiftY -= ((top + bottom) / 2 - rect.height / 2) * 2 * view / rect.height / camera.zoom;
         view *= Math.max(1.01, ratio);
       }
+      camera.zoom = zoom;
+      camera.updateProjectionMatrix();
+      selected = projectedAxes(display, data, sides, project);
+      sides.z = selected.z;
+      // Detail zoom intentionally crops at the existing chart viewport. Keep
+      // labels on their true projected axes rather than fitting zoom away.
+      nextLabels = layoutLabels(selected.axes, project, project([0, 0, 0]), measure, rect, zoom <= 1);
       const axisLines = selected.axes.flatMap((axis) => {
         const lines = [...axis.a, ...axis.b];
         for (let tick = 0; tick <= 4; tick++) {

@@ -354,7 +354,11 @@ printer environments support the described behavior.
   least 70% of chart width and 42% of chart height at the normal default
   square-fixture view. Other supported rotations require containment and
   readable projected axes, not an impossible area minimum for an edge-on flat
-  surface. The floor, two camera-far grid walls and nondegenerate Z enclosure
+  surface. Neutral 1x fitting is independent of bounded 0.75–3.5 user zoom:
+  intentional detail zoom above 1x may crop the correctly projected geometry
+  and labels at the fixed frame, while default/reset and all 1x orientations
+  retain full containment. Data/resize preserve zoom/orbit; reset restores 1x.
+  The floor, two camera-far grid walls and nondegenerate Z enclosure
   follow the actual data bounds; display padding never changes samples or
   summary measurements. Labels track true projected outer axis/tick anchors
   with quadrant hysteresis and measured outward placement. Data updates replace

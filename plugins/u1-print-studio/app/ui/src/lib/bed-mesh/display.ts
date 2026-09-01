@@ -78,7 +78,7 @@ export const projectedAxes = (display: Display, observation: BedMeshObservation,
 
 export const layoutLabels = (
   axes: ReturnType<typeof projectedAxes>['axes'], project: (point: Point) => ScreenPoint,
-  center: ScreenPoint, measure: (text: string) => { width: number; height: number }, frame: { width: number; height: number }
+  center: ScreenPoint, measure: (text: string) => { width: number; height: number }, frame: { width: number; height: number }, fit = true
 ) => {
   const labels: Label[] = [];
   const optional: Label[] = [];
@@ -110,7 +110,7 @@ export const layoutLabels = (
       for (const distance of [0, 6, 12, 18, 24, 36, 48, 64, 80]) {
         for (const [out, along] of [[0, distance], [0, -distance], [distance, 0], [distance, distance], [distance, -distance]]) {
           const candidate = { ...label, x: label.x + nx * out - ny * along, y: label.y + ny * out + nx * along };
-          if (!overlaps(candidate) && contained(candidate)) { Object.assign(label, candidate); placed = true; break; }
+          if (!overlaps(candidate) && (!fit || contained(candidate))) { Object.assign(label, candidate); placed = true; break; }
         }
         if (placed) break;
       }
