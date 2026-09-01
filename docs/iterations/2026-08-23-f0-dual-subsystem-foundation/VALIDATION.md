@@ -1,26 +1,40 @@
 # F0 dual-subsystem foundation validation
 
-## 2026-09-01 Svelte Bed Mesh private lab foundation
+## 2026-09-01 compact widget density and camera continuity — PR58 deployed
 
-Implementation ran in isolated worktree
-`/Users/scottchu/.codex/worktrees/u1-svelte-bed-mesh-foundation` on branch
-`codex/u1-svelte-bed-mesh-foundation`, based on exact `origin/main`
-`823ee09f3f51f256ea2dd26f93802b1fc0b0d23d`. No production route, MCP resource,
-service or printer was used.
+PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`. Guarded release
+`20260901-2cd7d96-pr58-20260901T073117-6df842` runs on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at runtime 0.4.8/
+schema 12/observation-v14/camera-v10. Twelve local-plus-tailnet dashboard route
+checks return 200 with byte-identical content, sixteen security checks pass and
+no rollback occurred.
+
+This is reviewed Git, release, service, health, integrity, security and static-
+route evidence. It does not establish printer, camera or actual-device
+acceptance; none of those surfaces was contacted or claimed.
+
+## 2026-09-01 Svelte Bed Mesh private lab package
+
+Implementation ran in an isolated worktree on branch
+`codex/u1-svelte-bed-mesh-foundation`. The branch merged exact current
+`origin/main` `2cd7d96b07d23002524c605259e8e27af4eeb198` normally, without
+rebasing, as merge commit `55ace2b`. No deployed service, printer, camera, auth
+or Tailscale surface was contacted.
 
 Commands actually run:
 
 ```text
-cd plugins/u1-print-studio/app/ui
-bun add -d @testing-library/jest-dom
-bun run check
-bun run test
-bun run build
-bun run build:embed
-bun run test:browser
-
 cd plugins/u1-print-studio/app
-bun install --frozen-lockfile
+bun run ui:verify
+bun run ui:test:browser
+bun run check
+bun test src/status-dashboard.test.ts src/private-lab.test.ts
+uv run --no-project ../../../scripts/test_u1_ship.py
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
 
 cd ../../..
 ./scripts/check-repository.sh
@@ -29,28 +43,53 @@ git diff --check
 
 Results:
 
-- Svelte check passes with zero errors/warnings; Vitest passes 4 component tests.
-- `adapter-static` emits `build/dashboard/lab/bed_mesh/index.html`; the separate
-  embed build emits `build-embed/u1-widgets.js` and CSS from the prop-injected
-  mount boundary.
-- Real Chrome passes four geometry/screenshot cases at 320/390/590/720. Each
-  checks the exact same chart x/y/width/height in 3D and 2D within 0.1 CSS pixel,
-  4:3 aspect, 44-pixel controls, no horizontal overflow, console error or
-  nonlocal request. Exact frame results are 258×193.5, 328×246, 500×375 and
-  630×472.5 CSS pixels respectively, with identical x/y in both modes. Paired
-  2D/3D and reference-comparison PNGs remain under the
-  ignored `ui/test-results` directory.
-- The existing repository contract passes TypeScript, 263 app tests with 2,734
-  assertions, 21 service-lifecycle tests and 24 shipping tests.
-- The source scan finds no `fetch`, WebSocket, EventSource, WebRTC,
-  XMLHttpRequest, Moonraker, Tailscale or printer route in UI components/routes.
-  Existing `app/src`, `app/public`, dashboard route registries and MCP resources
-  have no diff from the exact base.
+- Svelte check passes with zero errors/warnings and Vitest passes 4 component
+  tests. Two clean `adapter-static` builds package byte-identical output:
+  671,615 bytes with SHA-256
+  `744ce87b3510d425dec9248ee55a7770a97ef3f635ec8269d1d31279ea0ff680`.
+  The page is self-contained and the generic development embed is absent from
+  the production build, manifest and package.
+- One agent-only attempt to run two Vite builds concurrently in the same
+  checkout raced on `.svelte-kit` and failed with a missing generated manifest.
+  No repository workflow does this. Sequential clean builds were then run
+  twice and passed with the identical hash above; future verification must keep
+  UI builds sequential within one checkout.
+- The private handler serves only exact `/dashboard/lab/bed_mesh` and its
+  optional trailing slash. Tests prove the public service, nested/encoded/case
+  variants return 404; POST returns 405; private GET returns the exact packaged
+  bytes with restrictive CSP; and neither private nor public static handling
+  calls observation, camera or media acquisition hooks. The directory,
+  `/dashboard/bed_mesh`, MCP resources and production widget assets remain
+  unchanged. The candidate shipping contract has seventeen security checks
+  because it adds the explicit public-lab denial.
+- Real Chrome passes four private-handler geometry/screenshot cases at
+  320/390/590/720. Exact 3D and 2D `ChartFrame` DOMRects are respectively
+  258×193.5 at x31/y134.375, 328×246 at x31/y134.375, 500×375 at
+  x45/y165.1875 and 630×472.5 at x45/y165.1875 CSS pixels. Each pair is equal
+  within 0.1 CSS pixel and exactly 4:3. Controls are 44 pixels and there is no
+  horizontal overflow, console error or external request. Paired captures stay
+  under ignored `ui/test-results`.
+- The full repository gate passes TypeScript, 274 app tests with 2,974
+  assertions, 21 lifecycle tests and 24 shipping tests. Runtime, stdio and
+  private-server bundles build and the standalone runtime code signature is
+  valid.
+- Bundle evidence: `dist/server.js` is 3,824,340 bytes with SHA-256
+  `6dce49785d3f71241b3d7d39decec85c737bd218b30c8c6d91d15a9c3a63cf54`;
+  `dist/stdio.js` is 2,811,271 bytes with SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/u1-print-studio` is 65,229,648 bytes with SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`.
+- Existing production asset SHA-256 remains `a01768e408f3566d6e93aea4ea208930dfcd9e21e71ba372a15f8e7a306450e9`
+  for `widget.html`, `43e4d030dff321a8eb18d9794fe0e3e71f0ddce4b3027a8533f83db01b0f9405`
+  for `camera-widget.html`, `4460ae500cd8e5fb04edeabc48af8462f40048c4e6494d3be8ef7f87bc487a0c`
+  for the status host and `25c50f7ca45c76d7d914922d461b56fe009993aba99bed341dff2df0434926f2`
+  for the camera host.
 
-This is static/software, component and local real-browser fixture evidence. It
-does not establish independent review, production route integration, deployed
-service, live printer data, MCP-host rendering, touch/device behavior or user
-acceptance.
+This is author static/software, packaging, server-isolation and local real-
+browser fixture evidence. It does not establish independent review, deployed
+service behavior, live printer data, MCP-host rendering, touch/device behavior
+or user acceptance. Production focused cutover remains a separate reviewed
+slice.
 ## 2026-09-01 compact widget density and camera continuity — author candidate
 
 The source candidate advances to runtime 0.4.8/schema 12/observation-v14/

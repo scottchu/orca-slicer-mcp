@@ -14,7 +14,7 @@ export default defineConfig({
     trace: 'retain-on-failure'
   },
   webServer: {
-    command: 'bun run preview --host 127.0.0.1 --port 4179',
+    command: 'PORT=4179 bun run scripts/serve-private-lab-fixture.ts',
     port: 4179,
     reuseExistingServer: false,
     timeout: 20_000

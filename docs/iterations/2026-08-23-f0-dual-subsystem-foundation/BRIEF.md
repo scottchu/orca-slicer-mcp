@@ -6,12 +6,16 @@
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
 - Current presentation migration (2026-09-01): decision 0032 starts an
-  incremental Svelte 5/SvelteKit static lab without cutting over production
-  routes or MCP resources. The first slice is shared compact widget primitives
-  plus a synthetic Bed Mesh lab at `/dashboard/lab/bed_mesh`. Acceptance is one
+  incremental Svelte 5/SvelteKit static lab without cutting over focused
+  production routes or MCP resources. The first deployable slice is shared
+  compact widget primitives plus a synthetic Bed Mesh page served only by the
+  private dashboard at `/dashboard/lab/bed_mesh`. Acceptance is one
   bridge-injected, network-free component with the exact same 4:3 chart DOMRect
   in 2D/3D at 320/390/590/720, 44-pixel icon controls, overlay feedback and
-  real-browser captures. Existing deployed services remain untouched.
+  real-browser captures, deterministic self-contained packaging, exact private
+  route 200/public 404 isolation and no acquisition. The generic embed is not a
+  production artifact. Existing `/dashboard/bed_mesh`, tools/resources, auth
+  and Tailscale behavior remain untouched.
 - Latest shipped refinement (2026-08-31): PR56 reviewed `e2702dc7`, merged
   `cb7d06fd` (tree `dc290de1`) and guarded release
   `20260831-cb7d06f-pr56-20260831T234756-96fe19` runs on BOTH explicitly

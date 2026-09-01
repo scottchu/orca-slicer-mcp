@@ -1,66 +1,44 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 compact widget density and camera continuity — PR58 shipped
+
+PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`. Guarded release
+`20260901-2cd7d96-pr58-20260901T073117-6df842` runs on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at runtime 0.4.8/
+schema 12/observation-v14/camera-v10. Twelve local-plus-tailnet dashboard route
+checks return 200 with byte-identical content, sixteen security checks pass and
+no rollback occurred. No printer, camera or actual-device acceptance was
+performed or claimed.
+
 ## 2026-09-01 Svelte Bed Mesh private lab candidate
 
-Decision 0032, UI-001 and the active migration addendum freeze a strangler
-approach: existing production routes/resources stay authoritative while focused
-Svelte candidates mature in a static private lab. The first candidate is
-`plugins/u1-print-studio/app/ui`, with a synthetic Bed Mesh route at
-`/dashboard/lab/bed_mesh` and an independent library build from
-`src/lib/embed.ts`. Neither artifact is wired into the production server.
+Decision 0032, UI-001 and the active migration addendum preserve the existing
+focused routes/resources while the Svelte candidate matures at the exact private
+`/dashboard/lab/bed_mesh` fixture route. The 671,615-byte self-contained static
+page is imported into the private server bundle; public HTTP returns 404, the
+ten-entry directory and `/dashboard/bed_mesh` are unchanged, and no MCP resource
+or generic embed is packaged.
 
 Shared components are `WidgetShell`, `WidgetHeader`, `WidgetBody`,
-`WidgetFooter`, `ObservedMeta`, `IconButton` and `ChartFrame`, backed by one
-token source. Bed Mesh receives a validated normalized presentation prop, uses
-the same 4:3 frame for local Three.js 3D and Canvas 2D, preserves one palette
-and actual-mm summary, places icon-only 44-pixel actions below information and
-uses a non-flow flash overlay. There is no explanatory paragraph or direct
-network/printer path.
+`WidgetFooter`, `ObservedMeta`, `IconButton` and `ChartFrame`. Bed Mesh receives
+validated normalized props, uses one 4:3 frame for local Three.js 3D and Canvas
+2D, preserves one palette/actual-mm summary, places icon-only 44-pixel actions
+below information and uses a non-flow flash overlay. It has no direct network or
+printer path.
 
-Author evidence passes Svelte check, 4 Vitest tests, static and embed builds,
-four real-Chrome geometry/screenshot cases and the complete existing repository
-gate (263 app/2,734 assertions, 21 lifecycle, 24 shipping). At all 320/390/590/
-720 widths the 3D and 2D chart DOMRects are equal within 0.1 CSS pixel and 4:3;
-no overflow, console error or external request occurred. `design-qa.md` records
-the isolated-lab pass and the still-blocked production/device boundary.
+Author evidence passes Svelte check, 4 Vitest tests, deterministic package
+verification, four real-Chrome private-handler geometry/screenshot cases and
+the complete repository gate (274 app/2,974 assertions, 21 lifecycle and 24
+shipping tests). At 320/390/590/720, the 3D and 2D `ChartFrame` DOMRects are
+equal within 0.1 CSS pixel and 4:3; no overflow, console error or external
+request occurred. Runtime/stdio/private-server bundles and the runtime signature
+pass. Exact package SHA-256 is
+`744ce87b3510d425dec9248ee55a7770a97ef3f635ec8269d1d31279ea0ff680`.
 
-No merge, deployment, service restart, printer observation, auth/routing change,
-MCP resource registration or production cutover occurred. Next, the coordinator
-must obtain independent exact-SHA review of this candidate. If `origin/main`
-advanced, do not rebase or merge until that review is renewed against the
-coordinated integration base. A later Bed Mesh cutover is a separate slice.
-## 2026-09-01 compact widget density and camera continuity — source candidate
-
-The author candidate is runtime 0.4.8/schema 12/observation-v14/camera-v10 with
-26 resources and retained observation-v13/camera-v9 aliases. It gives every
-observation and camera card the frozen compact width-token anatomy, removes
-reserved directory height, and makes Print Queue the canonical visible label
-without changing selector `queue`. Hosted and standalone fullscreen now use
-only same-document native/CSS transitions that preserve the live media identity
-and make no host display-mode or camera request. The dedicated camera-body flex
-chain retains a non-zero 390 × 844 rendered box. PiP is offered only through
-the live video's same-document native API, makes zero host display-mode calls,
-preserves media/session identity on enter and exit, and is hidden when native
-PiP is unavailable. Host-reported fullscreen/PiP never drives a synthetic
-continuity state. Pause/stall events recover playback without immediate session
-teardown, FPS requires fresh frame evidence, and one page lifecycle restore is
-bounded. Standalone document, visible and iframe titles use canonical view
-labels, including U1 Camera and Print Queue.
-
-Real Chromium density checks also bound every thermal row to 64 pixels at
-320/390/590/720, while nested empty and Current Job panels leave `.u1-body` as
-their sole inset owner. Bed Mesh retains one fixed chart-frame height for both
-2D and 3D. The user's live evidence that its current 3D mode is near-blank and
-unreadable remains the first visual blocker for the proposed incremental
-SvelteKit migration; this stabilization slice does not broaden into that rewrite.
-
-Author checks pass 271 tests/2,936 assertions, TypeScript, reproducible vendor
-injection, and runtime/stdio/server bundles. Exact hashes and commands are in
-`VALIDATION.md`. Automated local headless-Chromium layout evidence ran; no
-printer, service, network, deployment or actual-device contact occurred. The
-next smallest action is independent exact-source review, then the standing PR
-merge/guarded deploy/restart-BOTH/verify workflow. Do not claim actual-device
-visual or physical acceptance from these source checks.
+No deployment, service restart, printer/camera observation, auth/Tailscale
+change, MCP registration or focused production cutover occurred. The next action
+is independent exact-SHA review. Deployment remains a later coordinator-owned
+step; a focused Bed Mesh cutover is a separate slice.
 
 ## 2026-08-31 unified widget and camera reliability — shipped in PR56
 

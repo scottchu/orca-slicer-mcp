@@ -340,8 +340,11 @@ printer environments support the described behavior.
   primitives own the visual anatomy. Components receive versioned normalized
   presentation values through props/host bridge only and make no direct
   printer, network, authentication or signaling request. The first private lab
-  candidate is `/dashboard/lab/bed_mesh`; it is not registered by the shipped
-  dashboard or MCP resource inventory. Bed Mesh 2D and 3D occupy the exact same
+  candidate is `/dashboard/lab/bed_mesh`; only the private dashboard server may
+  serve that exact fixture route. It is absent from the public service,
+  dashboard directory/focused route inventory and MCP resource inventory. The
+  static page is deterministic, self-contained and production packaging excludes
+  the generic embed scaffold. Bed Mesh 2D and 3D occupy the exact same
   responsive 4:3 `ChartFrame` `DOMRect` at 320/390/590/720 CSS-pixel widths,
   preserve reported samples and actual-mm labels, use icon-only 44-pixel bottom
   controls and non-flow feedback overlays, and contain no explanatory prose in

@@ -27,6 +27,7 @@ REPOSITORY = "scottchu/orca-slicer-mcp"
 REMOTES = {f"https://github.com/{REPOSITORY}", f"https://github.com/{REPOSITORY}.git", f"git@github.com:{REPOSITORY}.git", f"ssh://git@github.com/{REPOSITORY}.git"}
 SHA = re.compile(r"[0-9a-f]{40}\Z")
 APP = Path("plugins/u1-print-studio/app")
+PRIVATE_BED_MESH_LAB_ROUTE = "/dashboard/lab/bed_mesh"
 
 
 class ShipError(RuntimeError):
@@ -82,13 +83,13 @@ def static_contract(source):
     directory.feed((app / "public/dashboard-index.html").read_text())
     require(set(directory.links) == set(routes) | {"/dashboard/camera"} and len(directory.links) == len(routes) + 1, "Directory links and focused routes disagree")
     files = {(8788, route): "status-dashboard-host.html" for route in routes}
-    files.update({(8788, "/dashboard"): "dashboard-index.html", (8788, "/dashboard/"): "dashboard-index.html", (8788, "/dashboard/camera"): "camera-dashboard-host.html", (8788, "/widget"): "widget.html", (8787, "/widget"): "widget.html", (8788, "/camera-widget"): "camera-widget.html"})
+    files.update({(8788, "/dashboard"): "dashboard-index.html", (8788, "/dashboard/"): "dashboard-index.html", (8788, "/dashboard/camera"): "camera-dashboard-host.html", (8788, PRIVATE_BED_MESH_LAB_ROUTE): "svelte-bed-mesh-lab.html", (8788, "/widget"): "widget.html", (8787, "/widget"): "widget.html", (8788, "/camera-widget"): "camera-widget.html"})
     return {f"{port}{route}": {"port": port, "route": route, "sha256": digest(app / "public" / name)} for (port, route), name in files.items()}
 
 
 def http_read(port, route):
     require(port in (8787, 8788, 8789), "Unexpected verification port")
-    require(route in ("/health", "/widget", "/camera-widget", "/mcp", "/auth/enroll", "/dashboard", "/dashboard/") or re.fullmatch(r"/dashboard/[a-z_]+", route), "Unexpected verification route")
+    require(route in ("/health", "/widget", "/camera-widget", "/mcp", "/auth/enroll", "/dashboard", "/dashboard/", PRIVATE_BED_MESH_LAB_ROUTE) or re.fullmatch(r"/dashboard/[a-z_]+", route), "Unexpected verification route")
     class NoRedirect(urllib.request.HTTPRedirectHandler):
         def redirect_request(self, *args, **kwargs):
             return None
@@ -168,6 +169,7 @@ class Operations:
     def validate(self):
         app = self.source / APP
         self.command([str(self.bun), "--no-env-file", "--config=/dev/null", "install", "--frozen-lockfile", "--ignore-scripts"], cwd=app)
+        self.command([str(self.bun), "--no-env-file", "--config=/dev/null", "install", "--frozen-lockfile", "--ignore-scripts"], cwd=app / "ui")
         try:
             self.command(["./scripts/check-repository.sh"], timeout=600)
         except Exception:
