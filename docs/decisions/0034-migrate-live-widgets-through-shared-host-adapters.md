@@ -120,6 +120,42 @@ timestamp slot prevents splitting time from AM/PM while retaining loading
 geometry; existing metadata defaults remain unchanged. This design disposition
 is not implementation validation or independent exact-candidate approval.
 
+## Print Queue follow-on boundary (2026-09-01)
+
+The next existing migration after the independently accepted Heads foundation
+is Print Queue, addressing F0 / UI-003 and OBS-012. First develop its isolated
+strict real-envelope adapter and tests on reviewed Thermals main; consume shared
+composition only after Heads reaches accepted main, never a pending branch.
+The bounded cutover replaces only the child of `/dashboard/queue` with exact
+private `/dashboard/queue_widget`. Generic MCP aliases and backend acquisition
+remain unchanged. Production packaging proposes a separately reviewed 100,000
+raw-byte cap; this is not permission to increase either lab budget.
+
+Preserve independent queue receipt, freshness, checked time, reason and evidence;
+four queue states, nullable total count, first 100 rows of at most 1,000 jobs,
+explicit truncation, safe filenames, nullable added time and observed waiting
+duration. Queue state `loading` is a reported machine state, not UI skeleton
+mode. Waiting duration never advances locally and is not print ETA. Duplicate
+filenames remain separate ordered records; exposed position identifies a row's
+slot, not durable job identity. Missing facts never become zero or empty success.
+
+Acceptance requires real-producer compatibility, malformed/private-extra and
+wrong-view rejection, all count/state/time bounds, duplicate/reordered rows,
+independent clocks and retained stale empty versus unobserved state. Compose
+zero-raw Queue rows/skeleton/root from closed shared leaves, with top information,
+bottom icon refresh and non-flow feedback. All sanitized filenames remain
+readable at 320/390/590/720 and 200% text. Loading uses truthful structural slots;
+unknown arbitrary live row counts may resize on first data. Closed lab presets
+must match loading geometry and refresh must retain rows/time/focus without
+layout shift. No fabricated row count or enormous blank reserve is acceptable.
+
+Reuse the reviewed generic RPC/controller ordering, refresh race, lifecycle and
+host-generation protection. Exact private route, CSP/no-store, public/path/method
+isolation, source-derived shipping inventory and deterministic graph/budget
+checks precede independent exact-SHA approval and guarded paired-service release.
+This record is a scope contract, not source, deployment, printer or device
+acceptance. No printer controls, new acquisition, auth/Tailscale or plugin change.
+
 ## Documentation basis
 
 The existing split application is retained rather than scaffolded anew.

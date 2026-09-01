@@ -1,5 +1,16 @@
 # Next agent
 
+## Queue adapter checkpoint (2026-09-01)
+
+Continue the existing Print Queue migration, not a new feature: strict adapter,
+model and generic-controller tests are implemented on reviewed `6325c87` with
+56 focused tests plus compiler/AST PASS. Next explicitly integrate newly
+accepted Bed Mesh main, then build zero-raw rows/loading/root and private route
+after the shared Heads foundation is accepted. Do not import unreviewed Heads
+source. No browser port is reserved and no production/acquisition changed.
+Full combined gates, packaging design/budgets, independent exact-SHA review and
+guarded PR/deploy/BOTH restart/meaningful verification remain required.
+
 ## Current checkpoint: Thermals renewal after delivered Camera PR71
 
 Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly

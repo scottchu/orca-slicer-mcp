@@ -1,5 +1,28 @@
 # F0 dual-subsystem foundation validation
 
+## Queue adapter/controller foundation — author software only
+
+Actual commands on the isolated Queue branch with pinned Bun1.3.12:
+
+- App and UI `bun install --frozen-lockfile`: PASS, unchanged lockfiles.
+- UI `bun run check`: PASS, zero Svelte diagnostics and unchanged zero-raw
+  composition frontier. The first check before app dependency installation
+  failed for missing Node/Bun types; installation resolved it, no gate weakened.
+- UI `bun run test src/lib/live/queue-adapter.test.ts
+  src/lib/live/queue-controller.test.ts`:56 PASS (48 adapter,8 controller).
+
+The actual normalizer/store/projector runs only with injected synthetic data;
+no upstream reader executes. Coverage includes independent domain/envelope
+receipts, stale last-success retention, counts0/1/100/101/1,000, duplicate and
+reordered filenames, four machine states, unknown versus empty, canonical added
+date extremes and observed waits through Number.MAX_VALUE. Strict malformed,
+wrong-view, private-extra and unsafe-name cases reject. Shared lifecycle covers
+coalescing, superseded rejection, same-version freshness, lower-version restart,
+bounded initialization and disposal; wait values never tick.
+
+This is not a packaged UI, route, browser, independent approval, deployment,
+real-printer or actual-device acceptance. Full combined gates remain pending.
+
 ## Current checkpoint: Thermals renewal after delivered Camera PR71
 
 Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly

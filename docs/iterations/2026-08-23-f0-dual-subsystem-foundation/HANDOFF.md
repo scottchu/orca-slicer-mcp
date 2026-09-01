@@ -1,5 +1,21 @@
 # F0 dual-subsystem foundation handoff
 
+## Queue adapter checkpoint — no cutover
+
+Changed paths: UI `lib/live/queue-presentation.ts`, `queue-adapter.ts`,
+`queue-controller.ts`, their tests and `tests/fixtures/live-queue.ts`; the common
+envelope parser admits only the newly closed Queue selector alongside existing
+Fans/Thermals. Decision0034 records the bounded cutover/acceptance contract.
+Fifty-six focused tests and compiler/AST checks pass. No app runtime route,
+lab presentation, production bytes or service state changed.
+
+Next integrate accepted Bed Mesh main after this checkpoint, then compose
+Queue through accepted shared leaves once Heads reaches main. Do not copy
+unreviewed branches. Production size cap100,000 remains a review proposal;
+existing lab budget is not silently raised. Known initial row-count variation
+may resize at first live data; retained refresh and closed lab presets require
+strict geometry/focus/source-time parity. Preserve all other WIDGET_TRACKS.
+
 ## Current checkpoint: Thermals renewal after delivered Camera PR71
 
 Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly

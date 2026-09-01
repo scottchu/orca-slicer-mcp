@@ -1,5 +1,17 @@
 # Project state
 
+## Queue migration: isolated adapter foundation (2026-09-01)
+
+Reviewed Thermals main `6325c87` is the author baseline. Print Queue now has a
+fixture-independent model, strict real DTO adapter and thin binding to the
+reviewed generic controller. Fifty-six focused tests and Svelte/compiler/AST
+checks pass; these include the actual existing normalizer/store/projection with
+synthetic inputs, independent receipts and stale retention, duplicate names,
+100/1,000 bounds and source-accepted time extremes. No UI, route, production
+package or service cutover exists at this checkpoint. Heads shared composition
+is still pending independent acceptance and must not be copied from its branch.
+See decision0034 and LIVE_PARITY; all remaining WIDGET_TRACKS remain open.
+
 ## Current checkpoint: Thermals renewal after delivered Camera PR71
 
 Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly

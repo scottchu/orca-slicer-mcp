@@ -1,5 +1,12 @@
 # F0 dual-subsystem foundation brief
 
+Current bounded Queue track (2026-09-01): develop the strict real-data adapter
+and tests independently on reviewed Thermals main `6325c87`. Then, after accepted
+Heads foundation integration, compose shared zero-raw records/loading and the
+exact private Queue child route. Decision0034 and OBS-012 preserve independent
+receipt/state/count/first100 rows, duplicate safe names and observed wait, not
+ETA. No pending-branch source copying or generic MCP/backend/control change.
+
 Current execution order (2026-09-01): PR70 real Fans and PR71 focused Camera are
 shipped; reviewed main is `0aa83a0`. Renew the bounded real Thermals cutover on
 that explicitly integrated baseline, then remaining seven observation migrations before queued
