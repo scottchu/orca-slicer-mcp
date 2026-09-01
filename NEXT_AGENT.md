@@ -14,13 +14,16 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Bounded Bed Mesh author work: finish projected-axis/cage/data-reactivity browser
-checks (including real pixels, rotations and200% text), inspect captures, then
-rerun exact final gates and obtain independent source validation/review before
-guarded delivery. The private-lab package limits remain unchanged; production
-mesh and MCP are unchanged. Camera/Thermals are separate concurrent candidates;
-coordinate the single4179 fixture-server slot and integrate reviewed main before
-acceptance. Earlier PR70-pending statements below are historical at this baseline.
+Bounded Bed Mesh candidate: obtain independent exact-SHA validation and source
+review after the author pin, then guarded merge/deploy/BOTH restart/verification.
+Reviewed Camera main `0aa83a0` is integrated and already shipped as release
+`20260901-0aa83a0-pr71-20260901T170551-59206e`; do not repeat the older Camera
+acceptance sequence below. Bed Mesh author browser evidence is 137/137 passing,
+including real pixels, projected labels, reactive buffers and 200% text; newest
+VALIDATION records all gates and unchanged package limits. Production Bed Mesh
+and MCP remain legacy pending adapter parity. Thermals is separate concurrent
+work; coordinate fixture port 4179 and integrate only explicitly reviewed main.
+All remaining WIDGET_TRACKS stay open; earlier pending paragraphs are history.
 
 Next acceptance: the real Camera dashboard candidate on explicitly merged
 reviewed main `db1c926` (Fans PR70 delivered through release

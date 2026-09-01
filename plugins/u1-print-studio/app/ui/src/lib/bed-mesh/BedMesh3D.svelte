@@ -85,7 +85,7 @@
         camera.updateProjectionMatrix();
         selected = projectedAxes(display, data, sides, project);
         sides.z = selected.z;
-        nextLabels = layoutLabels(selected.axes, project, project([0, 0, 0]), measure);
+        nextLabels = layoutLabels(selected.axes, project, project([0, 0, 0]), measure, rect);
         const corners = [-display.halfX, display.halfX].flatMap((x) => [-display.halfY, display.halfY].flatMap((y) => [-0.18, 0.18].map((z) => project([x, z, y]))));
         const left = Math.min(...corners.map((p) => p.x), ...nextLabels.map((p) => p.x));
         const right = Math.max(...corners.map((p) => p.x), ...nextLabels.map((p) => p.x + p.width));

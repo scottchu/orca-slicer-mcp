@@ -10,13 +10,21 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
-The bounded private-lab Bed Mesh correction is under author validation on the
-reviewed PR70 baseline. It replaces fixed CSS-corner labels with actual projected
-axes, a nondegenerate padded-mm grid enclosure and persistent reactive 3D/2D
-renderers. Early unit/type/AST and default-browser geometry checks pass; expanded
-rotation/enlarged-text/pixel checks, final combined gates and independent exact
-acceptance remain pending. No production Bed Mesh/MCP cutover or deployment is
-claimed. Decision0032 and active VALIDATION/HANDOFF preserve the scope and gates.
+The bounded private-lab Bed Mesh correction explicitly integrates reviewed
+Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace`. It replaces fixed
+CSS-corner labels with projected axes, a nondegenerate padded-mm grid enclosure
+and persistent reactive 3D/2D renderers. The combined 137-case browser gate
+passes, including four widths, 200% text, actual surface pixels, data updates,
+disposal and supported orbit limits. Independent exact validation/review and
+Bed Mesh delivery remain pending; production Bed Mesh and MCP are unchanged.
+Decision 0032 and newest VALIDATION/HANDOFF record the current candidate.
+
+Camera PR71 is already delivered per the operator receipt: merge `0aa83a0`,
+tree `af970729c41d041533d5d6f6c909a3a43d49a21b`, release
+`20260901-0aa83a0-pr71-20260901T170551-59206e`, BOTH services restarted and
+health/integrity verified. This is attributed deployment evidence, not a new
+author device/printer check. Earlier Camera-pending sections below are history.
+Thermals and all other unfinished WIDGET_TRACKS remain separate open work.
 
 ### Real Camera dashboard candidate — exact review next (2026-09-01)
 

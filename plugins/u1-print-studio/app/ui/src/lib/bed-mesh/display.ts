@@ -78,11 +78,15 @@ export const projectedAxes = (display: Display, observation: BedMeshObservation,
 
 export const layoutLabels = (
   axes: ReturnType<typeof projectedAxes>['axes'], project: (point: Point) => ScreenPoint,
-  center: ScreenPoint, measure: (text: string) => { width: number; height: number }
+  center: ScreenPoint, measure: (text: string) => { width: number; height: number }, frame: { width: number; height: number }
 ) => {
   const labels: Label[] = [];
   const optional: Label[] = [];
-  for (const axis of axes) {
+  const overlaps = (label: Label) => labels.some((other) => label.x < other.x + other.width + 3 && label.x + label.width + 3 > other.x && label.y < other.y + other.height + 3 && label.y + label.height + 3 > other.y);
+  const contained = (label: Label) => label.x >= 3 && label.y >= 3 && label.x + label.width <= frame.width - 3 && label.y + label.height <= frame.height - 3;
+  // Reserve the narrow vertical silhouette first; floor labels can move down
+  // without pushing the entire chart away from the Z label column.
+  for (const axis of [axes[2], axes[0], axes[1]]) {
     const a = project(axis.a);
     const b = project(axis.b);
     const length = Math.max(1, Math.hypot(b.x - a.x, b.y - a.y));
@@ -92,7 +96,7 @@ export const layoutLabels = (
     for (const [suffix, part, text] of [['min', 0, numberLabel(axis.min)], ['max', 1, numberLabel(axis.max)], ['', 0.5, axis.id.toUpperCase()]] as const) {
       const anchor = { x: a.x + (b.x - a.x) * part, y: a.y + (b.y - a.y) * part };
       const size = measure(text);
-      const distance = 5 + Math.abs(nx) * size.width / 2 + Math.abs(ny) * size.height / 2 + (suffix ? 0 : size.height * 1.5);
+      const distance = 5 + Math.abs(nx) * size.width / 2 + Math.abs(ny) * size.height / 2 + (suffix ? 0 : size.height * 1.2);
       const label = { id: suffix ? `${axis.id}-${suffix}` : axis.id, text, ...size, anchor, x: anchor.x + nx * distance - size.width / 2, y: anchor.y + ny * distance - size.height / 2 };
       if (suffix && axis.id !== 'z') {
         const inset = Math.min(size.width / 2 + 7, length * 0.25) * (part ? -1 : 1);
@@ -100,11 +104,17 @@ export const layoutLabels = (
         label.y += (b.y - a.y) / length * inset;
       }
       if (suffix && axis.id === 'z') label.y += (part ? -1 : 1) * size.height * 0.6;
-      // Preserve the true anchor; push only outward when adjacent endpoints meet.
-      for (let attempt = 0; attempt < 32 && labels.some((other) => label.x < other.x + other.width + 3 && label.x + label.width + 3 > other.x && label.y < other.y + other.height + 3 && label.y + label.height + 3 > other.y); attempt += 1) {
-        label.x += nx * 6;
-        label.y += ny * 6;
+      // Search along the same projected edge as well as outward. A short Z
+      // projection needs vertically separated text, not an ever-wider margin.
+      let placed = false;
+      for (const distance of [0, 6, 12, 18, 24, 36, 48, 64, 80]) {
+        for (const [out, along] of [[0, distance], [0, -distance], [distance, 0], [distance, distance], [distance, -distance]]) {
+          const candidate = { ...label, x: label.x + nx * out - ny * along, y: label.y + ny * out + nx * along };
+          if (!overlaps(candidate) && contained(candidate)) { Object.assign(label, candidate); placed = true; break; }
+        }
+        if (placed) break;
       }
+      if (!placed) for (let attempt = 0; attempt < 32 && overlaps(label); attempt++) { label.x += nx * 6; label.y += ny * 6; }
       labels.push(label);
     }
     if (length > 160) {
@@ -116,6 +126,6 @@ export const layoutLabels = (
       optional.push(label);
     }
   }
-  for (const label of optional) if (!labels.some((other) => label.x < other.x + other.width + 3 && label.x + label.width + 3 > other.x && label.y < other.y + other.height + 3 && label.y + label.height + 3 > other.y)) labels.push(label);
+  for (const label of optional) if (contained(label) && !overlaps(label)) labels.push(label);
   return labels;
 };

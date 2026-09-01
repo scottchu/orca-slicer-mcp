@@ -1,5 +1,84 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 Bed Mesh combined author gates — independent acceptance pending
+
+Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` was explicitly
+merged after preserving the narrow Bed Mesh checkpoint. Attributed operator
+receipt: Camera release `20260901-0aa83a0-pr71-20260901T170551-59206e`, tree
+`af970729c41d041533d5d6f6c909a3a43d49a21b`, BOTH services restarted and
+health/integrity verified. That prior shipment is not new author printer/device
+evidence and does not claim this Bed Mesh candidate has been deployed.
+
+Actual final commands, pinned Bun 1.3.12 and normal Node PATH:
+
+- Repository `./scripts/check-repository.sh`: PASS, 221 UI units in 23 files,
+  Svelte/TypeScript zero errors/warnings and AST contract pass, deterministic
+  production Fans/Camera and both private labs, 286 app tests / 3,345 assertions,
+  21 lifecycle and 24 shipping tests, `repository contract: ok`.
+- UI `bun run test:browser`: 137/137 Chrome PASS on the combined Camera/Fans/
+  Bed Mesh source and exact packaged bytes. This includes the eight expanded
+  Bed Mesh cases (320/390/590/720, normal and 200% root text): flat zero, flat
+  nonzero, all-negative 3×7, asymmetric rectangular 11×11, tiny-range 2×2 and
+  tilted 64×64 updates; seven quadrant/boundary azimuths at both supported
+  18°/74° polar limits; measured glyph containment/nonoverlap; reset; retained
+  camera/canvas and changed actual geometry/color buffers with disposal.
+  Each data fixture requires actual colored screenshot pixels, not merely an
+  invisible bounding element. The 2D switch retains the identical 4:3 frame;
+  changed data changes its pixels without resize. Surface colors are not
+  required to fill an impossible minimum area in edge-on flat rotations.
+- Four default packaged-route cases within that full suite retain at least
+  70% frame width and 42% height surface coverage, contained 12px axis labels,
+  equal 2D/3D frame DOMRects and no external request or console error.
+- Supplemental UI `bun x playwright test tests/visual/bed-mesh.spec.ts
+  --workers=1`: 4/4 PASS after the full run, same source/bytes. Measured default
+  coverage at 320/390/590/720 is respectively 81.1/84.8/90.5/92.4% width and
+  46.7/48.8/52.1/53.2% height, with exact mode frame equality in every case.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and `dist/u1-print-studio --help`: PASS.
+- `git diff --check`: PASS.
+
+Author personally inspected final default 320/720 full-page captures and the
+320 enlarged reset/orbit plus 720 normal orbit captures. The actual surface,
+floor and two rear grid walls remain visible; true outer-edge labels are
+readable and separated. Captures are local generated test evidence, not checked
+into Git, and the reference screenshots informed structure only, not theme or
+copied measurement values. Existing summaries and controls remain unchanged.
+
+Final raw UTF-8 artifacts (SHA-256):
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| Observation lab | 749,150 | `8233becb8f75a4d2bb48658cd82ecb1f2a59df80f42f6a1dcbb5080cf3a055e1` |
+| Camera lab, unchanged | 78,795 | `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a` |
+| Production Fans, unchanged | 85,315 | `b28ee10c695bb8d0296fa0d161b9962c578fdecabbd0f18ec1b525d408d23be1` |
+| Production Camera, unchanged | 89,919 | `b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10` |
+
+The two labs total 827,945 bytes; unchanged limits remain 750,000 observation,
+80,000 Camera and 830,000 aggregate. No new dependency, route, cap increase,
+unsafe minification or dropped feature was used to fit. The redundant surface
+edge overlay was removed; real grid/axis geometry remains.
+
+The first final repository run failed solely because `private-lab.test.ts`
+still pinned the prior artifact hash; its 285/286 pass is not counted as a full
+pass. The exact rebuilt hash was updated, then the complete gate above passed.
+Earlier real label-overlap/containment and test-harness failures below remain
+recorded and were corrected without weakening the expanded assertions.
+
+Evidence boundary: author static/software, local fixtures and Chrome only.
+Independent exact validation, formal source review, Bed Mesh merge/deployment/
+BOTH restart and served-behavior verification are still required. No actual
+printer, user phone/Safari, live Bed Mesh adapter or MCP cutover is accepted.
+All other migration and named feature tracks remain open.
+
+Preliminary independent source inspection identified existing parity debt,
+explicitly outside this bounded refinement: the lab has no focusable keyboard
+orbit/Home reset contract, no automatic fallback when WebGL creation fails,
+and the 2D canvas labels remain fixed 12px when root text is enlarged. The 200%
+label assertions above apply to projected 3D labels, not 2D canvas text. This
+candidate does not claim full decision-0030 interaction parity; the next live
+chart cutover must address and independently verify all three gaps.
+
 ## 2026-09-01 Bed Mesh early author checkpoint — not acceptance
 
 The corrected test harness now exercises actual rendering. Normal320 passes its

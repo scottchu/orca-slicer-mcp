@@ -4,6 +4,14 @@ Updated 2026-09-01. Latest user order: finish existing implementation, complete
 migration and delivery, finish queued features, then clean up superseded code.
 No listed track is cancelled. Private fixtures do not prove live behavior.
 
+Current checkpoint: reviewed Camera PR71 merge `0aa83a0` is integrated and the
+operator reports it shipped with BOTH services restarted/verified. Its private
+dashboard migration does not retire legacy/MCP Camera aliases. The bounded Bed
+Mesh projected enclosure/reactive-renderer correction has passing author gates
+and awaits exact independent acceptance/delivery; it does not migrate the live
+Bed Mesh adapter. Thermals remains a separate candidate. Earlier pending status
+below is historical where superseded by this checkpoint.
+
 PR67 heads `8663d93` and `befbbd5` were independently rejected for text clipping,
 incomplete correlated selection types, and subsequently separated number/unit
 spacing. Final head `07e1c144` corrected those failures and passed fresh exact
@@ -28,8 +36,8 @@ cutovers and seven ready-shell debts remain.
 | Current Job | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
-| Bed Mesh | Svelte/Three chart, native-tag shell debt | Shipped controls; no Three mount while loading | Pending | PR67 deployed/post-verified |
-| Camera | Zero-raw real/lab roots and widgets, generic persistent VideoSurface/MediaStatus | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | Private dashboard candidate wired; exact independent acceptance pending; legacy/MCP unchanged | PR69 lab delivered; real Camera candidate not deployed |
+| Bed Mesh | Projected Three enclosure and reactive 2D/3D candidate; native-tag shell debt | Shipped controls; no Three mount while loading | Pending adapter parity | PR67 delivered; renderer refinement awaits independent acceptance/delivery |
+| Camera | Zero-raw real/lab roots and widgets, generic persistent VideoSurface/MediaStatus | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | Private dashboard delivered; legacy/MCP unchanged | PR71 operator reports BOTH restart/health/integrity verified; device acceptance separate |
 
 Acceptance progression: author software tests → separate exact-SHA validation →
 separate formal review → PR merge → exact deployment → explicit BOTH service
@@ -69,6 +77,9 @@ those adapters and generic resource replacement remain pending.
 
 - [ ] Bed Mesh reference-style visible-side axes and readable Z enclosure/grid,
   stable 2D/3D bounds, icon-only mode/reset controls.
+- [ ] Before live chart cutover: focusable keyboard orbit/Home reset, automatic
+  WebGL-failure 2D fallback, and root-text-responsive 2D labels. These inherited
+  lab gaps are not accepted by the projected-axis/reactivity refinement.
 - [ ] Read-only Console widget, with no command/control capability.
 - [ ] Truthful model thumbnail/layer-progress visualization, distinguishing
   visual preview from actual sliced-layer evidence.

@@ -1,5 +1,39 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 Bed Mesh combined candidate — exact review next
+
+The author preserved the narrow implementation checkpoint and explicitly merged
+reviewed Camera main `0aa83a0` into this branch. Camera's shipped private route,
+artifact and bridge are unchanged; its operator release is
+`20260901-0aa83a0-pr71-20260901T170551-59206e`, with BOTH restarts and
+health/integrity verification. This author performed no service/printer action.
+
+Changed application paths are the existing `ui/src/lib/bed-mesh` 3D/2D leaves,
+new pure `display.ts`, and the regenerated observation lab HTML plus exact hash.
+The chart-leaf AST inventory is updated; isolated test-only fixture/build routes
+exercise real Three buffers and pixels without shipping test hooks. Existing
+theme, frame, summaries, controls, dependencies and limits are unchanged.
+
+The final layout reserves essential Z labels, measures tabular numeric glyphs,
+and searches outward/along the projected edge before expanding the frustum.
+This fixes the reproduced enlarged flat endpoint overlap and extreme-orbit
+containment failures without hiding text or weakening their regression gates.
+The full combined 137-case browser suite passes; author inspected normal 320/720
+and enlarged/rotated captures. VALIDATION has exact commands, bounds and hashes.
+
+Next: independent full exact-source validation and formal review of the pin,
+then guarded delivery and separate served behavior checks. Preserve the earlier
+failed evidence below. No production/MCP Bed Mesh cutover, live measurement
+acquisition, actual Safari/phone or user-outcome acceptance is claimed. Thermals,
+remaining ready-shell debt, Console, model progress, size API and all other
+WIDGET_TRACKS remain open. Coordinate the exclusive fixture port 4179.
+
+Known inherited lab limitations retained for the next chart/live-parity slice:
+no focusable keyboard orbit/Home reset, no automatic WebGL-failure 2D fallback,
+and fixed 12px 2D canvas labels under root-text enlargement. The present 200%
+glyph tests cover 3D HTML labels only. Do not describe this candidate as complete
+decision-0030 parity or infer actual-device behavior from local Chrome checks.
+
 ## 2026-09-01 Bed Mesh projected-enclosure author checkpoint
 
 Decision0032's bounded private-lab refinement changes BedMesh3D/BedMesh2D plus
