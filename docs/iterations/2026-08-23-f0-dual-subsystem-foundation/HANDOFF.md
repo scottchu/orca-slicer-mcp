@@ -1,5 +1,46 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 reviewer-ready all-nine lab controls
+
+Author gates are complete: 126 UI units, 86 Chrome cases, compiler/AST,
+deterministic package, 276 app/3,187 assertions, 21 lifecycle, 24 ship tests and
+bundles/signature/help. Exact package is 748,478 bytes with 1,522-byte reserve;
+see newest VALIDATION for its hash and actual command record. The candidate is
+lab-only and not yet independently approved or deployed.
+
+Changed areas: closed controller and validated per-view fixture factories;
+shared bottom LabControls leaf; pure loading/terminal state boundaries; seven
+existing ready shells reused for loading without observation data; shared
+LoadingValue/ObservedMeta and degree placeholders; route-local URL state with
+popstate cleanup; exact guards; unit/browser/package tests and current records.
+Loading does not mount Three or any camera/transport. Known static names/icons
+remain while values are skeletons. Refresh retains values and source timestamps.
+
+Next smallest action: independent exact-SHA validation and formal review, then
+guarded PR merge/deploy/explicit BOTH restart/verification with the user's
+standing authority. Follow with a separate actual-receipt record. Camera author
+must integrate only after this frozen shared slice is resolved, not race its
+route/controller/registry/package files. WIDGET_TRACKS lists all unfinished
+migration, cutover, feature and cleanup obligations. No original user changes
+or previously reviewed worktrees were modified.
+
+## 2026-09-01 consolidation-first resume
+
+Finish the current all-nine private lab controls/loading candidate, run the full
+author gate set, freeze exact source, obtain independent validation/review, and
+only then guarded merge/deploy/BOTH restart/verify. Eight four-width/200%-text
+major geometry browser cases passed; corrected unit assertions need rerun.
+All interrupted local test processes have completed. The current source is
+unreviewed and unshipped; do not advertise it as live.
+
+Remaining migration debt is explicit: the seven Overview/Progress/Heads/
+CurrentJob/JobHistory/Queue/BedMesh ready shells, production observation and
+camera assets/routes, and the separately authored but unintegrated synthetic
+Camera lab. Cleanup follows accepted replacements; do not remove working legacy
+code or include production changes in this lab-only PR without reviewed scope.
+Smaller Refresh, size/API modes and other new feature tracks wait until existing
+consolidation and delivery are finished. Original dirty checkout is untouched.
+
 ## 2026-09-01 visible lab controls — unreviewed implementation checkpoint
 
 `codex/u1-lab-scenarios` contains closed per-view controller/factories, shared

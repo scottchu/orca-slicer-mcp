@@ -18,7 +18,8 @@ test('loading has known structure but no telemetry, gradient or action', async (
   expect(container.querySelectorAll('[data-metric-unit]')).toHaveLength(14);
   expect(container.querySelector('[data-percentage-background], button,input,a,[tabindex]')).toBeNull();
   expect(container.textContent).not.toMatch(/N\/A|RPM|%|Observed|Cool Chamber|9,126/);
-  expect(container.querySelectorAll('[data-skeleton]')).toHaveLength(17);
+  expect(container.querySelectorAll('[data-skeleton]')).toHaveLength(16);
+  expect(container.querySelectorAll('[data-observed-meta] [data-loading-value]')).toHaveLength(1);
   await rerender({ state: { kind: 'ready', observation: fansLabFixture } });
   expect(screen.getByRole('status')).toHaveTextContent('Fans & Air loaded');
   expect(container.querySelector('[data-skeleton]')).toBeNull();

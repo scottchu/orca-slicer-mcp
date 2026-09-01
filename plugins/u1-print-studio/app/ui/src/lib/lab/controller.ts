@@ -26,7 +26,7 @@ const presets = (values: readonly (number | null)[], unit = '') => values.map((v
 const printStates = choices('printing', 'paused', 'complete', 'standby');
 export const scenarios: Record<LabView, readonly Option[]> = {
   overview: printStates, progress: printStates, jobs: printStates,
-  thermals: choices('heating', 'at_target', 'targets_off', 'unknown_targets'),
+  thermals: choices('at_target', 'heating', 'targets_off', 'unknown_targets'),
   heads: choices('mixed', 'loaded', 'empty', 'unknown'),
   job_history: choices('populated', 'empty', 'mixed_outcomes'), queue: choices('populated', 'empty'),
   fans: choices('nominal', 'zero', 'unknown', 'mixed'), bed_mesh: choices('warped', 'flat', 'tilted')

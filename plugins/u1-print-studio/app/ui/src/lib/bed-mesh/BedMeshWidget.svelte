@@ -50,7 +50,7 @@
   {#snippet children()}
     <WidgetHeader title="Bed Mesh">
       {#snippet icon()}<Grid3X3 size={22} strokeWidth={1.8} />{/snippet}
-      {#snippet meta()}{#if loading}<Skeleton shape="caption" />{:else}<ObservedMeta observedAt={mesh?.sourceObservedAt ?? null} freshness={mesh?.freshness ?? 'unknown'} />{/if}{/snippet}
+      {#snippet meta()}<ObservedMeta observedAt={mesh?.sourceObservedAt ?? null} freshness={mesh?.freshness ?? 'unknown'} {loading} />{/snippet}
     </WidgetHeader>
     <WidgetBody>
       {#snippet children()}

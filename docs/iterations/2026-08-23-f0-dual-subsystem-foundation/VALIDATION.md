@@ -1,5 +1,75 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 all-nine lab controls — completed author gate set
+
+Actual local commands, with pinned Bun 1.3.12 on PATH and normal Node available:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser
+cd ../../../..
+./scripts/check-repository.sh
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign --verify --verbose=2 dist/u1-print-studio
+dist/u1-print-studio --help
+git diff --check
+```
+
+Final results: compiler zero errors/warnings; exact AST composition guards pass;
+126 UI unit tests pass; 86 Chrome cases pass; deterministic package verification
+passes; 276 app tests with 3,187 assertions pass; 21 lifecycle and 24 shipping
+tests pass. Vendor/server/stdio/runtime bundles, macOS signature and runtime help
+pass. New browser cases cover all nine closed control docks at four widths,
+keyboard selection, reload/back/forward/reset, disabled-state rules, no external
+requests, default and known-empty loading geometry, retained refresh/source time,
+terminal states and document overflow. Major card/header/body/footer/list/chart
+bounds remain within one CSS pixel at 320/390/590/720 and 200% text. Existing
+gradient, fan, thermal, mesh, title/bootstrap and compatibility checks remain.
+
+The packaged lab is 748,478 bytes, SHA-256
+`596fb409bb336cb4ba147b4aaeb7f2472ab97be8b9f8784238f1a5a33cf0e348`:
+21,382 bytes above deployed PR65 and 1,522 bytes below the unchanged 750,000 cap.
+Camera is not included. No cap increase, production asset/transport change,
+external chunk, CSP change or acquisition was introduced.
+
+Failures found and corrected before this final pass: intrinsic empty-word slot
+sizing, proportional-font material wrapping, metadata wrapping, and queue field
+widths. Ready/loading now share the same layout/value owners; no hidden ready
+telemetry or fixture observation is mounted for loading. Overview's shared narrow
+layout places the metric below its label to avoid an enlarged-text auto-column
+collision. Two unit structure/whitespace assertions and four browser label
+locators were updated to match the new visible controls without relaxing checks.
+
+These are author software/synthetic-browser results, not independent review,
+deployment, actual phone, camera or printer evidence. Separate exact-candidate
+validation and formal approval are still required before guarded delivery.
+
+## 2026-09-01 resumed consolidation checkpoint
+
+The interrupted author processes completed; no lab Vite/Vitest/Playwright process
+remained on resume. Current committed base is `e5972f2`, which explicitly merged
+reviewed main `cb37e3e`; ongoing source changes are not yet frozen or approved.
+`bun run check` passed compiler (zero errors/warnings) and exact composition
+guards. `bun run test:browser -- lab-states.spec.ts` passed all eight cases:
+all nine views at 320/390/590/720, ordinary and 200% text, major ready/loading
+geometry within one pixel, retained refresh geometry/source time, terminal
+states and document overflow. These are synthetic Chrome checks, not device or
+deployment acceptance. The preceding unit run was 124/126; the two outdated
+structure/whitespace assertions were corrected but await a fresh full run.
+
+The user now prioritizes finishing existing work and migration/delivery/cleanup
+before new features. This checkpoint does not claim Camera integration, seven
+legacy ready-shell retirement or production route cutover. No service was
+restarted and no printer/camera acquisition occurred during these author checks.
+
 ## 2026-09-01 visible lab state controls — work-in-progress author checkpoint
 
 Pinned Bun frozen installs, UI compiler/AST, all 110 unit tests, build and

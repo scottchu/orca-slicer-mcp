@@ -28,8 +28,8 @@
         {@const reading = heads?.items[index]}
         <section class:empty={reading?.presence !== true} class:active={reading?.active ?? false} class="head-card" style={`--head-color:${reading?.color ?? '#A7ADB4'}`} aria-label={`Tool ${head.physicalTool}`}>
           <div class="head-top"><strong>T{head.physicalTool}</strong><span class:neutral={!reading?.active} class:loading class="observation-status"><LoadingValue {loading} text={reading ? reading.active ? 'Active' : 'Parked' : undefined} /></span></div>
-          <div class="material" data-head-material><LoadingValue {loading} text={reading ? reading.presence === false ? 'Empty' : reading.presence === null ? 'N/A' : reading.material ?? 'N/A' : undefined} size="long" /></div>
-          <div class="temperature"><Thermometer aria-hidden="true" /> <LoadingValue {loading} text={reading ? `${Math.round(reading.actualC)}° / ${Math.round(reading.targetC)}°` : undefined} /></div>
+          <div class="material" data-head-material><LoadingValue {loading} text={reading ? reading.presence === false ? 'Empty' : reading.presence === null ? 'N/A' : reading.material ?? 'N/A' : undefined} size="long" words={[8, 6]} /></div>
+          <div class="temperature"><Thermometer aria-hidden="true" /> <LoadingValue {loading} text={reading ? `${Math.round(reading.actualC)}° / ${Math.round(reading.targetC)}°` : undefined} words={[4, 1, 4]} /></div>
           {#if reading?.color}
             <button class="color copy-color" type="button" data-copy-color aria-label={`Copy T${head.physicalTool} color ${reading.color}`} onclick={() => copyColor(reading.color!, feedback)}>
               <span class="swatch" aria-hidden="true"></span><span>{reading.color}</span><Copy aria-hidden="true" />

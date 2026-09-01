@@ -26,9 +26,9 @@ const factories = {
     progress: { state: printState(selection), percent: printPercent(selection) }, jobs: { state: printState(selection) } }),
   thermals: (selection: LabSelection): ThermalsObservation => {
     const readings = thermalsLabFixture.readings.map((reading, index) => {
-      const nominal = index < 4 ? 220 : index === 4 ? 55 : null;
+      const nominal = reading.targetC;
       const targetC = selection.scenario === 'targets_off' ? 0 : selection.scenario === 'unknown_targets' ? null : nominal;
-      const actualC = selection.scenario === 'at_target' ? targetC ?? 33 : selection.scenario === 'heating' ? index < 4 ? 100 : index === 4 ? 35 : 33 : reading.actualC;
+      const actualC = selection.scenario === 'at_target' && targetC !== null && targetC > 0 ? targetC : selection.scenario === 'heating' && reading.active ? index === 4 ? 35 : 100 : reading.actualC;
       return { ...reading, actualC, targetC, active: targetC !== null && targetC > 0 };
     });
     const reading = readings[Number(selection.values.channel)];

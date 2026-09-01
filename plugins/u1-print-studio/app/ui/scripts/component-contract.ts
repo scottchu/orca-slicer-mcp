@@ -5,7 +5,7 @@ import { parse } from 'svelte/compiler';
 // Explicit migration frontier: new files are rejected until assigned a layer.
 export const composites = ['observation/ThermalsWidget.svelte', 'observation/ActualTarget.svelte', 'observation/ThermalReading.svelte', 'observation/ThermalsSkeleton.svelte', 'observation/FansWidget.svelte', 'observation/FanReading.svelte', 'observation/FansSkeleton.svelte', 'observation/ObservationSkeleton.svelte', 'observation/ObservationState.svelte'];
 export const leaves: Record<string, string[]> = {
-  'ui/LoadingValue.svelte': ['span'],
+  'ui/LoadingValue.svelte': ['span', 'span'],
   'ui/LabControls.svelte': ['fieldset', 'legend', 'div', 'label', 'span', 'select', 'option'],
   'ui/Icon.svelte': [], 'ui/BorderedIcon.svelte': ['span'], 'ui/Label.svelte': ['span'],
   'ui/CircleLabel.svelte': ['span'], 'ui/BoxLabel.svelte': ['span'], 'ui/Name.svelte': ['span'],
@@ -58,7 +58,7 @@ const approvedImports: Record<string, string[]> = {
   'observation/ThermalsWidget.svelte': ['./ObservationFrame.svelte', './types', '../ui/state', '../ui/ReadingList.svelte', '../ui/StatePanel.svelte', './ThermalReading.svelte', './ThermalsSkeleton.svelte'],
   'observation/ActualTarget.svelte': ['../ui/DegreeValue.svelte', '../ui/Inline.svelte', '../ui/Label.svelte'],
   'observation/ThermalReading.svelte': ['./types', './ActualTarget.svelte', '../ui/Icon.svelte', '../ui/Inline.svelte', '../ui/Name.svelte', '../ui/ReadingRow.svelte', '../ui/PercentageBackground.svelte'],
-  'observation/ThermalsSkeleton.svelte': ['../ui/Inline.svelte', '../ui/ReadingList.svelte', '../ui/ReadingRow.svelte', '../ui/Skeleton.svelte'],
+  'observation/ThermalsSkeleton.svelte': ['../ui/ReadingList.svelte', './ThermalReading.svelte'],
 };
 export function inspectComponent(source: string, strict: boolean, imports: string[] = []): { tags: string[]; violations: string[] } {
   const ast = parse(source, { modern: true });

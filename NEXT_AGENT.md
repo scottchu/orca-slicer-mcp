@@ -14,6 +14,28 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Use active `WIDGET_TRACKS.md` as the finite unfinished-work checklist. Every
+named feature remains queued after existing consolidation; none is cancelled.
+
+Current all-nine lab candidate is ready for exact independent validation/review:
+author compiler/AST, 126 UI unit, 86 Chrome, deterministic 748,478-byte package,
+276 app/3,187 assertions, 21 lifecycle and 24 shipping tests pass; bundles /
+signature/help pass. No new feature track should delay that review and delivery.
+This is not yet merged, deployed, or validated on the user's actual device.
+
+Latest user order: finish existing work, migrate/consolidate, merge/deploy/
+explicitly restart BOTH services/verify, then clean up. Do not begin new feature
+tracks. Complete the preserved all-nine lab-controls/loading candidate first
+with exact independent validation and review; Camera integration and remaining
+legacy replacements require their own explicit reviewed cutover boundaries.
+Do not silently turn the lab PR into a production migration or delete working
+legacy paths prematurely. The seven partly legacy ready shells are Overview,
+Progress, Heads, CurrentJob, JobHistory, Queue and BedMesh; production observation
+and camera routes/assets also remain legacy. Camera's authored Svelte checkpoint
+is not integrated or shipped. Keep every remaining migration item open until
+replacement and delivery evidence exists. Earlier execution orders below are
+historical where they conflict with this consolidation-first order.
+
 Current priority is visible private-lab lifecycle/scenario/value controls and
 shape-matched loading for all nine observation views, followed promptly by the
 separate synthetic Camera lab using the shared controls. See decisions 0032/0033

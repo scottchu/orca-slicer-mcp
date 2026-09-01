@@ -4,6 +4,12 @@
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`
 - Status: active
+- Latest user execution order: complete existing implementation, consolidate /
+  migrate, review and guarded merge/deploy/BOTH restart/verify, then cleanup.
+  Freeze the smallest complete existing all-nine controls/loading slice first;
+  do not start new features or silently include production cutover. Camera and
+  seven legacy ready-shell replacements plus production observation/camera
+  migrations remain explicit unfinished work, not accepted by a lab shipment.
 - Current priority: visible shared bottom lab controls for all nine observation
   lifecycle/scenario/freshness/value examples, including structural loading;
   then separate synthetic Camera integration with that same control system.

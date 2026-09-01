@@ -18,8 +18,8 @@
       {#each items as item, index}
         <div class="observation-row queue-row">
           <span class="position" class:loading><LoadingValue {loading} text={queue ? item.position : undefined} size="short" /></span>
-          <div><strong><LoadingValue {loading} text={queue ? `Queued item ${item.position}` : undefined} size="long" /></strong><span><LoadingValue {loading} text={queue ? `Added ${formatClock(queue.items[index].addedAt)}` : undefined} size="long" /></span></div>
-          <span class="wait"><Clock3 aria-hidden="true" /><LoadingValue {loading} text={queue ? formatDuration(queue.items[index].waitingSeconds) : undefined} size="short" /></span>
+          <div><strong><LoadingValue {loading} text={queue ? `Queued item ${item.position}` : undefined} words={[7, 5, 2]} size="long" /></strong><span><LoadingValue {loading} text={queue ? `Added ${formatClock(queue.items[index].addedAt)}` : undefined} words={[6, 6, 3]} size="long" /></span></div>
+          <span class="wait"><Clock3 aria-hidden="true" /><LoadingValue {loading} text={queue ? formatDuration(queue.items[index].waitingSeconds) : undefined} words={[4]} size="short" /></span>
         </div>
       {/each}
     </div>

@@ -10,6 +10,33 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Consolidate, migrate, deliver and clean up — latest user order (2026-09-01)
+
+The finite source/state/cutover/delivery checklist is in the active iteration's
+`WIDGET_TRACKS.md`; all named feature obligations remain queued, not cancelled.
+
+Finish existing work before starting any new feature track. First complete and
+independently validate/review the preserved all-nine private-lab controls and
+loading slice, then use guarded merge/deploy/explicit BOTH restart/verification.
+Continue the already-started Camera integration and migration cleanup under
+separate reviewed boundaries; do not declare remaining legacy code migrated or
+delete it before replacement routes and behavior are accepted. Smaller Refresh,
+size modes and all other new feature additions wait behind consolidation.
+
+The current lab work is not shipped. Seven ready layout shells remain partly
+legacy: OverviewWidget, ProgressWidget, HeadsWidget, CurrentJobWidget,
+JobHistoryWidget, QueueWidget and BedMeshWidget. Production observation and
+camera assets/routes remain legacy too. The separate synthetic Camera Svelte
+checkpoint is not yet integrated into a deployed lab route. No production
+cutover, live camera, printer or actual-device acceptance is implied.
+
+The all-nine controls/loading candidate now passes author compiler/AST, 126 UI
+unit tests, 86 Chrome cases (four widths and 200% text), deterministic packaging,
+276 app tests/3,187 assertions, 21 lifecycle and 24 ship tests plus bundles /
+signature/help. Artifact: 748,478 bytes, unchanged cap 750,000. Exact independent
+validation/review and guarded delivery remain pending; these author results are
+not an actual-device or live-service acceptance claim.
+
 ### Visible lab lifecycle/scenario controls — current priority (2026-09-01)
 
 The next user-directed UI-003 slice adds a visible shared control dock below

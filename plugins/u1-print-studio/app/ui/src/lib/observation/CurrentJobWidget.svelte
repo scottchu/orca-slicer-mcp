@@ -17,8 +17,8 @@
   </div>
   <div class="job-track" aria-hidden="true"><span style={`width:${job?.progressPercent ?? 0}%`}></span></div>
   <div class="observation-metric-grid job-metrics">
-    <div class="observation-metric"><Clock3 class="observation-icon" aria-hidden="true" /><span class="observation-label">Elapsed</span><strong><LoadingValue {loading} text={job ? formatDuration(job.elapsedSeconds) : undefined} /></strong></div>
-    <div class="observation-metric"><Route class="observation-icon" aria-hidden="true" /><span class="observation-label">Filament</span><strong><LoadingValue {loading} text={job ? `${(job.filamentUsedMm / 1000).toFixed(1)} m` : undefined} /></strong></div>
+    <div class="observation-metric"><Clock3 class="observation-icon" aria-hidden="true" /><span class="observation-label">Elapsed</span><strong><LoadingValue {loading} text={job ? formatDuration(job.elapsedSeconds) : undefined} words={[3, 3]} /></strong></div>
+    <div class="observation-metric"><Route class="observation-icon" aria-hidden="true" /><span class="observation-label">Filament</span><strong><LoadingValue {loading} text={job ? `${(job.filamentUsedMm / 1000).toFixed(1)} m` : undefined} words={[4, 1]} /></strong></div>
     <div class="observation-metric"><Database class="observation-icon" aria-hidden="true" /><span class="observation-label">Storage</span><strong><LoadingValue {loading} text={job ? job.storageActive ? 'Active' : 'Idle' : undefined} /></strong></div>
     <div class="observation-metric"><Gauge class="observation-icon" aria-hidden="true" /><span class="observation-label">Progress</span><strong><LoadingValue {loading} text={job ? `${Math.round(job.progressPercent)}%` : undefined} /></strong></div>
   </div>

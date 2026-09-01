@@ -28,9 +28,8 @@ for (const width of [320, 390, 590, 720]) {
       await expect(page).toHaveURL(new RegExp(`/dashboard/lab/${view}$`));
       await expect(page.getByLabel('Freshness', { exact: true })).toHaveValue('fresh');
       await page.getByLabel('Preview state', { exact: true }).focus();
-      await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('Enter');
+      await page.keyboard.press('l');
+      await page.keyboard.press('Tab');
       await expect(page.getByLabel('Preview state', { exact: true })).toHaveValue('loading');
       await expect(page.getByLabel('Freshness', { exact: true })).toBeDisabled();
       await expect(page.getByLabel('Scenario', { exact: true })).toBeEnabled();
