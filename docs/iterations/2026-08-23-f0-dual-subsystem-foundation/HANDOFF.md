@@ -1,5 +1,28 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 PercentageBackground / Thermals author candidate
+
+Branch `codex/u1-percentage-background` starts at exact merged PR61 `e8edc38`.
+Source changes add `ui/PercentageBackground.svelte` and its pure ratio/color
+helpers, shared tint tokens, registered leaf/import contract, and the zero-raw
+ThermalReading wrapper. ReadingList owns private seam/stretch tokens consumed
+by ReadingRow; direct loading rows and wrapped ready rows preserve geometry.
+No production widget, adapter, tool/resource, auth or acquisition code changes.
+The generated private-lab asset and its frozen hash test are renewed.
+
+Author evidence is in the newest VALIDATION section. Independent exact-SHA
+validation and formal review must follow the frozen commit, then approved PR
+merge/guarded deployment/BOTH-service restart and scoped verification. Prior
+PR61 deployment is recorded as operator-attributed evidence in PROJECT_STATE,
+not a check performed by this implementation role.
+
+Next smallest slice: Fans & Air reuse of PercentageBackground with shared
+icon/name, compact percentage/RPM rows, neutral unknowns and loading/responsive
+tests. It is not implemented by this candidate. Preserve the remaining
+all-widget skeleton/gallery, eight ready migrations, Bed Mesh reference axes,
+read-only Console, job-bound model/layer progress, Camera lifecycle and
+production-cutover tracks. No live printer, device or user acceptance is claimed.
+
 ## 2026-09-01 component foundation / Thermals state author candidate
 
 Branch `codex/u1-component-foundation-v1` starts from exact merged PR60

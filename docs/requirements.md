@@ -484,6 +484,13 @@ durable-monitor claim.
   known data during refresh. Thermals is the first independently shippable
   migration; all-nine skeleton/gallery and remaining ready migrations stay
   explicitly pending until separately evidenced. See decision 0033.
+  Its reusable `PercentageBackground` leaf accepts value/maximum, a strictly
+  validated optional color and children. Only a finite nonnegative numerator
+  and positive finite denominator produce a bounded decorative gradient; invalid
+  ratios/colors are neutral. Text and actions remain unchanged, including
+  over-target values. Decoration owns no spacing, clipping, sizing or progress
+  semantics. Thermals is its first private-lab consumer; skeleton/ready seams,
+  row geometry and enlarged-text readability must remain consistent.
 
 When evidence changes one of these requirements, update it explicitly and
 record a decision if the change affects architecture, safety, or product scope.

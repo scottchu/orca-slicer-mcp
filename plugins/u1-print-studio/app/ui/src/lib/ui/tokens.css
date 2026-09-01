@@ -35,6 +35,8 @@
   --u1-reading-height: 49px;
   --u1-reading-inset: 14px;
   --u1-state-mark: 3px;
+  --u1-percentage-tint-start: 12%;
+  --u1-percentage-tint-end: 4%;
   --u1-skeleton-base: #e7e9ec;
   --u1-skeleton-radius: 4px;
   --u1-skeleton-duration: 1.2s;
