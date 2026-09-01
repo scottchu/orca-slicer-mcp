@@ -188,8 +188,12 @@ printer environments support the described behavior.
   frame-counter evidence. Omit unmeasured, invalid, reset, or stale FPS; timer
   callbacks are not frame counts. Clear FPS on exit and after 1.5 seconds
   without advancing frame evidence. Network diagnostics stay hidden.
-  Fullscreen/PiP reflect granted host/native state, with feature detection and
-  explicit rejection handling; API presence does not establish mobile support.
+  Fullscreen reflects same-document native or local CSS state and never requests
+  a remount-capable host display mode. PiP is offered only through the existing
+  live video's same-document native Picture in Picture API and makes zero host
+  display-mode requests; hide the action when native PiP is unavailable. Both
+  use feature detection and explicit rejection handling; API presence does not
+  establish mobile support.
 
 ## Events and notifications
 
@@ -285,15 +289,15 @@ printer environments support the described behavior.
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v13` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v14` is the
   focused presentation resource. Every explicit camera open or reopen creates
-  a fresh snapshot-first `camera-v9` presentation; Go Live, retry, Close, and
+  a fresh snapshot-first `camera-v10` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v12/v11/v10/v9/v8/v7/v6/v5/v4/v3/v2/v1 and
-  camera-v8/v7/v6/v5/v4 are current-asset compatibility aliases.
+  Observation-v13/v12/v11/v10/v9/v8/v7/v6/v5/v4/v3/v2/v1 and
+  camera-v9/v8/v7/v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
-  Source target is runtime 0.4.7/tool schema 12 with twenty-four resources;
+  Source target is runtime 0.4.8/tool schema 12 with twenty-six resources;
   this source contract does not claim deployment of those bytes to existing
   services. Observation and camera resources share one generated design-system
   fragment. Camera snapshot acquisition and decode terminate successfully or

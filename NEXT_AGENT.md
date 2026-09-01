@@ -14,6 +14,28 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+The active source candidate is runtime 0.4.8/schema 12/observation-v14/
+camera-v10 with 26 resources and retained observation-v13/camera-v9 aliases.
+It applies the frozen compact 320/390/590/720 anatomy to every observation,
+camera and directory surface; user-facing Queue is Print Queue while selector
+`queue` is unchanged. Hosted and standalone fullscreen use same-document native
+or CSS presentation without a host display-mode request; pause/stall and one
+page lifecycle restore preserve bounded live continuity. Real Chromium layout
+checks cover a non-zero 390 × 844 camera in both fullscreen paths and thermal
+rows no taller than 64 pixels at all four frozen widths. PiP uses only the
+existing video's native same-document API, makes zero host display-mode
+requests and is hidden when unsupported. Host-reported fullscreen/PiP does not
+drive continuity state; host, visible and iframe titles use canonical labels.
+Author validation passes 271 tests/2,936 assertions, TypeScript and all three
+bundles. Automated local headless-Chromium layout evidence ran. No service,
+network, auth, camera, printer, actual-device or deployment contact has occurred
+for this candidate.
+
+Next: complete independent source review. If accepted, use the standing PR
+merge/guarded deploy/restart-BOTH/verify workflow. Do not skip exact served hash
+and route checks, and do not claim browser/device or physical acceptance from
+static validation.
+
 PR56 is shipped. Exact reviewed head `e2702dc7a39c45665aa14155e85d13011d50526b`
 merged as `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`, tree
 `dc290de12aceebe134b6e3ceb78aa2e8d8789f73`; guarded release
