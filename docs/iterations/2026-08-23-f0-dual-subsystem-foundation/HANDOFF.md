@@ -1,5 +1,32 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 PR63 Fans private-lab slice shipped
+
+Reviewed `0f78e69` merged as `57a305b` and guarded release
+`20260901-57a305b-pr63-20260901T134952-9c86bd` runs on BOTH explicitly restarted,
+loaded/healthy/integrity-verified U1 services. Twenty-five source-matching static
+assets/routes and twenty-six security checks pass, with preservation true and
+no rollback. Snapshot `20260901T135032-d34949` remains recoverable. Full sanitized
+operator evidence is in the newest VALIDATION section.
+Independent postdeployment validation also confirms the exact tailnet Fans
+bytes/no-store response and BOTH service contracts; it does not claim phone,
+printer or user acceptance.
+
+The private SvelteKit lab contains the seven-row Fans shared-gradient/metric/
+progressive-state composition. Production `/dashboard/fans` and all production
+widget/MCP/auth/device boundaries remain unchanged. Use the lab for user feedback;
+do not conflate static/service verification with actual phone or printer behavior.
+These documentation-only receipt updates preserve exact application bytes and
+need no service restart or redeployment.
+
+Next smallest action is user review of the delivered Fans lab, followed by the
+remaining explicitly tracked foundation/widget slices. Thermals and Fans now
+have zero-raw ready/state/skeleton compositions. The all-nine skeleton
+gallery, seven remaining ready/skeleton migrations, Bed Mesh axes/enclosure, read-only
+Console, model/layer progress, Camera lifecycle and production cutovers remain
+open. Server/MCP migration is an independent architecture question. Preserve the
+original dirty checkout and frozen reviewed candidate branches.
+
 ## 2026-09-01 Fans & Air shared-background author candidate
 
 Branch `codex/u1-fans-percentage` is aligned with exact PR62 merge `a3da16a`.

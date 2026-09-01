@@ -4,6 +4,11 @@
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`
 - Status: active
+- Latest shipped slice: PR63 reviewed `0f78e69`, merged `57a305b`, deployed as
+  `20260901-57a305b-pr63-20260901T134952-9c86bd`. BOTH services explicitly
+  restarted and passed integrity/health plus 25 exact static and 26 security
+  checks. Fans private-lab composition is delivered for feedback; no production
+  cutover, live device observation or user acceptance is claimed.
 - Current user-directed slice: Fans & Air adopts seven composed percentage
   backgrounds, common 13-pixel metrics, 14-pixel names and geometry-matched
   structural loading on merged PR62 `a3da16a`. No production/server/MCP migration;

@@ -10,6 +10,39 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Fans & Air shared component slice shipped — PR63 (2026-09-01)
+
+Exact independently validated and formally approved head
+`0f78e6924cbaca5a576ee552c7e14e38cb9e1a92` merged as
+`57a305b31ff408bbff4988fc3eeaa518d24b5411`, with identical reviewed tree
+`402b9450cfe83faaa2f8e5b89c3884981131a260`. Guarded release
+`20260901-57a305b-pr63-20260901T134952-9c86bd` runs on BOTH explicitly restarted
+public/dashboard services, each loaded, healthy and integrity verified at
+0.4.8/schema 12/observation-v14/camera-v10. Twenty-five exact static asset/route
+checks and twenty-six security checks passed; preservation checks passed.
+Rollback was not needed; snapshot `20260901T135032-d34949` is retained.
+
+The shipped private SvelteKit lab artifact is 727,058 bytes, SHA-256
+`74ad17deadd33e8373402b3b2c204830bd686fa06e369f46fff0604cc01baa41`.
+The private lab Fans and Thermals routes serve those exact bytes. Production
+widgets/assets, tool inventory, adapters, auth and routing are unchanged.
+Source/browser-fixture and deployed-service acceptance are evidenced separately;
+this rollout made no printer or camera observation and claims no actual-device,
+live-printer or user acceptance. These rollout records change documentation only
+and require no second service deployment.
+
+Independent postdeployment validation also confirms tailnet `/dashboard/lab/fans`
+returns 200 with `Cache-Control: no-store` and byte-identical approved content,
+plus BOTH loaded/healthy/integrity-verified service contracts. This is attributed
+independent service/static evidence, not actual phone/printer acceptance.
+
+Thermals and Fans now have zero-raw ready/state/skeleton compositions. Next:
+user feedback on the shipped Fans lab while the seven remaining ready/skeleton
+compositions, all-nine skeleton gallery, Bed Mesh axes/enclosure,
+read-only Console, model/layer progress, Camera and production cutovers remain
+explicitly open. Server/MCP migration is a separate open architecture question,
+not an implementation commitment from the capability discussion.
+
 ### Fans & Air compositional percentage rows — current author candidate (2026-09-01)
 
 The user-directed next slice is implemented on merged PR62 `a3da16a`: private
