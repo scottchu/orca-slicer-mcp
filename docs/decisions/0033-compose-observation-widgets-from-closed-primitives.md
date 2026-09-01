@@ -61,3 +61,42 @@ read-only Console with no command input, model-progress imagery based on real
 sliced-layer geometry (never perspective-image bands), Camera lifecycle
 migration, and independently reviewed per-widget production cutovers. None of
 these pending tracks is implemented or physically accepted by this slice.
+
+## PercentageBackground refinement (2026-09-01)
+
+The next user-directed slice adds one registered DOM-owning decoration leaf,
+`PercentageBackground`, to the SvelteKit private lab. Its closed API is
+`value: number | null`, `max: number | null`, optional `color: string`, and a
+Svelte `children` snippet. It accepts children unchanged and does not own card
+insets, borders, clipping, radius, sizing, semantics or actions. An opaque child
+surface would cover the decoration; consumers use a transparent content surface
+and keep any rounded outer clipping at the existing surface/layout owner.
+
+Finite nonnegative values and a finite positive maximum yield a left-to-right
+fill clamped to 0–100%. For example, 220/200 fills the available background but
+the child still displays 220/200. Null, nonfinite, negative values, or a zero,
+negative or missing maximum produce no fill. This is decorative ratio
+information, not heater safety, readiness or a redundant ARIA progressbar.
+Thermals retains its real actual/target text and separate active/idle semantics.
+
+Omitted color uses the semantic accent token. Overrides must be exactly seven
+characters matching `#RRGGBB`; unsupported CSS names/functions, whitespace,
+line terminators, alpha or injection strings produce no fill and never reach
+CSS. Shared 12%→4% tint tokens produce the gradient only inside the filled
+region; the remainder is transparent. There is no animation, overlay layer or
+pointer interception, and forced-colors suppresses the decorative background.
+
+ThermalReading composes this wrapper around ReadingRow with zero raw markup.
+ReadingList owns positional seams and grid stretch through private inherited
+layout tokens; ReadingRow applies them inside its existing border box. This
+keeps direct skeleton rows and decorated ready rows at the same dimensions,
+including unequal-height peers at 200% text. No other widget, production route,
+MCP resource, acquisition boundary or service is changed by implementation.
+
+Acceptance includes normal/over-maximum/invalid ratios, strict color inputs,
+reactive child content and pointer/keyboard actions, actual rendered gradient
+pixels, no new wrapper spacing or clipping, four-width row/seam/loading parity,
+200% readability, deterministic packaging and unchanged production assets.
+Exact independent validation and review precede ordinary PR merge and guarded
+deployment/BOTH-service restart. This small feedback slice comes before, and
+does not replace, the named follow-on tracks above.

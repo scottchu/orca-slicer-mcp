@@ -10,6 +10,33 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### PercentageBackground — active private-lab refinement (2026-09-01)
+
+The current user-directed UI-003 slice adds reusable PercentageBackground and
+uses it in the SvelteKit Thermals composition. It preserves ratio text and
+active semantics, bounds the decorative fill, rejects invalid ratios/colors,
+accepts children without adding layout, and keeps ready/skeleton row geometry.
+Its implementation is isolated from production renderers and acquisition.
+Exact independent validation and review are next before PR delivery and the
+standing merge/deploy/BOTH-service restart/verification workflow.
+
+PR61 is no longer merely the candidate described below: it merged as
+`e8edc3847866ef6d0d07a2dc32f5e3d0e8132586`. Recovery/ship operator evidence
+reports guarded release `20260901-e8edc38-pr61-20260901T125836-f29e60`, BOTH
+public/dashboard services explicitly restarted, loaded, healthy and integrity
+verified, 25 exact asset/routes checks and 26 security/enrollment checks. The
+rollback snapshot `20260901T125915-f81d5e` was retained but not needed. These are
+attributed prior deployment checks, not repeated by this implementation role.
+Production widgets remain legacy; this refinement changes the SvelteKit private
+lab only. No printer, live-camera, actual-device or user acceptance is implied.
+
+The next requested slice is Fans & Air reuse of PercentageBackground with shared
+icon/name and compact percentage/RPM rows, neutral unknowns and progressive-state
+tests. It is not included in this Thermals source candidate.
+All-nine skeleton/gallery, eight remaining zero-raw ready migrations, Bed Mesh
+reference axes/grid enclosure, read-only Console, truthful job-bound model/layer
+progress, Camera lifecycle and production cutovers remain ordered follow-ons.
+
 ### Svelte component foundation and Thermals progressive state — author candidate (2026-09-01)
 
 Decision 0033/UI-003 now has a bounded private-lab author candidate based on

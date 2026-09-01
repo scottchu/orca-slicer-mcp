@@ -1,5 +1,44 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 PercentageBackground / Thermals author evidence
+
+Executed with pinned Bun 1.3.12 after frozen installs in both app/UI:
+UI `bun run check`, `bun run test`, `bun run build`,
+`bun run package:private-lab`, `bun run test:browser`; repository
+`PATH=<pinned-bun>:$PATH ./scripts/check-repository.sh`; app
+`bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+`bun run bundle:runtime`, `codesign -vvv --verify dist/u1-print-studio`,
+`dist/u1-print-studio --help`, and `git diff --check`.
+
+- Compiler: 0 errors/warnings; exact AST frontier passes. 79/79 unit cases
+  include 17 new ratio/color/child-interaction cases, strict line-terminator
+  rejection, reactive values and preserved accessible child measurements.
+- Chrome: 62/62 cases include all prior 54, plus eight new four-width cases.
+  Coverage includes actual sampled blue-filled/transparent pixels, 0/25/50/
+  100/over-target/unknown ratios, unchanged child semantics, keyboard/pointer
+  action, no decorative layout/overflow/motion, forced-colors suppression,
+  normal/list seam parity and full-height peers at 200% text. Existing loading/
+  ready/frame/row geometry, 44-pixel actions, source-time, overlay, routes,
+  title, Bed Mesh and nonlocal-request checks remain green.
+- Initial author probes caught a 200% peer-row seam gap, resolved by list-owned
+  stretch; a generic test initially compared differently wrapping child text
+  against a fixed height, corrected to assert exact wrapper/child bounds.
+  Early color review caught terminal-line-break acceptance; explicit length and
+  negative cases now reject it. Initial app hash failure was the expected stale
+  prior artifact pin, renewed only after deterministic generation.
+- Repeated build plus repository `ui:verify` reproduces 724,012 bytes, SHA-256
+  `50d8297d169d1a3c65238a9042924f3e80ea684057ac68f5ce2dc5c078eec4e2`.
+  Delta from PR61 is +1,528 bytes, reserve 25,988 under the unchanged 750,000-byte
+  hard cap. The pre-existing 720,000 soft target remains exceeded and requires
+  explicit reviewer disposition, not a weakened limit.
+- App 276/276, 3,181 assertions; lifecycle 21/21; shipping 24/24; repository
+  contract, all bundles, runtime signature/help and diff checks pass. The
+  production generated vendor build introduces no changed production asset.
+
+This is author synthetic-fixture/static/software evidence only. It is not
+independent approval, deployment, live telemetry, actual-device, physical printer
+or user acceptance. No printer, camera, auth or live service was contacted.
+
 ## 2026-09-01 component foundation / Thermals progressive-state author evidence
 
 Commands run from `plugins/u1-print-studio/app/ui` with pinned Bun `1.3.12`:

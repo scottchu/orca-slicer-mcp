@@ -32,6 +32,9 @@ provisional architecture as an implementation commitment.
 - Use `uv` for every Python invocation and dependency operation in this
   repository. Run Python tools through `uv run`; do not call `python` or
   `python3` directly.
+- Prefer arrow functions in new or changed TypeScript/JavaScript. Use a function
+  declaration only when a specific technical requirement needs it and document
+  that reason; do not bulk-rewrite unrelated code to enforce this convention.
 - Before material work, read `PROJECT_STATE.md`, `NEXT_AGENT.md`,
   `docs/requirements.md`, and the iteration named by
   `docs/iterations/CURRENT`.

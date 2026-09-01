@@ -14,6 +14,28 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+The current user priority is the PercentageBackground/Thermals refinement on
+`codex/u1-percentage-background`, based on exact merged PR61 `e8edc38`. Decision
+0033's addendum defines the closed value/max/color/children API, neutral invalid
+ratios/colors, nonintercepting decoration and list-owned layout/seam contract.
+Complete its exact author gates, independent validation and formal review, then
+deliver the approved PR through guarded merge/deploy/BOTH restart/verification
+for prompt feedback. Do not copy changes into the dirty original checkout.
+New TypeScript/JavaScript uses arrow functions unless a concrete technical
+requirement is documented; do not broadly rewrite unrelated code.
+
+PR61 was merged and operator-verified as release
+`20260901-e8edc38-pr61-20260901T125836-f29e60` on BOTH restarted services;
+PROJECT_STATE records the attributed deployment checkpoint. The prior candidate
+instructions below are historical, not the current execution order. This is
+still the SvelteKit private lab, not a production migration. Preserve all-nine
+skeleton/gallery, eight other composition migrations, Bed Mesh axes, read-only
+Console, model/layer progress, Camera and per-widget cutovers as pending work.
+Immediately after the PercentageBackground/Thermals release, apply the same
+primitive to Fans & Air through shared composed rows, compact icon/name/percent/
+RPM, neutral unknowns, responsive/skeleton tests and identical delivery gates.
+Do not mix that follow-on source into the already frozen Thermals candidate.
+
 Decision 0033/UI-003 is the immediate candidate on
 `codex/u1-component-foundation-v1`, exact base `9a9038d`. Freeze the clean
 author SHA only after current component/browser/deterministic/full repository

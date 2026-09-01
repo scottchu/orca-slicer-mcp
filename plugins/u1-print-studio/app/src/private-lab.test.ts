@@ -14,7 +14,7 @@ describe("private Svelte observation lab package", () => {
   test("freezes one deterministic self-contained static page", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "dd4f727d615fc7730db76f96b1b33e1371338b046737afc82d87d12a086b3b67"
+      "50d8297d169d1a3c65238a9042924f3e80ea684057ac68f5ce2dc5c078eec4e2"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -53,6 +53,9 @@ describe("private Svelte observation lab package", () => {
     expect(observationSources).not.toMatch(/https?:\/\//);
     expect(html).not.toContain("camera-widget");
     expect(html).not.toContain("/dashboard/tools/call");
+    expect(html).not.toContain("__setPercentage");
+    expect(html).not.toContain("__percentageClicks");
+    expect(html).not.toContain("Example card");
   });
 
   test("keeps the generic embed outside production packaging", () => {

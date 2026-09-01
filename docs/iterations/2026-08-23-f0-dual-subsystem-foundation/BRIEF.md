@@ -4,6 +4,16 @@
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`
 - Status: active
+- Current user-directed priority (2026-09-01): build PercentageBackground as a
+  reusable closed decoration leaf and compose private-lab Thermals from it,
+  after merged PR61 `e8edc38`. Preserve actual/target text, neutral invalid
+  ratios, safe configurable color, child interaction and shared layout/skeleton
+  geometry. Review/merge/deploy this bounded slice promptly; all-widget
+  skeletons, remaining ready migrations, Bed Mesh axes, Console, model progress,
+  Camera and production cutovers remain queued, not cancelled.
+- The next user-directed consumer is Fans & Air: reuse PercentageBackground
+  and shared compact row primitives with responsive/progressive tests after the
+  bounded Thermals release. This refinement does not implement Fans yet.
 - Current foundation slice (2026-09-01): decision 0033/UI-003 composes Thermals
   from closed shared typed primitives with zero native feature/composite HTML,
   frozen raw debt and loading/ready-refreshing/unavailable/error states. The
