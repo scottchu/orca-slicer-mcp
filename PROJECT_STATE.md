@@ -10,6 +10,37 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Shared percentage-gradient slope shipped — PR65 (2026-09-01)
+
+Exact independently validated and reviewed head
+`f216c70b9844b9e536676c403546b3eb116805b2` merged as
+`6b9b3e7e09ccfad89ed542a52a69f5126407da4b`, preserving reviewed tree
+`1a3bc6fc10a2a12054ef9db32d7a120f1a3a906e`. Guarded release
+`20260901-6b9b3e7-pr65-20260901T142009-341331` runs on BOTH explicitly restarted
+public/dashboard services, loaded, healthy and integrity verified at
+0.4.8/schema 12/observation-v14/camera-v10. Twenty-five exact static asset/route
+checks and twenty-six security checks pass; preservation is true. No rollback
+was needed; snapshot `20260901T142049-5cf038` is retained.
+
+Thermals and Fans private-lab backgrounds now use the subtle 100-degree tint
+inside the exact percentage-width rectangle. The artifact is 727,096 bytes,
+SHA-256 `2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`.
+Production widgets, MCP and device acquisition are unchanged. Source/browser
+fixtures and deployed-service evidence remain separate; no actual phone,
+printer, live-camera or user acceptance is claimed.
+
+Independent postdeployment checks confirm both actual tailnet Thermals/Fans
+routes return 200/no-store with those exact bytes, and both service identities
+match the installed release/merge with health and integrity verified. This is
+independent service/static evidence, not a device-render observation.
+
+Resume visible all-nine lab scenario/state controls and structural loading,
+then the separate synthetic Camera integration. Smaller visual Refresh,
+content-aware compact/medium/full plus a separately reviewed MCP size parameter,
+seven remaining ready migrations, Bed Mesh axes, read-only Console, model/layer
+progress and production cutovers remain open. These rollout records change no
+application bytes and need no additional deployment.
+
 ### Subtle percentage-gradient slope — current bounded refinement (2026-09-01)
 
 The shared PercentageBackground tint now slopes gently at 100 degrees inside

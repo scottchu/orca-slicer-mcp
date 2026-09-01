@@ -14,6 +14,21 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+PR65 is shipped: reviewed `f216c70`, merged `6b9b3e7`, exact guarded release
+`20260901-6b9b3e7-pr65-20260901T142009-341331`. BOTH services were explicitly
+restarted and are loaded/healthy/integrity verified; all 25 exact static and 26
+security checks passed. Thermals and Fans private-lab bytes match the approved
+727,096-byte artifact. This is service/static evidence, not phone or printer
+acceptance. The shipping snapshot is retained and no rollback was needed.
+
+Now resume preserved visible all-nine lab scenario/state controls and structural
+loading, then separate synthetic Camera integration. Keep smaller visual Refresh,
+content-aware compact/medium/full plus its separately reviewed MCP size parameter
+and the remaining named widget tracks queued. Do not restart the completed slope
+slice. These documentation-only receipt changes preserve application bytes and
+need no extra service deployment; the earlier candidate instructions below are
+superseded by this shipped checkpoint.
+
 First review/deliver the isolated shared 100-degree percentage tint refinement;
 then resume visible all-nine lab scenario/state controls and matched skeletons,
 followed by separate synthetic Camera integration. The lab worktree is preserved
