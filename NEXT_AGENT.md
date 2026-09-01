@@ -1,5 +1,50 @@
 # Next agent
 
+## Current checkpoint: held Bed Mesh zoom renewal after delivered Thermals
+
+Thermals PR72 is delivered on independently accepted merge
+`6325c8792fc8cca1f1c73109aae717e774d87076`, tree
+`e9b286b6be673a1d88f04bd5b227a91f40c4cb5b`. The attributed operator receipt
+reports release `20260901-6325c87-pr72-20260901T172710-d336bd`, BOTH existing
+services explicitly restarted, loaded/healthy/integrity verified at
+runtime0.4.8/schema12/observation-v14/camera-v10,29 static/30 security checks
+PASS, preservation true and no rollback. Snapshot `20260901T172800-d68cec`
+is retained. Canonical main and8,689 ignored entries/recovery refs are preserved.
+Camera PR71 and Fans PR70 are also delivered; older pending claims below are
+historical. Independent Thermals postdeployment PASS verifies BOTH exact service
+identities, 15 manifest hashes, seven private HTTPS assets with exact hashes /
+no-store/CSP, 14 isolation/status probes and clean canonical main. Nine Chrome
+checks on actual downloaded host/child bytes and CSP use synthetic responses:
+four widths, normal/200% text, skeleton/retained refresh/time/focus, nullable and
+extreme values and independent Cavity receipt. The validator inspected enlarged
+320 and normal720 captures. External unmatched-root502 remains pre-existing and
+unaccepted; actual printer/phone and stale installed-connector identity remain
+unverified. These are attributed independent deployment/synthetic-browser facts,
+not new author acquisition or device checks. No extra runtime change was made.
+
+Bed Mesh PR73 candidate `85f89f9` is HELD despite137 passing browser cases:
+independent real wheel input showed projected width452.28→448.55 instead of
+the baseline461.84→628.30. Per-render frustum fitting canceled user zoom.
+The accepted renewal fits at neutral1x, then applies independent bounded
+0.75–3.5 detail zoom. Default/reset and all1x orbit containment gates remain
+unchanged; intentional greater-than1x detail viewing may crop geometry/labels
+at the fixed frame boundary. It must not silently refit the user's zoom away.
+After explicit accepted-main merge `f0e25ba`, the author renewal passes 266 UI
+units, 290 app tests/3,400 assertions, 21 lifecycle, 24 shipping and the full
+152-case Chrome suite. All five packages are deterministic and bounded; runtime
+bundles/signature/help and compiler/AST pass. Actual wheel/two-finger browser
+input, pixels, identity, data/resize and reset regressions pass while every 1x
+containment test remains unchanged. Observation lab is 749,560 bytes; its
+440-byte reserve is not permission to raise the cap. Fresh exact independent
+validation/source approval is still required before delivery.
+
+This remains private-lab-only. Production Bed Mesh/MCP, keyboard/Home,
+automatic WebGL-failure fallback and root-scaled2D labels remain open, as do
+all other named WIDGET_TRACKS. No service, printer, authentication, Tailscale
+or plugin action is part of this author repair.
+
+## Historical checkpoints (superseded where noted above)
+
 ## Current checkpoint: Thermals renewal after delivered Camera PR71
 
 Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly
@@ -48,6 +93,17 @@ Resume from repository records, not chat history.
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
+
+Bounded Bed Mesh candidate: obtain independent exact-SHA validation and source
+review after the author pin, then guarded merge/deploy/BOTH restart/verification.
+Reviewed Camera main `0aa83a0` is integrated and already shipped as release
+`20260901-0aa83a0-pr71-20260901T170551-59206e`; do not repeat the older Camera
+acceptance sequence below. Bed Mesh author browser evidence is 137/137 passing,
+including real pixels, projected labels, reactive buffers and 200% text; newest
+VALIDATION records all gates and unchanged package limits. Production Bed Mesh
+and MCP remain legacy pending adapter parity. Thermals is separate concurrent
+work; coordinate fixture port 4179 and integrate only explicitly reviewed main.
+All remaining WIDGET_TRACKS stay open; earlier pending paragraphs are history.
 
 Next action: independently validate/review the frozen real Thermals candidate,
 then guarded merge/deploy/explicit BOTH restart/verify. Author final gates pass:

@@ -4,6 +4,16 @@ Updated 2026-09-01. Latest user order: finish existing implementation, complete
 migration and delivery, finish queued features, then clean up superseded code.
 No listed track is cancelled. Private fixtures do not prove live behavior.
 
+Current checkpoint: Fans PR70, Camera PR71 and Thermals PR72 are delivered;
+reviewed main `6325c87` is explicitly integrated. Their private dashboard
+migrations do not retire generic MCP/legacy aliases. Bed Mesh PR73 is held for
+independently reproduced canceled wheel zoom despite its earlier137 green
+browser cases. Neutral fit/detail zoom separation and real wheel/pinch-input
+regressions pass in the full152-case author suite; fresh exact independent
+validation/review remains required. The live
+Bed Mesh adapter remains pending. Heads is separately owned. Earlier pending
+status below is historical where superseded by this checkpoint.
+
 PR67 heads `8663d93` and `befbbd5` were independently rejected for text clipping,
 incomplete correlated selection types, and subsequently separated number/unit
 spacing. Final head `07e1c144` corrected those failures and passed fresh exact
@@ -11,7 +21,7 @@ independent validation and review before shipment. The regression matrix retains
 200 combinations, including 48 adjacency checks; earlier rejected heads were
 not deployed.
 
-## Current slice: Thermals after delivered Fans and Camera
+## Current slices: held Bed Mesh renewal and separately owned Heads
 
 PR67 shipped: reviewed `07e1c144`, merged `c924bf9`, both services restarted and
 independently post-verified. All nine observation control/loading paths below
@@ -20,7 +30,7 @@ production dashboard through PR71. Remaining cutovers and seven ready-shell debt
 
 | Track | Source/composition | State controls | Live cutover | Delivery |
 | --- | --- | --- | --- | --- |
-| Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Shipped five-state controls and closed examples | Author implementation; independent acceptance pending | Lab PR67 delivered; live not shipped |
+| Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Shipped five-state controls and closed examples | PR72 focused private dashboard delivered; generic MCP unchanged | BOTH restart, health/integrity/static/security and independent fetched-byte synthetic behavior PASS; real printer/phone and unmatched external root remain unaccepted |
 | Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | PR70 focused dashboard delivered; generic MCP still legacy | PR70 deployed/post-verified with synthetic tool replies; connector identity/device evidence separate |
 | Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
@@ -28,7 +38,7 @@ production dashboard through PR71. Remaining cutovers and seven ready-shell debt
 | Current Job | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
-| Bed Mesh | Svelte/Three chart, native-tag shell debt | Shipped controls; no Three mount while loading | Pending | PR67 deployed/post-verified |
+| Bed Mesh | Projected Three enclosure and reactive 2D/3D candidate; native-tag shell debt | Shipped controls; no Three mount while loading | Pending adapter parity | PR67 delivered; renderer refinement awaits independent acceptance/delivery |
 | Camera | Zero-raw real/lab roots and widgets, generic persistent VideoSurface/MediaStatus | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | PR71 focused private dashboard delivered; legacy/MCP unchanged | PR71 service/private-static/fetched-byte synthetic checks passed; real stream/device and external unmatched-root availability remain unaccepted |
 
 Acceptance progression: author software tests → separate exact-SHA validation →
@@ -39,8 +49,8 @@ Chrome, not phone, WebRTC or printer evidence.
 
 ## Remaining migration and cleanup
 
-PR70 LIVE Fans and PR71 focused Camera are delivered. Thermals is the current
-production cutover slice, renewing exact acceptance on reviewed Camera main.
+PR70 LIVE Fans, PR71 focused Camera and PR72 focused Thermals are delivered.
+Bed Mesh renderer repair and Heads are the current separately owned slices.
 `LIVE_PARITY.md` records the read-only remaining-eight acceptance inventory;
 those adapters and generic resource replacement remain pending.
 
@@ -72,6 +82,9 @@ those adapters and generic resource replacement remain pending.
 
 - [ ] Bed Mesh reference-style visible-side axes and readable Z enclosure/grid,
   stable 2D/3D bounds, icon-only mode/reset controls.
+- [ ] Before live chart cutover: focusable keyboard orbit/Home reset, automatic
+  WebGL-failure 2D fallback, and root-text-responsive 2D labels. These inherited
+  lab gaps are not accepted by the projected-axis/reactivity refinement.
 - [ ] Read-only Console widget, with no command/control capability.
 - [ ] Truthful model thumbnail/layer-progress visualization, distinguishing
   visual preview from actual sliced-layer evidence.

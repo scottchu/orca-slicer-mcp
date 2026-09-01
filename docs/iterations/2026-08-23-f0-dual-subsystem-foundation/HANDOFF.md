@@ -1,5 +1,121 @@
 # F0 dual-subsystem foundation handoff
 
+## PR73 repaired candidate handoff
+
+The new delta is restricted to neutral-fit/user-zoom separation in
+`ui/src/lib/bed-mesh/BedMesh3D.svelte`, a detail-placement option in
+`display.ts`, the test-only mesh identity/zoom probe and six new real-input
+browser tests. The observation artifact/hash and current decision/requirements/
+records are updated. Existing1x tests are unchanged. Reviewed Thermals main is
+explicitly integrated as `f0e25ba`; no other unapproved feature branch is included.
+Newest VALIDATION records full266/290/21/24/152 author gates and five hashes.
+
+Next smallest action: independent exact-candidate source review and validation,
+including the prior failing real-wheel reproduction, then guarded shipment only
+after both approvals. Browser port4179 is released. Lab artifact reserve is only
+440 bytes; future integration must measure the unchanged bounds early. Keep
+all existing compatibility and remaining feature tracks; this is neither live
+Bed Mesh nor complete decision0030 parity. No cleanup or printer action was taken.
+
+## Current checkpoint: held Bed Mesh zoom renewal after delivered Thermals
+
+Thermals PR72 is delivered on independently accepted merge
+`6325c8792fc8cca1f1c73109aae717e774d87076`, tree
+`e9b286b6be673a1d88f04bd5b227a91f40c4cb5b`. The attributed operator receipt
+reports release `20260901-6325c87-pr72-20260901T172710-d336bd`, BOTH existing
+services explicitly restarted, loaded/healthy/integrity verified at
+runtime0.4.8/schema12/observation-v14/camera-v10,29 static/30 security checks
+PASS, preservation true and no rollback. Snapshot `20260901T172800-d68cec`
+is retained. Canonical main and8,689 ignored entries/recovery refs are preserved.
+Camera PR71 and Fans PR70 are also delivered; older pending claims below are
+historical. Independent Thermals postdeployment PASS verifies BOTH exact service
+identities, 15 manifest hashes, seven private HTTPS assets with exact hashes /
+no-store/CSP, 14 isolation/status probes and clean canonical main. Nine Chrome
+checks on actual downloaded host/child bytes and CSP use synthetic responses:
+four widths, normal/200% text, skeleton/retained refresh/time/focus, nullable and
+extreme values and independent Cavity receipt. The validator inspected enlarged
+320 and normal720 captures. External unmatched-root502 remains pre-existing and
+unaccepted; actual printer/phone and stale installed-connector identity remain
+unverified. These are attributed independent deployment/synthetic-browser facts,
+not new author acquisition or device checks. No extra runtime change was made.
+
+Bed Mesh PR73 candidate `85f89f9` is HELD despite137 passing browser cases:
+independent real wheel input showed projected width452.28→448.55 instead of
+the baseline461.84→628.30. Per-render frustum fitting canceled user zoom.
+The accepted renewal fits at neutral1x, then applies independent bounded
+0.75–3.5 detail zoom. Default/reset and all1x orbit containment gates remain
+unchanged; intentional greater-than1x detail viewing may crop geometry/labels
+at the fixed frame boundary. It must not silently refit the user's zoom away.
+After explicit accepted-main merge `f0e25ba`, the author renewal passes 266 UI
+units, 290 app tests/3,400 assertions, 21 lifecycle, 24 shipping and the full
+152-case Chrome suite. All five packages are deterministic and bounded; runtime
+bundles/signature/help and compiler/AST pass. Actual wheel/two-finger browser
+input, pixels, identity, data/resize and reset regressions pass while every 1x
+containment test remains unchanged. Observation lab is 749,560 bytes; its
+440-byte reserve is not permission to raise the cap. Fresh exact independent
+validation/source approval is still required before delivery.
+
+This remains private-lab-only. Production Bed Mesh/MCP, keyboard/Home,
+automatic WebGL-failure fallback and root-scaled2D labels remain open, as do
+all other named WIDGET_TRACKS. No service, printer, authentication, Tailscale
+or plugin action is part of this author repair.
+
+## Historical checkpoints (superseded where noted above)
+
+## 2026-09-01 Bed Mesh combined candidate — exact review next
+
+The author preserved the narrow implementation checkpoint and explicitly merged
+reviewed Camera main `0aa83a0` into this branch. Camera's shipped private route,
+artifact and bridge are unchanged; its operator release is
+`20260901-0aa83a0-pr71-20260901T170551-59206e`, with BOTH restarts and
+health/integrity verification. This author performed no service/printer action.
+
+Changed application paths are the existing `ui/src/lib/bed-mesh` 3D/2D leaves,
+new pure `display.ts`, and the regenerated observation lab HTML plus exact hash.
+The chart-leaf AST inventory is updated; isolated test-only fixture/build routes
+exercise real Three buffers and pixels without shipping test hooks. Existing
+theme, frame, summaries, controls, dependencies and limits are unchanged.
+
+The final layout reserves essential Z labels, measures tabular numeric glyphs,
+and searches outward/along the projected edge before expanding the frustum.
+This fixes the reproduced enlarged flat endpoint overlap and extreme-orbit
+containment failures without hiding text or weakening their regression gates.
+The full combined 137-case browser suite passes; author inspected normal 320/720
+and enlarged/rotated captures. VALIDATION has exact commands, bounds and hashes.
+
+Next: independent full exact-source validation and formal review of the pin,
+then guarded delivery and separate served behavior checks. Preserve the earlier
+failed evidence below. No production/MCP Bed Mesh cutover, live measurement
+acquisition, actual Safari/phone or user-outcome acceptance is claimed. Thermals,
+remaining ready-shell debt, Console, model progress, size API and all other
+WIDGET_TRACKS remain open. Coordinate the exclusive fixture port 4179.
+
+Known inherited lab limitations retained for the next chart/live-parity slice:
+no focusable keyboard orbit/Home reset, no automatic WebGL-failure 2D fallback,
+and fixed 12px 2D canvas labels under root-text enlargement. The present 200%
+glyph tests cover 3D HTML labels only. Do not describe this candidate as complete
+decision-0030 parity or infer actual-device behavior from local Chrome checks.
+
+## 2026-09-01 Bed Mesh projected-enclosure author checkpoint
+
+Decision0032's bounded private-lab refinement changes BedMesh3D/BedMesh2D plus
+pure display/projection helpers, chart-leaf AST inventory and test-only geometry/
+orbit fixtures. The same Three renderer/control instance survives data changes;
+old buffers are disposed. The floor/two far walls/four uprights cannot collapse
+on flat data. Actual-mm labels follow projected visible edges rather than CSS
+corners; measured font changes refit without changing the4:3 frame. Rectangular
+2D data retains physical aspect and redraws without resize. Existing palette,
+controls, summaries, production mesh/MCP and budgets are unchanged.
+
+Early author tests pass, but final rotation/enlarged-text/pixel evidence remains
+pending. The first expanded browser attempt stopped on a test-only prototype
+instrumentation error; the harness now captures BufferGeometry attributes and
+OrbitControls rather than Three's instance-owned WebGLRenderer.render. An
+import alias corrects a Vitest hoisting collision in the renderer stub. Neither
+failure is accepted as application evidence. See VALIDATION for actual commands.
+Next: complete exact focused browser checks/captures, full gates and independently
+approve a frozen candidate. No release or actual-device/printer claim exists.
+
 ## Current checkpoint: Thermals renewal after delivered Camera PR71
 
 Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly

@@ -2,7 +2,7 @@ import { build } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { readFileSync, writeFileSync } from 'node:fs';
 
-for (const name of ['thermals', 'percentage', 'fans', 'progress']) {
+for (const name of ['thermals', 'percentage', 'fans', 'progress', 'bed-mesh']) {
 await build({
   configFile: false, plugins: [svelte()],
   build: {
