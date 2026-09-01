@@ -10,6 +10,64 @@ checks return 200 with byte-identical content, sixteen security checks pass and
 no rollback occurred. No printer, camera or actual-device acceptance was
 performed or claimed.
 
+## 2026-09-01 all-observation Svelte private-lab candidate
+
+Starting from exact merged main `f44bd06`, the isolated branch extends the
+merged Svelte foundation to the private `/dashboard/lab` directory and all nine
+non-camera observation candidates. One path-selected, self-contained static
+page supplies synthetic Overview, Print Progress, Thermals, Heads & Filaments,
+Current Job, Job History, Print Queue, Fans & Air and the unchanged Bed Mesh.
+Camera is visibly pending and has no link or lab route.
+
+Changed scope is `plugins/u1-print-studio/app/ui` components/fixtures/tests,
+the deterministic private package, exact private-server route handling/tests,
+shipping static-contract derivation and durable decision/iteration records.
+Existing production dashboard HTML, widget/camera resources, tool inventory,
+observation adapters/stores, auth and public routing are untouched. Components
+accept only strict versioned normalized props and contain no acquisition code.
+
+Formal review blocked exact `8a6df9b` on post-mount route selection, raw
+dot-segment normalization, RGBA rejection, mixed row clocks, responsive
+clipping and overbroad validator claims. The renewal emits a neutral zero-size
+SSR marker and selects the exact pathname during initial browser creation,
+rejects literal/single/double-encoded traversal from the raw target, retains
+normalized RGB/RGBA alpha, uses viewer-local row clocks, and enforces Overview
+1/2 columns, Heads two columns/content-driven height and canonical Thermals
+labels/titles.
+
+Re-review additionally caught a generic-to-canonical title mutation and the
+missing accepted Heads wash/Copy interaction. The earliest inline bootstrap now
+sets the canonical child title before hydration. Heads uses a six-percent wash
+that preserves RGBA alpha, exposes one 44-pixel bottom Copy action for each of
+the three valid colors, none for Empty/N/A, and shares one non-flow feedback
+overlay with Refresh.
+
+Exact `b3e0c7e` remained blocked: external Copy state could mask a newer
+Refresh message, and the active border was incorrectly coupled to filament
+color. `ObservationFrame` now owns the single feedback state/timer and passes
+one announcer to Heads; Copy and Refresh replace each other in exact action
+order. Active border uses `--u1-accent`; changing filament color changes only
+the six-percent wash and exact swatch.
+
+Exact `4e8788f` remained blocked on pending clipboard ordering. The corrected
+controller begins Copy synchronously with persistent `Copying …`, increments
+one generation for every action, and allows clipboard success/failure to settle
+only the still-current generation. Deferred resolve and reject can no longer
+replace a newer Refresh; a newer Copy still settles truthfully.
+
+Author evidence passes 25 UI tests, 50 real-Chrome cases, 276 app tests/3,178
+assertions, 21 lifecycle and 24 shipping tests, deterministic packaging, all
+three bundles, help and signature. The exact package is 713,802 bytes with
+SHA-256 `565c731ef6199c81e5df4f758837c6980fb33d7cc349905d7f16c4acbf17e2eb`.
+The deliberate risk is the 36,198-byte headroom below 750 KB while local
+Three.js coexists with eight compact views. Chrome measures one visible exact
+route, exactly one canonical non-empty title from initial parsing, zero layout
+shift and no required-text clipping at every frozen width; both Copy/Refresh
+orders keep one latest-action overlay and change card height by less than 0.1
+pixel. Bed Mesh remains unchanged. No merge/deploy/service/printer/camera/auth/
+Tailscale contact occurred. Next: exact-candidate review; production cutovers
+remain separate later slices.
+
 ## 2026-09-01 Svelte Bed Mesh private lab readability renewal
 
 Decision 0032, UI-001 and the active migration addendum preserve the existing

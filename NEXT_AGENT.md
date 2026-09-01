@@ -14,6 +14,46 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+The current candidate is the all-observation Svelte private lab on isolated
+branch `codex/u1-svelte-observation-lab`, based on merged `origin/main`
+`f44bd06`. It adds `/dashboard/lab` plus the nine exact non-camera child views
+from one 713,802-byte self-contained page (SHA-256
+`565c731ef6199c81e5df4f758837c6980fb33d7cc349905d7f16c4acbf17e2eb`).
+Camera is marked pending and unlinked. Production routes, MCP assets/inventory,
+auth/Tailscale and public HTTP do not change.
+
+Formal review blocked exact `8a6df9b` on post-mount child selection, raw
+dot-segment normalization, RGBA rejection, mixed row clocks, Overview clipping
+and overbroad validator claims. The renewal chooses the exact pathname during
+initial browser creation from a neutral SSR marker, rejects literal/single/
+double-encoded traversal before normalization, retains normalized RGB/RGBA
+alpha, uses viewer-local row clocks and enforces frozen responsive contracts.
+
+Re-review also required the canonical child title to be the first parsed
+non-empty title and the accepted Heads six-percent RGBA-aware wash plus bottom
+Copy interaction. The earliest inline bootstrap now owns title/route metadata;
+Heads has three valid-color 44-pixel Copy actions, none for Empty/N/A, and one
+shared non-flow Copy/Refresh feedback overlay. Review blocked `b3e0c7e` because
+the overlay still combined two states and active status followed filament
+color. The renewal has one authoritative state/timer for both action orders;
+active uses semantic amber while wash/swatch alone follow filament color.
+Exact `4e8788f` was subsequently blocked because an older pending clipboard
+completion could overwrite newer Refresh. The renewal publishes Copy intent
+synchronously, assigns one action generation, and ignores stale asynchronous
+success/failure after any newer action.
+
+Author evidence is green: Svelte check 0/0, Vitest 25/25, real Chrome 50/50 at
+320/390/590/720, app 276/276 with 3,178 assertions, lifecycle 21/21, shipping
+24/24, deterministic packaging, bundles/help/signature and unchanged production
+asset hashes. Browser assertions cover the entire initial non-empty title
+sequence, exact initial route, one visible panel, zero recorded layout shift,
+no required-text clipping, Overview 1/2 columns, Heads semantic active accent,
+RGBA wash/latest-action Copy/two columns and
+unchanged Bed Mesh geometry. No
+deployment, service, printer, camera, auth or Tailscale contact occurred. Next
+is exact-SHA review, then ordinary PR delivery only if approved. Each production
+migration remains a separate authorized slice.
+
 PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`; guarded release
 `20260901-2cd7d96-pr58-20260901T073117-6df842` runs on BOTH explicitly
 restarted, loaded, healthy and integrity-verified services at runtime 0.4.8/

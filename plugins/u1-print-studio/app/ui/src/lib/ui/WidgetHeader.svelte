@@ -3,7 +3,7 @@
   let { title, icon, meta, aside }: { title: string; icon: Snippet; meta?: Snippet; aside?: Snippet } = $props();
 </script>
 
-<header class="widget-header">
+<header class="widget-header" data-widget-header>
   <div class="icon-tile" aria-hidden="true">{@render icon()}</div>
   <div class="header-copy">
     <h1>{title}</h1>

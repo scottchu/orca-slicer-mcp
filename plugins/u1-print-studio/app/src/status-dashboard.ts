@@ -9,7 +9,7 @@ import embeddedDashboardHostFile from "../public/status-dashboard-host.html" wit
 import dashboardIndexHtml from "../public/dashboard-index.html" with { type: "text" };
 // This deterministic SvelteKit output is self-contained and compiled into the
 // private dashboard bundle. It is not part of the public service or MCP assets.
-import bedMeshLabHtml from "../public/svelte-bed-mesh-lab.html" with { type: "text" };
+import observationLabHtml from "../public/svelte-observation-lab.html" with { type: "text" };
 
 import {
   readCameraWidgetHtml,
@@ -55,7 +55,18 @@ const CAMERA_DASHBOARD_HOST_PATH = path.resolve(
   "camera-dashboard-host.html"
 );
 const DASHBOARD_PATH = "/dashboard";
-const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh";
+const OBSERVATION_LAB_PATHS = new Set([
+  "/dashboard/lab",
+  "/dashboard/lab/overview",
+  "/dashboard/lab/progress",
+  "/dashboard/lab/thermals",
+  "/dashboard/lab/heads",
+  "/dashboard/lab/jobs",
+  "/dashboard/lab/job_history",
+  "/dashboard/lab/queue",
+  "/dashboard/lab/fans",
+  "/dashboard/lab/bed_mesh",
+]);
 const FOCUSED_DASHBOARD_PATHS = new Set([
   "/dashboard/overview",
   "/dashboard/progress",
@@ -71,6 +82,22 @@ const CAMERA_DASHBOARD_PATH = "/dashboard/camera";
 const CAMERA_WIDGET_PATH = "/camera-widget";
 const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
 const MAX_REQUEST_BYTES = 128 * 1024;
+
+function hasRawTraversal(requestTarget: string | undefined): boolean {
+  if (!requestTarget) return false;
+  let candidate = requestTarget.split(/[?#]/, 1)[0] ?? "";
+  for (let pass = 0; pass < 3; pass += 1) {
+    if (candidate.split("/").some((segment) => segment === "..")) return true;
+    try {
+      const decoded = decodeURIComponent(candidate);
+      if (decoded === candidate) break;
+      candidate = decoded;
+    } catch {
+      return true;
+    }
+  }
+  return candidate.split("/").some((segment) => segment === "..");
+}
 
 type StatusReader = typeof readU1Status;
 type CameraFrameReader = typeof readU1CameraFrame;
@@ -134,10 +161,12 @@ export function createStatusDashboardHandler(
     res: ServerResponse,
     pathname: string
   ): Promise<boolean> => {
+    // WHATWG URL parsing removes dot segments. Inspect the original request
+    // target first so literal and encoded traversal can never alias a lab URL.
+    if (hasRawTraversal(req.url)) return false;
     const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";
-    const isBedMeshLab =
-      pathname === BED_MESH_LAB_PATH || pathname === BED_MESH_LAB_PATH + "/";
-    if (isBedMeshLab) {
+    const normalizedLabPath = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+    if (OBSERVATION_LAB_PATHS.has(normalizedLabPath)) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -153,7 +182,7 @@ export function createStatusDashboardHandler(
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
       });
-      res.end(bedMeshLabHtml);
+      res.end(observationLabHtml);
       return true;
     }
     if (isIndex || FOCUSED_DASHBOARD_PATHS.has(pathname) ||

@@ -82,10 +82,16 @@ revision or its widget hashes.
 
 Decision 0024's `public/dashboard-index.html` is imported as text and inlined
 in the HTTP bundle; it is not a seventh required external release asset.
-Decision 0032's generated `public/svelte-bed-mesh-lab.html` is likewise inlined
-in the private HTTP bundle rather than copied as an external release asset. Its
-source is a deterministic self-contained `adapter-static` build. The generic
-embed scaffold is never part of the production build or release manifest.
+Decision 0032's generated `public/svelte-observation-lab.html` is likewise
+inlined in the private HTTP bundle rather than copied as an external release
+asset. One deterministic self-contained `adapter-static` page selects only the
+exact private `/dashboard/lab` directory or its nine non-camera child routes
+from `window.location.pathname`; it contains synthetic fixtures and no
+acquisition client. Static SSR emits only a neutral zero-size marker; initial
+browser creation selects the exact closed pathname before mount instead of
+rendering the directory first. Raw literal or encoded dot-segment requests are
+rejected before URL normalization. The generic embed scaffold is never part of
+the production build or release manifest.
 The fixed lifecycle asset inventory and its fingerprint verification stay
 unchanged so previously staged releases remain valid rollback targets.
 
@@ -98,9 +104,10 @@ media. Current source lists ten entries; `/dashboard/jobs` remains Current Job,
 `/dashboard/job_history` remains its separate bounded History view, and
 `/dashboard/overview` is the compact composed headline view. The verified PR58
 deployment runs runtime 0.4.8/schema 12/observation-v14/camera-v10. The
-additional exact `/dashboard/lab/bed_mesh` path is a synthetic private fixture,
-not an eleventh directory entry or focused production route; the public service
-returns 404. Source merge alone never updates loaded services. The source HTTP
+additional exact `/dashboard/lab` directory and nine lab child paths are
+synthetic private fixtures, not production directory entries or focused
+production routes; Camera remains pending and unlinked there, and the public
+service returns 404 for every lab path. Source merge alone never updates loaded services. The source HTTP
 Overview route and MCP Overview selector are implemented; public dashboard
 routes remain unavailable. Every process shares
 one observation store across its HTTP calls, not across other services or

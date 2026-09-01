@@ -6,6 +6,7 @@ export default {
   kit: {
     adapter: adapter({ pages: 'build', assets: 'build', fallback: undefined, strict: true }),
     output: { bundleStrategy: 'inline' },
-    version: { name: 'u1-private-bed-mesh-lab-v1', pollInterval: 0 }
+    prerender: { entries: ['/'], crawl: false },
+    version: { name: 'u1-private-observation-lab-v1', pollInterval: 0 }
   }
 };

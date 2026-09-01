@@ -10,6 +10,66 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### All-observation Svelte private-lab candidate — review pending (2026-09-01)
+
+Decision 0032/UI-002 now has an isolated candidate for the complete non-camera
+observation lab. One deterministic self-contained SvelteKit page serves the
+private `/dashboard/lab` directory and exact Overview, Progress, Thermals,
+Heads, Current Job, Job History, Print Queue, Fans & Air and Bed Mesh fixture
+paths. Camera is visibly pending and unlinked. Production `/dashboard/*`, MCP
+tools/resources, auth/Tailscale and public HTTP remain unchanged; no runtime,
+service or device was contacted.
+
+Every new view uses strict versioned synthetic-fixture validation, the shared
+header/body/footer anatomy, compact user-selected visual hierarchy and one
+bottom 44-pixel Refresh with non-flow feedback. Bed Mesh is the merged approved
+component without source changes.
+
+Formal review blocked exact `8a6df9b`: child URLs first rendered the directory
+and switched only after mount; WHATWG normalization could alias raw dot-segment
+requests; Heads rejected canonical RGBA; row clocks mixed UTC and viewer-local
+time; Overview clipped facts; and validator evidence was too broad. The renewed
+source emits a neutral zero-size SSR marker, chooses the exact browser pathname
+during component creation rather than after mount, and synchronously marks the
+closed route. The handler rejects literal/single/double-encoded dot segments
+from the raw target before normalization. Heads retains normalized RGB/RGBA
+alpha, row clocks are viewer-local, Overview is one column at 320 and two
+thereafter, and Heads stays two columns through 720 without reserved material
+height.
+
+Re-review then found that parser-time title history still included generic
+`Observation Lab` before the canonical child title and that Heads did not yet
+carry the accepted six-percent RGBA-aware wash/Copy interaction. The earliest
+inline bootstrap now owns the exact first non-empty document title before
+hydration. Heads uses the accepted wash, three valid-color bottom Copy actions,
+no action for Empty/N/A, and one shared overlay for Copy/Refresh feedback.
+
+Exact `b3e0c7e` was then blocked because that shared overlay still had two
+competing states: stale Copy could mask a later Refresh. Its active border also
+followed filament color. The renewal gives `ObservationFrame` one authoritative
+feedback state/timer and one announcer used by both actions; the last action
+always replaces the message. Active uses the semantic amber accent independently
+while only wash and swatch follow filament color.
+
+Exact `4e8788f` was then blocked on asynchronous ordering: Copy announced only
+after awaiting the clipboard, so an older completion could overwrite a newer
+Refresh. Copy now begins a persistent `Copying …` state synchronously and holds
+its action generation. Clipboard success/failure settles only if that generation
+is still current; any newer action invalidates the completion.
+
+Real Chrome passes 50/50 cases at 320/390/590/720 with exactly one canonical
+non-empty title from initial parsing, one visible route, zero recorded layout
+shift, no required-text clipping, overflow, console error or nonlocal request,
+and stable Refresh/Copy feedback geometry/source time. Bed Mesh retains its
+exact 4:3/equal-mode contract. The package is 713,802 bytes, 36,198 below the
+750 KB bound, with SHA-256
+`565c731ef6199c81e5df4f758837c6980fb33d7cc349905d7f16c4acbf17e2eb`.
+Full author gates pass 25 UI tests, 276 app tests/3,178 assertions, 21 lifecycle
+tests, 24 shipping tests, deterministic builds, three bundles, help and code
+signature. Production hashes remain unchanged. This is renewed author fixture/
+software evidence only; exact independent review is next before any PR, merge,
+deployment or cutover.
+
 ### Compact widget density and camera continuity shipped in PR58 (2026-09-01)
 
 PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`. Guarded release
