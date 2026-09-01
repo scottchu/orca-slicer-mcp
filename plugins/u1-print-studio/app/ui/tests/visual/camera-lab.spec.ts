@@ -64,6 +64,7 @@ for (const width of [320, 390, 590, 720]) {
     const pipButton = page.getByRole('button', { name: 'Picture in picture', exact: true });
     if (await pipButton.count()) {
       await pipButton.click();
+      await expect.poll(() => page.evaluate(() => document.pictureInPictureElement !== null || document.querySelector('[data-camera-feedback]')?.textContent?.includes('unavailable') === true)).toBe(true);
       if (await page.evaluate(() => document.pictureInPictureElement !== null)) {
         await page.getByRole('button', { name: 'Exit picture in picture', exact: true }).click();
         await expect.poll(() => page.evaluate(() => document.pictureInPictureElement === null)).toBe(true);
@@ -109,4 +110,32 @@ test('synthetic media is unavailable without capture support and does not invent
   await expect(page.locator('[data-camera-status]')).toContainText('Video unavailable');
   await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Picture in picture', exact: true })).toHaveCount(0);
+});
+
+test('stalled synthetic video clears measured FPS, freezes time and terminates truthfully', async ({ page }) => {
+  await page.route(url, (route) => route.fulfill({ status: 200, contentType: 'text/html', headers: { 'content-security-policy': csp }, body: html }));
+  await page.goto(url);
+  await page.getByRole('button', { name: 'Start simulated live' }).click();
+  await expect(page.locator('[data-camera-fps]')).toContainText(/\d+ FPS/);
+  await page.locator('video').evaluate((video) => (video as HTMLVideoElement).pause());
+  await expect(page.locator('[data-camera-fps]')).toHaveCount(0, { timeout: 2500 });
+  const frozen = await page.locator('[data-camera-status] time').getAttribute('datetime');
+  await expect(page.locator('[data-camera-status]')).toContainText('Video unavailable', { timeout: 5000 });
+  expect(frozen).not.toBeNull();
+  expect(await page.locator('video').evaluate((video) => (video as HTMLVideoElement).srcObject)).toBeNull();
+});
+
+test('a missing first presented frame has a five-second startup deadline', async ({ page }) => {
+  await page.addInitScript(() => {
+    HTMLVideoElement.prototype.requestVideoFrameCallback = () => 1;
+    HTMLVideoElement.prototype.cancelVideoFrameCallback = () => {};
+  });
+  await page.route(url, (route) => route.fulfill({ status: 200, contentType: 'text/html', headers: { 'content-security-policy': csp }, body: html }));
+  await page.goto(url);
+  await page.getByRole('button', { name: 'Start simulated live' }).click();
+  await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'true');
+  await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
+  await expect(page.locator('[data-camera-status]')).toContainText('Video unavailable', { timeout: 6500 });
+  await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
+  expect(await page.locator('video').evaluate((video) => (video as HTMLVideoElement).srcObject)).toBeNull();
 });

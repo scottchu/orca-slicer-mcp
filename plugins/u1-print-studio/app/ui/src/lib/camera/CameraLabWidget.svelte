@@ -21,7 +21,7 @@
   const receiveFeedback = (message: string) => { feedback = message; };
 </script>
 
-<WidgetShell label="U1 Camera" busy={selected === 'loading' || selected === 'connecting'}>
+<WidgetShell label="U1 Camera" busy={selected === 'loading' || selected === 'connecting' || (selected === 'live' && !measurement.playing && !measurement.unavailable)}>
   <WidgetHeader title="U1 Camera">
     {#snippet icon()}<Camera aria-hidden="true" />{/snippet}
     {#snippet meta()}<Caption>Lab fixture</Caption>{/snippet}

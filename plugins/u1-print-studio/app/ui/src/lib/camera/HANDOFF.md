@@ -29,13 +29,16 @@ Commands actually run with pinned Bun 1.3.12:
   zero errors/warnings after correcting one test-only DOM type.
 - `bun run scripts/build-camera-harness.ts`.
 - `bun x vitest run src/lib/camera/state.test.ts`: 3 passing tests.
-- `bun x playwright test --config camera.playwright.config.ts`: 5 passing
+- `bun x playwright test --config camera.playwright.config.ts`: 7 passing
   Chrome tests. Four widths (320/390/590/720) cover all seven states, equal
   card/media geometry, 16:9 media, top-right status, 44-pixel actions, reduced
   motion, measured FPS, native fullscreen and PiP enter/exit, CSS fullscreen
   Escape, simulated rejection, one announcement, non-flow feedback, retained
   media identity, and stopped tracks after unmount. Missing capture support
-  reports unavailable and no FPS/PiP. No nonlocal request occurred.
+  reports unavailable and no FPS/PiP. Two additional browser regressions cover
+  FPS expiration independently of drawing ticks, a frozen last-frame time,
+  five-second post-frame stall termination and the five-second first-frame
+  deadline. No nonlocal request occurred.
 
 The harness uses the existing lab's restrictive response CSP without any
 `media-src` allowance. Local `srcObject` playback works under that policy.
@@ -45,7 +48,32 @@ real camera, deployed service and user acceptance remain unverified.
 Initial browser tests exposed waiting for `play()` before the first canvas draw
 and a three-pixel FPS header growth. Starting the draw loop first and reserving
 the full status text block fixed those defects. A native PiP exit assertion
-needed to await the real asynchronous state transition.
+needed to await the real asynchronous state transition on entry and exit.
+
+## Live-camera migration gap (proposal, not accepted implementation)
+
+The production `public/camera-widget.html` still owns host JSON-RPC,
+snapshot acquisition/decode, WebRTC session lifetime and display rendering in
+one file. `public/camera-dashboard-host.html` translates the same iframe bridge
+into private dashboard tool calls. The existing application camera relay,
+WebRTC, fan-out and operations-adapter modules remain reusable unchanged.
+
+The proposed split for independent design review is a host-only typed
+`lib/host/camera-bridge.ts`, injected-port/timer `lib/camera/session.ts`, one
+persistent `lib/media/VideoSurface.svelte`, and a real-source
+`lib/camera/CameraWidget.svelte`. The synthetic canvas producer remains lab-only;
+production must never consume fixture-specific types or manufacture a live
+source. This proposal does not authorize that cutover or rename current files.
+
+Preserve snapshot-first presentation, 10-second tool and 1.5-second decode
+deadlines, singleflight/generation retention, one-time private activation,
+open/answer/ICE/close sequencing, private metadata boundaries, one video per
+mounted camera, one-second measured FPS/1.5-second expiry, eight-second first
+frame deadline, five-second rendered-frame stall, three-second disconnect grace,
+retained snapshots/fallback, explicit Close cleanup, pagehide/pageshow intent,
+same-document fullscreen/PiP and all current/frozen compatibility resources.
+Synthetic Chrome evidence does not establish any host, backend, actual device
+or live-printer acceptance for that separate migration.
 
 ## Integration still required
 

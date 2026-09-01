@@ -28,7 +28,8 @@
   let epoch = 0;
   let toastTimer: ReturnType<typeof setTimeout> | undefined;
   let startTimer: ReturnType<typeof setTimeout> | undefined;
-  let lastEvidence = 0;
+  let evidenceTimer: ReturnType<typeof setTimeout> | undefined;
+  let stallTimer: ReturnType<typeof setTimeout> | undefined;
   let sampleTime = 0;
   let sampleCount = 0;
   let measuredFps: number | null = null;
@@ -55,8 +56,18 @@
   };
   const evidence = (time: number, count: number) => {
     if (!Number.isFinite(count) || count <= 0) return;
-    lastEvidence = time;
     if (startTimer) clearTimeout(startTimer);
+    if (evidenceTimer) clearTimeout(evidenceTimer);
+    if (stallTimer) clearTimeout(stallTimer);
+    const current = epoch;
+    evidenceTimer = setTimeout(() => {
+      if (current !== epoch) return;
+      measuredFps = null; sampleTime = 0; sampleCount = 0; notify();
+    }, 1500);
+    stallTimer = setTimeout(() => {
+      if (current !== epoch) return;
+      stop(); unavailable = true; notify(); toast('Local video stopped');
+    }, 5000);
     playing = true;
     shownAt = new Date().toISOString();
     if (!sampleTime || count < sampleCount) { sampleTime = time; sampleCount = count; measuredFps = null; }
@@ -69,6 +80,8 @@
   const stop = () => {
     epoch += 1;
     if (startTimer) clearTimeout(startTimer);
+    if (evidenceTimer) clearTimeout(evidenceTimer);
+    if (stallTimer) clearTimeout(stallTimer);
     cancelAnimationFrame(animation);
     if (videoFrame && video?.cancelVideoFrameCallback) video.cancelVideoFrameCallback(videoFrame);
     videoFrame = 0;
@@ -76,7 +89,7 @@
     stream = null;
     if (video) video.srcObject = null;
     playing = false; measuredFps = null; shownAt = null;
-    sampleTime = 0; sampleCount = 0; lastEvidence = 0;
+    sampleTime = 0; sampleCount = 0;
     notify();
   };
   const start = async () => {
@@ -101,9 +114,6 @@
         if (!video.requestVideoFrameCallback) {
           const count = video.getVideoPlaybackQuality?.().totalVideoFrames;
           if (count !== undefined && count > lastCount) { evidence(time, count); lastCount = count; }
-        }
-        if (lastEvidence && time - lastEvidence > 1500 && (playing || measuredFps !== null)) {
-          playing = false; measuredFps = null; sampleTime = 0; sampleCount = 0; notify();
         }
         animation = requestAnimationFrame(animate);
       };
