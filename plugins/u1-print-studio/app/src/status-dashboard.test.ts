@@ -9,7 +9,7 @@ import { createStatusDashboardHandler } from "./status-dashboard.js";
 import { createRequestHandler, tailscaleDashboardBaseUrl } from "./server.js";
 import type { U1Status } from "./u1-status.js";
 import { PrinterObservationStore } from "./observation-store.js";
-import { adaptFans } from "../ui/src/lib/live/fans-adapter";
+import { adaptFans } from "../ui/src/lib/live/fans-adapter.js";
 
 const status: U1Status = {
   schemaVersion: 1,

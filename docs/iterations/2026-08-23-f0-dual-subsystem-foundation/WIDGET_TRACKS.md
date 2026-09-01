@@ -38,6 +38,10 @@ Chrome, not phone, WebRTC or printer evidence.
 
 ## Remaining migration and cleanup
 
+The separate LIVE Fans candidate is the current production cutover slice.
+`LIVE_PARITY.md` records the read-only remaining-eight acceptance inventory;
+those adapters and generic resource replacement remain pending.
+
 - [x] Independently approve/deliver this controls/loading candidate and persist
   the actual rollout receipt.
 - [x] Recoverably quarantine the specifically approved ten redundant worktrees

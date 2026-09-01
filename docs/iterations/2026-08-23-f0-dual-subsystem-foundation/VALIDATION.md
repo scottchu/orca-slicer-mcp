@@ -1,5 +1,59 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 LIVE Fans exact-candidate author gates
+
+Actual final commands, pinned Bun 1.3.12 with normal Node PATH:
+
+- UI `bun run check`, focused `bun run test -- src/lib/live src/lib/host`,
+  `bun run build:live-fans`, `bun run build`, `bun run package:private-lab`,
+  focused `bun run test:browser -- live-fans.spec.ts`, then full
+  `bun run test:browser`: PASS. Full Chrome result is 104 cases, including ten
+  production-iframe cases and all existing Thermals/Fans/lab geometry regressions.
+- Repository `./scripts/check-repository.sh`: PASS, compiler/AST and 152 UI units,
+  deterministic production/lab rebuild checks, 280 app tests/3,265 assertions,
+  21 service-lifecycle and 24 ship tests, `repository contract: ok`.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and executable `--help`: PASS. `git diff --check`: PASS.
+
+The production iframe uses the actual private route/CSP and parent bridge with
+intercepted synthetic tool responses, not a fake presentation setter. Four
+widths (320/390/590/720) × normal/200% text cover every fan at the real 1,000,000
+RPM bound, one-pixel loading/ready region parity, retained source time, values,
+focus and geometry during refresh, null/zero/fractional values, error/retry and
+no unexpected network requests. Persisted page lifecycle and actual browser
+back/forward retain or restore exactly one mounted widget/bridge. Author
+screenshots at normal and 200% text were inspected; no clipping was observed.
+
+Separate pre-review found duplicate result notifications invalidating a pending
+newer result and pagehide disposing BFCache state. Both now have regressions;
+same-version freshness notifications likewise cannot discard the newer response.
+Host navigation generations reject pre-reload initial notifications and request
+replies. A real existing-server projection test (injected no-device reader) proves
+the strict adapter accepts unavailable domain data without inventing readings.
+
+Packaging evidence: production Fans 84,884 bytes, SHA-256
+`f25bc9bd332e3fdd49a974db754ea2636ed099f065241bd373a9c0d4daa22605`, below
+its separate 100,000-byte bound. Shared leaf extraction/busy-state changes add
+334 bytes to the observation lab: 748,888 bytes, SHA-256
+`26a05eaf00188d26dd27e5f2700ae9172c8d4ba4491c785c9dffec1c38e56800`,
+leaving 1,112 bytes under the unchanged 750,000-byte lab cap. The two artifacts
+total 833,772 bytes; the production artifact is not a second lab payload or a
+silent relaxation of the lab bound. Import-graph and packaged-marker guards
+exclude lab producers/controls, test harnesses, Three and media acquisition.
+
+Static/private-route tests add exact GET/no-store/CSP, prohibited methods,
+encoded/traversal/suffix rejection and public 404 coverage. The source-derived
+ship inventory now has one additional static asset and security probe; this is
+tested inventory, not a claim that a release has occurred. Full browser startup
+once refused another agent's occupied port; it was rerun only after that agent's
+suite released it. No reused test server or weakened gate was used.
+
+All results above are author software/synthetic-host evidence. Fresh independent
+validation and formal review of the frozen commit must precede guarded merge,
+exact deployment, BOTH service restarts and post-verification. No actual printer,
+camera, user phone, auth, Tailscale or running service was changed or observed.
+
 ## 2026-09-01 LIVE Fans current author checkpoint
 
 UI compiler/AST check and the focused adapter/controller/RPC unit run actually

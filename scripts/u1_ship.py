@@ -90,6 +90,8 @@ def static_contract(source):
     files = {(8788, route): "status-dashboard-host.html" for route in routes}
     files.update({(8788, route): "svelte-observation-lab.html" for route in lab_routes})
     live_fans_match = re.search(r'LIVE_FANS_WIDGET_PATH = "(/dashboard/[a-z_]+)"', text)
+    require("svelte-live-fans.html" not in text or live_fans_match is not None,
+            "Unsupported live Fans route contract")
     if live_fans_match:
         require(live_fans_match[1] not in routes and live_fans_match[1] not in lab_routes,
                 "Live Fans asset must have a distinct private route")

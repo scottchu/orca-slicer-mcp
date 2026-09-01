@@ -15,10 +15,14 @@ Last updated: 2026-09-01
 PR67 and its receipt PR68 are delivered; reviewed main `2d30b01` is explicitly
 integrated into this separate unshipped candidate. Decision 0034 implements
 fixture-independent Fans models, strict adapter, shared host RPC and retained
-refresh, plus a Fans-only private dashboard asset. Twenty-five focused units and
-ten real-iframe synthetic browser cases pass; full gates and independent exact
-acceptance remain pending. Backend/authentication and generic MCP resources are
+refresh, plus a Fans-only private dashboard asset. Author gates pass: 152 UI
+units, 104 Chrome cases, 280 app tests/3,265 assertions, 21 lifecycle and 24 ship
+tests, deterministic packages and bundles/signature/help. Independent exact
+acceptance remains pending. Backend/authentication and generic MCP resources are
 unchanged. Other eight observation cutovers and Camera remain separate work.
+Production Fans is 84,884 bytes; lab is 748,888 bytes, within its unchanged
+750,000-byte cap. These are software/synthetic-browser results, not live-printer
+or actual-user-device acceptance.
 
 ### All-nine private lab controls/loading shipped — PR67 (2026-09-01)
 

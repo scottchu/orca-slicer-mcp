@@ -14,6 +14,18 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Current unshipped LIVE Fans candidate explicitly integrates reviewed main
+`2d30b01`. Its real iframe/adapter/controller and private static asset are wired;
+152 UI units, 104 Chrome cases and full app/lifecycle/shipping/bundle gates pass.
+Obtain exact independent validation/review before the Fans-only cutover.
+See decision 0034 and active `LIVE_PARITY.md` for the remaining-eight contract.
+Do not infer live acceptance from the already shipped lab controls below.
+Production Fans is 84,884 bytes, SHA-256
+`f25bc9bd332e3fdd49a974db754ea2636ed099f065241bd373a9c0d4daa22605`;
+lab is 748,888 bytes, SHA-256
+`26a05eaf00188d26dd27e5f2700ae9172c8d4ba4491c785c9dffec1c38e56800`.
+Independent approval is still required; no service state changed in author tests.
+
 PR67 is shipped and independently post-verified: reviewed `07e1c144`, merged
 `c924bf9`, release `20260901-c924bf9-pr67-20260901T153250-99a666`. BOTH service
 restarts, health/integrity, 25 static routes/assets, 26 security checks and

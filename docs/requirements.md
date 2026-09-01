@@ -507,6 +507,15 @@ durable-monitor claim.
   and RPM, and no inferred running/fault state. Its skeleton retains static
   names/icons without telemetry or fill; loading/ready geometry is equal across
   supported widths/modes and 200% text. Whole metrics may wrap without clipping.
+  Decision 0034 extends the same composition to the first real Fans dashboard:
+  a fixture-independent adapter preserves all seven channel IDs, reported/null/
+  zero values through 1,000,000 RPM, purifier power/mode and domain receipts.
+  One host bridge/controller owns selected-view-before-data, bounded requests,
+  duplicate/late-result rejection, restart recovery, retained refresh/focus and
+  BFCache lifecycle. Its exact private static asset has no acquisition capability
+  and is separately bounded at 100,000 bytes; the lab retains its 750,000-byte cap.
+  Other focused routes and generic MCP/legacy aliases stay unchanged until their
+  own lossless parity, independent acceptance and guarded deployment.
 
 When evidence changes one of these requirements, update it explicitly and
 record a decision if the change affects architecture, safety, or product scope.

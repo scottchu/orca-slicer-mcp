@@ -49,6 +49,21 @@ private metadata at the bridge, but never project it as observation data.
 The Fans heading uses the fan-domain receipt/source time, not the status envelope
 time. Production packaging has a separate self-contained Fans entry and explicit
 isolation checks; it neither embeds nor changes the 750,000-byte private-lab cap.
+The exact private asset route is `/dashboard/fans_widget`, loaded only by the
+existing `/dashboard/fans` host. It performs no acquisition itself, accepts GET
+only, has no network/media capability in CSP and allows only same-origin framing.
+The separate production Fans artifact is bounded at 100,000 bytes; this does not
+relax or replace the lab cap. Source-derived ship inventory adds its exact hash
+and public-isolation probe. Eight other focused hosts and all MCP aliases retain
+their existing renderer. Camera packaging has a separate decision/author.
+
+Duplicate observations must not settle or invalidate an active refresh. Real
+newer responses are still compared against the latest accepted receipt, even if
+a same-version freshness notification arrives while they are pending. A persisted
+pagehide retains the mounted session for BFCache; nonpersisted disposal is final.
+Host reload generations reject replies belonging to a replaced iframe. A generic
+busy icon-button state uses aria-disabled and guards activation without removing
+keyboard focus; ordinary disabled behavior stays unchanged for existing callers.
 
 The live root is zero-raw and keeps components mounted. Primitives are shared
 with the lab; production bundles exclude fixture producers, lab controls, test

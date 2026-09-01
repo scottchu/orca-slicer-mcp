@@ -20,4 +20,14 @@ describe('shared widget foundation', () => {
     const { container } = render(ObservedMeta, { observedAt: null, freshness: 'unknown' });
     expect(container).toHaveTextContent('Observation time unavailable · Freshness unknown');
   });
+
+  test('busy icon action retains focus and blocks activation until ready', async () => {
+    const onclick = vi.fn();
+    const { getByRole, rerender } = render(IconButton, { label: 'Refresh', icon: RotateCcw, busy: true, onclick });
+    const button = getByRole('button', { name: 'Refresh' }); button.focus(); button.click();
+    expect(button).toHaveFocus(); expect(button).not.toBeDisabled();
+    expect(button).toHaveAttribute('aria-disabled', 'true'); expect(onclick).not.toHaveBeenCalled();
+    await rerender({ label: 'Refresh', icon: RotateCcw, busy: false, onclick }); button.click();
+    expect(onclick).toHaveBeenCalledOnce(); expect(button).toHaveFocus();
+  });
 });

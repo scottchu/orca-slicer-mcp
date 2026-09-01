@@ -4,11 +4,20 @@
 
 The separate LIVE candidate adds strict fixture-independent Fans models/adapter,
 one shared host RPC bridge, a view-locked controller, zero-raw live root and
-shared FanReadings. Twenty-five focused units, compiler/AST and ten browser cases
-pass. The Fans-only private asset and existing host handoff are implemented;
+shared FanReadings. Full author gates pass: 152 UI units, 104 Chrome cases,
+280 app tests/3,265 assertions, 21 lifecycle, 24 ship tests and all bundles /
+signature/help. The Fans-only private asset and existing host handoff are implemented;
 generic MCP remains unchanged. Reviewed main `2d30b01` is explicitly integrated.
-Next: finish full gates and independent exact acceptance. Keep Camera's separate
+Next: independent exact validation/review and guarded delivery. Keep Camera's separate
 integration and shared RPC dependency coordinated; do not duplicate listeners.
+
+Changed boundaries: UI `lib/host`, `lib/live`, the shared FanReadings/busy
+IconButton, production entry/build/package, Fans-only dashboard host/asset route,
+tests and source-derived shipping inventory. Backend observation acquisition,
+authorization, generic MCP resource and remaining renderer aliases are unchanged.
+The active `LIVE_PARITY.md` preserves the remaining-eight mapping/fixture gates.
+Do not delete reachable legacy renderer code before those cutovers are accepted.
+Production/lab hashes and budget deltas are in the newest VALIDATION entry.
 
 ## 2026-09-01 PR67 delivered — migration continues separately
 

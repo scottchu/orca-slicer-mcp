@@ -1,4 +1,4 @@
-import { FAN_IDS, type FansPresentation } from './presentation';
+import { FAN_IDS, type FansPresentation } from './presentation.js';
 type RecordValue = Record<string, unknown>;
 const record = (value: unknown): RecordValue => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Invalid observation');

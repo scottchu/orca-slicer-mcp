@@ -1,10 +1,12 @@
 # F0 dual-subsystem foundation brief
 
-Current migration sequence: finish frozen PR67 acceptance/delivery; independently
-prepare decision 0034's real Fans adapter/shared host controller on a separate
-branch; integrate reviewed main before its acceptance and Fans-only cutover.
+Current migration sequence: PR67 controls/loading and PR68 receipt are delivered;
+complete decision 0034's real Fans adapter/shared host controller on a separate
+branch with reviewed main `2d30b01` integrated before its Fans-only acceptance.
 Camera's separate controller reuses the shared RPC. No new feature or backend
 rewrite is folded into either reviewed boundary.
+The remaining-eight lossless mapping/fixture gates are recorded in
+`LIVE_PARITY.md`; no missing lab metric may be fabricated from real data.
 
 - Iteration ID: `2026-08-23-f0-dual-subsystem-foundation`
 - Date opened: 2026-08-23
