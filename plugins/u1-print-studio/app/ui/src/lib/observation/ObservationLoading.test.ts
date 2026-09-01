@@ -4,12 +4,15 @@ import ObservationSkeleton from './ObservationSkeleton.svelte';
 import ObservationState from './ObservationState.svelte';
 import { loadingObservation, structureCount } from './loading';
 import LoadingValue from '../ui/LoadingValue.svelte';
+import BedMeshWidget from '../bed-mesh/BedMeshWidget.svelte';
 
 afterEach(cleanup);
 describe('shared legacy layout loading', () => {
   for (const view of ['overview', 'progress', 'heads', 'jobs', 'job_history', 'queue', 'bed_mesh'] as const) {
     it(`${view} renders structural loading without telemetry, focusable actions or WebGL`, () => {
-      const { container } = render(ObservationSkeleton, { view });
+      const { container } = view === 'bed_mesh'
+        ? render(BedMeshWidget, { loading: true })
+        : render(ObservationSkeleton, { view });
       expect(container.querySelector('[data-widget-shell]')).toHaveAttribute('aria-busy', 'true');
       expect(screen.getAllByRole('status')).toHaveLength(1);
       expect(screen.getByRole('status')).toHaveTextContent(/^Loading /);

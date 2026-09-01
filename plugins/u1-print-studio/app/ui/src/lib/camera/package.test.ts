@@ -1,18 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import { assertLabBudgets, assertSelfContained } from '../../../scripts/private-lab-contract';
 
-describe('two-artifact private lab budget and isolation', () => {
+describe('three-artifact private lab budget and isolation', () => {
   it('accepts exact independently reviewed limits', () => {
-    expect(() => assertLabBudgets(750_000, 80_000)).not.toThrow();
+    expect(() => assertLabBudgets(200_000, 700_000, 80_000)).not.toThrow();
   });
-  it('rejects individual or invalid sizes, regardless of aggregate room', () => {
-    expect(() => assertLabBudgets(750_001, 1)).toThrow('Observation');
-    expect(() => assertLabBudgets(1, 80_001)).toThrow('Camera');
-    for (const size of [0, -1, 1.5, NaN, Infinity]) expect(() => assertLabBudgets(size, 1)).toThrow('Invalid');
+  it('rejects each individual cap at exactly plus one byte', () => {
+    expect(() => assertLabBudgets(200_001, 1, 1)).toThrow('Light observation');
+    expect(() => assertLabBudgets(1, 700_001, 1)).toThrow('Bed Mesh');
+    expect(() => assertLabBudgets(1, 1, 80_001)).toThrow('Camera');
   });
-  it('rejects oversized aggregate bytes without treating each file as a new 750KB allowance', () => {
-    expect(() => assertLabBudgets(750_000, 80_001)).toThrow('aggregate');
-    expect(() => assertLabBudgets(749_000, 749_000)).toThrow();
+  it('rejects every invalid position and exact aggregate plus one boundary', () => {
+    for (const size of [0, -1, 1.5, NaN, Infinity]) {
+      expect(() => assertLabBudgets(size, 1, 1)).toThrow('Invalid');
+      expect(() => assertLabBudgets(1, size, 1)).toThrow('Invalid');
+      expect(() => assertLabBudgets(1, 1, size)).toThrow('Invalid');
+    }
+    expect(() => assertLabBudgets(200_000, 700_000, 80_000)).not.toThrow();
+    expect(() => assertLabBudgets(200_000, 700_000, 80_001)).toThrow('aggregate');
   });
   it('rejects runtime script, stylesheet and media URLs', () => {
     for (const html of ['<script src="/module.js">', '<link rel="stylesheet" href="/style.css">', '<video src="https://example.test/feed">']) expect(() => assertSelfContained(html)).toThrow();
