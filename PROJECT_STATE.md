@@ -1,5 +1,31 @@
 # Project state
 
+## Current Job phase two — unaccepted non-browser checkpoint
+
+The independently source-reviewed phase-one checkpoint `4e50f7b` ordinarily
+merges accepted main `ff577fcb` as `ec38829` on `codex/u1-current-job-phase1`.
+Current Job now has zero-raw shared facts/panel, a live root, a fixture-only lab
+wrapper, seven-state lab controls and the exact private `/dashboard/jobs_widget`
+asset behind the unchanged `/dashboard/jobs` host. Reported-null filenames,
+storage false, zero/fractional/extreme quantities and independent job receipts
+remain distinct. Neither the real nor synthetic Current Job view invents a
+physical progress percentage. Generic MCP and legacy resources are unchanged.
+
+The root-adopted optional compact IconButton paints 32 pixels within a 44-pixel
+target; default consumers retain their existing appearance. Current Job is its
+only initial consumer. Generic QuantityValue/TextValue leaves, matching inert
+action skeleton and all affected package outputs are present. Current outputs
+are 85,370 bytes for Jobs; light/Bed/Camera lab 203,595/630,767/79,682 bytes
+(914,044 aggregate), with no limit changes.
+
+This is NOT a completed migration or release candidate. Before freezing, merge
+accepted Queue main normally, consume its DurationValue/DomainReceipt and
+shared generation fix, resolve shared leaf/graph changes without copying across
+worktrees, and run the full browser/geometry/default-consumer gates. The added
+17 browser cases have not run. Independent exact review/validation, PR, deploy,
+both-service restart and deployed verification remain required. No printer,
+service, plugin, auth or Tailscale action occurred. Other tracks remain open.
+
 ## Current Job strict live-model phase one — author checkpoint only
 
 From exact accepted main `8c5756ddb4435ba94a494963556c94d15d05b6e5`,

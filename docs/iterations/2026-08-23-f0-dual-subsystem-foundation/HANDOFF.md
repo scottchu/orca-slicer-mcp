@@ -1,5 +1,34 @@
 # F0 dual-subsystem foundation handoff
 
+## Current Job phase-two non-browser handoff — unaccepted
+
+Addresses OBS-015 Current Job parity and UI-002/shared composition under the
+existing focused-widget boundary. Accepted main `ff577fcb` was ordinarily
+merged as `ec38829`. Added CurrentJobFacts/Panel/LiveCurrentJobRoot, generic
+QuantityValue/TextValue, exact live entry and `/dashboard/jobs_widget` route,
+host initial-error notification mapping and guarded shipping inventory.
+CurrentJobWidget now composes the same panel without live adapter/RPC; its
+fixture schema and closed controls remove fabricated percent and expose seven
+states, zero/unknown/extreme facts and reported-empty/unreported/long filenames.
+The generic compact action prop is opt-in/default-false; only Current Job uses
+32-pixel paint with the unchanged 44-pixel target. All default consumer packages
+were regenerated, not silently treated as byte-identical.
+
+Remaining before acceptance: ordinary accepted Queue merge; reuse its pending
+DurationValue/DomainReceipt and generic obsolete-success fix; replace temporary
+seconds QuantityValue use; exact production aggregate guard; closed loading
+geometry and all 17 new browser cases plus full existing suite; strict graph,
+three-build hash, runtime and independent exact approval renewal. No browser
+run, PR or shipment belongs to this checkpoint. The current Job receipt is
+used rather than the top envelope receipt, and stale refresh keeps mounted
+rows/focus with one overlay. Real arbitrary filenames can change first-load
+height; retained refresh must not. No physical progress is inferred from bytes.
+
+Current package bytes: Jobs85,370; Fans86,539; Thermals87,115; Heads92,518;
+Camera90,804. Private labs:203,595/630,767/79,682, aggregate914,044. Camera lab
+has only318 bytes remaining; no cap was raised. Default consumer visual and
+enlarged-text regression gates are still due despite passing unit tests.
+
 ## Current Job strict-model phase-one handoff
 
 The bounded author delta adds only `CurrentJobPresentation`, the exact `jobs`

@@ -14,6 +14,7 @@ import bedMeshLabHtml from "../public/svelte-bed-mesh-lab.html" with { type: "te
 import liveFansHtml from "../public/svelte-live-fans.html" with { type: "text" };
 import liveThermalsHtml from "../public/svelte-live-thermals.html" with { type: "text" };
 import liveHeadsHtml from "../public/svelte-live-heads.html" with { type: "text" };
+import liveCurrentJobHtml from "../public/svelte-live-jobs.html" with { type: "text" };
 import liveCameraHtml from "../public/svelte-live-camera.html" with { type: "text" };
 import cameraLabHtml from "../public/svelte-camera-lab.html" with { type: "text" };
 
@@ -89,6 +90,7 @@ const CAMERA_DASHBOARD_PATH = "/dashboard/camera";
 const LIVE_FANS_WIDGET_PATH = "/dashboard/fans_widget";
 const LIVE_THERMALS_WIDGET_PATH = "/dashboard/thermals_widget";
 const LIVE_HEADS_WIDGET_PATH = "/dashboard/heads_widget";
+const LIVE_CURRENT_JOB_WIDGET_PATH = "/dashboard/jobs_widget";
 const LIVE_CAMERA_WIDGET_PATH = "/dashboard/camera_widget";
 const CAMERA_WIDGET_PATH = "/camera-widget";
 const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
@@ -175,7 +177,7 @@ export function createStatusDashboardHandler(
     // WHATWG URL parsing removes dot segments. Inspect the original request
     // target first so literal and encoded traversal can never alias a lab URL.
     if (hasRawTraversal(req.url)) return false;
-    if (pathname === LIVE_FANS_WIDGET_PATH || pathname === LIVE_THERMALS_WIDGET_PATH || pathname === LIVE_HEADS_WIDGET_PATH) {
+    if (pathname === LIVE_FANS_WIDGET_PATH || pathname === LIVE_THERMALS_WIDGET_PATH || pathname === LIVE_HEADS_WIDGET_PATH || pathname === LIVE_CURRENT_JOB_WIDGET_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -187,7 +189,7 @@ export function createStatusDashboardHandler(
         "content-type": "text/html; charset=utf-8",
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
-      }).end(pathname === LIVE_FANS_WIDGET_PATH ? liveFansHtml : pathname === LIVE_HEADS_WIDGET_PATH ? liveHeadsHtml : liveThermalsHtml);
+      }).end(pathname === LIVE_FANS_WIDGET_PATH ? liveFansHtml : pathname === LIVE_HEADS_WIDGET_PATH ? liveHeadsHtml : pathname === LIVE_CURRENT_JOB_WIDGET_PATH ? liveCurrentJobHtml : liveThermalsHtml);
       return true;
     }
     const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";

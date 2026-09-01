@@ -1,5 +1,13 @@
 # Widget completion tracks
 
+Current Job phase-two author checkpoint is now preserved on
+`codex/u1-current-job-phase1` after ordinary accepted-main merge `ec38829`.
+The real private child and shared lab/live composition exist, but accepted
+Queue integration, shared DurationValue/DomainReceipt reuse, browser geometry,
+independent exact approval and shipment remain outstanding. No completed track
+is inferred from the non-browser checkpoint. Current Job owns the pending
+generic compact action API; default consumers retain their existing styling.
+
 Current packaging track: accepted/deployed Heads main `5ffca66` is ordinarily
 merged into an authored exact-three private-lab split. Light observation, Bed
 Mesh and Camera are 199,819/629,880/78,795 bytes (908,494 aggregate) with
@@ -61,7 +69,7 @@ production dashboard through PR71. Remaining cutovers and seven ready-shell debt
 | Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Heads & Filaments | Zero-raw candidate with generic card/color/actual-target primitives | State controls retained; truthful skeleton and initial-error retry candidate pass | Focused private candidate; generic MCP unchanged | Author gates PASS; independent review/validation and shipment pending |
-| Current Job | Strict real model/adapter/controller phase-one checkpoint; UI composition still ready-shell debt | Shared live lifecycle tested; widget controls not yet composed | Pending | Unaccepted author checkpoint; no production artifact/review/PR/deploy |
+| Current Job | Strict real model/adapter; zero-raw shared panel/live root and private route authored | Seven-state/null/zero/extreme controls, inert loading and compact action authored; browser geometry pending | Pending | Unaccepted phase-two checkpoint; Queue integration, browser/full final gates, independent approval, PR/deploy due |
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Bed Mesh | Projected Three enclosure and reactive 2D/3D candidate; native-tag shell debt | Shipped controls; no Three mount while loading | Pending adapter parity | PR67 delivered; renderer refinement awaits independent acceptance/delivery |

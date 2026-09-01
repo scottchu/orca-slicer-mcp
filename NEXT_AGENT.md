@@ -1,5 +1,36 @@
 # Next agent
 
+## Resume Current Job phase two after accepted Queue integration
+
+Use branch `codex/u1-current-job-phase1`, not a fresh implementation. It contains
+the ordinary accepted-main merge `ec38829` and an unaccepted non-browser
+Current Job UI/route/package checkpoint. Do not ship this state. The root has
+reserved acceptance order Queue first; Current Job must ordinarily merge that
+accepted main before final freeze. No shared controller fix was duplicated.
+
+Next smallest actions:
+
+1. Merge accepted Queue main, retaining both additive `jobs` and `queue` types,
+   private route inventories and package entries. Reuse its pending
+   DurationValue/DomainReceipt and inert public-template loading shapes;
+   replace the temporary seconds QuantityValue rows. Never use real data as a
+   skeleton template. Keep all reported/null/false distinctions.
+2. Current Job owns the reviewed-to-be `compact?: boolean = false` IconButton
+   API and matching action skeleton. Bed phase-two's separate unaccepted
+   prototype must later merge accepted Current Job and reconcile in its favor.
+   Confirm 32-pixel painted surface/44-pixel hit target at four widths/200% text,
+   with default consumers unchanged. Camera lab now has 318 bytes of headroom.
+3. Run the 17 new `live-current-job.spec.ts` cases and all existing browser
+   cases, particularly closed lab loading geometry and long metadata wrapping.
+   No browser/4179 reservation was made for this checkpoint. Fix any geometry
+   failures structurally, without arbitrary card heights or tolerance changes.
+4. Renew all deterministic package hashes, strict emitted CLIENT graphs,
+   production-only aggregate <=1,550,000 bytes, full repository/runtime gates,
+   then obtain independent exact source and validation approval before PR/ship.
+
+The existing artifact is 85,370 bytes, not a final accepted package. No real
+printer, actual phone, live deployment or user-outcome evidence is implied.
+
 ## Current Job phase-one resume point — not accepted or shipped
 
 Review the strict real `jobs` model/adapter/controller checkpoint independently

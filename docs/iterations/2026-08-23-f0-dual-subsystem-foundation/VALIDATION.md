@@ -1,5 +1,48 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 Current Job phase-two non-browser checkpoint
+
+Software-only author evidence; not independent approval or deployment. The
+branch ordinarily merged accepted main `ff577fcb` as `ec38829`.
+
+- UI `bun run check`: Svelte/TypeScript zero errors and warnings; zero-raw
+  composite and precise leaf/debt AST contracts PASS.
+- UI `bun run test`:383/383 in38 files PASS after compact action addition.
+  Includes13 new Current Job/quantity tests, one strict emitted-domain graph
+  test and3 compact/default action tests. Shared actual-producer adapter and
+  controller regressions remain in the suite.
+- App `bun run check` and final repository-contained `bun run test`: PASS,
+  307/307 tests with3,608 assertions after compact package regeneration.
+- `uv run scripts/test_u1_ship.py`:24/24 PASS. Exact jobs route hash and
+  public absence are added; security inventory grows31→32. The initial old
+  count assertions failed and were updated to the actual new route inventory.
+- Final `bash scripts/check-repository.sh`: PASS after compact generic leaf and
+  package renewal, including compiler/AST, UI383, app307, lifecycle21,
+  shipping24 and deterministic source-package checks. `git diff --check`: PASS.
+- `bun run build:live-jobs` plus two `verify:live-jobs` runs initially produced
+  identical84,463-byte output before compact. Current renewed compact output
+  is85,370 bytes, SHA256
+  `e87ad9b5c8a3d27f3b62d01801f314425b3cfa148a2c6cef604892fccf833a0a`.
+  Production graph enforces only Current Job/generic emitted modules, with
+  actual CLIENT graph inspection. No other domain adapter was emitted.
+- Renewed `build:live-fans`, `build:live-thermals`, `build:live-heads`,
+  `build:live-camera`, SvelteKit `build` and `package:private-lab`: PASS. Labs
+  are203,595/630,767/79,682 bytes,914,044 aggregate; hashes are pinned in
+  package tests. No budgets were raised. Default consumers include new opt-in
+  CSS but retain `compact=false`; their visual/browser renewal remains due.
+- App `bun run bundle:runtime` and `dist/u1-print-studio --help`: PASS, including
+  build-script ad-hoc codesign/verify. This is a local binary, not a service.
+- Added17 Playwright cases cover four widths/normal and200% text, default and
+  compact actions, real host iframe states/retained refresh, long filenames,
+  immediate HTTP500/retry and persisted/final page lifecycle. NOT RUN: Queue
+  owns the current browser gate; no4179 reservation was attempted here.
+
+Still required: accepted Queue merge and DurationValue/DomainReceipt reuse,
+shared generic generation fix, closed-lab no-jump geometry and all browser
+regressions, three final deterministic builds, production aggregate guard and
+independent exact review/validation. No real-printer/actual-device/user-outcome
+or deployed-service acceptance exists for Current Job phase two.
+
 ## 2026-09-01 Current Job phase-one author evidence — not acceptance
 
 The source checkpoint is based on exact accepted main

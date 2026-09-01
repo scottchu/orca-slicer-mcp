@@ -7,3 +7,9 @@ export const assertLiveObservationModule = (id: string): void => {
 export const assertLiveObservationBytes = (bytes: number): void => {
   if (!Number.isSafeInteger(bytes) || bytes < 1 || bytes > 100_000) throw new Error('Invalid live observation byte count or 100 KB budget exceeded');
 };
+export const assertCurrentJobModule = (id: string): void => {
+  assertLiveObservationModule(id);
+  if (/\/lib\/live\//.test(id) && !/\/(?:LiveCurrentJobRoot\.svelte|current-job-(?:adapter|controller)\.ts|controller\.ts|validation\.ts|presentation\.ts|observation-port\.ts)$/.test(id)) throw new Error(`Current Job imported another live domain: ${id}`);
+  if (/\/lib\/observation\//.test(id) && !/\/(?:CurrentJob(?:Facts|Panel)\.svelte|current-job-value\.ts)$/.test(id)) throw new Error(`Current Job imported a fixture or another observation domain: ${id}`);
+  if (/\/LabControls\.svelte$/.test(id)) throw new Error('Current Job imported lab controls');
+};

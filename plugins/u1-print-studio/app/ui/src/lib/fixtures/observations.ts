@@ -34,8 +34,9 @@ export const headsLabFixture: HeadsObservation = {
   ]
 };
 export const currentJobLabFixture: CurrentJobObservation = {
-  ...base('jobs'), state: 'printing', storageActive: true, progressPercent: 64,
-  elapsedSeconds: 11_460, filamentUsedMm: 18_420
+  ...base('jobs'), state: 'printing', filename: 'Calibration model.gcode', filenameReported: true, storageActive: true,
+  filePositionBytes: 640_000, fileSizeBytes: 1_000_000,
+  printDurationSeconds: 11_460, totalDurationSeconds: 11_700, filamentUsedMillimeters: 18_420
 };
 export const jobHistoryLabFixture: JobHistoryObservation = {
   ...base('job_history'), items: [

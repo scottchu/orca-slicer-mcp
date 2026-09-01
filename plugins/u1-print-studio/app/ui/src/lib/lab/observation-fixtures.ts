@@ -47,9 +47,9 @@ export type ObservationByView = {
 
 const numberValue = (value: string, fallback: number | null): number | null =>
   value === 'scenario' ? fallback : value === 'unknown' ? null : Number(value);
-const printPercent = (selection: LabSelection<'overview' | 'progress' | 'jobs'>): number =>
+const printPercent = (selection: LabSelection<'overview' | 'progress'>): number =>
   selection.scenario === 'complete' ? 100 : selection.scenario === 'standby' ? 0 : numberValue(selection.values.percent, 64)!;
-const printState = (selection: LabSelection<'overview' | 'progress' | 'jobs'>): ProgressObservation['state'] => selection.scenario;
+const printState = (selection: LabSelection<'overview' | 'progress'>): ProgressObservation['state'] => selection.scenario;
 
 const factories: { [V in ObservationLabView]: (selection: LabSelection<V>) => ObservationByView[V] } = {
   progress: (selection) => {
@@ -59,9 +59,11 @@ const factories: { [V in ObservationLabView]: (selection: LabSelection<V>) => Ob
       etaSeconds: selection.scenario === 'standby' ? 0 : Math.round((100 - percent) * 180) });
   },
   jobs: (selection) => {
-    const percent = printPercent(selection);
-    return validateCurrentJob({ ...currentJobLabFixture, freshness: selection.freshness, state: printState(selection), progressPercent: percent,
-      storageActive: selection.scenario === 'printing' || selection.scenario === 'paused', elapsedSeconds: Math.round(percent * 180), filamentUsedMm: percent * 300 });
+    const quantity = (fallback: number) => selection.values.facts === 'unknown' ? null : selection.values.facts === 'zero' ? 0 : selection.values.facts === 'extreme' ? Number.MAX_SAFE_INTEGER : fallback;
+    return validateCurrentJob({ ...currentJobLabFixture, freshness: selection.freshness, state: selection.scenario,
+      filenameReported: selection.values.filename !== 'unreported', filename: ['empty', 'unreported'].includes(selection.values.filename) ? null : selection.values.filename === 'long' ? `${'Calibration'.repeat(13)}.gcode` : currentJobLabFixture.filename,
+      storageActive: selection.values.facts === 'unknown' ? null : selection.values.facts !== 'zero' && (selection.scenario === 'printing' || selection.scenario === 'paused'),
+      filePositionBytes: quantity(640_000), fileSizeBytes: quantity(1_000_000), printDurationSeconds: quantity(11_460.5), totalDurationSeconds: quantity(11_700.75), filamentUsedMillimeters: quantity(18_420.5) });
   },
   overview: (selection) => validateOverview({ ...overviewLabFixture, freshness: selection.freshness,
     progress: { state: printState(selection), percent: printPercent(selection) }, jobs: { state: printState(selection) } }),

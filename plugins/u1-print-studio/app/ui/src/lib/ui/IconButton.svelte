@@ -1,10 +1,10 @@
 <script lang="ts">
   type LucideIcon = typeof import('lucide-svelte')['Box'];
-  let { label, icon, pressed, onclick, disabled = false, busy = false }: { label: string; icon: LucideIcon; pressed?: boolean; onclick?: () => void; disabled?: boolean; busy?: boolean } = $props();
+  let { label, icon, pressed, onclick, disabled = false, busy = false, compact = false }: { label: string; icon: LucideIcon; pressed?: boolean; onclick?: () => void; disabled?: boolean; busy?: boolean; compact?: boolean } = $props();
   const Icon = $derived(icon);
 </script>
 
-<button type="button" class="icon-button" aria-label={label} title={label} aria-pressed={pressed} aria-disabled={busy || undefined} {disabled} onclick={() => { if (!disabled && !busy) onclick?.(); }}>
+<button type="button" class="icon-button" class:compact aria-label={label} title={label} aria-pressed={pressed} aria-disabled={busy || undefined} {disabled} onclick={() => { if (!disabled && !busy) onclick?.(); }}>
   <Icon size={20} strokeWidth={1.8} aria-hidden="true" />
 </button>
 
@@ -14,4 +14,8 @@
   .icon-button[aria-pressed="true"] { border-color: #8b929a; background: #e8edf1; box-shadow: inset 0 0 0 1px #8b929a; }
   .icon-button:focus-visible { outline: 3px solid var(--u1-focus); outline-offset: 2px; }
   .icon-button:disabled, .icon-button[aria-disabled="true"] { cursor: default; opacity: 0.45; }
+  .icon-button.compact { position: relative; isolation: isolate; border-color: transparent; background: transparent; box-shadow: none; }
+  .compact::before { position: absolute; inset: 5px; z-index: -1; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-control); background: var(--u1-soft); content: ''; }
+  .compact:hover::before { border-color: #cfd3d8; background: #eef1f3; }
+  .compact[aria-pressed="true"]::before { border-color: #8b929a; background: #e8edf1; box-shadow: inset 0 0 0 1px #8b929a; }
 </style>

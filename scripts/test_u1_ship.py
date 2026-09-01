@@ -377,10 +377,20 @@ class StaticContractTests(unittest.TestCase):
             source.write_text(correct_source.replace('LIVE_HEADS_WIDGET_PATH', 'UNRECOGNIZED_PATH') + ' import heads from "svelte-live-heads.html";')
             with self.assertRaisesRegex(ShipError, "Heads route"): static_contract(root)
             source.write_text(correct_source)
+            source.write_text(source.read_text() + ' const LIVE_CURRENT_JOB_WIDGET_PATH = "/dashboard/jobs_widget";')
+            (app / "public/svelte-live-jobs.html").write_text("production Current Job, no physical progress percent")
+            jobs_contract = static_contract(root)
+            self.assertEqual(len(jobs_contract), len(heads_contract) + 1)
+            self.assertEqual(jobs_contract["8788/dashboard/jobs_widget"]["sha256"], digest(app / "public/svelte-live-jobs.html"))
+            self.assertNotIn("8787/dashboard/jobs_widget", jobs_contract)
+            correct_source = source.read_text()
+            source.write_text(correct_source.replace('LIVE_CURRENT_JOB_WIDGET_PATH', 'UNRECOGNIZED_PATH') + ' import job from "svelte-live-jobs.html";')
+            with self.assertRaisesRegex(ShipError, "Current Job route"): static_contract(root)
+            source.write_text(correct_source)
             source.write_text(source.read_text() + ' const LIVE_CAMERA_WIDGET_PATH = "/dashboard/camera_widget";')
             (app / "public/svelte-live-camera.html").write_text("production Camera, not lab fixtures")
             camera_contract = static_contract(root)
-            self.assertEqual(len(camera_contract), len(heads_contract) + 1)
+            self.assertEqual(len(camera_contract), len(jobs_contract) + 1)
             self.assertEqual(camera_contract["8788/dashboard/camera_widget"]["sha256"], digest(app / "public/svelte-live-camera.html"))
             self.assertNotIn("8787/dashboard/camera_widget", camera_contract)
             isolated_source = source.read_text()
@@ -434,7 +444,7 @@ class StaticContractTests(unittest.TestCase):
             security_calls.append((port, route))
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
-        self.assertEqual(check_security(contract, security_read), 31)
+        self.assertEqual(check_security(contract, security_read), 32)
         self.assertIn((8787, "/dashboard/overview"), security_calls)
         self.assertIn((8787, "/dashboard/camera"), security_calls)
         self.assertIn((8787, "/dashboard/lab"), security_calls)
@@ -442,6 +452,7 @@ class StaticContractTests(unittest.TestCase):
         self.assertIn((8787, "/dashboard/fans_widget"), security_calls)
         self.assertIn((8787, "/dashboard/thermals_widget"), security_calls)
         self.assertIn((8787, "/dashboard/heads_widget"), security_calls)
+        self.assertIn((8787, "/dashboard/jobs_widget"), security_calls)
         self.assertIn((8787, "/dashboard/camera_widget"), security_calls)
         self.assertIn((8787, "/dashboard/lab/camera"), security_calls)
         self.assertNotIn((8788, "/dashboard/overview"), security_calls)
@@ -462,7 +473,7 @@ class StaticContractTests(unittest.TestCase):
         contract = static_contract(root)
         dashboard_paths = {item["route"] for item in contract.values() if item["route"].startswith("/dashboard")}
         expected = len(dashboard_paths) + 3 + 1  # fixed public/private auth checks plus private health
-        self.assertEqual(expected, 31)
+        self.assertEqual(expected, 32)
         def read(port, route):
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
