@@ -14,6 +14,12 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+PR70 `e0e141a` is independently held for a superseded-refresh rejection leaving
+busy=true. The narrow finally-settlement correction has two passing controller
+regressions and a passing real-iframe recovery/focus regression. Next integrate
+the reviewed Camera merge, then renew full combined-tree gates and exact review;
+do not ship the held head or reuse its earlier author green evidence as approval.
+
 Current unshipped LIVE Fans candidate explicitly integrates reviewed main
 `2d30b01`. Its real iframe/adapter/controller and private static asset are wired;
 152 UI units, 104 Chrome cases and full app/lifecycle/shipping/bundle gates pass.

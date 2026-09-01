@@ -52,6 +52,22 @@ describe('live Fans controller', () => {
     const retry = controller.refresh(); resolve(liveFansResult(13, '2026-09-01T12:00:13.000Z')); await retry;
     expect(controller.getState().feedback).toBe(''); controller.dispose();
   });
+  it.each(['newer observation', 'same-version freshness'])('settles a rejected refresh superseded by %s and permits another refresh', async (kind) => {
+    const { controller, notify, reject, resolve, port } = setup(); notify(liveFansResult());
+    const pending = controller.refresh();
+    const newer = kind === 'newer observation' ? liveFansResult(15, '2026-09-01T12:00:15.000Z') : liveFansResult();
+    if (kind === 'same-version freshness') newer.structuredContent.module.freshness = 'stale';
+    notify(newer);
+    const accepted = controller.getState().observation;
+    expect(controller.getState().refreshing).toBe(true);
+    reject(); await pending;
+    expect(controller.getState().observation).toBe(accepted);
+    expect(controller.getState()).toMatchObject({ phase: 'ready', refreshing: false, feedback: '' });
+    const retry = controller.refresh(); expect(port.refresh).toHaveBeenCalledTimes(2);
+    resolve(liveFansResult(16, '2026-09-01T12:00:16.000Z')); await retry;
+    expect(controller.getState()).toMatchObject({ refreshing: false, observation: { version: 16 }, feedback: '' });
+    controller.dispose();
+  });
   it('bounds initial loading and ignores notifications and completions after disposal', async () => {
     vi.useFakeTimers(); const { controller, notify, resolve, port } = setup(); controller.start(); controller.start();
     await vi.advanceTimersByTimeAsync(100); expect(controller.getState().phase).toBe('error'); expect(port.start).toHaveBeenCalledTimes(1);

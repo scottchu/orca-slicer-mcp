@@ -12,6 +12,14 @@ Last updated: 2026-09-01
 
 ### Live Fans migration — separate next slice (2026-09-01)
 
+Independent review/validation held PR70 head `e0e141a`: a newer notification
+followed by rejection of the older pending refresh left the UI permanently busy.
+The narrow renewal settles request completion without replacing accepted values
+or showing the obsolete error. Two new controller regressions reproduced the
+failure before the fix and now pass; the real-iframe rejection/retry/focus case
+also passes. Integrate the imminent reviewed Camera merge before renewed full
+gates and exact acceptance. Earlier author green results do not approve this head.
+
 PR67 and its receipt PR68 are delivered; reviewed main `2d30b01` is explicitly
 integrated into this separate unshipped candidate. Decision 0034 implements
 fixture-independent Fans models, strict adapter, shared host RPC and retained

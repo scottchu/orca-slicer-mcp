@@ -1,5 +1,26 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 PR70 superseded rejection — reproduced and narrowly corrected
+
+Independent review/validation held `e0e141a`: V12 → refresh → notification V15
+→ RPC rejection retained V15 but left refreshing=true after the flight ended.
+Two new author controller cases reproduced that exact failure, including the
+same-version freshness variant (eight prior tests passed, two new tests failed).
+The correction releases single-flight and clears busy in finally, even when the
+obsolete failure is intentionally suppressed. It preserves the accepted object,
+phase and feedback, and never publishes after disposal.
+
+Actual focused commands: UI `bun run test -- src/lib/live/controller.test.ts`
+passes all ten after the fix; `bun run build:live-fans` succeeds; and
+`bun run test:browser -- live-fans.spec.ts --grep 'superseded rejected RPC'`
+passes the real parent/iframe RPC error, retained V15 value/time/geometry/focus,
+re-enabled Refresh and successful subsequent V16 request. Pinned Bun 1.3.12,
+normal Node PATH, synthetic intercepted HTTP only; no printer/service change.
+The temporary renewed production artifact is 84,926 bytes, SHA-256
+`8f8595e944cdcb6111012affa8660391026023fdb0c5417fce05368df9fc52e1`.
+Full gates and independent exact acceptance must be repeated after the imminent
+reviewed Camera merge is explicitly integrated. This is not an approved release.
+
 ## 2026-09-01 LIVE Fans exact-candidate author gates
 
 Actual final commands, pinned Bun 1.3.12 with normal Node PATH:

@@ -1,5 +1,15 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 held PR70 renewal before Camera integration
+
+Do not ship `e0e141a`. Independent review/validation found the newer-observation
+then old-RPC-rejection race left busy=true. The sole runtime correction is final
+request settlement in the controller, retaining newer data and suppressing stale
+error feedback. Two controller regressions and one actual iframe/host regression
+pass after reproducing the failure. Integrate the reviewed Camera main next,
+preserving its split artifacts/routes/budgets, then rerun combined-tree gates and
+freeze a new exact head. No Camera source or running service has been changed.
+
 ## 2026-09-01 LIVE Fans end-to-end candidate, not shipped
 
 The separate LIVE candidate adds strict fixture-independent Fans models/adapter,

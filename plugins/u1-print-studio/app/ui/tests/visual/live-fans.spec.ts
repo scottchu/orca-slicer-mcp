@@ -129,3 +129,34 @@ test('initial host failure offers an in-widget retry and restores real data', as
   await frame.getByRole('button', { name: 'Refresh Fans & Air' }).click();
   await expect(frame.getByRole('status')).toHaveText('Fans & Air loaded'); expect(calls).toBe(2);
 });
+
+test('a superseded rejected RPC clears busy without replacing newer values or losing refresh focus', async ({ page }) => {
+  let calls = 0, rejectPending = () => {};
+  await page.route('**/dashboard/tools/call', async (route) => {
+    calls += 1;
+    if (calls === 2) {
+      await new Promise<void>((resolve) => { rejectPending = resolve; });
+      await route.fulfill({ status: 503, json: { error: 'unavailable' } });
+    } else await route.fulfill({ json: calls === 1 ? liveFansResult() : liveFansResult(16, '2026-09-01T12:00:16.000Z') });
+  });
+  await page.goto('/dashboard/fans');
+  const frame = page.frames().find((item) => item.url().endsWith('/dashboard/fans_widget'))!;
+  await expect(frame.getByRole('status')).toHaveText('Fans & Air loaded');
+  const refresh = frame.getByRole('button', { name: 'Refresh Fans & Air' });
+  await refresh.focus(); await refresh.press('Enter'); await expect.poll(() => calls).toBe(2);
+  const newer = liveFansResult(15, '2026-09-01T12:00:15.000Z'); newer.structuredContent.module.items[0].speedFraction = .75;
+  await page.evaluate((result) => {
+    document.querySelector('iframe')!.contentWindow!.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/tool-result', params: result }, location.origin);
+  }, newer);
+  await expect(frame.getByRole('listitem', { name: 'Tool 1' })).toContainText('75%');
+  await expect(refresh).toHaveAttribute('aria-disabled', 'true');
+  const retained = await bounds(frame), time = await frame.locator('[data-observed-meta]').textContent();
+  rejectPending();
+  await expect(frame.getByRole('status')).toHaveText('Fans & Air loaded');
+  await expect(refresh).toBeEnabled(); await expect(refresh).toBeFocused();
+  await expect(frame.getByRole('listitem', { name: 'Tool 1' })).toContainText('75%');
+  expect(await bounds(frame)).toEqual(retained); expect(await frame.locator('[data-observed-meta]').textContent()).toBe(time);
+  await refresh.press('Enter'); await expect.poll(() => calls).toBe(3);
+  await expect(frame.getByRole('listitem', { name: 'Tool 1' })).toContainText('100%');
+  await expect(frame.getByRole('status')).toHaveText('Fans & Air loaded');
+});

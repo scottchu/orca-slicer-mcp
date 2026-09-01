@@ -49,7 +49,12 @@ export const createFansController = (port: ObservationPort, timeoutMs = 20_000) 
         if (accepted === 'invalid' && current === generation) failure();
         else if (accepted !== 'accepted') publish({ ...state, refreshing: false });
       }
-    }).catch(() => { if (!disposed && current === generation) failure(); }).finally(() => { flight = null; });
+    }).catch(() => { if (!disposed && current === generation) failure(); }).finally(() => {
+      // A newer observation suppresses an obsolete request's error, not its
+      // completion. Release single-flight before announcing the settled state.
+      flight = null;
+      if (!disposed && state.refreshing) publish({ ...state, refreshing: false });
+    });
     return flight;
   };
   return {
