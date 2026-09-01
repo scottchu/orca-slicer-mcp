@@ -3,6 +3,45 @@
 This isolated author checkpoint is not registered in the lab routes, packaged,
 independently accepted, or deployed. It is not a production-camera migration.
 
+## Isolated real-session controller checkpoint (2026-09-01)
+
+The separate live-migration design was accepted by the role-separated designer
+before this bounded implementation. `session.ts` now adds a DOM-free controller
+with injected parsed transport, snapshot decoder, peer factory and scheduler.
+It does not bind the host bridge or production route and imports no synthetic
+fixture. The transport surface is frame/authorize, open, answer, candidates and
+close; the shared host-RPC author remains responsible for the sole MCP Apps
+bridge, with additive existing host compatibility. There is no new tool or
+server/adapter change. Private activation, session, offer, answer and candidate
+values never enter the published presentation state.
+
+Observable controller acceptance covers snapshot-first explicit authorization,
+singleflight refresh and live opening, decode-before-time commit, generations,
+10-second operations, 1.5-second decode, late-open lease cleanup, eight-second
+first presented frame, five-second stall, three-second disconnect grace,
+one-second measured FPS/1.5-second expiry, retained snapshots, bounded fallback
+polling, explicit Close, pagehide/pageshow and once-only saved-intent restore.
+The injected peer adapter must own and dispose only this viewer's tracks and
+observers. Display/fullscreen/PiP stay outside this controller: the persistent
+media component must not invoke Close or replace its video on display changes.
+
+Author command `bun x vitest run src/lib/camera/session.test.ts` passed all
+19 deterministic fake-clock/port tests. These are software tests without host,
+network, media hardware or a printer; no live cutover is established. The
+`bun x svelte-check --tsconfig ./tsconfig.json` compiler run found zero errors
+and zero warnings. Independent review of
+this controller, hostile parsed-port inputs, actual peer/decoder binding,
+browser lifetime integration, packaging and production acceptance remain open.
+The controller is paused at this checkpoint for independent validation of the
+unrelated observation-only PR67 renewal.
+
+This remains the existing interactive-decoupled app, not a new scaffold. The
+Apps SDK and OpenAI Docs skills were used to preserve component-initiated
+calls without remounting and the widget-private metadata boundary, grounded in
+the current official [UI guide](https://developers.openai.com/plugins/build/chatgpt-ui)
+and [reference](https://developers.openai.com/plugins/reference). No direct
+camera URL request or unrelated API-key setup was introduced.
+
 ## Contract
 
 `CameraLabWidget` accepts `scenario`, `capabilityPolicy`, and `onscenario`.
