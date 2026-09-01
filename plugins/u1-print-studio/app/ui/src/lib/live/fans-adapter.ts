@@ -1,50 +1,9 @@
 import { FAN_IDS, type FansPresentation } from './presentation.js';
-type RecordValue = Record<string, unknown>;
-const record = (value: unknown): RecordValue => {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Invalid observation');
-  return value as RecordValue;
-};
-const exact = (value: RecordValue, keys: string[]) => {
-  if (Object.keys(value).sort().join('|') !== [...keys].sort().join('|')) throw new Error('Invalid observation fields');
-};
-const choice = <T extends string>(value: unknown, options: readonly T[]): T => {
-  if (typeof value !== 'string' || !options.includes(value as T)) throw new Error('Invalid observation choice');
-  return value as T;
-};
-const number = (value: unknown, max: number): number => {
-  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > max) throw new Error('Invalid observation number');
-  return value;
-};
-const time = (value: unknown): string | null => {
-  if (value === null) return null;
-  if (typeof value !== 'string' || !Number.isFinite(Date.parse(value)) || new Date(value).toISOString() !== value) throw new Error('Invalid observation time');
-  return value;
-};
-const flag = (value: unknown): boolean => {
-  if (typeof value !== 'boolean') throw new Error('Invalid observation flag');
-  return value;
-};
-const capability = (value: unknown) => choice(value, ['observed', 'advertised', 'unsupported', 'unknown'] as const);
-const string = (value: unknown, max = 512): string => {
-  if (typeof value !== 'string' || value.length > max) throw new Error('Invalid observation text');
-  return value;
-};
+import { record, exact, choice, number, time, flag, capability, string, observationEnvelope } from './validation.js';
 
 /** Accept the existing server projection, not lab objects or raw device data. */
 export const adaptFans = (value: unknown): FansPresentation => {
-  const envelope = record(value);
-  exact(envelope, ['schemaVersion', 'view', 'observationVersion', 'sourceObservedAt', 'receivedAt', 'freshness', 'connectionEpoch', 'reachable', 'printerState', 'printerStateLabel', 'refreshAfterSeconds', 'session', 'module']);
-  if (envelope.schemaVersion !== 2 || envelope.view !== 'fans') throw new Error('Wrong observation view');
-  const version = number(envelope.observationVersion, Number.MAX_SAFE_INTEGER);
-  const epoch = envelope.connectionEpoch === null ? null : number(envelope.connectionEpoch, Number.MAX_SAFE_INTEGER);
-  if (!Number.isInteger(version) || (epoch !== null && !Number.isInteger(epoch))) throw new Error('Invalid observation version');
-  flag(envelope.reachable); string(envelope.printerState); string(envelope.printerStateLabel); number(envelope.refreshAfterSeconds, 3600);
-  const session = record(envelope.session);
-  exact(session, ['identity', 'provenance', 'detail']);
-  if (session.identity !== null) throw new Error('Invalid observation session');
-  choice(session.provenance, ['external', 'unknown']); string(session.detail);
-  const receivedAt = time(envelope.receivedAt);
-  if (receivedAt === null) throw new Error('Missing receipt');
+  const { envelope, version, connectionEpoch: epoch, receivedAt } = observationEnvelope(value, 'fans');
   const module = record(envelope.module);
   exact(module, ['kind', 'state', 'freshness', 'capabilityEvidence', 'provenance', 'receivedAt', 'checkedAt', 'reason', 'items', 'purifier']);
   if (module.kind !== 'fans') throw new Error('Wrong module');

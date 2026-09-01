@@ -541,6 +541,15 @@ durable-monitor claim.
   and is separately bounded at 100,000 bytes; the lab retains its 750,000-byte cap.
   Other focused routes and generic MCP/legacy aliases stay unchanged until their
   own lossless parity, independent acceptance and guarded deployment.
+  The next focused Thermals cutover preserves real `heater-bed`, nullable
+  actual/target/active and heater state, field evidence and provenance. Cavity
+  has no target and keeps independent receipt/freshness/state/reason metadata.
+  Tool/bed values retain source-accepted finite numbers, with safe compact
+  scientific display for extreme magnitudes and exact accessible input; Cavity
+  retains its -273.15..999 C source bounds. Shared rows/loading and retained
+  refresh keep geometry/focus; the exact private Thermals asset is separately
+  bounded at100,000 bytes without relaxing lab or Fans budgets. Generic MCP
+  aliases and remaining focused widgets stay legacy until independently accepted.
 
 When evidence changes one of these requirements, update it explicitly and
 record a decision if the change affects architecture, safety, or product scope.

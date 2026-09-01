@@ -1,5 +1,68 @@
 # F0 dual-subsystem foundation handoff
 
+## Current checkpoint: Thermals renewal after delivered Camera PR71
+
+Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly
+integrated in this PR72 merge. Additive source/record conflicts are resolved;
+renewed combined author gates PASS:256 UI,138 Chrome,290 app/3,400 assertions,
+21 lifecycle and24 shipping tests, compiler/AST, five deterministic packages,
+runtime bundles/signature/help. Exact independent validation/review is next;
+no Thermals acceptance or deployment is claimed.
+Fans PR70 and focused Camera PR71 are deployed. Thermals remains unshipped;
+seven other observation cutovers, generic MCP/legacy replacement and all named
+WIDGET_TRACKS remain open. Preserve existing widget-first execution order.
+
+PR71 independently accepted `c9311eb`, merged as `0aa83a0` with tree
+`af970729c41d041533d5d6f6c909a3a43d49a21b`, and shipped release
+`20260901-0aa83a0-pr71-20260901T170551-59206e`. Operator reports BOTH explicitly
+restarted, loaded/healthy/integrity verified at runtime0.4.8/schema12/obs14/camera10,
+28 static and29 security checks passed, preservation true, no rollback needed;
+snapshot `20260901T170638-b77ef9` retained. Canonical checkout/recovery refs and
+8,689 ignored entries were preserved. Camera artifact89,919 bytes has SHA256
+`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`.
+
+Independent `live_camera_exact_validation` postdeployment PASS covers BOTH
+service/plist identities,15 manifest hashes,6 exact private static routes with
+no-store/CSP, and fetched-byte synthetic host/media behavior (five probes and
+six hash checks). Public loopback rejects four private dashboard/lab routes.
+External unmatched-root routes still return502 from an unrelated unavailable
+upstream, including pre-existing widget routes: this is not a Camera-specific
+regression, but external-root availability/isolation remains unaccepted. No
+routing/auth changes were made. Actual phone/real-stream evidence remains
+pending. The separately stale installed-plugin connection still requires
+approval before reload/reinstallation; no such action occurred.
+
+
+## Historical author and delivery checkpoints (superseded where noted above)
+
+## LIVE Thermals author candidate ready; not shipped
+
+Full final gates pass:228 UI,130 Chrome,285 app/3,356 assertions,21 lifecycle,
+24 ship, compiler/AST/types, deterministic four artifacts and all bundles /
+signature/help. Exact hashes and source-bound evidence are in newest VALIDATION.
+Next: fresh independent exact validation/review; if Camera ships first, merge
+that reviewed main and renew the candidate. Do not deploy unreviewed source or
+claim actual-device acceptance. Browser4179 has been released to other authors.
+
+Changed boundaries: shared typed observation controller/validation, strict real
+Thermals adapter/presentation, six shared thermal rows and neutral nullable
+activity, safe extreme degree formatting, opt-in grouped timestamp metadata,
+zero-raw live root/entry, exact Thermals host/asset route and source-derived
+shipping inventory. Fans uses the extracted common logic and retains all race
+regressions. Tests cover actual normalized server output and synthetic iframe
+behavior; Camera-specific source, bridge API, backend acquisition/auth and generic
+MCP aliases are unchanged. Source baseline remains reviewed PR70 `db1c926`.
+
+## 2026-09-01 Thermals follows shipped Fans
+
+PR70 is shipped and independently postchecked on merge `db1c926`; full attributed
+receipt and connector-runtime limitation are in newest VALIDATION. Do not repeat
+its release or mistake a sparse historical connector response for the new server.
+Current author scope is only real Thermals: fixture-independent adapter, shared
+reviewed lifecycle, six compositional rows and separate Cavity evidence. Real
+Camera is independently owned; explicitly integrate whichever reviewed main
+ships first before final acceptance. Generic MCP and seven other observations
+remain legacy until their own parity. All named WIDGET_TRACKS remain pending.
 ## 2026-09-01 real Camera dashboard candidate — review handoff
 
 The candidate explicitly merged reviewed Fans main `db1c926` after committing

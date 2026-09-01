@@ -10,6 +10,7 @@ import { createRequestHandler, tailscaleDashboardBaseUrl } from "./server.js";
 import type { U1Status } from "./u1-status.js";
 import { PrinterObservationStore } from "./observation-store.js";
 import { adaptFans } from "../ui/src/lib/live/fans-adapter.js";
+import { adaptThermals } from "../ui/src/lib/live/thermals-adapter.js";
 
 const status: U1Status = {
   schemaVersion: 1,
@@ -151,7 +152,7 @@ describe("standalone status dashboard", () => {
 
     for (const route of ["/dashboard", "/dashboard/", "/dashboard/progress",
       "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs", "/dashboard/job_history",
-      "/dashboard/queue", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/camera_widget", "/dashboard/bed_mesh", "/dashboard/camera",
+      "/dashboard/queue", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/thermals_widget", "/dashboard/camera_widget", "/dashboard/bed_mesh", "/dashboard/camera",
       ...LAB_ROUTES.flatMap((path) => [path, path + "/"])]) {
       expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
     }
@@ -303,7 +304,7 @@ describe("standalone status dashboard", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
-    expect(html).toContain('const widgetSource = selectedView === "fans" ? "/dashboard/fans_widget" : "/widget?standalone=1"');
+    expect(html).toContain('const widgetSource = selectedView === "fans" ? "/dashboard/fans_widget" : selectedView === "thermals" ? "/dashboard/thermals_widget" : "/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
     expect(html).toContain('frame.title = selected?.[1] ?? "View unavailable"');
     for (const view of ["overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]) {
@@ -351,6 +352,45 @@ describe("standalone status dashboard", () => {
     expect(projected.items.every((row) => row.percent === null && row.rpm === null)).toBe(true);
     expect(projected.receipt.sourceObservedAt).toBe(null);
     expect(projected.sourceObservedAt).toBe(status.observedAt);
+    expect(reads).toBe(1);
+  });
+
+  test("serves only the exact private Thermals asset with no acquisition", async () => {
+    let reads = 0;
+    const origin = await startFixture(() => { reads += 1; });
+    const response = await fetch(`${origin}/dashboard/thermals_widget`);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(response.headers.get("content-security-policy")).toBe("default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'");
+    const artifact = readFileSync(new URL("../public/svelte-live-thermals.html", import.meta.url), "utf8");
+    expect(await response.text()).toBe(artifact);
+    expect(Buffer.byteLength(artifact)).toBeLessThanOrEqual(100_000);
+    for (const marker of ["lab_scenario", "Lab fixture", "RTCPeerConnection", "Three.js"]) expect(artifact).not.toContain(marker);
+    for (const method of ["POST", "PUT", "DELETE", "HEAD", "OPTIONS"]) {
+      const rejected = await fetch(`${origin}/dashboard/thermals_widget`, { method });
+      expect(rejected.status).toBe(405); expect(rejected.headers.get("allow")).toBe("GET");
+    }
+    for (const path of ["/dashboard/thermals_widget/", "/dashboard/THERMALS_widget", "/dashboard/thermals_widget/more", "/dashboard/%74hermals_widget", "/dashboard/../dashboard/thermals_widget", "/dashboard/%2e%2e/dashboard/thermals_widget", "/dashboard/%252e%252e/dashboard/thermals_widget"]) {
+      expect(await rawGet(origin, path)).toBe(404);
+    }
+    expect(reads).toBe(0);
+  });
+
+  test("production Thermals accepts the real server projection with independently missing cavity", async () => {
+    let reads = 0;
+    const origin = await startFixture(() => { reads += 1; });
+    const response = await fetch(`${origin}/dashboard/tools/call`, {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name: "refresh_printer_observation", arguments: { view: "thermals" } }),
+    });
+    expect(response.status).toBe(200);
+    const result = adaptThermals((await response.json()).structuredContent);
+    expect(result.readings).toHaveLength(6);
+    expect(result.readings[0]).toMatchObject({ actualC: 215, targetC: 215, active: true });
+    expect(result.readings[4]).toMatchObject({ id: "heater-bed", actualC: 55, targetC: 55, active: null });
+    expect(result.readings[5]).toMatchObject({ id: "cavity", actualC: null, targetC: null, reportedState: "not_reported" });
+    expect(result.environment.sourceObservedAt).toBe(null);
+    expect(result.sourceObservedAt).toBe(status.observedAt);
     expect(reads).toBe(1);
   });
 
@@ -613,7 +653,7 @@ describe("focused dashboard host bridge", () => {
       expect(host.title.textContent).toBe(label);
       expect(host.document.title).toBe(`U1 · ${label}`);
       expect(host.frame.title).toBe(label);
-      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : "/widget?standalone=1");
+      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : "/widget?standalone=1");
     }
   });
 
@@ -657,7 +697,7 @@ describe("focused dashboard host bridge", () => {
     expect(host.bridge.textContent).toBe("Service unavailable — use Reload widget to retry");
     expect(host.messages).toEqual([{ jsonrpc: "2.0", method: "ui/notifications/tool-input", params: { arguments: { view: "thermals" } } }]);
     host.reload();
-    expect(host.frame.src).toContain("/widget?standalone=1&t=");
+    expect(host.frame.src).toContain("/dashboard/thermals_widget?t=");
     await host.send({ method: "ui/notifications/initialized" });
     expect(attempts).toBe(2);
     expect(host.messages.at(-1).params.structuredContent.freshness).toBe("offline");

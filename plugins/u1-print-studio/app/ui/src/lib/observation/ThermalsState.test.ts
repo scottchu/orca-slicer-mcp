@@ -27,7 +27,7 @@ test('loading is six rows, one announcer, no telemetry or actions', async () => 
   expect(container.querySelectorAll('[data-skeleton]')).toHaveLength(0);
   expect(screen.getAllByRole('listitem')).toHaveLength(6);
   expect(screen.getByRole('listitem', { name: 'Tool 1 · Active' })).toHaveClass('active');
-  expect(within(screen.getByRole('listitem', { name: 'Cavity · Idle' })).getByRole('img', { name: 'Target: Temperature unavailable' })).toHaveTextContent('—');
+  expect(within(screen.getByRole('listitem', { name: 'Cavity · Inactive' })).getByRole('img', { name: 'Target: Temperature unavailable' })).toHaveTextContent('—');
 });
 test('refresh retains data/source time and terminal states supersede feedback', async () => {
   const { container, rerender } = render(ThermalsWidget, { state: { kind: 'ready', observation: thermalsLabFixture } });
