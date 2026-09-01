@@ -14,6 +14,24 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Decision 0033/UI-003 is the immediate candidate on
+`codex/u1-component-foundation-v1`, exact base `9a9038d`. Freeze the clean
+author SHA only after current component/browser/deterministic/full repository
+gates and top-of-file evidence are complete. Then perform independent exact-SHA
+validation and formal review; renew findings on the same branch only after
+stopping reviewers. If approved, ordinary PR merge followed by the standing
+guarded U1 ship workflow must explicitly restart BOTH services and verify the
+exact merge before returning the private lab URL. Never claim lab fixture,
+static route or service health as live printer/device acceptance.
+
+This first slice is intentionally only shared primitives plus fully composed
+Thermals ready/loading/refreshing/unavailable/error. Do not widen it to the
+remaining all-nine skeleton gallery or eight ready migrations. Preserve their
+order and the Bed Mesh enclosure/outer-axis, private sanitized read-only
+Console, truthful job-bound geometry progress, Camera lifecycle and per-widget
+cutover tracks recorded in decision 0033. Production paths/assets/MCP/auth and
+printer/camera remain untouched until separately reviewed scopes.
+
 The current candidate is the all-observation Svelte private lab on isolated
 branch `codex/u1-svelte-observation-lab`, based on merged `origin/main`
 `f44bd06`. It adds `/dashboard/lab` plus the nine exact non-camera child views

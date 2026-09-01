@@ -1,5 +1,24 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 component foundation / Thermals state author candidate
+
+Branch `codex/u1-component-foundation-v1` starts from exact merged PR60
+`9a9038d`. Changed source is confined to `plugins/u1-print-studio/app/ui` plus
+decision 0033/UI-003 and current iteration records. Shared closed primitives,
+WidgetState, six-row Thermals loading, ActualTarget/ThermalReading composition
+and the AST migration frontier are implemented; Thermals feature/domain files
+have no native element/style/direct icon-library import. Existing production
+renderer/assets/tools/routes/auth are unchanged. No server/device was contacted.
+
+Before delivery: finish browser, deterministic package and full repository
+checks; record exact output below; commit a clean immutable SHA; then independent
+validation and formal review. After exact approval only, PR merge and the
+standing guarded deployment explicitly restart BOTH U1 services and verify the
+served exact merge. Remaining all-nine skeleton/gallery, eight ready migrations,
+Bed Mesh outer-axis enclosure, private sanitized read-only Console, truthful
+layer-geometry progress, Camera and production cutovers remain separate named
+slices in decision 0033.
+
 ## 2026-09-01 compact widget density and camera continuity — PR58 shipped
 
 PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`. Guarded release

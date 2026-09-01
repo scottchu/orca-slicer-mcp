@@ -1,5 +1,39 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 component foundation / Thermals progressive-state author evidence
+
+Commands run from `plugins/u1-print-studio/app/ui` with pinned Bun `1.3.12`:
+`bun run check`, `bun run test`, two `bun run build` plus
+`bun run package:private-lab`, and `bun run test:browser --
+thermals-state.spec.ts observation-lab.spec.ts bed-mesh.spec.ts`. From the app
+and repository roots: app `ui:verify`, TypeScript/app tests,
+`uv run --no-project scripts/test_u1_service.py`,
+`uv run --no-project scripts/test_u1_ship.py`, `check-repository.sh`, and
+`git diff --check`.
+
+- Svelte check: 0 errors, 0 warnings; AST component frontier passes.
+- Vitest: 61/61. Coverage includes primitive formatting/ARIA/closed props,
+  degree null/zero/negative, actual-target order, source timestamp, invalid
+  WidgetState envelopes, six-row loading/no fake telemetry/no action, refresh
+  retention, stale-feedback invalidation and deliberate AST bypass fixtures.
+- Real Chrome: 54/54. Four progressive Thermals cases plus all prior 50 ready
+  lab/Bed Mesh cases pass at 320/390/590/720. Loading/ready header, shell and
+  row geometry match; six rows have no fake telemetry/control; reduced-motion,
+  forced-colors, refreshing retention, terminal states, 44-pixel action,
+  overflow and nonlocal-request gates pass. The exact state harness is test-only
+  and absent from packaged/static routes.
+- Two builds reproduce one 722,425-byte package with SHA-256
+  `239fbfb5de7587d0c4394e59cf2a31abc3e2edb25fcab18fc078963478b97baa`.
+  This is 27,575 bytes below the 750,000-byte hard bound, but 2,425 above the
+  provisional 720,000-byte soft target; exact review must explicitly accept or
+  require a correction without weakening the required composition.
+- Full gates: app 276/276 with 3,178 assertions, lifecycle 21/21, shipping
+  24/24, and repository contract pass. `git diff --check` passes.
+
+This is synthetic fixture/static software evidence only. It is not independent
+approval, deployment, live telemetry, real-printer, actual-device or user
+acceptance. No service, printer, camera, auth or Tailscale surface was contacted.
+
 ## 2026-09-01 asynchronous feedback-order renewal
 
 Formal review blocked exact `4e8788f`: Heads awaited the clipboard before

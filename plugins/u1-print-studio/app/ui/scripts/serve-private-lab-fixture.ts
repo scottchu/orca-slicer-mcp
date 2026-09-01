@@ -1,4 +1,5 @@
 import { createServer } from "node:http";
+import { readFileSync } from "node:fs";
 
 import { createStatusDashboardHandler } from "../../src/status-dashboard.js";
 
@@ -12,6 +13,11 @@ const handle = createStatusDashboardHandler({
 const port = Number(process.env.PORT ?? "4179");
 const server = createServer(async (req, res) => {
   const url = new URL(req.url ?? "/", "http://127.0.0.1");
+  if (req.url === '/__test/thermals' && req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+    res.end(readFileSync(new URL('../test-results/state-harness.html', import.meta.url)));
+    return;
+  }
   if (!(await handle(req, res, url.pathname))) res.writeHead(404).end("Not Found");
 });
 

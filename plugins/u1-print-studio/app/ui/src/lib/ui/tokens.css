@@ -25,6 +25,22 @@
   --u1-action-size: 44px;
   --u1-icon-size: 20px;
   --u1-card-x: 24px;
+  --u1-type-label: 13px;
+  --u1-type-name: 14px;
+  --u1-type-value: 20px;
+  --u1-weight-name: 560;
+  --u1-weight-strong: 620;
+  --u1-line-copy: 1.4;
+  --u1-line-value: 1.2;
+  --u1-reading-height: 49px;
+  --u1-reading-inset: 14px;
+  --u1-state-mark: 3px;
+  --u1-skeleton-base: #e7e9ec;
+  --u1-skeleton-radius: 4px;
+  --u1-skeleton-duration: 1.2s;
+  --u1-skeleton-text: 64px;
+  --u1-skeleton-value: 80px;
+  --u1-skeleton-caption: 180px;
 }
 
 html { background: #f7f8f9; }
