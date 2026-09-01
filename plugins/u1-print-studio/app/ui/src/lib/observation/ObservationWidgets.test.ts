@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/svelte';
-import { afterEach, describe, expect, test } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import {
   currentJobLabFixture, fansLabFixture, headsLabFixture, jobHistoryLabFixture,
   overviewLabFixture, progressLabFixture, queueLabFixture, thermalsLabFixture
@@ -90,6 +90,19 @@ describe('observation lab widgets', () => {
     expect(historyResult.container).toHaveTextContent('Job History');
     expect(historyResult.container).not.toHaveTextContent('Current Job');
   });
+
+  test('uses a normalized RGBA wash and copies valid head colors without adding flow content', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
+    const { container } = render(HeadsWidget, { observation: headsLabFixture });
+    expect(screen.getByLabelText('Tool 3')).toHaveStyle('--head-color: #3487C880');
+    expect(container.querySelectorAll('[data-copy-color]')).toHaveLength(3);
+    expect(screen.queryByRole('button', { name: /Copy T4 color/ })).not.toBeInTheDocument();
+    await fireEvent.click(screen.getByRole('button', { name: 'Copy T3 color #3487C880' }));
+    expect(writeText).toHaveBeenCalledOnce();
+    expect(writeText).toHaveBeenCalledWith('#3487C880');
+    expect(screen.getByRole('status')).toHaveTextContent('#3487C880 copied');
+  });
 });
 
 describe('observation bridge validators', () => {
@@ -141,7 +154,7 @@ describe('observation bridge validators', () => {
     const normalized = validateHeads(heads);
     expect(normalized.items[0].color).toBe('#ABCDEF80');
     expect(normalized.items[1].color).toBe('#102030FF');
-    expect(normalized.items[2].color).toBe('#3487C8');
+    expect(normalized.items[2].color).toBe('#3487C880');
   });
 
   test('rejects per-view enum, number, time, shape, order and color boundary failures', () => {

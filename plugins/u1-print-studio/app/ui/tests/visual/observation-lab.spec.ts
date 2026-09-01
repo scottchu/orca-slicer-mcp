@@ -7,6 +7,43 @@ const views = [
   ['queue', 'Print Queue'], ['fans', 'Fans & Air']
 ] as const;
 
+declare global {
+  interface Window {
+    __u1TitleSequence?: string[];
+  }
+}
+
+async function observeParsedTitles(page: import('@playwright/test').Page): Promise<void> {
+  await page.addInitScript(() => {
+    window.__u1TitleSequence = [];
+    const recordTitle = () => {
+      const title = document.title;
+      if (title && window.__u1TitleSequence?.at(-1) !== title) {
+        window.__u1TitleSequence?.push(title);
+      }
+    };
+    new MutationObserver(recordTitle).observe(document, {
+      subtree: true,
+      childList: true,
+      characterData: true
+    });
+    recordTitle();
+  });
+}
+
+for (const [path, title] of [
+  ['', 'Observation Lab'],
+  ...views,
+  ['bed_mesh', 'Bed Mesh']
+] as const) {
+  test(`${title} is the only non-empty title observed during initial parsing`, async ({ page }) => {
+    await observeParsedTitles(page);
+    await page.goto(`/dashboard/lab/${path}`, { waitUntil: 'networkidle' });
+    await expect(page).toHaveTitle(title);
+    expect(await page.evaluate(() => window.__u1TitleSequence)).toEqual([title]);
+  });
+}
+
 async function geometry(page: Page, view: string) {
   return page.locator(`[data-route-panel="${view}"] [data-widget-shell]`).evaluate((shell) => {
     const header = shell.querySelector<HTMLElement>('[data-widget-header]')!;
@@ -121,6 +158,29 @@ for (const width of widths) {
         expect(columns).toBe(2);
         const reservedHeights = await panel.locator('[data-head-material]').evaluateAll((items) => items.map((item) => getComputedStyle(item).minHeight));
         expect(reservedHeights).toEqual(['0px', '0px', '0px', '0px']);
+        await expect(panel.locator('[data-copy-color]')).toHaveCount(3);
+        for (const copy of await panel.locator('[data-copy-color]').all()) {
+          await expect(copy).toHaveCSS('height', '44px');
+        }
+        const wash = await panel.getByLabel('Tool 3').evaluate((card) => {
+          const color = getComputedStyle(card).getPropertyValue('--head-color').trim();
+          const probe = document.createElement('div');
+          probe.style.background = `color-mix(in srgb, ${color} 6%, white)`;
+          document.body.append(probe);
+          const expected = getComputedStyle(probe).backgroundColor;
+          probe.style.background = 'color-mix(in srgb, #3487C8 6%, white)';
+          const opaque = getComputedStyle(probe).backgroundColor;
+          probe.remove();
+          return { color, actual: getComputedStyle(card).backgroundColor, expected, opaque };
+        });
+        expect(wash.color).toBe('#3487C880');
+        expect(wash.actual).toBe(wash.expected);
+        expect(wash.actual).not.toBe(wash.opaque);
+        const shellHeightBeforeCopy = (await panel.locator('[data-widget-shell]').boundingBox())!.height;
+        await panel.getByRole('button', { name: 'Copy T3 color #3487C880' }).click();
+        await expect(panel.getByRole('status')).toHaveText(/#3487C880 (?:copied|copy unavailable)/i);
+        const shellHeightAfterCopy = (await panel.locator('[data-widget-shell]').boundingBox())!.height;
+        expect(Math.abs(shellHeightAfterCopy - shellHeightBeforeCopy)).toBeLessThan(0.1);
       }
       if (view === 'thermals') {
         for (const label of ['Tool 1', 'Tool 2', 'Tool 3', 'Tool 4', 'Heater bed', 'Cavity']) await expect(panel.getByText(label)).toBeVisible();

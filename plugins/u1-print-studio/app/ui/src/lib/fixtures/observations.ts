@@ -29,7 +29,7 @@ export const headsLabFixture: HeadsObservation = {
   ...base('heads'), items: [
     { physicalTool: 1, active: true, presence: true, material: 'Generic PLA', color: '#F4B927', actualC: 220, targetC: 220 },
     { physicalTool: 2, active: false, presence: true, material: 'Generic PLA', color: '#111111', actualC: 44, targetC: 0 },
-    { physicalTool: 3, active: false, presence: true, material: 'Generic PETG', color: '#3487C8', actualC: 33, targetC: 0 },
+    { physicalTool: 3, active: false, presence: true, material: 'Generic PETG', color: '#3487C880', actualC: 33, targetC: 0 },
     { physicalTool: 4, active: false, presence: false, material: null, color: null, actualC: 33, targetC: 0 }
   ]
 };

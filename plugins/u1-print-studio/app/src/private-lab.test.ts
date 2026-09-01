@@ -14,7 +14,7 @@ describe("private Svelte observation lab package", () => {
   test("freezes one deterministic self-contained static page", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "7be3e2c912c04233299b2089bb9f368bed891e11e0c4d1a28f843b5fe93a14cc"
+      "19ce12161bc169596035ddc92d0e914d4b4d3cfb0ced5ee6ccfd0682cc34299c"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -32,10 +32,16 @@ describe("private Svelte observation lab package", () => {
 
   test("selects exact private paths synchronously before body layout", () => {
     const routeSource = readFileSync(new URL("../ui/src/routes/+page.svelte", import.meta.url), "utf8");
+    const appShell = readFileSync(new URL("../ui/src/app.html", import.meta.url), "utf8");
     expect(routeSource).not.toContain("onMount");
+    expect(routeSource).not.toContain("<svelte:head>");
     expect(routeSource).toContain("browser ? viewFromPath(window.location.pathname) : undefined");
     expect(routeSource).toContain("data-route-bootstrap");
     expect(routeSource).toContain("SSR emits only a neutral zero-size bootstrap marker");
+    expect(appShell.indexOf("document.title = titles[route] ?? 'Observation Lab'")).toBeGreaterThan(0);
+    expect(appShell.indexOf("document.title = titles[route] ?? 'Observation Lab'")).toBeLessThan(
+      appShell.indexOf("%sveltekit.head%")
+    );
   });
 
   test("contains no acquisition path or non-local request primitive", () => {

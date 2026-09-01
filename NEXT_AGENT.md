@@ -17,8 +17,8 @@ Resume from repository records, not chat history.
 The current candidate is the all-observation Svelte private lab on isolated
 branch `codex/u1-svelte-observation-lab`, based on merged `origin/main`
 `f44bd06`. It adds `/dashboard/lab` plus the nine exact non-camera child views
-from one 713,119-byte self-contained page (SHA-256
-`7be3e2c912c04233299b2089bb9f368bed891e11e0c4d1a28f843b5fe93a14cc`).
+from one 713,867-byte self-contained page (SHA-256
+`19ce12161bc169596035ddc92d0e914d4b4d3cfb0ced5ee6ccfd0682cc34299c`).
 Camera is marked pending and unlinked. Production routes, MCP assets/inventory,
 auth/Tailscale and public HTTP do not change.
 
@@ -29,12 +29,19 @@ initial browser creation from a neutral SSR marker, rejects literal/single/
 double-encoded traversal before normalization, retains normalized RGB/RGBA
 alpha, uses viewer-local row clocks and enforces frozen responsive contracts.
 
-Author evidence is green: Svelte check 0/0, Vitest 23/23, real Chrome 40/40 at
-320/390/590/720, app 276/276 with 3,175 assertions, lifecycle 21/21, shipping
+Re-review also required the canonical child title to be the first parsed
+non-empty title and the accepted Heads six-percent RGBA-aware wash plus bottom
+Copy interaction. The earliest inline bootstrap now owns title/route metadata;
+Heads has three valid-color 44-pixel Copy actions, none for Empty/N/A, and one
+shared non-flow Copy/Refresh feedback overlay.
+
+Author evidence is green: Svelte check 0/0, Vitest 24/24, real Chrome 50/50 at
+320/390/590/720, app 276/276 with 3,178 assertions, lifecycle 21/21, shipping
 24/24, deterministic packaging, bundles/help/signature and unchanged production
-asset hashes. Browser assertions cover canonical titles, exact initial route,
-one visible panel, zero recorded layout shift, no required-text clipping,
-Overview 1/2 columns, Heads two columns and unchanged Bed Mesh geometry. No
+asset hashes. Browser assertions cover the entire initial non-empty title
+sequence, exact initial route, one visible panel, zero recorded layout shift,
+no required-text clipping, Overview 1/2 columns, Heads wash/Copy/two columns and
+unchanged Bed Mesh geometry. No
 deployment, service, printer, camera, auth or Tailscale contact occurred. Next
 is exact-SHA review, then ordinary PR delivery only if approved. Each production
 migration remains a separate authorized slice.

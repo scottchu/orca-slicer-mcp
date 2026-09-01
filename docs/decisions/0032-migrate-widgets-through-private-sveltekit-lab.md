@@ -234,3 +234,18 @@ fixes them without expanding runtime scope:
 - Tests now cover every view's applicable enum, number, time, shape, order,
   label and color boundaries plus route/title/visibility/layout-shift/columns/
   clipping at all frozen widths. Bed Mesh acceptance remains unchanged.
+
+### Parser-title and Heads interaction renewal
+
+Re-review found two remaining gaps without changing the migration boundary:
+
+- The neutral SSR marker prevented wrong body content, but a generic title was
+  still parsed before the canonical child title. The earliest inline app-head
+  bootstrap now selects the exact closed pathname, title and route marker before
+  Svelte head output or hydration. Browser instrumentation must observe exactly
+  one non-empty title for the directory and every direct child route.
+- Heads applies the accepted six-percent validated filament-color wash over
+  white through CSS `color-mix`, retaining the effect of an RGBA alpha byte.
+  Every valid hex exposes an accessible 44-pixel bottom Copy action; Empty/N/A
+  has none. Copy and Refresh share one truthful non-flow feedback overlay so
+  neither interaction changes intrinsic height or creates competing toasts.

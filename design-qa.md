@@ -41,6 +41,16 @@ Primary interactions tested: every bottom Refresh produces overlay-only
 feedback without changing card height or source time; Bed Mesh 2D/3D controls
 preserve the same frame. Browser console and nonlocal requests are clean.
 
+Parser-title and Heads renewal: the actual 320- and 390-pixel Heads captures
+were inspected after re-review. Loaded cards retain a deliberately subtle
+six-percent wash while the half-alpha blue fixture is visibly quieter than its
+opaque equivalent; Empty/N/A stays neutral. Swatch, normalized hex and one Copy
+icon form the bottom information/action row without adding reserved blank space.
+The temporary Copy confirmation overlays the card and disappears without moving
+the grid or footer. Automated early-document instrumentation also records only
+the canonical title, never a visible or metadata-level generic-to-specific
+transition. No new actionable visual finding remains.
+
 final result: passed
 
 ## 2026-09-01 Svelte Bed Mesh private lab foundation

@@ -4,6 +4,29 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="data:," />
+    <script>
+      (() => {
+        const titles = Object.freeze({
+          overview: 'Overview',
+          progress: 'Print Progress',
+          thermals: 'Thermals',
+          heads: 'Heads & Filaments',
+          jobs: 'Current Job',
+          job_history: 'Job History',
+          queue: 'Print Queue',
+          fans: 'Fans & Air',
+          bed_mesh: 'Bed Mesh'
+        });
+        const path = location.pathname.endsWith('/') && location.pathname !== '/'
+          ? location.pathname.slice(0, -1)
+          : location.pathname;
+        const route = path === '/dashboard/lab'
+          ? 'directory'
+          : path.slice('/dashboard/lab/'.length);
+        document.title = titles[route] ?? 'Observation Lab';
+        document.documentElement.dataset.u1LabRoute = route;
+      })();
+    </script>
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="off">

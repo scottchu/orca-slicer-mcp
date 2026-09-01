@@ -10,20 +10,21 @@
   import type { LabFreshness } from './types';
 
   type LucideIcon = typeof import('lucide-svelte')['Box'];
-  let { title, icon, observedAt, freshness, children }: {
+  let { title, icon, observedAt, freshness, feedback = '', children }: {
     title: string;
     icon: LucideIcon;
     observedAt: string;
     freshness: LabFreshness;
+    feedback?: string;
     children: Snippet;
   } = $props();
   const Icon = $derived(icon);
-  let feedback = $state('');
+  let refreshFeedback = $state('');
   let timer: ReturnType<typeof setTimeout> | undefined;
   function refresh(): void {
-    feedback = 'Lab fixture refreshed';
+    refreshFeedback = 'Lab fixture refreshed';
     if (timer) clearTimeout(timer);
-    timer = setTimeout(() => { feedback = ''; }, 1600);
+    timer = setTimeout(() => { refreshFeedback = ''; }, 1600);
   }
 </script>
 
@@ -36,7 +37,7 @@
   <WidgetFooter>
     {#snippet actions()}<IconButton label="Refresh lab fixture" icon={RefreshCw} onclick={refresh} />{/snippet}
   </WidgetFooter>
-  {#if feedback}<div class="widget-feedback" role="status">{feedback}</div>{/if}
+  {#if feedback || refreshFeedback}<div class="widget-feedback" role="status">{feedback || refreshFeedback}</div>{/if}
 </WidgetShell>
 
 <style>

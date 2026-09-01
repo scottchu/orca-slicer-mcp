@@ -369,7 +369,9 @@ printer environments support the described behavior.
   bottom 44-pixel icon action and overlay feedback cannot change intrinsic
   height. Canonical titles and the Progress/Thermals/Heads/Jobs/History/Queue/
   Fans/Overview/Bed Mesh presentation rules are fixed by decision 0032's
-  all-observation addendum. Existing production routes, tools, resources,
+  all-observation addendum. The canonical directory/child title must be the
+  first and only non-empty title observed during initial parsing, before
+  hydration. Existing production routes, tools, resources,
   authentication, Tailscale and public HTTP remain unchanged.
 
 Implementation qualification: the current store bootstraps one acquisition on

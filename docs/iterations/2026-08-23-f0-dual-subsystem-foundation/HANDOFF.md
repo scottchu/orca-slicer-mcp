@@ -35,14 +35,22 @@ normalized RGB/RGBA alpha, uses viewer-local row clocks, and enforces Overview
 1/2 columns, Heads two columns/content-driven height and canonical Thermals
 labels/titles.
 
-Author evidence passes 23 UI tests, 40 real-Chrome cases, 276 app tests/3,175
+Re-review additionally caught a generic-to-canonical title mutation and the
+missing accepted Heads wash/Copy interaction. The earliest inline bootstrap now
+sets the canonical child title before hydration. Heads uses a six-percent wash
+that preserves RGBA alpha, exposes one 44-pixel bottom Copy action for each of
+the three valid colors, none for Empty/N/A, and shares one non-flow feedback
+overlay with Refresh.
+
+Author evidence passes 24 UI tests, 50 real-Chrome cases, 276 app tests/3,178
 assertions, 21 lifecycle and 24 shipping tests, deterministic packaging, all
-three bundles, help and signature. The exact package is 713,119 bytes with
-SHA-256 `7be3e2c912c04233299b2089bb9f368bed891e11e0c4d1a28f843b5fe93a14cc`.
-The deliberate risk is the 36,881-byte headroom below 750 KB while local
+three bundles, help and signature. The exact package is 713,867 bytes with
+SHA-256 `19ce12161bc169596035ddc92d0e914d4b4d3cfb0ced5ee6ccfd0682cc34299c`.
+The deliberate risk is the 36,133-byte headroom below 750 KB while local
 Three.js coexists with eight compact views. Chrome measures one visible exact
-route, zero layout shift and no required-text clipping at every frozen width;
-Bed Mesh remains unchanged. No merge/deploy/service/printer/camera/auth/
+route, exactly one canonical non-empty title from initial parsing, zero layout
+shift and no required-text clipping at every frozen width; Copy changes card
+height by less than 0.1 pixel and Bed Mesh remains unchanged. No merge/deploy/service/printer/camera/auth/
 Tailscale contact occurred. Next: exact-candidate review; production cutovers
 remain separate later slices.
 

@@ -1,5 +1,72 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 parser-title and Heads interaction renewal
+
+Re-review blocked exact `9dc6470`: child routes still mutated from generic
+`Observation Lab` to the canonical title during parsing, and Heads did not yet
+implement the already accepted six-percent RGBA-aware wash and bottom Copy
+interaction. No service, printer, camera, auth or Tailscale surface was
+contacted while correcting the static private lab.
+
+Commands actually run after the final correction:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+
+cd ..
+bun run ui:verify
+bun run ui:verify
+bun run check
+bun run test
+bun run ui:test:browser
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_service.py
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes 0/0 and Vitest 24/24. The Heads component test proves
+  canonical RGBA reaches the card, only three valid colors expose Copy, Empty/
+  N/A does not, the exact normalized hex reaches `navigator.clipboard`, and
+  feedback is truthful.
+- Real Chrome passes 50/50. MutationObserver instrumentation from initial
+  parsing records exactly one non-empty canonical title for the directory and
+  all nine child routes, never generic-to-canonical mutation. At every frozen
+  width the computed Tool 3 wash exactly matches `color-mix` with the canonical
+  eight-digit color at six percent and differs from its opaque equivalent.
+  Copy actions are 44 pixels and Copy feedback changes card height by less than
+  0.1 pixel. All prior route/layout/readability and Bed Mesh 4:3 checks pass.
+- Two sequential verification builds reproduce one 713,867-byte self-contained
+  page, 36,133 bytes below 750 KB, SHA-256
+  `19ce12161bc169596035ddc92d0e914d4b4d3cfb0ced5ee6ccfd0682cc34299c`.
+- Full gates pass 276 app tests/3,178 assertions, 21 lifecycle and 24 shipping
+  tests. Bundles/signature/help pass: `dist/stdio.js` is 2,811,271 bytes/
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/server.js` is 3,867,597 bytes/
+  `74c8c00500c463b82f69249d004cd198e285ffef65fa334ad945ede955799787`;
+  `dist/u1-print-studio` is 65,229,648 bytes/
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`.
+  Existing production widget/camera/host hashes remain unchanged.
+
+This is renewed author static/software, synthetic-fixture browser and private-
+handler evidence. It does not prove independent approval, deployment, MCP
+cutover, live telemetry, camera/printer behavior, actual-device rendering or
+user acceptance.
+
 ## 2026-09-01 all-observation Svelte formal-review renewal
 
 Formal review blocked exact `8a6df9b` on initial route rendering, raw traversal,

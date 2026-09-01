@@ -37,13 +37,21 @@ alpha, row clocks are viewer-local, Overview is one column at 320 and two
 thereafter, and Heads stays two columns through 720 without reserved material
 height.
 
-Real Chrome passes 40/40 cases at 320/390/590/720 with canonical titles, one
-visible route, zero recorded layout shift, no required-text clipping, overflow,
-console error or nonlocal request, and stable feedback geometry/source time.
-Bed Mesh retains its exact 4:3/equal-mode contract. The package is 713,119
-bytes, 36,881 below the 750 KB bound, with SHA-256
-`7be3e2c912c04233299b2089bb9f368bed891e11e0c4d1a28f843b5fe93a14cc`.
-Full author gates pass 23 UI tests, 276 app tests/3,175 assertions, 21 lifecycle
+Re-review then found that parser-time title history still included generic
+`Observation Lab` before the canonical child title and that Heads did not yet
+carry the accepted six-percent RGBA-aware wash/Copy interaction. The earliest
+inline bootstrap now owns the exact first non-empty document title before
+hydration. Heads uses the accepted wash, three valid-color bottom Copy actions,
+no action for Empty/N/A, and one shared overlay for Copy/Refresh feedback.
+
+Real Chrome passes 50/50 cases at 320/390/590/720 with exactly one canonical
+non-empty title from initial parsing, one visible route, zero recorded layout
+shift, no required-text clipping, overflow, console error or nonlocal request,
+and stable Refresh/Copy feedback geometry/source time. Bed Mesh retains its
+exact 4:3/equal-mode contract. The package is 713,867 bytes, 36,133 below the
+750 KB bound, with SHA-256
+`19ce12161bc169596035ddc92d0e914d4b4d3cfb0ced5ee6ccfd0682cc34299c`.
+Full author gates pass 24 UI tests, 276 app tests/3,178 assertions, 21 lifecycle
 tests, 24 shipping tests, deterministic builds, three bundles, help and code
 signature. Production hashes remain unchanged. This is renewed author fixture/
 software evidence only; exact independent review is next before any PR, merge,
