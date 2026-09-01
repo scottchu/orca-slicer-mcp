@@ -5,6 +5,6 @@
   let { actual, target, loading = false }: { actual?: number | null; target?: number | null; loading?: boolean } = $props();
 </script>
 
-<Inline align="baseline" gap="tight" label="Actual and target temperature">
+<Inline align="baseline" gap="tight" shrink={false} label="Actual and target temperature">
   <DegreeValue value={actual} {loading} context="Actual" /><Label text="/" tone="muted" /><DegreeValue value={target} {loading} context="Target" emphasis="secondary" />
 </Inline>

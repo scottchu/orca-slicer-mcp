@@ -1,5 +1,40 @@
 # Next agent
 
+## Current checkpoint: Thermals renewal after delivered Camera PR71
+
+Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly
+integrated in this PR72 merge. Additive source/record conflicts are resolved;
+renewed combined author gates PASS:256 UI,138 Chrome,290 app/3,400 assertions,
+21 lifecycle and24 shipping tests, compiler/AST, five deterministic packages,
+runtime bundles/signature/help. Exact independent validation/review is next;
+no Thermals acceptance or deployment is claimed.
+Fans PR70 and focused Camera PR71 are deployed. Thermals remains unshipped;
+seven other observation cutovers, generic MCP/legacy replacement and all named
+WIDGET_TRACKS remain open. Preserve existing widget-first execution order.
+
+PR71 independently accepted `c9311eb`, merged as `0aa83a0` with tree
+`af970729c41d041533d5d6f6c909a3a43d49a21b`, and shipped release
+`20260901-0aa83a0-pr71-20260901T170551-59206e`. Operator reports BOTH explicitly
+restarted, loaded/healthy/integrity verified at runtime0.4.8/schema12/obs14/camera10,
+28 static and29 security checks passed, preservation true, no rollback needed;
+snapshot `20260901T170638-b77ef9` retained. Canonical checkout/recovery refs and
+8,689 ignored entries were preserved. Camera artifact89,919 bytes has SHA256
+`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`.
+
+Independent `live_camera_exact_validation` postdeployment PASS covers BOTH
+service/plist identities,15 manifest hashes,6 exact private static routes with
+no-store/CSP, and fetched-byte synthetic host/media behavior (five probes and
+six hash checks). Public loopback rejects four private dashboard/lab routes.
+External unmatched-root routes still return502 from an unrelated unavailable
+upstream, including pre-existing widget routes: this is not a Camera-specific
+regression, but external-root availability/isolation remains unaccepted. No
+routing/auth changes were made. Actual phone/real-stream evidence remains
+pending. The separately stale installed-plugin connection still requires
+approval before reload/reinstallation; no such action occurred.
+
+
+## Historical author and delivery checkpoints (superseded where noted above)
+
 Resume from repository records, not chat history.
 
 ## Read first
@@ -14,6 +49,32 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Next action: independently validate/review the frozen real Thermals candidate,
+then guarded merge/deploy/explicit BOTH restart/verify. Author final gates pass:
+228 UI,130 Chrome,285 app/3,356 assertions,21 lifecycle,24 shipping, deterministic
+packages and bundles/signature/help. This is not a deployed Thermals release.
+Its branch is based on reviewed `db1c926`; if Camera ships first, explicitly
+integrate that reviewed main and renew exact acceptance. Do not import the
+unapproved Camera branch. No browser test server remains running from this author.
+
+PR70 Fans is shipped on reviewed main `db1c926`; do not repeat its cutover.
+Next bounded author slice is real Thermals only, sharing the reviewed bridge and
+controller while preserving separate Cavity receipts and source-bound nullable
+thermal facts. Required parity is in LIVE_PARITY/decision0034. Real Camera is a
+separate coordinated branch; seven other observations and generic MCP still
+require migration. Keep every named WIDGET_TRACKS obligation, not new features.
+Latest actual PR70 operator and independent postcheck receipts are in
+PROJECT_STATE/VALIDATION: exact assets/services and11 fetched-byte iframe cases
+with synthetic replies pass. An unidentified connector produced historical
+sparse data; do not equate that with current real-data/device acceptance or
+silently change plugin/auth state. Thermals full gates and exact independent
+acceptance must finish before another cutover is claimed.
+
+### Historical next-action checkpoints
+
+The prior pending PR70/Camera/lab instructions below are historical, superseded
+by the current Thermals execution order above; they do not require reshipping
+already accepted bytes.
 Next acceptance: the real Camera dashboard candidate on explicitly merged
 reviewed main `db1c926` (Fans PR70 delivered through release
 `20260901-db1c926-pr70-20260901T162456-cc8038`; BOTH restarted/healthy/integrity,

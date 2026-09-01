@@ -11,6 +11,7 @@ import { PrinterObservationStore } from "./observation-store.js";
 import { createObservationPresentation } from "./observation-presentation.js";
 import { createRequestHandler } from "./server.js";
 import type { U1Status } from "./u1-status.js";
+import { adaptThermals } from "../ui/src/lib/live/thermals-adapter.js";
 
 const receipt = "2026-08-31T12:00:00.000Z";
 const raw = (status: Record<string, unknown> = {}) => ({ result: { status: {
@@ -34,6 +35,20 @@ const status = (): U1Status => ({
 });
 
 describe("bounded fixed environment normalization", () => {
+  test("live Thermals adapter retains normalized extreme/status and independently sourced cavity facts", async () => {
+    const current = status();
+    current.tools = [{ physicalTool: 1, temperature: Number.MAX_VALUE, target: 0, active: false, state: "COOLING" }];
+    current.bed = { temperature: -Number.MAX_VALUE, target: null };
+    const environment = normalizeEnvironmentResponse(raw({ "temperature_sensor cavity": { temperature: -273.15 } }), receipt);
+    const store = new PrinterObservationStore(async () => ({ status: current, metadata: {} }));
+    const snapshot = await store.current();
+    const result = adaptThermals(createObservationPresentation({ ...snapshot, environment }, "thermals"));
+    expect(result.readings[0]).toMatchObject({ actualC: Number.MAX_VALUE, targetC: 0, active: false, heaterState: { value: "COOLING" } });
+    expect(result.readings[4]).toMatchObject({ actualC: -Number.MAX_VALUE, targetC: null, active: null });
+    expect(result.readings[5]).toMatchObject({ actualC: -273.15, provenance: { sourceObservedAt: receipt } });
+    expect(result.environment.sourceObservedAt).toBe(receipt);
+    expect(result.sourceObservedAt).toBe(current.observedAt);
+  });
   test("normalizes only fixed cavity, fan and purifier fields including zero and nullable RPM", () => {
     const result = normalizeEnvironmentResponse(raw({ private_object: { credential: "secret" } }), receipt);
     expect(result).toMatchObject({ state: "known", freshness: "fresh", sourceObservedAt: receipt,

@@ -1,5 +1,165 @@
 # F0 dual-subsystem foundation validation
 
+## Current checkpoint: Thermals renewal after delivered Camera PR71
+
+Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly
+integrated in this PR72 merge. Additive source/record conflicts are resolved;
+renewed combined author gates PASS:256 UI,138 Chrome,290 app/3,400 assertions,
+21 lifecycle and24 shipping tests, compiler/AST, five deterministic packages,
+runtime bundles/signature/help. Exact independent validation/review is next;
+no Thermals acceptance or deployment is claimed.
+Fans PR70 and focused Camera PR71 are deployed. Thermals remains unshipped;
+seven other observation cutovers, generic MCP/legacy replacement and all named
+WIDGET_TRACKS remain open. Preserve existing widget-first execution order.
+
+PR71 independently accepted `c9311eb`, merged as `0aa83a0` with tree
+`af970729c41d041533d5d6f6c909a3a43d49a21b`, and shipped release
+`20260901-0aa83a0-pr71-20260901T170551-59206e`. Operator reports BOTH explicitly
+restarted, loaded/healthy/integrity verified at runtime0.4.8/schema12/obs14/camera10,
+28 static and29 security checks passed, preservation true, no rollback needed;
+snapshot `20260901T170638-b77ef9` retained. Canonical checkout/recovery refs and
+8,689 ignored entries were preserved. Camera artifact89,919 bytes has SHA256
+`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`.
+
+Independent `live_camera_exact_validation` postdeployment PASS covers BOTH
+service/plist identities,15 manifest hashes,6 exact private static routes with
+no-store/CSP, and fetched-byte synthetic host/media behavior (five probes and
+six hash checks). Public loopback rejects four private dashboard/lab routes.
+External unmatched-root routes still return502 from an unrelated unavailable
+upstream, including pre-existing widget routes: this is not a Camera-specific
+regression, but external-root availability/isolation remains unaccepted. No
+routing/auth changes were made. Actual phone/real-stream evidence remains
+pending. The separately stale installed-plugin connection still requires
+approval before reload/reinstallation; no such action occurred.
+
+
+## PR72 renewed author evidence on reviewed PR71 main
+
+Actual commands used pinned Bun1.3.12 on normal Node PATH:
+
+- UI `bun run check`, `bun run test`, all three `build:live-*` commands,
+  `bun run build`, `bun run package:private-lab`: PASS. Compiler/AST has
+  zero diagnostics and256 unit tests pass; no new raw-composite debt.
+- Repository `./scripts/check-repository.sh`: PASS; all five deterministic
+  artifact comparisons,290 app tests/3,400 assertions,21 service lifecycle and
+  24 shipping tests. Standalone `uv run --no-project scripts/test_u1_ship.py`
+  also passes24. Its first merge run identified one stale29-count assertion;
+  the corrected source-derived combined inventory is29 static/30 security.
+- UI `bun run test:browser`:138/138 PASS, including delivered Camera/Fans,
+  both labs, and all9 Thermals cases. Author inspected normal320 and enlarged720
+  extreme-value captures: readable values/units/receipts and unclipped focus.
+- App `bundle:widget-vendor`, `bundle`, `bundle:server`, `bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and executable
+  `--help`: PASS. `git diff --check`: PASS. No printer/media acquisition,
+  production service mutation, auth change or plugin reinstall occurred.
+
+| Artifact | UTF-8 bytes | SHA256 |
+| --- | ---: | --- |
+| Production Thermals | 86140 | `032fe53863f79e718b51ac5fd5cb43c3f73d79a4b25c196d1bd19a1309e1f22d` |
+| Production Fans | 85654 | `ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d` |
+| Production Camera | 89919 | `b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10` |
+| Observation lab | 749112 | `061fec9a18d12c0c9f4e7329fcb0a5ad169ec71fb47326a302352f44fcdd7fa0` |
+| Camera lab | 78795 | `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a` |
+
+Each production artifact remains under its separate100,000-byte limit.
+Two-lab aggregate827,907/830,000 leaves2,093 bytes; individual750,000/80,000
+limits remain intact. Camera production bytes and shared RPC/Camera/media
+source are identical to reviewed PR71 main. The integration does not change
+Camera acquisition/session interfaces or generic MCP aliases. This is author
+software/synthetic evidence; separate exact acceptance and guarded delivery
+must still precede any Thermals completion claim.
+
+## Historical author and delivery checkpoints (superseded where noted above)
+
+## 2026-09-01 LIVE Thermals final author gates
+
+Actual final commands used pinned Bun1.3.12 with normal Node PATH:
+
+- UI `bun run check`, `bun run test`, `bun run build`, `bun run
+  package:private-lab`, `bun run build:live-fans`, `bun run build:live-thermals`
+  and full `bun run test:browser`: PASS. Final228 UI unit tests and130 Chrome
+  cases include all existing lab/Fans/Camera regressions plus9 real Thermals
+  iframe cases. Compiler/AST/type gates preserve zero-raw feature composition.
+- Repository `./scripts/check-repository.sh`: PASS, including deterministic
+  comparisons of both labs and both production entries,285 app tests/3,356
+  assertions,21 lifecycle and24 ship tests, ending `repository contract: ok`.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and executable `--help`: PASS. `git diff --check`: PASS.
+
+The pure tests cover all finite status bounds, real Cavity bounds, independent
+nullable fields/evidence/receipts, exact heater-bed identity, wrong/malformed
+views, null/zero/overshoot and reported heater state. The shared controller keeps
+Fans ordering and superseded-rejection regressions, with equivalent Thermals
+cases. Real server projections and exact GET-only private/public-isolated routes
+are exercised through loopback fixtures, not device acquisition.
+
+Chrome covers320/390/590/720 normal/200% text: six structural rows, <=1px default
+loading/ready major bounds, retained refresh/error time/values/focus/geometry,
+independent stale Cavity/fresh status and the reverse, scientific extrema with
+full accessible values, glyph containment, neutral unknowns, retry, superseded
+RPC rejection and persisted page lifecycle. Author inspected normal narrow and
+enlarged extreme screenshots. The opt-in grouped-time metadata avoids separated
+AM/PM; default and grouped slots have unit coverage. False active now says
+Inactive, never inferred Idle; null stays neutral. Full tests reran after this
+final aria-only correction. The original expectation that an enabled button
+must have aria-disabled=false was corrected to the existing absent-attribute
+contract; no runtime busy guard was weakened. A stale package-hash assertion and
+an unsupported testing-library `exact` option were caught and corrected before
+the final passing gates.
+
+Final exact raw UTF-8 artifacts:
+
+| Artifact | Bytes / bound | SHA-256 |
+| --- | --- | --- |
+| Production Thermals |86,140 /100,000|`032fe53863f79e718b51ac5fd5cb43c3f73d79a4b25c196d1bd19a1309e1f22d`|
+| Production Fans |85,654 /100,000|`ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d`|
+| Observation lab |749,112 /750,000|`061fec9a18d12c0c9f4e7329fcb0a5ad169ec71fb47326a302352f44fcdd7fa0`|
+| Camera lab |78,795 /80,000|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+
+Lab aggregate827,907/830,000 leaves2,093 bytes. Against shipped PR70, observation
+adds296 bytes, Fans adds339 from shared validation/controller/metadata support,
+Camera is unchanged; Thermals is its own new86,140-byte production artifact.
+No cap was raised. Source-derived inventory adds one exact Thermals static hash
+and public404 probe, now28 static/29 security checks in software contracts.
+
+This is author software/synthetic-browser evidence only. Fresh exact independent
+validation and formal review, guarded shipment and deployed verification remain
+pending. No printer/camera acquisition, control, auth, plugin or running service
+change occurred. Reviewed baseline is `db1c926`; integrate any subsequent reviewed
+Camera main before acceptance, without copying unapproved branch contents.
+
+## 2026-09-01 actual PR70 rollout and independent postcheck
+
+Operator shipped independently accepted head
+`dbdfc390bdd96e038418cbbea9c0caec80129dd4`, tree
+`ccf7e91a867503ee554c4785e261c41b9963e567`, merged as
+`db1c926b3c8276e56911221a19b9b9300db53990`. Release
+`20260901-db1c926-pr70-20260901T162456-cc8038` explicitly restarted BOTH
+services: healthy/integrity runtime0.4.8/schema12/observation-v14/camera-v10;
+27 static and28 security checks PASS, preservation true. No rollback needed;
+snapshot `20260901T162541-5d87ef` retained. All8,689 ignored entries and recovery
+refs remained preserved.
+
+Independent `camera_exact_validation` postcheck PASS: both exact release/source
+identities and15 manifest hashes, actual tailnet host/Fans/both labs/index exact
+hashes with200/no-store/CSP, four public404 isolation probes; all11 real-iframe
+tests on fetched host/child/index bytes with synthetic tool replies. These are
+service/static and synthetic-browser acceptance, not actual-device acceptance.
+A separate model-visible Fans call returned a sparse historical placeholder
+shape that the current deployed producer cannot emit; connector runtime identity
+is unproven. Do not claim current real-data acceptance or coerce that old shape.
+Plugin reload/update needs its own authority; no plugin/auth change is included.
+
+## 2026-09-01 Thermals author start
+
+Read-only clean/ancestry checks confirmed the prior Fans branch was fully merged;
+created a new non-main Thermals branch at exact reviewed `db1c926`, preserving
+the old ref and existing worktree. Read source thermal projection/normalization,
+decision0034 and LIVE_PARITY. Initial focused unit run passes44 tests including
+22 real Thermals adapter cases plus unchanged Fans adapter/controller cases.
+No service, printer, camera or user-device action occurred. Further implementation
+and complete exact-candidate gates remain pending.
 ## 2026-09-01 real Camera dashboard author gates
 
 Reviewed main `db1c926` is explicitly integrated; its shipped Fans/shared-RPC

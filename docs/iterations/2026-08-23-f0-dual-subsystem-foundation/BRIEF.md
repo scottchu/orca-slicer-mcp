@@ -1,5 +1,15 @@
 # F0 dual-subsystem foundation brief
 
+Current execution order (2026-09-01): PR70 real Fans and PR71 focused Camera are
+shipped; reviewed main is `0aa83a0`. Renew the bounded real Thermals cutover on
+that explicitly integrated baseline, then remaining seven observation migrations before queued
+feature refinements/cleanup. Decision0034 and LIVE_PARITY govern nullable
+thermal values, real heater-bed identity and independent Cavity evidence.
+No generic MCP switch or deletion of reachable legacy assets is authorized by
+this Thermals slice. Older Fans/Camera-pending notes below are historical.
+
+## Historical execution-order checkpoints
+
 Current migration sequence: PR67 controls/loading and PR68 receipt are delivered;
 complete decision 0034's real Fans adapter/shared host controller on a separate
 branch with reviewed main `2d30b01` integrated before its Fans-only acceptance.

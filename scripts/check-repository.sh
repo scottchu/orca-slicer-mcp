@@ -109,6 +109,7 @@ if [[ -d "$plugin_app_root" ]]; then
     bun run ui:check
     bun run ui:test
     (cd ui && bun run verify:live-fans)
+    (cd ui && bun run verify:live-thermals)
     (cd ui && bun run verify:live-camera)
     bun run ui:verify
     bun run check

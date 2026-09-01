@@ -23,6 +23,9 @@ receipts/reasons/capability and privacy. Never cast a normalized result into a
 | Print Queue | Preserve filename, nullable time-added/wait, totalCount up to 1,000, truncation and first 100 rows. Cover four queue states, 0/1/100/101/1,000 counts, partial times, known-empty stale versus unobserved, and reordering. Wait is a receipt fact, not a running clock or ETA. |
 | Bed Mesh | Preserve active/no-active/null state, nullable matrix/bounds/summary/receipt. Chart adapter is active-only and maps min/max to minimum/maximum. Cover asymmetric rows-Y/columns-X, nonzero XY bounds, flat/negative heights, 2×2 through 64×64, absent profile and invalid dimensions/summary. Successful no-active clears the old chart; failed stale refresh retains it. Preserve selected 2D/3D mode and never mount Three for loading. |
 
+PR70 Fans is now shipped on `db1c926`; Thermals is the next bounded author slice.
+The table remains the complete parity obligation, not proof of those cutovers.
+
 Current `observation-v14` and `v13` through `v1` aliases still reach `widget.html`;
 legacy `status-v4`/`status-v3` reach frozen `legacy-widget.html`. Public/private
 `/widget` and eight remaining focused hosts still require those renderers. Do not
