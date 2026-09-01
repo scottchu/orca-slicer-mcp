@@ -7,18 +7,15 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
-Current priority: **E Overview**. Compose accepted focused projections from the
-shared normalized snapshot. Explicit demand concurrently requests main status
-plus all six existing independent non-camera domains, then produces one
-privacy-minimized headline module from the exact eight projectors. Per-tile
-receipts remain explicit; header time is status-only and complete/partial/none
-means coverage only. Render one compact responsive white card with one bottom
-Refresh—not nested full cards or a giant map. Do not add another reader,
-normalizer, cache, timer, camera/media, navigation or control. Target 0.4.6/
-schema 12/observation-v12/camera-v8, 22 resources with observation-v11 retained
-and unchanged tools. Preserve independently invokable A/F/Heads/B/C/D and their
-truthful empty/partial/unknown/unsupported/unavailable/stale states. All deployed
-cards still require browser/device visual acceptance.
+All focused widget tracks are delivered. E Overview shipped in PR54 as exact
+release `20260831-aa9bd9d-pr54-20260831T201019-d7aa8a` on BOTH restarted,
+healthy and integrity-verified services at runtime 0.4.6/schema 12/
+observation-v12/camera-v8. Sixteen security checks and exact served-asset checks
+pass; one private Overview refresh reported complete coverage, all eight tiles
+known and every receipt fresh/timestamped. Preserve independently invokable
+focused cards and their truthful empty/partial/unknown/unsupported/unavailable/
+stale states. Current priority is user visual review and bounded product
+iteration. All cards still require browser/device visual acceptance.
 
 Previous shipped priority: **D Current Job/real History**. PR51 exact approved
 head `30f1c7b` merged as `23f07e3`; release
@@ -50,7 +47,8 @@ preserved and no rollback. Independent checks confirm 15 exact manifest files,
 both service targets, three health/seven static checks, one known/fresh paused-
 empty Queue observation and exact served-widget semantics. Full evidence is in VALIDATION;
 visual/browser/device acceptance remains unverified. That checkpoint's order was
-C → D → E; the authoritative top section now records C/D shipped and E next.
+C → D → E; the authoritative top section now records C/D/E shipped and visual
+review next.
 
 Previous priority: **B Queue integration** after PR46's merged Heads rollout
 records (`bd7abc8`). Decision 0029's Queue addendum/OBS-012 bind the existing
@@ -119,9 +117,8 @@ interactive reported-height surface inside the existing white card. It does
 not request Fluidd's dark dashboard, interpolated-matrix selector or printer
 controls. At that checkpoint the release order was A/F/Heads (deployed) → B →
 C → D → E, B–E were unfinished, and Queue store/widget integration was next.
-The current top section and matrix supersede that history: B, C and D are shipped,
-and E is next. F0/O1 and E remain unfinished; A/F/B/C/D visual acceptance remains
-open. Preserve unrelated checkouts;
+The current top section and matrix supersede that history: B, C, D and E are
+shipped; visual acceptance remains open for every track. Preserve unrelated checkouts;
 any reuse needs explicit integration review. Queue foundation is locally committed as
 `4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`;
 independent bounded source/protocol review approves and closes the prior P2.
@@ -141,15 +138,15 @@ no unfinished track is cancelled by the new priority.
 | B Queue | Fixed bounded adapter, independent store/projection and white Queue card/index shipped in PR47 | User visual review; preserve no-mutation boundary | Deployed to both restarted services; exact/static/scoped verification recorded separately, visual/device acceptance unverified |
 | C Fans and chamber | Fixed environment route, independent store/projection and two focused cards shipped in PR49 | User visual review; preserve distinct commanded-percent/RPM/state semantics and no controls/health inference | Deployed to both restarted services; scoped one-Fans/one-Thermals telemetry verification passes, visual/device acceptance unverified |
 | D Current Job and History | Fixed independent Current/History reads, stores, projections and white cards shipped in PR51 | User visual review; preserve privacy, contextual identity, page-only count and no-control boundary | Deployed to both restarted services; sanitized scoped telemetry verification passes, visual/device acceptance unverified |
-| E Overview | Design-frozen explicit fan-out over existing domains and privacy-minimized composition of eight accepted projectors | One compact responsive white headline card, per-domain receipts and coverage-only summary; no alternate normalization/acquisition path or giant map | Active implementation; source/deployment/visual acceptance pending |
-| G Invokable skills and routes | Focused observation and camera skills delivered | Retain closed selectors and existing invocation; update source guidance/coverage as domains ship, without plugin reinstall | Active acceptance across releases |
+| E Overview | Explicit fan-out over existing domains and privacy-minimized composition of eight accepted projectors shipped in PR54 | User visual review; preserve compact headline-only card, per-domain receipts, coverage-only summary and no alternate acquisition path | Deployed to both restarted services; exact static/security/scoped refresh verification passes, visual/device acceptance unverified |
+| G Invokable skills and routes | Focused observation and camera skills delivered across all widget tracks | Retain closed selectors and existing invocation; update only through bounded product iteration, without plugin reinstall | Delivered; user invocation/visual acceptance remains open |
 
-Releases A, F surface, B, C, D, and E are independently shippable end-to-end slices.
+Releases A, F surface, B, C, D, and E are independently shipped end-to-end slices.
 A includes the shared visual foundation and material projection because their
 Heads/card changes need coordinated integration. F's white restyle shipped
 with A; the new F surface shipped separately in PR43. G is checked
-for every release. A new user priority may reorder the queue, but each remaining
-row stays active with a next action or an explicit user-approved pause.
+for every release. No widget implementation row remains; the next action is
+user visual review and bounded product iteration.
 
 ## Visual contract
 

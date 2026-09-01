@@ -1,5 +1,31 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 E compact Overview — shipped in PR54
+
+PR53 merged the reviewed Overview application as `4541ff12`. Its first guarded
+delivery reached verification, where the contradictory private Overview 200/404
+check stopped the rollout. Verified rollback snapshot
+`20260831T195837-6233d9` restored both healthy services at runtime 0.4.5. PR54
+head `a9ad04a` corrected that verifier and merged as
+`aa9bd9d609dbdca7c1e0124b4f760d5eb8ddf2c5` at
+`2026-09-01T00:10:35Z`.
+
+Guarded release `20260831-aa9bd9d-pr54-20260831T201019-d7aa8a` is installed on
+BOTH explicitly restarted, loaded, healthy and integrity-verified services at
+runtime 0.4.6/schema 12/observation-v12/camera-v8. Rollback snapshot
+`20260831T201038-575d7f` is retained and was not needed. Configuration, OAuth
+and routes were preserved; sixteen security checks pass. Served widget, index
+and status-host hashes have exact verified prefixes `a8a4…`, `49a5…` and
+`008d…`. Tailnet index and Overview each return 200.
+
+Exactly one private Overview refresh reported coverage complete, all eight tiles
+known, and every contributing receipt fresh and timestamped. This record retains
+no raw response, filename, job row, identifier, model/project identity, private
+path or other private payload. Browser/device visual behavior and physical user
+acceptance remain unverified. All focused widget tracks are now delivered; next
+is user visual review and bounded product iteration, not another implementation
+track.
+
 ## 2026-08-31 E Overview guarded-delivery verifier correction
 
 The E application source is merged, but guarded delivery must be renewed after
@@ -282,8 +308,8 @@ At the earlier Bed Mesh checkpoint, the user's Fluidd reference prioritized a bo
 3D reported-height surface inside the existing white card. Decision 0030 and
 OBS-009 supersede only the 2D-only presentation and prior release ordering.
 The order recorded then was A/F (deployed) → B Queue → C fans/chamber → D
-Current Job/History → E overview. The authoritative top section now records B/C/D
-shipped and E next. Keep all unfinished tracks, independent invocation and
+Current Job/History → E overview. The authoritative top section now records B/C/D/E
+shipped and visual review next. Keep independent invocation and
 the Current Job/History split. A's exact deployment receipt is preserved below;
 it is not acceptance of the new F source.
 
