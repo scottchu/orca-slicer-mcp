@@ -3,15 +3,15 @@
   import IconButton from './IconButton.svelte';
   type Option = { value: string; label: string };
   type Field = { key: string; label: string; options: readonly Option[]; disabled?: boolean };
-  let { fields, values, onchange, onreset }: {
+  let { fields, values, onchange, onreset, wideOptions = false }: {
     fields: readonly Field[]; values: Readonly<Record<string, string>>;
-    onchange: (key: string, value: string) => void; onreset: () => void;
+    onchange: (key: string, value: string) => void; onreset: () => void; wideOptions?: boolean;
   } = $props();
 </script>
 
 <fieldset class="lab-controls" data-lab-controls>
   <legend>Lab preview · synthetic data</legend>
-  <div class="fields">
+  <div class="fields" class:wide-options={wideOptions}>
     {#each fields as field (field.key)}
       <label>
         <span>{field.label}</span>
@@ -30,6 +30,7 @@
   .fields { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; }
   label { display: flex; flex: 1 1 130px; flex-direction: column; min-width: 0; gap: 4px; }
   label > span { color: var(--u1-muted); font-size: 12px; }
+  .wide-options label { flex-basis: 24ch; min-width: min(100%, 24ch); font-size: 13px; }
   select { box-sizing: border-box; width: 100%; min-width: 0; min-height: 44px; padding: 8px; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-control); color: var(--u1-ink); background: var(--u1-surface); font: inherit; font-size: 13px; }
   select:focus-visible { outline: 3px solid var(--u1-focus); outline-offset: 2px; }
   select:disabled { opacity: .5; }

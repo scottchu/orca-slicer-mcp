@@ -71,7 +71,7 @@ async function geometry(page: Page, view: string) {
 }
 
 for (const width of widths) {
-  test(`observation directory is exhaustive and camera remains pending at ${width}px`, async ({ page }) => {
+  test(`observation directory includes the separate Camera lab at ${width}px`, async ({ page }) => {
     await page.addInitScript(() => {
       (window as unknown as { __u1LayoutShifts: number[] }).__u1LayoutShifts = [];
       new PerformanceObserver((list) => {
@@ -88,9 +88,9 @@ for (const width of widths) {
     await expect(page.locator('html')).toHaveAttribute('data-u1-lab-route', 'directory');
     await expect(page.locator('.route-panel:visible')).toHaveCount(1);
     await expect(page.getByRole('heading', { name: 'Observation Lab' })).toBeVisible();
-    await expect(page.locator('[data-lab-link]')).toHaveCount(9);
-    await expect(page.getByText('Pending lifecycle migration')).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Camera' })).toHaveCount(0);
+    await expect(page.locator('[data-lab-link]')).toHaveCount(10);
+    await expect(page.getByText('Pending lifecycle migration')).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'U1 Camera' })).toHaveAttribute('href', '/dashboard/lab/camera');
     for (const [path, title] of [...views, ['bed_mesh', 'Bed Mesh']] as const) {
       await expect(page.locator(`[data-lab-link="${path}"]`)).toHaveText(title);
     }

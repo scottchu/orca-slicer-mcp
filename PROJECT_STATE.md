@@ -10,6 +10,30 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Synthetic Camera lab candidate — next visible slice (2026-09-01)
+
+The Camera candidate integrates reviewed main `2d30b01` and provides an exact
+private lab route linked from the directory, shared visible state/capability
+controls, structural loading, measured local-video FPS and persistent media
+across fullscreen/PiP. It uses only an explicitly labeled calibration fixture;
+production Camera, host transport, resources and printer acquisition are unchanged.
+CameraLabRoot/CameraLabWidget are zero-raw composites over a generic PageLayout
+and registered media/status leaves. Normal mobile status stays top-right;
+200% text may reflow without overlap and without changing other widget headers.
+
+Role-separated packaging design accepted exactly two self-contained artifacts:
+observation <=750,000 bytes, Camera <=80,000, combined <=830,000. Current bytes
+are748,482 +78,688 =827,170. Camera is an explicit compiled Svelte entry within
+the Kit project; observation remains adapter-static and owns the directory.
+No third payload, runtime asset requests, Three or real transport enters Camera.
+Exact private route-to-file shipping hashes and unchanged restrictive CSP apply.
+
+Author validation is recorded in the newest active VALIDATION. Exact independent
+validation/review, guarded merge/deploy/BOTH restart and user-device acceptance
+remain pending; this is not yet visible on the server. The pure real Camera
+session controller remains a separate injected-port checkpoint, not a live cutover.
+Preserve all remaining WIDGET_TRACKS; the existing PR67 rollout below is complete.
+
 ### All-nine private lab controls/loading shipped — PR67 (2026-09-01)
 
 Independently validated and approved head

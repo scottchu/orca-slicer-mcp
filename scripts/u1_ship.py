@@ -84,11 +84,14 @@ def static_contract(source):
     lab_routes = re.findall(r'"(/dashboard/lab(?:/[a-z_]+)?)"', lab_match[1])
     require(lab_routes and len(lab_routes) == len(set(lab_routes)) and PRIVATE_LAB_ROUTE in lab_routes,
             "Invalid private-lab route inventory")
+    camera_lab_match = re.search(r'CAMERA_LAB_PATH = "(/dashboard/lab/camera)";', text)
+    require(camera_lab_match is not None, "Unsupported private Camera lab route contract")
     directory = DirectoryLinks()
     directory.feed((app / "public/dashboard-index.html").read_text())
     require(set(directory.links) == set(routes) | {"/dashboard/camera"} and len(directory.links) == len(routes) + 1, "Directory links and focused routes disagree")
     files = {(8788, route): "status-dashboard-host.html" for route in routes}
     files.update({(8788, route): "svelte-observation-lab.html" for route in lab_routes})
+    files[(8788, camera_lab_match[1])] = "svelte-camera-lab.html"
     files.update({(8788, "/dashboard"): "dashboard-index.html", (8788, "/dashboard/"): "dashboard-index.html", (8788, "/dashboard/camera"): "camera-dashboard-host.html", (8788, "/widget"): "widget.html", (8787, "/widget"): "widget.html", (8788, "/camera-widget"): "camera-widget.html"})
     return {f"{port}{route}": {"port": port, "route": route, "sha256": digest(app / "public" / name)} for (port, route), name in files.items()}
 

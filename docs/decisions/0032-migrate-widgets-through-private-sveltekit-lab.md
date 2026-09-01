@@ -1,5 +1,48 @@
 # 0032: Migrate focused widgets through a private SvelteKit lab
 
+## 2026-09-01 synthetic Camera packaging addendum
+
+Role-separated design review accepted a second private self-contained artifact
+after measured integration exceeded the existing bound: 762,180 bytes with
+the current minifier; conservative pinned Terser 5.44.1/two passes produced
+764,097. No unsafe flags, property mangling or dropped features were used.
+The rejected minifier trial is not retained as a build dependency.
+
+The observation directory and nine views retain the SvelteKit adapter-static
+entry. Camera is an explicit separately compiled Svelte entry in that same
+project, sharing primitives and LabControls. It is not described as a second
+Kit adapter route. Exactly two decoded/raw UTF-8 HTML payloads are permitted:
+observation <=750,000 bytes, Camera <=80,000, sum <=830,000. The directory
+remains inside observation; no third index payload exists. These explicit
+reviewed bounds supersede only the earlier one-artifact Camera exclusion.
+Per-file and aggregate negative tests, deterministic output comparisons and
+the complete browser suite remain required; future growth does not raise caps.
+
+The Camera source graph excludes Three, observations, host RPC and the real
+Camera session controller. It creates only a labeled local calibration canvas
+and optionally its captureStream video, never a printer photo/device/network
+request. Scenario and capability values are closed. Simulated-live FPS requires
+advancing presented/decoded frames over a second and expires when stale.
+One video/stream/track identity survives fullscreen/PiP presentation changes;
+unsupported restricts capabilities, and simulated rejection calls no native API.
+
+Only exact private `/dashboard/lab/camera` (plus its trailing slash) receives
+the Camera artifact. The unchanged restrictive lab CSP/no-store/method and raw
+traversal guards apply to both. Shipping derives the exact route-to-file hash
+from source; it cannot treat Camera as observation bytes. No public route,
+production camera, MCP resource/alias, auth, service topology or acquisition
+contract changes. Static routes must not invoke printer dependencies.
+
+Normal320/390/590/720 headers retain top-right status. Opt-in shared header
+wrapping and font-aware status/controls allow intrinsically necessary enlarged-
+text reflow without hiding/shrinking text or changing existing nine headers.
+All seven states require glyph containment/non-overlap and equal card/media
+geometry within each width/text setting; 200% need not match normal-size height.
+Feedback remains a single non-flow overlay/announcer and controls stay44px.
+
+Accepted architecture is not exact-source validation, delivery, phone, printer
+or user acceptance. Production Camera migration remains separately gated.
+
 - Date: 2026-09-01
 - Status: accepted for the bounded private-lab slice
 - Scope: F0 read-only presentation architecture; private fixture route only
