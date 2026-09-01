@@ -27,6 +27,11 @@
   in-frame/non-overlapping labels, strict bridge rejection fixtures and a
   deterministic private-only package. Independent exact-candidate review is
   still required; production remains unchanged.
+- Formal review blocked exact candidate `a6363fd` on its remaining profile-
+  allowlist mismatch. The corrected bridge matches the adapter's Unicode
+  letters/numbers plus space/underscore/dot/hyphen rule, trims outer spaces and
+  rejects empty/dot/dotdot, traversal, URL, bidi, markup and controls. Renewed
+  exact-candidate review remains required.
 - Latest shipped refinement (2026-08-31): PR56 reviewed `e2702dc7`, merged
   `cb7d06fd` (tree `dc290de1`) and guarded release
   `20260831-cb7d06f-pr56-20260831T234756-96fe19` runs on BOTH explicitly

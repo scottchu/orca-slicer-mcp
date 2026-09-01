@@ -2,7 +2,7 @@
 
 ## 2026-09-01 Svelte Bed Mesh private lab foundation
 
-final result: author correction passes; independent renewal required
+final result: author corrections pass; formal and independent renewal required
 
 Decision 0032 adds one exact private `/dashboard/lab/bed_mesh` fixture route
 without replacing `/dashboard/bed_mesh` or adding a dashboard-directory/MCP
@@ -48,6 +48,13 @@ were inspected together, with 320- and 720-pixel captures also checked for end-
 point readability. This closes the author correction only. Exact-candidate
 independent visual review, user-device review and any production cutover remain
 pending.
+
+Formal review of exact candidate `a6363fd` also blocked the component bridge's
+profile allowlist. The corrected author candidate now applies the adapter's
+Unicode letter/number plus space/underscore/dot/hyphen rule and rejects path,
+URL, bidi, markup, dot/dotdot and control adversaries. This correction does not
+alter the measured visual result; renewed formal and independent exact-
+candidate reviews remain pending.
 
 ## E compact Overview design frozen: implementation/visual acceptance pending
 

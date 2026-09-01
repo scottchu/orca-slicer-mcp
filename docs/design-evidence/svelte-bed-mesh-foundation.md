@@ -24,6 +24,12 @@ also verifies freshness, canonical source time, safe bounded profile metadata,
 finite rectangular matrix data and supplied summary agreement within
 `0.000001 mm`; recomputed matrix values are the only rendering source.
 
+Formal review of `a6363fd` found the remaining profile allowlist mismatch. The
+corrected bridge now mirrors the adapter's Unicode letters/numbers plus ASCII
+space/underscore/dot/hyphen rule, trims outer spaces, and rejects empty,
+dot/dotdot, path, URL, bidi, markup and control values before the profile can
+reach card text.
+
 Browser acceptance uses the actual private-handler response for paired 2D/3D
 captures at 320, 390, 590 and 720 CSS pixels, equal chart `DOMRect`, 44-pixel
 controls, no overflow, no console error and no nonlocal request. It measures all

@@ -14,7 +14,7 @@ describe("private Svelte Bed Mesh lab package", () => {
   test("freezes one deterministic self-contained static page", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "682a32d24e1dbced9f3cd41d2db1a905583bd630e53a7234a8cc741d4cdec588"
+      "7eaf7f211bed3466665b61bb3d483e6309b9f17f7519f39cf6de44484dcc24ec"
     );
     expect(html).toContain('data-private-lab="bed_mesh"');
     expect(html).toContain('data-chart-frame=""');

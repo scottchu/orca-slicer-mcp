@@ -26,6 +26,11 @@ also identified that a typed prop alone was not a sufficient runtime bridge
 contract because freshness/source metadata and matrix-derived summary agreement
 were not verified.
 
+Formal review of renewed candidate `a6363fd` found one remaining mismatch:
+profile text was length/trim/control bounded but did not yet apply the existing
+Moonraker adapter's canonical allowlist, so path, URL, markup and bidirectional-
+control payloads could cross the component bridge.
+
 ## Decision
 
 ### Strangler migration, not a production replacement
@@ -89,8 +94,13 @@ were not verified.
   chart width and 42% of its height; labels stay inside the frame and do not
   overlap one another.
 - Runtime bridge validation accepts only the exact freshness enum, a null or
-  canonical millisecond UTC ISO observation time, bounded safe profile text,
-  finite matrix and valid XY bounds. It recomputes minimum, maximum and range
+  canonical millisecond UTC ISO observation time, and profile text matching
+  `^[\p{L}\p{N} _.-]{1,80}$` with the Unicode flag. Outer spaces are trimmed;
+  empty, `.` and `..` values are rejected. This is the established Moonraker
+  adapter canonical rule and excludes path/URL separators, colons, markup
+  delimiters, controls and bidirectional formatting characters. Validation
+  also requires a finite matrix and valid XY bounds. It recomputes minimum,
+  maximum and range
   from every matrix cell and requires supplied summary values to agree within
   an absolute `0.000001 mm` tolerance. The recomputed values become the
   rendering source of truth so surface, legend, accessible label and numerical
@@ -123,9 +133,11 @@ were not verified.
    verification, MCP descriptors/resources, auth and Tailscale behavior remain
    byte/behavior compatible. Source/component/browser evidence remains separate
    from deployed service, live-printer, MCP-host and user-device acceptance.
-8. Component fixtures reject invalid freshness/source/profile values, nonfinite
-   cells and summaries inconsistent with the matrix; within-tolerance summaries
-   are normalized to exact recomputed values.
+8. Component fixtures reject invalid freshness/source/profile values, including
+   path, URL, bidi, markup, dot/dotdot and control adversaries, nonfinite cells
+   and summaries inconsistent with the matrix. International Unicode letters/
+   numbers plus internal spaces, underscores, dots and hyphens remain valid;
+   within-tolerance summaries are normalized to exact recomputed values.
 
 ## Consequences
 

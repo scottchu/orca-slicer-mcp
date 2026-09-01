@@ -37,11 +37,17 @@ width and 53.4--53.7% of chart height, and validates freshness, canonical source
 time, bounded profile text, finite matrix data and matrix-derived summary
 agreement within `0.000001 mm` before rendering recomputed values.
 
-The renewed deterministic 669,454-byte self-contained page, SHA-256
-`682a32d24e1dbced9f3cd41d2db1a905583bd630e53a7234a8cc741d4cdec588`,
+Formal review then blocked exact candidate `a6363fd`: its profile guard did not
+yet match the established adapter canonical allowlist and admitted path, URL,
+markup and bidirectional-control values. The corrected bridge uses Unicode
+`^[\p{L}\p{N} _.-]{1,80}$`, trims outer spaces and rejects empty, `.` and `..`;
+adversarial and international-valid component fixtures cover that boundary.
+
+The renewed deterministic 669,506-byte self-contained page, SHA-256
+`7eaf7f211bed3466665b61bb3d483e6309b9f17f7519f39cf6de44484dcc24ec`,
 is wired only to the private dashboard's exact lab route. Public HTTP, the
 ten-entry directory, focused production routes and MCP resources remain
-unchanged. Svelte check passes with zero errors/warnings and Vitest passes 6/6.
+unchanged. Svelte check passes with zero errors/warnings and Vitest passes 8/8.
 Real Chrome through the private handler passes at 320/390/590/720: one exact 4:3
 `ChartFrame` has unchanged x/y/width/height across 3D/2D, every label is visible,
 in-frame and pairwise non-overlapping, controls are 44 pixels, and no overflow,

@@ -43,9 +43,15 @@ Runtime props now validate freshness, canonical millisecond UTC source time,
 bounded profile text, finite rectangular matrix data and supplied summary
 agreement within `0.000001 mm`, then render exact recomputed summary values.
 
-Svelte check passes with zero errors/warnings, Vitest passes 6/6, two sequential
-builds produce the same 669,454-byte page with SHA-256
-`682a32d24e1dbced9f3cd41d2db1a905583bd630e53a7234a8cc741d4cdec588`,
+Formal review blocked exact candidate `a6363fd` because that profile guard had
+not yet adopted the existing adapter allowlist. The corrected branch head uses
+Unicode `^[\p{L}\p{N} _.-]{1,80}$`, trims outer spaces and rejects empty,
+dot/dotdot, path, URL, bidi, markup and control values while retaining
+international letters/numbers and the allowed separators.
+
+Svelte check passes with zero errors/warnings, Vitest passes 8/8, two sequential
+builds produce the same 669,506-byte page with SHA-256
+`7eaf7f211bed3466665b61bb3d483e6309b9f17f7519f39cf6de44484dcc24ec`,
 and full gates pass 274 app tests/2,974 assertions, 21 lifecycle and 24 shipping
 tests plus bundles/signature. This is renewed author/implementation evidence,
 not independent approval. Next: independently review the exact new branch-head

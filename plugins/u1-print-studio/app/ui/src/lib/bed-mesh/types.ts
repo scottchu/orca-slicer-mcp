@@ -15,6 +15,7 @@ const freshnessValues = new Set<BedMeshObservation['freshness']>([
   'fresh', 'stale', 'offline', 'unknown'
 ]);
 const isoTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+const safeProfile = /^[\p{L}\p{N} _.-]{1,80}$/u;
 
 function record(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -27,6 +28,18 @@ function validSourceTime(value: unknown): value is string | null {
   return Number.isFinite(parsed) && new Date(parsed).toISOString() === value;
 }
 
+function canonicalProfile(value: unknown): string | null {
+  if (value === null) return null;
+  if (typeof value !== 'string' || !safeProfile.test(value)) {
+    throw new Error('Invalid bed mesh profile');
+  }
+  const canonical = value.trim();
+  if (!canonical || canonical === '.' || canonical === '..') {
+    throw new Error('Invalid bed mesh profile');
+  }
+  return canonical;
+}
+
 export function validateBedMeshObservation(value: unknown): BedMeshObservation {
   if (!record(value) || value.schema !== 'u1.bed-mesh.presentation.v1') {
     throw new Error('Invalid bed mesh presentation');
@@ -36,13 +49,7 @@ export function validateBedMeshObservation(value: unknown): BedMeshObservation {
       !freshnessValues.has(value.freshness as BedMeshObservation['freshness'])) {
     throw new Error('Invalid bed mesh source metadata');
   }
-  if (value.profile !== null && (
-    typeof value.profile !== 'string' || value.profile.length < 1 ||
-    value.profile.length > 80 || value.profile !== value.profile.trim() ||
-    /[\u0000-\u001f\u007f]/.test(value.profile)
-  )) {
-    throw new Error('Invalid bed mesh profile');
-  }
+  const profile = canonicalProfile(value.profile);
   if (value.fixture !== undefined && typeof value.fixture !== 'boolean') {
     throw new Error('Invalid bed mesh fixture marker');
   }
@@ -92,7 +99,7 @@ export function validateBedMeshObservation(value: unknown): BedMeshObservation {
     schema: value.schema,
     sourceObservedAt: value.sourceObservedAt,
     freshness: value.freshness as BedMeshObservation['freshness'],
-    profile: value.profile as string | null,
+    profile,
     bounds: bounds as BedMeshObservation['bounds'],
     matrix: matrix as number[][],
     summary: { minimum, maximum, range, rows: matrix.length, columns },

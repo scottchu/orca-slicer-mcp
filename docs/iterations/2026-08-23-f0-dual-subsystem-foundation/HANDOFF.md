@@ -14,7 +14,7 @@ performed or claimed.
 
 Decision 0032, UI-001 and the active migration addendum preserve the existing
 focused routes/resources while the Svelte candidate matures at the exact private
-`/dashboard/lab/bed_mesh` fixture route. The 669,454-byte self-contained static
+`/dashboard/lab/bed_mesh` fixture route. The 669,506-byte self-contained static
 page is imported into the private server bundle; public HTTP returns 404, the
 ten-entry directory and `/dashboard/bed_mesh` are unchanged, and no MCP resource
 or generic embed is packaged.
@@ -29,10 +29,17 @@ profile text, finite rectangular matrix and consistent XY bounds; it verifies
 the supplied summary within `0.000001 mm` and renders recomputed values. It has
 no direct network or printer path.
 
+Formal review blocked exact candidate `a6363fd` because profile validation did
+not yet match the adapter rule. The corrected bridge accepts only Unicode
+letters/numbers, ASCII space, underscore, dot and hyphen within 1--80 code
+points, trims outer spaces and rejects empty/dot/dotdot. Component adversaries
+cover traversal, URL, bidi, markup and controls; international-valid examples
+remain accepted.
+
 Independent review blocked exact earlier candidate `7aef4b5`: frame equality
 passed, but its 3D surface remained a thin central strip and its sprite labels
 were effectively 3--6 pixels. The renewed implementation uses a full XYZ grid
-and nine stable 12-pixel HTML labels. Author evidence passes Svelte check, 6
+and nine stable 12-pixel HTML labels. Author evidence passes Svelte check, 8
 Vitest tests, deterministic package verification, four real-Chrome private-
 handler geometry/readability/screenshot cases and the complete repository gate
 (274 app/2,974 assertions, 21 lifecycle and 24 shipping tests). At
@@ -42,7 +49,7 @@ pixel and 4:3; the real projected surface covers 91.9--92.5% of chart width and
 non-overlapping; and no overflow, console error or external request occurred.
 Runtime/stdio/private-server bundles and the runtime signature pass. Exact
 package SHA-256 is
-`682a32d24e1dbced9f3cd41d2db1a905583bd630e53a7234a8cc741d4cdec588`.
+`7eaf7f211bed3466665b61bb3d483e6309b9f17f7519f39cf6de44484dcc24ec`.
 
 No deployment, service restart, printer/camera observation, auth/Tailscale
 change, MCP registration or focused production cutover occurred. The next action

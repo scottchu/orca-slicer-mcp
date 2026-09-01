@@ -34,6 +34,12 @@ four widths; bridge malformed/inconsistent fixtures and deterministic private
 packaging pass. Independent exact-candidate renewal remains pending, so this
 track is not accepted or eligible for production cutover yet.
 
+Formal review then blocks exact candidate `a6363fd` on profile canonicalization:
+the corrected bridge now uses the adapter's Unicode letters/numbers plus ASCII
+space/underscore/dot/hyphen allowlist, trims outer spaces and rejects empty,
+dot/dotdot and path/URL/bidi/markup/control adversaries. International-valid
+fixtures remain accepted. A new exact-candidate review is still required.
+
 The bounded product-iteration refinement is shipped in PR56. Reviewed
 `e2702dc7a39c45665aa14155e85d13011d50526b` merged as
 `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`; guarded release

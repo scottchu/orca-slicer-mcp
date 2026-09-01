@@ -351,9 +351,11 @@ printer environments support the described behavior.
   card flow. At those widths, 3D HTML axis/value labels are at least 12 CSS
   pixels, visible and non-overlapping, while the projected surface covers at
   least 70% of chart width and 42% of chart height. Runtime prop validation
-  admits only canonical millisecond UTC source time plus bounded freshness/
-  profile metadata and verifies supplied minimum, maximum and range against the
-  finite matrix within `0.000001 mm`,
+  admits only canonical millisecond UTC source time plus bounded freshness and
+  adapter-canonical profile metadata matching
+  `^[\p{L}\p{N} _.-]{1,80}$`/Unicode, with empty/dot/dotdot rejection. It
+  verifies supplied minimum, maximum and range against the finite matrix within
+  `0.000001 mm`,
   then renders recomputed summary values. Decision 0032 fixes migration and
   cutover gates.
 

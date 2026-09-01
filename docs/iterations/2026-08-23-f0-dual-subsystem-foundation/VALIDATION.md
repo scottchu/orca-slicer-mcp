@@ -13,7 +13,75 @@ This is reviewed Git, release, service, health, integrity, security and static-
 route evidence. It does not establish printer, camera or actual-device
 acceptance; none of those surfaces was contacted or claimed.
 
-## 2026-09-01 Svelte Bed Mesh readability and bridge-contract renewal
+## 2026-09-01 Svelte Bed Mesh canonical-profile renewal
+
+Formal review blocked exact candidate `a6363fd`: the Svelte bridge guarded
+profile length, trimming and C0 controls, but did not yet apply the established
+Moonraker adapter allowlist. The corrected guard uses Unicode
+`^[\p{L}\p{N} _.-]{1,80}$`, trims outer spaces and rejects empty, `.` and `..`.
+No runtime boundary changed and no deployed service, printer, camera, auth or
+Tailscale surface was contacted.
+
+Commands actually run:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+
+cd ..
+bun run ui:build
+bun run ui:verify
+bun run ui:verify
+bun run ui:test:browser
+
+cd ../../..
+./scripts/check-repository.sh
+
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+
+cd ../../..
+git diff --check
+```
+
+Results:
+
+- Svelte check passes with zero errors/warnings. Vitest passes 8/8. The six Bed
+  Mesh tests now reject traversal (`../../private/path`), URL, bidirectional-
+  override, markup, dot/dotdot, newline and tab profiles at the rendered
+  component bridge. Japanese and Cyrillic letters, numbers, internal spaces,
+  underscore, dot and hyphen remain accepted; allowed outer spaces normalize
+  to the trimmed canonical label.
+- Two sequential verification builds reproduce the same 669,506-byte self-
+  contained package with SHA-256
+  `7eaf7f211bed3466665b61bb3d483e6309b9f17f7519f39cf6de44484dcc24ec`.
+  The generic embed remains excluded.
+- Real Chrome remains 4/4 at 320/390/590/720 with the exact same 4:3 2D/3D
+  `ChartFrame` DOMRects, nine exact 12-pixel visible/in-frame/non-overlapping
+  labels, 91.9--92.5% by 53.4--53.7% projected surface coverage, 44-pixel
+  controls, no overflow, no console error and no nonlocal request.
+- The full repository gate passes TypeScript, 274 app tests with 2,974
+  assertions, 21 lifecycle tests, 24 shipping tests and the repository
+  contract. Private route/hash/CSP and public-lab denial checks remain green.
+- Renewed bundles pass: `dist/server.js` is 3,822,253 bytes with SHA-256
+  `f84cc4e54765a8edb38992a7daffd073485a9858f527e152775fa3deb60deb17`;
+  `dist/stdio.js` is 2,811,271 bytes with SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/u1-print-studio` is 65,229,648 bytes with SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`;
+  its required code signature verifies.
+
+This is renewed author static/software, bridge-security, deterministic-
+packaging, server-isolation and local real-browser fixture evidence. Exact-
+candidate formal and independent review remain required. Production cutover is
+still a separate reviewed slice.
+
+## 2026-09-01 Svelte Bed Mesh readability and bridge-contract renewal `a6363fd` — blocked by formal profile review
 
 Independent review blocked exact candidate `7aef4b5`: its 2D/3D frame equality
 was real, but the projected 3D surface remained a thin central strip and the

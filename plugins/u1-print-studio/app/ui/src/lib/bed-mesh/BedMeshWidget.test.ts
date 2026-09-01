@@ -33,7 +33,6 @@ describe('Bed Mesh Svelte candidate', () => {
       (value: any) => { value.sourceObservedAt = 'yesterday'; },
       (value: any) => { value.sourceObservedAt = '2026-09-01T12:00:00Z'; },
       (value: any) => { value.sourceObservedAt = '2026-02-30T12:00:00.000Z'; },
-      (value: any) => { value.profile = '  padded'; },
       (value: any) => { value.matrix[2][3] = Number.NaN; },
       (value: any) => { value.summary.minimum -= BED_MESH_SUMMARY_TOLERANCE_MM * 2; },
       (value: any) => { value.summary.maximum += BED_MESH_SUMMARY_TOLERANCE_MM * 2; },
@@ -42,6 +41,39 @@ describe('Bed Mesh Svelte candidate', () => {
       const malformed: any = structuredClone(bedMeshLabFixture);
       mutate(malformed);
       expect(() => validateBedMeshObservation(malformed)).toThrow();
+    }
+  });
+
+  test('rejects adapter-unsafe profiles at the component bridge', () => {
+    for (const profile of [
+      '../../private/path',
+      'https://private.example/profile',
+      'safe\u202Egpj.exe',
+      '<script>alert(1)</script>',
+      '.',
+      '..',
+      ' . ',
+      ' .. ',
+      'line\nnext',
+      'tab\tnext',
+      'A'.repeat(81)
+    ]) {
+      const malformed = structuredClone(bedMeshLabFixture);
+      malformed.profile = profile;
+      expect(() => render(BedMeshWidget, { observation: malformed })).toThrow('Invalid bed mesh profile');
+    }
+  });
+
+  test('retains canonical international profile letters, numbers and separators', () => {
+    for (const profile of [
+      'PLA 日本語_2.0-A',
+      'Профиль 42_A-B.C',
+      '  PLA 2.0  ',
+      'A'.repeat(80)
+    ]) {
+      const candidate = structuredClone(bedMeshLabFixture);
+      candidate.profile = profile;
+      expect(validateBedMeshObservation(candidate).profile).toBe(profile.trim());
     }
   });
 
