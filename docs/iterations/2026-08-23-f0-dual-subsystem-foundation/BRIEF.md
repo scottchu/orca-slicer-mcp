@@ -1,5 +1,11 @@
 # F0 dual-subsystem foundation brief
 
+Current migration sequence: finish frozen PR67 acceptance/delivery; independently
+prepare decision 0034's real Fans adapter/shared host controller on a separate
+branch; integrate reviewed main before its acceptance and Fans-only cutover.
+Camera's separate controller reuses the shared RPC. No new feature or backend
+rewrite is folded into either reviewed boundary.
+
 - Iteration ID: `2026-08-23-f0-dual-subsystem-foundation`
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`

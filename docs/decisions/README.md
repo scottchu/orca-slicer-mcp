@@ -39,6 +39,7 @@ silently changed.
 | [0031](0031-unify-u1-widgets-and-bound-camera-bootstrap.md) | Unify U1 widget presentation and bound camera bootstrap | Accepted; shipped, visual acceptance pending |
 | [0032](0032-migrate-widgets-through-private-sveltekit-lab.md) | Migrate focused widgets through a private SvelteKit lab | Accepted for the bounded foundation slice |
 | [0033](0033-compose-observation-widgets-from-closed-primitives.md) | Compose observation widgets from closed primitives | Accepted for first Thermals foundation slice |
+| [0034](0034-migrate-live-widgets-through-shared-host-adapters.md) | Migrate live widgets through shared host adapters | Accepted design; first Fans cutover pending |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

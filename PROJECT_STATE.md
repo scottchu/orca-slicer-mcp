@@ -10,6 +10,15 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Live Fans migration — separate next slice (2026-09-01)
+
+Renewed PR67 remains frozen for independent acceptance. A separate branch starts
+decision 0034: fixture-independent Fans presentation, strict real adapter,
+shared host RPC and retained-refresh controller, then only Fans dashboard
+cutover. Backend/authentication and generic MCP resources remain unchanged.
+Integrate exact reviewed main before this branch's acceptance; nothing in this
+next slice is yet shipped.
+
 ### Consolidate, migrate, deliver and clean up — latest user order (2026-09-01)
 
 The finite source/state/cutover/delivery checklist is in the active iteration's
