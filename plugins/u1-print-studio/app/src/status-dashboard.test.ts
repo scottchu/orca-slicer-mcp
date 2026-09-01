@@ -11,6 +11,7 @@ import type { U1Status } from "./u1-status.js";
 import { PrinterObservationStore } from "./observation-store.js";
 import { adaptFans } from "../ui/src/lib/live/fans-adapter.js";
 import { adaptThermals } from "../ui/src/lib/live/thermals-adapter.js";
+import { adaptHeads } from "../ui/src/lib/live/heads-adapter.js";
 import { adaptQueue } from "../ui/src/lib/live/queue-adapter.js";
 
 const status: U1Status = {
@@ -49,6 +50,8 @@ const LAB_ROUTES = ["/dashboard/lab", "/dashboard/lab/overview", "/dashboard/lab
   "/dashboard/lab/thermals", "/dashboard/lab/heads", "/dashboard/lab/jobs",
   "/dashboard/lab/job_history", "/dashboard/lab/queue", "/dashboard/lab/fans",
   "/dashboard/lab/bed_mesh", "/dashboard/lab/camera"];
+const BED_MESH_LAB_ROUTE = "/dashboard/lab/bed_mesh";
+const CAMERA_LAB_ROUTE = "/dashboard/lab/camera";
 
 afterEach(async () => {
   await Promise.all(
@@ -153,7 +156,7 @@ describe("standalone status dashboard", () => {
 
     for (const route of ["/dashboard", "/dashboard/", "/dashboard/progress",
       "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs", "/dashboard/job_history",
-      "/dashboard/queue", "/dashboard/queue_widget", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/thermals_widget", "/dashboard/camera_widget", "/dashboard/bed_mesh", "/dashboard/camera",
+      "/dashboard/queue", "/dashboard/queue_widget", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/thermals_widget", "/dashboard/heads_widget", "/dashboard/camera_widget", "/dashboard/bed_mesh", "/dashboard/camera",
       ...LAB_ROUTES.flatMap((path) => [path, path + "/"])]) {
       expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
     }
@@ -265,6 +268,8 @@ describe("standalone status dashboard", () => {
     servers.push(server);
     const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
     const expected = readFileSync(new URL("../public/svelte-observation-lab.html", import.meta.url), "utf8");
+    const expectedBedMesh = readFileSync(new URL("../public/svelte-bed-mesh-lab.html", import.meta.url), "utf8");
+    const expectedCamera = readFileSync(new URL("../public/svelte-camera-lab.html", import.meta.url), "utf8");
 
     for (const route of LAB_ROUTES.flatMap((path) => [path, path + "/"])) {
       const response = await fetch(origin + route);
@@ -275,8 +280,14 @@ describe("standalone status dashboard", () => {
       expect(response.headers.get("content-security-policy")).not.toContain("connect-src");
       expect(response.headers.get("referrer-policy")).toBe("no-referrer");
       expect(response.headers.get("x-content-type-options")).toBe("nosniff");
-      expect(await response.text()).toBe(route.replace(/\/$/, '') === '/dashboard/lab/camera'
-        ? readFileSync(new URL('../public/svelte-camera-lab.html', import.meta.url), 'utf8') : expected);
+      const normalizedRoute = route.replace(/\/$/, '');
+      expect(await response.text()).toBe(
+        normalizedRoute === CAMERA_LAB_ROUTE
+          ? expectedCamera
+          : normalizedRoute === BED_MESH_LAB_ROUTE
+            ? expectedBedMesh
+            : expected
+      );
     }
     for (const route of [
       "/dashboard/lab/camera/index.html", "/dashboard/lab/camera/more", "/dashboard/lab/bed_mesh/index.html",
@@ -305,7 +316,8 @@ describe("standalone status dashboard", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
-    expect(html).toContain('const widgetSource = selectedView === "fans" ? "/dashboard/fans_widget" : selectedView === "thermals" ? "/dashboard/thermals_widget" : selectedView === "queue" ? "/dashboard/queue_widget" : "/widget?standalone=1"');
+    expect(html).toContain('const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget" })');
+    expect(html).toContain('const widgetSource = focusedWidget ?? "/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
     expect(html).toContain('frame.title = selected?.[1] ?? "View unavailable"');
     for (const view of ["overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]) {
@@ -356,22 +368,22 @@ describe("standalone status dashboard", () => {
     expect(reads).toBe(1);
   });
 
-  test("serves only the exact private Thermals asset with no acquisition", async () => {
+  for (const view of ['thermals', 'heads']) test(`serves only the exact private ${view} asset with no acquisition`, async () => {
     let reads = 0;
     const origin = await startFixture(() => { reads += 1; });
-    const response = await fetch(`${origin}/dashboard/thermals_widget`);
+    const response = await fetch(`${origin}/dashboard/${view}_widget`);
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
     expect(response.headers.get("content-security-policy")).toBe("default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'");
-    const artifact = readFileSync(new URL("../public/svelte-live-thermals.html", import.meta.url), "utf8");
+    const artifact = readFileSync(new URL(`../public/svelte-live-${view}.html`, import.meta.url), "utf8");
     expect(await response.text()).toBe(artifact);
     expect(Buffer.byteLength(artifact)).toBeLessThanOrEqual(100_000);
     for (const marker of ["lab_scenario", "Lab fixture", "RTCPeerConnection", "Three.js"]) expect(artifact).not.toContain(marker);
     for (const method of ["POST", "PUT", "DELETE", "HEAD", "OPTIONS"]) {
-      const rejected = await fetch(`${origin}/dashboard/thermals_widget`, { method });
+      const rejected = await fetch(`${origin}/dashboard/${view}_widget`, { method });
       expect(rejected.status).toBe(405); expect(rejected.headers.get("allow")).toBe("GET");
     }
-    for (const path of ["/dashboard/thermals_widget/", "/dashboard/THERMALS_widget", "/dashboard/thermals_widget/more", "/dashboard/%74hermals_widget", "/dashboard/../dashboard/thermals_widget", "/dashboard/%2e%2e/dashboard/thermals_widget", "/dashboard/%252e%252e/dashboard/thermals_widget"]) {
+    for (const path of [`/dashboard/${view}_widget/`, `/dashboard/${view.toUpperCase()}_widget`, `/dashboard/${view}_widget/more`, `/dashboard/%${view.charCodeAt(0).toString(16)}${view.slice(1)}_widget`, `/dashboard/../dashboard/${view}_widget`, `/dashboard/%2e%2e/dashboard/${view}_widget`, `/dashboard/%252e%252e/dashboard/${view}_widget`]) {
       expect(await rawGet(origin, path)).toBe(404);
     }
     expect(reads).toBe(0);
@@ -428,6 +440,24 @@ describe("standalone status dashboard", () => {
     expect(result.readings[4]).toMatchObject({ id: "heater-bed", actualC: 55, targetC: 55, active: null });
     expect(result.readings[5]).toMatchObject({ id: "cavity", actualC: null, targetC: null, reportedState: "not_reported" });
     expect(result.environment.sourceObservedAt).toBe(null);
+    expect(result.sourceObservedAt).toBe(status.observedAt);
+    expect(reads).toBe(1);
+  });
+
+  test("production Heads accepts server projection without inventing missing materials", async () => {
+    let reads = 0;
+    const origin = await startFixture(() => { reads += 1; });
+    const response = await fetch(`${origin}/dashboard/tools/call`, {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name: "refresh_printer_observation", arguments: { view: "heads" } }),
+    });
+    expect(response.status).toBe(200);
+    const result = adaptHeads((await response.json()).structuredContent);
+    expect(result.items).toHaveLength(4);
+    expect(result.items[0].temperature.value).toBe(215);
+    expect(result.items[0].headState.value).toBe('active');
+    expect(result.materials.sourceObservedAt).toBe(null);
+    expect(result.items.every((head) => head.reportedPresence.value === null && head.color.value === null)).toBe(true);
     expect(result.sourceObservedAt).toBe(status.observedAt);
     expect(reads).toBe(1);
   });
@@ -691,7 +721,7 @@ describe("focused dashboard host bridge", () => {
       expect(host.title.textContent).toBe(label);
       expect(host.document.title).toBe(`U1 · ${label}`);
       expect(host.frame.title).toBe(label);
-      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : view === "queue" ? "/dashboard/queue_widget" : "/widget?standalone=1");
+      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : view === "heads" ? "/dashboard/heads_widget" : view === "queue" ? "/dashboard/queue_widget" : "/widget?standalone=1");
     }
   });
 
@@ -733,13 +763,26 @@ describe("focused dashboard host bridge", () => {
     });
     await host.send({ method: "ui/notifications/initialized" });
     expect(host.bridge.textContent).toBe("Service unavailable — use Reload widget to retry");
-    expect(host.messages).toEqual([{ jsonrpc: "2.0", method: "ui/notifications/tool-input", params: { arguments: { view: "thermals" } } }]);
+    expect(host.messages).toEqual([
+      { jsonrpc: "2.0", method: "ui/notifications/tool-input", params: { arguments: { view: "thermals" } } },
+      { jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } },
+    ]);
     host.reload();
     expect(host.frame.src).toContain("/dashboard/thermals_widget?t=");
     await host.send({ method: "ui/notifications/initialized" });
     expect(attempts).toBe(2);
     expect(host.messages.at(-1).params.structuredContent.freshness).toBe("offline");
     expect(host.bridge.textContent).toBe("Observation received");
+  });
+
+  test("only migrated focused widgets receive initial error notifications", async () => {
+    for (const view of ["fans", "thermals", "heads", "overview", "queue", "jobs", "job_history", "progress", "bed_mesh"]) {
+      const host = hostFixture(`/dashboard/${view}`, async () => { throw new Error("private error"); });
+      await host.send({ method: "ui/notifications/initialized" });
+      const results = host.messages.filter((message) => message.method === "ui/notifications/tool-result");
+      expect(results).toEqual(["fans", "thermals", "heads", "queue"].includes(view) ? [{ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } }] : []);
+      expect(host.requests).toEqual([{ name: "refresh_printer_observation", arguments: { view } }]);
+    }
   });
 
   test("does not derive a view from unknown routes or query parameters", async () => {

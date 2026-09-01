@@ -10,8 +10,10 @@ import dashboardIndexHtml from "../public/dashboard-index.html" with { type: "te
 // This deterministic SvelteKit output is self-contained and compiled into the
 // private dashboard bundle. It is not part of the public service or MCP assets.
 import observationLabHtml from "../public/svelte-observation-lab.html" with { type: "text" };
+import bedMeshLabHtml from "../public/svelte-bed-mesh-lab.html" with { type: "text" };
 import liveFansHtml from "../public/svelte-live-fans.html" with { type: "text" };
 import liveThermalsHtml from "../public/svelte-live-thermals.html" with { type: "text" };
+import liveHeadsHtml from "../public/svelte-live-heads.html" with { type: "text" };
 import liveQueueHtml from "../public/svelte-live-queue.html" with { type: "text" };
 import liveCameraHtml from "../public/svelte-live-camera.html" with { type: "text" };
 import cameraLabHtml from "../public/svelte-camera-lab.html" with { type: "text" };
@@ -70,8 +72,8 @@ const OBSERVATION_LAB_PATHS = new Set([
   "/dashboard/lab/job_history",
   "/dashboard/lab/queue",
   "/dashboard/lab/fans",
-  "/dashboard/lab/bed_mesh",
 ]);
+const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh";
 const CAMERA_LAB_PATH = "/dashboard/lab/camera";
 const FOCUSED_DASHBOARD_PATHS = new Set([
   "/dashboard/overview",
@@ -87,6 +89,7 @@ const FOCUSED_DASHBOARD_PATHS = new Set([
 const CAMERA_DASHBOARD_PATH = "/dashboard/camera";
 const LIVE_FANS_WIDGET_PATH = "/dashboard/fans_widget";
 const LIVE_THERMALS_WIDGET_PATH = "/dashboard/thermals_widget";
+const LIVE_HEADS_WIDGET_PATH = "/dashboard/heads_widget";
 const LIVE_QUEUE_WIDGET_PATH = "/dashboard/queue_widget";
 const LIVE_CAMERA_WIDGET_PATH = "/dashboard/camera_widget";
 const CAMERA_WIDGET_PATH = "/camera-widget";
@@ -174,7 +177,8 @@ export function createStatusDashboardHandler(
     // WHATWG URL parsing removes dot segments. Inspect the original request
     // target first so literal and encoded traversal can never alias a lab URL.
     if (hasRawTraversal(req.url)) return false;
-    if (pathname === LIVE_FANS_WIDGET_PATH || pathname === LIVE_THERMALS_WIDGET_PATH || pathname === LIVE_QUEUE_WIDGET_PATH) {
+    if (pathname === LIVE_FANS_WIDGET_PATH || pathname === LIVE_THERMALS_WIDGET_PATH ||
+        pathname === LIVE_HEADS_WIDGET_PATH || pathname === LIVE_QUEUE_WIDGET_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -186,12 +190,16 @@ export function createStatusDashboardHandler(
         "content-type": "text/html; charset=utf-8",
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
-      }).end(pathname === LIVE_FANS_WIDGET_PATH ? liveFansHtml : pathname === LIVE_THERMALS_WIDGET_PATH ? liveThermalsHtml : liveQueueHtml);
+      }).end(pathname === LIVE_FANS_WIDGET_PATH ? liveFansHtml :
+        pathname === LIVE_THERMALS_WIDGET_PATH ? liveThermalsHtml :
+          pathname === LIVE_HEADS_WIDGET_PATH ? liveHeadsHtml : liveQueueHtml);
       return true;
     }
     const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";
     const normalizedLabPath = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
-    if (OBSERVATION_LAB_PATHS.has(normalizedLabPath) || normalizedLabPath === CAMERA_LAB_PATH) {
+    if (OBSERVATION_LAB_PATHS.has(normalizedLabPath) ||
+        normalizedLabPath === BED_MESH_LAB_PATH ||
+        normalizedLabPath === CAMERA_LAB_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -207,7 +215,13 @@ export function createStatusDashboardHandler(
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
       });
-      res.end(normalizedLabPath === CAMERA_LAB_PATH ? cameraLabHtml : observationLabHtml);
+      res.end(
+        normalizedLabPath === CAMERA_LAB_PATH
+          ? cameraLabHtml
+          : normalizedLabPath === BED_MESH_LAB_PATH
+            ? bedMeshLabHtml
+            : observationLabHtml
+      );
       return true;
     }
     if (isIndex || FOCUSED_DASHBOARD_PATHS.has(pathname) ||

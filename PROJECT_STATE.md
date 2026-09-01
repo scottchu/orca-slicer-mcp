@@ -1,41 +1,60 @@
 # Project state
 
-## Queue composition checkpoint — package guard held (2026-09-01)
+## Three-artifact private-lab split candidate — author gates complete
 
-Known renewal obligation: initial host HTTP failure currently forwards `isError`
-only to Fans. Queue must integrate the accepted Heads host-map/failure repair,
-add its closed route and prove true initial HTTP500 -> error -> retry separately
-from its passing wrong-view20-second deadline case. This remains a release blocker.
+Accepted and deployed Heads main `5ffca666e4ffa50c761ff54460f2d7dfc3466ad5`
+is ordinarily merged into the split branch. The private lab now builds exactly
+three inline artifacts and maps light observation, Bed Mesh and Camera routes
+to distinct source-derived hashes. Current authored sizes are 199,819,
+629,880 and 78,795 raw UTF-8 bytes (908,494 aggregate). Route, graph and cap
+tests pass locally. UI 335, app 296, lifecycle 21, shipping 24, repository and
+full Chrome 164/164 pass, including zero runtime fetch through all lab controls.
+The independently renewed 250,000-byte light cap leaves 50,181 bytes and the
+980,000 aggregate leaves 71,506. This finite envelope covers Queue, Current Job,
+History, Progress and Overview only; Console and thumbnails are excluded.
+Exact application source is `4a6c493`; independent exact-SHA validation and
+review remain required. Nothing is merged, deployed or accepted by this author
+checkpoint.
 
-The isolated Queue author branch explicitly integrated accepted Bed main
-`8c5756d` through merge `c01762c`. Queue now composes zero-native-HTML lab and
-live roots from generic ordered-record/date/duration leaves. Its exact private
-child route, unchanged host bridge, strict real DTO adapter and source-derived
-shipping inventory are implemented but **not delivered or accepted**. No Heads
-pending source was copied; Queue has no dependency on its new card leaves.
+## Current checkpoint: Heads candidate after delivered Bed Mesh PR73
 
-Author checks:344 UI unit tests; compiler/AST zero diagnostics;292 scoped app
-tests/3,434 assertions;21 lifecycle;24 ship tests;9 production Chrome cases.
-Production Queue is85,578 bytes and rebuilds
-deterministically under its proposed100,000-byte per-view cap. Lab packaging is
-correctly blocked:752,183 observation +78,795 Camera =830,978 bytes exceeds the
-unchanged750,000/80,000/830,000 limits. Removing redundant ready-value wrapper
-work saved39 lab bytes, not enough. No guard was bypassed or cap raised; packaged
-lab bytes remain the accepted older version. A scalable packaging decision,
-closed lab geometry/full combined gates, exact independent review and guarded
-delivery remain open. No service or actual-printer operation occurred.
+Bed Mesh PR73 was independently accepted at source `2e9268`, merged and shipped
+as `8c5756ddb4435ba94a494963556c94d15d05b6e5` (tree
+`b37b7806fda5d004cb06d4d9ccb7799380d0a52f`). Attributed operator receipt:
+release `20260901-8c5756d-pr73-20260901T175129-1e397e`, BOTH existing services
+explicitly restarted and loaded/healthy/integrity verified; 29 static and 30
+security checks PASS, preservation true, no rollback, retained snapshot
+`20260901T175219-d7c334`. Attributed independent postdeployment PASS confirms
+BOTH service identities,15 manifest hashes,8 exact private HTTPS assets/CSP,
+20 isolation/status probes and8 browser checks on actual downloaded lab bytes
+at four widths/normal200%. Wheel/pinch/reverse/reset, retained orbit/canvas,
+reactive2D pixels and fixed4:3 pass;320enlarged/720normal captures were inspected.
+This is deployed-service and synthetic browser evidence, not phone/printer
+acceptance. Production Bed Mesh/MCP, inherited keyboard/WebGL fallback/fixed2D
+font and the pre-existing unmatched-root502 remain outside accepted coverage.
 
-## Queue migration: isolated adapter foundation (2026-09-01)
+Heads author source is frozen at `4d24446`: strict real DTO, generic card/color
+leaves and zero-raw shared panel are implemented. Focused22 geometry cases and
+the final163-case Chrome suite PASS at four widths/normal200%, including exact
+<=1px skeleton bounds, Empty/N/A without Copy, retained refresh/copy/BFCache,
+initial error/retry and obsolete-RPC races. The latter found and repaired a real
+host omission: all three migrated focused widgets now receive initial errors.
+Repository/runtime gates and six deterministic packages PASS. Heads remains an
+unaccepted candidate pending exact independent source review and validation;
+no Heads deployment occurred.
+Decision0032 records the independently adopted finite lab budgets
+756,000/80,000/836,000 and separate100,000 Heads allowance, not future automatic
+growth. Client graphs, exact-source review and full combined gates remain due.
 
-Reviewed Thermals main `6325c87` is the author baseline. Print Queue now has a
-fixture-independent model, strict real DTO adapter and thin binding to the
-reviewed generic controller. Fifty-six focused tests and Svelte/compiler/AST
-checks pass; these include the actual existing normalizer/store/projection with
-synthetic inputs, independent receipts and stale retention, duplicate names,
-100/1,000 bounds and source-accepted time extremes. No UI, route, production
-package or service cutover exists at this checkpoint. Heads shared composition
-is still pending independent acceptance and must not be copied from its branch.
-See decision0034 and LIVE_PARITY; all remaining WIDGET_TRACKS remain open.
+Next: exact independent Heads source review/validation and guarded shipment.
+Queue → Current Job → History follow as separate bounded
+migrations; Progress remains separate, real Bed Mesh adapter/shell follows its
+renderer, and Overview is last. Current Job reported-null filename differs from
+unreported; its lab progressPercent must never be invented from file position.
+All remaining WIDGET_TRACKS stay open, including generic MCP/legacy cutover,
+new requested features and final recoverable cleanup.
+
+## Historical checkpoints (superseded where noted above)
 
 ## Current checkpoint: held Bed Mesh zoom renewal after delivered Thermals
 

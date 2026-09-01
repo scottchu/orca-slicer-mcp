@@ -1,43 +1,58 @@
 # Next agent
 
-## Queue composition continuation — do not ship this checkpoint
+## Three-artifact private-lab split candidate — do not ship yet
 
-New required renewal: the Heads author identified that the host's initial HTTP
-failure catch only forwards `isError` for Fans. Queue must consume the accepted
-Heads migrated-runtime handoff/map repair after its merge and include Queue in
-that closed route map. Add a true initial HTTP500 -> immediate error -> explicit
-retry test. The current passing wrong-view/deadline test exercises a different
-case and does not prove HTTP failure delivery. Do not ship until this is fixed.
+Continue from exact application source `4a6c493`, which ordinarily merged
+accepted/deployed Heads main `5ffca666e4ffa50c761ff54460f2d7dfc3466ad5`.
+Verify exactly three inline
+lab artifacts: light observation 199,819 bytes, Bed Mesh 629,880 and Camera
+78,795 (908,494 aggregate). Preserve exact route/source-graph isolation and the
+unchanged Camera lifecycle. Author deterministic, full browser and repository
+gates pass; obtain separate exact-SHA validation/review before merge. The independently
+renewed light limit is 250,000 bytes and leaves 50,181 bytes; its finite
+allowance covers only Queue, Current Job, History, Progress and Overview, not
+Console or thumbnails. Never loosen a cap or claim acceptance silently. No
+deployment or cleanup is authorized from this author checkpoint alone.
 
-Branch `codex/u1-live-queue`, non-temporary worktree
-`/Users/scottchu/.codex/worktrees/u1-live-queue`, includes accepted Bed main via
-`c01762c`. Generic ordered-record/date/duration leaves, zero-raw Queue lab/live
-composition, strict real boundary and `/dashboard/queue_widget` host routing now
-exist. No pending Heads code is required or copied.344 UI unit,292 scoped app,
-21 lifecycle,24 shipping and9 production browser tests pass; Queue
-artifact85,578 bytes is deterministic.
+## Current checkpoint: Heads candidate after delivered Bed Mesh PR73
 
-Production browser checks cover four widths, normal/200% text, source facts,
-100/1000 rows, long filenames, refresh stability, malformed initial timeout/retry
-and BFCache.4179 is released. Lab packaging remains blocked at752,183/78,795/830,978 versus
-750,000/80,000/830,000; root must obtain independent scalable packaging disposition
-before full lab geometry and combined release gates. One genuine wrapper
-elimination experiment saved39 bytes; do not remove semantics/accessibility or
-raise caps ad hoc. Closed Queue lab preset loading geometry still needs browser
-validation; production checks use synthetic data, not actual-device evidence. Run all
-combined checks and update evidence before exact candidate review. No release,
-paired restart, device validation or cleanup has been performed by this author.
+Bed Mesh PR73 was independently accepted at source `2e9268`, merged and shipped
+as `8c5756ddb4435ba94a494963556c94d15d05b6e5` (tree
+`b37b7806fda5d004cb06d4d9ccb7799380d0a52f`). Attributed operator receipt:
+release `20260901-8c5756d-pr73-20260901T175129-1e397e`, BOTH existing services
+explicitly restarted and loaded/healthy/integrity verified; 29 static and 30
+security checks PASS, preservation true, no rollback, retained snapshot
+`20260901T175219-d7c334`. Attributed independent postdeployment PASS confirms
+BOTH service identities,15 manifest hashes,8 exact private HTTPS assets/CSP,
+20 isolation/status probes and8 browser checks on actual downloaded lab bytes
+at four widths/normal200%. Wheel/pinch/reverse/reset, retained orbit/canvas,
+reactive2D pixels and fixed4:3 pass;320enlarged/720normal captures were inspected.
+This is deployed-service and synthetic browser evidence, not phone/printer
+acceptance. Production Bed Mesh/MCP, inherited keyboard/WebGL fallback/fixed2D
+font and the pre-existing unmatched-root502 remain outside accepted coverage.
 
-## Queue adapter checkpoint (2026-09-01)
+Heads author source is frozen at `4d24446`: strict real DTO, generic card/color
+leaves and zero-raw shared panel are implemented. Focused22 geometry cases and
+the final163-case Chrome suite PASS at four widths/normal200%, including exact
+<=1px skeleton bounds, Empty/N/A without Copy, retained refresh/copy/BFCache,
+initial error/retry and obsolete-RPC races. The latter found and repaired a real
+host omission: all three migrated focused widgets now receive initial errors.
+Repository/runtime gates and six deterministic packages PASS. Heads remains an
+unaccepted candidate pending exact independent source review and validation;
+no Heads deployment occurred.
+Decision0032 records the independently adopted finite lab budgets
+756,000/80,000/836,000 and separate100,000 Heads allowance, not future automatic
+growth. Client graphs, exact-source review and full combined gates remain due.
 
-Continue the existing Print Queue migration, not a new feature: strict adapter,
-model and generic-controller tests are implemented on reviewed `6325c87` with
-56 focused tests plus compiler/AST PASS. Next explicitly integrate newly
-accepted Bed Mesh main, then build zero-raw rows/loading/root and private route
-after the shared Heads foundation is accepted. Do not import unreviewed Heads
-source. No browser port is reserved and no production/acquisition changed.
-Full combined gates, packaging design/budgets, independent exact-SHA review and
-guarded PR/deploy/BOTH restart/meaningful verification remain required.
+Next: exact independent Heads source review/validation and guarded shipment.
+Queue → Current Job → History follow as separate bounded
+migrations; Progress remains separate, real Bed Mesh adapter/shell follows its
+renderer, and Overview is last. Current Job reported-null filename differs from
+unreported; its lab progressPercent must never be invented from file position.
+All remaining WIDGET_TRACKS stay open, including generic MCP/legacy cutover,
+new requested features and final recoverable cleanup.
+
+## Historical checkpoints (superseded where noted above)
 
 ## Current checkpoint: held Bed Mesh zoom renewal after delivered Thermals
 

@@ -1,8 +1,9 @@
 import { build } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
-import { readFileSync, writeFileSync } from 'node:fs';
-const view = process.argv.includes('--queue') ? 'queue' : process.argv.includes('--thermals') ? 'thermals' : 'fans';
-const title = view === 'queue' ? 'Print Queue' : view === 'thermals' ? 'Thermals' : 'Fans & Air';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { assertLiveObservationBytes, assertLiveObservationModule } from './observation-graph-contract';
+const view = process.argv.includes('--queue') ? 'queue' : process.argv.includes('--heads') ? 'heads' : process.argv.includes('--thermals') ? 'thermals' : 'fans';
+const title = view === 'queue' ? 'Print Queue' : view === 'heads' ? 'Heads & Filaments' : view === 'thermals' ? 'Thermals' : 'Fans & Air';
 await build({
   configFile: false, plugins: [svelte()],
   // Preserve whitespace inside bundled string values while emitting an artifact
@@ -14,11 +15,10 @@ await build({
     rollupOptions: {
       output: { assetFileNames: `${view}.[ext]` },
       plugins: [{ name: 'live-observation-production-boundary', generateBundle: (_options, bundle) => {
-        for (const item of Object.values(bundle)) if (item.type === 'chunk') for (const module of Object.keys(item.modules)) {
-          if (/\/(?:tests|lib\/lab)\/|\/lib\/observation\/(?:fixtures|controller)\.|\/lib\/camera\/|\/three\//.test(module)) {
-            throw new Error(`Live ${view} imported nonproduction source: ${module}`);
-          }
-        }
+        const modules = Object.values(bundle).filter((item) => item.type === 'chunk').flatMap((item) => Object.entries(item.modules).map(([id, value]) => ({ id, renderedLength: value.renderedLength, originalLength: value.originalLength })));
+        for (const { id } of modules) assertLiveObservationModule(id);
+        mkdirSync('test-results/build-graphs', { recursive: true });
+        writeFileSync(`test-results/build-graphs/live-${view}.json`, JSON.stringify(modules, null, 2));
       } }]
     }
   }
@@ -29,7 +29,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
 for (const forbidden of ['u1.observation-lab', 'Lab fixture', 'lab_scenario', '__setFansState', 'RTCPeerConnection', 'Three.js', 'test_percent']) {
   if (html.includes(forbidden)) throw new Error(`Live bundle contains forbidden lab/media marker: ${forbidden}`);
 }
-if (Buffer.byteLength(html) > 100_000) throw new Error(`Live ${view} exceeded its 100 KB single-artifact budget`);
+assertLiveObservationBytes(Buffer.byteLength(html));
 const output = `../public/svelte-live-${view}.html`;
 if (process.argv.includes('--check')) {
   if (readFileSync(output, 'utf8') !== html) throw new Error(`Live ${view} package differs from source`);

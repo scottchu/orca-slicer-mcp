@@ -47,7 +47,9 @@
       const selected = Object.hasOwn(routes, location.pathname) ? routes[location.pathname] : null;
       const selectedView = selected?.[0];
       const frame = document.querySelector("#widget");
-      const widgetSource = selectedView === "fans" ? "/dashboard/fans_widget" : selectedView === "thermals" ? "/dashboard/thermals_widget" : selectedView === "queue" ? "/dashboard/queue_widget" : "/widget?standalone=1";
+      const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget" });
+      const focusedWidget = Object.hasOwn(focusedWidgets, selectedView) ? focusedWidgets[selectedView] : null;
+      const widgetSource = focusedWidget ?? "/widget?standalone=1";
       const bridgeState = document.querySelector("#bridge-state");
       document.querySelector("#view-title").textContent = selected?.[1] ?? "View unavailable";
       document.title = selected ? `U1 · ${selected[1]}` : "U1 · View unavailable";
@@ -110,7 +112,7 @@
           } catch {
             if (current !== generation) return;
             bridgeState.textContent = "Service unavailable — use Reload widget to retry";
-            if (selectedView === "fans") notifyToolResult({ isError: true });
+            if (focusedWidget) notifyToolResult({ isError: true });
           }
           return;
         }

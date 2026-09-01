@@ -1,51 +1,57 @@
 # F0 dual-subsystem foundation handoff
 
-## Queue shared presentation checkpoint — packaging held, not release-ready
+## Three-artifact private-lab split author checkpoint
 
-Before renewal, integrate the accepted Heads host initial-failure repair (never
-copy its pending branch), include Queue in the closed migrated-runtime route
-map/error handoff and test true initial HTTP500 -> immediate error -> retry.
-The Heads author found current host catch forwards `isError` only for Fans;
-Queue's wrong-view deadline test is distinct and must not be cited as coverage
-for HTTP failure. Root explicitly held this checkpoint for that follow-on.
+Exact application source `4a6c493` ordinarily merges accepted/deployed Heads
+main `5ffca66`. Changed source
+splits fixtures and build graphs, adds an explicit Bed Mesh Svelte entry, maps
+the exact private Bed route to its own inline bytes, and derives the shipping
+manifest from the three route constants. Light excludes Bed/Three/Orbit; Bed
+excludes other observation, Camera/media, live-adapter and RPC graphs; Camera is
+unchanged. Current outputs are 199,819/629,880/78,795 bytes and 908,494
+aggregate. Author UI335/app296/lifecycle21/shipping24/repository and Chrome164
+gates pass. Independent exact-SHA validation/review remains required. Renewed
+limits are 250,000/700,000/80,000 and 980,000 aggregate, leaving
+50,181 light bytes for the finite Queue/Current Job/History/Progress/Overview
+envelope; Console and thumbnails are excluded. No deployment, printer, auth,
+MCP or public-route change is claimed.
 
-Own worktree now includes accepted Bed main. Added generic `OrderedRecords`,
-`Record`, `DateTimeValue`, `DurationValue`/formatter leaves and shared
-`DomainReceipt`, `QueueSummary`, `QueueRow`, `QueueRows`, `QueueSkeleton`
-composition. `QueueWidget` and `LiveQueueRoot` own no raw markup/style; the
-production entry uses reviewed common RPC/lifecycle only. Existing private
-`/dashboard/queue` routes to exact `/dashboard/queue_widget`, with app security
-tests and source-derived shipping hash/isolation inventory. Legacy MCP assets
-and all backend queries remain unchanged. Lab rows explicitly map fixture
-records; live presentation has no fixture casts/names/fabricated receipts.
+## Heads implementation checkpoint (unaccepted)
 
-Tests and passing nine-case production browser matrix are recorded in newest
-VALIDATION. Port4179 is released. Next smallest actions: independently
-reviewed scalable lab packaging, then full lab preset loading/refresh geometry,
-combined tests and independent exact candidate review. The lab guard correctly
-blocks752,183 observation/830,978 aggregate; production85,578 passes proposed
-100,000 cap. Do not treat current stale packaged lab bytes as migrated coverage.
-Queue requires no pending Heads leaves. Position is a record slot, not durable
-job identity; duplicate filenames remain separate. Domain waiting duration never
-ticks. Unknown arbitrary initial row counts may legitimately resize on first
-data; refresh must retain geometry/focus/receipt and lab closed presets must
-match. No deployment, services, printer, auth/Tailscale or cleanup changed.
+Accepted Bed Mesh main8c5756d is integrated as0bb9ef6 after author checkpoint
+a8ad5c7; both ADR sections and regenerated combined lab are preserved. See
+decision0037 for the exact Heads contract and decision0032 for independently
+reviewed packaging bounds. Added strict real Heads adapter/presentation,
+generic CardGrid/InsetCard/ColorSwatch/color utility, zero-raw HeadCard/cards/
+skeleton/panel, real/lab wrappers and shared clipboard-generation lifecycle.
+Candidate private heads_widget route, host selection and source-derived ship
+inventory preserve public isolation and legacy MCP aliases.
 
-## Queue adapter checkpoint — no cutover
+Do not ship without independent acceptance. Earlier mobile and all-empty/unknown geometry failures are
+repaired with bounded generic header lines and optional footer action slot,
+not arbitrary194-character material height. The empty slot is noninteractive;
+Empty/N/A contain no Copy button, role or focusable placeholder. Focused22
+renewal cases PASS, including all closed presets at four widths/normal200%,
+strict<=1px geometry, actual default material single-line/zero-padding bounds
+and long real metadata readability. Compact ActualTarget is an independently
+approved opt-in; Thermals86,230 bytes has explicit renewed hash and all default
+consumer cases PASS. Final Chrome163/163, repository contract and runtime/signing
+gates PASS on frozen app source `4d24446`. The first162 run was161PASS/1FAIL and
+exposed a real host initial-error omission; the shared focused-widget mapping now
+forwards errors for Fans, Thermals and Heads, with exact retry regression coverage.
+Independent exact-source and validation acceptance remain due.
+No real printer/media acquisition or service change occurred in this author work.
 
-Changed paths: UI `lib/live/queue-presentation.ts`, `queue-adapter.ts`,
-`queue-controller.ts`, their tests and `tests/fixtures/live-queue.ts`; the common
-envelope parser admits only the newly closed Queue selector alongside existing
-Fans/Thermals. Decision0034 records the bounded cutover/acceptance contract.
-Fifty-six focused tests and compiler/AST checks pass. No app runtime route,
-lab presentation, production bytes or service state changed.
+Current bounded artifacts: observation755,217/756,000; Camera78,795/80,000;
+two-lab aggregate834,012/836,000; Heads91,633/100,000. Client graph has235
+modules and no real adapter/controller/host/Camera dependencies. The separate
+Heads production graph excludes fixtures/lab/Camera/Three. Exact hashes are in
+package assertions and must be independently reproduced before guarded ship.
 
-Next integrate accepted Bed Mesh main after this checkpoint, then compose
-Queue through accepted shared leaves once Heads reaches main. Do not copy
-unreviewed branches. Production size cap100,000 remains a review proposal;
-existing lab budget is not silently raised. Known initial row-count variation
-may resize at first live data; retained refresh and closed lab presets require
-strict geometry/focus/source-time parity. Preserve all other WIDGET_TRACKS.
+Next migration order: Queue → Current Job → History; Progress separately,
+real Bed Mesh adapter/shell after renderer, Overview last. Preserve all remaining
+tracks. Current Job nullable/unreported filename and History mandatory sanitized
+filename are distinct. Do not derive lab-only current-job progress from bytes.
 
 ## PR73 repaired candidate handoff
 

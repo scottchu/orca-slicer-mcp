@@ -32,6 +32,17 @@ const cases = [
 ] as const;
 
 describe('observation lab widgets', () => {
+  test.each([false, null])('empty/unknown Heads action slots have no focusable Copy placeholder: %s', (presence) => {
+    const observation = structuredClone(headsLabFixture);
+    observation.items = observation.items.map((item) => ({ ...item, presence }));
+    const { container } = render(HeadsWidget, { observation });
+    expect(screen.queryByRole('button', { name: /^Copy T/ })).not.toBeInTheDocument();
+    expect(container.querySelectorAll('[data-inset-card] .actions')).toHaveLength(4);
+    expect(container.querySelectorAll('[data-inset-card] .actions :is(button,[role="button"],[tabindex])')).toHaveLength(0);
+    expect(container.querySelectorAll('[data-inset-card] .neutral')).toHaveLength(0);
+    expect(container.querySelectorAll('[data-inset-card].neutral')).toHaveLength(4);
+    expect(screen.getByLabelText('Tool 1')).toHaveTextContent('Generic PLA');
+  });
   test.each(cases)('%s uses one shared anatomy and overlay feedback', async (component, observation, title) => {
     const { container } = render(component as never, { observation } as never);
     expect(screen.getByRole('heading', { name: title })).toBeInTheDocument();
@@ -47,7 +58,7 @@ describe('observation lab widgets', () => {
     const headsResult = render(HeadsWidget, { observation: headsLabFixture });
     expect(headsResult.container).not.toHaveTextContent(/filament (?:reported )?present/i);
     expect(screen.getByLabelText('Tool 4')).toHaveTextContent('Empty');
-    expect(screen.getByLabelText('Tool 4')).toHaveTextContent('N/A');
+    expect(screen.getByLabelText('Tool 4')).not.toHaveTextContent('N/A');
     cleanup();
 
     const fansResult = render(FansWidget, { observation: fansLabFixture });
@@ -99,8 +110,8 @@ describe('observation lab widgets', () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
     const { container } = render(HeadsWidget, { observation: headsLabFixture });
-    expect(screen.getByLabelText('Tool 3')).toHaveStyle('--head-color: #3487C880');
-    expect(container.querySelectorAll('[data-copy-color]')).toHaveLength(3);
+    expect(screen.getByLabelText('Tool 3')).toHaveStyle('background-color: rgba(52, 135, 200, 0.030117647058823527)');
+    expect(container.querySelectorAll('button[aria-label^="Copy T"]')).toHaveLength(3);
     expect(screen.queryByRole('button', { name: /Copy T4 color/ })).not.toBeInTheDocument();
     await fireEvent.click(screen.getByRole('button', { name: 'Copy T3 color #3487C880' }));
     expect(writeText).toHaveBeenCalledOnce();
@@ -117,8 +128,8 @@ describe('observation lab widgets', () => {
     changedColor.items[0].color = '#7B4DFFFF';
     cleanup();
     const changed = render(HeadsWidget, { observation: changedColor });
-    expect(screen.getByLabelText('Tool 1')).toHaveStyle('--head-color: #7B4DFFFF');
-    expect(changed.container.querySelector('.head-card.active')).toHaveClass('active');
+    expect(screen.getByLabelText('Tool 1')).toHaveStyle('background-color: rgba(123, 77, 255, 0.06)');
+    expect(changed.container.querySelector('[data-inset-card].active')).toHaveClass('active');
   });
 
   test('prevents stale clipboard completion from replacing a newer feedback action', async () => {
@@ -210,7 +221,7 @@ describe('observation bridge validators', () => {
       expect(() => validateHeads(unsafeHeads)).toThrow();
     }
     const empty = structuredClone(headsLabFixture); empty.items[3].presence = false; empty.items[3].color = '#FFFFFF';
-    expect(() => validateHeads(empty)).toThrow();
+    expect(validateHeads(empty).items[3].color).toBe('#FFFFFF');
     const queue = structuredClone(queueLabFixture); queue.items[0].position = 2;
     expect(() => validateQueue(queue)).toThrow();
     const fans = structuredClone(fansLabFixture); fans.items[0].percent = 101;

@@ -2,14 +2,15 @@
 
 ## Focused production observation entries
 
-Decision0034 uses self-contained production Fans and Thermals HTML entries,
-each separately bounded at100,000 UTF-8 bytes. Both share the reviewed host RPC,
-typed controller and UI leaves; neither imports lab fixtures/controls, synthetic
+Decisions0034/0037 use self-contained production Fans, Thermals and Heads HTML
+entries, each separately bounded at100,000 UTF-8 bytes. They share the reviewed
+host RPC, typed controller and UI leaves; none imports lab fixtures/controls, synthetic
 media, test harnesses or Three. They are inline private-server text imports at
-the exact `/dashboard/fans_widget` and `/dashboard/thermals_widget` paths, with
+the exact `/dashboard/fans_widget`, `/dashboard/thermals_widget` and
+`/dashboard/heads_widget` paths, with
 GET-only/no-store/restrictive CSP and no acquisition side effects. Existing
 focused hosts select these entries; generic MCP/legacy aliases are unchanged.
-`build:live-fans` / `build:live-thermals` create the artifacts and their `verify:`
+`build:live-fans` / `build:live-thermals` / `build:live-heads` create the artifacts and their `verify:`
 commands compare exact deterministic bytes. The source-derived shipping map
 verifies each asset hash and public isolation. These production budgets do not
 relax or count as either private-lab artifact's existing aggregate allowance.
@@ -18,7 +19,7 @@ relax or count as either private-lab artifact's existing aggregate allowance.
 Decision0035 adds one compiled-Svelte `svelte-live-camera.html` child for the
 unchanged `/dashboard/camera` host, at exact private `/dashboard/camera_widget`.
 Its independently accepted100,000 raw UTF-8 byte ceiling is separate from Fans
-and the unchanged two-lab750,000/80,000/830,000 bounds. The explicit production
+and the reviewed two-lab756,000/80,000/836,000 bounds. The explicit production
 graph excludes lab fixtures/producers, tests, observations and Three; one IIFE
 and inline CSS require no runtime assets. `bun run verify:live-camera` rebuilds
 and compares exact bytes, and the repository gate includes it. Package unit
@@ -36,7 +37,10 @@ private-server text import, not an external lifecycle asset or MCP resource.
 It is a separate compiled Svelte entry within the Kit project, sharing the same
 LabControls and leaf components. Observation still uses adapter-static and
 owns the directory. Exactly two self-contained HTML outputs are checked:
-750,000 observation bytes,80,000 Camera bytes,830,000 aggregate raw UTF-8 bytes.
+756,000 observation bytes,80,000 Camera bytes,836,000 aggregate raw UTF-8 bytes.
+The explicit Heads composition revision in decision0032 does not permit future
+automatic increases. Build-only client module graphs are retained under ignored
+`ui/test-results/build-graphs`; SSR graphs are not client-boundary evidence.
 `ui:build` builds and checks both; `ui:verify` compares both deterministically.
 Camera's graph excludes Three, real session/host code and external imports.
 The exact private Camera path is mapped to its own hash by the shipping guard;
@@ -124,16 +128,20 @@ revision or its widget hashes.
 
 Decision 0024's `public/dashboard-index.html` is imported as text and inlined
 in the HTTP bundle; it is not a seventh required external release asset.
-Decision 0032's generated `public/svelte-observation-lab.html` is likewise
-inlined in the private HTTP bundle rather than copied as an external release
-asset. One deterministic self-contained `adapter-static` page selects only the
-exact private `/dashboard/lab` directory or its nine non-camera child routes
-from `window.location.pathname`; it contains synthetic fixtures and no
-acquisition client. Static SSR emits only a neutral zero-size marker; initial
-browser creation selects the exact closed pathname before mount instead of
-rendering the directory first. Raw literal or encoded dot-segment requests are
-rejected before URL normalization. The generic embed scaffold is never part of
-the production build or release manifest.
+Decision 0032's generated private lab HTML is inlined in the private HTTP
+bundle rather than copied as external release assets. Deterministic
+`svelte-observation-lab.html` serves the directory and eight non-Bed,
+non-Camera child routes. Exact `/dashboard/lab/bed_mesh` uses separate
+`svelte-bed-mesh-lab.html`, while Camera retains `svelte-camera-lab.html`.
+The light graph contains no Three.js, OrbitControls, Bed renderer or Bed
+fixture; the Bed graph contains no other observation, Camera/media,
+live-adapter or RPC graph. All three final pages are inline and self-contained
+with no external chunk or dynamic import. Static SSR emits only a neutral
+zero-size marker; initial browser creation selects the exact closed pathname
+before mount. Directory links use document navigation so SvelteKit does not
+acquire route data. Raw literal or encoded dot-segment requests are rejected
+before URL normalization. The generic embed scaffold is never part of the
+production build or release manifest.
 The fixed lifecycle asset inventory and its fingerprint verification stay
 unchanged so previously staged releases remain valid rollback targets.
 
