@@ -17,8 +17,8 @@ The focused shipping suite passes 24 tests; the full repository gate passes 253
 app tests/3,559 assertions, 21 lifecycle tests, 24 shipping tests, TypeScript and
 repository policy. New fixtures also prove the scoped Overview static check and
 security checker touch no tool-call, widget, camera-widget or observation
-acquisition endpoint. This
-role made no Git, service, auth, Tailscale, printer or browser call. The failed
+acquisition endpoint. This role made no Git delivery or remote GitHub call and
+contacted no service, auth, Tailscale, printer or browser endpoint. The failed
 shipment's verified rollback is guarded-workflow evidence, while a corrected E
 deployment remains unclaimed. Next:
 independently review and deliver this source-only correction, then rerun the

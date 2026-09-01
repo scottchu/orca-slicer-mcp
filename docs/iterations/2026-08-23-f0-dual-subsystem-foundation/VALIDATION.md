@@ -25,8 +25,9 @@ for E. `./scripts/check-repository.sh` passes TypeScript, **253 app tests with
 3,559 assertions**, **21 lifecycle tests**, **24 shipping tests** and the
 repository contract.
 
-This correction is source and fixture evidence only. This role did not call Git,
-services, auth, Tailscale, printer or browser endpoints. The preceding failed
+This correction is source and fixture evidence only. This role made no Git
+delivery or remote GitHub call and contacted no service, auth, Tailscale,
+printer or browser endpoint. The preceding failed
 shipment's rollback/restoration evidence belongs to the guarded workflow, not to
 these local tests. No corrected E deployment, loaded-runtime or visual/user-
 acceptance claim is made. A renewed reviewed delivery must rerun the full guarded
