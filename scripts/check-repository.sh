@@ -108,6 +108,7 @@ if [[ -d "$plugin_app_root" ]]; then
     cd "$plugin_app_root"
     bun run ui:check
     bun run ui:test
+    (cd ui && bun run verify:live-fans)
     bun run ui:verify
     bun run check
     bun test src/*.test.ts

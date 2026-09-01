@@ -37,6 +37,14 @@ describe('live Fans controller', () => {
     notify(liveFansResult(15, '2026-09-01T12:00:15.000Z')); resolve(liveFansResult(13, '2026-09-01T12:00:13.000Z')); await pending;
     expect(controller.getState().observation?.version).toBe(15); controller.dispose();
   });
+  it('duplicate and same-version freshness notifications cannot cancel a newer pending response', async () => {
+    const { controller, notify, resolve } = setup(); notify(liveFansResult()); const pending = controller.refresh();
+    notify(liveFansResult()); expect(controller.getState().refreshing).toBe(true);
+    const stale = liveFansResult(); stale.structuredContent.module.freshness = 'stale'; notify(stale);
+    expect(controller.getState().refreshing).toBe(true);
+    resolve(liveFansResult(13, '2026-09-01T12:00:13.000Z')); await pending;
+    expect(controller.getState()).toMatchObject({ refreshing: false, observation: { version: 13 } }); controller.dispose();
+  });
   it('retains accepted values on failure and allows retry after rejection', async () => {
     const { controller, notify, reject, resolve } = setup(); notify(liveFansResult()); const previous = controller.getState().observation;
     const first = controller.refresh(); reject(); await first;
@@ -50,5 +58,12 @@ describe('live Fans controller', () => {
     const pending = controller.refresh(); controller.dispose(); const state = controller.getState();
     notify(liveFansResult()); resolve(liveFansResult()); await pending;
     expect(controller.getState()).toBe(state); expect(port.dispose).toHaveBeenCalledTimes(1);
+  });
+  it('shows an explicit initial tool failure without a long loading wait, but does not settle an active refresh', async () => {
+    const { controller, notify, resolve } = setup();
+    notify({ isError: true }); expect(controller.getState().phase).toBe('error');
+    const retry = controller.refresh(); notify({ isError: true });
+    expect(controller.getState().phase).toBe('loading');
+    resolve(liveFansResult()); await retry; expect(controller.getState().phase).toBe('ready'); controller.dispose();
   });
 });

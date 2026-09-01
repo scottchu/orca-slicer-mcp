@@ -53,7 +53,7 @@
     {:else}<StatePanel title="Fans & Air" reason="error" />{/if}
   </WidgetBody>
   <WidgetFooter>
-    {#snippet actions()}{#if current.phase === 'loading'}<Skeleton shape="action" />{:else}<IconButton label="Refresh Fans & Air" icon={RefreshCw} onclick={() => { void controller.refresh(); }} disabled={current.refreshing} />{/if}{/snippet}
+    {#snippet actions()}{#if current.phase === 'loading'}<Skeleton shape="action" />{:else}<IconButton label="Refresh Fans & Air" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
   </WidgetFooter>
   <FeedbackOverlay message={current.feedback} announce={false} />
 </WidgetShell>

@@ -3,10 +3,22 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { readFileSync, writeFileSync } from 'node:fs';
 await build({
   configFile: false, plugins: [svelte()],
+  // Preserve whitespace inside bundled string values while emitting an artifact
+  // without literal line-end whitespace. Do not trim executable string content.
+  esbuild: { supported: { 'template-literal': false } },
   build: {
     outDir: 'build-live-fans', emptyOutDir: true,
     lib: { entry: 'src/live-fans.ts', formats: ['iife'], name: 'LiveFans', fileName: 'fans' },
-    rollupOptions: { output: { assetFileNames: 'fans.[ext]' } }
+    rollupOptions: {
+      output: { assetFileNames: 'fans.[ext]' },
+      plugins: [{ name: 'live-fans-production-boundary', generateBundle: (_options, bundle) => {
+        for (const item of Object.values(bundle)) if (item.type === 'chunk') for (const module of Object.keys(item.modules)) {
+          if (/\/(?:tests|lib\/lab)\/|\/lib\/observation\/(?:fixtures|controller)\.|\/lib\/camera\/|\/three\//.test(module)) {
+            throw new Error(`Live Fans imported nonproduction source: ${module}`);
+          }
+        }
+      } }]
+    }
   }
 });
 const js = readFileSync('build-live-fans/fans.iife.js', 'utf8');

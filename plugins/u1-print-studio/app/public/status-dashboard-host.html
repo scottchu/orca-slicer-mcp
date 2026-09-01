@@ -30,7 +30,7 @@
       <span class="spacer"></span>
       <button id="reload" type="button">Reload widget</button>
     </header>
-    <iframe id="widget" src="/widget?standalone=1" title="View unavailable"></iframe>
+    <iframe id="widget" title="View unavailable"></iframe>
     <script>
       "use strict";
       const routes = Object.freeze({
@@ -47,11 +47,13 @@
       const selected = Object.hasOwn(routes, location.pathname) ? routes[location.pathname] : null;
       const selectedView = selected?.[0];
       const frame = document.querySelector("#widget");
+      const widgetSource = selectedView === "fans" ? "/dashboard/fans_widget" : "/widget?standalone=1";
       const bridgeState = document.querySelector("#bridge-state");
       document.querySelector("#view-title").textContent = selected?.[1] ?? "View unavailable";
       document.title = selected ? `U1 · ${selected[1]}` : "U1 · View unavailable";
       frame.title = selected?.[1] ?? "View unavailable";
       let initialized = false;
+      let generation = 0;
       const reply = (id, result, error) => {
         frame.contentWindow?.postMessage({ jsonrpc: "2.0", id, ...(error ? { error } : { result }) }, location.origin);
       };
@@ -97,24 +99,29 @@
         if (message.method === "ui/notifications/initialized") {
           if (initialized) return;
           initialized = true;
+          const current = generation;
+          frame.contentWindow?.postMessage({
+            jsonrpc: "2.0", method: "ui/notifications/tool-input",
+            params: { arguments: { view: selectedView } },
+          }, location.origin);
           try {
-            notifyToolResult(await callTool("refresh_printer_observation", { view: selectedView }));
+            const result = await callTool("refresh_printer_observation", { view: selectedView });
+            if (current === generation) notifyToolResult(result);
           } catch {
+            if (current !== generation) return;
             bridgeState.textContent = "Service unavailable — use Reload widget to retry";
+            if (selectedView === "fans") notifyToolResult({ isError: true });
           }
           return;
         }
 
         if (message.method === "tools/call" && typeof message.id === "number") {
+          const current = generation;
           try {
-            reply(
-              message.id,
-              await callTool(
-                message.params?.name,
-                message.params?.arguments ?? {}
-              )
-            );
+            const result = await callTool(message.params?.name, message.params?.arguments ?? {});
+            if (current === generation) reply(message.id, result);
           } catch {
+            if (current !== generation) return;
             reply(message.id, null, { code: -32000, message: "tool_failed" });
             bridgeState.textContent = "Refresh failed — use Reload widget to retry";
           }
@@ -127,10 +134,14 @@
       });
 
       document.querySelector("#reload").addEventListener("click", () => {
+        generation += 1;
         initialized = false;
         bridgeState.textContent = "reloading";
-        frame.src = `/widget?standalone=1&t=${Date.now()}`;
+        frame.src = `${widgetSource}${widgetSource.includes("?") ? "&" : "?"}t=${Date.now()}`;
       });
+      // Attach the bridge before navigation; the focused view is known before
+      // the child requests initialization or any observation is acquired.
+      frame.src = widgetSource;
     </script>
   </body>
 </html>

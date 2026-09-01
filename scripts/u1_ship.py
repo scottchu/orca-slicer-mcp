@@ -89,6 +89,11 @@ def static_contract(source):
     require(set(directory.links) == set(routes) | {"/dashboard/camera"} and len(directory.links) == len(routes) + 1, "Directory links and focused routes disagree")
     files = {(8788, route): "status-dashboard-host.html" for route in routes}
     files.update({(8788, route): "svelte-observation-lab.html" for route in lab_routes})
+    live_fans_match = re.search(r'LIVE_FANS_WIDGET_PATH = "(/dashboard/[a-z_]+)"', text)
+    if live_fans_match:
+        require(live_fans_match[1] not in routes and live_fans_match[1] not in lab_routes,
+                "Live Fans asset must have a distinct private route")
+        files[(8788, live_fans_match[1])] = "svelte-live-fans.html"
     files.update({(8788, "/dashboard"): "dashboard-index.html", (8788, "/dashboard/"): "dashboard-index.html", (8788, "/dashboard/camera"): "camera-dashboard-host.html", (8788, "/widget"): "widget.html", (8787, "/widget"): "widget.html", (8788, "/camera-widget"): "camera-widget.html"})
     return {f"{port}{route}": {"port": port, "route": route, "sha256": digest(app / "public" / name)} for (port, route), name in files.items()}
 

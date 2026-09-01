@@ -9,4 +9,8 @@ const target = document.getElementById('widget-root');
 if (!target) throw new Error('Missing widget root');
 const controller = createFansController(observationPort(createHostRpc(window), 'fans'));
 const component = mount(LiveObservationRoot, { target, props: { controller } });
-window.addEventListener('pagehide', () => { controller.dispose(); void unmount(component); }, { once: true });
+window.addEventListener('pagehide', (event) => {
+  // A persisted document keeps its mounted root/bridge for BFCache restoration.
+  // Reinitializing on pageshow would duplicate the host acquisition and listeners.
+  if (!event.persisted) { controller.dispose(); void unmount(component); }
+});

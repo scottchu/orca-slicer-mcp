@@ -10,6 +10,7 @@ import dashboardIndexHtml from "../public/dashboard-index.html" with { type: "te
 // This deterministic SvelteKit output is self-contained and compiled into the
 // private dashboard bundle. It is not part of the public service or MCP assets.
 import observationLabHtml from "../public/svelte-observation-lab.html" with { type: "text" };
+import liveFansHtml from "../public/svelte-live-fans.html" with { type: "text" };
 
 import {
   readCameraWidgetHtml,
@@ -79,6 +80,7 @@ const FOCUSED_DASHBOARD_PATHS = new Set([
   "/dashboard/bed_mesh",
 ]);
 const CAMERA_DASHBOARD_PATH = "/dashboard/camera";
+const LIVE_FANS_WIDGET_PATH = "/dashboard/fans_widget";
 const CAMERA_WIDGET_PATH = "/camera-widget";
 const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
 const MAX_REQUEST_BYTES = 128 * 1024;
@@ -164,6 +166,21 @@ export function createStatusDashboardHandler(
     // WHATWG URL parsing removes dot segments. Inspect the original request
     // target first so literal and encoded traversal can never alias a lab URL.
     if (hasRawTraversal(req.url)) return false;
+    if (pathname === LIVE_FANS_WIDGET_PATH) {
+      if (req.method !== "GET") {
+        res.setHeader("allow", "GET");
+        json(res, 405, { error: "method_not_allowed" });
+        return true;
+      }
+      res.writeHead(200, {
+        "cache-control": "no-store",
+        "content-security-policy": "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+      }).end(liveFansHtml);
+      return true;
+    }
     const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";
     const normalizedLabPath = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
     if (OBSERVATION_LAB_PATHS.has(normalizedLabPath)) {
