@@ -241,7 +241,7 @@ for (const width of widths) {
         expect(Math.abs(shellHeightAfterCopy - shellHeightBeforeCopy)).toBeLessThan(0.1);
       }
       if (view === 'thermals') {
-        for (const label of ['Tool 1', 'Tool 2', 'Tool 3', 'Tool 4', 'Heater bed', 'Cavity']) await expect(panel.getByText(label)).toBeVisible();
+        for (const label of ['Tool 1', 'Tool 2', 'Tool 3', 'Tool 4', 'Heater bed', 'Cavity']) await expect(panel.locator('[data-widget-shell]').getByText(label)).toBeVisible();
       }
       const clipped = await panel.locator('[data-required-text]').evaluateAll((items) => items.filter((item) => {
         const element = item as HTMLElement;

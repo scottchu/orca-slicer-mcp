@@ -11,65 +11,78 @@
   import WidgetFooter from '../ui/WidgetFooter.svelte';
   import WidgetHeader from '../ui/WidgetHeader.svelte';
   import WidgetShell from '../ui/WidgetShell.svelte';
+  import LoadingValue from '../ui/LoadingValue.svelte';
+  import Skeleton from '../ui/Skeleton.svelte';
+  import StateAnnouncement from '../ui/StateAnnouncement.svelte';
+  import { loadingObservation } from '../observation/loading';
+  import { onDestroy } from 'svelte';
 
-  let { observation }: { observation: BedMeshObservation } = $props();
-  const mesh = $derived(validateBedMeshObservation(observation));
-  let mode = $state<'3d' | '2d'>('3d');
+  type Props = { observation: BedMeshObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never };
+  let { observation, loading = false, refreshing = false, selectedMode, onmode }: Props & { selectedMode?: '3d' | '2d'; onmode?: (mode: '3d' | '2d') => void } = $props();
+  const mesh = $derived(loadingObservation(loading, observation, validateBedMeshObservation));
+  let localMode = $state<'3d' | '2d'>('3d');
+  const mode = $derived(selectedMode ?? localMode);
   let resetKey = $state(0);
   let feedback = $state<string | null>(null);
   let feedbackTimer: ReturnType<typeof setTimeout> | undefined;
 
-  function flash(message: string) {
+  const flash = (message: string) => {
     feedback = message;
     clearTimeout(feedbackTimer);
     feedbackTimer = setTimeout(() => { feedback = null; }, 1200);
-  }
-  function selectMode(next: '3d' | '2d') {
-    mode = next;
+  };
+  const selectMode = (next: '3d' | '2d') => {
+    localMode = next;
+    onmode?.(next);
     flash(next === '3d' ? '3D view' : '2D view');
-  }
-  function reset() {
+  };
+  const reset = () => {
     resetKey += 1;
     flash('View reset');
-  }
+  };
+  onDestroy(() => clearTimeout(feedbackTimer));
 </script>
 
 {#snippet feedbackOverlay()}{feedback}{/snippet}
 
-<WidgetShell label="Bed Mesh">
+{#if loading || refreshing}<StateAnnouncement text={loading ? 'Loading Bed Mesh' : 'Refreshing Bed Mesh'} />{/if}
+<WidgetShell label="Bed Mesh" busy={loading || refreshing}>
   {#snippet children()}
     <WidgetHeader title="Bed Mesh">
       {#snippet icon()}<Grid3X3 size={22} strokeWidth={1.8} />{/snippet}
-      {#snippet meta()}<ObservedMeta observedAt={mesh.sourceObservedAt} freshness={mesh.freshness} />{/snippet}
+      {#snippet meta()}<ObservedMeta observedAt={mesh?.sourceObservedAt ?? null} freshness={mesh?.freshness ?? 'unknown'} {loading} />{/snippet}
     </WidgetHeader>
     <WidgetBody>
       {#snippet children()}
-        <div class="mesh-kicker">Reported probe grid · {mesh.summary.columns} × {mesh.summary.rows}{mesh.fixture ? ' · Lab fixture' : ''}</div>
-        <ChartFrame label={`Bed mesh ${mode === '3d' ? '3D surface' : '2D grid'}, ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres`} overlay={feedback ? feedbackOverlay : undefined}>
-          {#if mode === '3d'}
+        <div class="mesh-kicker">Reported probe grid · <LoadingValue {loading} text={mesh ? `${mesh.summary.columns} × ${mesh.summary.rows}` : undefined} />{loading || mesh?.fixture ? ' · Lab fixture' : ''}</div>
+        <ChartFrame label={mesh ? `Bed mesh ${mode === '3d' ? '3D surface' : '2D grid'}, ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : 'Loading bed mesh'} overlay={feedback ? feedbackOverlay : undefined}>
+          {#if !mesh}<Skeleton shape="chart" />
+          {:else if mode === '3d'}
             <BedMesh3D observation={mesh} {resetKey} />
           {:else}
             <BedMesh2D observation={mesh} />
           {/if}
         </ChartFrame>
-        <div class="legend" aria-label={`Z height from ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres`}>
+        <div class="legend" aria-label={mesh ? `Z height from ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : undefined}>
           <span>Z (mm)</span>
-          <div class="legend-bar" style={`--mesh-palette:${meshPalette.join(',')}`}></div>
-          <div class="legend-values"><span>{mesh.summary.minimum.toFixed(3)}</span><span>{mesh.summary.maximum.toFixed(3)}</span></div>
+          <div class="legend-bar" class:loading style={mesh ? `--mesh-palette:${meshPalette.join(',')}` : undefined}></div>
+          <div class="legend-values"><span><LoadingValue {loading} text={mesh?.summary.minimum.toFixed(3)} /></span><span><LoadingValue {loading} text={mesh?.summary.maximum.toFixed(3)} /></span></div>
         </div>
         <dl class="summary">
-          <div><dt>Minimum</dt><dd>{mesh.summary.minimum.toFixed(3)} mm</dd></div>
-          <div><dt>Maximum</dt><dd>{mesh.summary.maximum.toFixed(3)} mm</dd></div>
-          <div><dt>Range</dt><dd>{mesh.summary.range.toFixed(3)} mm</dd></div>
+          <div><dt>Minimum</dt><dd><LoadingValue {loading} text={mesh?.summary.minimum.toFixed(3)} /> mm</dd></div>
+          <div><dt>Maximum</dt><dd><LoadingValue {loading} text={mesh?.summary.maximum.toFixed(3)} /> mm</dd></div>
+          <div><dt>Range</dt><dd><LoadingValue {loading} text={mesh?.summary.range.toFixed(3)} /> mm</dd></div>
         </dl>
       {/snippet}
     </WidgetBody>
     <WidgetFooter>
       {#snippet actions()}
-        <IconButton label="Show 3D bed mesh" icon={Box} pressed={mode === '3d'} onclick={() => selectMode('3d')} />
-        <IconButton label="Show 2D bed mesh" icon={Grid2X2} pressed={mode === '2d'} onclick={() => selectMode('2d')} />
+        {#if loading}<Skeleton shape="action" /><Skeleton shape="action" />{:else}
+          <IconButton label="Show 3D bed mesh" icon={Box} pressed={mode === '3d'} onclick={() => selectMode('3d')} />
+          <IconButton label="Show 2D bed mesh" icon={Grid2X2} pressed={mode === '2d'} onclick={() => selectMode('2d')} />
+        {/if}
         <span class="action-separator" aria-hidden="true"></span>
-        <IconButton label="Reset bed mesh view" icon={RotateCcw} onclick={reset} disabled={mode === '2d'} />
+        {#if loading}<Skeleton shape="action" />{:else}<IconButton label="Reset bed mesh view" icon={RotateCcw} onclick={reset} disabled={mode === '2d'} />{/if}
       {/snippet}
     </WidgetFooter>
   {/snippet}
@@ -79,6 +92,7 @@
   .mesh-kicker { margin: 0 0 12px; color: var(--u1-muted); font-size: 13px; line-height: 1.4; }
   .legend { margin-top: 14px; color: var(--u1-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
   .legend-bar { height: 8px; margin-top: 7px; border-radius: 999px; background: linear-gradient(90deg, var(--mesh-palette)); }
+  .legend-bar.loading { background: var(--u1-skeleton-base); }
   .legend-values { display: flex; justify-content: space-between; margin-top: 5px; }
   .summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0 0; padding: 0; }
   .summary div { min-width: 0; }

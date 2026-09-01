@@ -1,5 +1,311 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 compact Progress metric — final renewed author checks
+
+Independent visual review of `befbbd5` rejected its separated `0 %` display
+despite automated checks passing. The percentage layout owner now sets inherited
+`text-align: end`; no shared leaf internals or other widget alignment are changed.
+Ready/loading slot bounds remain intact. The 4% regression uses a compiled
+test-only fixture; the public lab's closed choices are unchanged. The harness
+is served only by the local test server, never by application routes or bundles.
+
+Repeated actual commands: UI `bun run check`, `bun run build`,
+`bun run package:private-lab`, full `bun run test:browser`, repository
+`./scripts/check-repository.sh`, app `bun run bundle:widget-vendor`,
+`bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+`codesign --verify --verbose=2 dist/u1-print-studio`, executable `--help`, and
+`git diff --check`, all with pinned Bun and normal Node PATH. All pass: compiler/
+AST/types, 126 UI units, 94 Chrome cases, deterministic package, 276 app tests /
+3,187 assertions, 21 lifecycle and 24 ship tests, bundles/signature/help.
+
+The text-bound regression now includes 0/4/25/50/75/100 at every tested width
+and normal/200% text: 200 total preset combinations, including 48 adjacency
+checks. Number-to-unit glyph gap must be nonnegative and no greater than
+`max(4px, 0.2 * numeric font size)`, with original text containment and
+ready/loading one-pixel bounds unchanged. The final focused command
+`bun run test:browser -- lab-text-bounds.spec.ts` passed the stronger matrix;
+the final full run also includes the isolated 4% harness.
+Author screenshots of normal 390px/0% and 200%-text 390px/100% show joined,
+readable displays. Independent final rendering acceptance is still required;
+neither these tests nor screenshots are actual-device/printer evidence.
+
+Package: 748,554 bytes, SHA-256
+`83146f52f61fd9225877e3bd4ef7ee08798745083fc7232fa9e932399b007a1a`;
+21,458 bytes above deployed PR65 and 1,446 bytes below the unchanged cap.
+No live branch code, production route or printer acquisition is included.
+
+Later independent cleanup postcheck also passed, attributed to its validator:
+canonical main/ref equality, all 9,005 switch-manifest entries, 8,689 remaining
+ignored entries after the approved temporary clone removal, and all 315
+quarantined/archive entries matched. The ten other proposed worktree targets
+remain registered and unmoved. This does not alter runtime or feature acceptance.
+
+## 2026-09-01 PR67 renewal after independent rejection
+
+Independent validation of `8663d93` found 25 clipped-case groups in 168 closed
+preset/width/text-scale combinations, despite the earlier author suite passing.
+Progress percentages, Heads hex codes, Current Job labels/percent and Overview
+state text were visually confirmed clipped. Formal review also required a true
+mapped view/scenario/closed-values discriminated union. These were acceptance
+failures; the old head must not ship.
+
+The correction uses shared ready/loading text slots and font-aware grid/wrap
+rules, without truncation, smaller fonts, hidden telemetry or relaxed bounds.
+Overview separators are grid-owned so adaptive column counts retain seams.
+The controller now correlates each view, scenario and closed variable map;
+compile-negative cases reject wrong scenarios, keys, values and camera kinds.
+The committed `lab-text-bounds.spec.ts` adds all 168 regression combinations:
+visible text ranges must remain inside clipping ancestors within one pixel;
+major ready/loading regions retain the same one-pixel bound. Loading still has
+no action buttons, progress values or canvas.
+
+Actual renewed commands (pinned Bun 1.3.12, normal Node on PATH):
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser
+cd ../../../..
+./scripts/check-repository.sh
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign --verify --verbose=2 dist/u1-print-studio
+dist/u1-print-studio --help
+```
+
+Results: compiler zero errors/warnings, exact AST guards and type-negative
+checks pass; 126 UI units, all 94 Chrome cases, deterministic package, 276 app
+tests/3,187 assertions, 21 lifecycle and 24 ship tests pass. All four bundles,
+signature and executable help pass. The exact lab artifact is 748,539 bytes,
+SHA-256 `64f5fa2445b7ea0ec0213a4e5940434c65b1b9f8914a5d12442bd4b5a714c271`:
+21,443 bytes above deployed PR65, with 1,461 bytes below the unchanged 750,000
+cap. Seven legacy ready-shell native-tag multisets remain unchanged.
+`git diff --check` also passes after the renewal records were updated.
+
+These are renewed author software/synthetic-Chrome checks only. A new immutable
+head must independently pass and receive formal approval before guarded
+delivery. No production route, service, camera acquisition, printer or actual
+phone was exercised. Earlier green author evidence below remains historical,
+not evidence that the rejected head was acceptable.
+
+### Separately authorized workspace cleanup — attributed operator receipt
+
+The cleanup operator reports the canonical checkout is now clean `main` at
+`cb37e3e`. Before switching, a separate validator confirmed preservation of the
+five original uncommitted documents; a private binary patch and per-file hashes
+were archived. Original `actions` at `c18e6f3` and a recovery ref remain. The
+guarded reverse patch, no-overwrite-ignore switch and fast-forward-only pin
+preserved all 9,005 ignored entries (content, type, mode and symlink evidence).
+
+The separately approved stale nested source clone was then moved intact into
+private quarantine: all 315 manifest entries matched before/after, with a
+separate archive, one-line patch and HEAD recovery ref retained. Its empty
+temporary parent was removed non-recursively. No feature, runtime, service,
+printer or authentication change occurred. Ten proposed old task-worktree
+retirements remain pending; active/runtime/historical/Orca trees were untouched.
+These facts are attributed to the cleanup operator, not rerun by this author;
+final independent post-cleanup verification remains pending. Private paths and
+user-document hashes are deliberately not committed.
+
+## 2026-09-01 all-nine lab controls — completed author gate set
+
+Actual local commands, with pinned Bun 1.3.12 on PATH and normal Node available:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser
+cd ../../../..
+./scripts/check-repository.sh
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign --verify --verbose=2 dist/u1-print-studio
+dist/u1-print-studio --help
+git diff --check
+```
+
+Final results: compiler zero errors/warnings; exact AST composition guards pass;
+126 UI unit tests pass; 86 Chrome cases pass; deterministic package verification
+passes; 276 app tests with 3,187 assertions pass; 21 lifecycle and 24 shipping
+tests pass. Vendor/server/stdio/runtime bundles, macOS signature and runtime help
+pass. New browser cases cover all nine closed control docks at four widths,
+keyboard selection, reload/back/forward/reset, disabled-state rules, no external
+requests, default and known-empty loading geometry, retained refresh/source time,
+terminal states and document overflow. Major card/header/body/footer/list/chart
+bounds remain within one CSS pixel at 320/390/590/720 and 200% text. Existing
+gradient, fan, thermal, mesh, title/bootstrap and compatibility checks remain.
+
+The packaged lab is 748,478 bytes, SHA-256
+`596fb409bb336cb4ba147b4aaeb7f2472ab97be8b9f8784238f1a5a33cf0e348`:
+21,382 bytes above deployed PR65 and 1,522 bytes below the unchanged 750,000 cap.
+Camera is not included. No cap increase, production asset/transport change,
+external chunk, CSP change or acquisition was introduced.
+
+Failures found and corrected before this final pass: intrinsic empty-word slot
+sizing, proportional-font material wrapping, metadata wrapping, and queue field
+widths. Ready/loading now share the same layout/value owners; no hidden ready
+telemetry or fixture observation is mounted for loading. Overview's shared narrow
+layout places the metric below its label to avoid an enlarged-text auto-column
+collision. Two unit structure/whitespace assertions and four browser label
+locators were updated to match the new visible controls without relaxing checks.
+
+These are author software/synthetic-browser results, not independent review,
+deployment, actual phone, camera or printer evidence. Separate exact-candidate
+validation and formal approval are still required before guarded delivery.
+
+## 2026-09-01 resumed consolidation checkpoint
+
+The interrupted author processes completed; no lab Vite/Vitest/Playwright process
+remained on resume. Current committed base is `e5972f2`, which explicitly merged
+reviewed main `cb37e3e`; ongoing source changes are not yet frozen or approved.
+`bun run check` passed compiler (zero errors/warnings) and exact composition
+guards. `bun run test:browser -- lab-states.spec.ts` passed all eight cases:
+all nine views at 320/390/590/720, ordinary and 200% text, major ready/loading
+geometry within one pixel, retained refresh geometry/source time, terminal
+states and document overflow. These are synthetic Chrome checks, not device or
+deployment acceptance. The preceding unit run was 124/126; the two outdated
+structure/whitespace assertions were corrected but await a fresh full run.
+
+The user now prioritizes finishing existing work and migration/delivery/cleanup
+before new features. This checkpoint does not claim Camera integration, seven
+legacy ready-shell retirement or production route cutover. No service was
+restarted and no printer/camera acquisition occurred during these author checks.
+
+## 2026-09-01 visible lab state controls — work-in-progress author checkpoint
+
+Pinned Bun frozen installs, UI compiler/AST, all 110 unit tests, build and
+private-lab packaging ran. Compiler/AST and unit tests pass. Initial complete
+nine-view lifecycle build is 746,773 bytes before merging the tiny slope change;
+the 750,000 cap is unchanged and Camera must await a measured budget decision.
+Four-width controller browser tests reached working URL reload/back/forward/
+reset checks but fail the synthetic keyboard-select sequence; this is open,
+not browser acceptance. Major loading/ready geometry and enlarged-text gates
+have not yet completed. No live service, printer or camera acquisition occurred.
+
+The approved minimal design reuses the seven existing raw layout shells/CSS
+with a registered LoadingValue leaf. Loading receives no observation object,
+only bounded row-count structure, and Bed Mesh does not mount Three/WebGL.
+New state/skeleton wrappers are zero-raw; legacy exact raw-tag debts are not
+expanded and are not claimed fully migrated. This checkpoint is not a release.
+
+## 2026-09-01 PR65 guarded merge/deploy/BOTH restart verification
+
+Separate implementation, independent validation and independent formal review
+approved exact `f216c70b9844b9e536676c403546b3eb116805b2`, tree
+`1a3bc6fc10a2a12054ef9db32d7a120f1a3a906e`. The coordinator relayed approvals and
+the user's standing widget-release authorization. The reviewer subsequently
+acted as delivery operator; the independent validator remained separate.
+
+Actual commands from the clean, frozen candidate checkout:
+
+```text
+uv run --no-project scripts/u1_ship.py --help
+uv run --no-project scripts/u1_ship.py --pr 65 --reviewed-sha f216c70b9844b9e536676c403546b3eb116805b2 --bun <absolute-pinned-bun-1.3.12>
+uv run --no-project scripts/u1_ship.py --pr 65 --reviewed-sha f216c70b9844b9e536676c403546b3eb116805b2 --bun <absolute-pinned-bun-1.3.12> --execute
+```
+
+The verified Bun SHA-256 is
+`39e644cea4e6db24a3af36013695655d6f789b4b98f1f13bacb882ac6e5c3c18`; its local
+absolute path is intentionally omitted. Help/read-only preflight passed first.
+Execution passed identity, fetch-base, preflight, local validation, matching-head
+merge guards, exact merged-source isolation, stage, dry-run, install, explicit
+restart-both and final verification without bypass.
+
+- Merge: `6b9b3e7e09ccfad89ed542a52a69f5126407da4b`; exact reviewed tree preserved.
+- Operation: `pr65-20260901T142009-341331`; phase complete, ok true,
+  merged true, installed true.
+- Release: `20260901-6b9b3e7-pr65-20260901T142009-341331`.
+- BOTH public/dashboard: explicitly restarted, loaded true, healthy true,
+  integrity verified; runtime 0.4.8/schema 12/observation-v14/camera-v10.
+- Static asset/routes: 25 passing; security checks: 26 passing; configuration,
+  environment and routing preservation: true.
+- Lab artifact: 727,096 bytes, SHA-256
+  `2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`;
+  exact Thermals/Fans lab routes match. Existing production assets are unchanged.
+- Rollback: not needed; retained snapshot `20260901T142049-5cf038`.
+
+Independent postdeployment validation also reports PASS: actual tailnet Thermals
+and Fans lab routes each return 200 with `Cache-Control: no-store` and the exact
+727,096-byte approved content/hash. Independently inspected service status and
+selected plist/manifest identities confirm BOTH loaded/healthy/integrity states
+at the exact release and merged source above. No acquisition was performed.
+
+Independent predeployment software validation reported compiler/AST success,
+88 unit, 66 Chrome, 276 app/3,182 assertions, 21 lifecycle and 24 shipping tests,
+deterministic packaging, bundles/signature/help and clean source. Eight extra
+isolated Chrome cases at four widths and normal/200% text verified upper/lower
+ratio edges including fractional fills, unknown/zero/clamping, child identity,
+focus/events and geometry. A tall fixture's 3–6 red-channel vertical difference
+established genuine sloped tint rather than only a CSS-angle string. These are
+attributed independent fixture results, not this operator's new browser checks.
+
+This release establishes reviewed source plus exact service/static/security
+delivery, not actual phone rendering, live camera, physical printer or user
+acceptance. No printer acquisition, auth provisioning, Tailscale change or plugin
+reinstallation was performed. The separate rollout-record branch changes only
+documentation and needs no additional deployment when app bytes remain equal.
+
+Receipt-branch checks actually run: frozen Bun installs in app/UI, then the full
+`./scripts/check-repository.sh` with pinned Bun on PATH passed compiler/AST,
+88 UI unit tests, deterministic package verification, 276 app/3,182 assertions,
+21 lifecycle and 24 shipping tests. The first attempt in the new checkout stopped
+at missing `svelte-kit` before dependencies were installed; no source was changed
+to resolve it. `git diff --check` and `git diff --exit-code 6b9b3e7 -- plugins
+scripts .agents AGENTS.md` passed. Only the five current state/iteration receipt
+documents change. Plugin tree `5fcc4555140d5b8435bbeff05372704c0dae6ed4` and app
+tree `c77795604e025c6e3ea6229f5ef7ea01b7367bcc` remain equal to the shipped merge.
+Exact independent review is required before the documentation-only PR merge.
+
+## 2026-09-01 subtle percentage-gradient slope author evidence
+
+This isolated private-lab refinement uses 100-degree tint inside an exactly
+ratio-sized nonrepeating background rectangle. No public API, production
+widget, transport, auth or camera code changes. The larger lab-controls and
+synthetic Camera candidates remain in separate preserved branches.
+
+Commands actually run with pinned Bun 1.3.12: frozen app/UI installs; UI
+`bun run check`, `bun run test`, `bun run build`, `bun run package:private-lab`,
+focused `bun run test:browser -- percentage-background.spec.ts` then full
+`bun run test:browser`; repository `./scripts/check-repository.sh` with pinned
+Bun on PATH; app `bun run bundle:widget-vendor`, `bun run bundle`,
+`bun run bundle:server`, `bun run bundle:runtime`,
+`codesign -vvv --verify dist/u1-print-studio`, and `dist/u1-print-studio --help`.
+
+Compiler/AST and all 88 unit tests pass. Eight focused real-Chrome cases pass at
+320/390/590/720, including upper/lower-row pixel samples before/after the exact
+0/25/50/100-percent and over-target boundaries, neutral invalid ratios, 100-degree
+computed gradient, no repeat, unchanged child DOM identity/events/focus,
+unchanged geometry and forced-colors suppression. Thermals and Fans both use
+the same gradient leaf; existing seams and enlarged Thermals layout pass.
+
+The deterministic artifact is 727,096 bytes, SHA-256
+`2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`,
+only 38 bytes above shipped PR63 and 22,904 below the unchanged 750,000-byte
+hard cap. The already exceeded 720,000 soft target remains explicit review
+risk, not an implicit cap increase. Bundles, runtime signature/help pass.
+
+Full Chrome passes 66/66. The repository gate passes compiler/AST, 88 unit,
+deterministic package verification, 276 app tests/3,182 assertions, 21 lifecycle
+and 24 shipping tests. `git diff --check` passes; rebuilding production vendor
+assets introduces no production diff. Required records and remaining execution
+order are updated without changing those running surfaces.
+
+Evidence is author synthetic software/browser only, not independent approval,
+deployed-service, live-printer, actual-device or user acceptance. Exact
+independent review/validation precedes PR merge and guarded BOTH-service delivery.
+
 ## 2026-09-01 PR63 guarded merge/deploy/BOTH restart verification
 
 Independent validation and formal review approved exact

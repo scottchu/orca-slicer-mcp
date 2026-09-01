@@ -1,5 +1,151 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 final compact-metric renewal
+
+`befbbd5` also failed independent visual acceptance: short Progress values were
+separated from `%` by the reserved numeric slot. The percentage group now uses
+inherited end alignment, without shared-leaf coupling or changing slot geometry.
+The strengthened matrix covers 200 preset/width/text-scale combinations and
+48 numeric/unit adjacency checks; normal390/0% and enlarged390/100% captures
+were inspected by the author. Artifact: 748,554 bytes, 1,446-byte reserve;
+newest VALIDATION records actual commands/hash and acceptance limits.
+
+Obtain fresh independent validation and formal review of the new exact head,
+then guarded shipment; neither earlier head is approved. LIVE Fans' separate
+uncommitted decision/RPC/adapter/controller preparation is safely paused and has
+no route changes. Do not mix it into PR67. Camera and all other named tracks
+remain pending. Independent cleanup postverification now passes; the ten
+remaining old-worktree retirements are still pending, not silently completed.
+
+## 2026-09-01 PR67 corrected candidate — fresh acceptance required
+
+Do not deploy rejected head `8663d93`. Independent checks exposed visible text
+clipping in four widgets and formal review found the selection type insufficiently
+correlated. The renewal fixes Progress/Heads/CurrentJob/Overview shared layouts,
+adds mapped closed per-view selection types and compile-negative checks, and
+commits 168 preset/width/text-scale text-bounds/geometry regressions. Ready and
+loading still use the same layout owners; no telemetry is hidden under loaders.
+
+Renewed author evidence: compiler/AST/types, 126 units, 94 Chrome cases,
+deterministic 748,539-byte package (1,461-byte reserve), 276 app tests/3,187
+assertions, 21 lifecycle, 24 ship tests and all bundles/signature/help pass.
+See newest VALIDATION for exact commands/hash and evidence boundaries.
+
+Next: freeze a new exact PR67 head, independent validation and formal review,
+then guarded merge/deploy/explicit BOTH restart/verification. Do not reuse
+approval of any older head. The separate LIVE Fans preparation branch is clean
+and paused; Camera remains separate and unintegrated. No production migration,
+actual phone or printer acceptance is claimed. All named WIDGET_TRACKS remain.
+
+Separately authorized cleanup: the operator reports canonical clean `main` at
+`cb37e3e`, with the original five dirty documents privately archived after
+independent preservation verification; `actions` and recovery refs remain.
+All 9,005 ignored entries survived the switch unchanged. Only the approved stale
+nested clone was subsequently quarantined intact (315 matching manifest entries)
+and its empty temporary parent removed non-recursively. Recovery evidence is
+retained privately; final independent post-cleanup verification and ten other
+proposed old-worktree retirements remain pending. No feature/runtime change
+occurred. This author did not perform or independently verify that cleanup.
+
+## 2026-09-01 reviewer-ready all-nine lab controls
+
+Author gates are complete: 126 UI units, 86 Chrome cases, compiler/AST,
+deterministic package, 276 app/3,187 assertions, 21 lifecycle, 24 ship tests and
+bundles/signature/help. Exact package is 748,478 bytes with 1,522-byte reserve;
+see newest VALIDATION for its hash and actual command record. The candidate is
+lab-only and not yet independently approved or deployed.
+
+Changed areas: closed controller and validated per-view fixture factories;
+shared bottom LabControls leaf; pure loading/terminal state boundaries; seven
+existing ready shells reused for loading without observation data; shared
+LoadingValue/ObservedMeta and degree placeholders; route-local URL state with
+popstate cleanup; exact guards; unit/browser/package tests and current records.
+Loading does not mount Three or any camera/transport. Known static names/icons
+remain while values are skeletons. Refresh retains values and source timestamps.
+
+Next smallest action: independent exact-SHA validation and formal review, then
+guarded PR merge/deploy/explicit BOTH restart/verification with the user's
+standing authority. Follow with a separate actual-receipt record. Camera author
+must integrate only after this frozen shared slice is resolved, not race its
+route/controller/registry/package files. WIDGET_TRACKS lists all unfinished
+migration, cutover, feature and cleanup obligations. No original user changes
+or previously reviewed worktrees were modified.
+
+## 2026-09-01 consolidation-first resume
+
+Finish the current all-nine private lab controls/loading candidate, run the full
+author gate set, freeze exact source, obtain independent validation/review, and
+only then guarded merge/deploy/BOTH restart/verify. Eight four-width/200%-text
+major geometry browser cases passed; corrected unit assertions need rerun.
+All interrupted local test processes have completed. The current source is
+unreviewed and unshipped; do not advertise it as live.
+
+Remaining migration debt is explicit: the seven Overview/Progress/Heads/
+CurrentJob/JobHistory/Queue/BedMesh ready shells, production observation and
+camera assets/routes, and the separately authored but unintegrated synthetic
+Camera lab. Cleanup follows accepted replacements; do not remove working legacy
+code or include production changes in this lab-only PR without reviewed scope.
+Smaller Refresh, size/API modes and other new feature tracks wait until existing
+consolidation and delivery are finished. Original dirty checkout is untouched.
+
+## 2026-09-01 visible lab controls — unreviewed implementation checkpoint
+
+`codex/u1-lab-scenarios` contains closed per-view controller/factories, shared
+bottom LabControls, URL state, all-nine lifecycle wiring and seven legacy shells
+reusing LoadingValue for structural loading. Compiler/AST and 110 unit tests
+pass; browser keyboard selection and major geometry gates remain open. No
+candidate is independently approved or delivered. Integrate latest reviewed
+main explicitly, preserve separate source branches, then finish browser and
+repository gates before freezing a review candidate.
+
+Camera is separately authored and not included/linked here. Measure its combined
+package budget before integration; current complete lab build leaves only 3,227
+bytes before the slope change. Do not increase the cap or drop accepted features
+silently. Preserve smaller visual Refresh, compact/medium/full and later MCP
+size parameter, seven remaining ready migrations, Bed Mesh axes, Console,
+model/layer progress and production cutovers as separate follow-on tracks.
+
+## 2026-09-01 PR65 shared-gradient slope shipped
+
+Reviewed `f216c70` merged as `6b9b3e7`, preserving exact tree
+`1a3bc6fc10a2a12054ef9db32d7a120f1a3a906e`. Guarded release
+`20260901-6b9b3e7-pr65-20260901T142009-341331` runs on BOTH explicitly restarted,
+loaded/healthy/integrity-verified services. Twenty-five exact static asset/route
+and twenty-six security checks pass; configuration/routing preservation is true.
+No rollback occurred; snapshot `20260901T142049-5cf038` is retained. Actual commands
+and sanitized evidence are in the newest VALIDATION section.
+
+The private lab artifact is 727,096 bytes with SHA-256
+`2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`.
+Thermals and Fans share the slope refinement. Production widgets/MCP/auth/device
+boundaries are unchanged. This is reviewed software and service/static evidence,
+not actual phone, printer, live-camera or user acceptance.
+
+Next smallest action: resume preserved all-nine visible lab controls/loading;
+then integrate the separately authored synthetic Camera checkpoint. Keep smaller
+visual Refresh, compact/medium/full plus later MCP size parameter, seven ready
+migrations, Bed Mesh axes, read-only Console, model/layer progress and production
+cutovers open. The original dirty checkout and reviewed source remain untouched.
+These receipt-only records preserve application bytes and need no redeployment.
+
+## 2026-09-01 shared-gradient slope candidate
+
+The isolated `codex/u1-gradient-slope` branch starts at merged PR64 `e1f57f0`.
+Only PercentageBackground CSS, its browser assertions, the deterministic lab
+artifact/hash pin and required records change. Tint slopes at 100 degrees
+inside an exact ratio-wide rectangle; the public component API and represented
+values remain unchanged. Author evidence is in the newest VALIDATION section.
+Freeze exact source, obtain separate validation/formal review, then use the
+standing PR/guarded merge/deploy/BOTH restart/scoped verification workflow.
+
+Resume preserved all-nine visible lab scenario/state controls and loading work
+after this small delivery, then integrate the separately authored synthetic
+Camera checkpoint using shared controls. Smaller visual Refresh and the later
+compact/medium/full presentation/MCP parameter remain separate queued slices.
+Do not drop seven remaining ready migrations, Bed Mesh axes, read-only Console,
+model/layer progress or production cutovers. Original dirty checkout and prior
+frozen source candidates remain untouched; no actual device/user claim exists.
+
 ## 2026-09-01 PR63 Fans private-lab slice shipped
 
 Reviewed `0f78e69` merged as `57a305b` and guarded release

@@ -474,6 +474,14 @@ durable-monitor claim.
 
 ## Requirement changes
 
+- **UI-004:** Every private observation lab view exposes shared bottom controls
+  outside its card for closed synthetic scenario/lifecycle/freshness/value
+  inspection, including loading skeletons and retained refresh. URL selections
+  are validated and back/forward/reset work without acquisition. New state and
+  skeleton compositions remain zero-raw; seven existing ready-body debts remain
+  frozen. Camera follows separately with the same controls and synthetic-only
+  media, not the production signaling widget. See decisions 0032 and 0033.
+
 - **UI-003:** Observation presentation uses closed DOM-owning leaf/layout
   primitives and zero-raw domain/feature composition. Shared degree,
   actual/target thermal, icon, label, name, caption and timestamp components
@@ -491,6 +499,9 @@ durable-monitor claim.
   over-target values. Decoration owns no spacing, clipping, sizing or progress
   semantics. Thermals is its first private-lab consumer; skeleton/ready seams,
   row geometry and enlarged-text readability must remain consistent.
+  The subtle tint direction is 100 degrees inside an exact left-aligned,
+  nonrepeating ratio-wide background; its represented fill boundary remains
+  vertical and accurate at every height.
   Fans & Air reuses this gradient through seven zero-raw canonical rows and a
   shared 13-pixel MetricValue, with 14-pixel names, independent null/zero percent
   and RPM, and no inferred running/fault state. Its skeleton retains static

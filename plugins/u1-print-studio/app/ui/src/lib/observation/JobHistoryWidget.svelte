@@ -3,21 +3,26 @@
   import ObservationFrame from './ObservationFrame.svelte';
   import { formatClock, formatDuration, titleCase } from './format';
   import { validateJobHistory, type JobHistoryObservation } from './types';
-  let { observation }: { observation: JobHistoryObservation } = $props();
-  const history = $derived(validateJobHistory(observation));
+  import LoadingValue from '../ui/LoadingValue.svelte';
+  import { loadingObservation, structureCount } from './loading';
+  type Props = { observation: JobHistoryObservation; loading?: false; refreshing?: boolean; rows?: never } | { loading: true; observation?: never; refreshing?: never; rows?: number };
+  let { observation, loading = false, refreshing = false, rows = 4 }: Props = $props();
+  const history = $derived(loadingObservation(loading, observation, validateJobHistory));
+  const items = $derived(history?.items ?? Array.from({ length: structureCount(rows, 20) }, (_, index) => ({ position: index + 1 })));
 </script>
 
-<ObservationFrame title="Job History" icon={History} observedAt={history.sourceObservedAt} freshness={history.freshness}>
+<ObservationFrame title="Job History" icon={History} observedAt={history?.sourceObservedAt ?? null} freshness={history?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
   <div class="observation-list">
-    {#each history.items as item}
+    {#each items as item, index}
       <div class="observation-row history-row">
         <div class="history-status">
-          {#if item.status === 'completed'}<CheckCircle2 class="completed" aria-hidden="true" />
-          {:else if item.status === 'cancelled'}<XCircle aria-hidden="true" />
+          {#if loading}<History aria-hidden="true" />
+          {:else if history?.items[index].status === 'completed'}<CheckCircle2 class="completed" aria-hidden="true" />
+          {:else if history?.items[index].status === 'cancelled'}<XCircle aria-hidden="true" />
           {:else}<AlertTriangle aria-hidden="true" />{/if}
-          <div><strong>{titleCase(item.status)}</strong><span>{formatClock(item.endedAt)}</span></div>
+          <div><strong><LoadingValue {loading} text={history ? titleCase(history.items[index].status) : undefined} /></strong><span><LoadingValue {loading} text={history ? formatClock(history.items[index].endedAt) : undefined} size="long" /></span></div>
         </div>
-        <span>{formatDuration(item.durationSeconds)}</span>
+        <span><LoadingValue {loading} text={history ? formatDuration(history.items[index].durationSeconds) : undefined} /></span>
       </div>
     {/each}
   </div>

@@ -9,19 +9,46 @@ for (const width of [320, 390, 590, 720]) {
     page.on('request', (request) => { if (!request.url().startsWith('http://127.0.0.1:4179/')) external.push(request.url()); });
     await page.goto('/__test/percentage');
     const background = page.locator('[data-percentage-background]');
+    const originalChild = await page.getByRole('button', { name: 'Example action' }).elementHandle();
     const original = (await background.boundingBox())!;
     expect(await background.evaluate((node) => {
       const css = getComputedStyle(node);
       return [css.padding, css.margin, css.borderWidth, css.overflow, css.animationName, css.transitionDuration];
     })).toEqual(['0px', '0px', '0px', 'visible', 'none', '0s']);
     for (const [value, max, fill] of [[0, 100, 0], [25, 100, 25], [100, 200, 50], [200, 200, 100], [220, 200, 100], [44, 0, 0], [null, 100, 0]] as const) {
-      await page.evaluate(({ value, max }) => (window as unknown as { __setPercentage: (next: unknown) => void }).__setPercentage({ value, max }), { value, max });
+      await page.evaluate(({ value, max }) => (window as unknown as { __setPercentage: (next: unknown) => void }).__setPercentage({ value, max, color: '#0055aa' }), { value, max });
       await expect(background).toHaveAttribute('data-percentage-fill', String(fill));
       const box = (await background.boundingBox())!;
       expect({ x: box.x, y: box.y, width: box.width }).toEqual({ x: original.x, y: original.y, width: original.width });
       expect(box).toEqual(await page.getByRole('region', { name: 'Example card' }).boundingBox());
       expect(await background.evaluate((node) => getComputedStyle(node).backgroundImage === 'none')).toBe(fill === 0);
       await expect(page.getByRole('region', { name: 'Example card' })).toContainText(`Actual ${value ?? 'unknown'} / Target ${max}`);
+      expect(await originalChild!.evaluate((node) => node === document.querySelector('button'))).toBe(true);
+      if (fill > 0) {
+        const css = await background.evaluate((node) => {
+          const style = getComputedStyle(node);
+          return { image: style.backgroundImage, size: style.backgroundSize, position: style.backgroundPosition, repeat: style.backgroundRepeat };
+        });
+        expect(css.image).toContain('100deg');
+        expect(css.size).toBe(`${fill}% 100%`);
+        expect(css.position).toBe('0% 0%');
+        expect(css.repeat).toBe('no-repeat');
+      }
+      const png = await page.screenshot();
+      const edgePixels = await page.evaluate(async ({ png, box, fill }) => {
+        const image = new Image(); image.src = `data:image/png;base64,${png}`; await image.decode();
+        const canvas = document.createElement('canvas'); canvas.width = image.width; canvas.height = image.height;
+        const context = canvas.getContext('2d')!; context.drawImage(image, 0, 0);
+        return [8, box.height - 8].map((y) => {
+          const sample = (x: number) => Array.from(context.getImageData(Math.round(box.x + x), Math.round(box.y + y), 1, 1).data);
+          const edge = box.width * fill / 100;
+          return { inside: fill ? sample(Math.min(box.width - 8, edge - 3)) : null, outside: fill < 100 ? sample(Math.max(8, edge + 3)) : null };
+        });
+      }, { png: png.toString('base64'), box, fill });
+      for (const { inside, outside } of edgePixels) {
+        if (inside) { expect(inside[2]).toBeGreaterThan(inside[0]); expect(inside[0]).toBeLessThan(253); }
+        if (outside) expect(outside).toEqual([255, 255, 255, 255]);
+      }
     }
     await page.evaluate(() => (window as unknown as { __setPercentage: (next: unknown) => void }).__setPercentage({ value: 50, max: 100, color: '#0055aa' }));
     await expect(background).toHaveAttribute('data-percentage-fill', '50');
@@ -54,6 +81,7 @@ for (const width of [320, 390, 590, 720]) {
     await page.goto('/dashboard/lab/thermals');
     await expect(page.locator('[data-percentage-background]')).toHaveCount(6);
     expect(await page.locator('[data-percentage-background]').evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-percentage-fill')))).toEqual(['100', '0', '0', '0', '100', '0']);
+    expect(await page.locator('[data-percentage-background]').first().evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('100deg');
     const seams = async () => page.locator('[data-reading-row]').evaluateAll((rows) => rows.map((row) => {
       const box = row.getBoundingClientRect(); const cell = row.parentElement!.getBoundingClientRect();
       const css = getComputedStyle(row);
@@ -65,5 +93,9 @@ for (const width of [320, 390, 590, 720]) {
     expect((await seams()).every(({ fillsCell }) => fillsCell)).toBe(true);
     await page.screenshot({ path: `test-results/percentage-thermals-${width}.png`, fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    await page.goto('/dashboard/lab/fans');
+    const cavity = page.locator('[data-percentage-fill="70"]');
+    expect(await cavity.evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('100deg');
+    expect(await cavity.evaluate((node) => getComputedStyle(node).backgroundSize)).toBe('70% 100%');
   });
 }

@@ -1,3 +1,82 @@
+# Widget completion tracks
+
+Updated 2026-09-01. Latest user order: finish existing implementation, complete
+migration and delivery, finish queued features, then clean up superseded code.
+No listed track is cancelled. Private fixtures do not prove live behavior.
+
+PR67 head `8663d93` was independently rejected for required-text clipping and
+incomplete correlated selection types. Its corrected successor must obtain new
+exact validation/review; 94 author Chrome cases now include 168 text/geometry
+preset combinations. A subsequent `befbbd5` visual rejection for separated
+number/unit spacing is corrected with inherited numeric alignment and a final
+200-combination matrix, including 48 adjacency checks. Current controls remain
+unshipped until fresh independent acceptance and guarded delivery.
+
+## Current slice: all-nine private lab controls and loading
+
+| Track | Source/composition | State controls | Live cutover | Delivery |
+| --- | --- | --- | --- | --- |
+| Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Local five-state controls and closed examples | Pending | Prior foundation shipped; current controls unreviewed/unshipped |
+| Fans & Air | Zero-raw composite, seven shared percentage rows | Local five-state controls and closed examples | Pending | Prior foundation shipped; current controls unreviewed/unshipped |
+| Overview | Explicit native-tag ready-shell debt | Local shared loading shell and controls | Pending | Candidate unreviewed/unshipped |
+| Print Progress | Explicit native-tag ready-shell debt | Local shared loading shell and controls | Pending | Candidate unreviewed/unshipped |
+| Heads & Filaments | Explicit native-tag ready-shell debt | Local shared loading shell and controls | Pending | Candidate unreviewed/unshipped |
+| Current Job | Explicit native-tag ready-shell debt | Local shared loading shell and controls | Pending | Candidate unreviewed/unshipped |
+| Job History | Explicit native-tag ready-shell debt | Local bounded row/empty loading and controls | Pending | Candidate unreviewed/unshipped |
+| Print Queue | Explicit native-tag ready-shell debt | Local bounded row/empty loading and controls | Pending | Candidate unreviewed/unshipped |
+| Bed Mesh | Svelte/Three chart, native-tag shell debt | Local controls; no Three mount while loading | Pending | Candidate unreviewed/unshipped |
+| Camera | Separately authored synthetic Svelte checkpoint, not integrated | Shared-controller integration pending | Pending; production remains legacy | No shipped Svelte camera route |
+
+Acceptance progression: author software tests → separate exact-SHA validation →
+separate formal review → PR merge → exact deployment → explicit BOTH service
+restart → static/security/integrity verification → actual-device/user feedback.
+Only completed layers may be accepted. Current geometry tests are synthetic
+Chrome, not phone, WebRTC or printer evidence.
+
+## Remaining migration and cleanup
+
+- [ ] Independently approve/deliver this controls/loading candidate and persist
+  the actual rollout receipt.
+- [ ] Integrate the existing Camera checkpoint, shared controls and exact private
+  route. Measure the combined package before any budget decision; the decoded
+  single-artifact cap remains 750,000 bytes.
+- [ ] Retire the seven remaining ready-shell raw-tag debts using shared
+  primitives; retain exact composition guards.
+- [ ] Review/implement live observation transport and each focused-widget
+  cutover; lab state selection is not production loading behavior.
+- [ ] Review/implement live Camera cutover, startup/fullscreen-exit continuity,
+  non-shifting snapshot feedback and truthful FPS.
+- [ ] Inventory production HTML/assets, host routes and MCP resource aliases
+  before retirement; required compatibility readers remain until replaced.
+- [ ] After accepted replacements and delivery, remove superseded widget code,
+  stale artifacts and temporary scaffolding with an explicit scope; preserve
+  user work, recovery snapshots and required compatibility behavior.
+
+## Named feature obligations after existing consolidation
+
+- [ ] Bed Mesh reference-style visible-side axes and readable Z enclosure/grid,
+  stable 2D/3D bounds, icon-only mode/reset controls.
+- [ ] Read-only Console widget, with no command/control capability.
+- [ ] Truthful model thumbnail/layer-progress visualization, distinguishing
+  visual preview from actual sliced-layer evidence.
+- [ ] Filament material/profile/color synchronization discovery and verified
+  integration, preserving loaded/empty/unknown distinctions.
+- [ ] Consistent compact spacing/type/color/icon foundations, correct headings,
+  gray empty filament state and compact fan metrics in remaining widgets.
+- [ ] Smaller Refresh visual: 32-pixel surface/16-pixel glyph within a 44-pixel
+  accessible target.
+- [ ] Content-aware compact/medium/full presentation and separately reviewed MCP
+  size parameter, without silent transport/API expansion.
+
+Whole-server/MCP migration to SvelteKit remains an architecture question from a
+capability discussion, not an approved replacement commitment. Each live cutover
+needs its own boundary/evidence before cleanup is accepted.
+
+## Earlier track evidence and acceptance details
+
+The current checklist above supersedes earlier execution order, not these
+historical delivery records or their unresolved device-acceptance boundaries.
+
 # U1 widget completion tracks
 
 Updated 2026-08-31. This is the authoritative execution queue for the user's

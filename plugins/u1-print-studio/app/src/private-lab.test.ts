@@ -14,7 +14,7 @@ describe("private Svelte observation lab package", () => {
   test("freezes one deterministic self-contained static page", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "74ad17deadd33e8373402b3b2c204830bd686fa06e369f46fff0604cc01baa41"
+      "83146f52f61fd9225877e3bd4ef7ee08798745083fc7232fa9e932399b007a1a"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -33,7 +33,9 @@ describe("private Svelte observation lab package", () => {
   test("selects exact private paths synchronously before body layout", () => {
     const routeSource = readFileSync(new URL("../ui/src/routes/+page.svelte", import.meta.url), "utf8");
     const appShell = readFileSync(new URL("../ui/src/app.html", import.meta.url), "utf8");
-    expect(routeSource).not.toContain("onMount");
+    expect(routeSource.indexOf("browser ? viewFromPath(window.location.pathname) : undefined")).toBeLessThan(routeSource.indexOf("onMount(() =>"));
+    expect(routeSource).toContain("window.addEventListener('popstate', restore)");
+    expect(routeSource).toContain("window.removeEventListener('popstate', restore)");
     expect(routeSource).not.toContain("<svelte:head>");
     expect(routeSource).toContain("browser ? viewFromPath(window.location.pathname) : undefined");
     expect(routeSource).toContain("data-route-bootstrap");
@@ -57,6 +59,9 @@ describe("private Svelte observation lab package", () => {
     expect(html).not.toContain("__percentageClicks");
     expect(html).not.toContain("__setFansState");
     expect(html).not.toContain("Example card");
+    expect(html).toContain("data-lab-controls");
+    expect(html).toContain("Preview state");
+    expect(html).toContain("Reset lab preview");
   });
 
   test("keeps the generic embed outside production packaging", () => {

@@ -20,10 +20,12 @@
 
 <style>
   .filled {
-    background-image: linear-gradient(90deg,
+    background-image: linear-gradient(100deg,
       color-mix(in srgb, var(--u1-percentage-color, var(--u1-accent)) var(--u1-percentage-tint-start), transparent) 0%,
-      color-mix(in srgb, var(--u1-percentage-color, var(--u1-accent)) var(--u1-percentage-tint-end), transparent) var(--u1-percentage-fill),
-      transparent var(--u1-percentage-fill));
+      color-mix(in srgb, var(--u1-percentage-color, var(--u1-accent)) var(--u1-percentage-tint-end), transparent) 100%);
+    background-size: var(--u1-percentage-fill) 100%;
+    background-position: left top;
+    background-repeat: no-repeat;
   }
   @media (forced-colors: active) { .filled { background-image: none; } }
 </style>
