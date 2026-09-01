@@ -4,6 +4,7 @@ import { parse } from 'svelte/compiler';
 
 // Explicit migration frontier: new files are rejected until assigned a layer.
 export const composites = ['observation/ThermalsWidget.svelte', 'observation/ActualTarget.svelte', 'observation/ThermalReading.svelte', 'observation/ThermalsSkeleton.svelte', 'observation/FansWidget.svelte', 'observation/FanReading.svelte', 'observation/FansSkeleton.svelte', 'observation/ObservationSkeleton.svelte', 'observation/ObservationState.svelte'];
+composites.push('observation/FanReadings.svelte', 'live/LiveObservationRoot.svelte');
 export const leaves: Record<string, string[]> = {
   'ui/LoadingValue.svelte': ['span', 'span'],
   'ui/LabControls.svelte': ['fieldset', 'legend', 'div', 'label', 'span', 'select', 'option'],
@@ -52,7 +53,9 @@ function visit(value: unknown, fn: (node: Node) => void): void {
 const approvedImports: Record<string, string[]> = {
   'observation/ObservationSkeleton.svelte': ['./types', './OverviewWidget.svelte', './ProgressWidget.svelte', './HeadsWidget.svelte', './CurrentJobWidget.svelte', './JobHistoryWidget.svelte', './QueueWidget.svelte', '../bed-mesh/BedMeshWidget.svelte'],
   'observation/ObservationState.svelte': ['./types', './ObservationFrame.svelte', '../ui/StatePanel.svelte'],
-  'observation/FansWidget.svelte': ['./ObservationFrame.svelte', './types', './format', '../ui/state', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/ReadingList.svelte', '../ui/StatePanel.svelte', './FanReading.svelte', './FansSkeleton.svelte'],
+  'observation/FansWidget.svelte': ['./ObservationFrame.svelte', './types', './format', '../ui/state', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/StatePanel.svelte', './FanReadings.svelte', './FansSkeleton.svelte'],
+  'observation/FanReadings.svelte': ['../live/presentation', '../ui/ReadingList.svelte', './FanReading.svelte'],
+  'live/LiveObservationRoot.svelte': ['svelte', 'lucide-svelte', './controller', '../observation/format', '../observation/FanReadings.svelte', '../observation/FansSkeleton.svelte', '../ui/WidgetShell.svelte', '../ui/WidgetHeader.svelte', '../ui/WidgetBody.svelte', '../ui/WidgetFooter.svelte', '../ui/StateAnnouncement.svelte', '../ui/StatePanel.svelte', '../ui/ObservedMeta.svelte', '../ui/Caption.svelte', '../ui/Icon.svelte', '../ui/IconButton.svelte', '../ui/Skeleton.svelte', '../ui/FeedbackOverlay.svelte', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte'],
   'observation/FanReading.svelte': ['./types', './fan-labels', '../ui/PercentageBackground.svelte', '../ui/ReadingRow.svelte', '../ui/Inline.svelte', '../ui/Icon.svelte', '../ui/Name.svelte', '../ui/MetricValue.svelte'],
   'observation/FansSkeleton.svelte': ['./fan-labels', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/Skeleton.svelte', '../ui/ReadingList.svelte', '../ui/ReadingRow.svelte', '../ui/Inline.svelte', '../ui/Icon.svelte', '../ui/Name.svelte', '../ui/MetricValue.svelte'],
   'observation/ThermalsWidget.svelte': ['./ObservationFrame.svelte', './types', '../ui/state', '../ui/ReadingList.svelte', '../ui/StatePanel.svelte', './ThermalReading.svelte', './ThermalsSkeleton.svelte'],

@@ -37,6 +37,19 @@ a superseding event or disposal. Errors use non-flow feedback. Versions may rese
 after restart: lower-version recovery and same-version freshness updates are
 valid, not globally monotonic ordering.
 
+Within a mounted view, compare the real envelope receive time before its
+process-local version: reject earlier receipts; for equal receipts in the same
+connection epoch, reject lower versions. A later receipt may carry a lower
+version after server restart. Same-version freshness updates remain valid.
+Malformed or wrong-view notifications are ignored without settling an unrelated
+refresh; a malformed response to that refresh reports its own failure. Standard
+host events supersede compatibility replay for their event kind. Preserve tool
+private metadata at the bridge, but never project it as observation data.
+
+The Fans heading uses the fan-domain receipt/source time, not the status envelope
+time. Production packaging has a separate self-contained Fans entry and explicit
+isolation checks; it neither embeds nor changes the 750,000-byte private-lab cap.
+
 The live root is zero-raw and keeps components mounted. Primitives are shared
 with the lab; production bundles exclude fixture producers, lab controls, test
 harnesses and synthetic camera media. Later alias/artifact retirement requires

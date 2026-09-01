@@ -10,12 +10,19 @@
   import Icon from '../ui/Icon.svelte';
   import Name from '../ui/Name.svelte';
   import MetricValue from '../ui/MetricValue.svelte';
+  let { includePower = false }: { includePower?: boolean } = $props();
 </script>
 <Stack>
   <InfoPair reserve="label">
     {#snippet label()}<Label text="Purifier" tone="muted" />{/snippet}
     {#snippet value()}<Skeleton shape="text" />{/snippet}
   </InfoPair>
+  {#if includePower}
+    <InfoPair reserve="label">
+      {#snippet label()}<Label text="Power" tone="muted" />{/snippet}
+      {#snippet value()}<Skeleton shape="text" />{/snippet}
+    </InfoPair>
+  {/if}
   <ReadingList label="Fan readings" columns="single">
     {#each fanIds as id (id)}
       <ReadingRow label={fanNames[id]}>

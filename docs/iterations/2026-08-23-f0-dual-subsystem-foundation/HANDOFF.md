@@ -1,5 +1,15 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 LIVE Fans preparatory checkpoint
+
+The separate LIVE candidate adds strict fixture-independent Fans models/adapter,
+one shared host RPC bridge, a view-locked controller, zero-raw live root and
+shared FanReadings. Twenty-three focused units and compiler/AST checks pass.
+No dashboard route or generic MCP cutover exists yet. Next: integrate reviewed
+main ancestry, add the Fans-only private asset and existing host bridge handoff,
+then browser/full gates and fresh independent acceptance. Keep Camera's separate
+lab integration and shared RPC dependency coordinated; do not duplicate listeners.
+
 ## 2026-09-01 final compact-metric renewal
 
 `befbbd5` also failed independent visual acceptance: short Progress values were

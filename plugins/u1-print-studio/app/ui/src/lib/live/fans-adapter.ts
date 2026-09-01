@@ -62,7 +62,7 @@ export const adaptFans = (value: unknown): FansPresentation => {
     const state = choice(row.state, ['known', 'not_reported'] as const);
     if ((state === 'known') !== (speedReported || rpmReported)) throw new Error('Inconsistent fan report');
     const percent = speedReported ? number(row.speedFraction, 1) * 100 : null;
-    const rpm = rpmReported ? number(row.rpm, 1_000_000) : null;
+    const rpm = rpmReported && row.rpm !== null ? number(row.rpm, 1_000_000) : null;
     if ((!speedReported && row.speedFraction !== null) || (!rpmReported && row.rpm !== null)) throw new Error('Unreported fan value');
     return { id: FAN_IDS[index], state, speedReported, rpmReported, percent, rpm };
   });

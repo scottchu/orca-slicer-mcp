@@ -1,0 +1,9 @@
+<script lang="ts">
+  import type { FanValue } from '../live/presentation';
+  import ReadingList from '../ui/ReadingList.svelte';
+  import FanReading from './FanReading.svelte';
+  let { items }: { items: readonly FanValue[] } = $props();
+</script>
+<ReadingList label="Fan readings" columns="single">
+  {#each items as reading (reading.id)}<FanReading {reading} />{/each}
+</ReadingList>

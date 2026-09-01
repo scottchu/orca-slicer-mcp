@@ -11,6 +11,8 @@
     "package:private-lab": "bun run scripts/package-private-lab.ts",
     "verify:private-lab": "bun run build && bun run scripts/package-private-lab.ts --check",
     "build:embed": "vite build --config vite.embed.config.ts",
+    "build:live-fans": "bun run scripts/build-live-fans.ts",
+    "verify:live-fans": "bun run scripts/build-live-fans.ts --check",
     "test:browser": "bun run scripts/build-state-harness.ts && playwright test"
   },
   "dependencies": {

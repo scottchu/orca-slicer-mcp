@@ -17,6 +17,7 @@ export const createHostRpc = (host: HostWindow, options: { timeoutMs?: number } 
   const pending = new Map<number, { resolve: (value: unknown) => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> }>();
   const listeners = new Set<(event: HostEvent) => void>();
   const latest = new Map<HostEvent['kind'], HostEvent>();
+  const standard = new Set<HostEvent['kind']>();
   let sequence = 0, disposed = false;
   let initialized: Promise<void> | undefined;
   const emit = (event: HostEvent) => {
@@ -46,16 +47,18 @@ export const createHostRpc = (host: HostWindow, options: { timeoutMs?: number } 
       else active.resolve(message.result);
       return;
     }
-    if (message.method === 'ui/notifications/tool-input') emit({ kind: 'input', value: message.params });
-    if (message.method === 'ui/notifications/tool-result') emit({ kind: 'result', value: message.params });
+    if (message.method === 'ui/notifications/tool-input') { standard.add('input'); emit({ kind: 'input', value: message.params }); }
+    if (message.method === 'ui/notifications/tool-result') { standard.add('result'); emit({ kind: 'result', value: message.params }); }
   };
   const globals = (value: Compatibility | undefined) => {
     if (!value) return;
-    if (value.toolInput !== undefined) emit({ kind: 'input', value: value.toolInput });
+    if (!standard.has('input') && value.toolInput !== undefined) emit({ kind: 'input', value: value.toolInput });
     const metadata = record(value.toolResponseMetadata);
     const complete = metadata?.mcp_tool_result ?? metadata?.call_tool_result;
-    if (complete !== undefined) emit({ kind: 'result', value: complete });
-    else if (value.toolOutput !== undefined) emit({ kind: 'result', value: { structuredContent: value.toolOutput } });
+    if (!standard.has('result')) {
+      if (complete !== undefined) emit({ kind: 'result', value: complete });
+      else if (value.toolOutput !== undefined) emit({ kind: 'result', value: { structuredContent: value.toolOutput, _meta: metadata } });
+    }
   };
   const compatibility = (event: Event) => globals(record((event as CustomEvent).detail)?.globals as Compatibility | undefined);
   host.addEventListener('message', receive as EventListener);

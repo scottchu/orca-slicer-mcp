@@ -1,5 +1,15 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 LIVE Fans preparatory author checkpoint
+
+UI compiler/AST check and the focused adapter/controller/RPC unit run actually
+pass: 23 tests (12 adapter, six controller, five bridge). The first isolated
+production package build is 84,447 bytes and excludes lab controls, fixtures,
+test entry points, Three and media acquisition. This is an unshipped preparatory
+checkpoint: the dashboard host/route, independent review, complete browser
+matrix and release gates remain pending. It does not establish live-printer
+or actual-device behavior. Further source changes require fresh package evidence.
+
 ## 2026-09-01 compact Progress metric — final renewed author checks
 
 Independent visual review of `befbbd5` rejected its separated `0 %` display
