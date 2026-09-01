@@ -27,6 +27,14 @@ text-visibility and ready/loading geometry combinations. No new feature track
 should delay review and delivery. This is not merged, deployed or actual-device
 accepted; the separate clean LIVE Fans preparation branch remains paused.
 
+Subsequent independent visual review rejected `befbbd5` for a separated `0 %`
+metric. The scoped end-alignment fix retains ready/loading geometry; the final
+matrix has 200 combinations and 48 strict glyph/unit gap checks. Updated
+artifact: 748,554 bytes (1,446-byte reserve). Fresh exact acceptance is required.
+LIVE Fans has a separate uncommitted preparatory checkpoint (decision/shared
+RPC/pure adapter/controller), paused without route changes; it is not part of
+this lab candidate.
+
 Latest user order: finish existing work, migrate/consolidate, merge/deploy/
 explicitly restart BOTH services/verify, then clean up. Do not begin new feature
 tracks. Complete the preserved all-nine lab-controls/loading candidate first

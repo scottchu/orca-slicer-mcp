@@ -37,9 +37,14 @@ those shared ready/loading layouts and supplies a mapped discriminated union.
 Author compiler/AST, 126 UI units, 94 Chrome cases (including 168 preset/width/
 text-scale combinations), deterministic packaging, 276 app tests/3,187
 assertions, 21 lifecycle and 24 ship tests plus bundles/signature/help pass.
-Artifact: 748,539 bytes, unchanged cap 750,000. Fresh exact independent
-validation/review and guarded delivery remain pending; author green gates do
-not override the rejected earlier head or imply actual-device/live acceptance.
+Independent visual review of successor `befbbd5` then found excessive spacing
+between a short progress number and its percent unit. The percentage group now
+uses inherited end alignment without changing its loading slot or other widgets.
+The final regression matrix covers 200 preset/width/text-scale combinations,
+including 48 number/unit adjacency checks. Artifact: 748,554 bytes, unchanged
+cap 750,000. Fresh exact independent validation/review and guarded delivery
+remain pending; author green gates do not override either rejected earlier head
+or imply actual-device/live acceptance.
 
 ### Visible lab lifecycle/scenario controls — current priority (2026-09-01)
 

@@ -2,7 +2,9 @@ import { expect, test, type Page } from '@playwright/test';
 
 const cases = [
   ['overview', 'lab_scenario=standby'], ['overview', 'lab_scenario=complete'],
-  ['progress', 'lab_scenario=printing&lab_percent=0'], ['progress', 'lab_scenario=printing&lab_percent=100'],
+  ['progress', 'lab_scenario=printing&lab_percent=0'], ['progress', 'test_percent=4'],
+  ['progress', 'lab_scenario=printing&lab_percent=25'],
+  ['progress', 'lab_scenario=printing&lab_percent=50'], ['progress', 'lab_scenario=printing&lab_percent=75'], ['progress', 'lab_scenario=printing&lab_percent=100'],
   ['progress', 'lab_scenario=complete'], ['progress', 'lab_scenario=standby'],
   ['heads', 'lab_scenario=loaded'], ['heads', 'lab_scenario=empty'], ['heads', 'lab_scenario=unknown'],
   ['jobs', 'lab_scenario=complete'], ['jobs', 'lab_scenario=standby'],
@@ -55,12 +57,28 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     test.setTimeout(60_000);
     await page.setViewportSize({ width, height: 1800 });
     for (const [view, query] of cases) {
-      await page.goto(`/dashboard/lab/${view}?${query}`);
-      await page.locator('[data-lab-controls]').waitFor();
+      const harness = query === 'test_percent=4';
+      await page.goto(harness ? '/__test/progress' : `/dashboard/lab/${view}?${query}`);
+      await page.locator(harness ? '[data-widget-shell]' : '[data-lab-controls]').waitFor();
       if (enlarged) await doubleText(page);
       expect.soft(await clippedText(page), `${view} ${query}`).toEqual([]);
+      if (view === 'progress' && query.includes('percent=')) {
+        const spacing = await page.locator('.percent').evaluate((element) => {
+          const value = element.querySelector('.value-slot > span'), unit = element.lastElementChild;
+          if (!value?.firstChild || !unit?.firstChild) return { gap: Infinity, limit: 0 };
+          const valueRange = document.createRange(), unitRange = document.createRange();
+          valueRange.selectNodeContents(value.firstChild); unitRange.selectNodeContents(unit.firstChild);
+          return { gap: unitRange.getBoundingClientRect().left - valueRange.getBoundingClientRect().right, limit: Math.max(4, .2 * Number.parseFloat(getComputedStyle(value).fontSize)) };
+        });
+        expect.soft(spacing.gap, `${view} ${query} compact value/unit`).toBeGreaterThanOrEqual(0);
+        expect.soft(spacing.gap, `${view} ${query} compact value/unit`).toBeLessThanOrEqual(spacing.limit);
+        if (width === 390 && ((!enlarged && query.endsWith('=0')) || (enlarged && query.endsWith('=100')))) {
+          await page.locator('[data-widget-shell]').screenshot({ path: test.info().outputPath(`compact-progress-${enlarged ? '200' : '100'}.png`) });
+        }
+      }
       const ready = await bounds(page);
-      await page.getByLabel('Preview state', { exact: true }).selectOption('loading');
+      if (harness) await page.evaluate(() => (window as unknown as { __progressLoading: () => void }).__progressLoading());
+      else await page.getByLabel('Preview state', { exact: true }).selectOption('loading');
       const loading = await bounds(page);
       expect.soft(loading.length).toBe(ready.length);
       for (let index = 0; index < ready.length; index++) for (let axis = 0; axis < 4; axis++) {
