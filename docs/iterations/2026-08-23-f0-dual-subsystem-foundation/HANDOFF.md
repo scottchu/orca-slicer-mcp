@@ -1,5 +1,23 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 shared-gradient slope candidate
+
+The isolated `codex/u1-gradient-slope` branch starts at merged PR64 `e1f57f0`.
+Only PercentageBackground CSS, its browser assertions, the deterministic lab
+artifact/hash pin and required records change. Tint slopes at 100 degrees
+inside an exact ratio-wide rectangle; the public component API and represented
+values remain unchanged. Author evidence is in the newest VALIDATION section.
+Freeze exact source, obtain separate validation/formal review, then use the
+standing PR/guarded merge/deploy/BOTH restart/scoped verification workflow.
+
+Resume preserved all-nine visible lab scenario/state controls and loading work
+after this small delivery, then integrate the separately authored synthetic
+Camera checkpoint using shared controls. Smaller visual Refresh and the later
+compact/medium/full presentation/MCP parameter remain separate queued slices.
+Do not drop seven remaining ready migrations, Bed Mesh axes, read-only Console,
+model/layer progress or production cutovers. Original dirty checkout and prior
+frozen source candidates remain untouched; no actual device/user claim exists.
+
 ## 2026-09-01 PR63 Fans private-lab slice shipped
 
 Reviewed `0f78e69` merged as `57a305b` and guarded release

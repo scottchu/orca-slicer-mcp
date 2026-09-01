@@ -1,5 +1,43 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 subtle percentage-gradient slope author evidence
+
+This isolated private-lab refinement uses 100-degree tint inside an exactly
+ratio-sized nonrepeating background rectangle. No public API, production
+widget, transport, auth or camera code changes. The larger lab-controls and
+synthetic Camera candidates remain in separate preserved branches.
+
+Commands actually run with pinned Bun 1.3.12: frozen app/UI installs; UI
+`bun run check`, `bun run test`, `bun run build`, `bun run package:private-lab`,
+focused `bun run test:browser -- percentage-background.spec.ts` then full
+`bun run test:browser`; repository `./scripts/check-repository.sh` with pinned
+Bun on PATH; app `bun run bundle:widget-vendor`, `bun run bundle`,
+`bun run bundle:server`, `bun run bundle:runtime`,
+`codesign -vvv --verify dist/u1-print-studio`, and `dist/u1-print-studio --help`.
+
+Compiler/AST and all 88 unit tests pass. Eight focused real-Chrome cases pass at
+320/390/590/720, including upper/lower-row pixel samples before/after the exact
+0/25/50/100-percent and over-target boundaries, neutral invalid ratios, 100-degree
+computed gradient, no repeat, unchanged child DOM identity/events/focus,
+unchanged geometry and forced-colors suppression. Thermals and Fans both use
+the same gradient leaf; existing seams and enlarged Thermals layout pass.
+
+The deterministic artifact is 727,096 bytes, SHA-256
+`2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`,
+only 38 bytes above shipped PR63 and 22,904 below the unchanged 750,000-byte
+hard cap. The already exceeded 720,000 soft target remains explicit review
+risk, not an implicit cap increase. Bundles, runtime signature/help pass.
+
+Full Chrome passes 66/66. The repository gate passes compiler/AST, 88 unit,
+deterministic package verification, 276 app tests/3,182 assertions, 21 lifecycle
+and 24 shipping tests. `git diff --check` passes; rebuilding production vendor
+assets introduces no production diff. Required records and remaining execution
+order are updated without changing those running surfaces.
+
+Evidence is author synthetic software/browser only, not independent approval,
+deployed-service, live-printer, actual-device or user acceptance. Exact
+independent review/validation precedes PR merge and guarded BOTH-service delivery.
+
 ## 2026-09-01 PR63 guarded merge/deploy/BOTH restart verification
 
 Independent validation and formal review approved exact

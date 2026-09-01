@@ -491,6 +491,9 @@ durable-monitor claim.
   over-target values. Decoration owns no spacing, clipping, sizing or progress
   semantics. Thermals is its first private-lab consumer; skeleton/ready seams,
   row geometry and enlarged-text readability must remain consistent.
+  The subtle tint direction is 100 degrees inside an exact left-aligned,
+  nonrepeating ratio-wide background; its represented fill boundary remains
+  vertical and accurate at every height.
   Fans & Air reuses this gradient through seven zero-raw canonical rows and a
   shared 13-pixel MetricValue, with 14-pixel names, independent null/zero percent
   and RPM, and no inferred running/fault state. Its skeleton retains static

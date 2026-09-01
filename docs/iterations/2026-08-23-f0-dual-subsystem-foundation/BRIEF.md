@@ -4,6 +4,11 @@
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`
 - Status: active
+- Current bounded priority: gently sloped shared percentage tint (100 degrees
+  inside an exact ratio-wide rectangle), then visible all-nine lab controls /
+  structural loading and separate synthetic Camera. Smaller visual Refresh and
+  content-aware compact/medium/full with a later MCP size parameter stay queued
+  separately; no production, API, auth or acquisition change in this slice.
 - Latest shipped slice: PR63 reviewed `0f78e69`, merged `57a305b`, deployed as
   `20260901-57a305b-pr63-20260901T134952-9c86bd`. BOTH services explicitly
   restarted and passed integrity/health plus 25 exact static and 26 security
