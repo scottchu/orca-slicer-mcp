@@ -202,7 +202,7 @@ describe("bed-mesh inbound composition", () => {
       expect(reads).toBe(1);
       await client.callTool({ name: "refresh_printer_observation", arguments: { view: "bed_mesh" } });
       expect(reads).toBe(1);
-      expect((await client.listResources()).resources).toHaveLength(22);
+      expect((await client.listResources()).resources).toHaveLength(24);
       const tools = (await client.listTools()).tools;
       expect(tools.filter(tool => (tool._meta?.ui as { visibility?: string[] })?.visibility?.includes("app") !== true)).toHaveLength(2);
     } finally { await client.close(); await server.close(); }

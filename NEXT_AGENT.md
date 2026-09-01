@@ -8,11 +8,26 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0025, 0027 through 0030 (0026 is reserved for earlier Queue work)
+5. decisions 0014 through 0025 and 0027 through 0031 (0026 is reserved for earlier Queue work)
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
+
+First finish exact-byte independent validation of the runtime 0.4.7/schema 12/
+observation-v13/camera-v9 candidate recorded in decision 0031 and the active
+iteration records. Frozen widget hashes are
+`1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
+and `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`;
+shared CSS is
+`6f11808888df189fa83bac98169d85ab42bb10ef4c105037efa64cb7ccc9c1e2`.
+The served Bed Mesh vendor block must retain the complete Three.js MIT notice.
+Do not regenerate or edit application bytes during that review.
+Author gates pass 263 tests/2,734 assertions, TypeScript, all three bundles and
+diff checks. If independently approved, follow the existing exact review → PR
+merge → exact merged build → guarded deploy → explicit BOTH-service restart →
+verification workflow. Browser/device visual acceptance must remain a separate
+unverified layer until actually performed.
 
 All focused widget tracks are delivered. Move next to **user visual review and
 bounded product iteration**, not another implementation track. Preserve the

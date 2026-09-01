@@ -84,7 +84,7 @@ describe("streamed JPEG extraction", () => {
   });
 
   test("budgets a slow first snapshot before bounded retry", () => {
-    expect(CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS).toEqual([20, 10]);
+    expect(CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS).toEqual([4, 2]);
   });
 
   test("returns the first complete JPEG without waiting for the response to close", () => {

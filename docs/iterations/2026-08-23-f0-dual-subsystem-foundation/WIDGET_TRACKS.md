@@ -7,6 +7,17 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
+The current bounded product-iteration candidate applies one shared white
+design-system source to all focused cards and camera, and refines Progress,
+Heads, Fans, Bed Mesh and camera reliability without cancelling or recombining
+any focused invocation. It is frozen at runtime 0.4.7/schema 12/observation-v13/
+camera-v9 with 24 resources. Author gates pass; independent validation is in
+progress. The locally generated Bed Mesh vendor block retains the complete
+Three.js MIT notice in served bytes. Frozen widget hashes are
+`1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
+and `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`.
+This candidate is not merged, deployed or visually/device accepted yet.
+
 All focused widget tracks are delivered. E Overview shipped in PR54 as exact
 release `20260831-aa9bd9d-pr54-20260831T201019-d7aa8a` on BOTH restarted,
 healthy and integrity-verified services at runtime 0.4.6/schema 12/

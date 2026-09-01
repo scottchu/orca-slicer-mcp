@@ -1,5 +1,27 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 unified widget and camera reliability — source freeze
+
+Decision 0031's smallest end-to-end source slice is frozen at runtime 0.4.7/
+schema 12/observation-v13/camera-v9. It contains the shared generated CSS
+contract, compact Progress layout, presence-first Heads/Overview, compact Fans,
+local exact Three.js Bed Mesh with exact 2D fallback, and bounded camera
+bootstrap/remount/fullscreen behavior. Compatibility aliases bring the resource
+count to 24; tool, auth, route and printer-read boundaries are unchanged.
+
+Author checks pass 263 tests/2,734 assertions, TypeScript, runtime/stdio/server
+bundles and diff checks. The generated served vendor block retains the complete
+Three.js MIT notice. Frozen SHA-256 values are
+`1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
+for the observation widget,
+`03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`
+for camera and
+`6f11808888df189fa83bac98169d85ab42bb10ef4c105037efa64cb7ccc9c1e2`
+for shared CSS. Independent exact-byte validation is active. Do not edit or
+regenerate the app candidate until it reports. If approved, next is the
+standing formal review and guarded PR merge/deploy/restart-BOTH/verify
+workflow. No deployment or visual/device acceptance is claimed.
+
 ## 2026-08-31 E compact Overview — shipped in PR54
 
 PR53 merged the reviewed Overview application as `4541ff12`. Its first guarded

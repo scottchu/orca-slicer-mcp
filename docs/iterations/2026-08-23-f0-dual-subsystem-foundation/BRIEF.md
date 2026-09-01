@@ -5,6 +5,18 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
+- Latest source candidate (2026-08-31): unify all focused observation cards and
+  camera under the shared design system while preserving independent tools,
+  routes, data projectors and read-only boundaries. Progress follows the compact
+  reference hierarchy; Heads/Overview use presence-first Empty/N/A semantics;
+  Fans use compact exact-fact rows; Bed Mesh uses locally bundled exact-pinned
+  Three.js/OrbitControls with exact 2D fallback; Camera has a bounded one-flight
+  snapshot/decode handshake, in-media feedback, stable mobile header and
+  same-document fullscreen continuity. Target runtime 0.4.7/schema 12/
+  observation-v13/camera-v9 with 24 resources and v12/v8 current-asset aliases.
+  Author and independent source checks precede guarded review/merge/deployment;
+  BOTH-service restart, served-byte verification and browser/phone visual QA
+  remain separate pending gates.
 - Latest priority (2026-08-31): implement E compact Overview under decision
   0021's completion addendum, decision 0029 and OBS-015. Explicit Overview
   demand concurrently requests main status plus all six independent non-camera

@@ -27,7 +27,10 @@ const QUERY_ROUTE =
   "/printer/objects/query?print_stats&virtual_sdcard&display_status&" +
   "heater_bed&extruder&extruder1&extruder2&extruder3&toolhead&webhooks";
 const WEBCAMS_ROUTE = "/server/webcams/list";
-export const CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS = [20, 10] as const;
+// Webcam discovery has its own 3-second cap. These attempts keep the server
+// inside the widget's 10-second tool budget and leave 1.5 seconds for decode,
+// so bridge-ready loading always terminates within twelve seconds.
+export const CAMERA_FRAME_ATTEMPT_TIMEOUTS_SECONDS = [4, 2] as const;
 let cachedSnapshotUrl: URL | null = null;
 let cachedStreamUrl: URL | null = null;
 

@@ -93,7 +93,7 @@ implementation-coverage labels. It loads no observations, widgets, or camera
 media. Current source lists ten entries; `/dashboard/jobs` remains Current Job,
 `/dashboard/job_history` remains its separate bounded History view, and
 `/dashboard/overview` is the compact composed headline view. The previously
-verified PR51 deployment remains runtime 0.4.5/schema 11/observation-v11/
+verified PR54 deployment remains runtime 0.4.6/schema 12/observation-v12/
 camera-v8 until this source is separately merged and shipped. Source merge alone
 never updates loaded services. The source HTTP Overview route and MCP Overview
 selector are implemented; public dashboard routes remain unavailable. Every process shares
@@ -154,16 +154,34 @@ unverified.
 
 Every channel's `doctor --json` reports one runtime contract containing the
 base runtime version, tool-schema version, observation-widget version, and
-camera-widget version. The current source contract is runtime `0.4.6`, tool
-schema `12`, observation widget `observation-v12`, and camera widget `camera-v8`.
-The previously verified deployment remains 0.4.5/schema 11/observation-v11/
+camera-widget version. The current source contract is runtime `0.4.7`, tool
+schema `12`, observation widget `observation-v13`, and camera widget `camera-v9`.
+The previously verified deployment remains 0.4.6/schema 12/observation-v12/
 camera-v8 until a guarded rollout installs these changed bytes.
-Observation-v11 through v1 and camera-v7/v6/v5/v4 remain current-asset aliases.
+Observation-v12 through v1 and camera-v8/v7/v6/v5/v4 remain current-asset aliases.
 The expanded closed enum has nine values; two model-visible/eight app-only tool
-counts are unchanged. Twenty-two resource URIs retain current/frozen compatibility.
+counts are unchanged. Twenty-four resource URIs retain current/frozen compatibility.
 The optional personal HTTP service returns the same contract from `/health`.
 Upgrade verification must compare these values with the intended source before
 asking a user to test a fresh task; process liveness alone is insufficient.
+
+The two self-contained widget resources are generated from durable local
+sources before validation:
+
+```sh
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+```
+
+That deterministic step injects the exact shared CSS fragment into both widget
+documents and injects the exact-pinned local Three.js 0.185.1 plus
+OrbitControls browser bundle into the observation document. It also prepends
+the complete Three.js MIT copyright and permission notice to the served bytes.
+Tests require byte-for-byte source/asset parity, the exact dependency version,
+the full surviving notice and no runtime stylesheet, module or CDN fetch.
+Feather and Lucide icon attributions remain locally bundled. Release builds and
+reviews must run this generator before typechecking/tests and reject any
+generated drift.
 
 Plugin installation and upgrades require a newly loaded MCP process. Existing
 tasks can retain the prior process and widget URI, and one observed Codex

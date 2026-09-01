@@ -233,8 +233,9 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v12.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v13.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
+      "ui://u1-print-studio/observation-v12.html",
       "ui://u1-print-studio/observation-v11.html",
       "ui://u1-print-studio/observation-v10.html",
       "ui://u1-print-studio/observation-v9.html",
@@ -339,7 +340,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(CAMERA_WIDGET_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v8.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v9.html");
     expect(LEGACY_CAMERA_WIDGET_URIS[0]).toBe(
       "ui://u1-print-studio/camera-v3.html"
     );
@@ -361,10 +362,10 @@ describe("U1 status MCP App contract", () => {
   test("retains previous current observation and camera aliases with exact frozen legacy resources", async () => {
     const client = await connectClient();
     const listed = await client.listResources();
-    expect(listed.resources).toHaveLength(22);
-    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v11.html");
+    expect(listed.resources).toHaveLength(24);
+    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v12.html");
     for (const uri of [...LEGACY_FOCUSED_WIDGET_URIS,
-      "ui://u1-print-studio/camera-v7.html", "ui://u1-print-studio/camera-v6.html",
+      "ui://u1-print-studio/camera-v8.html", "ui://u1-print-studio/camera-v7.html", "ui://u1-print-studio/camera-v6.html",
       "ui://u1-print-studio/camera-v5.html", "ui://u1-print-studio/camera-v4.html",
     ]) {
       expect(listed.resources.map(resource => resource.uri)).toContain(uri);
@@ -787,24 +788,24 @@ describe("camera-only widget contract", () => {
   });
 
   test("uses the selected white camera shell without artificial image overlays", () => {
-    expect(CAMERA_WIDGET_HTML).toContain('class="dashboard"');
+    expect(CAMERA_WIDGET_HTML).toContain('class="dashboard u1-card"');
     expect(CAMERA_WIDGET_HTML).not.toContain('<header class="camera-heading">');
     expect(CAMERA_WIDGET_HTML).not.toContain("<h1>Printer Camera</h1>");
     expect(CAMERA_WIDGET_HTML).not.toContain("Read only");
     expect(CAMERA_WIDGET_HTML).toContain('id="fullscreen"');
     expect(CAMERA_WIDGET_HTML).toContain('id="picture-in-picture"');
-    expect(CAMERA_WIDGET_HTML).toContain("--brand: #f4b927;");
+    expect(CAMERA_WIDGET_HTML).toContain("--brand: var(--u1-accent);");
     expect(CAMERA_WIDGET_HTML).toContain("width: min(100%, 1120px);");
     expect(CAMERA_WIDGET_HTML).not.toContain("background-size: 42px 42px;");
-    expect(CAMERA_WIDGET_HTML).toContain('<header class="camera-header">');
-    expect(CAMERA_WIDGET_HTML).toContain("<h1>U1 Camera</h1>");
+    expect(CAMERA_WIDGET_HTML).toContain('<header class="camera-header u1-header">');
+    expect(CAMERA_WIDGET_HTML).toContain('<h1 class="u1-title">U1 Camera</h1>');
     expect(CAMERA_WIDGET_HTML).toContain('aria-label="Open live camera"');
     expect(CAMERA_WIDGET_HTML).not.toContain(">Go Live</button>");
     expect(WIDGET_HTML).not.toContain('class="camera"');
   });
 
   test("uses only the MCP Apps bridge for camera data and signaling", () => {
-    expect(CAMERA_WIDGET_HTML).toContain('rpcRequest("tools/call"');
+    expect(CAMERA_WIDGET_HTML).toContain('"tools/call",');
     expect(CAMERA_WIDGET_HTML).toContain('callTool("get_u1_camera_frame"');
     expect(CAMERA_WIDGET_HTML).toContain("authorizeLive: true");
     expect(CAMERA_WIDGET_HTML).toContain("activationToken: activation.token");
@@ -940,8 +941,8 @@ describe("instrument-strip observation widget contract", () => {
   });
 
   test("renders missing and advertised-only semantics as unknown", () => {
-    expect(WIDGET_HTML).toContain("Material unknown");
-    expect(WIDGET_HTML).toContain("Color unknown");
+    expect(WIDGET_HTML).toContain('empty ? "Empty"');
+    expect(WIDGET_HTML).toContain('loaded ? reportedMaterial || "N/A" : "N/A"');
     expect(WIDGET_HTML).toContain('header("Current Job", true, data.sourceObservedAt');
     expect(WIDGET_HTML).toContain('header("Job History", true, data.sourceObservedAt');
     expect(WIDGET_HTML).toContain("No history entries returned");
@@ -955,14 +956,14 @@ describe("instrument-strip observation widget contract", () => {
   });
 
   test("uses header observation information and one actions-only footer", () => {
-    expect(WIDGET_HTML).toContain('class="instrument-footer"');
-    expect(WIDGET_HTML).toContain('class="instrument-info"');
-    expect(WIDGET_HTML).toContain('class="instrument-footer"><button');
+    expect(WIDGET_HTML).toContain('class="instrument-footer u1-footer"');
+    expect(WIDGET_HTML).toContain('class="instrument-info u1-meta"');
+    expect(WIDGET_HTML).toContain('class="instrument-footer u1-footer"><div class="u1-primary-actions"><button class="refresh u1-action u1-action--round"');
     expect(WIDGET_HTML).toContain("Observed ${date.toLocaleTimeString");
     expect(WIDGET_HTML).toContain("Observation time unavailable");
     expect(WIDGET_HTML).toContain('stale: "Stale"');
     expect(WIDGET_HTML).toContain('offline: "Offline"');
-    expect(WIDGET_HTML).toContain('--negative: #b83232;');
+    expect(WIDGET_HTML).toContain('--negative: var(--u1-negative);');
     expect(WIDGET_HTML).not.toContain('--negative: #ff8585;');
     expect(WIDGET_HTML).not.toContain("Read only");
     expect(WIDGET_HTML).not.toContain("Current reading");
@@ -984,7 +985,8 @@ describe("instrument-strip observation widget contract", () => {
 
   test("supports iPhone viewports, safe areas, and touch targets", () => {
     expect(WIDGET_HTML).toContain("viewport-fit=cover");
-    expect(WIDGET_HTML).toContain("min-height: 100dvh");
+    const observationStyle = WIDGET_HTML.split("<style>")[1]!.split("</style>")[0]!;
+    expect(observationStyle).not.toMatch(/body\s*\{[^}]*min-height:\s*100d?vh/s);
     expect(WIDGET_HTML).toContain("env(safe-area-inset-top, 0px)");
     expect(WIDGET_HTML).toContain('@media (max-width: 620px)');
     expect(WIDGET_HTML).toContain('@media (max-width: 390px)');
@@ -993,9 +995,10 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain("min-height: 44px");
     expect(WIDGET_HTML).toContain("touch-action: manipulation");
     expect(WIDGET_HTML).toContain("notifyIntrinsicHeight");
-    expect(WIDGET_HTML).toContain("--ink: #1c1e20;");
-    expect(WIDGET_HTML).toContain("--brand: #f4b927;");
-    expect(WIDGET_HTML).not.toContain("fetch(");
+    expect(WIDGET_HTML).toContain("--ink: var(--u1-ink);");
+    expect(WIDGET_HTML).toContain("--brand: var(--u1-accent);");
+    const moduleScript = WIDGET_HTML.split('<script type="module">')[1]!.split("</script>")[0]!;
+    expect(moduleScript).not.toContain("fetch(");
     expect(WIDGET_HTML).not.toContain("MOONRAKER_BASE_URL");
   });
 });
