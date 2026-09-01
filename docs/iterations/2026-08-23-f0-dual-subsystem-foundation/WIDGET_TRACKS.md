@@ -11,12 +11,12 @@ independent validation and review before shipment. The regression matrix retains
 200 combinations, including 48 adjacency checks; earlier rejected heads were
 not deployed.
 
-## Current slice: Thermals after delivered Fans, with Camera separately owned
+## Current slice: Thermals after delivered Fans and Camera
 
 PR67 shipped: reviewed `07e1c144`, merged `c924bf9`, both services restarted and
 independently post-verified. All nine observation control/loading paths below
-are delivered. Camera's synthetic lab is delivered through PR69; production
-cutovers and seven ready-shell debts remain.
+are delivered. Camera's synthetic lab is delivered through PR69 and its focused
+production dashboard through PR71. Remaining cutovers and seven ready-shell debts remain.
 
 | Track | Source/composition | State controls | Live cutover | Delivery |
 | --- | --- | --- | --- | --- |
@@ -29,7 +29,7 @@ cutovers and seven ready-shell debts remain.
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Bed Mesh | Svelte/Three chart, native-tag shell debt | Shipped controls; no Three mount while loading | Pending | PR67 deployed/post-verified |
-| Camera | Zero-raw root/widget, shared PageLayout and registered media/status leaves | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | Pending; real session checkpoint not wired, production remains legacy | PR69 deployed/post-verified |
+| Camera | Zero-raw real/lab roots and widgets, generic persistent VideoSurface/MediaStatus | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | PR71 focused private dashboard delivered; legacy/MCP unchanged | PR71 service/private-static/fetched-byte synthetic checks passed; real stream/device and external unmatched-root availability remain unaccepted |
 
 Acceptance progression: author software tests → separate exact-SHA validation →
 separate formal review → PR merge → exact deployment → explicit BOTH service
@@ -39,7 +39,8 @@ Chrome, not phone, WebRTC or printer evidence.
 
 ## Remaining migration and cleanup
 
-PR70 LIVE Fans is delivered. Thermals is the current production cutover slice.
+PR70 LIVE Fans and PR71 focused Camera are delivered. Thermals is the current
+production cutover slice, renewing exact acceptance on reviewed Camera main.
 `LIVE_PARITY.md` records the read-only remaining-eight acceptance inventory;
 those adapters and generic resource replacement remain pending.
 
@@ -58,8 +59,9 @@ those adapters and generic resource replacement remain pending.
   cutover; lab state selection is not production loading behavior.
   Shared transport and focused Fans are delivered by PR70; Thermals is in
   progress, seven remaining observation adapters and generic MCP are pending.
-- [ ] Review/implement live Camera cutover, startup/fullscreen-exit continuity,
-  non-shifting snapshot feedback and truthful FPS.
+- [x] Review/implement the focused private Camera cutover, startup/fullscreen-exit
+  continuity, non-shifting snapshot feedback and truthful FPS (PR71). Actual
+  device/real-stream acceptance remains separate and pending.
 - [ ] Inventory production HTML/assets, host routes and MCP resource aliases
   before retirement; required compatibility readers remain until replaced.
 - [ ] After accepted replacements and delivery, remove superseded widget code,

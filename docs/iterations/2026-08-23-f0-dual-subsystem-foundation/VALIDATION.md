@@ -1,5 +1,76 @@
 # F0 dual-subsystem foundation validation
 
+## Current checkpoint: Thermals renewal after delivered Camera PR71
+
+Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly
+integrated in this PR72 merge. Additive source/record conflicts are resolved;
+renewed combined author gates PASS:256 UI,138 Chrome,290 app/3,400 assertions,
+21 lifecycle and24 shipping tests, compiler/AST, five deterministic packages,
+runtime bundles/signature/help. Exact independent validation/review is next;
+no Thermals acceptance or deployment is claimed.
+Fans PR70 and focused Camera PR71 are deployed. Thermals remains unshipped;
+seven other observation cutovers, generic MCP/legacy replacement and all named
+WIDGET_TRACKS remain open. Preserve existing widget-first execution order.
+
+PR71 independently accepted `c9311eb`, merged as `0aa83a0` with tree
+`af970729c41d041533d5d6f6c909a3a43d49a21b`, and shipped release
+`20260901-0aa83a0-pr71-20260901T170551-59206e`. Operator reports BOTH explicitly
+restarted, loaded/healthy/integrity verified at runtime0.4.8/schema12/obs14/camera10,
+28 static and29 security checks passed, preservation true, no rollback needed;
+snapshot `20260901T170638-b77ef9` retained. Canonical checkout/recovery refs and
+8,689 ignored entries were preserved. Camera artifact89,919 bytes has SHA256
+`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`.
+
+Independent `live_camera_exact_validation` postdeployment PASS covers BOTH
+service/plist identities,15 manifest hashes,6 exact private static routes with
+no-store/CSP, and fetched-byte synthetic host/media behavior (five probes and
+six hash checks). Public loopback rejects four private dashboard/lab routes.
+External unmatched-root routes still return502 from an unrelated unavailable
+upstream, including pre-existing widget routes: this is not a Camera-specific
+regression, but external-root availability/isolation remains unaccepted. No
+routing/auth changes were made. Actual phone/real-stream evidence remains
+pending. The separately stale installed-plugin connection still requires
+approval before reload/reinstallation; no such action occurred.
+
+
+## PR72 renewed author evidence on reviewed PR71 main
+
+Actual commands used pinned Bun1.3.12 on normal Node PATH:
+
+- UI `bun run check`, `bun run test`, all three `build:live-*` commands,
+  `bun run build`, `bun run package:private-lab`: PASS. Compiler/AST has
+  zero diagnostics and256 unit tests pass; no new raw-composite debt.
+- Repository `./scripts/check-repository.sh`: PASS; all five deterministic
+  artifact comparisons,290 app tests/3,400 assertions,21 service lifecycle and
+  24 shipping tests. Standalone `uv run --no-project scripts/test_u1_ship.py`
+  also passes24. Its first merge run identified one stale29-count assertion;
+  the corrected source-derived combined inventory is29 static/30 security.
+- UI `bun run test:browser`:138/138 PASS, including delivered Camera/Fans,
+  both labs, and all9 Thermals cases. Author inspected normal320 and enlarged720
+  extreme-value captures: readable values/units/receipts and unclipped focus.
+- App `bundle:widget-vendor`, `bundle`, `bundle:server`, `bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and executable
+  `--help`: PASS. `git diff --check`: PASS. No printer/media acquisition,
+  production service mutation, auth change or plugin reinstall occurred.
+
+| Artifact | UTF-8 bytes | SHA256 |
+| --- | ---: | --- |
+| Production Thermals | 86140 | `032fe53863f79e718b51ac5fd5cb43c3f73d79a4b25c196d1bd19a1309e1f22d` |
+| Production Fans | 85654 | `ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d` |
+| Production Camera | 89919 | `b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10` |
+| Observation lab | 749112 | `061fec9a18d12c0c9f4e7329fcb0a5ad169ec71fb47326a302352f44fcdd7fa0` |
+| Camera lab | 78795 | `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a` |
+
+Each production artifact remains under its separate100,000-byte limit.
+Two-lab aggregate827,907/830,000 leaves2,093 bytes; individual750,000/80,000
+limits remain intact. Camera production bytes and shared RPC/Camera/media
+source are identical to reviewed PR71 main. The integration does not change
+Camera acquisition/session interfaces or generic MCP aliases. This is author
+software/synthetic evidence; separate exact acceptance and guarded delivery
+must still precede any Thermals completion claim.
+
+## Historical author and delivery checkpoints (superseded where noted above)
+
 ## 2026-09-01 LIVE Thermals final author gates
 
 Actual final commands used pinned Bun1.3.12 with normal Node PATH:
@@ -89,6 +160,74 @@ decision0034 and LIVE_PARITY. Initial focused unit run passes44 tests including
 22 real Thermals adapter cases plus unchanged Fans adapter/controller cases.
 No service, printer, camera or user-device action occurred. Further implementation
 and complete exact-candidate gates remain pending.
+## 2026-09-01 real Camera dashboard author gates
+
+Reviewed main `db1c926` is explicitly integrated; its shipped Fans/shared-RPC
+source is unchanged. With pinned Bun1.3.12 and normal Node PATH, actual commands:
+
+- Repository `./scripts/check-repository.sh`: PASS,211 UI units, Svelte/TS/AST
+  zero errors/warnings, exact deterministic Fans/Camera/two-lab packaging,
+  286 app tests/3,345 assertions,21 lifecycle24 shipping tests. This includes
+  the new UTF-8 byte/graph negative tests and exact private/public Camera routes.
+- UI `bun run build:live-camera`, `bun run check`, and
+  `bun run test -- src/lib/camera src/lib/media`: PASS,57 focused tests including
+  prior synthetic tests, real transport/session/peer/controller and playback.
+- UI `bun run test:browser`:129/129 Chrome PASS on the integrated candidate
+  before the final narrow loadedmetadata/playing capability-readiness listeners.
+- UI `bun x playwright test tests/visual/live-camera.spec.ts --workers=1`:
+  final8/8 PASS on current rebuilt bytes, including normal/200% text at
+  320/390/590/720, skeleton-to-ready geometry, snapshot-first host calls,
+  measured local-video FPS, native Chromium fullscreen, local fullscreen with
+  unchanged video/srcObject/track, non-flow snapshot feedback,5s stall fallback,
+  retry and one-time persisted-page restoration. Final cases additionally
+  exercise feature-detected native PiP entry or graceful rejection, emulated
+  Safari presentation API and rejected fullscreen without disconnecting.
+  Normal/enlarged390 screenshots were visually inspected for compact anatomy
+  and readable status. Fixture media is generated only in test source; it is
+  absent from the production graph and does not prove actual printer/device use.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and `dist/u1-print-studio --help`: PASS. Server/runtime/signature/help reran
+  after the final host and presentation source changes.
+- `git diff --check`: PASS.
+
+Final production Camera:89,919 raw UTF-8 bytes, SHA-256
+`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`.
+Independently reviewed cap100,000; one explicit compiled-Svelte entry and no
+runtime imports/assets. Existing Fans85,315 and two labs748,816 +78,795
+=827,611 are byte-unchanged from reviewed main. Their separate caps remain.
+
+One exploratory `bun test src` command selected UI Vitest files in Bun's
+non-DOM runner; it was discarded, not counted as a gate. An intermediate
+repository rerun caught asset mismatch while the author rebuilt mutable Camera
+bytes during its test process; it was also discarded. The final repository
+command above ran against stabilized source/artifact and passed all gates.
+
+Evidence boundary: author software/protocol/local Chrome only. Independent
+validation must run the full129 matrix against the final frozen pin, then formal
+review and guarded release remain mandatory. No real printer/camera acquisition,
+service restart or actual-user-device acceptance occurred in these author gates.
+
+## 2026-09-01 real Camera typed-port checkpoint
+
+On reviewed PR69 merge `ef5b239`, author ran from the app's ui directory using
+the pinned Bun1.3.12 installation and normal Node:
+
+- `bun run check`: Svelte/TypeScript zero errors/warnings, AST contracts pass.
+- `bun run test -- src/lib/camera/transport.test.ts src/lib/camera/session.test.ts src/lib/camera/peer.test.ts src/lib/media/playback.test.ts`:
+  38/38 pass (8 transport,19 session,6 peer,5 playback).
+
+The initial transport ceiling test exposed regex stack exhaustion at a4MiB
+frame. A flat bounded base64 validation scan fixes it; the full-byte-ceiling
+regression now passes. Other checks cover exact source time/JPEG bytes, strict
+downstream metadata/ICE/SDP bounds, invalid outgoing requests, malformed returned
+lease release, unchanged singleflight/deadline session behavior, peer/track
+ownership, stale callbacks and persistent-video playback recovery.
+
+This is author pure/mock-browser-port evidence only, not independent acceptance,
+production integration, actual browser rendering or real printer acquisition.
+No artifact or route changed. Next integrate reviewed shared HostRpc main before
+the end-to-end Camera presentation/build/route slice; full gates remain pending.
 
 ## 2026-09-01 renewed PR70 combined-tree author gate PASS
 

@@ -12,6 +12,7 @@ import dashboardIndexHtml from "../public/dashboard-index.html" with { type: "te
 import observationLabHtml from "../public/svelte-observation-lab.html" with { type: "text" };
 import liveFansHtml from "../public/svelte-live-fans.html" with { type: "text" };
 import liveThermalsHtml from "../public/svelte-live-thermals.html" with { type: "text" };
+import liveCameraHtml from "../public/svelte-live-camera.html" with { type: "text" };
 import cameraLabHtml from "../public/svelte-camera-lab.html" with { type: "text" };
 
 import {
@@ -85,6 +86,7 @@ const FOCUSED_DASHBOARD_PATHS = new Set([
 const CAMERA_DASHBOARD_PATH = "/dashboard/camera";
 const LIVE_FANS_WIDGET_PATH = "/dashboard/fans_widget";
 const LIVE_THERMALS_WIDGET_PATH = "/dashboard/thermals_widget";
+const LIVE_CAMERA_WIDGET_PATH = "/dashboard/camera_widget";
 const CAMERA_WIDGET_PATH = "/camera-widget";
 const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
 const MAX_REQUEST_BYTES = 128 * 1024;
@@ -251,7 +253,7 @@ export function createStatusDashboardHandler(
       return true;
     }
 
-    if (pathname === CAMERA_WIDGET_PATH) {
+    if (pathname === CAMERA_WIDGET_PATH || pathname === LIVE_CAMERA_WIDGET_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -266,7 +268,7 @@ export function createStatusDashboardHandler(
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
       });
-      res.end(readCameraWidgetHtml());
+      res.end(pathname === LIVE_CAMERA_WIDGET_PATH ? liveCameraHtml : readCameraWidgetHtml());
       return true;
     }
 

@@ -1,8 +1,9 @@
 /** Parsed, component-private ports. No host envelopes, network URLs or DOM. */
 export type CameraSnapshot = Readonly<{ image: string; observedAt: string | null }>;
 export type CameraFrameResult = Readonly<{ snapshot: CameraSnapshot | null; activationToken?: string }>;
-export type CameraOffer = Readonly<{ sessionId: string; sdp: string; iceServers: readonly unknown[] }>;
-export type CameraCandidate = Readonly<{ candidate: string; sdpMid: string | null; sdpMLineIndex: number | null }>;
+export type CameraIceServer = Readonly<{ urls: string | string[]; username?: string; credential?: string }>;
+export type CameraOffer = Readonly<{ sessionId: string; sdp: string; iceServers: readonly CameraIceServer[] }>;
+export type CameraCandidate = Readonly<{ candidate: string; sdpMid: string | null; sdpMLineIndex: number | null; usernameFragment?: string | null }>;
 export type CameraTransport = {
   frame: (options: { authorizeLive: boolean }) => Promise<CameraFrameResult>;
   open: (activationToken: string) => Promise<CameraOffer>;
@@ -254,6 +255,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   const close = () => {
     if (disposed) return;
     liveIntent = false;
+    savedRestoreAttempted = true;
     resumeAfterShow = false;
     ports.persistLiveIntent(false);
     stopLive();
@@ -262,6 +264,18 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   };
   return {
     state: () => state,
+    acceptHostFrame: async (result: CameraFrameResult): Promise<boolean> => {
+      if (disposed || hidden || !result.snapshot) return false;
+      if (state.snapshot?.observedAt && result.snapshot.observedAt && result.snapshot.observedAt <= state.snapshot.observedAt) return false;
+      cancelSnapshot();
+      const generation = snapshotGeneration;
+      publish({ refreshing: true, feedback: null });
+      const accepted = await acceptSnapshot(result, generation);
+      if (disposed || hidden || generation !== snapshotGeneration) return false;
+      publish({ phase: liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error', refreshing: false });
+      scheduleFallback();
+      return accepted;
+    },
     refreshSnapshot,
     goLive: () => { if (!disposed && !hidden) ports.persistLiveIntent(true); return openLive(); },
     restoreSavedIntent: (previouslyAuthorized: boolean) => {
