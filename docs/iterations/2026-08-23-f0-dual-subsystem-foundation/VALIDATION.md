@@ -13,6 +13,92 @@ This is reviewed Git, release, service, health, integrity, security and static-
 route evidence. It does not establish printer, camera or actual-device
 acceptance; none of those surfaces was contacted or claimed.
 
+## 2026-09-01 all-observation Svelte private-lab author evidence
+
+Implementation ran only in the isolated
+`codex/u1-svelte-observation-lab` worktree from exact merged main `f44bd06`.
+No service, printer, camera, auth or Tailscale surface was contacted.
+
+Commands actually run:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun install --frozen-lockfile
+bun run check
+bun run test
+bun run test:browser
+
+cd ..
+bun install --frozen-lockfile
+bun run ui:verify
+bun run ui:verify
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes with zero errors/warnings. Vitest passes 20/20 across
+  shared tokens/anatomy, Bed Mesh and all eight new components/strict bridge
+  validators. Adversarial cases reject extra identity/path fields, invalid
+  envelopes/times/enums/shapes, nonfinite/out-of-range numbers, unsafe material
+  text, contradictory empty-head metadata and reordered fixed domains.
+- Real Chrome passes 40/40 through the actual private handler at
+  320/390/590/720. The directory has nine links and unlinked Camera pending.
+  Every new view has one header/body/footer owner, exact shared inset, one
+  44-by-44 bottom Refresh, no overflow, console error or nonlocal request, and
+  overlay feedback changes neither card height nor observed timestamp. Bed Mesh
+  retains its paired exact 4:3 2D/3D frame and readability contract.
+- The actual captures were compared with the user-selected Progress and Heads
+  references. Progress retains the large lightweight percentage, continuous
+  8-pixel amber bar, layers/ETA and elapsed hierarchy without the reference's
+  unused whitespace. Heads preserves actual-color weak washes and makes Empty/
+  N/A neutral gray. Fans & Air is icon-led with restrained percent background
+  fill and compact right-aligned RPM; Overview is eight compact tiles.
+- The private handler returns identical bytes for the exact directory and nine
+  child routes with optional trailing slash (20 GET checks), restrictive CSP
+  and zero acquisition callbacks. Camera-lab, nested, encoded, traversal and
+  case variants return 404; all exact non-GETs return 405. Public/local normal
+  service routes return 404. Shipping derives the ten private paths and records
+  26 isolation checks without widening permitted read routes.
+- Two sequential verification builds reproduce one self-contained 717,295-byte
+  package, below the 750 KB bound, with SHA-256
+  `0842f9b316421886285e6be74b39a92700e508aa8cba48695b59a3446c1a2f5c`.
+  It contains no external asset, acquisition endpoint, Camera implementation or
+  generic embed.
+- The full repository gate passes 275 app tests/3,168 assertions, 21 lifecycle
+  tests, 24 shipping tests and repository policy. Bundles pass: `dist/stdio.js`
+  is 2,811,271 bytes/SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/server.js` is 3,870,447 bytes/SHA-256
+  `05e70250d26b8899bc5a82aa69b3d9cf477418a315dfcfa8dfdfc71c4c259509`;
+  `dist/u1-print-studio` is 65,229,648 bytes/SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`
+  and its required signature/help contract passes.
+- Existing production SHA-256 remains
+  `a01768e408f3566d6e93aea4ea208930dfcd9e21e71ba372a15f8e7a306450e9`
+  for `widget.html`,
+  `43e4d030dff321a8eb18d9794fe0e3e71f0ddce4b3027a8533f83db01b0f9405`
+  for `camera-widget.html`,
+  `4460ae500cd8e5fb04edeabc48af8462f40048c4e6494d3be8ef7f87bc487a0c`
+  for the status host and
+  `25c50f7ca45c76d7d914922d461b56fe009993aba99bed341dff2df0434926f2`
+  for the camera host.
+
+This proves author static/software, fixture-browser, bridge-validation,
+deterministic-package and private/public-isolation behavior. It does not prove
+independent approval, deployment, MCP-host behavior, live telemetry, camera,
+printer safety, actual-device rendering or user acceptance.
+
 ## 2026-09-01 Svelte Bed Mesh canonical-profile renewal
 
 Formal review blocked exact candidate `a6363fd`: the Svelte bridge guarded

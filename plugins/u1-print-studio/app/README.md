@@ -77,7 +77,7 @@ The source contract is runtime 0.4.8/schema 12, with twenty-six resources, nine
 observation selectors, and unchanged two-visible/eight-app-only tool counts.
 The private source directory has ten entries including the composed Overview.
 PR58 deployed runtime 0.4.8/schema 12/observation-v14/camera-v10 to both
-services. The Svelte Bed Mesh lab is a later source candidate and does not
+services. The Svelte observation lab is a later source candidate and does not
 change those runtime contract values or any MCP resource.
 A failure from an old task is not evidence that the current staged
 runtime is missing; verify the installed descriptor, executable, and a fresh
@@ -108,8 +108,11 @@ retain frozen compatibility bytes). Both use the same tool-call shape
 while retaining the exact HTTP signaling adapter for development coverage.
 
 The exact synthetic Svelte fixture lab is separately available only from the
-private dashboard at `/dashboard/lab/bed_mesh`; it is intentionally absent from
-the ten-entry directory and every MCP widget/resource.
+private dashboard at `/dashboard/lab` and the nine exact non-camera child
+routes `overview`, `progress`, `thermals`, `heads`, `jobs`, `job_history`,
+`queue`, `fans`, and `bed_mesh`. Its own directory marks Camera pending and
+does not link it. The lab is intentionally absent from the ten-entry production
+directory and every MCP widget/resource.
 
 `bun run bundle:widget-vendor` is the reproducible widget-asset gate. It injects
 `src/widget-shared.css` byte-for-byte into both self-contained HTML resources

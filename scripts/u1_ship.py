@@ -27,7 +27,7 @@ REPOSITORY = "scottchu/orca-slicer-mcp"
 REMOTES = {f"https://github.com/{REPOSITORY}", f"https://github.com/{REPOSITORY}.git", f"git@github.com:{REPOSITORY}.git", f"ssh://git@github.com/{REPOSITORY}.git"}
 SHA = re.compile(r"[0-9a-f]{40}\Z")
 APP = Path("plugins/u1-print-studio/app")
-PRIVATE_BED_MESH_LAB_ROUTE = "/dashboard/lab/bed_mesh"
+PRIVATE_LAB_ROUTE = "/dashboard/lab"
 
 
 class ShipError(RuntimeError):
@@ -79,17 +79,23 @@ def static_contract(source):
     require(match is not None, "Unsupported focused-route contract")
     routes = re.findall(r'"(/dashboard/[a-z_]+)"', match[1])
     require(routes and len(routes) == len(set(routes)), "Invalid focused-route inventory")
+    lab_match = re.search(r"OBSERVATION_LAB_PATHS = new Set\(\[(.*?)\]\)", text, re.S)
+    require(lab_match is not None, "Unsupported private-lab route contract")
+    lab_routes = re.findall(r'"(/dashboard/lab(?:/[a-z_]+)?)"', lab_match[1])
+    require(lab_routes and len(lab_routes) == len(set(lab_routes)) and PRIVATE_LAB_ROUTE in lab_routes,
+            "Invalid private-lab route inventory")
     directory = DirectoryLinks()
     directory.feed((app / "public/dashboard-index.html").read_text())
     require(set(directory.links) == set(routes) | {"/dashboard/camera"} and len(directory.links) == len(routes) + 1, "Directory links and focused routes disagree")
     files = {(8788, route): "status-dashboard-host.html" for route in routes}
-    files.update({(8788, "/dashboard"): "dashboard-index.html", (8788, "/dashboard/"): "dashboard-index.html", (8788, "/dashboard/camera"): "camera-dashboard-host.html", (8788, PRIVATE_BED_MESH_LAB_ROUTE): "svelte-bed-mesh-lab.html", (8788, "/widget"): "widget.html", (8787, "/widget"): "widget.html", (8788, "/camera-widget"): "camera-widget.html"})
+    files.update({(8788, route): "svelte-observation-lab.html" for route in lab_routes})
+    files.update({(8788, "/dashboard"): "dashboard-index.html", (8788, "/dashboard/"): "dashboard-index.html", (8788, "/dashboard/camera"): "camera-dashboard-host.html", (8788, "/widget"): "widget.html", (8787, "/widget"): "widget.html", (8788, "/camera-widget"): "camera-widget.html"})
     return {f"{port}{route}": {"port": port, "route": route, "sha256": digest(app / "public" / name)} for (port, route), name in files.items()}
 
 
 def http_read(port, route):
     require(port in (8787, 8788, 8789), "Unexpected verification port")
-    require(route in ("/health", "/widget", "/camera-widget", "/mcp", "/auth/enroll", "/dashboard", "/dashboard/", PRIVATE_BED_MESH_LAB_ROUTE) or re.fullmatch(r"/dashboard/[a-z_]+", route), "Unexpected verification route")
+    require(route in ("/health", "/widget", "/camera-widget", "/mcp", "/auth/enroll", "/dashboard", "/dashboard/") or re.fullmatch(r"/dashboard/(?:lab/)?[a-z_]+", route), "Unexpected verification route")
     class NoRedirect(urllib.request.HTTPRedirectHandler):
         def redirect_request(self, *args, **kwargs):
             return None

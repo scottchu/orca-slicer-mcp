@@ -147,3 +147,71 @@ implementations; that duplication is deliberate and bounded by per-widget
 cutover gates. The private server bundle grows by the self-contained Bed Mesh
 lab page; the public bundle, generic embed, normal user authority and printer
 runtime authority do not expand.
+
+## 2026-09-01 all-observation private-lab addendum
+
+### Context
+
+The Bed Mesh foundation is merged, while the eight other observation views
+still rely only on the production vanilla renderer. The user requires the full
+Svelte observation system to mature together in the private lab before any MCP
+resource is cut over. Camera is deliberately excluded because its media-session,
+fullscreen and Picture-in-Picture lifecycle needs a separate migration.
+
+### Decision
+
+- Extend the private lab to exact `/dashboard/lab/` plus
+  `/dashboard/lab/{overview,progress,thermals,heads,jobs,job_history,queue,fans,bed_mesh}`.
+  One deterministic self-contained SvelteKit package selects only from that
+  closed pathname set. The private server may serve the same bytes for each
+  exact path and optional trailing slash. Case, nested, encoded and public
+  variants remain unavailable.
+- The lab directory lists all nine observation views and names Camera as pending
+  its lifecycle migration without linking or registering a camera lab route.
+  Existing production `/dashboard/*`, directory entries, MCP tools/resources,
+  auth, Tailscale and public HTTP remain unchanged.
+- Every view accepts one versioned bridge-injected presentation value and applies
+  a strict domain validator before rendering. Fixtures are synthetic, visibly
+  marked `Lab fixture`, and contain no raw filenames, paths, URLs, identifiers,
+  printer identity, credentials or live telemetry. Components make no network,
+  printer, camera, auth or signaling request.
+- All focused cards reuse the shared tokens and exactly one `WidgetHeader`,
+  `WidgetBody` and `WidgetFooter` inset owner. Information stays above actions;
+  icon-only actions remain 44 pixels and feedback is an overlay that cannot
+  change intrinsic card height. Canonical titles are Overview, Print Progress,
+  Thermals, Heads & Filaments, Current Job, Job History, Print Queue, Fans & Air
+  and Bed Mesh.
+- Progress uses a prominent reported percentage, one continuous 8-pixel bar,
+  layers, ETA and elapsed time. Thermals uses compact Tool 1--4, Heater bed and
+  Cavity rows. Heads uses weak actual-color washes for loaded material and a
+  neutral gray Empty/N/A treatment without redundant presence prose. Current
+  Job and Job History remain separate. Fans use library icons, a restrained
+  percentage fill and compact right-aligned RPM without Commanded/Measured
+  labels. Overview remains a compact eight-domain summary. The accepted Bed
+  Mesh component and its 4:3 geometry/readability contract remain unchanged.
+
+### Observable acceptance
+
+1. Component and validator tests cover every view, adversarial enum/number/time/
+   label/color/shape values, canonical headings, shared anatomy, one footer
+   action and overlay feedback with stable intrinsic height.
+2. Real Chrome captures every view at 320/390/590/720 CSS pixels. Tests enforce
+   no horizontal overflow, no clipped 44-pixel action, common tokens/insets,
+   canonical title, readable content-driven height, zero console error and zero
+   nonlocal request. Refresh feedback does not move or resize the card.
+3. The same deterministic self-contained package serves every exact private lab
+   path. The directory and view selection work from pathname alone. No external
+   asset, runtime fetch, generic embed or camera code ships in the package.
+4. Private exact routes return 200 without observation/media acquisition;
+   public, encoded, traversal, nested, case and camera-lab paths return 404.
+   Existing production route/resource/tool byte and behavior contracts remain
+   green through repository and shipping gates.
+
+### Consequences
+
+The private server bundle grows because the lab temporarily carries Svelte
+presentations beside all production renderers and includes local Three.js for
+Bed Mesh. Bundle size is evidence and a review risk, not permission to split in
+runtime fetches or cut over production. Every observation component remains an
+independently callable candidate; cutover still occurs in separately reviewed
+per-widget slices.

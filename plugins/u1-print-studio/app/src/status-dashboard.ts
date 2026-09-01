@@ -9,7 +9,7 @@ import embeddedDashboardHostFile from "../public/status-dashboard-host.html" wit
 import dashboardIndexHtml from "../public/dashboard-index.html" with { type: "text" };
 // This deterministic SvelteKit output is self-contained and compiled into the
 // private dashboard bundle. It is not part of the public service or MCP assets.
-import bedMeshLabHtml from "../public/svelte-bed-mesh-lab.html" with { type: "text" };
+import observationLabHtml from "../public/svelte-observation-lab.html" with { type: "text" };
 
 import {
   readCameraWidgetHtml,
@@ -55,7 +55,18 @@ const CAMERA_DASHBOARD_HOST_PATH = path.resolve(
   "camera-dashboard-host.html"
 );
 const DASHBOARD_PATH = "/dashboard";
-const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh";
+const OBSERVATION_LAB_PATHS = new Set([
+  "/dashboard/lab",
+  "/dashboard/lab/overview",
+  "/dashboard/lab/progress",
+  "/dashboard/lab/thermals",
+  "/dashboard/lab/heads",
+  "/dashboard/lab/jobs",
+  "/dashboard/lab/job_history",
+  "/dashboard/lab/queue",
+  "/dashboard/lab/fans",
+  "/dashboard/lab/bed_mesh",
+]);
 const FOCUSED_DASHBOARD_PATHS = new Set([
   "/dashboard/overview",
   "/dashboard/progress",
@@ -135,9 +146,8 @@ export function createStatusDashboardHandler(
     pathname: string
   ): Promise<boolean> => {
     const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";
-    const isBedMeshLab =
-      pathname === BED_MESH_LAB_PATH || pathname === BED_MESH_LAB_PATH + "/";
-    if (isBedMeshLab) {
+    const normalizedLabPath = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+    if (OBSERVATION_LAB_PATHS.has(normalizedLabPath)) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -153,7 +163,7 @@ export function createStatusDashboardHandler(
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
       });
-      res.end(bedMeshLabHtml);
+      res.end(observationLabHtml);
       return true;
     }
     if (isIndex || FOCUSED_DASHBOARD_PATHS.has(pathname) ||

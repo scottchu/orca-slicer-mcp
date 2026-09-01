@@ -16,6 +16,13 @@
   route 200/public 404 isolation and no acquisition. The generic embed is not a
   production artifact. Existing `/dashboard/bed_mesh`, tools/resources, auth
   and Tailscale behavior remain untouched.
+- Current Svelte migration order now completes all nine observation candidates
+  in the private lab before any MCP cutover. Add `/dashboard/lab/` plus exact
+  overview/progress/thermals/heads/jobs/job_history/queue/fans/bed_mesh paths
+  from one deterministic bridge-only package, with strict synthetic fixtures,
+  shared compact anatomy and 320/390/590/720 browser evidence. Camera remains
+  explicitly pending a separate lifecycle migration. Production routes,
+  resources, auth, Tailscale and public HTTP do not change in this slice.
 - Independent review blocked candidate `7aef4b5`: stable geometry did not make
   its thin 3D projection or 3–6 pixel sprite labels readable. Renewal requires
   a surface covering at least 70% × 42% of the 4:3 frame, stable non-overlapping

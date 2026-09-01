@@ -10,6 +10,33 @@ checks return 200 with byte-identical content, sixteen security checks pass and
 no rollback occurred. No printer, camera or actual-device acceptance was
 performed or claimed.
 
+## 2026-09-01 all-observation Svelte private-lab candidate
+
+Starting from exact merged main `f44bd06`, the isolated branch extends the
+merged Svelte foundation to the private `/dashboard/lab` directory and all nine
+non-camera observation candidates. One path-selected, self-contained static
+page supplies synthetic Overview, Print Progress, Thermals, Heads & Filaments,
+Current Job, Job History, Print Queue, Fans & Air and the unchanged Bed Mesh.
+Camera is visibly pending and has no link or lab route.
+
+Changed scope is `plugins/u1-print-studio/app/ui` components/fixtures/tests,
+the deterministic private package, exact private-server route handling/tests,
+shipping static-contract derivation and durable decision/iteration records.
+Existing production dashboard HTML, widget/camera resources, tool inventory,
+observation adapters/stores, auth and public routing are untouched. Components
+accept only strict versioned normalized props and contain no acquisition code.
+
+Author evidence passes 20 UI tests, 40 real-Chrome cases, 275 app tests/3,168
+assertions, 21 lifecycle and 24 shipping tests, deterministic packaging, all
+three bundles, help and signature. The exact package is 717,295 bytes with
+SHA-256 `0842f9b316421886285e6be74b39a92700e508aa8cba48695b59a3446c1a2f5c`.
+The deliberate risk is bundle weight near the 750 KB bound while local Three.js
+coexists with the eight compact views. A single SSR directory can be present
+until client pathname selection hydrates; browser acceptance covers the stable
+post-hydration view, not first-paint filmstrip timing. No merge/deploy/service/
+printer/camera/auth/Tailscale contact occurred. Next: exact-candidate formal and
+independent review; production cutovers remain separate later slices.
+
 ## 2026-09-01 Svelte Bed Mesh private lab readability renewal
 
 Decision 0032, UI-001 and the active migration addendum preserve the existing

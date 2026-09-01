@@ -40,6 +40,15 @@ space/underscore/dot/hyphen allowlist, trims outer spaces and rejects empty,
 dot/dotdot and path/URL/bidi/markup/control adversaries. International-valid
 fixtures remain accepted. A new exact-candidate review is still required.
 
+The active next slice extends that merged foundation to every non-camera
+observation view before any MCP cutover. One private package serves a lab
+directory plus independently callable Overview, Print Progress, Thermals, Heads
+& Filaments, Current Job, Job History, Print Queue, Fans & Air and Bed Mesh
+paths. Each receives strict synthetic bridge data, uses the shared compact
+header/body/footer/action anatomy and gets real-Chrome coverage at
+320/390/590/720. Camera remains pending its separate media-lifecycle migration;
+production routes/resources and public HTTP do not change.
+
 The bounded product-iteration refinement is shipped in PR56. Reviewed
 `e2702dc7a39c45665aa14155e85d13011d50526b` merged as
 `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`; guarded release

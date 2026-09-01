@@ -10,6 +10,29 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### All-observation Svelte private-lab candidate — review pending (2026-09-01)
+
+Decision 0032/UI-002 now has an isolated candidate for the complete non-camera
+observation lab. One deterministic self-contained SvelteKit page serves the
+private `/dashboard/lab` directory and exact Overview, Progress, Thermals,
+Heads, Current Job, Job History, Print Queue, Fans & Air and Bed Mesh fixture
+paths. Camera is visibly pending and unlinked. Production `/dashboard/*`, MCP
+tools/resources, auth/Tailscale and public HTTP remain unchanged; no runtime,
+service or device was contacted.
+
+Every new view uses strict versioned synthetic-fixture validation, the shared
+header/body/footer anatomy, compact user-selected visual hierarchy and one
+bottom 44-pixel Refresh with non-flow feedback. Bed Mesh is the merged approved
+component without source changes. Real Chrome passes 40/40 cases at
+320/390/590/720 with zero overflow, console error or nonlocal request and no
+card-height/source-time change under feedback. The package is 717,295 bytes,
+SHA-256 `0842f9b316421886285e6be74b39a92700e508aa8cba48695b59a3446c1a2f5c`.
+Full author gates pass 20 UI tests, 275 app tests/3,168 assertions, 21 lifecycle
+tests, 24 shipping tests, exact private/public isolation, deterministic builds,
+three bundles, help and code signature. Existing production asset hashes remain
+unchanged. This is author fixture/software evidence only; exact independent
+review is next, before any PR, merge, deployment or per-widget cutover.
+
 ### Compact widget density and camera continuity shipped in PR58 (2026-09-01)
 
 PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`. Guarded release

@@ -3,7 +3,7 @@
   let { leading, actions }: { leading?: Snippet; actions: Snippet } = $props();
 </script>
 
-<footer class="widget-footer">
+<footer class="widget-footer" data-widget-footer>
   <div class="leading">{#if leading}{@render leading()}{/if}</div>
   <div class="actions">{@render actions()}</div>
 </footer>

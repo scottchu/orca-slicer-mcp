@@ -14,6 +14,22 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+The current candidate is the all-observation Svelte private lab on isolated
+branch `codex/u1-svelte-observation-lab`, based on merged `origin/main`
+`f44bd06`. It adds `/dashboard/lab` plus the nine exact non-camera child views
+from one 717,295-byte self-contained page (SHA-256
+`0842f9b316421886285e6be74b39a92700e508aa8cba48695b59a3446c1a2f5c`).
+Camera is marked pending and unlinked. Production routes, MCP assets/inventory,
+auth/Tailscale and public HTTP do not change.
+
+Author evidence is green: Svelte check 0/0, Vitest 20/20, real Chrome 40/40 at
+320/390/590/720, app 275/275 with 3,168 assertions, lifecycle 21/21, shipping
+24/24, deterministic packaging, bundles/help/signature and unchanged production
+asset hashes. No deployment, service, printer, camera, auth or Tailscale contact
+occurred. Next is exact-SHA formal and independent review, then ordinary PR
+delivery only if approved. Do not cut over an MCP widget or deploy this lab as
+part of review; each production migration remains a separate authorized slice.
+
 PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`; guarded release
 `20260901-2cd7d96-pr58-20260901T073117-6df842` runs on BOTH explicitly
 restarted, loaded, healthy and integrity-verified services at runtime 0.4.8/

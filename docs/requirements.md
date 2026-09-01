@@ -358,6 +358,19 @@ printer environments support the described behavior.
   `0.000001 mm`,
   then renders recomputed summary values. Decision 0032 fixes migration and
   cutover gates.
+- **UI-002:** Before any MCP observation-resource cutover, the private Svelte
+  lab exposes a directory and all nine closed observation views at exact
+  `/dashboard/lab/*` paths from one deterministic self-contained package.
+  Camera is explicitly pending a separate media-lifecycle migration and has no
+  lab route. Every view is independently callable, bridge-injected, synthetic-
+  fixture marked and network-free, with strict domain validation and no raw or
+  private identity. Shared tokens plus one header/body/footer inset owner keep
+  cards compact and content-driven at 320/390/590/720; information precedes one
+  bottom 44-pixel icon action and overlay feedback cannot change intrinsic
+  height. Canonical titles and the Progress/Thermals/Heads/Jobs/History/Queue/
+  Fans/Overview/Bed Mesh presentation rules are fixed by decision 0032's
+  all-observation addendum. Existing production routes, tools, resources,
+  authentication, Tailscale and public HTTP remain unchanged.
 
 Implementation qualification: the current store bootstraps one acquisition on
 its first `current()` demand. After initial acquisition, plain reads use the

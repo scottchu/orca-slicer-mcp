@@ -42,6 +42,10 @@ const status: U1Status = {
 };
 
 const servers: Server[] = [];
+const LAB_ROUTES = ["/dashboard/lab", "/dashboard/lab/overview", "/dashboard/lab/progress",
+  "/dashboard/lab/thermals", "/dashboard/lab/heads", "/dashboard/lab/jobs",
+  "/dashboard/lab/job_history", "/dashboard/lab/queue", "/dashboard/lab/fans",
+  "/dashboard/lab/bed_mesh"];
 
 afterEach(async () => {
   await Promise.all(
@@ -133,7 +137,7 @@ describe("standalone status dashboard", () => {
     for (const route of ["/dashboard", "/dashboard/", "/dashboard/progress",
       "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs", "/dashboard/job_history",
       "/dashboard/queue", "/dashboard/fans", "/dashboard/bed_mesh", "/dashboard/camera",
-      "/dashboard/lab/bed_mesh", "/dashboard/lab/bed_mesh/"]) {
+      ...LAB_ROUTES.flatMap((path) => [path, path + "/"])]) {
       expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
     }
     expect(
@@ -222,7 +226,7 @@ describe("standalone status dashboard", () => {
     expect(calls).toEqual([]);
   });
 
-  test("serves the exact self-contained Bed Mesh lab only from the private dashboard", async () => {
+  test("serves the exact self-contained observation lab only from the private dashboard", async () => {
     const calls: string[] = [];
     const forbidden = (name: string) => () => {
       calls.push(name);
@@ -243,9 +247,9 @@ describe("standalone status dashboard", () => {
     await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
     servers.push(server);
     const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
-    const expected = readFileSync(new URL("../public/svelte-bed-mesh-lab.html", import.meta.url), "utf8");
+    const expected = readFileSync(new URL("../public/svelte-observation-lab.html", import.meta.url), "utf8");
 
-    for (const route of ["/dashboard/lab/bed_mesh", "/dashboard/lab/bed_mesh/"]) {
+    for (const route of LAB_ROUTES.flatMap((path) => [path, path + "/"])) {
       const response = await fetch(origin + route);
       expect(response.status).toBe(200);
       expect(response.headers.get("cache-control")).toBe("no-store");
@@ -257,15 +261,17 @@ describe("standalone status dashboard", () => {
       expect(await response.text()).toBe(expected);
     }
     for (const route of [
-      "/dashboard/lab", "/dashboard/lab/bed_mesh/index.html",
+      "/dashboard/lab/camera", "/dashboard/lab/bed_mesh/index.html",
       "/dashboard/lab/bed_mesh/more", "/dashboard/lab%2Fbed_mesh",
       "/dashboard/lab/%252e%252e/bed_mesh", "/dashboard/LAB/bed_mesh",
     ]) {
       expect((await fetch(origin + route, { redirect: "manual" })).status).toBe(404);
     }
-    const rejected = await fetch(origin + "/dashboard/lab/bed_mesh", { method: "POST" });
-    expect(rejected.status).toBe(405);
-    expect(rejected.headers.get("allow")).toBe("GET");
+    for (const route of LAB_ROUTES) {
+      const rejected = await fetch(origin + route, { method: "POST" });
+      expect(rejected.status).toBe(405);
+      expect(rejected.headers.get("allow")).toBe("GET");
+    }
     expect(calls).toEqual([]);
   });
 
