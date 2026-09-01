@@ -1,5 +1,20 @@
 # Widget completion tracks
 
+Current: PR75's three-artifact split is delivered at accepted main `ff577fcb`,
+with independent service/downloaded-byte synthetic verification recorded in
+PROJECT_STATE. Queue has a strict real adapter, zero-raw composition and focused
+route candidate frozen at application source `5c53d05`; independently designed
+public-template skeletons pass focused24/full174 browser checks. Full repository,
+deterministic packages/runtime gates pass; independent exact-SHA validation and
+source review remain due, with no delivery claim.
+The shared arrival-generation RPC repair is regression-covered across Fans,
+Thermals, Heads and Queue but not accepted or shipped yet. Progress stays held
+until that repair is accepted. Current Job/History checkpoints have source
+approval only, Overview `136da4b` awaits review and real Bed Mesh remains open.
+Final cleanup and generic MCP/legacy cutover are not complete.
+
+## Historical checkpoints (superseded where noted above)
+
 Current packaging track: accepted/deployed Heads main `5ffca66` is ordinarily
 merged into an authored exact-three private-lab split. Light observation, Bed
 Mesh and Camera are 199,819/629,880/78,795 bytes (908,494 aggregate) with

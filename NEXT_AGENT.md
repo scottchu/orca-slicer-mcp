@@ -1,5 +1,41 @@
 # Next agent
 
+## Review frozen Queue candidate after delivered PR75
+
+PR75's three-artifact private-lab split is delivered on accepted main
+`ff577fcb5cf506c5a1699ad3ecf118e43afca8cd` (tree `8924189`). Attributed guarded
+release `20260901-ff577fc-pr75-20260901T190836-b199a6` explicitly restarted BOTH
+services: healthy/integrity verified,15 manifest hashes,30 static/31 security
+checks, preservation true and no rollback; snapshot `20260901T190930-6f0cb3`
+remains recoverable. Independent postdeployment checks verified actual HTTPS
+three-artifact bytes/22 routes/CSP/method/isolation and downloaded-byte browser
+30/30 plus wheel/reset1/1, zero runtime fetch at four widths/200% text. This is
+deployed-service/synthetic evidence, not real-printer or phone acceptance.
+
+Queue ordinarily merged that main as `a042be5`. Its strict real adapter,
+zero-raw composition, exact private route and shared obsolete-success RPC repair
+are frozen at application source `5c53d05ec15d76b5b5f413471a2ae8dee3326296`
+(tree `155abfb5e436cf8e1cb344a6724fbc358feafc60`). Independently designed
+intrinsic public-template skeletons now pass24/24 focused geometry cases and
+Chrome174/174. Repository UI426/app300/lifecycle21/shipping24, compiler/AST,
+deterministic packages, runtime/signature/help pass. Queue87,831 and light204,875
+remain bounded; all exact hashes are recorded in VALIDATION and package tests.
+No Queue shipment or final acceptance is claimed. Preserve prior failure history.
+
+Next smallest action: independently validate and source-review the exact final
+PR head, including its records-only tail, shared RPC repair across all consumers,
+public-template isolation and all eight package hashes. Only after both roles
+approve may the guarded PR merge/deploy/BOTH restart/verify proceed. Browser4179
+is released to the separate lab legend author; coordinate exclusive reuse.
+
+Remaining tracks stay open: Progress phase-one is held until the shared
+obsolete-success fix is accepted; Overview checkpoint `136da4b` awaits independent
+review; Current Job `4e50f7b` and History `379c1e7` have source approval only,
+not delivered widgets. Real Bed Mesh composition, generic MCP/legacy migration,
+new requested features and final recoverable cleanup are not complete.
+
+## Historical checkpoints (superseded where noted above)
+
 ## Three-artifact private-lab split candidate — do not ship yet
 
 Continue from exact application source `4a6c493`, which ordinarily merged

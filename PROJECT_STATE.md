@@ -1,5 +1,39 @@
 # Project state
 
+## Current: delivered PR75, Queue author candidate ready for exact review
+
+PR75's three-artifact private-lab split is delivered on accepted main
+`ff577fcb5cf506c5a1699ad3ecf118e43afca8cd` (tree `8924189`). Attributed guarded
+release `20260901-ff577fc-pr75-20260901T190836-b199a6` explicitly restarted BOTH
+services: healthy/integrity verified,15 manifest hashes,30 static/31 security
+checks, preservation true and no rollback; snapshot `20260901T190930-6f0cb3`
+remains recoverable. Independent postdeployment checks verified actual HTTPS
+three-artifact bytes/22 routes/CSP/method/isolation and downloaded-byte browser
+30/30 plus wheel/reset1/1, zero runtime fetch at four widths/200% text. This is
+deployed-service/synthetic evidence, not real-printer or phone acceptance.
+
+Queue ordinarily merged that main as `a042be5`. Its strict real adapter,
+zero-raw composition, exact private route and shared obsolete-success RPC repair
+are frozen at application source `5c53d05ec15d76b5b5f413471a2ae8dee3326296`
+(tree `155abfb5e436cf8e1cb344a6724fbc358feafc60`). Independent design's inert
+public-template leaf replaces the failed estimated widths. Focused geometry24/24
+and full Chrome174/174 pass with per-record<=1px bounds at four widths/200%.
+UI426, app300/3,555 assertions, lifecycle21, shipping24, compiler/AST,
+deterministic packages and runtime/signature/help pass. Queue is87,831 bytes;
+five focused production entries total444,546; labs total913,550 within unchanged
+limits. Separate exact-source review/validation and guarded shipment are still
+required. No Queue shipment or final acceptance is claimed. Failure history is
+preserved in VALIDATION.md. Browser4179 has been released to the separate lab
+legend author; no service or printer changes occurred.
+
+Remaining tracks stay open: Progress phase-one is held until the shared
+obsolete-success fix is accepted; Overview checkpoint `136da4b` awaits independent
+review; Current Job `4e50f7b` and History `379c1e7` have source approval only,
+not delivered widgets. Real Bed Mesh composition, generic MCP/legacy migration,
+new requested features and final recoverable cleanup are not complete.
+
+## Historical checkpoints (superseded where noted above)
+
 ## Three-artifact private-lab split candidate — author gates complete
 
 Accepted and deployed Heads main `5ffca666e4ffa50c761ff54460f2d7dfc3466ad5`
