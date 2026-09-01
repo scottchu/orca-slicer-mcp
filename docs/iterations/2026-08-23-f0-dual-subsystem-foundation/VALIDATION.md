@@ -1,5 +1,38 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 E Overview shipping-verifier correction
+
+The first guarded E delivery reached post-install verification, where it exposed
+a contradictory source check: the exact static contract required private
+`/dashboard/overview` on port 8788 to return 200 with the frozen host hash,
+while `check_security` separately hard-coded the same private route as 404. The
+guarded workflow rolled back and verified the prior services restored; no E
+deployment remained from that failed attempt. The security checker now derives every focused
+dashboard route from the contract only for public port 8787 isolation and no
+longer repeats a private Overview assertion. Private Overview remains covered
+by the exact static-asset verifier. This correction does not replace either
+boundary and does not add an acquisition, camera, tool-call, service, auth or
+printer request.
+
+`uv run --no-project scripts/test_u1_ship.py` passes **24 tests**. Regressions
+prove private Overview is called once by the scoped static check and never by
+the security checker; public Overview and Camera routes remain required 404s;
+public Overview exposure fails; body/hash mismatch fails the static check; the
+scoped Overview static check and security checker contact no acquisition,
+widget, camera-widget, observation or tool endpoint; and the dynamic
+security count is derived from the current dashboard inventory and equals 16
+for E. `./scripts/check-repository.sh` passes TypeScript, **253 app tests with
+3,559 assertions**, **21 lifecycle tests**, **24 shipping tests** and the
+repository contract.
+
+This correction is source and fixture evidence only. This role made no Git
+delivery or remote GitHub call and contacted no service, auth, Tailscale,
+printer or browser endpoint. The preceding failed
+shipment's rollback/restoration evidence belongs to the guarded workflow, not to
+these local tests. No corrected E deployment, loaded-runtime or visual/user-
+acceptance claim is made. A renewed reviewed delivery must rerun the full guarded
+verification.
+
 ## 2026-08-31 E compact Overview — source-complete candidate
 
 The application candidate implements the frozen E contract without a new
@@ -11,7 +44,7 @@ The private index and `/dashboard/overview` route are implemented at runtime
 resources and the unchanged two-visible/eight-app-only tools.
 
 `./scripts/check-repository.sh` passed TypeScript, **253 app tests with 3,559
-assertions**, **21 lifecycle tests**, **22 shipping tests** and the repository
+assertions**, **21 lifecycle tests**, **24 shipping tests** and the repository
 contract. Focused optional-domain regressions pass **48 tests/494 assertions**.
 All three bundles built; standalone `--help` and `codesign -vvv --verify`
 passed; six emitted HTML assets exactly match source. SHA-256 is

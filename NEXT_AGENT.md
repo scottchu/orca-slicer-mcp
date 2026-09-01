@@ -14,7 +14,20 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Validate and deliver the source-complete **E Overview** next. It composes only accepted focused-domain projections
+Review and deliver the source-only **E Overview shipping-verifier correction**
+next. The E application source is already merged. A first guarded delivery
+reached post-install verification and encountered a contradictory verifier:
+exact static verification required private
+`/dashboard/overview` to be 200 with the frozen hash, while a stale hard-coded
+security tuple required the same private route to be 404. The guarded workflow
+rolled back and verified the prior services restored; no E deployment remained.
+The correction deletes only that tuple. Public port 8787 isolation remains dynamically derived for all
+dashboard routes; exact private Overview verification remains in `check_static`.
+Focused and full repository gates pass 24 shipping tests, 253 app tests/3,559
+assertions and 21 lifecycle tests. Complete independent review, PR delivery and
+the guarded exact-build/BOTH-restart/scoped verification sequence.
+
+The Overview itself composes only accepted focused-domain projections
 from shared normalized state. Explicit Overview demand concurrently requests
 main status plus all six independent non-camera domains through their existing
 readers/receipts/15-second TTLs/coalescing/stale retention; no static, index,

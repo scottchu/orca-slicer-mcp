@@ -1,5 +1,30 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 E Overview guarded-delivery verifier correction
+
+The E application source is merged, but guarded delivery must be renewed after
+a contradictory verifier stopped the first attempt during post-install
+verification: exact static verification correctly required private
+`/dashboard/overview` to be 200 with its frozen hash, then a stale hard-coded
+security tuple incorrectly required that same private route to be 404. The
+guarded workflow rolled back and verified the prior services restored; no E
+deployment remained. The minimal source repair deletes only that tuple. Security
+still derives and verifies every dashboard route—including Overview and Camera—
+as 404 on public port 8787, while static verification remains the sole exact
+private Overview 200/hash authority.
+
+The focused shipping suite passes 24 tests; the full repository gate passes 253
+app tests/3,559 assertions, 21 lifecycle tests, 24 shipping tests, TypeScript and
+repository policy. New fixtures also prove the scoped Overview static check and
+security checker touch no tool-call, widget, camera-widget or observation
+acquisition endpoint. This role made no Git delivery or remote GitHub call and
+contacted no service, auth, Tailscale, printer or browser endpoint. The failed
+shipment's verified rollback is guarded-workflow evidence, while a corrected E
+deployment remains unclaimed. Next:
+independently review and deliver this source-only correction, then rerun the
+guarded exact-build deployment, explicit BOTH-service restart and scoped static,
+security, health and runtime verification before offering the Overview URL.
+
 ## 2026-08-31 E compact Overview — source-complete handoff
 
 The smallest E source slice is implemented and locally validated: exact

@@ -117,7 +117,7 @@ def check_static(contract, reader=http_read, expected=True):
 def check_security(contract, reader=http_read):
     paths = {item["route"] for item in contract.values() if item["route"].startswith("/dashboard")}
     checks = [(8787, path, 404) for path in sorted(paths)]
-    checks += [(8787, "/auth/enroll", 404), (8787, "/mcp", 401), (8788, "/mcp", 404), (8788, "/dashboard/overview", 404)]
+    checks += [(8787, "/auth/enroll", 404), (8787, "/mcp", 401), (8788, "/mcp", 404)]
     for port, route, expected in checks:
         require(reader(port, route)[0] == expected, "Public authentication or private-route isolation failed")
     code, body = reader(8789, "/health")

@@ -12,7 +12,8 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
-**E compact Overview is source-complete and under final validation.** Explicit
+**E compact Overview application source is merged; guarded delivery is pending a
+source-only shipping-verifier correction.** Explicit
 Overview demand composes the exact eight accepted focused projections while
 concurrently requesting main status plus Materials, Environment, Queue, Bed
 Mesh, Current Job and Job History through their existing independent receipts,
@@ -22,10 +23,16 @@ one privacy-minimized headline module, not nested full cards or a giant map;
 every tile preserves its own state/time/freshness/reason and the header status
 time remains main-status-only. Camera stays separate. Target is 0.4.6/schema 12/
 observation-v12/camera-v8 with 22 resources and observation-v11 retained; tools
-remain two visible plus eight app-only. Application source and durable tests are
-implemented; deployment, live-printer and visual/device acceptance are not yet
-claimed. Preserve A/F/Heads/B/C/D and complete exact review → PR merge → exact-
-build deploy → restart BOTH → scoped verify.
+remain two visible plus eight app-only. A first guarded delivery reached
+post-install verification and encountered a contradictory verifier that required
+the exact private Overview asset to be both 200 and 404. The workflow rolled back
+and verified the prior services restored; no E deployment remained. The minimal
+correction removes only the stale private 404 tuple;
+public dashboard isolation and exact private static verification remain. Its
+focused 24-test and full repository gates pass. A corrected E deployment,
+live-printer and visual/device acceptance are not claimed by this source-only
+correction. Preserve A/F/Heads/B/C/D and complete exact review → PR
+merge → guarded deploy → restart BOTH → scoped verify.
 
 **D Current Job/real History is shipped.** PR51 exact head
 `30f1c7bb407d08d19d390acf2b5704a30eff010f` was approved by the formal reviewer
