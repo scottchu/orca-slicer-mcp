@@ -17,6 +17,112 @@ only bounded row-count structure, and Bed Mesh does not mount Three/WebGL.
 New state/skeleton wrappers are zero-raw; legacy exact raw-tag debts are not
 expanded and are not claimed fully migrated. This checkpoint is not a release.
 
+## 2026-09-01 PR65 guarded merge/deploy/BOTH restart verification
+
+Separate implementation, independent validation and independent formal review
+approved exact `f216c70b9844b9e536676c403546b3eb116805b2`, tree
+`1a3bc6fc10a2a12054ef9db32d7a120f1a3a906e`. The coordinator relayed approvals and
+the user's standing widget-release authorization. The reviewer subsequently
+acted as delivery operator; the independent validator remained separate.
+
+Actual commands from the clean, frozen candidate checkout:
+
+```text
+uv run --no-project scripts/u1_ship.py --help
+uv run --no-project scripts/u1_ship.py --pr 65 --reviewed-sha f216c70b9844b9e536676c403546b3eb116805b2 --bun <absolute-pinned-bun-1.3.12>
+uv run --no-project scripts/u1_ship.py --pr 65 --reviewed-sha f216c70b9844b9e536676c403546b3eb116805b2 --bun <absolute-pinned-bun-1.3.12> --execute
+```
+
+The verified Bun SHA-256 is
+`39e644cea4e6db24a3af36013695655d6f789b4b98f1f13bacb882ac6e5c3c18`; its local
+absolute path is intentionally omitted. Help/read-only preflight passed first.
+Execution passed identity, fetch-base, preflight, local validation, matching-head
+merge guards, exact merged-source isolation, stage, dry-run, install, explicit
+restart-both and final verification without bypass.
+
+- Merge: `6b9b3e7e09ccfad89ed542a52a69f5126407da4b`; exact reviewed tree preserved.
+- Operation: `pr65-20260901T142009-341331`; phase complete, ok true,
+  merged true, installed true.
+- Release: `20260901-6b9b3e7-pr65-20260901T142009-341331`.
+- BOTH public/dashboard: explicitly restarted, loaded true, healthy true,
+  integrity verified; runtime 0.4.8/schema 12/observation-v14/camera-v10.
+- Static asset/routes: 25 passing; security checks: 26 passing; configuration,
+  environment and routing preservation: true.
+- Lab artifact: 727,096 bytes, SHA-256
+  `2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`;
+  exact Thermals/Fans lab routes match. Existing production assets are unchanged.
+- Rollback: not needed; retained snapshot `20260901T142049-5cf038`.
+
+Independent postdeployment validation also reports PASS: actual tailnet Thermals
+and Fans lab routes each return 200 with `Cache-Control: no-store` and the exact
+727,096-byte approved content/hash. Independently inspected service status and
+selected plist/manifest identities confirm BOTH loaded/healthy/integrity states
+at the exact release and merged source above. No acquisition was performed.
+
+Independent predeployment software validation reported compiler/AST success,
+88 unit, 66 Chrome, 276 app/3,182 assertions, 21 lifecycle and 24 shipping tests,
+deterministic packaging, bundles/signature/help and clean source. Eight extra
+isolated Chrome cases at four widths and normal/200% text verified upper/lower
+ratio edges including fractional fills, unknown/zero/clamping, child identity,
+focus/events and geometry. A tall fixture's 3–6 red-channel vertical difference
+established genuine sloped tint rather than only a CSS-angle string. These are
+attributed independent fixture results, not this operator's new browser checks.
+
+This release establishes reviewed source plus exact service/static/security
+delivery, not actual phone rendering, live camera, physical printer or user
+acceptance. No printer acquisition, auth provisioning, Tailscale change or plugin
+reinstallation was performed. The separate rollout-record branch changes only
+documentation and needs no additional deployment when app bytes remain equal.
+
+Receipt-branch checks actually run: frozen Bun installs in app/UI, then the full
+`./scripts/check-repository.sh` with pinned Bun on PATH passed compiler/AST,
+88 UI unit tests, deterministic package verification, 276 app/3,182 assertions,
+21 lifecycle and 24 shipping tests. The first attempt in the new checkout stopped
+at missing `svelte-kit` before dependencies were installed; no source was changed
+to resolve it. `git diff --check` and `git diff --exit-code 6b9b3e7 -- plugins
+scripts .agents AGENTS.md` passed. Only the five current state/iteration receipt
+documents change. Plugin tree `5fcc4555140d5b8435bbeff05372704c0dae6ed4` and app
+tree `c77795604e025c6e3ea6229f5ef7ea01b7367bcc` remain equal to the shipped merge.
+Exact independent review is required before the documentation-only PR merge.
+
+## 2026-09-01 subtle percentage-gradient slope author evidence
+
+This isolated private-lab refinement uses 100-degree tint inside an exactly
+ratio-sized nonrepeating background rectangle. No public API, production
+widget, transport, auth or camera code changes. The larger lab-controls and
+synthetic Camera candidates remain in separate preserved branches.
+
+Commands actually run with pinned Bun 1.3.12: frozen app/UI installs; UI
+`bun run check`, `bun run test`, `bun run build`, `bun run package:private-lab`,
+focused `bun run test:browser -- percentage-background.spec.ts` then full
+`bun run test:browser`; repository `./scripts/check-repository.sh` with pinned
+Bun on PATH; app `bun run bundle:widget-vendor`, `bun run bundle`,
+`bun run bundle:server`, `bun run bundle:runtime`,
+`codesign -vvv --verify dist/u1-print-studio`, and `dist/u1-print-studio --help`.
+
+Compiler/AST and all 88 unit tests pass. Eight focused real-Chrome cases pass at
+320/390/590/720, including upper/lower-row pixel samples before/after the exact
+0/25/50/100-percent and over-target boundaries, neutral invalid ratios, 100-degree
+computed gradient, no repeat, unchanged child DOM identity/events/focus,
+unchanged geometry and forced-colors suppression. Thermals and Fans both use
+the same gradient leaf; existing seams and enlarged Thermals layout pass.
+
+The deterministic artifact is 727,096 bytes, SHA-256
+`2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`,
+only 38 bytes above shipped PR63 and 22,904 below the unchanged 750,000-byte
+hard cap. The already exceeded 720,000 soft target remains explicit review
+risk, not an implicit cap increase. Bundles, runtime signature/help pass.
+
+Full Chrome passes 66/66. The repository gate passes compiler/AST, 88 unit,
+deterministic package verification, 276 app tests/3,182 assertions, 21 lifecycle
+and 24 shipping tests. `git diff --check` passes; rebuilding production vendor
+assets introduces no production diff. Required records and remaining execution
+order are updated without changing those running surfaces.
+
+Evidence is author synthetic software/browser only, not independent approval,
+deployed-service, live-printer, actual-device or user acceptance. Exact
+independent review/validation precedes PR merge and guarded BOTH-service delivery.
+
 ## 2026-09-01 PR63 guarded merge/deploy/BOTH restart verification
 
 Independent validation and formal review approved exact

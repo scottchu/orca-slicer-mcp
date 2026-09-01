@@ -20,8 +20,34 @@ separate synthetic Camera lab using the shared controls. See decisions 0032/0033
 addenda. The controller accepts only closed examples, never JSON/URLs or live
 transport. Preserve the seven legacy ready-body raw debts and the 750,000-byte
 combined budget; Camera stays pending until its separate integration ships.
-PR64 merged as `e1f57f0` with unchanged deployed application `57a305b`.
+Reviewed main `cb37e3e` is explicitly integrated, including shipped slope PR65
+and receipt PR66; the deployed application is `6b9b3e7`.
 All earlier candidate priorities below are historical, not the current order.
+
+PR65 is shipped: reviewed `f216c70`, merged `6b9b3e7`, exact guarded release
+`20260901-6b9b3e7-pr65-20260901T142009-341331`. BOTH services were explicitly
+restarted and are loaded/healthy/integrity verified; all 25 exact static and 26
+security checks passed. Thermals and Fans private-lab bytes match the approved
+727,096-byte artifact. This is service/static evidence, not phone or printer
+acceptance. The shipping snapshot is retained and no rollback was needed.
+
+Now resume preserved visible all-nine lab scenario/state controls and structural
+loading, then separate synthetic Camera integration. Keep smaller visual Refresh,
+content-aware compact/medium/full plus its separately reviewed MCP size parameter
+and the remaining named widget tracks queued. Do not restart the completed slope
+slice. These documentation-only receipt changes preserve application bytes and
+need no extra service deployment; the earlier candidate instructions below are
+superseded by this shipped checkpoint.
+
+First review/deliver the isolated shared 100-degree percentage tint refinement;
+then resume visible all-nine lab scenario/state controls and matched skeletons,
+followed by separate synthetic Camera integration. The lab worktree is preserved
+and is not included in this small refinement. New requests for smaller visual
+Refresh (32-pixel surface/16-pixel glyph inside 44-pixel target) and content-aware
+compact/medium/full presentation plus a separately reviewed MCP size parameter
+remain queued, not silently included. All historical candidate instructions
+below are superseded by this order. PR64 `e1f57f0` is merged with deployed app
+bytes still matching PR63 `57a305b`.
 
 PR63 is shipped: reviewed `0f78e69`, merged `57a305b`, exact guarded release
 `20260901-57a305b-pr63-20260901T134952-9c86bd`. BOTH public/dashboard services

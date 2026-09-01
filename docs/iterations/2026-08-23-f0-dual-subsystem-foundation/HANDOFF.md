@@ -17,6 +17,47 @@ silently. Preserve smaller visual Refresh, compact/medium/full and later MCP
 size parameter, seven remaining ready migrations, Bed Mesh axes, Console,
 model/layer progress and production cutovers as separate follow-on tracks.
 
+## 2026-09-01 PR65 shared-gradient slope shipped
+
+Reviewed `f216c70` merged as `6b9b3e7`, preserving exact tree
+`1a3bc6fc10a2a12054ef9db32d7a120f1a3a906e`. Guarded release
+`20260901-6b9b3e7-pr65-20260901T142009-341331` runs on BOTH explicitly restarted,
+loaded/healthy/integrity-verified services. Twenty-five exact static asset/route
+and twenty-six security checks pass; configuration/routing preservation is true.
+No rollback occurred; snapshot `20260901T142049-5cf038` is retained. Actual commands
+and sanitized evidence are in the newest VALIDATION section.
+
+The private lab artifact is 727,096 bytes with SHA-256
+`2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`.
+Thermals and Fans share the slope refinement. Production widgets/MCP/auth/device
+boundaries are unchanged. This is reviewed software and service/static evidence,
+not actual phone, printer, live-camera or user acceptance.
+
+Next smallest action: resume preserved all-nine visible lab controls/loading;
+then integrate the separately authored synthetic Camera checkpoint. Keep smaller
+visual Refresh, compact/medium/full plus later MCP size parameter, seven ready
+migrations, Bed Mesh axes, read-only Console, model/layer progress and production
+cutovers open. The original dirty checkout and reviewed source remain untouched.
+These receipt-only records preserve application bytes and need no redeployment.
+
+## 2026-09-01 shared-gradient slope candidate
+
+The isolated `codex/u1-gradient-slope` branch starts at merged PR64 `e1f57f0`.
+Only PercentageBackground CSS, its browser assertions, the deterministic lab
+artifact/hash pin and required records change. Tint slopes at 100 degrees
+inside an exact ratio-wide rectangle; the public component API and represented
+values remain unchanged. Author evidence is in the newest VALIDATION section.
+Freeze exact source, obtain separate validation/formal review, then use the
+standing PR/guarded merge/deploy/BOTH restart/scoped verification workflow.
+
+Resume preserved all-nine visible lab scenario/state controls and loading work
+after this small delivery, then integrate the separately authored synthetic
+Camera checkpoint using shared controls. Smaller visual Refresh and the later
+compact/medium/full presentation/MCP parameter remain separate queued slices.
+Do not drop seven remaining ready migrations, Bed Mesh axes, read-only Console,
+model/layer progress or production cutovers. Original dirty checkout and prior
+frozen source candidates remain untouched; no actual device/user claim exists.
+
 ## 2026-09-01 PR63 Fans private-lab slice shipped
 
 Reviewed `0f78e69` merged as `57a305b` and guarded release

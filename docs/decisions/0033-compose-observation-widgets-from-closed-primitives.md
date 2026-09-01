@@ -17,6 +17,18 @@ bounded; existing observation validation remains the final acceptance boundary.
 Required evidence covers all views/states, four widths and enlarged text,
 keyboard operation, URL/back-forward/reset, retained refresh and cleanup.
 
+## Subtle gradient slope refinement (2026-09-01)
+
+The user requests a small slope in the shared percentage background. Render
+the existing 12%→4% tint at 100 degrees inside a nonrepeating background whose
+size is exactly `fill% 100%` and position is left top. The diagonal affects
+only the tint, never the represented ratio or its right edge at different
+heights. Zero/invalid remains neutral, over-target remains capped, children
+retain identity and events, and forced-colors removes decoration. No additional
+angle setting, token, public prop or transport is added. Thermals and Fans both
+inherit this one leaf change. Numerical, upper/lower edge pixel, geometry and
+child-interaction evidence must precede exact independent review and delivery.
+
 ## Decision
 
 The user requires small reusable foundations, not duplicated HTML in each

@@ -9,6 +9,18 @@
   then separate synthetic Camera integration with that same control system.
   No production/printer/media transport change. Preserve frozen seven ready
   debts, exact private route isolation and the unchanged 750,000-byte cap.
+
+- Latest shipped refinement: PR65 reviewed `f216c70`, merged `6b9b3e7`, guarded
+  release `20260901-6b9b3e7-pr65-20260901T142009-341331`. BOTH services explicitly
+  restarted and passed loaded/health/integrity, 25 exact asset/route and 26
+  security checks. Thermals/Fans share the 100-degree tint at exact ratio width.
+  Resume visible all-nine lab controls/loading, then synthetic Camera; remaining
+  refresh, size/API and widget tracks stay open. No actual-device acceptance.
+- Current bounded priority: gently sloped shared percentage tint (100 degrees
+  inside an exact ratio-wide rectangle), then visible all-nine lab controls /
+  structural loading and separate synthetic Camera. Smaller visual Refresh and
+  content-aware compact/medium/full with a later MCP size parameter stay queued
+  separately; no production, API, auth or acquisition change in this slice.
 - Latest shipped slice: PR63 reviewed `0f78e69`, merged `57a305b`, deployed as
   `20260901-57a305b-pr63-20260901T134952-9c86bd`. BOTH services explicitly
   restarted and passed integrity/health plus 25 exact static and 26 security
