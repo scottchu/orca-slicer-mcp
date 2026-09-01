@@ -14,23 +14,21 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-First finish exact-byte independent validation of the runtime 0.4.7/schema 12/
-observation-v13/camera-v9 candidate recorded in decision 0031 and the active
-iteration records. Frozen widget hashes are
-`1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
-and `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`;
-shared CSS is
-`6f11808888df189fa83bac98169d85ab42bb10ef4c105037efa64cb7ccc9c1e2`.
-The served Bed Mesh vendor block must retain the complete Three.js MIT notice.
-Do not regenerate or edit application bytes during that review.
-Author gates pass 263 tests/2,734 assertions, TypeScript, all three bundles and
-diff checks. If independently approved, follow the existing exact review → PR
-merge → exact merged build → guarded deploy → explicit BOTH-service restart →
-verification workflow. Browser/device visual acceptance must remain a separate
-unverified layer until actually performed.
+PR56 is shipped. Exact reviewed head `e2702dc7a39c45665aa14155e85d13011d50526b`
+merged as `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`, tree
+`dc290de12aceebe134b6e3ceb78aa2e8d8789f73`; guarded release
+`20260831-cb7d06f-pr56-20260831T234756-96fe19` runs on BOTH explicitly restarted,
+loaded, healthy and integrity-verified services at runtime 0.4.7/schema 12/
+observation-v13/camera-v9. Sixteen security checks pass, no rollback occurred,
+both exact served widget hashes match, and all ten dashboard routes return 200
+on both local and tailnet origins. Independent postdeployment validation is
+PASS.
 
-All focused widget tracks are delivered. Move next to **user visual review and
-bounded product iteration**, not another implementation track. Preserve the
+Move next to **user visual review and bounded product iteration**, not another
+implementation or deployment track. The browser runtime was unavailable during
+shipping, so iPhone layout, WebGL rendering/fallback, touch interaction and
+live-camera/fullscreen continuity remain pending visual/device gates. No camera
+or printer request was made during rollout verification. Preserve the
 independently invokable focused cards and compact Overview, their separate
 receipts/15-second TTLs/coalescing/stale retention, the closed read-only tool
 surface and the no-control/privacy boundaries. Browser/device rendering and
