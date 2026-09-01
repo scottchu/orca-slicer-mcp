@@ -3,17 +3,19 @@ import { resultObservation, type ObservationPort } from './observation-port';
 import type { FansPresentation } from './presentation';
 export type LiveFansState = { observation: FansPresentation | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string };
 
-export const createFansController = (port: ObservationPort, timeoutMs = 20_000) => {
-  let state: LiveFansState = { observation: null, phase: 'loading', refreshing: false, feedback: '' };
+export type OrderedObservation = { version: number; connectionEpoch: number | null; receivedAt: string };
+export type LiveState<T> = { observation: T | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string };
+export const createObservationController = <T extends OrderedObservation>(port: ObservationPort, adapt: (value: unknown) => T, title: string, timeoutMs = 20_000) => {
+  let state: LiveState<T> = { observation: null, phase: 'loading', refreshing: false, feedback: '' };
   let disposed = false, started = false, generation = 0;
   let flight: Promise<void> | null = null;
   let deadline: ReturnType<typeof setTimeout> | undefined;
-  const listeners = new Set<(state: LiveFansState) => void>();
-  const publish = (next: LiveFansState) => { if (!disposed) { state = next; for (const listener of listeners) listener(state); } };
-  const failure = () => publish({ ...state, phase: state.observation ? 'ready' : 'error', refreshing: false, feedback: state.observation ? 'Refresh failed · showing previous observation' : 'Could not load Fans & Air' });
+  const listeners = new Set<(state: LiveState<T>) => void>();
+  const publish = (next: LiveState<T>) => { if (!disposed) { state = next; for (const listener of listeners) listener(state); } };
+  const failure = () => publish({ ...state, phase: state.observation ? 'ready' : 'error', refreshing: false, feedback: state.observation ? 'Refresh failed · showing previous observation' : `Could not load ${title}` });
   const accept = (result: unknown, notification = false): 'accepted' | 'duplicate' | 'older' | 'invalid' => {
     try {
-      const observation = adaptFans(resultObservation(result));
+      const observation = adapt(resultObservation(result));
       if (disposed) return 'invalid';
       const previous = state.observation;
       if (previous && JSON.stringify(observation) === JSON.stringify(previous)) return 'duplicate';
@@ -59,7 +61,7 @@ export const createFansController = (port: ObservationPort, timeoutMs = 20_000) 
   };
   return {
     getState: () => state,
-    subscribe: (listener: (state: LiveFansState) => void) => { listeners.add(listener); listener(state); return () => { listeners.delete(listener); }; },
+    subscribe: (listener: (state: LiveState<T>) => void) => { listeners.add(listener); listener(state); return () => { listeners.delete(listener); }; },
     start: () => {
       if (started || disposed) return;
       started = true;
@@ -74,3 +76,4 @@ export const createFansController = (port: ObservationPort, timeoutMs = 20_000) 
     }
   };
 };
+export const createFansController = (port: ObservationPort, timeoutMs = 20_000) => createObservationController(port, adaptFans, 'Fans & Air', timeoutMs);

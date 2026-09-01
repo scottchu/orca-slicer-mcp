@@ -19,17 +19,17 @@ independent validation and review before shipment. The regression matrix retains
 200 combinations, including 48 adjacency checks; earlier rejected heads were
 not deployed.
 
-## Current slice: all-nine private lab controls and loading
+## Current slice: Thermals after delivered Fans and Camera
 
 PR67 shipped: reviewed `07e1c144`, merged `c924bf9`, both services restarted and
 independently post-verified. All nine observation control/loading paths below
-are delivered. Camera's synthetic lab is delivered through PR69; production
-cutovers and seven ready-shell debts remain.
+are delivered. Camera's synthetic lab is delivered through PR69 and its focused
+production dashboard through PR71. Remaining cutovers and seven ready-shell debts remain.
 
 | Track | Source/composition | State controls | Live cutover | Delivery |
 | --- | --- | --- | --- | --- |
-| Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Shipped five-state controls and closed examples | Pending | PR67 deployed/post-verified |
-| Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | Private dashboard delivered; generic MCP cutover pending | PR70 merged/deployed; separate device acceptance |
+| Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Shipped five-state controls and closed examples | Author implementation; independent acceptance pending | Lab PR67 delivered; live not shipped |
+| Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | PR70 focused dashboard delivered; generic MCP still legacy | PR70 deployed/post-verified with synthetic tool replies; connector identity/device evidence separate |
 | Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Heads & Filaments | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
@@ -37,7 +37,7 @@ cutovers and seven ready-shell debts remain.
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Bed Mesh | Projected Three enclosure and reactive 2D/3D candidate; native-tag shell debt | Shipped controls; no Three mount while loading | Pending adapter parity | PR67 delivered; renderer refinement awaits independent acceptance/delivery |
-| Camera | Zero-raw real/lab roots and widgets, generic persistent VideoSurface/MediaStatus | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | Private dashboard delivered; legacy/MCP unchanged | PR71 operator reports BOTH restart/health/integrity verified; device acceptance separate |
+| Camera | Zero-raw real/lab roots and widgets, generic persistent VideoSurface/MediaStatus | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | PR71 focused private dashboard delivered; legacy/MCP unchanged | PR71 service/private-static/fetched-byte synthetic checks passed; real stream/device and external unmatched-root availability remain unaccepted |
 
 Acceptance progression: author software tests → separate exact-SHA validation →
 separate formal review → PR merge → exact deployment → explicit BOTH service
@@ -47,8 +47,8 @@ Chrome, not phone, WebRTC or printer evidence.
 
 ## Remaining migration and cleanup
 
-LIVE Fans private dashboard is shipped as reviewed main `db1c926`. The real
-Camera private dashboard candidate is the next separate cutover slice.
+PR70 LIVE Fans and PR71 focused Camera are delivered. Thermals is the current
+production cutover slice, renewing exact acceptance on reviewed Camera main.
 `LIVE_PARITY.md` records the read-only remaining-eight acceptance inventory;
 those adapters and generic resource replacement remain pending.
 
@@ -65,8 +65,11 @@ those adapters and generic resource replacement remain pending.
   primitives; retain exact composition guards.
 - [ ] Review/implement live observation transport and each focused-widget
   cutover; lab state selection is not production loading behavior.
-- [ ] Review/implement live Camera cutover, startup/fullscreen-exit continuity,
-  non-shifting snapshot feedback and truthful FPS.
+  Shared transport and focused Fans are delivered by PR70; Thermals is in
+  progress, seven remaining observation adapters and generic MCP are pending.
+- [x] Review/implement the focused private Camera cutover, startup/fullscreen-exit
+  continuity, non-shifting snapshot feedback and truthful FPS (PR71). Actual
+  device/real-stream acceptance remains separate and pending.
 - [ ] Inventory production HTML/assets, host routes and MCP resource aliases
   before retirement; required compatibility readers remain until replaced.
 - [ ] After accepted replacements and delivery, remove superseded widget code,
