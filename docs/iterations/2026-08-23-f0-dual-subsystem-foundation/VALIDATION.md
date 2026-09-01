@@ -1,5 +1,42 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 Bed Mesh early author checkpoint — not acceptance
+
+The corrected test harness now exercises actual rendering. Normal320 passes its
+full data/orbit/pixel case. Enlarged320 correctly blocks the checkpoint for
+Z-endpoint collisions and a subsequent extreme-orbit label containment defect;
+measured numeric widths, endpoint offsets and bounded collision/frustum fitting
+are being corrected without weakening assertions. This checkpoint must not ship.
+
+Pinned Bun1.3.12, existing frozen UI/app lockfile installs; no dependency changes.
+Commands actually run: UI `bun run check` (0 errors/0 warnings, AST pass),
+`bun run test -- src/lib/bed-mesh` (16 pass), and `bun run test` (193 pass).
+The direct geometry test verifies exact sample-to-display round trips, topology,
+flat0/nonzero/negative/tiny/tilted/64×64 matrices, asymmetric bounds and14 grid
+uprights across quadrants. Renderer tests capture actual Three buffers and verify
+changed colors/positions, retained camera/canvas, reset-key-only behavior and
+replacement/final disposal; the2D test verifies reactive rectangular cell geometry.
+
+`bun run build`, `bun run package:private-lab` pass. Early observation bytes
+748,711, Camera unchanged78,795, aggregate827,506; these are checkpoint bytes,
+not a frozen candidate. Existing750,000/80,000/830,000 bounds are preserved.
+Four actual Chrome default checks pass at320/390/590/720: same4:3 mode bounds,
+contained12px labels, default surface81.9–92.8%width/47.2–53.4%height. Author
+personally inspected normal320/720 screenshots plus the supplied graph reference;
+subsequent axis-midpoint refinements require renewed visual evidence.
+
+An overbroad filename filter matched the worktree name and started129 tests.
+It was deliberately stopped at the first known new test-harness startup failure:
+114 existing tests passed, one new case timed out, three were interrupted and11
+did not run. The test-only hook incorrectly assumed WebGLRenderer.render lives
+on its prototype. It now captures BufferGeometry and OrbitControls instead.
+An attempted nonbrowser full repository gate later caught a Vitest imported-name
+collision in an arrow-property stub; importing testing-library render under a
+distinct alias fixes it and the focused renderer tests pass again. No failed or
+interrupted run is claimed as a full pass. Final expanded browser and exact full
+repository gates, independent review/validation and guarded delivery remain open.
+No service, printer, real camera, auth, Tailscale or user-device action occurred.
+
 ## 2026-09-01 renewed PR70 combined-tree author gate PASS
 
 The refresh-rejection correction and explicit `ef5b239` merge have now been

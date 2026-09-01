@@ -1,5 +1,25 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 Bed Mesh projected-enclosure author checkpoint
+
+Decision0032's bounded private-lab refinement changes BedMesh3D/BedMesh2D plus
+pure display/projection helpers, chart-leaf AST inventory and test-only geometry/
+orbit fixtures. The same Three renderer/control instance survives data changes;
+old buffers are disposed. The floor/two far walls/four uprights cannot collapse
+on flat data. Actual-mm labels follow projected visible edges rather than CSS
+corners; measured font changes refit without changing the4:3 frame. Rectangular
+2D data retains physical aspect and redraws without resize. Existing palette,
+controls, summaries, production mesh/MCP and budgets are unchanged.
+
+Early author tests pass, but final rotation/enlarged-text/pixel evidence remains
+pending. The first expanded browser attempt stopped on a test-only prototype
+instrumentation error; the harness now captures BufferGeometry attributes and
+OrbitControls rather than Three's instance-owned WebGLRenderer.render. An
+import alias corrects a Vitest hoisting collision in the renderer stub. Neither
+failure is accepted as application evidence. See VALIDATION for actual commands.
+Next: complete exact focused browser checks/captures, full gates and independently
+approve a frozen candidate. No release or actual-device/printer claim exists.
+
 ## Renewed PR70 ready for independent exact acceptance
 
 The held refresh race is corrected and reviewed main `ef5b239` is explicitly

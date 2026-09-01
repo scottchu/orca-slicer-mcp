@@ -1,5 +1,31 @@
 # 0032: Migrate focused widgets through a private SvelteKit lab
 
+## 2026-09-01 projected Bed Mesh enclosure refinement
+
+The existing private-lab Three/OrbitControls renderer gains a genuine floor and
+two camera-far vertical grid walls. Four uprights and the selected axis edges
+remain available for flat and nonflat measurements. A pure reversible transform
+maps actual millimetres into centered display coordinates; padded, nondegenerate
+nice Z bounds affect presentation only, never reported samples or summaries.
+
+X/Y labels follow coherent camera-near outer base edges and Z follows an outer
+silhouette upright. True world anchors are projected after orbit/resize, with
+quadrant hysteresis, measured outward labels and a fitted orthographic frustum.
+Essential titles/endpoints stay readable and contained; intermediate labels may
+be thinned first. The normal default square fixture retains the existing 70%
+width/42% height coverage gate. Other supported rotations require containment
+and readable anchors, not an impossible area minimum for an edge-on flat plane.
+
+Prop changes replace/dispose surface color/position/index and enclosure buffers
+without remounting the renderer or resetting the orbit. The 2D leaf redraws on
+data changes and respects unequal physical X/Y spans. Font changes refit labels.
+Existing 4:3 frame, palette, summaries and icon-only bottom controls remain; no
+height-scale/helper prose, dependency, acquisition, new product route or public/
+MCP cutover is introduced. Raw markup is confined to existing chart leaves.
+The existing 750,000/80,000/830,000 raw-byte package limits remain unchanged.
+Source/buffer/browser evidence, deployed-service behavior and actual-device/
+printer acceptance remain separate. This design does not approve source or ship.
+
 ## 2026-09-01 synthetic Camera packaging addendum
 
 Role-separated design review accepted a second private self-contained artifact

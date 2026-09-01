@@ -14,6 +14,14 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Bounded Bed Mesh author work: finish projected-axis/cage/data-reactivity browser
+checks (including real pixels, rotations and200% text), inspect captures, then
+rerun exact final gates and obtain independent source validation/review before
+guarded delivery. The private-lab package limits remain unchanged; production
+mesh and MCP are unchanged. Camera/Thermals are separate concurrent candidates;
+coordinate the single4179 fixture-server slot and integrate reviewed main before
+acceptance. Earlier PR70-pending statements below are historical at this baseline.
+
 Next action: independent exact validation/review of renewed PR70 on merged
 Camera baseline `ef5b239`, then guarded Fans-only cutover. Full combined author
 gates pass: 183 UI units, 121 Chrome, 281 app/3,301 assertions, 21 lifecycle and

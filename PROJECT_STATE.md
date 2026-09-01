@@ -10,6 +10,14 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+The bounded private-lab Bed Mesh correction is under author validation on the
+reviewed PR70 baseline. It replaces fixed CSS-corner labels with actual projected
+axes, a nondegenerate padded-mm grid enclosure and persistent reactive 3D/2D
+renderers. Early unit/type/AST and default-browser geometry checks pass; expanded
+rotation/enlarged-text/pixel checks, final combined gates and independent exact
+acceptance remain pending. No production Bed Mesh/MCP cutover or deployment is
+claimed. Decision0032 and active VALIDATION/HANDOFF preserve the scope and gates.
+
 Renewed PR70 author gates now pass on the explicitly integrated PR69 baseline:
 183 UI units, 121 Chrome cases, 281 app tests/3,301 assertions, 21 lifecycle and
 24 ship tests, deterministic packages and all bundles/signature/help. The held

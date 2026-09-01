@@ -1,5 +1,13 @@
 # F0 dual-subsystem foundation brief
 
+Current bounded parallel UI-001 refinement: correct the existing private-lab
+Bed Mesh renderer's projected visible-side axes, nondegenerate Z enclosure,
+reactive data updates and rectangular 2D projection. Decision0032's refinement
+records measurable coverage, containment, stable4:3 and disposal gates. This is
+an existing named obligation, not a production migration; Camera/Thermals remain
+separate candidates and exact reviewed integration precedes release. No printer,
+MCP, theme, route, dependency or package-cap expansion is authorized here.
+
 Current migration sequence: PR67 controls/loading and PR68 receipt are delivered;
 complete decision 0034's real Fans adapter/shared host controller on a separate
 branch with reviewed main `2d30b01` integrated before its Fans-only acceptance.
