@@ -351,7 +351,19 @@ printer environments support the described behavior.
   controls and non-flow feedback overlays, and contain no explanatory prose in
   card flow. At those widths, 3D HTML axis/value labels are at least 12 CSS
   pixels, visible and non-overlapping, while the projected surface covers at
-  least 70% of chart width and 42% of chart height. Runtime prop validation
+  least 70% of chart width and 42% of chart height at the normal default
+  square-fixture view. Other supported rotations require containment and
+  readable projected axes, not an impossible area minimum for an edge-on flat
+  surface. Neutral 1x fitting is independent of bounded 0.75–3.5 user zoom:
+  intentional detail zoom above 1x may crop the correctly projected geometry
+  and labels at the fixed frame, while default/reset and all 1x orientations
+  retain full containment. Data/resize preserve zoom/orbit; reset restores 1x.
+  The floor, two camera-far grid walls and nondegenerate Z enclosure
+  follow the actual data bounds; display padding never changes samples or
+  summary measurements. Labels track true projected outer axis/tick anchors
+  with quadrant hysteresis and measured outward placement. Data updates replace
+  and dispose buffers without remounting or resetting orbit; 2D redraws reactively
+  and preserves unequal physical X/Y spans. Runtime prop validation
   admits only canonical millisecond UTC source time plus bounded freshness and
   adapter-canonical profile metadata matching
   `^[\p{L}\p{N} _.-]{1,80}$`/Unicode, with empty/dot/dotdot rejection. It

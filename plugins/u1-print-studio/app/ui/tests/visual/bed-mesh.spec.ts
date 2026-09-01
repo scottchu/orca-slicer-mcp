@@ -25,12 +25,12 @@ for (const width of widths) {
     expect(before).not.toBeNull();
     expect(Math.abs(before!.width / before!.height - 4 / 3)).toBeLessThan(0.01);
     const labels = page.locator('[data-axis-label]');
-    await expect(labels).toHaveCount(9);
-    await expect(labels).toHaveText([
-      'Z · mm', '0.136', '-0.175',
-      'Y · mm', '267', '3',
-      'X · mm', '3', '267'
-    ]);
+    expect(await labels.count()).toBeGreaterThanOrEqual(9);
+    await expect(page.locator('[data-axis="x"]')).toHaveText('X');
+    await expect(page.locator('[data-axis="y"]')).toHaveText('Y');
+    await expect(page.locator('[data-axis="z"]')).toHaveText('Z');
+    await expect(page.locator('[data-axis="z-min"]')).toHaveText('-0.3');
+    await expect(page.locator('[data-axis="z-max"]')).toHaveText('0.2');
     const labelMetrics = await labels.evaluateAll((items) => items.map((item) => {
       const style = getComputedStyle(item);
       const rect = item.getBoundingClientRect();
