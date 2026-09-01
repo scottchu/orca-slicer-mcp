@@ -7,16 +7,21 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
-The current bounded product-iteration candidate applies one shared white
-design-system source to all focused cards and camera, and refines Progress,
-Heads, Fans, Bed Mesh and camera reliability without cancelling or recombining
-any focused invocation. It is frozen at runtime 0.4.7/schema 12/observation-v13/
-camera-v9 with 24 resources. Author gates pass; independent validation is in
-progress. The locally generated Bed Mesh vendor block retains the complete
-Three.js MIT notice in served bytes. Frozen widget hashes are
-`1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
-and `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`.
-This candidate is not merged, deployed or visually/device accepted yet.
+The bounded product-iteration refinement is shipped in PR56. Reviewed
+`e2702dc7a39c45665aa14155e85d13011d50526b` merged as
+`cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`; guarded release
+`20260831-cb7d06f-pr56-20260831T234756-96fe19` runs on BOTH explicitly restarted,
+healthy and integrity-verified services at runtime 0.4.7/schema 12/
+observation-v13/camera-v9. Sixteen security checks, exact served hashes and all
+ten local-plus-tailnet dashboard routes pass; independent postdeployment
+validation is PASS and no rollback occurred.
+
+The shared design system, refined Progress/Heads/Fans/Bed Mesh and camera
+reliability are deployed without cancelling or recombining any focused
+invocation. The remaining track is visual/device acceptance: iPhone layout,
+WebGL render/fallback, touch interaction and live-camera/fullscreen behavior are
+pending because the browser runtime was unavailable. Rollout verification made
+no camera or printer request.
 
 All focused widget tracks are delivered. E Overview shipped in PR54 as exact
 release `20260831-aa9bd9d-pr54-20260831T201019-d7aa8a` on BOTH restarted,

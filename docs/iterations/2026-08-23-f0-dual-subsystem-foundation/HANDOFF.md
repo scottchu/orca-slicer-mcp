@@ -1,5 +1,28 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-08-31 unified widget and camera reliability — shipped in PR56
+
+Exact reviewed head `e2702dc7a39c45665aa14155e85d13011d50526b` merged in
+PR56 as `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`, tree
+`dc290de12aceebe134b6e3ceb78aa2e8d8789f73`. Guarded release
+`20260831-cb7d06f-pr56-20260831T234756-96fe19` is installed on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at runtime 0.4.7/
+schema 12/observation-v13/camera-v9. Sixteen security checks pass and no
+rollback occurred.
+
+The served observation and camera hashes exactly match
+`1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
+and `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`.
+All ten dashboard routes returned 200 on both local and tailnet origins;
+independent postdeployment validation reports PASS.
+
+The next smallest action is user visual/device review only. The browser runtime
+was unavailable during rollout, so iPhone layout, WebGL rendering/fallback,
+touch interaction and live-camera/fullscreen continuity remain pending. No
+camera or printer request was made, and the deployment evidence does not prove
+physical-printer behavior or user acceptance. This docs-only handoff does not
+deploy, restart or contact either service.
+
 ## 2026-08-31 unified widget and camera reliability — source freeze
 
 Decision 0031's smallest end-to-end source slice is frozen at runtime 0.4.7/

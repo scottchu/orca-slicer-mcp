@@ -1,5 +1,35 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 unified widget and camera reliability — PR56 deployed
+
+PR56 exact reviewed head
+`e2702dc7a39c45665aa14155e85d13011d50526b` merged as
+`cb7d06fdcc4de45f7fb5803fe2efee13364eba0f` with tree
+`dc290de12aceebe134b6e3ceb78aa2e8d8789f73`. The guarded workflow installed
+release `20260831-cb7d06f-pr56-20260831T234756-96fe19`, explicitly restarted
+BOTH services, and verified both loaded, healthy and integrity-matched at
+runtime 0.4.7/schema 12/observation-v13/camera-v9. Sixteen security checks
+passed. No rollback occurred.
+
+Exact served SHA-256:
+
+- observation widget:
+  `1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
+- camera widget:
+  `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`
+
+All ten dashboard routes returned HTTP 200 from both the local and tailnet
+origins. Independent postdeployment validation reports PASS for the exact
+release, health/integrity contract, security checks, served hashes and route
+matrix.
+
+This is Git/deployment/service/static-route evidence only. The browser runtime
+was unavailable, so no rendered browser or device check occurred. In
+particular, iPhone responsive layout, WebGL render/fallback, touch interaction
+and live-camera/fullscreen continuity remain pending visual acceptance. The
+verification made no camera-frame, live-stream or printer-observation request.
+It does not establish physical-printer behavior or user outcome.
+
 ## 2026-08-31 unified widget and camera reliability — frozen author candidate
 
 The frozen source targets runtime 0.4.7/schema 12/observation-v13/camera-v9,

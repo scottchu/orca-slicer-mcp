@@ -10,25 +10,30 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
-### Unified widget and camera reliability candidate (2026-08-31)
+### Unified widget and camera reliability shipped in PR56 (2026-08-31)
 
-The source candidate now targets runtime 0.4.7/schema 12/observation-v13/
-camera-v9 with 24 resources and retained observation-v12/camera-v8 current-asset
-aliases. Decision 0031 records the shared self-contained design system, bounded
-camera bootstrap/remount behavior and locally bundled exact Three.js Bed Mesh
-renderer. Progress, Heads, Fans, Bed Mesh, Overview and camera presentation are
-updated without adding tools, controls, routes, auth scope or printer reads.
-The reproducible vendor build also preserves the complete Three.js MIT notice
-inside the served self-contained resource.
+PR56's exact reviewed head
+`e2702dc7a39c45665aa14155e85d13011d50526b` merged as
+`cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`, tree
+`dc290de12aceebe134b6e3ceb78aa2e8d8789f73`. Guarded release
+`20260831-cb7d06f-pr56-20260831T234756-96fe19` is installed on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at runtime 0.4.7/
+schema 12/observation-v13/camera-v9. Sixteen security checks pass and no
+rollback was required.
 
-Author validation passes TypeScript, 263 application tests/2,734 assertions,
-runtime/stdio/server bundles and `git diff --check`. Frozen resource SHA-256 is
+Served SHA-256 matches the reviewed source exactly:
 `1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
-for `public/widget.html` and
+for the observation widget and
 `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`
-for `public/camera-widget.html`. Independent source validation is in progress.
-No merge, deployment, service restart, browser/device visual pass, live-printer
-read or physical acceptance is claimed at this checkpoint.
+for camera. All ten dashboard routes returned 200 on both local and tailnet
+origins. Independent postdeployment validation reports PASS.
+
+This establishes reviewed Git delivery, guarded deployment, BOTH-service
+restart, health/integrity/security and exact static-route evidence. The browser
+runtime was unavailable, so iPhone layout, WebGL rendering/fallback, touch
+interaction and live-camera/fullscreen continuity remain visually unaccepted.
+No camera or printer request was made for this rollout verification, and no
+physical-printer or user-outcome acceptance is claimed.
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
