@@ -45,7 +45,7 @@ const servers: Server[] = [];
 const LAB_ROUTES = ["/dashboard/lab", "/dashboard/lab/overview", "/dashboard/lab/progress",
   "/dashboard/lab/thermals", "/dashboard/lab/heads", "/dashboard/lab/jobs",
   "/dashboard/lab/job_history", "/dashboard/lab/queue", "/dashboard/lab/fans",
-  "/dashboard/lab/bed_mesh"];
+  "/dashboard/lab/bed_mesh", "/dashboard/lab/camera"];
 
 afterEach(async () => {
   await Promise.all(
@@ -272,10 +272,11 @@ describe("standalone status dashboard", () => {
       expect(response.headers.get("content-security-policy")).not.toContain("connect-src");
       expect(response.headers.get("referrer-policy")).toBe("no-referrer");
       expect(response.headers.get("x-content-type-options")).toBe("nosniff");
-      expect(await response.text()).toBe(expected);
+      expect(await response.text()).toBe(route.replace(/\/$/, '') === '/dashboard/lab/camera'
+        ? readFileSync(new URL('../public/svelte-camera-lab.html', import.meta.url), 'utf8') : expected);
     }
     for (const route of [
-      "/dashboard/lab/camera", "/dashboard/lab/bed_mesh/index.html",
+      "/dashboard/lab/camera/index.html", "/dashboard/lab/camera/more", "/dashboard/lab/bed_mesh/index.html",
       "/dashboard/lab/bed_mesh/more", "/dashboard/lab%2Fbed_mesh",
       "/dashboard/lab/%252e%252e/bed_mesh", "/dashboard/LAB/bed_mesh",
     ]) {

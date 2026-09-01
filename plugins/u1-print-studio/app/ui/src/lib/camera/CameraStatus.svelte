@@ -17,8 +17,8 @@
 </div>
 
 <style>
-  .camera-status { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; width: 104px; min-height: 52px; color: var(--u1-muted); font-size: 12px; line-height: 1.25; font-variant-numeric: tabular-nums; }
+  .camera-status { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; width: 8.6667em; min-height: calc(4em + 4px); color: var(--u1-muted); font-size: 12px; line-height: 1.25; font-variant-numeric: tabular-nums; }
   .live { color: var(--u1-positive); }
   .metrics { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 3px 8px; }
-  @media (max-width: 420px) { .camera-status { width: 87px; } }
+  @media (max-width: 420px) { .camera-status { width: 7.25em; } }
 </style>

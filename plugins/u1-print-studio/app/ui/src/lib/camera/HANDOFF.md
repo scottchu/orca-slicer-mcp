@@ -1,7 +1,35 @@
 # Synthetic Camera lab checkpoint
 
-This isolated author checkpoint is not registered in the lab routes, packaged,
-independently accepted, or deployed. It is not a production-camera migration.
+The synthetic Camera is integrated as a separate private lab candidate, not
+yet independently accepted or deployed. It is not a production-camera migration.
+
+## Current integrated candidate (2026-09-01)
+
+Shared LabControls now exposes seven closed states and three restrictive
+display policies with URL/reset/back-forward lifecycle. The directory links
+the exact private Camera route; first title is U1 Camera. Shared Icon and AST
+leaf/composite boundaries are registered. One persistent synthetic video keeps
+fullscreen/PiP identity. Normal status is top-right; opt-in font-aware header
+reflow fixes the author-observed320px/200% title/status glyph overlap without
+changing existing observation header behavior.
+
+Independent packaging design accepted explicit observation/Camera compiled
+entries with750,000/80,000 and830,000 aggregate limits after the762,180-byte
+combined build and764,097-byte conservative Terser trial exceeded the old cap.
+Current outputs:748,482 observation+78,551 Camera=827,033 aggregate.
+No cap bypass, external asset or production change is included. Camera's build
+graph rejects Three, host/observation/bed-mesh code and the real session module.
+The ship guard maps the exact Camera route to its own generated artifact hash.
+
+Actual author checks so far:155UI units and compiler/AST pass;277app tests /
+3,223assertions pass; isolated7Chrome lifecycle cases pass;9Camera-route cases
+pass including56state/width/text combinations, glyph containment/non-overlap,
+state geometry, top-right normal status, URL/reset/history/hostile input and
+loading without an active stream. Full suite, deterministic rebuild, repository
+gates, records, exact freeze/review and guarded delivery remain to finish.
+One attempted Python module-invocation used the wrong import/path arrangement;
+the repository's direct `uv run --no-project scripts/test_u1_*.py` commands
+are the authoritative rerun, not that failed invocation.
 
 ## Isolated real-session controller checkpoint (2026-09-01)
 

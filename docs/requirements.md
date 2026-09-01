@@ -362,8 +362,21 @@ printer environments support the described behavior.
 - **UI-002:** Before any MCP observation-resource cutover, the private Svelte
   lab exposes a directory and all nine closed observation views at exact
   `/dashboard/lab/*` paths from one deterministic self-contained package.
-  Camera is explicitly pending a separate media-lifecycle migration and has no
-  lab route. Every view is independently callable, bridge-injected, synthetic-
+  Camera has a separate synthetic-only `/dashboard/lab/camera` candidate using
+  the same visible LabControls. It is a compiled Svelte entry within the Kit
+  project, not a live camera or a second SvelteKit adapter route. The exact two
+  self-contained HTML artifacts have raw UTF-8 limits of 750,000 observation,
+  80,000 Camera and 830,000 aggregate bytes; the directory belongs to the
+  observation artifact, with no third payload or runtime asset requests.
+  Camera offers loading/connecting/snapshot/simulated-live/fallback/error/
+  unsupported and restrictive native/unsupported/simulated-rejection policies.
+  Native capabilities are feature-detected; FPS requires actual local presented
+  frames, not fixture numbers. Its persistent video survives fullscreen/PiP
+  toggles, all states keep media geometry, and normal mobile status stays top
+  right. Enlarged text may reflow only when intrinsic space is insufficient.
+  The unchanged restrictive private CSP and exact route-to-artifact shipping
+  hashes apply independently to both artifacts. Production Camera migration
+  remains separate. Every view is independently callable, bridge-injected, synthetic-
   fixture marked and network-free, with strict domain validation and no raw or
   private identity. Shared tokens plus one header/body/footer inset owner keep
   cards compact and content-driven at 320/390/590/720; information precedes one

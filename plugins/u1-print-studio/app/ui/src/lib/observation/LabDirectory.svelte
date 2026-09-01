@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { ArrowRight, Camera, FlaskConical } from 'lucide-svelte';
+  import { ArrowRight, FlaskConical } from 'lucide-svelte';
   const views = [
     ['overview', 'Overview'], ['progress', 'Print Progress'], ['thermals', 'Thermals'],
     ['heads', 'Heads & Filaments'], ['jobs', 'Current Job'], ['job_history', 'Job History'],
-    ['queue', 'Print Queue'], ['fans', 'Fans & Air'], ['bed_mesh', 'Bed Mesh']
+    ['queue', 'Print Queue'], ['fans', 'Fans & Air'], ['bed_mesh', 'Bed Mesh'], ['camera', 'U1 Camera']
   ] as const;
 </script>
 
@@ -14,7 +14,6 @@
       <a href={`/dashboard/lab/${path}`} data-lab-link={path}><span>{label}</span><ArrowRight aria-hidden="true" /></a>
     {/each}
   </nav>
-  <div class="camera-pending"><Camera aria-hidden="true" /><div><strong>Camera</strong><span>Pending lifecycle migration</span></div></div>
 </main>
 
 <style>
@@ -29,10 +28,5 @@
   a:last-child { border-bottom: 0; }
   a:focus-visible { outline: 3px solid var(--u1-focus); outline-offset: -3px; }
   a :global(svg) { width: 18px; height: 18px; color: var(--u1-muted); }
-  .camera-pending { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 12px 14px; border-radius: 14px; color: var(--u1-muted); background: var(--u1-soft); }
-  .camera-pending > :global(svg) { width: 19px; height: 19px; }
-  .camera-pending div { display: grid; gap: 2px; }
-  .camera-pending strong { color: var(--u1-ink); font-size: 13px; }
-  .camera-pending span { font-size: 11px; }
   @media (min-width: 590px) { .lab-directory { margin-block: 40px; } nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } a:nth-child(odd) { border-right: 1px solid var(--u1-line); } a:nth-last-child(-n + 2) { border-bottom: 0; } }
 </style>

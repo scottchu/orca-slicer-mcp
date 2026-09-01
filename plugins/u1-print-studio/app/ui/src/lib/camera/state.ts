@@ -3,7 +3,7 @@ export const CAMERA_SCENARIOS = [
   { value: 'connecting', label: 'Connecting' },
   { value: 'snapshot', label: 'Snapshot' },
   { value: 'live', label: 'Simulated live' },
-  { value: 'fallback', label: 'Snapshot fallback' },
+  { value: 'fallback', label: 'Fallback' },
   { value: 'error', label: 'Error' },
   { value: 'unsupported', label: 'Unsupported' },
 ] as const;
@@ -11,9 +11,9 @@ export const CAMERA_SCENARIOS = [
 export type CameraScenario = typeof CAMERA_SCENARIOS[number]['value'];
 export type CameraCapabilityPolicy = 'native' | 'unsupported' | 'denied';
 export const CAMERA_CAPABILITIES = [
-  { value: 'native', label: 'Native capabilities' },
-  { value: 'unsupported', label: 'Display unsupported' },
-  { value: 'denied', label: 'Simulated display rejection' },
+  { value: 'native', label: 'Native' },
+  { value: 'unsupported', label: 'Unsupported' },
+  { value: 'denied', label: 'Simulated rejection' },
 ] as const;
 export type CameraMeasurement = { fps: number | null; displayedAt: string | null; playing: boolean; unavailable?: boolean };
 export const CAMERA_FIXTURE_TIME = '2026-09-01T12:00:00.000Z';

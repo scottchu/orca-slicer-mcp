@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Camera } from 'lucide-svelte';
+  import Icon from '../ui/Icon.svelte';
   import WidgetShell from '../ui/WidgetShell.svelte';
   import WidgetHeader from '../ui/WidgetHeader.svelte';
   import WidgetBody from '../ui/WidgetBody.svelte';
@@ -22,8 +22,8 @@
 </script>
 
 <WidgetShell label="U1 Camera" busy={selected === 'loading' || selected === 'connecting' || (selected === 'live' && !measurement.playing && !measurement.unavailable)}>
-  <WidgetHeader title="U1 Camera">
-    {#snippet icon()}<Camera aria-hidden="true" />{/snippet}
+  <WidgetHeader title="U1 Camera" wrapAside>
+    {#snippet icon()}<Icon name="camera" />{/snippet}
     {#snippet meta()}<Caption>Lab fixture</Caption>{/snippet}
     {#snippet aside()}<CameraStatus scenario={selected} {measurement} />{/snippet}
   </WidgetHeader>
