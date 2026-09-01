@@ -21,7 +21,7 @@ cutovers and seven ready-shell debts remain.
 | Track | Source/composition | State controls | Live cutover | Delivery |
 | --- | --- | --- | --- | --- |
 | Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Shipped five-state controls and closed examples | Pending | PR67 deployed/post-verified |
-| Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | Pending | PR67 deployed/post-verified |
+| Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | Private dashboard delivered; generic MCP cutover pending | PR70 merged/deployed; separate device acceptance |
 | Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Heads & Filaments | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
@@ -29,7 +29,7 @@ cutovers and seven ready-shell debts remain.
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Bed Mesh | Svelte/Three chart, native-tag shell debt | Shipped controls; no Three mount while loading | Pending | PR67 deployed/post-verified |
-| Camera | Zero-raw root/widget, shared PageLayout and registered media/status leaves | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | Pending; real session checkpoint not wired, production remains legacy | PR69 deployed/post-verified |
+| Camera | Zero-raw real/lab roots and widgets, generic persistent VideoSurface/MediaStatus | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | Private dashboard candidate wired; exact independent acceptance pending; legacy/MCP unchanged | PR69 lab delivered; real Camera candidate not deployed |
 
 Acceptance progression: author software tests → separate exact-SHA validation →
 separate formal review → PR merge → exact deployment → explicit BOTH service
@@ -39,7 +39,8 @@ Chrome, not phone, WebRTC or printer evidence.
 
 ## Remaining migration and cleanup
 
-The separate LIVE Fans candidate is the current production cutover slice.
+LIVE Fans private dashboard is shipped as reviewed main `db1c926`. The real
+Camera private dashboard candidate is the next separate cutover slice.
 `LIVE_PARITY.md` records the read-only remaining-eight acceptance inventory;
 those adapters and generic resource replacement remain pending.
 

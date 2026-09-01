@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:live-camera": "bun run scripts/build-live-camera.ts",
+    "verify:live-camera": "bun run scripts/build-live-camera.ts --check",
     "dev": "vite",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && bun run scripts/check-components.ts",

@@ -1,5 +1,21 @@
 # Local-first packaging contract
 
+## Private production Camera packaging
+
+Decision0035 adds one compiled-Svelte `svelte-live-camera.html` child for the
+unchanged `/dashboard/camera` host, at exact private `/dashboard/camera_widget`.
+Its independently accepted100,000 raw UTF-8 byte ceiling is separate from Fans
+and the unchanged two-lab750,000/80,000/830,000 bounds. The explicit production
+graph excludes lab fixtures/producers, tests, observations and Three; one IIFE
+and inline CSS require no runtime assets. `bun run verify:live-camera` rebuilds
+and compares exact bytes, and the repository gate includes it. Package unit
+tests reject oversize UTF-8, fixture/test imports and remote asset references.
+
+The asset is an inline private-server text import and enters source-derived
+release hash/security inventory, not a new external lifecycle asset or MCP
+resource. It retains existing Camera CSP/no-store behavior. Legacy camera HTML
+and all MCP aliases are unchanged until their separately reviewed cutover.
+
 ## Private synthetic Camera lab packaging
 
 Decision0032's Camera addendum adds `svelte-camera-lab.html` as an inline

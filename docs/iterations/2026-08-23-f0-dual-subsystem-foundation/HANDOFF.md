@@ -1,5 +1,52 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 real Camera dashboard candidate — review handoff
+
+The candidate explicitly merged reviewed Fans main `db1c926` after committing
+its typed-port foundation. Shared HostRpc source is reused unchanged. New
+camera transport/peer/session/controller/runtime, generic media playback/
+VideoSurface/MediaStatus and zero-raw CameraWidget/LiveCameraRoot implement the
+real dashboard child. Synthetic Camera remains a separate import graph.
+
+Private `/dashboard/camera` now selects exact `/dashboard/camera_widget` with
+the unchanged Camera CSP. Host origin/child epochs reject stale replies and
+release an allocated late lease after child replacement. Five existing calls,
+backend acquisition, auth, public/MCP/legacy assets and other widgets remain
+unchanged. Production build/contract/negative tests enforce one self-contained
+HTML under100,000 raw UTF-8 bytes and reject lab/tests/Three/remote assets.
+Shipping inventory adds its exact source-derived private hash; public/path/
+method/cache/CSP and host regressions are included.
+
+Current author gates and exact artifact hashes are in newest VALIDATION.
+Before acceptance, a separate validator must run the full final129 browser
+matrix and challenge native/PiP/timeout/lifecycle/metadata boundaries; the
+author's full129 run preceded the final loadedmetadata/playing capability
+listeners, followed by all8 final Camera browser cases. The latter includes
+feature-detected native PiP entry or retained-playback rejection, explicitly
+emulated Safari presentation API, native/CSS fullscreen, FPS expiry/stall,
+retry/BFCache and four widths at200% text. No actual Safari/phone/printer proof.
+
+Next: independent exact validation and source review, guarded PR merge/deploy/
+BOTH restart and separate served behavior verification. Do not retire legacy
+Camera/MCP resources or mark every widget migrated. Keep all remaining tracks.
+
+## 2026-09-01 real Camera typed-port checkpoint
+
+Decision0035 records the role-separated accepted real Camera dashboard-only
+direction. New camera/transport.ts validates the existing five private frame/
+signaling calls without a camera URL or message listener; camera/peer.ts binds
+only a downstream receive-only peer; media/playback.ts preserves one supplied
+video and producer-owned tracks. Their unit tests plus existing session tests
+pass38/38 and compiler/AST pass. CameraOffer now describes bounded ICE fields;
+candidate usernameFragment is retained. No fixture producer enters these files.
+
+Next merge the reviewed real Fans/shared-HostRpc main, then implement generic
+VideoSurface/MediaStatus, zero-raw CameraWidget/root, bootstrap/host lifecycle and
+exact private `/dashboard/camera_widget` build/route. Production budget must be
+measured and independently accepted. Preserve legacy `/camera-widget` and MCP
+resources; do not claim complete migration or live/device parity from this
+unwired checkpoint. No printer call or service change occurred.
+
 ## Renewed PR70 ready for independent exact acceptance
 
 The held refresh race is corrected and reviewed main `ef5b239` is explicitly

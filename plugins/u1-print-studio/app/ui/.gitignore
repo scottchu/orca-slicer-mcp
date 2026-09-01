@@ -2,5 +2,6 @@
 /build/
 /build-embed/
 /build-live-fans/
+/build-live-camera/
 /node_modules/
 /test-results/

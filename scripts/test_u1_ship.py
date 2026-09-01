@@ -356,6 +356,12 @@ class StaticContractTests(unittest.TestCase):
             self.assertEqual(len(live_contract), len(contract) + 1)
             self.assertEqual(live_contract["8788/dashboard/fans_widget"]["sha256"], digest(app / "public/svelte-live-fans.html"))
             self.assertNotIn("8787/dashboard/fans_widget", live_contract)
+            source.write_text(source.read_text() + ' const LIVE_CAMERA_WIDGET_PATH = "/dashboard/camera_widget";')
+            (app / "public/svelte-live-camera.html").write_text("production Camera, not lab fixtures")
+            camera_contract = static_contract(root)
+            self.assertEqual(len(camera_contract), len(live_contract) + 1)
+            self.assertEqual(camera_contract["8788/dashboard/camera_widget"]["sha256"], digest(app / "public/svelte-live-camera.html"))
+            self.assertNotIn("8787/dashboard/camera_widget", camera_contract)
             index.write_text('<a href="https://unexpected.invalid">Wrong</a>')
             with self.assertRaises(ShipError): static_contract(root)
 
@@ -399,12 +405,13 @@ class StaticContractTests(unittest.TestCase):
             security_calls.append((port, route))
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
-        self.assertEqual(check_security(contract, security_read), 28)
+        self.assertEqual(check_security(contract, security_read), 29)
         self.assertIn((8787, "/dashboard/overview"), security_calls)
         self.assertIn((8787, "/dashboard/camera"), security_calls)
         self.assertIn((8787, "/dashboard/lab"), security_calls)
         self.assertIn((8787, "/dashboard/lab/bed_mesh"), security_calls)
         self.assertIn((8787, "/dashboard/fans_widget"), security_calls)
+        self.assertIn((8787, "/dashboard/camera_widget"), security_calls)
         self.assertIn((8787, "/dashboard/lab/camera"), security_calls)
         self.assertNotIn((8788, "/dashboard/overview"), security_calls)
         forbidden_routes = {"/dashboard/tools/call", "/widget", "/camera-widget"}
@@ -424,7 +431,7 @@ class StaticContractTests(unittest.TestCase):
         contract = static_contract(root)
         dashboard_paths = {item["route"] for item in contract.values() if item["route"].startswith("/dashboard")}
         expected = len(dashboard_paths) + 3 + 1  # fixed public/private auth checks plus private health
-        self.assertEqual(expected, 28)
+        self.assertEqual(expected, 29)
         def read(port, route):
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
