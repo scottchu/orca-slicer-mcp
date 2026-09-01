@@ -188,8 +188,10 @@ printer environments support the described behavior.
   frame-counter evidence. Omit unmeasured, invalid, reset, or stale FPS; timer
   callbacks are not frame counts. Clear FPS on exit and after 1.5 seconds
   without advancing frame evidence. Network diagnostics stay hidden.
-  Fullscreen/PiP reflect granted host/native state, with feature detection and
-  explicit rejection handling; API presence does not establish mobile support.
+  Fullscreen reflects same-document native or local CSS state and never requests
+  a remount-capable host display mode; PiP reflects granted host/native state.
+  Both use feature detection and explicit rejection handling; API presence does
+  not establish mobile support.
 
 ## Events and notifications
 

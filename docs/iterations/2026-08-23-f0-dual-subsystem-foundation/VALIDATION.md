@@ -18,19 +18,20 @@ bun run bundle
 bun run bundle:server
 ```
 
-Results: TypeScript passes; 268 tests/2,828 assertions pass; runtime, stdio and
+Results: TypeScript passes; 268 tests/2,841 assertions pass; runtime, stdio and
 server bundles build; the standalone runtime satisfies its designated code-sign
 requirement. Deterministic coverage includes the 320/390/590/720 density
-contract, multiple listeners for one DOM event, host-over-native fullscreen
-precedence, same-peer pause/stall recovery, FPS reset/recovery, one bounded
+contract, multiple listeners for one DOM event, hosted native/local fullscreen
+identity continuity with zero host display-mode or camera calls, same-peer
+pause/stall recovery, FPS reset/recovery, one bounded
 pagehide/pageshow restore and no intrinsic-height notification on FPS-only
 ticks.
 
 Frozen SHA-256:
 
-- `public/widget.html`: `8bf4ab6242b1b0a0aa4a96f9a73d6bbb8d8c6807c9e9b1cdd051f184ad4f0f07`
-- `public/camera-widget.html`: `a66e8689d20557359cffaba456473ab90a7b50d32083109ca02e24dc5b3d3be9`
-- `src/widget-shared.css`: `1a43bb86e8a8a53a04ee0f1dd7fe191f9fb28c97bb98c9ce3a221e8c1548626b`
+- `public/widget.html`: `2f822f9f2f882a6628f5678ae67e77bbba1819ef0a087833fb19c76ad12fde7f`
+- `public/camera-widget.html`: `2e00a848a7e647f904a1c49e25cb9fc618fea6847190cc8bcd265e870f60e29c`
+- `src/widget-shared.css`: `111eae4226d62272d27972f66978455770677e5409ed0d714afd88fad361f7cb`
 - `public/dashboard-index.html`: `c2d3ab47c2abdc4f4570bbfab35f1216ddddef9d10aef8e969ac5747d2e806e1`
 - `public/status-dashboard-host.html`: `8fe08aba0693bd7873faa9941877fb0a9508140b355baedf59cbca7ba4787749`
 

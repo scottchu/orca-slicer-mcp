@@ -273,7 +273,7 @@ describe("production observation widget host boundary", () => {
   test("empty output does not mask either metadata envelope", () => {
     for (const key of ["mcp_tool_result", "call_tool_result"]) {
       const card = mount({ toolOutput: {}, toolResponseMetadata: { [key]: { structuredContent: fixture("queue") } } });
-      expect(card.modules.innerHTML).toContain("Queue");
+      expect(card.modules.innerHTML).toContain("Print Queue");
       expect(card.modules.innerHTML).not.toContain("Waiting");
     }
   });
@@ -501,8 +501,8 @@ describe("production observation widget host boundary", () => {
     const markup = mount({ toolOutput: states }).modules.innerHTML;
     for (const line of [
       "Current Job · Stale · Observed ", " · Stale · Network unavailable",
-      "History · Not observed · Observation time unavailable · Freshness unknown · Not requested",
-      "Queue · Unsupported · Observation time unavailable · Freshness unknown · Endpoint unsupported",
+      "Job History · Not observed · Observation time unavailable · Freshness unknown · Not requested",
+      "Print Queue · Unsupported · Observation time unavailable · Freshness unknown · Endpoint unsupported",
       "Environment · Not observed · Observation time unavailable · Freshness unknown · Not reported",
     ]) expect(markup).toContain(line);
     expect((markup.match(/Data could not be read/g) ?? []).length).toBe(0);
@@ -879,7 +879,7 @@ describe("continuous reported print progress", () => {
 
   test("white surface, library icons and thin track remain stable in a dark host", () => {
     expect(html).toContain("color-scheme: light;"); expect(html).not.toContain("prefers-color-scheme: dark");
-    expect(html).toContain("--surface: var(--u1-surface);"); expect(html).toContain(".progress-track { height: 6px;");
+    expect(html).toContain("--surface: var(--u1-surface);"); expect(html).toContain(".progress-track { height: 8px;");
     expect(html).toContain("Feather Icons v4.29.2"); expect(html).toContain("Copyright (c) 2013-2023 Cole Bemis");
     const markup = progress(3, 5).modules.innerHTML;
     expect(markup).toContain('data-icon="feather-printer"');

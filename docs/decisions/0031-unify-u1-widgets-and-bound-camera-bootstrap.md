@@ -44,11 +44,14 @@ labels are Overview, Print Progress, U1 Camera, Thermals, Heads & Filaments,
 Current Job, Job History, Print Queue, Fans & Air and Bed Mesh. Stable selector
 and tool identities, including `queue`, do not change.
 
-Hosted ChatGPT fullscreen requests use the documented host display-mode bridge
-before any browser-native API. Standalone presentation may use same-document
-native fullscreen and otherwise uses a CSS presentation fallback. Pause and
-stalled events attempt playback recovery without closing the peer, media track
-or signaling session; FPS clears until new rendered-frame evidence recovers it.
+Fullscreen never uses the host display-mode bridge because a host grant may
+remount the resource and destroy live-media identity. Hosted and standalone
+presentation use same-document native dashboard fullscreen when available and
+otherwise use an in-document CSS viewport fallback. Entry and exit make no
+camera request and preserve the video node, `srcObject`, peer, track and frame
+observer. Pause and stalled events attempt playback recovery without closing
+the peer, media track or signaling session; FPS clears until new rendered-frame
+evidence recovers it.
 One pagehide/pageshow cycle may restore persisted live intent once, while a
 fresh remount retains the existing one-attempt restore bound. Intrinsic-height
 notifications follow content or display-mode changes, never FPS-only ticks.

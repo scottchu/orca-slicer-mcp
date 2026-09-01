@@ -510,7 +510,7 @@ describe("camera widget presentation runtime", () => {
     expect(host.node("#camera").classList.contains("has-snapshot")).toBe(true);
   });
 
-  test("host-granted mode wins, including mobile PiP coercion and fullscreen exit", async () => {
+  test("host-granted PiP reports mobile coercion without routing the fullscreen control through the host", async () => {
     const modes: string[] = [];
     const host = cameraHost({ openai: { requestDisplayMode: async ({ mode }: { mode: string }) => { modes.push(mode); return { mode: mode === "pip" ? "fullscreen" : mode }; } } });
     host.acceptSnapshot();
@@ -520,12 +520,10 @@ describe("camera widget presentation runtime", () => {
     expect(host.node("#picture-in-picture").getAttribute("aria-pressed")).toBe("false");
     expect(host.node("#fullscreen").getAttribute("aria-pressed")).toBe("true");
     expect(host.node("#display-feedback").textContent).toContain("instead of picture in picture");
-    await host.api.requestCameraDisplay("fullscreen");
-    expect(modes).toEqual(["pip", "inline"]);
-    expect(host.document.body.dataset.displayMode).toBe("inline");
+    expect(modes).toEqual(["pip"]);
   });
 
-  test("inline-only local fullscreen preserves the live peer, media and FPS with zero tool calls", async () => {
+  test("hosted local fullscreen fallback preserves live identities with zero host or camera calls", async () => {
     const host = cameraHost(); host.acceptSnapshot(); host.api.prepareLive();
     const track = { id: "same-track" }; host.node("#live-stream").srcObject = { id: "same-media", getTracks: () => [track] };
     host.renderFrame(1); host.advance(1000); host.renderFrame(31);
@@ -533,6 +531,7 @@ describe("camera widget presentation runtime", () => {
     const liveNode = host.node("#live-stream"); const snapshotNode = host.node("#snapshot");
     const snapshotSrc = snapshotNode.src;
     const cameraCalls = () => host.messages.filter((message: any) => message.method === "tools/call").length;
+    const displayCalls = () => host.messages.filter((message: any) => message.method === "ui/request-display-mode").length;
     const calls = cameraCalls();
     await host.api.requestCameraDisplay("fullscreen");
     expect(host.document.body.dataset.localFullscreen).toBe("true");
@@ -548,35 +547,50 @@ describe("camera widget presentation runtime", () => {
     expect(host.node("#live-stream").srcObject.getTracks()[0]).toBe(track);
     expect(host.node("#snapshot").src).toBe(snapshotSrc);
     expect(cameraCalls()).toBe(calls);
+    expect(displayCalls()).toBe(0);
     expect(html).not.toContain("webkitEnterFullscreen");
   });
 
-  test("host display mode takes precedence over an available native fullscreen API", async () => {
-    const host = cameraHost();
-    let nativeCalls = 0;
+  test("hosted native fullscreen preserves peer, track, media nodes and frame observer", async () => {
+    const host = cameraHost(); host.acceptSnapshot(); host.api.prepareLive();
+    const track = { id: "hosted-native-track" };
+    const media = { id: "hosted-native-media", getTracks: () => [track] };
+    host.node("#live-stream").srcObject = media;
+    host.renderFrame(1); host.advance(1000); host.renderFrame(31);
+    const before = host.api.state();
+    const liveNode = host.node("#live-stream");
+    const snapshotNode = host.node("#snapshot");
     host.document.fullscreenEnabled = true;
-    host.node("#dashboard").requestFullscreen = async () => { nativeCalls++; };
+    host.node("#dashboard").requestFullscreen = async () => { host.document.fullscreenElement = host.node("#dashboard"); };
+    host.document.exitFullscreen = async () => { host.document.fullscreenElement = null; };
     await host.reply(host.messages[0], { hostContext: { displayMode: "inline", availableDisplayModes: ["inline", "fullscreen"] } });
-    const pending = host.api.requestCameraDisplay("fullscreen");
-    const request = host.messages.at(-1);
-    expect(request.method).toBe("ui/request-display-mode");
-    expect(nativeCalls).toBe(0);
-    await host.reply(request, { mode: "fullscreen" });
-    await pending;
-    expect(nativeCalls).toBe(0);
+    const messageCount = host.messages.length;
+    await host.api.requestCameraDisplay("fullscreen");
+    expect(host.document.fullscreenElement).toBe(host.node("#dashboard"));
+    await host.api.requestCameraDisplay("fullscreen");
+    expect(host.document.fullscreenElement).toBeNull();
+    expect(host.messages).toHaveLength(messageCount);
+    expect(host.api.state()).toEqual(before);
+    expect(host.api.state().livePeerConnection).toBe(before.livePeerConnection);
+    expect(host.api.state().liveFrameCallback).toBe(before.liveFrameCallback);
+    expect(host.node("#live-stream")).toBe(liveNode);
+    expect(host.node("#snapshot")).toBe(snapshotNode);
+    expect(host.node("#live-stream").srcObject).toBe(media);
+    expect(host.node("#live-stream").srcObject.getTracks()[0]).toBe(track);
   });
 
-  test("MCP host display requests wait for an actual granted mode", async () => {
+  test("MCP host PiP requests wait for an actual granted mode", async () => {
     const host = cameraHost();
     await host.reply(host.messages[0], { hostContext: { displayMode: "inline", availableDisplayModes: ["inline", "fullscreen", "pip"] } });
     host.acceptSnapshot();
-    const pending = host.api.requestCameraDisplay("fullscreen");
+    const pending = host.api.requestCameraDisplay("pip");
     const request = host.messages.at(-1);
     expect(request.method).toBe("ui/request-display-mode");
+    expect(request.params).toEqual({ mode: "pip" });
     expect(host.document.body.dataset.displayMode).toBe("inline");
-    await host.reply(request, { mode: "fullscreen" });
+    await host.reply(request, { mode: "pip" });
     await pending;
-    expect(host.document.body.dataset.displayMode).toBe("fullscreen");
+    expect(host.document.body.dataset.displayMode).toBe("pip");
   });
 
   test("native fullscreen and live-only PiP are feature-detected and not synthetic host modes", async () => {

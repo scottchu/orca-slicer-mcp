@@ -18,9 +18,10 @@ The active source candidate is runtime 0.4.8/schema 12/observation-v14/
 camera-v10 with 26 resources and retained observation-v13/camera-v9 aliases.
 It applies the frozen compact 320/390/590/720 anatomy to every observation,
 camera and directory surface; user-facing Queue is Print Queue while selector
-`queue` is unchanged. Hosted fullscreen has host-over-native precedence;
-pause/stall and one page lifecycle restore preserve bounded live continuity.
-Author validation passes 268 tests/2,828 assertions, TypeScript and all three
+`queue` is unchanged. Hosted and standalone fullscreen use same-document native
+or CSS presentation without a host display-mode request; pause/stall and one
+page lifecycle restore preserve bounded live continuity.
+Author validation passes 268 tests/2,841 assertions, TypeScript and all three
 bundles. No service, network, auth, camera, printer or deployment contact has
 occurred for this candidate.
 

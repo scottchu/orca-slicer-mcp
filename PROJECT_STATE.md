@@ -19,9 +19,9 @@ directory now share a compact content-height anatomy at 320/390/590/720 widths.
 Canonical labels include Print Progress, U1 Camera, Print Queue and Fans & Air;
 stable selectors and tools are unchanged.
 
-Hosted fullscreen prefers host display mode, standalone fullscreen preserves
-same-document media identity, pause/stall recovery retains the peer, and one
-page lifecycle restore is bounded. Author checks pass 268 tests/2,828
+Hosted and standalone fullscreen use only continuity-preserving same-document
+native or CSS presentation, pause/stall recovery retains the peer, and one
+page lifecycle restore is bounded. Author checks pass 268 tests/2,841
 assertions, TypeScript and all three bundles. No service/network/printer contact
 or deployment occurred; independent review and guarded delivery are pending.
 

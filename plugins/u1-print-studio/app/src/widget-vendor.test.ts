@@ -56,5 +56,10 @@ describe("self-contained bed mesh renderer bundle", () => {
     tokens("--u1-card-x: 14px; --u1-icon-tile-size: 40px; --u1-size-title: 18px; --u1-row-y: 10px");
     expect(css).toContain("width: var(--u1-icon-tile-size); height: var(--u1-icon-tile-size)");
     expect(css).toContain(".u1-body { min-width: 0; margin: 0 var(--u1-card-x); padding: 0 0 var(--u1-body-bottom); }");
+    expect(css).toContain(".u1-meta { margin-top: 4px;");
+    expect(css).toContain("/ 1.35 var(--u1-font)");
+    expect(css).toContain("--u1-leading-body: 1.4;");
+    expect(css).toContain(".progress-instrument .progress-track { height: 8px; }");
+    expect(css).toContain(".u1-header-result { grid-column: 2; grid-row: 2; justify-self: stretch; text-align: left; }");
   });
 });

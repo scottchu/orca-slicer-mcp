@@ -84,7 +84,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       .progress-percent { display: block; color: var(--positive); font-size: clamp(44px, 9vw, 72px); line-height: 1; font-weight: 300; letter-spacing: -0.065em; font-variant-numeric: tabular-nums; }
       .progress-percent.unknown { font-size: 24px; color: var(--muted); letter-spacing: -0.02em; }
       .progress-state { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
-      .progress-track { height: 6px; margin: 2px 0 12px; overflow: hidden; border-radius: 999px; background: #f1f2f3; }
+      .progress-track { height: 8px; margin: 2px 0 12px; overflow: hidden; border-radius: 999px; background: #f1f2f3; }
       .progress-fill { height: 100%; border-radius: inherit; background: var(--brand); }
       .progress-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; color: var(--muted); font-size: 14px; }
       .progress-meta > span { display: inline-flex; align-items: center; gap: 7px; }
@@ -258,7 +258,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
   --u1-size-title: 24px;
   --u1-size-hero: 56px;
   --u1-leading-heading: 1.2;
-  --u1-leading-body: 1.45;
+  --u1-leading-body: 1.4;
   --u1-weight-regular: 400;
   --u1-weight-medium: 560;
   --u1-weight-heading: 620;
@@ -282,7 +282,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 .u1-header-copy { grid-column: 2; grid-row: 1; min-width: 0; }
 .u1-header-result { grid-column: 3; grid-row: 1; min-width: 0; text-align: right; align-self: center; }
 .u1-title { margin: 0; color: var(--u1-ink); font: var(--u1-weight-heading) var(--u1-size-title) / var(--u1-leading-heading) var(--u1-font); letter-spacing: -0.035em; overflow-wrap: anywhere; }
-.u1-meta { margin-top: 6px; color: var(--u1-muted); font: var(--u1-weight-regular) var(--u1-size-meta) / var(--u1-leading-body) var(--u1-font); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.u1-meta { margin-top: 4px; color: var(--u1-muted); font: var(--u1-weight-regular) var(--u1-size-meta) / 1.35 var(--u1-font); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .u1-body { min-width: 0; margin: 0 var(--u1-card-x); padding: 0 0 var(--u1-body-bottom); }
 .u1-data-row { min-width: 0; border-color: var(--u1-line); font: var(--u1-weight-regular) var(--u1-size-body) / var(--u1-leading-body) var(--u1-font); }
 .u1-facts { min-width: 0; border-color: var(--u1-line); }
@@ -296,7 +296,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 
 .progress-instrument .progress-result { min-width: 0; margin: 0; }
 .progress-instrument .progress-percent { font-size: var(--u1-size-hero); }
-.progress-instrument .progress-track { height: 6px; }
+.progress-instrument .progress-track { height: 8px; }
 
 @media (max-width: 620px) {
   :root {
@@ -335,6 +335,8 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
     --u1-size-hero: 36px;
     --u1-row-y: 10px;
   }
+  .u1-header { grid-template-columns: var(--u1-icon-tile-size) minmax(0, 1fr); }
+  .u1-header-result { grid-column: 2; grid-row: 2; justify-self: stretch; text-align: left; }
   .u1-meta { font-size: 11px; }
 }
 /* END GENERATED U1 SHARED CSS */
@@ -4901,7 +4903,7 @@ void main() {
           valid[1] ? (() => { const primary = thermals.activeTool === null ? "Active tool unknown" : `T${thermals.activeTool} ${thermals.activeActualC === null ? "Unknown" : `${Math.round(thermals.activeActualC)}°`} / ${thermals.activeTargetC === null ? "Unknown" : `${Math.round(thermals.activeTargetC)}°`}`; const secondary = `Bed ${thermals.bedActualC === null ? "Unknown" : `${Math.round(thermals.bedActualC)}°`} / ${thermals.bedTargetC === null ? "Unknown" : `${Math.round(thermals.bedTargetC)}°`} · Cavity ${thermals.cavityActualC === null ? "Unknown" : `${Math.round(thermals.cavityActualC)}°`}`; return overviewTile(thermals, "Thermals", primary, secondary, overviewReceipt("Printer", thermals.receipts.status) + overviewReceipt("Cavity", thermals.receipts.environment)); })() : invalidOverviewTile(thermals, "Thermals"),
           valid[2] ? (() => { const loaded = heads.reportedPresence === true; const empty = heads.reportedPresence === false; const color = loaded && heads.color !== null ? `<span class="material-swatch" aria-hidden="true" style="display:inline-block;vertical-align:-4px;margin-right:7px;background-color:${heads.color}"></span>` : empty ? '<span class="material-swatch empty" aria-hidden="true" style="display:inline-block;vertical-align:-4px;margin-right:7px"></span>' : ""; const material = empty ? "Empty" : loaded ? heads.material ?? "N/A" : "N/A"; const primary = heads.activeTool === null ? "Active head unknown" : `T${heads.activeTool} · ${escapeHtml(material)}`; return overviewTile(heads, "Heads & Filaments", `${color}${primary}`, "", overviewReceipt("Printer", heads.receipts.status) + overviewReceipt("Material", heads.receipts.materials)); })() : invalidOverviewTile(heads, "Heads & Filaments"),
           valid[3] ? (() => { const state = jobs.printState === null ? "State not reported" : ({ standby: "Standby", printing: "Printing", paused: "Paused", complete: "Complete", error: "Error", cancelled: "Cancelled", unknown: "Unknown" })[jobs.printState]; const storage = jobs.storageActive === null ? "Storage not reported" : jobs.storageActive ? "Storage active" : "Storage inactive"; return overviewTile(jobs, "Current Job", escapeHtml(state), escapeHtml(storage), overviewReceipt("Current Job", jobs.receipts.currentJob)); })() : invalidOverviewTile(jobs, "Current Job"),
-          valid[4] ? (() => { const secondary = history.statusCounts === null ? "Status aggregate unavailable" : Object.entries(history.statusCounts).filter(([, count]) => count > 0).map(([status, count]) => `${count} ${statusLabel(status)}`).join(" · ") || "No statuses returned"; return overviewTile(history, "Job History", history.pageCount === null ? "Page not observed" : `${history.pageCount} ${history.pageCount === 1 ? "job" : "jobs"} returned`, escapeHtml(secondary), overviewReceipt("History", history.receipts.jobHistory)); })() : invalidOverviewTile(history, "Job History"),
+          valid[4] ? (() => { const secondary = history.statusCounts === null ? "Status aggregate unavailable" : Object.entries(history.statusCounts).filter(([, count]) => count > 0).map(([status, count]) => `${count} ${statusLabel(status)}`).join(" · ") || "No statuses returned"; return overviewTile(history, "Job History", history.pageCount === null ? "Page not observed" : `${history.pageCount} ${history.pageCount === 1 ? "job" : "jobs"} returned`, escapeHtml(secondary), overviewReceipt("Job History", history.receipts.jobHistory)); })() : invalidOverviewTile(history, "Job History"),
           valid[5] ? (() => { const state = queue.queueState === null ? "State unknown" : ({ ready: "Ready", loading: "Loading", starting: "Starting", paused: "Paused" })[queue.queueState]; return overviewTile(queue, "Print Queue", escapeHtml(state), queue.totalCount === null ? "Count unknown" : `${queue.totalCount} ${queue.totalCount === 1 ? "job" : "jobs"} queued`, overviewReceipt("Print Queue", queue.receipts.queue)); })() : invalidOverviewTile(queue, "Print Queue"),
           valid[6] ? (() => { const mode = fans.purifierPowerDetected !== true ? "" : ` · ${({ idle: "Idle", cool_chamber: "Cool chamber", preheat_chamber: "Preheat chamber", hot_chamber: "Hot chamber" })[fans.purifierMode] ?? "Mode unknown"}`; const purifier = fans.purifierPowerDetected === null ? "Purifier not reported" : fans.purifierPowerDetected ? `Purifier detected${mode}` : "Purifier not detected"; return overviewTile(fans, "Fans & Air", fans.reportedFanCount === null ? "Fans not observed" : `${fans.reportedFanCount} of 7 fans reported`, escapeHtml(purifier), overviewReceipt("Environment", fans.receipts.environment)); })() : invalidOverviewTile(fans, "Fans & Air"),
           valid[7] ? (() => { const primary = mesh.active === null ? "Mesh state unknown" : mesh.active ? "Active mesh" : "No active mesh"; const secondary = mesh.active === true ? `${mesh.columns} × ${mesh.rows} · ${mesh.rangeMillimeters.toFixed(3)} mm range` : ""; return overviewTile(mesh, "Bed Mesh", primary, secondary, overviewReceipt("Bed Mesh", mesh.receipts.bedMesh)); })() : invalidOverviewTile(mesh, "Bed Mesh"),

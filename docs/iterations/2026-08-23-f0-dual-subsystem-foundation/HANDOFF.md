@@ -6,13 +6,13 @@ The author candidate is runtime 0.4.8/schema 12/observation-v14/camera-v10 with
 26 resources and retained observation-v13/camera-v9 aliases. It gives every
 observation and camera card the frozen compact width-token anatomy, removes
 reserved directory height, and makes Print Queue the canonical visible label
-without changing selector `queue`. Hosted fullscreen now prefers the MCP Apps
-display-mode bridge; standalone native/CSS transitions preserve the live media
-identity. Pause/stall events recover playback without immediate session
+without changing selector `queue`. Hosted and standalone fullscreen now use
+only same-document native/CSS transitions that preserve the live media identity
+and make no host display-mode or camera request. Pause/stall events recover playback without immediate session
 teardown, FPS requires fresh frame evidence, and one page lifecycle restore is
 bounded.
 
-Author checks pass 268 tests/2,828 assertions, TypeScript, reproducible vendor
+Author checks pass 268 tests/2,841 assertions, TypeScript, reproducible vendor
 injection, and runtime/stdio/server bundles. Exact hashes and commands are in
 `VALIDATION.md`. No printer, service, network, deployment or browser/device
 contact occurred. The next smallest action is independent exact-source review,
