@@ -14,7 +14,7 @@ describe("private Svelte observation lab package", () => {
   test("freezes one deterministic self-contained static page", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "565c731ef6199c81e5df4f758837c6980fb33d7cc349905d7f16c4acbf17e2eb"
+      "dd4f727d615fc7730db76f96b1b33e1371338b046737afc82d87d12a086b3b67"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [

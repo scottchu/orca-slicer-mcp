@@ -4,6 +4,12 @@
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`
 - Status: active
+- Current foundation slice (2026-09-01): decision 0033/UI-003 composes Thermals
+  from closed shared typed primitives with zero native feature/composite HTML,
+  frozen raw debt and loading/ready-refreshing/unavailable/error states. The
+  first slice ships separately for prompt user feedback; all-nine skeletons and
+  remaining ready migrations stay ordered follow-ons rather than silently
+  dropped scope. No production cutover or acquisition is included.
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
 - Current presentation migration (2026-09-01): decision 0032 starts an
   incremental Svelte 5/SvelteKit static lab without cutting over focused

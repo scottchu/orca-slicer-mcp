@@ -474,6 +474,17 @@ durable-monitor claim.
 
 ## Requirement changes
 
+- **UI-003:** Observation presentation uses closed DOM-owning leaf/layout
+  primitives and zero-raw domain/feature composition. Shared degree,
+  actual/target thermal, icon, label, name, caption and timestamp components
+  preserve units, source time and unknown-versus-zero semantics. AST checks
+  prevent new raw feature HTML/style/transport debt. Each widget gains a
+  shape-matched loading state without fake values or focusable actions,
+  aria-busy plus one state announcement, reduced-motion support and retained
+  known data during refresh. Thermals is the first independently shippable
+  migration; all-nine skeleton/gallery and remaining ready migrations stay
+  explicitly pending until separately evidenced. See decision 0033.
+
 When evidence changes one of these requirements, update it explicitly and
 record a decision if the change affects architecture, safety, or product scope.
 Do not let a printer limitation silently redefine the intended user outcome.

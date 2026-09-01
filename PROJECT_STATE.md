@@ -10,6 +10,34 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Svelte component foundation and Thermals progressive state — author candidate (2026-09-01)
+
+Decision 0033/UI-003 now has a bounded private-lab author candidate based on
+merged PR60 `9a9038d`. It introduces closed typed leaf/layout primitives,
+zero-native-element ActualTarget/ThermalReading/Thermals compositions, a
+central icon registry, shared WidgetState and shape-matched six-row Thermals
+loading. Loading contains no telemetry or actionable control; ready refresh
+retains data and source time; unavailable/error are closed. An AST frontier
+rejects native HTML/style/HTML injection, unregistered components/imports and
+transport/global escapes in migrated composites while bounding the eight
+untouched ready-widget raw debts. Production assets, routes, tools, resources,
+auth and services remain unchanged and uncontacted.
+
+Author checks pass Svelte 0/0, 62 component tests, 54 real-Chrome cases and the
+full repository gate (276 app/3,178 assertions, lifecycle 21, shipping 24).
+Two builds reproduce a 722,484-byte self-contained package with SHA-256
+`dd4f727d615fc7730db76f96b1b33e1371338b046737afc82d87d12a086b3b67`.
+The hard reserve is 27,516 bytes; this is 2,484 bytes above the provisional
+720,000-byte soft target and requires explicit reviewer disposition. Exact
+independent re-review is required before PR/merge/deploy. This is synthetic static/software evidence,
+not deployed-service, live-printer, actual-device or user acceptance.
+
+The next ordered slices remain explicit: all-nine skeleton companions/gallery,
+remaining eight zero-raw ready migrations; Bed Mesh camera-aware outer axes and
+full grid enclosure; bounded sanitized private read-only Console with no input;
+job-bound model thumbnail then real layer-geometry progress; Camera lifecycle;
+and separately reviewed production cutovers. None is implemented here.
+
 ### All-observation Svelte private-lab candidate — review pending (2026-09-01)
 
 Decision 0032/UI-002 now has an isolated candidate for the complete non-camera

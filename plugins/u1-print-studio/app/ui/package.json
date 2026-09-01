@@ -5,13 +5,13 @@
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && bun run scripts/check-components.ts",
     "test": "vitest run",
     "build": "vite build",
     "package:private-lab": "bun run scripts/package-private-lab.ts",
     "verify:private-lab": "bun run build && bun run scripts/package-private-lab.ts --check",
     "build:embed": "vite build --config vite.embed.config.ts",
-    "test:browser": "playwright test"
+    "test:browser": "bun run scripts/build-state-harness.ts && playwright test"
   },
   "dependencies": {
     "lucide-svelte": "^0.544.0",

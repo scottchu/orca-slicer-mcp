@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  let { children, label }: { children: Snippet; label: string } = $props();
+  let { children, label, busy }: { children: Snippet; label: string; busy?: boolean } = $props();
 </script>
 
-<article class="widget-shell" aria-label={label} data-widget-shell>
+<article class="widget-shell" aria-label={label} aria-busy={busy} data-widget-shell>
   {@render children()}
 </article>
 
