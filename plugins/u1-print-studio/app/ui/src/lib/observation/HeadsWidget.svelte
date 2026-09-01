@@ -4,44 +4,42 @@
   import { validateHeads, type HeadsObservation } from './types';
   let { observation }: { observation: HeadsObservation } = $props();
   const heads = $derived(validateHeads(observation));
-  let feedback = $state('');
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  async function copyColor(color: string): Promise<void> {
+  async function copyColor(color: string, announce: (message: string) => void): Promise<void> {
     try {
       if (!navigator.clipboard) throw new Error('clipboard unavailable');
       await navigator.clipboard.writeText(color);
-      feedback = `${color} copied`;
+      announce(`${color} copied`);
     } catch {
-      feedback = `${color} copy unavailable`;
+      announce(`${color} copy unavailable`);
     }
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => { feedback = ''; }, 1600);
   }
 </script>
 
-<ObservationFrame title="Heads & Filaments" icon={Layers3} observedAt={heads.sourceObservedAt} freshness={heads.freshness} {feedback}>
-  <div class="head-grid">
-    {#each heads.items as head}
-      <section class:empty={head.presence !== true} class:active={head.active} class="head-card" style={`--head-color:${head.color ?? '#A7ADB4'}`} aria-label={`Tool ${head.physicalTool}`}>
-        <div class="head-top"><strong>T{head.physicalTool}</strong><span class:neutral={!head.active} class="observation-status">{head.active ? 'Active' : 'Parked'}</span></div>
-        <div class="material" data-head-material>{head.presence === false ? 'Empty' : head.presence === null ? 'N/A' : head.material ?? 'N/A'}</div>
-        <div class="temperature"><Thermometer aria-hidden="true" /> {Math.round(head.actualC)}° / {Math.round(head.targetC)}°</div>
-        {#if head.color}
-          <button class="color copy-color" type="button" data-copy-color aria-label={`Copy T${head.physicalTool} color ${head.color}`} onclick={() => copyColor(head.color!)}>
-            <span class="swatch" aria-hidden="true"></span><span>{head.color}</span><Copy aria-hidden="true" />
-          </button>
-        {:else}
-          <div class="color color-static"><span class="swatch" aria-hidden="true"></span><span>N/A</span></div>
-        {/if}
-      </section>
-    {/each}
-  </div>
+<ObservationFrame title="Heads & Filaments" icon={Layers3} observedAt={heads.sourceObservedAt} freshness={heads.freshness}>
+  {#snippet children(announce: (message: string) => void)}
+    <div class="head-grid">
+      {#each heads.items as head}
+        <section class:empty={head.presence !== true} class:active={head.active} class="head-card" style={`--head-color:${head.color ?? '#A7ADB4'}`} aria-label={`Tool ${head.physicalTool}`}>
+          <div class="head-top"><strong>T{head.physicalTool}</strong><span class:neutral={!head.active} class="observation-status">{head.active ? 'Active' : 'Parked'}</span></div>
+          <div class="material" data-head-material>{head.presence === false ? 'Empty' : head.presence === null ? 'N/A' : head.material ?? 'N/A'}</div>
+          <div class="temperature"><Thermometer aria-hidden="true" /> {Math.round(head.actualC)}° / {Math.round(head.targetC)}°</div>
+          {#if head.color}
+            <button class="color copy-color" type="button" data-copy-color aria-label={`Copy T${head.physicalTool} color ${head.color}`} onclick={() => copyColor(head.color!, announce)}>
+              <span class="swatch" aria-hidden="true"></span><span>{head.color}</span><Copy aria-hidden="true" />
+            </button>
+          {:else}
+            <div class="color color-static"><span class="swatch" aria-hidden="true"></span><span>N/A</span></div>
+          {/if}
+        </section>
+      {/each}
+    </div>
+  {/snippet}
 </ObservationFrame>
 
 <style>
   .head-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .head-card { min-width: 0; padding: 14px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--head-color) 20%, var(--u1-line)); border-radius: var(--u1-radius-inner); background: color-mix(in srgb, var(--head-color) 6%, white); }
-  .head-card.active { border-bottom: 3px solid var(--head-color); }
+  .head-card.active { border-bottom: 3px solid var(--u1-accent); }
   .head-card.empty { --head-color: #A7ADB4 !important; background: #f3f4f5; }
   .head-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   .head-top > strong { font-size: 22px; letter-spacing: -.04em; }

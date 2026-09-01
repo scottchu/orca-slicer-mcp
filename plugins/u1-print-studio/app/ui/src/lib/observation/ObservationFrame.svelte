@@ -10,22 +10,23 @@
   import type { LabFreshness } from './types';
 
   type LucideIcon = typeof import('lucide-svelte')['Box'];
-  let { title, icon, observedAt, freshness, feedback = '', children }: {
+  type FeedbackAnnouncer = (message: string) => void;
+  let { title, icon, observedAt, freshness, children }: {
     title: string;
     icon: LucideIcon;
     observedAt: string;
     freshness: LabFreshness;
-    feedback?: string;
-    children: Snippet;
+    children: Snippet<[FeedbackAnnouncer]>;
   } = $props();
   const Icon = $derived(icon);
-  let refreshFeedback = $state('');
+  let feedback = $state('');
   let timer: ReturnType<typeof setTimeout> | undefined;
-  function refresh(): void {
-    refreshFeedback = 'Lab fixture refreshed';
+  function announce(message: string): void {
+    feedback = message;
     if (timer) clearTimeout(timer);
-    timer = setTimeout(() => { refreshFeedback = ''; }, 1600);
+    timer = setTimeout(() => { feedback = ''; }, 1600);
   }
+  function refresh(): void { announce('Lab fixture refreshed'); }
 </script>
 
 <WidgetShell label={title}>
@@ -33,11 +34,11 @@
     {#snippet icon()}<Icon aria-hidden="true" />{/snippet}
     {#snippet meta()}<span class="fixture-meta">Lab fixture · <ObservedMeta {observedAt} {freshness} /></span>{/snippet}
   </WidgetHeader>
-  <WidgetBody>{@render children()}</WidgetBody>
+  <WidgetBody>{@render children(announce)}</WidgetBody>
   <WidgetFooter>
     {#snippet actions()}<IconButton label="Refresh lab fixture" icon={RefreshCw} onclick={refresh} />{/snippet}
   </WidgetFooter>
-  {#if feedback || refreshFeedback}<div class="widget-feedback" role="status">{feedback || refreshFeedback}</div>{/if}
+  {#if feedback}<div class="widget-feedback" role="status">{feedback}</div>{/if}
 </WidgetShell>
 
 <style>

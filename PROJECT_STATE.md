@@ -44,13 +44,20 @@ inline bootstrap now owns the exact first non-empty document title before
 hydration. Heads uses the accepted wash, three valid-color bottom Copy actions,
 no action for Empty/N/A, and one shared overlay for Copy/Refresh feedback.
 
+Exact `b3e0c7e` was then blocked because that shared overlay still had two
+competing states: stale Copy could mask a later Refresh. Its active border also
+followed filament color. The renewal gives `ObservationFrame` one authoritative
+feedback state/timer and one announcer used by both actions; the last action
+always replaces the message. Active uses the semantic amber accent independently
+while only wash and swatch follow filament color.
+
 Real Chrome passes 50/50 cases at 320/390/590/720 with exactly one canonical
 non-empty title from initial parsing, one visible route, zero recorded layout
 shift, no required-text clipping, overflow, console error or nonlocal request,
 and stable Refresh/Copy feedback geometry/source time. Bed Mesh retains its
-exact 4:3/equal-mode contract. The package is 713,867 bytes, 36,133 below the
+exact 4:3/equal-mode contract. The package is 713,594 bytes, 36,406 below the
 750 KB bound, with SHA-256
-`19ce12161bc169596035ddc92d0e914d4b4d3cfb0ced5ee6ccfd0682cc34299c`.
+`097c9620af5125cb6ce65c820f6b3ce3e67e324d51c91115c6845cbab1878dd7`.
 Full author gates pass 24 UI tests, 276 app tests/3,178 assertions, 21 lifecycle
 tests, 24 shipping tests, deterministic builds, three bundles, help and code
 signature. Production hashes remain unchanged. This is renewed author fixture/

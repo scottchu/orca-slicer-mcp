@@ -1,5 +1,68 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 latest-action and semantic-active renewal
+
+Formal review blocked exact `b3e0c7e`: Copy and Refresh rendered one overlay but
+retained two states, allowing stale Copy to mask newer Refresh; the active border
+also followed filament color instead of semantic state. The correction remained
+inside the synthetic private lab and contacted no service, device, auth or
+Tailscale surface.
+
+Commands actually run after correction:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser -- observation-lab.spec.ts bed-mesh.spec.ts
+
+cd ..
+bun run ui:verify
+bun run ui:verify
+bun run check
+bun run test
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_service.py
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes 0/0 and Vitest 24/24. Component regressions exercise
+  Copy → Refresh and Refresh → Copy, require exactly one status node with the
+  latest message, and vary the active tool's canonical color independently.
+- Real Chrome passes 50/50. At 320/390/590/720, both action orders immediately
+  replace one feedback overlay and preserve card height within 0.1 pixel. A live
+  custom-property mutation changes the active card wash while its border remains
+  the exact computed semantic amber accent. All title, readability, overflow,
+  nonlocal-request and Bed Mesh 4:3 checks remain green.
+- Two sequential verification builds reproduce one 713,594-byte self-contained
+  page, 36,406 bytes below 750 KB, SHA-256
+  `097c9620af5125cb6ce65c820f6b3ce3e67e324d51c91115c6845cbab1878dd7`.
+- Full gates pass 276 app tests/3,178 assertions, 21 lifecycle and 24 shipping
+  tests. Bundles/signature/help pass: `dist/stdio.js` is 2,811,271 bytes/
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/server.js` is 3,867,324 bytes/
+  `0b92d73ad36ae29bac5fa981412a7b1e0ea401d10afde37498aab9f31063c4c7`;
+  `dist/u1-print-studio` is 65,229,648 bytes/
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`.
+  Existing production widget/camera/host hashes remain unchanged.
+
+This is author static/software and synthetic-fixture browser evidence only. It
+does not prove independent approval, deployment, MCP cutover, live telemetry,
+camera/printer behavior, actual-device rendering or user acceptance.
+
 ## 2026-09-01 parser-title and Heads interaction renewal
 
 Re-review blocked exact `9dc6470`: child routes still mutated from generic

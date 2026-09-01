@@ -249,3 +249,16 @@ Re-review found two remaining gaps without changing the migration boundary:
   Every valid hex exposes an accessible 44-pixel bottom Copy action; Empty/N/A
   has none. Copy and Refresh share one truthful non-flow feedback overlay so
   neither interaction changes intrinsic height or creates competing toasts.
+
+### Latest-action and semantic-active renewal
+
+Exact `b3e0c7e` showed that one rendered overlay is insufficient if Copy and
+Refresh retain separate state: an older Copy could mask a newer Refresh. The
+shared `ObservationFrame` therefore owns one feedback value, one timer and one
+announcer used by every frame action. Each action replaces the previous value
+immediately, so Copy → Refresh and Refresh → Copy both display only the latest
+truth without overlap or geometry change.
+
+Active tool state is semantic, not filament-derived. The active border uses the
+shared amber `--u1-accent`; changing a valid filament color may change only its
+six-percent RGBA-aware wash and exact swatch/hex.

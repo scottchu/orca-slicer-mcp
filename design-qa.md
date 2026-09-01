@@ -51,6 +51,12 @@ the grid or footer. Automated early-document instrumentation also records only
 the canonical title, never a visible or metadata-level generic-to-specific
 transition. No new actionable visual finding remains.
 
+Latest-action/active-state renewal: active status now keeps the shared amber
+accent when the active tool's filament color is changed; only the subtle wash
+and swatch change. Copy → Refresh and Refresh → Copy each render one overlay
+with the latest message and no card-height delta, avoiding both overlap and a
+stale semantic state.
+
 final result: passed
 
 ## 2026-09-01 Svelte Bed Mesh private lab foundation

@@ -176,9 +176,37 @@ for (const width of widths) {
         expect(wash.color).toBe('#3487C880');
         expect(wash.actual).toBe(wash.expected);
         expect(wash.actual).not.toBe(wash.opaque);
+        const activeSemantics = await panel.getByLabel('Tool 1').evaluate((card) => {
+          const element = card as HTMLElement;
+          const originalColor = element.style.getPropertyValue('--head-color');
+          const before = getComputedStyle(element);
+          const borderBefore = before.borderBottomColor;
+          const washBefore = before.backgroundColor;
+          element.style.setProperty('--head-color', '#7B4DFFFF');
+          const changed = getComputedStyle(element);
+          const borderAfter = changed.borderBottomColor;
+          const washAfter = changed.backgroundColor;
+          const probe = document.createElement('div');
+          probe.style.color = 'var(--u1-accent)';
+          document.body.append(probe);
+          const semanticAccent = getComputedStyle(probe).color;
+          probe.remove();
+          element.style.setProperty('--head-color', originalColor);
+          return { borderBefore, borderAfter, washBefore, washAfter, semanticAccent };
+        });
+        expect(activeSemantics.borderBefore).toBe(activeSemantics.semanticAccent);
+        expect(activeSemantics.borderAfter).toBe(activeSemantics.semanticAccent);
+        expect(activeSemantics.washAfter).not.toBe(activeSemantics.washBefore);
         const shellHeightBeforeCopy = (await panel.locator('[data-widget-shell]').boundingBox())!.height;
         await panel.getByRole('button', { name: 'Copy T3 color #3487C880' }).click();
         await expect(panel.getByRole('status')).toHaveText(/#3487C880 (?:copied|copy unavailable)/i);
+        await expect(panel.getByRole('status')).toHaveCount(1);
+        await refresh.click();
+        await expect(panel.getByRole('status')).toHaveText('Lab fixture refreshed');
+        await expect(panel.getByRole('status')).toHaveCount(1);
+        await panel.getByRole('button', { name: 'Copy T3 color #3487C880' }).click();
+        await expect(panel.getByRole('status')).toHaveText(/#3487C880 (?:copied|copy unavailable)/i);
+        await expect(panel.getByRole('status')).toHaveCount(1);
         const shellHeightAfterCopy = (await panel.locator('[data-widget-shell]').boundingBox())!.height;
         expect(Math.abs(shellHeightAfterCopy - shellHeightBeforeCopy)).toBeLessThan(0.1);
       }

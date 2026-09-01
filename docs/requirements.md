@@ -63,8 +63,9 @@ printer environments support the described behavior.
   envelopes. This is firmware metadata, not an Orca preset or sync/write action.
   Decision 0029 fixes selected field names, normalization and acceptance.
   Tool cards use a soft 6% wash of validated actual filament color over white
-  (respecting reported alpha), separate from active-state accents; swatch/hex
-  remain exact.
+  (respecting reported alpha), separate from the semantic amber active-state
+  accent; changing filament color cannot change active status. Swatch/hex remain
+  exact.
   Unknown color stays neutral with no copy action; valid hex has an accessible
   bottom Copy action with truthful feedback. Refresh stays below information.
 - **OBS-011:** All pending focused widgets remain in the active iteration's
@@ -367,7 +368,8 @@ printer environments support the described behavior.
   private identity. Shared tokens plus one header/body/footer inset owner keep
   cards compact and content-driven at 320/390/590/720; information precedes one
   bottom 44-pixel icon action and overlay feedback cannot change intrinsic
-  height. Canonical titles and the Progress/Thermals/Heads/Jobs/History/Queue/
+  height. One authoritative feedback state/timer makes the latest action replace
+  every earlier message immediately. Canonical titles and the Progress/Thermals/Heads/Jobs/History/Queue/
   Fans/Overview/Bed Mesh presentation rules are fixed by decision 0032's
   all-observation addendum. The canonical directory/child title must be the
   first and only non-empty title observed during initial parsing, before

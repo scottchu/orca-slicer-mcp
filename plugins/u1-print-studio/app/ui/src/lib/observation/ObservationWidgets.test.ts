@@ -91,7 +91,7 @@ describe('observation lab widgets', () => {
     expect(historyResult.container).not.toHaveTextContent('Current Job');
   });
 
-  test('uses a normalized RGBA wash and copies valid head colors without adding flow content', async () => {
+  test('keeps active semantics independent and makes the latest Heads action authoritative', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
     const { container } = render(HeadsWidget, { observation: headsLabFixture });
@@ -102,6 +102,19 @@ describe('observation lab widgets', () => {
     expect(writeText).toHaveBeenCalledOnce();
     expect(writeText).toHaveBeenCalledWith('#3487C880');
     expect(screen.getByRole('status')).toHaveTextContent('#3487C880 copied');
+    await fireEvent.click(screen.getByRole('button', { name: 'Refresh lab fixture' }));
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+    expect(screen.getByRole('status')).toHaveTextContent('Lab fixture refreshed');
+    await fireEvent.click(screen.getByRole('button', { name: 'Copy T3 color #3487C880' }));
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+    expect(screen.getByRole('status')).toHaveTextContent('#3487C880 copied');
+
+    const changedColor = structuredClone(headsLabFixture);
+    changedColor.items[0].color = '#7B4DFFFF';
+    cleanup();
+    const changed = render(HeadsWidget, { observation: changedColor });
+    expect(screen.getByLabelText('Tool 1')).toHaveStyle('--head-color: #7B4DFFFF');
+    expect(changed.container.querySelector('.head-card.active')).toHaveClass('active');
   });
 });
 

@@ -17,8 +17,8 @@ Resume from repository records, not chat history.
 The current candidate is the all-observation Svelte private lab on isolated
 branch `codex/u1-svelte-observation-lab`, based on merged `origin/main`
 `f44bd06`. It adds `/dashboard/lab` plus the nine exact non-camera child views
-from one 713,867-byte self-contained page (SHA-256
-`19ce12161bc169596035ddc92d0e914d4b4d3cfb0ced5ee6ccfd0682cc34299c`).
+from one 713,594-byte self-contained page (SHA-256
+`097c9620af5125cb6ce65c820f6b3ce3e67e324d51c91115c6845cbab1878dd7`).
 Camera is marked pending and unlinked. Production routes, MCP assets/inventory,
 auth/Tailscale and public HTTP do not change.
 
@@ -33,14 +33,18 @@ Re-review also required the canonical child title to be the first parsed
 non-empty title and the accepted Heads six-percent RGBA-aware wash plus bottom
 Copy interaction. The earliest inline bootstrap now owns title/route metadata;
 Heads has three valid-color 44-pixel Copy actions, none for Empty/N/A, and one
-shared non-flow Copy/Refresh feedback overlay.
+shared non-flow Copy/Refresh feedback overlay. Review blocked `b3e0c7e` because
+the overlay still combined two states and active status followed filament
+color. The renewal has one authoritative state/timer for both action orders;
+active uses semantic amber while wash/swatch alone follow filament color.
 
 Author evidence is green: Svelte check 0/0, Vitest 24/24, real Chrome 50/50 at
 320/390/590/720, app 276/276 with 3,178 assertions, lifecycle 21/21, shipping
 24/24, deterministic packaging, bundles/help/signature and unchanged production
 asset hashes. Browser assertions cover the entire initial non-empty title
 sequence, exact initial route, one visible panel, zero recorded layout shift,
-no required-text clipping, Overview 1/2 columns, Heads wash/Copy/two columns and
+no required-text clipping, Overview 1/2 columns, Heads semantic active accent,
+RGBA wash/latest-action Copy/two columns and
 unchanged Bed Mesh geometry. No
 deployment, service, printer, camera, auth or Tailscale contact occurred. Next
 is exact-SHA review, then ordinary PR delivery only if approved. Each production
