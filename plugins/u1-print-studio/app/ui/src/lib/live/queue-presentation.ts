@@ -1,4 +1,4 @@
-import type { Capability, Evidence, Freshness, Provenance } from './presentation';
+import type { Capability, Evidence, Freshness, Provenance } from './presentation.js';
 
 export type QueueState = 'ready' | 'loading' | 'starting' | 'paused';
 export type QueueReason = 'not_requested' | 'unsupported' | 'unauthorized' | 'http_error' | 'timeout' | 'network' | 'malformed' | 'too_large' | 'not_configured';

@@ -69,7 +69,9 @@ describe('observation lab widgets', () => {
 
   test('uses viewer-local clocks consistently in history and queue rows', () => {
     const historyClock = formatClock(jobHistoryLabFixture.items[0].endedAt);
-    const queueClock = formatClock(queueLabFixture.items[0].addedAt);
+    const queueClock = new Date(queueLabFixture.items[0].addedAt).toLocaleString([], {
+      year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
     const expectedHistory = new Intl.DateTimeFormat('en-US', {
       hour: 'numeric', minute: '2-digit', hour12: true
     }).format(new Date(jobHistoryLabFixture.items[0].endedAt));
@@ -77,8 +79,10 @@ describe('observation lab widgets', () => {
     render(JobHistoryWidget, { observation: jobHistoryLabFixture });
     expect(screen.getByText(historyClock)).toBeInTheDocument();
     cleanup();
-    render(QueueWidget, { observation: queueLabFixture });
-    expect(screen.getByText((_, element) => element?.classList.contains('value-slot') === true && element.textContent?.trim() === `Added ${queueClock}`)).toBeInTheDocument();
+    const queue = render(QueueWidget, { observation: queueLabFixture });
+    const added = queue.container.querySelector(`time[datetime="${queueLabFixture.items[0].addedAt}"]`);
+    expect(added).toHaveTextContent(queueClock);
+    expect(added).toHaveAttribute('title', queueLabFixture.items[0].addedAt);
   });
 
   test('keeps current job and history independent', () => {

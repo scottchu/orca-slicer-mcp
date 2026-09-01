@@ -1,5 +1,11 @@
 # F0 dual-subsystem foundation brief
 
+Queue continuation order update: accepted Bed main is integrated. Queue's
+ordered-list composition does not depend on pending Heads card leaves, so it is
+implemented independently using accepted foundation primitives. Production-only
+browser checks can run while guarded lab packaging is held for independent
+scalable design disposition; no cap increase or source-copy shortcut is allowed.
+
 Current bounded Queue track (2026-09-01): develop the strict real-data adapter
 and tests independently on reviewed Thermals main `6325c87`. Then, after accepted
 Heads foundation integration, compose shared zero-raw records/loading and the

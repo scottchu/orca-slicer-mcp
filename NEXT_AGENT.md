@@ -1,5 +1,33 @@
 # Next agent
 
+## Queue composition continuation — do not ship this checkpoint
+
+New required renewal: the Heads author identified that the host's initial HTTP
+failure catch only forwards `isError` for Fans. Queue must consume the accepted
+Heads migrated-runtime handoff/map repair after its merge and include Queue in
+that closed route map. Add a true initial HTTP500 -> immediate error -> explicit
+retry test. The current passing wrong-view/deadline test exercises a different
+case and does not prove HTTP failure delivery. Do not ship until this is fixed.
+
+Branch `codex/u1-live-queue`, non-temporary worktree
+`/Users/scottchu/.codex/worktrees/u1-live-queue`, includes accepted Bed main via
+`c01762c`. Generic ordered-record/date/duration leaves, zero-raw Queue lab/live
+composition, strict real boundary and `/dashboard/queue_widget` host routing now
+exist. No pending Heads code is required or copied.344 UI unit,292 scoped app,
+21 lifecycle,24 shipping and9 production browser tests pass; Queue
+artifact85,578 bytes is deterministic.
+
+Production browser checks cover four widths, normal/200% text, source facts,
+100/1000 rows, long filenames, refresh stability, malformed initial timeout/retry
+and BFCache.4179 is released. Lab packaging remains blocked at752,183/78,795/830,978 versus
+750,000/80,000/830,000; root must obtain independent scalable packaging disposition
+before full lab geometry and combined release gates. One genuine wrapper
+elimination experiment saved39 bytes; do not remove semantics/accessibility or
+raise caps ad hoc. Closed Queue lab preset loading geometry still needs browser
+validation; production checks use synthetic data, not actual-device evidence. Run all
+combined checks and update evidence before exact candidate review. No release,
+paired restart, device validation or cleanup has been performed by this author.
+
 ## Queue adapter checkpoint (2026-09-01)
 
 Continue the existing Print Queue migration, not a new feature: strict adapter,

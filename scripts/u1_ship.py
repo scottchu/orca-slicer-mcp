@@ -105,6 +105,13 @@ def static_contract(source):
         require((8788, live_thermals_match[1]) not in files,
                 "Live Thermals asset must have a distinct private route")
         files[(8788, live_thermals_match[1])] = "svelte-live-thermals.html"
+    live_queue_match = re.search(r'LIVE_QUEUE_WIDGET_PATH = "(/dashboard/queue_widget)";', text)
+    require("svelte-live-queue.html" not in text or live_queue_match is not None,
+            "Unsupported live Queue route contract")
+    if live_queue_match:
+        require((8788, live_queue_match[1]) not in files,
+                "Live Queue asset must have a distinct private route")
+        files[(8788, live_queue_match[1])] = "svelte-live-queue.html"
     files[(8788, camera_lab_match[1])] = "svelte-camera-lab.html"
     live_camera_match = re.search(r'LIVE_CAMERA_WIDGET_PATH = "(/dashboard/[a-z_]+)"', text)
     require("svelte-live-camera.html" not in text or live_camera_match is not None,

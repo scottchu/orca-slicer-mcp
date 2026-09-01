@@ -1,5 +1,72 @@
 # F0 dual-subsystem foundation validation
 
+## Queue composition checkpoint — author software, packaging held
+
+Actual commands in the isolated worktree, pinned Bun1.3.12:
+
+- UI `bun run check`: PASS zero Svelte errors/warnings and zero-native-HTML AST
+  composition checks. QueueWidget alone is removed from frozen raw-markup debt;
+  new leaves have closed tag/import inventories.
+- UI `bun run test -- --reporter=dot`:344 PASS. Early runs exposed an old Queue
+  selector/clock expectation and missing explicit cleanup in new component tests;
+  tests now check semantic datetime/local date output and isolate each render.
+- App `bun test src/status-dashboard.test.ts`:22 PASS/744 assertions. Exact
+  private Queue GET bytes/CSP/no-store, wrong methods, case/suffix/encoded paths,
+  traversal, public isolation and no-acquisition static requests pass. Actual
+  existing server projection accepts unobserved Queue without a false zero.
+- `uv run python scripts/test_u1_ship.py`:24 PASS. Inventory gains exactly the
+  Queue private asset and public-isolation check (31 derived security checks).
+  An initial `uv run python -m unittest scripts/test_u1_ship.py` invocation failed
+  module discovery; direct documented script invocation resolved it.
+- UI `bun run build:live-queue`, `bun run verify:live-queue`:PASS,85,578 bytes.
+  Production graph rejects lab fixtures/controllers, media/Camera and Three.
+- UI `bun run build`:PASS. `bun run package:private-lab`:EXPECTED GUARD FAILURE,
+  not completion. Normalized observation752,183 +Camera78,795 =830,978 bytes,
+  above unchanged750,000/80,000/830,000 limits. Prior output752,222/831,017
+  improved39 bytes by removing unnecessary ready-value LoadingValue wrappers;
+  loading leaves and exact/accessibility values are preserved. No artifacts
+  were force-written, no caps changed and no guards weakened.
+
+The first attempted broad app `bun test` accidentally discovered Vitest UI
+files and was interrupted after incompatible DOM runner errors. The proper
+app `bun run test` uses its existing `src/*.test.ts` scope:292 PASS/3,434
+assertions. `uv run python scripts/test_u1_service.py`:21 PASS. App
+`bun run check`, `bun run bundle`, `bun run bundle:server` and
+`bun run bundle:runtime`:PASS, compiled binary signature verified by build.
+The first app compiler pass exposed missing NodeNext `.js` suffixes in Queue
+adapter/model imports; corrected to match accepted live adapters without type
+or compiler-policy suppression. Compiled `dist/u1-print-studio --help`:PASS;
+`git diff --check`:PASS.
+
+UI `bun x playwright test tests/visual/live-queue.spec.ts --workers=1`:9 PASS
+against actual private host/child bytes and response CSP, intercepted synthetic
+tool responses only. Four widths320/390/590/720 × normal/200% text cover full
+160-character Latin/Unicode names, first100 of1000, explicit omitted count,
+duplicate/reordered slots, independently nullable dates/waits, finite duration
+extremes and expanded-year dates, four machine states, stale empty versus
+unobserved, exact retained geometry/receipt/focus after refresh failure, no
+outside requests or page errors. The ninth test advances virtual time through
+the unchanged20-second initialization deadline after wrong-view data, then
+verifies explicit retry and BFCache without duplicate initialization. Its first
+version failed by expecting the error at5 seconds; the test was corrected to
+exercise the real bounded deadline, not by changing the application timeout.
+The author inspected720 normal and320 enlarged `ready-queue.png` captures under
+ignored `ui/test-results/playwright/`; text stays readable and the footer remains
+below records. Port4179 is released to the Heads author. This is synthetic Chrome
+evidence, not independent visual approval or real phone validation.
+
+Production Queue SHA256:
+`c858dfb3c74ac7ad65adade91943f82bea4a96708e3093c14db5e4aa55396e3e`.
+Closed lab loading geometry and full combined gates remain unverified because
+packaging is held. No independent review, deployment, actual-printer acquisition
+or actual-device result is claimed.
+
+Parent-attributed Heads finding after this run: initial host HTTP failures only
+forward `isError` to Fans. Queue must integrate the accepted host-map/handoff
+repair and add a separate initial HTTP500 -> immediate error -> explicit retry
+regression. The passing wrong-view deadline test does not cover that defect.
+No fix or success for that HTTP case is claimed in this checkpoint.
+
 ## Queue adapter/controller foundation — author software only
 
 Actual commands on the isolated Queue branch with pinned Bun1.3.12:

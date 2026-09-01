@@ -1,5 +1,36 @@
 # F0 dual-subsystem foundation handoff
 
+## Queue shared presentation checkpoint — packaging held, not release-ready
+
+Before renewal, integrate the accepted Heads host initial-failure repair (never
+copy its pending branch), include Queue in the closed migrated-runtime route
+map/error handoff and test true initial HTTP500 -> immediate error -> retry.
+The Heads author found current host catch forwards `isError` only for Fans;
+Queue's wrong-view deadline test is distinct and must not be cited as coverage
+for HTTP failure. Root explicitly held this checkpoint for that follow-on.
+
+Own worktree now includes accepted Bed main. Added generic `OrderedRecords`,
+`Record`, `DateTimeValue`, `DurationValue`/formatter leaves and shared
+`DomainReceipt`, `QueueSummary`, `QueueRow`, `QueueRows`, `QueueSkeleton`
+composition. `QueueWidget` and `LiveQueueRoot` own no raw markup/style; the
+production entry uses reviewed common RPC/lifecycle only. Existing private
+`/dashboard/queue` routes to exact `/dashboard/queue_widget`, with app security
+tests and source-derived shipping hash/isolation inventory. Legacy MCP assets
+and all backend queries remain unchanged. Lab rows explicitly map fixture
+records; live presentation has no fixture casts/names/fabricated receipts.
+
+Tests and passing nine-case production browser matrix are recorded in newest
+VALIDATION. Port4179 is released. Next smallest actions: independently
+reviewed scalable lab packaging, then full lab preset loading/refresh geometry,
+combined tests and independent exact candidate review. The lab guard correctly
+blocks752,183 observation/830,978 aggregate; production85,578 passes proposed
+100,000 cap. Do not treat current stale packaged lab bytes as migrated coverage.
+Queue requires no pending Heads leaves. Position is a record slot, not durable
+job identity; duplicate filenames remain separate. Domain waiting duration never
+ticks. Unknown arbitrary initial row counts may legitimately resize on first
+data; refresh must retain geometry/focus/receipt and lab closed presets must
+match. No deployment, services, printer, auth/Tailscale or cleanup changed.
+
 ## Queue adapter checkpoint — no cutover
 
 Changed paths: UI `lib/live/queue-presentation.ts`, `queue-adapter.ts`,

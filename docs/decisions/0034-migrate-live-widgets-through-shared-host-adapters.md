@@ -158,6 +158,14 @@ acceptance. No printer controls, new acquisition, auth/Tailscale or plugin chang
 
 ## Documentation basis
 
+Queue implementation-order clarification: ordered-record leaves are independent
+of Heads card leaves and may be authored on already accepted foundation main.
+Do not copy unaccepted Heads source. The candidate's lab growth is subject to
+the unchanged aggregate/individual guards; the held752,183-byte observation
+measurement requires a separately reviewed packaging decision, not an automatic
+per-widget cap increase. Production100,000 remains a review proposal until exact
+candidate approval. This does not change privacy, semantics or acceptance gates.
+
 The existing split application is retained rather than scaffolded anew.
 [Official UI guidance](https://developers.openai.com/apps-sdk/build/chatgpt-ui)
 supports standards-first bridge events and updates to mounted UI;

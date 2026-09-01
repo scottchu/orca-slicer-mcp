@@ -1,5 +1,5 @@
-import type { QueuePresentation, QueueRecord } from './queue-presentation';
-import { record, exact, choice, number, time, flag, capability, evidence, reason, provenance, observationEnvelope, string } from './validation';
+import type { QueuePresentation, QueueRecord } from './queue-presentation.js';
+import { record, exact, choice, number, time, flag, capability, evidence, reason, provenance, observationEnvelope, string } from './validation.js';
 
 // Mirror the normalized public-basename boundary without importing an adapter
 // that owns child_process/network capabilities into the presentation graph.

@@ -1,8 +1,8 @@
 import { build } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { readFileSync, writeFileSync } from 'node:fs';
-const view = process.argv.includes('--thermals') ? 'thermals' : 'fans';
-const title = view === 'thermals' ? 'Thermals' : 'Fans & Air';
+const view = process.argv.includes('--queue') ? 'queue' : process.argv.includes('--thermals') ? 'thermals' : 'fans';
+const title = view === 'queue' ? 'Print Queue' : view === 'thermals' ? 'Thermals' : 'Fans & Air';
 await build({
   configFile: false, plugins: [svelte()],
   // Preserve whitespace inside bundled string values while emitting an artifact

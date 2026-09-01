@@ -1,5 +1,30 @@
 # Project state
 
+## Queue composition checkpoint — package guard held (2026-09-01)
+
+Known renewal obligation: initial host HTTP failure currently forwards `isError`
+only to Fans. Queue must integrate the accepted Heads host-map/failure repair,
+add its closed route and prove true initial HTTP500 -> error -> retry separately
+from its passing wrong-view20-second deadline case. This remains a release blocker.
+
+The isolated Queue author branch explicitly integrated accepted Bed main
+`8c5756d` through merge `c01762c`. Queue now composes zero-native-HTML lab and
+live roots from generic ordered-record/date/duration leaves. Its exact private
+child route, unchanged host bridge, strict real DTO adapter and source-derived
+shipping inventory are implemented but **not delivered or accepted**. No Heads
+pending source was copied; Queue has no dependency on its new card leaves.
+
+Author checks:344 UI unit tests; compiler/AST zero diagnostics;292 scoped app
+tests/3,434 assertions;21 lifecycle;24 ship tests;9 production Chrome cases.
+Production Queue is85,578 bytes and rebuilds
+deterministically under its proposed100,000-byte per-view cap. Lab packaging is
+correctly blocked:752,183 observation +78,795 Camera =830,978 bytes exceeds the
+unchanged750,000/80,000/830,000 limits. Removing redundant ready-value wrapper
+work saved39 lab bytes, not enough. No guard was bypassed or cap raised; packaged
+lab bytes remain the accepted older version. A scalable packaging decision,
+closed lab geometry/full combined gates, exact independent review and guarded
+delivery remain open. No service or actual-printer operation occurred.
+
 ## Queue migration: isolated adapter foundation (2026-09-01)
 
 Reviewed Thermals main `6325c87` is the author baseline. Print Queue now has a

@@ -7,7 +7,10 @@ export const composites = ['camera/CameraLabRoot.svelte', 'camera/CameraLabWidge
 composites.push('observation/FanReadings.svelte', 'live/LiveObservationRoot.svelte');
 composites.push('observation/ThermalReadings.svelte', 'live/LiveThermalsRoot.svelte');
 composites.push('camera/CameraWidget.svelte', 'camera/LiveCameraRoot.svelte');
+composites.push('observation/QueueWidget.svelte', 'observation/QueueRow.svelte', 'observation/QueueRows.svelte', 'observation/QueueSummary.svelte', 'observation/QueueSkeleton.svelte', 'observation/DomainReceipt.svelte', 'live/LiveQueueRoot.svelte');
 export const leaves: Record<string, string[]> = {
+  'ui/OrderedRecords.svelte': ['ol'], 'ui/Record.svelte': ['li', 'span', 'div'],
+  'ui/DateTimeValue.svelte': ['span', 'time'], 'ui/DurationValue.svelte': ['span'],
   'media/MediaStatus.svelte': ['div', 'span', 'span', 'span'],
   'media/VideoSurface.svelte': ['div', 'div', 'div', 'div', 'div', 'div', 'img', 'video'],
   'ui/PageLayout.svelte': ['main'],
@@ -37,7 +40,6 @@ export const debt: Record<string, string[]> = {
   'observation/HeadsWidget.svelte': ['button','div','div','div','div','div','section','span','span','span','span','span','strong'],
   'observation/CurrentJobWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','span','strong','strong','strong','strong','strong'],
   'observation/JobHistoryWidget.svelte': ['div','div','div','div','span','span','strong'],
-  'observation/QueueWidget.svelte': ['div','div','div','div','div','span','span','span','span','span','strong','strong'],
   'bed-mesh/BedMeshWidget.svelte': ['dd','dd','dd','div','div','div','div','div','div','div','dl','dt','dt','dt','span','span','span','span'],
   'observation/LabDirectory.svelte': ['a','div','div','h1','header','main','nav','p','span'],
   'observation/ObservationFrame.svelte': [],
@@ -58,6 +60,13 @@ function visit(value: unknown, fn: (node: Node) => void): void {
 }
 
 const approvedImports: Record<string, string[]> = {
+  'observation/QueueWidget.svelte': ['./ObservationFrame.svelte', './types', './loading', '../ui/Stack.svelte', '../ui/Caption.svelte', './QueueSummary.svelte', './QueueRows.svelte', './QueueSkeleton.svelte'],
+  'observation/QueueRow.svelte': ['../live/queue-presentation', '../ui/Record.svelte', '../ui/BoxLabel.svelte', '../ui/Name.svelte', '../ui/Caption.svelte', '../ui/LoadingValue.svelte', '../ui/DateTimeValue.svelte', '../ui/DurationValue.svelte'],
+  'observation/QueueRows.svelte': ['../live/queue-presentation', '../ui/OrderedRecords.svelte', './QueueRow.svelte'],
+  'observation/QueueSkeleton.svelte': ['../ui/OrderedRecords.svelte', './QueueRow.svelte', '../ui/LoadingValue.svelte', '../ui/Caption.svelte', './loading'],
+  'observation/QueueSummary.svelte': ['../live/queue-presentation', '../ui/InfoPair.svelte', '../ui/Caption.svelte', '../ui/LoadingValue.svelte', './format'],
+  'observation/DomainReceipt.svelte': ['../live/presentation', '../ui/Caption.svelte', '../ui/ObservedMeta.svelte', './format'],
+  'live/LiveQueueRoot.svelte': ['svelte', 'lucide-svelte', './queue-controller', '../ui/WidgetShell.svelte', '../ui/WidgetHeader.svelte', '../ui/WidgetBody.svelte', '../ui/WidgetFooter.svelte', '../ui/StateAnnouncement.svelte', '../ui/StatePanel.svelte', '../ui/Caption.svelte', '../ui/Icon.svelte', '../ui/IconButton.svelte', '../ui/Skeleton.svelte', '../ui/FeedbackOverlay.svelte', '../ui/Stack.svelte', '../observation/DomainReceipt.svelte', '../observation/QueueSummary.svelte', '../observation/QueueRows.svelte', '../observation/QueueSkeleton.svelte'],
   'observation/ThermalReadings.svelte': ['../live/presentation', '../ui/ReadingList.svelte', './ThermalReading.svelte'],
   'live/LiveThermalsRoot.svelte': ['svelte', 'lucide-svelte', './thermals-controller', '../observation/format', '../observation/ThermalReadings.svelte', '../observation/ThermalsSkeleton.svelte', '../ui/WidgetShell.svelte', '../ui/WidgetHeader.svelte', '../ui/WidgetBody.svelte', '../ui/WidgetFooter.svelte', '../ui/StateAnnouncement.svelte', '../ui/StatePanel.svelte', '../ui/ObservedMeta.svelte', '../ui/Caption.svelte', '../ui/Icon.svelte', '../ui/IconButton.svelte', '../ui/Skeleton.svelte', '../ui/FeedbackOverlay.svelte', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte'],
   'camera/LiveCameraRoot.svelte': ['./CameraWidget.svelte', './session', '../media/playback', './runtime'],
