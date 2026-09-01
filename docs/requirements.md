@@ -495,6 +495,18 @@ durable-monitor claim.
 
 ## Requirement changes
 
+- **UI-005:** The real Camera Svelte migration first replaces only the private
+  `/dashboard/camera` child with `/dashboard/camera_widget`, using the reviewed
+  shared host bridge and existing bounded frame/signaling application boundary.
+  One persistent video survives native/CSS fullscreen and PiP; timestamps/FPS
+  require decoded/presented evidence, stale async work cannot resurrect sessions,
+  and page lifecycle releases only this viewer's lease. Typed private metadata,
+  one-use activation, snapshot-first state and retained fallback are preserved.
+  The single self-contained production HTML has a separately reviewed100,000
+  raw UTF-8 byte limit; unchanged lab budgets do not fund it. Synthetic producers
+  never enter its build graph. Legacy `/camera-widget` and MCP aliases remain
+  until their separate parity cutover. See decision0035 for acceptance gates.
+
 - **UI-004:** Every private observation lab view exposes shared bottom controls
   outside its card for closed synthetic scenario/lifecycle/freshness/value
   inspection, including loading skeletons and retained refresh. URL selections

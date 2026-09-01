@@ -151,7 +151,7 @@ describe("standalone status dashboard", () => {
 
     for (const route of ["/dashboard", "/dashboard/", "/dashboard/progress",
       "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs", "/dashboard/job_history",
-      "/dashboard/queue", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/bed_mesh", "/dashboard/camera",
+      "/dashboard/queue", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/camera_widget", "/dashboard/bed_mesh", "/dashboard/camera",
       ...LAB_ROUTES.flatMap((path) => [path, path + "/"])]) {
       expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
     }
@@ -354,7 +354,7 @@ describe("standalone status dashboard", () => {
     expect(reads).toBe(1);
   });
 
-  test("serves the same camera-only widget behind a focused test host", async () => {
+  test("serves the migrated private Camera while preserving the legacy camera asset", async () => {
     const origin = await startFixture();
     const hostResponse = await fetch(`${origin}/dashboard/camera`);
     const hostHtml = await hostResponse.text();
@@ -363,7 +363,8 @@ describe("standalone status dashboard", () => {
 
     expect(hostResponse.status).toBe(200);
     expect(hostResponse.headers.get("cache-control")).toBe("no-store");
-    expect(hostHtml).toContain('src="/camera-widget?standalone=1"');
+    expect(hostHtml).toContain('const widgetSource = "/dashboard/camera_widget"');
+    expect(hostHtml).toContain('frame.src = widgetSource');
     expect(hostHtml).toContain("<title>U1 Camera</title>");
     expect(hostHtml).toContain("<strong>U1 Camera</strong>");
     expect(hostHtml).toContain('title="U1 Camera"');
@@ -378,6 +379,23 @@ describe("standalone status dashboard", () => {
     expect(widgetHtml).toContain('id="snapshot"');
     expect(widgetHtml).toContain('id="live-stream"');
     expect(widgetHtml).not.toContain("fetch(");
+  });
+
+  test("serves exact live Camera bytes with unchanged Camera CSP and strict private path/method isolation", async () => {
+    let reads = 0;
+    const origin = await startFixture(() => { reads += 1; });
+    const response = await fetch(`${origin}/dashboard/camera_widget`);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(response.headers.get("content-security-policy")).toBe("default-src 'none'; img-src data:; media-src blob:; script-src 'unsafe-inline'; style-src 'unsafe-inline'");
+    expect(await response.text()).toBe(readFileSync(new URL("../public/svelte-live-camera.html", import.meta.url), "utf8"));
+    for (const method of ["POST", "PUT", "DELETE", "HEAD", "OPTIONS"]) {
+      const rejected = await fetch(`${origin}/dashboard/camera_widget`, { method });
+      expect(rejected.status).toBe(405); expect(rejected.headers.get("allow")).toBe("GET");
+    }
+    for (const route of ["/dashboard/camera_widget/", "/dashboard/Camera_widget", "/dashboard/camera_widget/more", "/dashboard/%63amera_widget"]) expect((await fetch(origin + route)).status).toBe(404);
+    for (const route of ["/dashboard/../dashboard/camera_widget", "/dashboard/%2e%2e/dashboard/camera_widget", "/dashboard/%252e%252e/dashboard/camera_widget"]) expect(await rawGet(origin, route)).toBe(404);
+    expect(reads).toBe(0);
   });
 
   test("exposes only the widget's read-only observation and camera calls", async () => {

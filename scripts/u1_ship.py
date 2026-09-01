@@ -99,6 +99,14 @@ def static_contract(source):
                 "Live Fans asset must have a distinct private route")
         files[(8788, live_fans_match[1])] = "svelte-live-fans.html"
     files[(8788, camera_lab_match[1])] = "svelte-camera-lab.html"
+    live_camera_match = re.search(r'LIVE_CAMERA_WIDGET_PATH = "(/dashboard/[a-z_]+)"', text)
+    require("svelte-live-camera.html" not in text or live_camera_match is not None,
+            "Unsupported live Camera route contract")
+    if live_camera_match:
+        require(live_camera_match[1] not in routes and live_camera_match[1] not in lab_routes
+                and (8788, live_camera_match[1]) not in files,
+                "Live Camera asset must have a distinct private route")
+        files[(8788, live_camera_match[1])] = "svelte-live-camera.html"
     files.update({(8788, "/dashboard"): "dashboard-index.html", (8788, "/dashboard/"): "dashboard-index.html", (8788, "/dashboard/camera"): "camera-dashboard-host.html", (8788, "/widget"): "widget.html", (8787, "/widget"): "widget.html", (8788, "/camera-widget"): "camera-widget.html"})
     return {f"{port}{route}": {"port": port, "route": route, "sha256": digest(app / "public" / name)} for (port, route), name in files.items()}
 
