@@ -1,5 +1,35 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 Svelte Bed Mesh private lab candidate
+
+Decision 0032, UI-001 and the active migration addendum freeze a strangler
+approach: existing production routes/resources stay authoritative while focused
+Svelte candidates mature in a static private lab. The first candidate is
+`plugins/u1-print-studio/app/ui`, with a synthetic Bed Mesh route at
+`/dashboard/lab/bed_mesh` and an independent library build from
+`src/lib/embed.ts`. Neither artifact is wired into the production server.
+
+Shared components are `WidgetShell`, `WidgetHeader`, `WidgetBody`,
+`WidgetFooter`, `ObservedMeta`, `IconButton` and `ChartFrame`, backed by one
+token source. Bed Mesh receives a validated normalized presentation prop, uses
+the same 4:3 frame for local Three.js 3D and Canvas 2D, preserves one palette
+and actual-mm summary, places icon-only 44-pixel actions below information and
+uses a non-flow flash overlay. There is no explanatory paragraph or direct
+network/printer path.
+
+Author evidence passes Svelte check, 4 Vitest tests, static and embed builds,
+four real-Chrome geometry/screenshot cases and the complete existing repository
+gate (263 app/2,734 assertions, 21 lifecycle, 24 shipping). At all 320/390/590/
+720 widths the 3D and 2D chart DOMRects are equal within 0.1 CSS pixel and 4:3;
+no overflow, console error or external request occurred. `design-qa.md` records
+the isolated-lab pass and the still-blocked production/device boundary.
+
+No merge, deployment, service restart, printer observation, auth/routing change,
+MCP resource registration or production cutover occurred. Next, the coordinator
+must obtain independent exact-SHA review of this candidate. If `origin/main`
+advanced, do not rebase or merge until that review is renewed against the
+coordinated integration base. A later Bed Mesh cutover is a separate slice.
+
 ## 2026-08-31 unified widget and camera reliability — shipped in PR56
 
 Exact reviewed head `e2702dc7a39c45665aa14155e85d13011d50526b` merged in

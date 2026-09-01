@@ -1,5 +1,31 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## 2026-09-01 Svelte Bed Mesh private lab foundation
+
+final result: pass for the isolated lab candidate; production acceptance blocked
+
+Decision 0032 keeps the Svelte 5/SvelteKit work outside all current production
+routes and MCP resources. The candidate uses the established white card, system
+type, restrained outline/shadow, local Lucide icons, information above actions
+and exact 44-pixel controls. One shared 4:3 `ChartFrame` owns both modes;
+feedback is a timed in-chart overlay and no instruction paragraph changes flow.
+
+Real Chrome captured 2D and 3D at 320, 390, 590 and 720 CSS pixels. Geometry
+assertions compare x, y, width and height before/after each switch within 0.1
+CSS pixel, enforce 4:3, and check no horizontal overflow, console error or
+nonlocal request. The paired reference comparison confirms the candidate fixes
+the reported defects: the 3D surface is visibly colored and shaped rather than
+an almost blank plane, and the 2D/3D card rhythm no longer jumps. The 2D map
+retains maximum Y above minimum Y and shares the 3D fixture's exact range and
+palette. Fixture images and the combined comparison remain ignored local test
+artifacts; private reference files are not committed.
+
+This pass is static/component/real-browser evidence for the private synthetic
+lab only. Production `/dashboard/bed_mesh`, MCP-host mounting, live reported
+data, touch/orbit behavior on the user's phone and service deployment were not
+changed or accepted. A later production cutover requires renewed exact review,
+compatibility evidence and guarded rollout.
+
 ## E compact Overview design frozen: implementation/visual acceptance pending
 
 final result: blocked

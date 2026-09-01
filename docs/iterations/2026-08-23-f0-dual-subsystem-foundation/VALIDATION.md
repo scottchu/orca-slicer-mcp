@@ -1,5 +1,57 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 Svelte Bed Mesh private lab foundation
+
+Implementation ran in isolated worktree
+`/Users/scottchu/.codex/worktrees/u1-svelte-bed-mesh-foundation` on branch
+`codex/u1-svelte-bed-mesh-foundation`, based on exact `origin/main`
+`823ee09f3f51f256ea2dd26f93802b1fc0b0d23d`. No production route, MCP resource,
+service or printer was used.
+
+Commands actually run:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun add -d @testing-library/jest-dom
+bun run check
+bun run test
+bun run build
+bun run build:embed
+bun run test:browser
+
+cd plugins/u1-print-studio/app
+bun install --frozen-lockfile
+
+cd ../../..
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes with zero errors/warnings; Vitest passes 4 component tests.
+- `adapter-static` emits `build/dashboard/lab/bed_mesh/index.html`; the separate
+  embed build emits `build-embed/u1-widgets.js` and CSS from the prop-injected
+  mount boundary.
+- Real Chrome passes four geometry/screenshot cases at 320/390/590/720. Each
+  checks the exact same chart x/y/width/height in 3D and 2D within 0.1 CSS pixel,
+  4:3 aspect, 44-pixel controls, no horizontal overflow, console error or
+  nonlocal request. Exact frame results are 258×193.5, 328×246, 500×375 and
+  630×472.5 CSS pixels respectively, with identical x/y in both modes. Paired
+  2D/3D and reference-comparison PNGs remain under the
+  ignored `ui/test-results` directory.
+- The existing repository contract passes TypeScript, 263 app tests with 2,734
+  assertions, 21 service-lifecycle tests and 24 shipping tests.
+- The source scan finds no `fetch`, WebSocket, EventSource, WebRTC,
+  XMLHttpRequest, Moonraker, Tailscale or printer route in UI components/routes.
+  Existing `app/src`, `app/public`, dashboard route registries and MCP resources
+  have no diff from the exact base.
+
+This is static/software, component and local real-browser fixture evidence. It
+does not establish independent review, production route integration, deployed
+service, live printer data, MCP-host rendering, touch/device behavior or user
+acceptance.
+
 ## 2026-08-31 unified widget and camera reliability — PR56 deployed
 
 PR56 exact reviewed head

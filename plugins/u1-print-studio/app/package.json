@@ -15,7 +15,11 @@
     "setup": "bun run src/cli.ts setup",
     "doctor": "bun run src/cli.ts doctor",
     "check": "tsc --noEmit",
-    "test": "bun test src/*.test.ts"
+    "test": "bun test src/*.test.ts",
+    "ui:check": "bun --cwd ui run check",
+    "ui:test": "bun --cwd ui run test",
+    "ui:build": "bun --cwd ui run build && bun --cwd ui run build:embed",
+    "ui:test:browser": "bun --cwd ui run test:browser"
   },
   "dependencies": {
     "@modelcontextprotocol/ext-apps": "^1.0.1",

@@ -1,0 +1,37 @@
+:root {
+  color-scheme: light;
+  --u1-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --u1-ink: #1c1e20;
+  --u1-muted: #70757c;
+  --u1-faint: #959aa1;
+  --u1-surface: #ffffff;
+  --u1-canvas: #fbfcfd;
+  --u1-line: #e7e9ec;
+  --u1-soft: #f5f7f8;
+  --u1-accent: #f4b927;
+  --u1-positive: #32b968;
+  --u1-focus: #c38d00;
+  --u1-shadow: 0 8px 30px rgba(28, 30, 32, 0.07);
+  --u1-space-1: 4px;
+  --u1-space-2: 8px;
+  --u1-space-3: 12px;
+  --u1-space-4: 16px;
+  --u1-space-5: 20px;
+  --u1-space-6: 24px;
+  --u1-space-8: 32px;
+  --u1-radius-control: 12px;
+  --u1-radius-inner: 16px;
+  --u1-radius-card: 24px;
+  --u1-action-size: 44px;
+  --u1-icon-size: 20px;
+  --u1-card-x: 24px;
+}
+
+html { background: #f7f8f9; }
+body { margin: 0; color: var(--u1-ink); background: #f7f8f9; font-family: var(--u1-font); }
+button { font: inherit; }
+* { box-sizing: border-box; }
+
+@media (max-width: 420px) {
+  :root { --u1-card-x: 18px; --u1-radius-card: 20px; }
+}

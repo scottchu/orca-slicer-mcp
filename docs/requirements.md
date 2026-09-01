@@ -330,6 +330,18 @@ printer environments support the described behavior.
   observation store. Process restarts, separate services, and host-owned stdio
   connectors remain separate state scopes; service liveness does not establish
   printer freshness, durable history, login, sleep, or physical acceptance.
+- **UI-001:** Focused-widget framework migration uses a parallel Svelte 5/
+  SvelteKit static lab before any production cutover. Shared `WidgetShell`,
+  header, body, footer, observed metadata, 44-pixel icon action and chart-frame
+  primitives own the visual anatomy. Components receive versioned normalized
+  presentation values through props/host bridge only and make no direct
+  printer, network, authentication or signaling request. The first private lab
+  candidate is `/dashboard/lab/bed_mesh`; it is not registered by the shipped
+  dashboard or MCP resource inventory. Bed Mesh 2D and 3D occupy the exact same
+  responsive 4:3 `ChartFrame` `DOMRect` at 320/390/590/720 CSS-pixel widths,
+  preserve reported samples and actual-mm labels, use icon-only 44-pixel bottom
+  controls and non-flow feedback overlays, and contain no explanatory prose in
+  card flow. Decision 0032 fixes migration and cutover gates.
 
 Implementation qualification: the current store bootstraps one acquisition on
 its first `current()` demand. After initial acquisition, plain reads use the

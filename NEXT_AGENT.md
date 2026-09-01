@@ -8,11 +8,28 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0025 and 0027 through 0031 (0026 is reserved for earlier Queue work)
+5. decisions 0014 through 0025 and 0027 through 0032 (0026 is reserved for earlier Queue work)
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
+
+Decision 0032 now has an isolated implementation candidate for the incremental
+Svelte 5/SvelteKit rewrite. Review the exact non-main candidate before any
+integration. It adds only `plugins/u1-print-studio/app/ui`, app-level UI scripts
+and durable decision/iteration records. The private lab route is
+`/dashboard/lab/bed_mesh`; it is emitted by `adapter-static` but deliberately
+not registered by the production HTTP server or MCP resource inventory.
+
+The candidate's shared primitives are `WidgetShell`, `WidgetHeader`,
+`WidgetBody`, `WidgetFooter`, `ObservedMeta`, `IconButton` and `ChartFrame`.
+Bed Mesh accepts bridge-injected normalized props only. Real Chrome fixtures at
+320/390/590/720 prove an invariant 4:3 chart DOMRect across 3D/2D, 44-pixel
+controls, no overflow/errors/nonlocal request and paired captures. Full existing
+repository tests also pass. This is author/implementation evidence, not
+independent approval. Do not merge, rebase, deploy, register the lab route,
+contact services/printer or cut over production until the coordinator renews
+exact-SHA review and separately authorizes the next boundary.
 
 PR56 is shipped. Exact reviewed head `e2702dc7a39c45665aa14155e85d13011d50526b`
 merged as `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`, tree

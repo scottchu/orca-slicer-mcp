@@ -7,6 +7,17 @@ cancel other rows. Older entries saying Queue/progress are deferred are history.
 
 ## Scope and current reality
 
+### SvelteKit migration foundation — active, no production cutover
+
+Decision 0032 adds a private static fixture lab and shared Svelte component
+anatomy. Bed Mesh is the first candidate because its 2D/3D vertical jump is
+measurable. This track does not replace `/dashboard/bed_mesh`, register an MCP
+resource, deploy assets or contact the printer. It is accepted only when the
+same 4:3 chart frame survives mode switches at 320/390/590/720 with readable
+real-sample 3D/2D output, 44-pixel icon controls, overlay feedback, no direct
+network path and browser screenshot evidence. Per-widget production cutover is
+a later separately reviewed track; every existing focused widget remains active.
+
 The bounded product-iteration refinement is shipped in PR56. Reviewed
 `e2702dc7a39c45665aa14155e85d13011d50526b` merged as
 `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`; guarded release

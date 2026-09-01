@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-08-31
+Last updated: 2026-09-01
 
 ## Baseline
 
@@ -9,6 +9,23 @@ Last updated: 2026-08-31
   subsystems joined by an explicit prepared-job/print-session handoff.
 
 ## Active iteration
+
+### Svelte widget foundation candidate — private lab only (2026-09-01)
+
+Decision 0032 records an incremental Svelte 5/SvelteKit migration. An isolated
+source candidate adds shared widget primitives and a synthetic Bed Mesh lab at
+`/dashboard/lab/bed_mesh`; the static and embed builds accept only injected
+normalized props and contain no printer/network client. Existing production
+`/dashboard/bed_mesh`, HTTP routing, MCP tools/resources, auth and compatibility
+assets are unchanged.
+
+Component checks pass 4/4. Real Chrome geometry/screenshot fixtures pass at
+320/390/590/720: one exact 4:3 ChartFrame has unchanged x/y/width/height across
+3D/2D, controls are 44 pixels, and no overflow, console error or nonlocal
+request occurs. The full existing repository gate passes 263 app tests/2,734
+assertions, 21 lifecycle tests and 24 shipping tests. This is implementation-
+role evidence only, not independent review. The candidate is unmerged and
+undeployed; no service, printer, auth or route was contacted or changed.
 
 ### Unified widget and camera reliability shipped in PR56 (2026-08-31)
 

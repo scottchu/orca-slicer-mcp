@@ -34,6 +34,10 @@ silently changed.
 | [0025](0025-separate-current-job-and-job-history.md) | Separate Current Job and Job History | Accepted for the user-requested independently callable job views |
 | [0027](0027-observe-reported-bed-mesh-on-demand.md) | Observe the reported bed mesh on demand | Accepted; deployed and read-only live acquisition verified |
 | [0028](0028-ship-reviewed-u1-source-through-one-operator-workflow.md) | Ship reviewed U1 source through one operator workflow | Accepted; successful reviewed PR34 shipment verified |
+| [0029](0029-complete-white-read-only-widget-suite.md) | Complete the white read-only widget suite | Accepted; shipped, visual acceptance pending |
+| [0030](0030-present-reported-bed-mesh-as-interactive-surface.md) | Present the reported bed mesh as an interactive surface | Accepted; shipped, visual acceptance pending |
+| [0031](0031-unify-u1-widgets-and-bound-camera-bootstrap.md) | Unify U1 widget presentation and bound camera bootstrap | Accepted; shipped, visual acceptance pending |
+| [0032](0032-migrate-widgets-through-private-sveltekit-lab.md) | Migrate focused widgets through a private SvelteKit lab | Accepted for the bounded foundation slice |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 
