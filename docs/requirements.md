@@ -474,6 +474,14 @@ durable-monitor claim.
 
 ## Requirement changes
 
+- **UI-004:** Every private observation lab view exposes shared bottom controls
+  outside its card for closed synthetic scenario/lifecycle/freshness/value
+  inspection, including loading skeletons and retained refresh. URL selections
+  are validated and back/forward/reset work without acquisition. New state and
+  skeleton compositions remain zero-raw; seven existing ready-body debts remain
+  frozen. Camera follows separately with the same controls and synthetic-only
+  media, not the production signaling widget. See decisions 0032 and 0033.
+
 - **UI-003:** Observation presentation uses closed DOM-owning leaf/layout
   primitives and zero-raw domain/feature composition. Shared degree,
   actual/target thermal, icon, label, name, caption and timestamp components

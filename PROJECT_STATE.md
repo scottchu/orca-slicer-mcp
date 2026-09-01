@@ -10,6 +10,23 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Visible lab lifecycle/scenario controls — current priority (2026-09-01)
+
+The next user-directed UI-003 slice adds a visible shared control dock below
+every private lab observation card. Closed lifecycle, coherent synthetic data,
+freshness and bounded value examples replace the route's fixed ready-only
+fixture. All nine views gain loading/refreshing/unavailable/error inspection;
+no arbitrary JSON, transport or printer acquisition is introduced. Camera follows
+in a separate synthetic-only media-lifecycle slice using the same control system;
+it stays explicitly pending until its route is reviewed and delivered.
+
+PR63 and its documentation PR64 are merged. This candidate starts at `e1f57f0`;
+the currently deployed application remains exact `57a305b`. The hard private-lab
+package cap remains 750,000 bytes (22,942 bytes reserve before these slices).
+Seven legacy ready-body raw-debt multisets remain frozen, not falsely marked
+fully compositional. Bed Mesh axes/enclosure, read-only Console, model/layer
+progress, remaining ready migrations and production cutovers remain open.
+
 ### Fans & Air shared component slice shipped — PR63 (2026-09-01)
 
 Exact independently validated and formally approved head

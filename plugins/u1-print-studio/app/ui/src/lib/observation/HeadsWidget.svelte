@@ -2,10 +2,14 @@
   import { Copy, Layers3, Thermometer } from 'lucide-svelte';
   import ObservationFrame from './ObservationFrame.svelte';
   import { validateHeads, type HeadsObservation } from './types';
+  import LoadingValue from '../ui/LoadingValue.svelte';
+  import { loadingObservation } from './loading';
   type FeedbackController = { begin: (message: string, autoClear?: boolean) => number; settle: (generation: number, message: string) => void };
-  let { observation }: { observation: HeadsObservation } = $props();
-  const heads = $derived(validateHeads(observation));
-  async function copyColor(color: string, feedback: FeedbackController): Promise<void> {
+  type Props = { observation: HeadsObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never };
+  let { observation, loading = false, refreshing = false }: Props = $props();
+  const heads = $derived(loadingObservation(loading, observation, validateHeads));
+  const items = $derived(heads?.items ?? [1, 2, 3, 4].map((physicalTool) => ({ physicalTool })));
+  const copyColor = async (color: string, feedback: FeedbackController): Promise<void> => {
     const generation = feedback.begin(`Copying ${color}`, false);
     try {
       if (!navigator.clipboard) throw new Error('clipboard unavailable');
@@ -14,23 +18,24 @@
     } catch {
       feedback.settle(generation, `${color} copy unavailable`);
     }
-  }
+  };
 </script>
 
-<ObservationFrame title="Heads & Filaments" icon={Layers3} observedAt={heads.sourceObservedAt} freshness={heads.freshness}>
+<ObservationFrame title="Heads & Filaments" icon={Layers3} observedAt={heads?.sourceObservedAt ?? null} freshness={heads?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
   {#snippet children(feedback: FeedbackController)}
     <div class="head-grid">
-      {#each heads.items as head}
-        <section class:empty={head.presence !== true} class:active={head.active} class="head-card" style={`--head-color:${head.color ?? '#A7ADB4'}`} aria-label={`Tool ${head.physicalTool}`}>
-          <div class="head-top"><strong>T{head.physicalTool}</strong><span class:neutral={!head.active} class="observation-status">{head.active ? 'Active' : 'Parked'}</span></div>
-          <div class="material" data-head-material>{head.presence === false ? 'Empty' : head.presence === null ? 'N/A' : head.material ?? 'N/A'}</div>
-          <div class="temperature"><Thermometer aria-hidden="true" /> {Math.round(head.actualC)}° / {Math.round(head.targetC)}°</div>
-          {#if head.color}
-            <button class="color copy-color" type="button" data-copy-color aria-label={`Copy T${head.physicalTool} color ${head.color}`} onclick={() => copyColor(head.color!, feedback)}>
-              <span class="swatch" aria-hidden="true"></span><span>{head.color}</span><Copy aria-hidden="true" />
+      {#each items as head, index}
+        {@const reading = heads?.items[index]}
+        <section class:empty={reading?.presence !== true} class:active={reading?.active ?? false} class="head-card" style={`--head-color:${reading?.color ?? '#A7ADB4'}`} aria-label={`Tool ${head.physicalTool}`}>
+          <div class="head-top"><strong>T{head.physicalTool}</strong><span class:neutral={!reading?.active} class:loading class="observation-status"><LoadingValue {loading} text={reading ? reading.active ? 'Active' : 'Parked' : undefined} /></span></div>
+          <div class="material" data-head-material><LoadingValue {loading} text={reading ? reading.presence === false ? 'Empty' : reading.presence === null ? 'N/A' : reading.material ?? 'N/A' : undefined} size="long" /></div>
+          <div class="temperature"><Thermometer aria-hidden="true" /> <LoadingValue {loading} text={reading ? `${Math.round(reading.actualC)}° / ${Math.round(reading.targetC)}°` : undefined} /></div>
+          {#if reading?.color}
+            <button class="color copy-color" type="button" data-copy-color aria-label={`Copy T${head.physicalTool} color ${reading.color}`} onclick={() => copyColor(reading.color!, feedback)}>
+              <span class="swatch" aria-hidden="true"></span><span>{reading.color}</span><Copy aria-hidden="true" />
             </button>
           {:else}
-            <div class="color color-static"><span class="swatch" aria-hidden="true"></span><span>N/A</span></div>
+            <div class="color color-static"><span class="swatch" aria-hidden="true"></span><span><LoadingValue {loading} text={loading ? undefined : 'N/A'} /></span></div>
           {/if}
         </section>
       {/each}
@@ -40,8 +45,9 @@
 
 <style>
   .head-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .head-card { min-width: 0; padding: 14px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--head-color) 20%, var(--u1-line)); border-radius: var(--u1-radius-inner); background: color-mix(in srgb, var(--head-color) 6%, white); }
-  .head-card.active { border-bottom: 3px solid var(--u1-accent); }
+  .head-card { min-width: 0; padding: 14px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--head-color) 20%, var(--u1-line)); border-bottom-width: 3px; border-radius: var(--u1-radius-inner); background: color-mix(in srgb, var(--head-color) 6%, white); }
+  .head-card.active { border-bottom-color: var(--u1-accent); }
+  .loading::before { visibility: hidden; }
   .head-card.empty { --head-color: #A7ADB4 !important; background: #f3f4f5; }
   .head-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   .head-top > strong { font-size: 22px; letter-spacing: -.04em; }

@@ -4,6 +4,11 @@
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`
 - Status: active
+- Current priority: visible shared bottom lab controls for all nine observation
+  lifecycle/scenario/freshness/value examples, including structural loading;
+  then separate synthetic Camera integration with that same control system.
+  No production/printer/media transport change. Preserve frozen seven ready
+  debts, exact private route isolation and the unchanged 750,000-byte cap.
 - Latest shipped slice: PR63 reviewed `0f78e69`, merged `57a305b`, deployed as
   `20260901-57a305b-pr63-20260901T134952-9c86bd`. BOTH services explicitly
   restarted and passed integrity/health plus 25 exact static and 26 security

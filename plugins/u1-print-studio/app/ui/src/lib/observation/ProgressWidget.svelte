@@ -3,24 +3,28 @@
   import ObservationFrame from './ObservationFrame.svelte';
   import { formatDuration, titleCase } from './format';
   import { validateProgress, type ProgressObservation } from './types';
-  let { observation }: { observation: ProgressObservation } = $props();
-  const progress = $derived(validateProgress(observation));
+  import LoadingValue from '../ui/LoadingValue.svelte';
+  import { loadingObservation } from './loading';
+  type Props = { observation: ProgressObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never };
+  let { observation, loading = false, refreshing = false }: Props = $props();
+  const progress = $derived(loadingObservation(loading, observation, validateProgress));
 </script>
 
-<ObservationFrame title="Print Progress" icon={Printer} observedAt={progress.sourceObservedAt} freshness={progress.freshness}>
+<ObservationFrame title="Print Progress" icon={Printer} observedAt={progress?.sourceObservedAt ?? null} freshness={progress?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
   <div class="progress-top">
-    <span class="observation-status">{titleCase(progress.state)}</span>
-    <div class="percent">{Math.round(progress.percent)}<span>%</span></div>
+    <span class="observation-status" class:loading><LoadingValue {loading} text={progress ? titleCase(progress.state) : undefined} /></span>
+    <div class="percent"><LoadingValue {loading} text={progress ? Math.round(progress.percent) : undefined} size="short" /><span>{loading ? '' : '%'}</span></div>
   </div>
-  <div class="progress-track" role="progressbar" aria-label="Print progress" aria-valuenow={progress.percent} aria-valuemin="0" aria-valuemax="100">
-    <div class="progress-fill" style={`width:${progress.percent}%`}></div>
+  <div class="progress-track" role={loading ? undefined : 'progressbar'} aria-hidden={loading ? true : undefined} aria-label={loading ? undefined : 'Print progress'} aria-valuenow={progress?.percent} aria-valuemin={loading ? undefined : 0} aria-valuemax={loading ? undefined : 100}>
+    <div class="progress-fill" style={`width:${progress?.percent ?? 0}%`}></div>
   </div>
-  <div class="progress-detail"><span>Layer <strong>{progress.currentLayer}</strong> / {progress.totalLayers}</span><span><Clock3 aria-hidden="true" /> About {formatDuration(progress.etaSeconds)} left</span></div>
-  <div class="elapsed"><Clock3 aria-hidden="true" /><div><span class="observation-label">Elapsed</span><strong>{formatDuration(progress.elapsedSeconds)}</strong></div></div>
+  <div class="progress-detail"><span>Layer <strong><LoadingValue {loading} text={progress?.currentLayer} size="short" /></strong> / <LoadingValue {loading} text={progress?.totalLayers} size="short" /></span><span><Clock3 aria-hidden="true" /> <LoadingValue {loading} text={progress ? `About ${formatDuration(progress.etaSeconds)} left` : undefined} size="long" /></span></div>
+  <div class="elapsed"><Clock3 aria-hidden="true" /><div><span class="observation-label">Elapsed</span><strong><LoadingValue {loading} text={progress ? formatDuration(progress.elapsedSeconds) : undefined} /></strong></div></div>
 </ObservationFrame>
 
 <style>
   .progress-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .loading::before { visibility: hidden; }
   .percent { color: var(--u1-positive); font-size: clamp(42px, 13vw, 68px); font-weight: 380; line-height: .95; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
   .percent span { margin-left: 2px; font-size: .52em; }
   .progress-track { height: 8px; margin-top: 18px; overflow: hidden; border-radius: 999px; background: var(--u1-soft); }

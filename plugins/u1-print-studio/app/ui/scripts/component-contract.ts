@@ -3,8 +3,10 @@ import { resolve, relative } from 'node:path';
 import { parse } from 'svelte/compiler';
 
 // Explicit migration frontier: new files are rejected until assigned a layer.
-export const composites = ['observation/ThermalsWidget.svelte', 'observation/ActualTarget.svelte', 'observation/ThermalReading.svelte', 'observation/ThermalsSkeleton.svelte', 'observation/FansWidget.svelte', 'observation/FanReading.svelte', 'observation/FansSkeleton.svelte'];
+export const composites = ['observation/ThermalsWidget.svelte', 'observation/ActualTarget.svelte', 'observation/ThermalReading.svelte', 'observation/ThermalsSkeleton.svelte', 'observation/FansWidget.svelte', 'observation/FanReading.svelte', 'observation/FansSkeleton.svelte', 'observation/ObservationSkeleton.svelte', 'observation/ObservationState.svelte'];
 export const leaves: Record<string, string[]> = {
+  'ui/LoadingValue.svelte': ['span'],
+  'ui/LabControls.svelte': ['fieldset', 'legend', 'div', 'label', 'span', 'select', 'option'],
   'ui/Icon.svelte': [], 'ui/BorderedIcon.svelte': ['span'], 'ui/Label.svelte': ['span'],
   'ui/CircleLabel.svelte': ['span'], 'ui/BoxLabel.svelte': ['span'], 'ui/Name.svelte': ['span'],
   'ui/Caption.svelte': ['span'], 'ui/Timestamp.svelte': ['span', 'time'], 'ui/DegreeValue.svelte': ['span'],
@@ -48,6 +50,8 @@ function visit(value: unknown, fn: (node: Node) => void): void {
 }
 
 const approvedImports: Record<string, string[]> = {
+  'observation/ObservationSkeleton.svelte': ['./types', './OverviewWidget.svelte', './ProgressWidget.svelte', './HeadsWidget.svelte', './CurrentJobWidget.svelte', './JobHistoryWidget.svelte', './QueueWidget.svelte', '../bed-mesh/BedMeshWidget.svelte'],
+  'observation/ObservationState.svelte': ['./types', './ObservationFrame.svelte', '../ui/StatePanel.svelte'],
   'observation/FansWidget.svelte': ['./ObservationFrame.svelte', './types', './format', '../ui/state', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/ReadingList.svelte', '../ui/StatePanel.svelte', './FanReading.svelte', './FansSkeleton.svelte'],
   'observation/FanReading.svelte': ['./types', './fan-labels', '../ui/PercentageBackground.svelte', '../ui/ReadingRow.svelte', '../ui/Inline.svelte', '../ui/Icon.svelte', '../ui/Name.svelte', '../ui/MetricValue.svelte'],
   'observation/FansSkeleton.svelte': ['./fan-labels', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/Skeleton.svelte', '../ui/ReadingList.svelte', '../ui/ReadingRow.svelte', '../ui/Inline.svelte', '../ui/Icon.svelte', '../ui/Name.svelte', '../ui/MetricValue.svelte'],

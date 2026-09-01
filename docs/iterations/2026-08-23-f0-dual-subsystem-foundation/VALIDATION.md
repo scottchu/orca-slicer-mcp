@@ -1,5 +1,22 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 visible lab state controls — work-in-progress author checkpoint
+
+Pinned Bun frozen installs, UI compiler/AST, all 110 unit tests, build and
+private-lab packaging ran. Compiler/AST and unit tests pass. Initial complete
+nine-view lifecycle build is 746,773 bytes before merging the tiny slope change;
+the 750,000 cap is unchanged and Camera must await a measured budget decision.
+Four-width controller browser tests reached working URL reload/back/forward/
+reset checks but fail the synthetic keyboard-select sequence; this is open,
+not browser acceptance. Major loading/ready geometry and enlarged-text gates
+have not yet completed. No live service, printer or camera acquisition occurred.
+
+The approved minimal design reuses the seven existing raw layout shells/CSS
+with a registered LoadingValue leaf. Loading receives no observation object,
+only bounded row-count structure, and Bed Mesh does not mount Three/WebGL.
+New state/skeleton wrappers are zero-raw; legacy exact raw-tag debts are not
+expanded and are not claimed fully migrated. This checkpoint is not a release.
+
 ## 2026-09-01 PR63 guarded merge/deploy/BOTH restart verification
 
 Independent validation and formal review approved exact

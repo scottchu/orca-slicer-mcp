@@ -3,20 +3,23 @@
   import ObservationFrame from './ObservationFrame.svelte';
   import { titleCase } from './format';
   import { validateOverview, type OverviewObservation } from './types';
-  let { observation }: { observation: OverviewObservation } = $props();
-  const overview = $derived(validateOverview(observation));
+  import LoadingValue from '../ui/LoadingValue.svelte';
+  import { loadingObservation } from './loading';
+  type Props = { observation: OverviewObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never };
+  let { observation, loading = false, refreshing = false }: Props = $props();
+  const overview = $derived(loadingObservation(loading, observation, validateOverview));
 </script>
 
-<ObservationFrame title="Overview" icon={LayoutDashboard} observedAt={overview.sourceObservedAt} freshness={overview.freshness}>
+<ObservationFrame title="Overview" icon={LayoutDashboard} observedAt={overview?.sourceObservedAt ?? null} freshness={overview?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
   <div class="overview-grid">
-    <div class="overview-item"><Printer aria-hidden="true" /><span data-required-text>Progress</span><strong data-required-text>{Math.round(overview.progress.percent)}%</strong><small data-required-text>{titleCase(overview.progress.state)}</small></div>
-    <div class="overview-item"><Thermometer aria-hidden="true" /><span data-required-text>Thermals</span><strong data-required-text>{Math.round(overview.thermals.nozzleC)}°</strong><small data-required-text>{Math.round(overview.thermals.bedC)}° bed · {Math.round(overview.thermals.cavityC)}° cavity</small></div>
-    <div class="overview-item"><Layers3 aria-hidden="true" /><span data-required-text>Heads</span><strong data-required-text>{overview.heads.loaded} loaded</strong><small data-required-text>{overview.heads.activeTool === null ? 'None active' : `T${overview.heads.activeTool} active`}</small></div>
-    <div class="overview-item"><FileClock aria-hidden="true" /><span data-required-text>Current Job</span><strong data-required-text>{titleCase(overview.jobs.state)}</strong><small data-required-text>Observation</small></div>
-    <div class="overview-item"><History aria-hidden="true" /><span data-required-text>History</span><strong data-required-text>{overview.jobHistory.returned}</strong><small data-required-text>Recent records</small></div>
-    <div class="overview-item"><ListOrdered aria-hidden="true" /><span data-required-text>Print Queue</span><strong data-required-text>{overview.queue.count}</strong><small data-required-text>{titleCase(overview.queue.state)}</small></div>
-    <div class="overview-item"><Fan aria-hidden="true" /><span data-required-text>Fans</span><strong data-required-text>{overview.fans.active}</strong><small data-required-text>Active channels</small></div>
-    <div class="overview-item"><Grid3X3 aria-hidden="true" /><span data-required-text>Bed Mesh</span><strong data-required-text>{overview.bedMesh.rangeMm.toFixed(3)}</strong><small data-required-text>mm range</small></div>
+    <div class="overview-item"><Printer aria-hidden="true" /><span data-required-text>Progress</span><strong data-required-text><LoadingValue {loading} text={overview ? `${Math.round(overview.progress.percent)}%` : undefined} size="short" /></strong><small data-required-text><LoadingValue {loading} text={overview ? titleCase(overview.progress.state) : undefined} /></small></div>
+    <div class="overview-item"><Thermometer aria-hidden="true" /><span data-required-text>Thermals</span><strong data-required-text><LoadingValue {loading} text={overview ? `${Math.round(overview.thermals.nozzleC)}°` : undefined} size="short" /></strong><small data-required-text><LoadingValue {loading} text={overview ? `${Math.round(overview.thermals.bedC)}° bed · ${Math.round(overview.thermals.cavityC)}° cavity` : undefined} size="long" /></small></div>
+    <div class="overview-item"><Layers3 aria-hidden="true" /><span data-required-text>Heads</span><strong data-required-text><LoadingValue {loading} text={overview ? `${overview.heads.loaded} loaded` : undefined} /></strong><small data-required-text><LoadingValue {loading} text={overview ? overview.heads.activeTool === null ? 'None active' : `T${overview.heads.activeTool} active` : undefined} /></small></div>
+    <div class="overview-item"><FileClock aria-hidden="true" /><span data-required-text>Current Job</span><strong data-required-text><LoadingValue {loading} text={overview ? titleCase(overview.jobs.state) : undefined} /></strong><small data-required-text>Observation</small></div>
+    <div class="overview-item"><History aria-hidden="true" /><span data-required-text>History</span><strong data-required-text><LoadingValue {loading} text={overview?.jobHistory.returned} size="short" /></strong><small data-required-text>Recent records</small></div>
+    <div class="overview-item"><ListOrdered aria-hidden="true" /><span data-required-text>Print Queue</span><strong data-required-text><LoadingValue {loading} text={overview?.queue.count} size="short" /></strong><small data-required-text><LoadingValue {loading} text={overview ? titleCase(overview.queue.state) : undefined} /></small></div>
+    <div class="overview-item"><Fan aria-hidden="true" /><span data-required-text>Fans</span><strong data-required-text><LoadingValue {loading} text={overview?.fans.active} size="short" /></strong><small data-required-text>Active channels</small></div>
+    <div class="overview-item"><Grid3X3 aria-hidden="true" /><span data-required-text>Bed Mesh</span><strong data-required-text><LoadingValue {loading} text={overview?.bedMesh.rangeMm.toFixed(3)} size="short" /></strong><small data-required-text>mm range</small></div>
   </div>
 </ObservationFrame>
 

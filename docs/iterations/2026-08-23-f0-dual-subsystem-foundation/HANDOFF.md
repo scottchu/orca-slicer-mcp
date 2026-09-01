@@ -1,5 +1,22 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 visible lab controls — unreviewed implementation checkpoint
+
+`codex/u1-lab-scenarios` contains closed per-view controller/factories, shared
+bottom LabControls, URL state, all-nine lifecycle wiring and seven legacy shells
+reusing LoadingValue for structural loading. Compiler/AST and 110 unit tests
+pass; browser keyboard selection and major geometry gates remain open. No
+candidate is independently approved or delivered. Integrate latest reviewed
+main explicitly, preserve separate source branches, then finish browser and
+repository gates before freezing a review candidate.
+
+Camera is separately authored and not included/linked here. Measure its combined
+package budget before integration; current complete lab build leaves only 3,227
+bytes before the slope change. Do not increase the cap or drop accepted features
+silently. Preserve smaller visual Refresh, compact/medium/full and later MCP
+size parameter, seven remaining ready migrations, Bed Mesh axes, Console,
+model/layer progress and production cutovers as separate follow-on tracks.
+
 ## 2026-09-01 PR63 Fans private-lab slice shipped
 
 Reviewed `0f78e69` merged as `57a305b` and guarded release

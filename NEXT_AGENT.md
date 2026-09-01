@@ -14,6 +14,15 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Current priority is visible private-lab lifecycle/scenario/value controls and
+shape-matched loading for all nine observation views, followed promptly by the
+separate synthetic Camera lab using the shared controls. See decisions 0032/0033
+addenda. The controller accepts only closed examples, never JSON/URLs or live
+transport. Preserve the seven legacy ready-body raw debts and the 750,000-byte
+combined budget; Camera stays pending until its separate integration ships.
+PR64 merged as `e1f57f0` with unchanged deployed application `57a305b`.
+All earlier candidate priorities below are historical, not the current order.
+
 PR63 is shipped: reviewed `0f78e69`, merged `57a305b`, exact guarded release
 `20260901-57a305b-pr63-20260901T134952-9c86bd`. BOTH public/dashboard services
 were explicitly restarted and passed loaded/healthy/integrity checks; 25 exact

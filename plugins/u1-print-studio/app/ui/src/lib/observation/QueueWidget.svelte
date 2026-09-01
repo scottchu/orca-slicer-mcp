@@ -3,29 +3,35 @@
   import ObservationFrame from './ObservationFrame.svelte';
   import { formatClock, formatDuration, titleCase } from './format';
   import { validateQueue, type QueueObservation } from './types';
-  let { observation }: { observation: QueueObservation } = $props();
-  const queue = $derived(validateQueue(observation));
+  import LoadingValue from '../ui/LoadingValue.svelte';
+  import { loadingObservation, structureCount } from './loading';
+  type Props = { observation: QueueObservation; loading?: false; refreshing?: boolean; rows?: never } | { loading: true; observation?: never; refreshing?: never; rows?: number };
+  let { observation, loading = false, refreshing = false, rows = 3 }: Props = $props();
+  const queue = $derived(loadingObservation(loading, observation, validateQueue));
+  const items = $derived(queue?.items ?? Array.from({ length: structureCount(rows, 100) }, (_, index) => ({ position: index + 1 })));
 </script>
 
-<ObservationFrame title="Print Queue" icon={ListOrdered} observedAt={queue.sourceObservedAt} freshness={queue.freshness}>
-  <div class="queue-summary"><span class="observation-status">{titleCase(queue.queueState)}</span><strong>{queue.items.length}<span> queued</span></strong></div>
-  {#if queue.items.length}
+<ObservationFrame title="Print Queue" icon={ListOrdered} observedAt={queue?.sourceObservedAt ?? null} freshness={queue?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
+  <div class="queue-summary"><span class="observation-status" class:loading><LoadingValue {loading} text={queue ? titleCase(queue.queueState) : undefined} /></span><strong><LoadingValue {loading} text={queue?.items.length} size="short" /><span> queued</span></strong></div>
+  {#if items.length}
     <div class="observation-list queue-list">
-      {#each queue.items as item}
+      {#each items as item, index}
         <div class="observation-row queue-row">
-          <span class="position">{item.position}</span>
-          <div><strong>Queued item {item.position}</strong><span>Added {formatClock(item.addedAt)}</span></div>
-          <span class="wait"><Clock3 aria-hidden="true" />{formatDuration(item.waitingSeconds)}</span>
+          <span class="position" class:loading><LoadingValue {loading} text={queue ? item.position : undefined} size="short" /></span>
+          <div><strong><LoadingValue {loading} text={queue ? `Queued item ${item.position}` : undefined} size="long" /></strong><span><LoadingValue {loading} text={queue ? `Added ${formatClock(queue.items[index].addedAt)}` : undefined} size="long" /></span></div>
+          <span class="wait"><Clock3 aria-hidden="true" /><LoadingValue {loading} text={queue ? formatDuration(queue.items[index].waitingSeconds) : undefined} size="short" /></span>
         </div>
       {/each}
     </div>
   {:else}
-    <div class="empty-state">Queue empty</div>
+    <div class="empty-state"><LoadingValue {loading} text={queue ? 'Queue empty' : undefined} size="long" /></div>
   {/if}
 </ObservationFrame>
 
 <style>
   .queue-summary { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+  .loading::before { visibility: hidden; }
+  .position.loading { background: var(--u1-soft); }
   .queue-summary > strong { font-size: 22px; }
   .queue-summary > strong span { color: var(--u1-muted); font-size: 12px; font-weight: 500; }
   .queue-row { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
