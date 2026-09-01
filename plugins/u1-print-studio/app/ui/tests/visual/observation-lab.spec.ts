@@ -171,14 +171,14 @@ for (const width of widths) {
       if (view === 'heads') {
         const columns = await panel.locator('.card-grid').evaluate((node) => getComputedStyle(node).gridTemplateColumns.split(' ').length);
         expect(columns).toBe(2);
-        const reservedHeights = await panel.locator('[data-inset-card] > .body').evaluateAll((items) => items.map((item) => getComputedStyle(item).minHeight));
-        expect(reservedHeights).toEqual(['0px', '0px', '0px', '0px']);
+        const materialLines = await panel.locator('[data-inset-card] > .body .stack > .caption').evaluateAll((items) => items.map((item) => ({ height: item.getBoundingClientRect().height, line: Number.parseFloat(getComputedStyle(item).lineHeight), padding: Number.parseFloat(getComputedStyle(item).paddingTop) + Number.parseFloat(getComputedStyle(item).paddingBottom) })));
+        expect(materialLines).toHaveLength(4);
+        for (const material of materialLines) { expect(Math.abs(material.height - material.line)).toBeLessThanOrEqual(1); expect(material.padding).toBe(0); }
         await expect(panel.getByRole('button', { name: /^Copy T/ })).toHaveCount(3);
         for (const copy of await panel.getByRole('button', { name: /^Copy T/ }).all()) {
           await expect(copy).toHaveCSS('height', '44px');
         }
         const wash = await panel.getByLabel('Tool 3').evaluate((card) => {
-          const color = card.querySelector('[data-color-swatch]')?.getAttribute('data-color-swatch');
           const probe = document.createElement('div');
           probe.style.background = `rgba(52, 135, 200, ${128 / 255 * .06})`;
           document.body.append(probe);
@@ -186,9 +186,9 @@ for (const width of widths) {
           probe.style.background = 'rgba(52, 135, 200, .06)';
           const opaque = getComputedStyle(probe).backgroundColor;
           probe.remove();
-          return { color, actual: getComputedStyle(card).backgroundColor, expected, opaque };
+          return { actual: getComputedStyle(card).backgroundColor, expected, opaque };
         });
-        expect(wash.color).toBe('#3487C880');
+        await expect(panel.getByLabel('Tool 3')).toContainText('#3487C880');
         expect(wash.actual).toBe(wash.expected);
         expect(wash.actual).not.toBe(wash.opaque);
         const activeSemantics = await panel.getByLabel('Tool 1').evaluate((card) => {

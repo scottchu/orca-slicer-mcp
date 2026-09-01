@@ -4,6 +4,16 @@ Updated 2026-09-01. Latest user order: finish existing implementation, complete
 migration and delivery, finish queued features, then clean up superseded code.
 No listed track is cancelled. Private fixtures do not prove live behavior.
 
+Current checkpoint: Fans PR70, Camera PR71, Thermals PR72 and the Bed Mesh
+renderer PR73 are delivered (accepted main8c5756d). Heads candidate explicitly
+integrates that main; strict adapter and compositional leaves exist, and focused
+mobile/empty skeleton repairs pass22 cases. Complete independent gates remain due. No Heads
+delivery claim is made. Decision0032 explicitly revises two-lab limits to
+756,000/80,000/836,000 for measured Heads composition, not automatic growth.
+Continue Heads, then Queue → Current Job → History; Progress separately, real
+Bed Mesh adapter/shell after renderer, Overview last. All feature, MCP/legacy
+cutover and recoverable-cleanup obligations below remain open.
+
 Current checkpoint: Fans PR70, Camera PR71 and Thermals PR72 are delivered;
 reviewed main `6325c87` is explicitly integrated. Their private dashboard
 migrations do not retire generic MCP/legacy aliases. Bed Mesh PR73 is held for

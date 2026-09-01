@@ -1,5 +1,38 @@
 # F0 dual-subsystem foundation handoff
 
+## Heads implementation checkpoint (unaccepted)
+
+Accepted Bed Mesh main8c5756d is integrated as0bb9ef6 after author checkpoint
+a8ad5c7; both ADR sections and regenerated combined lab are preserved. See
+decision0037 for the exact Heads contract and decision0032 for independently
+reviewed packaging bounds. Added strict real Heads adapter/presentation,
+generic CardGrid/InsetCard/ColorSwatch/color utility, zero-raw HeadCard/cards/
+skeleton/panel, real/lab wrappers and shared clipboard-generation lifecycle.
+Candidate private heads_widget route, host selection and source-derived ship
+inventory preserve public isolation and legacy MCP aliases.
+
+Do not ship yet. Earlier mobile and all-empty/unknown geometry failures are
+repaired with bounded generic header lines and optional footer action slot,
+not arbitrary194-character material height. The empty slot is noninteractive;
+Empty/N/A contain no Copy button, role or focusable placeholder. Focused22
+renewal cases PASS, including all closed presets at four widths/normal200%,
+strict<=1px geometry, actual default material single-line/zero-padding bounds
+and long real metadata readability. Compact ActualTarget is an independently
+approved opt-in; Thermals86,230 bytes has explicit renewed hash and9 unchanged
+default-consumer browser cases PASS. Full combined renewal/review remains due.
+No real printer/media acquisition or service change occurred in this author work.
+
+Current bounded artifacts: observation755,217/756,000; Camera78,795/80,000;
+two-lab aggregate834,012/836,000; Heads91,633/100,000. Client graph has235
+modules and no real adapter/controller/host/Camera dependencies. The separate
+Heads production graph excludes fixtures/lab/Camera/Three. Exact hashes are in
+package assertions and must be independently reproduced before guarded ship.
+
+Next migration order: Queue → Current Job → History; Progress separately,
+real Bed Mesh adapter/shell after renderer, Overview last. Preserve all remaining
+tracks. Current Job nullable/unreported filename and History mandatory sanitized
+filename are distinct. Do not derive lab-only current-job progress from bytes.
+
 ## PR73 repaired candidate handoff
 
 The new delta is restricted to neutral-fit/user-zoom separation in

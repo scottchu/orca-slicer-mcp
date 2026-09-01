@@ -1,5 +1,80 @@
 # F0 dual-subsystem foundation validation
 
+## Heads repaired source — final combined renewal in progress
+
+The earlier mobile/empty failures below are preserved historical evidence, not
+remaining acceptance waivers. Focused Heads+Thermals18/18 PASS, then full161
+reported154PASS/7FAIL: three genuine all-empty/unknown geometry failures and
+four obsolete body min-height string expectations. The generic optional action
+slot repairs the geometry without adding empty buttons; actual material glyph
+height/zero padding replaces the obsolete style-string assertion. Renewed
+focused selection22/22 PASS at all four widths/normal200%, including loaded,
+empty and unknown presets, truthful skeletons, copy lifecycle, and readable
+194-character real metadata. These are local synthetic checks, not service or
+actual-device acceptance. Full UI333/333 PASS preceded two new action-slot
+semantic cases; the focused widget unit file now19/19 PASS. Shipping24/24 PASS.
+The temporary testing-library target-prop option collision was a test harness
+error, corrected with an explicit props wrapper; it was not an app defect.
+
+Current exact raw UTF-8 artifacts for the final combined renewal:
+
+| Artifact | Bytes | SHA256 |
+| --- | ---: | --- |
+| Observation lab |755217/756000|`c7ff57181e42cdd7231aabfe596f46e0cec6c3d69854bb2aecb96e0f733a1485`|
+| Camera lab |78795/80000|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+| Heads |91633/100000|`ddf531806391a5ab1a66400956f57d2d92d25765d7ff20ca8ec98a1e96f238a0`|
+| Thermals |86230/100000|`41933ec1a3649c1d90419f6385820944b09fb0a59f9668f56b6a80ea3c6417ba`|
+| Fans |85654/100000|`ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d`|
+| Camera |89919/100000|`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`|
+
+The exact two-lab sum is834012/836000; observation has783 bytes reserve.
+The retained Vite7.3.6/default esbuild/Kit inline flags are unchanged, without
+unsafe minification or new dependencies. Genuine browser Rollup graph235modules
+excludes real adapters/controllers/host RPC/Camera; production Heads excludes
+fixtures/lab/Camera/Three. Negative graph and +/-1/invalid byte cases are
+enforced. Graph reports remain ignored build evidence, never runtime assets.
+Thermals changed bytes intentionally for the one opt-in generic ActualTarget;
+its default hierarchy, semantics and all9 existing browser cases passed.
+
+Next: final162 browser cases (one additional Heads initial-error/BFCache/RPC
+race case), full repository/runtime gates, deterministic6-package reproduction,
+then exact independent source/validation approval before PR guarded shipment.
+
+## 2026-09-01 Heads implementation checkpoint — not acceptance
+
+Author branch explicitly merged accepted Thermals6325c87, then accepted
+Bed Mesh8c5756d as0bb9ef6. No service or printer acquisition was performed.
+Actual commands run in app/ui with pinned Bun1.3.12:
+
+- `bun run test -- src/lib/live/heads-adapter.test.ts src/lib/ui/color.test.ts`:
+  42 focused adapter/color cases PASS.
+- `bun run test -- src/lib/live/heads-controller.test.ts src/lib/observation/ObservationWidgets.test.ts`:
+  22PASS; async stale-copy/refresh generations and four-card semantics.
+- `bun run test -- src/lib/live/graph-contract.test.ts src/lib/camera/package.test.ts`:
+  19PASS before the additional production byte-boundary case was added.
+- `bun run check`: compiler0errors/0warnings and AST zero-raw contracts PASS.
+- `bun x playwright test tests/visual/live-heads.spec.ts --workers=1`: first
+  pass5PASS/4FAIL; second compact candidate6PASS/3FAIL. Remaining initial layout
+  differences320normal+26.19px and320/390200%−7.61px are held failures, not waived.
+  Copy rejection/busy focus/removed-action fallback and stale completion passed.
+- `bun test src/status-dashboard.test.ts` (app):22PASS/746assertions, including
+  exact Heads GET/CSP/no-store/path/method/public isolation and real projector DTO.
+- `uv run python scripts/test_u1_ship.py`:24ran; two expected inventory-count
+  assertions needed updating30→31 for Heads. Renewal is required after the edit.
+  An earlier module-style invocation failed import resolution and is not evidence.
+- `bun run build && bun run package:private-lab`: combined Bed+Heads measured
+  754,723 observation +78,795 Camera =833,518, under explicitly reviewed
+  756,000/80,000/836,000 bounds. Subsequent layout changes require remeasurement.
+- Build-only Rollup client graph has234modules before Bed integration, with no
+  real adapter/controller/host RPC/Camera in observation lab. Shared copy action
+  and tree-shaken Heads presentation are deliberate, not acquisition. Production
+  graph rejects fixtures/lab/Camera/Three; reports are ignored local evidence.
+
+Independently approved compact ActualTarget design keeps one generic component,
+defaultfalse and unchanged normal hierarchy/semantics. Regenerated Thermals
+86,230 bytes and Heads91,358 bytes are current author artifacts, not accepted
+hashes; final default Thermals regressions and deterministic renewal remain due.
+
 ## 2026-09-01 PR73 zoom repair — final author evidence, not independent approval
 
 The held `85f89f9` remains rejected: its earlier green suite did not exercise

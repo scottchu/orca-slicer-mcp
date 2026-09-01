@@ -32,6 +32,17 @@ const cases = [
 ] as const;
 
 describe('observation lab widgets', () => {
+  test.each([false, null])('empty/unknown Heads action slots have no focusable Copy placeholder: %s', (presence) => {
+    const observation = structuredClone(headsLabFixture);
+    observation.items = observation.items.map((item) => ({ ...item, presence }));
+    const { container } = render(HeadsWidget, { observation });
+    expect(screen.queryByRole('button', { name: /^Copy T/ })).not.toBeInTheDocument();
+    expect(container.querySelectorAll('[data-inset-card] .actions')).toHaveLength(4);
+    expect(container.querySelectorAll('[data-inset-card] .actions :is(button,[role="button"],[tabindex])')).toHaveLength(0);
+    expect(container.querySelectorAll('[data-inset-card] .neutral')).toHaveLength(0);
+    expect(container.querySelectorAll('[data-inset-card].neutral')).toHaveLength(4);
+    expect(screen.getByLabelText('Tool 1')).toHaveTextContent('Generic PLA');
+  });
   test.each(cases)('%s uses one shared anatomy and overlay feedback', async (component, observation, title) => {
     const { container } = render(component as never, { observation } as never);
     expect(screen.getByRole('heading', { name: title })).toBeInTheDocument();

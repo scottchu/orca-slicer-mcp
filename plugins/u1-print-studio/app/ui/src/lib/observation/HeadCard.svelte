@@ -15,7 +15,7 @@
   let { physicalTool, reading, loading = false, copying = false, oncopy }: { physicalTool: HeadId; reading?: HeadCardValue; loading?: boolean; copying?: boolean; oncopy?: (id: HeadId, color: string) => void } = $props();
   const color = $derived(headColor(reading?.presence ?? null, reading?.color ?? null));
 </script>
-<InsetCard label={`Tool ${physicalTool}`} color={color.color} neutral={!loading && color.neutral} active={reading?.active === true} actionAvailable={!loading && !!color.color}>
+<InsetCard label={`Tool ${physicalTool}`} color={color.color} neutral={!loading && color.neutral} active={reading?.active === true} actionAvailable={!loading && !!color.color} headerLines={2}>
   {#snippet header()}
     <Name text={`T${physicalTool}`} />
     <Caption><LoadingValue {loading} text={loading ? undefined : headStateLabel(reading?.active ?? null, reading?.state ?? null)} /></Caption>
@@ -26,6 +26,8 @@
   </Stack>
   {#snippet footer()}
     <Inline gap="tight"><ColorSwatch color={color.color} /><Caption><LoadingValue {loading} text={loading ? undefined : color.label} words={[10]} /></Caption></Inline>
+  {/snippet}
+  {#snippet actions()}
     {#if loading}<Skeleton shape="action" />{:else if color.color}<IconButton label={`Copy T${physicalTool} color ${color.color}`} icon={Copy} busy={copying} onclick={() => oncopy?.(physicalTool, color.color!)} />{/if}
   {/snippet}
 </InsetCard>

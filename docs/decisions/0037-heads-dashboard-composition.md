@@ -25,6 +25,20 @@ accent remains independent of color. Copy feedback is non-flow, generation
 guarded, and cannot overwrite newer refresh/data; removal of a focused Copy
 action has a deliberate local focus fallback.
 
+Independent presentation review accepted an opt-in `ActualTarget compact`
+variant for Heads, using the existing caption scale for both degree values.
+The default remains false with unchanged primary/secondary hierarchy, names,
+formatting and DOM. Keep one generic component rather than a parallel domain
+composition. This explicitly permits regenerated Thermals compiled bytes, not
+changed default behavior; renew its artifact hash and full four-width/200%
+loading, retained-refresh, nullable/extreme and accessibility regressions.
+No global token or typography change is permitted. Compact legibility review
+does not substitute for exact Heads loading-geometry acceptance. The bounded
+generic InsetCard reserves up to two header lines and an optional44-pixel
+footer action slot; empty slot markup is never a button, role or focus target.
+No material-height reservation is permitted. Closed preset geometry remains
+strictly within1px; genuine long text may naturally increase initial height.
+
 Acceptance requires strict real DTO tests, zero-raw AST checks, four widths
 (320/390/590/720) at normal and 200% text, truthful closed-preset skeleton
 geometry, arbitrary long-text readability, retained-refresh/copy geometry and

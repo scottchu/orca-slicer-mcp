@@ -52,6 +52,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     const loading = await bounds(frame), loadingDetails = await details(); release(liveHeadsResult());
     await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
     const ready = await bounds(frame); expect(ready.length).toBe(loading.length);
+    await page.screenshot({ path: test.info().outputPath('heads-ready.png'), fullPage: true });
     await test.info().attach('slot-geometry', { body: JSON.stringify({ loading: loadingDetails, ready: await details() }, null, 2), contentType: 'application/json' });
     for (let region = 0; region < ready.length; region++) for (let axis = 0; axis < 4; axis++) expect(Math.abs(ready[region][axis] - loading[region][axis]), `region ${region} axis ${axis}: ${JSON.stringify({ loading: loading[region], ready: ready[region] })}`).toBeLessThanOrEqual(1);
     await expect(frame.getByRole('region', { name: 'Tool 1', exact: true })).toContainText('Active · Heating');
@@ -105,4 +106,31 @@ test('Heads copy generations, busy focus, rejection and removed-action fallback'
   await expect(copy).toHaveCount(0); await expect(frame.getByRole('region', { name: 'Tool 1', exact: true })).toContainText('Empty');
   await frame.evaluate(() => (window as unknown as { __headCopies: { resolve: () => void }[] }).__headCopies[1].resolve());
   await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
+});
+
+test('Heads initial failure retry, BFCache and superseded rejected refresh retain one root', async ({ page }) => {
+  let calls = 0, fail: () => void = () => {};
+  await page.route('**/dashboard/tools/call', async (route) => {
+    calls += 1;
+    if (calls === 1) await route.fulfill({ status: 503, json: { error: 'unavailable' } });
+    else if (calls === 3) { await new Promise<void>((resolve) => { fail = resolve; }); await route.fulfill({ status: 503, json: { error: 'old request' } }); }
+    else await route.fulfill({ json: liveHeadsResult(calls === 2 ? 12 : 16, calls === 2 ? '2026-09-01T12:00:12.000Z' : '2026-09-01T12:00:16.000Z') });
+  });
+  await page.goto('/dashboard/heads');
+  const frame = page.frames().find((item) => item.url().endsWith('/dashboard/heads_widget'))!;
+  await expect(frame.getByRole('status')).toHaveText('Could not load Heads & Filaments');
+  const refresh = frame.getByRole('button', { name: 'Refresh Heads & Filaments' }); await refresh.click();
+  await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
+  await frame.evaluate(() => {
+    const before = document.querySelector('[data-inset-card]');
+    window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true })); window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+    if (document.querySelector('[data-inset-card]') !== before) throw new Error('BFCache replaced the Heads root');
+  });
+  expect(calls).toBe(2); await refresh.focus(); await refresh.press('Enter'); await expect.poll(() => calls).toBe(3);
+  const next = liveHeadsResult(15, '2026-09-01T12:00:15.000Z'); next.structuredContent.module.items[0].temperature.value = 225;
+  await page.evaluate((value) => document.querySelector('iframe')!.contentWindow!.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/tool-result', params: value }, '*'), next);
+  await expect(frame.getByRole('region', { name: 'Tool 1', exact: true })).toContainText('225°');
+  const retained = await bounds(frame); fail(); await expect(refresh).not.toHaveAttribute('aria-disabled', 'true');
+  await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded'); await expect(refresh).toBeFocused(); expect(await bounds(frame)).toEqual(retained);
+  await refresh.press('Enter'); await expect.poll(() => calls).toBe(4); await expect(frame.getByRole('region', { name: 'Tool 1', exact: true })).toContainText('220°');
 });
