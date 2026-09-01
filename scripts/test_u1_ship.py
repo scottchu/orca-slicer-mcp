@@ -361,10 +361,56 @@ class StaticContractTests(unittest.TestCase):
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
         contract = {"index": {"port": 8788, "route": "/dashboard", "sha256": "fixture"}}
-        self.assertEqual(check_security(contract, read), 6)
+        self.assertEqual(check_security(contract, read), 5)
         self.assertFalse(any("tools" in path or "camera" in path or "status" in path for _, path in calls))
         with self.assertRaisesRegex(ShipError, "authentication"):
             check_security(contract, lambda *args: (200, b""))
+
+    def test_overview_private_static_and_public_isolation_are_separate(self):
+        root = Path(__file__).resolve().parents[1]
+        contract = static_contract(root)
+        overview = contract["8788/dashboard/overview"]
+        static_calls = []
+        def static_read(port, route):
+            static_calls.append((port, route))
+            return 200, (root / APP / "public/status-dashboard-host.html").read_bytes()
+        result = check_static({"overview": overview}, static_read)
+        self.assertEqual(result["overview"]["code"], 200)
+        self.assertEqual(static_calls, [(8788, "/dashboard/overview")])
+        with self.assertRaisesRegex(ShipError, "static"):
+            check_static({"overview": overview}, lambda *args: (200, b"mismatch"))
+
+        security_calls = []
+        def security_read(port, route):
+            security_calls.append((port, route))
+            if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
+            return (401 if port == 8787 and route == "/mcp" else 404), b""
+        self.assertEqual(check_security(contract, security_read), 16)
+        self.assertIn((8787, "/dashboard/overview"), security_calls)
+        self.assertIn((8787, "/dashboard/camera"), security_calls)
+        self.assertNotIn((8788, "/dashboard/overview"), security_calls)
+        forbidden_routes = {"/dashboard/tools/call", "/widget", "/camera-widget"}
+        self.assertFalse(any(
+            route in forbidden_routes or "observation" in route or "tool" in route
+            for _, route in static_calls + security_calls
+        ))
+
+        def exposed_overview(port, route):
+            if (port, route) == (8787, "/dashboard/overview"): return 200, b"exposed"
+            return security_read(port, route)
+        with self.assertRaisesRegex(ShipError, "isolation"):
+            check_security(contract, exposed_overview)
+
+    def test_security_count_is_derived_from_current_dashboard_inventory(self):
+        root = Path(__file__).resolve().parents[1]
+        contract = static_contract(root)
+        dashboard_paths = {item["route"] for item in contract.values() if item["route"].startswith("/dashboard")}
+        expected = len(dashboard_paths) + 3 + 1  # fixed public/private auth checks plus private health
+        self.assertEqual(expected, 16)
+        def read(port, route):
+            if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
+            return (401 if port == 8787 and route == "/mcp" else 404), b""
+        self.assertEqual(check_security(contract, read), expected)
 
 
 if __name__ == "__main__":
