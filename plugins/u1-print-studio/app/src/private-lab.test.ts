@@ -6,6 +6,7 @@ const html = readFileSync(
   new URL("../public/svelte-observation-lab.html", import.meta.url),
   "utf8"
 );
+const cameraHtml = readFileSync(new URL('../public/svelte-camera-lab.html', import.meta.url), 'utf8');
 const appPackage = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8")
 ) as { scripts: Record<string, string> };
@@ -14,13 +15,13 @@ describe("private Svelte observation lab package", () => {
   test("freezes one deterministic self-contained static page", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "26a05eaf00188d26dd27e5f2700ae9172c8d4ba4491c785c9dffec1c38e56800"
+      "4ec4b2f03c26affbc89784ff3ea55e47b8be62be83cbc5d3054849eb0ef11840"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
       "Overview", "Print Progress", "Thermals", "Heads & Filaments",
       "Current Job", "Job History", "Print Queue", "Fans & Air", "Bed Mesh",
-      "Pending lifecycle migration"
+      "U1 Camera"
     ]) expect(html).toContain(marker);
     expect(html).toContain('data-chart-frame=""');
     expect(html).not.toMatch(/<script\b[^>]*\bsrc\s*=/i);
@@ -28,6 +29,16 @@ describe("private Svelte observation lab package", () => {
     expect(html).not.toMatch(
       /<(?:img|audio|video|source|iframe)\b[^>]*\bsrc\s*=\s*["'](?!data:)/i
     );
+  });
+
+  test('keeps the synthetic Camera in a second bounded private artifact', () => {
+    expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a');
+    expect(Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(80_000);
+    expect(Buffer.byteLength(html) + Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(830_000);
+    for (const marker of ['U1 Camera', 'Simulated live', 'Camera state', 'Display capabilities', 'data-camera-media']) expect(cameraHtml).toContain(marker);
+    for (const forbidden of ['RTCPeerConnection', '/dashboard/tools/call', 'open_printer_camera', 'WebGLRenderer', '__setCamera']) expect(cameraHtml).not.toContain(forbidden);
+    expect(cameraHtml).not.toMatch(/<script\b[^>]*\bsrc\s*=|<link\b[^>]*\brel\s*=\s*["']stylesheet/i);
+    expect(html).not.toContain('data-camera-media');
   });
 
   test("selects exact private paths synchronously before body layout", () => {

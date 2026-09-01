@@ -28,7 +28,7 @@ are delivered; production cutovers, Camera and seven ready-shell debts remain.
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Bed Mesh | Svelte/Three chart, native-tag shell debt | Shipped controls; no Three mount while loading | Pending | PR67 deployed/post-verified |
-| Camera | Separately authored synthetic Svelte checkpoint, not integrated | Shared-controller integration pending | Pending; production remains legacy | No shipped Svelte camera route |
+| Camera | Candidate zero-raw root/widget, shared PageLayout and registered media/status leaves | Candidate seven states, restrictive capabilities, loading, URL/reset/history | Pending; pure session checkpoint not wired, production remains legacy | Exact independent acceptance and delivery pending |
 
 Acceptance progression: author software tests → separate exact-SHA validation →
 separate formal review → PR merge → exact deployment → explicit BOTH service
@@ -47,9 +47,10 @@ those adapters and generic resource replacement remain pending.
 - [x] Recoverably quarantine the specifically approved ten redundant worktrees
   and stale nested clone; independently verify full preservation. Active feature
   work, runtime/rollback trees and required legacy code are not retired by this.
-- [ ] Integrate the existing Camera checkpoint, shared controls and exact private
-  route. Measure the combined package before any budget decision; the decoded
-  single-artifact cap remains 750,000 bytes.
+- [ ] Independently accept/deliver the integrated synthetic Camera lab candidate.
+  Decision0032's reviewed split permits exactly two artifacts:750,000 observation,
+  80,000 Camera,830,000 aggregate; candidate748,482+78,688=827,170. The directory
+  stays in observation. No real Camera migration is inferred from these fixtures.
 - [ ] Retire the seven remaining ready-shell raw-tag debts using shared
   primitives; retain exact composition guards.
 - [ ] Review/implement live observation transport and each focused-widget

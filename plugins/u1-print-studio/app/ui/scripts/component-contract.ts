@@ -3,9 +3,12 @@ import { resolve, relative } from 'node:path';
 import { parse } from 'svelte/compiler';
 
 // Explicit migration frontier: new files are rejected until assigned a layer.
-export const composites = ['observation/ThermalsWidget.svelte', 'observation/ActualTarget.svelte', 'observation/ThermalReading.svelte', 'observation/ThermalsSkeleton.svelte', 'observation/FansWidget.svelte', 'observation/FanReading.svelte', 'observation/FansSkeleton.svelte', 'observation/ObservationSkeleton.svelte', 'observation/ObservationState.svelte'];
+export const composites = ['camera/CameraLabRoot.svelte', 'camera/CameraLabWidget.svelte', 'observation/ThermalsWidget.svelte', 'observation/ActualTarget.svelte', 'observation/ThermalReading.svelte', 'observation/ThermalsSkeleton.svelte', 'observation/FansWidget.svelte', 'observation/FanReading.svelte', 'observation/FansSkeleton.svelte', 'observation/ObservationSkeleton.svelte', 'observation/ObservationState.svelte'];
 composites.push('observation/FanReadings.svelte', 'live/LiveObservationRoot.svelte');
 export const leaves: Record<string, string[]> = {
+  'ui/PageLayout.svelte': ['main'],
+  'camera/CameraMedia.svelte': ['canvas', 'div', 'div', 'div', 'div', 'div', 'video'],
+  'camera/CameraStatus.svelte': ['div', 'span', 'span', 'span'],
   'ui/LoadingValue.svelte': ['span', 'span'],
   'ui/LabControls.svelte': ['fieldset', 'legend', 'div', 'label', 'span', 'select', 'option'],
   'ui/Icon.svelte': [], 'ui/BorderedIcon.svelte': ['span'], 'ui/Label.svelte': ['span'],
@@ -32,7 +35,7 @@ export const debt: Record<string, string[]> = {
   'observation/JobHistoryWidget.svelte': ['div','div','div','div','span','span','strong'],
   'observation/QueueWidget.svelte': ['div','div','div','div','div','span','span','span','span','span','strong','strong'],
   'bed-mesh/BedMeshWidget.svelte': ['dd','dd','dd','div','div','div','div','div','div','div','dl','dt','dt','dt','span','span','span','span'],
-  'observation/LabDirectory.svelte': ['a','div','div','div','div','h1','header','main','nav','p','span','span','strong'],
+  'observation/LabDirectory.svelte': ['a','div','div','h1','header','main','nav','p','span'],
   'observation/ObservationFrame.svelte': [],
   '../routes/+page.svelte': ['div','main','section','section'], '../routes/+layout.svelte': [],
 };
@@ -51,6 +54,8 @@ function visit(value: unknown, fn: (node: Node) => void): void {
 }
 
 const approvedImports: Record<string, string[]> = {
+  'camera/CameraLabRoot.svelte': ['svelte', './CameraLabWidget.svelte', '../ui/LabControls.svelte', '../ui/PageLayout.svelte', './controller', './lab-location'],
+  'camera/CameraLabWidget.svelte': ['../ui/Icon.svelte', '../ui/WidgetShell.svelte', '../ui/WidgetHeader.svelte', '../ui/WidgetBody.svelte', '../ui/Caption.svelte', '../ui/StateAnnouncement.svelte', './CameraStatus.svelte', './CameraMedia.svelte', './state'],
   'observation/ObservationSkeleton.svelte': ['./types', './OverviewWidget.svelte', './ProgressWidget.svelte', './HeadsWidget.svelte', './CurrentJobWidget.svelte', './JobHistoryWidget.svelte', './QueueWidget.svelte', '../bed-mesh/BedMeshWidget.svelte'],
   'observation/ObservationState.svelte': ['./types', './ObservationFrame.svelte', '../ui/StatePanel.svelte'],
   'observation/FansWidget.svelte': ['./ObservationFrame.svelte', './types', './format', '../ui/state', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/StatePanel.svelte', './FanReadings.svelte', './FansSkeleton.svelte'],

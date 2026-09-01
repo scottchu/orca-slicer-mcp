@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  let { title, icon, meta, aside }: { title: string; icon: Snippet; meta?: Snippet; aside?: Snippet } = $props();
+  let { title, icon, meta, aside, wrapAside = false }: { title: string; icon: Snippet; meta?: Snippet; aside?: Snippet; wrapAside?: boolean } = $props();
 </script>
 
-<header class="widget-header" data-widget-header>
+<header class="widget-header" class:wrap-aside={wrapAside} data-widget-header>
   <div class="icon-tile" aria-hidden="true">{@render icon()}</div>
   <div class="header-copy">
     <h1>{title}</h1>
@@ -20,6 +20,10 @@
   h1 { margin: 0; font-size: 24px; font-weight: 640; line-height: 1.2; letter-spacing: -0.035em; }
   .meta { margin-top: 5px; color: var(--u1-muted); font-size: 13px; line-height: 1.4; font-variant-numeric: tabular-nums; }
   .aside { min-width: 0; text-align: right; }
+  .wrap-aside { display: flex; flex-wrap: wrap; }
+  .wrap-aside .icon-tile { flex: 0 0 auto; }
+  .wrap-aside .header-copy { flex: 1 1 0; min-width: min-content; }
+  .wrap-aside .aside { margin-left: auto; }
   @media (max-width: 420px) {
     .widget-header { grid-template-columns: 44px minmax(0, 1fr) auto; gap: 11px; padding-top: 18px; padding-bottom: 14px; }
     .icon-tile { width: 44px; height: 44px; border-radius: 12px; }

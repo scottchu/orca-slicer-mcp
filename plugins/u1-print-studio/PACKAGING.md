@@ -1,5 +1,18 @@
 # Local-first packaging contract
 
+## Private synthetic Camera lab packaging
+
+Decision0032's Camera addendum adds `svelte-camera-lab.html` as an inline
+private-server text import, not an external lifecycle asset or MCP resource.
+It is a separate compiled Svelte entry within the Kit project, sharing the same
+LabControls and leaf components. Observation still uses adapter-static and
+owns the directory. Exactly two self-contained HTML outputs are checked:
+750,000 observation bytes,80,000 Camera bytes,830,000 aggregate raw UTF-8 bytes.
+`ui:build` builds and checks both; `ui:verify` compares both deterministically.
+Camera's graph excludes Three, real session/host code and external imports.
+The exact private Camera path is mapped to its own hash by the shipping guard;
+the public service, production assets and fixed rollback inventory are unchanged.
+
 ## Personal persistent HTTP adapter
 
 The repository-only `$u1-ship` skill and `scripts/u1_ship.py` add decision

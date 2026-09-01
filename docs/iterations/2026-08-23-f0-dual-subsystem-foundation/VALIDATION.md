@@ -1,5 +1,15 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 combined Camera baseline for renewed PR70
+
+Explicitly integrated reviewed main `ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24`
+(PR69), preserving Camera artifact routing, closed controls, source boundaries
+and the 750,000/80,000/830,000 private-lab limits. Conflict resolution combines
+the two route/registry/ship inventories and regenerates the deterministic HTML.
+The superseded-request fix remains confined to the live Fans controller.
+New full combined-tree gates are pending; prior `e0e141a` author green tests do
+not override its independent rejection or establish the integrated candidate.
+
 ## 2026-09-01 PR70 superseded rejection — reproduced and narrowly corrected
 
 Independent review/validation held `e0e141a`: V12 → refresh → notification V15
@@ -89,6 +99,64 @@ and has an explicit production import-graph guard. Seventeen dashboard tests pas
 including actual existing server projection compatibility, static route isolation
 and pre-reload reply generations. Full gates and fresh independent acceptance
 remain pending; these tests do not establish printer or actual-device behavior.
+## 2026-09-01 synthetic Camera lab author validation
+
+The reviewed packaging/layout design is recorded in decision0032. Source builds
+two explicit self-contained entries: SvelteKit observation/directory and a
+compiled Svelte Camera entry. Current deterministic output identities:
+
+- Observation748,482 bytes, SHA-256
+  `bba36db142abc32eb11792265d7ba888f987ff43e502fa32ee50e93c29caec77`.
+- Camera78,688 bytes, SHA-256
+  `de731c01ab92726e73be444fe70036f380d4df6172e895e5477db14ea8a87fba`.
+- Aggregate827,170 bytes; limits750,000/80,000 and830,000 total are unchanged
+  from the explicit split decision. Both HTML comparisons and negative size/
+  asset tests are required. Camera's bundler checks no Three, host, observation,
+  bed-mesh or real session module and no dynamic/runtime imports.
+
+Actual commands with Bun1.3.12 and normal Node PATH:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser
+cd ../../../..
+./scripts/check-repository.sh
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign --verify --verbose=2 dist/u1-print-studio
+dist/u1-print-studio --help
+```
+
+Final source after PageLayout extraction passed155UI units, compiler/AST,
+277app tests/3,223 assertions,21lifecycle and24ship tests,110Chrome cases and
+the complete repository contract. `ui:verify` rebuilt both artifacts and matched
+their exact bytes. Bundles/signature/help and `git diff --check` passed on that
+final source. One incorrect Python module-style invocation failed
+to import the script sibling and named a nonexistent lifecycle file; the correct
+repository direct commands are `uv run --no-project scripts/test_u1_service.py`
+and `uv run --no-project scripts/test_u1_ship.py`. The first corrected run passed
+21lifecycle tests and exposed two stale26-security-count expectations; both now
+expect27 because the exact private Camera route adds one public-isolation check.
+
+Camera browser coverage includes seven states at320/390/590/720 normal and200%
+text (56combinations), real glyph containment/non-overlap, equal card/header/body/
+media geometry within a text setting, normal top-right status,44px actions,
+closedURL/reset/back-forward behavior and loading without an active stream.
+The7isolated media tests cover actual local presented-frame FPS, expiration,
+startup/stall deadlines, native/CSSfullscreen and PiP identity, simulated failures,
+single non-flow announcement and track cleanup under the exact restrictive CSP.
+The200%320px screenshot was visually inspected: title and right-aligned status
+no longer overlap. Other screenshots and exact bytes require independent review.
+
+All evidence is software or local synthetic Chrome. No actual printer, camera
+device, phone, deployed service or user acceptance is claimed by this candidate.
 
 ## 2026-09-01 independent cleanup preservation and receipt-only checks
 

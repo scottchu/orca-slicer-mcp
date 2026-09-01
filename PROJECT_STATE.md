@@ -10,6 +10,16 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+Current integration checkpoint: reviewed PR69 Camera merge
+`ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24` is explicitly integrated into the
+unshipped PR70 renewal. The operator reported successful Camera-only deployment
+and both restarts; independent post-deployment evidence is recorded separately.
+Preserve its two private lab artifacts, exact Camera route and 750,000/80,000 /
+830,000-byte individual/aggregate bounds. The third artifact here is production
+Fans, not another lab payload. Full combined-tree gates and fresh exact PR70
+acceptance are pending; earlier Camera-candidate and PR70 author notes below
+are historical where superseded by this checkpoint.
+
 ### Live Fans migration — separate next slice (2026-09-01)
 
 Independent review/validation held PR70 head `e0e141a`: a newer notification
@@ -31,6 +41,29 @@ unchanged. Other eight observation cutovers and Camera remain separate work.
 Production Fans is 84,884 bytes; lab is 748,888 bytes, within its unchanged
 750,000-byte cap. These are software/synthetic-browser results, not live-printer
 or actual-user-device acceptance.
+### Synthetic Camera lab candidate — next visible slice (2026-09-01)
+
+The Camera candidate integrates reviewed main `2d30b01` and provides an exact
+private lab route linked from the directory, shared visible state/capability
+controls, structural loading, measured local-video FPS and persistent media
+across fullscreen/PiP. It uses only an explicitly labeled calibration fixture;
+production Camera, host transport, resources and printer acquisition are unchanged.
+CameraLabRoot/CameraLabWidget are zero-raw composites over a generic PageLayout
+and registered media/status leaves. Normal mobile status stays top-right;
+200% text may reflow without overlap and without changing other widget headers.
+
+Role-separated packaging design accepted exactly two self-contained artifacts:
+observation <=750,000 bytes, Camera <=80,000, combined <=830,000. Current bytes
+are748,482 +78,688 =827,170. Camera is an explicit compiled Svelte entry within
+the Kit project; observation remains adapter-static and owns the directory.
+No third payload, runtime asset requests, Three or real transport enters Camera.
+Exact private route-to-file shipping hashes and unchanged restrictive CSP apply.
+
+Author validation is recorded in the newest active VALIDATION. Exact independent
+validation/review, guarded merge/deploy/BOTH restart and user-device acceptance
+remain pending; this is not yet visible on the server. The pure real Camera
+session controller remains a separate injected-port checkpoint, not a live cutover.
+Preserve all remaining WIDGET_TRACKS; the existing PR67 rollout below is complete.
 
 ### All-nine private lab controls/loading shipped — PR67 (2026-09-01)
 

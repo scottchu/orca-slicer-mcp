@@ -14,6 +14,13 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+The PR70 refresh-race renewal now explicitly integrates reviewed Camera main
+`ef5b239`. Resolve and verify the combined source/packages/routes without
+overwriting its Camera mapping, controls or two-artifact/aggregate budget.
+Rerun full gates and freeze a new exact PR70 head for independent acceptance.
+The Camera-candidate paragraphs below are preserved historical evidence, not
+an instruction to redeploy Camera separately from this combined next release.
+
 PR70 `e0e141a` is independently held for a superseded-refresh rejection leaving
 busy=true. The narrow finally-settlement correction has two passing controller
 regressions and a passing real-iframe recovery/focus regression. Next integrate
@@ -31,6 +38,19 @@ Production Fans is 84,884 bytes, SHA-256
 lab is 748,888 bytes, SHA-256
 `26a05eaf00188d26dd27e5f2700ae9172c8d4ba4491c785c9dffec1c38e56800`.
 Independent approval is still required; no service state changed in author tests.
+Next candidate: the synthetic Camera lab, integrated with reviewed main
+`2d30b01`. It has an explicit private compiled-Svelte entry, shared controls and
+zero-raw root/widget over generic layout/media/status leaves. Seven states,
+restrictive display policies, truthful measured local FPS and persistent
+fullscreen/PiP media are synthetic-only. Production Camera remains unchanged.
+Observe decision0032's revised exact-two-artifact budgets750,000/80,000 and
+830,000 aggregate; current748,482/78,688 =827,170. No third index or remote assets.
+Run/inspect newest VALIDATION, freeze exact source, obtain independent validation
+and formal review, then guarded merge/deploy/explicit BOTH restart/verify.
+The pending real-session controller is not wired to host or production media.
+LIVE Fans remains a separate author/branch with shared RPC ownership; explicitly
+integrate its reviewed result later, not unreviewed copies. Historical Camera
+unintegrated instructions below are superseded by this candidate, not by delivery.
 
 PR67 is shipped and independently post-verified: reviewed `07e1c144`, merged
 `c924bf9`, release `20260901-c924bf9-pr67-20260901T153250-99a666`. BOTH service

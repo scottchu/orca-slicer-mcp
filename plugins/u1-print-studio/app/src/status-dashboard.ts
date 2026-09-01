@@ -11,6 +11,7 @@ import dashboardIndexHtml from "../public/dashboard-index.html" with { type: "te
 // private dashboard bundle. It is not part of the public service or MCP assets.
 import observationLabHtml from "../public/svelte-observation-lab.html" with { type: "text" };
 import liveFansHtml from "../public/svelte-live-fans.html" with { type: "text" };
+import cameraLabHtml from "../public/svelte-camera-lab.html" with { type: "text" };
 
 import {
   readCameraWidgetHtml,
@@ -68,6 +69,7 @@ const OBSERVATION_LAB_PATHS = new Set([
   "/dashboard/lab/fans",
   "/dashboard/lab/bed_mesh",
 ]);
+const CAMERA_LAB_PATH = "/dashboard/lab/camera";
 const FOCUSED_DASHBOARD_PATHS = new Set([
   "/dashboard/overview",
   "/dashboard/progress",
@@ -183,7 +185,7 @@ export function createStatusDashboardHandler(
     }
     const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";
     const normalizedLabPath = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
-    if (OBSERVATION_LAB_PATHS.has(normalizedLabPath)) {
+    if (OBSERVATION_LAB_PATHS.has(normalizedLabPath) || normalizedLabPath === CAMERA_LAB_PATH) {
       if (req.method !== "GET") {
         res.setHeader("allow", "GET");
         json(res, 405, { error: "method_not_allowed" });
@@ -199,7 +201,7 @@ export function createStatusDashboardHandler(
         "referrer-policy": "no-referrer",
         "x-content-type-options": "nosniff",
       });
-      res.end(observationLabHtml);
+      res.end(normalizedLabPath === CAMERA_LAB_PATH ? cameraLabHtml : observationLabHtml);
       return true;
     }
     if (isIndex || FOCUSED_DASHBOARD_PATHS.has(pathname) ||

@@ -336,13 +336,15 @@ class StaticContractTests(unittest.TestCase):
             app = root / APP
             (app / "src").mkdir(parents=True)
             (app / "public").mkdir()
-            (app / "src/status-dashboard.ts").write_text('const FOCUSED_DASHBOARD_PATHS = new Set(["/dashboard/progress", "/dashboard/new_view"]); const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab", "/dashboard/lab/bed_mesh"]);')
+            (app / "src/status-dashboard.ts").write_text('const FOCUSED_DASHBOARD_PATHS = new Set(["/dashboard/progress", "/dashboard/new_view"]); const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab", "/dashboard/lab/bed_mesh"]); const CAMERA_LAB_PATH = "/dashboard/lab/camera";')
             for name in ASSETS: (app / "public" / name).write_text(name)
             (app / "public/svelte-observation-lab.html").write_text("lab")
+            (app / "public/svelte-camera-lab.html").write_text("camera lab")
             index = app / "public/dashboard-index.html"
             index.write_text('<a href="/dashboard/progress">Progress</a><a href="/dashboard/new_view">New</a><a href="/dashboard/camera">Camera</a>')
             contract = static_contract(root)
             self.assertIn("8788/dashboard/new_view", contract)
+            self.assertEqual(contract["8788/dashboard/lab/camera"]["sha256"], digest(app / "public/svelte-camera-lab.html"))
             self.assertEqual(
                 contract["8788/dashboard/lab/bed_mesh"]["sha256"],
                 digest(app / "public/svelte-observation-lab.html"),
@@ -397,12 +399,13 @@ class StaticContractTests(unittest.TestCase):
             security_calls.append((port, route))
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
-        self.assertEqual(check_security(contract, security_read), 27)
+        self.assertEqual(check_security(contract, security_read), 28)
         self.assertIn((8787, "/dashboard/overview"), security_calls)
         self.assertIn((8787, "/dashboard/camera"), security_calls)
         self.assertIn((8787, "/dashboard/lab"), security_calls)
         self.assertIn((8787, "/dashboard/lab/bed_mesh"), security_calls)
         self.assertIn((8787, "/dashboard/fans_widget"), security_calls)
+        self.assertIn((8787, "/dashboard/lab/camera"), security_calls)
         self.assertNotIn((8788, "/dashboard/overview"), security_calls)
         forbidden_routes = {"/dashboard/tools/call", "/widget", "/camera-widget"}
         self.assertFalse(any(
@@ -421,7 +424,7 @@ class StaticContractTests(unittest.TestCase):
         contract = static_contract(root)
         dashboard_paths = {item["route"] for item in contract.values() if item["route"].startswith("/dashboard")}
         expected = len(dashboard_paths) + 3 + 1  # fixed public/private auth checks plus private health
-        self.assertEqual(expected, 27)
+        self.assertEqual(expected, 28)
         def read(port, route):
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
