@@ -1,5 +1,15 @@
 # Widget completion tracks
 
+Current packaging track: accepted/deployed Heads main `5ffca66` is ordinarily
+merged into an authored exact-three private-lab split. Light observation, Bed
+Mesh and Camera are 199,819/629,880/78,795 bytes (908,494 aggregate) with
+distinct route/source graphs. Exact application source `4a6c493` passes full
+author renewal including Chrome164; independent exact-SHA review is still
+required. Independently renewed limits are 250,000/700,000/80,000 and
+980,000 aggregate, leaving 50,181 light bytes for Queue/Current Job/History/
+Progress/Overview only; Console and thumbnails are excluded. No delivery or
+cleanup claim is made.
+
 Updated 2026-09-01. Latest user order: finish existing implementation, complete
 migration and delivery, finish queued features, then clean up superseded code.
 No listed track is cancelled. Private fixtures do not prove live behavior.

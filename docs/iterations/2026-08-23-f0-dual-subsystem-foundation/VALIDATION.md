@@ -1,5 +1,36 @@
 # F0 dual-subsystem foundation validation
 
+## Three-artifact private-lab split — final author evidence
+
+Base `8c5756d` was split, then accepted/deployed Heads main `5ffca66` was
+ordinarily merged as `53cc313`. Exact application source `4a6c493` (tree
+`2eb0fc97b55e0da830f9af3e0add5fa5bac03fe6`) has deterministic outputs that
+measure light 199,819 bytes, Bed Mesh 629,880, Camera 78,795 and aggregate
+908,494. SHA-256 is light
+`080ad95276834fe560ccae2eb57e763969d891b5c65fa708babbca12667e6101`,
+Bed `02cea8092dc8b8915e0ac32e2f492c66a62b3913545a49af1139963640c646c9`
+and Camera
+`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`.
+Two complete private-package builds reproduced those hashes.
+
+Actually run author gates: `bun run check`, `bun run test` and two
+`bun run verify:private-lab` runs in `app/ui`; `bun run check`,
+`bun test src/*.test.ts`, `bun run bundle`, `bundle:server` and
+`bundle:runtime` in `app`; `uv run --no-project scripts/test_u1_service.py`,
+`uv run --no-project scripts/test_u1_ship.py`,
+`./scripts/check-repository.sh`; and `bun run test:browser`. Results: UI
+335/335, app 296/296 with 3,503 assertions, lifecycle 21/21, shipping 24/24,
+repository/signing PASS and Chrome 164/164 in 1.3 minutes. Browser coverage
+retains all four widths, normal/200%, Bed 4:3/zoom/pixels/labels/modes and Camera
+lifecycle. A pre-execution `fetch` monkeypatch exercised the directory link and
+every route/state/control/refresh with zero calls. No external request appeared.
+Independent cap review renewed limits to 250,000/700,000/80,000 and 980,000
+aggregate, leaving 50,181 light and 71,506 aggregate bytes. Its exact boundary
+matrix and finite Queue/Current Job/History/Progress/Overview scope are fixed in
+decision 0032; Console and thumbnails are excluded. This removes the capacity
+hold, not the need for exact-SHA validation/review. These are author software artifacts,
+not deployment, device, printer or user acceptance.
+
 ## Heads repaired source — final author evidence, not independent acceptance
 
 Frozen application source `4d24446` (tree `48896cc`) passes final Chrome
