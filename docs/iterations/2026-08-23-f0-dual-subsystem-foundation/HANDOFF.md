@@ -17,6 +17,63 @@ measured and independently accepted. Preserve legacy `/camera-widget` and MCP
 resources; do not claim complete migration or live/device parity from this
 unwired checkpoint. No printer call or service change occurred.
 
+## Renewed PR70 ready for independent exact acceptance
+
+The held refresh race is corrected and reviewed main `ef5b239` is explicitly
+integrated. Full combined author gates PASS: 183 UI units, 121 Chrome cases,
+281 app tests/3,301 assertions, 21 lifecycle, 24 ship tests and deterministic
+packages/bundles/signature/help. Next is fresh independent validation/review,
+then guarded merge/deploy/BOTH restart/verification; no PR70 release is claimed.
+Production Fans is 85,315 bytes; the two labs are 748,816 + 78,795 = 827,611.
+Camera-specific source and budget contracts are preserved; shared generic busy
+button code explains its 107-byte artifact change. The actual PR69 receipt below
+is historical deployed evidence, not approval of this newer combined candidate.
+
+PR69 is shipped and independently post-verified: reviewed `473cd000`, merged
+`ef5b239`, release `20260901-ef5b239-pr69-20260901T160906-8d7501`. Both explicit
+restarts, integrity, 26 static/27 security and preservation passed; rollback
+snapshot retained. Separate postchecks cover exact runtime/file identities,
+actual tailnet assets/CSP and downloaded-byte synthetic browser lifecycle.
+Full attributed receipt is in VALIDATION. Real Camera remains a distinct pending
+cutover; no physical stream or actual-phone acceptance is claimed.
+
+## 2026-09-01 reviewed Camera baseline integrated into PR70 renewal
+
+Main `ef5b239` is explicitly merged. Preserve Camera's source/leaf registry,
+dedicated private route, build scripts and split lab budgets; the live Fans asset
+remains a separate production entry. Merge resolutions combine registry/route/
+shipping maps, regenerate rather than hand-edit packaged HTML, and preserve both
+sets of tests. Next: full combined-tree validation, exact independent review and
+guarded PR70 delivery. No PR70 deployment or hardware acceptance exists yet.
+
+## 2026-09-01 held PR70 renewal before Camera integration
+
+Do not ship `e0e141a`. Independent review/validation found the newer-observation
+then old-RPC-rejection race left busy=true. The sole runtime correction is final
+request settlement in the controller, retaining newer data and suppressing stale
+error feedback. Two controller regressions and one actual iframe/host regression
+pass after reproducing the failure. Integrate the reviewed Camera main next,
+preserving its split artifacts/routes/budgets, then rerun combined-tree gates and
+freeze a new exact head. No Camera source or running service has been changed.
+
+## 2026-09-01 LIVE Fans end-to-end candidate, not shipped
+
+The separate LIVE candidate adds strict fixture-independent Fans models/adapter,
+one shared host RPC bridge, a view-locked controller, zero-raw live root and
+shared FanReadings. Full author gates pass: 152 UI units, 104 Chrome cases,
+280 app tests/3,265 assertions, 21 lifecycle, 24 ship tests and all bundles /
+signature/help. The Fans-only private asset and existing host handoff are implemented;
+generic MCP remains unchanged. Reviewed main `2d30b01` is explicitly integrated.
+Next: independent exact validation/review and guarded delivery. Keep Camera's separate
+integration and shared RPC dependency coordinated; do not duplicate listeners.
+
+Changed boundaries: UI `lib/host`, `lib/live`, the shared FanReadings/busy
+IconButton, production entry/build/package, Fans-only dashboard host/asset route,
+tests and source-derived shipping inventory. Backend observation acquisition,
+authorization, generic MCP resource and remaining renderer aliases are unchanged.
+The active `LIVE_PARITY.md` preserves the remaining-eight mapping/fixture gates.
+Do not delete reachable legacy renderer code before those cutovers are accepted.
+Production/lab hashes and budget deltas are in the newest VALIDATION entry.
 ## 2026-09-01 synthetic Camera lab integrated candidate
 
 Reviewed main `2d30b01` is explicitly integrated. This slice registers the

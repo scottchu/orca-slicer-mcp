@@ -21,6 +21,176 @@ production integration, actual browser rendering or real printer acquisition.
 No artifact or route changed. Next integrate reviewed shared HostRpc main before
 the end-to-end Camera presentation/build/route slice; full gates remain pending.
 
+## 2026-09-01 renewed PR70 combined-tree author gate PASS
+
+The refresh-rejection correction and explicit `ef5b239` merge have now been
+verified together. Commands actually rerun with pinned Bun 1.3.12 and normal
+Node PATH: UI `bun run build`, `bun run package:private-lab`,
+`bun run build:live-fans`, full `bun run test:browser`; repository
+`./scripts/check-repository.sh`; app vendor/stdio/server/runtime bundle scripts,
+`codesign --verify --verbose=2 dist/u1-print-studio`, executable `--help`, and
+`git diff --check`. All pass. Counts: 183 UI units, 121 Chrome cases, 281 app
+tests / 3,301 assertions, 21 lifecycle and 24 ship tests. Both deterministic lab
+rebuilds and the deterministic production rebuild pass their exact comparisons.
+
+The full browser matrix includes Camera state/capability/layout/media lifecycle,
+all earlier observation regressions and eleven live Fans iframe cases. The new
+case proves V12 → pending refresh → V15 notification → rejected old RPC retains
+V15/time/layout/focus, clears busy without stale feedback and permits a V16
+refresh. Two unit regressions also cover a same-version freshness supersession;
+both were demonstrated failing before the narrow finally-settlement fix. No
+clipping/geometry tolerance, composition guard or package limit was weakened.
+
+Renewed packaged artifacts:
+
+- Production Fans: 85,315 bytes, SHA-256
+  `b28ee10c695bb8d0296fa0d161b9962c578fdecabbd0f18ec1b525d408d23be1`,
+  below its 100,000-byte bound.
+- Observation lab: 748,816 bytes, SHA-256
+  `4ec4b2f03c26affbc89784ff3ea55e47b8be62be83cbc5d3054849eb0ef11840`,
+  +334 versus shipped PR69, 1,184 bytes below 750,000.
+- Camera lab: 78,795 bytes, SHA-256
+  `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`,
+  +107 from the shared generic busy button, 1,205 bytes below 80,000.
+- Two-lab aggregate: 827,611 bytes, 2,389 below 830,000. Production Fans is not
+  included in or substituted for that explicitly reviewed two-lab bound.
+
+The source-derived inventory tests now cover 27 static asset/routes and 28
+security checks, including both distinct Camera-lab and production-Fans assets.
+These are test counts, not actual deployment checks for PR70. Independent
+validation/review of the renewed immutable commit remains mandatory; the earlier
+held `e0e141a` must not ship. No running service, physical printer, real camera
+stream or actual-user device was used in these author gates.
+
+## 2026-09-01 actual PR69 Camera lab rollout and independent postcheck
+
+Attributed delivery-operator receipt: independently approved head
+`473cd000399aa0eb5d9f548b0f75e54dbbd0309f`, tree
+`f3399abfb25345fcf419e1ed9c37cb20c16cf842`, merged as
+`ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24` with identical tree. Guarded release
+`20260901-ef5b239-pr69-20260901T160906-8d7501` explicitly restarted BOTH
+existing services. Health/integrity, runtime 0.4.8/schema 12/observation-v14 /
+camera-v10, 26 static and 27 security checks passed; preservation=true, no
+rollback needed, snapshot `20260901T160950-ad9fec` retained. Canonical checkout's
+8,689 ignored entries and recovery refs were preserved.
+
+The distinct `camera_exact_validation` agent independently confirmed both running
+launchd/plist identities, active manifest and all 15 file hashes match the exact
+release/revision, with healthy/integrity status. Actual tailnet directory with
+and without slash, nine observation lab routes and Camera returned 200/no-store,
+restrictive CSP and exact approved artifacts: observation 748,482 bytes, SHA-256
+`bba36db142abc32eb11792265d7ba888f987ff43e502fa32ee50e93c29caec77`;
+Camera 78,688 bytes, SHA-256
+`de731c01ab92726e73be444fe70036f380d4df6172e895e5477db14ea8a87fba`.
+Downloaded Camera bytes with their real CSP passed nine independent Chrome
+probes / 56 state-width-text combinations, including native fullscreen/PiP and
+CSS fallback retaining media identity, with no network/device acquisition.
+Canonical checkout was clean at the merge. Detailed receipts remain private.
+
+This is independently attributed deployed-service/static and synthetic-browser
+evidence, not an iPhone, real printer stream or completed production Camera
+migration. The actual receipt is included with the next reviewed Fans source
+candidate; it does not request a documentation-only extra deployment/restart.
+
+## 2026-09-01 combined Camera baseline for renewed PR70
+
+Explicitly integrated reviewed main `ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24`
+(PR69), preserving Camera artifact routing, closed controls, source boundaries
+and the 750,000/80,000/830,000 private-lab limits. Conflict resolution combines
+the two route/registry/ship inventories and regenerates the deterministic HTML.
+The superseded-request fix remains confined to the live Fans controller.
+New full combined-tree gates are pending; prior `e0e141a` author green tests do
+not override its independent rejection or establish the integrated candidate.
+
+## 2026-09-01 PR70 superseded rejection — reproduced and narrowly corrected
+
+Independent review/validation held `e0e141a`: V12 → refresh → notification V15
+→ RPC rejection retained V15 but left refreshing=true after the flight ended.
+Two new author controller cases reproduced that exact failure, including the
+same-version freshness variant (eight prior tests passed, two new tests failed).
+The correction releases single-flight and clears busy in finally, even when the
+obsolete failure is intentionally suppressed. It preserves the accepted object,
+phase and feedback, and never publishes after disposal.
+
+Actual focused commands: UI `bun run test -- src/lib/live/controller.test.ts`
+passes all ten after the fix; `bun run build:live-fans` succeeds; and
+`bun run test:browser -- live-fans.spec.ts --grep 'superseded rejected RPC'`
+passes the real parent/iframe RPC error, retained V15 value/time/geometry/focus,
+re-enabled Refresh and successful subsequent V16 request. Pinned Bun 1.3.12,
+normal Node PATH, synthetic intercepted HTTP only; no printer/service change.
+The temporary renewed production artifact is 84,926 bytes, SHA-256
+`8f8595e944cdcb6111012affa8660391026023fdb0c5417fce05368df9fc52e1`.
+Full gates and independent exact acceptance must be repeated after the imminent
+reviewed Camera merge is explicitly integrated. This is not an approved release.
+
+## 2026-09-01 LIVE Fans exact-candidate author gates
+
+Actual final commands, pinned Bun 1.3.12 with normal Node PATH:
+
+- UI `bun run check`, focused `bun run test -- src/lib/live src/lib/host`,
+  `bun run build:live-fans`, `bun run build`, `bun run package:private-lab`,
+  focused `bun run test:browser -- live-fans.spec.ts`, then full
+  `bun run test:browser`: PASS. Full Chrome result is 104 cases, including ten
+  production-iframe cases and all existing Thermals/Fans/lab geometry regressions.
+- Repository `./scripts/check-repository.sh`: PASS, compiler/AST and 152 UI units,
+  deterministic production/lab rebuild checks, 280 app tests/3,265 assertions,
+  21 service-lifecycle and 24 ship tests, `repository contract: ok`.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and executable `--help`: PASS. `git diff --check`: PASS.
+
+The production iframe uses the actual private route/CSP and parent bridge with
+intercepted synthetic tool responses, not a fake presentation setter. Four
+widths (320/390/590/720) × normal/200% text cover every fan at the real 1,000,000
+RPM bound, one-pixel loading/ready region parity, retained source time, values,
+focus and geometry during refresh, null/zero/fractional values, error/retry and
+no unexpected network requests. Persisted page lifecycle and actual browser
+back/forward retain or restore exactly one mounted widget/bridge. Author
+screenshots at normal and 200% text were inspected; no clipping was observed.
+
+Separate pre-review found duplicate result notifications invalidating a pending
+newer result and pagehide disposing BFCache state. Both now have regressions;
+same-version freshness notifications likewise cannot discard the newer response.
+Host navigation generations reject pre-reload initial notifications and request
+replies. A real existing-server projection test (injected no-device reader) proves
+the strict adapter accepts unavailable domain data without inventing readings.
+
+Packaging evidence: production Fans 84,884 bytes, SHA-256
+`f25bc9bd332e3fdd49a974db754ea2636ed099f065241bd373a9c0d4daa22605`, below
+its separate 100,000-byte bound. Shared leaf extraction/busy-state changes add
+334 bytes to the observation lab: 748,888 bytes, SHA-256
+`26a05eaf00188d26dd27e5f2700ae9172c8d4ba4491c785c9dffec1c38e56800`,
+leaving 1,112 bytes under the unchanged 750,000-byte lab cap. The two artifacts
+total 833,772 bytes; the production artifact is not a second lab payload or a
+silent relaxation of the lab bound. Import-graph and packaged-marker guards
+exclude lab producers/controls, test harnesses, Three and media acquisition.
+
+Static/private-route tests add exact GET/no-store/CSP, prohibited methods,
+encoded/traversal/suffix rejection and public 404 coverage. The source-derived
+ship inventory now has one additional static asset and security probe; this is
+tested inventory, not a claim that a release has occurred. Full browser startup
+once refused another agent's occupied port; it was rerun only after that agent's
+suite released it. No reused test server or weakened gate was used.
+
+All results above are author software/synthetic-host evidence. Fresh independent
+validation and formal review of the frozen commit must precede guarded merge,
+exact deployment, BOTH service restarts and post-verification. No actual printer,
+camera, user phone, auth, Tailscale or running service was changed or observed.
+
+## 2026-09-01 LIVE Fans current author checkpoint
+
+UI compiler/AST check and the focused adapter/controller/RPC unit run actually
+pass: 25 tests (12 adapter, eight controller, five bridge). Ten browser cases pass
+against the real packaged iframe/host with synthetic intercepted tool results:
+four widths, 200% text, all seven rows at 1,000,000 RPM, initial loading parity,
+retained refresh/time/focus, failure/retry, persisted lifecycle and back/forward.
+The new busy icon-button state preserves focus while suppressing duplicate
+activation; native disabling initially failed this test and was corrected.
+The package is 84,884 bytes, excludes lab producers/controls, Three and media,
+and has an explicit production import-graph guard. Seventeen dashboard tests pass,
+including actual existing server projection compatibility, static route isolation
+and pre-reload reply generations. Full gates and fresh independent acceptance
+remain pending; these tests do not establish printer or actual-device behavior.
 ## 2026-09-01 synthetic Camera lab author validation
 
 The reviewed packaging/layout design is recorded in decision0032. Source builds
