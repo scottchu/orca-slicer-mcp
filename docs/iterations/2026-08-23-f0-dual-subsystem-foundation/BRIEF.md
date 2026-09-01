@@ -4,6 +4,12 @@
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`
 - Status: active
+- Latest shipped refinement: PR65 reviewed `f216c70`, merged `6b9b3e7`, guarded
+  release `20260901-6b9b3e7-pr65-20260901T142009-341331`. BOTH services explicitly
+  restarted and passed loaded/health/integrity, 25 exact asset/route and 26
+  security checks. Thermals/Fans share the 100-degree tint at exact ratio width.
+  Resume visible all-nine lab controls/loading, then synthetic Camera; remaining
+  refresh, size/API and widget tracks stay open. No actual-device acceptance.
 - Current bounded priority: gently sloped shared percentage tint (100 degrees
   inside an exact ratio-wide rectangle), then visible all-nine lab controls /
   structural loading and separate synthetic Camera. Smaller visual Refresh and
