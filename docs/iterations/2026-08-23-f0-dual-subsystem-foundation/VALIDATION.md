@@ -12,7 +12,7 @@ and repository roots: app `ui:verify`, TypeScript/app tests,
 `git diff --check`.
 
 - Svelte check: 0 errors, 0 warnings; AST component frontier passes.
-- Vitest: 61/61. Coverage includes primitive formatting/ARIA/closed props,
+- Vitest: 62/62. Coverage includes primitive formatting/ARIA/closed props,
   degree null/zero/negative, actual-target order, source timestamp, invalid
   WidgetState envelopes, six-row loading/no fake telemetry/no action, refresh
   retention, stale-feedback invalidation and deliberate AST bypass fixtures.
@@ -22,9 +22,9 @@ and repository roots: app `ui:verify`, TypeScript/app tests,
   forced-colors, refreshing retention, terminal states, 44-pixel action,
   overflow and nonlocal-request gates pass. The exact state harness is test-only
   and absent from packaged/static routes.
-- Two builds reproduce one 722,425-byte package with SHA-256
-  `239fbfb5de7587d0c4394e59cf2a31abc3e2edb25fcab18fc078963478b97baa`.
-  This is 27,575 bytes below the 750,000-byte hard bound, but 2,425 above the
+- Two builds reproduce one 722,484-byte package with SHA-256
+  `dd4f727d615fc7730db76f96b1b33e1371338b046737afc82d87d12a086b3b67`.
+  This is 27,516 bytes below the 750,000-byte hard bound, but 2,484 above the
   provisional 720,000-byte soft target; exact review must explicitly accept or
   require a correction without weakening the required composition.
 - Full gates: app 276/276 with 3,178 assertions, lifecycle 21/21, shipping

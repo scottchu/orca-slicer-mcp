@@ -13,7 +13,7 @@ import { formatDegree, formatTimestamp } from './format';
 import { validateWidgetState } from './state';
 import { thermalsLabFixture } from '../fixtures/observations';
 import { validateThermals } from '../observation/types';
-import { inspectComponent, checkComponents } from '../../../scripts/component-contract';
+import { inspectComponent, checkComponents, exactTags } from '../../../scripts/component-contract';
 import { resolve } from 'node:path';
 
 afterEach(cleanup);
@@ -70,6 +70,13 @@ describe('closed component/state contracts', () => {
     expect(inspectComponent('<script>let { content } = $props();</script>{@render content()}', true).violations).toContain('escape RenderTag');
   });
   test('registered tree obeys migration frontier', () => expect(checkComponents(resolve(process.cwd(), 'src/lib'))).toEqual([]));
+  test('legacy debt rejects same-count and lower-count unsafe tag substitutions', () => {
+    expect(exactTags(['iframe'], ['div'])).toBe(false);
+    expect(exactTags(['form'], ['div'])).toBe(false);
+    expect(exactTags(['script'], ['div'])).toBe(false);
+    expect(exactTags([], ['div'])).toBe(false);
+    expect(exactTags(['span', 'div'], ['div', 'span'])).toBe(true);
+  });
   test.each([
     '<span>raw</span>', '{@html "unsafe"}', '<svelte:element this="span" />',
     '<svelte:window onresize={() => {}} />', '<svelte:head><title>wrong</title></svelte:head>',

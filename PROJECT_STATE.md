@@ -23,13 +23,13 @@ transport/global escapes in migrated composites while bounding the eight
 untouched ready-widget raw debts. Production assets, routes, tools, resources,
 auth and services remain unchanged and uncontacted.
 
-Author checks pass Svelte 0/0, 61 component tests, 54 real-Chrome cases and the
+Author checks pass Svelte 0/0, 62 component tests, 54 real-Chrome cases and the
 full repository gate (276 app/3,178 assertions, lifecycle 21, shipping 24).
-Two builds reproduce a 722,425-byte self-contained package with SHA-256
-`239fbfb5de7587d0c4394e59cf2a31abc3e2edb25fcab18fc078963478b97baa`.
-The hard reserve is 27,575 bytes; this is 2,425 bytes above the provisional
+Two builds reproduce a 722,484-byte self-contained package with SHA-256
+`dd4f727d615fc7730db76f96b1b33e1371338b046737afc82d87d12a086b3b67`.
+The hard reserve is 27,516 bytes; this is 2,484 bytes above the provisional
 720,000-byte soft target and requires explicit reviewer disposition. Exact
-independent review is required before PR/merge/deploy. This is synthetic static/software evidence,
+independent re-review is required before PR/merge/deploy. This is synthetic static/software evidence,
 not deployed-service, live-printer, actual-device or user acceptance.
 
 The next ordered slices remain explicit: all-nine skeleton companions/gallery,

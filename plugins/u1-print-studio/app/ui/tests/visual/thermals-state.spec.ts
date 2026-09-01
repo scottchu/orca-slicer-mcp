@@ -51,6 +51,14 @@ for (const width of [320, 390, 590, 720]) {
     }
     await setState('ready');
     await page.addStyleTag({ content: '.name { font-size: 28px !important; } .degree { font-size:40px !important; } .degree.secondary { font-size:26px !important; }' });
+    const readability = await page.locator('[data-reading-row]').evaluateAll((rows) => rows.map((row) => {
+      const outer = row.getBoundingClientRect();
+      const texts = [...row.querySelectorAll('[data-required-text]')].map((item) => item.getBoundingClientRect());
+      const contained = texts.every((box) => box.left >= outer.left - .1 && box.right <= outer.right + .1 && box.top >= outer.top - .1 && box.bottom <= outer.bottom + .1 && box.width > 0 && box.height > 0);
+      const nonoverlap = texts.every((box, index) => texts.slice(index + 1).every((other) => box.right <= other.left + .1 || other.right <= box.left + .1 || box.bottom <= other.top + .1 || other.bottom <= box.top + .1));
+      return { contained, nonoverlap, height: outer.height };
+    }));
+    expect(readability.every(({ contained, nonoverlap, height }) => contained && nonoverlap && height > 49)).toBe(true);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
     expect(errors).toEqual([]); expect(external).toEqual([]);
   });

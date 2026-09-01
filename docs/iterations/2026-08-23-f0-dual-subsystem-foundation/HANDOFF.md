@@ -10,9 +10,16 @@ and the AST migration frontier are implemented; Thermals feature/domain files
 have no native element/style/direct icon-library import. Existing production
 renderer/assets/tools/routes/auth are unchanged. No server/device was contacted.
 
-Before delivery: finish browser, deterministic package and full repository
-checks; record exact output below; commit a clean immutable SHA; then independent
-validation and formal review. After exact approval only, PR merge and the
+Author browser, deterministic package and full repository checks completed for
+exact `9a4d02d`; formal review then blocked its aggregate-only raw-debt freeze
+and fixed-height text-resize clipping. The renewed source freezes each legacy
+file's exact sorted tag multiset, lets reading rows grow, and adds substitution
+and required-text containment/non-overlap regressions. Renewed author gates pass
+62 component tests, 54 real-Chrome cases, app 276/3,178, lifecycle 21,
+shipping 24 and the repository contract. Two builds reproduce the 722,484-byte
+package recorded in VALIDATION. Freeze this renewal as a new exact SHA, then
+perform independent validation and formal review.
+After exact approval only, PR merge and the
 standing guarded deployment explicitly restart BOTH U1 services and verify the
 served exact merge. Remaining all-nine skeleton/gallery, eight ready migrations,
 Bed Mesh outer-axis enclosure, private sanitized read-only Console, truthful

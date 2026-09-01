@@ -4,7 +4,7 @@
   const degree = $derived(formatDegree(value, precision));
 </script>
 
-<span class="degree" class:secondary={emphasis === 'secondary'} role="img" aria-label={context ? `${context}: ${degree.accessible}` : degree.accessible}>{degree.visible}</span>
+<span class="degree" class:secondary={emphasis === 'secondary'} role="img" aria-label={context ? `${context}: ${degree.accessible}` : degree.accessible} data-required-text>{degree.visible}</span>
 
 <style>
   .degree { color: var(--u1-ink); font-size: var(--u1-type-value); font-weight: var(--u1-weight-strong); font-variant-numeric: tabular-nums; line-height: var(--u1-line-value); white-space: nowrap; }

@@ -19,14 +19,23 @@ export const leaves: Record<string, string[]> = {
 };
 // Untouched ready widgets, route chrome, and compatibility frame remain explicit
 // debt. Exact tag multisets cannot grow. Retire entries when migrated.
-export const debt: Record<string, number> = {
-  'observation/OverviewWidget.svelte': 33, 'observation/ProgressWidget.svelte': 14,
-  'observation/HeadsWidget.svelte': 13, 'observation/CurrentJobWidget.svelte': 18,
-  'observation/JobHistoryWidget.svelte': 7, 'observation/QueueWidget.svelte': 12,
-  'observation/FansWidget.svelte': 9, 'bed-mesh/BedMeshWidget.svelte': 18,
-  'observation/LabDirectory.svelte': 13, 'observation/ObservationFrame.svelte': 0,
-  '../routes/+page.svelte': 4, '../routes/+layout.svelte': 0,
+export const debt: Record<string, string[]> = {
+  'observation/OverviewWidget.svelte': ['div','div','div','div','div','div','div','div','div','small','small','small','small','small','small','small','small','span','span','span','span','span','span','span','span','strong','strong','strong','strong','strong','strong','strong','strong'],
+  'observation/ProgressWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','strong','strong'],
+  'observation/HeadsWidget.svelte': ['button','div','div','div','div','div','section','span','span','span','span','span','strong'],
+  'observation/CurrentJobWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','span','strong','strong','strong','strong','strong'],
+  'observation/JobHistoryWidget.svelte': ['div','div','div','div','span','span','strong'],
+  'observation/QueueWidget.svelte': ['div','div','div','div','div','span','span','span','span','span','strong','strong'],
+  'observation/FansWidget.svelte': ['div','div','div','span','span','span','span','strong','strong'],
+  'bed-mesh/BedMeshWidget.svelte': ['dd','dd','dd','div','div','div','div','div','div','div','dl','dt','dt','dt','span','span','span','span'],
+  'observation/LabDirectory.svelte': ['a','div','div','div','div','h1','header','main','nav','p','span','span','strong'],
+  'observation/ObservationFrame.svelte': [],
+  '../routes/+page.svelte': ['div','main','section','section'], '../routes/+layout.svelte': [],
 };
+
+export function exactTags(actual: string[], expected: string[]): boolean {
+  return JSON.stringify([...actual].sort()) === JSON.stringify([...expected].sort());
+}
 
 type Node = { type?: string; name?: string; [key: string]: unknown };
 function visit(value: unknown, fn: (node: Node) => void): void {
@@ -90,8 +99,8 @@ export function checkComponents(root: string): string[] {
     const source = readFileSync(file, 'utf8');
     const result = inspectComponent(source, strict, approvedImports[name]);
     failures.push(...result.violations.map((message) => `${name}: ${message}`));
-    if (name in leaves && JSON.stringify(result.tags) !== JSON.stringify([...leaves[name]].sort())) failures.push(`${name}: leaf native tags changed`);
-    if (name in debt && result.tags.length > debt[name]) failures.push(`${name}: raw debt increased`);
+    if (name in leaves && !exactTags(result.tags, leaves[name])) failures.push(`${name}: leaf native tags changed`);
+    if (name in debt && !exactTags(result.tags, debt[name])) failures.push(`${name}: raw debt tag multiset changed`);
     if (name.startsWith('ui/') && /from\s+['"][^'"]*(?:observation|bed-mesh)\//.test(source)) failures.push(`${name}: leaf imports feature`);
   }
   return failures;
