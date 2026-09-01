@@ -21,7 +21,10 @@ stable selectors and tools are unchanged.
 
 Hosted and standalone fullscreen use only continuity-preserving same-document
 native or CSS presentation, pause/stall recovery retains the peer, and one
-page lifecycle restore is bounded. Author checks pass 268 tests/2,841
+page lifecycle restore is bounded. The dedicated fullscreen camera-body flex
+chain has a non-zero 390 × 844 browser-layout regression; host PiP coercion to
+fullscreen is rejected. Thermal rows are bounded to 64 pixels and content
+panels have one inset owner. Author checks pass 270 tests/2,888
 assertions, TypeScript and all three bundles. No service/network/printer contact
 or deployment occurred; independent review and guarded delivery are pending.
 

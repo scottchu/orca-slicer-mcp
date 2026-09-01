@@ -71,9 +71,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       body[data-display-mode="fullscreen"] .dashboard { width: 100%; border: 0; box-shadow: none; }
       body[data-local-fullscreen="true"] { width: 100vw; height: 100dvh; overflow: hidden; }
       body[data-local-fullscreen="true"] .dashboard { display: flex; height: 100dvh; flex-direction: column; }
-      body[data-local-fullscreen="true"] .camera { flex: 1; min-height: 0; aspect-ratio: auto; }
       .dashboard:fullscreen { display: flex; flex-direction: column; width: 100vw; height: 100vh; border-radius: 0; }
-      .dashboard:fullscreen .camera { flex: 1; min-height: 0; aspect-ratio: auto; }
+      .dashboard[data-fullscreen-layout="local"] { display: flex; width: 100%; height: 100dvh; flex-direction: column; }
+      .dashboard[data-fullscreen-layout="native"] { display: flex; width: 100vw; height: 100vh; flex-direction: column; border-radius: 0; }
+      body[data-local-fullscreen="true"] .camera-body,
+      .dashboard:fullscreen .camera-body,
+      .dashboard[data-fullscreen-layout="local"] .camera-body,
+      .dashboard[data-fullscreen-layout="native"] .camera-body { display: flex; flex: 1; min-height: 0; }
+      body[data-local-fullscreen="true"] .camera,
+      .dashboard:fullscreen .camera,
+      .dashboard[data-fullscreen-layout="local"] .camera,
+      .dashboard[data-fullscreen-layout="native"] .camera { flex: 1; min-height: 0; width: 100%; aspect-ratio: auto; }
       .dashboard:fullscreen img, .dashboard:fullscreen video { object-fit: contain; }
       /* BEGIN GENERATED U1 SHARED CSS */
 /* U1 widget design system. This source is injected into both self-contained MCP resources. */
@@ -205,7 +213,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         </span>
       </header>
       <span class="sr-only" id="camera-status" role="status" aria-live="polite">Camera loading</span>
-      <div class="u1-body">
+      <div class="camera-body u1-body">
       <strong class="sr-only" id="camera-empty-message" role="status" aria-live="polite">Waiting for camera</strong>
       <section class="camera" id="camera" data-camera-mode="loading" data-camera-status="loading" data-camera-loading="true" aria-label="Printer camera">
         <div class="display-feedback" id="display-feedback" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -872,8 +880,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const updateDisplayControls = () => {
         elements.refreshSnapshot.disabled = cameraRefreshing || !hostBridgeAvailable;
         const mode = document.body.dataset.displayMode;
-        const fullscreenActive = localViewportFullscreen || mode === "fullscreen" || Boolean(document.fullscreenElement);
+        const nativeFullscreenActive = document.fullscreenElement === elements.dashboard;
+        const fullscreenActive = localViewportFullscreen || mode === "fullscreen" || nativeFullscreenActive;
         const pipActive = mode === "pip" || document.pictureInPictureElement === elements.liveStream || elements.liveStream.webkitPresentationMode === "picture-in-picture";
+        elements.dashboard.dataset.fullscreenLayout = nativeFullscreenActive ? "native" : localViewportFullscreen ? "local" : "inline";
         elements.fullscreen.hidden = false;
         elements.pip.hidden = !pipActive && !hostSupports("pip") && !canNativePip();
         elements.fullscreen.setAttribute("aria-pressed", String(fullscreenActive));
@@ -903,10 +913,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               : await window.openai.requestDisplayMode({ mode });
             const granted = result?.mode;
             if (!["inline", "fullscreen", "pip"].includes(granted)) throw new Error("No granted mode");
-            applyHostContext({ displayMode: granted });
-            if (granted !== mode) setFeedback(granted === "fullscreen" && mode === "pip"
-              ? "This app opened fullscreen instead of picture in picture."
-              : "This display mode is not available in this app.", "error");
+            if (granted === mode) applyHostContext({ displayMode: granted });
+            else setFeedback("This display mode is not available in this app.", "error");
           } else {
             if (document.pictureInPictureElement === elements.liveStream) await document.exitPictureInPicture();
             else if (elements.liveStream.webkitPresentationMode === "picture-in-picture") elements.liveStream.webkitSetPresentationMode("inline");

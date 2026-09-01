@@ -8,11 +8,20 @@ observation and camera card the frozen compact width-token anatomy, removes
 reserved directory height, and makes Print Queue the canonical visible label
 without changing selector `queue`. Hosted and standalone fullscreen now use
 only same-document native/CSS transitions that preserve the live media identity
-and make no host display-mode or camera request. Pause/stall events recover playback without immediate session
+and make no host display-mode or camera request. The dedicated camera-body flex
+chain retains a non-zero 390 × 844 rendered box; PiP coercion to fullscreen is
+rejected. Pause/stall events recover playback without immediate session
 teardown, FPS requires fresh frame evidence, and one page lifecycle restore is
 bounded.
 
-Author checks pass 268 tests/2,841 assertions, TypeScript, reproducible vendor
+Real Chromium density checks also bound every thermal row to 64 pixels at
+320/390/590/720, while nested empty and Current Job panels leave `.u1-body` as
+their sole inset owner. Bed Mesh retains one fixed chart-frame height for both
+2D and 3D. The user's live evidence that its current 3D mode is near-blank and
+unreadable remains the first visual blocker for the proposed incremental
+SvelteKit migration; this stabilization slice does not broaden into that rewrite.
+
+Author checks pass 270 tests/2,888 assertions, TypeScript, reproducible vendor
 injection, and runtime/stdio/server bundles. Exact hashes and commands are in
 `VALIDATION.md`. No printer, service, network, deployment or browser/device
 contact occurred. The next smallest action is independent exact-source review,

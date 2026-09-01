@@ -1,5 +1,8 @@
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { runInNewContext } from "node:vm";
 
 const html = readFileSync(new URL("../public/camera-widget.html", import.meta.url), "utf8");
@@ -10,6 +13,64 @@ const frame = (observedAt: string | null = snapshotTime, data = "fixture") => ({
   structuredContent: { available: true, mediaType: "image/jpeg", observedAt },
   _meta: { cameraFrame: { dataUrl: `data:image/jpeg;base64,${data}` } },
 });
+
+const chromePath = [
+  process.env.CHROME_BIN,
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/Applications/Chromium.app/Contents/MacOS/Chromium",
+  "/usr/bin/google-chrome",
+  "/usr/bin/chromium",
+  "/usr/bin/chromium-browser",
+].find((candidate): candidate is string => typeof candidate === "string" && existsSync(candidate));
+
+function measureFullscreenLayout(mode: "local" | "native") {
+  if (!chromePath) throw new Error("A Chromium browser is required for the camera fullscreen layout regression");
+  const directory = mkdtempSync(join(tmpdir(), "u1-camera-layout-"));
+  const fixturePath = join(directory, `${mode}.html`);
+  const innerHtml = html.replace(/<script type="module">[\s\S]*?<\/script>/, "");
+  writeFileSync(fixturePath, `<!doctype html><html><body><script>
+    function measure(frame) {
+      const view = frame.contentWindow;
+      const document = frame.contentDocument;
+      document.body.dataset.displayMode = "fullscreen";
+      document.body.dataset.localFullscreen = String(${JSON.stringify(mode)} === "local");
+      const dashboard = document.querySelector("#dashboard");
+      dashboard.dataset.fullscreenLayout = ${JSON.stringify(mode)};
+      const camera = document.querySelector("#camera");
+      const video = document.querySelector("#live-stream");
+      const result = document.createElement("pre");
+      result.id = "layout-result";
+      result.textContent = JSON.stringify({
+        viewport: [view.innerWidth, view.innerHeight],
+        dashboard: dashboard.getBoundingClientRect().height,
+        body: document.querySelector(".camera-body").getBoundingClientRect().height,
+        camera: camera.getBoundingClientRect().height,
+        video: video.getBoundingClientRect().height,
+      });
+      window.document.body.append(result);
+    }
+    const frame = document.createElement("iframe");
+    frame.width = "390"; frame.height = "844"; frame.style = "display:block;border:0";
+    frame.onload = () => measure(frame);
+    frame.srcdoc = atob("${Buffer.from(innerHtml).toString("base64")}");
+    document.body.append(frame);
+  </script></body></html>`);
+  try {
+    const result = spawnSync(chromePath, [
+      "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars",
+      "--force-device-scale-factor=1", "--window-size=800,1000", "--virtual-time-budget=1000",
+      "--dump-dom", `file://${fixturePath}`,
+    ], { encoding: "utf8", timeout: 15_000 });
+    expect(result.status).toBe(0);
+    const serialized = result.stdout.match(/<pre id="layout-result">([^<]+)<\/pre>/)?.[1];
+    if (!serialized) throw new Error(`Camera layout result missing: ${result.stdout.slice(-1000)} ${result.stderr.slice(0, 500)}`);
+    return JSON.parse(serialized.replaceAll("&quot;", '"')) as {
+      viewport: [number, number]; dashboard: number; body: number; camera: number; video: number;
+    };
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+}
 
 function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?: boolean; rtcPeer?: new (...args: any[]) => any; standalone?: boolean } = {}) {
   let clock = Date.parse("2026-08-31T10:10:00.000Z");
@@ -510,16 +571,18 @@ describe("camera widget presentation runtime", () => {
     expect(host.node("#camera").classList.contains("has-snapshot")).toBe(true);
   });
 
-  test("host-granted PiP reports mobile coercion without routing the fullscreen control through the host", async () => {
+  test("host PiP coercion to fullscreen is rejected without changing local fullscreen state", async () => {
     const modes: string[] = [];
     const host = cameraHost({ openai: { requestDisplayMode: async ({ mode }: { mode: string }) => { modes.push(mode); return { mode: mode === "pip" ? "fullscreen" : mode }; } } });
     host.acceptSnapshot();
     host.api.applyHostContext({ availableDisplayModes: ["inline", "fullscreen", "pip"] });
     await host.api.requestCameraDisplay("pip");
-    expect(host.document.body.dataset.displayMode).toBe("fullscreen");
+    expect(host.document.body.dataset.displayMode).toBe("inline");
     expect(host.node("#picture-in-picture").getAttribute("aria-pressed")).toBe("false");
-    expect(host.node("#fullscreen").getAttribute("aria-pressed")).toBe("true");
-    expect(host.node("#display-feedback").textContent).toContain("instead of picture in picture");
+    expect(host.node("#fullscreen").getAttribute("aria-pressed")).toBe("false");
+    expect(host.node("#display-feedback").textContent).toContain("not available");
+    expect(host.document.body.dataset.localFullscreen).not.toBe("true");
+    expect(host.node("#dashboard").dataset.fullscreenLayout).toBe("inline");
     expect(modes).toEqual(["pip"]);
   });
 
@@ -535,8 +598,10 @@ describe("camera widget presentation runtime", () => {
     const calls = cameraCalls();
     await host.api.requestCameraDisplay("fullscreen");
     expect(host.document.body.dataset.localFullscreen).toBe("true");
+    expect(host.node("#dashboard").dataset.fullscreenLayout).toBe("local");
     await host.api.requestCameraDisplay("fullscreen");
     expect(host.document.body.dataset.localFullscreen).toBe("false");
+    expect(host.node("#dashboard").dataset.fullscreenLayout).toBe("inline");
     expect(host.api.state()).toEqual(before);
     expect(host.api.state().livePeerConnection).toBe(before.livePeerConnection);
     expect(host.api.state().liveFrameObserverGeneration).toBe(before.liveFrameObserverGeneration);
@@ -567,8 +632,10 @@ describe("camera widget presentation runtime", () => {
     const messageCount = host.messages.length;
     await host.api.requestCameraDisplay("fullscreen");
     expect(host.document.fullscreenElement).toBe(host.node("#dashboard"));
+    expect(host.node("#dashboard").dataset.fullscreenLayout).toBe("native");
     await host.api.requestCameraDisplay("fullscreen");
     expect(host.document.fullscreenElement).toBeNull();
+    expect(host.node("#dashboard").dataset.fullscreenLayout).toBe("inline");
     expect(host.messages).toHaveLength(messageCount);
     expect(host.api.state()).toEqual(before);
     expect(host.api.state().livePeerConnection).toBe(before.livePeerConnection);
@@ -578,6 +645,17 @@ describe("camera widget presentation runtime", () => {
     expect(host.node("#live-stream").srcObject).toBe(media);
     expect(host.node("#live-stream").srcObject.getTracks()[0]).toBe(track);
   });
+
+  test("390 by 844 rendered layout keeps camera and video non-zero in local and native fullscreen", () => {
+    for (const mode of ["local", "native"] as const) {
+      const box = measureFullscreenLayout(mode);
+      expect(box.viewport).toEqual([390, 844]);
+      expect(box.dashboard).toBeGreaterThan(700);
+      expect(box.body).toBeGreaterThan(600);
+      expect(box.camera).toBeGreaterThan(600);
+      expect(box.video).toBe(box.camera);
+    }
+  }, 20_000);
 
   test("MCP host PiP requests wait for an actual granted mode", async () => {
     const host = cameraHost();

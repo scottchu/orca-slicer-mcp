@@ -991,7 +991,8 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain("env(safe-area-inset-top, 0px)");
     expect(WIDGET_HTML).toContain('@media (max-width: 620px)');
     expect(WIDGET_HTML).toContain('@media (max-width: 480px)');
-    expect(WIDGET_HTML).toContain('.strip .identity { grid-column: 1 / -1; }');
+    expect(WIDGET_HTML).not.toContain('.strip .identity { grid-column: 1 / -1; }');
+    expect(WIDGET_HTML).toContain("grid-template-columns: minmax(104px, 1.2fr) repeat(2, minmax(52px, 0.7fr))");
     expect(WIDGET_HTML).not.toContain('.strip .reading:nth-of-type(2) { display: none; }');
     expect(WIDGET_HTML).toContain("min-height: 44px");
     expect(WIDGET_HTML).toContain("touch-action: manipulation");

@@ -1,5 +1,8 @@
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import vm from "node:vm";
 import { normalizeBedMeshResponse, BED_MESH_MAX_DIMENSION } from "./adapters/moonraker-bed-mesh.js";
 import { unavailableBedMesh } from "./application/bed-mesh-observation.js";
@@ -10,9 +13,53 @@ import { createObservationPresentation } from "./observation-presentation.js";
 import type { U1Status } from "./u1-status.js";
 
 // Execute the exact production script against a deterministic host/DOM boundary.
-// This is protocol/software evidence, not a browser-layout or mobile test.
+// The dedicated Chromium helper below adds the separately named thermal-layout evidence.
 const html = readFileSync(new URL("../public/widget.html", import.meta.url), "utf8");
 const source = html.split('<script type="module">')[1]!.split("</script>")[0]!;
+const observationChromePath = [
+  process.env.CHROME_BIN,
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/Applications/Chromium.app/Contents/MacOS/Chromium",
+  "/usr/bin/google-chrome",
+  "/usr/bin/chromium",
+  "/usr/bin/chromium-browser",
+].find((candidate): candidate is string => typeof candidate === "string" && existsSync(candidate));
+
+function measureThermalRowHeights() {
+  if (!observationChromePath) throw new Error("A Chromium browser is required for the thermal density regression");
+  const directory = mkdtempSync(join(tmpdir(), "u1-thermal-layout-"));
+  const fixturePath = join(directory, "thermals.html");
+  const innerHtml = html.replace(/<script type="module">[\s\S]*?<\/script>/, "");
+  const markup = '<div class="u1-body"><div class="strip-list"><div class="strip u1-data-row"><div class="identity"><span class="roundel">T1</span><span><strong>Tool 1</strong><span class="micro"><span class="dot"></span>Active</span></span></div><div class="reading"><small>Actual</small><strong>220°</strong></div><div class="reading"><small>Target</small><strong>220°</strong></div></div></div></div>';
+  writeFileSync(fixturePath, `<!doctype html><html><body><script>
+    const results = {};
+    const widths = [320, 390, 590, 720];
+    function measure(frame, width) {
+      const document = frame.contentDocument;
+      document.querySelector("#modules").innerHTML = ${JSON.stringify(markup)};
+      results[width] = { viewport: frame.contentWindow.innerWidth, height: document.querySelector(".strip").getBoundingClientRect().height };
+      if (Object.keys(results).length === widths.length) {
+        const result = document.createElement("pre"); result.id = "layout-result"; result.textContent = JSON.stringify(results); window.document.body.append(result);
+      }
+    }
+    for (const width of widths) {
+      const frame = document.createElement("iframe"); frame.width = String(width); frame.height = "300"; frame.style = "display:block;border:0";
+      frame.onload = () => measure(frame, width); frame.srcdoc = atob("${Buffer.from(innerHtml).toString("base64")}"); document.body.append(frame);
+    }
+  </script></body></html>`);
+  try {
+    const result = spawnSync(observationChromePath, [
+      "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars", "--force-device-scale-factor=1",
+      "--window-size=800,1400", "--virtual-time-budget=1000", "--dump-dom", `file://${fixturePath}`,
+    ], { encoding: "utf8", timeout: 15_000 });
+    expect(result.status).toBe(0);
+    const serialized = result.stdout.match(/<pre id="layout-result">([^<]+)<\/pre>/)?.[1];
+    if (!serialized) throw new Error(`Thermal layout result missing: ${result.stderr.slice(0, 500)}`);
+    return JSON.parse(serialized.replaceAll("&quot;", '"')) as Record<string, { viewport: number; height: number }>;
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+}
 type Payload = Record<string, any>;
 const tick = async () => {
   for (let index = 0; index < 8; index++) await Promise.resolve();
@@ -203,6 +250,8 @@ describe("production observation widget host boundary", () => {
       if (data.view === "jobs") {
         expect(before).toContain("Current Job");
         expect(before).toContain("current-only.gcode");
+        expect(before).toContain('<div class="u1-body"><div class="job-current">');
+        expect(before).not.toContain("job-current u1-body");
         expect(before).not.toMatch(/History|history|Previous jobs|old-history.gcode/);
       } else {
         expect(before).toContain("Job History");
@@ -234,6 +283,8 @@ describe("production observation widget host boundary", () => {
     data.module = { kind: "jobs", state: "unknown", reason: "not_requested" };
     const missing = mount({ toolOutput: data }).modules.innerHTML;
     expect(missing).toContain("Current Job not observed");
+    expect(missing).toContain('<div class="u1-body"><div class="empty-panel">');
+    expect(missing).not.toContain("empty-panel u1-body");
     expect(missing).not.toMatch(/No active job|Idle|No jobs/);
   });
 
@@ -244,6 +295,10 @@ describe("production observation widget host boundary", () => {
     const accepted = mount({ toolOutput: maximum }).modules.innerHTML;
     expect(accepted).toContain("history-only.gcode");
     expect(accepted).not.toContain("Job History not observed");
+    for (const shorthand of ["attempted History endpoint", "Showing the last observed History page",
+      "latest History page", "current History page", '"History endpoint unsupported"']) {
+      expect(html).not.toContain(shorthand);
+    }
 
     for (const field of ["startTime", "endTime"] as const) {
       const beyond = fixture("job_history");
@@ -633,7 +688,20 @@ describe("production observation widget host boundary", () => {
     expect(cavity).not.toContain("Target");
     data.module.readings.at(-1).state = "unknown"; data.module.readings.at(-1).reportedState = "not_reported"; data.module.readings.at(-1).actual = { state: "unknown", value: null };
     expect(mount({ toolOutput: data }).modules.innerHTML).toContain("Temperature not reported");
+    expect(html).toContain("padding: 5px 14px");
+    expect(html).toContain("grid-template-columns: minmax(104px, 1.2fr) repeat(2, minmax(52px, 0.7fr)); gap: 6px; padding: 5px 8px;");
+    expect(html).toContain(".roundel { width: 40px; height: 40px; }");
+    expect(html).not.toContain(".strip .identity { grid-column: 1 / -1; }");
   });
+
+  test("Thermal rows render at no more than 64 pixels across the frozen widths", () => {
+    const rows = measureThermalRowHeights();
+    for (const width of [320, 390, 590, 720]) {
+      expect(rows[width]!.viewport).toBe(width);
+      expect(rows[width]!.height).toBeGreaterThan(0);
+      expect(rows[width]!.height).toBeLessThanOrEqual(64);
+    }
+  }, 20_000);
 
   test("Queue renders trusted FIFO receipts, duplicates, truncation and bottom-only Refresh", () => {
     const payload = fixture("queue");
@@ -778,6 +846,8 @@ describe("reported bed mesh widget", () => {
   });
   test("icon-only bottom controls switch exact 2D fallback and Refresh is the only acquisition", async () => {
     const card = mount({ toolOutput: data(mesh()) }); await card.initialize();
+    expect(html).toContain(".mesh-chart { position: relative; height: clamp(220px, 48vw, 320px);");
+    expect(html).not.toMatch(/\.mesh-chart\[data-mode="(?:2d|3d)"\][^{]*\{[^}]*height:/);
     card.mode2d.emit("click"); expect(card.modules.innerHTML).toContain('class="mesh-map"');
     card.mode3d.emit("click"); expect(card.controls.meshView.mode).toBe("2d");
     card.reset.emit("click");

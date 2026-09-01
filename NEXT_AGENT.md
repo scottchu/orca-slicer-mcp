@@ -20,8 +20,11 @@ It applies the frozen compact 320/390/590/720 anatomy to every observation,
 camera and directory surface; user-facing Queue is Print Queue while selector
 `queue` is unchanged. Hosted and standalone fullscreen use same-document native
 or CSS presentation without a host display-mode request; pause/stall and one
-page lifecycle restore preserve bounded live continuity.
-Author validation passes 268 tests/2,841 assertions, TypeScript and all three
+page lifecycle restore preserve bounded live continuity. Real Chromium layout
+checks cover a non-zero 390 × 844 camera in both fullscreen paths and thermal
+rows no taller than 64 pixels at all four frozen widths. Host PiP coercion to
+fullscreen is rejected without changing local fullscreen state.
+Author validation passes 270 tests/2,888 assertions, TypeScript and all three
 bundles. No service, network, auth, camera, printer or deployment contact has
 occurred for this candidate.
 

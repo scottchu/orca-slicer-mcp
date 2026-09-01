@@ -61,7 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       .refresh svg { width: 18px; height: 18px; }
       .refresh[aria-busy="true"] svg { animation: spin 0.8s linear infinite; }
       .strip-list { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; }
-      .strip { display: grid; grid-template-columns: minmax(170px, 1.25fr) repeat(2, minmax(90px, 0.75fr)); align-items: center; padding: var(--u1-row-y) 16px; border-bottom: 1px solid var(--line); }
+      .strip { display: grid; grid-template-columns: minmax(170px, 1.25fr) repeat(2, minmax(90px, 0.75fr)); align-items: center; min-height: 0; padding: 5px 14px; border-bottom: 1px solid var(--line); }
       .strip:last-child { border-bottom: 0; }
       .strip.active { box-shadow: inset 5px 0 0 var(--brand); }
       .identity { display: flex; min-width: 0; align-items: center; gap: 14px; }
@@ -71,8 +71,8 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       .identity strong { display: block; font-size: 15px; }
       .micro { margin-top: 5px; color: var(--muted); font-size: 11px; font-weight: 740; letter-spacing: 0.08em; text-transform: uppercase; }
       .micro .dot { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--brand); }
-      .reading small { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; }
-      .reading strong { font-size: clamp(22px, 5vw, 30px); font-weight: 640; letter-spacing: -0.035em; }
+      .reading small { display: block; margin-bottom: 2px; color: var(--muted); font-size: 11px; line-height: 1.2; }
+      .reading strong { font-size: clamp(22px, 5vw, 30px); font-weight: 640; line-height: 1; letter-spacing: -0.035em; }
       .reading.unavailable strong { color: var(--muted); font-size: 15px; font-weight: 540; letter-spacing: 0; }
       .active .reading strong { color: var(--ink); }
       .icon-tile { display: grid; place-items: center; flex: none; width: 64px; height: 72px; border: 1px solid var(--line); border-radius: 16px; background: var(--canvas); }
@@ -116,9 +116,9 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       .head-card.active { box-shadow: inset 0 -2px 0 var(--brand); }
       .head-card.empty { background: #f0f2f4; }
       .material-swatch.empty { background-color: #aeb4bb; }
-      .empty-panel, .empty-panel.u1-body { padding: 14px 16px; border: 1px dashed var(--line); border-radius: 16px; color: var(--muted); background: rgba(245, 245, 244, 0.62); }
+      .empty-panel { padding: 14px 16px; border: 1px dashed var(--line); border-radius: 16px; color: var(--muted); background: rgba(245, 245, 244, 0.62); }
       .empty-panel strong { display: block; margin-bottom: 5px; color: var(--ink); font-size: 16px; }
-      .job-current.u1-body { padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; }
+      .job-current { padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; }
       .job-current > strong { display: block; font-size: 18px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
       .job-context { display: block; margin-bottom: 7px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
       .job-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--line); }
@@ -205,12 +205,11 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       @media (max-width: 340px) { .head-grid, .overview-grid { grid-template-columns: minmax(0, 1fr); } }
       @media (max-width: 620px) {
         .instrument { border-radius: 20px; }
-        .strip { grid-template-columns: minmax(150px, 1.2fr) repeat(2, minmax(74px, 0.7fr)); }
+        .strip { grid-template-columns: minmax(104px, 1.2fr) repeat(2, minmax(52px, 0.7fr)); gap: 6px; padding: 5px 8px; }
+        .roundel { width: 40px; height: 40px; }
+        .identity { gap: 8px; }
       }
       @media (max-width: 340px) {
-        .strip { grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px; }
-        .strip .identity { grid-column: 1 / -1; }
-        .roundel { width: 44px; height: 44px; }
         .job-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .history-heading { display: block; }
         .history-status { display: block; margin-top: 5px; }
@@ -4600,7 +4599,7 @@ void main() {
       const validReported = (field, validate, nullable = false) => field && typeof field.reported === "boolean" && (field.reported ? (nullable && field.value === null) || validate(field.value) : field.value === null);
       const boundedFact = value => validNumber(value) && value >= 0 && value <= Number.MAX_SAFE_INTEGER;
       const jobReasons = { unsupported: "The attempted Current Job endpoint was unsupported.", unauthorized: "Current Job access was denied.", timeout: "The Current Job request timed out.", malformed: "The Current Job response could not be read.", too_large: "The Current Job response exceeded the supported limit.", not_configured: "Current Job connection is not configured.", network: "Couldn’t reach the Current Job endpoint.", http_error: "The Current Job request failed." };
-      const historyReasons = { unsupported: "The attempted History endpoint was unsupported.", unauthorized: "History access was denied.", timeout: "The History request timed out.", malformed: "The History response could not be read.", too_large: "The History response exceeded the supported limit.", not_configured: "History connection is not configured.", network: "Couldn’t reach the History endpoint.", http_error: "The History request failed." };
+      const historyReasons = { unsupported: "The attempted Job History endpoint was unsupported.", unauthorized: "Job History access was denied.", timeout: "The Job History request timed out.", malformed: "The Job History response could not be read.", too_large: "The Job History response exceeded the supported limit.", not_configured: "Job History connection is not configured.", network: "Couldn’t reach the Job History endpoint.", http_error: "The Job History request failed." };
       const factDuration = value => boundedFact(value) ? formatDuration({ state: "known", value }) : "Not reported";
       const factBytes = value => Number.isSafeInteger(value) && value >= 0 ? `${value.toLocaleString()} bytes` : "Not reported";
       const factTime = value => { const date = typeof value === "string" && value.length <= 40 ? new Date(value) : null; return date && Number.isFinite(date.valueOf()) ? date.toLocaleString([], { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "Not reported"; };
@@ -4612,14 +4611,14 @@ void main() {
           validReported(data.filePositionBytes, value => Number.isSafeInteger(value) && value >= 0) && validReported(data.fileSizeBytes, value => Number.isSafeInteger(value) && value >= 0) &&
           validReported(data.totalDurationSeconds, boundedFact) && validReported(data.printDurationSeconds, boundedFact) && validReported(data.filamentUsedMillimeters, boundedFact);
         const reason = jobReasons[data?.reason] ?? ""; const warning = retained && valid ? `${reason ? `${reason} ` : ""}Showing the last observed Current Job facts.` : reason;
-        if (!valid) { const title = data?.state === "unsupported" ? "Current Job endpoint unsupported" : data?.state === "unavailable" ? "Current Job unavailable" : "Current Job not observed"; const detail = data?.state === "unknown" ? "Refresh to request Current Job facts." : "No Current Job facts are available."; return `<section class="instrument u1-card">${header("Current Job", true, null, "unknown", warning)}<div class="empty-panel u1-body"><strong>${title}</strong>${detail}</div>${provenance()}</section>`; }
+        if (!valid) { const title = data?.state === "unsupported" ? "Current Job endpoint unsupported" : data?.state === "unavailable" ? "Current Job unavailable" : "Current Job not observed"; const detail = data?.state === "unknown" ? "Refresh to request Current Job facts." : "No Current Job facts are available."; return `<section class="instrument u1-card">${header("Current Job", true, null, "unknown", warning)}<div class="u1-body"><div class="empty-panel"><strong>${title}</strong>${detail}</div></div>${provenance()}</section>`; }
         const state = data.printState.reported ? data.printState.value : null;
         const stateLabel = ({ standby: "Standby", printing: "Printing", paused: "Paused", complete: "Complete", error: "Error", cancelled: "Cancelled", unknown: "Unknown" })[state] ?? "Not reported";
         const context = ({ printing: "Current job", paused: "Paused job", standby: "Loaded file", complete: "Last reported job", error: "Last reported job", cancelled: "Last reported job", unknown: "Reported file" })[state] ?? "File";
         const name = !data.filename.reported ? "Not reported" : data.filename.value ?? "No loaded file";
         const storage = !data.storageActive.reported ? "Not reported" : data.storageActive.value ? "Active" : "Inactive";
         const facts = [["Print state", stateLabel], ["Storage", storage], ["Printing time", factDuration(data.printDurationSeconds.value)], ["Total time", factDuration(data.totalDurationSeconds.value)], ["Filament", boundedFact(data.filamentUsedMillimeters.value) ? `${data.filamentUsedMillimeters.value.toLocaleString()} mm` : "Not reported"], ["File position", factBytes(data.filePositionBytes.value)], ["File size", factBytes(data.fileSizeBytes.value)]];
-        return `<section class="instrument u1-card">${header("Current Job", true, data.sourceObservedAt, retained ? "stale" : data.freshness, warning)}<div class="job-current u1-body"><span class="job-context">${context}</span><strong>${escapeHtml(name)}</strong><dl class="job-facts u1-facts">${facts.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}</dl></div>${provenance()}</section>`;
+        return `<section class="instrument u1-card">${header("Current Job", true, data.sourceObservedAt, retained ? "stale" : data.freshness, warning)}<div class="u1-body"><div class="job-current"><span class="job-context">${context}</span><strong>${escapeHtml(name)}</strong><dl class="job-facts u1-facts">${facts.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}</dl></div></div>${provenance()}</section>`;
       };
       const renderJobHistory = (data) => {
         const observed = data?.state === "known" || data?.state === "stale"; const retained = data?.state === "stale";
@@ -4627,8 +4626,8 @@ void main() {
         const validTime = value => { if (value === null) return true; if (typeof value !== "string" || value.length > 40) return false; const milliseconds = new Date(value).valueOf(); return Number.isFinite(milliseconds) && milliseconds >= 0 && milliseconds <= 253402300799000; };
         const validItem = (item, index) => item?.position === index + 1 && safeFilename(item.filename) && statuses.includes(item.status) && validTime(item.startTime) && validTime(item.endTime) && [item.printDurationSeconds, item.totalDurationSeconds, item.filamentUsedMillimeters].every(value => value === null || boundedFact(value));
         const valid = observed && validReceipt(data) && Number.isSafeInteger(data.pageCount) && data.pageCount >= 0 && data.pageCount <= 20 && Array.isArray(data.items) && data.items.length === data.pageCount && data.items.every(validItem);
-        const reason = historyReasons[data?.reason] ?? ""; const warning = retained && valid ? `${reason ? `${reason} ` : ""}Showing the last observed History page.` : reason;
-        if (!valid) { const title = data?.state === "unsupported" ? "History endpoint unsupported" : data?.state === "unavailable" ? "Job History unavailable" : "Job History not observed"; const detail = data?.state === "unknown" ? "Refresh to request the latest History page." : "No current History page is available."; return `<section class="instrument u1-card">${header("Job History", true, null, "unknown", warning)}<div class="empty-panel u1-body"><strong>${title}</strong>${detail}</div>${provenance()}</section>`; }
+        const reason = historyReasons[data?.reason] ?? ""; const warning = retained && valid ? `${reason ? `${reason} ` : ""}Showing the last observed Job History page.` : reason;
+        if (!valid) { const title = data?.state === "unsupported" ? "Job History endpoint unsupported" : data?.state === "unavailable" ? "Job History unavailable" : "Job History not observed"; const detail = data?.state === "unknown" ? "Refresh to request the latest Job History page." : "No current Job History page is available."; return `<section class="instrument u1-card">${header("Job History", true, null, "unknown", warning)}<div class="u1-body"><div class="empty-panel"><strong>${title}</strong>${detail}</div></div>${provenance()}</section>`; }
         const statusLabel = value => ({ in_progress: "In progress", completed: "Completed", cancelled: "Cancelled", error: "Error", klippy_shutdown: "Klippy shutdown", klippy_disconnect: "Klippy disconnected", interrupted: "Interrupted", unknown: "Unknown" })[value];
         const body = data.pageCount === 0 ? '<div class="empty-panel"><strong>No history entries returned</strong>This latest-page query returned no rows; it does not establish that no past jobs exist.</div>' : `<ol class="history-list" aria-label="Latest jobs returned">${data.items.map(item => `<li class="history-item u1-data-row"><div class="history-heading"><strong class="history-name">${escapeHtml(item.filename)}</strong><span class="history-status">${statusLabel(item.status)}</span></div><div class="history-meta"><span>Started ${escapeHtml(factTime(item.startTime))}</span><span>${item.endTime === null ? "End not reported" : `Ended ${escapeHtml(factTime(item.endTime))}`}</span><span>Printing ${escapeHtml(factDuration(item.printDurationSeconds))}</span><span>Total ${escapeHtml(factDuration(item.totalDurationSeconds))}</span><span>Filament ${boundedFact(item.filamentUsedMillimeters) ? `${item.filamentUsedMillimeters.toLocaleString()} mm` : "Not reported"}</span></div></li>`).join("")}</ol>`;
         return `<section class="instrument u1-card">${header("Job History", true, data.sourceObservedAt, retained ? "stale" : data.freshness, warning)}<div class="u1-body"><p class="history-summary u1-facts">Latest jobs returned <strong>${data.pageCount}</strong></p>${body}</div>${provenance()}</section>`;
@@ -4664,7 +4663,7 @@ void main() {
         if (!observed) {
           const title = data?.state === "unsupported" ? "Environment endpoint unsupported" : data?.state === "unavailable" ? "Fans unavailable" : "Fans not observed";
           const detail = data?.state === "unsupported" ? "The attempted endpoint was unsupported; this does not establish a hardware limitation." : data?.state === "unavailable" ? "No current fan or purifier readings are available." : "Refresh to request fan and purifier readings.";
-          return `<section class="instrument u1-card">${header("Fans & Air", true, null, "unknown", warning)}<div class="empty-panel u1-body"><strong>${title}</strong>${detail}</div>${provenance()}</section>`;
+          return `<section class="instrument u1-card">${header("Fans & Air", true, null, "unknown", warning)}<div class="u1-body"><div class="empty-panel"><strong>${title}</strong>${detail}</div></div>${provenance()}</section>`;
         }
         const fanDefinitions = [
           ["tool-1-part", "Tool 1 part cooling", "part_cooling"], ["tool-2-part", "Tool 2 part cooling", "part_cooling"],
@@ -4676,7 +4675,7 @@ void main() {
         const validPurifier = data?.purifier && (data.purifier.state === "known" || data.purifier.state === "not_reported") && (data.purifier.powerDetected === true || data.purifier.powerDetected === false || data.purifier.powerDetected === null) && ["idle", "cool_chamber", "preheat_chamber", "hot_chamber", null].includes(data.purifier.mode) && (data.purifier.state === "known" ? typeof data.purifier.powerDetected === "boolean" : data.purifier.powerDetected === null && data.purifier.mode === null) && (data.purifier.powerDetected === true || data.purifier.mode === null);
         const sourceTime = data?.provenance?.sourceObservedAt; const validReceipt = typeof sourceTime === "string" && sourceTime.length <= 40 && Number.isFinite(new Date(sourceTime).valueOf()) && data.provenance?.source === "moonraker" && (data.freshness === "fresh" || data.freshness === "stale") && (data.state === "stale") === (data.freshness === "stale");
         const valid = observed && validReceipt && Array.isArray(data.items) && data.items.length === fanDefinitions.length && data.items.every((fan, index) => validFan(fan, fanDefinitions[index])) && validPurifier;
-        if (!valid) return `<section class="instrument u1-card">${header("Fans & Air", true, null, "unknown", "Fan and purifier data could not be read.")}<div class="empty-panel u1-body"><strong>Fans unavailable</strong>No current fan or purifier readings are available.</div>${provenance()}</section>`;
+        if (!valid) return `<section class="instrument u1-card">${header("Fans & Air", true, null, "unknown", "Fan and purifier data could not be read.")}<div class="u1-body"><div class="empty-panel"><strong>Fans unavailable</strong>No current fan or purifier readings are available.</div></div>${provenance()}</section>`;
         const formatFan = fan => {
           const known = fan.state === "known";
           const speed = known && fan.speedReported ? fan.speedFraction : null;
@@ -4816,7 +4815,7 @@ void main() {
         const known = data?.state === "known" || data?.state === "stale";
         const stale = data?.state === "stale" || data?.freshness === "stale";
         const heading = header("Bed Mesh", true, data?.sourceObservedAt ?? null, data?.freshness ?? "unknown", stale && data?.reason ? "Refresh unavailable · showing the last observed mesh state" : "");
-        const empty = (title, detail) => `<section class="instrument u1-card">${heading}<div class="empty-panel u1-body"><strong>${title}</strong>${detail}</div>${provenance()}</section>`;
+        const empty = (title, detail) => `<section class="instrument u1-card">${heading}<div class="u1-body"><div class="empty-panel"><strong>${title}</strong>${detail}</div></div>${provenance()}</section>`;
         if (known && data?.status === "no_active_mesh" && data?.matrix === null) return empty(stale ? "Last observation: no active mesh" : "No active mesh", "The printer reported no loaded bed mesh.");
         const matrix = data?.matrix; const bounds = data?.bounds;
         const bounded = (n) => validNumber(n) && Math.abs(n) <= 1000000;
@@ -4893,7 +4892,7 @@ void main() {
       const overviewTile = (tile, title, primary, secondary, receipts) => { const state = ({ known: "Available", stale: "Stale", unknown: "Not observed", unsupported: "Unsupported", unavailable: "Unavailable" })[tile.state]; return `<article class="overview-tile u1-data-row" data-overview-tile="${tile.id}"><div class="overview-heading"><h3>${escapeHtml(title)}</h3><span class="coverage ${tile.state === "known" ? "complete" : ""}">${escapeHtml(state)}</span></div><p class="overview-primary">${primary}</p>${secondary ? `<p class="overview-secondary">${secondary}</p>` : ""}<div class="overview-receipts u1-facts">${receipts}</div></article>`; };
       const invalidOverviewTile = (tile, title) => `<article class="overview-tile u1-data-row" data-overview-tile="${tile.id}"><div class="overview-heading"><h3>${escapeHtml(title)}</h3><span class="coverage">Unavailable</span></div><p class="overview-primary">Data could not be read</p><p class="overview-secondary">This headline was rejected; the other domains remain available.</p><div class="overview-receipts u1-facts"><span>Observation unavailable</span></div></article>`;
       const renderOverview = data => {
-        if (!validOverviewModule(data)) return `<section class="instrument u1-card">${header("Overview", true, null, "unknown", "Overview data could not be read.")}<div class="empty-panel u1-body"><strong>Overview unavailable</strong>No current overview headlines are available.</div>${provenance()}</section>`;
+        if (!validOverviewModule(data)) return `<section class="instrument u1-card">${header("Overview", true, null, "unknown", "Overview data could not be read.")}<div class="u1-body"><div class="empty-panel"><strong>Overview unavailable</strong>No current overview headlines are available.</div></div>${provenance()}</section>`;
         const [progress, thermals, heads, jobs, history, queue, fans, mesh] = data.tiles;
         const valid = data.tiles.map(validOverviewTile);
         const time = seconds => seconds === null ? "Estimate unknown" : `About ${escapeHtml(formatDuration({ state: "known", value: seconds }))} left`;
@@ -4943,7 +4942,7 @@ void main() {
       const showLoadError = () => {
         if (observation) return;
         const canRetry = selectedView && window.parent !== window;
-        modulesElement.innerHTML = `<section class="instrument u1-card">${header("Couldn’t load this view", false)}<div class="empty-panel u1-body">The widget did not receive a printer observation. No current values are available.<p class="loading-guidance" role="status">${canRetry ? "Try loading the view again." : "Reopen this card from the conversation to try again."}</p></div>${canRetry ? '<footer class="instrument-footer u1-footer"><div class="u1-primary-actions"><button class="refresh u1-action" type="button" aria-label="Retry loading observation">Retry</button></div></footer>' : ""}</section>`;
+        modulesElement.innerHTML = `<section class="instrument u1-card">${header("Couldn’t load this view", false)}<div class="u1-body"><div class="empty-panel">The widget did not receive a printer observation. No current values are available.<p class="loading-guidance" role="status">${canRetry ? "Try loading the view again." : "Reopen this card from the conversation to try again."}</p></div></div>${canRetry ? '<footer class="instrument-footer u1-footer"><div class="u1-primary-actions"><button class="refresh u1-action" type="button" aria-label="Retry loading observation">Retry</button></div></footer>' : ""}</section>`;
         modulesElement.querySelector(".refresh")?.addEventListener("click", () => void retryLoad());
         window.openai?.notifyIntrinsicHeight?.();
       };

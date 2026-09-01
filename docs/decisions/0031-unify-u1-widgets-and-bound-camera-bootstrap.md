@@ -52,6 +52,10 @@ camera request and preserve the video node, `srcObject`, peer, track and frame
 observer. Pause and stalled events attempt playback recovery without closing
 the peer, media track or signaling session; FPS clears until new rendered-frame
 evidence recovers it.
+The fullscreen dashboard, dedicated camera body and camera form one bounded flex
+chain so preserved media also retains a non-zero rendered box. A PiP entry
+reply is accepted only when it grants PiP (and exit only when it grants inline);
+coercion to fullscreen is rejected and does not mutate local fullscreen state.
 One pagehide/pageshow cycle may restore persisted live intent once, while a
 fresh remount retains the existing one-attempt restore bound. Intrinsic-height
 notifications follow content or display-mode changes, never FPS-only ticks.
@@ -61,3 +65,9 @@ observation-v14/camera-v10 and 26 resources, retaining observation-v13 and
 camera-v9 as current-asset aliases. It changes presentation and camera
 lifecycle resilience only; acquisition, printer, authorization, service and
 network semantics remain unchanged.
+
+Thermal strips remain at most 64 pixels tall at the four frozen widths. Empty
+and Current Job panels are children of the sole `.u1-body` inset owner rather
+than owning that inset themselves. Bed Mesh keeps one shared bounded chart frame
+for both 2D and 3D modes; this presentation release does not reinterpret or
+replace its reported geometry.

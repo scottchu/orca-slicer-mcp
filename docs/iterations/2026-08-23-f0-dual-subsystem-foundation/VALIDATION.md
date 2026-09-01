@@ -18,19 +18,23 @@ bun run bundle
 bun run bundle:server
 ```
 
-Results: TypeScript passes; 268 tests/2,841 assertions pass; runtime, stdio and
+Results: TypeScript passes; 270 tests/2,888 assertions pass; runtime, stdio and
 server bundles build; the standalone runtime satisfies its designated code-sign
 requirement. Deterministic coverage includes the 320/390/590/720 density
 contract, multiple listeners for one DOM event, hosted native/local fullscreen
 identity continuity with zero host display-mode or camera calls, same-peer
 pause/stall recovery, FPS reset/recovery, one bounded
 pagehide/pageshow restore and no intrinsic-height notification on FPS-only
-ticks.
+ticks. Headless Chromium additionally measures a non-zero camera and video box
+for local and native fullscreen at an exact 390 × 844 viewport, and thermal rows
+at no more than 64 pixels at 320/390/590/720. PiP-to-fullscreen coercion is
+rejected, Job History/Print Queue remain canonical visible labels, nested panels
+have one inset owner, and 2D/3D Bed Mesh share one bounded chart-frame height.
 
 Frozen SHA-256:
 
-- `public/widget.html`: `2f822f9f2f882a6628f5678ae67e77bbba1819ef0a087833fb19c76ad12fde7f`
-- `public/camera-widget.html`: `2e00a848a7e647f904a1c49e25cb9fc618fea6847190cc8bcd265e870f60e29c`
+- `public/widget.html`: `a01768e408f3566d6e93aea4ea208930dfcd9e21e71ba372a15f8e7a306450e9`
+- `public/camera-widget.html`: `fb037f6093f4ae75d554af00ff2b71f5cf98e7c41181806b668790c227315d9b`
 - `src/widget-shared.css`: `111eae4226d62272d27972f66978455770677e5409ed0d714afd88fad361f7cb`
 - `public/dashboard-index.html`: `c2d3ab47c2abdc4f4570bbfab35f1216ddddef9d10aef8e969ac5747d2e806e1`
 - `public/status-dashboard-host.html`: `8fe08aba0693bd7873faa9941877fb0a9508140b355baedf59cbca7ba4787749`
