@@ -1,5 +1,34 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 PR67 delivered — migration continues separately
+
+PR67 is complete through independent deployed-service/synthetic-browser checks:
+reviewed `07e1c144`, merged `c924bf9`, identical tree `9198918a`, release
+`20260901-c924bf9-pr67-20260901T153250-99a666`. BOTH explicit restarts and all
+health/integrity/25-static/26-security/preservation gates pass. No rollback;
+snapshot `20260901T153330-e4475a` retained. Independent directory/nine-route
+fetches match exact 748,554-byte SHA-256
+`83146f52f61fd9225877e3bd4ef7ee08798745083fc7232fa9e932399b007a1a`.
+Fetched-byte isolated Chrome verifies controls, loading, retained refresh/time,
+announcements and geometry. Actual phone/printer/camera proof remains pending.
+
+All nine observation lab controls/loading paths are shipped; seven ready-shell
+raw debts and all production cutovers are not thereby finished. Continue the
+separate live Fans shared-RPC/adapter/controller candidate and Camera integration,
+then remaining named tracks. Integrate reviewed main into each unreviewed
+candidate before exact validation. Keep generic MCP resources/aliases intact
+until all-nine replacement parity. No second deployment is required for these
+sanitized receipt docs; detailed runtime reports remain private.
+
+Cleanup handoff: the separately authorized operator moved ten redundant task
+worktrees intact, preserving branch refs, registrations and all files. A distinct
+validator (the receipt author, not the cleanup operator) freshly rehashed their
+complete contents and independently passed before/fresh/after parity, canonical
+ignored files and recovery refs, archived original documents and nested clone.
+Active feature/current-validation worktrees remain registered. Only the empty
+temporary parent was removed, nonrecursively; all material source remains
+recoverable. Do not empty quarantine or assume production legacy code is retired.
+
 ## 2026-09-01 final compact-metric renewal
 
 `befbbd5` also failed independent visual acceptance: short Progress values were
