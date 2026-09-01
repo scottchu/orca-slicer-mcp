@@ -154,13 +154,13 @@ unverified.
 
 Every channel's `doctor --json` reports one runtime contract containing the
 base runtime version, tool-schema version, observation-widget version, and
-camera-widget version. The current source contract is runtime `0.4.7`, tool
-schema `12`, observation widget `observation-v13`, and camera widget `camera-v9`.
-The previously verified deployment remains 0.4.6/schema 12/observation-v12/
-camera-v8 until a guarded rollout installs these changed bytes.
-Observation-v12 through v1 and camera-v8/v7/v6/v5/v4 remain current-asset aliases.
+camera-widget version. The current source contract is runtime `0.4.8`, tool
+schema `12`, observation widget `observation-v14`, and camera widget `camera-v10`.
+The previously verified deployment remains 0.4.7/schema 12/observation-v13/
+camera-v9 until a guarded rollout installs these changed bytes.
+Observation-v13 through v1 and camera-v9/v8/v7/v6/v5/v4 remain current-asset aliases.
 The expanded closed enum has nine values; two model-visible/eight app-only tool
-counts are unchanged. Twenty-four resource URIs retain current/frozen compatibility.
+counts are unchanged. Twenty-six resource URIs retain current/frozen compatibility.
 The optional personal HTTP service returns the same contract from `/health`.
 Upgrade verification must compare these values with the intended source before
 asking a user to test a fresh task; process liveness alone is insufficient.

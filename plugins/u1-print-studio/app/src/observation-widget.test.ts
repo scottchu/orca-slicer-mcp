@@ -1,5 +1,8 @@
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import vm from "node:vm";
 import { normalizeBedMeshResponse, BED_MESH_MAX_DIMENSION } from "./adapters/moonraker-bed-mesh.js";
 import { unavailableBedMesh } from "./application/bed-mesh-observation.js";
@@ -10,9 +13,53 @@ import { createObservationPresentation } from "./observation-presentation.js";
 import type { U1Status } from "./u1-status.js";
 
 // Execute the exact production script against a deterministic host/DOM boundary.
-// This is protocol/software evidence, not a browser-layout or mobile test.
+// The dedicated Chromium helper below adds the separately named thermal-layout evidence.
 const html = readFileSync(new URL("../public/widget.html", import.meta.url), "utf8");
 const source = html.split('<script type="module">')[1]!.split("</script>")[0]!;
+const observationChromePath = [
+  process.env.CHROME_BIN,
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/Applications/Chromium.app/Contents/MacOS/Chromium",
+  "/usr/bin/google-chrome",
+  "/usr/bin/chromium",
+  "/usr/bin/chromium-browser",
+].find((candidate): candidate is string => typeof candidate === "string" && existsSync(candidate));
+
+function measureThermalRowHeights() {
+  if (!observationChromePath) throw new Error("A Chromium browser is required for the thermal density regression");
+  const directory = mkdtempSync(join(tmpdir(), "u1-thermal-layout-"));
+  const fixturePath = join(directory, "thermals.html");
+  const innerHtml = html.replace(/<script type="module">[\s\S]*?<\/script>/, "");
+  const markup = '<div class="u1-body"><div class="strip-list"><div class="strip u1-data-row"><div class="identity"><span class="roundel">T1</span><span><strong>Tool 1</strong><span class="micro"><span class="dot"></span>Active</span></span></div><div class="reading"><small>Actual</small><strong>220°</strong></div><div class="reading"><small>Target</small><strong>220°</strong></div></div></div></div>';
+  writeFileSync(fixturePath, `<!doctype html><html><body><script>
+    const results = {};
+    const widths = [320, 390, 590, 720];
+    function measure(frame, width) {
+      const document = frame.contentDocument;
+      document.querySelector("#modules").innerHTML = ${JSON.stringify(markup)};
+      results[width] = { viewport: frame.contentWindow.innerWidth, height: document.querySelector(".strip").getBoundingClientRect().height };
+      if (Object.keys(results).length === widths.length) {
+        const result = document.createElement("pre"); result.id = "layout-result"; result.textContent = JSON.stringify(results); window.document.body.append(result);
+      }
+    }
+    for (const width of widths) {
+      const frame = document.createElement("iframe"); frame.width = String(width); frame.height = "300"; frame.style = "display:block;border:0";
+      frame.onload = () => measure(frame, width); frame.srcdoc = atob("${Buffer.from(innerHtml).toString("base64")}"); document.body.append(frame);
+    }
+  </script></body></html>`);
+  try {
+    const result = spawnSync(observationChromePath, [
+      "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars", "--force-device-scale-factor=1",
+      "--window-size=800,1400", "--virtual-time-budget=1000", "--dump-dom", `file://${fixturePath}`,
+    ], { encoding: "utf8", timeout: 15_000 });
+    expect(result.status).toBe(0);
+    const serialized = result.stdout.match(/<pre id="layout-result">([^<]+)<\/pre>/)?.[1];
+    if (!serialized) throw new Error(`Thermal layout result missing: ${result.stderr.slice(0, 500)}`);
+    return JSON.parse(serialized.replaceAll("&quot;", '"')) as Record<string, { viewport: number; height: number }>;
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+}
 type Payload = Record<string, any>;
 const tick = async () => {
   for (let index = 0; index < 8; index++) await Promise.resolve();
@@ -203,6 +250,8 @@ describe("production observation widget host boundary", () => {
       if (data.view === "jobs") {
         expect(before).toContain("Current Job");
         expect(before).toContain("current-only.gcode");
+        expect(before).toContain('<div class="u1-body"><div class="job-current">');
+        expect(before).not.toContain("job-current u1-body");
         expect(before).not.toMatch(/History|history|Previous jobs|old-history.gcode/);
       } else {
         expect(before).toContain("Job History");
@@ -234,6 +283,8 @@ describe("production observation widget host boundary", () => {
     data.module = { kind: "jobs", state: "unknown", reason: "not_requested" };
     const missing = mount({ toolOutput: data }).modules.innerHTML;
     expect(missing).toContain("Current Job not observed");
+    expect(missing).toContain('<div class="u1-body"><div class="empty-panel">');
+    expect(missing).not.toContain("empty-panel u1-body");
     expect(missing).not.toMatch(/No active job|Idle|No jobs/);
   });
 
@@ -244,6 +295,10 @@ describe("production observation widget host boundary", () => {
     const accepted = mount({ toolOutput: maximum }).modules.innerHTML;
     expect(accepted).toContain("history-only.gcode");
     expect(accepted).not.toContain("Job History not observed");
+    for (const shorthand of ["attempted History endpoint", "Showing the last observed History page",
+      "latest History page", "current History page", '"History endpoint unsupported"']) {
+      expect(html).not.toContain(shorthand);
+    }
 
     for (const field of ["startTime", "endTime"] as const) {
       const beyond = fixture("job_history");
@@ -273,7 +328,7 @@ describe("production observation widget host boundary", () => {
   test("empty output does not mask either metadata envelope", () => {
     for (const key of ["mcp_tool_result", "call_tool_result"]) {
       const card = mount({ toolOutput: {}, toolResponseMetadata: { [key]: { structuredContent: fixture("queue") } } });
-      expect(card.modules.innerHTML).toContain("Queue");
+      expect(card.modules.innerHTML).toContain("Print Queue");
       expect(card.modules.innerHTML).not.toContain("Waiting");
     }
   });
@@ -418,8 +473,8 @@ describe("production observation widget host boundary", () => {
 
   test("overview renders eight compact privacy-minimized headlines in one card", () => {
     const overview = mount({ toolOutput: fixture("overview") }).modules.innerHTML;
-    for (const text of ["Overview", "Coverage complete", "Progress", "Thermals",
-      "Heads &amp; Filaments", "Current Job", "Job History", "Queue", "Fans &amp; Air",
+    for (const text of ["Overview", "Coverage complete", "Print Progress", "Thermals",
+      "Heads &amp; Filaments", "Current Job", "Job History", "Print Queue", "Fans &amp; Air",
       "Bed Mesh", "42%", "Layer 21 / 50", "T2 220° / 220°", "Cavity 32°",
       "Snapmaker PLA Matte", "2 jobs returned",
       "1 completed · 1 cancelled", "0 jobs queued", "5 of 7 fans reported",
@@ -428,7 +483,7 @@ describe("production observation widget host boundary", () => {
     expect((overview.match(/<section class="instrument/g) ?? []).length).toBe(1);
     expect((overview.match(/aria-label="Refresh observation"/g) ?? []).length).toBe(1);
     expect(overview).not.toMatch(/fixture\.gcode|history-only\.gcode|file position|file size|mesh-surface|camera|health/i);
-    expect(html).toContain("@media (max-width: 480px) { .overview-grid { grid-template-columns: minmax(0, 1fr); } }");
+    expect(html).toContain("@media (max-width: 340px) { .head-grid, .overview-grid { grid-template-columns: minmax(0, 1fr); } }");
 
     const malformed = fixture("overview");
     malformed.module.tiles[2].material = "secret/access_token/private";
@@ -501,8 +556,8 @@ describe("production observation widget host boundary", () => {
     const markup = mount({ toolOutput: states }).modules.innerHTML;
     for (const line of [
       "Current Job · Stale · Observed ", " · Stale · Network unavailable",
-      "History · Not observed · Observation time unavailable · Freshness unknown · Not requested",
-      "Queue · Unsupported · Observation time unavailable · Freshness unknown · Endpoint unsupported",
+      "Job History · Not observed · Observation time unavailable · Freshness unknown · Not requested",
+      "Print Queue · Unsupported · Observation time unavailable · Freshness unknown · Endpoint unsupported",
       "Environment · Not observed · Observation time unavailable · Freshness unknown · Not reported",
     ]) expect(markup).toContain(line);
     expect((markup.match(/Data could not be read/g) ?? []).length).toBe(0);
@@ -633,7 +688,20 @@ describe("production observation widget host boundary", () => {
     expect(cavity).not.toContain("Target");
     data.module.readings.at(-1).state = "unknown"; data.module.readings.at(-1).reportedState = "not_reported"; data.module.readings.at(-1).actual = { state: "unknown", value: null };
     expect(mount({ toolOutput: data }).modules.innerHTML).toContain("Temperature not reported");
+    expect(html).toContain("padding: 5px 14px");
+    expect(html).toContain("grid-template-columns: minmax(104px, 1.2fr) repeat(2, minmax(52px, 0.7fr)); gap: 6px; padding: 5px 8px;");
+    expect(html).toContain(".roundel { width: 40px; height: 40px; }");
+    expect(html).not.toContain(".strip .identity { grid-column: 1 / -1; }");
   });
+
+  test("Thermal rows render at no more than 64 pixels across the frozen widths", () => {
+    const rows = measureThermalRowHeights();
+    for (const width of [320, 390, 590, 720]) {
+      expect(rows[width]!.viewport).toBe(width);
+      expect(rows[width]!.height).toBeGreaterThan(0);
+      expect(rows[width]!.height).toBeLessThanOrEqual(64);
+    }
+  }, 20_000);
 
   test("Queue renders trusted FIFO receipts, duplicates, truncation and bottom-only Refresh", () => {
     const payload = fixture("queue");
@@ -648,7 +716,7 @@ describe("production observation widget host boundary", () => {
       })),
     });
     const markup = mount({ toolOutput: payload }).modules.innerHTML;
-    expect(markup).toContain("Queue state"); expect(markup).toContain("Paused");
+    expect(markup).toContain("Print Queue state"); expect(markup).toContain("Paused");
     expect(markup).toContain("101 jobs"); expect(markup).toContain("Showing 100 of 101");
     expect(markup).toContain("1 job is not displayed");
     expect((markup.match(/duplicate\.gcode/g) ?? []).length).toBe(2);
@@ -661,14 +729,14 @@ describe("production observation widget host boundary", () => {
 
   test("Queue distinguishes observed empty, retained stale empty and all non-observations", () => {
     const empty = fixture("queue"); Object.assign(empty.module, { state: "known", freshness: "fresh", sourceObservedAt: "2026-08-31T12:00:00.000Z", queueState: "ready", totalCount: 0, truncated: false, reason: null });
-    expect(mount({ toolOutput: empty }).modules.innerHTML).toContain("Queue empty");
+    expect(mount({ toolOutput: empty }).modules.innerHTML).toContain("Print queue empty");
     const stale = structuredClone(empty); Object.assign(stale.module, { state: "stale", freshness: "stale", reason: "timeout" });
     const staleMarkup = mount({ toolOutput: stale }).modules.innerHTML;
-    expect(staleMarkup).toContain("Last observed queue was empty"); expect(staleMarkup).toContain("last observed queue");
-    for (const [state, reason, label] of [["unknown", "not_requested", "Queue not observed"], ["unsupported", "unsupported", "Queue unsupported"], ["unavailable", "network", "Queue unavailable"]]) {
+    expect(staleMarkup).toContain("Last observed print queue was empty"); expect(staleMarkup).toContain("last observed print queue");
+    for (const [state, reason, label] of [["unknown", "not_requested", "Print Queue not observed"], ["unsupported", "unsupported", "Print Queue unsupported"], ["unavailable", "network", "Print Queue unavailable"]]) {
       const unavailable = fixture("queue"); Object.assign(unavailable.module, { state, reason, sourceObservedAt: null, queueState: null, totalCount: null, truncated: false, items: [] });
       const markup = mount({ toolOutput: unavailable }).modules.innerHTML;
-      expect(markup).toContain(label); expect(markup).not.toContain("Queue empty");
+      expect(markup).toContain(label); expect(markup).not.toContain("Print queue empty");
     }
   });
 
@@ -677,15 +745,15 @@ describe("production observation widget host boundary", () => {
       items: [{ position: 1, filename: '<img src=x onerror="private()">.gcode', timeAdded: null, timeInQueueSeconds: 0 }],
     });
     const escaped = mount({ toolOutput: unsafe }).modules.innerHTML;
-    expect(escaped).toContain("Queue unavailable"); expect(escaped).not.toContain("&lt;img"); expect(escaped).not.toContain("<img src=x");
+    expect(escaped).toContain("Print Queue unavailable"); expect(escaped).not.toContain("&lt;img"); expect(escaped).not.toContain("<img src=x");
     for (const mutation of [{ totalCount: -1 }, { totalCount: 1, items: [] }, { queueState: "idle" }, { totalCount: 1, items: [{ position: 2, filename: "a.gcode" }] }]) {
       const malformed = structuredClone(unsafe); Object.assign(malformed.module, mutation);
       const markup = mount({ toolOutput: malformed }).modules.innerHTML;
-      expect(markup).toContain("Queue unavailable"); expect(markup).not.toContain("Queue empty");
+      expect(markup).toContain("Print Queue unavailable"); expect(markup).not.toContain("Print queue empty");
     }
     const unsupported = fixture("queue"); Object.assign(unsupported.module, { state: "unsupported", reason: "unsupported", sourceObservedAt: null, queueState: null, totalCount: null, truncated: false, items: [] });
     const unsupportedMarkup = mount({ toolOutput: unsupported }).modules.innerHTML;
-    expect(unsupportedMarkup).toContain("attempted Queue endpoint was unsupported");
+    expect(unsupportedMarkup).toContain("attempted Print Queue endpoint was unsupported");
     expect(unsupportedMarkup).not.toMatch(/printer (?:does not|did not) support/i);
   });
 });
@@ -778,6 +846,8 @@ describe("reported bed mesh widget", () => {
   });
   test("icon-only bottom controls switch exact 2D fallback and Refresh is the only acquisition", async () => {
     const card = mount({ toolOutput: data(mesh()) }); await card.initialize();
+    expect(html).toContain(".mesh-chart { position: relative; height: clamp(220px, 48vw, 320px);");
+    expect(html).not.toMatch(/\.mesh-chart\[data-mode="(?:2d|3d)"\][^{]*\{[^}]*height:/);
     card.mode2d.emit("click"); expect(card.modules.innerHTML).toContain('class="mesh-map"');
     card.mode3d.emit("click"); expect(card.controls.meshView.mode).toBe("2d");
     card.reset.emit("click");
@@ -1046,8 +1116,8 @@ describe("printer-reported material widget", () => {
       expect(card.indexOf('class="temperature"')).toBeLessThan(card.indexOf('class="material-color"'));
     }
     expect(rendered.indexOf('aria-label="Refresh observation"')).toBeGreaterThan(rendered.lastIndexOf("</article>"));
-    expect(html).toContain('@media (max-width: 760px) { .head-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }');
-    expect(html).toContain('.head-grid { grid-template-columns: minmax(0, 1fr);');
+    expect(html).toContain('@media (min-width: 760px) { .head-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }');
+    expect(html).toContain('@media (max-width: 340px) { .head-grid, .overview-grid { grid-template-columns: minmax(0, 1fr); } }');
     expect(html.match(/\.material-copy \{[^}]+\}/)?.[0]).toMatch(/width: 44px; min-height: 44px/);
     expect(html).toContain('.material-copy:focus-visible { outline: 3px solid #64748b; outline-offset: 3px; }');
     expect(html).toContain('data-icon="feather-copy"');

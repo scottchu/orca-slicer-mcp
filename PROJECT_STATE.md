@@ -10,14 +10,34 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Compact widget density and camera continuity source candidate (2026-09-01)
+
+The current author candidate is runtime 0.4.8/schema 12/observation-v14/
+camera-v10 with 26 resources and retained observation-v13/camera-v9 aliases.
+All focused observation cards, compact Overview, camera and the static
+directory now share a compact content-height anatomy at 320/390/590/720 widths.
+Canonical labels include Print Progress, U1 Camera, Print Queue and Fans & Air;
+stable selectors and tools are unchanged.
+
+Hosted and standalone fullscreen use only continuity-preserving same-document
+native or CSS presentation, pause/stall recovery retains the peer, and one
+page lifecycle restore is bounded. The dedicated fullscreen camera-body flex
+chain has a non-zero 390 × 844 browser-layout regression. PiP is native-video
+only, makes zero host display-mode requests and is hidden when unavailable;
+host fullscreen/PiP context never drives continuity state. Host and iframe
+titles use canonical card labels. Thermal rows are bounded to 64 pixels and
+content panels have one inset owner. Author checks pass 271 tests/2,936
+assertions, TypeScript and all three bundles. Automated local headless-Chromium
+layout evidence ran; no service/network/printer/actual-device contact or
+deployment occurred. Independent review and guarded delivery are pending.
+
 ### Svelte widget foundation candidate — private lab only (2026-09-01)
 
 Decision 0032 records an incremental Svelte 5/SvelteKit migration. An isolated
 source candidate adds shared widget primitives and a synthetic Bed Mesh lab at
-`/dashboard/lab/bed_mesh`; the static and embed builds accept only injected
-normalized props and contain no printer/network client. Existing production
-`/dashboard/bed_mesh`, HTTP routing, MCP tools/resources, auth and compatibility
-assets are unchanged.
+`/dashboard/lab/bed_mesh`; its build accepts only injected normalized props and
+contains no printer/network client. Existing production `/dashboard/bed_mesh`,
+MCP tools/resources, auth and compatibility assets remain unchanged.
 
 Component checks pass 4/4. Real Chrome geometry/screenshot fixtures pass at
 320/390/590/720: one exact 4:3 ChartFrame has unchanged x/y/width/height across

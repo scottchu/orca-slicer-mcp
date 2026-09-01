@@ -233,8 +233,9 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v13.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v14.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
+      "ui://u1-print-studio/observation-v13.html",
       "ui://u1-print-studio/observation-v12.html",
       "ui://u1-print-studio/observation-v11.html",
       "ui://u1-print-studio/observation-v10.html",
@@ -340,7 +341,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(CAMERA_WIDGET_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v9.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v10.html");
     expect(LEGACY_CAMERA_WIDGET_URIS[0]).toBe(
       "ui://u1-print-studio/camera-v3.html"
     );
@@ -362,10 +363,10 @@ describe("U1 status MCP App contract", () => {
   test("retains previous current observation and camera aliases with exact frozen legacy resources", async () => {
     const client = await connectClient();
     const listed = await client.listResources();
-    expect(listed.resources).toHaveLength(24);
-    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v12.html");
+    expect(listed.resources).toHaveLength(26);
+    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v13.html");
     for (const uri of [...LEGACY_FOCUSED_WIDGET_URIS,
-      "ui://u1-print-studio/camera-v8.html", "ui://u1-print-studio/camera-v7.html", "ui://u1-print-studio/camera-v6.html",
+      "ui://u1-print-studio/camera-v9.html", "ui://u1-print-studio/camera-v8.html", "ui://u1-print-studio/camera-v7.html", "ui://u1-print-studio/camera-v6.html",
       "ui://u1-print-studio/camera-v5.html", "ui://u1-print-studio/camera-v4.html",
     ]) {
       expect(listed.resources.map(resource => resource.uri)).toContain(uri);
@@ -989,8 +990,9 @@ describe("instrument-strip observation widget contract", () => {
     expect(observationStyle).not.toMatch(/body\s*\{[^}]*min-height:\s*100d?vh/s);
     expect(WIDGET_HTML).toContain("env(safe-area-inset-top, 0px)");
     expect(WIDGET_HTML).toContain('@media (max-width: 620px)');
-    expect(WIDGET_HTML).toContain('@media (max-width: 390px)');
-    expect(WIDGET_HTML).toContain('.strip .identity { grid-column: 1 / -1; }');
+    expect(WIDGET_HTML).toContain('@media (max-width: 480px)');
+    expect(WIDGET_HTML).not.toContain('.strip .identity { grid-column: 1 / -1; }');
+    expect(WIDGET_HTML).toContain("grid-template-columns: minmax(104px, 1.2fr) repeat(2, minmax(52px, 0.7fr))");
     expect(WIDGET_HTML).not.toContain('.strip .reading:nth-of-type(2) { display: none; }');
     expect(WIDGET_HTML).toContain("min-height: 44px");
     expect(WIDGET_HTML).toContain("touch-action: manipulation");

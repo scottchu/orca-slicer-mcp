@@ -141,10 +141,10 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.4.7",
+      runtimeVersion: "0.4.8",
       toolSchemaVersion: 12,
-      observationWidgetVersion: "observation-v13",
-      cameraWidgetVersion: "camera-v9",
+      observationWidgetVersion: "observation-v14",
+      cameraWidgetVersion: "camera-v10",
     });
   });
 
@@ -202,6 +202,12 @@ describe("standalone status dashboard", () => {
       expect(html.match(/>Implemented<\/span>/g)).toHaveLength(9);
       expect(html.match(/>Partial<\/span>/g)).toHaveLength(1);
       expect(html.match(/>Not implemented<\/span>/g)).toBeNull();
+      for (const label of ["Overview", "Print Progress", "U1 Camera", "Thermals", "Heads &amp; Filaments", "Current Job", "Job History", "Print Queue", "Fans &amp; Air", "Bed Mesh"]) {
+        expect(html).toContain(`<h2>${label}</h2>`);
+      }
+      expect(html).not.toMatch(/<h2>(?:Progress|Camera|Queue|Fans)<\/h2>/);
+      expect(html).not.toContain("min-height: 150px");
+      expect(html).not.toContain("min-height: 110px");
       expect(html).toContain("Up to 20 latest returned jobs");
       expect(html).toContain("Availability describes this release, not printer status.");
       expect(html).not.toMatch(/<script|<iframe|<img|<video|<audio|<form|<button|fetch\(|setInterval|setTimeout|target=|Read.only|Current reading|Printer telemetry|Observed/i);
@@ -225,6 +231,7 @@ describe("standalone status dashboard", () => {
     expect(response.headers.get("cache-control")).toBe("no-store");
     expect(html).toContain('src="/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
+    expect(html).toContain('frame.title = selected?.[1] ?? "View unavailable"');
     for (const view of ["overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]) {
       expect((await fetch(`${origin}/dashboard/${view}`)).status).toBe(200);
     }
@@ -244,6 +251,10 @@ describe("standalone status dashboard", () => {
     expect(hostResponse.status).toBe(200);
     expect(hostResponse.headers.get("cache-control")).toBe("no-store");
     expect(hostHtml).toContain('src="/camera-widget?standalone=1"');
+    expect(hostHtml).toContain("<title>U1 Camera</title>");
+    expect(hostHtml).toContain("<strong>U1 Camera</strong>");
+    expect(hostHtml).toContain('title="U1 Camera"');
+    expect(hostHtml).not.toMatch(/Dashboard|Test|observation widget/);
     expect(hostHtml).toContain('message.method === "tools/call"');
     expect(widgetResponse.status).toBe(200);
     expect(widgetResponse.headers.get("cache-control")).toBe("no-store");
@@ -408,7 +419,7 @@ function hostFixture(pathname: string, fetchResult: () => Promise<unknown>) {
   const requests: any[] = [];
   const origin = "http://127.0.0.1:12345";
   const frame = {
-    src: "/widget?standalone=1",
+    src: "/widget?standalone=1", title: "View unavailable",
     contentWindow: { postMessage: (message: unknown, targetOrigin: string) => {
       expect(targetOrigin).toBe(origin);
       messages.push(message);
@@ -416,16 +427,17 @@ function hostFixture(pathname: string, fetchResult: () => Promise<unknown>) {
   };
   const bridge = { textContent: "" };
   const title = { textContent: "" };
+  const documentState = { title: "", querySelector: (selector: string) => {
+    if (selector === "#widget") return frame;
+    if (selector === "#bridge-state") return bridge;
+    if (selector === "#view-title") return title;
+    return { addEventListener: (_name: string, handler: () => void) => { reload = handler; } };
+  } };
   let onMessage: (event: unknown) => Promise<void> = async () => {};
   let reload = () => {};
   runInNewContext(script, {
     location: { origin, pathname, search: "?view=overview&tool=start_print" },
-    document: { title: "", querySelector: (selector: string) => {
-      if (selector === "#widget") return frame;
-      if (selector === "#bridge-state") return bridge;
-      if (selector === "#view-title") return title;
-      return { addEventListener: (_name: string, handler: () => void) => { reload = handler; } };
-    } },
+    document: documentState,
     window: { addEventListener: (_name: string, handler: typeof onMessage) => { onMessage = handler; } },
     fetch: async (_url: string, options: { body: string }) => {
       requests.push(JSON.parse(options.body));
@@ -434,7 +446,7 @@ function hostFixture(pathname: string, fetchResult: () => Promise<unknown>) {
     },
   });
   return {
-    messages, requests, frame, bridge, title,
+    messages, requests, frame, bridge, title, document: documentState,
     reload: () => reload(),
     send: (data: unknown, eventOrigin = origin, source: unknown = frame.contentWindow) =>
       onMessage({ source, origin: eventOrigin, data: { jsonrpc: "2.0", ...data as object } }),
@@ -442,6 +454,20 @@ function hostFixture(pathname: string, fetchResult: () => Promise<unknown>) {
 }
 
 describe("focused dashboard host bridge", () => {
+  test("uses the selected canonical view for document, visible and iframe titles", () => {
+    const labels = new Map([
+      ["overview", "Overview"], ["progress", "Print Progress"], ["thermals", "Thermals"],
+      ["heads", "Heads & Filaments"], ["jobs", "Current Job"], ["job_history", "Job History"],
+      ["queue", "Print Queue"], ["fans", "Fans & Air"], ["bed_mesh", "Bed Mesh"],
+    ]);
+    for (const [view, label] of labels) {
+      const host = hostFixture(`/dashboard/${view}`, async () => ({}));
+      expect(host.title.textContent).toBe(label);
+      expect(host.document.title).toBe(`U1 · ${label}`);
+      expect(host.frame.title).toBe(label);
+    }
+  });
+
   test("routes initial and widget refresh only to the selected closed view", async () => {
     for (const view of ["progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]) {
       const result = { structuredContent: { view } };

@@ -14,12 +14,34 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Decision 0032 now has an isolated implementation candidate for the incremental
-Svelte 5/SvelteKit rewrite. Review the exact non-main candidate before any
-integration. It adds only `plugins/u1-print-studio/app/ui`, app-level UI scripts
-and durable decision/iteration records. The private lab route is
-`/dashboard/lab/bed_mesh`; it is emitted by `adapter-static` but deliberately
-not registered by the production HTTP server or MCP resource inventory.
+The active source candidate is runtime 0.4.8/schema 12/observation-v14/
+camera-v10 with 26 resources and retained observation-v13/camera-v9 aliases.
+It applies the frozen compact 320/390/590/720 anatomy to every observation,
+camera and directory surface; user-facing Queue is Print Queue while selector
+`queue` is unchanged. Hosted and standalone fullscreen use same-document native
+or CSS presentation without a host display-mode request; pause/stall and one
+page lifecycle restore preserve bounded live continuity. Real Chromium layout
+checks cover a non-zero 390 × 844 camera in both fullscreen paths and thermal
+rows no taller than 64 pixels at all four frozen widths. PiP uses only the
+existing video's native same-document API, makes zero host display-mode
+requests and is hidden when unsupported. Host-reported fullscreen/PiP does not
+drive continuity state; host, visible and iframe titles use canonical labels.
+Author validation passes 271 tests/2,936 assertions, TypeScript and all three
+bundles. Automated local headless-Chromium layout evidence ran. No service,
+network, auth, camera, printer, actual-device or deployment contact has occurred
+for this candidate.
+
+Next: complete independent source review. If accepted, use the standing PR
+merge/guarded deploy/restart-BOTH/verify workflow. Do not skip exact served hash
+and route checks, and do not claim browser/device or physical acceptance from
+static validation.
+
+Decision 0032 also has an isolated implementation candidate for the incremental
+Svelte 5/SvelteKit rewrite. It adds only `plugins/u1-print-studio/app/ui`,
+app-level UI scripts and durable decision/iteration records. The private lab
+route is `/dashboard/lab/bed_mesh`; the candidate emits it through
+`adapter-static` without changing production `/dashboard/bed_mesh` or any MCP
+resource.
 
 The candidate's shared primitives are `WidgetShell`, `WidgetHeader`,
 `WidgetBody`, `WidgetFooter`, `ObservedMeta`, `IconButton` and `ChartFrame`.
@@ -27,9 +49,8 @@ Bed Mesh accepts bridge-injected normalized props only. Real Chrome fixtures at
 320/390/590/720 prove an invariant 4:3 chart DOMRect across 3D/2D, 44-pixel
 controls, no overflow/errors/nonlocal request and paired captures. Full existing
 repository tests also pass. This is author/implementation evidence, not
-independent approval. Do not merge, rebase, deploy, register the lab route,
-contact services/printer or cut over production until the coordinator renews
-exact-SHA review and separately authorizes the next boundary.
+independent approval. Do not deploy, contact services/printer or cut over a
+production widget without a separately reviewed and authorized boundary.
 
 PR56 is shipped. Exact reviewed head `e2702dc7a39c45665aa14155e85d13011d50526b`
 merged as `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`, tree
