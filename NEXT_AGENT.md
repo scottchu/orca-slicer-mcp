@@ -14,6 +14,15 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Current candidate is Fans & Air on `codex/u1-fans-percentage`, aligned by clean
+base fast-forward with PR62 merge `a3da16a`. Complete its exact independent
+validation/review, then guarded PR merge/deploy/BOTH restart/scoped verification
+for feedback. Its seven rows use shared PercentageBackground and compact
+MetricValue plus truthful structural loading; no production cutover is included.
+PR62 is shipped and independently postverified as recorded in PROJECT_STATE;
+prior pending-PR62 directions below are historical. Preserve all remaining named
+tracks and do not expand this slice to server/MCP architecture migration.
+
 The current user priority is the PercentageBackground/Thermals refinement on
 `codex/u1-percentage-background`, based on exact merged PR61 `e8edc38`. Decision
 0033's addendum defines the closed value/max/color/children API, neutral invalid

@@ -100,3 +100,33 @@ pixels, no new wrapper spacing or clipping, four-width row/seam/loading parity,
 Exact independent validation and review precede ordinary PR merge and guarded
 deployment/BOTH-service restart. This small feedback slice comes before, and
 does not replace, the named follow-on tracks above.
+
+## Fans & Air shared-background slice (2026-09-01)
+
+After PR62, Fans becomes the next zero-raw feature consumer. Its seven canonical
+rows retain the validated raw percentage for PercentageBackground (maximum 100),
+integer-rounded visible percent, en-US integer RPM and independent null/zero
+semantics. No new stopped/running/fault state is inferred. Icons are static.
+All controls remain in the shared footer; no feature-specific CSS is retained.
+
+Closed shared Stack and InfoPair own layout, ReadingList gains a single-column
+option without changing Thermals' responsive default, and Inline's explicit
+nonshrinking option permits bounded whole-metric wrapping for enlarged text.
+MetricValue supplies common 13-pixel percent/RPM units and hidden loading
+placeholders in the same font-relative minimum slots; Name remains 14 pixels.
+Large valid RPM and 200% text grow/wrap without clipping or reducing font size.
+InfoPair's closed label reservation keeps all four reported purifier modes and
+unknown mode on the same loading/ready layout. It does not manufacture a mode.
+
+Loading shows the truthful static canonical fan names/icons, hides only values
+and purifier mode behind inert skeletons, has no gradient or actionable control,
+and uses one loading announcement plus aria-busy. Known data and source time
+remain during refresh; unavailable/error use existing closed states. Static
+name structure is not telemetry. Seven rows, list and shell must retain exact
+loading/ready geometry at 320/390/590/720 and 200% text, including all mode strings.
+
+Only the private synthetic SvelteKit lab is changed. Production renderers,
+device adapters, tools/resources, auth and camera remain unchanged. Retire only
+Fans' raw-markup debt; all other pending tracks remain explicit. Require exact
+independent review/validation and the same PR/guarded deployment/BOTH restart/
+verification workflow before calling this delivered.

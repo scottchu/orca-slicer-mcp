@@ -10,6 +10,29 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Fans & Air compositional percentage rows — current author candidate (2026-09-01)
+
+The user-directed next slice is implemented on merged PR62 `a3da16a`: private
+SvelteKit Fans now composes seven PercentageBackground/FanReading rows, shared
+MetricValue, Stack/InfoPair and single-column ReadingList. Static fan names/icons
+remain during loading; only telemetry/mode are skeletons. Null/zero remain
+distinct, enlarged values wrap, and refresh retains known values/source time.
+Exact independent validation/review and delivery are pending; production widgets
+remain unchanged. Remaining skeleton/gallery, seven ready migrations, Bed Mesh
+axes, Console, model/layer progress, Camera and production cutovers are not lost.
+
+PR62 was approved and shipped from exact `ac690ae` as merge
+`a3da16a94f85bd6ddd1b8bd3c3b2828422ac0189`, release
+`20260901-a3da16a-pr62-20260901T133020-38372f`. The operator reports BOTH
+services explicitly restarted, loaded/healthy/integrity verified, 25 exact
+asset/routes and 26 security checks passing. Rollback was unnecessary; snapshot
+`20260901T133059-947eea` is retained. Independent postdeployment validation
+reports the tailnet Thermals lab returned 200/no-store and exact 724,012-byte
+SHA-256 `50d8297d169d1a3c65238a9042924f3e80ea684057ac68f5ce2dc5c078eec4e2`.
+Both services report 0.4.8/schema 12/observation-v14/camera-v10. This is attributed
+operator/validator service evidence, not this author's rerun or actual device,
+live-printer, live-camera or user acceptance.
+
 ### PercentageBackground — active private-lab refinement (2026-09-01)
 
 The current user-directed UI-003 slice adds reusable PercentageBackground and

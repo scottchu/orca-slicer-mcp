@@ -491,6 +491,11 @@ durable-monitor claim.
   over-target values. Decoration owns no spacing, clipping, sizing or progress
   semantics. Thermals is its first private-lab consumer; skeleton/ready seams,
   row geometry and enlarged-text readability must remain consistent.
+  Fans & Air reuses this gradient through seven zero-raw canonical rows and a
+  shared 13-pixel MetricValue, with 14-pixel names, independent null/zero percent
+  and RPM, and no inferred running/fault state. Its skeleton retains static
+  names/icons without telemetry or fill; loading/ready geometry is equal across
+  supported widths/modes and 200% text. Whole metrics may wrap without clipping.
 
 When evidence changes one of these requirements, update it explicitly and
 record a decision if the change affects architecture, safety, or product scope.

@@ -4,6 +4,10 @@
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`
 - Status: active
+- Current user-directed slice: Fans & Air adopts seven composed percentage
+  backgrounds, common 13-pixel metrics, 14-pixel names and geometry-matched
+  structural loading on merged PR62 `a3da16a`. No production/server/MCP migration;
+  independent exact-SHA review precedes the standing delivery workflow.
 - Current user-directed priority (2026-09-01): build PercentageBackground as a
   reusable closed decoration leaf and compose private-lab Thermals from it,
   after merged PR61 `e8edc38`. Preserve actual/target text, neutral invalid

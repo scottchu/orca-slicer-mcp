@@ -1,5 +1,30 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 Fans & Air shared-background author candidate
+
+Branch `codex/u1-fans-percentage` is aligned with exact PR62 merge `a3da16a`.
+Changed source is the private-lab FansWidget/FanReading/FansSkeleton, shared
+Stack/InfoPair/MetricValue, closed single-column ReadingList and nonshrinking
+wrapping Inline options, and the central fan icon. Only Fans raw debt is
+retired; no arbitrary feature markup/styles/import escape was added. Seven
+canonical names/icons are structural loading content; values/mode remain hidden
+until observed. Zero and unavailable percentage/RPM remain independent.
+
+Four-width/200% browser evidence covers exact loading/ready geometry, all mode
+labels, text-range containment at 100,000 RPM, nonmoving overlay feedback,
+retained refresh, real gradient pixels, and unchanged Thermals regression gates.
+Author commands/results are recorded in VALIDATION. Freeze this candidate,
+obtain independent validation/formal review of its exact SHA, then deliver
+through the standing PR/guarded ship/BOTH restart/scoped verification sequence.
+No production widget or device acquisition changes are included.
+
+PR62 prior deployment and independent postverification are attributed in
+PROJECT_STATE, not claimed as this author's new checks. Continue remaining
+all-widget skeleton/gallery, seven other ready composition migrations, Bed Mesh
+axes/enclosure, read-only Console, model/layer progress, Camera lifecycle and
+production cutovers. Server/MCP migration remains a separate architecture
+discussion, not an implicit part of this slice.
+
 ## 2026-09-01 PercentageBackground / Thermals author candidate
 
 Branch `codex/u1-percentage-background` starts at exact merged PR61 `e8edc38`.
