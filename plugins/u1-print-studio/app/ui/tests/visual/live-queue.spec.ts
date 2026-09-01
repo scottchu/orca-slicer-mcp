@@ -85,29 +85,78 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await expect(frame.locator('[data-record]').nth(1)).toContainText(long.structuredContent.module.items[1].filename);
     await readable(frame, width);
     await page.screenshot({ path: test.info().outputPath('long-queue.png') });
-    const reorder = liveQueueResult(3, 14, '2026-09-01T12:00:14.000Z');
+    for (const [offset, count] of [1, 100, 101].entries()) {
+      const next = liveQueueResult(count, 14 + offset, `2026-09-01T12:00:${14 + offset}.000Z`);
+      await notify(next);
+      await expect(frame.locator('[data-record]')).toHaveCount(Math.min(count, 100));
+      await expect(frame.locator('[data-widget-body]')).toContainText(`${count} ${count === 1 ? 'job' : 'jobs'}`);
+      if (count === 101) await expect(frame.locator('[data-widget-body]')).toContainText('Showing 100 of 101 jobs · 1 not shown');
+      else await expect(frame.locator('[data-widget-body]')).not.toContainText('not shown');
+    }
+    const reorder = liveQueueResult(3, 17, '2026-09-01T12:00:17.000Z');
     reorder.structuredContent.module.items.reverse().forEach((item, index) => { item.position = index + 1; });
     await notify(reorder); await expect(frame.locator('[data-record]').first()).toContainText('Fixture 3.gcode');
     for (const [index, state] of ['ready', 'starting', 'paused'].entries()) {
-      const next = liveQueueResult(0, 15 + index, `2026-09-01T12:00:${15 + index}.000Z`);
+      const next = liveQueueResult(0, 18 + index, `2026-09-01T12:00:${18 + index}.000Z`);
       next.structuredContent.module.queueState = state as 'ready' | 'starting' | 'paused';
       await notify(next); await expect(frame.locator('[data-widget-body]')).toContainText('0 jobs');
       await expect(frame.locator('[data-widget-body]')).toContainText('Queue empty');
     }
-    const stale = liveQueueResult(0, 18, '2026-09-01T12:00:18.000Z');
+    const stale = liveQueueResult(0, 21, '2026-09-01T12:00:21.000Z');
     stale.structuredContent.module.state = 'stale'; stale.structuredContent.module.freshness = 'stale'; stale.structuredContent.module.reason = 'timeout';
     await notify(stale); await expect(frame.locator('[data-widget-body]')).toContainText('Last observed queue was empty');
     await expect(frame.locator('[data-observed-meta]')).toContainText('Stale'); await readable(frame, width);
-    const unknown = liveQueueResult(0, 19, '2026-09-01T12:00:19.000Z');
-    const domain = { ...unknown.structuredContent.module, state: 'unavailable', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, queueState: null, totalCount: null, reason: 'timeout', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: unknown.structuredContent.module.provenance.detail } };
-    await notify({ structuredContent: { ...unknown.structuredContent, module: domain } });
+    const unavailable = liveQueueResult(0, 22, '2026-09-01T12:00:22.000Z');
+    const unavailableDomain = { ...unavailable.structuredContent.module, state: 'unavailable', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, checkedAt: '2026-09-01T12:00:22.000Z', queueState: null, totalCount: null, reason: 'timeout', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: unavailable.structuredContent.module.provenance.detail } };
+    await notify({ structuredContent: { ...unavailable.structuredContent, module: unavailableDomain } });
     await expect(frame.locator('[data-widget-body]')).toHaveText('Print Queue unavailable');
+    await expect(frame.locator('[data-widget-shell]')).not.toContainText(/0 jobs|Queue empty/); await readable(frame, width);
+    const unknown = liveQueueResult(0, 23, '2026-09-01T12:00:23.000Z');
+    const unknownDomain = { ...unknown.structuredContent.module, state: 'unknown', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, checkedAt: null, queueState: null, totalCount: null, reason: 'not_requested', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: unknown.structuredContent.module.provenance.detail } };
+    await notify({ structuredContent: { ...unknown.structuredContent, module: unknownDomain } });
+    await expect(frame.locator('[data-widget-body]')).toHaveText('Print Queue not observed');
     await expect(frame.locator('[data-widget-shell]')).not.toContainText(/0 jobs|Queue empty/); await readable(frame, width);
     expect(calls).toEqual(Array(2).fill({ name: 'refresh_printer_observation', arguments: { view: 'queue' } }));
     expect(errors).toEqual([]); expect(outside).toEqual([]);
     await page.screenshot({ path: test.info().outputPath('live-queue.png'), fullPage: true });
   });
 }
+
+test('Queue true initial HTTP failure immediately exposes Retry and preserves newer data over an obsolete RPC', async ({ page }) => {
+  let calls = 0, releaseOld: () => void = () => {};
+  await page.route('**/dashboard/tools/call', async (route) => {
+    calls += 1;
+    if (calls === 1) await route.fulfill({ status: 503, json: { error: 'unavailable' } });
+    else if (calls === 3) {
+      await new Promise<void>((resolve) => { releaseOld = resolve; });
+      await route.fulfill({ json: liveQueueResult(2, 16, '2026-09-01T12:00:16.000Z') });
+    } else await route.fulfill({ json: liveQueueResult(3, calls === 2 ? 12 : 17, calls === 2 ? '2026-09-01T12:00:12.000Z' : '2026-09-01T12:00:17.000Z') });
+  });
+  await page.goto('/dashboard/queue');
+  const frame = page.frames().find((item) => item.url().endsWith('/dashboard/queue_widget'))!;
+  await expect(frame.getByRole('status')).toHaveText('Could not load Print Queue');
+  const refresh = frame.getByRole('button', { name: 'Refresh Print Queue' });
+  await expect(refresh).toBeVisible(); await refresh.click();
+  await expect(frame.getByRole('status')).toHaveText('Print Queue loaded'); expect(calls).toBe(2);
+  await frame.evaluate(() => {
+    const before = document.querySelector('[data-widget-shell]');
+    window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true }));
+    window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+    if (document.querySelector('[data-widget-shell]') !== before) throw new Error('BFCache replaced the Queue root');
+  });
+  expect(calls).toBe(2); await refresh.focus(); await refresh.press('Enter'); await expect.poll(() => calls).toBe(3);
+  const newer = liveQueueResult(1, 15, '2026-09-01T12:00:15.000Z');
+  newer.structuredContent.module.items[0].filename = 'Newer notification.gcode';
+  await page.evaluate((value) => document.querySelector('iframe')!.contentWindow!.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/tool-result', params: value }, '*'), newer);
+  await expect(frame.locator('[data-record]').first()).toContainText('Newer notification.gcode');
+  const retained = await bounds(frame); releaseOld();
+  await expect(refresh).not.toHaveAttribute('aria-disabled', 'true');
+  await expect(frame.getByRole('status')).toHaveText('Print Queue loaded');
+  await expect(frame.locator('[data-record]').first()).toContainText('Newer notification.gcode');
+  await expect(refresh).toBeFocused(); expect(await bounds(frame)).toEqual(retained);
+  await refresh.press('Enter'); await expect.poll(() => calls).toBe(4);
+  await expect(frame.locator('[data-record]').first()).toContainText('Repeated fixture.gcode');
+});
 
 test('Queue initial wrong-view failure is bounded, retry and BFCache preserve one bridge', async ({ page }) => {
   await page.clock.install();

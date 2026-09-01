@@ -473,7 +473,7 @@ class StaticContractTests(unittest.TestCase):
         contract = static_contract(root)
         dashboard_paths = {item["route"] for item in contract.values() if item["route"].startswith("/dashboard")}
         expected = len(dashboard_paths) + 3 + 1  # fixed public/private auth checks plus private health
-        self.assertEqual(expected, 31)
+        self.assertEqual(expected, 32)
         def read(port, route):
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""

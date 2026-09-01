@@ -46,9 +46,11 @@ export const createObservationController = <T extends OrderedObservation>(port: 
     const current = ++generation;
     publish({ ...state, phase: state.observation ? 'ready' : 'loading', refreshing: !!state.observation, feedback: '' });
     flight = port.refresh().then((result) => {
-      if (!disposed) {
+      // A notification accepted after this request started owns the mounted
+      // session even when the older RPC claims a later server receipt/version.
+      if (!disposed && current === generation) {
         const accepted = accept(result);
-        if (accepted === 'invalid' && current === generation) failure();
+        if (accepted === 'invalid') failure();
         else if (accepted !== 'accepted') publish({ ...state, refreshing: false });
       }
     }).catch(() => { if (!disposed && current === generation) failure(); }).finally(() => {

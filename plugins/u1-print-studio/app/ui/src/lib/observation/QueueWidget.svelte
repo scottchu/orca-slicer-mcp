@@ -7,6 +7,7 @@
   import QueueSummary from './QueueSummary.svelte';
   import QueueRows from './QueueRows.svelte';
   import QueueSkeleton from './QueueSkeleton.svelte';
+  import { queueLoadingShapes } from '../lab/queue-shapes';
   type Props = { observation: QueueObservation; loading?: false; refreshing?: boolean; rows?: never } | { loading: true; observation?: never; refreshing?: never; rows?: number };
   let { observation, loading = false, refreshing = false, rows = 3 }: Props = $props();
   const queue = $derived(loadingObservation(loading, observation, validateQueue));
@@ -15,7 +16,7 @@
 </script>
 <ObservationFrame title="Print Queue" iconName="queue" observedAt={queue?.sourceObservedAt ?? null} freshness={queue?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
   <Stack>
-    {#if loading}<QueueSummary loading /><QueueSkeleton {rows} />
+    {#if loading}<QueueSummary loading /><QueueSkeleton {rows} shapes={queueLoadingShapes(rows)} />
     {:else}<QueueSummary state={queue!.queueState} count={items.length} />
       {#if items.length}<QueueRows {items} />{:else}<Caption>Queue empty</Caption>{/if}
     {/if}

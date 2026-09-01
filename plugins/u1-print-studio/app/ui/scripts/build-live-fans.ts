@@ -16,7 +16,7 @@ await build({
       output: { assetFileNames: `${view}.[ext]` },
       plugins: [{ name: 'live-observation-production-boundary', generateBundle: (_options, bundle) => {
         const modules = Object.values(bundle).filter((item) => item.type === 'chunk').flatMap((item) => Object.entries(item.modules).map(([id, value]) => ({ id, renderedLength: value.renderedLength, originalLength: value.originalLength })));
-        for (const { id } of modules) assertLiveObservationModule(id);
+        for (const { id } of modules) assertLiveObservationModule(id, view);
         mkdirSync('test-results/build-graphs', { recursive: true });
         writeFileSync(`test-results/build-graphs/live-${view}.json`, JSON.stringify(modules, null, 2));
       } }]

@@ -23,6 +23,7 @@ export const leaves: Record<string, string[]> = {
   'camera/CameraMedia.svelte': ['canvas', 'div', 'div', 'div', 'div', 'div', 'video'],
   'camera/CameraStatus.svelte': ['div', 'span', 'span', 'span'],
   'ui/LoadingValue.svelte': ['span', 'span'],
+  'ui/TextSkeleton.svelte': ['span'],
   'ui/LabControls.svelte': ['fieldset', 'legend', 'div', 'label', 'span', 'select', 'option'],
   'ui/Icon.svelte': [], 'ui/BorderedIcon.svelte': ['span'], 'ui/Label.svelte': ['span'],
   'ui/CircleLabel.svelte': ['span'], 'ui/BoxLabel.svelte': ['span'], 'ui/Name.svelte': ['span'],
@@ -65,7 +66,7 @@ function visit(value: unknown, fn: (node: Node) => void): void {
 }
 
 const approvedImports: Record<string, string[]> = {
-  'observation/QueueWidget.svelte': ['./ObservationFrame.svelte', './types', './loading', '../ui/Stack.svelte', '../ui/Caption.svelte', './QueueSummary.svelte', './QueueRows.svelte', './QueueSkeleton.svelte'],
+  'observation/QueueWidget.svelte': ['./ObservationFrame.svelte', './types', './loading', '../ui/Stack.svelte', '../ui/Caption.svelte', './QueueSummary.svelte', './QueueRows.svelte', './QueueSkeleton.svelte', '../lab/queue-shapes'],
   'observation/QueueRow.svelte': ['../live/queue-presentation', '../ui/Record.svelte', '../ui/BoxLabel.svelte', '../ui/Name.svelte', '../ui/Caption.svelte', '../ui/LoadingValue.svelte', '../ui/DateTimeValue.svelte', '../ui/DurationValue.svelte'],
   'observation/QueueRows.svelte': ['../live/queue-presentation', '../ui/OrderedRecords.svelte', './QueueRow.svelte'],
   'observation/QueueSkeleton.svelte': ['../ui/OrderedRecords.svelte', './QueueRow.svelte', '../ui/LoadingValue.svelte', '../ui/Caption.svelte', './loading'],

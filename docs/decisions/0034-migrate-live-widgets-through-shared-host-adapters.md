@@ -156,6 +156,38 @@ checks precede independent exact-SHA approval and guarded paired-service release
 This record is a scope contract, not source, deployment, printer or device
 acceptance. No printer controls, new acquisition, auth/Tailscale or plugin change.
 
+### Queue integration and shared loading decision
+
+The accepted PR75 three-artifact baseline is explicitly merged before final
+Queue composition. Its light250,000/Bed700,000/Camera80,000/aggregate980,000
+limits remain unchanged. The separately adopted focused-production inventory
+contains at most ten named widgets and is capped at1,550,000 raw UTF-8 bytes;
+only present production Svelte entries count, never labs, hosts or index.
+The final ten-entry acceptance remains future work. Queue is individually
+bounded at100,000 bytes now; this is not an allowance for unrelated features.
+
+Independent source review of another consumer exposed an obsolete-success
+race in the shared controller. An accepted notification invalidates any RPC
+started earlier, regardless of the reply's claimed version or receipt. Its
+flight still settles; retry remains available. Duplicate/invalid notifications
+do not acquire arrival ownership, and receipt-ordered process restart without
+an intervening accepted notification remains legitimate. All four existing
+observation consumers require the same regression, not a Queue-only workaround.
+
+Independent design adopted intrinsic public text templates for exact closed-lab
+skeleton geometry after estimated character widths failed. The generic
+TextSkeleton leaf uses a bounded control-safe, aria-hidden inert text node;
+actual inherited glyph metrics and whitespace determine wrapping. Name and
+DateTimeValue accept templates only in loading variants; numeric index/name
+templates use tabular zero glyphs. Lab shapes derive solely from the closed
+synthetic layout and fixed public date format, never a real filename/receipt.
+Production uses neutral defaults, promises no exact unknown first-row count,
+and retains real content during refresh. Ready metadata is not truncated and
+no fixed card reserve or weakened one-pixel geometry gate is permitted. Locale
+matching is demonstrated for the tested closed locale, not every arbitrary
+localized date format. This design decision does not replace exact candidate
+validation or authorize shipment.
+
 ## Documentation basis
 
 Queue implementation-order clarification: ordered-record leaves are independent

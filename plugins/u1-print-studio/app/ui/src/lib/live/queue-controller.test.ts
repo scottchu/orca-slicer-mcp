@@ -37,12 +37,15 @@ describe('Print Queue shares reviewed observation lifecycle', () => {
     expect(controller.getState().observation?.version).toBe(12);
     notify(liveQueueResult(0, 1, '2026-09-01T12:01:00.000Z')); expect(controller.getState().observation).toMatchObject({ version: 1, totalCount: 0 }); controller.dispose();
   });
-  it('a duplicate cannot cancel newer response and an old response cannot regress new notification', async () => {
+  it('a duplicate cannot cancel newer response and an obsolete response cannot replace a newer notification despite a later receipt', async () => {
     const { controller, notify, resolve } = setup(); notify(liveQueueResult()); const first = controller.refresh(); notify(liveQueueResult());
     resolve(liveQueueResult(1, 13, '2026-09-01T12:00:13.000Z')); await first; expect(controller.getState().observation?.version).toBe(13);
     const second = controller.refresh(); notify(liveQueueResult(0, 15, '2026-09-01T12:00:15.000Z'));
-    resolve(liveQueueResult(2, 14, '2026-09-01T12:00:14.000Z')); await second;
-    expect(controller.getState()).toMatchObject({ observation: { version: 15, totalCount: 0 }, refreshing: false }); controller.dispose();
+    const accepted = controller.getState().observation;
+    resolve(liveQueueResult(2, 16, '2026-09-01T12:00:16.000Z')); await second;
+    expect(controller.getState()).toMatchObject({ observation: accepted, refreshing: false, feedback: '' });
+    const retry = controller.refresh(); resolve(liveQueueResult(1, 17, '2026-09-01T12:00:17.000Z')); await retry;
+    expect(controller.getState()).toMatchObject({ observation: { version: 17, totalCount: 1 }, refreshing: false }); controller.dispose();
   });
   it('observed wait does not become an advancing clock', async () => {
     vi.useFakeTimers(); const { controller, notify } = setup(); notify(liveQueueResult()); const original = controller.getState().observation;
