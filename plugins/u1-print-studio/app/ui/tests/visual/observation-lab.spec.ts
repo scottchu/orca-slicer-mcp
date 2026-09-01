@@ -169,35 +169,35 @@ for (const width of widths) {
         expect(columns).toBe(width === 320 ? 1 : 2);
       }
       if (view === 'heads') {
-        const columns = await panel.locator('.head-grid').evaluate((node) => getComputedStyle(node).gridTemplateColumns.split(' ').length);
+        const columns = await panel.locator('.card-grid').evaluate((node) => getComputedStyle(node).gridTemplateColumns.split(' ').length);
         expect(columns).toBe(2);
-        const reservedHeights = await panel.locator('[data-head-material]').evaluateAll((items) => items.map((item) => getComputedStyle(item).minHeight));
-        expect(reservedHeights).toEqual(['0px', '0px', '0px', '0px']);
-        await expect(panel.locator('[data-copy-color]')).toHaveCount(3);
-        for (const copy of await panel.locator('[data-copy-color]').all()) {
+        const materialLines = await panel.locator('[data-inset-card] > .body .stack > .caption').evaluateAll((items) => items.map((item) => ({ height: item.getBoundingClientRect().height, line: Number.parseFloat(getComputedStyle(item).lineHeight), padding: Number.parseFloat(getComputedStyle(item).paddingTop) + Number.parseFloat(getComputedStyle(item).paddingBottom) })));
+        expect(materialLines).toHaveLength(4);
+        for (const material of materialLines) { expect(Math.abs(material.height - material.line)).toBeLessThanOrEqual(1); expect(material.padding).toBe(0); }
+        await expect(panel.getByRole('button', { name: /^Copy T/ })).toHaveCount(3);
+        for (const copy of await panel.getByRole('button', { name: /^Copy T/ }).all()) {
           await expect(copy).toHaveCSS('height', '44px');
         }
         const wash = await panel.getByLabel('Tool 3').evaluate((card) => {
-          const color = getComputedStyle(card).getPropertyValue('--head-color').trim();
           const probe = document.createElement('div');
-          probe.style.background = `color-mix(in srgb, ${color} 6%, white)`;
+          probe.style.background = `rgba(52, 135, 200, ${128 / 255 * .06})`;
           document.body.append(probe);
           const expected = getComputedStyle(probe).backgroundColor;
-          probe.style.background = 'color-mix(in srgb, #3487C8 6%, white)';
+          probe.style.background = 'rgba(52, 135, 200, .06)';
           const opaque = getComputedStyle(probe).backgroundColor;
           probe.remove();
-          return { color, actual: getComputedStyle(card).backgroundColor, expected, opaque };
+          return { actual: getComputedStyle(card).backgroundColor, expected, opaque };
         });
-        expect(wash.color).toBe('#3487C880');
+        await expect(panel.getByLabel('Tool 3')).toContainText('#3487C880');
         expect(wash.actual).toBe(wash.expected);
         expect(wash.actual).not.toBe(wash.opaque);
         const activeSemantics = await panel.getByLabel('Tool 1').evaluate((card) => {
           const element = card as HTMLElement;
-          const originalColor = element.style.getPropertyValue('--head-color');
+          const originalColor = element.style.backgroundColor;
           const before = getComputedStyle(element);
           const borderBefore = before.borderBottomColor;
           const washBefore = before.backgroundColor;
-          element.style.setProperty('--head-color', '#7B4DFFFF');
+          element.style.backgroundColor = 'rgba(123, 77, 255, .06)';
           const changed = getComputedStyle(element);
           const borderAfter = changed.borderBottomColor;
           const washAfter = changed.backgroundColor;
@@ -206,7 +206,7 @@ for (const width of widths) {
           document.body.append(probe);
           const semanticAccent = getComputedStyle(probe).color;
           probe.remove();
-          element.style.setProperty('--head-color', originalColor);
+          element.style.backgroundColor = originalColor;
           return { borderBefore, borderAfter, washBefore, washAfter, semanticAccent };
         });
         expect(activeSemantics.borderBefore).toBe(activeSemantics.semanticAccent);

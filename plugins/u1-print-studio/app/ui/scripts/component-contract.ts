@@ -8,11 +8,15 @@ composites.push('observation/FanReadings.svelte', 'live/LiveObservationRoot.svel
 composites.push('observation/ThermalReadings.svelte', 'live/LiveThermalsRoot.svelte');
 composites.push('camera/CameraWidget.svelte', 'camera/LiveCameraRoot.svelte');
 composites.push('bed-mesh/BedMeshLabRoot.svelte');
+composites.push('observation/HeadCard.svelte', 'observation/HeadCards.svelte', 'observation/HeadsSkeleton.svelte');
+composites.push('observation/HeadsPanel.svelte', 'live/LiveHeadsRoot.svelte');
+composites.push('observation/HeadsWidget.svelte');
 export const leaves: Record<string, string[]> = {
+  'ui/CardGrid.svelte': ['div'], 'ui/InsetCard.svelte': ['section', 'div', 'div', 'div', 'div'], 'ui/ColorSwatch.svelte': ['span'],
   'media/MediaStatus.svelte': ['div', 'span', 'span', 'span'],
   'media/VideoSurface.svelte': ['div', 'div', 'div', 'div', 'div', 'div', 'img', 'video'],
   'ui/PageLayout.svelte': ['main'],
-  'ui/ObservationLabPage.svelte': ['main'],
+  'ui/ObservationLabPage.svelte': ['main', 'section'],
   'camera/CameraMedia.svelte': ['canvas', 'div', 'div', 'div', 'div', 'div', 'video'],
   'camera/CameraStatus.svelte': ['div', 'span', 'span', 'span'],
   'ui/LoadingValue.svelte': ['span', 'span'],
@@ -36,7 +40,6 @@ export const leaves: Record<string, string[]> = {
 export const debt: Record<string, string[]> = {
   'observation/OverviewWidget.svelte': ['div','div','div','div','div','div','div','div','div','small','small','small','small','small','small','small','small','span','span','span','span','span','span','span','span','strong','strong','strong','strong','strong','strong','strong','strong'],
   'observation/ProgressWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','strong','strong'],
-  'observation/HeadsWidget.svelte': ['button','div','div','div','div','div','section','span','span','span','span','span','strong'],
   'observation/CurrentJobWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','span','strong','strong','strong','strong','strong'],
   'observation/JobHistoryWidget.svelte': ['div','div','div','div','span','span','strong'],
   'observation/QueueWidget.svelte': ['div','div','div','div','div','span','span','span','span','span','strong','strong'],

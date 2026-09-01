@@ -11,7 +11,7 @@ describe('three-artifact private lab budget and isolation', () => {
     expect(() => assertLabBudgets(1, 1, 80_001)).toThrow('Camera');
   });
   it('rejects every invalid position and exact aggregate plus one boundary', () => {
-    for (const size of [0, -1, 1.5, NaN, Infinity]) {
+    for (const size of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
       expect(() => assertLabBudgets(size, 1, 1)).toThrow('Invalid');
       expect(() => assertLabBudgets(1, size, 1)).toThrow('Invalid');
       expect(() => assertLabBudgets(1, 1, size)).toThrow('Invalid');
