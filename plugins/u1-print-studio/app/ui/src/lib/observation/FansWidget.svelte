@@ -6,9 +6,8 @@
   import Stack from '../ui/Stack.svelte';
   import InfoPair from '../ui/InfoPair.svelte';
   import Label from '../ui/Label.svelte';
-  import ReadingList from '../ui/ReadingList.svelte';
   import StatePanel from '../ui/StatePanel.svelte';
-  import FanReading from './FanReading.svelte';
+  import FanReadings from './FanReadings.svelte';
   import FansSkeleton from './FansSkeleton.svelte';
   type Props = { observation: FansObservation; state?: never } | { state: WidgetState<FansObservation>; observation?: never };
   let { observation, state }: Props = $props();
@@ -25,9 +24,7 @@
         {#snippet label()}<Label text="Purifier" tone="muted" />{/snippet}
         {#snippet value()}<Label text={current.observation.purifierMode === null ? 'N/A' : titleCase(current.observation.purifierMode)} />{/snippet}
       </InfoPair>
-      <ReadingList label="Fan readings" columns="single">
-        {#each current.observation.items as reading (reading.id)}<FanReading {reading} />{/each}
-      </ReadingList>
+      <FanReadings items={current.observation.items} />
     </Stack>
   {:else if current.kind === 'loading'}<FansSkeleton />
   {:else}<StatePanel title="Fans & Air" reason={current.kind} />{/if}

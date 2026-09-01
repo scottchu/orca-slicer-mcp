@@ -14,6 +14,44 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Next action: independent exact validation/review of renewed PR70 on merged
+Camera baseline `ef5b239`, then guarded Fans-only cutover. Full combined author
+gates pass: 183 UI units, 121 Chrome, 281 app/3,301 assertions, 21 lifecycle and
+24 ship tests plus deterministic packages/bundles/signature/help. The initial
+`e0e141a` was held; do not reuse that pin. New artifact hashes and actual PR69
+rollout/postcheck attribution are in the newest VALIDATION entries. Camera lab
+is already shipped; real Camera remains separate. No further feature expansion
+belongs in this renewal while independent acceptance is pending.
+
+The PR70 refresh-race renewal now explicitly integrates reviewed Camera main
+`ef5b239`. Resolve and verify the combined source/packages/routes without
+overwriting its Camera mapping, controls or two-artifact/aggregate budget.
+Rerun full gates and freeze a new exact PR70 head for independent acceptance.
+The Camera-candidate paragraphs below are preserved historical evidence, not
+an instruction to redeploy Camera separately from this combined next release.
+
+Camera lab PR69 is already deployed and independently post-verified on exact
+`ef5b239`, release `20260901-ef5b239-pr69-20260901T160906-8d7501`. Its actual
+operator/postcheck receipt is in VALIDATION. Do not confuse synthetic local-video
+acceptance with the still-pending real Camera transport/session cutover.
+
+PR70 `e0e141a` is independently held for a superseded-refresh rejection leaving
+busy=true. The narrow finally-settlement correction has two passing controller
+regressions and a passing real-iframe recovery/focus regression. Next integrate
+the reviewed Camera merge, then renew full combined-tree gates and exact review;
+do not ship the held head or reuse its earlier author green evidence as approval.
+
+Current unshipped LIVE Fans candidate explicitly integrates reviewed main
+`2d30b01`. Its real iframe/adapter/controller and private static asset are wired;
+152 UI units, 104 Chrome cases and full app/lifecycle/shipping/bundle gates pass.
+Obtain exact independent validation/review before the Fans-only cutover.
+See decision 0034 and active `LIVE_PARITY.md` for the remaining-eight contract.
+Do not infer live acceptance from the already shipped lab controls below.
+Production Fans is 84,884 bytes, SHA-256
+`f25bc9bd332e3fdd49a974db754ea2636ed099f065241bd373a9c0d4daa22605`;
+lab is 748,888 bytes, SHA-256
+`26a05eaf00188d26dd27e5f2700ae9172c8d4ba4491c785c9dffec1c38e56800`.
+Independent approval is still required; no service state changed in author tests.
 Next candidate: the synthetic Camera lab, integrated with reviewed main
 `2d30b01`. It has an explicit private compiled-Svelte entry, shared controls and
 zero-raw root/widget over generic layout/media/status leaves. Seven states,

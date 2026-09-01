@@ -1,10 +1,10 @@
 <script lang="ts">
   type LucideIcon = typeof import('lucide-svelte')['Box'];
-  let { label, icon, pressed, onclick, disabled = false }: { label: string; icon: LucideIcon; pressed?: boolean; onclick?: () => void; disabled?: boolean } = $props();
+  let { label, icon, pressed, onclick, disabled = false, busy = false }: { label: string; icon: LucideIcon; pressed?: boolean; onclick?: () => void; disabled?: boolean; busy?: boolean } = $props();
   const Icon = $derived(icon);
 </script>
 
-<button type="button" class="icon-button" aria-label={label} title={label} aria-pressed={pressed} {disabled} {onclick}>
+<button type="button" class="icon-button" aria-label={label} title={label} aria-pressed={pressed} aria-disabled={busy || undefined} {disabled} onclick={() => { if (!disabled && !busy) onclick?.(); }}>
   <Icon size={20} strokeWidth={1.8} aria-hidden="true" />
 </button>
 
@@ -13,5 +13,5 @@
   .icon-button:hover { border-color: #cfd3d8; background: #eef1f3; }
   .icon-button[aria-pressed="true"] { border-color: #8b929a; background: #e8edf1; box-shadow: inset 0 0 0 1px #8b929a; }
   .icon-button:focus-visible { outline: 3px solid var(--u1-focus); outline-offset: 2px; }
-  .icon-button:disabled { cursor: default; opacity: 0.45; }
+  .icon-button:disabled, .icon-button[aria-disabled="true"] { cursor: default; opacity: 0.45; }
 </style>

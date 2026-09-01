@@ -10,6 +10,54 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+Renewed PR70 author gates now pass on the explicitly integrated PR69 baseline:
+183 UI units, 121 Chrome cases, 281 app tests/3,301 assertions, 21 lifecycle and
+24 ship tests, deterministic packages and all bundles/signature/help. The held
+`e0e141a` race is covered by both controller and real-iframe regressions; this
+new candidate still requires independent exact-SHA validation/review. Current
+artifacts: production Fans 85,315 bytes; observation lab 748,816; Camera lab
+78,795; lab aggregate 827,611. All three individual limits and the 830,000-byte
+two-lab aggregate remain enforced. No renewed PR70 deployment is claimed.
+
+Current integration checkpoint: reviewed PR69 Camera merge
+`ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24` is explicitly integrated into the
+unshipped PR70 renewal. The operator reported successful Camera-only deployment
+and both restarts; independent post-deployment evidence is recorded separately.
+Preserve its two private lab artifacts, exact Camera route and 750,000/80,000 /
+830,000-byte individual/aggregate bounds. The third artifact here is production
+Fans, not another lab payload. Full combined-tree gates and fresh exact PR70
+acceptance are pending; earlier Camera-candidate and PR70 author notes below
+are historical where superseded by this checkpoint.
+
+PR69 actual shipment is independently post-verified: exact reviewed `473cd000`,
+merge `ef5b239`, release `20260901-ef5b239-pr69-20260901T160906-8d7501`, BOTH
+restarts, 26 static/27 security checks, preservation and integrity pass. The
+separate validator checked runtime/source identities and downloaded Camera
+bytes/CSP through nine probes and 56 state-width-text combinations. Production
+Camera remains legacy; this acceptance is for the synthetic private lab only.
+See newest VALIDATION for hashes, rollback snapshot and role attribution.
+
+### Live Fans migration — separate next slice (2026-09-01)
+
+Independent review/validation held PR70 head `e0e141a`: a newer notification
+followed by rejection of the older pending refresh left the UI permanently busy.
+The narrow renewal settles request completion without replacing accepted values
+or showing the obsolete error. Two new controller regressions reproduced the
+failure before the fix and now pass; the real-iframe rejection/retry/focus case
+also passes. Integrate the imminent reviewed Camera merge before renewed full
+gates and exact acceptance. Earlier author green results do not approve this head.
+
+PR67 and its receipt PR68 are delivered; reviewed main `2d30b01` is explicitly
+integrated into this separate unshipped candidate. Decision 0034 implements
+fixture-independent Fans models, strict adapter, shared host RPC and retained
+refresh, plus a Fans-only private dashboard asset. Author gates pass: 152 UI
+units, 104 Chrome cases, 280 app tests/3,265 assertions, 21 lifecycle and 24 ship
+tests, deterministic packages and bundles/signature/help. Independent exact
+acceptance remains pending. Backend/authentication and generic MCP resources are
+unchanged. Other eight observation cutovers and Camera remain separate work.
+Production Fans is 84,884 bytes; lab is 748,888 bytes, within its unchanged
+750,000-byte cap. These are software/synthetic-browser results, not live-printer
+or actual-user-device acceptance.
 ### Synthetic Camera lab candidate — next visible slice (2026-09-01)
 
 The Camera candidate integrates reviewed main `2d30b01` and provides an exact
