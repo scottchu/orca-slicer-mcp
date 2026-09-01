@@ -14,6 +14,22 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+PR63 is shipped: reviewed `0f78e69`, merged `57a305b`, exact guarded release
+`20260901-57a305b-pr63-20260901T134952-9c86bd`. BOTH public/dashboard services
+were explicitly restarted and passed loaded/healthy/integrity checks; 25 exact
+static routes/assets and 26 security checks passed without rollback. See newest
+PROJECT_STATE and active VALIDATION/HANDOFF sections for the actual receipt.
+Pending-candidate instructions below are historical for this slice. Do not
+redeploy unchanged application bytes merely to merge these rollout records.
+
+Obtain user feedback on private `/dashboard/lab/fans`; production `/dashboard/fans`
+still uses the unchanged legacy widget. Thermals and Fans are the two completed
+zero-raw ready/state/skeleton compositions. Continue the seven remaining
+ready/skeleton migrations, all-nine gallery, Bed Mesh axes, read-only Console,
+model/layer progress, Camera lifecycle and separately reviewed cutovers. Actual
+device/live-printer/user acceptance is still unclaimed. Preserve existing
+dirty original-checkout changes and the frozen reviewed source branches.
+
 Current candidate is Fans & Air on `codex/u1-fans-percentage`, aligned by clean
 base fast-forward with PR62 merge `a3da16a`. Complete its exact independent
 validation/review, then guarded PR merge/deploy/BOTH restart/scoped verification

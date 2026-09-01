@@ -1,5 +1,68 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 PR63 guarded merge/deploy/BOTH restart verification
+
+Independent validation and formal review approved exact
+`0f78e6924cbaca5a576ee552c7e14e38cb9e1a92`, tree
+`402b9450cfe83faaa2f8e5b89c3884981131a260`, before execution. Root relayed both
+approvals and the user's scoped standing widget-release authorization. The
+implementation agent then acted as delivery operator, not as independent
+reviewer or validator.
+
+Actual commands from the frozen clean candidate checkout:
+
+```text
+uv run --no-project scripts/u1_ship.py --help
+uv run --no-project scripts/u1_ship.py --pr 63 --reviewed-sha 0f78e6924cbaca5a576ee552c7e14e38cb9e1a92 --bun <absolute-pinned-bun-1.3.12>
+uv run --no-project scripts/u1_ship.py --pr 63 --reviewed-sha 0f78e6924cbaca5a576ee552c7e14e38cb9e1a92 --bun <absolute-pinned-bun-1.3.12> --execute
+```
+
+The absolute local executable path is intentionally omitted from this
+repository record. Its verified Bun SHA-256 is
+`39e644cea4e6db24a3af36013695655d6f789b4b98f1f13bacb882ac6e5c3c18`.
+The fresh read-only plan passed before execution. The workflow then completed
+identity/fetch-base/preflight, required local validation, matching-head merge,
+exact merged-tree isolation, stage, dry-run, install, explicit restart-both and
+final verification, with no bypass or extra device acquisition.
+
+- Merge: `57a305b31ff408bbff4988fc3eeaa518d24b5411`; merged tree equals the
+  approved source tree.
+- Operation: `pr63-20260901T134952-9c86bd`; phase complete, ok true,
+  installed true, merged true.
+- Release: `20260901-57a305b-pr63-20260901T134952-9c86bd`.
+- BOTH public/dashboard: explicitly restarted, loaded true, healthy true,
+  integrity verified; runtime 0.4.8/schema 12/observation-v14/camera-v10.
+- Exact static asset/routes: 25 passing; security checks: 26 passing;
+  configuration/routing/environment preservation: true.
+- Private lab artifact: 727,058 bytes, SHA-256
+  `74ad17deadd33e8373402b3b2c204830bd686fa06e369f46fff0604cc01baa41`, including
+  exact served Fans/Thermals lab routes. Existing production assets are unchanged.
+- Rollback: not needed; retained snapshot `20260901T135032-d34949`.
+
+This establishes reviewed source delivery and exact deployed-service/static/
+security verification. The independent software suite separately passed 88 unit,
+66 Chrome, 276 app/3,182 assertions, 21 lifecycle and 24 shipping tests plus
+additional all-row maximum-RPM/mode/geometry checks. These are not real-device,
+live-camera, physical-printer or user-outcome acceptance. No printer, camera,
+auth provisioning, Tailscale change or plugin reinstallation was performed.
+
+Rollout-record changes are documentation-only and retain identical application
+bytes; no second deployment is required by decision 0028.
+
+Independent postdeployment validation subsequently reported PASS: tailnet
+`/dashboard/lab/fans` returned HTTP 200 with `Cache-Control: no-store` and the
+exact 727,058 bytes/hash above, compared byte-for-byte with approved source.
+The documented service-status command independently confirmed BOTH loaded,
+healthy, integrity-verified service contracts at the same runtime/schema/resource
+versions. This attributed independent checkpoint proves service/static rollout,
+not a new phone/user/printer observation.
+
+For this separate documentation-only branch, `git diff --check`, the exact
+five-file change list, and `git diff --exit-code <merge> -- plugins scripts
+.agents AGENTS.md` verify format/scope and unchanged application/operator bytes.
+Exact review of the documentation commit remains required before ordinary PR
+merge; the original reviewed application worktree remains clean and unchanged.
+
 ## 2026-09-01 Fans & Air shared-background author evidence
 
 Commands actually run with pinned Bun 1.3.12: frozen app/UI installs; UI
