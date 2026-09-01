@@ -14,7 +14,7 @@ describe("private Svelte observation lab package", () => {
   test("freezes one deterministic self-contained static page", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "50d8297d169d1a3c65238a9042924f3e80ea684057ac68f5ce2dc5c078eec4e2"
+      "74ad17deadd33e8373402b3b2c204830bd686fa06e369f46fff0604cc01baa41"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -55,6 +55,7 @@ describe("private Svelte observation lab package", () => {
     expect(html).not.toContain("/dashboard/tools/call");
     expect(html).not.toContain("__setPercentage");
     expect(html).not.toContain("__percentageClicks");
+    expect(html).not.toContain("__setFansState");
     expect(html).not.toContain("Example card");
   });
 

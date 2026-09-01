@@ -1,5 +1,50 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 Fans & Air shared-background author evidence
+
+Commands actually run with pinned Bun 1.3.12: frozen app/UI installs; UI
+`bun run check`, `bun run test`, `bun run build`, `bun run package:private-lab`,
+focused `bun run test:browser -- fans-state.spec.ts` then full
+`bun run test:browser`; repository `./scripts/check-repository.sh` with pinned
+Bun on PATH; app `bun run bundle:widget-vendor`, `bun run bundle`,
+`bun run bundle:server`, `bun run bundle:runtime`,
+`codesign -vvv --verify dist/u1-print-studio`, `dist/u1-print-studio --help`;
+and `git diff --check`.
+
+- Compiler 0 errors/warnings and exact AST frontier pass. 88 unit tests cover
+  canonical fan structure, independent null/zero metrics, fractional percent
+  display versus raw gradient, 100,000 RPM, shared loading, refresh retention,
+  closed terminal states and all existing component/domain regressions.
+- Focused Chrome passes all four widths (320/390/590/720), normal and 200% text.
+  Every canonical purifier mode plus null retains exact loading/ready shell,
+  list and seven-row geometry. Static names/icons stay visible but loading has
+  no telemetry, fill or controls. Maximum RPM text ranges remain within their
+  metric/row bounds; whole metrics wrap when necessary. Real rendered gradient
+  pixels, neutral unknowns/zeros, frozen refresh source time, single overlay,
+  icon-only 44-pixel actions, reduced-motion and no external request pass.
+- Initial focused failures exposed a 320-pixel/enlarged metric-group overflow
+  and purifier-placeholder line-height mismatch. Bounded whole-metric wrapping,
+  shared minimum slots and InfoPair line-height resolved them. Test-only
+  geometry now uses document coordinates so click-induced browser scrolling is
+  not mistaken for layout shift. An initial unit fixture accidentally retained
+  both observation and state props; the test now uses the intended state API.
+- Repeated build and repository `ui:verify` reproduce 727,058 bytes, SHA-256
+  `74ad17deadd33e8373402b3b2c204830bd686fa06e369f46fff0604cc01baa41`.
+  This is +3,046 bytes from PR62, leaving 22,942 below the unchanged 750,000-byte
+  hard cap. The previously exceeded 720,000 soft target still needs explicit
+  reviewer disposition; it is not silently raised.
+- Full Chrome suite passes 66/66, including all 62 prior ready/state/Bed Mesh
+  cases and the four new multi-state Fans cases. Thermals' responsive columns,
+  seams, degree values, loading and enlarged-text geometry remain unchanged.
+- Repository gate, app 276/276 (3,182 assertions), lifecycle 21/21, shipping
+  24/24, production bundles, runtime
+  signature/help and diff checks pass. Only the private lab artifact changes;
+  generating production vendor assets introduces no production diff.
+
+Evidence is author synthetic-fixture/static/software only. Exact independent
+review, deployment and actual device/user acceptance are distinct later gates.
+No printer, camera, auth or live service was contacted by this implementation.
+
 ## 2026-09-01 PercentageBackground / Thermals author evidence
 
 Executed with pinned Bun 1.3.12 after frozen installs in both app/UI:

@@ -13,9 +13,9 @@ const handle = createStatusDashboardHandler({
 const port = Number(process.env.PORT ?? "4179");
 const server = createServer(async (req, res) => {
   const url = new URL(req.url ?? "/", "http://127.0.0.1");
-  if ((req.url === '/__test/thermals' || req.url === '/__test/percentage') && req.method === 'GET') {
+  if ((req.url === '/__test/thermals' || req.url === '/__test/percentage' || req.url === '/__test/fans') && req.method === 'GET') {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
-    const name = req.url === '/__test/thermals' ? 'thermals' : 'percentage';
+    const name = req.url === '/__test/thermals' ? 'thermals' : req.url === '/__test/fans' ? 'fans' : 'percentage';
     res.end(readFileSync(new URL(`../test-results/${name}-harness.html`, import.meta.url)));
     return;
   }

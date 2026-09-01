@@ -3,7 +3,7 @@ import { resolve, relative } from 'node:path';
 import { parse } from 'svelte/compiler';
 
 // Explicit migration frontier: new files are rejected until assigned a layer.
-export const composites = ['observation/ThermalsWidget.svelte', 'observation/ActualTarget.svelte', 'observation/ThermalReading.svelte', 'observation/ThermalsSkeleton.svelte'];
+export const composites = ['observation/ThermalsWidget.svelte', 'observation/ActualTarget.svelte', 'observation/ThermalReading.svelte', 'observation/ThermalsSkeleton.svelte', 'observation/FansWidget.svelte', 'observation/FanReading.svelte', 'observation/FansSkeleton.svelte'];
 export const leaves: Record<string, string[]> = {
   'ui/Icon.svelte': [], 'ui/BorderedIcon.svelte': ['span'], 'ui/Label.svelte': ['span'],
   'ui/CircleLabel.svelte': ['span'], 'ui/BoxLabel.svelte': ['span'], 'ui/Name.svelte': ['span'],
@@ -11,6 +11,7 @@ export const leaves: Record<string, string[]> = {
   'ui/Inline.svelte': ['span'], 'ui/ReadingList.svelte': ['div'], 'ui/ReadingRow.svelte': ['div'],
   'ui/Skeleton.svelte': ['span'], 'ui/StateAnnouncement.svelte': ['span'], 'ui/StatePanel.svelte': ['p'],
   'ui/PercentageBackground.svelte': ['div'],
+  'ui/Stack.svelte': ['div'], 'ui/InfoPair.svelte': ['div', 'span'], 'ui/MetricValue.svelte': ['span'],
   'ui/FeedbackOverlay.svelte': ['div'], 'ui/ObservedMeta.svelte': ['span'],
   'ui/WidgetShell.svelte': ['article'], 'ui/WidgetBody.svelte': ['div'],
   'ui/WidgetHeader.svelte': ['div', 'div', 'div', 'div', 'h1', 'header'],
@@ -27,7 +28,6 @@ export const debt: Record<string, string[]> = {
   'observation/CurrentJobWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','span','strong','strong','strong','strong','strong'],
   'observation/JobHistoryWidget.svelte': ['div','div','div','div','span','span','strong'],
   'observation/QueueWidget.svelte': ['div','div','div','div','div','span','span','span','span','span','strong','strong'],
-  'observation/FansWidget.svelte': ['div','div','div','span','span','span','span','strong','strong'],
   'bed-mesh/BedMeshWidget.svelte': ['dd','dd','dd','div','div','div','div','div','div','div','dl','dt','dt','dt','span','span','span','span'],
   'observation/LabDirectory.svelte': ['a','div','div','div','div','h1','header','main','nav','p','span','span','strong'],
   'observation/ObservationFrame.svelte': [],
@@ -48,6 +48,9 @@ function visit(value: unknown, fn: (node: Node) => void): void {
 }
 
 const approvedImports: Record<string, string[]> = {
+  'observation/FansWidget.svelte': ['./ObservationFrame.svelte', './types', './format', '../ui/state', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/ReadingList.svelte', '../ui/StatePanel.svelte', './FanReading.svelte', './FansSkeleton.svelte'],
+  'observation/FanReading.svelte': ['./types', './fan-labels', '../ui/PercentageBackground.svelte', '../ui/ReadingRow.svelte', '../ui/Inline.svelte', '../ui/Icon.svelte', '../ui/Name.svelte', '../ui/MetricValue.svelte'],
+  'observation/FansSkeleton.svelte': ['./fan-labels', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/Skeleton.svelte', '../ui/ReadingList.svelte', '../ui/ReadingRow.svelte', '../ui/Inline.svelte', '../ui/Icon.svelte', '../ui/Name.svelte', '../ui/MetricValue.svelte'],
   'observation/ThermalsWidget.svelte': ['./ObservationFrame.svelte', './types', '../ui/state', '../ui/ReadingList.svelte', '../ui/StatePanel.svelte', './ThermalReading.svelte', './ThermalsSkeleton.svelte'],
   'observation/ActualTarget.svelte': ['../ui/DegreeValue.svelte', '../ui/Inline.svelte', '../ui/Label.svelte'],
   'observation/ThermalReading.svelte': ['./types', './ActualTarget.svelte', '../ui/Icon.svelte', '../ui/Inline.svelte', '../ui/Name.svelte', '../ui/ReadingRow.svelte', '../ui/PercentageBackground.svelte'],

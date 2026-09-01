@@ -52,7 +52,7 @@ describe('observation lab widgets', () => {
 
     const fansResult = render(FansWidget, { observation: fansLabFixture });
     expect(fansResult.container).not.toHaveTextContent(/Commanded|Measured/i);
-    expect(fansResult.container.querySelectorAll('[data-fan-fill]')).toHaveLength(7);
+    expect(fansResult.container.querySelectorAll('[data-percentage-background]')).toHaveLength(7);
     expect(fansResult.container).toHaveTextContent('9,126 RPM');
     cleanup();
 
