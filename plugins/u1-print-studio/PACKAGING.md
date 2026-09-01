@@ -82,6 +82,10 @@ revision or its widget hashes.
 
 Decision 0024's `public/dashboard-index.html` is imported as text and inlined
 in the HTTP bundle; it is not a seventh required external release asset.
+Decision 0032's generated `public/svelte-bed-mesh-lab.html` is likewise inlined
+in the private HTTP bundle rather than copied as an external release asset. Its
+source is a deterministic self-contained `adapter-static` build. The generic
+embed scaffold is never part of the production build or release manifest.
 The fixed lifecycle asset inventory and its fingerprint verification stay
 unchanged so previously staged releases remain valid rollback targets.
 
@@ -92,11 +96,13 @@ Private stable entries are `/dashboard/overview`, `/dashboard/progress`, `/dashb
 implementation-coverage labels. It loads no observations, widgets, or camera
 media. Current source lists ten entries; `/dashboard/jobs` remains Current Job,
 `/dashboard/job_history` remains its separate bounded History view, and
-`/dashboard/overview` is the compact composed headline view. The previously
-verified PR54 deployment remains runtime 0.4.6/schema 12/observation-v12/
-camera-v8 until this source is separately merged and shipped. Source merge alone
-never updates loaded services. The source HTTP Overview route and MCP Overview
-selector are implemented; public dashboard routes remain unavailable. Every process shares
+`/dashboard/overview` is the compact composed headline view. The verified PR58
+deployment runs runtime 0.4.8/schema 12/observation-v14/camera-v10. The
+additional exact `/dashboard/lab/bed_mesh` path is a synthetic private fixture,
+not an eleventh directory entry or focused production route; the public service
+returns 404. Source merge alone never updates loaded services. The source HTTP
+Overview route and MCP Overview selector are implemented; public dashboard
+routes remain unavailable. Every process shares
 one observation store across its HTTP calls, not across other services or
 restarts. A cold store acquires its first observation on demand; later plain
 reads use the cache and explicit due refreshes coalesce. User login and host availability are dependencies; automatic

@@ -132,7 +132,8 @@ describe("standalone status dashboard", () => {
 
     for (const route of ["/dashboard", "/dashboard/", "/dashboard/progress",
       "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs", "/dashboard/job_history",
-      "/dashboard/queue", "/dashboard/fans", "/dashboard/bed_mesh", "/dashboard/camera"]) {
+      "/dashboard/queue", "/dashboard/fans", "/dashboard/bed_mesh", "/dashboard/camera",
+      "/dashboard/lab/bed_mesh", "/dashboard/lab/bed_mesh/"]) {
       expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
     }
     expect(
@@ -218,6 +219,53 @@ describe("standalone status dashboard", () => {
       expect(response.headers.get("allow")).toBe("GET");
     }
     for (const view of routes) expect((await fetch(`${origin}/dashboard/${view}`)).status).toBe(200);
+    expect(calls).toEqual([]);
+  });
+
+  test("serves the exact self-contained Bed Mesh lab only from the private dashboard", async () => {
+    const calls: string[] = [];
+    const forbidden = (name: string) => () => {
+      calls.push(name);
+      throw new Error("Private lab must not acquire printer data");
+    };
+    const observations = new PrinterObservationStore(forbidden("status"));
+    observations.current = forbidden("observation");
+    const server = createServer(createRequestHandler(null, null, {
+      observations,
+      readStatus: forbidden("status"),
+      readCameraFrame: forbidden("camera-frame"),
+      cameraSessions: {
+        authorize: forbidden("authorize"), open: forbidden("open"),
+        answer: forbidden("answer"), addCandidates: forbidden("candidates"),
+        close: forbidden("close"),
+      },
+    }));
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    servers.push(server);
+    const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+    const expected = readFileSync(new URL("../public/svelte-bed-mesh-lab.html", import.meta.url), "utf8");
+
+    for (const route of ["/dashboard/lab/bed_mesh", "/dashboard/lab/bed_mesh/"]) {
+      const response = await fetch(origin + route);
+      expect(response.status).toBe(200);
+      expect(response.headers.get("cache-control")).toBe("no-store");
+      expect(response.headers.get("content-type")).toBe("text/html; charset=utf-8");
+      expect(response.headers.get("content-security-policy")).toContain("default-src 'none'");
+      expect(response.headers.get("content-security-policy")).not.toContain("connect-src");
+      expect(response.headers.get("referrer-policy")).toBe("no-referrer");
+      expect(response.headers.get("x-content-type-options")).toBe("nosniff");
+      expect(await response.text()).toBe(expected);
+    }
+    for (const route of [
+      "/dashboard/lab", "/dashboard/lab/bed_mesh/index.html",
+      "/dashboard/lab/bed_mesh/more", "/dashboard/lab%2Fbed_mesh",
+      "/dashboard/lab/%252e%252e/bed_mesh", "/dashboard/LAB/bed_mesh",
+    ]) {
+      expect((await fetch(origin + route, { redirect: "manual" })).status).toBe(404);
+    }
+    const rejected = await fetch(origin + "/dashboard/lab/bed_mesh", { method: "POST" });
+    expect(rejected.status).toBe(405);
+    expect(rejected.headers.get("allow")).toBe("GET");
     expect(calls).toEqual([]);
   });
 

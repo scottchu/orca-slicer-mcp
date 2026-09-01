@@ -1,5 +1,61 @@
 # U1 focused-widget presentation QA — 2026-08-31
 
+## 2026-09-01 Svelte Bed Mesh private lab foundation
+
+final result: author corrections pass; formal and independent renewal required
+
+Decision 0032 adds one exact private `/dashboard/lab/bed_mesh` fixture route
+without replacing `/dashboard/bed_mesh` or adding a dashboard-directory/MCP
+entry. Public HTTP returns 404. The candidate uses the established white card,
+system type, restrained outline/shadow, local Lucide icons, information above
+actions and exact 44-pixel controls. One shared 4:3 `ChartFrame` owns both modes;
+feedback is a timed in-chart overlay and no instruction paragraph changes flow.
+
+Real Chrome captured the actual private-handler response in 2D and 3D at 320,
+390, 590 and 720 CSS pixels. Geometry assertions compare x, y, width and height
+before/after each switch within 0.1 CSS pixel, enforce 4:3, and check no
+horizontal overflow, console error or nonlocal request. The paired reference
+comparison confirms the candidate fixes the reported defects: the 3D surface is
+visibly colored and shaped rather than an almost blank plane, and the 2D/3D card
+rhythm no longer jumps. The 2D map retains maximum Y above minimum Y and shares
+the 3D fixture's exact range and palette. Fixture images and the combined
+comparison remain ignored local test artifacts; private reference files are not
+committed.
+
+This pass is static/component/private-handler/real-browser evidence for the
+synthetic lab only. The candidate was not deployed. Production
+`/dashboard/bed_mesh`, MCP-host mounting, live reported data, touch/orbit
+behavior on the user's phone and running services were not changed or accepted.
+A later focused production cutover requires renewed exact review, compatibility
+evidence and guarded rollout.
+
+Independent review of exact candidate `7aef4b5` supersedes the earlier author
+pass. Although 2D/3D geometry stayed equal, the 3D surface occupied only a thin
+central band and its sprite-based XYZ/value labels rendered at effectively 3–6
+pixels at phone widths and remained too small on larger fixtures. Renewal must
+show a materially filled surface and measured 12-pixel-or-larger stable HTML
+labels at all four frozen widths; screenshots and canvas visibility alone do
+not close this block.
+
+The renewed author candidate replaces sprites with nine stable HTML axis/bound
+labels. Real Chrome through the actual private handler now measures every label
+at 12 CSS pixels, visible and inside the shared frame with no pairwise overlap,
+at 320, 390, 590 and 720 pixels. The surface derived from all fixture points
+covers respectively 91.9--92.5% of frame width and 53.4--53.7% of frame height;
+the full XYZ box/grid remains visible, and the 2D/3D frame DOMRects remain exact
+matches. The original blocked phone reference and renewed 390-pixel capture
+were inspected together, with 320- and 720-pixel captures also checked for end-
+point readability. This closes the author correction only. Exact-candidate
+independent visual review, user-device review and any production cutover remain
+pending.
+
+Formal review of exact candidate `a6363fd` also blocked the component bridge's
+profile allowlist. The corrected author candidate now applies the adapter's
+Unicode letter/number plus space/underscore/dot/hyphen rule and rejects path,
+URL, bidi, markup, dot/dotdot and control adversaries. This correction does not
+alter the measured visual result; renewed formal and independent exact-
+candidate reviews remain pending.
+
 ## E compact Overview design frozen: implementation/visual acceptance pending
 
 final result: blocked

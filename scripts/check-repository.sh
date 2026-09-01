@@ -106,6 +106,9 @@ if [[ -d "$plugin_app_root" ]]; then
   fi
   (
     cd "$plugin_app_root"
+    bun run ui:check
+    bun run ui:test
+    bun run ui:verify
     bun run check
     bun test src/*.test.ts
   )

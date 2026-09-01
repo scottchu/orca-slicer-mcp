@@ -334,6 +334,30 @@ printer environments support the described behavior.
   observation store. Process restarts, separate services, and host-owned stdio
   connectors remain separate state scopes; service liveness does not establish
   printer freshness, durable history, login, sleep, or physical acceptance.
+- **UI-001:** Focused-widget framework migration uses a parallel Svelte 5/
+  SvelteKit static lab before any production cutover. Shared `WidgetShell`,
+  header, body, footer, observed metadata, 44-pixel icon action and chart-frame
+  primitives own the visual anatomy. Components receive versioned normalized
+  presentation values through props/host bridge only and make no direct
+  printer, network, authentication or signaling request. The first private lab
+  candidate is `/dashboard/lab/bed_mesh`; only the private dashboard server may
+  serve that exact fixture route. It is absent from the public service,
+  dashboard directory/focused route inventory and MCP resource inventory. The
+  static page is deterministic, self-contained and production packaging excludes
+  the generic embed scaffold. Bed Mesh 2D and 3D occupy the exact same
+  responsive 4:3 `ChartFrame` `DOMRect` at 320/390/590/720 CSS-pixel widths,
+  preserve reported samples and actual-mm labels, use icon-only 44-pixel bottom
+  controls and non-flow feedback overlays, and contain no explanatory prose in
+  card flow. At those widths, 3D HTML axis/value labels are at least 12 CSS
+  pixels, visible and non-overlapping, while the projected surface covers at
+  least 70% of chart width and 42% of chart height. Runtime prop validation
+  admits only canonical millisecond UTC source time plus bounded freshness and
+  adapter-canonical profile metadata matching
+  `^[\p{L}\p{N} _.-]{1,80}$`/Unicode, with empty/dot/dotdot rejection. It
+  verifies supplied minimum, maximum and range against the finite matrix within
+  `0.000001 mm`,
+  then renders recomputed summary values. Decision 0032 fixes migration and
+  cutover gates.
 
 Implementation qualification: the current store bootstraps one acquisition on
 its first `current()` demand. After initial acquisition, plain reads use the

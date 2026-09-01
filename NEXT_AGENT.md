@@ -8,33 +8,55 @@ Resume from repository records, not chat history.
 2. `PROJECT_STATE.md`
 3. `docs/requirements.md`
 4. `docs/iterations/CURRENT` and every file in that iteration
-5. decisions 0014 through 0025 and 0027 through 0031 (0026 is reserved for earlier Queue work)
+5. decisions 0014 through 0025 and 0027 through 0032 (0026 is reserved for earlier Queue work)
 6. `plugins/u1-print-studio/PACKAGING.md`
 7. `docs/u1-print-studio-plugin-architecture.md`
 
 ## Current execution order
 
-The active source candidate is runtime 0.4.8/schema 12/observation-v14/
-camera-v10 with 26 resources and retained observation-v13/camera-v9 aliases.
-It applies the frozen compact 320/390/590/720 anatomy to every observation,
-camera and directory surface; user-facing Queue is Print Queue while selector
-`queue` is unchanged. Hosted and standalone fullscreen use same-document native
-or CSS presentation without a host display-mode request; pause/stall and one
-page lifecycle restore preserve bounded live continuity. Real Chromium layout
-checks cover a non-zero 390 × 844 camera in both fullscreen paths and thermal
-rows no taller than 64 pixels at all four frozen widths. PiP uses only the
-existing video's native same-document API, makes zero host display-mode
-requests and is hidden when unsupported. Host-reported fullscreen/PiP does not
-drive continuity state; host, visible and iframe titles use canonical labels.
-Author validation passes 271 tests/2,936 assertions, TypeScript and all three
-bundles. Automated local headless-Chromium layout evidence ran. No service,
-network, auth, camera, printer, actual-device or deployment contact has occurred
-for this candidate.
+PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`; guarded release
+`20260901-2cd7d96-pr58-20260901T073117-6df842` runs on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at runtime 0.4.8/
+schema 12/observation-v14/camera-v10. Twelve local-plus-tailnet dashboard route
+checks return 200 with byte-identical content, sixteen security checks pass and
+no rollback occurred. No printer, camera or actual-device acceptance was
+performed or claimed.
 
-Next: complete independent source review. If accepted, use the standing PR
-merge/guarded deploy/restart-BOTH/verify workflow. Do not skip exact served hash
-and route checks, and do not claim browser/device or physical acceptance from
-static validation.
+Decision 0032 also has an isolated implementation candidate for the incremental
+Svelte 5/SvelteKit rewrite. It adds only `plugins/u1-print-studio/app/ui`,
+app-level UI scripts and durable decision/iteration records. The private lab
+route is `/dashboard/lab/bed_mesh`; the candidate packages one deterministic
+self-contained `adapter-static` page into the existing private handler without
+changing production `/dashboard/bed_mesh`, the directory or any MCP resource.
+The public service returns 404 and the generic embed is not packaged.
+
+The candidate's shared primitives are `WidgetShell`, `WidgetHeader`,
+`WidgetBody`, `WidgetFooter`, `ObservedMeta`, `IconButton` and `ChartFrame`.
+Bed Mesh accepts bridge-injected normalized props only. Independent review
+blocked candidate `7aef4b5` because its equal geometry still contained a thin
+3D strip and unreadably small sprite labels. The renewed branch-head candidate
+uses nine stable 12-pixel HTML axis/bound labels, a full XYZ grid and an actual
+projected surface covering 91.9--92.5% of chart width and 53.4--53.7% of chart
+height at 320/390/590/720. All labels are visible, in-frame and non-overlapping;
+the exact 4:3 3D/2D DOMRect remains invariant and controls remain 44 pixels.
+Runtime props now validate freshness, canonical millisecond UTC source time,
+bounded profile text, finite rectangular matrix data and supplied summary
+agreement within `0.000001 mm`, then render exact recomputed summary values.
+
+Formal review blocked exact candidate `a6363fd` because that profile guard had
+not yet adopted the existing adapter allowlist. The corrected branch head uses
+Unicode `^[\p{L}\p{N} _.-]{1,80}$`, trims outer spaces and rejects empty,
+dot/dotdot, path, URL, bidi, markup and control values while retaining
+international letters/numbers and the allowed separators.
+
+Svelte check passes with zero errors/warnings, Vitest passes 8/8, two sequential
+builds produce the same 669,506-byte page with SHA-256
+`7eaf7f211bed3466665b61bb3d483e6309b9f17f7519f39cf6de44484dcc24ec`,
+and full gates pass 274 app tests/2,974 assertions, 21 lifecycle and 24 shipping
+tests plus bundles/signature. This is renewed author/implementation evidence,
+not independent approval. Next: independently review the exact new branch-head
+candidate. Do not deploy, contact services/printer or cut over a production
+widget without a separately reviewed and authorized boundary.
 
 PR56 is shipped. Exact reviewed head `e2702dc7a39c45665aa14155e85d13011d50526b`
 merged as `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`, tree

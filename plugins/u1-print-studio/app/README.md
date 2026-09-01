@@ -76,8 +76,9 @@ status-v4/v3 and camera-v3/v2/v1 preserve frozen older presentation bytes.
 The source contract is runtime 0.4.8/schema 12, with twenty-six resources, nine
 observation selectors, and unchanged two-visible/eight-app-only tool counts.
 The private source directory has ten entries including the composed Overview.
-The previously verified PR56 deployment remains runtime 0.4.7/schema 12/
-observation-v13/camera-v9 until this source is separately merged and shipped.
+PR58 deployed runtime 0.4.8/schema 12/observation-v14/camera-v10 to both
+services. The Svelte Bed Mesh lab is a later source candidate and does not
+change those runtime contract values or any MCP resource.
 A failure from an old task is not evidence that the current staged
 runtime is missing; verify the installed descriptor, executable, and a fresh
 task separately.
@@ -89,7 +90,9 @@ Bun and the untracked root `.env` are developer-only conveniences:
 ```sh
 cd plugins/u1-print-studio/app
 bun install
+bun install --cwd ui
 bun run bundle:widget-vendor
+bun run ui:verify
 bun run check
 bun test src/*.test.ts
 bun run bundle
@@ -103,6 +106,10 @@ directory at `http://127.0.0.1:8788/dashboard` and the focused camera widget at
 as `ui://u1-print-studio/camera-v10.html` (v9/v8/v7/v6/v5/v4 are current aliases; v3/v2/v1
 retain frozen compatibility bytes). Both use the same tool-call shape
 while retaining the exact HTTP signaling adapter for development coverage.
+
+The exact synthetic Svelte fixture lab is separately available only from the
+private dashboard at `/dashboard/lab/bed_mesh`; it is intentionally absent from
+the ten-entry directory and every MCP widget/resource.
 
 `bun run bundle:widget-vendor` is the reproducible widget-asset gate. It injects
 `src/widget-shared.css` byte-for-byte into both self-contained HTML resources

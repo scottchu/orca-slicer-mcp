@@ -7,6 +7,9 @@ import embeddedDashboardHostFile from "../public/status-dashboard-host.html" wit
 // Inline this static page in bundles so existing supervised releases keep their
 // fixed asset inventory and remain verifiable rollback targets.
 import dashboardIndexHtml from "../public/dashboard-index.html" with { type: "text" };
+// This deterministic SvelteKit output is self-contained and compiled into the
+// private dashboard bundle. It is not part of the public service or MCP assets.
+import bedMeshLabHtml from "../public/svelte-bed-mesh-lab.html" with { type: "text" };
 
 import {
   readCameraWidgetHtml,
@@ -52,6 +55,7 @@ const CAMERA_DASHBOARD_HOST_PATH = path.resolve(
   "camera-dashboard-host.html"
 );
 const DASHBOARD_PATH = "/dashboard";
+const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh";
 const FOCUSED_DASHBOARD_PATHS = new Set([
   "/dashboard/overview",
   "/dashboard/progress",
@@ -131,6 +135,27 @@ export function createStatusDashboardHandler(
     pathname: string
   ): Promise<boolean> => {
     const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + "/";
+    const isBedMeshLab =
+      pathname === BED_MESH_LAB_PATH || pathname === BED_MESH_LAB_PATH + "/";
+    if (isBedMeshLab) {
+      if (req.method !== "GET") {
+        res.setHeader("allow", "GET");
+        json(res, 405, { error: "method_not_allowed" });
+        return true;
+      }
+      res.writeHead(200, {
+        "cache-control": "no-store",
+        "content-security-policy":
+          "default-src 'none'; img-src data:; " +
+          "script-src 'unsafe-inline'; style-src 'unsafe-inline'; " +
+          "base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+        "content-type": "text/html; charset=utf-8",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+      });
+      res.end(bedMeshLabHtml);
+      return true;
+    }
     if (isIndex || FOCUSED_DASHBOARD_PATHS.has(pathname) ||
         pathname === CAMERA_DASHBOARD_PATH) {
       if (req.method !== "GET") {

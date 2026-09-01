@@ -5,6 +5,33 @@
 - Working baseline: `32762dd`
 - Status: active
 - Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
+- Current presentation migration (2026-09-01): decision 0032 starts an
+  incremental Svelte 5/SvelteKit static lab without cutting over focused
+  production routes or MCP resources. The first deployable slice is shared
+  compact widget primitives plus a synthetic Bed Mesh page served only by the
+  private dashboard at `/dashboard/lab/bed_mesh`. Acceptance is one
+  bridge-injected, network-free component with the exact same 4:3 chart DOMRect
+  in 2D/3D at 320/390/590/720, 44-pixel icon controls, overlay feedback and
+  real-browser captures, deterministic self-contained packaging, exact private
+  route 200/public 404 isolation and no acquisition. The generic embed is not a
+  production artifact. Existing `/dashboard/bed_mesh`, tools/resources, auth
+  and Tailscale behavior remain untouched.
+- Independent review blocked candidate `7aef4b5`: stable geometry did not make
+  its thin 3D projection or 3–6 pixel sprite labels readable. Renewal requires
+  a surface covering at least 70% × 42% of the 4:3 frame, stable non-overlapping
+  HTML axis/value labels at 12 pixels or larger, and runtime bridge validation
+  that checks freshness/source/profile metadata and recomputes/verifies matrix
+  summary values within the decision-0032 tolerance.
+- The renewed author candidate meets those measurable gates at all four frozen
+  widths: 91.9--92.5% × 53.4--53.7% real projection coverage, nine 12-pixel
+  in-frame/non-overlapping labels, strict bridge rejection fixtures and a
+  deterministic private-only package. Independent exact-candidate review is
+  still required; production remains unchanged.
+- Formal review blocked exact candidate `a6363fd` on its remaining profile-
+  allowlist mismatch. The corrected bridge matches the adapter's Unicode
+  letters/numbers plus space/underscore/dot/hyphen rule, trims outer spaces and
+  rejects empty/dot/dotdot, traversal, URL, bidi, markup and controls. Renewed
+  exact-candidate review remains required.
 - Latest shipped refinement (2026-08-31): PR56 reviewed `e2702dc7`, merged
   `cb7d06fd` (tree `dc290de1`) and guarded release
   `20260831-cb7d06f-pr56-20260831T234756-96fe19` runs on BOTH explicitly

@@ -10,26 +10,53 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
-### Compact widget density and camera continuity source candidate (2026-09-01)
+### Compact widget density and camera continuity shipped in PR58 (2026-09-01)
 
-The current author candidate is runtime 0.4.8/schema 12/observation-v14/
-camera-v10 with 26 resources and retained observation-v13/camera-v9 aliases.
-All focused observation cards, compact Overview, camera and the static
-directory now share a compact content-height anatomy at 320/390/590/720 widths.
-Canonical labels include Print Progress, U1 Camera, Print Queue and Fans & Air;
-stable selectors and tools are unchanged.
+PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`. Guarded release
+`20260901-2cd7d96-pr58-20260901T073117-6df842` runs on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at runtime 0.4.8/
+schema 12/observation-v14/camera-v10. All twelve local-plus-tailnet dashboard
+route checks return 200 with byte-identical content; sixteen security checks
+pass and no rollback occurred. This is release/service/static-route evidence,
+not printer, camera or actual-device acceptance; none of those surfaces was
+contacted or claimed.
 
-Hosted and standalone fullscreen use only continuity-preserving same-document
-native or CSS presentation, pause/stall recovery retains the peer, and one
-page lifecycle restore is bounded. The dedicated fullscreen camera-body flex
-chain has a non-zero 390 × 844 browser-layout regression. PiP is native-video
-only, makes zero host display-mode requests and is hidden when unavailable;
-host fullscreen/PiP context never drives continuity state. Host and iframe
-titles use canonical card labels. Thermal rows are bounded to 64 pixels and
-content panels have one inset owner. Author checks pass 271 tests/2,936
-assertions, TypeScript and all three bundles. Automated local headless-Chromium
-layout evidence ran; no service/network/printer/actual-device contact or
-deployment occurred. Independent review and guarded delivery are pending.
+### Svelte widget foundation candidate — private lab only (2026-09-01)
+
+Decision 0032 records an incremental Svelte 5/SvelteKit migration. An isolated
+source candidate adds shared widget primitives and a synthetic Bed Mesh lab at
+`/dashboard/lab/bed_mesh`; its build accepts only injected normalized props and
+contains no printer/network client. Existing production `/dashboard/bed_mesh`,
+MCP tools/resources, auth and compatibility assets remain unchanged.
+
+Independent review blocked candidate `7aef4b5`: equal frame geometry concealed
+an unreadably thin 3D projection and effectively 3--6 pixel sprite labels. The
+renewed source candidate replaces those sprites with nine stable 12-pixel HTML
+axis/bound labels, fits the actual projected surface to 91.9--92.5% of chart
+width and 53.4--53.7% of chart height, and validates freshness, canonical source
+time, bounded profile text, finite matrix data and matrix-derived summary
+agreement within `0.000001 mm` before rendering recomputed values.
+
+Formal review then blocked exact candidate `a6363fd`: its profile guard did not
+yet match the established adapter canonical allowlist and admitted path, URL,
+markup and bidirectional-control values. The corrected bridge uses Unicode
+`^[\p{L}\p{N} _.-]{1,80}$`, trims outer spaces and rejects empty, `.` and `..`;
+adversarial and international-valid component fixtures cover that boundary.
+
+The renewed deterministic 669,506-byte self-contained page, SHA-256
+`7eaf7f211bed3466665b61bb3d483e6309b9f17f7519f39cf6de44484dcc24ec`,
+is wired only to the private dashboard's exact lab route. Public HTTP, the
+ten-entry directory, focused production routes and MCP resources remain
+unchanged. Svelte check passes with zero errors/warnings and Vitest passes 8/8.
+Real Chrome through the private handler passes at 320/390/590/720: one exact 4:3
+`ChartFrame` has unchanged x/y/width/height across 3D/2D, every label is visible,
+in-frame and pairwise non-overlapping, controls are 44 pixels, and no overflow,
+console error or nonlocal request occurs. The full repository gate passes 274
+app tests/2,974 assertions, 21 lifecycle tests and 24 shipping tests; exact
+private/public isolation and deterministic package hashes pass. This is renewed
+implementation-role evidence only; independent exact-candidate review remains
+required. The candidate is unmerged and undeployed, and no running service,
+printer, camera, auth or Tailscale surface was contacted or changed.
 
 ### Unified widget and camera reliability shipped in PR56 (2026-08-31)
 
