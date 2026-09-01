@@ -9,10 +9,14 @@ reserved directory height, and makes Print Queue the canonical visible label
 without changing selector `queue`. Hosted and standalone fullscreen now use
 only same-document native/CSS transitions that preserve the live media identity
 and make no host display-mode or camera request. The dedicated camera-body flex
-chain retains a non-zero 390 × 844 rendered box; PiP coercion to fullscreen is
-rejected. Pause/stall events recover playback without immediate session
+chain retains a non-zero 390 × 844 rendered box. PiP is offered only through
+the live video's same-document native API, makes zero host display-mode calls,
+preserves media/session identity on enter and exit, and is hidden when native
+PiP is unavailable. Host-reported fullscreen/PiP never drives a synthetic
+continuity state. Pause/stall events recover playback without immediate session
 teardown, FPS requires fresh frame evidence, and one page lifecycle restore is
-bounded.
+bounded. Standalone document, visible and iframe titles use canonical view
+labels, including U1 Camera and Print Queue.
 
 Real Chromium density checks also bound every thermal row to 64 pixels at
 320/390/590/720, while nested empty and Current Job panels leave `.u1-body` as
@@ -21,12 +25,13 @@ their sole inset owner. Bed Mesh retains one fixed chart-frame height for both
 unreadable remains the first visual blocker for the proposed incremental
 SvelteKit migration; this stabilization slice does not broaden into that rewrite.
 
-Author checks pass 270 tests/2,888 assertions, TypeScript, reproducible vendor
+Author checks pass 271 tests/2,936 assertions, TypeScript, reproducible vendor
 injection, and runtime/stdio/server bundles. Exact hashes and commands are in
-`VALIDATION.md`. No printer, service, network, deployment or browser/device
-contact occurred. The next smallest action is independent exact-source review,
-then the standing PR merge/guarded deploy/restart-BOTH/verify workflow. Do not
-claim visual or physical acceptance from these source checks.
+`VALIDATION.md`. Automated local headless-Chromium layout evidence ran; no
+printer, service, network, deployment or actual-device contact occurred. The
+next smallest action is independent exact-source review, then the standing PR
+merge/guarded deploy/restart-BOTH/verify workflow. Do not claim actual-device
+visual or physical acceptance from these source checks.
 
 ## 2026-08-31 unified widget and camera reliability — shipped in PR56
 

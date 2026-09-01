@@ -53,12 +53,20 @@ observer. Pause and stalled events attempt playback recovery without closing
 the peer, media track or signaling session; FPS clears until new rendered-frame
 evidence recovers it.
 The fullscreen dashboard, dedicated camera body and camera form one bounded flex
-chain so preserved media also retains a non-zero rendered box. A PiP entry
-reply is accepted only when it grants PiP (and exit only when it grants inline);
-coercion to fullscreen is rejected and does not mutate local fullscreen state.
+chain so preserved media also retains a non-zero rendered box. PiP never uses
+the host display-mode bridge because mobile hosts may coerce that request to
+fullscreen before returning or remount the resource. PiP is offered only when
+the existing live video supports same-document native Picture in Picture;
+unsupported environments hide the action. Native PiP entry and exit preserve
+the video node, `srcObject`, peer, track and frame observer and make no host or
+camera request. Host context events reporting PiP or fullscreen do not drive a
+synthetic continuity state.
 One pagehide/pageshow cycle may restore persisted live intent once, while a
 fresh remount retains the existing one-attempt restore bound. Intrinsic-height
 notifications follow content or display-mode changes, never FPS-only ticks.
+
+Standalone host document, visible and iframe titles use the same canonical view
+labels as their cards, including U1 Camera, Job History and Print Queue.
 
 The addendum advances the source contract to runtime 0.4.8/schema 12,
 observation-v14/camera-v10 and 26 resources, retaining observation-v13 and

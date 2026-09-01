@@ -22,11 +22,14 @@ stable selectors and tools are unchanged.
 Hosted and standalone fullscreen use only continuity-preserving same-document
 native or CSS presentation, pause/stall recovery retains the peer, and one
 page lifecycle restore is bounded. The dedicated fullscreen camera-body flex
-chain has a non-zero 390 × 844 browser-layout regression; host PiP coercion to
-fullscreen is rejected. Thermal rows are bounded to 64 pixels and content
-panels have one inset owner. Author checks pass 270 tests/2,888
-assertions, TypeScript and all three bundles. No service/network/printer contact
-or deployment occurred; independent review and guarded delivery are pending.
+chain has a non-zero 390 × 844 browser-layout regression. PiP is native-video
+only, makes zero host display-mode requests and is hidden when unavailable;
+host fullscreen/PiP context never drives continuity state. Host and iframe
+titles use canonical card labels. Thermal rows are bounded to 64 pixels and
+content panels have one inset owner. Author checks pass 271 tests/2,936
+assertions, TypeScript and all three bundles. Automated local headless-Chromium
+layout evidence ran; no service/network/printer/actual-device contact or
+deployment occurred. Independent review and guarded delivery are pending.
 
 ### Unified widget and camera reliability shipped in PR56 (2026-08-31)
 

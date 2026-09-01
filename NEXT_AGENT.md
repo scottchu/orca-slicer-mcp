@@ -22,11 +22,14 @@ camera and directory surface; user-facing Queue is Print Queue while selector
 or CSS presentation without a host display-mode request; pause/stall and one
 page lifecycle restore preserve bounded live continuity. Real Chromium layout
 checks cover a non-zero 390 × 844 camera in both fullscreen paths and thermal
-rows no taller than 64 pixels at all four frozen widths. Host PiP coercion to
-fullscreen is rejected without changing local fullscreen state.
-Author validation passes 270 tests/2,888 assertions, TypeScript and all three
-bundles. No service, network, auth, camera, printer or deployment contact has
-occurred for this candidate.
+rows no taller than 64 pixels at all four frozen widths. PiP uses only the
+existing video's native same-document API, makes zero host display-mode
+requests and is hidden when unsupported. Host-reported fullscreen/PiP does not
+drive continuity state; host, visible and iframe titles use canonical labels.
+Author validation passes 271 tests/2,936 assertions, TypeScript and all three
+bundles. Automated local headless-Chromium layout evidence ran. No service,
+network, auth, camera, printer, actual-device or deployment contact has occurred
+for this candidate.
 
 Next: complete independent source review. If accepted, use the standing PR
 merge/guarded deploy/restart-BOTH/verify workflow. Do not skip exact served hash

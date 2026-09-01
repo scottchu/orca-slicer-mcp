@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>U1 Camera Dashboard</title>
+    <title>U1 Camera</title>
     <style>
       :root { color-scheme: light; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
       * { box-sizing: border-box; }
@@ -25,12 +25,12 @@
   </head>
   <body>
     <header hidden>
-      <strong>U1 Camera Test</strong>
+      <strong>U1 Camera</strong>
       <span id="bridge-state">starting</span>
       <span class="spacer"></span>
       <button id="reload" type="button">Reload widget</button>
     </header>
-    <iframe id="camera-widget" src="/camera-widget?standalone=1" title="U1 Print Studio camera widget" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>
+    <iframe id="camera-widget" src="/camera-widget?standalone=1" title="U1 Camera" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>
     <script>
       const frame = document.querySelector("#camera-widget");
       const bridgeState = document.querySelector("#bridge-state");

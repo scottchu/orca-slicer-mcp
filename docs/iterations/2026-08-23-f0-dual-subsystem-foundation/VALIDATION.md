@@ -18,7 +18,7 @@ bun run bundle
 bun run bundle:server
 ```
 
-Results: TypeScript passes; 270 tests/2,888 assertions pass; runtime, stdio and
+Results: TypeScript passes; 271 tests/2,936 assertions pass; runtime, stdio and
 server bundles build; the standalone runtime satisfies its designated code-sign
 requirement. Deterministic coverage includes the 320/390/590/720 density
 contract, multiple listeners for one DOM event, hosted native/local fullscreen
@@ -27,22 +27,26 @@ pause/stall recovery, FPS reset/recovery, one bounded
 pagehide/pageshow restore and no intrinsic-height notification on FPS-only
 ticks. Headless Chromium additionally measures a non-zero camera and video box
 for local and native fullscreen at an exact 390 × 844 viewport, and thermal rows
-at no more than 64 pixels at 320/390/590/720. PiP-to-fullscreen coercion is
-rejected, Job History/Print Queue remain canonical visible labels, nested panels
-have one inset owner, and 2D/3D Bed Mesh share one bounded chart-frame height.
+at no more than 64 pixels at 320/390/590/720. PiP makes zero host display-mode
+requests, native enter/exit preserve video/media/session/track/observer identity,
+and unsupported PiP is hidden without state mutation. Host-reported fullscreen
+or PiP never drives synthetic presentation state. Job History/Print Queue remain
+canonical card, host-document and iframe labels, nested panels have one inset
+owner, and 2D/3D Bed Mesh share one bounded chart-frame height.
 
 Frozen SHA-256:
 
 - `public/widget.html`: `a01768e408f3566d6e93aea4ea208930dfcd9e21e71ba372a15f8e7a306450e9`
-- `public/camera-widget.html`: `fb037f6093f4ae75d554af00ff2b71f5cf98e7c41181806b668790c227315d9b`
+- `public/camera-widget.html`: `43e4d030dff321a8eb18d9794fe0e3e71f0ddce4b3027a8533f83db01b0f9405`
 - `src/widget-shared.css`: `111eae4226d62272d27972f66978455770677e5409ed0d714afd88fad361f7cb`
 - `public/dashboard-index.html`: `c2d3ab47c2abdc4f4570bbfab35f1216ddddef9d10aef8e969ac5747d2e806e1`
-- `public/status-dashboard-host.html`: `8fe08aba0693bd7873faa9941877fb0a9508140b355baedf59cbca7ba4787749`
+- `public/status-dashboard-host.html`: `4460ae500cd8e5fb04edeabc48af8462f40048c4e6494d3be8ef7f87bc487a0c`
+- `public/camera-dashboard-host.html`: `25c50f7ca45c76d7d914922d461b56fe009993aba99bed341dff2df0434926f2`
 
-This is author static/software and simulator evidence only. No service,
-network, auth, Tailscale, camera, printer, deployment, browser/device render or
-physical acceptance occurred. Independent validation and formal review remain
-required before merge or guarded delivery.
+This is author static/software, simulator and automated local headless-Chromium
+layout evidence only. No service, network, auth, Tailscale, camera, printer,
+deployment or actual-device render/physical acceptance occurred. Independent
+validation and formal review remain required before merge or guarded delivery.
 
 ## 2026-08-31 unified widget and camera reliability — PR56 deployed
 

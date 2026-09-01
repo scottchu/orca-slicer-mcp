@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>U1 Printer Observation</title>
+    <title>U1 · View unavailable</title>
     <style>
       :root { color-scheme: light; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
       * { box-sizing: border-box; }
@@ -25,12 +25,12 @@
   </head>
   <body>
     <header hidden>
-      <strong id="view-title">U1 Printer Observation</strong>
+      <strong id="view-title">View unavailable</strong>
       <span id="bridge-state" role="status" aria-live="polite">starting</span>
       <span class="spacer"></span>
       <button id="reload" type="button">Reload widget</button>
     </header>
-    <iframe id="widget" src="/widget?standalone=1" title="U1 Print Studio observation widget"></iframe>
+    <iframe id="widget" src="/widget?standalone=1" title="View unavailable"></iframe>
     <script>
       "use strict";
       const routes = Object.freeze({
@@ -50,6 +50,7 @@
       const bridgeState = document.querySelector("#bridge-state");
       document.querySelector("#view-title").textContent = selected?.[1] ?? "View unavailable";
       document.title = selected ? `U1 · ${selected[1]}` : "U1 · View unavailable";
+      frame.title = selected?.[1] ?? "View unavailable";
       let initialized = false;
       const reply = (id, result, error) => {
         frame.contentWindow?.postMessage({ jsonrpc: "2.0", id, ...(error ? { error } : { result }) }, location.origin);

@@ -162,6 +162,8 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
 
 describe("camera widget presentation runtime", () => {
   test("keeps title, state and feedback in the white header outside genuine media", () => {
+    expect(html).toContain("<title>U1 Camera</title>");
+    expect(html).not.toContain("U1 Printer Camera");
     const body = html.split("<body")[1]!.split('<script type="module">')[0]!;
     const mediaStart = body.indexOf('id="camera"');
     expect(mediaStart).toBeGreaterThan(-1);
@@ -560,30 +562,40 @@ describe("camera widget presentation runtime", () => {
     expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
   });
 
-  test("unsupported PiP is absent and rejected requests preserve camera", async () => {
-    const host = cameraHost();
+  test("unsupported PiP is absent even when the host advertises PiP and preserves camera state", async () => {
+    const hostCalls: string[] = [];
+    const host = cameraHost({ openai: { requestDisplayMode: async ({ mode }: { mode: string }) => {
+      hostCalls.push(mode);
+      return { mode };
+    } } });
     host.acceptSnapshot();
+    const before = host.api.state();
+    host.api.applyHostContext({ displayMode: "inline", availableDisplayModes: ["inline", "fullscreen", "pip"] });
     expect(host.node("#fullscreen").hidden).toBe(false);
     expect(host.node("#picture-in-picture").hidden).toBe(true);
     await host.api.requestCameraDisplay("pip");
     expect(host.document.body.dataset.displayMode).toBe("inline");
     expect(host.node("#display-feedback").textContent).toContain("unavailable");
     expect(host.node("#camera").classList.contains("has-snapshot")).toBe(true);
+    expect(host.api.state()).toEqual(before);
+    expect(hostCalls).toEqual([]);
+    expect(host.messages.filter((message: any) => message.method === "ui/request-display-mode")).toHaveLength(0);
   });
 
-  test("host PiP coercion to fullscreen is rejected without changing local fullscreen state", async () => {
-    const modes: string[] = [];
-    const host = cameraHost({ openai: { requestDisplayMode: async ({ mode }: { mode: string }) => { modes.push(mode); return { mode: mode === "pip" ? "fullscreen" : mode }; } } });
+  test("host fullscreen and PiP context events never drive continuity presentation state", () => {
+    const host = cameraHost();
     host.acceptSnapshot();
-    host.api.applyHostContext({ availableDisplayModes: ["inline", "fullscreen", "pip"] });
-    await host.api.requestCameraDisplay("pip");
+    const before = host.api.state();
+    host.api.applyHostContext({ displayMode: "fullscreen", availableDisplayModes: ["inline", "fullscreen", "pip"] });
     expect(host.document.body.dataset.displayMode).toBe("inline");
     expect(host.node("#picture-in-picture").getAttribute("aria-pressed")).toBe("false");
     expect(host.node("#fullscreen").getAttribute("aria-pressed")).toBe("false");
-    expect(host.node("#display-feedback").textContent).toContain("not available");
     expect(host.document.body.dataset.localFullscreen).not.toBe("true");
     expect(host.node("#dashboard").dataset.fullscreenLayout).toBe("inline");
-    expect(modes).toEqual(["pip"]);
+    host.api.applyHostContext({ displayMode: "pip" });
+    expect(host.document.body.dataset.displayMode).toBe("inline");
+    expect(host.node("#picture-in-picture").getAttribute("aria-pressed")).toBe("false");
+    expect(host.api.state()).toEqual(before);
   });
 
   test("hosted local fullscreen fallback preserves live identities with zero host or camera calls", async () => {
@@ -657,18 +669,35 @@ describe("camera widget presentation runtime", () => {
     }
   }, 20_000);
 
-  test("MCP host PiP requests wait for an actual granted mode", async () => {
-    const host = cameraHost();
-    await host.reply(host.messages[0], { hostContext: { displayMode: "inline", availableDisplayModes: ["inline", "fullscreen", "pip"] } });
-    host.acceptSnapshot();
-    const pending = host.api.requestCameraDisplay("pip");
-    const request = host.messages.at(-1);
-    expect(request.method).toBe("ui/request-display-mode");
-    expect(request.params).toEqual({ mode: "pip" });
-    expect(host.document.body.dataset.displayMode).toBe("inline");
-    await host.reply(request, { mode: "pip" });
-    await pending;
-    expect(host.document.body.dataset.displayMode).toBe("pip");
+  test("hosted native PiP enter and exit preserve media identities and make zero host display requests", async () => {
+    const host = cameraHost(); host.acceptSnapshot(); host.api.prepareLive();
+    const track = { id: "same-pip-track" };
+    const media = { id: "same-pip-media", getTracks: () => [track] };
+    const liveNode = host.node("#live-stream");
+    liveNode.srcObject = media;
+    host.renderFrame(1); host.advance(1000); host.renderFrame(31);
+    const before = host.api.state();
+    const messageCount = host.messages.length;
+    host.document.pictureInPictureEnabled = true;
+    liveNode.requestPictureInPicture = async () => { host.document.pictureInPictureElement = liveNode; };
+    host.document.exitPictureInPicture = async () => { host.document.pictureInPictureElement = null; };
+    host.api.applyHostContext({ displayMode: "inline", availableDisplayModes: ["inline", "fullscreen", "pip"] });
+    expect(host.node("#picture-in-picture").hidden).toBe(false);
+    await host.api.requestCameraDisplay("pip");
+    expect(host.document.pictureInPictureElement).toBe(liveNode);
+    expect(host.node("#picture-in-picture").getAttribute("aria-pressed")).toBe("true");
+    await host.api.requestCameraDisplay("pip");
+    expect(host.document.pictureInPictureElement).toBeNull();
+    expect(host.node("#picture-in-picture").getAttribute("aria-pressed")).toBe("false");
+    expect(host.messages).toHaveLength(messageCount);
+    expect(host.messages.filter((message: any) => message.method === "ui/request-display-mode")).toHaveLength(0);
+    expect(host.api.state()).toEqual(before);
+    expect(host.api.state().livePeerConnection).toBe(before.livePeerConnection);
+    expect(host.api.state().liveFrameObserverGeneration).toBe(before.liveFrameObserverGeneration);
+    expect(host.api.state().liveFrameCallback).toBe(before.liveFrameCallback);
+    expect(host.node("#live-stream")).toBe(liveNode);
+    expect(host.node("#live-stream").srcObject).toBe(media);
+    expect(host.node("#live-stream").srcObject.getTracks()[0]).toBe(track);
   });
 
   test("native fullscreen and live-only PiP are feature-detected and not synthetic host modes", async () => {

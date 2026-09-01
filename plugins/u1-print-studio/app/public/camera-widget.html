@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>U1 Printer Camera</title>
+    <title>U1 Camera</title>
     <style>
       :root {
         color-scheme: light;
@@ -859,7 +859,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const applyHostContext = (context = {}) => {
         hostContext = { ...hostContext, ...context };
         const mode = context.displayMode ?? window.openai?.displayMode;
-        if (!localViewportFullscreen && ["inline", "fullscreen", "pip"].includes(mode)) document.body.dataset.displayMode = mode;
+        // Host fullscreen/PiP can remount the resource. Presentation state is
+        // therefore derived only from same-document browser APIs or our local
+        // CSS fallback; host context may only confirm the neutral inline mode.
+        if (!localViewportFullscreen && mode === "inline") document.body.dataset.displayMode = "inline";
         const safeArea = context.safeArea ?? window.openai?.safeArea;
         const insets = safeArea?.insets ?? safeArea ?? {};
         for (const side of ["top", "right", "bottom", "left"]) {
@@ -872,20 +875,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         notifyContentHeight();
       };
 
-      const hostSupports = (mode) => Array.isArray(hostContext.availableDisplayModes) && hostContext.availableDisplayModes.includes(mode);
       const canNativePip = () => relayRendering && (
         (document.pictureInPictureEnabled && typeof elements.liveStream.requestPictureInPicture === "function") ||
         elements.liveStream.webkitSupportsPresentationMode?.("picture-in-picture") === true
       );
       const updateDisplayControls = () => {
         elements.refreshSnapshot.disabled = cameraRefreshing || !hostBridgeAvailable;
-        const mode = document.body.dataset.displayMode;
         const nativeFullscreenActive = document.fullscreenElement === elements.dashboard;
-        const fullscreenActive = localViewportFullscreen || mode === "fullscreen" || nativeFullscreenActive;
-        const pipActive = mode === "pip" || document.pictureInPictureElement === elements.liveStream || elements.liveStream.webkitPresentationMode === "picture-in-picture";
+        const fullscreenActive = localViewportFullscreen || nativeFullscreenActive;
+        const pipActive = document.pictureInPictureElement === elements.liveStream || elements.liveStream.webkitPresentationMode === "picture-in-picture";
         elements.dashboard.dataset.fullscreenLayout = nativeFullscreenActive ? "native" : localViewportFullscreen ? "local" : "inline";
         elements.fullscreen.hidden = false;
-        elements.pip.hidden = !pipActive && !hostSupports("pip") && !canNativePip();
+        elements.pip.hidden = !pipActive && !canNativePip();
         elements.fullscreen.setAttribute("aria-pressed", String(fullscreenActive));
         elements.pip.setAttribute("aria-pressed", String(pipActive));
         elements.fullscreen.setAttribute("aria-label", fullscreenActive ? "Exit fullscreen" : "Fullscreen");
@@ -897,24 +898,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         const exiting = button.getAttribute("aria-pressed") === "true";
         button.disabled = true;
         try {
-          const hostModeActive = document.body.dataset.displayMode === requestedMode;
           if (requestedMode === "fullscreen" && (document.fullscreenElement || (!exiting && document.fullscreenEnabled && typeof elements.dashboard.requestFullscreen === "function"))) {
             if (document.fullscreenElement) await document.exitFullscreen();
             else await elements.dashboard.requestFullscreen();
           } else if (requestedMode === "fullscreen") {
             localViewportFullscreen = !exiting;
             document.body.dataset.localFullscreen = String(localViewportFullscreen);
-            document.body.dataset.displayMode = localViewportFullscreen ? "fullscreen" : (hostContext.displayMode ?? "inline");
+            document.body.dataset.displayMode = localViewportFullscreen ? "fullscreen" : "inline";
             notifyContentHeight();
-          } else if (hosted && hostSupports(requestedMode) && (!exiting || hostModeActive)) {
-            const mode = exiting ? "inline" : requestedMode;
-            const result = hostBridgeAvailable
-              ? await rpcRequest("ui/request-display-mode", { mode })
-              : await window.openai.requestDisplayMode({ mode });
-            const granted = result?.mode;
-            if (!["inline", "fullscreen", "pip"].includes(granted)) throw new Error("No granted mode");
-            if (granted === mode) applyHostContext({ displayMode: granted });
-            else setFeedback("This display mode is not available in this app.", "error");
           } else {
             if (document.pictureInPictureElement === elements.liveStream) await document.exitPictureInPicture();
             else if (elements.liveStream.webkitPresentationMode === "picture-in-picture") elements.liveStream.webkitSetPresentationMode("inline");
