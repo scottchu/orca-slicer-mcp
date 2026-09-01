@@ -41,4 +41,20 @@ describe("self-contained bed mesh renderer bundle", () => {
       for (const literal of authoritativeLiterals) expect(withoutShared(resource)).not.toContain(literal);
     }
   });
+
+  test("locks compact density tokens at 320, 390, 590 and 720 widths", () => {
+    const css = readFileSync(new URL("./widget-shared.css", import.meta.url), "utf8");
+    const tokens = (block: string) => {
+      for (const declaration of block.split("; ")) expect(css).toContain(declaration);
+    };
+    tokens("--u1-page-x: 18px; --u1-card-x: 24px; --u1-card-top: 24px; --u1-header-body-gap: 18px; --u1-icon-tile-size: 56px; --u1-size-title: 24px; --u1-body-bottom: 18px; --u1-footer-top: 12px; --u1-footer-bottom: 18px; --u1-row-y: 14px; --u1-grid-gap: 12px");
+    expect(css).toContain("@media (max-width: 620px)");
+    tokens("--u1-page-x: 8px; --u1-card-x: 18px; --u1-card-top: 18px; --u1-header-body-gap: 14px; --u1-icon-tile-size: 44px; --u1-size-title: 20px; --u1-body-bottom: 14px; --u1-footer-top: 10px; --u1-footer-bottom: 14px; --u1-row-y: 12px; --u1-grid-gap: 10px");
+    expect(css).toContain("@media (max-width: 480px)");
+    tokens("--u1-card-x: 16px; --u1-card-top: 16px; --u1-header-body-gap: 12px; --u1-body-bottom: 12px; --u1-footer-bottom: 12px; --u1-grid-gap: 8px");
+    expect(css).toContain("@media (max-width: 340px)");
+    tokens("--u1-card-x: 14px; --u1-icon-tile-size: 40px; --u1-size-title: 18px; --u1-row-y: 10px");
+    expect(css).toContain("width: var(--u1-icon-tile-size); height: var(--u1-icon-tile-size)");
+    expect(css).toContain(".u1-body { min-width: 0; margin: 0 var(--u1-card-x); padding: 0 0 var(--u1-body-bottom); }");
+  });
 });

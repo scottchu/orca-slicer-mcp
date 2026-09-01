@@ -1,5 +1,24 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 compact widget density and camera continuity — source candidate
+
+The author candidate is runtime 0.4.8/schema 12/observation-v14/camera-v10 with
+26 resources and retained observation-v13/camera-v9 aliases. It gives every
+observation and camera card the frozen compact width-token anatomy, removes
+reserved directory height, and makes Print Queue the canonical visible label
+without changing selector `queue`. Hosted fullscreen now prefers the MCP Apps
+display-mode bridge; standalone native/CSS transitions preserve the live media
+identity. Pause/stall events recover playback without immediate session
+teardown, FPS requires fresh frame evidence, and one page lifecycle restore is
+bounded.
+
+Author checks pass 268 tests/2,828 assertions, TypeScript, reproducible vendor
+injection, and runtime/stdio/server bundles. Exact hashes and commands are in
+`VALIDATION.md`. No printer, service, network, deployment or browser/device
+contact occurred. The next smallest action is independent exact-source review,
+then the standing PR merge/guarded deploy/restart-BOTH/verify workflow. Do not
+claim visual or physical acceptance from these source checks.
+
 ## 2026-08-31 unified widget and camera reliability — shipped in PR56
 
 Exact reviewed head `e2702dc7a39c45665aa14155e85d13011d50526b` merged in

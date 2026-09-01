@@ -141,10 +141,10 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.4.7",
+      runtimeVersion: "0.4.8",
       toolSchemaVersion: 12,
-      observationWidgetVersion: "observation-v13",
-      cameraWidgetVersion: "camera-v9",
+      observationWidgetVersion: "observation-v14",
+      cameraWidgetVersion: "camera-v10",
     });
   });
 
@@ -202,6 +202,12 @@ describe("standalone status dashboard", () => {
       expect(html.match(/>Implemented<\/span>/g)).toHaveLength(9);
       expect(html.match(/>Partial<\/span>/g)).toHaveLength(1);
       expect(html.match(/>Not implemented<\/span>/g)).toBeNull();
+      for (const label of ["Overview", "Print Progress", "U1 Camera", "Thermals", "Heads &amp; Filaments", "Current Job", "Job History", "Print Queue", "Fans &amp; Air", "Bed Mesh"]) {
+        expect(html).toContain(`<h2>${label}</h2>`);
+      }
+      expect(html).not.toMatch(/<h2>(?:Progress|Camera|Queue|Fans)<\/h2>/);
+      expect(html).not.toContain("min-height: 150px");
+      expect(html).not.toContain("min-height: 110px");
       expect(html).toContain("Up to 20 latest returned jobs");
       expect(html).toContain("Availability describes this release, not printer status.");
       expect(html).not.toMatch(/<script|<iframe|<img|<video|<audio|<form|<button|fetch\(|setInterval|setTimeout|target=|Read.only|Current reading|Printer telemetry|Observed/i);

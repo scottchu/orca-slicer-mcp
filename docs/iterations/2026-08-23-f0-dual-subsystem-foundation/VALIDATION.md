@@ -1,5 +1,44 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 compact widget density and camera continuity — author candidate
+
+The source candidate advances to runtime 0.4.8/schema 12/observation-v14/
+camera-v10 with 26 resources. Observation-v13 and camera-v9 remain readable
+current-asset aliases. Stable selectors, tools, acquisition, authorization and
+printer boundaries are unchanged; user-visible Queue is now Print Queue.
+
+Commands actually run from `plugins/u1-print-studio/app`:
+
+```text
+bun run bundle:widget-vendor
+bun run check
+bun test src/*.test.ts
+bun run bundle:runtime
+bun run bundle
+bun run bundle:server
+```
+
+Results: TypeScript passes; 268 tests/2,828 assertions pass; runtime, stdio and
+server bundles build; the standalone runtime satisfies its designated code-sign
+requirement. Deterministic coverage includes the 320/390/590/720 density
+contract, multiple listeners for one DOM event, host-over-native fullscreen
+precedence, same-peer pause/stall recovery, FPS reset/recovery, one bounded
+pagehide/pageshow restore and no intrinsic-height notification on FPS-only
+ticks.
+
+Frozen SHA-256:
+
+- `public/widget.html`: `8bf4ab6242b1b0a0aa4a96f9a73d6bbb8d8c6807c9e9b1cdd051f184ad4f0f07`
+- `public/camera-widget.html`: `a66e8689d20557359cffaba456473ab90a7b50d32083109ca02e24dc5b3d3be9`
+- `src/widget-shared.css`: `1a43bb86e8a8a53a04ee0f1dd7fe191f9fb28c97bb98c9ce3a221e8c1548626b`
+- `public/dashboard-index.html`: `c2d3ab47c2abdc4f4570bbfab35f1216ddddef9d10aef8e969ac5747d2e806e1`
+- `public/status-dashboard-host.html`: `8fe08aba0693bd7873faa9941877fb0a9508140b355baedf59cbca7ba4787749`
+
+This is author static/software and simulator evidence only. No service,
+network, auth, Tailscale, camera, printer, deployment, browser/device render or
+physical acceptance occurred. Independent validation and formal review remain
+required before merge or guarded delivery.
+
 ## 2026-08-31 unified widget and camera reliability — PR56 deployed
 
 PR56 exact reviewed head

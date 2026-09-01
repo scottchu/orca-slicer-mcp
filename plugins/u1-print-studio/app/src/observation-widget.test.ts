@@ -418,8 +418,8 @@ describe("production observation widget host boundary", () => {
 
   test("overview renders eight compact privacy-minimized headlines in one card", () => {
     const overview = mount({ toolOutput: fixture("overview") }).modules.innerHTML;
-    for (const text of ["Overview", "Coverage complete", "Progress", "Thermals",
-      "Heads &amp; Filaments", "Current Job", "Job History", "Queue", "Fans &amp; Air",
+    for (const text of ["Overview", "Coverage complete", "Print Progress", "Thermals",
+      "Heads &amp; Filaments", "Current Job", "Job History", "Print Queue", "Fans &amp; Air",
       "Bed Mesh", "42%", "Layer 21 / 50", "T2 220° / 220°", "Cavity 32°",
       "Snapmaker PLA Matte", "2 jobs returned",
       "1 completed · 1 cancelled", "0 jobs queued", "5 of 7 fans reported",
@@ -428,7 +428,7 @@ describe("production observation widget host boundary", () => {
     expect((overview.match(/<section class="instrument/g) ?? []).length).toBe(1);
     expect((overview.match(/aria-label="Refresh observation"/g) ?? []).length).toBe(1);
     expect(overview).not.toMatch(/fixture\.gcode|history-only\.gcode|file position|file size|mesh-surface|camera|health/i);
-    expect(html).toContain("@media (max-width: 480px) { .overview-grid { grid-template-columns: minmax(0, 1fr); } }");
+    expect(html).toContain("@media (max-width: 340px) { .head-grid, .overview-grid { grid-template-columns: minmax(0, 1fr); } }");
 
     const malformed = fixture("overview");
     malformed.module.tiles[2].material = "secret/access_token/private";
@@ -648,7 +648,7 @@ describe("production observation widget host boundary", () => {
       })),
     });
     const markup = mount({ toolOutput: payload }).modules.innerHTML;
-    expect(markup).toContain("Queue state"); expect(markup).toContain("Paused");
+    expect(markup).toContain("Print Queue state"); expect(markup).toContain("Paused");
     expect(markup).toContain("101 jobs"); expect(markup).toContain("Showing 100 of 101");
     expect(markup).toContain("1 job is not displayed");
     expect((markup.match(/duplicate\.gcode/g) ?? []).length).toBe(2);
@@ -661,14 +661,14 @@ describe("production observation widget host boundary", () => {
 
   test("Queue distinguishes observed empty, retained stale empty and all non-observations", () => {
     const empty = fixture("queue"); Object.assign(empty.module, { state: "known", freshness: "fresh", sourceObservedAt: "2026-08-31T12:00:00.000Z", queueState: "ready", totalCount: 0, truncated: false, reason: null });
-    expect(mount({ toolOutput: empty }).modules.innerHTML).toContain("Queue empty");
+    expect(mount({ toolOutput: empty }).modules.innerHTML).toContain("Print queue empty");
     const stale = structuredClone(empty); Object.assign(stale.module, { state: "stale", freshness: "stale", reason: "timeout" });
     const staleMarkup = mount({ toolOutput: stale }).modules.innerHTML;
-    expect(staleMarkup).toContain("Last observed queue was empty"); expect(staleMarkup).toContain("last observed queue");
-    for (const [state, reason, label] of [["unknown", "not_requested", "Queue not observed"], ["unsupported", "unsupported", "Queue unsupported"], ["unavailable", "network", "Queue unavailable"]]) {
+    expect(staleMarkup).toContain("Last observed print queue was empty"); expect(staleMarkup).toContain("last observed print queue");
+    for (const [state, reason, label] of [["unknown", "not_requested", "Print Queue not observed"], ["unsupported", "unsupported", "Print Queue unsupported"], ["unavailable", "network", "Print Queue unavailable"]]) {
       const unavailable = fixture("queue"); Object.assign(unavailable.module, { state, reason, sourceObservedAt: null, queueState: null, totalCount: null, truncated: false, items: [] });
       const markup = mount({ toolOutput: unavailable }).modules.innerHTML;
-      expect(markup).toContain(label); expect(markup).not.toContain("Queue empty");
+      expect(markup).toContain(label); expect(markup).not.toContain("Print queue empty");
     }
   });
 
@@ -677,15 +677,15 @@ describe("production observation widget host boundary", () => {
       items: [{ position: 1, filename: '<img src=x onerror="private()">.gcode', timeAdded: null, timeInQueueSeconds: 0 }],
     });
     const escaped = mount({ toolOutput: unsafe }).modules.innerHTML;
-    expect(escaped).toContain("Queue unavailable"); expect(escaped).not.toContain("&lt;img"); expect(escaped).not.toContain("<img src=x");
+    expect(escaped).toContain("Print Queue unavailable"); expect(escaped).not.toContain("&lt;img"); expect(escaped).not.toContain("<img src=x");
     for (const mutation of [{ totalCount: -1 }, { totalCount: 1, items: [] }, { queueState: "idle" }, { totalCount: 1, items: [{ position: 2, filename: "a.gcode" }] }]) {
       const malformed = structuredClone(unsafe); Object.assign(malformed.module, mutation);
       const markup = mount({ toolOutput: malformed }).modules.innerHTML;
-      expect(markup).toContain("Queue unavailable"); expect(markup).not.toContain("Queue empty");
+      expect(markup).toContain("Print Queue unavailable"); expect(markup).not.toContain("Print queue empty");
     }
     const unsupported = fixture("queue"); Object.assign(unsupported.module, { state: "unsupported", reason: "unsupported", sourceObservedAt: null, queueState: null, totalCount: null, truncated: false, items: [] });
     const unsupportedMarkup = mount({ toolOutput: unsupported }).modules.innerHTML;
-    expect(unsupportedMarkup).toContain("attempted Queue endpoint was unsupported");
+    expect(unsupportedMarkup).toContain("attempted Print Queue endpoint was unsupported");
     expect(unsupportedMarkup).not.toMatch(/printer (?:does not|did not) support/i);
   });
 });
@@ -879,7 +879,7 @@ describe("continuous reported print progress", () => {
 
   test("white surface, library icons and thin track remain stable in a dark host", () => {
     expect(html).toContain("color-scheme: light;"); expect(html).not.toContain("prefers-color-scheme: dark");
-    expect(html).toContain("--surface: var(--u1-surface);"); expect(html).toContain(".progress-track { height: 8px;");
+    expect(html).toContain("--surface: var(--u1-surface);"); expect(html).toContain(".progress-track { height: 6px;");
     expect(html).toContain("Feather Icons v4.29.2"); expect(html).toContain("Copyright (c) 2013-2023 Cole Bemis");
     const markup = progress(3, 5).modules.innerHTML;
     expect(markup).toContain('data-icon="feather-printer"');
@@ -1046,8 +1046,8 @@ describe("printer-reported material widget", () => {
       expect(card.indexOf('class="temperature"')).toBeLessThan(card.indexOf('class="material-color"'));
     }
     expect(rendered.indexOf('aria-label="Refresh observation"')).toBeGreaterThan(rendered.lastIndexOf("</article>"));
-    expect(html).toContain('@media (max-width: 760px) { .head-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }');
-    expect(html).toContain('.head-grid { grid-template-columns: minmax(0, 1fr);');
+    expect(html).toContain('@media (min-width: 760px) { .head-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }');
+    expect(html).toContain('@media (max-width: 340px) { .head-grid, .overview-grid { grid-template-columns: minmax(0, 1fr); } }');
     expect(html.match(/\.material-copy \{[^}]+\}/)?.[0]).toMatch(/width: 44px; min-height: 44px/);
     expect(html).toContain('.material-copy:focus-visible { outline: 3px solid #64748b; outline-offset: 3px; }');
     expect(html).toContain('data-icon="feather-copy"');

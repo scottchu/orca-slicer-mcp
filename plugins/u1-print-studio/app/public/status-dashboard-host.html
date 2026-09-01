@@ -35,14 +35,14 @@
       "use strict";
       const routes = Object.freeze({
         "/dashboard/overview": ["overview", "Overview"],
-        "/dashboard/progress": ["progress", "Print progress"],
+        "/dashboard/progress": ["progress", "Print Progress"],
         "/dashboard/thermals": ["thermals", "Thermals"],
-        "/dashboard/heads": ["heads", "Heads and filaments"],
+        "/dashboard/heads": ["heads", "Heads & Filaments"],
         "/dashboard/jobs": ["jobs", "Current Job"],
         "/dashboard/job_history": ["job_history", "Job History"],
-        "/dashboard/queue": ["queue", "Queue"],
-        "/dashboard/fans": ["fans", "Fans"],
-        "/dashboard/bed_mesh": ["bed_mesh", "Bed mesh"],
+        "/dashboard/queue": ["queue", "Print Queue"],
+        "/dashboard/fans": ["fans", "Fans & Air"],
+        "/dashboard/bed_mesh": ["bed_mesh", "Bed Mesh"],
       });
       const selected = Object.hasOwn(routes, location.pathname) ? routes[location.pathname] : null;
       const selectedView = selected?.[0];

@@ -70,14 +70,14 @@ cannot mount an MCP Apps component.
 After installing or upgrading the Marketplace plugin, start a new ChatGPT or
 Codex task before testing it. Existing tasks may still refer to the previous
 installed MCP process and widget URI. Current source descriptors point to
-`ui://u1-print-studio/observation-v13.html` and the separate `camera-v9.html`.
-Observation-v12 through v1 and camera-v8/v7/v6/v5/v4 serve current-asset compatibility aliases;
+`ui://u1-print-studio/observation-v14.html` and the separate `camera-v10.html`.
+Observation-v13 through v1 and camera-v9/v8/v7/v6/v5/v4 serve current-asset compatibility aliases;
 status-v4/v3 and camera-v3/v2/v1 preserve frozen older presentation bytes.
-The source contract is runtime 0.4.7/schema 12, with twenty-four resources, nine
+The source contract is runtime 0.4.8/schema 12, with twenty-six resources, nine
 observation selectors, and unchanged two-visible/eight-app-only tool counts.
 The private source directory has ten entries including the composed Overview.
-The previously verified PR54 deployment remains runtime 0.4.6/schema 12/
-observation-v12/camera-v8 until this source is separately merged and shipped.
+The previously verified PR56 deployment remains runtime 0.4.7/schema 12/
+observation-v13/camera-v9 until this source is separately merged and shipped.
 A failure from an old task is not evidence that the current staged
 runtime is missing; verify the installed descriptor, executable, and a fresh
 task separately.
@@ -100,7 +100,7 @@ The source `../.mcp.json` is intentionally a Bun adapter. For widget work
 without a host, `bun run dashboard` serves the standalone loopback status
 directory at `http://127.0.0.1:8788/dashboard` and the focused camera widget at
 `http://127.0.0.1:8788/dashboard/camera`. The camera route mounts the same HTML
-as `ui://u1-print-studio/camera-v9.html` (v8/v7/v6/v5/v4 are current aliases; v3/v2/v1
+as `ui://u1-print-studio/camera-v10.html` (v9/v8/v7/v6/v5/v4 are current aliases; v3/v2/v1
 retain frozen compatibility bytes). Both use the same tool-call shape
 while retaining the exact HTTP signaling adapter for development coverage.
 

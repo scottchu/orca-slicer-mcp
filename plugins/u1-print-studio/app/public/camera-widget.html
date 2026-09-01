@@ -20,14 +20,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
       * { box-sizing: border-box; }
-      body { margin: 0; min-height: 100vh; min-height: 100dvh; padding: calc(18px + var(--safe-top)) calc(16px + var(--safe-right)) calc(18px + var(--safe-bottom)) calc(16px + var(--safe-left)); color: var(--ink); background: var(--u1-canvas); }
+      body { margin: 0; padding: calc(var(--u1-page-x) + var(--safe-top)) calc(var(--u1-page-x) + var(--safe-right)) calc(var(--u1-page-x) + var(--safe-bottom)) calc(var(--u1-page-x) + var(--safe-left)); color: var(--ink); background: var(--u1-canvas); }
       button { border: 0; color: inherit; font: inherit; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
       button:not(:disabled) { cursor: pointer; }
       button:focus-visible { outline: 3px solid var(--u1-focus); outline-offset: 3px; }
-      .dashboard { width: min(100%, 1120px); margin: 0 auto; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--u1-shadow); }
-      .camera-header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, auto); align-items: center; gap: 14px 20px; margin-bottom: 18px; }
-      .camera-heading { display: flex; align-items: center; gap: 15px; min-width: 0; }
-      .camera-heading h1 { margin: 0; font-size: clamp(18px, 2.6vw, 24px); font-weight: 600; letter-spacing: -.02em; }
+      .dashboard { width: min(100%, 1120px); margin: 0 auto; padding: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--u1-shadow); }
+      .camera-header { margin: 0; }
+      .camera-heading { min-width: 0; }
       .icon-tile { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 12px; background: #fafbfc; }
       .icon-tile svg { width: 23px; height: 23px; stroke-width: 1.7; }
       .camera-mode { display: inline-flex; min-width: 0; max-width: 100%; justify-self: end; align-items: center; justify-content: flex-end; gap: 9px; color: var(--muted); font-size: clamp(12px, 1.8vw, 16px); line-height: 1.35; text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: normal; }
@@ -36,9 +35,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .camera-mode-live-dot { display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--u1-faint); }
       .camera-mode[data-mode="live"] .camera-mode-live-dot { background: var(--positive); }
       .camera-mode[data-mode="unavailable"] .camera-mode-live-dot { background: var(--negative); }
-      .camera-info { display: flex; flex-direction: column; gap: 8px; }
-      .camera-info-message { margin: 0 0 12px; color: var(--negative); font-size: 12px; font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
-      .camera-info-message[hidden] { display: none; }
       .camera { position: relative; aspect-ratio: 16 / 9; overflow: hidden; isolation: isolate; border-radius: 16px; background: #202327; }
       .display-feedback { position: absolute; top: 12px; left: 12px; z-index: 3; max-width: calc(100% - 24px); margin: 0; padding: 8px 10px; border: 1px solid rgba(255,255,255,.5); border-radius: 10px; color: var(--ink); background: rgba(255,255,255,.94); box-shadow: 0 2px 12px rgba(0,0,0,.13); font-size: 11px; font-weight: 550; line-height: 1.4; overflow-wrap: anywhere; }
       .display-feedback[data-kind="error"] { color: #8f2424; }
@@ -61,28 +57,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .camera[data-camera-mode="live"] .camera-button.close { display: inline-flex; }
       .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
       @media (max-width: 540px) {
-        body { padding: calc(10px + var(--safe-top)) calc(8px + var(--safe-right)) calc(10px + var(--safe-bottom)) calc(8px + var(--safe-left)); }
-        .dashboard { padding: 14px; border-radius: 20px; }
-        .camera-header { grid-template-columns: minmax(112px, 1fr) minmax(132px, auto); gap: 8px; margin-bottom: 14px; }
-        .camera-heading { gap: 12px; }
+        .dashboard { border-radius: 20px; }
         .camera-mode { gap: 6px; font-size: 12px; }
         .camera { border-radius: 12px; }
         .camera-bottom { right: 10px; bottom: 10px; left: 10px; }
         .camera-controls { gap: 6px; }
       }
       @media (max-width: 340px) {
-        .camera-header { grid-template-columns: minmax(104px, .8fr) minmax(128px, 1fr); }
-        .camera-heading { gap: 8px; }
-        .camera-heading h1 { font-size: 17px; }
-        .icon-tile { width: 40px; height: 40px; }
         .camera-mode { align-items: flex-start; }
       }
       body[data-display-mode="pip"] { padding: 0; background: #fff; }
-      body[data-display-mode="pip"] .dashboard { padding: 10px; }
       body[data-display-mode="fullscreen"] { display: grid; align-content: center; padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); background: #fff; }
       body[data-display-mode="fullscreen"] .dashboard { width: 100%; border: 0; box-shadow: none; }
-      body[data-local-fullscreen="true"] { width: 100vw; min-height: 100dvh; overflow: hidden; }
-      body[data-local-fullscreen="true"] .dashboard { display: flex; min-height: 100dvh; flex-direction: column; }
+      body[data-local-fullscreen="true"] { width: 100vw; height: 100dvh; overflow: hidden; }
+      body[data-local-fullscreen="true"] .dashboard { display: flex; height: 100dvh; flex-direction: column; }
       body[data-local-fullscreen="true"] .camera { flex: 1; min-height: 0; aspect-ratio: auto; }
       .dashboard:fullscreen { display: flex; flex-direction: column; width: 100vw; height: 100vh; border-radius: 0; }
       .dashboard:fullscreen .camera { flex: 1; min-height: 0; aspect-ratio: auto; }
@@ -119,8 +107,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   --u1-size-meta: 12px;
   --u1-size-body: 14px;
   --u1-size-value: 16px;
-  --u1-size-title: 27px;
-  --u1-size-hero: 64px;
+  --u1-size-title: 24px;
+  --u1-size-hero: 56px;
   --u1-leading-heading: 1.2;
   --u1-leading-body: 1.45;
   --u1-weight-regular: 400;
@@ -128,21 +116,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   --u1-weight-heading: 620;
   --u1-action-size: 44px;
   --u1-icon-size: 20px;
+  --u1-page-x: 18px;
   --u1-card-x: 24px;
-  --u1-card-top: 32px;
+  --u1-card-top: 24px;
+  --u1-header-body-gap: 18px;
+  --u1-icon-tile-size: 56px;
+  --u1-body-bottom: 18px;
+  --u1-footer-top: 12px;
+  --u1-footer-bottom: 18px;
+  --u1-row-y: 14px;
+  --u1-grid-gap: 12px;
 }
 
 .u1-card { height: auto; min-height: 0; overflow: hidden; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-card); color: var(--u1-ink); background: var(--u1-surface); box-shadow: var(--u1-shadow); }
-.u1-header { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; column-gap: 18px; row-gap: 4px; padding: var(--u1-card-top) var(--u1-space-8) var(--u1-space-6); }
-.u1-icon-tile { grid-column: 1; grid-row: 1; display: grid; place-items: center; width: 64px; height: 72px; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-inner); background: var(--u1-canvas); }
+.u1-header { display: grid; grid-template-columns: var(--u1-icon-tile-size) minmax(0, 1fr) auto; align-items: center; column-gap: var(--u1-header-body-gap); row-gap: 4px; padding: var(--u1-card-top) var(--u1-card-x) var(--u1-header-body-gap); }
+.u1-icon-tile { grid-column: 1; grid-row: 1; display: grid; place-items: center; width: var(--u1-icon-tile-size); height: var(--u1-icon-tile-size); border: 1px solid var(--u1-line); border-radius: var(--u1-radius-inner); background: var(--u1-canvas); }
 .u1-header-copy { grid-column: 2; grid-row: 1; min-width: 0; }
 .u1-header-result { grid-column: 3; grid-row: 1; min-width: 0; text-align: right; align-self: center; }
 .u1-title { margin: 0; color: var(--u1-ink); font: var(--u1-weight-heading) var(--u1-size-title) / var(--u1-leading-heading) var(--u1-font); letter-spacing: -0.035em; overflow-wrap: anywhere; }
-.u1-meta { margin-top: 8px; color: var(--u1-muted); font: var(--u1-weight-regular) var(--u1-size-meta) / var(--u1-leading-body) var(--u1-font); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.u1-body { min-width: 0; padding: 0 var(--u1-card-x) var(--u1-space-5); }
+.u1-meta { margin-top: 6px; color: var(--u1-muted); font: var(--u1-weight-regular) var(--u1-size-meta) / var(--u1-leading-body) var(--u1-font); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.u1-body { min-width: 0; margin: 0 var(--u1-card-x); padding: 0 0 var(--u1-body-bottom); }
 .u1-data-row { min-width: 0; border-color: var(--u1-line); font: var(--u1-weight-regular) var(--u1-size-body) / var(--u1-leading-body) var(--u1-font); }
 .u1-facts { min-width: 0; border-color: var(--u1-line); }
-.u1-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--u1-space-3); margin: 0 var(--u1-card-x); padding: var(--u1-space-3) 0 var(--u1-space-5); border-top: 1px solid var(--u1-line); }
+.u1-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--u1-space-3); margin: 0 var(--u1-card-x); padding: var(--u1-footer-top) 0 var(--u1-footer-bottom); border-top: 1px solid var(--u1-line); }
 .u1-local-actions, .u1-primary-actions { display: flex; align-items: center; gap: var(--u1-space-2); }
 .u1-primary-actions { margin-left: auto; }
 .u1-action { display: inline-grid; place-items: center; width: var(--u1-action-size); min-width: var(--u1-action-size); height: var(--u1-action-size); min-height: var(--u1-action-size); padding: 0; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-control); color: var(--u1-ink); background: var(--u1-soft); touch-action: manipulation; }
@@ -152,22 +148,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 .progress-instrument .progress-result { min-width: 0; margin: 0; }
 .progress-instrument .progress-percent { font-size: var(--u1-size-hero); }
-.progress-instrument .progress-track { height: 8px; }
+.progress-instrument .progress-track { height: 6px; }
 
 @media (max-width: 620px) {
-  :root { --u1-card-x: 18px; --u1-card-top: 20px; --u1-size-title: 20px; --u1-size-hero: 40px; }
-  .u1-header { grid-template-columns: 44px minmax(0, 1fr) auto; column-gap: 12px; padding: 20px 18px 16px; }
-  .u1-icon-tile { width: 44px; height: 52px; border-radius: 12px; }
-  .u1-body { padding-bottom: 16px; }
-  .u1-footer { padding: 12px 0 16px; }
+  :root {
+    --u1-page-x: 8px;
+    --u1-card-x: 18px;
+    --u1-card-top: 18px;
+    --u1-header-body-gap: 14px;
+    --u1-icon-tile-size: 44px;
+    --u1-size-title: 20px;
+    --u1-size-hero: 40px;
+    --u1-body-bottom: 14px;
+    --u1-footer-top: 10px;
+    --u1-footer-bottom: 14px;
+    --u1-row-y: 12px;
+    --u1-grid-gap: 10px;
+  }
+  .u1-icon-tile { border-radius: 12px; }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --u1-card-x: 16px;
+    --u1-card-top: 16px;
+    --u1-header-body-gap: 12px;
+    --u1-body-bottom: 12px;
+    --u1-footer-bottom: 12px;
+    --u1-grid-gap: 8px;
+  }
 }
 
 @media (max-width: 340px) {
-  :root { --u1-card-x: 16px; --u1-card-top: 18px; --u1-size-title: 18px; --u1-size-hero: 36px; }
-  .u1-header { grid-template-columns: 40px minmax(0, 1fr) auto; column-gap: 10px; padding: 18px 16px 14px; }
-  .u1-icon-tile { width: 40px; height: 46px; }
+  :root {
+    --u1-card-x: 14px;
+    --u1-icon-tile-size: 40px;
+    --u1-size-title: 18px;
+    --u1-size-hero: 36px;
+    --u1-row-y: 10px;
+  }
   .u1-meta { font-size: 11px; }
-  .u1-footer { margin: 0 16px; }
 }
 /* END GENERATED U1 SHARED CSS */
     </style>
@@ -184,9 +204,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       </header>
       <span class="sr-only" id="camera-status" role="status" aria-live="polite">Camera loading</span>
       <div class="u1-body">
-      <div class="camera-info">
-        <strong class="camera-info-message" id="camera-empty-message" role="status" aria-live="polite">Waiting for camera</strong>
-      </div>
+      <strong class="sr-only" id="camera-empty-message" role="status" aria-live="polite">Waiting for camera</strong>
       <section class="camera" id="camera" data-camera-mode="loading" data-camera-status="loading" data-camera-loading="true" aria-label="Printer camera">
         <div class="display-feedback" id="display-feedback" role="status" aria-live="polite" aria-atomic="true"></div>
         <div class="camera-empty" id="camera-empty"><svg aria-hidden="true" data-icon="feather-camera" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
@@ -253,6 +271,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       let feedbackTimer = null;
       let localViewportFullscreen = false;
       let restoredLiveIntentAttempted = false;
+      let resumeLiveAfterPageShow = false;
+      let pageShowRestoreAttempted = false;
 
       const CAMERA_TOOL_DEADLINE_MS = 10000;
       const CAMERA_DECODE_DEADLINE_MS = 1500;
@@ -296,6 +316,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }, duration);
       };
 
+      const notifyContentHeight = () => window.openai?.notifyIntrinsicHeight?.();
+
       const setCameraState = (state, loading = false) => {
         const labels = {
           loading: "Camera loading",
@@ -320,7 +342,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         elements.refreshSnapshot.setAttribute("aria-label", retrying ? "Retry camera snapshot" : "Refresh snapshot");
         elements.refreshSnapshot.title = retrying ? "Retry camera snapshot" : "Refresh snapshot";
         updateDisplayControls();
-        window.openai?.notifyIntrinsicHeight?.();
+        notifyContentHeight();
       };
 
       const formatCameraTime = (observedAt) => {
@@ -667,6 +689,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (refreshSnapshot) void refreshCameraFrame();
       };
 
+      const recoverLivePlayback = (reason = "video playback interrupted") => {
+        if (!livePreview || !livePeerConnection) return;
+        clearLiveFps();
+        const peer = livePeerConnection;
+        void Promise.resolve(elements.liveStream.play()).then(() => {
+          if (livePreview && livePeerConnection === peer) setFeedback();
+        }).catch(() => {
+          if (livePreview && livePeerConnection === peer) {
+            setFeedback("Live playback paused. Tap the live view to resume.", "error");
+          }
+        });
+        elements.cameraStatus.textContent = reason;
+      };
+
       const connectStreamResult = async (response) => {
         const stream = response?._meta?.cameraStream ?? response?.meta?.cameraStream;
         const sessionId = stream?.sessionId;
@@ -801,10 +837,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
 
       elements.liveStream.addEventListener("stalled", () => {
-        if (livePreview) activateSnapshotFallback("video playback stalled");
+        recoverLivePlayback("Live playback stalled; reconnecting playback.");
       });
       elements.liveStream.addEventListener("pause", () => {
-        if (livePreview && relayRendering) activateSnapshotFallback("video playback paused");
+        recoverLivePlayback("Live playback paused; reconnecting playback.");
       });
       elements.liveStream.addEventListener("error", () => {
         if (livePreview) activateSnapshotFallback("video playback failed");
@@ -823,6 +859,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           }
         }
         updateDisplayControls();
+        notifyContentHeight();
       };
 
       const hostSupports = (mode) => Array.isArray(hostContext.availableDisplayModes) && hostContext.availableDisplayModes.includes(mode);
@@ -849,14 +886,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         button.disabled = true;
         try {
           const hostModeActive = document.body.dataset.displayMode === requestedMode;
-          if (requestedMode === "fullscreen" && (document.fullscreenElement || (!exiting && document.fullscreenEnabled && typeof elements.dashboard.requestFullscreen === "function"))) {
-            if (document.fullscreenElement) await document.exitFullscreen();
-            else await elements.dashboard.requestFullscreen();
-          } else if (requestedMode === "fullscreen" && !hostSupports("fullscreen")) {
-            localViewportFullscreen = !exiting;
-            document.body.dataset.localFullscreen = String(localViewportFullscreen);
-            document.body.dataset.displayMode = localViewportFullscreen ? "fullscreen" : (hostContext.displayMode ?? "inline");
-          } else if ((hostSupports(requestedMode) && !exiting) || hostModeActive) {
+          if (hosted && hostSupports(requestedMode) && (!exiting || hostModeActive)) {
             const mode = exiting ? "inline" : requestedMode;
             const result = hostBridgeAvailable
               ? await rpcRequest("ui/request-display-mode", { mode })
@@ -867,6 +897,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             if (granted !== mode) setFeedback(granted === "fullscreen" && mode === "pip"
               ? "This app opened fullscreen instead of picture in picture."
               : "This display mode is not available in this app.", "error");
+          } else if (requestedMode === "fullscreen" && !hosted && (document.fullscreenElement || (!exiting && document.fullscreenEnabled && typeof elements.dashboard.requestFullscreen === "function"))) {
+            if (document.fullscreenElement) await document.exitFullscreen();
+            else await elements.dashboard.requestFullscreen();
+          } else if (requestedMode === "fullscreen") {
+            localViewportFullscreen = !exiting;
+            document.body.dataset.localFullscreen = String(localViewportFullscreen);
+            document.body.dataset.displayMode = localViewportFullscreen ? "fullscreen" : (hostContext.displayMode ?? "inline");
+            notifyContentHeight();
           } else {
             if (document.pictureInPictureElement === elements.liveStream) await document.exitPictureInPicture();
             else if (elements.liveStream.webkitPresentationMode === "picture-in-picture") elements.liveStream.webkitSetPresentationMode("inline");
@@ -903,7 +941,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const initializeBridge = async () => {
         if (!hosted) return null;
         const result = await rpcRequest("ui/initialize", {
-          appInfo: { name: "u1-camera-widget", version: "0.4.7-camera-v9" },
+          appInfo: { name: "u1-camera-widget", version: "0.4.8-camera-v10" },
           appCapabilities: {},
           protocolVersion: "2026-01-26",
         });
@@ -946,8 +984,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       for (const event of ["enterpictureinpicture", "leavepictureinpicture", "webkitpresentationmodechanged", "webkitbeginfullscreen", "webkitendfullscreen"]) elements.liveStream.addEventListener(event, updateDisplayControls);
       window.addEventListener("openai:set_globals", (event) => applyHostContext(event.detail?.globals));
       window.addEventListener("pagehide", () => {
+        resumeLiveAfterPageShow = livePreview || shouldRestoreLiveIntent();
+        pageShowRestoreAttempted = false;
         livePreview = false;
         stopLiveStream();
+      });
+      window.addEventListener("pageshow", () => {
+        if (!resumeLiveAfterPageShow || pageShowRestoreAttempted) return;
+        pageShowRestoreAttempted = true;
+        void bridgeReady.then(async (bridge) => {
+          if (!bridge) return;
+          if (!elements.camera.classList.contains("has-snapshot")) await refreshCameraFrame();
+          await openCameraStream(true);
+        });
       });
 
       applyHostContext();

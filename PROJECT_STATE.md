@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-08-31
+Last updated: 2026-09-01
 
 ## Baseline
 
@@ -9,6 +9,21 @@ Last updated: 2026-08-31
   subsystems joined by an explicit prepared-job/print-session handoff.
 
 ## Active iteration
+
+### Compact widget density and camera continuity source candidate (2026-09-01)
+
+The current author candidate is runtime 0.4.8/schema 12/observation-v14/
+camera-v10 with 26 resources and retained observation-v13/camera-v9 aliases.
+All focused observation cards, compact Overview, camera and the static
+directory now share a compact content-height anatomy at 320/390/590/720 widths.
+Canonical labels include Print Progress, U1 Camera, Print Queue and Fans & Air;
+stable selectors and tools are unchanged.
+
+Hosted fullscreen prefers host display mode, standalone fullscreen preserves
+same-document media identity, pause/stall recovery retains the peer, and one
+page lifecycle restore is bounded. Author checks pass 268 tests/2,828
+assertions, TypeScript and all three bundles. No service/network/printer contact
+or deployment occurred; independent review and guarded delivery are pending.
 
 ### Unified widget and camera reliability shipped in PR56 (2026-08-31)
 
