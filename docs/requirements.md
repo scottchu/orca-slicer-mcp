@@ -285,15 +285,28 @@ printer environments support the described behavior.
   app-only calls remain hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
-  require `u1.monitor` where remote OAuth applies. `observation-v12` is the
+  require `u1.monitor` where remote OAuth applies. `observation-v13` is the
   focused presentation resource. Every explicit camera open or reopen creates
-  a fresh snapshot-first `camera-v8` presentation; Go Live, retry, Close, and
+  a fresh snapshot-first `camera-v9` presentation; Go Live, retry, Close, and
   fallback remain widget functionality rather than additional model commands.
-  Observation-v11/v10/v9/v8/v7/v6/v5/v4/v3/v2/v1 and camera-v7/v6/v5/v4 are current-asset compatibility aliases.
+  Observation-v12/v11/v10/v9/v8/v7/v6/v5/v4/v3/v2/v1 and
+  camera-v8/v7/v6/v5/v4 are current-asset compatibility aliases.
   Frozen `status-v4`/`status-v3` and camera-v3/v2/v1 resources remain readable
   for retained mounted tasks without becoming a second observation path.
-  Source target is runtime 0.4.6/tool schema 12 with twenty-two resources; this source
-  contract does not claim deployment of those bytes to existing services.
+  Source target is runtime 0.4.7/tool schema 12 with twenty-four resources;
+  this source contract does not claim deployment of those bytes to existing
+  services. Observation and camera resources share one generated design-system
+  fragment. Camera snapshot acquisition and decode terminate successfully or
+  truthfully within twelve seconds, keep only one acquisition in flight, reject
+  stale completions, and retain a previously accepted frame across retries.
+  Same-document fullscreen transitions preserve the existing media session.
+  Heads and Overview present filament presence before material metadata: loaded
+  retains sanitized material/color, known empty suppresses contradictory
+  metadata, and unknown remains `N/A`. Fans use the fixed seven-row normalized
+  projection without inferring absent speed or RPM. Bed Mesh renders only the
+  reported grid, with exact 2D geometry and a locally bundled, exact-pinned
+  Three.js/OrbitControls 3D view; no runtime asset fetch or printer control is
+  added.
 
 ## Architecture and ontology
 

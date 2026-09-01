@@ -1,7 +1,8 @@
 # 0029: Complete the white read-only widget suite
 
 - Date: 2026-08-31
-- Status: A/Heads/B/C/D deployed; E Overview design frozen; visual acceptance unverified
+- Status: A/Heads/B/C/D deployed; unified source refinement frozen; merge,
+  deployment and visual acceptance unverified
 - Scope: F0/O1, OBS-007/008/010/011/013/014/015, CAM-008, API-005, decisions 0021/0025/0028
 
 ## Context and execution
@@ -20,6 +21,41 @@ refinement; then overview. Each slice passes local and independent exact-SHA
 review, PR merge, decision 0028 shipping, explicit restart of both existing
 services, and exact assets plus meaningful widget verification. Preserve source,
 protocol/browser, deployment, real-printer, and user-device evidence separately.
+
+## Unified source refinement addendum (2026-08-31)
+
+The next source candidate preserves every independently invokable view and the
+existing acquisition/projection boundaries while consolidating their visual
+anatomy. One durable CSS source is injected byte-for-byte into both observation
+and camera resources. Cards share the same header, body, data-row, footer and
+44 px action primitives; observation pages are content-height. Progress uses a
+fixed icon/title/result header grid, compact 8 px progress bar, only reported
+metrics and a bottom Refresh. This is presentation convergence, not a combined
+status card or new printer query.
+
+Heads and the Overview Heads tile are presence-first. Loaded filament may show
+sanitized material and the reported color treatment. Known empty shows exactly
+`Empty` with a neutral treatment and suppresses contradictory material/color
+metadata. Unknown shows `N/A`; it is never inferred as empty. Fans retain the
+fixed seven projected rows but use compact icon/name/percentage/RPM anatomy,
+with exact zero and unavailable semantics and no diagnostic labels or inferred
+fault state.
+
+Camera bootstrap owns one bounded acquisition generation. Snapshot acquisition
+plus decode succeeds or enters truthful terminal unavailable state within
+twelve seconds; retry is repeatable and a previously accepted frame is retained.
+Its status/FPS/time remain in the top-right header column. Feedback is an
+in-media toast below the controls. Inline-only mobile fullscreen uses a local
+same-document viewport mode and preserves peer, track, frame observer, FPS and
+snapshot identity rather than reopening the stream. A host remount accepts a
+snapshot before one bounded live-intent restoration.
+
+Bed Mesh follows decision 0030's refinement addendum. Runtime remains read-only
+and network-free. The source target is runtime 0.4.7/schema 12/observation-v13/
+camera-v9 with 24 resources; observation-v12 and camera-v8 are current-asset
+compatibility aliases. Source checks do not establish merge, deployment,
+service restart, browser rendering, phone behavior or physical-printer
+acceptance.
 
 ## E compact Overview composition (2026-08-31)
 

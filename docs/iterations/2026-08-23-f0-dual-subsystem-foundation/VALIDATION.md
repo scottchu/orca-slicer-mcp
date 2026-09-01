@@ -1,5 +1,44 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 unified widget and camera reliability — frozen author candidate
+
+The frozen source targets runtime 0.4.7/schema 12/observation-v13/camera-v9,
+retaining observation-v12 and camera-v8 as current-asset compatibility aliases
+for 24 total resources. The closed two-visible/eight-app-only tool surface,
+read-only boundary, routing and authorization are unchanged.
+
+Commands actually run from `plugins/u1-print-studio/app`:
+
+```text
+bun run bundle:widget-vendor
+bun run check
+bun test src/*.test.ts
+bun run bundle:runtime
+bun run bundle
+bun run bundle:server
+git diff --check
+```
+
+Results: TypeScript passes; 263 tests/2,734 assertions pass; runtime, stdio and
+server bundles build; the standalone runtime satisfies its designated code-sign
+requirement; generated Three.js/shared-CSS assets match their reproducible
+sources; the served vendor block retains the complete Three.js MIT copyright,
+permission and notice text; diff check is clean. Focused camera tests pass
+29/193, including the
+twelve-second acquisition/decode bound, one-in-flight and late response races,
+snapshot-before-one-remount-restore success/failure, measured FPS, persistent
+errors and fullscreen peer/track/node/observer identity with zero tool calls.
+
+Frozen SHA-256:
+
+- `public/widget.html`: `1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
+- `public/camera-widget.html`: `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`
+- `src/widget-shared.css`: `6f11808888df189fa83bac98169d85ab42bb10ef4c105037efa64cb7ccc9c1e2`
+
+This is static/software and simulator evidence only. Independent validation is
+in progress. No Git delivery, deployment, service restart, auth/Tailscale/
+printer contact, browser/device render or physical acceptance occurred here.
+
 ## 2026-08-31 E compact Overview — PR54 deployed
 
 PR53 merged the reviewed application as `4541ff12`. Its guarded deployment

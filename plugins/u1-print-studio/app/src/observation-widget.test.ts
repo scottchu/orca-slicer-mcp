@@ -166,7 +166,7 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
     },
     clearTimeout: (id: number) => timers.delete(id),
   });
-  vm.runInContext(`${source}\n__controls.refresh = refresh; __controls.retry = retryLoad; __controls.meshView = meshView; __controls.meshGeometry = () => meshGeometry; __controls.meshProjection = meshProjection;`, context);
+  vm.runInContext(`${source}\n__controls.refresh = refresh; __controls.retry = retryLoad; __controls.meshView = meshView; __controls.meshGeometry = () => meshGeometry; __controls.meshDisplayScale = meshDisplayScale; __controls.disposeMeshRenderer = disposeMeshRenderer;`, context);
   const message = (data: Payload, sender: unknown = parent) => events.get("message")?.({ data, source: sender });
   const deliver = (result: Payload, sender?: unknown) => message({ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: result }, sender);
   const respond = (request: Payload, result: Payload = {}) => message({ jsonrpc: "2.0", id: request.id, result });
@@ -380,7 +380,7 @@ describe("production observation widget host boundary", () => {
       expect(header).toContain(view === "bed_mesh" || view === "queue" || view === "fans" ? "Observation time unavailable" : "Observed ");
       expect(header).toContain('class="refresh-error" role="status"');
       expect(header).not.toContain("<button");
-      expect(footer).toMatch(/^<footer class="instrument-footer"><button[\s\S]*<\/button><\/footer>$/);
+      expect(footer).toMatch(/^<footer class="instrument-footer u1-footer"><div class="u1-primary-actions"><button class="refresh u1-action u1-action--round"[\s\S]*<\/button><\/div><\/footer>$/);
       expect(footer).not.toMatch(/<time|Observed|refresh-error|freshness-warning|role="status"/);
       expect(markup).toContain(view === "bed_mesh" || view === "queue" || view === "fans" ? "Observation time unavailable" : "Observed ");
       expect(markup).not.toMatch(/Read only|Current reading|Printer telemetry/);
@@ -397,7 +397,7 @@ describe("production observation widget host boundary", () => {
       expect(markup).not.toMatch(/<time|Observed|Observation time unavailable/);
       if (hasView) {
         expect(markup.indexOf("Try loading the view again.")).toBeLessThan(markup.indexOf("<footer"));
-        expect(markup.match(/<footer [\s\S]*?<\/footer>/)![0]).toBe('<footer class="instrument-footer"><button class="refresh" type="button" aria-label="Retry loading observation">Retry</button></footer>');
+        expect(markup.match(/<footer [\s\S]*?<\/footer>/)![0]).toBe('<footer class="instrument-footer u1-footer"><div class="u1-primary-actions"><button class="refresh u1-action" type="button" aria-label="Retry loading observation">Retry</button></div></footer>');
       } else {
         expect(markup).toContain("Reopen this card from the conversation");
         expect(markup).not.toContain("<footer");
@@ -421,7 +421,7 @@ describe("production observation widget host boundary", () => {
     for (const text of ["Overview", "Coverage complete", "Progress", "Thermals",
       "Heads &amp; Filaments", "Current Job", "Job History", "Queue", "Fans &amp; Air",
       "Bed Mesh", "42%", "Layer 21 / 50", "T2 220° / 220°", "Cavity 32°",
-      "Snapmaker PLA Matte", "Filament reported present", "2 jobs returned",
+      "Snapmaker PLA Matte", "2 jobs returned",
       "1 completed · 1 cancelled", "0 jobs queued", "5 of 7 fans reported",
       "Purifier detected · Cool chamber", "9 × 9 · 0.407 mm range"]) expect(overview).toContain(text);
     expect((overview.match(/data-overview-tile=/g) ?? []).length).toBe(8);
@@ -521,7 +521,7 @@ describe("production observation widget host boundary", () => {
         receipts: { status: { state: "unavailable", sourceObservedAt: retained.sourceObservedAt, freshness: retained.freshness } } });
       data.module.coverage = "partial";
       const markup = mount({ toolOutput: data }).modules.innerHTML;
-      const progress = markup.match(/<article class="overview-tile" data-overview-tile="progress">[\s\S]*?<\/article>/)![0];
+      const progress = markup.match(/<article class="overview-tile u1-data-row" data-overview-tile="progress">[\s\S]*?<\/article>/)![0];
       expect(progress).toContain("Not observed");
       expect(progress).not.toContain("Data could not be read");
       expect(progress).not.toMatch(/42%|Layer 21|Printing/);
@@ -592,10 +592,15 @@ describe("production observation widget host boundary", () => {
     const markup = mount({ toolOutput: data }).modules.innerHTML;
     for (const text of ["Fans &amp; Air", "Part cooling", "Air handling", "Tool 1 part cooling",
       "Tool 4 part cooling", "Cavity fan", "Purifier exhaust", "Purifier inner fan", "50%",
-      "Off", "0 RPM · Stopped", "Not measured", "Not reported", "Cool chamber", "Detected"]) expect(markup).toContain(text);
+      "Off", "N/A", "Cool chamber"]) expect(markup).toContain(text);
     const expectedTime = new Date(observedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     expect(markup).toContain(`Observed ${expectedTime}`);
     expect(markup).not.toMatch(/Control|View only|health|fault/i);
+    expect(markup).not.toMatch(/Commanded|Measured|Command not reported|Stopped|Detected/);
+    expect(markup.match(/data-icon="lucide-fan"/g)).toHaveLength(7);
+    expect(markup).toContain('style="--fan-level:50%"');
+    expect(markup).toContain('style="--fan-level:100%"');
+    expect(markup).not.toContain('style="--fan-level:101%"');
     expect(markup.indexOf("Observed ")).toBeLessThan(markup.indexOf("Part cooling"));
     expect(markup.indexOf('aria-label="Refresh observation"')).toBeGreaterThan(markup.indexOf("Air handling"));
 
@@ -623,7 +628,7 @@ describe("production observation widget host boundary", () => {
     data.module.readings.push({ id: "cavity", label: "Cavity", state: "known",
       reportedState: "known", actual: { state: "known", value: 31.5 } });
     const markup = mount({ toolOutput: data }).modules.innerHTML;
-    const cavity = markup.match(/<div class="strip zone-row"><div class="identity"><span><strong>Cavity<\/strong>[\s\S]*?<\/div><\/div>/)?.[0] ?? "";
+    const cavity = markup.match(/<div class="strip u1-data-row zone-row"><div class="identity"><span><strong>Cavity<\/strong>[\s\S]*?<\/div><\/div>/)?.[0] ?? "";
     expect(cavity).toContain("32°"); expect(cavity).toContain("Observed ");
     expect(cavity).not.toContain("Target");
     data.module.readings.at(-1).state = "unknown"; data.module.readings.at(-1).reportedState = "not_reported"; data.module.readings.at(-1).actual = { state: "unknown", value: null };
@@ -647,7 +652,9 @@ describe("production observation widget host boundary", () => {
     expect(markup).toContain("101 jobs"); expect(markup).toContain("Showing 100 of 101");
     expect(markup).toContain("1 job is not displayed");
     expect((markup.match(/duplicate\.gcode/g) ?? []).length).toBe(2);
-    expect(markup).toContain("Waited at observation 1m"); expect(markup).not.toMatch(/ETA|starts? in|live clock/i);
+    expect(markup).toContain("Waited at observation 1m");
+    const visibleText = markup.replace(/<[^>]+>/g, " ");
+    expect(visibleText).not.toMatch(/\bETA\b|starts? in|live clock/i);
     expect(markup.indexOf("Observed ")).toBeLessThan(markup.indexOf("duplicate.gcode"));
     expect(markup.indexOf("duplicate.gcode")).toBeLessThan(markup.indexOf("<footer"));
   });
@@ -715,9 +722,9 @@ describe("reported bed mesh widget", () => {
     const zero = mount({ toolOutput: data(mesh([[0, 0], [0, 0]])) }).modules.innerHTML;
     expect(zero).toContain("0.000 mm"); expect(zero).not.toMatch(/NaN|Infinity|unavailable/);
     expect(new Set([...zero.matchAll(/fill="(hsl[^\"]+)"/g)].map(match => match[1])).size).toBe(1);
-    const largest = mount({ toolOutput: data(mesh(Array.from({ length: BED_MESH_MAX_DIMENSION }, () => Array(BED_MESH_MAX_DIMENSION).fill(0)))) }).modules.innerHTML;
-    expect(largest.match(/<circle class="mesh-vertex" /g)).toHaveLength(4096);
-    expect(largest.match(/<polygon class="mesh-face" /g)).toHaveLength(7938);
+    const largestCard = mount({ toolOutput: data(mesh(Array.from({ length: BED_MESH_MAX_DIMENSION }, () => Array(BED_MESH_MAX_DIMENSION).fill(0)))) });
+    largestCard.mode2d.emit("click");
+    expect(largestCard.modules.innerHTML.match(/<rect class="mesh-cell" /g)).toHaveLength(4096);
     const invalid = mount({ toolOutput: data(mesh([[0, 0], [0, NaN]])) }).modules.innerHTML;
     expect(invalid).toContain("Bed mesh unavailable"); expect(invalid).not.toContain('<rect class="mesh-cell"');
   });
@@ -749,7 +756,7 @@ describe("reported bed mesh widget", () => {
     }
     const stale = mount({ toolOutput: data({ ...mesh(), state: "stale", freshness: "stale", reason: "network" }) }).modules.innerHTML;
     expect(stale.match(/<header [\s\S]*?<\/header>/)![0]).toContain("Refresh unavailable");
-    expect(stale).toContain("Stale"); expect(stale.match(/<circle class="mesh-vertex" /g)).toHaveLength(6);
+    expect(stale).toContain("Stale"); expect(stale).toContain('class="mesh-map"');
   });
   test("untrusted malformed grids and profile injection fail closed without breaking the view", () => {
     for (const matrix of [null, [], [[0, 1]], [[0, 1], [2]], Array.from({ length: 65 }, () => [0, 0]), [[0, 0], [0, Infinity]]]) {
@@ -759,42 +766,25 @@ describe("reported bed mesh widget", () => {
     const markup = mount({ toolOutput: data({ ...mesh(), profile: '<img src=x onerror="evil()">' }) }).modules.innerHTML;
     expect(markup).not.toContain("evil"); expect(markup).toContain("Reported probe grid");
   });
-  test("surface uses only adjacent reported vertices and exposes actual XYZ with height disclosure", () => {
+  test("3D surface preserves reported vertices and uses the bounded automatic display scale", () => {
     const card = mount({ toolOutput: data(mesh()) }); const markup = card.modules.innerHTML;
-    expect(markup).toContain('class="mesh-surface"');
-    expect(markup.match(/class="mesh-face"/g)).toHaveLength(4);
-    expect(markup.match(/class="mesh-vertex"/g)).toHaveLength(6);
-    expect(markup).toContain("X 10.000 mm, Y 20.000 mm, Z -0.200 mm");
-    expect(markup).toContain("X 110.000 mm, Y 220.000 mm, Z 0.400 mm");
-    expect(markup).toContain("Height exaggerated 100x"); expect(markup).toContain("Z (mm)");
-    expect(markup).toContain("Surface connects reported points; it adds no measurements.");
+    expect(html).toContain('class="mesh-three"');
+    expect(markup).toContain('class="mesh-map"');
+    expect(markup).toContain("Z display ×40");
+    expect(markup).not.toMatch(/Height ×|Height exaggerated|mesh-height|mesh-help|Surface connects/);
     const geometry = card.controls.meshGeometry();
     expect(geometry.vertices.map((p: Payload) => [p.x, p.y, p.z])).toEqual([[10, 20, -0.2], [60, 20, 0], [110, 20, 0.1], [10, 220, 0.3], [60, 220, -0.1], [110, 220, 0.4]]);
-    for (const match of markup.matchAll(/data-vertices="([\d,]+)"/g)) {
-      const indices = match[1]!.split(",").map(Number);
-      expect(indices).toHaveLength(3); expect(indices.every(i => i >= 0 && i < 6)).toBe(true);
-    }
+    expect(card.controls.meshDisplayScale(geometry)).toBeCloseTo(40);
   });
-  test("local bottom controls, pointer and keyboard retain camera state across refresh without acquisition", async () => {
+  test("icon-only bottom controls switch exact 2D fallback and Refresh is the only acquisition", async () => {
     const card = mount({ toolOutput: data(mesh()) }); await card.initialize();
-    const before = card.chart.innerHTML;
-    card.chart.emit("keydown", { key: "ArrowRight" }); expect(card.chart.innerHTML).not.toBe(before);
-    card.height.emit("change", { target: { value: "300" } }); expect(card.modules.innerHTML).toContain("Height exaggerated 300x");
-    const state = { ...card.controls.meshView };
-    card.deliver({ structuredContent: data(mesh()) }); expect(card.controls.meshView).toEqual(state);
-    card.mode2d.emit("click"); expect(card.height.disabled).toBe(true); expect(card.modules.innerHTML).toContain('class="mesh-map"');
-    card.mode3d.emit("click"); expect(card.height.disabled).toBe(false);
-    card.chart.emit("pointerdown", { pointerId: 1, button: 0, clientX: 50, clientY: 50 });
-    card.chart.emit("pointermove", { pointerId: 1, clientX: 75, clientY: 35 });
-    expect(card.controls.meshView.yaw).not.toBe(state.yaw);
-    card.chart.emit("pointerup");
-    for (let i = 0; i < 50; i++) card.chart.emit("keydown", { key: "ArrowUp" });
-    expect(card.controls.meshView.pitch).toBeCloseTo(5 * Math.PI / 12);
-    for (let i = 0; i < 50; i++) card.chart.emit("keydown", { key: "ArrowDown" });
-    expect(card.controls.meshView.pitch).toBeCloseTo(Math.PI / 12);
-    card.chart.emit("keydown", { key: "Home" }); expect(card.controls.meshView).toEqual({ mode: "3d", height: 100, yaw: -0.65, pitch: 0.55 });
-    card.height.emit("change", { target: { value: "1" } }); expect(card.modules.innerHTML).toContain("Height scale 1x");
-    card.reset.emit("click"); expect(card.controls.meshView.height).toBe(100);
+    card.mode2d.emit("click"); expect(card.modules.innerHTML).toContain('class="mesh-map"');
+    card.mode3d.emit("click"); expect(card.controls.meshView.mode).toBe("2d");
+    card.reset.emit("click");
+    expect(card.modules.innerHTML).toContain('aria-label="Show 3D bed mesh"');
+    expect(card.modules.innerHTML).toContain('aria-label="Show 2D bed mesh"');
+    expect(card.modules.innerHTML).toContain('aria-label="Reset bed mesh view"');
+    expect(card.modules.innerHTML).not.toMatch(/>3D surface<|>2D grid<|>Reset view</);
     expect(card.sent.filter(item => item.method === "tools/call")).toHaveLength(0);
     const refresh = card.controls.refresh(); await tick();
     const request = card.sent.find(item => item.method === "tools/call")!;
@@ -802,67 +792,28 @@ describe("reported bed mesh widget", () => {
     card.respond(request, { structuredContent: data(mesh()) }); await refresh;
     expect(card.sent.filter(item => item.method === "tools/call")).toHaveLength(1);
   });
-  test("projection stays finite and fits extreme or tiny accepted coordinates at every height scale", () => {
+  test("display scale oracle is finite, automatic and bounded for flat and extreme grids", () => {
     for (const bounds of [
       { xMin: -1000000, xMax: 1000000, yMin: -0.00001, yMax: 0.00001 },
       { xMin: 0, xMax: Number.MIN_VALUE, yMin: 0, yMax: Number.MIN_VALUE },
     ]) for (const heights of [[[0, 0], [0, 0]], [[-1000000, 1000000], [0, 0.5]]]) {
       const card = mount({ toolOutput: data({ ...mesh(heights), bounds }) });
-      for (const height of [1, 100, 300]) {
-        card.height.emit("change", { target: { value: String(height) } });
-        expect(card.chart.innerHTML).not.toMatch(/NaN|Infinity/);
-        const p = card.controls.meshProjection(card.controls.meshGeometry(), card.controls.meshView);
-        for (const vertex of p.vertices) {
-          expect(Number.isFinite(vertex.x) && Number.isFinite(vertex.y) && Number.isFinite(vertex.depth)).toBe(true);
-          expect(vertex.x).toBeGreaterThanOrEqual(67); expect(vertex.x).toBeLessThanOrEqual(305);
-          expect(vertex.y).toBeGreaterThanOrEqual(42); expect(vertex.y).toBeLessThanOrEqual(224);
-        }
-      }
+      const scale = card.controls.meshDisplayScale(card.controls.meshGeometry());
+      expect(Number.isFinite(scale)).toBe(true); expect(scale).toBeGreaterThanOrEqual(1); expect(scale).toBeLessThanOrEqual(300);
+      expect(card.modules.innerHTML).not.toMatch(/NaN|Infinity/);
     }
   });
-  test("height-field painter order puts the nearest triangle last at overlapping screen points", () => {
-    const matrix = [[-0.5, 0.8, 0.2], [0.9, -0.9, 0.7], [-0.3, -0.9, -0.9]];
-    const card = mount({ toolOutput: data({ ...mesh(matrix), bounds: { xMin: 0, xMax: 200, yMin: 0, yMax: 200 } }) });
-    card.height.emit("change", { target: { value: "300" } });
-    const hitsAt = (x: number, y: number) => {
-      const geometry = card.controls.meshGeometry();
-      const projected = card.controls.meshProjection(geometry, card.controls.meshView).vertices;
-      const hits: Array<{ indices: string; depth: number }> = [];
-      // Inspect actual SVG draw order; interpolate depth at this pixel, never at centroids.
-      for (const match of card.chart.innerHTML.matchAll(/class="mesh-face" data-vertices="([\d,]+)"/g)) {
-        const [a, b, c] = match[1]!.split(",").map((i: string) => projected[Number(i)]) as Payload[];
-        const area = (b!.y - c!.y) * (a!.x - c!.x) + (c!.x - b!.x) * (a!.y - c!.y);
-        if (Math.abs(area) < 1e-10) continue;
-        const u = ((b!.y - c!.y) * (x - c!.x) + (c!.x - b!.x) * (y - c!.y)) / area;
-        const v = ((c!.y - a!.y) * (x - c!.x) + (a!.x - c!.x) * (y - c!.y)) / area;
-        const w = 1 - u - v;
-        if (Math.min(u, v, w) > 1e-7) hits.push({ indices: match[1]!, depth: u * a!.depth + v * b!.depth + w * c!.depth });
-      }
-      return hits;
-    };
-    const regression = hitsAt(172, 63);
-    expect(regression.map(hit => hit.indices)).toEqual(["1,2,5", "1,5,4"]);
-    expect(regression[1]!.depth).toBeGreaterThan(regression[0]!.depth);
-    let overlaps = 0;
-    for (const [xMax, yMax] of [[200, 200], [80, 320], [320, 80]]) {
-      Object.assign(card.controls.meshGeometry().bounds, { xMax, yMax });
-      const geometry = card.controls.meshGeometry();
-      for (const p of geometry.vertices) { p.x = p.column * xMax! / 2; p.y = p.row * yMax! / 2; }
-      for (const yaw of [-0.65, 0, Math.PI / 4, Math.PI / 2, Math.PI, 3 * Math.PI / 2, 5.1]) {
-        card.controls.meshView.yaw = yaw;
-        for (const pitch of [Math.PI / 12, 0.55, 5 * Math.PI / 12]) {
-          card.controls.meshView.pitch = pitch;
-          card.height.emit("change", { target: { value: "300" } });
-          for (let x = 73; x <= 301; x += 19) for (let y = 47; y <= 219; y += 17) {
-            const hits = hitsAt(x, y);
-            if (hits.length < 2) continue;
-            overlaps++;
-            expect(hits.at(-1)!.depth).toBeCloseTo(Math.max(...hits.map(hit => hit.depth)), 9);
-          }
-        }
-      }
-    }
-    expect(overlaps).toBeGreaterThan(100);
+  test("Three renderer uses deterministic adjacent triangles, real Z grid labels and bounded lifecycle", () => {
+    expect(html).toContain("new THREE.OrthographicCamera");
+    expect(html).toContain("indices.push(a, c, d, a, d, b)");
+    expect(html).toContain("for (const value of meshTicks(geometry))");
+    expect(html).toContain('label(`${meshAxis(value)} mm`');
+    expect(html).toContain("new ResizeObserver(resize)");
+    expect(html).toContain("controls.dispose()");
+    expect(html).toContain("material.map?.dispose?.()");
+    expect(html).toContain("renderer.forceContextLoss?.()");
+    expect(html).toContain('new THREE.WebGLRenderer({ antialias: true');
+    expect(html).not.toMatch(/meshProjection|meshSurface|height-field painter/);
   });
 });
 
@@ -928,7 +879,7 @@ describe("continuous reported print progress", () => {
 
   test("white surface, library icons and thin track remain stable in a dark host", () => {
     expect(html).toContain("color-scheme: light;"); expect(html).not.toContain("prefers-color-scheme: dark");
-    expect(html).toContain("--surface: #fff;"); expect(html).toContain(".progress-track { height: 8px;");
+    expect(html).toContain("--surface: var(--u1-surface);"); expect(html).toContain(".progress-track { height: 8px;");
     expect(html).toContain("Feather Icons v4.29.2"); expect(html).toContain("Copyright (c) 2013-2023 Cole Bemis");
     const markup = progress(3, 5).modules.innerHTML;
     expect(markup).toContain('data-icon="feather-printer"');
@@ -936,7 +887,7 @@ describe("continuous reported print progress", () => {
 
   test("large progress percentage meets 3:1 contrast against the actual card surface", () => {
     const token = (name: string) => {
-      const value = html.match(new RegExp(`--${name}:\\s*(#[0-9a-f]{3,6});`, "i"))?.[1];
+      const value = html.match(new RegExp(`--u1-${name}:\\s*(#[0-9a-f]{3,6});`, "i"))?.[1];
       expect(value).toBeDefined();
       return value!;
     };
@@ -988,11 +939,12 @@ describe("printer-reported material widget", () => {
     } });
   };
 
-  test("renders four physical slots, metadata, safe visible colors and reported presence with its own time", () => {
+  test("renders four physical slots with presence-first loaded, empty and unknown material states", () => {
     const card = mount({ toolOutput: materialFixture() });
     const rendered = card.modules.innerHTML;
     expect((rendered.match(/class="head-card/g) ?? [])).toHaveLength(4);
-    for (const label of ["T1", "T2", "T3", "T4", "Fixture PLA Matte", "Generic PETG", "Other ABS", "Material unknown", "#FFFFFFFF", "#000000FF", "#6F4C2FFF", "No filament reported", "Presence unknown", "Active"]) expect(rendered).toContain(label);
+    for (const label of ["T1", "T2", "T3", "T4", "Fixture PLA Matte", "Generic PETG", "Empty", "N/A", "#FFFFFFFF", "#000000FF", "Active"]) expect(rendered).toContain(label);
+    expect(rendered).not.toMatch(/No filament reported|Filament reported present|Presence unknown|Other ABS|#6F4C2FFF|NONE/);
     expect(rendered).toContain("Printer-reported material");
     expect(rendered).toContain('style="background-color:#FFFFFFFF"');
     expect(rendered).not.toContain("NONE");
@@ -1012,17 +964,18 @@ describe("printer-reported material widget", () => {
       const missing = mount({ toolOutput: data }).modules.innerHTML;
       expect(missing).toContain(`Material data ${state}`);
       expect(missing).toContain("Printer-reported material · Observation time unavailable");
-      expect((missing.match(/Material unknown/g) ?? [])).toHaveLength(4);
+      expect((missing.match(/>N\/A</g) ?? []).length).toBeGreaterThanOrEqual(4);
     }
   });
 
   test("partial labels retain the reported subtype and explicitly name missing vendor and material", () => {
     const data = materialFixture();
+    data.module.items[0].material.value = null;
     data.module.items[0].vendor.value = null;
     data.module.items[0].materialType.value = null;
-    expect(mount({ toolOutput: data }).modules.innerHTML).toContain("Vendor unknown Material unknown Matte");
+    expect(mount({ toolOutput: data }).modules.innerHTML).toContain('class="material">N/A N/A Matte</div>');
     data.module.items[0].materialType.value = "PLA";
-    expect(mount({ toolOutput: data }).modules.innerHTML).toContain("Vendor unknown PLA Matte");
+    expect(mount({ toolOutput: data }).modules.innerHTML).toContain('class="material">N/A PLA Matte</div>');
   });
 
   test("malicious host-delivered colors are not CSS and labels cannot inject HTML", async () => {
@@ -1031,7 +984,7 @@ describe("printer-reported material widget", () => {
     data.module.items[0].vendor.value = '<img src="https://private.invalid" onerror="alert(1)">';
     data.module.items[1].physicalTool = '<img onerror="alert(1)">';
     const card = mount({ toolOutput: data });
-    expect(card.modules.innerHTML).toContain("Color unknown");
+    expect(card.modules.innerHTML).toContain("N/A");
     expect(card.modules.innerHTML).toContain("&lt;img");
     expect(card.modules.innerHTML).not.toMatch(/background-image|<img|onerror="|class="material-swatch"[^>]*https:/);
     await card.initialize();
@@ -1051,7 +1004,7 @@ describe("printer-reported material widget", () => {
     for (const [color, tint] of cases) {
       const data = materialFixture(); data.module.items[0].color.value = color;
       const rendered = mount({ toolOutput: data }).modules.innerHTML;
-      const card = rendered.match(/<article class="head-card active"[\s\S]*?<\/article>/)![0];
+      const card = rendered.match(/<article class="head-card u1-data-row active"[\s\S]*?<\/article>/)![0];
       expect(card).toContain(`aria-label="Tool 1" style="background-color:${tint}"`);
       expect(card).toContain(`class="material-swatch" aria-hidden="true" style="background-color:${color!.toUpperCase()}"`);
       expect(card).toContain(`data-color="${color!.toUpperCase()}"`);
@@ -1067,12 +1020,12 @@ describe("printer-reported material widget", () => {
   test("missing, invalid and untrusted-state colors stay neutral without a copy action", () => {
     for (const raw of [null, "red", "#FFF", "#1234567", " #ffffff", "#ffffff\" onclick=\"bad", 123456]) {
       const data = materialFixture(); data.module.items[0].color.value = raw;
-      const markup = mount({ toolOutput: data }).modules.innerHTML.match(/<article class="head-card active"[\s\S]*?<\/article>/)![0];
-      expect(markup).toContain("Color unknown");
+      const markup = mount({ toolOutput: data }).modules.innerHTML.match(/<article class="head-card u1-data-row active"[\s\S]*?<\/article>/)![0];
+      expect(markup).toContain("N/A");
       expect(markup).not.toMatch(/style=|class="material-copy"|class="material-swatch"/);
     }
     const data = materialFixture(); data.module.items[0].color.state = "unknown";
-    expect(mount({ toolOutput: data }).copyButtons).toHaveLength(3);
+    expect(mount({ toolOutput: data }).copyButtons).toHaveLength(1);
   });
 
   test("reference card hierarchy keeps identity, state, presence and current-target temperatures independent", () => {
@@ -1108,14 +1061,14 @@ describe("printer-reported material widget", () => {
     });
     await card.initialize();
     expect(writes).toEqual([]);
-    const button = card.copyButtons[3]!;
+    const button = card.copyButtons[1]!;
     button.emit("click");
-    expect(writes).toEqual(["#6F4C2FFF"]);
+    expect(writes).toEqual(["#000000FF"]);
     expect(button.disabled).toBe(true); expect(button.attributes["aria-busy"]).toBe("true");
     expect(button.feedback.textContent).toBe("Copying color…");
     button.emit("click"); expect(writes).toHaveLength(1);
     resolveCopy(); await tick();
-    expect(button.feedback.textContent).toBe("Copied #6F4C2FFF");
+    expect(button.feedback.textContent).toBe("Copied #000000FF");
     expect(button.disabled).toBe(false); expect(button.attributes["aria-busy"]).toBe("false");
     expect(card.sent.filter(item => item.method === "tools/call")).toHaveLength(0);
     expect(card.modules.innerHTML).toContain('role="status" aria-live="polite"');

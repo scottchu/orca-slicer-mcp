@@ -17,6 +17,33 @@ reference's profile-management controls, matrix selector, endstops and filament
 panels are outside this request. No reference image or private attachment path
 is committed; this description records the relevant visual intent.
 
+## Source refinement addendum (2026-08-31)
+
+The unified source candidate replaces the initial custom SVG 3D painter and its
+visible height selector/instruction paragraph. The accepted 3D renderer is an
+exact-pinned, locally bundled Three.js plus OrbitControls build using an
+orthographic camera, antialiasing, bounded device-pixel ratio, ResizeObserver,
+bounded orbit/zoom and explicit disposal. It makes no CDN or runtime fetch and
+ships the complete upstream MIT copyright and permission notice inside the
+self-contained widget resource.
+
+The surface still uses every exact reported vertex and deterministic adjacent
+triangles without interpolation or smoothing. X and Y preserve their physical
+aspect. Z has spatially aligned axes, actual-mm ticks and horizontal grid
+planes. Display exaggeration is automatic and finite-safe:
+`range > 0 ? clamp((0.12 * max(xSpan, ySpan)) / range, 1, 300) : 1`.
+Only a compact `Z display ×N` disclosure is shown; axes, summaries and
+tooltips remain actual millimetres. The exact-orientation SVG grid is retained
+as the selected 2D view and as the WebGL failure fallback.
+
+Bottom controls are icon-only, locally attributed Feather 4.29.2 controls for
+3D, 2D and Reset, with a separated Refresh action. Each remains at least 44 px
+and carries title, accessible name and selected state where applicable. There
+is no visible height selector or help paragraph. Acquisition, normalized data,
+privacy, freshness, stale retention and read-only boundaries from this decision
+remain unchanged. This addendum supersedes only the presentation and local
+interaction details below; it does not claim browser/device visual acceptance.
+
 The current ordered releases are A (already deployed), F Bed Mesh surface,
 B Queue, C fans/chamber, D Current Job/History, and E overview. The new priority
 does not cancel the remaining tracks or their unfinished acceptance. G's

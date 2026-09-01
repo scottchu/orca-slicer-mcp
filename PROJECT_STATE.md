@@ -10,6 +10,26 @@ Last updated: 2026-08-31
 
 ## Active iteration
 
+### Unified widget and camera reliability candidate (2026-08-31)
+
+The source candidate now targets runtime 0.4.7/schema 12/observation-v13/
+camera-v9 with 24 resources and retained observation-v12/camera-v8 current-asset
+aliases. Decision 0031 records the shared self-contained design system, bounded
+camera bootstrap/remount behavior and locally bundled exact Three.js Bed Mesh
+renderer. Progress, Heads, Fans, Bed Mesh, Overview and camera presentation are
+updated without adding tools, controls, routes, auth scope or printer reads.
+The reproducible vendor build also preserves the complete Three.js MIT notice
+inside the served self-contained resource.
+
+Author validation passes TypeScript, 263 application tests/2,734 assertions,
+runtime/stdio/server bundles and `git diff --check`. Frozen resource SHA-256 is
+`1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
+for `public/widget.html` and
+`03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`
+for `public/camera-widget.html`. Independent source validation is in progress.
+No merge, deployment, service restart, browser/device visual pass, live-printer
+read or physical acceptance is claimed at this checkpoint.
+
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
 **All focused widget tracks, including E compact Overview, are shipped.** PR53

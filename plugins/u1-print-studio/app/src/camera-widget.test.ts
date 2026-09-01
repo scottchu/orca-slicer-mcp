@@ -11,7 +11,7 @@ const frame = (observedAt: string | null = snapshotTime, data = "fixture") => ({
   _meta: { cameraFrame: { dataUrl: `data:image/jpeg;base64,${data}` } },
 });
 
-function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?: boolean } = {}) {
+function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?: boolean; rtcPeer?: new (...args: any[]) => any } = {}) {
   let clock = Date.parse("2026-08-31T10:10:00.000Z");
   let timerId = 0;
   const timers = new Map<number, { callback: () => void; at: number; delay: number; repeat: boolean }>();
@@ -58,12 +58,14 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
     setInterval: (callback: () => void, delay: number) => { timers.set(++timerId, { callback, delay, at: clock + delay, repeat: true }); return timerId; },
     clearInterval: (id: number) => timers.delete(id),
   };
+  if (options.rtcPeer) sandbox.RTCPeerConnection = options.rtcPeer;
   runInNewContext(`${script}\nglobalThis.api = {
-    applyCameraFrame, setCameraMode, closeLive, applyHostContext, requestCameraDisplay, readSelectedIcePath,
+    applyCameraFrame, refreshCameraFrame, setCameraMode, closeLive, applyHostContext, requestCameraDisplay, readSelectedIcePath,
     restartFrameObserver: observeRenderedFrames,
     prepareLive: () => { livePreview = true; livePeerConnection = { close() {} }; observeRenderedFrames(); },
     fallback: activateSnapshotFallback,
-    state: () => ({ snapshotObservedAt, liveObservedAt, relayRendering, selectedIcePath, measuredLiveFps }),
+    state: () => ({ snapshotObservedAt, liveObservedAt, relayRendering, selectedIcePath, measuredLiveFps, cameraRefreshing, snapshotGeneration,
+      livePeerConnection, liveFrameObserverGeneration, liveFrameCallback }),
   };`, sandbox);
   const flush = async () => { for (let count = 0; count < 8; count++) await Promise.resolve(); };
   const reply = async (request: any, result: any) => {
@@ -89,21 +91,30 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
 describe("camera widget presentation runtime", () => {
   test("keeps title, state and feedback in the white header outside genuine media", () => {
     const body = html.split("<body")[1]!.split('<script type="module">')[0]!;
-    const mediaStart = body.indexOf('<section class="camera"');
+    const mediaStart = body.indexOf('id="camera"');
+    expect(mediaStart).toBeGreaterThan(-1);
     const beforeMedia = body.slice(0, mediaStart); const media = body.slice(mediaStart);
-    expect(beforeMedia).toContain("<h1>U1 Camera</h1>");
-    for (const id of ["camera-detail", "camera-detail-label", "camera-empty-message", "display-feedback"]) {
+    expect(beforeMedia).toContain('<h1 class="u1-title">U1 Camera</h1>');
+    for (const id of ["camera-detail", "camera-detail-label", "camera-empty-message"]) {
       expect(beforeMedia).toContain(`id="${id}"`); expect(media).not.toContain(`id="${id}"`);
     }
+    expect(beforeMedia).not.toContain('id="display-feedback"');
+    expect(media).toContain('id="display-feedback"');
+    expect(html).toContain("position: absolute; top: 12px; left: 12px;");
+    expect(html).toContain("z-index: 3; max-width: calc(100% - 24px)");
+    expect(html).toContain(".camera-bottom { position: absolute; right: 16px; bottom: 16px; left: 16px; z-index: 4;");
+    expect(html).toContain('aria-live="polite" aria-atomic="true"');
     expect(beforeMedia).not.toContain("<button");
     const cluster = body.match(/<div class="camera-controls">([\s\S]*?)<\/div>/)![1]!;
     expect([...cluster.matchAll(/<button[^>]+id="([^"]+)"/g)].map(match => match[1]))
       .toEqual(["picture-in-picture", "fullscreen", "refresh-snapshot", "go-live", "close-live"]);
     expect(media).toContain('id="snapshot"'); expect(media).toContain('id="live-stream"');
     expect(html).not.toMatch(/camera::before|camera::after|linear-gradient|prefers-color-scheme: dark/);
-    expect(html).toContain("color-scheme: light;"); expect(html).toContain("--surface: #fff;");
+    expect(html).toContain("color-scheme: light;"); expect(html).toContain("--surface: var(--u1-surface);");
     expect(html).toContain("min-width: 44px; min-height: 44px;");
-    expect(html).toContain(".camera-mode { flex-basis: 100%;");
+    expect(html).toContain("grid-template-columns: 44px minmax(0, 1fr) auto");
+    expect(html).toContain('class="camera-mode u1-meta u1-header-result"');
+    expect(html).not.toContain(".camera-mode { flex-basis: 100%;");
     expect(html).toContain('data-icon="feather-camera"'); expect(html).toContain("Copyright (c) 2013-2023 Cole Bemis");
     expect(html).toContain(".dashboard:fullscreen .camera");
   });
@@ -136,6 +147,126 @@ describe("camera widget presentation runtime", () => {
     expect(host.api.state().relayRendering).toBe(true);
     expect(host.api.state().snapshotObservedAt).toBe(nextSnapshotTime);
     expect(host.messages.filter((m: any) => m.params?.name === "close_u1_camera_stream")).toHaveLength(0);
+  });
+
+  test("initial acquisition is single-flight and becomes a repeatable retry within the total deadline", async () => {
+    const host = cameraHost();
+    await host.reply(host.messages[0], { hostContext: {} });
+    await host.api.refreshCameraFrame();
+    expect(host.messages.filter((message: any) => message.params?.name === "get_u1_camera_frame")).toHaveLength(1);
+    host.advance(10001, true); await host.flush();
+    expect(host.node("#camera-status").textContent).toBe("Camera unavailable");
+    expect(host.node("#refresh-snapshot").disabled).toBe(false);
+    expect(host.node("#refresh-snapshot").getAttribute("aria-label")).toBe("Retry camera snapshot");
+    host.node("#refresh-snapshot").events.get("click")(); await host.flush();
+    const requests = host.messages.filter((message: any) => message.params?.name === "get_u1_camera_frame");
+    expect(requests).toHaveLength(2);
+    await host.reply(requests[1], frame(nextSnapshotTime, "retry")); host.images.at(-1).onload(); await host.flush();
+    expect(host.node("#camera-status").textContent).toBe("Camera snapshot ready");
+    expect(host.api.state().snapshotObservedAt).toBe(nextSnapshotTime);
+  });
+
+  test("a remounted live intent accepts a snapshot before one bounded restore and keeps failure truthful", async () => {
+    const initial = frame();
+    const host = cameraHost({ openai: {
+      widgetState: { u1Camera: { liveRequested: true } },
+      toolOutput: initial.structuredContent,
+      toolResponseMetadata: initial._meta,
+      setWidgetState() {},
+    } });
+    await host.reply(host.messages[0], { hostContext: { displayMode: "inline" } });
+    expect(host.images).toHaveLength(1);
+    host.images[0].onload(); await host.flush();
+    expect(host.node("#snapshot").src).toEndWith("fixture");
+    const restore = host.messages.find((message: any) => message.params?.name === "get_u1_camera_frame");
+    expect(restore.params.arguments).toEqual({ authorizeLive: true });
+    await host.reply(restore, { structuredContent: { available: false, reason: "activation unavailable" } });
+    expect(host.node("#display-feedback").textContent).toContain("could not be restored");
+    expect(host.node("#display-feedback").dataset.kind).toBe("error");
+    expect(host.node("#snapshot").src).toEndWith("fixture");
+    expect(host.api.state().measuredLiveFps).toBeNull();
+    expect(host.messages.filter((message: any) => message.params?.name === "get_u1_camera_frame")).toHaveLength(1);
+  });
+
+  test("a remounted live intent restores once without claiming FPS before a rendered frame", async () => {
+    class Peer {
+      connectionState = "connected"; localDescription: any = null;
+      addTransceiver() {} close() {} async setRemoteDescription() {}
+      async createAnswer() { return { type: "answer", sdp: "answer" }; }
+      async setLocalDescription(answer: any) { this.localDescription = answer; }
+      async getStats() { return new Map(); }
+    }
+    const initial = frame();
+    const host = cameraHost({ rtcPeer: Peer, openai: {
+      widgetState: { u1Camera: { liveRequested: true } },
+      toolOutput: initial.structuredContent,
+      toolResponseMetadata: initial._meta,
+      setWidgetState() {},
+    } });
+    await host.reply(host.messages[0], { hostContext: { displayMode: "inline" } });
+    host.images[0].onload(); await host.flush();
+    const restore = host.messages.find((message: any) => message.params?.name === "get_u1_camera_frame");
+    await host.reply(restore, { ...frame(nextSnapshotTime, "restore"), _meta: {
+      ...frame(nextSnapshotTime, "restore")._meta,
+      cameraActivation: { token: "token" },
+    } });
+    host.images.at(-1).onload(); await host.flush();
+    const open = host.messages.find((message: any) => message.params?.name === "open_u1_camera_stream");
+    expect(open.params.arguments).toEqual({ activationToken: "token" });
+    await host.reply(open, { structuredContent: { available: true }, _meta: { cameraStream: {
+      sessionId: "session", transport: "mcp-apps-tools", offer: { type: "offer", sdp: "offer" }, iceServers: [],
+    } } });
+    const answer = host.messages.find((message: any) => message.params?.name === "answer_u1_camera_stream");
+    expect(answer).toBeDefined();
+    await host.reply(answer, { structuredContent: { accepted: true } });
+    expect(host.api.state().livePeerConnection).toBeInstanceOf(Peer);
+    expect(host.api.state().relayRendering).toBe(false);
+    expect(host.api.state().measuredLiveFps).toBeNull();
+    expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
+    expect(host.messages.filter((message: any) => message.params?.name === "get_u1_camera_frame")).toHaveLength(1);
+    expect(host.messages.filter((message: any) => message.params?.name === "open_u1_camera_stream")).toHaveLength(1);
+  });
+
+  test("decode timeout finishes inside twelve seconds and late decode cannot resurrect or restamp", async () => {
+    const host = cameraHost(); host.acceptSnapshot();
+    host.api.applyCameraFrame(frame(nextSnapshotTime, "hanging")); const late = host.images.at(-1);
+    host.advance(1501, true); await host.flush();
+    expect(host.api.state().snapshotObservedAt).toBe(snapshotTime);
+    expect(host.node("#snapshot").src).toEndWith("fixture");
+    late.onload();
+    expect(host.api.state().snapshotObservedAt).toBe(snapshotTime);
+    expect(host.node("#snapshot").src).toEndWith("fixture");
+  });
+
+  test("an older acquisition response cannot overwrite a newer host-delivered frame", async () => {
+    const host = cameraHost(); await host.reply(host.messages[0], { hostContext: {} });
+    const olderRequest = host.messages.find((message: any) => message.params?.name === "get_u1_camera_frame");
+    host.acceptSnapshot(frame(nextSnapshotTime, "newer"));
+    await host.reply(olderRequest, frame(snapshotTime, "older"));
+    expect(host.images.at(-1).src).toContain("newer");
+    expect(host.api.state().snapshotObservedAt).toBe(nextSnapshotTime);
+    expect(host.node("#snapshot").src).toEndWith("newer");
+  });
+
+  test("feedback is an in-media timed toast while failures remain persistent", () => {
+    const host = cameraHost(); host.acceptSnapshot();
+    host.api.applyCameraFrame(frame(nextSnapshotTime, "fresh"), true); host.images.at(-1).onload();
+    expect(host.node("#display-feedback").dataset.kind).toBe("success");
+    host.advance(1801, true); expect(host.node("#display-feedback").textContent).toBe("");
+    host.api.applyCameraFrame(frame(nextSnapshotTime, "bad"), true); host.images.at(-1).onerror();
+    expect(host.node("#display-feedback").dataset.kind).toBe("error");
+    const error = host.node("#display-feedback").textContent;
+    host.advance(10000, true); expect(host.node("#display-feedback").textContent).toBe(error);
+  });
+
+  test("progress feedback remains until the bounded request resolves", async () => {
+    const host = cameraHost(); await host.reply(host.messages[0], { hostContext: {} });
+    const initial = host.messages.find((message: any) => message.params?.name === "get_u1_camera_frame");
+    await host.reply(initial, frame()); host.images.at(-1).onload(); await host.flush();
+    host.node("#refresh-snapshot").events.get("click")(); await host.flush();
+    expect(host.node("#display-feedback").dataset.kind).toBe("progress");
+    host.advance(4001, true);
+    expect(host.node("#display-feedback").textContent).toBe("Refreshing snapshot…");
   });
 
   test("failed user snapshot decode keeps the prior frame and reports failure", () => {
@@ -357,10 +488,10 @@ describe("camera widget presentation runtime", () => {
     expect(host.node("#camera-detail-label").textContent).not.toContain("FPS");
   });
 
-  test("unsupported display controls are absent; rejected requests preserve camera", async () => {
+  test("unsupported PiP is absent and rejected requests preserve camera", async () => {
     const host = cameraHost();
     host.acceptSnapshot();
-    expect(host.node("#fullscreen").hidden).toBe(true);
+    expect(host.node("#fullscreen").hidden).toBe(false);
     expect(host.node("#picture-in-picture").hidden).toBe(true);
     await host.api.requestCameraDisplay("pip");
     expect(host.document.body.dataset.displayMode).toBe("inline");
@@ -372,6 +503,7 @@ describe("camera widget presentation runtime", () => {
     const modes: string[] = [];
     const host = cameraHost({ openai: { requestDisplayMode: async ({ mode }: { mode: string }) => { modes.push(mode); return { mode: mode === "pip" ? "fullscreen" : mode }; } } });
     host.acceptSnapshot();
+    host.api.applyHostContext({ availableDisplayModes: ["inline", "fullscreen", "pip"] });
     await host.api.requestCameraDisplay("pip");
     expect(host.document.body.dataset.displayMode).toBe("fullscreen");
     expect(host.node("#picture-in-picture").getAttribute("aria-pressed")).toBe("false");
@@ -380,6 +512,32 @@ describe("camera widget presentation runtime", () => {
     await host.api.requestCameraDisplay("fullscreen");
     expect(modes).toEqual(["pip", "inline"]);
     expect(host.document.body.dataset.displayMode).toBe("inline");
+  });
+
+  test("inline-only local fullscreen preserves the live peer, media and FPS with zero tool calls", async () => {
+    const host = cameraHost(); host.acceptSnapshot(); host.api.prepareLive();
+    const track = { id: "same-track" }; host.node("#live-stream").srcObject = { id: "same-media", getTracks: () => [track] };
+    host.renderFrame(1); host.advance(1000); host.renderFrame(31);
+    const before = host.api.state(); const media = host.node("#live-stream").srcObject;
+    const liveNode = host.node("#live-stream"); const snapshotNode = host.node("#snapshot");
+    const snapshotSrc = snapshotNode.src;
+    const cameraCalls = () => host.messages.filter((message: any) => message.method === "tools/call").length;
+    const calls = cameraCalls();
+    await host.api.requestCameraDisplay("fullscreen");
+    expect(host.document.body.dataset.localFullscreen).toBe("true");
+    await host.api.requestCameraDisplay("fullscreen");
+    expect(host.document.body.dataset.localFullscreen).toBe("false");
+    expect(host.api.state()).toEqual(before);
+    expect(host.api.state().livePeerConnection).toBe(before.livePeerConnection);
+    expect(host.api.state().liveFrameObserverGeneration).toBe(before.liveFrameObserverGeneration);
+    expect(host.api.state().liveFrameCallback).toBe(before.liveFrameCallback);
+    expect(host.node("#live-stream")).toBe(liveNode);
+    expect(host.node("#snapshot")).toBe(snapshotNode);
+    expect(host.node("#live-stream").srcObject).toBe(media);
+    expect(host.node("#live-stream").srcObject.getTracks()[0]).toBe(track);
+    expect(host.node("#snapshot").src).toBe(snapshotSrc);
+    expect(cameraCalls()).toBe(calls);
+    expect(html).not.toContain("webkitEnterFullscreen");
   });
 
   test("MCP host display requests wait for an actual granted mode", async () => {
