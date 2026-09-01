@@ -189,9 +189,11 @@ printer environments support the described behavior.
   callbacks are not frame counts. Clear FPS on exit and after 1.5 seconds
   without advancing frame evidence. Network diagnostics stay hidden.
   Fullscreen reflects same-document native or local CSS state and never requests
-  a remount-capable host display mode; PiP reflects granted host/native state.
-  Both use feature detection and explicit rejection handling; API presence does
-  not establish mobile support.
+  a remount-capable host display mode. PiP is offered only through the existing
+  live video's same-document native Picture in Picture API and makes zero host
+  display-mode requests; hide the action when native PiP is unavailable. Both
+  use feature detection and explicit rejection handling; API presence does not
+  establish mobile support.
 
 ## Events and notifications
 
