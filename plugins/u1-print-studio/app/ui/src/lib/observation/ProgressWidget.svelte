@@ -26,7 +26,7 @@
   .progress-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
   .loading::before { visibility: hidden; }
   .loading-unit { visibility: hidden; }
-  .percent { display: flex; flex: none; align-items: baseline; padding-inline-end: .08em; color: var(--u1-positive); font-size: clamp(42px, 13vw, 68px); font-weight: 380; line-height: .95; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
+  .percent { display: flex; flex: none; align-items: baseline; text-align: end; padding-inline-end: .08em; color: var(--u1-positive); font-size: clamp(42px, 13vw, 68px); font-weight: 380; line-height: .95; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
   .percent span { margin-left: 2px; font-size: .52em; }
   .progress-track { height: 8px; margin-top: 18px; overflow: hidden; border-radius: 999px; background: var(--u1-soft); }
   .progress-fill { height: 100%; border-radius: inherit; background: var(--u1-accent); }

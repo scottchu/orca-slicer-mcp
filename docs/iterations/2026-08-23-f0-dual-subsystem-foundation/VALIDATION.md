@@ -1,5 +1,45 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 compact Progress metric — final renewed author checks
+
+Independent visual review of `befbbd5` rejected its separated `0 %` display
+despite automated checks passing. The percentage layout owner now sets inherited
+`text-align: end`; no shared leaf internals or other widget alignment are changed.
+Ready/loading slot bounds remain intact. The 4% regression uses a compiled
+test-only fixture; the public lab's closed choices are unchanged. The harness
+is served only by the local test server, never by application routes or bundles.
+
+Repeated actual commands: UI `bun run check`, `bun run build`,
+`bun run package:private-lab`, full `bun run test:browser`, repository
+`./scripts/check-repository.sh`, app `bun run bundle:widget-vendor`,
+`bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+`codesign --verify --verbose=2 dist/u1-print-studio`, executable `--help`, and
+`git diff --check`, all with pinned Bun and normal Node PATH. All pass: compiler/
+AST/types, 126 UI units, 94 Chrome cases, deterministic package, 276 app tests /
+3,187 assertions, 21 lifecycle and 24 ship tests, bundles/signature/help.
+
+The text-bound regression now includes 0/4/25/50/75/100 at every tested width
+and normal/200% text: 200 total preset combinations, including 48 adjacency
+checks. Number-to-unit glyph gap must be nonnegative and no greater than
+`max(4px, 0.2 * numeric font size)`, with original text containment and
+ready/loading one-pixel bounds unchanged. The final focused command
+`bun run test:browser -- lab-text-bounds.spec.ts` passed the stronger matrix;
+the final full run also includes the isolated 4% harness.
+Author screenshots of normal 390px/0% and 200%-text 390px/100% show joined,
+readable displays. Independent final rendering acceptance is still required;
+neither these tests nor screenshots are actual-device/printer evidence.
+
+Package: 748,554 bytes, SHA-256
+`83146f52f61fd9225877e3bd4ef7ee08798745083fc7232fa9e932399b007a1a`;
+21,458 bytes above deployed PR65 and 1,446 bytes below the unchanged cap.
+No live branch code, production route or printer acquisition is included.
+
+Later independent cleanup postcheck also passed, attributed to its validator:
+canonical main/ref equality, all 9,005 switch-manifest entries, 8,689 remaining
+ignored entries after the approved temporary clone removal, and all 315
+quarantined/archive entries matched. The ten other proposed worktree targets
+remain registered and unmoved. This does not alter runtime or feature acceptance.
+
 ## 2026-09-01 PR67 renewal after independent rejection
 
 Independent validation of `8663d93` found 25 clipped-case groups in 168 closed

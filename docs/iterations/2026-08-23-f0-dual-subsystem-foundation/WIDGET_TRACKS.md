@@ -7,7 +7,10 @@ No listed track is cancelled. Private fixtures do not prove live behavior.
 PR67 head `8663d93` was independently rejected for required-text clipping and
 incomplete correlated selection types. Its corrected successor must obtain new
 exact validation/review; 94 author Chrome cases now include 168 text/geometry
-preset combinations. Current controls remain unshipped until guarded delivery.
+preset combinations. A subsequent `befbbd5` visual rejection for separated
+number/unit spacing is corrected with inherited numeric alignment and a final
+200-combination matrix, including 48 adjacency checks. Current controls remain
+unshipped until fresh independent acceptance and guarded delivery.
 
 ## Current slice: all-nine private lab controls and loading
 

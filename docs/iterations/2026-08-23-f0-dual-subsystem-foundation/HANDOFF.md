@@ -1,5 +1,22 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 final compact-metric renewal
+
+`befbbd5` also failed independent visual acceptance: short Progress values were
+separated from `%` by the reserved numeric slot. The percentage group now uses
+inherited end alignment, without shared-leaf coupling or changing slot geometry.
+The strengthened matrix covers 200 preset/width/text-scale combinations and
+48 numeric/unit adjacency checks; normal390/0% and enlarged390/100% captures
+were inspected by the author. Artifact: 748,554 bytes, 1,446-byte reserve;
+newest VALIDATION records actual commands/hash and acceptance limits.
+
+Obtain fresh independent validation and formal review of the new exact head,
+then guarded shipment; neither earlier head is approved. LIVE Fans' separate
+uncommitted decision/RPC/adapter/controller preparation is safely paused and has
+no route changes. Do not mix it into PR67. Camera and all other named tracks
+remain pending. Independent cleanup postverification now passes; the ten
+remaining old-worktree retirements are still pending, not silently completed.
+
 ## 2026-09-01 PR67 corrected candidate — fresh acceptance required
 
 Do not deploy rejected head `8663d93`. Independent checks exposed visible text
