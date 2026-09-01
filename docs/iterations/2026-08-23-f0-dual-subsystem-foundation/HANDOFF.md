@@ -11,15 +11,19 @@ skeleton/panel, real/lab wrappers and shared clipboard-generation lifecycle.
 Candidate private heads_widget route, host selection and source-derived ship
 inventory preserve public isolation and legacy MCP aliases.
 
-Do not ship yet. Earlier mobile and all-empty/unknown geometry failures are
+Do not ship without independent acceptance. Earlier mobile and all-empty/unknown geometry failures are
 repaired with bounded generic header lines and optional footer action slot,
 not arbitrary194-character material height. The empty slot is noninteractive;
 Empty/N/A contain no Copy button, role or focusable placeholder. Focused22
 renewal cases PASS, including all closed presets at four widths/normal200%,
 strict<=1px geometry, actual default material single-line/zero-padding bounds
 and long real metadata readability. Compact ActualTarget is an independently
-approved opt-in; Thermals86,230 bytes has explicit renewed hash and9 unchanged
-default-consumer browser cases PASS. Full combined renewal/review remains due.
+approved opt-in; Thermals86,230 bytes has explicit renewed hash and all default
+consumer cases PASS. Final Chrome163/163, repository contract and runtime/signing
+gates PASS on frozen app source `4d24446`. The first162 run was161PASS/1FAIL and
+exposed a real host initial-error omission; the shared focused-widget mapping now
+forwards errors for Fans, Thermals and Heads, with exact retry regression coverage.
+Independent exact-source and validation acceptance remain due.
 No real printer/media acquisition or service change occurred in this author work.
 
 Current bounded artifacts: observation755,217/756,000; Camera78,795/80,000;

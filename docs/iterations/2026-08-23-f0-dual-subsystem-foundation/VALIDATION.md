@@ -1,6 +1,12 @@
 # F0 dual-subsystem foundation validation
 
-## Heads repaired source — final combined renewal in progress
+## Heads repaired source — final author evidence, not independent acceptance
+
+Frozen application source `4d24446` (tree `48896cc`) passes final Chrome
+163/163 in4.7m. The first full162 renewal was161PASS/1FAIL: initial Heads HTTP
+failure remained Loading because the host forwarded initial errors only to Fans.
+The closed focused-widget route map now forwards initial errors for
+Fans/Thermals/Heads. Focused initial-error/retry2/2 and host23/23 PASS.
 
 The earlier mobile/empty failures below are preserved historical evidence, not
 remaining acceptance waivers. Focused Heads+Thermals18/18 PASS, then full161
@@ -11,8 +17,9 @@ height/zero padding replaces the obsolete style-string assertion. Renewed
 focused selection22/22 PASS at all four widths/normal200%, including loaded,
 empty and unknown presets, truthful skeletons, copy lifecycle, and readable
 194-character real metadata. These are local synthetic checks, not service or
-actual-device acceptance. Full UI333/333 PASS preceded two new action-slot
-semantic cases; the focused widget unit file now19/19 PASS. Shipping24/24 PASS.
+actual-device acceptance. Final repository contract PASS: UI335/335 in33 files,
+app294/294 with3,482 assertions, lifecycle21/21, shipping24/24, compiler/AST,
+six deterministic packages, runtime bundles, strict signing and `--help`.
 The temporary testing-library target-prop option collision was a test harness
 error, corrected with an explicit props wrapper; it was not an app defect.
 
@@ -36,9 +43,9 @@ enforced. Graph reports remain ignored build evidence, never runtime assets.
 Thermals changed bytes intentionally for the one opt-in generic ActualTarget;
 its default hierarchy, semantics and all9 existing browser cases passed.
 
-Next: final162 browser cases (one additional Heads initial-error/BFCache/RPC
-race case), full repository/runtime gates, deterministic6-package reproduction,
-then exact independent source/validation approval before PR guarded shipment.
+Next: exact independent source review and validation, then guarded shipment.
+This is synthetic software/browser evidence, not deployed-service, phone,
+camera-stream or printer acceptance.
 
 ## 2026-09-01 Heads implementation checkpoint — not acceptance
 

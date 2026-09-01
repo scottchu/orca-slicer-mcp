@@ -17,21 +17,21 @@ This is deployed-service and synthetic browser evidence, not phone/printer
 acceptance. Production Bed Mesh/MCP, inherited keyboard/WebGL fallback/fixed2D
 font and the pre-existing unmatched-root502 remain outside accepted coverage.
 
-Heads author checkpoint `a8ad5c7` explicitly merged that accepted main as
-`0bb9ef6`; additive ADR and generated-lab conflicts preserve both slices.
-Heads remains an unaccepted candidate: strict real DTO, generic card/color
-leaves and zero-raw shared panel are implemented. The initial mobile and
-all-empty footer geometry failures are repaired: focused22 cases PASS, including
-four widths/normal200%, exact<=1px skeleton bounds and no Empty/N/A Copy action.
-Full combined renewal and exact independent review remain due. Compact ActualTarget is independently approved
-in principle as an opt-in, with unchanged default semantics; its compiled
-Thermals artifact and regressions must be renewed. No Heads deployment occurred.
+Heads author source is frozen at `4d24446`: strict real DTO, generic card/color
+leaves and zero-raw shared panel are implemented. Focused22 geometry cases and
+the final163-case Chrome suite PASS at four widths/normal200%, including exact
+<=1px skeleton bounds, Empty/N/A without Copy, retained refresh/copy/BFCache,
+initial error/retry and obsolete-RPC races. The latter found and repaired a real
+host omission: all three migrated focused widgets now receive initial errors.
+Repository/runtime gates and six deterministic packages PASS. Heads remains an
+unaccepted candidate pending exact independent source review and validation;
+no Heads deployment occurred.
 Decision0032 records the independently adopted finite lab budgets
 756,000/80,000/836,000 and separate100,000 Heads allowance, not future automatic
 growth. Client graphs, exact-source review and full combined gates remain due.
 
-Next: finish Heads full combined gates, exact independent review
-and guarded shipment. Queue → Current Job → History follow as separate bounded
+Next: exact independent Heads source review/validation and guarded shipment.
+Queue → Current Job → History follow as separate bounded
 migrations; Progress remains separate, real Bed Mesh adapter/shell follows its
 renderer, and Overview is last. Current Job reported-null filename differs from
 unreported; its lab progressPercent must never be invented from file position.

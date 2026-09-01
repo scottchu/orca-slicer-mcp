@@ -6,8 +6,9 @@ No listed track is cancelled. Private fixtures do not prove live behavior.
 
 Current checkpoint: Fans PR70, Camera PR71, Thermals PR72 and the Bed Mesh
 renderer PR73 are delivered (accepted main8c5756d). Heads candidate explicitly
-integrates that main; strict adapter and compositional leaves exist, and focused
-mobile/empty skeleton repairs pass22 cases. Complete independent gates remain due. No Heads
+integrates that main; strict adapter and compositional leaves exist, focused
+mobile/empty skeleton repairs pass22 cases, and the final combined Chrome163 and
+repository/runtime gates pass. Independent review/validation remain due. No Heads
 delivery claim is made. Decision0032 explicitly revises two-lab limits to
 756,000/80,000/836,000 for measured Heads composition, not automatic growth.
 Continue Heads, then Queue → Current Job → History; Progress separately, real
@@ -44,7 +45,7 @@ production dashboard through PR71. Remaining cutovers and seven ready-shell debt
 | Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | PR70 focused dashboard delivered; generic MCP still legacy | PR70 deployed/post-verified with synthetic tool replies; connector identity/device evidence separate |
 | Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
-| Heads & Filaments | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
+| Heads & Filaments | Zero-raw candidate with generic card/color/actual-target primitives | State controls retained; truthful skeleton and initial-error retry candidate pass | Focused private candidate; generic MCP unchanged | Author gates PASS; independent review/validation and shipment pending |
 | Current Job | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
