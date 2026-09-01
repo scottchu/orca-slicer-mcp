@@ -1,5 +1,33 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 synthetic Camera lab integrated candidate
+
+Reviewed main `2d30b01` is explicitly integrated. This slice registers the
+synthetic Camera state/controller/root/widget/media/status, one shared LabControls
+dock, directory link and exact private route/title. A generic PageLayout owns
+the root markup; CameraLabRoot and CameraLabWidget have zero raw DOM, enforced
+by the AST registry. Browser location is a separate lab-only edge. Shared header
+wrapping/controls sizing are opt-in; all nine existing widgets retain defaults.
+
+The measured762,180-byte combined build and764,097-byte conservative Terser trial
+failed the original750KB cap. Independent design review explicitly accepted
+two entries/artifacts with750,000/80,000 and830,000 aggregate bounds. No Terser
+dependency remains. Current748,482 observation+78,688 Camera=827,170. The
+observation directory is not a third payload. Camera's graph excludes Three,
+observations, host RPC and real session code; the private route maps to its own
+hash in the shipping contract. Same restrictive CSP; no external asset requests.
+
+Changed paths include camera source/tests, generic PageLayout, opt-in Header/
+LabControls, AST registry, explicit Camera build and two-artifact package guards,
+private route/public isolation/ship tests, generated lab HTML, requirements and
+decision0032. Production HTML, camera backend, MCP, auth and aliases are unchanged.
+
+Next: exact independent validator and formal reviewer must accept the frozen
+candidate, then guarded PR merge/deploy/explicit BOTH restart/verify. Do not
+claim live Camera migrated. Its separate DOM-free session controller has19
+mock-port/clock tests but still needs host/real-peer/persistent-media binding,
+review and production cutover. All remaining tracks stay open.
+
 ## 2026-09-01 PR67 delivered — migration continues separately
 
 PR67 is complete through independent deployed-service/synthetic-browser checks:

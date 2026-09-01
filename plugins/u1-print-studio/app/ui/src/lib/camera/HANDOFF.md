@@ -16,17 +16,20 @@ changing existing observation header behavior.
 Independent packaging design accepted explicit observation/Camera compiled
 entries with750,000/80,000 and830,000 aggregate limits after the762,180-byte
 combined build and764,097-byte conservative Terser trial exceeded the old cap.
-Current outputs:748,482 observation+78,551 Camera=827,033 aggregate.
+Current outputs:748,482 observation+78,688 Camera=827,170 aggregate.
 No cap bypass, external asset or production change is included. Camera's build
 graph rejects Three, host/observation/bed-mesh code and the real session module.
 The ship guard maps the exact Camera route to its own generated artifact hash.
 
-Actual author checks so far:155UI units and compiler/AST pass;277app tests /
-3,223assertions pass; isolated7Chrome lifecycle cases pass;9Camera-route cases
-pass including56state/width/text combinations, glyph containment/non-overlap,
-state geometry, top-right normal status, URL/reset/history/hostile input and
-loading without an active stream. Full suite, deterministic rebuild, repository
-gates, records, exact freeze/review and guarded delivery remain to finish.
+Final author checks:155UI units/compilerAST,277app tests/3,223assertions,
+21lifecycle24ship, full110Chrome cases, deterministic two-artifact rebuild,
+bundles/signature/help and diff gate pass. The browser suite includes7isolated
+lifecycle cases and9Camera-route cases covering56state/width/text combinations,
+glyph containment/non-overlap, state geometry, top-right normal status, URL/
+reset/history/hostile input and loading without an active stream. A generic
+PageLayout owns main markup; CameraLabRoot and CameraLabWidget are strict
+zero-raw composites. The lab-location edge alone handles URL/browser history.
+Exact independent validation/review and guarded delivery remain to finish.
 One attempted Python module-invocation used the wrong import/path arrangement;
 the repository's direct `uv run --no-project scripts/test_u1_*.py` commands
 are the authoritative rerun, not that failed invocation.
@@ -142,22 +145,13 @@ same-document fullscreen/PiP and all current/frozen compatibility resources.
 Synthetic Chrome evidence does not establish any host, backend, actual device
 or live-printer acceptance for that separate migration.
 
-## Integration still required
+## Remaining acceptance
 
-- Integrate the shared `LabControls` registry and exact private Camera route,
-  directory link and first-title bootstrap. Do not add another control toolbar.
-- Replace the temporary direct Camera glyph import in `CameraLabWidget` with
-  the shared central `Icon` registry's camera name.
-- Register the composite's closed imports and exact leaf tag multisets in the
-  AST frontier. Full `bun run check` is intentionally not claimed yet.
-- Merge the isolated browser harness build into normal browser validation or
-  explicitly include its config/script in required gates.
-- Measure the joint deterministic self-contained package against the unchanged
-  750,000-byte hard cap; no combined artifact measurement exists yet.
-- Update UI-002/ADR0032 and the active iteration/state/handoff records through
-  the integration owner before exact independent review and guarded delivery.
-- Preserve production camera bytes, MCP/auth and both service boundaries.
-
-This is author synthetic/software evidence only. The shared-control author owns
-integration and durable top-level records; no source is copied into a dirty
-checkout and no merge/deployment permission is implied by this checkpoint.
+The shared controls, exact route/directory/title, central Camera icon, strict
+AST layers, normal browser harness and explicit two-artifact packaging are now
+integrated and recorded in UI-002/ADR0032 and active state/handoff. Freeze source,
+obtain independent exact validation/formal review, then guarded delivery and
+service verification. Production Camera bytes, MCP/auth and both service
+boundaries stay unchanged. Source/browser evidence alone is not device or
+live-printer acceptance. The real-session controller remains a separate dormant
+source checkpoint, excluded from both lab build graphs and not host-wired.

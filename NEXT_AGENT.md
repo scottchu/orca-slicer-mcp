@@ -14,6 +14,20 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Next candidate: the synthetic Camera lab, integrated with reviewed main
+`2d30b01`. It has an explicit private compiled-Svelte entry, shared controls and
+zero-raw root/widget over generic layout/media/status leaves. Seven states,
+restrictive display policies, truthful measured local FPS and persistent
+fullscreen/PiP media are synthetic-only. Production Camera remains unchanged.
+Observe decision0032's revised exact-two-artifact budgets750,000/80,000 and
+830,000 aggregate; current748,482/78,688 =827,170. No third index or remote assets.
+Run/inspect newest VALIDATION, freeze exact source, obtain independent validation
+and formal review, then guarded merge/deploy/explicit BOTH restart/verify.
+The pending real-session controller is not wired to host or production media.
+LIVE Fans remains a separate author/branch with shared RPC ownership; explicitly
+integrate its reviewed result later, not unreviewed copies. Historical Camera
+unintegrated instructions below are superseded by this candidate, not by delivery.
+
 PR67 is shipped and independently post-verified: reviewed `07e1c144`, merged
 `c924bf9`, release `20260901-c924bf9-pr67-20260901T153250-99a666`. BOTH service
 restarts, health/integrity, 25 static routes/assets, 26 security checks and
