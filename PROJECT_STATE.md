@@ -10,6 +10,24 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Subtle percentage-gradient slope — current bounded refinement (2026-09-01)
+
+The shared PercentageBackground tint now slopes gently at 100 degrees inside
+an exactly ratio-wide rectangle. The current 12%→4% wash is unchanged; zero,
+invalid and over-target semantics, child identity and layout remain unchanged.
+This isolated private-lab slice precedes the in-progress visible all-nine
+scenario/state controls and skeleton work so it can be reviewed and delivered
+promptly. Camera remains a separately authored synthetic-only follow-on using
+the same lab controls, not production signaling.
+
+The latest additional UI requests remain queued separately: a 32-pixel visual
+Refresh surface with a 16-pixel glyph inside the existing 44-pixel accessible
+target, then content-aware compact/medium/full presentation and its separately
+reviewed MCP size parameter. No such API or size behavior is implemented here.
+Seven remaining ready migrations, Bed Mesh axes, read-only Console, model/layer
+progress and production cutovers remain open. Current deployed application is
+still PR63 `57a305b`; documentation PR64 `e1f57f0` changed no runtime bytes.
+
 ### Fans & Air shared component slice shipped — PR63 (2026-09-01)
 
 Exact independently validated and formally approved head

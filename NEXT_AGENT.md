@@ -14,6 +14,16 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+First review/deliver the isolated shared 100-degree percentage tint refinement;
+then resume visible all-nine lab scenario/state controls and matched skeletons,
+followed by separate synthetic Camera integration. The lab worktree is preserved
+and is not included in this small refinement. New requests for smaller visual
+Refresh (32-pixel surface/16-pixel glyph inside 44-pixel target) and content-aware
+compact/medium/full presentation plus a separately reviewed MCP size parameter
+remain queued, not silently included. All historical candidate instructions
+below are superseded by this order. PR64 `e1f57f0` is merged with deployed app
+bytes still matching PR63 `57a305b`.
+
 PR63 is shipped: reviewed `0f78e69`, merged `57a305b`, exact guarded release
 `20260901-57a305b-pr63-20260901T134952-9c86bd`. BOTH public/dashboard services
 were explicitly restarted and passed loaded/healthy/integrity checks; 25 exact
