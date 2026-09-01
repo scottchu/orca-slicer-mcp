@@ -1,5 +1,24 @@
 # F0 dual-subsystem foundation handoff
 
+## Current Job strict-model phase-one handoff
+
+The bounded author delta adds only `CurrentJobPresentation`, the exact `jobs`
+envelope/parser boundary, `adaptCurrentJob`, `createCurrentJobController` and
+producer/lifecycle tests. It uses the existing server normalizer and projection
+in application tests rather than lab casts. Filename privacy is revalidated at
+the client boundary; state, source/receipt, freshness, reason, capability,
+provenance and all reported nullable values are preserved. File bytes remain
+facts, never a print-progress substitute.
+
+Full author evidence is in VALIDATION. A module-only minified controller build
+is 6,339 bytes with SHA-256
+`71844efd3e11e27d31016efe2650effb8585e45c9a1699c0bb61a200dca3b906`;
+this is not a production widget artifact or permission to define/raise a cap.
+No UI composition, route, package, browser gate, ADR or shipment was attempted.
+Next: exact independent source review, then the smallest compositional UI slice
+on the reviewed model. Keep Current Job and History separate and retain the
+existing deployment/review gates.
+
 ## PR73 repaired candidate handoff
 
 The new delta is restricted to neutral-fit/user-zoom separation in

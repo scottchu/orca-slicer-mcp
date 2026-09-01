@@ -1,5 +1,22 @@
 # Next agent
 
+## Current Job phase-one resume point — not accepted or shipped
+
+Review the strict real `jobs` model/adapter/controller checkpoint independently
+before using it for UI composition. The author branch starts at accepted main
+`8c5756ddb4435ba94a494963556c94d15d05b6e5`; it intentionally contains no
+Current Job component/root, route, package manifest/cap, ADR, PR or deployment.
+Do not infer physical progress from file position/size and do not add a
+`progressPercent` field: the real producer does not report one.
+
+The next smallest implementation slice, only after source acceptance, is a
+zero-raw compositional Current Job card that consumes this strict presentation,
+preserves every nullable/reported distinction and uses the shared controller.
+Then measure the exact production artifact, add focused package/route/browser
+gates and obtain exact independent validation/review before normal guarded
+delivery. Keep Job History separate. No printer control, plugin/auth/Tailscale
+change or browser port reservation belongs to this checkpoint.
+
 ## Current checkpoint: held Bed Mesh zoom renewal after delivered Thermals
 
 Thermals PR72 is delivered on independently accepted merge

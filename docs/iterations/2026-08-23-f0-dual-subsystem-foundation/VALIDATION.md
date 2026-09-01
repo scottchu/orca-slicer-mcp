@@ -1,5 +1,45 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 Current Job phase-one author evidence — not acceptance
+
+The source checkpoint is based on exact accepted main
+`8c5756ddb4435ba94a494963556c94d15d05b6e5`. Frozen app/UI installs used the
+repository-pinned Bun 1.3.12 lockfiles; neither lockfile nor dependency set
+changed. Commands and results:
+
+- UI `bun x vitest run src/lib/live/current-job-adapter.test.ts
+  src/lib/live/current-job-controller.test.ts`: 31/31 PASS. The strict adapter
+  covers all seven states, exact envelope/module fields, nullable versus
+  unreported values, false storage, zero/MAX_SAFE bytes, fractional values,
+  stale facts, unsafe filenames and no `progressPercent`. Shared lifecycle
+  cases cover initial error/retry, single-flight, failed-refresh stale retention,
+  newer-notification/obsolete-RPC ordering and persisted-page ownership/final
+  disposal.
+- App `bun test src/current-job-live-adapter.test.ts`: 9/9 PASS with 62
+  assertions through the actual `normalizeCurrentJobResponse` and
+  `createObservationPresentation(..., 'jobs')` producer path. This separately
+  covers six known states plus future-to-unknown normalization, successful
+  empty standby, producer basename/privacy and Unicode code-point bounding.
+- UI `bun run test`: 297/297 PASS in 30 files. UI `bun run check`: Svelte and
+  TypeScript 0 errors/0 warnings; component contract PASS.
+- App `bun run test`: 299/299 PASS in 29 files with 3,462 assertions. App
+  `bun run check`: PASS. An earlier unscoped raw `bun test` was not a valid app
+  harness because it recursively selected UI tests without Vitest/jsdom and was
+  stopped; the package-scoped command above is the passing repository harness.
+- UI `bun build src/lib/live/current-job-controller.ts --target=browser --minify
+  --outdir <temporary-directory>`: PASS, 7 modules and 6,339-byte module-only
+  output, SHA-256
+  `71844efd3e11e27d31016efe2650effb8585e45c9a1699c0bb61a200dca3b906`.
+  This is diagnostic source measurement, not a production artifact or budget.
+- `git diff --check`: PASS.
+
+Evidence boundary: author static/software tests against the actual producer and
+synthetic lifecycle ports only. They do not establish a composed widget,
+production package/route, browser behavior, deployed service, real printer or
+actual-device/user acceptance. Exact independent source review is required
+before phase two; normal independent validation/review and guarded shipment
+remain required after a production candidate exists.
+
 ## 2026-09-01 PR73 zoom repair — final author evidence, not independent approval
 
 The held `85f89f9` remains rejected: its earlier green suite did not exercise

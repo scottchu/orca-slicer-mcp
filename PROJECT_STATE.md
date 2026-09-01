@@ -1,5 +1,26 @@
 # Project state
 
+## Current Job strict live-model phase one — author checkpoint only
+
+From exact accepted main `8c5756ddb4435ba94a494963556c94d15d05b6e5`,
+the bounded phase-one slice adds a fixture-independent `jobs` presentation,
+strict real-server adapter and thin shared observation controller. It preserves
+the envelope version/epoch, independent job receipt, evidence/freshness/reason,
+capability and provenance; reported-null filename remains distinct from
+unreported unknown, storage `false` remains distinct from unknown, and all
+seven normalized producer states plus nullable bounded metrics remain intact.
+There is deliberately no `progressPercent`: the producer supplies none and the
+byte fraction is not physical print progress.
+
+Actual producer normalization/projection tests and shared lifecycle tests pass,
+including standby with no reported filename, zero and maximum-safe bytes,
+fractional durations, failed-refresh stale retention, retry, obsolete RPC and
+persisted-page ownership. This is an unaccepted author checkpoint: it adds no
+Current Job UI composition, route, package/cap, ADR or release candidate. No PR,
+browser server, service/deployment, printer, plugin, authentication or Tailscale
+action occurred. Independent source review and phase-two widget composition are
+still required; all other widget tracks remain open.
+
 ## Current checkpoint: held Bed Mesh zoom renewal after delivered Thermals
 
 Thermals PR72 is delivered on independently accepted merge

@@ -14,6 +14,11 @@ validation/review remains required. The live
 Bed Mesh adapter remains pending. Heads is separately owned. Earlier pending
 status below is historical where superseded by this checkpoint.
 
+Current Job now has an unaccepted phase-one strict real model/adapter/controller
+author checkpoint based on exact accepted main `8c5756d`. It has actual-producer
+and shared-lifecycle tests but no UI composition, route, production artifact,
+independent approval or delivery; its track therefore remains pending.
+
 PR67 heads `8663d93` and `befbbd5` were independently rejected for text clipping,
 incomplete correlated selection types, and subsequently separated number/unit
 spacing. Final head `07e1c144` corrected those failures and passed fresh exact
@@ -35,7 +40,7 @@ production dashboard through PR71. Remaining cutovers and seven ready-shell debt
 | Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Heads & Filaments | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
-| Current Job | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
+| Current Job | Strict real model/adapter/controller phase-one checkpoint; UI composition still ready-shell debt | Shared live lifecycle tested; widget controls not yet composed | Pending | Unaccepted author checkpoint; no production artifact/review/PR/deploy |
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Bed Mesh | Projected Three enclosure and reactive 2D/3D candidate; native-tag shell debt | Shipped controls; no Three mount while loading | Pending adapter parity | PR67 delivered; renderer refinement awaits independent acceptance/delivery |
