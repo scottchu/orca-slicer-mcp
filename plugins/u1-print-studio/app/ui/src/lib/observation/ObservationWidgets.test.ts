@@ -78,7 +78,7 @@ describe('observation lab widgets', () => {
     expect(screen.getByText(historyClock)).toBeInTheDocument();
     cleanup();
     render(QueueWidget, { observation: queueLabFixture });
-    expect(screen.getByText(`Added ${queueClock}`)).toBeInTheDocument();
+    expect(screen.getByText((_, element) => element?.classList.contains('value-slot') === true && element.textContent?.trim() === `Added ${queueClock}`)).toBeInTheDocument();
   });
 
   test('keeps current job and history independent', () => {

@@ -73,7 +73,7 @@
 <WidgetShell label={title} busy={stateKind ? stateKind === 'loading' || refreshing : undefined}>
   <WidgetHeader {title}>
     {#snippet icon()}{#if iconName}<Icon name={iconName} />{:else if LegacyIcon}<LegacyIcon aria-hidden="true" />{/if}{/snippet}
-    {#snippet meta()}<Caption>Lab fixture · {#if stateKind === 'loading'}<Skeleton shape="caption" />{:else}<ObservedMeta {observedAt} {freshness} />{/if}</Caption>{/snippet}
+    {#snippet meta()}<Caption>Lab fixture · <ObservedMeta {observedAt} {freshness} loading={stateKind === 'loading'} /></Caption>{/snippet}
   </WidgetHeader>
   <WidgetBody>{@render children(controller)}</WidgetBody>
   <WidgetFooter>

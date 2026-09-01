@@ -1,15 +1,10 @@
 <script lang="ts">
-  import Inline from '../ui/Inline.svelte';
   import ReadingList from '../ui/ReadingList.svelte';
-  import ReadingRow from '../ui/ReadingRow.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
+  import ThermalReading from './ThermalReading.svelte';
 </script>
 
 <ReadingList label="Temperature readings">
-  {#each [1, 2, 3, 4, 5, 6] as row (row)}
-    <ReadingRow>
-      {#snippet leading()}<Inline><Skeleton shape="icon" /><Skeleton shape="text" /></Inline>{/snippet}
-      {#snippet trailing()}<Skeleton shape="value" />{/snippet}
-    </ReadingRow>
+  {#each ['tool-1', 'tool-2', 'tool-3', 'tool-4', 'bed', 'cavity'] as id (id)}
+    <ThermalReading loading id={id as 'tool-1' | 'tool-2' | 'tool-3' | 'tool-4' | 'bed' | 'cavity'} />
   {/each}
 </ReadingList>

@@ -4,6 +4,18 @@
 - Date opened: 2026-08-23
 - Working baseline: `32762dd`
 - Status: active
+- Latest user execution order: complete existing implementation, consolidate /
+  migrate, review and guarded merge/deploy/BOTH restart/verify, then cleanup.
+  Freeze the smallest complete existing all-nine controls/loading slice first;
+  do not start new features or silently include production cutover. Camera and
+  seven legacy ready-shell replacements plus production observation/camera
+  migrations remain explicit unfinished work, not accepted by a lab shipment.
+- Current priority: visible shared bottom lab controls for all nine observation
+  lifecycle/scenario/freshness/value examples, including structural loading;
+  then separate synthetic Camera integration with that same control system.
+  No production/printer/media transport change. Preserve frozen seven ready
+  debts, exact private route isolation and the unchanged 750,000-byte cap.
+
 - Latest shipped refinement: PR65 reviewed `f216c70`, merged `6b9b3e7`, guarded
   release `20260901-6b9b3e7-pr65-20260901T142009-341331`. BOTH services explicitly
   restarted and passed loaded/health/integrity, 25 exact asset/route and 26

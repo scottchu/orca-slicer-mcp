@@ -4,6 +4,30 @@
 - Status: accepted for the bounded private-lab slice
 - Scope: F0 read-only presentation architecture; private fixture route only
 
+## 2026-09-01 visible scenario laboratory addendum
+
+Each observation route adds a shared compact, keyboard-accessible LabControls
+dock after and outside its measured widget card. Preview lifecycle (loading,
+ready, refreshing, unavailable, error), fixture scenario, freshness and bounded
+values are independent closed choices. Queue state is explicitly distinct from
+preview Loading. Per-view factories validate every resolved fixture through the
+existing strict observation validator. Invalid query values normalize to safe
+defaults; only closed local selections persist in the URL, with back/forward
+restoring them. No runtime/global test harness or arbitrary JSON input ships.
+
+Ready-refreshing retains the chosen fixture and source timestamp. Loading has
+structural skeletons, one announcement and no fake telemetry or focusable
+widget actions; scenario controls remain available outside the card. Terminal
+states remain explicit. Freshness/value inputs are disabled outside ready and
+refreshing. Reset affects only the current local preview. Controls may change
+synthetic values, never printer, file, service, auth or media state.
+
+Camera is a separate immediate follow-on and remains unlinked until delivered.
+Its shared controller uses a discriminated camera scenario rather than invalid
+observation-lifecycle combinations. Existing production routes, resources and
+live-camera transport remain authoritative and unchanged. Both slices share
+the existing 750,000-byte deterministic self-contained package budget.
+
 ## Context
 
 The shipped focused widgets are self-contained vanilla HTML resources. They

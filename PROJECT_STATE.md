@@ -10,6 +10,60 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Consolidate, migrate, deliver and clean up — latest user order (2026-09-01)
+
+The finite source/state/cutover/delivery checklist is in the active iteration's
+`WIDGET_TRACKS.md`; all named feature obligations remain queued, not cancelled.
+
+Finish existing work before starting any new feature track. First complete and
+independently validate/review the preserved all-nine private-lab controls and
+loading slice, then use guarded merge/deploy/explicit BOTH restart/verification.
+Continue the already-started Camera integration and migration cleanup under
+separate reviewed boundaries; do not declare remaining legacy code migrated or
+delete it before replacement routes and behavior are accepted. Smaller Refresh,
+size modes and all other new feature additions wait behind consolidation.
+
+The current lab work is not shipped. Seven ready layout shells remain partly
+legacy: OverviewWidget, ProgressWidget, HeadsWidget, CurrentJobWidget,
+JobHistoryWidget, QueueWidget and BedMeshWidget. Production observation and
+camera assets/routes remain legacy too. The separate synthetic Camera Svelte
+checkpoint is not yet integrated into a deployed lab route. No production
+cutover, live camera, printer or actual-device acceptance is implied.
+
+Independent checks rejected PR67 head `8663d93`: required text was clipped in
+Progress, Heads, Current Job and Overview, and its selection type did not fully
+correlate each view with closed scenarios/values. The renewed candidate fixes
+those shared ready/loading layouts and supplies a mapped discriminated union.
+Author compiler/AST, 126 UI units, 94 Chrome cases (including 168 preset/width/
+text-scale combinations), deterministic packaging, 276 app tests/3,187
+assertions, 21 lifecycle and 24 ship tests plus bundles/signature/help pass.
+Independent visual review of successor `befbbd5` then found excessive spacing
+between a short progress number and its percent unit. The percentage group now
+uses inherited end alignment without changing its loading slot or other widgets.
+The final regression matrix covers 200 preset/width/text-scale combinations,
+including 48 number/unit adjacency checks. Artifact: 748,554 bytes, unchanged
+cap 750,000. Fresh exact independent validation/review and guarded delivery
+remain pending; author green gates do not override either rejected earlier head
+or imply actual-device/live acceptance.
+
+### Visible lab lifecycle/scenario controls — current priority (2026-09-01)
+
+The next user-directed UI-003 slice adds a visible shared control dock below
+every private lab observation card. Closed lifecycle, coherent synthetic data,
+freshness and bounded value examples replace the route's fixed ready-only
+fixture. All nine views gain loading/refreshing/unavailable/error inspection;
+no arbitrary JSON, transport or printer acquisition is introduced. Camera follows
+in a separate synthetic-only media-lifecycle slice using the same control system;
+it stays explicitly pending until its route is reviewed and delivered.
+
+This candidate started at `e1f57f0` and explicitly integrates reviewed main
+`cb37e3e`, including shipped slope PR65 and receipt PR66. The currently deployed
+application is exact `6b9b3e7`. The hard private-lab package cap remains 750,000
+bytes (22,904 bytes reserve before the lab-controls slice).
+Seven legacy ready-body raw-debt multisets remain frozen, not falsely marked
+fully compositional. Bed Mesh axes/enclosure, read-only Console, model/layer
+progress, remaining ready migrations and production cutovers remain open.
+
 ### Shared percentage-gradient slope shipped — PR65 (2026-09-01)
 
 Exact independently validated and reviewed head

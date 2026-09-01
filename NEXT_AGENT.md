@@ -14,6 +14,50 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Use active `WIDGET_TRACKS.md` as the finite unfinished-work checklist. Every
+named feature remains queued after existing consolidation; none is cancelled.
+
+PR67 head `8663d93` was independently rejected for real text clipping and an
+incomplete correlated selection type. The renewed candidate corrects both and
+requires fresh exact validation/review, not reuse of earlier author results.
+Author compiler/AST, 126 UI units, 94 Chrome cases, deterministic 748,539-byte
+package, 276 app/3,187 assertions, 21 lifecycle and 24 shipping tests pass;
+bundles/signature/help pass. The browser suite now includes 168 closed-preset
+text-visibility and ready/loading geometry combinations. No new feature track
+should delay review and delivery. This is not merged, deployed or actual-device
+accepted; the separate clean LIVE Fans preparation branch remains paused.
+
+Subsequent independent visual review rejected `befbbd5` for a separated `0 %`
+metric. The scoped end-alignment fix retains ready/loading geometry; the final
+matrix has 200 combinations and 48 strict glyph/unit gap checks. Updated
+artifact: 748,554 bytes (1,446-byte reserve). Fresh exact acceptance is required.
+LIVE Fans has a separate uncommitted preparatory checkpoint (decision/shared
+RPC/pure adapter/controller), paused without route changes; it is not part of
+this lab candidate.
+
+Latest user order: finish existing work, migrate/consolidate, merge/deploy/
+explicitly restart BOTH services/verify, then clean up. Do not begin new feature
+tracks. Complete the preserved all-nine lab-controls/loading candidate first
+with exact independent validation and review; Camera integration and remaining
+legacy replacements require their own explicit reviewed cutover boundaries.
+Do not silently turn the lab PR into a production migration or delete working
+legacy paths prematurely. The seven partly legacy ready shells are Overview,
+Progress, Heads, CurrentJob, JobHistory, Queue and BedMesh; production observation
+and camera routes/assets also remain legacy. Camera's authored Svelte checkpoint
+is not integrated or shipped. Keep every remaining migration item open until
+replacement and delivery evidence exists. Earlier execution orders below are
+historical where they conflict with this consolidation-first order.
+
+Current priority is visible private-lab lifecycle/scenario/value controls and
+shape-matched loading for all nine observation views, followed promptly by the
+separate synthetic Camera lab using the shared controls. See decisions 0032/0033
+addenda. The controller accepts only closed examples, never JSON/URLs or live
+transport. Preserve the seven legacy ready-body raw debts and the 750,000-byte
+combined budget; Camera stays pending until its separate integration ships.
+Reviewed main `cb37e3e` is explicitly integrated, including shipped slope PR65
+and receipt PR66; the deployed application is `6b9b3e7`.
+All earlier candidate priorities below are historical, not the current order.
+
 PR65 is shipped: reviewed `f216c70`, merged `6b9b3e7`, exact guarded release
 `20260901-6b9b3e7-pr65-20260901T142009-341331`. BOTH services were explicitly
 restarted and are loaded/healthy/integrity verified; all 25 exact static and 26

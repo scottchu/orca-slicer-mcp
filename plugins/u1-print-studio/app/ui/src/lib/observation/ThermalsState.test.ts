@@ -17,7 +17,8 @@ test('loading is six rows, one announcer, no telemetry or actions', async () => 
   expect(screen.getAllByRole('status')).toHaveLength(1);
   expect(screen.getByRole('status')).toHaveTextContent('Loading Thermals');
   expect(container.querySelectorAll('[data-reading-row]')).toHaveLength(6);
-  expect(container.querySelectorAll('[data-skeleton]')).toHaveLength(20);
+  expect(container.querySelectorAll('[data-skeleton="degree"]')).toHaveLength(12);
+  expect(container.querySelectorAll('[data-reading-row] svg')).toHaveLength(6);
   expect(container.textContent).not.toMatch(/Observed|°|220|Active|Idle/);
   expect(container.querySelector('button,input,a,[tabindex]')).toBeNull();
   await rerender({ state: { kind: 'ready', observation: thermalsLabFixture } });
@@ -35,7 +36,7 @@ test('refresh retains data/source time and terminal states supersede feedback', 
   expect(screen.getByRole('status')).toHaveTextContent('Lab fixture refreshed');
   await rerender({ state: { kind: 'ready', observation: thermalsLabFixture, refreshing: true } });
   expect(screen.getByRole('status')).toHaveTextContent('Refreshing Thermals');
-  expect(container.querySelector('[data-observed-meta]')).toHaveTextContent(observed!);
+  expect(container.querySelector('[data-observed-meta]')!.textContent).toBe(observed);
   expect(screen.getAllByRole('listitem')).toHaveLength(6);
   expect(container.querySelector('[data-skeleton]')).toBeNull();
   expect(screen.getByRole('button')).toBeDisabled();
