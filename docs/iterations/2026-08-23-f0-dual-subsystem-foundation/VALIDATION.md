@@ -1,5 +1,26 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 real Camera typed-port checkpoint
+
+On reviewed PR69 merge `ef5b239`, author ran from the app's ui directory using
+the pinned Bun1.3.12 installation and normal Node:
+
+- `bun run check`: Svelte/TypeScript zero errors/warnings, AST contracts pass.
+- `bun run test -- src/lib/camera/transport.test.ts src/lib/camera/session.test.ts src/lib/camera/peer.test.ts src/lib/media/playback.test.ts`:
+  38/38 pass (8 transport,19 session,6 peer,5 playback).
+
+The initial transport ceiling test exposed regex stack exhaustion at a4MiB
+frame. A flat bounded base64 validation scan fixes it; the full-byte-ceiling
+regression now passes. Other checks cover exact source time/JPEG bytes, strict
+downstream metadata/ICE/SDP bounds, invalid outgoing requests, malformed returned
+lease release, unchanged singleflight/deadline session behavior, peer/track
+ownership, stale callbacks and persistent-video playback recovery.
+
+This is author pure/mock-browser-port evidence only, not independent acceptance,
+production integration, actual browser rendering or real printer acquisition.
+No artifact or route changed. Next integrate reviewed shared HostRpc main before
+the end-to-end Camera presentation/build/route slice; full gates remain pending.
+
 ## 2026-09-01 synthetic Camera lab author validation
 
 The reviewed packaging/layout design is recorded in decision0032. Source builds

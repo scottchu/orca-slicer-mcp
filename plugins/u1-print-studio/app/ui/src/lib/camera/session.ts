@@ -1,8 +1,9 @@
 /** Parsed, component-private ports. No host envelopes, network URLs or DOM. */
 export type CameraSnapshot = Readonly<{ image: string; observedAt: string | null }>;
 export type CameraFrameResult = Readonly<{ snapshot: CameraSnapshot | null; activationToken?: string }>;
-export type CameraOffer = Readonly<{ sessionId: string; sdp: string; iceServers: readonly unknown[] }>;
-export type CameraCandidate = Readonly<{ candidate: string; sdpMid: string | null; sdpMLineIndex: number | null }>;
+export type CameraIceServer = Readonly<{ urls: string | string[]; username?: string; credential?: string }>;
+export type CameraOffer = Readonly<{ sessionId: string; sdp: string; iceServers: readonly CameraIceServer[] }>;
+export type CameraCandidate = Readonly<{ candidate: string; sdpMid: string | null; sdpMLineIndex: number | null; usernameFragment?: string | null }>;
 export type CameraTransport = {
   frame: (options: { authorizeLive: boolean }) => Promise<CameraFrameResult>;
   open: (activationToken: string) => Promise<CameraOffer>;

@@ -14,6 +14,15 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Real Camera implementation is active after shipped synthetic PR69 `ef5b239`.
+Decision0035 records the accepted dashboard-only migration and safety gates.
+The typed-port checkpoint has transport/peer/playback adapters and38 focused
+unit tests, but no real host binding, production artifact or route change. Merge
+reviewed Fans/shared-HostRpc main next, then build the persistent VideoSurface,
+zero-raw CameraWidget/root and exact private artifact. Do not treat synthetic
+lab evidence as real Camera parity or retire reachable MCP/legacy assets.
+Latest VALIDATION/HANDOFF distinguish this checkpoint from deployment evidence.
+
 Next candidate: the synthetic Camera lab, integrated with reviewed main
 `2d30b01`. It has an explicit private compiled-Svelte entry, shared controls and
 zero-raw root/widget over generic layout/media/status leaves. Seven states,

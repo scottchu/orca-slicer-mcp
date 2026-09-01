@@ -1,5 +1,22 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 real Camera typed-port checkpoint
+
+Decision0035 records the role-separated accepted real Camera dashboard-only
+direction. New camera/transport.ts validates the existing five private frame/
+signaling calls without a camera URL or message listener; camera/peer.ts binds
+only a downstream receive-only peer; media/playback.ts preserves one supplied
+video and producer-owned tracks. Their unit tests plus existing session tests
+pass38/38 and compiler/AST pass. CameraOffer now describes bounded ICE fields;
+candidate usernameFragment is retained. No fixture producer enters these files.
+
+Next merge the reviewed real Fans/shared-HostRpc main, then implement generic
+VideoSurface/MediaStatus, zero-raw CameraWidget/root, bootstrap/host lifecycle and
+exact private `/dashboard/camera_widget` build/route. Production budget must be
+measured and independently accepted. Preserve legacy `/camera-widget` and MCP
+resources; do not claim complete migration or live/device parity from this
+unwired checkpoint. No printer call or service change occurred.
+
 ## 2026-09-01 synthetic Camera lab integrated candidate
 
 Reviewed main `2d30b01` is explicitly integrated. This slice registers the

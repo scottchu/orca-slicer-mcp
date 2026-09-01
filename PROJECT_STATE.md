@@ -10,6 +10,19 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+### Real Camera dashboard migration — typed-port checkpoint (2026-09-01)
+
+Synthetic Camera PR69 is shipped as reviewed merge `ef5b239`. Continue the
+separate real Camera dashboard-only cutover under decision0035: typed private
+frame/signaling adapter, one peer/session owner and persistent video display.
+The checkpoint adds transport, downstream-peer and playback adapters with38
+focused passing unit tests plus clean Svelte/AST checks. It is not wired to a
+host, route or production artifact yet. No acquisition was performed. Integrate
+reviewed real Fans main before importing its shared HostRpc; preserve the old
+`/camera-widget` and MCP aliases until separate parity acceptance. Production
+packaging needs an independently reviewed measured budget, separate from
+unchanged lab limits. All other WIDGET_TRACKS remain open.
+
 ### Synthetic Camera lab candidate — next visible slice (2026-09-01)
 
 The Camera candidate integrates reviewed main `2d30b01` and provides an exact
