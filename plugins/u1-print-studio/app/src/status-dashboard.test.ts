@@ -305,7 +305,8 @@ describe("standalone status dashboard", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
-    expect(html).toContain('const widgetSource = selectedView === "fans" ? "/dashboard/fans_widget" : selectedView === "thermals" ? "/dashboard/thermals_widget" : selectedView === "heads" ? "/dashboard/heads_widget" : "/widget?standalone=1"');
+    expect(html).toContain('const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget" })');
+    expect(html).toContain('const widgetSource = focusedWidget ?? "/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
     expect(html).toContain('frame.title = selected?.[1] ?? "View unavailable"');
     for (const view of ["overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]) {
@@ -714,13 +715,26 @@ describe("focused dashboard host bridge", () => {
     });
     await host.send({ method: "ui/notifications/initialized" });
     expect(host.bridge.textContent).toBe("Service unavailable — use Reload widget to retry");
-    expect(host.messages).toEqual([{ jsonrpc: "2.0", method: "ui/notifications/tool-input", params: { arguments: { view: "thermals" } } }]);
+    expect(host.messages).toEqual([
+      { jsonrpc: "2.0", method: "ui/notifications/tool-input", params: { arguments: { view: "thermals" } } },
+      { jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } },
+    ]);
     host.reload();
     expect(host.frame.src).toContain("/dashboard/thermals_widget?t=");
     await host.send({ method: "ui/notifications/initialized" });
     expect(attempts).toBe(2);
     expect(host.messages.at(-1).params.structuredContent.freshness).toBe("offline");
     expect(host.bridge.textContent).toBe("Observation received");
+  });
+
+  test("only migrated focused widgets receive initial error notifications", async () => {
+    for (const view of ["fans", "thermals", "heads", "overview", "queue", "jobs", "job_history", "progress", "bed_mesh"]) {
+      const host = hostFixture(`/dashboard/${view}`, async () => { throw new Error("private error"); });
+      await host.send({ method: "ui/notifications/initialized" });
+      const results = host.messages.filter((message) => message.method === "ui/notifications/tool-result");
+      expect(results).toEqual(["fans", "thermals", "heads"].includes(view) ? [{ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } }] : []);
+      expect(host.requests).toEqual([{ name: "refresh_printer_observation", arguments: { view } }]);
+    }
   });
 
   test("does not derive a view from unknown routes or query parameters", async () => {

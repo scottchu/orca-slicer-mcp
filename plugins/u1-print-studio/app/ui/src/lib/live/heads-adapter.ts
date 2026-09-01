@@ -1,6 +1,6 @@
-import { HEAD_IDS, type HeadField, type HeadState, type HeadsPresentation } from './heads-presentation';
-import { parseColor } from '../ui/color';
-import { record as object, exact, choice, flag as boolean, string as text, time, evidence, provenance, observationEnvelope, capability } from './validation';
+import { HEAD_IDS, type HeadField, type HeadState, type HeadsPresentation } from './heads-presentation.js';
+import { parseColor } from '../ui/color.js';
+import { record as object, exact, choice, flag as boolean, string as text, time, evidence, provenance, observationEnvelope, capability } from './validation.js';
 
 const finite = (value: unknown): number => {
   if (typeof value !== 'number' || !Number.isFinite(value)) throw new Error('Invalid Heads number');
