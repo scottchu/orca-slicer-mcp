@@ -12,10 +12,20 @@ export type ScenarioByView = {
   queue: 'populated' | 'empty'; fans: 'nominal' | 'zero' | 'unknown' | 'mixed';
   bed_mesh: 'warped' | 'flat' | 'tilted';
 };
-export type LabSelection<V extends LabView = LabView> = {
-  kind: 'observation'; view: V; phase: Phase; scenario: ScenarioByView[V];
-  freshness: LabFreshness; values: Record<string, string>;
+type PrintValues = { percent: 'scenario' | '0' | '25' | '50' | '75' | '100' };
+export type ValuesByView = {
+  overview: PrintValues; progress: PrintValues; jobs: PrintValues;
+  thermals: { channel: '0' | '1' | '2' | '3' | '4' | '5'; actual: 'scenario' | '0' | '25' | '100' | '200' | '220' | '300'; target: 'scenario' | 'unknown' | '0' | '55' | '200' | '220' | '300' };
+  heads: { tool: '0' | '1' | '2' | '3'; material: 'scenario' | 'empty' | 'unknown' | 'pla_white' | 'petg_blue' | 'pla_black' };
+  job_history: { count: 'scenario' | '0' | '1' | '4' | '20' };
+  queue: { queueState: 'ready' | 'loading' | 'starting' | 'paused'; count: 'scenario' | '0' | '1' | '3' | '10' };
+  fans: { fan: '0' | '1' | '2' | '3' | '4' | '5' | '6'; percent: 'scenario' | 'unknown' | '0' | '25' | '33.3' | '50' | '70' | '100'; rpm: 'scenario' | 'unknown' | '0' | '1200' | '9126' | '100000'; mode: 'scenario' | 'unknown' | 'idle' | 'cool_chamber' | 'preheat_chamber' | 'hot_chamber' };
+  bed_mesh: { mode: '3d' | '2d' };
 };
+export type LabSelection<V extends LabView = LabView> = { [K in V]: {
+  kind: 'observation'; view: K; phase: Phase; scenario: ScenarioByView[K];
+  freshness: LabFreshness; values: ValuesByView[K];
+} }[V];
 // Camera supplies its own closed definition/reducer in its separately reviewed
 // integration. It never combines camera-live with observation-loading.
 export type LabControllerKind = 'observation' | 'camera';
@@ -54,24 +64,24 @@ const variables: Record<LabView, readonly Field[]> = {
 export const defaultSelection = <V extends LabView>(view: V): LabSelection<V> => ({
   kind: 'observation', view, phase: 'ready', scenario: scenarios[view][0].value as ScenarioByView[V], freshness: 'fresh',
   values: Object.fromEntries(variables[view].map(({ key, options }) => [key, options[0].value]))
-});
-export const fieldsFor = (selection: LabSelection): Field[] => {
+} as LabSelection<V>);
+export const fieldsFor = <V extends LabView>(selection: LabSelection<V>): Field[] => {
   const unavailable = selection.phase !== 'ready' && selection.phase !== 'refreshing';
   return [field('phase', 'Preview state', phases), field('scenario', 'Scenario', scenarios[selection.view]),
     { ...field('freshness', 'Freshness', freshness), disabled: unavailable },
     ...variables[selection.view].map((item) => ({ ...item, disabled: unavailable || (['overview', 'progress', 'jobs'].includes(selection.view) && ['complete', 'standby'].includes(selection.scenario)) }))];
 };
-export const selectionValue = (selection: LabSelection, key: string): string =>
-  key === 'phase' ? selection.phase : key === 'scenario' ? selection.scenario : key === 'freshness' ? selection.freshness : selection.values[key];
+export const selectionValue = <V extends LabView>(selection: LabSelection<V>, key: string): string =>
+  key === 'phase' ? selection.phase : key === 'scenario' ? selection.scenario : key === 'freshness' ? selection.freshness : (selection.values as Record<string, string>)[key];
 export const setSelection = <V extends LabView>(selection: LabSelection<V>, key: string, value: string): LabSelection<V> => {
   const definition = fieldsFor(selection).find((item) => item.key === key);
   if (!definition?.options.some((item) => item.value === value)) return selection;
-  if (key === 'scenario') return { ...selection, scenario: value as ScenarioByView[V], values: defaultSelection(selection.view).values };
+  if (key === 'scenario') return { ...selection, scenario: value, values: defaultSelection(selection.view).values } as LabSelection<V>;
   if (key === 'phase') return { ...selection, phase: value as Phase };
   if (key === 'freshness') return { ...selection, freshness: value as LabFreshness };
   return { ...selection, values: { ...selection.values, [key]: value } };
 };
-export const readSelection = (view: LabView, search: string): LabSelection => {
+export const readSelection = <V extends LabView>(view: V, search: string): LabSelection<V> => {
   let selection = defaultSelection(view);
   // Unknown, duplicated or invalid parameters are ignored, never interpreted as
   // code, JSON, a transport URL or a new observation shape.
@@ -82,7 +92,7 @@ export const readSelection = (view: LabView, search: string): LabSelection => {
   }
   return selection;
 };
-export const selectionSearch = (selection: LabSelection): string => {
+export const selectionSearch = <V extends LabView>(selection: LabSelection<V>): string => {
   const query = new URLSearchParams();
   for (const { key } of fieldsFor(selection)) query.set(`lab_${key}`, selectionValue(selection, key));
   return `?${query}`;

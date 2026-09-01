@@ -30,12 +30,16 @@ camera assets/routes remain legacy too. The separate synthetic Camera Svelte
 checkpoint is not yet integrated into a deployed lab route. No production
 cutover, live camera, printer or actual-device acceptance is implied.
 
-The all-nine controls/loading candidate now passes author compiler/AST, 126 UI
-unit tests, 86 Chrome cases (four widths and 200% text), deterministic packaging,
-276 app tests/3,187 assertions, 21 lifecycle and 24 ship tests plus bundles /
-signature/help. Artifact: 748,478 bytes, unchanged cap 750,000. Exact independent
-validation/review and guarded delivery remain pending; these author results are
-not an actual-device or live-service acceptance claim.
+Independent checks rejected PR67 head `8663d93`: required text was clipped in
+Progress, Heads, Current Job and Overview, and its selection type did not fully
+correlate each view with closed scenarios/values. The renewed candidate fixes
+those shared ready/loading layouts and supplies a mapped discriminated union.
+Author compiler/AST, 126 UI units, 94 Chrome cases (including 168 preset/width/
+text-scale combinations), deterministic packaging, 276 app tests/3,187
+assertions, 21 lifecycle and 24 ship tests plus bundles/signature/help pass.
+Artifact: 748,539 bytes, unchanged cap 750,000. Fresh exact independent
+validation/review and guarded delivery remain pending; author green gates do
+not override the rejected earlier head or imply actual-device/live acceptance.
 
 ### Visible lab lifecycle/scenario controls — current priority (2026-09-01)
 

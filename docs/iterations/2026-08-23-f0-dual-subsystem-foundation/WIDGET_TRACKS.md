@@ -4,6 +4,11 @@ Updated 2026-09-01. Latest user order: finish existing implementation, complete
 migration and delivery, finish queued features, then clean up superseded code.
 No listed track is cancelled. Private fixtures do not prove live behavior.
 
+PR67 head `8663d93` was independently rejected for required-text clipping and
+incomplete correlated selection types. Its corrected successor must obtain new
+exact validation/review; 94 author Chrome cases now include 168 text/geometry
+preset combinations. Current controls remain unshipped until guarded delivery.
+
 ## Current slice: all-nine private lab controls and loading
 
 | Track | Source/composition | State controls | Live cutover | Delivery |

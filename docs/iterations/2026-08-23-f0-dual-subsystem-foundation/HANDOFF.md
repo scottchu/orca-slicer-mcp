@@ -1,5 +1,35 @@
 # F0 dual-subsystem foundation handoff
 
+## 2026-09-01 PR67 corrected candidate — fresh acceptance required
+
+Do not deploy rejected head `8663d93`. Independent checks exposed visible text
+clipping in four widgets and formal review found the selection type insufficiently
+correlated. The renewal fixes Progress/Heads/CurrentJob/Overview shared layouts,
+adds mapped closed per-view selection types and compile-negative checks, and
+commits 168 preset/width/text-scale text-bounds/geometry regressions. Ready and
+loading still use the same layout owners; no telemetry is hidden under loaders.
+
+Renewed author evidence: compiler/AST/types, 126 units, 94 Chrome cases,
+deterministic 748,539-byte package (1,461-byte reserve), 276 app tests/3,187
+assertions, 21 lifecycle, 24 ship tests and all bundles/signature/help pass.
+See newest VALIDATION for exact commands/hash and evidence boundaries.
+
+Next: freeze a new exact PR67 head, independent validation and formal review,
+then guarded merge/deploy/explicit BOTH restart/verification. Do not reuse
+approval of any older head. The separate LIVE Fans preparation branch is clean
+and paused; Camera remains separate and unintegrated. No production migration,
+actual phone or printer acceptance is claimed. All named WIDGET_TRACKS remain.
+
+Separately authorized cleanup: the operator reports canonical clean `main` at
+`cb37e3e`, with the original five dirty documents privately archived after
+independent preservation verification; `actions` and recovery refs remain.
+All 9,005 ignored entries survived the switch unchanged. Only the approved stale
+nested clone was subsequently quarantined intact (315 matching manifest entries)
+and its empty temporary parent removed non-recursively. Recovery evidence is
+retained privately; final independent post-cleanup verification and ten other
+proposed old-worktree retirements remain pending. No feature/runtime change
+occurred. This author did not perform or independently verify that cleanup.
+
 ## 2026-09-01 reviewer-ready all-nine lab controls
 
 Author gates are complete: 126 UI units, 86 Chrome cases, compiler/AST,

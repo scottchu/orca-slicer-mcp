@@ -12,8 +12,8 @@
 
 <ObservationFrame title="Print Progress" icon={Printer} observedAt={progress?.sourceObservedAt ?? null} freshness={progress?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
   <div class="progress-top">
-    <span class="observation-status" class:loading><LoadingValue {loading} text={progress ? titleCase(progress.state) : undefined} /></span>
-    <div class="percent"><LoadingValue {loading} text={progress ? Math.round(progress.percent) : undefined} size="short" /><span class:loading-unit={loading} aria-hidden={loading ? true : undefined}>%</span></div>
+    <span class="observation-status" class:loading><LoadingValue {loading} text={progress ? titleCase(progress.state) : undefined} words={[9]} /></span>
+    <div class="percent"><LoadingValue {loading} text={progress ? Math.round(progress.percent) : undefined} size="short" words={[3]} /><span class:loading-unit={loading} aria-hidden={loading ? true : undefined}>%</span></div>
   </div>
   <div class="progress-track" role={loading ? undefined : 'progressbar'} aria-hidden={loading ? true : undefined} aria-label={loading ? undefined : 'Print progress'} aria-valuenow={progress?.percent} aria-valuemin={loading ? undefined : 0} aria-valuemax={loading ? undefined : 100}>
     <div class="progress-fill" style={`width:${progress?.percent ?? 0}%`}></div>
@@ -23,10 +23,10 @@
 </ObservationFrame>
 
 <style>
-  .progress-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .progress-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
   .loading::before { visibility: hidden; }
   .loading-unit { visibility: hidden; }
-  .percent { display: flex; align-items: baseline; color: var(--u1-positive); font-size: clamp(42px, 13vw, 68px); font-weight: 380; line-height: .95; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
+  .percent { display: flex; flex: none; align-items: baseline; padding-inline-end: .08em; color: var(--u1-positive); font-size: clamp(42px, 13vw, 68px); font-weight: 380; line-height: .95; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
   .percent span { margin-left: 2px; font-size: .52em; }
   .progress-track { height: 8px; margin-top: 18px; overflow: hidden; border-radius: 999px; background: var(--u1-soft); }
   .progress-fill { height: 100%; border-radius: inherit; background: var(--u1-accent); }

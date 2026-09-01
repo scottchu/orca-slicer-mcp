@@ -1,5 +1,78 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 PR67 renewal after independent rejection
+
+Independent validation of `8663d93` found 25 clipped-case groups in 168 closed
+preset/width/text-scale combinations, despite the earlier author suite passing.
+Progress percentages, Heads hex codes, Current Job labels/percent and Overview
+state text were visually confirmed clipped. Formal review also required a true
+mapped view/scenario/closed-values discriminated union. These were acceptance
+failures; the old head must not ship.
+
+The correction uses shared ready/loading text slots and font-aware grid/wrap
+rules, without truncation, smaller fonts, hidden telemetry or relaxed bounds.
+Overview separators are grid-owned so adaptive column counts retain seams.
+The controller now correlates each view, scenario and closed variable map;
+compile-negative cases reject wrong scenarios, keys, values and camera kinds.
+The committed `lab-text-bounds.spec.ts` adds all 168 regression combinations:
+visible text ranges must remain inside clipping ancestors within one pixel;
+major ready/loading regions retain the same one-pixel bound. Loading still has
+no action buttons, progress values or canvas.
+
+Actual renewed commands (pinned Bun 1.3.12, normal Node on PATH):
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser
+cd ../../../..
+./scripts/check-repository.sh
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign --verify --verbose=2 dist/u1-print-studio
+dist/u1-print-studio --help
+```
+
+Results: compiler zero errors/warnings, exact AST guards and type-negative
+checks pass; 126 UI units, all 94 Chrome cases, deterministic package, 276 app
+tests/3,187 assertions, 21 lifecycle and 24 ship tests pass. All four bundles,
+signature and executable help pass. The exact lab artifact is 748,539 bytes,
+SHA-256 `64f5fa2445b7ea0ec0213a4e5940434c65b1b9f8914a5d12442bd4b5a714c271`:
+21,443 bytes above deployed PR65, with 1,461 bytes below the unchanged 750,000
+cap. Seven legacy ready-shell native-tag multisets remain unchanged.
+`git diff --check` also passes after the renewal records were updated.
+
+These are renewed author software/synthetic-Chrome checks only. A new immutable
+head must independently pass and receive formal approval before guarded
+delivery. No production route, service, camera acquisition, printer or actual
+phone was exercised. Earlier green author evidence below remains historical,
+not evidence that the rejected head was acceptable.
+
+### Separately authorized workspace cleanup — attributed operator receipt
+
+The cleanup operator reports the canonical checkout is now clean `main` at
+`cb37e3e`. Before switching, a separate validator confirmed preservation of the
+five original uncommitted documents; a private binary patch and per-file hashes
+were archived. Original `actions` at `c18e6f3` and a recovery ref remain. The
+guarded reverse patch, no-overwrite-ignore switch and fast-forward-only pin
+preserved all 9,005 ignored entries (content, type, mode and symlink evidence).
+
+The separately approved stale nested source clone was then moved intact into
+private quarantine: all 315 manifest entries matched before/after, with a
+separate archive, one-line patch and HEAD recovery ref retained. Its empty
+temporary parent was removed non-recursively. No feature, runtime, service,
+printer or authentication change occurred. Ten proposed old task-worktree
+retirements remain pending; active/runtime/historical/Orca trees were untouched.
+These facts are attributed to the cleanup operator, not rerun by this author;
+final independent post-cleanup verification remains pending. Private paths and
+user-document hashes are deliberately not committed.
+
 ## 2026-09-01 all-nine lab controls — completed author gate set
 
 Actual local commands, with pinned Bun 1.3.12 on PATH and normal Node available:

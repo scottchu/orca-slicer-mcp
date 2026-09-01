@@ -17,11 +17,15 @@ Resume from repository records, not chat history.
 Use active `WIDGET_TRACKS.md` as the finite unfinished-work checklist. Every
 named feature remains queued after existing consolidation; none is cancelled.
 
-Current all-nine lab candidate is ready for exact independent validation/review:
-author compiler/AST, 126 UI unit, 86 Chrome, deterministic 748,478-byte package,
-276 app/3,187 assertions, 21 lifecycle and 24 shipping tests pass; bundles /
-signature/help pass. No new feature track should delay that review and delivery.
-This is not yet merged, deployed, or validated on the user's actual device.
+PR67 head `8663d93` was independently rejected for real text clipping and an
+incomplete correlated selection type. The renewed candidate corrects both and
+requires fresh exact validation/review, not reuse of earlier author results.
+Author compiler/AST, 126 UI units, 94 Chrome cases, deterministic 748,539-byte
+package, 276 app/3,187 assertions, 21 lifecycle and 24 shipping tests pass;
+bundles/signature/help pass. The browser suite now includes 168 closed-preset
+text-visibility and ready/loading geometry combinations. No new feature track
+should delay review and delivery. This is not merged, deployed or actual-device
+accepted; the separate clean LIVE Fans preparation branch remains paused.
 
 Latest user order: finish existing work, migrate/consolidate, merge/deploy/
 explicitly restart BOTH services/verify, then clean up. Do not begin new feature

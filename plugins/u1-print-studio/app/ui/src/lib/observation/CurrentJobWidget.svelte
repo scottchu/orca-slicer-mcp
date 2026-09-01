@@ -12,8 +12,8 @@
 
 <ObservationFrame title="Current Job" icon={FileClock} observedAt={job?.sourceObservedAt ?? null} freshness={job?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
   <div class="job-primary">
-    <span class="observation-status" class:loading><LoadingValue {loading} text={job ? titleCase(job.state) : undefined} /></span>
-    <strong><LoadingValue {loading} text={job ? `${Math.round(job.progressPercent)}%` : undefined} size="short" /></strong>
+    <span class="observation-status" class:loading><LoadingValue {loading} text={job ? titleCase(job.state) : undefined} words={[9]} /></span>
+    <strong><LoadingValue {loading} text={job ? `${Math.round(job.progressPercent)}%` : undefined} size="short" words={[5]} /></strong>
   </div>
   <div class="job-track" aria-hidden="true"><span style={`width:${job?.progressPercent ?? 0}%`}></span></div>
   <div class="observation-metric-grid job-metrics">
@@ -25,13 +25,13 @@
 </ObservationFrame>
 
 <style>
-  .job-primary { display: flex; align-items: end; justify-content: space-between; gap: 16px; }
+  .job-primary { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; }
   .loading::before { visibility: hidden; }
   .job-primary > strong { color: var(--u1-positive); font-size: 42px; font-weight: 420; line-height: 1; letter-spacing: -.05em; }
   .job-track { height: 8px; margin: 16px 0; overflow: hidden; border-radius: 99px; background: var(--u1-soft); }
   .job-track span { display: block; height: 100%; border-radius: inherit; background: var(--u1-accent); }
-  .job-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .job-metrics { grid-template-columns: repeat(auto-fit, minmax(min(100%, max(8em, calc(50% - 8px))), 1fr)); font-size: var(--u1-type-name); }
   .observation-metric { display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: center; gap: 3px 8px; }
   .observation-metric strong { grid-column: 2; font-size: 16px; font-weight: 560; }
-  @media (min-width: 590px) { .job-metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (min-width: 590px) { .job-metrics { grid-template-columns: repeat(auto-fit, minmax(min(100%, max(8em, calc(25% - 12px))), 1fr)); } }
 </style>

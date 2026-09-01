@@ -44,7 +44,7 @@
 </ObservationFrame>
 
 <style>
-  .head-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .head-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, max(8em, calc(50% - 5px))), 1fr)); gap: 10px; font-size: var(--u1-type-name); }
   .head-card { min-width: 0; padding: 14px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--head-color) 20%, var(--u1-line)); border-bottom-width: 3px; border-radius: var(--u1-radius-inner); background: color-mix(in srgb, var(--head-color) 6%, white); }
   .head-card.active { border-bottom-color: var(--u1-accent); }
   .loading::before { visibility: hidden; }

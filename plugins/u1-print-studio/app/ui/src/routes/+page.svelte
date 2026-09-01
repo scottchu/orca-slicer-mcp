@@ -65,7 +65,7 @@
       {:else if view === 'job_history'}<JobHistoryWidget observation={resolveFixture(selected('job_history'))} refreshing={selection.phase === 'refreshing'} />
       {:else if view === 'queue'}<QueueWidget observation={resolveFixture(selected('queue'))} refreshing={selection.phase === 'refreshing'} />
       {:else if view === 'fans'}<FansWidget state={previewState(selected('fans'))} />
-      {:else if view === 'bed_mesh'}<BedMeshWidget observation={resolveFixture(selected('bed_mesh'))} refreshing={selection.phase === 'refreshing'} selectedMode={selection.values.mode === '2d' ? '2d' : '3d'} onmode={(mode) => change('mode', mode)} />
+      {:else if view === 'bed_mesh'}<BedMeshWidget observation={resolveFixture(selected('bed_mesh'))} refreshing={selection.phase === 'refreshing'} selectedMode={selected('bed_mesh').values.mode === '2d' ? '2d' : '3d'} onmode={(mode) => change('mode', mode)} />
       {/if}
       <LabControls fields={fieldsFor(selection)} values={Object.fromEntries(fieldsFor(selection).map(({ key }) => [key, selectionValue(selection!, key)]))} onchange={change} onreset={reset} />
     </main>

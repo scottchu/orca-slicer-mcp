@@ -24,18 +24,13 @@
 </ObservationFrame>
 
 <style>
-  .overview-grid { display: grid; grid-template-columns: 1fr; overflow: hidden; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-inner); }
-  .overview-item { display: grid; grid-template-columns: 20px minmax(0, 1fr); grid-template-rows: auto auto auto; align-items: center; gap: 2px 8px; min-width: 0; padding: 10px 11px; border-right: 1px solid var(--u1-line); border-bottom: 1px solid var(--u1-line); }
-  .overview-item { border-right: 0; }
-  .overview-item:last-child { border-bottom: 0; }
+  .overview-grid { display: grid; grid-template-columns: 1fr; gap: 1px; font-size: var(--u1-type-name); overflow: hidden; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-inner); background: var(--u1-line); }
+  .overview-item { display: grid; grid-template-columns: 20px minmax(0, 1fr); grid-template-rows: auto auto auto; align-items: center; gap: 2px 8px; min-width: 0; padding: 10px 11px; background: var(--u1-surface); }
   .overview-item :global(svg) { grid-row: 1 / span 3; width: 19px; height: 19px; color: #69717a; }
   .overview-item span { color: var(--u1-muted); font-size: 11px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
   .overview-item strong { grid-column: 2; grid-row: 2; font-size: 17px; font-weight: 590; text-align: left; }
   .overview-item small { grid-column: 2; grid-row: 3; color: var(--u1-muted); font-size: 11px; line-height: 1.3; }
   @media (min-width: 390px) {
-    .overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .overview-item { border-right: 1px solid var(--u1-line); }
-    .overview-item:nth-child(even) { border-right: 0; }
-    .overview-item:nth-last-child(-n + 2) { border-bottom: 0; }
+    .overview-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, max(8em, calc(50% - .5px))), 1fr)); }
   }
 </style>
