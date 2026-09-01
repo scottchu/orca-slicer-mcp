@@ -14,36 +14,30 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
-Review and deliver the source-only **E Overview shipping-verifier correction**
-next. The E application source is already merged. A first guarded delivery
-reached post-install verification and encountered a contradictory verifier:
-exact static verification required private
-`/dashboard/overview` to be 200 with the frozen hash, while a stale hard-coded
-security tuple required the same private route to be 404. The guarded workflow
-rolled back and verified the prior services restored; no E deployment remained.
-The correction deletes only that tuple. Public port 8787 isolation remains dynamically derived for all
-dashboard routes; exact private Overview verification remains in `check_static`.
-Focused and full repository gates pass 24 shipping tests, 253 app tests/3,559
-assertions and 21 lifecycle tests. Complete independent review, PR delivery and
-the guarded exact-build/BOTH-restart/scoped verification sequence.
+All focused widget tracks are delivered. Move next to **user visual review and
+bounded product iteration**, not another implementation track. Preserve the
+independently invokable focused cards and compact Overview, their separate
+receipts/15-second TTLs/coalescing/stale retention, the closed read-only tool
+surface and the no-control/privacy boundaries. Browser/device rendering and
+physical user acceptance remain unverified.
 
-The Overview itself composes only accepted focused-domain projections
-from shared normalized state. Explicit Overview demand concurrently requests
-main status plus all six independent non-camera domains through their existing
-readers/receipts/15-second TTLs/coalescing/stale retention; no static, index,
-health or unrelated focused request may fan out. Produce one privacy-minimized
-`OverviewModule` headline structure from the exact eight projectors—never embed
-full modules and hide private data only in the DOM. Render one compact two-column
-white card collapsing to one column, with per-tile state/time/freshness/reason
-and one bottom Refresh. Camera remains separate. Do not add another query,
-normalizer, cache, timer, synthetic health/freshness verdict, control surface or
-giant map. Preserve independently invokable A/F/Heads/B/C/D cards and their
-domain semantics. Target 0.4.6/schema 12/observation-v12/camera-v8, 22 resources
-plus observation-v11 compatibility and unchanged two-visible/eight-app-only
-tools. Source and durable tests are implemented; do not reopen design or add a
-parallel acquisition path. Complete exact review → PR merge → exact-build deployment → explicit
-BOTH-service restart → scoped verification. Browser/device visual acceptance
-remains unverified.
+### Shipped E compact Overview checkpoint
+
+PR53 merged the Overview application as `4541ff12`; its first guarded shipment
+failed the contradictory private Overview 200/404 verifier and verified rollback
+snapshot `20260831T195837-6233d9` restored healthy runtime 0.4.5. PR54 head
+`a9ad04a` fixed the verifier and merged as
+`aa9bd9d609dbdca7c1e0124b4f760d5eb8ddf2c5` at
+`2026-09-01T00:10:35Z`. Exact release
+`20260831-aa9bd9d-pr54-20260831T201019-d7aa8a` runs on BOTH explicitly restarted,
+loaded, healthy and integrity-verified services at runtime 0.4.6/schema 12/
+observation-v12/camera-v8. Rollback snapshot `20260831T201038-575d7f` is retained
+and was not needed. Configuration, OAuth and routes are preserved; sixteen
+security checks pass. Exact served widget/index/status-host hash prefixes are
+`a8a4…`/`49a5…`/`008d…`; tailnet index and Overview return 200. One private
+Overview refresh reports complete coverage, all eight tiles known and all
+contributing receipts fresh and timestamped. No private job, Queue or model data
+is retained in this record.
 
 ### Shipped D Current Job/real History checkpoint
 
@@ -84,7 +78,7 @@ exact local-tailnet static checks, and exactly one known/fresh paused-empty Queu
 refresh at `2026-08-31T21:31:36.003Z`; exact served-widget semantics pass.
 visual/browser/device acceptance remains unverified. At that checkpoint the
 recorded order was C → D Current Job/History → E Overview; the authoritative top
-section now records C/D shipped and E next.
+section now records C/D/E shipped and visual review next.
 
 ### Previous Queue source checkpoint
 

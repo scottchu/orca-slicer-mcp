@@ -12,27 +12,25 @@ Last updated: 2026-08-31
 
 ### Authoritative current work: complete all U1 widgets (2026-08-31)
 
-**E compact Overview application source is merged; guarded delivery is pending a
-source-only shipping-verifier correction.** Explicit
-Overview demand composes the exact eight accepted focused projections while
-concurrently requesting main status plus Materials, Environment, Queue, Bed
-Mesh, Current Job and Job History through their existing independent receipts,
-15-second attempt TTLs, coalescing, stale retention and fixture isolation. It
-adds no reader, cache, timer or normalizer. The structured and visible result is
-one privacy-minimized headline module, not nested full cards or a giant map;
-every tile preserves its own state/time/freshness/reason and the header status
-time remains main-status-only. Camera stays separate. Target is 0.4.6/schema 12/
-observation-v12/camera-v8 with 22 resources and observation-v11 retained; tools
-remain two visible plus eight app-only. A first guarded delivery reached
-post-install verification and encountered a contradictory verifier that required
-the exact private Overview asset to be both 200 and 404. The workflow rolled back
-and verified the prior services restored; no E deployment remained. The minimal
-correction removes only the stale private 404 tuple;
-public dashboard isolation and exact private static verification remain. Its
-focused 24-test and full repository gates pass. A corrected E deployment,
-live-printer and visual/device acceptance are not claimed by this source-only
-correction. Preserve A/F/Heads/B/C/D and complete exact review → PR
-merge → guarded deploy → restart BOTH → scoped verify.
+**All focused widget tracks, including E compact Overview, are shipped.** PR53
+merged the Overview application as `4541ff12`; its first guarded delivery reached
+verification but stopped on the contradictory private Overview 200/404 check.
+The workflow restored healthy runtime 0.4.5 from verified rollback snapshot
+`20260831T195837-6233d9`. PR54 head `a9ad04a` corrected only that verifier and
+merged as `aa9bd9d609dbdca7c1e0124b4f760d5eb8ddf2c5` at
+`2026-09-01T00:10:35Z`. Exact release
+`20260831-aa9bd9d-pr54-20260831T201019-d7aa8a` now runs on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at runtime 0.4.6/
+schema 12/observation-v12/camera-v8. Rollback snapshot
+`20260831T201038-575d7f` is retained and was not needed. Configuration, OAuth and
+routes were preserved; sixteen security checks pass. Served widget, index and
+status-host hashes have verified prefixes `a8a4…`, `49a5…` and `008d…`; tailnet
+index and Overview return 200. Exactly one private Overview refresh reported
+complete coverage: all eight tiles known and every contributing receipt fresh
+and timestamped. No raw payload, filename, row, identifier, model, project or
+private path is retained. Browser/device visual review and physical user
+acceptance remain unverified; the next step is user visual review and bounded
+product iteration, not another widget implementation track.
 
 **D Current Job/real History is shipped.** PR51 exact head
 `30f1c7bb407d08d19d390acf2b5704a30eff010f` was approved by the formal reviewer
@@ -46,8 +44,8 @@ History return 200. Exactly one sanitized Current Job read was known/fresh and
 reported a completed terminal job with inactive storage; exactly one sanitized
 History read was known/fresh with 20 returned rows. This proves bounded telemetry
 semantics only, not filenames/projects, a currently active job, grand-total
-history, visual/device behavior or user acceptance. Preserve A/F/Heads/B/C/D;
-**E Overview source validation and delivery are next**.
+history, visual/device behavior or user acceptance. At this D checkpoint E was
+next; the authoritative section above records E shipped.
 
 ### Previous shipped C checkpoint
 
@@ -63,7 +61,8 @@ served widget/index hashes match frozen source. Exactly one Fans and one Thermal
 POST shared source time `2026-08-31T22:27:06.974Z` and returned known/fresh
 environment facts, including Cavity 33°C. These are telemetry facts, not sensor-
 accuracy, health or safety proof. Browser/device visual acceptance is unverified.
-Preserve A/F/Heads/B/C/D and continue **E Overview**.
+At that C checkpoint, E Overview remained next; all tracks are now shipped as
+recorded above.
 
 ### Previous shipped Queue checkpoint
 
@@ -78,7 +77,8 @@ health/seven exact local-tailnet static checks and exactly one private Queue
 refresh: known/fresh paused empty at `2026-08-31T21:31:36.003Z`. The exact served
 widget passes current-empty/state/time/no-ETA/bounds/top-information/single-bottom-
 Refresh behavior. User/browser/device visual acceptance remains unverified.
-Next is **C fans/chamber**, then D Current Job/History and E overview.
+At that Queue checkpoint, C, D and E remained next; all are now shipped as
+recorded above.
 
 ### Previous Queue source checkpoint
 

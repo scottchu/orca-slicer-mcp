@@ -1,5 +1,30 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-08-31 E compact Overview — PR54 deployed
+
+PR53 merged the reviewed application as `4541ff12`. Its guarded deployment
+reached verification but stopped when the exact private Overview static 200/hash
+check was followed by the stale private 404 security assertion. Verified rollback
+snapshot `20260831T195837-6233d9` restored both healthy services at runtime
+0.4.5. PR54 head `a9ad04a` corrected that verifier and merged as
+`aa9bd9d609dbdca7c1e0124b4f760d5eb8ddf2c5` at
+`2026-09-01T00:10:35Z`.
+
+Exact release `20260831-aa9bd9d-pr54-20260831T201019-d7aa8a` runs on BOTH
+explicitly restarted, loaded, healthy and integrity-verified services at runtime
+0.4.6/schema 12/observation-v12/camera-v8. Rollback snapshot
+`20260831T201038-575d7f` is retained and was not needed. Configuration, OAuth and
+routes were preserved. Sixteen security checks pass. Served widget/index/status-
+host hash prefixes are exactly `a8a4…`/`49a5…`/`008d…`; tailnet index and Overview
+return 200.
+
+Exactly one private Overview refresh returned complete coverage with all eight
+tiles known and every contributing receipt fresh and timestamped. This is
+sanitized telemetry and deployment evidence only: no raw payload, filename, job
+row, identifier, model/project identity or private path is recorded. It does not
+prove browser/device rendering, physical behavior or user acceptance, which
+remain unverified.
+
 ## 2026-08-31 E Overview shipping-verifier correction
 
 The first guarded E delivery reached post-install verification, where it exposed
