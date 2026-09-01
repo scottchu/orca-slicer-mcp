@@ -10,11 +10,11 @@ checks return 200 with byte-identical content, sixteen security checks pass and
 no rollback occurred. No printer, camera or actual-device acceptance was
 performed or claimed.
 
-## 2026-09-01 Svelte Bed Mesh private lab candidate
+## 2026-09-01 Svelte Bed Mesh private lab readability renewal
 
 Decision 0032, UI-001 and the active migration addendum preserve the existing
 focused routes/resources while the Svelte candidate matures at the exact private
-`/dashboard/lab/bed_mesh` fixture route. The 671,615-byte self-contained static
+`/dashboard/lab/bed_mesh` fixture route. The 669,454-byte self-contained static
 page is imported into the private server bundle; public HTTP returns 404, the
 ten-entry directory and `/dashboard/bed_mesh` are unchanged, and no MCP resource
 or generic embed is packaged.
@@ -23,21 +23,30 @@ Shared components are `WidgetShell`, `WidgetHeader`, `WidgetBody`,
 `WidgetFooter`, `ObservedMeta`, `IconButton` and `ChartFrame`. Bed Mesh receives
 validated normalized props, uses one 4:3 frame for local Three.js 3D and Canvas
 2D, preserves one palette/actual-mm summary, places icon-only 44-pixel actions
-below information and uses a non-flow flash overlay. It has no direct network or
-printer path.
+below information and uses a non-flow flash overlay. Validation admits only the
+exact freshness enum, canonical millisecond UTC source time, bounded safe
+profile text, finite rectangular matrix and consistent XY bounds; it verifies
+the supplied summary within `0.000001 mm` and renders recomputed values. It has
+no direct network or printer path.
 
-Author evidence passes Svelte check, 4 Vitest tests, deterministic package
-verification, four real-Chrome private-handler geometry/screenshot cases and
-the complete repository gate (274 app/2,974 assertions, 21 lifecycle and 24
-shipping tests). At 320/390/590/720, the 3D and 2D `ChartFrame` DOMRects are
-equal within 0.1 CSS pixel and 4:3; no overflow, console error or external
-request occurred. Runtime/stdio/private-server bundles and the runtime signature
-pass. Exact package SHA-256 is
-`744ce87b3510d425dec9248ee55a7770a97ef3f635ec8269d1d31279ea0ff680`.
+Independent review blocked exact earlier candidate `7aef4b5`: frame equality
+passed, but its 3D surface remained a thin central strip and its sprite labels
+were effectively 3--6 pixels. The renewed implementation uses a full XYZ grid
+and nine stable 12-pixel HTML labels. Author evidence passes Svelte check, 6
+Vitest tests, deterministic package verification, four real-Chrome private-
+handler geometry/readability/screenshot cases and the complete repository gate
+(274 app/2,974 assertions, 21 lifecycle and 24 shipping tests). At
+320/390/590/720, the 3D and 2D `ChartFrame` DOMRects are equal within 0.1 CSS
+pixel and 4:3; the real projected surface covers 91.9--92.5% of chart width and
+53.4--53.7% of chart height; every label is visible, in-frame and pairwise
+non-overlapping; and no overflow, console error or external request occurred.
+Runtime/stdio/private-server bundles and the runtime signature pass. Exact
+package SHA-256 is
+`682a32d24e1dbced9f3cd41d2db1a905583bd630e53a7234a8cc741d4cdec588`.
 
 No deployment, service restart, printer/camera observation, auth/Tailscale
 change, MCP registration or focused production cutover occurred. The next action
-is independent exact-SHA review. Deployment remains a later coordinator-owned
+is renewed independent exact-SHA review. Deployment remains a later coordinator-owned
 step; a focused Bed Mesh cutover is a separate slice.
 
 ## 2026-08-31 unified widget and camera reliability — shipped in PR56

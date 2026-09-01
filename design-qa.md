@@ -2,7 +2,7 @@
 
 ## 2026-09-01 Svelte Bed Mesh private lab foundation
 
-final result: pass for the private lab route; focused production cutover blocked
+final result: author correction passes; independent renewal required
 
 Decision 0032 adds one exact private `/dashboard/lab/bed_mesh` fixture route
 without replacing `/dashboard/bed_mesh` or adding a dashboard-directory/MCP
@@ -28,6 +28,26 @@ synthetic lab only. The candidate was not deployed. Production
 behavior on the user's phone and running services were not changed or accepted.
 A later focused production cutover requires renewed exact review, compatibility
 evidence and guarded rollout.
+
+Independent review of exact candidate `7aef4b5` supersedes the earlier author
+pass. Although 2D/3D geometry stayed equal, the 3D surface occupied only a thin
+central band and its sprite-based XYZ/value labels rendered at effectively 3–6
+pixels at phone widths and remained too small on larger fixtures. Renewal must
+show a materially filled surface and measured 12-pixel-or-larger stable HTML
+labels at all four frozen widths; screenshots and canvas visibility alone do
+not close this block.
+
+The renewed author candidate replaces sprites with nine stable HTML axis/bound
+labels. Real Chrome through the actual private handler now measures every label
+at 12 CSS pixels, visible and inside the shared frame with no pairwise overlap,
+at 320, 390, 590 and 720 pixels. The surface derived from all fixture points
+covers respectively 91.9--92.5% of frame width and 53.4--53.7% of frame height;
+the full XYZ box/grid remains visible, and the 2D/3D frame DOMRects remain exact
+matches. The original blocked phone reference and renewed 390-pixel capture
+were inspected together, with 320- and 720-pixel captures also checked for end-
+point readability. This closes the author correction only. Exact-candidate
+independent visual review, user-device review and any production cutover remain
+pending.
 
 ## E compact Overview design frozen: implementation/visual acceptance pending
 

@@ -32,14 +32,25 @@ The public service returns 404 and the generic embed is not packaged.
 
 The candidate's shared primitives are `WidgetShell`, `WidgetHeader`,
 `WidgetBody`, `WidgetFooter`, `ObservedMeta`, `IconButton` and `ChartFrame`.
-Bed Mesh accepts bridge-injected normalized props only. Real Chrome fixtures at
-320/390/590/720 prove an invariant 4:3 chart DOMRect across 3D/2D, 44-pixel
-controls, no overflow/errors/nonlocal request and paired captures. Full gates
-pass 274 app tests/2,974 assertions, 21 lifecycle and 24 shipping tests plus
-bundles/signature. This is author/implementation evidence, not independent
-approval. Next: independently review the exact candidate. Do not deploy,
-contact services/printer or cut over a production widget without a separately
-reviewed and authorized boundary.
+Bed Mesh accepts bridge-injected normalized props only. Independent review
+blocked candidate `7aef4b5` because its equal geometry still contained a thin
+3D strip and unreadably small sprite labels. The renewed branch-head candidate
+uses nine stable 12-pixel HTML axis/bound labels, a full XYZ grid and an actual
+projected surface covering 91.9--92.5% of chart width and 53.4--53.7% of chart
+height at 320/390/590/720. All labels are visible, in-frame and non-overlapping;
+the exact 4:3 3D/2D DOMRect remains invariant and controls remain 44 pixels.
+Runtime props now validate freshness, canonical millisecond UTC source time,
+bounded profile text, finite rectangular matrix data and supplied summary
+agreement within `0.000001 mm`, then render exact recomputed summary values.
+
+Svelte check passes with zero errors/warnings, Vitest passes 6/6, two sequential
+builds produce the same 669,454-byte page with SHA-256
+`682a32d24e1dbced9f3cd41d2db1a905583bd630e53a7234a8cc741d4cdec588`,
+and full gates pass 274 app tests/2,974 assertions, 21 lifecycle and 24 shipping
+tests plus bundles/signature. This is renewed author/implementation evidence,
+not independent approval. Next: independently review the exact new branch-head
+candidate. Do not deploy, contact services/printer or cut over a production
+widget without a separately reviewed and authorized boundary.
 
 PR56 is shipped. Exact reviewed head `e2702dc7a39c45665aa14155e85d13011d50526b`
 merged as `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`, tree

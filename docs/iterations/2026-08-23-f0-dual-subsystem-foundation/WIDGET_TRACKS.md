@@ -21,6 +21,19 @@ network path, deterministic static packaging, private 200/public 404 isolation,
 no acquisition and browser screenshot evidence. Per-widget production cutover is
 a later separately reviewed track; every existing focused widget remains active.
 
+Independent review blocks exact candidate `7aef4b5`: frame equality passed, but
+the 3D surface remained a thin central strip and its perspective-scaled labels
+were unreadable. Renewal adds explicit initial surface-projection coverage,
+12-pixel non-overlapping HTML axis/value label checks and strict runtime
+freshness/source/profile plus matrix-summary consistency validation. Geometry
+alone is no longer sufficient visual evidence.
+
+The renewed author candidate now measures 91.9--92.5% × 53.4--53.7% surface
+coverage and nine 12-pixel visible, in-frame and non-overlapping labels at all
+four widths; bridge malformed/inconsistent fixtures and deterministic private
+packaging pass. Independent exact-candidate renewal remains pending, so this
+track is not accepted or eligible for production cutover yet.
+
 The bounded product-iteration refinement is shipped in PR56. Reviewed
 `e2702dc7a39c45665aa14155e85d13011d50526b` merged as
 `cb7d06fdcc4de45f7fb5803fe2efee13364eba0f`; guarded release

@@ -13,7 +13,93 @@ This is reviewed Git, release, service, health, integrity, security and static-
 route evidence. It does not establish printer, camera or actual-device
 acceptance; none of those surfaces was contacted or claimed.
 
-## 2026-09-01 Svelte Bed Mesh private lab package
+## 2026-09-01 Svelte Bed Mesh readability and bridge-contract renewal
+
+Independent review blocked exact candidate `7aef4b5`: its 2D/3D frame equality
+was real, but the projected 3D surface remained a thin central strip and the
+perspective-scaled sprite labels were effectively 3--6 pixels. The renewed
+candidate keeps the exact private-lab and production-isolation boundary while
+correcting those defects and strengthening runtime prop validation. No deployed
+service, printer, camera, auth or Tailscale surface was contacted.
+
+Commands actually run:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+
+cd ..
+bun run ui:verify
+bun run ui:verify
+bun run ui:test:browser
+
+cd ../../..
+./scripts/check-repository.sh
+
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+
+cd ../../..
+git diff --check
+```
+
+Results:
+
+- Svelte check passes with zero errors/warnings. Vitest passes 6/6: two shared-
+  foundation tests and four Bed Mesh component/bridge tests. Rejection coverage
+  includes invalid freshness, noncanonical/impossible source times, unsafe
+  profile metadata, malformed/non-finite matrices and supplied minimum/maximum/
+  range disagreement beyond `0.000001 mm`; within-tolerance input is normalized
+  to exact recomputed matrix values.
+- Two sequential clean static builds produce the same 669,454-byte self-
+  contained page with SHA-256
+  `682a32d24e1dbced9f3cd41d2db1a905583bd630e53a7234a8cc741d4cdec588`.
+  The generic embed remains absent from the production manifest/package.
+- Real Chrome through the actual private handler passes 4/4 at 320, 390, 590
+  and 720 pixels. Exact 3D and 2D `ChartFrame` DOMRects remain respectively
+  258x193.5 at x31/y134.375, 328x246 at x31/y134.375, 500x375 at
+  x45/y165.1875 and 630x472.5 at x45/y165.1875 CSS pixels. Each pair is equal
+  within 0.1 CSS pixel and 4:3.
+- The actual camera-projected surface bound is 237.109375x103.265625,
+  302.125x131.5625, 461.84375x201.125 and 582.578125x253.703125 CSS pixels at
+  those widths: 91.9--92.5% of frame width and 53.4--53.7% of frame height.
+  All nine exact X/Y/Z and bound/value labels compute to 12 pixels, remain
+  visible and in-frame, and have no pairwise overlap. The full grid/surface is
+  readable in paired captures; no overflow, console error or nonlocal request
+  occurs and controls remain 44 pixels.
+- The full repository gate passes TypeScript, 274 app tests with 2,974
+  assertions, 21 lifecycle tests, 24 shipping tests and the repository
+  contract. Private exact-route/static-byte/CSP tests and the explicit public-
+  lab denial remain green.
+- Renewed bundles pass: `dist/server.js` is 3,822,202 bytes with SHA-256
+  `30c476991cccf94fe79bf7766ffaf7a0071c6654dea05f60bc21ad06ea76e260`;
+  `dist/stdio.js` is 2,811,271 bytes with SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/u1-print-studio` is 65,229,648 bytes with SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`;
+  its required code signature verifies.
+- Existing production SHA-256 remains
+  `a01768e408f3566d6e93aea4ea208930dfcd9e21e71ba372a15f8e7a306450e9`
+  for `widget.html`,
+  `43e4d030dff321a8eb18d9794fe0e3e71f0ddce4b3027a8533f83db01b0f9405`
+  for `camera-widget.html`,
+  `4460ae500cd8e5fb04edeabc48af8462f40048c4e6494d3be8ef7f87bc487a0c`
+  for the status host and
+  `25c50f7ca45c76d7d914922d461b56fe009993aba99bed341dff2df0434926f2`
+  for the camera host.
+
+This is renewed author static/software, packaging, server-isolation and local
+real-browser fixture evidence. Exact-candidate independent review remains
+required. It does not establish deployed service behavior, live printer data,
+MCP-host rendering, touch/device behavior or user acceptance. Production
+focused cutover remains a separate reviewed slice.
+
+## 2026-09-01 Svelte Bed Mesh private lab package `7aef4b5` — blocked by independent visual review
 
 Implementation ran in an isolated worktree on branch
 `codex/u1-svelte-bed-mesh-foundation`. The branch merged exact current

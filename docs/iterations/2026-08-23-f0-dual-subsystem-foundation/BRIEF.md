@@ -16,6 +16,17 @@
   route 200/public 404 isolation and no acquisition. The generic embed is not a
   production artifact. Existing `/dashboard/bed_mesh`, tools/resources, auth
   and Tailscale behavior remain untouched.
+- Independent review blocked candidate `7aef4b5`: stable geometry did not make
+  its thin 3D projection or 3–6 pixel sprite labels readable. Renewal requires
+  a surface covering at least 70% × 42% of the 4:3 frame, stable non-overlapping
+  HTML axis/value labels at 12 pixels or larger, and runtime bridge validation
+  that checks freshness/source/profile metadata and recomputes/verifies matrix
+  summary values within the decision-0032 tolerance.
+- The renewed author candidate meets those measurable gates at all four frozen
+  widths: 91.9--92.5% × 53.4--53.7% real projection coverage, nine 12-pixel
+  in-frame/non-overlapping labels, strict bridge rejection fixtures and a
+  deterministic private-only package. Independent exact-candidate review is
+  still required; production remains unchanged.
 - Latest shipped refinement (2026-08-31): PR56 reviewed `e2702dc7`, merged
   `cb7d06fd` (tree `dc290de1`) and guarded release
   `20260831-cb7d06f-pr56-20260831T234756-96fe19` runs on BOTH explicitly

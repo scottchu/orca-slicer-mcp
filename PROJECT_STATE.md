@@ -29,17 +29,28 @@ source candidate adds shared widget primitives and a synthetic Bed Mesh lab at
 contains no printer/network client. Existing production `/dashboard/bed_mesh`,
 MCP tools/resources, auth and compatibility assets remain unchanged.
 
-The deterministic 671,615-byte self-contained page is now wired only to the
-private dashboard's exact lab route; public HTTP, the ten-entry directory,
-focused production routes and MCP resources remain unchanged. Component checks
-pass 4/4. Real Chrome through the private handler passes at
-320/390/590/720: one exact 4:3 ChartFrame has unchanged x/y/width/height across
-3D/2D, controls are 44 pixels, and no overflow, console error or nonlocal
-request occurs. The full repository gate passes 274 app tests/2,974 assertions,
-21 lifecycle tests and 24 shipping tests; exact private/public isolation and
-package hashes pass. This is implementation-role evidence only, not independent
-review. The candidate is unmerged and undeployed; no running service, printer,
-camera, auth or Tailscale surface was contacted or changed.
+Independent review blocked candidate `7aef4b5`: equal frame geometry concealed
+an unreadably thin 3D projection and effectively 3--6 pixel sprite labels. The
+renewed source candidate replaces those sprites with nine stable 12-pixel HTML
+axis/bound labels, fits the actual projected surface to 91.9--92.5% of chart
+width and 53.4--53.7% of chart height, and validates freshness, canonical source
+time, bounded profile text, finite matrix data and matrix-derived summary
+agreement within `0.000001 mm` before rendering recomputed values.
+
+The renewed deterministic 669,454-byte self-contained page, SHA-256
+`682a32d24e1dbced9f3cd41d2db1a905583bd630e53a7234a8cc741d4cdec588`,
+is wired only to the private dashboard's exact lab route. Public HTTP, the
+ten-entry directory, focused production routes and MCP resources remain
+unchanged. Svelte check passes with zero errors/warnings and Vitest passes 6/6.
+Real Chrome through the private handler passes at 320/390/590/720: one exact 4:3
+`ChartFrame` has unchanged x/y/width/height across 3D/2D, every label is visible,
+in-frame and pairwise non-overlapping, controls are 44 pixels, and no overflow,
+console error or nonlocal request occurs. The full repository gate passes 274
+app tests/2,974 assertions, 21 lifecycle tests and 24 shipping tests; exact
+private/public isolation and deterministic package hashes pass. This is renewed
+implementation-role evidence only; independent exact-candidate review remains
+required. The candidate is unmerged and undeployed, and no running service,
+printer, camera, auth or Tailscale surface was contacted or changed.
 
 ### Unified widget and camera reliability shipped in PR56 (2026-08-31)
 

@@ -19,6 +19,13 @@ A framework rewrite cannot silently replace proven routing, authentication,
 tool, resource, acquisition or compatibility behavior. A new application shell
 also must not become a second printer client or a public dashboard.
 
+Independent visual review of candidate `7aef4b5` blocked acceptance: its frame
+was stable, but the projected 3D surface occupied only a thin central band and
+Three.js sprite labels rendered at effectively unreadable sizes. The same review
+also identified that a typed prop alone was not a sufficient runtime bridge
+contract because freshness/source metadata and matrix-derived summary agreement
+were not verified.
+
 ## Decision
 
 ### Strangler migration, not a production replacement
@@ -76,6 +83,18 @@ also must not become a second printer client or a public dashboard.
   bounded automatic display exaggeration and deterministic adjacent triangles.
   The 2D renderer retains the same coordinate orientation and height palette.
   Summary values and axis labels remain actual millimetres.
+- 3D axis and bound/value labels are stable HTML overlays, never perspective-
+  scaled sprites. Their computed size is at least 12 CSS pixels at every frozen
+  viewport. The initial real projected surface occupies at least 70% of the
+  chart width and 42% of its height; labels stay inside the frame and do not
+  overlap one another.
+- Runtime bridge validation accepts only the exact freshness enum, a null or
+  canonical millisecond UTC ISO observation time, bounded safe profile text,
+  finite matrix and valid XY bounds. It recomputes minimum, maximum and range
+  from every matrix cell and requires supplied summary values to agree within
+  an absolute `0.000001 mm` tolerance. The recomputed values become the
+  rendering source of truth so surface, legend, accessible label and numerical
+  summary cannot disagree.
 
 ## Observable acceptance
 
@@ -87,7 +106,9 @@ also must not become a second printer client or a public dashboard.
    overlay feedback.
 3. Real-browser tests at 320/390/590/720 measure one 4:3 `ChartFrame`, compare
    its exact `DOMRect` across 3D/2D switching, and report no horizontal overflow
-   or console error.
+   or console error. They also measure at least 12-pixel visible, non-overlapping
+   HTML axis/value labels and the actual camera-projected surface bound against
+   the 70%-wide/42%-high coverage floor.
 4. Browser captures cover both modes at the same viewport and state. The 3D
    surface, XYZ grid and labels are readable; 2D and 3D use the same fixture,
    numerical range and palette.
@@ -102,6 +123,9 @@ also must not become a second printer client or a public dashboard.
    verification, MCP descriptors/resources, auth and Tailscale behavior remain
    byte/behavior compatible. Source/component/browser evidence remains separate
    from deployed service, live-printer, MCP-host and user-device acceptance.
+8. Component fixtures reject invalid freshness/source/profile values, nonfinite
+   cells and summaries inconsistent with the matrix; within-tolerance summaries
+   are normalized to exact recomputed values.
 
 ## Consequences
 

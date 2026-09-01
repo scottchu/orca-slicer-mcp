@@ -348,7 +348,14 @@ printer environments support the described behavior.
   responsive 4:3 `ChartFrame` `DOMRect` at 320/390/590/720 CSS-pixel widths,
   preserve reported samples and actual-mm labels, use icon-only 44-pixel bottom
   controls and non-flow feedback overlays, and contain no explanatory prose in
-  card flow. Decision 0032 fixes migration and cutover gates.
+  card flow. At those widths, 3D HTML axis/value labels are at least 12 CSS
+  pixels, visible and non-overlapping, while the projected surface covers at
+  least 70% of chart width and 42% of chart height. Runtime prop validation
+  admits only canonical millisecond UTC source time plus bounded freshness/
+  profile metadata and verifies supplied minimum, maximum and range against the
+  finite matrix within `0.000001 mm`,
+  then renders recomputed summary values. Decision 0032 fixes migration and
+  cutover gates.
 
 Implementation qualification: the current store bootstraps one acquisition on
 its first `current()` demand. After initial acquisition, plain reads use the

@@ -15,9 +15,23 @@ view actions. Feedback flashes over the chart and never moves content. The
 fixture is synthetic and visibly labeled; no private attachment, live printer
 value or local attachment path is committed.
 
+Independent review blocked earlier candidate `7aef4b5` even though its geometry
+test passed: the 3D mesh occupied a thin central strip and perspective-scaled
+sprite labels were effectively unreadable. The renewal fits the real projected
+surface into the chart, renders a full XYZ box/grid, and moves axis/bound values
+to stable HTML overlays at an explicit 12-pixel computed size. The bridge guard
+also verifies freshness, canonical source time, safe bounded profile metadata,
+finite rectangular matrix data and supplied summary agreement within
+`0.000001 mm`; recomputed matrix values are the only rendering source.
+
 Browser acceptance uses the actual private-handler response for paired 2D/3D
 captures at 320, 390, 590 and 720 CSS pixels, equal chart `DOMRect`, 44-pixel
-controls, no overflow, no console error and no nonlocal request. The exact lab
-route is excluded from the dashboard directory and MCP resources, and public
-HTTP returns 404. These fixture captures are software/design evidence, not a
-focused production cutover, live-printer observation or user-device acceptance.
+controls, no overflow, no console error and no nonlocal request. It measures all
+nine labels at 12 pixels, inside the frame without overlap, and the surface at
+91.9--92.5% of frame width and 53.4--53.7% of frame height. The original blocked
+phone screenshot and renewed 390-pixel capture were inspected together; 320-
+and 720-pixel captures confirm endpoint readability. The exact lab route is
+excluded from the dashboard directory and MCP resources, and public HTTP
+returns 404. These captures are renewed author software/design evidence, not
+independent review, a focused production cutover, live-printer observation or
+user-device acceptance.
