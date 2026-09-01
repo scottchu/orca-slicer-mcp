@@ -15,11 +15,12 @@ test('all lab navigation, states and controls execute without runtime fetch', as
   const calls: string[] = [];
   await page.exposeFunction('__recordLabFetch', async (url: string) => { calls.push(url); });
   await page.addInitScript(() => {
-    window.fetch = async (input: RequestInfo | URL) => {
+    const blockedFetch = async (input: RequestInfo | URL): Promise<Response> => {
       const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
       await window.__recordLabFetch(url);
       throw new Error(`Private lab attempted runtime fetch: ${url}`);
     };
+    window.fetch = blockedFetch as typeof window.fetch;
   });
 
   await page.goto('/dashboard/lab/', { waitUntil: 'networkidle' });

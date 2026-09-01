@@ -63,6 +63,12 @@ function visit(value: unknown, fn: (node: Node) => void): void {
 }
 
 const approvedImports: Record<string, string[]> = {
+  'observation/HeadsWidget.svelte': ['svelte', './types', './loading', '../live/copy-action', '../live/heads-presentation', '../ui/clipboard', './HeadsPanel.svelte'],
+  'live/LiveHeadsRoot.svelte': ['svelte', './heads-controller', './heads-presentation', '../observation/HeadsPanel.svelte'],
+  'observation/HeadsPanel.svelte': ['lucide-svelte', '../live/presentation', '../live/heads-presentation', './format', './HeadCards.svelte', './HeadsSkeleton.svelte', '../ui/WidgetShell.svelte', '../ui/WidgetHeader.svelte', '../ui/WidgetBody.svelte', '../ui/WidgetFooter.svelte', '../ui/StateAnnouncement.svelte', '../ui/StatePanel.svelte', '../ui/ObservedMeta.svelte', '../ui/Caption.svelte', '../ui/Icon.svelte', '../ui/IconButton.svelte', '../ui/Skeleton.svelte', '../ui/FeedbackOverlay.svelte', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte'],
+  'observation/HeadCard.svelte': ['lucide-svelte', '../live/heads-presentation', '../ui/InsetCard.svelte', '../ui/ColorSwatch.svelte', '../ui/Inline.svelte', '../ui/Stack.svelte', '../ui/Name.svelte', '../ui/Caption.svelte', '../ui/LoadingValue.svelte', '../ui/Icon.svelte', '../ui/IconButton.svelte', '../ui/Skeleton.svelte', './ActualTarget.svelte'],
+  'observation/HeadCards.svelte': ['../live/heads-presentation', '../ui/CardGrid.svelte', './HeadCard.svelte'],
+  'observation/HeadsSkeleton.svelte': ['./HeadCards.svelte'],
   'observation/ThermalReadings.svelte': ['../live/presentation', '../ui/ReadingList.svelte', './ThermalReading.svelte'],
   'live/LiveThermalsRoot.svelte': ['svelte', 'lucide-svelte', './thermals-controller', '../observation/format', '../observation/ThermalReadings.svelte', '../observation/ThermalsSkeleton.svelte', '../ui/WidgetShell.svelte', '../ui/WidgetHeader.svelte', '../ui/WidgetBody.svelte', '../ui/WidgetFooter.svelte', '../ui/StateAnnouncement.svelte', '../ui/StatePanel.svelte', '../ui/ObservedMeta.svelte', '../ui/Caption.svelte', '../ui/Icon.svelte', '../ui/IconButton.svelte', '../ui/Skeleton.svelte', '../ui/FeedbackOverlay.svelte', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte'],
   'camera/LiveCameraRoot.svelte': ['./CameraWidget.svelte', './session', '../media/playback', './runtime'],

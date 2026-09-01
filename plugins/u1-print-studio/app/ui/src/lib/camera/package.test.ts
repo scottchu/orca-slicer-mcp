@@ -3,10 +3,13 @@ import { assertLabBudgets, assertSelfContained } from '../../../scripts/private-
 
 describe('three-artifact private lab budget and isolation', () => {
   it('accepts exact independently reviewed limits', () => {
-    expect(() => assertLabBudgets(200_000, 700_000, 80_000)).not.toThrow();
+    expect(() => assertLabBudgets(250_000, 650_000, 80_000)).not.toThrow();
+    expect(() => assertLabBudgets(250_000, 1, 1)).not.toThrow();
+    expect(() => assertLabBudgets(1, 700_000, 1)).not.toThrow();
+    expect(() => assertLabBudgets(1, 1, 80_000)).not.toThrow();
   });
   it('rejects each individual cap at exactly plus one byte', () => {
-    expect(() => assertLabBudgets(200_001, 1, 1)).toThrow('Light observation');
+    expect(() => assertLabBudgets(250_001, 1, 1)).toThrow('Light observation');
     expect(() => assertLabBudgets(1, 700_001, 1)).toThrow('Bed Mesh');
     expect(() => assertLabBudgets(1, 1, 80_001)).toThrow('Camera');
   });
@@ -16,8 +19,8 @@ describe('three-artifact private lab budget and isolation', () => {
       expect(() => assertLabBudgets(1, size, 1)).toThrow('Invalid');
       expect(() => assertLabBudgets(1, 1, size)).toThrow('Invalid');
     }
-    expect(() => assertLabBudgets(200_000, 700_000, 80_000)).not.toThrow();
-    expect(() => assertLabBudgets(200_000, 700_000, 80_001)).toThrow('aggregate');
+    expect(() => assertLabBudgets(250_000, 650_000, 80_000)).not.toThrow();
+    expect(() => assertLabBudgets(250_000, 650_001, 80_000)).toThrow('aggregate');
   });
   it('rejects runtime script, stylesheet and media URLs', () => {
     for (const html of ['<script src="/module.js">', '<link rel="stylesheet" href="/style.css">', '<video src="https://example.test/feed">']) expect(() => assertSelfContained(html)).toThrow();

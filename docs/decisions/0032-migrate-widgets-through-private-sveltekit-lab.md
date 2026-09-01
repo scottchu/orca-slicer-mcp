@@ -402,3 +402,48 @@ immediately. Copy begins with persistent `Copying …`; its later truthful succe
 or failure settles only when its generation is still current. Any newer Refresh
 or Copy invalidates the older completion without spawning another timer or
 status node.
+
+## 2026-09-01 route-graph packaging isolation addendum
+
+The exact-two-artifact contract is rejected for the next candidate. At accepted
+main `5ffca66`, the observation artifact was 755,217 raw UTF-8 bytes and Camera
+was 78,795 bytes (834,012 aggregate). More importantly, every directory and
+non-Bed observation request carried the complete Three.js, OrbitControls, Bed
+Mesh renderer and Bed fixture graph. Being self-contained did not make that
+route graph appropriately scoped.
+
+The replacement contract has exactly three final inline HTML artifacts:
+
+- `svelte-observation-lab.html` serves the directory and the eight non-Camera,
+  non-Bed observation views. The directory still links to Bed Mesh and Camera,
+  but this artifact imports neither implementation.
+- `svelte-bed-mesh-lab.html` serves exact `/dashboard/lab/bed_mesh` and its
+  optional trailing slash. It is an explicit Svelte entry in the existing Kit
+  project, not another Kit adapter or server route.
+- `svelte-camera-lab.html` and the accepted Camera lifecycle contract remain
+  unchanged.
+
+All three are deterministic, self-contained and inlined into the private
+dashboard bundle. They emit or reference no runtime chunk, CDN, stylesheet or
+media URL and use no dynamic import. Lab links force document navigation, and
+browser instrumentation installed before child execution must observe zero
+`fetch` calls through every route, state, control, refresh and directory link.
+SvelteKit's bundled, unreachable fetch helper is not acquisition evidence:
+`version.pollInterval` remains zero and the runtime browser assertion is the
+acceptance boundary. Any observed call is a release hold.
+
+The independently renewed candidate limits are 250,000 bytes for light
+observations, 700,000 for Bed Mesh, 80,000 for Camera and 980,000 aggregate.
+The exact aggregate boundary `250,000 + 650,000 + 80,000` passes; adding one Bed
+byte fails aggregate. Each individual maximum with one-byte siblings passes,
+each individual maximum plus one fails, and zero, negative, fractional, NaN,
+infinite and unsafe-integer values fail in every position. This is a finite
+envelope only for the remaining Queue, Current Job, History, Progress and
+Overview compositions. Console and print-thumbnail work are excluded and
+require their own decision rather than consuming this allowance.
+
+After integrating accepted Heads, the authored outputs are 199,819, 629,880 and
+78,795 bytes respectively (908,494 aggregate), leaving 50,181 light, 70,120 Bed,
+1,205 Camera and 71,506 aggregate bytes. The renewed envelope removes the
+capacity hold without constituting source, browser or release acceptance. Caps
+must not be silently loosened; graph/network/determinism gates remain unchanged.

@@ -373,16 +373,26 @@ printer environments support the described behavior.
   cutover gates.
 - **UI-002:** Before any MCP observation-resource cutover, the private Svelte
   lab exposes a directory and all nine closed observation views at exact
-  `/dashboard/lab/*` paths from one deterministic self-contained package.
+  `/dashboard/lab/*` paths from deterministic self-contained packages.
   Camera has a separate synthetic-only `/dashboard/lab/camera` candidate using
   the same visible LabControls. It is a compiled Svelte entry within the Kit
-  project, not a live camera or a second SvelteKit adapter route. The exact two
-  self-contained HTML artifacts have raw UTF-8 limits of 756,000 observation,
-  80,000 Camera and 836,000 aggregate bytes; the directory belongs to the
-  observation artifact, with no third payload or runtime asset requests. The
-  measured Heads composition revision is recorded in decision 0032: no future
-  automatic growth, unchanged minifier/composition, client graph exclusion
-  proofs, invalid and +/-1 byte guards, and final combined deterministic builds.
+  project, not a live camera or a second SvelteKit adapter route. Exactly three
+  final inline HTML artifacts have raw UTF-8 limits of 250,000 light
+  observation, 700,000 Bed Mesh, 80,000 Camera and 980,000 aggregate bytes.
+  The directory and eight non-Bed/non-Camera views belong to the light
+  artifact; Bed Mesh and Camera each use a closed explicit Svelte entry in the
+  same project. The light graph excludes Three.js, OrbitControls, the Bed
+  renderer and Bed fixture; Bed excludes other observations, Camera/media,
+  live adapters and RPC. No final artifact may reference an external asset or
+  dynamic import, and instrumented lab navigation, states, controls and
+  refreshes execute without runtime fetch. Decision 0032 records measured
+  outputs, invalid and +/-1-byte guards and deterministic builds. The exact
+  aggregate boundary is 250,000 + 650,000 + 80,000; one additional Bed byte
+  fails. Every individual maximum with one-byte siblings passes, while every
+  individual plus one and every zero, negative, fractional, NaN, infinite or
+  unsafe-integer position fails. This finite allowance covers only remaining
+  Queue, Current Job, History, Progress and Overview composition; Console and
+  print thumbnails require a separate decision.
   Camera offers loading/connecting/snapshot/simulated-live/fallback/error/
   unsupported and restrictive native/unsupported/simulated-rejection policies.
   Native capabilities are feature-detected; FPS requires actual local presented
@@ -390,7 +400,7 @@ printer environments support the described behavior.
   toggles, all states keep media geometry, and normal mobile status stays top
   right. Enlarged text may reflow only when intrinsic space is insufficient.
   The unchanged restrictive private CSP and exact route-to-artifact shipping
-  hashes apply independently to both artifacts. Production Camera migration
+  hashes apply independently to all three artifacts. Production Camera migration
   remains separate. Every view is independently callable, bridge-injected, synthetic-
   fixture marked and network-free, with strict domain validation and no raw or
   private identity. Shared tokens plus one header/body/footer inset owner keep
