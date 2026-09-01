@@ -10,6 +10,15 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+Renewed PR70 author gates now pass on the explicitly integrated PR69 baseline:
+183 UI units, 121 Chrome cases, 281 app tests/3,301 assertions, 21 lifecycle and
+24 ship tests, deterministic packages and all bundles/signature/help. The held
+`e0e141a` race is covered by both controller and real-iframe regressions; this
+new candidate still requires independent exact-SHA validation/review. Current
+artifacts: production Fans 85,315 bytes; observation lab 748,816; Camera lab
+78,795; lab aggregate 827,611. All three individual limits and the 830,000-byte
+two-lab aggregate remain enforced. No renewed PR70 deployment is claimed.
+
 Current integration checkpoint: reviewed PR69 Camera merge
 `ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24` is explicitly integrated into the
 unshipped PR70 renewal. The operator reported successful Camera-only deployment
@@ -19,6 +28,14 @@ Preserve its two private lab artifacts, exact Camera route and 750,000/80,000 /
 Fans, not another lab payload. Full combined-tree gates and fresh exact PR70
 acceptance are pending; earlier Camera-candidate and PR70 author notes below
 are historical where superseded by this checkpoint.
+
+PR69 actual shipment is independently post-verified: exact reviewed `473cd000`,
+merge `ef5b239`, release `20260901-ef5b239-pr69-20260901T160906-8d7501`, BOTH
+restarts, 26 static/27 security checks, preservation and integrity pass. The
+separate validator checked runtime/source identities and downloaded Camera
+bytes/CSP through nine probes and 56 state-width-text combinations. Production
+Camera remains legacy; this acceptance is for the synthetic private lab only.
+See newest VALIDATION for hashes, rollback snapshot and role attribution.
 
 ### Live Fans migration — separate next slice (2026-09-01)
 

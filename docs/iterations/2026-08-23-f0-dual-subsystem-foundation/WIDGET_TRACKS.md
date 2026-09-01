@@ -15,7 +15,8 @@ not deployed.
 
 PR67 shipped: reviewed `07e1c144`, merged `c924bf9`, both services restarted and
 independently post-verified. All nine observation control/loading paths below
-are delivered; production cutovers, Camera and seven ready-shell debts remain.
+are delivered. Camera's synthetic lab is delivered through PR69; production
+cutovers and seven ready-shell debts remain.
 
 | Track | Source/composition | State controls | Live cutover | Delivery |
 | --- | --- | --- | --- | --- |
@@ -28,7 +29,7 @@ are delivered; production cutovers, Camera and seven ready-shell debts remain.
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Bed Mesh | Svelte/Three chart, native-tag shell debt | Shipped controls; no Three mount while loading | Pending | PR67 deployed/post-verified |
-| Camera | Candidate zero-raw root/widget, shared PageLayout and registered media/status leaves | Candidate seven states, restrictive capabilities, loading, URL/reset/history | Pending; pure session checkpoint not wired, production remains legacy | Exact independent acceptance and delivery pending |
+| Camera | Zero-raw root/widget, shared PageLayout and registered media/status leaves | Shipped seven synthetic states, restrictive capabilities, loading, URL/reset/history | Pending; real session checkpoint not wired, production remains legacy | PR69 deployed/post-verified |
 
 Acceptance progression: author software tests → separate exact-SHA validation →
 separate formal review → PR merge → exact deployment → explicit BOTH service
@@ -47,9 +48,9 @@ those adapters and generic resource replacement remain pending.
 - [x] Recoverably quarantine the specifically approved ten redundant worktrees
   and stale nested clone; independently verify full preservation. Active feature
   work, runtime/rollback trees and required legacy code are not retired by this.
-- [ ] Independently accept/deliver the integrated synthetic Camera lab candidate.
+- [x] Independently accept/deliver the integrated synthetic Camera lab (PR69).
   Decision0032's reviewed split permits exactly two artifacts:750,000 observation,
-  80,000 Camera,830,000 aggregate; candidate748,482+78,688=827,170. The directory
+  80,000 Camera,830,000 aggregate; shipped748,482+78,688=827,170. The directory
   stays in observation. No real Camera migration is inferred from these fixtures.
 - [ ] Retire the seven remaining ready-shell raw-tag debts using shared
   primitives; retain exact composition guards.

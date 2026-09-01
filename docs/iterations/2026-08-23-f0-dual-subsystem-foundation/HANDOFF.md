@@ -1,5 +1,25 @@
 # F0 dual-subsystem foundation handoff
 
+## Renewed PR70 ready for independent exact acceptance
+
+The held refresh race is corrected and reviewed main `ef5b239` is explicitly
+integrated. Full combined author gates PASS: 183 UI units, 121 Chrome cases,
+281 app tests/3,301 assertions, 21 lifecycle, 24 ship tests and deterministic
+packages/bundles/signature/help. Next is fresh independent validation/review,
+then guarded merge/deploy/BOTH restart/verification; no PR70 release is claimed.
+Production Fans is 85,315 bytes; the two labs are 748,816 + 78,795 = 827,611.
+Camera-specific source and budget contracts are preserved; shared generic busy
+button code explains its 107-byte artifact change. The actual PR69 receipt below
+is historical deployed evidence, not approval of this newer combined candidate.
+
+PR69 is shipped and independently post-verified: reviewed `473cd000`, merged
+`ef5b239`, release `20260901-ef5b239-pr69-20260901T160906-8d7501`. Both explicit
+restarts, integrity, 26 static/27 security and preservation passed; rollback
+snapshot retained. Separate postchecks cover exact runtime/file identities,
+actual tailnet assets/CSP and downloaded-byte synthetic browser lifecycle.
+Full attributed receipt is in VALIDATION. Real Camera remains a distinct pending
+cutover; no physical stream or actual-phone acceptance is claimed.
+
 ## 2026-09-01 reviewed Camera baseline integrated into PR70 renewal
 
 Main `ef5b239` is explicitly merged. Preserve Camera's source/leaf registry,

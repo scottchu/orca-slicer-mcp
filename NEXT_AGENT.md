@@ -14,12 +14,26 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Next action: independent exact validation/review of renewed PR70 on merged
+Camera baseline `ef5b239`, then guarded Fans-only cutover. Full combined author
+gates pass: 183 UI units, 121 Chrome, 281 app/3,301 assertions, 21 lifecycle and
+24 ship tests plus deterministic packages/bundles/signature/help. The initial
+`e0e141a` was held; do not reuse that pin. New artifact hashes and actual PR69
+rollout/postcheck attribution are in the newest VALIDATION entries. Camera lab
+is already shipped; real Camera remains separate. No further feature expansion
+belongs in this renewal while independent acceptance is pending.
+
 The PR70 refresh-race renewal now explicitly integrates reviewed Camera main
 `ef5b239`. Resolve and verify the combined source/packages/routes without
 overwriting its Camera mapping, controls or two-artifact/aggregate budget.
 Rerun full gates and freeze a new exact PR70 head for independent acceptance.
 The Camera-candidate paragraphs below are preserved historical evidence, not
 an instruction to redeploy Camera separately from this combined next release.
+
+Camera lab PR69 is already deployed and independently post-verified on exact
+`ef5b239`, release `20260901-ef5b239-pr69-20260901T160906-8d7501`. Its actual
+operator/postcheck receipt is in VALIDATION. Do not confuse synthetic local-video
+acceptance with the still-pending real Camera transport/session cutover.
 
 PR70 `e0e141a` is independently held for a superseded-refresh rejection leaving
 busy=true. The narrow finally-settlement correction has two passing controller

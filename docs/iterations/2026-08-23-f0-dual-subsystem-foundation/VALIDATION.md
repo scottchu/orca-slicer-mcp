@@ -1,5 +1,76 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 renewed PR70 combined-tree author gate PASS
+
+The refresh-rejection correction and explicit `ef5b239` merge have now been
+verified together. Commands actually rerun with pinned Bun 1.3.12 and normal
+Node PATH: UI `bun run build`, `bun run package:private-lab`,
+`bun run build:live-fans`, full `bun run test:browser`; repository
+`./scripts/check-repository.sh`; app vendor/stdio/server/runtime bundle scripts,
+`codesign --verify --verbose=2 dist/u1-print-studio`, executable `--help`, and
+`git diff --check`. All pass. Counts: 183 UI units, 121 Chrome cases, 281 app
+tests / 3,301 assertions, 21 lifecycle and 24 ship tests. Both deterministic lab
+rebuilds and the deterministic production rebuild pass their exact comparisons.
+
+The full browser matrix includes Camera state/capability/layout/media lifecycle,
+all earlier observation regressions and eleven live Fans iframe cases. The new
+case proves V12 → pending refresh → V15 notification → rejected old RPC retains
+V15/time/layout/focus, clears busy without stale feedback and permits a V16
+refresh. Two unit regressions also cover a same-version freshness supersession;
+both were demonstrated failing before the narrow finally-settlement fix. No
+clipping/geometry tolerance, composition guard or package limit was weakened.
+
+Renewed packaged artifacts:
+
+- Production Fans: 85,315 bytes, SHA-256
+  `b28ee10c695bb8d0296fa0d161b9962c578fdecabbd0f18ec1b525d408d23be1`,
+  below its 100,000-byte bound.
+- Observation lab: 748,816 bytes, SHA-256
+  `4ec4b2f03c26affbc89784ff3ea55e47b8be62be83cbc5d3054849eb0ef11840`,
+  +334 versus shipped PR69, 1,184 bytes below 750,000.
+- Camera lab: 78,795 bytes, SHA-256
+  `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`,
+  +107 from the shared generic busy button, 1,205 bytes below 80,000.
+- Two-lab aggregate: 827,611 bytes, 2,389 below 830,000. Production Fans is not
+  included in or substituted for that explicitly reviewed two-lab bound.
+
+The source-derived inventory tests now cover 27 static asset/routes and 28
+security checks, including both distinct Camera-lab and production-Fans assets.
+These are test counts, not actual deployment checks for PR70. Independent
+validation/review of the renewed immutable commit remains mandatory; the earlier
+held `e0e141a` must not ship. No running service, physical printer, real camera
+stream or actual-user device was used in these author gates.
+
+## 2026-09-01 actual PR69 Camera lab rollout and independent postcheck
+
+Attributed delivery-operator receipt: independently approved head
+`473cd000399aa0eb5d9f548b0f75e54dbbd0309f`, tree
+`f3399abfb25345fcf419e1ed9c37cb20c16cf842`, merged as
+`ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24` with identical tree. Guarded release
+`20260901-ef5b239-pr69-20260901T160906-8d7501` explicitly restarted BOTH
+existing services. Health/integrity, runtime 0.4.8/schema 12/observation-v14 /
+camera-v10, 26 static and 27 security checks passed; preservation=true, no
+rollback needed, snapshot `20260901T160950-ad9fec` retained. Canonical checkout's
+8,689 ignored entries and recovery refs were preserved.
+
+The distinct `camera_exact_validation` agent independently confirmed both running
+launchd/plist identities, active manifest and all 15 file hashes match the exact
+release/revision, with healthy/integrity status. Actual tailnet directory with
+and without slash, nine observation lab routes and Camera returned 200/no-store,
+restrictive CSP and exact approved artifacts: observation 748,482 bytes, SHA-256
+`bba36db142abc32eb11792265d7ba888f987ff43e502fa32ee50e93c29caec77`;
+Camera 78,688 bytes, SHA-256
+`de731c01ab92726e73be444fe70036f380d4df6172e895e5477db14ea8a87fba`.
+Downloaded Camera bytes with their real CSP passed nine independent Chrome
+probes / 56 state-width-text combinations, including native fullscreen/PiP and
+CSS fallback retaining media identity, with no network/device acquisition.
+Canonical checkout was clean at the merge. Detailed receipts remain private.
+
+This is independently attributed deployed-service/static and synthetic-browser
+evidence, not an iPhone, real printer stream or completed production Camera
+migration. The actual receipt is included with the next reviewed Fans source
+candidate; it does not request a documentation-only extra deployment/restart.
+
 ## 2026-09-01 combined Camera baseline for renewed PR70
 
 Explicitly integrated reviewed main `ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24`
