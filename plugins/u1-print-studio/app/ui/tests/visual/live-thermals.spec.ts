@@ -95,6 +95,20 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
   });
 }
 
+test('Thermals initial failure offers an in-widget retry', async ({ page }) => {
+  let calls = 0;
+  await page.route('**/dashboard/tools/call', async (route) => {
+    calls += 1;
+    await route.fulfill(calls === 1 ? { status: 503, json: { error: 'unavailable' } } : { json: liveThermalsResult() });
+  });
+  await page.goto('/dashboard/thermals');
+  const frame = page.frames().find((item) => item.url().endsWith('/dashboard/thermals_widget'))!;
+  await expect(frame.getByRole('status')).toHaveText('Could not load Thermals');
+  await frame.getByRole('button', { name: 'Refresh Thermals' }).click();
+  await expect(frame.getByRole('status')).toHaveText('Thermals loaded');
+  expect(calls).toBe(2);
+});
+
 test('Thermals superseded rejection settles, retries and survives BFCache without another bridge', async ({ page }) => {
   let calls = 0, fail: () => void = () => {};
   await page.route('**/dashboard/tools/call', async (route) => {

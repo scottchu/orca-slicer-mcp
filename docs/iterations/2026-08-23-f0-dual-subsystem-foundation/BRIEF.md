@@ -1,5 +1,24 @@
 # F0 dual-subsystem foundation brief
 
+Current order: complete the three-artifact private-lab route/graph split on top
+of accepted/deployed Heads main `5ffca66`. The authored light/Bed/Camera outputs
+are 199,819/629,880/78,795 bytes (908,494 aggregate). Independently renewed caps
+are 250,000/700,000/80,000 and 980,000 aggregate. The finite light allowance
+covers Queue, Current Job, History, Progress and Overview only; Console and
+thumbnails are excluded. No printer, auth, public route, MCP or production
+widget behavior changes.
+
+Current order: Fans PR70, Camera PR71, Thermals PR72 and Bed Mesh renderer PR73
+are delivered. Accepted main8c5756d is explicitly integrated in Heads branch
+merge0bb9ef6. Heads mobile skeleton repairs pass focused22 cases, not delivered;
+finish exact combined tests/review and guarded ship.
+Then Queue, Current Job and History are separately bounded migrations; Progress
+is separate, real Bed Mesh adapter/shell follows renderer, Overview is last.
+Decision0032's reviewed finite Heads composition budget revision applies.
+All new-feature tracks and final cleanup remain open, after consolidation.
+
+## Historical checkpoints
+
 Current order: Fans PR70, Camera PR71 and Thermals PR72 are delivered; reviewed
 Thermals main `6325c87` is explicitly merged for this held PR73 renewal. Repair
 the independently reproduced canceled-wheel-zoom regression, retain every 1x

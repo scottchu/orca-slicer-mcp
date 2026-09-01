@@ -40,6 +40,119 @@ actual-device/user acceptance. Exact independent source review is required
 before phase two; normal independent validation/review and guarded shipment
 remain required after a production candidate exists.
 
+## Three-artifact private-lab split — final author evidence
+
+Base `8c5756d` was split, then accepted/deployed Heads main `5ffca66` was
+ordinarily merged as `53cc313`. Exact application source `4a6c493` (tree
+`2eb0fc97b55e0da830f9af3e0add5fa5bac03fe6`) has deterministic outputs that
+measure light 199,819 bytes, Bed Mesh 629,880, Camera 78,795 and aggregate
+908,494. SHA-256 is light
+`080ad95276834fe560ccae2eb57e763969d891b5c65fa708babbca12667e6101`,
+Bed `02cea8092dc8b8915e0ac32e2f492c66a62b3913545a49af1139963640c646c9`
+and Camera
+`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`.
+Two complete private-package builds reproduced those hashes.
+
+Actually run author gates: `bun run check`, `bun run test` and two
+`bun run verify:private-lab` runs in `app/ui`; `bun run check`,
+`bun test src/*.test.ts`, `bun run bundle`, `bundle:server` and
+`bundle:runtime` in `app`; `uv run --no-project scripts/test_u1_service.py`,
+`uv run --no-project scripts/test_u1_ship.py`,
+`./scripts/check-repository.sh`; and `bun run test:browser`. Results: UI
+335/335, app 296/296 with 3,503 assertions, lifecycle 21/21, shipping 24/24,
+repository/signing PASS and Chrome 164/164 in 1.3 minutes. Browser coverage
+retains all four widths, normal/200%, Bed 4:3/zoom/pixels/labels/modes and Camera
+lifecycle. A pre-execution `fetch` monkeypatch exercised the directory link and
+every route/state/control/refresh with zero calls. No external request appeared.
+Independent cap review renewed limits to 250,000/700,000/80,000 and 980,000
+aggregate, leaving 50,181 light and 71,506 aggregate bytes. Its exact boundary
+matrix and finite Queue/Current Job/History/Progress/Overview scope are fixed in
+decision 0032; Console and thumbnails are excluded. This removes the capacity
+hold, not the need for exact-SHA validation/review. These are author software artifacts,
+not deployment, device, printer or user acceptance.
+
+## Heads repaired source — final author evidence, not independent acceptance
+
+Frozen application source `4d24446` (tree `48896cc`) passes final Chrome
+163/163 in4.7m. The first full162 renewal was161PASS/1FAIL: initial Heads HTTP
+failure remained Loading because the host forwarded initial errors only to Fans.
+The closed focused-widget route map now forwards initial errors for
+Fans/Thermals/Heads. Focused initial-error/retry2/2 and host23/23 PASS.
+
+The earlier mobile/empty failures below are preserved historical evidence, not
+remaining acceptance waivers. Focused Heads+Thermals18/18 PASS, then full161
+reported154PASS/7FAIL: three genuine all-empty/unknown geometry failures and
+four obsolete body min-height string expectations. The generic optional action
+slot repairs the geometry without adding empty buttons; actual material glyph
+height/zero padding replaces the obsolete style-string assertion. Renewed
+focused selection22/22 PASS at all four widths/normal200%, including loaded,
+empty and unknown presets, truthful skeletons, copy lifecycle, and readable
+194-character real metadata. These are local synthetic checks, not service or
+actual-device acceptance. Final repository contract PASS: UI335/335 in33 files,
+app294/294 with3,482 assertions, lifecycle21/21, shipping24/24, compiler/AST,
+six deterministic packages, runtime bundles, strict signing and `--help`.
+The temporary testing-library target-prop option collision was a test harness
+error, corrected with an explicit props wrapper; it was not an app defect.
+
+Current exact raw UTF-8 artifacts for the final combined renewal:
+
+| Artifact | Bytes | SHA256 |
+| --- | ---: | --- |
+| Observation lab |755217/756000|`c7ff57181e42cdd7231aabfe596f46e0cec6c3d69854bb2aecb96e0f733a1485`|
+| Camera lab |78795/80000|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+| Heads |91633/100000|`ddf531806391a5ab1a66400956f57d2d92d25765d7ff20ca8ec98a1e96f238a0`|
+| Thermals |86230/100000|`41933ec1a3649c1d90419f6385820944b09fb0a59f9668f56b6a80ea3c6417ba`|
+| Fans |85654/100000|`ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d`|
+| Camera |89919/100000|`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`|
+
+The exact two-lab sum is834012/836000; observation has783 bytes reserve.
+The retained Vite7.3.6/default esbuild/Kit inline flags are unchanged, without
+unsafe minification or new dependencies. Genuine browser Rollup graph235modules
+excludes real adapters/controllers/host RPC/Camera; production Heads excludes
+fixtures/lab/Camera/Three. Negative graph and +/-1/invalid byte cases are
+enforced. Graph reports remain ignored build evidence, never runtime assets.
+Thermals changed bytes intentionally for the one opt-in generic ActualTarget;
+its default hierarchy, semantics and all9 existing browser cases passed.
+
+Next: exact independent source review and validation, then guarded shipment.
+This is synthetic software/browser evidence, not deployed-service, phone,
+camera-stream or printer acceptance.
+
+## 2026-09-01 Heads implementation checkpoint — not acceptance
+
+Author branch explicitly merged accepted Thermals6325c87, then accepted
+Bed Mesh8c5756d as0bb9ef6. No service or printer acquisition was performed.
+Actual commands run in app/ui with pinned Bun1.3.12:
+
+- `bun run test -- src/lib/live/heads-adapter.test.ts src/lib/ui/color.test.ts`:
+  42 focused adapter/color cases PASS.
+- `bun run test -- src/lib/live/heads-controller.test.ts src/lib/observation/ObservationWidgets.test.ts`:
+  22PASS; async stale-copy/refresh generations and four-card semantics.
+- `bun run test -- src/lib/live/graph-contract.test.ts src/lib/camera/package.test.ts`:
+  19PASS before the additional production byte-boundary case was added.
+- `bun run check`: compiler0errors/0warnings and AST zero-raw contracts PASS.
+- `bun x playwright test tests/visual/live-heads.spec.ts --workers=1`: first
+  pass5PASS/4FAIL; second compact candidate6PASS/3FAIL. Remaining initial layout
+  differences320normal+26.19px and320/390200%−7.61px are held failures, not waived.
+  Copy rejection/busy focus/removed-action fallback and stale completion passed.
+- `bun test src/status-dashboard.test.ts` (app):22PASS/746assertions, including
+  exact Heads GET/CSP/no-store/path/method/public isolation and real projector DTO.
+- `uv run python scripts/test_u1_ship.py`:24ran; two expected inventory-count
+  assertions needed updating30→31 for Heads. Renewal is required after the edit.
+  An earlier module-style invocation failed import resolution and is not evidence.
+- `bun run build && bun run package:private-lab`: combined Bed+Heads measured
+  754,723 observation +78,795 Camera =833,518, under explicitly reviewed
+  756,000/80,000/836,000 bounds. Subsequent layout changes require remeasurement.
+- Build-only Rollup client graph has234modules before Bed integration, with no
+  real adapter/controller/host RPC/Camera in observation lab. Shared copy action
+  and tree-shaken Heads presentation are deliberate, not acquisition. Production
+  graph rejects fixtures/lab/Camera/Three; reports are ignored local evidence.
+
+Independently approved compact ActualTarget design keeps one generic component,
+defaultfalse and unchanged normal hierarchy/semantics. Regenerated Thermals
+86,230 bytes and Heads91,358 bytes are current author artifacts, not accepted
+hashes; final default Thermals regressions and deterministic renewal remain due.
+
 ## 2026-09-01 PR73 zoom repair — final author evidence, not independent approval
 
 The held `85f89f9` remains rejected: its earlier green suite did not exercise

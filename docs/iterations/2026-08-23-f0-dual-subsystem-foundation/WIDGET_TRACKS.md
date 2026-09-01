@@ -1,8 +1,29 @@
 # Widget completion tracks
 
+Current packaging track: accepted/deployed Heads main `5ffca66` is ordinarily
+merged into an authored exact-three private-lab split. Light observation, Bed
+Mesh and Camera are 199,819/629,880/78,795 bytes (908,494 aggregate) with
+distinct route/source graphs. Exact application source `4a6c493` passes full
+author renewal including Chrome164; independent exact-SHA review is still
+required. Independently renewed limits are 250,000/700,000/80,000 and
+980,000 aggregate, leaving 50,181 light bytes for Queue/Current Job/History/
+Progress/Overview only; Console and thumbnails are excluded. No delivery or
+cleanup claim is made.
+
 Updated 2026-09-01. Latest user order: finish existing implementation, complete
 migration and delivery, finish queued features, then clean up superseded code.
 No listed track is cancelled. Private fixtures do not prove live behavior.
+
+Current checkpoint: Fans PR70, Camera PR71, Thermals PR72 and the Bed Mesh
+renderer PR73 are delivered (accepted main8c5756d). Heads candidate explicitly
+integrates that main; strict adapter and compositional leaves exist, focused
+mobile/empty skeleton repairs pass22 cases, and the final combined Chrome163 and
+repository/runtime gates pass. Independent review/validation remain due. No Heads
+delivery claim is made. Decision0032 explicitly revises two-lab limits to
+756,000/80,000/836,000 for measured Heads composition, not automatic growth.
+Continue Heads, then Queue → Current Job → History; Progress separately, real
+Bed Mesh adapter/shell after renderer, Overview last. All feature, MCP/legacy
+cutover and recoverable-cleanup obligations below remain open.
 
 Current checkpoint: Fans PR70, Camera PR71 and Thermals PR72 are delivered;
 reviewed main `6325c87` is explicitly integrated. Their private dashboard
@@ -39,7 +60,7 @@ production dashboard through PR71. Remaining cutovers and seven ready-shell debt
 | Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | PR70 focused dashboard delivered; generic MCP still legacy | PR70 deployed/post-verified with synthetic tool replies; connector identity/device evidence separate |
 | Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
-| Heads & Filaments | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
+| Heads & Filaments | Zero-raw candidate with generic card/color/actual-target primitives | State controls retained; truthful skeleton and initial-error retry candidate pass | Focused private candidate; generic MCP unchanged | Author gates PASS; independent review/validation and shipment pending |
 | Current Job | Strict real model/adapter/controller phase-one checkpoint; UI composition still ready-shell debt | Shared live lifecycle tested; widget controls not yet composed | Pending | Unaccepted author checkpoint; no production artifact/review/PR/deploy |
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |

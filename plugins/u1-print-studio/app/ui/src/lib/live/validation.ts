@@ -34,7 +34,7 @@ export const provenance = (value: unknown): Provenance => {
   const data = record(value); exact(data, ['source', 'sourceObservedAt', 'detail']);
   return { source: choice(data.source, ['moonraker', 'derived', 'not_observed']), sourceObservedAt: time(data.sourceObservedAt), detail: string(data.detail) };
 };
-export const observationEnvelope = (value: unknown, view: 'fans' | 'thermals' | 'jobs') => {
+export const observationEnvelope = (value: unknown, view: 'fans' | 'thermals' | 'heads' | 'jobs') => {
   const envelope = record(value);
   exact(envelope, ['schemaVersion', 'view', 'observationVersion', 'sourceObservedAt', 'receivedAt', 'freshness', 'connectionEpoch', 'reachable', 'printerState', 'printerStateLabel', 'refreshAfterSeconds', 'session', 'module']);
   if (envelope.schemaVersion !== 2 || envelope.view !== view) throw new Error('Wrong observation view');

@@ -6,16 +6,31 @@ const html = readFileSync(
   new URL("../public/svelte-observation-lab.html", import.meta.url),
   "utf8"
 );
+const bedMeshHtml = readFileSync(new URL('../public/svelte-bed-mesh-lab.html', import.meta.url), 'utf8');
 const cameraHtml = readFileSync(new URL('../public/svelte-camera-lab.html', import.meta.url), 'utf8');
 const appPackage = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8")
 ) as { scripts: Record<string, string> };
 
-describe("private Svelte observation lab package", () => {
-  test("freezes one deterministic self-contained static page", () => {
-    expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
+describe("private Svelte lab packages", () => {
+  test('keeps exactly three final private lab artifacts', () => {
+    const labFiles = readdirSync(new URL('../public/', import.meta.url))
+      .filter((name) => /^svelte-.+-lab\.html$/.test(name))
+      .sort();
+    expect(labFiles).toEqual([
+      'svelte-bed-mesh-lab.html',
+      'svelte-camera-lab.html',
+      'svelte-observation-lab.html'
+    ]);
+    for (const artifact of [html, bedMeshHtml, cameraHtml]) {
+      expect(artifact).not.toMatch(/\bimport\s*\(/);
+    }
+  });
+
+  test("freezes the deterministic light observation artifact", () => {
+    expect(Buffer.byteLength(html)).toBeLessThanOrEqual(250_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "f1a3328ac5a2f6179d41cc114f4faafdf57808790ba559d52e34bdfb1517ffcc"
+      "080ad95276834fe560ccae2eb57e763969d891b5c65fa708babbca12667e6101"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -23,7 +38,8 @@ describe("private Svelte observation lab package", () => {
       "Current Job", "Job History", "Print Queue", "Fans & Air", "Bed Mesh",
       "U1 Camera"
     ]) expect(html).toContain(marker);
-    expect(html).toContain('data-chart-frame=""');
+    expect(html).not.toContain('data-chart-frame=""');
+    for (const forbidden of ['WebGLRenderer', 'OrbitControls', 'bed-mesh-fixture']) expect(html).not.toContain(forbidden);
     expect(html).not.toMatch(/<script\b[^>]*\bsrc\s*=/i);
     expect(html).not.toMatch(/<link\b[^>]*\brel\s*=\s*["']stylesheet/i);
     expect(html).not.toMatch(
@@ -31,14 +47,23 @@ describe("private Svelte observation lab package", () => {
     );
   });
 
+  test('freezes Bed Mesh as an isolated self-contained artifact', () => {
+    expect(Buffer.byteLength(bedMeshHtml)).toBeLessThanOrEqual(700_000);
+    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('02cea8092dc8b8915e0ac32e2f492c66a62b3913545a49af1139963640c646c9');
+    for (const marker of ['Bed Mesh', '3D surface', '2D grid', 'data-chart-frame=""', 'WebGLRenderer', 'OrbitControls']) expect(bedMeshHtml).toContain(marker);
+    for (const forbidden of ['data-camera-media', 'RTCPeerConnection', '/dashboard/tools/call', 'open_printer_camera']) expect(bedMeshHtml).not.toContain(forbidden);
+    expect(bedMeshHtml).not.toMatch(/<script\b[^>]*\bsrc\s*=|<link\b[^>]*\brel\s*=\s*["']stylesheet/i);
+  });
+
   test('keeps the synthetic Camera in a second bounded private artifact', () => {
     expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a');
     expect(Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(80_000);
-    expect(Buffer.byteLength(html) + Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(830_000);
+    expect(Buffer.byteLength(html) + Buffer.byteLength(bedMeshHtml) + Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(980_000);
     for (const marker of ['U1 Camera', 'Simulated live', 'Camera state', 'Display capabilities', 'data-camera-media']) expect(cameraHtml).toContain(marker);
     for (const forbidden of ['RTCPeerConnection', '/dashboard/tools/call', 'open_printer_camera', 'WebGLRenderer', '__setCamera']) expect(cameraHtml).not.toContain(forbidden);
     expect(cameraHtml).not.toMatch(/<script\b[^>]*\bsrc\s*=|<link\b[^>]*\brel\s*=\s*["']stylesheet/i);
     expect(html).not.toContain('data-camera-media');
+    expect(bedMeshHtml).not.toContain('data-camera-media');
   });
 
   test("selects exact private paths synchronously before body layout", () => {

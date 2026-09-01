@@ -6,7 +6,7 @@
     <link rel="icon" href="data:," />
     <script>
       (() => {
-        const titles = Object.freeze({
+        const titles = {
           overview: 'Overview',
           progress: 'Print Progress',
           thermals: 'Thermals',
@@ -14,16 +14,9 @@
           jobs: 'Current Job',
           job_history: 'Job History',
           queue: 'Print Queue',
-          fans: 'Fans & Air',
-          bed_mesh: 'Bed Mesh',
-          camera: 'U1 Camera'
-        });
-        const path = location.pathname.endsWith('/') && location.pathname !== '/'
-          ? location.pathname.slice(0, -1)
-          : location.pathname;
-        const route = path === '/dashboard/lab'
-          ? 'directory'
-          : path.slice('/dashboard/lab/'.length);
+          fans: 'Fans & Air'
+        };
+        const route = location.pathname.replace(/\/$/, '').slice('/dashboard/lab/'.length) || 'directory';
         document.title = titles[route] ?? 'Observation Lab';
         document.documentElement.dataset.u1LabRoute = route;
       })();

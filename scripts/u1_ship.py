@@ -86,11 +86,16 @@ def static_contract(source):
             "Invalid private-lab route inventory")
     camera_lab_match = re.search(r'CAMERA_LAB_PATH = "(/dashboard/lab/camera)";', text)
     require(camera_lab_match is not None, "Unsupported private Camera lab route contract")
+    bed_mesh_lab_match = re.search(r'BED_MESH_LAB_PATH = "(/dashboard/lab/bed_mesh)";', text)
+    require(bed_mesh_lab_match is not None, "Unsupported private Bed Mesh lab route contract")
+    require(bed_mesh_lab_match[1] not in lab_routes and camera_lab_match[1] not in lab_routes,
+            "Heavy private labs must not be included in the light route inventory")
     directory = DirectoryLinks()
     directory.feed((app / "public/dashboard-index.html").read_text())
     require(set(directory.links) == set(routes) | {"/dashboard/camera"} and len(directory.links) == len(routes) + 1, "Directory links and focused routes disagree")
     files = {(8788, route): "status-dashboard-host.html" for route in routes}
     files.update({(8788, route): "svelte-observation-lab.html" for route in lab_routes})
+    files[(8788, bed_mesh_lab_match[1])] = "svelte-bed-mesh-lab.html"
     live_fans_match = re.search(r'LIVE_FANS_WIDGET_PATH = "(/dashboard/[a-z_]+)"', text)
     require("svelte-live-fans.html" not in text or live_fans_match is not None,
             "Unsupported live Fans route contract")
@@ -105,6 +110,13 @@ def static_contract(source):
         require((8788, live_thermals_match[1]) not in files,
                 "Live Thermals asset must have a distinct private route")
         files[(8788, live_thermals_match[1])] = "svelte-live-thermals.html"
+    live_heads_match = re.search(r'LIVE_HEADS_WIDGET_PATH = "(/dashboard/heads_widget)";', text)
+    require("svelte-live-heads.html" not in text or live_heads_match is not None,
+            "Unsupported live Heads route contract")
+    if live_heads_match:
+        require((8788, live_heads_match[1]) not in files,
+                "Live Heads asset must have a distinct private route")
+        files[(8788, live_heads_match[1])] = "svelte-live-heads.html"
     files[(8788, camera_lab_match[1])] = "svelte-camera-lab.html"
     live_camera_match = re.search(r'LIVE_CAMERA_WIDGET_PATH = "(/dashboard/[a-z_]+)"', text)
     require("svelte-live-camera.html" not in text or live_camera_match is not None,

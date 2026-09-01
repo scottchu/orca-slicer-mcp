@@ -336,9 +336,10 @@ class StaticContractTests(unittest.TestCase):
             app = root / APP
             (app / "src").mkdir(parents=True)
             (app / "public").mkdir()
-            (app / "src/status-dashboard.ts").write_text('const FOCUSED_DASHBOARD_PATHS = new Set(["/dashboard/progress", "/dashboard/new_view"]); const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab", "/dashboard/lab/bed_mesh"]); const CAMERA_LAB_PATH = "/dashboard/lab/camera";')
+            (app / "src/status-dashboard.ts").write_text('const FOCUSED_DASHBOARD_PATHS = new Set(["/dashboard/progress", "/dashboard/new_view"]); const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab"]); const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh"; const CAMERA_LAB_PATH = "/dashboard/lab/camera";')
             for name in ASSETS: (app / "public" / name).write_text(name)
             (app / "public/svelte-observation-lab.html").write_text("lab")
+            (app / "public/svelte-bed-mesh-lab.html").write_text("bed mesh lab")
             (app / "public/svelte-camera-lab.html").write_text("camera lab")
             index = app / "public/dashboard-index.html"
             index.write_text('<a href="/dashboard/progress">Progress</a><a href="/dashboard/new_view">New</a><a href="/dashboard/camera">Camera</a>')
@@ -347,7 +348,7 @@ class StaticContractTests(unittest.TestCase):
             self.assertEqual(contract["8788/dashboard/lab/camera"]["sha256"], digest(app / "public/svelte-camera-lab.html"))
             self.assertEqual(
                 contract["8788/dashboard/lab/bed_mesh"]["sha256"],
-                digest(app / "public/svelte-observation-lab.html"),
+                digest(app / "public/svelte-bed-mesh-lab.html"),
             )
             source = app / "src/status-dashboard.ts"
             source.write_text(source.read_text() + ' const LIVE_FANS_WIDGET_PATH = "/dashboard/fans_widget";')
@@ -366,12 +367,30 @@ class StaticContractTests(unittest.TestCase):
             source.write_text(correct_source.replace('LIVE_THERMALS_WIDGET_PATH', 'UNRECOGNIZED_PATH') + ' import thermal from "svelte-live-thermals.html";')
             with self.assertRaisesRegex(ShipError, "Thermals route"): static_contract(root)
             source.write_text(correct_source)
+            source.write_text(source.read_text() + ' const LIVE_HEADS_WIDGET_PATH = "/dashboard/heads_widget";')
+            (app / "public/svelte-live-heads.html").write_text("production Heads, independent materials")
+            heads_contract = static_contract(root)
+            self.assertEqual(len(heads_contract), len(thermal_contract) + 1)
+            self.assertEqual(heads_contract["8788/dashboard/heads_widget"]["sha256"], digest(app / "public/svelte-live-heads.html"))
+            self.assertNotIn("8787/dashboard/heads_widget", heads_contract)
+            correct_source = source.read_text()
+            source.write_text(correct_source.replace('LIVE_HEADS_WIDGET_PATH', 'UNRECOGNIZED_PATH') + ' import heads from "svelte-live-heads.html";')
+            with self.assertRaisesRegex(ShipError, "Heads route"): static_contract(root)
+            source.write_text(correct_source)
             source.write_text(source.read_text() + ' const LIVE_CAMERA_WIDGET_PATH = "/dashboard/camera_widget";')
             (app / "public/svelte-live-camera.html").write_text("production Camera, not lab fixtures")
             camera_contract = static_contract(root)
-            self.assertEqual(len(camera_contract), len(thermal_contract) + 1)
+            self.assertEqual(len(camera_contract), len(heads_contract) + 1)
             self.assertEqual(camera_contract["8788/dashboard/camera_widget"]["sha256"], digest(app / "public/svelte-live-camera.html"))
             self.assertNotIn("8787/dashboard/camera_widget", camera_contract)
+            isolated_source = source.read_text()
+            source.write_text(isolated_source.replace('const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab"]);', 'const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab", "/dashboard/lab/bed_mesh"]);'))
+            with self.assertRaisesRegex(ShipError, "Heavy private labs"):
+                static_contract(root)
+            source.write_text(isolated_source.replace('const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh";', 'const UNRECOGNIZED_BED_PATH = "/dashboard/lab/bed_mesh";'))
+            with self.assertRaisesRegex(ShipError, "Bed Mesh lab route"):
+                static_contract(root)
+            source.write_text(isolated_source)
             index.write_text('<a href="https://unexpected.invalid">Wrong</a>')
             with self.assertRaises(ShipError): static_contract(root)
 
@@ -415,13 +434,14 @@ class StaticContractTests(unittest.TestCase):
             security_calls.append((port, route))
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
-        self.assertEqual(check_security(contract, security_read), 30)
+        self.assertEqual(check_security(contract, security_read), 31)
         self.assertIn((8787, "/dashboard/overview"), security_calls)
         self.assertIn((8787, "/dashboard/camera"), security_calls)
         self.assertIn((8787, "/dashboard/lab"), security_calls)
         self.assertIn((8787, "/dashboard/lab/bed_mesh"), security_calls)
         self.assertIn((8787, "/dashboard/fans_widget"), security_calls)
         self.assertIn((8787, "/dashboard/thermals_widget"), security_calls)
+        self.assertIn((8787, "/dashboard/heads_widget"), security_calls)
         self.assertIn((8787, "/dashboard/camera_widget"), security_calls)
         self.assertIn((8787, "/dashboard/lab/camera"), security_calls)
         self.assertNotIn((8788, "/dashboard/overview"), security_calls)
@@ -442,7 +462,7 @@ class StaticContractTests(unittest.TestCase):
         contract = static_contract(root)
         dashboard_paths = {item["route"] for item in contract.values() if item["route"].startswith("/dashboard")}
         expected = len(dashboard_paths) + 3 + 1  # fixed public/private auth checks plus private health
-        self.assertEqual(expected, 30)
+        self.assertEqual(expected, 31)
         def read(port, route):
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
