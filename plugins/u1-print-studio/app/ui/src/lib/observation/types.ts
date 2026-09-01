@@ -30,6 +30,7 @@ export type ThermalsObservation = LabBase<'thermals'> & { readings: ThermalReadi
 export type HeadReading = {
   physicalTool: 1 | 2 | 3 | 4;
   active: boolean;
+  headState: 'active' | 'parked' | 'heating' | 'cooling' | 'standby' | 'idle' | 'unknown';
   presence: boolean | null;
   material: string | null;
   color: string | null;
@@ -164,14 +165,13 @@ export function validateHeads(value: unknown): HeadsObservation {
   if (!Array.isArray(item.items) || item.items.length !== 4) throw new Error('Invalid head items');
   const items = item.items.map((head, index) => {
     const row = record(head, 'Invalid head item');
-    exact(row, ['physicalTool', 'active', 'presence', 'material', 'color', 'actualC', 'targetC'], 'Invalid head item');
+    exact(row, ['physicalTool', 'active', 'headState', 'presence', 'material', 'color', 'actualC', 'targetC'], 'Invalid head item');
     if (row.physicalTool !== index + 1 || typeof row.active !== 'boolean' ||
         (row.presence !== null && typeof row.presence !== 'boolean') ||
         (row.color !== null && (typeof row.color !== 'string' || !hexColor.test(row.color)))) throw new Error('Invalid head item');
     const normalizedMaterial = material(row.material);
-    if (row.presence === false && (normalizedMaterial !== null || row.color !== null)) throw new Error('Empty head cannot carry material metadata');
     const normalizedColor = typeof row.color === 'string' ? row.color.toUpperCase() : null;
-    return { physicalTool: (index + 1) as 1 | 2 | 3 | 4, active: row.active, presence: row.presence as boolean | null,
+    return { physicalTool: (index + 1) as 1 | 2 | 3 | 4, active: row.active, headState: oneOf(row.headState, ['active', 'parked', 'heating', 'cooling', 'standby', 'idle', 'unknown'], 'Invalid head state'), presence: row.presence as boolean | null,
       material: normalizedMaterial, color: normalizedColor,
       actualC: finite(row.actualC, -20, 400), targetC: finite(row.targetC, 0, 400) };
   });

@@ -1,5 +1,29 @@
 # 0032: Migrate focused widgets through a private SvelteKit lab
 
+## 2026-09-01 Heads composition packaging addendum
+
+Independent packaging design review and coordinator adoption revise only the
+observation allowance to 756,000 raw UTF-8 bytes and the exact two-lab sum to
+836,000; Camera remains 80,000. No third artifact, extra chunk, runtime URL or
+CSP expansion is permitted. Separate production Heads is bounded at 100,000.
+This is a measured 6,000-byte (0.8%) revision, not automatic future growth.
+
+The author and independent reviewer both measured candidate observation 754,067
+bytes, Camera 78,795, and production Heads 90,834. Compared with accepted
+Thermals observation 749,112, Heads adds 4,955. The independently identified
+pending Bed Mesh correction adds 448, forecasting 754,515 with 1,485 reserve.
+These are design-review measurements, not final combined source acceptance.
+The final integrated build must be remeasured and deterministically reproduced.
+
+Keep the existing pinned Vite/esbuild minifier and inline packaging. Do not
+remove semantics, accessibility, retained-refresh behavior, tests or leaf-only
+composition to fit the budget. Client Rollup module graphs, not SSR graphs,
+must prove that lab excludes live adapters/controllers and production Heads
+excludes fixtures, Camera and Three. Negative graph fixtures, exact +/-1 byte
+boundaries, invalid byte counts, exact-two-artifact and self-contained checks
+remain mandatory. Graph reports are ignored build evidence, not runtime assets.
+Exact-source independent approval and guarded shipping remain separate gates.
+
 ## 2026-09-01 projected Bed Mesh enclosure refinement
 
 Independent interaction validation held the first candidate because its fit

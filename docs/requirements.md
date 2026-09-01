@@ -377,9 +377,12 @@ printer environments support the described behavior.
   Camera has a separate synthetic-only `/dashboard/lab/camera` candidate using
   the same visible LabControls. It is a compiled Svelte entry within the Kit
   project, not a live camera or a second SvelteKit adapter route. The exact two
-  self-contained HTML artifacts have raw UTF-8 limits of 750,000 observation,
-  80,000 Camera and 830,000 aggregate bytes; the directory belongs to the
-  observation artifact, with no third payload or runtime asset requests.
+  self-contained HTML artifacts have raw UTF-8 limits of 756,000 observation,
+  80,000 Camera and 836,000 aggregate bytes; the directory belongs to the
+  observation artifact, with no third payload or runtime asset requests. The
+  measured Heads composition revision is recorded in decision 0032: no future
+  automatic growth, unchanged minifier/composition, client graph exclusion
+  proofs, invalid and +/-1 byte guards, and final combined deterministic builds.
   Camera offers loading/connecting/snapshot/simulated-live/fallback/error/
   unsupported and restrictive native/unsupported/simulated-rejection policies.
   Native capabilities are feature-detected; FPS requires actual local presented
@@ -550,7 +553,8 @@ durable-monitor claim.
   One host bridge/controller owns selected-view-before-data, bounded requests,
   duplicate/late-result rejection, restart recovery, retained refresh/focus and
   BFCache lifecycle. Its exact private static asset has no acquisition capability
-  and is separately bounded at 100,000 bytes; the lab retains its 750,000-byte cap.
+  and is separately bounded at 100,000 bytes; the lab follows UI-002's explicit
+  independently reviewed limits.
   Other focused routes and generic MCP/legacy aliases stay unchanged until their
   own lossless parity, independent acceptance and guarded deployment.
   The next focused Thermals cutover preserves real `heater-bed`, nullable

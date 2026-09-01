@@ -13,9 +13,9 @@ const appPackage = JSON.parse(
 
 describe("private Svelte observation lab package", () => {
   test("freezes one deterministic self-contained static page", () => {
-    expect(Buffer.byteLength(html)).toBeLessThanOrEqual(750_000);
+    expect(Buffer.byteLength(html)).toBeLessThanOrEqual(756_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "f1a3328ac5a2f6179d41cc114f4faafdf57808790ba559d52e34bdfb1517ffcc"
+      "c7ff57181e42cdd7231aabfe596f46e0cec6c3d69854bb2aecb96e0f733a1485"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -34,7 +34,7 @@ describe("private Svelte observation lab package", () => {
   test('keeps the synthetic Camera in a second bounded private artifact', () => {
     expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a');
     expect(Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(80_000);
-    expect(Buffer.byteLength(html) + Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(830_000);
+    expect(Buffer.byteLength(html) + Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(836_000);
     for (const marker of ['U1 Camera', 'Simulated live', 'Camera state', 'Display capabilities', 'data-camera-media']) expect(cameraHtml).toContain(marker);
     for (const forbidden of ['RTCPeerConnection', '/dashboard/tools/call', 'open_printer_camera', 'WebGLRenderer', '__setCamera']) expect(cameraHtml).not.toContain(forbidden);
     expect(cameraHtml).not.toMatch(/<script\b[^>]*\bsrc\s*=|<link\b[^>]*\brel\s*=\s*["']stylesheet/i);

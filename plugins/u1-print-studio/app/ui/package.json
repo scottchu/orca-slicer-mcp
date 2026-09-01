@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:live-heads": "bun run scripts/build-live-fans.ts --heads",
+    "verify:live-heads": "bun run scripts/build-live-fans.ts --heads --check",
     "build:live-camera": "bun run scripts/build-live-camera.ts",
     "verify:live-camera": "bun run scripts/build-live-camera.ts --check",
     "dev": "vite",
