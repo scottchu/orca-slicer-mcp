@@ -1,14 +1,99 @@
 # F0 dual-subsystem foundation validation
 
-## 2026-09-01 LIVE Fans preparatory author checkpoint
+## 2026-09-01 LIVE Fans current author checkpoint
 
 UI compiler/AST check and the focused adapter/controller/RPC unit run actually
-pass: 23 tests (12 adapter, six controller, five bridge). The first isolated
-production package build is 84,447 bytes and excludes lab controls, fixtures,
-test entry points, Three and media acquisition. This is an unshipped preparatory
-checkpoint: the dashboard host/route, independent review, complete browser
-matrix and release gates remain pending. It does not establish live-printer
-or actual-device behavior. Further source changes require fresh package evidence.
+pass: 25 tests (12 adapter, eight controller, five bridge). Ten browser cases pass
+against the real packaged iframe/host with synthetic intercepted tool results:
+four widths, 200% text, all seven rows at 1,000,000 RPM, initial loading parity,
+retained refresh/time/focus, failure/retry, persisted lifecycle and back/forward.
+The new busy icon-button state preserves focus while suppressing duplicate
+activation; native disabling initially failed this test and was corrected.
+The package is 84,884 bytes, excludes lab producers/controls, Three and media,
+and has an explicit production import-graph guard. Seventeen dashboard tests pass,
+including actual existing server projection compatibility, static route isolation
+and pre-reload reply generations. Full gates and fresh independent acceptance
+remain pending; these tests do not establish printer or actual-device behavior.
+
+## 2026-09-01 independent cleanup preservation and receipt-only checks
+
+The cleanup operator moved exactly ten approved redundant task worktrees intact
+with `git worktree move`; no force-removal, global clean/prune, branch deletion
+or permanent source deletion was used. The separately approved nested clone was
+quarantined intact; only its empty parent was removed using nonrecursive `rmdir`.
+
+Independent verification was performed by the receipt author, who did not
+perform these cleanup operations. An inline `uv run python -` read-only check
+used independent SHA-256/lstat/symlink traversal and tar-member inspection,
+plus `git worktree list --porcelain`, `git status --porcelain`, `git rev-parse`,
+`git merge-base --is-ancestor` and ignored-file enumeration. Actual result PASS:
+
+- Every current quarantined worktree exactly matches its before, fresh-pre-move
+  and after manifests for file bytes, types, modes and symlink targets. Only the
+  registered root Git pointer is excluded, because Git updates it during a move.
+- All ten old paths are absent and new registrations, HEADs and retained branch
+  refs match; both untracked independent diagnostic specs remain present.
+- Canonical checkout is clean `main` at `c924bf9`; the original action/recovery
+  refs match. All 8,689 current ignored entries match the pre/post-PR67 manifests;
+  the original 9,005-entry pre/post-main-switch manifests also match each other.
+- All 315 nested-clone entries match current quarantine and archive contents;
+  archive/patch checksums pass. The five historical original document files match
+  their safe archive-member allowlist and recorded hashes; archive/patch
+  checksums pass. No private paths, user-document contents or their hashes are
+  committed here.
+- Active lab, LIVE Fans, Camera and current-validator worktrees remain present
+  and registered. No claim of an independent byte-for-byte baseline comparison
+  for those actively changing excluded trees is made.
+
+This verifies recoverability, not runtime behavior. The independent check made
+no source, service, build, printer or quarantine mutation. Detailed recovery
+manifests remain private; do not empty the recoverable quarantine.
+
+Receipt-only author commands actually run: `git diff --check`,
+`git diff --quiet c924bf9 -- plugins scripts .agents AGENTS.md`, and
+`PATH=<pinned Bun 1.3.12 plus normal Node PATH> ./scripts/check-repository.sh`.
+All pass, including 126 UI units, 276 app tests/3,187 assertions, 21 lifecycle
+and 24 ship tests, ending `repository contract: ok`. Only five record files
+change; application/plugin/operator trees are identical to the deployed merge.
+Fresh independent docs review is still required; no second deploy/restart is
+appropriate for unchanged application bytes.
+
+## 2026-09-01 PR67 actual shipment and independent postcheck
+
+Attribution: the separate validator passed exact `07e1c144` (full compiler/AST,
+126 units, 94 Chrome cases, deterministic package, app/lifecycle/shipping gates,
+168 original clipping cases and 48 isolated adjacency cases). The latter showed
+exactly 2px number/unit spacing and zero loading-geometry difference across
+normal/200% text and all four widths. Formal review approved the same immutable
+head. Author results alone were not treated as approval; rejected `8663d93` and
+`befbbd5` were not deployed.
+
+The delivery operator actually ran the documented shipping help, read-only plan,
+then `uv run scripts/u1_ship.py --pr 67 --reviewed-sha
+07e1c144df9debbbb20b92c1bb0b2ad7b10bc03a --bun <pinned Bun 1.3.12> --execute`.
+This receipt intentionally omits machine-private paths. Result:
+
+- Merge `c924bf9a0e225f96a1b4163cdb90c83751545e6a`, exact reviewed tree
+  `9198918a05ddb08bf503369413125b8b4bc120cb`.
+- Release `20260901-c924bf9-pr67-20260901T153250-99a666`.
+- BOTH existing services explicitly restarted; loaded/healthy/integrity verified,
+  runtime 0.4.8, runtime schema 12, observation-v14 and camera-v10.
+- 25 static asset/route checks, 26 security checks and preservation checks pass.
+- No rollback needed; snapshot `20260901T153330-e4475a` retained.
+
+The separate post-deployment validator confirmed loaded launchd/plist/source
+identities match this release and merge. Actual tailnet lab directory plus nine
+routes returned 200/no-store with restrictive CSP and exact 748,554 bytes,
+SHA-256 `83146f52f61fd9225877e3bd4ef7ee08798745083fc7232fa9e932399b007a1a`.
+Isolated Chrome ran against fetched server bytes and passed all-nine controls,
+retained refresh/source times, skeletons without active content, one loading
+announcement, stable major geometry and no external requests. The detailed
+verification report remains private, not committed runtime data.
+
+These are attributed independent software, deployed-service and synthetic Chrome
+results. No actual-user-browser, iPhone, printer or camera acceptance is claimed.
+The receipt-only change does not alter deployed application bytes and needs no
+additional restart/deploy under decision 0028.
 
 ## 2026-09-01 compact Progress metric — final renewed author checks
 

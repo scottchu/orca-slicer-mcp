@@ -4,27 +4,30 @@ Updated 2026-09-01. Latest user order: finish existing implementation, complete
 migration and delivery, finish queued features, then clean up superseded code.
 No listed track is cancelled. Private fixtures do not prove live behavior.
 
-PR67 head `8663d93` was independently rejected for required-text clipping and
-incomplete correlated selection types. Its corrected successor must obtain new
-exact validation/review; 94 author Chrome cases now include 168 text/geometry
-preset combinations. A subsequent `befbbd5` visual rejection for separated
-number/unit spacing is corrected with inherited numeric alignment and a final
-200-combination matrix, including 48 adjacency checks. Current controls remain
-unshipped until fresh independent acceptance and guarded delivery.
+PR67 heads `8663d93` and `befbbd5` were independently rejected for text clipping,
+incomplete correlated selection types, and subsequently separated number/unit
+spacing. Final head `07e1c144` corrected those failures and passed fresh exact
+independent validation and review before shipment. The regression matrix retains
+200 combinations, including 48 adjacency checks; earlier rejected heads were
+not deployed.
 
 ## Current slice: all-nine private lab controls and loading
 
+PR67 shipped: reviewed `07e1c144`, merged `c924bf9`, both services restarted and
+independently post-verified. All nine observation control/loading paths below
+are delivered; production cutovers, Camera and seven ready-shell debts remain.
+
 | Track | Source/composition | State controls | Live cutover | Delivery |
 | --- | --- | --- | --- | --- |
-| Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Local five-state controls and closed examples | Pending | Prior foundation shipped; current controls unreviewed/unshipped |
-| Fans & Air | Zero-raw composite, seven shared percentage rows | Local five-state controls and closed examples | Pending | Prior foundation shipped; current controls unreviewed/unshipped |
-| Overview | Explicit native-tag ready-shell debt | Local shared loading shell and controls | Pending | Candidate unreviewed/unshipped |
-| Print Progress | Explicit native-tag ready-shell debt | Local shared loading shell and controls | Pending | Candidate unreviewed/unshipped |
-| Heads & Filaments | Explicit native-tag ready-shell debt | Local shared loading shell and controls | Pending | Candidate unreviewed/unshipped |
-| Current Job | Explicit native-tag ready-shell debt | Local shared loading shell and controls | Pending | Candidate unreviewed/unshipped |
-| Job History | Explicit native-tag ready-shell debt | Local bounded row/empty loading and controls | Pending | Candidate unreviewed/unshipped |
-| Print Queue | Explicit native-tag ready-shell debt | Local bounded row/empty loading and controls | Pending | Candidate unreviewed/unshipped |
-| Bed Mesh | Svelte/Three chart, native-tag shell debt | Local controls; no Three mount while loading | Pending | Candidate unreviewed/unshipped |
+| Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Shipped five-state controls and closed examples | Pending | PR67 deployed/post-verified |
+| Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | Pending | PR67 deployed/post-verified |
+| Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
+| Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
+| Heads & Filaments | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
+| Current Job | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
+| Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
+| Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
+| Bed Mesh | Svelte/Three chart, native-tag shell debt | Shipped controls; no Three mount while loading | Pending | PR67 deployed/post-verified |
 | Camera | Separately authored synthetic Svelte checkpoint, not integrated | Shared-controller integration pending | Pending; production remains legacy | No shipped Svelte camera route |
 
 Acceptance progression: author software tests → separate exact-SHA validation →
@@ -35,8 +38,11 @@ Chrome, not phone, WebRTC or printer evidence.
 
 ## Remaining migration and cleanup
 
-- [ ] Independently approve/deliver this controls/loading candidate and persist
+- [x] Independently approve/deliver this controls/loading candidate and persist
   the actual rollout receipt.
+- [x] Recoverably quarantine the specifically approved ten redundant worktrees
+  and stale nested clone; independently verify full preservation. Active feature
+  work, runtime/rollback trees and required legacy code are not retired by this.
 - [ ] Integrate the existing Camera checkpoint, shared controls and exact private
   route. Measure the combined package before any budget decision; the decoded
   single-artifact cap remains 750,000 bytes.
@@ -63,6 +69,8 @@ Chrome, not phone, WebRTC or printer evidence.
   integration, preserving loaded/empty/unknown distinctions.
 - [ ] Consistent compact spacing/type/color/icon foundations, correct headings,
   gray empty filament state and compact fan metrics in remaining widgets.
+- [ ] Resolve generic color-token naming and remaining legacy `--u1` aliases
+  in old ready shells; the arrow-function convention is already adopted.
 - [ ] Smaller Refresh visual: 32-pixel surface/16-pixel glyph within a 44-pixel
   accessible target.
 - [ ] Content-aware compact/medium/full presentation and separately reviewed MCP
