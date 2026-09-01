@@ -369,7 +369,9 @@ printer environments support the described behavior.
   cards compact and content-driven at 320/390/590/720; information precedes one
   bottom 44-pixel icon action and overlay feedback cannot change intrinsic
   height. One authoritative feedback state/timer makes the latest action replace
-  every earlier message immediately. Canonical titles and the Progress/Thermals/Heads/Jobs/History/Queue/
+  every earlier message immediately. Async actions publish intent before
+  awaiting and may settle only while their action generation remains current;
+  stale success/failure cannot overwrite newer intent. Canonical titles and the Progress/Thermals/Heads/Jobs/History/Queue/
   Fans/Overview/Bed Mesh presentation rules are fixed by decision 0032's
   all-observation addendum. The canonical directory/child title must be the
   first and only non-empty title observed during initial parsing, before

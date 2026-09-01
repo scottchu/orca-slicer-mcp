@@ -57,6 +57,11 @@ and swatch change. Copy → Refresh and Refresh → Copy each render one overlay
 with the latest message and no card-height delta, avoiding both overlap and a
 stale semantic state.
 
+Async-order renewal: Copy now displays `Copying …` on press. Deferred clipboard
+resolve/reject after a newer Refresh leaves the Refresh message intact; when
+Copy is newest, its success/failure replaces the progress message truthfully.
+All cases retain one overlay and the same card geometry.
+
 final result: passed
 
 ## 2026-09-01 Svelte Bed Mesh private lab foundation

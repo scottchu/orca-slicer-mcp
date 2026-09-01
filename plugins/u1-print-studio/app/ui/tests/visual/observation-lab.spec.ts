@@ -108,6 +108,21 @@ for (const width of widths) {
         const url = new URL(request.url());
         if (url.hostname !== '127.0.0.1') externalRequests.push(request.url());
       });
+      if (view === 'heads') {
+        await page.addInitScript(() => {
+          type Pending = { resolve: () => void; reject: () => void };
+          const scope = window as unknown as { __u1PendingClipboard: Pending[] };
+          scope.__u1PendingClipboard = [];
+          Object.defineProperty(navigator, 'clipboard', {
+            configurable: true,
+            value: {
+              writeText: () => new Promise<void>((resolve, reject) => {
+                scope.__u1PendingClipboard.push({ resolve, reject: () => reject(new Error('denied')) });
+              })
+            }
+          });
+        });
+      }
       await page.addInitScript(() => {
         (window as unknown as { __u1LayoutShifts: number[] }).__u1LayoutShifts = [];
         new PerformanceObserver((list) => {
@@ -198,14 +213,29 @@ for (const width of widths) {
         expect(activeSemantics.borderAfter).toBe(activeSemantics.semanticAccent);
         expect(activeSemantics.washAfter).not.toBe(activeSemantics.washBefore);
         const shellHeightBeforeCopy = (await panel.locator('[data-widget-shell]').boundingBox())!.height;
-        await panel.getByRole('button', { name: 'Copy T3 color #3487C880' }).click();
-        await expect(panel.getByRole('status')).toHaveText(/#3487C880 (?:copied|copy unavailable)/i);
+        const copy = panel.getByRole('button', { name: 'Copy T3 color #3487C880' });
+        await copy.click();
+        await expect(panel.getByRole('status')).toHaveText('Copying #3487C880');
         await expect(panel.getByRole('status')).toHaveCount(1);
         await refresh.click();
         await expect(panel.getByRole('status')).toHaveText('Lab fixture refreshed');
+        await page.evaluate(() => (window as unknown as { __u1PendingClipboard: Array<{ resolve: () => void }> }).__u1PendingClipboard[0].resolve());
+        await expect(panel.getByRole('status')).toHaveText('Lab fixture refreshed');
         await expect(panel.getByRole('status')).toHaveCount(1);
-        await panel.getByRole('button', { name: 'Copy T3 color #3487C880' }).click();
-        await expect(panel.getByRole('status')).toHaveText(/#3487C880 (?:copied|copy unavailable)/i);
+        await refresh.click();
+        await copy.click();
+        await expect(panel.getByRole('status')).toHaveText('Copying #3487C880');
+        await page.evaluate(() => (window as unknown as { __u1PendingClipboard: Array<{ resolve: () => void }> }).__u1PendingClipboard[1].resolve());
+        await expect(panel.getByRole('status')).toHaveText('#3487C880 copied');
+        await copy.click();
+        await refresh.click();
+        await page.evaluate(() => (window as unknown as { __u1PendingClipboard: Array<{ reject: () => void }> }).__u1PendingClipboard[2].reject());
+        await expect(panel.getByRole('status')).toHaveText('Lab fixture refreshed');
+        await refresh.click();
+        await copy.click();
+        await expect(panel.getByRole('status')).toHaveText('Copying #3487C880');
+        await page.evaluate(() => (window as unknown as { __u1PendingClipboard: Array<{ reject: () => void }> }).__u1PendingClipboard[3].reject());
+        await expect(panel.getByRole('status')).toHaveText('#3487C880 copy unavailable');
         await expect(panel.getByRole('status')).toHaveCount(1);
         const shellHeightAfterCopy = (await panel.locator('[data-widget-shell]').boundingBox())!.height;
         expect(Math.abs(shellHeightAfterCopy - shellHeightBeforeCopy)).toBeLessThan(0.1);

@@ -17,8 +17,8 @@ Resume from repository records, not chat history.
 The current candidate is the all-observation Svelte private lab on isolated
 branch `codex/u1-svelte-observation-lab`, based on merged `origin/main`
 `f44bd06`. It adds `/dashboard/lab` plus the nine exact non-camera child views
-from one 713,594-byte self-contained page (SHA-256
-`097c9620af5125cb6ce65c820f6b3ce3e67e324d51c91115c6845cbab1878dd7`).
+from one 713,802-byte self-contained page (SHA-256
+`565c731ef6199c81e5df4f758837c6980fb33d7cc349905d7f16c4acbf17e2eb`).
 Camera is marked pending and unlinked. Production routes, MCP assets/inventory,
 auth/Tailscale and public HTTP do not change.
 
@@ -37,8 +37,12 @@ shared non-flow Copy/Refresh feedback overlay. Review blocked `b3e0c7e` because
 the overlay still combined two states and active status followed filament
 color. The renewal has one authoritative state/timer for both action orders;
 active uses semantic amber while wash/swatch alone follow filament color.
+Exact `4e8788f` was subsequently blocked because an older pending clipboard
+completion could overwrite newer Refresh. The renewal publishes Copy intent
+synchronously, assigns one action generation, and ignores stale asynchronous
+success/failure after any newer action.
 
-Author evidence is green: Svelte check 0/0, Vitest 24/24, real Chrome 50/50 at
+Author evidence is green: Svelte check 0/0, Vitest 25/25, real Chrome 50/50 at
 320/390/590/720, app 276/276 with 3,178 assertions, lifecycle 21/21, shipping
 24/24, deterministic packaging, bundles/help/signature and unchanged production
 asset hashes. Browser assertions cover the entire initial non-empty title

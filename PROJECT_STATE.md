@@ -51,14 +51,20 @@ feedback state/timer and one announcer used by both actions; the last action
 always replaces the message. Active uses the semantic amber accent independently
 while only wash and swatch follow filament color.
 
+Exact `4e8788f` was then blocked on asynchronous ordering: Copy announced only
+after awaiting the clipboard, so an older completion could overwrite a newer
+Refresh. Copy now begins a persistent `Copying …` state synchronously and holds
+its action generation. Clipboard success/failure settles only if that generation
+is still current; any newer action invalidates the completion.
+
 Real Chrome passes 50/50 cases at 320/390/590/720 with exactly one canonical
 non-empty title from initial parsing, one visible route, zero recorded layout
 shift, no required-text clipping, overflow, console error or nonlocal request,
 and stable Refresh/Copy feedback geometry/source time. Bed Mesh retains its
-exact 4:3/equal-mode contract. The package is 713,594 bytes, 36,406 below the
+exact 4:3/equal-mode contract. The package is 713,802 bytes, 36,198 below the
 750 KB bound, with SHA-256
-`097c9620af5125cb6ce65c820f6b3ce3e67e324d51c91115c6845cbab1878dd7`.
-Full author gates pass 24 UI tests, 276 app tests/3,178 assertions, 21 lifecycle
+`565c731ef6199c81e5df4f758837c6980fb33d7cc349905d7f16c4acbf17e2eb`.
+Full author gates pass 25 UI tests, 276 app tests/3,178 assertions, 21 lifecycle
 tests, 24 shipping tests, deterministic builds, three bundles, help and code
 signature. Production hashes remain unchanged. This is renewed author fixture/
 software evidence only; exact independent review is next before any PR, merge,

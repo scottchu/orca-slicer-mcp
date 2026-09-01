@@ -49,11 +49,17 @@ one announcer to Heads; Copy and Refresh replace each other in exact action
 order. Active border uses `--u1-accent`; changing filament color changes only
 the six-percent wash and exact swatch.
 
-Author evidence passes 24 UI tests, 50 real-Chrome cases, 276 app tests/3,178
+Exact `4e8788f` remained blocked on pending clipboard ordering. The corrected
+controller begins Copy synchronously with persistent `Copying …`, increments
+one generation for every action, and allows clipboard success/failure to settle
+only the still-current generation. Deferred resolve and reject can no longer
+replace a newer Refresh; a newer Copy still settles truthfully.
+
+Author evidence passes 25 UI tests, 50 real-Chrome cases, 276 app tests/3,178
 assertions, 21 lifecycle and 24 shipping tests, deterministic packaging, all
-three bundles, help and signature. The exact package is 713,594 bytes with
-SHA-256 `097c9620af5125cb6ce65c820f6b3ce3e67e324d51c91115c6845cbab1878dd7`.
-The deliberate risk is the 36,406-byte headroom below 750 KB while local
+three bundles, help and signature. The exact package is 713,802 bytes with
+SHA-256 `565c731ef6199c81e5df4f758837c6980fb33d7cc349905d7f16c4acbf17e2eb`.
+The deliberate risk is the 36,198-byte headroom below 750 KB while local
 Three.js coexists with eight compact views. Chrome measures one visible exact
 route, exactly one canonical non-empty title from initial parsing, zero layout
 shift and no required-text clipping at every frozen width; both Copy/Refresh

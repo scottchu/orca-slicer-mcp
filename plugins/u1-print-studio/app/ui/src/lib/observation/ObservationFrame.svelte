@@ -10,23 +10,42 @@
   import type { LabFreshness } from './types';
 
   type LucideIcon = typeof import('lucide-svelte')['Box'];
-  type FeedbackAnnouncer = (message: string) => void;
+  type FeedbackController = {
+    begin: (message: string, autoClear?: boolean) => number;
+    settle: (generation: number, message: string) => void;
+  };
   let { title, icon, observedAt, freshness, children }: {
     title: string;
     icon: LucideIcon;
     observedAt: string;
     freshness: LabFreshness;
-    children: Snippet<[FeedbackAnnouncer]>;
+    children: Snippet<[FeedbackController]>;
   } = $props();
   const Icon = $derived(icon);
   let feedback = $state('');
   let timer: ReturnType<typeof setTimeout> | undefined;
-  function announce(message: string): void {
+  let generation = 0;
+  function clearLater(current: number): void {
+    timer = setTimeout(() => {
+      if (generation === current) feedback = '';
+    }, 1600);
+  }
+  function begin(message: string, autoClear = true): number {
+    const current = ++generation;
     feedback = message;
     if (timer) clearTimeout(timer);
-    timer = setTimeout(() => { feedback = ''; }, 1600);
+    timer = undefined;
+    if (autoClear) clearLater(current);
+    return current;
   }
-  function refresh(): void { announce('Lab fixture refreshed'); }
+  function settle(current: number, message: string): void {
+    if (generation !== current) return;
+    feedback = message;
+    if (timer) clearTimeout(timer);
+    clearLater(current);
+  }
+  const controller: FeedbackController = { begin, settle };
+  function refresh(): void { begin('Lab fixture refreshed'); }
 </script>
 
 <WidgetShell label={title}>
@@ -34,7 +53,7 @@
     {#snippet icon()}<Icon aria-hidden="true" />{/snippet}
     {#snippet meta()}<span class="fixture-meta">Lab fixture · <ObservedMeta {observedAt} {freshness} /></span>{/snippet}
   </WidgetHeader>
-  <WidgetBody>{@render children(announce)}</WidgetBody>
+  <WidgetBody>{@render children(controller)}</WidgetBody>
   <WidgetFooter>
     {#snippet actions()}<IconButton label="Refresh lab fixture" icon={RefreshCw} onclick={refresh} />{/snippet}
   </WidgetFooter>

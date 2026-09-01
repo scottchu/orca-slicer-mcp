@@ -1,5 +1,68 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 asynchronous feedback-order renewal
+
+Formal review blocked exact `4e8788f`: Heads awaited the clipboard before
+announcing Copy, allowing an older completion to overwrite a newer Refresh.
+The correction stayed inside the synthetic private lab and contacted no service,
+device, auth or Tailscale surface.
+
+Commands actually run after correction:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser -- observation-lab.spec.ts bed-mesh.spec.ts
+
+cd ..
+bun run ui:verify
+bun run ui:verify
+bun run check
+bun run test
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_service.py
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes 0/0 and Vitest 25/25. Deferred-promise tests cover stale
+  clipboard resolve and reject after newer Refresh plus current Copy resolve and
+  reject after Refresh. Copy intent appears synchronously, stale completion is
+  ignored, and exactly one latest status node remains.
+- Real Chrome passes 50/50. A controlled clipboard verifies the same four order/
+  outcome cases at 320/390/590/720, one overlay and under-0.1-pixel card-height
+  delta. All title, accent/wash, readability, overflow, nonlocal-request and Bed
+  Mesh 4:3 checks remain green.
+- Two sequential verification builds reproduce one 713,802-byte self-contained
+  page, 36,198 bytes below 750 KB, SHA-256
+  `565c731ef6199c81e5df4f758837c6980fb33d7cc349905d7f16c4acbf17e2eb`.
+- Full gates pass 276 app tests/3,178 assertions, 21 lifecycle and 24 shipping
+  tests. The stdio bundle is 2,811,271 bytes (SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`),
+  the server bundle is 3,867,535 bytes (SHA-256
+  `481a146768225a110364b01533baf9224a6f8d632f5aca965a3d52bd1fa1c500`)
+  and the signed runtime is 65,229,648 bytes (SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`).
+  Signature and help checks pass. Production widget and host hashes remain
+  unchanged from the frozen values below.
+
+This is author static/software and synthetic-fixture browser evidence only. It
+does not prove independent approval, deployment, MCP cutover, live telemetry,
+camera/printer behavior, actual-device rendering or user acceptance.
+
 ## 2026-09-01 latest-action and semantic-active renewal
 
 Formal review blocked exact `b3e0c7e`: Copy and Refresh rendered one overlay but

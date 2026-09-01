@@ -2,21 +2,23 @@
   import { Copy, Layers3, Thermometer } from 'lucide-svelte';
   import ObservationFrame from './ObservationFrame.svelte';
   import { validateHeads, type HeadsObservation } from './types';
+  type FeedbackController = { begin: (message: string, autoClear?: boolean) => number; settle: (generation: number, message: string) => void };
   let { observation }: { observation: HeadsObservation } = $props();
   const heads = $derived(validateHeads(observation));
-  async function copyColor(color: string, announce: (message: string) => void): Promise<void> {
+  async function copyColor(color: string, feedback: FeedbackController): Promise<void> {
+    const generation = feedback.begin(`Copying ${color}`, false);
     try {
       if (!navigator.clipboard) throw new Error('clipboard unavailable');
       await navigator.clipboard.writeText(color);
-      announce(`${color} copied`);
+      feedback.settle(generation, `${color} copied`);
     } catch {
-      announce(`${color} copy unavailable`);
+      feedback.settle(generation, `${color} copy unavailable`);
     }
   }
 </script>
 
 <ObservationFrame title="Heads & Filaments" icon={Layers3} observedAt={heads.sourceObservedAt} freshness={heads.freshness}>
-  {#snippet children(announce: (message: string) => void)}
+  {#snippet children(feedback: FeedbackController)}
     <div class="head-grid">
       {#each heads.items as head}
         <section class:empty={head.presence !== true} class:active={head.active} class="head-card" style={`--head-color:${head.color ?? '#A7ADB4'}`} aria-label={`Tool ${head.physicalTool}`}>
@@ -24,7 +26,7 @@
           <div class="material" data-head-material>{head.presence === false ? 'Empty' : head.presence === null ? 'N/A' : head.material ?? 'N/A'}</div>
           <div class="temperature"><Thermometer aria-hidden="true" /> {Math.round(head.actualC)}° / {Math.round(head.targetC)}°</div>
           {#if head.color}
-            <button class="color copy-color" type="button" data-copy-color aria-label={`Copy T${head.physicalTool} color ${head.color}`} onclick={() => copyColor(head.color!, announce)}>
+            <button class="color copy-color" type="button" data-copy-color aria-label={`Copy T${head.physicalTool} color ${head.color}`} onclick={() => copyColor(head.color!, feedback)}>
               <span class="swatch" aria-hidden="true"></span><span>{head.color}</span><Copy aria-hidden="true" />
             </button>
           {:else}

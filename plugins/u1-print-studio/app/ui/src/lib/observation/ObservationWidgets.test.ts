@@ -116,6 +116,59 @@ describe('observation lab widgets', () => {
     expect(screen.getByLabelText('Tool 1')).toHaveStyle('--head-color: #7B4DFFFF');
     expect(changed.container.querySelector('.head-card.active')).toHaveClass('active');
   });
+
+  test('prevents stale clipboard completion from replacing a newer feedback action', async () => {
+    type Deferred = { promise: Promise<void>; resolve: () => void; reject: () => void };
+    const deferred = (): Deferred => {
+      let resolve!: () => void;
+      let reject!: () => void;
+      const promise = new Promise<void>((ok, fail) => { resolve = ok; reject = () => fail(new Error('denied')); });
+      return { promise, resolve, reject };
+    };
+    const pending: Deferred[] = [];
+    const writeText = vi.fn().mockImplementation(() => {
+      const next = deferred();
+      pending.push(next);
+      return next.promise;
+    });
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
+    render(HeadsWidget, { observation: headsLabFixture });
+    const copy = screen.getByRole('button', { name: 'Copy T3 color #3487C880' });
+    const refresh = screen.getByRole('button', { name: 'Refresh lab fixture' });
+
+    await fireEvent.click(copy);
+    expect(screen.getByRole('status')).toHaveTextContent('Copying #3487C880');
+    await fireEvent.click(refresh);
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+    expect(screen.getByRole('status')).toHaveTextContent('Lab fixture refreshed');
+    pending[0].resolve();
+    await pending[0].promise;
+    await Promise.resolve();
+    expect(screen.getByRole('status')).toHaveTextContent('Lab fixture refreshed');
+
+    await fireEvent.click(copy);
+    expect(screen.getByRole('status')).toHaveTextContent('Copying #3487C880');
+    await fireEvent.click(refresh);
+    pending[1].reject();
+    await pending[1].promise.catch(() => undefined);
+    await Promise.resolve();
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+    expect(screen.getByRole('status')).toHaveTextContent('Lab fixture refreshed');
+
+    await fireEvent.click(refresh);
+    await fireEvent.click(copy);
+    expect(screen.getByRole('status')).toHaveTextContent('Copying #3487C880');
+    pending[2].resolve();
+    await pending[2].promise;
+    await vi.waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('#3487C880 copied'));
+
+    await fireEvent.click(refresh);
+    await fireEvent.click(copy);
+    pending[3].reject();
+    await pending[3].promise.catch(() => undefined);
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+    await vi.waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('#3487C880 copy unavailable'));
+  });
 });
 
 describe('observation bridge validators', () => {

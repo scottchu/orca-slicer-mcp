@@ -262,3 +262,13 @@ truth without overlap or geometry change.
 Active tool state is semantic, not filament-derived. The active border uses the
 shared amber `--u1-accent`; changing a valid filament color may change only its
 six-percent RGBA-aware wash and exact swatch/hex.
+
+### Asynchronous action-order renewal
+
+Exact `4e8788f` showed that a single state/timer is still insufficient if an
+asynchronous Copy does not record intent until after `clipboard.writeText`.
+Every feedback action now increments one generation and writes its intent
+immediately. Copy begins with persistent `Copying …`; its later truthful success
+or failure settles only when its generation is still current. Any newer Refresh
+or Copy invalidates the older completion without spawning another timer or
+status node.
