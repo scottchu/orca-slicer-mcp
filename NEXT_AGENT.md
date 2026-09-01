@@ -14,6 +14,33 @@ Resume from repository records, not chat history.
 
 ## Current execution order
 
+Next action: independently validate/review the frozen real Thermals candidate,
+then guarded merge/deploy/explicit BOTH restart/verify. Author final gates pass:
+228 UI,130 Chrome,285 app/3,356 assertions,21 lifecycle,24 shipping, deterministic
+packages and bundles/signature/help. This is not a deployed Thermals release.
+Its branch is based on reviewed `db1c926`; if Camera ships first, explicitly
+integrate that reviewed main and renew exact acceptance. Do not import the
+unapproved Camera branch. No browser test server remains running from this author.
+
+PR70 Fans is shipped on reviewed main `db1c926`; do not repeat its cutover.
+Next bounded author slice is real Thermals only, sharing the reviewed bridge and
+controller while preserving separate Cavity receipts and source-bound nullable
+thermal facts. Required parity is in LIVE_PARITY/decision0034. Real Camera is a
+separate coordinated branch; seven other observations and generic MCP still
+require migration. Keep every named WIDGET_TRACKS obligation, not new features.
+Latest actual PR70 operator and independent postcheck receipts are in
+PROJECT_STATE/VALIDATION: exact assets/services and11 fetched-byte iframe cases
+with synthetic replies pass. An unidentified connector produced historical
+sparse data; do not equate that with current real-data/device acceptance or
+silently change plugin/auth state. Thermals full gates and exact independent
+acceptance must finish before another cutover is claimed.
+
+### Historical next-action checkpoints
+
+The prior pending PR70/Camera/lab instructions below are historical, superseded
+by the current Thermals execution order above; they do not require reshipping
+already accepted bytes.
+
 Next action: independent exact validation/review of renewed PR70 on merged
 Camera baseline `ef5b239`, then guarded Fans-only cutover. Full combined author
 gates pass: 183 UI units, 121 Chrome, 281 app/3,301 assertions, 21 lifecycle and

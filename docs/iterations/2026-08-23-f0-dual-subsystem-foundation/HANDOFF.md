@@ -1,5 +1,34 @@
 # F0 dual-subsystem foundation handoff
 
+## LIVE Thermals author candidate ready; not shipped
+
+Full final gates pass:228 UI,130 Chrome,285 app/3,356 assertions,21 lifecycle,
+24 ship, compiler/AST/types, deterministic four artifacts and all bundles /
+signature/help. Exact hashes and source-bound evidence are in newest VALIDATION.
+Next: fresh independent exact validation/review; if Camera ships first, merge
+that reviewed main and renew the candidate. Do not deploy unreviewed source or
+claim actual-device acceptance. Browser4179 has been released to other authors.
+
+Changed boundaries: shared typed observation controller/validation, strict real
+Thermals adapter/presentation, six shared thermal rows and neutral nullable
+activity, safe extreme degree formatting, opt-in grouped timestamp metadata,
+zero-raw live root/entry, exact Thermals host/asset route and source-derived
+shipping inventory. Fans uses the extracted common logic and retains all race
+regressions. Tests cover actual normalized server output and synthetic iframe
+behavior; Camera-specific source, bridge API, backend acquisition/auth and generic
+MCP aliases are unchanged. Source baseline remains reviewed PR70 `db1c926`.
+
+## 2026-09-01 Thermals follows shipped Fans
+
+PR70 is shipped and independently postchecked on merge `db1c926`; full attributed
+receipt and connector-runtime limitation are in newest VALIDATION. Do not repeat
+its release or mistake a sparse historical connector response for the new server.
+Current author scope is only real Thermals: fixture-independent adapter, shared
+reviewed lifecycle, six compositional rows and separate Cavity evidence. Real
+Camera is independently owned; explicitly integrate whichever reviewed main
+ships first before final acceptance. Generic MCP and seven other observations
+remain legacy until their own parity. All named WIDGET_TRACKS remain pending.
+
 ## Renewed PR70 ready for independent exact acceptance
 
 The held refresh race is corrected and reviewed main `ef5b239` is explicitly

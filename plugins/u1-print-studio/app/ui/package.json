@@ -13,6 +13,8 @@
     "build:embed": "vite build --config vite.embed.config.ts",
     "build:live-fans": "bun run scripts/build-live-fans.ts",
     "verify:live-fans": "bun run scripts/build-live-fans.ts --check",
+    "build:live-thermals": "bun run scripts/build-live-fans.ts --thermals",
+    "verify:live-thermals": "bun run scripts/build-live-fans.ts --thermals --check",
     "test:browser": "bun run scripts/build-state-harness.ts && bun run scripts/build-camera-harness.ts && playwright test"
   },
   "dependencies": {

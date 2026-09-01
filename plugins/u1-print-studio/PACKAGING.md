@@ -1,5 +1,19 @@
 # Local-first packaging contract
 
+## Focused production observation entries
+
+Decision0034 uses self-contained production Fans and Thermals HTML entries,
+each separately bounded at100,000 UTF-8 bytes. Both share the reviewed host RPC,
+typed controller and UI leaves; neither imports lab fixtures/controls, synthetic
+media, test harnesses or Three. They are inline private-server text imports at
+the exact `/dashboard/fans_widget` and `/dashboard/thermals_widget` paths, with
+GET-only/no-store/restrictive CSP and no acquisition side effects. Existing
+focused hosts select these entries; generic MCP/legacy aliases are unchanged.
+`build:live-fans` / `build:live-thermals` create the artifacts and their `verify:`
+commands compare exact deterministic bytes. The source-derived shipping map
+verifies each asset hash and public isolation. These production budgets do not
+relax or count as either private-lab artifact's existing aggregate allowance.
+
 ## Private synthetic Camera lab packaging
 
 Decision0032's Camera addendum adds `svelte-camera-lab.html` as an inline

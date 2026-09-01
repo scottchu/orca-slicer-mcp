@@ -1,5 +1,95 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-01 LIVE Thermals final author gates
+
+Actual final commands used pinned Bun1.3.12 with normal Node PATH:
+
+- UI `bun run check`, `bun run test`, `bun run build`, `bun run
+  package:private-lab`, `bun run build:live-fans`, `bun run build:live-thermals`
+  and full `bun run test:browser`: PASS. Final228 UI unit tests and130 Chrome
+  cases include all existing lab/Fans/Camera regressions plus9 real Thermals
+  iframe cases. Compiler/AST/type gates preserve zero-raw feature composition.
+- Repository `./scripts/check-repository.sh`: PASS, including deterministic
+  comparisons of both labs and both production entries,285 app tests/3,356
+  assertions,21 lifecycle and24 ship tests, ending `repository contract: ok`.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and executable `--help`: PASS. `git diff --check`: PASS.
+
+The pure tests cover all finite status bounds, real Cavity bounds, independent
+nullable fields/evidence/receipts, exact heater-bed identity, wrong/malformed
+views, null/zero/overshoot and reported heater state. The shared controller keeps
+Fans ordering and superseded-rejection regressions, with equivalent Thermals
+cases. Real server projections and exact GET-only private/public-isolated routes
+are exercised through loopback fixtures, not device acquisition.
+
+Chrome covers320/390/590/720 normal/200% text: six structural rows, <=1px default
+loading/ready major bounds, retained refresh/error time/values/focus/geometry,
+independent stale Cavity/fresh status and the reverse, scientific extrema with
+full accessible values, glyph containment, neutral unknowns, retry, superseded
+RPC rejection and persisted page lifecycle. Author inspected normal narrow and
+enlarged extreme screenshots. The opt-in grouped-time metadata avoids separated
+AM/PM; default and grouped slots have unit coverage. False active now says
+Inactive, never inferred Idle; null stays neutral. Full tests reran after this
+final aria-only correction. The original expectation that an enabled button
+must have aria-disabled=false was corrected to the existing absent-attribute
+contract; no runtime busy guard was weakened. A stale package-hash assertion and
+an unsupported testing-library `exact` option were caught and corrected before
+the final passing gates.
+
+Final exact raw UTF-8 artifacts:
+
+| Artifact | Bytes / bound | SHA-256 |
+| --- | --- | --- |
+| Production Thermals |86,140 /100,000|`032fe53863f79e718b51ac5fd5cb43c3f73d79a4b25c196d1bd19a1309e1f22d`|
+| Production Fans |85,654 /100,000|`ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d`|
+| Observation lab |749,112 /750,000|`061fec9a18d12c0c9f4e7329fcb0a5ad169ec71fb47326a302352f44fcdd7fa0`|
+| Camera lab |78,795 /80,000|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+
+Lab aggregate827,907/830,000 leaves2,093 bytes. Against shipped PR70, observation
+adds296 bytes, Fans adds339 from shared validation/controller/metadata support,
+Camera is unchanged; Thermals is its own new86,140-byte production artifact.
+No cap was raised. Source-derived inventory adds one exact Thermals static hash
+and public404 probe, now28 static/29 security checks in software contracts.
+
+This is author software/synthetic-browser evidence only. Fresh exact independent
+validation and formal review, guarded shipment and deployed verification remain
+pending. No printer/camera acquisition, control, auth, plugin or running service
+change occurred. Reviewed baseline is `db1c926`; integrate any subsequent reviewed
+Camera main before acceptance, without copying unapproved branch contents.
+
+## 2026-09-01 actual PR70 rollout and independent postcheck
+
+Operator shipped independently accepted head
+`dbdfc390bdd96e038418cbbea9c0caec80129dd4`, tree
+`ccf7e91a867503ee554c4785e261c41b9963e567`, merged as
+`db1c926b3c8276e56911221a19b9b9300db53990`. Release
+`20260901-db1c926-pr70-20260901T162456-cc8038` explicitly restarted BOTH
+services: healthy/integrity runtime0.4.8/schema12/observation-v14/camera-v10;
+27 static and28 security checks PASS, preservation true. No rollback needed;
+snapshot `20260901T162541-5d87ef` retained. All8,689 ignored entries and recovery
+refs remained preserved.
+
+Independent `camera_exact_validation` postcheck PASS: both exact release/source
+identities and15 manifest hashes, actual tailnet host/Fans/both labs/index exact
+hashes with200/no-store/CSP, four public404 isolation probes; all11 real-iframe
+tests on fetched host/child/index bytes with synthetic tool replies. These are
+service/static and synthetic-browser acceptance, not actual-device acceptance.
+A separate model-visible Fans call returned a sparse historical placeholder
+shape that the current deployed producer cannot emit; connector runtime identity
+is unproven. Do not claim current real-data acceptance or coerce that old shape.
+Plugin reload/update needs its own authority; no plugin/auth change is included.
+
+## 2026-09-01 Thermals author start
+
+Read-only clean/ancestry checks confirmed the prior Fans branch was fully merged;
+created a new non-main Thermals branch at exact reviewed `db1c926`, preserving
+the old ref and existing worktree. Read source thermal projection/normalization,
+decision0034 and LIVE_PARITY. Initial focused unit run passes44 tests including
+22 real Thermals adapter cases plus unchanged Fans adapter/controller cases.
+No service, printer, camera or user-device action occurred. Further implementation
+and complete exact-candidate gates remain pending.
+
 ## 2026-09-01 renewed PR70 combined-tree author gate PASS
 
 The refresh-rejection correction and explicit `ef5b239` merge have now been

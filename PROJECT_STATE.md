@@ -10,6 +10,38 @@ Last updated: 2026-09-01
 
 ## Active iteration
 
+Thermals author candidate is ready for independent exact validation/review:
+228 UI tests,130 Chrome cases,285 app tests/3,356 assertions,21 lifecycle and24
+ship tests pass, with compiler/AST/type gates, deterministic packaging and all
+bundles/signature/help. Only the Thermals dashboard is newly selected; no new
+MCP alias or production Camera cutover is included. It is not merged/deployed.
+Artifacts: Thermals86,140; Fans85,654; observation lab749,112; Camera lab78,795
+bytes. All individual budgets and827,907/830,000 lab aggregate pass. Before
+acceptance, integrate any subsequently reviewed Camera main and renew gates;
+never consume its unapproved candidate. Exact hashes/evidence are in VALIDATION.
+
+Current bounded work: LIVE Thermals dashboard migration from reviewed Fans
+merge `db1c926b3c8276e56911221a19b9b9300db53990`. Preserve independent status and
+Cavity evidence, six shared rows and reviewed bridge/refresh behavior. Real
+Camera continues separately; other seven observations and generic MCP remain
+unmigrated. See decision0034 and LIVE_PARITY; no new feature track is opened.
+
+PR70 is actually shipped: reviewed `dbdfc390`, merge `db1c926`, release
+`20260901-db1c926-pr70-20260901T162456-cc8038`. Operator reports BOTH explicit
+restarts healthy/integrity verified, 27 static/28 security checks and preservation
+PASS; rollback unnecessary, snapshot `20260901T162541-5d87ef` retained. All 8,689
+ignored entries/recovery refs preserved. Independent postcheck also PASS:
+exact running release/source/15 manifest hashes and served bytes/CSP, plus11
+real-iframe cases using fetched assets and synthetic tool replies. A separate
+model-visible call returned a historical sparse placeholder from an unidentified
+connector runtime; current real-data/device acceptance is not claimed and no
+plugin/auth update is included. Full attributed evidence is in VALIDATION.
+
+### Historical checkpoints (superseded current claims retained as evidence)
+
+The following unshipped/pending PR70 and earlier-candidate paragraphs describe
+their checkpoints at the time, not the current delivered state above.
+
 Renewed PR70 author gates now pass on the explicitly integrated PR69 baseline:
 183 UI units, 121 Chrome cases, 281 app tests/3,301 assertions, 21 lifecycle and
 24 ship tests, deterministic packages and all bundles/signature/help. The held

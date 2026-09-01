@@ -83,6 +83,43 @@ explicit parity evidence, not merely a successful build.
 - Synthetic host checks do not prove phone, camera or printer behavior. No
   printer controls, authentication changes or transport expansion is added.
 
+## Thermals follow-on boundary (2026-09-01)
+
+After reviewed Fans PR70, the next bounded cutover is only `/dashboard/thermals`.
+Its exact private `/dashboard/thermals_widget` asset uses the same host bridge
+and a shared typed observation controller, retaining every reviewed ordering,
+single-flight, superseded-rejection, BFCache and focus regression. Other seven
+focused observations and generic MCP resources remain on existing renderers.
+No backend query, authentication, capability or printer control changes.
+
+The fixture-independent adapter preserves six stable identities, including real
+`heater-bed`, independent nullable actual/target/active/heater-state fields,
+each field's evidence state and each reading's provenance/capability. Cavity has
+no target; its environment state, reported state, receipt/check/source times,
+freshness and reason remain independent of status. Source normalization accepts
+all finite tool/bed temperatures but bounds Cavity at -273.15 through 999 C;
+the UI must not silently impose the narrower synthetic lab fixture bounds.
+Unknown is not zero, inactive is not unknown, overshoot is not clamped text.
+
+Reuse shared thermal rows/degree/percentage primitives without raw feature DOM,
+with a six-row structural skeleton and retained refresh. Four-width/200%-text
+readability and loading/refresh bounds, real server projection compatibility,
+strict malformed/wrong-view rejection, unknown/zero/source-bound cases and the
+existing Fans regression suite gate acceptance. Production Thermals has its own
+self-contained <=100,000-byte artifact, separate from the unchanged individual
+and aggregate lab budgets. Exact static route/public-isolation shipping checks
+must include it before guarded delivery. This records scope, not completed
+implementation or actual-device acceptance.
+
+Bounded independent presentation design review accepted an explicitly scoped
+Tools/bed status header and one compact independent Cavity receipt row above
+the six shared readings. Keep its skeleton structure identical; do not repeat
+provenance paragraphs per channel. Unknown active is neutral; false is labeled
+Inactive rather than inferring an Idle heater state. An opt-in grouped
+timestamp slot prevents splitting time from AM/PM while retaining loading
+geometry; existing metadata defaults remain unchanged. This design disposition
+is not implementation validation or independent exact-candidate approval.
+
 ## Documentation basis
 
 The existing split application is retained rather than scaffolded anew.

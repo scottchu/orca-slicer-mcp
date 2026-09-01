@@ -47,7 +47,7 @@
       const selected = Object.hasOwn(routes, location.pathname) ? routes[location.pathname] : null;
       const selectedView = selected?.[0];
       const frame = document.querySelector("#widget");
-      const widgetSource = selectedView === "fans" ? "/dashboard/fans_widget" : "/widget?standalone=1";
+      const widgetSource = selectedView === "fans" ? "/dashboard/fans_widget" : selectedView === "thermals" ? "/dashboard/thermals_widget" : "/widget?standalone=1";
       const bridgeState = document.querySelector("#bridge-state");
       document.querySelector("#view-title").textContent = selected?.[1] ?? "View unavailable";
       document.title = selected ? `U1 · ${selected[1]}` : "U1 · View unavailable";

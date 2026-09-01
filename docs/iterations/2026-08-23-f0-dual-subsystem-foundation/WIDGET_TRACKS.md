@@ -11,7 +11,7 @@ independent validation and review before shipment. The regression matrix retains
 200 combinations, including 48 adjacency checks; earlier rejected heads were
 not deployed.
 
-## Current slice: all-nine private lab controls and loading
+## Current slice: Thermals after delivered Fans, with Camera separately owned
 
 PR67 shipped: reviewed `07e1c144`, merged `c924bf9`, both services restarted and
 independently post-verified. All nine observation control/loading paths below
@@ -20,8 +20,8 @@ cutovers and seven ready-shell debts remain.
 
 | Track | Source/composition | State controls | Live cutover | Delivery |
 | --- | --- | --- | --- | --- |
-| Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Shipped five-state controls and closed examples | Pending | PR67 deployed/post-verified |
-| Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | Pending | PR67 deployed/post-verified |
+| Thermals | Zero-raw composite, shared actual/target/degree/percentage primitives | Shipped five-state controls and closed examples | Author implementation; independent acceptance pending | Lab PR67 delivered; live not shipped |
+| Fans & Air | Zero-raw composite, seven shared percentage rows | Shipped five-state controls and closed examples | PR70 focused dashboard delivered; generic MCP still legacy | PR70 deployed/post-verified with synthetic tool replies; connector identity/device evidence separate |
 | Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Heads & Filaments | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
@@ -39,7 +39,7 @@ Chrome, not phone, WebRTC or printer evidence.
 
 ## Remaining migration and cleanup
 
-The separate LIVE Fans candidate is the current production cutover slice.
+PR70 LIVE Fans is delivered. Thermals is the current production cutover slice.
 `LIVE_PARITY.md` records the read-only remaining-eight acceptance inventory;
 those adapters and generic resource replacement remain pending.
 
@@ -56,6 +56,8 @@ those adapters and generic resource replacement remain pending.
   primitives; retain exact composition guards.
 - [ ] Review/implement live observation transport and each focused-widget
   cutover; lab state selection is not production loading behavior.
+  Shared transport and focused Fans are delivered by PR70; Thermals is in
+  progress, seven remaining observation adapters and generic MCP are pending.
 - [ ] Review/implement live Camera cutover, startup/fullscreen-exit continuity,
   non-shifting snapshot feedback and truthful FPS.
 - [ ] Inventory production HTML/assets, host routes and MCP resource aliases
