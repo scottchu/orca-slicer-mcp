@@ -253,6 +253,27 @@ for (const enlarged of [false, true]) test(`Heads public hex fits either side of
   }
 });
 
+for (const width of [567, 590, 720]) test(`Heads widest RGBA shares the enlarged loading wrap policy at ${width}`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 1600 });
+  let release: (result: unknown) => void = () => {};
+  await page.route('**/dashboard/tools/call', async (route) => {
+    const result = await new Promise((resolve) => { release = resolve; });
+    await route.fulfill({ json: result });
+  });
+  await page.goto('/dashboard/heads');
+  const frame = page.frames().find((item) => item.url().endsWith('/dashboard/heads_widget'))!;
+  await expect(frame.getByRole('status')).toHaveText('Loading Heads & Filaments');
+  await enlarge(frame);
+  const loading = await bounds(frame);
+  const result = liveHeadsResult();
+  for (const [index, value] of ['#DDDDDDDD', '#CCCCCCCC', '#FFFFFF'].entries()) result.structuredContent.module.items[index].color = { state: 'known', value };
+  release(result);
+  await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
+  await colorRows(frame); await readable(frame, width);
+  const ready = await bounds(frame);
+  for (let region = 0; region < ready.length; region++) for (let axis = 0; axis < 4; axis++) expect(Math.abs(ready[region][axis] - loading[region][axis])).toBeLessThanOrEqual(1);
+});
+
 test('Heads copy generations, busy focus, rejection and removed-action fallback', async ({ page }) => {
   const next = liveHeadsResult();
   await page.route('**/dashboard/tools/call', (route) => route.fulfill({ json: next }));

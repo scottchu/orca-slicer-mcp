@@ -1,5 +1,39 @@
 # F0 dual-subsystem foundation validation
 
+## Heads Copy wrap-parity repair — renewed focused checks passed
+
+Rejected candidate `c32f7f1` passed its repository gate (514UI,300app/3557,
+21 lifecycle/24 shipping), but full browser was244/245: inherited Heads320
+shell<850 and fixed-two-column assumptions contradicted the adopted one-column
+policy. Independent validation additionally measured loading-to-wide-RGBA
+height changes of26.78125px at567/200 and13.390625px at590/200. These are retained
+failures, not accepted results or threshold exceptions.
+
+The ColorValue subgroup now selects inline/stacked layout from the same public
+maximum hex width for loading and ready. Actual text remains naturally sized.
+Independent compactness-contract review adopted Heads-only row anatomy checks;
+other widgets retain850px. Card insets/gaps, two natural body rows, intrinsic
+header/footer,44px actions and row maxima are checked, not a larger arbitrary
+shell-height allowance. The unchanged1px transition gate remains.
+
+Actually renewed: `bun run check` zero errors/warnings and AST PASS; exact
+Heads/light builds and private packaging PASS; focused
+`bun x playwright test tests/visual/observation-lab.spec.ts
+tests/visual/live-heads.spec.ts --grep 'Heads'`:44/44 PASS (33.5s), including
+567/590/720 enlarged wide-RGBA parity and both sides of column boundaries.
+Heads96660 SHA256 `63d9b108c8f94c96b5574ec8200f692147aa692b0472703ab51a72b98d67d6a3`;
+light209516 SHA256 `7ccb1028e72346abf797bd6883a8e60ce6763552a145ea78f059366d2a4b56f5`.
+Six other packages remain unchanged; Lab922100, production453480, Camera79776.
+Renew the full gate on these changed application bytes before acceptance.
+
+Original ignored full logs are retained as
+`app/ui/test-results/heads-copy-c32f7f1-repository.log` and
+`heads-copy-c32f7f1-browser.log`; full screenshots/traces remain in
+`heads-copy-c32f7f1-playwright`, with the separate exact320 anatomy measurement
+in `heads-copy-compactness-measurement`. Four normal single-column cards measure
+193.390625px each (header36.390625, body52, footer53); intrinsic rows explain
+the1050.3125px shell. No evidence was deleted. All focused fixtures exited.
+
 ## Heads Copy layout repair — focused author checks passed
 
 The independently measured policy is adopted in decision0039: scoped44px

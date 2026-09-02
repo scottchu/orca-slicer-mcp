@@ -23,6 +23,17 @@ normal but one at320px or390px enlarged text. It is a font-relative constraint,
 not a device breakpoint or private value-derived measurement. Renew boundary
 tests on font/token changes; this is not proof for untested platform typography.
 Ready labels have no width reserve; loading's neutral9ch shape is public.
+The subgroup's inline/stacked layout uses that same public maximum plus the
+17px swatch and4px gap, not each ready label's actual width. This prevents
+loading and wide RGBA from choosing different wrap points at enlarged sizes.
+
+The inherited all-view850px shell limit and unconditional two-column assertion
+cannot describe four content-sized Heads rows at320px. An independent contract
+review replaces them for Heads only with row anatomy:12px card insets/gaps,
+1px/3px card borders, a bounded two-line header, two natural body rows, and a
+footer of1px border +8px inset +max(44px action, intrinsic color-group height).
+Grid rows use the maximum intrinsic card height plus12px row gaps. All other
+widgets keep850px; no transition, clipping or touch-target threshold is relaxed.
 
 Acceptance requires coherent right-side Copy, exact RGB/RGBA including wide
 public hexadecimal strings, whole-text containment,44px action, no text/icon

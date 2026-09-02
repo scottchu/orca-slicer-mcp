@@ -151,8 +151,13 @@ for (const width of widths) {
       await expect(refresh).toHaveCSS('width', '44px');
       await expect(refresh).toHaveCSS('height', '44px');
       const before = await geometry(page, view);
+      if (view === 'heads') await test.info().attach('heads-card-anatomy', { contentType: 'application/json', body: JSON.stringify(await panel.locator('[data-inset-card]').evaluateAll((cards) => cards.map((card) => {
+        const box = card.getBoundingClientRect(), style = getComputedStyle(card);
+        return { height: box.height, width: box.width, padding: [style.paddingTop, style.paddingBottom], gap: style.gap, border: [style.borderTopWidth, style.borderBottomWidth],
+          sections: [...card.children].map((section) => { const css = getComputedStyle(section), rect = section.getBoundingClientRect(); return { name: section.className, height: rect.height, padding: [css.paddingTop, css.paddingBottom], gap: css.gap }; }) };
+      })), null, 2) });
       expect(before.shell.width).toBeGreaterThan(250);
-      expect(before.shell.height).toBeLessThan(850);
+      if (view !== 'heads') expect(before.shell.height).toBeLessThan(850);
       expect(before.headerInset).toBe(before.tokenInset);
       expect(before.bodyInset).toBe(before.tokenInset);
       expect(before.footerInset).toBe(before.tokenInset);
@@ -170,7 +175,44 @@ for (const width of widths) {
       }
       if (view === 'heads') {
         const columns = await panel.locator('.card-grid').evaluate((node) => getComputedStyle(node).gridTemplateColumns.split(' ').length);
-        expect(columns).toBe(2);
+        expect(columns).toBe(width === 320 ? 1 : 2);
+        const anatomy = await panel.locator('.card-grid').evaluate((grid) => ({
+          height: grid.getBoundingClientRect().height, gap: Number.parseFloat(getComputedStyle(grid).rowGap),
+          cards: [...grid.children].map((card) => {
+            const style = getComputedStyle(card), header = card.children[0] as HTMLElement, body = card.children[1] as HTMLElement, footer = card.children[2] as HTMLElement;
+            const caption = header.querySelector<HTMLElement>('.caption')!, name = header.querySelector<HTMLElement>('.name')!;
+            const line = Number.parseFloat(getComputedStyle(caption).lineHeight);
+            const rows = [...body.firstElementChild!.children];
+            const rowHeights = rows.map((row) => Math.max(...[...row.children].map((child) => child.getBoundingClientRect().height)));
+            const bodyHeight = rowHeights.reduce((sum, height) => sum + height, 0) + 12;
+            const color = footer.querySelector<HTMLElement>('[data-color-value] .group')!;
+            const colorHeight = color.getBoundingClientRect().height;
+            const footerHeight = 1 + 8 + Math.max(44, colorHeight);
+            const headerHeight = Math.max(2 * line, name.getBoundingClientRect().height);
+            return {
+              height: card.getBoundingClientRect().height, intrinsic: 24 + 4 + 24 + headerHeight + bodyHeight + footerHeight,
+              padding: [style.paddingTop, style.paddingRight, style.paddingBottom, style.paddingLeft],
+              border: [style.borderTopWidth, style.borderBottomWidth], gap: style.rowGap, rows: rows.length,
+              header: header.getBoundingClientRect().height, headerHeight,
+              footer: footer.getBoundingClientRect().height, footerHeight,
+              colorSpacing: [getComputedStyle(color).paddingTop, getComputedStyle(color).paddingBottom, getComputedStyle(color).marginTop, getComputedStyle(color).marginBottom],
+            };
+          }),
+        }));
+        expect(anatomy.cards).toHaveLength(4); expect(anatomy.gap).toBe(12);
+        const rowHeights: number[] = [];
+        for (let index = 0; index < anatomy.cards.length; index += columns) {
+          const row = anatomy.cards.slice(index, index + columns), height = Math.max(...row.map((card) => card.intrinsic));
+          rowHeights.push(height);
+          for (const card of row) {
+            expect(card.padding).toEqual(['12px', '12px', '12px', '12px']); expect(card.border).toEqual(['1px', '3px']);
+            expect(card.gap).toBe('12px'); expect(card.rows).toBe(2); expect(card.colorSpacing).toEqual(['0px', '0px', '0px', '0px']);
+            expect(Math.abs(card.header - card.headerHeight)).toBeLessThanOrEqual(1);
+            expect(Math.abs(card.footer - card.footerHeight)).toBeLessThanOrEqual(1);
+            expect(Math.abs(card.height - height)).toBeLessThanOrEqual(1);
+          }
+        }
+        expect(Math.abs(anatomy.height - rowHeights.reduce((sum, height) => sum + height, 0) - (rowHeights.length - 1) * 12)).toBeLessThanOrEqual(1);
         const materialLines = await panel.locator('[data-inset-card] .lucide-spool').evaluateAll((icons) => icons.map((icon) => {
           const item = icon.parentElement!.parentElement!.querySelector<HTMLElement>('.caption')!;
           const text = document.createTreeWalker(item, NodeFilter.SHOW_TEXT).nextNode()!;

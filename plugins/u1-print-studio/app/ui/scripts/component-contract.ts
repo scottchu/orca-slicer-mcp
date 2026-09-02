@@ -25,7 +25,7 @@ export const leaves: Record<string, string[]> = {
   'camera/CameraMedia.svelte': ['canvas', 'div', 'div', 'div', 'div', 'div', 'video'],
   'camera/CameraStatus.svelte': ['div', 'span', 'span', 'span'],
   'ui/LoadingValue.svelte': ['span', 'span'],
-  'ui/TextSkeleton.svelte': ['span'], 'ui/ColorValue.svelte': ['span', 'span'],
+  'ui/TextSkeleton.svelte': ['span'], 'ui/ColorValue.svelte': ['span', 'span', 'span'],
   'ui/LabControls.svelte': ['fieldset', 'legend', 'div', 'label', 'span', 'select', 'option'],
   'ui/Icon.svelte': [], 'ui/BorderedIcon.svelte': ['span'], 'ui/Label.svelte': ['span'],
   'ui/CircleLabel.svelte': ['span'], 'ui/BoxLabel.svelte': ['span'], 'ui/Name.svelte': ['span'],
