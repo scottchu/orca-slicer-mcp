@@ -1,5 +1,37 @@
 # Project state
 
+## Current: Heads material icon — frozen author candidate
+
+Application source `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree
+`3cca582bad7e2ff9d21b5f77f34fdc96aedcf266`, from accepted PR80 main
+`4e869d8`. The shared Spool icon sits beside one continuous, naturally wrapping
+material string in both Lab and Live. Earlier split-word Lab markup caused the
+reported gap; current mapping was already joined and is not rewritten.
+
+Independent design's public loading-only `nominal | empty` shapes preserve
+closed Lab fixtures without using resolved observations or private text. Live
+root keeps its default public template. Exact arbitrary private-length loading
+parity is not claimed. Focused 39 browser cases, final 56 affected UI tests,
+compiler/AST and 12 package tests/138 assertions pass. The required full candidate
+browser run passes 214/214; independent acceptance and guarded PR delivery remain
+pending. Earlier 16/18 and 201/206 failures are retained, not waived.
+
+Heads is 94,264 bytes; light/Bed/Camera labs are 207,111/638,718/79,257
+(925,086 total), within unchanged caps. Spool adds 462 Camera bytes: PR79's
+separate 318-byte headroom needs a real integration measurement before shipping;
+no cap rise or unreviewed optimization is authorized. No service or printer
+acceptance is claimed.
+
+Current Job PR79 `48f2060` remains separate. Independent deployed-Lab UIUX and
+printer-information audits are complete as recommendations, not implementation.
+Preserved priorities: fixed bottom Lab controls, shared loading/error frames,
+Camera three-slot states/lifecycle, atomic spacing/actions, Progress local fill/
+layer design and thumbnail feasibility, and stable Bed framing/inset summaries.
+All earlier migrations, Console, filament sync, sizes, tokens and recoverable
+cleanup stay open; see WIDGET_TRACKS.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current: repository test strategy — docs-only review pending
 
 The latest user priority is now recorded in `AGENTS.md` under Test strategy:

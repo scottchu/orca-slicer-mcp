@@ -1,5 +1,42 @@
 # F0 dual-subsystem foundation handoff
 
+## Heads material icon — frozen application, independent acceptance due
+
+Application `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree
+`3cca582bad7e2ff9d21b5f77f34fdc96aedcf266`, base accepted PR80 `4e869d8`.
+Later edits are continuity only. The owned full browser run passes 214/214;
+separate source review and targeted validation are still required.
+
+Changed runtime paths: shared `ui/Icon.svelte`; Heads HeadCard/HeadCards/
+HeadsSkeleton/HeadsPanel/HeadsWidget composition; generic ObservationSkeleton
+pass-through; closed Lab route/helper; pure observation loading-shape helper.
+No adapter/controller/live-root/network/MCP/auth/service/shipping change.
+Tests, AST import allowlists and exact package hashes are renewed.
+
+One joined material text leaf plus nonshrinking 20px/1.8 Spool is shared by Live
+and Lab. Fixed public `nominal | empty` loading shapes are selected only by
+validated Lab controls, including all-empty/all-unknown and per-head overrides.
+Ready data is not a template source; type/runtime guards reject ready overrides,
+arbitrary strings, malformed lists and sparse lists. Live defaults stay unchanged.
+Public finite templates guarantee tested closed fixture geometry, not arbitrary
+private initial text lengths. 194-character actual labels remain naturally visible.
+
+Focused 39 Chrome, final 56 affected UI, compiler/AST and 12 package/138 assertion
+checks pass. Old 16/18 and 201/206 failures remain in ignored evidence storage.
+A lazy-derived guard was caught by a component adversary and corrected with
+pre-render effects; all 12 HeadCard cases then pass. No tolerance was loosened.
+Detailed commands, hashes and evidence limits are in VALIDATION.
+
+All eight final assets remain within caps; only Heads/light Lab change again
+after the public-template repair. Spool's 462-byte Camera increment exceeds PR79's
+old 318-byte headroom: later ordinary integration needs actual measurement and a
+separately reviewed optimization if needed. Do not raise caps or copy pending code.
+PR79 and all additive tracks remain intact. Playwright's isolated contexts and
+fixture exited; lsof confirms no listener on4179. All author command sessions
+completed. User sessions, services, worktrees and evidence remain preserved.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Test strategy policy handoff — docs only
 
 Changed only `AGENTS.md`, `PROJECT_STATE.md`, `NEXT_AGENT.md` and active

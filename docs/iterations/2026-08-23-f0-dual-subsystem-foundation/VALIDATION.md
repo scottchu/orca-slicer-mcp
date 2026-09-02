@@ -1,5 +1,99 @@
 # F0 dual-subsystem foundation validation
 
+## Heads material icon — frozen author application
+
+Source `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree
+`3cca582bad7e2ff9d21b5f77f34fdc96aedcf266`; base accepted PR80
+`4e869d8e70aa1ee4d55295fc5a8d93ec4ee70258`. Later continuity edits do not
+change application/build/test inputs. Independent exact acceptance is pending.
+
+### Commands and actual results
+
+Pinned Bun 1.3.12; isolated browser permission confirmed by coordinator after
+the Browser skill was read and the in-app tool was unavailable. The explicitly
+approved repository Playwright path uses no user profile.
+
+- App/UI `bun install --frozen-lockfile`: PASS, lockfiles unchanged.
+- UI `bun run check`: PASS after final repair, Svelte zero errors/warnings and
+  strict migrated-composite zero-native-HTML contract.
+- Initial UI `vitest run src/lib/observation/HeadCard.test.ts
+  src/lib/live/heads-adapter.test.ts src/lib/live/heads-controller.test.ts
+  src/lib/observation/ObservationWidgets.test.ts src/lib/ui/components.test.ts
+  src/lib/ui/foundation.test.ts`: 106 PASS. Unchanged adapter/controller/leaf
+  behavior evidence remains applicable.
+- Enum editing added `src/lib/lab/heads-loading.test.ts` and
+  `src/lib/lab/controller.test.ts` to that focused set: 131 PASS.
+- Final affected renewal `vitest run src/lib/observation/HeadCard.test.ts
+  src/lib/observation/ObservationWidgets.test.ts src/lib/lab/controller.test.ts
+  src/lib/lab/heads-loading.test.ts`: 56 PASS. Twelve HeadCard cases include
+  ready+template rejection, arbitrary/sparse shape rejection, configured-but-empty
+  material, private loading, exact RGBA and Copy. The helper covers all 96 public
+  scenario/tool/material combinations without accepting a DTO.
+- UI `build:live-heads`, `build:live-fans`, `build:live-thermals`,
+  `build:live-queue`, `build:live-camera`, `build`,
+  `package:private-lab`: all eight transitive package graphs/budgets PASS.
+  Heads/light Lab were renewed after runtime repair; other six hashes remained
+  identical. Direct packaging after Vite build initially lacked cleared Bed/
+  Camera intermediates; standard `package:private-lab` rebuilt them and passed.
+- App `bun test src/live-fans-package.test.ts src/private-lab.test.ts`:
+  final 12 PASS / 138 assertions, exact hashes and self-contained boundaries.
+- Initial `playwright test tests/visual/live-heads.spec.ts`: 16/18 PASS.
+  320px normal Lab/Live had a genuine 32.75px material loading gap. Fixed public
+  TextSkeleton repair gave 18/18 PASS, unchanged <=1px geometry assertion.
+- First frozen app `6e13fe4`, `bun run test:browser`: 201/206 PASS, not waived.
+  Four old tests located a direct Caption and assumed one line; the new row
+  requires Spool-adjacent Caption and actual DOM Range line count. That focused
+  selector renewal passed 4/4. One genuine all-empty 320px Lab gap required
+  independent adoption of the closed loading-shape enum before runtime changes.
+- A component guard test initially failed because unused Svelte derived values
+  are lazy. Pre-render validation now rejects ready overrides; HeadCard 12/12 PASS.
+- Final `playwright test tests/visual/live-heads.spec.ts
+  tests/visual/lab-text-bounds.spec.ts tests/visual/observation-lab.spec.ts
+  --grep 'Heads|closed presets'`: 39/39 PASS. Includes all public empty/unknown/
+  mixed per-tool overrides at 320/390/590/720 normal/200%, original closed
+  presets, typography, preserved refresh/Copy/retry/BFCache and no remote fetch.
+- One renewed full `bun run test:browser`: 214/214 PASS (1.5 minutes) on frozen final bytes.
+  It is required because the earlier failed candidate's inputs changed, not a
+  discretionary repeat by another role.
+- `git diff --check`: PASS.
+- Documentation-tail identity: `git diff --exit-code c9d69cb -- plugins scripts
+  .agents .github`: PASS. Final package hashes match the table below; no
+  application/test/configuration/dependency/build input changed after the full run.
+- `lsof -nP -iTCP:4179 -sTCP:LISTEN`: no listener after Playwright teardown.
+
+DOM Range glyph rectangles and font-matched canvas space widths verify natural
+spacing, not merely marker presence. Actual 320px normal and 200% long-material
+screenshots were inspected. A finite public template only proves tested closed
+fixture geometry; arbitrary private initial 194-character height parity is not
+claimed. Ready long values are naturally wrapped, not truncated.
+
+### Final exact package inventory
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| live Fans | 87209 | 64f457273462b8440342343264f6192e3b9d83c11049faa52295a796b430e14f |
+| live Thermals | 87785 | 971307a7da0399f7cd6f6edf7a0a2940fe0972cd62200349f47919d9195f27b7 |
+| live Heads | 94264 | 0bb5b4a97eaa9efe02daa008fe43551545f2f4451e5d9f7eb527d6cacf4f5713 |
+| live Queue | 88295 | 982c55a74bc1f777295ef4cf111880ef8cfbd6aa8a076ad46f26a3da532d4613 |
+| live Camera | 90381 | 8e2020e8a3a745cd786dcce9193a9de75ce940765a2da90aa49174dd751445cd |
+| light Lab | 207111 | 417dc98bf4aac8663edea56251dcfbed6590d4dce5eba4b0d47154a1ae642466 |
+| Bed Lab | 638718 | d07b4f5ead3c40b3640d9a36f900f00177c052fc0620001314d21aedf3e0e814 |
+| Camera Lab | 79257 | 839f6847e398a0d5d8f4cb038253340a81edfa00e9cf3ddf8c032d92726bd18f |
+
+Production total447,934; labs925,086. Caps remain100k per ordinary production
+widget /1.55m aggregate, labs250k/700k/80k and980k aggregate. Camera headroom743;
+Spool adds462. PR79 separately has318 headroom, so later integration needs a
+real merged measurement. This is a predicted integration risk, not a measured
+merged artifact or permission to raise caps.
+
+Ignored evidence retains both earlier failed runs and the owned final run log.
+No camera recording, user model, private profile or runtime data is committed.
+Browser/fixture resources and all author command sessions are released. These are software
+and synthetic-protocol results, not deployed-service, real-printer or actual
+phone acceptance. No service, printer, hosted validation or user browser changed.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Test strategy policy — targeted docs-only author evidence
 
 Base: accepted PR78 `177d326d13e126d727be7d7431fbfc232e902bc3`.

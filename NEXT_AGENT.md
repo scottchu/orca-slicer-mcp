@@ -1,5 +1,31 @@
 # Next agent
 
+## Next: independently accept and ship the small Heads material slice
+
+Review frozen application `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`,
+tree `3cca582bad7e2ff9d21b5f77f34fdc96aedcf266`. Focused 39 Chrome and
+final 56 affected UI tests pass. The owned full browser run is 214/214 PASS;
+match retained evidence to the exact candidate instead of repeating it automatically.
+
+The material row uses shared Spool plus one naturally wrapping Caption.
+Loading-only public `nominal | empty` shapes come from closed Lab controls,
+never a reading/DTO/string length. Type/runtime guards reject ready or arbitrary
+templates. Live root never opts in. No fixed heights, truncation or tolerance
+waiver belongs here; arbitrary private initial length parity is not promised.
+
+The documentation-only evidence tail preserves application bytes; obtain separate exact source
+review and targeted independent validation before guarded PR merge/deploy/BOTH
+service restart/served behavior verification. Preserve failed evidence and free
+the isolated fixture port before handing it over (4179 is now released). Do not touch frozen PR79;
+ordinary later integration must remeasure its tight Camera package cap.
+
+All newer shared-state, fixed Lab dock, Camera, Progress, Bed and atomic-design
+tracks remain recorded in WIDGET_TRACKS. Completed UIUX/printer audits are design
+recommendations only, not delivered UI. No user browser, service or printer
+state should be changed by independent source checks.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Next: independently review the docs-only test-strategy PR
 
 Review `AGENTS.md`'s seven Test strategy rules and the targeted identity/docs

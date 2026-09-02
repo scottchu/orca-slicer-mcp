@@ -1,5 +1,30 @@
 # F0 dual-subsystem foundation brief
 
+Current bounded slice (OBS-010/UI-003): add the shared Spool icon beside the
+already-contiguous Heads material label, from accepted main PR80 `4e869d8`.
+Both live and lab use HeadCard; retain one naturally wrapping material string,
+independent material receipts, empty/unknown color semantics and loading privacy.
+No global LoadingValue redesign, network/adapter change or cap increase.
+Focused source/unit/compiler/consumer-package checks precede the one owned
+candidate regression and independent acceptance. Isolated browser use is approved.
+The adopted material loading repair reuses TextSkeleton with closed public
+`nominal | empty` shapes selecting `Generic PLA` / `—`, inside the identical
+Caption/icon/gap composition. Only validated Lab controls choose shapes; no
+private reading supplies a skeleton template. The closed-scenario <=1px parity
+gate does not promise arbitrary private-length initial parity. Long actual labels
+remain naturally wrapping, without a fixed reserve, truncation or layout redesign.
+
+All new additive priorities remain separate: fixed bottom Lab controls; Camera
+three fixed metadata slots, truthful state icons and thin lifecycle components;
+Progress local PercentageBackground/layer blocks and thumbnail feasibility;
+Bed stable framing with inset Z legend and in-chart extrema/range; all-widget
+loading/error frame preservation and non-flow feedback. PR79 remains untouched.
+Independent deployed-Lab UIUX and printer-information audits are complete as
+recommendations: state frames/fixed Lab dock first, then atomic typography/actions,
+Progress and Bed. This Heads slice does not implement those broader proposals.
+
+## Earlier execution order (superseded where noted above)
+
 Latest user-directed priority: persist the test cadence and task-owned resource
 cleanup rules in `AGENTS.md`, as a bounded F0 docs-only policy change from
 accepted PR78 `177d326`. Acceptance is a concise authoritative policy, unchanged
