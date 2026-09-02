@@ -178,7 +178,7 @@ test('Queue initial wrong-view failure is bounded, retry and BFCache preserve on
   await expect(frame.getByRole('status')).toHaveCount(1);
   await expect(frame.locator('.widget-feedback')).toContainText('Could not load');
   await expect(frame.locator('[data-record] button,[data-record] a,[data-record] [tabindex],[aria-valuenow],time')).toHaveCount(0);
-  expect(await frame.locator('[data-record]').allTextContents()).toEqual(['', '', '']);
+  expect((await frame.locator('[data-record]').allTextContents()).map(text => text.replace(/\s+/g, ' ').trim())).toEqual(Array(3).fill('Added Wait at observation'));
   expect(await frame.locator('[data-loading-value],[data-skeleton]').evaluateAll(nodes => nodes.length > 0 && nodes.every(node =>
     [null, '::before', '::after'].every(pseudo => getComputedStyle(node, pseudo).animationName === 'none')))).toBe(true);
   const failed = await bounds(frame);
