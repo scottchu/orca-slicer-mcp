@@ -1,5 +1,96 @@
 # F0 dual-subsystem foundation validation
 
+## Bed Lab frozen candidate — full author gates passed
+
+Frozen application `1da084822fde1430c47aa58e332e50e453dbffad`, tree
+`5ed792d20873e254067997d3c236147ca6b62294`. Ordinary accepted-main merge
+`d139091` incorporates delivered Heads `55078ea`; focus source checkpoint
+`99b0846` follows the reproduced failure below. ADR0038 records the adopted
+independent UI/UX policy: conditional active-document-owned successful 2D Retry
+focus handoff to the selected radio, native-disabled Reset unchanged, no late
+focus stealing and unchanged 3D Reset ownership. Shared IconButton/segmented
+control changes require all consumer package/regression renewal, not Bed alone.
+
+Actually run with pinned Bun1.3.12, UI commands in `app/ui`:
+
+- Focused Vitest: `bun x vitest run src/lib/bed-mesh/retry-focus.test.ts
+  src/lib/ui/IconButton.test.ts src/lib/ui/IconSegmentedControl.test.ts
+  src/lib/bed-mesh/BedMeshWidget.test.ts`: 33 PASS before the test-only lease
+  teardown strengthening. The exact final tests are renewed by the full gate.
+- `bun x playwright test tests/visual/bed-error-state.spec.ts`: 21/21 PASS
+  (22.3s). Initial/retained errors, Enter/Space successful 2D handoff, 3D focus,
+  320px/200% target/ring/scroll checks, Tab/Shift+Tab/pointer/mode/phase/history
+  and synthetic window-blur no-reclaim cases. Normal and 200% here mean desktop
+  Chrome CSS text scaling, not actual phone Dynamic Type or OS window switching.
+- `bun run build && bun run package:private-lab && bun run build:live-fans &&
+  bun run build:live-thermals && bun run build:live-heads &&
+  bun run build:live-queue && bun run build:live-camera`: all eight PASS.
+- Root `./scripts/check-repository.sh`: PASS on frozen1da0848. Svelte zero
+  errors/warnings, composite AST guards, 504 UI tests, all eight deterministic
+  package verifications, app TypeScript, 300 app tests/3,557 assertions,
+  21 service lifecycle and24 shipping tests. No cap/guard/tolerance changed.
+  Ignored log: `app/ui/test-results/bed-error-full-repository.log`.
+- `bun run test:browser`: the one owned full frozen run, 235/235 PASS (1.7m).
+  Ignored log: `app/ui/test-results/bed-error-full-browser.log`.
+- Root `uv run --no-project scripts/test_project_agents.py`: 3/3 PASS.
+- App `bun run bundle && bun run bundle:server && bun run bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and
+  `dist/u1-print-studio --help`: PASS. Root `uv run --no-project
+  scripts/u1_ship.py --help` and `scripts/u1_service.py --help`: PASS;
+  no ship execution, service restart or printer acquisition was performed.
+
+Renewed package identities (SHA256; production total451603, Lab total920214):
+
+| Package | Bytes | SHA256 |
+| --- | ---: | --- |
+| live-fans | 88086 | `c1b1d04d8a51effdd1df08bca01a4e19fde47646721195469888a5ae4868f01a` |
+| live-thermals | 88662 | `a73f5d6833379a204f45fbca5afe2a8ece98aa24cffdde443e0172bc6453d85f` |
+| live-heads | 94783 | `22621770dd05285537b98f2cda0203e8675f563e11fab48907240aa4d0d5f90d` |
+| live-queue | 89172 | `e20108ffec78a961f79401d9f41a462aaddad5bad57bc0c6a2b896e9125c5215` |
+| live-camera | 90900 | `9ee881eb88a2019421bff68077af193866ae33bcb360a06689a1fffc611e9b19` |
+| observation-lab | 207630 | `980975278fe5e5f589bbfb9faecafc0580d79ae563379d46d3c45e5bd1c6bb82` |
+| bed-mesh-lab | 632808 | `89d002c114aaca37b3056969874af85d2eaae88c7476d03a7a02ca592f650166` |
+| camera-lab | 79776 | `85dd732e6a6f3a4df7ed96c5de4557e68e1ce62926ada9fe0e2af49454cc1bc2` |
+
+The separate validator reports14 targeted browser cases plus six fresh delayed
+policy adversaries PASS on exact1da0848/Bed632808/hash89d002c1. Six 2D/3D
+viewport/text-scale initial/retained frame comparisons have zero geometry delta;
+ownership, focus loss, phase/mode/unmount, and Heads/Fans consumer checks pass.
+Headless cross-page active-document simulation was unavailable, so blur evidence
+is explicitly event-level plus a pure `canRecoverFocus=false` adversary, not
+actual OS focus switching. Independent final-head source approval is pending.
+
+Failure history remains below: the original successful 2D Retry focus loss
+was reproduced, then repaired. An intermediate segmented-control unit test
+incorrectly merged old controlled props into a loading rerender; isolated loading
+render fixed that test. A compiler warning about nonreactive component refs was
+resolved with `$state`. Reviewer-requested lease-test `finally` cleanup is in the
+exact full504 test run. No assertion/size/accessibility guard was waived.
+
+The successful320px/200% focus screenshot was inspected: focus ring is visible
+and Reset stays disabled; inherited minimum/maximum/range summary crowding is
+still outside this slice. No whole-widget polish or physical acceptance claimed.
+All full-run sessions exited; browser/fixture teardown completed,4179 has no
+listener. Retain ignored evidence logs and failure trace; preserve user apps.
+
+The final six-record documentation tail retains these frozen application inputs;
+check its unchanged plugins/scripts/configuration/assets and diff, bind evidence
+to the final PR head, and obtain independent acceptance without an unaffected
+full-suite rerun. Guarded delivery remains a separate mandatory workflow.
+Tail checks actually pass: `git diff --check`; `git diff --exit-code
+1da084822fde1430c47aa58e332e50e453dbffad -- plugins scripts .agents .github
+.codex`; and a `uv run --no-project python -c` standard-library check of the exact
+six-record allowlist, CURRENT's unique active iteration and required continuity
+headings. The initial local check used case-sensitive acceptance labels instead
+of the repository's case-insensitive contract; corrected check passes without
+changing product files. Full-log SHA256 identities inspected independently:
+browser `6a8e6a064f7b7845ce0992194e796a60223c238c729a1df7815b3837f5218a01`,
+repository `374157050acfac4c0558dba4f3bc5478e8575dcf0cdb1544f6c662b9dbeaeeaa`.
+Next scoped order is Bed release, new Heads mobile color/Copy wrapping repair,
+then source-approved unshipped Camera retry1c6920e; none is silently mixed here.
+
+## Earlier targeted integration evidence (superseded by the frozen results)
+
 ## Accepted-main integration — targeted renewal; known focus failure
 
 Ordinary merge target: accepted Heads/main
