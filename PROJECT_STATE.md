@@ -1,5 +1,35 @@
 # Project state
 
+## Current: Bed Mesh icon-toggle author candidate, exact review next
+
+The latest additive user priority is implemented independently of pending Jobs:
+application source `80229841fced7307aaf3eba850a8e60ef688c26a`, tree
+`5dd9210ad01605cf4678da8a069ee8764333ef9f`, from accepted main `4828ce04`.
+One reusable controlled icon segmented leaf replaces the two Bed mode buttons;
+keyboard, reduced motion, inert loading and unchanged chart identity are tested.
+Full author evidence passes:455 UI,300 app/3,557 assertions,21 lifecycle,24
+shipping,198 Chrome, runtime/signature/help and repeated eight-package builds.
+Only Bed lab changes:638,249 bytes; labs total921,919 within unchanged limits.
+No source acceptance or shipment is claimed. Independent exact review and
+validation precede guarded PR merge/deploy/BOTH restart/scoped verification.
+
+PR77's prior release `20260901-4828ce0-pr77-20260901T204905-260700` is attributed
+deployed/postverified: BOTH restarted,31static/32security; independent15 hashes,
+13HTTPS/24raw-isolation checks and8 downloaded-byte browser cases passed.
+Its accepted Bed asset was634,045 bytes/SHA5127c317…; this candidate is different.
+Known 320px/200% Min/Max/Range crowding and Observed-time spacing remain unchanged,
+not evidence of whole-widget polish. Real Bed composition is still pending.
+
+Current Job `5855223` is preserved (focused49/UI500/app311/lifecycle21/shipping24
+pass; full207/runtime/final determinism/PR due). Progress `b9c5008` phase-one has
+independent source approval; phase-two authoring begins from accepted PR77 merge
+`0f55b56`, not a completed checkpoint. History `379c1e7` and Overview `1a3b4f4`
+retain phase-two source approval only. Real Bed `194ea79`, generic MCP/legacy,
+Console, model thumbnail, filament sync, size variants, token cleanup and
+recoverable cleanup remain open. No plugin/routing/phone/printer acceptance.
+
+## Earlier author and integrated baseline records
+
 ## Current: slim vertical legend author gates complete, review pending
 
 Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily

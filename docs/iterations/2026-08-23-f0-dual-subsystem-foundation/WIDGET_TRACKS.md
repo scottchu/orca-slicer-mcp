@@ -1,5 +1,24 @@
 # Widget completion tracks
 
+Latest additive priority: Bed Mesh's single animated icon segmented mode control
+is authored at8022984 from accepted4828ce04;455 UI/300 app/21 lifecycle/24 shipping,
+focused16/full198 browser and all eight deterministic packages pass. Independent
+exact review/validation and delivery remain due. Only Bed lab changes; this is
+not real-Bed migration or whole-widget polish. Existing enlarged summary debt stays.
+
+PR77 at4828ce04 is attributed deployed/postverified (BOTH services and scoped
+served-byte/browser checks); its prior legend source is accepted, not this toggle.
+Current Job5855223/treeac3b23c is preserved with focused49/UI500/app311/21/24 PASS,
+held full207/runtime/final determinism/PR. Progressb9c5008 has phase-one source
+approval (30 UI/12 producer/151 fresh cases); phase-two author begins from merge
+0f55b56, not completed. History379c1e7 and Overview1a3b4f4 have phase-two source
+approval only. Real Bed194ea79 still needs accepted Jobs compact leaf and full
+migration. Generic MCP/legacy, Console, model thumbnail, filament sync, size
+variants, token cleanup and recoverable cleanup remain unfinished. No installed
+plugin, routing, phone or physical-printer acceptance is implied.
+
+## Earlier author and integrated baseline records
+
 Current immediate slice: slim vertical legend author gates complete after
 ordinary accepted Queue `7882670` integration. Rail-only design passes full
 Chrome 182 and repository/runtime/eight-package gates; exact independent review

@@ -1,5 +1,65 @@
 # F0 dual-subsystem foundation validation
 
+## Bed Mesh icon segmented toggle — complete author gates, unaccepted
+
+Exact application source: `80229841fced7307aaf3eba850a8e60ef688c26a`; tree
+`5dd9210ad01605cf4678da8a069ee8764333ef9f`; isolated accepted base4828ce04.
+Actually run:
+
+- UI `bun run check && bun run test`: zero compiler errors/warnings, registered
+  leaf/unchanged raw-debt AST,455 tests in41 files (16 new leaf cases).
+- Focused `bun x playwright test tests/visual/icon-segmented.spec.ts`:16/16.
+- Full `bun run test:browser`:198/198 in1.5m, including native Enter/Space/repeat,
+  one Tab stop, arrows/Home/End, option reorder/external focus, disabled/loading,
+  real animated intermediate transforms/reduced motion,44px targets/32px track,
+  chart/footer geometry, URL/back/forward/reset at320/390/590/720 normal/200%.
+  Existing all-matrix legend/XYZ/pixel/orbit/wheel/pinch/reset/reactive2D,
+  Camera/other-widget and zero-runtime-fetch suites remain passing.
+- `./scripts/check-repository.sh`:455 UI,300 app/3,557 assertions,21 lifecycle
+  and24 shipping tests PASS, including exact routes/CSP/no-store/path/method/
+  public isolation, source graphs and strict individual/aggregate budgets.
+- All `verify:live-fans`, `verify:live-thermals`, `verify:live-heads`,
+  `verify:live-queue`, `verify:live-camera`, `verify:private-lab` repeated
+  after the final source repair: all eight rebuilt hashes remain identical.
+- App `bun run bundle && bun run bundle:server && bun run bundle:runtime`
+  and `./dist/u1-print-studio --help` PASS; compiled runtime signature is valid.
+- `git diff --check` PASS. Against accepted base, only the Bed lab public
+  artifact differs; all five production, light lab and Camera lab are identical.
+
+| Artifact | UTF-8 bytes | SHA-256 |
+| --- | ---: | --- |
+| Fans | 86747 | af6a8ad6b892966099c399231384383a5a4abd499e677443ebe231e9ff156b61 |
+| Thermals | 87323 | 99aa65a13ba86acd07bc596f69e491c7319417eff5a6e06ebe5c5fbc917f6621 |
+| Heads | 92726 | c778ae8d951260464277d9873de6f9f3c12a6355db96ba316ff41766294f21f4 |
+| Queue | 87831 | ccaaca3ecf881d087f4f0188613055f64cb9c7184521c08d1cb4367098342c27 |
+| Camera | 89919 | b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10 |
+| Light lab | 204875 | 4665ccc4033c385f6234043195521002b30c6bf8bd121f1646ea9de1fe36b98a |
+| Bed lab | 638249 | 37a48c3baed18f2ffd25cae1b8c3d8a2e251b94dce4f9ece6782961902534ac2 |
+| Camera lab | 78795 | af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a |
+
+The three labs total921,919, below unchanged980,000; individual250,000/700,000/
+80,000 caps remain. Browser captures `ui/test-results/bed-icon-toggle-320-true.png`
+and `bed-icon-toggle-720-false.png` were inspected by author and coordinator.
+The connected control matches its adopted shape. Existing 320px/200% summary
+headings crowd and Observed-time spacing remains; neither was changed or waived.
+
+Failure/repair evidence: initial leaf units caught whitespace-only text-test
+assumptions and nonreactive ref binding; runtime refs now use reactive bindings.
+First focused browser12/16 exposed a real2px inline baseline shift only in the
+empty enlarged loading harness. Explicit `vertical-align:middle` fixes it with
+unchanged geometry assertions. A pre-final repository run reached an obsolete
+Bed hash assertion during package/pin renewal; the complete final run passes.
+No test tolerance, target dimension, production source or acceptance gate relaxed.
+
+Attributed previous PR77 deployed-service evidence is separate: accepted4828ce04
+release20260901-4828ce0-pr77-20260901T204905-260700 restarted BOTH services and
+passed31static/32security; independent postchecks verified15 hashes,13HTTPS,
+24raw path/method/isolation and8 downloaded-byte browser cases. Those checks do
+not accept this changed candidate. This turn used synthetic software only:
+no services, printer, auth, Tailscale or installed plugin were changed.
+
+## Earlier author and integrated baseline records
+
 ## Slim vertical legend final author renewal — independent acceptance pending
 
 Accepted Queue `7882670778627128214d74bcee62fe20f5ddbf7a` was ordinarily merged

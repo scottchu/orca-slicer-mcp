@@ -1,5 +1,31 @@
 # F0 dual-subsystem foundation handoff
 
+## Bed Mesh icon toggle — author candidate ready for independent roles
+
+Source80229841fced7307aaf3eba850a8e60ef688c26a is based only on accepted4828ce04.
+Changed paths: generic IconSegmentedControl/icon-segmented guard plus units,
+BedMeshWidget's mode composition, test-only harness/route/build registration,
+updated radio selectors in existing regressions,16 new browser cases,
+component frontier, exact Bed hash/artifact, UI-002/ADR0032 and current records.
+Shared IconButton, controller, chart/renderer implementation, production and
+other lab assets remain unchanged. Current Job5855223 was not copied/integrated.
+
+Author gates:455 UI,300 app/3557 assertions,21 lifecycle,24 shipping, focused16,
+full198, runtime/signature/help, repeated eight-package hashes. Browser4179 is
+released. Separate exact source review and validation, then guarded PR delivery,
+BOTH restart and scoped served-byte behavior verification remain next.
+
+The control is one radiogroup with two icon choices, not a camera/host display
+toggle. Mode changes still dispose/remount the existing chart content while the
+ChartFrame identity/4:3 stays fixed; no renderer-persistence guarantee is added.
+Known enlarged summary crowding and timestamp spacing await the preserved
+real-Bed composition track194ea79 and are not whole-widget acceptance.
+Resume Current Job5855223 after this immediate release by ordinary accepted-main
+merge and renew its deferred full207/runtime/determinism/exact gates. Preserve
+Progress, History, Overview and every new-feature/migration/cleanup track.
+
+## Earlier author and integrated baseline records
+
 ## Slim vertical legend author handoff — ready for separate exact review
 
 Ordinary Queue integration is `910355e`. Changed HeightLegend/ChartFrame leaves,
