@@ -12,6 +12,15 @@ provisional architecture as an implementation commitment.
   aggregate.
 - Keep their handoff explicit and traceable. Slicing, upload, start, command
   acknowledgement, and observed printing are distinct states and evidence.
+- Every prepared print artifact must contain genuine, decodable, nonempty
+  embedded thumbnail images compatible with the selected slicer and target.
+  Before prepared acceptance or upload, verify image count, format, dimensions
+  and correspondence to the exact selected plate/layout; bind that evidence to
+  the final artifact hash. A thumbnail setting or standalone image is
+  insufficient. After upload, verify target-parsed thumbnail metadata against
+  the local evidence before start. Missing, invalid, stale or unverified
+  evidence blocks its gate. Thumbnails do not prove geometry or printability.
+  See decision 0040 and PREP-007/HANDOFF-007.
 - Keep OrcaSlicer behind the preparation boundary and printer-specific behavior
   behind the operations adapter boundary; neither subsystem is an adapter
   around the other.

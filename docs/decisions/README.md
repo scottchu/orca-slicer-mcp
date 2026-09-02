@@ -44,6 +44,7 @@ silently changed.
 
 | [0038](0038-preserve-widget-structure-through-errors.md) | Preserve widget structure through errors | Accepted presentation direction; first Bed Lab implementation pending |
 | [0039](0039-keep-heads-color-and-copy-coherent.md) | Keep Heads color and Copy coherent | Adopted presentation direction; exact acceptance pending |
+| [0040](0040-require-embedded-print-thumbnails.md) | Require embedded thumbnails before print handoff | Accepted workflow policy; automated enforcement unimplemented |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

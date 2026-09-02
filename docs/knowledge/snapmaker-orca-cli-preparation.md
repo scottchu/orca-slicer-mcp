@@ -51,6 +51,13 @@ incomplete configurations and must remain distinguishable during future runs.
 
 ## Smallest repeatable preparation protocol
 
+Decision [0040](../decisions/0040-require-embedded-print-thumbnails.md) adds a
+mandatory acceptance gate. In a later CLI run, preset thumbnail configuration
+was present while the emitted artifact contained no thumbnail image blocks.
+This sanitized observation establishes that configuration is not output
+evidence; it does not establish a universal backend defect. Private artifacts
+and images remain outside the repository.
+
 Before starting the process:
 
 - fingerprint the Snapmaker Orca executable and record its bundle and CLI
@@ -68,6 +75,14 @@ After the process exits:
 - record the child-process exit independently from the wrapper exit;
 - require a newly created artifact;
 - hash the artifact;
+- extract and decode the final artifact's embedded thumbnail images; verify
+  nonempty image content, image count, format and dimensions against the exact
+  backend/target requirements, without inventing universal image sizes;
+- inspect the decoded images against the exact selected plate's objects,
+  orientation and layout, and bind that result to the final artifact hash;
+- block prepared acceptance and upload on absent, corrupt, blank, incompatible,
+  stale or unverified thumbnails; neither a configuration value nor a
+  standalone preview satisfies this check;
 - statically inspect tool commands, temperatures, layer count, and core process
   values;
 - inspect actual `M140` and `M190` commands rather than relying on filament
@@ -76,6 +91,10 @@ After the process exits:
 - fail the preparation request if the actual tool does not match the requested
   physical extruder;
 - create a new revision for every reslice or configuration change.
+
+Embedding or replacing a thumbnail also changes artifact bytes: hash and verify
+the final artifact again and renew its manifest/authorization binding. A
+thumbnail is visual identity evidence, not geometry or printability proof.
 
 No upload or print start belongs to this preparation protocol.
 
@@ -126,6 +145,11 @@ collapse slice, upload, start, and observed printing into one opaque action.
   before start.
 - A correct remote size is insufficient; verify material slot use, actual bed
   and nozzle temperatures, layers, and estimate.
+- After upload and before start, independently read the uploaded artifact's
+  target-parsed thumbnail metadata and match count, dimensions and format to
+  local evidence as exposed by that target. Missing, conflicting or unavailable
+  verification blocks start, even if a prior upload succeeded. This remote
+  check follows upload; local PREP-007 verification precedes it.
 - Start acknowledgement and fresh `printing` observation remain distinct.
 - Monitoring chooses the next check after every sample. Stable middle sections
   tolerate longer intervals; final minutes require progressively shorter ones.
@@ -144,6 +168,10 @@ collapse slice, upload, start, and observed printing into one opaque action.
 - whether direct multi-plate 3MF slicing can be made reliable without reducing
   inputs to STL;
 - exact GUI-versus-CLI parity for the local U1 profiles;
+- reproducible thumbnail generation across backend versions, target metadata
+  capabilities, and a non-user fixture matrix covering absent, corrupt, blank
+  and stale images; the policy is required now, but runtime enforcement and
+  universal backend support are not established;
 - which profile fields form the minimum complete schema for each backend
   version;
 - whether identical inputs are byte-for-byte deterministic;

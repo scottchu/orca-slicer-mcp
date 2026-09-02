@@ -1,5 +1,28 @@
 # Project state
 
+## Current: required print-thumbnail policy reviewed; PR86 delivery
+
+The latest user priority adds decision 0040's required embedded-thumbnail gate
+to AGENTS, PREP-007/HANDOFF-007 and maintained preparation knowledge. Local
+decoded image content and exact plate/layout correspondence must be verified
+and bound to the final artifact hash before prepared acceptance or upload;
+target-parsed thumbnail metadata must be verified after upload before start.
+This applies to current unstarted jobs. Thumbnail settings alone are
+insufficient, and missing or unverified evidence blocks the corresponding gate.
+
+The source/manual agent workflow policy at `d08c88d8` has independent approval
+with no findings. [PR86](https://github.com/scottchu/orca-slicer-mcp/pull/86)
+is open for delivery; this continuity tail needs final identity binding and
+merge verification. Application/build inputs, plugin skills and deployed
+services are unchanged; automated enforcement, geometry, printability and physical display
+acceptance are not claimed. VALIDATION records the documentation-only checks.
+After delivery is verified, resume the prior widget order below. Heads PR84/Bed
+PR83 retain their existing evidence, while Camera retry, all-widget error work, Bed layout,
+fixed Lab dock, Current Job PR79, other migrations, Console/progress-thumbnail/
+widget-size features and recoverable cleanup remain unfinished.
+
+## Previous delivered widget checkpoint
+
 ## Current: Heads Copy PR84 deployed and independently verified
 
 PR84 merged as `0fe54f34e43f97dd9376e5a17b06efd342726455`, with the

@@ -1,5 +1,32 @@
 # F0 dual-subsystem foundation brief
 
+## Current: require embedded thumbnails before print handoff
+
+The user's latest priority is a mandatory thumbnail rule for every prepared
+print artifact. This bounded F0 preparation/handoff policy slice addresses
+whether configured thumbnail settings are enough to accept output; they are
+not. PREP-007, HANDOFF-007 and decision 0040 are implemented as source/manual
+agent workflow policy. Independent review approved `d08c88d8` with no findings;
+delivery is through open [PR86](https://github.com/scottchu/orca-slicer-mcp/pull/86).
+Bind this continuity tail to that approval and verify delivery before resuming
+the previous unfinished widget order.
+
+Acceptance requires decoded, nonempty, backend-compatible embedded images
+matching the exact selected plate/layout and final artifact hash before
+prepared acceptance or upload. After upload, verify target-parsed thumbnail
+metadata against the local evidence before start. Missing, invalid, stale or
+unverified thumbnail evidence blocks the corresponding gate. This applies to
+the current unstarted job as well as future preparation; an earlier uploaded
+candidate is not start-ready merely because upload succeeded.
+
+This changes agent workflow policy, not runtime enforcement or widget thumbnail
+support, and proves no geometry, printability or physical outcome. Preserve
+the accepted Heads/Bed evidence and every unfinished widget track below; resume
+their existing order after this priority. No application build, service restart
+or plugin installation belongs to this documentation change.
+
+## Previous delivered widget checkpoint
+
 ## Current: Heads Copy PR84 deployed and independently verified
 
 PR84 merged as `0fe54f34e43f97dd9376e5a17b06efd342726455`, with the
@@ -798,8 +825,8 @@ that can be validated without guessing.
 
 ## Requirements
 
-Primary discovery targets: `PREP-001` through `PREP-006`, `ORCA-001` through
-`ORCA-006`, `HANDOFF-001` through `HANDOFF-006`, `SESSION-001`, `OBS-001`
+Primary discovery targets: `PREP-001` through `PREP-007`, `ORCA-001` through
+`ORCA-006`, `HANDOFF-001` through `HANDOFF-007`, `SESSION-001`, `OBS-001`
 through `OBS-006`, `CAM-001` through `CAM-007`, `CTRL-001`, `SAFE-001`,
 `DATA-001` through `DATA-004`, `AUTH-001` through `AUTH-004`, `API-001` through `API-005`,
 `ARCH-001` through `ARCH-005`, `ONTO-001` through `ONTO-002`, and `PORT-001`
