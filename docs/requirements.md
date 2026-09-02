@@ -68,6 +68,10 @@ printer environments support the described behavior.
   exact.
   Unknown color stays neutral with no copy action; valid hex has an accessible
   bottom Copy action with truthful feedback. Refresh stays below information.
+  Decision0039 keeps Copy in a44px right-side column beside an atomic exact hex.
+  Only the swatch/value subgroup may wrap; narrower cards fall to one column
+  using a public font-relative minimum rather than truncating hex or orphaning
+  Copy. Loading/ready geometry, unknown/empty behavior and focus remain stable.
 - **OBS-011:** All pending focused widgets remain in the active iteration's
   durable completion matrix when new feedback arrives. Apply the selected white
   visual language to all current cards and the directory; preserve real content,

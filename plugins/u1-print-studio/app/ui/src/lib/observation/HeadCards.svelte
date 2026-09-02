@@ -8,7 +8,7 @@
   const shapes = $derived(checkedMaterialShapes(loading, materialShapes));
   $effect.pre(() => { checkedMaterialShapes(loading, materialShapes); });
 </script>
-<CardGrid>
+<CardGrid minimum="color-action">
   {#each HEAD_IDS as physicalTool, index (physicalTool)}
     {#if loading}<HeadCard {physicalTool} loading materialShape={shapes?.[index]} />
     {:else}<HeadCard {physicalTool} reading={items?.[index]} copying={copying === physicalTool} {oncopy} />{/if}

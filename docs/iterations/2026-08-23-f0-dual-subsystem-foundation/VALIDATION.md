@@ -1,5 +1,124 @@
 # F0 dual-subsystem foundation validation
 
+## Heads Copy final frozen application — full author gates passed
+
+Frozen app `a8e3e7a728a366f7073e74385420039b3c1e5283`, tree
+`830393fee8202b1a51b20f6ad4d85977add867e0`. Required renewal actually ran:
+
+- Root `./scripts/check-repository.sh` with pinned Bun1.3.12 on PATH: PASS,
+  zero Svelte errors/warnings, AST guards,514UI,300app/3557 assertions,
+  21 lifecycle/24 shipping, all eight deterministic packages.
+- UI `bun run test:browser`:248/248 PASS (1.7m). This is the one renewed full
+  run after the actual wrap-policy repair; the rejected first run stays below.
+- App `bun run bundle && bun run bundle:server && bun run bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and
+  `dist/u1-print-studio --help`: PASS, no service/printer operation.
+
+Ignored full-log SHA256:
+repository `6c13238147e4c33d02f01367169bfff322ddf6099b067e405a727fb42e6da63c`;
+browser `a9d5f6e1e62ab2a6c383ae8b99d1e4544e700c7c346c707bc1a54ca2f1065aa4`.
+Logs are `app/ui/test-results/heads-copy-full-repository.log` and
+`heads-copy-full-browser.log`. All sessions exited; `lsof -nP -iTCP:4179
+-sTCP:LISTEN` shows no listener. No user app/profile/connection was closed.
+
+Independent roles report source review PASS and36 fresh targeted cases PASS
+on these exact bytes. Repaired567/590/720 actual200% wide-RGBA transitions all
+measure0px. Whole text, right44px Copy, clipboard denial/busy/focus, long Unicode
+material, empty/unknown and independent receipts pass. These are attributed
+synthetic software results, not author self-approval or physical-device claims.
+Exact final documentation-head binding remains required before shipment.
+
+Only Heads96660/hash63d9b108 and light209516/hash7ccb1028 change; all full hashes
+and unchanged six packages are enforced in the renewed package checks.
+Production453480 and Lab922100 stay within original limits; Camera79776 stays
+unchanged. The six-record final tail changes no application/dependency/config/
+asset/shipping input. Bind retained full evidence to its exact PR head without
+an unaffected build/browser rerun. Copy deployment is still pending.
+
+## Heads Copy wrap-parity repair — renewed focused checks passed
+
+Rejected candidate `c32f7f1` passed its repository gate (514UI,300app/3557,
+21 lifecycle/24 shipping), but full browser was244/245: inherited Heads320
+shell<850 and fixed-two-column assumptions contradicted the adopted one-column
+policy. Independent validation additionally measured loading-to-wide-RGBA
+height changes of26.78125px at567/200 and13.390625px at590/200. These are retained
+failures, not accepted results or threshold exceptions.
+
+The ColorValue subgroup now selects inline/stacked layout from the same public
+maximum hex width for loading and ready. Actual text remains naturally sized.
+Independent compactness-contract review adopted Heads-only row anatomy checks;
+other widgets retain850px. Card insets/gaps, two natural body rows, intrinsic
+header/footer,44px actions and row maxima are checked, not a larger arbitrary
+shell-height allowance. The unchanged1px transition gate remains.
+
+Actually renewed: `bun run check` zero errors/warnings and AST PASS; exact
+Heads/light builds and private packaging PASS; focused
+`bun x playwright test tests/visual/observation-lab.spec.ts
+tests/visual/live-heads.spec.ts --grep 'Heads'`:44/44 PASS (33.5s), including
+567/590/720 enlarged wide-RGBA parity and both sides of column boundaries.
+Heads96660 SHA256 `63d9b108c8f94c96b5574ec8200f692147aa692b0472703ab51a72b98d67d6a3`;
+light209516 SHA256 `7ccb1028e72346abf797bd6883a8e60ce6763552a145ea78f059366d2a4b56f5`.
+Six other packages remain unchanged; Lab922100, production453480, Camera79776.
+Renew the full gate on these changed application bytes before acceptance.
+
+Original ignored full logs are retained as
+`app/ui/test-results/heads-copy-c32f7f1-repository.log` and
+`heads-copy-c32f7f1-browser.log`; full screenshots/traces remain in
+`heads-copy-c32f7f1-playwright`, with the separate exact320 anatomy measurement
+in `heads-copy-compactness-measurement`. Four normal single-column cards measure
+193.390625px each (header36.390625, body52, footer53); intrinsic rows explain
+the1050.3125px shell. No evidence was deleted. All focused fixtures exited.
+
+## Heads Copy layout repair — focused author checks passed
+
+The independently measured policy is adopted in decision0039: scoped44px
+right action column, wrapping swatch/whole-natural-hex left group, and public
+font-relative minimum card width. ColorValue is a small DOM-owning leaf with
+runtime loading privacy validation; HeadCard remains zero-raw. Existing global
+Inline/LoadingValue and package caps are unchanged.
+
+Actually run with pinned Bun1.3.12 in app/ui:
+
+- `bun run check`: zero Svelte errors/warnings; AST contract PASS.
+- `bun x vitest run src/lib/ui/ColorValue.test.ts
+  src/lib/observation/HeadCard.test.ts
+  src/lib/observation/ObservationLoading.test.ts`:51 PASS.
+- `bun x playwright test tests/visual/live-heads.spec.ts`:34 PASS,
+  followed by the two added `--grep 'column boundary'` cases:2 PASS.
+  Four widths normal/200%, whole worst RGB/RGBA, exact44px right-side Copy,
+  clipping/overlap/row grouping, closed loading parity, success/rejection/busy
+  focus and retained refresh. Boundary388/389 normal and566/567 enlarged pass.
+- `bun run build:live-heads && bun run build && bun run package:private-lab`
+  passed twice deterministically. Heads96458 SHA256
+  `db1a487699468c3e697cfc009f7b9c2d7e8bb9d5f69d52da015c2f7da63f359a`;
+  lightLab209309 SHA256
+  `34a2ca0a1b96e30114c46935e200c59dc1548b72306e3e2c3c19d3fbb9b5b640`.
+  Other six packaged assets unchanged; Lab total921893, production453278.
+  Camera Lab79776 retains224bytes headroom without a cap change.
+
+The next gate is the single author-owned full frozen-candidate run, then
+separate exact source approval and targeted independent verification. No
+deployment/actual-device/user-outcome acceptance is claimed for Copy.
+Focused fixture/browser sessions have exited and released4179.
+
+### Setup and prior-base evidence
+
+Base `f949f4472937b6f9bd27aa1969200770465a0eaa` is the accepted Bed PR83
+merge. Read current repository guidance and contracts, confirmed canonical main
+clean and created a separate non-main branch. Source diagnosis: HeadCard's
+ready ten-character value reserve combines with the wrapping InsetCard footer
+to orphan Copy below swatch/hex. No UI changes or new test pass is claimed yet.
+Independent UI/UX sizing feedback precedes implementation; preserve44px targets,
+complete RGB/RGBA, loading privacy and unchanged package/security limits.
+The author's prior Bed source approval does not approve this new authored work.
+Bed deployment is coordinator-attributed. Independent final postverification
+reports15 manifest hashes, eight HTTPS assets,15 downloaded-byte browser cases
+and six policy adversaries PASS with zero geometry delta; BOTH services are
+healthy/integrity-verified. Real-phone/native-OS-focus acceptance is not claimed.
+No user/printer/service resource was acquired here. Author dependency setup:
+pinned Bun1.3.12 `bun install --frozen-lockfile` in app and UI passed with no
+tracked lockfile/dependency changes. `git diff --check` passes.
+
 ## Bed Lab frozen candidate — full author gates passed
 
 Frozen application `1da084822fde1430c47aa58e332e50e453dbffad`, tree
