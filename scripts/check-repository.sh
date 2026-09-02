@@ -108,14 +108,14 @@ if [[ -d "$plugin_app_root" ]]; then
     cd "$plugin_app_root"
     bun run ui:check
     bun run ui:test
-    (cd ui && bun run verify:live-fans)
-    (cd ui && bun run verify:live-thermals)
-    (cd ui && bun run verify:live-heads)
-    (cd ui && bun run verify:live-queue)
-    (cd ui && bun run verify:live-camera)
+    bun run verify:live-fans
+    bun run verify:live-thermals
+    bun run verify:live-heads
+    bun run verify:live-queue
+    bun run verify:live-camera
     bun run ui:verify
     bun run check
-    bun test src/*.test.ts
+    bun run test:server
   )
 fi
 

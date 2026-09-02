@@ -1,42 +1,37 @@
 # Next agent
 
-## Current: PR91 shipped; next single SvelteKit application with Bun
+## Current: prove the real Kit route/service integration
 
-PR91 merged as `6a222a8ff66ca76cb3cac4682501a8cbb44fd5d6` from independently
-approved `2719e604229313494b6e32020cf500f74bcecf69`, tree
-`463f607adb357494d830b56e3f5548d827e83a19`. Shared common/Button/Icon/Switch,
-compact bottom-right Camera icon modes and decision0042 byte-cap removal are
-shipped. Normal minification/size reporting, integrity/determinism/security and
-all shipping guards remain. The required source gate passed565 UI,304 app tests/
-3645 assertions, eight deterministic packages,21 lifecycle/24 shipping tests;
-one full browser run passed321, plus three fresh scoped adversaries with their
-private-fixture failure/renewal retained. See VALIDATION for exact evidence.
+On `codex/u1-sveltekit-unified-app` from111470, retain Bun and follow0043's single
+app-root layout: UI in `src/components/common` and domain compositions, pure
+TypeScript in `src/lib`, server-private code in `lib/server`, API/dashboard/Lab
+in `src/routes`. The app-root/Fans pilot is source-implemented; complete integration
+and independent acceptance remain pending.
 
-Guarded release `20260902-6a222a8-pr91-20260902T121040-666036` explicitly restarted
-BOTH services: loaded, healthy, integrity verified;31 static/32 security checks
-and preservation pass, rollback not needed. Independent postverification passes
-15 manifest files, eight exact HTTPS bundles and six distinct served-widget cases
-(Camera Lab1, focused Camera2, Heads2, Bed Lab1; five retained+one private-selector
-renewal). Actual served HTML/CSP is preserved with synthetic tool/media fixtures.
-No real camera/printer acquisition occurred; C08 remains open. Report and failed
-fixture evidence are bound in VALIDATION; owned browsers/processes are closed.
+Use official adapter-node5.5.7 under the user-adopted Bun1.4.0, with the thin
+raw-target/lifecycle bootstrap. VALIDATION binds its official/user binary identity,
+retains the Bun1.3.12 disconnect failure and records six passing1.4.0 probe cases.
+Use native close events and generic request lease ownership; the temporary polling
+workaround is removed. Process-local `U1_KIT_BODY_SIZE_LIMIT=Infinity` preserves
+baseline MCP behavior while endpoint128KiB limits remain. Actual Kit routing is
+source-implemented; only Fans is native, while other UI paths serve packaged HTML.
+The final author run passes105 focused tests/1466 assertions; two payload builds
+match and116 relocation checks pass. Freeze the candidate for the necessary
+full regression and independent exact review; these author results do not replace them.
+The six shipping files have independent bounded APPROVE; UI is frozen with70
+focused tests,12 package tests, eight deterministic builds and30 distinct browser
+cases (22 final plus eight retained). Initial Lab title and fixture-origin failures
+are preserved alongside successful renewal in VALIDATION. This does not accept
+whole-app integration or deploy it. Preserve shared page/widget controller semantics.
+Use `docs/sveltekit-route-migration.md` for the finite pending compatibility
+checklist and retire handlers through verified migration;
+folder moves or a permanent second backend do not complete the task. Preserve
+`/dashboard/lab` and all role/auth/Camera-service boundaries.
 
-Decision0043 adopts one SvelteKit app at the app root, retaining Bun. Next prove
-an actual Kit Fans page and existing tools/call URL through one shared service,
-then account for remaining compatibility routes and complete routing integration.
-Use `src/components/common` for generic UI, `src/lib` for pure TypeScript domain/
-services/transport (`lib/server` for server-private code), and `src/routes` for
-API/dashboard/Lab. Preserve `/dashboard/lab` and other existing URLs, public/private
-roles, auth semantics, Camera service lifecycle and MCP stdio sharing services.
-The nested UI app is transitional; widgets are shared-component build targets.
-Folder moves alone do not complete this work. Adapter compatibility is unaccepted;
-no Bun removal, Node migration or new framework is queued.
-
-All55 ledger IDs remain. C08's prior unclassified intermittent acquisition risk,
-Progress no-action, F07 reactive-class discussion and separate c6 stay open.
-This records tail changes no application bytes; decision0028 requires no new
-build/deployment. Static, served-service, simulated and actual-device/printer
-acceptance remain distinct.
+Use focused author checks while editing, one assigned necessary frozen full-run
+owner, separate exact review and guarded two-service shipment/postverification.
+PR91 remains deployed and its exact evidence is in VALIDATION. All55 ledger IDs
+remain; C08, Progress no-action, reactive-class discussion and c6 stay separate.
 
 ### Earlier source checkpoint before decision0042
 

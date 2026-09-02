@@ -1,42 +1,46 @@
 # Project state
 
-## Current: PR91 shipped; next single SvelteKit application with Bun
+## Current: integrate one SvelteKit application with Bun
 
-PR91 merged as `6a222a8ff66ca76cb3cac4682501a8cbb44fd5d6` from independently
-approved `2719e604229313494b6e32020cf500f74bcecf69`, tree
-`463f607adb357494d830b56e3f5548d827e83a19`. Shared common/Button/Icon/Switch,
-compact bottom-right Camera icon modes and decision0042 byte-cap removal are
-shipped. Normal minification/size reporting, integrity/determinism/security and
-all shipping guards remain. The required source gate passed565 UI,304 app tests/
-3645 assertions, eight deterministic packages,21 lifecycle/24 shipping tests;
-one full browser run passed321, plus three fresh scoped adversaries with their
-private-fixture failure/renewal retained. See VALIDATION for exact evidence.
+Work is active on `codex/u1-sveltekit-unified-app` from111470. Decision0043's real
+app-root integration is in progress: one SvelteKit app, Bun retained, UI under
+`src/components` (`components/common` for generic primitives), pure TypeScript
+services/domain/transport in `src/lib`, private server code in `lib/server`, and
+actual API/dashboard/Lab routes in `src/routes`. The nested UI app has been removed
+from source; widgets remain shared-component build targets and MCP stdio uses shared services.
 
-Guarded release `20260902-6a222a8-pr91-20260902T121040-666036` explicitly restarted
-BOTH services: loaded, healthy, integrity verified;31 static/32 security checks
-and preservation pass, rollback not needed. Independent postverification passes
-15 manifest files, eight exact HTTPS bundles and six distinct served-widget cases
-(Camera Lab1, focused Camera2, Heads2, Bed Lab1; five retained+one private-selector
-renewal). Actual served HTML/CSP is preserved with synthetic tool/media fixtures.
-No real camera/printer acquisition occurred; C08 remains open. Report and failed
-fixture evidence are bound in VALIDATION; owned browsers/processes are closed.
+The candidate now adopts the user's installed Bun1.4.0 with official
+`@sveltejs/adapter-node`5.5.7's handler and a thin raw-target/lifecycle bootstrap.
+Its revision and binary hash match the verified official release (VALIDATION).
+The old Bun1.3.12 completed-body disconnect failure is retained; the same isolated
+probe passes all six cases on1.4.0. Native close events replace the temporary
+polling workaround; generic request lease ownership remains. The bootstrap's
+process-local `U1_KIT_BODY_SIZE_LIMIT=Infinity` preserves baseline MCP body behavior;
+existing128KiB endpoint limits remain. No user environment or service was changed.
+The single-root source and actual Kit routing are implemented. The final author
+run passes105 focused tests/1466 assertions; two Bun1.4 payloads share the same
+39-file/58-route manifest and116 isolated relocation checks pass. Only Fans is a native Kit
+page; other dashboard/Lab/widget routes use Kit endpoints serving packaged HTML.
+The six root shipping files now have independent bounded APPROVE after34/26
+author tests and the repaired six-asset/directory-link checks. UI migration is
+frozen with70 focused tests,12 package tests and all eight deterministic builds;
+30 distinct browser cases are22 final passes plus eight input-bound retained
+passes, not a full run. The initial Lab title flash and fixture-origin failures
+were repaired with their failed evidence retained. Whole-candidate full regression,
+exact review and shipment remain pending. Next freeze the candidate and bind the
+necessary full regression and independent exact review to its final source/runtime.
+Account for every temporary compatibility route before completing routing
+integration. This adapter choice does not introduce a Node runtime or second backend.
+Acceptance criteria and role ownership are in active HANDOFF/VALIDATION.
 
-Decision0043 adopts one SvelteKit app at the app root, retaining Bun. Next prove
-an actual Kit Fans page and existing tools/call URL through one shared service,
-then account for remaining compatibility routes and complete routing integration.
-Use `src/components/common` for generic UI, `src/lib` for pure TypeScript domain/
-services/transport (`lib/server` for server-private code), and `src/routes` for
-API/dashboard/Lab. Preserve `/dashboard/lab` and other existing URLs, public/private
-roles, auth semantics, Camera service lifecycle and MCP stdio sharing services.
-The nested UI app is transitional; widgets are shared-component build targets.
-Folder moves alone do not complete this work. Adapter compatibility is unaccepted;
-no Bun removal, Node migration or new framework is queued.
-
-All55 ledger IDs remain. C08's prior unclassified intermittent acquisition risk,
-Progress no-action, F07 reactive-class discussion and separate c6 stay open.
-This records tail changes no application bytes; decision0028 requires no new
-build/deployment. Static, served-service, simulated and actual-device/printer
-acceptance remain distinct.
+PR91 `6a222a8` remains deployed: common primitives, compact Camera icon overlay and
+byte-cap removal passed exact source review, required full regression and scoped
+served-widget verification. Its recorded source/ship/post evidence remains in
+VALIDATION; it does not accept changed application bytes in this integration.
+Preserve existing URLs, public/dashboard roles and auth, Camera lifecycle,
+read-only boundaries and every shipping guard. All55 ledger IDs, C08's intermittent
+unclassified acquisition risk, Progress no-action, F07 class discussion and c6
+remain. No new deployment/device/printer acceptance is claimed.
 
 ### Earlier source checkpoint before decision0042
 

@@ -22,8 +22,10 @@ import tempfile
 import time
 import urllib.request
 
+from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, LEGACY_ASSET_FILES, read_build_manifest
+
 LABELS = {"public": "com.scottchu.u1-print-studio", "dashboard": "com.scottchu.u1-print-studio-dashboard"}
-ASSETS = ("widget.html", "legacy-widget.html", "camera-widget.html", "legacy-camera-widget.html", "status-dashboard-host.html", "camera-dashboard-host.html")
+ASSETS = tuple(LEGACY_ASSET_FILES)
 ID = re.compile(r"[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}\Z")
 HEALTH_KEYS = ("runtimeVersion", "toolSchemaVersion", "observationWidgetVersion", "cameraWidgetVersion")
 BOOTOUT_WAIT_ATTEMPTS = 300
@@ -221,17 +223,15 @@ class ServiceManager:
         # Failed staging stays quarantined at this unique path and cannot install:
         # manifest.json is written only after the build and all checks succeed.
         (release / "dist").mkdir(mode=0o700)
-        (release / "public").mkdir(mode=0o700)
         (release / "bin").mkdir(mode=0o700)
         (release / "bunfig.toml").write_text("")
         shutil.copyfile(bun, release / "bin/bun")
-        self.runner([str(bun), "--no-env-file", "--config=/dev/null", "build", "src/server.ts", "--target=bun", f"--outdir={release / 'dist'}", "--entry-naming=server.js", "--asset-naming=[name].[ext]"], cwd=app)
-        for asset in ASSETS:
-            shutil.copyfile(app / "public" / asset, release / "public" / asset)
+        self.runner([str(bun), "--no-env-file", "--config=/dev/null", "run", "build:server", "--outdir", str(release / "dist")], cwd=app)
+        read_build_manifest(release / "dist")
         assert_clean()
         if revision != self.runner(["git", "-C", str(source), "rev-parse", "HEAD"]).strip() or digest(bun) != bun_hash:
             raise ValueError("Source or Bun changed during staging")
-        contract = (app / "src/runtime-contract.ts").read_text()
+        contract = (app / "src/lib/server/runtime-contract.ts").read_text()
         expected = {}
         for key, constant in zip(HEALTH_KEYS, ("U1_RUNTIME_VERSION", "U1_TOOL_SCHEMA_VERSION", "U1_OBSERVATION_WIDGET_VERSION", "U1_CAMERA_WIDGET_VERSION")):
             match = re.search(rf"export const {constant} = (\"[^\"]+\"|\d+);", contract)
@@ -241,7 +241,7 @@ class ServiceManager:
         files = {str(p.relative_to(release)): digest(p) for p in release.rglob("*") if p.is_file()}
         if "dist/server.js" not in files:
             raise ValueError("Build did not produce server.js")
-        manifest = {"schemaVersion": 1, "release": release_id, "sourceRevision": revision, "bun": str(release / "bin/bun"), "bunVersion": version, "bunSha256": bun_hash, "health": expected, "files": files}
+        manifest = {"schemaVersion": 2, "buildKind": BUILD_KIND, "release": release_id, "sourceRevision": revision, "bun": str(release / "bin/bun"), "bunVersion": version, "bunSha256": bun_hash, "health": expected, "files": files}
         write_private(release / "manifest.json", json_bytes(manifest))
         for path in release.rglob("*"):
             path.chmod(0o500 if path.is_dir() or path == release / "bin/bun" else 0o400)
@@ -253,14 +253,23 @@ class ServiceManager:
         owned(release, directory=True)
         owned(release / "manifest.json")
         manifest = json.loads((release / "manifest.json").read_text())
-        if manifest.get("schemaVersion") != 1 or manifest.get("release") != release_id:
+        schema = manifest.get("schemaVersion")
+        if type(schema) is not int or schema not in (1, 2) or manifest.get("release") != release_id:
             raise ValueError("Unsupported release manifest")
+        if schema == 2 and manifest.get("buildKind") != BUILD_KIND:
+            raise ValueError("Unsupported release build kind")
+        if schema == 1 and ("buildKind" in manifest or (release / "dist" / BUILD_MANIFEST).exists()):
+            raise ValueError("Kit release cannot use the legacy schema")
         if Path(manifest["bun"]) != release / "bin/bun" or digest(Path(manifest["bun"])) != manifest["bunSha256"]:
             raise ValueError("Pinned Bun executable changed; stage a new release")
-        actual_files = {str(p.relative_to(release)) for p in release.rglob("*") if p.is_file() and p.name != "manifest.json"}
+        actual_files = {str(p.relative_to(release)) for p in release.rglob("*") if p.is_file() and p != release / "manifest.json"}
         if actual_files != set(manifest["files"]):
             raise ValueError("Release inventory changed")
-        required = {"dist/server.js", "bin/bun", "bunfig.toml", *("public/" + asset for asset in ASSETS)}
+        required = {"dist/server.js", "bin/bun", "bunfig.toml"}
+        if schema == 1:
+            required.update("public/" + asset for asset in ASSETS)
+        else:
+            required.update(("dist/handler.js", "dist/" + BUILD_MANIFEST))
         if not required.issubset(actual_files) or set(manifest["health"]) != set(HEALTH_KEYS):
             raise ValueError("Release is missing required assets or health contract")
         if not os.access(release / "bin/bun", os.X_OK):
@@ -272,6 +281,12 @@ class ServiceManager:
             owned(path)
             if digest(path) != expected:
                 raise ValueError("Release content changed")
+        if schema == 2:
+            build = read_build_manifest(release / "dist")
+            expected_files = {"bin/bun", "bunfig.toml", "dist/" + BUILD_MANIFEST}
+            expected_files.update("dist/" + relative for relative in build["runtimeFiles"])
+            if actual_files != expected_files:
+                raise ValueError("Unexpected files outside the Kit build inventory")
         return release, manifest
 
     def snapshot(self, originals):

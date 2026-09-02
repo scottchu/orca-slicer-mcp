@@ -5,7 +5,7 @@
       "args": [
         "--env-file=../../.env",
         "run",
-        "./app/src/stdio-main.ts"
+        "./app/src/entrypoints/stdio-main.ts"
       ],
       "cwd": ".",
       "startup_timeout_sec": 10,

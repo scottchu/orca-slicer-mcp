@@ -29,10 +29,22 @@ in `src/lib` (`lib/server` for server-private code), actual API/dashboard/Lab in
 `src/routes`. Preserve existing URLs, roles/auth semantics and Camera lifecycle;
 widgets remain shared-component build targets and MCP stdio uses shared services.
 Retire the permanent nested UI application: folder-only moves are insufficient.
-Adapter choice/pilot are not implemented or accepted; no Bun removal is queued.
+Official adapter-node5.5.7 runs under the user-adopted Bun1.4.0 with a thin
+raw-target/lifecycle bootstrap. Native abort events replace temporary polling;
+generic request lease ownership and128KiB endpoint limits remain. Process-local
+adapter configuration preserves baseline MCP body behavior. Actual Kit routing is
+source-implemented: Fans is native; other UI paths are Kit-served packaged HTML.
+Final author checks pass105 tests/1466 assertions and116 relocation checks with
+two identical payload manifests. Frozen full/exact acceptance remains pending. The root shipping group has bounded independent approval after
+34/26 author tests; UI has70 focused/12 package tests, eight deterministic builds
+and30 distinct browser cases (22 final plus eight retained). See VALIDATION for
+source identities, initial failures and renewal. No Bun removal or second backend
+is queued. `docs/sveltekit-route-migration.md` tracks the finite routing boundary.
+Route migration does not imply widget-feature completion.
 All55 IDs, C08, Progress no-action, F07 class discussion and c6 remain. Byte ceilings
 stay removed while minification/reporting and integrity/security/shipping guards
-remain mandatory. This unchanged-application records tail adds no deployment.
+remain mandatory. Current implementation work requires its own focused/full/exact
+acceptance and guarded shipment; PR91 evidence does not accept changed app bytes.
 
 ### Earlier common UI checkpoint before decision0042
 
@@ -209,7 +221,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | F05 generic semantic tokens | Not started; --u1 tokens remain | Inventory consumers and controlled alias transition |
 | F06 arrow functions | Adopted AGENTS | Apply to changed JS/TS; document genuine exceptions |
 | F07 component-owned folders/services | Partial; PR89 delivers real/synthetic Camera service separation | Thin subscribers/renderers. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
-| F08 whole server/MCP SvelteKit migration |0043 single SvelteKit app with Bun adopted; route/service pilot and adapter unimplemented/unaccepted | Real Fans Kit page + existing tools/call service pilot, finite compatibility inventory, then full routing integration; preserve URLs/auth/roles and shared MCP stdio services |
+| F08 whole server/MCP SvelteKit migration |0043 app-root/Fans source pilot3tests32assertions; adapter selected, independent/full integration pending | Resolve headerless body parity, verify shipping repairs, then remaining-route migration plus URL/auth/role/MCP lifetime/relocation evidence |
 | F09 self-contained widget HTML |0042 individual/aggregate byte caps removed, independently accepted and shipped PR91 | Preserve self-contained assets, CSP/security, integrity, determinism, minification and size reporting during0043 |
 | U01 density/grouping/consistent language | Partial; independent UIUX/domain audits complete | Implement findings per widget; audits alone are not fixes |
 | U02 smaller Refresh visual | Not started in delivered shared component | Compact visible glyph/control, 44px accessible target |

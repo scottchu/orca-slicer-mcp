@@ -1,0 +1,10 @@
+/node_modules/
+/.svelte-kit/
+/build*/
+/test-results/
+/playwright-report/
+/ui/node_modules/
+/ui/.svelte-kit/
+/ui/build*/
+/ui/test-results/
+/ui/playwright-report/

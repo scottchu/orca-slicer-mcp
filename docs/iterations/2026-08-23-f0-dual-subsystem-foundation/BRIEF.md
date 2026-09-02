@@ -1,6 +1,42 @@
 # F0 dual-subsystem foundation brief
 
-## Current implementation: neutral failures and adjacent footer status
+## Current implementation: real single-app SvelteKit integration with Bun
+
+This F0 slice addresses UI-001/UI-003 and decision0043 on
+`codex/u1-sveltekit-unified-app` from111470. PR91 remains deployed; real app-root
+integration is in progress. Retain Bun, move UI to `src/components` with generic
+`components/common`, pure TypeScript services/domain to `src/lib`, private server
+code to `lib/server`, and actual API/dashboard/Lab routes to `src/routes`.
+
+Use official adapter-node5.5.7 under the user-adopted Bun1.4.0 with a thin
+raw-target/lifecycle bootstrap. The official/user binary identity and isolated
+six-case disconnect renewal are recorded in VALIDATION; the old1.3.12 failure is
+retained. Preserve generic request lease ownership using native events, without
+polling, and baseline MCP body behavior through process-local adapter configuration.
+Existing128KiB endpoint limits remain. No probe establishes deployment acceptance.
+
+The single-root and actual Kit route source is implemented; Fans is native Kit,
+while other dashboard/Lab/widget endpoints serve packaged HTML. Final author
+checks pass105 tests/1466 assertions and116 relocation checks with two identical
+payload manifests; frozen full/exact acceptance remains pending. Shipping scripts have independent bounded
+approval; UI has focused70/12 tests, eight deterministic builds and30 distinct
+browser cases (22 final plus eight retained), without whole-candidate acceptance.
+Observable
+acceptance requires the HTTP page and host-RPC widget to share component/controller
+semantics, actual Kit routes to share services with MCP, and no telemetry acquisition
+merely from directory/SSR navigation. Preserve URLs including `/dashboard/lab`,
+public/dashboard role and auth isolation, raw-target/body/abort/shutdown guards,
+Camera service lifecycle and read-only authority. Inventory temporary compatibility
+routes and retire each as it is migrated; folder moves or a permanent second
+backend do not establish complete routing integration. Widgets remain extra build
+targets from shared components. Focused checks precede one frozen full-run owner,
+independent exact review and guarded two-service shipment/postverification.
+
+All55 ledger IDs remain; C08 intermittent risk, Progress no-action, F07 reactive
+class discussion and c6 stay separate. Byte caps remain removed; all other
+integrity/security/determinism and shipping guards remain mandatory.
+
+## Historical implementation: neutral failures and adjacent footer status
 
 The user has resumed saved checkpoint `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`
 on `codex/u1-footer-error-skeletons`; the coordinator verified the clean checkout
