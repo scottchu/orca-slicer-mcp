@@ -24,7 +24,7 @@
   let current = $state(untrack(() => controller.getState()));
   const observation = $derived(current.observation);
   const unavailable = $derived(!!observation && (observation.state === 'unavailable' || observation.state === 'unsupported'));
-  const placeholder = $derived(!observation || unavailable);
+  const placeholder = $derived(!observation || unavailable || !!current.failure);
   const notice = $derived(current.feedback || (unavailable ? 'Fans & Air ' + (observation?.state === 'unsupported' ? 'endpoint unsupported' : 'unavailable') : ''));
   const announcement = $derived(current.phase === 'loading' ? 'Loading Fans & Air' : current.refreshing ? 'Refreshing Fans & Air' : notice || 'Fans & Air loaded');
   onMount(() => {
@@ -34,7 +34,7 @@
   });
 </script>
 <StateAnnouncement text={announcement} />
-<WidgetStateSurface phase={unavailable ? 'unavailable' : current.phase}>
+<WidgetStateSurface phase={current.failure ? 'error' : unavailable ? 'unavailable' : current.phase}>
 <WidgetShell label="Fans & Air" busy={current.phase === 'loading' || current.refreshing}>
   <WidgetHeader title="Fans & Air">
     {#snippet icon()}<Icon name="fan" />{/snippet}
@@ -55,9 +55,9 @@
       </Stack>
     {:else}<FansSkeleton includePower />{/if}
   </WidgetBody>
-  <WidgetFooter>
+  <WidgetFooter message={current.failure || unavailable ? notice : ''}>
     {#snippet actions()}{#if current.phase === 'loading'}<Skeleton shape="action" />{:else}<IconButton label="Refresh Fans & Air" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
   </WidgetFooter>
-  <FeedbackOverlay message={notice} announce={false} />
+  <FeedbackOverlay message={current.failure || unavailable ? '' : notice} announce={false} />
 </WidgetShell>
 </WidgetStateSurface>

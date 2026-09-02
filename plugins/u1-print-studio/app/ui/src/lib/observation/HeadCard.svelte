@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Copy } from 'lucide-svelte';
+  import { Copy, Spool, ThermometerSun } from 'lucide-svelte';
   import { headColor, headStateLabel, type HeadCardValue, type HeadId } from '../live/heads-presentation';
   import InsetCard from '../ui/InsetCard.svelte';
   import ColorValue from '../ui/ColorValue.svelte';
@@ -9,7 +9,7 @@
   import Caption from '../ui/Caption.svelte';
   import LoadingValue from '../ui/LoadingValue.svelte';
   import TextSkeleton from '../ui/TextSkeleton.svelte';
-  import Icon from '../ui/Icon.svelte';
+  import IconGlyph from '../ui/IconGlyph.svelte';
   import QuietIconButton from '../ui/QuietIconButton.svelte';
   import ActualTarget from './ActualTarget.svelte';
   import { materialLoadingTemplate, type MaterialLoadingShape } from './heads-loading';
@@ -25,8 +25,8 @@
     <Caption><LoadingValue {loading} text={loading ? undefined : headStateLabel(reading?.active ?? null, reading?.state ?? null)} /></Caption>
   {/snippet}
   <Stack>
-    <Inline gap="tight"><Inline shrink={false}><Icon name="spool" /></Inline><Caption>{#if loading}<TextSkeleton shape={materialTemplate} />{:else}{reading?.material ?? '—'}{/if}</Caption></Inline>
-    <Inline gap="tight"><Inline shrink={false}><Icon name="thermals" /></Inline><ActualTarget actual={loading ? undefined : reading?.actual ?? null} target={loading ? undefined : reading?.target ?? null} {loading} compact /></Inline>
+    <Inline gap="tight"><Inline shrink={false}><IconGlyph icon={Spool} /></Inline><Caption>{#if loading}<TextSkeleton shape={materialTemplate} />{:else}{reading?.material ?? '—'}{/if}</Caption></Inline>
+    <Inline gap="tight"><Inline shrink={false}><IconGlyph icon={ThermometerSun} /></Inline><ActualTarget actual={loading ? undefined : reading?.actual ?? null} target={loading ? undefined : reading?.target ?? null} {loading} compact /></Inline>
   </Stack>
   {#snippet footer()}
     {#if !loading && color.color}

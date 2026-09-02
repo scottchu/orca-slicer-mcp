@@ -1,11 +1,17 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
+  import { onMount, type Snippet } from 'svelte';
   import { staticStructure, type WidgetSurfacePhase } from './types';
+  import { createSurfaceAllocation } from './allocation';
   let { phase, children }: { phase: WidgetSurfacePhase; children: Snippet } = $props();
   const settled = $derived(staticStructure(phase));
+  let root: HTMLDivElement;
+  let allocation: ReturnType<typeof createSurfaceAllocation> | undefined;
+  onMount(() => { allocation = createSurfaceAllocation(root); return () => allocation?.dispose(); });
+  $effect.pre(() => { const failed = phase === 'error' || phase === 'unavailable'; allocation?.before(failed); });
+  $effect(() => { phase; allocation?.after(); });
 </script>
 
-<div data-widget-state-surface={phase} class:static-structure={settled}>
+<div bind:this={root} data-widget-state-surface={phase} class:static-structure={settled}>
   {@render children()}
 </div>
 

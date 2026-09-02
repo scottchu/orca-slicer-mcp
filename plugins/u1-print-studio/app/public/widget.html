@@ -54,7 +54,9 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       .instrument-title { min-width: 0; flex: 1; }
       .instrument-info { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
       .instrument-info time { display: block; font-variant-numeric: tabular-nums; }
-      .refresh-error { position: absolute; right: var(--u1-card-x); bottom: 74px; z-index: 8; max-width: calc(100% - 2 * var(--u1-card-x)); padding: 8px 11px; border-radius: 10px; color: white; background: rgb(28 30 32 / 86%); font-size: 12px; line-height: 1.35; }
+      .refresh-error { display: grid; align-content: center; flex: 0 1 auto; width: max-content; min-width: 0; min-height: 2.4em; color: var(--muted); font-size: 12px; line-height: 1.2; text-align: right; }
+      .refresh-error:empty::before { content: "Could not load"; visibility: hidden; }
+      [data-retained-observation] { position: absolute !important; inset: 0; width: 100%; visibility: hidden; pointer-events: none; }
       .neutral-value { display: inline-block; width: 8ch; max-width: 100%; height: 1em; border-radius: 4px; background: var(--soft); vertical-align: middle; }
       .neutral-value.short { width: 4ch; }
       .neutral-value.long { width: 14ch; }
@@ -211,7 +213,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       .domain-warning { margin-top: 6px; color: var(--negative); font-size: 12px; line-height: 1.5; }
       .instrument-footer { color: var(--muted); font-size: 12px; line-height: 1.45; }
       .freshness-warning { color: var(--negative); }
-      .refresh-error:empty { display: none; }
+      .refresh-error:empty { visibility: hidden; }
       .loading { padding: 18px var(--u1-card-x); color: var(--muted); text-align: center; }
       @keyframes spin { to { transform: rotate(360deg); } }
       @media (prefers-reduced-motion: reduce) { .refresh[aria-busy="true"] svg { animation: none; } }
@@ -4516,7 +4518,7 @@ void main() {
       const formatDuration = (field) => { const seconds = valueOf(field); if (!validNumber(seconds)) return "Unknown"; const minutes = Math.max(0, Math.round(seconds / 60)); return minutes < 60 ? `${minutes}m` : `${Math.floor(minutes / 60)}h ${minutes % 60}m`; };
       const observedLabel = (value) => { const date = typeof value === "string" && value ? new Date(value) : null; return !date || Number.isNaN(date.valueOf()) ? "Observation time unavailable" : `Observed ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`; };
       const freshnessLabel = (state) => ({ fresh: "", stale: "Stale", offline: "Offline", unknown: "Freshness unknown" })[state] ?? "Freshness unknown";
-      const observationInfo = (sourceObservedAt = observation?.sourceObservedAt, freshnessState = observation?.freshness) => { const freshness = freshnessLabel(freshnessState); return `<div class="instrument-info u1-meta"><time>${escapeHtml(observedLabel(sourceObservedAt))}${freshness ? ` <span class="freshness-warning">· ${escapeHtml(freshness)}</span>` : ""}</time><span class="refresh-error" role="status"></span></div>`; };
+      const observationInfo = (sourceObservedAt = observation?.sourceObservedAt, freshnessState = observation?.freshness) => { const freshness = freshnessLabel(freshnessState); return `<div class="instrument-info u1-meta"><time>${escapeHtml(observedLabel(sourceObservedAt))}${freshness ? ` <span class="freshness-warning">· ${escapeHtml(freshness)}</span>` : ""}</time></div>`; };
       // Feather Icons 4.29.2, MIT; full notice is bundled in this document.
       const icons = Object.freeze({"printer":"<svg aria-hidden=\"true\" data-icon=\"feather-printer\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 6 2 18 2 18 9\"/><path d=\"M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2\"/><rect x=\"6\" y=\"14\" width=\"12\" height=\"8\"/></svg>","clock":"<svg aria-hidden=\"true\" data-icon=\"feather-clock\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><polyline points=\"12 6 12 12 16 14\"/></svg>","thermometer":"<svg aria-hidden=\"true\" data-icon=\"feather-thermometer\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z\"/></svg>","layers":"<svg aria-hidden=\"true\" data-icon=\"feather-layers\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"12 2 2 7 12 12 22 7 12 2\"/><polyline points=\"2 17 12 22 22 17\"/><polyline points=\"2 12 12 17 22 12\"/></svg>","file-text":"<svg aria-hidden=\"true\" data-icon=\"feather-file-text\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"/><polyline points=\"14 2 14 8 20 8\"/><line x1=\"16\" y1=\"13\" x2=\"8\" y2=\"13\"/><line x1=\"16\" y1=\"17\" x2=\"8\" y2=\"17\"/><polyline points=\"10 9 9 9 8 9\"/></svg>","list":"<svg aria-hidden=\"true\" data-icon=\"feather-list\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"8\" y1=\"6\" x2=\"21\" y2=\"6\"/><line x1=\"8\" y1=\"12\" x2=\"21\" y2=\"12\"/><line x1=\"8\" y1=\"18\" x2=\"21\" y2=\"18\"/><line x1=\"3\" y1=\"6\" x2=\"3.01\" y2=\"6\"/><line x1=\"3\" y1=\"12\" x2=\"3.01\" y2=\"12\"/><line x1=\"3\" y1=\"18\" x2=\"3.01\" y2=\"18\"/></svg>","fan":"<svg aria-hidden=\"true\" data-icon=\"lucide-fan\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10.827 16.379a6.082 6.082 0 0 1-8.618-7.002l5.412 1.45a6.082 6.082 0 0 1 7.002-8.618l-1.45 5.412a6.082 6.082 0 0 1 8.618 7.002l-5.412-1.45a6.082 6.082 0 0 1-7.002 8.618l1.45-5.412Z\"/><path d=\"M12 12v.01\"/></svg>","wind":"<svg aria-hidden=\"true\" data-icon=\"lucide-wind\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12.8 19.6A2 2 0 1 0 14 16H2\"/><path d=\"M17.5 8a2.5 2.5 0 1 1 2 4H2\"/><path d=\"M9.8 4.4A2 2 0 1 1 11 8H2\"/></svg>","grid":"<svg aria-hidden=\"true\" data-icon=\"feather-grid\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\"/></svg>","activity":"<svg aria-hidden=\"true\" data-icon=\"feather-activity\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\"/></svg>","refresh-cw":"<svg aria-hidden=\"true\" data-icon=\"feather-refresh-cw\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"23 4 23 10 17 10\"/><polyline points=\"1 20 1 14 7 14\"/><path d=\"M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15\"/></svg>"});
       const icon = (name) => icons[name] ?? icons.activity;
@@ -4526,7 +4528,8 @@ void main() {
       });
       const meshIcon = name => meshIcons[name] ?? icon(name);
       const titleIcons = Object.freeze({ "Print Progress": "printer", Thermals: "thermometer", "Heads & Filaments": "layers", "Current Job": "file-text", "Job History": "clock", "Print Queue": "list", "Fans & Air": "wind", "Bed Mesh": "grid", Overview: "activity" });
-      const provenance = () => `<footer class="instrument-footer u1-footer"><div class="u1-primary-actions"><button class="refresh u1-action u1-action--round" type="button" title="Refresh observation" aria-label="Refresh observation">${icon("refresh-cw")}</button></div></footer>`;
+      const footerStatus = (message = "") => `<span class="refresh-error" role="status" aria-label="${escapeHtml(message)}">${message ? "Could not load" : ""}</span>`;
+      const provenance = () => `<footer class="instrument-footer u1-footer"><div class="u1-primary-actions">${footerStatus()}<button class="refresh u1-action u1-action--round" type="button" title="Refresh observation" aria-label="Refresh observation">${icon("refresh-cw")}</button></div></footer>`;
       const header = (title, showObservation = true, sourceObservedAt = observation?.sourceObservedAt, freshness = observation?.freshness, message = "", trailing = "") => `<header class="instrument-header u1-header"><span class="icon-tile u1-icon-tile" aria-hidden="true">${icon(titleIcons[title])}</span><div class="instrument-title u1-header-copy"><h2 class="u1-title">${escapeHtml(title)}</h2>${showObservation ? observationInfo(sourceObservedAt, freshness) : ""}${message ? `<div class="domain-warning" role="status">${escapeHtml(message)}</div>` : ""}</div>${trailing ? `<div class="u1-header-result">${trailing}</div>` : ""}</header>`;
       const layerPosition = (fields) => {
         const current = valueOf(fields?.currentLayer); const total = valueOf(fields?.totalLayers);
@@ -4939,23 +4942,43 @@ void main() {
         thermals: () => neutralRows(["Tool 1", "Tool 2", "Tool 3", "Tool 4", "Heater bed", "Cavity"]),
         heads: () => neutralCards(["T1", "T2", "T3", "T4"]),
         jobs: () => `<div class="neutral-stack">${neutralValue("long")}${neutralCards(["State", "Elapsed", "Filament", "Storage"])}</div>`,
-        job_history: () => neutralRows(["", "", "", ""]),
-        queue: () => `<div class="neutral-stack">${neutralValue()}${neutralRows(["1", "2", "3"])}</div>`,
+        job_history: () => neutralRows(Array.from({ length: retainedPresentation?.rows ?? 4 }, () => "")),
+        queue: () => `<div class="neutral-stack">${neutralValue()}${neutralRows(Array.from({ length: retainedPresentation?.rows ?? 3 }, () => ""))}</div>`,
         fans: () => neutralRows(["Tool 1", "Tool 2", "Tool 3", "Tool 4", "Cavity", "Purifier exhaust", "Purifier inner"]),
         bed_mesh: () => `<div class="neutral-stack">${neutralValue("long")}<div class="neutral-chart" aria-hidden="true"></div>${neutralRows(["Minimum", "Maximum", "Range"])}</div>`,
       };
       const viewTitles = { overview: "Overview", progress: "Print Progress", thermals: "Thermals", heads: "Heads & Filaments", jobs: "Current Job", job_history: "Job History", queue: "Print Queue", fans: "Fans & Air", bed_mesh: "Bed Mesh" };
+      let retainedPresentation = null;
+      const retainPresentation = () => {
+        if (retainedPresentation || !observation) return;
+        const section = modulesElement.querySelector('.instrument');
+        if (!section || section.hasAttribute('data-observation-placeholder')) return;
+        const selectors = ['.u1-header', '.u1-body', '.u1-footer'];
+        retainedPresentation = { section: selectedView === 'bed_mesh' ? section : null, width: modulesElement.getBoundingClientRect().width,
+          heights: selectors.map(selector => section.querySelector(selector)?.getBoundingClientRect().height ?? 0),
+          rows: Array.isArray(observation.module?.items) ? Math.min(100, observation.module.items.length) : undefined };
+        if (retainedPresentation.section) { section.setAttribute('data-retained-observation', ''); section.inert = true; section.setAttribute('aria-hidden', 'true'); }
+        modulesElement.style.position = 'relative';
+      };
       const showPlaceholder = (phase = "loading", message = "") => {
         const view = selectedView ?? "overview";
         const title = selectedView ? viewTitles[view] : "Printer observation";
         const retry = phase !== "loading" && selectedView && window.parent !== window;
         const heading = header(title, false).replace("</h2>", `</h2><div class="instrument-info u1-meta">${neutralValue("long")}</div>`);
         const action = retry ? `<button class="refresh u1-action" type="button" aria-label="Retry loading observation">${icon("refresh-cw")}</button>` : '<span class="neutral-action" aria-hidden="true"></span>';
-        modulesElement.innerHTML = `<section class="instrument u1-card" data-observation-placeholder="${phase}" aria-busy="${phase === "loading"}">${heading}<div class="u1-body">${neutralBodies[view]()}</div><span class="refresh-error" role="status">${escapeHtml(message)}</span><footer class="instrument-footer u1-footer"><div class="u1-primary-actions">${action}</div></footer></section>`;
+        if (phase !== 'loading') retainPresentation();
+        const retained = retainedPresentation?.section;
+        retained?.remove();
+        modulesElement.innerHTML = `<section class="instrument u1-card" data-observation-placeholder="${phase}" aria-busy="${phase === "loading"}">${heading}<div class="u1-body">${neutralBodies[view]()}</div><footer class="instrument-footer u1-footer"><div class="u1-primary-actions">${footerStatus(message)}${action}</div></footer></section>`;
+        if (retainedPresentation && Math.abs(modulesElement.getBoundingClientRect().width - retainedPresentation.width) <= 1) ['.u1-header', '.u1-body', '.u1-footer'].forEach((selector, index) => {
+          const region = modulesElement.querySelector(selector), height = retainedPresentation.heights[index];
+          if (region && height) region.style.minHeight = `${height}px`;
+        });
+        if (retained) modulesElement.append(retained);
         if (retry) modulesElement.querySelector(".refresh")?.addEventListener("click", () => void retryLoad());
         window.openai?.notifyIntrinsicHeight?.();
       };
-      const render = () => { if (!observation?.module) return; disposeMeshRenderer(); const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); if (view === "bed_mesh") bindMeshControls(); if (view === "heads") bindMaterialCopy(); window.openai?.notifyIntrinsicHeight?.(); };
+      const render = () => { if (!observation?.module) return; disposeMeshRenderer(); retainedPresentation = null; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); if (view === "bed_mesh") bindMeshControls(); if (view === "heads") bindMaterialCopy(); window.openai?.notifyIntrinsicHeight?.(); };
       const rpcNotify = (method, params) => window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
       const rpcRequest = (method, params) => new Promise((resolve, reject) => {
         const id = ++rpcId;
@@ -4975,9 +4998,8 @@ void main() {
           acceptedResult = true;
           const message = candidate.view === "bed_mesh" && candidate.module.reason === "not_reported" ? "Bed mesh not reported" : `${viewTitles[candidate.view]} ${candidate.module.state === "unsupported" ? "endpoint unsupported" : "unavailable"}`;
           if (previous && ["known", "stale"].includes(previous.module.state) && previous.view === candidate.view && Number.isSafeInteger(candidate.connectionEpoch) && candidate.connectionEpoch >= 0 && candidate.connectionEpoch === previous.connectionEpoch) {
-            const error = modulesElement.querySelector(".refresh-error");
-            if (error) error.textContent = `${message} · showing previous observation`;
-          } else { observation = null; disposeMeshRenderer(); showPlaceholder("unavailable", message); }
+            showPlaceholder("unavailable", message);
+          } else { observation = null; disposeMeshRenderer(); retainedPresentation = null; showPlaceholder("unavailable", message); }
           clearTimeout(loadTimer);
           return true;
         }
@@ -5008,7 +5030,7 @@ void main() {
           const result = await rpcRequest("tools/call", { name: "refresh_printer_observation", arguments: { view: selectedView } });
           if (!applyResult(result)) throw new Error("Observation unavailable");
         } catch {
-          if (observation) { const error = modulesElement.querySelector(".refresh-error"); if (error) error.textContent = "Refresh failed · showing previous observation"; }
+          if (observation) showPlaceholder("error", `Could not load ${viewTitles[selectedView]}`);
           else showLoadError();
         } finally {
           refreshPending = false;

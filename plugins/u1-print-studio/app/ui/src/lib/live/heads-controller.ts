@@ -18,7 +18,7 @@ export const createHeadsController = (port: ObservationPort, writeText: (text: s
     refresh: observation.refresh,
     copy: (id: HeadId, hex: string) => {
       const item = observation.getState().observation?.items.find((item) => item.physicalTool === id);
-      if (!item || observation.getState().refreshing) return Promise.resolve();
+      if (!item || observation.getState().refreshing || observation.getState().failure) return Promise.resolve();
       const card = headCardValue(item), color = headColor(card.presence, card.color).color;
       return color && color === hex ? action.copy(id, color) : Promise.resolve();
     },

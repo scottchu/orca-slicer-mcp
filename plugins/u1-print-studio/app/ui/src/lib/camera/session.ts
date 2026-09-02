@@ -36,6 +36,8 @@ export type CameraSessionState = Readonly<{
   fps: number | null;
   refreshing: boolean;
   feedback: 'snapshot-refreshed' | 'snapshot-unavailable' | 'live-unavailable' | null;
+  /** Presentation failure persists through pending retry; action toasts are separate. */
+  failure?: 'snapshot' | 'live' | null;
 }>;
 export type CameraSessionPorts = {
   transport: CameraTransport;
@@ -135,7 +137,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     try { decoded = await bounded(() => ports.decode(result.snapshot!), 1500, snapshotPending); } catch { return false; }
     if (!decoded || disposed || hidden || generation !== snapshotGeneration) return false;
     // Commit source time only together with a successfully decoded image.
-    publish({ snapshot: Object.freeze({ ...result.snapshot }) });
+    publish({ snapshot: Object.freeze({ ...result.snapshot }), failure: null });
     return true;
   };
   const scheduleFallback = () => {
@@ -157,10 +159,11 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
         publish({
           phase: liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error',
           feedback: accepted ? 'snapshot-refreshed' : 'snapshot-unavailable',
+          failure: accepted ? null : 'snapshot',
         });
       } catch {
         if (!disposed && !hidden && generation === snapshotGeneration) publish({
-          phase: liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error', feedback: 'snapshot-unavailable',
+          phase: liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error', feedback: 'snapshot-unavailable', failure: 'snapshot',
         });
       } finally {
         if (generation === snapshotGeneration && !disposed && !hidden) {
@@ -176,7 +179,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   const fallback = (token: number) => {
     if (!isCurrent(token)) return;
     stopLive();
-    publish({ phase: 'fallback', liveAt: null, fps: null, feedback: 'live-unavailable' });
+    publish({ phase: 'fallback', liveAt: null, fps: null, feedback: 'live-unavailable', failure: 'live' });
     scheduleFallback();
   };
   const recordFrame = (token: number, evidence: CameraFrameEvidence) => {
@@ -201,7 +204,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     const fps = elapsed >= 1000 && evidence.count > first.count ? (evidence.count - first.count) * 1000 / elapsed : null;
     fpsTimer?.();
     fpsTimer = scheduler.after(1500, clearFps);
-    publish({ phase: 'live', liveAt: scheduler.timestamp(), fps, feedback: null });
+    publish({ phase: 'live', liveAt: scheduler.timestamp(), fps, feedback: null, failure: null });
   };
   const openLive = (): Promise<void> => {
     if (disposed || hidden) return Promise.resolve();
@@ -272,7 +275,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
       publish({ refreshing: true, feedback: null });
       const accepted = await acceptSnapshot(result, generation);
       if (disposed || hidden || generation !== snapshotGeneration) return false;
-      publish({ phase: liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error', refreshing: false });
+      publish({ phase: liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error', refreshing: false, failure: accepted ? null : 'snapshot' });
       scheduleFallback();
       return accepted;
     },

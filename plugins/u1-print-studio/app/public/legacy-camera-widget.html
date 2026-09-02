@@ -211,6 +211,14 @@
       }
 
       .camera-status svg { width: 19px; height: 19px; }
+      .camera-footer { display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding: 12px 16px 18px; border-top: 1px solid rgba(128,128,128,.2); }
+      .camera-footer-status { min-height: 2.4em; min-width: 0; display: grid; align-content: center; color: var(--muted); font-size: 12px; line-height: 1.2; text-align: right; }
+      .camera-footer-status:empty::before { content: "Could not load"; visibility: hidden; }
+      .camera-retry { flex: none; width: 44px; height: 44px; border-radius: 12px; border: 1px solid rgba(128,128,128,.2); background: transparent; color: var(--ink); }
+      .camera-retry svg { width: 20px; height: 20px; }
+      .camera[data-acquisition-failed="true"] .camera-skeleton { opacity: 1; }
+      .camera[data-acquisition-failed="true"] .camera-skeleton span::after { animation: none; }
+      .camera[data-acquisition-failed="true"] img, .camera[data-acquisition-failed="true"] video, .camera[data-acquisition-failed="true"] .camera-bottom, .camera[data-acquisition-failed="true"] .camera-empty { visibility: hidden; }
 
       .camera-actions {
         display: flex;
@@ -410,6 +418,7 @@
           </div>
         </div>
       </section>
+      <footer class="camera-footer"><span class="camera-footer-status" id="camera-footer-status"></span><button class="camera-retry" id="refresh-snapshot" type="button" aria-label="Refresh camera snapshot" title="Refresh camera snapshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6" /></svg></button></footer>
     </main>
 
     <script type="module">
@@ -454,8 +463,16 @@
         if (!bridge) throw new Error("host bridge unavailable");
         return rpcRequest("tools/call", { name, arguments: argumentsValue });
       };
+      const setCameraFailure = (failed) => {
+        elements.camera.dataset.acquisitionFailed = String(failed);
+        for (const element of [elements.snapshot, elements.liveStream, elements.cameraDetail]) element.setAttribute('aria-hidden', String(failed));
+        const controls = elements.camera.querySelector('.camera-bottom'); controls.inert = failed; controls.setAttribute('aria-hidden', String(failed));
+        const status = document.querySelector('#camera-footer-status');
+        status.textContent = failed ? 'Could not load' : ''; status.setAttribute('aria-label', failed ? 'Could not load camera' : '');
+      };
 
       const setCameraState = (state, loading = false) => {
+        if (state === 'unavailable') setCameraFailure(true);
         const labels = {
           loading: "Camera loading",
           snapshot: "Camera snapshot ready",
@@ -525,6 +542,7 @@
           );
           return true;
         }
+        setCameraFailure(true);
         if (livePreview && elements.camera.classList.contains("has-snapshot")) {
           const mode = fallbackDetail ? "fallback" : "loading";
           setCameraMode(mode);
@@ -538,6 +556,7 @@
       };
 
       elements.snapshot.addEventListener("load", () => {
+        setCameraFailure(false);
         elements.camera.classList.add("has-snapshot");
         const mode = livePreview
           ? relayRendering
@@ -566,6 +585,7 @@
         try {
           applyCameraFrame(await callTool("get_u1_camera_frame"));
         } catch {
+          setCameraFailure(true);
           if (!elements.camera.classList.contains("has-snapshot")) {
             setCameraMode("unavailable");
             setCameraState("unavailable");
@@ -624,6 +644,7 @@
       const markFirstRenderedFrame = (now = performance.now()) => {
         if (!livePreview || !livePeerConnection || relayRendering) return false;
         relayRendering = true;
+        setCameraFailure(false);
         clearTimeout(firstRenderedFrameTimer);
         firstRenderedFrameTimer = null;
         clearTimeout(snapshotFallbackTimer);
@@ -701,6 +722,7 @@
       };
 
       const activateSnapshotFallback = (reason = "relay unavailable") => {
+        setCameraFailure(true);
         if (!livePreview) return;
         fallbackDetail = fallbackMessage(reason);
         stopLiveStream();
@@ -906,6 +928,7 @@
         };
       };
 
+      document.querySelector('#refresh-snapshot').addEventListener('click', () => void refreshCameraFrame());
       elements.goLive.addEventListener("click", openCameraStream);
       elements.closeLive.addEventListener("click", closeLive);
       window.addEventListener("pagehide", () => {

@@ -13,6 +13,7 @@ composites.push('observation/HeadsPanel.svelte', 'live/LiveHeadsRoot.svelte');
 composites.push('observation/HeadsWidget.svelte');
 composites.push('observation/QueueWidget.svelte', 'observation/QueueRow.svelte', 'observation/QueueRows.svelte', 'observation/QueueSummary.svelte', 'observation/QueueSkeleton.svelte', 'observation/DomainReceipt.svelte', 'live/LiveQueueRoot.svelte');
 export const leaves: Record<string, string[]> = {
+  'ui/IconGlyph.svelte': [], 'ui/RetainedLayer.svelte': ['div'],
   'ui/WidgetStateSurface/WidgetStateSurface.svelte': ['div'],
   'ui/CardGrid.svelte': ['div'], 'ui/InsetCard.svelte': ['section', 'div', 'div', 'div', 'div'], 'ui/ColorSwatch.svelte': ['span'],
   'ui/IconSegmentedControl.svelte': ['div', 'span', 'span', 'button'],
@@ -37,7 +38,7 @@ export const leaves: Record<string, string[]> = {
   'ui/FeedbackOverlay.svelte': ['div'], 'ui/ObservedMeta.svelte': ['span'],
   'ui/WidgetShell.svelte': ['article'], 'ui/WidgetBody.svelte': ['div'],
   'ui/WidgetHeader.svelte': ['div', 'div', 'div', 'div', 'h1', 'header'],
-  'ui/WidgetFooter.svelte': ['div', 'div', 'footer'], 'ui/IconButton.svelte': ['button'],
+  'ui/WidgetFooter.svelte': ['div', 'div', 'footer', 'span'], 'ui/IconButton.svelte': ['button'],
   'ui/QuietIconButton.svelte': ['button'],
   'ui/ChartFrame.svelte': ['div', 'div', 'div', 'div', 'div', 'span'],
   'ui/HeightLegend.svelte': ['div', 'span', 'span', 'span', 'span'],
@@ -101,6 +102,14 @@ const approvedImports: Record<string, string[]> = {
   'observation/ThermalReading.svelte': ['../live/presentation', './ActualTarget.svelte', '../ui/Icon.svelte', '../ui/Inline.svelte', '../ui/Name.svelte', '../ui/ReadingRow.svelte', '../ui/PercentageBackground.svelte'],
   'observation/ThermalsSkeleton.svelte': ['../ui/ReadingList.svelte', './ThermalReading.svelte'],
 };
+// Explicit registry-free glyph consumers and the shared footer/state contract.
+for (const name of ['camera/CameraWidget.svelte', 'camera/CameraLabWidget.svelte', 'observation/HeadCard.svelte', 'observation/HeadsPanel.svelte']) {
+  approvedImports[name] = approvedImports[name].filter((path) => path !== '../ui/Icon.svelte');
+  approvedImports[name].push('../ui/IconGlyph.svelte');
+}
+approvedImports['camera/CameraWidget.svelte'].push('../ui/WidgetFooter.svelte', '../ui/WidgetStateSurface/WidgetStateSurface.svelte', '../ui/Skeleton.svelte');
+approvedImports['camera/CameraLabWidget.svelte'].push('lucide-svelte', '../ui/IconButton.svelte', '../ui/WidgetFooter.svelte', '../ui/WidgetStateSurface/WidgetStateSurface.svelte', '../ui/Skeleton.svelte');
+
 export function inspectComponent(source: string, strict: boolean, imports: string[] = []): { tags: string[]; violations: string[] } {
   const ast = parse(source, { modern: true });
   const tags: string[] = [];

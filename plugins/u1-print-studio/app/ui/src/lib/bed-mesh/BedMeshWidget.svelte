@@ -16,6 +16,7 @@
   import WidgetStateSurface from '../ui/WidgetStateSurface/WidgetStateSurface.svelte';
   import LoadingValue from '../ui/LoadingValue.svelte';
   import Skeleton from '../ui/Skeleton.svelte';
+  import RetainedLayer from '../ui/RetainedLayer.svelte';
   import StateAnnouncement from '../ui/StateAnnouncement.svelte';
   import { loadingObservation } from '../observation/loading';
   import { onDestroy, tick } from 'svelte';
@@ -23,12 +24,12 @@
 
   type Props = { observation?: BedMeshObservation; loading?: boolean; refreshing?: boolean; failure?: 'error' | 'unavailable'; retrying?: boolean; onretry?: () => void };
   let { observation, loading = false, refreshing = false, failure, retrying = false, onretry, selectedMode, onmode }: Props & { selectedMode?: '3d' | '2d'; onmode?: (mode: '3d' | '2d') => void } = $props();
-  const placeholder = $derived(!observation);
+  const placeholder = $derived(!observation || !!failure);
   const mesh = $derived.by(() => {
     if (loading && observation || !observation && !loading && !failure && !retrying) throw new Error('Invalid bed mesh presentation state');
-    return loadingObservation(placeholder, observation, validateBedMeshObservation);
+    return loadingObservation(!observation, observation, validateBedMeshObservation);
   });
-  const surfacePhase = $derived(loading ? 'loading' : refreshing ? 'refreshing' : failure ?? 'ready');
+  const surfacePhase = $derived(failure ?? (loading ? 'loading' : refreshing ? 'refreshing' : 'ready'));
   const retryAction = $derived((failure === 'error' || retrying) && !!onretry);
   const showAction = $derived(!placeholder || retryAction && !!onretry);
   let localMode = $state<'3d' | '2d'>('3d');
@@ -46,7 +47,7 @@
   let resetKey = $state(0);
   let feedback = $state<string | null>(null);
   let feedbackTimer: ReturnType<typeof setTimeout> | undefined;
-  const notice = $derived(loading || refreshing ? null : failure === 'error' ? mesh ? 'Refresh failed' : 'Could not load bed mesh' : failure === 'unavailable' ? 'Bed mesh unavailable' : feedback);
+  const notice = $derived(failure === 'error' ? 'Could not load bed mesh' : failure === 'unavailable' ? 'Bed mesh unavailable' : null);
 
   const flash = (message: string) => {
     feedback = message;
@@ -65,10 +66,10 @@
   onDestroy(() => { clearTimeout(feedbackTimer); retryFocus.dispose(); });
 </script>
 
-{#snippet feedbackOverlay()}{notice}{/snippet}
+{#snippet feedbackOverlay()}{feedback}{/snippet}
 
 <WidgetStateSurface phase={surfacePhase}>
-{#if loading || refreshing}<StateAnnouncement text={loading ? 'Loading Bed Mesh' : 'Refreshing Bed Mesh'} />{/if}
+<StateAnnouncement text={notice || (loading ? 'Loading Bed Mesh' : refreshing ? 'Refreshing Bed Mesh' : 'Bed Mesh loaded')} />
 <WidgetShell label="Bed Mesh" busy={loading || refreshing}>
   {#snippet children()}
     <WidgetHeader title="Bed Mesh">
@@ -77,24 +78,26 @@
     </WidgetHeader>
     <WidgetBody>
       {#snippet children()}
-        <div class="mesh-kicker">Reported probe grid · <LoadingValue loading={placeholder} text={mesh ? `${mesh.summary.columns} × ${mesh.summary.rows}` : undefined} />{placeholder || mesh?.fixture ? ' · Lab fixture' : ''}</div>
-        <ChartFrame label={mesh ? `Bed mesh ${mode === '3d' ? '3D surface' : '2D grid'}, ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : loading ? 'Loading bed mesh' : 'Bed mesh unavailable'} description={mesh ? `Z height in millimetres; top ${mesh.summary.maximum}, bottom ${mesh.summary.minimum}` : 'Z height in millimetres; range unavailable'} overlay={notice ? feedbackOverlay : undefined}>
-          {#snippet leading()}<HeightLegend minimum={mesh?.summary.minimum ?? null} maximum={mesh?.summary.maximum ?? null} palette={meshPalette} orientation="vertical" placement="start" showEndpoints={false} />{/snippet}
-          {#if !mesh}<Skeleton shape="chart" />
-          {:else if mode === '3d'}
+        <div class="mesh-kicker">Reported probe grid · <LoadingValue loading={placeholder} text={!placeholder && mesh ? `${mesh.summary.columns} × ${mesh.summary.rows}` : undefined} />{placeholder || mesh?.fixture ? ' · Lab fixture' : ''}</div>
+        <ChartFrame label={!placeholder && mesh ? `Bed mesh ${mode === '3d' ? '3D surface' : '2D grid'}, ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : loading ? 'Loading bed mesh' : 'Bed mesh unavailable'} description={!placeholder && mesh ? `Z height in millimetres; top ${mesh.summary.maximum}, bottom ${mesh.summary.minimum}` : 'Z height in millimetres; range unavailable'} overlay={!notice && feedback ? feedbackOverlay : undefined}>
+          {#snippet leading()}<HeightLegend minimum={!placeholder ? mesh?.summary.minimum ?? null : null} maximum={!placeholder ? mesh?.summary.maximum ?? null : null} palette={meshPalette} orientation="vertical" placement="start" showEndpoints={false} />{/snippet}
+          {#if placeholder}<Skeleton shape="chart" />{/if}
+          <RetainedLayer masked={placeholder}>
+          {#if mesh && mode === '3d'}
             <BedMesh3D observation={mesh} {resetKey} />
-          {:else}
+          {:else if mesh}
             <BedMesh2D observation={mesh} />
           {/if}
+          </RetainedLayer>
         </ChartFrame>
         <dl class="summary">
-          <div><dt>Minimum</dt><dd><LoadingValue loading={placeholder} text={mesh?.summary.minimum.toFixed(3)} /> mm</dd></div>
-          <div><dt>Maximum</dt><dd><LoadingValue loading={placeholder} text={mesh?.summary.maximum.toFixed(3)} /> mm</dd></div>
-          <div><dt>Range</dt><dd><LoadingValue loading={placeholder} text={mesh?.summary.range.toFixed(3)} /> mm</dd></div>
+          <div><dt>Minimum</dt><dd><LoadingValue loading={placeholder} text={placeholder ? undefined : mesh?.summary.minimum.toFixed(3)} /> mm</dd></div>
+          <div><dt>Maximum</dt><dd><LoadingValue loading={placeholder} text={placeholder ? undefined : mesh?.summary.maximum.toFixed(3)} /> mm</dd></div>
+          <div><dt>Range</dt><dd><LoadingValue loading={placeholder} text={placeholder ? undefined : mesh?.summary.range.toFixed(3)} /> mm</dd></div>
         </dl>
       {/snippet}
     </WidgetBody>
-    <WidgetFooter>
+    <WidgetFooter message={notice ?? ''}>
       {#snippet actions()}
         {#if placeholder}<IconSegmentedControl label="Bed mesh view" options={modeOptions} loading />{:else}
           <IconSegmentedControl bind:this={modeControl} label="Bed mesh view" options={modeOptions} value={mode} onchange={selectMode} />

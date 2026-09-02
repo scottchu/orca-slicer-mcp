@@ -4,7 +4,8 @@ import type { FansPresentation } from './presentation';
 export type LiveFansState = { observation: FansPresentation | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string };
 
 export type OrderedObservation = { version: number; connectionEpoch: number | null; receivedAt: string; state: string };
-export type LiveState<T> = { observation: T | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string };
+export type AcquisitionFailure = 'error' | 'unavailable' | 'unsupported';
+export type LiveState<T> = { observation: T | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string; failure?: AcquisitionFailure | null };
 export const createObservationController = <T extends OrderedObservation>(port: ObservationPort, adapt: (value: unknown) => T, title: string, timeoutMs = 20_000) => {
   let state: LiveState<T> = { observation: null, phase: 'loading', refreshing: false, feedback: '' };
   let disposed = false, started = false, generation = 0;
@@ -13,7 +14,7 @@ export const createObservationController = <T extends OrderedObservation>(port: 
   let latest: T | null = null;
   const listeners = new Set<(state: LiveState<T>) => void>();
   const publish = (next: LiveState<T>) => { if (!disposed) { state = next; for (const listener of listeners) listener(state); } };
-  const failure = () => publish({ ...state, phase: state.observation ? 'ready' : 'error', refreshing: false, feedback: state.observation ? 'Refresh failed · showing previous observation' : `Could not load ${title}` });
+  const failure = () => publish({ ...state, phase: state.observation ? 'ready' : 'error', refreshing: false, failure: 'error', feedback: `Could not load ${title}` });
   const accept = (result: unknown, notification = false): 'accepted' | 'duplicate' | 'older' | 'invalid' => {
     try {
       const observation = adapt(resultObservation(result));
@@ -22,11 +23,12 @@ export const createObservationController = <T extends OrderedObservation>(port: 
       const retainedFailure = (observation.state === 'unavailable' || observation.state === 'unsupported') &&
         previous && (previous.state === 'known' || previous.state === 'stale') &&
         observation.connectionEpoch !== null && observation.connectionEpoch === previous.connectionEpoch;
-      const retainedFeedback = `${title} ${observation.state === 'unsupported' ? 'endpoint unsupported' : 'unavailable'} · showing previous observation`;
+      const failureKind = observation.state === 'unsupported' || observation.state === 'unavailable' ? observation.state : null;
+      const retainedFeedback = failureKind ? `${title} ${failureKind === 'unsupported' ? 'endpoint unsupported' : 'unavailable'}` : '';
       if (latest && JSON.stringify(observation) === JSON.stringify(latest)) {
         // A duplicate explicit response confirms only its own state. A failed
         // receipt must not clear the persistent last-success warning.
-        if (!notification) publish({ ...state, feedback: retainedFailure ? retainedFeedback : '' });
+        if (!notification) publish({ ...state, failure: failureKind, feedback: retainedFeedback });
         return 'duplicate';
       }
       // Server receipt orders events across process-local version resets. A
@@ -41,11 +43,11 @@ export const createObservationController = <T extends OrderedObservation>(port: 
       // superseded evidence. A new/unknown epoch never borrows prior data.
       if (retainedFailure) {
         publish({ observation: previous, phase: 'ready', refreshing: notification && !!flight,
-          feedback: retainedFeedback });
+          failure: failureKind, feedback: retainedFeedback });
         return 'accepted';
       }
       // Arrival/generation orders this mounted session, not process-local version.
-      publish({ observation, phase: 'ready', refreshing: notification && !!flight, feedback: '' });
+      publish({ observation, phase: 'ready', refreshing: notification && !!flight, failure: failureKind, feedback: retainedFeedback });
       return 'accepted';
     } catch { return 'invalid'; }
   };

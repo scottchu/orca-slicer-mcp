@@ -1,5 +1,33 @@
 # Project state
 
+## Current pack-up: unvalidated WIP checkpoint for remote resume
+
+The latest user request is to preserve eligible WIP on the remote branch, then
+recoverably clean up this worktree. Feature work, full tests and release remain
+stopped. Branch `codex/u1-footer-error-skeletons` checkpoints the unfinished work
+from accepted base `80280568589fb8cd2df7f8ab30c2f1faddcb3769`.
+Push and recoverable archive are coordinator-owned and pending confirmation;
+this checkpoint does not itself claim either completed. Private local evidence
+is excluded from Git and must be preserved separately. Nothing from this WIP
+is independently approved, merged or deployed. Read the current section of
+[HANDOFF](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/HANDOFF.md)
+for the exact changed-path groups, remaining work and next smallest check;
+[VALIDATION](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/VALIDATION.md)
+records only commands actually completed.
+
+Current UI request: all acquisition failures show static neutral skeletons and
+persistent footer status beside Refresh, not stale telemetry or floating error
+overlays; Heads Copy keeps balanced hover inset and one inline color group.
+The early390/200% Heads pair passes, but broad route/legacy/Camera/resize and
+old-contract renewal remain unfinished. Latest additional requests: investigate
+actual `/dashboard/camera` repeatedly falling back; consider stable Snapshot /
+Live / renamed Fallback stages with automatic failure transition. “Auto
+snapshots” is a proposed name requiring semantics confirmation, not implemented.
+The question about repository byte caps is not approval to change them; official
+OpenAI platform limits have not been verified in this task. The unrelated Camera
+`c6cfb4e` checkpoint remains separate, source-only and blocked. PR87 below remains
+the deployed application; the following older current headings are historical.
+
 PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
 Camera remains separately blocked; Progress redesign is still unfinished.
 The complete current route/evidence matrix is

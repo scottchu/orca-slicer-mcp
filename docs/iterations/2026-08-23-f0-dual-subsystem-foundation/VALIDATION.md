@@ -1,5 +1,65 @@
 # F0 dual-subsystem foundation validation
 
+## Current footer/skeleton WIP checkpoint — preservation evidence only
+
+Branch `codex/u1-footer-error-skeletons`, accepted base `80280568589fb8cd2df7f8ab30c2f1faddcb3769`.
+The latest request is checkpoint, coordinator-verified push and recoverable
+cleanup; this record does not claim push/archive completed. Preparation used
+bounded `git status`, `git diff`, `git ls-files` inventory and `git diff --check`.
+An added-content scan of35 modified and5 new eligible files found no matching
+credential literals, private keys, absolute local paths, private IPv4 addresses
+or tailnet hosts; this heuristic is not an exhaustive security audit. Protected
+guidance, shipping/configuration and dependency inputs remain unchanged.
+Ignored evidence/dependency/build directories are excluded and preserved for
+coordinator-owned quarantine. No application tests/builds ran for preservation.
+The earlier commands below concern evolving WIP, not frozen acceptance.
+
+Commands used pinned Bun1.3.12. Dependency setup used `bun install --frozen-lockfile`
+in app and UI; no lockfile/dependency changes. A fresh-worktree Camera build
+initially lacked `.svelte-kit/tsconfig.json`; normal `bunx svelte-kit sync`
+resolved this setup prerequisite. It was not a product test failure.
+
+Completed actual commands from UI:
+
+- `bun run check`: final execution passed Svelte0errors/0warnings and strict
+  component AST checks after explicit leaf/import registration. Earlier AST
+  rejection of unregistered new leaves was corrected without loosening policy.
+- `bun run build:live-heads`: intermediate builds99,713 then95,223 and96,179
+  bytes after registry-free glyph and numeric allocation. Last96,179 is below
+  unchanged100,000 cap but predates the final49-byte footer-width CSS refinement.
+- `bun run scripts/build-camera-lab.ts`: intermediate76,089/77,331; latest
+ 77,380/80,000. `bun run build:live-camera`: latest88,576/100,000,
+  SHA256 `70058726553b8e693daee00d576a6b15d47b5a17349e0cf5da9af3abca4927d8`.
+- `bun run build`, `bun run build:bed-mesh-lab`,
+  `bun run scripts/build-camera-lab.ts`, `bun run scripts/package-private-lab.ts`:
+  latest light212,963, Bed634,915, Camera77,380; aggregate925,258/980,000 PASS.
+  These are evolving-source builds, not frozen/full/independent acceptance.
+- `bun node_modules/@playwright/test/cli.js test tests/visual/footer-error-preview.spec.ts --output test-results/footer-preview-20260902-1258`:
+  **2/2 PASS**, exit0. Actual isolated Chromium, packaged Lab390px normal and
+  computed200% text. Copy symmetric8px inset,16px glyph,44px target;2columns
+  normal/1column enlarged; static failed skeleton/no Copy/no floating overlay;
+  major/header/body/footer/card geometry within1px; status adjacent8px toRefresh.
+  Public status uses available width and normal390 message stays on one line.
+
+Local logs under `plugins/u1-print-studio/app/ui/test-results/`:
+`footer-preview-20260902-1248.log` has two test-selector timeouts (test incorrectly
+asked forT0; public fixture isT1). Its unique failure screenshots/traces remain.
+Corrected test-only run `footer-preview-20260902-1252.log` passed2/2; after the
+footer-width refinement, `footer-preview-20260902-1258.log` passed2/2.
+Each same-named output directory retains `heads-hover.png`, `heads-error.png`
+and attached geometry per normal/200% case. The author visually inspected the
+1252 normal pair; the coordinator also inspected it and requested the now-tested
+intrinsic-width refinement. No claim of physical phone/browser-native clipboard
+or real-printer validation is made.
+
+No Vitest/application/legacy-focused suite, full repository regression, full
+browser suite, final asset-pin verification, independent review or deployment
+ran for this WIP. Legacy edits made after the focused pair are unverified;
+other live bundles remain old and current artifacts are not a release manifest.
+Old retained-display/overlay tests are intentionally listed as pending renewal,
+not waived. Pack-up stopped code changes and released all owned processes,
+isolated browsers and fixture listener; preserved user sessions and evidence.
+
 ## PR87 rollout — coordinator receipt
 
 Exact independently reviewed PR head

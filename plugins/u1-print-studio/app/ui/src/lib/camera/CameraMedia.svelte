@@ -22,6 +22,7 @@
   let canPip = $state(false);
   let feedback = $state('');
   let unavailable = $state(false);
+  const failed = $derived(scenario === 'error' || unavailable);
   let stream: MediaStream | null = null;
   let animation = 0;
   let videoFrame = 0;
@@ -40,6 +41,10 @@
     feedback = message; onfeedback(message);
     if (toastTimer) clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { feedback = ''; onfeedback(''); }, 1800);
+  };
+  export const refresh = () => {
+    if (failed) onscenario?.('snapshot');
+    else toast('Fixture snapshot refreshed');
   };
   // A local calibration pattern, not a printer photograph or recorded stream.
   const draw = (position = 0) => {
@@ -188,20 +193,19 @@
 </script>
 
 <div class="media-frame" class:local-fullscreen={localFullscreen} bind:this={frame} data-camera-media data-camera-scenario={scenario}>
-  <canvas bind:this={canvas} width="640" height="360" class:hidden={!['snapshot', 'live', 'fallback', 'unsupported'].includes(scenario)} aria-label="Synthetic camera calibration pattern"></canvas>
-  <video bind:this={video} class:visible={scenario === 'live' && playing} muted autoplay playsinline aria-label="Synthetic camera video"></video>
-  {#if scenario === 'loading'}<div class="loading" aria-hidden="true"><Skeleton shape="fill" /></div>{/if}
-  {#if scenario === 'connecting' || scenario === 'error'}<div class="placeholder" aria-hidden="true"><Camera size={40} strokeWidth={1.5} /></div>{/if}
+  <canvas bind:this={canvas} width="640" height="360" class:hidden={failed || !['snapshot', 'live', 'fallback', 'unsupported'].includes(scenario)} aria-hidden={failed} aria-label={failed ? undefined : 'Synthetic camera calibration pattern'}></canvas>
+  <video bind:this={video} class:visible={!failed && scenario === 'live' && playing} muted autoplay playsinline aria-hidden={failed} aria-label={failed ? undefined : 'Synthetic camera video'}></video>
+  {#if scenario === 'loading' || failed}<div class="loading" aria-hidden="true"><Skeleton shape="fill" /></div>{/if}
+  {#if scenario === 'connecting'}<div class="placeholder" aria-hidden="true"><Camera size={40} strokeWidth={1.5} /></div>{/if}
   <div class="media-actions" data-camera-actions>
-    {#if scenario === 'loading'}<Skeleton shape="action" /><Skeleton shape="action" /><Skeleton shape="action" />
+    {#if scenario === 'loading' || failed}<Skeleton shape="action" /><Skeleton shape="action" />
     {:else}
       {#if scenario === 'live' && playing && canPip && capabilityPolicy !== 'unsupported'}<IconButton label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
       <IconButton label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
-      <IconButton label="Refresh synthetic snapshot" icon={Camera} onclick={() => toast('Fixture snapshot refreshed')} />
       <IconButton label={scenario === 'live' ? 'Close simulated live' : 'Start simulated live'} icon={scenario === 'live' ? X : Video} onclick={() => onscenario?.(scenario === 'live' ? 'snapshot' : 'live')} disabled={!onscenario} />
     {/if}
   </div>
-  {#if feedback}<div class="media-feedback" data-camera-feedback>{feedback}</div>{/if}
+  {#if feedback && !failed}<div class="media-feedback" data-camera-feedback>{feedback}</div>{/if}
 </div>
 
 <style>

@@ -18,6 +18,23 @@ unverified unless explicitly recorded otherwise.
 
 ## Current execution order and all-route error coverage
 
+**User-requested pack-up:** preserve eligible WIP on branch
+`codex/u1-footer-error-skeletons` from base8028056, then coordinator-verified
+push and recoverable cleanup. Resume the remote checkpoint after confirmation,
+not an assumed surviving worktree. Latest adopted
+decision0041 replaces visible retained-error data/floating notices with neutral
+skeletons and adjacent persistent footer status; adds balanced Heads Copy inset.
+Implementation touches Svelte and legacy/Camera routes but remains incomplete,
+unvalidated and unreviewed; a WIP commit is preservation, not delivery.
+Only the early390/200% Heads pair and compiler/budget
+checks pass; the deployed rows below still describe PR87, not this new request.
+See active HANDOFF for exact paths, pending tests/resize/contracts and source
+versus package gaps. No caps changed and no c6 checkpoint integrated.
+Additional pending asks: diagnose actual Camera live fallback; stable Snapshot /
+Live / renamed Fallback stages with automatic failure transition (“Auto
+snapshots” is only a proposal); explain project caps without assuming unverified
+OpenAI platform limits. Stop full tests/release until the new task resumes.
+
 1. PR87 observation/legacy-combined errors and inline Heads Copy are deployed.
    Scoped served verification passes; finish independent review/merge of rollout records;
    this documentation-only update does not require another service restart.

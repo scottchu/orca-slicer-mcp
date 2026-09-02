@@ -1,5 +1,28 @@
 # F0 dual-subsystem foundation brief
 
+## Current implementation: neutral failures and adjacent footer status
+
+Pack-up now means checkpoint eligible WIP on `codex/u1-footer-error-skeletons`,
+then coordinator-verified remote push and recoverable worktree cleanup. Do not
+resume implementation/full tests/release during preservation. HANDOFF is the
+remote-resume entry; the current request is not complete. Pending push/archive
+are not claimed completed by this checkpoint. New Camera fallback/stable-stage
+and byte-cap questions are recorded there without implementation or authority
+to raise caps. Early Heads390/200% screenshots are focused evidence only.
+
+The latest user request supersedes visible retained-error telemetry and floating
+acquisition-error notices. Initial and refresh failures must present static
+neutral skeletons, with a persistent error status beside the existing footer
+Refresh/Retry. Internal ordering/cache and mounted chart/media ownership remain
+unchanged. Local Copy/fullscreen/PiP rejection is not acquisition failure.
+All observation and Camera routes are in this presentation audit; the separate
+Camera feature checkpoint and its unapproved budget increase remain excluded.
+Heads Copy also receives balanced hover padding without separating its inline
+swatch, whole hex and small glyph. First measure Camera/package budgets, then
+implement and renew focused route/state tests before one frozen full regression.
+This is work in progress, not delivered evidence. PR87 below is the accepted
+deployment baseline. Progress redesign and other ledger work follow this slice.
+
 PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
 Camera remains separately blocked; Progress redesign is still unfinished.
 The complete current route/evidence matrix is

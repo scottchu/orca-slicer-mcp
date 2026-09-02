@@ -1,5 +1,28 @@
 # Next agent
 
+## Resume the preserved WIP branch after pack-up
+
+After the coordinator verifies its push, fetch and resume the checkpoint on
+`codex/u1-footer-error-skeletons`, based on
+`80280568589fb8cd2df7f8ab30c2f1faddcb3769`. Use the coordinator's exact remote
+SHA and local recovery receipt; do not assume the old worktree still exists.
+Do not discard this WIP, merge another Camera checkpoint or ship it.
+Start with the current [HANDOFF](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/HANDOFF.md)
+and [VALIDATION](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/VALIDATION.md).
+No full regression or independent approval exists for these bytes. Five rebuilt
+packages and their build pins are not yet a coherent frozen candidate.
+
+Next smallest action after resuming: inspect the partial legacy/Camera edits,
+finish the shared numeric-allocation resize/short-body policy, then update the
+explicitly mapped obsolete retained-data/overlay tests before targeted execution.
+Keep one expensive frozen full-run owner and separate reviewer/validator.
+Newest unimplemented asks also need tracking: diagnose actual live Camera
+fallback; replace variable controls with stable Snapshot / Live / better-named
+Fallback stages (proposed “Auto snapshots”, semantics not confirmed); explain
+project byte caps without claiming unverified OpenAI platform limits or changing
+caps. Continue the skeleton/footer/Copy request first unless the user changes
+order. Preserve the separate `c6cfb4e` checkpoint and all ledger backlog.
+
 PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
 Camera remains separately blocked; Progress redesign is still unfinished.
 The complete current route/evidence matrix is

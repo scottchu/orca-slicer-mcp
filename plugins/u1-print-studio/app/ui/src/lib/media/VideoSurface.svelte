@@ -4,8 +4,8 @@
   import IconButton from '../ui/IconButton.svelte';
   import Skeleton from '../ui/Skeleton.svelte';
   import { createVideoPlayback, type VideoSurfacePort } from './playback';
-  let { snapshot = null, active = false, loading = false, feedback = '', actions, onready, onfeedback }: {
-    snapshot?: string | null; active?: boolean; loading?: boolean; feedback?: string; actions: Snippet;
+  let { snapshot = null, active = false, loading = false, failed = false, feedback = '', actions, onready, onfeedback }: {
+    snapshot?: string | null; active?: boolean; loading?: boolean; failed?: boolean; feedback?: string; actions: Snippet;
     onready: (surface: VideoSurfacePort) => (() => void); onfeedback: (message: string) => void;
   } = $props();
   type WebkitVideo = HTMLVideoElement & { webkitPresentationMode?: string; webkitSupportsPresentationMode?: (mode: string) => boolean; webkitSetPresentationMode?: (mode: string) => void };
@@ -84,12 +84,12 @@
 
 <div class="media-slot" data-media-slot>
   <div class="media-surface" class:local-fullscreen={localFullscreen} bind:this={frame} data-media-surface role={localFullscreen ? 'dialog' : undefined} aria-modal={localFullscreen ? true : undefined} aria-label={localFullscreen ? 'Fullscreen camera' : undefined}>
-    {#if snapshot}<img src={snapshot} alt="Latest camera snapshot" />{/if}
-    <video bind:this={video} class:visible={active} muted autoplay playsinline aria-label="Live printer camera"></video>
-    {#if loading}<div class="placeholder" aria-hidden="true"><Skeleton shape="fill" /></div>
+    {#if snapshot}<img src={snapshot} class:masked={failed} aria-hidden={failed} alt={failed ? '' : 'Latest camera snapshot'} />{/if}
+    <video bind:this={video} class:visible={active && !failed} class:masked={failed} muted autoplay playsinline aria-hidden={failed} aria-label={failed ? undefined : 'Live printer camera'}></video>
+    {#if loading || failed}<div class="placeholder" aria-hidden="true"><Skeleton shape="fill" /></div>
     {:else if !snapshot && !active}<div class="placeholder" aria-hidden="true"><Camera size={40} strokeWidth={1.5} /></div>{/if}
     <div class="actions" data-media-actions>
-      {#if loading}<Skeleton shape="action" /><Skeleton shape="action" /><Skeleton shape="action" />
+      {#if loading || failed}<Skeleton shape="action" /><Skeleton shape="action" />
       {:else}
         {#if active && canPip}<IconButton label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
         <IconButton label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
@@ -106,6 +106,7 @@
   img, video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
   video { opacity: 0; }
   video.visible { opacity: 1; }
+  .masked { visibility: hidden; pointer-events: none; }
   .placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: var(--u1-faint); }
   .placeholder :global(.skeleton) { height: 100%; }
   .actions { position: absolute; bottom: 10px; right: 10px; display: flex; gap: 8px; }

@@ -22,7 +22,7 @@
   let current = $state(untrack(() => controller.getState()));
   const observation = $derived(current.observation);
   const unavailable = $derived(!!observation && (observation.state === 'unavailable' || observation.state === 'unsupported'));
-  const placeholder = $derived(!observation || unavailable);
+  const placeholder = $derived(!observation || unavailable || !!current.failure);
   const notice = $derived(current.feedback || (unavailable ? 'Print Queue ' + (observation?.state === 'unsupported' ? 'endpoint unsupported' : 'unavailable') : ''));
   const loading = $derived(current.phase === 'loading');
   const observed = $derived(observation?.state === 'known' || observation?.state === 'stale');
@@ -33,7 +33,7 @@
   });
 </script>
 <StateAnnouncement text={announcement} />
-<WidgetStateSurface phase={unavailable ? 'unavailable' : current.phase}>
+<WidgetStateSurface phase={current.failure ? 'error' : unavailable ? 'unavailable' : current.phase}>
 <WidgetShell label="Print Queue" busy={loading || current.refreshing}>
   <WidgetHeader title="Print Queue">
     {#snippet icon()}<Icon name="queue" />{/snippet}
@@ -41,7 +41,7 @@
   </WidgetHeader>
   <WidgetBody>
     <Stack>
-      {#if placeholder}<QueueSummary loading /><QueueSkeleton />
+      {#if placeholder}<QueueSummary loading /><QueueSkeleton rows={observed ? observation!.items.length : 3} />
       {:else if observed && observation}
         <QueueSummary state={observation.queueState} count={observation.totalCount} />
         {#if observation.items.length}<QueueRows items={observation.items} />
@@ -51,9 +51,9 @@
       {/if}
     </Stack>
   </WidgetBody>
-  <WidgetFooter>
+  <WidgetFooter message={current.failure || unavailable ? notice : ''}>
     {#snippet actions()}{#if loading}<Skeleton shape="action" />{:else}<IconButton label="Refresh Print Queue" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
   </WidgetFooter>
-  <FeedbackOverlay message={notice} announce={false} />
+  <FeedbackOverlay message={current.failure || unavailable ? '' : notice} announce={false} />
 </WidgetShell>
 </WidgetStateSurface>
