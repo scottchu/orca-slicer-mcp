@@ -1,5 +1,15 @@
 # F0 dual-subsystem foundation brief
 
+Latest user-directed priority: persist the test cadence and task-owned resource
+cleanup rules in `AGENTS.md`, as a bounded F0 docs-only policy change from
+accepted PR78 `177d326`. Acceptance is a concise authoritative policy, unchanged
+shipping safeguards and application/build inputs, targeted docs validation and
+independent documentation review. No new ADR, script, automation, browser run or
+service restart belongs to this slice. Current Job PR79 remains frozen; all
+other migration, feature and recoverable-cleanup tracks are preserved.
+
+## Earlier execution order (superseded where noted above)
+
 Latest additive user priority (UI-001/UI-002): replace Bed Mesh's separate mode
 buttons with one generic icon-only segmented control, isolated from accepted
 PR77 main `4828ce04`. Adopted independent design: two controlled radio options,

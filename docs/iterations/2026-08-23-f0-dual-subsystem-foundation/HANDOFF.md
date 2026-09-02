@@ -1,5 +1,18 @@
 # F0 dual-subsystem foundation handoff
 
+## Test strategy policy handoff — docs only
+
+Changed only `AGENTS.md`, `PROJECT_STATE.md`, `NEXT_AGENT.md` and active
+BRIEF/VALIDATION/HANDOFF records. AGENTS is the sole policy definition; current
+records cross-reference it without duplicating the rules. ADR0028 already covers
+unchanged-application docs-only delivery, so no ADR/skill/script change is needed.
+Next: independent exact documentation review, then normal PR merge without
+deployment. Current Job PR79 and all pending tracks remain separate and intact.
+No test fixture, browser, watcher or service was started; author command handles
+are closed before handoff. Logs and user applications/files/runtime are retained.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Bed Mesh icon toggle — author candidate ready for independent roles
 
 Source80229841fced7307aaf3eba850a8e60ef688c26a is based only on accepted4828ce04.

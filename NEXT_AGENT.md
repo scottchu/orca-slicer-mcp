@@ -1,5 +1,17 @@
 # Next agent
 
+## Next: independently review the docs-only test-strategy PR
+
+Review `AGENTS.md`'s seven Test strategy rules and the targeted identity/docs
+evidence in the active `VALIDATION.md`. Do not rerun unaffected application or
+browser suites for this documentation tail; do not bypass any existing shipping
+guard for later widget releases. After review, merge this policy through its PR
+without service deployment, as ADR0028 already allows for unchanged app bytes.
+Keep Current Job PR79 `48f2060` untouched and resume its independent validation;
+the remaining tracks in `PROJECT_STATE.md` and `WIDGET_TRACKS.md` stay open.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Next: independent exact review and validation of the icon-toggle candidate
 
 Application source `80229841fced7307aaf3eba850a8e60ef688c26a` has complete author

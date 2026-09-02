@@ -81,6 +81,37 @@ Before stopping or handing off material work:
 3. Update `PROJECT_STATE.md` and `NEXT_AGENT.md` so another agent can resume
    from repository files alone.
 
+## Test strategy
+
+- Map each change to affected behavior, transitive consumers, contracts and
+  build inputs before choosing checks; shared changes require consumer coverage.
+- Use focused tests while editing. Assign one owner to the expensive full
+  required candidate regression on frozen application bytes, with recorded
+  source/input identities; coordinate exclusive fixture ports instead of
+  launching duplicate full runs.
+- Keep independent source review and verification separate from authorship.
+  Independent verification should use targeted checks and fresh adversarial
+  cases, and match the full-run evidence to the exact candidate. Repeat a full
+  suite when a mandatory gate, relevant broad impact or unresolved uncertainty
+  requires it, not automatically because another role takes over.
+- For a documentation-only tail, verify unchanged code, dependencies,
+  configuration and generated assets, plus the diff and relevant documentation
+  contracts. Bind retained application evidence to the new documentation head;
+  do not repeat unaffected full builds or browser suites solely for bookkeeping.
+- Relevant source, test, dependency, configuration or build-input changes
+  invalidate affected evidence; renew the needed checks before acceptance.
+  Record commands actually run, their identities, results and limits. Never
+  claim an unrun test or carry changed-byte acceptance forward silently.
+- Exception: all existing `u1-ship` required local-validation, exact-review,
+  identity, security and preservation guards remain mandatory and unchanged.
+  This cadence grants no skip flag, cache bypass, weakened gate or shipping
+  automation change. Decision 0028's unchanged-application documentation-only
+  no-deployment rule still applies.
+- Tests must release their own handles, child processes, isolated browsers,
+  fixture ports and watchers in `finally`/teardown, including failure paths.
+  Release idle task-owned resources and finish bounded agents when done;
+  preserve user applications, sessions, files, deployed runtimes and evidence logs.
+
 ## GitHub delivery
 
 - Develop trunk-bound changes on a non-`main` branch and deliver them through a
