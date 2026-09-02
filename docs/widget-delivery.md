@@ -14,15 +14,16 @@ unverified unless explicitly recorded otherwise.
 
 ## Current execution order and all-route error coverage
 
-1. Shared static error/unavailable anatomy plus Heads inline color/quiet Copy.
-2. Camera author checkpoint `c6cfb4e` integrates accepted `8b995ee` and prior
+1. Finish and ship shared static observation error/unavailable anatomy, legacy
+   observation/combined compatibility and Heads inline color/quiet Copy after
+   frozen regression plus independent source/behavior acceptance.
+2. Parallel blocked Camera checkpoint `c6cfb4e` integrates accepted `8b995ee` and prior
    `1c6920e`: compiler/AST,86 focused UI and12 isolated Chrome cases pass.
    Live88,613/100,000 fits; Lab81,989/80,000 is blocked. An84,000 Lab cap has
    been proposed to the user, not authorized. No integration, independent
    acceptance, full regression, production-browser check or deployment yet.
-3. Finish bounded legacy error presentation, exact integrated checks, independent
-   source/behavior acceptance and guarded deployment.
-4. Resume Progress, remaining migrations and the open work below; recoverable
+   It is not a prerequisite for the observation/Heads release.
+3. Resume Progress, remaining migrations and the open work below; recoverable
    cleanup follows accepted replacements, never discarding unique source.
 
 | Route/presentation | Existing delivered baseline | Current source work | Required acceptance |

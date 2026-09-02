@@ -37,7 +37,8 @@ describe('observation lab widgets', () => {
     observation.items = observation.items.map((item) => ({ ...item, presence }));
     const { container } = render(HeadsWidget, { observation });
     expect(screen.queryByRole('button', { name: /^Copy T/ })).not.toBeInTheDocument();
-    expect(container.querySelectorAll('[data-inset-card] .actions')).toHaveLength(4);
+    expect(container.querySelectorAll('[data-inset-card] .actions')).toHaveLength(0);
+    expect(container.querySelectorAll('[data-inset-card] .footer [data-color-value]')).toHaveLength(4);
     expect(container.querySelectorAll('[data-inset-card] .actions :is(button,[role="button"],[tabindex])')).toHaveLength(0);
     expect(container.querySelectorAll('[data-inset-card] .neutral')).toHaveLength(0);
     expect(container.querySelectorAll('[data-inset-card].neutral')).toHaveLength(4);

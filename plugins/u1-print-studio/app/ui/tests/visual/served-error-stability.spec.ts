@@ -69,6 +69,15 @@ for (const width of [320, 390, 720]) for (const doubled of [false, true]) {
       await expect(frame.locator('.widget-feedback')).toContainText('unavailable · showing previous observation');
       equal(await geometry(frame), ready); expect(await frame.locator('[data-widget-body]').textContent()).toBe(content);
       expect(await frame.locator('[data-observed-meta]').allTextContents()).toEqual(receipts);
+      for (let attempt = 0; attempt < 2; attempt++) {
+        await refresh.press('Enter'); await expect.poll(() => calls).toBe(5 + attempt);
+        await expect(frame.locator('.widget-feedback')).toContainText('unavailable · showing previous observation');
+        release(failed);
+        await expect(refresh).not.toHaveAttribute('aria-disabled', 'true');
+        await expect(frame.locator('.widget-feedback')).toContainText('unavailable · showing previous observation');
+        equal(await geometry(frame), ready); await expect(refresh).toBeFocused();
+        expect(await frame.locator('[data-observed-meta]').allTextContents()).toEqual(receipts);
+      }
       expect(await frame.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
       await page.unroute('**/dashboard/tools/call');
     }

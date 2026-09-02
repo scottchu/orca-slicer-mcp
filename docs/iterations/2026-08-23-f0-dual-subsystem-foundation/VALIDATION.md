@@ -28,15 +28,34 @@ Commands actually run during editing with pinned Bun1.3.12:
   Whole color row is one44px-high button with16px glyph;390normal keeps two
   158px cards. Each normal card is193.390625px tall. Public column transitions
   are375px normal and553px enlarged, including existing shell inset change.
-- All five changed packages built below original caps: Fans88,929;
-  Thermals89,542; Heads98,911; Queue90,044; light Lab210,908. Bed632,808 and
+- All five changed packages built below original caps: Fans88,956;
+  Thermals89,569; Heads98,938; Queue90,071; light Lab210,908. Bed632,808 and
   current CameraLab79,776/Live90,900 are unchanged. Hash pins were renewed.
 
 Editing failures were not waived: old short-error/footer/string assertions were
 updated to the adopted static structure; Bed not-reported semantics were retained.
 An initial enlarged boundary expectation541px omitted the existing shell's12px
 inset increase; corrected553px was measured and passed, not a tolerance change.
-Full frozen-candidate regression and independent exact-head approval remain next.
+First candidate `8f7ea32` was rejected by independent source review: identical
+failed Retry responses could erase retained warnings; legacy same-epoch unknown
+data was incorrectly eligible for retention. Both are repaired. Pending/older
+RPC responses now preserve warning evidence until confirmed success. Renewed
+controller/Bed/observation focused tests total36 PASS; legacy56 tests/916
+assertions PASS. Four affected live packages were rebuilt and repinned.
+Renewed four-host browser matrix6/6 PASS at320/390/720 normal/200% text,
+including two identical failed explicit Retry responses per view, persistent
+warning, focus and full-frame/receipt preservation. Its first harness assertion
+incorrectly required literal `aria-disabled=false`; ready buttons omit that
+attribute. Corrected to reject `true`, without changing product behavior.
+
+The first full attempt is diagnostic only: repository UI522/525 found three
+superseded assertions (Bed-only retained-error scope and old Heads actions
+wrappers); they now assert global scope/noninteractive whole-row semantics.
+Browser execution was interrupted after source mutation; its partial results
+are mixed-byte diagnostics, not candidate acceptance. Both original logs are
+preserved as `stable-errors-first-diagnostic-{repository,browser}.log` in ignored
+UI test-results. No tolerance, privacy, byte cap or shipping guard was weakened.
+Renewed frozen-candidate regression and independent exact-head approval remain next.
 Owned focused fixtures/browsers closed after each run; no user tabs were closed.
 
 ## Earlier evidence (historical)

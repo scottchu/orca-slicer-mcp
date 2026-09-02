@@ -34,6 +34,23 @@ describe('live Fans controller', () => {
       expect(controller.getState().feedback).toBe('');
     } finally { controller.dispose(); }
   });
+  it.each(['unavailable', 'unsupported'])('repeated explicit Retry of the same %s receipt cannot erase its warning', async (kind) => {
+    const { controller, notify, resolve } = setup();
+    try {
+      notify(liveFansResult()); const previous = controller.getState().observation;
+      const value = liveFansResult(14, '2026-09-01T12:00:14.000Z');
+      const failed = { structuredContent: { ...value.structuredContent, module: { ...value.structuredContent.module, state: kind } } };
+      notify(failed);
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const retry = controller.refresh(); resolve(failed); await retry;
+        expect(controller.getState().observation).toBe(previous);
+        expect(controller.getState()).toMatchObject({ refreshing: false, feedback: `Fans & Air ${kind === 'unsupported' ? 'endpoint unsupported' : 'unavailable'} · showing previous observation` });
+      }
+      const retry = controller.refresh(); resolve(liveFansResult(15, '2026-09-01T12:00:15.000Z')); await retry;
+      expect(controller.getState().observation?.version).toBe(15);
+      expect(controller.getState().feedback).toBe('');
+    } finally { controller.dispose(); }
+  });
   it('coalesces refresh, retains identity and ignores malformed unrelated notifications', async () => {
     const { controller, notify, resolve, port } = setup(); notify(liveFansResult());
     const previous = controller.getState().observation, first = controller.refresh();
@@ -42,6 +59,20 @@ describe('live Fans controller', () => {
     expect(controller.getState()).toMatchObject({ observation: previous, refreshing: true, feedback: '' });
     resolve(liveFansResult(13, '2026-09-01T12:00:13.000Z')); await first;
     expect(controller.getState()).toMatchObject({ refreshing: false, observation: { version: 13 } }); controller.dispose();
+  });
+  it('keeps failure evidence while pending and after an older RPC, but clears on confirmed known success', async () => {
+    const { controller, notify, resolve, reject } = setup();
+    try {
+      notify(liveFansResult()); const previous = controller.getState().observation;
+      const failed = controller.refresh(); reject(); await failed;
+      const warning = controller.getState().feedback;
+      const old = controller.refresh();
+      expect(controller.getState().feedback).toBe(warning);
+      resolve(liveFansResult(11, '2026-09-01T12:00:11.000Z')); await old;
+      expect(controller.getState()).toMatchObject({ observation: previous, refreshing: false, feedback: warning });
+      const confirmed = controller.refresh(); resolve(liveFansResult()); await confirmed;
+      expect(controller.getState()).toMatchObject({ observation: previous, refreshing: false, feedback: '' });
+    } finally { controller.dispose(); }
   });
   it('rejects delayed older data, accepts real lower-version restart and same-version freshness', () => {
     const { controller, notify } = setup(); notify(liveFansResult());

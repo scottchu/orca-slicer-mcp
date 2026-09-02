@@ -4974,7 +4974,7 @@ void main() {
         if (candidate.module.state === "unavailable" || candidate.module.state === "unsupported") {
           acceptedResult = true;
           const message = candidate.view === "bed_mesh" && candidate.module.reason === "not_reported" ? "Bed mesh not reported" : `${viewTitles[candidate.view]} ${candidate.module.state === "unsupported" ? "endpoint unsupported" : "unavailable"}`;
-          if (previous && previous.view === candidate.view && Number.isSafeInteger(candidate.connectionEpoch) && candidate.connectionEpoch >= 0 && candidate.connectionEpoch === previous.connectionEpoch) {
+          if (previous && ["known", "stale"].includes(previous.module.state) && previous.view === candidate.view && Number.isSafeInteger(candidate.connectionEpoch) && candidate.connectionEpoch >= 0 && candidate.connectionEpoch === previous.connectionEpoch) {
             const error = modulesElement.querySelector(".refresh-error");
             if (error) error.textContent = `${message} · showing previous observation`;
           } else { observation = null; disposeMeshRenderer(); showPlaceholder("unavailable", message); }

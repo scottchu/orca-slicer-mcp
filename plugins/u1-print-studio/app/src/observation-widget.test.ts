@@ -238,6 +238,22 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
 }
 
 describe("production observation widget host boundary", () => {
+  test('terminal legacy failure retains only known/stale data in an explicit matching epoch', () => {
+    for (const previousState of ['known', 'stale', 'unknown']) for (const epoch of [3, 4, null]) {
+      const initial = fixture('queue', { connectionEpoch: 3 });
+      Object.assign(initial.module, { state: previousState, queueState: 'ready', totalCount: 0, truncated: false, items: [], sourceObservedAt: initial.sourceObservedAt, freshness: previousState === 'stale' ? 'stale' : 'fresh' });
+      const card = mount({ toolOutput: initial }); const previous = card.modules.innerHTML;
+      const failed = fixture('queue', { connectionEpoch: epoch }); failed.module.state = 'unavailable';
+      card.deliver({ structuredContent: failed });
+      if (previousState !== 'unknown' && epoch === 3) {
+        expect(card.modules.innerHTML).toBe(previous);
+        expect(card.error.textContent).toContain('showing previous observation');
+      } else {
+        expect(card.modules.innerHTML).toContain('data-observation-placeholder="unavailable"');
+        expect(card.modules.innerHTML).not.toContain('Print queue empty');
+      }
+    }
+  });
   test('all nine initial unavailable deliveries keep static public anatomy and explicit Retry reads once', async () => {
     for (const view of ['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans', 'bed_mesh']) {
       const unavailable = fixture(view); unavailable.module.state = 'unavailable';

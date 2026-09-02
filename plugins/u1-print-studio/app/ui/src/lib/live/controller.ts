@@ -19,7 +19,16 @@ export const createObservationController = <T extends OrderedObservation>(port: 
       const observation = adapt(resultObservation(result));
       if (disposed) return 'invalid';
       const previous = state.observation;
-      if (latest && JSON.stringify(observation) === JSON.stringify(latest)) return 'duplicate';
+      const retainedFailure = (observation.state === 'unavailable' || observation.state === 'unsupported') &&
+        previous && (previous.state === 'known' || previous.state === 'stale') &&
+        observation.connectionEpoch !== null && observation.connectionEpoch === previous.connectionEpoch;
+      const retainedFeedback = `${title} ${observation.state === 'unsupported' ? 'endpoint unsupported' : 'unavailable'} · showing previous observation`;
+      if (latest && JSON.stringify(observation) === JSON.stringify(latest)) {
+        // A duplicate explicit response confirms only its own state. A failed
+        // receipt must not clear the persistent last-success warning.
+        if (!notification) publish({ ...state, feedback: retainedFailure ? retainedFeedback : '' });
+        return 'duplicate';
+      }
       // Server receipt orders events across process-local version resets. A
       // later receipt can legitimately carry version 1 after a restart; a
       // delayed earlier receipt cannot replace newer accepted data.
@@ -30,11 +39,9 @@ export const createObservationController = <T extends OrderedObservation>(port: 
       // Keep display evidence only inside the same known connection epoch.
       // Ordering still advances on failure, so a delayed success cannot revive
       // superseded evidence. A new/unknown epoch never borrows prior data.
-      if ((observation.state === 'unavailable' || observation.state === 'unsupported') &&
-          previous && (previous.state === 'known' || previous.state === 'stale') &&
-          observation.connectionEpoch !== null && observation.connectionEpoch === previous.connectionEpoch) {
+      if (retainedFailure) {
         publish({ observation: previous, phase: 'ready', refreshing: notification && !!flight,
-          feedback: `${title} ${observation.state === 'unsupported' ? 'endpoint unsupported' : 'unavailable'} · showing previous observation` });
+          feedback: retainedFeedback });
         return 'accepted';
       }
       // Arrival/generation orders this mounted session, not process-local version.
@@ -56,7 +63,9 @@ export const createObservationController = <T extends OrderedObservation>(port: 
     if (disposed) return Promise.resolve();
     if (flight) return flight;
     const current = ++generation;
-    publish({ ...state, phase: state.observation ? 'ready' : 'loading', refreshing: !!state.observation, feedback: '' });
+    // Pending or rejected older evidence cannot turn a previous failure into
+    // apparent success. Only an accepted/confirmed successful result clears it.
+    publish({ ...state, phase: state.observation ? 'ready' : 'loading', refreshing: !!state.observation });
     flight = port.refresh().then((result) => {
       // A notification accepted after this request started owns the mounted
       // session even when the older RPC claims a later server receipt/version.
