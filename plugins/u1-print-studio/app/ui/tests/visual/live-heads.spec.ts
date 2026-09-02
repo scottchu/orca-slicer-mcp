@@ -71,6 +71,39 @@ const materialRows = async (frame: Frame, loading = false) => {
   }
   return rows;
 };
+const colorRows = async (frame: Frame) => {
+  const rows = await frame.locator('[data-inset-card]').evaluateAll((cards) => cards.map((card) => {
+    const footer = card.querySelector<HTMLElement>('.footer')!;
+    const color = footer.querySelector<HTMLElement>('[data-color-value]')!;
+    const value = color.querySelector<HTMLElement>('.text')!;
+    const swatch = color.querySelector<HTMLElement>('.swatch')!;
+    const copy = footer.querySelector<HTMLButtonElement>('button');
+    const box = footer.getBoundingClientRect(), text = value.getBoundingClientRect();
+    const glyph = swatch.getBoundingClientRect(), button = copy?.getBoundingClientRect();
+    const range = document.createRange(); range.selectNodeContents(value);
+    const lines = [...range.getClientRects()].filter((rect) => rect.width > 0);
+    return {
+      label: value.textContent, loading: value.hasAttribute('data-loading-value'), lines: lines.length,
+      natural: Math.abs(text.width - range.getBoundingClientRect().width),
+      contained: text.left >= box.left && text.right <= box.right && text.top >= box.top && text.bottom <= box.bottom,
+      overlap: glyph.left < text.right && glyph.right > text.left && glyph.top < text.bottom && glyph.bottom > text.top,
+      button: button ? { width: button.width, height: button.height, right: box.right - button.right,
+        gap: button.left - text.right, center: button.y + button.height / 2 - (box.y + 9 + (box.height - 9) / 2) } : null,
+    };
+  }));
+  for (const row of rows) {
+    expect(row.contained).toBe(true); expect(row.overlap).toBe(false);
+    expect(row.lines).toBe(1);
+    if (!row.loading) expect(row.natural).toBeLessThanOrEqual(1);
+    if (row.button) {
+      expect(row.button.width).toBe(44); expect(row.button.height).toBe(44);
+      expect(row.button.right).toBeLessThanOrEqual(1);
+      expect(row.button.gap).toBeGreaterThanOrEqual(3.5);
+      expect(Math.abs(row.button.center)).toBeLessThanOrEqual(1);
+    }
+  }
+  return rows;
+};
 for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) {
   test(`Heads public empty/unknown and per-tool preview templates ${width} enlarged=${enlarged}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1600 });
@@ -97,11 +130,13 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     if (enlarged) await enlarge(page.mainFrame());
     const rows = await materialRows(page.mainFrame());
     expect(rows[0].text).toBe('Generic PLA');
+    await colorRows(page.mainFrame());
     await readable(page.mainFrame(), width);
     const ready = await bounds(page.mainFrame());
     await page.screenshot({ path: test.info().outputPath('heads-material-lab.png'), fullPage: true });
     await page.getByLabel('Preview state', { exact: true }).selectOption('loading');
     await materialRows(page.mainFrame(), true);
+    await colorRows(page.mainFrame());
     const loading = await bounds(page.mainFrame());
     expect(loading.length).toBe(ready.length);
     for (let row = 0; row < ready.length; row++) for (let axis = 0; axis < 4; axis++) expect(Math.abs(loading[row][axis] - ready[row][axis])).toBeLessThanOrEqual(1);
@@ -128,6 +163,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     const loading = await bounds(frame), loadingDetails = await details(); release(liveHeadsResult());
     await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
     expect((await materialRows(frame))[0].text).toBe('Generic PLA');
+    await colorRows(frame);
     const ready = await bounds(frame); expect(ready.length).toBe(loading.length);
     await page.screenshot({ path: test.info().outputPath('heads-ready.png'), fullPage: true });
     await test.info().attach('slot-geometry', { body: JSON.stringify({ loading: loadingDetails, ready: await details() }, null, 2), contentType: 'application/json' });
@@ -169,6 +205,53 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await page.screenshot({ path: test.info().outputPath('heads-partial-text.png'), fullPage: true });
   });
 }
+
+for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) {
+  test(`Heads coherent color and Copy row worst RGBA ${width} enlarged=${enlarged}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1600 });
+    const result = liveHeadsResult();
+    const colors = ['#DDDDDDDD', '#CCCCCCCC', '#3487C880'];
+    for (const [index, value] of colors.entries()) result.structuredContent.module.items[index].color = { state: 'known', value };
+    await page.route('**/dashboard/tools/call', (route) => route.fulfill({ json: result }));
+    await page.goto('/dashboard/heads');
+    const frame = page.frames().find((item) => item.url().endsWith('/dashboard/heads_widget'))!;
+    await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
+    if (enlarged) await enlarge(frame);
+    const rows = await colorRows(frame);
+    expect(rows.slice(0, 3).map((row) => row.label)).toEqual(colors);
+    expect(rows[3].button).toBeNull();
+    await readable(frame, width);
+    const columns = await frame.locator('.card-grid').evaluate((grid) => getComputedStyle(grid).gridTemplateColumns.split(' ').length);
+    expect(columns).toBe(width === 320 || (enlarged && width === 390) ? 1 : 2);
+    await frame.evaluate(() => {
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value: string) => { Object.assign(window, { __copiedColor: value }); } } });
+    });
+    const before = await bounds(frame), copy = frame.getByRole('button', { name: 'Copy T1 color #DDDDDDDD', exact: true });
+    await copy.focus(); await copy.press('Enter');
+    await expect(frame.getByRole('status')).toHaveText('#DDDDDDDD copied');
+    await expect(copy).toBeFocused();
+    expect(await frame.evaluate(() => (window as unknown as { __copiedColor: string }).__copiedColor)).toBe('#DDDDDDDD');
+    expect(await bounds(frame)).toEqual(before);
+    await page.screenshot({ path: test.info().outputPath('heads-color-copy.png'), fullPage: true });
+  });
+}
+
+for (const enlarged of [false, true]) test(`Heads public hex fits either side of the column boundary enlarged=${enlarged}`, async ({ page }) => {
+  await page.setViewportSize({ width: 600, height: 1600 });
+  const result = liveHeadsResult();
+  for (const [index, value] of ['#DDDDDDDD', '#CCCCCCCC', '#FFFFFF'].entries()) result.structuredContent.module.items[index].color = { state: 'known', value };
+  await page.route('**/dashboard/tools/call', (route) => route.fulfill({ json: result }));
+  await page.goto('/dashboard/heads');
+  const frame = page.frames().find((item) => item.url().endsWith('/dashboard/heads_widget'))!;
+  await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
+  if (enlarged) await enlarge(frame);
+  const threshold = enlarged ? 567 : 389;
+  for (const width of [threshold - 1, threshold]) {
+    await page.setViewportSize({ width, height: 1600 });
+    await colorRows(frame); await readable(frame, width);
+    expect(await frame.locator('.card-grid').evaluate((grid) => getComputedStyle(grid).gridTemplateColumns.split(' ').length)).toBe(width < threshold ? 1 : 2);
+  }
+});
 
 test('Heads copy generations, busy focus, rejection and removed-action fallback', async ({ page }) => {
   const next = liveHeadsResult();

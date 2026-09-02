@@ -1,5 +1,55 @@
 # F0 dual-subsystem foundation validation
 
+## Heads Copy layout repair — focused author checks passed
+
+The independently measured policy is adopted in decision0039: scoped44px
+right action column, wrapping swatch/whole-natural-hex left group, and public
+font-relative minimum card width. ColorValue is a small DOM-owning leaf with
+runtime loading privacy validation; HeadCard remains zero-raw. Existing global
+Inline/LoadingValue and package caps are unchanged.
+
+Actually run with pinned Bun1.3.12 in app/ui:
+
+- `bun run check`: zero Svelte errors/warnings; AST contract PASS.
+- `bun x vitest run src/lib/ui/ColorValue.test.ts
+  src/lib/observation/HeadCard.test.ts
+  src/lib/observation/ObservationLoading.test.ts`:51 PASS.
+- `bun x playwright test tests/visual/live-heads.spec.ts`:34 PASS,
+  followed by the two added `--grep 'column boundary'` cases:2 PASS.
+  Four widths normal/200%, whole worst RGB/RGBA, exact44px right-side Copy,
+  clipping/overlap/row grouping, closed loading parity, success/rejection/busy
+  focus and retained refresh. Boundary388/389 normal and566/567 enlarged pass.
+- `bun run build:live-heads && bun run build && bun run package:private-lab`
+  passed twice deterministically. Heads96458 SHA256
+  `db1a487699468c3e697cfc009f7b9c2d7e8bb9d5f69d52da015c2f7da63f359a`;
+  lightLab209309 SHA256
+  `34a2ca0a1b96e30114c46935e200c59dc1548b72306e3e2c3c19d3fbb9b5b640`.
+  Other six packaged assets unchanged; Lab total921893, production453278.
+  Camera Lab79776 retains224bytes headroom without a cap change.
+
+The next gate is the single author-owned full frozen-candidate run, then
+separate exact source approval and targeted independent verification. No
+deployment/actual-device/user-outcome acceptance is claimed for Copy.
+Focused fixture/browser sessions have exited and released4179.
+
+### Setup and prior-base evidence
+
+Base `f949f4472937b6f9bd27aa1969200770465a0eaa` is the accepted Bed PR83
+merge. Read current repository guidance and contracts, confirmed canonical main
+clean and created a separate non-main branch. Source diagnosis: HeadCard's
+ready ten-character value reserve combines with the wrapping InsetCard footer
+to orphan Copy below swatch/hex. No UI changes or new test pass is claimed yet.
+Independent UI/UX sizing feedback precedes implementation; preserve44px targets,
+complete RGB/RGBA, loading privacy and unchanged package/security limits.
+The author's prior Bed source approval does not approve this new authored work.
+Bed deployment is coordinator-attributed. Independent final postverification
+reports15 manifest hashes, eight HTTPS assets,15 downloaded-byte browser cases
+and six policy adversaries PASS with zero geometry delta; BOTH services are
+healthy/integrity-verified. Real-phone/native-OS-focus acceptance is not claimed.
+No user/printer/service resource was acquired here. Author dependency setup:
+pinned Bun1.3.12 `bun install --frozen-lockfile` in app and UI passed with no
+tracked lockfile/dependency changes. `git diff --check` passes.
+
 ## Bed Lab frozen candidate — full author gates passed
 
 Frozen application `1da084822fde1430c47aa58e332e50e453dbffad`, tree

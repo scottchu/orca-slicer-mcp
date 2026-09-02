@@ -2,7 +2,7 @@
   import { Copy } from 'lucide-svelte';
   import { headColor, headStateLabel, type HeadCardValue, type HeadId } from '../live/heads-presentation';
   import InsetCard from '../ui/InsetCard.svelte';
-  import ColorSwatch from '../ui/ColorSwatch.svelte';
+  import ColorValue from '../ui/ColorValue.svelte';
   import Inline from '../ui/Inline.svelte';
   import Stack from '../ui/Stack.svelte';
   import Name from '../ui/Name.svelte';
@@ -20,7 +20,7 @@
   $effect.pre(() => { materialLoadingTemplate(loading, materialShape); });
   const color = $derived(headColor(reading?.presence ?? null, reading?.color ?? null));
 </script>
-<InsetCard label={`Tool ${physicalTool}`} color={color.color} neutral={!loading && color.neutral} active={reading?.active === true} actionAvailable={!loading && !!color.color} headerLines={2}>
+<InsetCard label={`Tool ${physicalTool}`} color={color.color} neutral={!loading && color.neutral} active={reading?.active === true} actionAvailable={!loading && !!color.color} headerLines={2} footerLayout="action-column">
   {#snippet header()}
     <Name text={`T${physicalTool}`} />
     <Caption><LoadingValue {loading} text={loading ? undefined : headStateLabel(reading?.active ?? null, reading?.state ?? null)} /></Caption>
@@ -30,7 +30,7 @@
     <Inline gap="tight"><Inline shrink={false}><Icon name="thermals" /></Inline><ActualTarget actual={loading ? undefined : reading?.actual ?? null} target={loading ? undefined : reading?.target ?? null} {loading} compact /></Inline>
   </Stack>
   {#snippet footer()}
-    <Inline gap="tight"><ColorSwatch color={color.color} /><Caption><LoadingValue {loading} text={loading ? undefined : color.label} words={[10]} /></Caption></Inline>
+    <ColorValue color={loading ? undefined : color.color} text={loading ? undefined : color.label} {loading} />
   {/snippet}
   {#snippet actions()}
     {#if loading}<Skeleton shape="action" />{:else if color.color}<IconButton label={`Copy T${physicalTool} color ${color.color}`} icon={Copy} busy={copying} onclick={() => oncopy?.(physicalTool, color.color!)} />{/if}

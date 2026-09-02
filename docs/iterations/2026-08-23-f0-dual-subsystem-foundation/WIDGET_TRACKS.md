@@ -1,6 +1,31 @@
 # Widget completion tracks
 
-## Current: Bed Lab gates passed; Heads Copy is the next scoped repair
+## Current: Heads Copy layout repair after Bed PR83
+
+Accepted main `f949f4472937b6f9bd27aa1969200770465a0eaa` is the base of
+this separate Heads-only refinement (OBS-010/UI-003). The coordinator reports
+Bed PR83 merged/deployed with both services restarted. Its independent final
+postverification passed15 manifest hashes, eight HTTPS assets,15 downloaded-byte
+browser cases and six policy adversaries with zero geometry delta; BOTH services
+are healthy/integrity-verified. This attributed software/service evidence does
+not establish real-phone or native-OS-focus acceptance.
+
+The mobile report exposes an orphan Copy action: InsetCard wraps separate
+color/value and action items, while HeadCard reserves ten characters even for
+ready hex text. Obtain the independent UI/UX sizing decision before changing
+presentation. Preserve a coherent exact swatch/hex/Copy group, the 44px target,
+unknown/empty semantics, truthful feedback and stable loading structure.
+Measure 320/390 normal and 200% text with RGB/RGBA; do not truncate, hard-force
+two columns, shrink targets, rewrite global LoadingValue, or add fake heights.
+
+The assigned author owns focused editing checks and one full frozen-candidate
+regression. Other agents must independently review source and verify the exact
+candidate before coordinator-owned guarded delivery. Eight package limits and
+shipping guards remain unchanged; Camera Lab currently has only224bytes spare.
+No network/printer acquisition or service operation belongs to this author task.
+Heads Copy precedes Camera `1c6920e`; all other unfinished tracks stay intact.
+
+## Earlier Bed candidate handoff (superseded where noted above)
 
 Frozen application `1da084822fde1430c47aa58e332e50e453dbffad`, tree
 `5ed792d20873e254067997d3c236147ca6b62294`, ordinarily integrates accepted

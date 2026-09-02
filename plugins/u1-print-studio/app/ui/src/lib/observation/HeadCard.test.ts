@@ -57,6 +57,10 @@ describe('shared HeadCard material row', () => {
     const { container, getByRole } = render(HeadCard, { physicalTool: 1, reading: reading('Generic PLA') });
     expect(container.querySelector('[data-inset-card]')).toHaveStyle('background-color: rgba(52, 135, 200, 0.030117647058823527)');
     expect(getByRole('button', { name: 'Copy T1 color #3487C880' }).closest('.footer')).not.toBeNull();
+    expect(container.querySelector('.footer')).toHaveClass('action-column');
+    expect(container.querySelector('[data-color-value] .text')).toHaveTextContent('#3487C880');
+    expect(container.querySelector('[data-color-value] .text')?.childElementCount).toBe(0);
+    expect(container.querySelector('[data-color-value] .words')).toBeNull();
   });
 
   it('retains decorative material icons in loading without private labels or active controls', () => {
