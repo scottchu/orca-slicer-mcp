@@ -1,5 +1,22 @@
 # F0 dual-subsystem foundation handoff
 
+## Current Job label repair checkpoint — awaiting accepted legend integration
+
+Changed only `current-job-value.ts`, CurrentJobPanel seven-state/non-inference
+tests, matching unrun browser assertions and continuity records. Printing and
+paused now say Current job/Paused job; standby says Loaded file; terminal states
+say Last reported job; unknown/unreported says Reported file. No model, producer,
+controller or shared compact-action behavior changed. UI 476, compiler/AST,
+app TypeScript and nine actual-producer tests pass.
+
+Do not ship this checkpoint: package bytes/pins are intentionally still `42feff1`.
+Next wait for accepted PR77 main, ordinary-merge it, regenerate all affected
+consumer artifacts and run full non-browser/browser/default-compact geometry
+gates before separate exact review/validation. No 4179 reservation is held.
+Independent legend release keeps priority; other tracks remain open.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current Job after accepted Queue integration — unaccepted author checkpoint
 
 Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily

@@ -81,13 +81,18 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     expect(await bounds(frame)).toEqual(ready); await expect(refresh).toBeFocused();
     expect(await frame.locator('[data-observed-meta]').textContent()).toBe(receipt);
     let version = 20;
-    for (const state of ['printing', 'paused', 'complete', 'standby', 'cancelled', 'error', 'unknown']) {
+    for (const [state, fileLabel] of [
+      ['printing', 'Current job'], ['paused', 'Paused job'], ['complete', 'Last reported job'],
+      ['standby', 'Loaded file'], ['cancelled', 'Last reported job'],
+      ['error', 'Last reported job'], ['unknown', 'Reported file']
+    ]) {
       const result = liveCurrentJobResult(version++, `2026-09-01T12:01:${String(version).padStart(2, '0')}.000Z`);
       result.structuredContent.module.printState.value = state;
       result.structuredContent.module.filename.value = `${'Long_model_name'.repeat(9)}.gcode`;
       result.structuredContent.module.storageActive.value = false;
       await page.evaluate((value) => document.querySelector('iframe')!.contentWindow!.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/tool-result', params: value }, location.origin), result);
       await expect(frame.getByText(state[0].toUpperCase() + state.slice(1), { exact: true })).toBeVisible();
+      await expect(frame.getByText(fileLabel, { exact: true })).toBeVisible();
       await expect(frame.getByText('Inactive', { exact: true })).toBeVisible();
       await expect(frame.getByRole('img', { name: '9007199254740991 bytes' })).toBeVisible();
       expect(await readable(frame)).toEqual([]);

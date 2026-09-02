@@ -1,5 +1,13 @@
 # F0 dual-subsystem foundation brief
 
+Current bounded repair: address independent Current Job source review's lost
+file-context labels before further acceptance. Preserve ADR0025 and the existing
+renderer: printing Current job, paused Paused job, standby Loaded file,
+complete/error/cancelled Last reported job, unknown/unreported Reported file.
+Finish non-browser checks while PR77 keeps release/browser priority. Wait for
+accepted legend main before ordinary integration, all-consumer package renewal
+and full browser gates. No unaccepted legend source, PR or deployment now.
+
 Current order: Queue PR76 is accepted and deployed at main7882670. Integrate it
 ordinarily into Current Job under OBS-014/UI-003, reuse accepted shared leaves
 and preserve the exact private Jobs cutover. Finish the non-browser checkpoint

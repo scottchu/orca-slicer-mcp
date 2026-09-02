@@ -1,5 +1,19 @@
 # Project state
 
+## Current Job contextual-label repair — non-browser checkpoint
+
+Independent source review found lost persisted-file context in `currentJobLabels`.
+The repair restores ADR0025 and the existing renderer's exact seven-state labels:
+printing Current job; paused Paused job; standby Loaded file; complete/error/
+cancelled Last reported job; unknown or unreported state Reported file. Filename
+or active storage never establishes a current job independently of state.
+All 476 UI tests, compiler/AST and nine actual-producer tests pass. Browser
+assertions were updated but not run. Packages still represent prior checkpoint
+`42feff1`, intentionally not renewed before accepted legend PR77 integration.
+No PR, deployment, service or printer action; full acceptance remains pending.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current Job after accepted Queue integration — unaccepted author checkpoint
 
 Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily

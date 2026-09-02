@@ -1,5 +1,20 @@
 # Next agent
 
+## Next: integrate accepted legend before Current Job final renewal
+
+The independent contextual-label finding is repaired and seven-state rendered
+tests plus unreported-state/active-storage non-inference pass. UI 476 and actual
+producer nine tests are green. No browser port or package regeneration occurred.
+Wait for the coordinator's accepted PR77 main signal, then ordinary-merge that
+exact main, preserve its legend and this candidate's compact IconButton, renew
+all consumer packages/hashes and full browser/default/compact/loading geometry.
+Current artifact pins are intentionally the earlier `42feff1` checkpoint, not
+the repaired source; do not ship or claim deterministic final acceptance yet.
+Independent exact-source review and validation remain required. Other tracks
+and the immediate legend release priority are unchanged.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current Job after accepted Queue integration — unaccepted author checkpoint
 
 Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily

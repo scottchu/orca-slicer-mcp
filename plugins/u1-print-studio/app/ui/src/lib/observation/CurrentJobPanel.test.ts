@@ -4,24 +4,39 @@ import CurrentJobPanel from './CurrentJobPanel.svelte';
 import LiveCurrentJobRoot from '../live/LiveCurrentJobRoot.svelte';
 import { createCurrentJobController } from '../live/current-job-controller';
 import { adaptCurrentJob } from '../live/current-job-adapter';
-import { CURRENT_JOB_STATES } from '../live/presentation';
 import { currentJobField, liveCurrentJobResult } from '../../../tests/fixtures/live-current-job';
 
 afterEach(cleanup);
 describe('Current Job compositional presentation', () => {
-  it.each(CURRENT_JOB_STATES)('renders reported %s independently of storage and bytes', (state) => {
+  it.each([
+    ['printing', 'Current job'], ['paused', 'Paused job'], ['standby', 'Loaded file'],
+    ['complete', 'Last reported job'], ['error', 'Last reported job'],
+    ['cancelled', 'Last reported job'], ['unknown', 'Reported file']
+  ] as const)('renders reported %s with contextual identity %s independently of storage and bytes', (state, fileLabel) => {
     const result = liveCurrentJobResult(); result.structuredContent.module.printState.value = state;
     result.structuredContent.module.storageActive.value = false;
     const job = adaptCurrentJob(result.structuredContent);
     const { container } = render(CurrentJobPanel, { job, phase: 'ready', evidence: job.state });
     expect(container).toHaveTextContent(state[0].toUpperCase() + state.slice(1));
     expect(container).toHaveTextContent('Inactive');
-    expect(container).toHaveTextContent(state === 'printing' || state === 'paused' ? 'Printing file' : 'Reported file');
+    expect(screen.getByText(fileLabel, { exact: true })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: '9007199254740991 bytes' })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: '0 seconds' })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: '12.5 seconds' })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: '0 mm' })).toBeInTheDocument();
     expect(container).not.toHaveTextContent(/%|Progress|Printing speed/);
+  });
+  it('does not infer a current job from a filename or active storage when state is unreported', () => {
+    const result = liveCurrentJobResult();
+    result.structuredContent.module.printState = currentJobField(false, null);
+    result.structuredContent.module.storageActive.value = true;
+    const job = adaptCurrentJob(result.structuredContent);
+    render(CurrentJobPanel, { job, phase: 'ready' });
+    expect(screen.getByText('Reported file', { exact: true })).toBeInTheDocument();
+    expect(screen.getByText('model.gcode', { exact: true })).toBeInTheDocument();
+    expect(screen.getByText('Active', { exact: true })).toBeInTheDocument();
+    expect(screen.queryByText('Current job', { exact: true })).not.toBeInTheDocument();
+    expect(screen.queryByText('Paused job', { exact: true })).not.toBeInTheDocument();
   });
   it('distinguishes reported no-file from missing filename and neutral unknown quantities', async () => {
     const result = liveCurrentJobResult(); result.structuredContent.module.filename = currentJobField<string>(true, null);

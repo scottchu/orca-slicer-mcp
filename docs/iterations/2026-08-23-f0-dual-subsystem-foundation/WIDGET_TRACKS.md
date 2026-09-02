@@ -1,5 +1,11 @@
 # Widget completion tracks
 
+Current Job contextual-label source finding is repaired in a non-browser
+checkpoint: all seven states preserve ADR0025/existing-renderer file context.
+UI 476 and actual-producer nine tests pass; final artifact/browser renewal waits
+for accepted legend PR77 integration. This is not Current Job delivery and does
+not cancel other migrations, generic MCP/legacy parity or cleanup work.
+
 ## Current Job after accepted Queue integration — unaccepted author checkpoint
 
 Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily

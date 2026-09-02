@@ -1,5 +1,31 @@
 # F0 dual-subsystem foundation validation
 
+## Current Job contextual-label source repair — bounded non-browser renewal
+
+Starting clean at `42feff136f479b068186c53069406147b1127998`, checked ADR0025's
+persisted filename contract against `public/widget.html`'s existing context map.
+The latter also establishes printing Current job and paused Paused job. Replaced
+the collapsed Printing file/Reported file mapping with all seven exact contexts.
+Tests explicitly enumerate expected labels independently of the implementation
+and verify unreported job state plus a filename/active storage is not current.
+Updated the same seven browser-state assertions; these have NOT run yet.
+
+Actually run: UI `bun run check && bun run test` PASS: 0 errors/0 warnings,
+zero-raw AST and 476 tests in 43 files (12 CurrentJobPanel cases). App
+`bun run check && bun test src/current-job-live-adapter.test.ts` PASS: nine
+normalizer/projector/adapter tests, 62 assertions. `git diff --check` passes.
+Controller, IconButton and all committed public assets are unchanged from
+`42feff1`. Shared accepted DurationValue/DomainReceipt/TextSkeleton remain reused.
+
+No browser/4179, artifact renewal, complete repository/runtime renewal, PR or
+deployment was attempted. Existing packages are deliberately pre-repair bytes
+until accepted PR77 main is ordinarily integrated. Then every compact-button
+consumer package and all final hashes/graphs/bounds/browser gates must renew.
+This is author software evidence only, not independent acceptance or printer/
+device behavior. All migration and cleanup backlog remains open.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current Job accepted-Queue integration — non-browser author evidence
 
 Ordinary integration of accepted main `7882670778627128214d74bcee62fe20f5ddbf7a`
