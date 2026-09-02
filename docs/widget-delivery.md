@@ -4,36 +4,30 @@ Current authority, 2026-09-02. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
-## Current execution: native Thermals, Heads and Queue dashboard pages
+## Current deployment: PR97 native observation pages
 
-The user paused Screen Sharing until returning home and directed other work to
-continue. On `codex/u1-native-observation-pages` from mainb5329ad, the next
-0043/F01/F08 slice makes `/dashboard/thermals`, `/dashboard/heads` and
-`/dashboard/queue` native Kit pages following deployed Fans. Reuse the existing
-UI, controllers and services without iframes; add no design or domain data.
-Native page source is independently approved on29e4f07, including the required
-gate and seven cases against the formal payload. PR97 shipping then stopped:
-fixed `ship-build` reuse left14 undeclared old assets, correctly rejected by the
-closed inventory guard before merge/install. PR95 remains deployed. The operator
-now creates a unique empty candidate directory;27 focused tests pass, application
-bytes remain unchanged, and new exact review/required regression are pending.
-Detailed commands, hashes, original77 failure and repairs remain in VALIDATION.
-This slice does not close all F01 migration or Queue product requirements.
+PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
+approved350fb6e. Fans, Thermals, Heads and Queue now use native Kit pages at the
+existing URLs, without iframes or new domain behavior. Other dashboard/Lab
+renderers and unfinished product requirements remain in the delivery ledger.
 
-Acceptance: preserve URLs and widget resource endpoints; SSR acquires no telemetry,
-mount starts the existing observation flow once, and refresh/failure/recovery keep
-neutral error geometry/footer behavior. Preserve Heads full-hex Copy, keyboard/
-focus behavior and existing role/auth/static-asset guards. Next: freeze the
-candidate, run one required regression with independent exact review, then
-u1-ship, BOTH restarts and scoped served-UI checks. History evidence covers a
-fresh document, not an observed BFCache restoration.
-Synthetic/software evidence stays distinct from physical-printer/device acceptance.
+The required gate passes574 UI,325 server/3951 assertions, eight packages and
+34+27 Python tests. Seven formal-payload browser cases are retained by unchanged
+application/payload hashes. Guarded shipping explicitly restarted BOTH services:
+loaded/healthy/integrity,73 static/75 security checks and preservation pass, with
+no rollback. Independent postverification passes all four320px native pages:
+exact HTTPS assets, neutral failed-refresh geometry/footer, recovery and Heads
+keyboard Copy with synthetic responses. No real printer or user clipboard access.
+Detailed commands/hashes and all prior failures remain in VALIDATION, including
+77f023e imports,29e4f07 fixture/build differences and the rejected stale output.
 
-C08 stays open and paused for the user's at-home Local Network UI inspection;
-Screen Sharing diagnosis and actual Camera probing do not block this page slice.
-Do not restart those probes or change system/auth/network settings. Keep all55
-ledger IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
-unchanged loading policy. PR95 remains the deployed application baseline.
+C08 and Screen Sharing stay paused until the user returns home; no Camera service
+repair, real Live, physical-printer, BFCache or actual-device acceptance is claimed.
+Keep all55 IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
+unchanged loading policy. Next, select the next bounded native-renderer/product
+slice from the ledger; at-home Local Network inspection remains C08's external
+step. This Markdown-only rollout record preserves application bytes and needs no
+additional service deployment under0028.
 
 ### Retained PR95 source/deployment evidence
 
@@ -82,12 +76,13 @@ PR86 thumbnail policy remains accepted.
 
 Decision0043's single SvelteKit root with Bun1.4.0, generic components/common,
 pure TypeScript lib/server boundaries and actual API/dashboard/Lab routes is
-shipped. Only Fans is native Kit; other UI endpoints serve packaged HTML/iframe.
+shipped. Fans, Thermals, Heads and Queue are native Kit pages through PR97;
+other UI endpoints serve packaged HTML/iframe.
 There is no old custom HTTP-router fallback. Widget build targets and MCP stdio
 share services; URL/role/auth, Camera lease lifecycle and protocol limits remain.
 Build isolation covers outer/nested Bun calls and Kit's environment loader.
 
-The current Thermals/Heads/Queue native-page slice advances renderer migration
+The delivered Thermals/Heads/Queue native-page slice advances renderer migration
 while C08 is paused. `docs/sveltekit-route-migration.md` tracks
 routing versus rendering without adding/removing these55 IDs. Progress remains
 no action, F07 class remains discussion and c6 stays separate. No new actual-camera,
@@ -262,14 +257,14 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 
 | IDs / request | Status and evidence | Acceptance / next smallest action |
 | --- | --- | --- |
-| F01 SvelteKit checked-in project | Partial:10 Lab routes/five focused Svelte views delivered; native Thermals/Heads/Queue source approved29e4f07; shipment blocked pending operator repair gates | Reuse delivered UI/controllers/services after native Fans; noiframe page acceptance does not finish remaining views or domain features |
+| F01 SvelteKit checked-in project | Partial:10 Lab routes/five focused Svelte views delivered; native Fans/Thermals/Heads/Queue pages delivered through PR97 | Reuse delivered UI/controllers/services after native Fans; noiframe page acceptance does not finish remaining views or domain features |
 | F02 shared primitive composition | Common/Button/Icon/Switch shipped PR91; app-root components/common integration shipped PR93 | Preserve all-eight consumer/AST/security coverage; other raw-markup debt remains |
 | F03 PercentageBackground + slight slope | Delivered: Thermals/Fans, 100-degree tint | Preserve exact ratio and truthful over-target numbers |
 | F04 src/lib/ui vs src/components |0043 one app-root components/common and pure TypeScript lib separation independently accepted and shipped PR93 | Preserve generic primitives/domain composition boundary; native renderer migration remains F01 |
 | F05 generic semantic tokens | Not started; --u1 tokens remain | Inventory consumers and controlled alias transition |
 | F06 arrow functions | Adopted AGENTS | Apply to changed JS/TS; document genuine exceptions |
 | F07 component-owned folders/services | Partial; PR89 delivers real/synthetic Camera service separation | Thin subscribers/renderers. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
-| F08 whole server/MCP SvelteKit migration |0043 real Kit API/UI routing/shared services shipped PR93; native Thermals/Heads/Queue source approved29e4f07; shipment blocked pending operator repair gates | Fans remains the deployed native page; other UI routes currently serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
+| F08 whole server/MCP SvelteKit migration |0043 real Kit API/UI routing/shared services shipped PR93; native Fans/Thermals/Heads/Queue pages delivered through PR97 | Four native pages are deployed; remaining UI routes serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
 | F09 self-contained widget HTML |0042 individual/aggregate byte caps removed, independently accepted and shipped PR91 | Preserve self-contained assets, CSP/security, integrity, determinism, minification and size reporting during0043 |
 | U01 density/grouping/consistent language | Partial; independent UIUX/domain audits complete | Implement findings per widget; audits alone are not fixes |
 | U02 smaller Refresh visual | Not started in delivered shared component | Compact visible glyph/control, 44px accessible target |
