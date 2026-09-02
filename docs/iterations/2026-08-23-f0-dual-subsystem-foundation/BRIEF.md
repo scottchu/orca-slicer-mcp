@@ -1,6 +1,41 @@
 # F0 dual-subsystem foundation brief
 
-## Current delivery: PR93 single-app integration, remaining widget debt
+## Current execution: unresolved C08 diagnosis and Switch44px acceptance
+
+The active F0/CAM-004–008/C08 work responds to actual Live connection failure;
+the separate UI-001/003 request makes Switch visibly match the44px Button.
+
+The nine bounded diagnosis attempts locate the current failure before the
+browser peer is created: deployed open returns no response, while Bun1.4.0
+reports `EHOSTUNREACH` when sending ICE UDP to the printer and receives no reply.
+The same current adapter under immutable Bun1.3.12 reaches upstream ICE/RTP/offer;
+external STUN, local UDP and authenticated STUN wire-byte comparisons pass.
+Both runtimes use the same IPv4 route/bind/interface setup; signing identifier,
+Team and designated requirement match, while executable UUIDs differ. These
+observations do not establish a Bun regression or macOS permission denial.
+
+C08 remains blocked on diagnosis, with the user's Local Network entry state
+requested; no settings change is authorized and no service-code repair exists.
+Actual probes have stopped and owned resources are closed. After the missing
+evidence, choose the smallest service-owned repair and require affected focused
+checks, advancing actual decoded frames, frozen required validation, independent
+exact review, u1-ship, BOTH restarts and actual served-Live verification. Keep
+failed attempts; HTTP success, synthetic media and health alone cannot close C08.
+
+The separate Switch44px change can proceed through its own release gates while
+C08 remains open: visible track matches Button, thumb40px with2px inset, Camera
+three-mode width132px and Bed two-mode width88px. Author evidence is26 units and
+33 distinct synthetic consumer browser cases (10 initial passes plus23 renewed),
+with bounded design review. Three consumer packages/pins are integrated;12 package
+tests/130 assertions and Live/Lab deterministic checks pass. The other12 public
+HTML files are unchanged. Exact frozen validation/review and deployment are pending.
+
+Preserve Snapshot/Live/Auto compact icons, footer errors and service-owned Camera
+lifecycle. Loading skeleton/Refresh questions were explanatory only: loading policy
+is unchanged. Keep all55 ledger IDs, Progress no-action, F07 class discussion,
+separate c6 and remaining renderer/product backlog. PR93 remains deployed.
+
+## Deployed baseline: PR93 single-app integration
 
 This F0/UI-001/UI-003/0043 slice is merged and deployed as PR93 `60cab967`, matching
 independently approved7a0d398. Required574 UI/322 server/3756 assertions/eight
@@ -17,10 +52,9 @@ controller/services, acquisition-free SSR, raw/body/abort/shutdown boundaries an
 service-owned Camera lifecycle remain. No-env isolation applies to both process
 and framework build loaders. Routing takeover is distinct from native UI migration.
 
-The next scope remains the delivery ledger's incomplete renderers/product work
-and C08 diagnosis. Keep all55 IDs, Progress no-action, F07 class discussion and c6
+Incomplete renderers/product work remains in the ledger behind active C08 repair. Keep all55 IDs, Progress no-action, F07 class discussion and c6
 separate. Byte caps remain removed; all integrity/security/determinism/shipping
-guards remain. This records-only tail needs no application redeployment under0028.
+guards remain. The completed PR93 records-only tail required no redeployment under0028.
 
 ## Historical implementation: neutral failures and adjacent footer status
 

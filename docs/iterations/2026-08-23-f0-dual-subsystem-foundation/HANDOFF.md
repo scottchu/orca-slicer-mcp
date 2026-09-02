@@ -1,6 +1,41 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: PR93 source accepted and guarded release deployed
+## Current: C08 diagnosis boundary and Switch44px delivery
+
+Branch `codex/u1-camera-live-connectivity` starts from main1ce44ec. The application
+author alone performed actual camera diagnosis; records/UI work used synthetic data.
+
+The nine bounded diagnosis attempts locate the current failure before the
+browser peer is created: deployed open returns no response, while Bun1.4.0
+reports `EHOSTUNREACH` when sending ICE UDP to the printer and receives no reply.
+The same current adapter under immutable Bun1.3.12 reaches upstream ICE/RTP/offer;
+external STUN, local UDP and authenticated STUN wire-byte comparisons pass.
+Both runtimes use the same IPv4 route/bind/interface setup; signing identifier,
+Team and designated requirement match, while executable UUIDs differ. These
+observations do not establish a Bun regression or macOS permission denial.
+
+C08 remains blocked on diagnosis, with the user's Local Network entry state
+requested; no settings change is authorized and no service-code repair exists.
+Actual probes have stopped and owned resources are closed. After the missing
+evidence, choose the smallest service-owned repair and require affected focused
+checks, advancing actual decoded frames, frozen required validation, independent
+exact review, u1-ship, BOTH restarts and actual served-Live verification. Keep
+failed attempts; HTTP success, synthetic media and health alone cannot close C08.
+
+The separate Switch44px change can proceed through its own release gates while
+C08 remains open: visible track matches Button, thumb40px with2px inset, Camera
+three-mode width132px and Bed two-mode width88px. Author evidence is26 units and
+33 distinct synthetic consumer browser cases (10 initial passes plus23 renewed),
+with bounded design review. Three consumer packages/pins are integrated;12 package
+tests/130 assertions and Live/Lab deterministic checks pass. The other12 public
+HTML files are unchanged. Exact frozen validation/review and deployment are pending.
+
+Preserve Snapshot/Live/Auto compact icons, footer errors and service-owned Camera
+lifecycle. Loading skeleton/Refresh questions were explanatory only: loading policy
+is unchanged. Keep all55 ledger IDs, Progress no-action, F07 class discussion,
+separate c6 and remaining renderer/product backlog. PR93 remains deployed.
+
+## Deployed baseline: PR93 source accepted and shipped
 
 PR93 merged `60cab96747775fd5715b4c626f99726e68b3d85c` from independently approved
 `7a0d398c1652d1a7ae8aede8bf952f27bb3636cd`, tree
@@ -26,12 +61,10 @@ rollback not needed. Five independent HTTPS served-UI cases pass: Kit Fans320/72
 Heads, Camera and Camera Lab. All tool/media data is synthetic; no actual printer
 or real Live acquisition was performed. Do not infer actual-device acceptance.
 
-Next preserve remaining native-renderer/product work and investigate C08's open
-intermittent unclassified Live acquisition failure within its own scope. All55
+Remaining native-renderer/product work stays behind the active C08 repair. All55
 ledger IDs, Progress no-action, F07 class discussion and separate c6 remain.
-This is a docs-only release-record tail; under0028, unchanged application bytes
-require no repeat build, deployment or restart. Independent docs review binds the
-retained evidence to the documentation head.
+The completed PR93 docs-only tail retained application evidence without another
+deployment under0028. The new C08 code repair requires its own exact release gates.
 
 ### Earlier source checkpoint before decision0042
 

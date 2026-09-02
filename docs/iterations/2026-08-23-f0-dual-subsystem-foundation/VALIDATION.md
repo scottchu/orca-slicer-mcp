@@ -1,6 +1,117 @@
 # F0 dual-subsystem foundation validation
 
-## Current PR93 source approval and guarded shipment
+## Current C08 diagnosis: remote UDP send fails; root cause unproven
+
+The designated application author's nine bounded attempts are frozen in
+`app/test-results/c08-diagnosis/REPORT.json`, SHA256
+`d0f8005d53abdfe2bdc37dbe5c65d4699c50b5b677d6348c1077bf149e5aeddc`.
+Attempt1 uses actual deployed HTTPS: activation snapshot200, open has no response
+before the12.112s Auto sample, and browser peer/ICE/decoded-frame counts remain0.
+Attempts2/3/4/6/7/9 use current Bun1.4.0 and produce no upstream RTP; attempts5/8
+use immutable PR89 Bun1.3.12 with the same current adapter source and reach upstream
+RTP plus a viewer offer. This is upstream protocol evidence, not browser decoding.
+
+Canonical attempts8/9 share trace SHA256
+`77468f1703bdab4343fd0f0a2ca5f4ec0f5ea0e59313e98c647725545bbb5535`.
+The author ran `uv run --no-project test-results/c08-diagnosis/run-comparison.py`
+with each runtime and its respective `attempt-8-bun1312-binding` /
+`attempt-9-bun140-binding` output stem; private binary paths are omitted here.
+Bun1.3.12 reaches upstream RTP at1157ms and viewer offer at1175ms with no UDP-send
+error. Bun1.4.0 receives external STUN responses but all10 printer ICE-send callbacks
+return `EHOSTUNREACH`; no selected pair/RTP appears before12.068s cleanup.
+The respective logs have SHA256
+`05a93115196d98af4b3fad1f80daa3c081afa89c2552dec83d4816ebdf2c469f` and
+`c503ed65c8de6e3d2b327524a92955709eb52bd659eeeb05491a97aaef4039b8`.
+
+Both use udp4 wildcard binding, the same advertised interfaces, configured printer
+IPv4 and kernel route. Synthetic authenticated STUN wire bytes match exactly
+(SHA256 `9263fcab17d321e727898f56d919a063e61ef5c98ae739299629dd8acafb7453`)
+and parse successfully; loopback and two own-interface UDP round trips pass on both.
+These local/synthetic checks do not prove remote-printer reachability. Signing
+identifier/Team/designated requirement match; executable UUIDs differ. A bounded
+OS log query returns0 entries, which does not determine permission state.
+
+Read-only primary-source research found no matching Bun regression issue.
+[Apple TN3179](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy)
+documents LAN UDP access rules, responsible-code/signature/UUID tracking and the
+LaunchAgent distinction; it does not identify this failure's cause. Neither macOS
+Local Network denial nor a Bun defect is established. The coordinator requested
+the user's visible Local Network entry state; no settings change is authorized.
+No production service source changed, no runtime rollback or repair was adopted,
+and current served Live remains unaccepted. All nine subprocesses and owned peers,
+the isolated browser and contexts are closed; user tabs and services are preserved.
+No printer controls, service restart or further real-camera probes were performed.
+
+## Current Switch44px source and synthetic consumer evidence
+
+The separate user-approved Switch geometry source is frozen in
+`app/test-results/camera-switch-height/AUTHOR-REPORT.json`, SHA256
+`64c76bd43f38847f6a498e7ed1bc2bfe72066b65638652c3406a7c79bcf5aab9`.
+Only `src/components/common/Switch.svelte` production CSS changes: its existing44px
+outer box is filled by the track; the40px thumb keeps2px inset; existing action-size
+tokens replace repeated sizes. DOM/state/loading policy is unchanged. Switch SHA256
+is `5cbc5d9d4c7a6b62025ee49512596153bb23e2933d1938b8657044bb466e962d`.
+Affected source consumers are CameraWidget, CameraLabWidget and BedMeshWidget;
+the three existing browser geometry files bind their revised assertions.
+
+`bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/common/Switch.test.ts`
+passes26 tests. Five separate isolated build commands compile Camera Live, Camera
+Lab, Bed Lab and the two affected harnesses without modifying shared/public outputs.
+The source-producer copies preserve options and graph guards, changing only output/
+import paths; the state-harness copy selects only Switch. Exact commands and output
+hashes are in the report. Sizes94546/83945/636894 are isolated UI evidence only.
+
+The private4182 Playwright run initially passes10 Camera Lab cases, fails two Camera
+cases and interrupts one because a newly added assertion used a dialog label as
+the fullscreen button name. This fixture error and traces remain. Correcting only
+that selector, the targeted Camera/shared-Switch/Bed renewal passes23 cases in18.1s;
+33 distinct cases are covered through10 retained+23 renewed, not one clean full run.
+Evidence confirms Camera and Lab44px track/Button parity,40px thumb,132px three-mode
+width, stable loading/ready geometry, Bed88px two-mode width, keyboard/focus/URL and
+reduced-motion behavior at the recorded widths/text scales. These use synthetic
+media/tool data and do not prove C08 Live connectivity. The author inspected the
+packaged Camera Lab320 screenshot; independent exact/UI review remains separate.
+
+At this isolated UI checkpoint, all15 public HTML files were byte-identical to
+HEAD and no shared build/pins changed. The application author separately owns
+final CameraLive/CameraLab/BedLab regeneration and package-pin integration. All fixture/browser/runner handles closed,
+4182 is free, and `git diff --check` passes. No actual printer connection, full
+repository/browser run, commit or deployment was performed by the UI/records author.
+
+### Integrated Switch packages: author source freeze
+
+The separate integration report
+`app/test-results/camera-switch-height/integrated/REPORT.json`, SHA256
+`88e527c53e69f340881b1fea3b8425ba489fed03aef2d93d10faf5945405df77`,
+binds the unchanged Switch source and three browser test files above, three rebuilt
+public packages and the two package-pin test files. All other12 public HTML files
+match HEAD. Camera service/transport/lifecycle, dependencies and runtime are unchanged.
+
+With `bun --no-env-file --config=/dev/null`, the author ran `run build:live-camera`,
+`run scripts/build-camera-lab.ts`, `run build:bed-mesh-lab`, then
+`run scripts/package-private-lab.ts`: all exit0. The focused
+`test tests/server/private-lab.test.ts tests/server/live-fans-package.test.ts`
+passes12 tests/130 assertions; log SHA256
+`548d5f5a1bb30022c13a83b174d08bb65230750bd180b9d93e1ec6c40251b676`.
+`run verify:live-camera` and `run scripts/package-private-lab.ts --check` pass.
+The report records each exact command and log hash.
+
+| Package | Bytes | SHA256 |
+| --- | ---: | --- |
+| Camera Live |94546|`4ccfa91f17d00ff33762ba0cd68b9288516ffe3ffbab6558cdb8f1bf30713535`|
+| Camera Lab |83945|`e3e1fadeb9aaf9aa416fe9950a9e49abdbd512124844de746913647078df5bf9`|
+| Bed Lab |636894|`d3b92ed3c854c6a1d39c9ff90c0a8894f116349add5ba0bebaa5e36454634a4e`|
+
+These equal the isolated consumer bytes supporting the retained26-unit/33-case
+mixed browser evidence; integration did not rerun those tests. Bounded design
+review and author checks do not replace independent exact candidate acceptance.
+All integration processes finished and owned resources are closed. The records
+pass preserves55 ledger IDs and passed `git diff --check`; it ran no app/full/browser
+suite. Next freeze a candidate for required validation, independent exact review
+and guarded Switch delivery. PR93 remains deployed and C08 remains unresolved;
+no current-runtime actual decoded-frame acceptance or service fix is claimed.
+
+## Deployed PR93 source approval and guarded shipment
 
 Independent exact review of `7a0d398c1652d1a7ae8aede8bf952f27bb3636cd`, tree
 `d8a34948e29a4b93b62125d4aef0100a1ddd9f04`, APPROVES the repaired candidate.

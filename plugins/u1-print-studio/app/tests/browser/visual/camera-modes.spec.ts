@@ -32,6 +32,13 @@ for (const width of [320, 390, 720]) for (const doubled of [false, true]) test(`
   await expect(frame.locator('img')).toBeVisible();
   if (doubled) await enlarge(frame);
   const modes = frame.getByRole('radiogroup', { name: 'Camera mode' });
+  const fullscreen = frame.getByRole('button', { name: 'Fullscreen', exact: true });
+  const track = modes.locator('.track');
+  await expect(modes).toHaveCSS('width', '132px');
+  await expect(track).toHaveCSS('height', '44px');
+  expect(await track.boundingBox()).toEqual(await modes.boundingBox());
+  expect((await track.boundingBox())!.height).toBe((await fullscreen.boundingBox())!.height);
+  await expect(modes.locator('.thumb')).toHaveCSS('height', '40px');
   expect(await modes.getByRole('radio').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')))).toEqual(['Snapshot', 'Live', 'Auto']);
   await expect(modes.getByRole('radio')).toHaveText(['', '', '']);
   const original = await bounds(frame);
