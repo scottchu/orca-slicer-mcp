@@ -67,17 +67,17 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
       for (const phase of ['error', 'unavailable']) {
         await page.getByLabel('Preview state', { exact: true }).selectOption(phase);
         if (view === 'bed_mesh') {
-          await expect(page.getByRole('status')).toHaveCount(0);
+          await expect(page.getByRole('status')).toHaveCount(1);
           await expect(page.locator('[data-widget-shell] canvas')).toHaveCount(0);
           await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
-          await expect(page.locator('[data-chart-frame] [aria-live="polite"]')).toHaveCount(1);
+          await expect(page.locator('[data-widget-state-surface] [aria-live="polite"]')).toHaveCount(1);
           expect(await bounds(page)).toEqual(loading);
         } else {
           await expect(page.getByRole('status')).toHaveCount(1);
           await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
           await expect(page.locator('[data-widget-shell] canvas,[data-widget-shell] video,[data-widget-shell] [aria-valuenow]')).toHaveCount(0);
-          await expect(page.locator('.widget-feedback')).toBeVisible();
-          expect(await page.locator('.widget-feedback').evaluate(node => getComputedStyle(node).position)).toBe('absolute');
+          await expect(page.locator('[data-footer-status]')).toBeVisible();
+          await expect(page.locator('.widget-feedback')).toHaveCount(0);
           expect(await page.locator('[data-widget-shell] [data-loading-value]').count()).toBeGreaterThan(0);
           expect(await page.locator('[data-widget-shell] [data-loading-value],[data-widget-shell] [data-skeleton]').evaluateAll(nodes => nodes.every(node =>
             [null, '::before', '::after'].every(pseudo => getComputedStyle(node, pseudo).animationName === 'none')))).toBe(true);

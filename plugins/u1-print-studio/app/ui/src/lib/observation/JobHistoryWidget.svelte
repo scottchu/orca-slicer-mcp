@@ -6,12 +6,14 @@
   import LoadingValue from '../ui/LoadingValue.svelte';
   import { loadingObservation, structureCount, type FailureProps } from './loading';
   type Props = FailureProps & ({ observation: JobHistoryObservation; loading?: false; refreshing?: boolean; rows?: never } | { loading: true; observation?: never; refreshing?: never; rows?: number });
-  let { observation, loading = false, refreshing = false, rows = 4, failure, onretry }: Props = $props();
-  const history = $derived(loadingObservation(loading, observation, validateJobHistory));
-  const items = $derived(history?.items ?? Array.from({ length: structureCount(rows, 20) }, (_, index) => ({ position: index + 1 })));
+  let { observation, loading: pending = false, refreshing = false, rows = 4, failure, onretry }: Props = $props();
+  const loading = $derived(pending || !!failure);
+  const accepted = $derived(loadingObservation(pending, observation, validateJobHistory));
+  const history = $derived(failure ? null : accepted);
+  const items = $derived(history?.items ?? Array.from({ length: structureCount(accepted?.items.length ?? rows, 20) }, (_, index) => ({ position: index + 1 })));
 </script>
 
-<ObservationFrame title="Job History" icon={History} observedAt={history?.sourceObservedAt ?? null} freshness={history?.freshness ?? 'unknown'} stateKind={failure ?? (loading ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing}>
+<ObservationFrame title="Job History" icon={History} observedAt={history?.sourceObservedAt ?? null} freshness={history?.freshness ?? 'unknown'} stateKind={failure ?? (pending ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing}>
   <div class="observation-list">
     {#each items as item, index}
       <div class="observation-row history-row">

@@ -3,7 +3,7 @@ import { defaultSelection, setSelection } from './controller';
 import { OBSERVATION_LAB_VIEWS } from './observation-fixtures';
 import { observationProps } from './observation-props';
 
-it.each(OBSERVATION_LAB_VIEWS)('%s initial failures use only public neutral props and retained error keeps receipt', (view) => {
+it.each(OBSERVATION_LAB_VIEWS)('%s initial failures use only public neutral props and retained error also has no telemetry', (view) => {
   const ready = defaultSelection(view);
   const props = observationProps(ready);
   expect(props.loading).toBe(false);
@@ -13,7 +13,7 @@ it.each(OBSERVATION_LAB_VIEWS)('%s initial failures use only public neutral prop
     expect(placeholder).not.toHaveProperty('observation');
   }
   const retained = observationProps(setSelection(ready, 'phase', 'retained-error'));
-  expect(retained.loading).toBe(false);
-  expect(retained.observation).toEqual(props.observation);
-  expect(retained.refreshing).toBe(false);
+  expect(retained.loading).toBe(true);
+  expect(retained).not.toHaveProperty('observation');
+  expect(retained).not.toHaveProperty('refreshing');
 });

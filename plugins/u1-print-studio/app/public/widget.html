@@ -68,6 +68,8 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       .neutral-stack { display: grid; gap: 14px; }
       .neutral-chart { aspect-ratio: 4 / 3; border: 1px solid var(--line); border-radius: 16px; background: var(--soft); }
       .neutral-action { width: 44px; height: 44px; border-radius: 12px; background: var(--soft); }
+      .neutral-allocation { display: grid; height: 100%; min-height: 0; grid-auto-rows: minmax(0, 1fr); gap: 8px; }
+      .neutral-allocation > span { min-height: 0; border-radius: 8px; background: var(--soft); }
       [data-observation-placeholder="loading"] .neutral-value { animation: neutral-pulse 1.3s ease-in-out infinite alternate; }
       @keyframes neutral-pulse { to { opacity: .45; } }
       @media (prefers-reduced-motion: reduce) { [data-observation-placeholder] .neutral-value { animation: none; } }
@@ -4851,7 +4853,7 @@ void main() {
         const profile = typeof data.profile === "string" && /^[\p{L}\p{N} _.-]{1,80}$/u.test(data.profile) ? ` · ${escapeHtml(data.profile)}` : "";
         const plot = meshPlot();
         const legend = `<div class="mesh-legend" aria-label="Height color scale: ${meshMm(min)} to ${meshMm(max)}"><span>Z (mm)</span><span>${meshMm(min)}</span><span class="mesh-colors" aria-hidden="true">${Array.from({ length: 16 }, (_, i) => `<span style="background:${meshColor(min + range * i / 15, min, range)}"></span>`).join("")}</span><span>${meshMm(max)}</span></div>`;
-        const controls = `<footer class="instrument-footer u1-footer mesh-controls"><span class="mesh-control-cluster u1-local-actions"><button type="button" class="mesh-control u1-action" data-mesh-mode="3d" aria-label="Show 3D bed mesh" title="3D view" aria-pressed="${meshView.mode === "3d"}">${meshIcon("box")}</button><button type="button" class="mesh-control u1-action" data-mesh-mode="2d" aria-label="Show 2D bed mesh" title="2D view" aria-pressed="${meshView.mode === "2d"}">${meshIcon("grid")}</button></span><span class="mesh-control-cluster u1-primary-actions"><button type="button" class="mesh-control mesh-reset u1-action" aria-label="Reset bed mesh view" title="Reset view">${meshIcon("rotate-ccw")}</button><button class="refresh u1-action u1-action--round" type="button" title="Refresh observation" aria-label="Refresh observation">${icon("refresh-cw")}</button></span></footer>`;
+        const controls = `<footer class="instrument-footer u1-footer mesh-controls"><span class="mesh-control-cluster u1-local-actions"><button type="button" class="mesh-control u1-action" data-mesh-mode="3d" aria-label="Show 3D bed mesh" title="3D view" aria-pressed="${meshView.mode === "3d"}">${meshIcon("box")}</button><button type="button" class="mesh-control u1-action" data-mesh-mode="2d" aria-label="Show 2D bed mesh" title="2D view" aria-pressed="${meshView.mode === "2d"}">${meshIcon("grid")}</button></span><span class="mesh-control-cluster u1-primary-actions">${footerStatus()}<button type="button" class="mesh-control mesh-reset u1-action" aria-label="Reset bed mesh view" title="Reset view">${meshIcon("rotate-ccw")}</button><button class="refresh u1-action u1-action--round" type="button" title="Refresh observation" aria-label="Refresh observation">${icon("refresh-cw")}</button></span></footer>`;
         return `<section class="instrument u1-card">${heading}<div class="mesh-body u1-body"><p class="mesh-caption">Reported probe grid · ${columns} × ${rows}${profile}</p><div class="mesh-chart" data-mode="${meshView.mode}" tabindex="0" role="group" aria-label="Bed mesh view.">${plot}</div>${legend}<p class="mesh-disclosure">Z display ×${Math.round(meshDisplayScale(meshGeometry))}</p><dl class="mesh-summary u1-facts"><div><dt>Minimum</dt><dd>${meshMm(min)}</dd></div><div><dt>Maximum</dt><dd>${meshMm(max)}</dd></div><div><dt>Range</dt><dd>${meshMm(range)}</dd></div></dl></div>${controls}</section>`;
       };
       const overviewStates = ["known", "stale", "unknown", "unsupported", "unavailable"];
@@ -4949,18 +4951,26 @@ void main() {
       };
       const viewTitles = { overview: "Overview", progress: "Print Progress", thermals: "Thermals", heads: "Heads & Filaments", jobs: "Current Job", job_history: "Job History", queue: "Print Queue", fans: "Fans & Air", bed_mesh: "Bed Mesh" };
       let retainedPresentation = null;
+      let placeholderPhase = 'loading';
+      let placeholderMessage = '';
+      const layoutSignature = () => {
+        const title = modulesElement.querySelector('.u1-title');
+        return [modulesElement.getBoundingClientRect().width, title ? getComputedStyle(title).fontSize : ''];
+      };
       const retainPresentation = () => {
         if (retainedPresentation || !observation) return;
         const section = modulesElement.querySelector('.instrument');
         if (!section || section.hasAttribute('data-observation-placeholder')) return;
         const selectors = ['.u1-header', '.u1-body', '.u1-footer'];
-        retainedPresentation = { section: selectedView === 'bed_mesh' ? section : null, width: modulesElement.getBoundingClientRect().width,
+        retainedPresentation = { section: selectedView === 'bed_mesh' ? section : null, signature: layoutSignature(),
           heights: selectors.map(selector => section.querySelector(selector)?.getBoundingClientRect().height ?? 0),
           rows: Array.isArray(observation.module?.items) ? Math.min(100, observation.module.items.length) : undefined };
         if (retainedPresentation.section) { section.setAttribute('data-retained-observation', ''); section.inert = true; section.setAttribute('aria-hidden', 'true'); }
         modulesElement.style.position = 'relative';
       };
       const showPlaceholder = (phase = "loading", message = "") => {
+        placeholderPhase = phase;
+        placeholderMessage = message;
         const view = selectedView ?? "overview";
         const title = selectedView ? viewTitles[view] : "Printer observation";
         const retry = phase !== "loading" && selectedView && window.parent !== window;
@@ -4970,14 +4980,37 @@ void main() {
         const retained = retainedPresentation?.section;
         retained?.remove();
         modulesElement.innerHTML = `<section class="instrument u1-card" data-observation-placeholder="${phase}" aria-busy="${phase === "loading"}">${heading}<div class="u1-body">${neutralBodies[view]()}</div><footer class="instrument-footer u1-footer"><div class="u1-primary-actions">${footerStatus(message)}${action}</div></footer></section>`;
-        if (retainedPresentation && Math.abs(modulesElement.getBoundingClientRect().width - retainedPresentation.width) <= 1) ['.u1-header', '.u1-body', '.u1-footer'].forEach((selector, index) => {
+        if (retainedPresentation?.heights) ['.u1-header', '.u1-body', '.u1-footer'].forEach((selector, index) => {
           const region = modulesElement.querySelector(selector), height = retainedPresentation.heights[index];
-          if (region && height) region.style.minHeight = `${height}px`;
+          if (!region || !height) return;
+          if (index === 1) {
+            // Allocate only measured pixels and bounded row count. No retained
+            // text, telemetry or hidden DTO supplies a placeholder's geometry.
+            const rows = Math.max(1, Math.min(retainedPresentation.rows ?? 4, Math.floor(height / 20)));
+            region.style.height = `${height}px`;
+            region.innerHTML = `<div class="neutral-allocation" aria-hidden="true">${'<span></span>'.repeat(rows)}</div>`;
+          } else region.style.minHeight = `${height}px`;
         });
         if (retained) modulesElement.append(retained);
+        allocationObserver?.disconnect();
+        allocationObserver?.observe(modulesElement);
+        const titleNode = modulesElement.querySelector('.u1-title');
+        if (titleNode) allocationObserver?.observe(titleNode);
         if (retry) modulesElement.querySelector(".refresh")?.addEventListener("click", () => void retryLoad());
         window.openai?.notifyIntrinsicHeight?.();
       };
+      const releaseChangedAllocation = () => {
+        if (!retainedPresentation?.heights) return;
+        const signature = layoutSignature();
+        if (Math.abs(signature[0] - retainedPresentation.signature[0]) <= 1 && signature[1] === retainedPresentation.signature[1]) return;
+        retainedPresentation.heights = null;
+        showPlaceholder(placeholderPhase, placeholderMessage);
+      };
+      const allocationObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(releaseChangedAllocation) : null;
+      allocationObserver?.observe(modulesElement);
+      window.addEventListener('resize', releaseChangedAllocation);
+      window.addEventListener('pagehide', () => allocationObserver?.disconnect());
+      window.addEventListener('pageshow', () => { allocationObserver?.observe(modulesElement); releaseChangedAllocation(); });
       const render = () => { if (!observation?.module) return; disposeMeshRenderer(); retainedPresentation = null; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); if (view === "bed_mesh") bindMeshControls(); if (view === "heads") bindMaterialCopy(); window.openai?.notifyIntrinsicHeight?.(); };
       const rpcNotify = (method, params) => window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
       const rpcRequest = (method, params) => new Promise((resolve, reject) => {
@@ -4988,18 +5021,27 @@ void main() {
       });
       const validObservation = (value) => value && VIEWS.includes(value.view) &&
         value.module?.kind === value.view && typeof value.module.state === "string";
+      const failedDomain = (value, depth = 0) => {
+        if (!value || typeof value !== 'object' || depth > 3) return false;
+        if (['unavailable', 'unsupported'].includes(value.state)) return true;
+        if (value.state === 'stale' && ['unauthorized', 'http_error', 'timeout', 'network', 'malformed', 'too_large', 'not_configured', 'unsupported'].includes(value.reason)) return true;
+        return [value.materials, value.environment, ...Object.values(value.receipts ?? {}), ...(Array.isArray(value.tiles) ? value.tiles : [])].some(child => child && failedDomain(child, depth + 1));
+      };
       const applyResult = (result) => {
         const candidates = [result?.structuredContent, result?.result?.structuredContent, result?.mcp_tool_result?.structuredContent, result?.call_tool_result?.structuredContent, result];
         const candidate = candidates.find(validObservation);
         if (!candidate || (selectedView && candidate.view !== selectedView)) return false;
         selectedView = candidate.view;
         const previous = observation;
-        if (candidate.module.state === "unavailable" || candidate.module.state === "unsupported") {
+        if (failedDomain(candidate.module)) {
           acceptedResult = true;
+          // Geometry is not observation acceptance; preserve its numeric shape
+          // even when an unknown result or a new epoch invalidates cached data.
+          if (previous?.view === candidate.view) retainPresentation();
           const message = candidate.view === "bed_mesh" && candidate.module.reason === "not_reported" ? "Bed mesh not reported" : `${viewTitles[candidate.view]} ${candidate.module.state === "unsupported" ? "endpoint unsupported" : "unavailable"}`;
           if (previous && ["known", "stale"].includes(previous.module.state) && previous.view === candidate.view && Number.isSafeInteger(candidate.connectionEpoch) && candidate.connectionEpoch >= 0 && candidate.connectionEpoch === previous.connectionEpoch) {
             showPlaceholder("unavailable", message);
-          } else { observation = null; disposeMeshRenderer(); retainedPresentation = null; showPlaceholder("unavailable", message); }
+          } else { observation = null; disposeMeshRenderer(); if (retainedPresentation) retainedPresentation.section = null; showPlaceholder("unavailable", message); }
           clearTimeout(loadTimer);
           return true;
         }
@@ -5023,7 +5065,7 @@ void main() {
       const refresh = async () => {
         if (!selectedView || refreshPending || window.parent === window) return;
         refreshPending = true;
-        if (!observation) { acceptedResult = false; showPlaceholder("loading"); }
+        if (!observation) { acceptedResult = false; if (placeholderPhase === 'loading') showPlaceholder("loading"); }
         modulesElement.querySelectorAll(".refresh").forEach((button) => { button.disabled = true; button.setAttribute("aria-busy", "true"); });
         try {
           if (!bridge) bridge = await initializeBridge();

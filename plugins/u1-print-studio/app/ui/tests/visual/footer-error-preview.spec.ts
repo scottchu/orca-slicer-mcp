@@ -53,3 +53,42 @@ for (const doubled of [false, true]) test(`Heads balanced Copy and footer error 
   await page.screenshot({ path: info.outputPath('heads-error.png'), fullPage: true });
   await info.attach('geometry', { body: JSON.stringify({ measurements, ready, failed, footer }), contentType: 'application/json' });
 });
+
+for (const [view, counts] of [['job_history', [0, 1, 20]], ['queue', [0, 1, 10]]] as const) {
+  for (const width of [320, 390, 720]) for (const doubled of [false, true]) test(`${view} short/long failure allocations ${width} text200=${doubled}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1500 });
+    for (const count of counts) {
+      await page.goto(`/dashboard/lab/${view}?lab_count=${count}`);
+      const control = page.getByLabel('Preview state', { exact: true }); await control.waitFor();
+      if (doubled) await enlarge(page);
+      const ready = await geometry(page);
+      await control.selectOption('retained-error');
+      const failed = await geometry(page);
+      failed.forEach((row, i) => row.forEach((value, j) => expect(Math.abs(value - ready[i][j]), `${count}: region${i}/${j}`).toBeLessThanOrEqual(1)));
+      await expect(page.locator('[data-widget-body] time')).toHaveCount(0);
+      await expect(page.locator('[data-footer-status]')).toBeVisible();
+      await control.selectOption('ready');
+      const recovered = await geometry(page);
+      recovered.forEach((row, i) => row.forEach((value, j) => expect(Math.abs(value - ready[i][j])).toBeLessThanOrEqual(1)));
+      expect(await page.locator('[data-widget-body]').evaluate(node => (node as HTMLElement).style.minBlockSize)).toBe('');
+    }
+  });
+}
+
+test('failed allocation follows font-only and width resize and releases on recovery', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 1500 });
+  await page.goto('/dashboard/lab/heads');
+  const control = page.getByLabel('Preview state', { exact: true }); await control.waitFor();
+  await control.selectOption('retained-error');
+  const allocation = () => page.locator('[data-widget-body]').evaluate(node => (node as HTMLElement).style.minBlockSize);
+  await expect.poll(allocation).not.toBe('');
+  await enlarge(page);
+  await expect.poll(allocation).toBe('');
+  await control.selectOption('ready'); await control.selectOption('retained-error');
+  await expect.poll(allocation).not.toBe('');
+  await page.setViewportSize({ width: 720, height: 1500 });
+  await expect.poll(allocation).toBe('');
+  await expect(page.getByRole('button', { name: /^Copy / })).toHaveCount(0);
+  await control.selectOption('ready');
+  await expect(page.getByRole('button', { name: /^Copy T1 / })).toBeVisible();
+});

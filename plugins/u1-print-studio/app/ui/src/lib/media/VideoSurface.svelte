@@ -5,7 +5,7 @@
   import Skeleton from '../ui/Skeleton.svelte';
   import { createVideoPlayback, type VideoSurfacePort } from './playback';
   let { snapshot = null, active = false, loading = false, failed = false, feedback = '', actions, onready, onfeedback }: {
-    snapshot?: string | null; active?: boolean; loading?: boolean; failed?: boolean; feedback?: string; actions: Snippet;
+    snapshot?: string | null; active?: boolean; loading?: boolean; failed?: boolean; feedback?: string; actions?: Snippet;
     onready: (surface: VideoSurfacePort) => (() => void); onfeedback: (message: string) => void;
   } = $props();
   type WebkitVideo = HTMLVideoElement & { webkitPresentationMode?: string; webkitSupportsPresentationMode?: (mode: string) => boolean; webkitSetPresentationMode?: (mode: string) => void };
@@ -18,6 +18,11 @@
   let mounted = false;
   let displayPending = false;
   let returnFocus: HTMLElement | null = null;
+  $effect(() => {
+    // A failed acquisition masks in-frame actions. Leave the local viewport
+    // presentation so its still-available footer Retry remains reachable.
+    if (failed && localFullscreen) { localFullscreen = false; fullscreen = false; }
+  });
   const updateDisplay = () => {
     if (!mounted) return;
     fullscreen = document.fullscreenElement === frame || localFullscreen;
@@ -93,7 +98,7 @@
       {:else}
         {#if active && canPip}<IconButton label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
         <IconButton label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
-        {@render actions()}
+        {@render actions?.()}
       {/if}
     </div>
     {#if feedback}<div class="feedback" data-media-feedback>{feedback}</div>{/if}

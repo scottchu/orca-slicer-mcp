@@ -91,4 +91,19 @@ describe('closed Camera transport and private response parsing', () => {
     await expect(port.candidates(id, [{ candidate: 'fixture', sdpMid: null, sdpMLineIndex: 0 }])).rejects.toThrow();
     await expect(port.close(id)).rejects.toThrow();
   });
+  it('accepts the dashboard direct acknowledgements without weakening negative or envelope checks', async () => {
+    const callTool = vi.fn().mockResolvedValueOnce({ accepted: true })
+      .mockResolvedValueOnce({ accepted: true, candidateCount: 1 }).mockResolvedValueOnce({ closed: false });
+    const port = cameraTransport({ callTool });
+    const candidate = { candidate: 'fixture', sdpMid: null, sdpMLineIndex: 0 };
+    await port.answer(id, 'fixture-answer'); await port.candidates(id, [candidate]); await port.close(id);
+    for (const response of [{ accepted: false }, { accepted: 'true' }, { accepted: true, isError: true }, { accepted: true, structuredContent: null }, { structuredContent: { accepted: false }, accepted: true }]) {
+      callTool.mockResolvedValue(response);
+      await expect(port.answer(id, 'fixture-answer')).rejects.toThrow('Invalid Camera response');
+    }
+    callTool.mockResolvedValue({ accepted: true, candidateCount: 2 });
+    await expect(port.candidates(id, [candidate])).rejects.toThrow();
+    callTool.mockResolvedValue({ closed: 'true' }); await expect(port.close(id)).rejects.toThrow();
+    expect(() => parseCameraOffer({ schemaVersion: 2, available: true })).toThrow();
+  });
 });

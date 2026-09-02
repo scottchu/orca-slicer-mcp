@@ -36,7 +36,7 @@ for (const width of [320, 390, 720]) for (const doubled of [false, true]) {
         await control.selectOption(phase);
         await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
         await expect(page.getByRole('status')).toHaveCount(1);
-        await expect(page.locator('.widget-feedback')).toBeVisible();
+        await expect(page.locator('[data-footer-status]')).toBeVisible();
         await expect(page.locator('[data-widget-shell] canvas, [data-widget-shell] video')).toHaveCount(0);
         expect(await page.locator('[data-skeleton], [data-loading-value], [data-loading-value] span').evaluateAll((nodes) => nodes.length > 0 && nodes.every((node) => getComputedStyle(node).animationName === 'none'))).toBe(true);
         equalBounds(await bounds(page), loading);
@@ -61,9 +61,11 @@ for (const width of [320, 390, 720]) for (const doubled of [false, true]) {
       const content = await page.locator('[data-widget-body]').textContent();
       await control.selectOption('retained-error');
       equalBounds(await bounds(page), ready);
-      expect(await page.locator('[data-observed-meta]').allTextContents()).toEqual(receipt);
-      expect(await page.locator('[data-widget-body]').textContent()).toBe(content);
-      await expect(page.locator('.widget-feedback')).toHaveText('Refresh failed · showing previous observation');
+      expect(await page.locator('[data-observed-meta]').allTextContents()).not.toEqual(receipt);
+      expect(await page.locator('[data-widget-body]').textContent()).not.toBe(content);
+      await expect(page.locator('[data-footer-status]')).toContainText('Could not load');
+      await expect(page.locator('.widget-feedback')).toHaveCount(0);
+      await expect(page.getByRole('button', { name: /^Copy / })).toHaveCount(0);
       if (view === 'heads') {
         const rows = await page.locator('[data-inset-card] .footer').evaluateAll((footers) => footers.map((footer) => {
           const swatch = footer.querySelector('.swatch')!.getBoundingClientRect();

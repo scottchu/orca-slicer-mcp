@@ -176,7 +176,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     const refresh = frame.getByRole('button', { name: 'Refresh Heads & Filaments' }); await refresh.focus(); await refresh.press('Enter');
     await expect.poll(() => calls.length).toBe(2); expect(await bounds(frame)).toEqual(ready); await expect(refresh).toBeFocused();
     expect(await frame.locator('[data-observed-meta]').allTextContents()).toEqual(receipts);
-    release({ isError: true }); await expect(frame.getByRole('status')).toHaveText('Refresh failed · showing previous observation');
+    release({ isError: true }); await expect(frame.getByRole('status')).toHaveText('Could not load Heads & Filaments');
     expect(await bounds(frame)).toEqual(ready); await expect(refresh).toBeFocused();
     const next = liveHeadsResult(13, '2026-09-01T12:00:13.000Z');
     next.structuredContent.module.items[0].vendor.value = 'A'.repeat(64); next.structuredContent.module.items[0].materialType.value = 'B'.repeat(64); next.structuredContent.module.items[0].subtype = { state: 'known', value: 'C'.repeat(64) };
@@ -184,7 +184,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     next.structuredContent.module.items[0].temperature.value = Number.MAX_VALUE; next.structuredContent.module.items[0].target.value = -Number.MAX_VALUE;
     next.structuredContent.module.items[1].headState.value = 'COOLING'; next.structuredContent.module.items[1].reportedPresence.value = false;
     next.structuredContent.module.items[2].reportedPresence = { state: 'unknown', value: null }; next.structuredContent.module.items[2].target = { state: 'unknown', value: null };
-    next.structuredContent.module.materials.state = 'stale'; next.structuredContent.module.materials.freshness = 'stale'; next.structuredContent.module.materials.reason = 'timeout';
+    next.structuredContent.module.materials.state = 'stale'; next.structuredContent.module.materials.freshness = 'stale'; next.structuredContent.module.materials.reason = null; // Successful age-stale receipt.
     await page.evaluate((value) => document.querySelector('iframe')!.contentWindow!.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/tool-result', params: value }, '*'), next);
     await expect(frame.getByRole('region', { name: 'Tool 1', exact: true })).toContainText(next.structuredContent.module.items[0].material.value!);
     await expect(frame.getByRole('region', { name: 'Tool 2', exact: true })).toContainText('Cooling');

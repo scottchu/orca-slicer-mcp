@@ -14,11 +14,11 @@
   const action = createCopyAction(writeClipboard);
   let current = $state(action.getState());
   const stop = action.subscribe((value) => { current = value; });
-  $effect.pre(() => { heads; refreshing; action.invalidate(); });
+  $effect.pre(() => { heads; refreshing; failure; action.invalidate(); });
   onDestroy(() => { stop(); action.dispose(); });
   const copy = (id: HeadId, color: string) => {
     const item = items?.find((item) => item.physicalTool === id);
-    if (!refreshing && item && headColor(item.presence, item.color).color === color) void action.copy(id, color);
+    if (!failure && !refreshing && item && headColor(item.presence, item.color).color === color) void action.copy(id, color);
   };
 </script>
 <HeadsPanel {items} {materialShapes} observedAt={heads?.sourceObservedAt ?? null} freshness={heads?.freshness ?? 'unknown'} materials={heads ? { state: 'known', freshness: heads.freshness === 'offline' ? 'unknown' : heads.freshness, sourceObservedAt: heads.sourceObservedAt, receivedAt: heads.sourceObservedAt, checkedAt: heads.sourceObservedAt, reason: null } : undefined} phase={failure ?? (loading ? 'loading' : 'ready')} {refreshing} copying={current.copying} feedback={current.feedback} sourceLabel="Lab fixture · Head state & thermals" refreshLabel={failure ? 'Retry lab fixture' : 'Refresh lab fixture'} onrefresh={failure && onretry ? onretry : () => action.notify('Lab fixture refreshed')} oncopy={copy} />

@@ -1,6 +1,84 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: remote-resume checkpoint, unfinished footer/skeleton WIP
+## Current: resumed footer/skeleton WIP
+
+The user has resumed remote checkpoint
+`f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c` on
+`codex/u1-footer-error-skeletons`. The coordinator verified a clean current
+checkout and fetched/checked out the exact branch. The old worktree is archived
+and unregistered according to the user; there is no current cleanup request.
+Preserve all existing work and other worktrees. No force checkout, restart from
+main or c6 Camera integration belongs to this task.
+
+Current order: record the source-frozen candidate commit after final Camera
+renderer/geometry/package renewal, then run the required regression. The fixed
+Snapshot / Live / Auto switch has service-owned transitions; components subscribe/
+render. Preserve the existing phase1 footer/skeleton/Heads work; Camera Lab's two
+obsolete-selector renewals pass alongside six retained cases. Then complete the required regression
+with one owner, obtain independent review/targeted verification and ship through
+the guarded PR/deployment workflow. Caps remain unchanged repo guards. Preserve
+all ledger IDs/backlog and the separate source-only blocked c6 checkpoint.
+
+Phase1 Svelte authorship now has compiler/AST,158 unit,12 package and49 unique
+browser cases through retained+renewed runs. Shared/direct failure masking,
+pending Copy invalidation, Queue bounded short/long allocation, width/font resize
+release and Bed hidden renderer/Retry focus received focused repair/coverage.
+Obsolete presentation assertions were renewed while cache/order semantics remain.
+All eight packages have a phase1 identity record; light213926/Bed635242/Camera77725
+and aggregate926893 fit unchanged caps. These are evolving uncommitted bytes;
+new Camera changes invalidate affected pins/evidence, and no full gate is claimed.
+
+The coordinator reports four source-preflight findings fixed with focused author
+renewal, not independent exact approval. Phase2 author repairs now address raw
+Dashboard acknowledgement rejection and a 10-second mDNS candidate timeout that
+closed already-connected video. Only answer/candidate/close support both raw HTTP
+and MCP wrappers; frame/open envelopes stay strict. The typed-timeout exception
+requires the current live epoch/session, observed connection and an accepted frame
+received less than 5 seconds ago; invalid/rejected acknowledgements and all
+deadlines remain unchanged. A mixed candidate-UI/deployed-service actual-camera
+check remained Live for20.4s, with444 decoded1920x1080 frames and explicit own-lease
+close200. This is not final-renderer, deployment, phone or print acceptance.
+Legacy/Camera author evidence is90 app tests/
+1176 assertions,35 unit tests and scoped route checks; Camera Lab is six retained
+plus two renewed passes, not a clean full run. The generic Bed footer/allocation,
+Camera alias static transitions, combined font/viewport invalidation and camera
+failure-through-Retry paths have focused source/test repairs. Camera phase2 may
+change source and packages again; retain earlier evidence only for unchanged scope.
+VALIDATION records attributed commands, failed runs, renewals and log identities.
+No full regression, merge, deployment or actual-device acceptance is claimed.
+Historical checkpoint inventories below remain useful provenance, not current
+instructions to redo already covered work.
+
+Phase2 changed boundaries: `ui/src/lib/camera/session.ts`, `transport.ts`,
+`live-controller.ts`, real/Lab Camera roots/renderers and tests; new synthetic
+service, `ui/TextSegmentedControl` and Camera-only `StaticWidgetStateSurface`;
+the real-handler/host/transport integration in `src/status-dashboard.test.ts`;
+affected Camera bundles/pins. All paths are under `plugins/u1-print-studio/app/`.
+The static phase surface uses Camera's intrinsic fixed regions without the
+numeric resize-allocation observer needed by variable widgets. Caps were reduced
+through source graph work, not changed: final author Lab79375/80000,
+Live89770/100000, private aggregate928543/980000 and live aggregate462929.
+The one-word Auto header and intrinsic geometry have final focused renewal.
+
+Service author report `phase2-report.json` is final at SHA256
+`bd1188f404fa6ad035714a71ababc9067197dff4fdbb5a22225136ed395407d6`.
+Its55-test run retains52 cases plus5 renewed synthetic tests, with one separate
+HTTP integration pass. The renderer's final3 UI,23+2 browser and12 package tests/
+138 assertions, compiler/AST and package checks pass; the older6 mode-browser
+cases are superseded. Final `CAMERA-RENDERER-REPORT.md` and
+`camera-renderer-identities.json` are under ignored `ui/test-results/camera-modes-author`.
+Keep mixed
+actual-camera evidence tied to its91,063-byte UI hash in VALIDATION; final served
+Live needs its own bounded check after guarded deployment. All service-author
+browsers/processes and own leases were released; preserve ignored diagnostic logs.
+
+The user's Progress status question explicitly requested no action; P01/P02 remain
+not started and P03 decision pending. Continue Camera only within the current slice.
+
+## Historical pack-up record for saved f9fe1eb
+
+The following pack-up instructions and pending receipts describe the earlier
+checkpoint preparation only; the active resume order above supersedes its stop.
 
 ### Ready-to-paste new-task kickoff
 

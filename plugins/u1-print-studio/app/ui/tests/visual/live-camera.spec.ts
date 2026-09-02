@@ -10,7 +10,7 @@ const doubleText = (frame: Frame) => frame.evaluate(() => {
   };
   for (const sheet of document.styleSheets) for (const rule of sheet.cssRules) visit(rule);
 });
-const geometry = (frame: Frame) => frame.locator('[data-widget-shell],[data-widget-header],[data-widget-body],[data-media-slot]').evaluateAll((nodes) => nodes.map((node) => {
+const geometry = (frame: Frame) => frame.locator('[data-widget-shell],[data-widget-header],[data-widget-body],[data-widget-footer],[data-media-slot]').evaluateAll((nodes) => nodes.map((node) => {
   const box = node.getBoundingClientRect(); return [box.x + scrollX, box.y + scrollY, box.width, box.height];
 }));
 
@@ -37,7 +37,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await page.goto('/dashboard/camera'); await expect.poll(() => calls.length).toBe(1);
     const frame = page.frames().find((candidate) => candidate.url().endsWith('/dashboard/camera_widget'))!;
     if (enlarged) await doubleText(frame);
-    await expect(frame.locator('button')).toHaveCount(0); await expect(frame.getByRole('status')).toHaveText('Loading camera');
+    await expect(frame.getByRole('radio')).toHaveCount(3); await expect(frame.getByRole('status')).toHaveText('Loading camera');
     const before = await geometry(frame); release();
     await expect(frame.locator('[data-media-status]')).toContainText('Snapshot');
     await expect(frame.locator('img')).toBeVisible();
@@ -46,7 +46,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
       const header = await frame.locator('[data-widget-header]').boundingBox(), status = await frame.locator('[data-media-status]').boundingBox(), title = await frame.locator('h1').boundingBox();
       expect(status!.y).toBeLessThan(title!.y + title!.height); expect(status!.x).toBeGreaterThan(title!.x + title!.width - 1); expect(status!.y + status!.height).toBeLessThan(header!.y + header!.height);
     }
-    await frame.getByRole('button', { name: 'Go live', exact: true }).click();
+    await frame.getByRole('radio', { name: 'Live', exact: true }).click();
     await expect(frame.locator('[data-media-status]')).toContainText('Live');
     await expect(frame.locator('[data-media-fps]')).toContainText('FPS', { timeout: 7000 });
     await frame.evaluate(() => Object.assign(window, { __videoBefore: document.querySelector('video'), __streamBefore: document.querySelector('video')!.srcObject }));
@@ -99,20 +99,24 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     expect(await geometry(frame)).toEqual(before);
     await expect(frame.locator('[data-media-status]')).toContainText('Live');
     let closedLeases = 1;
-    if (width === 390 && !enlarged) {
+    if ((width === 390 && !enlarged) || (width === 320 && enlarged)) {
       await frame.evaluate(() => { (window as unknown as { __cameraProbe: { paused: boolean } }).__cameraProbe.paused = true; });
       await expect(frame.locator('[data-media-fps]')).toHaveCount(0, { timeout: 4000 });
-      await expect(frame.locator('[data-media-status]')).toContainText('Snapshot fallback', { timeout: 7000 });
+      await expect(frame.locator('[data-footer-status]')).toBeVisible({ timeout: 7000 });
+      await expect(frame.getByRole('radio', { name: 'Auto', exact: true })).toHaveAttribute('aria-checked', 'true');
+      await expect(frame.locator('video')).toHaveAttribute('aria-hidden', 'true');
+      await expect(frame.locator('[data-media-status] time')).toHaveCount(0);
+      expect(await frame.locator('[data-skeleton]').evaluateAll(nodes => nodes.every(node => getComputedStyle(node).animationName === 'none'))).toBe(true);
       expect(await geometry(frame)).toEqual(before);
       await frame.evaluate(() => { (window as unknown as { __cameraProbe: { paused: boolean } }).__cameraProbe.paused = false; });
-      await frame.getByRole('button', { name: 'Retry live camera' }).click();
+      await frame.getByRole('radio', { name: 'Live', exact: true }).click();
       await expect(frame.locator('[data-media-fps]')).toContainText('FPS');
       await frame.evaluate(() => { window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true })); window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true })); window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true })); });
       await expect(frame.locator('[data-media-fps]')).toContainText('FPS');
       expect(await frame.evaluate(() => (window as unknown as { __cameraProbe: { opens: number } }).__cameraProbe.opens)).toBe(3);
       closedLeases = 3;
     }
-    await frame.getByRole('button', { name: 'Close live camera' }).click();
+    await frame.getByRole('radio', { name: 'Snapshot', exact: true }).click();
     await expect(frame.locator('[data-media-status]')).toContainText('Snapshot');
     await expect.poll(() => calls.filter((call) => call.name === 'close_u1_camera_stream').length).toBe(closedLeases);
     expect(await geometry(frame)).toEqual(before);

@@ -12,6 +12,7 @@ import { PrinterObservationStore } from "./observation-store.js";
 import { adaptFans } from "../ui/src/lib/live/fans-adapter.js";
 import { adaptThermals } from "../ui/src/lib/live/thermals-adapter.js";
 import { adaptHeads } from "../ui/src/lib/live/heads-adapter.js";
+import { cameraTransport } from "../ui/src/lib/camera/transport.js";
 import { adaptQueue } from "../ui/src/lib/live/queue-adapter.js";
 
 const status: U1Status = {
@@ -127,6 +128,30 @@ async function rawGet(origin: string, target: string): Promise<number> {
 }
 
 describe("standalone status dashboard", () => {
+  test("actual dashboard acknowledgements survive the host bridge and strict Camera transport", async () => {
+    const origin = await startFixture();
+    const source = readFileSync(new URL('../public/camera-dashboard-host.html', import.meta.url), 'utf8').match(/<script>([\s\S]*?)<\/script>/)![1];
+    const handlers: Record<string, (event: unknown) => Promise<void>> = {};
+    const replies = new Map<number, (value: unknown) => void>();
+    const raw: unknown[] = [];
+    const frame = { src: '', contentWindow: { postMessage: (message: any) => { if (message.error) throw new Error(message.error.message); replies.get(message.id)?.(message.result); } } };
+    runInNewContext(source, {
+      TextEncoder, location: { origin },
+      document: { querySelector: (selector: string) => selector === '#camera-widget' ? frame : selector === '#bridge-state' ? { textContent: '' } : { addEventListener: () => {} } },
+      window: { addEventListener: (name: string, handler: typeof handlers[string]) => { handlers[name] = handler; } },
+      fetch: async (path: string, options: RequestInit) => { const response = await fetch(origin + path, options); const value = await response.json(); raw.push(value); return { ok: response.ok, json: async () => value }; },
+    });
+    let next = 0;
+    const transport = cameraTransport({ callTool: (name, argumentsValue) => new Promise((resolve, reject) => {
+      const id = ++next; replies.set(id, resolve);
+      void handlers.message({ source: frame.contentWindow, origin, data: { jsonrpc: '2.0', id, method: 'tools/call', params: { name, arguments: argumentsValue } } }).catch(reject);
+    }) });
+    await transport.answer('dashboard-session-token', 'fixture-answer');
+    await transport.candidates('dashboard-session-token', [{ candidate: 'candidate:fixture', sdpMid: '0', sdpMLineIndex: 0 }]);
+    await transport.close('dashboard-session-token');
+    expect(raw).toEqual([{ accepted: true }, { accepted: true, candidateCount: 1 }, { closed: true }]);
+  });
+
   test("builds a private Tailscale Serve HTTPS origin without accepting arbitrary DNS", () => {
     expect(
       tailscaleDashboardBaseUrl(

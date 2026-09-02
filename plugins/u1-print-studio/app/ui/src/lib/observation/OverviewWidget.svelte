@@ -6,11 +6,13 @@
   import LoadingValue from '../ui/LoadingValue.svelte';
   import { loadingObservation, type FailureProps } from './loading';
   type Props = FailureProps & ({ observation: OverviewObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never });
-  let { observation, loading = false, refreshing = false, failure, onretry }: Props = $props();
-  const overview = $derived(loadingObservation(loading, observation, validateOverview));
+  let { observation, loading: pending = false, refreshing = false, failure, onretry }: Props = $props();
+  const loading = $derived(pending || !!failure);
+  const accepted = $derived(loadingObservation(pending, observation, validateOverview));
+  const overview = $derived(failure ? null : accepted);
 </script>
 
-<ObservationFrame title="Overview" icon={LayoutDashboard} observedAt={overview?.sourceObservedAt ?? null} freshness={overview?.freshness ?? 'unknown'} stateKind={failure ?? (loading ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing}>
+<ObservationFrame title="Overview" icon={LayoutDashboard} observedAt={overview?.sourceObservedAt ?? null} freshness={overview?.freshness ?? 'unknown'} stateKind={failure ?? (pending ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing}>
   <div class="overview-grid">
     <div class="overview-item"><Printer aria-hidden="true" /><span data-required-text>Progress</span><strong data-required-text><LoadingValue {loading} text={overview ? `${Math.round(overview.progress.percent)}%` : undefined} size="short" /></strong><small data-required-text><LoadingValue {loading} text={overview ? titleCase(overview.progress.state) : undefined} /></small></div>
     <div class="overview-item"><Thermometer aria-hidden="true" /><span data-required-text>Thermals</span><strong data-required-text><LoadingValue {loading} text={overview ? `${Math.round(overview.thermals.nozzleC)}°` : undefined} size="short" /></strong><small data-required-text><LoadingValue {loading} text={overview ? `${Math.round(overview.thermals.bedC)}° bed · ${Math.round(overview.thermals.cavityC)}° cavity` : undefined} words={[3, 3, 1, 3, 6]} size="long" /></small></div>

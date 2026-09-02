@@ -9,6 +9,7 @@
   import StateAnnouncement from '../ui/StateAnnouncement.svelte';
   import WidgetStateSurface from '../ui/WidgetStateSurface/WidgetStateSurface.svelte';
   import Caption from '../ui/Caption.svelte';
+  import LoadingValue from '../ui/LoadingValue.svelte';
   import Icon from '../ui/Icon.svelte';
   import IconButton from '../ui/IconButton.svelte';
   import Skeleton from '../ui/Skeleton.svelte';
@@ -41,7 +42,7 @@
   </WidgetHeader>
   <WidgetBody>
     <Stack>
-      {#if placeholder}<QueueSummary loading /><QueueSkeleton rows={observed ? observation!.items.length : 3} />
+      {#if placeholder}{#if observation?.state === 'unknown'}<Caption><LoadingValue loading /></Caption>{:else}<QueueSummary loading /><QueueSkeleton rows={observed ? observation!.items.length : 3} compact={observed && !!current.failure} />{/if}
       {:else if observed && observation}
         <QueueSummary state={observation.queueState} count={observation.totalCount} />
         {#if observation.items.length}<QueueRows items={observation.items} />

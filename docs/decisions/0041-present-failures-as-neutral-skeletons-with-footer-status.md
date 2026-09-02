@@ -1,6 +1,14 @@
 # 0041: Present acquisition failures as neutral skeletons with footer status
 
-Status: Accepted for implementation; not yet validated or deployed.
+Status: Accepted user intent; implementation has scoped author evidence only.
+Independent exact acceptance, full regression and deployment remain pending.
+
+Explicit supersession: OBS-008/010/012/013/014, CAM-008, UI-001/003/004 and
+the related UI-002/API-005 presentation clauses now follow this decision for
+acquisition failure. Earlier0038 visible retained-error values/receipts and
+floating notices are historical; its cache/epoch/order, renderer identity and
+guarded Bed Retry focus contracts remain. Decision0039's inline color group and
+44px target remain, with the hover-padding refinement below.
 
 The latest user request supersedes decision 0038's visible retained-data error
 presentation and the action-only footer clauses in OBS-008 and related widget
@@ -19,9 +27,48 @@ resize/recovery cleanup. No private strings or fabricated DTOs size placeholders
 
 CAM-008 is narrowly refined: move the existing snapshot refresh into an always
 present footer beside its failure status, rather than adding a second action.
-Live/fullscreen/PiP controls and connection ownership remain unchanged. This
-does not integrate the separate Camera service feature checkpoint or increase
-any package cap.
+Fullscreen/PiP authority and connection ownership remain unchanged. The resumed
+user request requires fixed Snapshot / Live / Auto modes; Auto is the explicit
+one-word public label. Snapshot stops continuous work and reads once. Auto reads
+one snapshot at a time, scheduling the next read 1.5 seconds after completion;
+actual deployed fallback receipts advance about every 2 seconds. Live failure
+selects Auto immediately and masks retained media/time until a fresh image is
+accepted and decoded. Choosing Live again from Auto retries Live; selecting the
+current mode does not duplicate work. The three controls remain reachable during
+failure/connection, with keyboard selection and no automatic focus stealing.
+Local fullscreen/PiP rejection does not change acquisition state.
+
+The implementation proposal keeps these effects in the real/synthetic Camera
+services; components subscribe/render. Mode change, hide and disposal invalidate
+old work, cancel owned timers and release owned peers/leases. In-document resume
+preserves Auto rather than silently reopening Live; fresh presentations retain
+the snapshot-first contract. No c6 source is integrated.
+
+Two observed failures motivated the scoped source repair. Dashboard returns raw
+answer/candidate/close acknowledgements whereas MCP wraps them in
+`structuredContent`; only those three acknowledgements accept both existing
+shapes. Frame/open validation and tool/authority contracts remain strict and
+unchanged. A successful acknowledgement is not evidence of connected media.
+After that repair, an actual mDNS candidate took 10,007ms while another candidate
+completed in 2ms and a selected pair already carried decoded video. The existing
+10-second supplemental-candidate deadline then closed healthy Live. Only a typed
+candidate timeout may preserve an already-live stream, and only for the current
+epoch/session, observed connected state and an accepted frame received less than
+5 seconds ago. Invalid/rejected acknowledgements still fail; first-frame 8s,
+stall 5s, disconnect 3s and candidate 10s deadlines remain. Late results cannot
+clear failure or restore an old mode/session. No server, auth or network change
+is part of this remedy. Author evidence and remaining gates are in VALIDATION;
+authorship is not independent approval.
+
+The compatibility boundary follows the standard structured result shape while
+explicitly accommodating this repository's existing HTTP acknowledgements;
+private media/signaling data remains outside model-visible results. See the
+[official MCP tool-result contract](https://modelcontextprotocol.io/specification/2025-11-25/server/tools#structured-content)
+and [OpenAI tool-result reference](https://developers.openai.com/plugins/reference#tool-results).
+Camera Lab 80,000 and Live 100,000 raw-byte caps remain repository guards, not
+asserted OpenAI limits. History introduced Lab's guard in `db7643f` and Live's
+separate guard in `c9311eb` after an approximately 89.4k measured artifact; this
+record grants no cap increase.
 
 Heads keeps one inline swatch/whole-hex/16px Copy group. Balanced hover padding
 may use the existing card inset without consuming text width, overlapping other

@@ -6,11 +6,13 @@
   import LoadingValue from '../ui/LoadingValue.svelte';
   import { loadingObservation, type FailureProps } from './loading';
   type Props = FailureProps & ({ observation: CurrentJobObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never });
-  let { observation, loading = false, refreshing = false, failure, onretry }: Props = $props();
-  const job = $derived(loadingObservation(loading, observation, validateCurrentJob));
+  let { observation, loading: pending = false, refreshing = false, failure, onretry }: Props = $props();
+  const loading = $derived(pending || !!failure);
+  const accepted = $derived(loadingObservation(pending, observation, validateCurrentJob));
+  const job = $derived(failure ? null : accepted);
 </script>
 
-<ObservationFrame title="Current Job" icon={FileClock} observedAt={job?.sourceObservedAt ?? null} freshness={job?.freshness ?? 'unknown'} stateKind={failure ?? (loading ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing}>
+<ObservationFrame title="Current Job" icon={FileClock} observedAt={job?.sourceObservedAt ?? null} freshness={job?.freshness ?? 'unknown'} stateKind={failure ?? (pending ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing}>
   <div class="job-primary">
     <span class="observation-status" class:loading><LoadingValue {loading} text={job ? titleCase(job.state) : undefined} words={[9]} /></span>
     <strong><LoadingValue {loading} text={job ? `${Math.round(job.progressPercent)}%` : undefined} size="short" words={[5]} /></strong>

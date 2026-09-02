@@ -27,7 +27,7 @@ describe('Thermals shares reviewed observation lifecycle', () => {
     notify(next); const accepted = controller.getState().observation;
     reject(); await pending; expect(controller.getState().observation).toBe(accepted);
     expect(controller.getState().refreshing).toBe(false);
-    expect(controller.getState().feedback).toBe(variant === 'duplicate' ? 'Refresh failed · showing previous observation' : '');
+    expect(controller.getState().feedback).toBe(variant === 'duplicate' ? 'Could not load Thermals' : '');
     const retry = controller.refresh(); resolve(liveThermalsResult(16, '2026-09-01T12:00:16.000Z')); await retry;
     expect(controller.getState()).toMatchObject({ observation: { version: 16 }, refreshing: false, feedback: '' }); controller.dispose();
   });

@@ -1,5 +1,234 @@
 # F0 dual-subsystem foundation validation
 
+## Phase2 Camera source repair — author and mixed-runtime evidence
+
+Current uncommitted work continues checkpoint
+`f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`. The evidence below is attributed to
+the implementation authors, not independent acceptance. Final Camera renderer/
+geometry renewal and coherent pins now pass on source-frozen bytes; no full regression,
+exact review, merge or new deployment is claimed. PR87 remains deployed.
+
+The service author's final ignored report is `phase2-report.json` under
+`plugins/u1-print-studio/app/ui/test-results/legacy-camera-resume-20260902`.
+Its report/source hashes describe that author's handoff, not subsequently changed
+renderer bytes. Commands actually run from app/ui unless stated otherwise:
+
+- `bun run test src/lib/camera/transport.test.ts`:9 PASS; raw Dashboard versus
+  wrapped MCP acknowledgements, with frame/open validation unchanged.
+- `bun run test src/lib/camera/synthetic-session.test.ts src/lib/camera/session.test.ts src/lib/camera/transport.test.ts src/lib/camera/live-controller.test.ts src/lib/camera/peer.test.ts src/lib/media/playback.test.ts`:
+  55 PASS across6 files. After the synthetic observer changed,
+  `bun run test src/lib/camera/synthetic-session.test.ts` passed5. This retains52
+  cases and renews5, totaling57 covered cases; it is not a single57-test run.
+- From app, `bun test src/status-dashboard.test.ts --test-name-pattern 'actual dashboard acknowledgements'`:
+  1 PASS/25 filtered/1 assertion; actual HTTP-handler response crosses the
+  production host script in a VM and Camera transport for answer/candidates/close.
+- `bun test-results/legacy-camera-resume-20260902/diagnose-deployed.mjs`:
+  actual deployed baseline reproduced answer200 followed by client close3ms
+  later, without frames; fallback accepted successive snapshots about2s apart.
+- The same command with `--candidate`, then
+  `bun test-results/legacy-camera-resume-20260902/diagnose-detailed.mjs --candidate`:
+  acknowledgement-only candidate removed immediate close but still failed at the
+  candidate deadline. Detailed evidence showed connected ICE/DTLS, a nominated
+  pair, decoded frames1->178 and increasing RTP while candidate acknowledgement
+  waited about10s. These failed runs remain preserved, not counted as acceptance.
+- `bun test-results/legacy-camera-resume-20260902/diagnose-repaired.mjs --candidate`:
+  actual camera check stayed Live at20.4s,1920x1080,444 decoded frames,
+  video time15.235s and4799 RTP packets/4,287,623 bytes. The confirmed mDNS host
+  candidate took10,007ms; the srflx candidate took2ms. The repaired session stayed
+  live about8s beyond the candidate deadline. Own lease closed200 in teardown.
+
+The last actual check replaced only the Camera child response body in an isolated
+browser with a91,063-byte candidate UI, SHA256
+`383a4256550f0ac765faa76272d69867f2b1002ff91ead33380dca5b4a5caea7`.
+Dashboard host/backend were the unchanged deployed service. This proves actual
+media on that mixed path, not deployment or exact final-renderer acceptance. It
+does not establish actual-phone fullscreen/PiP, physical print or user acceptance.
+No server, authentication, Tailscale or network configuration was changed.
+
+The source repair preserves the10s candidate bound: only typed timeout with the
+same live epoch/session, observed connected state and an accepted frame received
+less than5s ago leaves healthy Live intact. Invalid/rejected acknowledgements
+still fail; first-frame8s/stall5s/disconnect3s and late-work ownership remain.
+The separate acknowledgement parser accepts only the two existing transport shapes
+for answer/candidates/close, with strict frame/open envelopes. See decision0041.
+
+| Service author evidence | SHA256 |
+| --- | --- |
+| `phase2-report.json` | `bd1188f404fa6ad035714a71ababc9067197dff4fdbb5a22225136ed395407d6` |
+| `phase2-services.log` | `9d8581cd377f41cd20d3a5f3305e0688673bf12df7b0b73dba20cbf94aa91368` |
+| `synthetic-final.log` | `5a2fca692d0f1be20c8556a26dd52899dc770e4c459bf1df7af9772da0814ae0` |
+| `dashboard-ack-integration.log` | `2081d42121497f0965031c0123c72a4ee9a59097c15cc7735cf60330366c39b7` |
+| `candidate-ack-diagnostic.json` | `83de0f6a8d1454ca4807af566cc75241e9ea711793d7353591fd842d610f9d41` |
+| `candidate-ack-detailed.json` | `8b23da1dcd54b97625ae6fd2c69371d58c9dd2be1e5d49220216304f1bac07a8` |
+| `candidate-live-repaired.json` | `24803046b7774fc3ee1a0e4aff798d106a6990fa9c55f7d7b4d8d69dba99dd83` |
+
+Renderer final report and manifest are `CAMERA-RENDERER-REPORT.md` and
+`camera-renderer-identities.json` under ignored `ui/test-results/camera-modes-author`.
+Author commands from app/ui, Bun1.3.12:
+
+- `bun run check`:0 errors/0 warnings and AST PASS.
+- `bun run scripts/build-camera-lab.ts`, `bun run build:live-camera`,
+  `bun run scripts/package-private-lab.ts`, the latter with `--check`, and
+  `bun run scripts/build-camera-harness.ts`:PASS.
+- `bun run test src/lib/ui/TextSegmentedControl.test.ts src/lib/camera/CameraWidget.test.ts`:
+  3 PASS/2 files.
+- `bun node_modules/@playwright/test/cli.js test tests/visual/camera-modes.spec.ts tests/visual/camera-route.spec.ts tests/visual/camera-lab.spec.ts --output test-results/camera-modes-author/browser-final`:
+  23 PASS. `bun node_modules/@playwright/test/cli.js test tests/visual/live-camera.spec.ts --grep '320, enlarged=true|390, enlarged=false' --output test-results/camera-modes-author/live-final`:
+  2 PASS, explicitly covering Live FPS -> failure -> recovery.
+- From app, `bun test src/private-lab.test.ts src/live-fans-package.test.ts`:
+  12 PASS/138 assertions.
+
+These25 browser cases supersede the earlier6 mode-browser passes and cover fixed
+controls, keyboard/focus,320/390/590/720 normal/200% text, static errors, periodic
+Auto/one-shot Snapshot, media identity and teardown. They are fixtures, separate
+from the actual-camera check above. Final packages: Camera Lab79375/80000,
+SHA256 `e985efca7d3c0e29b7ea036893874c4aca0b73817f422fbb1883762f63333de6`;
+Live89770/100000, SHA256
+`79169b075e60fed17dad252c70ad583542d2daa1646fb7ae957c3a5274f4a938`;
+private aggregate928543/980000 and focused production aggregate462929. The six
+non-Camera bundles retain phase1 identities in the renderer manifest. A dedicated
+synthetic service and Camera-only intrinsic static phase surface remove unneeded
+variable-widget allocation work; final geometry passes without changing caps.
+Earlier over-budget builds remain development evidence. Full/exact approval and
+final served Live verification remain required. Renderer processes/browsers closed;
+its fixture port4179 is free according to the author.
+
+Documentation author ran `uv run --no-project python` for read-only SHA256 checks:
+the final service report identity and all11 referenced log hashes match. No
+feature test was rerun for this records update. The final service report states
+all owned browsers, returned leases and processes were released in teardown;
+ignored diagnostics contain no camera images/video, SDP, tokens or IPs. No raw
+runtime data was copied into repository records. Preserve those local logs.
+This documentation tail is not independent review or validation of its own work.
+
+## Resumed phase1 focused evidence and bounded deployed Camera diagnosis
+
+Attributed author evidence on evolving, uncommitted changes from checkpoint
+`f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`. There is no frozen candidate,
+independent exact approval, full repository/browser regression, merge or new
+deployment. PR87 remains deployed. The coordinator reports four source-preflight
+findings repaired with focused author renewal; that preflight is not release
+approval. The latest user priority is actual Live diagnosis/repair now, retaining
+completed phase1 evidence and the final full/review/shipping gates.
+
+Svelte author commands used Bun1.3.12 from app/ui, unless noted:
+
+- `bun run check`: Svelte0errors/0warnings and strict AST PASS.
+- `bun run test src/lib/observation src/lib/live/controller.test.ts src/lib/live/heads-controller.test.ts src/lib/live/queue-controller.test.ts src/lib/live/thermals-controller.test.ts src/lib/bed-mesh/BedMeshState.test.ts src/lib/bed-mesh/retry-focus.test.ts src/lib/lab/observation-props.test.ts src/lib/ui/WidgetStateSurface`:
+  158PASS across17files.
+- Scoped Playwright `footer-error-preview`, `widget-error-stability`,
+  `bed-error-state`, `served-error-stability` with the author's anatomy grep:
+  43PASS/5FAIL. Two obsolete Bed locators and three real narrow Queue-growth
+  failures were repaired. Renewal on served-error/Bed/live-queue gave6PASS/3FAIL;
+  the remaining two Bed locators and one test resolver race were repaired,
+  followed by3PASS. This is49 unique cases via retained+renewed evidence, not a
+  clean full-suite pass. Initial prerequisite/interrupt failures remain recorded.
+  Coverage includes eight light Lab views at320/390/720 and200% text, Heads hover,
+  bounded Queue/History rows, font/width allocation and Bed renderer/focus.
+- `bun run build`, `bun run build:bed-mesh-lab`,
+  `bun run scripts/build-camera-lab.ts`, `bun run scripts/package-private-lab.ts`
+  and the four observation live builds produced phase1 light213926, Bed635242,
+  Camera77725, aggregate926893; Fans91348/Thermals91959/Heads96930/Queue92922.
+  Camera author's `bun run build:live-camera` produced88929. All caps unchanged.
+  The light rebuild required rebuilding cleared Bed/Camera build directories;
+  failed packaging is not acceptance. Final light bytes followed the Queue compact
+  repair; the frozen full run must cover the final packages.
+- From app, `bun test src/private-lab.test.ts src/live-fans-package.test.ts`:
+  12PASS/138assertions. `bun run scripts/package-private-lab.ts --check` PASS.
+
+Legacy/Camera author evidence, kept separate rather than summed with Svelte:
+
+- From app, `bun test src/observation-widget.test.ts src/camera-widget.test.ts`:
+  90PASS/1176assertions. Later legacy CSS/combined MutationObserver changes are
+  outside those app tests and have the scoped browser renewal below.
+- From app/ui, `bun run test src/lib/camera/session.test.ts src/lib/camera/controller.test.ts src/lib/camera/live-controller.test.ts src/lib/media/playback.test.ts`:
+  35PASS/4files, including failure presentation through Retry.
+- Initial legacy/combined/allocation browser18PASS retains only six generic
+  nine-route cases; later runs renew the rest. Camera/combined18cases gave
+  12PASS/6FAIL, retaining six modern Camera cases; legacy transition failures
+  were repaired. Next19cases gave15PASS/4FAIL; retained six legacy Camera, six
+  short-allocation/retry/recovery/font/viewport and one local-fullscreen case.
+  Four combined font failures were repaired with MutationObserver and all six
+  combined cases then passed. Camera Lab8cases gave6PASS/2FAIL from obsolete
+  hidden-status selectors; corrected terminal selectors then passed2/2. This is
+  six retained plus two renewed Lab passes, not a clean full run. No cumulative
+  browser total is inferred across overlapping suites.
+
+Local ignored evidence roots are `ui/test-results/footer-resume-svelte` and
+`ui/test-results/legacy-camera-resume-20260902` under the app. Author reports bind
+commands, retained scopes and limits; the Svelte JSON also binds source/artifacts.
+Documentation author verified all18 referenced log hashes without rerunning tests.
+The read-only `uv run --no-project python` report/hash and ledger checks passed;
+all55 ledger IDs remain in original order, and `git diff --check` passed. This
+records-only pass changed no application bytes and launched no test fixture.
+
+| Evidence | SHA256 |
+| --- | --- |
+| Svelte `PHASE1-SVELTE-REPORT.md` | `0c6772a0aaff31a65ebcd79f11d18643cefdbf631896fe07241647ccca73f2cc` |
+| Svelte `phase1-svelte-identities.json` | `6d490a2b9dd3b36bc2812332db6ddaf2000ac36b6432ee4e72adb0763fe3bb9e` |
+| Svelte `check-final.log` | `e3460f6359f8619d0423663eec7b94936599113a6397cd7dbfe7a0113203c7b4` |
+| Svelte `final-affected-unit.log` | `37e7f7da2edee5b0949e76089ef0d6794d9a0d5ba7131f1d8757ae1889db7bec` |
+| Svelte `browser-anatomy-renewal.log` | `f1fcaf9df886992e0478921495d33a20fb5b0e3eed5d47c9b05d13931492c302` |
+| Svelte `browser-queue-renewal.log` | `96a309b3ab1c614e8eb43c2a464696bb69722341e75f92d7a030a62dd75d76b8` |
+| Svelte `browser-last3.log` | `2ed284166a0971ce105c3292b668e41077beb3da5ba4b5b68448180106767900` |
+| Legacy/Camera `phase1-report.json` | `6f551161f3da8590a28a78137d16c6f5b4932c499b430f6fdedba83a85d62774` |
+| Legacy/Camera `app-final-focused.log` | `4d1dee66a57124cd6d435c2ee70dafd50a88cad589ec78e2ed037364e8cdfcd2` |
+| Legacy/Camera `unit-final.log` | `25b66355122d8f3d2f8502ac0d11756d47abd9556405d57454b75e35606a7492` |
+| Legacy/Camera `combined-resize-final.log` | `927f7921392f7cca01d7783dc962f481b8fa668fbb44167b226ecec3f6baaa24` |
+| Legacy/Camera `camera-lab-terminal-final.log` | `3a27639c7f58ad14c6f7c7527f759ee2d5677288ca18d3398f7213a1cacfb2f2` |
+| Legacy/Camera `deployed-diagnostic.json` | `9cf95bbaa0f119035c44653cfc0f2aa5e5f980549b0b10d876ff2aef9d4a39b3` |
+
+The Camera author's bounded actual deployed diagnostic observes open/answer200,
+then client Close3ms after answer; no media frame rendered. The author traced raw
+HTTP answer/candidate/close acknowledgements rejected by a transport expecting
+structuredContent. Its scoped adapter repair preserves strict frame/open validation;
+no accepted repair is claimed. Repeated accepted snapshots about every2seconds
+support the behavior behind the user-corrected Snapshot/Live/Auto labels; Auto is
+one word and does not claim continuous video. This is deployed-service/browser observation,
+not a synthetic reproduction, physical print acceptance, phone acceptance or proof
+that changed source is deployed. The sanitized local `deployed-diagnostic.json`
+records that trace and own-session cleanup200. Source phase1 tests above remain
+synthetic/static; no c6 checkpoint is imported. Camera changes must renew affected
+packages/pins and evidence before the final gates. Test fixtures/browsers were
+closed and4179 released; the later diagnostic used its own bounded session.
+
+## Resumed f9fe1eb — documentation reconciliation only
+
+Saved checkpoint `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c` on
+`codex/u1-footer-error-skeletons` is unvalidated WIP. The coordinator reports
+verified clean checkout and exact fetched branch; the user reports the prior
+worktree archived/unregistered. No new archive/cleanup, source acceptance,
+independent approval or deployment is claimed by this entry. The active records
+now follow the resumed order; the pack-up stop below is historical.
+
+The documentation author updated PROJECT_STATE, NEXT_AGENT, BRIEF, HANDOFF,
+this VALIDATION, requirements, widget-delivery, decisions0038/0039/0041 and only
+the UI/UX role's presentation guidance. Requirements explicitly reconcile0041
+with previous retained-display/overlay rules while preserving cache/ordering,
+successful empty/unknown/age-stale states, local-action feedback and lifecycle.
+
+Commands actually run by the documentation author:
+
+- `uv run --no-project scripts/test_project_agents.py`: PASS,3 tests. Only the
+  role's `developer_instructions` field changed; name/description and field
+  inventory are unchanged. No model or permission configuration was changed.
+- `git diff --check`: PASS on the then-current working diff.
+- `uv run --no-project python` with an inline read-only record check: PASS;
+  all55 ledger IDs remain in their original order versus HEAD, role TOML changes
+  only `developer_instructions`, and all five active continuity/ledger entry
+  sections contain the exact saved checkpoint identity.
+
+Initial shell process creation failed with `Too many open files (os error24)`;
+bounded reads resumed using non-login PTY commands. Two stalled task-owned `rg`
+command sessions were interrupted; absolute `/opt/homebrew/bin/rg --threads1`
+reads succeeded. No user application, deployed service or unrelated process was
+closed. The documentation author retains no running process or browser.
+
+These are documentation/role-contract checks, not application, browser, physical
+printer or device evidence. Concurrent source work requires its own focused
+results and exact frozen-candidate acceptance. No full regression was repeated
+for this records-only task.
+
 ## Current footer/skeleton WIP checkpoint — preservation evidence only
 
 Branch `codex/u1-footer-error-skeletons`, accepted base `80280568589fb8cd2df7f8ab30c2f1faddcb3769`.

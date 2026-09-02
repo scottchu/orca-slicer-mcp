@@ -101,6 +101,9 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
     },
     setAttribute(name: string, value: string) { this.attributes.set(name, value); },
     getAttribute(name: string) { return this.attributes.get(name) ?? null; },
+    removeAttribute(name: string) { this.attributes.delete(name); },
+    append(child: any) { child.parentNode = this; },
+    querySelector: (selector: string) => node(selector),
     addEventListener(name: string, callback: (event: any) => void) { addListener(this.events, name, callback); },
     emit(name: string, event: any = {}) { emit(this.events, name, event); },
   };
@@ -183,7 +186,7 @@ describe("camera widget presentation runtime", () => {
     expect([...cluster.matchAll(/<button[^>]+id="([^"]+)"/g)].map(match => match[1]))
       .toEqual(["picture-in-picture", "fullscreen", "refresh-snapshot", "go-live", "close-live"]);
     expect(media).toContain('id="snapshot"'); expect(media).toContain('id="live-stream"');
-    expect(html).not.toMatch(/camera::before|camera::after|linear-gradient|prefers-color-scheme: dark/);
+    expect(html).not.toMatch(/camera::before|camera::after|prefers-color-scheme: dark/);
     expect(html).toContain("color-scheme: light;"); expect(html).toContain("--surface: var(--u1-surface);");
     expect(html).toContain("min-width: 44px; min-height: 44px;");
     expect(html).toContain("grid-template-columns: var(--u1-icon-tile-size) minmax(0, 1fr) auto");
@@ -328,9 +331,10 @@ describe("camera widget presentation runtime", () => {
     expect(host.node("#display-feedback").dataset.kind).toBe("success");
     host.advance(1801, true); expect(host.node("#display-feedback").textContent).toBe("");
     host.api.applyCameraFrame(frame(nextSnapshotTime, "bad"), true); host.images.at(-1).onerror();
-    expect(host.node("#display-feedback").dataset.kind).toBe("error");
-    const error = host.node("#display-feedback").textContent;
-    host.advance(10000, true); expect(host.node("#display-feedback").textContent).toBe(error);
+    expect(host.node("#display-feedback").hidden).toBe(true);
+    expect(host.node("#camera-footer-status").textContent).toBe("Could not load");
+    host.advance(10000, true);
+    expect(host.node("#camera-footer-status").textContent).toBe("Could not load");
   });
 
   test("progress feedback remains until the bounded request resolves", async () => {
@@ -348,7 +352,12 @@ describe("camera widget presentation runtime", () => {
     host.api.applyCameraFrame(frame(nextSnapshotTime, "bad"), true);
     host.images.at(-1).onerror();
     expect(host.api.state().snapshotObservedAt).toBe(snapshotTime);
-    expect(host.node("#display-feedback").textContent).toContain("Snapshot refresh failed");
+    expect(host.node("#camera-footer-status").textContent).toBe("Could not load");
+    expect(host.node("#camera").dataset.acquisitionFailed).toBe("true");
+    expect(host.node("#snapshot").getAttribute("aria-hidden")).toBe("true");
+    expect(host.node(".camera-controls").inert).toBe(true);
+    expect(host.node("#refresh-snapshot").parentNode).toBe(host.node(".camera-footer"));
+    expect(host.node("#camera-detail").title ?? "").toBe("");
   });
 
   test("commits time only after JPEG decode and retains it through mode changes", () => {

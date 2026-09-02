@@ -1,15 +1,16 @@
 # Project state
 
-## Current pack-up: unvalidated WIP checkpoint for remote resume
+## Current: resume the unfinished footer/skeleton checkpoint
 
-The latest user request is to preserve eligible WIP on the remote branch, then
-recoverably clean up this worktree. Feature work, full tests and release remain
-stopped. Branch `codex/u1-footer-error-skeletons` checkpoints the unfinished work
-from accepted base `80280568589fb8cd2df7f8ab30c2f1faddcb3769`.
-Push and recoverable archive are coordinator-owned and pending confirmation;
-this checkpoint does not itself claim either completed. Private local evidence
-is excluded from Git and must be preserved separately. Nothing from this WIP
-is independently approved, merged or deployed. Read the current section of
+The user resumed branch `codex/u1-footer-error-skeletons` at saved remote
+checkpoint `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`, based on accepted
+`80280568589fb8cd2df7f8ab30c2f1faddcb3769`. The coordinator verified the current
+checkout was clean and fetched/checked out that exact branch. The prior worktree
+is archived and unregistered according to the user; no new cleanup is requested.
+Preserve existing modifications, other worktrees and private evidence. The
+earlier pack-up stop is superseded by this implementation request. This is an
+unvalidated WIP checkpoint, not an approved, merged or deployable candidate.
+Read the current section of
 [HANDOFF](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/HANDOFF.md)
 for the exact changed-path groups, remaining work and next smallest check;
 [VALIDATION](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/VALIDATION.md)
@@ -18,15 +19,45 @@ records only commands actually completed.
 Current UI request: all acquisition failures show static neutral skeletons and
 persistent footer status beside Refresh, not stale telemetry or floating error
 overlays; Heads Copy keeps balanced hover inset and one inline color group.
-The early390/200% Heads pair passes, but broad route/legacy/Camera/resize and
-old-contract renewal remain unfinished. Latest additional requests: investigate
-actual `/dashboard/camera` repeatedly falling back; consider stable Snapshot /
-Live / renamed Fallback stages with automatic failure transition. “Auto
-snapshots” is a proposed name requiring semantics confirmation, not implemented.
-The question about repository byte caps is not approval to change them; official
-OpenAI platform limits have not been verified in this task. The unrelated Camera
+Phase1 now has attributed focused Svelte evidence: compiler/AST,158 unit cases,
+12 package tests and49 unique browser cases through retained+renewed runs, not a
+clean full-suite pass. Direct callers, Queue short/long allocation, font/width
+resize and Bed retained renderer/focus were repaired; full evidence is in
+VALIDATION. Source preflight identified four findings subsequently repaired with
+focused renewal; this is not independent approval of an exact frozen candidate.
+The working candidate remains uncommitted. Phase2 now repairs two observed Live
+failures: raw Dashboard acknowledgements rejected by an MCP-only parser, then a
+10-second mDNS candidate timeout closing already-connected, fresh video. The
+acknowledgement-only compatibility adapter preserves strict frame/open envelopes;
+the typed candidate-timeout exception requires the same live epoch/session,
+observed connected state and a frame received less than 5 seconds ago. Invalid
+acknowledgements and all existing deadlines remain unchanged. Fixed Snapshot /
+Live / Auto modes are service-owned; Auto repeatedly reads snapshots and is
+selected automatically after Live failure. Components subscribe/render.
+
+Attributed phase2 evidence is 55 service tests, with 52 retained and 5 renewed
+synthetic tests after the final synthetic service change, plus one actual
+HTTP-handler/host/transport integration test. This is 57 covered cases, not one
+57-test run. A bounded actual-camera check substituted a 91,063-byte candidate UI
+into an isolated browser using the unchanged deployed host/backend: it remained
+Live at 20.4s with 444 decoded frames at 1920x1080, beyond the slow candidate
+deadline. This is mixed candidate/deployed-service evidence, not a new deployment,
+exact final-renderer acceptance or phone acceptance. Earlier failed traces are
+retained in VALIDATION. Legacy/Camera phase1 evidence remains scoped there.
+
+Renderer author now reports 3 UI, 23+2 targeted browser and 12 package tests
+(138 assertions), compiler/AST and package checks passing on source-frozen bytes.
+Camera Lab79375/80000 and Live89770/100000 fit unchanged caps; private aggregate
+928543 and focused production aggregate462929. Next: record the frozen candidate
+commit and assign one full-regression owner, obtain
+separate independent review/verification, and complete guarded `u1-ship` delivery.
+Widget byte caps are unchanged repository guards, not asserted OpenAI limits.
+The unrelated Camera
 `c6cfb4e` checkpoint remains separate, source-only and blocked. PR87 below remains
 the deployed application; the following older current headings are historical.
+
+The latest Progress question requested status only; P01/P02 remain not started
+and P03 decision pending. All 55 delivery-ledger IDs remain accounted for.
 
 PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
 Camera remains separately blocked; Progress redesign is still unfinished.

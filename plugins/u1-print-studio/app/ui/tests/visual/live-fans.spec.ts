@@ -57,7 +57,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     expect(await frame.locator('[data-observed-meta]').textContent()).toBe(observed);
     await expect(refresh).toBeFocused();
     release({ isError: true });
-    await expect(frame.getByRole('status')).toHaveText('Refresh failed · showing previous observation');
+    await expect(frame.getByRole('status')).toHaveText('Could not load Fans & Air');
     expect(await bounds(frame)).toEqual(ready);
     await expect(refresh).toBeFocused();
     await refresh.press('Enter'); await expect.poll(() => calls.length).toBe(3);

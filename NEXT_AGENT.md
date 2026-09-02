@@ -1,27 +1,51 @@
 # Next agent
 
-## Resume the preserved WIP branch after pack-up
+## Continue the resumed WIP branch
 
-After the coordinator verifies its push, fetch and resume the checkpoint on
-`codex/u1-footer-error-skeletons`, based on
-`80280568589fb8cd2df7f8ab30c2f1faddcb3769`. Use the coordinator's exact remote
-SHA and local recovery receipt; do not assume the old worktree still exists.
-Do not discard this WIP, merge another Camera checkpoint or ship it.
+The coordinator verified a clean current checkout, fetched and checked out
+`codex/u1-footer-error-skeletons` at remote checkpoint
+`f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`, based on
+`80280568589fb8cd2df7f8ab30c2f1faddcb3769`. The old worktree's archive and
+unregistration are user-reported; do not recreate its cleanup, discard existing
+changes, force checkout or delete other worktrees. The prior pack-up stop is
+historical. Complete this WIP before considering it for shipping.
 Start with the current [HANDOFF](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/HANDOFF.md)
 and [VALIDATION](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/VALIDATION.md).
-No full regression or independent approval exists for these bytes. Five rebuilt
-packages and their build pins are not yet a coherent frozen candidate.
+No full regression or independent exact approval exists for these uncommitted
+bytes. Phase1 Svelte evidence is compiler/AST,158 unit,12 package and49 unique
+browser cases retained+renewed; see VALIDATION for failures, renewals and hashes.
+The reported packages/pins fit unchanged caps at their recorded phase1 identity;
+subsequent Camera edits require renewed affected packaging/evidence.
 
-Next smallest action after resuming: inspect the partial legacy/Camera edits,
-finish the shared numeric-allocation resize/short-body policy, then update the
-explicitly mapped obsolete retained-data/overlay tests before targeted execution.
-Keep one expensive frozen full-run owner and separate reviewer/validator.
-Newest unimplemented asks also need tracking: diagnose actual live Camera
-fallback; replace variable controls with stable Snapshot / Live / better-named
-Fallback stages (proposed “Auto snapshots”, semantics not confirmed); explain
-project byte caps without claiming unverified OpenAI platform limits or changing
-caps. Continue the skeleton/footer/Copy request first unless the user changes
-order. Preserve the separate `c6cfb4e` checkpoint and all ledger backlog.
+Next smallest action: record the frozen candidate commit and begin the assigned
+required regression. Final Camera renderer has3 UI,23+2 targeted browser and12
+package tests/138 assertions, compiler/AST and package checks passing; Lab79375,
+Live89770 and private aggregate928543 fit unchanged caps. Actual Live diagnosis and the two
+scoped service repairs now have author evidence: raw HTTP acknowledgement
+compatibility, then preservation of connected/fresh Live on a typed supplemental
+candidate timeout. Frame/open validation, invalid-ack failure and all deadlines
+remain unchanged. Fixed Snapshot / Live / Auto modes have service-owned effects;
+Auto is the user's one-word label for repeated snapshot reads. The source-only
+renderer has its final package/geometry evidence in VALIDATION; independent exact
+review, full regression and guarded delivery remain.
+
+The 55 service-test run retains 52 cases after synthetic-service changes; five
+renewed synthetic cases give 57 covered cases, not one 57-test run. One actual
+HTTP handler -> host -> Camera transport test passes. The real-camera diagnostic
+uses a 91,063-byte candidate UI with the deployed host/backend: Live persisted to
+20.4s, 444 decoded frames at 1920x1080, through the confirmed 10-second mDNS delay.
+That is mixed evidence, not a new deployment or final exact-renderer acceptance.
+Retain earlier failed diagnostics and phase1 evidence as scoped in VALIDATION.
+
+Keep one expensive frozen full-run owner and separate reviewer/validator. The
+four earlier preflight findings have focused author repairs, not exact approval.
+Freeze only completed, focused-verified bytes, then
+run the required full regression once under its assigned owner; independent
+source review and targeted verification precede guarded PR merge/deployment with
+both-service restart. Agent handoff alone does not invalidate retained evidence.
+Project byte caps remain unchanged repo guards, not asserted OpenAI limits.
+Preserve the separate source-only blocked `c6cfb4e` checkpoint and all ledger backlog.
+The latest Progress request is status-only: do not start P01/P02/P03 in this slice.
 
 PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
 Camera remains separately blocked; Progress redesign is still unfinished.

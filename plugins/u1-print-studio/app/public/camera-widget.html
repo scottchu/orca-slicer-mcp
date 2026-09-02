@@ -35,7 +35,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .camera-footer-status { min-height: 2.4em; min-width: 0; width: max-content; display: grid; align-content: center; font-size: 12px; line-height: 1.2; color: var(--muted); text-align: right; }
       .camera-footer-status:empty::before { content: "Could not load"; visibility: hidden; }
       .camera[data-acquisition-failed="true"]::after, .camera[data-camera-loading="true"]:not(.has-snapshot)::after { content: ""; position: absolute; inset: 0; background: #e7e9ec; z-index: 1; }
-      .camera[data-acquisition-failed="true"] img, .camera[data-acquisition-failed="true"] video, .camera[data-acquisition-failed="true"] .camera-controls, [data-acquisition-failed="true"] #camera-detail { visibility: hidden; }
+      .camera[data-acquisition-failed="true"] img, .camera[data-acquisition-failed="true"] video, .camera[data-acquisition-failed="true"] .camera-controls { visibility: hidden; }
+      [data-acquisition-failed="true"] #camera-detail { position: relative; }
+      [data-acquisition-failed="true"] #camera-detail > * { visibility: hidden; }
+      [data-acquisition-failed="true"] #camera-detail::after { content: ""; position: absolute; inset: 20% 0; border-radius: 4px; background: linear-gradient(to bottom, #e7e9ec 0 35%, transparent 35% 65%, #e7e9ec 65%); }
       #camera-detail-label { min-width: 0; }
       .camera-mode-indicator { display: inline-flex; flex: none; width: 8px; height: 8px; }
       .camera-mode-live-dot { display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--u1-faint); }
@@ -341,6 +344,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         elements.camera.dataset.acquisitionFailed = String(failed);
         elements.dashboard.dataset.acquisitionFailed = String(failed);
         for (const element of [elements.snapshot, elements.liveStream, elements.cameraDetail]) element.setAttribute('aria-hidden', String(failed));
+        if (failed) elements.cameraDetail.removeAttribute('title');
         const controls = elements.camera.querySelector('.camera-controls');
         controls.inert = failed; controls.setAttribute('aria-hidden', String(failed));
         const status = document.querySelector('#camera-footer-status');
@@ -404,7 +408,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         elements.cameraDetail.dataset.mode = mode;
         const label = labels[mode] ?? labels.unavailable;
         if (elements.cameraDetailLabel.textContent !== label) elements.cameraDetailLabel.textContent = label;
-        elements.cameraDetail.title = mode === "live"
+        elements.cameraDetail.title = elements.camera.dataset.acquisitionFailed === 'true' ? '' : mode === "live"
           ? "Time of the latest video frame displayed on this device"
           : mode === "fallback" ? "Live video unavailable. Showing the last accepted snapshot; time is server image receipt time."
           : "Snapshot time is server image receipt time, not camera capture time";

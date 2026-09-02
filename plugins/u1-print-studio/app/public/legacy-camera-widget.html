@@ -216,7 +216,7 @@
       .camera-footer-status:empty::before { content: "Could not load"; visibility: hidden; }
       .camera-retry { flex: none; width: 44px; height: 44px; border-radius: 12px; border: 1px solid rgba(128,128,128,.2); background: transparent; color: var(--ink); }
       .camera-retry svg { width: 20px; height: 20px; }
-      .camera[data-acquisition-failed="true"] .camera-skeleton { opacity: 1; }
+      .camera[data-acquisition-failed="true"] .camera-skeleton { opacity: 1; visibility: visible; transition: none; }
       .camera[data-acquisition-failed="true"] .camera-skeleton span::after { animation: none; }
       .camera[data-acquisition-failed="true"] img, .camera[data-acquisition-failed="true"] video, .camera[data-acquisition-failed="true"] .camera-bottom, .camera[data-acquisition-failed="true"] .camera-empty { visibility: hidden; }
 

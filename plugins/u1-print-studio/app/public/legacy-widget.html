@@ -649,7 +649,7 @@
       .action-feedback:empty { display: none; }
       [data-status-failed="true"] [data-loading="true"].skeleton-target::after,
       [data-status-failed="true"] [data-loading="true"] .skeleton-target::after { animation: none; }
-      .camera[data-acquisition-failed="true"] .camera-skeleton { opacity: 1; }
+      .camera[data-acquisition-failed="true"] .camera-skeleton { opacity: 1; visibility: visible; transition: none; }
       .camera[data-acquisition-failed="true"] .camera-skeleton span::after { animation: none; }
       .camera[data-acquisition-failed="true"] img, .camera[data-acquisition-failed="true"] video, .camera[data-acquisition-failed="true"] .camera-bottom, .camera[data-acquisition-failed="true"] .camera-empty { visibility: hidden; }
 
@@ -992,8 +992,29 @@
         Number.isFinite(value) ? `${Math.round(value)}°` : "—";
 
       let cameraFailed = false;
+      let failureLayout = null;
+      const statusRegions = () => [elements.statusRow, elements.progressSection, ...elements.metrics, elements.freshness];
+      const clearFailureAllocation = () => {
+        for (const region of statusRegions()) { region.style.minHeight = ''; region.style.width = ''; }
+        failureLayout = null;
+      };
+      const failureSignature = () => [elements.dashboard.getBoundingClientRect().width, getComputedStyle(elements.filename).fontSize, getComputedStyle(elements.observed).fontSize];
+      const resizeFailure = () => {
+        if (!failureLayout) return;
+        const next = failureSignature();
+        if (next.some((value, index) => value !== failureLayout[index])) clearFailureAllocation();
+      };
+      const failureResize = typeof ResizeObserver === 'function' ? new ResizeObserver(resizeFailure) : null;
+      const failureStyles = typeof MutationObserver === 'function' ? new MutationObserver(resizeFailure) : null;
+      const observeFailureStyles = () => failureStyles?.observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'class'], subtree: true, childList: true });
+      observeFailureStyles();
+      for (const node of [elements.dashboard, elements.filename, elements.observed]) failureResize?.observe(node);
+      window.addEventListener('resize', resizeFailure);
+      window.addEventListener('pagehide', () => { failureResize?.disconnect(); failureStyles?.disconnect(); });
+      window.addEventListener('pageshow', () => { for (const node of [elements.dashboard, elements.filename, elements.observed]) failureResize?.observe(node); observeFailureStyles(); resizeFailure(); });
       const setNotice = (message = "", acquisition = false) => {
         if (!acquisition) { document.querySelector('#action-feedback').textContent = message; return; }
+        if (message) document.querySelector('#action-feedback').textContent = '';
         elements.notice.textContent = message ? "Could not load" : "";
         elements.notice.setAttribute('aria-label', message);
         elements.notice.title = message;
@@ -1014,7 +1035,7 @@
         }
         if (loading) elements.progressTrack.removeAttribute("aria-valuenow");
         else {
-          for (const target of [elements.statusRow, elements.progressSection, ...elements.metrics, elements.freshness]) target.style.minHeight = '';
+          clearFailureAllocation();
           if (!cameraFailed) setNotice('', true);
           setCameraFailure(cameraFailed);
         }
@@ -1023,8 +1044,11 @@
       const setStatusFailure = (message) => {
         const regions = [elements.statusRow, elements.progressSection, ...elements.metrics, elements.freshness];
         const heights = regions.map(region => region.getBoundingClientRect().height);
+        const freshnessWidth = elements.freshness.getBoundingClientRect().width;
+        failureLayout = failureSignature();
         setStatusLoading(true);
         regions.forEach((region, index) => { if (heights[index]) region.style.minHeight = `${heights[index]}px`; });
+        if (freshnessWidth) elements.freshness.style.width = `${freshnessWidth}px`;
         for (const element of [elements.stateLabel, elements.percent, elements.layer, elements.filename, elements.tool, elements.toolTemp, elements.bed, elements.bedTarget, elements.elapsed, elements.remaining, elements.observed, elements.nextCheck]) { element.textContent = ''; element.removeAttribute('title'); }
         elements.progressFill.style.width = '0%';
         elements.dashboard.dataset.statusFailed = "true";
@@ -1039,6 +1063,7 @@
         elements.camera.dataset.acquisitionFailed = String(masked);
         for (const element of [elements.snapshot, elements.liveStream, elements.cameraDetail]) element.setAttribute('aria-hidden', String(masked));
         const controls = elements.camera.querySelector('.camera-bottom'); controls.inert = masked; controls.setAttribute('aria-hidden', String(masked));
+        if (masked) elements.cameraDetail.removeAttribute('title');
         if (failed) setNotice('Could not load camera', true);
         else if (elements.dashboard.dataset.statusFailed !== 'true') setNotice('', true);
       };

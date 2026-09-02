@@ -24,12 +24,12 @@
 
   type Props = { observation?: BedMeshObservation; loading?: boolean; refreshing?: boolean; failure?: 'error' | 'unavailable'; retrying?: boolean; onretry?: () => void };
   let { observation, loading = false, refreshing = false, failure, retrying = false, onretry, selectedMode, onmode }: Props & { selectedMode?: '3d' | '2d'; onmode?: (mode: '3d' | '2d') => void } = $props();
-  const placeholder = $derived(!observation || !!failure);
+  const placeholder = $derived(!observation || !!failure || retrying);
   const mesh = $derived.by(() => {
     if (loading && observation || !observation && !loading && !failure && !retrying) throw new Error('Invalid bed mesh presentation state');
     return loadingObservation(!observation, observation, validateBedMeshObservation);
   });
-  const surfacePhase = $derived(failure ?? (loading ? 'loading' : refreshing ? 'refreshing' : 'ready'));
+  const surfacePhase = $derived(failure ?? (retrying ? 'error' : loading ? 'loading' : refreshing ? 'refreshing' : 'ready'));
   const retryAction = $derived((failure === 'error' || retrying) && !!onretry);
   const showAction = $derived(!placeholder || retryAction && !!onretry);
   let localMode = $state<'3d' | '2d'>('3d');
@@ -47,7 +47,7 @@
   let resetKey = $state(0);
   let feedback = $state<string | null>(null);
   let feedbackTimer: ReturnType<typeof setTimeout> | undefined;
-  const notice = $derived(failure === 'error' ? 'Could not load bed mesh' : failure === 'unavailable' ? 'Bed mesh unavailable' : null);
+  const notice = $derived(failure === 'error' || retrying ? 'Could not load bed mesh' : failure === 'unavailable' ? 'Bed mesh unavailable' : null);
 
   const flash = (message: string) => {
     feedback = message;

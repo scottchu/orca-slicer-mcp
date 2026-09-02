@@ -61,7 +61,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     const refresh = frame.getByRole('button', { name: 'Refresh Thermals' }); await refresh.focus(); await refresh.press('Enter');
     await expect.poll(() => calls.length).toBe(2); expect(await bounds(frame)).toEqual(ready);
     expect(await frame.locator('[data-observed-meta]').allTextContents()).toEqual(beforeTime); await expect(refresh).toBeFocused();
-    release({ isError: true }); await expect(frame.getByRole('status')).toHaveText('Refresh failed · showing previous observation');
+    release({ isError: true }); await expect(frame.getByRole('status')).toHaveText('Could not load Thermals');
     expect(await bounds(frame)).toEqual(ready); await expect(refresh).toBeFocused();
     const notify = (value: unknown) => page.evaluate((value) => {
       document.querySelector('iframe')!.contentWindow!.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/tool-result', params: value }, '*');
