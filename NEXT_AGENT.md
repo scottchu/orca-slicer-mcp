@@ -1,28 +1,42 @@
 # Next agent
 
-## Implement common UI primitives and the compact Camera overlay
+## Current: PR91 shipped; next single SvelteKit application with Bun
 
-Decision0042 is the latest explicit user direction: remove repo widget/package
-individual and aggregate byte caps, without replacing them. Preserve size reporting,
-production minification, clear source, all integrity/determinism/schema/security/
-self-contained-asset and shipping review/lifecycle/preservation checks.
-Application source is frozen with cap removal, common primitives and compact
-Camera overlay implemented, and all eight bundles/pins rebuilt. Author check0/0/AST,
-197 distinct focused UI checks (146 retained+51 renewed),28 browser cases
-(four same-hash Heads retained+24 final),12 package and three asset tests pass.
-See VALIDATION for exact report/input binding and preserved failed attempts.
-Next commit the candidate for one assigned necessary full repository/browser gate,
-independent exact review and guarded two-service delivery. Do not seek another cap
-approval or treat author evidence as final acceptance. PR89 stays deployed; C08's
-intermittent unclassified acquisition risk and all55 ledger IDs remain, with
-Progress/reactive-class/c6 scope unchanged. Author resources are released.
+PR91 merged as `6a222a8ff66ca76cb3cac4682501a8cbb44fd5d6` from independently
+approved `2719e604229313494b6e32020cf500f74bcecf69`, tree
+`463f607adb357494d830b56e3f5548d827e83a19`. Shared common/Button/Icon/Switch,
+compact bottom-right Camera icon modes and decision0042 byte-cap removal are
+shipped. Normal minification/size reporting, integrity/determinism/security and
+all shipping guards remain. The required source gate passed565 UI,304 app tests/
+3645 assertions, eight deterministic packages,21 lifecycle/24 shipping tests;
+one full browser run passed321, plus three fresh scoped adversaries with their
+private-fixture failure/renewal retained. See VALIDATION for exact evidence.
 
-After current shipment, prioritize the user's next cleanup slice: UI belongs in
-`src/components` with `components/common/Button`, Icon and Switch; pure TypeScript
-services/domain/transport in `src/lib`, server-only code in `lib/server`, and
-API/dashboard/Lab in `src/routes`, preserving `/dashboard/lab` URLs. This future
-layout/route consolidation is not implemented. Do not redo current `lib/common`
-application work before shipping its accepted slice.
+Guarded release `20260902-6a222a8-pr91-20260902T121040-666036` explicitly restarted
+BOTH services: loaded, healthy, integrity verified;31 static/32 security checks
+and preservation pass, rollback not needed. Independent postverification passes
+15 manifest files, eight exact HTTPS bundles and six distinct served-widget cases
+(Camera Lab1, focused Camera2, Heads2, Bed Lab1; five retained+one private-selector
+renewal). Actual served HTML/CSP is preserved with synthetic tool/media fixtures.
+No real camera/printer acquisition occurred; C08 remains open. Report and failed
+fixture evidence are bound in VALIDATION; owned browsers/processes are closed.
+
+Decision0043 adopts one SvelteKit app at the app root, retaining Bun. Next prove
+an actual Kit Fans page and existing tools/call URL through one shared service,
+then account for remaining compatibility routes and complete routing integration.
+Use `src/components/common` for generic UI, `src/lib` for pure TypeScript domain/
+services/transport (`lib/server` for server-private code), and `src/routes` for
+API/dashboard/Lab. Preserve `/dashboard/lab` and other existing URLs, public/private
+roles, auth semantics, Camera service lifecycle and MCP stdio sharing services.
+The nested UI app is transitional; widgets are shared-component build targets.
+Folder moves alone do not complete this work. Adapter compatibility is unaccepted;
+no Bun removal, Node migration or new framework is queued.
+
+All55 ledger IDs remain. C08's prior unclassified intermittent acquisition risk,
+Progress no-action, F07 reactive-class discussion and separate c6 stay open.
+This records tail changes no application bytes; decision0028 requires no new
+build/deployment. Static, served-service, simulated and actual-device/printer
+acceptance remain distinct.
 
 ### Earlier source checkpoint before decision0042
 

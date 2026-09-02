@@ -1,7 +1,7 @@
 # 0042: Remove repository widget package byte caps
 
-Status: Accepted by explicit user direction; removal implemented with author-focused
-evidence, independent full validation/exact acceptance and delivery pending.
+Status: Accepted by explicit user direction; removal independently validated,
+reviewed and shipped through PR91. Size observability and other guards remain.
 
 The individual and aggregate widget HTML ceilings were repository-defined guards,
 not established OpenAI platform limits. They blocked the adopted common UI
