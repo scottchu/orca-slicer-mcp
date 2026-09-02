@@ -1,35 +1,38 @@
 # Next agent
 
-## Current: Heads Copy frozen candidate — author gates passed
+## Current: Heads Copy PR84 deployed and independently verified
 
-Frozen application `a8e3e7a728a366f7073e74385420039b3c1e5283`, tree
-`830393fee8202b1a51b20f6ad4d85977add867e0`, follows accepted Bed/main
-`f949f4472937b6f9bd27aa1969200770465a0eaa`. Decision0039 keeps44px Copy
-in a dedicated right column, with natural whole hex in a reusable ColorValue.
-A public width bound drives both grid columns and loading/ready subgroup wrap;
-no actual private value controls sizing. Global Inline/LoadingValue are unchanged.
+PR84 merged as `0fe54f34e43f97dd9376e5a17b06efd342726455`, with the
+independently approved tree `62af16d2dcc17bcf3c25e93c8fb7c4776a11c8db`.
+The coordinator's guarded delivery receipt confirms BOTH existing services were
+explicitly restarted, loaded and healthy/integrity-verified;31 static and32
+security checks passed, preservation passed and no rollback occurred.
+Independent postverification passed: 15 manifest hashes, nine HTTPS routes
+(eight exact widget assets and Heads host), and 15 downloaded-CSP synthetic
+behavior cases. Wide-RGBA transitions at 567/590/720px with 200% text remain
+0px; whole hex, right-side 44px Copy and shared consumers passed.
 
-Author evidence:44 focused browser PASS; renewed full repository PASS with
-514UI,300app/3557 assertions,21 lifecycle/24 shipping and eight exact package
-checks; full browser248/248 PASS. Runtime bundles, strict signature and compiled
-help pass. Independent source review reports no blocker on the frozen app;
-independent36 targeted cases pass, including formerly failing567/590/720200%
-wide-RGBA transitions at0px. Exact final-head review/verification and guarded
-PR delivery remain pending; the author does not approve their own candidate.
+The delivered Heads layout keeps44px Copy on the right, exact whole RGB/RGBA,
+and public-width-driven loading/ready wrap. Source evidence remains44 focused,
+514UI,300app/3557 assertions,21 lifecycle/24 shipping and248 browser PASS.
+Separate independent36 targeted cases plus four packaged-consumer checks pass;
+previous567/590/720 enlarged wide-RGBA transitions are0px. Failed first-candidate
+evidence and the unchanged1px gate are preserved in VALIDATION.
+This does not prove actual-phone typography, native OS focus or printer behavior.
 
-Only two package bytes change: Heads96660 and lightLab209516. Six other assets,
-all caps/security/shipping guards and producer contracts are unchanged.
-Camera Lab79776 retains224bytes headroom. Failed c32f7f1 evidence is preserved:
-244/245 browser plus independent26.78125px wrap jump. The actual wrap repair and
-Heads-only row-anatomy compactness contract pass; all1px transition gates remain.
+Heads96660 and lightLab209516 are the only changed widget packages; six others,
+all dependency/configuration/security/shipping inputs and caps are unchanged.
+Camera Lab79776 still has224bytes headroom. Bed PR83 remains accepted prior work.
 
-Bed PR83 final deployment evidence is coordinator-attributed: BOTH services
-healthy/integrity-verified,15 manifest hashes, eight HTTPS assets,15 downloaded
-browser cases and six policy adversaries PASS. This is prior-base acceptance,
-not Copy deployment or actual-phone/native-OS-focus acceptance.
-All author browser/fixture sessions exited;4179 is free. Keep evidence logs.
-Next: bind exact final Copy head and ship through the unchanged guarded workflow,
-then Camera `1c6920e`. Other widget/error/dock/migration/cleanup tracks remain open.
+Next: integrate source-approved Camera retry checkpoint
+`1c6920ef49804cdec789df33e3be0221fdecc887` with accepted main, renew actual
+consumer packages/tests and obtain independent exact acceptance before release.
+That checkpoint is not integrated, rebuilt or deployed; current Camera assets
+must not be mistaken for its acceptance. Remaining all-widget error rollout,
+Bed grid/legend/summary work, fixed Lab dock, Current Job PR79, other migrations,
+Console/progress-thumbnail/widget-size features and recoverable cleanup stay open.
+This six-record rollout update changes documentation only; decision0028 requires
+no repeat build/browser suite, deployment or additional service restart.
 
 ## Earlier Bed candidate handoff (superseded where noted above)
 
