@@ -11,15 +11,14 @@ continue. On `codex/u1-native-observation-pages` from mainb5329ad, the next
 0043/F01/F08 slice makes `/dashboard/thermals`, `/dashboard/heads` and
 `/dashboard/queue` native Kit pages following deployed Fans. Reuse the existing
 UI, controllers and services without iframes; add no design or domain data.
-The three page pairs and four-page prerender/closed-route mapping are frozen in
-source. Author checks pass three server cases/195 assertions,21 distinct browser
-scopes (15 retained, five renewed and one new), and Svelte0errors/0warnings/AST.
-Two successful builds have the same56-file/72-route manifest; all15 public HTML
-files match baseline, without widget regeneration. Report SHA256
-`682fbcf027852d36cd5f079c1a643e23035f03a816bb6b3015879f2a3bf5598a`
-binds this focused evidence; active VALIDATION preserves commands and failures.
-Independent candidate validation and shipment remain pending. This slice does
-not close all F01 migration or finish Queue's remaining product requirements.
+Native page source is independently approved on29e4f07, including the required
+gate and seven cases against the formal payload. PR97 shipping then stopped:
+fixed `ship-build` reuse left14 undeclared old assets, correctly rejected by the
+closed inventory guard before merge/install. PR95 remains deployed. The operator
+now creates a unique empty candidate directory;27 focused tests pass, application
+bytes remain unchanged, and new exact review/required regression are pending.
+Detailed commands, hashes, original77 failure and repairs remain in VALIDATION.
+This slice does not close all F01 migration or Queue product requirements.
 
 Acceptance: preserve URLs and widget resource endpoints; SSR acquires no telemetry,
 mount starts the existing observation flow once, and refresh/failure/recovery keep
@@ -263,14 +262,14 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 
 | IDs / request | Status and evidence | Acceptance / next smallest action |
 | --- | --- | --- |
-| F01 SvelteKit checked-in project | Partial:10 Lab routes/five focused Svelte views delivered; native Thermals/Heads/Queue source implemented, independent acceptance/shipment pending | Reuse delivered UI/controllers/services after native Fans; noiframe page acceptance does not finish remaining views or domain features |
+| F01 SvelteKit checked-in project | Partial:10 Lab routes/five focused Svelte views delivered; native Thermals/Heads/Queue source approved29e4f07; shipment blocked pending operator repair gates | Reuse delivered UI/controllers/services after native Fans; noiframe page acceptance does not finish remaining views or domain features |
 | F02 shared primitive composition | Common/Button/Icon/Switch shipped PR91; app-root components/common integration shipped PR93 | Preserve all-eight consumer/AST/security coverage; other raw-markup debt remains |
 | F03 PercentageBackground + slight slope | Delivered: Thermals/Fans, 100-degree tint | Preserve exact ratio and truthful over-target numbers |
 | F04 src/lib/ui vs src/components |0043 one app-root components/common and pure TypeScript lib separation independently accepted and shipped PR93 | Preserve generic primitives/domain composition boundary; native renderer migration remains F01 |
 | F05 generic semantic tokens | Not started; --u1 tokens remain | Inventory consumers and controlled alias transition |
 | F06 arrow functions | Adopted AGENTS | Apply to changed JS/TS; document genuine exceptions |
 | F07 component-owned folders/services | Partial; PR89 delivers real/synthetic Camera service separation | Thin subscribers/renderers. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
-| F08 whole server/MCP SvelteKit migration |0043 real Kit API/UI routing/shared services shipped PR93; native Thermals/Heads/Queue source implemented, independent acceptance/shipment pending | Fans remains the deployed native page; other UI routes currently serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
+| F08 whole server/MCP SvelteKit migration |0043 real Kit API/UI routing/shared services shipped PR93; native Thermals/Heads/Queue source approved29e4f07; shipment blocked pending operator repair gates | Fans remains the deployed native page; other UI routes currently serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
 | F09 self-contained widget HTML |0042 individual/aggregate byte caps removed, independently accepted and shipped PR91 | Preserve self-contained assets, CSP/security, integrity, determinism, minification and size reporting during0043 |
 | U01 density/grouping/consistent language | Partial; independent UIUX/domain audits complete | Implement findings per widget; audits alone are not fixes |
 | U02 smaller Refresh visual | Not started in delivered shared component | Compact visible glyph/control, 44px accessible target |

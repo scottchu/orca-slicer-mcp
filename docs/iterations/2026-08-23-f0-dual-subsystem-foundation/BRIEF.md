@@ -7,15 +7,14 @@ continue. On `codex/u1-native-observation-pages` from mainb5329ad, the next
 0043/F01/F08 slice makes `/dashboard/thermals`, `/dashboard/heads` and
 `/dashboard/queue` native Kit pages following deployed Fans. Reuse the existing
 UI, controllers and services without iframes; add no design or domain data.
-The three page pairs and four-page prerender/closed-route mapping are frozen in
-source. Author checks pass three server cases/195 assertions,21 distinct browser
-scopes (15 retained, five renewed and one new), and Svelte0errors/0warnings/AST.
-Two successful builds have the same56-file/72-route manifest; all15 public HTML
-files match baseline, without widget regeneration. Report SHA256
-`682fbcf027852d36cd5f079c1a643e23035f03a816bb6b3015879f2a3bf5598a`
-binds this focused evidence; active VALIDATION preserves commands and failures.
-Independent candidate validation and shipment remain pending. This slice does
-not close all F01 migration or finish Queue's remaining product requirements.
+Native page source is independently approved on29e4f07, including the required
+gate and seven cases against the formal payload. PR97 shipping then stopped:
+fixed `ship-build` reuse left14 undeclared old assets, correctly rejected by the
+closed inventory guard before merge/install. PR95 remains deployed. The operator
+now creates a unique empty candidate directory;27 focused tests pass, application
+bytes remain unchanged, and new exact review/required regression are pending.
+Detailed commands, hashes, original77 failure and repairs remain in VALIDATION.
+This slice does not close all F01 migration or Queue product requirements.
 
 Acceptance: preserve URLs and widget resource endpoints; SSR acquires no telemetry,
 mount starts the existing observation flow once, and refresh/failure/recovery keep

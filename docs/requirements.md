@@ -386,8 +386,9 @@ printer environments support the described behavior.
   Bun retained: real API/dashboard/Lab routes, shared services and additional
   widget build targets. Routing and the native Fans page shipped in PR93;
   the nested static UI app has been retired. Current source extends native pages
-  to Thermals, Heads and Queue using existing UI/controllers/services, with
-  independent acceptance and shipment pending. Preserve role/auth/URL boundaries,
+  to Thermals, Heads and Queue using existing UI/controllers/services;29e4f07
+  source is independently approved, while shipment remains pending after the
+  correctly rejected stale shipping output and its operator repair. Preserve role/auth/URL boundaries,
   zero acquisition during SSR and one observation flow on mount; account for
   remaining packaged renderers in `docs/sveltekit-route-migration.md`. Neither
   folder-only moves nor native page delivery complete remaining domain features.

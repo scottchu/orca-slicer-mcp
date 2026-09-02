@@ -1,6 +1,87 @@
 # F0 dual-subsystem foundation validation
 
-## Current candidate77f023e: required gate failed at test-import type checking
+## Current:29e4f07 approved; PR97 validation rejected stale output; operator repair frozen
+
+Independent `app/test-results/independent-29e4f07/REPORT.json`, SHA256
+`a35a432cc741d5f101b7d51c331aac2880128476c5b628f46ab3086bf32dbde2`,
+APPROVES `29e4f07fb971e466e123590a95d3916323b22141`, tree
+`1f61da7a679f3ccae09cbf6a0dc2c8d8d55516ff`. Its
+`./scripts/check-repository.sh` exits0 in47.098s:574 UI/55 files,325 server/32 files/
+3951 assertions, eight deterministic packages,34 service/26 ship Python tests,
+Svelte0errors/0warnings, AST and repository contracts PASS. Full-log SHA256 is
+`c9a58d86ba19857f1b6589ef224f94bf632b834487885ab2e0685917519815a4`.
+The original77f023e failure and two-file import repair below remain unchanged.
+
+With Bun1.4.0 and `--no-env-file --config=/dev/null`, the verifier ran
+`node_modules/@playwright/test/cli.js test --config test-results/independent-29e4f07/playwright.config.ts`.
+The first six-pass/one-failure result used a private Heads material sentinel that
+collided with an existing public skeleton template; unique-sentinel single-case
+renewal passed in1.534s. Both records remain. The first run used mutable gate
+`build-kit`, whose route-node order, CSS order and public Intl date template differ
+from the formal Bun-built payload. Equal CSS rule multisets do not prove equal
+cascade behavior; source equality does not bind browser acceptance to those bytes.
+
+Independent `run build:server --outdir test-results/independent-29e4f07/server`
+passes in4.243s with the same complete author manifest
+`a2a0afdb2db6402bb632ea212eeff09aed654d4e082c65553b1891f66e10f663`,
+56 runtime files and72 static routes. All seven cases then pass in5.304s using
+`serve-exact-payload.ts` and the isolated bundled handler/client/prerender bytes.
+This is seven distinct cases, not14: five fresh cases plus two renewed Fans cases.
+They cover Queue row counts/resize/200%/empty/error geometry, Heads Copy retirement
+and hidden prior telemetry, Thermals stale-success versus failed acquisition, and
+Fans320/720 hydration/refresh recovery. Exact-payload browser log SHA256 is
+`d9a2dc603b0197452f84978a77e2ad893e50de6f114c70a02b33895bc7dbe986`.
+
+Author triage `app/test-results/native-observation-pages/build-command-triage/REPORT.json`,
+SHA256 `f34f055fc7a7a31d6787bc7a64228a61f684238481a4afbb5173b30a55314aac`,
+records an accidental `bun … run build --version` build during investigation.
+It overwrote mutable output, not tracked inputs; original gate output had been
+archived and the isolated formal payload/browser verification was unaffected.
+No new323-case full browser run, BFCache hit or actual-printer acceptance is claimed.
+All328 verifier outputs are hashed; owned browsers/processes/ports were released.
+
+The read-only ship plan first rejected the draft PR without mutation; after the
+PR became ready, planning passed. Execute operation
+`pr97-20260902T165630-1d4262` failed in validate with
+`Invalid or incomplete Kit build contract`. Receipt basename
+`pr97-20260902T165630-1d4262.json` SHA256 is
+`0ea30e370a8f8cf2849855b9fd80d899bb287ab49ca31e25868e2b9404170ae3`:
+merged=false, installed=false; no shipment or restart succeeded. PR95 remains deployed.
+
+Independent `app/test-results/independent-pr97-ship-contract-failure/REPORT.json`,
+SHA256 `236ec6ce139038eb3312bc11d72c2d877ca5c8b87a44857b396125e9bc35c379`,
+identifies fixed `test-results/ship-build` reuse:56 declared files versus70 actual,
+14 undeclared old hashed client assets and zero missing files. The unchanged
+closed inventory reader correctly rejects it and accepts the fresh56-file/72-route
+formal payload. No native-route mapping or guard relaxation is required.
+
+The operator repair changes only `scripts/u1_ship.py` and its test: every validation
+gets a unique empty `candidate-*` directory while previous successful/failed output
+is retained. `app/test-results/ship-candidate-isolation/REPORT.json` SHA256 is
+`f8c33ac7ebf2410b9e7eef2d2deb695659fc0fd9df1d866ba1e7176dfa490d3e`.
+Author command `uv run --no-project python -m unittest discover -s scripts -p test_u1_ship.py -v`
+passes27 tests; log SHA256
+`d1caf5f632e9b9b976adb8561b5339bcc26ff8c7c569d95c6b4e663f940a668d`.
+The new test first failed its directory assertion, then the refined fixture
+reproduced the original inventory error on old source; both failures remain.
+After repair it proves two distinct initially empty outputs with equal manifests,
+retention of original evidence bytes, and rejection/preservation of a third fresh
+output with an undeclared asset. Reader, service, identity/security and shipping
+gates remain unchanged; these are synthetic fixtures, not a real ship retry.
+
+All417 app inputs remain bound to b202a856 below, with zero app delta and all15
+public HTML files identical. No rebuild, full gate, merge, install or service
+operation ran during this repair. Test resources closed. The new operator candidate
+requires independent exact review and mandatory required regression before another
+u1-ship attempt;29e4f07 browser evidence needs explicit unchanged-input retention.
+
+Docs-only `git diff --check`, the repository documentation prefix through
+`uv run python`,55-ID/order comparison and report/source hash checks pass.
+Application diff against29e4f07 is empty. These nine Markdown updates ran no
+application test, full regression, browser or build; operator authorship and
+independent candidate acceptance remain separate.
+
+## Earlier candidate77f023e: required gate failed at test-import type checking
 
 Independent `./scripts/check-repository.sh` on
 `77f023e1b007d836651d862ca1cbcae4fa91f608`, tree
