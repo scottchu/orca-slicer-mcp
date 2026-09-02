@@ -1,13 +1,11 @@
 # 0043: Unify the SvelteKit application while retaining Bun
 
-Status: Accepted and deployed in PR93. Independent source/software acceptance
-covers the single-app routing and shared-service integration; through PR95, only
-Fans is a deployed native Kit page. The current Thermals/Heads/Queue extension
-implements native page source using the same presentation/controller/service
-boundaries, without new domain behavior, independently approved on29e4f07.
-PR97 validation rejected stale build output before merge/install; the operator
-repair requires new candidate gates, and shipment remains pending. Remaining native-renderer work and actual-device/printer
-acceptance remain separate.
+Status: Accepted and deployed. PR93 delivered single-app routing/shared services
+and native Fans; PR97 adds native Thermals, Heads and Queue using the same
+presentation/controller/service boundaries without new domain behavior. Final
+350fb6e independent approval and guarded shipment are recorded in VALIDATION,
+alongside the earlier rejected stale build output and its operator repair.
+Remaining native-renderer work and actual-device/printer acceptance stay separate.
 
 Use one SvelteKit application at `plugins/u1-print-studio/app`, retaining Bun for
 runtime/tooling. This is a repository choice, not a requirement to remove Bun,

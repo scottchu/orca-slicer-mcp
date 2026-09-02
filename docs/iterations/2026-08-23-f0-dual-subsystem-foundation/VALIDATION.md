@@ -1,6 +1,82 @@
 # F0 dual-subsystem foundation validation
 
-## Current:29e4f07 approved; PR97 validation rejected stale output; operator repair frozen
+## Current PR97: exact350fb6e approval and guarded deployment
+
+Independent `app/test-results/independent-350fb6e/REPORT.json`, SHA256
+`7f73feb0dd5b28f02bb42959daacda7736ace75ef05dd61c53881ffb961e9a78`,
+APPROVES `350fb6ead4931c784a9e61a0b9bcf96f7d96aad4`, tree
+`59698e929d029ed42e015200c93a028a8aaf1f76`. Required
+`./scripts/check-repository.sh` exits0 in46.325s:574 UI/55 files,325 server/32 files/
+3951 assertions, eight packages,34 service/27 ship Python tests, Svelte0errors/
+0warnings, AST and repository contracts PASS. Full-log SHA256 is
+`c9be993264dcb6fc4025b9f6b97611bce6375d5f67bcd7958ada3db3ab5383d0`.
+
+The independent operator adversary passed one scenario with three attempts:
+partial compiler failure, actual-reader symlink rejection, then a valid candidate.
+Distinct initially empty directories retained failed/existing output and the
+mandatory call sequence. Its SHA256 is
+`c1751ae11515af0b99228a10db662c54f6c17f8e2291e8b6291ee064dbdd4d83`;
+external commands were mocked, so this is source/fixture evidence, not a ship.
+No remaining source findings or guard changes were identified.
+
+All420 tracked application files (417 non-Markdown),15 public HTML files and the
+56-file/72-route formal payload match29e4f07. The exact seven canonical browser
+cases and manifest
+`a2a0afdb2db6402bb632ea212eeff09aed654d4e082c65553b1891f66e10f663`
+are retained by these identities; no new browser or extra `build:server` ran in
+this verification. The mutable full-gate build was not substituted for canonical
+payload evidence. Binding SHA256 is
+`0d18b6e1ccd7b8d7f5e6d942d307daa808ef572bef00d29aa2260d1db77e354f`.
+All prior import, fixture, artifact-selection and failed-ship evidence below remains.
+Verifier-owned processes exited,4179/4181/4182 were free and no printer reads ran.
+
+Guarded `u1-ship` execute operation `pr97-20260902T170641-88762e` completed,
+merging `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9` and installing release
+`20260902-aa85f4d-pr97-20260902T170641-88762e`. Receipt basename
+`pr97-20260902T170641-88762e.json` SHA256 is
+`ca57210aff1949c019a0894ac714747930d127873f55eb42bc1a16924249c316`.
+It binds reviewed350fb6e/tree59698e9 and Bun1.4.0 SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`.
+Mandatory local validation/bundles/codesign/exact-stage guards completed; BOTH
+services explicitly restarted and verified loaded/healthy/integral.73 static and
+75 security checks pass, preservation is true and rollback was not needed.
+Private installation paths are omitted. The earlier165630 failed operation remains
+separate and unchanged. Source approval and shipment are distinct from scoped
+served behavior and any actual-printer/device acceptance.
+
+Independent `app/test-results/postdeploy-pr97-independent/REPORT.json`, SHA256
+`e976d542da68e1627fec35ef941b17a22fc05c84112dbad283b230c8c78b2da5`,
+passes all four320px native pages with zero failures. The verifier ran
+`uv run --no-project plugins/u1-print-studio/app/test-results/postdeploy-pr97-independent/identity.py`
+and Bun1.4.0 `--no-env-file --config=/dev/null` on the colocated `served-native.ts`.
+The latter log SHA256 is
+`887fe2f047caab1590f53da84840aa55464835fd0df8ccc61c3d39cefbf5e402`.
+All Thermals/Heads/Queue/Fans pages have no iframe, select the correct view and
+issue one intercepted initial acquisition. Failed refresh removes prior synthetic
+values from text/title/ARIA, shows static neutral skeleton/footer beside Refresh,
+and preserves shell/header/body/footer geometry within1px. An exact duplicate
+successful receipt recovers the display. Heads keyboard Copy retains its44px
+target and passes the complete eight-digit hex to an isolated clipboard stub.
+
+The browser independently hashes33 unique actual HTTPS assets across88 static
+responses against the active payload; all four HTML pages preserve CSP/no-store.
+Twelve synthetic tool responses cause zero actual printer/Camera reads, zero
+user clipboard access and zero page/asset/unexpected-request errors. Both services
+match the release, remain loaded/healthy/integral, and all56 runtime files/72 static
+routes match a2a0afdb above. The73 static/75 security/preservation results are
+retained from the exact ship receipt, not rerun by this verifier. Browser/context
+closed in finally, no fixture server started, and4179/4181/4182 have no listeners.
+These are new scoped deployed-software checks, not physical/device/Live acceptance;
+C08, other native renderers and product backlog remain open.
+
+For this nine-file Markdown-only rollout tail, the docs author ran
+`git diff --check` and, through `uv run python`, the repository's documentation
+prefix,55-ID/order comparison, exact report hash and changed-path comparison
+against mergedaa85f4d: PASS. Application, scripts, assets, dependencies and
+configuration are unchanged. Under0028, this record update requires no repeated
+application/full/browser tests, build or service deployment.
+
+## Earlier:29e4f07 approved; PR97 validation rejected stale output; operator repair frozen
 
 Independent `app/test-results/independent-29e4f07/REPORT.json`, SHA256
 `a35a432cc741d5f101b7d51c331aac2880128476c5b628f46ab3086bf32dbde2`,

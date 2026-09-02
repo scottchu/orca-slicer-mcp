@@ -1,35 +1,29 @@
 # F0 dual-subsystem foundation brief
 
-## Current execution: native Thermals, Heads and Queue dashboard pages
+## Current deployment: PR97 native observation pages
 
-The user paused Screen Sharing until returning home and directed other work to
-continue. On `codex/u1-native-observation-pages` from mainb5329ad, the next
-0043/F01/F08 slice makes `/dashboard/thermals`, `/dashboard/heads` and
-`/dashboard/queue` native Kit pages following deployed Fans. Reuse the existing
-UI, controllers and services without iframes; add no design or domain data.
-Native page source is independently approved on29e4f07, including the required
-gate and seven cases against the formal payload. PR97 shipping then stopped:
-fixed `ship-build` reuse left14 undeclared old assets, correctly rejected by the
-closed inventory guard before merge/install. PR95 remains deployed. The operator
-now creates a unique empty candidate directory;27 focused tests pass, application
-bytes remain unchanged, and new exact review/required regression are pending.
-Detailed commands, hashes, original77 failure and repairs remain in VALIDATION.
-This slice does not close all F01 migration or Queue product requirements.
+PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
+approved350fb6e. Fans, Thermals, Heads and Queue now use native Kit pages at the
+existing URLs, without iframes or new domain behavior. Other dashboard/Lab
+renderers and unfinished product requirements remain in the delivery ledger.
 
-Acceptance: preserve URLs and widget resource endpoints; SSR acquires no telemetry,
-mount starts the existing observation flow once, and refresh/failure/recovery keep
-neutral error geometry/footer behavior. Preserve Heads full-hex Copy, keyboard/
-focus behavior and existing role/auth/static-asset guards. Next: freeze the
-candidate, run one required regression with independent exact review, then
-u1-ship, BOTH restarts and scoped served-UI checks. History evidence covers a
-fresh document, not an observed BFCache restoration.
-Synthetic/software evidence stays distinct from physical-printer/device acceptance.
+The required gate passes574 UI,325 server/3951 assertions, eight packages and
+34+27 Python tests. Seven formal-payload browser cases are retained by unchanged
+application/payload hashes. Guarded shipping explicitly restarted BOTH services:
+loaded/healthy/integrity,73 static/75 security checks and preservation pass, with
+no rollback. Independent postverification passes all four320px native pages:
+exact HTTPS assets, neutral failed-refresh geometry/footer, recovery and Heads
+keyboard Copy with synthetic responses. No real printer or user clipboard access.
+Detailed commands/hashes and all prior failures remain in VALIDATION, including
+77f023e imports,29e4f07 fixture/build differences and the rejected stale output.
 
-C08 stays open and paused for the user's at-home Local Network UI inspection;
-Screen Sharing diagnosis and actual Camera probing do not block this page slice.
-Do not restart those probes or change system/auth/network settings. Keep all55
-ledger IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
-unchanged loading policy. PR95 remains the deployed application baseline.
+C08 and Screen Sharing stay paused until the user returns home; no Camera service
+repair, real Live, physical-printer, BFCache or actual-device acceptance is claimed.
+Keep all55 IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
+unchanged loading policy. Next, select the next bounded native-renderer/product
+slice from the ledger; at-home Local Network inspection remains C08's external
+step. This Markdown-only rollout record preserves application bytes and needs no
+additional service deployment under0028.
 
 ### Retained PR95 source/deployment evidence
 
