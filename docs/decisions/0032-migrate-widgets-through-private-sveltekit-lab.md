@@ -499,7 +499,19 @@ After integrating accepted Heads, the authored outputs are 199,819, 629,880 and
 capacity hold without constituting source, browser or release acceptance. Caps
 must not be silently loosened; graph/network/determinism gates remain unchanged.
 
-## 2026-09-01 icon segmented mode-control refinement
+## 2026-09-02 shared Switch visible-height amendment
+
+The user requests that the Camera overlay Switch visibly match the44px Button.
+The adopted generic `src/components/common/Switch.svelte` uses the shared
+action-size token: its track fills the44px outer height and its40x40 thumb keeps
+2px inset. Segment width remains44px, preserving Bed's88px and Camera's132px
+overall widths. This supersedes only the32px track and28px thumb heights in the
+historical refinement below. Loading/ready geometry, interaction, focus, reduced
+motion and Camera connection lifecycle remain unchanged. Active VALIDATION binds
+the source and consumer evidence; this amendment does not claim deployment or
+resolution of C08 Live connectivity.
+
+## 2026-09-01 icon segmented mode-control refinement (historical geometry)
 
 The latest user-requested Bed Mesh refinement replaces the separate mode buttons
 with a reusable closed `IconSegmentedControl` leaf, not a new route or renderer.
