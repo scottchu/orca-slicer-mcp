@@ -61,6 +61,25 @@ provisional architecture as an implementation commitment.
   and wait or ask the user how to proceed instead of performing the material
   work directly.
 
+### Project review roles
+
+Use the project-scoped role matching the assigned question:
+
+- `ui_ux_designer`: screenshot-first UI/UX, consistency and accessibility;
+  `.codex/agents/ui_ux_designer.toml`.
+- `printer_domain_expert`: printer information grouping and truthful domain
+  semantics; `.codex/agents/printer_domain_expert.toml`.
+- `agentic_architect`: agentic MCP/API contracts, authority and boundaries;
+  `.codex/agents/agentic_architect.toml`.
+- `maker_user`: simulated low-friction maker walkthrough and usability feedback;
+  `.codex/agents/maker_user.toml`.
+
+The role files own their detailed instructions; see `docs/project-agents.md`
+for invocation and compatibility. Give each a bounded question and evidence
+scope. Request multiple roles only when their distinct perspectives matter,
+not as a mandatory gate for every small change. Design/persona feedback does
+not replace independent implementation review, verification or user acceptance.
+
 ## Change workflow
 
 Before a substantial implementation change:

@@ -1,5 +1,16 @@
 # F0 dual-subsystem foundation brief
 
+Latest user-directed priority: persist four project agents for UI/UX design,
+printer-domain review, agentic MCP/API architecture and a simulated maker user.
+This bounded F0 configuration slice addresses reusable role ownership without
+committing a new product architecture. Acceptance: four valid standalone TOMLs,
+clear role routing/examples, inherited settings, truthful compatibility limits,
+targeted static checks and independent review. No application implementation,
+real-printer acquisition, deployment or global configuration change belongs here.
+Preserve all unfinished widget checkpoints; see the newest PROJECT_STATE entry.
+
+## Earlier execution order (superseded where noted above)
+
 Latest user-directed priority: persist the test cadence and task-owned resource
 cleanup rules in `AGENTS.md`, as a bounded F0 docs-only policy change from
 accepted PR78 `177d326`. Acceptance is a concise authoritative policy, unchanged

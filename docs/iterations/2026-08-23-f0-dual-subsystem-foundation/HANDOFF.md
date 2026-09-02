@@ -1,5 +1,21 @@
 # F0 dual-subsystem foundation handoff
 
+## Project-agent definitions — configuration handoff
+
+Changed four `.codex/agents/*.toml` files, routing in `AGENTS.md`, the usage and
+compatibility guide `docs/project-agents.md`, focused
+`scripts/test_project_agents.py`, and the five required continuity records.
+No application, asset, dependency, runtime, shipping automation or global Codex
+configuration changed. The new script uses only Python stdlib through `uv run`.
+Next: independent exact source/config review and PR merge, not deployment.
+Native named-role discovery/invocation remains unverified; the current spawn
+tool exposes no custom-agent-name parameter. Do not equate static parsing with
+runtime selection or role behavior. All earlier widget tracks remain unfinished.
+No browser, fixture server, model process, watcher or printer connection was
+started for this slice; command/file handles close on completion.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Test strategy policy handoff — docs only
 
 Changed only `AGENTS.md`, `PROJECT_STATE.md`, `NEXT_AGENT.md` and active

@@ -1,5 +1,24 @@
 # Project state
 
+## Current: project review roles — configuration candidate
+
+The latest user priority is reusable project-scoped agents: `ui_ux_designer`,
+`printer_domain_expert`, `agentic_architect` and `maker_user`. Their standalone
+definitions are in `.codex/agents/`; `docs/project-agents.md` describes routing,
+inheritance and the unverified native-client loading boundary. This is a bounded
+F0 agent-configuration/documentation change from accepted PR80 main `4e869d8`.
+No widget, application build input, service or printer is changed. Independent
+review and PR merge remain pending; no runtime agent-loading acceptance is claimed.
+
+The previous test-strategy policy is merged through PR80. Preserve the separate
+unfinished widget tracks: Heads PR81 checkpoint `1e2e387` and its uncommitted
+continuity tail, Camera `4eb3106` with its known same-scenario live Retry issue,
+Bed error foundation `c0323a4` pending accepted-main integration, Current Job
+PR79, Progress, History, Overview, real Bed and every remaining WIDGET_TRACKS
+item. Those coordinator-attributed checkpoints are not accepted by this change.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current: repository test strategy — docs-only review pending
 
 The latest user priority is now recorded in `AGENTS.md` under Test strategy:
