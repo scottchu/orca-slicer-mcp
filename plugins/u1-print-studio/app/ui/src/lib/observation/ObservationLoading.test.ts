@@ -10,6 +10,9 @@ import HeadCards from './HeadCards.svelte';
 const expectNoLoadingTelemetry = (container: HTMLElement, heads = false) => {
   const copy = container.cloneNode(true) as HTMLElement;
   for (const skeleton of heads ? copy.querySelectorAll('[data-text-skeleton]') : []) {
+    expect(skeleton.tagName).toBe('SPAN');
+    expect(skeleton.getAttributeNames().every((name) =>
+      ['class', 'data-loading-value', 'data-text-skeleton', 'aria-hidden'].includes(name))).toBe(true);
     expect(skeleton).toHaveClass('text-skeleton');
     expect(skeleton).toHaveAttribute('data-loading-value');
     expect(skeleton).toHaveAttribute('aria-hidden', 'true');
@@ -75,7 +78,7 @@ describe('shared legacy layout loading', () => {
     expectNoLoadingTelemetry(container, true);
   });
 
-  it.each(['private template', 'accessible template', 'unmarked template', 'template accessible label', 'visible label', 'hidden label', 'accessible label'])(
+  it.each(['private template', 'accessible template', 'unmarked template', 'template accessible label', 'visible label', 'hidden label', 'accessible label', 'tabindex', 'contenteditable', 'href', 'role', 'button tag'])(
     'keeps the loading privacy guard effective for %s', (violation) => {
       const { container } = render(ObservationSkeleton, { view: 'heads' });
       const skeleton = container.querySelector('[data-text-skeleton]')!;
@@ -83,6 +86,16 @@ describe('shared legacy layout loading', () => {
       else if (violation === 'accessible template') skeleton.removeAttribute('aria-hidden');
       else if (violation === 'unmarked template') skeleton.removeAttribute('data-text-skeleton');
       else if (violation === 'template accessible label') skeleton.setAttribute('aria-label', 'Private vendor secret PETG');
+      else if (violation === 'tabindex') skeleton.setAttribute('tabindex', '0');
+      else if (violation === 'contenteditable') skeleton.setAttribute('contenteditable', 'true');
+      else if (violation === 'href') skeleton.setAttribute('href', '#fixture');
+      else if (violation === 'role') skeleton.setAttribute('role', 'button');
+      else if (violation === 'button tag') {
+        const button = document.createElement('button');
+        for (const attribute of skeleton.attributes) button.setAttribute(attribute.name, attribute.value);
+        button.textContent = skeleton.textContent;
+        skeleton.replaceWith(button);
+      }
       else {
         const label = document.createElement('span');
         if (violation === 'accessible label') label.setAttribute('aria-label', 'Generic PLA 220°');
