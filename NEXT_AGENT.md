@@ -1,5 +1,27 @@
 # Next agent
 
+## Next: independent exact review and validation of the icon-toggle candidate
+
+Application source `80229841fced7307aaf3eba850a8e60ef688c26a` has complete author
+gates (455 UI,300 app,21 lifecycle,24 shipping,198 Chrome, runtime/signature and
+repeated eight-package checks). Review the final PR head including its records
+tail. Validate the two-option/loading contract, radio keyboard and native
+Space/Enter once, external/reordered focus,32px track/44px targets, reduced
+motion, exact mode/loading geometry, preserved legend/orbit/zoom/pixels/zero
+fetch and all source/package boundaries. Port4179 is released.
+
+Only `svelte-bed-mesh-lab.html` differs from accepted main4828ce04 public assets:
+638,249 bytes/SHA37a48c3b…; three labs total921,919. No production renderer,
+controller, IconButton, route or MCP cutover belongs here. After separate exact
+approval the coordinator may use the guarded PR ship workflow; do not self-review.
+The existing enlarged summary crowding/Observed spacing remain explicit debts.
+
+After the immediate release, resume preserved Current Job5855223 and real
+Bed194ea79 with ordinary accepted-main integration. All named tracks in
+WIDGET_TRACKS remain open; nothing is lost by this execution-order change.
+
+## Earlier author and integrated baseline records
+
 ## Immediate next: independently review and validate the slim-rail candidate
 
 The author candidate ordinarily integrates accepted Queue main `7882670`.

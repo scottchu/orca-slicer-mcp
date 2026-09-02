@@ -498,3 +498,31 @@ After integrating accepted Heads, the authored outputs are 199,819, 629,880 and
 1,205 Camera and 71,506 aggregate bytes. The renewed envelope removes the
 capacity hold without constituting source, browser or release acceptance. Caps
 must not be silently loosened; graph/network/determinism gates remain unchanged.
+
+## 2026-09-01 icon segmented mode-control refinement
+
+The latest user-requested Bed Mesh refinement replaces the separate mode buttons
+with a reusable closed `IconSegmentedControl` leaf, not a new route or renderer.
+The independently adopted contract is exactly two typed value/label/Lucide-icon
+options, controlled value/onchange with optional disabled, or an inert loading
+variant without value/callback. Bed maps cube to 3D surface and grid to 2D grid.
+The control owns an 88x44 outer box, two 44x44 targets, a centered 88x32 connected
+track and a white 40x28 thumb inset 2px that slides 44px. Only thumb transform
+animates, for 180ms; reduced motion removes that transition. Neutral shared
+tokens and 20px glyphs preserve the existing visual language. Explicit middle
+inline alignment keeps the empty loading box on the same baseline as ready.
+
+The radiogroup has two radio buttons and exactly one selected Tab stop. Arrows
+wrap/focus/select, Home/End select endpoints, and Space/Enter activate once with
+native follow-up click suppressed. Selecting the already selected value is a
+no-op; external controlled updates never steal focus. Disabled buttons cannot
+activate or receive focus; loading has no buttons, selected state or callback.
+No extra tooltips, focus stops or animation of the canvas are added.
+
+The existing `selectedMode`/`onmode` flow, LabControls URL/history/reset, bottom
+separator and Reset action remain. The ChartFrame stays the same 4:3 element;
+mode changes retain the existing renderer disposal/remount behavior, not a new
+persistent renderer. All legend, pixel, orbit, wheel/pinch, loading/refresh,
+200%-text and runtime-zero-fetch gates remain. Production assets and unrelated
+shared IconButton behavior must be byte-identical to accepted PR77. This narrow
+lab slice does not complete real Bed phase two or cancel any widget track.

@@ -85,7 +85,7 @@ for (const width of [320, 390, 590, 720]) for (const doubled of [false, true]) {
     await page.getByRole('button', { name: 'Reset bed mesh view' }).click();
     await checkLabels(page, doubled);
     await page.locator('[data-chart-frame]').screenshot({ path: `test-results/bed-mesh-reset-${width}-${doubled}.png` });
-    await page.getByRole('button', { name: 'Show 2D bed mesh' }).click();
+    await page.getByRole('radio', { name: '2D grid' }).click();
     expect(await page.locator('[data-chart-frame]').boundingBox()).toEqual(frame);
     const twoBefore = await page.locator('[data-bed-mesh-2d]').screenshot();
     await page.evaluate(() => (window as any).meshHarness.set(3, 7, 'rectangle'));
