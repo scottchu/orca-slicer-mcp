@@ -5,8 +5,11 @@
 The user's latest priority is a mandatory thumbnail rule for every prepared
 print artifact. This bounded F0 preparation/handoff policy slice addresses
 whether configured thumbnail settings are enough to accept output; they are
-not. Record PREP-007, HANDOFF-007 and decision 0040, then independently review
-the exact documentation candidate and deliver it through a PR.
+not. PREP-007, HANDOFF-007 and decision 0040 are implemented as source/manual
+agent workflow policy. Independent review approved `d08c88d8` with no findings;
+delivery is through open [PR86](https://github.com/scottchu/orca-slicer-mcp/pull/86).
+Bind this continuity tail to that approval and verify delivery before resuming
+the previous unfinished widget order.
 
 Acceptance requires decoded, nonempty, backend-compatible embedded images
 matching the exact selected plate/layout and final artifact hash before

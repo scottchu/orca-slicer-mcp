@@ -1,6 +1,6 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: required print-thumbnail policy candidate
+## Current: required print-thumbnail policy reviewed; PR86 delivery
 
 Decision 0040 makes decoded embedded thumbnails mandatory for prepared
 acceptance and upload; target-parsed thumbnail metadata follows upload and must
@@ -17,15 +17,17 @@ dependency, configuration, asset, service or private artifact changes belong
 to the candidate. The sanitized motivating observation is preset thumbnail
 configuration with absent emitted image blocks.
 
-Next smallest action: independent exact-candidate source review and targeted
-documentation verification, then PR delivery. No full build/browser suite,
+Independent review approved source/manual workflow policy `d08c88d8` with no
+findings; [PR86](https://github.com/scottchu/orca-slicer-mcp/pull/86) is open.
+Next smallest action: bind this five-record continuity tail to the approved
+policy, finish PR86 delivery and verify the merge. No full build/browser suite,
 plugin installation or service restart is required for unchanged application
 bytes under decision 0028. Backend automation, non-user thumbnail fixtures and
 target/physical display evidence remain separate; thumbnails do not establish
 geometry, printability or physical success.
 
 Preserve accepted Heads PR84/Bed PR83 and resume the earlier widget order after
-this user priority. Camera retry, all-widget errors, Bed layout, fixed Lab
+PR86 delivery is verified. Camera retry, all-widget errors, Bed layout, fixed Lab
 dock, Current Job PR79, unfinished Queue/Fans/Job History migrations and other
 widget/Console/progress-thumbnail/size/cleanup tracks remain open.
 

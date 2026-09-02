@@ -1,6 +1,22 @@
 # F0 dual-subsystem foundation validation
 
-## Required print-thumbnail policy — documentation author evidence
+## Required print-thumbnail policy — independent approval and PR86
+
+Independent review approved exact policy commit
+`d08c88d8be9e70ae209664405119e3bc65d06838`, tree
+`7b118ec97a6d4d78c4d67c7109484d5b9ed7dadf`, with no findings. The separate
+reviewer reports 457 unchanged protected blobs, 43 valid local Markdown links,
+and passing privacy and ordered local/upload/start gate checks. These results
+are attributed independent documentation evidence; no runtime enforcement,
+printer operation or physical outcome is established.
+
+The coordinator opened [PR86](https://github.com/scottchu/orca-slicer-mcp/pull/86).
+This five-record continuity tail records completed approval and the existing
+PR; it changes no policy or application bytes. Author `git diff --check` and
+`uv run --no-project -` focused path/link/blob checks pass against `d08c88d8`.
+Final independent identity binding and PR86 merge verification remain pending.
+
+### Earlier author evidence, retained for unchanged policy and application bytes
 
 Base: `36ab3b21acd2ae6ff0bbb1b18e9ebd861197829f`. Decision 0040,
 PREP-007/HANDOFF-007 and the AGENTS/knowledge additions require local decoded
@@ -26,8 +42,9 @@ guards and source plugin skills remain byte-identical to the base. The prior
 application evidence below is retained for those unchanged bytes, without
 extending it to thumbnail behavior. No application test, full build/browser
 suite, service operation, printer command or plugin installation was run by
-this documentation author. Independent exact-candidate review and PR delivery
-remain pending; physical thumbnail display and printability are unverified.
+this documentation author. The independent policy review above is complete;
+PR86 delivery remains pending. Physical thumbnail display and printability are
+unverified.
 
 ## Heads Copy PR84 rollout — delivery and independent postverification passed
 

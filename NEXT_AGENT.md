@@ -1,9 +1,12 @@
 # Next agent
 
-## Immediate: review and deliver required print-thumbnail policy
+## Immediate: finish PR86 delivery of the reviewed thumbnail policy
 
-Independently review the documentation candidate for decision 0040,
-PREP-007/HANDOFF-007 and the AGENTS/knowledge gate, then deliver through a PR.
+Independent review approved policy `d08c88d8` with no findings.
+[PR86](https://github.com/scottchu/orca-slicer-mcp/pull/86) already contains the
+source/manual workflow rule. Bind this continuity-only tail to that review,
+finish delivery through PR86 and verify the merge; do not recreate the PR or
+repeat the completed policy review.
 Apply local decoded-image verification before accepting or uploading any
 prepared artifact, including the current unstarted job. After upload, verify
 target-parsed thumbnail metadata before start. Configuration strings or an
@@ -15,8 +18,8 @@ service restart. Runtime enforcement and target/physical display acceptance
 remain unimplemented or unverified; preserve exact artifact and authorization
 bindings during operations outside this repository policy work.
 
-Then resume the previous widget order below without marking unfinished Camera,
-Queue, Fans, Job History, Current Job, other migrations or thumbnail/Console/
+After delivery is verified, resume the previous widget order below without
+marking unfinished Camera, Queue, Fans, Job History, Current Job, other migrations or thumbnail/Console/
 widget-size features complete. See the active HANDOFF and VALIDATION records
 for changed paths, evidence and limits.
 
