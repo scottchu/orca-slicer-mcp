@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { QueueState } from '../live/queue-presentation';
-  import InfoPair from '../ui/InfoPair.svelte';
-  import Caption from '../ui/Caption.svelte';
-  import LoadingValue from '../ui/LoadingValue.svelte';
+  import InfoPair from '../common/InfoPair.svelte';
+  import Caption from '../common/Caption.svelte';
+  import LoadingValue from '../common/LoadingValue.svelte';
   import { titleCase } from './format';
   type State = { state: QueueState | null; count: number | null; loading?: false } | { loading: true; state?: never; count?: never };
   let { state, count, loading = false }: State = $props();

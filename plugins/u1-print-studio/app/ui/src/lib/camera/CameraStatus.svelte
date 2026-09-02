@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Skeleton from '../ui/Skeleton.svelte';
-  import Timestamp from '../ui/Timestamp.svelte';
+  import Skeleton from '../common/Skeleton.svelte';
+  import Timestamp from '../common/Timestamp.svelte';
   import { type CameraScenario, type CameraMeasurement, CAMERA_FIXTURE_TIME } from './state';
   let { scenario, measurement }: { scenario: CameraScenario; measurement: CameraMeasurement } = $props();
   const live = $derived(scenario === 'live' || scenario === 'connecting');

@@ -140,3 +140,47 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await page.screenshot({ path: test.info().outputPath('live-camera.png'), fullPage: true });
   });
 }
+
+for (const width of [320, 390, 720]) test(`Camera icon overlay fullscreen roving tab order ${width}`, async ({ page }, info) => {
+  await page.setViewportSize({ width, height: 1000 });
+  await page.addInitScript(installCameraPeerFixture);
+  const image = await page.evaluate(() => { const canvas = document.createElement('canvas'); canvas.width = 32; canvas.height = 18; return canvas.toDataURL('image/jpeg'); });
+  await page.route('**/dashboard/tools/call', async route => {
+    const call = route.request().postDataJSON();
+    const json = call.name === 'get_u1_camera_frame' ? { structuredContent: { schemaVersion: 1, available: true, observedAt: '2026-09-01T12:00:00.000Z', mediaType: 'image/jpeg', byteLength: Buffer.from(image.split(',')[1], 'base64').length }, _meta: { cameraFrame: { dataUrl: image }, cameraActivation: { token: 'fixture-activation-capability' } } }
+      : call.name === 'open_u1_camera_stream' ? { structuredContent: { schemaVersion: 2, available: true }, _meta: { cameraStream: { transport: 'mcp-apps-tools', sessionId: 'fixture-session-capability', offer: { type: 'offer', sdp: 'fixture-downstream-offer' }, iceServers: [] } } }
+      : call.name === 'answer_u1_camera_stream' ? { structuredContent: { accepted: true } } : { structuredContent: { closed: true } };
+    await route.fulfill({ json });
+  });
+  await page.goto('/dashboard/camera');
+  const frame = page.frames().find(candidate => candidate.url().endsWith('/dashboard/camera_widget'))!;
+  await expect(frame.locator('img')).toBeVisible();
+  if (width !== 390) await doubleText(frame);
+  await frame.evaluate(() => Object.defineProperty(document, 'fullscreenEnabled', { value: false, configurable: true }));
+  for (const mode of ['Snapshot', 'Live', 'Auto']) {
+    const selected = frame.getByRole('radio', { name: mode, exact: true });
+    await selected.click(); await expect(selected).toHaveAttribute('aria-checked', 'true');
+    if (mode === 'Live') await expect(frame.locator('[data-media-fps]')).toContainText('FPS');
+    await expect(frame.getByRole('button', { name: 'Fullscreen', exact: true })).toBeEnabled();
+    const placement = await frame.locator('[data-media-actions]').evaluate(actions => {
+      const media = actions.closest('[data-media-surface]')!.getBoundingClientRect();
+      const controls = [...actions.querySelectorAll<HTMLButtonElement>('button')].map(button => button.getBoundingClientRect());
+      const group = actions.querySelector('[role="radiogroup"]')!.getBoundingClientRect();
+      return { contained: controls.every(box => box.left >= media.left && box.right <= media.right && box.top >= media.top && box.bottom <= media.bottom), separate: controls.every((a, i) => controls.every((b, j) => i === j || Math.min(a.right, b.right) - Math.max(a.left, b.left) <= 1)), right: media.right - group.right, bottom: media.bottom - group.bottom, width: group.width };
+    });
+    expect(placement).toEqual({ contained: true, separate: true, right: 10, bottom: 10, width: 132 });
+    await page.screenshot({ path: info.outputPath(`camera-${mode.toLowerCase()}-ready.png`), fullPage: true });
+    await frame.getByRole('button', { name: 'Fullscreen', exact: true }).click();
+    const dialog = frame.getByRole('dialog', { name: 'Fullscreen camera' }); await expect(dialog).toBeVisible();
+    await selected.focus(); await selected.press('Tab');
+    expect(await frame.evaluate(() => { const buttons = [...document.querySelectorAll<HTMLButtonElement>('[role="dialog"] button')].filter(button => !button.disabled && button.tabIndex >= 0); return document.activeElement === buttons[0]; })).toBe(true);
+    await page.keyboard.press('Shift+Tab'); await expect(selected).toBeFocused();
+    await page.screenshot({ path: info.outputPath(`camera-${mode.toLowerCase()}-fullscreen.png`), fullPage: true });
+    await selected.press('Escape'); await expect(dialog).toHaveCount(0);
+    await expect(frame.getByRole('button', { name: 'Fullscreen', exact: true })).toBeFocused();
+  }
+  // A dark OS preference still uses this application's explicit light token palette.
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await expect(frame.locator('html')).toHaveCSS('color-scheme', 'light');
+  await page.screenshot({ path: info.outputPath('camera-dark-preference.png'), fullPage: true });
+});

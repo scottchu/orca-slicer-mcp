@@ -5,21 +5,22 @@
   import { titleCase } from '../observation/format';
   import ThermalReadings from '../observation/ThermalReadings.svelte';
   import ThermalsSkeleton from '../observation/ThermalsSkeleton.svelte';
-  import WidgetShell from '../ui/WidgetShell.svelte';
-  import WidgetHeader from '../ui/WidgetHeader.svelte';
-  import WidgetBody from '../ui/WidgetBody.svelte';
-  import WidgetFooter from '../ui/WidgetFooter.svelte';
-  import StateAnnouncement from '../ui/StateAnnouncement.svelte';
-  import WidgetStateSurface from '../ui/WidgetStateSurface/WidgetStateSurface.svelte';
-  import ObservedMeta from '../ui/ObservedMeta.svelte';
-  import Caption from '../ui/Caption.svelte';
-  import Icon from '../ui/Icon.svelte';
-  import IconButton from '../ui/IconButton.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
-  import FeedbackOverlay from '../ui/FeedbackOverlay.svelte';
-  import Stack from '../ui/Stack.svelte';
-  import InfoPair from '../ui/InfoPair.svelte';
-  import Label from '../ui/Label.svelte';
+  import Shell from '../common/Shell.svelte';
+  import Header from '../common/Header.svelte';
+  import Body from '../common/Body.svelte';
+  import Footer from '../common/Footer.svelte';
+  import StateAnnouncement from '../common/StateAnnouncement.svelte';
+  import StateSurface from '../common/StateSurface/StateSurface.svelte';
+  import ObservedMeta from '../observation/ObservedMeta.svelte';
+  import Caption from '../common/Caption.svelte';
+  import Icon from '../common/Icon.svelte';
+  import { observationIcons } from '../observation/icons';
+  import Button from '../common/Button.svelte';
+  import Skeleton from '../common/Skeleton.svelte';
+  import FeedbackOverlay from '../common/FeedbackOverlay.svelte';
+  import Stack from '../common/Stack.svelte';
+  import InfoPair from '../common/InfoPair.svelte';
+  import Label from '../common/Label.svelte';
   let { controller }: { controller: ReturnType<typeof createThermalsController> } = $props();
   let current = $state(untrack(() => controller.getState()));
   const observation = $derived(current.observation);
@@ -36,13 +37,13 @@
   });
 </script>
 <StateAnnouncement text={announcement} />
-<WidgetStateSurface phase={current.failure ? 'error' : unavailable ? 'unavailable' : current.phase}>
-<WidgetShell label="Thermals" busy={loading || current.refreshing}>
-  <WidgetHeader title="Thermals">
-    {#snippet icon()}<Icon name="thermals" />{/snippet}
+<StateSurface phase={current.failure ? 'error' : unavailable ? 'unavailable' : current.phase}>
+<Shell label="Thermals" busy={loading || current.refreshing}>
+  <Header title="Thermals">
+    {#snippet icon()}<Icon icon={observationIcons.thermals} />{/snippet}
     {#snippet meta()}<Caption>Tools & bed · <ObservedMeta observedAt={observation?.sourceObservedAt ?? null} freshness={observation?.freshness ?? 'unknown'} loading={placeholder} groupedTime /></Caption>{/snippet}
-  </WidgetHeader>
-  <WidgetBody>
+  </Header>
+  <Body>
       <Stack>
         <InfoPair>
           {#snippet label()}<Label text="Cavity" tone="muted" />{/snippet}
@@ -50,10 +51,10 @@
         </InfoPair>
         {#if observation && !placeholder}<ThermalReadings readings={observation.readings} />{:else}<ThermalsSkeleton />{/if}
       </Stack>
-  </WidgetBody>
-  <WidgetFooter message={current.failure || unavailable ? notice : ''}>
-    {#snippet actions()}{#if loading}<Skeleton shape="action" />{:else}<IconButton label="Refresh Thermals" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
-  </WidgetFooter>
+  </Body>
+  <Footer message={current.failure || unavailable ? notice : ''}>
+    {#snippet actions()}{#if loading}<Skeleton shape="action" />{:else}<Button label="Refresh Thermals" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
+  </Footer>
   <FeedbackOverlay message={current.failure || unavailable ? '' : notice} announce={false} />
-</WidgetShell>
-</WidgetStateSurface>
+</Shell>
+</StateSurface>

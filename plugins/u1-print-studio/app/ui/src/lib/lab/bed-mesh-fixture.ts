@@ -1,7 +1,7 @@
 import { validateBedMeshObservation, type BedMeshObservation } from '../bed-mesh/types';
 import { bedMeshLabFixture } from '../fixtures/bed-mesh';
 import { bedMeshSelectionSearch, readBedMeshSelection, type BedMeshLabSelection } from '../bed-mesh/lab-controller';
-import type { WidgetState } from '../ui/state';
+import type { WidgetState } from '../observation/state';
 
 export const resolveBedMeshFixture = (selection: BedMeshLabSelection): BedMeshObservation => {
   const canonical = readBedMeshSelection(bedMeshSelectionSearch(selection));

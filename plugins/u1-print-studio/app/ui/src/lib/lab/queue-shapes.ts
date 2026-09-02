@@ -1,5 +1,5 @@
 import { queueLabFixture } from '../fixtures/observations';
-import { formatDateTime } from '../ui/date-time';
+import { formatDateTime } from '../common/date-time';
 import { structureCount } from '../observation/loading';
 
 // Closed synthetic layout metadata only. This module is excluded from every

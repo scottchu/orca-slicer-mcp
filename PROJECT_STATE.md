@@ -1,6 +1,75 @@
 # Project state
 
-## Current: PR89 deployed and scoped-verified; intermittent Camera acquisition risk open
+## Current: common UI foundation and compact Camera icon overlay
+
+The user explicitly authorized removal of all repository widget/package individual
+and aggregate byte caps under decision0042. Remove ceilings rather than raising
+them; these were repo rules, not OpenAI limits. Prefer readable, precise, separated
+source over size-only complexity; normal minification/size reporting remain.
+Integrity, determinism, schema/security/self-contained assets and all shipping
+review/lifecycle/preservation guards stay mandatory.
+
+Application source is frozen: common/Button/Icon/Switch, compact bottom-right
+Camera icon overlay and individual/aggregate byte-cap removal are implemented;
+all eight bundles/pins are rebuilt. Author evidence passes check0errors/0warnings/
+AST,197 distinct focused UI checks (146 retained+51 renewed),28 browser cases
+(four same-hash Heads retained+24 final),12 package and three served-asset tests.
+These are author checks, not independent/full acceptance. VALIDATION binds the
+report and369 non-Markdown app inputs and preserves earlier failures.
+
+Next freeze the candidate for one required repository/browser regression owner,
+independent exact review, then guarded ship and BOTH restarts/postverification.
+PR89 remains deployed; all55 IDs, C08's intermittent unclassified acquisition risk,
+Progress no-action, reactive-class discussion and c6 remain. No extra cap approval
+is needed. Author-owned browsers/processes are closed and port4179 is released.
+
+After this slice ships, the user's next priority is cleanup toward `src/components`
+for UI (`components/common/Button`, Icon, Switch), `src/lib` for pure TypeScript
+services/domain/transport (`lib/server` for server-only code), and `src/routes` for
+API/dashboard/Lab while preserving `/dashboard/lab` URLs. Current `lib/common` is
+this slice's implementation; the next layout/route consolidation is not implemented
+and must not restart or delay the current application shipment.
+
+### Earlier source checkpoint before decision0042
+
+The latest user correction is active on `codex/u1-camera-icon-overlay`, based on
+`431b5d40a761919d638a35e2950874e3a5a29519`: reuse the existing animated
+`IconSegmentedControl` behavior, consolidated as generic `Switch`, for
+Snapshot/Live/Auto as a compact icon-only overlay
+inside the Camera image's bottom-right corner. Labels appear only in tooltip/aria;
+this supersedes the visible text/full-width mode control placement. Preserve44px
+targets, keyboard/focus, reduced motion and separation from fullscreen controls.
+Acquisition-error text stays beside footer Refresh. Camera service/mode/Auto
+fallback and read-only lifecycle semantics remain unchanged.
+
+The user also adopted `src/lib/common/*` for all shared UI primitives, with generic
+names: Button, Icon, Switch. Props/variants express visual/content differences;
+domain compositions and domain icon mappings stay outside common. Consolidate
+IconButton/QuietIconButton into Button and IconGlyph/BorderedIcon into Icon variants
+without changing domain behavior or semantic tokens. Common/Button/Icon/Switch
+source migration is implemented, but not accepted or deployed. Shared migration affects all eight
+packages and requires consumer coverage under one full-regression owner.
+
+Author `bun run check` passes0errors/0warnings and AST; one390px synthetic Camera
+modes case passes, with an initial error screenshot matching the compact overlay.
+Camera Lab remains blocked by its unchanged80000-byte guard:83901 initially,
+83446 after focused Switch/Icon simplification. Initial Live94479 fits100000.
+A preliminary source-derived UI/UX P1 found local-fullscreen tab trapping includes
+unselected radios; its focused repair is in progress. A LabControls size experiment
+saved no bytes and was fully reverted. No full/independent acceptance is claimed.
+
+Read-only architecture review found no wrong graph dependency and no identified
+bounded simplification that recovers the remaining3446bytes while preserving the
+requirements; this is not proof that fitting is impossible. Next finish the focus
+repair and obtain all eight final package measurements/focused evidence before
+checkpointing. Any cap change needs a separate explicit user decision; no new cap
+is proposed from these interim sizes. Then renew consumer geometry/interaction/
+package checks, then required full validation, independent exact review and guarded
+delivery. No new acceptance or deployment yet; PR89 below remains deployed and
+C08's intermittent unclassified acquisition risk remains open. All55 ledger IDs,
+Progress no-action, F07 reactive-class discussion, c6 separation and repo caps remain.
+
+## Deployed baseline: PR89 scoped verification and open Camera risk
 
 PR89 merged as `f0d7c178e59e72a9d1ed6324577d2e131ffb0f91`, preserving independently
 reviewed `ce065866c61eba159075da9d3bcbf642e9bd404d` and tree

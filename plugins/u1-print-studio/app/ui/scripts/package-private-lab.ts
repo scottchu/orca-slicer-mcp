@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { assertLabBudgets, assertSelfContained, normalizeLabHtml } from './private-lab-contract';
+import { assertLabSizes, assertSelfContained, normalizeLabHtml } from './private-lab-contract';
 
 const builtPath = path.resolve(import.meta.dir, "../build/index.html");
 const packagedPath = path.resolve(import.meta.dir, "../../public/svelte-observation-lab.html");
@@ -23,7 +23,7 @@ for (const marker of ["Overview", "Print Progress", "Thermals", "Heads & Filamen
 assertSelfContained(packaged);
 assertSelfContained(bedMesh);
 assertSelfContained(camera);
-assertLabBudgets(Buffer.byteLength(packaged), Buffer.byteLength(bedMesh), Buffer.byteLength(camera));
+assertLabSizes(Buffer.byteLength(packaged), Buffer.byteLength(bedMesh), Buffer.byteLength(camera));
 for (const forbidden of ['data-chart-frame', 'WebGLRenderer', 'OrbitControls', 'bed-mesh-fixture']) {
   if (packaged.includes(forbidden)) throw new Error(`Light observation lab contains Bed Mesh implementation: ${forbidden}`);
 }

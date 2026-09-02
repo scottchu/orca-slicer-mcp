@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount, type Snippet } from 'svelte';
-  import { staticStructure, type WidgetSurfacePhase } from './types';
+  import { staticStructure, type SurfacePhase } from './types';
   import { createSurfaceAllocation } from './allocation';
-  let { phase, children }: { phase: WidgetSurfacePhase; children: Snippet } = $props();
+  let { phase, children }: { phase: SurfacePhase; children: Snippet } = $props();
   const settled = $derived(staticStructure(phase));
   let root: HTMLDivElement;
   let allocation: ReturnType<typeof createSurfaceAllocation> | undefined;

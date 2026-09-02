@@ -1,16 +1,16 @@
 <script lang="ts">
   import { Copy, Spool, ThermometerSun } from 'lucide-svelte';
   import { headColor, headStateLabel, type HeadCardValue, type HeadId } from '../live/heads-presentation';
-  import InsetCard from '../ui/InsetCard.svelte';
-  import ColorValue from '../ui/ColorValue.svelte';
-  import Inline from '../ui/Inline.svelte';
-  import Stack from '../ui/Stack.svelte';
-  import Name from '../ui/Name.svelte';
-  import Caption from '../ui/Caption.svelte';
-  import LoadingValue from '../ui/LoadingValue.svelte';
-  import TextSkeleton from '../ui/TextSkeleton.svelte';
-  import IconGlyph from '../ui/IconGlyph.svelte';
-  import QuietIconButton from '../ui/QuietIconButton.svelte';
+  import InsetCard from '../common/InsetCard.svelte';
+  import ColorValue from '../common/ColorValue.svelte';
+  import Inline from '../common/Inline.svelte';
+  import Stack from '../common/Stack.svelte';
+  import Name from '../common/Name.svelte';
+  import Caption from '../common/Caption.svelte';
+  import LoadingValue from '../common/LoadingValue.svelte';
+  import TextSkeleton from '../common/TextSkeleton.svelte';
+  import Icon from '../common/Icon.svelte';
+  import Button from '../common/Button.svelte';
   import ActualTarget from './ActualTarget.svelte';
   import { materialLoadingTemplate, type MaterialLoadingShape } from './heads-loading';
   type Props = { physicalTool: HeadId; reading?: HeadCardValue; copying?: boolean; oncopy?: (id: HeadId, color: string) => void } & ({ loading: true; materialShape?: MaterialLoadingShape } | { loading?: false; materialShape?: never });
@@ -25,12 +25,12 @@
     <Caption><LoadingValue {loading} text={loading ? undefined : headStateLabel(reading?.active ?? null, reading?.state ?? null)} /></Caption>
   {/snippet}
   <Stack>
-    <Inline gap="tight"><Inline shrink={false}><IconGlyph icon={Spool} /></Inline><Caption>{#if loading}<TextSkeleton shape={materialTemplate} />{:else}{reading?.material ?? '—'}{/if}</Caption></Inline>
-    <Inline gap="tight"><Inline shrink={false}><IconGlyph icon={ThermometerSun} /></Inline><ActualTarget actual={loading ? undefined : reading?.actual ?? null} target={loading ? undefined : reading?.target ?? null} {loading} compact /></Inline>
+    <Inline gap="tight"><Inline shrink={false}><Icon icon={Spool} /></Inline><Caption>{#if loading}<TextSkeleton shape={materialTemplate} />{:else}{reading?.material ?? '—'}{/if}</Caption></Inline>
+    <Inline gap="tight"><Inline shrink={false}><Icon icon={ThermometerSun} /></Inline><ActualTarget actual={loading ? undefined : reading?.actual ?? null} target={loading ? undefined : reading?.target ?? null} {loading} compact /></Inline>
   </Stack>
   {#snippet footer()}
     {#if !loading && color.color}
-      <QuietIconButton label={`Copy T${physicalTool} color ${color.color}`} icon={Copy} busy={copying} onclick={() => oncopy?.(physicalTool, color.color!)}><ColorValue color={color.color} text={color.label} /></QuietIconButton>
+      <Button variant="quiet" label={`Copy T${physicalTool} color ${color.color}`} icon={Copy} busy={copying} onclick={() => oncopy?.(physicalTool, color.color!)}><ColorValue color={color.color} text={color.label} /></Button>
     {:else}<ColorValue color={loading ? undefined : color.color} text={loading ? undefined : color.label} {loading} />{/if}
   {/snippet}
 </InsetCard>

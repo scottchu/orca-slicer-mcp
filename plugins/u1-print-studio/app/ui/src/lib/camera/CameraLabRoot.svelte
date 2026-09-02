@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import CameraLabWidget from './CameraLabWidget.svelte';
-  import LabControls from '../ui/LabControls.svelte';
-  import PageLayout from '../ui/PageLayout.svelte';
+  import LabControls from '../lab/LabControls.svelte';
+  import PageLayout from '../common/PageLayout.svelte';
   import { cameraFields, defaultCameraSelection, setCameraSelection } from './controller';
   import { currentCameraSelection, writeCameraSelection, resetCameraLocation, watchCameraLocation } from './lab-location';
   let selection = $state(currentCameraSelection());

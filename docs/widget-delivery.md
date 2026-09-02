@@ -21,6 +21,53 @@ unverified unless explicitly recorded otherwise.
 
 ## Current execution order and all-route error coverage
 
+Latest explicit direction is decision0042: remove all repository widget/package
+individual and aggregate byte ceilings, without substituting higher caps. These
+were repo guards, not OpenAI limits. Prefer readable/precise source over size-only
+complexity; retain normal minification, size reporting, integrity/determinism/schema/
+security/self-contained assets and all shipping review/lifecycle/preservation gates.
+
+Application source is frozen with cap removal, common/Button/Icon/Switch and compact
+Camera overlay implemented; all eight bundles/pins are rebuilt. Author check0/0/AST,
+197 distinct focused UI checks (146 retained+51 renewed),28 browser cases
+(four same-hash Heads retained+24 final),12 package and three asset tests pass.
+VALIDATION binds the report/369 inputs; this is not independent/full acceptance.
+Next one assigned necessary frozen full repository/browser regression, independent
+exact review and guarded two-service delivery. PR89 stays deployed; all55 IDs,
+C08 intermittent unclassified risk, Progress no-action, F07 discussion and c6 remain.
+
+### Earlier common UI checkpoint before decision0042
+
+Latest priority on `codex/u1-camera-icon-overlay` from431b5d4: reuse existing
+animated `IconSegmentedControl` behavior in generic `Switch` for compact icon-only Snapshot/Live/Auto inside
+the Camera media's bottom-right overlay, with tooltip/aria labels,44px targets,
+keyboard/focus/reduced motion and no fullscreen overlap. Footer Refresh retains
+acquisition-error text; service/mode/fallback semantics stay unchanged. This
+supersedes the text/full-width mode placement and is not yet verified/deployed.
+Complete affected focused checks/bundles, required full gate, independent review
+and guarded delivery. PR89 and C08's open intermittent risk remain the baseline;
+all55 IDs, Progress no-action, F07 class discussion, c6 and caps are preserved.
+
+The user now adopts all shared primitives under `src/lib/common/*`, with generic
+Button/Icon/Switch names and props/variants for visual/content differences.
+Domain compositions and domain icon mappings remain outside common. F02 foundation
+cleanup/common migration is implemented in source but unaccepted, and F05 token changes
+remain unstarted. Cover all eight bundles and transitive consumers under one
+required full-run owner; do not repeat full regression merely for agent handoff.
+
+Current editing evidence: `bun run check`0errors/0warnings/AST PASS and one390px
+synthetic Camera modes case PASS. Camera Lab83901 then83446 exceeds its unchanged
+80000 guard; initial Live94479 fits100000. A source-derived local-fullscreen P1
+(unselected radios in tab trapping) is being fixed. LabControls size experiment
+was fully reverted after no saving. Continue legitimate common/Camera simplification
+and focused evidence; no full/independent acceptance, new deployment or cap change.
+Read-only architecture review found no wrong graph dependency or bounded justified
+3446-byte saving preserving requirements. Await all eight final measurements before
+checkpointing; this is an unresolved repo guard, not an OpenAI limit or proof of
+impossibility. Any new cap requires an explicit user decision.
+
+### PR89 baseline evidence
+
 PR89's full source gate passed559 UI,304 app/3656assertions, eight deterministic
 packages,21 lifecycle/24 shipping. Browser coverage is317 cases (256 retained+
 61 renewed), not a full317-case run; independent controller4/Camera7 remain bound
@@ -158,14 +205,14 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | IDs / request | Status and evidence | Acceptance / next smallest action |
 | --- | --- | --- |
 | F01 SvelteKit checked-in project | Partial: 10 Lab routes, five focused Svelte views delivered | Finish other five focused views; canonical source remains checked in |
-| F02 shared primitive composition | Partial: registered leaves and AST guard delivered | Retire seven frozen raw-markup debts without weakening guard |
+| F02 shared primitive composition | Common/Button/Icon/Switch source frozen; author focused checks/all-eight bundles pass | Required frozen full consumer validation and exact review; preserve integrity/component/shipping guards and other raw-markup debt |
 | F03 PercentageBackground + slight slope | Delivered: Thermals/Fans, 100-degree tint | Preserve exact ratio and truthful over-target numbers |
-| F04 src/lib/ui vs src/components | Decision pending | Decide location once; no unrequested mass move |
+| F04 src/lib/ui vs src/components | Current src/lib/common source frozen; next adopted target src/components/common, not implemented | Ship current slice first, then UI/common Button/Icon/Switch cleanup in components; pure TypeScript remains lib; domain compositions stay outside common |
 | F05 generic semantic tokens | Not started; --u1 tokens remain | Inventory consumers and controlled alias transition |
 | F06 arrow functions | Adopted AGENTS | Apply to changed JS/TS; document genuine exceptions |
 | F07 component-owned folders/services | Partial; PR89 delivers real/synthetic Camera service separation | Thin subscribers/renderers. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
-| F08 whole server/MCP SvelteKit migration | Decision pending | Agentic architecture review preserving peer subsystems and authority |
-| F09 self-contained widget HTML | Delivered packaging contract, not one giant source file | Preserve independent CSP-safe artifacts and byte budgets |
+| F08 whole server/MCP SvelteKit migration | Next-slice route/layout cleanup adopted; whole-server/MCP migration not implemented or established | After current ship, design src/routes API/dashboard/Lab and lib/server boundary preserving /dashboard/lab URLs, peer subsystems and authority |
+| F09 self-contained widget HTML | Packaging retained;0042 individual/aggregate byte caps removed in frozen source, author checks pass | Full/exact acceptance pending; preserve CSP-safe self-contained assets, integrity, determinism and size reporting |
 | U01 density/grouping/consistent language | Partial; independent UIUX/domain audits complete | Implement findings per widget; audits alone are not fixes |
 | U02 smaller Refresh visual | Not started in delivered shared component | Compact visible glyph/control, 44px accessible target |
 | U03 small borderless Copy | PR89 deployed; scoped HTTPS served-byte verification PASS | One44px-high color-row target,16px glyph,8px symmetric inset; native clipboard acceptance separate |
@@ -180,11 +227,11 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | L06 variable list fixed height | Decision pending | Choose bounded scroll vs content height; do not infer from skeleton rule |
 | C01 fullscreen video continuity | Delivered focused software fix | Genuine phone/native PiP and physical stream remain unverified |
 | C02 Camera in Lab and SvelteKit | Delivered PR69/71 | Does not imply latest service/status repair delivered |
-| C03 connecting/disconnected icons/red dot | Source-only integrated checkpoint c6cfb4e | Resolve budget authority, integrate, independently verify |
-| C04 consistent two/three status slots | PR89 fixed Snapshot/Live/Auto deployed; scoped actual HTTPS modes verified | Preserve three controls/geometry; Auto obtains new snapshots, Snapshot stops ongoing reads; C08 risk separate |
+| C03 connecting/disconnected icons/red dot | Source-only separate checkpoint c6cfb4e | Integrate separately and independently verify;0042 removes historical repo cap blocker |
+| C04 consistent two/three status slots | PR89 modes deployed; compact Switch overlay source frozen with final scoped browser passes | Full/exact acceptance and delivery pending; preserve animation/tooltip/aria/44px targets, fullscreen focus and non-overlap; C08 risk separate |
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
-| C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Budget and independent/final integrated acceptance pending |
+| C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
 | C08 served Camera still old | PR89 exact bytes verified; intermittent Live acquisition risk remains open | Two successes advanced decoded frames for17.100s/17.102s; first failed acquisition unclassified. Diagnose it; no blanket reliability/phone acceptance |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |

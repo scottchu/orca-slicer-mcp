@@ -1,7 +1,7 @@
 <script lang="ts">
   import ProgressWidget from '../../src/lib/observation/ProgressWidget.svelte';
   import { progressLabFixture } from '../../src/lib/fixtures/observations';
-  import '../../src/lib/ui/tokens.css';
+  import '../../src/lib/common/tokens.css';
   let loading = $state(false);
   Object.assign(window, { __progressLoading: () => { loading = true; } });
 </script>

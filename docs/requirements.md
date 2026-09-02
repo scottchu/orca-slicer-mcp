@@ -197,8 +197,13 @@ printer environments support the described behavior.
   small camera-icon tile/title at top left; state/measured FPS/frame time in the
   white header above and outside the genuine image, with readable narrow
   wrapping. Display/live/snapshot controls stay bottom right and remain working
-  and accessible. Snapshot / Live / Auto form a fixed
-  three-mode toggle; Live failure automatically selects Auto. The user-selected
+  and accessible. Snapshot / Live / Auto use the existing animated
+  `IconSegmentedControl` behavior through generic common `Switch` as a fixed
+  compact icon-only three-mode overlay inside
+  the Camera media's bottom-right corner. Names appear only in tooltip/aria,
+  superseding visible text/full-width mode controls. Keep44px targets, keyboard
+  selection/focus and reduced-motion behavior; the switch must not overlap
+  fullscreen or other display controls. Live failure automatically selects Auto. The user-selected
   one-word Auto label describes repeated accepted snapshots, not continuous
   video: one read at a time, with the next scheduled 1.5 seconds after completion.
   Snapshot stops recurring work and reads once; choosing Live from Auto retries
@@ -210,7 +215,8 @@ printer environments support the described behavior.
   acquisition failure. Decision0041 places the existing snapshot Refresh beside
   persistent acquisition-error status in an always-present footer; it does not
   duplicate the action. Failed acquisition masks old media/telemetry with static
-  neutral skeletons. No grid, tint or photo information overlay is added.
+  neutral skeletons. The mode-control overlay adds no grid, tint or telemetry
+  overlay to the photo; state/FPS/time remain in the header.
   This supersedes the former bottom-left
   information exception; information is above actions. Do not truncate time/FPS
   or shrink 44-pixel controls on narrow views. Snapshot/fallback time belongs to the
@@ -420,22 +426,20 @@ printer environments support the described behavior.
   Camera has a separate synthetic-only `/dashboard/lab/camera` candidate using
   the same visible LabControls. It is a compiled Svelte entry within the Kit
   project, not a live camera or a second SvelteKit adapter route. Exactly three
-  final inline HTML artifacts have raw UTF-8 limits of 250,000 light
-  observation, 700,000 Bed Mesh, 80,000 Camera and 980,000 aggregate bytes.
+  nonempty valid inline HTML artifacts remain independently packaged. Decision0042
+  removes repository individual and aggregate package byte ceilings; measured
+  sizes remain observable, with normal production minification and no replacement cap.
   The directory and eight non-Bed/non-Camera views belong to the light
   artifact; Bed Mesh and Camera each use a closed explicit Svelte entry in the
   same project. The light graph excludes Three.js, OrbitControls, the Bed
   renderer and Bed fixture; Bed excludes other observations, Camera/media,
   live adapters and RPC. No final artifact may reference an external asset or
   dynamic import, and instrumented lab navigation, states, controls and
-  refreshes execute without runtime fetch. Decision 0032 records measured
-  outputs, invalid and +/-1-byte guards and deterministic builds. The exact
-  aggregate boundary is 250,000 + 650,000 + 80,000; one additional Bed byte
-  fails. Every individual maximum with one-byte siblings passes, while every
-  individual plus one and every zero, negative, fractional, NaN, infinite or
-  unsafe-integer position fails. This finite allowance covers only remaining
-  Queue, Current Job, History, Progress and Overview composition; Console and
-  print thumbnails require a separate decision.
+  refreshes execute without runtime fetch. Deterministic builds, exact hash/asset
+  identity, schema/graph/security/CSP and self-contained-asset checks remain
+  mandatory. Decision0032's historical byte thresholds and boundary tests are
+  superseded only by0042's package-cap removal. Console and print thumbnails
+  still require their own product decisions; removing caps does not add features.
   Bed Mesh's generic height legend sits vertically inside the shared chart's
   left edge as a 6px rail with one intrinsic Z(mm) caption. Existing visible
   Minimum/Maximum/Range facts replace duplicate chart endpoint numbers; the
@@ -602,8 +606,9 @@ durable-monitor claim.
   require decoded/presented evidence, stale async work cannot resurrect sessions,
   and page lifecycle releases only this viewer's lease. Typed private metadata,
   one-use activation, snapshot-first state and retained fallback are preserved.
-  The single self-contained production HTML has a separately reviewed100,000
-  raw UTF-8 byte limit; unchanged lab budgets do not fund it. Synthetic producers
+  The single self-contained production HTML keeps deterministic/hash/schema/
+  security checks and size reporting, with no repository byte ceiling under0042.
+  Synthetic producers
   never enter its build graph. Legacy `/camera-widget` and MCP aliases remain
   until their separate parity cutover. See decision0035 for acceptance gates.
 
@@ -637,7 +642,14 @@ durable-monitor claim.
   the requirement does not itself claim every route has been delivered.
 
 - **UI-003:** Observation presentation uses closed DOM-owning leaf/layout
-  primitives and zero-raw domain/feature composition. Shared degree,
+  primitives and zero-raw domain/feature composition. All shared UI primitives
+  live in `src/lib/common/*` with generic names such as Button, Icon and Switch;
+  props/variants express visual/content differences. Domain compositions and
+  domain icon mappings remain outside common. Consolidate visual-only leaf
+  variants without weakening AST/import guards or changing domain semantics;
+  shared changes require all eight bundles and transitive-consumer coverage.
+  This supersedes the prior shared-folder naming choice, not the semantic-token
+  contract or service ownership. Shared degree,
   actual/target thermal, icon, label, name, caption and timestamp components
   preserve units, source time and unknown-versus-zero semantics. AST checks
   prevent new raw feature HTML/style/transport debt. Each widget gains a
@@ -668,9 +680,9 @@ durable-monitor claim.
   zero values through 1,000,000 RPM, purifier power/mode and domain receipts.
   One host bridge/controller owns selected-view-before-data, bounded requests,
   duplicate/late-result rejection, restart recovery, retained refresh/focus and
-  BFCache lifecycle. Its exact private static asset has no acquisition capability
-  and is separately bounded at 100,000 bytes; the lab follows UI-002's explicit
-  independently reviewed limits.
+  BFCache lifecycle. Its exact private static asset has no acquisition capability.
+  Decision0042 removes its repository byte ceiling; UI-002's remaining integrity,
+  determinism, security and self-contained-asset requirements still apply.
   Other focused routes and generic MCP/legacy aliases stay unchanged until their
   own lossless parity, independent acceptance and guarded deployment.
   The next focused Thermals cutover preserves real `heater-bed`, nullable
@@ -679,8 +691,9 @@ durable-monitor claim.
   Tool/bed values retain source-accepted finite numbers, with safe compact
   scientific display for extreme magnitudes and exact accessible input; Cavity
   retains its -273.15..999 C source bounds. Shared rows/loading and retained
-  refresh keep geometry/focus; the exact private Thermals asset is separately
-  bounded at100,000 bytes without relaxing lab or Fans budgets. Generic MCP
+  refresh keep geometry/focus; the exact private Thermals asset retains integrity,
+  deterministic packaging and size reporting without a repository byte ceiling
+  under0042. Generic MCP
   aliases and remaining focused widgets stay legacy until independently accepted.
 
 When evidence changes one of these requirements, update it explicitly and

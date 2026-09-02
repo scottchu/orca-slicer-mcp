@@ -1,6 +1,6 @@
 <script lang="ts">
   import { HEAD_IDS, type HeadCardValue, type HeadId } from '../live/heads-presentation';
-  import CardGrid from '../ui/CardGrid.svelte';
+  import CardGrid from '../common/CardGrid.svelte';
   import HeadCard from './HeadCard.svelte';
   import { checkedMaterialShapes, type MaterialLoadingShapes } from './heads-loading';
   type Props = { items?: HeadCardValue[]; copying?: HeadId | null; oncopy?: (id: HeadId, color: string) => void } & ({ loading: true; materialShapes?: MaterialLoadingShapes } | { loading?: false; materialShapes?: never });

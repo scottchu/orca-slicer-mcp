@@ -1,10 +1,12 @@
 <script lang="ts">
   import { onMount, type Snippet } from 'svelte';
-  import { Camera, Maximize, Minimize, PictureInPicture2 } from 'lucide-svelte';
-  import IconButton from '../ui/IconButton.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
-  import { createVideoPlayback, type VideoSurfacePort } from './playback';
-  let { snapshot = null, active = false, loading = false, failed = false, feedback = '', actions, onready, onfeedback }: {
+  import { Maximize, Minimize, PictureInPicture2 } from 'lucide-svelte';
+  import Button from './Button.svelte';
+  import Icon from './Icon.svelte';
+  import Skeleton from './Skeleton.svelte';
+  import { createVideoPlayback, type VideoSurfacePort } from '../media/playback';
+  let { label, snapshotLabel, fullscreenLabel, placeholderIcon, snapshot = null, active = false, loading = false, failed = false, feedback = '', actions, onready, onfeedback }: {
+    label: string; snapshotLabel: string; fullscreenLabel: string; placeholderIcon?: typeof import('lucide-svelte')['Box'];
     snapshot?: string | null; active?: boolean; loading?: boolean; failed?: boolean; feedback?: string; actions?: Snippet;
     onready: (surface: VideoSurfacePort) => (() => void); onfeedback: (message: string) => void;
   } = $props();
@@ -58,7 +60,7 @@
     if (!localFullscreen) return;
     if (event.key === 'Escape') { event.preventDefault(); localFullscreen = false; updateDisplay(); focusBack(); }
     if (event.key !== 'Tab') return;
-    const controls = [...frame.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')];
+    const controls = [...frame.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')].filter(button => button.tabIndex >= 0);
     const first = controls[0], last = controls.at(-1);
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
@@ -88,18 +90,18 @@
 </script>
 
 <div class="media-slot" data-media-slot>
-  <div class="media-surface" class:local-fullscreen={localFullscreen} bind:this={frame} data-media-surface role={localFullscreen ? 'dialog' : undefined} aria-modal={localFullscreen ? true : undefined} aria-label={localFullscreen ? 'Fullscreen camera' : undefined}>
-    {#if snapshot}<img src={snapshot} class:masked={failed} aria-hidden={failed} alt={failed ? '' : 'Latest camera snapshot'} />{/if}
-    <video bind:this={video} class:visible={active && !failed} class:masked={failed} muted autoplay playsinline aria-hidden={failed} aria-label={failed ? undefined : 'Live printer camera'}></video>
+  <div class="media-surface" class:local-fullscreen={localFullscreen} bind:this={frame} data-media-surface role={localFullscreen ? 'dialog' : undefined} aria-modal={localFullscreen ? true : undefined} aria-label={localFullscreen ? fullscreenLabel : undefined}>
+    {#if snapshot}<img src={snapshot} class:masked={failed} aria-hidden={failed} alt={failed ? '' : snapshotLabel} />{/if}
+    <video bind:this={video} class:visible={active && !failed} class:masked={failed} muted autoplay playsinline aria-hidden={failed} aria-label={failed ? undefined : label}></video>
     {#if loading || failed}<div class="placeholder" aria-hidden="true"><Skeleton shape="fill" /></div>
-    {:else if !snapshot && !active}<div class="placeholder" aria-hidden="true"><Camera size={40} strokeWidth={1.5} /></div>{/if}
+    {:else if !snapshot && !active}<div class="placeholder" aria-hidden="true">{#if placeholderIcon}<Icon icon={placeholderIcon} size={40} />{/if}</div>{/if}
     <div class="actions" data-media-actions>
       {#if loading || failed}<Skeleton shape="action" /><Skeleton shape="action" />
       {:else}
-        {#if active && canPip}<IconButton label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
-        <IconButton label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
-        {@render actions?.()}
+        {#if active && canPip}<Button label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
+        <Button label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
       {/if}
+      {@render actions?.()}
     </div>
     {#if feedback}<div class="feedback" data-media-feedback>{feedback}</div>{/if}
   </div>

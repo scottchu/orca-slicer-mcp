@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { QueueRecord } from '../live/queue-presentation';
-  import OrderedRecords from '../ui/OrderedRecords.svelte';
+  import OrderedRecords from '../common/OrderedRecords.svelte';
   import QueueRow from './QueueRow.svelte';
   let { items }: { items: QueueRecord[] } = $props();
 </script>

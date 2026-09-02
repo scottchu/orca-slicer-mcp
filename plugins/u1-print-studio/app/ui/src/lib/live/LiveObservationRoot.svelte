@@ -5,21 +5,22 @@
   import { titleCase } from '../observation/format';
   import FanReadings from '../observation/FanReadings.svelte';
   import FansSkeleton from '../observation/FansSkeleton.svelte';
-  import WidgetShell from '../ui/WidgetShell.svelte';
-  import WidgetHeader from '../ui/WidgetHeader.svelte';
-  import WidgetBody from '../ui/WidgetBody.svelte';
-  import WidgetFooter from '../ui/WidgetFooter.svelte';
-  import StateAnnouncement from '../ui/StateAnnouncement.svelte';
-  import WidgetStateSurface from '../ui/WidgetStateSurface/WidgetStateSurface.svelte';
-  import ObservedMeta from '../ui/ObservedMeta.svelte';
-  import Caption from '../ui/Caption.svelte';
-  import Icon from '../ui/Icon.svelte';
-  import IconButton from '../ui/IconButton.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
-  import FeedbackOverlay from '../ui/FeedbackOverlay.svelte';
-  import Stack from '../ui/Stack.svelte';
-  import InfoPair from '../ui/InfoPair.svelte';
-  import Label from '../ui/Label.svelte';
+  import Shell from '../common/Shell.svelte';
+  import Header from '../common/Header.svelte';
+  import Body from '../common/Body.svelte';
+  import Footer from '../common/Footer.svelte';
+  import StateAnnouncement from '../common/StateAnnouncement.svelte';
+  import StateSurface from '../common/StateSurface/StateSurface.svelte';
+  import ObservedMeta from '../observation/ObservedMeta.svelte';
+  import Caption from '../common/Caption.svelte';
+  import Icon from '../common/Icon.svelte';
+  import { observationIcons } from '../observation/icons';
+  import Button from '../common/Button.svelte';
+  import Skeleton from '../common/Skeleton.svelte';
+  import FeedbackOverlay from '../common/FeedbackOverlay.svelte';
+  import Stack from '../common/Stack.svelte';
+  import InfoPair from '../common/InfoPair.svelte';
+  import Label from '../common/Label.svelte';
   let { controller }: { controller: ReturnType<typeof createFansController> } = $props();
   let current = $state(untrack(() => controller.getState()));
   const observation = $derived(current.observation);
@@ -34,13 +35,13 @@
   });
 </script>
 <StateAnnouncement text={announcement} />
-<WidgetStateSurface phase={current.failure ? 'error' : unavailable ? 'unavailable' : current.phase}>
-<WidgetShell label="Fans & Air" busy={current.phase === 'loading' || current.refreshing}>
-  <WidgetHeader title="Fans & Air">
-    {#snippet icon()}<Icon name="fan" />{/snippet}
+<StateSurface phase={current.failure ? 'error' : unavailable ? 'unavailable' : current.phase}>
+<Shell label="Fans & Air" busy={current.phase === 'loading' || current.refreshing}>
+  <Header title="Fans & Air">
+    {#snippet icon()}<Icon icon={observationIcons.fan} />{/snippet}
     {#snippet meta()}<Caption><ObservedMeta observedAt={observation?.receipt.sourceObservedAt ?? null} freshness={observation?.receipt.freshness ?? 'unknown'} loading={placeholder} />{#if !placeholder && observation && observation.state !== 'known' && observation.state !== 'stale'} · {titleCase(observation.state)}{/if}</Caption>{/snippet}
-  </WidgetHeader>
-  <WidgetBody>
+  </Header>
+  <Body>
     {#if observation && !placeholder}
       <Stack>
         <InfoPair reserve="label">
@@ -54,10 +55,10 @@
         <FanReadings items={observation.items} />
       </Stack>
     {:else}<FansSkeleton includePower />{/if}
-  </WidgetBody>
-  <WidgetFooter message={current.failure || unavailable ? notice : ''}>
-    {#snippet actions()}{#if current.phase === 'loading'}<Skeleton shape="action" />{:else}<IconButton label="Refresh Fans & Air" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
-  </WidgetFooter>
+  </Body>
+  <Footer message={current.failure || unavailable ? notice : ''}>
+    {#snippet actions()}{#if current.phase === 'loading'}<Skeleton shape="action" />{:else}<Button label="Refresh Fans & Air" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
+  </Footer>
   <FeedbackOverlay message={current.failure || unavailable ? '' : notice} announce={false} />
-</WidgetShell>
-</WidgetStateSurface>
+</Shell>
+</StateSurface>

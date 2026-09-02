@@ -1,6 +1,6 @@
 import { expect, test, type Frame } from '@playwright/test';
 
-const bounds = (frame: Frame) => frame.locator('[data-widget-shell],[data-widget-header],[data-widget-body],[data-widget-footer],[data-media-slot],[data-text-segmented]').evaluateAll(nodes => nodes.map(node => {
+const bounds = (frame: Frame) => frame.locator('[data-widget-shell],[data-widget-header],[data-widget-body],[data-widget-footer],[data-media-slot],[data-icon-segmented]').evaluateAll(nodes => nodes.map(node => {
   const r = node.getBoundingClientRect(); return [r.x + scrollX, r.y + scrollY, r.width, r.height];
 }));
 const equal = (a: number[][], b: number[][]) => a.forEach((row, i) => row.forEach((value, j) => expect(Math.abs(value - b[i][j]), `${i}/${j}`).toBeLessThanOrEqual(1)));
@@ -32,8 +32,10 @@ for (const width of [320, 390, 720]) for (const doubled of [false, true]) test(`
   await expect(frame.locator('img')).toBeVisible();
   if (doubled) await enlarge(frame);
   const modes = frame.getByRole('radiogroup', { name: 'Camera mode' });
-  await expect(modes.getByRole('radio')).toHaveText(['Snapshot', 'Live', 'Auto']);
+  expect(await modes.getByRole('radio').evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')))).toEqual(['Snapshot', 'Live', 'Auto']);
+  await expect(modes.getByRole('radio')).toHaveText(['', '', '']);
   const original = await bounds(frame);
+  await page.screenshot({ path: info.outputPath('camera-snapshot.png'), fullPage: true });
   const live = modes.getByRole('radio', { name: 'Live', exact: true });
   await live.focus(); await live.press('Enter');
   await expect.poll(() => opens).toBe(1);
@@ -44,7 +46,8 @@ for (const width of [320, 390, 720]) for (const doubled of [false, true]) test(`
   await expect(frame.locator('[data-media-fps]')).toHaveCount(0);
   equal(await bounds(frame), original);
   const hitTargets = await modes.getByRole('radio').evaluateAll(nodes => nodes.map(node => ({ width: node.getBoundingClientRect().width, height: node.getBoundingClientRect().height, insideMedia: !!node.closest('[data-media-surface]') })));
-  hitTargets.forEach(box => { expect(box.width).toBeGreaterThanOrEqual(44); expect(box.height).toBeGreaterThanOrEqual(44); expect(box.insideMedia).toBe(false); });
+  hitTargets.forEach(box => { expect(box.width).toBe(44); expect(box.height).toBe(44); expect(box.insideMedia).toBe(true); });
+  await expect(modes).toHaveCSS('width', '132px');
   const first = frames; await page.clock.fastForward(1600); await expect.poll(() => frames).toBeGreaterThan(first);
   await expect(frame.locator('img')).toBeVisible();
   await expect(frame.locator('[data-media-status]')).toContainText('Auto');

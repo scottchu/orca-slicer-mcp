@@ -3,7 +3,7 @@
   import ObservationFrame from './ObservationFrame.svelte';
   import { formatDuration, titleCase } from './format';
   import { validateProgress, type ProgressObservation } from './types';
-  import LoadingValue from '../ui/LoadingValue.svelte';
+  import LoadingValue from '../common/LoadingValue.svelte';
   import { loadingObservation, type FailureProps } from './loading';
   type Props = FailureProps & ({ observation: ProgressObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never });
   let { observation, loading: pending = false, refreshing = false, failure, onretry }: Props = $props();

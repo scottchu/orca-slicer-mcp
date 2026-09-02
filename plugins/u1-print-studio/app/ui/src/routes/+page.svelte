@@ -1,7 +1,7 @@
 <script lang="ts">
   import { browser } from '$app/environment';
   import { onMount } from 'svelte';
-  import LabControls from '$lib/ui/LabControls.svelte';
+  import LabControls from '$lib/lab/LabControls.svelte';
   import { observationProps } from '$lib/lab/observation-props';
   import { defaultSelection, fieldsFor, readSelection, selectionSearch, selectionValue, setSelection, type LabSelection } from '$lib/lab/controller';
   import { OBSERVATION_LAB_VIEWS, previewObservationState, type ObservationLabView } from '$lib/lab/observation-fixtures';

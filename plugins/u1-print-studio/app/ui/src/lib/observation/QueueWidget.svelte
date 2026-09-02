@@ -2,8 +2,8 @@
   import ObservationFrame from './ObservationFrame.svelte';
   import { validateQueue, type QueueObservation } from './types';
   import { loadingObservation, type FailureProps } from './loading';
-  import Stack from '../ui/Stack.svelte';
-  import Caption from '../ui/Caption.svelte';
+  import Stack from '../common/Stack.svelte';
+  import Caption from '../common/Caption.svelte';
   import QueueSummary from './QueueSummary.svelte';
   import QueueRows from './QueueRows.svelte';
   import QueueSkeleton from './QueueSkeleton.svelte';

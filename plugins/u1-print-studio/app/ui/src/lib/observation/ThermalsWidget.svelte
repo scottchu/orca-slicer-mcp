@@ -1,7 +1,7 @@
 <script lang="ts">
   import ObservationFrame from './ObservationFrame.svelte';
   import { validateThermals, type ThermalsObservation } from './types';
-  import { validateWidgetState, type WidgetState } from '../ui/state';
+  import { validateWidgetState, type WidgetState } from './state';
   import type { FailureProps } from './loading';
   import ThermalReadings from './ThermalReadings.svelte';
   import ThermalsSkeleton from './ThermalsSkeleton.svelte';

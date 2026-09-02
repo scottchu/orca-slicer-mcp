@@ -2,19 +2,20 @@
   import { onMount, untrack } from 'svelte';
   import { RefreshCw } from 'lucide-svelte';
   import type { createQueueController } from './queue-controller';
-  import WidgetShell from '../ui/WidgetShell.svelte';
-  import WidgetHeader from '../ui/WidgetHeader.svelte';
-  import WidgetBody from '../ui/WidgetBody.svelte';
-  import WidgetFooter from '../ui/WidgetFooter.svelte';
-  import StateAnnouncement from '../ui/StateAnnouncement.svelte';
-  import WidgetStateSurface from '../ui/WidgetStateSurface/WidgetStateSurface.svelte';
-  import Caption from '../ui/Caption.svelte';
-  import LoadingValue from '../ui/LoadingValue.svelte';
-  import Icon from '../ui/Icon.svelte';
-  import IconButton from '../ui/IconButton.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
-  import FeedbackOverlay from '../ui/FeedbackOverlay.svelte';
-  import Stack from '../ui/Stack.svelte';
+  import Shell from '../common/Shell.svelte';
+  import Header from '../common/Header.svelte';
+  import Body from '../common/Body.svelte';
+  import Footer from '../common/Footer.svelte';
+  import StateAnnouncement from '../common/StateAnnouncement.svelte';
+  import StateSurface from '../common/StateSurface/StateSurface.svelte';
+  import Caption from '../common/Caption.svelte';
+  import LoadingValue from '../common/LoadingValue.svelte';
+  import Icon from '../common/Icon.svelte';
+  import { observationIcons } from '../observation/icons';
+  import Button from '../common/Button.svelte';
+  import Skeleton from '../common/Skeleton.svelte';
+  import FeedbackOverlay from '../common/FeedbackOverlay.svelte';
+  import Stack from '../common/Stack.svelte';
   import DomainReceipt from '../observation/DomainReceipt.svelte';
   import QueueSummary from '../observation/QueueSummary.svelte';
   import QueueRows from '../observation/QueueRows.svelte';
@@ -34,13 +35,13 @@
   });
 </script>
 <StateAnnouncement text={announcement} />
-<WidgetStateSurface phase={current.failure ? 'error' : unavailable ? 'unavailable' : current.phase}>
-<WidgetShell label="Print Queue" busy={loading || current.refreshing}>
-  <WidgetHeader title="Print Queue">
-    {#snippet icon()}<Icon name="queue" />{/snippet}
+<StateSurface phase={current.failure ? 'error' : unavailable ? 'unavailable' : current.phase}>
+<Shell label="Print Queue" busy={loading || current.refreshing}>
+  <Header title="Print Queue">
+    {#snippet icon()}<Icon icon={observationIcons.queue} />{/snippet}
     {#snippet meta()}<DomainReceipt observedAt={observation?.receipt.sourceObservedAt ?? null} freshness={observation?.receipt.freshness ?? 'unknown'} state={observation?.state ?? 'unknown'} reason={observation?.receipt.reason ?? null} loading={placeholder} />{/snippet}
-  </WidgetHeader>
-  <WidgetBody>
+  </Header>
+  <Body>
     <Stack>
       {#if placeholder}{#if observation?.state === 'unknown'}<Caption><LoadingValue loading /></Caption>{:else}<QueueSummary loading /><QueueSkeleton rows={observed ? observation!.items.length : 3} compact={observed && !!current.failure} />{/if}
       {:else if observed && observation}
@@ -51,10 +52,10 @@
       {:else if observation}<Caption>{observation.state === 'unsupported' ? 'Print Queue endpoint unsupported' : observation.state === 'unknown' ? 'Print Queue not observed' : 'Print Queue unavailable'}</Caption>
       {/if}
     </Stack>
-  </WidgetBody>
-  <WidgetFooter message={current.failure || unavailable ? notice : ''}>
-    {#snippet actions()}{#if loading}<Skeleton shape="action" />{:else}<IconButton label="Refresh Print Queue" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
-  </WidgetFooter>
+  </Body>
+  <Footer message={current.failure || unavailable ? notice : ''}>
+    {#snippet actions()}{#if loading}<Skeleton shape="action" />{:else}<Button label="Refresh Print Queue" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
+  </Footer>
   <FeedbackOverlay message={current.failure || unavailable ? '' : notice} announce={false} />
-</WidgetShell>
-</WidgetStateSurface>
+</Shell>
+</StateSurface>

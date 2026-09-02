@@ -1,7 +1,7 @@
 import { mount, unmount } from 'svelte';
 import BedMeshWidget from './bed-mesh/BedMeshWidget.svelte';
 import type { BedMeshObservation } from './bed-mesh/types';
-import './ui/tokens.css';
+import './common/tokens.css';
 
 export type BedMeshWidgetHandle = { destroy(): Promise<void> };
 

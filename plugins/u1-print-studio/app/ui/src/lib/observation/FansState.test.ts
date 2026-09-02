@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/svelte';
 import { afterEach, expect, test } from 'vitest';
 import FansWidget from './FansWidget.svelte';
-import MetricValue from '../ui/MetricValue.svelte';
+import MetricValue from '../common/MetricValue.svelte';
 import { fansLabFixture } from '../fixtures/observations';
 import { fanNames } from './fan-labels';
 

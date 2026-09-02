@@ -3,14 +3,14 @@ import { afterEach, describe, expect, test } from 'vitest';
 import DegreeValue from './DegreeValue.svelte';
 import Timestamp from './Timestamp.svelte';
 import Icon from './Icon.svelte';
-import BorderedIcon from './BorderedIcon.svelte';
+import { ThermometerSun } from 'lucide-svelte';
 import Label from './Label.svelte';
 import BoxLabel from './BoxLabel.svelte';
 import CircleLabel from './CircleLabel.svelte';
 import Name from './Name.svelte';
 import Skeleton from './Skeleton.svelte';
 import { formatDegree, formatTimestamp } from './format';
-import { validateWidgetState } from './state';
+import { validateWidgetState } from '../observation/state';
 import { thermalsLabFixture } from '../fixtures/observations';
 import { validateThermals } from '../observation/types';
 import { inspectComponent, checkComponents, exactTags } from '../../../scripts/component-contract';
@@ -38,11 +38,11 @@ describe('closed leaf foundation', () => {
     expect(screen.getByText('Time unavailable')).toBeInTheDocument();
   });
   test('icons distinguish decorative and named semantics; bordered icon is not an action', () => {
-    const { container } = render(Icon, { name: 'thermals' });
+    const { container } = render(Icon, { icon: ThermometerSun });
     expect(container.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
-    cleanup(); render(Icon, { name: 'thermals', decorative: false, label: 'Temperature' });
+    cleanup(); render(Icon, { icon: ThermometerSun, decorative: false, label: 'Temperature' });
     expect(screen.getByRole('img', { name: 'Temperature' })).toBeInTheDocument();
-    cleanup(); render(BorderedIcon, { name: 'thermals' });
+    cleanup(); render(Icon, { icon: ThermometerSun, variant: 'bordered' });
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
   test('labels and names render text without HTML interpretation', () => {
@@ -75,8 +75,8 @@ describe('closed leaf foundation', () => {
 
 describe('closed component/state contracts', () => {
   test('approved composition passes while each styling escape fails its own rule', () => {
-    const prefix = '<script>import X from "../ui/Name.svelte";</script>';
-    const allowed = ['../ui/Name.svelte'];
+    const prefix = '<script>import X from "./Name.svelte";</script>';
+    const allowed = ['./Name.svelte'];
     expect(inspectComponent(`${prefix}<X text="Tool 1" />`, true, allowed).violations).toEqual([]);
     for (const attribute of ['class="bad"', 'style="color:red"']) expect(inspectComponent(`${prefix}<X ${attribute} />`, true, allowed).violations).toContain('styling escape');
     expect(inspectComponent(`${prefix}<X {...{}} />`, true, allowed).violations).toContain('escape SpreadAttribute');

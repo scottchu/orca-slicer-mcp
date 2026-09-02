@@ -1,6 +1,65 @@
 # Next agent
 
-## Continue from PR89's scoped verification and open Camera risk
+## Implement common UI primitives and the compact Camera overlay
+
+Decision0042 is the latest explicit user direction: remove repo widget/package
+individual and aggregate byte caps, without replacing them. Preserve size reporting,
+production minification, clear source, all integrity/determinism/schema/security/
+self-contained-asset and shipping review/lifecycle/preservation checks.
+Application source is frozen with cap removal, common primitives and compact
+Camera overlay implemented, and all eight bundles/pins rebuilt. Author check0/0/AST,
+197 distinct focused UI checks (146 retained+51 renewed),28 browser cases
+(four same-hash Heads retained+24 final),12 package and three asset tests pass.
+See VALIDATION for exact report/input binding and preserved failed attempts.
+Next commit the candidate for one assigned necessary full repository/browser gate,
+independent exact review and guarded two-service delivery. Do not seek another cap
+approval or treat author evidence as final acceptance. PR89 stays deployed; C08's
+intermittent unclassified acquisition risk and all55 ledger IDs remain, with
+Progress/reactive-class/c6 scope unchanged. Author resources are released.
+
+After current shipment, prioritize the user's next cleanup slice: UI belongs in
+`src/components` with `components/common/Button`, Icon and Switch; pure TypeScript
+services/domain/transport in `src/lib`, server-only code in `lib/server`, and
+API/dashboard/Lab in `src/routes`, preserving `/dashboard/lab` URLs. This future
+layout/route consolidation is not implemented. Do not redo current `lib/common`
+application work before shipping its accepted slice.
+
+### Earlier source checkpoint before decision0042
+
+On `codex/u1-camera-icon-overlay` from `431b5d40a761919d638a35e2950874e3a5a29519`,
+preserve existing animated `IconSegmentedControl` behavior in generic `Switch`:
+Snapshot/Live/Auto icons only,
+compact at the Camera image's bottom-right, with tooltip/aria names. Replace the
+visible text/full-width placement; keep44px targets, keyboard/focus/reduced motion
+and no overlap with fullscreen. Error text remains beside footer Refresh.
+Service-owned mode/connection/Auto-fallback semantics stay unchanged.
+
+Use adopted `src/lib/common/*` for all shared generic primitives. Button and Icon
+variants replace the separate visual-only button/icon leaves; domain compositions
+and domain icon mappings remain outside common. Do not rename semantic tokens or
+mix Camera service, Progress, reactive-class or c6 work into this foundation.
+Cover all shared consumers/all eight bundles, with one assigned full-run owner;
+changing agents alone does not require another full regression.
+
+The common/Button/Icon/Switch migration is implemented in source; `bun run check`
+passes0errors/0warnings and AST, and one390px Camera modes case passes. Lab size
+remains blocked at83446/80000 after an initial83901; initial Live94479/100000 fits.
+The LabControls experiment saved nothing and was fully reverted. Fix the preliminary
+source-derived local-fullscreen P1 (unselected radios included in its tab trap),
+then continue legitimate common/Camera simplification and focused evidence. Caps,
+dependencies, packaging pipeline and service semantics remain unchanged; there is
+no claim that fitting the existing guard is impossible. Read-only architecture
+review found no wrong graph dependency or bounded justified3446-byte saving that
+preserves requirements. Obtain all eight final measurements and focused author
+evidence before checkpointing; any cap change requires an explicit user decision,
+not an assumed platform limit or a new threshold guessed from interim builds.
+
+Renew affected focused tests/bundles before the assigned full gate, independent
+exact review and guarded delivery. This correction is not yet verified/deployed;
+PR89 remains the baseline. Keep C08 unclassified acquisition risk, all55 IDs,
+Progress no-action, unimplemented reactive-class discussion and c6 separation.
+
+## Deployed baseline: PR89 scoped verification and open Camera risk
 
 PR89 is merged/deployed as `f0d7c178e59e72a9d1ed6324577d2e131ffb0f91`, matching
 reviewed `ce065866c61eba159075da9d3bcbf642e9bd404d` tree

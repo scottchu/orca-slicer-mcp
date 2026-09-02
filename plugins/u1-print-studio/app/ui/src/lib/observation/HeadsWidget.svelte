@@ -4,7 +4,7 @@
   import { loadingObservation, type FailureProps } from './loading';
   import { createCopyAction } from '../live/copy-action';
   import { headColor, type HeadCardValue, type HeadId } from '../live/heads-presentation';
-  import { writeClipboard } from '../ui/clipboard';
+  import { writeClipboard } from '../common/clipboard';
   import HeadsPanel from './HeadsPanel.svelte';
   import type { MaterialLoadingShapes } from './heads-loading';
   type Props = FailureProps & ({ observation: HeadsObservation; loading?: false; refreshing?: boolean; materialShapes?: never } | { loading: true; observation?: never; refreshing?: never; materialShapes?: MaterialLoadingShapes });

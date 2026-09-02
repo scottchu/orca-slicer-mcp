@@ -1,5 +1,12 @@
 # Synthetic Camera lab checkpoint
 
+Current source navigation: the shared persistent media primitive is
+`lib/common/Video.svelte`; Camera compositions remain in `lib/camera`, and
+`lib/camera/session.ts` owns connection lifecycle. The dated checkpoints below
+retain their original evidence and proposed names, including `VideoSurface`.
+Use the active iteration and delivery ledger for current acceptance/deployment
+status and decision 0042 for removal of the historical package byte caps.
+
 The synthetic Camera is integrated as a separate private lab candidate, not
 yet independently accepted or deployed. It is not a production-camera migration.
 

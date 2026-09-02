@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { QueueRecord } from '../live/queue-presentation';
-  import Record from '../ui/Record.svelte';
-  import BoxLabel from '../ui/BoxLabel.svelte';
-  import Name from '../ui/Name.svelte';
-  import Caption from '../ui/Caption.svelte';
-  import DateTimeValue from '../ui/DateTimeValue.svelte';
-  import DurationValue from '../ui/DurationValue.svelte';
-  import LoadingValue from '../ui/LoadingValue.svelte';
+  import Record from '../common/Record.svelte';
+  import BoxLabel from '../common/BoxLabel.svelte';
+  import Name from '../common/Name.svelte';
+  import Caption from '../common/Caption.svelte';
+  import DateTimeValue from '../common/DateTimeValue.svelte';
+  import DurationValue from '../common/DurationValue.svelte';
+  import LoadingValue from '../common/LoadingValue.svelte';
   type State = { item: QueueRecord; loading?: false; positionCharacters?: never; nameShape?: never; dateShape?: never; compact?: never } | { loading: true; item?: never; positionCharacters?: number; nameShape?: string; dateShape?: string; compact?: boolean };
   let { item, loading = false, positionCharacters = 1, nameShape, dateShape, compact = false }: State = $props();
 </script>

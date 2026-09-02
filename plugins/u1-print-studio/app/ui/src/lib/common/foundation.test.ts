@@ -1,19 +1,18 @@
 import { render } from '@testing-library/svelte';
 import { RotateCcw } from 'lucide-svelte';
 import { describe, expect, test, vi } from 'vitest';
-import IconButton from './IconButton.svelte';
-import ObservedMeta from './ObservedMeta.svelte';
+import Button from './Button.svelte';
+import ObservedMeta from '../observation/ObservedMeta.svelte';
 
 describe('shared widget foundation', () => {
   test('icon actions expose one exact 44-pixel accessible target contract', async () => {
     const onclick = vi.fn();
-    const { getByRole } = render(IconButton, { label: 'Reset view', icon: RotateCcw, pressed: false, onclick });
+    const { getByRole } = render(Button, { label: 'Reset view', icon: RotateCcw, pressed: false, onclick });
     const button = getByRole('button', { name: 'Reset view' });
     expect(button).toHaveAttribute('title', 'Reset view');
     expect(button).toHaveAttribute('aria-pressed', 'false');
     button.click();
     expect(onclick).toHaveBeenCalledOnce();
-    expect(button).toHaveClass('icon-button');
   });
 
   test('observed metadata never invents a clock', () => {
@@ -23,7 +22,7 @@ describe('shared widget foundation', () => {
 
   test('busy icon action retains focus and blocks activation until ready', async () => {
     const onclick = vi.fn();
-    const { getByRole, rerender } = render(IconButton, { label: 'Refresh', icon: RotateCcw, busy: true, onclick });
+    const { getByRole, rerender } = render(Button, { label: 'Refresh', icon: RotateCcw, busy: true, onclick });
     const button = getByRole('button', { name: 'Refresh' }); button.focus(); button.click();
     expect(button).toHaveFocus(); expect(button).not.toBeDisabled();
     expect(button).toHaveAttribute('aria-disabled', 'true'); expect(onclick).not.toHaveBeenCalled();

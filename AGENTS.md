@@ -44,6 +44,14 @@ provisional architecture as an implementation commitment.
 - Prefer arrow functions in new or changed TypeScript/JavaScript. Use a function
   declaration only when a specific technical requirement needs it and document
   that reason; do not bulk-rewrite unrelated code to enforce this convention.
+- Put shared UI primitives in `src/lib/common` with generic names such as
+  `Button`, `Icon` and `Switch`; express style/content differences with props or
+  variants. Keep Camera/Bed/other domain compositions and domain icon mappings
+  outside common. Preserve consumer coverage and existing component guards.
+- Prefer clean, precise, readable and well-separated source over size-only
+  micro-optimizations. Decision0042 removes repository widget/package byte caps;
+  retain production minification, size reporting, integrity/determinism/security
+  and every required shipping guard.
 - Before material work, read `PROJECT_STATE.md`, `NEXT_AGENT.md`,
   `docs/requirements.md`, and the iteration named by
   `docs/iterations/CURRENT`.

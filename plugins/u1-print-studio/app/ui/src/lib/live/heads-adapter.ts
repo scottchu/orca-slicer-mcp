@@ -1,5 +1,5 @@
 import { HEAD_IDS, type HeadField, type HeadState, type HeadsPresentation } from './heads-presentation.js';
-import { parseColor } from '../ui/color.js';
+import { parseColor } from '../common/color.js';
 import { record as object, exact, choice, flag as boolean, string as text, time, evidence, provenance, observationEnvelope, capability } from './validation.js';
 
 const finite = (value: unknown): number => {
