@@ -1,6 +1,67 @@
 # F0 dual-subsystem foundation validation
 
-## Current observation errors and quiet inline Copy — author focused checkpoint
+## PR87 final application and test evidence
+
+Application `88eb80fbb9a9fa2667b9123815b100feea95df4e`, tree
+`fc919112b0c1962e206d7829791e9f1faacd878d`; corrected-test checkpoint
+`3d8954c7881d0cc80f9a1e1e899d66d0d9a81b88`, tree
+`b1642909c722812a8d73ec8558cb91469852c8f6`. The latter differs only in two
+browser specs, not application/dependency/configuration/generated assets.
+Separate source review and independent targeted validation approve that head.
+This seven-document tail still requires exact final identity binding.
+
+Actual commands and results with pinned Bun1.3.12:
+
+- `./scripts/check-repository.sh`: exit0; compiler/AST,528 UI,303 app/3642
+  assertions, all eight reproducible package checks,21 lifecycle and24 shipping
+  tests pass. `stable-errors-full-repository.log` SHA256
+  `8465f6351c0a09197c9c76c536c4d3869da585fd69bae749c67b68ce4af4a5ff`.
+- `bun run test:browser`: exit1,263 passed/9 failed. Both independent roles
+  classified the nine failures as obsolete no-skeleton expectations in
+  lab-states and live-queue, not passing tests or proven product regressions.
+  `stable-errors-full-browser.log` SHA256
+  `f62c9e1b31dc350ac661f7d8c7875fc5d3a5819571650da1b847d16d922230bf`.
+- Scoped Playwright renewal: eight Lab cases pass on the corrected lab-states
+  bytes, retained unchanged through the final test head; Queue wrong-view
+  Retry/BFCache case passes on exact `3d8954c`. Both now require static/inert
+  public skeletons, no fake readings and full-region geometry within1px.
+  Public labels and strictly whitelisted aria-hidden nominal templates are
+  distinguished; initial empty-text assumptions failed and were corrected.
+  Log hashes: `stable-errors-adopted-browser-contracts.log`
+  `d98d4e4f0dfc0d6c7a521f952832e9d5cd10afe854dd23d52e7ab3010d53ff78`;
+  `stable-errors-queue-contract-renewed.log`
+  `aae257b99c2c15df0b2a39b7c7702a7bcd6b1d66b327b27547ab0df928ce8f84`.
+  This is263 retained successes plus9 renewed passes, **not** a clean full-suite
+  pass. Unaffected application checks were not repeated for test-only changes.
+- `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and compiled
+  `--help`: exit0 on unchanged application bytes.
+
+Logs are in ignored UI `test-results`. Original full-failure screenshots/traces
+were inspected independently, then lost when Playwright cleared its default
+output directory during renewal. They are not retained or claimed recoverable;
+the original text log remains. Later Queue attempts have unique output
+directories. Independent evidence is unaffected.
+
+Attributed independent validation:38 fresh intercepted packaged-browser cases
+(31 plus7 bounded continuation) covering four Svelte hosts, eight Labs, nine
+generic views, five actual legacy hosts, two combined layouts, retained-order
+adversaries and Heads boundary/clipboard semantics. Evidence report
+`u1-errors-heads-independent-validation/VALIDATION.md` SHA256
+`b449ab4f783fc45eb3a25dc6017a6297fc94eb20259584e7e670203e2207dffd`;
+test-head binding SHA256
+`5c17b1dc80ab101ddf07c29cd19f59d91ee614412464ef46c69ced3680c66e88`.
+JSON hashes:31-case `7942d368009b5cb1cd56e7cc1143fecb3d6af314ec41a3ac25383ced9ae82621`;
+7-case `189c3235eec89e9c0565a8ab1be2054b48da38fb9d151d847ed178bde38a89d7`.
+Private harness selector/route mismatches remain recorded separately, not
+claimed product defects. No duplicate independent full suite was run.
+
+PR87 is not deployed; Camera/Glyph is excluded and caps/security/shipping
+inputs are unchanged. No actual phone, native clipboard or printer evidence.
+All owned browsers/processes were closed and4179 released. Root's mandatory
+guarded shipping validation remains required; no skip or bypass was introduced.
+
+## Earlier editing evidence — observation errors and quiet inline Copy
 
 Based on accepted PR86 `8b995ee`; deployment remains PR84. Source scope and
 remaining Camera gaps are authoritative in [widget-delivery](../../widget-delivery.md).
