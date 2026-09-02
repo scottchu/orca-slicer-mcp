@@ -1,6 +1,38 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: e186c41 review repair, awaiting a new frozen candidate
+## Current: f0c5e41 source approval with incomplete required validation
+
+Exact candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
+`9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, received independent source APPROVE
+with no findings (coordinator-attributed); the earlier P1/P2 repairs are covered.
+The independent required repository run passed compiler/AST,559 UI tests and
+five focused/three Lab deterministic package checks, then app TypeScript failed.
+Missing installed app `three`/`@types/three` and a type-only `./session` import in
+`ui/src/lib/camera/transport.ts` lacking NodeNext's `.js` suffix are separate
+environment/source causes. App tests and Python lifecycle/shipping did not run.
+
+Independent61 targeted browser and four fresh controller cases passed. The
+per-case retention manifest covers256 prior passes plus61 renewed cases (317
+covered, not one full317-case run);69 matching Camera/media inputs support the
+seven earlier Camera adversaries. Preserve the failed gate and earlier e186c41
+failures, not just passing portions. See current VALIDATION for exact receipts.
+
+Author repair is complete: only `ui/src/lib/camera/transport.ts:1` changes its
+type-only import to `./session.js`. Pinned frozen install restored eight existing
+locked packages; app TypeScript, one actual HTTP/host/transport test, nine transport
+tests and Camera build verification pass. All eight widget artifacts match
+f0c5e41 byte-for-byte, transpiled JavaScript is unchanged, and package/lockfiles
+are unchanged. These are focused author checks, not a passed full gate.
+Next smallest action: freeze this source correction and records as a new
+candidate for the full required repository gate and independent exact review.
+The new source delta invalidates automatic reuse of f0c5e41's exact approval.
+Retain browser/controller/Camera evidence only with explicit scope/hash binding;
+do not repeat an unaffected full browser suite solely for handoff. No merge or
+deployment occurred; PR87 remains deployed. Preserve all55 ledger IDs, byte caps,
+service-owned Camera lifecycle and separate c6 source; Progress stays no action.
+The validator's runners/browsers exited and4179 has no listener.
+
+## Historical: e186c41 review repair, awaiting a new frozen candidate
 
 The rejected candidate was `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac`, tree
 `cfc4c6bd9b972652f06a8e5bda902a3c123f0a8e`. Preserve its complete independent

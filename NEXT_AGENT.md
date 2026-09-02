@@ -1,6 +1,28 @@
 # Next agent
 
-## Continue after the e186c41 review repairs
+## Continue the minimal NodeNext/dependency repair after f0c5e41
+
+Candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
+`9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, has coordinator-attributed
+independent exact source APPROVE with no findings. Its full required repository
+gate remains failed: compiler/AST,559 UI and five focused/three Lab deterministic
+package checks passed, then app TypeScript stopped on missing installed
+`three`/`@types/three` and Camera's type-only `./session` lacking `.js` under
+NodeNext. App tests and Python lifecycle/shipping were not reached.
+
+The author's correction is complete: only type-only `./session.js` changed;
+frozen install restored eight existing locked packages. App TypeScript, one
+HTTP/host/transport case, nine transport cases and Camera build verification pass.
+All eight widget artifacts and transpiled JavaScript are byte-identical; package
+and both lockfiles are unchanged. Next freeze the new SHA, then renew the full required repository
+gate and independent exact review. Retain the61 targeted browser passes, four
+fresh controller adversaries and prior Camera7 only when exact input/behavior
+binding supports it;317 browser cases means256 retained plus61 renewed, not a
+clean317-case full run. No automatic full-browser repeat for handoff is requested.
+No `u1-ship` gate is waived. Preserve the failed logs and all55 ledger IDs;
+PR87 remains deployed, c6 remains separate and Progress remains no action.
+
+## Historical: e186c41 review repairs
 
 The current working tree contains focused repairs on
 `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac`; do not deploy that rejected candidate.

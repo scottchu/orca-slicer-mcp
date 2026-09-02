@@ -18,6 +18,27 @@ unverified unless explicitly recorded otherwise.
 
 ## Current execution order and all-route error coverage
 
+Current candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
+`9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, has independent exact source
+APPROVE/no findings (coordinator-attributed), but its required gate failed at app
+TypeScript after compiler/AST,559 UI and five focused/three Lab package checks
+passed. Missing installed app `three`/`@types/three` and the Camera type-only
+NodeNext import suffix need the author's minimal repair; app tests and Python
+lifecycle/shipping were not reached. Independent61 targeted browser/four fresh
+controller cases passed;317 browser coverage is256 retained+61 renewed, not one
+full run. Prior Camera7 remain supported by69 matching scoped inputs.
+
+The author completed only the type-only `./session.js` correction and restored
+eight locked packages. App TypeScript, one HTTP/host/transport test, nine transport
+tests and Camera build verification pass; all eight widget artifacts and
+transpiled JavaScript are byte-identical, with package/lockfiles unchanged.
+Immediate order: freeze the next SHA, rerun the full required repository gate, obtain independent
+exact review and then guarded shipment. Prior exact approval does not approve a
+new source delta. No new ledger item is delivered; PR87 remains deployed. Existing
+caps, all55 IDs, c6 separation and Progress no-action status remain unchanged.
+
+### Historical resumed work and prior candidate evidence
+
 **Resumed WIP:** the user resumed saved remote checkpoint
 `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c` on
 `codex/u1-footer-error-skeletons` from base8028056. The coordinator verified a
@@ -115,7 +136,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | F04 src/lib/ui vs src/components | Decision pending | Decide location once; no unrequested mass move |
 | F05 generic semantic tokens | Not started; --u1 tokens remain | Inventory consumers and controlled alias transition |
 | F06 arrow functions | Adopted AGENTS | Apply to changed JS/TS; document genuine exceptions |
-| F07 component-owned folders/services | Partial; resumed real/synthetic Camera service source has focused evidence | Thin subscribers/renderers; final package and independent acceptance pending |
+| F07 component-owned folders/services | Partial; resumed real/synthetic Camera service source has focused evidence | Thin subscribers/renderers; final acceptance pending. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
 | F08 whole server/MCP SvelteKit migration | Decision pending | Agentic architecture review preserving peer subsystems and authority |
 | F09 self-contained widget HTML | Delivered packaging contract, not one giant source file | Preserve independent CSP-safe artifacts and byte budgets |
 | U01 density/grouping/consistent language | Partial; independent UIUX/domain audits complete | Implement findings per widget; audits alone are not fixes |

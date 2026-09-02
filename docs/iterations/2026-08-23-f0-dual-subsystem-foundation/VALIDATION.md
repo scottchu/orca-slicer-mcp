@@ -1,5 +1,82 @@
 # F0 dual-subsystem foundation validation
 
+## f0c5e41 exact source approval, failed required gate and minimal type repair
+
+Exact candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
+`9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, received independent source APPROVE
+with no findings (coordinator-attributed), including the prior P1/P2 repairs.
+Independent validation did not accept the candidate. Its clean-input manifest
+and report are under app/ui `test-results/independent-f0c5e41-20260903`.
+
+- `./scripts/check-repository.sh`: exit2 after36.92s. Compiler/AST,559 UI tests
+  across55files, five focused deterministic packages and three private Lab package
+  checks passed. App TypeScript then failed: installed app `three`/`@types/three`
+  were absent, and the new app NodeNext consumer exposed type-only `./session`
+  without a `.js` suffix (TS2835 and six consequent implicit-any errors).
+  App tests and Python lifecycle/shipping gates were not reached. Preserve this
+  failed run; the later author fix does not relabel it passed.
+- Scoped Playwright renewal across `live-fans`, `live-heads`, `live-queue`,
+  `live-thermals`, `failed-retry-recovery`, `served-error-stability` and `bed-mesh`:
+  61PASS/0FAIL in39.49s. `browser-targeted.json` records the exact command/grep.
+  Per-case `retention.json` retains256 of the earlier301 passes, renews45 earlier
+  passes plus12 earlier failures and four new cases. Thus317 covered browser
+  cases means256 retained+61 renewed, not one317-case full run.
+- Four fresh private controller adversaries PASS: repeated duplicate recovery/
+  identity, newer failed notification superseding duplicate RPC, age-stale versus
+  explicit-timeout duplicate, and late settled request after disposal.
+- Seven prior independent Camera adversaries are retained against69 identical
+  Camera/media inputs, unchanged private tests/packages/build configuration and
+  dependency declarations. The pending type-only delta requires explicit renewed
+  binding before carrying this evidence to another exact candidate.
+
+| Independent evidence | SHA256 |
+| --- | --- |
+| REPORT.json | `04b2a845a6f45310bf23b96e6f56b664a08b12506b8f2b3fdb07c7207d921d65` |
+| inputs.json | `3274220b3b178d9e296fd17e2c9dd93e0b881246025926fa398bfc4335784f08` |
+| repository-full.log | `96a1f7c0fec7f0d1eed3c4db62acc446ee6b06c8ea479e6203bcf94088c5ca2f` |
+| browser-targeted.log | `3769145d635203cc8ef3df263a6ad02d3edfd27e6d4f79e15e17fef78a5aadac` |
+| browser-targeted.json | `69134e30d39c31a8ee36b2f87a6141c13981145aabaa78304cffc1568ccd2ce2` |
+| controller-adversarial.log | `d08259dee0e1f07be29ccc3c8a18d0b4cbe61a4c9b72d6ef49dd8276114c3724` |
+| retention.json | `43218b7b1987fc0972faf544107f86a05f852c5fb90a0b946bfa66fd051c320f` |
+
+The author then changed only `ui/src/lib/camera/transport.ts:1` from type-only
+`./session` to `./session.js`. Pinned Bun1.3.12 `bun install --frozen-lockfile` in
+app restored eight already-declared packages, including three0.185.1 and
+@types/three0.185.4. Package declarations, app/UI locks, caps and guards did not
+change. Actual focused author commands, recorded in
+`test-results/legacy-camera-type-repair-20260903/report.json`:
+
+- From app, `bun run check`: `tsc --noEmit` PASS.
+- From app, `bun test src/status-dashboard.test.ts --test-name-pattern 'actual dashboard acknowledgements'`:
+  1PASS/25filtered/1assertion through the actual HTTP handler, host and transport.
+- From app/ui, `bun run test src/lib/camera/transport.test.ts`:9PASS/1file.
+- From app/ui, `bun run verify:live-camera`: graph/cap/build/byte comparison PASS;
+ 89770bytes, SHA256 `79169b075e60fed17dad252c70ad583542d2daa1646fb7ae957c3a5274f4a938`.
+- Pinned Bun transpiler comparison: emitted JavaScript before/after is identical.
+  `uv run --no-project python` artifact/input comparison: all eight widget HTML
+  artifacts are byte-identical to f0c5e41; package and both lockfiles unchanged.
+  Author `git diff --check` PASS.
+
+| Minimal author repair evidence | SHA256 |
+| --- | --- |
+| report.json | `2a3316cd9751943483ccd0bc2c755b97aef3a1336f88b92fd353e8394c63b29b` |
+| transport.ts after repair | `8cfa05b7834f79dd41222940b3249769cafbab149322f94b6b19a6c37212db40` |
+| app-check.log | `8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92` |
+| artifacts-identical.json | `8184c03f99ac6854c8755ab56bde1e65065c2e006a8cdbf156ac2a3b239f89ef` |
+| transpiled-proof.json | `7ab1e017753c9e5868f1abbd9c9331ee228013891f95bf68f2b4e7389ae59df4` |
+| dashboard-ack.log | `86764a9bbb48700fbe84b92687df664f601c04f1005ea67bfbe627da78f965cc` |
+| transport-test.log | `31505f1592d780dd2cf72ce3c4f919540a27a1837f49661e5a6274374e1cc6c0` |
+
+The correction is not committed and has no new exact approval/full gate. Freeze
+the source and five continuity records, then renew the complete required
+repository gate and independent exact review. Retain browser/controller/Camera
+evidence only after scope/identity binding; no automatic full-browser repeat or
+`u1-ship` waiver is introduced. PR87 remains deployed, all55 ledger IDs remain
+open or delivered only as previously evidenced, and Progress stays no action.
+Validator and author processes/browsers exited;4179 has no validator listener.
+This documentation pass only reads attributed evidence and edits the five assigned
+records; it does not rerun application/browser gates or add private logs to Git.
+
 ## e186c41 independent failures and focused author repair
 
 Candidate `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac`, tree

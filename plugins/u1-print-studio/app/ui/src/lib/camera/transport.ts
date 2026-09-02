@@ -1,4 +1,4 @@
-import type { CameraCandidate, CameraFrameResult, CameraOffer, CameraTransport } from './session';
+import type { CameraCandidate, CameraFrameResult, CameraOffer, CameraTransport } from './session.js';
 
 /** Supplied by the shared HostRpc. Camera owns no message listener or URL. */
 export type CameraRpcPort = { callTool: (name: string, argumentsValue: Record<string, unknown>) => Promise<unknown> };

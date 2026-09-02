@@ -1,6 +1,34 @@
 # Project state
 
-## Current: focused repair after candidate e186c41 validation
+## Current: minimal TypeScript repair complete; required gate renewal pending
+
+Exact candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
+`9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, has independent source-review
+APPROVE with no findings, as reported by the coordinator. The earlier P1/P2
+repairs are accepted by that source review. Required validation is incomplete:
+compiler/AST,559 UI tests and five focused/three Lab deterministic package checks
+passed, then app TypeScript failed. App tests and Python lifecycle/shipping gates
+did not run. Missing installed app `three`/`@types/three` and a type-only Camera
+`./session` import missing NodeNext's `.js` suffix are separate causes.
+
+Independent verification passed61 targeted browser and four fresh controller
+adversaries. Its per-case retention record supports256 prior passes plus61 renewed
+cases (317 covered, not one317-test full run). Seven earlier independent Camera
+cases remain scoped to69 matching Camera/media inputs. VALIDATION preserves the
+failed gate, exact hashes and retention limits. Source approval is not shipping
+acceptance, and does not automatically approve subsequent edits.
+
+The author corrected only `transport.ts:1` to type-only `./session.js` and restored
+eight already-locked packages. App TypeScript, one actual HTTP/host/transport
+test, nine transport tests and Camera build verification pass. All eight widget
+artifacts match f0c5e41 byte-for-byte; transpiled JavaScript and package/lock files
+are unchanged. This is focused author evidence, not a renewed full gate.
+Next freeze a new candidate, renew the full required repository gate and independent
+exact review before guarded `u1-ship`. No new merge/deployment is claimed; PR87
+remains deployed. All55 ledger IDs, caps and separate c6 checkpoint remain intact;
+Progress remains status-only with no implementation authorization.
+
+## Historical: focused repair after candidate e186c41 validation
 
 Candidate `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac` was not accepted. Its
 required repository run passed compiler/AST then stopped at557 UI passes and one
