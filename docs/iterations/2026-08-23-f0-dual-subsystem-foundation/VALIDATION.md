@@ -1,5 +1,84 @@
 # F0 dual-subsystem foundation validation
 
+## PR89 source acceptance, guarded shipment and scoped postverification
+
+Independent exact source review approved
+`ce065866c61eba159075da9d3bcbf642e9bd404d`, tree
+`a96e57fab0a5289d30ce406c68d3d6023e049d3d`. PR89 merged as
+`f0d7c178e59e72a9d1ed6324577d2e131ffb0f91` with that same tree. The earlier
+e186c41/f0c5e41/092f84a failed runs below remain historical failed evidence.
+
+Independent source validation ran `./scripts/check-repository.sh` on clean
+ce06586: exit0 in48.16s, compiler/AST,559 UI/55files, five focused and three Lab
+deterministic packages, app TypeScript,304 app tests/3656assertions/28files,
+21 lifecycle and24 shipping tests PASS. Its report binds374 unchanged app files
+through the test-only delta and the previous type-only emitted-JS/15HTML/144-input
+binding. This retains317 browser cases (256 scope-retained+61 renewed, not one
+full317-case run), four independent controller and seven Camera adversaries.
+No new browser/real-printer operation occurred in that source validation.
+
+The coordinator's guarded `u1-ship` execution completed PR89 merge/deployment:
+operation `pr89-20260902T105400-686862`, release
+`20260902-f0d7c17-pr89-20260902T105400-686862`. BOTH existing public/dashboard
+services were explicitly restarted and are loaded, healthy and integrity-verified;
+31 static asset checks and32 security checks pass, preservation is true and no
+rollback was needed. Recovery snapshot `20260902T105502-26ca5c` is retained.
+This is attributed guarded ship evidence, distinct from the independent meaningful
+postverification below; health/assets alone do not establish Live or widget behavior.
+
+| Evidence under app/ui test-results | SHA256 |
+| --- | --- |
+| independent-ce06586-20260903/REPORT.json | `5f6b1ff3c93af89e53892daeedbd5c7ff72132bfccf81a3275d6f7603c448548` |
+| independent-ce06586-20260903/repository-full.log | `30ab07f08937640f13e7cdac758a4220139aaf57d75917874118661660c1772b` |
+| independent-ce06586-20260903/retention-binding.json | `129cbdd2305785181bab003664e98f03468be3348b93f869ede4fe8cf95e6c01` |
+| ship-pr89-ce06586/execute.json | `ec2c9e2fd4bf24a7d735de113cda58abd3f5c9da65dcc1ced87515493ef64698` |
+| postdeploy-pr89-independent/REPORT.json | `454352ba3a45d3dadd1670a69eacc7a3c5137a1b433c840ab8bbf75e3e5627b7` |
+
+Independent post result is `SCOPED_PASS_WITH_OPEN_CAMERA_RELIABILITY_RISK`.
+Both service identities match the merged release;15 manifest hashes,31 local HTTP
+routes and six public assets match exact merged bytes. Eight user-facing HTTPS
+served-byte/CSP cases pass for Fans/Thermals/Heads/Queue at390 normal and320/200%
+text, intercepting only tool results: static initial/failed-refresh skeletons,
+stale-data suppression,21s persistent footer status, pending Retry, duplicate RPC
+recovery/focus and geometry within1px. Heads keeps whole RGB/RGBA,44px target,
+16px glyph and8px balanced inset. These eight cases are synthetic widget behavior,
+not real printer telemetry or native clipboard acceptance.
+
+Actual HTTPS Camera used the exact89770-byte served UI without substitution.
+There were three Live attempts. The first acquisition failed, unclassified:
+open/answer were accepted but no FPS was observed; missing phase/rVFC/RTC history
+prevents classifying the cause. Preserve it as C08, not an inferred timeout type.
+The second20.122s observation window contained17.100s of advancing decoded samples
+(34 to547), video time18.081s at1920x1080 and connected ICE. Its later local
+`video.pause()` probe did not induce failure; that script's failed probe assertion
+is not a product defect or evidence of actual automatic fallback. The third clean
+20.123s observation contained17.102s of advancing decoded samples (1 to502),452
+presented callbacks, video time17.368s, readyState4/unpaused and connected ICE at
+1920x1080. Two successes do not explain the first failure or establish reliability
+on every attempt. Automatic Live-to-Auto behavior retains source/fixture evidence.
+
+Actual Auto/Snapshot passed: five frame requests/five unique receipts, including
+two new Auto reads; Snapshot remained quiet for4.5s with zero Live opens and
+geometry within1px. All three owned Live leases closed200; contexts/pages/browsers
+and runner processes exited, preserving user tabs/services. No camera images or
+video were saved. Detailed evidence remains local under `postdeploy-pr89-independent`:
+
+| Post evidence | SHA256 |
+| --- | --- |
+| served-fixtures.json | `8ded0564c64cb42aeb87774d01bdf8c99fd0ba6ff19913e8013391c46ed46b28` |
+| actual-camera.json (unclassified failed acquisition) | `b0a8e9bab9cac076b92c3fbc9be446da16995955a59fcf5506eeea294e06b817` |
+| actual-camera-detailed.json | `5d039c5afee0ae51cc2567aeb56fe50027a067c59466151ba840e528d8f618ca` |
+| actual-camera-confirmatory.json | `1a2ec7909b47227fb5cbd5e378d48c864065003f90cbd2cc15bd0ea12749e1c6` |
+| actual-auto-snapshot.json | `3a86ef5e2cabf92e6d5709f7f78be8ba61cc7046b4b325ca9a95a9dcc5cb08cd` |
+
+The rollout tail changes only PROJECT_STATE, NEXT_AGENT, HANDOFF, VALIDATION and
+widget-delivery from exact merged f0d7c17; application/test/dependency/configuration/
+generated bytes remain unchanged. Next diagnose the preserved C08 intermittent
+acquisition failure and retain the open delivery ledger. Decision0028 requires no repeated build/browser gate, service
+restart or deployment for this documentation-only tail. Source, ship, actual
+served behavior, actual-camera observations and phone/native/physical-print
+acceptance remain distinct; no printer control or plugin reinstall is implied.
+
 ## 092f84a required-gate failure and test-only renewal
 
 Exact source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132`, tree
