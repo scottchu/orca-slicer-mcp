@@ -1,5 +1,24 @@
 # Project state
 
+## Current: Bed Lab accepted-main integration and focus repair
+
+Accepted Heads main `55078ea215768094bf1897b516726e2e4aa05bd8` is ordinarily
+integrated while preserving both branches' records and shared AST contracts.
+The coordinator reports Heads PR81 deployed with BOTH services healthy/integrity
+verified; independent postchecks passed 11 HTTPS routes/eight unique assets and
+14 downloaded-byte browser cases. This attributed evidence accepts Heads only,
+not this Bed candidate. Final manifest verification was still being recorded.
+
+Bed Lab remains the bounded UI-003/UI-004/ADR0038 slice: stable initial-error
+structure, retained-data failure and local Retry, no grid/legend redesign or
+printer acquisition. A new targeted Chrome check reproduced lost focus after
+2D retained-error Retry succeeds and the button becomes native-disabled Reset.
+Independent UI/UX focus-policy selection precedes its repair. All other error
+rollouts, Camera `4eb3106`, fixed Lab dock, PR79 and older migration/feature/
+recoverable-cleanup tracks stay open. No Bed release acceptance is claimed.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current: Bed Lab error-frame source checkpoint; integration pending
 
 Application `464d3e73d427e648a6b4c75be625eeaa49beaee9` from accepted
@@ -23,6 +42,96 @@ production acquisition, printer action or release is part of implementation.
 Source/unit/targeted browser and transitive packages precede frozen-candidate
 independent acceptance. Heads repair, Camera68259ead, remaining widget error
 rollout, fixed Lab dock and all earlier migration/feature tracks stay separate.
+
+## Accepted-main history (superseded by the current Bed integration)
+
+## Current: resume Heads delivery after accepted project-role integration
+
+Accepted main `707a018a3e3c64b885bc1ece13f2795ae2bb546d` (PR82) is ordinarily
+integrated as `b1c9a8c` into PR81, preserving both histories and all six Heads
+repair records. PR82's four project roles passed independent static review and
+were merged; native named-role loading remains unverified. No service restart
+was needed for that configuration/docs-only change.
+
+Current order: final exact Heads test/config/identity acceptance and guarded
+delivery; then Bed Lab stable-error checkpoint `c0323a4`; then Camera `4eb3106`
+explicit same-live-scenario retry repair and remaining validation. Neither
+checkpoint is released. All other WIDGET_TRACKS remain open. The merged role
+configuration and its new focused test do not change widget application inputs;
+retained 214-browser evidence requires explicit final-head identity binding.
+Author renewal passes 29 focused UI tests, three project-role checks, the exact
+14-path delta allowlist and all eight asset identities. Final independent
+acceptance and guarded delivery remain pending; no service/printer claim.
+
+## Earlier Heads repair checkpoint
+
+## Current: Heads PR81 shipping-gate test repair
+
+The first guarded shipment stopped at local validation; PR81 was not merged or
+installed and no services restarted. The inherited loading test rejected the
+deliberately hidden public `Generic PLA` skeleton. Test-only checkpoint
+`1e2e387d8cbbada99a23dfa01ad9b94265834f8d` (tree
+`94f127adb482d90586d851b85d86b5bda08ec844`) admits only exact public,
+noninteractive Heads material skeleton leaves; private, visible, accessible and
+non-Heads telemetry guards remain. Independent source review and 29 targeted
+tests pass. The final required repository gate passes: 483 UI, 300 app/3,557
+assertions, 21 lifecycle, 24 shipping tests and all eight exact packages.
+
+Runtime, assets, dependencies, configuration, browser inputs and shipping guards
+remain identical to frozen app `c9d69cb`; its 214/214 browser evidence is retained
+for independent identity-bound reuse, not rerun. The final records tail and PR
+head still need independent identity confirmation before the coordinator retries
+guarded delivery. All unfinished tracks below remain open.
+
+## Current: Heads material icon — frozen author candidate
+
+Application source `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree
+`3cca582bad7e2ff9d21b5f77f34fdc96aedcf266`, from accepted PR80 main
+`4e869d8`. The shared Spool icon sits beside one continuous, naturally wrapping
+material string in both Lab and Live. Earlier split-word Lab markup caused the
+reported gap; current mapping was already joined and is not rewritten.
+
+Independent design's public loading-only `nominal | empty` shapes preserve
+closed Lab fixtures without using resolved observations or private text. Live
+root keeps its default public template. Exact arbitrary private-length loading
+parity is not claimed. Focused 39 browser cases, final 56 affected UI tests,
+compiler/AST and 12 package tests/138 assertions pass. The required full candidate
+browser run passes 214/214; independent acceptance and guarded PR delivery remain
+pending. Earlier 16/18 and 201/206 failures are retained, not waived.
+
+Heads is 94,264 bytes; light/Bed/Camera labs are 207,111/638,718/79,257
+(925,086 total), within unchanged caps. Spool adds 462 Camera bytes: PR79's
+separate 318-byte headroom needs a real integration measurement before shipping;
+no cap rise or unreviewed optimization is authorized. No service or printer
+acceptance is claimed.
+
+Current Job PR79 `48f2060` remains separate. Independent deployed-Lab UIUX and
+printer-information audits are complete as recommendations, not implementation.
+Preserved priorities: fixed bottom Lab controls, shared loading/error frames,
+Camera three-slot states/lifecycle, atomic spacing/actions, Progress local fill/
+layer design and thumbnail feasibility, and stable Bed framing/inset summaries.
+All earlier migrations, Console, filament sync, sizes, tokens and recoverable
+cleanup stay open; see WIDGET_TRACKS.
+## Earlier project-role candidate (merged through PR82)
+
+## Current: project review roles — configuration candidate
+
+The latest user priority is reusable project-scoped agents: `ui_ux_designer`,
+`printer_domain_expert`, `agentic_architect` and `maker_user`. Their standalone
+definitions are in `.codex/agents/`; `docs/project-agents.md` describes routing,
+inheritance and the unverified native-client loading boundary. This is a bounded
+F0 agent-configuration/documentation change from accepted PR80 main `4e869d8`.
+No widget, application build input, service or printer is changed. Independent
+review and PR merge remain pending; no runtime agent-loading acceptance is claimed.
+
+The previous test-strategy policy is merged through PR80. Preserve the separate
+unfinished widget tracks: Heads PR81 checkpoint `1e2e387` and its uncommitted
+continuity tail, Camera `4eb3106` with its known same-scenario live Retry issue,
+Bed error foundation `c0323a4` pending accepted-main integration, Current Job
+PR79, Progress, History, Overview, real Bed and every remaining WIDGET_TRACKS
+item. Those coordinator-attributed checkpoints are not accepted by this change.
+
+## Earlier checkpoints (superseded where noted above)
 
 ## Current: repository test strategy — docs-only review pending
 

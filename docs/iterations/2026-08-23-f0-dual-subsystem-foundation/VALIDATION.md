@@ -1,5 +1,37 @@
 # F0 dual-subsystem foundation validation
 
+## Accepted-main integration — targeted renewal; known focus failure
+
+Ordinary merge target: accepted Heads/main
+`55078ea215768094bf1897b516726e2e4aa05bd8`. Additive conflicts preserve both
+sets of continuity records; the AST allows the Bed error composition and Heads
+loading helper together. The generated Bed artifact is rebuilt, not hand merged.
+Actually run on the combined source with pinned Bun1.3.12:
+
+- `bun run check`: zero Svelte errors/warnings and AST PASS.
+- `bun run build` and `bun run package:private-lab`: PASS. Light207111,
+  Bed631250, Camera79257; aggregate917618 within unchanged caps. Bed hash remains
+  `828350559ed1896466c4aff6d85e7a6f11cc5ba6abc4ae4b2a597eaa6d1607f1`.
+- The seven-file focused Vitest command listed in the previous checkpoint:
+  101 tests PASS on the combined source, including renewed Heads loading guards.
+- App `bun test src/private-lab.test.ts src/bed-mesh.test.ts`:19 PASS,
+  220 assertions.
+- `bun x playwright test tests/visual/bed-error-state.spec.ts -g 'Bed retained 2d'`:
+  1 FAIL, deliberately reproducing the independent-review concern. A new
+  successful-retry focus assertion observes the previously focused Retry button
+  become native-disabled Reset and lose focus after301ms. Earlier tests checked
+  only focus during retry. No tolerance was weakened or failure waived.
+  Failure screenshot/trace remains in ignored `ui/test-results/bed-retry-2d-focus-before-fix`.
+- `git diff --check`: PASS. The owned fixture and browser exited;4179 has no
+  listener. No full candidate/browser/runtime gate has yet run on this merge.
+
+Independent UI/UX focus policy and repair are next, followed by one full frozen
+candidate regression. No Bed deployment or real-printer/device acceptance.
+The coordinator's separate Heads postdeployment result is attributed in the
+current HANDOFF; it does not accept this changed candidate.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Bed Lab stable-error frame — focused author evidence, not release acceptance
 
 Application source `464d3e73d427e648a6b4c75be625eeaa49beaee9`, tree
@@ -52,6 +84,221 @@ then14/14 and final26/26 pass. No geometry/contrast/cap tolerance waived.
 No full repository/browser/runtime run or independent acceptance yet. Wait for
 accepted Heads PR81 ordinary integration before one owned full candidate run.
 No deployment, physical printer, phone or user-outcome evidence is claimed.
+
+## Accepted-main history (superseded by the current Bed integration)
+
+## Heads PR81 accepted-main integration — focused renewal
+
+Preserved repair records commit `8f66edc`; ordinary accepted-main merge
+`b1c9a8ced0cd5012cdcb9b895bf64a22b0af8ce5`, tree
+`cff0c0512e03d4fd1e16c7cbf2581ea6e2254aba`, incorporates PR82 main
+`707a018a3e3c64b885bc1ece13f2795ae2bb546d`. Five additive continuity conflicts
+retain both histories under current versus historical headings. The new main
+changes only project-agent configuration/routing, its guide/test and records;
+it was independently reviewed and merged, not native-runtime verified.
+
+Actually run on the integrated candidate:
+
+- UI pinned Bun `bun run test -- src/lib/observation/ObservationLoading.test.ts`:
+  29/29 PASS; ignored log `test-results/heads-main-integration-focused.log`.
+- `uv run --no-project scripts/test_project_agents.py`: 3/3 PASS.
+- `git diff --exit-code 1e2e387 HEAD -- plugins .agents .github`: PASS.
+- `git diff --exit-code c9d69cb HEAD -- plugins
+  ':!plugins/u1-print-studio/app/ui/src/lib/observation/ObservationLoading.test.ts'
+  .agents .github`: PASS. Runtime, browser tests/harnesses, dependencies,
+  application build inputs and all packaged assets are unchanged.
+- `git diff --exit-code 1e2e387 HEAD -- scripts/check-repository.sh
+  scripts/u1_ship.py scripts/u1_service.py`: PASS; shipping guards unchanged.
+- `git diff --exit-code 707a018 HEAD -- .codex AGENTS.md
+  docs/project-agents.md scripts/test_project_agents.py`: PASS; accepted role
+  definitions/configuration test are integrated exactly.
+- `git merge-base --is-ancestor 707a018 HEAD`: PASS.
+- One-off read-only Bun identity/docs check: PASS, exact 14-path delta from
+  `c9d69cb` (six continuity records, four roles, AGENTS, guide, new config test,
+  repaired ObservationLoading test), six valid record headings/no conflict
+  markers, current iteration, all eight exact asset hashes/lengths against the
+  earlier independent receipt. Retained full browser log still has SHA-256
+  `13bea3f380b5e62f243eafaa65a90ba2246f79f2ae160fdf5a2e0de8c52ec4e8`
+  and `214 passed (1.5m)`.
+- `git diff --check`: PASS; the merge checkpoint was clean before this
+  records-only evidence tail.
+
+No repeated full browser/build/repository run was needed for this config/docs
+integration. The complete repaired-test repository gate at `1e2e387` and the
+unchanged application/browser evidence at `c9d69cb` remain separately scoped;
+final independent identity binding and every mandatory u1-ship gate are still
+required. All owned command sessions exited; no browser, fixture, watcher,
+service restart or printer connection was started. This is source/static
+evidence, not deployed-service, native agent-loading, phone or printer acceptance.
+
+## PR81 local-gate repair — tests only
+
+Test checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d`, tree
+`94f127adb482d90586d851b85d86b5bda08ec844`. The earlier ship operation
+`pr81-20260901T223907-478182` stopped before merge/install/restart. Its inherited
+ObservationLoading.test.ts reported 15 PASS/1 FAIL because a blanket text check
+forbade the accepted hidden public `Generic PLA` template.
+
+Only this test changes: approved leaves must be SPAN with exactly allowed
+attributes, aria-hidden, no child elements, the Spool/Caption/card structure and
+one of the two exact public strings. All remaining text and accessible labels
+retain forbidden-telemetry checks; non-Heads templates receive no exception.
+Private readings, arbitrary templates, visible/hidden stray labels, accessible
+labels, tabindex/contenteditable/href/role and button-tag adversaries are covered.
+
+Actual commands (pinned Bun 1.3.12):
+
+- UI `bun run test -- src/lib/observation/ObservationLoading.test.ts`: initial
+  editing 21/22 (overbroad rejection of Queue's existing skeleton), then 24/24
+  PASS after limiting the exception to Heads. No Queue/runtime change.
+- UI `bun run test`: 478/478 PASS on first repair `8e67cd2`.
+- First `./scripts/check-repository.sh`: deliberately interrupted after 478 UI
+  and five live package checks when independent review identified a missing
+  noninteractive-leaf assertion. It is not a complete gate PASS; log retained.
+- Focused renewal: 29/29 PASS; independent reviewer separately ran 29/29 on
+  final `1e2e387` after valid interactive-attribute adversary values were set.
+- Final `PATH=<pinned-bun-bin>:$PATH ./scripts/check-repository.sh`: exit0 on
+  `1e2e387`; compiler/AST zero errors/warnings, 483 UI, all eight deterministic
+  package checks, 300 app/3,557 assertions, 21 lifecycle and 24 shipping PASS.
+  No separate full browser/build command was run; required gate internals ran
+  unchanged, including their existing package builds and rendered-layout check.
+
+Ignored UI test-results logs: heads-ship-loading-focused.log,
+heads-ship-full-ui.log, heads-ship-repository.log (interrupted),
+heads-ship-loading-final-focused.log and heads-ship-final-repository.log (complete).
+`git diff --exit-code c9d69cb HEAD -- plugins/u1-print-studio/app` with only
+ObservationLoading.test.ts excluded passed; browser tests/harness/scripts,
+runtime, packages, configuration and dependencies are unchanged. Independent
+review also confirmed no other non-record changes after `6f487c8`. Retained
+214/214 browser evidence belongs to unchanged app inputs, subject to final
+independent head binding. This is software evidence, not deployment/device or
+physical-printer acceptance.
+
+All command sessions exited, including the deliberately interrupted gate. No
+author browser/fixture was started. A later read-only exec could not launch due
+to OS error24 (too many open files); it did not affect the completed final gate.
+
+## Heads material icon — frozen author application
+
+Source `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree
+`3cca582bad7e2ff9d21b5f77f34fdc96aedcf266`; base accepted PR80
+`4e869d8e70aa1ee4d55295fc5a8d93ec4ee70258`. Later continuity edits do not
+change application/build/test inputs. Independent exact acceptance is pending.
+
+### Commands and actual results
+
+Pinned Bun 1.3.12; isolated browser permission confirmed by coordinator after
+the Browser skill was read and the in-app tool was unavailable. The explicitly
+approved repository Playwright path uses no user profile.
+
+- App/UI `bun install --frozen-lockfile`: PASS, lockfiles unchanged.
+- UI `bun run check`: PASS after final repair, Svelte zero errors/warnings and
+  strict migrated-composite zero-native-HTML contract.
+- Initial UI `vitest run src/lib/observation/HeadCard.test.ts
+  src/lib/live/heads-adapter.test.ts src/lib/live/heads-controller.test.ts
+  src/lib/observation/ObservationWidgets.test.ts src/lib/ui/components.test.ts
+  src/lib/ui/foundation.test.ts`: 106 PASS. Unchanged adapter/controller/leaf
+  behavior evidence remains applicable.
+- Enum editing added `src/lib/lab/heads-loading.test.ts` and
+  `src/lib/lab/controller.test.ts` to that focused set: 131 PASS.
+- Final affected renewal `vitest run src/lib/observation/HeadCard.test.ts
+  src/lib/observation/ObservationWidgets.test.ts src/lib/lab/controller.test.ts
+  src/lib/lab/heads-loading.test.ts`: 56 PASS. Twelve HeadCard cases include
+  ready+template rejection, arbitrary/sparse shape rejection, configured-but-empty
+  material, private loading, exact RGBA and Copy. The helper covers all 96 public
+  scenario/tool/material combinations without accepting a DTO.
+- UI `build:live-heads`, `build:live-fans`, `build:live-thermals`,
+  `build:live-queue`, `build:live-camera`, `build`,
+  `package:private-lab`: all eight transitive package graphs/budgets PASS.
+  Heads/light Lab were renewed after runtime repair; other six hashes remained
+  identical. Direct packaging after Vite build initially lacked cleared Bed/
+  Camera intermediates; standard `package:private-lab` rebuilt them and passed.
+- App `bun test src/live-fans-package.test.ts src/private-lab.test.ts`:
+  final 12 PASS / 138 assertions, exact hashes and self-contained boundaries.
+- Initial `playwright test tests/visual/live-heads.spec.ts`: 16/18 PASS.
+  320px normal Lab/Live had a genuine 32.75px material loading gap. Fixed public
+  TextSkeleton repair gave 18/18 PASS, unchanged <=1px geometry assertion.
+- First frozen app `6e13fe4`, `bun run test:browser`: 201/206 PASS, not waived.
+  Four old tests located a direct Caption and assumed one line; the new row
+  requires Spool-adjacent Caption and actual DOM Range line count. That focused
+  selector renewal passed 4/4. One genuine all-empty 320px Lab gap required
+  independent adoption of the closed loading-shape enum before runtime changes.
+- A component guard test initially failed because unused Svelte derived values
+  are lazy. Pre-render validation now rejects ready overrides; HeadCard 12/12 PASS.
+- Final `playwright test tests/visual/live-heads.spec.ts
+  tests/visual/lab-text-bounds.spec.ts tests/visual/observation-lab.spec.ts
+  --grep 'Heads|closed presets'`: 39/39 PASS. Includes all public empty/unknown/
+  mixed per-tool overrides at 320/390/590/720 normal/200%, original closed
+  presets, typography, preserved refresh/Copy/retry/BFCache and no remote fetch.
+- One renewed full `bun run test:browser`: 214/214 PASS (1.5 minutes) on frozen final bytes.
+  It is required because the earlier failed candidate's inputs changed, not a
+  discretionary repeat by another role.
+- `git diff --check`: PASS.
+- Documentation-tail identity: `git diff --exit-code c9d69cb -- plugins scripts
+  .agents .github`: PASS. Final package hashes match the table below; no
+  application/test/configuration/dependency/build input changed after the full run.
+- `lsof -nP -iTCP:4179 -sTCP:LISTEN`: no listener after Playwright teardown.
+
+DOM Range glyph rectangles and font-matched canvas space widths verify natural
+spacing, not merely marker presence. Actual 320px normal and 200% long-material
+screenshots were inspected. A finite public template only proves tested closed
+fixture geometry; arbitrary private initial 194-character height parity is not
+claimed. Ready long values are naturally wrapped, not truncated.
+
+### Final exact package inventory
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| live Fans | 87209 | 64f457273462b8440342343264f6192e3b9d83c11049faa52295a796b430e14f |
+| live Thermals | 87785 | 971307a7da0399f7cd6f6edf7a0a2940fe0972cd62200349f47919d9195f27b7 |
+| live Heads | 94264 | 0bb5b4a97eaa9efe02daa008fe43551545f2f4451e5d9f7eb527d6cacf4f5713 |
+| live Queue | 88295 | 982c55a74bc1f777295ef4cf111880ef8cfbd6aa8a076ad46f26a3da532d4613 |
+| live Camera | 90381 | 8e2020e8a3a745cd786dcce9193a9de75ce940765a2da90aa49174dd751445cd |
+| light Lab | 207111 | 417dc98bf4aac8663edea56251dcfbed6590d4dce5eba4b0d47154a1ae642466 |
+| Bed Lab | 638718 | d07b4f5ead3c40b3640d9a36f900f00177c052fc0620001314d21aedf3e0e814 |
+| Camera Lab | 79257 | 839f6847e398a0d5d8f4cb038253340a81edfa00e9cf3ddf8c032d92726bd18f |
+
+Production total447,934; labs925,086. Caps remain100k per ordinary production
+widget /1.55m aggregate, labs250k/700k/80k and980k aggregate. Camera headroom743;
+Spool adds462. PR79 separately has318 headroom, so later integration needs a
+real merged measurement. This is a predicted integration risk, not a measured
+merged artifact or permission to raise caps.
+
+Ignored evidence retains both earlier failed runs and the owned final run log.
+No camera recording, user model, private profile or runtime data is committed.
+Browser/fixture resources and all author command sessions are released. These are software
+and synthetic-protocol results, not deployed-service, real-printer or actual
+phone acceptance. No service, printer, hosted validation or user browser changed.
+## Earlier project-role candidate evidence (merged through PR82)
+
+## Project review roles — targeted configuration evidence
+
+Base: accepted PR80 `4e869d8e70aa1ee4d55295fc5a8d93ec4ee70258`.
+Four standalone role files use only `name`, `description` and
+`developer_instructions`, following the opened official OpenAI custom-agent
+documentation linked in `docs/project-agents.md`. They contain no model,
+permission, tool, MCP or global configuration overrides. The guide explicitly
+separates schema validation from native-client loading and simulated user
+feedback from real user research.
+
+Actually run by the author:
+
+- `uv run --no-project scripts/test_project_agents.py`: 3 tests PASS, covering
+  all four names/files, nonempty string fields, no added configuration keys,
+  role routing/guide links, repository context references, portable instructions
+  and resource cleanup clauses. File streams use context managers.
+- `git diff --check`: PASS.
+- `git diff --exit-code 4e869d8e70aa1ee4d55295fc5a8d93ec4ee70258 -- plugins .agents .github scripts/check-repository.sh scripts/u1_ship.py scripts/u1_service.py`:
+  PASS; application, assets, dependencies and existing shipping gates unchanged.
+
+This is static configuration/documentation evidence only. No full widget/build/
+browser suite, model invocation, named-agent runtime loading, screenshot audit,
+service restart, printer read/control or physical acceptance was run or claimed.
+Independent exact source/config review remains pending. No owned long-lived
+process, browser, fixture port or connection was started. All pending widget
+checkpoints remain separate; no earlier application evidence approves new bytes.
+
+## Earlier checkpoints (superseded where noted above)
 
 ## Test strategy policy — targeted docs-only author evidence
 

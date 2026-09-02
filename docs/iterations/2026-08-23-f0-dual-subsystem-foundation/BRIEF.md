@@ -1,5 +1,24 @@
 # F0 dual-subsystem foundation brief
 
+## Current: Bed Lab integration, focused repair, then one frozen full regression
+
+Accepted Heads main `55078ea215768094bf1897b516726e2e4aa05bd8` is ordinarily
+integrated while preserving both branches' records and shared AST contracts.
+The coordinator reports Heads PR81 deployed with BOTH services healthy/integrity
+verified; independent postchecks passed 11 HTTPS routes/eight unique assets and
+14 downloaded-byte browser cases. This attributed evidence accepts Heads only,
+not this Bed candidate. Final manifest verification was still being recorded.
+
+Bed Lab remains the bounded UI-003/UI-004/ADR0038 slice: stable initial-error
+structure, retained-data failure and local Retry, no grid/legend redesign or
+printer acquisition. A new targeted Chrome check reproduced lost focus after
+2D retained-error Retry succeeds and the button becomes native-disabled Reset.
+Independent UI/UX focus-policy selection precedes its repair. All other error
+rollouts, Camera `4eb3106`, fixed Lab dock, PR79 and older migration/feature/
+recoverable-cleanup tracks stay open. No Bed release acceptance is claimed.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current: bounded Bed Lab stable-error surface
 
 From accepted4e869d8, implement decision0038's controlled shared presentation
@@ -10,6 +29,60 @@ production acquisition, printer action or release is part of implementation.
 Source/unit/targeted browser and transitive packages precede frozen-candidate
 independent acceptance. Heads repair, Camera68259ead, remaining widget error
 rollout, fixed Lab dock and all earlier migration/feature tracks stay separate.
+
+## Accepted-main history (superseded by the current Bed integration)
+
+Current resumed order: finish Heads PR81 exact candidate acceptance and guarded
+delivery, then Bed Lab stable-error `c0323a4`, then Camera `4eb3106` retry repair
+and remaining validation. PR82's project roles are already merged at `707a018`
+with independent static acceptance; native role loading remains unverified.
+Ordinary main integration must preserve every unfinished checkpoint. Renew
+only affected test/config/docs evidence, bind unchanged application/browser
+inputs, and keep every mandatory shipping guard intact.
+
+## Earlier Heads repair scope
+
+Immediate bounded repair: finish PR81's failed local gate by correcting only
+ObservationLoading.test.ts. Permit only the accepted Heads public nominal/empty
+TextSkeleton leaves after exact noninteractive/hidden structural checks; retain
+all privacy and non-Heads checks and add adversaries. Application/browser bytes
+stay frozen. Renew required repository validation and exact independent approval
+before retrying guarded shipment; never alter shipping guards to mask a failure.
+
+Current bounded slice (OBS-010/UI-003): add the shared Spool icon beside the
+already-contiguous Heads material label, from accepted main PR80 `4e869d8`.
+Both live and lab use HeadCard; retain one naturally wrapping material string,
+independent material receipts, empty/unknown color semantics and loading privacy.
+No global LoadingValue redesign, network/adapter change or cap increase.
+Focused source/unit/compiler/consumer-package checks precede the one owned
+candidate regression and independent acceptance. Isolated browser use is approved.
+The adopted material loading repair reuses TextSkeleton with closed public
+`nominal | empty` shapes selecting `Generic PLA` / `—`, inside the identical
+Caption/icon/gap composition. Only validated Lab controls choose shapes; no
+private reading supplies a skeleton template. The closed-scenario <=1px parity
+gate does not promise arbitrary private-length initial parity. Long actual labels
+remain naturally wrapping, without a fixed reserve, truncation or layout redesign.
+
+All new additive priorities remain separate: fixed bottom Lab controls; Camera
+three fixed metadata slots, truthful state icons and thin lifecycle components;
+Progress local PercentageBackground/layer blocks and thumbnail feasibility;
+Bed stable framing with inset Z legend and in-chart extrema/range; all-widget
+loading/error frame preservation and non-flow feedback. PR79 remains untouched.
+Independent deployed-Lab UIUX and printer-information audits are complete as
+recommendations: state frames/fixed Lab dock first, then atomic typography/actions,
+Progress and Bed. This Heads slice does not implement those broader proposals.
+## Earlier project-role scope (completed by merged PR82)
+
+Latest user-directed priority: persist four project agents for UI/UX design,
+printer-domain review, agentic MCP/API architecture and a simulated maker user.
+This bounded F0 configuration slice addresses reusable role ownership without
+committing a new product architecture. Acceptance: four valid standalone TOMLs,
+clear role routing/examples, inherited settings, truthful compatibility limits,
+targeted static checks and independent review. No application implementation,
+real-printer acquisition, deployment or global configuration change belongs here.
+Preserve all unfinished widget checkpoints; see the newest PROJECT_STATE entry.
+
+## Earlier execution order (superseded where noted above)
 
 Latest user-directed priority: persist the test cadence and task-owned resource
 cleanup rules in `AGENTS.md`, as a bounded F0 docs-only policy change from
