@@ -27,6 +27,7 @@ __pycache__/
 # Bun compile temporary runtime copies: exactly 16 hex digits, hyphen, 8 hex digits
 /plugins/u1-print-studio/app/.[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].bun-build
 build/
+/plugins/u1-print-studio/app/ui/build-live-queue/
 dist/
 coverage/
 .coverage

@@ -46,11 +46,24 @@ describe('closed leaf foundation', () => {
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
   test('labels and names render text without HTML interpretation', () => {
-    for (const Component of [Label, BoxLabel, CircleLabel, Name]) {
-      const { container } = render(Component, { text: '<b>Tool 1</b>' });
+    for (const create of [() => render(Label, { text: '<b>Tool 1</b>' }), () => render(BoxLabel, { text: '<b>Tool 1</b>' }), () => render(CircleLabel, { text: '<b>Tool 1</b>' }), () => render(Name, { text: '<b>Tool 1</b>' })]) {
+      const { container } = create();
       expect(container.querySelector('b')).toBeNull();
       expect(container).toHaveTextContent('<b>Tool 1</b>'); cleanup();
     }
+  });
+  test('a loading name preserves name typography without carrying observed text', () => {
+    const { container } = render(Name, { loading: true });
+    expect(container.querySelector('.name [data-loading-value]')).not.toBeNull();
+    expect(container.querySelector('[data-required-text]')).toBeNull();
+    expect(container.textContent).not.toMatch(/Tool|Queue|Fixture/);
+  });
+  test('a loading numeric box label takes bounded character structure, not a reported index', () => {
+    const { container } = render(BoxLabel, { loading: true, numeric: true, characters: 2 });
+    expect(container.querySelector('[data-text-skeleton]')).toHaveTextContent('00');
+    expect(container.querySelector('[data-text-skeleton]')).toHaveAttribute('aria-hidden', 'true');
+    expect(container.querySelector('.box-label')).toHaveAttribute('aria-hidden', 'true');
+    cleanup(); expect(() => render(BoxLabel, { loading: true, characters: 0 })).toThrow('Invalid label structure');
   });
   test.each(['text', 'value', 'icon', 'action', 'caption'] as const)('skeleton %s is inert and aria hidden', (shape) => {
     const { container } = render(Skeleton, { shape });

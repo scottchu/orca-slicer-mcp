@@ -47,7 +47,7 @@ const clippedText = (page: Page) => page.locator('[data-widget-shell]').evaluate
   }
   return findings;
 });
-const bounds = (page: Page) => page.locator('[data-widget-shell], [data-widget-header], [data-widget-body], [data-widget-footer], [data-chart-frame], [data-reading-list], .overview-grid, .card-grid, .observation-list').evaluateAll((nodes) => nodes.map((node) => {
+const bounds = (page: Page) => page.locator('[data-widget-shell], [data-widget-header], [data-widget-body], [data-widget-footer], [data-chart-frame], [data-reading-list], [data-record], .overview-grid, .card-grid, .observation-list').evaluateAll((nodes) => nodes.map((node) => {
   const rect = node.getBoundingClientRect();
   return [rect.x + scrollX, rect.y + scrollY, rect.width, rect.height];
 }));
