@@ -33,7 +33,64 @@ const readable = async (frame: Frame, width: number) => {
     return clipped;
   })).toEqual([]);
 };
+const materialRows = async (frame: Frame, loading = false) => {
+  const rows = await frame.locator('[data-inset-card]').evaluateAll((cards) => cards.map((card) => {
+    const icon = card.querySelector<SVGElement>('.lucide-spool')!;
+    const row = icon.parentElement!.parentElement!;
+    const caption = row.querySelector<HTMLElement>('.caption')!;
+    const value = caption.querySelector<HTMLElement>('[data-text-skeleton]') ?? caption;
+    const glyph = icon.getBoundingClientRect();
+    const cardBox = card.getBoundingClientRect();
+    const text = document.createTreeWalker(value, NodeFilter.SHOW_TEXT).nextNode()!;
+    const overlaps: string[] = [], spaces: number[] = [];
+    const textValue = value.textContent ?? '';
+    for (let index = 0; index < textValue.length; index++) {
+      const range = document.createRange(); range.setStart(text, index); range.setEnd(text, index + 1);
+      for (const rect of range.getClientRects()) {
+        if (rect.width && rect.left < glyph.right - 0.5 && rect.right > glyph.left + 0.5 && rect.top < glyph.bottom - 0.5 && rect.bottom > glyph.top + 0.5) overlaps.push(textValue[index]);
+        if (textValue[index] === ' ' && rect.width) spaces.push(rect.width);
+      }
+    }
+    const context = document.createElement('canvas').getContext('2d')!;
+    const css = getComputedStyle(value); context.font = css.font;
+    return {
+      text: textValue, children: value.childElementCount, loading: value.hasAttribute('data-loading-value'),
+      hidden: value.getAttribute('aria-hidden'), width: glyph.width, height: glyph.height,
+      iconHidden: icon.getAttribute('aria-hidden'), stroke: icon.getAttribute('stroke-width'),
+      fits: glyph.left >= cardBox.left && glyph.right <= cardBox.right, overlaps, spaces,
+      naturalSpace: context.measureText(' ').width,
+    };
+  }));
+  expect(rows).toHaveLength(4);
+  for (const row of rows) {
+    expect(row.width).toBe(20); expect(row.height).toBe(20); expect(row.stroke).toBe('1.8');
+    expect(row.iconHidden).toBe('true'); expect(row.fits).toBe(true); expect(row.children).toBe(0);
+    expect(row.overlaps).toEqual([]); expect(row.loading).toBe(loading);
+    if (loading) { expect(row.hidden).toBe('true'); expect(row.text).toBe('Generic PLA'); }
+    else for (const space of row.spaces) expect(Math.abs(space - row.naturalSpace)).toBeLessThanOrEqual(1);
+  }
+  return rows;
+};
 for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) {
+  test(`Heads lab material icon and natural spacing ${width} enlarged=${enlarged}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1600 });
+    await page.goto('/dashboard/lab/heads');
+    await page.locator('[data-lab-controls]').waitFor();
+    if (enlarged) await enlarge(page.mainFrame());
+    const rows = await materialRows(page.mainFrame());
+    expect(rows[0].text).toBe('Generic PLA');
+    await readable(page.mainFrame(), width);
+    const ready = await bounds(page.mainFrame());
+    await page.screenshot({ path: test.info().outputPath('heads-material-lab.png'), fullPage: true });
+    await page.getByLabel('Preview state', { exact: true }).selectOption('loading');
+    await materialRows(page.mainFrame(), true);
+    const loading = await bounds(page.mainFrame());
+    expect(loading.length).toBe(ready.length);
+    for (let row = 0; row < ready.length; row++) for (let axis = 0; axis < 4; axis++) expect(Math.abs(loading[row][axis] - ready[row][axis])).toBeLessThanOrEqual(1);
+    await expect(page.locator('[data-widget-shell] button,time')).toHaveCount(0);
+    await page.getByLabel('Preview state', { exact: true }).selectOption('ready');
+    expect(await bounds(page.mainFrame())).toEqual(ready);
+  });
   test(`Heads real iframe loading, retained refresh and readable values ${width} enlarged=${enlarged}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1600 });
     let release: (result: unknown) => void = () => {};
@@ -48,9 +105,11 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await expect(frame.getByRole('status')).toHaveText('Loading Heads & Filaments'); if (enlarged) await enlarge(frame);
     await expect(frame.locator('[data-inset-card]')).toHaveCount(4);
     await expect(frame.locator('[data-widget-shell] button,canvas,video,[aria-valuenow],time')).toHaveCount(0);
+    await materialRows(frame, true);
     const details = () => frame.locator('[data-inset-card],[data-inset-card] > div,[data-inset-card] .value-slot,[data-inset-card] .degree').evaluateAll((nodes) => nodes.map((node) => ({ text: node.textContent, class: node.className, box: node.getBoundingClientRect().toJSON() })));
     const loading = await bounds(frame), loadingDetails = await details(); release(liveHeadsResult());
     await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
+    expect((await materialRows(frame))[0].text).toBe('Generic PLA');
     const ready = await bounds(frame); expect(ready.length).toBe(loading.length);
     await page.screenshot({ path: test.info().outputPath('heads-ready.png'), fullPage: true });
     await test.info().attach('slot-geometry', { body: JSON.stringify({ loading: loadingDetails, ready: await details() }, null, 2), contentType: 'application/json' });
@@ -78,8 +137,18 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await expect(frame.getByRole('region', { name: 'Tool 3', exact: true })).toContainText('N/A');
     await expect(frame.locator('[data-observed-meta]').nth(1)).toContainText('Stale'); await expect(frame.locator('[data-observed-meta]').first()).not.toContainText('Stale');
     await readable(frame, width); expect(errors).toEqual([]); expect(outside).toEqual([]);
-    expect(calls).toEqual(Array(2).fill({ name: 'refresh_printer_observation', arguments: { view: 'heads' } }));
+    expect((await materialRows(frame))[0].text).toHaveLength(194);
     await page.screenshot({ path: test.info().outputPath('heads-long-text.png'), fullPage: true });
+    const partial = liveHeadsResult(14, '2026-09-01T12:00:14.000Z');
+    partial.structuredContent.module.items[0].materialType = { state: 'unknown', value: null };
+    partial.structuredContent.module.items[0].subtype = { state: 'known', value: 'Matte' };
+    partial.structuredContent.module.items[0].material = { state: 'unknown', value: null };
+    await page.evaluate((value) => document.querySelector('iframe')!.contentWindow!.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/tool-result', params: value }, location.origin), partial);
+    await expect(frame.getByRole('region', { name: 'Tool 1', exact: true })).toContainText('Generic Matte');
+    expect((await materialRows(frame))[0].text).toBe('Generic Matte');
+    await readable(frame, width);
+    expect(calls).toEqual(Array(2).fill({ name: 'refresh_printer_observation', arguments: { view: 'heads' } }));
+    await page.screenshot({ path: test.info().outputPath('heads-partial-text.png'), fullPage: true });
   });
 }
 

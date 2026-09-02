@@ -4,10 +4,10 @@ import { readFileSync } from 'node:fs';
 import { assertFocusedProductionAggregate } from '../ui/scripts/observation-graph-contract.js';
 
 for (const [view, title, hash] of [
-  ['fans', 'Fans & Air', 'af6a8ad6b892966099c399231384383a5a4abd499e677443ebe231e9ff156b61'],
-  ['thermals', 'Thermals', '99aa65a13ba86acd07bc596f69e491c7319417eff5a6e06ebe5c5fbc917f6621'],
-  ['heads', 'Heads & Filaments', 'c778ae8d951260464277d9873de6f9f3c12a6355db96ba316ff41766294f21f4'],
-  ['queue', 'Print Queue', 'ccaaca3ecf881d087f4f0188613055f64cb9c7184521c08d1cb4367098342c27'],
+  ['fans', 'Fans & Air', '64f457273462b8440342343264f6192e3b9d83c11049faa52295a796b430e14f'],
+  ['thermals', 'Thermals', '971307a7da0399f7cd6f6edf7a0a2940fe0972cd62200349f47919d9195f27b7'],
+  ['heads', 'Heads & Filaments', '0417a0e80f9d7321fca1101221a360f04a47760793689d96082d91889fc76ca0'],
+  ['queue', 'Print Queue', '982c55a74bc1f777295ef4cf111880ef8cfbd6aa8a076ad46f26a3da532d4613'],
 ]) test(`real ${title} is one deterministic private artifact without lab or acquisition code`, () => {
   const html = readFileSync(new URL(`../public/svelte-live-${view}.html`, import.meta.url), 'utf8');
   expect(Buffer.byteLength(html)).toBeLessThanOrEqual(100_000);
@@ -24,7 +24,7 @@ test('current focused production inventory remains within the forward ten-widget
     view,
     bytes: Buffer.byteLength(readFileSync(new URL(`../public/svelte-live-${view}.html`, import.meta.url), 'utf8')),
   }));
-  expect(entries.map(({ bytes }) => bytes)).toEqual([86_747, 87_323, 92_726, 87_831, 89_919]);
-  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(444_546);
+  expect(entries.map(({ bytes }) => bytes)).toEqual([87_209, 87_785, 93_409, 88_295, 90_381]);
+  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(447_079);
   expect(() => assertFocusedProductionAggregate(entries)).not.toThrow();
 });
