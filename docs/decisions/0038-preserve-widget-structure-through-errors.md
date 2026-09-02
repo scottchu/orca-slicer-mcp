@@ -40,3 +40,18 @@ retry/focus, retained renderer/data/receipt identity, no WebGL allocation for
 initial placeholders, closed URL selections and cleanup. Shared defaults,
 source-graph isolation and existing byte caps must hold. Synthetic software
 evidence does not establish production RPC behavior or device acceptance.
+
+## Successful Retry focus handoff
+
+Independent UI/UX review selected a guarded focus handoff, not an enabled
+no-op Reset or a global change to disabled-button semantics. In 2D, successful
+Retry makes Reset native-disabled; only if the initiating Retry still owns
+focus in the active document may focus move to the currently selected 2D radio.
+Use explicit shared-leaf focus methods and prevent scrolling; do not click,
+change mode, flash feedback or recreate the renderer. In 3D, the same enabled
+Reset retains focus. Mode/phase changes, user focus movement or window blur,
+cancellation, obsolete completion and unmount cancel recovery. Capture ownership
+before the disabled-state DOM patch and check generation again after rendering.
+Focus leases release their listeners on success, cancellation and teardown.
+Targeted leaf/policy tests and real browser keyboard/no-steal checks cover this
+contract; dispatching a blur event is not actual-device or OS-window evidence.

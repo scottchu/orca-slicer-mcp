@@ -3,6 +3,10 @@
   let props: IconSegmentedProps<Value> = $props();
   const control = $derived(validateIconSegmented(props));
   let buttons = $state<HTMLButtonElement[]>([]);
+  export const focusSelected = () => {
+    if (control.loading || control.disabled) return;
+    buttons[control.options.findIndex(({ value }) => value === control.value)]?.focus({ preventScroll: true });
+  };
   const choose = (index: number, focus = false) => {
     if (control.loading || control.disabled) return;
     if (focus) buttons[index]?.focus();

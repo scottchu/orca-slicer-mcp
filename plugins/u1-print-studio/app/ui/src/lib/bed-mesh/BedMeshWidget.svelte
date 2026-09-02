@@ -18,7 +18,8 @@
   import Skeleton from '../ui/Skeleton.svelte';
   import StateAnnouncement from '../ui/StateAnnouncement.svelte';
   import { loadingObservation } from '../observation/loading';
-  import { onDestroy } from 'svelte';
+  import { onDestroy, tick } from 'svelte';
+  import { createRetryFocusRecovery } from './retry-focus';
 
   type Props = { observation?: BedMeshObservation; loading?: boolean; refreshing?: boolean; failure?: 'error' | 'unavailable'; retrying?: boolean; onretry?: () => void };
   let { observation, loading = false, refreshing = false, failure, retrying = false, onretry, selectedMode, onmode }: Props & { selectedMode?: '3d' | '2d'; onmode?: (mode: '3d' | '2d') => void } = $props();
@@ -33,6 +34,15 @@
   let localMode = $state<'3d' | '2d'>('3d');
   const modeOptions = [{ value: '3d', label: '3D surface', icon: Box }, { value: '2d', label: '2D grid', icon: Grid2X2 }] as const;
   const mode = $derived(selectedMode ?? localMode);
+  let action = $state<ReturnType<typeof IconButton>>();
+  let modeControl = $state<{ focusSelected: () => void }>();
+  const retryFocus = createRetryFocusRecovery({
+    captureFocus: () => action?.captureFocus(),
+    canRecoverFocus: () => action?.canRecoverFocus() ?? false,
+    focusSelected: () => modeControl?.focusSelected(),
+    afterRender: tick
+  });
+  $effect.pre(() => retryFocus.update({ retrying, mode, ready: !!mesh && !loading && !refreshing && !failure }));
   let resetKey = $state(0);
   let feedback = $state<string | null>(null);
   let feedbackTimer: ReturnType<typeof setTimeout> | undefined;
@@ -52,7 +62,7 @@
     resetKey += 1;
     flash('View reset');
   };
-  onDestroy(() => clearTimeout(feedbackTimer));
+  onDestroy(() => { clearTimeout(feedbackTimer); retryFocus.dispose(); });
 </script>
 
 {#snippet feedbackOverlay()}{notice}{/snippet}
@@ -87,10 +97,10 @@
     <WidgetFooter>
       {#snippet actions()}
         {#if placeholder}<IconSegmentedControl label="Bed mesh view" options={modeOptions} loading />{:else}
-          <IconSegmentedControl label="Bed mesh view" options={modeOptions} value={mode} onchange={selectMode} />
+          <IconSegmentedControl bind:this={modeControl} label="Bed mesh view" options={modeOptions} value={mode} onchange={selectMode} />
         {/if}
         <span class="action-separator" aria-hidden="true"></span>
-        {#if showAction}<IconButton label={retryAction ? 'Retry bed mesh' : 'Reset bed mesh view'} icon={retryAction ? RefreshCw : RotateCcw} onclick={retryAction ? onretry : reset} busy={retrying} disabled={!retryAction && mode === '2d'} />{:else}<Skeleton shape="action" />{/if}
+        {#if showAction}<IconButton bind:this={action} label={retryAction ? 'Retry bed mesh' : 'Reset bed mesh view'} icon={retryAction ? RefreshCw : RotateCcw} onclick={retryAction ? onretry : reset} busy={retrying} disabled={!retryAction && mode === '2d'} />{:else}<Skeleton shape="action" />{/if}
       {/snippet}
     </WidgetFooter>
   {/snippet}
