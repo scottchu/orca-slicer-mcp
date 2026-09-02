@@ -4,13 +4,13 @@
   import { formatDuration, titleCase } from './format';
   import { validateProgress, type ProgressObservation } from './types';
   import LoadingValue from '../ui/LoadingValue.svelte';
-  import { loadingObservation } from './loading';
-  type Props = { observation: ProgressObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never };
-  let { observation, loading = false, refreshing = false }: Props = $props();
+  import { loadingObservation, type FailureProps } from './loading';
+  type Props = FailureProps & ({ observation: ProgressObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never });
+  let { observation, loading = false, refreshing = false, failure, onretry }: Props = $props();
   const progress = $derived(loadingObservation(loading, observation, validateProgress));
 </script>
 
-<ObservationFrame title="Print Progress" icon={Printer} observedAt={progress?.sourceObservedAt ?? null} freshness={progress?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
+<ObservationFrame title="Print Progress" icon={Printer} observedAt={progress?.sourceObservedAt ?? null} freshness={progress?.freshness ?? 'unknown'} stateKind={failure ?? (loading ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing}>
   <div class="progress-top">
     <span class="observation-status" class:loading><LoadingValue {loading} text={progress ? titleCase(progress.state) : undefined} words={[9]} /></span>
     <div class="percent"><LoadingValue {loading} text={progress ? Math.round(progress.percent) : undefined} size="short" words={[3]} /><span class:loading-unit={loading} aria-hidden={loading ? true : undefined}>%</span></div>

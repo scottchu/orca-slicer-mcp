@@ -4,13 +4,13 @@
   import { formatDuration, titleCase } from './format';
   import { validateCurrentJob, type CurrentJobObservation } from './types';
   import LoadingValue from '../ui/LoadingValue.svelte';
-  import { loadingObservation } from './loading';
-  type Props = { observation: CurrentJobObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never };
-  let { observation, loading = false, refreshing = false }: Props = $props();
+  import { loadingObservation, type FailureProps } from './loading';
+  type Props = FailureProps & ({ observation: CurrentJobObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never });
+  let { observation, loading = false, refreshing = false, failure, onretry }: Props = $props();
   const job = $derived(loadingObservation(loading, observation, validateCurrentJob));
 </script>
 
-<ObservationFrame title="Current Job" icon={FileClock} observedAt={job?.sourceObservedAt ?? null} freshness={job?.freshness ?? 'unknown'} stateKind={loading ? 'loading' : 'ready'} {refreshing}>
+<ObservationFrame title="Current Job" icon={FileClock} observedAt={job?.sourceObservedAt ?? null} freshness={job?.freshness ?? 'unknown'} stateKind={failure ?? (loading ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing}>
   <div class="job-primary">
     <span class="observation-status" class:loading><LoadingValue {loading} text={job ? titleCase(job.state) : undefined} words={[9]} /></span>
     <strong><LoadingValue {loading} text={job ? `${Math.round(job.progressPercent)}%` : undefined} size="short" words={[5]} /></strong>

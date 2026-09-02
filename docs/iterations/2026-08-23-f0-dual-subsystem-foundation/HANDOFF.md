@@ -1,5 +1,41 @@
 # F0 dual-subsystem foundation handoff
 
+Current execution: ship observation stable error anatomy and inline Heads
+color/quiet Copy first. Camera is a separate blocked checkpoint, not a release
+prerequisite; Progress redesign follows. The complete route/evidence matrix is
+[Widget delivery ledger](../../widget-delivery.md).
+PR87 is ready for exact final-record binding and guarded delivery. Application
+`88eb80f` plus test-only head `3d8954c` has separate independent source and
+targeted validation approval. Repository528 UI/303 app/21 lifecycle/24 shipping
+pass; browser evidence is263 retained passes plus9 corrected scoped passes,
+not a clean full-browser pass. The38 independent cases and limits are in
+VALIDATION. No PR87 deployment has occurred; PR84 remains the latest live app.
+Camera `c6cfb4e` remains source-only and blocked at81,989/80,000 bytes.
+PR86 merged as `8b995ee`; its thumbnail policy remains binding.
+The older checkpoint sections below are historical, not current priority,
+migration or completion claims. Next: final-doc identity approval, then root
+ships PR87 through unchanged guards and verifies actual served behavior.
+
+Current changed source: shared observation frame/skeleton composition, four
+live controllers/roots, closed Lab state/prop mapping, Heads quiet whole-row
+Copy and public CardGrid minimum; legacy focused host/widget and combined status
+failure presentation. Tests retain privacy, same-epoch ordering and keyboard
+contracts. Camera-specific files and Glyph are excluded; that source-only
+checkpoint exceeds its unchanged Lab cap. Do not claim all Camera errors fixed.
+Application and test checkpoints are frozen and independently approved;
+only this seven-document continuity tail requires final binding before root
+ships [PR87](https://github.com/scottchu/orca-slicer-mcp/pull/87).
+No further application/test change is planned. Current source is based on
+merged PR86 `8b995ee`, not its historical open-PR text below.
+
+Evidence-preservation limitation: the failed full-browser text log remains,
+but Playwright default-output cleanup removed its original auto screenshots
+and traces after independent classification. They are not claimed recoverable.
+Renewed Queue outputs use separate directories; independent screenshots/JSON
+remain intact. Follow up durable per-run evidence output without changing
+the harness configuration in this slice. All owned processes/browsers ended;
+4179 is free. Preserve user sessions and unique unfinished worktrees.
+
 ## Current: required print-thumbnail policy reviewed; PR86 delivery
 
 Decision 0040 makes decoded embedded thumbnails mandatory for prepared

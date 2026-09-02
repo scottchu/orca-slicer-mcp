@@ -74,7 +74,18 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
           expect(await bounds(page)).toEqual(loading);
         } else {
           await expect(page.getByRole('status')).toHaveCount(1);
-          await expect(page.locator('[data-widget-shell] [data-loading-value], [data-widget-shell] canvas')).toHaveCount(0);
+          await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
+          await expect(page.locator('[data-widget-shell] canvas,[data-widget-shell] video,[data-widget-shell] [aria-valuenow]')).toHaveCount(0);
+          await expect(page.locator('.widget-feedback')).toBeVisible();
+          expect(await page.locator('.widget-feedback').evaluate(node => getComputedStyle(node).position)).toBe('absolute');
+          expect(await page.locator('[data-widget-shell] [data-loading-value]').count()).toBeGreaterThan(0);
+          expect(await page.locator('[data-widget-shell] [data-loading-value],[data-widget-shell] [data-skeleton]').evaluateAll(nodes => nodes.every(node =>
+            [null, '::before', '::after'].every(pseudo => getComputedStyle(node, pseudo).animationName === 'none')))).toBe(true);
+          const failed = await bounds(page);
+          expect(failed.length).toBe(loading.length);
+          failed.forEach((region, index) => {
+            for (const key of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(region[key] - loading[index][key]), `${view} ${phase} region${index}.${key}`).toBeLessThanOrEqual(1);
+          });
         }
       }
       expect.soft(await page.evaluate(() => document.documentElement.scrollWidth), `${view} overflow`).toBeLessThanOrEqual(width);

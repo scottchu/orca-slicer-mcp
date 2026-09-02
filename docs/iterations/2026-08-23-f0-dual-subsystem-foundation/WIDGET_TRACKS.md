@@ -1,5 +1,17 @@
 # Widget completion tracks
 
+Current execution: ship PR87 observation errors and inline Heads quiet Copy.
+Application `88eb80f` / test-only `3d8954c` has independent source and targeted
+approval; no deployment yet. Camera remains separately blocked, not a release
+prerequisite. The complete current status and route/evidence matrix is
+[Widget delivery ledger](../../widget-delivery.md).
+PR84 is still the latest deployed app. PR86's merged thumbnail policy remains
+binding. VALIDATION records528 UI/303 app/21 lifecycle/24 shipping passes,
+263 retained browser successes plus9 corrected scoped passes, and38 independent
+cases. These are software/synthetic evidence, not device/printer acceptance.
+Final records need exact identity approval before guarded delivery.
+All older sections below are historical, not current completion claims.
+
 ## Current: Heads Copy PR84 deployed and independently verified
 
 PR84 merged as `0fe54f34e43f97dd9376e5a17b06efd342726455`, with the

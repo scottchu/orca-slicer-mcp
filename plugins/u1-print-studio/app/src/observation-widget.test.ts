@@ -238,6 +238,51 @@ function mount(openai: Payload = {}, width = 720, mediaMode: "modern" | "legacy"
 }
 
 describe("production observation widget host boundary", () => {
+  test('terminal legacy failure retains only known/stale data in an explicit matching epoch', () => {
+    for (const previousState of ['known', 'stale', 'unknown']) for (const epoch of [3, 4, null]) {
+      const initial = fixture('queue', { connectionEpoch: 3 });
+      Object.assign(initial.module, { state: previousState, queueState: 'ready', totalCount: 0, truncated: false, items: [], sourceObservedAt: initial.sourceObservedAt, freshness: previousState === 'stale' ? 'stale' : 'fresh' });
+      const card = mount({ toolOutput: initial }); const previous = card.modules.innerHTML;
+      const failed = fixture('queue', { connectionEpoch: epoch }); failed.module.state = 'unavailable';
+      card.deliver({ structuredContent: failed });
+      if (previousState !== 'unknown' && epoch === 3) {
+        expect(card.modules.innerHTML).toBe(previous);
+        expect(card.error.textContent).toContain('showing previous observation');
+      } else {
+        expect(card.modules.innerHTML).toContain('data-observation-placeholder="unavailable"');
+        expect(card.modules.innerHTML).not.toContain('Print queue empty');
+      }
+    }
+  });
+  test('all nine initial unavailable deliveries keep static public anatomy and explicit Retry reads once', async () => {
+    for (const view of ['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans', 'bed_mesh']) {
+      const unavailable = fixture(view); unavailable.module.state = 'unavailable';
+      const card = mount({ toolInput: { view }, toolOutput: unavailable });
+      await card.initialize();
+      const before = card.modules.innerHTML;
+      expect(before).toContain('data-observation-placeholder="unavailable"');
+      expect(before).toContain('aria-busy="false"');
+      expect(before).toContain('neutral-value');
+      expect(before).not.toMatch(/<canvas|<video|<time|aria-valuenow|mesh-cell/);
+      await card.advance(15001);
+      expect(card.modules.innerHTML).toBe(before);
+      const retry = card.controls.retry(); await tick();
+      const request = card.sent.find(item => item.method === 'tools/call')!;
+      expect(request.params).toEqual({ name: 'refresh_printer_observation', arguments: { view } });
+      card.respond(request, { structuredContent: fixture(view) }); await retry;
+      expect(card.sent.filter(item => item.method === 'tools/call')).toHaveLength(1);
+    }
+  });
+
+  test('startup unsupported remains a distinct terminal result after the missing-host timeout', async () => {
+    const unavailable = fixture('queue'); unavailable.module.state = 'unsupported';
+    const card = mount({ toolOutput: unavailable }); await card.initialize();
+    await card.advance(15001);
+    expect(card.modules.innerHTML).toContain('Print Queue endpoint unsupported');
+    expect(card.modules.innerHTML).not.toContain('Couldn’t load');
+    expect(card.sent.filter(item => item.method === 'tools/call')).toHaveLength(0);
+  });
+
   test("current job and history have separate content and selected-view refresh", async () => {
     const current = fixture("jobs");
     current.module.history = { items: [{ filename: "old-history.gcode" }] }; // Old payloads must not restore the combined panel.
@@ -317,7 +362,7 @@ describe("production observation widget host boundary", () => {
     expect(card.sent[0]!.method).toBe("ui/initialize");
     expect(typeof card.sent[0]!.id).toBe("number");
     expect(card.sent[0]!.params.protocolVersion).toBe("2026-01-26");
-    expect(card.modules.innerHTML).toContain("Waiting");
+    expect(card.modules.innerHTML).toContain('data-observation-placeholder="loading"');
     await card.initialize();
     expect(card.sent).toContainEqual(expect.objectContaining({ method: "ui/notifications/initialized" }));
     card.deliver({ structuredContent: fixture("progress") });
@@ -372,7 +417,7 @@ describe("production observation widget host boundary", () => {
   test("ignores foreign messages and bounds missing host data", async () => {
     const card = mount();
     card.deliver({ structuredContent: fixture("progress") }, {});
-    expect(card.modules.innerHTML).toContain("Waiting");
+    expect(card.modules.innerHTML).toContain('data-observation-placeholder="loading"');
     await card.advance(15001);
     expect(card.modules.innerHTML).not.toContain("Waiting for printer observation");
     expect(card.modules.innerHTML).toMatch(/reopen|open.*again/i);
@@ -452,10 +497,11 @@ describe("production observation widget host boundary", () => {
       expect(markup).not.toMatch(/<time|Observed|Observation time unavailable/);
       if (hasView) {
         expect(markup.indexOf("Try loading the view again.")).toBeLessThan(markup.indexOf("<footer"));
-        expect(markup.match(/<footer [\s\S]*?<\/footer>/)![0]).toBe('<footer class="instrument-footer u1-footer"><div class="u1-primary-actions"><button class="refresh u1-action" type="button" aria-label="Retry loading observation">Retry</button></div></footer>');
+        expect(markup.match(/<footer [\s\S]*?<\/footer>/)![0]).toMatch(/aria-label="Retry loading observation"><svg[\s\S]*<\/svg><\/button>/);
       } else {
         expect(markup).toContain("Reopen this card from the conversation");
-        expect(markup).not.toContain("<footer");
+        expect(markup).toContain('<span class="neutral-action" aria-hidden="true"></span>');
+        expect(markup).not.toContain('<button');
       }
     }
   });
@@ -733,7 +779,7 @@ describe("production observation widget host boundary", () => {
     const stale = structuredClone(empty); Object.assign(stale.module, { state: "stale", freshness: "stale", reason: "timeout" });
     const staleMarkup = mount({ toolOutput: stale }).modules.innerHTML;
     expect(staleMarkup).toContain("Last observed print queue was empty"); expect(staleMarkup).toContain("last observed print queue");
-    for (const [state, reason, label] of [["unknown", "not_requested", "Print Queue not observed"], ["unsupported", "unsupported", "Print Queue unsupported"], ["unavailable", "network", "Print Queue unavailable"]]) {
+    for (const [state, reason, label] of [["unknown", "not_requested", "Print Queue not observed"], ["unsupported", "unsupported", "Print Queue endpoint unsupported"], ["unavailable", "network", "Print Queue unavailable"]]) {
       const unavailable = fixture("queue"); Object.assign(unavailable.module, { state, reason, sourceObservedAt: null, queueState: null, totalCount: null, truncated: false, items: [] });
       const markup = mount({ toolOutput: unavailable }).modules.innerHTML;
       expect(markup).toContain(label); expect(markup).not.toContain("Print queue empty");
@@ -753,7 +799,7 @@ describe("production observation widget host boundary", () => {
     }
     const unsupported = fixture("queue"); Object.assign(unsupported.module, { state: "unsupported", reason: "unsupported", sourceObservedAt: null, queueState: null, totalCount: null, truncated: false, items: [] });
     const unsupportedMarkup = mount({ toolOutput: unsupported }).modules.innerHTML;
-    expect(unsupportedMarkup).toContain("attempted Print Queue endpoint was unsupported");
+    expect(unsupportedMarkup).toContain("Print Queue endpoint unsupported");
     expect(unsupportedMarkup).not.toMatch(/printer (?:does not|did not) support/i);
   });
 });
@@ -794,7 +840,7 @@ describe("reported bed mesh widget", () => {
     largestCard.mode2d.emit("click");
     expect(largestCard.modules.innerHTML.match(/<rect class="mesh-cell" /g)).toHaveLength(4096);
     const invalid = mount({ toolOutput: data(mesh([[0, 0], [0, NaN]])) }).modules.innerHTML;
-    expect(invalid).toContain("Bed mesh unavailable"); expect(invalid).not.toContain('<rect class="mesh-cell"');
+    expect(invalid).toContain("Bed Mesh unavailable"); expect(invalid).not.toContain('<rect class="mesh-cell"');
   });
   test("compacts extreme axis labels while preserving exact accessible bounds and quiet visible content", () => {
     const value = mesh();
@@ -815,12 +861,15 @@ describe("reported bed mesh widget", () => {
       [{ ...inactive, state: "stale", freshness: "stale", reason: "network" }, "Last observation: no active mesh"],
       [unavailableBedMesh("not_reported"), "Bed mesh not reported"],
       [unavailableBedMesh("not_requested"), "Bed mesh not observed"],
-      [unavailableBedMesh("network"), "Bed mesh unavailable"],
+      [unavailableBedMesh("network"), "Bed Mesh unavailable"],
     ];
     for (const [module, expected] of cases) {
       const markup = mount({ toolOutput: data(module) }).modules.innerHTML;
       expect(markup).toContain(expected); expect(markup).not.toContain('<rect class="mesh-cell"');
-      if (!module.sourceObservedAt) expect(markup).toContain("Observation time unavailable");
+      if (!module.sourceObservedAt) {
+        if (module.state === 'unavailable' || module.state === 'unsupported') expect(markup).toContain('data-observation-placeholder="unavailable"');
+        else expect(markup).toContain("Observation time unavailable");
+      }
     }
     const stale = mount({ toolOutput: data({ ...mesh(), state: "stale", freshness: "stale", reason: "network" }) }).modules.innerHTML;
     expect(stale.match(/<header [\s\S]*?<\/header>/)![0]).toContain("Refresh unavailable");

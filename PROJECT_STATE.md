@@ -1,5 +1,21 @@
 # Project state
 
+Current execution: ship observation stable error anatomy and inline Heads
+color/quiet Copy first. Camera is a separate blocked checkpoint, not a release
+prerequisite; Progress redesign follows. The complete route/evidence matrix is
+[Widget delivery ledger](docs/widget-delivery.md).
+PR87 is ready for exact final-record binding and guarded delivery. Application
+`88eb80f` plus test-only head `3d8954c` has separate independent source and
+targeted validation approval. Repository528 UI/303 app/21 lifecycle/24 shipping
+pass; browser evidence is263 retained passes plus9 corrected scoped passes,
+not a clean full-browser pass. The38 independent cases and limits are in
+VALIDATION. No PR87 deployment has occurred; PR84 remains the latest live app.
+Camera `c6cfb4e` remains source-only and blocked at81,989/80,000 bytes.
+PR86 merged as `8b995ee`; its thumbnail policy remains binding.
+The older checkpoint sections below are historical, not current priority,
+migration or completion claims. Next: final-doc identity approval, then root
+ships PR87 through unchanged guards and verifies actual served behavior.
+
 ## Current: required print-thumbnail policy reviewed; PR86 delivery
 
 The latest user priority adds decision 0040's required embedded-thumbnail gate

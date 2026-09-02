@@ -68,10 +68,12 @@ printer environments support the described behavior.
   exact.
   Unknown color stays neutral with no copy action; valid hex has an accessible
   bottom Copy action with truthful feedback. Refresh stays below information.
-  Decision0039 keeps Copy in a44px right-side column beside an atomic exact hex.
-  Only the swatch/value subgroup may wrap; narrower cards fall to one column
-  using a public font-relative minimum rather than truncating hex or orphaning
-  Copy. Loading/ready geometry, unknown/empty behavior and focus remain stable.
+  Decision0039's latest refinement keeps swatch, whole natural hex and Copy
+  on one line. Copy has a small borderless 16px glyph inside a 44px accessible
+  target; hover/focus and exact clipboard feedback remain clear. Narrower cards
+  fall to one column using a public font-relative minimum rather than wrapping
+  the swatch, truncating hex, overlapping targets or orphaning Copy.
+  Loading/ready geometry, unknown/empty behavior and focus remain stable.
 - **OBS-011:** All pending focused widgets remain in the active iteration's
   durable completion matrix when new feedback arrives. Apply the selected white
   visual language to all current cards and the directory; preserve real content,
@@ -583,7 +585,15 @@ durable-monitor claim.
   the initiating action still owns active-document focus; user focus movement,
   mode/phase changes and stale work cancel recovery. Reset remains disabled in
   2D, while successful 3D Retry keeps the same enabled Reset focused.
-  Other widget and production-route adoption requires separate evidence.
+  The same full-frame contract applies to every Lab and served widget,
+  including legacy compatibility/MCP routes: initial error/unavailable keeps
+  static content and receipt placeholders, a consistent non-flow notice and
+  the existing Retry slot; retained failure preserves real content and receipts.
+  Loading-to-error and ready-to-retained-error shell/header/body/footer bounds
+  must remain equal at supported widths and 200% text, without acquisition by
+  a skeleton. Unsupported capability stays distinct from missing/error data.
+  Adoption and evidence are tracked per route in `docs/widget-delivery.md`;
+  the requirement does not itself claim every route has been delivered.
 
 - **UI-003:** Observation presentation uses closed DOM-owning leaf/layout
   primitives and zero-raw domain/feature composition. Shared degree,

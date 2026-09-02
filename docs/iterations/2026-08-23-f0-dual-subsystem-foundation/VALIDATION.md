@@ -1,5 +1,126 @@
 # F0 dual-subsystem foundation validation
 
+## PR87 final application and test evidence
+
+Application `88eb80fbb9a9fa2667b9123815b100feea95df4e`, tree
+`fc919112b0c1962e206d7829791e9f1faacd878d`; corrected-test checkpoint
+`3d8954c7881d0cc80f9a1e1e899d66d0d9a81b88`, tree
+`b1642909c722812a8d73ec8558cb91469852c8f6`. The latter differs only in two
+browser specs, not application/dependency/configuration/generated assets.
+Separate source review and independent targeted validation approve that head.
+This seven-document tail still requires exact final identity binding.
+
+Actual commands and results with pinned Bun1.3.12:
+
+- `./scripts/check-repository.sh`: exit0; compiler/AST,528 UI,303 app/3642
+  assertions, all eight reproducible package checks,21 lifecycle and24 shipping
+  tests pass. `stable-errors-full-repository.log` SHA256
+  `8465f6351c0a09197c9c76c536c4d3869da585fd69bae749c67b68ce4af4a5ff`.
+- `bun run test:browser`: exit1,263 passed/9 failed. Both independent roles
+  classified the nine failures as obsolete no-skeleton expectations in
+  lab-states and live-queue, not passing tests or proven product regressions.
+  `stable-errors-full-browser.log` SHA256
+  `f62c9e1b31dc350ac661f7d8c7875fc5d3a5819571650da1b847d16d922230bf`.
+- Scoped Playwright renewal: eight Lab cases pass on the corrected lab-states
+  bytes, retained unchanged through the final test head; Queue wrong-view
+  Retry/BFCache case passes on exact `3d8954c`. Both now require static/inert
+  public skeletons, no fake readings and full-region geometry within1px.
+  Public labels and strictly whitelisted aria-hidden nominal templates are
+  distinguished; initial empty-text assumptions failed and were corrected.
+  Log hashes: `stable-errors-adopted-browser-contracts.log`
+  `d98d4e4f0dfc0d6c7a521f952832e9d5cd10afe854dd23d52e7ab3010d53ff78`;
+  `stable-errors-queue-contract-renewed.log`
+  `aae257b99c2c15df0b2a39b7c7702a7bcd6b1d66b327b27547ab0df928ce8f84`.
+  This is263 retained successes plus9 renewed passes, **not** a clean full-suite
+  pass. Unaffected application checks were not repeated for test-only changes.
+- `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and compiled
+  `--help`: exit0 on unchanged application bytes.
+
+Logs are in ignored UI `test-results`. Original full-failure screenshots/traces
+were inspected independently, then lost when Playwright cleared its default
+output directory during renewal. They are not retained or claimed recoverable;
+the original text log remains. Later Queue attempts have unique output
+directories. Independent evidence is unaffected.
+
+Attributed independent validation:38 fresh intercepted packaged-browser cases
+(31 plus7 bounded continuation) covering four Svelte hosts, eight Labs, nine
+generic views, five actual legacy hosts, two combined layouts, retained-order
+adversaries and Heads boundary/clipboard semantics. Evidence report
+`u1-errors-heads-independent-validation/VALIDATION.md` SHA256
+`b449ab4f783fc45eb3a25dc6017a6297fc94eb20259584e7e670203e2207dffd`;
+test-head binding SHA256
+`5c17b1dc80ab101ddf07c29cd19f59d91ee614412464ef46c69ced3680c66e88`.
+JSON hashes:31-case `7942d368009b5cb1cd56e7cc1143fecb3d6af314ec41a3ac25383ced9ae82621`;
+7-case `189c3235eec89e9c0565a8ab1be2054b48da38fb9d151d847ed178bde38a89d7`.
+Private harness selector/route mismatches remain recorded separately, not
+claimed product defects. No duplicate independent full suite was run.
+
+PR87 is not deployed; Camera/Glyph is excluded and caps/security/shipping
+inputs are unchanged. No actual phone, native clipboard or printer evidence.
+All owned browsers/processes were closed and4179 released. Root's mandatory
+guarded shipping validation remains required; no skip or bypass was introduced.
+
+## Earlier editing evidence — observation errors and quiet inline Copy
+
+Based on accepted PR86 `8b995ee`; deployment remains PR84. Source scope and
+remaining Camera gaps are authoritative in [widget-delivery](../../widget-delivery.md).
+No Camera/Glyph checkpoint, package-cap increase, acquisition change or printer
+operation is included. New code is not independently accepted or deployed yet.
+
+Commands actually run during editing with pinned Bun1.3.12:
+
+- UI `bun run check`: zero errors/warnings and AST PASS. The obsolete unused
+  short `ObservationState` component was removed; no raw-feature allowance added.
+- Focused controller/HeadCard tests:44 PASS; loading/privacy/prop/quiet-button
+  tests:38 PASS. New retention cases cover same-epoch unavailable/unsupported,
+  newer failure ordering and explicit changed-epoch reset.
+- App focused observation/dashboard/package tests PASS; legacy observation plus
+  dashboard subset80 tests/1711 assertions PASS. Closed global unavailable Retry
+  reads once; startup unsupported remains distinct beyond15seconds.
+- Focused `served-error-stability` plus `widget-error-stability`:24 browser cases
+  PASS. Each matrix loops applicable routes at320/390/720 and normal/200% text:
+  eight light Labs, four actual Svelte hosts, nine generic legacy views and
+  active combined status. Initial loading/error/unavailable full-frame geometry
+  stays within1px; retained failures keep content/receipts. Persistent notices
+  survive21seconds initial and6seconds retained. No actual printer/device claim.
+- Heads widest RGB/A8cases, normal/enlarged boundary2cases, prior567/590/720
+  enlarged parity3cases and clipboard generations/busy/denial/focus1case PASS.
+  Whole color row is one44px-high button with16px glyph;390normal keeps two
+  158px cards. Each normal card is193.390625px tall. Public column transitions
+  are375px normal and553px enlarged, including existing shell inset change.
+- All five changed packages built below original caps: Fans88,956;
+  Thermals89,569; Heads98,938; Queue90,071; light Lab210,908. Bed632,808 and
+  current CameraLab79,776/Live90,900 are unchanged. Hash pins were renewed.
+
+Editing failures were not waived: old short-error/footer/string assertions were
+updated to the adopted static structure; Bed not-reported semantics were retained.
+An initial enlarged boundary expectation541px omitted the existing shell's12px
+inset increase; corrected553px was measured and passed, not a tolerance change.
+First candidate `8f7ea32` was rejected by independent source review: identical
+failed Retry responses could erase retained warnings; legacy same-epoch unknown
+data was incorrectly eligible for retention. Both are repaired. Pending/older
+RPC responses now preserve warning evidence until confirmed success. Renewed
+controller/Bed/observation focused tests total36 PASS; legacy56 tests/916
+assertions PASS. Four affected live packages were rebuilt and repinned.
+Renewed four-host browser matrix6/6 PASS at320/390/720 normal/200% text,
+including two identical failed explicit Retry responses per view, persistent
+warning, focus and full-frame/receipt preservation. Its first harness assertion
+incorrectly required literal `aria-disabled=false`; ready buttons omit that
+attribute. Corrected to reject `true`, without changing product behavior.
+
+The first full attempt is diagnostic only: repository UI522/525 found three
+superseded assertions (Bed-only retained-error scope and old Heads actions
+wrappers); they now assert global scope/noninteractive whole-row semantics.
+Browser execution was interrupted after source mutation; its partial results
+are mixed-byte diagnostics, not candidate acceptance. Both original logs are
+preserved as `stable-errors-first-diagnostic-{repository,browser}.log` in ignored
+UI test-results. No tolerance, privacy, byte cap or shipping guard was weakened.
+Renewed frozen-candidate regression and independent exact-head approval remain next.
+Owned focused fixtures/browsers closed after each run; no user tabs were closed.
+
+## Earlier evidence (historical)
+
 ## Required print-thumbnail policy — independent approval and PR86
 
 Independent review approved exact policy commit

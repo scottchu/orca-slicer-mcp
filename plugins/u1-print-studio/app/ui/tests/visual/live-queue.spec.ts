@@ -109,8 +109,9 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     const unavailable = liveQueueResult(0, 22, '2026-09-01T12:00:22.000Z');
     const unavailableDomain = { ...unavailable.structuredContent.module, state: 'unavailable', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, checkedAt: '2026-09-01T12:00:22.000Z', queueState: null, totalCount: null, reason: 'timeout', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: unavailable.structuredContent.module.provenance.detail } };
     await notify({ structuredContent: { ...unavailable.structuredContent, module: unavailableDomain } });
-    await expect(frame.locator('[data-widget-body]')).toHaveText('Print Queue unavailable');
-    await expect(frame.locator('[data-widget-shell]')).not.toContainText(/0 jobs|Queue empty/); await readable(frame, width);
+    await expect(frame.locator('.widget-feedback')).toHaveText('Print Queue unavailable · showing previous observation');
+    await expect(frame.locator('[data-widget-body]')).toContainText('Last observed queue was empty');
+    await expect(frame.locator('[data-observed-meta]')).toContainText('Stale'); await readable(frame, width);
     const unknown = liveQueueResult(0, 23, '2026-09-01T12:00:23.000Z');
     const unknownDomain = { ...unknown.structuredContent.module, state: 'unknown', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, checkedAt: null, queueState: null, totalCount: null, reason: 'not_requested', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: unknown.structuredContent.module.provenance.detail } };
     await notify({ structuredContent: { ...unknown.structuredContent, module: unknownDomain } });
@@ -168,9 +169,27 @@ test('Queue initial wrong-view failure is bounded, retry and BFCache preserve on
   await page.goto('/dashboard/queue'); const frame = page.frames().find((item) => item.url().endsWith('/dashboard/queue_widget'))!;
   await expect.poll(() => calls).toBe(1);
   await expect(frame.getByRole('status')).toHaveText('Loading Print Queue');
+  const initial = await bounds(frame);
+  await expect(frame.locator('[data-record]')).toHaveCount(3);
   await page.clock.fastForward(20_001);
   await expect(frame.getByRole('button', { name: 'Refresh Print Queue' })).toBeVisible();
-  await expect(frame.locator('[data-record]')).toHaveCount(0);
+  await expect(frame.locator('[data-record]')).toHaveCount(3);
+  await expect(frame.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
+  await expect(frame.getByRole('status')).toHaveCount(1);
+  await expect(frame.locator('.widget-feedback')).toContainText('Could not load');
+  await expect(frame.locator('[data-record] button,[data-record] a,[data-record] [tabindex],[aria-valuenow],time')).toHaveCount(0);
+  expect(await frame.locator('[data-record]').evaluateAll(rows => rows.map(row => {
+    const copy = row.cloneNode(true) as Element;
+    copy.querySelectorAll('[aria-hidden="true"]').forEach(node => node.remove());
+    return copy.textContent!.replace(/\s+/g, ' ').trim();
+  }))).toEqual(Array(3).fill('Added Wait at observation'));
+  expect(await frame.locator('[data-record] [data-text-skeleton]').evaluateAll(nodes => nodes.every(node =>
+    node.getAttribute('aria-hidden') === 'true' && ['0', 'Model filename.gcode', 'Jan 0, 0000, 00:00:00 AM'].includes(node.textContent!)))).toBe(true);
+  expect(await frame.locator('[data-loading-value],[data-skeleton]').evaluateAll(nodes => nodes.length > 0 && nodes.every(node =>
+    [null, '::before', '::after'].every(pseudo => getComputedStyle(node, pseudo).animationName === 'none')))).toBe(true);
+  const failed = await bounds(frame);
+  expect(failed.length).toBe(initial.length);
+  failed.forEach((region, index) => region.forEach((value, axis) => expect(Math.abs(value - initial[index][axis])).toBeLessThanOrEqual(1)));
   await frame.getByRole('button', { name: 'Refresh Print Queue' }).click();
   await expect(frame.getByRole('status')).toHaveText('Print Queue loaded'); expect(calls).toBe(2);
   const ready = await bounds(frame);

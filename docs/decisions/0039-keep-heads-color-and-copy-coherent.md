@@ -3,6 +3,25 @@
 Date: 2026-09-02. Status: adopted presentation direction; exact acceptance pending.
 Milestone: F0, OBS-010/UI-003, refining decision0037 without a new data path.
 
+## Latest user refinement (2026-09-02)
+
+The swatch, whole naturally sized RGB/RGBA and Copy must remain on one row.
+This supersedes the swatch-above-hex allowance below, not the exact color,
+privacy or 44px hit-area contracts. Use a scoped quiet 16px Copy glyph without a
+visible default border/background; hover and keyboard focus remain clear.
+The entire color row is one Copy button, not separate text and icon targets.
+Its public card minimum includes swatch + whole maximum hex + both gaps +
+16px glyph + card insets; the whole row stays at least44px high. At390px the
+132px card interior fits the measured124.07px public maximum row, retaining
+two columns without overlapping targets. Switch to one column when this
+complete row cannot fit; do not truncate, orphan or shrink the target.
+Loading/error use the same anatomy with no button or private color.
+Unknown/empty is noninteractive. Keep generic default controls
+unchanged and test normal/enlarged 320/390/desktop and column boundaries.
+Prior evidence below describes PR84, not acceptance of this refinement.
+
+## Earlier PR84 decision and evidence
+
 The independent UI/UX inspection found that a ten-character ready value reserve
 plus a wrapping footer pushed the44px Copy action into an orphan second row.
 At390px, the132px card interior fits natural RGB but not full swatch/RGBA/Copy.

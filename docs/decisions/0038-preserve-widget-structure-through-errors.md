@@ -22,6 +22,29 @@ not restamp old data or recreate the renderer merely to show an error.
 Successful empty/no-active data and unsupported capability remain distinct
 from acquisition error. Static placeholders are not an assertion of empty data.
 
+## All-route adoption (2026-09-02)
+
+Apply this contract to every current Lab and served observation presentation,
+including legacy generic/MCP aliases; the first Bed-only rollout was not global
+completion. The route matrix in [widget-delivery](../widget-delivery.md) records
+actual source/deployed coverage. Compare complete header/body/footer/shell
+geometry. Initial failure keeps neutral metadata shapes too, while an existing
+receipt stays visible and unchanged on retained failure. Unavailable capability
+is explicit in the overlay without inventing a valid empty reading. Retry owns
+its existing action slot; no acquisition is introduced into skeleton rendering.
+
+For the four Svelte observation controllers, valid unavailable/unsupported
+envelopes preserve last known/stale display evidence only within the same
+non-null connection epoch. An independently retained latest acceptance receipt
+orders later events even when the display receipt remains old. New or unknown
+epochs and valid empty/unknown data never borrow an earlier connection's data.
+Legacy focused envelopes require an explicit matching epoch for this same
+retention; request rejection retains the existing mounted view. The older
+combined status-v3/v4 format has no connection epoch: its notice describes only
+the last accepted status in that mounted compatibility card, not session proof.
+Camera-specific compatibility header/media adoption remains a separately
+blocked track, not implicitly completed by these observation changes.
+
 ## First bounded application
 
 Apply the foundation to Bed Mesh Lab only, using closed synthetic states and

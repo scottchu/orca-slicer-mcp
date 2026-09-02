@@ -10,7 +10,7 @@
   import WidgetBody from '../ui/WidgetBody.svelte';
   import WidgetFooter from '../ui/WidgetFooter.svelte';
   import StateAnnouncement from '../ui/StateAnnouncement.svelte';
-  import StatePanel from '../ui/StatePanel.svelte';
+  import WidgetStateSurface from '../ui/WidgetStateSurface/WidgetStateSurface.svelte';
   import ObservedMeta from '../ui/ObservedMeta.svelte';
   import Caption from '../ui/Caption.svelte';
   import Icon from '../ui/Icon.svelte';
@@ -23,7 +23,10 @@
   let { controller }: { controller: ReturnType<typeof createFansController> } = $props();
   let current = $state(untrack(() => controller.getState()));
   const observation = $derived(current.observation);
-  const announcement = $derived(current.phase === 'loading' ? 'Loading Fans & Air' : current.refreshing ? 'Refreshing Fans & Air' : current.feedback || 'Fans & Air loaded');
+  const unavailable = $derived(!!observation && (observation.state === 'unavailable' || observation.state === 'unsupported'));
+  const placeholder = $derived(!observation || unavailable);
+  const notice = $derived(current.feedback || (unavailable ? 'Fans & Air ' + (observation?.state === 'unsupported' ? 'endpoint unsupported' : 'unavailable') : ''));
+  const announcement = $derived(current.phase === 'loading' ? 'Loading Fans & Air' : current.refreshing ? 'Refreshing Fans & Air' : notice || 'Fans & Air loaded');
   onMount(() => {
     const unsubscribe = controller.subscribe((state) => { current = state; });
     controller.start();
@@ -31,13 +34,14 @@
   });
 </script>
 <StateAnnouncement text={announcement} />
+<WidgetStateSurface phase={unavailable ? 'unavailable' : current.phase}>
 <WidgetShell label="Fans & Air" busy={current.phase === 'loading' || current.refreshing}>
   <WidgetHeader title="Fans & Air">
     {#snippet icon()}<Icon name="fan" />{/snippet}
-    {#snippet meta()}<Caption><ObservedMeta observedAt={observation?.receipt.sourceObservedAt ?? null} freshness={observation?.receipt.freshness ?? 'unknown'} loading={current.phase === 'loading'} />{#if observation && observation.state !== 'known' && observation.state !== 'stale'} · {titleCase(observation.state)}{/if}</Caption>{/snippet}
+    {#snippet meta()}<Caption><ObservedMeta observedAt={observation?.receipt.sourceObservedAt ?? null} freshness={observation?.receipt.freshness ?? 'unknown'} loading={placeholder} />{#if !placeholder && observation && observation.state !== 'known' && observation.state !== 'stale'} · {titleCase(observation.state)}{/if}</Caption>{/snippet}
   </WidgetHeader>
   <WidgetBody>
-    {#if observation}
+    {#if observation && !placeholder}
       <Stack>
         <InfoPair reserve="label">
           {#snippet label()}<Label text="Purifier" tone="muted" />{/snippet}
@@ -49,11 +53,11 @@
         </InfoPair>
         <FanReadings items={observation.items} />
       </Stack>
-    {:else if current.phase === 'loading'}<FansSkeleton includePower />
-    {:else}<StatePanel title="Fans & Air" reason="error" />{/if}
+    {:else}<FansSkeleton includePower />{/if}
   </WidgetBody>
   <WidgetFooter>
     {#snippet actions()}{#if current.phase === 'loading'}<Skeleton shape="action" />{:else}<IconButton label="Refresh Fans & Air" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
   </WidgetFooter>
-  <FeedbackOverlay message={current.feedback} announce={false} />
+  <FeedbackOverlay message={notice} announce={false} />
 </WidgetShell>
+</WidgetStateSurface>

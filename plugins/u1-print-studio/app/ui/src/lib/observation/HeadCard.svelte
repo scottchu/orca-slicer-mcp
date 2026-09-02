@@ -10,8 +10,7 @@
   import LoadingValue from '../ui/LoadingValue.svelte';
   import TextSkeleton from '../ui/TextSkeleton.svelte';
   import Icon from '../ui/Icon.svelte';
-  import IconButton from '../ui/IconButton.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
+  import QuietIconButton from '../ui/QuietIconButton.svelte';
   import ActualTarget from './ActualTarget.svelte';
   import { materialLoadingTemplate, type MaterialLoadingShape } from './heads-loading';
   type Props = { physicalTool: HeadId; reading?: HeadCardValue; copying?: boolean; oncopy?: (id: HeadId, color: string) => void } & ({ loading: true; materialShape?: MaterialLoadingShape } | { loading?: false; materialShape?: never });
@@ -20,7 +19,7 @@
   $effect.pre(() => { materialLoadingTemplate(loading, materialShape); });
   const color = $derived(headColor(reading?.presence ?? null, reading?.color ?? null));
 </script>
-<InsetCard label={`Tool ${physicalTool}`} color={color.color} neutral={!loading && color.neutral} active={reading?.active === true} actionAvailable={!loading && !!color.color} headerLines={2} footerLayout="action-column">
+<InsetCard label={`Tool ${physicalTool}`} color={color.color} neutral={!loading && color.neutral} active={reading?.active === true} actionAvailable={!loading && !!color.color} headerLines={2} footerLayout="content">
   {#snippet header()}
     <Name text={`T${physicalTool}`} />
     <Caption><LoadingValue {loading} text={loading ? undefined : headStateLabel(reading?.active ?? null, reading?.state ?? null)} /></Caption>
@@ -30,9 +29,8 @@
     <Inline gap="tight"><Inline shrink={false}><Icon name="thermals" /></Inline><ActualTarget actual={loading ? undefined : reading?.actual ?? null} target={loading ? undefined : reading?.target ?? null} {loading} compact /></Inline>
   </Stack>
   {#snippet footer()}
-    <ColorValue color={loading ? undefined : color.color} text={loading ? undefined : color.label} {loading} />
-  {/snippet}
-  {#snippet actions()}
-    {#if loading}<Skeleton shape="action" />{:else if color.color}<IconButton label={`Copy T${physicalTool} color ${color.color}`} icon={Copy} busy={copying} onclick={() => oncopy?.(physicalTool, color.color!)} />{/if}
+    {#if !loading && color.color}
+      <QuietIconButton label={`Copy T${physicalTool} color ${color.color}`} icon={Copy} busy={copying} onclick={() => oncopy?.(physicalTool, color.color!)}><ColorValue color={color.color} text={color.label} /></QuietIconButton>
+    {:else}<ColorValue color={loading ? undefined : color.color} text={loading ? undefined : color.label} {loading} />{/if}
   {/snippet}
 </InsetCard>

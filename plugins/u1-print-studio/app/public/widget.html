@@ -49,12 +49,26 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       button:focus-visible { outline: 3px solid var(--u1-focus); outline-offset: 3px; }
       .shell { width: min(100%, 820px); margin: 0 auto; }
       .modules { display: grid; gap: var(--u1-grid-gap); }
-      .instrument { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+      .instrument { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
       .instrument-header { display: flex; align-items: center; gap: 18px; padding: 32px 32px 26px; }
       .instrument-title { min-width: 0; flex: 1; }
       .instrument-info { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
       .instrument-info time { display: block; font-variant-numeric: tabular-nums; }
-      .refresh-error { display: block; }
+      .refresh-error { position: absolute; right: var(--u1-card-x); bottom: 74px; z-index: 8; max-width: calc(100% - 2 * var(--u1-card-x)); padding: 8px 11px; border-radius: 10px; color: white; background: rgb(28 30 32 / 86%); font-size: 12px; line-height: 1.35; }
+      .neutral-value { display: inline-block; width: 8ch; max-width: 100%; height: 1em; border-radius: 4px; background: var(--soft); vertical-align: middle; }
+      .neutral-value.short { width: 4ch; }
+      .neutral-value.long { width: 14ch; }
+      .neutral-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-bottom: 1px solid var(--line); }
+      .neutral-row:last-child { border-bottom: 0; }
+      .neutral-list { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; }
+      .neutral-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .neutral-card { display: grid; gap: 14px; min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 16px; }
+      .neutral-stack { display: grid; gap: 14px; }
+      .neutral-chart { aspect-ratio: 4 / 3; border: 1px solid var(--line); border-radius: 16px; background: var(--soft); }
+      .neutral-action { width: 44px; height: 44px; border-radius: 12px; background: var(--soft); }
+      [data-observation-placeholder="loading"] .neutral-value { animation: neutral-pulse 1.3s ease-in-out infinite alternate; }
+      @keyframes neutral-pulse { to { opacity: .45; } }
+      @media (prefers-reduced-motion: reduce) { [data-observation-placeholder] .neutral-value { animation: none; } }
       .loading-guidance { margin: 12px 0 0; font-size: 12px; line-height: 1.5; }
       h2 { margin: 0; font-size: clamp(20px, 3.7vw, 27px); font-weight: 620; line-height: 1.2; letter-spacing: -0.035em; }
       .refresh { display: inline-grid; width: 44px; min-width: 44px; min-height: 44px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--soft); }
@@ -196,7 +210,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
       .mesh-summary dd { margin: 5px 0 0; font-size: clamp(14px, 3.6vw, 20px); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
       .domain-warning { margin-top: 6px; color: var(--negative); font-size: 12px; line-height: 1.5; }
       .instrument-footer { color: var(--muted); font-size: 12px; line-height: 1.45; }
-      .freshness-warning, .refresh-error { color: var(--negative); }
+      .freshness-warning { color: var(--negative); }
       .refresh-error:empty { display: none; }
       .loading { padding: 18px var(--u1-card-x); color: var(--muted); text-align: center; }
       @keyframes spin { to { transform: rotate(360deg); } }
@@ -343,7 +357,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
   </head>
   <body>
     <main class="shell">
-      <div class="modules" id="modules"><div class="instrument u1-card loading u1-body">Waiting for printer observation…</div></div>
+      <div class="modules" id="modules"></div>
     </main>
     <script>
       /* Three.js r185 and OrbitControls, MIT License. Exact dependency and
@@ -4492,7 +4506,9 @@ void main() {
       let bridge = null;
       let loadTimer = null;
       let refreshPending = false;
-      let selectedView = null;
+      const queryView = /[?&]view=([a-z_]+)(?:&|$)/.exec(window.location?.search ?? "")?.[1];
+      let selectedView = VIEWS.includes(queryView) ? queryView : null;
+      let acceptedResult = false;
       const escapeHtml = (value) => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
       const validNumber = (value) => typeof value === "number" && Number.isFinite(value);
       const valueOf = (field) => field?.state === "known" || field?.state === "stale" ? field.value : null;
@@ -4912,6 +4928,33 @@ void main() {
         return `<section class="instrument u1-card overview-instrument">${header("Overview", true, observation.sourceObservedAt, observation.freshness, "", `<span class="overview-coverage">Coverage ${renderedCoverage}</span>`)}<div class="overview-grid u1-body">${tiles}</div>${provenance()}</section>`;
       };
       const renderers = { overview: renderOverview, progress: renderProgress, thermals: renderThermals, heads: renderHeads, jobs: renderJobs, job_history: renderJobHistory, queue: renderQueue, fans: renderFans, bed_mesh: renderBedMesh };
+      // Closed public structure only: no synthetic observation, hidden filename,
+      // timestamp, color, thermal value or renderer is created for placeholders.
+      const neutralValue = (size = "") => `<span class="neutral-value ${size}" aria-hidden="true"></span>`;
+      const neutralRows = (labels) => `<div class="neutral-list">${labels.map(label => `<div class="neutral-row"><span>${escapeHtml(label)}</span>${neutralValue()}</div>`).join("")}</div>`;
+      const neutralCards = (labels) => `<div class="neutral-grid">${labels.map(label => `<div class="neutral-card"><span>${escapeHtml(label)}</span>${neutralValue("long")}${neutralValue()}</div>`).join("")}</div>`;
+      const neutralBodies = {
+        overview: () => neutralCards(["Print Progress", "Thermals", "Heads & Filaments", "Current Job", "Job History", "Print Queue", "Fans & Air", "Bed Mesh"]),
+        progress: () => `<div class="neutral-stack">${neutralValue("short")}<div class="progress-track"></div><div class="progress-meta"><span>Layer ${neutralValue("short")}</span>${neutralValue("long")}</div>${neutralRows(["Elapsed"])}</div>`,
+        thermals: () => neutralRows(["Tool 1", "Tool 2", "Tool 3", "Tool 4", "Heater bed", "Cavity"]),
+        heads: () => neutralCards(["T1", "T2", "T3", "T4"]),
+        jobs: () => `<div class="neutral-stack">${neutralValue("long")}${neutralCards(["State", "Elapsed", "Filament", "Storage"])}</div>`,
+        job_history: () => neutralRows(["", "", "", ""]),
+        queue: () => `<div class="neutral-stack">${neutralValue()}${neutralRows(["1", "2", "3"])}</div>`,
+        fans: () => neutralRows(["Tool 1", "Tool 2", "Tool 3", "Tool 4", "Cavity", "Purifier exhaust", "Purifier inner"]),
+        bed_mesh: () => `<div class="neutral-stack">${neutralValue("long")}<div class="neutral-chart" aria-hidden="true"></div>${neutralRows(["Minimum", "Maximum", "Range"])}</div>`,
+      };
+      const viewTitles = { overview: "Overview", progress: "Print Progress", thermals: "Thermals", heads: "Heads & Filaments", jobs: "Current Job", job_history: "Job History", queue: "Print Queue", fans: "Fans & Air", bed_mesh: "Bed Mesh" };
+      const showPlaceholder = (phase = "loading", message = "") => {
+        const view = selectedView ?? "overview";
+        const title = selectedView ? viewTitles[view] : "Printer observation";
+        const retry = phase !== "loading" && selectedView && window.parent !== window;
+        const heading = header(title, false).replace("</h2>", `</h2><div class="instrument-info u1-meta">${neutralValue("long")}</div>`);
+        const action = retry ? `<button class="refresh u1-action" type="button" aria-label="Retry loading observation">${icon("refresh-cw")}</button>` : '<span class="neutral-action" aria-hidden="true"></span>';
+        modulesElement.innerHTML = `<section class="instrument u1-card" data-observation-placeholder="${phase}" aria-busy="${phase === "loading"}">${heading}<div class="u1-body">${neutralBodies[view]()}</div><span class="refresh-error" role="status">${escapeHtml(message)}</span><footer class="instrument-footer u1-footer"><div class="u1-primary-actions">${action}</div></footer></section>`;
+        if (retry) modulesElement.querySelector(".refresh")?.addEventListener("click", () => void retryLoad());
+        window.openai?.notifyIntrinsicHeight?.();
+      };
       const render = () => { if (!observation?.module) return; disposeMeshRenderer(); const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); if (view === "bed_mesh") bindMeshControls(); if (view === "heads") bindMaterialCopy(); window.openai?.notifyIntrinsicHeight?.(); };
       const rpcNotify = (method, params) => window.parent.postMessage({ jsonrpc: "2.0", method, params }, "*");
       const rpcRequest = (method, params) => new Promise((resolve, reject) => {
@@ -4928,27 +4971,37 @@ void main() {
         if (!candidate || (selectedView && candidate.view !== selectedView)) return false;
         selectedView = candidate.view;
         const previous = observation;
+        if (candidate.module.state === "unavailable" || candidate.module.state === "unsupported") {
+          acceptedResult = true;
+          const message = candidate.view === "bed_mesh" && candidate.module.reason === "not_reported" ? "Bed mesh not reported" : `${viewTitles[candidate.view]} ${candidate.module.state === "unsupported" ? "endpoint unsupported" : "unavailable"}`;
+          if (previous && ["known", "stale"].includes(previous.module.state) && previous.view === candidate.view && Number.isSafeInteger(candidate.connectionEpoch) && candidate.connectionEpoch >= 0 && candidate.connectionEpoch === previous.connectionEpoch) {
+            const error = modulesElement.querySelector(".refresh-error");
+            if (error) error.textContent = `${message} · showing previous observation`;
+          } else { observation = null; disposeMeshRenderer(); showPlaceholder("unavailable", message); }
+          clearTimeout(loadTimer);
+          return true;
+        }
         observation = candidate;
         try { render(); } catch { observation = previous; return false; }
+        acceptedResult = true;
         clearTimeout(loadTimer);
         return true;
       };
       const applyGlobals = (globals = {}) => {
         const metadata = globals.toolResponseMetadata;
         const requested = globals.toolInput?.view;
-        if (!selectedView && VIEWS.includes(requested)) selectedView = requested;
+        if (!selectedView && VIEWS.includes(requested)) { selectedView = requested; if (!observation) showPlaceholder(); }
         return [globals.toolOutput, metadata?.mcp_tool_result, metadata?.call_tool_result, metadata].some(applyResult);
       };
       const showLoadError = () => {
-        if (observation) return;
+        if (observation || acceptedResult) return;
         const canRetry = selectedView && window.parent !== window;
-        modulesElement.innerHTML = `<section class="instrument u1-card">${header("Couldn’t load this view", false)}<div class="u1-body"><div class="empty-panel">The widget did not receive a printer observation. No current values are available.<p class="loading-guidance" role="status">${canRetry ? "Try loading the view again." : "Reopen this card from the conversation to try again."}</p></div></div>${canRetry ? '<footer class="instrument-footer u1-footer"><div class="u1-primary-actions"><button class="refresh u1-action" type="button" aria-label="Retry loading observation">Retry</button></div></footer>' : ""}</section>`;
-        modulesElement.querySelector(".refresh")?.addEventListener("click", () => void retryLoad());
-        window.openai?.notifyIntrinsicHeight?.();
+        showPlaceholder("error", `Couldn’t load this view. ${canRetry ? "Try loading the view again." : "Reopen this card from the conversation to try again."}`);
       };
       const refresh = async () => {
         if (!selectedView || refreshPending || window.parent === window) return;
         refreshPending = true;
+        if (!observation) { acceptedResult = false; showPlaceholder("loading"); }
         modulesElement.querySelectorAll(".refresh").forEach((button) => { button.disabled = true; button.setAttribute("aria-busy", "true"); });
         try {
           if (!bridge) bridge = await initializeBridge();
@@ -4968,8 +5021,8 @@ void main() {
         return result;
       };
       const retryLoad = async () => {
-        if (applyGlobals(window.openai)) return;
         if (selectedView) { await refresh(); return; }
+        if (applyGlobals(window.openai)) return;
         clearTimeout(loadTimer);
         loadTimer = setTimeout(showLoadError, 15000);
         try { bridge = await initializeBridge(); } catch { showLoadError(); }
@@ -4982,14 +5035,15 @@ void main() {
           const pending = pendingRequests.get(message.id); pendingRequests.delete(message.id); clearTimeout(pending.timer);
           message.error ? pending.reject(new Error("Host request failed")) : pending.resolve(message.result); return;
         }
-        if (message.method === "ui/notifications/tool-input" && VIEWS.includes(message.params?.arguments?.view) && !selectedView) selectedView = message.params.arguments.view;
+        if (message.method === "ui/notifications/tool-input" && VIEWS.includes(message.params?.arguments?.view) && !selectedView) { selectedView = message.params.arguments.view; if (!observation) showPlaceholder(); }
         if (message.method === "ui/notifications/tool-result" && !applyResult(message.params) && !observation) showLoadError();
       });
       window.addEventListener("openai:set_globals", (event) => {
         if (!applyGlobals(event.detail?.globals)) applyGlobals(window.openai);
       });
+      showPlaceholder();
       applyGlobals(window.openai);
-      if (!observation) loadTimer = setTimeout(showLoadError, 15000);
+      if (!acceptedResult) loadTimer = setTimeout(showLoadError, 15000);
       if (window.parent !== window) void initializeBridge().then((result) => { bridge = result; applyGlobals(window.openai); }).catch(showLoadError);
     </script>
   </body>

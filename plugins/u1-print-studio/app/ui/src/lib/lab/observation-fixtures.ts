@@ -120,6 +120,6 @@ export const resolveObservationFixture = <V extends ObservationLabView>(selectio
 };
 
 export const previewObservationState = <V extends ObservationLabView>(selection: LabSelection<V>): WidgetState<ObservationByView[V]> =>
-  selection.phase === 'ready' || selection.phase === 'refreshing'
+  selection.phase === 'ready' || selection.phase === 'refreshing' || selection.phase === 'retained-error'
     ? { kind: 'ready', observation: resolveObservationFixture(selection), refreshing: selection.phase === 'refreshing' }
     : { kind: selection.phase };

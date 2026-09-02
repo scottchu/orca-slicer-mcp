@@ -65,6 +65,7 @@
       }
 
       .dashboard {
+        position: relative;
         width: min(100%, 720px);
         margin: 0 auto;
         overflow: hidden;
@@ -632,6 +633,11 @@
 
       .notice {
         display: none;
+        position: absolute;
+        right: 16px;
+        bottom: 72px;
+        z-index: 8;
+        max-width: calc(100% - 32px);
         padding: 11px 13px;
         border-radius: 14px;
         color: #8b281f;
@@ -643,6 +649,8 @@
       .notice.is-visible {
         display: block;
       }
+      [data-status-failed="true"] [data-loading="true"].skeleton-target::after,
+      [data-status-failed="true"] [data-loading="true"] .skeleton-target::after { animation: none; }
 
       .physical-boundary {
         color: var(--muted);
@@ -830,7 +838,7 @@
         </div>
 
         <div class="progress-section" id="progress-section" data-loading="true">
-          <div class="progress-track skeleton-target" role="progressbar" aria-label="Print progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track">
+          <div class="progress-track skeleton-target" role="progressbar" aria-label="Print progress" aria-valuemin="0" aria-valuemax="100" id="progress-track">
             <div class="progress-fill" id="progress-fill"></div>
           </div>
           <div class="progress-meta">
@@ -989,10 +997,24 @@
 
       const setStatusLoading = (loading) => {
         const value = String(Boolean(loading));
+        elements.dashboard.setAttribute("aria-busy", value);
+        elements.dashboard.dataset.statusFailed = "false";
         elements.statusRow.dataset.loading = value;
         elements.progressSection.dataset.loading = value;
         for (const metric of elements.metrics) metric.dataset.loading = value;
         elements.freshness.dataset.loading = value;
+        for (const target of [elements.statusRow, elements.progressSection, ...elements.metrics, elements.freshness]) {
+          if (loading) target.setAttribute("aria-hidden", "true");
+          else target.removeAttribute("aria-hidden");
+        }
+        if (loading) elements.progressTrack.removeAttribute("aria-valuenow");
+      };
+
+      const setStatusFailure = (message) => {
+        setStatusLoading(!toolOutput);
+        elements.dashboard.dataset.statusFailed = "true";
+        elements.dashboard.setAttribute("aria-busy", "false");
+        setNotice(`${message}${toolOutput ? " · showing previous observation" : ""}`);
       };
 
       const setCameraState = (state, loading = false) => {
@@ -1208,7 +1230,12 @@
       });
 
       const applyStatusResult = (result) => {
-        toolOutput = result?.structuredContent ?? result ?? toolOutput;
+        const candidate = result?.structuredContent ?? result;
+        if (!candidate || candidate.reachable !== true) {
+          setStatusFailure("Printer status unavailable");
+          return;
+        }
+        toolOutput = candidate;
         render();
         if (hosted && !livePreview) {
           queueMicrotask(() => void refreshCameraFrame());
@@ -1298,8 +1325,7 @@
       };
 
       const bridgeReady = initializeBridge().catch(() => {
-        setNotice("Host bridge unavailable");
-        setStatusLoading(false);
+        setStatusFailure("Host bridge unavailable");
         return null;
       });
 
@@ -1591,11 +1617,11 @@
           applyStatusResult(response);
           if (!livePreview) void refreshCameraFrame();
         } catch {
-          setNotice("Refresh failed");
+          setStatusFailure("Refresh failed");
           scheduleRefresh(15);
         } finally {
           refreshing = false;
-          if (showSkeletons) setStatusLoading(false);
+          if (showSkeletons && toolOutput) setStatusLoading(false);
           elements.refresh.classList.remove("is-refreshing");
         }
       };
@@ -1655,6 +1681,7 @@
 
       syncAutoRefreshControl();
       applyHostContext();
+      setStatusLoading(true);
 
       if (window.openai?.toolOutput) {
         applyStatusResult({

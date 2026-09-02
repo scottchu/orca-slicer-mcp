@@ -10,7 +10,7 @@
   import WidgetBody from '../ui/WidgetBody.svelte';
   import WidgetFooter from '../ui/WidgetFooter.svelte';
   import StateAnnouncement from '../ui/StateAnnouncement.svelte';
-  import StatePanel from '../ui/StatePanel.svelte';
+  import WidgetStateSurface from '../ui/WidgetStateSurface/WidgetStateSurface.svelte';
   import ObservedMeta from '../ui/ObservedMeta.svelte';
   import Caption from '../ui/Caption.svelte';
   import Icon from '../ui/Icon.svelte';
@@ -23,9 +23,12 @@
   let { controller }: { controller: ReturnType<typeof createThermalsController> } = $props();
   let current = $state(untrack(() => controller.getState()));
   const observation = $derived(current.observation);
+  const unavailable = $derived(!!observation && (observation.state === 'unavailable' || observation.state === 'unsupported'));
+  const placeholder = $derived(!observation || unavailable);
+  const notice = $derived(current.feedback || (unavailable ? 'Thermals ' + (observation?.state === 'unsupported' ? 'endpoint unsupported' : 'unavailable') : ''));
   const loading = $derived(current.phase === 'loading');
   const environment = $derived(observation?.environment);
-  const announcement = $derived(loading ? 'Loading Thermals' : current.refreshing ? 'Refreshing Thermals' : current.feedback || 'Thermals loaded');
+  const announcement = $derived(loading ? 'Loading Thermals' : current.refreshing ? 'Refreshing Thermals' : notice || 'Thermals loaded');
   onMount(() => {
     const unsubscribe = controller.subscribe((state) => { current = state; });
     controller.start();
@@ -33,24 +36,24 @@
   });
 </script>
 <StateAnnouncement text={announcement} />
+<WidgetStateSurface phase={unavailable ? 'unavailable' : current.phase}>
 <WidgetShell label="Thermals" busy={loading || current.refreshing}>
   <WidgetHeader title="Thermals">
     {#snippet icon()}<Icon name="thermals" />{/snippet}
-    {#snippet meta()}<Caption>Tools & bed · <ObservedMeta observedAt={observation?.sourceObservedAt ?? null} freshness={observation?.freshness ?? 'unknown'} {loading} groupedTime /></Caption>{/snippet}
+    {#snippet meta()}<Caption>Tools & bed · <ObservedMeta observedAt={observation?.sourceObservedAt ?? null} freshness={observation?.freshness ?? 'unknown'} loading={placeholder} groupedTime /></Caption>{/snippet}
   </WidgetHeader>
   <WidgetBody>
-    {#if observation || loading}
       <Stack>
         <InfoPair>
           {#snippet label()}<Label text="Cavity" tone="muted" />{/snippet}
-          {#snippet value()}<Caption><ObservedMeta observedAt={environment?.sourceObservedAt ?? null} freshness={environment?.freshness ?? 'unknown'} {loading} groupedTime />{#if environment && environment.state !== 'known' && environment.state !== 'stale'} · {titleCase(environment.state)}{:else if observation?.readings[5].reportedState === 'not_reported'} · Not reported{/if}{#if environment?.reason} · {titleCase(environment.reason)}{/if}</Caption>{/snippet}
+          {#snippet value()}<Caption><ObservedMeta observedAt={environment?.sourceObservedAt ?? null} freshness={environment?.freshness ?? 'unknown'} loading={placeholder} groupedTime />{#if !placeholder}{#if environment && environment.state !== 'known' && environment.state !== 'stale'} · {titleCase(environment.state)}{:else if observation?.readings[5].reportedState === 'not_reported'} · Not reported{/if}{#if environment?.reason} · {titleCase(environment.reason)}{/if}{/if}</Caption>{/snippet}
         </InfoPair>
-        {#if observation}<ThermalReadings readings={observation.readings} />{:else}<ThermalsSkeleton />{/if}
+        {#if observation && !placeholder}<ThermalReadings readings={observation.readings} />{:else}<ThermalsSkeleton />{/if}
       </Stack>
-    {:else}<StatePanel title="Thermals" reason="error" />{/if}
   </WidgetBody>
   <WidgetFooter>
     {#snippet actions()}{#if loading}<Skeleton shape="action" />{:else}<IconButton label="Refresh Thermals" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
   </WidgetFooter>
-  <FeedbackOverlay message={current.feedback} announce={false} />
+  <FeedbackOverlay message={notice} announce={false} />
 </WidgetShell>
+</WidgetStateSurface>

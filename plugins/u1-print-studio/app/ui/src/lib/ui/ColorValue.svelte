@@ -16,13 +16,8 @@
 </span>
 
 <style>
-  .color-value { display: block; container-type: inline-size; min-width: 0; color: var(--u1-muted); font-size: var(--u1-type-label); line-height: var(--u1-line-copy); }
+  .color-value { display: block; min-width: 0; color: var(--u1-muted); font-size: var(--u1-type-label); line-height: var(--u1-line-copy); }
   .group { display: flex; align-items: center; gap: var(--u1-space-1); }
-  /* Use the same public maximum as CardGrid, plus the17px swatch/4px gap.
-     Loading and every actual hex choose the same layout, without sizing text. */
-  @container (width < calc(6.4em + 21px)) {
-    .group { flex-direction: column; align-items: flex-start; }
-  }
   .text { white-space: nowrap; }
   .loading { width: 9ch; height: 1lh; background: var(--u1-skeleton-base); border-radius: var(--u1-skeleton-radius); animation: skeleton-pulse var(--u1-skeleton-duration) ease-in-out infinite alternate; }
   @keyframes skeleton-pulse { to { opacity: .5; } }

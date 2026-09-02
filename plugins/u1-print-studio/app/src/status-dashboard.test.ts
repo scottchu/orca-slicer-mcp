@@ -317,7 +317,7 @@ describe("standalone status dashboard", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
     expect(html).toContain('const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget" })');
-    expect(html).toContain('const widgetSource = focusedWidget ?? "/widget?standalone=1"');
+    expect(html).toContain('const widgetSource = focusedWidget ?? `/widget?standalone=1&view=${selectedView}`');
     expect(html).toContain('message.method === "tools/call"');
     expect(html).toContain('frame.title = selected?.[1] ?? "View unavailable"');
     for (const view of ["overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]) {
@@ -721,7 +721,7 @@ describe("focused dashboard host bridge", () => {
       expect(host.title.textContent).toBe(label);
       expect(host.document.title).toBe(`U1 · ${label}`);
       expect(host.frame.title).toBe(label);
-      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : view === "heads" ? "/dashboard/heads_widget" : view === "queue" ? "/dashboard/queue_widget" : "/widget?standalone=1");
+      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : view === "heads" ? "/dashboard/heads_widget" : view === "queue" ? "/dashboard/queue_widget" : `/widget?standalone=1&view=${view}`);
     }
   });
 
