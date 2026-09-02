@@ -20,10 +20,13 @@
   import Stack from '../ui/Stack.svelte';
   import InfoPair from '../ui/InfoPair.svelte';
   import Label from '../ui/Label.svelte';
-  let { items, observedAt = null, freshness = 'unknown', materials, phase, refreshing = false, copying = null, feedback = '', sourceLabel = 'Head state & thermals', refreshLabel = 'Refresh Heads & Filaments', onrefresh, oncopy }: {
-    items?: HeadCardValue[]; observedAt?: string | null; freshness?: Freshness; materials?: HeadsPresentation['materials']; phase: 'loading' | 'ready' | 'error'; refreshing?: boolean; copying?: HeadId | null; feedback?: string; sourceLabel?: string; refreshLabel?: string; onrefresh?: () => void; oncopy?: (id: HeadId, color: string) => void;
+  import { checkedMaterialShapes, type MaterialLoadingShapes } from './heads-loading';
+  let { items, observedAt = null, freshness = 'unknown', materials, phase, materialShapes, refreshing = false, copying = null, feedback = '', sourceLabel = 'Head state & thermals', refreshLabel = 'Refresh Heads & Filaments', onrefresh, oncopy }: {
+    items?: HeadCardValue[]; observedAt?: string | null; freshness?: Freshness; materials?: HeadsPresentation['materials']; phase: 'loading' | 'ready' | 'error'; materialShapes?: MaterialLoadingShapes; refreshing?: boolean; copying?: HeadId | null; feedback?: string; sourceLabel?: string; refreshLabel?: string; onrefresh?: () => void; oncopy?: (id: HeadId, color: string) => void;
   } = $props();
   const loading = $derived(phase === 'loading');
+  const shapes = $derived(checkedMaterialShapes(loading, materialShapes));
+  $effect.pre(() => { checkedMaterialShapes(loading, materialShapes); });
   const announcement = $derived(loading ? 'Loading Heads & Filaments' : refreshing ? 'Refreshing Heads & Filaments' : feedback || 'Heads & Filaments loaded');
 </script>
 <StateAnnouncement text={announcement} />
@@ -39,7 +42,7 @@
           {#snippet label()}<Label text="Materials" tone="muted" />{/snippet}
           {#snippet value()}<Caption><ObservedMeta observedAt={materials?.sourceObservedAt ?? null} freshness={materials?.freshness ?? 'unknown'} {loading} groupedTime />{#if materials && materials.state !== 'known' && materials.state !== 'stale'} · {titleCase(materials.state)}{/if}{#if materials?.reason} · {titleCase(materials.reason)}{/if}</Caption>{/snippet}
         </InfoPair>
-        {#if items}<HeadCards {items} {copying} {oncopy} />{:else}<HeadsSkeleton />{/if}
+        {#if items}<HeadCards {items} {copying} {oncopy} />{:else}<HeadsSkeleton materialShapes={shapes} />{/if}
       </Stack>
     {:else}<StatePanel title="Heads & Filaments" reason="error" />{/if}
   </WidgetBody>

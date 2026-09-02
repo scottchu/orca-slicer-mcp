@@ -1,5 +1,75 @@
 # F0 dual-subsystem foundation handoff
 
+## Heads accepted-main integration — author renewal complete
+
+The six inherited repair records are preserved in commit `8f66edc`. Ordinary
+integration of accepted PR82 main `707a018` adds only its project-agent
+configuration, routing/guide, focused configuration test and continuity records.
+Merge `b1c9a8c` preserves additive records without changing application inputs.
+Focused29/config3 and exact delta/assets/retained browser-log checks pass; see
+VALIDATION. Independent final source review, validation and guarded delivery
+remain the next gates; no new deployment is claimed here.
+After Heads, resume Bed Lab `c0323a4`, Camera `4eb3106` retry repair, then all
+other preserved tracks. PR82 is merged, but native role invocation is unverified.
+All author command sessions exited. No browser, fixture, watcher or connection
+was started; user sessions, services and retained evidence were untouched.
+
+## Earlier Heads repair handoff
+
+## PR81 test-only local-gate repair ready for exact binding
+
+Checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d` changes only
+ObservationLoading.test.ts after the previous final records. Its exact hidden
+public-leaf exception is independently source-approved; independent 29 targeted
+tests and final required repository validation pass (483 UI, 300 app, 21/24
+lifecycle/shipping, eight unchanged packages). The earlier ship gate failed
+before merge/install/restarts. Preserve its failure evidence and retry only
+after independent final docs/remote identity and retained browser binding.
+
+No runtime, assets, browser inputs, dependencies or guards changed from app
+`c9d69cb`; no duplicate 214-case browser run was launched. Command sessions are
+closed; no author fixture/browser is open. OS error24 blocked one subsequent
+read-only launch after all required tests completed; preserve user/service
+resources and do not infer unfinished children from that global symptom.
+Camera `4eb3106` and its explicit-retry defect remain a separate unfinished
+checkpoint, as do Bed/state/dock/Progress and all existing tracks.
+
+## Heads material icon — frozen application, independent acceptance due
+
+Application `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree
+`3cca582bad7e2ff9d21b5f77f34fdc96aedcf266`, base accepted PR80 `4e869d8`.
+Later edits are continuity only. The owned full browser run passes 214/214;
+separate source review and targeted validation are still required.
+
+Changed runtime paths: shared `ui/Icon.svelte`; Heads HeadCard/HeadCards/
+HeadsSkeleton/HeadsPanel/HeadsWidget composition; generic ObservationSkeleton
+pass-through; closed Lab route/helper; pure observation loading-shape helper.
+No adapter/controller/live-root/network/MCP/auth/service/shipping change.
+Tests, AST import allowlists and exact package hashes are renewed.
+
+One joined material text leaf plus nonshrinking 20px/1.8 Spool is shared by Live
+and Lab. Fixed public `nominal | empty` loading shapes are selected only by
+validated Lab controls, including all-empty/all-unknown and per-head overrides.
+Ready data is not a template source; type/runtime guards reject ready overrides,
+arbitrary strings, malformed lists and sparse lists. Live defaults stay unchanged.
+Public finite templates guarantee tested closed fixture geometry, not arbitrary
+private initial text lengths. 194-character actual labels remain naturally visible.
+
+Focused 39 Chrome, final 56 affected UI, compiler/AST and 12 package/138 assertion
+checks pass. Old 16/18 and 201/206 failures remain in ignored evidence storage.
+A lazy-derived guard was caught by a component adversary and corrected with
+pre-render effects; all 12 HeadCard cases then pass. No tolerance was loosened.
+Detailed commands, hashes and evidence limits are in VALIDATION.
+
+All eight final assets remain within caps; only Heads/light Lab change again
+after the public-template repair. Spool's 462-byte Camera increment exceeds PR79's
+old 318-byte headroom: later ordinary integration needs actual measurement and a
+separately reviewed optimization if needed. Do not raise caps or copy pending code.
+PR79 and all additive tracks remain intact. Playwright's isolated contexts and
+fixture exited; lsof confirms no listener on4179. All author command sessions
+completed. User sessions, services, worktrees and evidence remain preserved.
+## Earlier project-role handoff (completed by merged PR82)
+
 ## Project-agent definitions — configuration handoff
 
 Changed four `.codex/agents/*.toml` files, routing in `AGENTS.md`, the usage and

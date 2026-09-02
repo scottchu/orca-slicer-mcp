@@ -1,5 +1,74 @@
 # Widget completion tracks
 
+Resumed order after accepted PR82 main `707a018`: finish Heads PR81 exact
+acceptance/shipment, then Bed Lab stable-error `c0323a4`, then Camera `4eb3106`
+explicit retry repair and remaining gates. Project-role configuration is merged
+and statically accepted, with native loading unverified. All tracks below stay
+open; this integration changes no widget implementation or acceptance boundary.
+
+PR81 delivery update: first mandatory gate rejected an inherited blanket loading
+test; nothing merged/installed/restarted. Test-only `1e2e387` repairs the exact
+public-skeleton exception with private/accessibility/noninteractive adversaries.
+Final repository gate and independent source/targeted tests pass; final identity
+binding and guarded retry remain. Application `c9d69cb` and 214 browser results
+are unchanged. Camera `4eb3106` is a separate source checkpoint with a known
+explicit same-live-scenario retry defect, not accepted or deployed. No track
+below is dropped or treated as completed by this test repair.
+
+## New user priorities retained — Heads icon first
+
+- Heads: shared Spool icon beside one contiguous, naturally wrapping material
+  label; retain independent receipts, empty/N/A colors and loading privacy.
+- Lab: controls pinned at the bottom without obscuring widget content.
+- Camera: shared three-slot status geometry, distinct connecting/error icons,
+  truthful display fallback and thin views over owned lifecycle services.
+- Progress: local PercentageBackground/layer-block design and model-thumbnail
+  feasibility; do not infer model geometry or new telemetry.
+- Bed Mesh: stable framing, inset vertical Z legend and in-chart min/max/range.
+- All widgets: preserve loading/error frames and use non-flow feedback overlays.
+
+PR80 policy is merged at `4e869d8`; PR79 and every earlier migration, Console,
+filament-sync, size, token and recoverable-cleanup track stay separate/open.
+
+The shared-state proposal preserves shell/body/actions: an initial error keeps
+the same neutral skeleton/frame without shimmer and adds compact persistent
+feedback plus footer Retry; stale refresh failure keeps real data/receipt/focus
+and renderer. Empty/unsupported stay distinct from acquisition failure. One
+announcer and feedback owner must remain. Apply first to Bed lab, then nine
+non-Camera labs and the five delivered live views; Camera shares presentation
+only, not session ownership. Arbitrary first live filename/list length cannot
+claim exact initial skeleton parity without a separately designed bounded view.
+
+LabPreviewLayout/ViewportDock must cover all ten widget labs (eight light,
+Bed and Camera, with the directory separately considered), reserve measured dock
+height plus safe area once, retain last-action visibility and keyboard access,
+and permit dock scrolling on short/200% viewports. Widget actions stay in cards.
+
+Progress layer blocks need an explicit adopted revision of OBS-011's current
+continuous-strip rule before implementation; a thumbnail does not establish
+model geometry or layers. Bed's requested stable orbit reference must avoid
+drag-driven frustum refitting; in-chart min/max/range and legend endpoints need
+an explicit UI-002 revision and fresh 320px/200% acceptance. Neither policy is
+silently changed by this Heads slice.
+
+Preserved checkpoints: Progress `25673dd`; History `379c1e7` and Overview
+`1a3b4f4` are model/adapter checkpoints, not production UI panels; real Bed
+`194ea79`; Current Job PR79 `48f2060`. MCP/legacy parity and all other recorded
+tracks remain unfinished. Heads application `c9d69cb` passes 39 focused browser
+cases and the full 214-case browser run after the closed public loading-shape
+repair; independent exact acceptance remains due. No arbitrary private-material loading
+height guarantee or whole-card visual redesign belongs to this slice.
+
+Independent UIUX and printer-information reviews of the deployed Lab are complete;
+their evidence stays outside version control. Recommendations, not implementation:
+nine non-Camera error-frame collapses; duplicated Current Job percentage and missing
+Lab filename; weak History identity/date; atomic spacing; shared dock/status
+contracts. Camera remains three fixed metadata slots after the two-vs-three review.
+Proposed priority is shared state frames/fixed Lab dock, then atomic typography/
+actions, Progress and Bed. PR79 and prior independent evidence stay separate.
+
+## Earlier checkpoints (superseded where noted above)
+
 Latest additive priority: Bed Mesh's single animated icon segmented mode control
 is authored at8022984 from accepted4828ce04;455 UI/300 app/21 lifecycle/24 shipping,
 focused16/full198 browser and all eight deterministic packages pass. Independent

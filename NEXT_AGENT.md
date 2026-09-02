@@ -1,5 +1,63 @@
 # Next agent
 
+## Immediate: finish Heads exact-candidate delivery, then Bed and Camera
+
+PR82 is merged as `707a018`; its four project roles are statically accepted,
+not native-runtime verified. Preserve that accepted configuration during the
+ordinary Heads PR81 merge. Bind the repaired test and retained application/
+browser evidence to the clean final head, renew focused test/config checks,
+and obtain separate exact source review and validation before guarded shipment.
+Existing mandatory u1-ship gates remain required. Then integrate and validate
+Bed Lab stable-error `c0323a4`, followed by Camera `4eb3106`'s explicit retry
+repair. Current Job PR79 and every other track remain preserved and unfinished.
+The ordinary merge is `b1c9a8c`; author focused29/config3 and exact application,
+asset and retained-browser-log identity checks pass. The final records-only tail
+must be included in independent exact-head approval, then pushed through PR81.
+
+## Earlier Heads repair handoff
+
+## Immediate: bind the PR81 test-only repair and retry guarded delivery
+
+Test checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d` has independent
+source approval, independent 29/29 focused PASS and a complete author repository
+gate PASS (483 UI, 300 app, 21 lifecycle, 24 shipping, eight package identities).
+Only ObservationLoading.test.ts changes after the previous records head; no
+application/browser inputs change from `c9d69cb`. Verify the final docs/remote
+identity and bind retained 214-case browser evidence before retrying PR81.
+The failed first ship operation merged/installed nothing; do not bypass a guard.
+
+All test command sessions exited. No author browser or fixture was opened for
+this repair. A subsequent read-only exec launch was rejected with OS error24;
+the completed gate was unaffected. Do not broadly kill user/service processes.
+Camera checkpoint `4eb3106` is separate and has an independently identified
+same-live-scenario explicit-retry defect to fix after this Heads handoff. No
+Camera release or completion is claimed; all broader tracks remain open.
+
+## Next: independently accept and ship the small Heads material slice
+
+Review frozen application `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`,
+tree `3cca582bad7e2ff9d21b5f77f34fdc96aedcf266`. Focused 39 Chrome and
+final 56 affected UI tests pass. The owned full browser run is 214/214 PASS;
+match retained evidence to the exact candidate instead of repeating it automatically.
+
+The material row uses shared Spool plus one naturally wrapping Caption.
+Loading-only public `nominal | empty` shapes come from closed Lab controls,
+never a reading/DTO/string length. Type/runtime guards reject ready or arbitrary
+templates. Live root never opts in. No fixed heights, truncation or tolerance
+waiver belongs here; arbitrary private initial length parity is not promised.
+
+The documentation-only evidence tail preserves application bytes; obtain separate exact source
+review and targeted independent validation before guarded PR merge/deploy/BOTH
+service restart/served behavior verification. Preserve failed evidence and free
+the isolated fixture port before handing it over (4179 is now released). Do not touch frozen PR79;
+ordinary later integration must remeasure its tight Camera package cap.
+
+All newer shared-state, fixed Lab dock, Camera, Progress, Bed and atomic-design
+tracks remain recorded in WIDGET_TRACKS. Completed UIUX/printer audits are design
+recommendations only, not delivered UI. No user browser, service or printer
+state should be changed by independent source checks.
+## Earlier project-role handoff (completed by merged PR82)
+
 ## Next: independently review the four project-agent definitions
 
 Review `.codex/agents/`, `AGENTS.md` routing and `docs/project-agents.md` against
