@@ -13,7 +13,8 @@ export const resolveBedMeshFixture = (selection: BedMeshLabSelection): BedMeshOb
     summary: { ...bedMeshLabFixture.summary, minimum, maximum, range: maximum - minimum } });
 };
 
-export const previewBedMeshState = (selection: BedMeshLabSelection): WidgetState<BedMeshObservation> =>
+export const previewBedMeshState = (selection: BedMeshLabSelection): WidgetState<BedMeshObservation> | { kind: 'retained-error'; observation: BedMeshObservation } =>
+  selection.phase === 'retained-error' ? { kind: 'retained-error', observation: resolveBedMeshFixture(selection) } :
   selection.phase === 'ready' || selection.phase === 'refreshing'
     ? { kind: 'ready', observation: resolveBedMeshFixture(selection), refreshing: selection.phase === 'refreshing' }
     : { kind: selection.phase };

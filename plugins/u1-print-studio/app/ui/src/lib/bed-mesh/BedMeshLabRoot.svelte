@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, untrack } from 'svelte';
   import LabControls from '../ui/LabControls.svelte';
   import ObservationLabPage from '../ui/ObservationLabPage.svelte';
-  import ObservationState from '../observation/ObservationState.svelte';
   import { resolveBedMeshFixture } from '../lab/bed-mesh-fixture';
   import {
     bedMeshFields,
@@ -14,30 +13,55 @@
   import BedMeshWidget from './BedMeshWidget.svelte';
 
   let selection = $state(currentBedMeshSelection());
+  let retrying = $state(false);
+  let retryWithoutData = $state(false);
+  let retryTimer: ReturnType<typeof setTimeout> | undefined;
+  // Phase/mode changes do not recreate the retained fixture or renderer input.
+  const fixtureKey = $derived(`${selection.scenario}:${selection.freshness}`);
+  const fixture = $derived.by(() => { fixtureKey; return untrack(() => resolveBedMeshFixture(selection)); });
+  const hasData = $derived(['ready', 'refreshing', 'retained-error'].includes(selection.phase) && !(retrying && retryWithoutData));
+  const stopRetry = () => { clearTimeout(retryTimer); retryTimer = undefined; retrying = false; retryWithoutData = false; };
   const change = (key: string, value: string): void => {
+    if (key !== 'mode') stopRetry();
     selection = setBedMeshSelection(selection, key, value);
     writeBedMeshSelection(selection);
   };
   const reset = (): void => {
+    stopRetry();
     selection = defaultBedMeshSelection();
     resetBedMeshLocation();
   };
-  onMount(() => watchBedMeshLocation((restored) => { selection = restored; }));
+  const retry = () => {
+    if (retrying || !['error', 'retained-error'].includes(selection.phase)) return;
+    retryWithoutData = !hasData;
+    retrying = true;
+    selection = setBedMeshSelection(selection, 'phase', 'refreshing');
+    writeBedMeshSelection(selection);
+    // Closed local demonstration only; no acquisition or automatic server retry.
+    retryTimer = setTimeout(() => {
+      retryTimer = undefined;
+      retrying = false; retryWithoutData = false;
+      selection = setBedMeshSelection(selection, 'phase', 'ready');
+      writeBedMeshSelection(selection);
+    }, 300);
+  };
+  onMount(() => {
+    const stopLocation = watchBedMeshLocation((restored) => { stopRetry(); selection = restored; });
+    return () => { stopRetry(); stopLocation(); };
+  });
 </script>
 
 <ObservationLabPage name="bed_mesh">
-  {#if selection.phase === 'error' || selection.phase === 'unavailable'}
-    <ObservationState view="bed_mesh" reason={selection.phase} />
-  {:else if selection.phase === 'loading'}
-    <BedMeshWidget loading selectedMode={selection.values.mode} onmode={(mode) => change('mode', mode)} />
-  {:else}
-    <BedMeshWidget
-      observation={resolveBedMeshFixture(selection)}
-      refreshing={selection.phase === 'refreshing'}
-      selectedMode={selection.values.mode}
-      onmode={(mode) => change('mode', mode)}
-    />
-  {/if}
+  <BedMeshWidget
+    observation={hasData ? fixture : undefined}
+    loading={selection.phase === 'loading'}
+    refreshing={selection.phase === 'refreshing'}
+    failure={selection.phase === 'error' || selection.phase === 'retained-error' ? 'error' : selection.phase === 'unavailable' ? 'unavailable' : undefined}
+    {retrying}
+    onretry={retry}
+    selectedMode={selection.values.mode}
+    onmode={(mode) => change('mode', mode)}
+  />
   <LabControls
     fields={bedMeshFields(selection)}
     values={Object.fromEntries(bedMeshFields(selection).map(({ key }) => [key, bedMeshSelectionValue(selection, key)]))}

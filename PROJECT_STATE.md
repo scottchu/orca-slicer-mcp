@@ -1,5 +1,16 @@
 # Project state
 
+## Current: bounded Bed Lab stable-error surface
+
+From accepted4e869d8, implement decision0038's controlled shared presentation
+foundation in Bed Lab only. Preserve chart/header/footer structure through
+initial loading/error/retry; retain known renderer/data/receipt on refresh
+failure. No whole-widget height guess, private skeleton template, cap increase,
+production acquisition, printer action or release is part of implementation.
+Source/unit/targeted browser and transitive packages precede frozen-candidate
+independent acceptance. Heads repair, Camera68259ead, remaining widget error
+rollout, fixed Lab dock and all earlier migration/feature tracks stay separate.
+
 ## Current: repository test strategy — docs-only review pending
 
 The latest user priority is now recorded in `AGENTS.md` under Test strategy:

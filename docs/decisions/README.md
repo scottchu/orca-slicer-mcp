@@ -42,6 +42,8 @@ silently changed.
 | [0034](0034-migrate-live-widgets-through-shared-host-adapters.md) | Migrate live widgets through shared host adapters | Accepted design; first Fans cutover pending |
 | [0035](0035-migrate-private-camera-through-shared-svelte-presentation.md) | Migrate private Camera through shared Svelte presentation | Accepted dashboard-only direction; exact acceptance pending |
 
+| [0038](0038-preserve-widget-structure-through-errors.md) | Preserve widget structure through errors | Accepted presentation direction; first Bed Lab implementation pending |
+
 Decision 0026 is reserved for the paused queue work outside this source slice.
 
 Copy [the template](template.md) for new records. Accepted records should be
