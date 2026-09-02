@@ -9,6 +9,20 @@ const options = [{ value: 'cube', label: 'Surface', icon: Box }, { value: 'grid'
 const props = { label: 'View', options, value: 'cube', onchange: vi.fn() };
 
 describe('closed two-option icon segmented control', () => {
+  test('explicit focusSelected is focus-only, prevents scrolling and respects disabled/loading', async () => {
+    const onchange = vi.fn();
+    const { component, getByRole, rerender } = render(IconSegmentedControl, { ...props, value: 'grid', onchange });
+    const grid = getByRole('radio', { name: 'Grid' });
+    const focus = vi.spyOn(grid, 'focus');
+    component.focusSelected();
+    expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+    expect(grid).toHaveFocus(); expect(onchange).not.toHaveBeenCalled();
+    await rerender({ ...props, disabled: true, onchange });
+    focus.mockClear(); component.focusSelected(); expect(focus).not.toHaveBeenCalled();
+    cleanup();
+    const loading = render(IconSegmentedControl, { label: 'View', options, loading: true });
+    loading.component.focusSelected(); expect(onchange).not.toHaveBeenCalled();
+  });
   test('has one tab stop, decorative icons, controlled selection and selected-click no-op', async () => {
     const onchange = vi.fn();
     const { getByRole, container, rerender } = render(IconSegmentedControl, { ...props, onchange });

@@ -2,9 +2,29 @@
   type LucideIcon = typeof import('lucide-svelte')['Box'];
   let { label, icon, pressed, onclick, disabled = false, busy = false }: { label: string; icon: LucideIcon; pressed?: boolean; onclick?: () => void; disabled?: boolean; busy?: boolean } = $props();
   const Icon = $derived(icon);
+  let button: HTMLButtonElement;
+  // A short-lived lease lets a caller distinguish user focus loss from its own
+  // later disabled-state patch. Only explicit callers install these listeners.
+  export const captureFocus = () => {
+    const target = button;
+    const document = target?.ownerDocument;
+    if (!document?.hasFocus() || document.activeElement !== target) return undefined;
+    let current = true;
+    const lost = () => { current = false; };
+    target.addEventListener('blur', lost);
+    document.defaultView?.addEventListener('blur', lost);
+    return {
+      ownsFocus: () => current && document.hasFocus() && document.activeElement === target,
+      release: () => { target.removeEventListener('blur', lost); document.defaultView?.removeEventListener('blur', lost); }
+    };
+  };
+  export const canRecoverFocus = () => {
+    const document = button?.ownerDocument;
+    return !!document?.hasFocus() && (document.activeElement === button || document.activeElement === document.body);
+  };
 </script>
 
-<button type="button" class="icon-button" aria-label={label} title={label} aria-pressed={pressed} aria-disabled={busy || undefined} {disabled} onclick={() => { if (!disabled && !busy) onclick?.(); }}>
+<button bind:this={button} type="button" class="icon-button" aria-label={label} title={label} aria-pressed={pressed} aria-disabled={busy || undefined} {disabled} onclick={() => { if (!disabled && !busy) onclick?.(); }}>
   <Icon size={20} strokeWidth={1.8} aria-hidden="true" />
 </button>
 

@@ -13,6 +13,7 @@ composites.push('observation/HeadsPanel.svelte', 'live/LiveHeadsRoot.svelte');
 composites.push('observation/HeadsWidget.svelte');
 composites.push('observation/QueueWidget.svelte', 'observation/QueueRow.svelte', 'observation/QueueRows.svelte', 'observation/QueueSummary.svelte', 'observation/QueueSkeleton.svelte', 'observation/DomainReceipt.svelte', 'live/LiveQueueRoot.svelte');
 export const leaves: Record<string, string[]> = {
+  'ui/WidgetStateSurface/WidgetStateSurface.svelte': ['div'],
   'ui/CardGrid.svelte': ['div'], 'ui/InsetCard.svelte': ['section', 'div', 'div', 'div', 'div'], 'ui/ColorSwatch.svelte': ['span'],
   'ui/IconSegmentedControl.svelte': ['div', 'span', 'span', 'button'],
   'ui/OrderedRecords.svelte': ['ol'], 'ui/Record.svelte': ['li', 'span', 'div'],
@@ -87,7 +88,7 @@ const approvedImports: Record<string, string[]> = {
   'camera/CameraWidget.svelte': ['lucide-svelte', '../ui/Icon.svelte', '../ui/IconButton.svelte', '../ui/WidgetShell.svelte', '../ui/WidgetHeader.svelte', '../ui/WidgetBody.svelte', '../ui/StateAnnouncement.svelte', '../media/MediaStatus.svelte', '../media/VideoSurface.svelte', '../media/playback', './session'],
   'camera/CameraLabRoot.svelte': ['svelte', './CameraLabWidget.svelte', '../ui/LabControls.svelte', '../ui/PageLayout.svelte', './controller', './lab-location'],
   'camera/CameraLabWidget.svelte': ['../ui/Icon.svelte', '../ui/WidgetShell.svelte', '../ui/WidgetHeader.svelte', '../ui/WidgetBody.svelte', '../ui/Caption.svelte', '../ui/StateAnnouncement.svelte', './CameraStatus.svelte', './CameraMedia.svelte', './state'],
-  'bed-mesh/BedMeshLabRoot.svelte': ['svelte', '../ui/LabControls.svelte', '../ui/ObservationLabPage.svelte', '../observation/ObservationState.svelte', '../lab/bed-mesh-fixture', './lab-controller', './lab-location', './BedMeshWidget.svelte'],
+  'bed-mesh/BedMeshLabRoot.svelte': ['svelte', '../ui/LabControls.svelte', '../ui/ObservationLabPage.svelte', '../lab/bed-mesh-fixture', './lab-controller', './lab-location', './BedMeshWidget.svelte'],
   'observation/ObservationSkeleton.svelte': ['./types', './OverviewWidget.svelte', './ProgressWidget.svelte', './HeadsWidget.svelte', './CurrentJobWidget.svelte', './JobHistoryWidget.svelte', './QueueWidget.svelte', './heads-loading'],
   'observation/ObservationState.svelte': ['./types', './ObservationFrame.svelte', '../ui/StatePanel.svelte'],
   'observation/FansWidget.svelte': ['./ObservationFrame.svelte', './types', './format', '../ui/state', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/StatePanel.svelte', './FanReadings.svelte', './FansSkeleton.svelte'],

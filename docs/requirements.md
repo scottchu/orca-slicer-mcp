@@ -550,6 +550,16 @@ durable-monitor claim.
   skeleton compositions remain zero-raw; seven existing ready-body debts remain
   frozen. Camera follows separately with the same controls and synthetic-only
   media, not the production signaling widget. See decisions 0032 and 0033.
+  Decision0038 adds a bounded Bed Lab error-state foundation: initial failure
+  retains the widget's static neutral structure with a non-flow notice; retained
+  refresh failure keeps known chart data and its original receipt. Retry stays
+  in its existing bottom slot. No loading animation or busy claim persists
+  after failure. Empty and unsupported states remain semantically distinct.
+  A successful 2D Retry transfers focus to the selected mode radio only while
+  the initiating action still owns active-document focus; user focus movement,
+  mode/phase changes and stale work cancel recovery. Reset remains disabled in
+  2D, while successful 3D Retry keeps the same enabled Reset focused.
+  Other widget and production-route adoption requires separate evidence.
 
 - **UI-003:** Observation presentation uses closed DOM-owning leaf/layout
   primitives and zero-raw domain/feature composition. Shared degree,

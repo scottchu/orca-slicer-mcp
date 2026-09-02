@@ -1,5 +1,83 @@
 # F0 dual-subsystem foundation handoff
 
+## Current: Bed Lab frozen source and evidence handoff
+
+Frozen application `1da084822fde1430c47aa58e332e50e453dbffad`, tree
+`5ed792d20873e254067997d3c236147ca6b62294`, ordinarily integrates accepted
+Heads/main `55078ea215768094bf1897b516726e2e4aa05bd8` via `d139091`.
+Bed Lab now keeps initial-error structure and retained-error data/renderer/
+receipt. Adopted independent UI/UX policy moves successful 2D Retry focus to
+the selected 2D radio only while the current retry owns active-document focus;
+Reset stays native-disabled. 3D keeps Reset focus. Blur, user focus movement,
+mode/phase changes, cancellation and unmount prevent late focus recovery.
+Shared leaf focus APIs own no connection/retry logic; ADR0038 records the policy.
+
+Author gates on these frozen bytes pass: 21 focused Bed browser cases; the
+single full browser run 235/235; required repository gate 504 UI, 300 app/
+3,557 assertions, 21 lifecycle and 24 shipping tests; eight deterministic
+packages and runtime bundles/signature/help. Independent targeted validation
+reports 14 browser cases plus six fresh delayed-policy adversaries PASS.
+Exact final-head source review/verification, PR and guarded deployment remain
+pending. No Bed service, phone, real-printer or user-outcome acceptance.
+
+All eight packages changed through shared leaf APIs; Lab sizes are
+207630/632808/79776, total920214, within unchanged caps. Camera Lab has only
+224 bytes headroom; later integration must remeasure, not raise its cap.
+Owned browser/fixture sessions are closed and4179 is free. Existing Bed
+320px/200% summary crowding and grid/legend redesign are outside this slice.
+
+Coordinator-attributed Heads PR81 final postverification passed BOTH services,
+15 manifest hashes, 11 HTTPS routes/eight unique assets and14 browser cases;
+this does not accept Bed. Next order: finish Bed exact-candidate delivery,
+then the newly reported mobile Heads color swatch/hex/Copy wrapping repair
+with focused layout regression, then source-approved but unshipped Camera
+retry checkpoint `1c6920e`. Keep Camera's old packaged assets distinct.
+Other widget error rollouts, fixed Lab dock, PR79, migrations/features and
+recoverable cleanup remain open; do not fold them into this frozen candidate.
+
+Changed source: controlled `ui/WidgetStateSurface/`; BedMeshWidget and Lab root
+composition; Bed-only phase/controller types; `bed-mesh/retry-focus.ts`;
+explicit focus APIs in IconButton and IconSegmentedControl; adjacent unit and
+Bed browser tests; component AST contract; all eight rebuilt public artifacts
+and app hash pins; ADR0038/UI004. The last tail changes only the six continuity
+records and preserves frozen application1da0848. Next smallest action is exact
+independent source/validation head binding, then coordinator-owned guarded PR
+delivery; never author self-approval or manual service restart.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Bed Lab error-frame checkpoint — focused gates passed; integration next
+
+Application464d3e73d427e648a6b4c75be625eeaa49beaee9 adds controlled
+`ui/WidgetStateSurface/`, BedMeshWidget/BedMeshLabRoot state composition,
+Bed-only retained-error selection/fixture type, focused unit/browser tests,
+AST registration, regenerated Bed asset/pin and ADR0038/UI004 records.
+The wrapper always renders the same child snippet; it owns no RPC, state
+machine, timer or announcer. Existing ChartFrame provides one non-flow notice.
+Initial failure uses the existing skeleton structure statically, not telemetry;
+unavailable is a presentation state, not inferred unsupported capability.
+Only an actual provided retry callback exposes Retry. Bed Lab's300ms local
+demo timer is canceled on selection/reset/popstate/unmount; retained phase
+changes reuse fixture identity and original receipt. Existing ready chart,
+legend, mode control and renderer implementation stay unchanged.
+
+Focused88 UI,26 browser plus four original chart cases,19 app/220 assertions,
+compiler/AST and repeated three-Lab packages pass; see VALIDATION commands.
+All owned fixture/browser processes close through test teardown;4187 is checked
+released. Evidence captures/logs remain ignored; no user editor/browser/session,
+printer or deployed service was touched. No full-suite or release claim.
+
+Next smallest action: wait for accepted Heads PR81, ordinary merge accepted main
+into this branch, resolve only normal shared record/test/artifact integration,
+renew affected evidence and run one owned full frozen-candidate regression.
+Separate source review and targeted independent verification follow, then normal
+guarded PR/merge/deploy/BOTH restart/served behavior verification. Do not deploy
+this checkpoint directly. Camera68259ead, other nine widgets/live error rollout,
+fixed Lab dock, real Bed migration and every existing feature/cleanup track stay
+pending. Known320/200% summary crowding is inherited and not accepted as fixed.
+
+## Accepted-main history (superseded by the current Bed integration)
+
 ## Heads accepted-main integration — author renewal complete
 
 The six inherited repair records are preserved in commit `8f66edc`. Ordinary

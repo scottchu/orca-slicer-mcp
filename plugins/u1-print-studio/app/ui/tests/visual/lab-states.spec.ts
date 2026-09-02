@@ -66,8 +66,16 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
       await page.screenshot({ path: `test-results/lab-${view}-loading-${width}-${enlarged}.png`, fullPage: true });
       for (const phase of ['error', 'unavailable']) {
         await page.getByLabel('Preview state', { exact: true }).selectOption(phase);
-        await expect(page.getByRole('status')).toHaveCount(1);
-        await expect(page.locator('[data-widget-shell] [data-loading-value], [data-widget-shell] canvas')).toHaveCount(0);
+        if (view === 'bed_mesh') {
+          await expect(page.getByRole('status')).toHaveCount(0);
+          await expect(page.locator('[data-widget-shell] canvas')).toHaveCount(0);
+          await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
+          await expect(page.locator('[data-chart-frame] [aria-live="polite"]')).toHaveCount(1);
+          expect(await bounds(page)).toEqual(loading);
+        } else {
+          await expect(page.getByRole('status')).toHaveCount(1);
+          await expect(page.locator('[data-widget-shell] [data-loading-value], [data-widget-shell] canvas')).toHaveCount(0);
+        }
       }
       expect.soft(await page.evaluate(() => document.documentElement.scrollWidth), `${view} overflow`).toBeLessThanOrEqual(width);
     }

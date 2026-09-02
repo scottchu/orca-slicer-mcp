@@ -1,10 +1,11 @@
 import type { Field, Option, Phase } from '../lab/controller';
 import type { LabFreshness } from '../observation/types';
 
+export type BedMeshLabPhase = Phase | 'retained-error';
 export type BedMeshLabSelection = {
   kind: 'observation';
   view: 'bed_mesh';
-  phase: Phase;
+  phase: BedMeshLabPhase;
   scenario: 'warped' | 'flat' | 'tilted';
   freshness: LabFreshness;
   values: { mode: '3d' | '2d' };
@@ -14,7 +15,7 @@ const option = (value: string, label: string): Option => ({ value, label });
 const field = (key: string, label: string, options: readonly Option[]): Field => ({ key, label, options });
 const phases = [
   option('ready', 'Ready'), option('loading', 'Loading'), option('refreshing', 'Refreshing'),
-  option('unavailable', 'Unavailable'), option('error', 'Error')
+  option('unavailable', 'Unavailable'), option('error', 'Error'), option('retained-error', 'Refresh failed')
 ];
 const scenarios = [option('warped', 'Warped'), option('flat', 'Flat'), option('tilted', 'Tilted')];
 const freshness = [option('fresh', 'Fresh'), option('stale', 'Stale'), option('offline', 'Offline'), option('unknown', 'Unknown')];
@@ -25,7 +26,7 @@ export const defaultBedMeshSelection = (): BedMeshLabSelection => ({
 });
 
 export const bedMeshFields = (selection: BedMeshLabSelection): Field[] => {
-  const unavailable = selection.phase !== 'ready' && selection.phase !== 'refreshing';
+  const unavailable = !['ready', 'refreshing', 'retained-error'].includes(selection.phase);
   return [
     field('phase', 'Preview state', phases),
     field('scenario', 'Scenario', scenarios),
@@ -40,7 +41,7 @@ export const bedMeshSelectionValue = (selection: BedMeshLabSelection, key: strin
 export const setBedMeshSelection = (selection: BedMeshLabSelection, key: string, value: string): BedMeshLabSelection => {
   const definition = bedMeshFields(selection).find((item) => item.key === key);
   if (!definition?.options.some((item) => item.value === value)) return selection;
-  if (key === 'phase') return { ...selection, phase: value as Phase };
+  if (key === 'phase') return { ...selection, phase: value as BedMeshLabPhase };
   if (key === 'scenario') return { ...selection, scenario: value as BedMeshLabSelection['scenario'], values: defaultBedMeshSelection().values };
   if (key === 'freshness') return { ...selection, freshness: value as LabFreshness };
   return { ...selection, values: { mode: value as BedMeshLabSelection['values']['mode'] } };

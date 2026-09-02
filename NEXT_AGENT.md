@@ -1,5 +1,68 @@
 # Next agent
 
+## Next: independently accept and deliver frozen Bed, then Heads Copy
+
+Frozen application `1da084822fde1430c47aa58e332e50e453dbffad`, tree
+`5ed792d20873e254067997d3c236147ca6b62294`, ordinarily integrates accepted
+Heads/main `55078ea215768094bf1897b516726e2e4aa05bd8` via `d139091`.
+Bed Lab now keeps initial-error structure and retained-error data/renderer/
+receipt. Adopted independent UI/UX policy moves successful 2D Retry focus to
+the selected 2D radio only while the current retry owns active-document focus;
+Reset stays native-disabled. 3D keeps Reset focus. Blur, user focus movement,
+mode/phase changes, cancellation and unmount prevent late focus recovery.
+Shared leaf focus APIs own no connection/retry logic; ADR0038 records the policy.
+
+Author gates on these frozen bytes pass: 21 focused Bed browser cases; the
+single full browser run 235/235; required repository gate 504 UI, 300 app/
+3,557 assertions, 21 lifecycle and 24 shipping tests; eight deterministic
+packages and runtime bundles/signature/help. Independent targeted validation
+reports 14 browser cases plus six fresh delayed-policy adversaries PASS.
+Exact final-head source review/verification, PR and guarded deployment remain
+pending. No Bed service, phone, real-printer or user-outcome acceptance.
+
+All eight packages changed through shared leaf APIs; Lab sizes are
+207630/632808/79776, total920214, within unchanged caps. Camera Lab has only
+224 bytes headroom; later integration must remeasure, not raise its cap.
+Owned browser/fixture sessions are closed and4179 is free. Existing Bed
+320px/200% summary crowding and grid/legend redesign are outside this slice.
+
+Coordinator-attributed Heads PR81 final postverification passed BOTH services,
+15 manifest hashes, 11 HTTPS routes/eight unique assets and14 browser cases;
+this does not accept Bed. Next order: finish Bed exact-candidate delivery,
+then the newly reported mobile Heads color swatch/hex/Copy wrapping repair
+with focused layout regression, then source-approved but unshipped Camera
+retry checkpoint `1c6920e`. Keep Camera's old packaged assets distinct.
+Other widget error rollouts, fixed Lab dock, PR79, migrations/features and
+recoverable cleanup remain open; do not fold them into this frozen candidate.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Current: Bed Lab error-frame source checkpoint; integration pending
+
+Application `464d3e73d427e648a6b4c75be625eeaa49beaee9` from accepted
+`4e869d8` implements ADR0038 for Bed Lab only. Compiler/AST, focused88 UI,
+focused26 browser plus four unchanged-chart browser cases,19 app tests and
+repeated three-Lab packaging pass. Only Bed Lab asset changes (631250 bytes);
+all five production and other two Lab assets remain byte-identical.
+Wait for accepted Heads PR81, integrate ordinary main, renew affected checks,
+then assign one owner to the full frozen-candidate gates. Independent source
+review/verification, PR, deployment and meaningful served behavior are pending.
+Other nine widgets and production error rollout, Camera68259ead, fixed Lab
+dock, unfinished migrations/features and recoverable cleanup remain open.
+
+## Earlier implementation scope
+
+From accepted4e869d8, implement decision0038's controlled shared presentation
+foundation in Bed Lab only. Preserve chart/header/footer structure through
+initial loading/error/retry; retain known renderer/data/receipt on refresh
+failure. No whole-widget height guess, private skeleton template, cap increase,
+production acquisition, printer action or release is part of implementation.
+Source/unit/targeted browser and transitive packages precede frozen-candidate
+independent acceptance. Heads repair, Camera68259ead, remaining widget error
+rollout, fixed Lab dock and all earlier migration/feature tracks stay separate.
+
+## Accepted-main history (superseded by the current Bed integration)
+
 ## Immediate: finish Heads exact-candidate delivery, then Bed and Camera
 
 PR82 is merged as `707a018`; its four project roles are statically accepted,
