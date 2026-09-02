@@ -2,24 +2,34 @@
 
 ## Focused production observation entries
 
-Decisions0034/0037 use self-contained production Fans, Thermals and Heads HTML
+Decisions0034/0037 use self-contained production Fans, Thermals, Heads and Queue HTML
 entries, each separately bounded at100,000 UTF-8 bytes. They share the reviewed
 host RPC, typed controller and UI leaves; none imports lab fixtures/controls, synthetic
 media, test harnesses or Three. They are inline private-server text imports at
 the exact `/dashboard/fans_widget`, `/dashboard/thermals_widget` and
-`/dashboard/heads_widget` paths, with
+`/dashboard/heads_widget` and `/dashboard/queue_widget` paths, with
 GET-only/no-store/restrictive CSP and no acquisition side effects. Existing
 focused hosts select these entries; generic MCP/legacy aliases are unchanged.
-`build:live-fans` / `build:live-thermals` / `build:live-heads` create the artifacts and their `verify:`
+`build:live-fans` / `build:live-thermals` / `build:live-heads` / `build:live-queue` create the artifacts and their `verify:`
 commands compare exact deterministic bytes. The source-derived shipping map
 verifies each asset hash and public isolation. These production budgets do not
-relax or count as either private-lab artifact's existing aggregate allowance.
+relax or count as any private-lab artifact's existing aggregate allowance.
+
+The explicit focused-production inventory accepts one through ten named
+artifacts, unique safe positive byte counts and a 1,550,000-byte aggregate
+ceiling. Only present focused production Svelte widgets count: Fans, Thermals,
+Camera, Heads and Queue currently; Current Job, History, Progress, Overview and
+Bed Mesh remain future entries. Labs, dashboard hosts and index never count.
+Exactly ten is a future final acceptance gate, not an invented present artifact
+requirement. Queue's 100,000-byte individual ceiling is enforced now. All emitted
+client module IDs, not only nonzero rendered modules, are checked for forbidden
+lab/test/fixture/media/Three and other real-domain adapter imports.
 ## Private production Camera packaging
 
 Decision0035 adds one compiled-Svelte `svelte-live-camera.html` child for the
 unchanged `/dashboard/camera` host, at exact private `/dashboard/camera_widget`.
 Its independently accepted100,000 raw UTF-8 byte ceiling is separate from Fans
-and the reviewed two-lab756,000/80,000/836,000 bounds. The explicit production
+and the reviewed three-lab250,000/700,000/80,000/980,000 bounds. The explicit production
 graph excludes lab fixtures/producers, tests, observations and Three; one IIFE
 and inline CSS require no runtime assets. `bun run verify:live-camera` rebuilds
 and compares exact bytes, and the repository gate includes it. Package unit
@@ -36,12 +46,13 @@ Decision0032's Camera addendum adds `svelte-camera-lab.html` as an inline
 private-server text import, not an external lifecycle asset or MCP resource.
 It is a separate compiled Svelte entry within the Kit project, sharing the same
 LabControls and leaf components. Observation still uses adapter-static and
-owns the directory. Exactly two self-contained HTML outputs are checked:
-756,000 observation bytes,80,000 Camera bytes,836,000 aggregate raw UTF-8 bytes.
-The explicit Heads composition revision in decision0032 does not permit future
-automatic increases. Build-only client module graphs are retained under ignored
+owns the directory. Decision0032's accepted three-artifact split checks exactly
+250,000 light observation bytes,700,000 Bed Mesh bytes,80,000 Camera bytes and
+980,000 aggregate raw UTF-8 bytes. The finite light allowance includes Queue,
+Current Job, History, Progress and Overview; Console and model thumbnails are
+excluded. No future automatic increase is permitted. Build-only client module graphs are retained under ignored
 `ui/test-results/build-graphs`; SSR graphs are not client-boundary evidence.
-`ui:build` builds and checks both; `ui:verify` compares both deterministically.
+`ui:build` builds and checks all three; `ui:verify` compares all three deterministically.
 Camera's graph excludes Three, real session/host code and external imports.
 The exact private Camera path is mapped to its own hash by the shipping guard;
 the public service, production assets and fixed rollback inventory are unchanged.

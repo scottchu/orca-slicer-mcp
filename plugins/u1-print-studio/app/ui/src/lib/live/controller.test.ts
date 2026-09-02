@@ -32,18 +32,22 @@ describe('live Fans controller', () => {
     const stale = liveFansResult(1, '2026-09-01T12:01:01.000Z'); stale.structuredContent.module.freshness = 'stale';
     notify(stale); expect(controller.getState().observation?.receipt.freshness).toBe('stale'); controller.dispose();
   });
-  it('a newer notification supersedes a pending response and error', async () => {
-    const { controller, notify, resolve } = setup(); notify(liveFansResult()); const pending = controller.refresh();
-    notify(liveFansResult(15, '2026-09-01T12:00:15.000Z')); resolve(liveFansResult(13, '2026-09-01T12:00:13.000Z')); await pending;
-    expect(controller.getState().observation?.version).toBe(15); controller.dispose();
+  it('a newer notification supersedes a pending RPC even when the old RPC claims a later receipt, then permits retry', async () => {
+    const { controller, notify, resolve, port } = setup(); notify(liveFansResult()); const pending = controller.refresh();
+    notify(liveFansResult(15, '2026-09-01T12:00:15.000Z')); const accepted = controller.getState().observation;
+    resolve(liveFansResult(16, '2026-09-01T12:00:16.000Z')); await pending;
+    expect(controller.getState()).toMatchObject({ observation: accepted, refreshing: false, feedback: '' });
+    const retry = controller.refresh(); expect(port.refresh).toHaveBeenCalledTimes(2);
+    resolve(liveFansResult(17, '2026-09-01T12:00:17.000Z')); await retry;
+    expect(controller.getState()).toMatchObject({ observation: { version: 17 }, refreshing: false, feedback: '' }); controller.dispose();
   });
-  it('duplicate and same-version freshness notifications cannot cancel a newer pending response', async () => {
+  it('duplicate does not supersede a pending response, while an accepted freshness notification does', async () => {
     const { controller, notify, resolve } = setup(); notify(liveFansResult()); const pending = controller.refresh();
     notify(liveFansResult()); expect(controller.getState().refreshing).toBe(true);
     const stale = liveFansResult(); stale.structuredContent.module.freshness = 'stale'; notify(stale);
     expect(controller.getState().refreshing).toBe(true);
     resolve(liveFansResult(13, '2026-09-01T12:00:13.000Z')); await pending;
-    expect(controller.getState()).toMatchObject({ refreshing: false, observation: { version: 13 } }); controller.dispose();
+    expect(controller.getState()).toMatchObject({ refreshing: false, observation: { version: 12, receipt: { freshness: 'stale' } } }); controller.dispose();
   });
   it('retains accepted values on failure and allows retry after rejection', async () => {
     const { controller, notify, reject, resolve } = setup(); notify(liveFansResult()); const previous = controller.getState().observation;

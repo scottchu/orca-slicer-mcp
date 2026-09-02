@@ -1,5 +1,23 @@
 # F0 dual-subsystem foundation brief
 
+Current order: Queue PR76 is accepted and deployed at main7882670. Integrate it
+ordinarily into Current Job under OBS-014/UI-003, reuse accepted shared leaves
+and preserve the exact private Jobs cutover. Finish the non-browser checkpoint
+while the separate Bed legend refinement has browser-test priority. No Current
+Job PR or shipment until full browser, exact independent review and validation.
+
+Current order: PR75 is delivered at accepted main `ff577fcb`; finish the bounded
+Queue candidate and independently discovered shared stale-success RPC repair.
+Application source `5c53d05` incorporates independently designed intrinsic public
+text templates and passes full author gates: geometry24, Chrome174 and repository
+checks. Obtain independent exact-source review and validation before guarded
+merge/deploy/BOTH restart/verify. No cap/backend/MCP expansion.
+Queue then Current Job and History remain bounded migrations; Progress is held
+pending the shared repair, real Bed Mesh is separate and Overview last. All
+feature and recoverable-cleanup tracks remain open.
+
+## Historical execution-order checkpoints
+
 Current order: complete the three-artifact private-lab route/graph split on top
 of accepted/deployed Heads main `5ffca66`. The authored light/Bed/Camera outputs
 are 199,819/629,880/78,795 bytes (908,494 aggregate). Independently renewed caps

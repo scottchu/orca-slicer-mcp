@@ -9,7 +9,7 @@
   import WidgetFooter from '../ui/WidgetFooter.svelte';
   import StateAnnouncement from '../ui/StateAnnouncement.svelte';
   import StatePanel from '../ui/StatePanel.svelte';
-  import ObservedMeta from '../ui/ObservedMeta.svelte';
+  import DomainReceipt from './DomainReceipt.svelte';
   import Caption from '../ui/Caption.svelte';
   import Icon from '../ui/Icon.svelte';
   import IconButton from '../ui/IconButton.svelte';
@@ -27,7 +27,7 @@
 <WidgetShell label="Current Job" busy={loading || refreshing}>
   <WidgetHeader title="Current Job">
     {#snippet icon()}<Icon name="jobs" />{/snippet}
-    {#snippet meta()}<Caption>{sourceLabel} · <ObservedMeta {observedAt} {freshness} {loading} groupedTime />{#if !loading && evidence !== 'known'} · {evidence}{/if}{#if reason} · {reason}{/if}</Caption>{/snippet}
+    {#snippet meta()}<Caption>{sourceLabel} · <DomainReceipt {observedAt} {freshness} state={evidence} {reason} {loading} /></Caption>{/snippet}
   </WidgetHeader>
   <WidgetBody>
     {#if job || loading}<CurrentJobFacts {job} />{:else}<StatePanel title="Current Job" reason="error" />{/if}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { formatQuantity, type QuantityUnit } from './quantity';
-  import LoadingValue from './LoadingValue.svelte';
+  import TextSkeleton from './TextSkeleton.svelte';
   type Props = { unit: QuantityUnit } & ({ value: number | null; loading?: false } | { loading: true; value?: never });
   let { value, unit, loading = false }: Props = $props();
   const formatted = $derived.by(() => {
@@ -10,7 +10,7 @@
 </script>
 
 <span class="quantity" role={loading ? undefined : 'img'} aria-label={formatted?.label} data-quantity>
-  <LoadingValue {loading} text={formatted?.text} words={[12]} />
+  {#if loading}<TextSkeleton shape="0,000.00" />{:else}{formatted?.text}{/if}
 </span>
 
 <style>

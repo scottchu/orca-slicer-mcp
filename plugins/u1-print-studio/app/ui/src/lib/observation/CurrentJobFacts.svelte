@@ -7,6 +7,7 @@
   import ReadingList from '../ui/ReadingList.svelte';
   import ReadingRow from '../ui/ReadingRow.svelte';
   import QuantityValue from '../ui/QuantityValue.svelte';
+  import DurationValue from '../ui/DurationValue.svelte';
   let { job }: { job?: CurrentJobValue } = $props();
   const labels = $derived(job ? currentJobLabels(job) : null);
   const quantities = $derived([
@@ -35,7 +36,13 @@
     {#each quantities as quantity (quantity.label)}
       <ReadingRow label={quantity.label}>
         {#snippet leading()}<Label text={quantity.label} tone="muted" />{/snippet}
-        {#snippet trailing()}{#if job}<QuantityValue unit={quantity.unit} value={quantity.field?.reported ? quantity.field.value : null} />{:else}<QuantityValue unit={quantity.unit} loading />{/if}{/snippet}
+        {#snippet trailing()}
+          {#if quantity.unit === 'seconds'}
+            {#if job}<DurationValue seconds={quantity.field?.reported ? quantity.field.value : null} />{:else}<DurationValue loading />{/if}
+          {:else}
+            {#if job}<QuantityValue unit={quantity.unit} value={quantity.field?.reported ? quantity.field.value : null} />{:else}<QuantityValue unit={quantity.unit} loading />{/if}
+          {/if}
+        {/snippet}
       </ReadingRow>
     {/each}
   </ReadingList>

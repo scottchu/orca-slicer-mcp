@@ -1,5 +1,54 @@
 # F0 dual-subsystem foundation validation
 
+## Current Job accepted-Queue integration — non-browser author evidence
+
+Ordinary integration of accepted main `7882670778627128214d74bcee62fe20f5ddbf7a`
+preserves both private routes and package inventories. Merge resolution reused
+accepted DurationValue/DomainReceipt/TextSkeleton and the shared generation
+repair rather than copying pending branches. New Jobs regression proves a later
+receipt on obsolete RPC16 cannot replace accepted notification15; retry17 works.
+
+Commands actually completed on this checkpoint:
+
+- UI `bun run check` and `bun run test`:475/475 in43 files; zero compiler
+  errors/warnings; exact zero-raw component AST PASS. Existing compact/default
+  unit tests and all accepted Queue controls/controller tests are included.
+- Rebuilt production Fans/Thermals/Heads/Queue/Jobs and all three private labs.
+  An initial app run before hash renewal failed exactly seven stale package/
+  inventory assertions; the rederived pins below replaced them, not the caps.
+- Final `bash scripts/check-repository.sh`: PASS, including UI475,
+  app311/311 with3,660 assertions, lifecycle21/21, shipping24/24, compiler/AST
+  and deterministic source-versus-committed package rebuild checks.
+- `uv run --no-project scripts/test_u1_ship.py`:24/24 separately PASS;
+  both Queue and Jobs are public-isolated, with security inventory33.
+- App `bun run bundle:runtime`, `codesign --verify --strict --verbose=2
+  dist/u1-print-studio`, and `dist/u1-print-studio --help`: PASS.
+- Actual emitted Current Job CLIENT graph127 modules passes its closed guard;
+  no lab/fixture or other real-domain adapter modules. `git diff --check`: PASS.
+
+| Artifact | Raw bytes | SHA256 |
+| --- | ---: | --- |
+| live-fans | 87632 | `c743a74eb4bdfcbf685f19d81e098634edd58cd8fa8f5946b98e7ba7b0657dd9` |
+| live-thermals | 88208 | `a61b1f573d2eb35b2072d922ab1006a7edf7fbca10a31b7d23a694ded7b2316b` |
+| live-heads | 93611 | `9af894315db44cccefc00aeea04361b5d2df88278e1bf3495b6c038554dca9f8` |
+| live-queue | 88716 | `f7d1f007c18a2353ecd53cd57a689246e790fc6ee223a44e8b8293cc3cc89df9` |
+| live-camera | 90804 | `a6cab2f0915ac0e33187da8ad8152d92960435e800f2891c79f895288eda3bcb` |
+| live-jobs | 88256 | `fdb958bfeab62bd21a8a6418a13b285a99abf4c54a1c9057692044fce5d49ac9` |
+| observation-lab | 209633 | `3dc3fc89f18a5ca78395d522d8aa50bfce35f8746f07020e75e84722defb3f93` |
+| bed-mesh-lab | 630767 | `a236140ff270f2e36e6e6b8fdc32a3fb9fc2d29da75c74b10785b3d271267fbf` |
+| camera-lab | 79682 | `cd2cf36e01d6ac6f1b06d069b99034cc0d1ced9d3061000aa82d1372809ab8fc` |
+
+Six actual focused production artifacts total537227/1,550,000. Lab aggregate
+is920,082/980,000; Camera lab has318 bytes headroom. No cap or dependency changed.
+
+NOT RUN:17 new Current Job browser cases, complete combined browser suite,
+closed loading geometry and default-consumer/compact button visual, hit-target
+and focus renewal. The root assigned separate Bed legend work browser priority;
+no4179 reservation or browser execution occurred here. Three final deterministic
+build cycles and fresh exact independent review/validation are still due before
+PR/freeze/ship. This is author software evidence only; no deployed-service,
+printer, actual-phone or user-outcome acceptance is claimed.
+
 ## 2026-09-01 Current Job phase-two non-browser checkpoint
 
 Software-only author evidence; not independent approval or deployment. The
@@ -82,6 +131,128 @@ production package/route, browser behavior, deployed service, real printer or
 actual-device/user acceptance. Exact independent source review is required
 before phase two; normal independent validation/review and guarded shipment
 remain required after a production candidate exists.
+
+## Queue final author renewal — exact independent review still required
+
+Application source `5c53d05ec15d76b5b5f413471a2ae8dee3326296`, tree
+`155abfb5e436cf8e1cb344a6724fbc358feafc60`, ordinarily descends from accepted
+PR75 main `ff577fcb` through `a042be5`. The final shared leaf contract implements
+the independent design: bounded control-safe inert public template text uses
+native glyph metrics/word wrapping; numeric templates use tabular zero glyphs.
+Only lab Queue reads its closed synthetic layout. Production uses neutral
+templates and never passes a real filename/date to skeletons. Ready text is
+untruncated, no fixed card reserve is added, and<=1px geometry is unchanged.
+An initial lazy-derived ready-prop guard missed invalid DateTime loading-shape
+props; a focused unit failure caught it and the explicit ready guard fixed it.
+
+Actual commands used pinned Bun1.3.12 on PATH. From `app/ui`:
+`bun run check`, `bun run test`, production `build:live-fans`,
+`build:live-thermals`, `build:live-heads`, `build:live-queue`, `bun run build`,
+`bun run package:private-lab`; focused Playwright
+`lab-states.spec.ts` plus `lab-text-bounds.spec.ts`; and final
+`bun run test:browser`. From repository root: `./scripts/check-repository.sh`.
+From `app`: `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+`codesign --verify --strict --verbose=2 dist/u1-print-studio`, and
+`dist/u1-print-studio --help`. All completed successfully on the final source.
+The repository gate independently rebuilds and byte-compares every production
+and private-lab artifact; hashes below were rederived after the final run.
+
+Results: UI426/426 in38 files, app300/300 with3,555 assertions, lifecycle21/21,
+shipping24/24, compiler0 errors/0 warnings and exact leaf AST PASS. Focused
+geometry24/24 then Chrome174/174 in1.5m PASS. Every record is included in closed
+fixture geometry at320/390/590/720, normal and200% text. Full browser coverage
+includes Queue counts0/1/100/101/1000, duplicate/reordered160-character ASCII
+and Unicode records, extreme/nullable dates and durations, stale/empty/unknown,
+retained-refresh bounds/focus, true initial HTTP503-to-Retry-to-ready,
+wrong-view20s deadline, BFCache/one bridge and obsolete successful RPC16 after
+notification15. Existing Fans/Thermals/Heads/Camera and all lab controls remain
+green. Pre-execution fetch interception across every lab route/control reports
+zero runtime calls. Browser4179 was released immediately after completion.
+
+Author inspection of final320-enlarged and720-normal Queue screenshots confirms
+readable wrapping without clipping; the ready fixture intentionally reports
+machine queue state Loading, distinct from UI skeleton mode. No real printer,
+media acquisition, phone, service, auth, Tailscale or plugin operation occurred.
+These are authored software/synthetic-browser facts, not independent acceptance.
+
+| Artifact | Raw UTF-8 bytes | SHA256 |
+| --- | ---: | --- |
+| Fans |86747|`af6a8ad6b892966099c399231384383a5a4abd499e677443ebe231e9ff156b61`|
+| Thermals |87323|`99aa65a13ba86acd07bc596f69e491c7319417eff5a6e06ebe5c5fbc917f6621`|
+| Heads |92726|`c778ae8d951260464277d9873de6f9f3c12a6355db96ba316ff41766294f21f4`|
+| Queue |87831|`ccaaca3ecf881d087f4f0188613055f64cb9c7184521c08d1cb4367098342c27`|
+| Production Camera (unchanged) |89919|`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`|
+| Light lab |204875|`4665ccc4033c385f6234043195521002b30c6bf8bd121f1646ea9de1fe36b98a`|
+| Bed lab (unchanged) |629880|`02cea8092dc8b8915e0ac32e2f492c66a62b3913545a49af1139963640c646c9`|
+| Camera lab (unchanged) |78795|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+
+Current five focused production assets total444,546/1,550,000; the generic
+named inventory guard permits1..10 unique present widgets, never labs/host/index.
+The future closed ten-entry envelope is not claimed complete. Labs total
+913,550/980,000 within light250,000/Bed700,000/Camera80,000. No cap changed.
+Actual emitted CLIENT graph counts are Fans128, Thermals129, Heads133,
+Queue128 and light238. All emitted module IDs are checked (including zero-length
+rendered entries): production excludes fixtures/tests/lab/Camera/Bed/Three and
+other real-domain adapters; light excludes real adapters/controllers/host RPC.
+Exact path/method/CSP/no-store/public isolation and source-derived shipping
+inventory pass in the app/shipping tests. Shared controller regressions cover
+all four actual factories, including process restart without an intervening
+notification, duplicate/invalid notification and obsolete-success settlement.
+
+## Queue author renewal — superseded intermediate failures, not acceptance
+
+Accepted main `ff577fcb5cf506c5a1699ad3ecf118e43afca8cd` was ordinarily merged
+into the Queue branch as `a042be5`. The exact private Queue route, shared host
+failure forwarding, production packaging/ship inventory and the light-only lab
+integration are authored candidates, not deployed changes.
+
+Independent Progress source review exposed a shared controller defect: a
+refresh begun before an accepted notification could later overwrite that
+notification by claiming a higher version/later receipt. The candidate now gates
+RPC acceptance on the request's still-current arrival generation. Focused
+Vitest cases through the actual Fans/Thermals/Heads/Queue factories prove
+notification15 survives obsolete RPC16, busy settles, and retry17 succeeds;
+duplicate/wrong-view notifications and receipt-ordered process restart retain
+their separate semantics. Focused controller/graph50 and app37/949 assertions
+passed. An exploratory direct `bun test` invocation was the wrong runner for
+Vitest timer APIs; the supported `bun run test -- ...` rerun passed30/30 after
+renewing the old same-version-freshness expectation to match arrival ownership.
+
+With the initial shared repair, `./scripts/check-repository.sh` with pinned Bun1.3.12 on PATH
+passed UI415/415, app300/300 (3,555 assertions), lifecycle21/21, shipping24/24,
+compiler/AST and all production/private-package deterministic checks. The
+production Queue browser suite passed10/10 at320/390/590/720 normal/200% text,
+including true initial HTTP503/retry, wrong-view deadline, BFCache, stale-success
+RPC suppression, counts0/1/100/101/1000, duplicates, long sanitized names and
+retained refresh focus. These are synthetic local replies, not printer evidence.
+
+The subsequent full `bun run test:browser` was158PASS/16FAIL of174. All failures
+were Queue lab loading/ready geometry in `lab-states.spec.ts` and
+`lab-text-bounds.spec.ts`. Computed boxes isolated bare-name typography
+(18px loading versus19.59375px ready at normal text), a4.1875px loading index
+column versus the padded ready label, and differing locale-date line wrapping.
+The first Name experiment was initially repackaged without rebuilding the Kit
+light entry; that stale-build rerun repeated the16 failures and is not source
+validation. The full light build then confirmed the Name typography repair.
+
+Shared leaf experiments preserve all ready text and strict<=1px gates, without
+fixed card-height reserves. Name loading and numeric BoxLabel character shapes
+repair the corresponding boxes. A locale-token date skeleton passed10/12
+selected geometry cases, with only the tenth row at390/590 enlarged differing
+by one36.390625px caption line. A weighted locale-token variant subsequently
+passed21/24 full geometry cases but moved remaining failures to320: one
+18.1875px date line per normal row, and one39.1875px name line on the tenth
+enlarged row. At that checkpoint those failures were a HOLD pending independent
+bounded shape design; the final renewal above supersedes that hold, not the
+failure evidence. No shipment is claimed.
+Per-record bounds are now included alongside shell/header/body/footer bounds.
+Ignored Playwright screenshots/traces retain the failing cases; no browser
+server remains running from this intermediate check.
+
+All application assets then required regeneration and exact hashes/test
+assertion renewal after the shape decision; that renewal is now recorded above.
+Earlier green counts alone did not validate experimental leaf bytes. No service, printer, plugin, auth, Tailscale,
+MCP or backend operation was performed by this author renewal.
 
 ## Three-artifact private-lab split — final author evidence
 

@@ -1,5 +1,32 @@
 # Next agent
 
+## Current Job after accepted Queue integration — unaccepted author checkpoint
+
+Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily
+merged into this branch. Attributed PR76 delivery was release
+`20260901-7882670-pr76-20260901T201010-58c9cd`: BOTH services restarted,
+31 static/32 security checks,15 manifest hashes and12 downloaded-byte browser
+checks passed. This is Queue deployed-service/synthetic evidence only.
+
+Current Job now reuses accepted DurationValue, DomainReceipt and TextSkeleton;
+its new neutral loading leaves carry no real filename, receipt or quantities.
+The accepted shared generation fix is inherited, with a Jobs-specific test that
+notification15 defeats later-receipt obsolete success16 and retry17 succeeds.
+Both Queue and Jobs routes, shipping entries and graph unions are preserved.
+The production aggregate enumerates all six actual assets, excludes labs/host/
+index, and retains the1,550,000-byte cap. Jobs is88,256 bytes; labs are
+209,633/630,767/79,682 (920,082 aggregate), with unchanged limits. Compact
+IconButton remains default-false,32-pixel paint/44-pixel target, Jobs-only opt-in.
+
+Not accepted or shipped:17 new browser cases and all existing regressions,
+closed fixture loading geometry, default-consumer/compact focus and hit targets,
+three final deterministic builds and independent exact review/validation remain
+due. Bed legend has browser-test priority. Do not infer first-load arbitrary
+filename geometry from neutral templates; retained refresh must remain stable.
+No printer, service, plugin, auth or Tailscale operation occurred in this work.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Resume Current Job phase two after accepted Queue integration
 
 Use branch `codex/u1-current-job-phase1`, not a fresh implementation. It contains
@@ -47,6 +74,42 @@ Then measure the exact production artifact, add focused package/route/browser
 gates and obtain exact independent validation/review before normal guarded
 delivery. Keep Job History separate. No printer control, plugin/auth/Tailscale
 change or browser port reservation belongs to this checkpoint.
+
+## Review frozen Queue candidate after delivered PR75
+
+PR75's three-artifact private-lab split is delivered on accepted main
+`ff577fcb5cf506c5a1699ad3ecf118e43afca8cd` (tree `8924189`). Attributed guarded
+release `20260901-ff577fc-pr75-20260901T190836-b199a6` explicitly restarted BOTH
+services: healthy/integrity verified,15 manifest hashes,30 static/31 security
+checks, preservation true and no rollback; snapshot `20260901T190930-6f0cb3`
+remains recoverable. Independent postdeployment checks verified actual HTTPS
+three-artifact bytes/22 routes/CSP/method/isolation and downloaded-byte browser
+30/30 plus wheel/reset1/1, zero runtime fetch at four widths/200% text. This is
+deployed-service/synthetic evidence, not real-printer or phone acceptance.
+
+Queue ordinarily merged that main as `a042be5`. Its strict real adapter,
+zero-raw composition, exact private route and shared obsolete-success RPC repair
+are frozen at application source `5c53d05ec15d76b5b5f413471a2ae8dee3326296`
+(tree `155abfb5e436cf8e1cb344a6724fbc358feafc60`). Independently designed
+intrinsic public-template skeletons now pass24/24 focused geometry cases and
+Chrome174/174. Repository UI426/app300/lifecycle21/shipping24, compiler/AST,
+deterministic packages, runtime/signature/help pass. Queue87,831 and light204,875
+remain bounded; all exact hashes are recorded in VALIDATION and package tests.
+No Queue shipment or final acceptance is claimed. Preserve prior failure history.
+
+Next smallest action: independently validate and source-review the exact final
+PR head, including its records-only tail, shared RPC repair across all consumers,
+public-template isolation and all eight package hashes. Only after both roles
+approve may the guarded PR merge/deploy/BOTH restart/verify proceed. Browser4179
+is released to the separate lab legend author; coordinate exclusive reuse.
+
+Remaining tracks stay open: Progress phase-one is held until the shared
+obsolete-success fix is accepted; Overview checkpoint `136da4b` awaits independent
+review; Current Job `4e50f7b` and History `379c1e7` have source approval only,
+not delivered widgets. Real Bed Mesh composition, generic MCP/legacy migration,
+new requested features and final recoverable cleanup are not complete.
+
+## Historical checkpoints (superseded where noted above)
 
 ## Three-artifact private-lab split candidate — do not ship yet
 

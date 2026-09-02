@@ -38,10 +38,15 @@ describe('Heads controller reuses ordered observation with independent Copy inte
     clip.resolve(); await copying; expect(controller.getState().observation).toBe(previous); expect(controller.getState().feedback).toBe('');
     read.reject(new Error('read failed')); await pending; expect(controller.getState().feedback).toContain('Refresh failed'); controller.dispose();
   });
-  it('newer notification and old rejected refresh release busy while retaining data', async () => {
+  it('newer notification wins over an obsolete later-receipt RPC, releases busy and permits retry', async () => {
     const { controller, notify, refresh } = setup(), read = deferred<unknown>(); refresh.mockReturnValue(read.promise);
-    const pending = controller.refresh(); notify(liveHeadsResult(15, '2026-09-01T12:00:15.000Z')); read.reject(new Error('old')); await pending;
+    const pending = controller.refresh(); notify(liveHeadsResult(15, '2026-09-01T12:00:15.000Z')); const accepted = controller.getState().observation;
+    read.resolve(liveHeadsResult(16, '2026-09-01T12:00:16.000Z')); await pending;
+    expect(controller.getState().observation).toBe(accepted);
     expect(controller.getState()).toMatchObject({ refreshing: false, feedback: '', observation: { version: 15 } });
+    const retryRead = deferred<unknown>(); refresh.mockReturnValue(retryRead.promise); const retry = controller.refresh();
+    retryRead.resolve(liveHeadsResult(17, '2026-09-01T12:00:17.000Z')); await retry;
+    expect(controller.getState()).toMatchObject({ refreshing: false, feedback: '', observation: { version: 17 } });
     notify(liveHeadsResult(1, '2026-09-01T12:01:00.000Z')); expect(controller.getState().observation?.version).toBe(1);
     notify(liveHeadsResult(14, '2026-09-01T12:00:14.000Z')); expect(controller.getState().observation?.version).toBe(1); controller.dispose();
   });

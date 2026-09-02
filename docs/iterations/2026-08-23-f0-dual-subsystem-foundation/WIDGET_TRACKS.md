@@ -1,5 +1,32 @@
 # Widget completion tracks
 
+## Current Job after accepted Queue integration — unaccepted author checkpoint
+
+Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily
+merged into this branch. Attributed PR76 delivery was release
+`20260901-7882670-pr76-20260901T201010-58c9cd`: BOTH services restarted,
+31 static/32 security checks,15 manifest hashes and12 downloaded-byte browser
+checks passed. This is Queue deployed-service/synthetic evidence only.
+
+Current Job now reuses accepted DurationValue, DomainReceipt and TextSkeleton;
+its new neutral loading leaves carry no real filename, receipt or quantities.
+The accepted shared generation fix is inherited, with a Jobs-specific test that
+notification15 defeats later-receipt obsolete success16 and retry17 succeeds.
+Both Queue and Jobs routes, shipping entries and graph unions are preserved.
+The production aggregate enumerates all six actual assets, excludes labs/host/
+index, and retains the1,550,000-byte cap. Jobs is88,256 bytes; labs are
+209,633/630,767/79,682 (920,082 aggregate), with unchanged limits. Compact
+IconButton remains default-false,32-pixel paint/44-pixel target, Jobs-only opt-in.
+
+Not accepted or shipped:17 new browser cases and all existing regressions,
+closed fixture loading geometry, default-consumer/compact focus and hit targets,
+three final deterministic builds and independent exact review/validation remain
+due. Bed legend has browser-test priority. Do not infer first-load arbitrary
+filename geometry from neutral templates; retained refresh must remain stable.
+No printer, service, plugin, auth or Tailscale operation occurred in this work.
+
+## Earlier checkpoints (superseded where noted above)
+
 Current Job phase-two author checkpoint is now preserved on
 `codex/u1-current-job-phase1` after ordinary accepted-main merge `ec38829`.
 The real private child and shared lab/live composition exist, but accepted
@@ -7,6 +34,21 @@ Queue integration, shared DurationValue/DomainReceipt reuse, browser geometry,
 independent exact approval and shipment remain outstanding. No completed track
 is inferred from the non-browser checkpoint. Current Job owns the pending
 generic compact action API; default consumers retain their existing styling.
+
+Current: PR75's three-artifact split is delivered at accepted main `ff577fcb`,
+with independent service/downloaded-byte synthetic verification recorded in
+PROJECT_STATE. Queue has a strict real adapter, zero-raw composition and focused
+route candidate frozen at application source `5c53d05`; independently designed
+public-template skeletons pass focused24/full174 browser checks. Full repository,
+deterministic packages/runtime gates pass; independent exact-SHA validation and
+source review remain due, with no delivery claim.
+The shared arrival-generation RPC repair is regression-covered across Fans,
+Thermals, Heads and Queue but not accepted or shipped yet. Progress stays held
+until that repair is accepted. Current Job/History checkpoints have source
+approval only, Overview `136da4b` awaits review and real Bed Mesh remains open.
+Final cleanup and generic MCP/legacy cutover are not complete.
+
+## Historical checkpoints (superseded where noted above)
 
 Current packaging track: accepted/deployed Heads main `5ffca66` is ordinarily
 merged into an authored exact-three private-lab split. Light observation, Bed

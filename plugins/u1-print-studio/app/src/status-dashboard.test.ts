@@ -12,6 +12,7 @@ import { PrinterObservationStore } from "./observation-store.js";
 import { adaptFans } from "../ui/src/lib/live/fans-adapter.js";
 import { adaptThermals } from "../ui/src/lib/live/thermals-adapter.js";
 import { adaptHeads } from "../ui/src/lib/live/heads-adapter.js";
+import { adaptQueue } from "../ui/src/lib/live/queue-adapter.js";
 
 const status: U1Status = {
   schemaVersion: 1,
@@ -155,7 +156,7 @@ describe("standalone status dashboard", () => {
 
     for (const route of ["/dashboard", "/dashboard/", "/dashboard/progress",
       "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs", "/dashboard/job_history",
-      "/dashboard/queue", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/thermals_widget", "/dashboard/heads_widget", "/dashboard/jobs_widget", "/dashboard/camera_widget", "/dashboard/bed_mesh", "/dashboard/camera",
+      "/dashboard/queue", "/dashboard/queue_widget", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/thermals_widget", "/dashboard/heads_widget", "/dashboard/jobs_widget", "/dashboard/camera_widget", "/dashboard/bed_mesh", "/dashboard/camera",
       ...LAB_ROUTES.flatMap((path) => [path, path + "/"])]) {
       expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
     }
@@ -315,7 +316,7 @@ describe("standalone status dashboard", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
-    expect(html).toContain('const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", jobs: "/dashboard/jobs_widget" })');
+    expect(html).toContain('const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget", jobs: "/dashboard/jobs_widget" })');
     expect(html).toContain('const widgetSource = focusedWidget ?? "/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
     expect(html).toContain('frame.title = selected?.[1] ?? "View unavailable"');
@@ -386,6 +387,43 @@ describe("standalone status dashboard", () => {
       expect(await rawGet(origin, path)).toBe(404);
     }
     expect(reads).toBe(0);
+  });
+
+  test("serves only the exact private Queue asset with no acquisition", async () => {
+    let reads = 0;
+    const origin = await startFixture(() => { reads += 1; });
+    const response = await fetch(`${origin}/dashboard/queue_widget`);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(response.headers.get("content-security-policy")).toBe("default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'");
+    const artifact = readFileSync(new URL("../public/svelte-live-queue.html", import.meta.url), "utf8");
+    expect(await response.text()).toBe(artifact);
+    expect(Buffer.byteLength(artifact)).toBeLessThanOrEqual(100_000);
+    for (const marker of ["lab_scenario", "Lab fixture", "RTCPeerConnection", "Three.js"]) expect(artifact).not.toContain(marker);
+    for (const method of ["POST", "PUT", "DELETE", "HEAD", "OPTIONS"]) {
+      const rejected = await fetch(`${origin}/dashboard/queue_widget`, { method });
+      expect(rejected.status).toBe(405); expect(rejected.headers.get("allow")).toBe("GET");
+    }
+    for (const path of ["/dashboard/queue_widget/", "/dashboard/QUEUE_widget", "/dashboard/queue_widget/more", "/dashboard/%71ueue_widget", "/dashboard/../dashboard/queue_widget", "/dashboard/%2e%2e/dashboard/queue_widget", "/dashboard/%252e%252e/dashboard/queue_widget"]) {
+      expect(await rawGet(origin, path)).toBe(404);
+    }
+    expect(reads).toBe(0);
+  });
+
+  test("production Queue accepts real projection without inventing a domain receipt or count", async () => {
+    let reads = 0;
+    const origin = await startFixture(() => { reads += 1; });
+    const response = await fetch(`${origin}/dashboard/tools/call`, {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name: "refresh_printer_observation", arguments: { view: "queue" } }),
+    });
+    expect(response.status).toBe(200);
+    const result = adaptQueue((await response.json()).structuredContent);
+    expect(result.totalCount).toBe(null);
+    expect(result.items).toEqual([]);
+    expect(result.receipt.sourceObservedAt).toBe(null);
+    expect(result.sourceObservedAt).toBe(status.observedAt);
+    expect(reads).toBe(1);
   });
 
   test("production Thermals accepts the real server projection with independently missing cavity", async () => {
@@ -683,7 +721,7 @@ describe("focused dashboard host bridge", () => {
       expect(host.title.textContent).toBe(label);
       expect(host.document.title).toBe(`U1 · ${label}`);
       expect(host.frame.title).toBe(label);
-      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : view === "heads" ? "/dashboard/heads_widget" : view === "jobs" ? "/dashboard/jobs_widget" : "/widget?standalone=1");
+      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : view === "heads" ? "/dashboard/heads_widget" : view === "queue" ? "/dashboard/queue_widget" : view === "jobs" ? "/dashboard/jobs_widget" : "/widget?standalone=1");
     }
   });
 
@@ -742,7 +780,7 @@ describe("focused dashboard host bridge", () => {
       const host = hostFixture(`/dashboard/${view}`, async () => { throw new Error("private error"); });
       await host.send({ method: "ui/notifications/initialized" });
       const results = host.messages.filter((message) => message.method === "ui/notifications/tool-result");
-      expect(results).toEqual(["fans", "thermals", "heads", "jobs"].includes(view) ? [{ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } }] : []);
+      expect(results).toEqual(["fans", "thermals", "heads", "queue", "jobs"].includes(view) ? [{ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } }] : []);
       expect(host.requests).toEqual([{ name: "refresh_printer_observation", arguments: { view } }]);
     }
   });

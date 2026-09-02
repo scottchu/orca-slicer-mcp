@@ -72,4 +72,21 @@ describe('Current Job shared observation lifecycle', () => {
     expect(states).toEqual([12, 13]); expect(port.start).toHaveBeenCalledTimes(1); expect(port.dispose).not.toHaveBeenCalled();
     controller.dispose(); expect(port.dispose).toHaveBeenCalledTimes(1);
   });
+
+  it('keeps an accepted notification over a later-receipt obsolete success and settles for retry', async () => {
+    const { controller, notify, reads, port } = setup();
+    notify(liveCurrentJobResult());
+    const pending = controller.refresh();
+    notify(liveCurrentJobResult(15, '2026-09-01T12:00:15.000Z'));
+    const retained = controller.getState().observation;
+    reads[0].resolve(liveCurrentJobResult(16, '2026-09-01T12:00:16.000Z'));
+    await pending;
+    expect(controller.getState()).toMatchObject({ observation: retained, refreshing: false, feedback: '' });
+    const retry = controller.refresh();
+    expect(port.refresh).toHaveBeenCalledTimes(2);
+    reads[1].resolve(liveCurrentJobResult(17, '2026-09-01T12:00:17.000Z'));
+    await retry;
+    expect(controller.getState().observation?.version).toBe(17);
+    controller.dispose();
+  });
 });
