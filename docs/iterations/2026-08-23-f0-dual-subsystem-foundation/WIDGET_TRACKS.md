@@ -1,24 +1,30 @@
 # Widget completion tracks
 
-## Current Job renewal after accepted PR78 — author work in progress
+## Current Job author gates complete — independent exact acceptance next
 
-Ordinary integration of accepted main `177d326d13e126d727be7d7431fbfc232e902bc3`
-preserves the delivered Bed legend/toggle and Queue controller. Current Job's
-seven exact contexts, closed public loading templates and compact shared action
-remain. Compiler/AST and rebuilt lab packages pass:211,518/639,136/79,682 bytes,
-930,336 total under unchanged caps. Full223 browser, repository/runtime and
-three-cycle nine-package renewal are next; no Current Job acceptance is claimed.
+Application source `33f7cd390e0a0c6748db66f6feb197c4ca56f7c7`, tree
+`83caba261de818b377d4fac99be37eca354eccc4`, ordinarily merges accepted PR78
+main `177d326d13e126d727be7d7431fbfc232e902bc3`. Seven exact file contexts,
+strict real model/receipts, closed lab-only loading templates and opt-in32px
+paint/44px action targets are retained; accepted Queue controller and Bed
+legend/toggle stay intact. Author gates PASS:516 UI,311 app/3,662 assertions,
+21 lifecycle,24 shipping,223 Chrome, runtime/signature/help and three complete
+nine-package deterministic cycles. Jobs89,526; six production538,802; labs
+211,518/639,136/79,682 (930,336). Caps unchanged; Camera headroom318 bytes.
+Port4179 released. Exact independent source review/validation and guarded
+PR delivery remain required; this is not Current Job deployed acceptance.
 
-Attributed PR78 shipment: release
-`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH services restarted,
-31 static/32 security checks and preservation true; snapshot
-`20260901T212717-45f8ec`. Separate postverification is pending. PR76/PR77
-postverification is complete. Current Job is now the resumed implementation
-track; all prior work stays open. Progress phase-two `b694b2c` has a preliminary
-contrast hold being separately repaired, not copied here. History `379c1e7`,
-Overview `1a3b4f4`, real Bed `194ea79`, MCP/legacy parity, Console, model
-thumbnail, filament sync, sizes, token cleanup and recoverable cleanup remain
-unfinished. No printer, installed-plugin or actual-device acceptance.
+Attributed PR78 delivery/postverification is complete: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH restarted,
+31static/32security, preservation true, snapshot`20260901T212717-45f8ec`;
+independent15 manifest hashes,13HTTPS/all8assets,24 isolation checks and8
+downloaded-byte browser cases passed. PR76/PR77 postchecks are also complete.
+Known Bed320px/200% summary crowding/Observed spacing remain unchanged.
+Progress`25673dd` has its independent contrast finding cleared, but full
+phase-two integration/browser acceptance is pending; no Progress code copied.
+History`379c1e7`, Overview`1a3b4f4`, real Bed`194ea79`, MCP/legacy parity,
+Console, model thumbnail, filament sync, sizes, token and recoverable cleanup
+remain open. No printer, installed-plugin or actual-device acceptance.
 
 ## Earlier checkpoints (superseded where noted above)
 

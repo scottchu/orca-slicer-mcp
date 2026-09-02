@@ -1,24 +1,77 @@
 # F0 dual-subsystem foundation validation
 
-## Current Job renewal after accepted PR78 — author work in progress
+## Current Job author gates complete — independent exact acceptance next
 
-Ordinary integration of accepted main `177d326d13e126d727be7d7431fbfc232e902bc3`
-preserves the delivered Bed legend/toggle and Queue controller. Current Job's
-seven exact contexts, closed public loading templates and compact shared action
-remain. Compiler/AST and rebuilt lab packages pass:211,518/639,136/79,682 bytes,
-930,336 total under unchanged caps. Full223 browser, repository/runtime and
-three-cycle nine-package renewal are next; no Current Job acceptance is claimed.
+Application source `33f7cd390e0a0c6748db66f6feb197c4ca56f7c7`, tree
+`83caba261de818b377d4fac99be37eca354eccc4`, ordinarily merges accepted PR78
+main `177d326d13e126d727be7d7431fbfc232e902bc3`. Seven exact file contexts,
+strict real model/receipts, closed lab-only loading templates and opt-in32px
+paint/44px action targets are retained; accepted Queue controller and Bed
+legend/toggle stay intact. Author gates PASS:516 UI,311 app/3,662 assertions,
+21 lifecycle,24 shipping,223 Chrome, runtime/signature/help and three complete
+nine-package deterministic cycles. Jobs89,526; six production538,802; labs
+211,518/639,136/79,682 (930,336). Caps unchanged; Camera headroom318 bytes.
+Port4179 released. Exact independent source review/validation and guarded
+PR delivery remain required; this is not Current Job deployed acceptance.
 
-Attributed PR78 shipment: release
-`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH services restarted,
-31 static/32 security checks and preservation true; snapshot
-`20260901T212717-45f8ec`. Separate postverification is pending. PR76/PR77
-postverification is complete. Current Job is now the resumed implementation
-track; all prior work stays open. Progress phase-two `b694b2c` has a preliminary
-contrast hold being separately repaired, not copied here. History `379c1e7`,
-Overview `1a3b4f4`, real Bed `194ea79`, MCP/legacy parity, Console, model
-thumbnail, filament sync, sizes, token cleanup and recoverable cleanup remain
-unfinished. No printer, installed-plugin or actual-device acceptance.
+Attributed PR78 delivery/postverification is complete: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH restarted,
+31static/32security, preservation true, snapshot`20260901T212717-45f8ec`;
+independent15 manifest hashes,13HTTPS/all8assets,24 isolation checks and8
+downloaded-byte browser cases passed. PR76/PR77 postchecks are also complete.
+Known Bed320px/200% summary crowding/Observed spacing remain unchanged.
+Progress`25673dd` has its independent contrast finding cleared, but full
+phase-two integration/browser acceptance is pending; no Progress code copied.
+History`379c1e7`, Overview`1a3b4f4`, real Bed`194ea79`, MCP/legacy parity,
+Console, model thumbnail, filament sync, sizes, token and recoverable cleanup
+remain open. No printer, installed-plugin or actual-device acceptance.
+
+### Final Current Job author renewal commands and scope
+
+- `./scripts/check-repository.sh`: PASS, compiler 0 errors/warnings, zero-raw
+  AST, 516 UI tests, 311 app tests/3,662 assertions, 21 lifecycle, 24 shipping.
+  Includes actual normalizer/projector/adapter contracts, private route/method/
+  CSP/no-store/path isolation, six production and three lab source-hash checks.
+- UI `bun run test:browser`: PASS 223/223 in 1.7m, normal configured workers.
+  The 25 Jobs cases cover fourteen closed loading structures at each of four
+  widths and normal/200% text, all seven contexts, retained refresh, HTTP503
+  retry and real child lifetime. Default/compact controls retain 44px targets,
+  32px compact paint, focus and the transparent target-edge click. All inherited
+  Camera, Queue, Bed legend/toggle, orbit/zoom/pixels and no-fetch gates pass.
+  Generation/obsolete RPC/retry/BFCache source tests pass in the UI suite.
+- Three deterministic cycles: repository package checks above, then twice each
+  `verify:live-fans`, `verify:live-thermals`, `verify:live-heads`,
+  `verify:live-jobs`, `verify:live-queue`, `verify:live-camera`,
+  `verify:private-lab`. Every rebuilt package matches committed bytes each time.
+  The actual emitted Jobs CLIENT graph has 127 modules and passes
+  `assertCurrentJobModule`; no fixtures, closed shape builder, other observation
+  renderer, Camera, tests or backend source enters it.
+- App `bun run bundle && bun run bundle:server && bun run bundle:runtime`:
+  PASS, compiled runtime code signature valid and designated requirement met.
+  `./dist/u1-print-studio --help` and `git diff --check`: PASS.
+
+Frozen application package inventory (UTF-8 bytes / SHA-256):
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| live Fans | 87632 | c743a74eb4bdfcbf685f19d81e098634edd58cd8fa8f5946b98e7ba7b0657dd9 |
+| live Thermals | 88208 | a61b1f573d2eb35b2072d922ab1006a7edf7fbca10a31b7d23a694ded7b2316b |
+| live Heads | 93611 | 9af894315db44cccefc00aeea04361b5d2df88278e1bf3495b6c038554dca9f8 |
+| live Queue | 89021 | 1bd7dc8891ce4606556e793f2e5b702097a966e9bc142fbf6430642437ec1162 |
+| live Camera | 90804 | a6cab2f0915ac0e33187da8ad8152d92960435e800f2891c79f895288eda3bcb |
+| live Jobs | 89526 | 03667bd25f5dee854259ea728676aaa47543f1f313a3ed4c9520130bb8ece271 |
+| light lab | 211518 | f9c72ca7ffa9b72b33931c88ded6190fd6b64691b63e4ceeac3110876f568158 |
+| Bed lab | 639136 | 9e5c79c204280ac2d925ee4fe082af950e0417054e0a4ce4333a07a345d17110 |
+| Camera lab | 79682 | cd2cf36e01d6ac6f1b06d069b99034cc0d1ced9d3061000aa82d1372809ab8fc |
+
+Actual synthetic real-host captures at 320px/200% and 720px/normal were inspected
+in `ui/test-results/playwright/live-current-job-Current-J-5e45a--geometry-320-enlarged-true/current-job-ready.png`
+and `live-current-job-Current-J-bc013-geometry-720-enlarged-false/current-job-ready.png`.
+Extreme filenames/maximum-safe byte counts wrap without clipping; no assertion
+claims arbitrary private first-load data has exactly the neutral skeleton height.
+No author failure occurred in this final combined run. Earlier failed geometry
+and test-measurement attempts remain below. Evidence is local software/synthetic,
+not independent acceptance, deployed Current Job or physical-printer behavior.
 
 ## Earlier checkpoints (superseded where noted above)
 
