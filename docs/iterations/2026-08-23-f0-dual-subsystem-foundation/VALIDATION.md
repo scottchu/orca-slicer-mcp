@@ -1,5 +1,40 @@
 # F0 dual-subsystem foundation validation
 
+## Heads Copy final frozen application — full author gates passed
+
+Frozen app `a8e3e7a728a366f7073e74385420039b3c1e5283`, tree
+`830393fee8202b1a51b20f6ad4d85977add867e0`. Required renewal actually ran:
+
+- Root `./scripts/check-repository.sh` with pinned Bun1.3.12 on PATH: PASS,
+  zero Svelte errors/warnings, AST guards,514UI,300app/3557 assertions,
+  21 lifecycle/24 shipping, all eight deterministic packages.
+- UI `bun run test:browser`:248/248 PASS (1.7m). This is the one renewed full
+  run after the actual wrap-policy repair; the rejected first run stays below.
+- App `bun run bundle && bun run bundle:server && bun run bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and
+  `dist/u1-print-studio --help`: PASS, no service/printer operation.
+
+Ignored full-log SHA256:
+repository `6c13238147e4c33d02f01367169bfff322ddf6099b067e405a727fb42e6da63c`;
+browser `a9d5f6e1e62ab2a6c383ae8b99d1e4544e700c7c346c707bc1a54ca2f1065aa4`.
+Logs are `app/ui/test-results/heads-copy-full-repository.log` and
+`heads-copy-full-browser.log`. All sessions exited; `lsof -nP -iTCP:4179
+-sTCP:LISTEN` shows no listener. No user app/profile/connection was closed.
+
+Independent roles report source review PASS and36 fresh targeted cases PASS
+on these exact bytes. Repaired567/590/720 actual200% wide-RGBA transitions all
+measure0px. Whole text, right44px Copy, clipboard denial/busy/focus, long Unicode
+material, empty/unknown and independent receipts pass. These are attributed
+synthetic software results, not author self-approval or physical-device claims.
+Exact final documentation-head binding remains required before shipment.
+
+Only Heads96660/hash63d9b108 and light209516/hash7ccb1028 change; all full hashes
+and unchanged six packages are enforced in the renewed package checks.
+Production453480 and Lab922100 stay within original limits; Camera79776 stays
+unchanged. The six-record final tail changes no application/dependency/config/
+asset/shipping input. Bind retained full evidence to its exact PR head without
+an unaffected build/browser rerun. Copy deployment is still pending.
+
 ## Heads Copy wrap-parity repair — renewed focused checks passed
 
 Rejected candidate `c32f7f1` passed its repository gate (514UI,300app/3557,

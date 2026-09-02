@@ -1,29 +1,35 @@
 # Project state
 
-## Current: Heads Copy layout repair after Bed PR83
+## Current: Heads Copy frozen candidate — author gates passed
 
-Accepted main `f949f4472937b6f9bd27aa1969200770465a0eaa` is the base of
-this separate Heads-only refinement (OBS-010/UI-003). The coordinator reports
-Bed PR83 merged/deployed with both services restarted. Its independent final
-postverification passed15 manifest hashes, eight HTTPS assets,15 downloaded-byte
-browser cases and six policy adversaries with zero geometry delta; BOTH services
-are healthy/integrity-verified. This attributed software/service evidence does
-not establish real-phone or native-OS-focus acceptance.
+Frozen application `a8e3e7a728a366f7073e74385420039b3c1e5283`, tree
+`830393fee8202b1a51b20f6ad4d85977add867e0`, follows accepted Bed/main
+`f949f4472937b6f9bd27aa1969200770465a0eaa`. Decision0039 keeps44px Copy
+in a dedicated right column, with natural whole hex in a reusable ColorValue.
+A public width bound drives both grid columns and loading/ready subgroup wrap;
+no actual private value controls sizing. Global Inline/LoadingValue are unchanged.
 
-The mobile report exposes an orphan Copy action: InsetCard wraps separate
-color/value and action items, while HeadCard reserves ten characters even for
-ready hex text. Obtain the independent UI/UX sizing decision before changing
-presentation. Preserve a coherent exact swatch/hex/Copy group, the 44px target,
-unknown/empty semantics, truthful feedback and stable loading structure.
-Measure 320/390 normal and 200% text with RGB/RGBA; do not truncate, hard-force
-two columns, shrink targets, rewrite global LoadingValue, or add fake heights.
+Author evidence:44 focused browser PASS; renewed full repository PASS with
+514UI,300app/3557 assertions,21 lifecycle/24 shipping and eight exact package
+checks; full browser248/248 PASS. Runtime bundles, strict signature and compiled
+help pass. Independent source review reports no blocker on the frozen app;
+independent36 targeted cases pass, including formerly failing567/590/720200%
+wide-RGBA transitions at0px. Exact final-head review/verification and guarded
+PR delivery remain pending; the author does not approve their own candidate.
 
-The assigned author owns focused editing checks and one full frozen-candidate
-regression. Other agents must independently review source and verify the exact
-candidate before coordinator-owned guarded delivery. Eight package limits and
-shipping guards remain unchanged; Camera Lab currently has only224bytes spare.
-No network/printer acquisition or service operation belongs to this author task.
-Heads Copy precedes Camera `1c6920e`; all other unfinished tracks stay intact.
+Only two package bytes change: Heads96660 and lightLab209516. Six other assets,
+all caps/security/shipping guards and producer contracts are unchanged.
+Camera Lab79776 retains224bytes headroom. Failed c32f7f1 evidence is preserved:
+244/245 browser plus independent26.78125px wrap jump. The actual wrap repair and
+Heads-only row-anatomy compactness contract pass; all1px transition gates remain.
+
+Bed PR83 final deployment evidence is coordinator-attributed: BOTH services
+healthy/integrity-verified,15 manifest hashes, eight HTTPS assets,15 downloaded
+browser cases and six policy adversaries PASS. This is prior-base acceptance,
+not Copy deployment or actual-phone/native-OS-focus acceptance.
+All author browser/fixture sessions exited;4179 is free. Keep evidence logs.
+Next: bind exact final Copy head and ship through the unchanged guarded workflow,
+then Camera `1c6920e`. Other widget/error/dock/migration/cleanup tracks remain open.
 
 ## Earlier Bed candidate handoff (superseded where noted above)
 
