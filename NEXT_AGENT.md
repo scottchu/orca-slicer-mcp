@@ -1,5 +1,19 @@
 # Next agent
 
+## Next: independently review the four project-agent definitions
+
+Review `.codex/agents/`, `AGENTS.md` routing and `docs/project-agents.md` against
+the latest requested UI/UX, printer-domain, agentic MCP/API and maker-user roles.
+Run the focused configuration check and inspect authority, evidence and
+author/reviewer separation; do not duplicate unaffected widget/browser suites.
+Native named-agent loading remains unverified in the exposed current toolset.
+After exact independent approval, merge the config/docs PR without service
+deployment. Do not change global Codex configuration or claim a client reload.
+Then resume the separate pending widget tracks recorded in PROJECT_STATE and
+WIDGET_TRACKS; this priority neither merges them nor discards their checkpoints.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Next: independently review the docs-only test-strategy PR
 
 Review `AGENTS.md`'s seven Test strategy rules and the targeted identity/docs
