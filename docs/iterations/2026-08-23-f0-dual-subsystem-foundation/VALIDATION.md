@@ -1,6 +1,69 @@
 # F0 dual-subsystem foundation validation
 
-## Current976aa9f independent failure and focused repairs
+## Current PR93 source approval and guarded shipment
+
+Independent exact review of `7a0d398c1652d1a7ae8aede8bf952f27bb3636cd`, tree
+`d8a34948e29a4b93b62125d4aef0100a1ddd9f04`, APPROVES the repaired candidate.
+`app/test-results/independent-7a0d398/REPORT.json` SHA256 is
+`ec7d870e660b277de0cdb38e5c0f9689cf2e361ee94b04624eb655e1410a8ce3`.
+`./scripts/check-repository.sh` ran once on this candidate, exit0 in45.595s:
+574 UI/55 files, Svelte0errors/0warnings and AST, eight deterministic packages,
+server types,322 server/31 files/3756 assertions,34 service/build-contract and
+26 shipping Python tests, repository contract PASS. Full log SHA256
+`33860fd8a2f312bd7b6f859ebcd38493b7072cadf436e8ab942b2fbd0403e484`.
+
+Browser coverage is323:321 widget/Lab cases retained from976's full run plus two
+renewed actual Kit Fans320/720 cases, not a second full browser run. Retention
+binding SHA256 `17533ceb41bae4a910c9f629e19cf5d1c8f4c94db0b816a2c254326195872600`
+binds all39 unchanged runtime files,58 routes/59 role checks and unchanged lease
+handler/source. Fresh synthetic `bundle:server`→`build:server` passes with eight
+ambient markers excluded, explicit process env preserved, an effective bunfig
+positive control and poisoned Kit-directory rejection. All18 changed paths were
+reviewed; three original findings are resolved. The976 failed report below remains
+failed. No software/protocol check here proves real Camera or device acceptance.
+
+PR93 merged as `60cab96747775fd5715b4c626f99726e68b3d85c`. Guarded `u1-ship`
+execute completed release `20260902-60cab96-pr93-20260902T142032-7f9bba` with
+Bun1.4.0 binary SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`.
+Shipment receipt basename `pr93-20260902T142032-7f9bba.json`, SHA256
+`1ea3f1b1cacaf78d2075cd3a31b8772cbea687bbba803fa60cb305835c21aa06`,
+records all mandatory local validation/bundle/codesign/exact merged-stage gates,
+explicit restarts of BOTH services, loaded/healthy/integrity-verified status,
+59 static/61 security checks and preserved state. Rollback was not needed.
+Private installation paths are intentionally omitted. This is deployed-service
+acceptance; scoped served-widget behavior remains a separate postverification.
+
+Independent postverification report
+`app/test-results/postdeploy-pr93-independent/REPORT.json`, SHA256
+`5ec6d156683ff5f5a933205cfced7c115cc69d4f9ce69604187f7202045b4ad6`,
+passes five served-UI cases with no failures. The exact deployed HTTPS HTML/JS/CSS
+matches39 active runtime files; separate checks cover eight bundles plus native
+Fans HTML, and all21 UI-observed response paths match hashes. BOTH services remain
+loaded/healthy/integrity-verified. The59 static/61 security/preservation results
+are retained from the exact shipment receipt, not a redundant security run.
+
+`bun --no-env-file --config=/dev/null run test-results/postdeploy-pr93-independent/served-ui.ts`
+exits0 in1.8s. Native Kit Fans320/720 each hydrates once, reaches ready, masks failed
+refresh telemetry with neutral anatomy/footer at stable height, and recovers.
+Heads retains the swatch/full hex and148×44 borderless Copy with synthetic keyboard
+clipboard behavior. Camera retains three44×44 icon targets, synthetic Live failure
+switches to Auto, Snapshot stops acquisition and fullscreen Escape works. Camera
+Lab's error/reset case passes. All13 tool responses were intercepted; Auto's five
+responses reuse one synthetic JPEG with new timestamps and a controlled clock.
+This does not establish fresh physical images, actual Live, phone/Safari or native
+clipboard acceptance. C08's intermittent real acquisition risk remains open.
+
+The report binds15 output files; output-manifest SHA256
+`738e6bc5008151924b360a356410ef9a3506d931d489089a52c686c27c8f9d5f`.
+All owned browser/context/child groups closed in finally; fixture ports are free,
+zero real-printer connections/leases were opened and user resources were preserved.
+For this Markdown-only tail, `git diff --check`, the checker documentation prefix,
+unchanged55 ledger IDs and a Git comparison against merged60cab967 confirm only
+Markdown changed: application, dependencies, configuration, scripts and generated
+assets are retained. Decision0028 requires no extra build, full suite or deployment.
+
+## Earlier976aa9f independent failure and focused repairs
 
 Independent report `app/test-results/independent-976aa9f/REPORT.json`, SHA256
 `67881024fe70a60287ded344ac7d1cc8a2ff6af062e29b46e6a1eed6a98b9701`, binds

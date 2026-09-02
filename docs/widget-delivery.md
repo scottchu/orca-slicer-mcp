@@ -1,60 +1,35 @@
 # Widget delivery ledger
 
 Current authority, 2026-09-02. Historical iteration checklists are not current
-completion claims. Status distinguishes delivered, source-only, partial,
-not-started and decision-pending. An audit or source checkpoint is not deployment.
+completion claims. Source, deployed service and actual-device/printer evidence
+remain separate; routing integration does not complete widget product features.
 
-Accepted source and latest application deployment: PR91 `6a222a8`, reviewed
-`2719e604229313494b6e32020cf500f74bcecf69`, tree
-`463f607adb357494d830b56e3f5548d827e83a19`. Common UI, compact Camera icon overlay
-and0042 byte-cap removal are independently validated and shipped. Full source
-coverage is565 UI/304 app/3645 assertions, eight deterministic packages,
-21 lifecycle/24 shipping and one321-pass browser run, plus three fresh adversaries
-with the private-fixture failure/renewal preserved. BOTH services were explicitly
-restarted and verified loaded/healthy/integral;31 static/32 security checks and
-preservation pass. Independent postverification passes15 manifest files, eight
-exact HTTPS bundles and six distinct served cases (five retained+one private-selector
-renewal), using actual HTML/CSP and synthetic tool/media data. PR89's prior
-actual Live successes and unclassified acquisition failure remain separate C08
-evidence; no new real-camera, phone/native or physical-print acceptance is claimed.
-Evidence lives in active VALIDATION/HANDOFF; PR86 thumbnail policy remains accepted.
+Latest accepted source/deployment: PR93 `60cab96747775fd5715b4c626f99726e68b3d85c`,
+reviewed `7a0d398c1652d1a7ae8aede8bf952f27bb3636cd`, tree
+`d8a34948e29a4b93b62125d4aef0100a1ddd9f04`. Required574 UI/322 server/3756
+assertions/eight packages/34+26 Python pass;323 browser coverage is321 retained
+plus two renewed Kit Fans cases. Guarded shipment explicitly restarted BOTH
+services, verified health/integrity and59 static/61 security checks, preserved
+existing state and required no rollback. Five independent HTTPS served-UI cases
+pass using synthetic tool/media data with zero real-printer/real-Live acquisition.
+Source/ship/post evidence and prior failures remain
+in active VALIDATION. PR86 thumbnail policy remains accepted.
 
 ## Current execution order and all-route error coverage
 
-The976aa9f integration candidate is not approved: independent validation preserves
-574 UI/eight package,323 full browser and34+26 Python passes, but server315 PASS/
-two fixture FAIL and a separate no-env build-isolation defect require repair.
-The two fixtures now pass90 focused tests with bounded source approval; outer and
-nested build/test invocations now enforce environment/config isolation. The
-no-env author passes8 tests/47 assertions, two synthetic builds and116 relocation
-checks; actual production payload matches976. Freeze repaired inputs for necessary
-full/exact gates; no ledger item or deployment
-status advances from these repairs.
+Decision0043's single SvelteKit root with Bun1.4.0, generic components/common,
+pure TypeScript lib/server boundaries and actual API/dashboard/Lab routes is
+shipped. Only Fans is native Kit; other UI endpoints serve packaged HTML/iframe.
+There is no old custom HTTP-router fallback. Widget build targets and MCP stdio
+share services; URL/role/auth, Camera lease lifecycle and protocol limits remain.
+Build isolation covers outer/nested Bun calls and Kit's environment loader.
 
-Decision0043 adopts one SvelteKit application at the app root with Bun retained.
-Next prove a real Kit Fans page and existing tools/call URL through one shared
-service, then explicitly account for remaining compatibility routes and complete
-routing integration. UI targets `src/components/common`; pure TypeScript belongs
-in `src/lib` (`lib/server` for server-private code), actual API/dashboard/Lab in
-`src/routes`. Preserve existing URLs, roles/auth semantics and Camera lifecycle;
-widgets remain shared-component build targets and MCP stdio uses shared services.
-Retire the permanent nested UI application: folder-only moves are insufficient.
-Official adapter-node5.5.7 runs under the user-adopted Bun1.4.0 with a thin
-raw-target/lifecycle bootstrap. Native abort events replace temporary polling;
-generic request lease ownership and128KiB endpoint limits remain. Process-local
-adapter configuration preserves baseline MCP body behavior. Actual Kit routing is
-source-implemented: Fans is native; other UI paths are Kit-served packaged HTML.
-Final author checks pass105 tests/1466 assertions and116 relocation checks with
-two identical payload manifests. Frozen full/exact acceptance remains pending. The root shipping group has bounded independent approval after
-34/26 author tests; UI has70 focused/12 package tests, eight deterministic builds
-and30 distinct browser cases (22 final plus eight retained). See VALIDATION for
-source identities, initial failures and renewal. No Bun removal or second backend
-is queued. `docs/sveltekit-route-migration.md` tracks the finite routing boundary.
-Route migration does not imply widget-feature completion.
-All55 IDs, C08, Progress no-action, F07 class discussion and c6 remain. Byte ceilings
-stay removed while minification/reporting and integrity/security/shipping guards
-remain mandatory. Current implementation work requires its own focused/full/exact
-acceptance and guarded shipment; PR91 evidence does not accept changed app bytes.
+Next preserve remaining native-renderer/product work and C08's unclassified
+intermittent acquisition diagnosis. `docs/sveltekit-route-migration.md` tracks
+routing versus rendering without adding/removing these55 IDs. Progress remains
+no action, F07 class remains discussion and c6 stays separate. No new actual-camera,
+phone/native or physical-print acceptance is claimed. Byte ceilings stay removed;
+minification/reporting and integrity/security/shipping guards remain mandatory.
 
 ### Earlier common UI checkpoint before decision0042
 
@@ -225,13 +200,13 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | IDs / request | Status and evidence | Acceptance / next smallest action |
 | --- | --- | --- |
 | F01 SvelteKit checked-in project | Partial: 10 Lab routes, five focused Svelte views delivered | Finish other five focused views; canonical source remains checked in |
-| F02 shared primitive composition | Common/Button/Icon/Switch independently accepted and shipped PR91 | Preserve all-eight consumer/AST/security coverage during0043; other raw-markup debt remains |
+| F02 shared primitive composition | Common/Button/Icon/Switch shipped PR91; app-root components/common integration shipped PR93 | Preserve all-eight consumer/AST/security coverage; other raw-markup debt remains |
 | F03 PercentageBackground + slight slope | Delivered: Thermals/Fans, 100-degree tint | Preserve exact ratio and truthful over-target numbers |
-| F04 src/lib/ui vs src/components | PR91 lib/common delivered;0043 adopts app-root components/common, not implemented | Real single-app route/service pilot precedes full integration; UI in components, pure TypeScript in lib, domain compositions outside common |
+| F04 src/lib/ui vs src/components |0043 one app-root components/common and pure TypeScript lib separation independently accepted and shipped PR93 | Preserve generic primitives/domain composition boundary; native renderer migration remains F01 |
 | F05 generic semantic tokens | Not started; --u1 tokens remain | Inventory consumers and controlled alias transition |
 | F06 arrow functions | Adopted AGENTS | Apply to changed JS/TS; document genuine exceptions |
 | F07 component-owned folders/services | Partial; PR89 delivers real/synthetic Camera service separation | Thin subscribers/renderers. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
-| F08 whole server/MCP SvelteKit migration |0043 app-root/Fans source pilot3tests32assertions; adapter selected, independent/full integration pending | Resolve headerless body parity, verify shipping repairs, then remaining-route migration plus URL/auth/role/MCP lifetime/relocation evidence |
+| F08 whole server/MCP SvelteKit migration |0043 real Kit API/UI routing and shared services independently accepted and shipped PR93 | Only Fans is native Kit; other UI routes serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
 | F09 self-contained widget HTML |0042 individual/aggregate byte caps removed, independently accepted and shipped PR91 | Preserve self-contained assets, CSP/security, integrity, determinism, minification and size reporting during0043 |
 | U01 density/grouping/consistent language | Partial; independent UIUX/domain audits complete | Implement findings per widget; audits alone are not fixes |
 | U02 smaller Refresh visual | Not started in delivered shared component | Compact visible glyph/control, 44px accessible target |
@@ -252,7 +227,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
-| C08 served Camera still old | PR91 Camera shipped; intermittent real Live acquisition risk remains open | PR89 two successes advanced decoded frames for17.100s/17.102s; first failed acquisition unclassified. Diagnose it; no blanket reliability/phone acceptance |
+| C08 served Camera still old | PR93 routing/runtime shipped with current Camera; intermittent real Live acquisition risk remains open | PR89 two successes advanced decoded frames for17.100s/17.102s; first failed acquisition unclassified. Diagnose it; no blanket reliability/phone acceptance |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |
@@ -275,7 +250,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | G02 role-separated delegation | Adopted AGENTS | Author cannot self-approve; disclose actual capacity limits |
 | G03 UIUX and printer-domain critique | Audits completed, implementation partial | Apply screenshot/domain findings; do not claim findings fixed |
 | G04 four project role definitions | Delivered PR82 | Native named-role loading unverified; role files/manual fallback explicit |
-| G05 merge/deploy before completion | PR91 guarded merge/deployment and scoped postverification complete | Keep source/service/device layers separate; C08 intermittent failure and other backlog remain open |
+| G05 merge/deploy before completion | PR93 guarded merge/deployment and five scoped served-UI cases PASS | Keep source/service/device layers separate; C08 intermittent failure and other backlog remain open |
 | G06 tmp/worktree/resource cleanup | Partial; ten redundant trees quarantined; current handles closed | Retain unique work; follow up per-run test evidence directories to avoid default cleanup loss |
 | G07 persistence/status/longest stage | Ongoing workflow | Report actual stage/blocker; continue authorized open queue |
 | G08 Chinese + English technical terms | Ongoing preference | Not a request to translate the application UI |

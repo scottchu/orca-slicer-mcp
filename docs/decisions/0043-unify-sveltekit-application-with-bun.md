@@ -1,7 +1,8 @@
 # 0043: Unify the SvelteKit application while retaining Bun
 
-Status: Accepted direction; adapter-node handler on Bun selected from the bounded
-author probe. Real application integration and independent acceptance pending.
+Status: Accepted and deployed in PR93. Independent source/software acceptance
+covers the single-app routing and shared-service integration; only Fans is a native
+Kit page. Other native-renderer work and actual-device/printer acceptance remain separate.
 
 Use one SvelteKit application at `plugins/u1-print-studio/app`, retaining Bun for
 runtime/tooling. This is a repository choice, not a requirement to remove Bun,
