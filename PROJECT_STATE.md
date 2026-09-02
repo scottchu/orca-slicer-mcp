@@ -1,5 +1,19 @@
 # Project state
 
+## Current: repository test strategy — docs-only review pending
+
+The latest user priority is now recorded in `AGENTS.md` under Test strategy:
+impact-based focused checks, one owned full candidate run, separate independent
+verification and evidence-bound docs-only tails. Existing shipping guards are
+unchanged. This branch starts at accepted/deployed/postverified PR78 `177d326`;
+it changes no application bytes and requires no service restart under ADR0028.
+Current Job PR79 stays frozen at `48f2060` with source approval and independent
+validation pending. Progress `25673dd`, History `379c1e7`, Overview `1a3b4f4`,
+real Bed `194ea79` and all migration/feature/cleanup tracks remain unfinished.
+This policy candidate still needs independent documentation review and PR merge.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current: Bed Mesh icon-toggle author candidate, exact review next
 
 The latest additive user priority is implemented independently of pending Jobs:

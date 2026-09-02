@@ -1,5 +1,21 @@
 # F0 dual-subsystem foundation validation
 
+## Test strategy policy — targeted docs-only author evidence
+
+Base: accepted PR78 `177d326d13e126d727be7d7431fbfc232e902bc3`.
+Only AGENTS and five current continuity records change; no application, test,
+dependency, configuration, asset, skill or shipping-script input changes.
+Targeted checks all PASS: `git diff --check`; `git diff --exit-code` against the base for
+`plugins scripts .agents .github`; a one-off Bun documentation-contract check
+of the exact six-file allowlist, required project/iteration files, unique active
+iteration, state/evidence headings, seven policy bullets and unchanged GitHub
+delivery section. These are policy/source-identity checks, not runtime evidence.
+No full repository/application/build/browser suite, deployment or printer test
+was run or claimed. Existing u1-ship gates remain unchanged and mandatory for
+future application releases. Independent documentation review remains pending.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Bed Mesh icon segmented toggle — complete author gates, unaccepted
 
 Exact application source: `80229841fced7307aaf3eba850a8e60ef688c26a`; tree
