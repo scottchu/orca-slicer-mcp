@@ -54,6 +54,13 @@ describe('reported mesh display geometry', () => {
       expect(axes[2].a[2]).toBe(axes[2].b[2]);
       expect(axes[2].min).toBe(display.low);
       expect(axes[2].max).toBe(display.high);
+      const opposite = projectedAxes(display, bedMeshLabFixture, sides, project, 'right');
+      expect(opposite.axes.slice(0, 2)).toEqual(axes.slice(0, 2));
+      expect(opposite.axes[2].a[0]).toBe(opposite.axes[2].b[0]);
+      expect(opposite.axes[2].a[2]).toBe(opposite.axes[2].b[2]);
+      expect(project(opposite.axes[2].a).x).toBeGreaterThanOrEqual(project(axes[2].a).x - 8);
+      expect(opposite.axes[2].min).toBe(display.low);
+      expect(opposite.axes[2].max).toBe(display.high);
     }
   });
 });

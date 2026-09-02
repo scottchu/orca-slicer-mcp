@@ -1,5 +1,24 @@
 # Project state
 
+## Immediate vertical Bed Mesh legend — HELD author candidate
+
+User execution order now prioritizes a narrow vertical Z(mm) legend inside the
+left chart edge, as a lab/shared-renderer slice from accepted main `ff577fcb`.
+Generic HeightLegend/ChartFrame composition removes the below-chart bar;
+measured legend text and the opposite true Z silhouette preserve plotting room.
+All existing frame, coverage, zoom, readability and isolation gates remain.
+The full-height wide-column experiment failed 320px/200% mesh coverage and is
+not accepted. The narrow-rail/opposite-Z candidate passes existing coverage,
+rotation and pixel-zoom checks, but the new surface/legend-box overlap check
+fails at 320/390px with 200% text (849/412 colored pixels). The fixed 6ch boxes
+overestimate short glyphs, so the next role must separate actual-glyph clearance
+from empty label width and include surface clearance in neutral fitting.
+Focused browser result is 24/26; full renewal and PR are held, not waived.
+Real Bed Mesh phase two remains preserved at `194ea79`, including its pending
+Queue controller and accepted Current Job compact-IconButton dependencies.
+No production package, controller, service, printer, MCP or auth change belongs
+to this immediate slice.
+
 ## Three-artifact private-lab split candidate — author gates complete
 
 Accepted and deployed Heads main `5ffca666e4ffa50c761ff54460f2d7dfc3466ad5`

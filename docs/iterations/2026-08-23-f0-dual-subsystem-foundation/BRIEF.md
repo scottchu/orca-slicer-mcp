@@ -1,5 +1,14 @@
 # F0 dual-subsystem foundation brief
 
+Latest additive order: deliver the user-requested vertical Z(mm) legend inside
+the left edge of the shared Bed Mesh 4:3 chart as a bounded lab-only slice from
+accepted main `ff577fcb`. The reusable HeightLegend and optional ChartFrame
+leading slot must retain 2D/3D/skeleton geometry, real sample extrema, readable
+nonoverlapping labels at four widths/normal200%, zoom and zero runtime fetch.
+No production route/controller/service/printer change belongs to this slice.
+Full real-Bed phase two is preserved at `194ea79` and remains queued with its
+independent gates and accepted Queue-controller dependency. Other tracks remain open.
+
 Current order: complete the three-artifact private-lab route/graph split on top
 of accepted/deployed Heads main `5ffca66`. The authored light/Bed/Camera outputs
 are 199,819/629,880/78,795 bytes (908,494 aggregate). Independently renewed caps

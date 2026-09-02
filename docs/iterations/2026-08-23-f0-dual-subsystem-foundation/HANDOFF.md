@@ -1,5 +1,32 @@
 # F0 dual-subsystem foundation handoff
 
+## Vertical legend author candidate — HELD after bounded experiments
+
+Changed generic HeightLegend, optional ChartFrame leading slot, measured chart
+obstacles and Bed lab composition/rendering fit. The narrow left rail leaves
+14px inset; visible legend endpoints reserve measured boxes and Z may use the
+opposite true projected silhouette. 2D reserves legend clearance without
+changing unequal physical spans; non-legend leaves preserve their defaults.
+Added leaf/unit and four-width/normal200 packaged browser tests. No production
+Bed entry, controller repair or compact IconButton is included. The full real
+Bed phase-two work remains at `194ea79`; merge accepted dependencies later.
+
+The wide-column experiment failed 320/200 colored surface and zoom gates.
+A narrow-rail trial passed normal coverage and zoom but still clipped one
+320/200 Y endpoint. Opposite-Z now passes every existing rotation/coverage/
+pixel-zoom case, but a new surface-clearance probe finds849/412 colored pixels
+under the legend's fixed6ch text boxes at320/390px with200% text. The boxes
+overestimate short actual glyphs; the top-left title is visually crowded.
+Focused26 ended24PASS/2FAIL. Independent layout design should measure glyphs
+and include their exclusion rectangles in neutral1x surface fitting while
+preserving14px rail, true projected axes, normal coverage and independent zoom.
+An alternative for independent design is a narrow Z(mm) rail with accessible
+endpoints and the existing visible Minimum/Maximum facts, avoiding duplicate
+numeric labels in the chart. This is a proposal, not adopted permission to
+remove visible values or weaken any acceptance gate.
+Do not waive these failures, claim visual acceptance, or ship until the final
+exact candidate passes and separate roles independently approve it.
+
 ## Three-artifact private-lab split author checkpoint
 
 Exact application source `4a6c493` ordinarily merges accepted/deployed Heads

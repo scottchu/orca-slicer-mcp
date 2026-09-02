@@ -1,5 +1,22 @@
 # Next agent
 
+## Immediate next: independent design for the HELD vertical legend
+
+The isolated author candidate starts from accepted main `ff577fcb` and only
+changes lab/shared chart presentation. Its last bounded browser run is 24/26:
+all existing mesh/axis/orbit/zoom cases pass, but 320/390px with 200% text puts
+849/412 colored pixels under the fixed-width legend label boxes. Determine
+actual-glyph clearance, then design neutral 1x surface fitting around those
+obstacles; do not continue heuristic fitting or loosen coverage/zoom gates.
+The 320 frame is 258×193.5px, plot width242px and rail inset14px; enlarged
+legend labels occupy about80px. Finish the four-width/200% browser,
+deterministic three-package and existing coverage/zoom gates without loosening
+them; then obtain exact-source independent review and validation before a PR
+can ship. Production assets must remain identical. Keep the preserved real
+Bed Mesh phase-two checkpoint `194ea79` separate until the immediate legend and
+its Queue/Current Job shared-leaf dependencies are accepted and ordinarily
+merged. Do not copy pending work between branches or bypass shipping guards.
+
 ## Three-artifact private-lab split candidate — do not ship yet
 
 Continue from exact application source `4a6c493`, which ordinarily merged

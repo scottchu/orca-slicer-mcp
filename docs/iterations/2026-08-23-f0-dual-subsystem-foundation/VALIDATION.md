@@ -1,5 +1,49 @@
 # F0 dual-subsystem foundation validation
 
+## Vertical legend author evidence — HELD, no PR or deployment
+
+Base is accepted main `ff577fcb`. Current artifacts are light199,819,
+Bed632,794 and Camera78,795 raw UTF-8 bytes, aggregate911,408. SHA256:
+light `080ad95276834fe560ccae2eb57e763969d891b5c65fa708babbca12667e6101`,
+Bed `7aef14f61bffde9bf682bfb516481ee1aed0a03f76ec6d9252441e8083474bf6`,
+Camera `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`.
+The exact private-package rebuild in final `./scripts/check-repository.sh`
+reproduced all three bytes. Git comparison with the base changes only the Bed
+lab public asset; all production and Camera/light artifacts remain identical.
+
+Actually run: UI `bun run check`, `bun run test` (344/344 in35files,0errors/
+0warnings/AST PASS); app `bun run check` and `bun test src/*.test.ts`
+(296/296,3,504assertions); final `./scripts/check-repository.sh` PASS including
+production package/source guards, graph/cap/private-route tests, three-lab
+determinism, lifecycle21/21 and shipping24/24. `bun run bundle`,
+`bun run bundle:server`, `bun run bundle:runtime` and compiled `--help` passed,
+including local ad-hoc signature verification. One intermediate repository
+renewal correctly failed the stale Bed artifact guard during a source change;
+the regenerated final artifact and exact guard passed the complete renewal.
+
+Browser command: `bun x playwright test tests/visual/bed-mesh-legend.spec.ts
+tests/visual/bed-mesh-rotation.spec.ts tests/visual/bed-mesh-zoom.spec.ts
+tests/visual/bed-mesh.spec.ts`. Final result24PASS/2FAIL in21.3s. Existing
+four-width normal coverage (320px75.9%width/43.7%height), all matrix/rotation/
+axis tests at normal200%, real colored surface, wheel/reverse/reset/pinch and
+canvas/orbit identity PASS. Pixel metrics now exclude the legend's own paint,
+so a color strip cannot falsely satisfy mesh coverage. New legend tests pass
+all normal widths and590/720 enlarged, including geometry/states/modes/resize/
+no-fetch and zero text-axis overlap. Failed cases320/390 enlarged report
+849/412 surface-colored pixels beneath fixed6ch legend text boxes. Those boxes
+overestimate actual short glyphs; the inspected320 enlarged capture shows a
+crowded title/surface boundary. This is a conservative unresolved clearance
+failure, not proof all reported pixels cover visible glyphs.
+
+Earlier wide-column experiment:6/8 initial tests failed on asynchronous
+ResizeObserver timing (fixed by two animation-frame settlement); its renewed
+legend8 passed but inherited320/200 surface area and pixel zoom failed.
+Narrow14px rail with left Z gave24/26 and3.23px endpoint clipping. The current
+opposite true Z silhouette repairs that clipping without changing default
+non-legend behavior, but does not resolve the final clearance hold. No full
+172-case browser renewal, independent approval, PR, shipment, phone or printer
+acceptance is claimed. Independent measured-glyph/surface-fit design is next.
+
 ## Three-artifact private-lab split — final author evidence
 
 Base `8c5756d` was split, then accepted/deployed Heads main `5ffca66` was

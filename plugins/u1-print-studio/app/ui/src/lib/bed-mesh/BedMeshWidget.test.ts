@@ -11,6 +11,9 @@ describe('Bed Mesh Svelte candidate', () => {
     const { container, getByRole } = render(BedMeshWidget, { observation: bedMeshLabFixture });
     expect(container.querySelector('[data-widget-shell]')).toBeTruthy();
     expect(container.querySelectorAll('[data-chart-frame]')).toHaveLength(1);
+    expect(container.querySelector('[data-chart-frame] [data-height-legend]')).toBeTruthy();
+    expect(container.querySelector('.legend-bar,.legend-values')).toBeNull();
+    expect(container.querySelector('[data-height-legend]')).toHaveAttribute('data-orientation', 'vertical');
     expect(container).toHaveTextContent('Reported probe grid · 11 × 11 · Lab fixture');
     expect(container).not.toHaveTextContent('Height exaggerated');
     expect(container).not.toHaveTextContent('Drag');

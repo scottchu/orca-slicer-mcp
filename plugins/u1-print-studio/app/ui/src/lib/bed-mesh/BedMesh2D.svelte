@@ -2,6 +2,7 @@
   import { onMount, untrack } from 'svelte';
   import { meshColor } from './palette';
   import type { BedMeshObservation } from './types';
+  import { chartObstacles } from '../ui/chart-obstacles';
 
   let { observation }: { observation: BedMeshObservation } = $props();
   let canvas: HTMLCanvasElement;
@@ -19,12 +20,15 @@
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       context.clearRect(0, 0, rect.width, rect.height);
       const pad = Math.max(36, rect.width * 0.1);
+      const obstacles = chartObstacles(canvas);
+      const reserved = Math.max(0, ...obstacles.map((box) => box.x + box.width));
+      const plotLeft = Math.max(pad, reserved + 34);
       const xSpan = observation.bounds.xMax - observation.bounds.xMin;
       const ySpan = observation.bounds.yMax - observation.bounds.yMin;
-      const scale = Math.min((rect.width - pad * 1.7) / xSpan, (rect.height - 74) / ySpan);
+      const scale = Math.min((obstacles.length ? rect.width - plotLeft - 16 : rect.width - pad * 1.7) / xSpan, (rect.height - 74) / ySpan);
       const width = xSpan * scale;
       const height = ySpan * scale;
-      const left = (rect.width - width) / 2;
+      const left = obstacles.length ? plotLeft + (rect.width - plotLeft - 16 - width) / 2 : (rect.width - width) / 2;
       const top = Math.max(14, (rect.height - height - 44) / 2);
       const cellWidth = width / observation.summary.columns;
       const cellHeight = height / observation.summary.rows;
@@ -56,6 +60,7 @@
     const observer = new ResizeObserver(draw);
     redraw = draw;
     observer.observe(canvas);
+    for (const label of canvas.closest('[data-chart-frame]')?.querySelectorAll('[data-chart-obstacle]') ?? []) observer.observe(label);
     draw();
     return () => { observer.disconnect(); redraw = undefined; };
   });

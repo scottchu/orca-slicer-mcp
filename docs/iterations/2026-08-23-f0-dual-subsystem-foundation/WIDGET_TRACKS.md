@@ -1,5 +1,12 @@
 # Widget completion tracks
 
+Immediate additive priority: a lab-only vertical Z(mm) legend inside the left
+chart edge, shared in 2D/3D/loading with no below-chart legend row or layout
+jump. Work starts at accepted main `ff577fcb`, separate from preserved real Bed
+phase-two checkpoint `194ea79`. The latter's production cutover, keyboard/
+context-loss/font/controller gates remain pending, not cancelled. No production
+or cleanup completion is implied by the immediate legend slice.
+
 Current packaging track: accepted/deployed Heads main `5ffca66` is ordinarily
 merged into an authored exact-three private-lab split. Light observation, Bed
 Mesh and Camera are 199,819/629,880/78,795 bytes (908,494 aggregate) with

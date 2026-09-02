@@ -1,5 +1,27 @@
 # 0032: Migrate focused widgets through a private SvelteKit lab
 
+## 2026-09-01 in-chart vertical height legend
+
+The user's latest layout request takes priority as a bounded lab/shared-leaf
+slice, before the separately preserved real Bed Mesh migration. A generic
+`HeightLegend` accepts actual minimum/maximum, units, palette, orientation and
+placement. Bed Mesh composes it in `ChartFrame`'s optional leading slot: inside
+the left border, maximum at top and minimum at bottom, with no below-chart bar.
+The rail reserves only 14 pixels, with measured text obstacles at its ends;
+the Z axis selects the opposite true projected silhouette when the left legend
+is present. Non-legend renderers keep their existing default side. Neither the
+legend nor its text overlays projected XYZ labels. All existing 4:3, default/reset fit, normal
+70%-width/42%-height square coverage, orbit/detail zoom, data and disposal gates
+remain unchanged. Loading has identical legend/frame geometry. Visible values
+are compact display formatting; accessible labels retain exact reported values.
+
+This slice does not introduce production Bed Mesh, change other production
+packages, alter the controller, or adopt the pending compact IconButton.
+Exactly three lab artifacts and all existing graph, route, CSP, no-fetch and
+250,000/700,000/80,000/980,000 byte guards remain. Author build measurements are
+199,819 / 632,794 / 78,795 bytes (911,408 total). These measurements and the design
+decision are not independent source acceptance or deployment evidence.
+
 ## 2026-09-01 Heads composition packaging addendum
 
 Independent packaging design review and coordinator adoption revise only the

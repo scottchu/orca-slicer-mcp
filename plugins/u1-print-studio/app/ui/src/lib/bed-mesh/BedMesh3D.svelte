@@ -5,6 +5,7 @@
   import { cageLines, layoutLabels, meshDisplay, projectedAxes, selectSides, type Label, type Point, type Sides } from './display';
   import { meshColor } from './palette';
   import type { BedMeshObservation } from './types';
+  import { chartObstacles } from '../ui/chart-obstacles';
 
   let { observation, resetKey = 0 }: { observation: BedMeshObservation; resetKey?: number } = $props();
   let host: HTMLDivElement;
@@ -70,6 +71,9 @@
       const digit = Math.max(...'0123456789'.split('').map((value) => measurement.measureText(value).width));
       const measure = (text: string) => ({ width: Math.ceil(Math.max(measurement.measureText(text).width, [...text].reduce((sum, value) => sum + (/\d/.test(value) ? digit : measurement.measureText(value).width), 0))) + 4, height: Math.ceil(fontSize * 1.2) + 2 });
       const aspect = rect.width / rect.height;
+      const obstacles = chartObstacles(host);
+      // A floating left legend leaves the opposite silhouette free for Z.
+      const edge = obstacles.length ? 'right' : 'left';
       // Fit is an overview calculation. OrbitControls owns the independent
       // detail zoom; including it in the fit would cancel wheel/pinch input.
       const zoom = camera.zoom;
@@ -78,7 +82,7 @@
       let shiftX = 0;
       let shiftY = 0;
       let nextLabels: Label[] = [];
-      let selected = projectedAxes(display, data, sides, project);
+      let selected = projectedAxes(display, data, sides, project, edge);
       // Fit the actual enclosure and measured labels, not a fixed CSS margin.
       // The user's orbit stays intact; only the orthographic frustum changes.
       for (let attempt = 0; attempt < 24; attempt += 1) {
@@ -87,9 +91,9 @@
         camera.top = view + shiftY;
         camera.bottom = -view + shiftY;
         camera.updateProjectionMatrix();
-        selected = projectedAxes(display, data, sides, project);
+        selected = projectedAxes(display, data, sides, project, edge);
         sides.z = selected.z;
-        nextLabels = layoutLabels(selected.axes, project, project([0, 0, 0]), measure, rect);
+        nextLabels = layoutLabels(selected.axes, project, project([0, 0, 0]), measure, rect, true, obstacles);
         const corners = [-display.halfX, display.halfX].flatMap((x) => [-display.halfY, display.halfY].flatMap((y) => [-0.18, 0.18].map((z) => project([x, z, y]))));
         const left = Math.min(...corners.map((p) => p.x), ...nextLabels.map((p) => p.x));
         const right = Math.max(...corners.map((p) => p.x), ...nextLabels.map((p) => p.x + p.width));
@@ -103,11 +107,11 @@
       }
       camera.zoom = zoom;
       camera.updateProjectionMatrix();
-      selected = projectedAxes(display, data, sides, project);
+      selected = projectedAxes(display, data, sides, project, edge);
       sides.z = selected.z;
       // Detail zoom intentionally crops at the existing chart viewport. Keep
       // labels on their true projected axes rather than fitting zoom away.
-      nextLabels = layoutLabels(selected.axes, project, project([0, 0, 0]), measure, rect, zoom <= 1);
+      nextLabels = layoutLabels(selected.axes, project, project([0, 0, 0]), measure, rect, zoom <= 1, zoom <= 1 ? obstacles : []);
       const axisLines = selected.axes.flatMap((axis) => {
         const lines = [...axis.a, ...axis.b];
         for (let tick = 0; tick <= 4; tick++) {
