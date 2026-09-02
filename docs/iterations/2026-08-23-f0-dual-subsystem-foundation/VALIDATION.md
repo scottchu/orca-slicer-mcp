@@ -1,5 +1,42 @@
 # F0 dual-subsystem foundation validation
 
+## Heads Copy PR84 rollout — delivery and independent postverification passed
+
+Reviewed PR head `dfc0857aa483e1fa3e86b71ad58805dae396c109` was independently
+source-approved and validated, then merged as
+`0fe54f34e43f97dd9376e5a17b06efd342726455` with the same approved tree
+`62af16d2dcc17bcf3c25e93c8fb7c4776a11c8db`. The coordinator reports the
+unchanged guarded workflow completed exact-build installation, explicit restart
+of BOTH public/dashboard services, loaded/healthy/integrity checks,31 static and
+32 security checks. Preservation passed; no rollback was needed.
+This docs author did not execute shipment or restart services.
+
+The separate validator reports its postdeployment command exited 0 and checked
+BOTH loaded/healthy services, integrity and all 15 manifest file hashes. Nine
+actual HTTPS routes (eight widget assets and Heads host) returned 200 with CSP
+and exact approved hashes. Downloaded HTML under actual response CSP passed
+15 isolated synthetic cases: six live width/text combinations, six Lab
+transitions, one clipboard/domain adversary group and two shared-consumer checks.
+Initial loading to widest RGB/RGBA at 567/590/720px with 200% text measured 0px;
+whole hex, coherent 44px Copy, focus and retained receipt checks passed.
+Independent evidence JSON SHA256:
+`1ecbc16b2a44d06c6111ebff530843e5692db653566a438706630825d8922224`.
+All validator resources were closed. These are attributed deployed-service and
+synthetic behavior results, not this author's tests or actual-phone, native
+clipboard/OS-focus or physical-printer acceptance. Failed-candidate history and
+the original 1px geometry limit remain below.
+
+The release-record branch starts at that exact accepted merge. Only the six
+continuity records change; application, assets, dependencies, configurations and
+shipping guards remain untouched. No full build/browser regression or second
+deployment is required for this docs-only update under decision0028.
+Independent exact documentation review precedes its separate PR merge.
+
+Documentation-only author checks actually ran: `git diff --check`, an exact
+six-record path allowlist, unchanged protected-input diff against the accepted
+merge, and a focused current-status/decision-link existence check. All passed.
+No application test, full build/browser run or deployment was repeated.
+
 ## Heads Copy final frozen application — full author gates passed
 
 Frozen app `a8e3e7a728a366f7073e74385420039b3c1e5283`, tree
