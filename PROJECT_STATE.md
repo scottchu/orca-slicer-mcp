@@ -1,6 +1,37 @@
 # Project state
 
-## Current: PR95 Switch44px deployed; C08 diagnosis remains open
+## Current execution: native Thermals, Heads and Queue dashboard pages
+
+The user paused Screen Sharing until returning home and directed other work to
+continue. On `codex/u1-native-observation-pages` from mainb5329ad, the next
+0043/F01/F08 slice makes `/dashboard/thermals`, `/dashboard/heads` and
+`/dashboard/queue` native Kit pages following deployed Fans. Reuse the existing
+UI, controllers and services without iframes; add no design or domain data.
+Native page source is independently approved on29e4f07, including the required
+gate and seven cases against the formal payload. PR97 shipping then stopped:
+fixed `ship-build` reuse left14 undeclared old assets, correctly rejected by the
+closed inventory guard before merge/install. PR95 remains deployed. The operator
+now creates a unique empty candidate directory;27 focused tests pass, application
+bytes remain unchanged, and new exact review/required regression are pending.
+Detailed commands, hashes, original77 failure and repairs remain in VALIDATION.
+This slice does not close all F01 migration or Queue product requirements.
+
+Acceptance: preserve URLs and widget resource endpoints; SSR acquires no telemetry,
+mount starts the existing observation flow once, and refresh/failure/recovery keep
+neutral error geometry/footer behavior. Preserve Heads full-hex Copy, keyboard/
+focus behavior and existing role/auth/static-asset guards. Next: freeze the
+candidate, run one required regression with independent exact review, then
+u1-ship, BOTH restarts and scoped served-UI checks. History evidence covers a
+fresh document, not an observed BFCache restoration.
+Synthetic/software evidence stays distinct from physical-printer/device acceptance.
+
+C08 stays open and paused for the user's at-home Local Network UI inspection;
+Screen Sharing diagnosis and actual Camera probing do not block this page slice.
+Do not restart those probes or change system/auth/network settings. Keep all55
+ledger IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
+unchanged loading policy. PR95 remains the deployed application baseline.
+
+### Retained PR95 source/deployment evidence
 
 PR95 is merged as `44d4266634bbe2d102a056332726550cbfe068e8`, preserving independently
 approved `fd642a5987bb8e35c9d5c272c73e4dce26ec882a` and tree
@@ -28,17 +59,17 @@ reaches upstream RTP/offer. External STUN, local UDP and authenticated wire-byte
 comparisons pass. Neither a Bun defect nor macOS Local Network denial is proved;
 no Camera service repair was made. Actual probes have stopped.
 
-The requested Local Network UI inspection is unavailable while remote desktop
-sign-in fails. Read-only checks confirm Screen Sharing is running and the account
-is allowed; correlated logs identify SRP authentication failure without its cause.
-Await the existing client-side failure evidence; do not repeat password attempts
-or change system/auth/network settings. Then resume the smallest evidence-led C08
-repair, requiring advancing actual decoded frames and its own exact release gates.
+The user has paused remote desktop diagnosis until returning home. Existing
+client/server logs identify RSA-SRP failure; the user reports that interactive
+local Directory verification accepted the same input. This does not identify the
+Screen Sharing failure's cause. No Screen Sharing restart was executed by agents.
+At-home inspection remains the next C08 external step; no further auth attempts,
+settings changes or Camera probes are part of the native-page slice.
 
 Preserve compact icon modes, footer errors, service-owned Camera lifecycle and
 unchanged loading policy. All55 IDs, Progress no-action, F07 class discussion,
-separate c6 and native-renderer/product backlog remain. This records-only tail
-retains application bytes and requires no extra deployment under decision0028.
+separate c6 and native-renderer/product backlog remain. The completed PR95
+records-only tail retained application bytes without another deployment under0028.
 
 ## Earlier deployed baseline: PR93 single-app Kit integration
 

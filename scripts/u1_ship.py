@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 import shutil
 import sys
+import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -171,9 +172,12 @@ class Operations:
                 raise ShipError(f"Local production build failed: {bundle}") from None
         self.command(["codesign", "-vvv", "--verify", str(app / "dist/u1-print-studio")])
         require((app / "dist/stdio.js").is_file(), "Production stdio bundle is missing")
-        # A dedicated output keeps the complete server inventory separate from
-        # the mandatory stdio and signed CLI build products in dist/.
-        directory = app / CANDIDATE_BUILD
+        # Each validation owns an empty output: copying a new hashed bundle over
+        # an earlier one retains obsolete chunks and violates the closed inventory.
+        # Preserve previous candidates and keep stdio/signed CLI products in dist/.
+        parent = app / CANDIDATE_BUILD
+        parent.mkdir(parents=True, exist_ok=True)
+        directory = Path(tempfile.mkdtemp(prefix="candidate-", dir=parent))
         self.command([str(self.bun), "--no-env-file", "--config=/dev/null", "run", "build:server", "--outdir", str(directory)], cwd=app)
         self.contract = static_contract(self.source, directory)
         self.build_manifest = read_build_manifest(directory)

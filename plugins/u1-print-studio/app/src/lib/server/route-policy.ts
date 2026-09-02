@@ -1,6 +1,8 @@
 export type RouteKind = 'general' | 'page' | 'tools' | 'oauth' | 'mcp' | 'camera';
 export type RoutePolicy = { kind: RouteKind; methods: readonly string[]; deniedMethod: 404 | 405 };
 export const DASHBOARD_VIEWS = ['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans', 'bed_mesh', 'camera'] as const;
+export const NATIVE_DASHBOARD_VIEWS = ['fans', 'thermals', 'heads', 'queue'] as const;
+export const NATIVE_DASHBOARD_PATHS = new Set<string>(NATIVE_DASHBOARD_VIEWS.map((view) => `/dashboard/${view}`));
 export const DASHBOARD_PAGES = new Set([
   '/dashboard', '/dashboard/', '/camera-widget',
   ...DASHBOARD_VIEWS.map((view) => `/dashboard/${view}`),

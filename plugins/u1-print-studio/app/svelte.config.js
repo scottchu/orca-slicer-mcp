@@ -15,7 +15,7 @@ export default {
     // OAuth token clients submit forms across origins without a browser Origin.
     // Preserve the existing PKCE/token-binding and WebAuthn origin contracts.
     csrf: { trustedOrigins: ['*'] },
-    prerender: { entries: ['/dashboard/fans'], crawl: false },
+    prerender: { entries: ['/dashboard/fans', '/dashboard/thermals', '/dashboard/heads', '/dashboard/queue'], crawl: false },
     version: { name: 'u1-unified-app-v1', pollInterval: 0 }
   }
 };

@@ -1,6 +1,200 @@
 # F0 dual-subsystem foundation validation
 
-## Current PR95: exact source approval and guarded Switch shipment
+## Current:29e4f07 approved; PR97 validation rejected stale output; operator repair frozen
+
+Independent `app/test-results/independent-29e4f07/REPORT.json`, SHA256
+`a35a432cc741d5f101b7d51c331aac2880128476c5b628f46ab3086bf32dbde2`,
+APPROVES `29e4f07fb971e466e123590a95d3916323b22141`, tree
+`1f61da7a679f3ccae09cbf6a0dc2c8d8d55516ff`. Its
+`./scripts/check-repository.sh` exits0 in47.098s:574 UI/55 files,325 server/32 files/
+3951 assertions, eight deterministic packages,34 service/26 ship Python tests,
+Svelte0errors/0warnings, AST and repository contracts PASS. Full-log SHA256 is
+`c9a58d86ba19857f1b6589ef224f94bf632b834487885ab2e0685917519815a4`.
+The original77f023e failure and two-file import repair below remain unchanged.
+
+With Bun1.4.0 and `--no-env-file --config=/dev/null`, the verifier ran
+`node_modules/@playwright/test/cli.js test --config test-results/independent-29e4f07/playwright.config.ts`.
+The first six-pass/one-failure result used a private Heads material sentinel that
+collided with an existing public skeleton template; unique-sentinel single-case
+renewal passed in1.534s. Both records remain. The first run used mutable gate
+`build-kit`, whose route-node order, CSS order and public Intl date template differ
+from the formal Bun-built payload. Equal CSS rule multisets do not prove equal
+cascade behavior; source equality does not bind browser acceptance to those bytes.
+
+Independent `run build:server --outdir test-results/independent-29e4f07/server`
+passes in4.243s with the same complete author manifest
+`a2a0afdb2db6402bb632ea212eeff09aed654d4e082c65553b1891f66e10f663`,
+56 runtime files and72 static routes. All seven cases then pass in5.304s using
+`serve-exact-payload.ts` and the isolated bundled handler/client/prerender bytes.
+This is seven distinct cases, not14: five fresh cases plus two renewed Fans cases.
+They cover Queue row counts/resize/200%/empty/error geometry, Heads Copy retirement
+and hidden prior telemetry, Thermals stale-success versus failed acquisition, and
+Fans320/720 hydration/refresh recovery. Exact-payload browser log SHA256 is
+`d9a2dc603b0197452f84978a77e2ad893e50de6f114c70a02b33895bc7dbe986`.
+
+Author triage `app/test-results/native-observation-pages/build-command-triage/REPORT.json`,
+SHA256 `f34f055fc7a7a31d6787bc7a64228a61f684238481a4afbb5173b30a55314aac`,
+records an accidental `bun … run build --version` build during investigation.
+It overwrote mutable output, not tracked inputs; original gate output had been
+archived and the isolated formal payload/browser verification was unaffected.
+No new323-case full browser run, BFCache hit or actual-printer acceptance is claimed.
+All328 verifier outputs are hashed; owned browsers/processes/ports were released.
+
+The read-only ship plan first rejected the draft PR without mutation; after the
+PR became ready, planning passed. Execute operation
+`pr97-20260902T165630-1d4262` failed in validate with
+`Invalid or incomplete Kit build contract`. Receipt basename
+`pr97-20260902T165630-1d4262.json` SHA256 is
+`0ea30e370a8f8cf2849855b9fd80d899bb287ab49ca31e25868e2b9404170ae3`:
+merged=false, installed=false; no shipment or restart succeeded. PR95 remains deployed.
+
+Independent `app/test-results/independent-pr97-ship-contract-failure/REPORT.json`,
+SHA256 `236ec6ce139038eb3312bc11d72c2d877ca5c8b87a44857b396125e9bc35c379`,
+identifies fixed `test-results/ship-build` reuse:56 declared files versus70 actual,
+14 undeclared old hashed client assets and zero missing files. The unchanged
+closed inventory reader correctly rejects it and accepts the fresh56-file/72-route
+formal payload. No native-route mapping or guard relaxation is required.
+
+The operator repair changes only `scripts/u1_ship.py` and its test: every validation
+gets a unique empty `candidate-*` directory while previous successful/failed output
+is retained. `app/test-results/ship-candidate-isolation/REPORT.json` SHA256 is
+`f8c33ac7ebf2410b9e7eef2d2deb695659fc0fd9df1d866ba1e7176dfa490d3e`.
+Author command `uv run --no-project python -m unittest discover -s scripts -p test_u1_ship.py -v`
+passes27 tests; log SHA256
+`d1caf5f632e9b9b976adb8561b5339bcc26ff8c7c569d95c6b4e663f940a668d`.
+The new test first failed its directory assertion, then the refined fixture
+reproduced the original inventory error on old source; both failures remain.
+After repair it proves two distinct initially empty outputs with equal manifests,
+retention of original evidence bytes, and rejection/preservation of a third fresh
+output with an undeclared asset. Reader, service, identity/security and shipping
+gates remain unchanged; these are synthetic fixtures, not a real ship retry.
+
+All417 app inputs remain bound to b202a856 below, with zero app delta and all15
+public HTML files identical. No rebuild, full gate, merge, install or service
+operation ran during this repair. Test resources closed. The new operator candidate
+requires independent exact review and mandatory required regression before another
+u1-ship attempt;29e4f07 browser evidence needs explicit unchanged-input retention.
+
+Docs-only `git diff --check`, the repository documentation prefix through
+`uv run python`,55-ID/order comparison and report/source hash checks pass.
+Application diff against29e4f07 is empty. These nine Markdown updates ran no
+application test, full regression, browser or build; operator authorship and
+independent candidate acceptance remain separate.
+
+## Earlier candidate77f023e: required gate failed at test-import type checking
+
+Independent `./scripts/check-repository.sh` on
+`77f023e1b007d836651d862ca1cbcae4fa91f608`, tree
+`8000b9abb18990a886932d9b4d264345614c445a`, exits2 after28.779s.
+`app/test-results/independent-77f023e/full-repository-result.json` records the
+command/result; `full-repository.log` SHA256 is
+`276e36fb7fdc95db6c871be8ced668914903c5562022e15263f91e71aa82e3e9`.
+Independent `REPORT.json` SHA256
+`376b311ae219483bc47d83a5861e43a117ecb2e1b0562d1cb9eea820bc61876d`
+records CHANGES_REQUESTED. Svelte0errors/0warnings, AST,574 UI tests/55 files and
+all eight deterministic package checks pass. Server TypeScript checking then reports TS2835 for three
+imports in `tests/server/kit-native-observations.test.ts` without NodeNext `.js`
+suffixes. Server tests and both Python stages were not reached; independent targeted
+browser checks had not begun. This is not a full-repository pass or candidate
+approval.
+
+The author's first focused repair exposed five equivalent imports in shared
+`tests/fixtures/kit-observation-store.ts`; retain
+`app/test-results/native-observation-pages/import-repair/typecheck-first.log`.
+That first focused log SHA256 is
+`f1e5f0cdf61ab8794f93f95bdd4cc30436c857433fcdb198bac2d2d709841b0a`.
+The frozen repair adds eight `.js` suffixes in these two test/fixture headers;
+production/configuration/guards are unchanged. Author repair `REPORT.json` in
+that directory has SHA256
+`cc10869d018b8f0699f53132774076a887be363a8695e3f893ff9fe375e1aaf0`.
+
+Using Bun with `--no-env-file --config=/dev/null`, `run check` now passes;
+`test tests/server/kit-native-observations.test.ts` passes three/195 assertions.
+With `U1_BROWSER_REPORT=./import-repair/browser-fans.json` and
+`U1_BROWSER_KIT_PORT=4182`, the existing Playwright config and grep
+`Kit Fans hydrate once.*320` pass one scoped fixture-startup/hydration/error/
+recovery case. The report retains exact command/output arguments. Typecheck,
+server-test and browser log SHA256 values are respectively
+`b2f327a363ac2117e2d2dd2deb15c4faeef49c09c5bb46f62aeee4a0d65e7449`,
+`620dd88aeb30e302ef7f13156853a634c65892085c7bd8d1466749bf66935e81` and
+`8908ff0b286bca1975cf9fbd1eb416fd7531bc1514fa09836bfc1643b784c9f6`.
+
+The new417-file `app-inputs.json` SHA256 is
+`b202a856519c65ae3a8de47408a73ecf1dcde50869d0c894ef1177bc3e9e2688`.
+Parity evidence binds333 unchanged production inputs,15 unchanged public HTML
+files and56 retained payload files; manifest remains a2a0afdb below. No rebuild,
+full suite or broad browser renewal ran. Owned browser/fixture/processes closed
+and4182 is free; no printer, deployed service or user session was touched.
+Required regression and independent exact review must renew on the next frozen
+candidate; the original77f023e failure remains unchanged.
+
+The docs author renewed `git diff --check` and, through `uv run python`, the
+documentation-only contract prefix,55-ID comparison and report/input/repaired-file
+hash checks: PASS. Only four continuity Markdown files changed in this update;
+no application/full/browser/build check was repeated by the docs author.
+
+## Prior native observation page author evidence
+
+
+Author report `app/test-results/native-observation-pages/AUTHOR-REPORT.json`, SHA256
+`682fbcf027852d36cd5f079c1a643e23035f03a816bb6b3015879f2a3bf5598a`,
+binds source from mainb5329ad. Its417-file non-Markdown application inventory
+`app-inputs.json` has SHA256
+`5fe71e58fd27a2ad0dc5ffa8ab3169a0b4c3232687328b281c1eabb630550d37`.
+Thermals/Heads/Queue now have native prerendered/hydrated page source at existing
+URLs, joining Fans. Closed native-path mappings bind CSP and build routes; three
+new page compositions are explicitly registered without raw DOM allowances.
+Shared presentation/controller/HTTP port, Camera lifecycle and public widgets
+are unchanged. This is focused author evidence, not independent acceptance or
+shipment; PR95 remains deployed and C08/Screen Sharing stay paused until home.
+
+Commands below ran from the app root using Bun1.4.0 with
+`--no-env-file --config=/dev/null`. Logs are in the report directory; the report
+records every exact command/log hash and retains the initial failures.
+
+| Actual command or scoped invocation | Result and retained failure |
+| --- | --- |
+| `bun … run build:server --outdir test-results/native-observation-pages/server` | First failed because the three new routes were absent from explicit prerender entries; renewal PASS |
+| `bun … test tests/server/kit-native-observations.test.ts` | Three PASS/195 assertions: exact prerender bytes, SSR zero reads, selected domain, CSP/public denial of every emitted client asset, raw/encoded/trailing/HTML/data aliases and GET-only methods |
+| `U1_KIT_FIXTURE_PORT=4182 bun … node_modules/@playwright/test/cli.js test --config test-results/native-observation-pages/playwright.config.ts` | Initial fixture startup failed before cases ran because the name collided with the adapter env prefix; changed fixture namespace to `U1_BROWSER_KIT_PORT` |
+| Same browser command with `U1_BROWSER_KIT_PORT=4182` |19 PASS/one fixture failure: duplicate injected navigation anchor; failure retained |
+| Same corrected browser command with `--grep "native client navigation"` | One renewal PASS after fixture correction |
+| Same corrected browser command with `--grep "text200=true\|history restoration"` | Four renewed PASS: three actual doubled-font cases replace ineffective root-font fixtures, plus history request-count coverage |
+| Same corrected browser command with `--grep "wrong-view and malformed"` | One new representative Heads wrong-view/malformed refresh/recovery case PASS |
+| `bun … run ui:check` | First failed on browser fetch-mock typing, then types passed but AST rejected three unregistered pages; narrow route registrations renewed final Svelte0errors/0warnings and AST PASS |
+| `bun … run build:server --outdir test-results/native-observation-pages/server-final` | PASS; all56 runtime files and complete manifest match the first successful build |
+
+The21 distinct browser scopes consist of15 unchanged scopes retained from the
+initial run, five renewed scopes and one new case; this is not a new21-case full
+run. Coverage includes native/no-iframe and JavaScript-disabled zero acquisition
+for all three pages;320/390/720 widths and actual200% text; initial failure,
+failed refresh, pending retry and recovery with neutral geometry; Heads complete
+eight-digit hex Copy, rejected-copy feedback, focus and44px target; SPA navigation
+aborts the departing request and mounts each selected view once. History returned
+a fresh document with one mount; no BFCache hit was observed. All data are synthetic.
+
+The complete payload manifest SHA256 is
+`a2a0afdb2db6402bb632ea212eeff09aed654d4e082c65553b1891f66e10f663`
+with56 runtime files/72 static routes. All15 public HTML files match baseline;
+`public-parity.json` SHA256 is
+`d25360be8eb70da90617f49fa44ce5cb919c405c5febe771e827cffd552f4e79`.
+No widget regeneration occurred. Server-test/final-build/final-UI log SHA256 values
+are respectively
+`e6b62aa281342a69ffcb11e4c7763a1e8988beb3011a95449ae1750607bb5ee3`,
+`2494b610dee3d7f047056c89f43c138eb985f6f01c6d2c86ceaea49437714a3b` and
+`e2f4d99851a1a07a56fbfe7aefc65b3be581552ecafd441457287eb35bcc27c8`.
+Owned browser contexts, fixtures and build/test children exited;4182 is free.
+No user session, deployed service, printer, authentication or network setting
+was changed. Required frozen regression, independent exact review, guarded ship,
+BOTH restarts and scoped served verification remain next.
+
+The docs author ran `git diff --check` and, through `uv run python`, the
+repository checker's documentation-only prefix, exact55 ledger ID/order comparison
+and report/input/delta hash comparisons: PASS. Application delta bytes remain
+bound to the author report. No app test, full regression, browser or build was
+repeated for these nine Markdown updates.
+
+## Retained PR95: exact source approval and guarded Switch shipment
 
 Independent report `app/test-results/independent-37884de/REPORT.json`, SHA256
 `bfb5e591d302fb1d3ff0b534ac6b67b2947e5773bd4b5587401ec924fa94ab24`,

@@ -343,9 +343,55 @@ class MechanicalGuardTests(unittest.TestCase):
         installs = [c for c in calls if "install" in c]
         self.assertEqual(len(installs), 1)
         self.assertIn("--frozen-lockfile", installs[0])
-        self.assertEqual(ops.build_manifest, read_build_manifest(app / CANDIDATE_BUILD))
+        output = next(Path(c[c.index("--outdir") + 1]) for c in calls if "--outdir" in c)
+        self.assertEqual(ops.build_manifest, read_build_manifest(output))
         (app / "public/widget.html").write_text("different")
         with self.assertRaisesRegex(ShipError, "asset"): ops.validate()
+
+    def test_validation_isolates_candidates_and_preserves_failed_output(self):
+        app = self.root / APP
+        (app / "public").mkdir(parents=True)
+        for name in ASSETS: (app / "public" / name).write_text(name)
+        (app / "dist").mkdir()
+        (app / "dist/stdio.js").write_text("fixture stdio")
+        previous = app / CANDIDATE_BUILD
+        write_kit_build(previous)
+        stale = previous / "client/_app/immutable/stale.js"
+        stale.write_text("previous candidate evidence")
+        preserved = {p.relative_to(previous): p.read_bytes() for p in previous.rglob("*") if p.is_file()}
+        ops = self.preflight_ops()
+        ops.source = self.root
+        ops.git = lambda *args, **kwargs: ""
+        outputs = []
+        initially_empty = []
+        inject_extra = False
+        def command(args, **kwargs):
+            if "--outdir" in args:
+                output = Path(args[args.index("--outdir") + 1])
+                initially_empty.append(output.is_dir() and not list(output.iterdir()))
+                outputs.append(output)
+                write_kit_build(output)
+                if inject_extra:
+                    (output / "client/_app/immutable/undeclared.js").write_text("reject this output")
+            return ""
+        ops.command = command
+        ops.validate()
+        first_manifest = deepcopy(ops.build_manifest)
+        ops.validate()
+        self.assertNotEqual(outputs[0], outputs[1])
+        self.assertEqual(first_manifest, read_build_manifest(outputs[0]))
+        self.assertEqual(first_manifest, read_build_manifest(outputs[1]))
+        inject_extra = True
+        with self.assertRaisesRegex(ShipError, "Invalid or incomplete Kit build contract"):
+            ops.validate()
+        self.assertEqual(len(set(outputs)), 3)
+        self.assertTrue(all(initially_empty))
+        self.assertTrue(all(output.parent == previous for output in outputs))
+        self.assertTrue((outputs[2] / "client/_app/immutable/undeclared.js").is_file())
+        with self.assertRaisesRegex(ValueError, "inventory differs"):
+            read_build_manifest(outputs[2])
+        for relative, content in preserved.items():
+            self.assertEqual((previous / relative).read_bytes(), content)
 
     def test_oauth_refresh_registration_and_counter_changes_are_allowed(self):
         path = self.root / "oauth.json"
