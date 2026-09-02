@@ -1,20 +1,26 @@
 # Next agent
 
-Current execution: ship observation stable error anatomy and inline Heads
-color/quiet Copy first. Camera is a separate blocked checkpoint, not a release
-prerequisite; Progress redesign follows. The complete route/evidence matrix is
+PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
+Camera remains separately blocked; Progress redesign is still unfinished.
+The complete current route/evidence matrix is
 [Widget delivery ledger](docs/widget-delivery.md).
-PR87 is ready for exact final-record binding and guarded delivery. Application
-`88eb80f` plus test-only head `3d8954c` has separate independent source and
-targeted validation approval. Repository528 UI/303 app/21 lifecycle/24 shipping
-pass; browser evidence is263 retained passes plus9 corrected scoped passes,
-not a clean full-browser pass. The38 independent cases and limits are in
-VALIDATION. No PR87 deployment has occurred; PR84 remains the latest live app.
+PR87 merged as `96e466e2ffefd75dc0b2c1fce92b40c7ec30555d`, preserving the
+independently approved tree `37a232ad86069584b4ec32562d603e5c0d577530`.
+The coordinator's guarded receipt confirms BOTH services explicitly restarted,
+loaded and healthy/integrity-verified;31 static and32 security checks pass,
+preservation passes and rollback was not needed. Independent postverification
+passes15 scoped downloaded-byte browser cases and exact service/asset checks.
+The pre-existing public-root routing limitation remains open in the ledger;
+this does not establish actual-phone, native clipboard or printer acceptance.
+Source/test evidence and the263 retained plus9 renewed browser split remain
+in VALIDATION, including the38 independent cases and artifact-loss limits.
 Camera `c6cfb4e` remains source-only and blocked at81,989/80,000 bytes.
 PR86 merged as `8b995ee`; its thumbnail policy remains binding.
-The older checkpoint sections below are historical, not current priority,
-migration or completion claims. Next: final-doc identity approval, then root
-ships PR87 through unchanged guards and verifies actual served behavior.
+This rollout-record change is documentation only: no additional application
+build, browser suite, deployment or service restart under decision0028.
+After independent review/merge of these records, continue the open ledger
+without declaring Camera, Progress or all migrations complete.
+Older sections below are historical, not current completion claims.
 
 ## Immediate: finish PR86 delivery of the reviewed thumbnail policy
 
