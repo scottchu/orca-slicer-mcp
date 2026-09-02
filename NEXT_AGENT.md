@@ -1,5 +1,27 @@
 # Next agent
 
+## Immediate: review and deliver required print-thumbnail policy
+
+Independently review the documentation candidate for decision 0040,
+PREP-007/HANDOFF-007 and the AGENTS/knowledge gate, then deliver through a PR.
+Apply local decoded-image verification before accepting or uploading any
+prepared artifact, including the current unstarted job. After upload, verify
+target-parsed thumbnail metadata before start. Configuration strings or an
+earlier upload do not satisfy these ordered gates.
+
+No application, plugin skill, build input or deployed service changes in this
+slice. Decision 0028's documentation-only rule requires no deployment or
+service restart. Runtime enforcement and target/physical display acceptance
+remain unimplemented or unverified; preserve exact artifact and authorization
+bindings during operations outside this repository policy work.
+
+Then resume the previous widget order below without marking unfinished Camera,
+Queue, Fans, Job History, Current Job, other migrations or thumbnail/Console/
+widget-size features complete. See the active HANDOFF and VALIDATION records
+for changed paths, evidence and limits.
+
+## Previous delivered widget checkpoint
+
 ## Current: Heads Copy PR84 deployed and independently verified
 
 PR84 merged as `0fe54f34e43f97dd9376e5a17b06efd342726455`, with the

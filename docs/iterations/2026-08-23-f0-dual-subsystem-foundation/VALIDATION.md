@@ -1,5 +1,34 @@
 # F0 dual-subsystem foundation validation
 
+## Required print-thumbnail policy — documentation author evidence
+
+Base: `36ab3b21acd2ae6ff0bbb1b18e9ebd861197829f`. Decision 0040,
+PREP-007/HANDOFF-007 and the AGENTS/knowledge additions require local decoded
+embedded images before prepared acceptance/upload, then target-parsed metadata
+after upload before start. This is an agent workflow policy; this change
+implements no runtime enforcement and validates no user artifact or printer.
+
+Author checks actually ran:
+
+- `git diff --check`: PASS.
+- `uv run --no-project -` inline documentation/identity checker: PASS. It uses
+  `git diff --name-only` and `git ls-files --others --exclude-standard` against
+  an exact ten-path documentation allowlist, `git ls-tree -rz` at the base and
+  `git hash-object --stdin-paths` on current files to compare all 457 protected
+  tracked blobs, then checks local Markdown link targets, unique PREP-007 and
+  HANDOFF-007 definitions, and the active iteration pointer.
+- Protected base-tree record SHA256 (NUL-joined `ls-tree` records, excluding
+  the ten allowed paths):
+  `d6b44818f7af97124ba7b3a1f08a52669346ab58f808ed665bae726cf4a23cb7`.
+
+All application, tests, dependencies, configuration, generated assets, shipping
+guards and source plugin skills remain byte-identical to the base. The prior
+application evidence below is retained for those unchanged bytes, without
+extending it to thumbnail behavior. No application test, full build/browser
+suite, service operation, printer command or plugin installation was run by
+this documentation author. Independent exact-candidate review and PR delivery
+remain pending; physical thumbnail display and printability are unverified.
+
 ## Heads Copy PR84 rollout — delivery and independent postverification passed
 
 Reviewed PR head `dfc0857aa483e1fa3e86b71ad58805dae396c109` was independently

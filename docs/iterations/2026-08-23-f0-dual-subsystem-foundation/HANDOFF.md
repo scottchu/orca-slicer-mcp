@@ -1,5 +1,36 @@
 # F0 dual-subsystem foundation handoff
 
+## Current: required print-thumbnail policy candidate
+
+Decision 0040 makes decoded embedded thumbnails mandatory for prepared
+acceptance and upload; target-parsed thumbnail metadata follows upload and must
+match local evidence before start. Local checks cover nonempty image content,
+backend-compatible count/format/dimensions and exact selected plate/layout,
+bound to the final artifact hash. The current unstarted job is subject to the
+same rule. An earlier upload never implies start readiness.
+
+Changed paths: `AGENTS.md`, `docs/requirements.md`,
+`docs/knowledge/snapmaker-orca-cli-preparation.md`, decision 0040 and its index,
+`PROJECT_STATE.md`, `NEXT_AGENT.md`, and this iteration's `BRIEF.md`,
+`VALIDATION.md`, `HANDOFF.md`. All are documentation; no runtime, source skill,
+dependency, configuration, asset, service or private artifact changes belong
+to the candidate. The sanitized motivating observation is preset thumbnail
+configuration with absent emitted image blocks.
+
+Next smallest action: independent exact-candidate source review and targeted
+documentation verification, then PR delivery. No full build/browser suite,
+plugin installation or service restart is required for unchanged application
+bytes under decision 0028. Backend automation, non-user thumbnail fixtures and
+target/physical display evidence remain separate; thumbnails do not establish
+geometry, printability or physical success.
+
+Preserve accepted Heads PR84/Bed PR83 and resume the earlier widget order after
+this user priority. Camera retry, all-widget errors, Bed layout, fixed Lab
+dock, Current Job PR79, unfinished Queue/Fans/Job History migrations and other
+widget/Console/progress-thumbnail/size/cleanup tracks remain open.
+
+## Previous delivered widget checkpoint
+
 ## Current: Heads Copy PR84 deployed and independently verified
 
 PR84 merged as `0fe54f34e43f97dd9376e5a17b06efd342726455`, with the

@@ -489,6 +489,16 @@ durable-monitor claim.
   support-enforcer or blocker geometry, painted mesh facets, and intentionally
   modeled breakaway geometry. Facet annotations remain bound to the exact mesh
   identity and are not silently carried across remeshing.
+- **PREP-007:** Every prepared artifact contains genuine, decodable, nonempty
+  embedded thumbnail images of its exact selected plate/layout. Before prepared
+  acceptance or upload, extract and decode the final artifact's images, verify
+  their count, format and dimensions against the selected backend/target
+  requirements, and inspect correspondence to the selected objects, orientation
+  and arrangement. Bind the result to the final artifact hash and preparation
+  revision. Configuration strings, standalone previews, blank placeholders and
+  images from another revision do not satisfy the gate. Missing, invalid,
+  incompatible, stale or unverified evidence blocks acceptance and upload.
+  This visual identity check does not prove geometry, printability or safety.
 - **ORCA-001:** Every invocation records the exact OrcaSlicer edition and
   version, bounded inputs and outputs, exit result, and captured diagnostics.
 - **ORCA-002:** Invocation success, output creation, and output validation are
@@ -527,6 +537,16 @@ durable-monitor claim.
 - **HANDOFF-006:** Authorization binds the exact artifact hash, manifest and
   handoff schema versions, target, requested action, validity period, and retry
   scope. A change to any bound field requires renewed authorization.
+- **HANDOFF-007:** The handoff carries PREP-007's thumbnail verification bound
+  to the final artifact hash. After upload and before start, independently read
+  the target's parsed thumbnail metadata for the uploaded artifact and match
+  image count, format and dimensions to the local evidence as exposed by that
+  target. Missing, conflicting or unavailable verification blocks start; an
+  upload acknowledgement alone is insufficient. Any artifact change, including
+  embedding or replacing images, requires renewed local verification and
+  identity/authorization binding before the changed artifact is uploaded.
+  Decision 0040 governs this workflow policy; automated enforcement remains
+  unimplemented.
 
 ## Expansion
 
