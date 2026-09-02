@@ -108,9 +108,9 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
   });
 }
 
-test('Current Job initial HTTP failure is immediate and retry succeeds', async ({ page }) => {
+test('Current Job initial HTTP 503 failure is immediate and retry succeeds', async ({ page }) => {
   let calls = 0;
-  await page.route('**/dashboard/tools/call', (route) => ++calls === 1 ? route.fulfill({ status: 500, body: 'unavailable' }) : route.fulfill({ json: liveCurrentJobResult() }));
+  await page.route('**/dashboard/tools/call', (route) => ++calls === 1 ? route.fulfill({ status: 503, body: 'unavailable' }) : route.fulfill({ json: liveCurrentJobResult() }));
   await page.goto('/dashboard/jobs');
   const frame = page.frames().find((item) => item.url().endsWith('/dashboard/jobs_widget'))!;
   await expect(frame.getByRole('button', { name: 'Retry Current Job' })).toBeVisible({ timeout: 3000 });

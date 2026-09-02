@@ -41,6 +41,25 @@ independent exact approval and shipment remain outstanding. No completed track
 is inferred from the non-browser checkpoint. Current Job owns the pending
 generic compact action API; default consumers retain their existing styling.
 
+## Integrated accepted legend baseline records
+Current immediate slice: slim vertical legend author gates complete after
+ordinary accepted Queue `7882670` integration. Rail-only design passes full
+Chrome 182 and repository/runtime/eight-package gates; exact independent review
+and guarded delivery remain pending. Five production assets are unchanged.
+Real Bed phase two `194ea79`, remaining migrations/features and recoverable
+cleanup stay open. Include the unchanged crowded 320px/200% summary in real
+Bed composition work; narrow legend acceptance does not cover that debt.
+
+## Historical author and integrated baseline records
+
+Immediate additive priority: a lab-only vertical Z(mm) legend inside the left
+chart edge, shared in 2D/3D/loading with no below-chart legend row or layout
+jump. Work starts at accepted main `ff577fcb`, separate from preserved real Bed
+phase-two checkpoint `194ea79`. The latter's production cutover, keyboard/
+context-loss/font/controller gates remain pending, not cancelled. No production
+or cleanup completion is implied by the immediate legend slice.
+
+## Integrated Queue baseline records
 Current: PR75's three-artifact split is delivered at accepted main `ff577fcb`,
 with independent service/downloaded-byte synthetic verification recorded in
 PROJECT_STATE. Queue has a strict real adapter, zero-raw composition and focused

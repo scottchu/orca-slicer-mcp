@@ -92,6 +92,58 @@ Next: exact independent source review, then the smallest compositional UI slice
 on the reviewed model. Keep Current Job and History separate and retain the
 existing deployment/review gates.
 
+## Integrated accepted legend baseline records
+## Slim vertical legend author handoff — ready for separate exact review
+
+Ordinary Queue integration is `910355e`. Changed HeightLegend/ChartFrame leaves,
+Bed lab composition, measured chart obstacles and projected 2D/3D label fitting;
+added unit, graph/AST and four-width/200% browser evidence. The adopted 6px rail
+has one intrinsic caption, no duplicate visible endpoint DOM or skeletons,
+neutral loading and a uniform flat midpoint. Chart accessible description
+retains exact maximum/minimum. Non-legend defaults stay unchanged.
+
+Final full browser 182/182 and repository/runtime/eight-package gates pass.
+Only Bed lab bytes differ from accepted Queue; no production Bed entry,
+controller, compact IconButton, service, MCP, auth or printer change. Next:
+separate exact-source review and independent validation, then coordinator-owned
+guarded shipment if approved. Port 4179 is released. Preserve all historical
+failure evidence below; do not treat author tests as independent approval.
+
+Real Bed phase two remains separately preserved at `194ea79`, with keyboard,
+context-loss/font/controller and accepted shared-leaf integration still due.
+The current unchanged three-column Min/Max/Range summary is crowded at
+320px/200% text; record and repair it in that broader composition slice.
+
+## Historical author and integrated baseline records
+
+## Vertical legend author candidate — HELD after bounded experiments
+
+Changed generic HeightLegend, optional ChartFrame leading slot, measured chart
+obstacles and Bed lab composition/rendering fit. The narrow left rail leaves
+14px inset; visible legend endpoints reserve measured boxes and Z may use the
+opposite true projected silhouette. 2D reserves legend clearance without
+changing unequal physical spans; non-legend leaves preserve their defaults.
+Added leaf/unit and four-width/normal200 packaged browser tests. No production
+Bed entry, controller repair or compact IconButton is included. The full real
+Bed phase-two work remains at `194ea79`; merge accepted dependencies later.
+
+The wide-column experiment failed 320/200 colored surface and zoom gates.
+A narrow-rail trial passed normal coverage and zoom but still clipped one
+320/200 Y endpoint. Opposite-Z now passes every existing rotation/coverage/
+pixel-zoom case, but a new surface-clearance probe finds849/412 colored pixels
+under the legend's fixed6ch text boxes at320/390px with200% text. The boxes
+overestimate short actual glyphs; the top-left title is visually crowded.
+Focused26 ended24PASS/2FAIL. Independent layout design should measure glyphs
+and include their exclusion rectangles in neutral1x surface fitting while
+preserving14px rail, true projected axes, normal coverage and independent zoom.
+An alternative for independent design is a narrow Z(mm) rail with accessible
+endpoints and the existing visible Minimum/Maximum facts, avoiding duplicate
+numeric labels in the chart. This is a proposal, not adopted permission to
+remove visible values or weaken any acceptance gate.
+Do not waive these failures, claim visual acceptance, or ship until the final
+exact candidate passes and separate roles independently approve it.
+
+## Integrated Queue baseline records
 ## Queue author handoff — exact review required, not release approval
 
 PR75's three-artifact private-lab split is delivered on accepted main

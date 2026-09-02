@@ -30,7 +30,7 @@ describe("private Svelte lab packages", () => {
   test("freezes the deterministic light observation artifact", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(250_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "3dc3fc89f18a5ca78395d522d8aa50bfce35f8746f07020e75e84722defb3f93"
+      "82aacc0c2046646bf3280ded20a1e18fe673564795f1fc9ca97a2878fde1f91f"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -49,7 +49,8 @@ describe("private Svelte lab packages", () => {
 
   test('freezes Bed Mesh as an isolated self-contained artifact', () => {
     expect(Buffer.byteLength(bedMeshHtml)).toBeLessThanOrEqual(700_000);
-    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('a236140ff270f2e36e6e6b8fdc32a3fb9fc2d29da75c74b10785b3d271267fbf');
+    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('0e366a9e52d0ddddfb3f546e115d55e9b084cc1e093b420e70bed8bae73217df');
+    expect(bedMeshHtml).toContain('data-height-legend');
     for (const marker of ['Bed Mesh', '3D surface', '2D grid', 'data-chart-frame=""', 'WebGLRenderer', 'OrbitControls']) expect(bedMeshHtml).toContain(marker);
     for (const forbidden of ['data-camera-media', 'RTCPeerConnection', '/dashboard/tools/call', 'open_printer_camera']) expect(bedMeshHtml).not.toContain(forbidden);
     expect(bedMeshHtml).not.toMatch(/<script\b[^>]*\bsrc\s*=|<link\b[^>]*\brel\s*=\s*["']stylesheet/i);

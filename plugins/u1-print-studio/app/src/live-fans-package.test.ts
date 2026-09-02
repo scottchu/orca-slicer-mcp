@@ -8,7 +8,7 @@ for (const [view, title, hash] of [
   ['thermals', 'Thermals', 'a61b1f573d2eb35b2072d922ab1006a7edf7fbca10a31b7d23a694ded7b2316b'],
   ['heads', 'Heads & Filaments', '9af894315db44cccefc00aeea04361b5d2df88278e1bf3495b6c038554dca9f8'],
   ['queue', 'Print Queue', 'f7d1f007c18a2353ecd53cd57a689246e790fc6ee223a44e8b8293cc3cc89df9'],
-  ['jobs', 'Current Job', 'fdb958bfeab62bd21a8a6418a13b285a99abf4c54a1c9057692044fce5d49ac9'],
+  ['jobs', 'Current Job', 'f936326129c06979274d4cf40f19e37fc61db9443472080e71be18d867da579c'],
 ]) test(`real ${title} is one deterministic private artifact without lab or acquisition code`, () => {
   const html = readFileSync(new URL(`../public/svelte-live-${view}.html`, import.meta.url), 'utf8');
   expect(Buffer.byteLength(html)).toBeLessThanOrEqual(100_000);
@@ -25,7 +25,7 @@ test('current focused production inventory remains within the forward ten-widget
     view,
     bytes: Buffer.byteLength(readFileSync(new URL(`../public/svelte-live-${view}.html`, import.meta.url), 'utf8')),
   }));
-  expect(entries.map(({ bytes }) => bytes)).toEqual([87632, 88208, 93611, 88716, 90804, 88256]);
-  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(537227);
+  expect(entries.map(({ bytes }) => bytes)).toEqual([87632, 88208, 93611, 88716, 90804, 88398]);
+  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(537369);
   expect(() => assertFocusedProductionAggregate(entries)).not.toThrow();
 });

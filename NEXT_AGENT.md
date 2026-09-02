@@ -90,6 +90,41 @@ gates and obtain exact independent validation/review before normal guarded
 delivery. Keep Job History separate. No printer control, plugin/auth/Tailscale
 change or browser port reservation belongs to this checkpoint.
 
+## Integrated accepted legend baseline records
+## Immediate next: independently review and validate the slim-rail candidate
+
+The author candidate ordinarily integrates accepted Queue main `7882670`.
+Final repository/runtime gates and Chrome 182/182 pass. Independently review
+the exact PR head and reproduce rail/caption clearance, accessible range,
+flat/neutral colors, mode/loading geometry, mesh coverage/orbit/zoom and zero
+fetch. Verify all eight packages deterministically: only Bed lab differs from
+Queue; light/Bed/Camera are 204,875 / 634,045 / 78,795 bytes (917,715 total).
+Then the coordinator may use guarded PR merge/deploy/BOTH restart/verification.
+Author evidence is not independent approval or deployment. Port 4179 is free.
+Keep real Bed phase two `194ea79` separate; its controller integration,
+compact IconButton, keyboard/context-loss/font and crowded 320px/200% summary
+remain follow-ups. Do not copy pending work or broaden this legend release.
+
+## Historical author and integrated baseline records
+
+## Immediate next: independent design for the HELD vertical legend
+
+The isolated author candidate starts from accepted main `ff577fcb` and only
+changes lab/shared chart presentation. Its last bounded browser run is 24/26:
+all existing mesh/axis/orbit/zoom cases pass, but 320/390px with 200% text puts
+849/412 colored pixels under the fixed-width legend label boxes. Determine
+actual-glyph clearance, then design neutral 1x surface fitting around those
+obstacles; do not continue heuristic fitting or loosen coverage/zoom gates.
+The 320 frame is 258×193.5px, plot width242px and rail inset14px; enlarged
+legend labels occupy about80px. Finish the four-width/200% browser,
+deterministic three-package and existing coverage/zoom gates without loosening
+them; then obtain exact-source independent review and validation before a PR
+can ship. Production assets must remain identical. Keep the preserved real
+Bed Mesh phase-two checkpoint `194ea79` separate until the immediate legend and
+its Queue/Current Job shared-leaf dependencies are accepted and ordinarily
+merged. Do not copy pending work between branches or bypass shipping guards.
+
+## Integrated Queue baseline records
 ## Review frozen Queue candidate after delivered PR75
 
 PR75's three-artifact private-lab split is delivered on accepted main
