@@ -1,5 +1,35 @@
 # F0 dual-subsystem foundation handoff
 
+## Bed Lab error-frame checkpoint — focused gates passed; integration next
+
+Application464d3e73d427e648a6b4c75be625eeaa49beaee9 adds controlled
+`ui/WidgetStateSurface/`, BedMeshWidget/BedMeshLabRoot state composition,
+Bed-only retained-error selection/fixture type, focused unit/browser tests,
+AST registration, regenerated Bed asset/pin and ADR0038/UI004 records.
+The wrapper always renders the same child snippet; it owns no RPC, state
+machine, timer or announcer. Existing ChartFrame provides one non-flow notice.
+Initial failure uses the existing skeleton structure statically, not telemetry;
+unavailable is a presentation state, not inferred unsupported capability.
+Only an actual provided retry callback exposes Retry. Bed Lab's300ms local
+demo timer is canceled on selection/reset/popstate/unmount; retained phase
+changes reuse fixture identity and original receipt. Existing ready chart,
+legend, mode control and renderer implementation stay unchanged.
+
+Focused88 UI,26 browser plus four original chart cases,19 app/220 assertions,
+compiler/AST and repeated three-Lab packages pass; see VALIDATION commands.
+All owned fixture/browser processes close through test teardown;4187 is checked
+released. Evidence captures/logs remain ignored; no user editor/browser/session,
+printer or deployed service was touched. No full-suite or release claim.
+
+Next smallest action: wait for accepted Heads PR81, ordinary merge accepted main
+into this branch, resolve only normal shared record/test/artifact integration,
+renew affected evidence and run one owned full frozen-candidate regression.
+Separate source review and targeted independent verification follow, then normal
+guarded PR/merge/deploy/BOTH restart/served behavior verification. Do not deploy
+this checkpoint directly. Camera68259ead, other nine widgets/live error rollout,
+fixed Lab dock, real Bed migration and every existing feature/cleanup track stay
+pending. Known320/200% summary crowding is inherited and not accepted as fixed.
+
 ## Test strategy policy handoff — docs only
 
 Changed only `AGENTS.md`, `PROJECT_STATE.md`, `NEXT_AGENT.md` and active

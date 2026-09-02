@@ -1,6 +1,19 @@
 # Project state
 
-## Current: bounded Bed Lab stable-error surface
+## Current: Bed Lab error-frame source checkpoint; integration pending
+
+Application `464d3e73d427e648a6b4c75be625eeaa49beaee9` from accepted
+`4e869d8` implements ADR0038 for Bed Lab only. Compiler/AST, focused88 UI,
+focused26 browser plus four unchanged-chart browser cases,19 app tests and
+repeated three-Lab packaging pass. Only Bed Lab asset changes (631250 bytes);
+all five production and other two Lab assets remain byte-identical.
+Wait for accepted Heads PR81, integrate ordinary main, renew affected checks,
+then assign one owner to the full frozen-candidate gates. Independent source
+review/verification, PR, deployment and meaningful served behavior are pending.
+Other nine widgets and production error rollout, Camera68259ead, fixed Lab
+dock, unfinished migrations/features and recoverable cleanup remain open.
+
+## Earlier implementation scope
 
 From accepted4e869d8, implement decision0038's controlled shared presentation
 foundation in Bed Lab only. Preserve chart/header/footer structure through

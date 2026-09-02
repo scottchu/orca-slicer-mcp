@@ -1,5 +1,13 @@
 # Widget completion tracks
 
+Current bounded checkpoint: Bed Lab initial/retained error-frame composition at
+464d3e7 from accepted4e869d8. Focused88 UI/26 browser plus four unchanged chart
+cases/19 app and compiler/three-Lab packages pass. No full or independent release
+acceptance yet; wait for accepted Heads PR81 integration before one owned full
+candidate. Other nine widget error surfaces and all production-error adoption
+remain open, as do fixed Lab dock, Camera68259ead and all earlier migration/
+feature/cleanup tracks. New ADR0038 is a direction, not rollout completion.
+
 Latest additive priority: Bed Mesh's single animated icon segmented mode control
 is authored at8022984 from accepted4828ce04;455 UI/300 app/21 lifecycle/24 shipping,
 focused16/full198 browser and all eight deterministic packages pass. Independent

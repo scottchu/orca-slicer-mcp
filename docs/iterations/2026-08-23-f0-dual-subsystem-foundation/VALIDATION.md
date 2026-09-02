@@ -1,5 +1,58 @@
 # F0 dual-subsystem foundation validation
 
+## Bed Lab stable-error frame — focused author evidence, not release acceptance
+
+Application source `464d3e73d427e648a6b4c75be625eeaa49beaee9`, tree
+`e1bfbab6b4d75cf41c3bffae82204512cbfc8a86`, accepted base4e869d8.
+Impact: new controlled WidgetStateSurface leaf, Bed Lab composition/closed phase
+selection, existing chart/state regressions and private Bed artifact/hash. No
+production reader, auth/routing, sample normalization, media session or renderer
+implementation changes. Current evidence is synthetic/software only.
+
+Actually run (Bun1.3.12; UI commands in app/ui):
+
+- `bun run check`: Svelte zero errors/warnings; AST leaf registration and
+  unchanged ready-body raw-debt multiset PASS.
+- `bun x vitest run src/lib/ui/WidgetStateSurface/WidgetStateSurface.test.ts
+  src/lib/bed-mesh/BedMeshState.test.ts src/lib/bed-mesh/BedMeshWidget.test.ts
+  src/lib/bed-mesh/lab-controller.test.ts src/lib/lab/controller.test.ts
+  src/lib/observation/ObservationLoading.test.ts src/lib/ui/components.test.ts`:
+  88/88. Wrapper retains video/canvas/button/stream identity and focus; one
+  mount/dispose; no wrapper lifecycle or announcements. Bed failures retain
+  neutral structure without truthy telemetry or renderer; closed retained-error
+  phase is rejected by other observation-route parsers.
+- `bun run build && bun run package:private-lab`, then repeated
+  `bun run package:private-lab`: deterministic three-Lab graph/cap checks PASS.
+  Bed631250, Light204875, Camera78795; aggregate914920 below unchanged980000.
+  Bed SHA256 `828350559ed1896466c4aff6d85e7a6f11cc5ba6abc4ae4b2a597eaa6d1607f1`.
+  Against base, only Bed public asset changes; all five production plus other
+  two Lab assets are byte-identical. No complete eight-package renewal claimed.
+- App `bun test src/private-lab.test.ts src/bed-mesh.test.ts`:19/19,
+  220 assertions; exact private package pin, no acquisition primitives, closed
+  routes, reported/inactive/unknown/retained normalization unchanged.
+- Isolated Chrome via ignored local configuration with exclusive4187 (same
+  tracked Playwright config except port/output placement):
+  `bun x playwright test --config test-results/local-bed.config.ts
+  tests/visual/bed-error-state.spec.ts tests/visual/lab-states.spec.ts`:26/26.
+  Four320/390/590/720 widths normal/200%: identical major loading/error/
+  unavailable geometry; ready transition within unchanged1px tolerance; static
+  animation, false error busy, one overlay, no initial WebGL requests,44px
+  Retry, same action/focus, retained2D/3D renderer/context/receipt, canceled
+  retry, no requests. Existing other-route/known-empty state checks pass.
+- Earlier focused `bed-error-state.spec.ts bed-mesh.spec.ts`:14/14, including
+  four original XYZ/chart/pixel-coverage/4:3/mode tests. Final test-only addition
+  of explicit WebGL request counters is covered in the26/26 run above.
+- `git diff --check` PASS. Captures at320/200% and720/normal were inspected:
+  error notice is within chart and frame is retained. Existing enlarged
+  below-chart summary-label crowding remains; this is not whole-widget polish.
+
+Failure history: first new browser run9/10;2D test incorrectly selected a child
+canvas although the renderer itself is a canvas. Corrected only selector,
+then14/14 and final26/26 pass. No geometry/contrast/cap tolerance waived.
+No full repository/browser/runtime run or independent acceptance yet. Wait for
+accepted Heads PR81 ordinary integration before one owned full candidate run.
+No deployment, physical printer, phone or user-outcome evidence is claimed.
+
 ## Test strategy policy — targeted docs-only author evidence
 
 Base: accepted PR78 `177d326d13e126d727be7d7431fbfc232e902bc3`.
