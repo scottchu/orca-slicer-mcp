@@ -66,12 +66,30 @@ const materialRows = async (frame: Frame, loading = false) => {
     expect(row.width).toBe(20); expect(row.height).toBe(20); expect(row.stroke).toBe('1.8');
     expect(row.iconHidden).toBe('true'); expect(row.fits).toBe(true); expect(row.children).toBe(0);
     expect(row.overlaps).toEqual([]); expect(row.loading).toBe(loading);
-    if (loading) { expect(row.hidden).toBe('true'); expect(row.text).toBe('Generic PLA'); }
+    if (loading) { expect(row.hidden).toBe('true'); expect(['Generic PLA', '—']).toContain(row.text); }
     else for (const space of row.spaces) expect(Math.abs(space - row.naturalSpace)).toBeLessThanOrEqual(1);
   }
   return rows;
 };
 for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) {
+  test(`Heads public empty/unknown and per-tool preview templates ${width} enlarged=${enlarged}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1600 });
+    const queries = ['lab_scenario=empty', 'lab_scenario=unknown', 'lab_scenario=loaded'];
+    for (const scenario of ['mixed', 'empty', 'unknown']) for (const tool of ['0', '1', '2', '3']) for (const material of ['empty', 'petg_blue']) queries.push(`lab_scenario=${scenario}&lab_tool=${tool}&lab_material=${material}`);
+    for (const query of queries) {
+      await page.goto(`/dashboard/lab/heads?${query}`);
+      await page.locator('[data-lab-controls]').waitFor();
+      if (enlarged) await enlarge(page.mainFrame());
+      await materialRows(page.mainFrame()); await readable(page.mainFrame(), width);
+      const ready = await bounds(page.mainFrame());
+      await page.getByLabel('Preview state', { exact: true }).selectOption('loading');
+      await materialRows(page.mainFrame(), true);
+      const loading = await bounds(page.mainFrame());
+      expect(loading.length).toBe(ready.length);
+      for (let row = 0; row < ready.length; row++) for (let axis = 0; axis < 4; axis++) expect(Math.abs(loading[row][axis] - ready[row][axis]), `${query} region ${row}/${axis}`).toBeLessThanOrEqual(1);
+      await expect(page.locator('[data-widget-shell] button,time')).toHaveCount(0);
+    }
+  });
   test(`Heads lab material icon and natural spacing ${width} enlarged=${enlarged}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1600 });
     await page.goto('/dashboard/lab/heads');

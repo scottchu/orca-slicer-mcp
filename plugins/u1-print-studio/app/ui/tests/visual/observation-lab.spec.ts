@@ -171,9 +171,15 @@ for (const width of widths) {
       if (view === 'heads') {
         const columns = await panel.locator('.card-grid').evaluate((node) => getComputedStyle(node).gridTemplateColumns.split(' ').length);
         expect(columns).toBe(2);
-        const materialLines = await panel.locator('[data-inset-card] > .body .stack > .caption').evaluateAll((items) => items.map((item) => ({ height: item.getBoundingClientRect().height, line: Number.parseFloat(getComputedStyle(item).lineHeight), padding: Number.parseFloat(getComputedStyle(item).paddingTop) + Number.parseFloat(getComputedStyle(item).paddingBottom) })));
+        const materialLines = await panel.locator('[data-inset-card] .lucide-spool').evaluateAll((icons) => icons.map((icon) => {
+          const item = icon.parentElement!.parentElement!.querySelector<HTMLElement>('.caption')!;
+          const text = document.createTreeWalker(item, NodeFilter.SHOW_TEXT).nextNode()!;
+          const range = document.createRange(); range.selectNodeContents(text);
+          const lines = new Set([...range.getClientRects()].filter((rect) => rect.width > 0).map((rect) => rect.top)).size;
+          return { height: item.getBoundingClientRect().height, lines, line: Number.parseFloat(getComputedStyle(item).lineHeight), padding: Number.parseFloat(getComputedStyle(item).paddingTop) + Number.parseFloat(getComputedStyle(item).paddingBottom) };
+        }));
         expect(materialLines).toHaveLength(4);
-        for (const material of materialLines) { expect(Math.abs(material.height - material.line)).toBeLessThanOrEqual(1); expect(material.padding).toBe(0); }
+        for (const material of materialLines) { expect(material.lines).toBeGreaterThan(0); expect(Math.abs(material.height - material.line * material.lines)).toBeLessThanOrEqual(1); expect(material.padding).toBe(0); }
         await expect(panel.getByRole('button', { name: /^Copy T/ })).toHaveCount(3);
         for (const copy of await panel.getByRole('button', { name: /^Copy T/ }).all()) {
           await expect(copy).toHaveCSS('height', '44px');

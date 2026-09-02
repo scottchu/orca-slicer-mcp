@@ -71,4 +71,21 @@ describe('shared HeadCard material row', () => {
       expect(skeleton?.textContent).toBe('Generic PLA');
     }
   });
+
+  it('uses only closed public per-card templates even if private readings are supplied', () => {
+    const { container } = render(HeadCards, { items: [reading('Private material fixture')], loading: true, materialShapes: ['empty', 'nominal', 'empty', 'nominal'] });
+    expect([...container.querySelectorAll('[data-text-skeleton]')].map((node) => node.textContent)).toEqual(['—', 'Generic PLA', '—', 'Generic PLA']);
+    expect(container.textContent).not.toContain('Private material fixture');
+    expect(container.querySelectorAll('button,time')).toHaveLength(0);
+  });
+
+  it('rejects ready template overrides at component boundaries', () => {
+    expect(() => render(HeadCard, { physicalTool: 1, reading: reading('Generic PLA'), materialShape: 'empty' } as never)).toThrow('Invalid material loading shape');
+    expect(() => render(HeadCards, { items: [reading('Generic PLA')], materialShapes: ['empty', 'empty', 'empty', 'empty'] } as never)).toThrow('Invalid material loading shapes');
+  });
+
+  it('rejects arbitrary strings rather than turning them into a private skeleton', () => {
+    expect(() => render(HeadCard, { physicalTool: 1, loading: true, materialShape: 'Private fixture' } as never)).toThrow('Invalid material loading shape');
+    expect(() => render(HeadCards, { loading: true, materialShapes: ['nominal', 'empty', 'private', 'nominal'] } as never)).toThrow('Invalid material loading shapes');
+  });
 });

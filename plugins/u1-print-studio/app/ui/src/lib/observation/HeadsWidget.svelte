@@ -6,8 +6,9 @@
   import { headColor, type HeadCardValue, type HeadId } from '../live/heads-presentation';
   import { writeClipboard } from '../ui/clipboard';
   import HeadsPanel from './HeadsPanel.svelte';
-  type Props = { observation: HeadsObservation; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; refreshing?: never };
-  let { observation, loading = false, refreshing = false }: Props = $props();
+  import type { MaterialLoadingShapes } from './heads-loading';
+  type Props = { observation: HeadsObservation; loading?: false; refreshing?: boolean; materialShapes?: never } | { loading: true; observation?: never; refreshing?: never; materialShapes?: MaterialLoadingShapes };
+  let { observation, loading = false, refreshing = false, materialShapes }: Props = $props();
   const heads = $derived(loadingObservation(loading, observation, validateHeads));
   const items = $derived(heads?.items.map((head): HeadCardValue => ({ physicalTool: head.physicalTool, active: head.active, state: head.headState, material: head.material, presence: head.presence, color: head.color, actual: head.actualC, target: head.targetC })));
   const action = createCopyAction(writeClipboard);
@@ -20,4 +21,4 @@
     if (!refreshing && item && headColor(item.presence, item.color).color === color) void action.copy(id, color);
   };
 </script>
-<HeadsPanel {items} observedAt={heads?.sourceObservedAt ?? null} freshness={heads?.freshness ?? 'unknown'} materials={heads ? { state: 'known', freshness: heads.freshness === 'offline' ? 'unknown' : heads.freshness, sourceObservedAt: heads.sourceObservedAt, receivedAt: heads.sourceObservedAt, checkedAt: heads.sourceObservedAt, reason: null } : undefined} phase={loading ? 'loading' : 'ready'} {refreshing} copying={current.copying} feedback={current.feedback} sourceLabel="Lab fixture · Head state & thermals" refreshLabel="Refresh lab fixture" onrefresh={() => action.notify('Lab fixture refreshed')} oncopy={copy} />
+<HeadsPanel {items} {materialShapes} observedAt={heads?.sourceObservedAt ?? null} freshness={heads?.freshness ?? 'unknown'} materials={heads ? { state: 'known', freshness: heads.freshness === 'offline' ? 'unknown' : heads.freshness, sourceObservedAt: heads.sourceObservedAt, receivedAt: heads.sourceObservedAt, checkedAt: heads.sourceObservedAt, reason: null } : undefined} phase={loading ? 'loading' : 'ready'} {refreshing} copying={current.copying} feedback={current.feedback} sourceLabel="Lab fixture · Head state & thermals" refreshLabel="Refresh lab fixture" onrefresh={() => action.notify('Lab fixture refreshed')} oncopy={copy} />

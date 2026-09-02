@@ -2,6 +2,7 @@
   import { browser } from '$app/environment';
   import { onMount } from 'svelte';
   import LabControls from '$lib/ui/LabControls.svelte';
+  import { headsLoadingShapes } from '$lib/lab/heads-loading';
   import { defaultSelection, fieldsFor, loadingRows, readSelection, selectionSearch, selectionValue, setSelection, type LabSelection } from '$lib/lab/controller';
   import { OBSERVATION_LAB_VIEWS, resolveObservationFixture, previewObservationState, type ObservationLabView } from '$lib/lab/observation-fixtures';
   import CurrentJobWidget from '$lib/observation/CurrentJobWidget.svelte';
@@ -54,7 +55,7 @@
   <section class="route-panel" data-route-panel={view}>
     <main class="lab-page" data-private-lab={view} data-lab-view={view}>
       {#if selection.phase === 'error' || selection.phase === 'unavailable'}<ObservationState {view} reason={selection.phase} />
-      {:else if selection.phase === 'loading' && view !== 'thermals' && view !== 'fans'}<ObservationSkeleton {view} rows={loadingRows(selection)} />
+      {:else if selection.phase === 'loading' && view !== 'thermals' && view !== 'fans'}<ObservationSkeleton {view} rows={loadingRows(selection)} materialShapes={headsLoadingShapes(selection)} />
       {:else if view === 'overview'}<OverviewWidget observation={resolveObservationFixture(selected('overview'))} refreshing={selection.phase === 'refreshing'} />
       {:else if view === 'progress'}<ProgressWidget observation={resolveObservationFixture(selected('progress'))} refreshing={selection.phase === 'refreshing'} />
       {:else if view === 'thermals'}<ThermalsWidget state={previewObservationState(selected('thermals'))} />

@@ -13,7 +13,11 @@
   import IconButton from '../ui/IconButton.svelte';
   import Skeleton from '../ui/Skeleton.svelte';
   import ActualTarget from './ActualTarget.svelte';
-  let { physicalTool, reading, loading = false, copying = false, oncopy }: { physicalTool: HeadId; reading?: HeadCardValue; loading?: boolean; copying?: boolean; oncopy?: (id: HeadId, color: string) => void } = $props();
+  import { materialLoadingTemplate, type MaterialLoadingShape } from './heads-loading';
+  type Props = { physicalTool: HeadId; reading?: HeadCardValue; copying?: boolean; oncopy?: (id: HeadId, color: string) => void } & ({ loading: true; materialShape?: MaterialLoadingShape } | { loading?: false; materialShape?: never });
+  let { physicalTool, reading, loading = false, materialShape, copying = false, oncopy }: Props = $props();
+  const materialTemplate = $derived(materialLoadingTemplate(loading, materialShape));
+  $effect.pre(() => { materialLoadingTemplate(loading, materialShape); });
   const color = $derived(headColor(reading?.presence ?? null, reading?.color ?? null));
 </script>
 <InsetCard label={`Tool ${physicalTool}`} color={color.color} neutral={!loading && color.neutral} active={reading?.active === true} actionAvailable={!loading && !!color.color} headerLines={2}>
@@ -22,7 +26,7 @@
     <Caption><LoadingValue {loading} text={loading ? undefined : headStateLabel(reading?.active ?? null, reading?.state ?? null)} /></Caption>
   {/snippet}
   <Stack>
-    <Inline gap="tight"><Inline shrink={false}><Icon name="spool" /></Inline><Caption>{#if loading}<TextSkeleton shape="Generic PLA" />{:else}{reading?.material ?? '—'}{/if}</Caption></Inline>
+    <Inline gap="tight"><Inline shrink={false}><Icon name="spool" /></Inline><Caption>{#if loading}<TextSkeleton shape={materialTemplate} />{:else}{reading?.material ?? '—'}{/if}</Caption></Inline>
     <Inline gap="tight"><Inline shrink={false}><Icon name="thermals" /></Inline><ActualTarget actual={loading ? undefined : reading?.actual ?? null} target={loading ? undefined : reading?.target ?? null} {loading} compact /></Inline>
   </Stack>
   {#snippet footer()}
