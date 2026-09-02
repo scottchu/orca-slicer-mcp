@@ -1,5 +1,52 @@
 # F0 dual-subsystem foundation validation
 
+## PR81 local-gate repair — tests only
+
+Test checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d`, tree
+`94f127adb482d90586d851b85d86b5bda08ec844`. The earlier ship operation
+`pr81-20260901T223907-478182` stopped before merge/install/restart. Its inherited
+ObservationLoading.test.ts reported 15 PASS/1 FAIL because a blanket text check
+forbade the accepted hidden public `Generic PLA` template.
+
+Only this test changes: approved leaves must be SPAN with exactly allowed
+attributes, aria-hidden, no child elements, the Spool/Caption/card structure and
+one of the two exact public strings. All remaining text and accessible labels
+retain forbidden-telemetry checks; non-Heads templates receive no exception.
+Private readings, arbitrary templates, visible/hidden stray labels, accessible
+labels, tabindex/contenteditable/href/role and button-tag adversaries are covered.
+
+Actual commands (pinned Bun 1.3.12):
+
+- UI `bun run test -- src/lib/observation/ObservationLoading.test.ts`: initial
+  editing 21/22 (overbroad rejection of Queue's existing skeleton), then 24/24
+  PASS after limiting the exception to Heads. No Queue/runtime change.
+- UI `bun run test`: 478/478 PASS on first repair `8e67cd2`.
+- First `./scripts/check-repository.sh`: deliberately interrupted after 478 UI
+  and five live package checks when independent review identified a missing
+  noninteractive-leaf assertion. It is not a complete gate PASS; log retained.
+- Focused renewal: 29/29 PASS; independent reviewer separately ran 29/29 on
+  final `1e2e387` after valid interactive-attribute adversary values were set.
+- Final `PATH=<pinned-bun-bin>:$PATH ./scripts/check-repository.sh`: exit0 on
+  `1e2e387`; compiler/AST zero errors/warnings, 483 UI, all eight deterministic
+  package checks, 300 app/3,557 assertions, 21 lifecycle and 24 shipping PASS.
+  No separate full browser/build command was run; required gate internals ran
+  unchanged, including their existing package builds and rendered-layout check.
+
+Ignored UI test-results logs: heads-ship-loading-focused.log,
+heads-ship-full-ui.log, heads-ship-repository.log (interrupted),
+heads-ship-loading-final-focused.log and heads-ship-final-repository.log (complete).
+`git diff --exit-code c9d69cb HEAD -- plugins/u1-print-studio/app` with only
+ObservationLoading.test.ts excluded passed; browser tests/harness/scripts,
+runtime, packages, configuration and dependencies are unchanged. Independent
+review also confirmed no other non-record changes after `6f487c8`. Retained
+214/214 browser evidence belongs to unchanged app inputs, subject to final
+independent head binding. This is software evidence, not deployment/device or
+physical-printer acceptance.
+
+All command sessions exited, including the deliberately interrupted gate. No
+author browser/fixture was started. A later read-only exec could not launch due
+to OS error24 (too many open files); it did not affect the completed final gate.
+
 ## Heads material icon — frozen author application
 
 Source `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree

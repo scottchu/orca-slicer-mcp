@@ -1,5 +1,14 @@
 # Widget completion tracks
 
+PR81 delivery update: first mandatory gate rejected an inherited blanket loading
+test; nothing merged/installed/restarted. Test-only `1e2e387` repairs the exact
+public-skeleton exception with private/accessibility/noninteractive adversaries.
+Final repository gate and independent source/targeted tests pass; final identity
+binding and guarded retry remain. Application `c9d69cb` and 214 browser results
+are unchanged. Camera `4eb3106` is a separate source checkpoint with a known
+explicit same-live-scenario retry defect, not accepted or deployed. No track
+below is dropped or treated as completed by this test repair.
+
 ## New user priorities retained — Heads icon first
 
 - Heads: shared Spool icon beside one contiguous, naturally wrapping material

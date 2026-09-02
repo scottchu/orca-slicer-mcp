@@ -1,5 +1,23 @@
 # Project state
 
+## Current: Heads PR81 shipping-gate test repair
+
+The first guarded shipment stopped at local validation; PR81 was not merged or
+installed and no services restarted. The inherited loading test rejected the
+deliberately hidden public `Generic PLA` skeleton. Test-only checkpoint
+`1e2e387d8cbbada99a23dfa01ad9b94265834f8d` (tree
+`94f127adb482d90586d851b85d86b5bda08ec844`) admits only exact public,
+noninteractive Heads material skeleton leaves; private, visible, accessible and
+non-Heads telemetry guards remain. Independent source review and 29 targeted
+tests pass. The final required repository gate passes: 483 UI, 300 app/3,557
+assertions, 21 lifecycle, 24 shipping tests and all eight exact packages.
+
+Runtime, assets, dependencies, configuration, browser inputs and shipping guards
+remain identical to frozen app `c9d69cb`; its 214/214 browser evidence is retained
+for independent identity-bound reuse, not rerun. The final records tail and PR
+head still need independent identity confirmation before the coordinator retries
+guarded delivery. All unfinished tracks below remain open.
+
 ## Current: Heads material icon — frozen author candidate
 
 Application source `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree

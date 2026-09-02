@@ -1,5 +1,12 @@
 # F0 dual-subsystem foundation brief
 
+Immediate bounded repair: finish PR81's failed local gate by correcting only
+ObservationLoading.test.ts. Permit only the accepted Heads public nominal/empty
+TextSkeleton leaves after exact noninteractive/hidden structural checks; retain
+all privacy and non-Heads checks and add adversaries. Application/browser bytes
+stay frozen. Renew required repository validation and exact independent approval
+before retrying guarded shipment; never alter shipping guards to mask a failure.
+
 Current bounded slice (OBS-010/UI-003): add the shared Spool icon beside the
 already-contiguous Heads material label, from accepted main PR80 `4e869d8`.
 Both live and lab use HeadCard; retain one naturally wrapping material string,

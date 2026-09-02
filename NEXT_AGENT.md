@@ -1,5 +1,22 @@
 # Next agent
 
+## Immediate: bind the PR81 test-only repair and retry guarded delivery
+
+Test checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d` has independent
+source approval, independent 29/29 focused PASS and a complete author repository
+gate PASS (483 UI, 300 app, 21 lifecycle, 24 shipping, eight package identities).
+Only ObservationLoading.test.ts changes after the previous records head; no
+application/browser inputs change from `c9d69cb`. Verify the final docs/remote
+identity and bind retained 214-case browser evidence before retrying PR81.
+The failed first ship operation merged/installed nothing; do not bypass a guard.
+
+All test command sessions exited. No author browser or fixture was opened for
+this repair. A subsequent read-only exec launch was rejected with OS error24;
+the completed gate was unaffected. Do not broadly kill user/service processes.
+Camera checkpoint `4eb3106` is separate and has an independently identified
+same-live-scenario explicit-retry defect to fix after this Heads handoff. No
+Camera release or completion is claimed; all broader tracks remain open.
+
 ## Next: independently accept and ship the small Heads material slice
 
 Review frozen application `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`,

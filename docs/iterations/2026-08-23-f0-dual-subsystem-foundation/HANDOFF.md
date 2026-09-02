@@ -1,5 +1,23 @@
 # F0 dual-subsystem foundation handoff
 
+## PR81 test-only local-gate repair ready for exact binding
+
+Checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d` changes only
+ObservationLoading.test.ts after the previous final records. Its exact hidden
+public-leaf exception is independently source-approved; independent 29 targeted
+tests and final required repository validation pass (483 UI, 300 app, 21/24
+lifecycle/shipping, eight unchanged packages). The earlier ship gate failed
+before merge/install/restarts. Preserve its failure evidence and retry only
+after independent final docs/remote identity and retained browser binding.
+
+No runtime, assets, browser inputs, dependencies or guards changed from app
+`c9d69cb`; no duplicate 214-case browser run was launched. Command sessions are
+closed; no author fixture/browser is open. OS error24 blocked one subsequent
+read-only launch after all required tests completed; preserve user/service
+resources and do not infer unfinished children from that global symptom.
+Camera `4eb3106` and its explicit-retry defect remain a separate unfinished
+checkpoint, as do Bed/state/dock/Progress and all existing tracks.
+
 ## Heads material icon — frozen application, independent acceptance due
 
 Application `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree
