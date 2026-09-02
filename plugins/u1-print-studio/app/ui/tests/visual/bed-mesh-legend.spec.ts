@@ -35,7 +35,7 @@ const inspect = async (page: Page, enlarged: boolean) => {
     expect(value.glyph.left, value.text!).toBeGreaterThanOrEqual(result.legend.left - 1); expect(value.glyph.right, value.text!).toBeLessThanOrEqual(result.legend.right + 1);
     expect(value.glyph.top).toBeGreaterThanOrEqual(result.chart.top); expect(value.glyph.bottom).toBeLessThanOrEqual(result.chart.bottom);
   }
-  expect(result.text[0].box.bottom).toBeLessThanOrEqual(result.text[1].box.top); expect(result.text[1].box.bottom).toBeLessThan(result.text[2].box.top);
+  expect(result.text).toHaveLength(1); expect(result.text[0].text).toBe('Z (mm)');
   for (const label of result.labels) {
     expect(label.box.left, label.text!).toBeGreaterThanOrEqual(result.content.left - 1); expect(label.box.right, label.text!).toBeLessThanOrEqual(result.content.right + 1);
     expect(label.box.top).toBeGreaterThanOrEqual(result.content.top - 1); expect(label.box.bottom).toBeLessThanOrEqual(result.content.bottom + 1);
@@ -45,6 +45,17 @@ const inspect = async (page: Page, enlarged: boolean) => {
     }
   }
 };
+
+const gradientSamples = async (page: Page) => {
+  const png = (await page.locator('[data-height-legend] .gradient').screenshot()).toString('base64');
+  return page.evaluate(async (png) => {
+    const image = new Image(); image.src = `data:image/png;base64,${png}`; await image.decode();
+    const canvas = document.createElement('canvas'); canvas.width = image.width; canvas.height = image.height;
+    const context = canvas.getContext('2d')!; context.drawImage(image, 0, 0);
+    return [4, Math.floor(image.height / 2), image.height - 5].map((y) => [...context.getImageData(Math.floor(image.width / 2), y, 1, 1).data].slice(0, 3));
+  }, png);
+};
+const closeColor = (actual: number[], expected: number[]) => actual.forEach((channel, index) => expect(Math.abs(channel - expected[index])).toBeLessThanOrEqual(12));
 
 const clearSurfaceBehindLegend = async (page: Page) => {
   const canvas = page.locator('[data-chart-frame] canvas');
@@ -78,17 +89,26 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
   await page.addInitScript(() => { Object.defineProperty(window, 'fetch', { value: () => { throw new Error('Legend lab must not fetch'); }, configurable: true }); });
   await page.goto('/dashboard/lab/bed_mesh'); await expect(page.locator('[data-bed-mesh-3d] canvas')).toBeVisible(); if (enlarged) await enlarge(page);
   await expect(page.locator('[data-height-legend]')).toHaveAttribute('data-orientation', 'vertical'); await expect(page.locator('.legend-bar,.legend-values')).toHaveCount(0);
+  await expect(page.locator('[data-height-legend] .endpoint,[data-height-legend] [title]')).toHaveCount(0);
+  await expect(page.locator('[data-height-legend] .gradient')).toHaveCSS('width', '6px');
   await inspect(page, enlarged); const before = await geometry(page);
   await page.screenshot({ path: test.info().outputPath('vertical-legend-3d.png'), fullPage: true });
   for (const scenario of ['flat', 'tilted', 'warped']) {
     await page.getByLabel('Scenario', { exact: true }).selectOption(scenario); await inspect(page, enlarged); await clearSurfaceBehindLegend(page); expect(await geometry(page)).toEqual(before);
+    const colors = await gradientSamples(page);
+    if (scenario === 'flat') {
+      colors.forEach((color) => closeColor(color, [69, 209, 111]));
+      await expect(page.locator('[data-chart-frame]')).toHaveAccessibleDescription('Z height in millimetres; top 0, bottom 0');
+    } else { closeColor(colors[0], [230, 164, 59]); closeColor(colors[2], [67, 97, 197]); }
   }
   await page.getByRole('button', { name: 'Show 2D bed mesh' }).click(); await expect(page.locator('[data-bed-mesh-2d]')).toBeVisible(); await inspect(page, enlarged); await clearSurfaceBehindLegend(page); expect(await geometry(page)).toEqual(before);
   await page.screenshot({ path: test.info().outputPath('vertical-legend-2d.png'), fullPage: true });
   await page.getByLabel('Preview state', { exact: true }).selectOption('refreshing'); expect(await geometry(page)).toEqual(before);
   await page.getByLabel('Preview state', { exact: true }).selectOption('loading'); await expect(page.locator('canvas,[data-widget-shell] button')).toHaveCount(0); const loading = await geometry(page);
   expect(loading.length).toBe(before.length); for (let index = 0; index < before.length; index++) for (const field of ['x','y','width','height'] as const) expect(Math.abs(loading[index][field] - before[index][field])).toBeLessThanOrEqual(1);
-  await expect(page.locator('[data-height-legend] [data-skeleton]')).toHaveCount(2); await inspect(page, enlarged);
+  await expect(page.locator('[data-height-legend] [data-skeleton],.endpoint')).toHaveCount(0); await inspect(page, enlarged);
+  (await gradientSamples(page)).forEach((color) => closeColor(color, [231, 233, 236]));
+  await expect(page.locator('[data-chart-frame]')).toHaveAccessibleDescription('Z height in millimetres; range unavailable');
   await page.getByLabel('Preview state', { exact: true }).selectOption('ready'); await page.getByRole('button', { name: 'Show 3D bed mesh' }).click(); await inspect(page, enlarged); expect(await geometry(page)).toEqual(before);
   const normal = (await page.locator('[data-surface-projection]').boundingBox())!;
   await page.locator('[data-bed-mesh-3d] canvas').hover(); await page.mouse.wheel(0, -600); await expect.poll(async () => (await page.locator('[data-surface-projection]').boundingBox())!.width).toBeGreaterThan(normal.width * 1.2);

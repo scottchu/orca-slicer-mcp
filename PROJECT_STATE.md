@@ -1,5 +1,23 @@
 # Project state
 
+## Current: slim vertical legend author gates complete, review pending
+
+Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily
+merged as `910355e`. Independent design replaces duplicate chart endpoint
+numbers with a 6px left rail and one intrinsic Z(mm) caption; exact extrema
+remain in the chart's accessible description and visible summary below.
+The fixed 4:3 frame, 14px inset, true projected axes and existing fit/zoom
+gates pass without waivers. Final author evidence: UI 439, app 300 (3,556
+assertions), lifecycle 21, shipping 24, eight deterministic packages and
+Chrome 182/182. Only the Bed lab asset changes from the accepted Queue base:
+634,045 bytes; three labs total 917,715. All five production assets match.
+Independent exact-source review/validation and guarded delivery remain due.
+No deployment, printer or actual-device acceptance is claimed. The unchanged
+three-column summary remains visually crowded at 320px/200% text and belongs
+to the preserved real-Bed composition follow-up at `194ea79`.
+
+## Historical author and integrated baseline records
+
 ## Immediate vertical Bed Mesh legend — HELD author candidate
 
 User execution order now prioritizes a narrow vertical Z(mm) legend inside the

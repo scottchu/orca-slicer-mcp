@@ -1,5 +1,21 @@
 # Next agent
 
+## Immediate next: independently review and validate the slim-rail candidate
+
+The author candidate ordinarily integrates accepted Queue main `7882670`.
+Final repository/runtime gates and Chrome 182/182 pass. Independently review
+the exact PR head and reproduce rail/caption clearance, accessible range,
+flat/neutral colors, mode/loading geometry, mesh coverage/orbit/zoom and zero
+fetch. Verify all eight packages deterministically: only Bed lab differs from
+Queue; light/Bed/Camera are 204,875 / 634,045 / 78,795 bytes (917,715 total).
+Then the coordinator may use guarded PR merge/deploy/BOTH restart/verification.
+Author evidence is not independent approval or deployment. Port 4179 is free.
+Keep real Bed phase two `194ea79` separate; its controller integration,
+compact IconButton, keyboard/context-loss/font and crowded 320px/200% summary
+remain follow-ups. Do not copy pending work or broaden this legend release.
+
+## Historical author and integrated baseline records
+
 ## Immediate next: independent design for the HELD vertical legend
 
 The isolated author candidate starts from accepted main `ff577fcb` and only

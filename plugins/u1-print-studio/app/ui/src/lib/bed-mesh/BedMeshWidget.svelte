@@ -56,8 +56,8 @@
     <WidgetBody>
       {#snippet children()}
         <div class="mesh-kicker">Reported probe grid · <LoadingValue {loading} text={mesh ? `${mesh.summary.columns} × ${mesh.summary.rows}` : undefined} />{loading || mesh?.fixture ? ' · Lab fixture' : ''}</div>
-        <ChartFrame label={mesh ? `Bed mesh ${mode === '3d' ? '3D surface' : '2D grid'}, ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : 'Loading bed mesh'} overlay={feedback ? feedbackOverlay : undefined}>
-          {#snippet leading()}<HeightLegend minimum={mesh?.summary.minimum ?? null} maximum={mesh?.summary.maximum ?? null} palette={meshPalette} orientation="vertical" placement="start" />{/snippet}
+        <ChartFrame label={mesh ? `Bed mesh ${mode === '3d' ? '3D surface' : '2D grid'}, ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : 'Loading bed mesh'} description={mesh ? `Z height in millimetres; top ${mesh.summary.maximum}, bottom ${mesh.summary.minimum}` : 'Z height in millimetres; range unavailable'} overlay={feedback ? feedbackOverlay : undefined}>
+          {#snippet leading()}<HeightLegend minimum={mesh?.summary.minimum ?? null} maximum={mesh?.summary.maximum ?? null} palette={meshPalette} orientation="vertical" placement="start" showEndpoints={false} />{/snippet}
           {#if !mesh}<Skeleton shape="chart" />
           {:else if mode === '3d'}
             <BedMesh3D observation={mesh} {resetKey} />

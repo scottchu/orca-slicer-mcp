@@ -1,5 +1,52 @@
 # F0 dual-subsystem foundation validation
 
+## Slim vertical legend final author renewal — independent acceptance pending
+
+Accepted Queue `7882670778627128214d74bcee62fe20f5ddbf7a` was ordinarily merged
+as `910355e`; no copy/cherry-pick/rebase. Only the Bed lab public artifact
+differs from this base. Final raw UTF-8 bytes and SHA-256:
+
+| Lab artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| Light observation | 204875 | `4665ccc4033c385f6234043195521002b30c6bf8bd121f1646ea9de1fe36b98a` |
+| Bed Mesh | 634045 | `5127c3173393ab2237227694ce6d4fca7c6b02581a11aabb07e1c6a1729b1b5f` |
+| Camera | 78795 | `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a` |
+
+Lab aggregate is 917,715; all eight packages total 1,362,261. Five production
+packages remain byte-identical to Queue: Camera 89,919; Fans 86,747; Heads
+92,726; Queue 87,831; Thermals 87,323. All individual/aggregate caps are unchanged.
+
+Actually run on final application source: UI `bun run check`, focused
+`bun run test` for HeightLegend/BedMeshWidget (18), `bun run build`,
+`bun run package:private-lab`; root `./scripts/check-repository.sh` PASS with
+UI 439/40 files, app 300/3,556 assertions, lifecycle 21, shipping 24, compiler
+0 errors/0 warnings, AST/route/graph/cap and all eight exact package rebuilds.
+App `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`, local
+ad-hoc signature verification and compiled `--help` PASS. Final UI
+`bun run test:browser`: Chrome 182/182 PASS (1.6m), including all 174 inherited
+cases plus eight four-width/normal-200% legend cases. Focused Bed suite was
+26/26 before the final accessibility-markup-only repair.
+
+The first full renewal was 174 PASS/8 FAIL: a deliberately clipped sr-only
+chart description triggered the existing visible-glyph audit. Standard
+`hidden` description content referenced by `aria-describedby` fixes the source;
+accessible-description unit coverage passes and no audit exclusion or threshold
+was relaxed. The final 182-case renewal is green. Rendered gradient top/bottom,
+uniform flat midpoint, neutral loading, zero caption/surface overlap, actual
+mesh pixels excluding legend paint, fixed frame/mode/refresh/resize, supported
+orbit/zoom/reset and zero runtime fetch are tested.
+
+Author inspected final 320px/200% and 720px/normal 3D screenshots in the ignored
+Playwright test-results, plus the 320px/200% 2D capture. Rail and axes are clear.
+Unchanged below-chart Min/Max/Range labels remain crowded at 320px/200%; the
+inherited glyph-bounds checks do not establish complete visual polish. This is
+recorded for the separate real-Bed composition, not concealed or newly accepted.
+Port 4179 is released. This is software/synthetic evidence only: independent
+exact-SHA source review/validation, shipment and actual-device/printer evidence
+are not claimed. Earlier held experiments below remain historical evidence.
+
+## Historical author and integrated baseline records
+
 ## Vertical legend author evidence — HELD, no PR or deployment
 
 Base is accepted main `ff577fcb`. Current artifacts are light199,819,

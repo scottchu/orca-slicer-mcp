@@ -1,6 +1,35 @@
 # 0032: Migrate focused widgets through a private SvelteKit lab
 
-## 2026-09-01 in-chart vertical height legend
+## 2026-09-01 independently reviewed slim-rail refinement
+
+The held `4c4706c` duplicated extrema beside already visible Minimum/Maximum/
+Range facts and failed enlarged-text clearance. Independent layout design,
+adopted by the coordinator, replaces only Bed's duplicate endpoints with one
+intrinsic max-content Z(mm) caption and a 6px vertical rail inside the left
+border. Generic `HeightLegend.showEndpoints` defaults true; Bed opts out and
+omits endpoint elements, skeletons and obstacles entirely. Caption text remains
+12px normally and 24px at 200%; loading has the same neutral rail and geometry.
+Equal minimum/maximum maps to one uniform palette midpoint, not a false range.
+
+The chart's role-img accessible description states exact top maximum and
+bottom minimum in millimetres; it cannot depend solely on nested legend aria.
+Existing visible facts retain numeric evidence without extra rows, buttons,
+tooltips or focus stops. Preserve 14px plot inset, 4:3 frame, opposite true
+projected Z silhouette, normal 70%/42% coverage and independent detail zoom.
+The intrinsic caption must have zero mesh/label overlap at all four widths
+and normal/200% text. A failure holds acceptance rather than authorizing further
+heuristic shrinking. Accepted Queue main `7882670` is ordinarily integrated;
+production assets must remain identical to that baseline. All prior graph,
+eight-package determinism, route/CSP/no-fetch and independent-source gates
+remain. This is accepted design, not acceptance of an implementation or release.
+
+Final author renewal measures light 204,875 / Bed 634,045 / Camera 78,795 bytes
+(917,715 total). All eight package rebuilds and 182 browser checks pass; five
+production packages remain identical to Queue. Exact independent source review
+and validation remain required. Historical experiments below are not current
+accepted measurements.
+
+## 2026-09-01 held in-chart vertical height legend experiment
 
 The user's latest layout request takes priority as a bounded lab/shared-leaf
 slice, before the separately preserved real Bed Mesh migration. A generic

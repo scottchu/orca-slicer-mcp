@@ -36,7 +36,7 @@ export const leaves: Record<string, string[]> = {
   'ui/WidgetShell.svelte': ['article'], 'ui/WidgetBody.svelte': ['div'],
   'ui/WidgetHeader.svelte': ['div', 'div', 'div', 'div', 'h1', 'header'],
   'ui/WidgetFooter.svelte': ['div', 'div', 'footer'], 'ui/IconButton.svelte': ['button'],
-  'ui/ChartFrame.svelte': ['div', 'div', 'div', 'div', 'div'],
+  'ui/ChartFrame.svelte': ['div', 'div', 'div', 'div', 'div', 'span'],
   'ui/HeightLegend.svelte': ['div', 'span', 'span', 'span', 'span'],
   'bed-mesh/BedMesh2D.svelte': ['canvas'], 'bed-mesh/BedMesh3D.svelte': ['div', 'span', 'div', 'div'],
 };

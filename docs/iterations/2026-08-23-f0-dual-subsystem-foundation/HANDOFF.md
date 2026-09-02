@@ -1,5 +1,28 @@
 # F0 dual-subsystem foundation handoff
 
+## Slim vertical legend author handoff — ready for separate exact review
+
+Ordinary Queue integration is `910355e`. Changed HeightLegend/ChartFrame leaves,
+Bed lab composition, measured chart obstacles and projected 2D/3D label fitting;
+added unit, graph/AST and four-width/200% browser evidence. The adopted 6px rail
+has one intrinsic caption, no duplicate visible endpoint DOM or skeletons,
+neutral loading and a uniform flat midpoint. Chart accessible description
+retains exact maximum/minimum. Non-legend defaults stay unchanged.
+
+Final full browser 182/182 and repository/runtime/eight-package gates pass.
+Only Bed lab bytes differ from accepted Queue; no production Bed entry,
+controller, compact IconButton, service, MCP, auth or printer change. Next:
+separate exact-source review and independent validation, then coordinator-owned
+guarded shipment if approved. Port 4179 is released. Preserve all historical
+failure evidence below; do not treat author tests as independent approval.
+
+Real Bed phase two remains separately preserved at `194ea79`, with keyboard,
+context-loss/font/controller and accepted shared-leaf integration still due.
+The current unchanged three-column Min/Max/Range summary is crowded at
+320px/200% text; record and repair it in that broader composition slice.
+
+## Historical author and integrated baseline records
+
 ## Vertical legend author candidate — HELD after bounded experiments
 
 Changed generic HeightLegend, optional ChartFrame leading slot, measured chart

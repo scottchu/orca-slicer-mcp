@@ -1,9 +1,11 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  let { label, children, overlay, leading }: { label: string; children: Snippet; overlay?: Snippet; leading?: Snippet } = $props();
+  const descriptionId = $props.id();
+  let { label, description, children, overlay, leading }: { label: string; description?: string; children: Snippet; overlay?: Snippet; leading?: Snippet } = $props();
 </script>
 
-<div class="chart-frame" role="img" aria-label={label} data-chart-frame>
+<div class="chart-frame" role="img" aria-label={label} aria-describedby={description ? descriptionId : undefined} data-chart-frame>
+  {#if description}<span id={descriptionId} hidden>{description}</span>{/if}
   <div class="chart-layout" class:with-leading={!!leading}>
     {#if leading}<div class="chart-leading">{@render leading()}</div>{/if}
     <div class="chart-content">{@render children()}</div>
