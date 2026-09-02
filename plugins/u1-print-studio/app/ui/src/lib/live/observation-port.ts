@@ -5,7 +5,7 @@ export type ObservationPort = {
   subscribe: (listener: (result: unknown) => void) => () => void;
   dispose: () => void;
 };
-export const observationPort = (rpc: HostRpc, view: 'fans' | 'thermals' | 'heads' | 'queue'): ObservationPort => ({
+export const observationPort = (rpc: HostRpc, view: 'fans' | 'thermals' | 'heads' | 'queue' | 'jobs'): ObservationPort => ({
   start: rpc.start,
   refresh: () => rpc.callTool('refresh_printer_observation', { view }),
   subscribe: (listener) => rpc.subscribe((event) => { if (event.kind === 'result') listener(event.value); }),

@@ -1,9 +1,9 @@
 import { build } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { assertLiveObservationBytes, assertLiveObservationModule } from './observation-graph-contract';
-const view = process.argv.includes('--queue') ? 'queue' : process.argv.includes('--heads') ? 'heads' : process.argv.includes('--thermals') ? 'thermals' : 'fans';
-const title = view === 'queue' ? 'Print Queue' : view === 'heads' ? 'Heads & Filaments' : view === 'thermals' ? 'Thermals' : 'Fans & Air';
+import { assertCurrentJobModule, assertLiveObservationBytes, assertLiveObservationModule } from './observation-graph-contract';
+const view = process.argv.includes('--queue') ? 'queue' : process.argv.includes('--jobs') ? 'jobs' : process.argv.includes('--heads') ? 'heads' : process.argv.includes('--thermals') ? 'thermals' : 'fans';
+const title = view === 'queue' ? 'Print Queue' : view === 'jobs' ? 'Current Job' : view === 'heads' ? 'Heads & Filaments' : view === 'thermals' ? 'Thermals' : 'Fans & Air';
 await build({
   configFile: false, plugins: [svelte()],
   // Preserve whitespace inside bundled string values while emitting an artifact
@@ -16,7 +16,10 @@ await build({
       output: { assetFileNames: `${view}.[ext]` },
       plugins: [{ name: 'live-observation-production-boundary', generateBundle: (_options, bundle) => {
         const modules = Object.values(bundle).filter((item) => item.type === 'chunk').flatMap((item) => Object.entries(item.modules).map(([id, value]) => ({ id, renderedLength: value.renderedLength, originalLength: value.originalLength })));
-        for (const { id } of modules) assertLiveObservationModule(id, view);
+        for (const { id } of modules) {
+          if (view === 'jobs') assertCurrentJobModule(id);
+          else assertLiveObservationModule(id, view);
+        }
         mkdirSync('test-results/build-graphs', { recursive: true });
         writeFileSync(`test-results/build-graphs/live-${view}.json`, JSON.stringify(modules, null, 2));
       } }]

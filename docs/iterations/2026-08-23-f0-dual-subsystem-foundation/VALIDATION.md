@@ -1,5 +1,283 @@
 # F0 dual-subsystem foundation validation
 
+## Current Job author gates complete — independent exact acceptance next
+
+Application source `33f7cd390e0a0c6748db66f6feb197c4ca56f7c7`, tree
+`83caba261de818b377d4fac99be37eca354eccc4`, ordinarily merges accepted PR78
+main `177d326d13e126d727be7d7431fbfc232e902bc3`. Seven exact file contexts,
+strict real model/receipts, closed lab-only loading templates and opt-in32px
+paint/44px action targets are retained; accepted Queue controller and Bed
+legend/toggle stay intact. Author gates PASS:516 UI,311 app/3,662 assertions,
+21 lifecycle,24 shipping,223 Chrome, runtime/signature/help and three complete
+nine-package deterministic cycles. Jobs89,526; six production538,802; labs
+211,518/639,136/79,682 (930,336). Caps unchanged; Camera headroom318 bytes.
+Port4179 released. Exact independent source review/validation and guarded
+PR delivery remain required; this is not Current Job deployed acceptance.
+
+Attributed PR78 delivery/postverification is complete: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH restarted,
+31static/32security, preservation true, snapshot`20260901T212717-45f8ec`;
+independent15 manifest hashes,13HTTPS/all8assets,24 isolation checks and8
+downloaded-byte browser cases passed. PR76/PR77 postchecks are also complete.
+Known Bed320px/200% summary crowding/Observed spacing remain unchanged.
+Progress`25673dd` has its independent contrast finding cleared, but full
+phase-two integration/browser acceptance is pending; no Progress code copied.
+History`379c1e7`, Overview`1a3b4f4`, real Bed`194ea79`, MCP/legacy parity,
+Console, model thumbnail, filament sync, sizes, token and recoverable cleanup
+remain open. No printer, installed-plugin or actual-device acceptance.
+
+### Final Current Job author renewal commands and scope
+
+- `./scripts/check-repository.sh`: PASS, compiler 0 errors/warnings, zero-raw
+  AST, 516 UI tests, 311 app tests/3,662 assertions, 21 lifecycle, 24 shipping.
+  Includes actual normalizer/projector/adapter contracts, private route/method/
+  CSP/no-store/path isolation, six production and three lab source-hash checks.
+- UI `bun run test:browser`: PASS 223/223 in 1.7m, normal configured workers.
+  The 25 Jobs cases cover fourteen closed loading structures at each of four
+  widths and normal/200% text, all seven contexts, retained refresh, HTTP503
+  retry and real child lifetime. Default/compact controls retain 44px targets,
+  32px compact paint, focus and the transparent target-edge click. All inherited
+  Camera, Queue, Bed legend/toggle, orbit/zoom/pixels and no-fetch gates pass.
+  Generation/obsolete RPC/retry/BFCache source tests pass in the UI suite.
+- Three deterministic cycles: repository package checks above, then twice each
+  `verify:live-fans`, `verify:live-thermals`, `verify:live-heads`,
+  `verify:live-jobs`, `verify:live-queue`, `verify:live-camera`,
+  `verify:private-lab`. Every rebuilt package matches committed bytes each time.
+  The actual emitted Jobs CLIENT graph has 127 modules and passes
+  `assertCurrentJobModule`; no fixtures, closed shape builder, other observation
+  renderer, Camera, tests or backend source enters it.
+- App `bun run bundle && bun run bundle:server && bun run bundle:runtime`:
+  PASS, compiled runtime code signature valid and designated requirement met.
+  `./dist/u1-print-studio --help` and `git diff --check`: PASS.
+
+Frozen application package inventory (UTF-8 bytes / SHA-256):
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| live Fans | 87632 | c743a74eb4bdfcbf685f19d81e098634edd58cd8fa8f5946b98e7ba7b0657dd9 |
+| live Thermals | 88208 | a61b1f573d2eb35b2072d922ab1006a7edf7fbca10a31b7d23a694ded7b2316b |
+| live Heads | 93611 | 9af894315db44cccefc00aeea04361b5d2df88278e1bf3495b6c038554dca9f8 |
+| live Queue | 89021 | 1bd7dc8891ce4606556e793f2e5b702097a966e9bc142fbf6430642437ec1162 |
+| live Camera | 90804 | a6cab2f0915ac0e33187da8ad8152d92960435e800f2891c79f895288eda3bcb |
+| live Jobs | 89526 | 03667bd25f5dee854259ea728676aaa47543f1f313a3ed4c9520130bb8ece271 |
+| light lab | 211518 | f9c72ca7ffa9b72b33931c88ded6190fd6b64691b63e4ceeac3110876f568158 |
+| Bed lab | 639136 | 9e5c79c204280ac2d925ee4fe082af950e0417054e0a4ce4333a07a345d17110 |
+| Camera lab | 79682 | cd2cf36e01d6ac6f1b06d069b99034cc0d1ced9d3061000aa82d1372809ab8fc |
+
+Actual synthetic real-host captures at 320px/200% and 720px/normal were inspected
+in `ui/test-results/playwright/live-current-job-Current-J-5e45a--geometry-320-enlarged-true/current-job-ready.png`
+and `live-current-job-Current-J-bc013-geometry-720-enlarged-false/current-job-ready.png`.
+Extreme filenames/maximum-safe byte counts wrap without clipping; no assertion
+claims arbitrary private first-load data has exactly the neutral skeleton height.
+No author failure occurred in this final combined run. Earlier failed geometry
+and test-measurement attempts remain below. Evidence is local software/synthetic,
+not independent acceptance, deployed Current Job or physical-printer behavior.
+
+## Earlier checkpoints (superseded where noted above)
+
+
+## Current Job PR77 integration and intrinsic-loading repair — unaccepted checkpoint
+
+Focused renewal PASS: `bun x playwright test tests/visual/live-current-job.spec.ts
+tests/visual/lab-states.spec.ts tests/visual/lab-text-bounds.spec.ts` runs 49/49 in
+1.0m. This covers fourteen closed Jobs shapes at four widths/normal and 200%,
+all seven real states, retained refresh, initial HTTP503/retry, visible glyph
+bounds and 32px paint/44px default-and-compact hit targets. Port4179 is released.
+
+Ordinary merge `361308b` integrates accepted `4828ce04`. Actually run after the
+repair: `./scripts/check-repository.sh` PASS, including compiler/zero-raw AST,
+500 UI tests, 311 app tests/3,661 assertions, 21 lifecycle and 24 shipping tests,
+and all nine source-derived package checks. Jobs/Queue/light lab changed for
+the additive loading-shape support; production has no fixture/shape-builder
+imports. Jobs 89,526; Queue 89,021; six production total 538,802. Lab bytes
+211,518/634,932/79,682, total 926,132; no caps changed.
+
+First full author browser run was 183/199 PASS: eight compact tests incorrectly
+measured pseudo-element content (30px) rather than its 32px painted border box,
+and eight enlarged-text loading cases exposed genuine intrinsic geometry gaps.
+The latter now use closed public lab-selection templates and same-font inert
+leaves; real loading remains neutral. A focused attempt also revealed that a
+corner click (1,1) was outside the rounded hit shape. The repaired test checks
+elementFromPoint and clicks (2,22), inside the 44px target but outside 32px paint.
+No CSS hit-area shrink, forced click or geometry tolerance relaxation was used.
+
+The latest user-directed Bed toggle priority defers Current Job's full final
+207-case browser suite, runtime/signing renewal and third deterministic build.
+Earlier runtime evidence predates this repair and is not final acceptance.
+No PR, deployment, service or printer operation occurred in this checkpoint.
+Independent source reviewer reports no interim repair blocker; exact final
+review and separate validation remain required.
+
+Attributed PR77 postdeploy evidence: both loaded launchd/plist identities,
+health/integrity, 15 manifest hashes, 13 HTTPS routes/all eight assets, 24 raw
+path/method/isolation checks and eight actual-downloaded-byte browser cases pass.
+The earlier partial-cell probe resolves to zero fully-contained collisions and
+zero collisions across 637 actual glyph pixels, not a tolerance change. Local
+evidence is in the legend worktree's `ui/test-results/independent-post77/POSTDEPLOY.md`.
+Known summary crowding is unchanged; this is not physical-printer evidence.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Current Job contextual-label source repair — bounded non-browser renewal
+
+Starting clean at `42feff136f479b068186c53069406147b1127998`, checked ADR0025's
+persisted filename contract against `public/widget.html`'s existing context map.
+The latter also establishes printing Current job and paused Paused job. Replaced
+the collapsed Printing file/Reported file mapping with all seven exact contexts.
+Tests explicitly enumerate expected labels independently of the implementation
+and verify unreported job state plus a filename/active storage is not current.
+Updated the same seven browser-state assertions; these have NOT run yet.
+
+Actually run: UI `bun run check && bun run test` PASS: 0 errors/0 warnings,
+zero-raw AST and 476 tests in 43 files (12 CurrentJobPanel cases). App
+`bun run check && bun test src/current-job-live-adapter.test.ts` PASS: nine
+normalizer/projector/adapter tests, 62 assertions. `git diff --check` passes.
+Controller, IconButton and all committed public assets are unchanged from
+`42feff1`. Shared accepted DurationValue/DomainReceipt/TextSkeleton remain reused.
+
+No browser/4179, artifact renewal, complete repository/runtime renewal, PR or
+deployment was attempted. Existing packages are deliberately pre-repair bytes
+until accepted PR77 main is ordinarily integrated. Then every compact-button
+consumer package and all final hashes/graphs/bounds/browser gates must renew.
+This is author software evidence only, not independent acceptance or printer/
+device behavior. All migration and cleanup backlog remains open.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Current Job accepted-Queue integration — non-browser author evidence
+
+Ordinary integration of accepted main `7882670778627128214d74bcee62fe20f5ddbf7a`
+preserves both private routes and package inventories. Merge resolution reused
+accepted DurationValue/DomainReceipt/TextSkeleton and the shared generation
+repair rather than copying pending branches. New Jobs regression proves a later
+receipt on obsolete RPC16 cannot replace accepted notification15; retry17 works.
+
+Commands actually completed on this checkpoint:
+
+- UI `bun run check` and `bun run test`:475/475 in43 files; zero compiler
+  errors/warnings; exact zero-raw component AST PASS. Existing compact/default
+  unit tests and all accepted Queue controls/controller tests are included.
+- Rebuilt production Fans/Thermals/Heads/Queue/Jobs and all three private labs.
+  An initial app run before hash renewal failed exactly seven stale package/
+  inventory assertions; the rederived pins below replaced them, not the caps.
+- Final `bash scripts/check-repository.sh`: PASS, including UI475,
+  app311/311 with3,660 assertions, lifecycle21/21, shipping24/24, compiler/AST
+  and deterministic source-versus-committed package rebuild checks.
+- `uv run --no-project scripts/test_u1_ship.py`:24/24 separately PASS;
+  both Queue and Jobs are public-isolated, with security inventory33.
+- App `bun run bundle:runtime`, `codesign --verify --strict --verbose=2
+  dist/u1-print-studio`, and `dist/u1-print-studio --help`: PASS.
+- Actual emitted Current Job CLIENT graph127 modules passes its closed guard;
+  no lab/fixture or other real-domain adapter modules. `git diff --check`: PASS.
+
+| Artifact | Raw bytes | SHA256 |
+| --- | ---: | --- |
+| live-fans | 87632 | `c743a74eb4bdfcbf685f19d81e098634edd58cd8fa8f5946b98e7ba7b0657dd9` |
+| live-thermals | 88208 | `a61b1f573d2eb35b2072d922ab1006a7edf7fbca10a31b7d23a694ded7b2316b` |
+| live-heads | 93611 | `9af894315db44cccefc00aeea04361b5d2df88278e1bf3495b6c038554dca9f8` |
+| live-queue | 88716 | `f7d1f007c18a2353ecd53cd57a689246e790fc6ee223a44e8b8293cc3cc89df9` |
+| live-camera | 90804 | `a6cab2f0915ac0e33187da8ad8152d92960435e800f2891c79f895288eda3bcb` |
+| live-jobs | 88256 | `fdb958bfeab62bd21a8a6418a13b285a99abf4c54a1c9057692044fce5d49ac9` |
+| observation-lab | 209633 | `3dc3fc89f18a5ca78395d522d8aa50bfce35f8746f07020e75e84722defb3f93` |
+| bed-mesh-lab | 630767 | `a236140ff270f2e36e6e6b8fdc32a3fb9fc2d29da75c74b10785b3d271267fbf` |
+| camera-lab | 79682 | `cd2cf36e01d6ac6f1b06d069b99034cc0d1ced9d3061000aa82d1372809ab8fc` |
+
+Six actual focused production artifacts total537227/1,550,000. Lab aggregate
+is920,082/980,000; Camera lab has318 bytes headroom. No cap or dependency changed.
+
+NOT RUN:17 new Current Job browser cases, complete combined browser suite,
+closed loading geometry and default-consumer/compact button visual, hit-target
+and focus renewal. The root assigned separate Bed legend work browser priority;
+no4179 reservation or browser execution occurred here. Three final deterministic
+build cycles and fresh exact independent review/validation are still due before
+PR/freeze/ship. This is author software evidence only; no deployed-service,
+printer, actual-phone or user-outcome acceptance is claimed.
+
+## 2026-09-01 Current Job phase-two non-browser checkpoint
+
+Software-only author evidence; not independent approval or deployment. The
+branch ordinarily merged accepted main `ff577fcb` as `ec38829`.
+
+- UI `bun run check`: Svelte/TypeScript zero errors and warnings; zero-raw
+  composite and precise leaf/debt AST contracts PASS.
+- UI `bun run test`:383/383 in38 files PASS after compact action addition.
+  Includes13 new Current Job/quantity tests, one strict emitted-domain graph
+  test and3 compact/default action tests. Shared actual-producer adapter and
+  controller regressions remain in the suite.
+- App `bun run check` and final repository-contained `bun run test`: PASS,
+  307/307 tests with3,608 assertions after compact package regeneration.
+- `uv run scripts/test_u1_ship.py`:24/24 PASS. Exact jobs route hash and
+  public absence are added; security inventory grows31→32. The initial old
+  count assertions failed and were updated to the actual new route inventory.
+- Final `bash scripts/check-repository.sh`: PASS after compact generic leaf and
+  package renewal, including compiler/AST, UI383, app307, lifecycle21,
+  shipping24 and deterministic source-package checks. `git diff --check`: PASS.
+- `bun run build:live-jobs` plus two `verify:live-jobs` runs initially produced
+  identical84,463-byte output before compact. Current renewed compact output
+  is85,370 bytes, SHA256
+  `e87ad9b5c8a3d27f3b62d01801f314425b3cfa148a2c6cef604892fccf833a0a`.
+  Production graph enforces only Current Job/generic emitted modules, with
+  actual CLIENT graph inspection. No other domain adapter was emitted.
+- Renewed `build:live-fans`, `build:live-thermals`, `build:live-heads`,
+  `build:live-camera`, SvelteKit `build` and `package:private-lab`: PASS. Labs
+  are203,595/630,767/79,682 bytes,914,044 aggregate; hashes are pinned in
+  package tests. No budgets were raised. Default consumers include new opt-in
+  CSS but retain `compact=false`; their visual/browser renewal remains due.
+- App `bun run bundle:runtime` and `dist/u1-print-studio --help`: PASS, including
+  build-script ad-hoc codesign/verify. This is a local binary, not a service.
+- Added17 Playwright cases cover four widths/normal and200% text, default and
+  compact actions, real host iframe states/retained refresh, long filenames,
+  immediate HTTP500/retry and persisted/final page lifecycle. NOT RUN: Queue
+  owns the current browser gate; no4179 reservation was attempted here.
+
+Still required: accepted Queue merge and DurationValue/DomainReceipt reuse,
+shared generic generation fix, closed-lab no-jump geometry and all browser
+regressions, three final deterministic builds, production aggregate guard and
+independent exact review/validation. No real-printer/actual-device/user-outcome
+or deployed-service acceptance exists for Current Job phase two.
+
+## 2026-09-01 Current Job phase-one author evidence — not acceptance
+
+The source checkpoint is based on exact accepted main
+`8c5756ddb4435ba94a494963556c94d15d05b6e5`. Frozen app/UI installs used the
+repository-pinned Bun 1.3.12 lockfiles; neither lockfile nor dependency set
+changed. Commands and results:
+
+- UI `bun x vitest run src/lib/live/current-job-adapter.test.ts
+  src/lib/live/current-job-controller.test.ts`: 31/31 PASS. The strict adapter
+  covers all seven states, exact envelope/module fields, nullable versus
+  unreported values, false storage, zero/MAX_SAFE bytes, fractional values,
+  stale facts, unsafe filenames and no `progressPercent`. Shared lifecycle
+  cases cover initial error/retry, single-flight, failed-refresh stale retention,
+  newer-notification/obsolete-RPC ordering and persisted-page ownership/final
+  disposal.
+- App `bun test src/current-job-live-adapter.test.ts`: 9/9 PASS with 62
+  assertions through the actual `normalizeCurrentJobResponse` and
+  `createObservationPresentation(..., 'jobs')` producer path. This separately
+  covers six known states plus future-to-unknown normalization, successful
+  empty standby, producer basename/privacy and Unicode code-point bounding.
+- UI `bun run test`: 297/297 PASS in 30 files. UI `bun run check`: Svelte and
+  TypeScript 0 errors/0 warnings; component contract PASS.
+- App `bun run test`: 299/299 PASS in 29 files with 3,462 assertions. App
+  `bun run check`: PASS. An earlier unscoped raw `bun test` was not a valid app
+  harness because it recursively selected UI tests without Vitest/jsdom and was
+  stopped; the package-scoped command above is the passing repository harness.
+- UI `bun build src/lib/live/current-job-controller.ts --target=browser --minify
+  --outdir <temporary-directory>`: PASS, 7 modules and 6,339-byte module-only
+  output, SHA-256
+  `71844efd3e11e27d31016efe2650effb8585e45c9a1699c0bb61a200dca3b906`.
+  This is diagnostic source measurement, not a production artifact or budget.
+- `git diff --check`: PASS.
+
+Evidence boundary: author static/software tests against the actual producer and
+synthetic lifecycle ports only. They do not establish a composed widget,
+production package/route, browser behavior, deployed service, real printer or
+actual-device/user acceptance. Exact independent source review is required
+before phase two; normal independent validation/review and guarded shipment
+remain required after a production candidate exists.
+
+## Integrated accepted legend baseline records
+## Accepted PR78 author history (superseded by current integration above)
 ## Bed Mesh icon segmented toggle — complete author gates, unaccepted
 
 Exact application source: `80229841fced7307aaf3eba850a8e60ef688c26a`; tree

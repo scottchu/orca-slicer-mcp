@@ -120,6 +120,27 @@ timestamp slot prevents splitting time from AM/PM while retaining loading
 geometry; existing metadata defaults remain unchanged. This design disposition
 is not implementation validation or independent exact-candidate approval.
 
+## Current Job follow-on integration boundary (2026-09-01)
+
+After accepted Queue main7882670, Current Job addresses OBS-014 through the
+existing exact private `/dashboard/jobs` host and `/dashboard/jobs_widget`
+child. The candidate preserves all seven producer states, reported-null versus
+unreported filename, storage false versus unknown, nullable byte position/size,
+print/total duration and filament. File bytes never become physical progress.
+It reuses accepted DurationValue, DomainReceipt, TextSkeleton and the shared
+arrival-generation controller. Neutral public skeleton shapes contain no real
+filename, quantity or receipt. Closed-fixture geometry and arbitrary first-load
+content are distinct; retained-refresh bounds and focus must remain stable.
+
+The root-adopted compact IconButton is opt-in/default-false: a32-pixel painted
+surface inside the existing44-pixel target. Current Job is the initial consumer;
+all default consumer visuals, focus, disabled/busy and hit targets require full
+four-width/200%-text renewal. Its inert action skeleton has the same target.
+The individual100,000-byte ceiling and explicit present-only production
+aggregate1,550,000 remain enforced; no private-lab cap changes. Generic MCP,
+legacy resources, backend acquisition and printer controls remain unchanged.
+This records candidate scope, not browser, independent or deployed acceptance.
+
 ## Print Queue follow-on boundary (2026-09-01)
 
 The next existing migration after the independently accepted Heads foundation

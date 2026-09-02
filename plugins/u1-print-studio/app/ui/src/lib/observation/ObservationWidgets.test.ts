@@ -272,8 +272,8 @@ describe('observation bridge validators', () => {
     ]);
     rejects(validateCurrentJob, currentJobLabFixture, [
       (d) => { d.state = 'queued'; }, (d) => { d.storageActive = 'yes'; },
-      (d) => { d.progressPercent = -1; }, (d) => { d.elapsedSeconds = 1.5; },
-      (d) => { d.filamentUsedMm = 100_000_001; }, (d) => { d.extra = true; }
+      (d) => { d.filePositionBytes = -1; }, (d) => { d.fileSizeBytes = 1.5; },
+      (d) => { d.filamentUsedMillimeters = Number.MAX_SAFE_INTEGER + 1; }, (d) => { d.extra = true; }
     ]);
     rejects(validateJobHistory, jobHistoryLabFixture, [
       (d) => { (d.items as Record<string, unknown>[])[0].status = 'printing'; },

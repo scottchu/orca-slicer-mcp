@@ -14,6 +14,12 @@ export const assertLiveObservationModule = (id: string, view?: 'fans' | 'thermal
 export const assertLiveObservationBytes = (bytes: number): void => {
   if (!Number.isSafeInteger(bytes) || bytes < 1 || bytes > 100_000) throw new Error('Invalid live observation byte count or 100 KB budget exceeded');
 };
+export const assertCurrentJobModule = (id: string): void => {
+  assertLiveObservationModule(id);
+  if (/\/lib\/live\//.test(id) && !/\/(?:LiveCurrentJobRoot\.svelte|current-job-(?:adapter|controller)\.ts|controller\.ts|validation\.ts|presentation\.ts|observation-port\.ts)$/.test(id)) throw new Error(`Current Job imported another live domain: ${id}`);
+  if (/\/lib\/observation\//.test(id) && !/\/(?:CurrentJob(?:Facts|Panel)\.svelte|DomainReceipt\.svelte|format\.ts|current-job-value\.ts)$/.test(id)) throw new Error(`Current Job imported a fixture or another observation domain: ${id}`);
+  if (/\/LabControls\.svelte$/.test(id)) throw new Error('Current Job imported lab controls');
+};
 export const FOCUSED_PRODUCTION_AGGREGATE_LIMIT = 1_550_000;
 export const FOCUSED_PRODUCTION_VIEWS = [
   'fans', 'thermals', 'camera', 'heads', 'queue', 'jobs', 'job_history', 'progress', 'overview', 'bed_mesh',

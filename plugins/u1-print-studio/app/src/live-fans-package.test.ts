@@ -4,10 +4,11 @@ import { readFileSync } from 'node:fs';
 import { assertFocusedProductionAggregate } from '../ui/scripts/observation-graph-contract.js';
 
 for (const [view, title, hash] of [
-  ['fans', 'Fans & Air', 'af6a8ad6b892966099c399231384383a5a4abd499e677443ebe231e9ff156b61'],
-  ['thermals', 'Thermals', '99aa65a13ba86acd07bc596f69e491c7319417eff5a6e06ebe5c5fbc917f6621'],
-  ['heads', 'Heads & Filaments', 'c778ae8d951260464277d9873de6f9f3c12a6355db96ba316ff41766294f21f4'],
-  ['queue', 'Print Queue', 'ccaaca3ecf881d087f4f0188613055f64cb9c7184521c08d1cb4367098342c27'],
+  ['fans', 'Fans & Air', 'c743a74eb4bdfcbf685f19d81e098634edd58cd8fa8f5946b98e7ba7b0657dd9'],
+  ['thermals', 'Thermals', 'a61b1f573d2eb35b2072d922ab1006a7edf7fbca10a31b7d23a694ded7b2316b'],
+  ['heads', 'Heads & Filaments', '9af894315db44cccefc00aeea04361b5d2df88278e1bf3495b6c038554dca9f8'],
+  ['queue', 'Print Queue', '1bd7dc8891ce4606556e793f2e5b702097a966e9bc142fbf6430642437ec1162'],
+  ['jobs', 'Current Job', '03667bd25f5dee854259ea728676aaa47543f1f313a3ed4c9520130bb8ece271'],
 ]) test(`real ${title} is one deterministic private artifact without lab or acquisition code`, () => {
   const html = readFileSync(new URL(`../public/svelte-live-${view}.html`, import.meta.url), 'utf8');
   expect(Buffer.byteLength(html)).toBeLessThanOrEqual(100_000);
@@ -20,11 +21,11 @@ for (const [view, title, hash] of [
 });
 
 test('current focused production inventory remains within the forward ten-widget aggregate', () => {
-  const entries = (['fans', 'thermals', 'heads', 'queue', 'camera'] as const).map((view) => ({
+  const entries = (['fans', 'thermals', 'heads', 'queue', 'camera', 'jobs'] as const).map((view) => ({
     view,
     bytes: Buffer.byteLength(readFileSync(new URL(`../public/svelte-live-${view}.html`, import.meta.url), 'utf8')),
   }));
-  expect(entries.map(({ bytes }) => bytes)).toEqual([86_747, 87_323, 92_726, 87_831, 89_919]);
-  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(444_546);
+  expect(entries.map(({ bytes }) => bytes)).toEqual([87632, 88208, 93611, 89021, 90804, 89526]);
+  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(538802);
   expect(() => assertFocusedProductionAggregate(entries)).not.toThrow();
 });

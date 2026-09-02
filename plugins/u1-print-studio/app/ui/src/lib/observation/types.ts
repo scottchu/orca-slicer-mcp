@@ -39,11 +39,15 @@ export type HeadReading = {
 };
 export type HeadsObservation = LabBase<'heads'> & { items: HeadReading[] };
 export type CurrentJobObservation = LabBase<'jobs'> & {
-  state: 'printing' | 'paused' | 'complete' | 'standby';
-  storageActive: boolean;
-  progressPercent: number;
-  elapsedSeconds: number;
-  filamentUsedMm: number;
+  state: 'printing' | 'paused' | 'complete' | 'standby' | 'error' | 'cancelled' | 'unknown';
+  filename: string | null;
+  filenameReported: boolean;
+  storageActive: boolean | null;
+  filePositionBytes: number | null;
+  fileSizeBytes: number | null;
+  printDurationSeconds: number | null;
+  totalDurationSeconds: number | null;
+  filamentUsedMillimeters: number | null;
 };
 export type HistoryItem = {
   position: number;
@@ -179,16 +183,19 @@ export function validateHeads(value: unknown): HeadsObservation {
   return { ...item, items } as HeadsObservation;
 }
 
-export function validateCurrentJob(value: unknown): CurrentJobObservation {
+export const validateCurrentJob = (value: unknown): CurrentJobObservation => {
   const item = base(value, 'jobs');
-  exact(item, [...baseKeys, 'state', 'storageActive', 'progressPercent', 'elapsedSeconds', 'filamentUsedMm']);
-  if (typeof item.storageActive !== 'boolean') throw new Error('Invalid current job storage');
+  exact(item, [...baseKeys, 'state', 'filename', 'filenameReported', 'storageActive', 'filePositionBytes', 'fileSizeBytes', 'printDurationSeconds', 'totalDurationSeconds', 'filamentUsedMillimeters']);
+  if (item.storageActive !== null && typeof item.storageActive !== 'boolean') throw new Error('Invalid current job storage');
+  if (typeof item.filenameReported !== 'boolean' || (!item.filenameReported && item.filename !== null) || (item.filename !== null && (typeof item.filename !== 'string' || !/^[\p{L}\p{M}\p{N} ._()+-]{1,160}$/u.test(item.filename) || item.filename.trim() !== item.filename))) throw new Error('Invalid lab filename');
+  const quantity = (value: unknown, bytes = false): number | null => value === null ? null : bytes ? integer(value, 0, Number.MAX_SAFE_INTEGER) : finite(value, 0, Number.MAX_SAFE_INTEGER);
   return { ...item,
-    state: oneOf(item.state, ['printing', 'paused', 'complete', 'standby'], 'Invalid current job state'),
-    storageActive: item.storageActive, progressPercent: finite(item.progressPercent, 0, 100),
-    elapsedSeconds: integer(item.elapsedSeconds, 0, 31_536_000), filamentUsedMm: finite(item.filamentUsedMm, 0, 100_000_000)
+    state: oneOf(item.state, ['printing', 'paused', 'complete', 'standby', 'error', 'cancelled', 'unknown'], 'Invalid current job state'),
+    filename: item.filename, filenameReported: item.filenameReported, storageActive: item.storageActive,
+    filePositionBytes: quantity(item.filePositionBytes, true), fileSizeBytes: quantity(item.fileSizeBytes, true),
+    printDurationSeconds: quantity(item.printDurationSeconds), totalDurationSeconds: quantity(item.totalDurationSeconds), filamentUsedMillimeters: quantity(item.filamentUsedMillimeters)
   } as CurrentJobObservation;
-}
+};
 
 export function validateJobHistory(value: unknown): JobHistoryObservation {
   const item = base(value, 'job_history');

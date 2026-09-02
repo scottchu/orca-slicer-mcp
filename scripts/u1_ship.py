@@ -117,6 +117,13 @@ def static_contract(source):
         require((8788, live_heads_match[1]) not in files,
                 "Live Heads asset must have a distinct private route")
         files[(8788, live_heads_match[1])] = "svelte-live-heads.html"
+    live_current_job_match = re.search(r'LIVE_CURRENT_JOB_WIDGET_PATH = "(/dashboard/jobs_widget)";', text)
+    require("svelte-live-jobs.html" not in text or live_current_job_match is not None,
+            "Unsupported live Current Job route contract")
+    if live_current_job_match:
+        require((8788, live_current_job_match[1]) not in files,
+                "Live Current Job asset must have a distinct private route")
+        files[(8788, live_current_job_match[1])] = "svelte-live-jobs.html"
     live_queue_match = re.search(r'LIVE_QUEUE_WIDGET_PATH = "(/dashboard/queue_widget)";', text)
     require("svelte-live-queue.html" not in text or live_queue_match is not None,
             "Unsupported live Queue route contract")

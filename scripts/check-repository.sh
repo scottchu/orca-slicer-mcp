@@ -111,6 +111,7 @@ if [[ -d "$plugin_app_root" ]]; then
     (cd ui && bun run verify:live-fans)
     (cd ui && bun run verify:live-thermals)
     (cd ui && bun run verify:live-heads)
+    (cd ui && bun run verify:live-jobs)
     (cd ui && bun run verify:live-queue)
     (cd ui && bun run verify:live-camera)
     bun run ui:verify

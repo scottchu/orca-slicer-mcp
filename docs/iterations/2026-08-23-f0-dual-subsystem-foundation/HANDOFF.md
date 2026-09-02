@@ -1,5 +1,166 @@
 # F0 dual-subsystem foundation handoff
 
+## Current Job author gates complete — independent exact acceptance next
+
+Application source `33f7cd390e0a0c6748db66f6feb197c4ca56f7c7`, tree
+`83caba261de818b377d4fac99be37eca354eccc4`, ordinarily merges accepted PR78
+main `177d326d13e126d727be7d7431fbfc232e902bc3`. Seven exact file contexts,
+strict real model/receipts, closed lab-only loading templates and opt-in32px
+paint/44px action targets are retained; accepted Queue controller and Bed
+legend/toggle stay intact. Author gates PASS:516 UI,311 app/3,662 assertions,
+21 lifecycle,24 shipping,223 Chrome, runtime/signature/help and three complete
+nine-package deterministic cycles. Jobs89,526; six production538,802; labs
+211,518/639,136/79,682 (930,336). Caps unchanged; Camera headroom318 bytes.
+Port4179 released. Exact independent source review/validation and guarded
+PR delivery remain required; this is not Current Job deployed acceptance.
+
+Attributed PR78 delivery/postverification is complete: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH restarted,
+31static/32security, preservation true, snapshot`20260901T212717-45f8ec`;
+independent15 manifest hashes,13HTTPS/all8assets,24 isolation checks and8
+downloaded-byte browser cases passed. PR76/PR77 postchecks are also complete.
+Known Bed320px/200% summary crowding/Observed spacing remain unchanged.
+Progress`25673dd` has its independent contrast finding cleared, but full
+phase-two integration/browser acceptance is pending; no Progress code copied.
+History`379c1e7`, Overview`1a3b4f4`, real Bed`194ea79`, MCP/legacy parity,
+Console, model thumbnail, filament sync, sizes, token and recoverable cleanup
+remain open. No printer, installed-plugin or actual-device acceptance.
+
+### Exact review handoff
+
+Review the final records-tail head against accepted PR78; application source is
+33f7cd3. Changed areas are strict Current Job presentation/adapter/controller,
+CurrentJobFacts/Panel/LiveCurrentJobRoot, leaf TextValue/QuantityValue and additive
+loading-only DurationValue templates, closed lab selection/fixtures/controls,
+compact opt-in IconButton/Skeleton, exact `/dashboard/jobs_widget` behind the
+existing `/dashboard/jobs`, source/package/test inventories and shipping asset
+enumeration. Generic MCP/legacy resources and accepted controller behavior remain.
+All six production consumers and three labs were renewed for shared leaf CSS.
+
+Next: independent exact source review plus separate validation; then the
+coordinator may use guarded PR merge/deploy/BOTH restart/scoped served-byte
+behavior verification. No further author browser reservation remains. Preserve
+Camera's 318-byte headroom; future Progress integration may require measured
+optimization, never an automatic cap increase. Real Bed must ordinarily merge
+the accepted compact leaf and then complete its own migration/fallback/font/
+summary geometry gates. Do not copy unaccepted Progress, History or Overview.
+
+## Earlier checkpoints (superseded where noted above)
+
+
+## Current Job repaired checkpoint — new Bed toggle prioritized
+
+Accepted PR77 is ordinarily integrated. Changed paths include CurrentJob
+facts/panel/widget, closed lab-only shape builder, loading-only TextValue/
+QuantityValue/DurationValue support and guards, route composition, geometry/
+target tests, affected Jobs/Queue/light artifacts and exact pins. Live root
+receives no shapes; accepted controller and Bed renderers are unchanged.
+Repository validation passes (500 UI/311 app/21 lifecycle/24 shipping).
+
+Focused browser renewal passes 49/49; port4179 is released. Preserve this checkpoint.
+Author the separately adopted Bed segmented-icon toggle from accepted main
+`4828ce04`, without any Jobs/compact-button changes. Current Job needs the
+full final 207-case browser suite, runtime/signing renewal, third deterministic
+build, final records, separate exact review/validation and PR/delivery afterward.
+Public-template geometry does not promise arbitrary first-load private filename
+parity; retained real refresh remains stable. Other tracks remain open.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Current Job label repair checkpoint — awaiting accepted legend integration
+
+Changed only `current-job-value.ts`, CurrentJobPanel seven-state/non-inference
+tests, matching unrun browser assertions and continuity records. Printing and
+paused now say Current job/Paused job; standby says Loaded file; terminal states
+say Last reported job; unknown/unreported says Reported file. No model, producer,
+controller or shared compact-action behavior changed. UI 476, compiler/AST,
+app TypeScript and nine actual-producer tests pass.
+
+Do not ship this checkpoint: package bytes/pins are intentionally still `42feff1`.
+Next wait for accepted PR77 main, ordinary-merge it, regenerate all affected
+consumer artifacts and run full non-browser/browser/default-compact geometry
+gates before separate exact review/validation. No 4179 reservation is held.
+Independent legend release keeps priority; other tracks remain open.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Current Job after accepted Queue integration — unaccepted author checkpoint
+
+Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily
+merged into this branch. Attributed PR76 delivery was release
+`20260901-7882670-pr76-20260901T201010-58c9cd`: BOTH services restarted,
+31 static/32 security checks,15 manifest hashes and12 downloaded-byte browser
+checks passed. This is Queue deployed-service/synthetic evidence only.
+
+Current Job now reuses accepted DurationValue, DomainReceipt and TextSkeleton;
+its new neutral loading leaves carry no real filename, receipt or quantities.
+The accepted shared generation fix is inherited, with a Jobs-specific test that
+notification15 defeats later-receipt obsolete success16 and retry17 succeeds.
+Both Queue and Jobs routes, shipping entries and graph unions are preserved.
+The production aggregate enumerates all six actual assets, excludes labs/host/
+index, and retains the1,550,000-byte cap. Jobs is88,256 bytes; labs are
+209,633/630,767/79,682 (920,082 aggregate), with unchanged limits. Compact
+IconButton remains default-false,32-pixel paint/44-pixel target, Jobs-only opt-in.
+
+Not accepted or shipped:17 new browser cases and all existing regressions,
+closed fixture loading geometry, default-consumer/compact focus and hit targets,
+three final deterministic builds and independent exact review/validation remain
+due. Bed legend has browser-test priority. Do not infer first-load arbitrary
+filename geometry from neutral templates; retained refresh must remain stable.
+No printer, service, plugin, auth or Tailscale operation occurred in this work.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Current Job phase-two non-browser handoff — unaccepted
+
+Addresses OBS-014 Current Job parity and UI-002/shared composition under the
+existing focused-widget boundary. Accepted main `ff577fcb` was ordinarily
+merged as `ec38829`. Added CurrentJobFacts/Panel/LiveCurrentJobRoot, generic
+QuantityValue/TextValue, exact live entry and `/dashboard/jobs_widget` route,
+host initial-error notification mapping and guarded shipping inventory.
+CurrentJobWidget now composes the same panel without live adapter/RPC; its
+fixture schema and closed controls remove fabricated percent and expose seven
+states, zero/unknown/extreme facts and reported-empty/unreported/long filenames.
+The generic compact action prop is opt-in/default-false; only Current Job uses
+32-pixel paint with the unchanged 44-pixel target. All default consumer packages
+were regenerated, not silently treated as byte-identical.
+
+Remaining before acceptance: ordinary accepted Queue merge; reuse its pending
+DurationValue/DomainReceipt and generic obsolete-success fix; replace temporary
+seconds QuantityValue use; exact production aggregate guard; closed loading
+geometry and all 17 new browser cases plus full existing suite; strict graph,
+three-build hash, runtime and independent exact approval renewal. No browser
+run, PR or shipment belongs to this checkpoint. The current Job receipt is
+used rather than the top envelope receipt, and stale refresh keeps mounted
+rows/focus with one overlay. Real arbitrary filenames can change first-load
+height; retained refresh must not. No physical progress is inferred from bytes.
+
+Current package bytes: Jobs85,370; Fans86,539; Thermals87,115; Heads92,518;
+Camera90,804. Private labs:203,595/630,767/79,682, aggregate914,044. Camera lab
+has only318 bytes remaining; no cap was raised. Default consumer visual and
+enlarged-text regression gates are still due despite passing unit tests.
+
+## Current Job strict-model phase-one handoff
+
+The bounded author delta adds only `CurrentJobPresentation`, the exact `jobs`
+envelope/parser boundary, `adaptCurrentJob`, `createCurrentJobController` and
+producer/lifecycle tests. It uses the existing server normalizer and projection
+in application tests rather than lab casts. Filename privacy is revalidated at
+the client boundary; state, source/receipt, freshness, reason, capability,
+provenance and all reported nullable values are preserved. File bytes remain
+facts, never a print-progress substitute.
+
+Full author evidence is in VALIDATION. A module-only minified controller build
+is 6,339 bytes with SHA-256
+`71844efd3e11e27d31016efe2650effb8585e45c9a1699c0bb61a200dca3b906`;
+this is not a production widget artifact or permission to define/raise a cap.
+No UI composition, route, package, browser gate, ADR or shipment was attempted.
+Next: exact independent source review, then the smallest compositional UI slice
+on the reviewed model. Keep Current Job and History separate and retain the
+existing deployment/review gates.
+
+## Integrated accepted legend baseline records
+## Accepted PR78 author history (superseded by current integration above)
 ## Bed Mesh icon toggle — author candidate ready for independent roles
 
 Source80229841fced7307aaf3eba850a8e60ef688c26a is based only on accepted4828ce04.

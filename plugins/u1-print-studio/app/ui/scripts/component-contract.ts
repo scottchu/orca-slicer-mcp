@@ -11,8 +11,10 @@ composites.push('bed-mesh/BedMeshLabRoot.svelte');
 composites.push('observation/HeadCard.svelte', 'observation/HeadCards.svelte', 'observation/HeadsSkeleton.svelte');
 composites.push('observation/HeadsPanel.svelte', 'live/LiveHeadsRoot.svelte');
 composites.push('observation/HeadsWidget.svelte');
+composites.push('observation/CurrentJobFacts.svelte', 'observation/CurrentJobPanel.svelte', 'live/LiveCurrentJobRoot.svelte', 'observation/CurrentJobWidget.svelte');
 composites.push('observation/QueueWidget.svelte', 'observation/QueueRow.svelte', 'observation/QueueRows.svelte', 'observation/QueueSummary.svelte', 'observation/QueueSkeleton.svelte', 'observation/DomainReceipt.svelte', 'live/LiveQueueRoot.svelte');
 export const leaves: Record<string, string[]> = {
+  'ui/QuantityValue.svelte': ['span'], 'ui/TextValue.svelte': ['span'],
   'ui/CardGrid.svelte': ['div'], 'ui/InsetCard.svelte': ['section', 'div', 'div', 'div', 'div'], 'ui/ColorSwatch.svelte': ['span'],
   'ui/IconSegmentedControl.svelte': ['div', 'span', 'span', 'button'],
   'ui/OrderedRecords.svelte': ['ol'], 'ui/Record.svelte': ['li', 'span', 'div'],
@@ -46,7 +48,6 @@ export const leaves: Record<string, string[]> = {
 export const debt: Record<string, string[]> = {
   'observation/OverviewWidget.svelte': ['div','div','div','div','div','div','div','div','div','small','small','small','small','small','small','small','small','span','span','span','span','span','span','span','span','strong','strong','strong','strong','strong','strong','strong','strong'],
   'observation/ProgressWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','strong','strong'],
-  'observation/CurrentJobWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','span','strong','strong','strong','strong','strong'],
   'observation/JobHistoryWidget.svelte': ['div','div','div','div','span','span','strong'],
   'bed-mesh/BedMeshWidget.svelte': ['dd','dd','dd','div','div','div','div','dl','dt','dt','dt','span'],
   'observation/LabDirectory.svelte': ['a','div','div','h1','header','main','nav','p','span'],
@@ -68,6 +69,10 @@ function visit(value: unknown, fn: (node: Node) => void): void {
 }
 
 const approvedImports: Record<string, string[]> = {
+  'observation/CurrentJobWidget.svelte': ['./types', './loading', './current-job-value', './CurrentJobPanel.svelte'],
+  'observation/CurrentJobFacts.svelte': ['./current-job-value', '../ui/Stack.svelte', '../ui/InfoPair.svelte', '../ui/Label.svelte', '../ui/TextValue.svelte', '../ui/ReadingList.svelte', '../ui/ReadingRow.svelte', '../ui/QuantityValue.svelte', '../ui/DurationValue.svelte'],
+  'observation/CurrentJobPanel.svelte': ['lucide-svelte', '../live/presentation', './current-job-value', './CurrentJobFacts.svelte', './DomainReceipt.svelte', '../ui/WidgetShell.svelte', '../ui/WidgetHeader.svelte', '../ui/WidgetBody.svelte', '../ui/WidgetFooter.svelte', '../ui/StateAnnouncement.svelte', '../ui/StatePanel.svelte', '../ui/Caption.svelte', '../ui/Icon.svelte', '../ui/IconButton.svelte', '../ui/Skeleton.svelte', '../ui/FeedbackOverlay.svelte'],
+  'live/LiveCurrentJobRoot.svelte': ['svelte', './current-job-controller', '../observation/CurrentJobPanel.svelte'],
   'observation/QueueWidget.svelte': ['./ObservationFrame.svelte', './types', './loading', '../ui/Stack.svelte', '../ui/Caption.svelte', './QueueSummary.svelte', './QueueRows.svelte', './QueueSkeleton.svelte', '../lab/queue-shapes'],
   'observation/QueueRow.svelte': ['../live/queue-presentation', '../ui/Record.svelte', '../ui/BoxLabel.svelte', '../ui/Name.svelte', '../ui/Caption.svelte', '../ui/LoadingValue.svelte', '../ui/DateTimeValue.svelte', '../ui/DurationValue.svelte'],
   'observation/QueueRows.svelte': ['../live/queue-presentation', '../ui/OrderedRecords.svelte', './QueueRow.svelte'],

@@ -28,3 +28,16 @@ export type FansPresentation = {
   items: Array<FanValue & { state: 'known' | 'not_reported'; speedReported: boolean; rpmReported: boolean }>;
   purifier: { state: 'known' | 'not_reported'; powerDetected: boolean | null; mode: PurifierMode; capability: Capability };
 };
+export const CURRENT_JOB_STATES = ['standby', 'printing', 'paused', 'complete', 'error', 'cancelled', 'unknown'] as const;
+export type CurrentJobState = typeof CURRENT_JOB_STATES[number];
+export type ReportedValue<T> = { reported: boolean; value: T | null };
+export type CurrentJobPresentation = {
+  kind: 'jobs'; version: number; connectionEpoch: number | null;
+  sourceObservedAt: string | null; receivedAt: string; freshness: Freshness; reachable: boolean;
+  state: Evidence; capability: Capability; provenance: Provenance;
+  receipt: { sourceObservedAt: string | null; receivedAt: string | null; checkedAt: string | null; freshness: 'fresh' | 'stale' | 'unknown'; reason: string | null };
+  printState: ReportedValue<CurrentJobState>; filename: ReportedValue<string>;
+  storageActive: ReportedValue<boolean>; filePositionBytes: ReportedValue<number>;
+  fileSizeBytes: ReportedValue<number>; totalDurationSeconds: ReportedValue<number>;
+  printDurationSeconds: ReportedValue<number>; filamentUsedMillimeters: ReportedValue<number>;
+};

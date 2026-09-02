@@ -1,5 +1,89 @@
 # Widget completion tracks
 
+## Current Job author gates complete — independent exact acceptance next
+
+Application source `33f7cd390e0a0c6748db66f6feb197c4ca56f7c7`, tree
+`83caba261de818b377d4fac99be37eca354eccc4`, ordinarily merges accepted PR78
+main `177d326d13e126d727be7d7431fbfc232e902bc3`. Seven exact file contexts,
+strict real model/receipts, closed lab-only loading templates and opt-in32px
+paint/44px action targets are retained; accepted Queue controller and Bed
+legend/toggle stay intact. Author gates PASS:516 UI,311 app/3,662 assertions,
+21 lifecycle,24 shipping,223 Chrome, runtime/signature/help and three complete
+nine-package deterministic cycles. Jobs89,526; six production538,802; labs
+211,518/639,136/79,682 (930,336). Caps unchanged; Camera headroom318 bytes.
+Port4179 released. Exact independent source review/validation and guarded
+PR delivery remain required; this is not Current Job deployed acceptance.
+
+Attributed PR78 delivery/postverification is complete: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH restarted,
+31static/32security, preservation true, snapshot`20260901T212717-45f8ec`;
+independent15 manifest hashes,13HTTPS/all8assets,24 isolation checks and8
+downloaded-byte browser cases passed. PR76/PR77 postchecks are also complete.
+Known Bed320px/200% summary crowding/Observed spacing remain unchanged.
+Progress`25673dd` has its independent contrast finding cleared, but full
+phase-two integration/browser acceptance is pending; no Progress code copied.
+History`379c1e7`, Overview`1a3b4f4`, real Bed`194ea79`, MCP/legacy parity,
+Console, model thumbnail, filament sync, sizes, token and recoverable cleanup
+remain open. No printer, installed-plugin or actual-device acceptance.
+
+## Earlier checkpoints (superseded where noted above)
+
+
+Current order: independently designed Bed Mesh icon segmented toggle is the
+latest small-release priority. Current Job is preserved after accepted PR77 merge
+and intrinsic lab loading repair; repository 500 UI/311 app/21 lifecycle/24 shipping
+passes, final full 207 browser/runtime/third-build/exact acceptance remains due.
+PR76 and PR77 independent postdeployment checks are complete, attributed to their
+separate validators. Overview `1a3b4f4` and History `379c1e7` retain phase-two source
+approval; Progress `b9c5008` is phase-one source approved (30 UI, 12 producer and
+151 fresh independent cases), no phase-two claim. Real Bed `194ea79` remains
+preserved. No track, generic MCP/legacy parity or cleanup has been cancelled.
+
+## Earlier checkpoints (superseded where noted above)
+
+Current Job contextual-label source finding is repaired in a non-browser
+checkpoint: all seven states preserve ADR0025/existing-renderer file context.
+UI 476 and actual-producer nine tests pass; final artifact/browser renewal waits
+for accepted legend PR77 integration. This is not Current Job delivery and does
+not cancel other migrations, generic MCP/legacy parity or cleanup work.
+
+## Current Job after accepted Queue integration — unaccepted author checkpoint
+
+Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily
+merged into this branch. Attributed PR76 delivery was release
+`20260901-7882670-pr76-20260901T201010-58c9cd`: BOTH services restarted,
+31 static/32 security checks,15 manifest hashes and12 downloaded-byte browser
+checks passed. This is Queue deployed-service/synthetic evidence only.
+
+Current Job now reuses accepted DurationValue, DomainReceipt and TextSkeleton;
+its new neutral loading leaves carry no real filename, receipt or quantities.
+The accepted shared generation fix is inherited, with a Jobs-specific test that
+notification15 defeats later-receipt obsolete success16 and retry17 succeeds.
+Both Queue and Jobs routes, shipping entries and graph unions are preserved.
+The production aggregate enumerates all six actual assets, excludes labs/host/
+index, and retains the1,550,000-byte cap. Jobs is88,256 bytes; labs are
+209,633/630,767/79,682 (920,082 aggregate), with unchanged limits. Compact
+IconButton remains default-false,32-pixel paint/44-pixel target, Jobs-only opt-in.
+
+Not accepted or shipped:17 new browser cases and all existing regressions,
+closed fixture loading geometry, default-consumer/compact focus and hit targets,
+three final deterministic builds and independent exact review/validation remain
+due. Bed legend has browser-test priority. Do not infer first-load arbitrary
+filename geometry from neutral templates; retained refresh must remain stable.
+No printer, service, plugin, auth or Tailscale operation occurred in this work.
+
+## Earlier checkpoints (superseded where noted above)
+
+Current Job phase-two author checkpoint is now preserved on
+`codex/u1-current-job-phase1` after ordinary accepted-main merge `ec38829`.
+The real private child and shared lab/live composition exist, but accepted
+Queue integration, shared DurationValue/DomainReceipt reuse, browser geometry,
+independent exact approval and shipment remain outstanding. No completed track
+is inferred from the non-browser checkpoint. Current Job owns the pending
+generic compact action API; default consumers retain their existing styling.
+
+## Integrated accepted legend baseline records
+## Accepted PR78 author history (superseded by current integration above)
 Latest additive priority: Bed Mesh's single animated icon segmented mode control
 is authored at8022984 from accepted4828ce04;455 UI/300 app/21 lifecycle/24 shipping,
 focused16/full198 browser and all eight deterministic packages pass. Independent
@@ -90,6 +174,11 @@ validation/review remains required. The live
 Bed Mesh adapter remains pending. Heads is separately owned. Earlier pending
 status below is historical where superseded by this checkpoint.
 
+Current Job now has an unaccepted phase-one strict real model/adapter/controller
+author checkpoint based on exact accepted main `8c5756d`. It has actual-producer
+and shared-lifecycle tests but no UI composition, route, production artifact,
+independent approval or delivery; its track therefore remains pending.
+
 PR67 heads `8663d93` and `befbbd5` were independently rejected for text clipping,
 incomplete correlated selection types, and subsequently separated number/unit
 spacing. Final head `07e1c144` corrected those failures and passed fresh exact
@@ -111,7 +200,7 @@ production dashboard through PR71. Remaining cutovers and seven ready-shell debt
 | Overview | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Print Progress | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
 | Heads & Filaments | Zero-raw candidate with generic card/color/actual-target primitives | State controls retained; truthful skeleton and initial-error retry candidate pass | Focused private candidate; generic MCP unchanged | Author gates PASS; independent review/validation and shipment pending |
-| Current Job | Explicit native-tag ready-shell debt | Shipped shared loading shell and controls | Pending | PR67 deployed/post-verified |
+| Current Job | Strict real model/adapter; zero-raw shared panel/live root and private route authored | Seven-state/null/zero/extreme controls, inert loading and compact action authored; browser geometry pending | Pending | Unaccepted phase-two checkpoint; Queue integration, browser/full final gates, independent approval, PR/deploy due |
 | Job History | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Print Queue | Explicit native-tag ready-shell debt | Shipped bounded row/empty loading and controls | Pending | PR67 deployed/post-verified |
 | Bed Mesh | Projected Three enclosure and reactive 2D/3D candidate; native-tag shell debt | Shipped controls; no Three mount while loading | Pending adapter parity | PR67 delivered; renderer refinement awaits independent acceptance/delivery |

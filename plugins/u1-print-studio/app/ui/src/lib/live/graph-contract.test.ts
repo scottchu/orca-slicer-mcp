@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { assertFocusedProductionAggregate, assertLiveObservationBytes, assertLiveObservationModule, assertObservationLabModule, FOCUSED_PRODUCTION_VIEWS } from '../../../scripts/observation-graph-contract';
+import { assertCurrentJobModule, assertFocusedProductionAggregate, assertLiveObservationBytes, assertLiveObservationModule, assertObservationLabModule, FOCUSED_PRODUCTION_VIEWS } from '../../../scripts/observation-graph-contract';
 describe('compiled observation graph boundaries', () => {
+  it('Current Job excludes every other emitted domain, fixture schema and lab controls', () => {
+    for (const id of ['live/current-job-adapter.ts', 'live/current-job-controller.ts', 'live/LiveCurrentJobRoot.svelte', 'live/controller.ts', 'live/validation.ts', 'observation/CurrentJobFacts.svelte', 'ui/QuantityValue.svelte']) expect(() => assertCurrentJobModule(`/src/lib/${id}`)).not.toThrow();
+    for (const id of ['live/fans-adapter.ts', 'live/thermals-controller.ts', 'live/heads-presentation.ts', 'observation/HeadsPanel.svelte', 'observation/types.ts', 'observation/CurrentJobWidget.svelte', 'ui/LabControls.svelte', 'camera/session.ts', 'fixtures/observations.ts']) expect(() => assertCurrentJobModule(`/src/lib/${id}`)).toThrow();
+    expect(() => assertObservationLabModule('/src/lib/live/current-job-adapter.ts')).toThrow();
+    expect(() => assertObservationLabModule('/src/lib/live/current-job-controller.ts')).toThrow();
+  });
   it('enforces production raw byte boundary including invalid input', () => {
     for (const value of [99_999, 100_000]) expect(() => assertLiveObservationBytes(value)).not.toThrow();
     for (const value of [100_001, 0, -1, 1.5, Infinity, NaN, Number.MAX_SAFE_INTEGER + 1]) expect(() => assertLiveObservationBytes(value)).toThrow();

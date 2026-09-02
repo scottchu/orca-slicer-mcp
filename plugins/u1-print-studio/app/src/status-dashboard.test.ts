@@ -156,7 +156,7 @@ describe("standalone status dashboard", () => {
 
     for (const route of ["/dashboard", "/dashboard/", "/dashboard/progress",
       "/dashboard/thermals", "/dashboard/heads", "/dashboard/jobs", "/dashboard/job_history",
-      "/dashboard/queue", "/dashboard/queue_widget", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/thermals_widget", "/dashboard/heads_widget", "/dashboard/camera_widget", "/dashboard/bed_mesh", "/dashboard/camera",
+      "/dashboard/queue", "/dashboard/queue_widget", "/dashboard/fans", "/dashboard/fans_widget", "/dashboard/thermals_widget", "/dashboard/heads_widget", "/dashboard/jobs_widget", "/dashboard/camera_widget", "/dashboard/bed_mesh", "/dashboard/camera",
       ...LAB_ROUTES.flatMap((path) => [path, path + "/"])]) {
       expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
     }
@@ -316,7 +316,7 @@ describe("standalone status dashboard", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
-    expect(html).toContain('const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget" })');
+    expect(html).toContain('const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget", jobs: "/dashboard/jobs_widget" })');
     expect(html).toContain('const widgetSource = focusedWidget ?? "/widget?standalone=1"');
     expect(html).toContain('message.method === "tools/call"');
     expect(html).toContain('frame.title = selected?.[1] ?? "View unavailable"');
@@ -368,7 +368,7 @@ describe("standalone status dashboard", () => {
     expect(reads).toBe(1);
   });
 
-  for (const view of ['thermals', 'heads']) test(`serves only the exact private ${view} asset with no acquisition`, async () => {
+  for (const view of ['thermals', 'heads', 'jobs']) test(`serves only the exact private ${view} asset with no acquisition`, async () => {
     let reads = 0;
     const origin = await startFixture(() => { reads += 1; });
     const response = await fetch(`${origin}/dashboard/${view}_widget`);
@@ -721,7 +721,7 @@ describe("focused dashboard host bridge", () => {
       expect(host.title.textContent).toBe(label);
       expect(host.document.title).toBe(`U1 · ${label}`);
       expect(host.frame.title).toBe(label);
-      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : view === "heads" ? "/dashboard/heads_widget" : view === "queue" ? "/dashboard/queue_widget" : "/widget?standalone=1");
+      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : view === "heads" ? "/dashboard/heads_widget" : view === "queue" ? "/dashboard/queue_widget" : view === "jobs" ? "/dashboard/jobs_widget" : "/widget?standalone=1");
     }
   });
 
@@ -780,7 +780,7 @@ describe("focused dashboard host bridge", () => {
       const host = hostFixture(`/dashboard/${view}`, async () => { throw new Error("private error"); });
       await host.send({ method: "ui/notifications/initialized" });
       const results = host.messages.filter((message) => message.method === "ui/notifications/tool-result");
-      expect(results).toEqual(["fans", "thermals", "heads", "queue"].includes(view) ? [{ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } }] : []);
+      expect(results).toEqual(["fans", "thermals", "heads", "queue", "jobs"].includes(view) ? [{ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } }] : []);
       expect(host.requests).toEqual([{ name: "refresh_printer_observation", arguments: { view } }]);
     }
   });

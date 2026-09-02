@@ -5,7 +5,7 @@ export type Field = { key: string; label: string; options: readonly Option[]; di
 export type Phase = 'loading' | 'ready' | 'refreshing' | 'unavailable' | 'error';
 export type ScenarioByView = {
   overview: 'printing' | 'paused' | 'complete' | 'standby';
-  progress: ScenarioByView['overview']; jobs: ScenarioByView['overview'];
+  progress: ScenarioByView['overview']; jobs: ScenarioByView['overview'] | 'error' | 'cancelled' | 'unknown';
   thermals: 'heating' | 'at_target' | 'targets_off' | 'unknown_targets';
   heads: 'mixed' | 'loaded' | 'empty' | 'unknown';
   job_history: 'populated' | 'empty' | 'mixed_outcomes';
@@ -14,7 +14,8 @@ export type ScenarioByView = {
 };
 type PrintValues = { percent: 'scenario' | '0' | '25' | '50' | '75' | '100' };
 export type ValuesByView = {
-  overview: PrintValues; progress: PrintValues; jobs: PrintValues;
+  overview: PrintValues; progress: PrintValues;
+  jobs: { facts: 'scenario' | 'zero' | 'unknown' | 'extreme'; filename: 'scenario' | 'empty' | 'unreported' | 'long' };
   thermals: { channel: '0' | '1' | '2' | '3' | '4' | '5'; actual: 'scenario' | '0' | '25' | '100' | '200' | '220' | '300'; target: 'scenario' | 'unknown' | '0' | '55' | '200' | '220' | '300' };
   heads: { tool: '0' | '1' | '2' | '3'; material: 'scenario' | 'empty' | 'unknown' | 'pla_white' | 'petg_blue' | 'pla_black' };
   job_history: { count: 'scenario' | '0' | '1' | '4' | '20' };
@@ -35,7 +36,7 @@ const field = (key: string, label: string, options: readonly Option[]): Field =>
 const presets = (values: readonly (number | null)[], unit = '') => values.map((value) => option(value === null ? 'unknown' : String(value), value === null ? 'Unknown' : `${value}${unit}`));
 const printStates = choices('printing', 'paused', 'complete', 'standby');
 export const scenarios: Record<LabView, readonly Option[]> = {
-  overview: printStates, progress: printStates, jobs: printStates,
+  overview: printStates, progress: printStates, jobs: choices('printing', 'paused', 'complete', 'standby', 'error', 'cancelled', 'unknown'),
   thermals: choices('at_target', 'heating', 'targets_off', 'unknown_targets'),
   heads: choices('mixed', 'loaded', 'empty', 'unknown'),
   job_history: choices('populated', 'empty', 'mixed_outcomes'), queue: choices('populated', 'empty'),
@@ -47,7 +48,7 @@ const defaultOption = option('scenario', 'Scenario default');
 const optionalPresets = (values: readonly (number | null)[], unit = '') => [defaultOption, ...presets(values, unit)];
 const percent = field('percent', 'Progress', optionalPresets([0, 25, 50, 75, 100], '%'));
 const variables: Record<LabView, readonly Field[]> = {
-  overview: [percent], progress: [percent], jobs: [percent],
+  overview: [percent], progress: [percent], jobs: [field('facts', 'Reported facts', [defaultOption, ...choices('zero', 'unknown', 'extreme')]), field('filename', 'Filename', [defaultOption, ...choices('empty', 'unreported', 'long')])],
   thermals: [field('channel', 'Channel', ['Tool 1', 'Tool 2', 'Tool 3', 'Tool 4', 'Heater bed', 'Cavity'].map((label, index) => option(String(index), label))),
     field('actual', 'Actual', optionalPresets([0, 25, 100, 200, 220, 300], '°')),
     field('target', 'Target', optionalPresets([null, 0, 55, 200, 220, 300], '°'))],
@@ -69,7 +70,7 @@ export const fieldsFor = <V extends LabView>(selection: LabSelection<V>): Field[
   const unavailable = selection.phase !== 'ready' && selection.phase !== 'refreshing';
   return [field('phase', 'Preview state', phases), field('scenario', 'Scenario', scenarios[selection.view]),
     { ...field('freshness', 'Freshness', freshness), disabled: unavailable },
-    ...variables[selection.view].map((item) => ({ ...item, disabled: unavailable || (['overview', 'progress', 'jobs'].includes(selection.view) && ['complete', 'standby'].includes(selection.scenario)) }))];
+    ...variables[selection.view].map((item) => ({ ...item, disabled: unavailable || (['overview', 'progress'].includes(selection.view) && ['complete', 'standby'].includes(selection.scenario)) }))];
 };
 export const selectionValue = <V extends LabView>(selection: LabSelection<V>, key: string): string =>
   key === 'phase' ? selection.phase : key === 'scenario' ? selection.scenario : key === 'freshness' ? selection.freshness : (selection.values as Record<string, string>)[key];

@@ -30,7 +30,7 @@ describe("private Svelte lab packages", () => {
   test("freezes the deterministic light observation artifact", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(250_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "4665ccc4033c385f6234043195521002b30c6bf8bd121f1646ea9de1fe36b98a"
+      "f9c72ca7ffa9b72b33931c88ded6190fd6b64691b63e4ceeac3110876f568158"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -49,7 +49,7 @@ describe("private Svelte lab packages", () => {
 
   test('freezes Bed Mesh as an isolated self-contained artifact', () => {
     expect(Buffer.byteLength(bedMeshHtml)).toBeLessThanOrEqual(700_000);
-    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('37a48c3baed18f2ffd25cae1b8c3d8a2e251b94dce4f9ece6782961902534ac2');
+    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('9e5c79c204280ac2d925ee4fe082af950e0417054e0a4ce4333a07a345d17110');
     expect(bedMeshHtml).toContain('data-height-legend');
     expect(bedMeshHtml).toContain('data-icon-segmented');
     for (const marker of ['Bed Mesh', '3D surface', '2D grid', 'data-chart-frame=""', 'WebGLRenderer', 'OrbitControls']) expect(bedMeshHtml).toContain(marker);
@@ -58,7 +58,7 @@ describe("private Svelte lab packages", () => {
   });
 
   test('keeps the synthetic Camera in a second bounded private artifact', () => {
-    expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a');
+    expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('cd2cf36e01d6ac6f1b06d069b99034cc0d1ced9d3061000aa82d1372809ab8fc');
     expect(Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(80_000);
     expect(Buffer.byteLength(html) + Buffer.byteLength(bedMeshHtml) + Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(980_000);
     for (const marker of ['U1 Camera', 'Simulated live', 'Camera state', 'Display capabilities', 'data-camera-media']) expect(cameraHtml).toContain(marker);

@@ -1,5 +1,144 @@
 # Next agent
 
+## Current Job author gates complete — independent exact acceptance next
+
+Application source `33f7cd390e0a0c6748db66f6feb197c4ca56f7c7`, tree
+`83caba261de818b377d4fac99be37eca354eccc4`, ordinarily merges accepted PR78
+main `177d326d13e126d727be7d7431fbfc232e902bc3`. Seven exact file contexts,
+strict real model/receipts, closed lab-only loading templates and opt-in32px
+paint/44px action targets are retained; accepted Queue controller and Bed
+legend/toggle stay intact. Author gates PASS:516 UI,311 app/3,662 assertions,
+21 lifecycle,24 shipping,223 Chrome, runtime/signature/help and three complete
+nine-package deterministic cycles. Jobs89,526; six production538,802; labs
+211,518/639,136/79,682 (930,336). Caps unchanged; Camera headroom318 bytes.
+Port4179 released. Exact independent source review/validation and guarded
+PR delivery remain required; this is not Current Job deployed acceptance.
+
+Attributed PR78 delivery/postverification is complete: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH restarted,
+31static/32security, preservation true, snapshot`20260901T212717-45f8ec`;
+independent15 manifest hashes,13HTTPS/all8assets,24 isolation checks and8
+downloaded-byte browser cases passed. PR76/PR77 postchecks are also complete.
+Known Bed320px/200% summary crowding/Observed spacing remain unchanged.
+Progress`25673dd` has its independent contrast finding cleared, but full
+phase-two integration/browser acceptance is pending; no Progress code copied.
+History`379c1e7`, Overview`1a3b4f4`, real Bed`194ea79`, MCP/legacy parity,
+Console, model thumbnail, filament sync, sizes, token and recoverable cleanup
+remain open. No printer, installed-plugin or actual-device acceptance.
+
+## Earlier checkpoints (superseded where noted above)
+
+
+## Next: isolated Bed Mesh toggle; preserve Current Job
+
+Current Job has ordinarily integrated accepted PR77 and repaired lab-only
+intrinsic loading geometry. Keep this branch/checkpoint intact. Do not ship it:
+the full final 207-case browser suite, runtime/signing renewal, third deterministic
+build and independent exact review/validation still remain. Nine current packages
+pass repository checks; source templates are excluded from production graphs.
+
+The latest user order prioritizes a separate small Bed Mesh segmented-icon
+toggle from accepted `4828ce04`, not this candidate. Its adopted contract is
+88x44 hit area, 88x32 connected track, two accessible radio options, 40x28 sliding
+thumb, 180ms transform-only/reduced-motion behavior, inert identical loading
+geometry and unchanged chart identity/mode semantics. Implement/review/ship that
+slice independently, then ordinarily integrate accepted changes here and renew.
+All previous migration and recoverable cleanup tracks remain open.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Next: integrate accepted legend before Current Job final renewal
+
+The independent contextual-label finding is repaired and seven-state rendered
+tests plus unreported-state/active-storage non-inference pass. UI 476 and actual
+producer nine tests are green. No browser port or package regeneration occurred.
+Wait for the coordinator's accepted PR77 main signal, then ordinary-merge that
+exact main, preserve its legend and this candidate's compact IconButton, renew
+all consumer packages/hashes and full browser/default/compact/loading geometry.
+Current artifact pins are intentionally the earlier `42feff1` checkpoint, not
+the repaired source; do not ship or claim deterministic final acceptance yet.
+Independent exact-source review and validation remain required. Other tracks
+and the immediate legend release priority are unchanged.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Current Job after accepted Queue integration — unaccepted author checkpoint
+
+Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily
+merged into this branch. Attributed PR76 delivery was release
+`20260901-7882670-pr76-20260901T201010-58c9cd`: BOTH services restarted,
+31 static/32 security checks,15 manifest hashes and12 downloaded-byte browser
+checks passed. This is Queue deployed-service/synthetic evidence only.
+
+Current Job now reuses accepted DurationValue, DomainReceipt and TextSkeleton;
+its new neutral loading leaves carry no real filename, receipt or quantities.
+The accepted shared generation fix is inherited, with a Jobs-specific test that
+notification15 defeats later-receipt obsolete success16 and retry17 succeeds.
+Both Queue and Jobs routes, shipping entries and graph unions are preserved.
+The production aggregate enumerates all six actual assets, excludes labs/host/
+index, and retains the1,550,000-byte cap. Jobs is88,256 bytes; labs are
+209,633/630,767/79,682 (920,082 aggregate), with unchanged limits. Compact
+IconButton remains default-false,32-pixel paint/44-pixel target, Jobs-only opt-in.
+
+Not accepted or shipped:17 new browser cases and all existing regressions,
+closed fixture loading geometry, default-consumer/compact focus and hit targets,
+three final deterministic builds and independent exact review/validation remain
+due. Bed legend has browser-test priority. Do not infer first-load arbitrary
+filename geometry from neutral templates; retained refresh must remain stable.
+No printer, service, plugin, auth or Tailscale operation occurred in this work.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Resume Current Job phase two after accepted Queue integration
+
+Use branch `codex/u1-current-job-phase1`, not a fresh implementation. It contains
+the ordinary accepted-main merge `ec38829` and an unaccepted non-browser
+Current Job UI/route/package checkpoint. Do not ship this state. The root has
+reserved acceptance order Queue first; Current Job must ordinarily merge that
+accepted main before final freeze. No shared controller fix was duplicated.
+
+Next smallest actions:
+
+1. Merge accepted Queue main, retaining both additive `jobs` and `queue` types,
+   private route inventories and package entries. Reuse its pending
+   DurationValue/DomainReceipt and inert public-template loading shapes;
+   replace the temporary seconds QuantityValue rows. Never use real data as a
+   skeleton template. Keep all reported/null/false distinctions.
+2. Current Job owns the reviewed-to-be `compact?: boolean = false` IconButton
+   API and matching action skeleton. Bed phase-two's separate unaccepted
+   prototype must later merge accepted Current Job and reconcile in its favor.
+   Confirm 32-pixel painted surface/44-pixel hit target at four widths/200% text,
+   with default consumers unchanged. Camera lab now has 318 bytes of headroom.
+3. Run the 17 new `live-current-job.spec.ts` cases and all existing browser
+   cases, particularly closed lab loading geometry and long metadata wrapping.
+   No browser/4179 reservation was made for this checkpoint. Fix any geometry
+   failures structurally, without arbitrary card heights or tolerance changes.
+4. Renew all deterministic package hashes, strict emitted CLIENT graphs,
+   production-only aggregate <=1,550,000 bytes, full repository/runtime gates,
+   then obtain independent exact source and validation approval before PR/ship.
+
+The existing artifact is 85,370 bytes, not a final accepted package. No real
+printer, actual phone, live deployment or user-outcome evidence is implied.
+
+## Current Job phase-one resume point — not accepted or shipped
+
+Review the strict real `jobs` model/adapter/controller checkpoint independently
+before using it for UI composition. The author branch starts at accepted main
+`8c5756ddb4435ba94a494963556c94d15d05b6e5`; it intentionally contains no
+Current Job component/root, route, package manifest/cap, ADR, PR or deployment.
+Do not infer physical progress from file position/size and do not add a
+`progressPercent` field: the real producer does not report one.
+
+The next smallest implementation slice, only after source acceptance, is a
+zero-raw compositional Current Job card that consumes this strict presentation,
+preserves every nullable/reported distinction and uses the shared controller.
+Then measure the exact production artifact, add focused package/route/browser
+gates and obtain exact independent validation/review before normal guarded
+delivery. Keep Job History separate. No printer control, plugin/auth/Tailscale
+change or browser port reservation belongs to this checkpoint.
+
+## Integrated accepted legend baseline records
+## Accepted PR78 author history (superseded by current integration above)
 ## Next: independent exact review and validation of the icon-toggle candidate
 
 Application source `80229841fced7307aaf3eba850a8e60ef688c26a` has complete author

@@ -1,5 +1,63 @@
 # F0 dual-subsystem foundation brief
 
+## Current Job author gates complete — independent exact acceptance next
+
+Application source `33f7cd390e0a0c6748db66f6feb197c4ca56f7c7`, tree
+`83caba261de818b377d4fac99be37eca354eccc4`, ordinarily merges accepted PR78
+main `177d326d13e126d727be7d7431fbfc232e902bc3`. Seven exact file contexts,
+strict real model/receipts, closed lab-only loading templates and opt-in32px
+paint/44px action targets are retained; accepted Queue controller and Bed
+legend/toggle stay intact. Author gates PASS:516 UI,311 app/3,662 assertions,
+21 lifecycle,24 shipping,223 Chrome, runtime/signature/help and three complete
+nine-package deterministic cycles. Jobs89,526; six production538,802; labs
+211,518/639,136/79,682 (930,336). Caps unchanged; Camera headroom318 bytes.
+Port4179 released. Exact independent source review/validation and guarded
+PR delivery remain required; this is not Current Job deployed acceptance.
+
+Attributed PR78 delivery/postverification is complete: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH restarted,
+31static/32security, preservation true, snapshot`20260901T212717-45f8ec`;
+independent15 manifest hashes,13HTTPS/all8assets,24 isolation checks and8
+downloaded-byte browser cases passed. PR76/PR77 postchecks are also complete.
+Known Bed320px/200% summary crowding/Observed spacing remain unchanged.
+Progress`25673dd` has its independent contrast finding cleared, but full
+phase-two integration/browser acceptance is pending; no Progress code copied.
+History`379c1e7`, Overview`1a3b4f4`, real Bed`194ea79`, MCP/legacy parity,
+Console, model thumbnail, filament sync, sizes, token and recoverable cleanup
+remain open. No printer, installed-plugin or actual-device acceptance.
+
+## Earlier checkpoints (superseded where noted above)
+
+
+Latest additive execution order: preserve Current Job's repaired checkpoint,
+then deliver the independently designed icon-only animated 2D/3D Bed Mesh
+segmented control as a bounded lab/shared-leaf slice from accepted PR77 main
+`4828ce04`. Do not include unaccepted Jobs, production Bed or compact IconButton.
+Acceptance: 44px targets/32px track, keyboard radio semantics, reduced motion,
+identical skeleton/frame/footer geometry at four widths and 200% text, existing
+legend/mesh/zoom/pixel/zero-fetch regressions, deterministic lab caps and unchanged
+production bytes. Independent exact approval and guarded delivery are required.
+Current Job's final full suite/PR is deferred, not cancelled; all other tracks
+remain preserved. PR76 and PR77 postdeployment verification are independently
+reported complete; no new Current Job deployment is claimed.
+
+
+Current bounded repair: address independent Current Job source review's lost
+file-context labels before further acceptance. Preserve ADR0025 and the existing
+renderer: printing Current job, paused Paused job, standby Loaded file,
+complete/error/cancelled Last reported job, unknown/unreported Reported file.
+Finish non-browser checks while PR77 keeps release/browser priority. Wait for
+accepted legend main before ordinary integration, all-consumer package renewal
+and full browser gates. No unaccepted legend source, PR or deployment now.
+
+Current order: Queue PR76 is accepted and deployed at main7882670. Integrate it
+ordinarily into Current Job under OBS-014/UI-003, reuse accepted shared leaves
+and preserve the exact private Jobs cutover. Finish the non-browser checkpoint
+while the separate Bed legend refinement has browser-test priority. No Current
+Job PR or shipment until full browser, exact independent review and validation.
+
+## Integrated accepted legend baseline records
+## Accepted PR78 author history (superseded by current integration above)
 Latest additive user priority (UI-001/UI-002): replace Bed Mesh's separate mode
 buttons with one generic icon-only segmented control, isolated from accepted
 PR77 main `4828ce04`. Adopted independent design: two controlled radio options,
