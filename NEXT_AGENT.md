@@ -1,5 +1,18 @@
 # Next agent
 
+## Immediate: finish Heads exact-candidate delivery, then Bed and Camera
+
+PR82 is merged as `707a018`; its four project roles are statically accepted,
+not native-runtime verified. Preserve that accepted configuration during the
+ordinary Heads PR81 merge. Bind the repaired test and retained application/
+browser evidence to the clean final head, renew focused test/config checks,
+and obtain separate exact source review and validation before guarded shipment.
+Existing mandatory u1-ship gates remain required. Then integrate and validate
+Bed Lab stable-error `c0323a4`, followed by Camera `4eb3106`'s explicit retry
+repair. Current Job PR79 and every other track remain preserved and unfinished.
+
+## Earlier Heads repair handoff
+
 ## Immediate: bind the PR81 test-only repair and retry guarded delivery
 
 Test checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d` has independent
@@ -40,6 +53,19 @@ All newer shared-state, fixed Lab dock, Camera, Progress, Bed and atomic-design
 tracks remain recorded in WIDGET_TRACKS. Completed UIUX/printer audits are design
 recommendations only, not delivered UI. No user browser, service or printer
 state should be changed by independent source checks.
+## Earlier project-role handoff (completed by merged PR82)
+
+## Next: independently review the four project-agent definitions
+
+Review `.codex/agents/`, `AGENTS.md` routing and `docs/project-agents.md` against
+the latest requested UI/UX, printer-domain, agentic MCP/API and maker-user roles.
+Run the focused configuration check and inspect authority, evidence and
+author/reviewer separation; do not duplicate unaffected widget/browser suites.
+Native named-agent loading remains unverified in the exposed current toolset.
+After exact independent approval, merge the config/docs PR without service
+deployment. Do not change global Codex configuration or claim a client reload.
+Then resume the separate pending widget tracks recorded in PROJECT_STATE and
+WIDGET_TRACKS; this priority neither merges them nor discards their checkpoints.
 
 ## Earlier checkpoints (superseded where noted above)
 

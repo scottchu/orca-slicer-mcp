@@ -1,5 +1,22 @@
 # Project state
 
+## Current: resume Heads delivery after accepted project-role integration
+
+Accepted main `707a018a3e3c64b885bc1ece13f2795ae2bb546d` (PR82) is being
+ordinarily integrated into PR81, preserving both histories and all six Heads
+repair records. PR82's four project roles passed independent static review and
+were merged; native named-role loading remains unverified. No service restart
+was needed for that configuration/docs-only change.
+
+Current order: final exact Heads test/config/identity acceptance and guarded
+delivery; then Bed Lab stable-error checkpoint `c0323a4`; then Camera `4eb3106`
+explicit same-live-scenario retry repair and remaining validation. Neither
+checkpoint is released. All other WIDGET_TRACKS remain open. The merged role
+configuration and its new focused test do not change widget application inputs;
+retained 214-browser evidence requires explicit final-head identity binding.
+
+## Earlier Heads repair checkpoint
+
 ## Current: Heads PR81 shipping-gate test repair
 
 The first guarded shipment stopped at local validation; PR81 was not merged or
@@ -47,6 +64,24 @@ Camera three-slot states/lifecycle, atomic spacing/actions, Progress local fill/
 layer design and thumbnail feasibility, and stable Bed framing/inset summaries.
 All earlier migrations, Console, filament sync, sizes, tokens and recoverable
 cleanup stay open; see WIDGET_TRACKS.
+## Earlier project-role candidate (merged through PR82)
+
+## Current: project review roles — configuration candidate
+
+The latest user priority is reusable project-scoped agents: `ui_ux_designer`,
+`printer_domain_expert`, `agentic_architect` and `maker_user`. Their standalone
+definitions are in `.codex/agents/`; `docs/project-agents.md` describes routing,
+inheritance and the unverified native-client loading boundary. This is a bounded
+F0 agent-configuration/documentation change from accepted PR80 main `4e869d8`.
+No widget, application build input, service or printer is changed. Independent
+review and PR merge remain pending; no runtime agent-loading acceptance is claimed.
+
+The previous test-strategy policy is merged through PR80. Preserve the separate
+unfinished widget tracks: Heads PR81 checkpoint `1e2e387` and its uncommitted
+continuity tail, Camera `4eb3106` with its known same-scenario live Retry issue,
+Bed error foundation `c0323a4` pending accepted-main integration, Current Job
+PR79, Progress, History, Overview, real Bed and every remaining WIDGET_TRACKS
+item. Those coordinator-attributed checkpoints are not accepted by this change.
 
 ## Earlier checkpoints (superseded where noted above)
 

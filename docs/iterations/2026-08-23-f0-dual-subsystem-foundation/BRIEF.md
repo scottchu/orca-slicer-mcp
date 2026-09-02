@@ -1,5 +1,15 @@
 # F0 dual-subsystem foundation brief
 
+Current resumed order: finish Heads PR81 exact candidate acceptance and guarded
+delivery, then Bed Lab stable-error `c0323a4`, then Camera `4eb3106` retry repair
+and remaining validation. PR82's project roles are already merged at `707a018`
+with independent static acceptance; native role loading remains unverified.
+Ordinary main integration must preserve every unfinished checkpoint. Renew
+only affected test/config/docs evidence, bind unchanged application/browser
+inputs, and keep every mandatory shipping guard intact.
+
+## Earlier Heads repair scope
+
 Immediate bounded repair: finish PR81's failed local gate by correcting only
 ObservationLoading.test.ts. Permit only the accepted Heads public nominal/empty
 TextSkeleton leaves after exact noninteractive/hidden structural checks; retain
@@ -29,6 +39,16 @@ loading/error frame preservation and non-flow feedback. PR79 remains untouched.
 Independent deployed-Lab UIUX and printer-information audits are complete as
 recommendations: state frames/fixed Lab dock first, then atomic typography/actions,
 Progress and Bed. This Heads slice does not implement those broader proposals.
+## Earlier project-role scope (completed by merged PR82)
+
+Latest user-directed priority: persist four project agents for UI/UX design,
+printer-domain review, agentic MCP/API architecture and a simulated maker user.
+This bounded F0 configuration slice addresses reusable role ownership without
+committing a new product architecture. Acceptance: four valid standalone TOMLs,
+clear role routing/examples, inherited settings, truthful compatibility limits,
+targeted static checks and independent review. No application implementation,
+real-printer acquisition, deployment or global configuration change belongs here.
+Preserve all unfinished widget checkpoints; see the newest PROJECT_STATE entry.
 
 ## Earlier execution order (superseded where noted above)
 

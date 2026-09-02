@@ -138,6 +138,34 @@ No camera recording, user model, private profile or runtime data is committed.
 Browser/fixture resources and all author command sessions are released. These are software
 and synthetic-protocol results, not deployed-service, real-printer or actual
 phone acceptance. No service, printer, hosted validation or user browser changed.
+## Earlier project-role candidate evidence (merged through PR82)
+
+## Project review roles — targeted configuration evidence
+
+Base: accepted PR80 `4e869d8e70aa1ee4d55295fc5a8d93ec4ee70258`.
+Four standalone role files use only `name`, `description` and
+`developer_instructions`, following the opened official OpenAI custom-agent
+documentation linked in `docs/project-agents.md`. They contain no model,
+permission, tool, MCP or global configuration overrides. The guide explicitly
+separates schema validation from native-client loading and simulated user
+feedback from real user research.
+
+Actually run by the author:
+
+- `uv run --no-project scripts/test_project_agents.py`: 3 tests PASS, covering
+  all four names/files, nonempty string fields, no added configuration keys,
+  role routing/guide links, repository context references, portable instructions
+  and resource cleanup clauses. File streams use context managers.
+- `git diff --check`: PASS.
+- `git diff --exit-code 4e869d8e70aa1ee4d55295fc5a8d93ec4ee70258 -- plugins .agents .github scripts/check-repository.sh scripts/u1_ship.py scripts/u1_service.py`:
+  PASS; application, assets, dependencies and existing shipping gates unchanged.
+
+This is static configuration/documentation evidence only. No full widget/build/
+browser suite, model invocation, named-agent runtime loading, screenshot audit,
+service restart, printer read/control or physical acceptance was run or claimed.
+Independent exact source/config review remains pending. No owned long-lived
+process, browser, fixture port or connection was started. All pending widget
+checkpoints remain separate; no earlier application evidence approves new bytes.
 
 ## Earlier checkpoints (superseded where noted above)
 

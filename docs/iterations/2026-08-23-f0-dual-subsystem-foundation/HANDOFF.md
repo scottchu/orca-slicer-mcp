@@ -1,5 +1,18 @@
 # F0 dual-subsystem foundation handoff
 
+## Heads accepted-main integration — exact handoff pending
+
+The six inherited repair records are preserved in commit `8f66edc`. Ordinary
+integration of accepted PR82 main `707a018` adds only its project-agent
+configuration, routing/guide, focused configuration test and continuity records.
+Resolve additive records without replacing history or changing application
+inputs. Final focused tests, identity evidence, independent exact review and
+guarded delivery remain the next gates; no new deployment is claimed here.
+After Heads, resume Bed Lab `c0323a4`, Camera `4eb3106` retry repair, then all
+other preserved tracks. PR82 is merged, but native role invocation is unverified.
+
+## Earlier Heads repair handoff
+
 ## PR81 test-only local-gate repair ready for exact binding
 
 Checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d` changes only
@@ -52,6 +65,21 @@ separately reviewed optimization if needed. Do not raise caps or copy pending co
 PR79 and all additive tracks remain intact. Playwright's isolated contexts and
 fixture exited; lsof confirms no listener on4179. All author command sessions
 completed. User sessions, services, worktrees and evidence remain preserved.
+## Earlier project-role handoff (completed by merged PR82)
+
+## Project-agent definitions — configuration handoff
+
+Changed four `.codex/agents/*.toml` files, routing in `AGENTS.md`, the usage and
+compatibility guide `docs/project-agents.md`, focused
+`scripts/test_project_agents.py`, and the five required continuity records.
+No application, asset, dependency, runtime, shipping automation or global Codex
+configuration changed. The new script uses only Python stdlib through `uv run`.
+Next: independent exact source/config review and PR merge, not deployment.
+Native named-role discovery/invocation remains unverified; the current spawn
+tool exposes no custom-agent-name parameter. Do not equate static parsing with
+runtime selection or role behavior. All earlier widget tracks remain unfinished.
+No browser, fixture server, model process, watcher or printer connection was
+started for this slice; command/file handles close on completion.
 
 ## Earlier checkpoints (superseded where noted above)
 

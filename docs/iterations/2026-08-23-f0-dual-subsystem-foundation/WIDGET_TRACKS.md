@@ -1,5 +1,11 @@
 # Widget completion tracks
 
+Resumed order after accepted PR82 main `707a018`: finish Heads PR81 exact
+acceptance/shipment, then Bed Lab stable-error `c0323a4`, then Camera `4eb3106`
+explicit retry repair and remaining gates. Project-role configuration is merged
+and statically accepted, with native loading unverified. All tracks below stay
+open; this integration changes no widget implementation or acceptance boundary.
+
 PR81 delivery update: first mandatory gate rejected an inherited blanket loading
 test; nothing merged/installed/restarted. Test-only `1e2e387` repairs the exact
 public-skeleton exception with private/accessibility/noninteractive adversaries.
