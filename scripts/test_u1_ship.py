@@ -8,8 +8,10 @@ import unittest
 from unittest.mock import Mock, patch
 
 from u1_service import ASSETS, digest
+from u1_build_contract import BUILD_MANIFEST, REQUIRED_ROLES, read_build_manifest
+from test_u1_service import write_kit_build
 from u1_ship import (
-    APP, Operations, REPOSITORY, ShipError, check_security, check_static,
+    APP, CANDIDATE_BUILD, Operations, REPOSITORY, ShipError, check_security, check_static,
     guard_pr, oauth_identity, ship, static_contract,
 )
 
@@ -264,22 +266,43 @@ class MechanicalGuardTests(unittest.TestCase):
 
     def test_stage_rejects_wrong_revision_or_asset(self):
         ops = self.preflight_ops()
-        ops.contract = {"fixture": True}
         release = self.root / "release"
-        for directory in (release / "public", self.root / APP / "public"):
+        ops.build_manifest = write_kit_build(release / "dist")
+        ops.contract = static_contract(self.root, release / "dist")
+        for directory in (self.root / APP / "public",):
             directory.mkdir(parents=True)
             for name in ASSETS: (directory / name).write_text(name)
         ops.manager = Mock()
         ops.manager.stage.return_value = {"sourceRevision": MERGED}
         manifest = {"sourceRevision": MERGED}
         ops.manager.verify_release.return_value = (release, manifest)
-        with patch("u1_ship.static_contract", return_value=ops.contract):
-            self.assertEqual(ops.stage(self.root, "fixture", MERGED), manifest)
-            ops.manager.stage.return_value = {"sourceRevision": HEAD}
-            with self.assertRaisesRegex(ShipError, "revision"): ops.stage(self.root, "fixture", MERGED)
-            ops.manager.stage.return_value = {"sourceRevision": MERGED}
-            (release / "public/widget.html").write_text("wrong")
-            with self.assertRaisesRegex(ShipError, "asset"): ops.stage(self.root, "fixture", MERGED)
+        self.assertEqual(ops.stage(self.root, "fixture", MERGED), manifest)
+        legacy = self.root / APP / "public/legacy-widget.html"
+        legacy.write_text("source hash must still be checked")
+        with self.assertRaisesRegex(ShipError, "asset"):
+            ops.stage(self.root, "fixture", MERGED)
+        legacy.write_text("legacy-widget.html")
+        ops.manager.stage.return_value = {"sourceRevision": HEAD}
+        with self.assertRaisesRegex(ShipError, "revision"): ops.stage(self.root, "fixture", MERGED)
+        ops.manager.stage.return_value = {"sourceRevision": MERGED}
+        (release / "dist/static-contract/widget.html").write_text("wrong")
+        with self.assertRaisesRegex(ShipError, "build contract"): ops.stage(self.root, "fixture", MERGED)
+
+    def test_stage_rejects_runtime_change_even_with_same_static_assets(self):
+        ops = self.preflight_ops()
+        release = self.root / "release"
+        ops.build_manifest = write_kit_build(release / "dist")
+        ops.contract = static_contract(self.root, release / "dist")
+        changed = deepcopy(ops.build_manifest)
+        handler = release / "dist/handler.js"
+        handler.write_text("different complete runtime")
+        changed["runtimeFiles"]["handler.js"] = digest(handler)
+        (release / "dist" / BUILD_MANIFEST).write_text(json.dumps(changed))
+        ops.manager = Mock()
+        ops.manager.stage.return_value = {"sourceRevision": MERGED}
+        ops.manager.verify_release.return_value = (release, {"sourceRevision": MERGED})
+        with self.assertRaisesRegex(ShipError, "complete build"):
+            ops.stage(self.root, "fixture", MERGED)
 
     def test_merge_uses_only_matching_head_no_bypass_flags(self):
         ops = self.preflight_ops()
@@ -305,13 +328,23 @@ class MechanicalGuardTests(unittest.TestCase):
         ops = self.preflight_ops()
         ops.source = self.root
         calls = []
-        ops.command = lambda args, **kwargs: calls.append(args) or ""
+        (app / "dist/stdio.js").write_text("fixture stdio")
+        def command(args, **kwargs):
+            calls.append(args)
+            if "build:server" in args:
+                write_kit_build(Path(args[args.index("--outdir") + 1]))
+            return ""
+        ops.command = command
         ops.git = lambda *args, **kwargs: ""
         ops.validate()
         self.assertIn(["./scripts/check-repository.sh"], calls)
         self.assertEqual([c[-1] for c in calls if len(c) > 3 and c[-2] == "run"], ["bundle", "bundle:server", "bundle:runtime"])
         self.assertTrue(any(c[0] == "codesign" for c in calls))
-        (app / "dist/widget.html").write_text("different")
+        installs = [c for c in calls if "install" in c]
+        self.assertEqual(len(installs), 1)
+        self.assertIn("--frozen-lockfile", installs[0])
+        self.assertEqual(ops.build_manifest, read_build_manifest(app / CANDIDATE_BUILD))
+        (app / "public/widget.html").write_text("different")
         with self.assertRaisesRegex(ShipError, "asset"): ops.validate()
 
     def test_oauth_refresh_registration_and_counter_changes_are_allowed(self):
@@ -330,79 +363,34 @@ class MechanicalGuardTests(unittest.TestCase):
 
 
 class StaticContractTests(unittest.TestCase):
-    def test_directory_source_routes_are_dynamic_not_fixed_count(self):
-        with tempfile.TemporaryDirectory(prefix="u1-static-fixture-") as temporary:
-            root = Path(temporary)
-            app = root / APP
-            (app / "src").mkdir(parents=True)
-            (app / "public").mkdir()
-            (app / "src/status-dashboard.ts").write_text('const FOCUSED_DASHBOARD_PATHS = new Set(["/dashboard/progress", "/dashboard/new_view"]); const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab"]); const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh"; const CAMERA_LAB_PATH = "/dashboard/lab/camera";')
-            for name in ASSETS: (app / "public" / name).write_text(name)
-            (app / "public/svelte-observation-lab.html").write_text("lab")
-            (app / "public/svelte-bed-mesh-lab.html").write_text("bed mesh lab")
-            (app / "public/svelte-camera-lab.html").write_text("camera lab")
-            index = app / "public/dashboard-index.html"
-            index.write_text('<a href="/dashboard/progress">Progress</a><a href="/dashboard/new_view">New</a><a href="/dashboard/camera">Camera</a>')
-            contract = static_contract(root)
-            self.assertIn("8788/dashboard/new_view", contract)
-            self.assertEqual(contract["8788/dashboard/lab/camera"]["sha256"], digest(app / "public/svelte-camera-lab.html"))
-            self.assertEqual(
-                contract["8788/dashboard/lab/bed_mesh"]["sha256"],
-                digest(app / "public/svelte-bed-mesh-lab.html"),
-            )
-            source = app / "src/status-dashboard.ts"
-            source.write_text(source.read_text() + ' const LIVE_FANS_WIDGET_PATH = "/dashboard/fans_widget";')
-            (app / "public/svelte-live-fans.html").write_text("production Fans, not lab fixtures")
-            live_contract = static_contract(root)
-            self.assertEqual(len(live_contract), len(contract) + 1)
-            self.assertEqual(live_contract["8788/dashboard/fans_widget"]["sha256"], digest(app / "public/svelte-live-fans.html"))
-            self.assertNotIn("8787/dashboard/fans_widget", live_contract)
-            source.write_text(source.read_text() + ' const LIVE_THERMALS_WIDGET_PATH = "/dashboard/thermals_widget";')
-            (app / "public/svelte-live-thermals.html").write_text("production Thermals, independent receipts")
-            thermal_contract = static_contract(root)
-            self.assertEqual(len(thermal_contract), len(live_contract) + 1)
-            self.assertEqual(thermal_contract["8788/dashboard/thermals_widget"]["sha256"], digest(app / "public/svelte-live-thermals.html"))
-            self.assertNotIn("8787/dashboard/thermals_widget", thermal_contract)
-            correct_source = source.read_text()
-            source.write_text(correct_source.replace('LIVE_THERMALS_WIDGET_PATH', 'UNRECOGNIZED_PATH') + ' import thermal from "svelte-live-thermals.html";')
-            with self.assertRaisesRegex(ShipError, "Thermals route"): static_contract(root)
-            source.write_text(correct_source)
-            source.write_text(source.read_text() + ' const LIVE_HEADS_WIDGET_PATH = "/dashboard/heads_widget";')
-            (app / "public/svelte-live-heads.html").write_text("production Heads, independent materials")
-            heads_contract = static_contract(root)
-            self.assertEqual(len(heads_contract), len(thermal_contract) + 1)
-            self.assertEqual(heads_contract["8788/dashboard/heads_widget"]["sha256"], digest(app / "public/svelte-live-heads.html"))
-            self.assertNotIn("8787/dashboard/heads_widget", heads_contract)
-            correct_source = source.read_text()
-            source.write_text(correct_source.replace('LIVE_HEADS_WIDGET_PATH', 'UNRECOGNIZED_PATH') + ' import heads from "svelte-live-heads.html";')
-            with self.assertRaisesRegex(ShipError, "Heads route"): static_contract(root)
-            source.write_text(correct_source)
-            source.write_text(source.read_text() + ' const LIVE_QUEUE_WIDGET_PATH = "/dashboard/queue_widget";')
-            (app / "public/svelte-live-queue.html").write_text("production Print Queue, observed waiting durations")
-            queue_contract = static_contract(root)
-            self.assertEqual(len(queue_contract), len(heads_contract) + 1)
-            self.assertEqual(queue_contract["8788/dashboard/queue_widget"]["sha256"], digest(app / "public/svelte-live-queue.html"))
-            self.assertNotIn("8787/dashboard/queue_widget", queue_contract)
-            correct_source = source.read_text()
-            source.write_text(correct_source.replace('LIVE_QUEUE_WIDGET_PATH', 'UNRECOGNIZED_PATH') + ' import queue from "svelte-live-queue.html";')
-            with self.assertRaisesRegex(ShipError, "Queue route"): static_contract(root)
-            source.write_text(correct_source)
-            source.write_text(source.read_text() + ' const LIVE_CAMERA_WIDGET_PATH = "/dashboard/camera_widget";')
-            (app / "public/svelte-live-camera.html").write_text("production Camera, not lab fixtures")
-            camera_contract = static_contract(root)
-            self.assertEqual(len(camera_contract), len(queue_contract) + 1)
-            self.assertEqual(camera_contract["8788/dashboard/camera_widget"]["sha256"], digest(app / "public/svelte-live-camera.html"))
-            self.assertNotIn("8787/dashboard/camera_widget", camera_contract)
-            isolated_source = source.read_text()
-            source.write_text(isolated_source.replace('const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab"]);', 'const OBSERVATION_LAB_PATHS = new Set(["/dashboard/lab", "/dashboard/lab/bed_mesh"]);'))
-            with self.assertRaisesRegex(ShipError, "Heavy private labs"):
-                static_contract(root)
-            source.write_text(isolated_source.replace('const BED_MESH_LAB_PATH = "/dashboard/lab/bed_mesh";', 'const UNRECOGNIZED_BED_PATH = "/dashboard/lab/bed_mesh";'))
-            with self.assertRaisesRegex(ShipError, "Bed Mesh lab route"):
-                static_contract(root)
-            source.write_text(isolated_source)
-            index.write_text('<a href="https://unexpected.invalid">Wrong</a>')
-            with self.assertRaises(ShipError): static_contract(root)
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="u1-static-fixture-")
+        self.root = Path(self.temporary.name).resolve()
+        self.directory = self.root / APP / CANDIDATE_BUILD
+        self.manifest = write_kit_build(self.directory)
+
+    def tearDown(self):
+        self.temporary.cleanup()
+
+    def test_static_contract_uses_complete_build_and_explicit_roles(self):
+        contract = static_contract(self.root)
+        for route in REQUIRED_ROLES:
+            self.assertIn("8788" + route, contract)
+        self.assertIn("8787/widget", contract)
+        self.assertNotIn("8787/dashboard/fans", contract)
+        self.assertIn("8788/_app/immutable/start.fixture.js", contract)
+        self.assertEqual(contract["8788/dashboard/fans"]["sha256"], digest(self.directory / "prerendered/dashboard/fans.html"))
+        # A new declared compatibility route adds checks without fixing a count.
+        self.manifest["staticRoutes"]["/dashboard/new_view"] = dict(self.manifest["staticRoutes"]["/dashboard/overview"])
+        (self.directory / BUILD_MANIFEST).write_text(json.dumps(self.manifest))
+        extended = static_contract(self.root)
+        self.assertEqual(len(extended), len(contract) + 1)
+        self.assertIn("8788/dashboard/new_view", extended)
+
+    def test_missing_manifest_fails_without_legacy_contract_fallback(self):
+        (self.directory / BUILD_MANIFEST).unlink()
+        with self.assertRaisesRegex(ShipError, "build contract"):
+            static_contract(self.root)
 
     def test_served_hash_mismatch_fails_without_followup_acquisition(self):
         calls = []
@@ -426,13 +414,12 @@ class StaticContractTests(unittest.TestCase):
             check_security(contract, lambda *args: (200, b""))
 
     def test_overview_private_static_and_public_isolation_are_separate(self):
-        root = Path(__file__).resolve().parents[1]
-        contract = static_contract(root)
+        contract = static_contract(self.root)
         overview = contract["8788/dashboard/overview"]
         static_calls = []
         def static_read(port, route):
             static_calls.append((port, route))
-            return 200, (root / APP / "public/status-dashboard-host.html").read_bytes()
+            return 200, (self.directory / "static-contract/fixture.html").read_bytes()
         result = check_static({"overview": overview}, static_read)
         self.assertEqual(result["overview"]["code"], 200)
         self.assertEqual(static_calls, [(8788, "/dashboard/overview")])
@@ -444,7 +431,7 @@ class StaticContractTests(unittest.TestCase):
             security_calls.append((port, route))
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""
-        self.assertEqual(check_security(contract, security_read), 32)
+        self.assertEqual(check_security(contract, security_read), len(REQUIRED_ROLES) + 4)
         self.assertIn((8787, "/dashboard/overview"), security_calls)
         self.assertIn((8787, "/dashboard/camera"), security_calls)
         self.assertIn((8787, "/dashboard/lab"), security_calls)
@@ -456,7 +443,9 @@ class StaticContractTests(unittest.TestCase):
         self.assertIn((8787, "/dashboard/camera_widget"), security_calls)
         self.assertIn((8787, "/dashboard/lab/camera"), security_calls)
         self.assertNotIn((8788, "/dashboard/overview"), security_calls)
-        forbidden_routes = {"/dashboard/tools/call", "/widget", "/camera-widget"}
+        self.assertIn((8787, "/_app/immutable/start.fixture.js"), security_calls)
+        self.assertIn((8787, "/camera-widget"), security_calls)
+        forbidden_routes = {"/dashboard/tools/call", "/widget"}
         self.assertFalse(any(
             route in forbidden_routes or "observation" in route or "tool" in route
             for _, route in static_calls + security_calls
@@ -469,11 +458,10 @@ class StaticContractTests(unittest.TestCase):
             check_security(contract, exposed_overview)
 
     def test_security_count_is_derived_from_current_dashboard_inventory(self):
-        root = Path(__file__).resolve().parents[1]
-        contract = static_contract(root)
-        dashboard_paths = {item["route"] for item in contract.values() if item["route"].startswith("/dashboard")}
-        expected = len(dashboard_paths) + 3 + 1  # fixed public/private auth checks plus private health
-        self.assertEqual(expected, 32)
+        contract = static_contract(self.root)
+        private_paths = {route for route, item in self.manifest["staticRoutes"].items() if item["role"] == "dashboard"}
+        expected = len(private_paths) + 3 + 1  # auth checks plus private health
+        self.assertGreater(expected, 32)  # Kit client and Camera HTML are isolated too.
         def read(port, route):
             if port == 8789: return 200, b'{"ok":true,"surface":"passkey-enrollment"}'
             return (401 if port == 8787 and route == "/mcp" else 404), b""

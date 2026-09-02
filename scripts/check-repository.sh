@@ -106,16 +106,16 @@ if [[ -d "$plugin_app_root" ]]; then
   fi
   (
     cd "$plugin_app_root"
-    bun run ui:check
-    bun run ui:test
-    (cd ui && bun run verify:live-fans)
-    (cd ui && bun run verify:live-thermals)
-    (cd ui && bun run verify:live-heads)
-    (cd ui && bun run verify:live-queue)
-    (cd ui && bun run verify:live-camera)
-    bun run ui:verify
-    bun run check
-    bun test src/*.test.ts
+    bun --no-env-file --config=/dev/null run ui:check
+    bun --no-env-file --config=/dev/null run ui:test
+    bun --no-env-file --config=/dev/null run verify:live-fans
+    bun --no-env-file --config=/dev/null run verify:live-thermals
+    bun --no-env-file --config=/dev/null run verify:live-heads
+    bun --no-env-file --config=/dev/null run verify:live-queue
+    bun --no-env-file --config=/dev/null run verify:live-camera
+    bun --no-env-file --config=/dev/null run ui:verify
+    bun --no-env-file --config=/dev/null run check
+    bun --no-env-file --config=/dev/null run test:server
   )
 fi
 

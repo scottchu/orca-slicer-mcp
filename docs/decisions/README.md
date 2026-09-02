@@ -47,7 +47,7 @@ silently changed.
 | [0040](0040-require-embedded-print-thumbnails.md) | Require embedded thumbnails before print handoff | Accepted workflow policy; automated enforcement unimplemented |
 | [0041](0041-present-failures-as-neutral-skeletons-with-footer-status.md) | Present acquisition failures as neutral skeletons with footer status | PR89 scoped deployment; common UI/Camera refinement shipped PR91; byte caps superseded by0042 |
 | [0042](0042-remove-repository-widget-byte-caps.md) | Remove repository widget package byte caps | Independently accepted and shipped PR91 |
-| [0043](0043-unify-sveltekit-application-with-bun.md) | Unify one SvelteKit application while retaining Bun | Accepted next direction; route/service pilot and adapter acceptance pending |
+| [0043](0043-unify-sveltekit-application-with-bun.md) | Unify one SvelteKit application while retaining Bun | Adapter-node handler on Bun selected; real route/service integration and independent acceptance pending |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

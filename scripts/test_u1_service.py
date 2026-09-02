@@ -1,6 +1,7 @@
 """Offline lifecycle tests: fake launchctl, builds and health; no service contact."""
 import hashlib
 import json
+import json
 import os
 from pathlib import Path
 import plistlib
@@ -9,9 +10,35 @@ import unittest
 from unittest.mock import patch
 
 from u1_service import ASSETS, HEALTH_KEYS, LABELS, ServiceManager, digest, json_bytes
+from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, LEGACY_ASSET_FILES, REQUIRED_ROLES, VIEWS, read_build_manifest
 
 
 CONTRACT = dict(zip(HEALTH_KEYS, ("0.3.0", 5, "observation-v2", "camera-v4")))
+
+
+def write_kit_build(directory):
+    """Synthetic closed output, including client code and a prerendered page."""
+    directory.mkdir(parents=True, exist_ok=True)
+    contents = {"server.js": "fixture bootstrap", "handler.js": "fixture handler",
+                "client/_app/immutable/start.fixture.js": "fixture client",
+                "prerendered/dashboard/fans.html": "<main>Neutral Fans fixture</main>",
+                "static-contract/fixture.html": "fixture compatibility page"}
+    contents.update({relative: name for name, relative in LEGACY_ASSET_FILES.items()})
+    contents["static-contract/dashboard-index.html"] = "".join(f'<a href="/dashboard/{view}">{view}</a>' for view in VIEWS)
+    for relative, content in contents.items():
+        file = directory / relative
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_text(content)
+    files = {relative: digest(directory / relative) for relative in contents}
+    routes = {}
+    for route, role in REQUIRED_ROLES.items():
+        relative = {"/widget": "static-contract/widget.html", "/camera-widget": "static-contract/camera-widget.html", "/dashboard/fans": "prerendered/dashboard/fans.html", "/dashboard": "static-contract/dashboard-index.html", "/dashboard/": "static-contract/dashboard-index.html"}.get(route, "static-contract/fixture.html")
+        routes[route] = {"file": relative, "sha256": files[relative], "role": role}
+    relative = "client/_app/immutable/start.fixture.js"
+    routes["/_app/immutable/start.fixture.js"] = {"file": relative, "sha256": files[relative], "role": "dashboard"}
+    manifest = {"schemaVersion": 1, "buildKind": BUILD_KIND, "runtimeFiles": files, "staticRoutes": routes}
+    (directory / BUILD_MANIFEST).write_bytes(json_bytes(manifest))
+    return manifest
 
 
 class LifecycleTests(unittest.TestCase):
@@ -275,28 +302,192 @@ class LifecycleTests(unittest.TestCase):
         result = subprocess.run([bun, f"--env-file={explicit}", "--no-env-file", "--config=/dev/null", "--eval", code], cwd=self.base, env={"PATH": os.environ.get("PATH", ""), "U1_TEST_PRECEDENCE": "from_plist"}, capture_output=True, text=True, check=True)
         self.assertEqual(json.loads(result.stdout), {"explicit": "from_file", "precedence": "from_plist", "autoload": None})
 
-    def test_stage_copies_only_fixed_assets_and_is_immutable(self):
+    def test_stage_builds_closed_kit_inventory_and_is_immutable(self):
         app = self.base / "plugins/u1-print-studio/app"
         (app / "public").mkdir(parents=True)
-        (app / "src").mkdir()
+        (app / "src/lib/server").mkdir(parents=True)
         for asset in ASSETS:
             (app / "public" / asset).write_text(asset)
         (app / "public/private-recording.mp4").write_text("do not stage")
-        (app / "src/runtime-contract.ts").write_text('export const U1_RUNTIME_VERSION = "0.3.0";\nexport const U1_TOOL_SCHEMA_VERSION = 5;\nexport const U1_OBSERVATION_WIDGET_VERSION = "observation-v2";\nexport const U1_CAMERA_WIDGET_VERSION = "camera-v4";')
+        (app / "src/lib/server/runtime-contract.ts").write_text('export const U1_RUNTIME_VERSION = "0.3.0";\nexport const U1_TOOL_SCHEMA_VERSION = 5;\nexport const U1_OBSERVATION_WIDGET_VERSION = "observation-v2";\nexport const U1_CAMERA_WIDGET_VERSION = "camera-v4";')
         def build_runner(args, **kwargs):
             if args[0] == "git":
                 return "a" * 40 if "rev-parse" in args else ""
-            if "build" in args:
-                out = Path(next(a.split("=", 1)[1] for a in args if a.startswith("--outdir=")))
-                (out / "server.js").write_text("fixture build")
+            if "build:server" in args:
+                out = Path(args[args.index("--outdir") + 1])
+                write_kit_build(out)
             return "fixture"
         manager = ServiceManager(self.root, self.plists, build_runner)
         result = manager.stage(self.base, self.bun, "r2")
         release, manifest = manager.verify_release("r2")
         self.assertEqual(result["health"], CONTRACT)
-        self.assertEqual(len(manifest["files"]), 9)
+        self.assertEqual(manifest["schemaVersion"], 2)
+        self.assertEqual(manifest["buildKind"], BUILD_KIND)
+        self.assertIn("dist/handler.js", manifest["files"])
+        self.assertIn("dist/client/_app/immutable/start.fixture.js", manifest["files"])
+        self.assertIn("dist/prerendered/dashboard/fans.html", manifest["files"])
+        self.assertIn("dist/build-manifest.json", manifest["files"])
         self.assertFalse((release / "public/private-recording.mp4").exists())
         self.assertEqual(release.stat().st_mode & 0o777, 0o500)
+
+    def kit_release(self):
+        release = self.root / "releases/r2"
+        release.mkdir(mode=0o700)
+        write_kit_build(release / "dist")
+        (release / "bin").mkdir(mode=0o700)
+        (release / "bin/bun").write_bytes(self.bun.read_bytes())
+        (release / "bunfig.toml").write_text("")
+        manifest = {"schemaVersion": 2, "buildKind": BUILD_KIND, "release": "r2",
+                    "sourceRevision": "b" * 40, "bun": str(release / "bin/bun"),
+                    "bunVersion": "fixture", "bunSha256": digest(self.bun), "health": CONTRACT,
+                    "files": {p.relative_to(release).as_posix(): digest(p) for p in release.rglob("*") if p.is_file()}}
+        (release / "manifest.json").write_bytes(json_bytes(manifest))
+        for path in release.rglob("*"):
+            path.chmod(0o700 if path.is_dir() or path == release / "bin/bun" else 0o600)
+        return release, manifest
+
+    def test_kit_install_can_rollback_to_verified_legacy_release(self):
+        self.manager.install("r1")
+        old = {name: self.manager.plist_path(name).read_bytes() for name in LABELS}
+        self.kit_release()
+        result = self.manager.install("r2")
+        self.assertTrue(all(value["integrity"] == "verified" for value in self.manager.status().values()))
+        self.manager.rollback(result["rollbackSnapshot"])
+        self.assertEqual({name: self.manager.plist_path(name).read_bytes() for name in LABELS}, old)
+        self.assertTrue(all(value["healthy"] for value in self.manager.status().values()))
+
+    def test_kit_manifest_cannot_be_deleted_or_downgraded(self):
+        release, manifest = self.kit_release()
+        downgraded = {**manifest, "schemaVersion": 1}
+        del downgraded["buildKind"]
+        (release / "manifest.json").write_bytes(json_bytes(downgraded))
+        with self.assertRaisesRegex(ValueError, "legacy schema"):
+            self.manager.install("r2")
+        (release / "dist" / BUILD_MANIFEST).unlink()
+        del manifest["files"]["dist/" + BUILD_MANIFEST]
+        (release / "manifest.json").write_bytes(json_bytes(manifest))
+        with self.assertRaisesRegex(ValueError, "missing required"):
+            self.manager.install("r2")
+        self.assertEqual(self.calls, [])
+
+    def test_missing_kit_handler_and_added_client_file_fail_before_stop(self):
+        release, manifest = self.kit_release()
+        extra = release / "dist/client/_app/unlisted.js"
+        extra.write_text("unlisted output")
+        with self.assertRaisesRegex(ValueError, "inventory changed"):
+            self.manager.install("r2")
+        extra.unlink()
+        (release / "dist/handler.js").unlink()
+        del manifest["files"]["dist/handler.js"]
+        (release / "manifest.json").write_bytes(json_bytes(manifest))
+        with self.assertRaisesRegex(ValueError, "missing required"):
+            self.manager.install("r2")
+        self.assertEqual(self.calls, [])
+
+
+class BuildContractTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="u1-kit-contract-")
+        self.directory = Path(self.temporary.name).resolve()
+        self.manifest = write_kit_build(self.directory)
+
+    def tearDown(self):
+        self.temporary.cleanup()
+
+    def write_manifest(self):
+        (self.directory / BUILD_MANIFEST).write_bytes(json_bytes(self.manifest))
+
+    def test_complete_build_is_readable_and_relocatable(self):
+        import shutil
+        with tempfile.TemporaryDirectory(prefix="u1-relocated-") as target:
+            relocated = Path(target).resolve() / "dist"
+            shutil.copytree(self.directory, relocated)
+            self.assertEqual(read_build_manifest(relocated), self.manifest)
+
+    def test_missing_route_cannot_reduce_security_inventory(self):
+        del self.manifest["staticRoutes"]["/dashboard/overview"]
+        self.write_manifest()
+        with self.assertRaisesRegex(ValueError, "Required static route"):
+            read_build_manifest(self.directory)
+
+    def test_private_asset_cannot_become_public(self):
+        self.manifest["staticRoutes"]["/_app/immutable/start.fixture.js"]["role"] = "both"
+        self.write_manifest()
+        with self.assertRaisesRegex(ValueError, "cannot be public"):
+            read_build_manifest(self.directory)
+
+    def test_file_hash_mismatch_and_undeclared_files_are_rejected(self):
+        (self.directory / "private-recording.mp4").write_text("must not ship")
+        with self.assertRaisesRegex(ValueError, "output inventory"):
+            read_build_manifest(self.directory)
+        (self.directory / "private-recording.mp4").unlink()
+        (self.directory / "handler.js").write_text("changed")
+        with self.assertRaisesRegex(ValueError, "hash mismatch"):
+            read_build_manifest(self.directory)
+
+    def test_generated_static_file_requires_a_declared_route(self):
+        del self.manifest["staticRoutes"]["/_app/immutable/start.fixture.js"]
+        self.write_manifest()
+        with self.assertRaisesRegex(ValueError, "missing its route"):
+            read_build_manifest(self.directory)
+
+    def test_symlink_and_traversal_cannot_enter_runtime_inventory(self):
+        original = self.directory / "handler.js"
+        original.unlink()
+        original.symlink_to(self.directory / "server.js")
+        with self.assertRaisesRegex(ValueError, "regular files|symlinks"):
+            read_build_manifest(self.directory)
+        original.unlink()
+        original.write_text("fixture handler")
+        self.manifest["runtimeFiles"]["../outside"] = "0" * 64
+        self.write_manifest()
+        with self.assertRaisesRegex(ValueError, "Invalid build file path"):
+            read_build_manifest(self.directory)
+
+    def test_duplicate_keys_and_missing_build_kind_are_rejected(self):
+        path = self.directory / BUILD_MANIFEST
+        path.write_text('{"schemaVersion":1,"schemaVersion":1}')
+        with self.assertRaisesRegex(ValueError, "Duplicate"):
+            read_build_manifest(self.directory)
+        del self.manifest["buildKind"]
+        self.write_manifest()
+        with self.assertRaisesRegex(ValueError, "Unsupported"):
+            read_build_manifest(self.directory)
+
+    def test_static_route_must_match_hashed_runtime_file(self):
+        self.manifest["staticRoutes"]["/dashboard/fans"]["sha256"] = "0" * 64
+        self.write_manifest()
+        with self.assertRaisesRegex(ValueError, "not bound"):
+            read_build_manifest(self.directory)
+
+    def test_directory_rejects_foreign_empty_duplicate_and_missing_links(self):
+        valid = (self.directory / "static-contract/dashboard-index.html").read_text()
+        invalid_documents = {
+            "foreign": '<a href="https://unexpected.invalid">Wrong</a>',
+            "empty": "<main>No links</main>",
+            "duplicate": valid + '<a href="/dashboard/fans">Duplicate</a>',
+            "missing": valid.replace('<a href="/dashboard/fans">fans</a>', ""),
+        }
+        for name, html in invalid_documents.items():
+            with self.subTest(case=name):
+                relative = "static-contract/dashboard-index.html"
+                (self.directory / relative).write_text(html)
+                expected = digest(self.directory / relative)
+                self.manifest["runtimeFiles"][relative] = expected
+                for route in ("/dashboard", "/dashboard/"):
+                    self.manifest["staticRoutes"][route]["sha256"] = expected
+                self.write_manifest()
+                with self.assertRaisesRegex(ValueError, "directory links"):
+                    read_build_manifest(self.directory)
+
+    def test_explicit_asset_paths_keep_both_legacy_resources_hashed(self):
+        read_build_manifest(self.directory)
+        for name in ("legacy-widget.html", "legacy-camera-widget.html"):
+            self.assertEqual(LEGACY_ASSET_FILES[name], name)
+            self.assertEqual(self.manifest["runtimeFiles"][name], digest(self.directory / name))
+        (self.directory / "legacy-widget.html").write_text("tampered legacy resource")
+        with self.assertRaisesRegex(ValueError, "hash mismatch"):
+            read_build_manifest(self.directory)
 
 
 if __name__ == "__main__":

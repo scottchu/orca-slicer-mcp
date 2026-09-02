@@ -1,5 +1,290 @@
 # F0 dual-subsystem foundation validation
 
+## Current976aa9f independent failure and focused repairs
+
+Independent report `app/test-results/independent-976aa9f/REPORT.json`, SHA256
+`67881024fe70a60287ded344ac7d1cc8a2ff6af062e29b46e6a1eed6a98b9701`, binds
+`976aa9ff9fcf8431934bb1826060828b42318d92`, tree
+`f18bd5f9df61b090799c03133bc38d096aedbe60`, and concludes CHANGES_REQUESTED.
+The required repository run passes574 UI/55 files, eight packages/types/AST but
+stops at315 server PASS/two FAIL/3710 assertions. Separately executed full browser
+passes323 cases in131.404s; Python lifecycle34 and shipping26 also ran and passed.
+Actual Kit completion-gap/normal/other-consumer/subsequent-request adversaries pass
+with zero printer acquisitions; canonical39-file/58-route/59-role/six-pin checks
+pass. These passing subsets do not turn the failed repository gate into a pass.
+The report retains the separate no-env build defect and all707 output hashes.
+
+The records author's two-fixture repair report is
+`app/test-results/widget-fixture-repair/REPORT.json`, SHA256
+`c31e320bd5606ae3bafeac972803fac05760c4fc367d0ed82f7ac3f99870448b`.
+`bun --no-env-file test tests/server/camera-widget.test.ts --test-name-pattern 'a remounted live intent restores once'`
+passes1/8 assertions after awaiting the observable answer request with a1s deadline
+and event-loop yields. A first two-file run passes88/fails2: strict process-error
+checks expose ETIMEDOUT in both Chrome CLI helpers even with complete DOM.
+The validator's prior16MiB experiment had confirmed Thermal stdout truncation at
+1114112 bytes versus a complete4333217-byte dump, but did not inspect process error;
+it cannot prove successful browser shutdown. Both failure stages remain recorded.
+
+The final two-file `bun --no-env-file test` invocation passes90 tests/1173 assertions
+in4.76s. Layout helpers now use existing Playwright with separate temporary profiles,
+bounded launch/navigation/result waits, a4096-character result bound and finally
+context/profile cleanup. Exact production HTML/CSS and all geometry assertions
+remain; no CLI timeout is tolerated. All15 public files match976 byte-for-byte.
+Camera test SHA256 is
+`d9f69b2216092d9f32e06893883c3eac643aa9db62aedddee922d57c6f008374`;
+observation test SHA256 is
+`6ba95f2270e9f76c6ffc6b5aa2202bd91ba59358a6b0b3324b3b426b37226d40`.
+Independent bounded source approval is `independent-976aa9f/fixture-source-review.json`,
+SHA256 `07a3423a8bc0d71875fc33f0f3765d0ef2414795ac7b5014e071e1f1dfb75c72`;
+it does not independently rerun the90 tests or approve the new whole candidate.
+
+The checker adds `--no-env-file --config=/dev/null` to its ten existing Bun gates,
+without changing order, fail-fast behavior or either Python gate. `bash -n` passes;
+a temporary command-recorder fixture confirms all12 commands and propagation of
+an injected exit29 before later gates. This executes no app/full/Python suites.
+Report `widget-fixture-repair/checker-no-env.json` SHA256
+`6602d1eeb4528cd03a5594e8189f2ce945ad41a1ab3653ebf8415e2cb46bae80`
+binds checker SHA256
+`eb4ce296b77c1244d555b6cce7a1da4c673dcd22e48b4139465ca436f68813fe`.
+The first recorder's wrong argument index was fixed only in the private probe;
+the actual checker was unchanged.
+
+The application author's frozen no-env report is
+`app/test-results/kit-env-repair/AUTHOR-REPORT.json`, SHA256
+`a4aabffce43c1c9ac306f9404f690d1b23d88b29acf9bfe1b754b48b2441fec8`.
+Its409 app/entry inputs, including the two repaired fixtures, bind SHA256
+`8c15774099c11c3328c45802cf4bc492cfd93aba73ad49caabb932816f1ee2ef`.
+`bun --no-env-file --config=/dev/null test tests/server/kit-env.test.ts tests/server/packaging.test.ts`
+passes8 tests/47 assertions. Server types, UI0/0 and AST, plus frozen install pass.
+`uv run --no-project plugins/u1-print-studio/app/test-results/kit-env-repair/build-adversary.py`
+passes two real package builds in isolated copies with distinct synthetic private/
+public markers: inner processes and payloads exclude markers/workspace paths.
+Their canonical manifest SHA256 is
+`ca8287a2f5b1cc33381c33ded522d33116912f38a548a8da21e84579ce00bb73`;
+symlinked fixture dependencies change chunk IDs, so this is not the release hash.
+The actual-root `bun --no-env-file --config=/dev/null run build:server --outdir test-results/kit-env-repair/production-payload`
+retains976's production manifest SHA256
+`3f484367dff7071a248fc4e4773cb7be761ee565291795a5c9a22fb0b1e78736`.
+`bun --no-env-file --config=/dev/null test-results/kit-env-repair/relocation.ts`
+passes116 checks with both SIGTERM exits0, source reads denied, empty external cwd
+and no node_modules. Exact command/log hashes and initial symlink-fixture failure
+are preserved in the report. The independent defect showed ambient Kit loading;
+no existing-payload secret leak was established. Explicit runtime process/env-file
+semantics remain unchanged. Kit's guarded `.gitkeep`-only source directory and
+flags at both outer/nested Bun boundaries prevent build autoload; no runtime
+payload depends on that directory. These are author repairs, not new exact approval.
+
+All owned fixture browsers, profiles/processes and temporary stubs are released. No app build/full regression,
+service change or printer call was performed by this repair author. Next renew
+necessary full validation and exact review on the repaired committed candidate;
+PR91 remains deployed and all ledger/no-action boundaries remain.
+
+## Earlier0043 application freeze: user Bun1.4.0 and body parity
+
+The application author's `app/test-results/unified-app/AUTHOR-REPORT.json`, SHA256
+`c5a0bba0e8957fc2239293cb7942728b38c0dbaf823fe88df9fc487c9bbd251e`, binds
+406 non-Markdown app/plugin-entry inputs in `source-inputs.json`, SHA256
+`3cb61b356e089bf1c75a6730d462a8a08d53d63d3fbe26a02ab44fdab57c8f40`.
+This is source-frozen author evidence, not independent whole-candidate acceptance.
+The user-installed Bun1.4.0 has revision
+`34cbb9a40b4bd1bd767d134a7065e66c2432a676`, binary SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`.
+
+Actual final author commands/results under that runtime:
+
+- `bun test` on the report's11 named server files:105 PASS/1466 assertions.
+  `author-final-focused.log` SHA256
+  `0be67a704e5e8cdbf46680508a669d200d924bd74ba0a915fcb17a0f884e9d90`.
+- `bun run check`, `bun run ui:check`: PASS,0 errors/0 warnings and AST PASS.
+  `bun --no-env-file --config=/dev/null install --frozen-lockfile --ignore-scripts`
+  passes with no dependency changes.
+- `bun x playwright test --config playwright.kit.config.ts`: two native Fans
+  cases PASS at320/720. `verify:private-lab` and all five `verify:live-*` commands
+  pass all eight artifacts, byte-identical to the earlier UI freeze. Current
+  legacy vendor output was regenerated with `bundle:widget-vendor` for1.4.0.
+- Two separate `bun --no-env-file --config=/dev/null run build:server --outdir ...`
+  calls produce identical39-file/58-route manifests, SHA256
+  `3f484367dff7071a248fc4e4773cb7be761ee565291795a5c9a22fb0b1e78736`.
+  `bun test-results/unified-app/relocation-author.ts` passes116 route/role/asset
+  checks from an empty external cwd with source reads denied and no node_modules;
+  both service fixtures exit0 on SIGTERM. The root manifest/static-contract reader
+  passes39 files/58 routes/59 role checks. Exact command arguments and every log
+  hash are in the author report.
+
+Preserved failures include body padding/headerless parity, cloned-request hangs,
+Kit start-publication/fixture assertions, the1.3.12 late-offer disconnect failure,
+1.4.0 vendor mismatch and moved test-resource paths. Their fixes and final renewal
+are attributed in the report; none is silently relabeled a clean full run.
+Current source uses standard close/finish events without polling, address inspection
+or an end-method patch. Generic request lifetime releases newly created Camera
+leases on abort; HTTP finish transfers ownership without proving client receipt.
+The process-local `U1_KIT_BODY_SIZE_LIMIT=Infinity` is set before handler import;
+existing128KiB endpoint readers remain, with actual1MiB MCP ping and128KiB+1
+endpoint rejection covered by the final author run.
+
+The records author's separate official-runtime probe is
+`app/test-results/bun140-abort-probe/probe-s3sk7qw8/REPORT.json`, SHA256
+`473db4301a38a7453d2e4cf28f1002498c2b4be8d1a903aa7a66631915878a59`.
+Official darwin-aarch64 ZIP SHA256
+`c669e97f6164e1c96e0701748db98dfa77492908cbd8394c7557134a735de381`
+matches GitHub release metadata and official SHASUMS256; its extracted binary
+matches the user's installed hash above. The saved signature was not independently
+verified against a trusted signing key. Both runtimes ran `--no-env-file` with
+`original-probe.ts` and `lease-probe.ts` (exact arguments retained in the report).
+Bun1.3.12 loses response/socket close after completed POST and passes2/fails4
+cases;1.4.0 passes all six: late leases at5/100ms, held lease, normal finish,
+keepalive and SSE. The1.3 runs completed before the user's reinstall removed its
+old path; the agent did not restore or change global Bun. These are synthetic
+loopback probes with no polling/private handles, not real Camera acceptance.
+
+The body-parity report is
+`app/test-results/mcp-body-parity-probe/probe-gl7708p1/REPORT.json`, SHA256
+`536201545b96bab81dfe67e53d4fb174efa1f2d17f65253a06ef8bba8385bf6e`;
+input-manifest SHA256
+`6daa716d055cb1bfa8d46d4eae2036f71dbd35b7870a8e1d6e17246521999e48`.
+`bun --no-env-file test-results/mcp-body-parity-probe/probe-gl7708p1/probe.ts test-results/mcp-body-parity-probe/probe-gl7708p1/results.json`
+ran on user Bun1.4.0 and exited0. Source inspection binds baseline111470's exact
+SDK1.30/Hono streamable transport with no configured finite MCP cap; the separate
+legacy SSE transport's4MiB cap does not apply. Twelve synthetic initialize cases
+compare524288/524289/1048576 declared bytes and1048576 chunked bytes: baseline
+SDK/Hono and Kit Infinity all200; default Kit512KiB accepts only the exact boundary
+and returns400/-32700 for the three larger cases. This tests installed conversions,
+not a full baseline application/old-runtime replay or arbitrary-size practicality.
+
+All probe sockets/SDK transports/processes and4182 are released; the main author
+released4181 and its browsers. No actual printer request, user environment,
+LaunchAgent or deployed-service mutation occurred. Next bind the committed source
+and runtime to one required full repository/browser owner and independent exact
+review, then guarded shipment. PR91 remains deployed; all55 ledger IDs and C08,
+Progress no-action, reactive-class discussion and c6 boundaries remain unchanged.
+
+## Earlier0043 UI freeze and bounded shipping approval
+
+The six-file shipping group received independent bounded APPROVE in
+`app/test-results/independent-kit-script-review/renewal/REPORT.json`, SHA256
+`c95302dc20cfd4262a8d16d04488c282a316f95bbc85131cfa4214d1a28a0761`.
+It binds the renewed six hashes, actual39-file/58-route/59-check manifest, all six
+source pins and five rejected directory adversaries. Prior P1/P2 findings remain
+below. This is separate from whole-candidate review and full regression.
+
+The UI author's `app/test-results/ui-migration-builds/REPORT.json`, SHA256
+`25dbbc89fe5c85bd9e8ed8c95a53c8e98e3f548ac692a2e47c3c961f23579631`, binds
+287 UI/build/test inputs (`final-ui-inputs.json` SHA256
+`d567afd0b53c122d6d16642c6ac8891deba162ba40756dd1131e42d848f2aa81`),
+all eight artifact hashes, commands and logs. Pinned Bun1.3.12 ran `ui:check`
+(0 errors/0 warnings, AST PASS), focused `ui:test --` on five moved
+common/graph/Camera/Bed test files (70 PASS), and `bun test tests/server/private-lab.test.ts tests/server/live-fans-package.test.ts`
+(12 PASS/130 assertions). `verify:private-lab` plus all five `verify:live-*`
+commands pass after final graph/title repairs. Sizes are156852/636747/83798 for
+light/Bed/Camera Lab and86992/93059/96772/88512/94399 for
+Fans/Thermals/Heads/Queue/Live Camera; these are measurements, not byte caps.
+
+The dedicated4182 Playwright config ran29 cases:18 PASS/11 FAIL after an initial
+missing-harness collection failure. Eight failures exposed generic-first Lab
+titles; three tests assumed4179 instead of configured exact origin. Both were
+repaired without relaxing semantics. Affected renewal passes21 cases, plus one
+actual packaged CameraLab seven-state case; eight unaffected cases retain their
+unchanged artifact evidence. Thus30 distinct cases are covered, not one clean
+full run. All original logs/screenshots/traces remain ignored. No printer lease
+was opened; all owned fixture/browser/runner handles exited and4182 is empty.
+Current app/route/lifecycle work remains an uncommitted candidate awaiting frozen
+full regression and exact review. PR91 remains deployed; C08 and other backlog
+are unchanged. The README documents one app/root install and the precise native
+Fans versus Kit-served HTML boundary.
+
+The main application author additionally reports, and the log tails confirm,
+`app/test-results/unified-app/lifecycle-focused-renew.log`28PASS/200assertions
+(OAuth/Fans/Camera disposal), `kit-mcp-abort.log`5PASS/47assertions (actual Kit MCP
+GET SSE abort, DELETE/OPTIONS, negotiation and independent shared consumers),
+`kit-browser-renew3.log`2PASS (native Fans320/720 hydration, neutral failed refresh
+and recovery), and `http-port-unit-renew.log`2PASS. These are attributed author
+checks, not tests run by the records author or a combined full suite. These intermediate
+commands are superseded by the final attributed report above; no independent,
+deployment or actual-printer acceptance is implied.
+
+## Earlier0043 source pilot and shipping interface review
+
+The application author moved to the single app root and built39 runtime files/
+58 static routes. `tests/server/kit-fans.test.ts` renewed to3PASS/32assertions in
+`app/test-results/unified-app/fans-test-renew2.log`: actual Kit page navigation
+performs zero acquisitions, HTTP/MCP share the injected store, and focused raw
+target/method/UTF8/chunked-body checks pass. Earlier runs remain failed:
+`first-fans-test.log` passed2/failed1 because odd UTF8 padding produced131071
+instead of131072bytes; `fans-test-renew.log` passed2/failed1 because missing
+Content-Type made the adapter expose a null body. Renewal2 adds application/json
+and does not establish headerless parity. The author is repairing that actual
+compatibility gap; remaining routes and production MCP lifetimes are pending.
+
+The separate root script author ran `uv run --no-project scripts/test_u1_service.py`
+and `uv run --no-project scripts/test_u1_ship.py`: initial29/26PASS, renewed32/26PASS
+after schema2/legacy-rollback/tamper fixtures, plus script-scoped `git diff --check`.
+Evidence: `app/test-results/kit-shipping-scripts/SCRIPT-REPORT.json`, SHA256
+`b914203623172de232c789a6476af8593d74be5b31aecd091cd8854b19fe2279`, binds six
+script/helper/test hashes and logs. No full app/browser/deployment run occurred.
+The actual author build manifest SHA256
+`129e67018b01df5eab532666a8711f3e9f1616c2d2e78ee3b9aecfbd56d903ff` passes the
+read-only manifest parser's complete inventory/route-role checks (39 files,
+58 URLs/59 port checks), recorded in `actual-manifest.json` beside the script report.
+
+The first preliminary independent review found a P1 consumer/producer mismatch:
+shipping expected both legacy HTML assets in static-contract/, while the real build
+keeps them at dist top level for resource readers. The parser pass alone did not
+verify those six source-asset pins. It also found P2: replacing source parsing had
+lost the directory's exact closed-link guard; foreign/empty links with recomputed
+hashes still passed. Review report SHA256
+`812535acb21b8f2a8055cf6b5e5d9c7c68c4894a6d10340a0fc329e181ee6047` retains both
+findings and the adversarial evidence.
+
+The author renewed only this script group: an explicit six-asset path map preserves
+all source hashes, and both generated directory aliases require exactly ten closed
+relative focused links with no duplicates/omissions/foreign destinations. Focused
+tests now pass34 lifecycle/build-contract and26 shipping; script diff check passes.
+The same actual39-file/58-route manifest now also passes all six source pins and
+directory checks. `app/test-results/kit-shipping-scripts/SCRIPT-REVIEW-RENEWAL.json`
+SHA256 `a0a4dab13cf681ba0b8750b17ed6cc90785eb20033b74255f7cc14de254e6800`
+binds the new six source hashes, commands/logs and actual-output comparison. The
+group is refrozen for independent bounded renewal; initial failed review remains.
+No app build/full suite/runtime operation was performed here. Application/full/exact acceptance,
+relocation and shipment remain separate; PR91 is still deployed and C08 stays open.
+
+## Bounded0043 adapter probe
+
+The implementation author's isolated probe selects official adapter-node5.5.7
+handler under existing Bun1.3.12, with a thin raw-target/lifecycle HTTP bootstrap.
+This is author software/protocol evidence only; no tracked application/dependency
+change, browser/full suite, deployed service or printer request occurred in the
+probe. The app-root/Fans implementation and independent acceptance remain pending.
+
+Ignored evidence is `app/ui/test-results/kit-runtime-probe/probe-nQ5xHx/REPORT.md`.
+`PROBE-IDENTITIES.json` SHA256 is
+`da38074d48e5594927f298a3d966e820ced3255fd97586dfadbe1b97a52804a6`;
+`report-node-renew.json` SHA256 is
+`843b7ce361deada6c401596171a6b78f0dcb5bee51417462e2939f5f4bec2b0d`.
+The report binds stack, exact commands, source/build/evidence hashes and adapter
+package integrity. All commands ran only in the ignored fixture with pinned Bun:
+`bun install --ignore-scripts`, `bun --bun run build`, `bun run-probe.ts bun`,
+`bun run-raw.ts`, exact adapter-node install, then
+`PROBE_ADAPTER=node bun --bun run build` and `bun run-probe.ts node`/`node-renew`.
+
+Native adapter1.0.1 ran the Kit page/API/MCP/lifecycle fixture but normalized three
+traversal variants in both request and platform URLs, returning200 incorrectly;
+that failure and targeted follow-up are retained. The first node-handler fixture
+cancelled the body reader before returning413, destroying the socket and losing
+chunked rejections. Renewal responds first and cleans incomplete requests after
+response finish. It passes12 explicit checks and seven raw-path observations
+(valid Fans200, six invalid404): shared synthetic page/API service, exact128KiB
+body and plus-one rejection, complete/unterminated chunked413 cleanup, bounded
+JSON MCP POST initialize/tool handling with two opens/two closes, abort active
+count zero, and SIGTERM cleanup/exit0 within two seconds. All4181 servers exited.
+
+The probe's synthetic SSR acquisition is not product behavior; real navigation
+must not acquire printer telemetry. Buffered JSON fixture responses do not prove
+production MCP SSE/GET, full method/error/cancel parity, role isolation before
+static serving, OAuth/Camera ticket/header semantics or URL-prefix/origin behavior.
+Those are integration gates, alongside finite compatibility-route accounting,
+shared widget parity, release-manifest changes, exact review and required regression.
+PR91 source/ship/post evidence below remains the deployed baseline only.
+
 ## PR91 exact source acceptance and guarded deployment
 
 Source reviewer and independent validator approved exact

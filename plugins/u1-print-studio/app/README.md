@@ -85,44 +85,78 @@ task separately.
 
 ## Source development
 
-Bun and the untracked root `.env` are developer-only conveniences:
+The current source is one SvelteKit application with user-adopted Bun 1.4.0, one
+`package.json`, and one frozen `bun.lock`. The unified-app candidate still
+requires independent validation and release; the deployed baseline is PR91.
+There is no nested `ui` dependency installation.
+
+- `src/components/common` contains shared generic UI primitives; other
+  component folders compose domain views. CSS lives with components.
+- `src/lib/client` contains pure TypeScript presentation/controllers and
+  transport ports; `src/lib/server` contains private services and use cases.
+- `src/routes` owns actual Kit API, dashboard, and Lab routing. Only
+  `/dashboard/fans` currently uses a native prerendered/hydrated Kit page.
+  Other dashboard/Lab/widget routes serve existing packaged HTML through Kit
+  endpoints; that routing integration does not complete native UI migration.
+- `src/entrypoints/widgets` builds the eight self-contained widget artifacts
+  from shared components. `src/entrypoints/stdio-main.ts` uses the same server
+  services for MCP stdio.
+
+Run source commands from this application root:
 
 ```sh
 cd plugins/u1-print-studio/app
-bun install
-bun install --cwd ui
-bun run bundle:widget-vendor
-bun run ui:verify
+bun install --frozen-lockfile
+bun run ui:check
 bun run check
-bun test src/*.test.ts
-bun run bundle
-bun run start
+bun run build:server
+bun run dashboard
 ```
 
-The source `../.mcp.json` is intentionally a Bun adapter. For widget work
-without a host, `bun run dashboard` serves the standalone loopback status
-directory at `http://127.0.0.1:8788/dashboard` and the focused camera widget at
-`http://127.0.0.1:8788/dashboard/camera`. The camera route mounts the same HTML
-as `ui://u1-print-studio/camera-v10.html` (v9/v8/v7/v6/v5/v4 are current aliases; v3/v2/v1
-retain frozen compatibility bytes). Both use the same tool-call shape
-while retaining the exact HTTP signaling adapter for development coverage.
+`build:server` runs the Kit build and bundles its official adapter-node handler
+for the same Bun runtime. Its output includes `dist/server.js`, `handler.js`,
+client/prerendered files, and a closed `build-manifest.json`; the thin HTTP
+bootstrap preserves the existing raw-target, role, body, and lifecycle guards.
+The bootstrap uses native close/finish events to retain newly created resources
+until response completion or abort, without socket polling. Its process-local
+`U1_KIT_BODY_SIZE_LIMIT=Infinity` avoids imposing the adapter's default512KiB cap
+on the existing MCP transport; explicit128KiB endpoint limits remain unchanged.
+This does not modify a user `.env` or LaunchAgent.
+Build/test package commands disable Bun dotenv/config autoload at each nested
+invocation. The repository checker does the same at its outer boundary. Kit reads
+only the guarded `config/no-dotenv` directory, whose sole permitted entry is
+`.gitkeep`; explicit runtime process/env-file behavior is preserved separately.
+It does not introduce a Node runtime. The untracked repository-root `.env` is
+an explicit development convenience, not a release build input.
 
-The exact synthetic Svelte fixture lab is separately available only from the
-private dashboard at `/dashboard/lab` and the nine exact non-camera child
-routes `overview`, `progress`, `thermals`, `heads`, `jobs`, `job_history`,
-`queue`, `fans`, and `bed_mesh`. Its own directory marks Camera pending and
-does not link it. The lab is intentionally absent from the ten-entry production
-directory and every MCP widget/resource. Static SSR is a neutral zero-size
-marker; initial browser creation selects the exact closed pathname without a
+Use `bun run ui:test -- <affected test paths>` for focused client tests and
+`bun test <affected tests/server paths>` for server tests. The separate
+`build:live-*`/`verify:live-*` commands build/check focused production widgets;
+`ui:build`/`ui:verify` build/check the three private Lab packages. The root
+repository checker and guarded shipping workflow own required full validation;
+do not repeat full suites merely because another agent takes over.
+
+The source `../.mcp.json` is a Bun adapter. `bun run dashboard` serves the
+private loopback directory at `http://127.0.0.1:8788/dashboard` with the same
+process-owned services used by MCP. Public/dashboard role and authentication
+boundaries remain explicit. Camera connection lifecycle remains in its service;
+components subscribe and render.
+
+The synthetic Svelte Lab is available only from the private dashboard at
+`/dashboard/lab` and its ten named children: `overview`, `progress`, `thermals`,
+`heads`, `jobs`, `job_history`, `queue`, `fans`, `bed_mesh`, and `camera`.
+It is absent from MCP resource inventory. Lab widgets select the exact closed
+pathname before mount, preserving the initial title and avoiding a
 post-mount directory-to-widget transition.
 
-`bun run bundle:widget-vendor` is the reproducible widget-asset gate. It injects
-`src/widget-shared.css` byte-for-byte into both self-contained HTML resources
-and bundles the exact-pinned local Three.js 0.185.1 plus OrbitControls build into
-the observation resource. The generated bytes include the complete Three.js
-MIT copyright and permission notice. Source tests verify that notice, exact
-dependency pin, deterministic output, CSS parity and the absence of runtime
-imports or network fetches; do not hand-edit the generated vendor block.
+`bun run bundle:widget-vendor` is the reproducible legacy widget-asset gate.
+It injects `src/components/common/widget-shared.css` byte-for-byte into both
+self-contained HTML resources and bundles the exact-pinned local Three.js
+0.185.1 plus OrbitControls into the observation resource. Generated bytes retain
+the complete Three.js MIT notice. Tests preserve dependency pins, deterministic
+output, CSS parity, and absence of runtime imports or network fetches; do not
+hand-edit generated vendor blocks. Repository widget/package byte caps were
+removed by decision0042; size reporting, integrity and security guards remain.
 
 The runtime uses bundled pure-TypeScript `werift` peers to terminate one H264
 printer stream locally and fan it out to independent downstream viewers. No

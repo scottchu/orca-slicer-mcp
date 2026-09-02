@@ -1,0 +1,10 @@
+import { mount, unmount } from 'svelte';
+import LiveCameraRoot from '../../components/camera/LiveCameraRoot.svelte';
+import '../../components/common/tokens.css';
+
+const target = document.getElementById('widget-root');
+if (!target) throw new Error('Missing widget root');
+const component = mount(LiveCameraRoot, { target });
+window.addEventListener('pagehide', (event) => {
+  if (!event.persisted) void unmount(component);
+});

@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-from html.parser import HTMLParser
 import json
 import os
 from pathlib import Path
@@ -19,15 +18,18 @@ import urllib.error
 import urllib.request
 
 from u1_service import (
-    ASSETS, LABELS, ServiceManager, digest, json_bytes,
+    LABELS, ServiceManager, digest, json_bytes,
     private_dir, run, write_private,
+)
+from u1_build_contract import (
+    LEGACY_ASSET_FILES, read_build_manifest, route_path, static_contract as build_static_contract,
 )
 
 REPOSITORY = "scottchu/orca-slicer-mcp"
 REMOTES = {f"https://github.com/{REPOSITORY}", f"https://github.com/{REPOSITORY}.git", f"git@github.com:{REPOSITORY}.git", f"ssh://git@github.com/{REPOSITORY}.git"}
 SHA = re.compile(r"[0-9a-f]{40}\Z")
 APP = Path("plugins/u1-print-studio/app")
-PRIVATE_LAB_ROUTE = "/dashboard/lab"
+CANDIDATE_BUILD = Path("test-results/ship-build")
 
 
 class ShipError(RuntimeError):
@@ -61,85 +63,22 @@ def oauth_identity(path):
     return fingerprint({"privateKey": value["signingPrivateJwk"], "publicKey": value["signingPublicJwk"], "credential": {k: credential.get(k) for k in ("id", "publicKey")}})
 
 
-class DirectoryLinks(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.links = []
-
-    def handle_starttag(self, tag, attrs):
-        if tag == "a":
-            self.links.append(dict(attrs).get("href"))
-
-
-def static_contract(source):
-    """Parse only the source's explicit route list; never execute widget JS."""
-    app = source / APP
-    text = (app / "src/status-dashboard.ts").read_text()
-    match = re.search(r"FOCUSED_DASHBOARD_PATHS = new Set\(\[(.*?)\]\)", text, re.S)
-    require(match is not None, "Unsupported focused-route contract")
-    routes = re.findall(r'"(/dashboard/[a-z_]+)"', match[1])
-    require(routes and len(routes) == len(set(routes)), "Invalid focused-route inventory")
-    lab_match = re.search(r"OBSERVATION_LAB_PATHS = new Set\(\[(.*?)\]\)", text, re.S)
-    require(lab_match is not None, "Unsupported private-lab route contract")
-    lab_routes = re.findall(r'"(/dashboard/lab(?:/[a-z_]+)?)"', lab_match[1])
-    require(lab_routes and len(lab_routes) == len(set(lab_routes)) and PRIVATE_LAB_ROUTE in lab_routes,
-            "Invalid private-lab route inventory")
-    camera_lab_match = re.search(r'CAMERA_LAB_PATH = "(/dashboard/lab/camera)";', text)
-    require(camera_lab_match is not None, "Unsupported private Camera lab route contract")
-    bed_mesh_lab_match = re.search(r'BED_MESH_LAB_PATH = "(/dashboard/lab/bed_mesh)";', text)
-    require(bed_mesh_lab_match is not None, "Unsupported private Bed Mesh lab route contract")
-    require(bed_mesh_lab_match[1] not in lab_routes and camera_lab_match[1] not in lab_routes,
-            "Heavy private labs must not be included in the light route inventory")
-    directory = DirectoryLinks()
-    directory.feed((app / "public/dashboard-index.html").read_text())
-    require(set(directory.links) == set(routes) | {"/dashboard/camera"} and len(directory.links) == len(routes) + 1, "Directory links and focused routes disagree")
-    files = {(8788, route): "status-dashboard-host.html" for route in routes}
-    files.update({(8788, route): "svelte-observation-lab.html" for route in lab_routes})
-    files[(8788, bed_mesh_lab_match[1])] = "svelte-bed-mesh-lab.html"
-    live_fans_match = re.search(r'LIVE_FANS_WIDGET_PATH = "(/dashboard/[a-z_]+)"', text)
-    require("svelte-live-fans.html" not in text or live_fans_match is not None,
-            "Unsupported live Fans route contract")
-    if live_fans_match:
-        require(live_fans_match[1] not in routes and live_fans_match[1] not in lab_routes,
-                "Live Fans asset must have a distinct private route")
-        files[(8788, live_fans_match[1])] = "svelte-live-fans.html"
-    live_thermals_match = re.search(r'LIVE_THERMALS_WIDGET_PATH = "(/dashboard/thermals_widget)";', text)
-    require("svelte-live-thermals.html" not in text or live_thermals_match is not None,
-            "Unsupported live Thermals route contract")
-    if live_thermals_match:
-        require((8788, live_thermals_match[1]) not in files,
-                "Live Thermals asset must have a distinct private route")
-        files[(8788, live_thermals_match[1])] = "svelte-live-thermals.html"
-    live_heads_match = re.search(r'LIVE_HEADS_WIDGET_PATH = "(/dashboard/heads_widget)";', text)
-    require("svelte-live-heads.html" not in text or live_heads_match is not None,
-            "Unsupported live Heads route contract")
-    if live_heads_match:
-        require((8788, live_heads_match[1]) not in files,
-                "Live Heads asset must have a distinct private route")
-        files[(8788, live_heads_match[1])] = "svelte-live-heads.html"
-    live_queue_match = re.search(r'LIVE_QUEUE_WIDGET_PATH = "(/dashboard/queue_widget)";', text)
-    require("svelte-live-queue.html" not in text or live_queue_match is not None,
-            "Unsupported live Queue route contract")
-    if live_queue_match:
-        require((8788, live_queue_match[1]) not in files,
-                "Live Queue asset must have a distinct private route")
-        files[(8788, live_queue_match[1])] = "svelte-live-queue.html"
-    files[(8788, camera_lab_match[1])] = "svelte-camera-lab.html"
-    live_camera_match = re.search(r'LIVE_CAMERA_WIDGET_PATH = "(/dashboard/[a-z_]+)"', text)
-    require("svelte-live-camera.html" not in text or live_camera_match is not None,
-            "Unsupported live Camera route contract")
-    if live_camera_match:
-        require(live_camera_match[1] not in routes and live_camera_match[1] not in lab_routes
-                and (8788, live_camera_match[1]) not in files,
-                "Live Camera asset must have a distinct private route")
-        files[(8788, live_camera_match[1])] = "svelte-live-camera.html"
-    files.update({(8788, "/dashboard"): "dashboard-index.html", (8788, "/dashboard/"): "dashboard-index.html", (8788, "/dashboard/camera"): "camera-dashboard-host.html", (8788, "/widget"): "widget.html", (8787, "/widget"): "widget.html", (8788, "/camera-widget"): "camera-widget.html"})
-    return {f"{port}{route}": {"port": port, "route": route, "sha256": digest(app / "public" / name)} for (port, route), name in files.items()}
+def static_contract(source, directory=None):
+    """Read the complete generated build contract without executing widget code."""
+    try:
+        manifest = read_build_manifest(directory or source / APP / CANDIDATE_BUILD)
+    except (OSError, ValueError, TypeError) as error:
+        raise ShipError("Invalid or incomplete Kit build contract") from error
+    return build_static_contract(manifest)
 
 
 def http_read(port, route):
     require(port in (8787, 8788, 8789), "Unexpected verification port")
-    require(route in ("/health", "/widget", "/camera-widget", "/mcp", "/auth/enroll", "/dashboard", "/dashboard/") or re.fullmatch(r"/dashboard/(?:lab/)?[a-z_]+", route), "Unexpected verification route")
+    try:
+        route_path(route)
+    except ValueError as error:
+        raise ShipError("Unexpected verification route") from error
+    require(route in ("/health", "/widget", "/camera-widget", "/mcp", "/auth/enroll", "/dashboard", "/dashboard/") or route.startswith(("/dashboard/", "/_app/")), "Unexpected verification route")
     class NoRedirect(urllib.request.HTTPRedirectHandler):
         def redirect_request(self, *args, **kwargs):
             return None
@@ -166,7 +105,8 @@ def check_static(contract, reader=http_read, expected=True):
 
 
 def check_security(contract, reader=http_read):
-    paths = {item["route"] for item in contract.values() if item["route"].startswith("/dashboard")}
+    public_paths = {item["route"] for item in contract.values() if item["port"] == 8787}
+    paths = {item["route"] for item in contract.values() if item["port"] == 8788 and item["route"] not in public_paths}
     checks = [(8787, path, 404) for path in sorted(paths)]
     checks += [(8787, "/auth/enroll", 404), (8787, "/mcp", 401), (8788, "/mcp", 404)]
     for port, route, expected in checks:
@@ -184,7 +124,8 @@ class Operations:
         self.manager = ServiceManager(Path.home() / "Library/Application Support/U1 Print Studio/service", Path.home() / "Library/LaunchAgents")
         self.environment = {**os.environ, "PATH": str(self.bun.parent) + os.pathsep + os.environ.get("PATH", "")}
         self.bun_hash = digest(self.bun)
-        self.contract = static_contract(source)
+        self.contract = None
+        self.build_manifest = None
 
     def command(self, command, cwd=None, **kwargs):
         return run(command, cwd=cwd or self.source, env=kwargs.pop("env", self.environment), timeout=kwargs.pop("timeout", 180), **kwargs).strip()
@@ -219,7 +160,6 @@ class Operations:
     def validate(self):
         app = self.source / APP
         self.command([str(self.bun), "--no-env-file", "--config=/dev/null", "install", "--frozen-lockfile", "--ignore-scripts"], cwd=app)
-        self.command([str(self.bun), "--no-env-file", "--config=/dev/null", "install", "--frozen-lockfile", "--ignore-scripts"], cwd=app / "ui")
         try:
             self.command(["./scripts/check-repository.sh"], timeout=600)
         except Exception:
@@ -230,8 +170,15 @@ class Operations:
             except Exception:
                 raise ShipError(f"Local production build failed: {bundle}") from None
         self.command(["codesign", "-vvv", "--verify", str(app / "dist/u1-print-studio")])
-        for name in ASSETS:
-            require(digest(app / "public" / name) == digest(app / "dist" / name), "Bundled public asset differs from source")
+        require((app / "dist/stdio.js").is_file(), "Production stdio bundle is missing")
+        # A dedicated output keeps the complete server inventory separate from
+        # the mandatory stdio and signed CLI build products in dist/.
+        directory = app / CANDIDATE_BUILD
+        self.command([str(self.bun), "--no-env-file", "--config=/dev/null", "run", "build:server", "--outdir", str(directory)], cwd=app)
+        self.contract = static_contract(self.source, directory)
+        self.build_manifest = read_build_manifest(directory)
+        for name, relative in LEGACY_ASSET_FILES.items():
+            require(self.build_manifest["runtimeFiles"].get(relative) == digest(app / "public" / name), "Bundled public asset differs from source")
         self.git("diff", "--check")
 
     def merge(self, candidate):
@@ -277,9 +224,10 @@ class Operations:
         staged = self.manager.stage(source, self.bun, release)
         require(staged["sourceRevision"] == merged, "Staged source revision mismatch")
         path, manifest = self.manager.verify_release(release)
-        require(manifest["sourceRevision"] == merged and static_contract(source) == self.contract, "Staged source/static contract mismatch")
-        for name in ASSETS:
-            require(digest(path / "public" / name) == digest(source / APP / "public" / name), "Staged asset does not match merged source")
+        require(manifest["sourceRevision"] == merged and static_contract(source, path / "dist") == self.contract, "Staged source/static contract mismatch")
+        require(self.build_manifest is not None and read_build_manifest(path / "dist") == self.build_manifest, "Staged complete build differs from the validated candidate")
+        for name, relative in LEGACY_ASSET_FILES.items():
+            require(digest(path / "dist" / relative) == digest(source / APP / "public" / name), "Staged asset does not match merged source")
         return manifest
 
     def dry_run(self, release):
