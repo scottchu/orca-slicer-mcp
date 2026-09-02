@@ -47,8 +47,8 @@ and failed the Camera Lab case before behavioral checks: the private helper used
 Live's `[data-media-actions]` instead of Lab's `[data-camera-actions]`. The original
 timeout/log/trace remains. Only that ignored helper was corrected; the separate
 Lab-renewal config with grep `HTTPS Camera Lab` passed one case. Six distinct
-accepted cases comprise Camera Lab320, focused Camera390/320 at200% text,
-Heads390/320 at200% text, and Bed Lab390; this is five retained plus one renewal.
+accepted cases comprise Camera Lab320, focused Camera and Heads each at390 normal
+and320 at200% text, and Bed Lab390; this is five retained plus one renewal.
 They verify compact icon placement/44px targets, fullscreen roving focus and
 video identity, simulated Live failure→Auto, neutral footer/recovery, Heads
 RGBA/Copy padding, and Bed Switch state/URL/reduced motion. No full suite reran.
