@@ -1,6 +1,74 @@
 # F0 dual-subsystem foundation validation
 
-## Frozen author source: common UI, compact Camera overlay and decision0042
+## PR91 exact source acceptance and guarded deployment
+
+Source reviewer and independent validator approved exact
+`2719e604229313494b6e32020cf500f74bcecf69`, tree
+`463f607adb357494d830b56e3f5548d827e83a19`; PR91 merged as
+`6a222a8ff66ca76cb3cac4682501a8cbb44fd5d6`. Independent input binding compares369
+author inputs and487 tracked files with zero mismatches.
+
+Independent `./scripts/check-repository.sh` passed in48.53s:565 UI tests/54files,
+zero Svelte errors/warnings, AST, five focused/three Lab deterministic packages,
+app TypeScript,304 app tests/28files/3645assertions,21 lifecycle/24 shipping.
+One pinned-Bun `bun run test:browser --output .../browser-full` run passed all321
+configured cases in130.57s. Three fresh adversarial scopes pass: Switch contraction/
+roving focus, Heads Copy/Refresh overlap, and Camera fullscreen mode/focus/lifecycle.
+The first adversarial run passed two and failed one because a private fixture's
+15-character sessionId correctly failed the production minimum16 requirement.
+Only that ignored fixture was corrected and the Camera scope rerun: one pass.
+The failed log/trace remains; no production gate or tracked test was weakened.
+
+The coordinator ran guarded `u1-ship` for operation
+`pr91-20260902T121040-666036`: merged/installed complete, release
+`20260902-6a222a8-pr91-20260902T121040-666036`. BOTH existing services explicitly
+restarted, loaded/healthy/integrity verified;31 static/32 security checks pass,
+preserved true, rollback not needed. Source/simulated evidence and this service
+receipt are distinct from the scoped meaningful postverification below.
+
+| Evidence under app/ui/test-results | SHA256 |
+| --- | --- |
+| independent-2719e60-20260903/REPORT.json | `ea3fea76b3823b4fdf63ddc9b6223701cc1bdb7a0f72dd31dfb6541a781e1f7e` |
+| independent-2719e60-20260903/repository-full.log | `922d0bd2c17c4e89a486e813dd4d0b26ccfed95951bc59564a9ca1fd7aeb9f08` |
+| independent-2719e60-20260903/browser-full.log | `9107dab0bf75e779dcdd614d3fa21406c260bdc9ec61678f1f3eb7222ebc31f8` |
+| ship-pr91-2719e60/execute.json | `c07c1b58d2fc24a5c4cf7a9cf5ec9108c829b68d26ef2e3d1a3fbfc1ffbf480d` |
+| postdeploy-pr91-independent/REPORT.json | `1cc1670cb02a2de133fee0d38d0c356a4551edf7a764da393d1b402f32ab9bde` |
+| postdeploy-pr91-independent output manifest | `480e11fa3aa73305b421f6503ded5133a48a00d301cf3732fbeb93b028b58ef5` |
+
+Independent postverification reports SCOPED_POSTDEPLOY_PASS. It ran
+`uv run --no-project scripts/u1_service.py status`, checked both exact release
+entrypoints/healthy loaded services, independently hashed15 manifest files and
+matched all eight HTTPS widget bundles to merged Git. All369 app inputs remain
+unchanged. Actual served HTML/CSP was retained; only tool data/clipboard/local
+canvas media were fixtures, with no UI substitution or actual printer connection.
+
+Pinned `bun x playwright test --config .../playwright.config.ts` passed five cases
+and failed the Camera Lab case before behavioral checks: the private helper used
+Live's `[data-media-actions]` instead of Lab's `[data-camera-actions]`. The original
+timeout/log/trace remains. Only that ignored helper was corrected; the separate
+Lab-renewal config with grep `HTTPS Camera Lab` passed one case. Six distinct
+accepted cases comprise Camera Lab320, focused Camera390/320 at200% text,
+Heads390/320 at200% text, and Bed Lab390; this is five retained plus one renewal.
+They verify compact icon placement/44px targets, fullscreen roving focus and
+video identity, simulated Live failure→Auto, neutral footer/recovery, Heads
+RGBA/Copy padding, and Bed Switch state/URL/reduced motion. No full suite reran.
+Owned runners/browsers are closed,4179 has no listener, zero actual leases/images
+or recordings were acquired, and user apps/sessions/services were preserved.
+C08's prior unclassified real-camera acquisition risk remains open.
+
+The source validator released fixture4179 and owned runners/browser contexts,
+preserving user sessions/services; zero actual printer acquisitions occurred.
+This documentation tail changes no app/source/dependency/configuration/assets and
+runs no application tests/builds. Decision0028 requires no additional deployment.
+Decision0043 records the accepted next single-Kit-app/Bun direction, not an
+implemented route pilot or accepted adapter. C08, Progress, reactive-class and c6
+boundaries remain; no phone/native/real-printer acceptance is inferred.
+This records pass ran `git diff --check` and a read-only
+`uv run --no-project python` comparison: all55 ledger IDs/order preserved and
+tracked changes Markdown-only. The first comparison incorrectly excluded G IDs
+and counted47 in both versions; correcting the regex passed without changing IDs.
+
+## Historical author freeze: common UI, compact Camera overlay and decision0042
 
 The user authorized removal of individual/aggregate repository widget/package byte
 ceilings. This supersedes the previous cap-preservation requirement; no replacement

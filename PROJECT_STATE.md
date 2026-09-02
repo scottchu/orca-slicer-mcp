@@ -1,34 +1,42 @@
 # Project state
 
-## Current: common UI foundation and compact Camera icon overlay
+## Current: PR91 shipped; next single SvelteKit application with Bun
 
-The user explicitly authorized removal of all repository widget/package individual
-and aggregate byte caps under decision0042. Remove ceilings rather than raising
-them; these were repo rules, not OpenAI limits. Prefer readable, precise, separated
-source over size-only complexity; normal minification/size reporting remain.
-Integrity, determinism, schema/security/self-contained assets and all shipping
-review/lifecycle/preservation guards stay mandatory.
+PR91 merged as `6a222a8ff66ca76cb3cac4682501a8cbb44fd5d6` from independently
+approved `2719e604229313494b6e32020cf500f74bcecf69`, tree
+`463f607adb357494d830b56e3f5548d827e83a19`. Shared common/Button/Icon/Switch,
+compact bottom-right Camera icon modes and decision0042 byte-cap removal are
+shipped. Normal minification/size reporting, integrity/determinism/security and
+all shipping guards remain. The required source gate passed565 UI,304 app tests/
+3645 assertions, eight deterministic packages,21 lifecycle/24 shipping tests;
+one full browser run passed321, plus three fresh scoped adversaries with their
+private-fixture failure/renewal retained. See VALIDATION for exact evidence.
 
-Application source is frozen: common/Button/Icon/Switch, compact bottom-right
-Camera icon overlay and individual/aggregate byte-cap removal are implemented;
-all eight bundles/pins are rebuilt. Author evidence passes check0errors/0warnings/
-AST,197 distinct focused UI checks (146 retained+51 renewed),28 browser cases
-(four same-hash Heads retained+24 final),12 package and three served-asset tests.
-These are author checks, not independent/full acceptance. VALIDATION binds the
-report and369 non-Markdown app inputs and preserves earlier failures.
+Guarded release `20260902-6a222a8-pr91-20260902T121040-666036` explicitly restarted
+BOTH services: loaded, healthy, integrity verified;31 static/32 security checks
+and preservation pass, rollback not needed. Independent postverification passes
+15 manifest files, eight exact HTTPS bundles and six distinct served-widget cases
+(Camera Lab1, focused Camera2, Heads2, Bed Lab1; five retained+one private-selector
+renewal). Actual served HTML/CSP is preserved with synthetic tool/media fixtures.
+No real camera/printer acquisition occurred; C08 remains open. Report and failed
+fixture evidence are bound in VALIDATION; owned browsers/processes are closed.
 
-Next freeze the candidate for one required repository/browser regression owner,
-independent exact review, then guarded ship and BOTH restarts/postverification.
-PR89 remains deployed; all55 IDs, C08's intermittent unclassified acquisition risk,
-Progress no-action, reactive-class discussion and c6 remain. No extra cap approval
-is needed. Author-owned browsers/processes are closed and port4179 is released.
+Decision0043 adopts one SvelteKit app at the app root, retaining Bun. Next prove
+an actual Kit Fans page and existing tools/call URL through one shared service,
+then account for remaining compatibility routes and complete routing integration.
+Use `src/components/common` for generic UI, `src/lib` for pure TypeScript domain/
+services/transport (`lib/server` for server-private code), and `src/routes` for
+API/dashboard/Lab. Preserve `/dashboard/lab` and other existing URLs, public/private
+roles, auth semantics, Camera service lifecycle and MCP stdio sharing services.
+The nested UI app is transitional; widgets are shared-component build targets.
+Folder moves alone do not complete this work. Adapter compatibility is unaccepted;
+no Bun removal, Node migration or new framework is queued.
 
-After this slice ships, the user's next priority is cleanup toward `src/components`
-for UI (`components/common/Button`, Icon, Switch), `src/lib` for pure TypeScript
-services/domain/transport (`lib/server` for server-only code), and `src/routes` for
-API/dashboard/Lab while preserving `/dashboard/lab` URLs. Current `lib/common` is
-this slice's implementation; the next layout/route consolidation is not implemented
-and must not restart or delay the current application shipment.
+All55 ledger IDs remain. C08's prior unclassified intermittent acquisition risk,
+Progress no-action, F07 reactive-class discussion and separate c6 stay open.
+This records tail changes no application bytes; decision0028 requires no new
+build/deployment. Static, served-service, simulated and actual-device/printer
+acceptance remain distinct.
 
 ### Earlier source checkpoint before decision0042
 
