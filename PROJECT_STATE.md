@@ -22,8 +22,10 @@ not evidence of whole-widget polish. Real Bed composition is still pending.
 
 Current Job `5855223` is preserved (focused49/UI500/app311/lifecycle21/shipping24
 pass; full207/runtime/final determinism/PR due). Progress `b9c5008` phase-one has
-independent source approval; phase-two authoring begins from accepted PR77 merge
-`0f55b56`, not a completed checkpoint. History `379c1e7` and Overview `1a3b4f4`
+independent source approval; phase-two checkpoint `b694b2c` ordinarily integrates
+PR77 as `0f55b56` and has non-browser UI502/app315/lifecycle21/shipping24,
+nine-package/runtime gates only. Its browser/PR/deploy/exact review remain due.
+History `379c1e7` and Overview `1a3b4f4`
 retain phase-two source approval only. Real Bed `194ea79`, generic MCP/legacy,
 Console, model thumbnail, filament sync, size variants, token cleanup and
 recoverable cleanup remain open. No plugin/routing/phone/printer acceptance.

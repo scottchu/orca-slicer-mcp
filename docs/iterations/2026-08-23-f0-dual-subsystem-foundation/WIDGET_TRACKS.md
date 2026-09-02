@@ -10,8 +10,11 @@ PR77 at4828ce04 is attributed deployed/postverified (BOTH services and scoped
 served-byte/browser checks); its prior legend source is accepted, not this toggle.
 Current Job5855223/treeac3b23c is preserved with focused49/UI500/app311/21/24 PASS,
 held full207/runtime/final determinism/PR. Progressb9c5008 has phase-one source
-approval (30 UI/12 producer/151 fresh cases); phase-two author begins from merge
-0f55b56, not completed. History379c1e7 and Overview1a3b4f4 have phase-two source
+approval (30 UI/12 producer/151 fresh cases); phase-two checkpointb694b2c/tree8190315
+from accepted77 merge0f55b56 has UI502/app315/3666 assertions/lifecycle21/shipping24,
+focused77 and nine-package/runtime gates, no browser/PR/deployment/exact review.
+It still depends on accepted Jobs integration and geometry/client checks.
+History379c1e7 and Overview1a3b4f4 have phase-two source
 approval only. Real Bed194ea79 still needs accepted Jobs compact leaf and full
 migration. Generic MCP/legacy, Console, model thumbnail, filament sync, size
 variants, token cleanup and recoverable cleanup remain unfinished. No installed
