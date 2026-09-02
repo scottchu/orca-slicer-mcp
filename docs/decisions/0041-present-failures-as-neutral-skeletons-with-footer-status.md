@@ -1,7 +1,33 @@
 # 0041: Present acquisition failures as neutral skeletons with footer status
 
-Status: Accepted user intent; implementation has scoped author evidence only.
-Independent exact acceptance, full regression and deployment remain pending.
+Decision0042 supersedes this record's byte-cap preservation clauses: the user
+explicitly authorized removal of repository individual/aggregate widget package
+ceilings. Integrity/determinism/security and all shipping guards remain; earlier
+sizes and blocked checks below are historical evidence, not renewed cap authority.
+
+Status: PR89 deployed with scoped verification; C08 intermittent acquisition risk
+remains open. The latest Camera icon-overlay correction is accepted for
+implementation, with source migration implemented but new exact validation and
+deployment pending. Current Camera Lab exceeds its unchanged byte guard; focused
+size/focus work remains, without a cap, dependency, pipeline or service change.
+
+Latest placement refinement: reuse existing animated `IconSegmentedControl`
+behavior through generic common `Switch` for
+Snapshot/Live/Auto as a compact icon-only overlay inside the Camera media's
+bottom-right corner. Labels are tooltip/aria only. This supersedes the earlier
+visible-text/full-width mode placement. Preserve44px targets, keyboard/focus,
+reduced motion and no fullscreen overlap. Acquisition-error text remains beside
+footer Refresh; service-owned modes, Auto fallback and read-only lifecycle are
+unchanged. This does not authorize a reactive-class refactor, Progress or c6 work,
+or any change to repository byte caps.
+
+The user also adopts `src/lib/common/*` for all shared UI primitives, generically
+named Button/Icon/Switch with props/variants for visual/content differences.
+Consolidate the visual-only button/icon leaves; domain compositions and domain
+icon mappings remain outside common. This direction is implemented in source with
+acceptance pending, not a semantic-token rename or Camera service refactor. Shared migration
+requires all eight packages/transitive consumers and existing AST guards under
+one required full-regression owner; agent handoff alone is not a repeat-full trigger.
 
 Explicit supersession: OBS-008/010/012/013/014, CAM-008, UI-001/003/004 and
 the related UI-002/API-005 presentation clauses now follow this decision for

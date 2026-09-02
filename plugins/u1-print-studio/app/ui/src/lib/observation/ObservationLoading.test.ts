@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/svelte';
 import ObservationSkeleton from './ObservationSkeleton.svelte';
 import { loadingObservation, structureCount } from './loading';
-import LoadingValue from '../ui/LoadingValue.svelte';
+import LoadingValue from '../common/LoadingValue.svelte';
 import BedMeshWidget from '../bed-mesh/BedMeshWidget.svelte';
 import HeadCards from './HeadCards.svelte';
 

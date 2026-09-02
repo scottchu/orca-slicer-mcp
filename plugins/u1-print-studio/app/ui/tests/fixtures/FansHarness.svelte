@@ -1,9 +1,9 @@
 <script lang="ts">
   import FansWidget from '../../src/lib/observation/FansWidget.svelte';
   import { fansLabFixture } from '../../src/lib/fixtures/observations';
-  import type { WidgetState } from '../../src/lib/ui/state';
+  import type { WidgetState } from '../../src/lib/observation/state';
   import type { FansObservation } from '../../src/lib/observation/types';
-  import '../../src/lib/ui/tokens.css';
+  import '../../src/lib/common/tokens.css';
   let state = $state<WidgetState<FansObservation>>({ kind: 'loading' });
   Object.assign(window, { __setFansState: (kind: 'loading' | 'ready' | 'refreshing' | 'unavailable' | 'error', edge = false, mode?: FansObservation['purifierMode']) => {
     const observation = structuredClone(fansLabFixture);

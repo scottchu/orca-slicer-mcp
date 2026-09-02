@@ -1,7 +1,7 @@
 import { cleanup, render } from '@testing-library/svelte';
 import { Box } from 'lucide-svelte';
 import { afterEach, expect, test, vi } from 'vitest';
-import IconButton from './IconButton.svelte';
+import Button from './Button.svelte';
 
 const leases: Array<{ release: () => void }> = [];
 afterEach(() => {
@@ -10,7 +10,7 @@ afterEach(() => {
 });
 
 test('focus leases reject absent ownership and track loss even after focus returns', () => {
-  const { component, getByRole } = render(IconButton, { label: 'Action', icon: Box });
+  const { component, getByRole } = render(Button, { label: 'Action', icon: Box });
   expect(component.captureFocus()).toBeUndefined();
   const button = getByRole('button'); button.focus();
   const lease = component.captureFocus()!;
@@ -22,7 +22,7 @@ test('focus leases reject absent ownership and track loss even after focus retur
 });
 
 test('window blur invalidates a lease and release removes only its own listeners', () => {
-  const { component, getByRole } = render(IconButton, { label: 'Action', icon: Box });
+  const { component, getByRole } = render(Button, { label: 'Action', icon: Box });
   const button = getByRole('button'); button.focus();
   const removeWindow = vi.spyOn(window, 'removeEventListener');
   const removeButton = vi.spyOn(button, 'removeEventListener');
@@ -36,8 +36,8 @@ test('window blur invalidates a lease and release removes only its own listeners
 });
 
 test('recovery never overrides another target or inactive document; disabled stays native', async () => {
-  const { component, getByRole, rerender } = render(IconButton, { label: 'Action', icon: Box });
-  const other = render(IconButton, { label: 'Other', icon: Box });
+  const { component, getByRole, rerender } = render(Button, { label: 'Action', icon: Box });
+  const other = render(Button, { label: 'Other', icon: Box });
   const button = getByRole('button', { name: 'Action' }); button.focus();
   expect(component.canRecoverFocus()).toBe(true);
   other.getByRole('button', { name: 'Other' }).focus();

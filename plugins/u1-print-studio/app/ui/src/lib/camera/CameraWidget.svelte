@@ -1,18 +1,18 @@
 <script lang="ts">
   import { Camera } from 'lucide-svelte';
-  import IconGlyph from '../ui/IconGlyph.svelte';
-  import WidgetFooter from '../ui/WidgetFooter.svelte';
-  import WidgetStateSurface from '../ui/WidgetStateSurface/StaticWidgetStateSurface.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
-  import IconButton from '../ui/IconButton.svelte';
-  import WidgetShell from '../ui/WidgetShell.svelte';
-  import WidgetHeader from '../ui/WidgetHeader.svelte';
-  import WidgetBody from '../ui/WidgetBody.svelte';
-  import StateAnnouncement from '../ui/StateAnnouncement.svelte';
-  import Stack from '../ui/Stack.svelte';
-  import TextSegmentedControl from '../ui/TextSegmentedControl.svelte';
-  import MediaStatus from '../media/MediaStatus.svelte';
-  import VideoSurface from '../media/VideoSurface.svelte';
+  import Icon from '../common/Icon.svelte';
+  import Footer from '../common/Footer.svelte';
+  import StateSurface from '../common/StateSurface/StaticStateSurface.svelte';
+  import Skeleton from '../common/Skeleton.svelte';
+  import Button from '../common/Button.svelte';
+  import Shell from '../common/Shell.svelte';
+  import Header from '../common/Header.svelte';
+  import Body from '../common/Body.svelte';
+  import StateAnnouncement from '../common/StateAnnouncement.svelte';
+  import Switch from '../common/Switch.svelte';
+  import { cameraModeOptions } from './mode-options';
+  import MediaStatus from '../common/MediaStatus.svelte';
+  import Video from '../common/Video.svelte';
   import type { VideoSurfacePort } from '../media/playback';
   import type { CameraMode, CameraSessionState } from './session';
   let { state, feedback, onready, onfeedback, onrefresh, onmode }: {
@@ -24,26 +24,24 @@
   const loading = $derived(state.phase === 'loading');
   const failed = $derived(state.phase === 'error' || !!state.failure);
   const failureMessage = $derived(failed ? 'Could not load camera' : '');
-  const modes = [{ value: 'snapshot', label: 'Snapshot' }, { value: 'live', label: 'Live' }, { value: 'auto', label: 'Auto' }] as const;
   const label = $derived(live ? 'Live' : state.phase === 'connecting' ? 'Connecting' : state.mode === 'auto' ? 'Auto' : state.phase === 'snapshot' ? 'Snapshot' : state.phase === 'error' ? 'Unavailable' : 'Connecting');
   const time = $derived(live ? state.liveAt : state.snapshot?.observedAt ?? null);
 </script>
 
-<WidgetStateSurface phase={failed ? 'error' : loading ? 'loading' : 'ready'}>
-<WidgetShell label="U1 Camera" busy={!failed && (loading || state.phase === 'connecting' || state.refreshing)}>
-  <WidgetHeader title="U1 Camera" wrapAside>
-    {#snippet icon()}<IconGlyph icon={Camera} />{/snippet}
+<StateSurface phase={failed ? 'error' : loading ? 'loading' : 'ready'}>
+<Shell label="U1 Camera" busy={!failed && (loading || state.phase === 'connecting' || state.refreshing)}>
+  <Header title="U1 Camera" wrapAside>
+    {#snippet icon()}<Icon icon={Camera} />{/snippet}
     {#snippet aside()}<MediaStatus {label} {live} {time} fps={state.fps} loading={loading || failed} />{/snippet}
-  </WidgetHeader>
-  <WidgetBody>
-    <Stack>
-      <TextSegmentedControl label="Camera mode" options={modes} value={state.mode} onchange={onmode} />
-      <VideoSurface snapshot={state.snapshot?.image ?? null} active={live} {loading} {failed} feedback={failed ? '' : feedback} {onready} {onfeedback} />
-    </Stack>
-  </WidgetBody>
-  <WidgetFooter message={failureMessage}>
-    {#snippet actions()}{#if loading}<Skeleton shape="action" />{:else}<IconButton label={failed ? 'Retry snapshot' : 'Refresh snapshot'} icon={Camera} busy={state.refreshing || state.phase === 'connecting'} onclick={onrefresh} />{/if}{/snippet}
-  </WidgetFooter>
+  </Header>
+  <Body>
+    <Video label="Live printer camera" snapshotLabel="Latest camera snapshot" fullscreenLabel="Fullscreen camera" placeholderIcon={Camera} snapshot={state.snapshot?.image ?? null} active={live} {loading} {failed} feedback={failed ? '' : feedback} {onready} {onfeedback}>
+      {#snippet actions()}<Switch label="Camera mode" options={cameraModeOptions} value={state.mode} onchange={onmode} />{/snippet}
+    </Video>
+  </Body>
+  <Footer message={failureMessage}>
+    {#snippet actions()}{#if loading}<Skeleton shape="action" />{:else}<Button label={failed ? 'Retry snapshot' : 'Refresh snapshot'} icon={Camera} busy={state.refreshing || state.phase === 'connecting'} onclick={onrefresh} />{/if}{/snippet}
+  </Footer>
   <StateAnnouncement text={failureMessage || feedback || (loading ? 'Loading camera' : label)} />
-</WidgetShell>
-</WidgetStateSurface>
+</Shell>
+</StateSurface>

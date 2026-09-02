@@ -1,9 +1,9 @@
 <script lang="ts">
   import ThermalsWidget from '../../src/lib/observation/ThermalsWidget.svelte';
   import { thermalsLabFixture } from '../../src/lib/fixtures/observations';
-  import type { WidgetState } from '../../src/lib/ui/state';
+  import type { WidgetState } from '../../src/lib/observation/state';
   import type { ThermalsObservation } from '../../src/lib/observation/types';
-  import '../../src/lib/ui/tokens.css';
+  import '../../src/lib/common/tokens.css';
   let state = $state<WidgetState<ThermalsObservation>>({ kind: 'loading' });
   // Test-only bridge, never included by the production/private-lab entrypoint.
   Object.assign(window, { __setThermalsState(kind: 'loading' | 'ready' | 'refreshing' | 'unavailable' | 'error') {

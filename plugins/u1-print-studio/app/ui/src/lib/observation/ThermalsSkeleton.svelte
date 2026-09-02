@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ReadingList from '../ui/ReadingList.svelte';
+  import ReadingList from '../common/ReadingList.svelte';
   import ThermalReading from './ThermalReading.svelte';
 </script>
 

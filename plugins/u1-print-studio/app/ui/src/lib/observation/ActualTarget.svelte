@@ -1,7 +1,7 @@
 <script lang="ts">
-  import DegreeValue from '../ui/DegreeValue.svelte';
-  import Inline from '../ui/Inline.svelte';
-  import Label from '../ui/Label.svelte';
+  import DegreeValue from '../common/DegreeValue.svelte';
+  import Inline from '../common/Inline.svelte';
+  import Label from '../common/Label.svelte';
   let { actual, target, loading = false, compact = false }: { actual?: number | null; target?: number | null; loading?: boolean; compact?: boolean } = $props();
 </script>
 

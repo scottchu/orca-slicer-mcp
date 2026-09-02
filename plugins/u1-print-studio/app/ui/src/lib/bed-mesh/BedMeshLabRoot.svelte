@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, untrack } from 'svelte';
-  import LabControls from '../ui/LabControls.svelte';
-  import ObservationLabPage from '../ui/ObservationLabPage.svelte';
+  import LabControls from '../lab/LabControls.svelte';
+  import ObservationLabPage from '../lab/ObservationLabPage.svelte';
   import { resolveBedMeshFixture } from '../lab/bed-mesh-fixture';
   import {
     bedMeshFields,

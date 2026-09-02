@@ -5,7 +5,7 @@
   import { cageLines, layoutLabels, meshDisplay, projectedAxes, selectSides, type Label, type Point, type Sides } from './display';
   import { meshColor } from './palette';
   import type { BedMeshObservation } from './types';
-  import { chartObstacles } from '../ui/chart-obstacles';
+  import { chartObstacles } from '../common/chart-obstacles';
 
   let { observation, resetKey = 0 }: { observation: BedMeshObservation; resetKey?: number } = $props();
   let host: HTMLDivElement;

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Skeleton from '../ui/Skeleton.svelte';
-  import Timestamp from '../ui/Timestamp.svelte';
+  import Skeleton from './Skeleton.svelte';
+  import Timestamp from './Timestamp.svelte';
   let { label, live = false, time = null, fps = null, loading = false }: {
     label: string; live?: boolean; time?: string | null; fps?: number | null; loading?: boolean;
   } = $props();

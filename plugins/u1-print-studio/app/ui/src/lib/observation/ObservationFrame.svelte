@@ -1,18 +1,19 @@
 <script lang="ts">
-  import { onDestroy, type ComponentProps, type Snippet } from 'svelte';
+  import { onDestroy, type Snippet } from 'svelte';
   import { RefreshCw } from 'lucide-svelte';
-  import WidgetShell from '../ui/WidgetShell.svelte';
-  import WidgetHeader from '../ui/WidgetHeader.svelte';
-  import WidgetBody from '../ui/WidgetBody.svelte';
-  import WidgetFooter from '../ui/WidgetFooter.svelte';
-  import IconButton from '../ui/IconButton.svelte';
-  import ObservedMeta from '../ui/ObservedMeta.svelte';
-  import Icon from '../ui/Icon.svelte';
-  import Caption from '../ui/Caption.svelte';
-  import FeedbackOverlay from '../ui/FeedbackOverlay.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
-  import StateAnnouncement from '../ui/StateAnnouncement.svelte';
-  import WidgetStateSurface from '../ui/WidgetStateSurface/WidgetStateSurface.svelte';
+  import Shell from '../common/Shell.svelte';
+  import Header from '../common/Header.svelte';
+  import Body from '../common/Body.svelte';
+  import Footer from '../common/Footer.svelte';
+  import Button from '../common/Button.svelte';
+  import ObservedMeta from './ObservedMeta.svelte';
+  import Icon from '../common/Icon.svelte';
+  import { observationIcons, type ObservationIconName } from './icons';
+  import Caption from '../common/Caption.svelte';
+  import FeedbackOverlay from '../common/FeedbackOverlay.svelte';
+  import Skeleton from '../common/Skeleton.svelte';
+  import StateAnnouncement from '../common/StateAnnouncement.svelte';
+  import StateSurface from '../common/StateSurface/StateSurface.svelte';
   import type { LabFreshness } from './types';
 
   type LucideIcon = typeof import('lucide-svelte')['Box'];
@@ -23,7 +24,7 @@
   let { title, icon, iconName, observedAt, freshness, children, stateKind, placeholder = stateKind === 'loading', refreshing = false, onretry }: {
     title: string;
     icon?: LucideIcon;
-    iconName?: ComponentProps<typeof Icon>['name'];
+    iconName?: ObservationIconName;
     observedAt: string | null;
     freshness: LabFreshness;
     children: Snippet<[FeedbackController]>;
@@ -74,16 +75,16 @@
 </script>
 
 {#if stateKind}<StateAnnouncement text={failureMessage || feedback || stateMessage} />{/if}
-<WidgetStateSurface phase={stateKind ?? 'ready'}>
-<WidgetShell label={title} busy={stateKind ? stateKind === 'loading' || refreshing : undefined}>
-  <WidgetHeader {title}>
-    {#snippet icon()}{#if iconName}<Icon name={iconName} />{:else if LegacyIcon}<LegacyIcon aria-hidden="true" />{/if}{/snippet}
+<StateSurface phase={stateKind ?? 'ready'}>
+<Shell label={title} busy={stateKind ? stateKind === 'loading' || refreshing : undefined}>
+  <Header {title}>
+    {#snippet icon()}{#if iconName}<Icon icon={observationIcons[iconName]} />{:else if LegacyIcon}<Icon icon={LegacyIcon} />{/if}{/snippet}
     {#snippet meta()}<Caption>Lab fixture · <ObservedMeta {observedAt} {freshness} loading={placeholder} /></Caption>{/snippet}
-  </WidgetHeader>
-  <WidgetBody>{@render children(controller)}</WidgetBody>
-  <WidgetFooter message={failureMessage}>
-    {#snippet actions()}{#if stateKind === 'loading'}<Skeleton shape="action" />{:else}<IconButton label={failureMessage ? 'Retry lab fixture' : 'Refresh lab fixture'} icon={RefreshCw} onclick={failureMessage && onretry ? onretry : refresh} disabled={refreshing} />{/if}{/snippet}
-  </WidgetFooter>
+  </Header>
+  <Body>{@render children(controller)}</Body>
+  <Footer message={failureMessage}>
+    {#snippet actions()}{#if stateKind === 'loading'}<Skeleton shape="action" />{:else}<Button label={failureMessage ? 'Retry lab fixture' : 'Refresh lab fixture'} icon={RefreshCw} onclick={failureMessage && onretry ? onretry : refresh} disabled={refreshing} />{/if}{/snippet}
+  </Footer>
   <FeedbackOverlay message={failureMessage ? '' : feedback} announce={!stateKind} />
-</WidgetShell>
-</WidgetStateSurface>
+</Shell>
+</StateSurface>

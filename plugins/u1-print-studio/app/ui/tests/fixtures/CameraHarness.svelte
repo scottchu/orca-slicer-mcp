@@ -1,7 +1,7 @@
 <script lang="ts">
   import CameraLabWidget from '../../src/lib/camera/CameraLabWidget.svelte';
   import type { CameraScenario, CameraCapabilityPolicy } from '../../src/lib/camera/state';
-  import '../../src/lib/ui/tokens.css';
+  import '../../src/lib/common/tokens.css';
   let scenario = $state<CameraScenario>('snapshot');
   let capabilityPolicy = $state<CameraCapabilityPolicy>('native');
   let visible = $state(true);

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import PercentageBackground from '../../src/lib/ui/PercentageBackground.svelte';
-  import '../../src/lib/ui/tokens.css';
+  import PercentageBackground from '../../src/lib/common/PercentageBackground.svelte';
+  import '../../src/lib/common/tokens.css';
   let { value = 50, max = 100, color, onclick = () => {} }: {
     value?: number | null; max?: number | null; color?: string; onclick?: () => void;
   } = $props();

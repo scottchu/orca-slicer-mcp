@@ -28,7 +28,7 @@ import {
   type LabView
 } from '../observation/types';
 import { readSelection, selectionSearch, type LabSelection } from './controller';
-import type { WidgetState } from '../ui/state';
+import type { WidgetState } from '../observation/state';
 
 export type ObservationLabView = Exclude<LabView, 'bed_mesh'>;
 export const OBSERVATION_LAB_VIEWS = [

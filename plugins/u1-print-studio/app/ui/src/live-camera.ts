@@ -1,6 +1,6 @@
 import { mount, unmount } from 'svelte';
 import LiveCameraRoot from './lib/camera/LiveCameraRoot.svelte';
-import './lib/ui/tokens.css';
+import './lib/common/tokens.css';
 
 const target = document.getElementById('widget-root');
 if (!target) throw new Error('Missing widget root');

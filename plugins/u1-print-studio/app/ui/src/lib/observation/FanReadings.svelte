@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { FanValue } from '../live/presentation';
-  import ReadingList from '../ui/ReadingList.svelte';
+  import ReadingList from '../common/ReadingList.svelte';
   import FanReading from './FanReading.svelte';
   let { items }: { items: readonly FanValue[] } = $props();
 </script>

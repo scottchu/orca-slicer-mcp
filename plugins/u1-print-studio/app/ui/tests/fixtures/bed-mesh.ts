@@ -1,5 +1,5 @@
 import { mount } from 'svelte';
-import '../../src/lib/ui/tokens.css';
+import '../../src/lib/common/tokens.css';
 import BedMeshHarness from './BedMeshHarness.svelte';
 import { BufferGeometry } from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';

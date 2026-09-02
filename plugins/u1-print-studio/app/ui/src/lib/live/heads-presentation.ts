@@ -1,5 +1,5 @@
 import type { Capability, Evidence, Freshness } from './presentation.js';
-import { parseColor } from '../ui/color.js';
+import { parseColor } from '../common/color.js';
 
 export const HEAD_IDS = [1, 2, 3, 4] as const;
 export type HeadId = typeof HEAD_IDS[number];

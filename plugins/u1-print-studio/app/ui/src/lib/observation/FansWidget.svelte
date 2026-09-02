@@ -2,10 +2,10 @@
   import ObservationFrame from './ObservationFrame.svelte';
   import { validateFans, type FansObservation } from './types';
   import { titleCase } from './format';
-  import { validateWidgetState, type WidgetState } from '../ui/state';
-  import Stack from '../ui/Stack.svelte';
-  import InfoPair from '../ui/InfoPair.svelte';
-  import Label from '../ui/Label.svelte';
+  import { validateWidgetState, type WidgetState } from './state';
+  import Stack from '../common/Stack.svelte';
+  import InfoPair from '../common/InfoPair.svelte';
+  import Label from '../common/Label.svelte';
   import type { FailureProps } from './loading';
   import FanReadings from './FanReadings.svelte';
   import FansSkeleton from './FansSkeleton.svelte';

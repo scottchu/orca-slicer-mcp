@@ -1,6 +1,79 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: PR89 scoped-verified; C08 intermittent acquisition risk remains
+## Current: adopted common UI foundation and Camera compact icon overlay
+
+Decision0042 records the user's explicit removal of individual/aggregate repository
+widget package byte ceilings, not a new higher cap. The earlier no-cap-change
+instructions below are superseded. Prefer clean, precise source; keep normal
+minification/size observability and meaningful DOM/accessibility fixes. Integrity,
+determinism, schema/security/CSP/self-contained assets, component boundaries and
+all exact-review/ship/lifecycle/preservation guards remain unchanged.
+
+Application source is frozen: common primitives, compact Camera overlay and
+individual/aggregate byte-cap enforcement/test removal are implemented. All eight
+artifacts/pins are rebuilt; final Camera Lab83810 and Live94413 bytes are reported
+sizes, not cap failures. Author check0/0/AST,197 distinct focused UI checks
+(146 retained+51 renewed),28 browser cases (four same-hash Heads retained+24 final),
+12 package and three asset tests pass. VALIDATION binds the report and369 inputs,
+retains prior failures and distinguishes author checks from independent acceptance.
+All author processes/browsers are closed and port4179 is released.
+
+Next freeze the candidate for one owner's required full repository/browser gate,
+independent exact review, guarded merge/deploy and BOTH restarts/postverification.
+No new cap approval is needed. PR89 remains deployed; all55 IDs, C08 intermittent
+unclassified acquisition risk, Progress no-action, F07 discussion and c6 remain.
+This documentation author updates current contracts/0042 and the narrow Camera
+handoff pointer to common/Video; no application tests/builds were run here.
+
+After this shipment, prioritize the user's requested cleanup: `src/components`
+owns UI with `components/common/Button`, Icon and Switch; `src/lib` owns pure
+TypeScript services/domain/transport with server-only code in `lib/server`;
+`src/routes` owns API/dashboard/Lab, preserving `/dashboard/lab` URLs. This next
+layout/route consolidation is not implemented; current `lib/common` remains this
+slice's source and must ship before that refactor starts.
+
+### Earlier source checkpoint before decision0042
+
+Branch `codex/u1-camera-icon-overlay` starts at
+`431b5d40a761919d638a35e2950874e3a5a29519`. Latest user direction supersedes the
+text/full-width mode placement: preserve existing animated `IconSegmentedControl`
+behavior through generic `Switch`,
+with Snapshot/Live/Auto icons only in a compact bottom-right overlay inside the
+Camera media. Names belong in tooltip/aria. Preserve44px targets, keyboard/focus,
+reduced-motion behavior and non-overlap with fullscreen; failure text remains in
+the footer beside Refresh. Service-owned lifecycle/Auto fallback is unchanged.
+
+The user adopted all shared primitives under `src/lib/common/*`, generically named
+Button/Icon/Switch and styled/configured via props/variants. Consolidate visual-only
+IconButton/QuietIconButton and IconGlyph/BorderedIcon variants; keep domain icon
+mappings and Camera/Bed/other domain compositions outside common. The migration is
+implemented in source, with acceptance pending; F05 token renaming is not in scope.
+This shared move requires all eight package/consumer coverage, with one full-run
+owner and separate exact review; no repeated full suite solely for agent handoff.
+
+The implementation author owns application/tests/assets; this records pass changes
+only five continuity/ledger files, requirements/0041 and one AGENTS working rule.
+Author `bun run check` passes0errors/0warnings and AST; one390px synthetic Camera
+modes test passes and its initial-error screenshot matches the compact overlay.
+Lab remains blocked by the unchanged80000-byte guard:83901 initially,83446 after
+Switch/Icon simplification. Initial Live94479 is within100000. A preliminary
+source-derived UI/UX P1 identified unselected radios entering the local-fullscreen
+tab trap; the author is fixing it. A LabControls experiment saved no bytes and was
+fully reverted. Architect review is bounded to legitimate common/Camera
+simplification; no cap/dependency/pipeline/service change is authorized here.
+Read-only architecture review found no wrong graph dependency and no identified
+bounded justified saving of the remaining3446bytes while preserving requirements;
+that does not establish impossibility. Next finish focus work and collect all eight
+final package measurements/focused evidence before checkpointing. A cap change
+would require a separate explicit user decision, not a guessed new threshold.
+Collect focused source/geometry/interaction/
+package evidence, then the required
+full gate, independent exact review and guarded delivery. No new tests or deployment
+are run by this documentation author; reported checks are not full or independent
+acceptance. PR89 stays deployed, C08 intermittent acquisition risk remains,
+and all55 IDs, Progress no-action, F07 class discussion, c6 and byte caps are preserved.
+
+## Deployed baseline: PR89 scoped verification and open Camera risk
 
 Reviewed `ce065866c61eba159075da9d3bcbf642e9bd404d` merged through PR89 as
 `f0d7c178e59e72a9d1ed6324577d2e131ffb0f91`, retaining tree

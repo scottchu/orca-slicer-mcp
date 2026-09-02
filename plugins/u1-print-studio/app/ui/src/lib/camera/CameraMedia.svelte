@@ -1,16 +1,17 @@
 <script lang="ts">
-  import { onMount, untrack } from 'svelte';
+  import { onMount, untrack, type Snippet } from 'svelte';
   import { Camera, Maximize, Minimize, PictureInPicture2 } from 'lucide-svelte';
-  import IconButton from '../ui/IconButton.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
+  import Button from '../common/Button.svelte';
+  import Skeleton from '../common/Skeleton.svelte';
   import { type CameraScenario, type CameraMeasurement, type CameraCapabilityPolicy } from './state';
   import { createSyntheticCameraSession } from './synthetic-session';
   import type { CameraMode } from './session';
-  let { scenario, capabilityPolicy, onmeasurement, onfeedback }: {
+  let { scenario, capabilityPolicy, onmeasurement, onfeedback, actions }: {
     scenario: CameraScenario;
     capabilityPolicy: CameraCapabilityPolicy;
     onmeasurement: (measurement: CameraMeasurement) => void;
     onfeedback: (message: string) => void;
+    actions?: Snippet;
   } = $props();
   let frame: HTMLDivElement;
   let canvas: HTMLCanvasElement;
@@ -91,9 +92,10 @@
   <div class="media-actions" data-camera-actions>
     {#if presented === 'loading' || failed}<Skeleton shape="action" /><Skeleton shape="action" />
     {:else}
-      {#if presented === 'live' && playing && canPip && capabilityPolicy !== 'unsupported'}<IconButton label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
-      <IconButton label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
+      {#if presented === 'live' && playing && canPip && capabilityPolicy !== 'unsupported'}<Button label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
+      <Button label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
     {/if}
+    {@render actions?.()}
   </div>
   {#if feedback && !failed}<div class="media-feedback" data-camera-feedback>{feedback}</div>{/if}
 </div>

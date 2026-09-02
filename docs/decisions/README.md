@@ -45,6 +45,8 @@ silently changed.
 | [0038](0038-preserve-widget-structure-through-errors.md) | Preserve widget structure through errors | Accepted presentation direction; first Bed Lab implementation pending |
 | [0039](0039-keep-heads-color-and-copy-coherent.md) | Keep Heads color and Copy coherent | Adopted presentation direction; exact acceptance pending |
 | [0040](0040-require-embedded-print-thumbnails.md) | Require embedded thumbnails before print handoff | Accepted workflow policy; automated enforcement unimplemented |
+| [0041](0041-present-failures-as-neutral-skeletons-with-footer-status.md) | Present acquisition failures as neutral skeletons with footer status | PR89 scoped deployment; common UI/Camera refinement in progress; byte caps superseded by0042 |
+| [0042](0042-remove-repository-widget-byte-caps.md) | Remove repository widget package byte caps | Explicitly authorized; implementation/exact acceptance pending |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

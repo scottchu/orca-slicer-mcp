@@ -112,3 +112,37 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     expect(positions.at(-1)).toBe(0); await expect(count).toHaveText('8');
   });
 }
+
+test('Switch expands from two to three controlled icons with a measured animated thumb', async ({ page }, info) => {
+  await page.goto('/__test/icon-segmented');
+  const group = page.getByRole('radiogroup', { name: 'Test view' });
+  await page.getByRole('radio', { name: 'Grid' }).click();
+  await expect(group.locator('.thumb')).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 44, 0)');
+  await group.screenshot({ path: info.outputPath('switch-two.png') });
+  await page.getByRole('button', { name: 'Toggle third option' }).click();
+  await expect(group).toHaveCSS('width', '132px');
+  const sample = await page.evaluate(async () => {
+    const group = document.querySelector('[data-icon-segmented]')!;
+    const thumb = group.querySelector('.thumb')!;
+    (group.querySelector('[aria-label="List"]') as HTMLButtonElement).click();
+    return new Promise<number>(resolve => {
+      const start = performance.now();
+      const sample = () => {
+        const x = new DOMMatrix(getComputedStyle(thumb).transform).m41;
+        if (x > 44 && x < 88) { thumb.getAnimations().forEach(animation => animation.pause()); resolve(x); }
+        else if (performance.now() - start > 1000) resolve(x);
+        else requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+  });
+  expect(sample).toBeGreaterThan(44); expect(sample).toBeLessThan(88);
+  await group.screenshot({ path: info.outputPath('switch-three-in-motion.png'), animations: 'allow' });
+  await group.locator('.thumb').evaluate(node => node.getAnimations().forEach(animation => animation.finish()));
+  await expect(group.locator('.thumb')).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 88, 0)');
+  await group.screenshot({ path: info.outputPath('switch-three.png') });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.getByRole('radio', { name: 'Surface' }).click();
+  await expect(group.locator('.thumb')).toHaveCSS('transition-duration', '0s');
+  await expect(group.locator('.thumb')).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 0, 0)');
+});

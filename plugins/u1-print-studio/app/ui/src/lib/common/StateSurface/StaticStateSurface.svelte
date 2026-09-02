@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { staticStructure, type WidgetSurfacePhase } from './types';
+  import { staticStructure, type SurfacePhase } from './types';
   // Fixed media geometry needs phase styling, with no row allocation observer.
-  let { phase, children }: { phase: WidgetSurfacePhase; children: Snippet } = $props();
+  let { phase, children }: { phase: SurfacePhase; children: Snippet } = $props();
 </script>
 
 <div data-widget-state-surface={phase} class:static-structure={staticStructure(phase)}>

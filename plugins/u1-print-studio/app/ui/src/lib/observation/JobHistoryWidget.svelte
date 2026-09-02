@@ -3,7 +3,7 @@
   import ObservationFrame from './ObservationFrame.svelte';
   import { formatClock, formatDuration, titleCase } from './format';
   import { validateJobHistory, type JobHistoryObservation } from './types';
-  import LoadingValue from '../ui/LoadingValue.svelte';
+  import LoadingValue from '../common/LoadingValue.svelte';
   import { loadingObservation, structureCount, type FailureProps } from './loading';
   type Props = FailureProps & ({ observation: JobHistoryObservation; loading?: false; refreshing?: boolean; rows?: never } | { loading: true; observation?: never; refreshing?: never; rows?: number });
   let { observation, loading: pending = false, refreshing = false, rows = 4, failure, onretry }: Props = $props();

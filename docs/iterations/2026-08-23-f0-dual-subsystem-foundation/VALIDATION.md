@@ -1,5 +1,118 @@
 # F0 dual-subsystem foundation validation
 
+## Frozen author source: common UI, compact Camera overlay and decision0042
+
+The user authorized removal of individual/aggregate repository widget/package byte
+ceilings. This supersedes the previous cap-preservation requirement; no replacement
+ceiling or extra approval is required. These were repo guards, not OpenAI limits.
+Retain size reporting/normal production minification and clean readable source,
+plus integrity/hash pins, deterministic nonempty self-contained artifacts, schema/
+component/security/CSP and every required shipping review/lifecycle/preservation
+guard. Runtime/protocol bounds remain distinct and unchanged.
+
+The author froze application source based on431b5d4: common primitives and compact
+Camera overlay implemented; individual/aggregate byte ceilings removed from Lab,
+observation/live package contracts and corresponding tests. All eight artifacts/pins
+are rebuilt. Common Video now accepts domain labels/icons; service lifecycle and
+playback boundaries remain unchanged. Fullscreen focus wraps actual tabbable
+controls and respects Switch roving tabindex. Final Switch validation uses clear
+whole props; unnecessary plain-Icon wrapper/size-only LabControls experiment removed.
+
+Author evidence is under ignored `app/ui/test-results/camera-icon-overlay/`:
+
+| Evidence | SHA256 |
+| --- | --- |
+| AUTHOR-REPORT.json, exact commands/results/log hashes | `cdd008f69c6b3ee50bed8d9330fbfc95f97c823946b1a30b5a8f8ab9ef0c3cb8` |
+| final-inputs.json,369 non-Markdown app inputs | `6c9214e501d47e7c32323d8e28b26171ca67327b0cb1056e7fb80fdbc9fe4789` |
+| check-final.log | `e3460f6359f8619d0423663eec7b94936599113a6397cd7dbfe7a0113203c7b4` |
+| unit-final-affected.log | `5d5316d7b1a91b7349cc4635b9b800421c918f0249933fec8a5ec5a10072a59e` |
+| browser-final.log | `807c9f63a6da8f0ff578a98cc2e4a0553479ecd084391775abfb6c1e8fdd9ffa` |
+
+Actual author commands from UI: `bun run check` passed0errors/0warnings and AST;
+`bun run test -- src/lib/common/Switch.test.ts src/lib/camera/package.test.ts src/lib/camera/live-package.test.ts src/lib/live/graph-contract.test.ts`
+passed51 final affected tests. With146 unchanged tests retained from the earlier192
+run, this is197 distinct focused UI checks, not a new197-test full run.
+The final `bun x playwright test` command targeting camera-modes/live-camera/
+camera-route/icon-segmented specs (exact grep/output in report) passed24 cases via
+the standard fixture/final public assets. Four Heads cases retain identical final
+Heads SHA `f902508734871bb7d4392c9eb0a313ce70c1abc4eff2b7dcfd544def79245d9d`:
+28 distinct browser cases, not a final28-case run.
+
+`bun run build`, `bun run package:private-lab`, all five `build:live-*` commands
+and both harness builds pass. Final byte sizes are observation213413, Bed636807,
+Camera Lab83810 (private aggregate934030), Fans87001, Thermals93068, Heads96783,
+Queue88526 and Camera Live94413; these are observations, not caps. Exact artifact
+hashes are in the report and final-build-inventory.json. `bun test` against
+private-lab/live-fans-package passes12; the scoped status-dashboard served-asset
+command passes3 with23 filtered. Nonempty/schema/security/graph/pin gates remain.
+
+Required frozen full repository/browser verification, independent exact review and
+guarded two-service delivery are still pending. This documentation author ran no
+application tests/builds. PR89 remains deployed; C08 and all55 IDs stay open at their
+recorded scope. Author browsers/processes exited and fixture4179 was released;
+no new deployed service, real-printer or actual Safari/mobile acceptance is claimed.
+
+Additional attributed editing evidence, preceding final Switch-prop restoration
+and byte-cap removal: author renewed192 focused tests across19files through the
+correct repository `bun run test` runner, all PASS. The prior192-case run remains
+184PASS/8FAIL: six plain-Icon wrapper failures were repaired by reverting that
+wrapper without weakening Heads assertions; two disappeared under the correct
+runner with relevant Bed/Camera source unchanged. Do not reclassify that failed run.
+Author28 focused browser cases PASS, including Snapshot/Live/Auto fullscreen
+Tab/ShiftTab/Escape at320/390/720. UI/UX reviewed supplied narrow/200%, Heads RGBA
+Copy and Bed2D/3D screenshots and reported no new visual blocker; that reviewer
+did not run tests. Those checks alone did not accept later Switch/cap edits; the
+final affected renewal above binds their scoped retention. Earlier cap failures,
+including83493-byte rejection, and the first private-browser configuration cwd
+failure (no tests ran) remain failed historical evidence, not active cap blockers.
+
+## Earlier common UI checkpoint before decision0042
+
+Attributed editing evidence only: common/Button/Icon/Switch migration is implemented
+in source, not accepted/deployed. Author `bun run check` passes0errors/0warnings
+and strict AST. One390px synthetic `camera-modes` case passes; an initial-error
+screenshot matches the compact overlay. No broader browser, application, full
+regression or independent exact approval is established by these checks.
+
+Reported build measurements remain distinct: initial Camera Lab83901/80000,
+then83446/80000 after focused Switch/Icon simplification, still BLOCKED. Initial
+Live94479/100000 passes its cap. A LabControls experiment saved no bytes and was
+fully reverted, with no semantic change. No dependency, pipeline, service or cap
+change occurred. The preliminary source-derived UI/UX P1 concerning unselected
+radios in local-fullscreen tab trapping is being repaired, not accepted as fixed.
+Architect investigation remains scoped to legitimate common/Camera simplification;
+the failed guard does not establish that the accepted design cannot fit. Its
+read-only review found no wrong graph dependency or bounded justified saving of
+the remaining3446bytes while preserving requirements. All eight final package
+measurements/focused author evidence are needed before the next checkpoint; a
+cap change requires explicit user decision and no new threshold is proposed here.
+Further focused reports/screenshots, all-eight-consumer coverage and the assigned
+full/exact gates remain pending. This records author-reported results only; the
+documentation author ran no application tests or builds.
+
+Current branch `codex/u1-camera-icon-overlay`, starting at
+`431b5d40a761919d638a35e2950874e3a5a29519`, follows the user's latest compact
+icon-only Snapshot/Live/Auto direction. Reuse existing animated
+`IconSegmentedControl` behavior in generic common `Switch` inside the Camera
+image's bottom-right; labels only in
+tooltip/aria,44px targets, keyboard/focus/reduced motion and no fullscreen overlap.
+Error status remains beside footer Refresh; service lifecycle/fallback is unchanged.
+Required evidence will cover affected states,320/390/desktop and200% text, shared
+control consumers, overlay/media geometry, accessible selection and package caps.
+The adopted shared move consolidates generic primitives under `src/lib/common`,
+Button/Icon/Switch props/variants, with domain composition/icon mapping kept outside.
+Acceptance also requires preserved component/import guards, all shared consumers
+and all eight deterministic bundles, including package caps. Semantic-token,
+service/lifecycle, Progress/reactive-class and c6 changes are outside this scope.
+One assigned owner runs the required frozen-candidate regression; no repeat merely
+because authors/reviewers change. No build/test was run for this contract expansion.
+No application/browser/full gate ran in this documentation pass; author evidence
+and independent exact/full validation remain pending. PR89 evidence below does
+not accept changed bytes or close C08's intermittent acquisition risk. No new
+deployment, Progress/reactive-class/c6 work or cap change is claimed.
+The earlier icon-overlay-only documentation pass ran `git diff --check` and a read-only
+`uv run --no-project python` ledger-ID comparison: PASS, all55 IDs in original order.
+
 ## PR89 source acceptance, guarded shipment and scoped postverification
 
 Independent exact source review approved

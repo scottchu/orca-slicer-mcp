@@ -1,15 +1,16 @@
 <script lang="ts">
   import { fanNames, fanIds } from './fan-labels';
-  import Stack from '../ui/Stack.svelte';
-  import InfoPair from '../ui/InfoPair.svelte';
-  import Label from '../ui/Label.svelte';
-  import Skeleton from '../ui/Skeleton.svelte';
-  import ReadingList from '../ui/ReadingList.svelte';
-  import ReadingRow from '../ui/ReadingRow.svelte';
-  import Inline from '../ui/Inline.svelte';
-  import Icon from '../ui/Icon.svelte';
-  import Name from '../ui/Name.svelte';
-  import MetricValue from '../ui/MetricValue.svelte';
+  import Stack from '../common/Stack.svelte';
+  import InfoPair from '../common/InfoPair.svelte';
+  import Label from '../common/Label.svelte';
+  import Skeleton from '../common/Skeleton.svelte';
+  import ReadingList from '../common/ReadingList.svelte';
+  import ReadingRow from '../common/ReadingRow.svelte';
+  import Inline from '../common/Inline.svelte';
+  import Icon from '../common/Icon.svelte';
+  import { observationIcons } from './icons';
+  import Name from '../common/Name.svelte';
+  import MetricValue from '../common/MetricValue.svelte';
   let { includePower = false }: { includePower?: boolean } = $props();
 </script>
 <Stack>
@@ -26,7 +27,7 @@
   <ReadingList label="Fan readings" columns="single">
     {#each fanIds as id (id)}
       <ReadingRow label={fanNames[id]}>
-        {#snippet leading()}<Inline><Icon name="fan" /><Name text={fanNames[id]} /></Inline>{/snippet}
+        {#snippet leading()}<Inline><Icon icon={observationIcons.fan} /><Name text={fanNames[id]} /></Inline>{/snippet}
         {#snippet trailing()}<Inline shrink={false} align="baseline" gap="tight"><MetricValue loading unit="%" /><MetricValue loading unit="RPM" tone="muted" /></Inline>{/snippet}
       </ReadingRow>
     {/each}

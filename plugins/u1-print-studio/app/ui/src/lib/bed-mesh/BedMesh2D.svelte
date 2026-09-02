@@ -2,7 +2,7 @@
   import { onMount, untrack } from 'svelte';
   import { meshColor } from './palette';
   import type { BedMeshObservation } from './types';
-  import { chartObstacles } from '../ui/chart-obstacles';
+  import { chartObstacles } from '../common/chart-obstacles';
 
   let { observation }: { observation: BedMeshObservation } = $props();
   let canvas: HTMLCanvasElement;

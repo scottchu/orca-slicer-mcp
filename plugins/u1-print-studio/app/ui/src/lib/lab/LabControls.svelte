@@ -1,6 +1,6 @@
 <script lang="ts">
   import { RotateCcw } from 'lucide-svelte';
-  import IconButton from './IconButton.svelte';
+  import Button from '../common/Button.svelte';
   type Option = { value: string; label: string };
   type Field = { key: string; label: string; options: readonly Option[]; disabled?: boolean };
   let { fields, values, onchange, onreset, wideOptions = false }: {
@@ -20,7 +20,7 @@
         </select>
       </label>
     {/each}
-    <IconButton label="Reset lab preview" icon={RotateCcw} onclick={onreset} />
+    <Button label="Reset lab preview" icon={RotateCcw} onclick={onreset} />
   </div>
 </fieldset>
 
