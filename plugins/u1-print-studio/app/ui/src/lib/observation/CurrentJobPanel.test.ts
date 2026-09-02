@@ -57,7 +57,7 @@ describe('Current Job compositional presentation', () => {
     expect(container.querySelector('[data-widget-shell]')).toHaveAttribute('aria-busy', 'true');
     expect(container.querySelector('button,input,a,[title], [aria-valuenow]')).toBeNull();
     expect(container).not.toHaveTextContent('model.gcode');
-    expect(container.querySelectorAll('[data-text-skeleton]')).toHaveLength(6);
+    expect(container.querySelectorAll('[data-text-skeleton]')).toHaveLength(7);
     for (const shape of container.querySelectorAll('[data-text-skeleton]')) expect(shape).toHaveAttribute('aria-hidden', 'true');
     expect(screen.getAllByRole('status')).toHaveLength(1);
     await rerender({ phase: 'ready', job: adaptCurrentJob(liveCurrentJobResult().structuredContent) });

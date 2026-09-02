@@ -1,7 +1,7 @@
 <script lang="ts">
   import { RefreshCw } from 'lucide-svelte';
   import type { Evidence, Freshness } from '../live/presentation';
-  import type { CurrentJobValue } from './current-job-value';
+  import type { CurrentJobValue, CurrentJobLoadingShapes } from './current-job-value';
   import CurrentJobFacts from './CurrentJobFacts.svelte';
   import WidgetShell from '../ui/WidgetShell.svelte';
   import WidgetHeader from '../ui/WidgetHeader.svelte';
@@ -15,8 +15,8 @@
   import IconButton from '../ui/IconButton.svelte';
   import Skeleton from '../ui/Skeleton.svelte';
   import FeedbackOverlay from '../ui/FeedbackOverlay.svelte';
-  let { job, observedAt = null, freshness = 'unknown', evidence = 'unknown', reason = null, phase, refreshing = false, feedback = '', sourceLabel = 'Printer reported', refreshLabel = 'Refresh Current Job', onrefresh }: {
-    job?: CurrentJobValue; observedAt?: string | null; freshness?: Freshness; evidence?: Evidence; reason?: string | null;
+  let { job, shapes, observedAt = null, freshness = 'unknown', evidence = 'unknown', reason = null, phase, refreshing = false, feedback = '', sourceLabel = 'Printer reported', refreshLabel = 'Refresh Current Job', onrefresh }: {
+    job?: CurrentJobValue; shapes?: CurrentJobLoadingShapes; observedAt?: string | null; freshness?: Freshness; evidence?: Evidence; reason?: string | null;
     phase: 'loading' | 'ready' | 'error'; refreshing?: boolean; feedback?: string; sourceLabel?: string; refreshLabel?: string; onrefresh?: () => void;
   } = $props();
   const loading = $derived(phase === 'loading');
@@ -30,7 +30,7 @@
     {#snippet meta()}<Caption>{sourceLabel} · <DomainReceipt {observedAt} {freshness} state={evidence} {reason} {loading} /></Caption>{/snippet}
   </WidgetHeader>
   <WidgetBody>
-    {#if job || loading}<CurrentJobFacts {job} />{:else}<StatePanel title="Current Job" reason="error" />{/if}
+    {#if job || loading}<CurrentJobFacts {job} {shapes} />{:else}<StatePanel title="Current Job" reason="error" />{/if}
   </WidgetBody>
   <WidgetFooter>
     {#snippet actions()}{#if loading}<Skeleton shape="action" compact />{:else}<IconButton compact label={phase === 'error' ? 'Retry Current Job' : refreshLabel} icon={RefreshCw} onclick={onrefresh} busy={refreshing} />{/if}{/snippet}

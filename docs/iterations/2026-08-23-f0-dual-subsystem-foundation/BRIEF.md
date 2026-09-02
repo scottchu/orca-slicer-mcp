@@ -1,5 +1,18 @@
 # F0 dual-subsystem foundation brief
 
+Latest additive execution order: preserve Current Job's repaired checkpoint,
+then deliver the independently designed icon-only animated 2D/3D Bed Mesh
+segmented control as a bounded lab/shared-leaf slice from accepted PR77 main
+`4828ce04`. Do not include unaccepted Jobs, production Bed or compact IconButton.
+Acceptance: 44px targets/32px track, keyboard radio semantics, reduced motion,
+identical skeleton/frame/footer geometry at four widths and 200% text, existing
+legend/mesh/zoom/pixel/zero-fetch regressions, deterministic lab caps and unchanged
+production bytes. Independent exact approval and guarded delivery are required.
+Current Job's final full suite/PR is deferred, not cancelled; all other tracks
+remain preserved. PR76 and PR77 postdeployment verification are independently
+reported complete; no new Current Job deployment is claimed.
+
+
 Current bounded repair: address independent Current Job source review's lost
 file-context labels before further acceptance. Preserve ADR0025 and the existing
 renderer: printing Current job, paused Paused job, standby Loaded file,

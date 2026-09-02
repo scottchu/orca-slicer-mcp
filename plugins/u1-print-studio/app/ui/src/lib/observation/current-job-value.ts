@@ -2,6 +2,10 @@ import type { CurrentJobPresentation } from '../live/presentation';
 
 // Presentation facts are independent of either the live transport or lab fixture.
 export type CurrentJobValue = Pick<CurrentJobPresentation, 'printState' | 'filename' | 'storageActive' | 'filePositionBytes' | 'fileSizeBytes' | 'printDurationSeconds' | 'totalDurationSeconds' | 'filamentUsedMillimeters'>;
+export type CurrentJobLoadingShapes = {
+  state: string; fileLabel: string; filename: string; storage: string;
+  quantities: readonly [string, string, string, string, string];
+};
 
 const fileLabels = {
   printing: 'Current job', paused: 'Paused job', standby: 'Loaded file',
@@ -9,7 +13,7 @@ const fileLabels = {
   cancelled: 'Last reported job', unknown: 'Reported file'
 } as const;
 
-export const currentJobLabels = (job: CurrentJobValue) => {
+export const currentJobLabels = (job: Pick<CurrentJobValue, 'printState' | 'filename' | 'storageActive'>) => {
   const state = job.printState.reported ? job.printState.value : null;
   return {
     state: state ? state[0].toUpperCase() + state.slice(1) : 'Unknown',

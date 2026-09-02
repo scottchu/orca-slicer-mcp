@@ -1,5 +1,24 @@
 # F0 dual-subsystem foundation handoff
 
+## Current Job repaired checkpoint — new Bed toggle prioritized
+
+Accepted PR77 is ordinarily integrated. Changed paths include CurrentJob
+facts/panel/widget, closed lab-only shape builder, loading-only TextValue/
+QuantityValue/DurationValue support and guards, route composition, geometry/
+target tests, affected Jobs/Queue/light artifacts and exact pins. Live root
+receives no shapes; accepted controller and Bed renderers are unchanged.
+Repository validation passes (500 UI/311 app/21 lifecycle/24 shipping).
+
+Focused browser renewal passes 49/49; port4179 is released. Preserve this checkpoint.
+Author the separately adopted Bed segmented-icon toggle from accepted main
+`4828ce04`, without any Jobs/compact-button changes. Current Job needs the
+full final 207-case browser suite, runtime/signing renewal, third deterministic
+build, final records, separate exact review/validation and PR/delivery afterward.
+Public-template geometry does not promise arbitrary first-load private filename
+parity; retained real refresh remains stable. Other tracks remain open.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current Job label repair checkpoint — awaiting accepted legend integration
 
 Changed only `current-job-value.ts`, CurrentJobPanel seven-state/non-inference

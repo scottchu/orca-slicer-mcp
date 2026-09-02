@@ -1,5 +1,17 @@
 # Widget completion tracks
 
+Current order: independently designed Bed Mesh icon segmented toggle is the
+latest small-release priority. Current Job is preserved after accepted PR77 merge
+and intrinsic lab loading repair; repository 500 UI/311 app/21 lifecycle/24 shipping
+passes, final full 207 browser/runtime/third-build/exact acceptance remains due.
+PR76 and PR77 independent postdeployment checks are complete, attributed to their
+separate validators. Overview `1a3b4f4` and History `379c1e7` retain phase-two source
+approval; Progress `b9c5008` is phase-one source approved (30 UI, 12 producer and
+151 fresh independent cases), no phase-two claim. Real Bed `194ea79` remains
+preserved. No track, generic MCP/legacy parity or cleanup has been cancelled.
+
+## Earlier checkpoints (superseded where noted above)
+
 Current Job contextual-label source finding is repaired in a non-browser
 checkpoint: all seven states preserve ADR0025/existing-renderer file context.
 UI 476 and actual-producer nine tests pass; final artifact/browser renewal waits

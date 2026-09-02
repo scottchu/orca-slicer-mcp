@@ -1,5 +1,47 @@
 # F0 dual-subsystem foundation validation
 
+## Current Job PR77 integration and intrinsic-loading repair — unaccepted checkpoint
+
+Focused renewal PASS: `bun x playwright test tests/visual/live-current-job.spec.ts
+tests/visual/lab-states.spec.ts tests/visual/lab-text-bounds.spec.ts` runs 49/49 in
+1.0m. This covers fourteen closed Jobs shapes at four widths/normal and 200%,
+all seven real states, retained refresh, initial HTTP503/retry, visible glyph
+bounds and 32px paint/44px default-and-compact hit targets. Port4179 is released.
+
+Ordinary merge `361308b` integrates accepted `4828ce04`. Actually run after the
+repair: `./scripts/check-repository.sh` PASS, including compiler/zero-raw AST,
+500 UI tests, 311 app tests/3,661 assertions, 21 lifecycle and 24 shipping tests,
+and all nine source-derived package checks. Jobs/Queue/light lab changed for
+the additive loading-shape support; production has no fixture/shape-builder
+imports. Jobs 89,526; Queue 89,021; six production total 538,802. Lab bytes
+211,518/634,932/79,682, total 926,132; no caps changed.
+
+First full author browser run was 183/199 PASS: eight compact tests incorrectly
+measured pseudo-element content (30px) rather than its 32px painted border box,
+and eight enlarged-text loading cases exposed genuine intrinsic geometry gaps.
+The latter now use closed public lab-selection templates and same-font inert
+leaves; real loading remains neutral. A focused attempt also revealed that a
+corner click (1,1) was outside the rounded hit shape. The repaired test checks
+elementFromPoint and clicks (2,22), inside the 44px target but outside 32px paint.
+No CSS hit-area shrink, forced click or geometry tolerance relaxation was used.
+
+The latest user-directed Bed toggle priority defers Current Job's full final
+207-case browser suite, runtime/signing renewal and third deterministic build.
+Earlier runtime evidence predates this repair and is not final acceptance.
+No PR, deployment, service or printer operation occurred in this checkpoint.
+Independent source reviewer reports no interim repair blocker; exact final
+review and separate validation remain required.
+
+Attributed PR77 postdeploy evidence: both loaded launchd/plist identities,
+health/integrity, 15 manifest hashes, 13 HTTPS routes/all eight assets, 24 raw
+path/method/isolation checks and eight actual-downloaded-byte browser cases pass.
+The earlier partial-cell probe resolves to zero fully-contained collisions and
+zero collisions across 637 actual glyph pixels, not a tolerance change. Local
+evidence is in the legend worktree's `ui/test-results/independent-post77/POSTDEPLOY.md`.
+Known summary crowding is unchanged; this is not physical-printer evidence.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current Job contextual-label source repair — bounded non-browser renewal
 
 Starting clean at `42feff136f479b068186c53069406147b1127998`, checked ADR0025's

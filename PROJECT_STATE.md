@@ -1,5 +1,33 @@
 # Project state
 
+## Current Job preserved while the new Bed Mesh toggle takes priority
+
+Accepted PR77 main `4828ce04` was ordinarily merged as `361308b`. Current Job's
+seven-state file context, strict producer model, shared controller and exact
+private route are retained. Intrinsic public lab templates now keep all six
+fact rows stable at enlarged text; production uses neutral loading placeholders
+and never derives skeletons from private telemetry. The compact action remains
+32px paint within a 44px target, default consumers unchanged.
+
+Focused browser renewal passes 49/49; port4179 is released. Repository
+validation passes (500 UI, 311 app tests, 21 lifecycle and 24 shipping
+tests); nine regenerated packages are current. Jobs is 89,526 bytes; labs are
+211,518/634,932/79,682 (926,132 aggregate), within unchanged limits. Full final
+browser/runtime/determinism and independent exact acceptance remain due.
+The user's latest additive priority is a single animated icon-only Bed Mesh
+2D/3D segmented control, isolated from this unaccepted Current Job branch.
+
+Attributed accepted delivery: PR76 postverification is complete. PR77 release
+`20260901-4828ce0-pr77-20260901T204905-260700` restarted BOTH services and its
+independent postverification passed actual release/health/integrity identities,
+15 hashes, 13 HTTPS routes, 24 isolation cases and eight downloaded-byte browser
+cases. This is not Current Job delivery or physical-printer acceptance.
+Overview `1a3b4f4` and History `379c1e7` have phase-two source approval;
+Progress `b9c5008` has phase-one source approval only; real Bed phase two remains
+preserved at `194ea79`. Migration, MCP/legacy parity and cleanup remain open.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Current Job contextual-label repair — non-browser checkpoint
 
 Independent source review found lost persisted-file context in `currentJobLabels`.

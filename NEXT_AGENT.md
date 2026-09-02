@@ -1,5 +1,23 @@
 # Next agent
 
+## Next: isolated Bed Mesh toggle; preserve Current Job
+
+Current Job has ordinarily integrated accepted PR77 and repaired lab-only
+intrinsic loading geometry. Keep this branch/checkpoint intact. Do not ship it:
+the full final 207-case browser suite, runtime/signing renewal, third deterministic
+build and independent exact review/validation still remain. Nine current packages
+pass repository checks; source templates are excluded from production graphs.
+
+The latest user order prioritizes a separate small Bed Mesh segmented-icon
+toggle from accepted `4828ce04`, not this candidate. Its adopted contract is
+88x44 hit area, 88x32 connected track, two accessible radio options, 40x28 sliding
+thumb, 180ms transform-only/reduced-motion behavior, inert identical loading
+geometry and unchanged chart identity/mode semantics. Implement/review/ship that
+slice independently, then ordinarily integrate accepted changes here and renew.
+All previous migration and recoverable cleanup tracks remain open.
+
+## Earlier checkpoints (superseded where noted above)
+
 ## Next: integrate accepted legend before Current Job final renewal
 
 The independent contextual-label finding is repaired and seven-state rendered

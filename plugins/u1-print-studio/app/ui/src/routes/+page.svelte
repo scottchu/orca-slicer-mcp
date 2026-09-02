@@ -5,6 +5,7 @@
   import { defaultSelection, fieldsFor, loadingRows, readSelection, selectionSearch, selectionValue, setSelection, type LabSelection } from '$lib/lab/controller';
   import { OBSERVATION_LAB_VIEWS, resolveObservationFixture, previewObservationState, type ObservationLabView } from '$lib/lab/observation-fixtures';
   import CurrentJobWidget from '$lib/observation/CurrentJobWidget.svelte';
+  import { currentJobLoadingShapes } from '$lib/lab/current-job-shapes';
   import FansWidget from '$lib/observation/FansWidget.svelte';
   import HeadsWidget from '$lib/observation/HeadsWidget.svelte';
   import JobHistoryWidget from '$lib/observation/JobHistoryWidget.svelte';
@@ -54,6 +55,7 @@
   <section class="route-panel" data-route-panel={view}>
     <main class="lab-page" data-private-lab={view} data-lab-view={view}>
       {#if selection.phase === 'error' || selection.phase === 'unavailable'}<ObservationState {view} reason={selection.phase} />
+      {:else if selection.phase === 'loading' && view === 'jobs'}<CurrentJobWidget loading shapes={currentJobLoadingShapes(selected('jobs'))} />
       {:else if selection.phase === 'loading' && view !== 'thermals' && view !== 'fans'}<ObservationSkeleton {view} rows={loadingRows(selection)} />
       {:else if view === 'overview'}<OverviewWidget observation={resolveObservationFixture(selected('overview'))} refreshing={selection.phase === 'refreshing'} />
       {:else if view === 'progress'}<ProgressWidget observation={resolveObservationFixture(selected('progress'))} refreshing={selection.phase === 'refreshing'} />
