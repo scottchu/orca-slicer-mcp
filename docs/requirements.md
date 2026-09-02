@@ -404,6 +404,14 @@ printer environments support the described behavior.
   2D/3D/loading/refresh, and retains all UI-001 fit/zoom/coverage gates at all
   four widths and 200% text. This lab-only refinement does not migrate the
   production Bed Mesh widget or modify production package bytes.
+  Its two mode choices share one icon-only segmented control: 88x44 overall,
+  two 44x44 radio targets, centered 88x32 track and 40x28 selected thumb moving
+  44px in 180ms with transform only (no transition under reduced motion).
+  Exactly one selected radio is tabbable; arrows wrap, Home/End select, and
+  Space/Enter activate once. Controlled updates do not steal focus, selected
+  clicks are no-ops, disabled controls cannot activate, and loading is inert
+  with identical geometry and no selected state. The 4:3 chart element, mode
+  callbacks, URL/history, separator and Reset semantics remain unchanged.
   Camera offers loading/connecting/snapshot/simulated-live/fallback/error/
   unsupported and restrictive native/unsupported/simulated-rejection policies.
   Native capabilities are feature-detected; FPS requires actual local presented

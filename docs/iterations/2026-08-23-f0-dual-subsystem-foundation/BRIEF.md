@@ -1,5 +1,20 @@
 # F0 dual-subsystem foundation brief
 
+Latest additive user priority (UI-001/UI-002): replace Bed Mesh's separate mode
+buttons with one generic icon-only segmented control, isolated from accepted
+PR77 main `4828ce04`. Adopted independent design: two controlled radio options,
+88x44 outer/44x44 targets, centered 88x32 track, 40x28 thumb sliding 44px over
+180ms using transform only; reduced motion disables animation. Keyboard wrap,
+Home/End/Space/Enter, one Tab stop, no focus stealing, disabled and inert equal
+loading geometry are required. Preserve chart identity, mode semantics, reset,
+URL/history, legend, four-width/200% geometry and every mesh/zoom/pixel/no-fetch
+gate. Production bytes, routes, controllers and compact IconButton stay unchanged.
+Independent exact review/validation and guarded shipment remain required.
+Current Job is preserved at `5855223` (repository and focused49 pass, full207
+deferred); real Bed phase two `194ea79` and every prior backlog track stay open.
+
+## Earlier execution order (superseded where noted above)
+
 Latest additive order: deliver the user-requested vertical Z(mm) legend inside
 the left edge of the shared Bed Mesh 4:3 chart as a bounded lab-only slice from
 accepted Queue main `7882670`, ordinarily merged as `910355e`. The reusable

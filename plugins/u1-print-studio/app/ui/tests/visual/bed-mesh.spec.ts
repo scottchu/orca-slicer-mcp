@@ -70,8 +70,8 @@ for (const width of widths) {
     expect(projected!.y).toBeGreaterThanOrEqual(before!.y - 0.5);
     expect(projected!.x + projected!.width).toBeLessThanOrEqual(before!.x + before!.width + 0.5);
     expect(projected!.y + projected!.height).toBeLessThanOrEqual(before!.y + before!.height + 0.5);
-    await expect(page.getByRole('button', { name: 'Show 3D bed mesh' })).toHaveCSS('width', '44px');
-    await page.getByRole('button', { name: 'Show 2D bed mesh' }).click();
+    await expect(page.getByRole('radio', { name: '3D surface' })).toHaveCSS('width', '44px');
+    await page.getByRole('radio', { name: '2D grid' }).click();
     await expect(page.locator('[data-bed-mesh-2d]')).toBeVisible();
     await expect(page.locator('[aria-live="polite"]')).toHaveText('2D view');
     const after = await frame.boundingBox();
@@ -80,7 +80,7 @@ for (const width of widths) {
     console.log(JSON.stringify({ viewportWidth: width, three: before, two: after, surface: projected, labels: labelMetrics }));
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
     await page.screenshot({ path: `test-results/bed-mesh-${width}-2d.png`, fullPage: true });
-    await page.getByRole('button', { name: 'Show 3D bed mesh' }).click();
+    await page.getByRole('radio', { name: '3D surface' }).click();
     await expect(three).toBeVisible();
     await page.waitForTimeout(1300);
     await page.screenshot({ path: `test-results/bed-mesh-${width}-3d.png`, fullPage: true });

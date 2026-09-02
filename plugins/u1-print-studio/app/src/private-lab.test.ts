@@ -49,8 +49,9 @@ describe("private Svelte lab packages", () => {
 
   test('freezes Bed Mesh as an isolated self-contained artifact', () => {
     expect(Buffer.byteLength(bedMeshHtml)).toBeLessThanOrEqual(700_000);
-    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('5127c3173393ab2237227694ce6d4fca7c6b02581a11aabb07e1c6a1729b1b5f');
+    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('37a48c3baed18f2ffd25cae1b8c3d8a2e251b94dce4f9ece6782961902534ac2');
     expect(bedMeshHtml).toContain('data-height-legend');
+    expect(bedMeshHtml).toContain('data-icon-segmented');
     for (const marker of ['Bed Mesh', '3D surface', '2D grid', 'data-chart-frame=""', 'WebGLRenderer', 'OrbitControls']) expect(bedMeshHtml).toContain(marker);
     for (const forbidden of ['data-camera-media', 'RTCPeerConnection', '/dashboard/tools/call', 'open_printer_camera']) expect(bedMeshHtml).not.toContain(forbidden);
     expect(bedMeshHtml).not.toMatch(/<script\b[^>]*\bsrc\s*=|<link\b[^>]*\brel\s*=\s*["']stylesheet/i);

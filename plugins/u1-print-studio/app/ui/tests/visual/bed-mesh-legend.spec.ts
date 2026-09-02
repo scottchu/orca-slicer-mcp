@@ -101,7 +101,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
       await expect(page.locator('[data-chart-frame]')).toHaveAccessibleDescription('Z height in millimetres; top 0, bottom 0');
     } else { closeColor(colors[0], [230, 164, 59]); closeColor(colors[2], [67, 97, 197]); }
   }
-  await page.getByRole('button', { name: 'Show 2D bed mesh' }).click(); await expect(page.locator('[data-bed-mesh-2d]')).toBeVisible(); await inspect(page, enlarged); await clearSurfaceBehindLegend(page); expect(await geometry(page)).toEqual(before);
+  await page.getByRole('radio', { name: '2D grid' }).click(); await expect(page.locator('[data-bed-mesh-2d]')).toBeVisible(); await inspect(page, enlarged); await clearSurfaceBehindLegend(page); expect(await geometry(page)).toEqual(before);
   await page.screenshot({ path: test.info().outputPath('vertical-legend-2d.png'), fullPage: true });
   await page.getByLabel('Preview state', { exact: true }).selectOption('refreshing'); expect(await geometry(page)).toEqual(before);
   await page.getByLabel('Preview state', { exact: true }).selectOption('loading'); await expect(page.locator('canvas,[data-widget-shell] button')).toHaveCount(0); const loading = await geometry(page);
@@ -109,7 +109,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
   await expect(page.locator('[data-height-legend] [data-skeleton],.endpoint')).toHaveCount(0); await inspect(page, enlarged);
   (await gradientSamples(page)).forEach((color) => closeColor(color, [231, 233, 236]));
   await expect(page.locator('[data-chart-frame]')).toHaveAccessibleDescription('Z height in millimetres; range unavailable');
-  await page.getByLabel('Preview state', { exact: true }).selectOption('ready'); await page.getByRole('button', { name: 'Show 3D bed mesh' }).click(); await inspect(page, enlarged); expect(await geometry(page)).toEqual(before);
+  await page.getByLabel('Preview state', { exact: true }).selectOption('ready'); await page.getByRole('radio', { name: '3D surface' }).click(); await inspect(page, enlarged); expect(await geometry(page)).toEqual(before);
   const normal = (await page.locator('[data-surface-projection]').boundingBox())!;
   await page.locator('[data-bed-mesh-3d] canvas').hover(); await page.mouse.wheel(0, -600); await expect.poll(async () => (await page.locator('[data-surface-projection]').boundingBox())!.width).toBeGreaterThan(normal.width * 1.2);
   expect(await geometry(page)).toEqual(before); await page.getByRole('button', { name: 'Reset bed mesh view' }).click(); await inspect(page, enlarged);

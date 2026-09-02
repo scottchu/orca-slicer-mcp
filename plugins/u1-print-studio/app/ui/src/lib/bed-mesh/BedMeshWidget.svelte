@@ -7,6 +7,7 @@
   import ChartFrame from '../ui/ChartFrame.svelte';
   import HeightLegend from '../ui/HeightLegend.svelte';
   import IconButton from '../ui/IconButton.svelte';
+  import IconSegmentedControl from '../ui/IconSegmentedControl.svelte';
   import ObservedMeta from '../ui/ObservedMeta.svelte';
   import WidgetBody from '../ui/WidgetBody.svelte';
   import WidgetFooter from '../ui/WidgetFooter.svelte';
@@ -22,6 +23,7 @@
   let { observation, loading = false, refreshing = false, selectedMode, onmode }: Props & { selectedMode?: '3d' | '2d'; onmode?: (mode: '3d' | '2d') => void } = $props();
   const mesh = $derived(loadingObservation(loading, observation, validateBedMeshObservation));
   let localMode = $state<'3d' | '2d'>('3d');
+  const modeOptions = [{ value: '3d', label: '3D surface', icon: Box }, { value: '2d', label: '2D grid', icon: Grid2X2 }] as const;
   const mode = $derived(selectedMode ?? localMode);
   let resetKey = $state(0);
   let feedback = $state<string | null>(null);
@@ -74,9 +76,8 @@
     </WidgetBody>
     <WidgetFooter>
       {#snippet actions()}
-        {#if loading}<Skeleton shape="action" /><Skeleton shape="action" />{:else}
-          <IconButton label="Show 3D bed mesh" icon={Box} pressed={mode === '3d'} onclick={() => selectMode('3d')} />
-          <IconButton label="Show 2D bed mesh" icon={Grid2X2} pressed={mode === '2d'} onclick={() => selectMode('2d')} />
+        {#if loading}<IconSegmentedControl label="Bed mesh view" options={modeOptions} loading />{:else}
+          <IconSegmentedControl label="Bed mesh view" options={modeOptions} value={mode} onchange={selectMode} />
         {/if}
         <span class="action-separator" aria-hidden="true"></span>
         {#if loading}<Skeleton shape="action" />{:else}<IconButton label="Reset bed mesh view" icon={RotateCcw} onclick={reset} disabled={mode === '2d'} />{/if}
