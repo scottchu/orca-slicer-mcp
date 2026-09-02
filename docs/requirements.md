@@ -555,6 +555,10 @@ durable-monitor claim.
   refresh failure keeps known chart data and its original receipt. Retry stays
   in its existing bottom slot. No loading animation or busy claim persists
   after failure. Empty and unsupported states remain semantically distinct.
+  A successful 2D Retry transfers focus to the selected mode radio only while
+  the initiating action still owns active-document focus; user focus movement,
+  mode/phase changes and stale work cancel recovery. Reset remains disabled in
+  2D, while successful 3D Retry keeps the same enabled Reset focused.
   Other widget and production-route adoption requires separate evidence.
 
 - **UI-003:** Observation presentation uses closed DOM-owning leaf/layout

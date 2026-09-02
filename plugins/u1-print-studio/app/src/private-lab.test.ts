@@ -30,7 +30,7 @@ describe("private Svelte lab packages", () => {
   test("freezes the deterministic light observation artifact", () => {
     expect(Buffer.byteLength(html)).toBeLessThanOrEqual(250_000);
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "417dc98bf4aac8663edea56251dcfbed6590d4dce5eba4b0d47154a1ae642466"
+      "980975278fe5e5f589bbfb9faecafc0580d79ae563379d46d3c45e5bd1c6bb82"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -58,7 +58,7 @@ describe("private Svelte lab packages", () => {
   });
 
   test('keeps the synthetic Camera in a second bounded private artifact', () => {
-    expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('839f6847e398a0d5d8f4cb038253340a81edfa00e9cf3ddf8c032d92726bd18f');
+    expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('85dd732e6a6f3a4df7ed96c5de4557e68e1ce62926ada9fe0e2af49454cc1bc2');
     expect(Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(80_000);
     expect(Buffer.byteLength(html) + Buffer.byteLength(bedMeshHtml) + Buffer.byteLength(cameraHtml)).toBeLessThanOrEqual(980_000);
     for (const marker of ['U1 Camera', 'Simulated live', 'Camera state', 'Display capabilities', 'data-camera-media']) expect(cameraHtml).toContain(marker);
