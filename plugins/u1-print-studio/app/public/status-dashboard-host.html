@@ -47,7 +47,7 @@
       const selected = Object.hasOwn(routes, location.pathname) ? routes[location.pathname] : null;
       const selectedView = selected?.[0];
       const frame = document.querySelector("#widget");
-      const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget" });
+      const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget" });
       const focusedWidget = Object.hasOwn(focusedWidgets, selectedView) ? focusedWidgets[selectedView] : null;
       const widgetSource = focusedWidget ?? "/widget?standalone=1";
       const bridgeState = document.querySelector("#bridge-state");

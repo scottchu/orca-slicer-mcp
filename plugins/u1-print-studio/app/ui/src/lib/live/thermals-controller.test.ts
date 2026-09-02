@@ -37,13 +37,16 @@ describe('Thermals shares reviewed observation lifecycle', () => {
     const restart = liveThermalsResult(1, '2026-09-01T12:01:00.000Z'); restart.structuredContent.module.environment.freshness = 'stale';
     notify(restart); expect(controller.getState().observation).toMatchObject({ version: 1, freshness: 'fresh', environment: { freshness: 'stale' } }); controller.dispose();
   });
-  it('duplicate does not cancel a newer pending response; old response cannot regress a newer notification', async () => {
+  it('duplicate does not cancel a newer pending response; obsolete later-receipt response cannot replace a newer notification', async () => {
     const { controller, notify, resolve } = setup(); notify(liveThermalsResult()); const first = controller.refresh();
     notify(liveThermalsResult()); resolve(liveThermalsResult(13, '2026-09-01T12:00:13.000Z')); await first;
     expect(controller.getState().observation?.version).toBe(13);
     const second = controller.refresh(); notify(liveThermalsResult(15, '2026-09-01T12:00:15.000Z'));
-    resolve(liveThermalsResult(14, '2026-09-01T12:00:14.000Z')); await second;
-    expect(controller.getState()).toMatchObject({ observation: { version: 15 }, refreshing: false }); controller.dispose();
+    const accepted = controller.getState().observation;
+    resolve(liveThermalsResult(16, '2026-09-01T12:00:16.000Z')); await second;
+    expect(controller.getState()).toMatchObject({ observation: accepted, refreshing: false, feedback: '' });
+    const retry = controller.refresh(); resolve(liveThermalsResult(17, '2026-09-01T12:00:17.000Z')); await retry;
+    expect(controller.getState()).toMatchObject({ observation: { version: 17 }, refreshing: false }); controller.dispose();
   });
   it('bounds initial loading, shows actual failure and disposes without late publication', async () => {
     vi.useFakeTimers(); const { controller, notify, resolve, port } = setup(); controller.start(); controller.start();

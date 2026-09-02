@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 const views = ['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans', 'bed_mesh'] as const;
-const bounds = (page: Page) => page.locator('[data-widget-shell], [data-widget-header], [data-widget-body], [data-widget-footer], [data-chart-frame], [data-reading-list], .overview-grid, .card-grid, .observation-list').evaluateAll((nodes) => nodes.map((node) => {
+const bounds = (page: Page) => page.locator('[data-widget-shell], [data-widget-header], [data-widget-body], [data-widget-footer], [data-chart-frame], [data-reading-list], [data-record], .overview-grid, .card-grid, .observation-list').evaluateAll((nodes) => nodes.map((node) => {
   const rect = node.getBoundingClientRect();
   return { x: rect.x + scrollX, y: rect.y + scrollY, width: rect.width, height: rect.height };
 }));
