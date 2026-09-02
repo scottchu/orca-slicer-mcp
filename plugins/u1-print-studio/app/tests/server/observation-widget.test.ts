@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { spawnSync } from "node:child_process";
+import { chromium, type BrowserContext } from "@playwright/test";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -25,13 +25,16 @@ const observationChromePath = [
   "/usr/bin/chromium-browser",
 ].find((candidate): candidate is string => typeof candidate === "string" && existsSync(candidate));
 
-function measureThermalRowHeights() {
+const measureThermalRowHeights = async () => {
   if (!observationChromePath) throw new Error("A Chromium browser is required for the thermal density regression");
   const directory = mkdtempSync(join(tmpdir(), "u1-thermal-layout-"));
   const fixturePath = join(directory, "thermals.html");
   const innerHtml = html.replace(/<script type="module">[\s\S]*?<\/script>/, "");
   const markup = '<div class="u1-body"><div class="strip-list"><div class="strip u1-data-row"><div class="identity"><span class="roundel">T1</span><span><strong>Tool 1</strong><span class="micro"><span class="dot"></span>Active</span></span></div><div class="reading"><small>Actual</small><strong>220°</strong></div><div class="reading"><small>Target</small><strong>220°</strong></div></div></div></div>';
-  writeFileSync(fixturePath, `<!doctype html><html><body><script>
+  let context: BrowserContext | undefined;
+  let pageError = "";
+  try {
+    writeFileSync(fixturePath, `<!doctype html><html><body><script>
     const results = {};
     const widths = [320, 390, 590, 720];
     function measure(frame, width) {
@@ -47,19 +50,29 @@ function measureThermalRowHeights() {
       frame.onload = () => measure(frame, width); frame.srcdoc = atob("${Buffer.from(innerHtml).toString("base64")}"); document.body.append(frame);
     }
   </script></body></html>`);
-  try {
-    const result = spawnSync(observationChromePath, [
-      "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars", "--force-device-scale-factor=1",
-      "--window-size=800,1400", "--virtual-time-budget=1000", "--dump-dom", `file://${fixturePath}`,
-    ], { encoding: "utf8", timeout: 15_000 });
-    expect(result.status).toBe(0);
-    const serialized = result.stdout.match(/<pre id="layout-result">([^<]+)<\/pre>/)?.[1];
-    if (!serialized) throw new Error(`Thermal layout result missing: ${result.stderr.slice(0, 500)}`);
-    return JSON.parse(serialized.replaceAll("&quot;", '"')) as Record<string, { viewport: number; height: number }>;
+    context = await chromium.launchPersistentContext(join(directory, "chrome-profile"), {
+      executablePath: observationChromePath, headless: true, timeout: 5_000,
+      viewport: { width: 800, height: 1400 }, deviceScaleFactor: 1,
+      args: ["--disable-gpu", "--no-sandbox", "--hide-scrollbars"],
+    });
+    const page = context.pages()[0] ?? await context.newPage();
+    page.on("pageerror", error => { pageError = error.message.slice(0, 1_000); });
+    await page.goto(`file://${fixturePath}`, { waitUntil: "load", timeout: 5_000 });
+    const result = page.locator("#layout-result");
+    await result.waitFor({ state: "attached", timeout: 5_000 });
+    const serialized = await result.textContent({ timeout: 1_000 });
+    if (!serialized || serialized.length > 4_096) throw new Error("Layout result missing or exceeds fixture JSON bound");
+    return JSON.parse(serialized) as Record<string, { viewport: number; height: number }>;
+  } catch (error) {
+    throw new Error("Thermal layout fixture failed: " + JSON.stringify({
+      error: error instanceof Error ? error.message.slice(0, 2_000) : String(error).slice(0, 2_000),
+      pageError,
+    }), { cause: error });
   } finally {
-    rmSync(directory, { recursive: true, force: true });
+    try { await context?.close(); }
+    finally { rmSync(directory, { recursive: true, force: true }); }
   }
-}
+};
 type Payload = Record<string, any>;
 const tick = async () => {
   for (let index = 0; index < 8; index++) await Promise.resolve();
@@ -730,8 +743,8 @@ describe("production observation widget host boundary", () => {
     expect(html).not.toContain(".strip .identity { grid-column: 1 / -1; }");
   });
 
-  test("Thermal rows render at no more than 64 pixels across the frozen widths", () => {
-    const rows = measureThermalRowHeights();
+  test("Thermal rows render at no more than 64 pixels across the frozen widths", async () => {
+    const rows = await measureThermalRowHeights();
     for (const width of [320, 390, 590, 720]) {
       expect(rows[width]!.viewport).toBe(width);
       expect(rows[width]!.height).toBeGreaterThan(0);

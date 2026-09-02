@@ -1,6 +1,21 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: single-app Kit source frozen for independent gates
+## Current:976aa9f failed exact gate and focused repair
+
+Independent976 review requests changes despite574 UI/eight package gates,
+323 full browser cases and34+26 Python passes: server315 PASS/two fixture FAIL,
+plus a confirmed workspace-environment build-isolation defect. Only Camera and
+observation test fixtures change in the records author's app scope: bounded
+observable request waiting and managed isolated Playwright layout lifecycle.
+They pass90 tests/1173 assertions and bounded independent source review; all15
+production public files match976. The root checker now disables env/config
+autoload for each of its ten unchanged Bun gates. The application author has frozen
+nested-command/config isolation with8 tests/47 assertions, two synthetic builds
+and116 relocation checks; actual production payload remains byte-identical to976.
+Freeze those final inputs for required full
+regression and exact review;976 is not approved. All report hashes are in VALIDATION.
+
+### Current integration scope
 
 Branch `codex/u1-sveltekit-unified-app` starts from111470. Decision0043 keeps Bun
 and adopts one app-root SvelteKit project: components/common UI, pure TypeScript

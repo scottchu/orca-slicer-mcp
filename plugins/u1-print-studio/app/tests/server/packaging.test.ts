@@ -29,7 +29,7 @@ describe("local-first packaging contract", () => {
     expect(packageJson.scripts.setup).toBe("bun run src/entrypoints/cli.ts setup");
     expect(packageJson.scripts.doctor).toBe("bun run src/entrypoints/cli.ts doctor");
     expect(packageJson.scripts["bundle:runtime"]).toBe(
-      "bun run scripts/build-runtime.ts"
+      "bun --no-env-file --config=/dev/null run scripts/build-runtime.ts"
     );
     for (const channel of ["Marketplace", "Homebrew", "npm"]) {
       expect(packaging).toContain(`| ${channel} |`);

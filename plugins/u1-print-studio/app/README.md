@@ -122,6 +122,10 @@ until response completion or abort, without socket polling. Its process-local
 `U1_KIT_BODY_SIZE_LIMIT=Infinity` avoids imposing the adapter's default512KiB cap
 on the existing MCP transport; explicit128KiB endpoint limits remain unchanged.
 This does not modify a user `.env` or LaunchAgent.
+Build/test package commands disable Bun dotenv/config autoload at each nested
+invocation. The repository checker does the same at its outer boundary. Kit reads
+only the guarded `config/no-dotenv` directory, whose sole permitted entry is
+`.gitkeep`; explicit runtime process/env-file behavior is preserved separately.
 It does not introduce a Node runtime. The untracked repository-root `.env` is
 an explicit development convenience, not a release build input.
 

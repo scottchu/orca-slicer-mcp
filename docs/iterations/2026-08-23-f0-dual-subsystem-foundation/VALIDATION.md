@@ -1,6 +1,85 @@
 # F0 dual-subsystem foundation validation
 
-## Current0043 application freeze: user Bun1.4.0 and body parity
+## Current976aa9f independent failure and focused repairs
+
+Independent report `app/test-results/independent-976aa9f/REPORT.json`, SHA256
+`67881024fe70a60287ded344ac7d1cc8a2ff6af062e29b46e6a1eed6a98b9701`, binds
+`976aa9ff9fcf8431934bb1826060828b42318d92`, tree
+`f18bd5f9df61b090799c03133bc38d096aedbe60`, and concludes CHANGES_REQUESTED.
+The required repository run passes574 UI/55 files, eight packages/types/AST but
+stops at315 server PASS/two FAIL/3710 assertions. Separately executed full browser
+passes323 cases in131.404s; Python lifecycle34 and shipping26 also ran and passed.
+Actual Kit completion-gap/normal/other-consumer/subsequent-request adversaries pass
+with zero printer acquisitions; canonical39-file/58-route/59-role/six-pin checks
+pass. These passing subsets do not turn the failed repository gate into a pass.
+The report retains the separate no-env build defect and all707 output hashes.
+
+The records author's two-fixture repair report is
+`app/test-results/widget-fixture-repair/REPORT.json`, SHA256
+`c31e320bd5606ae3bafeac972803fac05760c4fc367d0ed82f7ac3f99870448b`.
+`bun --no-env-file test tests/server/camera-widget.test.ts --test-name-pattern 'a remounted live intent restores once'`
+passes1/8 assertions after awaiting the observable answer request with a1s deadline
+and event-loop yields. A first two-file run passes88/fails2: strict process-error
+checks expose ETIMEDOUT in both Chrome CLI helpers even with complete DOM.
+The validator's prior16MiB experiment had confirmed Thermal stdout truncation at
+1114112 bytes versus a complete4333217-byte dump, but did not inspect process error;
+it cannot prove successful browser shutdown. Both failure stages remain recorded.
+
+The final two-file `bun --no-env-file test` invocation passes90 tests/1173 assertions
+in4.76s. Layout helpers now use existing Playwright with separate temporary profiles,
+bounded launch/navigation/result waits, a4096-character result bound and finally
+context/profile cleanup. Exact production HTML/CSS and all geometry assertions
+remain; no CLI timeout is tolerated. All15 public files match976 byte-for-byte.
+Camera test SHA256 is
+`d9f69b2216092d9f32e06893883c3eac643aa9db62aedddee922d57c6f008374`;
+observation test SHA256 is
+`6ba95f2270e9f76c6ffc6b5aa2202bd91ba59358a6b0b3324b3b426b37226d40`.
+Independent bounded source approval is `independent-976aa9f/fixture-source-review.json`,
+SHA256 `07a3423a8bc0d71875fc33f0f3765d0ef2414795ac7b5014e071e1f1dfb75c72`;
+it does not independently rerun the90 tests or approve the new whole candidate.
+
+The checker adds `--no-env-file --config=/dev/null` to its ten existing Bun gates,
+without changing order, fail-fast behavior or either Python gate. `bash -n` passes;
+a temporary command-recorder fixture confirms all12 commands and propagation of
+an injected exit29 before later gates. This executes no app/full/Python suites.
+Report `widget-fixture-repair/checker-no-env.json` SHA256
+`6602d1eeb4528cd03a5594e8189f2ce945ad41a1ab3653ebf8415e2cb46bae80`
+binds checker SHA256
+`eb4ce296b77c1244d555b6cce7a1da4c673dcd22e48b4139465ca436f68813fe`.
+The first recorder's wrong argument index was fixed only in the private probe;
+the actual checker was unchanged.
+
+The application author's frozen no-env report is
+`app/test-results/kit-env-repair/AUTHOR-REPORT.json`, SHA256
+`a4aabffce43c1c9ac306f9404f690d1b23d88b29acf9bfe1b754b48b2441fec8`.
+Its409 app/entry inputs, including the two repaired fixtures, bind SHA256
+`8c15774099c11c3328c45802cf4bc492cfd93aba73ad49caabb932816f1ee2ef`.
+`bun --no-env-file --config=/dev/null test tests/server/kit-env.test.ts tests/server/packaging.test.ts`
+passes8 tests/47 assertions. Server types, UI0/0 and AST, plus frozen install pass.
+`uv run --no-project plugins/u1-print-studio/app/test-results/kit-env-repair/build-adversary.py`
+passes two real package builds in isolated copies with distinct synthetic private/
+public markers: inner processes and payloads exclude markers/workspace paths.
+Their canonical manifest SHA256 is
+`ca8287a2f5b1cc33381c33ded522d33116912f38a548a8da21e84579ce00bb73`;
+symlinked fixture dependencies change chunk IDs, so this is not the release hash.
+The actual-root `bun --no-env-file --config=/dev/null run build:server --outdir test-results/kit-env-repair/production-payload`
+retains976's production manifest SHA256
+`3f484367dff7071a248fc4e4773cb7be761ee565291795a5c9a22fb0b1e78736`.
+`bun --no-env-file --config=/dev/null test-results/kit-env-repair/relocation.ts`
+passes116 checks with both SIGTERM exits0, source reads denied, empty external cwd
+and no node_modules. Exact command/log hashes and initial symlink-fixture failure
+are preserved in the report. The independent defect showed ambient Kit loading;
+no existing-payload secret leak was established. Explicit runtime process/env-file
+semantics remain unchanged. Kit's guarded `.gitkeep`-only source directory and
+flags at both outer/nested Bun boundaries prevent build autoload; no runtime
+payload depends on that directory. These are author repairs, not new exact approval.
+
+All owned fixture browsers, profiles/processes and temporary stubs are released. No app build/full regression,
+service change or printer call was performed by this repair author. Next renew
+necessary full validation and exact review on the repaired committed candidate;
+PR91 remains deployed and all ledger/no-action boundaries remain.
+
+## Earlier0043 application freeze: user Bun1.4.0 and body parity
 
 The application author's `app/test-results/unified-app/AUTHOR-REPORT.json`, SHA256
 `c5a0bba0e8957fc2239293cb7942728b38c0dbaf823fe88df9fc487c9bbd251e`, binds

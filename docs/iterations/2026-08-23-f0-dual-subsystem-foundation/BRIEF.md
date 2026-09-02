@@ -1,6 +1,16 @@
 # F0 dual-subsystem foundation brief
 
-## Current implementation: real single-app SvelteKit integration with Bun
+## Current implementation: close the exact-candidate validation defects
+
+The976aa9f candidate has independent CHANGES_REQUESTED. Preserve its actual
+574 UI/eight package,323 browser and34+26 Python passes alongside315 server
+passes/two fixture failures. Repair the bounded test fixtures and two-layer
+Bun/Kit environment isolation; author renewal now passes90 fixture tests and
+8 no-env tests/47 assertions plus116 relocation checks, with unchanged production
+payload. Freeze new inputs for required full/exact
+gates. Passing subsets do not approve the repaired candidate. PR91 remains deployed.
+
+### Single-app SvelteKit integration with Bun
 
 This F0 slice addresses UI-001/UI-003 and decision0043 on
 `codex/u1-sveltekit-unified-app` from111470. PR91 remains deployed; real app-root

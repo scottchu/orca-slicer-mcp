@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { spawnSync } from "node:child_process";
+import { chromium, type BrowserContext } from "@playwright/test";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -23,12 +23,15 @@ const chromePath = [
   "/usr/bin/chromium-browser",
 ].find((candidate): candidate is string => typeof candidate === "string" && existsSync(candidate));
 
-function measureFullscreenLayout(mode: "local" | "native") {
+const measureFullscreenLayout = async (mode: "local" | "native") => {
   if (!chromePath) throw new Error("A Chromium browser is required for the camera fullscreen layout regression");
   const directory = mkdtempSync(join(tmpdir(), "u1-camera-layout-"));
   const fixturePath = join(directory, `${mode}.html`);
   const innerHtml = html.replace(/<script type="module">[\s\S]*?<\/script>/, "");
-  writeFileSync(fixturePath, `<!doctype html><html><body><script>
+  let context: BrowserContext | undefined;
+  let pageError = "";
+  try {
+    writeFileSync(fixturePath, `<!doctype html><html><body><script>
     function measure(frame) {
       const view = frame.contentWindow;
       const document = frame.contentDocument;
@@ -55,22 +58,31 @@ function measureFullscreenLayout(mode: "local" | "native") {
     frame.srcdoc = atob("${Buffer.from(innerHtml).toString("base64")}");
     document.body.append(frame);
   </script></body></html>`);
-  try {
-    const result = spawnSync(chromePath, [
-      "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars",
-      "--force-device-scale-factor=1", "--window-size=800,1000", "--virtual-time-budget=1000",
-      "--dump-dom", `file://${fixturePath}`,
-    ], { encoding: "utf8", timeout: 15_000 });
-    expect(result.status).toBe(0);
-    const serialized = result.stdout.match(/<pre id="layout-result">([^<]+)<\/pre>/)?.[1];
-    if (!serialized) throw new Error(`Camera layout result missing: ${result.stdout.slice(-1000)} ${result.stderr.slice(0, 500)}`);
-    return JSON.parse(serialized.replaceAll("&quot;", '"')) as {
+    context = await chromium.launchPersistentContext(join(directory, "chrome-profile"), {
+      executablePath: chromePath, headless: true, timeout: 5_000,
+      viewport: { width: 800, height: 1000 }, deviceScaleFactor: 1,
+      args: ["--disable-gpu", "--no-sandbox", "--hide-scrollbars"],
+    });
+    const page = context.pages()[0] ?? await context.newPage();
+    page.on("pageerror", error => { pageError = error.message.slice(0, 1_000); });
+    await page.goto(`file://${fixturePath}`, { waitUntil: "load", timeout: 5_000 });
+    const result = page.locator("#layout-result");
+    await result.waitFor({ state: "attached", timeout: 5_000 });
+    const serialized = await result.textContent({ timeout: 1_000 });
+    if (!serialized || serialized.length > 4_096) throw new Error("Layout result missing or exceeds fixture JSON bound");
+    return JSON.parse(serialized) as {
       viewport: [number, number]; dashboard: number; body: number; camera: number; video: number;
     };
+  } catch (error) {
+    throw new Error("Camera layout fixture failed: " + JSON.stringify({
+      error: error instanceof Error ? error.message.slice(0, 2_000) : String(error).slice(0, 2_000),
+      pageError,
+    }), { cause: error });
   } finally {
-    rmSync(directory, { recursive: true, force: true });
+    try { await context?.close(); }
+    finally { rmSync(directory, { recursive: true, force: true }); }
   }
-}
+};
 
 function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?: boolean; rtcPeer?: new (...args: any[]) => any; standalone?: boolean } = {}) {
   let clock = Date.parse("2026-08-31T10:10:00.000Z");
@@ -142,6 +154,18 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
       livePeerConnection, liveFrameObserverGeneration, liveFrameCallback }),
   };`, sandbox);
   const flush = async () => { for (let count = 0; count < 8; count++) await Promise.resolve(); };
+  const waitForRequest = async (name: string) => {
+    const deadline = performance.now() + 1_000;
+    while (true) {
+      const request = messages.find(message => message.params?.name === name);
+      if (request) return request;
+      if (performance.now() >= deadline) {
+        throw new Error(`Timed out waiting for ${name}; observed requests: ${messages.map(message => message.params?.name ?? message.method).join(", ")}`);
+      }
+      // VM promises may settle on the next event-loop turn under Bun 1.4.
+      await new Promise<void>(resolve => setImmediate(resolve));
+    }
+  };
   const reply = async (request: any, result: any) => {
     emit(handlers, "message", { source: parent, data: { jsonrpc: "2.0", id: request.id, result } });
     await flush();
@@ -155,7 +179,7 @@ function cameraHost(options: { openai?: Record<string, unknown>; frameCallbacks?
     }
   };
   return {
-    api: sandbox.api, node, document, window, images, messages, timers, callbacks, handlers, flush, reply, advance,
+    api: sandbox.api, node, document, window, images, messages, timers, callbacks, handlers, flush, reply, advance, waitForRequest,
     emitWindow: (name: string, event: any = {}) => emit(handlers, name, event),
     renderFrame: (presentedFrames?: number) => { const [id, callback] = [...callbacks][0]!; callbacks.delete(id); callback(clock, presentedFrames === undefined ? undefined : { presentedFrames }); },
     renderFrameBatch: (presentedFrames: number) => { const batch = [...callbacks.values()]; callbacks.clear(); for (const callback of batch) callback(clock, { presentedFrames }); },
@@ -293,7 +317,7 @@ describe("camera widget presentation runtime", () => {
     await host.reply(open, { structuredContent: { available: true }, _meta: { cameraStream: {
       sessionId: "session", transport: "mcp-apps-tools", offer: { type: "offer", sdp: "offer" }, iceServers: [],
     } } });
-    const answer = host.messages.find((message: any) => message.params?.name === "answer_u1_camera_stream");
+    const answer = await host.waitForRequest("answer_u1_camera_stream");
     expect(answer).toBeDefined();
     await host.reply(answer, { structuredContent: { accepted: true } });
     expect(host.api.state().livePeerConnection).toBeInstanceOf(Peer);
@@ -667,9 +691,9 @@ describe("camera widget presentation runtime", () => {
     expect(host.node("#live-stream").srcObject.getTracks()[0]).toBe(track);
   });
 
-  test("390 by 844 rendered layout keeps camera and video non-zero in local and native fullscreen", () => {
+  test("390 by 844 rendered layout keeps camera and video non-zero in local and native fullscreen", async () => {
     for (const mode of ["local", "native"] as const) {
-      const box = measureFullscreenLayout(mode);
+      const box = await measureFullscreenLayout(mode);
       expect(box.viewport).toEqual([390, 844]);
       expect(box.dashboard).toBeGreaterThan(700);
       expect(box.body).toBeGreaterThan(600);

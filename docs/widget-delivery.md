@@ -21,6 +21,16 @@ Evidence lives in active VALIDATION/HANDOFF; PR86 thumbnail policy remains accep
 
 ## Current execution order and all-route error coverage
 
+The976aa9f integration candidate is not approved: independent validation preserves
+574 UI/eight package,323 full browser and34+26 Python passes, but server315 PASS/
+two fixture FAIL and a separate no-env build-isolation defect require repair.
+The two fixtures now pass90 focused tests with bounded source approval; outer and
+nested build/test invocations now enforce environment/config isolation. The
+no-env author passes8 tests/47 assertions, two synthetic builds and116 relocation
+checks; actual production payload matches976. Freeze repaired inputs for necessary
+full/exact gates; no ledger item or deployment
+status advances from these repairs.
+
 Decision0043 adopts one SvelteKit application at the app root with Bun retained.
 Next prove a real Kit Fans page and existing tools/call URL through one shared
 service, then explicitly account for remaining compatibility routes and complete

@@ -1,6 +1,21 @@
 # Project state
 
-## Current: integrate one SvelteKit application with Bun
+## Current: repair976aa9f fixtures and no-env build isolation
+
+Independent review of `976aa9ff9fcf8431934bb1826060828b42318d92` requests changes.
+It ran574 UI tests, eight package/type/AST gates,323 full browser cases and34+26
+Python tests successfully; the server run passed315/failed2. Both test fixtures
+are repaired with90 focused passes and bounded independent source approval.
+The no-env repair is source-frozen: eight focused tests/47 assertions, two
+synthetic builds and116 relocation checks pass; actual production payload matches976.
+Outer and nested Bun build/test commands disable environment/config autoload,
+and Kit uses a guarded source-owned empty environment directory.
+The checker preserves its ten gates/order and both Python gates. Freeze the repaired
+candidate, renew required full validation and exact review; do not approve the new
+inputs using976's passing subsets. PR91 remains deployed. Detailed failures,
+reports and scopes are in active VALIDATION.
+
+### Current integration scope
 
 Work is active on `codex/u1-sveltekit-unified-app` from111470. Decision0043's real
 app-root integration is in progress: one SvelteKit app, Bun retained, UI under

@@ -20,6 +20,8 @@ async function run(command: string[]): Promise<void> {
 
 await run([
   process.execPath,
+  "--no-env-file",
+  "--config=/dev/null",
   "build",
   "src/entrypoints/cli.ts",
   "--compile",

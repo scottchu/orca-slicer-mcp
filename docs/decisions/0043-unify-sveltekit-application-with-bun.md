@@ -62,6 +62,12 @@ probe tests up to1MiB and does not claim arbitrary-size practicality. See
 [adapter-node body configuration](https://svelte.dev/docs/kit/adapter-node#Environment-variables-BODY_SIZE_LIMIT)
 and active VALIDATION for source/runtime distinctions and exact reports.
 
+Build isolation applies at both Bun process boundaries and the framework loader:
+outer/nested build and test commands disable dotenv/bunfig autoload; Kit uses a
+source-owned, guarded `.gitkeep`-only environment directory while Vite envDir is
+false. Explicit runtime process/env-file behavior remains separate and unchanged.
+No user environment file is edited or copied into build fixtures or releases.
+
 Accept the pilot only with exact route/service and role-isolation evidence, shared
 widget parity, relevant frozen regression and independent review. Complete routing
 integration requires accounting for every remaining compatibility route. Keep C08,

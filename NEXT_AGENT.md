@@ -1,6 +1,18 @@
 # Next agent
 
-## Current: prove the real Kit route/service integration
+## Current: freeze repaired no-env/test inputs for the next exact gate
+
+`976aa9f` remains CHANGES_REQUESTED:574 UI/eight packages,323 full browser and
+34+26 Python tests pass, but the server run has315 passes/two fixture failures.
+The two fixtures now pass90 focused tests with bounded source approval. No-env
+source is frozen with8 tests/47 assertions, two synthetic builds and116 relocation
+checks; actual production output matches976. Freeze the repaired candidate and renew the
+mandatory full regression/exact review. Outer checker and nested Bun commands
+must both disable environment/config autoload; existing runtime environment
+semantics and every shipping gate remain. See VALIDATION for retained failures
+and precise evidence bindings; no new source/deployment approval is implied.
+
+### Current integration scope
 
 On `codex/u1-sveltekit-unified-app` from111470, retain Bun and follow0043's single
 app-root layout: UI in `src/components/common` and domain compositions, pure
