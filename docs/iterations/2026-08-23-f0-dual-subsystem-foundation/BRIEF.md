@@ -1,5 +1,28 @@
 # F0 dual-subsystem foundation brief
 
+## Current Job renewal after accepted PR78 — author work in progress
+
+Ordinary integration of accepted main `177d326d13e126d727be7d7431fbfc232e902bc3`
+preserves the delivered Bed legend/toggle and Queue controller. Current Job's
+seven exact contexts, closed public loading templates and compact shared action
+remain. Compiler/AST and rebuilt lab packages pass:211,518/639,136/79,682 bytes,
+930,336 total under unchanged caps. Full223 browser, repository/runtime and
+three-cycle nine-package renewal are next; no Current Job acceptance is claimed.
+
+Attributed PR78 shipment: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH services restarted,
+31 static/32 security checks and preservation true; snapshot
+`20260901T212717-45f8ec`. Separate postverification is pending. PR76/PR77
+postverification is complete. Current Job is now the resumed implementation
+track; all prior work stays open. Progress phase-two `b694b2c` has a preliminary
+contrast hold being separately repaired, not copied here. History `379c1e7`,
+Overview `1a3b4f4`, real Bed `194ea79`, MCP/legacy parity, Console, model
+thumbnail, filament sync, sizes, token cleanup and recoverable cleanup remain
+unfinished. No printer, installed-plugin or actual-device acceptance.
+
+## Earlier checkpoints (superseded where noted above)
+
+
 Latest additive execution order: preserve Current Job's repaired checkpoint,
 then deliver the independently designed icon-only animated 2D/3D Bed Mesh
 segmented control as a bounded lab/shared-leaf slice from accepted PR77 main
@@ -28,6 +51,26 @@ while the separate Bed legend refinement has browser-test priority. No Current
 Job PR or shipment until full browser, exact independent review and validation.
 
 ## Integrated accepted legend baseline records
+## Accepted PR78 author history (superseded by current integration above)
+Latest additive user priority (UI-001/UI-002): replace Bed Mesh's separate mode
+buttons with one generic icon-only segmented control, isolated from accepted
+PR77 main `4828ce04`. Adopted independent design: two controlled radio options,
+88x44 outer/44x44 targets, centered 88x32 track, 40x28 thumb sliding 44px over
+180ms using transform only; reduced motion disables animation. Keyboard wrap,
+Home/End/Space/Enter, one Tab stop, no focus stealing, disabled and inert equal
+loading geometry are required. Preserve chart identity, mode semantics, reset,
+URL/history, legend, four-width/200% geometry and every mesh/zoom/pixel/no-fetch
+gate. Production bytes, routes, controllers and compact IconButton stay unchanged.
+Independent exact review/validation and guarded shipment remain required.
+Current Job is preserved at `5855223` (repository and focused49 pass, full207
+deferred); real Bed phase two `194ea79` and every prior backlog track stay open.
+Author application8022984 now passes455 UI,300 app,21 lifecycle,24 shipping,
+focused16/full198 browser and repeated eight-package/runtime/signature gates.
+Next is separate exact-source review/validation, then guarded PR delivery;
+author evidence is not independent approval or deployment.
+
+## Earlier execution order (superseded where noted above)
+
 Latest additive order: deliver the user-requested vertical Z(mm) legend inside
 the left edge of the shared Bed Mesh 4:3 chart as a bounded lab-only slice from
 accepted Queue main `7882670`, ordinarily merged as `910355e`. The reusable

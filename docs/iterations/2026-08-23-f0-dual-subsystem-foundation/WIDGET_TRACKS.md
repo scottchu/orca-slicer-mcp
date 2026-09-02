@@ -1,5 +1,28 @@
 # Widget completion tracks
 
+## Current Job renewal after accepted PR78 — author work in progress
+
+Ordinary integration of accepted main `177d326d13e126d727be7d7431fbfc232e902bc3`
+preserves the delivered Bed legend/toggle and Queue controller. Current Job's
+seven exact contexts, closed public loading templates and compact shared action
+remain. Compiler/AST and rebuilt lab packages pass:211,518/639,136/79,682 bytes,
+930,336 total under unchanged caps. Full223 browser, repository/runtime and
+three-cycle nine-package renewal are next; no Current Job acceptance is claimed.
+
+Attributed PR78 shipment: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH services restarted,
+31 static/32 security checks and preservation true; snapshot
+`20260901T212717-45f8ec`. Separate postverification is pending. PR76/PR77
+postverification is complete. Current Job is now the resumed implementation
+track; all prior work stays open. Progress phase-two `b694b2c` has a preliminary
+contrast hold being separately repaired, not copied here. History `379c1e7`,
+Overview `1a3b4f4`, real Bed `194ea79`, MCP/legacy parity, Console, model
+thumbnail, filament sync, sizes, token cleanup and recoverable cleanup remain
+unfinished. No printer, installed-plugin or actual-device acceptance.
+
+## Earlier checkpoints (superseded where noted above)
+
+
 Current order: independently designed Bed Mesh icon segmented toggle is the
 latest small-release priority. Current Job is preserved after accepted PR77 merge
 and intrinsic lab loading repair; repository 500 UI/311 app/21 lifecycle/24 shipping
@@ -54,6 +77,29 @@ is inferred from the non-browser checkpoint. Current Job owns the pending
 generic compact action API; default consumers retain their existing styling.
 
 ## Integrated accepted legend baseline records
+## Accepted PR78 author history (superseded by current integration above)
+Latest additive priority: Bed Mesh's single animated icon segmented mode control
+is authored at8022984 from accepted4828ce04;455 UI/300 app/21 lifecycle/24 shipping,
+focused16/full198 browser and all eight deterministic packages pass. Independent
+exact review/validation and delivery remain due. Only Bed lab changes; this is
+not real-Bed migration or whole-widget polish. Existing enlarged summary debt stays.
+
+PR77 at4828ce04 is attributed deployed/postverified (BOTH services and scoped
+served-byte/browser checks); its prior legend source is accepted, not this toggle.
+Current Job5855223/treeac3b23c is preserved with focused49/UI500/app311/21/24 PASS,
+held full207/runtime/final determinism/PR. Progressb9c5008 has phase-one source
+approval (30 UI/12 producer/151 fresh cases); phase-two checkpointb694b2c/tree8190315
+from accepted77 merge0f55b56 has UI502/app315/3666 assertions/lifecycle21/shipping24,
+focused77 and nine-package/runtime gates, no browser/PR/deployment/exact review.
+It still depends on accepted Jobs integration and geometry/client checks.
+History379c1e7 and Overview1a3b4f4 have phase-two source
+approval only. Real Bed194ea79 still needs accepted Jobs compact leaf and full
+migration. Generic MCP/legacy, Console, model thumbnail, filament sync, size
+variants, token cleanup and recoverable cleanup remain unfinished. No installed
+plugin, routing, phone or physical-printer acceptance is implied.
+
+## Earlier author and integrated baseline records
+
 Current immediate slice: slim vertical legend author gates complete after
 ordinary accepted Queue `7882670` integration. Rail-only design passes full
 Chrome 182 and repository/runtime/eight-package gates; exact independent review

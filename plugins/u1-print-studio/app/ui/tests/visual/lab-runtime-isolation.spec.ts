@@ -47,8 +47,8 @@ test('all lab navigation, states and controls execute without runtime fetch', as
     const refresh = page.getByRole('button', { name: /Refresh lab fixture/ });
     if (await refresh.count()) await refresh.click();
     if (route === 'bed_mesh') {
-      await page.getByRole('button', { name: 'Show 2D bed mesh' }).click();
-      await page.getByRole('button', { name: 'Show 3D bed mesh' }).click();
+      await page.getByRole('radio', { name: '2D grid' }).click();
+      await page.getByRole('radio', { name: '3D surface' }).click();
     }
     await page.getByRole('button', { name: 'Reset lab preview' }).click();
     expect(calls, `${route} runtime fetch calls`).toEqual([]);

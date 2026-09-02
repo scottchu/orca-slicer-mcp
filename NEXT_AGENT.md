@@ -1,5 +1,28 @@
 # Next agent
 
+## Current Job renewal after accepted PR78 — author work in progress
+
+Ordinary integration of accepted main `177d326d13e126d727be7d7431fbfc232e902bc3`
+preserves the delivered Bed legend/toggle and Queue controller. Current Job's
+seven exact contexts, closed public loading templates and compact shared action
+remain. Compiler/AST and rebuilt lab packages pass:211,518/639,136/79,682 bytes,
+930,336 total under unchanged caps. Full223 browser, repository/runtime and
+three-cycle nine-package renewal are next; no Current Job acceptance is claimed.
+
+Attributed PR78 shipment: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH services restarted,
+31 static/32 security checks and preservation true; snapshot
+`20260901T212717-45f8ec`. Separate postverification is pending. PR76/PR77
+postverification is complete. Current Job is now the resumed implementation
+track; all prior work stays open. Progress phase-two `b694b2c` has a preliminary
+contrast hold being separately repaired, not copied here. History `379c1e7`,
+Overview `1a3b4f4`, real Bed `194ea79`, MCP/legacy parity, Console, model
+thumbnail, filament sync, sizes, token cleanup and recoverable cleanup remain
+unfinished. No printer, installed-plugin or actual-device acceptance.
+
+## Earlier checkpoints (superseded where noted above)
+
+
 ## Next: isolated Bed Mesh toggle; preserve Current Job
 
 Current Job has ordinarily integrated accepted PR77 and repaired lab-only
@@ -109,6 +132,29 @@ delivery. Keep Job History separate. No printer control, plugin/auth/Tailscale
 change or browser port reservation belongs to this checkpoint.
 
 ## Integrated accepted legend baseline records
+## Accepted PR78 author history (superseded by current integration above)
+## Next: independent exact review and validation of the icon-toggle candidate
+
+Application source `80229841fced7307aaf3eba850a8e60ef688c26a` has complete author
+gates (455 UI,300 app,21 lifecycle,24 shipping,198 Chrome, runtime/signature and
+repeated eight-package checks). Review the final PR head including its records
+tail. Validate the two-option/loading contract, radio keyboard and native
+Space/Enter once, external/reordered focus,32px track/44px targets, reduced
+motion, exact mode/loading geometry, preserved legend/orbit/zoom/pixels/zero
+fetch and all source/package boundaries. Port4179 is released.
+
+Only `svelte-bed-mesh-lab.html` differs from accepted main4828ce04 public assets:
+638,249 bytes/SHA37a48c3b…; three labs total921,919. No production renderer,
+controller, IconButton, route or MCP cutover belongs here. After separate exact
+approval the coordinator may use the guarded PR ship workflow; do not self-review.
+The existing enlarged summary crowding/Observed spacing remain explicit debts.
+
+After the immediate release, resume preserved Current Job5855223 and real
+Bed194ea79 with ordinary accepted-main integration. All named tracks in
+WIDGET_TRACKS remain open; nothing is lost by this execution-order change.
+
+## Earlier author and integrated baseline records
+
 ## Immediate next: independently review and validate the slim-rail candidate
 
 The author candidate ordinarily integrates accepted Queue main `7882670`.

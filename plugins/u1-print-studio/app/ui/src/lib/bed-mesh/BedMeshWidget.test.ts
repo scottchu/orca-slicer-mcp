@@ -21,8 +21,8 @@ describe('Bed Mesh Svelte candidate', () => {
     expect(container).not.toHaveTextContent('Height exaggerated');
     expect(container).not.toHaveTextContent('Drag');
     expect(container).not.toHaveTextContent('Surface connects');
-    await fireEvent.click(getByRole('button', { name: 'Show 2D bed mesh' }));
-    expect(getByRole('button', { name: 'Show 2D bed mesh' })).toHaveAttribute('aria-pressed', 'true');
+    await fireEvent.click(getByRole('radio', { name: '2D grid' }));
+    expect(getByRole('radio', { name: '2D grid' })).toHaveAttribute('aria-checked', 'true');
     expect(container.querySelector('[data-chart-frame]')).toBeTruthy();
     expect(container.querySelector('[aria-live="polite"]')).toHaveTextContent('2D view');
   });

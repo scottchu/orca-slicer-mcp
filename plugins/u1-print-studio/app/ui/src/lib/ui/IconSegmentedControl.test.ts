@@ -1,0 +1,76 @@
+import { cleanup, fireEvent, render } from '@testing-library/svelte';
+import { Box, Grid2X2 } from 'lucide-svelte';
+import { afterEach, describe, expect, test, vi } from 'vitest';
+import IconSegmentedControl from './IconSegmentedControl.svelte';
+import { validateIconSegmented } from './icon-segmented';
+
+afterEach(cleanup);
+const options = [{ value: 'cube', label: 'Surface', icon: Box }, { value: 'grid', label: 'Grid', icon: Grid2X2 }] as const;
+const props = { label: 'View', options, value: 'cube', onchange: vi.fn() };
+
+describe('closed two-option icon segmented control', () => {
+  test('has one tab stop, decorative icons, controlled selection and selected-click no-op', async () => {
+    const onchange = vi.fn();
+    const { getByRole, container, rerender } = render(IconSegmentedControl, { ...props, onchange });
+    expect(getByRole('radiogroup', { name: 'View' })).toBeInTheDocument();
+    const cube = getByRole('radio', { name: 'Surface' }), grid = getByRole('radio', { name: 'Grid' });
+    expect(cube).toHaveAttribute('tabindex', '0'); expect(grid).toHaveAttribute('tabindex', '-1');
+    expect(cube).toHaveAttribute('aria-checked', 'true'); expect(grid).toHaveAttribute('aria-checked', 'false');
+    expect(container.querySelectorAll('svg[aria-hidden="true"]')).toHaveLength(2);
+    expect(container.textContent?.trim()).toBe('');
+    await fireEvent.click(cube); expect(onchange).not.toHaveBeenCalled();
+    await fireEvent.click(grid); expect(onchange).toHaveBeenCalledExactlyOnceWith('grid');
+    expect(cube).toHaveAttribute('aria-checked', 'true');
+    cube.focus(); await rerender({ ...props, onchange, value: 'grid' });
+    expect(grid).toHaveAttribute('aria-checked', 'true'); expect(grid).toHaveAttribute('tabindex', '0');
+    expect(cube).toHaveFocus();
+  });
+  test.each(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'End'])('%s selects and focuses the other option once', async (key) => {
+    const onchange = vi.fn();
+    const { getByRole } = render(IconSegmentedControl, { ...props, onchange });
+    const cube = getByRole('radio', { name: 'Surface' }), grid = getByRole('radio', { name: 'Grid' });
+    cube.focus(); await fireEvent.keyDown(cube, { key });
+    expect(onchange).toHaveBeenCalledExactlyOnceWith('grid'); expect(grid).toHaveFocus();
+  });
+  test.each(['Home', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'])('%s wraps or returns to the first option', async (key) => {
+    const onchange = vi.fn();
+    const { getByRole } = render(IconSegmentedControl, { ...props, value: 'grid', onchange });
+    const grid = getByRole('radio', { name: 'Grid' });
+    grid.focus(); await fireEvent.keyDown(grid, { key });
+    expect(onchange).toHaveBeenCalledExactlyOnceWith('cube'); expect(getByRole('radio', { name: 'Surface' })).toHaveFocus();
+  });
+  test.each([' ', 'Enter'])('%s activates the focused option only once and ignores key repeat', async (key) => {
+    const onchange = vi.fn();
+    const { getByRole } = render(IconSegmentedControl, { ...props, onchange });
+    const grid = getByRole('radio', { name: 'Grid' });
+    await fireEvent.keyDown(grid, { key }); expect(onchange).toHaveBeenCalledExactlyOnceWith('grid');
+    await fireEvent.keyDown(grid, { key, repeat: true }); expect(onchange).toHaveBeenCalledTimes(1);
+  });
+  test('Tab is untouched and disabled options cannot activate or take focus', async () => {
+    const onchange = vi.fn();
+    const { getByRole, rerender } = render(IconSegmentedControl, { ...props, onchange });
+    expect(await fireEvent.keyDown(getByRole('radio', { name: 'Surface' }), { key: 'Tab' })).toBe(true);
+    await rerender({ ...props, onchange, disabled: true });
+    for (const radio of [getByRole('radio', { name: 'Surface' }), getByRole('radio', { name: 'Grid' })]) {
+      expect(radio).toBeDisabled(); expect(radio).toHaveAttribute('tabindex', '-1');
+      await fireEvent.click(radio); await fireEvent.keyDown(radio, { key: 'ArrowRight' });
+    }
+    expect(onchange).not.toHaveBeenCalled();
+  });
+  test('loading owns no selected semantics, glyphs, buttons or callback', () => {
+    const { container } = render(IconSegmentedControl, { label: 'View', options, loading: true });
+    expect(container.querySelector('[data-icon-segmented]')).toHaveAttribute('aria-hidden', 'true');
+    expect(container.querySelector('button,svg,[tabindex],[role],[aria-checked],.thumb')).toBeNull();
+    expect(container.textContent?.trim()).toBe('');
+  });
+  test('rejects malformed option tuples and forbidden loading state at runtime', () => {
+    for (const change of [
+      { options: [] }, { options: [options[0]] }, { options: [...options, options[0]] }, { options: [options[0], options[0]] },
+      { label: '' }, { options: [{ ...options[0], label: '' }, options[1]] }, { options: [{ ...options[0], icon: null }, options[1]] },
+      { value: 'wrong' }, { onchange: null }, { disabled: 'yes' }, { loading: 'yes' }, { loading: true },
+    ]) expect(() => validateIconSegmented({ ...props, ...change } as never)).toThrow();
+    for (const change of [{ value: 'cube' }, { onchange: () => {} }, { disabled: false }]) {
+      expect(() => validateIconSegmented({ label: 'View', options, loading: true, ...change } as never)).toThrow();
+    }
+  });
+});

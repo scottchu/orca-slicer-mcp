@@ -16,6 +16,7 @@ composites.push('observation/QueueWidget.svelte', 'observation/QueueRow.svelte',
 export const leaves: Record<string, string[]> = {
   'ui/QuantityValue.svelte': ['span'], 'ui/TextValue.svelte': ['span'],
   'ui/CardGrid.svelte': ['div'], 'ui/InsetCard.svelte': ['section', 'div', 'div', 'div', 'div'], 'ui/ColorSwatch.svelte': ['span'],
+  'ui/IconSegmentedControl.svelte': ['div', 'span', 'span', 'button'],
   'ui/OrderedRecords.svelte': ['ol'], 'ui/Record.svelte': ['li', 'span', 'div'],
   'ui/DateTimeValue.svelte': ['span', 'time'], 'ui/DurationValue.svelte': ['span'],
   'media/MediaStatus.svelte': ['div', 'span', 'span', 'span'],

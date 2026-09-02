@@ -1,5 +1,28 @@
 # Project state
 
+## Current Job renewal after accepted PR78 — author work in progress
+
+Ordinary integration of accepted main `177d326d13e126d727be7d7431fbfc232e902bc3`
+preserves the delivered Bed legend/toggle and Queue controller. Current Job's
+seven exact contexts, closed public loading templates and compact shared action
+remain. Compiler/AST and rebuilt lab packages pass:211,518/639,136/79,682 bytes,
+930,336 total under unchanged caps. Full223 browser, repository/runtime and
+three-cycle nine-package renewal are next; no Current Job acceptance is claimed.
+
+Attributed PR78 shipment: release
+`20260901-177d326-pr78-20260901T212615-b6584c`, BOTH services restarted,
+31 static/32 security checks and preservation true; snapshot
+`20260901T212717-45f8ec`. Separate postverification is pending. PR76/PR77
+postverification is complete. Current Job is now the resumed implementation
+track; all prior work stays open. Progress phase-two `b694b2c` has a preliminary
+contrast hold being separately repaired, not copied here. History `379c1e7`,
+Overview `1a3b4f4`, real Bed `194ea79`, MCP/legacy parity, Console, model
+thumbnail, filament sync, sizes, token cleanup and recoverable cleanup remain
+unfinished. No printer, installed-plugin or actual-device acceptance.
+
+## Earlier checkpoints (superseded where noted above)
+
+
 ## Current Job preserved while the new Bed Mesh toggle takes priority
 
 Accepted PR77 main `4828ce04` was ordinarily merged as `361308b`. Current Job's
@@ -117,6 +140,39 @@ action occurred. Independent source review and phase-two widget composition are
 still required; all other widget tracks remain open.
 
 ## Integrated accepted legend baseline records
+## Accepted PR78 author history (superseded by current integration above)
+## Current: Bed Mesh icon-toggle author candidate, exact review next
+
+The latest additive user priority is implemented independently of pending Jobs:
+application source `80229841fced7307aaf3eba850a8e60ef688c26a`, tree
+`5dd9210ad01605cf4678da8a069ee8764333ef9f`, from accepted main `4828ce04`.
+One reusable controlled icon segmented leaf replaces the two Bed mode buttons;
+keyboard, reduced motion, inert loading and unchanged chart identity are tested.
+Full author evidence passes:455 UI,300 app/3,557 assertions,21 lifecycle,24
+shipping,198 Chrome, runtime/signature/help and repeated eight-package builds.
+Only Bed lab changes:638,249 bytes; labs total921,919 within unchanged limits.
+No source acceptance or shipment is claimed. Independent exact review and
+validation precede guarded PR merge/deploy/BOTH restart/scoped verification.
+
+PR77's prior release `20260901-4828ce0-pr77-20260901T204905-260700` is attributed
+deployed/postverified: BOTH restarted,31static/32security; independent15 hashes,
+13HTTPS/24raw-isolation checks and8 downloaded-byte browser cases passed.
+Its accepted Bed asset was634,045 bytes/SHA5127c317…; this candidate is different.
+Known 320px/200% Min/Max/Range crowding and Observed-time spacing remain unchanged,
+not evidence of whole-widget polish. Real Bed composition is still pending.
+
+Current Job `5855223` is preserved (focused49/UI500/app311/lifecycle21/shipping24
+pass; full207/runtime/final determinism/PR due). Progress `b9c5008` phase-one has
+independent source approval; phase-two checkpoint `b694b2c` ordinarily integrates
+PR77 as `0f55b56` and has non-browser UI502/app315/lifecycle21/shipping24,
+nine-package/runtime gates only. Its browser/PR/deploy/exact review remain due.
+History `379c1e7` and Overview `1a3b4f4`
+retain phase-two source approval only. Real Bed `194ea79`, generic MCP/legacy,
+Console, model thumbnail, filament sync, size variants, token cleanup and
+recoverable cleanup remain open. No plugin/routing/phone/printer acceptance.
+
+## Earlier author and integrated baseline records
+
 ## Current: slim vertical legend author gates complete, review pending
 
 Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily
