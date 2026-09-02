@@ -15,7 +15,39 @@ pass using synthetic tool/media data with zero real-printer/real-Live acquisitio
 Source/ship/post evidence and prior failures remain
 in active VALIDATION. PR86 thumbnail policy remains accepted.
 
-## Current execution order and all-route error coverage
+## Current execution: C08 remains blocked; Switch44px source ready
+
+The nine bounded diagnosis attempts locate the current failure before the
+browser peer is created: deployed open returns no response, while Bun1.4.0
+reports `EHOSTUNREACH` when sending ICE UDP to the printer and receives no reply.
+The same current adapter under immutable Bun1.3.12 reaches upstream ICE/RTP/offer;
+external STUN, local UDP and authenticated STUN wire-byte comparisons pass.
+Both runtimes use the same IPv4 route/bind/interface setup; signing identifier,
+Team and designated requirement match, while executable UUIDs differ. These
+observations do not establish a Bun regression or macOS permission denial.
+
+C08 remains blocked on diagnosis, with the user's Local Network entry state
+requested; no settings change is authorized and no service-code repair exists.
+Actual probes have stopped and owned resources are closed. After the missing
+evidence, choose the smallest service-owned repair and require affected focused
+checks, advancing actual decoded frames, frozen required validation, independent
+exact review, u1-ship, BOTH restarts and actual served-Live verification. Keep
+failed attempts; HTTP success, synthetic media and health alone cannot close C08.
+
+The separate Switch44px change can proceed through its own release gates while
+C08 remains open: visible track matches Button, thumb40px with2px inset, Camera
+three-mode width132px and Bed two-mode width88px. Author evidence is26 units and
+33 distinct synthetic consumer browser cases (10 initial passes plus23 renewed),
+with bounded design review. Three consumer packages/pins are integrated;12 package
+tests/130 assertions and Live/Lab deterministic checks pass. The other12 public
+HTML files are unchanged. Exact frozen validation/review and deployment are pending.
+
+Preserve Snapshot/Live/Auto compact icons, footer errors and service-owned Camera
+lifecycle. Loading skeleton/Refresh questions were explanatory only: loading policy
+is unchanged. Keep all55 ledger IDs, Progress no-action, F07 class discussion,
+separate c6 and remaining renderer/product backlog. PR93 remains deployed.
+
+### Delivered routing and remaining product scope
 
 Decision0043's single SvelteKit root with Bun1.4.0, generic components/common,
 pure TypeScript lib/server boundaries and actual API/dashboard/Lab routes is
@@ -24,8 +56,7 @@ There is no old custom HTTP-router fallback. Widget build targets and MCP stdio
 share services; URL/role/auth, Camera lease lifecycle and protocol limits remain.
 Build isolation covers outer/nested Bun calls and Kit's environment loader.
 
-Next preserve remaining native-renderer/product work and C08's unclassified
-intermittent acquisition diagnosis. `docs/sveltekit-route-migration.md` tracks
+Remaining native-renderer/product work follows the active C08 repair. `docs/sveltekit-route-migration.md` tracks
 routing versus rendering without adding/removing these55 IDs. Progress remains
 no action, F07 class remains discussion and c6 stays separate. No new actual-camera,
 phone/native or physical-print acceptance is claimed. Byte ceilings stay removed;
@@ -223,11 +254,11 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | C01 fullscreen video continuity | Delivered focused software fix | Genuine phone/native PiP and physical stream remain unverified |
 | C02 Camera in Lab and SvelteKit | Delivered PR69/71 | Does not imply latest service/status repair delivered |
 | C03 connecting/disconnected icons/red dot | Source-only separate checkpoint c6cfb4e | Integrate separately and independently verify;0042 removes historical repo cap blocker |
-| C04 consistent two/three status slots | Compact Snapshot/Live/Auto icon-only Switch independently accepted and shipped PR91 | Scoped served-widget verification PASS; preserve animation/tooltip/aria/44px targets, fullscreen focus and non-overlap; C08 risk separate |
+| C04 consistent two/three status slots | Compact Snapshot/Live/Auto icons shipped PR91; visible44px track refinement is author/design-checked source, pending exact release gates | Preserve44px targets,132px three-mode width,40px inset thumb, animation/tooltip/aria, fullscreen focus/non-overlap; loading policy unchanged; C08 separate |
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
-| C08 served Camera still old | PR93 routing/runtime shipped with current Camera; intermittent real Live acquisition risk remains open | PR89 two successes advanced decoded frames for17.100s/17.102s; first failed acquisition unclassified. Diagnose it; no blanket reliability/phone acceptance |
+| C08 served Camera still old | Diagnosis blocked: Bun1.4 remote-printer ICE UDP sends EHOSTUNREACH; same-adapter1.3 succeeds; permission/runtime root cause unproven; PR93 remains deployed | Await requested user Local Network state; no setting change or service repair. Preserve nine attempts; require service-owned fix, actual decoded-frame proof, exact release gates and served verification before closure |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |

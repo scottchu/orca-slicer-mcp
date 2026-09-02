@@ -24,7 +24,7 @@ test('current focused production inventory retains exact artifact size measureme
     view,
     bytes: Buffer.byteLength(readFileSync(new URL(`../../public/svelte-live-${view}.html`, import.meta.url), 'utf8')),
   }));
-  expect(entries.map(({ bytes }) => bytes)).toEqual([86992, 93059, 96772, 88512, 94399]);
-  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(459734);
+  expect(entries.map(({ bytes }) => bytes)).toEqual([86992, 93059, 96772, 88512, 94546]);
+  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(459881);
   expect(() => assertFocusedProductionInventory(entries)).not.toThrow();
 });

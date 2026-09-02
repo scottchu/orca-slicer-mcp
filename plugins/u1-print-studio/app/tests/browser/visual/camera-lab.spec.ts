@@ -6,6 +6,28 @@ const csp = "default-src 'none'; img-src data:; script-src 'unsafe-inline'; styl
 const url = 'http://127.0.0.1:4181/__test/camera';
 const html = readFileSync('test-results/camera-harness.html', 'utf8');
 
+for (const width of [320, 720]) test(`packaged Camera Lab switch matches Button height through loading at ${width}`, async ({ page }, info) => {
+  await page.setViewportSize({ width, height: 1000 });
+  await page.goto('/dashboard/lab/camera');
+  const modes = page.getByRole('radiogroup', { name: 'Camera mode' });
+  const track = modes.locator('.track');
+  const fullscreen = page.getByRole('button', { name: 'Fullscreen', exact: true });
+  await expect(modes).toHaveCSS('width', '132px');
+  await expect(track).toHaveCSS('height', '44px');
+  expect((await track.boundingBox())!.height).toBe((await fullscreen.boundingBox())!.height);
+  const before = await page.locator('[data-widget-shell],[data-camera-media],[data-icon-segmented]').evaluateAll(nodes => nodes.map(node => {
+    const box = node.getBoundingClientRect(); return [box.x, box.y, box.width, box.height];
+  }));
+  for (const scenario of ['loading', 'snapshot']) {
+    await page.getByLabel('Camera state', { exact: true }).selectOption(scenario);
+    expect(await page.locator('[data-widget-shell],[data-camera-media],[data-icon-segmented]').evaluateAll(nodes => nodes.map(node => {
+      const box = node.getBoundingClientRect(); return [box.x, box.y, box.width, box.height];
+    }))).toEqual(before);
+    expect(await track.boundingBox()).toEqual(await modes.boundingBox());
+  }
+  await page.screenshot({ path: info.outputPath('camera-lab-switch-height.png'), fullPage: true });
+});
+
 for (const width of [320, 390, 590, 720]) {
   test(`synthetic camera states and retained local media at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 });
@@ -19,10 +41,17 @@ for (const width of [320, 390, 590, 720]) {
       const { x, y, width, height } = node.getBoundingClientRect(); return { x: x + scrollX, y: y + scrollY, width, height };
     }));
     const baseline = await bounds();
+    const modes = page.getByRole('radiogroup', { name: 'Camera mode' });
+    const modeBounds = await modes.boundingBox();
+    await expect(modes).toHaveCSS('width', '132px');
+    await expect(modes.locator('.track')).toHaveCSS('height', '44px');
+    expect(await modes.locator('.track').boundingBox()).toEqual(modeBounds);
+    await expect(modes.locator('.thumb')).toHaveCSS('height', '40px');
     for (const scenario of ['loading', 'connecting', 'snapshot', 'fallback', 'error', 'unsupported'] as const) {
       await select(scenario);
       await expect(page.locator('[data-camera-media]')).toHaveAttribute('data-camera-scenario', scenario);
       expect(await bounds()).toEqual(baseline);
+      expect(await modes.boundingBox()).toEqual(modeBounds);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
       if (scenario === 'loading') {
         await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'true');
@@ -34,6 +63,7 @@ for (const width of [320, 390, 590, 720]) {
       await page.screenshot({ path: `test-results/camera-${scenario}-${width}.png` });
     }
     await select('live');
+    expect((await modes.locator('.track').boundingBox())!.height).toBe((await page.getByRole('button', { name: 'Fullscreen', exact: true }).boundingBox())!.height);
     await expect(page.locator('[data-camera-status]')).toContainText('Simulated live', { timeout: 5000 });
     await expect(page.locator('[data-camera-fps]')).toContainText(/\d+ FPS/, { timeout: 5000 });
     expect(await bounds()).toEqual(baseline);

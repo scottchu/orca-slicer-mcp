@@ -32,8 +32,9 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
       await expect(radio.locator('svg')).toHaveAttribute('width', '20');
     }
     const track = group.locator('.track'), thumb = group.locator('.thumb');
-    await expect(track).toHaveCSS('width', '88px'); await expect(track).toHaveCSS('height', '32px');
-    await expect(thumb).toHaveCSS('width', '40px'); await expect(thumb).toHaveCSS('height', '28px');
+    await expect(track).toHaveCSS('width', '88px'); await expect(track).toHaveCSS('height', '44px');
+    expect(await track.boundingBox()).toEqual(await group.boundingBox());
+    await expect(thumb).toHaveCSS('width', '40px'); await expect(thumb).toHaveCSS('height', '40px');
     await expect(thumb).toHaveCSS('transition-property', 'transform'); await expect(thumb).toHaveCSS('transition-duration', '0.18s');
     await page.locator('[data-chart-frame]').evaluate((node) => { Object.assign(window, { originalChartFrame: node }); });
     const before = await bounds(page);
@@ -87,6 +88,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await page.getByRole('button', { name: 'External value' }).focus(); await page.keyboard.press('Tab'); await expect(page.getByRole('button', { name: 'Toggle disabled' })).toBeFocused();
     await page.getByRole('button', { name: 'Toggle loading' }).click();
     await expect(page.getByRole('radio')).toHaveCount(0); expect(await page.locator('[data-icon-segmented]').boundingBox()).toEqual(box);
+    expect(await page.locator('[data-icon-segmented] .track').boundingBox()).toEqual(box);
     await page.getByRole('button', { name: 'Toggle loading' }).click(); await expect(page.getByRole('button', { name: 'Toggle loading' })).toBeFocused();
     await page.getByRole('button', { name: 'Toggle disabled' }).click();
     await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -121,6 +123,9 @@ test('Switch expands from two to three controlled icons with a measured animated
   await group.screenshot({ path: info.outputPath('switch-two.png') });
   await page.getByRole('button', { name: 'Toggle third option' }).click();
   await expect(group).toHaveCSS('width', '132px');
+  await expect(group.locator('.track')).toHaveCSS('height', '44px');
+  expect(await group.locator('.track').boundingBox()).toEqual(await group.boundingBox());
+  await expect(group.locator('.thumb')).toHaveCSS('height', '40px');
   const sample = await page.evaluate(async () => {
     const group = document.querySelector('[data-icon-segmented]')!;
     const thumb = group.querySelector('.thumb')!;

@@ -41,10 +41,10 @@
 </div>
 
 <style>
-  .segments { position: relative; display: inline-flex; flex: 0 0 calc(var(--segments) * 44px); width: calc(var(--segments) * 44px); height: 44px; vertical-align: middle; isolation: isolate; }
-  .track { position: absolute; left: 0; top: 6px; width: 100%; height: 32px; border-radius: var(--u1-radius-control); background: var(--u1-soft); box-shadow: inset 0 0 0 1px var(--u1-line); pointer-events: none; }
-  .thumb { position: absolute; left: 2px; top: 2px; width: 40px; height: 28px; border-radius: calc(var(--u1-radius-control) - 2px); background: var(--u1-surface); box-shadow: 0 1px 3px rgba(28, 30, 32, .12); transform: translateX(calc(var(--selected) * 44px)); transition: transform 180ms ease; }
-  button { position: relative; display: inline-grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--u1-radius-control); background: transparent; color: var(--u1-muted); cursor: pointer; touch-action: manipulation; }
+  .segments { position: relative; display: inline-flex; flex: 0 0 calc(var(--segments) * var(--u1-action-size)); width: calc(var(--segments) * var(--u1-action-size)); height: var(--u1-action-size); vertical-align: middle; isolation: isolate; }
+  .track { position: absolute; inset: 0; border-radius: var(--u1-radius-control); background: var(--u1-soft); box-shadow: inset 0 0 0 1px var(--u1-line); pointer-events: none; }
+  .thumb { position: absolute; left: 2px; top: 2px; width: calc(var(--u1-action-size) - 4px); height: calc(var(--u1-action-size) - 4px); border-radius: calc(var(--u1-radius-control) - 2px); background: var(--u1-surface); box-shadow: 0 1px 3px rgba(28, 30, 32, .12); transform: translateX(calc(var(--selected) * var(--u1-action-size))); transition: transform 180ms ease; }
+  button { position: relative; display: inline-grid; place-items: center; flex: 0 0 var(--u1-action-size); width: var(--u1-action-size); height: var(--u1-action-size); padding: 0; border: 0; border-radius: var(--u1-radius-control); background: transparent; color: var(--u1-muted); cursor: pointer; touch-action: manipulation; }
   button[aria-checked='true'] { color: var(--u1-ink); }
   button:focus-visible { outline: 3px solid var(--u1-focus); outline-offset: 2px; }
   .disabled { opacity: .45; }

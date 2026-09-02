@@ -458,9 +458,13 @@ printer environments support the described behavior.
   2D/3D/loading/refresh, and retains all UI-001 fit/zoom/coverage gates at all
   four widths and 200% text. This lab-only refinement does not migrate the
   production Bed Mesh widget or modify production package bytes.
-  Its two mode choices share one icon-only segmented control: 88x44 overall,
-  two 44x44 radio targets, centered 88x32 track and 40x28 selected thumb moving
-  44px in 180ms with transform only (no transition under reduced motion).
+  Its two mode choices use the generic common Switch: 88x44 overall and two
+  44x44 radio targets. The visible track fills the same44px action size as Button;
+  its40x40 selected thumb keeps2px inset and moves44px in180ms with transform
+  only (no transition under reduced motion). Each segment remains44px wide;
+  Camera's three-mode consumer remains132px overall. Use the shared action-size
+  token; loading and ready keep identical geometry. This supersedes decision0032's
+  historical32px track/28px thumb height; its2026-09-02 amendment records the change.
   Exactly one selected radio is tabbable; arrows wrap, Home/End select, and
   Space/Enter activate once. Controlled updates do not steal focus, selected
   clicks are no-ops, disabled controls cannot activate, and loading is inert
