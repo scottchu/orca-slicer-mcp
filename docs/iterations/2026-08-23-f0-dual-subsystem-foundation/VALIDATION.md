@@ -1,6 +1,50 @@
 # F0 dual-subsystem foundation validation
 
-## PR87 final application and test evidence
+## PR87 rollout — coordinator receipt
+
+Exact independently reviewed PR head
+`117907ceae9f96116d8348cc14cb3e2a143e4d0a` merged as
+`96e466e2ffefd75dc0b2c1fce92b40c7ec30555d`, retaining approved tree
+`37a232ad86069584b4ec32562d603e5c0d577530`.
+The coordinator reports unchanged `u1-ship` execution exit0, operation
+`pr87-20260902T081602-8bb576`, release
+`20260902-96e466e-pr87-20260902T081602-8bb576`.
+BOTH existing services were explicitly restarted, loaded, healthy and
+integrity-verified;31 static and32 security checks pass, preservation passes.
+Rollback was not needed; recovery snapshot `20260902T081703-ec53cc` is retained.
+This is attributed guarded deployment evidence, not a second author ship run.
+Independent meaningful postverification passes15/15 scoped cases using actual
+downloaded dashboard bytes, with BOTH service release/source/integrity checks,
+15 manifest files,10 unique dashboard HTTPS artifacts (eight Svelte artifacts,
+host and generic widget), and11 exact artifact hashes. Combined compatibility
+uses exact active-release manifest bytes, not a nonexistent HTTP route.
+Heads inline/quiet Copy, initial/static and retained errors, duplicate/older
+Retry evidence and selected legacy/combined behavior pass. These are scoped
+software/deployed-byte tests, not physical printer or actual-device acceptance.
+Attributed evidence in `u1-errors-heads-independent-validation`:
+`postdeploy-results.json` SHA256
+`075d3daecab0d7df08885cdf64d17fb09b65d62700c41f3da4ff6537a59553aa`;
+`postdeploy-static.json` SHA256
+`8389de5f305e183a3187995be1366a1111d4ad0a9ffa20b9605af06b1c792204`.
+All validator browsers/processes closed; no printer acquisition was performed.
+
+Read-only postverification identified an existing external routing limit:
+standard HTTPS root `/widget` returns502 because only `/health` and `/mcp`
+route to the public app there; the unmatched root routes elsewhere. Dashboard
+`/widget` and both local app endpoints return200 with exact871,780-byte content.
+Earlier retained validation already records this limitation. PR87 did not
+introduce or repair it; no routing, authentication or infrastructure change
+was made. Dashboard/package acceptance must not imply public-root reachability.
+
+This seven-record rollout-only branch starts at exact merged `96e466e`.
+No application, tests, dependencies, generated assets, policy, configuration
+or shipping inputs are changed. Author `git diff --check`, exact-base/protected
+path identity and relevant documentation-target existence checks pass.
+Decision0028 requires no repeat build/browser suite, deployment or service
+restart. Independent review of the exact docs head remains required before
+its PR merge; all author command sessions ended.
+
+## PR87 retained application and test evidence (predeployment)
 
 Application `88eb80fbb9a9fa2667b9123815b100feea95df4e`, tree
 `fc919112b0c1962e206d7829791e9f1faacd878d`; corrected-test checkpoint
