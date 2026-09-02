@@ -49,7 +49,7 @@
       const frame = document.querySelector("#widget");
       const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget" });
       const focusedWidget = Object.hasOwn(focusedWidgets, selectedView) ? focusedWidgets[selectedView] : null;
-      const widgetSource = focusedWidget ?? "/widget?standalone=1";
+      const widgetSource = focusedWidget ?? `/widget?standalone=1&view=${selectedView}`;
       const bridgeState = document.querySelector("#bridge-state");
       document.querySelector("#view-title").textContent = selected?.[1] ?? "View unavailable";
       document.title = selected ? `U1 · ${selected[1]}` : "U1 · View unavailable";

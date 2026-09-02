@@ -1,5 +1,13 @@
 # Project state
 
+Current execution: all-widget stable error anatomy and inline Heads color/quiet
+Copy first, coordinated with separate Camera integration; Progress redesign
+follows. The complete current status and route/evidence matrix is
+[Widget delivery ledger](docs/widget-delivery.md).
+Implementation is in progress, not deployed. PR86's accepted thumbnail gates
+remain binding. The older checkpoint sections below are historical evidence,
+not current priority or blanket migration/completion claims.
+
 ## Current: required print-thumbnail policy reviewed; PR86 delivery
 
 The latest user priority adds decision 0040's required embedded-thumbnail gate

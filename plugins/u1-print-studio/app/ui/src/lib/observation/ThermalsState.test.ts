@@ -46,7 +46,8 @@ test('refresh retains data/source time and terminal states supersede feedback', 
     await rerender({ state: { kind } });
     expect(screen.getAllByRole('status')).toHaveLength(1);
     expect(screen.getByRole('status')).not.toHaveTextContent('Lab fixture refreshed');
-    expect(container.querySelector('.widget-feedback')).toBeNull();
+    if (kind === 'loading') expect(container.querySelector('.widget-feedback')).toBeNull();
+    else expect(container.querySelector('.widget-feedback')).toHaveTextContent(kind === 'error' ? 'Could not load Thermals' : 'Thermals unavailable');
     expect(container.textContent).not.toContain('220°');
   }
 });

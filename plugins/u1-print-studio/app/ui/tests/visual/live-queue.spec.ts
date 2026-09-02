@@ -109,8 +109,9 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     const unavailable = liveQueueResult(0, 22, '2026-09-01T12:00:22.000Z');
     const unavailableDomain = { ...unavailable.structuredContent.module, state: 'unavailable', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, checkedAt: '2026-09-01T12:00:22.000Z', queueState: null, totalCount: null, reason: 'timeout', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: unavailable.structuredContent.module.provenance.detail } };
     await notify({ structuredContent: { ...unavailable.structuredContent, module: unavailableDomain } });
-    await expect(frame.locator('[data-widget-body]')).toHaveText('Print Queue unavailable');
-    await expect(frame.locator('[data-widget-shell]')).not.toContainText(/0 jobs|Queue empty/); await readable(frame, width);
+    await expect(frame.locator('.widget-feedback')).toHaveText('Print Queue unavailable · showing previous observation');
+    await expect(frame.locator('[data-widget-body]')).toContainText('Last observed queue was empty');
+    await expect(frame.locator('[data-observed-meta]')).toContainText('Stale'); await readable(frame, width);
     const unknown = liveQueueResult(0, 23, '2026-09-01T12:00:23.000Z');
     const unknownDomain = { ...unknown.structuredContent.module, state: 'unknown', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, checkedAt: null, queueState: null, totalCount: null, reason: 'not_requested', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: unknown.structuredContent.module.provenance.detail } };
     await notify({ structuredContent: { ...unknown.structuredContent, module: unknownDomain } });

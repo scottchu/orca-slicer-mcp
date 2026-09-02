@@ -1,5 +1,46 @@
 # F0 dual-subsystem foundation validation
 
+## Current observation errors and quiet inline Copy — author focused checkpoint
+
+Based on accepted PR86 `8b995ee`; deployment remains PR84. Source scope and
+remaining Camera gaps are authoritative in [widget-delivery](../../widget-delivery.md).
+No Camera/Glyph checkpoint, package-cap increase, acquisition change or printer
+operation is included. New code is not independently accepted or deployed yet.
+
+Commands actually run during editing with pinned Bun1.3.12:
+
+- UI `bun run check`: zero errors/warnings and AST PASS. The obsolete unused
+  short `ObservationState` component was removed; no raw-feature allowance added.
+- Focused controller/HeadCard tests:44 PASS; loading/privacy/prop/quiet-button
+  tests:38 PASS. New retention cases cover same-epoch unavailable/unsupported,
+  newer failure ordering and explicit changed-epoch reset.
+- App focused observation/dashboard/package tests PASS; legacy observation plus
+  dashboard subset80 tests/1711 assertions PASS. Closed global unavailable Retry
+  reads once; startup unsupported remains distinct beyond15seconds.
+- Focused `served-error-stability` plus `widget-error-stability`:24 browser cases
+  PASS. Each matrix loops applicable routes at320/390/720 and normal/200% text:
+  eight light Labs, four actual Svelte hosts, nine generic legacy views and
+  active combined status. Initial loading/error/unavailable full-frame geometry
+  stays within1px; retained failures keep content/receipts. Persistent notices
+  survive21seconds initial and6seconds retained. No actual printer/device claim.
+- Heads widest RGB/A8cases, normal/enlarged boundary2cases, prior567/590/720
+  enlarged parity3cases and clipboard generations/busy/denial/focus1case PASS.
+  Whole color row is one44px-high button with16px glyph;390normal keeps two
+  158px cards. Each normal card is193.390625px tall. Public column transitions
+  are375px normal and553px enlarged, including existing shell inset change.
+- All five changed packages built below original caps: Fans88,929;
+  Thermals89,542; Heads98,911; Queue90,044; light Lab210,908. Bed632,808 and
+  current CameraLab79,776/Live90,900 are unchanged. Hash pins were renewed.
+
+Editing failures were not waived: old short-error/footer/string assertions were
+updated to the adopted static structure; Bed not-reported semantics were retained.
+An initial enlarged boundary expectation541px omitted the existing shell's12px
+inset increase; corrected553px was measured and passed, not a tolerance change.
+Full frozen-candidate regression and independent exact-head approval remain next.
+Owned focused fixtures/browsers closed after each run; no user tabs were closed.
+
+## Earlier evidence (historical)
+
 ## Required print-thumbnail policy — independent approval and PR86
 
 Independent review approved exact policy commit

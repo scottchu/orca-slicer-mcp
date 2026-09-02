@@ -1,5 +1,13 @@
 # Widget completion tracks
 
+Current execution: all-widget stable error anatomy and inline Heads color/quiet
+Copy first, coordinated with separate Camera integration; Progress redesign
+follows. The complete current status and route/evidence matrix is
+[Widget delivery ledger](../../widget-delivery.md).
+Implementation is in progress, not deployed. PR86's accepted thumbnail gates
+remain binding. The older checkpoint sections below are historical evidence,
+not current priority or blanket migration/completion claims.
+
 ## Current: Heads Copy PR84 deployed and independently verified
 
 PR84 merged as `0fe54f34e43f97dd9376e5a17b06efd342726455`, with the

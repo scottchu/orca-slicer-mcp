@@ -3,13 +3,14 @@ import { resultObservation, type ObservationPort } from './observation-port';
 import type { FansPresentation } from './presentation';
 export type LiveFansState = { observation: FansPresentation | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string };
 
-export type OrderedObservation = { version: number; connectionEpoch: number | null; receivedAt: string };
+export type OrderedObservation = { version: number; connectionEpoch: number | null; receivedAt: string; state: string };
 export type LiveState<T> = { observation: T | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string };
 export const createObservationController = <T extends OrderedObservation>(port: ObservationPort, adapt: (value: unknown) => T, title: string, timeoutMs = 20_000) => {
   let state: LiveState<T> = { observation: null, phase: 'loading', refreshing: false, feedback: '' };
   let disposed = false, started = false, generation = 0;
   let flight: Promise<void> | null = null;
   let deadline: ReturnType<typeof setTimeout> | undefined;
+  let latest: T | null = null;
   const listeners = new Set<(state: LiveState<T>) => void>();
   const publish = (next: LiveState<T>) => { if (!disposed) { state = next; for (const listener of listeners) listener(state); } };
   const failure = () => publish({ ...state, phase: state.observation ? 'ready' : 'error', refreshing: false, feedback: state.observation ? 'Refresh failed · showing previous observation' : `Could not load ${title}` });
@@ -18,13 +19,24 @@ export const createObservationController = <T extends OrderedObservation>(port: 
       const observation = adapt(resultObservation(result));
       if (disposed) return 'invalid';
       const previous = state.observation;
-      if (previous && JSON.stringify(observation) === JSON.stringify(previous)) return 'duplicate';
+      if (latest && JSON.stringify(observation) === JSON.stringify(latest)) return 'duplicate';
       // Server receipt orders events across process-local version resets. A
       // later receipt can legitimately carry version 1 after a restart; a
       // delayed earlier receipt cannot replace newer accepted data.
-      if (previous && (observation.receivedAt < previous.receivedAt ||
-          (observation.receivedAt === previous.receivedAt && observation.connectionEpoch === previous.connectionEpoch && observation.version < previous.version))) return 'older';
+      if (latest && (observation.receivedAt < latest.receivedAt ||
+          (observation.receivedAt === latest.receivedAt && observation.connectionEpoch === latest.connectionEpoch && observation.version < latest.version))) return 'older';
       if (deadline) clearTimeout(deadline);
+      latest = observation;
+      // Keep display evidence only inside the same known connection epoch.
+      // Ordering still advances on failure, so a delayed success cannot revive
+      // superseded evidence. A new/unknown epoch never borrows prior data.
+      if ((observation.state === 'unavailable' || observation.state === 'unsupported') &&
+          previous && (previous.state === 'known' || previous.state === 'stale') &&
+          observation.connectionEpoch !== null && observation.connectionEpoch === previous.connectionEpoch) {
+        publish({ observation: previous, phase: 'ready', refreshing: notification && !!flight,
+          feedback: `${title} ${observation.state === 'unsupported' ? 'endpoint unsupported' : 'unavailable'} · showing previous observation` });
+        return 'accepted';
+      }
       // Arrival/generation orders this mounted session, not process-local version.
       publish({ observation, phase: 'ready', refreshing: notification && !!flight, feedback: '' });
       return 'accepted';

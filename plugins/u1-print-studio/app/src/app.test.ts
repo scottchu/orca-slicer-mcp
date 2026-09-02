@@ -312,7 +312,7 @@ describe("U1 status MCP App contract", () => {
     expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
     expect(LEGACY_WIDGET_HTML).not.toBe(WIDGET_HTML);
     expect(createHash("sha256").update(LEGACY_WIDGET_HTML).digest("hex")).toBe(
-      "da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437"
+      "6ee3d9aecc9e320e8a03fff4ad78d470140af36d7b35d649c1c8c078f34a6f6b"
     );
     const focusedLegacy = await client.readResource({
       uri: LEGACY_FOCUSED_WIDGET_URIS[0],

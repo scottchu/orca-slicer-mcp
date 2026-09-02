@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/svelte';
 import ObservationSkeleton from './ObservationSkeleton.svelte';
-import ObservationState from './ObservationState.svelte';
 import { loadingObservation, structureCount } from './loading';
 import LoadingValue from '../ui/LoadingValue.svelte';
 import BedMeshWidget from '../bed-mesh/BedMeshWidget.svelte';
@@ -49,9 +48,16 @@ describe('shared legacy layout loading', () => {
       expectNoLoadingTelemetry(container, view === 'heads');
     });
     it(`${view} reports explicit terminal states`, () => {
-      const { rerender } = render(ObservationState, { view, reason: 'unavailable' });
+      if (view === 'bed_mesh') {
+        const { container } = render(BedMeshWidget, { failure: 'unavailable' });
+        expect(container.querySelector('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
+        expect(container.querySelector('[data-skeleton]')).not.toBeNull();
+        return;
+      }
+      const { rerender, container } = render(ObservationSkeleton, { view, failure: 'unavailable' });
       expect(screen.getByRole('status')).toHaveTextContent('unavailable');
-      return rerender({ view, reason: 'error' }).then(() => expect(screen.getByRole('status')).toHaveTextContent('Could not load'));
+      expect(container.querySelector('[data-skeleton], [data-loading-value]')).not.toBeNull();
+      return rerender({ view, failure: 'error' }).then(() => expect(screen.getByRole('status')).toHaveTextContent('Could not load'));
     });
   }
   it('admits only bounded structural count and never a loading observation', () => {

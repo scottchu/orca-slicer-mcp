@@ -1,5 +1,23 @@
 # F0 dual-subsystem foundation handoff
 
+Current execution: all-widget stable error anatomy and inline Heads color/quiet
+Copy first, coordinated with separate Camera integration; Progress redesign
+follows. The complete current status and route/evidence matrix is
+[Widget delivery ledger](../../widget-delivery.md).
+Implementation is in progress, not deployed. PR86's accepted thumbnail gates
+remain binding. The older checkpoint sections below are historical evidence,
+not current priority or blanket migration/completion claims.
+
+Current changed source: shared observation frame/skeleton composition, four
+live controllers/roots, closed Lab state/prop mapping, Heads quiet whole-row
+Copy and public CardGrid minimum; legacy focused host/widget and combined status
+failure presentation. Tests retain privacy, same-epoch ordering and keyboard
+contracts. Camera-specific files and Glyph are excluded; that source-only
+checkpoint exceeds its unchanged Lab cap. Do not claim all Camera errors fixed.
+Next: freeze candidate, one owned required full regression, independent source
+and targeted validation, then guarded PR shipment by coordinator. Current source
+is based on merged PR86 `8b995ee`, not its historical open-PR text below.
+
 ## Current: required print-thumbnail policy reviewed; PR86 delivery
 
 Decision 0040 makes decoded embedded thumbnails mandatory for prepared

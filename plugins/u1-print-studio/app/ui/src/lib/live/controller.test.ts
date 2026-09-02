@@ -16,6 +16,24 @@ describe('live Fans controller', () => {
     notify(liveFansResult()); expect(controller.getState()).toMatchObject({ phase: 'ready', observation: { version: 12 } });
     controller.dispose();
   });
+  it.each(['unavailable', 'unsupported'])('retains same-epoch %s failures while advancing ordering, but clears on a new epoch', (kind) => {
+    const { controller, notify } = setup();
+    try {
+      notify(liveFansResult()); const previous = controller.getState().observation;
+      const failure = liveFansResult(14, '2026-09-01T12:00:14.000Z');
+      const failed = { structuredContent: { ...failure.structuredContent, module: { ...failure.structuredContent.module, state: kind } } };
+      notify(failed);
+      expect(controller.getState().observation).toBe(previous);
+      expect(controller.getState().feedback).toContain(kind === 'unsupported' ? 'endpoint unsupported' : 'unavailable');
+      expect(controller.getState().feedback).toContain('showing previous observation');
+      notify(liveFansResult(13, '2026-09-01T12:00:13.000Z'));
+      expect(controller.getState().observation).toBe(previous);
+      notify({ structuredContent: { ...failed.structuredContent, connectionEpoch: 4, receivedAt: '2026-09-01T12:00:15.000Z' } });
+      expect(controller.getState().observation?.state).toBe(kind);
+      expect(controller.getState().observation?.connectionEpoch).toBe(4);
+      expect(controller.getState().feedback).toBe('');
+    } finally { controller.dispose(); }
+  });
   it('coalesces refresh, retains identity and ignores malformed unrelated notifications', async () => {
     const { controller, notify, resolve, port } = setup(); notify(liveFansResult());
     const previous = controller.getState().observation, first = controller.refresh();

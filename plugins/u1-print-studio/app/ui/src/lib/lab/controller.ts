@@ -2,7 +2,7 @@ import type { LabView, LabFreshness } from '../observation/types';
 
 export type Option = { value: string; label: string };
 export type Field = { key: string; label: string; options: readonly Option[]; disabled?: boolean };
-export type Phase = 'loading' | 'ready' | 'refreshing' | 'unavailable' | 'error';
+export type Phase = 'loading' | 'ready' | 'refreshing' | 'unavailable' | 'error' | 'retained-error';
 export type ScenarioByView = {
   overview: 'printing' | 'paused' | 'complete' | 'standby';
   progress: ScenarioByView['overview']; jobs: ScenarioByView['overview'];
@@ -41,7 +41,7 @@ export const scenarios: Record<LabView, readonly Option[]> = {
   job_history: choices('populated', 'empty', 'mixed_outcomes'), queue: choices('populated', 'empty'),
   fans: choices('nominal', 'zero', 'unknown', 'mixed'), bed_mesh: choices('warped', 'flat', 'tilted')
 };
-const phases = choices('ready', 'loading', 'refreshing', 'unavailable', 'error');
+const phases = [...choices('ready', 'loading', 'refreshing', 'unavailable', 'error'), option('retained-error', 'Refresh failed')];
 const freshness = choices('fresh', 'stale', 'offline', 'unknown');
 const defaultOption = option('scenario', 'Scenario default');
 const optionalPresets = (values: readonly (number | null)[], unit = '') => [defaultOption, ...presets(values, unit)];
@@ -66,7 +66,7 @@ export const defaultSelection = <V extends LabView>(view: V): LabSelection<V> =>
   values: Object.fromEntries(variables[view].map(({ key, options }) => [key, options[0].value]))
 } as LabSelection<V>);
 export const fieldsFor = <V extends LabView>(selection: LabSelection<V>): Field[] => {
-  const unavailable = selection.phase !== 'ready' && selection.phase !== 'refreshing';
+  const unavailable = !['ready', 'refreshing', 'retained-error'].includes(selection.phase);
   return [field('phase', 'Preview state', phases), field('scenario', 'Scenario', scenarios[selection.view]),
     { ...field('freshness', 'Freshness', freshness), disabled: unavailable },
     ...variables[selection.view].map((item) => ({ ...item, disabled: unavailable || (['overview', 'progress', 'jobs'].includes(selection.view) && ['complete', 'standby'].includes(selection.scenario)) }))];

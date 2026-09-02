@@ -6,18 +6,18 @@
   import Stack from '../ui/Stack.svelte';
   import InfoPair from '../ui/InfoPair.svelte';
   import Label from '../ui/Label.svelte';
-  import StatePanel from '../ui/StatePanel.svelte';
+  import type { FailureProps } from './loading';
   import FanReadings from './FanReadings.svelte';
   import FansSkeleton from './FansSkeleton.svelte';
-  type Props = { observation: FansObservation; state?: never } | { state: WidgetState<FansObservation>; observation?: never };
-  let { observation, state }: Props = $props();
+  type Props = FailureProps & ({ observation: FansObservation; state?: never } | { state: WidgetState<FansObservation>; observation?: never });
+  let { observation, state, failure, onretry }: Props = $props();
   const resolve = (): WidgetState<FansObservation> => {
     if (state !== undefined && observation !== undefined) throw new Error('Fans accepts observation or state, not both');
     return validateWidgetState(state !== undefined ? state : { kind: 'ready', observation }, validateFans);
   };
   const current = $derived(resolve());
 </script>
-<ObservationFrame title="Fans & Air" iconName="fan" observedAt={current.kind === 'ready' ? current.observation.sourceObservedAt : null} freshness={current.kind === 'ready' ? current.observation.freshness : 'unknown'} stateKind={current.kind} refreshing={current.kind === 'ready' && current.refreshing}>
+<ObservationFrame title="Fans & Air" iconName="fan" observedAt={current.kind === 'ready' ? current.observation.sourceObservedAt : null} freshness={current.kind === 'ready' ? current.observation.freshness : 'unknown'} stateKind={failure ?? current.kind} placeholder={current.kind !== 'ready'} {onretry} refreshing={current.kind === 'ready' && current.refreshing}>
   {#if current.kind === 'ready'}
     <Stack>
       <InfoPair reserve="label">
@@ -26,6 +26,5 @@
       </InfoPair>
       <FanReadings items={current.observation.items} />
     </Stack>
-  {:else if current.kind === 'loading'}<FansSkeleton />
-  {:else}<StatePanel title="Fans & Air" reason={current.kind} />{/if}
+  {:else}<FansSkeleton />{/if}
 </ObservationFrame>
