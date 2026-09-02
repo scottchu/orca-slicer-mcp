@@ -3,9 +3,9 @@ import { createServer, type Server } from 'node:http';
 import { connect } from 'node:net';
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { createUnifiedRequestHandler } from '../../src/entrypoints/server';
-import { loadKitHandler } from '../../src/lib/server/kit-handler';
-import { createKitObservationFixture } from '../fixtures/kit-observation-store';
+import { createUnifiedRequestHandler } from '../../src/entrypoints/server.js';
+import { loadKitHandler } from '../../src/lib/server/kit-handler.js';
+import { createKitObservationFixture } from '../fixtures/kit-observation-store.js';
 
 const handler = await loadKitHandler(new URL('../../build-kit/handler.js', import.meta.url).href);
 const port = 4182;

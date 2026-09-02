@@ -1,8 +1,8 @@
-import { PrinterObservationStore } from '../../src/lib/server/observation-store';
-import { normalizeEnvironmentResponse } from '../../src/lib/server/adapters/moonraker-environment';
-import { normalizeMaterialResponse } from '../../src/lib/server/adapters/moonraker-materials';
-import { normalizeQueueResponse } from '../../src/lib/server/adapters/moonraker-queue';
-import type { U1Status } from '../../src/lib/server/u1-status';
+import { PrinterObservationStore } from '../../src/lib/server/observation-store.js';
+import { normalizeEnvironmentResponse } from '../../src/lib/server/adapters/moonraker-environment.js';
+import { normalizeMaterialResponse } from '../../src/lib/server/adapters/moonraker-materials.js';
+import { normalizeQueueResponse } from '../../src/lib/server/adapters/moonraker-queue.js';
+import type { U1Status } from '../../src/lib/server/u1-status.js';
 
 export const createKitObservationFixture = () => {
   let now = Date.parse('2026-09-01T12:00:00Z');

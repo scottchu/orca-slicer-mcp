@@ -1,6 +1,59 @@
 # F0 dual-subsystem foundation validation
 
-## Current native observation pages: author source frozen, candidate gates pending
+## Current candidate77f023e: required gate failed at test-import type checking
+
+Independent `./scripts/check-repository.sh` on
+`77f023e1b007d836651d862ca1cbcae4fa91f608`, tree
+`8000b9abb18990a886932d9b4d264345614c445a`, exits2 after28.779s.
+`app/test-results/independent-77f023e/full-repository-result.json` records the
+command/result; `full-repository.log` SHA256 is
+`276e36fb7fdc95db6c871be8ced668914903c5562022e15263f91e71aa82e3e9`.
+Independent `REPORT.json` SHA256
+`376b311ae219483bc47d83a5861e43a117ecb2e1b0562d1cb9eea820bc61876d`
+records CHANGES_REQUESTED. Svelte0errors/0warnings, AST,574 UI tests/55 files and
+all eight deterministic package checks pass. Server TypeScript checking then reports TS2835 for three
+imports in `tests/server/kit-native-observations.test.ts` without NodeNext `.js`
+suffixes. Server tests and both Python stages were not reached; independent targeted
+browser checks had not begun. This is not a full-repository pass or candidate
+approval.
+
+The author's first focused repair exposed five equivalent imports in shared
+`tests/fixtures/kit-observation-store.ts`; retain
+`app/test-results/native-observation-pages/import-repair/typecheck-first.log`.
+That first focused log SHA256 is
+`f1e5f0cdf61ab8794f93f95bdd4cc30436c857433fcdb198bac2d2d709841b0a`.
+The frozen repair adds eight `.js` suffixes in these two test/fixture headers;
+production/configuration/guards are unchanged. Author repair `REPORT.json` in
+that directory has SHA256
+`cc10869d018b8f0699f53132774076a887be363a8695e3f893ff9fe375e1aaf0`.
+
+Using Bun with `--no-env-file --config=/dev/null`, `run check` now passes;
+`test tests/server/kit-native-observations.test.ts` passes three/195 assertions.
+With `U1_BROWSER_REPORT=./import-repair/browser-fans.json` and
+`U1_BROWSER_KIT_PORT=4182`, the existing Playwright config and grep
+`Kit Fans hydrate once.*320` pass one scoped fixture-startup/hydration/error/
+recovery case. The report retains exact command/output arguments. Typecheck,
+server-test and browser log SHA256 values are respectively
+`b2f327a363ac2117e2d2dd2deb15c4faeef49c09c5bb46f62aeee4a0d65e7449`,
+`620dd88aeb30e302ef7f13156853a634c65892085c7bd8d1466749bf66935e81` and
+`8908ff0b286bca1975cf9fbd1eb416fd7531bc1514fa09836bfc1643b784c9f6`.
+
+The new417-file `app-inputs.json` SHA256 is
+`b202a856519c65ae3a8de47408a73ecf1dcde50869d0c894ef1177bc3e9e2688`.
+Parity evidence binds333 unchanged production inputs,15 unchanged public HTML
+files and56 retained payload files; manifest remains a2a0afdb below. No rebuild,
+full suite or broad browser renewal ran. Owned browser/fixture/processes closed
+and4182 is free; no printer, deployed service or user session was touched.
+Required regression and independent exact review must renew on the next frozen
+candidate; the original77f023e failure remains unchanged.
+
+The docs author renewed `git diff --check` and, through `uv run python`, the
+documentation-only contract prefix,55-ID comparison and report/input/repaired-file
+hash checks: PASS. Only four continuity Markdown files changed in this update;
+no application/full/browser/build check was repeated by the docs author.
+
+## Prior native observation page author evidence
+
 
 Author report `app/test-results/native-observation-pages/AUTHOR-REPORT.json`, SHA256
 `682fbcf027852d36cd5f079c1a643e23035f03a816bb6b3015879f2a3bf5598a`,

@@ -14,8 +14,17 @@ Two successful builds have the same56-file/72-route manifest; all15 public HTML
 files match baseline, without widget regeneration. Report SHA256
 `682fbcf027852d36cd5f079c1a643e23035f03a816bb6b3015879f2a3bf5598a`
 binds this focused evidence; active VALIDATION preserves commands and failures.
-Independent candidate validation and shipment remain pending. This slice does
-not close all F01 migration or finish Queue's remaining product requirements.
+Independent required validation of77f023e stopped at server TypeScript checking:
+three new test imports lacked NodeNext `.js` suffixes. The author's first repair
+then exposed five equivalent shared-fixture imports; both failures are preserved.
+The eight suffixes are now fixed in two test files: focused types, three server
+cases/195 assertions and one Kit Fans320 fixture case pass.333 production inputs,
+15 public HTML files and56 retained payload files are unchanged; no rebuild ran.
+Repair report SHA256 is
+`cc10869d018b8f0699f53132774076a887be363a8695e3f893ff9fe375e1aaf0`.
+Server/Python/browser stages of the failed independent run did not execute. A new
+frozen candidate must renew the required gate and exact review before shipment. This slice does not close all F01 migration
+or finish Queue's remaining product requirements.
 
 Acceptance: preserve URLs and widget resource endpoints; SSR acquires no telemetry,
 mount starts the existing observation flow once, and refresh/failure/recovery keep
