@@ -1,6 +1,27 @@
 # Next agent
 
-## Freeze the 092f84a test-only contract repair
+## Continue from PR89's scoped verification and open Camera risk
+
+PR89 is merged/deployed as `f0d7c178e59e72a9d1ed6324577d2e131ffb0f91`, matching
+reviewed `ce065866c61eba159075da9d3bcbf642e9bd404d` tree
+`a96e57fab0a5289d30ce406c68d3d6023e049d3d`. BOTH services were explicitly restarted
+and verified healthy/integral;31 static/32 security checks and preservation pass.
+Independent postverification passes15 manifest files,31 local routes, six merged
+public assets and eight HTTPS served-widget cases. Actual Live had two successes
+with17.100s/17.102s of advancing decoded samples, plus one unclassified acquisition
+failure; C08 remains open. Auto new receipts and Snapshot4.5s with no ongoing reads
+pass. The source gate passed559 UI,
+304 app/3656assertions, eight packages,21 lifecycle/24 shipping;317 browser coverage
+is256 retained+61 renewed with scoped controller4/Camera7, not a new full run.
+
+Next diagnose the preserved C08 intermittent acquisition failure; two successes
+do not explain it. Application bytes are unchanged: decision0028 requires no
+repeat build, deployment or service restart. Continue only authorized ledger work;
+Progress stays no action, CameraStream/$state stays discussion only, other
+migrations and c6 stay separate. Do not infer phone/native/physical-print acceptance
+from source, guarded ship or bounded real-camera observation.
+
+## Historical: 092f84a test-only contract repair
 
 Source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132` passed559 UI/eight
 packages/app TypeScript but stopped at301 app passes/3 obsolete assertions;

@@ -1,6 +1,38 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: 092f84a test-only repair awaiting freeze/full gate
+## Current: PR89 scoped-verified; C08 intermittent acquisition risk remains
+
+Reviewed `ce065866c61eba159075da9d3bcbf642e9bd404d` merged through PR89 as
+`f0d7c178e59e72a9d1ed6324577d2e131ffb0f91`, retaining tree
+`a96e57fab0a5289d30ce406c68d3d6023e049d3d`. Guarded release
+`20260902-f0d7c17-pr89-20260902T105400-686862` explicitly restarted BOTH services:
+loaded/healthy/integrity pass,31 static/32 security checks and preservation pass,
+rollback not needed. Independent postverification passes15 manifest files,31 local
+routes, six merged public assets and eight HTTPS served-widget fixture cases.
+Actual Live succeeded twice:20.122s/20.123s observation windows contained17.100s/
+17.102s of advancing decoded samples, ending at547/502 decoded frames; the third
+attempt also reached452 presented callbacks. The first acquisition failed for an
+unclassified reason and remains C08 risk. Auto new receipts and Snapshot4.5s with
+no ongoing reads pass; three owned Live leases closed200 and all browsers/runners
+exited. This is scoped verification, not blanket Camera reliability acceptance.
+The deployed scope is0041 failure masking/footer status across current packages/
+compatibility paths, Heads inset, Snapshot/Live/Auto and the two scoped Live repairs;
+this does not deliver every migration or the separate c6 checkpoint.
+
+Exact source validation passed559 UI,304 app/3656assertions, eight deterministic
+packages,21 lifecycle/24 shipping. Retained+renewed browser coverage is317 cases
+(256+61), with independent controller4/Camera7 and explicit bindings. Earlier
+failed runs remain in VALIDATION; software, guarded ship and postverification are
+separate layers. Actual camera reads do not authorize printer controls or prove
+physical prints, phones, native PiP/clipboard or general device compatibility.
+
+Changed paths on this tail are only PROJECT_STATE, NEXT_AGENT, this HANDOFF,
+VALIDATION and widget-delivery. Next diagnose the preserved intermittent C08
+failure and retain all unrelated backlog. No additional app build,
+deployment or restart under0028. Preserve all55 IDs, unfinished Progress/migrations,
+F07 discussion, caps and c6 source/evidence; release only task-owned resources.
+
+## Historical: 092f84a test-only repair awaiting freeze/full gate
 
 Exact source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132`, tree
 `fc9db1af454cbc206c2b4adf4d621ea8f25cd463`, passed559 UI, eight package checks and

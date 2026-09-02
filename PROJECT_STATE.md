@@ -1,6 +1,36 @@
 # Project state
 
-## Current: 092f84a test-contract repair ready for a new candidate
+## Current: PR89 deployed and scoped-verified; intermittent Camera acquisition risk open
+
+PR89 merged as `f0d7c178e59e72a9d1ed6324577d2e131ffb0f91`, preserving independently
+reviewed `ce065866c61eba159075da9d3bcbf642e9bd404d` and tree
+`a96e57fab0a5289d30ce406c68d3d6023e049d3d`. Decision0041's static neutral
+acquisition-error skeletons/footer status, Heads balanced Copy inset, and
+service-owned Snapshot/Live/Auto with the two scoped Live repairs are deployed.
+The guarded receipt confirms BOTH services explicitly restarted, loaded, healthy
+and integrity-verified;31 static/32 security checks and preservation passed,
+with no rollback. Independent postverification passes15 manifest files,31 local
+routes, six merged public assets and eight HTTPS served-widget fixture cases.
+Actual HTTPS Live succeeded twice, with advancing decoded frames for17.100s and
+17.102s after first samples; one earlier acquisition failed for an unclassified
+reason. Auto acquired new snapshots and Snapshot stayed quiet for4.5s. C08 remains
+open; these successes do not establish reliability on every attempt.
+
+Independent exact-source validation passed559 UI,304 app/3656assertions, eight
+deterministic packages,21 lifecycle and24 shipping tests. Browser evidence is317
+covered cases via256 retained+61 renewed, plus four controller/seven Camera
+adversaries with input bindings, not one317-case full run. VALIDATION preserves
+earlier failures and distinct source/ship/post evidence. No phone, native clipboard/
+PiP, physical print or broader printer-control acceptance is claimed.
+
+This branch updates only five rollout records from exact merged f0d7c17; under
+decision0028 unchanged application bytes require no repeat build or deployment.
+Next diagnose C08's preserved intermittent acquisition failure and continue only
+authorized backlog work; no further app deployment belongs to this records tail.
+Preserve all55 ledger IDs and open migrations, Progress P01/P02/P03, F07 reactive
+class discussion, separate c6 checkpoint and unchanged repo byte caps.
+
+## Historical: 092f84a test-contract repair ready for a new candidate
 
 `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132` has independent exact source approval,
 but its required gate stopped at301 app passes/3 obsolete assertions after559 UI,

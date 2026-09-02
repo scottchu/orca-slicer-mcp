@@ -4,19 +4,32 @@ Current authority, 2026-09-02. Historical iteration checklists are not current
 completion claims. Status distinguishes delivered, source-only, partial,
 not-started and decision-pending. An audit or source checkpoint is not deployment.
 
-Accepted source and latest application deployment: PR87 `96e466e`,
-approved tree `37a232ad86069584b4ec32562d603e5c0d577530`.
-BOTH services were explicitly restarted and verified healthy/integral.
-Independent15 scoped served-byte cases pass;15 manifest files,10 dashboard HTTPS
-artifacts and11 validation hashes match. Combined compatibility uses exact
-active-release bytes, not HTTP. PR86 `8b995ee` remains the
-accepted thumbnail policy; no source-only Camera checkpoint is deployed.
+Accepted source and latest application deployment: PR89 `f0d7c17`, from reviewed
+`ce065866c61eba159075da9d3bcbf642e9bd404d`, tree
+`a96e57fab0a5289d30ce406c68d3d6023e049d3d`. BOTH services were explicitly restarted
+and verified healthy/integral;31 static/32 security checks and preservation pass.
+Independent scoped postverification passes15 manifest files,31 local routes,
+six merged public assets and eight HTTPS served-widget cases. Actual Live had two
+successful observations and one unclassified acquisition failure; C08 stays open.
+Auto new receipts and Snapshot4.5s without ongoing reads pass. Decision0041, Heads inset and
+the resumed Camera modes/Live repairs are shipped; the separate c6 checkpoint was
+not imported. PR86 `8b995ee` remains the accepted thumbnail policy.
 Evidence: active iteration VALIDATION/HANDOFF; decisions 0033–0041; source under
 `plugins/u1-print-studio/app/ui`; route mapping in `app/src/status-dashboard.ts`.
 Real phone, native OS focus/clipboard and physical-printer acceptance remain
 unverified unless explicitly recorded otherwise.
 
 ## Current execution order and all-route error coverage
+
+PR89's full source gate passed559 UI,304 app/3656assertions, eight deterministic
+packages,21 lifecycle/24 shipping. Browser coverage is317 cases (256 retained+
+61 renewed), not a full317-case run; independent controller4/Camera7 remain bound
+to their exact inputs. Next diagnose the preserved intermittent C08 acquisition
+failure; this five-file rollout tail requires no build/deployment under0028. Preserve every
+open request below: Progress and reactive-class work were not authorized, and
+remaining migrations/size/dock/Bed/Console features are not completed by this ship.
+
+### Historical 092f84a test-contract repair
 
 Source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132` passed559 UI/eight
 packages/app TypeScript, then stopped at301 app passes/3 obsolete assertions;
@@ -107,22 +120,27 @@ The separate blocked Camera checkpoint `c6cfb4e` integrates accepted `8b995ee` a
    acceptance, full regression, production-browser check or deployment yet.
    It is not a prerequisite for the observation/Heads release.
 
-The following matrix records historical delivered PR87/PR83 coverage. Its retained
-display/overlay evidence does not satisfy0041; renew each applicable route under
-the current acceptance contract below before declaring this request complete.
+## Current PR89 route coverage
+
+This matrix distinguishes deployed package coverage from installed plugin/phone
+acceptance. Source tests and exact shipped assets cover0041; independent post checks
+verify exact assets plus eight HTTPS Fans/Thermals/Heads/Queue fixture cases and
+bounded actual Camera modes. Other rows retain their recorded source-level behavior
+evidence. Existing mounted/plugin-retained bytes are not
+upgraded by HTTP deployment. Compatibility aliases remain supported, not retired.
 
 | Route/presentation | Delivered presentation | Current scoped evidence | Preserved acceptance |
 | --- | --- | --- | --- |
-| Lab overview/progress/jobs/job_history | PR87 static error frame | Author and independent geometry pass; deployed exact package | Same header/body/footer loading/error/unavailable; retained receipt |
-| Lab thermals/heads/queue/fans | PR87 static error frame | Author and independent geometry pass; deployed exact package | Same anatomy, no fake values, stopped animation, one error notice |
-| Lab bed_mesh | PR83 static initial/retained error | Regression only | Preserve renderer, mode, focus policy and original receipt |
-| Lab camera | Old variable status layout | Separate Camera author | Fixed status rows/media geometry; no fake FPS/time |
-| Focused Svelte thermals/heads/queue/fans | PR87 static initial and retained failures | Six author and eight independent cases pass; deployed exact packages | Initial failure static skeleton; retained data and domain receipts |
-| Focused Svelte camera | Deployed original service/renderer | Separate Camera author | Lifecycle/status/Retry and unchanged package caps |
-| Focused overview/progress/jobs/job_history/bed_mesh | PR87 legacy widget.html presentation repair | Five actual hosts independently pass; deployed exact asset | Per-view neutral structure, non-flow failure, no new acquisition |
-| Generic observation/MCP v1–v14, all nine views | PR87 legacy widget.html; v14 active | Nine views and known-only retention independently pass; deployed exact asset | Initial/retained failure parity for each selected view |
-| Generic camera v4–v10 / legacy camera v1–v3 | Registered readable camera-widget / legacy-camera-widget assets | Media frame is structurally fixed; header/shimmer gaps remain pending Camera scope | No claim of full Camera adoption; verify current aliases before retiring |
-| Combined status v3/v4 | PR87 legacy-widget.html; v4 active show_u1_status consumer | Six author and two independent cases pass; deployed exact asset | Initial status failure keeps static placeholders; non-flow notice, retained receipt |
+| Lab overview/progress/jobs/job_history | PR89 static neutral failures and adjacent footer status | Scoped source geometry/short-list tests; exact shipped light package | Hide failed telemetry/receipts, preserve successful empty/unknown |
+| Lab thermals/heads/queue/fans | PR89 neutral initial/failed-refresh presentation | Scoped source width/font/Heads hover tests; exact shipped light package | Static/inert skeletons, balanced Copy inset, stable footer |
+| Lab bed_mesh | PR89 neutral masking/footer with retained renderer | Source renderer identity/Retry focus tests; exact shipped Bed package | Hidden inert renderer, original orbit and guarded focus policy |
+| Lab camera | PR89 fixed Snapshot/Live/Auto and neutral failure/footer | Source synthetic service/geometry tests; exact shipped Camera Lab package | No network acquisition in Lab; no fake FPS/time |
+| Focused Svelte thermals/heads/queue/fans | PR89 neutral initial/failed-refresh presentation |61-case source renewal plus eight HTTPS served-byte fixture cases PASS | Failed Retry/footer/geometry and duplicate recovery; Heads44px/16px glyph/8px inset verified |
+| Focused Svelte camera | PR89 modes plus acknowledgement/mDNS-timeout repairs | Exact HTTPS bytes: two Live successes, one unclassified acquisition failure; Auto/Snapshot PASS | Service owns lifecycle; C08 intermittent acquisition risk remains open |
+| Focused overview/progress/jobs/job_history/bed_mesh | PR89 generic neutral skeleton/footer paths | Source actual-host/resize/short-body coverage; shipped widget.html | These remain legacy presentations, not completed Svelte migrations |
+| Generic observation/MCP v1–v14, all nine views | PR89 widget.html; v14 active | Source nine-view/alias cases; shipped registered resource bytes | Internal cache/order retained; failed values/receipts masked |
+| Generic camera v4–v10 / legacy camera v1–v3 | PR89 neutral media/header/footer failure paths | Scoped modern/legacy Camera alias tests; shipped resource bytes | Stable static failure/Retry; this does not migrate aliases to the Svelte mode switch |
+| Combined status v3/v4 | PR89 legacy-widget.html; v4 show_u1_status consumer | Source pending-Retry/font/viewport tests; shipped compatibility bytes | Mask failed telemetry; persistent adjacent footer status through Retry |
 
 Every applicable route must be tested at 320/390/desktop and 200% text. Compare
 header, body, footer and shell—not just body height. Initial errors retain static
@@ -145,29 +163,29 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | F04 src/lib/ui vs src/components | Decision pending | Decide location once; no unrequested mass move |
 | F05 generic semantic tokens | Not started; --u1 tokens remain | Inventory consumers and controlled alias transition |
 | F06 arrow functions | Adopted AGENTS | Apply to changed JS/TS; document genuine exceptions |
-| F07 component-owned folders/services | Partial; resumed real/synthetic Camera service source has focused evidence | Thin subscribers/renderers; final acceptance pending. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
+| F07 component-owned folders/services | Partial; PR89 delivers real/synthetic Camera service separation | Thin subscribers/renderers. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
 | F08 whole server/MCP SvelteKit migration | Decision pending | Agentic architecture review preserving peer subsystems and authority |
 | F09 self-contained widget HTML | Delivered packaging contract, not one giant source file | Preserve independent CSP-safe artifacts and byte budgets |
 | U01 density/grouping/consistent language | Partial; independent UIUX/domain audits complete | Implement findings per widget; audits alone are not fixes |
 | U02 smaller Refresh visual | Not started in delivered shared component | Compact visible glyph/control, 44px accessible target |
-| U03 small borderless Copy | Deployed PR87; balanced hover inset is resumed WIP | One44px-high color-row target,16px glyph, symmetric inset and clear focus/hover |
+| U03 small borderless Copy | PR89 deployed; scoped HTTPS served-byte verification PASS | One44px-high color-row target,16px glyph,8px symmetric inset; native clipboard acceptance separate |
 | U04 swatch + whole hex same line | Deployed PR87; supersedes ADR0039 stacking | Atomic row keeps390normal two columns; preserve exact served behavior |
 | U05 no orphan Copy row | Delivered PR84 | Preserve exact clipboard/busy/focus and zero-jump regressions |
 | U06 Generic PLA + material icon | Delivered PR81/PR84 | Preserve full material and exact RGB/RGBA/empty semantics |
-| L01 all loading states, no Waiting collapse | Partial: Lab and four focused roots | Include legacy routes in explicit error/loading matrix above |
+| L01 all loading states, no Waiting collapse | PR89 deployed across current Lab/focused/compatibility packages | Preserve explicit loading/failure route matrix; actual-device acceptance separate |
 | L02 every Lab has controls/Camera | Delivered PR67/69 basics | Extend closed retained-error cases consistently |
 | L03 fixed bottom Lab dock | Not started | Safe-area/reserved space, short viewport and 200% text/keyboard |
 | L04 compact/medium/full + MCP size | Not started | Closed size contract with distinct information hierarchy |
-| L05 all-widget stable acquisition-error presentation | Partial: old Bed/PR87 behavior delivered;0041 neutral skeleton/footer WIP unvalidated | Renew all routes including failed refresh, legacy/Camera and short-content/resize; overlay requirement superseded |
+| L05 all-widget stable acquisition-error presentation | PR89 deployed0041; source route matrix and scoped served-widget verification PASS | Static neutral failures, adjacent footer status, no stale telemetry; retain resize/short-content/Retry guards and C08 risk |
 | L06 variable list fixed height | Decision pending | Choose bounded scroll vs content height; do not infer from skeleton rule |
 | C01 fullscreen video continuity | Delivered focused software fix | Genuine phone/native PiP and physical stream remain unverified |
 | C02 Camera in Lab and SvelteKit | Delivered PR69/71 | Does not imply latest service/status repair delivered |
 | C03 connecting/disconnected icons/red dot | Source-only integrated checkpoint c6cfb4e | Resolve budget authority, integrate, independently verify |
-| C04 consistent two/three status slots | Resumed fixed Snapshot/Live/Auto source; final3 UI/23+2 browser passes | Preserve three controls, keyboard/focus and fixed geometry; full/exact/deployment gates pending |
+| C04 consistent two/three status slots | PR89 fixed Snapshot/Live/Auto deployed; scoped actual HTTPS modes verified | Preserve three controls/geometry; Auto obtains new snapshots, Snapshot stops ongoing reads; C08 risk separate |
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
-| C06 connection lifecycle service | Partial; resumed real/synthetic services have52 retained+5 renewed focused cases | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
+| C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Budget and independent/final integrated acceptance pending |
-| C08 served Camera still old | Delivery gap; ack/mDNS-timeout repairs reach20.4s Live in mixed candidate-UI/deployed-service check; final packages fit | Independent/full gates and exact served Live verification pending; PR87 still deployed |
+| C08 served Camera still old | PR89 exact bytes verified; intermittent Live acquisition risk remains open | Two successes advanced decoded frames for17.100s/17.102s; first failed acquisition unclassified. Diagnose it; no blanket reliability/phone acceptance |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |
@@ -178,7 +196,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | B04 animated 2D/3D switch | Delivered PR78 | Keyboard/reduced-motion and chart identity preserved |
 | B05 orbit grid expands/shrinks | Not started | Separate fixed fit/frustum from orbit; zoom remains independent |
 | B06 inset Z rail + endpoints/range in plot | Not started | Actual extrema vs padded axes, no duplicate bottom summary/overlap |
-| B07 Bed error collapse | Delivered Lab PR83 only | Preserve initial/retained frame and guarded Retry focus |
+| B07 Bed error collapse | PR89 neutral masking/footer in Lab and generic legacy Bed | Preserve initial/failed-refresh geometry and Lab guarded Retry focus; real Svelte migration stays open |
 | B08 real Bed Svelte migration | Source-only 194ea79 / 2338530 | Integrate current main; keyboard, fallback and 200% 2D labels |
 | X01 read-only Console | Not started | Bounded sanitized observation contract, no command input/send |
 | X02 Current Job Svelte | Source-only PR79 / 48f2060 | Integrate/remeasure; filename/state grouping, not duplicate percent |
@@ -190,12 +208,12 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | G02 role-separated delegation | Adopted AGENTS | Author cannot self-approve; disclose actual capacity limits |
 | G03 UIUX and printer-domain critique | Audits completed, implementation partial | Apply screenshot/domain findings; do not claim findings fixed |
 | G04 four project role definitions | Delivered PR82 | Native named-role loading unverified; role files/manual fallback explicit |
-| G05 merge/deploy before completion | Adopted guarded workflow | PR87 last deployed app; no source-only Camera work reported live |
+| G05 merge/deploy before completion | PR89 guarded merge/deployment and scoped postverification complete | Keep source/service/device layers separate; C08 intermittent failure and other backlog remain open |
 | G06 tmp/worktree/resource cleanup | Partial; ten redundant trees quarantined; current handles closed | Retain unique work; follow up per-run test evidence directories to avoid default cleanup loss |
 | G07 persistence/status/longest stage | Ongoing workflow | Report actual stage/blocker; continue authorized open queue |
 | G08 Chinese + English technical terms | Ongoing preference | Not a request to translate the application UI |
 
-## Evidence boundaries
+## Earlier evidence boundaries
 
 PR84: author 514 UI / 300 app / 3557 assertions / 21 lifecycle / 24 shipping /
 248 browser PASS; independent 36 targeted + four shared-consumer checks; final
