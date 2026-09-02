@@ -1,5 +1,49 @@
 # F0 dual-subsystem foundation validation
 
+## Heads PR81 accepted-main integration — focused renewal
+
+Preserved repair records commit `8f66edc`; ordinary accepted-main merge
+`b1c9a8ced0cd5012cdcb9b895bf64a22b0af8ce5`, tree
+`cff0c0512e03d4fd1e16c7cbf2581ea6e2254aba`, incorporates PR82 main
+`707a018a3e3c64b885bc1ece13f2795ae2bb546d`. Five additive continuity conflicts
+retain both histories under current versus historical headings. The new main
+changes only project-agent configuration/routing, its guide/test and records;
+it was independently reviewed and merged, not native-runtime verified.
+
+Actually run on the integrated candidate:
+
+- UI pinned Bun `bun run test -- src/lib/observation/ObservationLoading.test.ts`:
+  29/29 PASS; ignored log `test-results/heads-main-integration-focused.log`.
+- `uv run --no-project scripts/test_project_agents.py`: 3/3 PASS.
+- `git diff --exit-code 1e2e387 HEAD -- plugins .agents .github`: PASS.
+- `git diff --exit-code c9d69cb HEAD -- plugins
+  ':!plugins/u1-print-studio/app/ui/src/lib/observation/ObservationLoading.test.ts'
+  .agents .github`: PASS. Runtime, browser tests/harnesses, dependencies,
+  application build inputs and all packaged assets are unchanged.
+- `git diff --exit-code 1e2e387 HEAD -- scripts/check-repository.sh
+  scripts/u1_ship.py scripts/u1_service.py`: PASS; shipping guards unchanged.
+- `git diff --exit-code 707a018 HEAD -- .codex AGENTS.md
+  docs/project-agents.md scripts/test_project_agents.py`: PASS; accepted role
+  definitions/configuration test are integrated exactly.
+- `git merge-base --is-ancestor 707a018 HEAD`: PASS.
+- One-off read-only Bun identity/docs check: PASS, exact 14-path delta from
+  `c9d69cb` (six continuity records, four roles, AGENTS, guide, new config test,
+  repaired ObservationLoading test), six valid record headings/no conflict
+  markers, current iteration, all eight exact asset hashes/lengths against the
+  earlier independent receipt. Retained full browser log still has SHA-256
+  `13bea3f380b5e62f243eafaa65a90ba2246f79f2ae160fdf5a2e0de8c52ec4e8`
+  and `214 passed (1.5m)`.
+- `git diff --check`: PASS; the merge checkpoint was clean before this
+  records-only evidence tail.
+
+No repeated full browser/build/repository run was needed for this config/docs
+integration. The complete repaired-test repository gate at `1e2e387` and the
+unchanged application/browser evidence at `c9d69cb` remain separately scoped;
+final independent identity binding and every mandatory u1-ship gate are still
+required. All owned command sessions exited; no browser, fixture, watcher,
+service restart or printer connection was started. This is source/static
+evidence, not deployed-service, native agent-loading, phone or printer acceptance.
+
 ## PR81 local-gate repair — tests only
 
 Test checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d`, tree

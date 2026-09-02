@@ -10,6 +10,9 @@ and obtain separate exact source review and validation before guarded shipment.
 Existing mandatory u1-ship gates remain required. Then integrate and validate
 Bed Lab stable-error `c0323a4`, followed by Camera `4eb3106`'s explicit retry
 repair. Current Job PR79 and every other track remain preserved and unfinished.
+The ordinary merge is `b1c9a8c`; author focused29/config3 and exact application,
+asset and retained-browser-log identity checks pass. The final records-only tail
+must be included in independent exact-head approval, then pushed through PR81.
 
 ## Earlier Heads repair handoff
 

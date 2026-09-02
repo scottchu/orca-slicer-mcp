@@ -1,15 +1,18 @@
 # F0 dual-subsystem foundation handoff
 
-## Heads accepted-main integration — exact handoff pending
+## Heads accepted-main integration — author renewal complete
 
 The six inherited repair records are preserved in commit `8f66edc`. Ordinary
 integration of accepted PR82 main `707a018` adds only its project-agent
 configuration, routing/guide, focused configuration test and continuity records.
-Resolve additive records without replacing history or changing application
-inputs. Final focused tests, identity evidence, independent exact review and
-guarded delivery remain the next gates; no new deployment is claimed here.
+Merge `b1c9a8c` preserves additive records without changing application inputs.
+Focused29/config3 and exact delta/assets/retained browser-log checks pass; see
+VALIDATION. Independent final source review, validation and guarded delivery
+remain the next gates; no new deployment is claimed here.
 After Heads, resume Bed Lab `c0323a4`, Camera `4eb3106` retry repair, then all
 other preserved tracks. PR82 is merged, but native role invocation is unverified.
+All author command sessions exited. No browser, fixture, watcher or connection
+was started; user sessions, services and retained evidence were untouched.
 
 ## Earlier Heads repair handoff
 

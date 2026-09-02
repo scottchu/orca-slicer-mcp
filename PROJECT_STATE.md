@@ -2,8 +2,8 @@
 
 ## Current: resume Heads delivery after accepted project-role integration
 
-Accepted main `707a018a3e3c64b885bc1ece13f2795ae2bb546d` (PR82) is being
-ordinarily integrated into PR81, preserving both histories and all six Heads
+Accepted main `707a018a3e3c64b885bc1ece13f2795ae2bb546d` (PR82) is ordinarily
+integrated as `b1c9a8c` into PR81, preserving both histories and all six Heads
 repair records. PR82's four project roles passed independent static review and
 were merged; native named-role loading remains unverified. No service restart
 was needed for that configuration/docs-only change.
@@ -14,6 +14,9 @@ explicit same-live-scenario retry repair and remaining validation. Neither
 checkpoint is released. All other WIDGET_TRACKS remain open. The merged role
 configuration and its new focused test do not change widget application inputs;
 retained 214-browser evidence requires explicit final-head identity binding.
+Author renewal passes 29 focused UI tests, three project-role checks, the exact
+14-path delta allowlist and all eight asset identities. Final independent
+acceptance and guarded delivery remain pending; no service/printer claim.
 
 ## Earlier Heads repair checkpoint
 
