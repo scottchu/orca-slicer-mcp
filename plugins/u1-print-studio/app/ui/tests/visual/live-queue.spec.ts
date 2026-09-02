@@ -178,7 +178,13 @@ test('Queue initial wrong-view failure is bounded, retry and BFCache preserve on
   await expect(frame.getByRole('status')).toHaveCount(1);
   await expect(frame.locator('.widget-feedback')).toContainText('Could not load');
   await expect(frame.locator('[data-record] button,[data-record] a,[data-record] [tabindex],[aria-valuenow],time')).toHaveCount(0);
-  expect((await frame.locator('[data-record]').allTextContents()).map(text => text.replace(/\s+/g, ' ').trim())).toEqual(Array(3).fill('Added Wait at observation'));
+  expect(await frame.locator('[data-record]').evaluateAll(rows => rows.map(row => {
+    const copy = row.cloneNode(true) as Element;
+    copy.querySelectorAll('[aria-hidden="true"]').forEach(node => node.remove());
+    return copy.textContent!.replace(/\s+/g, ' ').trim();
+  }))).toEqual(Array(3).fill('Added Wait at observation'));
+  expect(await frame.locator('[data-record] [data-text-skeleton]').evaluateAll(nodes => nodes.every(node =>
+    node.getAttribute('aria-hidden') === 'true' && ['0', 'Model filename.gcode', 'Jan 0, 0000, 00:00:00 AM'].includes(node.textContent!)))).toBe(true);
   expect(await frame.locator('[data-loading-value],[data-skeleton]').evaluateAll(nodes => nodes.length > 0 && nodes.every(node =>
     [null, '::before', '::after'].every(pseudo => getComputedStyle(node, pseudo).animationName === 'none')))).toBe(true);
   const failed = await bounds(frame);
