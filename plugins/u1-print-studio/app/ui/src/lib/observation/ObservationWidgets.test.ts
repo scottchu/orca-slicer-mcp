@@ -32,6 +32,29 @@ const cases = [
 ] as const;
 
 describe('observation lab widgets', () => {
+  test.each([0, 1, 20])('direct Queue failure keeps %s structural rows and recovers', async (count) => {
+    const observation = { ...queueLabFixture, items: Array.from({ length: count }, (_, index) => ({ ...queueLabFixture.items[0], position: index + 1 })) };
+    const view = render(QueueWidget, { observation });
+    await view.rerender({ observation, failure: 'error' });
+    expect(view.container.querySelectorAll('[data-record]')).toHaveLength(count);
+    expect(view.container.querySelectorAll('time')).toHaveLength(0);
+    await view.rerender({ observation, failure: undefined });
+    expect(view.container.querySelectorAll('[data-loading-value]')).toHaveLength(0);
+  });
+  test.each(cases)('%s directly masks failed refresh telemetry and recovers', async (component, observation, title) => {
+    const view = render(component as never, { observation } as never);
+    const before = view.container.querySelector('[data-widget-body]')!.textContent;
+    await view.rerender({ observation, failure: 'error' } as never);
+    expect(view.container.querySelector('[data-widget-body]')!.textContent).not.toBe(before);
+    expect(view.container.querySelector('[data-footer-status]')).toHaveAttribute('aria-label', 'Could not load ' + title);
+    expect(view.container.querySelector('.widget-feedback')).toBeNull();
+    expect(view.container.querySelectorAll('time,[aria-valuenow],[data-color-value] button')).toHaveLength(0);
+    expect(view.container.querySelector('[data-observed-meta]')).not.toHaveTextContent('Observed');
+    expect(view.container.querySelectorAll('[data-skeleton],[data-loading-value]')).not.toHaveLength(0);
+    expect(view.queryByRole('button', { name: /^Copy / })).toBeNull();
+    await view.rerender({ observation, failure: undefined } as never);
+    expect(view.container.querySelector('[data-widget-body]')!.textContent).toBe(before);
+  });
   test.each([false, null])('empty/unknown Heads action slots have no focusable Copy placeholder: %s', (presence) => {
     const observation = structuredClone(headsLabFixture);
     observation.items = observation.items.map((item) => ({ ...item, presence }));

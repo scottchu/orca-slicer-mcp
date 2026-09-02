@@ -632,25 +632,26 @@
       }
 
       .notice {
-        display: none;
-        position: absolute;
-        right: 16px;
-        bottom: 72px;
-        z-index: 8;
-        max-width: calc(100% - 32px);
-        padding: 11px 13px;
-        border-radius: 14px;
-        color: #8b281f;
-        background: rgba(224, 82, 82, 0.11);
+        display: grid;
+        align-content: center;
+        flex: 0 1 auto;
+        width: max-content;
+        min-width: 0;
+        min-height: 2.4em;
+        color: var(--muted);
         font-size: 12px;
-        line-height: 1.45;
+        line-height: 1.2;
+        text-align: right;
       }
-
-      .notice.is-visible {
-        display: block;
-      }
+      .notice:not(.is-visible) { visibility: hidden; }
+      .notice:empty::before { content: "Could not load"; }
+      .action-feedback { position: absolute; right: 16px; bottom: 76px; max-width: calc(100% - 32px); padding: 8px 11px; border-radius: 10px; background: #25282c; color: white; font-size: 12px; }
+      .action-feedback:empty { display: none; }
       [data-status-failed="true"] [data-loading="true"].skeleton-target::after,
       [data-status-failed="true"] [data-loading="true"] .skeleton-target::after { animation: none; }
+      .camera[data-acquisition-failed="true"] .camera-skeleton { opacity: 1; visibility: visible; transition: none; }
+      .camera[data-acquisition-failed="true"] .camera-skeleton span::after { animation: none; }
+      .camera[data-acquisition-failed="true"] img, .camera[data-acquisition-failed="true"] video, .camera[data-acquisition-failed="true"] .camera-bottom, .camera[data-acquisition-failed="true"] .camera-empty { visibility: hidden; }
 
       .physical-boundary {
         color: var(--muted);
@@ -865,8 +866,7 @@
           </div>
         </div>
 
-        <div class="notice" id="notice" role="alert"></div>
-
+        <div class="action-feedback" id="action-feedback" role="status"></div>
         <div class="footer">
           <div class="freshness skeleton-target" id="freshness" data-loading="true">
             <strong id="observed">Waiting for observation</strong><br />
@@ -880,6 +880,7 @@
                 <path d="M21 20v-6h-6" />
               </svg>
             </button>
+            <div class="notice" id="notice" role="status"></div>
             <button class="refresh-button" id="refresh" type="button" title="Refresh now" aria-label="Refresh now">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6" />
@@ -990,8 +991,33 @@
       const formatTemperature = (value) =>
         Number.isFinite(value) ? `${Math.round(value)}°` : "—";
 
-      const setNotice = (message = "") => {
-        elements.notice.textContent = message;
+      let cameraFailed = false;
+      let failureLayout = null;
+      const statusRegions = () => [elements.statusRow, elements.progressSection, ...elements.metrics, elements.freshness];
+      const clearFailureAllocation = () => {
+        for (const region of statusRegions()) { region.style.minHeight = ''; region.style.width = ''; }
+        failureLayout = null;
+      };
+      const failureSignature = () => [elements.dashboard.getBoundingClientRect().width, getComputedStyle(elements.filename).fontSize, getComputedStyle(elements.observed).fontSize];
+      const resizeFailure = () => {
+        if (!failureLayout) return;
+        const next = failureSignature();
+        if (next.some((value, index) => value !== failureLayout[index])) clearFailureAllocation();
+      };
+      const failureResize = typeof ResizeObserver === 'function' ? new ResizeObserver(resizeFailure) : null;
+      const failureStyles = typeof MutationObserver === 'function' ? new MutationObserver(resizeFailure) : null;
+      const observeFailureStyles = () => failureStyles?.observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'class'], subtree: true, childList: true });
+      observeFailureStyles();
+      for (const node of [elements.dashboard, elements.filename, elements.observed]) failureResize?.observe(node);
+      window.addEventListener('resize', resizeFailure);
+      window.addEventListener('pagehide', () => { failureResize?.disconnect(); failureStyles?.disconnect(); });
+      window.addEventListener('pageshow', () => { for (const node of [elements.dashboard, elements.filename, elements.observed]) failureResize?.observe(node); observeFailureStyles(); resizeFailure(); });
+      const setNotice = (message = "", acquisition = false) => {
+        if (!acquisition) { document.querySelector('#action-feedback').textContent = message; return; }
+        if (message) document.querySelector('#action-feedback').textContent = '';
+        elements.notice.textContent = message ? "Could not load" : "";
+        elements.notice.setAttribute('aria-label', message);
+        elements.notice.title = message;
         elements.notice.classList.toggle("is-visible", Boolean(message));
       };
 
@@ -1008,16 +1034,42 @@
           else target.removeAttribute("aria-hidden");
         }
         if (loading) elements.progressTrack.removeAttribute("aria-valuenow");
+        else {
+          clearFailureAllocation();
+          if (!cameraFailed) setNotice('', true);
+          setCameraFailure(cameraFailed);
+        }
       };
 
       const setStatusFailure = (message) => {
-        setStatusLoading(!toolOutput);
+        const regions = [elements.statusRow, elements.progressSection, ...elements.metrics, elements.freshness];
+        const heights = regions.map(region => region.getBoundingClientRect().height);
+        const freshnessWidth = elements.freshness.getBoundingClientRect().width;
+        failureLayout = failureSignature();
+        setStatusLoading(true);
+        regions.forEach((region, index) => { if (heights[index]) region.style.minHeight = `${heights[index]}px`; });
+        if (freshnessWidth) elements.freshness.style.width = `${freshnessWidth}px`;
+        for (const element of [elements.stateLabel, elements.percent, elements.layer, elements.filename, elements.tool, elements.toolTemp, elements.bed, elements.bedTarget, elements.elapsed, elements.remaining, elements.observed, elements.nextCheck]) { element.textContent = ''; element.removeAttribute('title'); }
+        elements.progressFill.style.width = '0%';
         elements.dashboard.dataset.statusFailed = "true";
         elements.dashboard.setAttribute("aria-busy", "false");
-        setNotice(`${message}${toolOutput ? " · showing previous observation" : ""}`);
+        setNotice(message, true);
+        setCameraFailure(cameraFailed);
+      };
+
+      const setCameraFailure = (failed) => {
+        cameraFailed = failed;
+        const masked = failed || elements.dashboard.dataset.statusFailed === 'true';
+        elements.camera.dataset.acquisitionFailed = String(masked);
+        for (const element of [elements.snapshot, elements.liveStream, elements.cameraDetail]) element.setAttribute('aria-hidden', String(masked));
+        const controls = elements.camera.querySelector('.camera-bottom'); controls.inert = masked; controls.setAttribute('aria-hidden', String(masked));
+        if (masked) elements.cameraDetail.removeAttribute('title');
+        if (failed) setNotice('Could not load camera', true);
+        else if (elements.dashboard.dataset.statusFailed !== 'true') setNotice('', true);
       };
 
       const setCameraState = (state, loading = false) => {
+        if (state === 'unavailable') setCameraFailure(true);
         const labels = {
           loading: "Camera loading",
           snapshot: "Camera snapshot ready",
@@ -1157,6 +1209,7 @@
       };
 
       elements.snapshot.addEventListener("load", () => {
+        setCameraFailure(false);
         elements.camera.classList.add("has-snapshot");
         const mode = livePreview
           ? relayRendering
@@ -1257,6 +1310,7 @@
           return;
         }
 
+        setCameraFailure(true);
         if (livePreview && elements.camera.classList.contains("has-snapshot")) {
           const mode = fallbackDetail ? "fallback" : "loading";
           setCameraMode(mode);
@@ -1341,6 +1395,7 @@
           });
           applyCameraFrame(response);
         } catch (error) {
+          setCameraFailure(true);
           if (!elements.camera.classList.contains("has-snapshot")) {
             setCameraMode("unavailable");
             setCameraState("unavailable");
@@ -1371,6 +1426,7 @@
       const markFirstRenderedFrame = (now = performance.now()) => {
         if (!livePreview || !livePeerConnection || relayRendering) return false;
         relayRendering = true;
+        setCameraFailure(false);
         clearTimeout(firstRenderedFrameTimer);
         firstRenderedFrameTimer = null;
         clearTimeout(snapshotFallbackTimer);
@@ -1462,6 +1518,7 @@
       };
 
       const activateSnapshotFallback = (reason = "relay unavailable") => {
+        setCameraFailure(true);
         if (!livePreview) return;
         fallbackDetail = fallbackMessage(reason);
         relayRendering = false;
@@ -1605,9 +1662,9 @@
         if (refreshing || !hosted) return;
         const showSkeletons = !toolOutput;
         refreshing = true;
-        if (showSkeletons) setStatusLoading(true);
+        if (showSkeletons && elements.dashboard.dataset.statusFailed !== 'true') setStatusLoading(true);
         elements.refresh.classList.add("is-refreshing");
-        setNotice("");
+        if (elements.dashboard.dataset.statusFailed !== 'true') setNotice("");
         try {
           await bridgeReady;
           const response = await rpcRequest("tools/call", {
@@ -1621,12 +1678,13 @@
           scheduleRefresh(15);
         } finally {
           refreshing = false;
-          if (showSkeletons && toolOutput) setStatusLoading(false);
+          if (showSkeletons && toolOutput && elements.dashboard.dataset.statusFailed !== 'true') setStatusLoading(false);
           elements.refresh.classList.remove("is-refreshing");
         }
       };
 
       const updateCountdown = () => {
+        if (elements.dashboard.dataset.statusFailed === 'true') { elements.nextCheck.textContent = ''; return; }
         if (!autoRefresh || !refreshDeadline) {
           elements.nextCheck.textContent = "Automatic refresh paused";
           return;

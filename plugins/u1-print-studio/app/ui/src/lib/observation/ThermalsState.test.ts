@@ -47,7 +47,7 @@ test('refresh retains data/source time and terminal states supersede feedback', 
     expect(screen.getAllByRole('status')).toHaveLength(1);
     expect(screen.getByRole('status')).not.toHaveTextContent('Lab fixture refreshed');
     if (kind === 'loading') expect(container.querySelector('.widget-feedback')).toBeNull();
-    else expect(container.querySelector('.widget-feedback')).toHaveTextContent(kind === 'error' ? 'Could not load Thermals' : 'Thermals unavailable');
+    else expect(container.querySelector('[data-footer-status]')).toHaveAttribute('aria-label', kind === 'error' ? 'Could not load Thermals' : 'Thermals unavailable');
     expect(container.textContent).not.toContain('220°');
   }
 });

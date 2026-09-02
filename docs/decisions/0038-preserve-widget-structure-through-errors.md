@@ -4,6 +4,17 @@
 - Status: accepted presentation direction; first Bed Lab implementation pending
 - Milestone: F0 / UI-003 and UI-004
 
+## Superseded acquisition-error presentation
+
+Decision0041 supersedes the visible retained-data/receipt and floating-notice
+rules below: initial and failed-refresh acquisition errors use static neutral
+skeletons and persistent status beside footer Refresh/Retry. Internal cache,
+acceptance ordering/epochs and mounted renderer/media ownership remain; retained
+content is hidden, inert and inaccessible during failure. Successful empty,
+unknown, unsupported and age-stale states, local-action feedback and the guarded
+Retry focus policy remain distinct. The earlier rollout evidence below proves
+only its original bytes, not implementation of0041 across all routes.
+
 ## Decision
 
 Loading and initial acquisition failure retain the widget's own neutral

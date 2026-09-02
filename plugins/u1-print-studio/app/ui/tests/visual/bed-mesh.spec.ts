@@ -73,7 +73,8 @@ for (const width of widths) {
     await expect(page.getByRole('radio', { name: '3D surface' })).toHaveCSS('width', '44px');
     await page.getByRole('radio', { name: '2D grid' }).click();
     await expect(page.locator('[data-bed-mesh-2d]')).toBeVisible();
-    await expect(page.locator('[aria-live="polite"]')).toHaveText('2D view');
+    await expect(frame.locator('[aria-live="polite"]')).toHaveText('2D view');
+    await expect(page.getByRole('status')).toHaveText('Bed Mesh loaded');
     const after = await frame.boundingBox();
     expect(after).not.toBeNull();
     for (const key of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(before![key] - after![key])).toBeLessThan(0.1);

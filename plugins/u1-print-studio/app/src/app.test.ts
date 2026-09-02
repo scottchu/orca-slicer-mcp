@@ -312,7 +312,7 @@ describe("U1 status MCP App contract", () => {
     expect("text" in resource ? resource.text : "").toBe(WIDGET_HTML);
     expect(LEGACY_WIDGET_HTML).not.toBe(WIDGET_HTML);
     expect(createHash("sha256").update(LEGACY_WIDGET_HTML).digest("hex")).toBe(
-      "6ee3d9aecc9e320e8a03fff4ad78d470140af36d7b35d649c1c8c078f34a6f6b"
+      "7181accfffb51057e5fcc4448961f0e7090834d6c17b91d910fff23979d1b0dd"
     );
     const focusedLegacy = await client.readResource({
       uri: LEGACY_FOCUSED_WIDGET_URIS[0],
@@ -348,7 +348,7 @@ describe("U1 status MCP App contract", () => {
     expect(LEGACY_CAMERA_WIDGET_HTML).not.toBe(CAMERA_WIDGET_HTML);
     expect(
       createHash("sha256").update(LEGACY_CAMERA_WIDGET_HTML).digest("hex")
-    ).toBe("c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203");
+    ).toBe("0c4b47cb836c80e1ecd61b28b07b191bfe49a4ea5672af641a0af0f8baef6f53");
 
     for (const legacyUri of LEGACY_CAMERA_WIDGET_URIS) {
       const legacy = await client.readResource({ uri: legacyUri });
@@ -956,10 +956,12 @@ describe("instrument-strip observation widget contract", () => {
     expect(WIDGET_HTML).toContain("provenance");
   });
 
-  test("uses header observation information and one actions-only footer", () => {
+  test("uses header observation information and one footer with error status beside Refresh", () => {
     expect(WIDGET_HTML).toContain('class="instrument-footer u1-footer"');
     expect(WIDGET_HTML).toContain('class="instrument-info u1-meta"');
-    expect(WIDGET_HTML).toContain('class="instrument-footer u1-footer"><div class="u1-primary-actions"><button class="refresh u1-action u1-action--round"');
+    expect(WIDGET_HTML).toContain('class="instrument-footer u1-footer"><div class="u1-primary-actions">${footerStatus()}<button class="refresh u1-action u1-action--round"');
+    expect(WIDGET_HTML).toContain('const footerStatus = (message = "") => `<span class="refresh-error" role="status" aria-label="${escapeHtml(message)}">${message ? "Could not load" : ""}</span>`');
+    expect(WIDGET_HTML).toContain('<footer class="instrument-footer u1-footer"><div class="u1-primary-actions">${footerStatus(message)}${action}</div></footer>');
     expect(WIDGET_HTML).toContain("Observed ${date.toLocaleTimeString");
     expect(WIDGET_HTML).toContain("Observation time unavailable");
     expect(WIDGET_HTML).toContain('stale: "Stale"');

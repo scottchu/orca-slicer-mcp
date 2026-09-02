@@ -1,5 +1,131 @@
 # Project state
 
+## Current: 092f84a test-contract repair ready for a new candidate
+
+`092f84a9d5f0b3e282eaa4a30304e9c86cb0e132` has independent exact source approval,
+but its required gate stopped at301 app passes/3 obsolete assertions after559 UI,
+eight packages and app TypeScript passed; Python gates were not reached. The author
+renewed only `app.test.ts`'s two legacy hash pins and adjacent footer-status
+contract:29PASS/281assertions, with374 other tracked app files byte-identical.
+Freeze this test-only repair and records, then renew the full required gate and
+exact review. PR87 remains deployed;55 ledger IDs, Progress no-action and the
+unimplemented reactive-class discussion remain unchanged. See VALIDATION.
+
+## Historical: minimal TypeScript repair and f0c5e41 gate
+
+Exact candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
+`9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, has independent source-review
+APPROVE with no findings, as reported by the coordinator. The earlier P1/P2
+repairs are accepted by that source review. Required validation is incomplete:
+compiler/AST,559 UI tests and five focused/three Lab deterministic package checks
+passed, then app TypeScript failed. App tests and Python lifecycle/shipping gates
+did not run. Missing installed app `three`/`@types/three` and a type-only Camera
+`./session` import missing NodeNext's `.js` suffix are separate causes.
+
+Independent verification passed61 targeted browser and four fresh controller
+adversaries. Its per-case retention record supports256 prior passes plus61 renewed
+cases (317 covered, not one317-test full run). Seven earlier independent Camera
+cases remain scoped to69 matching Camera/media inputs. VALIDATION preserves the
+failed gate, exact hashes and retention limits. Source approval is not shipping
+acceptance, and does not automatically approve subsequent edits.
+
+The author corrected only `transport.ts:1` to type-only `./session.js` and restored
+eight already-locked packages. App TypeScript, one actual HTTP/host/transport
+test, nine transport tests and Camera build verification pass. All eight widget
+artifacts match f0c5e41 byte-for-byte; transpiled JavaScript and package/lock files
+are unchanged. This is focused author evidence, not a renewed full gate.
+Next freeze a new candidate, renew the full required repository gate and independent
+exact review before guarded `u1-ship`. No new merge/deployment is claimed; PR87
+remains deployed. All55 ledger IDs, caps and separate c6 checkpoint remain intact;
+Progress remains status-only with no implementation authorization.
+
+## Historical: focused repair after candidate e186c41 validation
+
+Candidate `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac` was not accepted. Its
+required repository run passed compiler/AST then stopped at557 UI passes and one
+obsolete Bed selector; later gates did not run. Its single full browser run had
+301 passes and12 failures: four Bed selectors and eight Thermals fixtures still
+expected the prior error presentation. Seven independent Camera adversaries pass.
+These failed-run records are preserved in VALIDATION.
+
+The current working tree repairs two separate review findings: a successful
+explicit duplicate receipt after failed Retry now restores `ready`, while a
+duplicate notification preserves failure; combined legacy initial-error Retry
+keeps the static failure/footer until accepted data. Bed tests distinguish local
+chart feedback from phase announcements. Thermals tests distinguish successful
+age-stale receipts from timeout/offline failures and verify subsequent recovery.
+Focused author evidence is45 UI tests, compiler/AST, five package tests and22
+unique browser cases through14 retained plus eight renewed passes. This is not a
+clean full-suite pass or independent approval of the repair.
+
+The four affected live bundles/pins are coherent: Fans91362, Thermals91973,
+Heads96944, Queue92936 bytes; focused production aggregate462985. Camera and
+private lab bundles retain their prior hashes;39 scoped Camera inputs match the
+failed candidate exactly. Caps, dependencies and shipping guards are unchanged.
+Next: freeze a new candidate, obtain independent repair review/verification, run
+the full required repository gate with its assigned owner, then complete guarded
+`u1-ship`. PR87 remains deployed; no new merge/deployment or device acceptance is
+claimed. Preserve all delivery-ledger requirements and the separate c6 checkpoint.
+
+## Historical: resumed footer/skeleton checkpoint
+
+The user resumed branch `codex/u1-footer-error-skeletons` at saved remote
+checkpoint `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`, based on accepted
+`80280568589fb8cd2df7f8ab30c2f1faddcb3769`. The coordinator verified the current
+checkout was clean and fetched/checked out that exact branch. The prior worktree
+is archived and unregistered according to the user; no new cleanup is requested.
+Preserve existing modifications, other worktrees and private evidence. The
+earlier pack-up stop is superseded by this implementation request. This is an
+unvalidated WIP checkpoint, not an approved, merged or deployable candidate.
+Read the current section of
+[HANDOFF](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/HANDOFF.md)
+for the exact changed-path groups, remaining work and next smallest check;
+[VALIDATION](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/VALIDATION.md)
+records only commands actually completed.
+
+Current UI request: all acquisition failures show static neutral skeletons and
+persistent footer status beside Refresh, not stale telemetry or floating error
+overlays; Heads Copy keeps balanced hover inset and one inline color group.
+Phase1 now has attributed focused Svelte evidence: compiler/AST,158 unit cases,
+12 package tests and49 unique browser cases through retained+renewed runs, not a
+clean full-suite pass. Direct callers, Queue short/long allocation, font/width
+resize and Bed retained renderer/focus were repaired; full evidence is in
+VALIDATION. Source preflight identified four findings subsequently repaired with
+focused renewal; this is not independent approval of an exact frozen candidate.
+The working candidate remains uncommitted. Phase2 now repairs two observed Live
+failures: raw Dashboard acknowledgements rejected by an MCP-only parser, then a
+10-second mDNS candidate timeout closing already-connected, fresh video. The
+acknowledgement-only compatibility adapter preserves strict frame/open envelopes;
+the typed candidate-timeout exception requires the same live epoch/session,
+observed connected state and a frame received less than 5 seconds ago. Invalid
+acknowledgements and all existing deadlines remain unchanged. Fixed Snapshot /
+Live / Auto modes are service-owned; Auto repeatedly reads snapshots and is
+selected automatically after Live failure. Components subscribe/render.
+
+Attributed phase2 evidence is 55 service tests, with 52 retained and 5 renewed
+synthetic tests after the final synthetic service change, plus one actual
+HTTP-handler/host/transport integration test. This is 57 covered cases, not one
+57-test run. A bounded actual-camera check substituted a 91,063-byte candidate UI
+into an isolated browser using the unchanged deployed host/backend: it remained
+Live at 20.4s with 444 decoded frames at 1920x1080, beyond the slow candidate
+deadline. This is mixed candidate/deployed-service evidence, not a new deployment,
+exact final-renderer acceptance or phone acceptance. Earlier failed traces are
+retained in VALIDATION. Legacy/Camera phase1 evidence remains scoped there.
+
+Renderer author now reports 3 UI, 23+2 targeted browser and 12 package tests
+(138 assertions), compiler/AST and package checks passing on source-frozen bytes.
+Camera Lab79375/80000 and Live89770/100000 fit unchanged caps; private aggregate
+928543 and focused production aggregate462929. Next: record the frozen candidate
+commit and assign one full-regression owner, obtain
+separate independent review/verification, and complete guarded `u1-ship` delivery.
+Widget byte caps are unchanged repository guards, not asserted OpenAI limits.
+The unrelated Camera
+`c6cfb4e` checkpoint remains separate, source-only and blocked. PR87 below remains
+the deployed application; the following older current headings are historical.
+
+The latest Progress question requested status only; P01/P02 remain not started
+and P03 decision pending. All 55 delivery-ledger IDs remain accounted for.
+
 PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
 Camera remains separately blocked; Progress redesign is still unfinished.
 The complete current route/evidence matrix is

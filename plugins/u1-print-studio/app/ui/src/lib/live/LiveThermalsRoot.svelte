@@ -24,7 +24,7 @@
   let current = $state(untrack(() => controller.getState()));
   const observation = $derived(current.observation);
   const unavailable = $derived(!!observation && (observation.state === 'unavailable' || observation.state === 'unsupported'));
-  const placeholder = $derived(!observation || unavailable);
+  const placeholder = $derived(!observation || unavailable || !!current.failure);
   const notice = $derived(current.feedback || (unavailable ? 'Thermals ' + (observation?.state === 'unsupported' ? 'endpoint unsupported' : 'unavailable') : ''));
   const loading = $derived(current.phase === 'loading');
   const environment = $derived(observation?.environment);
@@ -36,7 +36,7 @@
   });
 </script>
 <StateAnnouncement text={announcement} />
-<WidgetStateSurface phase={unavailable ? 'unavailable' : current.phase}>
+<WidgetStateSurface phase={current.failure ? 'error' : unavailable ? 'unavailable' : current.phase}>
 <WidgetShell label="Thermals" busy={loading || current.refreshing}>
   <WidgetHeader title="Thermals">
     {#snippet icon()}<Icon name="thermals" />{/snippet}
@@ -51,9 +51,9 @@
         {#if observation && !placeholder}<ThermalReadings readings={observation.readings} />{:else}<ThermalsSkeleton />{/if}
       </Stack>
   </WidgetBody>
-  <WidgetFooter>
+  <WidgetFooter message={current.failure || unavailable ? notice : ''}>
     {#snippet actions()}{#if loading}<Skeleton shape="action" />{:else}<IconButton label="Refresh Thermals" icon={RefreshCw} onclick={() => { void controller.refresh(); }} busy={current.refreshing} />{/if}{/snippet}
   </WidgetFooter>
-  <FeedbackOverlay message={notice} announce={false} />
+  <FeedbackOverlay message={current.failure || unavailable ? '' : notice} announce={false} />
 </WidgetShell>
 </WidgetStateSurface>

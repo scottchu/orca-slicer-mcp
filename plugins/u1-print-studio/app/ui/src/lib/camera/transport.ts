@@ -1,4 +1,4 @@
-import type { CameraCandidate, CameraFrameResult, CameraOffer, CameraTransport } from './session';
+import type { CameraCandidate, CameraFrameResult, CameraOffer, CameraTransport } from './session.js';
 
 /** Supplied by the shared HostRpc. Camera owns no message listener or URL. */
 export type CameraRpcPort = { callTool: (name: string, argumentsValue: Record<string, unknown>) => Promise<unknown> };
@@ -11,6 +11,13 @@ const envelope = (value: unknown) => {
   const root = object(value);
   if (root.isError === true) invalid();
   return { content: object(root.structuredContent), meta: object(root._meta ?? root.meta ?? {}) };
+};
+// The dashboard tools endpoint returns these acknowledgements directly; MCP
+// wraps the same payload in structuredContent. Frame/offer metadata stays strict.
+const acknowledgement = (value: unknown) => {
+  const root = object(value);
+  if (root.isError === true) invalid();
+  return object(root.structuredContent === undefined ? root : root.structuredContent);
 };
 const timestamp = (value: unknown): string => {
   if (typeof value !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/.test(value)) return invalid();
@@ -75,7 +82,7 @@ const candidate = (value: CameraCandidate): CameraCandidate => {
 };
 export const cameraTransport = (rpc: CameraRpcPort): CameraTransport => {
   const close = async (sessionId: string): Promise<void> => {
-    const { content } = envelope(await rpc.callTool('close_u1_camera_stream', { sessionId: token(sessionId) }));
+    const content = acknowledgement(await rpc.callTool('close_u1_camera_stream', { sessionId: token(sessionId) }));
     if (typeof content.closed !== 'boolean') invalid();
   };
   return {
@@ -95,12 +102,12 @@ export const cameraTransport = (rpc: CameraRpcPort): CameraTransport => {
       }
     },
     answer: async (sessionId, sdp) => {
-      const { content } = envelope(await rpc.callTool('answer_u1_camera_stream', { sessionId: token(sessionId), sdp: text(sdp, 1, 96 * 1024) }));
+      const content = acknowledgement(await rpc.callTool('answer_u1_camera_stream', { sessionId: token(sessionId), sdp: text(sdp, 1, 96 * 1024) }));
       if (content.accepted !== true) invalid();
     },
     candidates: async (sessionId, values) => {
       if (!values.length || values.length > 16) invalid();
-      const { content } = envelope(await rpc.callTool('add_u1_camera_ice_candidates', { sessionId: token(sessionId), candidates: values.map(candidate) }));
+      const content = acknowledgement(await rpc.callTool('add_u1_camera_ice_candidates', { sessionId: token(sessionId), candidates: values.map(candidate) }));
       if (content.accepted !== true || !Number.isSafeInteger(content.candidateCount) || Number(content.candidateCount) < 0 || Number(content.candidateCount) > values.length) invalid();
     },
     close,

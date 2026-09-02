@@ -14,7 +14,7 @@ describe('Bed initial and retained failures', () => {
     expect(view.container.querySelector('[data-chart-frame]')).toBeTruthy();
     expect(view.container.querySelectorAll('[data-skeleton="chart"]')).toHaveLength(1);
     expect(view.container.querySelectorAll('[data-widget-header],[data-widget-footer]')).toHaveLength(2);
-    expect(view.container.querySelectorAll('canvas,time,button,[role="status"]')).toHaveLength(0);
+    expect(view.container.querySelectorAll('canvas,time,button')).toHaveLength(0);
     expect(view.container.querySelectorAll('[aria-live="polite"]')).toHaveLength(1);
     expect(view.container.querySelector('[aria-live="polite"]')).toHaveTextContent(failure === 'error' ? 'Could not load bed mesh' : 'Bed mesh unavailable');
     expect(view.container.textContent).not.toMatch(/Loading|11 × 11|-0\.175|0\.136/);
@@ -28,14 +28,14 @@ describe('Bed initial and retained failures', () => {
     await fireEvent.click(button); expect(onretry).toHaveBeenCalledOnce();
     await view.rerender({ failure: undefined, retrying: true, refreshing: true, onretry });
     expect(view.getByRole('button')).toBe(button); expect(button).toHaveAttribute('aria-disabled', 'true');
-    expect(view.getByRole('status')).toHaveTextContent('Refreshing Bed Mesh');
+    expect(view.getByRole('status')).toHaveTextContent('Could not load bed mesh');
     await fireEvent.click(button); expect(onretry).toHaveBeenCalledOnce();
     await view.rerender({ observation: bedMeshLabFixture, retrying: false, refreshing: false, onretry });
     expect(view.getByRole('button', { name: 'Reset bed mesh view' })).toBe(button);
     expect(document.activeElement).toBe(button);
     expect([...view.container.querySelectorAll('[data-widget-shell],[data-widget-header],[data-chart-frame],[data-widget-footer]')]).toEqual(nodes);
   });
-  it('preserves retained renderer/receipt and no callback means no Retry', async () => {
+  it('preserves masked renderer, clears receipt and no callback means no Retry', async () => {
     const view = render(BedMeshWidget, { observation: bedMeshLabFixture });
     const receipt = view.container.querySelector('[data-observed-meta]');
     const priorText = receipt!.textContent;
@@ -45,9 +45,13 @@ describe('Bed initial and retained failures', () => {
     expect(renderer).toHaveBeenCalledTimes(calls);
     expect(view.container.querySelector('[data-chart-frame]')).toBe(frame);
     expect(view.container.querySelector('[data-observed-meta]')).toBe(receipt);
-    expect(receipt!.textContent).toBe(priorText);
-    expect(view.container.querySelector('[aria-live="polite"]')).toHaveTextContent('Refresh failed');
+    expect(receipt!.textContent).not.toBe(priorText);
+    expect(receipt!.querySelector('[data-loading-value]')).toBeTruthy();
+    expect(view.container.querySelector('[data-retained-layer]')).toHaveProperty('inert', true);
+    expect(view.container.querySelector('[data-retained-layer]')).toHaveAttribute('aria-hidden', 'true');
+    expect(view.container.querySelector('[data-skeleton="chart"]')).toBeTruthy();
+    expect(view.container.querySelector('[aria-live="polite"]')).toHaveTextContent('Could not load bed mesh');
     expect(view.queryByRole('button', { name: 'Retry bed mesh' })).toBeNull();
-    expect(view.getByRole('button', { name: 'Reset bed mesh view' })).toBeTruthy();
+    expect(view.queryByRole('button', { name: 'Reset bed mesh view' })).toBeNull();
   });
 });

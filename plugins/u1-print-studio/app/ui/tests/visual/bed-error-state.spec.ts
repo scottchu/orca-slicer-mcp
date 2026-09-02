@@ -51,8 +51,8 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
       await selectPhase(page, phase);
       await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
       await expect(page.locator('[data-widget-shell] canvas')).toHaveCount(0);
-      await expect(page.getByRole('status')).toHaveCount(0);
-      await expect(page.locator('[data-chart-frame] [aria-live]')).toHaveText(phase === 'error' ? 'Could not load bed mesh' : 'Bed mesh unavailable');
+      await expect(page.getByRole('status')).toHaveCount(1);
+      await expect(page.getByRole('status')).toHaveText(phase === 'error' ? 'Could not load bed mesh' : 'Bed mesh unavailable');
       expect(await bounds(page)).toEqual(original);
       expect(await frame!.evaluate((node) => node === document.querySelector('[data-chart-frame]'))).toBe(true);
       expect(await header!.evaluate((node) => node === document.querySelector('[data-widget-header]'))).toBe(true);
@@ -94,10 +94,11 @@ for (const mode of ['3d', '2d']) {
     const original = await bounds(page);
     const contexts = await webGLCount(page);
     await selectPhase(page, 'retained-error');
-    await expect(page.locator('[data-chart-frame] [aria-live]')).toHaveText('Refresh failed');
+    await expect(page.getByRole('status')).toHaveText('Could not load bed mesh');
     expect(await renderer!.evaluate((node) => node.isConnected)).toBe(true);
     if (canvas) expect(await canvas.evaluate((node) => node.isConnected)).toBe(true);
-    expect(await page.locator('[data-widget-header]').textContent()).toBe(receipt);
+    expect(await page.locator('[data-widget-header]').textContent()).not.toBe(receipt);
+    await expect(page.locator('[data-retained-layer]')).toHaveAttribute('aria-hidden', 'true');
     expect(await bounds(page)).toEqual(original);
     expect(await webGLCount(page)).toBe(contexts);
     await page.clock.install();
@@ -117,7 +118,7 @@ for (const mode of ['3d', '2d']) {
     await selectPhase(page, 'unavailable');
     await page.clock.fastForward(400);
     await expect(page.getByLabel('Preview state', { exact: true })).toHaveValue('unavailable');
-    await expect(page.locator('[data-chart-frame] [aria-live]')).toHaveText('Bed mesh unavailable');
+    await expect(page.getByRole('status')).toHaveText('Bed mesh unavailable');
   });
 }
 
@@ -153,7 +154,7 @@ for (const move of ['Tab', 'Shift+Tab', 'pointer', 'mode', 'phase', 'history', '
     await page.getByRole('button', { name: 'Retry bed mesh', exact: true }).click();
     if (move === 'Tab' || move === 'Shift+Tab') await page.keyboard.press(move);
     else if (move === 'pointer') await page.getByLabel('Scenario', { exact: true }).click();
-    else if (move === 'mode') await page.getByRole('radio', { name: '3D surface', exact: true }).click();
+    else if (move === 'mode') await page.getByLabel('View', { exact: true }).selectOption('3d');
     else if (move === 'phase') await selectPhase(page, 'unavailable');
     else if (move === 'history') await page.evaluate(() => { history.back(); });
     else await page.evaluate(() => { window.dispatchEvent(new Event('blur')); });

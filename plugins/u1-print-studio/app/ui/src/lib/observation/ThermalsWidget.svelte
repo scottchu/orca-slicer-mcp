@@ -14,8 +14,8 @@
   const current = $derived(resolve());
 </script>
 
-<ObservationFrame title="Thermals" iconName="thermals" observedAt={current.kind === 'ready' ? current.observation.sourceObservedAt : null} freshness={current.kind === 'ready' ? current.observation.freshness : 'unknown'} stateKind={failure ?? current.kind} placeholder={current.kind !== 'ready'} {onretry} refreshing={current.kind === 'ready' && current.refreshing}>
-  {#if current.kind === 'ready'}
+<ObservationFrame title="Thermals" iconName="thermals" observedAt={current.kind === 'ready' ? current.observation.sourceObservedAt : null} freshness={current.kind === 'ready' ? current.observation.freshness : 'unknown'} stateKind={failure ?? current.kind} placeholder={current.kind !== 'ready' || !!failure} {onretry} refreshing={current.kind === 'ready' && current.refreshing}>
+  {#if current.kind === 'ready' && !failure}
     <ThermalReadings readings={current.observation.readings} />
   {:else}<ThermalsSkeleton />{/if}
 </ObservationFrame>

@@ -31,13 +31,17 @@ printer environments support the described behavior.
   normalize the printer independently. Camera frames retain their own
   acquisition time.
 - **OBS-008:** Current focused cards separate information above actions: useful
-  titles, observation time, freshness, failures, and content are above one
-  bottom action-only refresh/retry footer. Permission policy remains enforced
+  titles, observation time, freshness and content are above one bottom
+  refresh/retry footer with a persistent adjacent acquisition-error status.
+  Decision0041 supersedes the former action-only footer and top-area failure
+  rule: initial and failed-refresh acquisition errors show static neutral
+  skeletons with no visible or accessible old telemetry, no floating error
+  overlay and no header/body/footer/shell height jump. Permission policy remains enforced
   without repeated visible read-only labels or provenance/current-reading
-  boilerplate. Stale/offline/missing source time and refresh failures stay
-  explicit in the information area; unimplemented domains do not render
+  boilerplate. Successful age-stale/offline/missing-time states remain explicit
+  in the information area; acquisition errors use the footer. Unimplemented domains do not render
   decorative charts as measured data. Host loading is bounded and malformed
-  or missing delivery yields top-area explanatory/reopen guidance and, when
+  or missing delivery yields static neutral content with footer guidance and, when
   authorized by the existing workflow, a bottom retry action, not perpetual waiting.
 - **OBS-009:** Bed Mesh is an on-demand operations-adapter read projected through
   the shared observation store, with independent acquisition time, 15-second
@@ -67,12 +71,16 @@ printer environments support the described behavior.
   accent; changing filament color cannot change active status. Swatch/hex remain
   exact.
   Unknown color stays neutral with no copy action; valid hex has an accessible
-  bottom Copy action with truthful feedback. Refresh stays below information.
+  inline Copy action with truthful feedback. Refresh stays below information.
   Decision0039's latest refinement keeps swatch, whole natural hex and Copy
   on one line. Copy has a small borderless 16px glyph inside a 44px accessible
   target; hover/focus and exact clipboard feedback remain clear. Narrower cards
   fall to one column using a public font-relative minimum rather than wrapping
   the swatch, truncating hex, overlapping targets or orphaning Copy.
+  Decision0041 adds balanced hover padding from the existing card inset while
+  retaining the whole inline group, 16px glyph, 44px target and clear focus.
+  Acquisition failures mask displayed material/thermal values and receipts;
+  internal cache/order and independent domain timestamps remain unchanged.
   Loading/ready geometry, unknown/empty behavior and focus remain stable.
 - **OBS-011:** All pending focused widgets remain in the active iteration's
   durable completion matrix when new feedback arrives. Apply the selected white
@@ -93,8 +101,10 @@ printer environments support the described behavior.
   unsupported endpoint and unavailable acquisition. Show reported queue state,
   total count, at most 100 ordered safe basename rows, explicit omissions,
   optional reported added time and observed waiting duration, never print ETA
-  or an advancing clock. Receipt/freshness/failure information is above the
-  bottom Refresh action. Reject invalid or unsafe data even in hidden rows;
+  or an advancing clock. Receipt/freshness information is above bottom Refresh;
+  acquisition failure masks prior rows/receipts with static neutral skeletons
+  and persistent adjacent footer status under0041. Retained stale empty in the
+  store is not a successful empty UI after failed acquisition. Reject invalid or unsafe data even in hidden rows;
   IDs, paths, raw metadata/failures and credentials do not leave the adapter.
   Decision 0029 fixes integration/acceptance; no queue or file mutation is added.
 - **OBS-013:** One independently timed, demand-only environment observation
@@ -107,7 +117,9 @@ printer environments support the described behavior.
   component not reported, endpoint unsupported, unavailable and stale. Never
   infer fan health/fault from commanded speed versus RPM or use purifier desired
   temperature as a Cavity target. Information and independent freshness stay
-  above one bottom Refresh; no fan/purifier/thermal control is added.
+  above one bottom Refresh. Decision0041 masks prior values/receipts on acquisition
+  failure and locates persistent status beside Refresh, without changing cache,
+  ordering or successful age-stale semantics. No fan/purifier/thermal control is added.
 - **OBS-014:** Current Job and Job History are separate independently timed,
   demand-only application-store domains. `jobs` uses only the fixed bounded
   print_stats/virtual_sdcard query; `job_history` uses only the fixed descending
@@ -123,7 +135,9 @@ printer environments support the described behavior.
   statuses never do. Missing/partial, unknown, known empty, unsupported,
   unavailable and stale remain distinct. Each compact white card keeps its own
   information/freshness above one bottom Refresh; no pagination, row action,
-  mutation or printer control is added. Decision 0025 fixes exact semantics.
+  mutation or printer control is added. Acquisition failure uses0041's neutral
+  masking/footer status; internal retained state, valid empty/unknown and
+  successful age-stale evidence remain distinct. Decision 0025 fixes exact semantics.
 - **OBS-015:** Overview is one compact read-only composition of the exact eight
   accepted focused projections: Progress, Thermals, Heads, Current Job, Job
   History, Queue, Fans and Bed Mesh. Explicit Overview demand acquires main
@@ -183,9 +197,21 @@ printer environments support the described behavior.
   small camera-icon tile/title at top left; state/measured FPS/frame time in the
   white header above and outside the genuine image, with readable narrow
   wrapping. Display/live/snapshot controls stay bottom right and remain working
-  and accessible; any overflow menu exposes real PiP/Go Live/Close actions.
-  Rejection feedback stays above. No grid, tint, photo information overlay or
-  redundant snapshot footer is added. This supersedes the former bottom-left
+  and accessible. Snapshot / Live / Auto form a fixed
+  three-mode toggle; Live failure automatically selects Auto. The user-selected
+  one-word Auto label describes repeated accepted snapshots, not continuous
+  video: one read at a time, with the next scheduled 1.5 seconds after completion.
+  Snapshot stops recurring work and reads once; choosing Live from Auto retries
+  Live. Same-mode selection is idempotent. The fixed controls remain reachable
+  during error/connection, support keyboard selection and do not steal focus
+  when the service changes mode. Camera connection lifecycle remains service-owned;
+  components subscribe and render. Hide/dispose cancel owned work; resume keeps
+  the selected Auto mode without reopening Live. Local display rejection remains separate from
+  acquisition failure. Decision0041 places the existing snapshot Refresh beside
+  persistent acquisition-error status in an always-present footer; it does not
+  duplicate the action. Failed acquisition masks old media/telemetry with static
+  neutral skeletons. No grid, tint or photo information overlay is added.
+  This supersedes the former bottom-left
   information exception; information is above actions. Do not truncate time/FPS
   or shrink 44-pixel controls on narrow views. Snapshot/fallback time belongs to the
   accepted displayed JPEG's server receipt time; live time belongs to evidenced
@@ -309,7 +335,16 @@ printer environments support the described behavior.
   services. Observation and camera resources share one generated design-system
   fragment. Camera snapshot acquisition and decode terminate successfully or
   truthfully within twelve seconds, keep only one acquisition in flight, reject
-  stale completions, and retain a previously accepted frame across retries.
+  stale completions, and retain a previously accepted frame internally across
+  retries. Decision0041 masks that frame during acquisition failure until new
+  accepted evidence recovers the presentation; retention is not visible success.
+  Only answer/candidate/close acknowledgements accommodate the existing raw
+  Dashboard HTTP and wrapped MCP result shapes; frame/open envelopes remain
+  strict. A supplemental candidate's typed 10-second timeout may preserve Live
+  only for the current epoch/session, observed connected state and an accepted
+  frame received less than 5 seconds ago. Invalid/rejected acknowledgements
+  remain failures; first-frame 8s, stall 5s and disconnect 3s deadlines remain.
+  Late acknowledgements cannot establish Live, clear failure or restore old work.
   Same-document fullscreen transitions preserve the existing media session.
   Heads and Overview present filament presence before material metadata: loaded
   retains sanitized material/color, known empty suppresses contradictory
@@ -354,7 +389,9 @@ printer environments support the described behavior.
   the generic embed scaffold. Bed Mesh 2D and 3D occupy the exact same
   responsive 4:3 `ChartFrame` `DOMRect` at 320/390/590/720 CSS-pixel widths,
   preserve reported samples and actual-mm labels, use icon-only 44-pixel bottom
-  controls and non-flow feedback overlays, and contain no explanatory prose in
+  controls and non-flow local-action feedback. Acquisition failures instead use
+  decision0041's persistent adjacent footer status and neutral skeletons, with
+  retained renderers hidden/inert/inaccessible. They contain no explanatory prose in
   card flow. At those widths, 3D HTML axis/value labels are at least 12 CSS
   pixels, visible and non-overlapping, while the projected surface covers at
   least 70% of chart width and 42% of chart height at the normal default
@@ -430,8 +467,9 @@ printer environments support the described behavior.
   fixture marked and network-free, with strict domain validation and no raw or
   private identity. Shared tokens plus one header/body/footer inset owner keep
   cards compact and content-driven at 320/390/590/720; information precedes one
-  bottom 44-pixel icon action and overlay feedback cannot change intrinsic
-  height. One authoritative feedback state/timer makes the latest action replace
+  bottom 44-pixel icon action. Local-action overlay feedback cannot change intrinsic
+  height;0041 acquisition status occupies a reserved footer slot and persists
+  independently of transient feedback. One authoritative local-action feedback state/timer makes the latest action replace
   every earlier message immediately. Async actions publish intent before
   awaiting and may settle only while their action generation remains current;
   stale success/failure cannot overwrite newer intent. Canonical titles and the Progress/Thermals/Heads/Jobs/History/Queue/
@@ -576,19 +614,22 @@ durable-monitor claim.
   skeleton compositions remain zero-raw; seven existing ready-body debts remain
   frozen. Camera follows separately with the same controls and synthetic-only
   media, not the production signaling widget. See decisions 0032 and 0033.
-  Decision0038 adds a bounded Bed Lab error-state foundation: initial failure
-  retains the widget's static neutral structure with a non-flow notice; retained
-  refresh failure keeps known chart data and its original receipt. Retry stays
-  in its existing bottom slot. No loading animation or busy claim persists
+  Decision0041 supersedes0038's visible retained-error data and overlay notice:
+  initial and failed-refresh acquisition errors retain static neutral structure
+  with persistent status beside footer Retry. Internal known chart data/receipt
+  and mounted renderer identity survive while hidden, inert and inaccessible.
+  Retry stays in its existing bottom slot. No loading animation or busy claim persists
   after failure. Empty and unsupported states remain semantically distinct.
   A successful 2D Retry transfers focus to the selected mode radio only while
   the initiating action still owns active-document focus; user focus movement,
   mode/phase changes and stale work cancel recovery. Reset remains disabled in
   2D, while successful 3D Retry keeps the same enabled Reset focused.
   The same full-frame contract applies to every Lab and served widget,
-  including legacy compatibility/MCP routes: initial error/unavailable keeps
-  static content and receipt placeholders, a consistent non-flow notice and
-  the existing Retry slot; retained failure preserves real content and receipts.
+  including legacy compatibility/MCP and Camera routes: initial acquisition
+  error and failed refresh keep static public content/receipt placeholders and
+  adjacent footer status, hiding old content and receipts. Successful unknown,
+  unsupported, empty and age-stale states remain distinct; internal cache/epoch/
+  ordering and local Copy/PiP/fullscreen feedback are not acquisition failure.
   Loading-to-error and ready-to-retained-error shell/header/body/footer bounds
   must remain equal at supported widths and 200% text, without acquisition by
   a skeleton. Unsupported capability stays distinct from missing/error data.
@@ -602,7 +643,9 @@ durable-monitor claim.
   prevent new raw feature HTML/style/transport debt. Each widget gains a
   shape-matched loading state without fake values or focusable actions,
   aria-busy plus one state announcement, reduced-motion support and retained
-  known data during refresh. Thermals is the first independently shippable
+  known data during healthy pending refresh; after acquisition failure0041 masks
+  that data and keeps neutral failure presentation during Retry until accepted
+  new evidence. Thermals is the first independently shippable
   migration; all-nine skeleton/gallery and remaining ready migrations stay
   explicitly pending until separately evidenced. See decision 0033.
   Its reusable `PercentageBackground` leaf accepts value/maximum, a strictly

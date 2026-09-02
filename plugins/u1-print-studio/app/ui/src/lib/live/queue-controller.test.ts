@@ -28,7 +28,7 @@ describe('Print Queue shares reviewed observation lifecycle', () => {
     if (variant === 'freshness') { next.structuredContent.module.freshness = 'stale'; next.structuredContent.module.state = 'stale'; }
     notify(next); const accepted = controller.getState().observation;
     reject(); await pending; expect(controller.getState().observation).toBe(accepted); expect(controller.getState().refreshing).toBe(false);
-    expect(controller.getState().feedback).toBe(variant === 'duplicate' ? 'Refresh failed · showing previous observation' : '');
+    expect(controller.getState().feedback).toBe(variant === 'duplicate' ? 'Could not load Print Queue' : '');
     const retry = controller.refresh(); resolve(liveQueueResult(1, 16, '2026-09-01T12:00:16.000Z')); await retry;
     expect(controller.getState()).toMatchObject({ observation: { version: 16 }, refreshing: false, feedback: '' }); controller.dispose();
   });

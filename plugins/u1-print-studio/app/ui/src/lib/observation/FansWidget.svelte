@@ -17,8 +17,8 @@
   };
   const current = $derived(resolve());
 </script>
-<ObservationFrame title="Fans & Air" iconName="fan" observedAt={current.kind === 'ready' ? current.observation.sourceObservedAt : null} freshness={current.kind === 'ready' ? current.observation.freshness : 'unknown'} stateKind={failure ?? current.kind} placeholder={current.kind !== 'ready'} {onretry} refreshing={current.kind === 'ready' && current.refreshing}>
-  {#if current.kind === 'ready'}
+<ObservationFrame title="Fans & Air" iconName="fan" observedAt={current.kind === 'ready' ? current.observation.sourceObservedAt : null} freshness={current.kind === 'ready' ? current.observation.freshness : 'unknown'} stateKind={failure ?? current.kind} placeholder={current.kind !== 'ready' || !!failure} {onretry} refreshing={current.kind === 'ready' && current.refreshing}>
+  {#if current.kind === 'ready' && !failure}
     <Stack>
       <InfoPair reserve="label">
         {#snippet label()}<Label text="Purifier" tone="muted" />{/snippet}

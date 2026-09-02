@@ -1,5 +1,110 @@
 # Next agent
 
+## Freeze the 092f84a test-only contract repair
+
+Source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132` passed559 UI/eight
+packages/app TypeScript but stopped at301 app passes/3 obsolete assertions;
+Python gates were not reached. Only `app.test.ts` now renews two legacy pins and
+adjacent footer-status assertions:29PASS/281assertions,374 other tracked app files
+unchanged. Commit the new candidate, renew exact review and the full required gate;
+retain the failed run and scoped browser evidence. No ship yet: PR87 remains
+deployed, all55 IDs persist, Progress and reactive-class work remain unimplemented.
+
+## Historical: minimal NodeNext/dependency repair after f0c5e41
+
+Candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
+`9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, has coordinator-attributed
+independent exact source APPROVE with no findings. Its full required repository
+gate remains failed: compiler/AST,559 UI and five focused/three Lab deterministic
+package checks passed, then app TypeScript stopped on missing installed
+`three`/`@types/three` and Camera's type-only `./session` lacking `.js` under
+NodeNext. App tests and Python lifecycle/shipping were not reached.
+
+The author's correction is complete: only type-only `./session.js` changed;
+frozen install restored eight existing locked packages. App TypeScript, one
+HTTP/host/transport case, nine transport cases and Camera build verification pass.
+All eight widget artifacts and transpiled JavaScript are byte-identical; package
+and both lockfiles are unchanged. Next freeze the new SHA, then renew the full required repository
+gate and independent exact review. Retain the61 targeted browser passes, four
+fresh controller adversaries and prior Camera7 only when exact input/behavior
+binding supports it;317 browser cases means256 retained plus61 renewed, not a
+clean317-case full run. No automatic full-browser repeat for handoff is requested.
+No `u1-ship` gate is waived. Preserve the failed logs and all55 ledger IDs;
+PR87 remains deployed, c6 remains separate and Progress remains no action.
+
+## Historical: e186c41 review repairs
+
+The current working tree contains focused repairs on
+`e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac`; do not deploy that rejected candidate.
+Freeze the new candidate after reviewing this diff and the current HANDOFF /
+VALIDATION sections, then assign independent repair verification and the complete
+required repository gate. The earlier gate stopped at557 UI passes / one Bed
+selector failure; the one full browser run was301 pass /12 fail. Preserve those
+logs and the seven passing independent Camera adversaries. Do not repeat an
+unaffected full browser suite solely for handoff; all mandatory `u1-ship` gates
+remain unchanged.
+
+Author repairs restore `ready` after a successful duplicate RPC while duplicate
+notifications cannot clear failed Retry, and preserve the combined legacy initial
+error during Retry. Renewed Bed selectors retain both local and phase assertions;
+Thermals explicitly tests age-stale success, timeout/offline neutral failure and
+fresh recovery. Evidence:45 UI passes, compiler/AST, five package passes and22
+browser cases covered as14 retained plus eight renewed passes. The new input/log
+manifest and failure classifications are in VALIDATION; this is author evidence,
+not independent approval. Four live bundle pins are updated; Camera and private
+lab artifacts are unchanged. Next delivery must use the exact newly approved SHA.
+
+Preserve existing changes, delivery-ledger backlog, all c6 separation and byte
+caps. No Progress implementation was authorized in this repair. No new deployment
+occurred, and PR87 remains the served baseline.
+
+## Historical: resumed WIP branch
+
+The coordinator verified a clean current checkout, fetched and checked out
+`codex/u1-footer-error-skeletons` at remote checkpoint
+`f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`, based on
+`80280568589fb8cd2df7f8ab30c2f1faddcb3769`. The old worktree's archive and
+unregistration are user-reported; do not recreate its cleanup, discard existing
+changes, force checkout or delete other worktrees. The prior pack-up stop is
+historical. Complete this WIP before considering it for shipping.
+Start with the current [HANDOFF](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/HANDOFF.md)
+and [VALIDATION](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/VALIDATION.md).
+No full regression or independent exact approval exists for these uncommitted
+bytes. Phase1 Svelte evidence is compiler/AST,158 unit,12 package and49 unique
+browser cases retained+renewed; see VALIDATION for failures, renewals and hashes.
+The reported packages/pins fit unchanged caps at their recorded phase1 identity;
+subsequent Camera edits require renewed affected packaging/evidence.
+
+Next smallest action: record the frozen candidate commit and begin the assigned
+required regression. Final Camera renderer has3 UI,23+2 targeted browser and12
+package tests/138 assertions, compiler/AST and package checks passing; Lab79375,
+Live89770 and private aggregate928543 fit unchanged caps. Actual Live diagnosis and the two
+scoped service repairs now have author evidence: raw HTTP acknowledgement
+compatibility, then preservation of connected/fresh Live on a typed supplemental
+candidate timeout. Frame/open validation, invalid-ack failure and all deadlines
+remain unchanged. Fixed Snapshot / Live / Auto modes have service-owned effects;
+Auto is the user's one-word label for repeated snapshot reads. The source-only
+renderer has its final package/geometry evidence in VALIDATION; independent exact
+review, full regression and guarded delivery remain.
+
+The 55 service-test run retains 52 cases after synthetic-service changes; five
+renewed synthetic cases give 57 covered cases, not one 57-test run. One actual
+HTTP handler -> host -> Camera transport test passes. The real-camera diagnostic
+uses a 91,063-byte candidate UI with the deployed host/backend: Live persisted to
+20.4s, 444 decoded frames at 1920x1080, through the confirmed 10-second mDNS delay.
+That is mixed evidence, not a new deployment or final exact-renderer acceptance.
+Retain earlier failed diagnostics and phase1 evidence as scoped in VALIDATION.
+
+Keep one expensive frozen full-run owner and separate reviewer/validator. The
+four earlier preflight findings have focused author repairs, not exact approval.
+Freeze only completed, focused-verified bytes, then
+run the required full regression once under its assigned owner; independent
+source review and targeted verification precede guarded PR merge/deployment with
+both-service restart. Agent handoff alone does not invalidate retained evidence.
+Project byte caps remain unchanged repo guards, not asserted OpenAI limits.
+Preserve the separate source-only blocked `c6cfb4e` checkpoint and all ledger backlog.
+The latest Progress request is status-only: do not start P01/P02/P03 in this slice.
+
 PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
 Camera remains separately blocked; Progress redesign is still unfinished.
 The complete current route/evidence matrix is

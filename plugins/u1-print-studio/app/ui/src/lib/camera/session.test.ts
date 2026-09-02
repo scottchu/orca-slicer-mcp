@@ -76,6 +76,21 @@ describe('injected real-camera session ownership (no host, device or network)', 
     expect(app.session.state().snapshot).toBeNull();
   });
 
+  it('keeps acquisition failure through retry and clears it only after accepted decoded data', async () => {
+    const app = setup();
+    await app.session.refreshSnapshot();
+    app.transport.frame.mockRejectedValueOnce(new Error('fixture unavailable'));
+    await app.session.refreshSnapshot();
+    expect(app.session.state()).toMatchObject({ snapshot, failure: 'snapshot', refreshing: false });
+    const pending = deferred<boolean>(); app.decode.mockReturnValueOnce(pending.promise);
+    const retry = app.session.refreshSnapshot(); await flush();
+    expect(app.session.state()).toMatchObject({ snapshot, failure: 'snapshot', refreshing: true });
+    pending.resolve(true); await retry;
+    expect(app.session.state()).toMatchObject({ snapshot, failure: null, refreshing: false });
+    app.session.dispose();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
   it('expires decode at1.5s without replacing the retained snapshot', async () => {
     const app = setup(); await app.session.refreshSnapshot();
     const decoded = deferred<boolean>(); app.decode.mockReturnValue(decoded.promise);
@@ -242,4 +257,48 @@ describe('injected real-camera session ownership (no host, device or network)', 
     right.peers[0].events.frame({ kind: 'presented', count: 1, at: 0 }); expect(right.session.state().phase).toBe('live');
     right.session.dispose(); await flush(); expect(vi.getTimerCount()).toBe(0);
   });
+  it('keeps a proven connected stream when a supplemental candidate reaches its deadline', async () => {
+    const app = setup(); const candidate = deferred<void>(); app.transport.candidates.mockReturnValue(candidate.promise);
+    await app.session.goLive(); const events = app.peers[0].events;
+    events.connection('connected'); events.candidate({ candidate: 'candidate:fixture.local', sdpMid: '0', sdpMLineIndex: 0 }); await flush();
+    for (let count = 1; count <= 10; count++) { events.frame({ kind: 'presented', count, at: count * 1000 }); await vi.advanceTimersByTimeAsync(1000); }
+    expect(app.session.state()).toMatchObject({ mode: 'live', phase: 'live' });
+    expect(app.transport.close).not.toHaveBeenCalled();
+    candidate.resolve(); await flush(); expect(app.session.state().phase).toBe('live');
+    await vi.advanceTimersByTimeAsync(5000); expect(app.session.state()).toMatchObject({ mode: 'auto', phase: 'fallback' });
+    app.session.dispose(); await flush(); expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it.each(['unobserved', 'rejected'] as const)('does not waive candidate %s failure without proven connectivity', async kind => {
+    const app = setup(); const candidate = deferred<void>(); app.transport.candidates.mockReturnValue(candidate.promise);
+    await app.session.goLive(); const events = app.peers[0].events;
+    if (kind === 'rejected') events.connection('connected');
+    events.candidate({ candidate: 'candidate:fixture', sdpMid: '0', sdpMLineIndex: 0 }); await flush();
+    for (let count = 1; count <= 10; count++) { events.frame({ kind: 'presented', count, at: count * 1000 }); if (kind === 'rejected' && count === 10) candidate.reject(new Error('Invalid Camera response')); await vi.advanceTimersByTimeAsync(1000); }
+    expect(app.session.state()).toMatchObject({ mode: 'auto', phase: 'fallback' });
+    expect(app.transport.close).toHaveBeenCalledOnce(); app.session.dispose();
+  });
+
+  it('selects real periodic Auto snapshots and stops all recurring work in Snapshot', async () => {
+    const app = setup(); await app.session.selectMode('auto');
+    expect(app.session.state()).toMatchObject({ mode: 'auto', phase: 'fallback', failure: null });
+    expect(app.transport.frame).toHaveBeenCalledTimes(1); await app.session.selectMode('auto');
+    expect(app.transport.frame).toHaveBeenCalledTimes(1); await vi.advanceTimersByTimeAsync(1500);
+    expect(app.transport.frame).toHaveBeenCalledTimes(2); expect(app.transport.open).not.toHaveBeenCalled();
+    await app.session.selectMode('snapshot'); expect(app.transport.frame).toHaveBeenCalledTimes(3);
+    await vi.advanceTimersByTimeAsync(10000); expect(app.transport.frame).toHaveBeenCalledTimes(3);
+    app.session.dispose(); expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('cancels a pending Live offer on mode switch, releases its late lease and resumes Auto after pagehide', async () => {
+    const app = setup(); const opened = deferred<CameraOffer>(); app.transport.open.mockReturnValue(opened.promise);
+    const live = app.session.selectMode('live'); await flush(); await app.session.selectMode('auto');
+    opened.resolve(offer); await live; await flush();
+    expect(app.peers).toHaveLength(0); expect(app.transport.close).toHaveBeenCalledExactlyOnceWith('opaque-viewer');
+    expect(app.session.state().mode).toBe('auto'); app.session.pageHide(); const reads = app.transport.frame.mock.calls.length;
+    await vi.advanceTimersByTimeAsync(10000); expect(app.transport.frame).toHaveBeenCalledTimes(reads);
+    await app.session.pageShow(); await flush(); expect(app.session.state().mode).toBe('auto');
+    expect(app.transport.open).toHaveBeenCalledTimes(1); app.session.dispose(); expect(vi.getTimerCount()).toBe(0);
+  });
+
 });

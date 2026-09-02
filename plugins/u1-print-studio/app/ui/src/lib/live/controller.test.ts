@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createFansController } from './controller';
+import { acquisitionFailure, createFansController } from './controller';
 import { liveFansResult } from '../../../tests/fixtures/live-fans';
 const setup = () => {
   let notify = (_value: unknown) => {};
@@ -11,6 +11,13 @@ const setup = () => {
 };
 afterEach(() => vi.useRealTimers());
 describe('live Fans controller', () => {
+  it.each(['receipt', 'materials', 'environment'] as const)('masks explicit failed %s receipts but preserves successful age-stale and not-requested data', (key) => {
+    const base = { version: 1, connectionEpoch: 1, receivedAt: '2026-09-02T12:00:00.000Z', state: 'stale', freshness: 'stale' };
+    expect(acquisitionFailure({ ...base, [key]: { state: 'stale', reason: null } })).toBeNull();
+    expect(acquisitionFailure({ ...base, [key]: { state: 'unknown', reason: 'not_requested' } })).toBeNull();
+    for (const reason of ['network', 'timeout', 'malformed', 'unauthorized']) expect(acquisitionFailure({ ...base, [key]: { state: 'stale', reason } })).toBe('error');
+    expect(acquisitionFailure({ ...base, [key]: { state: 'stale', reason: 'unsupported' } })).toBe('unsupported');
+  });
   it('starts structurally loading and accepts source/domain times without fixtures', () => {
     const { controller, notify } = setup(); expect(controller.getState().phase).toBe('loading');
     notify(liveFansResult()); expect(controller.getState()).toMatchObject({ phase: 'ready', observation: { version: 12 } });
@@ -25,13 +32,13 @@ describe('live Fans controller', () => {
       notify(failed);
       expect(controller.getState().observation).toBe(previous);
       expect(controller.getState().feedback).toContain(kind === 'unsupported' ? 'endpoint unsupported' : 'unavailable');
-      expect(controller.getState().feedback).toContain('showing previous observation');
+      expect(controller.getState().failure).toBe(kind);
       notify(liveFansResult(13, '2026-09-01T12:00:13.000Z'));
       expect(controller.getState().observation).toBe(previous);
       notify({ structuredContent: { ...failed.structuredContent, connectionEpoch: 4, receivedAt: '2026-09-01T12:00:15.000Z' } });
       expect(controller.getState().observation?.state).toBe(kind);
       expect(controller.getState().observation?.connectionEpoch).toBe(4);
-      expect(controller.getState().feedback).toBe('');
+      expect(controller.getState().failure).toBe(kind);
     } finally { controller.dispose(); }
   });
   it.each(['unavailable', 'unsupported'])('repeated explicit Retry of the same %s receipt cannot erase its warning', async (kind) => {
@@ -44,7 +51,7 @@ describe('live Fans controller', () => {
       for (let attempt = 0; attempt < 2; attempt++) {
         const retry = controller.refresh(); resolve(failed); await retry;
         expect(controller.getState().observation).toBe(previous);
-        expect(controller.getState()).toMatchObject({ refreshing: false, feedback: `Fans & Air ${kind === 'unsupported' ? 'endpoint unsupported' : 'unavailable'} · showing previous observation` });
+        expect(controller.getState()).toMatchObject({ refreshing: false, feedback: `Fans & Air ${kind === 'unsupported' ? 'endpoint unsupported' : 'unavailable'}` });
       }
       const retry = controller.refresh(); resolve(liveFansResult(15, '2026-09-01T12:00:15.000Z')); await retry;
       expect(controller.getState().observation?.version).toBe(15);
@@ -81,6 +88,22 @@ describe('live Fans controller', () => {
     const stale = liveFansResult(1, '2026-09-01T12:01:01.000Z'); stale.structuredContent.module.freshness = 'stale';
     notify(stale); expect(controller.getState().observation?.receipt.freshness).toBe('stale'); controller.dispose();
   });
+  it('keeps a failed Retry masked on duplicate notifications and restores ready on an explicit duplicate success', async () => {
+    const { controller, notify, resolve, reject } = setup();
+    try {
+      const receipt = liveFansResult(); notify(receipt);
+      const observation = controller.getState().observation;
+      const failed = controller.refresh(); reject(); await failed;
+      const retry = controller.refresh();
+      expect(controller.getState()).toMatchObject({ phase: 'error', failure: 'error', refreshing: true });
+      const pending = controller.getState();
+      notify(receipt);
+      expect(controller.getState()).toBe(pending);
+      resolve(receipt); await retry;
+      expect(controller.getState()).toMatchObject({ phase: 'ready', failure: null, refreshing: false, feedback: '' });
+      expect(controller.getState().observation).toBe(observation);
+    } finally { controller.dispose(); }
+  });
   it('a newer notification supersedes a pending RPC even when the old RPC claims a later receipt, then permits retry', async () => {
     const { controller, notify, resolve, port } = setup(); notify(liveFansResult()); const pending = controller.refresh();
     notify(liveFansResult(15, '2026-09-01T12:00:15.000Z')); const accepted = controller.getState().observation;
@@ -101,7 +124,7 @@ describe('live Fans controller', () => {
   it('retains accepted values on failure and allows retry after rejection', async () => {
     const { controller, notify, reject, resolve } = setup(); notify(liveFansResult()); const previous = controller.getState().observation;
     const first = controller.refresh(); reject(); await first;
-    expect(controller.getState()).toMatchObject({ observation: previous, refreshing: false, feedback: 'Refresh failed · showing previous observation' });
+    expect(controller.getState()).toMatchObject({ observation: previous, refreshing: false, failure: 'error', feedback: 'Could not load Fans & Air' });
     const retry = controller.refresh(); resolve(liveFansResult(13, '2026-09-01T12:00:13.000Z')); await retry;
     expect(controller.getState().feedback).toBe(''); controller.dispose();
   });
@@ -132,7 +155,7 @@ describe('live Fans controller', () => {
     const { controller, notify, resolve } = setup();
     notify({ isError: true }); expect(controller.getState().phase).toBe('error');
     const retry = controller.refresh(); notify({ isError: true });
-    expect(controller.getState().phase).toBe('loading');
+    expect(controller.getState()).toMatchObject({phase: 'error', refreshing: true, failure: 'error'});
     resolve(liveFansResult()); await retry; expect(controller.getState().phase).toBe('ready'); controller.dispose();
   });
 });

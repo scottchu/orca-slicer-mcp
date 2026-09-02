@@ -24,7 +24,8 @@ describe('Bed Mesh Svelte candidate', () => {
     await fireEvent.click(getByRole('radio', { name: '2D grid' }));
     expect(getByRole('radio', { name: '2D grid' })).toHaveAttribute('aria-checked', 'true');
     expect(container.querySelector('[data-chart-frame]')).toBeTruthy();
-    expect(container.querySelector('[aria-live="polite"]')).toHaveTextContent('2D view');
+    expect(container.querySelector('[data-chart-frame] [aria-live="polite"]')).toHaveTextContent('2D view');
+    expect(getByRole('status')).toHaveTextContent('Bed Mesh loaded');
   });
 
   test('rejects malformed bridge-injected values', () => {

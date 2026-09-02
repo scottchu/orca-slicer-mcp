@@ -1,5 +1,51 @@
 # F0 dual-subsystem foundation brief
 
+## Current implementation: neutral failures and adjacent footer status
+
+The user has resumed saved checkpoint `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`
+on `codex/u1-footer-error-skeletons`; the coordinator verified the clean checkout
+and exact fetched branch. The old worktree is archived/unregistered according to
+the user, and its pack-up stop is historical. Preserve existing work; no fresh
+cleanup or integration of the separate c6 Camera checkpoint is requested.
+This F0 slice addresses OBS-008/010/012/013/014, CAM-008 and UI-001/003/004 under
+decision0041. Phase1 now has attributed compiler/AST,158 Svelte unit,12 package
+and49 unique retained+renewed browser cases; this is not a clean full regression.
+Four source-preflight findings received focused repairs, without independent exact
+approval. Legacy/Camera has90 app tests/1176 assertions,35 unit tests and scoped
+route evidence; Camera Lab is six retained plus two renewed passes. Phase2 service
+repairs now have focused and mixed actual-camera evidence, while the candidate
+remains uncommitted. Final Camera renderer/package renewal now passes:3 UI,
+23+2 targeted browser,12 package tests/138 assertions, compiler/AST and package
+checks. Lab79375/Live89770/private aggregate928543 fit unchanged caps.
+
+The active order is: (1) record the source-frozen candidate commit for the
+service-owned Snapshot / Live / Auto modes; (2) validate the frozen
+candidate, complete required full regression and independent review/verification,
+then guarded PR merge/deployment. The two source repairs address raw HTTP
+acknowledgements rejected by the widget and a 10-second mDNS candidate timeout
+closing healthy Live. Only acknowledgement compatibility and the narrowly guarded
+typed-timeout exception change; deadlines, invalid-ack failure and frame/open
+validation remain. Author evidence is 52 retained service plus 5 renewed synthetic
+tests, one actual handler/host/transport integration, and a 20.4s actual-camera
+check with candidate UI/deployed backend reaching 444 decoded frames at1920x1080.
+That mixed check does not deploy or accept the final renderer. Connection lifecycle
+stays in the service; components subscribe/render. All byte caps remain repo
+guards, not OpenAI limits. Other requests remain open in the delivery ledger.
+
+The latest user request supersedes visible retained-error telemetry and floating
+acquisition-error notices. Initial and refresh failures must present static
+neutral skeletons, with a persistent error status beside the existing footer
+Refresh/Retry. Internal ordering/cache and mounted chart/media ownership remain
+unchanged. Local Copy/fullscreen/PiP rejection is not acquisition failure.
+All observation and Camera routes are in this presentation audit; the separate
+Camera feature checkpoint and its unapproved budget increase remain excluded.
+Heads Copy also receives balanced hover padding without separating its inline
+swatch, whole hex and small glyph. First measure Camera/package budgets, then
+implement and renew focused route/state tests before one frozen full regression.
+This is work in progress, not delivered evidence. PR87 below is the accepted
+deployment baseline. The latest Progress question is status-only; no Progress
+implementation starts in this slice.
+
 PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
 Camera remains separately blocked; Progress redesign is still unfinished.
 The complete current route/evidence matrix is

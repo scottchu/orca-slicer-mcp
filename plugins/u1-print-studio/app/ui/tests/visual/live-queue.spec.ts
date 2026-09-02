@@ -34,6 +34,37 @@ const readable = async (frame: Frame, width: number) => {
   });
   expect(clipped).toEqual([]);
 };
+
+test('Queue failure keeps zero, one, twenty and unknown short allocations without stale facts', async ({ page }) => {
+  let release = (_value: unknown) => {};
+  let calls = 0;
+  await page.route('**/dashboard/tools/call', async route => {
+    calls++;
+    const result = await new Promise(resolve => { release = resolve; }); await route.fulfill({ json: result });
+  });
+  for (const count of [0, 1, 20, -1]) {
+    const beforeCalls = calls;
+    await page.goto('/dashboard/queue');
+    await expect.poll(() => calls).toBe(beforeCalls + 1);
+    const frame = page.frames().find(value => value.url().endsWith('/dashboard/queue_widget'))!;
+    await expect(frame.locator('[data-widget-shell]')).toBeVisible();
+    const ready = liveQueueResult(Math.max(count, 0));
+    const module = count === -1 ? { ...ready.structuredContent.module, state: 'unknown', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, checkedAt: null, queueState: null, totalCount: null, reason: 'not_requested', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: 'Fixture unknown' } } : ready.structuredContent.module;
+    release({ structuredContent: { ...ready.structuredContent, module } });
+    await expect(frame.locator('[data-loading-value]')).toHaveCount(0);
+    const before = await bounds(frame);
+    const refresh = frame.getByRole('button', { name: 'Refresh Print Queue' }); await refresh.click();
+    await expect.poll(() => calls).toBe(beforeCalls + 2);
+    await expect(refresh).toHaveAttribute('aria-disabled', 'true');
+    release({ isError: true });
+    await expect(frame.locator('[data-footer-status]')).toBeVisible();
+    const after = await bounds(frame);
+    expect(after.length).toBe(before.length);
+    after.forEach((row, i) => row.forEach((value, j) => expect(Math.abs(value - before[i][j]), `${count}: ${i}/${j}`).toBeLessThanOrEqual(1)));
+    await expect(frame.locator('[data-widget-body]')).not.toContainText(/Fixture.*gcode|Queue empty|Print Queue not observed/);
+    await expect(frame.locator('[data-widget-body] time')).toHaveCount(0);
+  }
+});
 for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) {
   test(`Print Queue source facts, retained refresh, long records ${width} enlarged=${enlarged}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1400 });
@@ -67,7 +98,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     const refresh = frame.getByRole('button', { name: 'Refresh Print Queue' }); await refresh.focus(); await refresh.press('Enter');
     await expect.poll(() => calls.length).toBe(2); expect(await bounds(frame)).toEqual(ready);
     expect(await frame.locator('[data-observed-meta]').textContent()).toBe(receipt); await expect(refresh).toBeFocused();
-    release({ isError: true }); await expect(frame.getByRole('status')).toHaveText('Refresh failed · showing previous observation');
+    release({ isError: true }); await expect(frame.getByRole('status')).toHaveText('Could not load Print Queue');
     expect(await bounds(frame)).toEqual(ready); await expect(refresh).toBeFocused();
     const notify = (value: unknown) => page.evaluate((value) => {
       document.querySelector('iframe')!.contentWindow!.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/tool-result', params: value }, '*');
@@ -103,15 +134,15 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
       await expect(frame.locator('[data-widget-body]')).toContainText('Queue empty');
     }
     const stale = liveQueueResult(0, 21, '2026-09-01T12:00:21.000Z');
-    stale.structuredContent.module.state = 'stale'; stale.structuredContent.module.freshness = 'stale'; stale.structuredContent.module.reason = 'timeout';
+    stale.structuredContent.module.state = 'stale'; stale.structuredContent.module.freshness = 'stale'; stale.structuredContent.module.reason = null; // Successful age-stale receipt.
     await notify(stale); await expect(frame.locator('[data-widget-body]')).toContainText('Last observed queue was empty');
     await expect(frame.locator('[data-observed-meta]')).toContainText('Stale'); await readable(frame, width);
     const unavailable = liveQueueResult(0, 22, '2026-09-01T12:00:22.000Z');
     const unavailableDomain = { ...unavailable.structuredContent.module, state: 'unavailable', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, checkedAt: '2026-09-01T12:00:22.000Z', queueState: null, totalCount: null, reason: 'timeout', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: unavailable.structuredContent.module.provenance.detail } };
     await notify({ structuredContent: { ...unavailable.structuredContent, module: unavailableDomain } });
-    await expect(frame.locator('.widget-feedback')).toHaveText('Print Queue unavailable · showing previous observation');
-    await expect(frame.locator('[data-widget-body]')).toContainText('Last observed queue was empty');
-    await expect(frame.locator('[data-observed-meta]')).toContainText('Stale'); await readable(frame, width);
+    await expect(frame.locator('[data-footer-status]')).toHaveAttribute('aria-label', 'Print Queue unavailable');
+    await expect(frame.locator('[data-widget-body]')).not.toContainText('Last observed queue was empty');
+    await expect(frame.locator('[data-observed-meta]')).not.toContainText('Stale'); await readable(frame, width);
     const unknown = liveQueueResult(0, 23, '2026-09-01T12:00:23.000Z');
     const unknownDomain = { ...unknown.structuredContent.module, state: 'unknown', freshness: 'unknown', sourceObservedAt: null, receivedAt: null, checkedAt: null, queueState: null, totalCount: null, reason: 'not_requested', capabilityEvidence: 'unknown', provenance: { source: 'not_observed', sourceObservedAt: null, detail: unknown.structuredContent.module.provenance.detail } };
     await notify({ structuredContent: { ...unknown.structuredContent, module: unknownDomain } });
@@ -176,7 +207,7 @@ test('Queue initial wrong-view failure is bounded, retry and BFCache preserve on
   await expect(frame.locator('[data-record]')).toHaveCount(3);
   await expect(frame.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
   await expect(frame.getByRole('status')).toHaveCount(1);
-  await expect(frame.locator('.widget-feedback')).toContainText('Could not load');
+  await expect(frame.locator('[data-footer-status]')).toContainText('Could not load');
   await expect(frame.locator('[data-record] button,[data-record] a,[data-record] [tabindex],[aria-valuenow],time')).toHaveCount(0);
   expect(await frame.locator('[data-record]').evaluateAll(rows => rows.map(row => {
     const copy = row.cloneNode(true) as Element;

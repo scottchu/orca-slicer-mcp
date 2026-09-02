@@ -26,7 +26,7 @@ for (const width of [320, 390, 590, 720]) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
       if (scenario === 'loading') {
         await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'true');
-        await expect(page.locator('button')).toHaveCount(0);
+        await expect(page.getByRole('radio')).toHaveCount(3);
         await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
         await page.emulateMedia({ reducedMotion: 'reduce' });
         expect(await page.locator('[data-skeleton]').evaluateAll((nodes) => nodes.every((node) => getComputedStyle(node).animationName === 'none'))).toBe(true);
@@ -87,10 +87,10 @@ for (const width of [320, 390, 590, 720]) {
     await page.keyboard.press('Escape');
     await expect(page.locator('.local-fullscreen')).toHaveCount(0);
     expect(await retained()).toBe(true);
-    await page.getByRole('button', { name: 'Close simulated live' }).click();
+    await page.getByRole('radio', { name: 'Snapshot', exact: true }).click();
     await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
     expect(await page.locator('video').evaluate((video) => (video as HTMLVideoElement).srcObject)).toBeNull();
-    await select('live');
+    await page.getByRole('radio', { name: 'Live', exact: true }).click();
     await expect(page.locator('[data-camera-fps]')).toContainText(/\d+ FPS/);
     await page.evaluate(() => {
       (window as unknown as { __lastStream: MediaStream; __hideCamera: () => void }).__lastStream = document.querySelector('video')!.srcObject as MediaStream;
@@ -103,24 +103,40 @@ for (const width of [320, 390, 590, 720]) {
 }
 
 test('synthetic media is unavailable without capture support and does not invent FPS', async ({ page }) => {
+  await page.clock.install();
   await page.addInitScript(() => { Object.defineProperty(HTMLCanvasElement.prototype, 'captureStream', { value: undefined }); });
   await page.route(url, (route) => route.fulfill({ status: 200, contentType: 'text/html', headers: { 'content-security-policy': csp }, body: html }));
   await page.goto(url);
-  await page.getByRole('button', { name: 'Start simulated live' }).click();
-  await expect(page.locator('[data-camera-status]')).toContainText('Video unavailable');
+  await page.getByRole('radio', { name: 'Live', exact: true }).click();
+  await expect(page.getByRole('radio', { name: 'Auto', exact: true })).toHaveAttribute('aria-checked', 'true');
+  await expect(page.getByRole('radio', { name: 'Live', exact: true })).toBeFocused();
+  await expect(page.locator('[data-footer-status]')).toBeVisible();
   await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Picture in picture', exact: true })).toHaveCount(0);
+  await page.clock.fastForward(1600);
+  await expect(page.locator('[data-camera-status]')).toContainText('Auto');
+  const first = await page.locator('[data-camera-status] time').getAttribute('datetime');
+  await page.clock.fastForward(1600);
+  await expect(page.locator('[data-camera-status] time')).not.toHaveAttribute('datetime', first!);
+  await page.getByRole('radio', { name: 'Snapshot', exact: true }).click();
+  const stopped = await page.locator('[data-camera-status] time').getAttribute('datetime');
+  await page.clock.fastForward(4000);
+  await expect(page.locator('[data-camera-status] time')).toHaveAttribute('datetime', stopped!);
 });
 
 test('stalled synthetic video clears measured FPS, freezes time and terminates truthfully', async ({ page }) => {
   await page.route(url, (route) => route.fulfill({ status: 200, contentType: 'text/html', headers: { 'content-security-policy': csp }, body: html }));
   await page.goto(url);
-  await page.getByRole('button', { name: 'Start simulated live' }).click();
+  await page.getByRole('radio', { name: 'Live', exact: true }).click();
   await expect(page.locator('[data-camera-fps]')).toContainText(/\d+ FPS/);
-  await page.locator('video').evaluate((video) => (video as HTMLVideoElement).pause());
+  await page.locator('video').evaluate(video => {
+    // Block presentation after a successful start, including automatic resume.
+    (video as HTMLVideoElement).play = () => Promise.resolve();
+    (video as HTMLVideoElement).pause();
+  });
   await expect(page.locator('[data-camera-fps]')).toHaveCount(0, { timeout: 2500 });
   const frozen = await page.locator('[data-camera-status] time').getAttribute('datetime');
-  await expect(page.locator('[data-camera-status]')).toContainText('Video unavailable', { timeout: 5000 });
+  await expect(page.locator('[data-footer-status]')).toBeVisible({ timeout: 6500 });
   expect(frozen).not.toBeNull();
   expect(await page.locator('video').evaluate((video) => (video as HTMLVideoElement).srcObject)).toBeNull();
 });
@@ -132,10 +148,24 @@ test('a missing first presented frame has a five-second startup deadline', async
   });
   await page.route(url, (route) => route.fulfill({ status: 200, contentType: 'text/html', headers: { 'content-security-policy': csp }, body: html }));
   await page.goto(url);
-  await page.getByRole('button', { name: 'Start simulated live' }).click();
+  await page.getByRole('radio', { name: 'Live', exact: true }).click();
   await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'true');
   await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
-  await expect(page.locator('[data-camera-status]')).toContainText('Video unavailable', { timeout: 6500 });
+  await expect(page.locator('[data-footer-status]')).toBeVisible({ timeout: 6500 });
   await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
   expect(await page.locator('video').evaluate((video) => (video as HTMLVideoElement).srcObject)).toBeNull();
+});
+
+test('failed local fullscreen leaves footer retry reachable without replacing mounted media', async ({ page }) => {
+  await page.route(url, route => route.fulfill({ status: 200, contentType: 'text/html', headers: { 'content-security-policy': csp }, body: html }));
+  await page.goto(url);
+  await page.evaluate(() => (window as unknown as { __setCamera: (scenario: CameraScenario, policy: CameraCapabilityPolicy) => void }).__setCamera('snapshot', 'unsupported'));
+  const video = await page.locator('video').elementHandle();
+  await page.getByRole('button', { name: 'Fullscreen', exact: true }).click();
+  await expect(page.locator('.local-fullscreen')).toHaveCount(1);
+  await page.evaluate(() => (window as unknown as { __setCamera: (scenario: CameraScenario, policy: CameraCapabilityPolicy) => void }).__setCamera('error', 'unsupported'));
+  await expect(page.locator('.local-fullscreen')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Retry synthetic snapshot' })).toBeVisible();
+  await expect(page.locator('[data-footer-status]')).toBeVisible();
+  expect(await video!.evaluate(node => node === document.querySelector('video'))).toBe(true);
 });

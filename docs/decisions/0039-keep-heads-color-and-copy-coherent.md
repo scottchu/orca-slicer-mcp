@@ -3,6 +3,13 @@
 Date: 2026-09-02. Status: adopted presentation direction; exact acceptance pending.
 Milestone: F0, OBS-010/UI-003, refining decision0037 without a new data path.
 
+Decision0041 further requires balanced Copy hover padding while preserving the
+single swatch/whole-hex/16px-glyph row and 44px accessible hit target. Existing
+card inset may supply that padding without clipping focus or overlapping targets.
+Acquisition failure masks old color/material/receipt content with static neutral
+skeletons and adjacent footer status; internal cache/order remains unchanged.
+This is accepted direction, not renewed implementation or deployment evidence.
+
 ## Latest user refinement (2026-09-02)
 
 The swatch, whole naturally sized RGB/RGBA and Copy must remain on one row.

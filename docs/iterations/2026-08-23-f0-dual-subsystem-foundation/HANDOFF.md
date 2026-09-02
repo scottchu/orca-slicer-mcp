@@ -1,5 +1,306 @@
 # F0 dual-subsystem foundation handoff
 
+## Current: 092f84a test-only repair awaiting freeze/full gate
+
+Exact source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132`, tree
+`fc9db1af454cbc206c2b4adf4d621ea8f25cd463`, passed559 UI, eight package checks and
+app TypeScript, then stopped at301 app passes/3 obsolete assertions; Python gates
+did not run. Only `src/app.test.ts` renews two legacy pins and the adjacent footer
+status contract, with29PASS/281assertions;374 other tracked app files are unchanged.
+Next freeze that test-only change and these records, renew full required validation
+and exact review. Failure receipts remain in VALIDATION. PR87 stays deployed;
+all55 IDs, Progress no-action and the unimplemented reactive-class discussion remain.
+
+## Historical: f0c5e41 source approval with incomplete required validation
+
+Exact candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
+`9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, received independent source APPROVE
+with no findings (coordinator-attributed); the earlier P1/P2 repairs are covered.
+The independent required repository run passed compiler/AST,559 UI tests and
+five focused/three Lab deterministic package checks, then app TypeScript failed.
+Missing installed app `three`/`@types/three` and a type-only `./session` import in
+`ui/src/lib/camera/transport.ts` lacking NodeNext's `.js` suffix are separate
+environment/source causes. App tests and Python lifecycle/shipping did not run.
+
+Independent61 targeted browser and four fresh controller cases passed. The
+per-case retention manifest covers256 prior passes plus61 renewed cases (317
+covered, not one full317-case run);69 matching Camera/media inputs support the
+seven earlier Camera adversaries. Preserve the failed gate and earlier e186c41
+failures, not just passing portions. See current VALIDATION for exact receipts.
+
+Author repair is complete: only `ui/src/lib/camera/transport.ts:1` changes its
+type-only import to `./session.js`. Pinned frozen install restored eight existing
+locked packages; app TypeScript, one actual HTTP/host/transport test, nine transport
+tests and Camera build verification pass. All eight widget artifacts match
+f0c5e41 byte-for-byte, transpiled JavaScript is unchanged, and package/lockfiles
+are unchanged. These are focused author checks, not a passed full gate.
+Next smallest action: freeze this source correction and records as a new
+candidate for the full required repository gate and independent exact review.
+The new source delta invalidates automatic reuse of f0c5e41's exact approval.
+Retain browser/controller/Camera evidence only with explicit scope/hash binding;
+do not repeat an unaffected full browser suite solely for handoff. No merge or
+deployment occurred; PR87 remains deployed. Preserve all55 ledger IDs, byte caps,
+service-owned Camera lifecycle and separate c6 source; Progress stays no action.
+The validator's runners/browsers exited and4179 has no listener.
+
+## Historical: e186c41 review repair, awaiting a new frozen candidate
+
+The rejected candidate was `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac`, tree
+`cfc4c6bd9b972652f06a8e5bda902a3c123f0a8e`. Preserve its complete independent
+report and failed gate/browser logs; see the first VALIDATION section. The current
+working tree contains only the following repair groups under
+`plugins/u1-print-studio/app/`, plus these continuity records:
+
+- `ui/src/lib/live/controller.ts` restores the accepted `ready` phase for an
+  explicit duplicate RPC. A duplicate notification does not clear failure or
+  change retained observation identity. A direct regression and four packaged
+  consumer browser adversaries cover failed Retry, duplicates and recovery.
+- `public/legacy-widget.html` keeps static initial-error state while Retry waits;
+  the existing combined-status browser matrix now checks that pending interval,
+  footer, accessibility masking and geometry before accepted recovery.
+- Bed UI/browser tests target chart-local feedback and still assert the separate
+  phase announcement. Thermals browser fixtures use null reason for age-stale
+  success and separately assert timeout/offline masking, geometry and recovery.
+- Four live bundles and `src/live-fans-package.test.ts` pins are renewed. Fans
+  91362, Thermals91973, Heads96944 and Queue92936 fit unchanged100000-byte caps;
+  focused production aggregate462985. No Camera/private lab package was rebuilt.
+
+Focused author checks:45 UI passes, compiler/AST, five package passes/59
+assertions, and22 unique browser cases via14 retained plus eight renewed passes.
+The initial focused run also exposed an old offline-success assertion; the next
+run exposed a test comparing failure geometry with an earlier, different ready
+header. Both fixture/assertion corrections are recorded with failed logs. The
+final Thermals matrix passes all eight cases without further application edits.
+
+The private `review-repair-e186c41/inputs-and-results.json` manifest records all
+application inputs,13 changed source/test/artifact paths, final bundle hashes and
+log hashes. Its39 Camera-scope inputs match e186c41 exactly, preserving the scope
+of prior Camera evidence. This does not certify the new whole candidate.
+Next smallest action: freeze these completed repairs, obtain independent exact
+review/targeted verification, and run the full required repository gate under its
+assigned owner before guarded shipping. No new full browser run, merge, deploy,
+printer or device acceptance is claimed. All owned test processes have exited;
+fixture4179 is released. Keep remaining delivery-ledger work and c6 separate.
+
+## Historical: resumed footer/skeleton WIP
+
+The user has resumed remote checkpoint
+`f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c` on
+`codex/u1-footer-error-skeletons`. The coordinator verified a clean current
+checkout and fetched/checked out the exact branch. The old worktree is archived
+and unregistered according to the user; there is no current cleanup request.
+Preserve all existing work and other worktrees. No force checkout, restart from
+main or c6 Camera integration belongs to this task.
+
+Current order: record the source-frozen candidate commit after final Camera
+renderer/geometry/package renewal, then run the required regression. The fixed
+Snapshot / Live / Auto switch has service-owned transitions; components subscribe/
+render. Preserve the existing phase1 footer/skeleton/Heads work; Camera Lab's two
+obsolete-selector renewals pass alongside six retained cases. Then complete the required regression
+with one owner, obtain independent review/targeted verification and ship through
+the guarded PR/deployment workflow. Caps remain unchanged repo guards. Preserve
+all ledger IDs/backlog and the separate source-only blocked c6 checkpoint.
+
+Phase1 Svelte authorship now has compiler/AST,158 unit,12 package and49 unique
+browser cases through retained+renewed runs. Shared/direct failure masking,
+pending Copy invalidation, Queue bounded short/long allocation, width/font resize
+release and Bed hidden renderer/Retry focus received focused repair/coverage.
+Obsolete presentation assertions were renewed while cache/order semantics remain.
+All eight packages have a phase1 identity record; light213926/Bed635242/Camera77725
+and aggregate926893 fit unchanged caps. These are evolving uncommitted bytes;
+new Camera changes invalidate affected pins/evidence, and no full gate is claimed.
+
+The coordinator reports four source-preflight findings fixed with focused author
+renewal, not independent exact approval. Phase2 author repairs now address raw
+Dashboard acknowledgement rejection and a 10-second mDNS candidate timeout that
+closed already-connected video. Only answer/candidate/close support both raw HTTP
+and MCP wrappers; frame/open envelopes stay strict. The typed-timeout exception
+requires the current live epoch/session, observed connection and an accepted frame
+received less than 5 seconds ago; invalid/rejected acknowledgements and all
+deadlines remain unchanged. A mixed candidate-UI/deployed-service actual-camera
+check remained Live for20.4s, with444 decoded1920x1080 frames and explicit own-lease
+close200. This is not final-renderer, deployment, phone or print acceptance.
+Legacy/Camera author evidence is90 app tests/
+1176 assertions,35 unit tests and scoped route checks; Camera Lab is six retained
+plus two renewed passes, not a clean full run. The generic Bed footer/allocation,
+Camera alias static transitions, combined font/viewport invalidation and camera
+failure-through-Retry paths have focused source/test repairs. Camera phase2 may
+change source and packages again; retain earlier evidence only for unchanged scope.
+VALIDATION records attributed commands, failed runs, renewals and log identities.
+No full regression, merge, deployment or actual-device acceptance is claimed.
+Historical checkpoint inventories below remain useful provenance, not current
+instructions to redo already covered work.
+
+Phase2 changed boundaries: `ui/src/lib/camera/session.ts`, `transport.ts`,
+`live-controller.ts`, real/Lab Camera roots/renderers and tests; new synthetic
+service, `ui/TextSegmentedControl` and Camera-only `StaticWidgetStateSurface`;
+the real-handler/host/transport integration in `src/status-dashboard.test.ts`;
+affected Camera bundles/pins. All paths are under `plugins/u1-print-studio/app/`.
+The static phase surface uses Camera's intrinsic fixed regions without the
+numeric resize-allocation observer needed by variable widgets. Caps were reduced
+through source graph work, not changed: final author Lab79375/80000,
+Live89770/100000, private aggregate928543/980000 and live aggregate462929.
+The one-word Auto header and intrinsic geometry have final focused renewal.
+
+Service author report `phase2-report.json` is final at SHA256
+`bd1188f404fa6ad035714a71ababc9067197dff4fdbb5a22225136ed395407d6`.
+Its55-test run retains52 cases plus5 renewed synthetic tests, with one separate
+HTTP integration pass. The renderer's final3 UI,23+2 browser and12 package tests/
+138 assertions, compiler/AST and package checks pass; the older6 mode-browser
+cases are superseded. Final `CAMERA-RENDERER-REPORT.md` and
+`camera-renderer-identities.json` are under ignored `ui/test-results/camera-modes-author`.
+Keep mixed
+actual-camera evidence tied to its91,063-byte UI hash in VALIDATION; final served
+Live needs its own bounded check after guarded deployment. All service-author
+browsers/processes and own leases were released; preserve ignored diagnostic logs.
+
+The user's Progress status question explicitly requested no action; P01/P02 remain
+not started and P03 decision pending. Continue Camera only within the current slice.
+
+## Historical pack-up record for saved f9fe1eb
+
+The following pack-up instructions and pending receipts describe the earlier
+checkpoint preparation only; the active resume order above supersedes its stop.
+
+### Ready-to-paste new-task kickoff
+
+After the coordinator verifies the push, fetch and check out the exact preserved
+`codex/u1-footer-error-skeletons` checkpoint. The old worktree may be archived;
+use the local recovery receipt rather than assuming it remains registered.
+Read AGENTS, PROJECT_STATE, NEXT_AGENT, this current iteration and
+`docs/widget-delivery.md` (the55-request ledger). Preserve this unfinished WIP,
+the separate c6 Camera checkpoint and all other source/evidence. Finish the
+current skeleton-on-acquisition-error + adjacent footer status + Heads Copy
+inset scope, then address the newly recorded Camera fallback/stable-stage asks
+in the user's order. This WIP is not independently validated or release-ready.
+Local-only verifier planning pointers are in the separately preserved ignored
+`plugins/u1-print-studio/app/ui/test-results/footer-packup-local.md`; they are
+not included in a remote checkout.
+
+The latest request supersedes the earlier same-worktree handoff: checkpoint
+eligible WIP, push it, then recoverably clean up this worktree. Branch
+`codex/u1-footer-error-skeletons` starts from accepted base
+`80280568589fb8cd2df7f8ab30c2f1faddcb3769`, base tree
+`17b8f37d73e8e280c0f72698a340d09714570ec6`. The checkpoint's Git HEAD records
+the source identity; the coordinator supplies exact remote/archive receipts.
+Push/archive are pending until separately verified. There is no release PR,
+frozen application candidate, independent approval or deployment for this WIP.
+Do not discard other preserved checkpoints or local evidence.
+
+Adopted intent is decision0041: acquisition failure masks stale telemetry with
+static neutral skeletons and a persistent footer status beside Refresh/Retry.
+Internal ordering/cache may remain; local Copy/PiP/fullscreen rejection must not
+mask healthy data. Heads retains whole inline swatch/hex/16px Copy with44px hit
+area and balanced8px hover padding borrowed from the existing12px card inset.
+
+### Checkpoint implementation inventory
+
+Paths below are relative to `plugins/u1-print-studio/app/`:
+
+- `ui/src/lib/ui/WidgetFooter.svelte`, `QuietIconButton.svelte`, new
+  `IconGlyph.svelte`, new `RetainedLayer.svelte`,
+  `WidgetStateSurface/WidgetStateSurface.svelte` and new `allocation.ts`:
+  opt-in adjacent reserved footer status, padded Copy, registry-free glyph,
+  mounted masked renderer layer and numeric-only layout allocation.
+- `ui/src/lib/observation/ObservationFrame.svelte`, `HeadsPanel.svelte`,
+  `HeadCard.svelte`; `ui/src/lib/lab/observation-props.ts`; all four
+  `ui/src/lib/live/LiveObservationRoot.svelte`, `LiveThermalsRoot.svelte`,
+  `LiveQueueRoot.svelte`, `LiveHeadsRoot.svelte`, plus `controller.ts` and
+  `heads-controller.ts`: typed acquisition failure, neutral presentation,
+  footer status and public row allocation; internal ordering remains.
+- `ui/src/lib/bed-mesh/BedMeshWidget.svelte`: retained renderer is hidden/inert
+  inside the public chart frame; receipt/legend/summary masked; footer notice.
+- `ui/src/lib/camera/CameraLabWidget.svelte`, `CameraMedia.svelte`,
+  `CameraWidget.svelte`, `session.ts`; `ui/src/lib/media/VideoSurface.svelte`:
+  existing snapshot action moves to footer; persistent typed failure masking;
+  session/video ownership stays mounted. No `c6cfb4e` source was read, copied or
+  cherry-picked. `IconGlyph` was independently authored against current Icon's
+  public visual/accessibility contract to avoid pulling the entire registry.
+- `public/widget.html`, `camera-widget.html`, `legacy-camera-widget.html`,
+  `legacy-widget.html`: partial compatibility presentation changes. Generic
+  errors retain only numeric allocation (Bed renderer DOM additionally retained);
+  combined status clears visible old values and separates action feedback;
+  Camera paths mask failed media and add/move footer retry. **Not yet tested.**
+- `ui/scripts/component-contract.ts`: explicit new-leaf/import inventories;
+  strict zero-native-HTML composite policy remains. New
+  `ui/tests/visual/footer-error-preview.spec.ts` is the only changed/new test.
+- Rebuilt but not finally pinned: `public/svelte-live-heads.html`,
+  `svelte-live-camera.html`, `svelte-observation-lab.html`,
+  `svelte-bed-mesh-lab.html`, `svelte-camera-lab.html`. Other live packages still
+  contain old shared bytes; Heads was built before the last footer-width tweak.
+  Do not claim artifact coherence or carry these budgets as final acceptance.
+
+Other checkpoint records: decision0041, this HANDOFF, VALIDATION, BRIEF,
+PROJECT_STATE, NEXT_AGENT and the delivery-ledger current section.
+
+### Excluded local material and preservation boundary
+
+Only eligible source/tests/docs and five already tracked public widget bundles
+are checkpointed. Ignored dependency/build/runtime material remains excluded:
+app/UI `node_modules`, UI `.svelte-kit`, `build`, `build-live-camera`,
+`build-live-heads`, UI `test-results`, and `scripts/__pycache__`.
+Preserve all local logs/screenshots/traces and the private pack-up note intact
+outside Git; a fresh checkout cannot recreate their evidence. The coordinator
+owns whole-worktree quarantine and Git registration cleanup, not this author.
+The bounded added-content privacy scan found no matching credential literals,
+private keys, absolute local paths, private IPv4 addresses or tailnet hosts.
+That is a preservation audit, not exhaustive secret detection or application
+approval. No feature tests/builds ran during checkpoint preparation.
+
+### Unfinished work / first resume checks
+
+1. Finish/review partial legacy paths before more expansion: generic Bed custom
+   footer still lacks the new common status slot; generic resize cleanup is not
+   implemented; numeric allocation must handle initial/after-known0/1/20-row and
+   successful-unknown short bodies without default-skeleton expansion/clipping.
+   Combined status and all Camera compatibility edits have no fresh runtime
+   evidence. Check adjacent action placement, no stale title/aria leakage,
+   persistent failure during Retry and recovery only on accepted new data.
+2. `WidgetStateSurface/allocation.ts` currently releases numeric allocations on
+   root width change; font-only200% changes and complete resize/recovery/unmount
+   adversaries are not covered. Bed masked renderer identity/orbit and2D Retry
+   focus policy need renewal. Direct failure props outside the closed Lab route
+   need review: do not assume changing Lab props masks every caller.
+3. Existing tests still assert old visible retained telemetry/overlays and have
+   **not** been updated or run: `controller.test.ts`,
+   `lab/observation-props.test.ts`, `BedMeshState.test.ts`, ObservationLoading/
+   ObservationWidgets, live roots; browser lab-states/widget-error-stability/
+   served-error-stability/live-* and bed-error-state; app observation-widget/
+   camera-widget/legacy contracts. Preserve cache/order tests; replace only
+   superseded presentation assertions with static/neutral/accessibility/footer/
+   geometry checks. The full suite is expected not to pass yet.
+4. Requirements OBS-008/010/012/013/014, CAM-008, UI-001/UI-004 and ADR0038/0039
+   cross-references still need explicit0041 supersession. No blanket completed
+   all-widget claim: route coverage and asset pins await focused validation.
+5. After focused code/test work, build all affected packages, verify unchanged
+   caps, freeze exact app bytes, assign one full-run owner and distinct source
+   review/targeted independent verification; only then use guarded PR delivery.
+
+### Latest additional user asks (not implemented or diagnosed)
+
+- Explain why repository raw-HTML budgets exist if no OpenAI limits are known.
+  Current caps are project performance guards; official platform limits were
+  not checked in this task. A question does not authorize raising any cap.
+- Actual `/dashboard/camera` repeatedly falls back from Live. This report has
+  **not** been diagnosed; synthetic render tests do not explain that runtime.
+- Replace changing3/4 controls with stable Snapshot / Live / better-named
+  Fallback stages; switch automatically when Live fails. “Auto snapshots” is a
+  proposed label, requiring confirmation of its real semantics, not a delivered
+  service or mode change. Separate local display-control failures from stream
+  acquisition failures.
+
+The unrelated Camera `c6cfb4e` feature checkpoint remains separate and blocked;
+Progress, Bed grid/legend, PR79, other migrations, thumbnail/runtime and all
+55 ledger items remain preserved. No printer/auth/Tailscale operations occurred.
+Task-owned build processes, isolated browsers and4179 fixture exited; no user
+tabs/sessions or deployed runtime were closed. Evidence stays in unique local
+`ui/test-results/footer-preview-20260902-*` directories; do not overwrite them.
+Independent source preflight and validation planning are complete/idle, not WIP
+acceptance. If later importing validator-authored c6 source, reassign independent
+verification accordingly. Start the next task from the verified remote
+checkpoint using the kickoff above; consult the local recovery receipt for
+separately archived evidence.
+
 PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
 Camera remains separately blocked; Progress redesign is still unfinished.
 The complete current route/evidence matrix is

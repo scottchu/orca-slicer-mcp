@@ -70,7 +70,7 @@
   const refresh = (): void => { begin('Lab fixture refreshed'); };
   onDestroy(() => { if (timer) clearTimeout(timer); });
   const stateMessage = $derived(stateKind === 'loading' ? `Loading ${title}` : stateKind === 'error' ? `Could not load ${title}` : stateKind === 'unavailable' ? `${title} unavailable` : refreshing ? `Refreshing ${title}` : `${title} loaded`);
-  const failureMessage = $derived(stateKind === 'error' || stateKind === 'unavailable' ? !placeholder ? 'Refresh failed · showing previous observation' : stateMessage : '');
+  const failureMessage = $derived(stateKind === 'error' || stateKind === 'unavailable' ? stateMessage : '');
 </script>
 
 {#if stateKind}<StateAnnouncement text={failureMessage || feedback || stateMessage} />{/if}
@@ -81,9 +81,9 @@
     {#snippet meta()}<Caption>Lab fixture · <ObservedMeta {observedAt} {freshness} loading={placeholder} /></Caption>{/snippet}
   </WidgetHeader>
   <WidgetBody>{@render children(controller)}</WidgetBody>
-  <WidgetFooter>
+  <WidgetFooter message={failureMessage}>
     {#snippet actions()}{#if stateKind === 'loading'}<Skeleton shape="action" />{:else}<IconButton label={failureMessage ? 'Retry lab fixture' : 'Refresh lab fixture'} icon={RefreshCw} onclick={failureMessage && onretry ? onretry : refresh} disabled={refreshing} />{/if}{/snippet}
   </WidgetFooter>
-  <FeedbackOverlay message={failureMessage || feedback} announce={!stateKind} />
+  <FeedbackOverlay message={failureMessage ? '' : feedback} announce={!stateKind} />
 </WidgetShell>
 </WidgetStateSurface>

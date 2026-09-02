@@ -36,7 +36,7 @@ describe('Heads controller reuses ordered observation with independent Copy inte
     const pending = controller.refresh(); expect(controller.getState()).toMatchObject({ refreshing: true, copying: null, feedback: '' });
     await controller.copy(2, '#000000FF'); expect(write).toHaveBeenCalledTimes(1);
     clip.resolve(); await copying; expect(controller.getState().observation).toBe(previous); expect(controller.getState().feedback).toBe('');
-    read.reject(new Error('read failed')); await pending; expect(controller.getState().feedback).toContain('Refresh failed'); controller.dispose();
+    read.reject(new Error('read failed')); await pending; expect(controller.getState().feedback).toContain('Could not load Heads & Filaments'); controller.dispose();
   });
   it('newer notification wins over an obsolete later-receipt RPC, releases busy and permits retry', async () => {
     const { controller, notify, refresh } = setup(), read = deferred<unknown>(); refresh.mockReturnValue(read.promise);

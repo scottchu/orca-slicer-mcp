@@ -73,6 +73,7 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
     start,
     refresh: () => { if (session.state().phase === 'connecting') return Promise.resolve(); beginAction(); return session.refreshSnapshot(); },
     goLive: () => { if (session.state().refreshing || !session.state().snapshot) return Promise.resolve(); beginAction(); return session.goLive(); },
+    selectMode: (mode: Parameters<typeof session.selectMode>[0]) => { beginAction(); return session.selectMode(mode); },
     close: () => { beginAction(); session.close(); if (!session.state().snapshot) void session.refreshSnapshot(); },
     notify: (message: string) => { ++generation; notify(message); },
     pageHide: () => { if (disposed || hidden) return; hidden = true; beginAction(); session.pageHide(); },

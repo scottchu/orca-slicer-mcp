@@ -1,3 +1,4 @@
+import type { CameraMode } from './session';
 export const CAMERA_SCENARIOS = [
   { value: 'loading', label: 'Loading' },
   { value: 'connecting', label: 'Connecting' },
@@ -15,7 +16,7 @@ export const CAMERA_CAPABILITIES = [
   { value: 'unsupported', label: 'Unsupported' },
   { value: 'denied', label: 'Simulated rejection' },
 ] as const;
-export type CameraMeasurement = { fps: number | null; displayedAt: string | null; playing: boolean; unavailable?: boolean };
+export type CameraMeasurement = { mode?: CameraMode; scenario?: CameraScenario; fps: number | null; displayedAt: string | null; playing: boolean; unavailable?: boolean };
 export const CAMERA_FIXTURE_TIME = '2026-09-01T12:00:00.000Z';
 export const isCameraScenario = (value: unknown): value is CameraScenario => CAMERA_SCENARIOS.some((item) => item.value === value);
 export const cameraScenario = (value: unknown): CameraScenario => isCameraScenario(value) ? value : 'error';

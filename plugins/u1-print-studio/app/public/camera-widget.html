@@ -30,6 +30,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       .icon-tile { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 12px; background: #fafbfc; }
       .icon-tile svg { width: 23px; height: 23px; stroke-width: 1.7; }
       .camera-mode { display: inline-flex; min-width: 0; max-width: 100%; justify-self: end; align-items: center; justify-content: flex-end; gap: 9px; color: var(--muted); font-size: clamp(12px, 1.8vw, 16px); line-height: 1.35; text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: normal; }
+      .camera-mode { width: 11em; min-height: 4.05em; }
+      .camera-footer { justify-content: flex-end; }
+      .camera-footer-status { min-height: 2.4em; min-width: 0; width: max-content; display: grid; align-content: center; font-size: 12px; line-height: 1.2; color: var(--muted); text-align: right; }
+      .camera-footer-status:empty::before { content: "Could not load"; visibility: hidden; }
+      .camera[data-acquisition-failed="true"]::after, .camera[data-camera-loading="true"]:not(.has-snapshot)::after { content: ""; position: absolute; inset: 0; background: #e7e9ec; z-index: 1; }
+      .camera[data-acquisition-failed="true"] img, .camera[data-acquisition-failed="true"] video, .camera[data-acquisition-failed="true"] .camera-controls { visibility: hidden; }
+      [data-acquisition-failed="true"] #camera-detail { position: relative; }
+      [data-acquisition-failed="true"] #camera-detail > * { visibility: hidden; }
+      [data-acquisition-failed="true"] #camera-detail::after { content: ""; position: absolute; inset: 20% 0; border-radius: 4px; background: linear-gradient(to bottom, #e7e9ec 0 35%, transparent 35% 65%, #e7e9ec 65%); }
       #camera-detail-label { min-width: 0; }
       .camera-mode-indicator { display: inline-flex; flex: none; width: 8px; height: 8px; }
       .camera-mode-live-dot { display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--u1-faint); }
@@ -231,6 +240,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         </div>
       </section>
       </div>
+      <footer class="u1-footer camera-footer"><span class="camera-footer-status" id="camera-footer-status"></span></footer>
     </main>
 
     <script type="module">
@@ -327,8 +337,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
 
       const notifyContentHeight = () => window.openai?.notifyIntrinsicHeight?.();
+      // Move the existing action; never add a second snapshot request owner.
+      const cameraFooter = document.querySelector('.camera-footer');
+      cameraFooter.append(elements.refreshSnapshot);
+      const setCameraFailure = (failed) => {
+        elements.camera.dataset.acquisitionFailed = String(failed);
+        elements.dashboard.dataset.acquisitionFailed = String(failed);
+        for (const element of [elements.snapshot, elements.liveStream, elements.cameraDetail]) element.setAttribute('aria-hidden', String(failed));
+        if (failed) elements.cameraDetail.removeAttribute('title');
+        const controls = elements.camera.querySelector('.camera-controls');
+        controls.inert = failed; controls.setAttribute('aria-hidden', String(failed));
+        const status = document.querySelector('#camera-footer-status');
+        status.textContent = failed ? 'Could not load' : '';
+        status.setAttribute('aria-label', failed ? 'Could not load camera' : '');
+        elements.displayFeedback.hidden = failed;
+      };
 
       const setCameraState = (state, loading = false) => {
+        if (state === 'unavailable') setCameraFailure(true);
         const labels = {
           loading: "Camera loading",
           snapshot: "Camera snapshot ready",
@@ -382,7 +408,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         elements.cameraDetail.dataset.mode = mode;
         const label = labels[mode] ?? labels.unavailable;
         if (elements.cameraDetailLabel.textContent !== label) elements.cameraDetailLabel.textContent = label;
-        elements.cameraDetail.title = mode === "live"
+        elements.cameraDetail.title = elements.camera.dataset.acquisitionFailed === 'true' ? '' : mode === "live"
           ? "Time of the latest video frame displayed on this device"
           : mode === "fallback" ? "Live video unavailable. Showing the last accepted snapshot; time is server image receipt time."
           : "Snapshot time is server image receipt time, not camera capture time";
@@ -425,6 +451,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           };
           image.onload = () => {
             if (!finishDecode(true)) return;
+            setCameraFailure(false);
             elements.snapshot.src = dataUrl;
             snapshotObservedAt = formatCameraTime(frame.observedAt) ? frame.observedAt : null;
             elements.camera.classList.add("has-snapshot");
@@ -439,7 +466,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           };
           image.onerror = () => {
             if (!finishDecode(false)) return;
-            if (announceRefresh) setFeedback("Snapshot refresh failed. The last accepted camera view is retained.", "error");
+            setCameraFailure(true);
             if (relayRendering) return;
             if (elements.camera.classList.contains("has-snapshot")) {
               const mode = livePreview ? (fallbackDetail ? "fallback" : "loading") : "snapshot";
@@ -487,13 +514,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
         try {
           if (!applyCameraFrame(await callTool("get_u1_camera_frame"), announceRefresh, generation)) {
-            if (generation === snapshotGeneration) setFeedback("Snapshot unavailable. The last accepted camera view is retained when possible.", "error");
+            if (generation === snapshotGeneration) setCameraFailure(true);
           } else {
             await snapshotDecodePromise;
           }
         } catch {
           if (generation !== snapshotGeneration) return;
-          if (announceRefresh) setFeedback("Snapshot refresh failed. The last accepted camera view is retained.", "error");
+          setCameraFailure(true);
           if (!elements.camera.classList.contains("has-snapshot")) {
             setCameraMode("unavailable");
             setCameraState("unavailable");
@@ -581,6 +608,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       const markFirstRenderedFrame = (now = performance.now(), count = null) => {
         if (!livePreview || !livePeerConnection || relayRendering) return false;
         relayRendering = true;
+        setCameraFailure(false);
         clearTimeout(firstRenderedFrameTimer);
         firstRenderedFrameTimer = null;
         clearTimeout(snapshotFallbackTimer);
@@ -689,6 +717,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       };
 
       const activateSnapshotFallback = (reason = "relay unavailable", refreshSnapshot = true) => {
+        setCameraFailure(true);
         if (!livePreview) return;
         fallbackDetail = fallbackMessage(reason);
         stopLiveStream();

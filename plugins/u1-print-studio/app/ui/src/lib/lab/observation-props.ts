@@ -10,6 +10,6 @@ type PreviewProps<V extends ObservationLabView> =
 // Public controls determine the neutral anatomy; never inspect an observation
 // to derive placeholder text, rows, colors or hidden sizing content.
 export const observationProps = <V extends ObservationLabView>(selection: LabSelection<V>): PreviewProps<V> =>
-  ['loading', 'error', 'unavailable'].includes(selection.phase)
+  ['loading', 'error', 'unavailable', 'retained-error'].includes(selection.phase)
     ? { loading: true, rows: loadingRows(selection as LabSelection), materialShapes: headsLoadingShapes(selection as LabSelection) }
     : { loading: false, observation: resolveObservationFixture(selection), refreshing: selection.phase === 'refreshing' };

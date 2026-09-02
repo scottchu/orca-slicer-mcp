@@ -18,6 +18,6 @@
 </script>
 
 <PageLayout name="camera">
-  <CameraLabWidget scenario={selection.scenario} capabilityPolicy={selection.capability} onscenario={(scenario) => change('scenario', scenario)} />
+  <CameraLabWidget scenario={selection.scenario} capabilityPolicy={selection.capability} />
   <LabControls fields={cameraFields} values={selection} onchange={change} onreset={reset} wideOptions />
 </PageLayout>
