@@ -1,6 +1,99 @@
 # F0 dual-subsystem foundation validation
 
-## Phase2 Camera source repair — author and mixed-runtime evidence
+## e186c41 independent failures and focused author repair
+
+Candidate `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac`, tree
+`cfc4c6bd9b972652f06a8e5bda902a3c123f0a8e`, was not accepted. The independent
+report is preserved under app/ui `test-results/independent-e186c41-20260903`:
+
+- Required repository run: compiler/AST PASS,557 UI PASS /1 FAIL. The failure
+  selected the first polite live region instead of Bed chart-local feedback.
+  Package verification, private lab verification, app TypeScript/tests and Python
+  lifecycle/shipping gates did not run after that failure.
+- One full browser run:301 PASS /12 FAIL,313 total. Four Bed cases used a strict
+  unscoped live-region selector; eight Thermals cases expected visible stale
+  telemetry despite explicit environment timeout. Independent classification
+  found obsolete assertions, not a product regression in those12 cases.
+- Seven independent private Camera service adversaries PASS. They do not clear
+  the separate review findings or approve this candidate.
+
+| Preserved independent evidence | SHA256 |
+| --- | --- |
+| REPORT.json | `3bbc65a2173635b07a32fc38a83bfabc851e7afbf9a4eae2d945bddd6b98fbcf` |
+| inputs.json | `6168135f8250c2766a9dbaec340618d748d10ec3fce2673ef6d2d6495a31669c` |
+| repository-full.log | `999a1e2118b20517d67cce1f6f94c32170cb7cc1719549ebbf6fb10925184698` |
+| browser-full.log | `2d1db84365b9434b8a86a17d48fbf7da61b1cd00a092aa3c0ce04ac9f2978357` |
+
+The author then repaired two separate review findings: successful duplicate RPC
+after failed Retry left `phase=error`, and combined legacy initial-error Retry
+reset its persistent failure to animated loading. Direct/controller and packaged
+browser adversaries verify the fixes while preserving duplicate-notification
+semantics, observation identity, footer status, focus and geometry. Bed local
+feedback and separate phase announcements are both asserted. Thermals now tests
+successful age-stale receipts with null reason, then timeout/offline neutral
+failure and accepted fresh recovery.
+
+Actual focused commands from `plugins/u1-print-studio/app/ui`, Bun1.3.12:
+
+- `bun run test src/lib/live/controller.test.ts src/lib/live/thermals-controller.test.ts src/lib/live/heads-controller.test.ts src/lib/live/queue-controller.test.ts src/lib/bed-mesh/BedMeshWidget.test.ts`:
+  45 PASS /5 files (`unit.log`).
+- `bun run check`:0 errors /0 warnings; component AST PASS (`check.log`).
+- `bun run build:live-fans`, `bun run build:live-thermals`,
+  `bun run build:live-heads`, `bun run build:live-queue`:all PASS, unchanged guards
+  (`build-fans.log`, `build-thermals.log`, `build-heads.log`, `build-queue.log`).
+- `bun node_modules/@playwright/test/cli.js test tests/visual/failed-retry-recovery.spec.ts tests/visual/bed-mesh.spec.ts tests/visual/live-thermals.spec.ts tests/visual/served-error-stability.spec.ts --grep 'recovers a failed Retry|Bed Mesh preserves|real Thermals loading|combined status aliases' --output test-results/review-repair-e186c41/browser`:
+  14 PASS /8 FAIL (`browser.log`). Passed four duplicate-RPC consumer cases, four
+  Bed cases and six combined pending-Retry cases. The eight Thermals cases passed
+  the new timeout assertions, then reached another obsolete offline-success
+  assertion; source behavior correctly remained neutral.
+- `bun node_modules/@playwright/test/cli.js test tests/visual/live-thermals.spec.ts --grep 'real Thermals loading' --output test-results/review-repair-e186c41/thermals-renewal`:
+  7 PASS /1 FAIL (`thermals-renewal.log`). At320px /200% text the test compared an
+  offline failure with an earlier different ready header. The baseline was
+  corrected to the immediately preceding successful age-stale header.
+- The same Thermals command with output directory
+  `test-results/review-repair-e186c41/thermals-final`:8 PASS (`thermals-final.log`).
+  Four widths320/390/590/720 at normal/200% text cover independent receipts,
+  extremes, stale success, timeout/offline masking and fresh recovery.
+- From app, `bun test src/live-fans-package.test.ts`:5 PASS /59 assertions
+  (`package-unit.log`). `git diff --check` passed.
+
+This covers22 unique browser cases through14 retained and eight renewed passes,
+not a clean full run. Failed author logs remain preserved. Evidence is software /
+fixture evidence; no physical printer, deployment or device acceptance is added.
+The mandatory full required repository gate and independent exact-candidate
+review remain pending under their assigned owners. Do not silently carry changed
+four-live-consumer acceptance forward; retain unaffected Camera evidence by
+matching hashes and scope. No mandatory `u1-ship` gate is waived.
+
+All author logs are under app/ui `test-results/review-repair-e186c41`.
+`inputs-and-results.json` SHA256
+`643433a8b905014aa81b4628f172e2eabfd60ae274ce05493a94aa43576dc246`
+records final application/test inputs, all eight artifacts and log hashes;39
+Camera-scope inputs match the independent e186c41 manifest exactly.
+
+| Renewed evidence | SHA256 |
+| --- | --- |
+| unit.log | `aa81e5fd3fa0c0214f80710a046d14b734a9ad3712f3d02d9439d6fa3d5e0283` |
+| check.log | `e3460f6359f8619d0423663eec7b94936599113a6397cd7dbfe7a0113203c7b4` |
+| browser.log | `ae5ae6f047537b039d484da2e131fb13543d3719d168ec1b7ca3934ed35d4c8a` |
+| thermals-renewal.log | `6e83859dc5eeacdbd5505db390d032580d9c76fb7d894b243266b9e20c82336a` |
+| thermals-final.log | `94fb61234074569d4513259b845726ad32b018fc5e71f0911310a5b53dcffca3` |
+| package-unit.log | `154242393317bf661848465e4dd067034ae80601c09d4cc45899afba41fce36a` |
+
+| Final affected package | Bytes | SHA256 |
+| --- | ---: | --- |
+| Live Fans | 91362 | `88d658852e88b48fb6a08c5e114698531668a6bddd8c32bd82774994d03c3870` |
+| Live Thermals | 91973 | `02f7dd436cdcc4fdea0c39164a4170d23944c52a4fd2da446e99b646a7d2e774` |
+| Live Heads | 96944 | `aba510d7989647f0f0a3f303b23c8c505a06d56f04fe6b09189859bfeb7c274a` |
+| Live Queue | 92936 | `1afc55419fffe775d1ab945491e1874fe62ef836861307e2f39eefc2e2a91584` |
+
+Focused production aggregate is462985 bytes. Camera89770 and all three private
+lab artifacts retain their prior hashes; private aggregate928543. Caps,
+dependencies, configuration and shipping guards are unchanged. No Progress work
+or remaining delivery-ledger requirement is marked complete. Owned runners and
+isolated browsers exited, and fixture4179 is released.
+
+## Historical: Phase2 Camera source repair — author and mixed-runtime evidence
 
 Current uncommitted work continues checkpoint
 `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`. The evidence below is attributed to

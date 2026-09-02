@@ -88,6 +88,22 @@ describe('live Fans controller', () => {
     const stale = liveFansResult(1, '2026-09-01T12:01:01.000Z'); stale.structuredContent.module.freshness = 'stale';
     notify(stale); expect(controller.getState().observation?.receipt.freshness).toBe('stale'); controller.dispose();
   });
+  it('keeps a failed Retry masked on duplicate notifications and restores ready on an explicit duplicate success', async () => {
+    const { controller, notify, resolve, reject } = setup();
+    try {
+      const receipt = liveFansResult(); notify(receipt);
+      const observation = controller.getState().observation;
+      const failed = controller.refresh(); reject(); await failed;
+      const retry = controller.refresh();
+      expect(controller.getState()).toMatchObject({ phase: 'error', failure: 'error', refreshing: true });
+      const pending = controller.getState();
+      notify(receipt);
+      expect(controller.getState()).toBe(pending);
+      resolve(receipt); await retry;
+      expect(controller.getState()).toMatchObject({ phase: 'ready', failure: null, refreshing: false, feedback: '' });
+      expect(controller.getState().observation).toBe(observation);
+    } finally { controller.dispose(); }
+  });
   it('a newer notification supersedes a pending RPC even when the old RPC claims a later receipt, then permits retry', async () => {
     const { controller, notify, resolve, port } = setup(); notify(liveFansResult()); const pending = controller.refresh();
     notify(liveFansResult(15, '2026-09-01T12:00:15.000Z')); const accepted = controller.getState().observation;

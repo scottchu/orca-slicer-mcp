@@ -25,7 +25,16 @@ clean checkout and exact fetched branch. The old worktree archive/unregistration
 is user-reported; its pack-up stop is historical and no new cleanup is requested.
 Decision0041 replaces visible retained-error data/floating notices with neutral
 skeletons and adjacent persistent footer status and adds balanced Heads Copy inset.
-The candidate remains uncommitted and incomplete. Phase1 Svelte author evidence
+The work was frozen as `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac` and rejected:
+the required repository run stopped after557 UI passes/one obsolete Bed selector;
+the single full browser run had301 passes/12 obsolete Bed/Thermals assertions.
+Seven independent Camera adversaries passed. The current repair restores ready
+after explicit duplicate RPC success, preserves failure during initial legacy
+Retry, and renews Bed feedback and Thermals age-stale/timeout/offline assertions.
+Author evidence is45 UI passes, compiler/AST, five package passes and22 browser
+cases via14 retained plus eight renewed passes. A new frozen SHA, independent
+exact approval and the complete required gate remain pending; no ledger item is
+newly delivered. Earlier Phase1 Svelte author evidence
 now includes compiler/AST,158 unit,12 package and49 unique retained+renewed browser
 cases, not a clean full-suite pass. All eight packages have recorded phase1 hashes;
 new Camera edits require affected renewal. Four preflight findings received focused
@@ -35,7 +44,7 @@ plus two renewed passes. Phase2 source repairs have scoped author/mixed-camera
 evidence; final renderer/package renewal passes, full regression and release gates remain.
 The deployed rows below still describe PR87.
 
-1. Record the frozen candidate after final Camera renderer/geometry renewal and
+1. Preserve completed Camera renderer/geometry work and
    two scoped repairs: raw
    Dashboard acknowledgements rejected by the widget, and a slow mDNS candidate
    timeout closing connected/fresh Live. Ack-only compatibility and the typed,
@@ -50,8 +59,10 @@ The deployed rows below still describe PR87.
    bytes. Final Lab79375/Live89770/private aggregate928543 fit existing guards;
    renderer3 UI,23+2 browser and12 package tests/138 assertions, compiler/AST and
    package checks pass. These author results still require the full/exact gates.
-2. Preserve phase1 skeleton/footer/Heads/legacy work and Camera Lab renewals;
-   renew affected checks and consistent bundles/pins for the final candidate.
+2. Preserve phase1 skeleton/footer/Heads/legacy work and Camera Lab renewals.
+   Review repairs now have focused checks and consistent four-live-bundle pins:
+   Fans91362/Thermals91973/Heads96944/Queue92936, aggregate462985 including unchanged
+   Camera89770. Camera/private lab artifact hashes remain unchanged from e186c41.
 3. Freeze focused-verified candidate bytes, complete the required full regression
    with one owner, independent review/targeted verification, then guarded PR merge,
    exact deployment and both-service restart/meaningful served verification.

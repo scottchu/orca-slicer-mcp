@@ -1662,7 +1662,7 @@
         if (refreshing || !hosted) return;
         const showSkeletons = !toolOutput;
         refreshing = true;
-        if (showSkeletons) setStatusLoading(true);
+        if (showSkeletons && elements.dashboard.dataset.statusFailed !== 'true') setStatusLoading(true);
         elements.refresh.classList.add("is-refreshing");
         if (elements.dashboard.dataset.statusFailed !== 'true') setNotice("");
         try {

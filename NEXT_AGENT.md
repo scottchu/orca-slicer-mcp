@@ -1,6 +1,32 @@
 # Next agent
 
-## Continue the resumed WIP branch
+## Continue after the e186c41 review repairs
+
+The current working tree contains focused repairs on
+`e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac`; do not deploy that rejected candidate.
+Freeze the new candidate after reviewing this diff and the current HANDOFF /
+VALIDATION sections, then assign independent repair verification and the complete
+required repository gate. The earlier gate stopped at557 UI passes / one Bed
+selector failure; the one full browser run was301 pass /12 fail. Preserve those
+logs and the seven passing independent Camera adversaries. Do not repeat an
+unaffected full browser suite solely for handoff; all mandatory `u1-ship` gates
+remain unchanged.
+
+Author repairs restore `ready` after a successful duplicate RPC while duplicate
+notifications cannot clear failed Retry, and preserve the combined legacy initial
+error during Retry. Renewed Bed selectors retain both local and phase assertions;
+Thermals explicitly tests age-stale success, timeout/offline neutral failure and
+fresh recovery. Evidence:45 UI passes, compiler/AST, five package passes and22
+browser cases covered as14 retained plus eight renewed passes. The new input/log
+manifest and failure classifications are in VALIDATION; this is author evidence,
+not independent approval. Four live bundle pins are updated; Camera and private
+lab artifacts are unchanged. Next delivery must use the exact newly approved SHA.
+
+Preserve existing changes, delivery-ledger backlog, all c6 separation and byte
+caps. No Progress implementation was authorized in this repair. No new deployment
+occurred, and PR87 remains the served baseline.
+
+## Historical: resumed WIP branch
 
 The coordinator verified a clean current checkout, fetched and checked out
 `codex/u1-footer-error-skeletons` at remote checkpoint

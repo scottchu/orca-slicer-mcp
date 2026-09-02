@@ -140,6 +140,14 @@ for (const width of [320, 390, 720]) for (const doubled of [false, true]) {
     await page.clock.fastForward(21000); equal(await boxes(), loading);
     await expect(frame.locator('#notice')).toHaveText('Could not load');
     await expect(frame.locator('#notice')).toHaveAttribute('aria-label', 'Refresh failed');
+    await frame.locator('#refresh').click();
+    await expect(frame.locator('#notice')).toHaveText('Could not load');
+    await expect(frame.locator('#dashboard')).toHaveAttribute('data-status-failed', 'true');
+    await expect(frame.locator('#dashboard')).toHaveAttribute('aria-busy', 'false');
+    expect(await frame.locator('.skeleton-target').evaluateAll(nodes => nodes.every(node => getComputedStyle(node, '::after').animationName === 'none'))).toBe(true);
+    equal(await boxes(), loading);
+    await page.clock.fastForward(2001);
+    await expect(frame.locator('#notice')).toHaveText('Could not load');
     const readyStatus = { structuredContent: { reachable: true, state: 'printing', stateLabel: 'Printing', progressPercent: 64, currentLayer: 416, totalLayers: 650, filename: 'Public fixture.gcode', activePhysicalTool: 1, tools: [{ physicalTool: 1, active: true, temperature: 220, target: 220, state: 'active' }], bed: { temperature: 55, target: 55 }, elapsedSeconds: 1000, remainingSeconds: 2000, observedAt: '2026-09-02T12:00:00.000Z', refreshAfterSeconds: 30, camera: { available: true } } };
     await notify(frame, readyStatus);
     const image = await frame.evaluate(() => { const canvas = document.createElement('canvas'); canvas.width = 16; canvas.height = 9; return canvas.toDataURL('image/jpeg'); });

@@ -1,6 +1,45 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: resumed footer/skeleton WIP
+## Current: e186c41 review repair, awaiting a new frozen candidate
+
+The rejected candidate was `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac`, tree
+`cfc4c6bd9b972652f06a8e5bda902a3c123f0a8e`. Preserve its complete independent
+report and failed gate/browser logs; see the first VALIDATION section. The current
+working tree contains only the following repair groups under
+`plugins/u1-print-studio/app/`, plus these continuity records:
+
+- `ui/src/lib/live/controller.ts` restores the accepted `ready` phase for an
+  explicit duplicate RPC. A duplicate notification does not clear failure or
+  change retained observation identity. A direct regression and four packaged
+  consumer browser adversaries cover failed Retry, duplicates and recovery.
+- `public/legacy-widget.html` keeps static initial-error state while Retry waits;
+  the existing combined-status browser matrix now checks that pending interval,
+  footer, accessibility masking and geometry before accepted recovery.
+- Bed UI/browser tests target chart-local feedback and still assert the separate
+  phase announcement. Thermals browser fixtures use null reason for age-stale
+  success and separately assert timeout/offline masking, geometry and recovery.
+- Four live bundles and `src/live-fans-package.test.ts` pins are renewed. Fans
+  91362, Thermals91973, Heads96944 and Queue92936 fit unchanged100000-byte caps;
+  focused production aggregate462985. No Camera/private lab package was rebuilt.
+
+Focused author checks:45 UI passes, compiler/AST, five package passes/59
+assertions, and22 unique browser cases via14 retained plus eight renewed passes.
+The initial focused run also exposed an old offline-success assertion; the next
+run exposed a test comparing failure geometry with an earlier, different ready
+header. Both fixture/assertion corrections are recorded with failed logs. The
+final Thermals matrix passes all eight cases without further application edits.
+
+The private `review-repair-e186c41/inputs-and-results.json` manifest records all
+application inputs,13 changed source/test/artifact paths, final bundle hashes and
+log hashes. Its39 Camera-scope inputs match e186c41 exactly, preserving the scope
+of prior Camera evidence. This does not certify the new whole candidate.
+Next smallest action: freeze these completed repairs, obtain independent exact
+review/targeted verification, and run the full required repository gate under its
+assigned owner before guarded shipping. No new full browser run, merge, deploy,
+printer or device acceptance is claimed. All owned test processes have exited;
+fixture4179 is released. Keep remaining delivery-ledger work and c6 separate.
+
+## Historical: resumed footer/skeleton WIP
 
 The user has resumed remote checkpoint
 `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c` on

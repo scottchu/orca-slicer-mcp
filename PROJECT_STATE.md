@@ -1,6 +1,34 @@
 # Project state
 
-## Current: resume the unfinished footer/skeleton checkpoint
+## Current: focused repair after candidate e186c41 validation
+
+Candidate `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac` was not accepted. Its
+required repository run passed compiler/AST then stopped at557 UI passes and one
+obsolete Bed selector; later gates did not run. Its single full browser run had
+301 passes and12 failures: four Bed selectors and eight Thermals fixtures still
+expected the prior error presentation. Seven independent Camera adversaries pass.
+These failed-run records are preserved in VALIDATION.
+
+The current working tree repairs two separate review findings: a successful
+explicit duplicate receipt after failed Retry now restores `ready`, while a
+duplicate notification preserves failure; combined legacy initial-error Retry
+keeps the static failure/footer until accepted data. Bed tests distinguish local
+chart feedback from phase announcements. Thermals tests distinguish successful
+age-stale receipts from timeout/offline failures and verify subsequent recovery.
+Focused author evidence is45 UI tests, compiler/AST, five package tests and22
+unique browser cases through14 retained plus eight renewed passes. This is not a
+clean full-suite pass or independent approval of the repair.
+
+The four affected live bundles/pins are coherent: Fans91362, Thermals91973,
+Heads96944, Queue92936 bytes; focused production aggregate462985. Camera and
+private lab bundles retain their prior hashes;39 scoped Camera inputs match the
+failed candidate exactly. Caps, dependencies and shipping guards are unchanged.
+Next: freeze a new candidate, obtain independent repair review/verification, run
+the full required repository gate with its assigned owner, then complete guarded
+`u1-ship`. PR87 remains deployed; no new merge/deployment or device acceptance is
+claimed. Preserve all delivery-ledger requirements and the separate c6 checkpoint.
+
+## Historical: resumed footer/skeleton checkpoint
 
 The user resumed branch `codex/u1-footer-error-skeletons` at saved remote
 checkpoint `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`, based on accepted

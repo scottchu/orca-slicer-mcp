@@ -40,7 +40,7 @@ export const createObservationController = <T extends OrderedObservation>(port: 
       if (latest && JSON.stringify(observation) === JSON.stringify(latest)) {
         // A duplicate explicit response confirms only its own state. A failed
         // receipt must not clear the persistent last-success warning.
-        if (!notification) publish({ ...state, failure: failureKind, feedback: retainedFeedback });
+        if (!notification) publish({ ...state, phase: 'ready', failure: failureKind, feedback: retainedFeedback });
         return 'duplicate';
       }
       // Server receipt orders events across process-local version resets. A
