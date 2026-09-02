@@ -1,61 +1,37 @@
 # Project state
 
-## Current: repair976aa9f fixtures and no-env build isolation
+## Current: PR93 single-app Kit integration deployed
 
-Independent review of `976aa9ff9fcf8431934bb1826060828b42318d92` requests changes.
-It ran574 UI tests, eight package/type/AST gates,323 full browser cases and34+26
-Python tests successfully; the server run passed315/failed2. Both test fixtures
-are repaired with90 focused passes and bounded independent source approval.
-The no-env repair is source-frozen: eight focused tests/47 assertions, two
-synthetic builds and116 relocation checks pass; actual production payload matches976.
-Outer and nested Bun build/test commands disable environment/config autoload,
-and Kit uses a guarded source-owned empty environment directory.
-The checker preserves its ten gates/order and both Python gates. Freeze the repaired
-candidate, renew required full validation and exact review; do not approve the new
-inputs using976's passing subsets. PR91 remains deployed. Detailed failures,
-reports and scopes are in active VALIDATION.
+PR93 merged as `60cab96747775fd5715b4c626f99726e68b3d85c`, preserving independently
+approved `7a0d398c1652d1a7ae8aede8bf952f27bb3636cd` and tree
+`d8a34948e29a4b93b62125d4aef0100a1ddd9f04`. Required regression passes574 UI,
+322 server/3756 assertions, eight deterministic packages and34+26 Python tests.
+Browser coverage is321 retained cases plus two renewed actual Kit Fans cases,
+not another323-case full run. The rejected976 run and its repairs remain in VALIDATION.
 
-### Current integration scope
+Decision0043's one app root, `src/components/common`, pure TypeScript `src/lib`,
+private `lib/server` and actual `src/routes` are deployed under Bun1.4.0 and
+adapter-node5.5.7. Only Fans is a native prerendered/hydrated Kit page; other
+UI routes serve packaged HTML/iframe through Kit endpoints. There is no old
+custom HTTP-router fallback. Widgets and MCP stdio share application services.
+Native close events retain generic request lease ownership without polling;
+MCP body parity and128KiB endpoint limits remain. Outer/nested build commands
+and Kit's guarded environment directory isolate build inputs.
 
-Work is active on `codex/u1-sveltekit-unified-app` from111470. Decision0043's real
-app-root integration is in progress: one SvelteKit app, Bun retained, UI under
-`src/components` (`components/common` for generic primitives), pure TypeScript
-services/domain/transport in `src/lib`, private server code in `lib/server`, and
-actual API/dashboard/Lab routes in `src/routes`. The nested UI app has been removed
-from source; widgets remain shared-component build targets and MCP stdio uses shared services.
+Guarded release `20260902-60cab96-pr93-20260902T142032-7f9bba` passed exact stage,
+mandatory local/bundle/codesign gates and preservation. BOTH services explicitly
+restarted, loaded, healthy and integrity-verified;59 static/61 security checks pass,
+with no rollback. Independent scoped served-UI verification passes five cases:
+Kit Fans320/720, Heads, Camera and Camera Lab, using exact HTTPS assets and
+synthetic tool/media data. No actual printer or real Live acquisition was performed.
 
-The candidate now adopts the user's installed Bun1.4.0 with official
-`@sveltejs/adapter-node`5.5.7's handler and a thin raw-target/lifecycle bootstrap.
-Its revision and binary hash match the verified official release (VALIDATION).
-The old Bun1.3.12 completed-body disconnect failure is retained; the same isolated
-probe passes all six cases on1.4.0. Native close events replace the temporary
-polling workaround; generic request lease ownership remains. The bootstrap's
-process-local `U1_KIT_BODY_SIZE_LIMIT=Infinity` preserves baseline MCP body behavior;
-existing128KiB endpoint limits remain. No user environment or service was changed.
-The single-root source and actual Kit routing are implemented. The final author
-run passes105 focused tests/1466 assertions; two Bun1.4 payloads share the same
-39-file/58-route manifest and116 isolated relocation checks pass. Only Fans is a native Kit
-page; other dashboard/Lab/widget routes use Kit endpoints serving packaged HTML.
-The six root shipping files now have independent bounded APPROVE after34/26
-author tests and the repaired six-asset/directory-link checks. UI migration is
-frozen with70 focused tests,12 package tests and all eight deterministic builds;
-30 distinct browser cases are22 final passes plus eight input-bound retained
-passes, not a full run. The initial Lab title flash and fixture-origin failures
-were repaired with their failed evidence retained. Whole-candidate full regression,
-exact review and shipment remain pending. Next freeze the candidate and bind the
-necessary full regression and independent exact review to its final source/runtime.
-Account for every temporary compatibility route before completing routing
-integration. This adapter choice does not introduce a Node runtime or second backend.
-Acceptance criteria and role ownership are in active HANDOFF/VALIDATION.
-
-PR91 `6a222a8` remains deployed: common primitives, compact Camera icon overlay and
-byte-cap removal passed exact source review, required full regression and scoped
-served-widget verification. Its recorded source/ship/post evidence remains in
-VALIDATION; it does not accept changed application bytes in this integration.
-Preserve existing URLs, public/dashboard roles and auth, Camera lifecycle,
-read-only boundaries and every shipping guard. All55 ledger IDs, C08's intermittent
-unclassified acquisition risk, Progress no-action, F07 class discussion and c6
-remain. No new deployment/device/printer acceptance is claimed.
+Next preserve the remaining native-renderer/product work and diagnose C08's
+unclassified intermittent Live acquisition failure when that scope resumes.
+All55 ledger IDs remain: Progress is no action, F07 reactive class is discussion,
+c6 remains separate, and no actual-device/printer acceptance is inferred. Byte
+caps stay removed; integrity/security/determinism and shipping guards remain.
+This release-record tail changes Markdown only; decision0028 requires no extra
+application build, deployment or service restart.
 
 ### Earlier source checkpoint before decision0042
 

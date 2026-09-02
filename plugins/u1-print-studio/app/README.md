@@ -86,8 +86,8 @@ task separately.
 ## Source development
 
 The current source is one SvelteKit application with user-adopted Bun 1.4.0, one
-`package.json`, and one frozen `bun.lock`. The unified-app candidate still
-requires independent validation and release; the deployed baseline is PR91.
+`package.json`, and one frozen `bun.lock`. PR93 independently validated and
+deployed the unified routing/runtime; only Fans is a native Kit page, as below.
 There is no nested `ui` dependency installation.
 
 - `src/components/common` contains shared generic UI primitives; other

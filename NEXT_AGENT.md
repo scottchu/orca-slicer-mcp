@@ -1,49 +1,27 @@
 # Next agent
 
-## Current: freeze repaired no-env/test inputs for the next exact gate
+## Current: PR93 delivered; preserve remaining product scope
 
-`976aa9f` remains CHANGES_REQUESTED:574 UI/eight packages,323 full browser and
-34+26 Python tests pass, but the server run has315 passes/two fixture failures.
-The two fixtures now pass90 focused tests with bounded source approval. No-env
-source is frozen with8 tests/47 assertions, two synthetic builds and116 relocation
-checks; actual production output matches976. Freeze the repaired candidate and renew the
-mandatory full regression/exact review. Outer checker and nested Bun commands
-must both disable environment/config autoload; existing runtime environment
-semantics and every shipping gate remain. See VALIDATION for retained failures
-and precise evidence bindings; no new source/deployment approval is implied.
+PR93 `60cab96747775fd5715b4c626f99726e68b3d85c` is deployed from independently
+approved7a0d398. Required574 UI/322 server/3756 assertions/eight packages/34+26
+Python pass;323 browser coverage is321 retained plus two renewed Kit Fans cases.
+BOTH services were explicitly restarted and verified healthy/integral, with59
+static/61 security checks and preservation. Five independent served-UI cases pass
+using exact HTTPS assets and synthetic tool/media data. See active VALIDATION for
+source, shipment and postverification separately.
 
-### Current integration scope
+Keep the delivered single SvelteKit app and Bun1.4.0: generic components in
+`src/components/common`, pure TypeScript services in `src/lib`, private server
+code in `lib/server`, and framework routes in `src/routes`. Fans alone is native
+Kit; other UI endpoints still return packaged HTML/iframe. Routing takeover does
+not complete native-view migration. Existing URLs, roles/auth, service-owned
+Camera lifecycle, no-env builds and protocol limits remain explicit.
 
-On `codex/u1-sveltekit-unified-app` from111470, retain Bun and follow0043's single
-app-root layout: UI in `src/components/common` and domain compositions, pure
-TypeScript in `src/lib`, server-private code in `lib/server`, API/dashboard/Lab
-in `src/routes`. The app-root/Fans pilot is source-implemented; complete integration
-and independent acceptance remain pending.
-
-Use official adapter-node5.5.7 under the user-adopted Bun1.4.0, with the thin
-raw-target/lifecycle bootstrap. VALIDATION binds its official/user binary identity,
-retains the Bun1.3.12 disconnect failure and records six passing1.4.0 probe cases.
-Use native close events and generic request lease ownership; the temporary polling
-workaround is removed. Process-local `U1_KIT_BODY_SIZE_LIMIT=Infinity` preserves
-baseline MCP behavior while endpoint128KiB limits remain. Actual Kit routing is
-source-implemented; only Fans is native, while other UI paths serve packaged HTML.
-The final author run passes105 focused tests/1466 assertions; two payload builds
-match and116 relocation checks pass. Freeze the candidate for the necessary
-full regression and independent exact review; these author results do not replace them.
-The six shipping files have independent bounded APPROVE; UI is frozen with70
-focused tests,12 package tests, eight deterministic builds and30 distinct browser
-cases (22 final plus eight retained). Initial Lab title and fixture-origin failures
-are preserved alongside successful renewal in VALIDATION. This does not accept
-whole-app integration or deploy it. Preserve shared page/widget controller semantics.
-Use `docs/sveltekit-route-migration.md` for the finite pending compatibility
-checklist and retire handlers through verified migration;
-folder moves or a permanent second backend do not complete the task. Preserve
-`/dashboard/lab` and all role/auth/Camera-service boundaries.
-
-Use focused author checks while editing, one assigned necessary frozen full-run
-owner, separate exact review and guarded two-service shipment/postverification.
-PR91 remains deployed and its exact evidence is in VALIDATION. All55 ledger IDs
-remain; C08, Progress no-action, reactive-class discussion and c6 stay separate.
+Next follow the delivery ledger's remaining native-renderer/product work and C08
+intermittent acquisition diagnosis. Do not initiate Progress or the reactive Camera
+class from their status/discussion entries; keep c6 separate. Preserve all55 IDs.
+PR93 gives no new actual-camera, phone/native clipboard or physical-print acceptance.
+The current Markdown-only records require no application redeployment under0028.
 
 ### Earlier source checkpoint before decision0042
 
