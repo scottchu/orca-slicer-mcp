@@ -2,9 +2,11 @@
 
 Decision0043 routing integration is independently accepted and deployed in PR93
 `60cab967`, matching reviewed7a0d398. All listed application routes dispatch through
-actual Kit endpoints; there is no old custom HTTP-router fallback. Only Fans is
-a native Kit page. Other UI endpoints still serve packaged HTML/iframe, whose
-native-renderer debt remains open. Required source/role/lifecycle and isolated
+actual Kit endpoints; there is no old custom HTTP-router fallback. Through deployed
+PR95, only Fans is a native Kit page. The current source adds native Thermals,
+Heads and Queue pages; independent candidate acceptance and shipment are pending.
+Other UI endpoints still serve packaged HTML/iframe, whose native-renderer debt
+remains open. Required source/role/lifecycle and isolated
 relocation checks passed; guarded deployment passed59 static/61 security checks.
 Scoped served-UI behavior is separately recorded in active VALIDATION.
 
@@ -20,7 +22,8 @@ It does not add/remove widget ledger IDs or complete all native widget migration
 | MCP HTTP | GET/POST/DELETE/OPTIONS `/mcp` and `/mcp/*` | Kit `mcp/+server.ts` and prefix endpoint; routing shipped PR93; independent software/protocol coverage includes GET SSE abort, negotiation and shared-consumer isolation |
 | Camera signaling | POST/DELETE/OPTIONS `/media/camera.webrtc` | Kit `media/camera.webrtc/+server.ts`; routing shipped PR93 with ticket/header/role/service semantics retained; actual Live reliability remains C08 |
 | Dashboard directory | GET `/dashboard` and `/dashboard/` | Kit-served directory HTML; routing shipped PR93; navigation remains acquisition-free |
-| Other focused pages | GET `/dashboard/{overview,progress,thermals,heads,jobs,job_history,queue,bed_mesh,camera}` | Kit `dashboard/[view]/+server.ts` serves existing packaged HTML/iframe; native UI migration remains open |
+| Current native-page slice | GET `/dashboard/{thermals,heads,queue}` | Each has native `+page.ts`/`+page.svelte` source using existing UI/controller/HTTP port; four pages including Fans are prerendered through a closed path mapping. Author focused checks pass; independent acceptance and shipment pending; deployed PR95 still serves these three as packaged HTML/iframe |
+| Other focused pages | GET `/dashboard/{overview,progress,jobs,job_history,bed_mesh,camera}` | Kit `dashboard/[view]/+server.ts` serves existing packaged HTML/iframe; native UI migration remains open |
 | Focused widget assets | GET `/dashboard/{fans,thermals,heads,queue,camera}_widget` | Kit exact widget paths; routing and deterministic artifacts shipped PR93 |
 | Legacy Camera asset | GET `/camera-widget` | Kit `+server.ts` routing shipped PR93 |
 | Lab directory | GET `/dashboard/lab` and `/dashboard/lab/` | Kit `dashboard/lab/+server.ts`; packaged synthetic HTML routing shipped PR93 |

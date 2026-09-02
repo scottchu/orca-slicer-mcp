@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test.use({ baseURL: 'http://127.0.0.1:4181' });
+test.use({ baseURL: `http://127.0.0.1:${process.env.U1_BROWSER_KIT_PORT ?? '4181'}` });
 for (const width of [320, 720]) {
   test(`Kit Fans hydrate once and preserve neutral error geometry at ${width}`, async ({ page, request }) => {
     await page.setViewportSize({ width, height: 1100 });
@@ -9,7 +9,7 @@ for (const width of [320, 720]) {
     await request.post('/__fixture/state', { data: { reset: true, hold: true } });
     const serverPage = await request.get('/dashboard/fans');
     expect(serverPage.status()).toBe(200);
-    expect(await (await request.get('/__fixture/state')).json()).toEqual({ statusReads: 0, environmentReads: 0 });
+    expect(await (await request.get('/__fixture/state')).json()).toEqual({ statusReads: 0, environmentReads: 0, materialsReads: 0, queueReads: 0 });
     await page.goto('/dashboard/fans');
     const shell = page.getByRole('article', { name: 'Fans & Air' });
     await expect(shell).toBeVisible();

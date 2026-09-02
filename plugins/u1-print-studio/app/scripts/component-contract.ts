@@ -55,6 +55,7 @@ export const debt: Record<string, string[]> = {
   'observation/LabDirectory.svelte': ['a','div','div','h1','header','main','nav','p','span'],
   'observation/ObservationFrame.svelte': [],
   'lab/ObservationLab.svelte': ['div','main','section','section'], '../routes/+layout.svelte': [], '../routes/dashboard/fans/+page.svelte': [],
+  '../routes/dashboard/thermals/+page.svelte': [], '../routes/dashboard/heads/+page.svelte': [], '../routes/dashboard/queue/+page.svelte': [],
 };
 
 export function exactTags(actual: string[], expected: string[]): boolean {

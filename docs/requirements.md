@@ -382,14 +382,15 @@ printer environments support the described behavior.
   observation store. Process restarts, separate services, and host-owned stdio
   connectors remain separate state scopes; service liveness does not establish
   printer freshness, durable history, login, sleep, or physical acceptance.
-- **UI-001:** Focused-widget framework migration uses a parallel Svelte 5/
-  SvelteKit static lab before any production cutover. Decision0043 now adopts
-  one SvelteKit application at the app root with Bun retained: real API/dashboard/
-  Lab routes, shared services and additional widget build targets. The nested
-  static UI app is transitional; folder-only moves do not establish integration.
-  First prove the Fans page and existing tools/call URL through actual Kit routes
-  and one service, preserving role/auth/URL boundaries; enumerate remaining
-  compatibility routes. This next direction is not implemented by PR91.
+- **UI-001:** Decision0043 uses one SvelteKit application at the app root with
+  Bun retained: real API/dashboard/Lab routes, shared services and additional
+  widget build targets. Routing and the native Fans page shipped in PR93;
+  the nested static UI app has been retired. Current source extends native pages
+  to Thermals, Heads and Queue using existing UI/controllers/services, with
+  independent acceptance and shipment pending. Preserve role/auth/URL boundaries,
+  zero acquisition during SSR and one observation flow on mount; account for
+  remaining packaged renderers in `docs/sveltekit-route-migration.md`. Neither
+  folder-only moves nor native page delivery complete remaining domain features.
   Shared `WidgetShell`,
   header, body, footer, observed metadata, 44-pixel icon action and chart-frame
   primitives own the visual anatomy. Components receive versioned normalized
@@ -654,11 +655,12 @@ durable-monitor claim.
 
 - **UI-003:** Observation presentation uses closed DOM-owning leaf/layout
   primitives and zero-raw domain/feature composition. All shared UI primitives
-  live in `src/lib/common/*` with generic names such as Button, Icon and Switch;
-  this is PR91's delivered layout. Decision0043's next single-app target moves UI
-  to `src/components/common`, pure TypeScript services/domain to `src/lib` and
-  server-only code to `lib/server`, with real Kit routes in `src/routes` and Bun
-  retained. That migration is not complete merely by moving files. Existing
+  live in `src/components/common/*` with generic names such as Button, Icon and
+  Switch. Decision0043's single-app layout shipped in PR93: pure TypeScript
+  services/domain live in `src/lib`, server-only code in `lib/server` and real Kit
+  routes in `src/routes`, with Bun retained. The former `src/lib/common` path is
+  PR91 history. Native renderer coverage remains separately tracked; file moves
+  alone do not complete it. Existing
   props/variants express visual/content differences. Domain compositions and
   domain icon mappings remain outside common. Consolidate visual-only leaf
   variants without weakening AST/import guards or changing domain semantics;

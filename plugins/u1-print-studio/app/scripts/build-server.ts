@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { NATIVE_DASHBOARD_VIEWS } from '../src/lib/server/route-policy';
 
 const root = path.resolve(import.meta.dir, '..');
 const argument = process.argv.indexOf('--outdir');
@@ -40,14 +41,14 @@ const legacy = (urls: string[], file: string, role: StaticRoute['role'] = 'dashb
 legacy(['/widget'], 'widget.html', 'both');
 legacy(['/camera-widget'], 'camera-widget.html');
 legacy(['/dashboard', '/dashboard/'], 'dashboard-index.html');
-legacy(['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'bed_mesh'].map((view) => `/dashboard/${view}`), 'status-dashboard-host.html');
+legacy(['overview', 'progress', 'jobs', 'job_history', 'bed_mesh'].map((view) => `/dashboard/${view}`), 'status-dashboard-host.html');
 legacy(['/dashboard/camera'], 'camera-dashboard-host.html');
 for (const view of ['fans', 'thermals', 'heads', 'queue', 'camera']) legacy([`/dashboard/${view}_widget`], `svelte-live-${view}.html`);
 const lab = (urls: string[], file: string): void => legacy(urls.flatMap((url) => [url, `${url}/`]), file);
 lab(['/dashboard/lab', ...['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans'].map((view) => `/dashboard/lab/${view}`)], 'svelte-observation-lab.html');
 lab(['/dashboard/lab/bed_mesh'], 'svelte-bed-mesh-lab.html');
 lab(['/dashboard/lab/camera'], 'svelte-camera-lab.html');
-route('/dashboard/fans', 'prerendered/dashboard/fans.html');
+for (const view of NATIVE_DASHBOARD_VIEWS) route(`/dashboard/${view}`, `prerendered/dashboard/${view}.html`);
 const files = (folder: string, prefix = ''): string[] => readdirSync(folder, { withFileTypes: true }).flatMap((entry) => {
   if (entry.isSymbolicLink()) throw new Error('Build output contains symlink');
   const name = prefix + entry.name;

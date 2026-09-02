@@ -1,6 +1,44 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: PR95 rollout and the remaining C08 boundary
+## Current execution: native Thermals, Heads and Queue dashboard pages
+
+The user paused Screen Sharing until returning home and directed other work to
+continue. On `codex/u1-native-observation-pages` from mainb5329ad, the next
+0043/F01/F08 slice makes `/dashboard/thermals`, `/dashboard/heads` and
+`/dashboard/queue` native Kit pages following deployed Fans. Reuse the existing
+UI, controllers and services without iframes; add no design or domain data.
+The three page pairs and four-page prerender/closed-route mapping are frozen in
+source. Author checks pass three server cases/195 assertions,21 distinct browser
+scopes (15 retained, five renewed and one new), and Svelte0errors/0warnings/AST.
+Two successful builds have the same56-file/72-route manifest; all15 public HTML
+files match baseline, without widget regeneration. Report SHA256
+`682fbcf027852d36cd5f079c1a643e23035f03a816bb6b3015879f2a3bf5598a`
+binds this focused evidence; active VALIDATION preserves commands and failures.
+Independent candidate validation and shipment remain pending. This slice does
+not close all F01 migration or finish Queue's remaining product requirements.
+
+Acceptance: preserve URLs and widget resource endpoints; SSR acquires no telemetry,
+mount starts the existing observation flow once, and refresh/failure/recovery keep
+neutral error geometry/footer behavior. Preserve Heads full-hex Copy, keyboard/
+focus behavior and existing role/auth/static-asset guards. Next: freeze the
+candidate, run one required regression with independent exact review, then
+u1-ship, BOTH restarts and scoped served-UI checks. History evidence covers a
+fresh document, not an observed BFCache restoration.
+Synthetic/software evidence stays distinct from physical-printer/device acceptance.
+
+C08 stays open and paused for the user's at-home Local Network UI inspection;
+Screen Sharing diagnosis and actual Camera probing do not block this page slice.
+Do not restart those probes or change system/auth/network settings. Keep all55
+ledger IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
+unchanged loading policy. PR95 remains the deployed application baseline.
+
+Source changes are the three `src/routes/dashboard/{thermals,heads,queue}` page
+pairs, closed native-path/CSP/build mappings and route-only AST registrations,
+plus focused Kit fixtures/tests. Shared components, controller, HTTP observation
+port and Camera lifecycle are unchanged. Author input inventory binds417
+non-Markdown application files; use its exact identity for the next candidate gate.
+
+### Retained PR95 source/deployment evidence
 
 PR95 is merged as `44d4266634bbe2d102a056332726550cbfe068e8`, preserving independently
 approved `fd642a5987bb8e35c9d5c272c73e4dce26ec882a` and tree
@@ -28,17 +66,17 @@ reaches upstream RTP/offer. External STUN, local UDP and authenticated wire-byte
 comparisons pass. Neither a Bun defect nor macOS Local Network denial is proved;
 no Camera service repair was made. Actual probes have stopped.
 
-The requested Local Network UI inspection is unavailable while remote desktop
-sign-in fails. Read-only checks confirm Screen Sharing is running and the account
-is allowed; correlated logs identify SRP authentication failure without its cause.
-Await the existing client-side failure evidence; do not repeat password attempts
-or change system/auth/network settings. Then resume the smallest evidence-led C08
-repair, requiring advancing actual decoded frames and its own exact release gates.
+The user has paused remote desktop diagnosis until returning home. Existing
+client/server logs identify RSA-SRP failure; the user reports that interactive
+local Directory verification accepted the same input. This does not identify the
+Screen Sharing failure's cause. No Screen Sharing restart was executed by agents.
+At-home inspection remains the next C08 external step; no further auth attempts,
+settings changes or Camera probes are part of the native-page slice.
 
 Preserve compact icon modes, footer errors, service-owned Camera lifecycle and
 unchanged loading policy. All55 IDs, Progress no-action, F07 class discussion,
-separate c6 and native-renderer/product backlog remain. This records-only tail
-retains application bytes and requires no extra deployment under decision0028.
+separate c6 and native-renderer/product backlog remain. The completed PR95
+records-only tail retained application bytes without another deployment under0028.
 
 ## Earlier deployed baseline: PR93 source accepted and shipped
 

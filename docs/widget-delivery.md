@@ -4,7 +4,39 @@ Current authority, 2026-09-02. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
-## Current source/deployment: PR95 Switch44px
+## Current execution: native Thermals, Heads and Queue dashboard pages
+
+The user paused Screen Sharing until returning home and directed other work to
+continue. On `codex/u1-native-observation-pages` from mainb5329ad, the next
+0043/F01/F08 slice makes `/dashboard/thermals`, `/dashboard/heads` and
+`/dashboard/queue` native Kit pages following deployed Fans. Reuse the existing
+UI, controllers and services without iframes; add no design or domain data.
+The three page pairs and four-page prerender/closed-route mapping are frozen in
+source. Author checks pass three server cases/195 assertions,21 distinct browser
+scopes (15 retained, five renewed and one new), and Svelte0errors/0warnings/AST.
+Two successful builds have the same56-file/72-route manifest; all15 public HTML
+files match baseline, without widget regeneration. Report SHA256
+`682fbcf027852d36cd5f079c1a643e23035f03a816bb6b3015879f2a3bf5598a`
+binds this focused evidence; active VALIDATION preserves commands and failures.
+Independent candidate validation and shipment remain pending. This slice does
+not close all F01 migration or finish Queue's remaining product requirements.
+
+Acceptance: preserve URLs and widget resource endpoints; SSR acquires no telemetry,
+mount starts the existing observation flow once, and refresh/failure/recovery keep
+neutral error geometry/footer behavior. Preserve Heads full-hex Copy, keyboard/
+focus behavior and existing role/auth/static-asset guards. Next: freeze the
+candidate, run one required regression with independent exact review, then
+u1-ship, BOTH restarts and scoped served-UI checks. History evidence covers a
+fresh document, not an observed BFCache restoration.
+Synthetic/software evidence stays distinct from physical-printer/device acceptance.
+
+C08 stays open and paused for the user's at-home Local Network UI inspection;
+Screen Sharing diagnosis and actual Camera probing do not block this page slice.
+Do not restart those probes or change system/auth/network settings. Keep all55
+ledger IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
+unchanged loading policy. PR95 remains the deployed application baseline.
+
+### Retained PR95 source/deployment evidence
 
 PR95 is merged as `44d4266634bbe2d102a056332726550cbfe068e8`, preserving independently
 approved `fd642a5987bb8e35c9d5c272c73e4dce26ec882a` and tree
@@ -32,17 +64,17 @@ reaches upstream RTP/offer. External STUN, local UDP and authenticated wire-byte
 comparisons pass. Neither a Bun defect nor macOS Local Network denial is proved;
 no Camera service repair was made. Actual probes have stopped.
 
-The requested Local Network UI inspection is unavailable while remote desktop
-sign-in fails. Read-only checks confirm Screen Sharing is running and the account
-is allowed; correlated logs identify SRP authentication failure without its cause.
-Await the existing client-side failure evidence; do not repeat password attempts
-or change system/auth/network settings. Then resume the smallest evidence-led C08
-repair, requiring advancing actual decoded frames and its own exact release gates.
+The user has paused remote desktop diagnosis until returning home. Existing
+client/server logs identify RSA-SRP failure; the user reports that interactive
+local Directory verification accepted the same input. This does not identify the
+Screen Sharing failure's cause. No Screen Sharing restart was executed by agents.
+At-home inspection remains the next C08 external step; no further auth attempts,
+settings changes or Camera probes are part of the native-page slice.
 
 Preserve compact icon modes, footer errors, service-owned Camera lifecycle and
 unchanged loading policy. All55 IDs, Progress no-action, F07 class discussion,
-separate c6 and native-renderer/product backlog remain. This records-only tail
-retains application bytes and requires no extra deployment under decision0028.
+separate c6 and native-renderer/product backlog remain. The completed PR95
+records-only tail retained application bytes without another deployment under0028.
 
 Source/ship/post evidence and prior failures remain in active VALIDATION.
 PR86 thumbnail policy remains accepted.
@@ -56,7 +88,8 @@ There is no old custom HTTP-router fallback. Widget build targets and MCP stdio
 share services; URL/role/auth, Camera lease lifecycle and protocol limits remain.
 Build isolation covers outer/nested Bun calls and Kit's environment loader.
 
-Remaining native-renderer/product work follows the active C08 repair. `docs/sveltekit-route-migration.md` tracks
+The current Thermals/Heads/Queue native-page slice advances renderer migration
+while C08 is paused. `docs/sveltekit-route-migration.md` tracks
 routing versus rendering without adding/removing these55 IDs. Progress remains
 no action, F07 class remains discussion and c6 stays separate. No new actual-camera,
 phone/native or physical-print acceptance is claimed. Byte ceilings stay removed;
@@ -230,14 +263,14 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 
 | IDs / request | Status and evidence | Acceptance / next smallest action |
 | --- | --- | --- |
-| F01 SvelteKit checked-in project | Partial: 10 Lab routes, five focused Svelte views delivered | Finish other five focused views; canonical source remains checked in |
+| F01 SvelteKit checked-in project | Partial:10 Lab routes/five focused Svelte views delivered; native Thermals/Heads/Queue source implemented, independent acceptance/shipment pending | Reuse delivered UI/controllers/services after native Fans; noiframe page acceptance does not finish remaining views or domain features |
 | F02 shared primitive composition | Common/Button/Icon/Switch shipped PR91; app-root components/common integration shipped PR93 | Preserve all-eight consumer/AST/security coverage; other raw-markup debt remains |
 | F03 PercentageBackground + slight slope | Delivered: Thermals/Fans, 100-degree tint | Preserve exact ratio and truthful over-target numbers |
 | F04 src/lib/ui vs src/components |0043 one app-root components/common and pure TypeScript lib separation independently accepted and shipped PR93 | Preserve generic primitives/domain composition boundary; native renderer migration remains F01 |
 | F05 generic semantic tokens | Not started; --u1 tokens remain | Inventory consumers and controlled alias transition |
 | F06 arrow functions | Adopted AGENTS | Apply to changed JS/TS; document genuine exceptions |
 | F07 component-owned folders/services | Partial; PR89 delivers real/synthetic Camera service separation | Thin subscribers/renderers. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
-| F08 whole server/MCP SvelteKit migration |0043 real Kit API/UI routing and shared services independently accepted and shipped PR93 | Only Fans is native Kit; other UI routes serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
+| F08 whole server/MCP SvelteKit migration |0043 real Kit API/UI routing/shared services shipped PR93; native Thermals/Heads/Queue source implemented, independent acceptance/shipment pending | Fans remains the deployed native page; other UI routes currently serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
 | F09 self-contained widget HTML |0042 individual/aggregate byte caps removed, independently accepted and shipped PR91 | Preserve self-contained assets, CSP/security, integrity, determinism, minification and size reporting during0043 |
 | U01 density/grouping/consistent language | Partial; independent UIUX/domain audits complete | Implement findings per widget; audits alone are not fixes |
 | U02 smaller Refresh visual | Not started in delivered shared component | Compact visible glyph/control, 44px accessible target |
@@ -258,7 +291,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
-| C08 served Camera still old | Diagnosis blocked: Bun1.4 remote-printer ICE UDP sends EHOSTUNREACH; same-adapter1.3 succeeds; permission/runtime root cause unproven; PR95 changes only Switch geometry | Local Network UI inspection awaits remote desktop access; no setting change or service repair. Preserve nine attempts; require service-owned fix, actual decoded-frame proof, exact release gates and served verification before closure |
+| C08 served Camera still old | Diagnosis paused until the user returns home: Bun1.4 remote-printer ICE UDP sends EHOSTUNREACH; same-adapter1.3 succeeds; permission/runtime root cause unproven; PR95 changes only Switch geometry | Await at-home Local Network UI inspection; Screen Sharing/auth diagnosis stopped, no setting change or service repair. Preserve nine attempts; require service-owned fix, actual decoded-frame proof, exact release gates and served verification before closure |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |
