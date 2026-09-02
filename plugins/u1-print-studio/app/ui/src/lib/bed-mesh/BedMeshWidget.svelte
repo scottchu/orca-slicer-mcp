@@ -5,6 +5,7 @@
   import { meshPalette } from './palette';
   import { validateBedMeshObservation, type BedMeshObservation } from './types';
   import ChartFrame from '../ui/ChartFrame.svelte';
+  import HeightLegend from '../ui/HeightLegend.svelte';
   import IconButton from '../ui/IconButton.svelte';
   import ObservedMeta from '../ui/ObservedMeta.svelte';
   import WidgetBody from '../ui/WidgetBody.svelte';
@@ -55,7 +56,8 @@
     <WidgetBody>
       {#snippet children()}
         <div class="mesh-kicker">Reported probe grid · <LoadingValue {loading} text={mesh ? `${mesh.summary.columns} × ${mesh.summary.rows}` : undefined} />{loading || mesh?.fixture ? ' · Lab fixture' : ''}</div>
-        <ChartFrame label={mesh ? `Bed mesh ${mode === '3d' ? '3D surface' : '2D grid'}, ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : 'Loading bed mesh'} overlay={feedback ? feedbackOverlay : undefined}>
+        <ChartFrame label={mesh ? `Bed mesh ${mode === '3d' ? '3D surface' : '2D grid'}, ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : 'Loading bed mesh'} description={mesh ? `Z height in millimetres; top ${mesh.summary.maximum}, bottom ${mesh.summary.minimum}` : 'Z height in millimetres; range unavailable'} overlay={feedback ? feedbackOverlay : undefined}>
+          {#snippet leading()}<HeightLegend minimum={mesh?.summary.minimum ?? null} maximum={mesh?.summary.maximum ?? null} palette={meshPalette} orientation="vertical" placement="start" showEndpoints={false} />{/snippet}
           {#if !mesh}<Skeleton shape="chart" />
           {:else if mode === '3d'}
             <BedMesh3D observation={mesh} {resetKey} />
@@ -63,11 +65,6 @@
             <BedMesh2D observation={mesh} />
           {/if}
         </ChartFrame>
-        <div class="legend" aria-label={mesh ? `Z height from ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : undefined}>
-          <span>Z (mm)</span>
-          <div class="legend-bar" class:loading style={mesh ? `--mesh-palette:${meshPalette.join(',')}` : undefined}></div>
-          <div class="legend-values"><span><LoadingValue {loading} text={mesh?.summary.minimum.toFixed(3)} /></span><span><LoadingValue {loading} text={mesh?.summary.maximum.toFixed(3)} /></span></div>
-        </div>
         <dl class="summary">
           <div><dt>Minimum</dt><dd><LoadingValue {loading} text={mesh?.summary.minimum.toFixed(3)} /> mm</dd></div>
           <div><dt>Maximum</dt><dd><LoadingValue {loading} text={mesh?.summary.maximum.toFixed(3)} /> mm</dd></div>
@@ -90,10 +87,6 @@
 
 <style>
   .mesh-kicker { margin: 0 0 12px; color: var(--u1-muted); font-size: 13px; line-height: 1.4; }
-  .legend { margin-top: 14px; color: var(--u1-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-  .legend-bar { height: 8px; margin-top: 7px; border-radius: 999px; background: linear-gradient(90deg, var(--mesh-palette)); }
-  .legend-bar.loading { background: var(--u1-skeleton-base); }
-  .legend-values { display: flex; justify-content: space-between; margin-top: 5px; }
   .summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0 0; padding: 0; }
   .summary div { min-width: 0; }
   dt { color: var(--u1-muted); font-size: 11px; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.08em; }

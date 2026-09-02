@@ -36,7 +36,8 @@ export const leaves: Record<string, string[]> = {
   'ui/WidgetShell.svelte': ['article'], 'ui/WidgetBody.svelte': ['div'],
   'ui/WidgetHeader.svelte': ['div', 'div', 'div', 'div', 'h1', 'header'],
   'ui/WidgetFooter.svelte': ['div', 'div', 'footer'], 'ui/IconButton.svelte': ['button'],
-  'ui/ChartFrame.svelte': ['div', 'div', 'div'],
+  'ui/ChartFrame.svelte': ['div', 'div', 'div', 'div', 'div', 'span'],
+  'ui/HeightLegend.svelte': ['div', 'span', 'span', 'span', 'span'],
   'bed-mesh/BedMesh2D.svelte': ['canvas'], 'bed-mesh/BedMesh3D.svelte': ['div', 'span', 'div', 'div'],
 };
 // Untouched ready widgets, route chrome, and compatibility frame remain explicit
@@ -46,7 +47,7 @@ export const debt: Record<string, string[]> = {
   'observation/ProgressWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','strong','strong'],
   'observation/CurrentJobWidget.svelte': ['div','div','div','div','div','div','div','span','span','span','span','span','span','strong','strong','strong','strong','strong'],
   'observation/JobHistoryWidget.svelte': ['div','div','div','div','span','span','strong'],
-  'bed-mesh/BedMeshWidget.svelte': ['dd','dd','dd','div','div','div','div','div','div','div','dl','dt','dt','dt','span','span','span','span'],
+  'bed-mesh/BedMeshWidget.svelte': ['dd','dd','dd','div','div','div','div','dl','dt','dt','dt','span'],
   'observation/LabDirectory.svelte': ['a','div','div','h1','header','main','nav','p','span'],
   'observation/ObservationFrame.svelte': [],
   '../routes/+page.svelte': ['div','main','section','section'], '../routes/+layout.svelte': [],

@@ -62,11 +62,11 @@ export const cageLines = (display: Display, sides: Sides) => {
 
 export const numberLabel = (value: number) => Number(value.toPrecision(4)).toString();
 
-export const projectedAxes = (display: Display, observation: BedMeshObservation, sides: Sides, project: (point: Point) => ScreenPoint) => {
+export const projectedAxes = (display: Display, observation: BedMeshObservation, sides: Sides, project: (point: Point) => ScreenPoint, edge: 'left' | 'right' = 'left') => {
   const { halfX: x, halfY: y, low, high } = display;
   const candidates: Point[] = [[-sides.x * x, 0, sides.y * y], [sides.x * x, 0, -sides.y * y]];
   const left = project(candidates[0]).x - project(candidates[1]).x;
-  const z = Math.abs(left) > 8 ? (left < 0 ? 0 : 1) : sides.z;
+  const z = Math.abs(left) > 8 ? ((left < 0) === (edge === 'left') ? 0 : 1) : sides.z;
   const corner = candidates[z];
   const axes = [
     { id: 'x', a: [-x, -0.18, sides.y * y] as Point, b: [x, -0.18, sides.y * y] as Point, min: observation.bounds.xMin, max: observation.bounds.xMax },
@@ -78,11 +78,12 @@ export const projectedAxes = (display: Display, observation: BedMeshObservation,
 
 export const layoutLabels = (
   axes: ReturnType<typeof projectedAxes>['axes'], project: (point: Point) => ScreenPoint,
-  center: ScreenPoint, measure: (text: string) => { width: number; height: number }, frame: { width: number; height: number }, fit = true
+  center: ScreenPoint, measure: (text: string) => { width: number; height: number }, frame: { width: number; height: number }, fit = true,
+  obstacles: { x: number; y: number; width: number; height: number }[] = []
 ) => {
   const labels: Label[] = [];
   const optional: Label[] = [];
-  const overlaps = (label: Label) => labels.some((other) => label.x < other.x + other.width + 3 && label.x + label.width + 3 > other.x && label.y < other.y + other.height + 3 && label.y + label.height + 3 > other.y);
+  const overlaps = (label: Label) => [...labels, ...obstacles].some((other) => label.x < other.x + other.width + 3 && label.x + label.width + 3 > other.x && label.y < other.y + other.height + 3 && label.y + label.height + 3 > other.y);
   const contained = (label: Label) => label.x >= 3 && label.y >= 3 && label.x + label.width <= frame.width - 3 && label.y + label.height <= frame.height - 3;
   // Reserve the narrow vertical silhouette first; floor labels can move down
   // without pushing the entire chart away from the Z label column.

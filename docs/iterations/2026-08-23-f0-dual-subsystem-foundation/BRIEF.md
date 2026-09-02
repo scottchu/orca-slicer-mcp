@@ -1,5 +1,23 @@
 # F0 dual-subsystem foundation brief
 
+Latest additive order: deliver the user-requested vertical Z(mm) legend inside
+the left edge of the shared Bed Mesh 4:3 chart as a bounded lab-only slice from
+accepted Queue main `7882670`, ordinarily merged as `910355e`. The reusable
+HeightLegend and optional ChartFrame
+leading slot must retain 2D/3D/skeleton geometry, real sample extrema, readable
+nonoverlapping labels at four widths/normal and 200% text, zoom and zero fetch.
+No production route/controller/service/printer change belongs to this slice.
+Full real-Bed phase two is preserved at `194ea79` and remains queued with its
+independent gates and accepted Queue-controller dependency. Other tracks remain open.
+Independent design now adopts one intrinsic Z(mm) caption plus a 6px rail, no
+duplicate chart endpoint numbers, with exact range on the chart's accessible
+description and existing visible Minimum/Maximum/Range facts below. Retain
+14px plot inset and all coverage/clearance/readability gates. This supersedes
+only the held duplicate-endpoint design; no source acceptance is implied.
+Author full browser 182 and repository/runtime/eight-package gates now pass;
+independent exact review and guarded delivery are next.
+
+## Integrated Queue baseline records
 Current order: PR75 is delivered at accepted main `ff577fcb`; finish the bounded
 Queue candidate and independently discovered shared stale-success RPC repair.
 Application source `5c53d05` incorporates independently designed intrinsic public

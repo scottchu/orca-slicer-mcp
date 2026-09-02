@@ -1,5 +1,43 @@
 # Project state
 
+## Current: slim vertical legend author gates complete, review pending
+
+Accepted Queue main `7882670778627128214d74bcee62fe20f5ddbf7a` is ordinarily
+merged as `910355e`. Independent design replaces duplicate chart endpoint
+numbers with a 6px left rail and one intrinsic Z(mm) caption; exact extrema
+remain in the chart's accessible description and visible summary below.
+The fixed 4:3 frame, 14px inset, true projected axes and existing fit/zoom
+gates pass without waivers. Final author evidence: UI 439, app 300 (3,556
+assertions), lifecycle 21, shipping 24, eight deterministic packages and
+Chrome 182/182. Only the Bed lab asset changes from the accepted Queue base:
+634,045 bytes; three labs total 917,715. All five production assets match.
+Independent exact-source review/validation and guarded delivery remain due.
+No deployment, printer or actual-device acceptance is claimed. The unchanged
+three-column summary remains visually crowded at 320px/200% text and belongs
+to the preserved real-Bed composition follow-up at `194ea79`.
+
+## Historical author and integrated baseline records
+
+## Immediate vertical Bed Mesh legend — HELD author candidate
+
+User execution order now prioritizes a narrow vertical Z(mm) legend inside the
+left chart edge, as a lab/shared-renderer slice from accepted main `ff577fcb`.
+Generic HeightLegend/ChartFrame composition removes the below-chart bar;
+measured legend text and the opposite true Z silhouette preserve plotting room.
+All existing frame, coverage, zoom, readability and isolation gates remain.
+The full-height wide-column experiment failed 320px/200% mesh coverage and is
+not accepted. The narrow-rail/opposite-Z candidate passes existing coverage,
+rotation and pixel-zoom checks, but the new surface/legend-box overlap check
+fails at 320/390px with 200% text (849/412 colored pixels). The fixed 6ch boxes
+overestimate short glyphs, so the next role must separate actual-glyph clearance
+from empty label width and include surface clearance in neutral fitting.
+Focused browser result is 24/26; full renewal and PR are held, not waived.
+Real Bed Mesh phase two remains preserved at `194ea79`, including its pending
+Queue controller and accepted Current Job compact-IconButton dependencies.
+No production package, controller, service, printer, MCP or auth change belongs
+to this immediate slice.
+
+## Integrated Queue baseline records
 ## Current: delivered PR75, Queue author candidate ready for exact review
 
 PR75's three-artifact private-lab split is delivered on accepted main

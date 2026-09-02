@@ -8,7 +8,9 @@ const wheel = async (page: Page, delta: number) => {
   await page.waitForTimeout(80);
 };
 const coloredPixels = async (page: Page) => {
+  await page.locator('[data-height-legend]').evaluateAll((nodes) => nodes.forEach((node) => (node as HTMLElement).style.visibility = 'hidden'));
   const png = await page.locator('[data-chart-frame]').screenshot();
+  await page.locator('[data-height-legend]').evaluateAll((nodes) => nodes.forEach((node) => (node as HTMLElement).style.removeProperty('visibility')));
   return page.evaluate(async (data) => {
     const image = new Image(); image.src = `data:image/png;base64,${data}`; await image.decode();
     const canvas = document.createElement('canvas'); canvas.width = image.width; canvas.height = image.height;

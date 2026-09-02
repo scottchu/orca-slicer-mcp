@@ -393,6 +393,17 @@ printer environments support the described behavior.
   unsafe-integer position fails. This finite allowance covers only remaining
   Queue, Current Job, History, Progress and Overview composition; Console and
   print thumbnails require a separate decision.
+  Bed Mesh's generic height legend sits vertically inside the shared chart's
+  left edge as a 6px rail with one intrinsic Z(mm) caption. Existing visible
+  Minimum/Maximum/Range facts replace duplicate chart endpoint numbers; the
+  chart's accessible description carries exact top maximum and bottom minimum.
+  Equal extrema produce uniform midpoint color; unknown/loading is neutral with
+  identical geometry. The14px plot inset reserves room for a readable caption
+  and projected XYZ labels, with zero caption/mesh overlap. It replaces the
+  below-chart bar without adding card height, preserves the same 4:3 frame in
+  2D/3D/loading/refresh, and retains all UI-001 fit/zoom/coverage gates at all
+  four widths and 200% text. This lab-only refinement does not migrate the
+  production Bed Mesh widget or modify production package bytes.
   Camera offers loading/connecting/snapshot/simulated-live/fallback/error/
   unsupported and restrictive native/unsupported/simulated-rejection policies.
   Native capabilities are feature-detected; FPS requires actual local presented
