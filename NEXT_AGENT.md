@@ -1,6 +1,16 @@
 # Next agent
 
-## Continue the minimal NodeNext/dependency repair after f0c5e41
+## Freeze the 092f84a test-only contract repair
+
+Source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132` passed559 UI/eight
+packages/app TypeScript but stopped at301 app passes/3 obsolete assertions;
+Python gates were not reached. Only `app.test.ts` now renews two legacy pins and
+adjacent footer-status assertions:29PASS/281assertions,374 other tracked app files
+unchanged. Commit the new candidate, renew exact review and the full required gate;
+retain the failed run and scoped browser evidence. No ship yet: PR87 remains
+deployed, all55 IDs persist, Progress and reactive-class work remain unimplemented.
+
+## Historical: minimal NodeNext/dependency repair after f0c5e41
 
 Candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
 `9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, has coordinator-attributed

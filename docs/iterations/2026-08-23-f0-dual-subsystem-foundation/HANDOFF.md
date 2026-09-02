@@ -1,6 +1,17 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: f0c5e41 source approval with incomplete required validation
+## Current: 092f84a test-only repair awaiting freeze/full gate
+
+Exact source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132`, tree
+`fc9db1af454cbc206c2b4adf4d621ea8f25cd463`, passed559 UI, eight package checks and
+app TypeScript, then stopped at301 app passes/3 obsolete assertions; Python gates
+did not run. Only `src/app.test.ts` renews two legacy pins and the adjacent footer
+status contract, with29PASS/281assertions;374 other tracked app files are unchanged.
+Next freeze that test-only change and these records, renew full required validation
+and exact review. Failure receipts remain in VALIDATION. PR87 stays deployed;
+all55 IDs, Progress no-action and the unimplemented reactive-class discussion remain.
+
+## Historical: f0c5e41 source approval with incomplete required validation
 
 Exact candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
 `9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, received independent source APPROVE

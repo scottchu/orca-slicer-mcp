@@ -1,5 +1,39 @@
 # F0 dual-subsystem foundation validation
 
+## 092f84a required-gate failure and test-only renewal
+
+Exact source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132`, tree
+`fc9db1af454cbc206c2b4adf4d621ea8f25cd463`: independent
+`./scripts/check-repository.sh` exited1 after47.84s. Compiler/AST,559 UI/55files,
+five focused/three Lab packages and app TypeScript passed. App tests were301PASS/
+3FAIL of304 across28files,3632assertions; Python lifecycle/shipping were not reached.
+All three failures were obsolete `app.test.ts` contracts: two legacy hashes and
+an actions-only footer assertion. Preserve this failed gate.
+
+The author changed only `src/app.test.ts`, renewing actual legacy hashes plus
+adjacent footer status, role/status, escaped scoped aria-label and initial-error
+contracts. Pinned Bun1.3.12 `bun test src/app.test.ts`:29PASS/0FAIL/281assertions.
+Author `git diff --check` and `uv run --no-project python` before/after SHA256
+comparison passed;374 other tracked app files are unchanged. No runtime build,
+browser/full gate or deployment was performed for this test-only repair.
+
+Ignored reports under app/ui `test-results` bind these commands and limits:
+
+| Evidence | SHA256 |
+| --- | --- |
+| independent-092f84a-20260903/REPORT.json | `5eb2fa958c6bbfe22b9d1481cdeff5dabad9f6cdff43931c9747d41ff6dea705` |
+| independent-092f84a-20260903/repository-full.log | `d7733b124ab63c00fae84316ced2244944a461901ad1791ddb7023aae148832f` |
+| independent-092f84a-20260903/retention-binding.json | `2ef9cdfedd66a92580b4733337a46a1dc5c10dab283e24f853ddffab4cb76c1b` |
+| legacy-app-contract-repair-20260903/report.json | `fc79b0fa49ee783dc9432be1b86ffddb6dd1f8a3d7e01b183083c71e90842c17` |
+| legacy-app-contract-repair-20260903/app-focused.log | `beae90e0d5d5790de6837c330a06ac9da0c5bb92a4f5bfb6d5e9e2757f3ce44f` |
+
+Independent092f84a binding retains317 browser cases (256retained+61renewed,
+not one full run), four controller and seven Camera adversaries via15 unchanged
+HTML/144 test-build inputs and identical transpiled type-import output. Freeze
+the test-only repair/new records, then renew the full required gate and exact
+review; no ship gate is waived. PR87 remains deployed and no ledger item is
+newly complete. Owned runners exited; no browser was started for this repair.
+
 ## f0c5e41 exact source approval, failed required gate and minimal type repair
 
 Exact candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree

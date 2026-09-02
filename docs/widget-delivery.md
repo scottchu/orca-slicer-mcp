@@ -18,6 +18,15 @@ unverified unless explicitly recorded otherwise.
 
 ## Current execution order and all-route error coverage
 
+Source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132` passed559 UI/eight
+packages/app TypeScript, then stopped at301 app passes/3 obsolete assertions;
+Python gates did not run. The test-only `app.test.ts` repair passes29 tests/
+281assertions with374 other app files unchanged. Freeze the new SHA, renew full
+required validation and exact review, then guarded shipment. No new item is
+delivered; PR87 remains deployed. All55 IDs and existing no-action boundaries remain.
+
+### Historical f0c5e41 gate and type repair
+
 Current candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
 `9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, has independent exact source
 APPROVE/no findings (coordinator-attributed), but its required gate failed at app

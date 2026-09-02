@@ -1,6 +1,17 @@
 # Project state
 
-## Current: minimal TypeScript repair complete; required gate renewal pending
+## Current: 092f84a test-contract repair ready for a new candidate
+
+`092f84a9d5f0b3e282eaa4a30304e9c86cb0e132` has independent exact source approval,
+but its required gate stopped at301 app passes/3 obsolete assertions after559 UI,
+eight packages and app TypeScript passed; Python gates were not reached. The author
+renewed only `app.test.ts`'s two legacy hash pins and adjacent footer-status
+contract:29PASS/281assertions, with374 other tracked app files byte-identical.
+Freeze this test-only repair and records, then renew the full required gate and
+exact review. PR87 remains deployed;55 ledger IDs, Progress no-action and the
+unimplemented reactive-class discussion remain unchanged. See VALIDATION.
+
+## Historical: minimal TypeScript repair and f0c5e41 gate
 
 Exact candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
 `9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, has independent source-review
