@@ -1,41 +1,46 @@
 # F0 dual-subsystem foundation handoff
 
-## Current: C08 diagnosis boundary and Switch44px delivery
+## Current: PR95 rollout and the remaining C08 boundary
 
-Branch `codex/u1-camera-live-connectivity` starts from main1ce44ec. The application
-author alone performed actual camera diagnosis; records/UI work used synthetic data.
+PR95 is merged as `44d4266634bbe2d102a056332726550cbfe068e8`, preserving independently
+approved `fd642a5987bb8e35c9d5c272c73e4dce26ec882a` and tree
+`a132ed2e12e77fd023a30e671cd1450f6870fed4`. The generic Switch now visibly matches
+Button's44px action size, with a40px thumb/2px inset; Camera remains132px wide and
+Bed88px. Only three consumer packages changed; the other12 public HTML files,
+Camera lifecycle, dependencies and runtime are unchanged.
 
-The nine bounded diagnosis attempts locate the current failure before the
-browser peer is created: deployed open returns no response, while Bun1.4.0
-reports `EHOSTUNREACH` when sending ICE UDP to the printer and receives no reply.
-The same current adapter under immutable Bun1.3.12 reaches upstream ICE/RTP/offer;
-external STUN, local UDP and authenticated STUN wire-byte comparisons pass.
-Both runtimes use the same IPv4 route/bind/interface setup; signing identifier,
-Team and designated requirement match, while executable UUIDs differ. These
-observations do not establish a Bun regression or macOS permission denial.
+Required regression passes574 UI,322 server/3756 assertions, eight deterministic
+packages and34+26 Python tests. Independent targeted browser evidence covers35
+distinct cases (33 affected plus two fresh); the first34-pass/one-fixture-failure
+run and single-case renewal are preserved. Another89 unaffected cases are retained
+by input hashes; this is not a new323-case full browser run.
 
-C08 remains blocked on diagnosis, with the user's Local Network entry state
-requested; no settings change is authorized and no service-code repair exists.
-Actual probes have stopped and owned resources are closed. After the missing
-evidence, choose the smallest service-owned repair and require affected focused
-checks, advancing actual decoded frames, frozen required validation, independent
-exact review, u1-ship, BOTH restarts and actual served-Live verification. Keep
-failed attempts; HTTP success, synthetic media and health alone cannot close C08.
+Guarded release `20260902-44d4266-pr95-20260902T155815-e97e1c` explicitly restarted
+BOTH services and verified loaded/healthy/integral status,59 static/61 security
+checks and preservation, with no rollback. Independent postverification passes
+three320px consumer cases using exact HTTPS assets and synthetic data: Camera,
+Camera Lab and Bed Lab retain44px geometry, loading/ready bounds and keyboard
+behavior. No actual printer or Live acquisition was performed in this verification.
 
-The separate Switch44px change can proceed through its own release gates while
-C08 remains open: visible track matches Button, thumb40px with2px inset, Camera
-three-mode width132px and Bed two-mode width88px. Author evidence is26 units and
-33 distinct synthetic consumer browser cases (10 initial passes plus23 renewed),
-with bounded design review. Three consumer packages/pins are integrated;12 package
-tests/130 assertions and Live/Lab deterministic checks pass. The other12 public
-HTML files are unchanged. Exact frozen validation/review and deployment are pending.
+C08 remains unresolved: nine bounded attempts locate current Bun1.4 printer ICE
+UDP sends failing with `EHOSTUNREACH`, while the same adapter under immutable1.3
+reaches upstream RTP/offer. External STUN, local UDP and authenticated wire-byte
+comparisons pass. Neither a Bun defect nor macOS Local Network denial is proved;
+no Camera service repair was made. Actual probes have stopped.
 
-Preserve Snapshot/Live/Auto compact icons, footer errors and service-owned Camera
-lifecycle. Loading skeleton/Refresh questions were explanatory only: loading policy
-is unchanged. Keep all55 ledger IDs, Progress no-action, F07 class discussion,
-separate c6 and remaining renderer/product backlog. PR93 remains deployed.
+The requested Local Network UI inspection is unavailable while remote desktop
+sign-in fails. Read-only checks confirm Screen Sharing is running and the account
+is allowed; correlated logs identify SRP authentication failure without its cause.
+Await the existing client-side failure evidence; do not repeat password attempts
+or change system/auth/network settings. Then resume the smallest evidence-led C08
+repair, requiring advancing actual decoded frames and its own exact release gates.
 
-## Deployed baseline: PR93 source accepted and shipped
+Preserve compact icon modes, footer errors, service-owned Camera lifecycle and
+unchanged loading policy. All55 IDs, Progress no-action, F07 class discussion,
+separate c6 and native-renderer/product backlog remain. This records-only tail
+retains application bytes and requires no extra deployment under decision0028.
+
+## Earlier deployed baseline: PR93 source accepted and shipped
 
 PR93 merged `60cab96747775fd5715b4c626f99726e68b3d85c` from independently approved
 `7a0d398c1652d1a7ae8aede8bf952f27bb3636cd`, tree

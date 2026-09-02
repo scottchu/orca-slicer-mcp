@@ -1,5 +1,94 @@
 # F0 dual-subsystem foundation validation
 
+## Current PR95: exact source approval and guarded Switch shipment
+
+Independent report `app/test-results/independent-37884de/REPORT.json`, SHA256
+`bfb5e591d302fb1d3ff0b534ac6b67b2947e5773bd4b5587401ec924fa94ab24`,
+APPROVES `fd642a5987bb8e35c9d5c272c73e4dce26ec882a`, tree
+`a132ed2e12e77fd023a30e671cd1450f6870fed4`. Its required
+`./scripts/check-repository.sh` run exits0 in46.865s:574 UI/55 files,
+Svelte0errors/0warnings and AST, eight deterministic packages, server types,
+322 server/31 files/3756 assertions,34 service/build-contract and26 shipping
+Python tests PASS. Full-log SHA256
+`a78eb5510b8720bbed96c561cf75b0478e53260f29ff305d2307144ba109fcdf`.
+Only requirements/ADR0032 Markdown differs from initial37884de:432 non-Markdown
+inputs are unchanged, so the reviewer binds that run to the exact final candidate.
+
+With `bun --no-env-file --config=/dev/null node_modules/@playwright/test/cli.js`,
+the verifier ran `test --config test-results/independent-37884de/playwright.config.ts`.
+The first run exits1 with34 passes/one failure in51.803s: a private Camera Lab
+case wrongly expected the production dialog instead of Lab's `.local-fullscreen`.
+Only the private selector was repaired; its failure trace/screenshot/log remain.
+The same command with `--project independent --grep 'Camera Lab' --output
+ test-results/independent-37884de/playwright-camera-renewal` renews one pass in1.125s.
+The resulting35 distinct cases are33 affected plus two fresh independent cases;
+no new full browser suite ran. Targeted/renewal log SHA256 values are
+`13329f9970f772d305da3acf309c2f535ce99c7d955be3ec45f3f1d9fa5561f4` and
+`96d9f8f14cd1e45fecea4c4261b8a617bcc7ef956e83f8883491814e6531fe74`.
+
+Another89 fully unaffected cases from eight browser files are explicitly retained
+by source/test/asset hashes; retention binding SHA256
+`35fcb7b155657d610387e12e88b5c55f67a626044dd99887453ca381df4ababf`.
+Other historical multi-consumer/Camera/Bed cases are not silently relabeled as
+fresh acceptance on changed CSS. The35 targeted cases cover track/Button parity,
+40px thumb/2px inset, mode widths, loading/ready/failure geometry, keyboard/focus,
+reduced motion, resize, forced colors and Bed renderer/URL retention. The three
+changed bundles each add147 bytes;12 other public files remain identical. No
+byte caps return. The review's geometry-documentation finding is resolved;
+Camera service/transport and C08 are unchanged.485 outputs are hashed,371 prior
+fixed files and32 new fixed screenshots retained; owned browsers/processes and
+fixture ports were released, with zero actual-printer probes by the verifier.
+
+PR95 merged as `44d4266634bbe2d102a056332726550cbfe068e8`. The completed guarded
+`u1-ship` execute receipt basename is `pr95-20260902T155815-e97e1c.json`, SHA256
+`7c289b6aeb708d41262e2e5b723d537c8db2d881762da0986f3f81679247b195`.
+It binds the reviewed SHA/tree above and Bun1.4.0 SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`
+to release `20260902-44d4266-pr95-20260902T155815-e97e1c`. Mandatory local,
+bundle/codesign and exact-stage gates completed; BOTH services explicitly
+restarted and verified loaded/healthy/integral.59 static and61 security checks
+pass; preservation is true and rollback was not needed. Private service paths
+are omitted. This receipt establishes deployment/preservation; served-widget
+behavior is verified separately below.
+
+Independent `app/test-results/postdeploy-pr95-independent/REPORT.json`, SHA256
+`5b13d1561114ab0eb41b9b0aed05a4157467a583882499ae68e16098d5fecb88`,
+passes three cases with no failures in1.129s. The verifier ran
+`bun --no-env-file --config=/dev/null run test-results/postdeploy-pr95-independent/served-switch.ts`
+with the release ID and active manifest argument; private manifest paths are omitted.
+Camera iframe, Camera Lab and Bed Lab at320px show44px track/Button parity,
+40px thumb and Camera132px/Bed88px widths. Loading/ready bounds are equal;
+Camera retains its three loading modes/footer skeleton, and Bed retains its inert
+loading control with no radio/thumb. Keyboard/Home/End and view selection pass.
+
+Four actual HTTPS paths (Camera host plus three changed bundles) match exact hashes
+and existing CSP;39 active runtime files and58 static routes bind manifest SHA256
+`86ec56a4bd53eaff43173d7c96c5aa26f0a48fb41594e8a729e8988d47a54758`.
+Both service entries match the active release and remain healthy/integral. The59
+static/61 security/preservation results are retained from the exact receipt, not
+repeated. Three tool/frame requests are intercepted with synthetic responses;
+there are zero printer reads or real Camera leases and no C08 repair/Live claim.
+All browser/context/child resources closed in finally; fixture ports are free.
+Eleven output files are bound by manifest SHA256
+`e77178cddb6f111bc1e107a3c3bb002f631a59acca7eb95e09f1300c9d804151`.
+
+Remote desktop access prevents the requested Local Network UI inspection.
+Bounded read-only `launchctl print`, `netstat -an -p tcp`, group-membership and
+fixed-window `/usr/bin/log show` queries confirmed the deployed Mac's Screen Sharing service
+and listener are active, the intended target matches and the account is allowed.
+Two existing server-log activities identify SRP authentication failure but provide
+no established root cause; nearby directory lookup failures and timeouts are not
+proof of ACL denial or an incorrect password. Client-side evidence from those
+existing attempts remains requested. No additional password attempt, credential/
+hash/TCC access, authentication/ACL/network setting change or daemon restart was
+performed by this diagnostic work. It is stopped and does not close C08.
+
+This six-file Markdown-only rollout tail retains the merged application,
+dependencies/configuration/scripts/generated assets. `git diff --check`, the
+repository checker documentation prefix and the unchanged55 ledger IDs pass;
+only the owned Markdown paths differ from merged44d4266. Under0028 this records
+update requires no repeated app/full/browser test, build or service deployment.
+
 ## Current C08 diagnosis: remote UDP send fails; root cause unproven
 
 The designated application author's nine bounded attempts are frozen in
@@ -42,7 +131,7 @@ and current served Live remains unaccepted. All nine subprocesses and owned peer
 the isolated browser and contexts are closed; user tabs and services are preserved.
 No printer controls, service restart or further real-camera probes were performed.
 
-## Current Switch44px source and synthetic consumer evidence
+## Earlier Switch44px source and synthetic consumer evidence
 
 The separate user-approved Switch geometry source is frozen in
 `app/test-results/camera-switch-height/AUTHOR-REPORT.json`, SHA256
@@ -78,7 +167,7 @@ final CameraLive/CameraLab/BedLab regeneration and package-pin integration. All 
 4182 is free, and `git diff --check` passes. No actual printer connection, full
 repository/browser run, commit or deployment was performed by the UI/records author.
 
-### Integrated Switch packages: author source freeze
+### Earlier integrated Switch packages: author source freeze
 
 The separate integration report
 `app/test-results/camera-switch-height/integrated/REPORT.json`, SHA256
