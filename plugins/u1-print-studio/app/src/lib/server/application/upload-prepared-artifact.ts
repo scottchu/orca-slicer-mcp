@@ -201,6 +201,68 @@ const snapshotPlainData = (value: unknown): Readonly<Record<string, unknown>> | 
     return null;
   }
 };
+type BoundarySnapshot = { readonly ok: true; readonly value: unknown } | { readonly ok: false };
+const snapshotBoundaryValue = (value: unknown, ancestors: ReadonlySet<object> = new Set(), depth = 0): BoundarySnapshot => {
+  if (value === null || typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+    return { ok: true, value };
+  }
+  if (value instanceof Uint8Array) {
+    try {
+      return Object.getPrototypeOf(value) === Uint8Array.prototype ?
+        { ok: true, value: Uint8Array.from(value) } : { ok: false };
+    } catch {
+      return { ok: false };
+    }
+  }
+  if (typeof value !== "object" || depth > 16 || ancestors.has(value)) return { ok: false };
+  const nextAncestors = new Set(ancestors); nextAncestors.add(value);
+  if (Array.isArray(value)) {
+    try {
+      if (Object.getPrototypeOf(value) !== Array.prototype) return { ok: false };
+      const descriptors = Object.getOwnPropertyDescriptors(value);
+      const keys = Reflect.ownKeys(descriptors);
+      const lengthDescriptor = Reflect.get(descriptors, "length") as PropertyDescriptor | undefined;
+      if (!lengthDescriptor || !Object.hasOwn(lengthDescriptor, "value") || !Number.isInteger(lengthDescriptor.value) ||
+          lengthDescriptor.value < 0 || lengthDescriptor.value > 4096 || keys.some(key => typeof key !== "string") ||
+          keys.length !== lengthDescriptor.value + 1) return { ok: false };
+      const length = lengthDescriptor.value as number;
+      const snapshot: unknown[] = [];
+      for (let index = 0; index < length; index++) {
+        const descriptor = Reflect.get(descriptors, String(index)) as PropertyDescriptor | undefined;
+        if (!descriptor || !Object.hasOwn(descriptor, "value")) return { ok: false };
+        const item = snapshotBoundaryValue(descriptor.value, nextAncestors, depth + 1);
+        if (!item.ok) return item;
+        snapshot.push(item.value);
+      }
+      return { ok: true, value: Object.freeze(snapshot) };
+    } catch {
+      return { ok: false };
+    }
+  }
+  const data = snapshotPlainData(value);
+  if (!data || Object.keys(data).length > 4096) return { ok: false };
+  const snapshot: Record<string, unknown> = Object.create(null) as Record<string, unknown>;
+  for (const [key, item] of Object.entries(data)) {
+    const nested = snapshotBoundaryValue(item, nextAncestors, depth + 1);
+    if (!nested.ok) return nested;
+    snapshot[key] = nested.value;
+  }
+  return { ok: true, value: Object.freeze(snapshot) };
+};
+const snapshotBoundary = <T>(value: unknown): T | null => {
+  const snapshot = snapshotBoundaryValue(value);
+  return snapshot.ok ? snapshot.value as T : null;
+};
+const clockMilliseconds = (clock: Clock): number | null => {
+  try {
+    const value = clock.now();
+    if (Object.getPrototypeOf(value) !== Date.prototype) return null;
+    const milliseconds = Date.prototype.valueOf.call(value);
+    return Number.isFinite(milliseconds) ? milliseconds : null;
+  } catch {
+    return null;
+  }
+};
 const exactKeys = (snapshot: Readonly<Record<string, unknown>>, keys: ReadonlyArray<string>): boolean =>
   Object.keys(snapshot).sort().join("|") === keys.join("|");
 const requestKeys = ["correlationId", "idempotencyKey", "preparedJobRevisionId", "targetPreflightId",
@@ -214,21 +276,42 @@ const snapshotRequest = (value: unknown): GuardedUploadRequest | null => {
     correlationId: request.correlationId }) as GuardedUploadRequest;
 };
 const validValidationRecord = (record: StoredValidationReceipt): boolean => record?.schemaVersion === 1 &&
+  exactKeys(record as unknown as Readonly<Record<string, unknown>>, ["digest", "expiresAt", "issuedAt",
+    "preparedJobRevisionId", "receipt", "receiptId", "schemaVersion"]) &&
   validId(record.receiptId) && validId(record.preparedJobRevisionId) && SHA256.test(record.digest) &&
   validDate(record.issuedAt) && validDate(record.expiresAt) && record.receipt?.schemaVersion === 1 &&
   record.receipt.validatorVersion === PREPARED_ARTIFACT_VALIDATOR_VERSION &&
   record.receipt.requirementsVersion === PREPARATION_REQUIREMENTS_VERSION &&
   digestStoredValidationReceipt(record) === record.digest;
 const validPreflight = (record: TargetPreflight): boolean => record?.schemaVersion === 1 && validId(record.preflightId) &&
+  exactKeys(record as unknown as Readonly<Record<string, unknown>>, ["artifactSha256", "checkedAt", "digest", "expiresAt",
+    "manifestSha256", "preflightId", "preparedJobRevisionId", "schemaVersion", "status", "targetFingerprint", "validationId"]) &&
   new Set(["passed", "blocked", "unavailable"]).has(record.status) && validId(record.preparedJobRevisionId) &&
   SHA256.test(record.validationId) && SHA256.test(record.artifactSha256) && SHA256.test(record.manifestSha256) &&
   SHA256.test(record.targetFingerprint) && validDate(record.checkedAt) && validDate(record.expiresAt) &&
   SHA256.test(record.digest) && digestTargetPreflight(record) === record.digest;
 const validAuthorization = (record: UploadAuthorization): boolean => record?.schemaVersion === 1 &&
+  exactKeys(record as unknown as Readonly<Record<string, unknown>>, ["action", "artifactSha256", "authorizationId",
+    "correlationId", "digest", "expiresAt", "issuedAt", "manifestSha256", "preparedJobRevisionId", "schemaVersion",
+    "targetFingerprint", "validationId"]) &&
   validId(record.authorizationId) && record.action === "upload" && validId(record.preparedJobRevisionId) &&
   SHA256.test(record.validationId) && SHA256.test(record.artifactSha256) && SHA256.test(record.manifestSha256) &&
   SHA256.test(record.targetFingerprint) && validId(record.correlationId) && validDate(record.issuedAt) &&
   validDate(record.expiresAt) && SHA256.test(record.digest) && digestUploadAuthorization(record) === record.digest;
+const snapshotAuthorizationClaim = (value: unknown): AuthorizationClaim | null => {
+  const claim = snapshotBoundary<Record<string, unknown>>(value);
+  if (!claim || typeof claim.status !== "string") return null;
+  if (claim.status === "unavailable") return exactKeys(claim, ["status"]) ? { status: "unavailable" } : null;
+  if (claim.status === "blocked") {
+    return exactKeys(claim, ["code", "status"]) &&
+      new Set(["not_found", "expired", "consumed", "binding_mismatch"]).has(claim.code as string) ?
+      { status: "blocked", code: claim.code as "not_found" | "expired" | "consumed" | "binding_mismatch" } : null;
+  }
+  if (claim.status !== "claimed" || !exactKeys(claim, ["authorization", "consumedAt", "status"]) ||
+      !validDate(claim.consumedAt) || !validAuthorization(claim.authorization as UploadAuthorization)) return null;
+  return Object.freeze({ status: "claimed", authorization: claim.authorization as UploadAuthorization,
+    consumedAt: claim.consumedAt });
+};
 
 const result = (status: GuardedUploadStatus, code: string, fields: Partial<GuardedUploadResult> = {}): GuardedUploadResult => ({
   schemaVersion: PREPARATION_SCHEMA_VERSION, status, code, actionId: fields.actionId ?? null,
@@ -364,7 +447,15 @@ export const uploadPreparedArtifact = async (
   const safeRequest = snapshotRequest(request);
   if (!safeRequest) return result("error", "request_contract_invalid");
   let deadline: UploadDeadline;
-  try { deadline = ports.clock.openDeadline(GUARDED_UPLOAD_DEADLINE_MS, options.signal); }
+  try {
+    const rawDeadline = ports.clock.openDeadline(GUARDED_UPLOAD_DEADLINE_MS, options.signal);
+    const deadlineSnapshot = snapshotPlainData(rawDeadline);
+    if (!deadlineSnapshot || !exactKeys(deadlineSnapshot, ["close", "signal"]) ||
+        !(deadlineSnapshot.signal instanceof AbortSignal) || typeof deadlineSnapshot.close !== "function") {
+      return result("unavailable", "deadline_unavailable");
+    }
+    deadline = { signal: deadlineSnapshot.signal, close: deadlineSnapshot.close as () => void };
+  }
   catch { return result("unavailable", "deadline_unavailable"); }
   let actionId: string | null = null; let actionFingerprint: Sha256 | null = null;
   let authorizationConsumedAt: string | null = null;
@@ -387,17 +478,27 @@ export const uploadPreparedArtifact = async (
   };
   try {
     if (deadline.signal.aborted) return result("unavailable", "request_cancelled", boundFields);
-    let prepared: StoredPreparedArtifact | null; let storedValidation: StoredValidationReceipt | null;
-    let preflight: TargetPreflight | null;
+    let rawPrepared: StoredPreparedArtifact | null; let rawStoredValidation: StoredValidationReceipt | null;
+    let rawPreflight: TargetPreflight | null;
     try {
-      [prepared, storedValidation, preflight] = await Promise.all([
+      [rawPrepared, rawStoredValidation, rawPreflight] = await Promise.all([
         ports.preparedArtifacts.resolve(safeRequest.preparedJobRevisionId, deadline.signal),
         ports.validationReceipts.resolve(safeRequest.validationReceiptId, deadline.signal),
         ports.targetPreflights.resolve(safeRequest.targetPreflightId, deadline.signal),
       ]);
     } catch { return result("unavailable", "trusted_evidence_unavailable", boundFields); }
     if (deadline.signal.aborted) return result("unavailable", "request_cancelled", boundFields);
-    if (!prepared || prepared.preparedJobRevisionId !== safeRequest.preparedJobRevisionId ||
+    const prepared = rawPrepared === null ? null : snapshotBoundary<StoredPreparedArtifact>(rawPrepared);
+    const storedValidation = rawStoredValidation === null ? null : snapshotBoundary<StoredValidationReceipt>(rawStoredValidation);
+    const preflight = rawPreflight === null ? null : snapshotBoundary<TargetPreflight>(rawPreflight);
+    if (rawPrepared !== null && prepared === null) return result("error", "prepared_artifact_invalid", boundFields);
+    if (rawStoredValidation !== null && storedValidation === null) return result("error", "validation_receipt_invalid", boundFields);
+    if (rawPreflight !== null && preflight === null) return result("error", "target_preflight_invalid", boundFields);
+    if (!prepared || !exactKeys(prepared as unknown as Readonly<Record<string, unknown>>,
+      ["preparedJobRevisionId", "validationInput"]) ||
+        !exactKeys(prepared.validationInput as unknown as Readonly<Record<string, unknown>>,
+          ["artifactBytes", "correspondenceReceipt", "manifest", "resolvedSettingsReceipt", "spec"]) ||
+        prepared.preparedJobRevisionId !== safeRequest.preparedJobRevisionId ||
         prepared.validationInput.spec.preparationRevision !== safeRequest.preparedJobRevisionId) {
       return result("unavailable", "prepared_artifact_unavailable", boundFields);
     }
@@ -421,7 +522,7 @@ export const uploadPreparedArtifact = async (
         preflight.manifestSha256 !== validation.manifestSha256 || preflight.targetFingerprint !== validation.targetFingerprint) {
       return result("blocked", "target_preflight_binding_mismatch", boundFields);
     }
-    const artifactBytes = Uint8Array.from(prepared.validationInput.artifactBytes);
+    const artifactBytes = prepared.validationInput.artifactBytes;
     if (hashPreparedArtifact(artifactBytes) !== validation.artifactSha256) {
       return result("blocked", "artifact_changed_after_validation", boundFields);
     }
@@ -448,10 +549,8 @@ export const uploadPreparedArtifact = async (
     }
     actionId = actionClaim.actionId; boundFields = { ...boundFields, actionId };
     if (!validId(actionId)) return result("error", "action_claim_invalid", boundFields);
-    let preAuthorizationNowMs: number;
-    try { preAuthorizationNowMs = ports.clock.now().valueOf(); }
-    catch { return complete(result("error", "clock_invalid", boundFields)); }
-    if (!Number.isFinite(preAuthorizationNowMs)) return complete(result("error", "clock_invalid", boundFields));
+    const preAuthorizationNowMs = clockMilliseconds(ports.clock);
+    if (preAuthorizationNowMs === null) return complete(result("error", "clock_invalid", boundFields));
     if (Date.parse(storedValidation.issuedAt) > preAuthorizationNowMs ||
         Date.parse(storedValidation.expiresAt) <= preAuthorizationNowMs) {
       return complete(result("blocked", "validation_receipt_expired", boundFields));
@@ -459,16 +558,20 @@ export const uploadPreparedArtifact = async (
     if (Date.parse(preflight.checkedAt) > preAuthorizationNowMs || Date.parse(preflight.expiresAt) <= preAuthorizationNowMs) {
       return complete(result("blocked", "target_preflight_expired", boundFields));
     }
-    const expectedAuthorization: UploadAuthorizationBinding = { schemaVersion: 1,
+    const expectedAuthorization: UploadAuthorizationBinding = Object.freeze({ schemaVersion: 1,
       authorizationId: safeRequest.uploadAuthorizationId, action: "upload",
       preparedJobRevisionId: safeRequest.preparedJobRevisionId, validationId: validation.validationId!,
       artifactSha256: validation.artifactSha256!, manifestSha256: validation.manifestSha256!,
-      targetFingerprint: validation.targetFingerprint!, correlationId: safeRequest.correlationId };
-    let authorizationClaim: AuthorizationClaim;
-    try { authorizationClaim = await ports.authorizations.claim({ authorizationId: safeRequest.uploadAuthorizationId,
-      idempotencyKey: safeRequest.idempotencyKey, requestFingerprint: actionFingerprint,
-      expected: expectedAuthorization, signal: deadline.signal }); }
+      targetFingerprint: validation.targetFingerprint!, correlationId: safeRequest.correlationId });
+    let authorizationClaim: AuthorizationClaim | null;
+    try {
+      const rawAuthorizationClaim = await ports.authorizations.claim({ authorizationId: safeRequest.uploadAuthorizationId,
+        idempotencyKey: safeRequest.idempotencyKey, requestFingerprint: actionFingerprint,
+        expected: expectedAuthorization, signal: deadline.signal });
+      authorizationClaim = snapshotAuthorizationClaim(rawAuthorizationClaim);
+    }
     catch { return complete(result("unavailable", "authorization_claim_unavailable", boundFields)); }
+    if (!authorizationClaim) return complete(result("error", "authorization_claim_invalid", boundFields));
     if (authorizationClaim.status === "unavailable") return complete(result("unavailable", "authorization_claim_unavailable", boundFields));
     if (authorizationClaim.status === "blocked") return complete(result("blocked", `authorization_${authorizationClaim.code}`, boundFields));
     const authorization = authorizationClaim.authorization;
@@ -486,10 +589,8 @@ export const uploadPreparedArtifact = async (
         Date.parse(authorization.expiresAt) <= consumedAtMs) {
       return complete(result("blocked", "authorization_binding_mismatch", boundFields));
     }
-    let effectNowMs: number;
-    try { effectNowMs = ports.clock.now().valueOf(); }
-    catch { return complete(result("error", "clock_invalid", boundFields)); }
-    if (!Number.isFinite(effectNowMs)) return complete(result("error", "clock_invalid", boundFields));
+    const effectNowMs = clockMilliseconds(ports.clock);
+    if (effectNowMs === null) return complete(result("error", "clock_invalid", boundFields));
     if (Date.parse(storedValidation.issuedAt) > effectNowMs || Date.parse(storedValidation.expiresAt) <= effectNowMs) {
       return complete(result("blocked", "validation_receipt_expired", boundFields));
     }
@@ -514,6 +615,6 @@ export const uploadPreparedArtifact = async (
     const remoteArtifactId = "remoteArtifactId" in adapterOutcome ? adapterOutcome.remoteArtifactId : null;
     return complete(result(adapterOutcome.status, code, { ...boundFields, requiresVerification }), remoteArtifactId);
   } finally {
-    deadline.close();
+    try { deadline.close(); } catch { /* Cleanup failures cannot change the recorded action outcome. */ }
   }
 };

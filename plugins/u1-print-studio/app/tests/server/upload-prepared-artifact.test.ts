@@ -121,7 +121,9 @@ type HarnessOptions = {
   authorization?: "expired" | "mismatch";
   authorizationExpiresAt?: string;
   authorizationClaimedAt?: string;
+  authorizationClaim?: "mystery" | "accessor-status" | "accessor-authorization";
   coordinatorTimes?: ReadonlyArray<string>;
+  mutateDuringActionClaim?: "validation-expiry" | "preflight-expiry";
   adapterOutcome?: unknown;
   upload?: GuardedUploadPorts["uploader"]["upload"];
   replayRecord?: "polluted-result" | "polluted-record" | "invalid-status-code" | "invalid-verification" |
@@ -157,7 +159,7 @@ const harness = (options: HarnessOptions = {}) => {
   authorization = { ...authorization, digest: digestUploadAuthorization(authorization as UploadAuthorization) };
   const actions = new Map<string, { fingerprint: string; actionId: string; record: InternalUploadActionRecord | null }>();
   let actionCounter = 0; let authorizationConsumed = false; let uploadCalls = 0; let deadlineCloses = 0;
-  let authorizationClaimHadNow = false;
+  let authorizationClaimHadNow = false; let authorizationAccessorReads = 0;
   let coordinatorTimeIndex = 0;
   const coordinatorTimes = options.coordinatorTimes ?? ["2026-09-03T12:00:00.000Z"];
   const deadlineControllers: AbortController[] = []; const deadlineDurations: number[] = [];
@@ -180,6 +182,8 @@ const harness = (options: HarnessOptions = {}) => {
       preflight as TargetPreflight : null },
     actions: {
       claim: async claim => {
+        if (options.mutateDuringActionClaim === "validation-expiry") storedValidation.expiresAt = "2099-01-01T00:00:00.000Z";
+        if (options.mutateDuringActionClaim === "preflight-expiry") preflight.expiresAt = "2099-01-01T00:00:00.000Z";
         const existing = actions.get(claim.idempotencyKey);
         if (existing) return existing.fingerprint === claim.requestFingerprint ?
           { status: "replay" as const, actionId: existing.actionId, record: existing.record } : { status: "conflict" as const };
@@ -220,6 +224,22 @@ const harness = (options: HarnessOptions = {}) => {
       claim: async claim => {
         authorizationClaimHadNow ||= "now" in claim;
         const transactionNow = new Date(options.authorizationClaimedAt ?? "2026-09-03T12:00:00.000Z");
+        if (options.authorizationClaim === "mystery") return { status: "mystery", authorization,
+          consumedAt: transactionNow.toISOString(), privateField: "/private/authorization.gcode" } as unknown as
+          Awaited<ReturnType<GuardedUploadPorts["authorizations"]["claim"]>>;
+        if (options.authorizationClaim === "accessor-status") {
+          const accessorClaim = { authorization, consumedAt: transactionNow.toISOString() } as Record<string, unknown>;
+          Object.defineProperty(accessorClaim, "status", { enumerable: true,
+            get: () => authorizationAccessorReads++ === 0 ? "claimed" : "mystery" });
+          return accessorClaim as unknown as Awaited<ReturnType<GuardedUploadPorts["authorizations"]["claim"]>>;
+        }
+        if (options.authorizationClaim === "accessor-authorization") {
+          const accessorAuthorization = { ...authorization } as Record<string, unknown>;
+          Object.defineProperty(accessorAuthorization, "targetFingerprint", { enumerable: true,
+            get: () => authorizationAccessorReads++ === 0 ? validation.targetFingerprint! : "/private/changed-target.gcode" });
+          return { status: "claimed", authorization: accessorAuthorization as unknown as UploadAuthorization,
+            consumedAt: transactionNow.toISOString() };
+        }
         if (authorizationConsumed) return { status: "blocked" as const, code: "consumed" as const };
         if (Date.parse(authorization.expiresAt) <= transactionNow.valueOf()) {
           return { status: "blocked" as const, code: "expired" as const };
@@ -245,6 +265,7 @@ const harness = (options: HarnessOptions = {}) => {
     get uploadCalls() { return uploadCalls; }, get deadlineCloses() { return deadlineCloses; },
     get deadlineDurations() { return deadlineDurations; },
     get authorizationClaimHadNow() { return authorizationClaimHadNow; },
+    get authorizationAccessorReads() { return authorizationAccessorReads; },
     get completedRecords() { return [...actions.values()].flatMap(entry => entry.record ? [entry.record] : []); } };
 };
 
@@ -297,6 +318,34 @@ describe("trusted guarded-upload boundary", () => {
     });
     expect(await uploadPreparedArtifact(request(), preflightExpiry.ports)).toEqual({ ...preflightExpired, replay: true });
     expect(preflightExpiry.uploadCalls).toBe(0);
+  });
+
+  test("keeps snapshotted validation and preflight expiry immutable across the action claim", async () => {
+    for (const mutateDuringActionClaim of ["validation-expiry", "preflight-expiry"] as const) {
+      const run = harness({ mutateDuringActionClaim,
+        validationExpiresAt: mutateDuringActionClaim === "validation-expiry" ?
+          "2026-09-03T12:00:01.000Z" : "2026-09-03T13:00:00.000Z",
+        preflightExpiresAt: mutateDuringActionClaim === "preflight-expiry" ?
+          "2026-09-03T12:00:01.000Z" : "2026-09-03T13:00:00.000Z",
+        coordinatorTimes: ["2026-09-03T12:00:02.000Z"] });
+      const first = await uploadPreparedArtifact(request(), run.ports);
+      expect(first).toMatchObject({ status: "blocked", code: mutateDuringActionClaim === "validation-expiry" ?
+        "validation_receipt_expired" : "target_preflight_expired" });
+      expect(run.uploadCalls).toBe(0);
+    }
+  });
+
+  test("rejects malformed and accessor authorization claims without an effect or leak", async () => {
+    for (const authorizationClaim of ["mystery", "accessor-status", "accessor-authorization"] as const) {
+      const run = harness({ authorizationClaim });
+      const first = await uploadPreparedArtifact(request(), run.ports);
+      const replay = await uploadPreparedArtifact(request(), run.ports);
+      expect(first).toMatchObject({ status: "error", code: "authorization_claim_invalid", replay: false });
+      expect(replay).toEqual({ ...first, replay: true });
+      expect(run.authorizationAccessorReads).toBe(0);
+      expect(JSON.stringify([first, replay])).not.toMatch(/private|authorization\.gcode|changed-target/);
+      expect(run.uploadCalls).toBe(0);
+    }
   });
 
   test("keeps every missing or mismatched trusted gate at zero effects", async () => {
