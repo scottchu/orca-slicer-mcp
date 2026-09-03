@@ -17,6 +17,8 @@ import embeddedLegacyWidgetFile from "../../../public/legacy-widget.html" with {
 import embeddedWidgetFile from "../../../public/widget.html" with { type: "file" };
 import embeddedMcpObservationFile from "../../../public/mcp-observation.html" with { type: "file" };
 import embeddedMcpCameraFile from "../../../public/mcp-camera.html" with { type: "file" };
+import embeddedMcpObservationV15File from "../../../public/mcp-observation-v15.html" with { type: "file" };
+import embeddedMcpCameraV11File from "../../../public/mcp-camera-v11.html" with { type: "file" };
 
 import {
   createObservationPresentation,
@@ -116,6 +118,8 @@ export const readCameraWidgetHtml = () =>
 export const CAMERA_WIDGET_HTML = readCameraWidgetHtml();
 export const MCP_OBSERVATION_HTML = readFileSync(IS_COMPILED ? embeddedMcpObservationFile as unknown as string : path.join(ASSET_ROOT, 'mcp-observation.html'), 'utf8');
 export const MCP_CAMERA_HTML = readFileSync(IS_COMPILED ? embeddedMcpCameraFile as unknown as string : path.join(ASSET_ROOT, 'mcp-camera.html'), 'utf8');
+export const MCP_OBSERVATION_V15_HTML = readFileSync(IS_COMPILED ? embeddedMcpObservationV15File as unknown as string : path.join(ASSET_ROOT, 'mcp-observation-v15.html'), 'utf8');
+export const MCP_CAMERA_V11_HTML = readFileSync(IS_COMPILED ? embeddedMcpCameraV11File as unknown as string : path.join(ASSET_ROOT, 'mcp-camera-v11.html'), 'utf8');
 export const readLegacyCameraWidgetHtml = () =>
   IS_COMPILED
     ? readFileSync(embeddedLegacyCameraWidgetFile as unknown as string, "utf8")
@@ -390,6 +394,7 @@ export function createAppServer(
 
   const observationResources = [
     { uri: WIDGET_URI, html: MCP_OBSERVATION_HTML, focused: true },
+    { uri: 'ui://u1-print-studio/observation-v15.html', html: MCP_OBSERVATION_V15_HTML, focused: true },
     ...LEGACY_FOCUSED_WIDGET_URIS.map((uri) => ({
       uri,
       html: WIDGET_HTML,
@@ -439,6 +444,11 @@ export function createAppServer(
       uri: CAMERA_WIDGET_URI,
       html: MCP_CAMERA_HTML,
       version: U1_CAMERA_WIDGET_VERSION,
+    },
+    {
+      uri: "ui://u1-print-studio/camera-v11.html",
+      html: MCP_CAMERA_V11_HTML,
+      version: "camera-v11",
     },
     {
       uri: "ui://u1-print-studio/camera-v10.html",

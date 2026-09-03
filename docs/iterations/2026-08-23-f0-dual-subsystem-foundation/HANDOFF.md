@@ -1,5 +1,26 @@
 # F0 dual-subsystem foundation handoff
 
+## Current handoff: bounded C08 open/cleanup repair
+
+Current branch: `codex/u1-camera-live-deadlines`. The user's new phone UI works,
+but Live frequently shows Connecting then fallback. Attempt 10 using installed
+Bun 1.4.0 reaches first upstream RTP and a viewer offer; historical EHOSTUNREACH
+is not reproduced. It stops before browser answer/decode and runs separately
+from the deployed LaunchAgent, so it does not establish reliable phone Live.
+
+Frozen author source gives Live open its legacy 40 s user wait and retains only
+that HostRpc call for 55 s (40 s plus 15 s unanswered lease window) for late
+cleanup. Prove delayed success, post-timeout/selection/disposal lease closure and
+unchanged deadlines for other operations with integrated synthetic tests.
+Author focused checks pass; exact source/payload identities are in VALIDATION.
+Next commit the frozen candidate for required validation and independent review.
+The software timing defect is not proven to explain the user's failure. Screen Sharing stays paused.
+
+Candidate compatibility contract: new observation v16/Camera v12, runtime
+0.4.10/schema 14, 30 resources and 28 preserved old aliases. Snapshot PR99 v15/v11
+bytes for compatibility; do not replace the deployed PR99 identity below before
+shipping. Independent/current-deployment acceptance remains pending.
+
 ## Current handoff: PR99 MCP resources deployed
 
 PR99 merged `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba`, preserving independently
@@ -13,13 +34,12 @@ aliases remain. Changed areas are MCP entries/builds/fixtures, typed host/legacy
 adapters, common Mount/host styling, Camera bootstrap/HostRpc, registrations,
 versions and affected test/package inputs.
 
-Next smallest user-outcome check: new ChatGPT conversation after host metadata
-refresh, then Heads Refresh/whole-hex Copy and Camera icon Switch. Actual phone,
-OAuth, clipboard and real Live remain unverified; existing cards only refresh
+The user now reports renderer adoption on the phone; complete device, OAuth,
+clipboard and reliable Live acceptance remain unverified; existing cards only refresh
 data. No per-widget skill or plugin reinstall is required by the renderer cutover.
 
 The user reports allowing Bun Local Network access; the machine is unconfirmed
-and no retest has run. C08/Screen Sharing remain paused. Preserve all 55 IDs,
+and no LaunchAgent/phone acceptance follows from the current isolated probe. C08 is now resumed as above; Screen Sharing stays paused. Preserve all 55 IDs,
 unfinished Queue/Fans/Job History work, Progress no-action, F07 class discussion,
 separate c6 and unchanged loading policy. No printer/auth/network actions are
 authorized by this record. Markdown-only tail preserves application bytes and

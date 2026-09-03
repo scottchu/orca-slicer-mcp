@@ -60,7 +60,7 @@ describe('closed Camera transport and private response parsing', () => {
     await port.candidates(id, [candidate]); await port.close(id);
     expect(callTool.mock.calls).toEqual([
       ['get_u1_camera_frame', {}], ['get_u1_camera_frame', { authorizeLive: true }],
-      ['open_u1_camera_stream', { activationToken: activation }],
+      ['open_u1_camera_stream', { activationToken: activation }, { timeoutMs: 55000 }],
       ['answer_u1_camera_stream', { sessionId: id, sdp: 'fixture-answer' }],
       ['add_u1_camera_ice_candidates', { sessionId: id, candidates: [candidate] }],
       ['close_u1_camera_stream', { sessionId: id }],

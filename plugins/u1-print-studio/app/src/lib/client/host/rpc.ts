@@ -1,7 +1,8 @@
 export type HostEvent = { kind: 'input' | 'result'; value: unknown };
+export type HostRequestOptions = { timeoutMs?: number };
 export type HostRpc = {
   start: () => Promise<void>;
-  callTool: (name: string, args: Record<string, unknown>) => Promise<unknown>;
+  callTool: (name: string, args: Record<string, unknown>, options?: HostRequestOptions) => Promise<unknown>;
   subscribe: (listener: (event: HostEvent) => void) => () => void;
   dispose: () => void;
 };
@@ -29,11 +30,12 @@ export const createHostRpc = (host: HostWindow, options: {
     latest.set(event.kind, event);
     for (const listener of listeners) listener(event);
   };
-  const request = (method: string, params: unknown): Promise<unknown> => {
+  const request = (method: string, params: unknown, requestTimeoutMs = timeoutMs): Promise<unknown> => {
     if (disposed) return Promise.reject(new Error('Host disposed'));
+    if (!Number.isFinite(requestTimeoutMs) || requestTimeoutMs <= 0) return Promise.reject(new Error('Invalid host deadline'));
     return new Promise((resolve, reject) => {
       const id = ++sequence;
-      const timer = setTimeout(() => { pending.delete(id); reject(new Error('Host request timed out')); }, timeoutMs);
+      const timer = setTimeout(() => { pending.delete(id); reject(new Error('Host request timed out')); }, requestTimeoutMs);
       pending.set(id, { resolve, reject, timer });
       try { host.parent.postMessage({ jsonrpc: '2.0', id, method, params }, '*'); }
       catch { clearTimeout(timer); pending.delete(id); reject(new Error('Host unavailable')); }
@@ -73,7 +75,7 @@ export const createHostRpc = (host: HostWindow, options: {
   const start = (): Promise<void> => {
     if (disposed) return Promise.reject(new Error('Host disposed'));
     if (!initialized) initialized = request('ui/initialize', {
-      appInfo: { name: 'u1-observation', version: '0.4.9' }, appCapabilities: {}, protocolVersion: '2026-01-26'
+      appInfo: { name: 'u1-observation', version: '0.4.10' }, appCapabilities: {}, protocolVersion: '2026-01-26'
     }).then((value) => {
       if (disposed || !record(value)) throw new Error('Invalid host initialization');
       options.onHostContext?.(record(value)?.hostContext);
@@ -84,7 +86,10 @@ export const createHostRpc = (host: HostWindow, options: {
   };
   return {
     start,
-    callTool: async (name, args) => { await start(); return request('tools/call', { name, arguments: args }); },
+    callTool: async (name, args, requestOptions) => {
+      await start();
+      return request('tools/call', { name, arguments: args }, requestOptions?.timeoutMs);
+    },
     subscribe: (listener) => {
       if (disposed) return () => {};
       listeners.add(listener);

@@ -1,7 +1,9 @@
 import type { CameraCandidate, CameraFrameResult, CameraOffer, CameraTransport } from './session.js';
+import type { HostRpc } from '../host/rpc.js';
+import { CAMERA_OPEN_RESPONSE_TIMEOUT_MS } from './deadlines.js';
 
 /** Supplied by the shared HostRpc. Camera owns no message listener or URL. */
-export type CameraRpcPort = { callTool: (name: string, argumentsValue: Record<string, unknown>) => Promise<unknown> };
+export type CameraRpcPort = Pick<HostRpc, 'callTool'>;
 const invalid = (): never => { throw new Error('Invalid Camera response'); };
 const object = (value: unknown): Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : invalid();
 const byteLength = (value: string): number => new TextEncoder().encode(value).length;
@@ -88,7 +90,11 @@ export const cameraTransport = (rpc: CameraRpcPort): CameraTransport => {
   return {
     frame: async ({ authorizeLive }) => parseCameraFrame(await rpc.callTool('get_u1_camera_frame', authorizeLive ? { authorizeLive: true } : {})),
     open: async (activationToken) => {
-      const result = await rpc.callTool('open_u1_camera_stream', { activationToken: token(activationToken) });
+      const result = await rpc.callTool(
+        'open_u1_camera_stream',
+        { activationToken: token(activationToken) },
+        { timeoutMs: CAMERA_OPEN_RESPONSE_TIMEOUT_MS },
+      );
       try { return parseCameraOffer(result); }
       catch {
         // A malformed allocated offer still owns a lease; release only its
