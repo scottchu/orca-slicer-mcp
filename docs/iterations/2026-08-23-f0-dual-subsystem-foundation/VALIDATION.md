@@ -1,6 +1,69 @@
 # F0 dual-subsystem foundation validation
 
-## Current shipping failure: PR104 stopped before merge/install
+## Current accepted source: versioned deployment-manifest profiles
+
+Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97`, tree
+`d137dd3879e372557368578e5e51eac97d17cee1`, is independently APPROVED after the
+required gate:617 UI/59 files,219 server/2,567 assertions,44 service/28 shipping
+Python tests, TypeScript/Svelte/component/determinism/repository checks PASS.
+Independent `app/test-results/current-only-independent/PROFILE-REPORT.json`,
+SHA256 `a1c4f70ba4cf65d8606ed6d5fdfabf3b1b57254057edf9fcac54500f237a4212`,
+binds that exact decision. The reviewer ran, from repository root,
+`PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH ./scripts/check-repository.sh`;
+full-log SHA256 `75f391197fd8e47a64af71a6306ba02bcf51aedc04f624c37836fe041331c659`.
+`uv run --no-project python plugins/u1-print-studio/app/test-results/current-only-independent/deployment_profiles.py`
+passes ten cases: nine rejection adversaries and one aggregate fake lifecycle
+covering pre-Kit/historical Kit/current Kit install/status/rollback, with route-
+manifest and old-asset rollback tampering rejected before stop. The renewed log
+SHA256 is `8a54429880a4a9f85835a781565b91055b7f458ba4294b4734ce1e1904ac8122`.
+ The437-input manifest is
+`3e540707572c1b242ca423ded7cb3e5eb6b7221affef4ac35a745d91472a19f4`.
+Guarded shipping is still pending; the earlier execution's rejection remains below.
+
+Author `app/test-results/deployment-profile-author/REPORT.json`, SHA256
+`06b95e77452868c189d604e49daed9f8e080893d69eca8975ae9f2fd07f6e318`,
+binds six changed inputs, manifest
+`22db8c711f3e311a37d1ad9eb8c4fecee70b3bb9e3274f4aa43bffc82f5e9200`.
+From repository root,
+`PYTHONPATH=scripts uv run --no-project python -m unittest scripts/test_u1_service.py scripts/test_u1_ship.py`
+passed72 focused tests. `ServiceManager.status()` through uv verified actual
+BOTH PR101 services loaded/healthy/integrity-verified at their original runtime
+0.4.10/schema14/observation16/Camera12. This read-only evidence used no restart,
+printer/camera read, auth/network or plugin change.
+
+The author ran Bun1.4.0 with dotenv/config disabled:
+`run scripts/build-server.ts --outdir test-results/deployment-profile-author/payload`.
+The new52-file/71-route schema2 payload passes the strict current reader and
+matches every runtime/artifact hash and route from aaaf0a56's schema1 payload;
+only build-manifest schema changes. New manifest SHA256:
+`9e86c8124180c6e5d19da7258dd16c1c7fa4af5718f06a330288918db4ba9fc7`.
+
+New stage/ship inputs must be schema2 with current `/widget` binding; no missing-
+manifest or pre-Kit fallback is accepted for staging. Installed verification and
+rollback accept only supported historical schema1 Kit/current schema2 profiles,
+with original complete hash/minimum/role/security checks. Pre-Kit release-schema1
+retains its distinct six-asset minimum. This preserves existing installed/backup
+release validation without restoring obsolete public widgets or bypassing guards.
+No runtime/UI/controller/bundle behavior changed; prior current-only browser
+acceptance is retained by exact hashes, not claimed as newly rerun. All author
+processes completed; no browser or live connection was opened for this repair.
+
+The independent reader also accepts the actual installed PR101 historical schema1
+profile and rejects that same build at strict current candidate entry. All six
+changed source paths and author log hashes match. The first profile fixture
+incorrectly required a historical Camera-specific file binding stronger than its
+original contract; it was replaced with actual outer-release manifest tampering.
+The next fixture omitted owner-only permissions, then was corrected to require
+the exact content-changed rejection. A separate inline identity attempt completed
+actual status verification but incorrectly passed unshipped aaaf's schema1/current
+layout to the historical reader; comparison was corrected using its previously
+verified manifest hash and all runtime/routes. All failed private evidence remains
+in PROFILE-REPORT; none is presented as product acceptance or silently discarded.
+Reviewer temporary fixtures were released, finite status reads left no persistent
+connection, and no browser/port was owned. C08/phone and installed widget behavior
+remain outside these profile checks.
+
+## Prior shipping failure: PR104 stopped before merge/install
 
 The first read-only plan, operation `pr104-20260903T083212-468d6b`, was rejected
 because the PR was still draft; no merge/install followed. After the coordinator
@@ -29,9 +92,9 @@ The new repair separates explicit build profiles: schema2/current for staging
 and shipping; known historical schema1 Kit for installed status/rollback, with
 original hashes, minimums and roles enforced. Pre-Kit release-schema1 keeps its
 own six-asset minimum. No public alias/tool/route returns and no skip is added.
-Repair implementation, affected tests and independent exact acceptance remain
-pending. All prior candidate passes below retain their original scope and cannot
-claim the changed shipping path works.
+The bounded repair is independently accepted at b5a0d427, as recorded above.
+The failed attempt remains a rejection; guarded shipping must still be renewed.
+All earlier candidate passes below retain their original scope.
 
 ## Prior accepted source: Camera and current-only widget retirement
 

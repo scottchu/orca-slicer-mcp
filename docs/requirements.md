@@ -238,8 +238,10 @@ printer environments support the described behavior.
   use schema2/current binding; installed status/rollback must strictly validate
   supported historical schema1 Kit profiles with their original hashes/minimums/
   roles, while pre-Kit release-schema1 retains its six-asset minimum. This bounded
-  guard repair is pending exact acceptance; it restores no public aliases, skips
-  no guard and does not establish actual phone Live reliability.
+  guard repair is independently accepted at `b5a0d427`, including strict current
+  stage rejection of old/missing manifests and read-only verification of BOTH
+  installed PR101 services. Guarded shipment/installed behavior remain pending;
+  no public alias or skipped guard returns, and phone Live reliability is unproved.
   Names appear only in tooltip/aria,
   superseding visible text/full-width mode controls. Keep44px targets, keyboard
   selection/focus and reduced-motion behavior; the switch must not overlap

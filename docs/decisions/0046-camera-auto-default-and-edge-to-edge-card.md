@@ -1,6 +1,6 @@
 # 0046 — Camera Auto default and edge-to-edge card
 
-- Status: Camera/current-only source accepted; shipping blocked before merge/install; versioned manifest-profile repair and renewed exact acceptance pending
+- Status: Camera/current-only source and manifest-profile repair independently accepted at b5a0d427; guarded shipment and installed behavior verification pending
 - Date: 2026-09-03
 - Owners: project maintainers
 - Milestone: F0 / CAM-008, UI-004; delivery ledger C04, C06, C08
@@ -51,9 +51,11 @@ binding. Installed status and rollback must recognize known historical schema1
 Kit profiles and enforce their original complete hash/minimum/role contracts;
 pre-Kit release-schema1 keeps its separate six-asset minimum. This is release
 verification of installed/backed-up artifacts, not restoration of old public
-widget compatibility. No guard bypass is allowed. The bounded repair and renewed
-exact acceptance remain pending; earlier source approval does not prove shipping
-readiness.
+widget compatibility. No guard bypass is allowed. The bounded repair is
+independently accepted at `b5a0d427`: renewed required validation, ten profile cases
+and read-only installed status pass. Runtime/UI hashes and routes are unchanged;
+the current build manifest alone changes to schema2. Guarded shipment and
+installed behavior remain pending; the first blocked attempt stays in VALIDATION.
 
 - Use a thin header containing icon/title/state, measured FPS and accepted frame
   time. Remove the Camera footer and Refresh button. The media spans the full

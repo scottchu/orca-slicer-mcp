@@ -1,20 +1,20 @@
 # Next agent
 
-## Current: shipping blocked on build-manifest profile validation
+## Current: manifest-profile repair accepted; guarded shipment next
 
-PR104 execution stopped at merge-edge guards before merge or install. New
-current-only `/widget` binding validation was incorrectly applied to the installed
-PR101 historical build manifest; status failed before reading health. Direct
-health and the original strict60-file/72-route release checks passed for BOTH
-services. PR101 remains deployed. Earlier `6d061db` approval is retained source
-evidence, not proof that this shipping path is ready.
+Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97` is independently accepted after
+renewed required validation and ten fresh profile cases. New stage/ship builds
+require schema2/current binding; installed status/rollback strictly validate known
+historical profiles. No public widget compatibility or guard bypass returns.
+The current52-file/71-route payload retains the same runtime/UI hashes; only the
+build-manifest schema changes. BOTH existing PR101 services verify healthy through
+read-only status checks, with no restart. Evidence and prior failures are in
+VALIDATION.
 
-The bounded repair versions build-manifest profiles: new staging/shipping requires
-schema2/current binding; installed status and rollback validate known historical
-schema1 Kit builds against their complete original hash/minimum/role contracts.
-Pre-Kit release-schema1 keeps its own six-asset minimum. No old public widget URI,
-route or tool returns, and no shipping guard is skipped. Finish affected checks,
-exact independent review and renewed guarded shipment before deployment claims.
+Next review this documentation-only tail, then renew guarded u1-ship and verify
+BOTH restarts plus installed-resource behavior. PR101 remains deployed. C08 phone
+reliability, host fullscreen and existing layout debt remain unresolved; preserve
+all55 IDs, monitor workflow, eight active legacy views and Progress no-action.
 
 ## Earlier accepted source: Camera and current-only widgets
 

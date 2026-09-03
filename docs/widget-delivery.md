@@ -4,21 +4,21 @@ Current authority, 2026-09-03. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
-## Current: shipping blocked on build-manifest profile validation
+## Current: manifest-profile repair accepted; guarded shipment next
 
-PR104 execution stopped at merge-edge guards before merge or install. New
-current-only `/widget` binding validation was incorrectly applied to the installed
-PR101 historical build manifest; status failed before reading health. Direct
-health and the original strict60-file/72-route release checks passed for BOTH
-services. PR101 remains deployed. Earlier `6d061db` approval is retained source
-evidence, not proof that this shipping path is ready.
+Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97` is independently accepted after
+renewed required validation and ten fresh profile cases. New stage/ship builds
+require schema2/current binding; installed status/rollback strictly validate known
+historical profiles. No public widget compatibility or guard bypass returns.
+The current52-file/71-route payload retains the same runtime/UI hashes; only the
+build-manifest schema changes. BOTH existing PR101 services verify healthy through
+read-only status checks, with no restart. Evidence and prior failures are in
+VALIDATION.
 
-The bounded repair versions build-manifest profiles: new staging/shipping requires
-schema2/current binding; installed status and rollback validate known historical
-schema1 Kit builds against their complete original hash/minimum/role contracts.
-Pre-Kit release-schema1 keeps its own six-asset minimum. No old public widget URI,
-route or tool returns, and no shipping guard is skipped. Finish affected checks,
-exact independent review and renewed guarded shipment before deployment claims.
+Next review this documentation-only tail, then renew guarded u1-ship and verify
+BOTH restarts plus installed-resource behavior. PR101 remains deployed. C08 phone
+reliability, host fullscreen and existing layout debt remain unresolved; preserve
+all55 IDs, monitor workflow, eight active legacy views and Progress no-action.
 
 ## Earlier accepted source: Camera and current-only widgets
 
@@ -354,7 +354,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | C01 fullscreen video continuity | Delivered same-document native/CSS continuity; host fullscreen integration unfinished | Current code does not request host display mode; mobile whole-host fullscreen is not solved by local CSS/native fallback. Official host fullscreen API exists; this slice adds no implementation. Genuine phone/native PiP and physical stream acceptance remain separate |
 | C02 Camera in Lab and SvelteKit | Delivered PR69/71 | Does not imply latest service/status repair delivered |
 | C03 connecting/disconnected icons/red dot | Source-only separate checkpoint c6cfb4e | Integrate separately and independently verify;0042 removes historical repo cap blocker |
-| C04 consistent two/three status slots | aaaf0a56 independently accepted: default Auto, Auto/Live only,88px-by-44px icon Switch; no single-Snapshot or footer/Refresh | Quiet polling, edge-to-edge media, persistent bottom-left safe reason and bounded bootstrap/recovery accepted in source. Shipment blocked pre-merge on historical manifest validation; bounded profile repair/exact review pending. C08 reliability stays open |
+| C04 consistent two/three status slots | aaaf0a56 independently accepted: default Auto, Auto/Live only,88px-by-44px icon Switch; no single-Snapshot or footer/Refresh | Quiet polling, edge-to-edge media, persistent bottom-left safe reason and bounded bootstrap/recovery accepted in source. Profile repair independently accepted at b5a0d427 after the blocked first attempt; guarded shipment/installed behavior pending. C08 reliability stays open |
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
@@ -375,7 +375,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | X02 Current Job Svelte | Source-only PR79 / 48f2060 | Integrate/remeasure; filename/state grouping, not duplicate percent |
 | X03 History Svelte and record identity | Source-only 379c1e7 adapter | Basename/outcome/date/duration and bounded-list design |
 | X04 Overview Svelte/domain grouping | Source-only 1a3b4f4 adapter | Eight truthful domain summaries, no invented fields |
-| X05 no remaining legacy/MCP aliases | aaaf0a56 independently accepted: only two resources;30 old aliases/two tools/old Camera route and18 obsolete files retired | Shipment blocked pre-merge on manifest-profile validation; no public compatibility restoration. Eight legacy renderers still used by current observation remain active; their Svelte migration is unfinished. No actual-host acceptance claimed |
+| X05 no remaining legacy/MCP aliases | aaaf0a56 independently accepted: only two resources;30 old aliases/two tools/old Camera route and18 obsolete files retired | Manifest-profile repair independently accepted; guarded shipment pending, with no public compatibility restoration. Eight legacy renderers still used by current observation remain active; their Svelte migration is unfinished. No actual-host acceptance claimed |
 | X06 material/profile/color sync | Decision pending | No unreviewed write/sync authority |
 | G01 focused/transitive tests rule | Delivered PR80 AGENTS | One frozen full-run owner, independent targeted checks, ship guards intact |
 | G02 role-separated delegation | Adopted AGENTS | Author cannot self-approve; disclose actual capacity limits |
