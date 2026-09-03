@@ -1,6 +1,83 @@
 # F0 dual-subsystem foundation validation
 
-## Current accepted source: versioned deployment-manifest profiles
+## Current deployment: PR104 exact release and BOTH service restarts
+
+`PROFILE-DOCS-REVIEW.json` under `app/test-results/current-only-independent`,
+SHA256 `cd9a84fbf6fa51fdb0e262b1d40cff7d057aae54ea525fd12f09f961525780ea`,
+APPROVES `30e0649b91e27af23d5398242752c88161b3b18c`, tree
+`9d7f68fe47580a4a339ab13e0a8388f52a0351fa`. Its9-document tail preserves all437
+accepted application inputs; the b5a0d427 full/profile evidence below is bound
+to that exact reviewed head without repeating unaffected builds/browser suites.
+PR104 merged as `162dc68d0945feb4b3d2de7b638479560f2604d9` and shipped release
+`20260903-162dc68-pr104-20260903T084741-0ae7de`.
+
+Shipment receipt `pr104-20260903T084741-0ae7de.json`, under the private service
+shipments directory, has SHA256
+`fd978431ce9ed9187fa1e6f385d12d38d189964806dffa7304d4c92a1411fc22`.
+Read-only inspection confirms complete/ok=true, merged/installed=true and
+rollback=not-needed. BOTH services restarted and are loaded/healthy/integrity-
+verified at0.4.11/schema15/observation17/Camera13. All72 static and74 security
+checks pass; preservation=true. `/widget` on both services matches final
+observation SHA256 `df98a40784c7798a7f62f908dc999aac3b2c7be3b63567a5a9337e8c90581928`.
+Scoped installed-byte behavior passes with synthetic tools as recorded below;
+these results do not establish actual host/device behavior or reliable phone Live.
+
+Retain every earlier preflight result: draft-plan rejection and later plan PASS,
+then the historical-manifest merge-edge rejection below. After pushing30e0649,
+plan `pr104-20260903T084654-f94847` was rejected for PR-head mismatch without merge/
+install. Read-only GitHub PR head, remote branch and local head then all confirmed
+30e0649; plan `pr104-20260903T084711-6c1424` passed. The successful execution was
+operation `pr104-20260903T084741-0ae7de`, reviewed tree above, basebb7a1b3 and the
+same Bun1.4.0 hash already recorded below. No guard was bypassed.
+
+Actual successful command from repository root:
+`uv run --no-project scripts/u1_ship.py --pr 104 --reviewed-sha 30e0649b91e27af23d5398242752c88161b3b18c --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute`
+exited0. The successful plan used the same command without `--execute`.
+
+### Scoped postdeployment evidence and limits
+
+Independent `app/test-results/current-only-independent/POSTDEPLOY-REPORT.json`,
+SHA256 `90aba88ff5355bb95f6ba551e888db472dc6e28999c024ebf876eb3020813ef9`,
+reports PASS. Installed schema2 manifest
+`9e86c8124180c6e5d19da7258dd16c1c7fa4af5718f06a330288918db4ba9fc7`
+verifies52 runtime files/71 routes; all437 application inputs remain unchanged.
+Fresh BOTH-service status is healthy/verified. Public and dashboard loopback
+plus dashboard HTTPS all serve exact final observation HTML at `/widget` and
+reject `/camera-widget` with404. No retired public compatibility is restored.
+
+The reviewer read actual installed Camera/observation/dashboard-host HTML, matched
+its hashes to the reviewed payload and mounted it with isolated synthetic MCP
+tools. At320px, Camera starts Auto with one opening read, then polls; its two
+modes stay88px-by-44px with no footer/Refresh or automatic success feedback.
+Synthetic Live failure returns to Auto with the safe reason retained above and
+left of controls. Later Auto acquisition failure clears visible media without
+changing card bounds; recovery retains bounds and the Live-failure reason.
+Jobs uses the selected Current Job view with one initial read; failed Refresh
+clears visible time neutrally and retry recovers the same view.
+
+The first private Playwright invocation passed Jobs but its Camera assertion
+incorrectly required reason.top below the media midpoint. At320px the approved
+narrow layout places that row above the44px controls. Only the ignored fixture
+changed to left containment, an8–12px gap above controls and no collision;
+Camera renewal passed in5.6s (6.4s total). Its first failure screenshot followed
+finally blank-navigation and is not visual evidence. Logs are retained:
+`postdeploy-browser.log` SHA256
+`e5a3fae3c3eb90ef1726b112f51711b9523175b2bb561e8fb3ed9911f38f4e41`,
+and `postdeploy-camera-renew.log`
+`38f60c4340a3d17f0216391a981a496720fdd2283a7ba3455ec84f7cdbac0c09`.
+The command used `U1_REVIEW_INSTALLED_DIST=<verifiedrelease/dist>` with Bun1.4.0
+and `x playwright test --config test-results/current-only-independent/playwright.postdeploy.config.ts`;
+the renewal selected only installed Camera. Full arguments are in the report.
+
+Predeployment two-resource/30-retired-URI/two-retired-tool rejection evidence is
+retained by exact runtime identity; no actual ChatGPT metadata refresh or phone
+conversation was verified. No real Camera/printer read, auth/network/plugin
+change, rebuild or full-suite rerun occurred during postverification. Isolated
+browsers/MCP fixtures closed in finally and4181 has no listener; user browsers
+were preserved. C08 remains open. This Markdown-only rollout tail preserves all
+application inputs and requires no additional deployment under decision0028.
+
+## Accepted source: versioned deployment-manifest profiles
 
 Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97`, tree
 `d137dd3879e372557368578e5e51eac97d17cee1`, is independently APPROVED after the
