@@ -1,5 +1,25 @@
 # Project state
 
+## Current workflow slice: standalone asynchronous monitor
+
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
+reviewed source for decision0045/MON-001; consult the PR for merge identity.
+Independent review approved `3ce5a8cf2975c2c38601ce9832fa49bc50900893`, including
+the decision-index repair. The existing monitor is independently invocable and
+composed after observed printing, with one delegated owner and explicit run,
+recovery and terminal-evidence boundaries.
+
+Two skill validators, diff/identity checks and manual fictional lifecycle
+walkthroughs pass. These are instruction/source evidence, not model execution,
+real-printer, actual-device or durable notification tests. The branch incorporates incoming main `06e2a903f9ad2426f3580e77e72d65d98cc96d60`
+without modifying its application tree `ffc95dccafab2289959a934cc2630339cf5a2d2e`.
+This workflow adds no installation or service changes. VALIDATION separates retained
+skill evidence from incoming Camera application evidence; our checks do not
+validate those incoming application changes. O1/O2 and earlier product gaps remain open. Repository agents can use the
+maintained source workflow; installed-plugin adoption and proposed standardized
+one-shot observation tools remain separate work, without implied installation,
+runtime changes or printer authority.
+
 ## Current deployment: PR101 Camera open/cleanup repair
 
 PR101 `0710b4bf55edc6908eef614df5fec48614044497` is deployed after exact

@@ -155,6 +155,19 @@ printer environments support the described behavior.
   embed full cards, lists, charts, mesh surfaces, navigation, pagination,
   controls, Camera/media, filenames, projects, IDs, raw rows or metadata.
   Decision 0021 fixes the projection and presentation boundary.
+- **MON-001:** A standalone asynchronous monitoring workflow can attach to an
+  evidenced current print and compose after observed printing for a broader
+  print request. Preparation-only, upload-only and explicit start-only requests
+  do not enroll it. One delegated owner binds the target and run identity, known
+  artifact/manifest provenance and fresh evidence, chooses adaptive next checks,
+  and reports meaningful updates and immediate alerts while the primary remains
+  available. Duplicate requests reuse that owner. Telemetry and camera confidence
+  remain distinct; bounded recovery and resumed monitoring require fresh identity
+  verification, never automatic attachment to a different run. Verified print
+  terminal outcomes, user-stopped monitoring and interrupted/unavailable execution
+  are separate. Monitoring adds no printer control authority and makes no durable
+  service or external-notification claim. Decision 0045 and the maintained
+  u1-monitor-print skill own this active-conversation workflow.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory

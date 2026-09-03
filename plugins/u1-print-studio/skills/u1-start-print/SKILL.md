@@ -47,3 +47,20 @@ authorization for the new artifact. Do not modify G-code in this skill.
 
 Report upload verification, start acknowledgement, and observed printer state
 as separate lines. `result: ok` is not proof of physical motion or extrusion.
+
+## Compose with monitoring
+
+For a broader "Print this" request, after step 5 hand off the exact observed run
+to the standalone [$u1-monitor-print](../u1-monitor-print/SKILL.md) workflow.
+Include the private target/job identity, known artifact hash and manifest,
+upload/start evidence, and fresh printing observation. The coordinator assigns
+one monitoring owner and remains available; report monitoring active only after
+that owner accepts the binding and next check. If monitoring cannot be enrolled,
+report the observed print state and the supervision gap separately.
+
+Explicit start-only requests stop after the result above. Preparation-only and
+upload-only requests do not start a print or enroll monitoring. Composition does
+not weaken authorization, preflight, or PREP-007/HANDOFF-007: local embedded
+thumbnail validation stays before upload, and matching target-parsed thumbnail
+metadata stays before start. A start acknowledgement alone never enrolls the
+monitor or proves printing. Monitoring grants no pause, resume or cancel action.

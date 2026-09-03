@@ -1,5 +1,68 @@
 # F0 dual-subsystem foundation validation
 
+## Standalone asynchronous monitor: independent source acceptance
+
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
+reviewed source; consult the PR for merge identity. Independent source review
+approved `3ce5a8cf2975c2c38601ce9832fa49bc50900893`, tree
+`9136c5bb13d592c044c546205064baf2343caf4d`. The reviewer did not author the skill
+changes. Review of earlier `98aeaf3` found one index formatting defect: a blank
+line separated decision0045 from the table. The author removed that separator;
+the reviewer inspected the exact repair and attributed validation note.
+
+Commands actually run by the author and independently repeated for the unchanged
+skill bytes:
+
+- `uv run --no-project --with pyyaml "$SKILL_CREATOR/scripts/quick_validate.py" plugins/u1-print-studio/skills/u1-monitor-print` — exit0, Skill is valid.
+- The same command for `plugins/u1-print-studio/skills/u1-start-print` — exit0,
+  Skill is valid. SKILL_CREATOR denotes the installed system skill root; no
+  repository dependency or installed skill was modified.
+- `git diff --check`, clean-HEAD and scoped diff/identity checks — pass.
+- Base application tree from
+  `git rev-parse 220190f05afd4f785f068254d43f1b0257e9af57:plugins/u1-print-studio/app`
+  and approved source application tree both equal
+  `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
+
+The independent manual fictional walkthrough covered standalone unknown
+provenance, composed start acknowledgement, duplicate ownership, a repeated
+filename/new run or reset, stale terminal evidence, disconnect/recovery and its
+retry cap, stop-monitoring, explicit start-only, N/N while printing, camera loss,
+paused nonterminal state and complete/inactive/end checks. No source blocker
+remained. These were reasoned instruction/source cases, not executed model
+sessions, automated behavioral tests or actual host/printer evidence.
+
+Author read-only filesystem checks passed required nonempty repository/iteration
+records, exactly one active iteration, existing state headings/evidence layers,
+core requirement IDs, added local links and private-data exclusion. No full
+check-repository.sh application gate was run or modified for this slice.
+
+Retained SHA-256 skill identities across the documentation tail and main merge:
+
+- u1-monitor-print/SKILL.md:
+  `5adb6e7c71be436a5e803705a9cc6b409b474b30a0d61a2bc7d68cf6fa824a11`.
+- u1-start-print/SKILL.md:
+  `d28d4042d9b254d0cbb0115b55a45b1562271b2d96bf88f69e9ffcebfd477642`.
+- Original approved application tree: `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
+- Incoming main `06e2a903f9ad2426f3580e77e72d65d98cc96d60` application tree:
+  `ffc95dccafab2289959a934cc2630339cf5a2d2e`.
+
+Conflict resolution incorporates main `06e2a903` without force-pushing history.
+Four continuity conflicts were combined by preserving our top monitoring section
+and every incoming Camera/deployment record below it. Requirements retain both
+MON-001 and incoming Camera refinements; incoming widget-ledger and application
+changes are preserved. No decision0045 collision exists.
+
+Resolution checks compare the candidate against incoming main: introduced scope
+remains eleven Markdown files; application/dependencies/configuration/generated
+assets and shipping guards are unchanged. Approved monitor/start skill hashes
+remain exact. Diff checks and incoming-record preservation checks pass. The
+incoming application tree differs from the original base; previous monitoring
+checks do not validate these new Camera bytes. Keep the incoming workstream
+evidence below separate rather than carrying the old application acceptance
+forward. No full application build/browser suite is repeated for this docs/skill
+resolution. This slice adds no installation, service deployment, durable monitor,
+external notification, real-printer or actual-device acceptance.
+
 ## Current PR101: exact approval and guarded deployment
 
 Independent `app/test-results/camera-deadline-independent/REPORT.json`, SHA256
