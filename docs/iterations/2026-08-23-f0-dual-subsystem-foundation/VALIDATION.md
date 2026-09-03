@@ -1,11 +1,74 @@
 # F0 dual-subsystem foundation validation
 
-## Current candidate: independently accepted host fullscreen and body insets
+## Current deployment: PR106 exact release and BOTH service restarts
+
+PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6`, preserving reviewed
+`16bd3038295bbdf56ee5665e3655cbe55d230366` tree
+`31f79878d4aebede2538cc31cdf9a0c4e0385a25`. Independent
+`app/test-results/host-fullscreen-independent/DOCS-REVIEW.json`, SHA256
+`5b376002892266a9621281ea8a16ab220a83228ce4ed2a29a0c22e6007126686`,
+APPROVES that exact documentation head and binds the d999399 application gate
+below to all440 unchanged inputs without repeating unaffected application checks.
+
+Receipt `pr106-20260903T100036-471de8.json` in the private service shipments
+directory, SHA256
+`5ac62e217c016f3e42a5892962b48d1c09c5d01dab6b970820f96a866e4f03c1`,
+confirms complete/ok=true, merged/installed=true and rollback=not-needed. Release
+`20260903-0660a07-pr106-20260903T100036-471de8` has BOTH services restarted,
+loaded/healthy/integrity-verified at0.4.12/schema16/observation18/Camera14. All72
+static and74 security checks pass; preservation=true. Both served /widget hashes
+match observation `ff869c1e351d39d3dfc097995851d9caa222f9d7e776462254f3c6d6c9277d26`.
+
+The read-only plan `pr106-20260903T100018-d33671` passed. From repository root,
+`uv run --no-project scripts/u1_ship.py --pr 106 --reviewed-sha 16bd3038295bbdf56ee5665e3655cbe55d230366 --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute`
+exited0 through the Node child_process fallback (PID60016); the plan used the
+same command without --execute. No guard was bypassed. Existing historical
+failures below remain evidence with their original source boundaries.
+
+Installed-byte scoped postverification passes as recorded below. Actual phone
+fullscreen acceptance remains separate.
+C08 reliability and unchanged legacy Retry focus remain open. This root/docs-only
+rollout tail changes no app, scripts, dependencies, configuration or artifacts;
+it requires no repeated full regression/build/deployment.
+
+### Installed-byte scoped behavior and limits
+
+Independent `app/test-results/host-fullscreen-independent/POSTDEPLOY-REPORT.json`,
+SHA256 `936c6745abbeba2be4d56042b1d1658c9da517ad4201b52f4cf8d1524583e632`,
+passes against release0660a07. Installed schema2 manifest
+`05edf26a5f4d2f8ad5df63e91d7a8ef910d6bb370984cf082c229c490689d94f`
+verifies52 runtime files/71 routes. Public/dashboard loopback and dashboard HTTPS
+serve exact observation HTML at /widget and reject /camera-widget with404.
+All440 application inputs remain unchanged from the independently approved set.
+
+With pinned Bun1.4.0 and verified installed dist/widget hash environment values,
+`bun --no-env-file --config=/dev/null run node_modules/.bin/playwright test --config=test-results/host-fullscreen-independent/postdeploy.config.ts --grep "installed ACK-only|packaged Progress"`
+exited0 with two cases. Actual installed Camera/observation HTML was mounted in
+a synthetic MCP host, with resource-envelope and HTML hashes verified before
+rendering. Camera proves default Auto/one opening read/quiet polling, a synthetic
+Live peer, ACK-only fullscreen at320/390 with safe-area updates and44px Exit,
+bounded intrinsic resizing, same video/no extra open and host-driven inline exit.
+Progress at320px/200% text has no horizontal overflow and equal343.4375px ready/
+neutral-error/recovered bounds; keyboard Retry restores content/view. Retry focus
+remains the known baseline FALSE result. Neither that gap nor C08 is fixed.
+Postdeploy log SHA256:
+`3d97a781569d9610edd7c92b998cb497024303fa1772fad725aa2c05c07c316d`.
+
+Screenshots were inspected for safe-area containment, media letterboxing and body
+insets/wrapping with synthetic media/Unknown Progress. This is not an actual
+ChatGPT/phone resource fetch, fullscreen grant or physical Live connection test.
+All six read-only curl children, fixture browsers/server and routes closed;4181
+is free. No new build/full gate ran. An initial informational staticRoutes.length
+was undefined because routes are a mapping; Object.keys confirms71, with no guard
+or test failure. No user browser, deployed service, printer stream, auth or
+network configuration was changed by these postchecks.
+
+## Accepted source evidence: host fullscreen and body insets
 
 Frozen source `d99939986e185a55154d26a6243d62ca98ba8ecc`, tree
 `d670534663b51c10d3ebff391c4f60dfeabd6cf0`, has independent scope APPROVAL.
-PR106 awaits exact documentation-head review and guarded shipment.
-No new deployment or actual ChatGPT/phone fullscreen acceptance is claimed.
+The application evidence below predates the exact PR106 shipment recorded above;
+no actual ChatGPT/phone fullscreen acceptance is claimed.
 Author `app/test-results/host-fullscreen-author/REPORT.json`, SHA256
 `e9a7102beea5bdccf11bae7bc4b89780012d960fbeb6270767c8b93379ec82d6`,
 binds35 changed application inputs in `application-inputs.json`, SHA256
@@ -127,7 +190,7 @@ resources, private metadata and shipping guards. Reviewer contract adopted in
 presentation service owns the bounded pending request, Video renders actual
 acknowledged mode without DOM/session/timer replacement or focus stealing.
 Standalone native fullscreen requires document-state proof; no CSS-only host
-substitute. Source implementation and independent acceptance are recorded above; deployment/actual-host evidence remains pending.
+substitute. Source implementation and independent acceptance are recorded above; PR106 deployment is recorded separately and actual-host evidence remains pending.
 Progress redesign is no-action. Earlier PR104 evidence retains its original scope.
 
 The adopted display layout fixes media only after actual host fullscreen grant,
@@ -150,7 +213,7 @@ eight active legacy consumers, stable failure/recovery and320px/200% coverage.
 This is author package/Lab evidence, not measured CSS from the user's phone or
 acceptance of a Progress redesign; other legacy layout debt is not closed.
 
-## Current deployment: PR104 exact release and BOTH service restarts
+## Historical deployment: PR104 exact release and BOTH service restarts
 
 `PROFILE-DOCS-REVIEW.json` under `app/test-results/current-only-independent`,
 SHA256 `cd9a84fbf6fa51fdb0e262b1d40cff7d057aae54ea525fd12f09f961525780ea`,

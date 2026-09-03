@@ -4,30 +4,28 @@ Current authority, 2026-09-03. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
-## Current source: fullscreen and padding independently accepted
+## Current deployment: PR106 host fullscreen and packaged body insets
 
-Candidate `d99939986e185a55154d26a6243d62ca98ba8ecc` implements decision0047:
-host-acknowledged fullscreen through the existing HostRpc/presentation service,
-persistent Video, fixed media only after grant and bounded intrinsic-size
-suppression/resume. Standalone uses proven native fullscreen or unavailable.
-The current-only source is0.4.12/schema16/observation18/Camera14, with no aliases.
+PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release
+`20260903-0660a07-pr106-20260903T100036-471de8`. BOTH services restarted and
+verify loaded/healthy/integral at0.4.12/schema16/observation18/Camera14. All72
+static and74 security checks pass; preservation=true, rollback not needed.
+Exact review, receipt and scoped postverification are recorded in VALIDATION.
 
-The unmatched legacy selector is corrected to `.u1-body` using existing tokens.
-Author focused checks cover118 UI,71 server, seven MCP cases including48 legacy
-ready-to-failure geometry observations, and21 native Camera/Lab cases; all ten
-packages are deterministic. This is not a complete overflow/recovery matrix.
-Detailed input/artifact identities, commands and failures are in VALIDATION.
+The release implements host-acknowledged fullscreen with persistent media and
+corrects packaged legacy body insets using existing tokens. Installed-byte
+Camera fullscreen and selected Progress layout/recovery checks pass with a
+synthetic MCP host; actual phone fullscreen remains unverified.
+C08 Live reliability and baseline Retry→Refresh focus loss remain open. The
+selected Progress layout/recovery checks do not accept its deferred redesign.
 
-Independent scope review APPROVES d999399: the required gate, host fullscreen
-adversaries and selected320px/200% Progress layout/recovery pass. Legacy Retry
-focus recovery still fails in both baseline and candidate; U01 keeps that gap
-open. PR106 awaits exact documentation-head review and guarded shipment; PR104
-remains deployed. Actual phone fullscreen and C08 Live reliability remain open.
-Preserve host-owned composer/chrome, no OS-screen promise,55 IDs, two resources,
-eight active legacy renderers, monitor workflow, Progress no-action, F07 discussion,
-separate c6, unfinished Queue/Fans/Job History and every shipping/security guard.
+Preserve host-owned composer/chrome, no OS-screen promise,55 IDs, two current
+resources without aliases, eight active legacy renderers, monitor workflow,
+Progress no-action, F07 discussion, separate c6 and unfinished Queue/Fans/Job
+History. This rollout tail changes documentation only; no application rebuild,
+full regression or service deployment is required for the tail.
 
-## Current deployment: PR104 Camera and current-only widgets
+## Historical deployment: PR104 Camera and current-only widgets
 
 PR104 merged as `162dc68d0945feb4b3d2de7b638479560f2604d9`, preserving exact
 reviewed `30e0649` tree, and is deployed. BOTH services restarted and verify
@@ -367,7 +365,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | F07 component-owned folders/services | Partial; PR89 delivers real/synthetic Camera service separation | Thin subscribers/renderers. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
 | F08 whole server/MCP SvelteKit migration |0043 shared app/routing PR93; four native pages PR97; bounded MCP Heads/Camera cutover PR99 | Four native pages are deployed; remaining UI routes serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
 | F09 self-contained widget HTML |0042 individual/aggregate byte caps removed, independently accepted and shipped PR91 | Preserve self-contained assets, CSP/security, integrity, determinism, minification and size reporting during0043 |
-| U01 density/grouping/consistent language | Partial; author reproduces390px MCP body0 inset vs Lab18px from unmatched .u1-:host selector | Bounded .u1-body repair independently accepted at d999399;48 ready/error observations plus selected Progress320px/200% overflow/recovery pass. Retry→Refresh focus remains lost in both v17/v18 (unchanged legacy renderer); no focus recovery, full matrix, P01 redesign or broad cleanup claimed |
+| U01 density/grouping/consistent language | Partial; author reproduces390px MCP body0 inset vs Lab18px from unmatched .u1-:host selector | Bounded .u1-body repair shipped in PR106;48 ready/error observations plus selected Progress320px/200% overflow/recovery pass. Retry→Refresh focus remains lost in both v17/v18 (unchanged legacy renderer); no focus recovery, full matrix, P01 redesign or broad cleanup claimed |
 | U02 smaller Refresh visual | Not started in delivered shared component | Compact visible glyph/control, 44px accessible target |
 | U03 small borderless Copy | PR89 deployed; scoped HTTPS served-byte verification PASS | One44px-high color-row target,16px glyph,8px symmetric inset; native clipboard acceptance separate |
 | U04 swatch + whole hex same line | Deployed PR87; supersedes ADR0039 stacking | Atomic row keeps390normal two columns; preserve exact served behavior |
@@ -379,7 +377,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | L04 compact/medium/full + MCP size | Not started | Closed size contract with distinct information hierarchy |
 | L05 all-widget stable acquisition-error presentation | PR89 deployed0041; source route matrix and scoped served-widget verification PASS | Static neutral failures, adjacent footer status, no stale telemetry; Camera-only0046 exception and current-route allocation/release shipped PR104; scoped installed-byte/synthetic Camera and Jobs behavior PASS. Retain resize/short-content/Retry guards and C08 risk |
 | L06 variable list fixed height | Decision pending | Choose bounded scroll vs content height; do not infer from skeleton rule |
-| C01 fullscreen video continuity | Active: user reports PR104 fullscreen stays widget-sized; host fullscreen integration requested | Require acknowledged host mode/entry/exit with no Camera reconnect; preserve interactive-decoupled app and allow host composer/chrome. No OS-wide promise. ADR0047 independently accepted at d999399; PR106 shipment and actual-host acceptance pending |
+| C01 fullscreen video continuity | Active: user reports PR104 fullscreen stays widget-sized; host fullscreen integration requested | Require acknowledged host mode/entry/exit with no Camera reconnect; preserve interactive-decoupled app and allow host composer/chrome. No OS-wide promise. ADR0047 shipped in PR106; installed-byte scoped checks PASS; actual-host acceptance pending |
 | C02 Camera in Lab and SvelteKit | Delivered PR69/71 | Does not imply latest service/status repair delivered |
 | C03 connecting/disconnected icons/red dot | Source-only separate checkpoint c6cfb4e | Integrate separately and independently verify;0042 removes historical repo cap blocker |
 | C04 consistent two/three status slots | aaaf0a56 independently accepted: default Auto, Auto/Live only,88px-by-44px icon Switch; no single-Snapshot or footer/Refresh | Quiet polling, edge-to-edge media, persistent bottom-left safe reason and bounded bootstrap/recovery accepted in source. PR104 deployed after profile repair/BOTH restarts; scoped installed-byte/synthetic Camera and Jobs behavior PASS. C08 reliability stays open |

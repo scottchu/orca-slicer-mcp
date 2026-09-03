@@ -334,8 +334,8 @@ printer environments support the described behavior.
   disposed work must not affect the Camera session, persistent video DOM or Auto
   timers. Standalone/dashboard/Lab native fullscreen is confirmed by document
   state; otherwise report unavailable. Source d999399 implements this contract
-  with independent scope approval and the required full gate; guarded shipment
-  and actual-host acceptance remain pending. Current-only candidate versions are runtime0.4.12/
+  with independent scope approval and the required full gate, shipped in PR106
+  at0660a07. Actual-host acceptance remains pending. Current-only versions are runtime0.4.12/
   schema16/observation18/Camera14, with no old aliases. Display changes cause no reconnect
   or additional acquisition.
   PiP is offered only through the existing
