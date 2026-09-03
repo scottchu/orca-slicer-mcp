@@ -2,18 +2,22 @@
 
 ## Current workflow slice: standalone asynchronous monitor
 
-Decision0045 implements the requested F0/I1 contract in the existing monitor and
-start skills: standalone invocation or composition after observed printing, one
-delegated read-only owner, explicit run binding, adaptive checks and separate
-monitoring/print outcomes. MON-001 and AGENTS point to maintained repository source.
-Two skill validators pass; exact independent review is pending in this candidate.
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
+reviewed source for decision0045/MON-001; consult the PR for merge identity.
+Independent review approved `3ce5a8cf2975c2c38601ce9832fa49bc50900893`, including
+the decision-index repair. The existing monitor is independently invocable and
+composed after observed printing, with one delegated owner and explicit run,
+recovery and terminal-evidence boundaries.
 
-Application bytes remain at base `220190f05afd4f785f068254d43f1b0257e9af57`;
-installed plugin cache and services are unchanged. This is source/instruction
-evidence, not new runtime, real-printer, actual-device or durable notification
-acceptance. O1/O2 and all earlier product gaps remain open. Next: independent
-exact review, then the user-authorized PR/merge without application deployment.
-Detailed commands and limits are in the active VALIDATION/HANDOFF.
+Two skill validators, diff/identity checks and manual fictional lifecycle
+walkthroughs pass. These are instruction/source evidence, not model execution,
+real-printer, actual-device or durable notification tests. The application tree
+remains `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`; installed cache and services
+are unchanged. VALIDATION binds retained skill identities to this records-only
+tail. O1/O2 and earlier product gaps remain open. Repository agents can use the
+maintained source workflow; installed-plugin adoption and proposed standardized
+one-shot observation tools remain separate work, without implied installation,
+runtime changes or printer authority.
 
 ## Current deployment: PR99 MCP Camera and Heads
 

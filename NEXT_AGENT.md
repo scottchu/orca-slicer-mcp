@@ -1,20 +1,25 @@
 # Next agent
 
-## Current handoff: review standalone monitoring workflow
+## Current handoff: independently reviewed monitoring workflow
 
-Review the exact candidate for decision0045/MON-001 and the two changed skills.
-The existing monitor is independently invocable and composed after an observed
-authorized start; the primary delegates one owner and stays available. Preserve
-identity/deduplication, bounded recovery, stop-observing versus printer-control
-semantics, explicit limited request scope and every thumbnail gate.
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
+reviewed decision0045/MON-001 source; consult the PR for merge identity. Exact
+`3ce5a8cf2975c2c38601ce9832fa49bc50900893` was approved after the decision-table
+repair. This records-only tail retains the approved skill and application bytes.
 
-Both changed skill validators pass. Source is based on `220190f`; application,
-dependencies, generated assets and plugin configuration are unchanged. Installed
-cache is not updated, services are not restarted, and no durable service or
-notification behavior is claimed. User authorized a PR and merge after independent
-exact review. No deployment or plugin reinstall belongs to this slice. Read active
-VALIDATION/HANDOFF before delivery; preserve concurrent Camera work and all earlier
-acceptance gaps.
+Use the existing monitor independently or compose it after an observed authorized
+start. Preserve one owner, exact run binding, adaptive checks, bounded recovery,
+explicit limited request scope and all thumbnail/control gates. Stopping
+observation leaves the printer running. The primary remains available.
+
+Both skill validators and manual fictional lifecycle walkthroughs passed; these
+did not execute a model workflow or test actual host/printer behavior. Installed
+plugin cache and services are unchanged, with no durable service/notification
+claim. Follow maintained source for repository work. Any installed-plugin adoption
+or standardized one-shot observation tool is separate scope; do not install,
+deploy or change runtime under this documentation tail. Preserve concurrent
+Camera work and earlier acceptance gaps. Detailed retained identities and commands
+are in active VALIDATION/HANDOFF.
 
 ## Current handoff: PR99 MCP resources deployed
 

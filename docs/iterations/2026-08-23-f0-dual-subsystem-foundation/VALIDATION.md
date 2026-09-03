@@ -1,45 +1,55 @@
 # F0 dual-subsystem foundation validation
 
-## Standalone asynchronous monitor: author source validation
+## Standalone asynchronous monitor: independent source acceptance
 
-Independent source review of `98aeaf3` found one decision-index formatting
-issue: a blank line placed row0045 outside the existing table. The author removed
-only that separating blank line; renewed diff checks pass. The reviewer reported
-both skill validators passing and unchanged application identity. Review of the
-repaired exact candidate is still required; this is not author self-approval.
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
+reviewed source; consult the PR for merge identity. Independent source review
+approved `3ce5a8cf2975c2c38601ce9832fa49bc50900893`, tree
+`9136c5bb13d592c044c546205064baf2343caf4d`. The reviewer did not author the skill
+changes. Review of earlier `98aeaf3` found one index formatting defect: a blank
+line separated decision0045 from the table. The author removed that separator;
+the reviewer inspected the exact repair and attributed validation note.
 
-Base: `220190f05afd4f785f068254d43f1b0257e9af57`. Scope is decision0045,
-MON-001 and the existing monitor/start skills. The primary requested a bounded
-architect contract; the author implemented it separately. Exact independent
-review remains pending at this checkpoint.
-
-Commands actually run:
+Commands actually run by the author and independently repeated for the unchanged
+skill bytes:
 
 - `uv run --no-project --with pyyaml "$SKILL_CREATOR/scripts/quick_validate.py" plugins/u1-print-studio/skills/u1-monitor-print` — exit0, Skill is valid.
 - The same command for `plugins/u1-print-studio/skills/u1-start-print` — exit0,
-  Skill is valid. SKILL_CREATOR denotes the installed system skill root used
-  by the author; no repository dependency or installed skill was modified.
-- `git diff --check` — exit0.
-- `git diff --name-only 220190f05afd4f785f068254d43f1b0257e9af57` and scoped
-  `git diff` checks — Markdown-only changes; application/build/configuration
-  paths unchanged.
-- `git rev-parse 220190f05afd4f785f068254d43f1b0257e9af57:plugins/u1-print-studio/app`
-  — application tree `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
+  Skill is valid. SKILL_CREATOR denotes the installed system skill root; no
+  repository dependency or installed skill was modified.
+- `git diff --check`, clean-HEAD and scoped diff/identity checks — pass.
+- Base application tree from
+  `git rev-parse 220190f05afd4f785f068254d43f1b0257e9af57:plugins/u1-print-studio/app`
+  and approved source application tree both equal
+  `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
 
-Read-only Node filesystem checks also passed required nonempty repository files,
-CURRENT's three continuity records, exactly one active iteration, existing
-PROJECT_STATE headings/evidence layers, core requirement IDs, added local skill/
-decision links, and private-data exclusion in added content. These are focused
-documentation checks, not a run of the full check-repository.sh application gate.
-No test, guard or shipping script was modified.
+The independent manual fictional walkthrough covered standalone unknown
+provenance, composed start acknowledgement, duplicate ownership, a repeated
+filename/new run or reset, stale terminal evidence, disconnect/recovery and its
+retry cap, stop-monitoring, explicit start-only, N/N while printing, camera loss,
+paused nonterminal state and complete/inactive/end checks. No source blocker
+remained. These were reasoned instruction/source cases, not executed model
+sessions, automated behavioral tests or actual host/printer evidence.
 
-The two changed skill entrypoints pass structural validation; this alone does not
-prove instruction behavior. Independent fictional lifecycle cases and exact source
-review are the next gate. The existing runtime evidence remains bound to unchanged
-application bytes; no full application build/browser run was repeated for this
-skill/documentation-only slice. No simulator, printer, actual-host, installed-cache,
-durable-monitor or external-notification acceptance is added. Decision0028 requires
-no service deployment for these unchanged application bytes.
+Author read-only filesystem checks passed required nonempty repository/iteration
+records, exactly one active iteration, existing state headings/evidence layers,
+core requirement IDs, added local links and private-data exclusion. No full
+check-repository.sh application gate was run or modified for this slice.
+
+Retained SHA-256 identities for the final five-record documentation tail:
+
+- u1-monitor-print/SKILL.md:
+  `5adb6e7c71be436a5e803705a9cc6b409b474b30a0d61a2bc7d68cf6fa824a11`.
+- u1-start-print/SKILL.md:
+  `d28d4042d9b254d0cbb0115b55a45b1562271b2d96bf88f69e9ffcebfd477642`.
+- Application tree: `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
+
+The tail rechecks diff/identity and keeps approved skills, AGENTS, requirements,
+decision, application, dependencies, configuration and generated assets unchanged.
+Retain earlier application evidence on those unchanged bytes; do not repeat the
+full build/browser suite for bookkeeping. Installed cache/services are unchanged,
+and no durable monitor, external notification, real-printer or actual-device
+acceptance is added. Decision0028 requires no application deployment.
 
 ## Current PR99: exact approval and guarded deployment
 

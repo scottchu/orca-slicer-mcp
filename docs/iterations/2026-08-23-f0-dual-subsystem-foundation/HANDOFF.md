@@ -1,26 +1,31 @@
 # F0 dual-subsystem foundation handoff
 
-## Current handoff: standalone monitoring source candidate
+## Current handoff: independently reviewed monitoring source
 
-Base: `220190f05afd4f785f068254d43f1b0257e9af57`. Branch:
-`docs/u1-standalone-monitor-workflow`; isolated from unrelated working changes.
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
+reviewed source; consult the PR for merge identity. Base:
+`220190f05afd4f785f068254d43f1b0257e9af57`. Independent review approved
+`3ce5a8cf2975c2c38601ce9832fa49bc50900893`, tree
+`9136c5bb13d592c044c546205064baf2343caf4d`, after a decision-table separator repair.
 
-Changed paths: existing monitor/start SKILL.md files; AGENTS routing; MON-001 in
-requirements; decision0045 and decision index; PROJECT_STATE/NEXT_AGENT and this
-iteration's BRIEF/VALIDATION/HANDOFF. Preparation skill, application code, profiles,
-plugin configuration, dependencies, generated assets and runtime are unchanged.
+Source scope: monitor/start SKILL.md files; AGENTS routing; MON-001; decision0045
+and index; PROJECT_STATE/NEXT_AGENT and the iteration's BRIEF/VALIDATION/HANDOFF.
+This final tail changes only the five continuity records. Approved skill hashes
+and application tree are retained in VALIDATION; preparation skill, application,
+dependencies, configuration and generated assets remain unchanged.
 
-The standalone workflow owns one bound print, adaptive evidence/due-time loop,
-meaningful primary-delivered updates, immediate alerts, bounded recovery and
-identity-checked resumption. Print composition enrolls only after observed printing;
-limited preparation/upload/start-only requests remain limited. Stopping the
-monitor does not stop the printer. The installed skill cache is unchanged, and
-active-conversation execution is not O1/O2 durable supervision or notifications.
+The existing standalone workflow binds one print owner to adaptive observations,
+meaningful updates and immediate alerts, bounded recovery and verified outcomes.
+Composition begins after observed printing; limited request scope remains limited.
+Stopping monitoring does not control the printer. Structural validators and
+manual fictional lifecycle walkthroughs passed without executing a model workflow
+or using a real printer. No installed-plugin, actual-host or O1/O2 acceptance is
+inferred.
 
-Both quick skill validators pass. Next smallest action: independent exact source
-review with fictional lifecycle cases, then the user-authorized PR/merge. No
-application deployment or plugin reinstall. VALIDATION records actual commands,
-scope and retained application identity; no real printer was used for this change.
+Repository agents can follow the maintained source skill. Installed-plugin adoption
+and the proposed standardized one-shot observation tools remain separate scope.
+No application deployment, cache reinstall or runtime changes belong to this
+records-only tail. Preserve concurrent Camera work and earlier evidence gaps.
 
 ## Current handoff: PR99 MCP resources deployed
 
