@@ -231,8 +231,9 @@ printer environments support the described behavior.
   Keep the shared RPC default at 15 seconds, activation/local-answer/
   answer/candidate deadlines at 10 seconds, first-frame at 8 seconds, frame-stall
   at 5 seconds and disconnected-state grace at 3 seconds. This client budget
-  correction is pending acceptance in the active C08 slice; it does not prove
-  the cause of the reported phone fallback or extend other consumers' budgets.
+  correction is independently accepted and deployed through PR101; reliable
+  phone Live remains unaccepted. It does not prove the cause of the reported
+  phone fallback or extend other consumers' budgets.
   Hide/dispose cancel owned work; resume keeps
   the selected Auto mode without reopening Live. Local display rejection remains separate from
   acquisition failure. Decision0041 places the existing snapshot Refresh beside

@@ -11,7 +11,7 @@ recovery and terminal-evidence boundaries.
 
 Two skill validators, diff/identity checks and manual fictional lifecycle
 walkthroughs pass. These are instruction/source evidence, not model execution,
-real-printer, actual-device or durable notification tests. The branch incorporates incoming main `0710b4bf55edc6908eef614df5fec48614044497`
+real-printer, actual-device or durable notification tests. The branch incorporates incoming main `06e2a903f9ad2426f3580e77e72d65d98cc96d60`
 without modifying its application tree `ffc95dccafab2289959a934cc2630339cf5a2d2e`.
 This workflow adds no installation or service changes. VALIDATION separates retained
 skill evidence from incoming Camera application evidence; our checks do not
@@ -20,21 +20,22 @@ maintained source workflow; installed-plugin adoption and proposed standardized
 one-shot observation tools remain separate work, without implied installation,
 runtime changes or printer authority.
 
-## Current order: bounded C08 client deadline repair
+## Current deployment: PR101 Camera open/cleanup repair
 
-The user reports the refreshed new UI works on the phone, but Live shows
-Connecting then frequently falls back. Attempt 10 reaches upstream RTP and
-creates a viewer offer with the installed Bun 1.4.0; the earlier UDP error was
-not reproduced. This isolated-process result does not prove deployed/phone Live.
+PR101 `0710b4bf55edc6908eef614df5fec48614044497` is deployed after exact
+`42cdaca` independent approval and BOTH service restarts. Live open now waits
+40 s; only that HostRpc call retains a result for 55 s, with disposal bounded
+at 70 s. Other deadlines remain unchanged. Current resources are observation
+v16/Camera v12, runtime 0.4.10/schema 14; all 28 prior URI bytes are preserved.
 
-On `codex/u1-camera-live-deadlines`, author source freezes the client budget/late-
-cleanup correction: Live open may wait 40 s, with only that HostRpc call retained
-for 55 s so a late offer can be closed. Other deadlines stay unchanged. Author
-focused checks pass and identities are bound in VALIDATION; frozen required
-validation, independent review and delivery remain pending. This mismatch is not a proven cause of the phone symptom.
-Screen Sharing stays paused; all 55 ledger IDs and existing scope boundaries remain.
+Required validation, independent targeted checks and installed-resource
+postdeployment behavior with synthetic media pass; full identities and prior failures are in
+VALIDATION. The user confirms the new phone UI works, but C08 reliable Live is
+still unaccepted. The deadline defect and isolated attempt 10 do not prove the
+phone failure's cause. Screen Sharing stays paused; all 55 IDs and remaining
+product scope stay open as recorded. This docs-only tail needs no redeployment.
 
-## Current deployment: PR99 MCP Camera and Heads
+## Earlier deployment: PR99 MCP Camera and Heads
 
 PR99 merged as `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba` and is deployed after
 exact independent approval of `f782378`. Camera v11 now serves shared Svelte

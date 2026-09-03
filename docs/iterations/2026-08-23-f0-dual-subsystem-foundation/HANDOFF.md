@@ -5,7 +5,7 @@
 [PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
 reviewed source; consult the PR for merge identity. Original source base:
 `220190f05afd4f785f068254d43f1b0257e9af57`; incoming main incorporated during
-conflict resolution: `0710b4bf55edc6908eef614df5fec48614044497`. Independent review approved
+conflict resolution: `06e2a903f9ad2426f3580e77e72d65d98cc96d60`. Independent review approved
 `3ce5a8cf2975c2c38601ce9832fa49bc50900893`, tree
 `9136c5bb13d592c044c546205064baf2343caf4d`, after a decision-table separator repair.
 
@@ -32,28 +32,28 @@ and the proposed standardized one-shot observation tools remain separate scope.
 No application deployment, cache reinstall or runtime changes belong to this
 records-only tail. Preserve concurrent Camera work and earlier evidence gaps.
 
-## Current handoff: bounded C08 open/cleanup repair
+## Current handoff: PR101 Camera deadline repair deployed
 
-Current branch: `codex/u1-camera-live-deadlines`. The user's new phone UI works,
-but Live frequently shows Connecting then fallback. Attempt 10 using installed
-Bun 1.4.0 reaches first upstream RTP and a viewer offer; historical EHOSTUNREACH
-is not reproduced. It stops before browser answer/decode and runs separately
-from the deployed LaunchAgent, so it does not establish reliable phone Live.
+PR101 `0710b4bf55edc6908eef614df5fec48614044497` preserves independently
+approved `42cdaca` tree and is deployed with BOTH services restarted. Required
+checks, four independent timing adversaries and three scoped browser cases pass;
+installed-resource postdeployment behavior with synthetic media passes. Detailed evidence and
+prior failures remain in VALIDATION.
 
-Frozen author source gives Live open its legacy 40 s user wait and retains only
-that HostRpc call for 55 s (40 s plus 15 s unanswered lease window) for late
-cleanup. Prove delayed success, post-timeout/selection/disposal lease closure and
-unchanged deadlines for other operations with integrated synthetic tests.
-Author focused checks pass; exact source/payload identities are in VALIDATION.
-Next commit the frozen candidate for required validation and independent review.
-The software timing defect is not proven to explain the user's failure. Screen Sharing stays paused.
+Only Live open gains 40 s user wait/55 s RPC retention, with disposed open/close
+work bounded at 70 s; other deadlines stay unchanged. Observation v16/Camera v12,
+runtime 0.4.10/schema 14 provide 30 resources and preserve all 28 old URI bytes.
+The source changes are per-call HostRpc timing, service-owned cleanup, versioned
+compatibility packages and affected tests/pins; no new UI or server timeout.
 
-Candidate compatibility contract: new observation v16/Camera v12, runtime
-0.4.10/schema 14, 30 resources and 28 preserved old aliases. Snapshot PR99 v15/v11
-bytes for compatibility; do not replace the deployed PR99 identity below before
-shipping. Independent/current-deployment acceptance remains pending.
+Next: user retry in a newly mounted current Camera widget. New UI adoption on
+the phone is reported, reliable Live is not. Attempt 10 proved isolated upstream
+RTP/offer only; neither it nor the repaired timing defect proves the phone root
+cause. Screen Sharing remains paused. Preserve all 55 IDs, Progress no-action,
+F07 discussion, separate c6 and remaining product work. This docs-only tail
+preserves application bytes and requires no deployment under0028.
 
-## Current handoff: PR99 MCP resources deployed
+## Earlier handoff: PR99 MCP resources deployed
 
 PR99 merged `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba`, preserving independently
 approved `f782378` tree. The guarded release restarted BOTH services and verified

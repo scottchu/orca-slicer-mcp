@@ -6,7 +6,7 @@
 reviewed decision0045/MON-001 source; consult the PR for merge identity. Exact
 `3ce5a8cf2975c2c38601ce9832fa49bc50900893` was approved after the decision-table
 repair. The conflict resolution retains approved skill bytes and incoming main
-`0710b4bf` application bytes unchanged.
+`06e2a903` application bytes unchanged.
 
 Use the existing monitor independently or compose it after an observed authorized
 start. Preserve one owner, exact run binding, adaptive checks, bounded recovery,
@@ -21,23 +21,23 @@ deploy or change runtime under this documentation tail. Preserve concurrent
 Camera work and earlier acceptance gaps. Detailed retained identities and commands
 are in active VALIDATION/HANDOFF.
 
-## Current order: verify bounded C08 open/cleanup repair
+## Current handoff: PR101 deployed, phone Live still open
 
-On `codex/u1-camera-live-deadlines`, author source and focused evidence for the
-bounded Live-open correction are frozen. Commit the candidate, then run the
-required gate and exact independent review.
-Use 40 s for user-visible open and a per-call 55 s RPC retention window; prove
-that offers arriving after abandonment close their lease without reviving Live.
-Keep every other operation/default deadline unchanged. Author integrated/focused
-checks pass; required checks, independent approval and guarded delivery remain pending.
+PR101 `0710b4b` is deployed after exact `42cdaca` approval and BOTH restarts.
+The 40 s Live-open wait/55 s per-call retention/70 s bounded disposal repair
+preserves other deadlines and all 28 old resource aliases. Observation v16 and
+Camera v12 are current at runtime 0.4.10/schema 14. Required and targeted checks
+pass; installed-resource postdeployment behavior with synthetic media passes.
 
-The new UI works on the phone per user; frequent Connecting-to-fallback remains
-unresolved. Attempt 10 reaches upstream RTP/viewer offer in an isolated installed-
-Bun process, not a browser or LaunchAgent acceptance check. Do not infer the
-phone failure's cause from the deadline mismatch. Screen Sharing stays paused;
-all 55 IDs, Progress no-action, F07 discussion and c6 separation remain.
+Next user-outcome check: use a newly mounted current Camera widget and retry
+Live. The existing phone UI has user-reported success; reliable Live, native
+clipboard/OAuth and the original failure's cause remain unverified. Preserve
+attempts 1–10 and the software/deployed/phone evidence boundaries in VALIDATION.
+Screen Sharing stays paused; retain all 55 IDs, Progress no-action, F07 discussion,
+separate c6 and unfinished Queue/Fans/Job History scope. No full test/build or
+redeployment is required solely for this Markdown tail.
 
-## Current handoff: PR99 MCP resources deployed
+## Earlier handoff: PR99 MCP resources deployed
 
 PR99 `4787c02` is deployed after exact `f782378` approval and BOTH service
 restarts. Camera v11 and observation v15 now select the shared Svelte Camera
