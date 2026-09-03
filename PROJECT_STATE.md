@@ -1,5 +1,64 @@
 # Project state
 
+## Current candidate: deterministic pre-upload foundation ready for PR
+
+Combined documentation/skill candidate
+`eb38763fc92579563dcad28fa3f83494b28b591b`, tree
+`d2e9a0807deba19e7665543e570d31f550f0d763`, is independently APPROVED with no
+blocking or high-severity finding. It retains the accepted application source at
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`; exactly eleven documentation/skill
+files changed, while application source, tests and package inputs remained
+unchanged. The review renewed both skill validators, TypeScript, combined
+prepared-artifact fixtures, the observation-only inventory guard, source/test
+hashes, link resolution and diff/identity checks. Exact evidence is in
+VALIDATION.
+
+The sole full repository gate on that exact combined candidate passed once:
+627 Vitest tests/60 files, 251 Bun server tests/32 files/2,798 expects, 72 Python
+tests, Svelte zero errors/zero warnings and repository contract OK. The
+candidate remained clean with identity unchanged after the run. This
+records-only tail changes no accepted application, contract, test, dependency,
+configuration, generated asset or skill bytes, so the bound application and
+full-gate evidence need not be rerun solely for this bookkeeping.
+
+Next deliver this internal foundation through the normal PR route. Do not
+deploy services or contact a printer/network: no supported adapter, durable
+store, real uploader, target-parsed receipt, public mutation or start path
+exists. Durable stores and the first narrow trusted CLI adapter remain a later
+separately selected slice.
+
+## Current source slice: deterministic prepared-artifact upload guard
+
+The user selected the smallest deterministic preparation/handoff slice after
+the Laifen print retrospective. Proposed
+[decision 0048](docs/decisions/0048-guard-upload-with-content-bound-preparation-receipts.md)
+places pure `validatePreparedArtifact` in Orca Preparation and one guarded
+`uploadPreparedArtifact` coordinator at the peer-subsystem seam. Trusted
+content-bound settings/correspondence/validation receipts, target preflight,
+one-use authorization and idempotent action state remain separate.
+
+Exact `f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`, is independently APPROVED by the
+agentic architect and printer-domain reviewer. The core validates effective
+walls from a bound resolver receipt; tracks the first provable positive
+extrusion and its tool for thermal intent; bounds G-code/PNG parsing; resolves
+opaque IDs through injected trusted stores; snapshots runtime values; uses a
+trusted clock, one-use authority and idempotent action records; and normalizes
+all fake upload-port outcomes without duplicate effects.
+
+Author TypeScript passes, the combined source suites pass 32 tests/231
+assertions, and the focused MCP inventory guard passes one test/20 assertions.
+Independent architecture passes the focused preparation suite at 17/61 plus
+typecheck; domain review passes the combined 32/231, typecheck and a fresh tool
+matrix. Exact commands, identities and evidence limits are in VALIDATION.
+
+No durable store, supported skill/CLI adapter, real uploader, target-parsed
+post-upload receipt, public MCP mutation, printer/network/start action or
+deployment exists. Decision 0040's local source gate is accepted, but its
+end-to-end enforcement remains incomplete. The pure-core evidence does not
+establish real-printer safety, print quality or physical acceptance.
+
 ## Current deployment: PR106 host fullscreen and packaged body insets
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release

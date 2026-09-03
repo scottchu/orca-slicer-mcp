@@ -1,5 +1,57 @@
 # Next agent
 
+## Immediate: deliver the accepted internal foundation through a PR
+
+Use combined candidate `eb38763fc92579563dcad28fa3f83494b28b591b`, tree
+`d2e9a0807deba19e7665543e570d31f550f0d763`. Independent documentation/skill
+review APPROVES it with no blocking or high-severity finding and confirms that
+application source remains exact `f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`,
+tree `c5be31e7c744c70826a4cd2d98904bc20b4259f9`. The sole-owner full repository
+gate passed exactly once with 627 Vitest tests/60 files, 251 Bun server tests/32
+files/2,798 expects, 72 Python tests, Svelte zero errors/zero warnings and
+repository contract OK. The worktree was clean and identities unchanged after
+the run; exact review and command evidence is in VALIDATION.
+
+The next action is PR review and repository delivery of this internal
+foundation. This records-only tail leaves application, tests, contracts, skills,
+dependencies, configuration and generated assets unchanged, so retain their
+bound evidence without another full run. Do not deploy services or contact a
+printer/network. Durable stores, a supported CLI/skill adapter, real uploader,
+target-parsed HANDOFF-007 evidence, public mutation and start remain later
+separately authorized work.
+
+## Accepted core to preserve in delivery
+
+The user selected the narrow deterministic seam proposed in
+[decision 0048](docs/decisions/0048-guard-upload-with-content-bound-preparation-receipts.md).
+The transport-independent `validatePreparedArtifact` and guarded
+`uploadPreparedArtifact` pure core is accepted at
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`. Preserve its exact trusted-receipt,
+opaque-ID, runtime-snapshot, server-clock, one-use authorization, idempotency,
+first-positive-extrusion/tool and truthful upload-outcome semantics.
+
+The preparation skill retains a matching-edition preview and explicit user
+correspondence `PASS`/`FAIL`. Local embedded-image verification remains before
+upload; target-parsed thumbnail verification remains after upload and before
+separately authorized start. Upload, start acknowledgement, observed printing,
+monitoring, telemetry completion, camera evidence and physical acceptance stay
+distinct.
+
+Author TypeScript, combined 32-test/231-assertion fixtures and the focused
+one-test/20-assertion MCP inventory guard pass. Independent architecture and
+domain reviews APPROVE the exact source; exact evidence is in VALIDATION.
+
+The next implementation slice after delivery needs its own user selection and
+decision: inject durable stores and expose the core through the first narrow
+trusted CLI adapter.
+It must accept only opaque IDs and must not add a raw path, caller-built gates,
+manual upload, public MCP mutation, generic printer transport or start action.
+No such adapter, real uploader or target-parsed HANDOFF-007 receipt exists now.
+Do not mark decision 0040 end-to-end enforcement complete, or infer printer,
+network, start, deployment, print-quality or physical acceptance from the
+accepted pure-core fixtures.
+
 ## Current deployment: PR106 host fullscreen and packaged body insets
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release

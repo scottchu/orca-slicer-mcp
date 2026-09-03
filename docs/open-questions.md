@@ -36,13 +36,18 @@ cover the two peer subsystems and their handoff.
 
 - What is the minimum prepared-artifact manifest and versioning scheme?
 - Which compatibility checks must pass before upload or start is offered?
-- Does upload belong to Preparation, Operations, or a handoff coordinator for
-  the first environment?
+- What durable stores and first trusted CLI adapter can realize proposed
+  decision 0048's independently accepted pure-core split without exposing raw
+  paths or caller-supplied validation, authorization, time or preflight claims?
 - How are upload, queue or selection, start, acknowledgement, and observed
   printing represented as separate states?
 - How is the prepared artifact correlated to the printer's job identity and
   eventual print session?
-- Which retries are idempotent, and which require renewed authorization?
+- Which upload outcomes can be proven idempotent for the first adapter, and
+  which ambiguous outcomes require read-only reconciliation or renewed
+  authorization instead of retry?
+- Which target API supplies an independently parsed post-upload thumbnail
+  receipt for HANDOFF-007 without treating upload acknowledgement as proof?
 
 ## Product behavior
 
