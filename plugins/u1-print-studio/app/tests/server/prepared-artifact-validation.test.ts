@@ -74,7 +74,8 @@ const thumbnailBlock = (image = validPng, header = "thumbnail begin 2x1"): strin
   return `; ${header} ${base64.length}\n; ${base64}\n; thumbnail end`;
 };
 const gcode = (startup: string, thumbnails: ReadonlyArray<string> = [thumbnailBlock()]): Uint8Array =>
-  new TextEncoder().encode(["; synthetic fixture", startup, ...thumbnails, "G1 X1 E0.5", "M104 S0", "M140 S0", ""].join("\n"));
+  new TextEncoder().encode(["; synthetic fixture", "M82", "G92 E0", startup, ...thumbnails,
+    "G1 X1 E0.5", "M104 S0", "M140 S0", ""].join("\n"));
 const heatedStartup = "M140 S60\nM190 S60\nM104 T0 S210\nM109 T0 S210";
 
 type FixtureOptions = {
@@ -171,7 +172,7 @@ describe("ordered thermal validation", () => {
   });
 
   test("tracks active T selection and honors an explicit inline T", () => {
-    expect(check(fixture({ artifactBytes: gcode("T1\nM104 S210"), thermalIntent: unheated(1) }), "thermal_intent"))
+    expect(check(fixture({ artifactBytes: gcode("T1\nG92 E0\nM104 S210"), thermalIntent: unheated(1) }), "thermal_intent"))
       .toMatchObject({ status: "blocked", code: "tool_thermal_intent_mismatch" });
     expect(check(fixture({ artifactBytes: gcode("M104 T1 S210"), thermalIntent: unheated(1) }), "thermal_intent"))
       .toMatchObject({ status: "blocked", code: "tool_thermal_intent_mismatch" });
@@ -183,6 +184,22 @@ describe("ordered thermal validation", () => {
       .toMatchObject({ status: "unavailable", code: "thermal_startup_semantics_unapproved" });
     expect(check(fixture({ artifactBytes, thermalIntent: unheated(), approvedCommands: ["U1_BOOT BED=60"] }), "thermal_intent"))
       .toMatchObject({ status: "passed" });
+  });
+
+  test("uses extrusion delta so an absolute retraction cannot hide later startup semantics", () => {
+    const absoluteRetraction = new TextEncoder().encode([
+      "M82", "G92 E10", "G1 E9", "U1_BOOT BED=60", thumbnailBlock(), "G1 E11", "",
+    ].join("\n"));
+    expect(check(fixture({ artifactBytes: absoluteRetraction, thermalIntent: unheated() }), "thermal_intent"))
+      .toMatchObject({ status: "unavailable", code: "thermal_startup_semantics_unapproved" });
+    const relativeRetraction = new TextEncoder().encode([
+      "M83", "G1 E-1", thumbnailBlock(), "G1 E0.5", "",
+    ].join("\n"));
+    expect(check(fixture({ artifactBytes: relativeRetraction, thermalIntent: unheated() }), "thermal_intent"))
+      .toMatchObject({ status: "passed", code: "thermal_intent_verified" });
+    const unknownMode = new TextEncoder().encode([thumbnailBlock(), "G1 E0.5", ""].join("\n"));
+    expect(check(fixture({ artifactBytes: unknownMode, thermalIntent: unheated() }), "thermal_intent"))
+      .toMatchObject({ status: "unavailable", code: "thermal_extrusion_boundary_unavailable" });
   });
 });
 

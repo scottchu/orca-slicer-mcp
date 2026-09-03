@@ -136,7 +136,13 @@ export type PreparedArtifactValidationReceipt = {
 export type PreparedArtifactValidationResult = PreparedArtifactValidationReceipt;
 
 type HeaterState = { target: number | null; changedAt: number; waitedAt: number };
-type ThermalTrace = { bed: HeaterState; tools: Map<number, HeaterState>; extrusionFound: boolean; unknownStartup: boolean };
+type ThermalTrace = {
+  bed: HeaterState;
+  tools: Map<number, HeaterState>;
+  extrusionFound: boolean;
+  extrusionBoundaryUnprovable: boolean;
+  unknownStartup: boolean;
+};
 type ThumbnailBlock = { format: string | null; width: number; height: number; base64: string };
 type ParsedGcode = { status: "passed" | "error"; code: string; thermal: ThermalTrace; thumbnails: ThumbnailBlock[] };
 
@@ -242,12 +248,15 @@ const thermalCommand = (command: string, trace: ThermalTrace, activeTool: number
 };
 
 const parseGcode = (bytes: Uint8Array, approved: ReadonlySet<Sha256>, signal?: AbortSignal): ParsedGcode => {
-  const thermal: ThermalTrace = { bed: newHeater(), tools: new Map(), extrusionFound: false, unknownStartup: false };
+  const thermal: ThermalTrace = { bed: newHeater(), tools: new Map(), extrusionFound: false,
+    extrusionBoundaryUnprovable: false, unknownStartup: false };
   const thumbnails: ThumbnailBlock[] = [];
   let source: string;
   try { source = new TextDecoder("utf-8", { fatal: true }).decode(bytes); }
   catch { return { status: "error", code: "gcode_invalid_utf8", thermal, thumbnails }; }
   let offset = 0; let lines = 0; let encodedTotal = 0; let activeTool = 0; let sequence = 0;
+  let extrusionMode: "absolute" | "relative" | null = null;
+  const extruderPositions = new Map<number, number>();
   let block: { format: string | null; width: number; height: number; declared: number; chunks: string[] } | null = null;
   while (offset <= source.length) {
     if ((lines & 1023) === 0 && signal?.aborted) return { status: "error", code: "validation_aborted", thermal, thumbnails };
@@ -276,13 +285,32 @@ const parseGcode = (bytes: Uint8Array, approved: ReadonlySet<Sha256>, signal?: A
           declared: Number(begin[4]), chunks: [] };
       } else if (!thermal.extrusionFound) {
         const command = line.split(";", 1)[0]!.trim().replaceAll(/\s+/g, " ");
-        if (command && /^G(?:0|1)\b/i.test(command) && numericParameter(command, "E") !== null && numericParameter(command, "E")! > 0) {
-          thermal.extrusionFound = true;
-        } else if (command) {
+        if (command) {
           sequence += 1;
           const selected = /^T(\d+)$/i.exec(command);
-          if (selected) activeTool = Number(selected[1]);
-          else if (!thermalCommand(command, thermal, activeTool, sequence)) {
+          if (selected) {
+            activeTool = Number(selected[1]);
+            if (activeTool < 0 || activeTool > 15) thermal.unknownStartup = true;
+          } else if (/^M82\b/i.test(command)) extrusionMode = "absolute";
+          else if (/^M83\b/i.test(command)) extrusionMode = "relative";
+          else if (/^G92\b/i.test(command)) {
+            const position = numericParameter(command, "E");
+            if (position !== null) extruderPositions.set(activeTool, position);
+            else if (/(?:^|\s)E/i.test(command)) thermal.extrusionBoundaryUnprovable = true;
+          } else if (/^G(?:0|1)\b/i.test(command) && /(?:^|\s)E/i.test(command)) {
+            const commanded = numericParameter(command, "E");
+            if (commanded === null || extrusionMode === null) thermal.extrusionBoundaryUnprovable = true;
+            else if (extrusionMode === "relative") {
+              if (commanded > 0) thermal.extrusionFound = true;
+              const current = extruderPositions.get(activeTool);
+              if (current !== undefined) extruderPositions.set(activeTool, current + commanded);
+            } else {
+              const current = extruderPositions.get(activeTool);
+              if (current === undefined) thermal.extrusionBoundaryUnprovable = true;
+              else if (commanded - current > 0) thermal.extrusionFound = true;
+              extruderPositions.set(activeTool, commanded);
+            }
+          } else if (!thermalCommand(command, thermal, activeTool, sequence)) {
             const code = /^([GMT]\d+)\b/i.exec(command)?.[1]?.toUpperCase();
             if ((!code || !allowedStartupCommands.has(code)) && !approved.has(hashStartupCommand(command))) thermal.unknownStartup = true;
           }
@@ -403,6 +431,9 @@ const validateThumbnails = (blocks: ThumbnailBlock[], spec: PreparationSpec): {
   return { check: { id: "embedded_thumbnails", status: "passed", code: "embedded_thumbnails_verified" }, evidence };
 };
 const validateThermal = (trace: ThermalTrace, spec: PreparationSpec): PreparedArtifactCheck => {
+  if (trace.extrusionBoundaryUnprovable) {
+    return { id: "thermal_intent", status: "unavailable", code: "thermal_extrusion_boundary_unavailable" };
+  }
   if (!trace.extrusionFound) return { id: "thermal_intent", status: "unavailable", code: "thermal_extrusion_boundary_unavailable" };
   if (trace.unknownStartup) return { id: "thermal_intent", status: "unavailable", code: "thermal_startup_semantics_unapproved" };
   const matches = (state: HeaterState | undefined, intent: ThermalIntent): boolean => {
