@@ -4,21 +4,25 @@ Current authority, 2026-09-03. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
-## Current: manifest-profile repair accepted; guarded shipment next
+## Current deployment: PR104 Camera and current-only widgets
 
-Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97` is independently accepted after
-renewed required validation and ten fresh profile cases. New stage/ship builds
-require schema2/current binding; installed status/rollback strictly validate known
-historical profiles. No public widget compatibility or guard bypass returns.
-The current52-file/71-route payload retains the same runtime/UI hashes; only the
-build-manifest schema changes. BOTH existing PR101 services verify healthy through
-read-only status checks, with no restart. Evidence and prior failures are in
-VALIDATION.
+PR104 merged as `162dc68d0945feb4b3d2de7b638479560f2604d9`, preserving exact
+reviewed `30e0649` tree, and is deployed. BOTH services restarted and verify
+loaded/healthy/integral at runtime0.4.11/schema15/observation17/Camera13;72 static
+and74 security checks pass, preservation is true and rollback was not needed.
+Scoped postverification passes on installed Camera/Jobs HTML with synthetic MCP
+data, plus exact served resources and retired-route rejection. This is not actual
+ChatGPT phone or real Camera acceptance. Evidence is in VALIDATION.
 
-Next review this documentation-only tail, then renew guarded u1-ship and verify
-BOTH restarts plus installed-resource behavior. PR101 remains deployed. C08 phone
-reliability, host fullscreen and existing layout debt remain unresolved; preserve
-all55 IDs, monitor workflow, eight active legacy views and Progress no-action.
+Current resources are observation and Camera only, with two public/six app-only
+tools; retired aliases/assets/routes stay removed. Camera defaults to quiet Auto,
+uses Auto/Live with edge-to-edge media and the safe bottom-left failure reason.
+Known historical deployment profiles remain strictly verifiable without restoring
+public widget compatibility. All55 IDs, monitor workflow, eight active legacy
+views, Progress no-action, unfinished product work and existing layout debt remain.
+C08 phone reliability and host fullscreen are unresolved; Screen Sharing stays
+paused. This records-only tail changes no application bytes and needs no new
+deployment or full regression under decision0028.
 
 ## Earlier accepted source: Camera and current-only widgets
 
@@ -349,16 +353,16 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | L02 every Lab has controls/Camera | Delivered PR67/69 basics | Extend closed retained-error cases consistently |
 | L03 fixed bottom Lab dock | Not started | Safe-area/reserved space, short viewport and 200% text/keyboard |
 | L04 compact/medium/full + MCP size | Not started | Closed size contract with distinct information hierarchy |
-| L05 all-widget stable acquisition-error presentation | PR89 deployed0041; source route matrix and scoped served-widget verification PASS | Static neutral failures, adjacent footer status, no stale telemetry; Camera-only0046 exception and current-route allocation/release are source-accepted; shipment pending. Retain resize/short-content/Retry guards and C08 risk |
+| L05 all-widget stable acquisition-error presentation | PR89 deployed0041; source route matrix and scoped served-widget verification PASS | Static neutral failures, adjacent footer status, no stale telemetry; Camera-only0046 exception and current-route allocation/release shipped PR104; scoped installed-byte/synthetic Camera and Jobs behavior PASS. Retain resize/short-content/Retry guards and C08 risk |
 | L06 variable list fixed height | Decision pending | Choose bounded scroll vs content height; do not infer from skeleton rule |
 | C01 fullscreen video continuity | Delivered same-document native/CSS continuity; host fullscreen integration unfinished | Current code does not request host display mode; mobile whole-host fullscreen is not solved by local CSS/native fallback. Official host fullscreen API exists; this slice adds no implementation. Genuine phone/native PiP and physical stream acceptance remain separate |
 | C02 Camera in Lab and SvelteKit | Delivered PR69/71 | Does not imply latest service/status repair delivered |
 | C03 connecting/disconnected icons/red dot | Source-only separate checkpoint c6cfb4e | Integrate separately and independently verify;0042 removes historical repo cap blocker |
-| C04 consistent two/three status slots | aaaf0a56 independently accepted: default Auto, Auto/Live only,88px-by-44px icon Switch; no single-Snapshot or footer/Refresh | Quiet polling, edge-to-edge media, persistent bottom-left safe reason and bounded bootstrap/recovery accepted in source. Profile repair independently accepted at b5a0d427 after the blocked first attempt; guarded shipment/installed behavior pending. C08 reliability stays open |
+| C04 consistent two/three status slots | aaaf0a56 independently accepted: default Auto, Auto/Live only,88px-by-44px icon Switch; no single-Snapshot or footer/Refresh | Quiet polling, edge-to-edge media, persistent bottom-left safe reason and bounded bootstrap/recovery accepted in source. PR104 deployed after profile repair/BOTH restarts; scoped installed-byte/synthetic Camera and Jobs behavior PASS. C08 reliability stays open |
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
-| C08 served Camera still old | PR101 phone failure, one Live/30 FPS success after retries, then another failure with about 10 s before fallback. Reliability unresolved; exact URI/phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–12 and user-reported Bun permission allowance; local served-dashboard success did not reproduce phone failure. Safe failure-stage diagnostics are in progress, not a proven root-cause fix. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
+| C08 served Camera still old | PR101 phone failure, one Live/30 FPS success after retries, then another failure with about 10 s before fallback. Reliability unresolved; exact URI/phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–12 and user-reported Bun permission allowance; local served-dashboard success did not reproduce phone failure. Safe failure-stage diagnostics/Auto presentation shipped PR104 with scoped synthetic postverification; actual phone reliability remains unresolved. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |
@@ -375,7 +379,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | X02 Current Job Svelte | Source-only PR79 / 48f2060 | Integrate/remeasure; filename/state grouping, not duplicate percent |
 | X03 History Svelte and record identity | Source-only 379c1e7 adapter | Basename/outcome/date/duration and bounded-list design |
 | X04 Overview Svelte/domain grouping | Source-only 1a3b4f4 adapter | Eight truthful domain summaries, no invented fields |
-| X05 no remaining legacy/MCP aliases | aaaf0a56 independently accepted: only two resources;30 old aliases/two tools/old Camera route and18 obsolete files retired | Manifest-profile repair independently accepted; guarded shipment pending, with no public compatibility restoration. Eight legacy renderers still used by current observation remain active; their Svelte migration is unfinished. No actual-host acceptance claimed |
+| X05 no remaining legacy/MCP aliases | aaaf0a56 independently accepted: only two resources;30 old aliases/two tools/old Camera route and18 obsolete files retired | PR104 deployed with profile repair and no public compatibility restoration; scoped installed-byte/synthetic Camera and Jobs behavior PASS. Eight legacy renderers still used by current observation remain active; their Svelte migration is unfinished. No actual-host acceptance claimed |
 | X06 material/profile/color sync | Decision pending | No unreviewed write/sync authority |
 | G01 focused/transitive tests rule | Delivered PR80 AGENTS | One frozen full-run owner, independent targeted checks, ship guards intact |
 | G02 role-separated delegation | Adopted AGENTS | Author cannot self-approve; disclose actual capacity limits |

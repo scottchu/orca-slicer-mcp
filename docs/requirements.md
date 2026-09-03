@@ -232,16 +232,18 @@ printer environments support the described behavior.
   retired. Build-contract inventory follows current assets/routes, with retired
   route/resource/tool rejection coverage and unchanged hash/tamper/isolation/
   security/runtime-config-preservation/rollback/shipping guards. Required source
-  acceptance passes; guarded shipment and installed behavior verification remain
-  pending. PR104 stopped before merge/install because current binding validation
+  acceptance passes and PR104 is deployed at `162dc68`; scoped installed-byte/
+  synthetic Camera and Jobs behavior passes. Its first attempt stopped before merge/install
+  because current binding validation
   rejected the installed historical PR101 manifest. New stage/ship manifests must
   use schema2/current binding; installed status/rollback must strictly validate
   supported historical schema1 Kit profiles with their original hashes/minimums/
   roles, while pre-Kit release-schema1 retains its six-asset minimum. This bounded
   guard repair is independently accepted at `b5a0d427`, including strict current
   stage rejection of old/missing manifests and read-only verification of BOTH
-  installed PR101 services. Guarded shipment/installed behavior remain pending;
-  no public alias or skipped guard returns, and phone Live reliability is unproved.
+  installed PR101 services. The repaired release shipped through PR104 with BOTH
+  services restarted; scoped installed-byte/synthetic behavior passes. No public
+  alias or skipped guard returns, and phone Live reliability is unproved.
   Names appear only in tooltip/aria,
   superseding visible text/full-width mode controls. Keep44px targets, keyboard
   selection/focus and reduced-motion behavior; the switch must not overlap
@@ -312,7 +314,7 @@ printer environments support the described behavior.
   The new Auto default follows the separate mode contract above. The earlier
   proposed generic Footer statusText change is superseded for this Camera slice;
   other widget footer behavior stays unchanged. The new presentation/diagnostic
-  source is independently accepted at `aaaf0a56`, awaiting guarded shipment;
+  source is independently accepted and deployed through PR104 at `162dc68`;
   it does not establish the phone failure's cause.
   Fullscreen reflects same-document native or local CSS state and never requests
   a remount-capable host display mode. PiP is offered only through the existing

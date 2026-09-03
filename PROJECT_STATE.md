@@ -1,20 +1,24 @@
 # Project state
 
-## Current: manifest-profile repair accepted; guarded shipment next
+## Current deployment: PR104 Camera and current-only widgets
 
-Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97` is independently accepted after
-renewed required validation and ten fresh profile cases. New stage/ship builds
-require schema2/current binding; installed status/rollback strictly validate known
-historical profiles. No public widget compatibility or guard bypass returns.
-The current52-file/71-route payload retains the same runtime/UI hashes; only the
-build-manifest schema changes. BOTH existing PR101 services verify healthy through
-read-only status checks, with no restart. Evidence and prior failures are in
-VALIDATION.
+PR104 merged as `162dc68d0945feb4b3d2de7b638479560f2604d9`, preserving exact
+reviewed `30e0649` tree, and is deployed. BOTH services restarted and verify
+loaded/healthy/integral at runtime0.4.11/schema15/observation17/Camera13;72 static
+and74 security checks pass, preservation is true and rollback was not needed.
+Scoped postverification passes on installed Camera/Jobs HTML with synthetic MCP
+data, plus exact served resources and retired-route rejection. This is not actual
+ChatGPT phone or real Camera acceptance. Evidence is in VALIDATION.
 
-Next review this documentation-only tail, then renew guarded u1-ship and verify
-BOTH restarts plus installed-resource behavior. PR101 remains deployed. C08 phone
-reliability, host fullscreen and existing layout debt remain unresolved; preserve
-all55 IDs, monitor workflow, eight active legacy views and Progress no-action.
+Current resources are observation and Camera only, with two public/six app-only
+tools; retired aliases/assets/routes stay removed. Camera defaults to quiet Auto,
+uses Auto/Live with edge-to-edge media and the safe bottom-left failure reason.
+Known historical deployment profiles remain strictly verifiable without restoring
+public widget compatibility. All55 IDs, monitor workflow, eight active legacy
+views, Progress no-action, unfinished product work and existing layout debt remain.
+C08 phone reliability and host fullscreen are unresolved; Screen Sharing stays
+paused. This records-only tail changes no application bytes and needs no new
+deployment or full regression under decision0028.
 
 ## Earlier accepted source: Camera and current-only widgets
 

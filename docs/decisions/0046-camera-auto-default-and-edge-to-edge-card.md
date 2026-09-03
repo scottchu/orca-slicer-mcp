@@ -1,6 +1,6 @@
 # 0046 — Camera Auto default and edge-to-edge card
 
-- Status: Camera/current-only source and manifest-profile repair independently accepted at b5a0d427; guarded shipment and installed behavior verification pending
+- Status: PR104 independently accepted and deployed at162dc68; scoped installed-byte/synthetic postverification PASS; phone Live reliability remains unresolved
 - Date: 2026-09-03
 - Owners: project maintainers
 - Milestone: F0 / CAM-008, UI-004; delivery ledger C04, C06, C08
@@ -54,8 +54,9 @@ verification of installed/backed-up artifacts, not restoration of old public
 widget compatibility. No guard bypass is allowed. The bounded repair is
 independently accepted at `b5a0d427`: renewed required validation, ten profile cases
 and read-only installed status pass. Runtime/UI hashes and routes are unchanged;
-the current build manifest alone changes to schema2. Guarded shipment and
-installed behavior remain pending; the first blocked attempt stays in VALIDATION.
+the current build manifest alone changes to schema2. Guarded shipment is complete;
+scoped installed-byte/synthetic behavior passes after PR104 deployment. The first
+blocked attempt and postverification fixture correction stay in VALIDATION.
 
 - Use a thin header containing icon/title/state, measured FPS and accepted frame
   time. Remove the Camera footer and Refresh button. The media spans the full
@@ -105,8 +106,10 @@ VALIDATION separates those results from the superseded compatibility candidate.
 
 ## Consequences
 
-Exact source acceptance is complete; the PR101 three-mode release remains the
-deployed baseline until guarded shipment and installed behavior verification.
+Exact source acceptance and PR104 guarded shipment are complete. BOTH services
+run the current-only release; scoped installed-byte/synthetic Camera and Jobs
+behavior passes. Actual phone Live remains unresolved. Older PR101 three-mode
+behavior remains historical evidence.
 All 55 ledger IDs remain, including eight legacy MCP observation views, unfinished
 Queue/Fans/Job History, Progress no-action, F07 discussion and separate c6.
 Screen Sharing remains paused. No authentication, network or printer-control
