@@ -15,11 +15,11 @@ describe('local Camera producer service', () => {
   beforeEach(() => { vi.useFakeTimers(); vi.clearAllMocks(); });
   afterEach(() => { vi.restoreAllMocks(); vi.clearAllTimers(); vi.useRealTimers(); });
   it('Auto refreshes actual local receipts; Snapshot/hide/dispose cancel recurring ownership', async () => {
-    const app = setup(); app.service.selectMode('auto'); const first = app.state().displayedAt;
-    expect(app.state()).toMatchObject({ mode: 'auto', scenario: 'fallback', playing: false, fps: null });
+    const app = setup(); app.service.setScenario('snapshot'); const first = app.state().displayedAt;
+    expect(app.state()).toMatchObject({ mode: 'auto', scenario: 'snapshot', playing: false, fps: null });
     await vi.advanceTimersByTimeAsync(1500); expect(app.state().displayedAt).not.toBe(first);
     app.service.pageHide(); const count = app.states.length; await vi.advanceTimersByTimeAsync(5000); expect(app.states).toHaveLength(count);
-    app.service.pageShow(); expect(app.state().mode).toBe('auto'); app.service.selectMode('snapshot');
+    app.service.pageShow(); expect(app.state().mode).toBe('auto'); app.service.pageHide();
     const single = app.states.length; await vi.advanceTimersByTimeAsync(5000); expect(app.states).toHaveLength(single);
     expect(app.canvas.captureStream).not.toHaveBeenCalled(); app.service.dispose(); expect(vi.getTimerCount()).toBe(0);
   });
@@ -28,8 +28,8 @@ describe('local Camera producer service', () => {
     expect(app.state()).toMatchObject({ mode: 'live', playing: false, fps: null });
     app.frame(1, 100); expect(app.state().playing).toBe(true);
     app.service.selectMode('live'); expect(app.canvas.captureStream).toHaveBeenCalledTimes(1);
-    app.service.selectMode('snapshot'); expect(app.track.stop).toHaveBeenCalledOnce(); expect(app.video.srcObject).toBeNull();
-    app.frame(2, 1001); expect(app.state()).toMatchObject({ mode: 'snapshot', playing: false });
+    app.service.selectMode('auto'); expect(app.track.stop).toHaveBeenCalledOnce(); expect(app.video.srcObject).toBeNull();
+    app.frame(2, 1001); expect(app.state()).toMatchObject({ mode: 'auto', playing: false });
     app.service.dispose(); expect(vi.getTimerCount()).toBe(0);
   });
   it('first-frame failure automatically selects Auto, masks retained receipt then recovers after a fresh snapshot', async () => {

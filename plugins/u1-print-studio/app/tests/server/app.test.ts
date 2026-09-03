@@ -17,7 +17,9 @@ import {
   MCP_OBSERVATION_HTML,
   MCP_CAMERA_HTML,
   MCP_OBSERVATION_V15_HTML,
+  MCP_OBSERVATION_V16_HTML,
   MCP_CAMERA_V11_HTML,
+  MCP_CAMERA_V12_HTML,
   WIDGET_URI,
 } from "../../src/lib/server/app.js";
 import type {
@@ -237,7 +239,7 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v16.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v17.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
       "ui://u1-print-studio/observation-v14.html",
       "ui://u1-print-studio/observation-v13.html",
@@ -346,7 +348,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(MCP_CAMERA_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v12.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v13.html");
     expect(LEGACY_CAMERA_WIDGET_URIS[0]).toBe(
       "ui://u1-print-studio/camera-v3.html"
     );
@@ -368,8 +370,10 @@ describe("U1 status MCP App contract", () => {
   test("retains previous current observation and camera aliases with exact frozen legacy resources", async () => {
     const client = await connectClient();
     const listed = await client.listResources();
-    expect(listed.resources).toHaveLength(30);
+    expect(listed.resources).toHaveLength(32);
     for (const [uri, html, sha256] of [
+      ['ui://u1-print-studio/observation-v16.html', MCP_OBSERVATION_V16_HTML, '86ea2d1ab342d714a78d9850fe3b7fcaec6c958b4d3bf7bbdc2fd49d779b3427'],
+      ['ui://u1-print-studio/camera-v12.html', MCP_CAMERA_V12_HTML, '00b8a16f74e4f01c87262a24e9f29b3af4aa1a512915a22bd875b4665c406c8a'],
       ['ui://u1-print-studio/observation-v15.html', MCP_OBSERVATION_V15_HTML, '2838485ed47250f1c8dbc413227743981c7e2a2f5ea22b9c8acb8791b094edc4'],
       ['ui://u1-print-studio/camera-v11.html', MCP_CAMERA_V11_HTML, 'bcdd91b6646989639fa68c52536705ebf8b92b7a4dc15f8ae2d2e2b3c7134fe2'],
     ]) {
@@ -637,7 +641,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 14,
+      schemaVersion: 15,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });

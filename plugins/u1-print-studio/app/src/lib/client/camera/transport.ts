@@ -28,6 +28,20 @@ const timestamp = (value: unknown): string => {
 };
 const optionalField = (value: unknown): string | undefined => value === undefined ? undefined : text(value, 0, 1024);
 
+/** Opening host errors are authoritative; non-error results require Camera fields. */
+export const isCameraOpeningResult = (value: unknown): boolean => {
+  try {
+    const root = object(value);
+    if (root.isError === true) return true;
+    const meta = object(root._meta ?? root.meta ?? {});
+    if ('cameraFrame' in meta || 'cameraActivation' in meta) return true;
+    const content = object(root.structuredContent);
+    return 'mediaType' in content && 'byteLength' in content;
+  } catch {
+    return false;
+  }
+};
+
 export const parseCameraFrame = (value: unknown): CameraFrameResult => {
   const { content, meta } = envelope(value);
   if (content.schemaVersion !== 1 || typeof content.available !== 'boolean') invalid();

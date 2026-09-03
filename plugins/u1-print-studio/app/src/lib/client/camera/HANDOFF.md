@@ -1,16 +1,69 @@
-# Synthetic Camera lab checkpoint
+# Camera service navigation and historical checkpoints
 
-Current source navigation: the shared persistent media primitive is
-`lib/common/Video.svelte`; Camera compositions remain in `lib/camera`, and
-`lib/camera/session.ts` owns connection lifecycle. The dated checkpoints below
-retain their original evidence and proposed names, including `VideoSurface`.
-Use the active iteration and delivery ledger for current acceptance/deployment
-status and decision 0042 for removal of the historical package byte caps.
+## Current contract (2026-09-03)
 
-The synthetic Camera is integrated as a separate private lab candidate, not
-yet independently accepted or deployed. It is not a production-camera migration.
+Use repository CAM-008, decision0046, the active iteration and delivery ledger
+for authoritative scope and acceptance. The Auto/Live presentation and safe
+failure diagnostics are a candidate; PR101 remains deployed until the new exact
+candidate passes independent review and guarded shipment. Phone Live reliability
+is unresolved. Dated checkpoints below retain earlier evidence and superseded
+names, mode policies and byte caps; they are not current implementation contracts.
 
-## Current integrated candidate (2026-09-01)
+Paths are relative to the app root:
+
+- `src/components/camera/LiveCameraRoot.svelte`, `CameraWidget.svelte`,
+  `CameraMedia.svelte` and `CameraStatus.svelte` compose/render live Camera;
+  `CameraLabRoot.svelte` and `CameraLabWidget.svelte` compose the synthetic Lab.
+- `src/components/common/Video.svelte` owns the persistent media element;
+  common `Button`, `Icon` and `Switch` remain generic UI primitives.
+- `src/lib/client/camera/session.ts`, `live-controller.ts`, `runtime.ts` and
+  `peer.ts` own the real service, transport, connection and cleanup boundaries.
+  `synthetic-session.ts` supplies the Lab service; `state.ts`, `mode-options.ts`
+  and `failure.ts` define presentation state, modes and safe failure mapping.
+- `src/entrypoints/widgets/mcp-camera.ts` chooses host-result bootstrap;
+  `live-camera.ts` chooses dashboard request bootstrap. They share presentation
+  and services; components subscribe/render rather than own acquisition.
+
+A new card defaults to Auto with only Auto/Live, without reading/writing saved
+Live intent. The same mounted card resumes its explicit mode after hide/show.
+Auto is single-flight and schedules the next read 1.5 seconds after completion;
+automatic polls emit no success feedback or announcements. The compact Camera
+has no footer or Refresh button. Its 88px-by-44px Switch stays bottom right, with
+the persistent short safe failure reason bottom left inside edge-to-edge media.
+Narrow layouts move that reason one row up inside the media without growing
+the card or overlapping controls. Header content remains icon/title/state/FPS/time.
+
+MCP accepts/decodes a valid opening result without a redundant initial request,
+then schedules Auto after 1.5 seconds. Private cameraFrame/cameraActivation keys
+or the DTO mediaType plus byteLength fields identify Camera delivery.
+Authoritative malformed Camera delivery immediately becomes neutral error. A
+bare isError: true host opening-result notification also fails immediately
+without Camera fields; unrelated/unknown non-error delivery leaves the original
+waiter/deadline active. Missing delivery expires at 15 seconds. Immediate failure or expiry then
+schedules Auto retry after 1.5 seconds. Dashboard retains request bootstrap.
+Hide/dispose invalidate owned work; stale responses cannot revive media/session.
+
+PR101 established a 40-second Live-open user wait and 55-second retention only
+for that HostRpc call, with abandoned open/close work draining at most 70 seconds.
+Keep the shared RPC default 15 seconds; activation/local-answer/answer/candidate
+10 seconds, first-frame 8 seconds, frame-stall 5 seconds and disconnect grace
+3 seconds. This candidate changes none of those deadlines or watchdogs.
+
+Service-owned lastLiveFailure records the first winning closed stage/outcome
+before teardown and persists through Auto recovery. The next explicit Live
+attempt clears it; cancellation/hide/dispose/stale epochs do not create a new
+failure. Only the safe short reason is visible; elapsed/connection/frame-evidence
+fields remain internal and no raw signaling/error/credential data is exposed.
+Neutral acquisition failures mask stale media/telemetry without changing bounds.
+Fullscreen remains same-document native/local CSS; host fullscreen integration
+is unfinished. This source contract does not establish actual phone acceptance.
+
+## Historical evidence
+
+Decision0042 removed repository package byte caps. Earlier measurements, build
+names, paths and pending status below describe their dated checkpoints only.
+
+## Historical integrated candidate (2026-09-01)
 
 Shared LabControls now exposes seven closed states and three restrictive
 display policies with URL/reset/back-forward lifecycle. The directory links

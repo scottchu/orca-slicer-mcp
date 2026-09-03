@@ -3,7 +3,7 @@ import { frameRate, type CameraScenario, type CameraMeasurement } from './state'
 
 /** Local calibration producer. Owns its stream, observers and timers; no printer I/O. */
 export const createSyntheticCameraSession = (canvas: HTMLCanvasElement, video: HTMLVideoElement, changed: (state: CameraMeasurement) => void, feedback: (message: string) => void) => {
-  let state: CameraMeasurement = { mode: 'snapshot', scenario: 'snapshot', fps: null, displayedAt: null, playing: false, unavailable: false };
+  let state: CameraMeasurement = { mode: 'auto', scenario: 'snapshot', fps: null, displayedAt: null, playing: false, unavailable: false };
   let disposed = false, hidden = false, epoch = 0;
   let stream: MediaStream | null = null;
   let animation = 0, videoFrame = 0;
@@ -72,7 +72,7 @@ export const createSyntheticCameraSession = (canvas: HTMLCanvasElement, video: H
   };
   const setScenario = (scenario: CameraScenario) => {
     if (disposed) return; stop();
-    const mode: CameraMode = scenario === 'live' || scenario === 'connecting' ? 'live' : scenario === 'fallback' ? 'auto' : 'snapshot';
+    const mode: CameraMode = scenario === 'live' || scenario === 'connecting' ? 'live' : 'auto';
     publish({ mode, scenario, playing: false, unavailable: scenario === 'error', fps: null, displayedAt: null });
     if (hidden) return;
     if (scenario === 'live') live();
@@ -80,7 +80,7 @@ export const createSyntheticCameraSession = (canvas: HTMLCanvasElement, video: H
   };
   return {
     setScenario,
-    selectMode: (mode: CameraMode) => { if (mode === state.mode && !state.unavailable) return; setScenario(mode === 'live' ? 'live' : mode === 'auto' ? 'fallback' : 'snapshot'); },
+    selectMode: (mode: CameraMode) => { if (mode === state.mode && !state.unavailable) return; setScenario(mode === 'live' ? 'live' : 'snapshot'); },
     refresh: () => { if (state.unavailable || state.scenario === 'error') setScenario('snapshot'); else if (state.mode !== 'live') { clearTimeout(timer); snapshot(); } feedback('Fixture snapshot refreshed'); },
     pageHide: () => { if (!disposed && !hidden) { hidden = true; stop(); publish({ playing: false, fps: null }); } },
     pageShow: () => { if (!disposed && hidden) { hidden = false; setScenario(state.scenario ?? 'snapshot'); } },

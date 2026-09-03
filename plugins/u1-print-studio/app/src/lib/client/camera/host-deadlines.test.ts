@@ -67,8 +67,6 @@ const setup = (hangClose = false) => {
   const controller = createLiveCameraController({
     rpc,
     initialSnapshot: 'host-result',
-    savedLiveIntent: () => false,
-    persistLiveIntent: () => {},
     decode: async () => true,
     scheduler: {
       now: () => Date.now(),

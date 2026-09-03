@@ -14,8 +14,11 @@ Default Auto uses only Auto/Live in the 88px-by-44px icon Switch. Automatic poll
 emit no success feedback or announcements. New mounts never restore/start Live;
 the same mounted card resumes its explicit mode after hide/show. Valid MCP
 opening-result hydration makes no extra initial read, then schedules Auto 1.5s
-after completion. Missing delivery waits at most 15s; authoritative malformed or
-error delivery enters neutral error immediately, followed by Auto retry after 1.5s.
+after completion. Missing delivery waits at most 15s; a recognizable Camera
+malformed delivery or host opening-result `isError: true` enters neutral error
+immediately, followed by Auto retry after 1.5s. That error flag needs no Camera
+fields; unrelated/unknown non-error deliveries preserve the bounded wait.
+CAM-008 defines the Camera discriminators.
 
 On `codex/u1-camera-failure-stage` from `06e2a90`, service-owned sanitized
 lastLiveFailure persists through Auto; only its safe reason is visible in the

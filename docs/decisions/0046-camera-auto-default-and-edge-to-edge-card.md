@@ -44,8 +44,13 @@ new current resources carry the new behavior.
   current mode after hide/show. Live failure returns to actual Auto behavior.
 - MCP validates/decodes a valid opening result without another initial frame
   request, then schedules Auto after 1.5 seconds. Missing delivery waits at most
-  15 seconds; authoritative malformed/error delivery enters neutral error
-  immediately. These errors schedule Auto retry after 1.5 seconds. Dashboard
+  15 seconds. Private cameraFrame/cameraActivation keys or the DTO mediaType and
+  byteLength fields identify Camera delivery: authoritative malformed Camera
+  delivery enters neutral error immediately. A bare isError: true host opening-
+  result notification also fails immediately without Camera fields, preserving
+  existing opening-tool error behavior. Unrelated/unknown non-error delivery
+  leaves the original waiter/deadline active. Immediate failure or
+  expiry schedules Auto retry after 1.5 seconds. Dashboard
   retains request bootstrap. Neither path overlaps acquisition or revives stale
   work after mode change, hide or disposal.
 

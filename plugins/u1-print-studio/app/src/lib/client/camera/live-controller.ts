@@ -1,11 +1,11 @@
 import type { HostRpc } from '../host/rpc';
 import { CAMERA_OPEN_RESPONSE_TIMEOUT_MS } from './deadlines';
 import { createCameraSession, type CameraSessionPorts, type CameraSessionState } from './session';
-import { cameraTransport, parseCameraFrame } from './transport';
+import { cameraTransport, isCameraOpeningResult, parseCameraFrame } from './transport';
 
 export type LiveCameraState = { camera: CameraSessionState; feedback: string };
 export type LiveCameraPorts = Omit<CameraSessionPorts, 'changed' | 'transport'> & {
-  rpc: HostRpc; savedLiveIntent: () => boolean;
+  rpc: HostRpc;
   initialSnapshot?: 'request' | 'host-result';
 };
 
@@ -40,6 +40,11 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
     if (state.feedback !== previousFeedback) {
       previousFeedback = state.feedback;
       if (state.feedback && feedbackOwner === generation) {
+        if (state.feedback === 'live-unavailable') {
+          // Connection/acquisition explanations use the persistent media status.
+          notify('');
+          return;
+        }
         const message = state.feedback === 'snapshot-unavailable' && !state.snapshot ? 'Camera unavailable' : messages[state.feedback];
         notify(message);
       }
@@ -82,7 +87,7 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
           });
         } else bootstrap = accepted;
       } catch {
-        if ((event.value as { isError?: boolean } | null)?.isError === true && acceptInitial) {
+        if (isCameraOpeningResult(event.value) && acceptInitial) {
           notificationVersion++;
           acceptInitial(false);
         }
@@ -98,10 +103,9 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
         session.initialFrameUnavailable();
         return;
       }
-      if (!accepted && initialVersion === notificationVersion) await session.refreshSnapshot();
+      if (!accepted && initialVersion === notificationVersion) await session.refreshSnapshot('automatic');
       else if (!accepted) await bootstrap;
       if (disposed || hidden || generation !== current) return;
-      await session.restoreSavedIntent(ports.savedLiveIntent());
     })();
     // Snapshot/activation calls share this same initialization promise.
     void ports.rpc.start().catch(() => {});
@@ -110,13 +114,17 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
     state: (): LiveCameraState => ({ camera: session.state(), feedback }),
     subscribe: (listener: (state: LiveCameraState) => void) => { listeners.add(listener); listener({ camera: session.state(), feedback }); return () => { listeners.delete(listener); }; },
     start,
-    refresh: () => { if (session.state().phase === 'connecting') return Promise.resolve(); beginAction(); return session.refreshSnapshot(); },
+    refresh: () => { if (session.state().phase === 'connecting') return Promise.resolve(); beginAction(); return session.refreshSnapshot('manual'); },
     goLive: () => { if (session.state().refreshing || !session.state().snapshot) return Promise.resolve(); beginAction(); return session.goLive(); },
     selectMode: (mode: Parameters<typeof session.selectMode>[0]) => { beginAction(); return session.selectMode(mode); },
-    close: () => { beginAction(); session.close(); if (!session.state().snapshot) void session.refreshSnapshot(); },
-    notify: (message: string) => { ++generation; notify(message); },
+    close: () => { beginAction(); session.close(); if (!session.state().snapshot) void session.refreshSnapshot('automatic'); },
+    notify: (message: string) => { feedbackOwner = -1; notify(message); },
     pageHide: () => { if (disposed || hidden) return; hidden = true; beginAction(); session.pageHide(); },
-    pageShow: () => { if (disposed || !hidden) return Promise.resolve(); hidden = false; return session.pageShow().then(() => { if (!session.state().snapshot && session.state().phase !== 'connecting') return session.refreshSnapshot(); }); },
+    pageShow: () => {
+      if (disposed || !hidden) return Promise.resolve();
+      hidden = false;
+      return session.pageShow();
+    },
     dispose: () => {
       if (disposed) return;
       ++generation; acceptInitial?.(false); stopNotifications?.(); stopFeedback?.();

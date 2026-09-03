@@ -50,10 +50,14 @@ Default Auto uses only Auto/Live through the 88px-by-44px icon Switch. Automatic
 polling produces no success message or announcement. New mounts never restore/
 start Live; the same mounted card resumes its explicit mode after hide/show.
 A valid MCP opening result causes no extra initial read, then Auto polls 1.5s
-after completion. Missing initial delivery waits at most 15s; authoritative
-malformed/error delivery enters neutral error immediately. Either error then
-schedules Auto retry after 1.5s, with one acquisition at a time. This is an adopted
-contract, not yet evidence that candidate implementation passes.
+after completion. Missing initial delivery waits at most 15s. Private Camera
+frame/activation keys or the DTO mediaType/byteLength pair identify authoritative
+Camera delivery; malformed Camera delivery fails neutrally immediately. A bare
+isError: true opening-result notification also fails immediately without Camera
+fields. Only unrelated/unknown non-error delivery leaves the original waiter/
+deadline active. Immediate failure or expiry schedules Auto retry after 1.5s, with one
+acquisition at a time. These clarified CAM-008 discriminators remain an adopted
+contract awaiting final candidate validation, not a new passing-test claim.
 
 Service-owned lastLiveFailure retains the closed CAM-008 fields through Auto;
 only its short safe stage/outcome reason is visible. No timeout/watchdog change,

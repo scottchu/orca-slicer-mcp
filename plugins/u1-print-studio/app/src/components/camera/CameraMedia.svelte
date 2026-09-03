@@ -28,7 +28,6 @@
   let presented = $state<CameraScenario>('snapshot');
   const failed = $derived(presented === 'error' || unavailable);
   let toastTimer: ReturnType<typeof setTimeout> | undefined;
-  $effect(() => { if (failed && localFullscreen) { localFullscreen = false; fullscreen = false; } });
   const toast = (message: string) => { feedback = message; onfeedback(message); clearTimeout(toastTimer); toastTimer = setTimeout(() => { feedback = ''; onfeedback(''); }, 1800); };
   export const refresh = () => service?.refresh();
   export const selectMode = (mode: CameraMode) => service?.selectMode(mode);
@@ -89,27 +88,32 @@
   <video bind:this={video} class:visible={!failed && presented === 'live' && playing} muted autoplay playsinline aria-hidden={failed} aria-label={failed ? undefined : 'Synthetic camera video'}></video>
   {#if presented === 'loading' || failed}<div class="loading" aria-hidden="true"><Skeleton shape="fill" /></div>{/if}
   {#if presented === 'connecting'}<div class="placeholder" aria-hidden="true"><Camera size={40} strokeWidth={1.5} /></div>{/if}
+  <div class="media-controls">
+    {#if failed}<div class="media-status-message">Could not load camera</div>{/if}
   <div class="media-actions" data-camera-actions>
-    {#if presented === 'loading' || failed}<Skeleton shape="action" /><Skeleton shape="action" />
-    {:else}
       {#if presented === 'live' && playing && canPip && capabilityPolicy !== 'unsupported'}<Button label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
       <Button label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
-    {/if}
     {@render actions?.()}
+  </div>
   </div>
   {#if feedback && !failed}<div class="media-feedback" data-camera-feedback>{feedback}</div>{/if}
 </div>
 
 <style>
-  .media-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--u1-radius-inner); background: var(--u1-soft); }
+  .media-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--u1-soft); }
   canvas, video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
   video { opacity: 0; }
   video.visible { opacity: 1; }
   canvas.hidden { visibility: hidden; }
   .loading, .placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: var(--u1-faint); }
   .loading :global(.skeleton) { height: 100%; }
-  .media-actions { position: absolute; bottom: 10px; right: 10px; display: flex; gap: 8px; }
+  .media-controls { position: absolute; bottom: 10px; right: 10px; left: 10px; display: flex; align-items: flex-end; gap: 8px; }
+  .media-actions { display: flex; flex: 0 0 auto; gap: 8px; margin-left: auto; }
+  .media-status-message { min-width: 0; padding: 5px 7px; border-radius: var(--u1-radius-control); background: rgb(28 30 32 / 86%); color: white; font-size: 12px; line-height: 1.25; overflow-wrap: anywhere; }
   .media-feedback { position: absolute; bottom: 64px; right: 10px; max-width: calc(100% - 20px); padding: 8px 11px; border-radius: var(--u1-radius-control); background: rgb(28 30 32 / 86%); color: white; font-size: 12px; pointer-events: none; }
   .media-frame:fullscreen, .local-fullscreen { width: 100vw; height: 100dvh; aspect-ratio: auto; border-radius: 0; background: #edf1f4; }
   .local-fullscreen { position: fixed; inset: 0; z-index: 100; }
+  @media (max-width: 420px) {
+    .media-status-message { position: absolute; left: 0; bottom: 54px; max-width: 100%; box-sizing: border-box; }
+  }
 </style>

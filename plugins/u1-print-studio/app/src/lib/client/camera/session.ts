@@ -1,4 +1,5 @@
 import { CAMERA_OPEN_TIMEOUT_MS } from './deadlines.js';
+import type { CameraConnectionState, CameraLiveFailure, CameraLiveFailureOutcome, CameraLiveFailureStage } from './failure.js';
 
 /** Parsed, component-private ports. No host envelopes, network URLs or DOM. */
 export type CameraSnapshot = Readonly<{ image: string; observedAt: string | null }>;
@@ -21,7 +22,7 @@ export type CameraScheduler = {
 export type CameraFrameEvidence = { kind: 'presented' | 'decoded'; count: number; at: number };
 export type CameraPeerEvents = {
   frame: (evidence: CameraFrameEvidence) => void;
-  connection: (state: 'connected' | 'disconnected' | 'failed' | 'closed') => void;
+  connection: (state: RTCPeerConnectionState) => void;
   candidate: (candidate: CameraCandidate) => void;
   ended: () => void;
 };
@@ -32,7 +33,8 @@ export type CameraPeer = {
   dispose: () => void;
 };
 class CameraOperationTimeout extends Error {}
-export type CameraMode = 'snapshot' | 'live' | 'auto';
+export type CameraMode = 'auto' | 'live';
+export type CameraRefreshCause = 'automatic' | 'manual';
 export type CameraSessionState = Readonly<{
   mode: CameraMode;
   phase: 'loading' | 'snapshot' | 'connecting' | 'live' | 'fallback' | 'error';
@@ -43,6 +45,8 @@ export type CameraSessionState = Readonly<{
   feedback: 'snapshot-refreshed' | 'snapshot-unavailable' | 'live-unavailable' | null;
   /** Presentation failure persists through pending retry; action toasts are separate. */
   failure?: 'snapshot' | 'live' | null;
+  /** Retained through Auto snapshots; replaced only by a new Live attempt. */
+  lastLiveFailure?: CameraLiveFailure | null;
 }>;
 export type CameraSessionPorts = {
   transport: CameraTransport;
@@ -50,23 +54,22 @@ export type CameraSessionPorts = {
   decode: (snapshot: CameraSnapshot) => Promise<boolean>;
   peer: (offer: CameraOffer, events: CameraPeerEvents) => CameraPeer;
   changed: (state: CameraSessionState) => void;
-  persistLiveIntent: (requested: boolean) => void;
 };
 
 /** Mounted-session ownership; synthetic producers must not be wired here. */
 export const createCameraSession = (ports: CameraSessionPorts) => {
   const { transport, scheduler } = ports;
-  let state: CameraSessionState = { mode: 'snapshot', phase: 'loading', snapshot: null, liveAt: null, fps: null, refreshing: false, feedback: null };
+  let state: CameraSessionState = { mode: 'auto', phase: 'loading', snapshot: null, liveAt: null, fps: null, refreshing: false, feedback: null };
   let disposed = false;
   let hidden = false;
   let liveIntent = false;
-  let savedRestoreAttempted = false;
   let resumeAfterShow: CameraMode | null = null;
   let epoch = 0;
   let snapshotGeneration = 0;
   let peer: CameraPeer | null = null;
   let sessionId: string | null = null;
   let refreshFlight: Promise<void> | null = null;
+  let manualRefreshRequested = false;
   let liveFlight: Promise<void> | null = null;
   let fallbackTimer: (() => void) | null = null;
   let firstFrameTimer: (() => void) | null = null;
@@ -75,6 +78,9 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   let fpsTimer: (() => void) | null = null;
   let disconnected = false;
   let connected = false;
+  let connectionState: CameraConnectionState = 'not-created';
+  let liveStartedAt = 0;
+  let hadFrame = false;
   let lastFrame: CameraFrameEvidence | null = null;
   let lastFrameReceived = 0;
   let samples: CameraFrameEvidence[] = [];
@@ -129,6 +135,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     lastFrameReceived = 0;
     disconnected = false;
     connected = false;
+    connectionState = 'not-created';
     const oldPeer = peer; peer = null;
     const oldSession = sessionId; sessionId = null;
     // Invalidate callbacks before adapters may synchronously report closure.
@@ -139,6 +146,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     ++snapshotGeneration;
     cancelPending(snapshotPending);
     refreshFlight = null;
+    manualRefreshRequested = false;
   };
   const acceptSnapshot = async (result: CameraFrameResult, generation: number) => {
     if (!result.snapshot || disposed || hidden || generation !== snapshotGeneration) return false;
@@ -152,31 +160,38 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   const scheduleFallback = () => {
     fallbackTimer?.(); fallbackTimer = null;
     if (!disposed && !hidden && state.mode === 'auto') {
-      fallbackTimer = scheduler.after(1500, () => { fallbackTimer = null; void refreshSnapshot(); });
+      fallbackTimer = scheduler.after(1500, () => { fallbackTimer = null; void refreshSnapshot('automatic'); });
     }
   };
-  const refreshSnapshot = (): Promise<void> => {
+  const refreshSnapshot = (cause: CameraRefreshCause = 'manual'): Promise<void> => {
     if (disposed || hidden) return Promise.resolve();
+    if (cause === 'manual') {
+      manualRefreshRequested = true;
+      publish({ feedback: null });
+    }
     if (refreshFlight) return refreshFlight;
+    fallbackTimer?.();
+    fallbackTimer = null;
     const generation = ++snapshotGeneration;
-    publish({ refreshing: true, feedback: null });
+    publish({ refreshing: true });
+    const finishRefresh = (accepted: boolean) => {
+      if (disposed || hidden || generation !== snapshotGeneration) return;
+      publish({
+        phase: liveIntent ? state.phase : accepted ? 'snapshot' : 'error',
+        failure: accepted ? null : 'snapshot',
+        ...(manualRefreshRequested ? { feedback: accepted ? 'snapshot-refreshed' : 'snapshot-unavailable' } : {}),
+      });
+    };
     const flight = (async () => {
       try {
         const result = await bounded(() => transport.frame({ authorizeLive: false }), 10000, snapshotPending);
-        const accepted = await acceptSnapshot(result, generation);
-        if (disposed || hidden || generation !== snapshotGeneration) return;
-        publish({
-          phase: state.mode === 'auto' ? 'fallback' : liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error',
-          feedback: accepted ? 'snapshot-refreshed' : 'snapshot-unavailable',
-          failure: accepted ? null : 'snapshot',
-        });
+        finishRefresh(await acceptSnapshot(result, generation));
       } catch {
-        if (!disposed && !hidden && generation === snapshotGeneration) publish({
-          phase: state.mode === 'auto' ? 'fallback' : liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error', feedback: 'snapshot-unavailable', failure: 'snapshot',
-        });
+        finishRefresh(false);
       } finally {
         if (generation === snapshotGeneration && !disposed && !hidden) {
           refreshFlight = null;
+          manualRefreshRequested = false;
           publish({ refreshing: false });
           scheduleFallback();
         }
@@ -185,12 +200,18 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     refreshFlight = flight;
     return flight;
   };
-  const fallback = (token: number) => {
+  const fallback = (token: number, stage: CameraLiveFailureStage, outcome: CameraLiveFailureOutcome) => {
     if (!isCurrent(token)) return;
+    const lastLiveFailure: CameraLiveFailure = Object.freeze({
+      stage,
+      outcome,
+      elapsedMs: Math.max(0, Math.round(scheduler.now() - liveStartedAt)),
+      connectionState,
+      hadFrame,
+    });
     stopLive();
     liveIntent = false;
-    ports.persistLiveIntent(false);
-    publish({ mode: 'auto', phase: 'fallback', liveAt: null, fps: null, feedback: 'live-unavailable', failure: 'live' });
+    publish({ mode: 'auto', phase: 'fallback', liveAt: null, fps: null, feedback: 'live-unavailable', failure: 'live', lastLiveFailure });
     scheduleFallback();
   };
   const recordFrame = (token: number, evidence: CameraFrameEvidence) => {
@@ -205,11 +226,12 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     const previous = lastFrame;
     lastFrame = evidence;
     if (evidence.kind === 'decoded' && !previous) return;
+    hadFrame = true;
     lastFrameReceived = scheduler.now();
     firstFrameTimer?.(); firstFrameTimer = null;
     fallbackTimer?.(); fallbackTimer = null;
     stallTimer?.();
-    stallTimer = scheduler.after(5000, () => fallback(token));
+    stallTimer = scheduler.after(5000, () => fallback(token, 'playback', 'timeout'));
     samples = [...samples, evidence].filter((sample) => sample.at >= evidence.at - 5000).slice(-600);
     const first = samples[0];
     const elapsed = evidence.at - first.at;
@@ -225,19 +247,25 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     stopLive();
     cancelSnapshot();
     liveIntent = true;
+    liveStartedAt = scheduler.now();
+    hadFrame = false;
     const token = epoch;
     const generation = snapshotGeneration;
-    publish({ mode: 'live', phase: 'connecting', refreshing: false, liveAt: null, fps: null, feedback: null });
+    publish({ mode: 'live', phase: 'connecting', refreshing: false, liveAt: null, fps: null, feedback: null, lastLiveFailure: null });
     const flight = (async () => {
+      let stage: CameraLiveFailureStage = 'activation';
       try {
         const frame = await bounded(() => transport.frame({ authorizeLive: true }), 10000, livePending);
         if (!isCurrent(token)) return;
         await acceptSnapshot(frame, generation);
         if (!isCurrent(token)) return;
         if (!frame.activationToken) throw new Error('Camera activation unavailable');
+        stage = 'offer';
         const offer = await bounded(() => transport.open(frame.activationToken!), CAMERA_OPEN_TIMEOUT_MS, livePending, (late) => closeSession(late.sessionId));
         if (!isCurrent(token)) { closeSession(offer.sessionId); return; }
         sessionId = offer.sessionId;
+        stage = 'local-answer';
+        connectionState = 'new';
         const created = ports.peer(offer, {
           frame: (evidence) => recordFrame(token, evidence),
           candidate: (candidate) => {
@@ -247,27 +275,30 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
               // after another pair already carries fresh video. Keep that
               // proven stream; first-frame, disconnect and stall guards remain.
               if (isCurrent(token) && sessionId === offer.sessionId && error instanceof CameraOperationTimeout && connected && state.phase === 'live' && !disconnected && lastFrame && scheduler.now() - lastFrameReceived < 5000) return;
-              fallback(token);
+              fallback(token, 'candidate', error instanceof CameraOperationTimeout ? 'timeout' : 'rejected');
             });
           },
-          ended: () => fallback(token),
+          ended: () => fallback(token, 'playback', 'ended'),
           connection: (connection) => {
             if (!isCurrent(token)) return;
+            connectionState = connection;
             if (connection === 'connected') { connected = true; disconnected = false; disconnectTimer?.(); disconnectTimer = null; }
             else if (connection === 'disconnected') {
               connected = false; disconnected = true;
               clearFps();
-              if (!disconnectTimer) disconnectTimer = scheduler.after(3000, () => fallback(token));
-            } else fallback(token);
+              if (!disconnectTimer) disconnectTimer = scheduler.after(3000, () => fallback(token, 'connection', 'timeout'));
+            } else if (connection === 'failed') fallback(token, 'connection', 'failed');
+            else if (connection === 'closed') fallback(token, 'connection', 'ended');
           },
         });
         if (!isCurrent(token)) { created.dispose(); return; }
         peer = created;
         const sdp = await bounded(() => created.answer(), 10000, livePending);
         if (!isCurrent(token)) return;
+        stage = 'answer';
         await bounded(() => transport.answer(offer.sessionId, sdp), 10000, livePending);
-        if (isCurrent(token) && state.phase !== 'live') firstFrameTimer = scheduler.after(8000, () => fallback(token));
-      } catch { fallback(token); }
+        if (isCurrent(token) && state.phase !== 'live') firstFrameTimer = scheduler.after(8000, () => fallback(token, 'first-frame', 'timeout'));
+      } catch (error) { fallback(token, stage, error instanceof CameraOperationTimeout ? 'timeout' : 'rejected'); }
       finally { if (epoch === token) liveFlight = null; }
     })();
     liveFlight = flight;
@@ -276,19 +307,19 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   const close = () => {
     if (disposed) return;
     liveIntent = false;
-    savedRestoreAttempted = true;
     resumeAfterShow = null;
-    ports.persistLiveIntent(false);
     stopLive();
     cancelSnapshot();
-    publish({ mode: 'snapshot', phase: state.snapshot ? 'snapshot' : 'loading', liveAt: null, fps: null, refreshing: false, feedback: null });
+    publish({ mode: 'auto', phase: state.snapshot ? 'snapshot' : 'loading', liveAt: null, fps: null, refreshing: false, feedback: null });
+    scheduleFallback();
   };
   return {
     state: () => state,
     initialFrameUnavailable: () => {
       if (!disposed && !hidden && !state.snapshot) {
         cancelSnapshot();
-        publish({ phase: 'error', failure: 'snapshot', refreshing: false, feedback: 'snapshot-unavailable' });
+        publish({ phase: 'error', failure: 'snapshot', refreshing: false });
+        scheduleFallback();
       }
     },
     acceptHostFrame: async (result: CameraFrameResult): Promise<boolean> => {
@@ -296,27 +327,21 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
       if (state.snapshot?.observedAt && result.snapshot.observedAt && result.snapshot.observedAt <= state.snapshot.observedAt) return false;
       cancelSnapshot();
       const generation = snapshotGeneration;
-      publish({ refreshing: true, feedback: null });
+      publish({ refreshing: true });
       const accepted = await acceptSnapshot(result, generation);
       if (disposed || hidden || generation !== snapshotGeneration) return false;
-      publish({ phase: state.mode === 'auto' ? 'fallback' : liveIntent ? state.phase : state.snapshot ? 'snapshot' : 'error', refreshing: false, failure: accepted ? null : 'snapshot' });
+      publish({ phase: liveIntent ? state.phase : accepted ? 'snapshot' : 'error', refreshing: false, failure: accepted ? null : 'snapshot' });
       scheduleFallback();
       return accepted;
     },
     refreshSnapshot,
-    goLive: () => { if (!disposed && !hidden) ports.persistLiveIntent(true); return openLive(); },
-    restoreSavedIntent: (previouslyAuthorized: boolean) => {
-      if (disposed || hidden || savedRestoreAttempted || !previouslyAuthorized) return Promise.resolve();
-      savedRestoreAttempted = true;
-      return openLive();
-    },
+    goLive: openLive,
     close,
     selectMode: (mode: CameraMode) => {
       if (disposed || hidden || mode === state.mode) return Promise.resolve();
-      if (mode === 'live') { ports.persistLiveIntent(true); return openLive(); }
+      if (mode === 'live') return openLive();
       close();
-      if (mode === 'auto') publish({ mode: 'auto', phase: 'fallback' });
-      return refreshSnapshot();
+      return refreshSnapshot('automatic');
     },
     pageHide: () => {
       if (disposed || hidden) return;
@@ -333,7 +358,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
       resumeAfterShow = null;
       liveIntent = false;
       if (restore === 'live') return openLive();
-      if (restore === 'auto') { publish({ mode: 'auto', phase: 'fallback' }); return refreshSnapshot(); }
+      if (restore === 'auto') return refreshSnapshot('automatic');
       return Promise.resolve();
     },
     dispose: () => {

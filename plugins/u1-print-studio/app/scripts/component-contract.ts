@@ -22,11 +22,11 @@ export const leaves: Record<string, string[]> = {
   'common/Switch.svelte': ['div', 'span', 'span', 'button'],
   'common/OrderedRecords.svelte': ['ol'], 'common/Record.svelte': ['li', 'span', 'div'],
   'common/DateTimeValue.svelte': ['span', 'time'], 'common/DurationValue.svelte': ['span'],
-  'common/MediaStatus.svelte': ['div', 'span', 'span', 'span'],
-  'common/Video.svelte': ['div', 'div', 'div', 'div', 'div', 'div', 'img', 'video'],
+  'common/MediaStatus.svelte': ['div', 'span', 'span', 'span', 'span'],
+  'common/Video.svelte': ['div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'img', 'video'],
   'common/PageLayout.svelte': ['main'],
   'lab/ObservationLabPage.svelte': ['main', 'section'],
-  'camera/CameraMedia.svelte': ['canvas', 'div', 'div', 'div', 'div', 'div', 'video'],
+  'camera/CameraMedia.svelte': ['canvas', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'video'],
   'camera/CameraStatus.svelte': ['div', 'span', 'span', 'span'],
   'common/LoadingValue.svelte': ['span', 'span'],
   'common/TextSkeleton.svelte': ['span'], 'common/ColorValue.svelte': ['span', 'span', 'span'],
@@ -107,7 +107,7 @@ const approvedImports: Record<string, string[]> = {
   'observation/ThermalsSkeleton.svelte': ['../common/ReadingList.svelte', './ThermalReading.svelte'],
 };
 // Explicit shared footer/state contract.
-approvedImports['camera/CameraWidget.svelte'].push('../common/Footer.svelte', '../common/StateSurface/StaticStateSurface.svelte', '../common/Skeleton.svelte');
+approvedImports['camera/CameraWidget.svelte'].push('../common/Footer.svelte', '../common/StateSurface/StaticStateSurface.svelte', '../common/Skeleton.svelte', '../../lib/client/camera/failure');
 approvedImports['camera/CameraLabWidget.svelte'].push('lucide-svelte', '../common/Button.svelte', '../common/Footer.svelte', '../common/StateSurface/StaticStateSurface.svelte', '../common/Skeleton.svelte');
 
 for (const name of ['observation/FanReading.svelte', 'observation/FansSkeleton.svelte', 'observation/ThermalReading.svelte']) approvedImports[name].push('../../lib/client/observation/icons');

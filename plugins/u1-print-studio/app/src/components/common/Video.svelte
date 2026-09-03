@@ -5,9 +5,9 @@
   import Icon from './Icon.svelte';
   import Skeleton from './Skeleton.svelte';
   import { createVideoPlayback, type VideoSurfacePort } from '../../lib/client/media/playback';
-  let { label, snapshotLabel, fullscreenLabel, placeholderIcon, snapshot = null, active = false, loading = false, failed = false, feedback = '', actions, onready, onfeedback }: {
+  let { label, snapshotLabel, fullscreenLabel, placeholderIcon, snapshot = null, active = false, loading = false, failed = false, feedback = '', status, rounded = true, actions, onready, onfeedback }: {
     label: string; snapshotLabel: string; fullscreenLabel: string; placeholderIcon?: typeof import('lucide-svelte')['Box'];
-    snapshot?: string | null; active?: boolean; loading?: boolean; failed?: boolean; feedback?: string; actions?: Snippet;
+    snapshot?: string | null; active?: boolean; loading?: boolean; failed?: boolean; feedback?: string; status?: string; rounded?: boolean; actions?: Snippet;
     onready: (surface: VideoSurfacePort) => (() => void); onfeedback: (message: string) => void;
   } = $props();
   type WebkitVideo = HTMLVideoElement & { webkitPresentationMode?: string; webkitSupportsPresentationMode?: (mode: string) => boolean; webkitSetPresentationMode?: (mode: string) => void };
@@ -21,9 +21,8 @@
   let displayPending = false;
   let returnFocus: HTMLElement | null = null;
   $effect(() => {
-    // A failed acquisition masks in-frame actions. Leave the local viewport
-    // presentation so its still-available footer Retry remains reachable.
-    if (failed && localFullscreen) { localFullscreen = false; fullscreen = false; }
+    // Default consumers keep their recovery controls outside the media.
+    if (failed && status === undefined && localFullscreen) { localFullscreen = false; fullscreen = false; }
   });
   const updateDisplay = () => {
     if (!mounted) return;
@@ -90,18 +89,21 @@
 </script>
 
 <div class="media-slot" data-media-slot>
-  <div class="media-surface" class:local-fullscreen={localFullscreen} bind:this={frame} data-media-surface role={localFullscreen ? 'dialog' : undefined} aria-modal={localFullscreen ? true : undefined} aria-label={localFullscreen ? fullscreenLabel : undefined}>
+  <div class="media-surface" class:square={!rounded} class:local-fullscreen={localFullscreen} bind:this={frame} data-media-surface role={localFullscreen ? 'dialog' : undefined} aria-modal={localFullscreen ? true : undefined} aria-label={localFullscreen ? fullscreenLabel : undefined}>
     {#if snapshot}<img src={snapshot} class:masked={failed} aria-hidden={failed} alt={failed ? '' : snapshotLabel} />{/if}
     <video bind:this={video} class:visible={active && !failed} class:masked={failed} muted autoplay playsinline aria-hidden={failed} aria-label={failed ? undefined : label}></video>
     {#if loading || failed}<div class="placeholder" aria-hidden="true"><Skeleton shape="fill" /></div>
     {:else if !snapshot && !active}<div class="placeholder" aria-hidden="true">{#if placeholderIcon}<Icon icon={placeholderIcon} size={40} />{/if}</div>{/if}
+    <div class="controls" class:with-status={status !== undefined}>
+      {#if status}<div class="status" data-media-status-message>{status}</div>{/if}
     <div class="actions" data-media-actions>
-      {#if loading || failed}<Skeleton shape="action" /><Skeleton shape="action" />
+      {#if (loading || failed) && status === undefined}<Skeleton shape="action" /><Skeleton shape="action" />
       {:else}
         {#if active && canPip}<Button label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
         <Button label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
       {/if}
       {@render actions?.()}
+    </div>
     </div>
     {#if feedback}<div class="feedback" data-media-feedback>{feedback}</div>{/if}
   </div>
@@ -116,8 +118,15 @@
   .masked { visibility: hidden; pointer-events: none; }
   .placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: var(--u1-faint); }
   .placeholder :global(.skeleton) { height: 100%; }
-  .actions { position: absolute; bottom: 10px; right: 10px; display: flex; gap: 8px; }
+  .controls { position: absolute; bottom: 10px; right: 10px; display: flex; align-items: flex-end; gap: 8px; }
+  .controls.with-status { left: 10px; }
+  .actions { display: flex; flex: 0 0 auto; gap: 8px; margin-left: auto; }
+  .status { min-width: 0; max-width: 20em; padding: 5px 7px; border-radius: var(--u1-radius-control); background: rgb(28 30 32 / 86%); color: white; font-size: 12px; line-height: 1.25; overflow-wrap: anywhere; }
+  .square { border-radius: 0; }
   .feedback { position: absolute; bottom: 64px; right: 10px; max-width: calc(100% - 20px); padding: 8px 11px; border-radius: var(--u1-radius-control); background: rgb(28 30 32 / 86%); color: white; font-size: 12px; pointer-events: none; }
   .media-surface:fullscreen, .local-fullscreen { width: 100vw; height: 100dvh; border-radius: 0; background: var(--u1-soft); }
   .local-fullscreen { position: fixed; inset: 0; z-index: 100; }
+  @media (max-width: 420px) {
+    .with-status .status { position: absolute; left: 0; bottom: 54px; max-width: 100%; box-sizing: border-box; }
+  }
 </style>

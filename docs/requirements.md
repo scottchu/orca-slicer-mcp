@@ -229,9 +229,15 @@ printer environments support the described behavior.
   Auto. A new mount never starts Live automatically or restores saved Live mode.
   Valid MCP opening-result hydration causes no redundant initial frame request;
   Auto schedules its next read 1.5 seconds after that accepted result completes.
-  Missing initial delivery waits at most 15 seconds; authoritative malformed or
-  error delivery enters neutral error immediately. Both then schedule an Auto
-  retry after 1.5 seconds, with one acquisition at a time. Automatic polls produce no
+  Missing initial delivery waits at most 15 seconds. Presence of private
+  cameraFrame/cameraActivation keys or the DTO mediaType plus byteLength fields
+  identifies a Camera delivery; authoritative malformed Camera delivery enters
+  neutral error immediately. A host opening-result notification with bare
+  isError: true also fails immediately without any Camera fields, preserving the
+  existing opening-tool error behavior. Unrelated/unknown non-error deliveries
+  do not complete the waiter or reset its original deadline. Both immediate
+  failure and missing-delivery expiry schedule Auto retry after 1.5 seconds,
+  with one acquisition at a time. Automatic polls produce no
   success message or success announcement. The removed manual Refresh UI must
   not be reintroduced to provide feedback. Same-mode selection is idempotent. The fixed controls remain reachable
   during error/connection, support keyboard selection and do not steal focus
@@ -689,8 +695,11 @@ durable-monitor claim.
   `mcp-camera.html` with a thin host-result entry: the shared service accepts and
   decodes the opening tool result without duplicate initial acquisition. Its
   bounded missing/malformed delivery fails neutrally for explicit Refresh; the
-  dashboard keeps request bootstrap. Independent simulated-host and exact
-  served-resource evidence do not establish actual phone/plugin-host acceptance.
+  dashboard keeps request bootstrap. That PR99 behavior is historical;
+  CAM-008/decision0046's current candidate supersedes Camera's snapshot-first/
+  manual-retry policy with default Auto and bounded automatic recovery.
+  Independent simulated-host and exact served-resource evidence do not establish
+  actual phone/plugin-host acceptance.
   See decisions0035/0044 and the active iteration for acceptance gates.
 
 - **UI-004:** Every private observation lab view exposes shared bottom controls
