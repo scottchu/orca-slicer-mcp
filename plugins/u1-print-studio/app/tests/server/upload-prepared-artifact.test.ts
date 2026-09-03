@@ -119,6 +119,7 @@ type HarnessOptions = {
   authorization?: "expired" | "mismatch";
   adapterOutcome?: UploadAdapterOutcome;
   upload?: GuardedUploadPorts["uploader"]["upload"];
+  replayRecord?: "polluted-result" | "polluted-record" | "invalid-status-code" | "invalid-verification";
 };
 const harness = (options: HarnessOptions = {}) => {
   const validationInput = options.validationInput ?? buildValidationInput();
@@ -177,7 +178,18 @@ const harness = (options: HarnessOptions = {}) => {
       complete: async record => {
         const entry = [...actions.entries()].find(([, value]) => value.actionId === record.actionId);
         if (!entry) throw new Error("missing action");
-        actions.set(entry[0], { ...entry[1], record });
+        let replayRecord: unknown = record;
+        if (options.replayRecord === "polluted-result") replayRecord = {
+          ...record, result: { ...record.result, remoteArtifactId: "private-leak", idempotencyKey: "private-key" },
+        };
+        if (options.replayRecord === "polluted-record") replayRecord = { ...record, idempotencyKey: "private-key" };
+        if (options.replayRecord === "invalid-status-code") replayRecord = {
+          ...record, result: { ...record.result, status: "acknowledged", code: "upload_rejected" },
+        };
+        if (options.replayRecord === "invalid-verification") replayRecord = {
+          ...record, result: { ...record.result, requiresVerification: false },
+        };
+        actions.set(entry[0], { ...entry[1], record: replayRecord as InternalUploadActionRecord });
       },
     },
     authorizations: {
@@ -287,6 +299,17 @@ describe("idempotent authorization and effect outcomes", () => {
       expect(first.status).toBe(outcome.status); expect(replay.status).toBe(outcome.status); expect(run.uploadCalls).toBe(1);
       expect(first.requiresVerification).toBe(outcome.status !== "rejected");
       expect(JSON.stringify([first, replay])).not.toMatch(/private-id|possible-id/);
+    }
+  });
+
+  test("fails closed on polluted or semantically malformed trusted replay records", async () => {
+    for (const replayRecord of ["polluted-result", "polluted-record", "invalid-status-code", "invalid-verification"] as const) {
+      const run = harness({ replayRecord });
+      expect((await uploadPreparedArtifact(request(), run.ports)).status).toBe("acknowledged");
+      const replay = await uploadPreparedArtifact(request(), run.ports);
+      expect(replay).toMatchObject({ status: "error", code: "action_record_invalid", replay: false });
+      expect(JSON.stringify(replay)).not.toMatch(/private-leak|private-key|remoteArtifactId|idempotencyKey/);
+      expect(run.uploadCalls).toBe(1);
     }
   });
 

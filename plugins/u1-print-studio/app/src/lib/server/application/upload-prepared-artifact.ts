@@ -211,17 +211,57 @@ const result = (status: GuardedUploadStatus, code: string, fields: Partial<Guard
   targetFingerprint: fields.targetFingerprint ?? null, requiresVerification: fields.requiresVerification ?? false,
   replay: fields.replay ?? false,
 });
-const visibleRecord = (record: InternalUploadActionRecord): GuardedUploadResult => ({ ...record.result, replay: true });
+const projectStoredResult = (stored: InternalUploadActionRecord["result"], replay: boolean): GuardedUploadResult =>
+  result(stored.status, stored.code, {
+    actionId: stored.actionId,
+    preparedJobRevisionId: stored.preparedJobRevisionId,
+    validationReceiptId: stored.validationReceiptId,
+    validationId: stored.validationId,
+    uploadAuthorizationId: stored.uploadAuthorizationId,
+    targetPreflightId: stored.targetPreflightId,
+    correlationId: stored.correlationId,
+    artifactSha256: stored.artifactSha256,
+    manifestSha256: stored.manifestSha256,
+    targetFingerprint: stored.targetFingerprint,
+    requiresVerification: stored.requiresVerification,
+    replay,
+  });
 const activeReplay = (actionId: string, fields: Partial<GuardedUploadResult>): GuardedUploadResult =>
   result("outcome_unknown", "action_in_progress", { ...fields, actionId, requiresVerification: true, replay: true });
+const storedResultKeys = ["actionId", "artifactSha256", "code", "correlationId", "manifestSha256",
+  "preparedJobRevisionId", "requiresVerification", "schemaVersion", "status", "targetFingerprint",
+  "targetPreflightId", "uploadAuthorizationId", "validationId", "validationReceiptId"];
+const actionRecordKeys = ["actionId", "remoteArtifactId", "requestFingerprint", "result"];
+const validStatusCode = (stored: InternalUploadActionRecord["result"]): boolean => {
+  const policies: Partial<Record<GuardedUploadStatus, { readonly codes: ReadonlySet<string>; readonly verification: boolean }>> = {
+    acknowledged: { codes: new Set(["upload_acknowledged_unverified"]), verification: true },
+    rejected: { codes: new Set(["upload_rejected"]), verification: false },
+    timeout: { codes: new Set(["upload_timeout"]), verification: true },
+    transport_failed: { codes: new Set(["upload_transport_failed"]), verification: true },
+    outcome_unknown: { codes: new Set(["upload_outcome_unknown"]), verification: true },
+    blocked: { codes: new Set(["authorization_not_found", "authorization_expired", "authorization_consumed",
+      "authorization_binding_mismatch"]), verification: false },
+    unavailable: { codes: new Set(["authorization_claim_unavailable", "request_cancelled_before_effect"]), verification: false },
+  };
+  const policy = policies[stored.status];
+  return policy !== undefined && policy.codes.has(stored.code) && stored.requiresVerification === policy.verification;
+};
 const validReplayRecord = (record: InternalUploadActionRecord, actionId: string, fingerprint: Sha256,
-  fields: Partial<GuardedUploadResult>): boolean => record.actionId === actionId && validId(record.actionId) &&
+  fields: Partial<GuardedUploadResult>): boolean => record !== null && typeof record === "object" &&
+  Object.keys(record).sort().join("|") === actionRecordKeys.join("|") &&
+  record.result !== null && typeof record.result === "object" &&
+  Object.keys(record.result).sort().join("|") === storedResultKeys.join("|") &&
+  validStatusCode(record.result) && record.actionId === actionId && validId(record.actionId) &&
   record.requestFingerprint === fingerprint && record.result.actionId === actionId && record.result.schemaVersion === 1 &&
   record.result.preparedJobRevisionId === fields.preparedJobRevisionId &&
   record.result.validationReceiptId === fields.validationReceiptId && record.result.validationId === fields.validationId &&
   record.result.uploadAuthorizationId === fields.uploadAuthorizationId && record.result.targetPreflightId === fields.targetPreflightId &&
   record.result.correlationId === fields.correlationId && record.result.artifactSha256 === fields.artifactSha256 &&
-  record.result.manifestSha256 === fields.manifestSha256 && record.result.targetFingerprint === fields.targetFingerprint;
+  record.result.manifestSha256 === fields.manifestSha256 && record.result.targetFingerprint === fields.targetFingerprint &&
+  (record.remoteArtifactId === null || (typeof record.remoteArtifactId === "string" && record.remoteArtifactId.length > 0 &&
+    record.remoteArtifactId.length <= 512 && !/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(record.remoteArtifactId))) &&
+  (record.result.status === "acknowledged" ? record.remoteArtifactId !== null :
+    record.result.status === "outcome_unknown" || record.remoteArtifactId === null);
 
 export const uploadPreparedArtifact = async (
   request: GuardedUploadRequest,
@@ -244,7 +284,7 @@ export const uploadPreparedArtifact = async (
     const { replay: _replay, ...storedResult } = outcome;
     const stored: InternalUploadActionRecord = { actionId, requestFingerprint: actionFingerprint,
       result: { ...storedResult, actionId }, remoteArtifactId };
-    try { await ports.actions.complete(stored, deadline.signal); return { ...stored.result, replay: false }; }
+    try { await ports.actions.complete(stored, deadline.signal); return projectStoredResult(stored.result, false); }
     catch { return result("outcome_unknown", "action_record_unavailable", { ...boundFields, actionId, requiresVerification: true }); }
   };
   try {
@@ -309,7 +349,7 @@ export const uploadPreparedArtifact = async (
       if (!validId(actionClaim.actionId)) return result("error", "action_claim_invalid", boundFields);
       if (!actionClaim.record) return activeReplay(actionClaim.actionId, boundFields);
       return validReplayRecord(actionClaim.record, actionClaim.actionId, actionFingerprint, boundFields) ?
-        visibleRecord(actionClaim.record) : result("error", "action_record_invalid", boundFields);
+        projectStoredResult(actionClaim.record.result, true) : result("error", "action_record_invalid", boundFields);
     }
     actionId = actionClaim.actionId; boundFields = { ...boundFields, actionId };
     if (!validId(actionId)) return result("error", "action_claim_invalid", boundFields);
