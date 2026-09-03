@@ -333,9 +333,10 @@ printer environments support the described behavior.
   focus is managed, and notifications never steal focus. Rejected/timed-out or
   disposed work must not affect the Camera session, persistent video DOM or Auto
   timers. Standalone/dashboard/Lab native fullscreen is confirmed by document
-  state; otherwise report unavailable. No source or actual-host acceptance is
-  claimed yet. Planned current-only candidate versions are runtime0.4.12/schema16/
-  observation18/Camera14, with no old aliases. Display changes cause no reconnect
+  state; otherwise report unavailable. Source d999399 implements this contract
+  with independent scope approval and the required full gate; guarded shipment
+  and actual-host acceptance remain pending. Current-only candidate versions are runtime0.4.12/
+  schema16/observation18/Camera14, with no old aliases. Display changes cause no reconnect
   or additional acquisition.
   PiP is offered only through the existing
   live video's same-document native Picture in Picture API and makes zero host
@@ -785,7 +786,12 @@ durable-monitor claim.
   capture: MCP body margin/padding0 versus Lab18px because `.u1-:host` cannot
   match `.u1-body`. The scoped selector repair must use existing tokens, preserve
   loading/error/recovery bounds and cover all eight active legacy consumers,
-  including320px/200% text. Do not expand it into P01's deferred Progress design
+  including320px/200% text. Author d999399 checks48 ready-to-failure geometry
+  observations across eight active legacy views,320/390/1024 widths and100/200%
+  text. Independent review additionally accepts selected Progress320px/200%
+  overflow/neutral-height/Retry-content recovery. Retry→Refresh focus remains
+  lost in both baseline and candidate, an open U01 legacy gap. This is not a
+  full overflow/recovery matrix. Do not expand it into P01's deferred Progress design
   or claim all legacy debt resolved. Lab-only checks cannot accept the MCP fix.
   Adoption and evidence are tracked per route in `docs/widget-delivery.md`;
   the requirement does not itself claim every route has been delivered.

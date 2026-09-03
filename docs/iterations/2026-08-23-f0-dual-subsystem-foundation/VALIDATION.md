@@ -1,5 +1,113 @@
 # F0 dual-subsystem foundation validation
 
+## Current candidate: independently accepted host fullscreen and body insets
+
+Frozen source `d99939986e185a55154d26a6243d62ca98ba8ecc`, tree
+`d670534663b51c10d3ebff391c4f60dfeabd6cf0`, has independent scope APPROVAL.
+PR106 awaits exact documentation-head review and guarded shipment.
+No new deployment or actual ChatGPT/phone fullscreen acceptance is claimed.
+Author `app/test-results/host-fullscreen-author/REPORT.json`, SHA256
+`e9a7102beea5bdccf11bae7bc4b89780012d960fbeb6270767c8b93379ec82d6`,
+binds35 changed application inputs in `application-inputs.json`, SHA256
+`d65fda97621a30a1108059282beba285858f6bd249798ea6f6beb873a6432ffb`.
+The source is0.4.12/schema16 with only observation18/Camera14 resources.
+
+Bun1.4.0 commands ran from the app directory with dotenv/config autoload disabled:
+
+- `bun --no-env-file --config=/dev/null run ui:check` passes Svelte0 errors/
+  0 warnings and component guards. The report's exact12-file ui:test selection
+  passes118 focused UI tests; its eight affected server files pass71 tests.
+- `bun --no-env-file --config=/dev/null run test:mcp-widgets tests/browser/mcp/presentation-layout.spec.ts`
+  passes seven cases: one Camera host protocol/geometry/focus case and48 legacy
+  ready-to-error observations across eight views,320/390/1024 widths and100/200%
+  text. This verifies responsive inset tokens, no visible failed telemetry and
+  at most1px ready-to-error card-height change; it is not a full overflow or
+  recovery matrix. Renewed browser log SHA256:
+  `5b71a2af844bc8cda9873721b110988b7fcff134f592cf245c43e6913893f5ff`.
+- `bun --no-env-file --config=/dev/null run scripts/build-camera-harness.ts`
+  passes, followed by `bun --no-env-file --config=/dev/null node_modules/@playwright/test/cli.js test --config test-results/host-fullscreen-author/playwright.native.config.ts`:
+  21 cases pass for Camera Lab and standalone live Camera only.
+- Sequential build/verify commands listed in REPORT generate and verify ten
+  deterministic packages. Two separate `scripts/build-server.ts` runs for
+  payload-one/payload-two produce byte-identical schema2 build manifests,
+  52 runtime files/71 static routes, SHA256
+  `05edf26a5f4d2f8ad5df63e91d7a8ef910d6bb370984cf082c229c490689d94f`.
+
+Final observation HTML is948,867 bytes, SHA256
+`ff869c1e351d39d3dfc097995851d9caa222f9d7e776462254f3c6d6c9277d26`;
+Camera HTML is99,479 bytes, SHA256
+`87121885969f2f6d386e023939f9585a7a97b630c5bc76710ee7f9f44cf11353`.
+These are integrity/size reports, not repository byte caps. Before MCP and Lab
+screenshots use different synthetic DTOs: they establish spacing evidence only,
+not content parity. The selector repair addresses the specific unmatched
+`.u1-:host`/`.u1-body` cause; it does not implement Progress's deferred design
+or establish complete legacy layout cleanup.
+
+Preserve failures: initial diagnostic read srcdoc before the frame existed;
+bounded polling fixed that fixture. Two HostRpc typed doubles lacked presentation
+methods. Component guards caught direct document access and unregistered imports;
+browser access returned to runtime and only typed service imports were approved.
+The first40-test run passed with a nonreactive bind:this warning, fixed before
+final checks/builds. Initial layout assertions assumed fixed18px despite existing
+14/16px responsive tokens and supplied a domain DTO failure instead of RPC isError;
+fixture corrections preserved production geometry tolerances.
+
+Unified exec then failed before launch with CreateProcess EMFILE, including a
+login:false pwd attempt, despite completed author sessions. Node REPL execFile
+ran the same pinned Bun commands without changing system settings. Its first
+alternate launch referenced an unavailable process global and failed before
+launch; explicit minimal PATH/HOME fixed the runner. Records' two read-only exec
+attempts also failed before launch; Node filesystem access was used to update
+these root/docs files. This tooling failure is distinct from application tests.
+
+No author full regression, actual Camera/printer read, service restart or phone
+host validation occurred. All author child processes and isolated browsers
+completed;4182 was verified free and user sessions/services/streams were preserved.
+C08 intermittent phone Live remains unresolved. Deployment and actual-host
+entry/exit must retain separate evidence from these synthetic fixture checks.
+
+### Independent gate and retained accessibility gap
+
+Independent `app/test-results/host-fullscreen-independent/REPORT.json`, SHA256
+`fee91ea0ad62586cd33176bfd537ee4f2346ca789411a22efecdc47f9920c777`,
+APPROVES fullscreen and body-padding scope. Its440 non-Markdown app/scripts/policy
+inputs remain unchanged; manifest SHA256
+`01cd78fda3feb6abab486a3a1982364f0545040f57f09664f20b4926c104b851`.
+The reviewer verified author log/input hashes and both exact formal payloads.
+
+- From repository root, `PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH ./scripts/check-repository.sh`
+  exited0:627 UI/60 files,219 server/2567 assertions,44 service+28 ship tests,
+  Svelte0 errors/0 warnings, component/determinism/repository guards. Full log
+  SHA256 `d39afa4084747bc3e4fa2ed7dd206896da697332164c9142972e44b3a3219894`.
+  Node child_process ran the same pinned CLI after unified exec was unavailable.
+- Pinned Bun with `--no-env-file --config=/dev/null` ran the private
+  `adversaries.ts`: four PASS for timeout/late, disposal/listener cleanup,
+  error/dual envelope and native unavailable. The private Playwright config,
+  with exact Camera/observation hashes, passed five fullscreen cases.
+- The initial Playwright run exited1 on Progress's final Refresh-focus assertion;
+  its layout, neutral height and Retry content checks had passed. Two subsequent
+  diagnostic assertions initially read document.activeElement instead of the
+  shadow active element and failed. Corrected diagnostic fixtures and the
+  selected Progress case were renewed only; no full suite was repeated.
+- Renewed320px/200% Progress containment and ready/error/recovered geometry pass
+  at343.4375px. Shadow-aware v17/v18 comparisons both start with Retry focused,
+  then end on BODY after success: old Retry disconnected, new Refresh unfocused.
+  Legacy renderer JS is byte-identical. Focus recovery remains FALSE, retained
+  under U01; it is not reclassified PASS. Initial browser log SHA256
+  `11b3df378d49db082a35fc0771dbc7da6f70e080fe1568811062defa60735e5c`;
+  diagnostic failure log `024bf8c0fd3d0250ab977adf52cdd4590ceffbd9cabad0cf3809c372862f009c`;
+  scoped renewal log `6a83097fd8b9eec69a2b75ef61dc896ed027e65aa2ddc9bb4a883f1d606c80a5`.
+- Private `discovery.ts` confirms two current resources with exact HTML hashes,
+ 32 retired URIs and two retired tools rejected, with zero acquisitions. Both
+  schema2 payloads verify all52 runtime files/71 routes against the manifest above.
+
+All review processes, synthetic browsers/server and discovery connections closed;
+4181 is free. No deployed service, actual Camera/printer, auth/network or user
+browser changed. Synthetic host and selected synthetic Progress evidence do not
+prove actual phone fullscreen, real-print DTO parity or C08 reliability. The
+remaining documentation tail binds this retained application evidence to its
+exact reviewed head; no unaffected full build/browser rerun is required.
+
 ## Latest user outcome and active verification scope
 
 After PR104, the user reports other delivered UI working, but fullscreen still
@@ -19,7 +127,7 @@ resources, private metadata and shipping guards. Reviewer contract adopted in
 presentation service owns the bounded pending request, Video renders actual
 acknowledged mode without DOM/session/timer replacement or focus stealing.
 Standalone native fullscreen requires document-state proof; no CSS-only host
-substitute. Source changes and focused/independent/runtime evidence remain pending.
+substitute. Source implementation and independent acceptance are recorded above; deployment/actual-host evidence remains pending.
 Progress redesign is no-action. Earlier PR104 evidence retains its original scope.
 
 The adopted display layout fixes media only after actual host fullscreen grant,
@@ -28,14 +136,15 @@ resumes one update after actual inline return, preserving the same video element
 The source plans0.4.12/schema16/observation18/Camera14 with two current resources
 and no old aliases. An interim author report records40 focused tests passing
 across HostRpc/presentation/controller-widget/observation dispatch; the final
-commands, source manifest and report are pending. This does not prove the eight-
-view padding geometry, final packaged behavior or actual-host grant acceptance.
+commands, source manifest and final report supersede that interim count above.
+The final48 observations cover ready-to-error inset geometry only, not complete
+overflow/recovery or actual-host grant acceptance.
 
 Author paired rendered capture at390px now reproduces the layout discrepancy:
 MCP body computed margin/padding is0 while Lab inset is18px. Source diagnosis is
 an unmatched legacy `.u1-:host` selector instead of `.u1-body`. Private captures
 are under `app/test-results/host-fullscreen-author/progress-*.png`; final report
-and exact validation identities are pending. The adopted fix changes only the
+and final identities are recorded above. The implemented fix changes only the
 selector to the intended body using existing spacing tokens. It requires all
 eight active legacy consumers, stable failure/recovery and320px/200% coverage.
 This is author package/Lab evidence, not measured CSS from the user's phone or

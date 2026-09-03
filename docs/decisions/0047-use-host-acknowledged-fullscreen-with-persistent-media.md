@@ -1,6 +1,6 @@
 # 0047 — Use host-acknowledged fullscreen with persistent media
 
-- Status: reviewer contract adopted; source in progress, final validation/exact review/deployment pending
+- Status: independently accepted at d999399; exact docs-head review, guarded deployment and actual-host acceptance pending
 - Date: 2026-09-03
 - Owners: project maintainers
 - Milestone: F0 / CAM-008; delivery ledger C01
@@ -49,7 +49,7 @@ host's acknowledged presentation mode, not an OS-wide screen guarantee. No new
 authentication, network, printer control or plugin installation follows from this
 decision. Preserve private metadata and all shipping/security/preservation guards.
 Current widget resources remain exactly two; do not restore retired aliases.
-The source candidate plans runtime0.4.12/schema16/observation18/Camera14;
+The frozen source uses runtime0.4.12/schema16/observation18/Camera14;
 PR104's deployed identities remain unchanged until independently verified release.
 
 ## Acceptance and evidence
