@@ -1,51 +1,29 @@
 # Next agent
 
-## Current work: current-only widgets and the Camera candidate
+## Current: Camera and current-only widgets accepted; guarded shipment next
 
-The user's latest order retires old versioned widget aliases, obsolete bundles
-and compatibility-only tests. Keep only current widget resources. Preserve the
-eight legacy renderers still used by the current observation resource; they are
-active functionality, not old resource compatibility. Do not delete deployment
-backups or other worktrees. This supersedes the former 30-old-URI preservation
-contract. The unshipped `391303c` candidate is now an earlier validation baseline;
-cleanup needs its own affected checks, exact review and guarded release.
-The adopted target is two MCP resources (observation17/Camera13), retirement of
-six compatibility HTML files plus old camera-widget HTML/HTTP route, and `/widget`
-serving current MCP observation instead of duplicate widget.html/vendor injection.
-Retire pure compatibility status tools only after confirming no current consumer.
-Keep hash/tamper/isolation/security/config-preservation/rollback and ship guards;
-final removed paths, tool inventory and build counts await author evidence.
+Exact `aaaf0a56a0df944a19384822decfc62712021c51` is independently accepted.
+The source has only observation17/Camera13 resources and two public/six app-only
+tools. Thirty old URI aliases, the two status compatibility tools, old Camera
+HTTP route and18 obsolete files are removed; `/widget` serves current observation.
+The eight legacy renderers used by current observation remain active. Deployment
+backups, other worktrees and every shipping/integrity/security/preservation guard
+remain intact. Required and scoped validation evidence is in VALIDATION.
 
-The user-approved Camera candidate removes the footer and Refresh button. Keep a
-thin icon/title/state/FPS/time header; media fills the whole lower edge, with
-square top corners and bottom corners clipped by the outer card. A persistent
-short safe failure reason overlays the media at bottom left; controls remain at
-bottom right. At narrow widths the reason moves one row up inside the media,
-without collision or card-height change. Decision0046 supersedes Camera's
-0041 footer placement only; other widget footer/error rules remain unchanged.
+Camera defaults to quiet Auto with an88px-by-44px Auto/Live icon Switch. Its
+edge-to-edge media has no footer/Refresh; the persistent safe failure reason is
+bottom left, controls bottom right, with stable narrow-layout separation.
+Service-owned bootstrap, failure diagnostics and unchanged deadlines follow
+CAM-008/decision0046. Progress's2px failure allocation and Bed's failed-renderer
+release were scoped current-route fixes, not the deferred Progress redesign.
 
-Default Auto uses only Auto/Live in the 88px-by-44px icon Switch. Automatic polls
-emit no success feedback or announcements. New mounts never restore/start Live;
-the same mounted card resumes its explicit mode after hide/show. Valid MCP
-opening-result hydration makes no extra initial read, then schedules Auto 1.5s
-after completion. Missing delivery waits at most 15s; a recognizable Camera
-malformed delivery or host opening-result `isError: true` enters neutral error
-immediately, followed by Auto retry after 1.5s. That error flag needs no Camera
-fields; unrelated/unknown non-error deliveries preserve the bounded wait.
-CAM-008 defines the Camera discriminators.
-
-On `codex/u1-camera-failure-stage` from `06e2a90`, service-owned sanitized
-lastLiveFailure persists through Auto; only its safe reason is visible in the
-media overlay. Timeouts/watchdogs stay unchanged. This improves diagnosability
-and presentation, without proving the phone failure's cause. The earlier footer/
-reserved-header proposals are superseded. Camera v13/observation v17 are the
-current candidate resource identities; final current-only resource inventory and
-build identities await cleanup evidence.
-
-Earlier author checks and the failed first independent gate are recorded in
-VALIDATION; they do not accept the changed cleanup candidate. Cleanup validation,
-exact independent review and deployment remain pending; PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
-success/failure sequence; C08 reliability is unresolved. Screen Sharing stays paused.
+Next complete the documentation-only exact review, then guarded u1-ship and BOTH
+service restarts plus installed-resource behavior verification. PR101 remains
+the deployed baseline; no shipment or actual-device acceptance is claimed yet.
+Retain all55 IDs, monitor workflow, current eight legacy views, unfinished Queue/
+Fans/Job History, Progress no-action, F07 discussion and separate c6. C08 phone
+reliability remains unresolved; host fullscreen is unimplemented, Screen Sharing
+paused, and existing `.u1-:host` layout debt remains.
 
 ## Current handoff: independently reviewed monitoring workflow
 

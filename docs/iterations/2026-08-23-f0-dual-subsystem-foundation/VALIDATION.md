@@ -1,5 +1,93 @@
 # F0 dual-subsystem foundation validation
 
+## Current accepted source: Camera and current-only widget retirement
+
+Independent `app/test-results/current-only-independent/REPORT.json`, SHA256
+`b2194a3828ddefe5349be2ecc3efb1b16e2fc3046c2d54dbb1f608bdb1f6c022`,
+APPROVES `aaaf0a56a0df944a19384822decfc62712021c51`, tree
+`fe7d63f7c96349c960ee37d5f9606cb1eb410eab`. From repository root,
+`PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH ./scripts/check-repository.sh`
+exits0:617 UI/59 files,219 server/2,567 assertions,36 service/27 shipping Python,
+Svelte0 errors/0 warnings, TypeScript/component/determinism/repository contracts
+PASS. Full-log SHA256:
+`26af72823fa9a688d7c6100e9cb4eda7ec6cef94b343d90eade68b7f1643c546`.
+This is new candidate acceptance, separate from the superseded391303c gate below.
+Guarded shipment, BOTH restarts and installed-resource behavior remain pending.
+
+### Final scope and identity
+
+Source now exposes only observation17/Camera13, two model-visible and six app-only
+tools. Thirty old resource aliases, show/get_u1_status and `/camera-widget` are
+retired; active `/widget` uses current MCP observation. Eighteen files retire:
+eight obsolete HTML assets, five unused source/build leaves and five compatibility-
+only tests. The author report lists exact paths. Current eight legacy renderers
+remain. Camera keeps quiet Auto/Live,88px-by-44px controls, edge-to-edge media,
+persistent safe failure overlay, service-owned bootstrap and unchanged deadlines.
+
+Author `app/test-results/current-only-author/REPORT.json`, SHA256
+`7dfa0521ef5169b73222fd636a76b58c0754bb862a5f763f0c7cb7c5006316f8`,
+binds49 retirement input paths
+(`854f9c1955e608c093b27f0febcd166539526052be6f4654df7e756e38c9a936`)
+and91 aggregate paths from06e2a90
+(`e15f7c6079aea407b3715176dc72eb3dbb208732cce8ec4ab197668a9c6c471f`).
+The independent437-input manifest is
+`5e6bf243ef6d911c58bbe34928ce953369dd8b76575ef1a320100faf5183e9a5`.
+Both isolated complete payloads match52 runtime files/71 routes and build-manifest
+SHA256 `0ddf68159d97fd0702709cad7cbf601bf71dd57536999dc5b43698879259bf12`.
+Final observation HTML is948,325 bytes, SHA256
+`df98a40784c7798a7f62f908dc999aac3b2c7be3b63567a5a9337e8c90581928`;
+Camera HTML remains97,499 bytes, SHA256
+`5e894febd57368a6ff19f7d2696654c9cad0ff641fbe0f1c70d88a5feb2d0875`.
+These are reported sizes/integrity identities, not byte caps.
+
+### Author and independent behavior evidence
+
+Author commands in REPORT include `run check`, the11-file focused server selection
+(112 tests/1,584 assertions), `build:mcp-observation` and
+`verify:mcp-observation`, component guards, and two separate `scripts/build-server.ts`
+invocations for payload-one/two. With Bun1.4.0 and dotenv/config disabled,
+`x playwright test --config playwright.mcp.config.ts dashboard-current.spec.ts widgets.spec.ts`
+passes37 cases on final current artifacts: five dashboard bridges, eight active
+legacy renderers and responsive/enlarged-text Heads/Camera. From repository root,
+`PYTHONPATH=scripts uv run --no-project python -m unittest scripts/test_u1_service.py scripts/test_u1_ship.py`
+passes63 cases. Exact commands/cwds and all log hashes remain in the author report.
+
+Independent private `static_pair.py` run through `uv run --no-project python`
+accepts four exact widget file/route baselines and rejects four mutated pairs.
+The Bun `discovery.ts` fixture reads exactly two current resources matching final
+HTML, rejects30 retired resources/two retired tools, and makes zero acquisitions.
+Two fresh Playwright cases pass: Jobs `/widget` initial503 is immediately neutral,
+wrong-view child RPC is rejected without a read, manual retry recovers, and old
+Camera HTTP/status-tool paths reject with404/400 and zero fixture acquisitions.
+Independent `identity.py` through uv verifies both payloads, reported logs and
+source manifests. Full exact private command lines are in the independent report.
+The reviewer matched the author37 browser cases rather than repeating them all.
+Camera service bytes remain unchanged from391303c; its four HostRpc adversaries
+and six default/three MCP cases retain separate provenance.
+
+Retirement's first compile failed stale imports and then a leftover test block.
+Initial focused server results were106 PASS/4 FAIL, then109/1 while the skill
+inventory was corrected to two public/six app-only; final112/0. Initial Python
+invocation lacked PYTHONPATH and ran no actual tests; corrected61 passed, then
+63 with two new guards. Initial dashboard browser had3 PASS/2 FAIL: Progress's
+ready221.375/error219.375 difference came from a collapsed2px track margin omitted
+by body border-box measurement. Source now measures the actual header-bottom to
+footer-top flow span, without a hardcoded2px correction or weaker tolerance.
+Bed's initial failure assertion counted a hidden inert aria-hidden canvas;
+renewed checks distinguish visible/accessible data and prove WebGL context loss.
+Non-loading placeholders now dispose that renderer, controls, observer and GPU
+resources. One doubled-path private diagnostic failed before source mutation.
+These are focused current-route geometry/release fixes, not Progress design work.
+Earlier Camera/pin/reviewer-fixture failures remain below. Current independent
+mandatory gate and prepared fixtures passed their first execution.
+
+All owned author/reviewer processes, MCP clients, isolated browsers and temporary
+tamper payloads were released;4181/4182 have no owned listener. No actual Camera/
+printer read, phone reproduction, service restart, auth/network or plugin action
+was performed for these checks. C08 remains unresolved, host fullscreen remains
+unimplemented, and existing `.u1-:host` layout debt remains. Source acceptance
+never implies the deferred device/printer outcomes or completion of all55 IDs.
+
 ## Latest C08 phone outcome: intermittent success after retries
 
 After the PR101 update/retry instructions, the user first reported the same
@@ -35,7 +123,7 @@ Evidence under `app/test-results/c08-diagnosis`:
 - `served-attempt-12.json`: SHA256 `22f5a538e30c433fa056b81ebdbb17219d73018a30d02447febeb0675ee80bad`;
   `.log`: `a7a3f63c55d1bc940b54673e7dfc2ab63ed4b03439a4ebe41ece07f84f755cb3`.
 
-### Current Camera presentation/diagnostic candidate, not yet validated
+### Adopted Camera contract: source accepted, not yet shipped
 
 Decision0046 records the user-approved Camera-only exception to0041: no footer
 or Refresh button, thin icon/title/state/FPS/time header, media edge to edge
@@ -56,8 +144,8 @@ Camera delivery; malformed Camera delivery fails neutrally immediately. A bare
 isError: true opening-result notification also fails immediately without Camera
 fields. Only unrelated/unknown non-error delivery leaves the original waiter/
 deadline active. Immediate failure or expiry schedules Auto retry after 1.5s, with one
-acquisition at a time. These clarified CAM-008 discriminators remain an adopted
-contract awaiting final candidate validation, not a new passing-test claim.
+acquisition at a time. These CAM-008 discriminators are included in the accepted
+source scope above; actual-host bootstrap acceptance remains separate.
 
 Service-owned lastLiveFailure retains the closed CAM-008 fields through Auto;
 only its short safe stage/outcome reason is visible. No timeout/watchdog change,
@@ -65,13 +153,12 @@ raw details, new panel or extra acquisition from diagnostics. Prior generic
 Footer statusText/reserved-header proposals are superseded. Fullscreen discussion
 adds no host display-mode implementation or new acceptance claim.
 
-The latest user order supersedes old-URI preservation: retain only current
-widget resources, remove obsolete aliases/bundles and compatibility-only tests,
-and retain all eight legacy renderers used by current observation. Earlier
-`391303c` is unshipped; its compatibility-preserving evidence below does not
-accept the newly changed cleanup scope. Keep deployment backups and worktrees.
-PR101 remains deployed; cleanup checks, exact review and release remain pending.
-Presentation/diagnostics do not prove the phone failure's cause.
+The latest user order supersedes old-URI preservation. The accepted source above
+retains only current widget resources and all eight active legacy renderers,
+while retiring old aliases/bundles/compatibility-only tests. Earlier391303c is
+unshipped and superseded; fresh aaaf0a56 acceptance covers cleanup. Deployment
+backups and worktrees remain. PR101 stays deployed until guarded shipment;
+presentation/diagnostics do not prove the phone failure's cause.
 
 ### Earlier Camera candidate evidence before current-only cleanup
 

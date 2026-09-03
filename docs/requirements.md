@@ -206,7 +206,7 @@ printer environments support the described behavior.
   shared printer upstream closes when the last viewer closes or fails. TURN is
   a fallback, not a prerequisite when a direct server host candidate is
   reachable.
-- **CAM-008:** The latest user-approved Camera candidate has a thin white header
+- **CAM-008:** The independently accepted Camera source has a thin white header
   with icon/title and state/measured FPS/frame time. Its media extends edge to
   edge across the whole lower card, with square top media corners and bottom
   clipping supplied by the outer card radius and overflow containment. Camera
@@ -224,14 +224,16 @@ printer environments support the described behavior.
   the eight legacy renderers still required by the current observation resource,
   current behavior/security/lifecycle coverage, deployment backups and other
   worktrees. Historical URI/hash preservation is prior evidence, not a current
-  requirement. The adopted target is two MCP resources (current observation17
-  and Camera13), removal of six compatibility HTML files plus old
-  camera-widget.html and `/camera-widget`, and active `/widget` serving current
-  MCP observation instead of duplicate widget.html/vendor injection. Retire
-  compatibility-only show/get_u1_status tools only if no current consumer remains.
-  Build-contract inventory follows current assets/routes; hash/tamper/isolation/
-  security/runtime-config-preservation/rollback and shipping guards remain.
-  Final removed paths/tool inventory and cleanup acceptance remain pending.
+  requirement. Independently accepted `aaaf0a56` provides two MCP resources
+  (observation17/Camera13), two public and six app-only tools. It removes30 old
+  aliases, show/get_u1_status, `/camera-widget` and18 obsolete files (eight HTML,
+  five unused source/build files and five compatibility-only tests). Active
+  `/widget` serves current MCP observation; duplicate HTML/vendor injection is
+  retired. Build-contract inventory follows current assets/routes, with retired
+  route/resource/tool rejection coverage and unchanged hash/tamper/isolation/
+  security/runtime-config-preservation/rollback/shipping guards. Required source
+  acceptance passes; guarded shipment and installed behavior verification remain
+  pending. This does not establish actual phone Live reliability.
   Names appear only in tooltip/aria,
   superseding visible text/full-width mode controls. Keep44px targets, keyboard
   selection/focus and reduced-motion behavior; the switch must not overlap
@@ -302,8 +304,8 @@ printer environments support the described behavior.
   The new Auto default follows the separate mode contract above. The earlier
   proposed generic Footer statusText change is superseded for this Camera slice;
   other widget footer behavior stays unchanged. The new presentation/diagnostic
-  candidate is not yet accepted or deployed and does not itself establish the
-  phone failure's cause.
+  source is independently accepted at `aaaf0a56`, awaiting guarded shipment;
+  it does not establish the phone failure's cause.
   Fullscreen reflects same-document native or local CSS state and never requests
   a remount-capable host display mode. PiP is offered only through the existing
   live video's same-document native Picture in Picture API and makes zero host

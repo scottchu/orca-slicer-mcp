@@ -1,22 +1,20 @@
 # F0 dual-subsystem foundation brief
 
-## Active slice: current-only widget cleanup and Camera presentation
+## Active slice: accepted Camera/current-only source, guarded shipment next
 
-The latest user order supersedes prior version-compatibility requirements under
-[decision0046](../../decisions/0046-camera-auto-default-and-edge-to-edge-card.md).
-Retire old widget aliases/bundles and compatibility-only tests; target only current
-observation17/Camera13 resources. Active `/widget` uses current MCP observation;
-old Camera route and duplicate/vendor-injection assets retire. Confirm current
-consumers before removing compatibility-only status tools. Keep the eight active
-legacy renderers, all 55 ledger IDs, deployment backups and other worktrees.
+Decision0046's combined Camera and current-only source is independently accepted
+at `aaaf0a56a0df944a19384822decfc62712021c51`. Two current resources, two public/
+six app-only tools and52-file/71-route payload replace the old compatibility
+inventory; eight active legacy renderers remain. Camera uses quiet Auto/Live,
+edge-to-edge media and the safe persistent bottom-left reason. Scoped Progress
+allocation/Bed renderer-release fixes do not implement Progress's deferred design.
 
-The Camera candidate retains default Auto/Live, quiet single-flight polling,
-edge-to-edge media without footer/Refresh and safe bottom-left failure reason.
-Service ownership, neutral/stable error geometry, deadlines and all integrity/
-security/preservation/rollback/shipping guards remain. `391303c` is unshipped;
-prior candidate evidence in VALIDATION does not accept cleanup changes. Finish
-affected checks and exact independent review before guarded shipment and BOTH
-service restarts. C08 reliability and host fullscreen remain unresolved.
+Required and scoped evidence, prior failures and exact identities are in
+VALIDATION. Complete the documentation-only exact review and guarded shipment,
+restart BOTH services, then verify installed resources and behavior. PR101 remains
+deployed. Keep all55 IDs, monitoring scope, existing layout debt and shipping
+security/integrity/preservation guards. C08 and host fullscreen remain unresolved;
+no phone/printer acceptance follows from the synthetic checks.
 
 ## Maintained workflow: standalone asynchronous print monitoring
 

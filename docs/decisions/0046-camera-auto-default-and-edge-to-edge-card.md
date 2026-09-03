@@ -1,6 +1,6 @@
 # 0046 — Camera Auto default and edge-to-edge card
 
-- Status: user-adopted direction; candidate validation, independent approval and deployment pending
+- Status: exact source aaaf0a56 independently accepted; guarded shipment and installed behavior verification pending
 - Date: 2026-09-03
 - Owners: project maintainers
 - Milestone: F0 / CAM-008, UI-004; delivery ledger C04, C06, C08
@@ -33,15 +33,15 @@ current observation resource; they remain active functionality. Keep deployment
 backups, other worktrees and historical evidence. This changes release scope,
 not printer authority, private metadata, security or required shipping guards.
 
-The adopted cleanup target is 32 MCP resources reduced to current observation17
-and Camera13 only. Retire six compatibility HTML files and old camera-widget.html
-with its `/camera-widget` route; route active `/widget` to current MCP observation
-and remove duplicate widget.html plus its orphan vendor-injection pipeline.
-Pure compatibility show/get_u1_status tools may retire only when no current
-consumer depends on them. Adjust build-contract minimum inventory to current
-assets/routes while retaining hash/tamper, isolation, security, runtime-config
-preservation, rollback and every shipping guard. Final paths and inventories
-remain subject to author evidence; no eight-renderer rewrite belongs here.
+The accepted cleanup provides only current observation17 and Camera13 resources,
+with two model-visible and six app-only tools. It retires30 old resource aliases,
+show/get_u1_status and `/camera-widget`; `/widget` now serves current MCP
+observation. Eighteen files retire: eight obsolete HTML resources, five unused
+source/build files (including duplicate/vendor-injection and PNG fallback paths)
+and five compatibility-only tests. The eight active observation renderers remain.
+Build-contract minimum inventory follows current assets/routes. Retired routes,
+resources and tools have negative coverage; hash/tamper, isolation, security,
+runtime-config preservation, rollback and all shipping guards remain unchanged.
 
 - Use a thin header containing icon/title/state, measured FPS and accepted frame
   time. Remove the Camera footer and Refresh button. The media spans the full
@@ -85,15 +85,14 @@ This diagnostic record causes no additional acquisition.
 Neutral acquisition-error skeletons, hidden stale media/telemetry and stable
 loading/error/recovery geometry remain required. Accepted decoded/presented
 frames alone support Live/FPS; timed callbacks do not. The prior generic Footer
-statusText proposal is not required. Camera v13/observation v17 and the final
-current-only resource/build inventory require fresh affected evidence before
-acceptance; checks of the previous compatibility-preserving candidate do not
-accept removal of those resources.
+statusText proposal is not required. Fresh affected and independent required
+validation accept the current-only52-file/71-route payload at `aaaf0a56`;
+VALIDATION separates those results from the superseded compatibility candidate.
 
 ## Consequences
 
-Current records may adopt this direction before candidate code passes; the
-PR101 three-mode release remains the deployed baseline until guarded shipment.
+Exact source acceptance is complete; the PR101 three-mode release remains the
+deployed baseline until guarded shipment and installed behavior verification.
 All 55 ledger IDs remain, including eight legacy MCP observation views, unfinished
 Queue/Fans/Job History, Progress no-action, F07 discussion and separate c6.
 Screen Sharing remains paused. No authentication, network or printer-control
