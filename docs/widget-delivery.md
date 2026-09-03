@@ -4,25 +4,22 @@ Current authority, 2026-09-02. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
-## Active slice: MCP Camera and Heads Svelte candidate
+## Current deployment: PR99 MCP Camera and Heads
 
-PR97 remains deployed with legacy MCP resources. Author source for the F01/F08/
-X05 cutover is present on `codex/u1-mcp-svelte-widgets` from `3e6a4d7`: Camera v11
-selects deterministic `mcp-camera.html` with shared Svelte presentation/service
-and host-result bootstrap; dashboard keeps request bootstrap. Observation v15
-uses a nine-view dispatcher with shared Svelte Heads and eight existing renderers.
+PR99 `4787c02` is deployed after exact `f782378` independent approval and BOTH
+service restarts. Camera v11 selects shared Svelte via `mcp-camera.html`;
+observation v15 selects shared Svelte Heads and retains eight existing renderers.
+All 26 old resource aliases retain their original bytes. Required local/browser
+gates pass; scoped postdeployment behavior verification passes with synthetic host data. See the
+active VALIDATION for commands, identities and earlier failures.
 
-Author source/payload identities and focused checks are frozen in VALIDATION.
-Full required validation, independent exact approval, guarded release and actual
-plugin-host Refresh/Copy/icon Switch acceptance remain pending. Keep one bridge/
-lifecycle, self-contained assets, unchanged old URI assets and private metadata.
-The active BRIEF and decision0044 own the bounded acceptance contract.
+Actual ChatGPT phone/OAuth/clipboard and real Live acceptance remain separate.
+All 55 IDs remain, including unfinished Queue/Fans/Job History product work,
+Progress no-action, F07 discussion, c6 separation and unchanged loading policy.
+C08/Screen Sharing stay paused; user-reported Bun Local Network allowance has
+no confirmed machine or retest. This records-only tail does not redeploy.
 
-All 55 IDs remain. C08/Screen Sharing stay paused, Progress remains no-action,
-F07 class remains discussion, c6 stays separate and loading policy is unchanged.
-No new actual printer/device acceptance is claimed.
-
-## Current deployment: PR97 native observation pages
+## Earlier deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
 approved350fb6e. Fans, Thermals, Heads and Queue now use native Kit pages at the
@@ -255,7 +252,8 @@ upgraded by HTTP deployment. Compatibility aliases remain supported, not retired
 | Focused Svelte thermals/heads/queue/fans | PR89 neutral initial/failed-refresh presentation |61-case source renewal plus eight HTTPS served-byte fixture cases PASS | Failed Retry/footer/geometry and duplicate recovery; Heads44px/16px glyph/8px inset verified |
 | Focused Svelte camera | PR89 modes/acknowledgement repairs; PR95 visible44px Switch refinement | PR95 exact HTTPS geometry/loading/keyboard PASS with synthetic media; prior real-camera successes do not establish current Live | Service owns lifecycle; C08 current remote UDP EHOSTUNREACH remains unresolved |
 | Focused overview/progress/jobs/job_history/bed_mesh | PR89 generic neutral skeleton/footer paths | Source actual-host/resize/short-body coverage; shipped widget.html | These remain legacy presentations, not completed Svelte migrations |
-| Generic observation/MCP v1–v14, all nine views | PR89 widget.html; v14 active | Source nine-view/alias cases; shipped registered resource bytes | Internal cache/order retained; failed values/receipts masked |
+| MCP observation v15 / Camera v11 | PR99 shared Svelte Heads/Camera deployed; eight other observations retain legacy rendering | Exact independent full/32-case MCP suite/four adversaries; scoped postverification PASS | Self-contained resources; one bridge/lifecycle; actual phone acceptance separate |
+| Generic observation/MCP v1–v14, all nine views | PR89 widget.html; retained compatibility aliases | Source nine-view/alias cases; shipped registered resource bytes | Internal cache/order retained; failed values/receipts masked |
 | Generic camera v4–v10 / legacy camera v1–v3 | PR89 neutral media/header/footer failure paths | Scoped modern/legacy Camera alias tests; shipped resource bytes | Stable static failure/Retry; this does not migrate aliases to the Svelte mode switch |
 | Combined status v3/v4 | PR89 legacy-widget.html; v4 show_u1_status consumer | Source pending-Retry/font/viewport tests; shipped compatibility bytes | Mask failed telemetry; persistent adjacent footer status through Retry |
 
@@ -274,14 +272,14 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 
 | IDs / request | Status and evidence | Acceptance / next smallest action |
 | --- | --- | --- |
-| F01 SvelteKit checked-in project | Partial:10 Lab routes/five focused Svelte views delivered; native Fans/Thermals/Heads/Queue pages delivered through PR97 | Reuse delivered UI/controllers/services after native Fans; noiframe page acceptance does not finish remaining views or domain features |
+| F01 SvelteKit checked-in project | Partial:10 Lab routes/five focused Svelte views; four native pages through PR97; MCP Heads/Camera through PR99 | Reuse delivered UI/controllers/services after native Fans; noiframe page acceptance does not finish remaining views or domain features |
 | F02 shared primitive composition | Common/Button/Icon/Switch shipped PR91; app-root components/common integration shipped PR93 | Preserve all-eight consumer/AST/security coverage; other raw-markup debt remains |
 | F03 PercentageBackground + slight slope | Delivered: Thermals/Fans, 100-degree tint | Preserve exact ratio and truthful over-target numbers |
 | F04 src/lib/ui vs src/components |0043 one app-root components/common and pure TypeScript lib separation independently accepted and shipped PR93 | Preserve generic primitives/domain composition boundary; native renderer migration remains F01 |
 | F05 generic semantic tokens | Not started; --u1 tokens remain | Inventory consumers and controlled alias transition |
 | F06 arrow functions | Adopted AGENTS | Apply to changed JS/TS; document genuine exceptions |
 | F07 component-owned folders/services | Partial; PR89 delivers real/synthetic Camera service separation | Thin subscribers/renderers. CameraStream with $state is discussion only, not authorized or implemented; retain a framework-neutral service. |
-| F08 whole server/MCP SvelteKit migration |0043 real Kit API/UI routing/shared services shipped PR93; native Fans/Thermals/Heads/Queue pages delivered through PR97 | Four native pages are deployed; remaining UI routes serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
+| F08 whole server/MCP SvelteKit migration |0043 shared app/routing PR93; four native pages PR97; bounded MCP Heads/Camera cutover PR99 | Four native pages are deployed; remaining UI routes serve packaged HTML/iframe. Preserve URL/auth/role/MCP lifetime and relocation contracts |
 | F09 self-contained widget HTML |0042 individual/aggregate byte caps removed, independently accepted and shipped PR91 | Preserve self-contained assets, CSP/security, integrity, determinism, minification and size reporting during0043 |
 | U01 density/grouping/consistent language | Partial; independent UIUX/domain audits complete | Implement findings per widget; audits alone are not fixes |
 | U02 smaller Refresh visual | Not started in delivered shared component | Compact visible glyph/control, 44px accessible target |
@@ -319,13 +317,13 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | X02 Current Job Svelte | Source-only PR79 / 48f2060 | Integrate/remeasure; filename/state grouping, not duplicate percent |
 | X03 History Svelte and record identity | Source-only 379c1e7 adapter | Basename/outcome/date/duration and bounded-list design |
 | X04 Overview Svelte/domain grouping | Source-only 1a3b4f4 adapter | Eight truthful domain summaries, no invented fields |
-| X05 no remaining legacy/MCP aliases | Bounded MCP Camera/Heads source and author focused checks present; exact acceptance/deployment pending; full retirement not started | Bind real MCP resources to shared UI and prove Refresh/Copy/icon Switch parity; retain legacy aliases until their own lossless removal acceptance |
+| X05 no remaining legacy/MCP aliases | PR99 MCP Heads/Camera Svelte cutover independently accepted and deployed; eight other renderers and all 26 old aliases retained | Scoped postverification passes; actual-host acceptance remains separate; full retirement requires lossless removal acceptance |
 | X06 material/profile/color sync | Decision pending | No unreviewed write/sync authority |
 | G01 focused/transitive tests rule | Delivered PR80 AGENTS | One frozen full-run owner, independent targeted checks, ship guards intact |
 | G02 role-separated delegation | Adopted AGENTS | Author cannot self-approve; disclose actual capacity limits |
 | G03 UIUX and printer-domain critique | Audits completed, implementation partial | Apply screenshot/domain findings; do not claim findings fixed |
 | G04 four project role definitions | Delivered PR82 | Native named-role loading unverified; role files/manual fallback explicit |
-| G05 merge/deploy before completion | PR95 exact independent approval, guarded merge/deployment and three scoped served-UI cases PASS | Keep source/service/device layers separate; C08 intermittent failure and other backlog remain open |
+| G05 merge/deploy before completion | PR99 exact independent approval, guarded merge/deployment and BOTH restarts PASS; scoped postverification PASS | Keep source/service/device layers separate; C08 intermittent failure and other backlog remain open |
 | G06 tmp/worktree/resource cleanup | Partial; ten redundant trees quarantined; current handles closed | Retain unique work; follow up per-run test evidence directories to avoid default cleanup loss |
 | G07 persistence/status/longest stage | Ongoing workflow | Report actual stage/blocker; continue authorized open queue |
 | G08 Chinese + English technical terms | Ongoing preference | Not a request to translate the application UI |

@@ -1,36 +1,31 @@
 # F0 dual-subsystem foundation handoff
 
-## Current handoff: MCP Camera and Heads Svelte candidate
+## Current handoff: PR99 MCP resources deployed
 
-Author application bytes are frozen on `codex/u1-mcp-svelte-widgets`, based on `3e6a4d7`.
-PR97 remains deployed with legacy MCP packages. Decision0044's new Camera v11
-selects `mcp-camera.html`; its thin entry uses shared presentation/service with
-host-result initial bootstrap and no duplicate initial frame read. Dashboard
-keeps request bootstrap. Observation v15 dispatches shared Svelte Heads and the
-other eight existing renderers through one bridge/lifecycle. Old URI assets and
-private result metadata remain compatibility boundaries.
+PR99 merged `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba`, preserving independently
+approved `f782378` tree. The guarded release restarted BOTH services and verified
+health/integrity/preservation. Scoped postdeployment behavior verification passes with synthetic host data; detailed commands, identities and failed attempts are in VALIDATION.
 
-Changed areas are new MCP entries/build targets/fixtures, the typed observation
-host/legacy adapter, common Mount/host styling, Camera bootstrap and HostRpc,
-MCP registration/runtime contracts and affected package/test/shipping inputs.
-The active BRIEF owns acceptance; author focused results are in VALIDATION.
-Author source/payload hashes and cleanup are bound in VALIDATION. Next smallest
-action: commit the frozen candidate, then run the one-owner required gate and
-exact independent review.
-Guarded delivery and BOTH service restarts remain pending.
+Camera v11 uses `mcp-camera.html` with shared UI/service and host-result initial
+bootstrap; dashboard keeps request bootstrap. Observation v15 uses shared Svelte
+Heads and eight existing renderers through one bridge/lifecycle. All 26 old
+aliases remain. Changed areas are MCP entries/builds/fixtures, typed host/legacy
+adapters, common Mount/host styling, Camera bootstrap/HostRpc, registrations,
+versions and affected test/package inputs.
 
-The user reports allowing Bun Local Network access; the machine is unconfirmed,
-no retest has run and this is not C08 root-cause proof or authorization to resume
-printer reads.
+Next smallest user-outcome check: new ChatGPT conversation after host metadata
+refresh, then Heads Refresh/whole-hex Copy and Camera icon Switch. Actual phone,
+OAuth, clipboard and real Live remain unverified; existing cards only refresh
+data. No per-widget skill or plugin reinstall is required by the renderer cutover.
 
-No hosted direct HTTP acquisition, external asset fetch or old alias removal.
-C08/Screen Sharing stay paused; do not perform printer reads/controls or auth/
-system changes. Keep all 55 IDs, Progress no-action, F07 class discussion,
-separate c6 and unchanged loading policy. Actual phone/plugin-host behavior
-remains unaccepted until separately observed after deployment, host metadata
-refresh and a new conversation. Mounted-widget Refresh only renews data.
+The user reports allowing Bun Local Network access; the machine is unconfirmed
+and no retest has run. C08/Screen Sharing remain paused. Preserve all 55 IDs,
+unfinished Queue/Fans/Job History work, Progress no-action, F07 class discussion,
+separate c6 and unchanged loading policy. No printer/auth/network actions are
+authorized by this record. Markdown-only tail preserves application bytes and
+needs no redeployment under0028.
 
-## Current deployment: PR97 native observation pages
+## Earlier deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
 approved350fb6e. Fans, Thermals, Heads and Queue now use native Kit pages at the

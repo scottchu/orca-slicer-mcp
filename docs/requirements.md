@@ -623,8 +623,8 @@ durable-monitor claim.
   security checks and size reporting, with no repository byte ceiling under0042.
   Synthetic producers
   never enter its build graph. Legacy `/camera-widget` and MCP aliases remain
-  until their separate parity cutover. The currently authorized MCP Camera/Heads
-  slice performs that bounded presentation cutover through self-contained shared
+  as compatibility resources. PR99 delivers decision0044's bounded MCP
+  Camera/Heads presentation cutover through self-contained shared
   Svelte resources while preserving legacy URI compatibility, private metadata
   and bridge-only acquisition/signaling. Camera v11 uses deterministic
   `mcp-camera.html` with a thin host-result entry: the shared service accepts and

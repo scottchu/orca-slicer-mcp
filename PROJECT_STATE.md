@@ -1,29 +1,25 @@
 # Project state
 
-## Current work: MCP Camera and Heads Svelte cutover
+## Current deployment: PR99 MCP Camera and Heads
 
-Author application bytes are frozen on `codex/u1-mcp-svelte-widgets`, based on `3e6a4d7`.
-PR97 remains deployed: its native dashboard pages did not migrate the MCP
-resources. Decision0044's candidate selects Camera v11 through deterministic
-`mcp-camera.html` and observation v15 through a nine-view dispatcher: shared
-Svelte Heads plus the other eight existing renderers.
+PR99 merged as `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba` and is deployed after
+exact independent approval of `f782378`. Camera v11 now serves shared Svelte
+Camera through `mcp-camera.html`; observation v15 serves shared Svelte Heads
+and retains the other eight renderers. All 26 old resource aliases remain.
 
-Camera's thin MCP entry selects service-owned host-result initial bootstrap;
-dashboard keeps request bootstrap. One bridge/lifecycle, self-contained assets,
-old URI compatibility and private metadata remain required. Author focused
-checks and source/payload hashes are recorded in VALIDATION. The required
-full gate, exact independent approval, guarded delivery and actual plugin-host
-Refresh/Copy/icon Switch acceptance are pending.
+Required local and browser gates pass; guarded shipping restarted BOTH services
+and verified health, integrity and preservation. Postdeployment scoped behavior
+verification passes on installed resources with synthetic host data. Detailed identities, commands and earlier failed
+attempts remain in VALIDATION. Actual ChatGPT phone/OAuth/clipboard acceptance
+and real Camera Live are not established by this release.
 
-Candidate `b911d9a` failed the required gate on one stale resource-count test;
-the test-only correction passes focused checks; a renewed frozen gate is pending
-(see VALIDATION).
+Keep all 55 ledger IDs, unfinished Queue/Fans/Job History product work, Progress
+no-action, F07 reactive-class discussion, separate c6 and unchanged loading
+policy. C08 and Screen Sharing remain paused; the user's Bun Local Network
+allow report has no confirmed machine or retest. This Markdown-only rollout
+record preserves application bytes and needs no redeployment under0028.
 
-C08 Live connectivity and Screen Sharing stay paused; this slice includes no
-real-printer reads or controls. Preserve all 55 ledger IDs, Progress no-action,
-F07 reactive-class discussion, separate c6 and the unchanged loading policy.
-
-## Current deployment: PR97 native observation pages
+## Earlier deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
 approved350fb6e. Fans, Thermals, Heads and Queue now use native Kit pages at the
