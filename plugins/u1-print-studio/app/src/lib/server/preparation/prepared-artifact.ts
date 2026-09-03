@@ -140,6 +140,7 @@ type ThermalTrace = {
   bed: HeaterState;
   tools: Map<number, HeaterState>;
   extrusionFound: boolean;
+  firstExtrusionTool: number | null;
   extrusionBoundaryUnprovable: boolean;
   unknownStartup: boolean;
 };
@@ -266,7 +267,7 @@ const thermalCommand = (command: string, trace: ThermalTrace, activeTool: number
 };
 
 const parseGcode = (bytes: Uint8Array, approved: ReadonlySet<Sha256>, signal?: AbortSignal): ParsedGcode => {
-  const thermal: ThermalTrace = { bed: newHeater(), tools: new Map(), extrusionFound: false,
+  const thermal: ThermalTrace = { bed: newHeater(), tools: new Map(), extrusionFound: false, firstExtrusionTool: null,
     extrusionBoundaryUnprovable: false, unknownStartup: false };
   const thumbnails: ThumbnailBlock[] = [];
   let source: string;
@@ -321,14 +322,14 @@ const parseGcode = (bytes: Uint8Array, approved: ReadonlySet<Sha256>, signal?: A
             if (commandedParameter.status !== "present" || extrusionMode === null) thermal.extrusionBoundaryUnprovable = true;
             else if (extrusionMode === "relative") {
               const commanded = commandedParameter.value;
-              if (commanded > 0) thermal.extrusionFound = true;
+              if (commanded > 0) { thermal.extrusionFound = true; thermal.firstExtrusionTool = activeTool; }
               const current = extruderPositions.get(activeTool);
               if (current !== undefined) extruderPositions.set(activeTool, current + commanded);
             } else {
               const commanded = commandedParameter.value;
               const current = extruderPositions.get(activeTool);
               if (current === undefined) thermal.extrusionBoundaryUnprovable = true;
-              else if (commanded - current > 0) thermal.extrusionFound = true;
+              else if (commanded - current > 0) { thermal.extrusionFound = true; thermal.firstExtrusionTool = activeTool; }
               extruderPositions.set(activeTool, commanded);
             }
           } else if (!thermalCommand(command, thermal, activeTool, sequence)) {
@@ -462,6 +463,9 @@ const validateThermal = (trace: ThermalTrace, spec: PreparationSpec): PreparedAr
     return { id: "thermal_intent", status: "unavailable", code: "thermal_extrusion_boundary_unavailable" };
   }
   if (!trace.extrusionFound) return { id: "thermal_intent", status: "unavailable", code: "thermal_extrusion_boundary_unavailable" };
+  if (trace.firstExtrusionTool === null) {
+    return { id: "thermal_intent", status: "unavailable", code: "thermal_extrusion_boundary_unavailable" };
+  }
   if (trace.unknownStartup) return { id: "thermal_intent", status: "unavailable", code: "thermal_startup_semantics_unapproved" };
   const matches = (state: HeaterState | undefined, intent: ThermalIntent): boolean => {
     const target = state?.target ?? null;
@@ -469,8 +473,13 @@ const validateThermal = (trace: ThermalTrace, spec: PreparationSpec): PreparedAr
     return target !== null && Math.abs(target - intent.targetC) <= 0.01 &&
       (intent.wait === "not_required" || (state?.waitedAt ?? -1) >= (state?.changedAt ?? 0));
   };
-  if (!matches(trace.bed, spec.thermalIntent.bed)) return { id: "thermal_intent", status: "blocked", code: "bed_thermal_intent_mismatch" };
   const declared = new Map(spec.thermalIntent.tools.map(item => [item.tool, item.intent]));
+  const extrusionIntent = declared.get(trace.firstExtrusionTool);
+  if (!extrusionIntent) return { id: "thermal_intent", status: "blocked", code: "extrusion_tool_undeclared" };
+  if (!matches(trace.tools.get(trace.firstExtrusionTool), extrusionIntent)) {
+    return { id: "thermal_intent", status: "blocked", code: "extrusion_tool_thermal_intent_mismatch" };
+  }
+  if (!matches(trace.bed, spec.thermalIntent.bed)) return { id: "thermal_intent", status: "blocked", code: "bed_thermal_intent_mismatch" };
   for (const [tool, state] of trace.tools) {
     if (!declared.has(tool) && state.target !== null && state.target !== 0) {
       return { id: "thermal_intent", status: "blocked", code: "undeclared_tool_thermal_target" };

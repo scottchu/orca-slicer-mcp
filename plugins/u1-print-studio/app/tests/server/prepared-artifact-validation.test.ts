@@ -178,9 +178,39 @@ describe("ordered thermal validation", () => {
 
   test("tracks active T selection and honors an explicit inline T", () => {
     expect(check(fixture({ artifactBytes: gcode("T1\nG92 E0\nM104 S210"), thermalIntent: unheated(1) }), "thermal_intent"))
-      .toMatchObject({ status: "blocked", code: "tool_thermal_intent_mismatch" });
-    expect(check(fixture({ artifactBytes: gcode("M104 T1 S210"), thermalIntent: unheated(1) }), "thermal_intent"))
-      .toMatchObject({ status: "blocked", code: "tool_thermal_intent_mismatch" });
+      .toMatchObject({ status: "blocked", code: "extrusion_tool_thermal_intent_mismatch" });
+    expect(check(fixture({ artifactBytes: gcode("M104 T1 S210\nT1\nG92 E0"), thermalIntent: unheated(1) }), "thermal_intent"))
+      .toMatchObject({ status: "blocked", code: "extrusion_tool_thermal_intent_mismatch" });
+  });
+
+  test("binds the first positive extrusion to its declared tool thermal intent", () => {
+    const t1Extrusion = "M190 S60\nM109 T0 S210\nT1\nG92 E0";
+    expect(check(fixture({ artifactBytes: gcode(t1Extrusion) }), "thermal_intent"))
+      .toMatchObject({ status: "blocked", code: "extrusion_tool_undeclared" });
+
+    const multiToolIntent: PreparationSpec["thermalIntent"] = {
+      bed: { mode: "heated", targetC: 60, wait: "required" },
+      tools: [
+        { tool: 0, intent: { mode: "heated", targetC: 210, wait: "required" } },
+        { tool: 1, intent: { mode: "heated", targetC: 220, wait: "required" } },
+      ],
+    };
+    const switchedTool = "M190 S60\nM109 T0 S210\nM109 T1 S220\nT0\nG92 E10\nG1 E9\nT1\nG92 E0";
+    expect(check(fixture({ artifactBytes: gcode(switchedTool), thermalIntent: multiToolIntent }), "thermal_intent"))
+      .toMatchObject({ status: "passed", code: "thermal_intent_verified" });
+    expect(check(fixture({ artifactBytes: gcode(switchedTool.replace("M109 T1 S220\n", "")),
+      thermalIntent: multiToolIntent }), "thermal_intent"))
+      .toMatchObject({ status: "blocked", code: "extrusion_tool_thermal_intent_mismatch" });
+    expect(check(fixture({ artifactBytes: gcode(switchedTool.replace("M109 T1 S220", "M104 T1 S220")),
+      thermalIntent: multiToolIntent }), "thermal_intent"))
+      .toMatchObject({ status: "blocked", code: "extrusion_tool_thermal_intent_mismatch" });
+
+    const intentionalCold: PreparationSpec["thermalIntent"] = { bed: { mode: "unheated" }, tools: [
+      { tool: 0, intent: { mode: "unheated" } }, { tool: 1, intent: { mode: "unheated" } },
+    ] };
+    expect(check(fixture({ artifactBytes: gcode("T0\nG92 E5\nG1 E4\nT1\nG92 E0"),
+      thermalIntent: intentionalCold }), "thermal_intent"))
+      .toMatchObject({ status: "passed", code: "thermal_intent_verified" });
   });
 
   test("fails closed for arbitrary startup commands unless their exact semantics fingerprint is trusted", () => {
