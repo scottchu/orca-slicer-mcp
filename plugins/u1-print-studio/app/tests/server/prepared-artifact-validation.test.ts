@@ -52,7 +52,8 @@ const join = (parts: ReadonlyArray<Uint8Array>): Uint8Array => {
   for (const part of parts) { output.set(part, offset); offset += part.length; }
   return output;
 };
-const png = (options: { blank?: boolean; ancillaryChunks?: number; width?: number; height?: number } = {}): Uint8Array => {
+const png = (options: { blank?: boolean; ancillaryChunks?: number; extraChunkTypes?: ReadonlyArray<string>;
+  width?: number; height?: number } = {}): Uint8Array => {
   const width = options.width ?? 2; const height = options.height ?? 1; const header = new Uint8Array(13);
   header.set(uint32(width), 0); header.set(uint32(height), 4); header[8] = 8; header[9] = 2;
   const rows = new Uint8Array(height * (width * 3 + 1));
@@ -65,6 +66,7 @@ const png = (options: { blank?: boolean; ancillaryChunks?: number; width?: numbe
   }
   return join([new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]), chunk("IHDR", header),
     ...Array.from({ length: options.ancillaryChunks ?? 0 }, () => chunk("tEXt", new Uint8Array())),
+    ...(options.extraChunkTypes ?? []).map(type => chunk(type, new Uint8Array())),
     chunk("IDAT", deflateSync(rows)), chunk("IEND", new Uint8Array())]);
 };
 
@@ -201,6 +203,20 @@ describe("ordered thermal validation", () => {
     expect(check(fixture({ artifactBytes: unknownMode, thermalIntent: unheated() }), "thermal_intent"))
       .toMatchObject({ status: "unavailable", code: "thermal_extrusion_boundary_unavailable" });
   });
+
+  test("rejects duplicate interpreted parameters and firmware-dependent cold retract commands", () => {
+    expect(check(fixture({ artifactBytes: gcode("M140 S60 S0\nM190 S60\nM109 T0 S210") }), "thermal_intent"))
+      .toMatchObject({ status: "unavailable", code: "thermal_startup_semantics_unapproved" });
+    expect(check(fixture({ artifactBytes: gcode("M190 S60\nM104 T0 T1 S210\nM109 T0 S210") }), "thermal_intent"))
+      .toMatchObject({ status: "unavailable", code: "thermal_startup_semantics_unapproved" });
+    expect(check(fixture({ artifactBytes: gcode("G10\nG11"), thermalIntent: unheated() }), "thermal_intent"))
+      .toMatchObject({ status: "unavailable", code: "thermal_startup_semantics_unapproved" });
+    const duplicateExtrusion = new TextEncoder().encode([
+      "M83", "G1 E-1 E0.5", thumbnailBlock(), "G1 E0.5", "",
+    ].join("\n"));
+    expect(check(fixture({ artifactBytes: duplicateExtrusion, thermalIntent: unheated() }), "thermal_intent"))
+      .toMatchObject({ status: "unavailable", code: "thermal_extrusion_boundary_unavailable" });
+  });
 });
 
 describe("bounded embedded-thumbnail evidence", () => {
@@ -214,6 +230,13 @@ describe("bounded embedded-thumbnail evidence", () => {
       .toMatchObject({ status: "blocked", code: "thumbnail_invalid" });
     expect(check(fixture({ artifactBytes: gcode(heatedStartup, [thumbnailBlock(), thumbnailBlock()]) }), "embedded_thumbnails"))
       .toMatchObject({ status: "blocked", code: "thumbnail_requirements_mismatch" });
+  });
+
+  test("rejects non-letter and reserved-bit PNG chunk types even with valid CRCs", () => {
+    expect(check(fixture({ artifactBytes: gcode(heatedStartup, [thumbnailBlock(png({ extraChunkTypes: ["1BAD"] }))]) }),
+      "embedded_thumbnails")).toMatchObject({ status: "blocked", code: "thumbnail_invalid" });
+    expect(check(fixture({ artifactBytes: gcode(heatedStartup, [thumbnailBlock(png({ extraChunkTypes: ["texT"] }))]) }),
+      "embedded_thumbnails")).toMatchObject({ status: "blocked", code: "thumbnail_invalid" });
   });
 
   test("bounds line length, line count, aggregate base64 and PNG chunks", () => {

@@ -220,13 +220,22 @@ const validResolvedSettings = (receipt: ResolvedSettingsReceipt): boolean => rec
 
 const newHeater = (): HeaterState => ({ target: null, changedAt: -1, waitedAt: -1 });
 const allowedStartupCommands = new Set([
-  "G0", "G1", "G4", "G10", "G11", "G20", "G21", "G28", "G29", "G90", "G91", "G92",
+  "G0", "G1", "G4", "G20", "G21", "G28", "G29", "G90", "G91", "G92",
   "M17", "M18", "M73", "M82", "M83", "M84", "M106", "M107", "M117", "M118", "M201", "M203",
   "M204", "M205", "M220", "M221", "M400", "M420", "M500", "M900",
 ]);
-const numericParameter = (command: string, names: string): number | null => {
-  const match = new RegExp(`(?:^|\\s)[${names}](-?(?:\\d+(?:\\.\\d*)?|\\.\\d+))(?:\\s|$)`, "i").exec(command);
-  return match ? Number(match[1]) : null;
+type InterpretedParameter =
+  | { readonly status: "absent" }
+  | { readonly status: "present"; readonly value: number }
+  | { readonly status: "ambiguous" };
+const interpretedParameter = (command: string, names: string): InterpretedParameter => {
+  const matches = Array.from(command.matchAll(
+    new RegExp(`(?:^|\\s)[${names}](-?(?:\\d+(?:\\.\\d*)?|\\.\\d+))(?=\\s|$)`, "gi"),
+  ));
+  if (matches.length === 0) return { status: "absent" };
+  if (matches.length !== 1) return { status: "ambiguous" };
+  const value = Number(matches[0]![1]);
+  return Number.isFinite(value) ? { status: "present", value } : { status: "ambiguous" };
 };
 const setHeater = (state: HeaterState, target: number, sequence: number, wait: boolean): void => {
   if (state.target !== target) { state.target = target; state.changedAt = sequence; }
@@ -236,11 +245,17 @@ const thermalCommand = (command: string, trace: ThermalTrace, activeTool: number
   const code = /^([GMT]\d+)\b/i.exec(command)?.[1]?.toUpperCase();
   if (!code || !new Set(["M104", "M109", "M140", "M190"]).has(code)) return false;
   const wait = code === "M109" || code === "M190";
-  const target = numericParameter(command, wait ? "SR" : "S");
-  if (target === null || !Number.isFinite(target) || target < 0 || target > 500) { trace.unknownStartup = true; return true; }
+  const targetParameter = interpretedParameter(command, wait ? "SR" : "S");
+  if (targetParameter.status !== "present" || targetParameter.value < 0 || targetParameter.value > 500) {
+    trace.unknownStartup = true;
+    return true;
+  }
+  const target = targetParameter.value;
   if (code === "M140" || code === "M190") setHeater(trace.bed, target, sequence, wait);
   else {
-    const inlineTool = numericParameter(command, "T"); const tool = inlineTool ?? activeTool;
+    const inlineTool = interpretedParameter(command, "T");
+    if (inlineTool.status === "ambiguous") { trace.unknownStartup = true; return true; }
+    const tool = inlineTool.status === "present" ? inlineTool.value : activeTool;
     if (!Number.isInteger(tool) || tool < 0 || tool > 15) { trace.unknownStartup = true; return true; }
     const state = trace.tools.get(tool) ?? newHeater(); trace.tools.set(tool, state); setHeater(state, target, sequence, wait);
   }
@@ -294,17 +309,19 @@ const parseGcode = (bytes: Uint8Array, approved: ReadonlySet<Sha256>, signal?: A
           } else if (/^M82\b/i.test(command)) extrusionMode = "absolute";
           else if (/^M83\b/i.test(command)) extrusionMode = "relative";
           else if (/^G92\b/i.test(command)) {
-            const position = numericParameter(command, "E");
-            if (position !== null) extruderPositions.set(activeTool, position);
-            else if (/(?:^|\s)E/i.test(command)) thermal.extrusionBoundaryUnprovable = true;
+            const position = interpretedParameter(command, "E");
+            if (position.status === "present") extruderPositions.set(activeTool, position.value);
+            else if (position.status === "ambiguous" || /(?:^|\s)E/i.test(command)) thermal.extrusionBoundaryUnprovable = true;
           } else if (/^G(?:0|1)\b/i.test(command) && /(?:^|\s)E/i.test(command)) {
-            const commanded = numericParameter(command, "E");
-            if (commanded === null || extrusionMode === null) thermal.extrusionBoundaryUnprovable = true;
+            const commandedParameter = interpretedParameter(command, "E");
+            if (commandedParameter.status !== "present" || extrusionMode === null) thermal.extrusionBoundaryUnprovable = true;
             else if (extrusionMode === "relative") {
+              const commanded = commandedParameter.value;
               if (commanded > 0) thermal.extrusionFound = true;
               const current = extruderPositions.get(activeTool);
               if (current !== undefined) extruderPositions.set(activeTool, current + commanded);
             } else {
+              const commanded = commandedParameter.value;
               const current = extruderPositions.get(activeTool);
               if (current === undefined) thermal.extrusionBoundaryUnprovable = true;
               else if (commanded - current > 0) thermal.extrusionFound = true;
@@ -355,6 +372,8 @@ const decodePng = (bytes: Uint8Array): { width: number; height: number; meaningf
     chunkCount += 1; if (chunkCount > MAX_PNG_CHUNKS) return null;
     const length = read32(bytes, offset); if (offset + 12 + length > bytes.length) return null;
     const typeBytes = bytes.subarray(offset + 4, offset + 8); const type = Buffer.from(typeBytes).toString("ascii");
+    const asciiLetter = (byte: number): boolean => (byte >= 65 && byte <= 90) || (byte >= 97 && byte <= 122);
+    if (!Array.from(typeBytes).every(asciiLetter) || typeBytes[2]! < 65 || typeBytes[2]! > 90) return null;
     const data = bytes.subarray(offset + 8, offset + 8 + length); const crcInput = new Uint8Array(4 + length);
     crcInput.set(typeBytes); crcInput.set(data, 4);
     if (crc32(crcInput) !== read32(bytes, offset + 8 + length)) return null;
