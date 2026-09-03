@@ -1,5 +1,43 @@
 # F0 dual-subsystem foundation handoff
 
+## Current source: presentation experiment awaiting final exact review
+
+The renewed 45-path application source candidate has manifest
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+Its isolated MCP resource is 137,936 bytes at SHA-256
+`6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+Author checks pass 8 client tests, 13 server/MCP tests with 75 assertions,
+TypeScript/Svelte/component contracts, deterministic resource verification,
+the 62-file/80-route/62-hash server build and four Chrome cases at 320/720.
+Exact commands, two independent request-changes rounds, screenshot-first design
+evidence and final limits are in VALIDATION.
+The printer-domain reviewer approved prior manifest
+`4437e4f9f032cfffef3405227b7775c3f40dfb3a9326858bee478b2a826115fc`.
+A later
+whole-range whitespace check caused a formatting-only generator/source cleanup,
+full affected author renewal and the identity above; final independent exact-
+candidate review is still required.
+
+Decision0048 accepts only the isolated private-lab experiment: fixed T1, four
+closed domain leaves, common layout nodes, strict correlated envelopes,
+deduplicated source acquisition, per-value timestamps/provenance, `Unknown` for
+ambiguous fan relation, stable neutral error/loading structure, a private Lab
+route, and a Lab-only MCP factory/tool/resource. Production registration remains
+negative and unchanged. Do not infer a general UI DSL, production cutover, live
+mapping, mounted-host behavior, printer truth, deployment, or user acceptance.
+
+Decision0049 preserves a user-selected future Camera direction: move current
+top-right information plus loading/error messaging into bottom overlays within
+dynamic media. No Camera file changed. A separate screenshot-first candidate
+must preserve media/session/control/frame-evidence semantics and pass source,
+packaged-host and device review before adoption.
+
+Next smallest action is independent exact-commit/source review of the renewed
+identity and durable records. Do
+not PR, merge, deploy, register the Lab factory in production, or change printer,
+authentication or Tailscale state. Any product adoption requires a new decision
+and fresh exact-candidate evidence.
+
 ## Current deployment: PR106 host fullscreen and packaged body insets
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release

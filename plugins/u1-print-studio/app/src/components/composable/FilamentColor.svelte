@@ -1,0 +1,10 @@
+<script lang="ts">
+  import { Spool } from 'lucide-svelte';
+  import type { ResolvedColorValue } from '../../lib/composable/view-model';
+  import Reading from '../common/Reading.svelte';
+  import Swatch from '../common/Swatch.svelte';
+  let { value }: { value: ResolvedColorValue } = $props();
+  const display = $derived(value.state === 'known' ? value.hex ?? 'Unknown' : 'Unknown');
+</script>
+
+<Reading icon={Spool}><Swatch label="Configured filament color" color={value.hex} {display} state={value.state} /></Reading>

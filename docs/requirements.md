@@ -215,8 +215,15 @@ printer environments support the described behavior.
   compact header holds only icon/title/state/FPS/time. Decision0046 records this
   explicit user-approved Camera-only exception to decision0041's footer placement;
   other widgets retain their footer/Refresh/error contracts. Display/mode
-  controls stay accessible at the media's bottom right. The current candidate uses only Auto / Live through generic
-  common animated `Switch`, fixed at 88px wide and 44px high in the Camera media's
+  controls stay accessible at the media's bottom right. Decision0049 preserves
+  the current delivered layout as baseline but selects a future Camera-only
+  placement refinement: move the current top-right information plus truthful
+  loading/error messaging into bottom overlays inside dynamic media. That
+  migration is not implemented or visually/device accepted; it requires a
+  separate candidate and preserves Auto/Live, media/session/control, privacy,
+  fullscreen and frame-evidence semantics from decisions0046/0047. The current
+  candidate uses only Auto / Live through generic common animated `Switch`,
+  fixed at 88px wide and 44px high in the Camera media's
   bottom-right corner. Auto is the default for a new mount; remove the separate
   single-Snapshot mode. The latest user instruction supersedes old resource
   compatibility: retire prior version aliases, obsolete widget bundles and
@@ -803,7 +810,18 @@ durable-monitor claim.
   services/domain live in `src/lib`, server-only code in `lib/server` and real Kit
   routes in `src/routes`, with Bun retained. The former `src/lib/common` path is
   PR91 history. Native renderer coverage remains separately tracked; file moves
-  alone do not complete it. Existing
+  alone do not complete it.
+  Decision0048 additionally accepts a provisional private-lab experiment, not
+  production architecture or cutover: one fixed T1 subject composes only
+  `HeadStatus`, `HeadTemperature`, `FilamentColor`, and `FanRelation` domain
+  leaves through common `Card`/`Title`/`Table`/`Row` layout nodes. Strict JSON
+  validation, canonical hash/spec/plan/source/topology/provenance correlation,
+  deduplicated source readers, bounded values, `Unknown` for absent or ambiguous
+  relations, input-shaped loading/error states, no arbitrary code or markup,
+  and negative production-registration guards are mandatory. The isolated Lab
+  route and MCP factory/resource prove only synthetic software/protocol behavior;
+  production adoption, Camera, live mappings, mounted-host/device acceptance,
+  printer authority and deployment remain pending. Existing
   props/variants express visual/content differences. Domain compositions and
   domain icon mappings remain outside common. Consolidate visual-only leaf
   variants without weakening AST/import guards or changing domain semantics;

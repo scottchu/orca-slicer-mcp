@@ -13,6 +13,7 @@ composites.push('observation/HeadsPanel.svelte', 'live/LiveHeadsRoot.svelte');
 composites.push('observation/HeadsWidget.svelte');
 composites.push('mcp/ObservationRoot.svelte');
 composites.push('observation/QueueWidget.svelte', 'observation/QueueRow.svelte', 'observation/QueueRows.svelte', 'observation/QueueSummary.svelte', 'observation/QueueSkeleton.svelte', 'observation/DomainReceipt.svelte', 'live/LiveQueueRoot.svelte');
+composites.push('composable/PresentationNode.svelte', 'composable/PresentationRenderer.svelte', 'composable/ComposableMcpRoot.svelte', 'composable/HeadStatus.svelte', 'composable/HeadTemperature.svelte', 'composable/FilamentColor.svelte', 'composable/FanRelation.svelte');
 export const leaves: Record<string, string[]> = {
   'common/Mount.svelte': ['div'],
   'common/RetainedLayer.svelte': ['div'],
@@ -45,6 +46,12 @@ export const leaves: Record<string, string[]> = {
   'common/ChartFrame.svelte': ['div', 'div', 'div', 'div', 'div', 'span'],
   'common/HeightLegend.svelte': ['div', 'span', 'span', 'span', 'span'],
   'bed-mesh/BedMesh2D.svelte': ['canvas'], 'bed-mesh/BedMesh3D.svelte': ['div', 'span', 'div', 'div'],
+  'common/Badge.svelte': ['div', 'span', 'span'], 'common/Card.svelte': ['article'],
+  'common/Metric.svelte': ['div', 'span', 'span'], 'common/Row.svelte': ['div'],
+  'common/Swatch.svelte': ['div', 'span', 'span', 'span'], 'common/Table.svelte': ['div'],
+  'common/Title.svelte': ['h2'],
+  'common/Reading.svelte': ['div', 'div'], 'common/StatusLine.svelte': ['p'],
+  'common/StaticSkeleton.svelte': ['span'],
 };
 // Untouched ready widgets, route chrome, and compatibility frame remain explicit
 // debt. Exact tag multisets cannot grow. Retire entries when migrated.
@@ -58,6 +65,7 @@ export const debt: Record<string, string[]> = {
   'observation/ObservationFrame.svelte': [],
   'lab/ObservationLab.svelte': ['div','main','section','section'], '../routes/+layout.svelte': [], '../routes/dashboard/fans/+page.svelte': [],
   '../routes/dashboard/thermals/+page.svelte': [], '../routes/dashboard/heads/+page.svelte': [], '../routes/dashboard/queue/+page.svelte': [],
+  '../routes/dashboard/lab/composition/+page.svelte': ['details', 'details', 'h1', 'header', 'label', 'label', 'main', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'p', 'p', 'p', 'pre', 'pre', 'section', 'section', 'section', 'select', 'select', 'summary', 'summary'],
 };
 
 export function exactTags(actual: string[], expected: string[]): boolean {
@@ -82,6 +90,13 @@ const approvedImports: Record<string, string[]> = {
   'observation/QueueSummary.svelte': ['../../lib/client/live/queue-presentation', '../common/InfoPair.svelte', '../common/Caption.svelte', '../common/LoadingValue.svelte', '../../lib/client/observation/format'],
   'observation/DomainReceipt.svelte': ['../../lib/client/live/presentation', '../common/Caption.svelte', './ObservedMeta.svelte', '../../lib/client/observation/format'],
   'live/LiveQueueRoot.svelte': ['../common/LoadingValue.svelte', 'svelte', 'lucide-svelte', '../../lib/client/live/queue-controller', '../common/Shell.svelte', '../common/Header.svelte', '../common/Body.svelte', '../common/Footer.svelte', '../common/StateAnnouncement.svelte', '../common/StateSurface/StateSurface.svelte', '../common/Caption.svelte', '../common/Icon.svelte', '../common/Button.svelte', '../common/Skeleton.svelte', '../common/FeedbackOverlay.svelte', '../common/Stack.svelte', '../observation/DomainReceipt.svelte', '../observation/QueueSummary.svelte', '../observation/QueueRows.svelte', '../observation/QueueSkeleton.svelte'],
+  'composable/PresentationNode.svelte': ['../../lib/composable/view-model', '../common/Card.svelte', '../common/Title.svelte', '../common/Table.svelte', '../common/Row.svelte', './HeadStatus.svelte', './HeadTemperature.svelte', './FilamentColor.svelte', './FanRelation.svelte', './PresentationNode.svelte'],
+  'composable/PresentationRenderer.svelte': ['../../lib/composable/view-model', '../common/Stack.svelte', '../common/StatusLine.svelte', './PresentationNode.svelte'],
+  'composable/ComposableMcpRoot.svelte': ['svelte', '../../lib/client/host/rpc', '../../lib/client/composable/host', '../../lib/client/composable/presentation', '../common/StatusLine.svelte', './PresentationRenderer.svelte'],
+  'composable/HeadStatus.svelte': ['lucide-svelte', '../../lib/composable/view-model', '../common/Reading.svelte', '../common/Badge.svelte'],
+  'composable/HeadTemperature.svelte': ['lucide-svelte', '../../lib/composable/view-model', '../common/Reading.svelte', '../common/Metric.svelte'],
+  'composable/FilamentColor.svelte': ['lucide-svelte', '../../lib/composable/view-model', '../common/Reading.svelte', '../common/Swatch.svelte'],
+  'composable/FanRelation.svelte': ['lucide-svelte', '../../lib/composable/view-model', '../common/Reading.svelte', '../common/Metric.svelte'],
   'observation/HeadsWidget.svelte': ['svelte', '../../lib/client/observation/types', '../../lib/client/observation/loading', '../../lib/client/live/copy-action', '../../lib/client/live/heads-presentation', '../../lib/client/common/clipboard', './HeadsPanel.svelte', '../../lib/client/observation/heads-loading'],
   'live/LiveHeadsRoot.svelte': ['svelte', '../../lib/client/live/heads-controller', '../../lib/client/live/heads-presentation', '../observation/HeadsPanel.svelte'],
   'observation/HeadsPanel.svelte': ['lucide-svelte', '../../lib/client/live/presentation', '../../lib/client/live/heads-presentation', '../../lib/client/observation/format', './HeadCards.svelte', './HeadsSkeleton.svelte', '../common/Shell.svelte', '../common/Header.svelte', '../common/Body.svelte', '../common/Footer.svelte', '../common/StateAnnouncement.svelte', '../common/StateSurface/StateSurface.svelte', './ObservedMeta.svelte', '../common/Caption.svelte', '../common/Icon.svelte', '../common/Button.svelte', '../common/Skeleton.svelte', '../common/FeedbackOverlay.svelte', '../common/Stack.svelte', '../common/InfoPair.svelte', '../common/Label.svelte', '../../lib/client/observation/heads-loading'],

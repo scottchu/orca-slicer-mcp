@@ -52,6 +52,8 @@ silently changed.
 | [0045](0045-compose-print-with-standalone-asynchronous-monitoring.md) | Compose print with standalone asynchronous monitoring | Accepted workflow direction; source review pending; no durable service claim |
 | [0046](0046-camera-auto-default-and-edge-to-edge-card.md) | Camera Auto default and edge-to-edge card | PR104 accepted/deployed at162dc68; scoped synthetic postverification PASS; phone reliability unresolved |
 | [0047](0047-use-host-acknowledged-fullscreen-with-persistent-media.md) | Use host-acknowledged fullscreen with persistent media | Shipped in PR106; installed-byte scoped checks PASS; actual-host acceptance pending |
+| [0048](0048-explore-entity-bound-presentation-ast-in-private-lab.md) | Explore an entity-bound presentation AST in a private lab | Accepted for isolated private-lab learning; not production architecture or cutover |
+| [0049](0049-place-future-camera-information-in-media-overlays.md) | Place future Camera information in media-bottom overlays | User-selected future direction; implementation and acceptance pending |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

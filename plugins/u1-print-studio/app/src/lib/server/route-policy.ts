@@ -3,11 +3,13 @@ export type RoutePolicy = { kind: RouteKind; methods: readonly string[]; deniedM
 export const DASHBOARD_VIEWS = ['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans', 'bed_mesh', 'camera'] as const;
 export const NATIVE_DASHBOARD_VIEWS = ['fans', 'thermals', 'heads', 'queue'] as const;
 export const NATIVE_DASHBOARD_PATHS = new Set<string>(NATIVE_DASHBOARD_VIEWS.map((view) => `/dashboard/${view}`));
+export const NATIVE_LAB_PATHS = new Set(['/dashboard/lab/composition']);
 export const DASHBOARD_PAGES = new Set([
   '/dashboard', '/dashboard/',
   ...DASHBOARD_VIEWS.map((view) => `/dashboard/${view}`),
   ...['fans', 'thermals', 'heads', 'queue', 'camera'].map((view) => `/dashboard/${view}_widget`),
-  ...['/dashboard/lab', ...DASHBOARD_VIEWS.map((view) => `/dashboard/lab/${view}`)].flatMap((route) => [route, route + '/'])
+  ...['/dashboard/lab', ...DASHBOARD_VIEWS.map((view) => `/dashboard/lab/${view}`)].flatMap((route) => [route, route + '/']),
+  ...NATIVE_LAB_PATHS,
 ]);
 const oauthGet = new Set(['/.well-known/oauth-protected-resource', '/.well-known/oauth-protected-resource/mcp',
   '/.well-known/oauth-authorization-server', '/.well-known/jwks.json', '/oauth/authorize', '/oauth/authorize/options']);

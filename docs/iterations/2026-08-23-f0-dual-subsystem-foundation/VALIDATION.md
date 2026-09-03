@@ -1,5 +1,143 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-03 entity-bound presentation AST experiment
+
+### Acceptance and safety boundary
+
+This UI-003/F0 experiment asks whether strict JSON can compose one T1 status,
+actual/target temperature, configured filament color and truthful typed fan
+relation from closed domain leaves and common layout primitives. Acceptance is
+limited to a dashboard-private Lab route and an explicitly constructed Lab MCP
+factory/tool/resource. Production registration must not import or expose the
+experiment. There is no arbitrary HTML/CSS/JavaScript, remote content, printer
+control, Camera implementation, authentication/Tailscale change, PR, merge or
+deployment.
+
+The renewed 45-path application source candidate has manifest SHA-256
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+Its deterministic isolated MCP resource is 137,936 bytes, SHA-256
+`6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+This follows a whitespace-only source/generator cleanup after the prior
+independent approval; final independent exact-candidate review is pending.
+Decision0048 records this as provisional private-lab learning, not production
+architecture or cutover. Decision0049 separately records the user's future
+Camera media-bottom-overlay direction; no Camera file changed in this slice.
+
+### Author implementation and focused verification
+
+The strict AST binds T1 once and exposes only `HeadStatus`, `HeadTemperature`,
+`FilamentColor`, `FanRelation`, `Card`, `Title`, `Table` and `Row`. Domain leaves
+own fixed icons, labels, formatters and source mappings. Source planning
+deduplicates readers; unreferenced readers receive zero calls. A strict envelope
+correlates canonical JSON and SHA-256, exact derived plan and source ledger,
+resolved topology, value provenance and source/receipt timestamps. Card tint is
+correlated to provenance-bearing configured-color evidence even when no color
+leaf is rendered. A zero/absent fan relation is `Unknown`/`notReported`; multiple
+relations are `Unknown`/`ambiguous`; a malformed environment relation or source
+is `unavailable`/`sourceUnavailable` with a static error skeleton. Partial source
+failure preserves unrelated values. Loading skeletons animate; error skeletons
+are static with distinct persistent status space.
+
+From `plugins/u1-print-studio/app`, with Bun environment/config autoload
+disabled where shown:
+
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable`
+  passed 8 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts`
+  passed 13 tests with 75 assertions. Coverage includes strict-schema escapes,
+  counting readers, partial failure, spec/hash/plan/source/topology/provenance
+  adversaries, bounded render values, fan zero/one/multiple/malformed cases,
+  tint divergence/tint-without-transform, a transform with no color leaf, and
+  neutral unknown/unavailable transform evidence.
+- `bun --no-env-file --config=/dev/null run check` passed TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passed with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` followed by
+  `verify:mcp-composable-lab` passed deterministically at the resource identity
+  above. `bun --no-env-file --config=/dev/null run build:server` passed with 62
+  files, 80 static routes and 62 hashes.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed four Chrome cases at 320/720 pixels. All card/leaves/larger compositions
+  preserve known/loading/error/partial topology with at most 1px height drift;
+  only loading animates, no orphan row/cell roles remain, focus contrast is
+  7.67:1, 20px value text becomes 40px at 200%, and no overflow was observed.
+
+Renewed synthetic screenshots are under
+`plugins/u1-print-studio/app/test-results/composable-lab/`:
+`composition-known-320px.png`, `composition-known-720px.png`, and the 720px
+`composition-ambiguous`, `composition-loading`, `composition-partial` and
+`composition-error` PNGs. No private or user image is stored.
+
+### Role-separated review history
+
+The project-scoped architecture review gave a conditional structural pass, not
+source acceptance. It identified missing strict-schema adversaries, counting
+reader/zero-call coverage, partial-failure and provenance-time checks, fan
+cardinality/malformed cases, stable state topology, private/public and Lab/
+production inventory proofs, and static authority/import guards. Filesystem
+process spawning was unavailable under EMFILE, so that role reviewed
+root-provided summaries and could not independently verify tests, documents or
+isolation. Its gaps drove author tests; final independent review supersedes it
+for acceptance.
+
+Screenshot-first UI/UX review initially failed visual-source checkpoint manifest
+`d0167fdcc237ce6482fa70bbb4bde765a93a14014a265ddd4696d1f6302cb29d`:
+generic leaves permitted misleading icon/label/value combinations, error
+skeletons pulsed without visible status, and ready/error geometry drifted. A
+fresh follow-up passed that same visual checkpoint; report SHA-256
+`5ae4a706d7e5b50717b89c122735d458a763b34bd085bcff2c8a54a35247b04`
+records 0px state delta across all shapes, static error, 7.67:1 focus contrast,
+20px-to-40px 200% scaling and no overflow. This is a visual-source checkpoint,
+not final application identity: later correlation-only source/resource changes
+were accepted by the independent domain reviewer and received renewed author
+Playwright evidence.
+
+The project-scoped `printer_domain_expert`, assigned independent source,
+protocol and domain review, requested changes twice. Manifest
+`3f742e2ff30ca42191a38096dc4b0d765d3d0752ad0d1bc202f84eef73658988`
+lacked end-to-end envelope/input correlation and sufficiently closed rendered
+values. Manifest
+`b73c90245132aeae733abc72f8fb2aa869270e916623205a426219af9df2466a`
+did not correlate `Card.transform` to its resolved tint. After both repair
+rounds, the reviewer verified exact frozen source-set identity
+`4437e4f9f032cfffef3405227b7775c3f40dfb3a9326858bee478b2a826115fc`,
+truthful U1 semantics and the final evidence above, and returned **APPROVE**.
+That approval remains semantic/source evidence for the prior candidate, not
+exact approval of the current identity. A later whole-range whitespace check
+found one generated trailing-whitespace line and four blank EOF lines. The
+generator now losslessly escapes its one Svelte-runtime whitespace literal
+before embedding, rejects trailing whitespace in inline assets, and the four
+source EOFs are clean. This formatting-only change requires final independent
+review of manifest
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+
+### Records-only tail verification
+
+After adding decisions0048/0049 and synchronizing requirements, state, next-agent
+and iteration records, `git diff --check HEAD^` passed across the whole candidate. A
+focused static contract check confirmed `docs/iterations/CURRENT` resolves to
+existing VALIDATION/HANDOFF files, decisions0048/0049 each have exactly one
+record and one index row, and both decisions are referenced by requirements plus
+all four continuity records.
+
+After the whitespace repair and after the renewed Markdown tail, the sorted
+45-path changed/new application set was hashed as one line per `shasum -a 256`
+result and then hashed again. Both results equal
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+The affected client/server tests, UI/server checks, deterministic MCP build and
+verify, server build, and four-case Playwright suite were all renewed with the
+same counts above. The formatting cleanup changes resource identity only; it
+does not broaden the experiment's evidence boundary.
+
+### Evidence limits
+
+All values and browser scenarios are synthetic. These checks do not establish
+live Moonraker mappings, mounted MCP-host behavior, a real printer, physical
+accuracy/safety, actual-device usability, Camera behavior, recovery interaction,
+production suitability or user outcome. T1 is the only subject. The Lab MCP
+factory is an isolated proof and production inventory remains unchanged. No
+printer/service/network/auth action, PR, merge or deployment occurred.
+
 ## Current deployment: PR106 exact release and BOTH service restarts
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6`, preserving reviewed

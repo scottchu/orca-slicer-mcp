@@ -1,0 +1,190 @@
+import { describe, expect, test } from 'bun:test';
+import { createHash } from 'node:crypto';
+import type { PresentationField } from '../../src/lib/composable/schema.js';
+import { composableEnvelopeSchema } from '../../src/lib/composable/envelope.js';
+import { t1EntityCardSpec, t1LeafSpec } from '../../src/lib/composable/specs.js';
+import { composableViewModelSchema, resolvedValueSchema, type ResolvedNode, type ResolvedValue } from '../../src/lib/composable/view-model.js';
+import { composeEntityCard, type ComposableReaders } from '../../src/lib/server/composable-presentation.js';
+
+const statusObservedAt = '2026-09-03T16:20:00.000Z';
+const statusReceivedAt = '2026-09-03T16:20:00.100Z';
+const materialObservedAt = '2026-09-03T16:19:45.000Z';
+const materialReceivedAt = '2026-09-03T16:19:45.250Z';
+const environmentObservedAt = '2026-09-03T16:19:30.000Z';
+const environmentReceivedAt = '2026-09-03T16:19:30.500Z';
+const transformOnlySpec = {
+  schemaVersion: 1 as const,
+  subject: { kind: 'toolHead' as const, id: 'T1' as const },
+  root: { type: 'Card' as const, transform: { kind: 'softFilamentTint' as const, strength: 'subtle' as const }, children: [{ type: 'Title' as const, text: 'T1 material' }] },
+};
+const noTransformSpec = {
+  schemaVersion: 1 as const,
+  subject: { kind: 'toolHead' as const, id: 'T1' as const },
+  root: { type: 'Card' as const, children: [{ type: 'Title' as const, text: 'T1 status' }, { type: 'HeadStatus' as const }] },
+};
+
+const readers = (relations: unknown[] = []): ComposableReaders => ({
+  status: async () => ({ observedAt: statusObservedAt, receivedAt: statusReceivedAt, heads: [{ id: 'T1', status: 'active', actualC: 214.6, targetC: 220 }] }),
+  materials: async () => ({ observedAt: materialObservedAt, receivedAt: materialReceivedAt, heads: [{ id: 'T1', color: '#E89B3C' }] }),
+  environment: async () => ({ observedAt: environmentObservedAt, receivedAt: environmentReceivedAt, relations }),
+});
+
+const values = (node: ResolvedNode, output = new Map<PresentationField, ResolvedValue>()): Map<PresentationField, ResolvedValue> => {
+  if ('value' in node) {
+    const field: PresentationField = node.type === 'HeadStatus' ? 'head.status' : node.type === 'HeadTemperature' ? 'head.temperature' : node.type === 'FilamentColor' ? 'filament.color' : 'head.fanRelation';
+    output.set(field, node.value);
+  }
+  if ('children' in node) node.children.forEach((child) => values(child, output));
+  return output;
+};
+
+describe('entity-bound composition acquisition and provenance', () => {
+  test('rejects an invalid specification before any source acquisition', async () => {
+    let calls = 0;
+    const count = async () => { calls++; return {}; };
+    await expect(composeEntityCard({ ...t1EntityCardSpec, css: 'body{}' }, { status: count, materials: count, environment: count })).rejects.toThrow();
+    expect(calls).toBe(0);
+  });
+
+  test('calls each referenced reader exactly once and never calls an unreferenced source', async () => {
+    const count = { status: 0, materials: 0, environment: 0 };
+    const base = readers();
+    const counting: ComposableReaders = {
+      status: async () => { count.status++; return base.status(); },
+      materials: async () => { count.materials++; return base.materials(); },
+      environment: async () => { count.environment++; return base.environment(); },
+    };
+    await composeEntityCard(t1EntityCardSpec, counting);
+    expect(count).toEqual({ status: 1, materials: 1, environment: 1 });
+    count.status = 0; count.materials = 0; count.environment = 0;
+    await composeEntityCard(t1LeafSpec, counting);
+    expect(count).toEqual({ status: 1, materials: 1, environment: 0 });
+  });
+
+  test('validates its output and keeps source, receive, and generation times distinct', async () => {
+    const result = await composeEntityCard(t1EntityCardSpec, readers(), () => new Date('2026-09-03T16:21:00.000Z'));
+    expect(composableViewModelSchema.parse(result.viewModel)).toEqual(result.viewModel);
+    const resolved = values(result.viewModel.root);
+    expect(resolved.get('head.status')?.provenance).toMatchObject({ source: 'status', sourceObservedAt: statusObservedAt, receivedAt: statusReceivedAt });
+    expect(resolved.get('head.temperature')?.provenance).toMatchObject({ source: 'status', sourceObservedAt: statusObservedAt, receivedAt: statusReceivedAt });
+    expect(resolved.get('filament.color')?.provenance).toMatchObject({ source: 'materials', sourceObservedAt: materialObservedAt, receivedAt: materialReceivedAt });
+    expect(result.viewModel.generatedAt).toBe('2026-09-03T16:21:00.000Z');
+    await expect(composeEntityCard(t1EntityCardSpec, readers(), () => new Date(Number.NaN))).rejects.toThrow();
+  });
+
+  test('hashes canonical semantic structure rather than input object key insertion order', async () => {
+    const reordered = { root: t1EntityCardSpec.root, subject: { id: 'T1', kind: 'toolHead' }, schemaVersion: 1 };
+    const first = await composeEntityCard(t1EntityCardSpec, readers());
+    const second = await composeEntityCard(reordered, readers());
+    expect(first.viewModel.canonicalSpecSha256).toBe(second.viewModel.canonicalSpecSha256);
+    expect(first.viewModel.canonicalSpecSha256).toBe(createHash('sha256').update(JSON.stringify(first.canonicalSpec)).digest('hex'));
+    const changed = structuredClone(t1EntityCardSpec);
+    if (changed.root.type !== 'Card') throw new Error('Expected card fixture');
+    changed.root.children = [...changed.root.children].reverse();
+    expect((await composeEntityCard(changed, readers())).viewModel.canonicalSpecSha256).not.toBe(first.viewModel.canonicalSpecSha256);
+  });
+
+  test('preserves unrelated values when one source rejects or is malformed', async () => {
+    for (const environment of [async () => { throw new Error('offline'); }, async () => ({ observedAt: environmentObservedAt, receivedAt: environmentReceivedAt, relations: [{ headId: 'T1', fanId: 'part', label: '<unsafe>', role: 'partCooling' }] })]) {
+      const result = await composeEntityCard(t1EntityCardSpec, { ...readers(), environment });
+      const resolved = values(result.viewModel.root);
+      expect(result.viewModel.state).toBe('error');
+      expect(resolved.get('head.status')).toMatchObject({ state: 'known', text: 'Active' });
+      expect(resolved.get('head.temperature')).toMatchObject({ state: 'known', actual: 214.6, target: 220 });
+      expect(resolved.get('filament.color')).toMatchObject({ state: 'known', hex: '#E89B3C' });
+      expect(resolved.get('head.fanRelation')).toMatchObject({ state: 'unavailable', primary: null, sourceLabel: null, role: null, reason: 'sourceUnavailable' });
+    }
+  });
+
+  test('keeps zero, one, multiple, and malformed T1 fan relations truthful', async () => {
+    const part = { headId: 'T1', fanId: 'part', label: 'Part cooling fan', role: 'partCooling' };
+    const cavity = { headId: 'T1', fanId: 'cavity', label: 'Cavity fan', role: 'cavity' };
+    const cases = [
+      { relations: [], expected: { state: 'unknown', reason: 'notReported', role: null } },
+      { relations: [part], expected: { state: 'known', reason: null, role: 'partCooling', primary: 'Part cooling', sourceLabel: 'Part cooling fan' } },
+      { relations: [part, cavity], expected: { state: 'unknown', reason: 'ambiguous', role: null, primary: null, sourceLabel: null } },
+      { relations: [{ ...part, role: 'headFan' }], expected: { state: 'unavailable', reason: 'sourceUnavailable', role: null } },
+    ];
+    for (const item of cases) {
+      const result = await composeEntityCard(t1EntityCardSpec, readers(item.relations));
+      expect(values(result.viewModel.root).get('head.fanRelation')).toMatchObject(item.expected);
+    }
+  });
+
+  test('validates canonical spec, plan, source ledger, provenance, and resolved topology as one envelope', async () => {
+    const baseline = await composeEntityCard(t1EntityCardSpec, readers());
+    expect(composableEnvelopeSchema.parse(baseline)).toEqual(baseline);
+    const corruptions: Array<(candidate: any) => void> = [
+      (candidate) => { candidate.canonicalSpecSha256 = '1'.repeat(64); },
+      (candidate) => { candidate.viewModel.canonicalSpecSha256 = '2'.repeat(64); },
+      (candidate) => { candidate.viewModel.dependencies[2].fields = ['head.status']; },
+      (candidate) => { candidate.viewModel.sources.splice(1, 1); },
+      (candidate) => { candidate.viewModel.sources[2].observedAt = '2026-09-03T16:20:01.000Z'; },
+      (candidate) => { values(candidate.viewModel.root).get('head.status')!.provenance.receivedAt = '2026-09-03T16:20:01.000Z'; },
+      (candidate) => { values(candidate.viewModel.root).get('head.status')!.provenance.source = 'materials'; },
+      (candidate) => { candidate.canonicalSpec.root.children[0].text = 'Changed spec'; },
+      (candidate) => { candidate.viewModel.root.children[0].text = 'Changed tree'; },
+    ];
+    for (const corrupt of corruptions) {
+      const candidate = structuredClone(baseline) as any;
+      corrupt(candidate);
+      expect(composableEnvelopeSchema.safeParse(candidate).success).toBe(false);
+    }
+  });
+
+  test('rejects render-bound status, temperature, and fan contradictions', async () => {
+    const baseline = await composeEntityCard(t1EntityCardSpec, readers([
+      { headId: 'T1', fanId: 'part', label: 'Reported hardware label', role: 'partCooling' },
+    ]));
+    const resolved = values(baseline.viewModel.root);
+    const status = structuredClone(resolved.get('head.status')) as any;
+    status.text = 'Heating rapidly';
+    expect(resolvedValueSchema.safeParse(status).success).toBe(false);
+    const temperature = structuredClone(resolved.get('head.temperature')) as any;
+    temperature.actual = 10_000;
+    expect(resolvedValueSchema.safeParse(temperature).success).toBe(false);
+    const fan = structuredClone(resolved.get('head.fanRelation')) as any;
+    fan.primary = 'Cavity';
+    expect(resolvedValueSchema.safeParse(fan).success).toBe(false);
+  });
+
+  test('correlates card tint to provenance-bearing configured color without requiring a color leaf', async () => {
+    const calls = { status: 0, materials: 0, environment: 0 };
+    const base = readers();
+    const result = await composeEntityCard(transformOnlySpec, {
+      status: async () => { calls.status++; return base.status(); },
+      materials: async () => { calls.materials++; return base.materials(); },
+      environment: async () => { calls.environment++; return base.environment(); },
+    });
+    expect(calls).toEqual({ status: 0, materials: 1, environment: 0 });
+    expect(result.viewModel.root).toMatchObject({
+      type: 'Card',
+      tint: { kind: 'softTint', color: '#E89B3C', strength: 'subtle' },
+      transformEvidence: { kind: 'color', state: 'known', hex: '#E89B3C', provenance: { source: 'materials', sourceObservedAt: materialObservedAt, receivedAt: materialReceivedAt } },
+    });
+    const divergent = structuredClone(result) as any;
+    divergent.viewModel.root.tint.color = '#000000';
+    expect(composableEnvelopeSchema.safeParse(divergent).success).toBe(false);
+    const wrongReceipt = structuredClone(result) as any;
+    wrongReceipt.viewModel.root.transformEvidence.provenance.receivedAt = statusReceivedAt;
+    expect(composableEnvelopeSchema.safeParse(wrongReceipt).success).toBe(false);
+
+    const noTransform = await composeEntityCard(noTransformSpec, readers());
+    const injected = structuredClone(noTransform) as any;
+    injected.viewModel.root.tint = result.viewModel.root.type === 'Card' ? result.viewModel.root.tint : null;
+    expect(composableEnvelopeSchema.safeParse(injected).success).toBe(false);
+  });
+
+  test('keeps transformed card neutral when configured color is unknown or unavailable', async () => {
+    const unknown = await composeEntityCard(transformOnlySpec, {
+      ...readers(),
+      materials: async () => ({ observedAt: materialObservedAt, receivedAt: materialReceivedAt, heads: [{ id: 'T1', color: null }] }),
+    });
+    expect(unknown.viewModel.root).toMatchObject({ type: 'Card', tint: null, transformEvidence: { state: 'unknown', hex: null } });
+    const unavailable = await composeEntityCard(transformOnlySpec, {
+      ...readers(),
+      materials: async () => { throw new Error('offline'); },
+    });
+    expect(unavailable.viewModel.root).toMatchObject({ type: 'Card', tint: null, transformEvidence: { state: 'unavailable', hex: null } });
+  });
+});

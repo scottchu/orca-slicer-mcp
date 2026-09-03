@@ -1,5 +1,37 @@
 # Project state
 
+## Current source: entity-bound presentation AST private-lab experiment
+
+Decision0048's exploratory T1 composition is a renewed author candidate at the
+45-path manifest
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+The deterministic isolated MCP resource is 137,936 bytes, SHA-256
+`6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+Focused author evidence passes 8 client tests, 13 server/MCP tests with 75
+assertions, UI/server checks and builds, plus four Chrome cases at 320/720.
+VALIDATION records initial architecture/design gaps, two independent
+request-changes rounds, final approval and exact evidence boundaries.
+That approval binds prior manifest
+`4437e4f9f032cfffef3405227b7775c3f40dfb3a9326858bee478b2a826115fc`;
+a later whitespace-only
+generator/source cleanup renewed all affected author checks and now awaits final
+independent exact-candidate review.
+
+This is provisional private-lab learning, not production architecture or
+cutover. It binds only T1 status, actual/target temperature, configured filament
+color and a truthful typed fan relation through four closed domain leaves and
+common layout nodes. Strict correlated envelopes, deduplicated readers,
+timestamps/provenance, `Unknown`, stable neutral state structure and explicit
+Lab/production isolation are accepted only in that scope. Synthetic evidence
+does not establish live mappings, printer truth, mounted-host/device behavior or
+user outcome. No production registration, service, printer, auth/Tailscale, PR,
+merge or deployment changed.
+
+Decision0049 records the separate future Camera media-bottom-overlay direction.
+No Camera implementation belongs to this experiment; current Camera remains the
+baseline until a separately reviewed migration preserves all lifecycle/control/
+evidence semantics and gains visual/device acceptance.
+
 ## Current deployment: PR106 host fullscreen and packaged body insets
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release

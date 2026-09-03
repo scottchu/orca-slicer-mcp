@@ -1,5 +1,39 @@
 # Next agent
 
+## Final-review the presentation experiment and preserve its boundary
+
+Resume from decision0048 and the active iteration records. The frozen
+application source-set manifest is
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`;
+the isolated 137,936-byte MCP resource SHA-256 is
+`6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+Independent `printer_domain_expert` review approved prior manifest
+`4437e4f9f032cfffef3405227b7775c3f40dfb3a9326858bee478b2a826115fc`
+after two request-changes rounds. A later formatting-only generator/source
+cleanup produced the current identity and renewed every affected author check;
+final independent exact-candidate review is pending. VALIDATION contains the
+final 8 client, 13 server/75
+assertion, checks/builds and four-browser-case evidence.
+
+Treat it only as an isolated UI-003 private-lab experiment. Preserve fixed T1,
+the four closed domain leaves/common layout nodes, strict correlated envelope,
+deduplicated readers, per-value provenance/timestamps, `Unknown` relations,
+stable loading/error structure, private route, production-negative inventory
+and Lab-only MCP factory. Do not register it in production or infer live data,
+printer truth, a general DSL, cutover, mounted-host/device acceptance or user
+outcome. No PR, merge or deployment has been authorized for this experiment.
+
+Decision0049 preserves the user's future Camera direction but no Camera files
+changed: later move current top-right information plus loading/error messaging
+into bottom overlays within dynamic media through a separate screenshot-first,
+independently reviewed migration. Retain current media/session/control/
+frame-evidence semantics until that migration is accepted.
+
+Next action is final independent exact-commit review. After that, if requested,
+product review of the learning and a separately scoped decision for any
+production adoption. Do not change printer, service, authentication or
+Tailscale state.
+
 ## Current deployment: PR106 host fullscreen and packaged body insets
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release
