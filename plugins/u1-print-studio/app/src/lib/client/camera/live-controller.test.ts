@@ -9,7 +9,7 @@ const frame = (time = observedAt) => ({ structuredContent: { schemaVersion: 1, a
 const offered = { structuredContent: { schemaVersion: 2, available: true }, _meta: { cameraStream: { transport: 'mcp-apps-tools', sessionId: 'fixture-session-capability', offer: { type: 'offer', sdp: 'fixture-sdp' }, iceServers: [] } } };
 const deferred = <T>() => { let resolve!: (value: T) => void, reject!: (reason?: unknown) => void; const promise = new Promise<T>((yes, no) => { resolve = yes; reject = no; }); return { promise, resolve, reject }; };
 const flush = async () => { for (let index = 0; index < 30; index++) await Promise.resolve(); };
-const setup = (initial?: unknown) => {
+const setup = (initial?: unknown, initialSnapshot?: 'request' | 'host-result') => {
   let listener: ((event: HostEvent) => void) | undefined;
   const peers: CameraPeerEvents[] = [];
   const rpc = { start: vi.fn().mockResolvedValue(undefined), dispose: vi.fn(), subscribe: vi.fn((value: (event: HostEvent) => void) => {
@@ -22,6 +22,7 @@ const setup = (initial?: unknown) => {
   const savedLiveIntent = vi.fn().mockReturnValue(false), persistLiveIntent = vi.fn(), decode = vi.fn().mockResolvedValue(true);
   const peerDispose = vi.fn();
   const controller = createLiveCameraController({ rpc, savedLiveIntent, persistLiveIntent, decode,
+    initialSnapshot,
     scheduler: { now: () => Date.now(), timestamp: () => new Date().toISOString(), after: (ms, callback) => { const timer = setTimeout(callback, ms); return () => clearTimeout(timer); } },
     peer: (_offer, events) => { peers.push(events); return { answer: async () => 'fixture-answer', dispose: peerDispose }; },
   });
@@ -31,6 +32,46 @@ const setup = (initial?: unknown) => {
 describe('real Camera host/controller lifecycle without printer requests', () => {
   beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(new Date(observedAt)); });
   afterEach(() => { vi.clearAllTimers(); vi.useRealTimers(); });
+  it('waits for a delayed MCP initial result without repeating snapshot acquisition', async () => {
+    const app = setup(undefined, 'host-result'); app.controller.start(); await flush();
+    await vi.advanceTimersByTimeAsync(1000); expect(app.rpc.callTool).not.toHaveBeenCalled();
+    app.notify(frame()); await flush();
+    expect(app.controller.state().camera.phase).toBe('snapshot'); expect(app.rpc.callTool).not.toHaveBeenCalled();
+    app.controller.dispose(); await flush(); expect(vi.getTimerCount()).toBe(0);
+  });
+  it('bounds absent MCP delivery to neutral failure and requests only on explicit Refresh', async () => {
+    const app = setup(undefined, 'host-result'); app.controller.start(); await flush();
+    await vi.advanceTimersByTimeAsync(15000);
+    expect(app.controller.state().camera).toMatchObject({ phase: 'error', failure: 'snapshot', snapshot: null });
+    expect(app.rpc.callTool).not.toHaveBeenCalled();
+    await app.controller.refresh(); expect(app.rpc.callTool).toHaveBeenCalledExactlyOnceWith('get_u1_camera_frame', {});
+    expect(app.controller.state().camera.phase).toBe('snapshot'); app.controller.dispose(); await flush();
+  });
+  it('malformed MCP delivery reaches the same finite error without an automatic read', async () => {
+    const app = setup(undefined, 'host-result'); app.controller.start(); app.notify({ structuredContent: { schemaVersion: 1, available: true }, _meta: {} });
+    await vi.advanceTimersByTimeAsync(15000);
+    expect(app.controller.state().camera).toMatchObject({ phase: 'error', failure: 'snapshot', snapshot: null });
+    expect(app.rpc.callTool).not.toHaveBeenCalled(); app.controller.dispose(); await flush();
+  });
+  it('rejects failed MCP initial data and cancels the delivery waiter on disposal', async () => {
+    const app = setup(undefined, 'host-result'); app.controller.start();
+    app.notify({ ...frame(), isError: true }); await flush();
+    expect(app.controller.state().camera).toMatchObject({ phase: 'error', snapshot: null });
+    expect(app.rpc.callTool).not.toHaveBeenCalled(); app.controller.dispose(); await flush();
+    const pending = setup(undefined, 'host-result'); pending.controller.start(); pending.controller.dispose(); await flush();
+    pending.notify(frame()); await vi.advanceTimersByTimeAsync(15000);
+    expect(pending.rpc.callTool).not.toHaveBeenCalled(); expect(vi.getTimerCount()).toBe(0);
+  });
+  it('the newest initial host decode owns startup and saved-intent restoration', async () => {
+    const app = setup(undefined, 'host-result'); const first = deferred<boolean>(), second = deferred<boolean>();
+    app.decode.mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise); app.savedLiveIntent.mockReturnValue(true);
+    app.controller.start(); app.notify(frame()); await flush();
+    app.notify(frame('2026-09-01T12:00:01.000Z')); await flush();
+    expect(app.rpc.callTool).not.toHaveBeenCalled();
+    second.resolve(true); await flush();
+    expect(app.rpc.callTool).toHaveBeenCalledWith('get_u1_camera_frame', { authorizeLive: true }); expect(app.peers).toHaveLength(1);
+    first.resolve(true); await flush(); expect(app.peers).toHaveLength(1); app.controller.dispose(); await flush();
+  });
   it('renders an initial private snapshot after decode without acquiring or activating', async () => {
     const app = setup(frame()); app.controller.start(); app.controller.start(); await flush();
     expect(app.controller.state().camera).toMatchObject({ phase: 'snapshot', snapshot: { image, observedAt }, refreshing: false });

@@ -1,5 +1,43 @@
 # F0 dual-subsystem foundation brief
 
+## Current slice: MCP Camera and Heads Svelte cutover
+
+Execution order now prioritizes the plugin's real MCP resources before another
+native dashboard/product slice. This advances F01/F08 and the bounded parity
+work in X05; it does not retire all legacy resources. PR97 remains the deployed
+dashboard baseline. Work starts from `3e6a4d7` on
+`codex/u1-mcp-svelte-widgets`. Author source/payload identities and scoped checks
+are frozen in VALIDATION. Required full validation, exact independent approval,
+deployment and actual-host acceptance remain pending.
+[Decision 0044](../../decisions/0044-connect-heads-and-camera-svelte-to-mcp-resources.md)
+owns the bounded resource and compatibility contract.
+
+Acceptance:
+
+- New Camera v11 selects deterministic `mcp-camera.html`, a thin entry using
+  shared Svelte Camera presentation/service and host-result initial bootstrap.
+  Dashboard retains request bootstrap. The service validates/decodes the opening
+  tool result without another initial frame read; bounded missing/malformed
+  delivery becomes neutral error with explicit Refresh. New observation v15
+  retains one nine-view dispatcher and selects shared Svelte Heads only; its
+  other eight views retain the existing renderer. Tool and result metadata agree
+  on the new resources. Preserve all old URI assets byte for byte.
+- Keep deterministic, self-contained HTML/JS/CSS, one bridge/lifecycle, no
+  external asset fetch and no direct widget HTTP acquisition/signaling.
+- Refresh and failure/recovery preserve neutral skeleton/footer geometry; Heads
+  keeps swatch, whole hex and small borderless Copy inline with its hit target;
+  Camera uses the compact animated bottom-right icon Switch and truthful modes.
+- Legacy URI compatibility, validated result ordering, private metadata,
+  one-use activation and service-owned Camera connections/timers/disposal remain.
+- Required local validation and exact independent approval precede guarded PR
+  delivery and BOTH service restarts. Exact served resource and simulated host
+  evidence remain distinct from actual plugin-host Refresh/Copy/Switch acceptance.
+
+C08 Live connectivity and Screen Sharing stay paused. No real-printer reads or
+controls, authentication/network settings, Progress redesign, F07 reactive-class
+implementation, c6 integration or loading-policy change is part of this slice.
+Preserve all 55 request IDs and remaining product/native-renderer work.
+
 ## Current deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
@@ -20,10 +58,9 @@ Detailed commands/hashes and all prior failures remain in VALIDATION, including
 C08 and Screen Sharing stay paused until the user returns home; no Camera service
 repair, real Live, physical-printer, BFCache or actual-device acceptance is claimed.
 Keep all55 IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
-unchanged loading policy. Next, select the next bounded native-renderer/product
-slice from the ledger; at-home Local Network inspection remains C08's external
-step. This Markdown-only rollout record preserves application bytes and needs no
-additional service deployment under0028.
+unchanged loading policy. The MCP Camera/Heads cutover above is the active next
+slice; at-home Local Network inspection remains C08's external step. PR97's
+Markdown-only rollout record required no additional deployment under0028.
 
 ### Retained PR95 source/deployment evidence
 

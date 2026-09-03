@@ -15,6 +15,8 @@ import embeddedCameraWidgetFile from "../../../public/camera-widget.html" with {
 import embeddedLegacyCameraWidgetFile from "../../../public/legacy-camera-widget.html" with { type: "file" };
 import embeddedLegacyWidgetFile from "../../../public/legacy-widget.html" with { type: "file" };
 import embeddedWidgetFile from "../../../public/widget.html" with { type: "file" };
+import embeddedMcpObservationFile from "../../../public/mcp-observation.html" with { type: "file" };
+import embeddedMcpCameraFile from "../../../public/mcp-camera.html" with { type: "file" };
 
 import {
   createObservationPresentation,
@@ -71,6 +73,7 @@ export const LEGACY_CAMERA_WIDGET_URIS = [
   "ui://u1-print-studio/camera-v1.html",
 ] as const;
 export const LEGACY_FOCUSED_WIDGET_URIS = [
+  "ui://u1-print-studio/observation-v14.html",
   "ui://u1-print-studio/observation-v13.html",
   "ui://u1-print-studio/observation-v12.html",
   "ui://u1-print-studio/observation-v11.html",
@@ -111,6 +114,8 @@ export const readCameraWidgetHtml = () =>
     ? readFileSync(embeddedCameraWidgetFile as unknown as string, "utf8")
     : readFileSync(CAMERA_WIDGET_PATH, "utf8");
 export const CAMERA_WIDGET_HTML = readCameraWidgetHtml();
+export const MCP_OBSERVATION_HTML = readFileSync(IS_COMPILED ? embeddedMcpObservationFile as unknown as string : path.join(ASSET_ROOT, 'mcp-observation.html'), 'utf8');
+export const MCP_CAMERA_HTML = readFileSync(IS_COMPILED ? embeddedMcpCameraFile as unknown as string : path.join(ASSET_ROOT, 'mcp-camera.html'), 'utf8');
 export const readLegacyCameraWidgetHtml = () =>
   IS_COMPILED
     ? readFileSync(embeddedLegacyCameraWidgetFile as unknown as string, "utf8")
@@ -384,7 +389,7 @@ export function createAppServer(
     : {};
 
   const observationResources = [
-    { uri: WIDGET_URI, html: WIDGET_HTML, focused: true },
+    { uri: WIDGET_URI, html: MCP_OBSERVATION_HTML, focused: true },
     ...LEGACY_FOCUSED_WIDGET_URIS.map((uri) => ({
       uri,
       html: WIDGET_HTML,
@@ -432,8 +437,13 @@ export function createAppServer(
   const cameraResources = [
     {
       uri: CAMERA_WIDGET_URI,
-      html: CAMERA_WIDGET_HTML,
+      html: MCP_CAMERA_HTML,
       version: U1_CAMERA_WIDGET_VERSION,
+    },
+    {
+      uri: "ui://u1-print-studio/camera-v10.html",
+      html: CAMERA_WIDGET_HTML,
+      version: "camera-v10",
     },
     {
       uri: "ui://u1-print-studio/camera-v9.html",

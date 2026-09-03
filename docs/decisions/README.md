@@ -48,6 +48,7 @@ silently changed.
 | [0041](0041-present-failures-as-neutral-skeletons-with-footer-status.md) | Present acquisition failures as neutral skeletons with footer status | PR89 scoped deployment; common UI/Camera refinement shipped PR91; byte caps superseded by0042 |
 | [0042](0042-remove-repository-widget-byte-caps.md) | Remove repository widget package byte caps | Independently accepted and shipped PR91 |
 | [0043](0043-unify-sveltekit-application-with-bun.md) | Unify one SvelteKit application while retaining Bun | Adapter-node handler on Bun selected; real route/service integration and independent acceptance pending |
+| [0044](0044-connect-heads-and-camera-svelte-to-mcp-resources.md) | Connect Heads and Camera Svelte UI to MCP resources | Adopted bounded direction; source, deployment and actual-host acceptance pending |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

@@ -4,6 +4,24 @@ Current authority, 2026-09-02. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
+## Active slice: MCP Camera and Heads Svelte candidate
+
+PR97 remains deployed with legacy MCP resources. Author source for the F01/F08/
+X05 cutover is present on `codex/u1-mcp-svelte-widgets` from `3e6a4d7`: Camera v11
+selects deterministic `mcp-camera.html` with shared Svelte presentation/service
+and host-result bootstrap; dashboard keeps request bootstrap. Observation v15
+uses a nine-view dispatcher with shared Svelte Heads and eight existing renderers.
+
+Author source/payload identities and focused checks are frozen in VALIDATION.
+Full required validation, independent exact approval, guarded release and actual
+plugin-host Refresh/Copy/icon Switch acceptance remain pending. Keep one bridge/
+lifecycle, self-contained assets, unchanged old URI assets and private metadata.
+The active BRIEF and decision0044 own the bounded acceptance contract.
+
+All 55 IDs remain. C08/Screen Sharing stay paused, Progress remains no-action,
+F07 class remains discussion, c6 stays separate and loading policy is unchanged.
+No new actual printer/device acceptance is claimed.
+
 ## Current deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
@@ -24,10 +42,9 @@ Detailed commands/hashes and all prior failures remain in VALIDATION, including
 C08 and Screen Sharing stay paused until the user returns home; no Camera service
 repair, real Live, physical-printer, BFCache or actual-device acceptance is claimed.
 Keep all55 IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
-unchanged loading policy. Next, select the next bounded native-renderer/product
-slice from the ledger; at-home Local Network inspection remains C08's external
-step. This Markdown-only rollout record preserves application bytes and needs no
-additional service deployment under0028.
+unchanged loading policy. The MCP Camera/Heads cutover above is the active next
+slice; at-home Local Network inspection remains C08's external step. PR97's
+Markdown-only rollout record required no additional deployment under0028.
 
 ### Retained PR95 source/deployment evidence
 
@@ -302,7 +319,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | X02 Current Job Svelte | Source-only PR79 / 48f2060 | Integrate/remeasure; filename/state grouping, not duplicate percent |
 | X03 History Svelte and record identity | Source-only 379c1e7 adapter | Basename/outcome/date/duration and bounded-list design |
 | X04 Overview Svelte/domain grouping | Source-only 1a3b4f4 adapter | Eight truthful domain summaries, no invented fields |
-| X05 no remaining legacy/MCP aliases | Not started full retirement | Lossless consumer/parity inventory before removal |
+| X05 no remaining legacy/MCP aliases | Bounded MCP Camera/Heads source and author focused checks present; exact acceptance/deployment pending; full retirement not started | Bind real MCP resources to shared UI and prove Refresh/Copy/icon Switch parity; retain legacy aliases until their own lossless removal acceptance |
 | X06 material/profile/color sync | Decision pending | No unreviewed write/sync authority |
 | G01 focused/transitive tests rule | Delivered PR80 AGENTS | One frozen full-run owner, independent targeted checks, ship guards intact |
 | G02 role-separated delegation | Adopted AGENTS | Author cannot self-approve; disclose actual capacity limits |

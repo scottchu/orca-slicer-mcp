@@ -10,6 +10,18 @@ const setup = (globals?: Record<string, unknown>) => {
 };
 afterEach(() => vi.useRealTimers());
 describe('single shared host RPC', () => {
+  it('delivers bounded host context through the same validated parent listener', async () => {
+    const host = new EventTarget() as EventTarget & { parent: Window };
+    const send = vi.fn(), context = vi.fn(); host.parent = { postMessage: send } as unknown as Window;
+    const rpc = createHostRpc(host as unknown as Parameters<typeof createHostRpc>[0], { onHostContext: context });
+    const start = rpc.start();
+    host.dispatchEvent(new MessageEvent('message', { source: host.parent, data: { jsonrpc: '2.0', id: 1, result: { hostContext: { safeArea: { insets: { bottom: 12 } } } } } }));
+    await start; expect(context).toHaveBeenLastCalledWith({ safeArea: { insets: { bottom: 12 } } });
+    const message = { jsonrpc: '2.0', method: 'ui/notifications/host-context-changed', params: { safeArea: { bottom: 0 } } };
+    host.dispatchEvent(new MessageEvent('message', { source: {} as Window, data: message })); expect(context).toHaveBeenCalledTimes(1);
+    host.dispatchEvent(new MessageEvent('message', { source: host.parent, data: message })); expect(context).toHaveBeenLastCalledWith(message.params);
+    rpc.dispose(); host.dispatchEvent(new MessageEvent('message', { source: host.parent, data: message })); expect(context).toHaveBeenCalledTimes(2);
+  });
   it('initializes once and resolves reordered unique requests exactly once', async () => {
     const { rpc, send, reply } = setup(); const first = rpc.start(); expect(rpc.start()).toBe(first);
     expect(send).toHaveBeenCalledTimes(1); reply(1, { protocolVersion: '2026-01-26' }); await first;

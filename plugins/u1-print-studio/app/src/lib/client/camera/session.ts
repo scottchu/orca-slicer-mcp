@@ -283,6 +283,12 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   };
   return {
     state: () => state,
+    initialFrameUnavailable: () => {
+      if (!disposed && !hidden && !state.snapshot) {
+        cancelSnapshot();
+        publish({ phase: 'error', failure: 'snapshot', refreshing: false, feedback: 'snapshot-unavailable' });
+      }
+    },
     acceptHostFrame: async (result: CameraFrameResult): Promise<boolean> => {
       if (disposed || hidden || !result.snapshot) return false;
       if (state.snapshot?.observedAt && result.snapshot.observedAt && result.snapshot.observedAt <= state.snapshot.observedAt) return false;

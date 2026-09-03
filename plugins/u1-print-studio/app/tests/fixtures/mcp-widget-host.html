@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      iframe {
+        border: 0;
+        width: 100%;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      title="MCP resource"
+      sandbox="allow-scripts allow-same-origin"
+      allow="clipboard-write; fullscreen"
+    ></iframe>
+    <script type="module">
+      const frame = document.querySelector('iframe');
+      const query = new URLSearchParams(location.search);
+      const toolName = query.get('tool') ?? 'observe_printer';
+      const args = toolName === 'observe_printer' ? { view: query.get('view') ?? 'heads' } : {};
+      const post = (message) =>
+        frame.contentWindow.postMessage({ jsonrpc: '2.0', ...message }, '*');
+      const state = { calls: [], messages: [], sizes: [], ready: false, result: null, uri: null };
+      const call = async (name, argumentsValue) =>
+        (
+          await fetch('/fixture/call', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ name, arguments: argumentsValue }),
+          })
+        ).json();
+      const sendInput = (argumentsValue = args) =>
+        post({ method: 'ui/notifications/tool-input', params: { arguments: argumentsValue } });
+      const sendResult = (result = state.result) =>
+        post({ method: 'ui/notifications/tool-result', params: result });
+      window.__mcpHost = {
+        state,
+        sendInput,
+        sendResult,
+        sendContext: (context) =>
+          post({ method: 'ui/notifications/host-context-changed', params: context }),
+        call,
+        compatibility: null,
+      };
+      let initializations = 0;
+      window.addEventListener('message', async (event) => {
+        if (event.source !== frame.contentWindow || event.data?.jsonrpc !== '2.0') return;
+        const message = event.data;
+        state.messages.push(message);
+        if (message.method === 'ui/initialize') {
+          initializations++;
+          if (query.has('fail-init') && initializations === 1) {
+            sendInput();
+            post({
+              id: message.id,
+              error: { code: -32000, message: 'Synthetic initialization failure' },
+            });
+            return;
+          }
+          setTimeout(
+            () =>
+              post({
+                id: message.id,
+                result: {
+                  protocolVersion: '2026-01-26',
+                  hostInfo: { name: 'fixture', version: '1' },
+                  hostCapabilities: {},
+                  hostContext: {},
+                },
+              }),
+            Math.min(1000, Number(query.get('init-delay') ?? 0)),
+          );
+        } else if (message.method === 'ui/notifications/initialized') {
+          state.ready = true;
+          if (['manual', 'compatibility'].includes(query.get('delivery'))) return;
+          if (query.get('delivery') === 'result-first') {
+            sendResult();
+            sendInput();
+          } else {
+            sendInput();
+            sendResult();
+          }
+        } else if (message.method === 'tools/call') {
+          state.calls.push(message.params);
+          post({
+            id: message.id,
+            result: await call(message.params.name, message.params.arguments),
+          });
+        } else if (message.method === 'ui/notifications/size-changed') {
+          if (state.ready) {
+            state.sizes.push(message.params);
+            frame.style.height = `${message.params.height}px`;
+          }
+        }
+      });
+      const tools = await (await fetch('/fixture/tools')).json();
+      const descriptor = tools.tools.find((tool) => tool.name === toolName);
+      state.uri = descriptor._meta.ui.resourceUri;
+      const resource = await (
+        await fetch(`/fixture/resource?uri=${encodeURIComponent(state.uri)}`)
+      ).json();
+      state.result = await call(toolName, args);
+      window.__mcpHost.compatibility = {
+        toolInput: args,
+        toolOutput: state.result.structuredContent,
+        toolResponseMetadata: state.result._meta,
+      };
+      frame.srcdoc =
+        query.get('delivery') === 'compatibility'
+          ? resource.contents[0].text.replace(
+              '<head>',
+              '<head><script>window.openai = parent.__mcpHost.compatibility;<\/script>',
+            )
+          : resource.contents[0].text;
+    </script>
+  </body>
+</html>

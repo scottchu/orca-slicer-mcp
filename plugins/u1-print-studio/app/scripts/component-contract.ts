@@ -11,8 +11,10 @@ composites.push('bed-mesh/BedMeshLabRoot.svelte');
 composites.push('observation/HeadCard.svelte', 'observation/HeadCards.svelte', 'observation/HeadsSkeleton.svelte');
 composites.push('observation/HeadsPanel.svelte', 'live/LiveHeadsRoot.svelte');
 composites.push('observation/HeadsWidget.svelte');
+composites.push('mcp/ObservationRoot.svelte');
 composites.push('observation/QueueWidget.svelte', 'observation/QueueRow.svelte', 'observation/QueueRows.svelte', 'observation/QueueSummary.svelte', 'observation/QueueSkeleton.svelte', 'observation/DomainReceipt.svelte', 'live/LiveQueueRoot.svelte');
 export const leaves: Record<string, string[]> = {
+  'common/Mount.svelte': ['div'],
   'common/RetainedLayer.svelte': ['div'],
   'common/StateSurface/StateSurface.svelte': ['div'],
   'common/StateSurface/StaticStateSurface.svelte': ['div'],
@@ -72,6 +74,7 @@ function visit(value: unknown, fn: (node: Node) => void): void {
 }
 
 const approvedImports: Record<string, string[]> = {
+  'mcp/ObservationRoot.svelte': ['svelte', 'lucide-svelte', '../../lib/client/host/rpc', '../../lib/client/mcp/observation-host', '../../lib/client/mcp/heads', '../../lib/client/legacy/observation', '../live/LiveHeadsRoot.svelte', '../common/Mount.svelte', '../common/PageLayout.svelte', '../common/Shell.svelte', '../common/Header.svelte', '../common/Body.svelte', '../common/Footer.svelte', '../common/Icon.svelte', '../common/Skeleton.svelte', '../common/StateAnnouncement.svelte'],
   'observation/QueueWidget.svelte': ['./ObservationFrame.svelte', '../../lib/client/observation/types', '../../lib/client/observation/loading', '../common/Stack.svelte', '../common/Caption.svelte', './QueueSummary.svelte', './QueueRows.svelte', './QueueSkeleton.svelte', '../../lib/client/lab/queue-shapes'],
   'observation/QueueRow.svelte': ['../../lib/client/live/queue-presentation', '../common/Record.svelte', '../common/BoxLabel.svelte', '../common/Name.svelte', '../common/Caption.svelte', '../common/LoadingValue.svelte', '../common/DateTimeValue.svelte', '../common/DurationValue.svelte'],
   'observation/QueueRows.svelte': ['../../lib/client/live/queue-presentation', '../common/OrderedRecords.svelte', './QueueRow.svelte'],

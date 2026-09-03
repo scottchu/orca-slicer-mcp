@@ -26,6 +26,10 @@
     "verify:live-heads": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --heads --check",
     "build:live-camera": "bun --no-env-file --config=/dev/null run scripts/build-live-camera.ts",
     "verify:live-camera": "bun --no-env-file --config=/dev/null run scripts/build-live-camera.ts --check",
+    "build:mcp-observation": "bun --no-env-file --config=/dev/null run scripts/build-mcp-observation.ts",
+    "verify:mcp-observation": "bun --no-env-file --config=/dev/null run scripts/build-mcp-observation.ts --check",
+    "build:mcp-camera": "bun --no-env-file --config=/dev/null run scripts/build-live-camera.ts --mcp",
+    "verify:mcp-camera": "bun --no-env-file --config=/dev/null run scripts/build-live-camera.ts --mcp --check",
     "preview": "vite preview",
     "build:bed-mesh-lab": "bun --no-env-file --config=/dev/null run scripts/build-bed-mesh-lab.ts",
     "package:private-lab": "bun --no-env-file --config=/dev/null run scripts/build-bed-mesh-lab.ts && bun --no-env-file --config=/dev/null run scripts/build-camera-lab.ts && bun --no-env-file --config=/dev/null run scripts/package-private-lab.ts",
@@ -37,10 +41,11 @@
     "verify:live-thermals": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --thermals --check",
     "build:live-queue": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --queue",
     "verify:live-queue": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --queue --check",
-    "test:browser": "bun --no-env-file --config=/dev/null run build && bun --no-env-file --config=/dev/null run scripts/build-state-harness.ts && bun --no-env-file --config=/dev/null run scripts/build-camera-harness.ts && playwright test",
+    "test:browser": "bun --no-env-file --config=/dev/null run build && bun --no-env-file --config=/dev/null run scripts/build-state-harness.ts && bun --no-env-file --config=/dev/null run scripts/build-camera-harness.ts && playwright test && playwright test --config playwright.mcp.config.ts",
     "build:server": "bun --no-env-file --config=/dev/null run scripts/build-server.ts",
     "build": "vite build",
-    "test:server": "bun --no-env-file --config=/dev/null run build && bun --no-env-file --config=/dev/null test tests/server"
+    "test:server": "bun --no-env-file --config=/dev/null run build && bun --no-env-file --config=/dev/null test tests/server",
+    "test:mcp-widgets": "playwright test --config playwright.mcp.config.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/ext-apps": "1.7.5",

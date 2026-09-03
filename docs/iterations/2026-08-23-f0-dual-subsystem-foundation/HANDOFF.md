@@ -1,5 +1,31 @@
 # F0 dual-subsystem foundation handoff
 
+## Current handoff: MCP Camera and Heads Svelte candidate
+
+Author application bytes are frozen on `codex/u1-mcp-svelte-widgets`, based on `3e6a4d7`.
+PR97 remains deployed with legacy MCP packages. Decision0044's new Camera v11
+selects `mcp-camera.html`; its thin entry uses shared presentation/service with
+host-result initial bootstrap and no duplicate initial frame read. Dashboard
+keeps request bootstrap. Observation v15 dispatches shared Svelte Heads and the
+other eight existing renderers through one bridge/lifecycle. Old URI assets and
+private result metadata remain compatibility boundaries.
+
+Changed areas are new MCP entries/build targets/fixtures, the typed observation
+host/legacy adapter, common Mount/host styling, Camera bootstrap and HostRpc,
+MCP registration/runtime contracts and affected package/test/shipping inputs.
+The active BRIEF owns acceptance; author focused results are in VALIDATION.
+Author source/payload hashes and cleanup are bound in VALIDATION. Next smallest
+action: commit the frozen candidate, then run the one-owner required gate and
+exact independent review.
+Guarded delivery and BOTH service restarts remain pending.
+
+No hosted direct HTTP acquisition, external asset fetch or old alias removal.
+C08/Screen Sharing stay paused; do not perform printer reads/controls or auth/
+system changes. Keep all 55 IDs, Progress no-action, F07 class discussion,
+separate c6 and unchanged loading policy. Actual phone/plugin-host behavior
+remains unaccepted until separately observed after deployment, host metadata
+refresh and a new conversation. Mounted-widget Refresh only renews data.
+
 ## Current deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
@@ -20,10 +46,9 @@ Detailed commands/hashes and all prior failures remain in VALIDATION, including
 C08 and Screen Sharing stay paused until the user returns home; no Camera service
 repair, real Live, physical-printer, BFCache or actual-device acceptance is claimed.
 Keep all55 IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
-unchanged loading policy. Next, select the next bounded native-renderer/product
-slice from the ledger; at-home Local Network inspection remains C08's external
-step. This Markdown-only rollout record preserves application bytes and needs no
-additional service deployment under0028.
+unchanged loading policy. The MCP Camera/Heads cutover above is the active next
+slice; at-home Local Network inspection remains C08's external step. PR97's
+Markdown-only rollout record required no additional deployment under0028.
 
 Delivered source paths are `src/routes/dashboard/{thermals,heads,queue}` page
 pairs and closed native-path/CSP/build mappings, plus focused fixtures and the
