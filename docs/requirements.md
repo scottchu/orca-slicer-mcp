@@ -223,7 +223,17 @@ printer environments support the described behavior.
   Live. Same-mode selection is idempotent. The fixed controls remain reachable
   during error/connection, support keyboard selection and do not steal focus
   when the service changes mode. Camera connection lifecycle remains service-owned;
-  components subscribe and render. Hide/dispose cancel owned work; resume keeps
+  components subscribe and render. Live-open user wait is bounded at 40 seconds;
+  only that HostRpc call retains its response for 55 seconds, allowing the
+  service to close an offer arriving after abandonment within the 15-second
+  unanswered-lease window. A late offer must not revive disposed or switched
+  state. Outstanding open/close work after disposal drains for at most 70 seconds.
+  Keep the shared RPC default at 15 seconds, activation/local-answer/
+  answer/candidate deadlines at 10 seconds, first-frame at 8 seconds, frame-stall
+  at 5 seconds and disconnected-state grace at 3 seconds. This client budget
+  correction is pending acceptance in the active C08 slice; it does not prove
+  the cause of the reported phone fallback or extend other consumers' budgets.
+  Hide/dispose cancel owned work; resume keeps
   the selected Auto mode without reopening Live. Local display rejection remains separate from
   acquisition failure. Decision0041 places the existing snapshot Refresh beside
   persistent acquisition-error status in an always-present footer; it does not

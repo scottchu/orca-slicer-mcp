@@ -5,7 +5,8 @@
 [PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
 reviewed decision0045/MON-001 source; consult the PR for merge identity. Exact
 `3ce5a8cf2975c2c38601ce9832fa49bc50900893` was approved after the decision-table
-repair. This records-only tail retains the approved skill and application bytes.
+repair. The conflict resolution retains approved skill bytes and incoming main
+`0710b4bf` application bytes unchanged.
 
 Use the existing monitor independently or compose it after an observed authorized
 start. Preserve one owner, exact run binding, adaptive checks, bounded recovery,
@@ -13,13 +14,28 @@ explicit limited request scope and all thumbnail/control gates. Stopping
 observation leaves the printer running. The primary remains available.
 
 Both skill validators and manual fictional lifecycle walkthroughs passed; these
-did not execute a model workflow or test actual host/printer behavior. Installed
-plugin cache and services are unchanged, with no durable service/notification
-claim. Follow maintained source for repository work. Any installed-plugin adoption
+did not execute a model workflow or test actual host/printer behavior. This monitoring change adds no installed-plugin or service changes and no durable
+service/notification claim. Incoming Camera changes retain their own evidence. Follow maintained source for repository work. Any installed-plugin adoption
 or standardized one-shot observation tool is separate scope; do not install,
 deploy or change runtime under this documentation tail. Preserve concurrent
 Camera work and earlier acceptance gaps. Detailed retained identities and commands
 are in active VALIDATION/HANDOFF.
+
+## Current order: verify bounded C08 open/cleanup repair
+
+On `codex/u1-camera-live-deadlines`, author source and focused evidence for the
+bounded Live-open correction are frozen. Commit the candidate, then run the
+required gate and exact independent review.
+Use 40 s for user-visible open and a per-call 55 s RPC retention window; prove
+that offers arriving after abandonment close their lease without reviving Live.
+Keep every other operation/default deadline unchanged. Author integrated/focused
+checks pass; required checks, independent approval and guarded delivery remain pending.
+
+The new UI works on the phone per user; frequent Connecting-to-fallback remains
+unresolved. Attempt 10 reaches upstream RTP/viewer offer in an isolated installed-
+Bun process, not a browser or LaunchAgent acceptance check. Do not infer the
+phone failure's cause from the deadline mismatch. Screen Sharing stays paused;
+all 55 IDs, Progress no-action, F07 discussion and c6 separation remain.
 
 ## Current handoff: PR99 MCP resources deployed
 
@@ -30,14 +46,14 @@ Required gates pass; consult VALIDATION for exact evidence and prior failures.
 Scoped postdeployment behavior verification passes on installed resources
 with synthetic host data.
 
-The next user-outcome check is a new ChatGPT plugin conversation after host
-metadata refresh: request Heads and Camera, then test Refresh, complete-hex Copy
-and the compact icon Switch. Mounted cards do not replace their HTML on data
+The user has now reported the refreshed UI working on the phone. Complete-hex
+Copy and other device behaviors still need their own acceptance. Mounted cards do not replace their HTML on data
 Refresh. Do not claim actual phone/OAuth/clipboard or real Live acceptance from
 synthetic tests. No plugin reinstall or per-widget skill change was requested.
 
-C08/Screen Sharing stay paused. The user reports Bun Local Network access allowed,
-but the machine is unconfirmed and no retest has run. Preserve all 55 IDs,
+C08 is now resumed as above; Screen Sharing stays paused. The user reports Bun Local Network access allowed,
+but its machine remains unconfirmed; the current isolated probe is recorded
+above and does not establish LaunchAgent/phone behavior. Preserve all 55 IDs,
 unfinished Queue/Fans/Job History work, Progress no-action, F07 class discussion,
 separate c6 and unchanged loading policy. No printer reads/controls or auth/
 network changes follow from this deployment. Docs-only tail needs no redeploy.

@@ -11,13 +11,28 @@ recovery and terminal-evidence boundaries.
 
 Two skill validators, diff/identity checks and manual fictional lifecycle
 walkthroughs pass. These are instruction/source evidence, not model execution,
-real-printer, actual-device or durable notification tests. The application tree
-remains `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`; installed cache and services
-are unchanged. VALIDATION binds retained skill identities to this records-only
-tail. O1/O2 and earlier product gaps remain open. Repository agents can use the
+real-printer, actual-device or durable notification tests. The branch incorporates incoming main `0710b4bf55edc6908eef614df5fec48614044497`
+without modifying its application tree `ffc95dccafab2289959a934cc2630339cf5a2d2e`.
+This workflow adds no installation or service changes. VALIDATION separates retained
+skill evidence from incoming Camera application evidence; our checks do not
+validate those incoming application changes. O1/O2 and earlier product gaps remain open. Repository agents can use the
 maintained source workflow; installed-plugin adoption and proposed standardized
 one-shot observation tools remain separate work, without implied installation,
 runtime changes or printer authority.
+
+## Current order: bounded C08 client deadline repair
+
+The user reports the refreshed new UI works on the phone, but Live shows
+Connecting then frequently falls back. Attempt 10 reaches upstream RTP and
+creates a viewer offer with the installed Bun 1.4.0; the earlier UDP error was
+not reproduced. This isolated-process result does not prove deployed/phone Live.
+
+On `codex/u1-camera-live-deadlines`, author source freezes the client budget/late-
+cleanup correction: Live open may wait 40 s, with only that HostRpc call retained
+for 55 s so a late offer can be closed. Other deadlines stay unchanged. Author
+focused checks pass and identities are bound in VALIDATION; frozen required
+validation, independent review and delivery remain pending. This mismatch is not a proven cause of the phone symptom.
+Screen Sharing stays paused; all 55 ledger IDs and existing scope boundaries remain.
 
 ## Current deployment: PR99 MCP Camera and Heads
 
@@ -34,8 +49,9 @@ and real Camera Live are not established by this release.
 
 Keep all 55 ledger IDs, unfinished Queue/Fans/Job History product work, Progress
 no-action, F07 reactive-class discussion, separate c6 and unchanged loading
-policy. C08 and Screen Sharing remain paused; the user's Bun Local Network
-allow report has no confirmed machine or retest. This Markdown-only rollout
+policy. At PR99 deployment C08 and Screen Sharing were paused; the user's Bun Local Network
+allow report had no confirmed machine or retest at that checkpoint; see the
+current isolated probe above. This Markdown-only rollout
 record preserves application bytes and needs no redeployment under0028.
 
 ## Earlier deployment: PR97 native observation pages

@@ -1,3 +1,5 @@
+import { CAMERA_OPEN_TIMEOUT_MS } from './deadlines.js';
+
 /** Parsed, component-private ports. No host envelopes, network URLs or DOM. */
 export type CameraSnapshot = Readonly<{ image: string; observedAt: string | null }>;
 export type CameraFrameResult = Readonly<{ snapshot: CameraSnapshot | null; activationToken?: string }>;
@@ -233,7 +235,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
         await acceptSnapshot(frame, generation);
         if (!isCurrent(token)) return;
         if (!frame.activationToken) throw new Error('Camera activation unavailable');
-        const offer = await bounded(() => transport.open(frame.activationToken!), 10000, livePending, (late) => closeSession(late.sessionId));
+        const offer = await bounded(() => transport.open(frame.activationToken!), CAMERA_OPEN_TIMEOUT_MS, livePending, (late) => closeSession(late.sessionId));
         if (!isCurrent(token)) { closeSession(offer.sessionId); return; }
         sessionId = offer.sessionId;
         const created = ports.peer(offer, {

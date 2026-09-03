@@ -89,7 +89,7 @@ for (const width of [320, 390, 590, 720])
       await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
       await expect(copy).toBeVisible();
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/observation-v15.html',
+        'ui://u1-print-studio/observation-v16.html',
       );
       const messages = await page.evaluate(() => (window as any).__mcpHost.state.messages);
       expect(messages.filter((message: any) => message.method === 'ui/initialize')).toHaveLength(1);
@@ -150,7 +150,7 @@ for (const width of [320, 390, 590, 720])
       await frame.getByRole('radio', { name: 'Snapshot', exact: true }).click();
       await expect(frame.getByRole('radio', { name: 'Snapshot', exact: true })).toBeChecked();
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/camera-v11.html',
+        'ui://u1-print-studio/camera-v12.html',
       );
       await expect
         .poll(() => page.evaluate(() => (window as any).__mcpHost.state.sizes.length))

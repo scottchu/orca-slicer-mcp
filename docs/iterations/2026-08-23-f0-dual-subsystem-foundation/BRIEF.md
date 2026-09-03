@@ -16,7 +16,8 @@ thumbnail/control gates remain intact.
 
 Validation is structural/source review with manual fictional lifecycle cases,
 not execution of an autonomous model, actual-host or real-printer tests.
-The final records-only tail retains approved skills and application identity.
+The merge resolution retains approved skills and incoming main `0710b4bf`
+application identity; monitoring checks do not validate incoming Camera changes.
 No installed cache, service, durable-monitor or notification behavior changes;
 O1/O2 remain open. Installed-plugin adoption and standardized one-shot observation
 tools are separate work. This slice does not take ownership of concurrent Camera

@@ -1,4 +1,5 @@
 import type { HostRpc } from '../host/rpc';
+import { CAMERA_OPEN_RESPONSE_TIMEOUT_MS } from './deadlines';
 import { createCameraSession, type CameraSessionPorts, type CameraSessionState } from './session';
 import { cameraTransport, parseCameraFrame } from './transport';
 
@@ -19,8 +20,10 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
   let previousFeedback: CameraSessionState['feedback'] = null;
   const listeners = new Set<(state: LiveCameraState) => void>();
   const requests = new Set<Promise<unknown>>();
-  const trackedRpc = { callTool: (name: string, args: Record<string, unknown>) => {
-    const request = ports.rpc.callTool(name, args);
+  const trackedRpc: Pick<HostRpc, 'callTool'> = { callTool: (name, args, requestOptions) => {
+    const request = requestOptions
+      ? ports.rpc.callTool(name, args, requestOptions)
+      : ports.rpc.callTool(name, args);
     requests.add(request);
     void request.then(() => { requests.delete(request); }, () => { requests.delete(request); });
     return request;
@@ -120,7 +123,7 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
       session.dispose();
       // Drain late allocations and their best-effort close before removing the
       // host request map. Both downstream RPC rounds stay finitely bounded.
-      const deadline = ports.scheduler.after(30000, ports.rpc.dispose);
+      const deadline = ports.scheduler.after(CAMERA_OPEN_RESPONSE_TIMEOUT_MS + 15000, ports.rpc.dispose);
       void (async () => {
         await Promise.resolve(); await Promise.resolve();
         while (requests.size) { await Promise.allSettled([...requests]); await Promise.resolve(); await Promise.resolve(); }

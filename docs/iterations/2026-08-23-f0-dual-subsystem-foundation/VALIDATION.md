@@ -36,20 +36,118 @@ records, exactly one active iteration, existing state headings/evidence layers,
 core requirement IDs, added local links and private-data exclusion. No full
 check-repository.sh application gate was run or modified for this slice.
 
-Retained SHA-256 identities for the final five-record documentation tail:
+Retained SHA-256 skill identities across the documentation tail and main merge:
 
 - u1-monitor-print/SKILL.md:
   `5adb6e7c71be436a5e803705a9cc6b409b474b30a0d61a2bc7d68cf6fa824a11`.
 - u1-start-print/SKILL.md:
   `d28d4042d9b254d0cbb0115b55a45b1562271b2d96bf88f69e9ffcebfd477642`.
-- Application tree: `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
+- Original approved application tree: `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
+- Incoming main `0710b4bf55edc6908eef614df5fec48614044497` application tree:
+  `ffc95dccafab2289959a934cc2630339cf5a2d2e`.
 
-The tail rechecks diff/identity and keeps approved skills, AGENTS, requirements,
-decision, application, dependencies, configuration and generated assets unchanged.
-Retain earlier application evidence on those unchanged bytes; do not repeat the
-full build/browser suite for bookkeeping. Installed cache/services are unchanged,
-and no durable monitor, external notification, real-printer or actual-device
-acceptance is added. Decision0028 requires no application deployment.
+Conflict resolution incorporates main `0710b4bf` without force-pushing history.
+Four continuity conflicts were combined by preserving our top monitoring section
+and every incoming Camera/deployment record below it. Requirements retain both
+MON-001 and incoming Camera refinements; incoming widget-ledger and application
+changes are preserved. No decision0045 collision exists.
+
+Resolution checks compare the candidate against incoming main: introduced scope
+remains eleven Markdown files; application/dependencies/configuration/generated
+assets and shipping guards are unchanged. Approved monitor/start skill hashes
+remain exact. Diff checks and incoming-record preservation checks pass. The
+incoming application tree differs from the original base; previous monitoring
+checks do not validate these new Camera bytes. Keep the incoming workstream
+evidence below separate rather than carrying the old application acceptance
+forward. No full application build/browser suite is repeated for this docs/skill
+resolution. This slice adds no installation, service deployment, durable monitor,
+external notification, real-printer or actual-device acceptance.
+
+## Current C08: resumed diagnosis and bounded client repair
+
+The user reports on 2026-09-03 that the refreshed new plugin UI works on the phone,
+while selecting Live shows Connecting and frequently falls back. This is limited
+renderer adoption, not full phone/clipboard or reliable Live acceptance. Screen
+Sharing remains paused. The phone's failing connection phase is still unknown.
+
+Attempt 10 ran `uv run --no-project test-results/c08-diagnosis/run-comparison.py`
+with the active PR99 release's `bin/bun` and label
+`attempt-10-20260903-installed140`, under the outer 45 s cleanup bound. It exits
+0 in 1.472 s: offer 50 ms, upstream answer 130 ms, ICE connected 384 ms, peer
+connected 542 ms, first upstream RTP 1,143 ms, viewer offer 1,153 ms, then both
+peers close at 1,154 ms. No UDP EHOSTUNREACH was recorded. The four probed server
+sources match deployed `4787c02`. This isolated installed-Bun process is not the
+LaunchAgent or a browser: no downstream answer, decoded frame or phone Live was
+verified. Historical attempts 1–9 remain valid evidence of their earlier state;
+not reproducing that UDP error does not prove the permission change fixed it.
+
+`app/test-results/c08-diagnosis/attempt-10-20260903-installed140.json` SHA256:
+`71e173d1b8603671ebc86e7945e40c0fdb1b2c9c86d617d1c707805efaa8ee4e`;
+its `.log` SHA256:
+`8d7a312b48d5040158224ac08135adf01a877ade3d3d4711b44e41d09fa56610`.
+
+Source comparison identifies an independently actionable client mismatch: legacy
+Live open waits 40 s, while current Svelte session waits 10 s and shared HostRpc
+expires at 15 s, dropping later results before session-owned lease cleanup can
+see them. This is not established as the phone failure's cause. The current
+candidate on `codex/u1-camera-live-deadlines` changes only Live open to a 40 s
+user wait plus per-call 55 s RPC retention (40 s plus the 15 s unanswered lease
+window). Default HostRpc stays 15 s; activation/local answer/answer/candidate
+stay 10 s, first frame 8 s, stall 5 s and disconnect 3 s.
+
+Acceptance requires integrated HostRpc/session/controller timing checks for
+late success and abandoned-offer cleanup, without reviving disposed/switched
+state or changing other operation budgets. Candidate versions are observation
+v16, Camera v12, runtime 0.4.10/schema 14: 30 resources, preserving 28 old aliases
+including the PR99 v15/v11 snapshots byte for byte. These are frozen source-candidate
+contracts, not the deployed version. Author focused evidence below is complete;
+required frozen-candidate validation, exact independent approval and shipping
+remain pending.
+
+### Frozen C08 author evidence
+
+`app/test-results/camera-deadlines-author/AUTHOR-REPORT.json` SHA256
+`1ca20f617107d3477c4a60fc9acda05d75f539bc937e4157ebb1d0575bfe1277`
+binds 28 changed/new application inputs from `220190f`; input-manifest SHA256
+is `853888ce06f64af7bfa1694f0496467331cda68b6844f127f51b71eefc911134`.
+Exact pinned Bun commands and log hashes are in that report. Executed author
+checks: `run ui:test -- src/lib/client/live src/lib/client/camera src/lib/client/host
+src/lib/client/mcp src/lib/client/legacy` passes 273 tests/24 files; the integrated
+`host-deadlines.test.ts` renewal passes 7; `run ui:check` passes Svelte 0 errors/
+0 warnings and AST; seven affected server contract files pass 87 tests/1,395
+assertions. The current-resource MCP browser selection for Heads Refresh/Copy
+and Camera Switch/fallback at 320px passes two cases in 4.8 s with synthetic data.
+
+Seven affected bundles were rebuilt; `verify:mcp-observation` and
+`verify:mcp-camera` pass deterministic checks. `build:server -- --outdir
+test-results/camera-deadlines-author/payload` passes: 60 runtime files/72 static
+routes; build-manifest SHA256
+`e0c468dfde8db73b9f32e9bde3f84bcfbcf4ba135aa15e586f94dcdedab7a63f`.
+The current observation artifact is 947,796 bytes, SHA256
+`86ea2d1ab342d714a78d9850fe3b7fcaec6c958b4d3bf7bbdc2fd49d779b3427`;
+Camera is 96,802 bytes, SHA256
+`00b8a16f74e4f01c87262a24e9f29b3af4aa1a512915a22bd875b4665c406c8a`.
+The report binds every public asset and exact old-URI compatibility snapshots.
+
+Integrated real-HostRpc/session/controller tests cover 12/16s successful opens,
+40s Auto fallback followed by one 45s late-offer close, hide/disposal cleanup,
+55s absent-response cleanup and a 54s offer with hanging close released at 69s.
+The total disposed-request drain remains bounded at 70s. Default RPC and all
+other operation/frame guards are unchanged. This proves the software timing
+repair in fixtures, not the cause of the phone symptom or real Live acceptance.
+
+Retain `focused-first.log` (58 PASS/1 FAIL: old two-argument transport mock) and
+`ui-check.log` (nine type errors from circular inference in the new test fixture).
+The expectations/test typing were corrected; the final UI consumer run, 0/0
+typecheck and seven integrated cases pass. These are distinct attempts, not one
+clean initial run. All author exec sessions and isolated browser fixtures are
+closed; attempt 10 closed both peers in finally. No new runtime probe beyond
+attempt 10, full suite, auth/network change, restart or deployment was performed.
+
+Records verification: `git diff --check` and a `uv run --no-project python`
+ledger comparison against HEAD pass; all 55 IDs remain in order. Records changes
+are limited to six owned Markdown files; no app/build/test/commit action was
+performed by the records author.
 
 ## Current PR99: exact approval and guarded deployment
 

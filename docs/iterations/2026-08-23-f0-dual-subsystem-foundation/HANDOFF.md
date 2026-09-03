@@ -3,16 +3,21 @@
 ## Current handoff: independently reviewed monitoring source
 
 [PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
-reviewed source; consult the PR for merge identity. Base:
-`220190f05afd4f785f068254d43f1b0257e9af57`. Independent review approved
+reviewed source; consult the PR for merge identity. Original source base:
+`220190f05afd4f785f068254d43f1b0257e9af57`; incoming main incorporated during
+conflict resolution: `0710b4bf55edc6908eef614df5fec48614044497`. Independent review approved
 `3ce5a8cf2975c2c38601ce9832fa49bc50900893`, tree
 `9136c5bb13d592c044c546205064baf2343caf4d`, after a decision-table separator repair.
 
 Source scope: monitor/start SKILL.md files; AGENTS routing; MON-001; decision0045
 and index; PROJECT_STATE/NEXT_AGENT and the iteration's BRIEF/VALIDATION/HANDOFF.
-This final tail changes only the five continuity records. Approved skill hashes
-and application tree are retained in VALIDATION; preparation skill, application,
-dependencies, configuration and generated assets remain unchanged.
+Four continuity conflicts retain our monitoring prefix and the complete incoming
+Camera records. Requirements merged both contracts; decision0045 has no collision.
+Approved skill hashes are retained in VALIDATION. Against incoming main, this
+change remains documentation/skills only: application, dependencies, configuration,
+generated assets and shipping guards are byte-identical. Incoming application
+tree `ffc95dccafab2289959a934cc2630339cf5a2d2e` has its own evidence below;
+monitoring checks do not validate the Camera changes.
 
 The existing standalone workflow binds one print owner to adaptive observations,
 meaningful updates and immediate alerts, bounded recovery and verified outcomes.
@@ -27,6 +32,27 @@ and the proposed standardized one-shot observation tools remain separate scope.
 No application deployment, cache reinstall or runtime changes belong to this
 records-only tail. Preserve concurrent Camera work and earlier evidence gaps.
 
+## Current handoff: bounded C08 open/cleanup repair
+
+Current branch: `codex/u1-camera-live-deadlines`. The user's new phone UI works,
+but Live frequently shows Connecting then fallback. Attempt 10 using installed
+Bun 1.4.0 reaches first upstream RTP and a viewer offer; historical EHOSTUNREACH
+is not reproduced. It stops before browser answer/decode and runs separately
+from the deployed LaunchAgent, so it does not establish reliable phone Live.
+
+Frozen author source gives Live open its legacy 40 s user wait and retains only
+that HostRpc call for 55 s (40 s plus 15 s unanswered lease window) for late
+cleanup. Prove delayed success, post-timeout/selection/disposal lease closure and
+unchanged deadlines for other operations with integrated synthetic tests.
+Author focused checks pass; exact source/payload identities are in VALIDATION.
+Next commit the frozen candidate for required validation and independent review.
+The software timing defect is not proven to explain the user's failure. Screen Sharing stays paused.
+
+Candidate compatibility contract: new observation v16/Camera v12, runtime
+0.4.10/schema 14, 30 resources and 28 preserved old aliases. Snapshot PR99 v15/v11
+bytes for compatibility; do not replace the deployed PR99 identity below before
+shipping. Independent/current-deployment acceptance remains pending.
+
 ## Current handoff: PR99 MCP resources deployed
 
 PR99 merged `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba`, preserving independently
@@ -40,13 +66,12 @@ aliases remain. Changed areas are MCP entries/builds/fixtures, typed host/legacy
 adapters, common Mount/host styling, Camera bootstrap/HostRpc, registrations,
 versions and affected test/package inputs.
 
-Next smallest user-outcome check: new ChatGPT conversation after host metadata
-refresh, then Heads Refresh/whole-hex Copy and Camera icon Switch. Actual phone,
-OAuth, clipboard and real Live remain unverified; existing cards only refresh
+The user now reports renderer adoption on the phone; complete device, OAuth,
+clipboard and reliable Live acceptance remain unverified; existing cards only refresh
 data. No per-widget skill or plugin reinstall is required by the renderer cutover.
 
 The user reports allowing Bun Local Network access; the machine is unconfirmed
-and no retest has run. C08/Screen Sharing remain paused. Preserve all 55 IDs,
+and no LaunchAgent/phone acceptance follows from the current isolated probe. C08 is now resumed as above; Screen Sharing stays paused. Preserve all 55 IDs,
 unfinished Queue/Fans/Job History work, Progress no-action, F07 class discussion,
 separate c6 and unchanged loading policy. No printer/auth/network actions are
 authorized by this record. Markdown-only tail preserves application bytes and

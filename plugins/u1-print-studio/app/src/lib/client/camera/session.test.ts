@@ -141,9 +141,9 @@ describe('injected real-camera session ownership (no host, device or network)', 
     expect(vi.getTimerCount()).toBe(0);
   });
 
-  it('releases an offer arriving after the10s open deadline', async () => {
+  it('releases an offer arriving after the40s open deadline', async () => {
     const app = setup(); const opened = deferred<CameraOffer>(); app.transport.open.mockReturnValue(opened.promise);
-    const flight = app.session.goLive(); await flush(); await vi.advanceTimersByTimeAsync(10000); await flight;
+    const flight = app.session.goLive(); await flush(); await vi.advanceTimersByTimeAsync(40000); await flight;
     opened.resolve(offer); await flush();
     expect(app.session.state().phase).toBe('fallback');
     expect(app.transport.close).toHaveBeenCalledExactlyOnceWith('opaque-viewer');

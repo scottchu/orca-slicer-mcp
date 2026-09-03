@@ -16,6 +16,8 @@ import {
   WIDGET_HTML,
   MCP_OBSERVATION_HTML,
   MCP_CAMERA_HTML,
+  MCP_OBSERVATION_V15_HTML,
+  MCP_CAMERA_V11_HTML,
   WIDGET_URI,
 } from "../../src/lib/server/app.js";
 import type {
@@ -235,7 +237,7 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v15.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v16.html");
     expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
       "ui://u1-print-studio/observation-v14.html",
       "ui://u1-print-studio/observation-v13.html",
@@ -344,7 +346,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(MCP_CAMERA_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v11.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v12.html");
     expect(LEGACY_CAMERA_WIDGET_URIS[0]).toBe(
       "ui://u1-print-studio/camera-v3.html"
     );
@@ -366,7 +368,16 @@ describe("U1 status MCP App contract", () => {
   test("retains previous current observation and camera aliases with exact frozen legacy resources", async () => {
     const client = await connectClient();
     const listed = await client.listResources();
-    expect(listed.resources).toHaveLength(28);
+    expect(listed.resources).toHaveLength(30);
+    for (const [uri, html, sha256] of [
+      ['ui://u1-print-studio/observation-v15.html', MCP_OBSERVATION_V15_HTML, '2838485ed47250f1c8dbc413227743981c7e2a2f5ea22b9c8acb8791b094edc4'],
+      ['ui://u1-print-studio/camera-v11.html', MCP_CAMERA_V11_HTML, 'bcdd91b6646989639fa68c52536705ebf8b92b7a4dc15f8ae2d2e2b3c7134fe2'],
+    ]) {
+      const result = await client.readResource({ uri });
+      const resource = result.contents[0]!;
+      expect('text' in resource ? resource.text : '').toBe(html);
+      expect(createHash('sha256').update(html).digest('hex')).toBe(sha256);
+    }
     expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v14.html");
     for (const uri of [...LEGACY_FOCUSED_WIDGET_URIS,
       "ui://u1-print-studio/camera-v10.html",
@@ -626,7 +637,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 13,
+      schemaVersion: 14,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });
