@@ -284,7 +284,7 @@
 .u1-header-result { grid-column: 3; grid-row: 1; min-width: 0; text-align: right; align-self: center; }
 .u1-title { margin: 0; color: var(--u1-ink); font: var(--u1-weight-heading) var(--u1-size-title) / var(--u1-leading-heading) var(--u1-font); letter-spacing: -0.035em; overflow-wrap: anywhere; }
 .u1-meta { margin-top: 4px; color: var(--u1-muted); font: var(--u1-weight-regular) var(--u1-size-meta) / 1.35 var(--u1-font); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.u1-:host { min-width: 0; margin: 0 var(--u1-card-x); padding: 0 0 var(--u1-body-bottom); }
+.u1-body { min-width: 0; margin: 0 var(--u1-card-x); padding: 0 0 var(--u1-body-bottom); }
 .u1-data-row { min-width: 0; border-color: var(--u1-line); font: var(--u1-weight-regular) var(--u1-size-body) / var(--u1-leading-body) var(--u1-font); }
 .u1-facts { min-width: 0; border-color: var(--u1-line); }
 .u1-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--u1-space-3); margin: 0 var(--u1-card-x); padding: var(--u1-footer-top) 0 var(--u1-footer-bottom); border-top: 1px solid var(--u1-line); }

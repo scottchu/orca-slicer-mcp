@@ -27,7 +27,7 @@
       const args = toolName === 'observe_printer' ? { view: query.get('view') ?? 'heads' } : {};
       const post = (message) =>
         frame.contentWindow.postMessage({ jsonrpc: '2.0', ...message }, '*');
-      const state = { calls: [], messages: [], sizes: [], ready: false, result: null, uri: null };
+      const state = { calls: [], messages: [], sizes: [], ready: false, result: null, uri: null, displayMode: 'inline', displayRequests: [] };
       const call = async (name, argumentsValue) =>
         (
           await fetch('/fixture/call', {
@@ -40,12 +40,27 @@
         post({ method: 'ui/notifications/tool-input', params: { arguments: argumentsValue } });
       const sendResult = (result = state.result) =>
         post({ method: 'ui/notifications/tool-result', params: result });
+      let inlineHeight = 0;
+      const applyMode = (mode) => {
+        state.displayMode = mode;
+        frame.style.position = mode === 'fullscreen' ? 'fixed' : '';
+        frame.style.inset = mode === 'fullscreen' ? '0' : '';
+        frame.style.height = mode === 'fullscreen' ? '100dvh' : `${inlineHeight}px`;
+      };
+      const resolveDisplay = (mode) => {
+        const request = state.displayRequests.at(-1);
+        applyMode(mode);
+        post({ id: request.id, result: { mode } });
+      };
       window.__mcpHost = {
         state,
         sendInput,
+        resolveDisplay,
         sendResult,
-        sendContext: (context) =>
-          post({ method: 'ui/notifications/host-context-changed', params: context }),
+        sendContext: (context) => {
+          if (context.displayMode) applyMode(context.displayMode);
+          post({ method: 'ui/notifications/host-context-changed', params: context });
+        },
         call,
         compatibility: null,
       };
@@ -72,7 +87,7 @@
                   protocolVersion: '2026-01-26',
                   hostInfo: { name: 'fixture', version: '1' },
                   hostCapabilities: {},
-                  hostContext: {},
+                  hostContext: query.has('unsupported-display') ? { availableDisplayModes: ['inline'] } : {},
                 },
               }),
             Math.min(1000, Number(query.get('init-delay') ?? 0)),
@@ -87,6 +102,14 @@
             sendInput();
             sendResult();
           }
+        } else if (message.method === 'ui/request-display-mode') {
+          state.displayRequests.push(message);
+          if (query.get('presentation') === 'pending') return;
+          if (query.get('presentation') === 'reject') {
+            post({ id: message.id, error: { code: -32000, message: 'Synthetic display denial' } });
+            return;
+          }
+          resolveDisplay(query.get('presentation') === 'grant' ? message.params.mode : 'inline');
         } else if (message.method === 'tools/call') {
           state.calls.push(message.params);
           post({
@@ -94,7 +117,8 @@
             result: await call(message.params.name, message.params.arguments),
           });
         } else if (message.method === 'ui/notifications/size-changed') {
-          if (state.ready) {
+          if (state.ready && state.displayMode !== 'fullscreen') {
+            inlineHeight = message.params.height;
             state.sizes.push(message.params);
             frame.style.height = `${message.params.height}px`;
           }

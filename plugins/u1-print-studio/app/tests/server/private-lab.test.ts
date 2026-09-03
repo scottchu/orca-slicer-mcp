@@ -58,7 +58,7 @@ describe("private Svelte lab packages", () => {
   });
 
   test('keeps the synthetic Camera in a second isolated private artifact', () => {
-    expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('b32bb1d12b15ccfa5dd7b576f0429040236bb5b2f9c58982333ff38e43569f15');
+    expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('a921f730715f6d235cdaa444918c2f8d8e84e7efe6cff9b56f4c9d3134e17af9');
 
 
     for (const marker of ['U1 Camera', 'Simulated live', 'Camera state', 'Display capabilities', 'data-camera-media']) expect(cameraHtml).toContain(marker);

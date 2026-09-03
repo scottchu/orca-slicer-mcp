@@ -1,5 +1,46 @@
 # F0 dual-subsystem foundation validation
 
+## Latest user outcome and active verification scope
+
+After PR104, the user reports other delivered UI working, but fullscreen still
+fills only the widget. A new phone Progress image reports missing body insets
+while Lab appears correct. This is user outcome/screenshot evidence, not a fresh
+runtime reproduction, measured inset result, known CSS root cause or complete
+device/clipboard acceptance. General UI success does not establish reliable
+Camera Live; C08 remains open. No screenshot or raw private image is committed.
+
+The active slice from8b634a4 is host fullscreen plus actual packaged MCP/Lab layout
+parity. Observable acceptance: host-acknowledged entry/exit and truthful mode,
+no media/session reconnect, and matching intended body insets with stable
+failure/recovery geometry in the actual package. Host-owned composer/chrome may
+remain; no OS-screen guarantee follows. Preserve current app separation, two
+resources, private metadata and shipping guards. Reviewer contract adopted in
+0047: existing HostRpc ui/request-display-mode plus partial context subscription;
+presentation service owns the bounded pending request, Video renders actual
+acknowledged mode without DOM/session/timer replacement or focus stealing.
+Standalone native fullscreen requires document-state proof; no CSS-only host
+substitute. Source changes and focused/independent/runtime evidence remain pending.
+Progress redesign is no-action. Earlier PR104 evidence retains its original scope.
+
+The adopted display layout fixes media only after actual host fullscreen grant,
+suspends intrinsic card-size notifications while fullscreen is granted and
+resumes one update after actual inline return, preserving the same video element.
+The source plans0.4.12/schema16/observation18/Camera14 with two current resources
+and no old aliases. An interim author report records40 focused tests passing
+across HostRpc/presentation/controller-widget/observation dispatch; the final
+commands, source manifest and report are pending. This does not prove the eight-
+view padding geometry, final packaged behavior or actual-host grant acceptance.
+
+Author paired rendered capture at390px now reproduces the layout discrepancy:
+MCP body computed margin/padding is0 while Lab inset is18px. Source diagnosis is
+an unmatched legacy `.u1-:host` selector instead of `.u1-body`. Private captures
+are under `app/test-results/host-fullscreen-author/progress-*.png`; final report
+and exact validation identities are pending. The adopted fix changes only the
+selector to the intended body using existing spacing tokens. It requires all
+eight active legacy consumers, stable failure/recovery and320px/200% coverage.
+This is author package/Lab evidence, not measured CSS from the user's phone or
+acceptance of a Progress redesign; other legacy layout debt is not closed.
+
 ## Current deployment: PR104 exact release and BOTH service restarts
 
 `PROFILE-DOCS-REVIEW.json` under `app/test-results/current-only-independent`,

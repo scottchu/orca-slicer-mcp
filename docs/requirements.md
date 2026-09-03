@@ -316,8 +316,28 @@ printer environments support the described behavior.
   other widget footer behavior stays unchanged. The new presentation/diagnostic
   source is independently accepted and deployed through PR104 at `162dc68`;
   it does not establish the phone failure's cause.
-  Fullscreen reflects same-document native or local CSS state and never requests
-  a remount-capable host display mode. PiP is offered only through the existing
+  PR104 fullscreen uses same-document native/local CSS only. The current C01
+  request supersedes that local-only direction: add acknowledged host fullscreen
+  entry/exit while preserving the interactive-decoupled Svelte app, truthful
+  granted mode and media/session continuity. Host-owned composer/chrome may
+  remain; do not promise OS-wide fullscreen or treat local CSS as a host grant.
+  Adopted decision0047 uses the existing HostRpc standard ui/request-display-mode
+  with fullscreen/inline requests and partial host display-context subscription.
+  A presentation service in src/lib/client owns one pending bounded request;
+  Video subscribes/renders the acknowledged response/notification mode, without
+  optimistic state or a CSS-only host fullscreen substitute. Fixed media layout
+  starts only after the actual host grant; suspend intrinsic card-size
+  notifications in fullscreen and resume one after actual inline return without
+  remounting/reparenting the video. Host-driven exit is
+  synchronized; Exit remains available during loading/error. Only explicit action
+  focus is managed, and notifications never steal focus. Rejected/timed-out or
+  disposed work must not affect the Camera session, persistent video DOM or Auto
+  timers. Standalone/dashboard/Lab native fullscreen is confirmed by document
+  state; otherwise report unavailable. No source or actual-host acceptance is
+  claimed yet. Planned current-only candidate versions are runtime0.4.12/schema16/
+  observation18/Camera14, with no old aliases. Display changes cause no reconnect
+  or additional acquisition.
+  PiP is offered only through the existing
   live video's same-document native Picture in Picture API and makes zero host
   display-mode requests; hide the action when native PiP is unavailable. Both
   use feature detection and explicit rejection handling; API presence does not
@@ -759,6 +779,14 @@ durable-monitor claim.
   error reason in a persistent bottom-left media overlay and removes its footer/
   Refresh UI; the neutral/no-stale/stable-geometry obligations remain. Other
   widget footer rules are unchanged.
+  The current packaged-layout remediation must compare actual MCP resource HTML
+  with the corresponding Lab view and state at phone/desktop widths. The reported
+  Progress missing body insets were reproduced by the author's390px paired
+  capture: MCP body margin/padding0 versus Lab18px because `.u1-:host` cannot
+  match `.u1-body`. The scoped selector repair must use existing tokens, preserve
+  loading/error/recovery bounds and cover all eight active legacy consumers,
+  including320px/200% text. Do not expand it into P01's deferred Progress design
+  or claim all legacy debt resolved. Lab-only checks cannot accept the MCP fix.
   Adoption and evidence are tracked per route in `docs/widget-delivery.md`;
   the requirement does not itself claim every route has been delivered.
 

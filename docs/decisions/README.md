@@ -51,6 +51,7 @@ silently changed.
 | [0044](0044-connect-heads-and-camera-svelte-to-mcp-resources.md) | Connect Heads and Camera Svelte UI to MCP resources | Independently accepted and deployed PR99; scoped synthetic postverification PASS; actual-host acceptance pending |
 | [0045](0045-compose-print-with-standalone-asynchronous-monitoring.md) | Compose print with standalone asynchronous monitoring | Accepted workflow direction; source review pending; no durable service claim |
 | [0046](0046-camera-auto-default-and-edge-to-edge-card.md) | Camera Auto default and edge-to-edge card | PR104 accepted/deployed at162dc68; scoped synthetic postverification PASS; phone reliability unresolved |
+| [0047](0047-use-host-acknowledged-fullscreen-with-persistent-media.md) | Use host-acknowledged fullscreen with persistent media | Reviewer contract adopted; source in progress, final validation/exact acceptance pending |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

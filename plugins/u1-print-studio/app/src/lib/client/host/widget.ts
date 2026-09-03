@@ -9,12 +9,13 @@ const record = (value: unknown): Record<string, unknown> | null =>
 export const createWidgetHost = () => {
   let disposed = false;
   let ready = false;
+  let fullscreen = false;
   let frame = 0;
   let previous = '';
   const root = document.getElementById('widget-root') ?? document.body;
   const report = () => {
     frame = 0;
-    if (disposed || !ready) return;
+    if (disposed || !ready || fullscreen) return;
     const bottomMargin = Number.parseFloat(getComputedStyle(root).marginBottom || '0');
     const height = Math.ceil(root.getBoundingClientRect().bottom + window.scrollY + bottomMargin);
     const width = document.documentElement.clientWidth;
@@ -31,7 +32,7 @@ export const createWidgetHost = () => {
     );
   };
   const schedule = () => {
-    if (!disposed && ready && !frame) frame = requestAnimationFrame(report);
+    if (!disposed && ready && !fullscreen && !frame) frame = requestAnimationFrame(report);
   };
   const rpc = createHostRpc(window, {
     onInitialized: () => {
@@ -48,7 +49,11 @@ export const createWidgetHost = () => {
           root.style.setProperty(`--u1-host-inset-${side}`, `${value}px`);
         }
       }
-      // Host fullscreen/PiP never claims local browser fullscreen or starts Live.
+      const nextFullscreen = record(context)?.displayMode === 'fullscreen';
+      if (fullscreen && !nextFullscreen) previous = '';
+      fullscreen = nextFullscreen;
+      // The host owns fullscreen allocation. Resume intrinsic sizing only after
+      // returning inline and letting the component remove its fullscreen style.
       schedule();
     },
   });

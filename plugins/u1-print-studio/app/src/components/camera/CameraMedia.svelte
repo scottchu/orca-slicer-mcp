@@ -5,6 +5,7 @@
   import Skeleton from '../common/Skeleton.svelte';
   import { type CameraScenario, type CameraMeasurement, type CameraCapabilityPolicy } from '../../lib/client/camera/state';
   import { createSyntheticCameraSession } from '../../lib/client/camera/synthetic-session';
+  import { createDocumentPresentation, type Presentation } from '../../lib/client/media/presentation';
   import type { CameraMode } from '../../lib/client/camera/session';
   let { scenario, capabilityPolicy, onmeasurement, onfeedback, actions }: {
     scenario: CameraScenario;
@@ -19,7 +20,9 @@
   let mounted = $state(false);
   let playing = $state(false);
   let fullscreen = $state(false);
-  let localFullscreen = $state(false);
+  let displayPending = $state(false);
+  let presenter: Presentation | undefined;
+  let fullscreenButton = $state<Button>();
   let pip = $state(false);
   let canPip = $state(false);
   let feedback = $state('');
@@ -32,19 +35,19 @@
   export const refresh = () => service?.refresh();
   export const selectMode = (mode: CameraMode) => service?.selectMode(mode);
   const updateDisplay = () => {
-    fullscreen = document.fullscreenElement === frame || localFullscreen;
     pip = document.pictureInPictureElement === video;
     canPip = document.pictureInPictureEnabled === true && typeof video.requestPictureInPicture === 'function';
   };
   const toggleFullscreen = async () => {
-    try {
-      if (document.fullscreenElement === frame) await document.exitFullscreen();
-      else if (localFullscreen) localFullscreen = false;
-      else if (capabilityPolicy === 'denied') toast('Simulated display request failure');
-      else if (document.fullscreenEnabled && typeof frame.requestFullscreen === 'function' && capabilityPolicy !== 'unsupported' && scenario !== 'unsupported') await frame.requestFullscreen();
-      else localFullscreen = true;
-    } catch { toast('Fullscreen unavailable; preview continues'); }
-    updateDisplay();
+    if (!presenter || displayPending) return;
+    const origin = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const focus = fullscreenButton?.captureFocus();
+    const granted = await presenter.toggle();
+    const recoverFocus = focus?.ownsFocus();
+    focus?.release();
+    if (!mounted) return;
+    if (!granted) toast(capabilityPolicy === 'denied' ? 'Simulated display request failure' : 'Fullscreen unavailable');
+    if (recoverFocus && origin?.isConnected) origin.focus({ preventScroll: true });
   };
   const togglePip = async () => {
     try {
@@ -54,24 +57,20 @@
     } catch { toast('Picture in picture unavailable; preview continues'); }
     updateDisplay();
   };
-  const keydown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape' && localFullscreen) { localFullscreen = false; updateDisplay(); }
-  };
   onMount(() => {
     service = createSyntheticCameraSession(canvas, video, measurement => { playing = measurement.playing; unavailable = measurement.unavailable ?? false; presented = measurement.scenario ?? scenario; onmeasurement(measurement); }, toast);
     updateDisplay(); mounted = true;
+    presenter = createDocumentPresentation(frame, document, () => capabilityPolicy === 'native' && scenario !== 'unsupported');
+    const unsubscribeDisplay = presenter.subscribe(value => { fullscreen = value.mode === 'fullscreen'; displayPending = value.pending; });
     const hide = () => service?.pageHide(), show = () => service?.pageShow();
     window.addEventListener('pagehide', hide); window.addEventListener('pageshow', show);
-    document.addEventListener('fullscreenchange', updateDisplay);
-    document.addEventListener('keydown', keydown);
     video.addEventListener('enterpictureinpicture', updateDisplay);
     video.addEventListener('leavepictureinpicture', updateDisplay);
     return () => {
+      mounted = false; unsubscribeDisplay(); presenter?.dispose(); presenter = undefined;
       service?.dispose(); service = null;
       window.removeEventListener('pagehide', hide); window.removeEventListener('pageshow', show);
       if (toastTimer) clearTimeout(toastTimer);
-      document.removeEventListener('fullscreenchange', updateDisplay);
-      document.removeEventListener('keydown', keydown);
       video.removeEventListener('enterpictureinpicture', updateDisplay);
       video.removeEventListener('leavepictureinpicture', updateDisplay);
     };
@@ -83,7 +82,7 @@
   });
 </script>
 
-<div class="media-frame" class:local-fullscreen={localFullscreen} bind:this={frame} data-camera-media data-camera-scenario={presented}>
+<div class="media-frame" bind:this={frame} data-camera-media data-camera-scenario={presented}>
   <canvas bind:this={canvas} width="640" height="360" class:hidden={failed || !['snapshot', 'live', 'fallback', 'unsupported'].includes(presented)} aria-hidden={failed} aria-label={failed ? undefined : 'Synthetic camera calibration pattern'}></canvas>
   <video bind:this={video} class:visible={!failed && presented === 'live' && playing} muted autoplay playsinline aria-hidden={failed} aria-label={failed ? undefined : 'Synthetic camera video'}></video>
   {#if presented === 'loading' || failed}<div class="loading" aria-hidden="true"><Skeleton shape="fill" /></div>{/if}
@@ -92,7 +91,7 @@
     {#if failed}<div class="media-status-message">Could not load camera</div>{/if}
   <div class="media-actions" data-camera-actions>
       {#if presented === 'live' && playing && canPip && capabilityPolicy !== 'unsupported'}<Button label={pip ? 'Exit picture in picture' : 'Picture in picture'} icon={PictureInPicture2} pressed={pip} onclick={() => void togglePip()} />{/if}
-      <Button label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
+      <Button bind:this={fullscreenButton} label={fullscreen ? 'Exit fullscreen' : 'Fullscreen'} icon={fullscreen ? Minimize : Maximize} pressed={fullscreen} onclick={() => void toggleFullscreen()} />
     {@render actions?.()}
   </div>
   </div>
@@ -111,8 +110,7 @@
   .media-actions { display: flex; flex: 0 0 auto; gap: 8px; margin-left: auto; }
   .media-status-message { min-width: 0; padding: 5px 7px; border-radius: var(--u1-radius-control); background: rgb(28 30 32 / 86%); color: white; font-size: 12px; line-height: 1.25; overflow-wrap: anywhere; }
   .media-feedback { position: absolute; bottom: 64px; right: 10px; max-width: calc(100% - 20px); padding: 8px 11px; border-radius: var(--u1-radius-control); background: rgb(28 30 32 / 86%); color: white; font-size: 12px; pointer-events: none; }
-  .media-frame:fullscreen, .local-fullscreen { width: 100vw; height: 100dvh; aspect-ratio: auto; border-radius: 0; background: #edf1f4; }
-  .local-fullscreen { position: fixed; inset: 0; z-index: 100; }
+  .media-frame:fullscreen { width: 100vw; height: 100dvh; aspect-ratio: auto; border-radius: 0; background: #edf1f4; }
   @media (max-width: 420px) {
     .media-status-message { position: absolute; left: 0; bottom: 54px; max-width: 100%; box-sizing: border-box; }
   }

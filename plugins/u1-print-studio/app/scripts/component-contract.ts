@@ -106,6 +106,8 @@ const approvedImports: Record<string, string[]> = {
   'observation/ThermalReading.svelte': ['../../lib/client/live/presentation', './ActualTarget.svelte', '../common/Icon.svelte', '../common/Inline.svelte', '../common/Name.svelte', '../common/ReadingRow.svelte', '../common/PercentageBackground.svelte'],
   'observation/ThermalsSkeleton.svelte': ['../common/ReadingList.svelte', './ThermalReading.svelte'],
 };
+// Presentation is a typed rendering/service boundary; no host globals in composites.
+for (const name of ['camera/CameraWidget.svelte', 'camera/LiveCameraRoot.svelte']) approvedImports[name].push('../../lib/client/media/presentation');
 // Explicit shared footer/state contract.
 approvedImports['camera/CameraWidget.svelte'].push('../common/Footer.svelte', '../common/StateSurface/StaticStateSurface.svelte', '../common/Skeleton.svelte', '../../lib/client/camera/failure');
 approvedImports['camera/CameraLabWidget.svelte'].push('lucide-svelte', '../common/Button.svelte', '../common/Footer.svelte', '../common/StateSurface/StaticStateSurface.svelte', '../common/Skeleton.svelte');

@@ -5,6 +5,8 @@ import { createObservationHost, eventView } from './observation-host';
 const setup = (replay: HostEvent[] = []) => {
   const listeners = new Set<(event: HostEvent) => void>();
   const rpc: HostRpc = {
+    requestDisplayMode: vi.fn(async () => 'inline' as const),
+    subscribeContext: vi.fn(() => vi.fn()),
     start: vi.fn(async () => {}),
     callTool: vi.fn(async () => ({})),
     subscribe: (listener) => {
