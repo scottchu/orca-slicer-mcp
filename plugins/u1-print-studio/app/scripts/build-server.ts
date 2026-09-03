@@ -32,19 +32,18 @@ const route = (url: string, file: string, role: StaticRoute['role'] = 'dashboard
   if (staticRoutes[url]) throw new Error(`Duplicate static route: ${url}`);
   staticRoutes[url] = { file, sha256: digest(path.join(staging, file)), role };
 };
-const legacy = (urls: string[], file: string, role: StaticRoute['role'] = 'dashboard'): void => {
+const staticPage = (urls: string[], file: string, role: StaticRoute['role'] = 'dashboard'): void => {
   const target = `static-contract/${file}`;
   mkdirSync(path.join(staging, 'static-contract'), { recursive: true });
   cpSync(path.join(root, 'public', file), path.join(staging, target));
   for (const url of urls) route(url, target, role);
 };
-legacy(['/widget'], 'widget.html', 'both');
-legacy(['/camera-widget'], 'camera-widget.html');
-legacy(['/dashboard', '/dashboard/'], 'dashboard-index.html');
-legacy(['overview', 'progress', 'jobs', 'job_history', 'bed_mesh'].map((view) => `/dashboard/${view}`), 'status-dashboard-host.html');
-legacy(['/dashboard/camera'], 'camera-dashboard-host.html');
-for (const view of ['fans', 'thermals', 'heads', 'queue', 'camera']) legacy([`/dashboard/${view}_widget`], `svelte-live-${view}.html`);
-const lab = (urls: string[], file: string): void => legacy(urls.flatMap((url) => [url, `${url}/`]), file);
+route('/widget', 'mcp-observation.html', 'both');
+staticPage(['/dashboard', '/dashboard/'], 'dashboard-index.html');
+staticPage(['overview', 'progress', 'jobs', 'job_history', 'bed_mesh'].map((view) => `/dashboard/${view}`), 'status-dashboard-host.html');
+staticPage(['/dashboard/camera'], 'camera-dashboard-host.html');
+for (const view of ['fans', 'thermals', 'heads', 'queue', 'camera']) staticPage([`/dashboard/${view}_widget`], `svelte-live-${view}.html`);
+const lab = (urls: string[], file: string): void => staticPage(urls.flatMap((url) => [url, `${url}/`]), file);
 lab(['/dashboard/lab', ...['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans'].map((view) => `/dashboard/lab/${view}`)], 'svelte-observation-lab.html');
 lab(['/dashboard/lab/bed_mesh'], 'svelte-bed-mesh-lab.html');
 lab(['/dashboard/lab/camera'], 'svelte-camera-lab.html');
@@ -56,7 +55,7 @@ const files = (folder: string, prefix = ''): string[] => readdirSync(folder, { w
 });
 for (const file of files(path.join(staging, 'client'))) route(`/${file}`, `client/${file}`);
 const runtimeFiles = Object.fromEntries(files(staging).sort().map((file) => [file, digest(path.join(staging, file))]));
-const manifest = { schemaVersion: 1, buildKind: 'sveltekit-bun', runtimeFiles, staticRoutes };
+const manifest = { schemaVersion: 2, buildKind: 'sveltekit-bun', runtimeFiles, staticRoutes };
 writeFileSync(path.join(staging, 'build-manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 mkdirSync(output, { recursive: true });
 // Copy only this build's explicit payload; never remove unrelated CLI/stdin builds.

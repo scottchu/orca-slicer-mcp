@@ -2,7 +2,7 @@ import type { CameraMode } from './session';
 export const CAMERA_SCENARIOS = [
   { value: 'loading', label: 'Loading' },
   { value: 'connecting', label: 'Connecting' },
-  { value: 'snapshot', label: 'Snapshot' },
+  { value: 'snapshot', label: 'Auto' },
   { value: 'live', label: 'Simulated live' },
   { value: 'fallback', label: 'Fallback' },
   { value: 'error', label: 'Error' },

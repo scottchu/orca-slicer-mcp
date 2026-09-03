@@ -1,4 +1,4 @@
-import { cameraFramePayload, cameraStreamPayload, observationPayload, resultPayload } from './app.js';
+import { cameraFramePayload, cameraStreamPayload, observationPayload } from './app.js';
 import { OBSERVATION_VIEWS, type ObservationView } from './observation-presentation.js';
 import type { PrinterObservationStore } from './observation-store.js';
 import { readU1CameraFrame } from './u1-status.js';
@@ -9,7 +9,7 @@ import type { RequestLifetime } from './request-lifetime.js';
 export type ToolReply = { status: number; body: unknown };
 const reply = (status: number, body: unknown): ToolReply => ({ status, body });
 
-// One application dispatch shared by Kit HTTP and the finite compatibility adapter.
+// One application dispatch shared by Kit HTTP and the dashboard HTTP adapter.
 export const callDashboardTool = async (
   body: unknown, observations: PrinterObservationStore, dependencies: StatusDashboardDependencies, lifetime?: RequestLifetime
 ): Promise<ToolReply> => {
@@ -30,10 +30,6 @@ export const callDashboardTool = async (
         ? (argumentsValue as Record<string, unknown>)
         : {};
 
-    if (name === "get_u1_status") {
-      const snapshot = await observations.current({ refresh: true });
-      return reply(200, resultPayload(snapshot.status, snapshot.metadata));
-    }
     if (name === "refresh_printer_observation") {
       const view = argumentsObject.view;
       if (

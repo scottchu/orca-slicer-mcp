@@ -4,6 +4,47 @@ Current authority, 2026-09-03. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
+## Current: manifest-profile repair accepted; guarded shipment next
+
+Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97` is independently accepted after
+renewed required validation and ten fresh profile cases. New stage/ship builds
+require schema2/current binding; installed status/rollback strictly validate known
+historical profiles. No public widget compatibility or guard bypass returns.
+The current52-file/71-route payload retains the same runtime/UI hashes; only the
+build-manifest schema changes. BOTH existing PR101 services verify healthy through
+read-only status checks, with no restart. Evidence and prior failures are in
+VALIDATION.
+
+Next review this documentation-only tail, then renew guarded u1-ship and verify
+BOTH restarts plus installed-resource behavior. PR101 remains deployed. C08 phone
+reliability, host fullscreen and existing layout debt remain unresolved; preserve
+all55 IDs, monitor workflow, eight active legacy views and Progress no-action.
+
+## Earlier accepted source: Camera and current-only widgets
+
+Exact `aaaf0a56a0df944a19384822decfc62712021c51` is independently accepted.
+The source has only observation17/Camera13 resources and two public/six app-only
+tools. Thirty old URI aliases, the two status compatibility tools, old Camera
+HTTP route and18 obsolete files are removed; `/widget` serves current observation.
+The eight legacy renderers used by current observation remain active. Deployment
+backups, other worktrees and every shipping/integrity/security/preservation guard
+remain intact. Required and scoped validation evidence is in VALIDATION.
+
+Camera defaults to quiet Auto with an88px-by-44px Auto/Live icon Switch. Its
+edge-to-edge media has no footer/Refresh; the persistent safe failure reason is
+bottom left, controls bottom right, with stable narrow-layout separation.
+Service-owned bootstrap, failure diagnostics and unchanged deadlines follow
+CAM-008/decision0046. Progress's2px failure allocation and Bed's failed-renderer
+release were scoped current-route fixes, not the deferred Progress redesign.
+
+Next complete the documentation-only exact review, then guarded u1-ship and BOTH
+service restarts plus installed-resource behavior verification. PR101 remains
+the deployed baseline; no shipment or actual-device acceptance is claimed yet.
+Retain all55 IDs, monitor workflow, current eight legacy views, unfinished Queue/
+Fans/Job History, Progress no-action, F07 discussion and separate c6. C08 phone
+reliability remains unresolved; host fullscreen is unimplemented, Screen Sharing
+paused, and existing `.u1-:host` layout debt remains.
+
 ## Current deployment: PR101 Camera open/cleanup repair
 
 PR101 `0710b4b` is deployed after exact `42cdaca` independent approval and BOTH
@@ -12,8 +53,11 @@ post-disposal drain is bounded at 70 s; other deadlines remain unchanged.
 Current observation v16/Camera v12 preserve all 28 prior URI bytes. Required and
 independent targeted checks and installed-resource synthetic postverification pass.
 
-The user confirms the new phone UI works. C08 reliable Live and its failure's
-cause remain open; attempt 10 is isolated upstream evidence only. Screen Sharing
+The user first reported the same PR101 phone failure, then connected Live after a
+couple of retries, then failed again after about 10 s; the success screenshot
+shows new UI and Live/30 FPS. C08 reliability is unresolved; exact mounted URI,
+failure phase and root cause remain unverified.
+Attempt 10 is isolated upstream evidence only. Screen Sharing
 stays paused. All 55 IDs, eight legacy observation renderers, Progress no-action,
 F07 discussion, c6 separation and unfinished Queue/Fans/Job History remain.
 Detailed identities/failures are in VALIDATION; this docs-only tail does not redeploy.
@@ -305,16 +349,16 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | L02 every Lab has controls/Camera | Delivered PR67/69 basics | Extend closed retained-error cases consistently |
 | L03 fixed bottom Lab dock | Not started | Safe-area/reserved space, short viewport and 200% text/keyboard |
 | L04 compact/medium/full + MCP size | Not started | Closed size contract with distinct information hierarchy |
-| L05 all-widget stable acquisition-error presentation | PR89 deployed0041; source route matrix and scoped served-widget verification PASS | Static neutral failures, adjacent footer status, no stale telemetry; retain resize/short-content/Retry guards and C08 risk |
+| L05 all-widget stable acquisition-error presentation | PR89 deployed0041; source route matrix and scoped served-widget verification PASS | Static neutral failures, adjacent footer status, no stale telemetry; Camera-only0046 exception and current-route allocation/release are source-accepted; shipment pending. Retain resize/short-content/Retry guards and C08 risk |
 | L06 variable list fixed height | Decision pending | Choose bounded scroll vs content height; do not infer from skeleton rule |
-| C01 fullscreen video continuity | Delivered focused software fix | Genuine phone/native PiP and physical stream remain unverified |
+| C01 fullscreen video continuity | Delivered same-document native/CSS continuity; host fullscreen integration unfinished | Current code does not request host display mode; mobile whole-host fullscreen is not solved by local CSS/native fallback. Official host fullscreen API exists; this slice adds no implementation. Genuine phone/native PiP and physical stream acceptance remain separate |
 | C02 Camera in Lab and SvelteKit | Delivered PR69/71 | Does not imply latest service/status repair delivered |
 | C03 connecting/disconnected icons/red dot | Source-only separate checkpoint c6cfb4e | Integrate separately and independently verify;0042 removes historical repo cap blocker |
-| C04 consistent two/three status slots | Compact Snapshot/Live/Auto icons; visible44px track refinement independently approved and shipped PR95 | Preserve44px targets,132px three-mode width,40px inset thumb, animation/tooltip/aria and fullscreen behavior; three scoped HTTPS consumer cases PASS; loading policy unchanged; C08 separate |
+| C04 consistent two/three status slots | aaaf0a56 independently accepted: default Auto, Auto/Live only,88px-by-44px icon Switch; no single-Snapshot or footer/Refresh | Quiet polling, edge-to-edge media, persistent bottom-left safe reason and bounded bootstrap/recovery accepted in source. Profile repair independently accepted at b5a0d427 after the blocked first attempt; guarded shipment/installed behavior pending. C08 reliability stays open |
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
-| C08 served Camera still old | PR99 new UI works on phone per user; Live shows Connecting then frequently falls back. Diagnosis resumed; failing phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–10 and user-reported Bun permission allowance. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
+| C08 served Camera still old | PR101 phone failure, one Live/30 FPS success after retries, then another failure with about 10 s before fallback. Reliability unresolved; exact URI/phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–12 and user-reported Bun permission allowance; local served-dashboard success did not reproduce phone failure. Safe failure-stage diagnostics are in progress, not a proven root-cause fix. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |
@@ -331,7 +375,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | X02 Current Job Svelte | Source-only PR79 / 48f2060 | Integrate/remeasure; filename/state grouping, not duplicate percent |
 | X03 History Svelte and record identity | Source-only 379c1e7 adapter | Basename/outcome/date/duration and bounded-list design |
 | X04 Overview Svelte/domain grouping | Source-only 1a3b4f4 adapter | Eight truthful domain summaries, no invented fields |
-| X05 no remaining legacy/MCP aliases | PR99 MCP Heads/Camera Svelte cutover independently accepted and deployed; eight other renderers and all 26 old aliases retained | Scoped postverification passes; actual-host acceptance remains separate; full retirement requires lossless removal acceptance |
+| X05 no remaining legacy/MCP aliases | aaaf0a56 independently accepted: only two resources;30 old aliases/two tools/old Camera route and18 obsolete files retired | Manifest-profile repair independently accepted; guarded shipment pending, with no public compatibility restoration. Eight legacy renderers still used by current observation remain active; their Svelte migration is unfinished. No actual-host acceptance claimed |
 | X06 material/profile/color sync | Decision pending | No unreviewed write/sync authority |
 | G01 focused/transitive tests rule | Delivered PR80 AGENTS | One frozen full-run owner, independent targeted checks, ship guards intact |
 | G02 role-separated delegation | Adopted AGENTS | Author cannot self-approve; disclose actual capacity limits |

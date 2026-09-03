@@ -206,21 +206,63 @@ printer environments support the described behavior.
   shared printer upstream closes when the last viewer closes or fails. TURN is
   a fallback, not a prerequisite when a direct server host candidate is
   reachable.
-- **CAM-008:** Camera uses the latest selected white rounded-card reference:
-  small camera-icon tile/title at top left; state/measured FPS/frame time in the
-  white header above and outside the genuine image, with readable narrow
-  wrapping. Display/live/snapshot controls stay bottom right and remain working
-  and accessible. Snapshot / Live / Auto use the existing animated
-  `IconSegmentedControl` behavior through generic common `Switch` as a fixed
-  compact icon-only three-mode overlay inside
-  the Camera media's bottom-right corner. Names appear only in tooltip/aria,
+- **CAM-008:** The independently accepted Camera source has a thin white header
+  with icon/title and state/measured FPS/frame time. Its media extends edge to
+  edge across the whole lower card, with square top media corners and bottom
+  clipping supplied by the outer card radius and overflow containment. Camera
+  has no footer or Refresh button. A persistent short safe failure reason
+  overlays the media at bottom left, clear of the bottom-right controls; the
+  compact header holds only icon/title/state/FPS/time. Decision0046 records this
+  explicit user-approved Camera-only exception to decision0041's footer placement;
+  other widgets retain their footer/Refresh/error contracts. Display/mode
+  controls stay accessible at the media's bottom right. The current candidate uses only Auto / Live through generic
+  common animated `Switch`, fixed at 88px wide and 44px high in the Camera media's
+  bottom-right corner. Auto is the default for a new mount; remove the separate
+  single-Snapshot mode. The latest user instruction supersedes old resource
+  compatibility: retire prior version aliases, obsolete widget bundles and
+  compatibility-only tests, and publish only current widget resources. Preserve
+  the eight legacy renderers still required by the current observation resource,
+  current behavior/security/lifecycle coverage, deployment backups and other
+  worktrees. Historical URI/hash preservation is prior evidence, not a current
+  requirement. Independently accepted `aaaf0a56` provides two MCP resources
+  (observation17/Camera13), two public and six app-only tools. It removes30 old
+  aliases, show/get_u1_status, `/camera-widget` and18 obsolete files (eight HTML,
+  five unused source/build files and five compatibility-only tests). Active
+  `/widget` serves current MCP observation; duplicate HTML/vendor injection is
+  retired. Build-contract inventory follows current assets/routes, with retired
+  route/resource/tool rejection coverage and unchanged hash/tamper/isolation/
+  security/runtime-config-preservation/rollback/shipping guards. Required source
+  acceptance passes; guarded shipment and installed behavior verification remain
+  pending. PR104 stopped before merge/install because current binding validation
+  rejected the installed historical PR101 manifest. New stage/ship manifests must
+  use schema2/current binding; installed status/rollback must strictly validate
+  supported historical schema1 Kit profiles with their original hashes/minimums/
+  roles, while pre-Kit release-schema1 retains its six-asset minimum. This bounded
+  guard repair is independently accepted at `b5a0d427`, including strict current
+  stage rejection of old/missing manifests and read-only verification of BOTH
+  installed PR101 services. Guarded shipment/installed behavior remain pending;
+  no public alias or skipped guard returns, and phone Live reliability is unproved.
+  Names appear only in tooltip/aria,
   superseding visible text/full-width mode controls. Keep44px targets, keyboard
   selection/focus and reduced-motion behavior; the switch must not overlap
   fullscreen or other display controls. Live failure automatically selects Auto. The user-selected
   one-word Auto label describes repeated accepted snapshots, not continuous
   video: one read at a time, with the next scheduled 1.5 seconds after completion.
-  Snapshot stops recurring work and reads once; choosing Live from Auto retries
-  Live. Same-mode selection is idempotent. The fixed controls remain reachable
+  Choosing Live from Auto explicitly starts or retries Live; failure returns to
+  Auto. A new mount never starts Live automatically or restores saved Live mode.
+  Valid MCP opening-result hydration causes no redundant initial frame request;
+  Auto schedules its next read 1.5 seconds after that accepted result completes.
+  Missing initial delivery waits at most 15 seconds. Presence of private
+  cameraFrame/cameraActivation keys or the DTO mediaType plus byteLength fields
+  identifies a Camera delivery; authoritative malformed Camera delivery enters
+  neutral error immediately. A host opening-result notification with bare
+  isError: true also fails immediately without any Camera fields, preserving the
+  existing opening-tool error behavior. Unrelated/unknown non-error deliveries
+  do not complete the waiter or reset its original deadline. Both immediate
+  failure and missing-delivery expiry schedule Auto retry after 1.5 seconds,
+  with one acquisition at a time. Automatic polls produce no
+  success message or success announcement. The removed manual Refresh UI must
+  not be reintroduced to provide feedback. Same-mode selection is idempotent. The fixed controls remain reachable
   during error/connection, support keyboard selection and do not steal focus
   when the service changes mode. Camera connection lifecycle remains service-owned;
   components subscribe and render. Live-open user wait is bounded at 40 seconds;
@@ -234,15 +276,17 @@ printer environments support the described behavior.
   correction is independently accepted and deployed through PR101; reliable
   phone Live remains unaccepted. It does not prove the cause of the reported
   phone fallback or extend other consumers' budgets.
-  Hide/dispose cancel owned work; resume keeps
-  the selected Auto mode without reopening Live. Local display rejection remains separate from
-  acquisition failure. Decision0041 places the existing snapshot Refresh beside
-  persistent acquisition-error status in an always-present footer; it does not
-  duplicate the action. Failed acquisition masks old media/telemetry with static
-  neutral skeletons. The mode-control overlay adds no grid, tint or telemetry
-  overlay to the photo; state/FPS/time remain in the header.
-  This supersedes the former bottom-left
-  information exception; information is above actions. Do not truncate time/FPS
+  Hide/dispose cancel owned work. The same mounted card resumes its current
+  explicit mode after hide/show; a new mount uses Auto and never reads or writes
+  a saved Live preference. Local display
+  rejection remains separate from acquisition failure. The Camera-only
+  decision0041 exception changes status placement, not error evidence: failed
+  acquisition still masks old media/telemetry with static neutral skeletons,
+  and loading/failure/recovery retain stable card/media bounds. The mode controls
+  add no grid, tint or telemetry overlay; state/FPS/time remain in the header.
+  Only the short safe failure reason uses the bottom-left media overlay. It must
+  stay readable and move one row above the bottom-right controls at narrow
+  widths, inside the media without changing card/media bounds. Do not truncate time/FPS
   or shrink 44-pixel controls on narrow views. Snapshot/fallback time belongs to the
   accepted displayed JPEG's server receipt time; live time belongs to evidenced
   local rendered/decoded frames and freezes when they stop. Neither is claimed
@@ -250,7 +294,26 @@ printer environments support the described behavior.
   between state and time after at least one second of actual presented/decoded
   frame-counter evidence. Omit unmeasured, invalid, reset, or stale FPS; timer
   callbacks are not frame counts. Clear FPS on exit and after 1.5 seconds
-  without advancing frame evidence. Network diagnostics stay hidden.
+  without advancing frame evidence. Raw network diagnostics stay hidden. The bounded C08 diagnostic
+  slice preserves service-owned `lastLiveFailure` with only these safe fields:
+  stage (activation, offer, local-answer, answer, candidate, connection,
+  first-frame, playback), outcome (timeout, rejected, failed, ended), finite
+  bounded elapsedMs since that Live attempt began, connectionState (not-created,
+  new, connecting, connected, disconnected, failed, closed), and boolean hadFrame
+  based only on accepted presented/decoded-frame evidence. Capture the first
+  winning failure before teardown. Only a short stage/outcome reason appears in
+  the persistent bottom-left media overlay; elapsed/connection fields remain internal. No new panel,
+  raw error, address, signaling data, session identifier, token or credential is
+  exposed. An 8-second first-frame timeout retains stage first-frame internally;
+  when not connected the overlay reason says Connection timed out. Successful Auto
+  snapshots and frame Refresh retain the record; next explicit Live clears it.
+  Cancellation, hide, disposal and stale epochs create no new failure. Preserve
+  every deadline and watchdog; recording a failure causes no extra acquisition.
+  The new Auto default follows the separate mode contract above. The earlier
+  proposed generic Footer statusText change is superseded for this Camera slice;
+  other widget footer behavior stays unchanged. The new presentation/diagnostic
+  source is independently accepted at `aaaf0a56`, awaiting guarded shipment;
+  it does not establish the phone failure's cause.
   Fullscreen reflects same-document native or local CSS state and never requests
   a remount-capable host display mode. PiP is offered only through the existing
   live video's same-document native Picture in Picture API and makes zero host
@@ -488,7 +551,8 @@ printer environments support the described behavior.
   44x44 radio targets. The visible track fills the same44px action size as Button;
   its40x40 selected thumb keeps2px inset and moves44px in180ms with transform
   only (no transition under reduced motion). Each segment remains44px wide;
-  Camera's three-mode consumer remains132px overall. Use the shared action-size
+  Camera's current Auto/Live candidate is 88px overall; the older three-mode
+  resource remains 132px as compatibility history. Use the shared action-size
   token; loading and ready keep identical geometry. This supersedes decision0032's
   historical32px track/28px thumb height; its2026-09-02 amendment records the change.
   Exactly one selected radio is tabbable; arrows wrap, Home/End select, and
@@ -654,8 +718,13 @@ durable-monitor claim.
   `mcp-camera.html` with a thin host-result entry: the shared service accepts and
   decodes the opening tool result without duplicate initial acquisition. Its
   bounded missing/malformed delivery fails neutrally for explicit Refresh; the
-  dashboard keeps request bootstrap. Independent simulated-host and exact
-  served-resource evidence do not establish actual phone/plugin-host acceptance.
+  dashboard keeps request bootstrap. That PR99 behavior is historical;
+  CAM-008/decision0046's current candidate supersedes Camera's snapshot-first/
+  manual-retry policy with default Auto and bounded automatic recovery, and the
+  latest current-only widget policy retires old aliases/bundles and their
+  compatibility-only tests. The current eight legacy renderers remain required.
+  Independent simulated-host and exact served-resource evidence do not establish
+  actual phone/plugin-host acceptance.
   See decisions0035/0044 and the active iteration for acceptance gates.
 
 - **UI-004:** Every private observation lab view exposes shared bottom controls
@@ -684,6 +753,10 @@ durable-monitor claim.
   Loading-to-error and ready-to-retained-error shell/header/body/footer bounds
   must remain equal at supported widths and 200% text, without acquisition by
   a skeleton. Unsupported capability stays distinct from missing/error data.
+  Camera's latest user-approved CAM-008/decision0046 exception places its safe
+  error reason in a persistent bottom-left media overlay and removes its footer/
+  Refresh UI; the neutral/no-stale/stable-geometry obligations remain. Other
+  widget footer rules are unchanged.
   Adoption and evidence are tracked per route in `docs/widget-delivery.md`;
   the requirement does not itself claim every route has been delivered.
 

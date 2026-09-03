@@ -12,7 +12,7 @@ for (const width of [320, 720]) test(`packaged Camera Lab switch matches Button 
   const modes = page.getByRole('radiogroup', { name: 'Camera mode' });
   const track = modes.locator('.track');
   const fullscreen = page.getByRole('button', { name: 'Fullscreen', exact: true });
-  await expect(modes).toHaveCSS('width', '132px');
+  await expect(modes).toHaveCSS('width', '88px');
   await expect(track).toHaveCSS('height', '44px');
   expect((await track.boundingBox())!.height).toBe((await fullscreen.boundingBox())!.height);
   const before = await page.locator('[data-widget-shell],[data-camera-media],[data-icon-segmented]').evaluateAll(nodes => nodes.map(node => {
@@ -43,7 +43,7 @@ for (const width of [320, 390, 590, 720]) {
     const baseline = await bounds();
     const modes = page.getByRole('radiogroup', { name: 'Camera mode' });
     const modeBounds = await modes.boundingBox();
-    await expect(modes).toHaveCSS('width', '132px');
+    await expect(modes).toHaveCSS('width', '88px');
     await expect(modes.locator('.track')).toHaveCSS('height', '44px');
     expect(await modes.locator('.track').boundingBox()).toEqual(modeBounds);
     await expect(modes.locator('.thumb')).toHaveCSS('height', '40px');
@@ -55,7 +55,7 @@ for (const width of [320, 390, 590, 720]) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
       if (scenario === 'loading') {
         await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'true');
-        await expect(page.getByRole('radio')).toHaveCount(3);
+        await expect(page.getByRole('radio')).toHaveCount(2);
         await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
         await page.emulateMedia({ reducedMotion: 'reduce' });
         expect(await page.locator('[data-skeleton]').evaluateAll((nodes) => nodes.every((node) => getComputedStyle(node).animationName === 'none'))).toBe(true);
@@ -101,8 +101,7 @@ for (const width of [320, 390, 590, 720]) {
       } else await expect(page.locator('[data-camera-feedback]')).toContainText('unavailable');
       expect(await retained()).toBe(true);
     }
-    await page.getByRole('button', { name: 'Refresh synthetic snapshot' }).click();
-    await expect(page.getByRole('status').filter({ hasText: 'Fixture snapshot refreshed' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Refresh synthetic|Retry synthetic/ })).toHaveCount(0);
     await expect(page.getByRole('status')).toHaveCount(1);
     expect(await bounds()).toEqual(baseline);
     expect(await retained()).toBe(true);
@@ -117,7 +116,7 @@ for (const width of [320, 390, 590, 720]) {
     await page.keyboard.press('Escape');
     await expect(page.locator('.local-fullscreen')).toHaveCount(0);
     expect(await retained()).toBe(true);
-    await page.getByRole('radio', { name: 'Snapshot', exact: true }).click();
+    await page.getByRole('radio', { name: 'Auto', exact: true }).click();
     await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
     expect(await page.locator('video').evaluate((video) => (video as HTMLVideoElement).srcObject)).toBeNull();
     await page.getByRole('radio', { name: 'Live', exact: true }).click();
@@ -140,7 +139,7 @@ test('synthetic media is unavailable without capture support and does not invent
   await page.getByRole('radio', { name: 'Live', exact: true }).click();
   await expect(page.getByRole('radio', { name: 'Auto', exact: true })).toHaveAttribute('aria-checked', 'true');
   await expect(page.getByRole('radio', { name: 'Live', exact: true })).toBeFocused();
-  await expect(page.locator('[data-footer-status]')).toBeVisible();
+  await expect(page.locator('.media-status-message')).toBeVisible();
   await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Picture in picture', exact: true })).toHaveCount(0);
   await page.clock.fastForward(1600);
@@ -148,7 +147,7 @@ test('synthetic media is unavailable without capture support and does not invent
   const first = await page.locator('[data-camera-status] time').getAttribute('datetime');
   await page.clock.fastForward(1600);
   await expect(page.locator('[data-camera-status] time')).not.toHaveAttribute('datetime', first!);
-  await page.getByRole('radio', { name: 'Snapshot', exact: true }).click();
+  await page.evaluate(() => window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true })));
   const stopped = await page.locator('[data-camera-status] time').getAttribute('datetime');
   await page.clock.fastForward(4000);
   await expect(page.locator('[data-camera-status] time')).toHaveAttribute('datetime', stopped!);
@@ -166,7 +165,7 @@ test('stalled synthetic video clears measured FPS, freezes time and terminates t
   });
   await expect(page.locator('[data-camera-fps]')).toHaveCount(0, { timeout: 2500 });
   const frozen = await page.locator('[data-camera-status] time').getAttribute('datetime');
-  await expect(page.locator('[data-footer-status]')).toBeVisible({ timeout: 6500 });
+  await expect(page.locator('.media-status-message')).toBeVisible({ timeout: 6500 });
   expect(frozen).not.toBeNull();
   expect(await page.locator('video').evaluate((video) => (video as HTMLVideoElement).srcObject)).toBeNull();
 });
@@ -181,12 +180,12 @@ test('a missing first presented frame has a five-second startup deadline', async
   await page.getByRole('radio', { name: 'Live', exact: true }).click();
   await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'true');
   await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
-  await expect(page.locator('[data-footer-status]')).toBeVisible({ timeout: 6500 });
+  await expect(page.locator('.media-status-message')).toBeVisible({ timeout: 6500 });
   await expect(page.locator('[data-widget-shell]')).toHaveAttribute('aria-busy', 'false');
   expect(await page.locator('video').evaluate((video) => (video as HTMLVideoElement).srcObject)).toBeNull();
 });
 
-test('failed local fullscreen leaves footer retry reachable without replacing mounted media', async ({ page }) => {
+test('failed local fullscreen retains Exit and reason without replacing mounted media', async ({ page }) => {
   await page.route(url, route => route.fulfill({ status: 200, contentType: 'text/html', headers: { 'content-security-policy': csp }, body: html }));
   await page.goto(url);
   await page.evaluate(() => (window as unknown as { __setCamera: (scenario: CameraScenario, policy: CameraCapabilityPolicy) => void }).__setCamera('snapshot', 'unsupported'));
@@ -194,8 +193,10 @@ test('failed local fullscreen leaves footer retry reachable without replacing mo
   await page.getByRole('button', { name: 'Fullscreen', exact: true }).click();
   await expect(page.locator('.local-fullscreen')).toHaveCount(1);
   await page.evaluate(() => (window as unknown as { __setCamera: (scenario: CameraScenario, policy: CameraCapabilityPolicy) => void }).__setCamera('error', 'unsupported'));
-  await expect(page.locator('.local-fullscreen')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: 'Retry synthetic snapshot' })).toBeVisible();
-  await expect(page.locator('[data-footer-status]')).toBeVisible();
+  await expect(page.locator('.local-fullscreen')).toHaveCount(1);
+  await expect(page.getByRole('button', { name: 'Exit fullscreen', exact: true })).toBeVisible();
+  await expect(page.locator('.media-status-message')).toBeVisible();
   expect(await video!.evaluate(node => node === document.querySelector('video'))).toBe(true);
+  await page.getByRole('button', { name: 'Exit fullscreen', exact: true }).click();
+  await expect(page.locator('.local-fullscreen')).toHaveCount(0);
 });

@@ -11,7 +11,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from "node:ht
 import { loadKitHandler } from '../lib/server/kit-handler.js';
 
 
-import { readWidgetHtml } from "../lib/server/app.js";
+import { MCP_OBSERVATION_HTML } from "../lib/server/app.js";
 import { createCameraIceServerProvider } from "../lib/server/camera-ice-config.js";
 import {
   createCameraStreamLocator,
@@ -177,7 +177,7 @@ export const createUnifiedRequestHandler = (
     callTool: (body, lifetime) => callDashboardTool(body, observations, dashboard ?? {}, lifetime),
     general: (pathname) => pathname === '/health'
       ? new Response(JSON.stringify(runtimeHealth(oauth ? 'personal-oauth' : 'local-only')), { headers: { 'cache-control': 'no-store', 'content-type': 'application/json; charset=utf-8' } })
-      : pathname === '/widget' ? new Response(readWidgetHtml(), { headers: { 'cache-control': 'no-store', 'content-type': 'text/html; charset=utf-8' } })
+      : pathname === '/widget' ? new Response(MCP_OBSERVATION_HTML, { headers: { 'cache-control': 'no-store', 'content-type': 'text/html; charset=utf-8' } })
       : new Response('U1 Print Studio MCP server', { headers: { 'cache-control': 'no-store', 'content-type': 'text/plain; charset=utf-8' } }),
     page: (pathname, method) => dashboardPage(pathname, method) ?? new Response('Not Found', { status: 404 }),
     oauth: async (request, url) => await oauth?.handleRequest(request, url) ?? new Response('Not Found', { status: 404 }),

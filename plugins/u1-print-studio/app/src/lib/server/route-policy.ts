@@ -4,7 +4,7 @@ export const DASHBOARD_VIEWS = ['overview', 'progress', 'thermals', 'heads', 'jo
 export const NATIVE_DASHBOARD_VIEWS = ['fans', 'thermals', 'heads', 'queue'] as const;
 export const NATIVE_DASHBOARD_PATHS = new Set<string>(NATIVE_DASHBOARD_VIEWS.map((view) => `/dashboard/${view}`));
 export const DASHBOARD_PAGES = new Set([
-  '/dashboard', '/dashboard/', '/camera-widget',
+  '/dashboard', '/dashboard/',
   ...DASHBOARD_VIEWS.map((view) => `/dashboard/${view}`),
   ...['fans', 'thermals', 'heads', 'queue', 'camera'].map((view) => `/dashboard/${view}_widget`),
   ...['/dashboard/lab', ...DASHBOARD_VIEWS.map((view) => `/dashboard/lab/${view}`)].flatMap((route) => [route, route + '/'])

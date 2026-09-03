@@ -2,12 +2,15 @@ import { PrinterObservationStore } from '../../src/lib/server/observation-store.
 import { normalizeEnvironmentResponse } from '../../src/lib/server/adapters/moonraker-environment.js';
 import { normalizeMaterialResponse } from '../../src/lib/server/adapters/moonraker-materials.js';
 import { normalizeQueueResponse } from '../../src/lib/server/adapters/moonraker-queue.js';
+import { normalizeBedMeshResponse } from '../../src/lib/server/adapters/moonraker-bed-mesh.js';
+import { unavailableBedMesh } from '../../src/lib/server/application/bed-mesh-observation.js';
 import type { U1Status } from '../../src/lib/server/u1-status.js';
 
 export const createKitObservationFixture = () => {
   let now = Date.parse('2026-09-01T12:00:00Z');
   let failure = false;
   let held = false;
+  let bedMesh = false;
   const reads = { statusReads: 0, environmentReads: 0, materialsReads: 0, queueReads: 0 };
   const waiting = new Set<() => void>();
   const acquire = async (domain: keyof typeof reads) => {
@@ -29,7 +32,12 @@ export const createKitObservationFixture = () => {
       exception: false, camera: { available: false, service: null, targetFps: null }
     };
     return { status, metadata: {} };
-  }, () => new Date(now), undefined, async () => {
+  }, () => new Date(now), async () => bedMesh
+    ? normalizeBedMeshResponse({ result: { status: { bed_mesh: {
+      profile_name: 'Synthetic grid', mesh_min: [0, 0], mesh_max: [100, 100],
+      probed_matrix: [[-0.1, 0], [0.1, 0.2]],
+    } } } }, receipt())
+    : unavailableBedMesh('not_reported', receipt()), async () => {
     await acquire('materialsReads');
     return normalizeMaterialResponse({ result: { status: { print_task_config: {
       filament_exist: [true, true, true, false], filament_vendor: ['Generic', 'Generic', 'Generic', 'Generic'],
@@ -53,11 +61,12 @@ export const createKitObservationFixture = () => {
   return {
     observations,
     counts: () => ({ ...reads }),
-    configure: (value: { fail?: boolean; hold?: boolean; reset?: boolean }) => {
+    configure: (value: { fail?: boolean; hold?: boolean; reset?: boolean; bedMesh?: boolean }) => {
       now += 300_000;
       if (value.reset) for (const domain of Object.keys(reads) as Array<keyof typeof reads>) reads[domain] = 0;
       failure = value.fail ?? false;
       held = value.hold ?? false;
+      bedMesh = value.bedMesh ?? false;
       if (!held) release();
     },
     release

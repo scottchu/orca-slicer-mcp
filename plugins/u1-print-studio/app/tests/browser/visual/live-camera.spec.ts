@@ -19,7 +19,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await page.setViewportSize({ width, height: 1200 });
     const errors: string[] = [], outside: string[] = [], calls: { name: string; arguments: Record<string, unknown> }[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
-    page.on('request', (request) => { if (!request.url().startsWith('http://127.0.0.1:4179/')) outside.push(request.url()); });
+    page.on('request', (request) => { if (new URL(request.url()).origin !== new URL(test.info().project.use.baseURL!).origin) outside.push(request.url()); });
     await page.addInitScript(installCameraPeerFixture);
     const image = await page.evaluate(() => { const canvas = document.createElement('canvas'); canvas.width = 32; canvas.height = 18; const context = canvas.getContext('2d')!; context.fillStyle = '#edf1f4'; context.fillRect(0, 0, 32, 18); return canvas.toDataURL('image/jpeg'); });
     const payload = { structuredContent: { schemaVersion: 1, available: true, observedAt: '2026-09-01T12:00:00.000Z', mediaType: 'image/jpeg', byteLength: Buffer.from(image.split(',')[1], 'base64').length }, _meta: { cameraFrame: { dataUrl: image }, cameraActivation: { token: 'fixture-activation-capability' } } };
@@ -37,9 +37,9 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await page.goto('/dashboard/camera'); await expect.poll(() => calls.length).toBe(1);
     const frame = page.frames().find((candidate) => candidate.url().endsWith('/dashboard/camera_widget'))!;
     if (enlarged) await doubleText(frame);
-    await expect(frame.getByRole('radio')).toHaveCount(3); await expect(frame.getByRole('status')).toHaveText('Loading camera');
+    await expect(frame.getByRole('radio')).toHaveCount(2); await expect(frame.getByRole('status')).toHaveText('Loading camera');
     const before = await geometry(frame); release();
-    await expect(frame.locator('[data-media-status]')).toContainText('Snapshot');
+    await expect(frame.locator('[data-media-status]')).toContainText('Auto');
     await expect(frame.locator('img')).toBeVisible();
     expect(await geometry(frame)).toEqual(before);
     if (!enlarged) {
@@ -95,14 +95,14 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await frame.getByRole('button', { name: 'Exit fullscreen', exact: true }).click();
     expect(await geometry(frame)).toEqual(before);
     expect(await frame.evaluate(() => { const probe = window as unknown as { __videoBefore: HTMLVideoElement; __streamBefore: MediaStream }; return document.querySelector('video') === probe.__videoBefore && document.querySelector('video')!.srcObject === probe.__streamBefore && probe.__streamBefore.getVideoTracks()[0].readyState === 'live'; })).toBe(true);
-    await frame.getByRole('button', { name: 'Refresh snapshot' }).click(); await expect(frame.locator('[data-media-feedback]')).toHaveText('Snapshot refreshed');
+    await expect(frame.getByRole('button', { name: /Refresh snapshot|Retry snapshot/ })).toHaveCount(0);
     expect(await geometry(frame)).toEqual(before);
     await expect(frame.locator('[data-media-status]')).toContainText('Live');
     let closedLeases = 1;
     if ((width === 390 && !enlarged) || (width === 320 && enlarged)) {
       await frame.evaluate(() => { (window as unknown as { __cameraProbe: { paused: boolean } }).__cameraProbe.paused = true; });
       await expect(frame.locator('[data-media-fps]')).toHaveCount(0, { timeout: 4000 });
-      await expect(frame.locator('[data-footer-status]')).toBeVisible({ timeout: 7000 });
+      await expect(frame.locator('[data-media-status-message]')).toBeVisible({ timeout: 7000 });
       await expect(frame.getByRole('radio', { name: 'Auto', exact: true })).toHaveAttribute('aria-checked', 'true');
       await expect(frame.locator('video')).toHaveAttribute('aria-hidden', 'true');
       await expect(frame.locator('[data-media-status] time')).toHaveCount(0);
@@ -116,8 +116,8 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
       expect(await frame.evaluate(() => (window as unknown as { __cameraProbe: { opens: number } }).__cameraProbe.opens)).toBe(3);
       closedLeases = 3;
     }
-    await frame.getByRole('radio', { name: 'Snapshot', exact: true }).click();
-    await expect(frame.locator('[data-media-status]')).toContainText('Snapshot');
+    await frame.getByRole('radio', { name: 'Auto', exact: true }).click();
+    await expect(frame.locator('[data-media-status]')).toContainText('Auto');
     await expect.poll(() => calls.filter((call) => call.name === 'close_u1_camera_stream').length).toBe(closedLeases);
     expect(await geometry(frame)).toEqual(before);
     expect(await frame.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
@@ -157,7 +157,7 @@ for (const width of [320, 390, 720]) test(`Camera icon overlay fullscreen roving
   await expect(frame.locator('img')).toBeVisible();
   if (width !== 390) await doubleText(frame);
   await frame.evaluate(() => Object.defineProperty(document, 'fullscreenEnabled', { value: false, configurable: true }));
-  for (const mode of ['Snapshot', 'Live', 'Auto']) {
+  for (const mode of ['Auto', 'Live']) {
     const selected = frame.getByRole('radio', { name: mode, exact: true });
     await selected.click(); await expect(selected).toHaveAttribute('aria-checked', 'true');
     if (mode === 'Live') await expect(frame.locator('[data-media-fps]')).toContainText('FPS');
@@ -168,7 +168,7 @@ for (const width of [320, 390, 720]) test(`Camera icon overlay fullscreen roving
       const group = actions.querySelector('[role="radiogroup"]')!.getBoundingClientRect();
       return { contained: controls.every(box => box.left >= media.left && box.right <= media.right && box.top >= media.top && box.bottom <= media.bottom), separate: controls.every((a, i) => controls.every((b, j) => i === j || Math.min(a.right, b.right) - Math.max(a.left, b.left) <= 1)), right: media.right - group.right, bottom: media.bottom - group.bottom, width: group.width };
     });
-    expect(placement).toEqual({ contained: true, separate: true, right: 10, bottom: 10, width: 132 });
+    expect(placement).toEqual({ contained: true, separate: true, right: 10, bottom: 10, width: 88 });
     await page.screenshot({ path: info.outputPath(`camera-${mode.toLowerCase()}-ready.png`), fullPage: true });
     await frame.getByRole('button', { name: 'Fullscreen', exact: true }).click();
     const dialog = frame.getByRole('dialog', { name: 'Fullscreen camera' }); await expect(dialog).toBeVisible();

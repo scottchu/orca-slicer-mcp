@@ -50,7 +50,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
       expect(await bounds(page)).toEqual(baseline);
       expect(await headerReadability(page)).toEqual({ contained: true, overlap: false });
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-      if (scenario === 'loading') await expect(page.getByRole('radio')).toHaveCount(3);
+      if (scenario === 'loading') await expect(page.getByRole('radio')).toHaveCount(2);
       if (!enlarged && scenario === 'snapshot') expect(await page.locator('[data-camera-status]').evaluate(status => {
         const title = status.closest('header')!.querySelector('h1')!.getBoundingClientRect();
         const box = status.getBoundingClientRect(); return box.left >= title.right && box.top <= title.bottom;
@@ -77,7 +77,7 @@ test('Camera rejects ambiguous hostile URL values and has no hidden loading stre
   await expect(page.getByLabel('Display capabilities', { exact: true })).toHaveValue('native');
   await page.getByLabel('Camera state', { exact: true }).selectOption('loading');
   expect(await page.locator('video').evaluate(video => (video as HTMLVideoElement).srcObject)).toBeNull();
-  await expect(page.getByRole('radio')).toHaveCount(3);
+  await expect(page.getByRole('radio')).toHaveCount(2);
   await expect(page.locator('[data-camera-fps]')).toHaveCount(0);
   await expect(page.getByRole('status')).toHaveText('Loading synthetic camera');
 });

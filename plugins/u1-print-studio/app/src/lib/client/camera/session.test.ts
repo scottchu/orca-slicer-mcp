@@ -20,7 +20,7 @@ const setup = () => {
   };
   const decode = vi.fn().mockResolvedValue(true);
   const persistLiveIntent = vi.fn();
-  const session = createCameraSession({ transport, decode, persistLiveIntent,
+  const session = createCameraSession({ transport, decode,
     scheduler: { now: () => Date.now(), timestamp: () => new Date().toISOString(), after: (ms, callback) => {
       const timer = setTimeout(callback, ms); return () => clearTimeout(timer);
     } },
@@ -37,7 +37,7 @@ describe('injected real-camera session ownership (no host, device or network)', 
   beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(new Date('2026-09-01T12:00:00Z')); });
   afterEach(() => { vi.clearAllTimers(); vi.useRealTimers(); });
 
-  it('starts snapshot-first and never authorizes live from a snapshot refresh', async () => {
+  it('starts Auto and never authorizes live from a snapshot refresh', async () => {
     const app = setup();
     expect(app.session.state().phase).toBe('loading');
     expect(app.transport.frame).not.toHaveBeenCalled();
@@ -46,6 +46,7 @@ describe('injected real-camera session ownership (no host, device or network)', 
     expect(app.transport.open).not.toHaveBeenCalled();
     expect(app.persistLiveIntent).not.toHaveBeenCalled();
     expect(app.session.state()).toMatchObject({ phase: 'snapshot', snapshot, refreshing: false });
+    app.session.dispose();
     expect(vi.getTimerCount()).toBe(0);
   });
 
@@ -88,6 +89,7 @@ describe('injected real-camera session ownership (no host, device or network)', 
     pending.resolve(true); await retry;
     expect(app.session.state()).toMatchObject({ snapshot, failure: null, refreshing: false });
     app.session.dispose();
+    app.session.dispose();
     expect(vi.getTimerCount()).toBe(0);
   });
 
@@ -98,7 +100,8 @@ describe('injected real-camera session ownership (no host, device or network)', 
     const flight = app.session.refreshSnapshot(); await flush();
     await vi.advanceTimersByTimeAsync(1500); await flight;
     decoded.resolve(true); await flush();
-    expect(app.session.state()).toMatchObject({ phase: 'snapshot', snapshot, refreshing: false });
+    expect(app.session.state()).toMatchObject({ phase: 'error', snapshot, refreshing: false });
+    app.session.dispose();
     expect(vi.getTimerCount()).toBe(0);
   });
 
@@ -114,6 +117,7 @@ describe('injected real-camera session ownership (no host, device or network)', 
     app.session.dispose(); await flush();
     expect(app.peers[0].dispose).toHaveBeenCalledTimes(1);
     expect(app.transport.close).toHaveBeenCalledExactlyOnceWith('opaque-viewer');
+    app.session.dispose();
     expect(vi.getTimerCount()).toBe(0);
   });
 
@@ -125,7 +129,7 @@ describe('injected real-camera session ownership (no host, device or network)', 
     await vi.advanceTimersByTimeAsync(1499); expect(app.transport.frame).toHaveBeenCalledTimes(1);
     await vi.advanceTimersByTimeAsync(1); expect(app.transport.frame).toHaveBeenCalledTimes(2);
     expect(app.transport.frame).toHaveBeenLastCalledWith({ authorizeLive: false });
-    app.session.close(); await vi.advanceTimersByTimeAsync(5000);
+    app.session.pageHide(); await vi.advanceTimersByTimeAsync(5000);
     expect(app.transport.frame).toHaveBeenCalledTimes(2);
     expect(app.session.state().phase).toBe('snapshot');
   });
@@ -138,6 +142,7 @@ describe('injected real-camera session ownership (no host, device or network)', 
     expect(app.transport.answer).not.toHaveBeenCalled();
     expect(app.transport.close).toHaveBeenCalledExactlyOnceWith('opaque-viewer');
     expect(app.session.state().phase).toBe('snapshot');
+    app.session.dispose();
     expect(vi.getTimerCount()).toBe(0);
   });
 
@@ -155,6 +160,7 @@ describe('injected real-camera session ownership (no host, device or network)', 
     const app = setup(); const flight = app.session.goLive(); app.session.pageHide(); await flight;
     expect(app.transport.frame).not.toHaveBeenCalled();
     expect(app.transport.open).not.toHaveBeenCalled();
+    app.session.dispose();
     expect(vi.getTimerCount()).toBe(0);
   });
 
@@ -238,14 +244,17 @@ describe('injected real-camera session ownership (no host, device or network)', 
     expect(app.transport.open).toHaveBeenCalledTimes(2);
     app.session.close(); app.session.pageHide(); await app.session.pageShow();
     expect(app.transport.open).toHaveBeenCalledTimes(2);
-    expect(app.persistLiveIntent).toHaveBeenLastCalledWith(false);
+    expect(app.session.state().mode).toBe('auto');
   });
 
-  it('restores a saved authorized intent once and never restores false', async () => {
-    const app = setup(); await app.session.restoreSavedIntent(false);
-    expect(app.transport.frame).not.toHaveBeenCalled();
-    await app.session.restoreSavedIntent(true); app.session.close();
-    await app.session.restoreSavedIntent(true); expect(app.transport.open).toHaveBeenCalledTimes(1);
+  it('new sessions always default to Auto and require explicit Live selection', async () => {
+    const app = setup();
+    expect(app.session.state().mode).toBe('auto');
+    await app.session.refreshSnapshot('automatic');
+    expect(app.transport.open).not.toHaveBeenCalled();
+    await app.session.selectMode('live');
+    expect(app.transport.open).toHaveBeenCalledTimes(1);
+    app.session.dispose();
   });
 
   it('late candidates/events from one closed viewer cannot mutate another viewer', async () => {
@@ -255,7 +264,8 @@ describe('injected real-camera session ownership (no host, device or network)', 
     expect(left.transport.candidates).not.toHaveBeenCalled();
     expect(right.peers[0].dispose).not.toHaveBeenCalled();
     right.peers[0].events.frame({ kind: 'presented', count: 1, at: 0 }); expect(right.session.state().phase).toBe('live');
-    right.session.dispose(); await flush(); expect(vi.getTimerCount()).toBe(0);
+    right.session.dispose(); await flush();
+    expect(vi.getTimerCount()).toBe(0);
   });
   it('keeps a proven connected stream when a supplemental candidate reaches its deadline', async () => {
     const app = setup(); const candidate = deferred<void>(); app.transport.candidates.mockReturnValue(candidate.promise);
@@ -266,7 +276,8 @@ describe('injected real-camera session ownership (no host, device or network)', 
     expect(app.transport.close).not.toHaveBeenCalled();
     candidate.resolve(); await flush(); expect(app.session.state().phase).toBe('live');
     await vi.advanceTimersByTimeAsync(5000); expect(app.session.state()).toMatchObject({ mode: 'auto', phase: 'fallback' });
-    app.session.dispose(); await flush(); expect(vi.getTimerCount()).toBe(0);
+    app.session.dispose(); await flush(); app.session.dispose();
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it.each(['unobserved', 'rejected'] as const)('does not waive candidate %s failure without proven connectivity', async kind => {
@@ -279,26 +290,111 @@ describe('injected real-camera session ownership (no host, device or network)', 
     expect(app.transport.close).toHaveBeenCalledOnce(); app.session.dispose();
   });
 
-  it('selects real periodic Auto snapshots and stops all recurring work in Snapshot', async () => {
-    const app = setup(); await app.session.selectMode('auto');
-    expect(app.session.state()).toMatchObject({ mode: 'auto', phase: 'fallback', failure: null });
-    expect(app.transport.frame).toHaveBeenCalledTimes(1); await app.session.selectMode('auto');
-    expect(app.transport.frame).toHaveBeenCalledTimes(1); await vi.advanceTimersByTimeAsync(1500);
-    expect(app.transport.frame).toHaveBeenCalledTimes(2); expect(app.transport.open).not.toHaveBeenCalled();
-    await app.session.selectMode('snapshot'); expect(app.transport.frame).toHaveBeenCalledTimes(3);
-    await vi.advanceTimersByTimeAsync(10000); expect(app.transport.frame).toHaveBeenCalledTimes(3);
-    app.session.dispose(); expect(vi.getTimerCount()).toBe(0);
+  it('polls Auto quietly and stops recurring work while hidden', async () => {
+    const app = setup();
+    await app.session.refreshSnapshot('automatic');
+    expect(app.session.state()).toMatchObject({ mode: 'auto', feedback: null });
+    await vi.advanceTimersByTimeAsync(1500);
+    expect(app.transport.frame).toHaveBeenCalledTimes(2);
+    expect(app.session.state().feedback).toBeNull();
+    app.session.pageHide();
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(app.transport.frame).toHaveBeenCalledTimes(2);
+    await app.session.pageShow();
+    expect(app.transport.frame).toHaveBeenCalledTimes(3);
+    app.session.dispose();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+  it('manual refresh joins an automatic decode and polling preserves manual feedback', async () => {
+    const app = setup();
+    const pending = deferred<boolean>();
+    app.decode.mockReturnValueOnce(pending.promise);
+    const automatic = app.session.refreshSnapshot('automatic');
+    await flush();
+    const manual = app.session.refreshSnapshot('manual');
+    expect(manual).toBe(automatic);
+    expect(app.transport.frame).toHaveBeenCalledTimes(1);
+    await vi.advanceTimersByTimeAsync(500);
+    pending.resolve(true);
+    await manual;
+    expect(app.session.state().feedback).toBe('snapshot-refreshed');
+    await vi.advanceTimersByTimeAsync(1499);
+    expect(app.transport.frame).toHaveBeenCalledTimes(1);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(app.transport.frame).toHaveBeenCalledTimes(2);
+    expect(app.session.state().feedback).toBe('snapshot-refreshed');
+    app.session.dispose();
+    expect(vi.getTimerCount()).toBe(0);
   });
 
-  it('cancels a pending Live offer on mode switch, releases its late lease and resumes Auto after pagehide', async () => {
-    const app = setup(); const opened = deferred<CameraOffer>(); app.transport.open.mockReturnValue(opened.promise);
-    const live = app.session.selectMode('live'); await flush(); await app.session.selectMode('auto');
-    opened.resolve(offer); await live; await flush();
-    expect(app.peers).toHaveLength(0); expect(app.transport.close).toHaveBeenCalledExactlyOnceWith('opaque-viewer');
-    expect(app.session.state().mode).toBe('auto'); app.session.pageHide(); const reads = app.transport.frame.mock.calls.length;
-    await vi.advanceTimersByTimeAsync(10000); expect(app.transport.frame).toHaveBeenCalledTimes(reads);
-    await app.session.pageShow(); await flush(); expect(app.session.state().mode).toBe('auto');
-    expect(app.transport.open).toHaveBeenCalledTimes(1); app.session.dispose(); expect(vi.getTimerCount()).toBe(0);
+  it.each(['activation', 'offer', 'local-answer', 'answer'] as const)('records a safe %s rejection without storing private error data', async stage => {
+    const app = setup();
+    const privateError = new Error('private SDP/token/URL must never enter state');
+    if (stage === 'activation') app.transport.frame.mockRejectedValueOnce(privateError);
+    if (stage === 'offer') app.transport.open.mockRejectedValueOnce(privateError);
+    if (stage === 'answer') app.transport.answer.mockRejectedValueOnce(privateError);
+    const opening = app.session.goLive();
+    if (stage === 'local-answer') {
+      // Peer creation runs after asynchronous activation/decode/open.
+      for (let index = 0; index < 30 && !app.peers.length; index++) await Promise.resolve();
+      app.peers[0].answer.mockRejectedValueOnce(privateError);
+    }
+    await opening;
+    expect(app.session.state().lastLiveFailure).toMatchObject({ stage, outcome: 'rejected', hadFrame: false });
+    expect(Object.keys(app.session.state().lastLiveFailure!).sort()).toEqual(['connectionState', 'elapsedMs', 'hadFrame', 'outcome', 'stage']);
+    expect(JSON.stringify(app.session.state().lastLiveFailure)).not.toMatch(/private|SDP|token|URL/);
+    app.session.dispose();
+  });
+
+  it.each(['connecting', 'connected'] as const)('retains the first-frame watchdog origin with %s separately through Auto recovery', async connection => {
+    const app = setup();
+    await app.session.goLive();
+    app.peers[0].events.connection(connection);
+    await vi.advanceTimersByTimeAsync(8000);
+    const failure = app.session.state().lastLiveFailure;
+    expect(failure).toEqual({ stage: 'first-frame', outcome: 'timeout', elapsedMs: 8000, connectionState: connection, hadFrame: false });
+    await vi.advanceTimersByTimeAsync(1500);
+    expect(app.session.state()).toMatchObject({ mode: 'auto', phase: 'snapshot', failure: null });
+    expect(app.session.state().lastLiveFailure).toBe(failure);
+    await app.session.goLive();
+    expect(app.session.state().lastLiveFailure).toBeNull();
+    app.session.dispose();
+  });
+
+  it('attributes concurrent candidate rejection to candidate while waiting for answer', async () => {
+    const app = setup();
+    const answer = deferred<void>();
+    app.transport.answer.mockReturnValueOnce(answer.promise);
+    app.transport.candidates.mockRejectedValueOnce(new Error('private failure'));
+    const opening = app.session.goLive(); await flush();
+    app.peers[0].events.candidate({ candidate: 'private candidate', sdpMid: '0', sdpMLineIndex: 0 });
+    await flush();
+    expect(app.session.state().lastLiveFailure).toMatchObject({ stage: 'candidate', outcome: 'rejected' });
+    answer.resolve(); await opening;
+    expect(app.session.state().lastLiveFailure?.stage).toBe('candidate');
+    app.session.dispose();
+  });
+
+  it('records connection and playback triggers, while intentional retirement ignores late events', async () => {
+    const app = setup();
+    await app.session.goLive();
+    const first = app.peers[0].events;
+    first.connection('failed');
+    expect(app.session.state().lastLiveFailure).toMatchObject({ stage: 'connection', outcome: 'failed', connectionState: 'failed' });
+    await app.session.goLive();
+    const second = app.peers[1].events;
+    second.connection('connected'); second.frame({ kind: 'presented', count: 1, at: 0 });
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(app.session.state().lastLiveFailure).toMatchObject({ stage: 'playback', outcome: 'timeout', hadFrame: true });
+    await app.session.goLive();
+    app.peers[2].events.ended();
+    expect(app.session.state().lastLiveFailure).toMatchObject({ stage: 'playback', outcome: 'ended' });
+    await app.session.goLive();
+    app.session.pageHide();
+    app.peers[3].events.ended(); first.connection('failed'); second.ended();
+    expect(app.session.state().lastLiveFailure).toBeNull();
+    app.session.dispose();
+    expect(vi.getTimerCount()).toBe(0);
   });
 
 });

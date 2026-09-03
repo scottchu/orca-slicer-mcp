@@ -70,8 +70,8 @@ test('real nested package build commands do not re-enable Bun dotenv loading', a
     writeFileSync(path.join(root, '.env'), 'U1_TEST_NESTED_DOTENV=synthetic_ambient\nPUBLIC_U1_TEST_NESTED_DOTENV=synthetic_public\n');
     mkdirSync(path.join(root, 'scripts'));
     const probe = `console.log(JSON.stringify({ambientLoaded: !!process.env.U1_TEST_NESTED_DOTENV || !!process.env.PUBLIC_U1_TEST_NESTED_DOTENV, explicitPreserved: process.env.U1_TEST_EXPLICIT_CHILD === 'synthetic_explicit'}));`;
-    for (const entry of ['build-server.ts', 'build-runtime.ts', 'build-widget-vendor.ts']) writeFileSync(path.join(root, 'scripts', entry), probe);
-    for (const command of ['build:server', 'bundle:server', 'bundle:runtime', 'bundle:widget-vendor']) {
+    for (const entry of ['build-server.ts', 'build-runtime.ts']) writeFileSync(path.join(root, 'scripts', entry), probe);
+    for (const command of ['build:server', 'bundle:server', 'bundle:runtime']) {
       const child = Bun.spawn([process.execPath, '--no-env-file', '--config=/dev/null', 'run', command], {
         cwd: root, stdout: 'pipe', stderr: 'pipe', env: { ...process.env, U1_TEST_EXPLICIT_CHILD: 'synthetic_explicit' }
       });

@@ -1,5 +1,46 @@
 # Next agent
 
+## Current: manifest-profile repair accepted; guarded shipment next
+
+Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97` is independently accepted after
+renewed required validation and ten fresh profile cases. New stage/ship builds
+require schema2/current binding; installed status/rollback strictly validate known
+historical profiles. No public widget compatibility or guard bypass returns.
+The current52-file/71-route payload retains the same runtime/UI hashes; only the
+build-manifest schema changes. BOTH existing PR101 services verify healthy through
+read-only status checks, with no restart. Evidence and prior failures are in
+VALIDATION.
+
+Next review this documentation-only tail, then renew guarded u1-ship and verify
+BOTH restarts plus installed-resource behavior. PR101 remains deployed. C08 phone
+reliability, host fullscreen and existing layout debt remain unresolved; preserve
+all55 IDs, monitor workflow, eight active legacy views and Progress no-action.
+
+## Earlier accepted source: Camera and current-only widgets
+
+Exact `aaaf0a56a0df944a19384822decfc62712021c51` is independently accepted.
+The source has only observation17/Camera13 resources and two public/six app-only
+tools. Thirty old URI aliases, the two status compatibility tools, old Camera
+HTTP route and18 obsolete files are removed; `/widget` serves current observation.
+The eight legacy renderers used by current observation remain active. Deployment
+backups, other worktrees and every shipping/integrity/security/preservation guard
+remain intact. Required and scoped validation evidence is in VALIDATION.
+
+Camera defaults to quiet Auto with an88px-by-44px Auto/Live icon Switch. Its
+edge-to-edge media has no footer/Refresh; the persistent safe failure reason is
+bottom left, controls bottom right, with stable narrow-layout separation.
+Service-owned bootstrap, failure diagnostics and unchanged deadlines follow
+CAM-008/decision0046. Progress's2px failure allocation and Bed's failed-renderer
+release were scoped current-route fixes, not the deferred Progress redesign.
+
+Next complete the documentation-only exact review, then guarded u1-ship and BOTH
+service restarts plus installed-resource behavior verification. PR101 remains
+the deployed baseline; no shipment or actual-device acceptance is claimed yet.
+Retain all55 IDs, monitor workflow, current eight legacy views, unfinished Queue/
+Fans/Job History, Progress no-action, F07 discussion and separate c6. C08 phone
+reliability remains unresolved; host fullscreen is unimplemented, Screen Sharing
+paused, and existing `.u1-:host` layout debt remains.
+
 ## Current handoff: independently reviewed monitoring workflow
 
 [PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
@@ -29,9 +70,13 @@ preserves other deadlines and all 28 old resource aliases. Observation v16 and
 Camera v12 are current at runtime 0.4.10/schema 14. Required and targeted checks
 pass; installed-resource postdeployment behavior with synthetic media passes.
 
-Next user-outcome check: use a newly mounted current Camera widget and retry
-Live. The existing phone UI has user-reported success; reliable Live, native
-clipboard/OAuth and the original failure's cause remain unverified. Preserve
+Latest user outcome: the first PR101 retry still failed, then Live connected after
+a couple of retries, then failed again with about 10 s before fallback. The
+success screenshot shows new-generation UI and Live/30 FPS; reliability is
+unresolved. Next locate the failing connection phase;
+exact resource identity and root cause remain unverified. Do not close C08 from
+this single success or require another speculative fix. Native clipboard/OAuth
+acceptance remains separate. Preserve
 attempts 1–10 and the software/deployed/phone evidence boundaries in VALIDATION.
 Screen Sharing stays paused; retain all 55 IDs, Progress no-action, F07 discussion,
 separate c6 and unfinished Queue/Fans/Job History scope. No full test/build or

@@ -21,13 +21,6 @@ import liveCameraHtml from "../../../public/svelte-live-camera.html" with { type
 import cameraLabHtml from "../../../public/svelte-camera-lab.html" with { type: "text" };
 
 import {
-  readCameraWidgetHtml,
-  cameraFramePayload,
-  cameraStreamPayload,
-  observationPayload,
-  resultPayload,
-} from "./app.js";
-import {
   OBSERVATION_VIEWS,
   type ObservationView,
 } from "./observation-presentation.js";
@@ -84,7 +77,6 @@ const LIVE_THERMALS_WIDGET_PATH = "/dashboard/thermals_widget";
 const LIVE_HEADS_WIDGET_PATH = "/dashboard/heads_widget";
 const LIVE_QUEUE_WIDGET_PATH = "/dashboard/queue_widget";
 const LIVE_CAMERA_WIDGET_PATH = "/dashboard/camera_widget";
-const CAMERA_WIDGET_PATH = "/camera-widget";
 const DASHBOARD_TOOL_PATH = "/dashboard/tools/call";
 const MAX_REQUEST_BYTES = 128 * 1024;
 
@@ -194,7 +186,7 @@ export const dashboardPage = (pathname: string, method = 'GET'): Response | null
   const isLab = OBSERVATION_LAB_PATHS.has(normalized) || normalized === BED_MESH_LAB_PATH || normalized === CAMERA_LAB_PATH;
   const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + '/';
   const isFocused = FOCUSED_DASHBOARD_PATHS.has(pathname) || pathname === CAMERA_DASHBOARD_PATH;
-  const isCamera = pathname === CAMERA_WIDGET_PATH || pathname === LIVE_CAMERA_WIDGET_PATH;
+  const isCamera = pathname === LIVE_CAMERA_WIDGET_PATH;
   if (!live.has(pathname) && !isLab && !isIndex && !isFocused && !isCamera) return null;
   if (method !== 'GET') return new Response(JSON.stringify({ error: 'method_not_allowed' }), {
     status: 405, headers: { allow: 'GET', 'cache-control': 'no-store', 'content-type': 'application/json; charset=utf-8', 'referrer-policy': 'no-referrer', 'x-content-type-options': 'nosniff' }
@@ -203,7 +195,7 @@ export const dashboardPage = (pathname: string, method = 'GET'): Response | null
   if (isLab) return pageResponse(normalized === CAMERA_LAB_PATH ? cameraLabHtml : normalized === BED_MESH_LAB_PATH ? bedMeshLabHtml : observationLabHtml,
     "default-src 'none'; img-src data:; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");
   if (isIndex) return pageResponse(dashboardIndexHtml, "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");
-  if (isCamera) return pageResponse(pathname === LIVE_CAMERA_WIDGET_PATH ? liveCameraHtml : readCameraWidgetHtml(),
+  if (isCamera) return pageResponse(liveCameraHtml,
     "default-src 'none'; img-src data:; media-src blob:; script-src 'unsafe-inline'; style-src 'unsafe-inline'");
   const camera = pathname === CAMERA_DASHBOARD_PATH;
   const html = readFileSync(IS_COMPILED ? (camera ? embeddedCameraDashboardHostFile : embeddedDashboardHostFile) as unknown as string : camera ? CAMERA_DASHBOARD_HOST_PATH : DASHBOARD_HOST_PATH, 'utf8');

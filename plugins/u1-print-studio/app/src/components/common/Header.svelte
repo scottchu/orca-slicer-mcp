@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  let { title, icon, meta, aside, wrapAside = false }: { title: string; icon: Snippet; meta?: Snippet; aside?: Snippet; wrapAside?: boolean } = $props();
+  let { title, icon, meta, aside, wrapAside = false, compact = false }: { title: string; icon: Snippet; meta?: Snippet; aside?: Snippet; wrapAside?: boolean; compact?: boolean } = $props();
 </script>
 
-<header class="widget-header" class:wrap-aside={wrapAside} data-widget-header>
+<header class="widget-header" class:wrap-aside={wrapAside} class:compact data-widget-header>
   <div class="icon-tile" aria-hidden="true">{@render icon()}</div>
   <div class="header-copy">
     <h1>{title}</h1>
@@ -29,4 +29,7 @@
     .icon-tile { width: 44px; height: 44px; border-radius: 12px; }
     h1 { font-size: 20px; }
   }
+  .compact { grid-template-columns: 28px minmax(0, 1fr) auto; gap: 8px; padding: 10px 14px; }
+  .compact .icon-tile { width: 28px; height: 28px; border: 0; border-radius: 0; background: transparent; }
+  .compact h1 { font-size: 18px; }
 </style>

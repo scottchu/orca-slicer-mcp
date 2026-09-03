@@ -1,5 +1,46 @@
 # F0 dual-subsystem foundation handoff
 
+## Current: manifest-profile repair accepted; guarded shipment next
+
+Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97` is independently accepted after
+renewed required validation and ten fresh profile cases. New stage/ship builds
+require schema2/current binding; installed status/rollback strictly validate known
+historical profiles. No public widget compatibility or guard bypass returns.
+The current52-file/71-route payload retains the same runtime/UI hashes; only the
+build-manifest schema changes. BOTH existing PR101 services verify healthy through
+read-only status checks, with no restart. Evidence and prior failures are in
+VALIDATION.
+
+Next review this documentation-only tail, then renew guarded u1-ship and verify
+BOTH restarts plus installed-resource behavior. PR101 remains deployed. C08 phone
+reliability, host fullscreen and existing layout debt remain unresolved; preserve
+all55 IDs, monitor workflow, eight active legacy views and Progress no-action.
+
+## Earlier accepted source: Camera and current-only widgets
+
+Exact `aaaf0a56a0df944a19384822decfc62712021c51` is independently accepted.
+The source has only observation17/Camera13 resources and two public/six app-only
+tools. Thirty old URI aliases, the two status compatibility tools, old Camera
+HTTP route and18 obsolete files are removed; `/widget` serves current observation.
+The eight legacy renderers used by current observation remain active. Deployment
+backups, other worktrees and every shipping/integrity/security/preservation guard
+remain intact. Required and scoped validation evidence is in VALIDATION.
+
+Camera defaults to quiet Auto with an88px-by-44px Auto/Live icon Switch. Its
+edge-to-edge media has no footer/Refresh; the persistent safe failure reason is
+bottom left, controls bottom right, with stable narrow-layout separation.
+Service-owned bootstrap, failure diagnostics and unchanged deadlines follow
+CAM-008/decision0046. Progress's2px failure allocation and Bed's failed-renderer
+release were scoped current-route fixes, not the deferred Progress redesign.
+
+Next complete the documentation-only exact review, then guarded u1-ship and BOTH
+service restarts plus installed-resource behavior verification. PR101 remains
+the deployed baseline; no shipment or actual-device acceptance is claimed yet.
+Retain all55 IDs, monitor workflow, current eight legacy views, unfinished Queue/
+Fans/Job History, Progress no-action, F07 discussion and separate c6. C08 phone
+reliability remains unresolved; host fullscreen is unimplemented, Screen Sharing
+paused, and existing `.u1-:host` layout debt remains.
+
 ## Current handoff: independently reviewed monitoring source
 
 [PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
@@ -46,10 +87,12 @@ runtime 0.4.10/schema 14 provide 30 resources and preserve all 28 old URI bytes.
 The source changes are per-call HostRpc timing, service-owned cleanup, versioned
 compatibility packages and affected tests/pins; no new UI or server timeout.
 
-Next: user retry in a newly mounted current Camera widget. New UI adoption on
-the phone is reported, reliable Live is not. Attempt 10 proved isolated upstream
-RTP/offer only; neither it nor the repaired timing defect proves the phone root
-cause. Screen Sharing remains paused. Preserve all 55 IDs, Progress no-action,
+Latest outcome: after initially reporting the same PR101 failure, the user
+reported Live connected after a couple of retries, then failed again after about
+10 s. The success screenshot shows new compact Switch UI and Live/30 FPS; exact
+resource URI is not established. Reliability is unresolved; locate the failing
+phase without assuming a root cause. One success does not close C08. Attempt 10 remains isolated
+upstream evidence and does not prove why the phone failed. Screen Sharing remains paused. Preserve all 55 IDs, Progress no-action,
 F07 discussion, separate c6 and remaining product work. This docs-only tail
 preserves application bytes and requires no deployment under0028.
 

@@ -21,7 +21,7 @@ const pluginManifest = JSON.parse(
 
 const exclusiveRouting =
   "For standalone camera requests, call only model-visible `open_printer_camera`; never substitute " +
-  "`show_u1_status`, `get_u1_status`, app-only `get_u1_camera_frame`, or app-only " +
+  "app-only `get_u1_camera_frame` or " +
   "`open_u1_camera_stream`.";
 const normalizeWhitespace = (value: string): string =>
   value.replace(/\s+/g, " ").trim();
@@ -40,9 +40,9 @@ describe("standalone camera routing guidance", () => {
     }
   });
 
-  test("keeps the documented inventory at two model tools plus eight app helpers", () => {
+  test("keeps the documented inventory at two model tools plus six app helpers", () => {
     expect(mobileSetupSkill).toContain(
-      "exactly two model-visible\n   tools and exactly eight app-only helpers"
+      "exactly two model-visible\n   tools and exactly six app-only helpers"
     );
     expect(mobileSetupSkill).not.toContain("exactly the four read-only tools");
     expect(mobileSetupSkill).not.toContain("four-tool inventory");

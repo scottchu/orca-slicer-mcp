@@ -1,10 +1,10 @@
+import { MCP_OBSERVATION_HTML } from "../../src/lib/server/app.js";
 import { afterEach, describe, expect, test } from "bun:test";
 import { createServer, type Server } from "node:http";
 import { readFileSync } from "node:fs";
 import { connect, type AddressInfo } from "node:net";
 import { runInNewContext } from "node:vm";
 
-import { CAMERA_WIDGET_HTML } from "../../src/lib/server/app.js";
 import { createStatusDashboardHandler } from "../../src/lib/server/status-dashboard.js";
 import { createRequestHandler, tailscaleDashboardBaseUrl } from "../../src/entrypoints/server.js";
 import type { U1Status } from "../../src/lib/server/u1-status.js";
@@ -185,16 +185,22 @@ describe("standalone status dashboard", () => {
       ...LAB_ROUTES.flatMap((path) => [path, path + "/"])]) {
       expect((await fetch(`http://127.0.0.1:${port}${route}`)).status).toBe(404);
     }
-    expect(
-      (await fetch(`http://127.0.0.1:${port}/camera-widget`)).status
-    ).toBe(404);
+    const dashboardOrigin = await startFixture();
+    for (const origin of [`http://127.0.0.1:${port}`, dashboardOrigin]) {
+      for (const route of ["/camera-widget", "/widget.html", "/legacy-widget.html", "/camera-widget.html", "/legacy-camera-widget.html", "/mcp-observation-v15.html", "/mcp-observation-v16.html", "/mcp-camera-v11.html", "/mcp-camera-v12.html"]) {
+        expect((await fetch(origin + route)).status).toBe(404);
+      }
+    }
+    const widget = await fetch(`http://127.0.0.1:${port}/widget`);
+    expect(widget.status).toBe(200);
+    expect(await widget.text()).toBe(MCP_OBSERVATION_HTML);
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.4.10",
-      toolSchemaVersion: 14,
-      observationWidgetVersion: "observation-v16",
-      cameraWidgetVersion: "camera-v12",
+      runtimeVersion: "0.4.11",
+      toolSchemaVersion: 15,
+      observationWidgetVersion: "observation-v17",
+      cameraWidgetVersion: "camera-v13",
     });
   });
 
@@ -487,12 +493,11 @@ describe("standalone status dashboard", () => {
     expect(reads).toBe(1);
   });
 
-  test("serves the migrated private Camera while preserving the legacy camera asset", async () => {
+  test("serves the current private Camera and rejects the retired camera route", async () => {
     const origin = await startFixture();
     const hostResponse = await fetch(`${origin}/dashboard/camera`);
     const hostHtml = await hostResponse.text();
     const widgetResponse = await fetch(`${origin}/camera-widget`);
-    const widgetHtml = await widgetResponse.text();
 
     expect(hostResponse.status).toBe(200);
     expect(hostResponse.headers.get("cache-control")).toBe("no-store");
@@ -503,15 +508,7 @@ describe("standalone status dashboard", () => {
     expect(hostHtml).toContain('title="U1 Camera"');
     expect(hostHtml).not.toMatch(/Dashboard|Test|observation widget/);
     expect(hostHtml).toContain('message.method === "tools/call"');
-    expect(widgetResponse.status).toBe(200);
-    expect(widgetResponse.headers.get("cache-control")).toBe("no-store");
-    expect(widgetResponse.headers.get("content-security-policy")).toContain(
-      "default-src 'none'"
-    );
-    expect(widgetHtml).toBe(CAMERA_WIDGET_HTML);
-    expect(widgetHtml).toContain('id="snapshot"');
-    expect(widgetHtml).toContain('id="live-stream"');
-    expect(widgetHtml).not.toContain("fetch(");
+    expect(widgetResponse.status).toBe(404);
   });
 
   test("serves exact live Camera bytes with unchanged Camera CSP and strict private path/method isolation", async () => {
@@ -561,9 +558,11 @@ describe("standalone status dashboard", () => {
     expect(selector.response.status).toBe(400);
     expect(selector.body).toEqual({ error: "invalid_observation_view" });
 
-    const legacy = await call("get_u1_status");
-    expect(legacy.response.status).toBe(200);
-    expect(legacy.body.structuredContent).toMatchObject({ state: "printing" });
+    for (const retiredName of ["show_u1_status", "get_u1_status"]) {
+      const retired = await call(retiredName);
+      expect(retired.response.status).toBe(400);
+      expect(retired.body).toEqual({ error: "unsupported_read_only_tool" });
+    }
     expect(statusReads).toBe(1);
 
     const frame = await call("get_u1_camera_frame", { authorizeLive: true });
@@ -800,12 +799,12 @@ describe("focused dashboard host bridge", () => {
     expect(host.bridge.textContent).toBe("Observation received");
   });
 
-  test("only migrated focused widgets receive initial error notifications", async () => {
+  test("all current widgets receive immediate initial error notifications", async () => {
     for (const view of ["fans", "thermals", "heads", "overview", "queue", "jobs", "job_history", "progress", "bed_mesh"]) {
       const host = hostFixture(`/dashboard/${view}`, async () => { throw new Error("private error"); });
       await host.send({ method: "ui/notifications/initialized" });
       const results = host.messages.filter((message) => message.method === "ui/notifications/tool-result");
-      expect(results).toEqual(["fans", "thermals", "heads", "queue"].includes(view) ? [{ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } }] : []);
+      expect(results).toEqual([{ jsonrpc: "2.0", method: "ui/notifications/tool-result", params: { isError: true } }]);
       expect(host.requests).toEqual([{ name: "refresh_printer_observation", arguments: { view } }]);
     }
   });

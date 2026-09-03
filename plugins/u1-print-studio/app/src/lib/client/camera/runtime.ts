@@ -3,12 +3,8 @@ import type { VideoSurfacePort } from '../media/playback';
 import { createCameraPeer } from './peer';
 import { createLiveCameraController } from './live-controller';
 
-type CameraCompatibility = { widgetState?: unknown; setWidgetState?: (state: unknown) => unknown };
-const record = (value: unknown): Record<string, unknown> | null => value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : null;
-
 /** The only browser/host edge. No printer URL, fetch or synthetic producer. */
 export const createBrowserCamera = (surface: VideoSurfacePort, initialSnapshot: 'request' | 'host-result' = 'request') => {
-  const host = window as Window & { openai?: CameraCompatibility };
   let cancelDecode: (() => void) | null = null;
   const controller = createLiveCameraController({
     initialSnapshot,
@@ -16,13 +12,6 @@ export const createBrowserCamera = (surface: VideoSurfacePort, initialSnapshot: 
     scheduler: { now: () => performance.now(), timestamp: () => new Date().toISOString(), after: (milliseconds, callback) => {
       const timer = setTimeout(callback, milliseconds); return () => clearTimeout(timer);
     } },
-    savedLiveIntent: () => record(record(host.openai?.widgetState)?.u1Camera)?.liveRequested === true,
-    persistLiveIntent: (liveRequested) => {
-      try {
-        const previous = record(host.openai?.widgetState) ?? {};
-        void Promise.resolve(host.openai?.setWidgetState?.({ ...previous, u1Camera: { liveRequested } })).catch(() => {});
-      } catch { /* Host persistence is optional; it never authorizes this session. */ }
-    },
     decode: (snapshot) => {
       cancelDecode?.();
       return new Promise<boolean>((resolve) => {

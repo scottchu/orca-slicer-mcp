@@ -112,7 +112,7 @@
           } catch {
             if (current !== generation) return;
             bridgeState.textContent = "Service unavailable — use Reload widget to retry";
-            if (focusedWidget) notifyToolResult({ isError: true });
+            notifyToolResult({ isError: true });
           }
           return;
         }

@@ -89,7 +89,7 @@ for (const width of [320, 390, 590, 720])
       await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
       await expect(copy).toBeVisible();
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/observation-v16.html',
+        'ui://u1-print-studio/observation-v17.html',
       );
       const messages = await page.evaluate(() => (window as any).__mcpHost.state.messages);
       expect(messages.filter((message: any) => message.method === 'ui/initialize')).toHaveLength(1);
@@ -130,10 +130,10 @@ for (const width of [320, 390, 590, 720])
       page.on('pageerror', (error) => errors.push(error.message));
       await page.goto('/host?tool=open_printer_camera');
       const frame = await frameOf(page);
-      await expect(frame.locator('[data-media-status]')).toContainText('Snapshot');
+      await expect(frame.locator('[data-media-status]')).toContainText('Auto');
       if (doubled) await enlarge(frame);
-      await expect(frame.getByRole('radio')).toHaveCount(3);
-      await expect(frame.getByRole('radio', { name: 'Snapshot', exact: true })).toBeChecked();
+      await expect(frame.getByRole('radio')).toHaveCount(2);
+      await expect(frame.getByRole('radio', { name: 'Auto', exact: true })).toBeChecked();
       expect((await (await request.get('/fixture/state')).json()).calls).toEqual([
         { name: 'open_printer_camera', arguments: {} },
       ]);
@@ -147,19 +147,38 @@ for (const width of [320, 390, 590, 720])
       expect(
         state.calls.some((call: { name: string }) => call.name === 'open_u1_camera_stream'),
       ).toBe(true);
-      await frame.getByRole('radio', { name: 'Snapshot', exact: true }).click();
-      await expect(frame.getByRole('radio', { name: 'Snapshot', exact: true })).toBeChecked();
+      await expect(frame.locator('[data-media-status-message]')).toHaveText('Live request failed');
+      await expect(frame.locator('[data-widget-footer]')).toHaveCount(0);
+      await expect(frame.getByRole('button', { name: /refresh|retry/i })).toHaveCount(0);
+      const shell = await frame.locator('[data-widget-shell]').boundingBox();
+      const media = await frame.locator('[data-media-slot]').boundingBox();
+      expect(Math.abs(media!.x - shell!.x)).toBeLessThanOrEqual(1);
+      expect(Math.abs(media!.width - shell!.width)).toBeLessThanOrEqual(2);
+      const status = await frame.locator('[data-media-status-message]').boundingBox();
+      const actions = await frame.locator('[data-media-actions]').boundingBox();
+      expect(status!.x + status!.width <= actions!.x || status!.y + status!.height <= actions!.y).toBe(true);
+      await expect(frame.locator('img')).toHaveAttribute('aria-hidden', 'false');
+      await expect(frame.locator('[data-media-feedback]')).toHaveCount(0);
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/camera-v12.html',
+        'ui://u1-print-studio/camera-v13.html',
       );
       await expect
         .poll(() => page.evaluate(() => (window as any).__mcpHost.state.sizes.length))
         .toBeGreaterThan(0);
+      const autoBounds = await bounds(frame);
+      await request.post('/fixture/configure', { data: { failLive: false } });
+      await frame.getByRole('radio', { name: 'Live', exact: true }).click();
+      await expect(frame.locator('[data-media-fps]')).toContainText('FPS');
+      expect(await bounds(frame)).toEqual(autoBounds);
+      expect(await frame.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+      await frame.getByRole('radio', { name: 'Auto', exact: true }).click();
+      await expect(frame.locator('[data-media-status]')).toContainText('Auto');
+      expect(await bounds(frame)).toEqual(autoBounds);
       expect(errors).toEqual([]);
       await page.screenshot({ path: test.info().outputPath('camera.png'), fullPage: true });
     });
 
-test('MCP Camera initial error stays neutral until explicit Retry', async ({ page, request }) => {
+test('MCP Camera initial error stays neutral until quiet Auto recovery', async ({ page, request }) => {
   const image = await page.evaluate(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 32;
@@ -175,8 +194,7 @@ test('MCP Camera initial error stays neutral until explicit Retry', async ({ pag
     { name: 'open_printer_camera', arguments: {} },
   ]);
   await request.post('/fixture/configure', { data: {} });
-  await frame.getByRole('button', { name: 'Retry snapshot', exact: true }).click();
-  await expect(frame.locator('[data-media-status]')).toContainText('Snapshot');
+  await expect(frame.locator('[data-media-status]')).toContainText('Auto');
   expect((await (await request.get('/fixture/state')).json()).calls.at(-1)).toEqual({
     name: 'get_u1_camera_frame',
     arguments: {},
@@ -197,7 +215,7 @@ test('MCP synthetic Live owns one lease and releases it on nonpersisted pagehide
   await request.post('/fixture/configure', { data: { image, reset: true, failLive: false } });
   await page.goto('/host?tool=open_printer_camera');
   const frame = await frameOf(page);
-  await expect(frame.locator('[data-media-status]')).toContainText('Snapshot');
+  await expect(frame.locator('[data-media-status]')).toContainText('Auto');
   await frame.getByRole('radio', { name: 'Live', exact: true }).click();
   await expect(frame.locator('[data-media-status]')).toContainText('Live');
   expect(await frame.evaluate(() => (window as any).__cameraProbe.opens)).toBe(1);

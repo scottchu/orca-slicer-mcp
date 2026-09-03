@@ -1,6 +1,38 @@
 # F0 dual-subsystem foundation brief
 
-## Active slice: standalone asynchronous print monitoring
+## Current: manifest-profile repair accepted; guarded shipment next
+
+Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97` is independently accepted after
+renewed required validation and ten fresh profile cases. New stage/ship builds
+require schema2/current binding; installed status/rollback strictly validate known
+historical profiles. No public widget compatibility or guard bypass returns.
+The current52-file/71-route payload retains the same runtime/UI hashes; only the
+build-manifest schema changes. BOTH existing PR101 services verify healthy through
+read-only status checks, with no restart. Evidence and prior failures are in
+VALIDATION.
+
+Next review this documentation-only tail, then renew guarded u1-ship and verify
+BOTH restarts plus installed-resource behavior. PR101 remains deployed. C08 phone
+reliability, host fullscreen and existing layout debt remain unresolved; preserve
+all55 IDs, monitor workflow, eight active legacy views and Progress no-action.
+
+## Prior accepted slice: Camera/current-only source
+
+Decision0046's combined Camera and current-only source is independently accepted
+at `aaaf0a56a0df944a19384822decfc62712021c51`. Two current resources, two public/
+six app-only tools and52-file/71-route payload replace the old compatibility
+inventory; eight active legacy renderers remain. Camera uses quiet Auto/Live,
+edge-to-edge media and the safe persistent bottom-left reason. Scoped Progress
+allocation/Bed renderer-release fixes do not implement Progress's deferred design.
+
+Required and scoped evidence, prior failures and exact identities are in
+VALIDATION. Complete the documentation-only exact review and guarded shipment,
+restart BOTH services, then verify installed resources and behavior. PR101 remains
+deployed. Keep all55 IDs, monitoring scope, existing layout debt and shipping
+security/integrity/preservation guards. C08 and host fullscreen remain unresolved;
+no phone/printer acceptance follows from the synthetic checks.
+
+## Maintained workflow: standalone asynchronous print monitoring
 
 The selected standalone skill composition refines F0/I1 and MON-001 under
 [decision0045](../../decisions/0045-compose-print-with-standalone-asynchronous-monitoring.md).

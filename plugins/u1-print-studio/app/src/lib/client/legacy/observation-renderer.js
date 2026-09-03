@@ -470,9 +470,14 @@ const retainPresentation = () => {
   if (retainedPresentation || !observation) return;
   const section = modulesElement.querySelector('.instrument');
   if (!section || section.hasAttribute('data-observation-placeholder')) return;
-  const selectors = ['.u1-header', '.u1-body', '.u1-footer'];
+  const [header, body, footer] = ['.u1-header', '.u1-body', '.u1-footer'].map(
+    selector => section.querySelector(selector)?.getBoundingClientRect(),
+  );
+  // Include collapsed child margins in the measured body allocation. A border
+  // box alone misses the Progress track's margin and moves the error footer.
+  const bodyHeight = header && footer ? footer.top - header.bottom : body?.height ?? 0;
   retainedPresentation = { section: selectedView === 'bed_mesh' ? section : null, signature: layoutSignature(),
-    heights: selectors.map(selector => section.querySelector(selector)?.getBoundingClientRect().height ?? 0),
+    heights: [header?.height ?? 0, bodyHeight, footer?.height ?? 0],
     rows: Array.isArray(observation.module?.items) ? Math.min(100, observation.module.items.length) : undefined };
   if (retainedPresentation.section) { section.setAttribute('data-retained-observation', ''); section.inert = true; section.setAttribute('aria-hidden', 'true'); }
   modulesElement.style.position = 'relative';
@@ -485,7 +490,10 @@ const showPlaceholder = (phase = "loading", message = "") => {
   const retry = phase !== "loading" && selectedView && window.parent !== window;
   const heading = header(title, false).replace("</h2>", `</h2><div class="instrument-info u1-meta">${neutralValue("long")}</div>`);
   const action = retry ? `<button class="refresh u1-action" type="button" aria-label="Retry loading observation">${icon("refresh-cw")}</button>` : '<span class="neutral-action" aria-hidden="true"></span>';
-  if (phase !== 'loading') retainPresentation();
+  if (phase !== 'loading') {
+    retainPresentation();
+    disposeMeshRenderer();
+  }
   const retained = retainedPresentation?.section;
   retained?.remove();
   modulesElement.innerHTML = `<section class="instrument u1-card" data-observation-placeholder="${phase}" aria-busy="${phase === "loading"}">${heading}<div class="u1-body">${neutralBodies[view]()}</div><footer class="instrument-footer u1-footer"><div class="u1-primary-actions">${footerStatus(message)}${action}</div></footer></section>`;

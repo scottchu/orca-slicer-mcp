@@ -10,15 +10,14 @@ import re
 
 BUILD_KIND = "sveltekit-bun"
 BUILD_MANIFEST = "build-manifest.json"
+CURRENT_BUILD_SCHEMA = 2
 HASH = re.compile(r"[0-9a-f]{64}\Z")
 SAFE_PATH = re.compile(r"[A-Za-z0-9_./@+\-]+\Z")
 VIEWS = ("overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh", "camera")
 FOCUSED_ASSETS = ("fans", "thermals", "heads", "queue", "camera")
-LEGACY_ASSET_FILES = {
-    "widget.html": "static-contract/widget.html",
-    "legacy-widget.html": "legacy-widget.html",
-    "camera-widget.html": "static-contract/camera-widget.html",
-    "legacy-camera-widget.html": "legacy-camera-widget.html",
+CURRENT_ASSET_FILES = {
+    "mcp-observation.html": "mcp-observation.html",
+    "mcp-camera.html": "mcp-camera.html",
     "status-dashboard-host.html": "static-contract/status-dashboard-host.html",
     "camera-dashboard-host.html": "static-contract/camera-dashboard-host.html",
 }
@@ -26,13 +25,29 @@ LEGACY_ASSET_FILES = {
 # public-isolation checks that were required before the framework migration.
 REQUIRED_ROLES = {
     "/widget": "both",
-    "/camera-widget": "dashboard",
     "/dashboard": "dashboard",
     "/dashboard/": "dashboard",
     "/dashboard/lab": "dashboard",
     **{f"/dashboard/{view}": "dashboard" for view in VIEWS},
     **{f"/dashboard/lab/{view}": "dashboard" for view in VIEWS},
     **{f"/dashboard/{view}_widget": "dashboard" for view in FOCUSED_ASSETS},
+}
+
+
+# Historical deployment contracts remain verifiable rollback targets. These
+# filenames are integrity requirements, not current server routes or resources.
+HISTORICAL_ASSET_FILES = {
+    "widget.html": "static-contract/widget.html",
+    "legacy-widget.html": "legacy-widget.html",
+    "camera-widget.html": "static-contract/camera-widget.html",
+    "legacy-camera-widget.html": "legacy-camera-widget.html",
+    "status-dashboard-host.html": "static-contract/status-dashboard-host.html",
+    "camera-dashboard-host.html": "static-contract/camera-dashboard-host.html",
+}
+HISTORICAL_REQUIRED_ROLES = {**REQUIRED_ROLES, "/camera-widget": "dashboard"}
+BUILD_PROFILES = {
+    1: (HISTORICAL_ASSET_FILES, HISTORICAL_REQUIRED_ROLES, "static-contract/widget.html"),
+    CURRENT_BUILD_SCHEMA: (CURRENT_ASSET_FILES, REQUIRED_ROLES, "mcp-observation.html"),
 }
 
 
@@ -93,8 +108,9 @@ def read_build_manifest(directory):
     manifest = json.loads(manifest_path.read_text(), object_pairs_hook=unique_object)
     if not isinstance(manifest, dict) or set(manifest) != {"schemaVersion", "buildKind", "runtimeFiles", "staticRoutes"}:
         raise ValueError("Unsupported build manifest")
-    if type(manifest["schemaVersion"]) is not int or manifest["schemaVersion"] != 1 or manifest["buildKind"] != BUILD_KIND:
+    if type(manifest["schemaVersion"]) is not int or manifest["schemaVersion"] not in BUILD_PROFILES or manifest["buildKind"] != BUILD_KIND:
         raise ValueError("Unsupported build manifest version or kind")
+    assets, required_roles, widget_file = BUILD_PROFILES[manifest["schemaVersion"]]
     files, routes = manifest["runtimeFiles"], manifest["staticRoutes"]
     if not isinstance(files, dict) or not isinstance(routes, dict) or not routes:
         raise ValueError("Invalid build inventory")
@@ -126,17 +142,19 @@ def read_build_manifest(directory):
         role = item["role"]
         if role not in ("public", "dashboard", "both"):
             raise ValueError("Invalid static route role")
-        if not item["file"].startswith(("static-contract/", "client/", "prerendered/")):
+        if not item["file"].startswith(("static-contract/", "client/", "prerendered/")) and not (manifest["schemaVersion"] == CURRENT_BUILD_SCHEMA and route == "/widget" and item["file"] == widget_file):
             raise ValueError("Runtime code cannot be declared as a static route")
         if item["file"].startswith("client/") and route != "/" + item["file"][len("client/"):]:
             raise ValueError("Client asset route does not match its build path")
         private = route in ("/dashboard", "/_app", "/camera-widget") or route.startswith(("/dashboard/", "/_app/"))
         if private and role != "dashboard":
             raise ValueError("Private static route cannot be public")
-    if any(routes.get(route, {}).get("role") != role for route, role in REQUIRED_ROLES.items()):
+    if any(routes.get(route, {}).get("role") != role for route, role in required_roles.items()):
         raise ValueError("Required static route or role missing")
-    if not set(LEGACY_ASSET_FILES.values()).issubset(files):
-        raise ValueError("Required legacy resource asset missing")
+    if routes["/widget"]["file"] != widget_file:
+        raise ValueError("Widget route differs from its build schema contract")
+    if not set(assets.values()).issubset(files):
+        raise ValueError("Required build schema resource asset missing")
     expected_links = {f"/dashboard/{view}" for view in VIEWS}
     for route in ("/dashboard", "/dashboard/"):
         directory_links = DirectoryLinks()
@@ -149,6 +167,14 @@ def read_build_manifest(directory):
     for relative in files:
         if relative.startswith(("client/", "prerendered/")) and relative not in served_files:
             raise ValueError("Generated static file is missing its route")
+    return manifest
+
+
+def read_current_build_manifest(directory):
+    """Candidate acceptance never treats an older deployable build as current."""
+    manifest = read_build_manifest(directory)
+    if manifest["schemaVersion"] != CURRENT_BUILD_SCHEMA:
+        raise ValueError("New deployment requires the current build schema")
     return manifest
 
 

@@ -22,7 +22,7 @@ export const createCameraPeer = (offer: CameraOffer, events: CameraPeerEvents, p
   peer.onconnectionstatechange = () => {
     if (!current()) return;
     const state = peer.connectionState;
-    if (state === 'connected' || state === 'disconnected' || state === 'failed' || state === 'closed') events.connection(state);
+    events.connection(state);
   };
   peer.onicecandidate = (event) => {
     if (!current() || !event.candidate) return;
