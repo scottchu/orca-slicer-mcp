@@ -1,5 +1,40 @@
 # F0 dual-subsystem foundation validation
 
+## Standalone asynchronous monitor: author source validation
+
+Base: `220190f05afd4f785f068254d43f1b0257e9af57`. Scope is decision0045,
+MON-001 and the existing monitor/start skills. The primary requested a bounded
+architect contract; the author implemented it separately. Exact independent
+review remains pending at this checkpoint.
+
+Commands actually run:
+
+- `uv run --no-project --with pyyaml "$SKILL_CREATOR/scripts/quick_validate.py" plugins/u1-print-studio/skills/u1-monitor-print` — exit0, Skill is valid.
+- The same command for `plugins/u1-print-studio/skills/u1-start-print` — exit0,
+  Skill is valid. SKILL_CREATOR denotes the installed system skill root used
+  by the author; no repository dependency or installed skill was modified.
+- `git diff --check` — exit0.
+- `git diff --name-only 220190f05afd4f785f068254d43f1b0257e9af57` and scoped
+  `git diff` checks — Markdown-only changes; application/build/configuration
+  paths unchanged.
+- `git rev-parse 220190f05afd4f785f068254d43f1b0257e9af57:plugins/u1-print-studio/app`
+  — application tree `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
+
+Read-only Node filesystem checks also passed required nonempty repository files,
+CURRENT's three continuity records, exactly one active iteration, existing
+PROJECT_STATE headings/evidence layers, core requirement IDs, added local skill/
+decision links, and private-data exclusion in added content. These are focused
+documentation checks, not a run of the full check-repository.sh application gate.
+No test, guard or shipping script was modified.
+
+The two changed skill entrypoints pass structural validation; this alone does not
+prove instruction behavior. Independent fictional lifecycle cases and exact source
+review are the next gate. The existing runtime evidence remains bound to unchanged
+application bytes; no full application build/browser run was repeated for this
+skill/documentation-only slice. No simulator, printer, actual-host, installed-cache,
+durable-monitor or external-notification acceptance is added. Decision0028 requires
+no service deployment for these unchanged application bytes.
+
 ## Current PR99: exact approval and guarded deployment
 
 Independent `app/test-results/mcp-cutover-independent/REPORT-f782378.json`, SHA256

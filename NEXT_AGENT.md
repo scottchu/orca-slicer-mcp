@@ -1,5 +1,21 @@
 # Next agent
 
+## Current handoff: review standalone monitoring workflow
+
+Review the exact candidate for decision0045/MON-001 and the two changed skills.
+The existing monitor is independently invocable and composed after an observed
+authorized start; the primary delegates one owner and stays available. Preserve
+identity/deduplication, bounded recovery, stop-observing versus printer-control
+semantics, explicit limited request scope and every thumbnail gate.
+
+Both changed skill validators pass. Source is based on `220190f`; application,
+dependencies, generated assets and plugin configuration are unchanged. Installed
+cache is not updated, services are not restarted, and no durable service or
+notification behavior is claimed. User authorized a PR and merge after independent
+exact review. No deployment or plugin reinstall belongs to this slice. Read active
+VALIDATION/HANDOFF before delivery; preserve concurrent Camera work and all earlier
+acceptance gaps.
+
 ## Current handoff: PR99 MCP resources deployed
 
 PR99 `4787c02` is deployed after exact `f782378` approval and BOTH service

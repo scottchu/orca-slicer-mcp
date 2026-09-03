@@ -1,5 +1,27 @@
 # F0 dual-subsystem foundation handoff
 
+## Current handoff: standalone monitoring source candidate
+
+Base: `220190f05afd4f785f068254d43f1b0257e9af57`. Branch:
+`docs/u1-standalone-monitor-workflow`; isolated from unrelated working changes.
+
+Changed paths: existing monitor/start SKILL.md files; AGENTS routing; MON-001 in
+requirements; decision0045 and decision index; PROJECT_STATE/NEXT_AGENT and this
+iteration's BRIEF/VALIDATION/HANDOFF. Preparation skill, application code, profiles,
+plugin configuration, dependencies, generated assets and runtime are unchanged.
+
+The standalone workflow owns one bound print, adaptive evidence/due-time loop,
+meaningful primary-delivered updates, immediate alerts, bounded recovery and
+identity-checked resumption. Print composition enrolls only after observed printing;
+limited preparation/upload/start-only requests remain limited. Stopping the
+monitor does not stop the printer. The installed skill cache is unchanged, and
+active-conversation execution is not O1/O2 durable supervision or notifications.
+
+Both quick skill validators pass. Next smallest action: independent exact source
+review with fictional lifecycle cases, then the user-authorized PR/merge. No
+application deployment or plugin reinstall. VALIDATION records actual commands,
+scope and retained application identity; no real printer was used for this change.
+
 ## Current handoff: PR99 MCP resources deployed
 
 PR99 merged `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba`, preserving independently

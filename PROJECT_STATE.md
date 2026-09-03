@@ -1,5 +1,20 @@
 # Project state
 
+## Current workflow slice: standalone asynchronous monitor
+
+Decision0045 implements the requested F0/I1 contract in the existing monitor and
+start skills: standalone invocation or composition after observed printing, one
+delegated read-only owner, explicit run binding, adaptive checks and separate
+monitoring/print outcomes. MON-001 and AGENTS point to maintained repository source.
+Two skill validators pass; exact independent review is pending in this candidate.
+
+Application bytes remain at base `220190f05afd4f785f068254d43f1b0257e9af57`;
+installed plugin cache and services are unchanged. This is source/instruction
+evidence, not new runtime, real-printer, actual-device or durable notification
+acceptance. O1/O2 and all earlier product gaps remain open. Next: independent
+exact review, then the user-authorized PR/merge without application deployment.
+Detailed commands and limits are in the active VALIDATION/HANDOFF.
+
 ## Current deployment: PR99 MCP Camera and Heads
 
 PR99 merged as `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba` and is deployed after

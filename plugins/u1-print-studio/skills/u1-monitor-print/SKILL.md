@@ -1,6 +1,6 @@
 ---
 name: u1-monitor-print
-description: Monitor an active Snapmaker U1 print with read-only telemetry, camera snapshots, adaptive next-check timing, and concise visual status cards. Use after a print starts through verified completion or failure; never control the printer without fresh authorization.
+description: Run a standalone asynchronous, read-only Snapmaker U1 print monitor, or compose it after an authorized print start. Use for "Monitor this print" and ongoing monitoring through an evidenced outcome; a one-shot status or camera request stays a focused observation.
 ---
 
 # U1 Monitor Print
@@ -8,6 +8,73 @@ description: Monitor an active Snapmaker U1 print with read-only telemetry, came
 Observe the active print until completion or failure is proven. Monitoring is
 read-only: do not pause, resume, cancel, tune, or issue G-code without fresh
 authorization for that exact action.
+
+## Invocation and ownership
+
+Invoke this skill independently for "Monitor this print". For a broader
+"Print this" request, the coordinator composes prepare → authorized start →
+this monitor, handing off only after fresh observation of the exact job as
+printing. Preparation-only, upload-only and explicit start-only requests do
+not enroll a monitor. A start acknowledgement is an intermediate update,
+not a verified print outcome.
+
+Assign one delegated, read-only monitoring owner for the bound print session.
+The primary stays available for conversation and delivers the owner's meaningful
+updates and immediate alerts. Deduplicate a repeated request against the current
+owner instead of starting a second observation loop. If delegation or capacity
+is unavailable, say monitoring has not started; retain the handoff and resolve
+capacity with the user instead of silently taking over the primary's turn.
+
+Before reporting monitoring active, the owner accepts a private handoff with:
+
+- the target printer and exact job filename, plus the print-session identity
+  when exposed; filename alone cannot distinguish a repeated run;
+- the artifact hash and preparation/operations evidence references when known;
+  an externally started job keeps unavailable provenance explicitly unknown;
+- a fresh complete observation that binds the active run, its timestamp and
+  start/progress evidence, separate camera confidence, and the next check due;
+- the monitoring owner's identity, last successful observation and bounded
+  retry plan. Keep private identities and images out of repository records.
+
+A paused job can be monitored; pausing is not a terminal outcome. If a standalone
+request finds no identifiable active run, report current evidence and do not
+attach to a later job automatically. Never infer an artifact hash from a filename.
+
+## Asynchronous lifecycle
+
+Repeat: acquire timestamped telemetry and available camera evidence → compare
+job identity → assess progress, anomalies and confidence → choose the next due
+time → publish a meaningful update when warranted → wait interruptibly → repeat.
+Check that the same run remains bound on every sample. Record the next due time
+and its reason; waits must allow user steering and prompt owner messages.
+Report startup/first-layer evidence, material phase or estimate changes, requested
+status and terminal outcomes. Stable polls need not produce repetitive cards.
+
+Alert immediately on observed printer errors, apparent visual failures or lost
+telemetry. Camera-only loss lowers visual confidence and is not a printer error.
+For a telemetry outage, mark the state unknown, retain the last successful sample
+and make at most three read-only recovery attempts over three minutes. Recovered
+telemetry must be a fresh complete snapshot of the same run before normal cadence
+resumes. If those attempts fail, end the owner as monitoring unavailable and
+report the gap; do not claim the print failed or continue claiming supervision.
+
+Re-entering after interruption or "resume monitoring" requires a fresh complete
+snapshot and comparison with the retained run identity and last progress. A new
+run, changed filename, unexplained progress reset or uncertain identity requires
+an explicit new binding; never silently follow another print. Resuming monitoring
+does not send a printer resume command.
+
+End this owner on a verified complete, failed or cancelled print, an explicit
+"stop monitoring", or an interrupted/unavailable monitoring workflow. These are
+separate outcomes: stopping observation leaves the printer running. Report the
+last evidence, confidence and reason; release only task-owned timers, sessions
+and handles. An error, missing sample or layer N/N alone is not a terminal print.
+
+This skill defines agent orchestration while the active conversation and worker
+execution are available. It does not install a daemon, survive app/host shutdown,
+or provide durable background supervision or external notifications. On a lost
+owner, report interruption and retain a private handoff for explicit resumption;
+do not promise checks or alerts after execution has stopped.
 
 ## Each observation
 
@@ -50,12 +117,18 @@ connection/descriptor is stale or unavailable and stop. Ask the user to reload
 the plugin connection or fully quit and relaunch the host before retrying. Never
 open the status card as a camera fallback.
 
-## Completion
+## Terminal evidence
 
 Layer `N/N` is insufficient while state remains `printing`. Completion requires
 fresh telemetry showing `complete`, inactive virtual storage, full file
 position, no exception, parked tools, and heater targets returning to zero.
-Take a final camera snapshot. If the lowered bed moves the parts out of frame,
+A failed or cancelled outcome requires fresh printer-reported terminal state
+for the bound run and inactive execution; report the reason when available.
+A concerning image alone remains an advisory failure observation. If terminal
+state is reported but execution is still active or inconsistent, keep observing
+with a short interval and describe the uncertainty.
+
+Take a final camera snapshot when available. If the lowered bed moves the parts out of frame,
 say so and preserve the strongest earlier visual evidence instead of claiming
 an unseen physical result.
 

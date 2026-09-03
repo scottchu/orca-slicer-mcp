@@ -1,5 +1,21 @@
 # F0 dual-subsystem foundation brief
 
+## Active slice: standalone asynchronous print monitoring
+
+The user selected an independently invocable monitoring skill composed with
+printing. Decision [0045](../../decisions/0045-compose-print-with-standalone-asynchronous-monitoring.md)
+refines F0/I1 and MON-001: strengthen the existing monitor; keep one delegated
+read-only owner and the primary available. Source base is `220190f05afd4f785f068254d43f1b0257e9af57`.
+Preparation-only, upload-only and explicit start-only scope remain separate.
+
+Acceptance: standalone and composed invocation, exact run binding and deduplication,
+adaptive due times, meaningful updates/immediate alerts, bounded reconnect,
+identity-checked resumption, separate monitor/print terminal outcomes, retained
+thumbnail and control-authorization gates. Validate changed skills/docs and obtain
+independent exact review. Application, installed cache and services stay unchanged;
+no durable monitor, notification or physical-outcome claim follows. O1/O2 remain
+open. This source-only slice does not take ownership of concurrent Camera work.
+
 ## Delivered slice: PR99 MCP Camera and Heads
 
 Decision0044's bounded MCP cutover is deployed through PR99 `4787c02` after
