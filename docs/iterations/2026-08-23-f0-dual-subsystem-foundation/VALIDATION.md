@@ -2,6 +2,12 @@
 
 ## Standalone asynchronous monitor: author source validation
 
+Independent source review of `98aeaf3` found one decision-index formatting
+issue: a blank line placed row0045 outside the existing table. The author removed
+only that separating blank line; renewed diff checks pass. The reviewer reported
+both skill validators passing and unchanged application identity. Review of the
+repaired exact candidate is still required; this is not author self-approval.
+
 Base: `220190f05afd4f785f068254d43f1b0257e9af57`. Scope is decision0045,
 MON-001 and the existing monitor/start skills. The primary requested a bounded
 architect contract; the author implemented it separately. Exact independent
