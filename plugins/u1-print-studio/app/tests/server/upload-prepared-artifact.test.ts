@@ -115,8 +115,13 @@ type HarnessOptions = {
   validationInput?: PreparedArtifactValidationInput;
   storedValidationInput?: PreparedArtifactValidationInput;
   validationRecord?: "missing" | "expired" | "mismatch";
+  validationExpiresAt?: string;
   preflight?: "missing" | "blocked" | "unavailable" | "mismatch";
+  preflightExpiresAt?: string;
   authorization?: "expired" | "mismatch";
+  authorizationExpiresAt?: string;
+  authorizationClaimedAt?: string;
+  coordinatorTimes?: ReadonlyArray<string>;
   adapterOutcome?: UploadAdapterOutcome;
   upload?: GuardedUploadPorts["uploader"]["upload"];
   replayRecord?: "polluted-result" | "polluted-record" | "invalid-status-code" | "invalid-verification";
@@ -128,7 +133,8 @@ const harness = (options: HarnessOptions = {}) => {
     { ...validation, validationId: sha("other-validation") } : validation;
   let storedValidation = { schemaVersion: 1 as const, receiptId: "validation_receipt_0001",
     preparedJobRevisionId: "prepared_revision_0001", issuedAt: "2026-09-03T11:00:00.000Z",
-    expiresAt: options.validationRecord === "expired" ? "2026-09-03T11:30:00.000Z" : "2026-09-03T13:00:00.000Z",
+    expiresAt: options.validationExpiresAt ?? (options.validationRecord === "expired" ?
+      "2026-09-03T11:30:00.000Z" : "2026-09-03T13:00:00.000Z"),
     receipt: storedReceiptValue, digest: "" };
   storedValidation = { ...storedValidation,
     digest: digestStoredValidationReceipt(storedValidation as StoredValidationReceipt) };
@@ -137,21 +143,26 @@ const harness = (options: HarnessOptions = {}) => {
     preparedJobRevisionId: "prepared_revision_0001", validationId: validation.validationId!,
     artifactSha256: validation.artifactSha256!, manifestSha256: validation.manifestSha256!,
     targetFingerprint: options.preflight === "mismatch" ? sha("other-target") : validation.targetFingerprint!,
-    checkedAt: "2026-09-03T11:55:00.000Z", expiresAt: "2026-09-03T12:30:00.000Z", digest: "" };
+    checkedAt: "2026-09-03T11:55:00.000Z", expiresAt: options.preflightExpiresAt ?? "2026-09-03T12:30:00.000Z",
+    digest: "" };
   preflight = { ...preflight, digest: digestTargetPreflight(preflight as TargetPreflight) };
   let authorization = { schemaVersion: 1 as const, authorizationId: "upload_authorization_0001", action: "upload" as const,
     preparedJobRevisionId: "prepared_revision_0001", validationId: validation.validationId!,
     artifactSha256: validation.artifactSha256!, manifestSha256: validation.manifestSha256!,
     targetFingerprint: options.authorization === "mismatch" ? sha("other-target") : validation.targetFingerprint!,
     correlationId: "correlation_id_0001", issuedAt: "2026-09-03T11:50:00.000Z",
-    expiresAt: options.authorization === "expired" ? "2026-09-03T11:59:00.000Z" : "2026-09-03T12:30:00.000Z", digest: "" };
+    expiresAt: options.authorizationExpiresAt ?? (options.authorization === "expired" ?
+      "2026-09-03T11:59:00.000Z" : "2026-09-03T12:30:00.000Z"), digest: "" };
   authorization = { ...authorization, digest: digestUploadAuthorization(authorization as UploadAuthorization) };
   const actions = new Map<string, { fingerprint: string; actionId: string; record: InternalUploadActionRecord | null }>();
   let actionCounter = 0; let authorizationConsumed = false; let uploadCalls = 0; let deadlineCloses = 0;
+  let authorizationClaimHadNow = false;
+  let coordinatorTimeIndex = 0;
+  const coordinatorTimes = options.coordinatorTimes ?? ["2026-09-03T12:00:00.000Z"];
   const deadlineControllers: AbortController[] = []; const deadlineDurations: number[] = [];
   const ports: GuardedUploadPorts = {
     clock: {
-      now: () => new Date("2026-09-03T12:00:00.000Z"),
+      now: () => new Date(coordinatorTimes[Math.min(coordinatorTimeIndex++, coordinatorTimes.length - 1)]!),
       openDeadline: (milliseconds, parent) => {
         deadlineDurations.push(milliseconds);
         const controller = new AbortController(); deadlineControllers.push(controller);
@@ -194,15 +205,20 @@ const harness = (options: HarnessOptions = {}) => {
     },
     authorizations: {
       claim: async claim => {
+        authorizationClaimHadNow ||= "now" in claim;
+        const transactionNow = new Date(options.authorizationClaimedAt ?? "2026-09-03T12:00:00.000Z");
         if (authorizationConsumed) return { status: "blocked" as const, code: "consumed" as const };
-        if (Date.parse(authorization.expiresAt) <= claim.now.valueOf()) return { status: "blocked" as const, code: "expired" as const };
+        if (Date.parse(authorization.expiresAt) <= transactionNow.valueOf()) {
+          return { status: "blocked" as const, code: "expired" as const };
+        }
         if (authorization.authorizationId !== claim.expected.authorizationId ||
             authorization.preparedJobRevisionId !== claim.expected.preparedJobRevisionId ||
             authorization.validationId !== claim.expected.validationId || authorization.artifactSha256 !== claim.expected.artifactSha256 ||
             authorization.manifestSha256 !== claim.expected.manifestSha256 || authorization.targetFingerprint !== claim.expected.targetFingerprint ||
             authorization.correlationId !== claim.expected.correlationId) return { status: "blocked" as const, code: "binding_mismatch" as const };
         authorizationConsumed = true;
-        return { status: "claimed" as const, authorization: authorization as UploadAuthorization };
+        return { status: "claimed" as const, authorization: authorization as UploadAuthorization,
+          consumedAt: transactionNow.toISOString() };
       },
     },
     uploader: { upload: async uploadRequest => {
@@ -213,7 +229,9 @@ const harness = (options: HarnessOptions = {}) => {
   };
   return { ports, validationInput, abortDeadline: () => deadlineControllers.at(-1)?.abort(),
     get uploadCalls() { return uploadCalls; }, get deadlineCloses() { return deadlineCloses; },
-    get deadlineDurations() { return deadlineDurations; } };
+    get deadlineDurations() { return deadlineDurations; },
+    get authorizationClaimHadNow() { return authorizationClaimHadNow; },
+    get completedRecords() { return [...actions.values()].flatMap(entry => entry.record ? [entry.record] : []); } };
 };
 
 describe("trusted guarded-upload boundary", () => {
@@ -232,6 +250,39 @@ describe("trusted guarded-upload boundary", () => {
       const run = harness(options); const output = await uploadPreparedArtifact(request(), run.ports);
       expect(output.status).toBe("blocked"); expect(run.uploadCalls).toBe(0); expect(run.deadlineCloses).toBe(1);
     }
+  });
+
+  test("fails closed when authorization or freshness expires during asynchronous claims", async () => {
+    const authorizationExpiry = harness({ authorizationExpiresAt: "2026-09-03T12:00:01.000Z",
+      authorizationClaimedAt: "2026-09-03T12:00:02.000Z" });
+    const authorizationExpired = await uploadPreparedArtifact(request(), authorizationExpiry.ports);
+    expect(authorizationExpired).toMatchObject({
+      status: "blocked", code: "authorization_expired",
+    });
+    expect(await uploadPreparedArtifact(request(), authorizationExpiry.ports)).toEqual({ ...authorizationExpired, replay: true });
+    expect(authorizationExpiry.uploadCalls).toBe(0); expect(authorizationExpiry.authorizationClaimHadNow).toBe(false);
+
+    const validationExpiry = harness({ validationExpiresAt: "2026-09-03T12:00:01.000Z",
+      preflightExpiresAt: "2026-09-03T13:00:00.000Z", authorizationExpiresAt: "2026-09-03T13:00:00.000Z",
+      authorizationClaimedAt: "2026-09-03T12:00:01.500Z",
+      coordinatorTimes: ["2026-09-03T12:00:00.000Z", "2026-09-03T12:00:02.000Z"] });
+    const validationExpired = await uploadPreparedArtifact(request(), validationExpiry.ports);
+    expect(validationExpired).toMatchObject({
+      status: "blocked", code: "validation_receipt_expired",
+    });
+    expect(await uploadPreparedArtifact(request(), validationExpiry.ports)).toEqual({ ...validationExpired, replay: true });
+    expect(validationExpiry.uploadCalls).toBe(0);
+
+    const preflightExpiry = harness({ validationExpiresAt: "2026-09-03T13:00:00.000Z",
+      preflightExpiresAt: "2026-09-03T12:00:01.000Z", authorizationExpiresAt: "2026-09-03T13:00:00.000Z",
+      authorizationClaimedAt: "2026-09-03T12:00:01.500Z",
+      coordinatorTimes: ["2026-09-03T12:00:00.000Z", "2026-09-03T12:00:02.000Z"] });
+    const preflightExpired = await uploadPreparedArtifact(request(), preflightExpiry.ports);
+    expect(preflightExpired).toMatchObject({
+      status: "blocked", code: "target_preflight_expired",
+    });
+    expect(await uploadPreparedArtifact(request(), preflightExpiry.ports)).toEqual({ ...preflightExpired, replay: true });
+    expect(preflightExpiry.uploadCalls).toBe(0);
   });
 
   test("keeps every missing or mismatched trusted gate at zero effects", async () => {
@@ -265,7 +316,8 @@ describe("idempotent authorization and effect outcomes", () => {
     expect(first).toMatchObject({ status: "acknowledged", code: "upload_acknowledged_unverified", requiresVerification: true, replay: false });
     expect(second).toEqual(third); expect(second).toEqual({ ...first, replay: true }); expect(run.uploadCalls).toBe(1);
     expect(run.deadlineDurations).toEqual([15_000, 15_000, 15_000]);
-    expect(JSON.stringify(first)).not.toContain("remote-artifact");
+    expect(run.completedRecords[0]?.authorizationConsumedAt).toBe("2026-09-03T12:00:00.000Z");
+    expect(JSON.stringify(first)).not.toMatch(/remote-artifact|authorizationConsumedAt/);
   });
 
   test("concurrent replay reports the active action without a duplicate effect", async () => {
