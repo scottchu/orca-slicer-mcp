@@ -1,5 +1,28 @@
 # Project state
 
+## Current source: fullscreen and padding independently accepted
+
+Candidate `d99939986e185a55154d26a6243d62ca98ba8ecc` implements decision0047:
+host-acknowledged fullscreen through the existing HostRpc/presentation service,
+persistent Video, fixed media only after grant and bounded intrinsic-size
+suppression/resume. Standalone uses proven native fullscreen or unavailable.
+The current-only source is0.4.12/schema16/observation18/Camera14, with no aliases.
+
+The unmatched legacy selector is corrected to `.u1-body` using existing tokens.
+Author focused checks cover118 UI,71 server, seven MCP cases including48 legacy
+ready-to-failure geometry observations, and21 native Camera/Lab cases; all ten
+packages are deterministic. This is not a complete overflow/recovery matrix.
+Detailed input/artifact identities, commands and failures are in VALIDATION.
+
+Independent scope review APPROVES d999399: the required gate, host fullscreen
+adversaries and selected320px/200% Progress layout/recovery pass. Legacy Retry
+focus recovery still fails in both baseline and candidate; U01 keeps that gap
+open. PR106 awaits exact documentation-head review and guarded shipment; PR104
+remains deployed. Actual phone fullscreen and C08 Live reliability remain open.
+Preserve host-owned composer/chrome, no OS-screen promise,55 IDs, two resources,
+eight active legacy renderers, monitor workflow, Progress no-action, F07 discussion,
+separate c6, unfinished Queue/Fans/Job History and every shipping/security guard.
+
 ## Current deployment: PR104 Camera and current-only widgets
 
 PR104 merged as `162dc68d0945feb4b3d2de7b638479560f2604d9`, preserving exact
@@ -17,8 +40,8 @@ Known historical deployment profiles remain strictly verifiable without restorin
 public widget compatibility. All55 IDs, monitor workflow, eight active legacy
 views, Progress no-action, unfinished product work and existing layout debt remain.
 C08 phone reliability and host fullscreen are unresolved; Screen Sharing stays
-paused. This records-only tail changes no application bytes and needs no new
-deployment or full regression under decision0028.
+paused. The completed PR104 records-only tail changed no application bytes and
+needed no new deployment or full regression under decision0028.
 
 ## Earlier accepted source: Camera and current-only widgets
 
@@ -37,9 +60,10 @@ Service-owned bootstrap, failure diagnostics and unchanged deadlines follow
 CAM-008/decision0046. Progress's2px failure allocation and Bed's failed-renderer
 release were scoped current-route fixes, not the deferred Progress redesign.
 
-Next complete the documentation-only exact review, then guarded u1-ship and BOTH
-service restarts plus installed-resource behavior verification. PR101 remains
-the deployed baseline; no shipment or actual-device acceptance is claimed yet.
+At this earlier source checkpoint, the next steps were documentation-only exact
+review, guarded shipping, BOTH restarts and installed-resource verification;
+PR101 was then deployed. PR104 completed those release steps as recorded above;
+actual-device acceptance remains separate.
 Retain all55 IDs, monitor workflow, current eight legacy views, unfinished Queue/
 Fans/Job History, Progress no-action, F07 discussion and separate c6. C08 phone
 reliability remains unresolved; host fullscreen is unimplemented, Screen Sharing

@@ -112,8 +112,8 @@ for (const width of [320, 390, 590, 720]) {
     await select('live', 'unsupported');
     await expect(page.getByRole('button', { name: 'Picture in picture', exact: true })).toHaveCount(0);
     await page.getByRole('button', { name: 'Fullscreen', exact: true }).click();
-    await expect(page.locator('.local-fullscreen')).toHaveCount(1);
-    await page.keyboard.press('Escape');
+    await expect(page.getByRole('status')).toHaveText('Fullscreen unavailable');
+    await expect(page.getByRole('button', { name: 'Exit fullscreen', exact: true })).toHaveCount(0);
     await expect(page.locator('.local-fullscreen')).toHaveCount(0);
     expect(await retained()).toBe(true);
     await page.getByRole('radio', { name: 'Auto', exact: true }).click();
@@ -185,18 +185,18 @@ test('a missing first presented frame has a five-second startup deadline', async
   expect(await page.locator('video').evaluate((video) => (video as HTMLVideoElement).srcObject)).toBeNull();
 });
 
-test('failed local fullscreen retains Exit and reason without replacing mounted media', async ({ page }) => {
+test('failed native fullscreen retains Exit and reason without replacing mounted media', async ({ page }) => {
   await page.route(url, route => route.fulfill({ status: 200, contentType: 'text/html', headers: { 'content-security-policy': csp }, body: html }));
   await page.goto(url);
-  await page.evaluate(() => (window as unknown as { __setCamera: (scenario: CameraScenario, policy: CameraCapabilityPolicy) => void }).__setCamera('snapshot', 'unsupported'));
+  await page.evaluate(() => (window as unknown as { __setCamera: (scenario: CameraScenario, policy: CameraCapabilityPolicy) => void }).__setCamera('snapshot', 'native'));
   const video = await page.locator('video').elementHandle();
   await page.getByRole('button', { name: 'Fullscreen', exact: true }).click();
-  await expect(page.locator('.local-fullscreen')).toHaveCount(1);
-  await page.evaluate(() => (window as unknown as { __setCamera: (scenario: CameraScenario, policy: CameraCapabilityPolicy) => void }).__setCamera('error', 'unsupported'));
-  await expect(page.locator('.local-fullscreen')).toHaveCount(1);
+  await expect.poll(() => page.evaluate(() => document.fullscreenElement !== null)).toBe(true);
+  await page.evaluate(() => (window as unknown as { __setCamera: (scenario: CameraScenario, policy: CameraCapabilityPolicy) => void }).__setCamera('error', 'native'));
+  await expect.poll(() => page.evaluate(() => document.fullscreenElement !== null)).toBe(true);
   await expect(page.getByRole('button', { name: 'Exit fullscreen', exact: true })).toBeVisible();
   await expect(page.locator('.media-status-message')).toBeVisible();
   expect(await video!.evaluate(node => node === document.querySelector('video'))).toBe(true);
   await page.getByRole('button', { name: 'Exit fullscreen', exact: true }).click();
-  await expect(page.locator('.local-fullscreen')).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => document.fullscreenElement === null)).toBe(true);
 });

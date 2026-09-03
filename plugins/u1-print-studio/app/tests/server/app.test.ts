@@ -227,7 +227,7 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v17.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v18.html");
 
     expect(observe).toBeDefined();
     expect(observe?.annotations).toMatchObject({
@@ -309,7 +309,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(MCP_CAMERA_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v13.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v14.html");
   });
 
   test("lists only current resources and rejects every retired URI", async () => {
@@ -546,7 +546,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 15,
+      schemaVersion: 16,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });

@@ -12,7 +12,7 @@ const flush = async () => { for (let index = 0; index < 30; index++) await Promi
 const setup = (initial?: unknown, initialSnapshot?: 'request' | 'host-result') => {
   let listener: ((event: HostEvent) => void) | undefined;
   const peers: CameraPeerEvents[] = [];
-  const rpc = { start: vi.fn().mockResolvedValue(undefined), dispose: vi.fn(), subscribe: vi.fn((value: (event: HostEvent) => void) => {
+  const rpc = { requestDisplayMode: vi.fn(async () => 'inline' as const), subscribeContext: vi.fn(() => vi.fn()), start: vi.fn().mockResolvedValue(undefined), dispose: vi.fn(), subscribe: vi.fn((value: (event: HostEvent) => void) => {
     listener = value; if (initial) value({ kind: 'result', value: initial }); return vi.fn();
   }), callTool: vi.fn(async (name: string) => {
     if (name === 'get_u1_camera_frame') return frame();

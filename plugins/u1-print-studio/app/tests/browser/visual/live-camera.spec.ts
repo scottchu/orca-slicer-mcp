@@ -52,7 +52,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await frame.evaluate(() => Object.assign(window, { __videoBefore: document.querySelector('video'), __streamBefore: document.querySelector('video')!.srcObject }));
     expect(await geometry(frame)).toEqual(before);
     if (width === 390 && !enlarged) {
-      // Actual native fullscreen when supplied by Chromium, before CSS fallback.
+      // Actual native fullscreen when supplied by Chromium.
       if (await frame.evaluate(() => document.fullscreenEnabled)) {
         await frame.getByRole('button', { name: 'Fullscreen', exact: true }).click();
         await expect.poll(() => frame.evaluate(() => !!document.fullscreenElement)).toBe(true);
@@ -91,8 +91,8 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     }
     await frame.evaluate(() => Object.defineProperty(document, 'fullscreenEnabled', { value: false, configurable: true }));
     await frame.getByRole('button', { name: 'Fullscreen', exact: true }).click();
-    await expect(frame.getByRole('dialog', { name: 'Fullscreen camera' })).toBeVisible();
-    await frame.getByRole('button', { name: 'Exit fullscreen', exact: true }).click();
+    await expect(frame.locator('[data-media-feedback]')).toHaveText('Fullscreen unavailable');
+    await expect(frame.getByRole('button', { name: 'Exit fullscreen', exact: true })).toHaveCount(0);
     expect(await geometry(frame)).toEqual(before);
     expect(await frame.evaluate(() => { const probe = window as unknown as { __videoBefore: HTMLVideoElement; __streamBefore: MediaStream }; return document.querySelector('video') === probe.__videoBefore && document.querySelector('video')!.srcObject === probe.__streamBefore && probe.__streamBefore.getVideoTracks()[0].readyState === 'live'; })).toBe(true);
     await expect(frame.getByRole('button', { name: /Refresh snapshot|Retry snapshot/ })).toHaveCount(0);
@@ -141,7 +141,7 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
   });
 }
 
-for (const width of [320, 390, 720]) test(`Camera icon overlay fullscreen roving tab order ${width}`, async ({ page }, info) => {
+for (const width of [320, 390, 720]) test(`Camera icon overlay unsupported fullscreen preserves roving tab order ${width}`, async ({ page }, info) => {
   await page.setViewportSize({ width, height: 1000 });
   await page.addInitScript(installCameraPeerFixture);
   const image = await page.evaluate(() => { const canvas = document.createElement('canvas'); canvas.width = 32; canvas.height = 18; return canvas.toDataURL('image/jpeg'); });
@@ -171,13 +171,12 @@ for (const width of [320, 390, 720]) test(`Camera icon overlay fullscreen roving
     expect(placement).toEqual({ contained: true, separate: true, right: 10, bottom: 10, width: 88 });
     await page.screenshot({ path: info.outputPath(`camera-${mode.toLowerCase()}-ready.png`), fullPage: true });
     await frame.getByRole('button', { name: 'Fullscreen', exact: true }).click();
-    const dialog = frame.getByRole('dialog', { name: 'Fullscreen camera' }); await expect(dialog).toBeVisible();
-    await selected.focus(); await selected.press('Tab');
-    expect(await frame.evaluate(() => { const buttons = [...document.querySelectorAll<HTMLButtonElement>('[role="dialog"] button')].filter(button => !button.disabled && button.tabIndex >= 0); return document.activeElement === buttons[0]; })).toBe(true);
-    await page.keyboard.press('Shift+Tab'); await expect(selected).toBeFocused();
-    await page.screenshot({ path: info.outputPath(`camera-${mode.toLowerCase()}-fullscreen.png`), fullPage: true });
-    await selected.press('Escape'); await expect(dialog).toHaveCount(0);
-    await expect(frame.getByRole('button', { name: 'Fullscreen', exact: true })).toBeFocused();
+    await expect(frame.locator('[data-media-feedback]')).toHaveText('Fullscreen unavailable');
+    await expect(frame.locator('.local-fullscreen,.host-fullscreen')).toHaveCount(0);
+    await expect(frame.getByRole('button', { name: 'Exit fullscreen', exact: true })).toHaveCount(0);
+    await selected.focus();
+    await selected.press(mode === 'Auto' ? 'ArrowRight' : 'ArrowLeft');
+    await expect(frame.getByRole('radio', { name: mode === 'Auto' ? 'Live' : 'Auto', exact: true })).toBeFocused();
   }
   // A dark OS preference still uses this application's explicit light token palette.
   await page.emulateMedia({ colorScheme: 'dark' });
