@@ -1,5 +1,50 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-03 combined deterministic pre-upload candidate
+
+Exact combined documentation/skill candidate
+`eb38763fc92579563dcad28fa3f83494b28b591b`, tree
+`d2e9a0807deba19e7665543e570d31f550f0d763`, is independently APPROVED with no
+blocking or high-severity finding. Its application source remains exact
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`. Exactly eleven documentation and
+maintained-skill files changed from that source candidate; application source,
+tests and package inputs were unchanged.
+
+The independent documentation/skill reviewer:
+
+- reran TypeScript and the combined prepared-artifact suites: passed 32 tests
+  with 231 assertions;
+- reran the focused observation-only inventory guard: passed one test with 20
+  assertions and 25 filtered;
+- reran Skill Creator `quick_validate.py` for both `u1-prepare-print` and
+  `u1-start-print`: both passed;
+- matched all four source/test SHA-256 identities recorded in the accepted
+  pure-core section below;
+- resolved 64 relative Markdown links with zero missing, passed
+  `git diff --check`, and confirmed a clean worktree; and
+- confirmed decision 0048 remains Proposed with adapters pending, decision
+  0040 remains incomplete end to end, both skills fail closed without minting
+  receipts or accepting raw/manual upload, and all durable, public and real
+  target actions remain pending.
+
+One owner then ran the full repository gate exactly once from repository root:
+
+- `PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH
+  ./scripts/check-repository.sh`: exited 0 with pinned Bun 1.4.0; 627 Vitest
+  tests/60 files, 251 Bun server tests/32 files/2,798 expects, 72 Python tests,
+  Svelte zero errors/zero warnings and repository contract OK.
+
+The post-run worktree was clean and both candidate identities were unchanged.
+This evidence tail changes only PROJECT_STATE, NEXT_AGENT and active-iteration
+continuity records. It does not change accepted source, tests, skills, contract
+documents, dependencies, configuration or generated assets; retain the exact
+application and full-gate evidence above without rerunning it solely for this
+documentation bookkeeping. No printer or network was contacted, and no upload,
+start, public mutation, installation or service deployment was performed.
+For this four-file tail, `git diff --check` passed and a read-only Ruby scan
+resolved 13 relative Markdown links with zero missing.
+
 ## 2026-09-03 deterministic pre-upload slice — accepted pure core
 
 Milestone and boundary: P1/I1 through proposed decision 0048, PREP-005,

@@ -1,6 +1,30 @@
 # F0 dual-subsystem foundation handoff
 
-## Current handoff: deterministic pre-upload contract in progress
+## Current handoff: independently accepted internal foundation; PR next
+
+Exact combined candidate `eb38763fc92579563dcad28fa3f83494b28b591b`, tree
+`d2e9a0807deba19e7665543e570d31f550f0d763`, is independently APPROVED with no
+blocking or high-severity finding. It retains exact accepted source
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`; only eleven documentation/skill
+files changed, with application source, tests and package inputs unchanged.
+
+Independent documentation/skill checks and the sole-owner full repository gate
+pass. The latter ran exactly once and covered 627 Vitest tests/60 files, 251 Bun
+server tests/32 files/2,798 expects, 72 Python tests, Svelte zero errors/zero
+warnings and repository contract OK. Post-run identities and the clean worktree
+were unchanged. VALIDATION records the exact command and retained evidence
+boundary.
+
+The next action is normal PR review and repository delivery of this internal
+foundation. This records-only evidence tail changes no application, tests,
+contracts, skills, dependency, configuration or generated asset, so it does not
+invalidate or require a repeat of the bound full gate. Do not deploy a service
+or contact a printer/network. Durable stores and the first narrow trusted CLI
+adapter remain a later selected slice, along with every real uploader,
+target-parsed receipt, public mutation and start path.
+
+## Accepted deterministic pre-upload contract
 
 The accepted pure-core work follows proposed
 [decision 0048](../../decisions/0048-guard-upload-with-content-bound-preparation-receipts.md):
