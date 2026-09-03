@@ -1,8 +1,19 @@
 # Widget delivery ledger
 
-Current authority, 2026-09-02. Historical iteration checklists are not current
+Current authority, 2026-09-03. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
+
+## Active C08: bounded client deadline and late-offer cleanup
+
+The new UI works on the phone per user, but Live frequently goes Connecting to
+fallback. Attempt 10 reaches upstream RTP/viewer offer in an isolated installed-
+Bun 1.4.0 process; no browser decode or phone acceptance follows. Current work on
+`codex/u1-camera-live-deadlines` gives Live open a 40 s wait and only its HostRpc
+call a 55 s retention window for late cleanup. Other deadlines stay unchanged.
+Author source/focused evidence is frozen; required validation, independent review
+and delivery remain pending. This source mismatch is not
+a proven phone root cause. Screen Sharing stays paused; all 55 IDs remain.
 
 ## Current deployment: PR99 MCP Camera and Heads
 
@@ -16,8 +27,8 @@ active VALIDATION for commands, identities and earlier failures.
 Actual ChatGPT phone/OAuth/clipboard and real Live acceptance remain separate.
 All 55 IDs remain, including unfinished Queue/Fans/Job History product work,
 Progress no-action, F07 discussion, c6 separation and unchanged loading policy.
-C08/Screen Sharing stay paused; user-reported Bun Local Network allowance has
-no confirmed machine or retest. This records-only tail does not redeploy.
+C08 is now resumed as above; Screen Sharing stays paused; user-reported Bun Local Network allowance has
+no confirmed machine; the current isolated probe is not phone/LaunchAgent acceptance. This records-only tail does not redeploy.
 
 ## Earlier deployment: PR97 native observation pages
 
@@ -300,7 +311,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
-| C08 served Camera still old | Diagnosis paused until the user returns home: Bun1.4 remote-printer ICE UDP sends EHOSTUNREACH; same-adapter1.3 succeeds; permission/runtime root cause unproven; PR95 changes only Switch geometry | Await at-home Local Network UI inspection; Screen Sharing/auth diagnosis stopped, no setting change or service repair. Preserve nine attempts; require service-owned fix, actual decoded-frame proof, exact release gates and served verification before closure |
+| C08 served Camera still old | PR99 new UI works on phone per user; Live shows Connecting then frequently falls back. Diagnosis resumed; failing phase/root cause unconfirmed | Verify the bounded open/late-cleanup repair while locating the phone failure phase; retain attempts 1–10 and user-reported Bun permission allowance. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |

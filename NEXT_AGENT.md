@@ -1,5 +1,21 @@
 # Next agent
 
+## Current order: verify bounded C08 open/cleanup repair
+
+On `codex/u1-camera-live-deadlines`, author source and focused evidence for the
+bounded Live-open correction are frozen. Commit the candidate, then run the
+required gate and exact independent review.
+Use 40 s for user-visible open and a per-call 55 s RPC retention window; prove
+that offers arriving after abandonment close their lease without reviving Live.
+Keep every other operation/default deadline unchanged. Author integrated/focused
+checks pass; required checks, independent approval and guarded delivery remain pending.
+
+The new UI works on the phone per user; frequent Connecting-to-fallback remains
+unresolved. Attempt 10 reaches upstream RTP/viewer offer in an isolated installed-
+Bun process, not a browser or LaunchAgent acceptance check. Do not infer the
+phone failure's cause from the deadline mismatch. Screen Sharing stays paused;
+all 55 IDs, Progress no-action, F07 discussion and c6 separation remain.
+
 ## Current handoff: PR99 MCP resources deployed
 
 PR99 `4787c02` is deployed after exact `f782378` approval and BOTH service
@@ -9,14 +25,14 @@ Required gates pass; consult VALIDATION for exact evidence and prior failures.
 Scoped postdeployment behavior verification passes on installed resources
 with synthetic host data.
 
-The next user-outcome check is a new ChatGPT plugin conversation after host
-metadata refresh: request Heads and Camera, then test Refresh, complete-hex Copy
-and the compact icon Switch. Mounted cards do not replace their HTML on data
+The user has now reported the refreshed UI working on the phone. Complete-hex
+Copy and other device behaviors still need their own acceptance. Mounted cards do not replace their HTML on data
 Refresh. Do not claim actual phone/OAuth/clipboard or real Live acceptance from
 synthetic tests. No plugin reinstall or per-widget skill change was requested.
 
-C08/Screen Sharing stay paused. The user reports Bun Local Network access allowed,
-but the machine is unconfirmed and no retest has run. Preserve all 55 IDs,
+C08 is now resumed as above; Screen Sharing stays paused. The user reports Bun Local Network access allowed,
+but its machine remains unconfirmed; the current isolated probe is recorded
+above and does not establish LaunchAgent/phone behavior. Preserve all 55 IDs,
 unfinished Queue/Fans/Job History work, Progress no-action, F07 class discussion,
 separate c6 and unchanged loading policy. No printer reads/controls or auth/
 network changes follow from this deployment. Docs-only tail needs no redeploy.

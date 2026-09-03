@@ -1,5 +1,19 @@
 # Project state
 
+## Current order: bounded C08 client deadline repair
+
+The user reports the refreshed new UI works on the phone, but Live shows
+Connecting then frequently falls back. Attempt 10 reaches upstream RTP and
+creates a viewer offer with the installed Bun 1.4.0; the earlier UDP error was
+not reproduced. This isolated-process result does not prove deployed/phone Live.
+
+On `codex/u1-camera-live-deadlines`, author source freezes the client budget/late-
+cleanup correction: Live open may wait 40 s, with only that HostRpc call retained
+for 55 s so a late offer can be closed. Other deadlines stay unchanged. Author
+focused checks pass and identities are bound in VALIDATION; frozen required
+validation, independent review and delivery remain pending. This mismatch is not a proven cause of the phone symptom.
+Screen Sharing stays paused; all 55 ledger IDs and existing scope boundaries remain.
+
 ## Current deployment: PR99 MCP Camera and Heads
 
 PR99 merged as `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba` and is deployed after
@@ -15,8 +29,9 @@ and real Camera Live are not established by this release.
 
 Keep all 55 ledger IDs, unfinished Queue/Fans/Job History product work, Progress
 no-action, F07 reactive-class discussion, separate c6 and unchanged loading
-policy. C08 and Screen Sharing remain paused; the user's Bun Local Network
-allow report has no confirmed machine or retest. This Markdown-only rollout
+policy. At PR99 deployment C08 and Screen Sharing were paused; the user's Bun Local Network
+allow report had no confirmed machine or retest at that checkpoint; see the
+current isolated probe above. This Markdown-only rollout
 record preserves application bytes and needs no redeployment under0028.
 
 ## Earlier deployment: PR97 native observation pages

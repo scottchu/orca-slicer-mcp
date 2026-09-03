@@ -10,6 +10,26 @@ const setup = (globals?: Record<string, unknown>) => {
 };
 afterEach(() => vi.useRealTimers());
 describe('single shared host RPC', () => {
+  it('keeps ordinary calls bounded by the default while one call uses its own deadline', async () => {
+    vi.useFakeTimers();
+    const { rpc, reply } = setup();
+    try {
+      const initialized = rpc.start();
+      reply(1, {});
+      await initialized;
+      const ordinary = rpc.callTool('ordinary', {});
+      const extended = rpc.callTool('extended', {}, { timeoutMs: 200 });
+      const failure = expect(ordinary).rejects.toThrow('timed out');
+      await vi.advanceTimersByTimeAsync(100);
+      await failure;
+      reply(3, 'completed');
+      await expect(extended).resolves.toBe('completed');
+      await expect(rpc.callTool('invalid', {}, { timeoutMs: Infinity })).rejects.toThrow('Invalid host deadline');
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      rpc.dispose();
+    }
+  });
   it('delivers bounded host context through the same validated parent listener', async () => {
     const host = new EventTarget() as EventTarget & { parent: Window };
     const send = vi.fn(), context = vi.fn(); host.parent = { postMessage: send } as unknown as Window;
