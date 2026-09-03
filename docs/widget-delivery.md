@@ -4,18 +4,21 @@ Current authority, 2026-09-03. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
-## Active C08: bounded client deadline and late-offer cleanup
+## Current deployment: PR101 Camera open/cleanup repair
 
-The new UI works on the phone per user, but Live frequently goes Connecting to
-fallback. Attempt 10 reaches upstream RTP/viewer offer in an isolated installed-
-Bun 1.4.0 process; no browser decode or phone acceptance follows. Current work on
-`codex/u1-camera-live-deadlines` gives Live open a 40 s wait and only its HostRpc
-call a 55 s retention window for late cleanup. Other deadlines stay unchanged.
-Author source/focused evidence is frozen; required validation, independent review
-and delivery remain pending. This source mismatch is not
-a proven phone root cause. Screen Sharing stays paused; all 55 IDs remain.
+PR101 `0710b4b` is deployed after exact `42cdaca` independent approval and BOTH
+service restarts. Live-open wait is 40 s, only its RPC retention is 55 s, and
+post-disposal drain is bounded at 70 s; other deadlines remain unchanged.
+Current observation v16/Camera v12 preserve all 28 prior URI bytes. Required and
+independent targeted checks and installed-resource synthetic postverification pass.
 
-## Current deployment: PR99 MCP Camera and Heads
+The user confirms the new phone UI works. C08 reliable Live and its failure's
+cause remain open; attempt 10 is isolated upstream evidence only. Screen Sharing
+stays paused. All 55 IDs, eight legacy observation renderers, Progress no-action,
+F07 discussion, c6 separation and unfinished Queue/Fans/Job History remain.
+Detailed identities/failures are in VALIDATION; this docs-only tail does not redeploy.
+
+## Earlier deployment: PR99 MCP Camera and Heads
 
 PR99 `4787c02` is deployed after exact `f782378` independent approval and BOTH
 service restarts. Camera v11 selects shared Svelte via `mcp-camera.html`;
@@ -311,7 +314,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
-| C08 served Camera still old | PR99 new UI works on phone per user; Live shows Connecting then frequently falls back. Diagnosis resumed; failing phase/root cause unconfirmed | Verify the bounded open/late-cleanup repair while locating the phone failure phase; retain attempts 1–10 and user-reported Bun permission allowance. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
+| C08 served Camera still old | PR99 new UI works on phone per user; Live shows Connecting then frequently falls back. Diagnosis resumed; failing phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–10 and user-reported Bun permission allowance. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |
@@ -334,7 +337,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | G02 role-separated delegation | Adopted AGENTS | Author cannot self-approve; disclose actual capacity limits |
 | G03 UIUX and printer-domain critique | Audits completed, implementation partial | Apply screenshot/domain findings; do not claim findings fixed |
 | G04 four project role definitions | Delivered PR82 | Native named-role loading unverified; role files/manual fallback explicit |
-| G05 merge/deploy before completion | PR99 exact independent approval, guarded merge/deployment and BOTH restarts PASS; scoped postverification PASS | Keep source/service/device layers separate; C08 intermittent failure and other backlog remain open |
+| G05 merge/deploy before completion | PR101 exact independent approval, guarded merge/deployment and BOTH restarts PASS; scoped synthetic postverification PASS | Keep source/service/device layers separate; C08 intermittent failure and other backlog remain open |
 | G06 tmp/worktree/resource cleanup | Partial; ten redundant trees quarantined; current handles closed | Retain unique work; follow up per-run test evidence directories to avoid default cleanup loss |
 | G07 persistence/status/longest stage | Ongoing workflow | Report actual stage/blocker; continue authorized open queue |
 | G08 Chinese + English technical terms | Ongoing preference | Not a request to translate the application UI |
