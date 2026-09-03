@@ -1,5 +1,72 @@
 # F0 dual-subsystem foundation validation
 
+## Latest C08 phone outcome: intermittent success after retries
+
+After the PR101 update/retry instructions, the user first reported the same
+failure, then reported connection after a couple of attempts, then reported
+another failure with about 10 s before fallback. The supplied phone
+screenshot shows the new Svelte compact icon Switch and Live/30 FPS over a mobile
+connection. Preserve the full sequence: failure, one Live success, then renewed
+failure. Reliability remains unresolved.
+This confirms new-generation UI visually, not the exact mounted resource URI;
+it does not establish repeated-start success or the latest
+failure's phase/root cause or complete device/clipboard acceptance. C08 remains
+open and Screen Sharing remains paused. The current open deadline is 40 s, while
+other stages retain 8–10 s bounds; the reported interval does not identify which
+stage failed. The bounded served-dashboard attempts below did not reproduce the
+phone failure. No screenshot or raw private content is committed.
+
+### Served-dashboard attempts 11 and 12
+
+Both probes use the deployed dashboard in isolated local Chromium with actual
+Camera signaling/video; they are separate from the phone/MCP host path. Attempt
+11 ended after 5.957 s with 41 decoded frames, so it undersampled the reported
+10-second failure window. The specifically authorized renewal, attempt 12,
+observed its first frame at 2.937 s and 442 decoded frames at 18.293 s: 15.356 s
+of decoded-frame observation while connected, without Auto fallback. One candidate
+ACK took 10.007 s and was accepted without interrupting that active stream.
+Cleanup completed at 18.357 s with the one owned session and browser closed.
+No phone root cause or sustained reliability follows from these two successes.
+
+Evidence under `app/test-results/c08-diagnosis`:
+
+- `served-attempt-11.json`: SHA256 `bd4d05cf73e7b049a1e9ef3a5dd2cbf84af73e41155b4a59f1ca17f5d6b63ce6`;
+  `.log`: `1229e4de8734eeb6c35e6956cf7360a4cad9cce33ddadc705a8c535292f60685`.
+- `served-attempt-12.json`: SHA256 `22f5a538e30c433fa056b81ebdbb17219d73018a30d02447febeb0675ee80bad`;
+  `.log`: `a7a3f63c55d1bc940b54673e7dfc2ab63ed4b03439a4ebe41ece07f84f755cb3`.
+
+### Current Camera presentation/diagnostic candidate, not yet validated
+
+Decision0046 records the user-approved Camera-only exception to0041: no footer
+or Refresh button, thin icon/title/state/FPS/time header, media edge to edge
+along the lower card with square top corners and outer-card bottom clipping.
+The short safe failure reason is a persistent bottom-left media overlay, clear
+of bottom-right controls; narrow layouts move it one row up within the media
+without increasing card height. This supersedes the intermediate header-slot proposal.
+Neutral failures, no stale telemetry and stable geometry remain required;
+other widgets retain their footer/error contracts.
+
+Default Auto uses only Auto/Live through the 88px-by-44px icon Switch. Automatic
+polling produces no success message or announcement. New mounts never restore/
+start Live; the same mounted card resumes its explicit mode after hide/show.
+A valid MCP opening result causes no extra initial read, then Auto polls 1.5s
+after completion. Missing initial delivery waits at most 15s; authoritative
+malformed/error delivery enters neutral error immediately. Either error then
+schedules Auto retry after 1.5s, with one acquisition at a time. This is an adopted
+contract, not yet evidence that candidate implementation passes.
+
+Service-owned lastLiveFailure retains the closed CAM-008 fields through Auto;
+only its short safe stage/outcome reason is visible. No timeout/watchdog change,
+raw details, new panel or extra acquisition from diagnostics. Prior generic
+Footer statusText/reserved-header proposals are superseded. Fullscreen discussion
+adds no host display-mode implementation or new acceptance claim.
+
+Planned Camera v13/observation v17 and old-URI preservation depend on the final
+shared-component build evidence. PR101 remains deployed; candidate source/tests,
+exact approval and release acceptance remain pending. This work improves
+diagnosability and implements the requested presentation without proving or
+repairing the phone's as-yet-unidentified failure cause.
+
 ## Current PR101: exact approval and guarded deployment
 
 Independent `app/test-results/camera-deadline-independent/REPORT.json`, SHA256

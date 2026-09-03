@@ -50,6 +50,8 @@ silently changed.
 | [0043](0043-unify-sveltekit-application-with-bun.md) | Unify one SvelteKit application while retaining Bun | Adapter-node handler on Bun selected; real route/service integration and independent acceptance pending |
 | [0044](0044-connect-heads-and-camera-svelte-to-mcp-resources.md) | Connect Heads and Camera Svelte UI to MCP resources | Independently accepted and deployed PR99; scoped synthetic postverification PASS; actual-host acceptance pending |
 
+| [0046](0046-camera-auto-default-and-edge-to-edge-card.md) | Camera Auto default and edge-to-edge card | User-adopted Camera-only presentation/bootstrap direction; candidate validation and deployment pending |
+
 Decision 0026 is reserved for the paused queue work outside this source slice.
 
 Copy [the template](template.md) for new records. Accepted records should be

@@ -1,5 +1,33 @@
 # Project state
 
+## Current work: edge-to-edge Camera, Auto/Live and safe failure overlay
+
+The user-approved Camera candidate removes the footer and Refresh button. Keep a
+thin icon/title/state/FPS/time header; media fills the whole lower edge, with
+square top corners and bottom corners clipped by the outer card. A persistent
+short safe failure reason overlays the media at bottom left; controls remain at
+bottom right. At narrow widths the reason moves one row up inside the media,
+without collision or card-height change. Decision0046 supersedes Camera's
+0041 footer placement only; other widget footer/error rules remain unchanged.
+
+Default Auto uses only Auto/Live in the 88px-by-44px icon Switch. Automatic polls
+emit no success feedback or announcements. New mounts never restore/start Live;
+the same mounted card resumes its explicit mode after hide/show. Valid MCP
+opening-result hydration makes no extra initial read, then schedules Auto 1.5s
+after completion. Missing delivery waits at most 15s; authoritative malformed or
+error delivery enters neutral error immediately, followed by Auto retry after 1.5s.
+
+On `codex/u1-camera-failure-stage` from `06e2a90`, service-owned sanitized
+lastLiveFailure persists through Auto; only its safe reason is visible in the
+media overlay. Timeouts/watchdogs stay unchanged. This improves diagnosability
+and presentation, without proving the phone failure's cause. The earlier footer/
+reserved-header proposals are superseded. Planned Camera v13/observation v17 and
+old-alias preservation await final shared-component build evidence.
+
+Source validation, exact independent review and deployment remain pending;
+PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
+success/failure sequence; C08 reliability is unresolved. Screen Sharing stays paused.
+
 ## Current deployment: PR101 Camera open/cleanup repair
 
 PR101 `0710b4bf55edc6908eef614df5fec48614044497` is deployed after exact
@@ -10,9 +38,12 @@ v16/Camera v12, runtime 0.4.10/schema 14; all 28 prior URI bytes are preserved.
 
 Required validation, independent targeted checks and installed-resource
 postdeployment behavior with synthetic media pass; full identities and prior failures are in
-VALIDATION. The user confirms the new phone UI works, but C08 reliable Live is
-still unaccepted. The deadline defect and isolated attempt 10 do not prove the
-phone failure's cause. Screen Sharing stays paused; all 55 IDs and remaining
+VALIDATION. After PR101 the user first reported the same failure, then reported
+Live connected after a couple of retries, then failed again after about 10 s.
+The success screenshot shows the new compact Switch and Live/30 FPS. Reliability
+is unresolved; neither the exact resource URI nor failure phase is confirmed.
+C08 remains open. The
+deadline defect and isolated attempt 10 do not prove the phone failure's cause. Screen Sharing stays paused; all 55 IDs and remaining
 product scope stay open as recorded. This docs-only tail needs no redeployment.
 
 ## Earlier deployment: PR99 MCP Camera and Heads

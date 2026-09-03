@@ -4,6 +4,34 @@ Current authority, 2026-09-03. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
+## Current work: edge-to-edge Camera, Auto/Live and safe failure overlay
+
+The user-approved Camera candidate removes the footer and Refresh button. Keep a
+thin icon/title/state/FPS/time header; media fills the whole lower edge, with
+square top corners and bottom corners clipped by the outer card. A persistent
+short safe failure reason overlays the media at bottom left; controls remain at
+bottom right. At narrow widths the reason moves one row up inside the media,
+without collision or card-height change. Decision0046 supersedes Camera's
+0041 footer placement only; other widget footer/error rules remain unchanged.
+
+Default Auto uses only Auto/Live in the 88px-by-44px icon Switch. Automatic polls
+emit no success feedback or announcements. New mounts never restore/start Live;
+the same mounted card resumes its explicit mode after hide/show. Valid MCP
+opening-result hydration makes no extra initial read, then schedules Auto 1.5s
+after completion. Missing delivery waits at most 15s; authoritative malformed or
+error delivery enters neutral error immediately, followed by Auto retry after 1.5s.
+
+On `codex/u1-camera-failure-stage` from `06e2a90`, service-owned sanitized
+lastLiveFailure persists through Auto; only its safe reason is visible in the
+media overlay. Timeouts/watchdogs stay unchanged. This improves diagnosability
+and presentation, without proving the phone failure's cause. The earlier footer/
+reserved-header proposals are superseded. Planned Camera v13/observation v17 and
+old-alias preservation await final shared-component build evidence.
+
+Source validation, exact independent review and deployment remain pending;
+PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
+success/failure sequence; C08 reliability is unresolved. Screen Sharing stays paused.
+
 ## Current deployment: PR101 Camera open/cleanup repair
 
 PR101 `0710b4b` is deployed after exact `42cdaca` independent approval and BOTH
@@ -12,8 +40,11 @@ post-disposal drain is bounded at 70 s; other deadlines remain unchanged.
 Current observation v16/Camera v12 preserve all 28 prior URI bytes. Required and
 independent targeted checks and installed-resource synthetic postverification pass.
 
-The user confirms the new phone UI works. C08 reliable Live and its failure's
-cause remain open; attempt 10 is isolated upstream evidence only. Screen Sharing
+The user first reported the same PR101 phone failure, then connected Live after a
+couple of retries, then failed again after about 10 s; the success screenshot
+shows new UI and Live/30 FPS. C08 reliability is unresolved; exact mounted URI,
+failure phase and root cause remain unverified.
+Attempt 10 is isolated upstream evidence only. Screen Sharing
 stays paused. All 55 IDs, eight legacy observation renderers, Progress no-action,
 F07 discussion, c6 separation and unfinished Queue/Fans/Job History remain.
 Detailed identities/failures are in VALIDATION; this docs-only tail does not redeploy.
@@ -305,16 +336,16 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | L02 every Lab has controls/Camera | Delivered PR67/69 basics | Extend closed retained-error cases consistently |
 | L03 fixed bottom Lab dock | Not started | Safe-area/reserved space, short viewport and 200% text/keyboard |
 | L04 compact/medium/full + MCP size | Not started | Closed size contract with distinct information hierarchy |
-| L05 all-widget stable acquisition-error presentation | PR89 deployed0041; source route matrix and scoped served-widget verification PASS | Static neutral failures, adjacent footer status, no stale telemetry; retain resize/short-content/Retry guards and C08 risk |
+| L05 all-widget stable acquisition-error presentation | PR89 deployed0041; source route matrix and scoped served-widget verification PASS | Static neutral failures, adjacent footer status, no stale telemetry; current Camera-only0046 exception is pending. Retain resize/short-content/Retry guards and C08 risk |
 | L06 variable list fixed height | Decision pending | Choose bounded scroll vs content height; do not infer from skeleton rule |
-| C01 fullscreen video continuity | Delivered focused software fix | Genuine phone/native PiP and physical stream remain unverified |
+| C01 fullscreen video continuity | Delivered same-document native/CSS continuity; host fullscreen integration unfinished | Current code does not request host display mode; mobile whole-host fullscreen is not solved by local CSS/native fallback. Official host fullscreen API exists; this slice adds no implementation. Genuine phone/native PiP and physical stream acceptance remain separate |
 | C02 Camera in Lab and SvelteKit | Delivered PR69/71 | Does not imply latest service/status repair delivered |
 | C03 connecting/disconnected icons/red dot | Source-only separate checkpoint c6cfb4e | Integrate separately and independently verify;0042 removes historical repo cap blocker |
-| C04 consistent two/three status slots | Compact Snapshot/Live/Auto icons; visible44px track refinement independently approved and shipped PR95 | Preserve44px targets,132px three-mode width,40px inset thumb, animation/tooltip/aria and fullscreen behavior; three scoped HTTPS consumer cases PASS; loading policy unchanged; C08 separate |
+| C04 consistent two/three status slots | New candidate: default Auto, Auto/Live only, 88px-wide/44px-high animated icon Switch; PR101 three-mode bytes remain deployed compatibility history | Remove single-Snapshot mode and Camera footer/Refresh UI; quiet polling, edge-to-edge lower media and bottom-left safe failure overlay; Camera-only0041 exception in0046, bounded initial-result/Auto recovery contract, exact validation and delivery pending; C08 reliability remains open |
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
-| C08 served Camera still old | PR99 new UI works on phone per user; Live shows Connecting then frequently falls back. Diagnosis resumed; failing phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–10 and user-reported Bun permission allowance. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
+| C08 served Camera still old | PR101 phone failure, one Live/30 FPS success after retries, then another failure with about 10 s before fallback. Reliability unresolved; exact URI/phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–12 and user-reported Bun permission allowance; local served-dashboard success did not reproduce phone failure. Safe failure-stage diagnostics are in progress, not a proven root-cause fix. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |

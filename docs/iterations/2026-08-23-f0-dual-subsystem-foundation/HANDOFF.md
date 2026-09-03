@@ -1,5 +1,33 @@
 # F0 dual-subsystem foundation handoff
 
+## Current work: edge-to-edge Camera, Auto/Live and safe failure overlay
+
+The user-approved Camera candidate removes the footer and Refresh button. Keep a
+thin icon/title/state/FPS/time header; media fills the whole lower edge, with
+square top corners and bottom corners clipped by the outer card. A persistent
+short safe failure reason overlays the media at bottom left; controls remain at
+bottom right. At narrow widths the reason moves one row up inside the media,
+without collision or card-height change. Decision0046 supersedes Camera's
+0041 footer placement only; other widget footer/error rules remain unchanged.
+
+Default Auto uses only Auto/Live in the 88px-by-44px icon Switch. Automatic polls
+emit no success feedback or announcements. New mounts never restore/start Live;
+the same mounted card resumes its explicit mode after hide/show. Valid MCP
+opening-result hydration makes no extra initial read, then schedules Auto 1.5s
+after completion. Missing delivery waits at most 15s; authoritative malformed or
+error delivery enters neutral error immediately, followed by Auto retry after 1.5s.
+
+On `codex/u1-camera-failure-stage` from `06e2a90`, service-owned sanitized
+lastLiveFailure persists through Auto; only its safe reason is visible in the
+media overlay. Timeouts/watchdogs stay unchanged. This improves diagnosability
+and presentation, without proving the phone failure's cause. The earlier footer/
+reserved-header proposals are superseded. Planned Camera v13/observation v17 and
+old-alias preservation await final shared-component build evidence.
+
+Source validation, exact independent review and deployment remain pending;
+PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
+success/failure sequence; C08 reliability is unresolved. Screen Sharing stays paused.
+
 ## Current handoff: PR101 Camera deadline repair deployed
 
 PR101 `0710b4bf55edc6908eef614df5fec48614044497` preserves independently
@@ -14,10 +42,12 @@ runtime 0.4.10/schema 14 provide 30 resources and preserve all 28 old URI bytes.
 The source changes are per-call HostRpc timing, service-owned cleanup, versioned
 compatibility packages and affected tests/pins; no new UI or server timeout.
 
-Next: user retry in a newly mounted current Camera widget. New UI adoption on
-the phone is reported, reliable Live is not. Attempt 10 proved isolated upstream
-RTP/offer only; neither it nor the repaired timing defect proves the phone root
-cause. Screen Sharing remains paused. Preserve all 55 IDs, Progress no-action,
+Latest outcome: after initially reporting the same PR101 failure, the user
+reported Live connected after a couple of retries, then failed again after about
+10 s. The success screenshot shows new compact Switch UI and Live/30 FPS; exact
+resource URI is not established. Reliability is unresolved; locate the failing
+phase without assuming a root cause. One success does not close C08. Attempt 10 remains isolated
+upstream evidence and does not prove why the phone failed. Screen Sharing remains paused. Preserve all 55 IDs, Progress no-action,
 F07 discussion, separate c6 and remaining product work. This docs-only tail
 preserves application bytes and requires no deployment under0028.
 

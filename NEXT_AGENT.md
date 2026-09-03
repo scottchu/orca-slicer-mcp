@@ -1,5 +1,33 @@
 # Next agent
 
+## Current work: edge-to-edge Camera, Auto/Live and safe failure overlay
+
+The user-approved Camera candidate removes the footer and Refresh button. Keep a
+thin icon/title/state/FPS/time header; media fills the whole lower edge, with
+square top corners and bottom corners clipped by the outer card. A persistent
+short safe failure reason overlays the media at bottom left; controls remain at
+bottom right. At narrow widths the reason moves one row up inside the media,
+without collision or card-height change. Decision0046 supersedes Camera's
+0041 footer placement only; other widget footer/error rules remain unchanged.
+
+Default Auto uses only Auto/Live in the 88px-by-44px icon Switch. Automatic polls
+emit no success feedback or announcements. New mounts never restore/start Live;
+the same mounted card resumes its explicit mode after hide/show. Valid MCP
+opening-result hydration makes no extra initial read, then schedules Auto 1.5s
+after completion. Missing delivery waits at most 15s; authoritative malformed or
+error delivery enters neutral error immediately, followed by Auto retry after 1.5s.
+
+On `codex/u1-camera-failure-stage` from `06e2a90`, service-owned sanitized
+lastLiveFailure persists through Auto; only its safe reason is visible in the
+media overlay. Timeouts/watchdogs stay unchanged. This improves diagnosability
+and presentation, without proving the phone failure's cause. The earlier footer/
+reserved-header proposals are superseded. Planned Camera v13/observation v17 and
+old-alias preservation await final shared-component build evidence.
+
+Source validation, exact independent review and deployment remain pending;
+PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
+success/failure sequence; C08 reliability is unresolved. Screen Sharing stays paused.
+
 ## Current handoff: PR101 deployed, phone Live still open
 
 PR101 `0710b4b` is deployed after exact `42cdaca` approval and BOTH restarts.
@@ -8,9 +36,13 @@ preserves other deadlines and all 28 old resource aliases. Observation v16 and
 Camera v12 are current at runtime 0.4.10/schema 14. Required and targeted checks
 pass; installed-resource postdeployment behavior with synthetic media passes.
 
-Next user-outcome check: use a newly mounted current Camera widget and retry
-Live. The existing phone UI has user-reported success; reliable Live, native
-clipboard/OAuth and the original failure's cause remain unverified. Preserve
+Latest user outcome: the first PR101 retry still failed, then Live connected after
+a couple of retries, then failed again with about 10 s before fallback. The
+success screenshot shows new-generation UI and Live/30 FPS; reliability is
+unresolved. Next locate the failing connection phase;
+exact resource identity and root cause remain unverified. Do not close C08 from
+this single success or require another speculative fix. Native clipboard/OAuth
+acceptance remains separate. Preserve
 attempts 1–10 and the software/deployed/phone evidence boundaries in VALIDATION.
 Screen Sharing stays paused; retain all 55 IDs, Progress no-action, F07 discussion,
 separate c6 and unfinished Queue/Fans/Job History scope. No full test/build or
