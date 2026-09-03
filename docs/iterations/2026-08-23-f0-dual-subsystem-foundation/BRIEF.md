@@ -1,29 +1,27 @@
 # F0 dual-subsystem foundation brief
 
-## Current source: fullscreen and padding independently accepted
+## Current deployment: PR106 host fullscreen and packaged body insets
 
-Candidate `d99939986e185a55154d26a6243d62ca98ba8ecc` implements decision0047:
-host-acknowledged fullscreen through the existing HostRpc/presentation service,
-persistent Video, fixed media only after grant and bounded intrinsic-size
-suppression/resume. Standalone uses proven native fullscreen or unavailable.
-The current-only source is0.4.12/schema16/observation18/Camera14, with no aliases.
+PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release
+`20260903-0660a07-pr106-20260903T100036-471de8`. BOTH services restarted and
+verify loaded/healthy/integral at0.4.12/schema16/observation18/Camera14. All72
+static and74 security checks pass; preservation=true, rollback not needed.
+Exact review, receipt and scoped postverification are recorded in VALIDATION.
 
-The unmatched legacy selector is corrected to `.u1-body` using existing tokens.
-Author focused checks cover118 UI,71 server, seven MCP cases including48 legacy
-ready-to-failure geometry observations, and21 native Camera/Lab cases; all ten
-packages are deterministic. This is not a complete overflow/recovery matrix.
-Detailed input/artifact identities, commands and failures are in VALIDATION.
+The release implements host-acknowledged fullscreen with persistent media and
+corrects packaged legacy body insets using existing tokens. Installed-byte
+Camera fullscreen and selected Progress layout/recovery checks pass with a
+synthetic MCP host; actual phone fullscreen remains unverified.
+C08 Live reliability and baseline Retry→Refresh focus loss remain open. The
+selected Progress layout/recovery checks do not accept its deferred redesign.
 
-Independent scope review APPROVES d999399: the required gate, host fullscreen
-adversaries and selected320px/200% Progress layout/recovery pass. Legacy Retry
-focus recovery still fails in both baseline and candidate; U01 keeps that gap
-open. PR106 awaits exact documentation-head review and guarded shipment; PR104
-remains deployed. Actual phone fullscreen and C08 Live reliability remain open.
-Preserve host-owned composer/chrome, no OS-screen promise,55 IDs, two resources,
-eight active legacy renderers, monitor workflow, Progress no-action, F07 discussion,
-separate c6, unfinished Queue/Fans/Job History and every shipping/security guard.
+Preserve host-owned composer/chrome, no OS-screen promise,55 IDs, two current
+resources without aliases, eight active legacy renderers, monitor workflow,
+Progress no-action, F07 discussion, separate c6 and unfinished Queue/Fans/Job
+History. This rollout tail changes documentation only; no application rebuild,
+full regression or service deployment is required for the tail.
 
-## Current deployment: PR104 Camera and current-only widgets
+## Historical deployment: PR104 Camera and current-only widgets
 
 PR104 merged as `162dc68d0945feb4b3d2de7b638479560f2604d9`, preserving exact
 reviewed `30e0649` tree, and is deployed. BOTH services restarted and verify
