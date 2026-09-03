@@ -15,6 +15,10 @@ checks and source/payload hashes are recorded in VALIDATION. The required
 full gate, exact independent approval, guarded delivery and actual plugin-host
 Refresh/Copy/icon Switch acceptance are pending.
 
+Candidate `b911d9a` failed the required gate on one stale resource-count test;
+the test-only correction passes focused checks; a renewed frozen gate is pending
+(see VALIDATION).
+
 C08 Live connectivity and Screen Sharing stay paused; this slice includes no
 real-printer reads or controls. Preserve all 55 ledger IDs, Progress no-action,
 F07 reactive-class discussion, separate c6 and the unchanged loading policy.

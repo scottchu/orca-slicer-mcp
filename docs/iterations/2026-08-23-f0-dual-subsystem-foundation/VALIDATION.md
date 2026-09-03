@@ -1,12 +1,33 @@
 # F0 dual-subsystem foundation validation
 
+## Current MCP candidate b911d9a: required gate rejected
+
+The sole independent `./scripts/check-repository.sh` attempt on
+`b911d9a395ceacff1e6a2770fe62d6e214da3c28` stopped after 55.444 s at the server
+tests: 326 PASS / 1 FAIL / 3,974 assertions across 33 files. The sole failure was
+`tests/server/bed-mesh.test.ts:205`, which expected 26 resources after the two new
+versioned resources made the actual count 28. Earlier gate stages passed Svelte
+0 errors/0 warnings, AST, 586 UI tests in 57 files and all ten deterministic
+packages. Python and full-browser stages did not run; no full-gate, exact-review
+or shipping approval is claimed.
+
+Independent `app/test-results/mcp-cutover-independent/full-repository.log` has
+SHA256 `087767c5b32fc9106f65d3b904911065e7fffe6a9f51100d76b62936414d7880`.
+The author corrected only `bed-mesh.test.ts:205` from 26 to 28.
+`bun --no-env-file --config=/dev/null test tests/server/bed-mesh.test.ts` passes
+12 tests/141 assertions; `server-bed-mesh-followup.log` SHA256 is
+`115136c606dbbb193cf7c6da10127a3b0c1a2a7eddeb174b58c6cad9622477bb`.
+Production source/artifacts are unchanged; no author UI/browser/build was rerun.
+Corrected source/input identities below are frozen for a new commit and the
+mandatory required-gate renewal. The rejected attempt is retained.
+
 ## Current MCP cutover: frozen author evidence, independent gate pending
 
 Author report `plugins/u1-print-studio/app/test-results/mcp-cutover-author/
 AUTHOR-REPORT.json` records exact commands, prior failures and scoped results.
-Its SHA256 is `aeaa3df7d3d07ad56f9673a21ffab60fde6fc54b64e069cb9705dd45e30d00f7`.
-The 45 changed/new application-input manifest has SHA256
-`ed208c8c50142bc31008e2cd9df65fd8257d26edeeb57a3a16813af333d35153`.
+Its SHA256 is `9ad492c63dd24fb95da9d9dbc9f7919f3923c75a20f44f2e10e0e718da570cb3`.
+The 46 changed/new application-input manifest has SHA256
+`9e252c75065ae88a476e8d19fe74ad00f224b84ee4795ddbdeda518b011c6a3e`.
 Application bytes are frozen for the coordinator commit. This is author evidence;
 required full regression, exact independent approval, deployment and actual
 ChatGPT phone acceptance remain pending.

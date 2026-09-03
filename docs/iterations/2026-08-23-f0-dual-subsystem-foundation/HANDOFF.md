@@ -19,6 +19,10 @@ action: commit the frozen candidate, then run the one-owner required gate and
 exact independent review.
 Guarded delivery and BOTH service restarts remain pending.
 
+The user reports allowing Bun Local Network access; the machine is unconfirmed,
+no retest has run and this is not C08 root-cause proof or authorization to resume
+printer reads.
+
 No hosted direct HTTP acquisition, external asset fetch or old alias removal.
 C08/Screen Sharing stay paused; do not perform printer reads/controls or auth/
 system changes. Keep all 55 IDs, Progress no-action, F07 class discussion,
