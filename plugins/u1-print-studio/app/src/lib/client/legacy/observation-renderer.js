@@ -535,7 +535,7 @@ const applyResult = (result) => {
   const candidates = [result?.structuredContent, result?.result?.structuredContent, result?.mcp_tool_result?.structuredContent, result?.call_tool_result?.structuredContent, result];
   const candidate = candidates.find(validObservation);
   if (!candidate || (selectedView && candidate.view !== selectedView)) return false;
-  
+
   const previous = observation;
   if (failedDomain(candidate.module)) {
     acceptedResult = true;
@@ -546,13 +546,13 @@ const applyResult = (result) => {
     if (previous && ["known", "stale"].includes(previous.module.state) && previous.view === candidate.view && Number.isSafeInteger(candidate.connectionEpoch) && candidate.connectionEpoch >= 0 && candidate.connectionEpoch === previous.connectionEpoch) {
       showPlaceholder("unavailable", message);
     } else { observation = null; disposeMeshRenderer(); if (retainedPresentation) retainedPresentation.section = null; showPlaceholder("unavailable", message); }
-    
+
     return true;
   }
   observation = candidate;
   try { render(); } catch { observation = previous; return false; }
   acceptedResult = true;
-  
+
   return true;
 };
 

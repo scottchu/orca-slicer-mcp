@@ -4,9 +4,9 @@
 
 Author report `plugins/u1-print-studio/app/test-results/mcp-cutover-author/
 AUTHOR-REPORT.json` records exact commands, prior failures and scoped results.
-Its SHA256 is `593e418b91584aeb09ea54176e1f6680430a7f120fced9ea9147da6b8d0cc8f1`.
+Its SHA256 is `aeaa3df7d3d07ad56f9673a21ffab60fde6fc54b64e069cb9705dd45e30d00f7`.
 The 45 changed/new application-input manifest has SHA256
-`506ca82cfad6e7126dd44fd04d82faa7f6464815344ab32ddb1cb4582a33ba5c`.
+`ed208c8c50142bc31008e2cd9df65fd8257d26edeeb57a3a16813af333d35153`.
 Application bytes are frozen for the coordinator commit. This is author evidence;
 required full regression, exact independent approval, deployment and actual
 ChatGPT phone acceptance remain pending.
@@ -61,6 +61,15 @@ author browsers/processes were closed and port 4182 has no listener; user tabs,
 deployed runtimes and evidence logs were preserved. No author full required run,
 real printer/Camera reads, plugin reinstall, auth/network changes or deployment
 occurred.
+
+Staging caught three trailing-space blank lines omitted by the earlier untracked
+diff check. After removing only those spaces,
+`bun --no-env-file --config=/dev/null run --cwd plugins/u1-print-studio/app verify:mcp-observation`
+and `git diff --check 3e6a4d7` PASS, including the new files. The 947,699-byte
+observation artifact retains SHA256 `2838485ed47250f1c8dbc413227743981c7e2a2f5ea22b9c8acb8791b094edc4`;
+affected determinism was renewed and unchanged runtime evidence retained without
+repeating browser/full suites. The current report/input hashes above include
+this whitespace-only correction.
 
 ### Initial MCP cutover scope checkpoint
 
