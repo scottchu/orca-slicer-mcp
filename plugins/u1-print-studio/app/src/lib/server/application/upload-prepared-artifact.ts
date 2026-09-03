@@ -1,27 +1,148 @@
+import { createHash } from "node:crypto";
+
 import {
+  PREPARATION_REQUIREMENTS_VERSION,
   PREPARATION_SCHEMA_VERSION,
+  PREPARED_ARTIFACT_VALIDATOR_VERSION,
   hashPreparedArtifact,
   validatePreparedArtifact,
   type PreparedArtifactValidationInput,
+  type PreparedArtifactValidationReceipt,
   type Sha256,
   type ValidationStatus,
 } from "../preparation/prepared-artifact.js";
 
-export type UploadAuthorization = {
-  readonly schemaVersion: typeof PREPARATION_SCHEMA_VERSION;
-  readonly action: "upload";
-  readonly artifactSha256: Sha256;
-  readonly manifestSha256: Sha256;
-  readonly targetFingerprint: Sha256;
-  readonly expiresAt: string;
-  readonly remainingAttempts: number;
+export const GUARDED_UPLOAD_DEADLINE_MS = 15_000;
+const OPAQUE_ID = /^[A-Za-z0-9][A-Za-z0-9_-]{15,127}$/;
+const SHA256 = /^[a-f0-9]{64}$/;
+
+export type GuardedUploadRequest = {
+  readonly preparedJobRevisionId: string;
+  readonly validationReceiptId: string;
+  readonly uploadAuthorizationId: string;
+  readonly targetPreflightId: string;
+  readonly idempotencyKey: string;
+  readonly correlationId: string;
 };
-export type UploadPreflight = {
-  readonly schemaVersion: typeof PREPARATION_SCHEMA_VERSION;
-  readonly status: "passed" | "blocked" | "unavailable";
+export type StoredPreparedArtifact = {
+  readonly preparedJobRevisionId: string;
+  readonly validationInput: PreparedArtifactValidationInput;
+};
+export type StoredValidationReceiptContent = {
+  readonly schemaVersion: 1;
+  readonly receiptId: string;
+  readonly preparedJobRevisionId: string;
+  readonly issuedAt: string;
+  readonly expiresAt: string;
+  readonly receipt: PreparedArtifactValidationReceipt;
+};
+export type StoredValidationReceipt = StoredValidationReceiptContent & { readonly digest: Sha256 };
+export type UploadAuthorizationContent = {
+  readonly schemaVersion: 1;
+  readonly authorizationId: string;
+  readonly action: "upload";
+  readonly preparedJobRevisionId: string;
+  readonly validationId: Sha256;
   readonly artifactSha256: Sha256;
   readonly manifestSha256: Sha256;
   readonly targetFingerprint: Sha256;
+  readonly correlationId: string;
+  readonly issuedAt: string;
+  readonly expiresAt: string;
+};
+export type UploadAuthorization = UploadAuthorizationContent & { readonly digest: Sha256 };
+export type UploadAuthorizationBinding = Omit<UploadAuthorizationContent, "issuedAt" | "expiresAt">;
+export type TargetPreflightContent = {
+  readonly schemaVersion: 1;
+  readonly preflightId: string;
+  readonly status: "passed" | "blocked" | "unavailable";
+  readonly preparedJobRevisionId: string;
+  readonly validationId: Sha256;
+  readonly artifactSha256: Sha256;
+  readonly manifestSha256: Sha256;
+  readonly targetFingerprint: Sha256;
+  readonly checkedAt: string;
+  readonly expiresAt: string;
+};
+export type TargetPreflight = TargetPreflightContent & { readonly digest: Sha256 };
+
+export type UploadAdapterOutcome =
+  | { readonly status: "acknowledged"; readonly remoteArtifactId: string }
+  | { readonly status: "rejected" }
+  | { readonly status: "timeout" }
+  | { readonly status: "transport_failed" }
+  | { readonly status: "outcome_unknown"; readonly remoteArtifactId?: string };
+export type UploadOutcomeStatus = UploadAdapterOutcome["status"];
+export type GuardedUploadStatus = UploadOutcomeStatus | Exclude<ValidationStatus, "passed">;
+
+export type GuardedUploadResult = {
+  readonly schemaVersion: 1;
+  readonly status: GuardedUploadStatus;
+  readonly code: string;
+  readonly actionId: string | null;
+  readonly preparedJobRevisionId: string | null;
+  readonly validationReceiptId: string | null;
+  readonly validationId: Sha256 | null;
+  readonly uploadAuthorizationId: string | null;
+  readonly targetPreflightId: string | null;
+  readonly correlationId: string | null;
+  readonly artifactSha256: Sha256 | null;
+  readonly manifestSha256: Sha256 | null;
+  readonly targetFingerprint: Sha256 | null;
+  readonly requiresVerification: boolean;
+  readonly replay: boolean;
+};
+export type InternalUploadActionRecord = {
+  readonly actionId: string;
+  readonly requestFingerprint: Sha256;
+  readonly result: Omit<GuardedUploadResult, "replay">;
+  /** Operations-only locator. Never copied into model-visible results. */
+  readonly remoteArtifactId: string | null;
+};
+export type UploadActionClaim =
+  | { readonly status: "claimed"; readonly actionId: string }
+  | { readonly status: "replay"; readonly actionId: string; readonly record: InternalUploadActionRecord | null }
+  | { readonly status: "conflict" }
+  | { readonly status: "unavailable" };
+export type AuthorizationClaim =
+  | { readonly status: "claimed"; readonly authorization: UploadAuthorization }
+  | { readonly status: "blocked"; readonly code: "not_found" | "expired" | "consumed" | "binding_mismatch" }
+  | { readonly status: "unavailable" };
+
+export type UploadDeadline = { readonly signal: AbortSignal; readonly close: () => void };
+export type Clock = {
+  readonly now: () => Date;
+  readonly openDeadline: (milliseconds: number, parentSignal?: AbortSignal) => UploadDeadline;
+};
+export type PreparedArtifactStore = {
+  readonly resolve: (preparedJobRevisionId: string, signal: AbortSignal) => Promise<StoredPreparedArtifact | null>;
+};
+export type ValidationReceiptStore = {
+  readonly resolve: (validationReceiptId: string, signal: AbortSignal) => Promise<StoredValidationReceipt | null>;
+};
+export type AuthorizationStore = {
+  /** Atomically consumes a one-use authorization or returns its stable denial. */
+  readonly claim: (request: {
+    readonly authorizationId: string;
+    readonly idempotencyKey: string;
+    readonly requestFingerprint: Sha256;
+    readonly expected: UploadAuthorizationBinding;
+    readonly now: Date;
+    readonly signal: AbortSignal;
+  }) => Promise<AuthorizationClaim>;
+};
+export type TargetPreflightStore = {
+  readonly resolve: (targetPreflightId: string, signal: AbortSignal) => Promise<TargetPreflight | null>;
+};
+export type UploadActionStore = {
+  /** Atomically claims the key and persists a pending action before any external effect. */
+  readonly claim: (request: {
+    readonly idempotencyKey: string;
+    readonly requestFingerprint: Sha256;
+    readonly correlationId: string;
+    readonly signal: AbortSignal;
+  }) => Promise<UploadActionClaim>;
+  readonly complete: (record: InternalUploadActionRecord, signal: AbortSignal) => Promise<void>;
 };
 export type PreparedArtifactUploadPort = {
   readonly upload: (request: {
@@ -29,82 +150,212 @@ export type PreparedArtifactUploadPort = {
     readonly artifactSha256: Sha256;
     readonly manifestSha256: Sha256;
     readonly targetFingerprint: Sha256;
-  }) => Promise<{ readonly remoteArtifactId: string }>;
+    readonly correlationId: string;
+    readonly signal: AbortSignal;
+  }) => Promise<UploadAdapterOutcome>;
 };
-export type GuardedUploadResult = {
-  readonly schemaVersion: typeof PREPARATION_SCHEMA_VERSION;
-  readonly status: "uploaded" | Exclude<ValidationStatus, "passed">;
-  readonly code: string;
-  readonly artifactSha256: Sha256 | null;
-  readonly manifestSha256: Sha256 | null;
-  readonly preparationRevision: string | null;
-  readonly targetFingerprint: Sha256 | null;
-  readonly validationId: Sha256 | null;
-  readonly authorizationExpiresAt: string | null;
-  readonly remoteArtifactId: string | null;
+export type GuardedUploadPorts = {
+  readonly clock: Clock;
+  readonly preparedArtifacts: PreparedArtifactStore;
+  readonly validationReceipts: ValidationReceiptStore;
+  readonly authorizations: AuthorizationStore;
+  readonly targetPreflights: TargetPreflightStore;
+  readonly actions: UploadActionStore;
+  readonly uploader: PreparedArtifactUploadPort;
 };
 
-const SHA256 = /^[a-f0-9]{64}$/;
-const result = (status: GuardedUploadResult["status"], code: string, artifactSha256: Sha256 | null,
-  manifestSha256: Sha256 | null, preparationRevision: string | null, targetFingerprint: Sha256 | null,
-  validationId: Sha256 | null, authorizationExpiresAt: string | null = null,
-  remoteArtifactId: string | null = null): GuardedUploadResult => ({
-  schemaVersion: PREPARATION_SCHEMA_VERSION, status, code, artifactSha256, manifestSha256,
-  preparationRevision, targetFingerprint, validationId, authorizationExpiresAt, remoteArtifactId,
+const canonicalize = (value: unknown): string => {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(canonicalize).join(",")}]`;
+  return `{${Object.entries(value as Record<string, unknown>)
+    .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
+    .map(([key, item]) => `${JSON.stringify(key)}:${canonicalize(item)}`).join(",")}}`;
+};
+const hash = (value: string): Sha256 => createHash("sha256").update(value).digest("hex");
+const digestRecord = <T extends { readonly digest: Sha256 }>(record: T): Sha256 => {
+  const { digest: _ignored, ...content } = record;
+  return hash(canonicalize(content));
+};
+export const digestStoredValidationReceipt = (record: StoredValidationReceipt): Sha256 => digestRecord(record);
+export const digestUploadAuthorization = (record: UploadAuthorization): Sha256 => digestRecord(record);
+export const digestTargetPreflight = (record: TargetPreflight): Sha256 => digestRecord(record);
+const validId = (value: unknown): value is string => typeof value === "string" && OPAQUE_ID.test(value);
+const validDate = (value: unknown): value is string => typeof value === "string" && Number.isFinite(Date.parse(value));
+const requestKeys = ["correlationId", "idempotencyKey", "preparedJobRevisionId", "targetPreflightId",
+  "uploadAuthorizationId", "validationReceiptId"];
+const validRequest = (request: GuardedUploadRequest): boolean => request !== null && typeof request === "object" &&
+  Object.keys(request).sort().join("|") === requestKeys.join("|") && requestKeys.every(key => validId(request[key as keyof GuardedUploadRequest]));
+const validValidationRecord = (record: StoredValidationReceipt): boolean => record?.schemaVersion === 1 &&
+  validId(record.receiptId) && validId(record.preparedJobRevisionId) && SHA256.test(record.digest) &&
+  validDate(record.issuedAt) && validDate(record.expiresAt) && record.receipt?.schemaVersion === 1 &&
+  record.receipt.validatorVersion === PREPARED_ARTIFACT_VALIDATOR_VERSION &&
+  record.receipt.requirementsVersion === PREPARATION_REQUIREMENTS_VERSION &&
+  digestStoredValidationReceipt(record) === record.digest;
+const validPreflight = (record: TargetPreflight): boolean => record?.schemaVersion === 1 && validId(record.preflightId) &&
+  new Set(["passed", "blocked", "unavailable"]).has(record.status) && validId(record.preparedJobRevisionId) &&
+  SHA256.test(record.validationId) && SHA256.test(record.artifactSha256) && SHA256.test(record.manifestSha256) &&
+  SHA256.test(record.targetFingerprint) && validDate(record.checkedAt) && validDate(record.expiresAt) &&
+  SHA256.test(record.digest) && digestTargetPreflight(record) === record.digest;
+const validAuthorization = (record: UploadAuthorization): boolean => record?.schemaVersion === 1 &&
+  validId(record.authorizationId) && record.action === "upload" && validId(record.preparedJobRevisionId) &&
+  SHA256.test(record.validationId) && SHA256.test(record.artifactSha256) && SHA256.test(record.manifestSha256) &&
+  SHA256.test(record.targetFingerprint) && validId(record.correlationId) && validDate(record.issuedAt) &&
+  validDate(record.expiresAt) && SHA256.test(record.digest) && digestUploadAuthorization(record) === record.digest;
+
+const result = (status: GuardedUploadStatus, code: string, fields: Partial<GuardedUploadResult> = {}): GuardedUploadResult => ({
+  schemaVersion: PREPARATION_SCHEMA_VERSION, status, code, actionId: fields.actionId ?? null,
+  preparedJobRevisionId: fields.preparedJobRevisionId ?? null, validationReceiptId: fields.validationReceiptId ?? null,
+  validationId: fields.validationId ?? null, uploadAuthorizationId: fields.uploadAuthorizationId ?? null,
+  targetPreflightId: fields.targetPreflightId ?? null, correlationId: fields.correlationId ?? null,
+  artifactSha256: fields.artifactSha256 ?? null, manifestSha256: fields.manifestSha256 ?? null,
+  targetFingerprint: fields.targetFingerprint ?? null, requiresVerification: fields.requiresVerification ?? false,
+  replay: fields.replay ?? false,
 });
+const visibleRecord = (record: InternalUploadActionRecord): GuardedUploadResult => ({ ...record.result, replay: true });
+const activeReplay = (actionId: string, fields: Partial<GuardedUploadResult>): GuardedUploadResult =>
+  result("outcome_unknown", "action_in_progress", { ...fields, actionId, requiresVerification: true, replay: true });
+const validReplayRecord = (record: InternalUploadActionRecord, actionId: string, fingerprint: Sha256,
+  fields: Partial<GuardedUploadResult>): boolean => record.actionId === actionId && validId(record.actionId) &&
+  record.requestFingerprint === fingerprint && record.result.actionId === actionId && record.result.schemaVersion === 1 &&
+  record.result.preparedJobRevisionId === fields.preparedJobRevisionId &&
+  record.result.validationReceiptId === fields.validationReceiptId && record.result.validationId === fields.validationId &&
+  record.result.uploadAuthorizationId === fields.uploadAuthorizationId && record.result.targetPreflightId === fields.targetPreflightId &&
+  record.result.correlationId === fields.correlationId && record.result.artifactSha256 === fields.artifactSha256 &&
+  record.result.manifestSha256 === fields.manifestSha256 && record.result.targetFingerprint === fields.targetFingerprint;
 
-export const uploadPreparedArtifact = async (input: {
-  readonly validation: PreparedArtifactValidationInput;
-  readonly authorization: UploadAuthorization | null;
-  readonly preflight: UploadPreflight | null;
-  readonly now: string;
-}, port: PreparedArtifactUploadPort): Promise<GuardedUploadResult> => {
-  const validation = validatePreparedArtifact(input.validation);
-  const details = [validation.preparationRevision, validation.targetFingerprint, validation.validationId] as const;
-  if (validation.status !== "passed") {
-    return result(validation.status, "local_validation_not_passed", validation.artifactSha256, validation.manifestSha256, ...details);
-  }
-  const artifactHash = validation.artifactSha256!; const manifestHash = validation.manifestSha256!;
-  const authorization = input.authorization;
-  const expiresAt = authorization ? Date.parse(authorization.expiresAt) : NaN;
-  const now = Date.parse(input.now);
-  if (!authorization || authorization.schemaVersion !== PREPARATION_SCHEMA_VERSION || authorization.action !== "upload" ||
-      authorization.artifactSha256 !== artifactHash || authorization.manifestSha256 !== manifestHash ||
-      authorization.targetFingerprint !== input.validation.spec.targetFingerprint ||
-      !Number.isInteger(authorization.remainingAttempts) || authorization.remainingAttempts < 1 ||
-      !Number.isFinite(expiresAt) || !Number.isFinite(now) || expiresAt <= now) {
-    return result("blocked", "upload_authorization_invalid", artifactHash, manifestHash, ...details);
-  }
-  const preflight = input.preflight;
-  if (!preflight) return result("unavailable", "upload_preflight_missing", artifactHash, manifestHash, ...details,
-    authorization.expiresAt);
-  if (preflight.schemaVersion !== PREPARATION_SCHEMA_VERSION ||
-      !new Set(["passed", "blocked", "unavailable"]).has(preflight.status)) {
-    return result("error", "upload_preflight_invalid", artifactHash, manifestHash, ...details, authorization.expiresAt);
-  }
-  if (preflight.status !== "passed") return result(preflight.status, "upload_preflight_not_passed", artifactHash, manifestHash,
-    ...details, authorization.expiresAt);
-  if (!SHA256.test(preflight.artifactSha256) ||
-      preflight.artifactSha256 !== artifactHash || preflight.manifestSha256 !== manifestHash ||
-      preflight.targetFingerprint !== input.validation.spec.targetFingerprint) {
-    return result("blocked", "upload_preflight_binding_mismatch", artifactHash, manifestHash, ...details, authorization.expiresAt);
-  }
-  // Snapshot and re-hash the exact bytes passed to the port. This closes the
-  // local mutation gap without granting the validator any upload capability.
-  const artifactBytes = Uint8Array.from(input.validation.artifactBytes);
-  if (hashPreparedArtifact(artifactBytes) !== artifactHash) {
-    return result("blocked", "artifact_changed_after_validation", artifactHash, manifestHash, ...details, authorization.expiresAt);
-  }
+export const uploadPreparedArtifact = async (
+  request: GuardedUploadRequest,
+  ports: GuardedUploadPorts,
+  options: { readonly signal?: AbortSignal } = {},
+): Promise<GuardedUploadResult> => {
+  if (!validRequest(request)) return result("error", "request_contract_invalid");
+  const safeRequest = { preparedJobRevisionId: request.preparedJobRevisionId, validationReceiptId: request.validationReceiptId,
+    uploadAuthorizationId: request.uploadAuthorizationId, targetPreflightId: request.targetPreflightId,
+    idempotencyKey: request.idempotencyKey, correlationId: request.correlationId };
+  let deadline: UploadDeadline;
+  try { deadline = ports.clock.openDeadline(GUARDED_UPLOAD_DEADLINE_MS, options.signal); }
+  catch { return result("unavailable", "deadline_unavailable"); }
+  let actionId: string | null = null; let actionFingerprint: Sha256 | null = null;
+  let boundFields: Partial<GuardedUploadResult> = { preparedJobRevisionId: safeRequest.preparedJobRevisionId,
+    validationReceiptId: safeRequest.validationReceiptId, uploadAuthorizationId: safeRequest.uploadAuthorizationId,
+    targetPreflightId: safeRequest.targetPreflightId, correlationId: safeRequest.correlationId };
+  const complete = async (outcome: GuardedUploadResult, remoteArtifactId: string | null = null): Promise<GuardedUploadResult> => {
+    if (!actionId || !actionFingerprint) return outcome;
+    const { replay: _replay, ...storedResult } = outcome;
+    const stored: InternalUploadActionRecord = { actionId, requestFingerprint: actionFingerprint,
+      result: { ...storedResult, actionId }, remoteArtifactId };
+    try { await ports.actions.complete(stored, deadline.signal); return { ...stored.result, replay: false }; }
+    catch { return result("outcome_unknown", "action_record_unavailable", { ...boundFields, actionId, requiresVerification: true }); }
+  };
   try {
-    const uploaded = await port.upload({ artifactBytes, artifactSha256: artifactHash,
-      manifestSha256: manifestHash, targetFingerprint: input.validation.spec.targetFingerprint });
-    if (typeof uploaded?.remoteArtifactId !== "string" || uploaded.remoteArtifactId.length === 0 ||
-        uploaded.remoteArtifactId.length > 128 || /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(uploaded.remoteArtifactId)) {
-      return result("error", "upload_receipt_invalid", artifactHash, manifestHash, ...details, authorization.expiresAt);
+    if (deadline.signal.aborted) return result("unavailable", "request_cancelled", boundFields);
+    let prepared: StoredPreparedArtifact | null; let storedValidation: StoredValidationReceipt | null;
+    let preflight: TargetPreflight | null;
+    try {
+      [prepared, storedValidation, preflight] = await Promise.all([
+        ports.preparedArtifacts.resolve(safeRequest.preparedJobRevisionId, deadline.signal),
+        ports.validationReceipts.resolve(safeRequest.validationReceiptId, deadline.signal),
+        ports.targetPreflights.resolve(safeRequest.targetPreflightId, deadline.signal),
+      ]);
+    } catch { return result("unavailable", "trusted_evidence_unavailable", boundFields); }
+    if (deadline.signal.aborted) return result("unavailable", "request_cancelled", boundFields);
+    if (!prepared || prepared.preparedJobRevisionId !== safeRequest.preparedJobRevisionId ||
+        prepared.validationInput.spec.preparationRevision !== safeRequest.preparedJobRevisionId) {
+      return result("unavailable", "prepared_artifact_unavailable", boundFields);
     }
-    return result("uploaded", "upload_accepted", artifactHash, manifestHash, ...details, authorization.expiresAt,
-      uploaded.remoteArtifactId);
-  } catch {
-    return result("error", "upload_failed", artifactHash, manifestHash, ...details, authorization.expiresAt);
+    const validation = validatePreparedArtifact(prepared.validationInput, { signal: deadline.signal });
+    boundFields = { ...boundFields, validationId: validation.validationId, artifactSha256: validation.artifactSha256,
+      manifestSha256: validation.manifestSha256, targetFingerprint: validation.targetFingerprint };
+    if (validation.status !== "passed") return result(validation.status, "current_validation_not_passed", boundFields);
+    const now = ports.clock.now(); const nowMs = now.valueOf();
+    if (!Number.isFinite(nowMs)) return result("error", "clock_invalid", boundFields);
+    if (!storedValidation) return result("unavailable", "validation_receipt_unavailable", boundFields);
+    if (!validValidationRecord(storedValidation)) return result("error", "validation_receipt_invalid", boundFields);
+    if (storedValidation.receiptId !== safeRequest.validationReceiptId ||
+        storedValidation.preparedJobRevisionId !== safeRequest.preparedJobRevisionId ||
+        storedValidation.receipt.status !== "passed" || storedValidation.receipt.validationId !== validation.validationId ||
+        canonicalize(storedValidation.receipt) !== canonicalize(validation)) {
+      return result("blocked", "validation_receipt_binding_mismatch", boundFields);
+    }
+    if (Date.parse(storedValidation.issuedAt) > nowMs || Date.parse(storedValidation.expiresAt) <= nowMs) {
+      return result("blocked", "validation_receipt_expired", boundFields);
+    }
+    if (!preflight) return result("unavailable", "target_preflight_unavailable", boundFields);
+    if (!validPreflight(preflight)) return result("error", "target_preflight_invalid", boundFields);
+    if (preflight.status !== "passed") return result(preflight.status, "target_preflight_not_passed", boundFields);
+    if (preflight.preflightId !== safeRequest.targetPreflightId || preflight.preparedJobRevisionId !== safeRequest.preparedJobRevisionId ||
+        preflight.validationId !== validation.validationId || preflight.artifactSha256 !== validation.artifactSha256 ||
+        preflight.manifestSha256 !== validation.manifestSha256 || preflight.targetFingerprint !== validation.targetFingerprint) {
+      return result("blocked", "target_preflight_binding_mismatch", boundFields);
+    }
+    if (Date.parse(preflight.checkedAt) > nowMs || Date.parse(preflight.expiresAt) <= nowMs) {
+      return result("blocked", "target_preflight_expired", boundFields);
+    }
+    const artifactBytes = Uint8Array.from(prepared.validationInput.artifactBytes);
+    if (hashPreparedArtifact(artifactBytes) !== validation.artifactSha256) {
+      return result("blocked", "artifact_changed_after_validation", boundFields);
+    }
+    actionFingerprint = hash(canonicalize({ ...safeRequest, validationId: validation.validationId,
+      artifactSha256: validation.artifactSha256, manifestSha256: validation.manifestSha256,
+      targetFingerprint: validation.targetFingerprint, validationReceiptDigest: storedValidation.digest,
+      preflightDigest: preflight.digest }));
+    let actionClaim: UploadActionClaim;
+    try { actionClaim = await ports.actions.claim({ idempotencyKey: safeRequest.idempotencyKey,
+      requestFingerprint: actionFingerprint, correlationId: safeRequest.correlationId, signal: deadline.signal }); }
+    catch { return result("unavailable", "action_claim_unavailable", boundFields); }
+    if (actionClaim.status === "conflict") return result("blocked", "idempotency_key_conflict", boundFields);
+    if (actionClaim.status === "unavailable") return result("unavailable", "action_claim_unavailable", boundFields);
+    if (actionClaim.status === "replay") {
+      if (!validId(actionClaim.actionId)) return result("error", "action_claim_invalid", boundFields);
+      if (!actionClaim.record) return activeReplay(actionClaim.actionId, boundFields);
+      return validReplayRecord(actionClaim.record, actionClaim.actionId, actionFingerprint, boundFields) ?
+        visibleRecord(actionClaim.record) : result("error", "action_record_invalid", boundFields);
+    }
+    actionId = actionClaim.actionId; boundFields = { ...boundFields, actionId };
+    if (!validId(actionId)) return result("error", "action_claim_invalid", boundFields);
+    const expectedAuthorization: UploadAuthorizationBinding = { schemaVersion: 1,
+      authorizationId: safeRequest.uploadAuthorizationId, action: "upload",
+      preparedJobRevisionId: safeRequest.preparedJobRevisionId, validationId: validation.validationId!,
+      artifactSha256: validation.artifactSha256!, manifestSha256: validation.manifestSha256!,
+      targetFingerprint: validation.targetFingerprint!, correlationId: safeRequest.correlationId };
+    let authorizationClaim: AuthorizationClaim;
+    try { authorizationClaim = await ports.authorizations.claim({ authorizationId: safeRequest.uploadAuthorizationId,
+      idempotencyKey: safeRequest.idempotencyKey, requestFingerprint: actionFingerprint,
+      expected: expectedAuthorization, now, signal: deadline.signal }); }
+    catch { return complete(result("unavailable", "authorization_claim_unavailable", boundFields)); }
+    if (authorizationClaim.status === "unavailable") return complete(result("unavailable", "authorization_claim_unavailable", boundFields));
+    if (authorizationClaim.status === "blocked") return complete(result("blocked", `authorization_${authorizationClaim.code}`, boundFields));
+    const authorization = authorizationClaim.authorization;
+    if (!validAuthorization(authorization) || authorization.authorizationId !== expectedAuthorization.authorizationId ||
+        authorization.preparedJobRevisionId !== expectedAuthorization.preparedJobRevisionId ||
+        authorization.validationId !== expectedAuthorization.validationId || authorization.artifactSha256 !== expectedAuthorization.artifactSha256 ||
+        authorization.manifestSha256 !== expectedAuthorization.manifestSha256 || authorization.targetFingerprint !== expectedAuthorization.targetFingerprint ||
+        authorization.correlationId !== expectedAuthorization.correlationId || Date.parse(authorization.issuedAt) > nowMs ||
+        Date.parse(authorization.expiresAt) <= nowMs) {
+      return complete(result("blocked", "authorization_binding_mismatch", boundFields));
+    }
+    if (deadline.signal.aborted) return complete(result("unavailable", "request_cancelled_before_effect", boundFields));
+    let adapterOutcome: UploadAdapterOutcome;
+    try {
+      adapterOutcome = await ports.uploader.upload({ artifactBytes, artifactSha256: validation.artifactSha256!,
+        manifestSha256: validation.manifestSha256!, targetFingerprint: validation.targetFingerprint!,
+        correlationId: safeRequest.correlationId, signal: deadline.signal });
+    } catch {
+      adapterOutcome = { status: "outcome_unknown" };
+    }
+    const requiresVerification = adapterOutcome.status === "acknowledged" || adapterOutcome.status === "timeout" ||
+      adapterOutcome.status === "transport_failed" || adapterOutcome.status === "outcome_unknown";
+    const code = adapterOutcome.status === "acknowledged" ? "upload_acknowledged_unverified" :
+      adapterOutcome.status === "rejected" ? "upload_rejected" : adapterOutcome.status === "timeout" ? "upload_timeout" :
+      adapterOutcome.status === "transport_failed" ? "upload_transport_failed" : "upload_outcome_unknown";
+    const rawRemoteArtifactId = "remoteArtifactId" in adapterOutcome ? adapterOutcome.remoteArtifactId : undefined;
+    const remoteArtifactId = typeof rawRemoteArtifactId === "string" && rawRemoteArtifactId.length > 0 &&
+      rawRemoteArtifactId.length <= 512 && !/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(rawRemoteArtifactId) ? rawRemoteArtifactId : null;
+    if (adapterOutcome.status === "acknowledged" && remoteArtifactId === null) {
+      return complete(result("outcome_unknown", "upload_outcome_unknown", { ...boundFields, requiresVerification: true }));
+    }
+    return complete(result(adapterOutcome.status, code, { ...boundFields, requiresVerification }), remoteArtifactId);
+  } finally {
+    deadline.close();
   }
 };
