@@ -233,7 +233,13 @@ printer environments support the described behavior.
   route/resource/tool rejection coverage and unchanged hash/tamper/isolation/
   security/runtime-config-preservation/rollback/shipping guards. Required source
   acceptance passes; guarded shipment and installed behavior verification remain
-  pending. This does not establish actual phone Live reliability.
+  pending. PR104 stopped before merge/install because current binding validation
+  rejected the installed historical PR101 manifest. New stage/ship manifests must
+  use schema2/current binding; installed status/rollback must strictly validate
+  supported historical schema1 Kit profiles with their original hashes/minimums/
+  roles, while pre-Kit release-schema1 retains its six-asset minimum. This bounded
+  guard repair is pending exact acceptance; it restores no public aliases, skips
+  no guard and does not establish actual phone Live reliability.
   Names appear only in tooltip/aria,
   superseding visible text/full-width mode controls. Keep44px targets, keyboard
   selection/focus and reduced-motion behavior; the switch must not overlap

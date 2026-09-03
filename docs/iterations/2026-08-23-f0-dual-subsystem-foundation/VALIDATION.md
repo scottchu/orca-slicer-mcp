@@ -1,6 +1,39 @@
 # F0 dual-subsystem foundation validation
 
-## Current accepted source: Camera and current-only widget retirement
+## Current shipping failure: PR104 stopped before merge/install
+
+The first read-only plan, operation `pr104-20260903T083212-468d6b`, was rejected
+because the PR was still draft; no merge/install followed. After the coordinator
+marked PR104 ready, plan `pr104-20260903T083226-b8d949` passed. These plan outcomes
+are coordinator-recorded; only the execution below produced a shipment receipt.
+
+Execution `pr104-20260903T083329-bb9a8f` passed candidate validation but stopped at
+`merge-edge-guards`: Existing services must be healthy verified releases before
+shipping. Its receipt is under the local service `shipments` directory, SHA256
+`8b583dc6253a6355faedf70e44d752d056cfe9cfa97f0d7bc9a0df35f239c571`.
+Read-only receipt inspection confirms ok=false, merged=false, installed=false
+and rollback=not-needed. Candidate identity was
+`6d061db8a93dcec11c2c367db2509937c3c96fbc`, tree
+`5407366ac26e5aef26bc836fa4b1a6cabafbb3e9`, base
+`bb7a1b32a58f971bed1b6c1aa6540f4b6b4843b9`; Bun1.4.0 SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`.
+No deployment or restart occurred.
+
+Coordinator diagnosis: the new read_build_manifest current `/widget` binding
+check was applied to installed PR101's historical schema1 build. That exception
+prevented status from reading health and yielded false. Direct BOTH-service
+health and the original strict60-file/72-route manifest checks passed. These
+observations locate the shipping guard defect; they do not undo its rejection.
+
+The new repair separates explicit build profiles: schema2/current for staging
+and shipping; known historical schema1 Kit for installed status/rollback, with
+original hashes, minimums and roles enforced. Pre-Kit release-schema1 keeps its
+own six-asset minimum. No public alias/tool/route returns and no skip is added.
+Repair implementation, affected tests and independent exact acceptance remain
+pending. All prior candidate passes below retain their original scope and cannot
+claim the changed shipping path works.
+
+## Prior accepted source: Camera and current-only widget retirement
 
 Independent `app/test-results/current-only-independent/REPORT.json`, SHA256
 `b2194a3828ddefe5349be2ecc3efb1b16e2fc3046c2d54dbb1f608bdb1f6c022`,

@@ -1,6 +1,22 @@
 # Next agent
 
-## Current: Camera and current-only widgets accepted; guarded shipment next
+## Current: shipping blocked on build-manifest profile validation
+
+PR104 execution stopped at merge-edge guards before merge or install. New
+current-only `/widget` binding validation was incorrectly applied to the installed
+PR101 historical build manifest; status failed before reading health. Direct
+health and the original strict60-file/72-route release checks passed for BOTH
+services. PR101 remains deployed. Earlier `6d061db` approval is retained source
+evidence, not proof that this shipping path is ready.
+
+The bounded repair versions build-manifest profiles: new staging/shipping requires
+schema2/current binding; installed status and rollback validate known historical
+schema1 Kit builds against their complete original hash/minimum/role contracts.
+Pre-Kit release-schema1 keeps its own six-asset minimum. No old public widget URI,
+route or tool returns, and no shipping guard is skipped. Finish affected checks,
+exact independent review and renewed guarded shipment before deployment claims.
+
+## Earlier accepted source: Camera and current-only widgets
 
 Exact `aaaf0a56a0df944a19384822decfc62712021c51` is independently accepted.
 The source has only observation17/Camera13 resources and two public/six app-only

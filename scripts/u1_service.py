@@ -22,10 +22,11 @@ import tempfile
 import time
 import urllib.request
 
-from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, CURRENT_ASSET_FILES, read_build_manifest
+from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, CURRENT_ASSET_FILES, HISTORICAL_ASSET_FILES, read_build_manifest, read_current_build_manifest
 
 LABELS = {"public": "com.scottchu.u1-print-studio", "dashboard": "com.scottchu.u1-print-studio-dashboard"}
 ASSETS = tuple(CURRENT_ASSET_FILES)
+PRE_KIT_ASSETS = tuple(HISTORICAL_ASSET_FILES)
 ID = re.compile(r"[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}\Z")
 HEALTH_KEYS = ("runtimeVersion", "toolSchemaVersion", "observationWidgetVersion", "cameraWidgetVersion")
 BOOTOUT_WAIT_ATTEMPTS = 300
@@ -227,7 +228,7 @@ class ServiceManager:
         (release / "bunfig.toml").write_text("")
         shutil.copyfile(bun, release / "bin/bun")
         self.runner([str(bun), "--no-env-file", "--config=/dev/null", "run", "build:server", "--outdir", str(release / "dist")], cwd=app)
-        read_build_manifest(release / "dist")
+        read_current_build_manifest(release / "dist")
         assert_clean()
         if revision != self.runner(["git", "-C", str(source), "rev-parse", "HEAD"]).strip() or digest(bun) != bun_hash:
             raise ValueError("Source or Bun changed during staging")
@@ -267,7 +268,7 @@ class ServiceManager:
             raise ValueError("Release inventory changed")
         required = {"dist/server.js", "bin/bun", "bunfig.toml"}
         if schema == 1:
-            required.update("public/" + asset for asset in ASSETS)
+            required.update("public/" + asset for asset in PRE_KIT_ASSETS)
         else:
             required.update(("dist/handler.js", "dist/" + BUILD_MANIFEST))
         if not required.issubset(actual_files) or set(manifest["health"]) != set(HEALTH_KEYS):

@@ -433,6 +433,13 @@ class StaticContractTests(unittest.TestCase):
         self.assertEqual(len(extended), len(contract) + 1)
         self.assertIn("8788/dashboard/new_view", extended)
 
+    def test_historical_build_is_rejected_by_current_ship_static_contract(self):
+        directory = self.root / "historical-build"
+        write_kit_build(directory, schema=1)
+        self.assertEqual(read_build_manifest(directory)["schemaVersion"], 1)
+        with self.assertRaisesRegex(ShipError, "build contract"):
+            static_contract(self.root, directory)
+
     def test_missing_manifest_fails_without_legacy_contract_fallback(self):
         (self.directory / BUILD_MANIFEST).unlink()
         with self.assertRaisesRegex(ShipError, "build contract"):

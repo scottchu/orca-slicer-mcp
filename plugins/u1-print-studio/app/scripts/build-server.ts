@@ -55,7 +55,7 @@ const files = (folder: string, prefix = ''): string[] => readdirSync(folder, { w
 });
 for (const file of files(path.join(staging, 'client'))) route(`/${file}`, `client/${file}`);
 const runtimeFiles = Object.fromEntries(files(staging).sort().map((file) => [file, digest(path.join(staging, file))]));
-const manifest = { schemaVersion: 1, buildKind: 'sveltekit-bun', runtimeFiles, staticRoutes };
+const manifest = { schemaVersion: 2, buildKind: 'sveltekit-bun', runtimeFiles, staticRoutes };
 writeFileSync(path.join(staging, 'build-manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 mkdirSync(output, { recursive: true });
 // Copy only this build's explicit payload; never remove unrelated CLI/stdin builds.

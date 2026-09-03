@@ -9,21 +9,23 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from u1_service import ASSETS, HEALTH_KEYS, LABELS, ServiceManager, digest, json_bytes
-from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, CURRENT_ASSET_FILES, REQUIRED_ROLES, VIEWS, read_build_manifest
+from u1_service import ASSETS, PRE_KIT_ASSETS, HEALTH_KEYS, LABELS, ServiceManager, digest, json_bytes
+from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, CURRENT_ASSET_FILES, HISTORICAL_ASSET_FILES, HISTORICAL_REQUIRED_ROLES, REQUIRED_ROLES, VIEWS, read_build_manifest, read_current_build_manifest
 
 
 CONTRACT = dict(zip(HEALTH_KEYS, ("0.3.0", 5, "observation-v2", "camera-v4")))
 
 
-def write_kit_build(directory):
+def write_kit_build(directory, schema=2):
     """Synthetic closed output, including client code and a prerendered page."""
     directory.mkdir(parents=True, exist_ok=True)
     contents = {"server.js": "fixture bootstrap", "handler.js": "fixture handler",
                 "client/_app/immutable/start.fixture.js": "fixture client",
                 "prerendered/dashboard/fans.html": "<main>Neutral Fans fixture</main>",
                 "static-contract/fixture.html": "fixture compatibility page"}
-    contents.update({relative: name for name, relative in CURRENT_ASSET_FILES.items()})
+    assets = HISTORICAL_ASSET_FILES if schema == 1 else CURRENT_ASSET_FILES
+    roles = HISTORICAL_REQUIRED_ROLES if schema == 1 else REQUIRED_ROLES
+    contents.update({relative: name for name, relative in assets.items()})
     contents["static-contract/dashboard-index.html"] = "".join(f'<a href="/dashboard/{view}">{view}</a>' for view in VIEWS)
     for relative, content in contents.items():
         file = directory / relative
@@ -31,12 +33,12 @@ def write_kit_build(directory):
         file.write_text(content)
     files = {relative: digest(directory / relative) for relative in contents}
     routes = {}
-    for route, role in REQUIRED_ROLES.items():
-        relative = {"/widget": "mcp-observation.html", "/dashboard/fans": "prerendered/dashboard/fans.html", "/dashboard": "static-contract/dashboard-index.html", "/dashboard/": "static-contract/dashboard-index.html"}.get(route, "static-contract/fixture.html")
+    for route, role in roles.items():
+        relative = {"/widget": "static-contract/widget.html" if schema == 1 else "mcp-observation.html", "/camera-widget": "static-contract/camera-widget.html", "/dashboard/fans": "prerendered/dashboard/fans.html", "/dashboard": "static-contract/dashboard-index.html", "/dashboard/": "static-contract/dashboard-index.html"}.get(route, "static-contract/fixture.html")
         routes[route] = {"file": relative, "sha256": files[relative], "role": role}
     relative = "client/_app/immutable/start.fixture.js"
     routes["/_app/immutable/start.fixture.js"] = {"file": relative, "sha256": files[relative], "role": "dashboard"}
-    manifest = {"schemaVersion": 1, "buildKind": BUILD_KIND, "runtimeFiles": files, "staticRoutes": routes}
+    manifest = {"schemaVersion": schema, "buildKind": BUILD_KIND, "runtimeFiles": files, "staticRoutes": routes}
     (directory / BUILD_MANIFEST).write_bytes(json_bytes(manifest))
     return manifest
 
@@ -74,7 +76,7 @@ class LifecycleTests(unittest.TestCase):
         (self.release / "dist").mkdir(mode=0o700)
         (self.release / "bin").mkdir(mode=0o700)
         (self.release / "public").mkdir(mode=0o700)
-        for asset in ASSETS:
+        for asset in PRE_KIT_ASSETS:
             (self.release / "public" / asset).write_text(asset)
         (self.release / "bin/bun").write_bytes(self.bun.read_bytes())
         (self.release / "bunfig.toml").write_text("")
@@ -330,14 +332,14 @@ class LifecycleTests(unittest.TestCase):
         self.assertFalse((release / "public/private-recording.mp4").exists())
         self.assertEqual(release.stat().st_mode & 0o777, 0o500)
 
-    def kit_release(self):
-        release = self.root / "releases/r2"
+    def kit_release(self, release_id="r2", build_schema=2):
+        release = self.root / "releases" / release_id
         release.mkdir(mode=0o700)
-        write_kit_build(release / "dist")
+        write_kit_build(release / "dist", build_schema)
         (release / "bin").mkdir(mode=0o700)
         (release / "bin/bun").write_bytes(self.bun.read_bytes())
         (release / "bunfig.toml").write_text("")
-        manifest = {"schemaVersion": 2, "buildKind": BUILD_KIND, "release": "r2",
+        manifest = {"schemaVersion": 2, "buildKind": BUILD_KIND, "release": release_id,
                     "sourceRevision": "b" * 40, "bun": str(release / "bin/bun"),
                     "bunVersion": "fixture", "bunSha256": digest(self.bun), "health": CONTRACT,
                     "files": {p.relative_to(release).as_posix(): digest(p) for p in release.rglob("*") if p.is_file()}}
@@ -355,6 +357,39 @@ class LifecycleTests(unittest.TestCase):
         self.manager.rollback(result["rollbackSnapshot"])
         self.assertEqual({name: self.manager.plist_path(name).read_bytes() for name in LABELS}, old)
         self.assertTrue(all(value["healthy"] for value in self.manager.status().values()))
+
+    def test_current_kit_install_can_rollback_to_verified_historical_kit(self):
+        self.kit_release("historical", build_schema=1)
+        self.manager.install("historical")
+        old = {name: self.manager.plist_path(name).read_bytes() for name in LABELS}
+        self.assertTrue(all(value["healthy"] for value in self.manager.status().values()))
+        self.kit_release()
+        result = self.manager.install("r2")
+        self.manager.rollback(result["rollbackSnapshot"])
+        self.assertEqual({name: self.manager.plist_path(name).read_bytes() for name in LABELS}, old)
+        self.assertTrue(all(value["healthy"] and value["integrity"] == "verified"
+                            for value in self.manager.status().values()))
+
+    def test_stage_rejects_historical_build_before_creating_a_release_manifest(self):
+        def build_runner(args, **kwargs):
+            if args[0] == "git":
+                return "a" * 40 if "rev-parse" in args else ""
+            if "build:server" in args:
+                write_kit_build(Path(args[args.index("--outdir") + 1]), schema=1)
+            return "fixture"
+        manager = ServiceManager(self.root, self.plists, build_runner)
+        with self.assertRaisesRegex(ValueError, "requires the current build schema"):
+            manager.stage(self.base, self.bun, "rejected-historical")
+        self.assertFalse((self.root / "releases/rejected-historical/manifest.json").exists())
+        self.assertEqual(self.calls, [])
+
+    def test_pre_kit_required_assets_cannot_be_removed_even_with_updated_hashes(self):
+        relative = "public/legacy-widget.html"
+        (self.release / relative).unlink()
+        del self.manifest["files"][relative]
+        (self.release / "manifest.json").write_bytes(json_bytes(self.manifest))
+        with self.assertRaisesRegex(ValueError, "missing required assets"):
+            self.manager.verify_release("r1")
 
     def test_kit_manifest_cannot_be_deleted_or_downgraded(self):
         release, manifest = self.kit_release()
@@ -396,6 +431,59 @@ class BuildContractTests(unittest.TestCase):
 
     def write_manifest(self):
         (self.directory / BUILD_MANIFEST).write_bytes(json_bytes(self.manifest))
+
+    def test_historical_profile_is_complete_but_cannot_be_a_new_candidate(self):
+        historical = self.directory / "historical"
+        manifest = write_kit_build(historical, schema=1)
+        self.assertEqual(read_build_manifest(historical), manifest)
+        with self.assertRaisesRegex(ValueError, "requires the current build schema"):
+            read_current_build_manifest(historical)
+
+    def test_profile_minimum_assets_cannot_be_omitted_from_rewritten_inventories(self):
+        for schema, missing in [(1, "legacy-widget.html"), (2, "mcp-camera.html")]:
+            with self.subTest(schema=schema):
+                directory = self.directory / str(schema)
+                manifest = write_kit_build(directory, schema=schema)
+                (directory / missing).unlink()
+                del manifest["runtimeFiles"][missing]
+                (directory / BUILD_MANIFEST).write_bytes(json_bytes(manifest))
+                with self.assertRaisesRegex(ValueError, "Required build schema resource"):
+                    read_build_manifest(directory)
+
+    def test_historical_profile_hashes_and_private_roles_remain_required(self):
+        directory = self.directory / "historical"
+        manifest = write_kit_build(directory, schema=1)
+        asset = directory / "legacy-widget.html"
+        asset.write_text("tampered")
+        with self.assertRaisesRegex(ValueError, "hash mismatch"):
+            read_build_manifest(directory)
+        asset.write_text("legacy-widget.html")
+        manifest["staticRoutes"]["/camera-widget"]["role"] = "both"
+        (directory / BUILD_MANIFEST).write_bytes(json_bytes(manifest))
+        with self.assertRaisesRegex(ValueError, "cannot be public"):
+            read_build_manifest(directory)
+        del manifest["staticRoutes"]["/camera-widget"]
+        (directory / BUILD_MANIFEST).write_bytes(json_bytes(manifest))
+        with self.assertRaisesRegex(ValueError, "Required static route"):
+            read_build_manifest(directory)
+
+    def test_schema_relabeling_does_not_mix_profiles(self):
+        for schema, replacement in [(1, 2), (2, 1)]:
+            with self.subTest(schema=schema):
+                directory = self.directory / str(schema)
+                manifest = write_kit_build(directory, schema=schema)
+                manifest["schemaVersion"] = replacement
+                (directory / BUILD_MANIFEST).write_bytes(json_bytes(manifest))
+                with self.assertRaisesRegex(ValueError, "build schema contract|Runtime code cannot"):
+                    read_build_manifest(directory)
+
+    def test_unknown_and_boolean_build_schemas_fail_closed(self):
+        for schema in [0, 3, True, "2"]:
+            with self.subTest(schema=schema):
+                self.manifest["schemaVersion"] = schema
+                self.write_manifest()
+                with self.assertRaisesRegex(ValueError, "Unsupported build manifest"):
+                    read_build_manifest(self.directory)
 
     def test_complete_build_is_readable_and_relocatable(self):
         import shutil
@@ -485,7 +573,7 @@ class BuildContractTests(unittest.TestCase):
         self.manifest["staticRoutes"]["/widget"].update(
             file=relative, sha256=self.manifest["runtimeFiles"][relative])
         self.write_manifest()
-        with self.assertRaisesRegex(ValueError, "current observation resource"):
+        with self.assertRaisesRegex(ValueError, "build schema contract"):
             read_build_manifest(self.directory)
 
     def test_mcp_resource_exception_cannot_expose_runtime_code(self):

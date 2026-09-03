@@ -1,6 +1,6 @@
 # 0046 — Camera Auto default and edge-to-edge card
 
-- Status: exact source aaaf0a56 independently accepted; guarded shipment and installed behavior verification pending
+- Status: Camera/current-only source accepted; shipping blocked before merge/install; versioned manifest-profile repair and renewed exact acceptance pending
 - Date: 2026-09-03
 - Owners: project maintainers
 - Milestone: F0 / CAM-008, UI-004; delivery ledger C04, C06, C08
@@ -42,6 +42,18 @@ and five compatibility-only tests. The eight active observation renderers remain
 Build-contract minimum inventory follows current assets/routes. Retired routes,
 resources and tools have negative coverage; hash/tamper, isolation, security,
 runtime-config preservation, rollback and all shipping guards remain unchanged.
+
+The first PR104 execution exposed a guard integration defect before merge/install:
+current-only binding checks rejected the installed PR101 historical manifest
+before health was read, while direct health/original release validation passed.
+New staged/shipped builds must use explicit build-manifest schema2 with current
+binding. Installed status and rollback must recognize known historical schema1
+Kit profiles and enforce their original complete hash/minimum/role contracts;
+pre-Kit release-schema1 keeps its separate six-asset minimum. This is release
+verification of installed/backed-up artifacts, not restoration of old public
+widget compatibility. No guard bypass is allowed. The bounded repair and renewed
+exact acceptance remain pending; earlier source approval does not prove shipping
+readiness.
 
 - Use a thin header containing icon/title/state, measured FPS and accepted frame
   time. Remove the Camera footer and Refresh button. The media spans the full

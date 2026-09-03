@@ -50,7 +50,7 @@ silently changed.
 | [0043](0043-unify-sveltekit-application-with-bun.md) | Unify one SvelteKit application while retaining Bun | Adapter-node handler on Bun selected; real route/service integration and independent acceptance pending |
 | [0044](0044-connect-heads-and-camera-svelte-to-mcp-resources.md) | Connect Heads and Camera Svelte UI to MCP resources | Independently accepted and deployed PR99; scoped synthetic postverification PASS; actual-host acceptance pending |
 | [0045](0045-compose-print-with-standalone-asynchronous-monitoring.md) | Compose print with standalone asynchronous monitoring | Accepted workflow direction; source review pending; no durable service claim |
-| [0046](0046-camera-auto-default-and-edge-to-edge-card.md) | Camera Auto default and edge-to-edge card | Camera/current-only source independently accepted at aaaf0a56; guarded shipment pending |
+| [0046](0046-camera-auto-default-and-edge-to-edge-card.md) | Camera Auto default and edge-to-edge card | Camera/current-only source accepted; shipping blocked before merge; manifest-profile repair pending |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 
