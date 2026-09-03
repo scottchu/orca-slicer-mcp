@@ -1,5 +1,23 @@
 # Next agent
 
+## Current order: freeze and verify MCP Camera/Heads candidate
+
+Continue `codex/u1-mcp-svelte-widgets` from `3e6a4d7`. Author source connects Camera
+v11 to deterministic `mcp-camera.html` with service-owned host-result bootstrap,
+and observation v15 to a nine-view dispatcher with shared Svelte Heads only.
+The other eight renderers, old URI assets and one bridge/lifecycle stay intact;
+dashboard Camera retains request bootstrap.
+
+Author source/payload evidence is frozen in VALIDATION. Commit the candidate
+and run the required gate with one owner. Obtain independent exact approval, then use
+`u1-ship` to deploy and restart BOTH services. Verify exact served MCP resources
+and meaningful Refresh/Copy/icon Switch behavior. Actual phone/plugin-host
+acceptance stays separate from simulated host evidence; PR97 is still deployed.
+
+C08/Screen Sharing remain paused. No printer reads/controls, Progress redesign,
+F07 reactive-class implementation or c6 integration. Preserve all 55 IDs and
+unchanged loading policy; use the active HANDOFF and VALIDATION for evidence.
+
 ## Current deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
@@ -20,10 +38,9 @@ Detailed commands/hashes and all prior failures remain in VALIDATION, including
 C08 and Screen Sharing stay paused until the user returns home; no Camera service
 repair, real Live, physical-printer, BFCache or actual-device acceptance is claimed.
 Keep all55 IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
-unchanged loading policy. Next, select the next bounded native-renderer/product
-slice from the ledger; at-home Local Network inspection remains C08's external
-step. This Markdown-only rollout record preserves application bytes and needs no
-additional service deployment under0028.
+unchanged loading policy. The MCP Camera/Heads cutover above is the active next
+slice; at-home Local Network inspection remains C08's external step. PR97's
+Markdown-only rollout record required no additional deployment under0028.
 
 ### Retained PR95 source/deployment evidence
 

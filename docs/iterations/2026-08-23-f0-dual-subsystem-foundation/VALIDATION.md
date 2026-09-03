@@ -1,5 +1,119 @@
 # F0 dual-subsystem foundation validation
 
+## Current MCP candidate b911d9a: required gate rejected
+
+The sole independent `./scripts/check-repository.sh` attempt on
+`b911d9a395ceacff1e6a2770fe62d6e214da3c28` stopped after 55.444 s at the server
+tests: 326 PASS / 1 FAIL / 3,974 assertions across 33 files. The sole failure was
+`tests/server/bed-mesh.test.ts:205`, which expected 26 resources after the two new
+versioned resources made the actual count 28. Earlier gate stages passed Svelte
+0 errors/0 warnings, AST, 586 UI tests in 57 files and all ten deterministic
+packages. Python and full-browser stages did not run; no full-gate, exact-review
+or shipping approval is claimed.
+
+Independent `app/test-results/mcp-cutover-independent/full-repository.log` has
+SHA256 `087767c5b32fc9106f65d3b904911065e7fffe6a9f51100d76b62936414d7880`.
+The author corrected only `bed-mesh.test.ts:205` from 26 to 28.
+`bun --no-env-file --config=/dev/null test tests/server/bed-mesh.test.ts` passes
+12 tests/141 assertions; `server-bed-mesh-followup.log` SHA256 is
+`115136c606dbbb193cf7c6da10127a3b0c1a2a7eddeb174b58c6cad9622477bb`.
+Production source/artifacts are unchanged; no author UI/browser/build was rerun.
+Corrected source/input identities below are frozen for a new commit and the
+mandatory required-gate renewal. The rejected attempt is retained.
+
+## Current MCP cutover: frozen author evidence, independent gate pending
+
+Author report `plugins/u1-print-studio/app/test-results/mcp-cutover-author/
+AUTHOR-REPORT.json` records exact commands, prior failures and scoped results.
+Its SHA256 is `9ad492c63dd24fb95da9d9dbc9f7919f3923c75a20f44f2e10e0e718da570cb3`.
+The 46 changed/new application-input manifest has SHA256
+`9e252c75065ae88a476e8d19fe74ad00f224b84ee4795ddbdeda518b011c6a3e`.
+Application bytes are frozen for the coordinator commit. This is author evidence;
+required full regression, exact independent approval, deployment and actual
+ChatGPT phone acceptance remain pending.
+
+| Executed check / log | Observed result and boundary |
+| --- | --- |
+| `vitest run src/lib/client/live src/lib/client/camera src/lib/client/host src/lib/client/mcp src/lib/client/legacy` / `ui-consumers.log` | 265 tests in 23 files PASS; shared live/Camera/RPC and new adapter consumers |
+| Focused server contract/role/package tests / `server-consumers.log` | 75 tests in 6 files, 1,250 assertions PASS; final exact package pins separately renewed by `mcp-pins.log`: 2 tests/20 assertions PASS |
+| `bun --no-env-file --config=/dev/null run ui:check` / `ui-check-final.log` | Svelte 0 errors/0 warnings, closed component AST contracts PASS |
+| `bun --no-env-file --config=/dev/null run scripts/build-mcp-observation.ts --check` / `verify-mcp-observation.log` | Deterministic self-contained MCP observation package PASS, 947,699 bytes |
+| `bun --no-env-file --config=/dev/null run scripts/build-live-camera.ts --mcp --check` / `verify-mcp-camera.log` | Deterministic MCP Camera package PASS, 96,643 bytes; distinct host-result entry |
+| `bun --no-env-file --config=/dev/null x playwright test --config playwright.mcp.config.ts` / `browser-formatted.log` | 32 cases PASS in 51.6 s on final formatted artifacts with synthetic MCP resources/media |
+| `bun --no-env-file --config=/dev/null test-results/mcp-cutover-author/dashboard-camera-smoke.ts` / `dashboard-camera-smoke.log` | PASS: one initial request, three 44px modes and explicit Refresh; shared dashboard request policy |
+| `bun --no-env-file --config=/dev/null run build:server -- --outdir test-results/mcp-cutover-author/payload-{one,two}` (two separate invocations) | Both PASS: 58 runtime entries, 72 static routes; all 59 physical payload files, including manifest, byte-identical |
+
+The 32-case renewal covers Heads Refresh/Copy, Camera icon Switch/fallback and
+initial-error Retry at 320/390/720 widths and enlarged text, the retained eight
+legacy views, result-first/compatibility replay, contradictory input, stale
+failure suppression, intrinsic height/init retry, and a synthetic Live lease
+released on nonpersisted pagehide. It is a complete scoped renewal after source
+formatting, not an aggregation with the earlier 2/9/14-case runs or the preceding
+32-case run. No actual printer Live, phone clipboard or real host acceptance is
+inferred from simulated media/RPC.
+
+Retain `camera-bootstrap-count.log`: the earlier wiring produced opening-tool
+plus duplicate `get_u1_camera_frame` acquisition (`frameNumber: 2`). Decision0044
+responds with the separate host-result entry and bounded explicit initial policy;
+the final 32-case renewal asserts one initial acquisition. Independent checks
+remain required. Earlier
+focused UI48/server30/browser2/9/14 and pre-format browser32 successes remain
+attributed to their earlier inputs, not the eventual frozen candidate.
+
+The two new artifacts are `mcp-camera.html` 96,643 bytes, SHA256
+`bcdd91b6646989639fa68c52536705ebf8b92b7a4dc15f8ae2d2e2b3c7134fe2`, and
+`mcp-observation.html` 947,699 bytes, SHA256
+`2838485ed47250f1c8dbc413227743981c7e2a2f5ea22b9c8acb8791b094edc4`.
+The four old resource HTML files are byte-identical to base `3e6a4d7`; exact
+hashes remain in the report. Five focused Svelte packages were rebuilt for
+shared RPC/Camera inputs; this slice does not claim all prior assets unchanged.
+The 59-file comparison manifest `payload-manifest.json` has SHA256
+`e2d36fcbc88b4a8db0a64ff6a98e32d2b84aa2c42fda213e9c415f9bdbfdf429`;
+this is distinct from the runtime build manifest. The actual
+`payload-one/build-manifest.json` file SHA256 is
+`5878d4327fd4e12c2ef87a413cba424b7bc78fbc338c931b9b392a6f7974fd19`.
+
+The author reports an earlier alias/current-URI expectation mismatch without a
+saved raw failure log; do not invent a missing log or treat all attempts as clean.
+Early source-review seams (error envelopes, contradictory input, initialized
+height/retry, safe-area ownership and overlapping initial decode generation) were
+repaired before freeze. Pre-freeze source review is not exact approval. All
+author browsers/processes were closed and port 4182 has no listener; user tabs,
+deployed runtimes and evidence logs were preserved. No author full required run,
+real printer/Camera reads, plugin reinstall, auth/network changes or deployment
+occurred.
+
+Staging caught three trailing-space blank lines omitted by the earlier untracked
+diff check. After removing only those spaces,
+`bun --no-env-file --config=/dev/null run --cwd plugins/u1-print-studio/app verify:mcp-observation`
+and `git diff --check 3e6a4d7` PASS, including the new files. The 947,699-byte
+observation artifact retains SHA256 `2838485ed47250f1c8dbc413227743981c7e2a2f5ea22b9c8acb8791b094edc4`;
+affected determinism was renewed and unchanged runtime evidence retained without
+repeating browser/full suites. The current report/input hashes above include
+this whitespace-only correction.
+
+### Initial MCP cutover scope checkpoint
+
+At base `3e6a4d713469e14a61f0da790c42b722901fc651` on
+`codex/u1-mcp-svelte-widgets`, read-only inspection of
+`plugins/u1-print-studio/app/src/lib/server/app.ts` confirms active MCP resource
+registration reads `widget.html` and `camera-widget.html`. PR97's native route
+acceptance below does not prove a shared Svelte renderer in the plugin host.
+The user-provided phone screenshots are evidence of the earlier presentation,
+not acceptance of this new cutover.
+
+This initial records checkpoint updates execution order and acceptance only.
+Its author ran no app build, full regression, browser, printer or Camera checks;
+implementation-owner focused evidence is pending and not claimed here. Source,
+deployment and actual-host acceptance for the new cutover remain pending. New application/resource changes require their affected
+checks; prior PR97 evidence remains attributed to its original bytes. Commands
+run for this records checkpoint: `git status --short`, `git branch --show-current`,
+`git rev-parse HEAD`, bounded `sed`/`/opt/homebrew/bin/rg` record and resource reads,
+`git diff --check`, and a `uv run --no-project python` comparison of ledger IDs
+against `git show HEAD:docs/widget-delivery.md`: PASS, all 55 IDs retained in
+order and all seven owned continuity files present. No application checks were
+run for this documentation-only initial scope update.
+
 ## Current PR97: exact350fb6e approval and guarded deployment
 
 Independent `app/test-results/independent-350fb6e/REPORT.json`, SHA256

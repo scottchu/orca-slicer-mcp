@@ -1,5 +1,28 @@
 # Project state
 
+## Current work: MCP Camera and Heads Svelte cutover
+
+Author application bytes are frozen on `codex/u1-mcp-svelte-widgets`, based on `3e6a4d7`.
+PR97 remains deployed: its native dashboard pages did not migrate the MCP
+resources. Decision0044's candidate selects Camera v11 through deterministic
+`mcp-camera.html` and observation v15 through a nine-view dispatcher: shared
+Svelte Heads plus the other eight existing renderers.
+
+Camera's thin MCP entry selects service-owned host-result initial bootstrap;
+dashboard keeps request bootstrap. One bridge/lifecycle, self-contained assets,
+old URI compatibility and private metadata remain required. Author focused
+checks and source/payload hashes are recorded in VALIDATION. The required
+full gate, exact independent approval, guarded delivery and actual plugin-host
+Refresh/Copy/icon Switch acceptance are pending.
+
+Candidate `b911d9a` failed the required gate on one stale resource-count test;
+the test-only correction passes focused checks; a renewed frozen gate is pending
+(see VALIDATION).
+
+C08 Live connectivity and Screen Sharing stay paused; this slice includes no
+real-printer reads or controls. Preserve all 55 ledger IDs, Progress no-action,
+F07 reactive-class discussion, separate c6 and the unchanged loading policy.
+
 ## Current deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
@@ -20,10 +43,9 @@ Detailed commands/hashes and all prior failures remain in VALIDATION, including
 C08 and Screen Sharing stay paused until the user returns home; no Camera service
 repair, real Live, physical-printer, BFCache or actual-device acceptance is claimed.
 Keep all55 IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
-unchanged loading policy. Next, select the next bounded native-renderer/product
-slice from the ledger; at-home Local Network inspection remains C08's external
-step. This Markdown-only rollout record preserves application bytes and needs no
-additional service deployment under0028.
+unchanged loading policy. The MCP Camera/Heads cutover above is the active next
+slice; at-home Local Network inspection remains C08's external step. PR97's
+Markdown-only rollout record required no additional deployment under0028.
 
 ### Retained PR95 source/deployment evidence
 

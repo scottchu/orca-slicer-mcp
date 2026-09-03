@@ -1,0 +1,4 @@
+#widget-root {
+  display: flow-root;
+  padding: var(--u1-host-inset-top, env(safe-area-inset-top, 0px)) var(--u1-host-inset-right, env(safe-area-inset-right, 0px)) var(--u1-host-inset-bottom, env(safe-area-inset-bottom, 0px)) var(--u1-host-inset-left, env(safe-area-inset-left, 0px));
+}

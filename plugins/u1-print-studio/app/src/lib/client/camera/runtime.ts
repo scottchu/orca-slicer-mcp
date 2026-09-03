@@ -1,4 +1,4 @@
-import { createHostRpc } from '../host/rpc';
+import { createWidgetHost } from '../host/widget';
 import type { VideoSurfacePort } from '../media/playback';
 import { createCameraPeer } from './peer';
 import { createLiveCameraController } from './live-controller';
@@ -7,11 +7,12 @@ type CameraCompatibility = { widgetState?: unknown; setWidgetState?: (state: unk
 const record = (value: unknown): Record<string, unknown> | null => value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : null;
 
 /** The only browser/host edge. No printer URL, fetch or synthetic producer. */
-export const createBrowserCamera = (surface: VideoSurfacePort) => {
+export const createBrowserCamera = (surface: VideoSurfacePort, initialSnapshot: 'request' | 'host-result' = 'request') => {
   const host = window as Window & { openai?: CameraCompatibility };
   let cancelDecode: (() => void) | null = null;
   const controller = createLiveCameraController({
-    rpc: createHostRpc(window),
+    initialSnapshot,
+    rpc: createWidgetHost(),
     scheduler: { now: () => performance.now(), timestamp: () => new Date().toISOString(), after: (milliseconds, callback) => {
       const timer = setTimeout(callback, milliseconds); return () => clearTimeout(timer);
     } },

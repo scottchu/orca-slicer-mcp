@@ -5,6 +5,7 @@ import { cameraTransport, parseCameraFrame } from './transport';
 export type LiveCameraState = { camera: CameraSessionState; feedback: string };
 export type LiveCameraPorts = Omit<CameraSessionPorts, 'changed' | 'transport'> & {
   rpc: HostRpc; savedLiveIntent: () => boolean;
+  initialSnapshot?: 'request' | 'host-result';
 };
 
 /** One mounted real-camera orchestration owner, independent of DOM and fixtures. */
@@ -12,6 +13,8 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
   let disposed = false, started = false, hidden = false, generation = 0, notificationVersion = 0, feedbackOwner = 0;
   let stopNotifications: (() => void) | null = null;
   let stopFeedback: (() => void) | null = null;
+  let stopInitial: (() => void) | null = null;
+  let acceptInitial: ((accepted: boolean) => void) | null = null;
   let feedback = '';
   let previousFeedback: CameraSessionState['feedback'] = null;
   const listeners = new Set<(state: LiveCameraState) => void>();
@@ -40,25 +43,58 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
     }
     emit();
   } });
-  const beginAction = () => { feedbackOwner = ++generation; notify(''); };
+  const beginAction = () => {
+    feedbackOwner = ++generation;
+    acceptInitial?.(false);
+    notify('');
+  };
   const start = () => {
     if (disposed || started) return;
     started = true;
     let bootstrap = Promise.resolve(false);
+    if (ports.initialSnapshot === 'host-result') {
+      bootstrap = new Promise<boolean>((resolve) => {
+        acceptInitial = (accepted) => {
+          stopInitial?.();
+          stopInitial = null;
+          acceptInitial = null;
+          resolve(accepted);
+        };
+        stopInitial = ports.scheduler.after(15000, () => { acceptInitial?.(false); });
+      });
+    }
     stopNotifications = ports.rpc.subscribe((event) => {
       if (event.kind !== 'result' || disposed || hidden) return;
       try {
         const result = parseCameraFrame(event.value);
-        if (!result.snapshot) return;
-        notificationVersion++;
-        bootstrap = session.acceptHostFrame(result);
-      } catch { /* Other tools and invalid private envelopes are not camera data. */ }
+        const receipt = ++notificationVersion;
+        if (!result.snapshot) {
+          acceptInitial?.(false);
+          return;
+        }
+        const accepted = session.acceptHostFrame(result);
+        if (ports.initialSnapshot === 'host-result') {
+          void accepted.then((value) => {
+            if (receipt === notificationVersion) acceptInitial?.(value);
+          });
+        } else bootstrap = accepted;
+      } catch {
+        if ((event.value as { isError?: boolean } | null)?.isError === true && acceptInitial) {
+          notificationVersion++;
+          acceptInitial(false);
+        }
+        // Other tools and invalid private envelopes are not camera data.
+      }
     });
     const current = generation;
     void (async () => {
       const initialVersion = notificationVersion;
       const accepted = await bootstrap;
       if (disposed || hidden || generation !== current) return;
+      if (!accepted && ports.initialSnapshot === 'host-result') {
+        session.initialFrameUnavailable();
+        return;
+      }
       if (!accepted && initialVersion === notificationVersion) await session.refreshSnapshot();
       else if (!accepted) await bootstrap;
       if (disposed || hidden || generation !== current) return;
@@ -80,7 +116,7 @@ export const createLiveCameraController = (ports: LiveCameraPorts) => {
     pageShow: () => { if (disposed || !hidden) return Promise.resolve(); hidden = false; return session.pageShow().then(() => { if (!session.state().snapshot && session.state().phase !== 'connecting') return session.refreshSnapshot(); }); },
     dispose: () => {
       if (disposed) return;
-      ++generation; stopNotifications?.(); stopFeedback?.();
+      ++generation; acceptInitial?.(false); stopNotifications?.(); stopFeedback?.();
       session.dispose();
       // Drain late allocations and their best-effort close before removing the
       // host request map. Both downstream RPC rounds stay finitely bounded.

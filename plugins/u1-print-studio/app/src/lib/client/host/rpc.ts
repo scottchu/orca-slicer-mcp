@@ -5,13 +5,17 @@ export type HostRpc = {
   subscribe: (listener: (event: HostEvent) => void) => () => void;
   dispose: () => void;
 };
-type Compatibility = { toolInput?: unknown; toolOutput?: unknown; toolResponseMetadata?: unknown };
+type Compatibility = { toolInput?: unknown; toolOutput?: unknown; toolResponseMetadata?: unknown; safeArea?: unknown; displayMode?: unknown };
 type HostWindow = Pick<Window, 'parent' | 'addEventListener' | 'removeEventListener'> & { openai?: Compatibility };
 const record = (value: unknown): Record<string, unknown> | null =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : null;
 
 /** One standard calling transport. Compatibility contributes data, never calls. */
-export const createHostRpc = (host: HostWindow, options: { timeoutMs?: number } = {}): HostRpc => {
+export const createHostRpc = (host: HostWindow, options: {
+  timeoutMs?: number;
+  onHostContext?: (context: unknown) => void;
+  onInitialized?: () => void;
+} = {}): HostRpc => {
   const timeoutMs = options.timeoutMs ?? 15_000;
   if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) throw new Error('Invalid host deadline');
   const pending = new Map<number, { resolve: (value: unknown) => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> }>();
@@ -49,9 +53,11 @@ export const createHostRpc = (host: HostWindow, options: { timeoutMs?: number } 
     }
     if (message.method === 'ui/notifications/tool-input') { standard.add('input'); emit({ kind: 'input', value: message.params }); }
     if (message.method === 'ui/notifications/tool-result') { standard.add('result'); emit({ kind: 'result', value: message.params }); }
+    if (message.method === 'ui/notifications/host-context-changed') options.onHostContext?.(message.params);
   };
   const globals = (value: Compatibility | undefined) => {
     if (!value) return;
+    options.onHostContext?.(value);
     if (!standard.has('input') && value.toolInput !== undefined) emit({ kind: 'input', value: value.toolInput });
     const metadata = record(value.toolResponseMetadata);
     const complete = metadata?.mcp_tool_result ?? metadata?.call_tool_result;
@@ -67,10 +73,12 @@ export const createHostRpc = (host: HostWindow, options: { timeoutMs?: number } 
   const start = (): Promise<void> => {
     if (disposed) return Promise.reject(new Error('Host disposed'));
     if (!initialized) initialized = request('ui/initialize', {
-      appInfo: { name: 'u1-observation', version: '0.4.8' }, appCapabilities: {}, protocolVersion: '2026-01-26'
+      appInfo: { name: 'u1-observation', version: '0.4.9' }, appCapabilities: {}, protocolVersion: '2026-01-26'
     }).then((value) => {
       if (disposed || !record(value)) throw new Error('Invalid host initialization');
+      options.onHostContext?.(record(value)?.hostContext);
       host.parent.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/initialized', params: {} }, '*');
+      options.onInitialized?.();
     }).catch((error) => { initialized = undefined; throw error; });
     return initialized;
   };

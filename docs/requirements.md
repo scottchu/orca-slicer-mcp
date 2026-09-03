@@ -623,7 +623,16 @@ durable-monitor claim.
   security checks and size reporting, with no repository byte ceiling under0042.
   Synthetic producers
   never enter its build graph. Legacy `/camera-widget` and MCP aliases remain
-  until their separate parity cutover. See decision0035 for acceptance gates.
+  until their separate parity cutover. The currently authorized MCP Camera/Heads
+  slice performs that bounded presentation cutover through self-contained shared
+  Svelte resources while preserving legacy URI compatibility, private metadata
+  and bridge-only acquisition/signaling. Camera v11 uses deterministic
+  `mcp-camera.html` with a thin host-result entry: the shared service accepts and
+  decodes the opening tool result without duplicate initial acquisition. Its
+  bounded missing/malformed delivery fails neutrally for explicit Refresh; the
+  dashboard keeps request bootstrap. Independent simulated-host and exact
+  served-resource evidence do not establish actual phone/plugin-host acceptance.
+  See decisions0035/0044 and the active iteration for acceptance gates.
 
 - **UI-004:** Every private observation lab view exposes shared bottom controls
   outside its card for closed synthetic scenario/lifecycle/freshness/value
