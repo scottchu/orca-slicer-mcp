@@ -229,12 +229,13 @@ type InterpretedParameter =
   | { readonly status: "present"; readonly value: number }
   | { readonly status: "ambiguous" };
 const interpretedParameter = (command: string, names: string): InterpretedParameter => {
-  const matches = Array.from(command.matchAll(
-    new RegExp(`(?:^|\\s)[${names}](-?(?:\\d+(?:\\.\\d*)?|\\.\\d+))(?=\\s|$)`, "gi"),
-  ));
-  if (matches.length === 0) return { status: "absent" };
-  if (matches.length !== 1) return { status: "ambiguous" };
-  const value = Number(matches[0]![1]);
+  const interpretedNames = new Set(names.toUpperCase());
+  const tokens = command.split(" ").filter(token => interpretedNames.has(token[0]?.toUpperCase() ?? ""));
+  if (tokens.length === 0) return { status: "absent" };
+  if (tokens.length !== 1) return { status: "ambiguous" };
+  const match = new RegExp(`^[${names}](-?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$`, "i").exec(tokens[0]!);
+  if (!match) return { status: "ambiguous" };
+  const value = Number(match[1]);
   return Number.isFinite(value) ? { status: "present", value } : { status: "ambiguous" };
 };
 const setHeater = (state: HeaterState, target: number, sequence: number, wait: boolean): void => {
@@ -367,7 +368,8 @@ const decodePng = (bytes: Uint8Array): { width: number; height: number; meaningf
   const signature = [137, 80, 78, 71, 13, 10, 26, 10];
   if (bytes.length < 45 || !signature.every((byte, index) => bytes[index] === byte)) return null;
   let offset = 8; let chunkCount = 0; let compressedLength = 0; let width = 0; let height = 0; let colorType = -1;
-  let header = false; let ended = false; const compressedParts: Uint8Array[] = [];
+  let header = false; let ended = false; let idatSeen = false; let idatRunEnded = false;
+  const compressedParts: Uint8Array[] = [];
   while (offset + 12 <= bytes.length) {
     chunkCount += 1; if (chunkCount > MAX_PNG_CHUNKS) return null;
     const length = read32(bytes, offset); if (offset + 12 + length > bytes.length) return null;
@@ -383,11 +385,15 @@ const decodePng = (bytes: Uint8Array): { width: number; height: number; meaningf
       if (!positiveInteger(width, 4096) || !positiveInteger(height, 4096) || width * height > 16_777_216 ||
           data[8] !== 8 || !new Set([0, 2, 4, 6]).has(colorType) || data[10] !== 0 || data[11] !== 0 || data[12] !== 0) return null;
     } else if (type === "IDAT") {
-      if (!header || ended) return null;
+      if (!header || ended || idatRunEnded) return null;
+      idatSeen = true;
       compressedLength += length; if (compressedLength > MAX_PNG_COMPRESSED_BYTES) return null; compressedParts.push(data);
     } else if (type === "IEND") {
       if (length !== 0) return null; ended = true; offset += 12; break;
-    } else if (/^[A-Z]/.test(type)) return null;
+    } else {
+      if (/^[A-Z]/.test(type)) return null;
+      if (idatSeen) idatRunEnded = true;
+    }
     offset += 12 + length;
   }
   if (!header || !ended || compressedParts.length === 0 || offset !== bytes.length) return null;

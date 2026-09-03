@@ -153,7 +153,7 @@ export type PreparedArtifactUploadPort = {
     readonly targetFingerprint: Sha256;
     readonly correlationId: string;
     readonly signal: AbortSignal;
-  }) => Promise<UploadAdapterOutcome>;
+  }) => Promise<unknown>;
 };
 export type GuardedUploadPorts = {
   readonly clock: Clock;
@@ -251,11 +251,11 @@ const validStatusCode = (stored: InternalUploadActionRecord["result"]): boolean 
 const validReplayRecord = (record: InternalUploadActionRecord, actionId: string, fingerprint: Sha256,
   fields: Partial<GuardedUploadResult>): boolean => {
   const consumedAtRequired = new Set([
-    "authorization_binding_mismatch",
     "request_cancelled_before_effect", "upload_acknowledged_unverified", "upload_rejected", "upload_timeout",
     "upload_transport_failed", "upload_outcome_unknown",
   ]).has(record?.result?.code);
-  const consumedAtOptional = new Set(["validation_receipt_expired", "target_preflight_expired", "clock_invalid"])
+  const consumedAtOptional = new Set(["authorization_binding_mismatch", "validation_receipt_expired",
+    "target_preflight_expired", "clock_invalid"])
     .has(record?.result?.code);
   return record !== null && typeof record === "object" &&
   Object.keys(record).sort().join("|") === actionRecordKeys.join("|") &&
@@ -274,6 +274,32 @@ const validReplayRecord = (record: InternalUploadActionRecord, actionId: string,
     record.remoteArtifactId.length <= 512 && !/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(record.remoteArtifactId))) &&
   (record.result.status === "acknowledged" ? record.remoteArtifactId !== null :
     record.result.status === "outcome_unknown" || record.remoteArtifactId === null);
+};
+const validRemoteArtifactId = (value: unknown): value is string => typeof value === "string" && value.length > 0 &&
+  value.length <= 512 && !/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(value);
+const normalizeUploadAdapterOutcome = (value: unknown): UploadAdapterOutcome => {
+  try {
+    if (value === null || typeof value !== "object" || Array.isArray(value)) return { status: "outcome_unknown" };
+    const keys = Reflect.ownKeys(value);
+    if (keys.some(key => typeof key !== "string")) return { status: "outcome_unknown" };
+    const sortedKeys = (keys as string[]).sort().join("|");
+    const candidate = value as Record<string, unknown>;
+    if (candidate.status === "acknowledged") {
+      return sortedKeys === "remoteArtifactId|status" && validRemoteArtifactId(candidate.remoteArtifactId) ?
+        { status: "acknowledged", remoteArtifactId: candidate.remoteArtifactId } : { status: "outcome_unknown" };
+    }
+    if (candidate.status === "rejected" || candidate.status === "timeout" || candidate.status === "transport_failed") {
+      return sortedKeys === "status" ? { status: candidate.status } : { status: "outcome_unknown" };
+    }
+    if (candidate.status === "outcome_unknown") {
+      if (sortedKeys === "status") return { status: "outcome_unknown" };
+      return sortedKeys === "remoteArtifactId|status" && validRemoteArtifactId(candidate.remoteArtifactId) ?
+        { status: "outcome_unknown", remoteArtifactId: candidate.remoteArtifactId } : { status: "outcome_unknown" };
+    }
+  } catch {
+    // An adapter result is untrusted even when its static implementation type is narrower.
+  }
+  return { status: "outcome_unknown" };
 };
 
 export const uploadPreparedArtifact = async (
@@ -410,9 +436,10 @@ export const uploadPreparedArtifact = async (
     if (deadline.signal.aborted) return complete(result("unavailable", "request_cancelled_before_effect", boundFields));
     let adapterOutcome: UploadAdapterOutcome;
     try {
-      adapterOutcome = await ports.uploader.upload({ artifactBytes, artifactSha256: validation.artifactSha256!,
+      const rawAdapterOutcome = await ports.uploader.upload({ artifactBytes, artifactSha256: validation.artifactSha256!,
         manifestSha256: validation.manifestSha256!, targetFingerprint: validation.targetFingerprint!,
         correlationId: safeRequest.correlationId, signal: deadline.signal });
+      adapterOutcome = normalizeUploadAdapterOutcome(rawAdapterOutcome);
     } catch {
       adapterOutcome = { status: "outcome_unknown" };
     }
@@ -421,12 +448,7 @@ export const uploadPreparedArtifact = async (
     const code = adapterOutcome.status === "acknowledged" ? "upload_acknowledged_unverified" :
       adapterOutcome.status === "rejected" ? "upload_rejected" : adapterOutcome.status === "timeout" ? "upload_timeout" :
       adapterOutcome.status === "transport_failed" ? "upload_transport_failed" : "upload_outcome_unknown";
-    const rawRemoteArtifactId = "remoteArtifactId" in adapterOutcome ? adapterOutcome.remoteArtifactId : undefined;
-    const remoteArtifactId = typeof rawRemoteArtifactId === "string" && rawRemoteArtifactId.length > 0 &&
-      rawRemoteArtifactId.length <= 512 && !/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(rawRemoteArtifactId) ? rawRemoteArtifactId : null;
-    if (adapterOutcome.status === "acknowledged" && remoteArtifactId === null) {
-      return complete(result("outcome_unknown", "upload_outcome_unknown", { ...boundFields, requiresVerification: true }));
-    }
+    const remoteArtifactId = "remoteArtifactId" in adapterOutcome ? adapterOutcome.remoteArtifactId : null;
     return complete(result(adapterOutcome.status, code, { ...boundFields, requiresVerification }), remoteArtifactId);
   } finally {
     deadline.close();

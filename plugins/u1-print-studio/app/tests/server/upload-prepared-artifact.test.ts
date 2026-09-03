@@ -122,7 +122,7 @@ type HarnessOptions = {
   authorizationExpiresAt?: string;
   authorizationClaimedAt?: string;
   coordinatorTimes?: ReadonlyArray<string>;
-  adapterOutcome?: UploadAdapterOutcome;
+  adapterOutcome?: unknown;
   upload?: GuardedUploadPorts["uploader"]["upload"];
   replayRecord?: "polluted-result" | "polluted-record" | "invalid-status-code" | "invalid-verification";
 };
@@ -224,7 +224,8 @@ const harness = (options: HarnessOptions = {}) => {
     uploader: { upload: async uploadRequest => {
       uploadCalls += 1;
       if (options.upload) return options.upload(uploadRequest);
-      return options.adapterOutcome ?? { status: "acknowledged", remoteArtifactId: "/private/remote-artifact.gcode" };
+      return Object.hasOwn(options, "adapterOutcome") ? options.adapterOutcome :
+        { status: "acknowledged", remoteArtifactId: "/private/remote-artifact.gcode" };
     } },
   };
   return { ports, validationInput, abortDeadline: () => deadlineControllers.at(-1)?.abort(),
@@ -300,6 +301,16 @@ describe("trusted guarded-upload boundary", () => {
     }
   });
 
+  test("replays a non-consuming authorization binding denial exactly", async () => {
+    const run = harness({ authorization: "mismatch" });
+    const first = await uploadPreparedArtifact(request(), run.ports);
+    const replay = await uploadPreparedArtifact(request(), run.ports);
+    expect(first).toMatchObject({ status: "blocked", code: "authorization_binding_mismatch", replay: false });
+    expect(replay).toEqual({ ...first, replay: true });
+    expect(run.completedRecords[0]?.authorizationConsumedAt).toBeNull();
+    expect(run.uploadCalls).toBe(0);
+  });
+
   test("rejects artifact bytes mutated after the stored validation receipt", async () => {
     const original = buildValidationInput();
     const mutated = { ...original, artifactBytes: new Uint8Array([...original.artifactBytes, 10]) };
@@ -352,6 +363,33 @@ describe("idempotent authorization and effect outcomes", () => {
       expect(first.requiresVerification).toBe(outcome.status !== "rejected");
       expect(JSON.stringify([first, replay])).not.toMatch(/private-id|possible-id/);
     }
+  });
+
+  test("normalizes malformed adapter results and throws to one stable unknown outcome", async () => {
+    for (const malformed of [
+      null,
+      { status: "mystery" },
+      { status: "rejected", remoteArtifactId: "private-rejected-locator" },
+      { status: "acknowledged" },
+    ]) {
+      const run = harness({ adapterOutcome: malformed });
+      const first = await uploadPreparedArtifact(request(), run.ports);
+      const replay = await uploadPreparedArtifact(request(), run.ports);
+      expect(first).toMatchObject({ status: "outcome_unknown", code: "upload_outcome_unknown",
+        requiresVerification: true, replay: false });
+      expect(replay).toEqual({ ...first, replay: true });
+      expect(JSON.stringify([first, replay])).not.toMatch(/mystery|private-rejected-locator|remoteArtifactId/);
+      expect(run.completedRecords[0]?.remoteArtifactId).toBeNull();
+      expect(run.uploadCalls).toBe(1);
+    }
+
+    const thrown = harness({ upload: async () => { throw new Error("private adapter failure"); } });
+    const first = await uploadPreparedArtifact(request(), thrown.ports);
+    const replay = await uploadPreparedArtifact(request(), thrown.ports);
+    expect(first).toMatchObject({ status: "outcome_unknown", code: "upload_outcome_unknown", requiresVerification: true });
+    expect(replay).toEqual({ ...first, replay: true });
+    expect(JSON.stringify([first, replay])).not.toContain("private adapter failure");
+    expect(thrown.uploadCalls).toBe(1);
   });
 
   test("fails closed on polluted or semantically malformed trusted replay records", async () => {
