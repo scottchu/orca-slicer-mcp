@@ -1,6 +1,6 @@
 # 0044 — Connect Heads and Camera Svelte UI to MCP resources
 
-- Status: 採納此 bounded implementation direction；source、deployment 與實際 host 驗收待完成
+- Status: PR99 exact source 獨立接受並部署；installed-resource synthetic postverification 通過，實際 phone/OAuth/clipboard 與 real Live 未驗收
 - Date: 2026-09-02
 - Owners: project maintainers
 - Milestone: F0 / UI-001、UI-002、UI-003；delivery ledger F01、F08、X05

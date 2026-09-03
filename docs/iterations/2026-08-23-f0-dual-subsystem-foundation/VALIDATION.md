@@ -1,6 +1,81 @@
 # F0 dual-subsystem foundation validation
 
-## Current MCP candidate b911d9a: required gate rejected
+## Current PR99: exact approval and guarded deployment
+
+Independent `app/test-results/mcp-cutover-independent/REPORT-f782378.json`, SHA256
+`d52005544b2d414f09041044ea9213720bed2041ff91e763c61b269930641317`,
+APPROVES `f782378bb9bc38e75ed7a5b1f500c586a2f410ff`, tree
+`6c1c79e55ba78c0fccaffd874e2c061e7f573c4f`. All 447 reviewed inputs match.
+Required `./scripts/check-repository.sh` exits 0 in 55.663 s: 586 UI/57 files,
+327 server/33 files/3,975 assertions, ten deterministic packages, 34 service/
+27 shipping Python tests, Svelte 0 errors/0 warnings, AST and repository contracts
+PASS. Full-log SHA256 is
+`95507f091df8a702d2d3d631b968fa6c1387c305f3d9302fa231b36150c9b867`.
+
+Pinned Bun 1.4.0 `--no-env-file --config=/dev/null run test:browser` exits 0
+in 166.639 s: all 344 visual cases plus 32 actual-resource MCP fixture cases PASS;
+log SHA256 `75875e8342354a9b0b7fd11fe886caca2c32c8b9c830a71bf8b86dc649044e13`.
+Independent `actual-mcp.ts` adds four fresh synthetic adversaries: Heads error/
+height, legacy error envelopes, late contradictory input/Copy retirement and
+Camera fallback/private state. It reads all 28 resources, preserves 26 old aliases
+and verifies MIME/CSP, tool/result metadata and both canonical payload hashes.
+The unchanged two author payloads were rehashed, not rebuilt by the reviewer.
+
+Retain the earlier b911d9a rejection below. The first f782378 required attempt
+failed in an unchanged Thermal test's 5,000 ms Chrome startup before navigation/
+render assertions; `bun --no-env-file --config=/dev/null test
+tests/server/observation-widget.test.ts --test-name-pattern
+"Thermal rows render at no more than 64 pixels"` then passed
+its focused case/12 assertions in 1.749 s. The same SHA passed the full renewal,
+without changing source, timeout or guards. Log hashes remain in the independent
+report. The private MCP fixture also failed twice: unsettled body text included
+the inline bundle, then a generic main locator matched two elements. The ignored
+fixture was corrected to awaited `#widget-root` text and stale aria/title checks;
+the final four cases passed with tracked candidate bytes unchanged.
+
+Root ran the plan and then, from repository root:
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 99 --reviewed-sha f782378bb9bc38e75ed7a5b1f500c586a2f410ff --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute
+```
+
+Both exit 0. PR99 merged as `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba` with the
+reviewed tree preserved. Release `20260902-4787c02-pr99-20260902T220944-0679a4`
+explicitly restarted BOTH public/dashboard services: loaded/healthy/integrity
+PASS, 73 static/75 security checks, preservation true and no rollback. Receipt
+`service/shipments/pr99-20260902T220944-0679a4.json` has SHA256
+`e3c3a7f7a0f93aece7293e2b02ad4a1125a7bb814b0cec4535f0538e9760d45e`.
+Both services advertise runtime 0.4.9, schema 13, observation-v15 and camera-v11.
+Independent `app/test-results/mcp-cutover-independent/POSTSHIP-REPORT.json`,
+SHA256 `e7bcf1c0e88b1838fb956db2becd917432b15503d9d8a0728ebaed00ba28f666`,
+records POSTSHIP PASS. It rehashes 61 installed files, all 58 runtime files
+against the canonical payload, and all 447 approved inputs. Fresh public/dashboard
+health reads return 200 with matching current versions.
+
+`bun --no-env-file --config=/dev/null test-results/mcp-cutover-independent/postship-mcp.ts`
+exits 0 in 3.91 s. Exact installed `server.js`/`handler.js` provide initialize,
+tools/list, resources/list and all 28 resource reads through an isolated HTTP
+fixture; every HTML matches the pre-ship source/canonical hash. No compiled
+`tools/call` or actual public OAuth endpoint is used. Two browser groups consume
+those resource bytes with synthetic host replies: Heads whole eight-digit Copy,
+neutral failed Refresh/stable height/recovery; Camera zero redundant initial
+frame request, 44px three-mode Switch, Live-to-Auto and the next accepted synthetic
+Auto frame. No real observation or Camera dependency is called. Owned browser,
+HTTP and MCP resources are closed; port 4181 has no listener.
+
+This is software/synthetic MCP and deployed-service evidence. Actual public OAuth,
+ChatGPT phone/native clipboard and real Live are not accepted. Eight non-Heads
+observation renderers remain legacy; no printer reads, controls, plugin reinstall
+or auth/network changes occurred. Reviewer fixtures 4179/4181/4182 have no listener;
+owned browser/MCP/HTTP resources were closed in finally and user apps preserved.
+This Markdown-only tail retains application bytes and needs no redeployment.
+
+Records-only tail checks: `git diff --check` and a `uv run --no-project python`
+comparison against merge `4787c02` PASS: nine changed Markdown files, no untracked
+files, all 55 ledger IDs retained in order, and no application/dependency/config/
+generated-asset changes. No build/test/deployment was rerun for this tail.
+
+### Rejected MCP candidate b911d9a: retained first required attempt
 
 The sole independent `./scripts/check-repository.sh` attempt on
 `b911d9a395ceacff1e6a2770fe62d6e214da3c28` stopped after 55.444 s at the server
@@ -21,7 +96,7 @@ Production source/artifacts are unchanged; no author UI/browser/build was rerun.
 Corrected source/input identities below are frozen for a new commit and the
 mandatory required-gate renewal. The rejected attempt is retained.
 
-## Current MCP cutover: frozen author evidence, independent gate pending
+### Retained MCP author evidence before exact approval
 
 Author report `plugins/u1-print-studio/app/test-results/mcp-cutover-author/
 AUTHOR-REPORT.json` records exact commands, prior failures and scoped results.
@@ -114,7 +189,7 @@ against `git show HEAD:docs/widget-delivery.md`: PASS, all 55 IDs retained in
 order and all seven owned continuity files present. No application checks were
 run for this documentation-only initial scope update.
 
-## Current PR97: exact350fb6e approval and guarded deployment
+## Earlier PR97: exact350fb6e approval and guarded deployment
 
 Independent `app/test-results/independent-350fb6e/REPORT.json`, SHA256
 `7f73feb0dd5b28f02bb42959daacda7736ace75ef05dd61c53881ffb961e9a78`,

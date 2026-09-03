@@ -1,16 +1,15 @@
 # F0 dual-subsystem foundation brief
 
-## Current slice: MCP Camera and Heads Svelte cutover
+## Delivered slice: PR99 MCP Camera and Heads
 
-Execution order now prioritizes the plugin's real MCP resources before another
-native dashboard/product slice. This advances F01/F08 and the bounded parity
-work in X05; it does not retire all legacy resources. PR97 remains the deployed
-dashboard baseline. Work starts from `3e6a4d7` on
-`codex/u1-mcp-svelte-widgets`. Author source/payload identities and scoped checks
-are frozen in VALIDATION. Required full validation, exact independent approval,
-deployment and actual-host acceptance remain pending.
+Decision0044's bounded MCP cutover is deployed through PR99 `4787c02` after
+exact `f782378` approval, required gates and BOTH service restarts. It advances
+F01/F08/X05 without retiring the other eight observation renderers or old aliases.
+Scoped postdeployment behavior verification passes on installed resources
+with synthetic host data. Actual ChatGPT phone/
+OAuth/clipboard and real Camera Live remain separate acceptance layers.
 [Decision 0044](../../decisions/0044-connect-heads-and-camera-svelte-to-mcp-resources.md)
-owns the bounded resource and compatibility contract.
+owns the resource and compatibility contract; VALIDATION owns evidence.
 
 Acceptance:
 
@@ -38,7 +37,7 @@ controls, authentication/network settings, Progress redesign, F07 reactive-class
 implementation, c6 integration or loading-policy change is part of this slice.
 Preserve all 55 request IDs and remaining product/native-renderer work.
 
-## Current deployment: PR97 native observation pages
+## Earlier deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
 approved350fb6e. Fans, Thermals, Heads and Queue now use native Kit pages at the

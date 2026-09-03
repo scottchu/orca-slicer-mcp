@@ -1,24 +1,27 @@
 # Next agent
 
-## Current order: freeze and verify MCP Camera/Heads candidate
+## Current handoff: PR99 MCP resources deployed
 
-Continue `codex/u1-mcp-svelte-widgets` from `3e6a4d7`. Author source connects Camera
-v11 to deterministic `mcp-camera.html` with service-owned host-result bootstrap,
-and observation v15 to a nine-view dispatcher with shared Svelte Heads only.
-The other eight renderers, old URI assets and one bridge/lifecycle stay intact;
-dashboard Camera retains request bootstrap.
+PR99 `4787c02` is deployed after exact `f782378` approval and BOTH service
+restarts. Camera v11 and observation v15 now select the shared Svelte Camera
+and Heads UI; eight other observation renderers and all old aliases remain.
+Required gates pass; consult VALIDATION for exact evidence and prior failures.
+Scoped postdeployment behavior verification passes on installed resources
+with synthetic host data.
 
-Author source/payload evidence is frozen in VALIDATION. Commit the candidate
-and run the required gate with one owner. Obtain independent exact approval, then use
-`u1-ship` to deploy and restart BOTH services. Verify exact served MCP resources
-and meaningful Refresh/Copy/icon Switch behavior. Actual phone/plugin-host
-acceptance stays separate from simulated host evidence; PR97 is still deployed.
+The next user-outcome check is a new ChatGPT plugin conversation after host
+metadata refresh: request Heads and Camera, then test Refresh, complete-hex Copy
+and the compact icon Switch. Mounted cards do not replace their HTML on data
+Refresh. Do not claim actual phone/OAuth/clipboard or real Live acceptance from
+synthetic tests. No plugin reinstall or per-widget skill change was requested.
 
-C08/Screen Sharing remain paused. No printer reads/controls, Progress redesign,
-F07 reactive-class implementation or c6 integration. Preserve all 55 IDs and
-unchanged loading policy; use the active HANDOFF and VALIDATION for evidence.
+C08/Screen Sharing stay paused. The user reports Bun Local Network access allowed,
+but the machine is unconfirmed and no retest has run. Preserve all 55 IDs,
+unfinished Queue/Fans/Job History work, Progress no-action, F07 class discussion,
+separate c6 and unchanged loading policy. No printer reads/controls or auth/
+network changes follow from this deployment. Docs-only tail needs no redeploy.
 
-## Current deployment: PR97 native observation pages
+## Earlier deployment: PR97 native observation pages
 
 PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
 approved350fb6e. Fans, Thermals, Heads and Queue now use native Kit pages at the
