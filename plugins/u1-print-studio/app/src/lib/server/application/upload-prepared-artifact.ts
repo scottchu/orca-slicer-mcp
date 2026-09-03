@@ -182,10 +182,37 @@ export const digestUploadAuthorization = (record: UploadAuthorization): Sha256 =
 export const digestTargetPreflight = (record: TargetPreflight): Sha256 => digestRecord(record);
 const validId = (value: unknown): value is string => typeof value === "string" && OPAQUE_ID.test(value);
 const validDate = (value: unknown): value is string => typeof value === "string" && Number.isFinite(Date.parse(value));
+const snapshotPlainData = (value: unknown): Readonly<Record<string, unknown>> | null => {
+  try {
+    if (value === null || typeof value !== "object" || Array.isArray(value)) return null;
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== Object.prototype && prototype !== null) return null;
+    const descriptors = Object.getOwnPropertyDescriptors(value);
+    const keys = Reflect.ownKeys(descriptors);
+    if (keys.some(key => typeof key !== "string")) return null;
+    const snapshot: Record<string, unknown> = Object.create(null) as Record<string, unknown>;
+    for (const key of keys as string[]) {
+      const descriptor = Reflect.get(descriptors, key) as PropertyDescriptor;
+      if (!Object.hasOwn(descriptor, "value")) return null;
+      snapshot[key] = descriptor.value;
+    }
+    return Object.freeze(snapshot);
+  } catch {
+    return null;
+  }
+};
+const exactKeys = (snapshot: Readonly<Record<string, unknown>>, keys: ReadonlyArray<string>): boolean =>
+  Object.keys(snapshot).sort().join("|") === keys.join("|");
 const requestKeys = ["correlationId", "idempotencyKey", "preparedJobRevisionId", "targetPreflightId",
   "uploadAuthorizationId", "validationReceiptId"];
-const validRequest = (request: GuardedUploadRequest): boolean => request !== null && typeof request === "object" &&
-  Object.keys(request).sort().join("|") === requestKeys.join("|") && requestKeys.every(key => validId(request[key as keyof GuardedUploadRequest]));
+const snapshotRequest = (value: unknown): GuardedUploadRequest | null => {
+  const request = snapshotPlainData(value);
+  if (!request || !exactKeys(request, requestKeys) || !requestKeys.every(key => validId(request[key]))) return null;
+  return Object.freeze({ preparedJobRevisionId: request.preparedJobRevisionId,
+    validationReceiptId: request.validationReceiptId, uploadAuthorizationId: request.uploadAuthorizationId,
+    targetPreflightId: request.targetPreflightId, idempotencyKey: request.idempotencyKey,
+    correlationId: request.correlationId }) as GuardedUploadRequest;
+};
 const validValidationRecord = (record: StoredValidationReceipt): boolean => record?.schemaVersion === 1 &&
   validId(record.receiptId) && validId(record.preparedJobRevisionId) && SHA256.test(record.digest) &&
   validDate(record.issuedAt) && validDate(record.expiresAt) && record.receipt?.schemaVersion === 1 &&
@@ -233,6 +260,39 @@ const storedResultKeys = ["actionId", "artifactSha256", "code", "correlationId",
   "preparedJobRevisionId", "requiresVerification", "schemaVersion", "status", "targetFingerprint",
   "targetPreflightId", "uploadAuthorizationId", "validationId", "validationReceiptId"];
 const actionRecordKeys = ["actionId", "authorizationConsumedAt", "remoteArtifactId", "requestFingerprint", "result"];
+const snapshotActionClaim = (value: unknown): UploadActionClaim | null => {
+  const claim = snapshotPlainData(value);
+  if (!claim || typeof claim.status !== "string") return null;
+  if (claim.status === "conflict" || claim.status === "unavailable") {
+    return exactKeys(claim, ["status"]) ? { status: claim.status } : null;
+  }
+  if (claim.status === "claimed") {
+    return exactKeys(claim, ["actionId", "status"]) ?
+      { status: "claimed", actionId: claim.actionId as string } : null;
+  }
+  if (claim.status === "replay") {
+    return exactKeys(claim, ["actionId", "record", "status"]) ?
+      { status: "replay", actionId: claim.actionId as string,
+        record: claim.record as InternalUploadActionRecord | null } : null;
+  }
+  return null;
+};
+const snapshotActionRecord = (value: unknown): InternalUploadActionRecord | null => {
+  const record = snapshotPlainData(value);
+  if (!record || !exactKeys(record, actionRecordKeys)) return null;
+  const storedResult = snapshotPlainData(record.result);
+  if (!storedResult || !exactKeys(storedResult, storedResultKeys)) return null;
+  const resultSnapshot = Object.freeze({ schemaVersion: storedResult.schemaVersion, status: storedResult.status,
+    code: storedResult.code, actionId: storedResult.actionId, preparedJobRevisionId: storedResult.preparedJobRevisionId,
+    validationReceiptId: storedResult.validationReceiptId, validationId: storedResult.validationId,
+    uploadAuthorizationId: storedResult.uploadAuthorizationId, targetPreflightId: storedResult.targetPreflightId,
+    correlationId: storedResult.correlationId, artifactSha256: storedResult.artifactSha256,
+    manifestSha256: storedResult.manifestSha256, targetFingerprint: storedResult.targetFingerprint,
+    requiresVerification: storedResult.requiresVerification }) as InternalUploadActionRecord["result"];
+  return Object.freeze({ actionId: record.actionId, requestFingerprint: record.requestFingerprint,
+    result: resultSnapshot, authorizationConsumedAt: record.authorizationConsumedAt,
+    remoteArtifactId: record.remoteArtifactId }) as InternalUploadActionRecord;
+};
 const validStatusCode = (stored: InternalUploadActionRecord["result"]): boolean => {
   const policies: Partial<Record<GuardedUploadStatus, { readonly codes: ReadonlySet<string>; readonly verification: boolean }>> = {
     acknowledged: { codes: new Set(["upload_acknowledged_unverified"]), verification: true },
@@ -278,26 +338,20 @@ const validReplayRecord = (record: InternalUploadActionRecord, actionId: string,
 const validRemoteArtifactId = (value: unknown): value is string => typeof value === "string" && value.length > 0 &&
   value.length <= 512 && !/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(value);
 const normalizeUploadAdapterOutcome = (value: unknown): UploadAdapterOutcome => {
-  try {
-    if (value === null || typeof value !== "object" || Array.isArray(value)) return { status: "outcome_unknown" };
-    const keys = Reflect.ownKeys(value);
-    if (keys.some(key => typeof key !== "string")) return { status: "outcome_unknown" };
-    const sortedKeys = (keys as string[]).sort().join("|");
-    const candidate = value as Record<string, unknown>;
-    if (candidate.status === "acknowledged") {
-      return sortedKeys === "remoteArtifactId|status" && validRemoteArtifactId(candidate.remoteArtifactId) ?
-        { status: "acknowledged", remoteArtifactId: candidate.remoteArtifactId } : { status: "outcome_unknown" };
-    }
-    if (candidate.status === "rejected" || candidate.status === "timeout" || candidate.status === "transport_failed") {
-      return sortedKeys === "status" ? { status: candidate.status } : { status: "outcome_unknown" };
-    }
-    if (candidate.status === "outcome_unknown") {
-      if (sortedKeys === "status") return { status: "outcome_unknown" };
-      return sortedKeys === "remoteArtifactId|status" && validRemoteArtifactId(candidate.remoteArtifactId) ?
-        { status: "outcome_unknown", remoteArtifactId: candidate.remoteArtifactId } : { status: "outcome_unknown" };
-    }
-  } catch {
-    // An adapter result is untrusted even when its static implementation type is narrower.
+  const candidate = snapshotPlainData(value);
+  if (!candidate) return { status: "outcome_unknown" };
+  const sortedKeys = Object.keys(candidate).sort().join("|");
+  if (candidate.status === "acknowledged") {
+    return sortedKeys === "remoteArtifactId|status" && validRemoteArtifactId(candidate.remoteArtifactId) ?
+      { status: "acknowledged", remoteArtifactId: candidate.remoteArtifactId } : { status: "outcome_unknown" };
+  }
+  if (candidate.status === "rejected" || candidate.status === "timeout" || candidate.status === "transport_failed") {
+    return sortedKeys === "status" ? { status: candidate.status } : { status: "outcome_unknown" };
+  }
+  if (candidate.status === "outcome_unknown") {
+    if (sortedKeys === "status") return { status: "outcome_unknown" };
+    return sortedKeys === "remoteArtifactId|status" && validRemoteArtifactId(candidate.remoteArtifactId) ?
+      { status: "outcome_unknown", remoteArtifactId: candidate.remoteArtifactId } : { status: "outcome_unknown" };
   }
   return { status: "outcome_unknown" };
 };
@@ -307,10 +361,8 @@ export const uploadPreparedArtifact = async (
   ports: GuardedUploadPorts,
   options: { readonly signal?: AbortSignal } = {},
 ): Promise<GuardedUploadResult> => {
-  if (!validRequest(request)) return result("error", "request_contract_invalid");
-  const safeRequest = { preparedJobRevisionId: request.preparedJobRevisionId, validationReceiptId: request.validationReceiptId,
-    uploadAuthorizationId: request.uploadAuthorizationId, targetPreflightId: request.targetPreflightId,
-    idempotencyKey: request.idempotencyKey, correlationId: request.correlationId };
+  const safeRequest = snapshotRequest(request);
+  if (!safeRequest) return result("error", "request_contract_invalid");
   let deadline: UploadDeadline;
   try { deadline = ports.clock.openDeadline(GUARDED_UPLOAD_DEADLINE_MS, options.signal); }
   catch { return result("unavailable", "deadline_unavailable"); }
@@ -321,10 +373,16 @@ export const uploadPreparedArtifact = async (
     targetPreflightId: safeRequest.targetPreflightId, correlationId: safeRequest.correlationId };
   const complete = async (outcome: GuardedUploadResult, remoteArtifactId: string | null = null): Promise<GuardedUploadResult> => {
     if (!actionId || !actionFingerprint) return outcome;
-    const { replay: _replay, ...storedResult } = outcome;
-    const stored: InternalUploadActionRecord = { actionId, requestFingerprint: actionFingerprint,
-      result: { ...storedResult, actionId }, authorizationConsumedAt, remoteArtifactId };
-    try { await ports.actions.complete(stored, deadline.signal); return projectStoredResult(stored.result, false); }
+    const storedResult = Object.freeze({ schemaVersion: outcome.schemaVersion, status: outcome.status, code: outcome.code,
+      actionId, preparedJobRevisionId: outcome.preparedJobRevisionId, validationReceiptId: outcome.validationReceiptId,
+      validationId: outcome.validationId, uploadAuthorizationId: outcome.uploadAuthorizationId,
+      targetPreflightId: outcome.targetPreflightId, correlationId: outcome.correlationId,
+      artifactSha256: outcome.artifactSha256, manifestSha256: outcome.manifestSha256,
+      targetFingerprint: outcome.targetFingerprint, requiresVerification: outcome.requiresVerification });
+    const stored = Object.freeze({ actionId, requestFingerprint: actionFingerprint, result: storedResult,
+      authorizationConsumedAt, remoteArtifactId }) as InternalUploadActionRecord;
+    const publicOutcome = projectStoredResult(stored.result, false);
+    try { await ports.actions.complete(stored, deadline.signal); return publicOutcome; }
     catch { return result("outcome_unknown", "action_record_unavailable", { ...boundFields, actionId, requiresVerification: true }); }
   };
   try {
@@ -371,17 +429,22 @@ export const uploadPreparedArtifact = async (
       artifactSha256: validation.artifactSha256, manifestSha256: validation.manifestSha256,
       targetFingerprint: validation.targetFingerprint, validationReceiptDigest: storedValidation.digest,
       preflightDigest: preflight.digest }));
-    let actionClaim: UploadActionClaim;
-    try { actionClaim = await ports.actions.claim({ idempotencyKey: safeRequest.idempotencyKey,
-      requestFingerprint: actionFingerprint, correlationId: safeRequest.correlationId, signal: deadline.signal }); }
+    let actionClaim: UploadActionClaim | null;
+    try {
+      const rawActionClaim = await ports.actions.claim({ idempotencyKey: safeRequest.idempotencyKey,
+        requestFingerprint: actionFingerprint, correlationId: safeRequest.correlationId, signal: deadline.signal });
+      actionClaim = snapshotActionClaim(rawActionClaim);
+    }
     catch { return result("unavailable", "action_claim_unavailable", boundFields); }
+    if (!actionClaim) return result("error", "action_claim_invalid", boundFields);
     if (actionClaim.status === "conflict") return result("blocked", "idempotency_key_conflict", boundFields);
     if (actionClaim.status === "unavailable") return result("unavailable", "action_claim_unavailable", boundFields);
     if (actionClaim.status === "replay") {
       if (!validId(actionClaim.actionId)) return result("error", "action_claim_invalid", boundFields);
       if (!actionClaim.record) return activeReplay(actionClaim.actionId, boundFields);
-      return validReplayRecord(actionClaim.record, actionClaim.actionId, actionFingerprint, boundFields) ?
-        projectStoredResult(actionClaim.record.result, true) : result("error", "action_record_invalid", boundFields);
+      const replayRecord = snapshotActionRecord(actionClaim.record);
+      return replayRecord && validReplayRecord(replayRecord, actionClaim.actionId, actionFingerprint, boundFields) ?
+        projectStoredResult(replayRecord.result, true) : result("error", "action_record_invalid", boundFields);
     }
     actionId = actionClaim.actionId; boundFields = { ...boundFields, actionId };
     if (!validId(actionId)) return result("error", "action_claim_invalid", boundFields);

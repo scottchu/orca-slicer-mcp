@@ -238,12 +238,14 @@ const interpretedParameter = (command: string, names: string): InterpretedParame
   const value = Number(match[1]);
   return Number.isFinite(value) ? { status: "present", value } : { status: "ambiguous" };
 };
+const commandOpcode = (command: string): string | null =>
+  /^([GMT]\d+)(?=\s|$)/i.exec(command)?.[1]?.toUpperCase() ?? null;
 const setHeater = (state: HeaterState, target: number, sequence: number, wait: boolean): void => {
   if (state.target !== target) { state.target = target; state.changedAt = sequence; }
   if (wait) state.waitedAt = sequence;
 };
 const thermalCommand = (command: string, trace: ThermalTrace, activeTool: number, sequence: number): boolean => {
-  const code = /^([GMT]\d+)\b/i.exec(command)?.[1]?.toUpperCase();
+  const code = commandOpcode(command);
   if (!code || !new Set(["M104", "M109", "M140", "M190"]).has(code)) return false;
   const wait = code === "M109" || code === "M190";
   const targetParameter = interpretedParameter(command, wait ? "SR" : "S");
@@ -304,16 +306,17 @@ const parseGcode = (bytes: Uint8Array, approved: ReadonlySet<Sha256>, signal?: A
         if (command) {
           sequence += 1;
           const selected = /^T(\d+)$/i.exec(command);
+          const code = commandOpcode(command);
           if (selected) {
             activeTool = Number(selected[1]);
             if (activeTool < 0 || activeTool > 15) thermal.unknownStartup = true;
-          } else if (/^M82\b/i.test(command)) extrusionMode = "absolute";
-          else if (/^M83\b/i.test(command)) extrusionMode = "relative";
-          else if (/^G92\b/i.test(command)) {
+          } else if (code === "M82") extrusionMode = "absolute";
+          else if (code === "M83") extrusionMode = "relative";
+          else if (code === "G92") {
             const position = interpretedParameter(command, "E");
             if (position.status === "present") extruderPositions.set(activeTool, position.value);
             else if (position.status === "ambiguous" || /(?:^|\s)E/i.test(command)) thermal.extrusionBoundaryUnprovable = true;
-          } else if (/^G(?:0|1)\b/i.test(command) && /(?:^|\s)E/i.test(command)) {
+          } else if ((code === "G0" || code === "G1") && /(?:^|\s)E/i.test(command)) {
             const commandedParameter = interpretedParameter(command, "E");
             if (commandedParameter.status !== "present" || extrusionMode === null) thermal.extrusionBoundaryUnprovable = true;
             else if (extrusionMode === "relative") {
@@ -329,7 +332,6 @@ const parseGcode = (bytes: Uint8Array, approved: ReadonlySet<Sha256>, signal?: A
               extruderPositions.set(activeTool, commanded);
             }
           } else if (!thermalCommand(command, thermal, activeTool, sequence)) {
-            const code = /^([GMT]\d+)\b/i.exec(command)?.[1]?.toUpperCase();
             if ((!code || !allowedStartupCommands.has(code)) && !approved.has(hashStartupCommand(command))) thermal.unknownStartup = true;
           }
         }

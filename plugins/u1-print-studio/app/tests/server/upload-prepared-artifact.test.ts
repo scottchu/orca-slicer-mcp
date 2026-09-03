@@ -124,7 +124,8 @@ type HarnessOptions = {
   coordinatorTimes?: ReadonlyArray<string>;
   adapterOutcome?: unknown;
   upload?: GuardedUploadPorts["uploader"]["upload"];
-  replayRecord?: "polluted-result" | "polluted-record" | "invalid-status-code" | "invalid-verification";
+  replayRecord?: "polluted-result" | "polluted-record" | "invalid-status-code" | "invalid-verification" |
+    "accessor-result-code" | "accessor-remote";
 };
 const harness = (options: HarnessOptions = {}) => {
   const validationInput = options.validationInput ?? buildValidationInput();
@@ -200,6 +201,18 @@ const harness = (options: HarnessOptions = {}) => {
         if (options.replayRecord === "invalid-verification") replayRecord = {
           ...record, result: { ...record.result, requiresVerification: false },
         };
+        if (options.replayRecord === "accessor-result-code") {
+          const accessorResult = { ...record.result }; let reads = 0;
+          Object.defineProperty(accessorResult, "code", { enumerable: true,
+            get: () => reads++ === 0 ? "upload_acknowledged_unverified" : "/private/changed-code.gcode" });
+          replayRecord = { ...record, result: accessorResult };
+        }
+        if (options.replayRecord === "accessor-remote") {
+          const accessorRecord = { ...record }; let reads = 0;
+          Object.defineProperty(accessorRecord, "remoteArtifactId", { enumerable: true,
+            get: () => reads++ === 0 ? "/private/first.gcode" : "/private/changed.gcode" });
+          replayRecord = accessorRecord;
+        }
         actions.set(entry[0], { ...entry[1], record: replayRecord as InternalUploadActionRecord });
       },
     },
@@ -390,15 +403,30 @@ describe("idempotent authorization and effect outcomes", () => {
     expect(replay).toEqual({ ...first, replay: true });
     expect(JSON.stringify([first, replay])).not.toContain("private adapter failure");
     expect(thrown.uploadCalls).toBe(1);
+
+    let locatorReads = 0;
+    const accessorOutcome = { status: "acknowledged" } as Record<string, unknown>;
+    Object.defineProperty(accessorOutcome, "remoteArtifactId", { enumerable: true,
+      get: () => locatorReads++ === 0 ? "/private/first.gcode" : "/private/changed.gcode" });
+    const accessor = harness({ adapterOutcome: accessorOutcome });
+    const accessorFirst = await uploadPreparedArtifact(request(), accessor.ports);
+    const accessorReplay = await uploadPreparedArtifact(request(), accessor.ports);
+    expect(accessorFirst).toMatchObject({ status: "outcome_unknown", code: "upload_outcome_unknown" });
+    expect(accessorReplay).toEqual({ ...accessorFirst, replay: true });
+    expect(locatorReads).toBe(0); expect(accessor.uploadCalls).toBe(1);
+    expect(JSON.stringify([accessorFirst, accessorReplay])).not.toMatch(/private|remoteArtifactId/);
   });
 
   test("fails closed on polluted or semantically malformed trusted replay records", async () => {
-    for (const replayRecord of ["polluted-result", "polluted-record", "invalid-status-code", "invalid-verification"] as const) {
+    for (const replayRecord of ["polluted-result", "polluted-record", "invalid-status-code", "invalid-verification",
+      "accessor-result-code", "accessor-remote"] as const) {
       const run = harness({ replayRecord });
       expect((await uploadPreparedArtifact(request(), run.ports)).status).toBe("acknowledged");
       const replay = await uploadPreparedArtifact(request(), run.ports);
+      const repeatedReplay = await uploadPreparedArtifact(request(), run.ports);
       expect(replay).toMatchObject({ status: "error", code: "action_record_invalid", replay: false });
-      expect(JSON.stringify(replay)).not.toMatch(/private-leak|private-key|remoteArtifactId|idempotencyKey/);
+      expect(repeatedReplay).toEqual(replay);
+      expect(JSON.stringify([replay, repeatedReplay])).not.toMatch(/private|remoteArtifactId|idempotencyKey/);
       expect(run.uploadCalls).toBe(1);
     }
   });

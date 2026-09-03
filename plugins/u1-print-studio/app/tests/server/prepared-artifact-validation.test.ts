@@ -236,6 +236,16 @@ describe("ordered thermal validation", () => {
     expect(check(fixture({ artifactBytes: alternateExtrusion, thermalIntent: unheated() }), "thermal_intent"))
       .toMatchObject({ status: "unavailable", code: "thermal_extrusion_boundary_unavailable" });
   });
+
+  test("rejects decimal opcode suffixes instead of treating them as integer commands", () => {
+    expect(check(fixture({ artifactBytes: gcode("M140 S60\nM190.1 S60\nM104 T0 S210\nM109.1 T0 S210") }),
+      "thermal_intent")).toMatchObject({ status: "unavailable", code: "thermal_startup_semantics_unapproved" });
+    const falseExtrusion = new TextEncoder().encode([
+      "M82", "G92 E0", "G1.1 E1", "U1_BOOT BED=60", thumbnailBlock(), "G1 E0.5", "",
+    ].join("\n"));
+    expect(check(fixture({ artifactBytes: falseExtrusion, thermalIntent: unheated() }), "thermal_intent"))
+      .toMatchObject({ status: "unavailable", code: "thermal_startup_semantics_unapproved" });
+  });
 });
 
 describe("bounded embedded-thumbnail evidence", () => {
