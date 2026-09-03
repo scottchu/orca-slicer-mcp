@@ -1,19 +1,34 @@
 # Next agent
 
-## Final-review the presentation experiment and preserve its boundary
+## Preserve the approved tailnet-only presentation experiment preview
 
 Resume from decision0048 and the active iteration records. The frozen
-application source-set manifest is
+source is `518c6440db1d624361a1a804754590def3e330e2`, tree
+`a79032b72e04cab6d4dc32a26c4db47024aad5c3`; its application source-set
+manifest is
 `7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`;
 the isolated 137,936-byte MCP resource SHA-256 is
 `6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
 Independent `printer_domain_expert` review approved prior manifest
 `4437e4f9f032cfffef3405227b7775c3f40dfb3a9326858bee478b2a826115fc`
 after two request-changes rounds. A later formatting-only generator/source
-cleanup produced the current identity and renewed every affected author check;
-final independent exact-candidate review is pending. VALIDATION contains the
-final 8 client, 13 server/75
-assertion, checks/builds and four-browser-case evidence.
+cleanup produced the current identity and renewed every affected author check.
+The project-scoped `printer_domain_expert`, acting as independent read-only
+runtime verifier, now APPROVES the exact source/tree for this tailnet-only
+preview. VALIDATION contains the final 8 client, 13 server/75 assertion,
+checks/builds and four-browser-case evidence.
+
+The separate synthetic fixture remains running under
+`com.openai.u1-composable-preview` at `127.0.0.1:4199`; tailnet-only HTTPS 8450
+proxies only `/` to that fixture. Local and Tailnet Lab requests pass 200 and
+share body SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`.
+Full configuration comparison proves every earlier Serve/Funnel mapping is
+preserved and 8450 has no Funnel permission. Keep the preview running unless
+cleanup is requested. Cleanup is endpoint-scoped:
+`Tailscale serve --yes --https=8450 off`, then
+`launchctl remove com.openai.u1-composable-preview`; never use Serve/Funnel
+reset.
 
 Treat it only as an isolated UI-003 private-lab experiment. Preserve fixed T1,
 the four closed domain leaves/common layout nodes, strict correlated envelope,
@@ -29,10 +44,11 @@ into bottom overlays within dynamic media through a separate screenshot-first,
 independently reviewed migration. Retain current media/session/control/
 frame-evidence semantics until that migration is accepted.
 
-Next action is final independent exact-commit review. After that, if requested,
-product review of the learning and a separately scoped decision for any
-production adoption. Do not change printer, service, authentication or
-Tailscale state.
+Next action is user/product review of the provisional learning, if requested,
+then a separately scoped decision for any production adoption. Current runtime
+evidence came from the same enrolled host and proves no browser/device visual,
+public Internet, real-printer, Camera, auth-flow or user outcome. Do not change
+printer, production service, authentication or other Tailscale state.
 
 ## Current deployment: PR106 host fullscreen and packaged body insets
 

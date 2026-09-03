@@ -1,8 +1,10 @@
 # F0 dual-subsystem foundation handoff
 
-## Current source: presentation experiment awaiting final exact review
+## Current source: approved tailnet-only presentation experiment preview
 
-The renewed 45-path application source candidate has manifest
+Frozen source `518c6440db1d624361a1a804754590def3e330e2`, tree
+`a79032b72e04cab6d4dc32a26c4db47024aad5c3`, has the 45-path application
+manifest
 `7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
 Its isolated MCP resource is 137,936 bytes at SHA-256
 `6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
@@ -15,8 +17,23 @@ The printer-domain reviewer approved prior manifest
 `4437e4f9f032cfffef3405227b7775c3f40dfb3a9326858bee478b2a826115fc`.
 A later
 whole-range whitespace check caused a formatting-only generator/source cleanup,
-full affected author renewal and the identity above; final independent exact-
-candidate review is still required.
+full affected author renewal and the identity above. The same project-scoped
+`printer_domain_expert`, acting as independent read-only runtime verifier,
+APPROVES the exact source/tree for this tailnet-only preview.
+
+The synthetic Lab runs separately as `com.openai.u1-composable-preview` on
+`127.0.0.1:4199`, with tailnet-only HTTPS 8450 proxying only `/` to that origin.
+Local and Tailnet Lab requests pass 200 with byte-identical SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`.
+Before/after Serve/Funnel hashes are respectively
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`
+and `d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`.
+Pruning only the new HTTPS 8450 root proxy makes the after state canonically
+identical to before; the Funnel allowlist is unchanged, 8450 has no Funnel, and
+negative auth/OAuth/media probes expose no added surfaces. Production jobs were
+uninterrupted. Endpoint-only cleanup is
+`Tailscale serve --yes --https=8450 off`, followed by
+`launchctl remove com.openai.u1-composable-preview`.
 
 Decision0048 accepts only the isolated private-lab experiment: fixed T1, four
 closed domain leaves, common layout nodes, strict correlated envelopes,
@@ -32,11 +49,12 @@ dynamic media. No Camera file changed. A separate screenshot-first candidate
 must preserve media/session/control/frame-evidence semantics and pass source,
 packaged-host and device review before adoption.
 
-Next smallest action is independent exact-commit/source review of the renewed
-identity and durable records. Do
-not PR, merge, deploy, register the Lab factory in production, or change printer,
-authentication or Tailscale state. Any product adoption requires a new decision
-and fresh exact-candidate evidence.
+Next smallest action is user/product review of the provisional learning, if
+requested. Do not PR, merge, deploy, register the Lab factory in production, or
+change printer, authentication or unrelated Tailscale state. Evidence is from
+the same enrolled host and is not browser/device visual, public-Internet,
+real-printer, Camera, auth-flow or user-outcome acceptance. Any product adoption
+requires a new decision and fresh exact-candidate evidence.
 
 ## Current deployment: PR106 host fullscreen and packaged body insets
 

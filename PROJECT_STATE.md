@@ -1,21 +1,33 @@
 # Project state
 
-## Current source: entity-bound presentation AST private-lab experiment
+## Current source and preview: entity-bound presentation AST private-lab experiment
 
-Decision0048's exploratory T1 composition is a renewed author candidate at the
-45-path manifest
+Decision0048's exploratory T1 composition is frozen at source
+`518c6440db1d624361a1a804754590def3e330e2`, tree
+`a79032b72e04cab6d4dc32a26c4db47024aad5c3`, and the 45-path manifest
 `7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
 The deterministic isolated MCP resource is 137,936 bytes, SHA-256
 `6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
 Focused author evidence passes 8 client tests, 13 server/MCP tests with 75
 assertions, UI/server checks and builds, plus four Chrome cases at 320/720.
 VALIDATION records initial architecture/design gaps, two independent
-request-changes rounds, final approval and exact evidence boundaries.
-That approval binds prior manifest
-`4437e4f9f032cfffef3405227b7775c3f40dfb3a9326858bee478b2a826115fc`;
-a later whitespace-only
-generator/source cleanup renewed all affected author checks and now awaits final
-independent exact-candidate review.
+request-changes rounds, final source evidence and exact boundaries. The final
+project-scoped `printer_domain_expert`, acting as an independent read-only
+runtime verifier, APPROVES the exact source/tree above for this tailnet-only
+preview.
+
+The synthetic Lab is running separately as launchd job
+`com.openai.u1-composable-preview` on loopback `127.0.0.1:4199`. Tailnet-only
+HTTPS 8450 has exactly one `/` proxy to that loopback fixture. Local and Tailnet
+Lab requests return 200 with byte-identical body SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`.
+Serve/Funnel configuration changed from SHA-256
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`
+to `d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`:
+canonical comparison after pruning only 8450 exactly equals the before state,
+the Funnel allowlist is unchanged and 8450 has no Funnel entry. Negative auth,
+OAuth and media probes expose no such routes; production jobs remained
+uninterrupted.
 
 This is provisional private-lab learning, not production architecture or
 cutover. It binds only T1 status, actual/target temperature, configured filament
@@ -24,8 +36,9 @@ common layout nodes. Strict correlated envelopes, deduplicated readers,
 timestamps/provenance, `Unknown`, stable neutral state structure and explicit
 Lab/production isolation are accepted only in that scope. Synthetic evidence
 does not establish live mappings, printer truth, mounted-host/device behavior or
-user outcome. No production registration, service, printer, auth/Tailscale, PR,
-merge or deployment changed.
+user outcome. No production registration, service, printer, auth, PR, merge or
+deployment changed. The only runtime additions are the isolated job and the
+reversible tailnet-only 8450 Serve listener; they are not production rollout.
 
 Decision0049 records the separate future Camera media-bottom-overlay direction.
 No Camera implementation belongs to this experiment; current Camera remains the

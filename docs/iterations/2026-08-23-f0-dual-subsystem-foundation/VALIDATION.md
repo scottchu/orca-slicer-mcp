@@ -10,15 +10,19 @@ relation from closed domain leaves and common layout primitives. Acceptance is
 limited to a dashboard-private Lab route and an explicitly constructed Lab MCP
 factory/tool/resource. Production registration must not import or expose the
 experiment. There is no arbitrary HTML/CSS/JavaScript, remote content, printer
-control, Camera implementation, authentication/Tailscale change, PR, merge or
-deployment.
+control, Camera implementation, authentication change, PR, merge or deployment.
+The later separately authorized preview adds only the reversible synthetic
+launchd job and tailnet-only Serve listener recorded below.
 
 The renewed 45-path application source candidate has manifest SHA-256
 `7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
 Its deterministic isolated MCP resource is 137,936 bytes, SHA-256
 `6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
 This follows a whitespace-only source/generator cleanup after the prior
-independent approval; final independent exact-candidate review is pending.
+independent approval. Exact source
+`518c6440db1d624361a1a804754590def3e330e2`, tree
+`a79032b72e04cab6d4dc32a26c4db47024aad5c3`, is now independently approved for
+the tailnet-only preview described below.
 Decision0048 records this as provisional private-lab learning, not production
 architecture or cutover. Decision0049 separately records the user's future
 Camera media-bottom-overlay direction; no Camera file changed in this slice.
@@ -107,9 +111,48 @@ exact approval of the current identity. A later whole-range whitespace check
 found one generated trailing-whitespace line and four blank EOF lines. The
 generator now losslessly escapes its one Svelte-runtime whitespace literal
 before embedding, rejects trailing whitespace in inline assets, and the four
-source EOFs are clean. This formatting-only change requires final independent
-review of manifest
+source EOFs are clean. Renewed checks bind that formatting-only change to
+manifest
 `7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+
+### Tailnet-only preview and independent runtime verification
+
+The author confirmed port 4199 and launchd label
+`com.openai.u1-composable-preview` were unused, then submitted a bounded job
+running the existing build-kit fixture on `127.0.0.1:4199` with pinned Bun 1.4.0,
+`--no-env-file --config=/dev/null`, from the exact source/tree above. No
+repository file or production process changed. The local Lab route returned 200
+and contained T1, Actual / target, Configured filament color and Fan relation.
+
+Before adding the listener, `Tailscale serve status --json` and
+`Tailscale funnel status --json` each had SHA-256
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`.
+The author added only tailnet HTTPS 8450 with one `/` proxy to
+`http://127.0.0.1:4199`. Afterward both status documents had SHA-256
+`d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`.
+A canonical structural comparison removed only `TCP[8450]` and the single Web
+listener ending in `:8450` from the after state and then exactly matched the
+before state. The Funnel allowlist is unchanged and contains no 8450 entry.
+Local HTTP and Tailnet HTTPS Lab responses both returned 200 and were
+byte-identical at SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`.
+
+The project-scoped `printer_domain_expert`, acting as an independent read-only
+runtime verifier, freshly inspected launchd/process/cwd/Bun flags, loopback and
+Tailnet response identity, complete before/after Serve/Funnel preservation,
+negative auth/OAuth/media routes, uninterrupted production jobs, clean
+worktree and endpoint-scoped cleanup. It returned **APPROVE** for the
+tailnet-only composable preview at exact source `518c644`, tree `a79032`. There
+is no separate review report artifact or hash.
+
+Reversible cleanup affects only this experiment:
+
+- `Tailscale serve --yes --https=8450 off`
+- `launchctl remove com.openai.u1-composable-preview`
+
+Do not use Serve/Funnel reset. This approval is same-enrolled-host synthetic
+runtime evidence only: it does not establish browser/device visual behavior,
+public Internet access, a real printer, Camera, an auth flow or user outcome.
 
 ### Records-only tail verification
 
@@ -129,6 +172,20 @@ verify, server build, and four-case Playwright suite were all renewed with the
 same counts above. The formatting cleanup changes resource identity only; it
 does not broaden the experiment's evidence boundary.
 
+For this runtime records-only tail, the same 45 application paths were hashed
+again with one `shasum -a 256` line per path and a final SHA-256 over those
+lines. The result remains
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+The MCP resource remains exactly 137,936 bytes at SHA-256
+`6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+The documentation path allowlist, CURRENT files, decision0048/0049 unique-file,
+index and requirements references, private-identifier guard and whole-range
+`git diff --check HEAD^` all passed. A final read-only runtime recheck found the
+named job running, Serve and Funnel status still at the exact after hash, and
+local/Tailnet Lab responses still 200 with the body hash above. Under the
+documentation-only cadence, unchanged application bytes retain the affected
+author gate; no full application or browser suite was repeated for bookkeeping.
+
 ### Evidence limits
 
 All values and browser scenarios are synthetic. These checks do not establish
@@ -136,7 +193,9 @@ live Moonraker mappings, mounted MCP-host behavior, a real printer, physical
 accuracy/safety, actual-device usability, Camera behavior, recovery interaction,
 production suitability or user outcome. T1 is the only subject. The Lab MCP
 factory is an isolated proof and production inventory remains unchanged. No
-printer/service/network/auth action, PR, merge or deployment occurred.
+printer, production-service or auth action, PR, merge or deployment occurred.
+The only host/network additions are the separately named synthetic launchd job
+and endpoint-scoped tailnet-only 8450 Serve listener described above.
 
 ## Current deployment: PR106 exact release and BOTH service restarts
 
