@@ -1,5 +1,45 @@
 # F0 dual-subsystem foundation handoff
 
+## Current handoff: deterministic pre-upload contract in progress
+
+The accepted pure-core work follows proposed
+[decision 0048](../../decisions/0048-guard-upload-with-content-bound-preparation-receipts.md):
+pure `validatePreparedArtifact` owns preparation validation and a shared
+`uploadPreparedArtifact` coordinator guards the explicit handoff to the
+printer-specific upload adapter. Correspondence and validation receipts are
+readonly/content-bound; guarded upload returns a distinct readonly result. None
+grants authority. Source contracts are in
+`plugins/u1-print-studio/app/src/lib/server/preparation/prepared-artifact.ts`
+and `plugins/u1-print-studio/app/src/lib/server/application/upload-prepared-artifact.ts`.
+A narrow CLI remains the first planned transport; neither it nor MCP is in this
+pure-core/injected-store/fake-port slice.
+
+The documentation and maintained preparation/start skills now describe the
+seam, explicit preview correspondence `PASS`/`FAIL`, local thumbnail validation
+before upload, target-parsed metadata before start, separate upload/start
+authorization, and no arbitrary-path/manual-upload success path. The skills
+cannot invoke source modules directly: they must report blocked until a
+supported adapter exposes the use cases.
+
+Exact `f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`, passes author TypeScript, combined
+32 tests/231 assertions and the focused one-test/20-assertion MCP inventory
+guard. Independent architecture APPROVES after 17 preparation tests/61
+assertions plus typecheck. Independent domain review APPROVES after the combined
+32/231, typecheck and fresh tool matrix. VALIDATION records exact identities,
+commands and limits.
+
+Next preserve this accepted core while separately deciding the durable-store
+and first narrow CLI-adapter slice. Any adapter must accept only opaque IDs,
+resolve and snapshot trusted records, and preserve the server-clock, one-use
+authorization, replay and zero/one-effect contract. It cannot add a raw-path or
+manual success route.
+
+Do not claim complete decision 0040 automated enforcement, target-parsed thumbnail
+behavior, real-printer safety, print quality or physical acceptance from policy,
+skill structure or local fixtures. No printer/network/upload/start, installed
+plugin, service deployment or external mutation belongs to this handoff.
+
 ## Current deployment: PR106 host fullscreen and packaged body insets
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release

@@ -1,5 +1,200 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-03 deterministic pre-upload slice — accepted pure core
+
+Milestone and boundary: P1/I1 through proposed decision 0048, PREP-005,
+PREP-007/PREP-008 and HANDOFF-007/HANDOFF-008. Exact source
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`, is independently APPROVED for the
+internal pure-core/injected-store/fake-upload-port slice.
+
+Exact source and test SHA-256:
+
+- `prepared-artifact.ts`:
+  `8b7ddb7a0658ff80599124e1af1c15a9df34708acea031ee1b93649e005bb555`;
+- `upload-prepared-artifact.ts`:
+  `7c36eba9cefa8cbfd0914fcc61d7c74f788c41e62d42fb97c63fbbba1faa35fa`;
+- `prepared-artifact-validation.test.ts`:
+  `863c752525b14b688d0b80761339e315ec3ee4f5e0e9bd1668bde951b172656b`;
+  and
+- `upload-prepared-artifact.test.ts`:
+  `6d5d72ddd4a183afc862c1c5152f18f25a8a996e2ffd8b871e8e73a853026316`.
+
+### Implemented contract
+
+- `validatePreparedArtifact` accepts only an internal snapshot of exact
+  spec/manifest/artifact bytes plus digest-bound resolved-settings and
+  challenge-bound correspondence receipts. Effective walls come from trusted
+  resolver evidence, never informational manifest claims.
+- The bounded G-code parser tracks absolute/relative extrusion, `G92 E`, active
+  tool and explicit inline tool. Thermal intent covers commands before the first
+  provable positive extrusion delta and binds that tool to explicit
+  heated/unheated and required/not-required wait intent. Unknown startup
+  semantics, ambiguous parameters and unprovable extrusion boundaries do not
+  pass. Shutdown after extrusion is outside the startup schedule.
+- Thumbnail parsing bounds artifact bytes, lines, line bytes, base64, PNG chunks,
+  compressed and decoded sizes. It rejects missing, corrupt, blank and
+  unexpected evidence. Layout correspondence stays an explicit user or fixture
+  review receipt bound to the same revision, challenge, artifact, manifest,
+  layout and thumbnail hashes; the core does not claim arbitrary pixel
+  understanding.
+- `uploadPreparedArtifact` accepts only opaque IDs and resolves records through
+  injected trusted stores. Runtime normalization snapshots plain data and
+  rejects accessors, polluted prototypes, cycles and malformed shapes before
+  authority or external effect. A trusted clock/deadline, digest/freshness
+  checks, atomic one-use authorization claim and idempotent action claim guard
+  the injected upload port.
+- Adapter outcomes preserve acknowledged, rejected, timeout, transport failure
+  and unknown separately. Stable replay uses the stored action record. Ambiguous
+  effects require verification and never trigger an automatic duplicate. The
+  model-visible result omits private remote artifact identity and trusted
+  authorization-consumption time.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`, author evidence:
+
+- `bun --no-env-file --config=/dev/null run check`: passed.
+- `bun --no-env-file --config=/dev/null test
+  tests/server/prepared-artifact-validation.test.ts
+  tests/server/upload-prepared-artifact.test.ts`: passed 32 tests with 231
+  assertions.
+- `bun --no-env-file --config=/dev/null test
+  ./tests/server/status-dashboard.test.ts -t "exposes only the widget's
+  read-only observation and camera calls"`: passed one test with 20 assertions;
+  25 tests were filtered. This is a focused no-MCP-inventory-change guard, not a
+  full status-dashboard run. Independent reviewers observed 31 tests in their
+  broader test contexts; that count is not substituted for this focused result.
+- `git diff --check`: passed on the source candidate.
+
+Independent architect evidence: exact `f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`
+APPROVE after `bun --no-env-file --config=/dev/null run check` and the focused
+`prepared-artifact-validation.test.ts` suite passed 17 tests/61 assertions.
+
+Independent printer-domain evidence: exact
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff` APPROVE after TypeScript, the
+combined 32-test/231-assertion source suites and a fresh tool/thermal matrix.
+This domain approval accepts effective-setting and truthful thermal semantics;
+it does not claim exact physical perimeter count or actual heater temperature.
+
+Documentation-tail validation from the repository root:
+
+- `uv run --no-project --with pyyaml
+  <skill-creator-root>/scripts/quick_validate.py
+  plugins/u1-print-studio/skills/u1-prepare-print`: passed with
+  `Skill is valid!`.
+- The same command for `plugins/u1-print-studio/skills/u1-start-print`: passed
+  with `Skill is valid!`.
+- `git diff --check`: passed.
+- A read-only Ruby scan resolved every relative Markdown link in the eleven
+  changed documentation and skill files.
+
+The environment-owned Skill Creator root is redacted from this durable record;
+the repository-relative targets and remaining arguments are exact.
+
+### Evidence boundary
+
+No durable store, supported skill/CLI adapter, real uploader, target-parsed
+post-upload receipt, public MCP mutation, printer/network/start action or
+deployment exists. No target was contacted. Static and fake-port evidence does
+not establish real upload, target parsing, printer safety, print quality,
+monitoring or physical user acceptance. Decision 0040's local source gate is
+accepted; end-to-end enforcement remains incomplete until a supported adapter,
+durable stores and separate target-parsed pre-start evidence are accepted.
+
+## Rejected early checkpoint — retained repair history
+
+Milestone and boundary: P1/I1 through proposed decision 0048, PREP-005,
+PREP-007/PREP-008 and HANDOFF-007/HANDOFF-008. The candidate makes local
+prepared-artifact validation and the upload-port call guard executable while
+keeping start, observed printing and physical outcome outside this evidence.
+
+Pure-core checkpoint: `fefedbd1d2b9050bd558b025ae88af54b6f31d8c`,
+tree `2fa8de6f4e4f1d42a85e9742f4905e61b67b9c7c`. Exact file SHA-256:
+
+- `prepared-artifact.ts`:
+  `86df99c3e488e6d31fe17f68aefa5cb54f1ddb81d4761306056943266bf1d59a`;
+- `upload-prepared-artifact.ts`:
+  `8479cae1d29b08e2561b0b3b373897a15bee8f9c32d0577c55f6dc7ae4adeae3`;
+  and
+- `prepared-artifact-validation.test.ts`:
+  `2d17887955df3e223d454f4f68de542b1d91dd07e78f198dbc772568aa701c99`.
+
+The seven non-user fixtures establish byte-for-byte repeatable readonly
+validation receipts and `validationId`; effective per-object wall checking;
+required versus not-required wait contracts; intentional unheated and shutdown
+zero; `unavailable` unknown heat/start macros; decoded nonblank PNG requirements;
+missing/corrupt-image rejection; exact artifact/manifest/layout/thumbnail
+correspondence-receipt binding; artifact-byte mutation invalidation; zero
+injected-port calls across the focused `blocked`/`unavailable` cases; and exactly
+one fake-port call for a fully bound authorized/preflight-passed input. The port
+receives exact bytes and hashes, not a path or generic transport.
+
+The different-layout fixture mutates the correspondence receipt's plate-layout
+hash. The core intentionally does not infer arbitrary real-image correspondence
+from pixels; production correspondence still requires the exact-bound user
+review receipt. The suite does not independently mutate every spec, manifest,
+target, review, schema and validator-semantic binding, or separately drive a
+malformed `error` through the upload guard. Those remain valid adversarial
+review targets; do not generalize beyond the exact cases above.
+
+Source contracts:
+
+- `plugins/u1-print-studio/app/src/lib/server/preparation/prepared-artifact.ts`
+  exports readonly preparation, manifest, correspondence, check and receipt
+  contracts plus pure `validatePreparedArtifact`; and
+- `plugins/u1-print-studio/app/src/lib/server/application/upload-prepared-artifact.ts`
+  exports readonly authorization, preflight, injected-port and result contracts
+  plus `uploadPreparedArtifact`.
+
+Commands and results from `plugins/u1-print-studio/app`:
+
+- `bun --no-env-file --config=/dev/null run check`: exited 0; TypeScript
+  `tsc --noEmit -p tsconfig.server.json` passed.
+- `bun --no-env-file --config=/dev/null test
+  tests/server/prepared-artifact-validation.test.ts`: exited 0 with seven tests,
+  42 assertions and zero failures.
+- An initial MCP-inventory command used the wrong `src/` path and exited 1 after
+  matching no test file. The corrected `bun --no-env-file --config=/dev/null
+  test ./tests/server/status-dashboard.test.ts -t "exposes only the widget's
+  read-only observation and camera calls"` exited 0 with one test/20 assertions,
+  zero failures and 25 filtered tests. This proves no MCP inventory change from
+  this slice; it is not a full status-dashboard suite.
+
+Commands and results from the repository root:
+
+- `uv run --no-project --with pyyaml
+  <skill-creator-root>/scripts/quick_validate.py
+  plugins/u1-print-studio/skills/u1-prepare-print`: exited 0 with
+  `Skill is valid!`.
+- The same command for `plugins/u1-print-studio/skills/u1-start-print`: exited
+  0 with `Skill is valid!`.
+
+The environment-owned Skill Creator root is redacted from this durable record;
+the repository-relative targets and remaining arguments are exact.
+
+The implementation author separately reports that the first TypeScript command
+could not run because locked dependencies were absent. `bun install
+--frozen-lockfile --ignore-scripts` completed with no lockfile change, after
+which TypeScript passed. The first focused test run had one assertion-shape-only
+failure, repaired before the final seven-test/42-assertion pass; its exact
+diagnostic was not retained, and it was not a product-semantic failure.
+
+This checkpoint was not accepted. Later source through `f90e0b5` repaired
+trusted receipt/store authority, server-clock expiry races, action replay,
+boundary snapshots and G-code/tool ambiguity, then renewed the exact independent
+review recorded above. No skill/CLI adapter, MCP inventory change or real
+uploader belonged to either checkpoint.
+
+Evidence limit: local static and fake-port fixtures cannot establish
+target-parsed thumbnail behavior, printer state, safe motion, upload to a real
+target, start, observed printing, monitoring continuity, print quality or
+physical user acceptance. No printer/network/upload/start, installed-plugin or
+service-deployment action is authorized or performed by this record. Decision
+0040 remains accepted workflow policy; local source enforcement exists, but
+end-to-end enforcement remains incomplete without a supported adapter and the
+separate target-parsed pre-start gate.
+
 ## Current deployment: PR106 exact release and BOTH service restarts
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6`, preserving reviewed

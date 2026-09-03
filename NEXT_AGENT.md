@@ -1,5 +1,36 @@
 # Next agent
 
+## Immediate: preserve accepted core; design the first trusted adapter separately
+
+The user selected the narrow deterministic seam proposed in
+[decision 0048](docs/decisions/0048-guard-upload-with-content-bound-preparation-receipts.md).
+The transport-independent `validatePreparedArtifact` and guarded
+`uploadPreparedArtifact` pure core is accepted at
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`. Preserve its exact trusted-receipt,
+opaque-ID, runtime-snapshot, server-clock, one-use authorization, idempotency,
+first-positive-extrusion/tool and truthful upload-outcome semantics.
+
+The preparation skill retains a matching-edition preview and explicit user
+correspondence `PASS`/`FAIL`. Local embedded-image verification remains before
+upload; target-parsed thumbnail verification remains after upload and before
+separately authorized start. Upload, start acknowledgement, observed printing,
+monitoring, telemetry completion, camera evidence and physical acceptance stay
+distinct.
+
+Author TypeScript, combined 32-test/231-assertion fixtures and the focused
+one-test/20-assertion MCP inventory guard pass. Independent architecture and
+domain reviews APPROVE the exact source; exact evidence is in VALIDATION.
+
+The next implementation slice needs its own user selection and decision: inject
+durable stores and expose the core through the first narrow trusted CLI adapter.
+It must accept only opaque IDs and must not add a raw path, caller-built gates,
+manual upload, public MCP mutation, generic printer transport or start action.
+No such adapter, real uploader or target-parsed HANDOFF-007 receipt exists now.
+Do not mark decision 0040 end-to-end enforcement complete, or infer printer,
+network, start, deployment, print-quality or physical acceptance from the
+accepted pure-core fixtures.
+
 ## Current deployment: PR106 host fullscreen and packaged body insets
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release

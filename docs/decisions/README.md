@@ -52,6 +52,7 @@ silently changed.
 | [0045](0045-compose-print-with-standalone-asynchronous-monitoring.md) | Compose print with standalone asynchronous monitoring | Accepted workflow direction; source review pending; no durable service claim |
 | [0046](0046-camera-auto-default-and-edge-to-edge-card.md) | Camera Auto default and edge-to-edge card | PR104 accepted/deployed at162dc68; scoped synthetic postverification PASS; phone reliability unresolved |
 | [0047](0047-use-host-acknowledged-fullscreen-with-persistent-media.md) | Use host-acknowledged fullscreen with persistent media | Shipped in PR106; installed-byte scoped checks PASS; actual-host acceptance pending |
+| [0048](0048-guard-upload-with-content-bound-preparation-receipts.md) | Guard upload with content-bound preparation receipts | Proposed; pure-core source independently accepted, adapters pending |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 
