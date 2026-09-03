@@ -65,11 +65,82 @@ raw details, new panel or extra acquisition from diagnostics. Prior generic
 Footer statusText/reserved-header proposals are superseded. Fullscreen discussion
 adds no host display-mode implementation or new acceptance claim.
 
-Planned Camera v13/observation v17 and old-URI preservation depend on the final
-shared-component build evidence. PR101 remains deployed; candidate source/tests,
-exact approval and release acceptance remain pending. This work improves
-diagnosability and implements the requested presentation without proving or
-repairing the phone's as-yet-unidentified failure cause.
+The latest user order supersedes old-URI preservation: retain only current
+widget resources, remove obsolete aliases/bundles and compatibility-only tests,
+and retain all eight legacy renderers used by current observation. Earlier
+`391303c` is unshipped; its compatibility-preserving evidence below does not
+accept the newly changed cleanup scope. Keep deployment backups and worktrees.
+PR101 remains deployed; cleanup checks, exact review and release remain pending.
+Presentation/diagnostics do not prove the phone failure's cause.
+
+### Earlier Camera candidate evidence before current-only cleanup
+
+Author `app/test-results/camera-failure-author/REPORT.json`, SHA256
+`502caf615c52097c175b240f9b01b993d804b137325fed2ee111bc4789354e52`,
+records the `5a2a474` candidate and the three-pin test-only renewal committed as
+`391303c`. Its 53-input manifest is
+`28dbdc6903ad1c662d3e2b5b8a721a68394c519173acc9a25b53296134e149d8`.
+The earlier runtime 0.4.11/schema15, Camera13/observation17 payload has 62 runtime
+files/72 routes; build-manifest SHA256
+`fea9fbf3a85b21d99199a4e4f7ed62298998809d517db1581f70bc5c4d505761`.
+Its 32-resource/30-old-URI parity is historical evidence, now superseded as an
+acceptance obligation. No shipment of this candidate occurred.
+
+Commands actually run by the author used Bun1.4.0 with
+`--no-env-file --config=/dev/null` from the app directory unless noted:
+
+- `run ui:test -- src/lib/client/camera src/lib/client/common src/lib/client/observation src/lib/client/bed-mesh src/lib/client/live`:
+  565 tests/52 files PASS before final Camera classifier refinement; unchanged
+  shared UI paths retain that evidence. Camera-only renewal passed99 tests/12
+  files; final controller/widget refinement passed18 tests.
+- `run ui:check`, `run check`, ten deterministic package checks and seven focused
+  server files passed (87 server tests); exact commands/log hashes are in REPORT.
+- `x playwright test --config playwright.mcp.config.ts --grep "MCP Camera"`:
+  nine actual MCP-artifact cases passed at320/390/590/720 and200% text. These
+  artifact bytes preceded the additive initial-envelope classifier; tested UI/
+  style paths were unchanged. Private author config passed27 Camera Lab/dashboard
+  cases and nine Camera-route cases; the latter used the final Lab artifact.
+- `run build:server --outdir test-results/camera-failure-author/payload-final`
+  produced the above payload. `run test-results/camera-failure-author/verify-compat.ts`
+  then passed32 resources/30 old URI hashes without acquisition. That check is
+  retained history, not a new compatibility requirement.
+- After the independent gate failure, from repository root Bun ran
+  `test plugins/u1-print-studio/app/tests/server/private-lab.test.ts`: seven
+  tests/75 assertions PASS after only three expected hashes changed. No rebuild,
+  UI/browser renewal or author full gate accompanied that test-only repair.
+
+Retain the earlier failures: five obsolete mode/assertions plus a test-edit typo;
+component guards needing exact new wrapper/status counts; a private Playwright
+relative-cwd module-not-found error; a hoisted mock cleanup spy recording zero
+calls; its optional type initialization; and a doubled relative compat-script
+path. The independent required gate on `5a2a474` then failed three omitted private
+Lab SHA pins (324 server PASS/3 FAIL). The pin renewal log SHA256 is
+`fd6e9fe22d3f8a63bd26d8a5168af710a0a38d33130945eefa1a8029ab39ca1e`.
+An independent private adversary fixture initially had a missing brace and ran
+zero tests; this is a fixture failure, not product acceptance. No independent
+full-pass claim for the current cleanup candidate follows from these records.
+Author-owned browsers/MCP clients/processes were closed; fixture4182 was released.
+These checks made no actual camera/printer probe, service restart or auth change.
+
+Independent `app/test-results/camera-failure-independent/SUPERSEDED-391303c.json`,
+SHA256 `bac34f22f12c91e0bb784970d6a0f05d5184640e453137b07a94eaef5f0efc7a`,
+records the renewed required gate PASS on
+`391303c757ed507d016a1a557bfc21c0691f3523`, tree
+`7f44d1e4ecf56473d72998119d6b792da2f3ef67`: 617 UI/59 files,
+327 server/3,983 assertions, 34 service/27 shipping Python tests, Svelte0/0 and
+component contracts. Full renewal log SHA256:
+`71b72df31088d0b2f1f2b65a18962d783b5de5af91b2a81328f63eb9d5f343ca`.
+Four fresh real-HostRpc/controller adversaries and nine scoped browser cases
+(six shared/default consumers plus three MCP cases) passed with synthetic data.
+The independent final MCP initial-error case renews that specific changed path;
+the earlier 45 author browser cases retain their stated pre-classifier/final-Lab
+boundaries, not an invented all-final-bundle run. The 454-input manifest SHA256 is
+`3cd88481fb9c70719688ff50d27dc0d25a2fd3c3fac8985fbc771edf7266c9fe`.
+Thirty old URI bodies matched in the then-32-resource inventory with zero
+acquisition. The user changed scope before approval: status is SUPERSEDED,
+with no APPROVE or shipment. All reviewer processes/fixtures were closed. These
+passing prior-candidate results do not validate current-only retirement bytes.
+
 
 ## Standalone asynchronous monitor: independent source acceptance
 

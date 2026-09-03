@@ -1,6 +1,20 @@
 # Project state
 
-## Current work: edge-to-edge Camera, Auto/Live and safe failure overlay
+## Current work: current-only widgets and the Camera candidate
+
+The user's latest order retires old versioned widget aliases, obsolete bundles
+and compatibility-only tests. Keep only current widget resources. Preserve the
+eight legacy renderers still used by the current observation resource; they are
+active functionality, not old resource compatibility. Do not delete deployment
+backups or other worktrees. This supersedes the former 30-old-URI preservation
+contract. The unshipped `391303c` candidate is now an earlier validation baseline;
+cleanup needs its own affected checks, exact review and guarded release.
+The adopted target is two MCP resources (observation17/Camera13), retirement of
+six compatibility HTML files plus old camera-widget HTML/HTTP route, and `/widget`
+serving current MCP observation instead of duplicate widget.html/vendor injection.
+Retire pure compatibility status tools only after confirming no current consumer.
+Keep hash/tamper/isolation/security/config-preservation/rollback and ship guards;
+final removed paths, tool inventory and build counts await author evidence.
 
 The user-approved Camera candidate removes the footer and Refresh button. Keep a
 thin icon/title/state/FPS/time header; media fills the whole lower edge, with
@@ -24,11 +38,13 @@ On `codex/u1-camera-failure-stage` from `06e2a90`, service-owned sanitized
 lastLiveFailure persists through Auto; only its safe reason is visible in the
 media overlay. Timeouts/watchdogs stay unchanged. This improves diagnosability
 and presentation, without proving the phone failure's cause. The earlier footer/
-reserved-header proposals are superseded. Planned Camera v13/observation v17 and
-old-alias preservation await final shared-component build evidence.
+reserved-header proposals are superseded. Camera v13/observation v17 are the
+current candidate resource identities; final current-only resource inventory and
+build identities await cleanup evidence.
 
-Source validation, exact independent review and deployment remain pending;
-PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
+Earlier author checks and the failed first independent gate are recorded in
+VALIDATION; they do not accept the changed cleanup candidate. Cleanup validation,
+exact independent review and deployment remain pending; PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
 success/failure sequence; C08 reliability is unresolved. Screen Sharing stays paused.
 
 ## Current workflow slice: standalone asynchronous monitor

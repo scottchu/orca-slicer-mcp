@@ -1,6 +1,24 @@
 # F0 dual-subsystem foundation brief
 
-## Active slice: standalone asynchronous print monitoring
+## Active slice: current-only widget cleanup and Camera presentation
+
+The latest user order supersedes prior version-compatibility requirements under
+[decision0046](../../decisions/0046-camera-auto-default-and-edge-to-edge-card.md).
+Retire old widget aliases/bundles and compatibility-only tests; target only current
+observation17/Camera13 resources. Active `/widget` uses current MCP observation;
+old Camera route and duplicate/vendor-injection assets retire. Confirm current
+consumers before removing compatibility-only status tools. Keep the eight active
+legacy renderers, all 55 ledger IDs, deployment backups and other worktrees.
+
+The Camera candidate retains default Auto/Live, quiet single-flight polling,
+edge-to-edge media without footer/Refresh and safe bottom-left failure reason.
+Service ownership, neutral/stable error geometry, deadlines and all integrity/
+security/preservation/rollback/shipping guards remain. `391303c` is unshipped;
+prior candidate evidence in VALIDATION does not accept cleanup changes. Finish
+affected checks and exact independent review before guarded shipment and BOTH
+service restarts. C08 reliability and host fullscreen remain unresolved.
+
+## Maintained workflow: standalone asynchronous print monitoring
 
 The selected standalone skill composition refines F0/I1 and MON-001 under
 [decision0045](../../decisions/0045-compose-print-with-standalone-asynchronous-monitoring.md).

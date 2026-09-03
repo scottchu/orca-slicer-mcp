@@ -1,6 +1,6 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { createAppServer } from '../src/lib/server/app.js';
+import { createAppServer, MCP_OBSERVATION_HTML } from '../src/lib/server/app.js';
 import { createKitObservationFixture } from '../tests/fixtures/kit-observation-store.js';
 import { readFileSync } from 'node:fs';
 
@@ -61,18 +61,28 @@ const html = readFileSync(
   new URL('../tests/fixtures/mcp-widget-host.html', import.meta.url),
   'utf8',
 );
+const dashboardHtml = readFileSync(
+  new URL('../public/status-dashboard-host.html', import.meta.url), 'utf8',
+);
+const dashboardViews = new Set(['overview', 'progress', 'jobs', 'job_history', 'bed_mesh']);
 const server = Bun.serve({
   hostname: '127.0.0.1',
   port: Number(process.env.U1_MCP_FIXTURE_PORT ?? 4182),
   fetch: async (request) => {
     const url = new URL(request.url);
     try {
+      if (request.method === 'GET' && dashboardViews.has(url.pathname.replace('/dashboard/', '')) && url.pathname.startsWith('/dashboard/')) {
+        return new Response(dashboardHtml, { headers: { 'content-type': 'text/html' } });
+      }
+      if (request.method === 'GET' && url.pathname === '/widget') {
+        return new Response(MCP_OBSERVATION_HTML, { headers: { 'content-type': 'text/html' } });
+      }
       if (url.pathname === '/host')
         return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } });
       if (url.pathname === '/fixture/tools') return Response.json(await client.listTools());
       if (url.pathname === '/fixture/resource')
         return Response.json(await client.readResource({ uri: url.searchParams.get('uri') ?? '' }));
-      if (url.pathname === '/fixture/call') {
+      if (url.pathname === '/fixture/call' || url.pathname === '/dashboard/tools/call') {
         const call = (await request.json()) as { name: string; arguments: Record<string, unknown> };
         calls.push(call);
         return Response.json(await client.callTool(call));
@@ -87,6 +97,7 @@ const server = Bun.serve({
           fail?: boolean;
           hold?: boolean;
           reset?: boolean;
+          bedMesh?: boolean;
         };
         if (config.image !== undefined) image = config.image;
         failCamera = config.failCamera ?? false;

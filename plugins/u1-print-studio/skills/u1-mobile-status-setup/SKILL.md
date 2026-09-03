@@ -37,7 +37,7 @@ Report these separately:
 1. Local software evidence: server checks and tests pass on the Mac.
 2. Public-edge evidence: HTTPS health, OAuth discovery, and unauthenticated rejection work through Funnel.
 3. MCP evidence: the authenticated client discovers exactly two model-visible
-   tools and exactly eight app-only helpers, all read-only.
+   tools and exactly six app-only helpers, eight tools total, all read-only.
 4. Printer evidence: returned telemetry and camera data came from the configured real printer.
 5. iOS evidence: the host visibly rendered either the interactive component or
    the inline PNG fallback; interactive controls are evidence only on hosts
@@ -161,18 +161,22 @@ The OAuth login should redirect to the personal authorization page. Ask the user
 
 In the New Plugin form choose **Server URL**, not **Tunnel**. Choose **OAuth**, keep dynamically discovered OAuth settings, acknowledge the custom-server warning, and create the connection. Secure MCP Tunnel is a separate OpenAI Platform path for private development and does not support public plugin submission.
 
-After connection, verify that the authenticated inventory contains exactly:
+After connection, verify that the authenticated model-visible inventory contains exactly:
 
 ```text
 observe_printer
 open_printer_camera
 ```
 
+The six app-only helpers are `refresh_printer_observation`,
+`get_u1_camera_frame`, `open_u1_camera_stream`, `answer_u1_camera_stream`,
+`add_u1_camera_ice_candidates`, and `close_u1_camera_stream`. They remain hidden
+from model-visible inventory: two public plus six app-only equals eight total.
 Each tool must be read-only and require `u1.monitor`. Stop if any control tool is present.
 
 For standalone camera requests, call only model-visible
-`open_printer_camera`; never substitute `show_u1_status`, `get_u1_status`,
-app-only `get_u1_camera_frame`, or app-only `open_u1_camera_stream`. If
+`open_printer_camera`; never substitute app-only `get_u1_camera_frame` or
+`open_u1_camera_stream`. If
 `open_printer_camera` is missing from the current tool inventory or its camera
 resource cannot be loaded, report that the current MCP connection/descriptor
 is stale or unavailable and stop. Ask the user to reload the plugin connection
@@ -227,7 +231,7 @@ TURN REST credential and mounted playback on each host are observed.
 
 Report the discovered MagicDNS hostname, standard-HTTPS MCP URL, preserved
 Funnel and Serve handlers, private enrollment health, the exact two
-model-visible plus eight app-only inventory, ICE mode (local candidates,
+model-visible plus six app-only inventory (eight tools total), ICE mode (local candidates,
 explicit STUN, or TURN REST), and each evidence boundary. Redact
 credentials and tokens. State that this self-hosted edition requires an
 always-on LAN agent per printer owner; it may run on a desktop, NAS, or small

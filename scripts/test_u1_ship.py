@@ -277,15 +277,15 @@ class MechanicalGuardTests(unittest.TestCase):
         manifest = {"sourceRevision": MERGED}
         ops.manager.verify_release.return_value = (release, manifest)
         self.assertEqual(ops.stage(self.root, "fixture", MERGED), manifest)
-        legacy = self.root / APP / "public/legacy-widget.html"
+        legacy = self.root / APP / "public/mcp-camera.html"
         legacy.write_text("source hash must still be checked")
         with self.assertRaisesRegex(ShipError, "asset"):
             ops.stage(self.root, "fixture", MERGED)
-        legacy.write_text("legacy-widget.html")
+        legacy.write_text("mcp-camera.html")
         ops.manager.stage.return_value = {"sourceRevision": HEAD}
         with self.assertRaisesRegex(ShipError, "revision"): ops.stage(self.root, "fixture", MERGED)
         ops.manager.stage.return_value = {"sourceRevision": MERGED}
-        (release / "dist/static-contract/widget.html").write_text("wrong")
+        (release / "dist/mcp-observation.html").write_text("wrong")
         with self.assertRaisesRegex(ShipError, "build contract"): ops.stage(self.root, "fixture", MERGED)
 
     def test_stage_rejects_runtime_change_even_with_same_static_assets(self):
@@ -345,7 +345,7 @@ class MechanicalGuardTests(unittest.TestCase):
         self.assertIn("--frozen-lockfile", installs[0])
         output = next(Path(c[c.index("--outdir") + 1]) for c in calls if "--outdir" in c)
         self.assertEqual(ops.build_manifest, read_build_manifest(output))
-        (app / "public/widget.html").write_text("different")
+        (app / "public/mcp-observation.html").write_text("different")
         with self.assertRaisesRegex(ShipError, "asset"): ops.validate()
 
     def test_validation_isolates_candidates_and_preserves_failed_output(self):
@@ -490,7 +490,6 @@ class StaticContractTests(unittest.TestCase):
         self.assertIn((8787, "/dashboard/lab/camera"), security_calls)
         self.assertNotIn((8788, "/dashboard/overview"), security_calls)
         self.assertIn((8787, "/_app/immutable/start.fixture.js"), security_calls)
-        self.assertIn((8787, "/camera-widget"), security_calls)
         forbidden_routes = {"/dashboard/tools/call", "/widget"}
         self.assertFalse(any(
             route in forbidden_routes or "observation" in route or "tool" in route

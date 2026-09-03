@@ -1,25 +1,13 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 
 import {
-  CAMERA_WIDGET_HTML,
   CAMERA_WIDGET_URI,
   createAppServer,
-  LEGACY_CAMERA_WIDGET_URIS,
-  LEGACY_CAMERA_WIDGET_HTML,
-  LEGACY_FOCUSED_WIDGET_URIS,
-  LEGACY_WIDGET_HTML,
-  LEGACY_WIDGET_URIS,
-  WIDGET_HTML,
   MCP_OBSERVATION_HTML,
   MCP_CAMERA_HTML,
-  MCP_OBSERVATION_V15_HTML,
-  MCP_OBSERVATION_V16_HTML,
-  MCP_CAMERA_V11_HTML,
-  MCP_CAMERA_V12_HTML,
   WIDGET_URI,
 } from "../../src/lib/server/app.js";
 import type {
@@ -240,22 +228,6 @@ describe("U1 status MCP App contract", () => {
     );
 
     expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v17.html");
-    expect(LEGACY_FOCUSED_WIDGET_URIS).toEqual([
-      "ui://u1-print-studio/observation-v14.html",
-      "ui://u1-print-studio/observation-v13.html",
-      "ui://u1-print-studio/observation-v12.html",
-      "ui://u1-print-studio/observation-v11.html",
-      "ui://u1-print-studio/observation-v10.html",
-      "ui://u1-print-studio/observation-v9.html",
-      "ui://u1-print-studio/observation-v8.html",
-      "ui://u1-print-studio/observation-v7.html",
-      "ui://u1-print-studio/observation-v6.html",
-      "ui://u1-print-studio/observation-v5.html",
-      "ui://u1-print-studio/observation-v4.html",
-      "ui://u1-print-studio/observation-v3.html",
-      "ui://u1-print-studio/observation-v2.html",
-      "ui://u1-print-studio/observation-v1.html",
-    ]);
 
     expect(observe).toBeDefined();
     expect(observe?.annotations).toMatchObject({
@@ -317,17 +289,6 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(MCP_OBSERVATION_HTML);
-    expect(LEGACY_WIDGET_HTML).not.toBe(WIDGET_HTML);
-    expect(createHash("sha256").update(LEGACY_WIDGET_HTML).digest("hex")).toBe(
-      "7181accfffb51057e5fcc4448961f0e7090834d6c17b91d910fff23979d1b0dd"
-    );
-    const focusedLegacy = await client.readResource({
-      uri: LEGACY_FOCUSED_WIDGET_URIS[0],
-    });
-    expect(focusedLegacy.contents[0]).toMatchObject({
-      uri: LEGACY_FOCUSED_WIDGET_URIS[0],
-      text: WIDGET_HTML,
-    });
   });
 
   test("serves a dedicated camera-only MCP App resource", async () => {
@@ -349,72 +310,20 @@ describe("U1 status MCP App contract", () => {
     });
     expect("text" in resource ? resource.text : "").toBe(MCP_CAMERA_HTML);
     expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v13.html");
-    expect(LEGACY_CAMERA_WIDGET_URIS[0]).toBe(
-      "ui://u1-print-studio/camera-v3.html"
-    );
-    expect(LEGACY_CAMERA_WIDGET_HTML).not.toBe(CAMERA_WIDGET_HTML);
-    expect(
-      createHash("sha256").update(LEGACY_CAMERA_WIDGET_HTML).digest("hex")
-    ).toBe("0c4b47cb836c80e1ecd61b28b07b191bfe49a4ea5672af641a0af0f8baef6f53");
-
-    for (const legacyUri of LEGACY_CAMERA_WIDGET_URIS) {
-      const legacy = await client.readResource({ uri: legacyUri });
-      expect(listed.resources.map(({ uri }) => uri)).toContain(legacyUri);
-      expect(legacy.contents[0]?.uri).toBe(legacyUri);
-      expect(
-        "text" in legacy.contents[0]! ? legacy.contents[0].text : ""
-      ).toBe(LEGACY_CAMERA_WIDGET_HTML);
-    }
   });
 
-  test("retains previous current observation and camera aliases with exact frozen legacy resources", async () => {
+  test("lists only current resources and rejects every retired URI", async () => {
     const client = await connectClient();
     const listed = await client.listResources();
-    expect(listed.resources).toHaveLength(32);
-    for (const [uri, html, sha256] of [
-      ['ui://u1-print-studio/observation-v16.html', MCP_OBSERVATION_V16_HTML, '86ea2d1ab342d714a78d9850fe3b7fcaec6c958b4d3bf7bbdc2fd49d779b3427'],
-      ['ui://u1-print-studio/camera-v12.html', MCP_CAMERA_V12_HTML, '00b8a16f74e4f01c87262a24e9f29b3af4aa1a512915a22bd875b4665c406c8a'],
-      ['ui://u1-print-studio/observation-v15.html', MCP_OBSERVATION_V15_HTML, '2838485ed47250f1c8dbc413227743981c7e2a2f5ea22b9c8acb8791b094edc4'],
-      ['ui://u1-print-studio/camera-v11.html', MCP_CAMERA_V11_HTML, 'bcdd91b6646989639fa68c52536705ebf8b92b7a4dc15f8ae2d2e2b3c7134fe2'],
-    ]) {
-      const result = await client.readResource({ uri });
-      const resource = result.contents[0]!;
-      expect('text' in resource ? resource.text : '').toBe(html);
-      expect(createHash('sha256').update(html).digest('hex')).toBe(sha256);
+    expect(listed.resources.map(({ uri }) => uri)).toEqual([WIDGET_URI, CAMERA_WIDGET_URI]);
+    const retired = [
+      ...Array.from({ length: 16 }, (_, index) => `observation-v${index + 1}`),
+      ...Array.from({ length: 12 }, (_, index) => `camera-v${index + 1}`),
+      "status-v3", "status-v4",
+    ];
+    for (const version of retired) {
+      await expect(client.readResource({ uri: `ui://u1-print-studio/${version}.html` })).rejects.toThrow();
     }
-    expect(LEGACY_FOCUSED_WIDGET_URIS[0]).toBe("ui://u1-print-studio/observation-v14.html");
-    for (const uri of [...LEGACY_FOCUSED_WIDGET_URIS,
-      "ui://u1-print-studio/camera-v10.html",
-      "ui://u1-print-studio/camera-v9.html", "ui://u1-print-studio/camera-v8.html", "ui://u1-print-studio/camera-v7.html", "ui://u1-print-studio/camera-v6.html",
-      "ui://u1-print-studio/camera-v5.html", "ui://u1-print-studio/camera-v4.html",
-    ]) {
-      expect(listed.resources.map(resource => resource.uri)).toContain(uri);
-      const result = await client.readResource({ uri });
-      const resource = result.contents[0]!;
-      expect("text" in resource ? resource.text : "").toBe(uri.includes("camera-") ? CAMERA_WIDGET_HTML : WIDGET_HTML);
-    }
-  });
-
-  test("keeps the previous widget URI readable for mounted cards during upgrades", async () => {
-    const client = await connectClient();
-    const legacyUri = LEGACY_WIDGET_URIS[0];
-    const listed = await client.listResources();
-    const result = await client.readResource({ uri: legacyUri });
-    const resource = result.contents[0];
-
-    expect(listed.resources.map(({ uri }) => uri)).toEqual(
-      expect.arrayContaining([WIDGET_URI, legacyUri])
-    );
-    expect(resource?.uri).toBe(legacyUri);
-    expect(resource?.mimeType).toBe("text/html;profile=mcp-app");
-    expect(resource?._meta?.ui).toMatchObject({
-      csp: {
-        connectDomains: [],
-        resourceDomains: [],
-        frameDomains: [],
-      },
-    });
-    expect("text" in resource ? resource.text : "").toBe(LEGACY_WIDGET_HTML);
   });
 
   test("keeps external CSP empty when hosted signaling is composed", async () => {
@@ -558,8 +467,6 @@ describe("U1 status MCP App contract", () => {
         .map((tool) => tool.name)
     ).toEqual([
       "refresh_printer_observation",
-      "show_u1_status",
-      "get_u1_status",
       "get_u1_camera_frame",
       "open_u1_camera_stream",
       "answer_u1_camera_stream",
@@ -598,10 +505,8 @@ describe("U1 status MCP App contract", () => {
       name: "get_u1_status",
       arguments: {},
     });
-    expect(legacyShow.structuredContent).toMatchObject({ state: "printing" });
-    expect(JSON.stringify(legacyShow.content)).toContain('"type":"image"');
-    expect(legacyRefresh.structuredContent).toMatchObject({ state: "printing" });
-    expect(JSON.stringify(legacyRefresh.content)).not.toContain('"type":"image"');
+    expect(legacyShow.isError).toBe(true);
+    expect(legacyRefresh.isError).toBe(true);
 
     const openedCamera = await client.callTool({
       name: "open_printer_camera",
@@ -778,250 +683,5 @@ describe("U1 status MCP App contract", () => {
     });
     expect(streamFailure.isError).toBe(true);
     expect(publicEnvelope).toContain("camera_stream_unavailable");
-  });
-});
-
-describe("camera-only widget contract", () => {
-  test("parses its module script under strict-mode semantics", () => {
-    const scriptStart = CAMERA_WIDGET_HTML.indexOf('<script type="module">');
-    const sourceStart = scriptStart + '<script type="module">'.length;
-    const scriptEnd = CAMERA_WIDGET_HTML.indexOf("</script>", sourceStart);
-    const source = CAMERA_WIDGET_HTML.slice(sourceStart, scriptEnd);
-
-    expect(scriptStart).toBeGreaterThan(-1);
-    expect(scriptEnd).toBeGreaterThan(sourceStart);
-    expect(() => new Function(`"use strict";\n${source}`)).not.toThrow();
-  });
-
-  test("contains only the snapshot, stream, and fallback camera experience", () => {
-    expect(CAMERA_WIDGET_HTML).toContain('id="snapshot"');
-    expect(CAMERA_WIDGET_HTML).toContain('id="live-stream"');
-    expect(CAMERA_WIDGET_HTML).toContain('id="go-live"');
-    expect(CAMERA_WIDGET_HTML).toContain('id="close-live"');
-    expect(CAMERA_WIDGET_HTML).toContain('data-camera-mode="loading"');
-    expect(CAMERA_WIDGET_HTML).toContain('setCameraMode("fallback"');
-    expect(CAMERA_WIDGET_HTML).toContain(
-      "snapshotFallbackTimer = setTimeout(refreshCameraFrame, 1500)"
-    );
-    expect(CAMERA_WIDGET_HTML).not.toContain('id="progress-section"');
-    expect(CAMERA_WIDGET_HTML).not.toContain('name: "get_u1_status"');
-  });
-
-  test("uses the selected white camera shell without artificial image overlays", () => {
-    expect(CAMERA_WIDGET_HTML).toContain('class="dashboard u1-card"');
-    expect(CAMERA_WIDGET_HTML).not.toContain('<header class="camera-heading">');
-    expect(CAMERA_WIDGET_HTML).not.toContain("<h1>Printer Camera</h1>");
-    expect(CAMERA_WIDGET_HTML).not.toContain("Read only");
-    expect(CAMERA_WIDGET_HTML).toContain('id="fullscreen"');
-    expect(CAMERA_WIDGET_HTML).toContain('id="picture-in-picture"');
-    expect(CAMERA_WIDGET_HTML).toContain("--brand: var(--u1-accent);");
-    expect(CAMERA_WIDGET_HTML).toContain("width: min(100%, 1120px);");
-    expect(CAMERA_WIDGET_HTML).not.toContain("background-size: 42px 42px;");
-    expect(CAMERA_WIDGET_HTML).toContain('<header class="camera-header u1-header">');
-    expect(CAMERA_WIDGET_HTML).toContain('<h1 class="u1-title">U1 Camera</h1>');
-    expect(CAMERA_WIDGET_HTML).toContain('aria-label="Open live camera"');
-    expect(CAMERA_WIDGET_HTML).not.toContain(">Go Live</button>");
-    expect(WIDGET_HTML).not.toContain('class="camera"');
-  });
-
-  test("uses only the MCP Apps bridge for camera data and signaling", () => {
-    expect(CAMERA_WIDGET_HTML).toContain('"tools/call",');
-    expect(CAMERA_WIDGET_HTML).toContain('callTool("get_u1_camera_frame"');
-    expect(CAMERA_WIDGET_HTML).toContain("authorizeLive: true");
-    expect(CAMERA_WIDGET_HTML).toContain("activationToken: activation.token");
-    expect(CAMERA_WIDGET_HTML).toContain('callTool("open_u1_camera_stream"');
-    expect(CAMERA_WIDGET_HTML).toContain('callTool("answer_u1_camera_stream"');
-    expect(CAMERA_WIDGET_HTML).toContain('callTool("add_u1_camera_ice_candidates"');
-    expect(CAMERA_WIDGET_HTML).toContain('callTool("close_u1_camera_stream"');
-    expect(CAMERA_WIDGET_HTML).not.toContain("fetch(");
-    expect(CAMERA_WIDGET_HTML).not.toContain("MOONRAKER_BASE_URL");
-    expect(CAMERA_WIDGET_HTML).not.toContain("snapshotUrl");
-  });
-
-  test("hydrates the opening snapshot from compatibility result envelopes", () => {
-    expect(CAMERA_WIDGET_HTML).toContain("window.openai?.toolResponseMetadata");
-    expect(CAMERA_WIDGET_HTML).toContain("metadata?.mcp_tool_result");
-    expect(CAMERA_WIDGET_HTML).toContain("metadata?.call_tool_result");
-    expect(CAMERA_WIDGET_HTML).toContain(
-      "initial?.structuredContent?.mediaType !== undefined"
-    );
-    expect(CAMERA_WIDGET_HTML).toContain("applyCameraFrame(initial)");
-    expect(CAMERA_WIDGET_HTML).not.toContain(
-      "void openCameraStream(initial)"
-    );
-    const sessionAssignment = CAMERA_WIDGET_HTML.indexOf(
-      'if (typeof sessionId === "string") liveSessionId = sessionId;'
-    );
-    const validation = CAMERA_WIDGET_HTML.indexOf(
-      'response?.structuredContent?.available !== true'
-    );
-    expect(sessionAssignment).toBeGreaterThan(-1);
-    expect(validation).toBeGreaterThan(sessionAssignment);
-  });
-
-  test("gates live state on a rendered frame and falls back when playback fails", () => {
-    const onTrackStart = CAMERA_WIDGET_HTML.indexOf("peer.ontrack = (event)");
-    const connectionStateStart = CAMERA_WIDGET_HTML.indexOf(
-      "peer.onconnectionstatechange",
-      onTrackStart
-    );
-    const onTrackSource = CAMERA_WIDGET_HTML.slice(
-      onTrackStart,
-      connectionStateStart
-    );
-
-    expect(CAMERA_WIDGET_HTML).toContain("markFirstRenderedFrame");
-    expect(CAMERA_WIDGET_HTML).toContain("requestVideoFrameCallback");
-    expect(CAMERA_WIDGET_HTML).toContain("no rendered video frames");
-    expect(CAMERA_WIDGET_HTML).toContain("video playback rejected");
-    expect(CAMERA_WIDGET_HTML).toContain("video track ended");
-    expect(CAMERA_WIDGET_HTML).toContain('addEventListener("stalled"');
-    expect(onTrackSource).not.toContain(
-      'elements.camera.classList.add("has-live")'
-    );
-  });
-
-  test("keeps activation snapshots in connecting state until success or failure", () => {
-    for (const html of [CAMERA_WIDGET_HTML]) {
-      const frameStart = html.indexOf("const applyCameraFrame = (result,");
-      const frameEnd = html.indexOf("window.addEventListener", frameStart);
-      const frameSource = html.slice(frameStart, frameEnd);
-      const trackStart = html.indexOf("peer.ontrack = (event)");
-      const trackEnd = html.indexOf("peer.onconnectionstatechange", trackStart);
-      const trackSource = html.slice(trackStart, trackEnd);
-
-      expect(frameSource).toContain(
-        'livePreview ? (fallbackDetail ? "fallback" : "loading") : "loading"'
-      );
-      expect(frameSource).not.toContain('livePreview ? "fallback" : "snapshot"');
-      expect(frameSource).toContain(
-        'elements.camera.classList.contains("has-snapshot")'
-      );
-      expect(html).toContain('relayRendering ? "live" : fallbackDetail ? "fallback" : "loading"');
-      expect(html).toContain("markFirstRenderedFrame");
-      expect(html).toContain("no rendered video frames");
-      expect(trackSource).not.toContain(
-        'elements.camera.classList.add("has-live")'
-      );
-    }
-  });
-
-  test("shows one coherent waiting or unavailable state and gates Go Live on a usable snapshot", () => {
-    expect(CAMERA_WIDGET_HTML).toContain(
-      'id="camera-empty-message" role="status" aria-live="polite">Waiting for camera'
-    );
-    expect(CAMERA_WIDGET_HTML).toContain(
-      'id="go-live" type="button" title="Open live camera" aria-label="Open live camera" disabled hidden'
-    );
-    expect(CAMERA_WIDGET_HTML).toContain(
-      'state === "snapshot" &&\n          elements.camera.classList.contains("has-snapshot") && !livePreview'
-    );
-    expect(CAMERA_WIDGET_HTML).toContain(
-      'elements.goLive.disabled = !canGoLive;'
-    );
-    expect(CAMERA_WIDGET_HTML).toContain(
-      'elements.goLive.hidden = !canGoLive;'
-    );
-    expect(CAMERA_WIDGET_HTML).toContain(
-      'state === "unavailable"\n          ? "Camera unavailable"\n          : "Waiting for camera"'
-    );
-    expect(CAMERA_WIDGET_HTML).not.toContain(
-      '.camera[data-camera-status="unavailable"] .camera-bottom { display: none; }'
-    );
-    expect(CAMERA_WIDGET_HTML).toContain('id="refresh-snapshot"');
-  });
-});
-
-describe("instrument-strip observation widget contract", () => {
-  test("parses its module script under strict-mode semantics", () => {
-    const scriptStart = WIDGET_HTML.indexOf('<script type="module">');
-    const sourceStart = scriptStart + '<script type="module">'.length;
-    const scriptEnd = WIDGET_HTML.indexOf("</script>", sourceStart);
-    const source = WIDGET_HTML.slice(sourceStart, scriptEnd);
-
-    expect(scriptStart).toBeGreaterThan(-1);
-    expect(scriptEnd).toBeGreaterThan(sourceStart);
-    expect(() => new Function(`"use strict";\n${source}`)).not.toThrow();
-  });
-
-  test("renders exactly one selected focused or composed Overview module", () => {
-    expect(WIDGET_HTML).toContain('const VIEWS = ["overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh"]');
-    expect(WIDGET_HTML).toContain("const renderers = {");
-    expect(WIDGET_HTML).toContain("progress: renderProgress");
-    expect(WIDGET_HTML).toContain("thermals: renderThermals");
-    expect(WIDGET_HTML).toContain("bed_mesh: renderBedMesh");
-    expect(WIDGET_HTML).toContain("overview: renderOverview");
-    expect(WIDGET_HTML).toContain("renderers[view](observation.module)");
-    expect(WIDGET_HTML).not.toContain("VIEWS.slice(1)");
-    expect(WIDGET_HTML).not.toContain("refreshTimer");
-    expect(WIDGET_HTML).not.toContain("setTimeout(() => void refresh()");
-    expect(WIDGET_HTML).toContain('name: "refresh_printer_observation"');
-    expect(WIDGET_HTML).not.toContain('id="snapshot"');
-    expect(WIDGET_HTML).not.toContain('open_u1_camera_stream');
-  });
-
-  test("renders missing and advertised-only semantics as unknown", () => {
-    expect(WIDGET_HTML).toContain('empty ? "Empty"');
-    expect(WIDGET_HTML).toContain('loaded ? reportedMaterial || "N/A" : "N/A"');
-    expect(WIDGET_HTML).toContain('header("Current Job", true, data.sourceObservedAt');
-    expect(WIDGET_HTML).toContain('header("Job History", true, data.sourceObservedAt');
-    expect(WIDGET_HTML).toContain("No history entries returned");
-    expect(WIDGET_HTML).not.toContain("<span>Current job</span>");
-    expect(WIDGET_HTML).not.toContain("${escapeHtml(data.current.state)}");
-    expect(WIDGET_HTML).not.toContain("Advertised history has no accepted normalization.");
-    expect(WIDGET_HTML).toContain("Queue");
-    expect(WIDGET_HTML).toContain("Fans & Air");
-    expect(WIDGET_HTML).toContain("Bed Mesh");
-    expect(WIDGET_HTML).toContain("provenance");
-  });
-
-  test("uses header observation information and one footer with error status beside Refresh", () => {
-    expect(WIDGET_HTML).toContain('class="instrument-footer u1-footer"');
-    expect(WIDGET_HTML).toContain('class="instrument-info u1-meta"');
-    expect(WIDGET_HTML).toContain('class="instrument-footer u1-footer"><div class="u1-primary-actions">${footerStatus()}<button class="refresh u1-action u1-action--round"');
-    expect(WIDGET_HTML).toContain('const footerStatus = (message = "") => `<span class="refresh-error" role="status" aria-label="${escapeHtml(message)}">${message ? "Could not load" : ""}</span>`');
-    expect(WIDGET_HTML).toContain('<footer class="instrument-footer u1-footer"><div class="u1-primary-actions">${footerStatus(message)}${action}</div></footer>');
-    expect(WIDGET_HTML).toContain("Observed ${date.toLocaleTimeString");
-    expect(WIDGET_HTML).toContain("Observation time unavailable");
-    expect(WIDGET_HTML).toContain('stale: "Stale"');
-    expect(WIDGET_HTML).toContain('offline: "Offline"');
-    expect(WIDGET_HTML).toContain('--negative: var(--u1-negative);');
-    expect(WIDGET_HTML).not.toContain('--negative: #ff8585;');
-    expect(WIDGET_HTML).not.toContain("Read only");
-    expect(WIDGET_HTML).not.toContain("Current reading");
-    expect(WIDGET_HTML).not.toContain("Missing evidence stays Unknown");
-    expect(WIDGET_HTML).not.toContain("value?.detail ?? \"Provenance unavailable\"");
-    expect(WIDGET_HTML).not.toContain('<div class="provenance"><code>');
-    expect(WIDGET_HTML).toContain("font-size: 12px; line-height: 1.5;");
-  });
-
-  test("keeps tool badges but renders bed and cavity as aligned text-only zones", () => {
-    expect(WIDGET_HTML).toContain('const toolReading = reading.id.startsWith("tool-")');
-    expect(WIDGET_HTML).toContain('toolReading ? `<span class="roundel">T');
-    expect(WIDGET_HTML).toContain('toolReading ? "" : " zone-row"');
-    expect(WIDGET_HTML).toContain(".strip.zone-row .identity { padding-left: 8px; }");
-    expect(WIDGET_HTML).not.toContain('reading.id === "heater-bed" ? "BED" : "CAV"');
-    expect(WIDGET_HTML).toContain('.active .reading strong { color: var(--ink); }');
-    expect(WIDGET_HTML).not.toContain('.active .reading strong { color: #e8b600; }');
-  });
-
-  test("supports iPhone viewports, safe areas, and touch targets", () => {
-    expect(WIDGET_HTML).toContain("viewport-fit=cover");
-    const observationStyle = WIDGET_HTML.split("<style>")[1]!.split("</style>")[0]!;
-    expect(observationStyle).not.toMatch(/body\s*\{[^}]*min-height:\s*100d?vh/s);
-    expect(WIDGET_HTML).toContain("env(safe-area-inset-top, 0px)");
-    expect(WIDGET_HTML).toContain('@media (max-width: 620px)');
-    expect(WIDGET_HTML).toContain('@media (max-width: 480px)');
-    expect(WIDGET_HTML).not.toContain('.strip .identity { grid-column: 1 / -1; }');
-    expect(WIDGET_HTML).toContain("grid-template-columns: minmax(104px, 1.2fr) repeat(2, minmax(52px, 0.7fr))");
-    expect(WIDGET_HTML).not.toContain('.strip .reading:nth-of-type(2) { display: none; }');
-    expect(WIDGET_HTML).toContain("min-height: 44px");
-    expect(WIDGET_HTML).toContain("touch-action: manipulation");
-    expect(WIDGET_HTML).toContain("notifyIntrinsicHeight");
-    expect(WIDGET_HTML).toContain("--ink: var(--u1-ink);");
-    expect(WIDGET_HTML).toContain("--brand: var(--u1-accent);");
-    const moduleScript = WIDGET_HTML.split('<script type="module">')[1]!.split("</script>")[0]!;
-    expect(moduleScript).not.toContain("fetch(");
-    expect(WIDGET_HTML).not.toContain("MOONRAKER_BASE_URL");
   });
 });

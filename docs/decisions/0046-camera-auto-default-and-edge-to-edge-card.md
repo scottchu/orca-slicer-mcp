@@ -22,8 +22,26 @@ not the evidence needed to close C08.
 
 Camera alone supersedes decision0041's footer/error placement and decision0044's
 snapshot-first/manual-retry bootstrap. Other widgets retain their footer/Refresh
-and adjacent error contracts. Keep all immutable compatibility resource bytes;
-new current resources carry the new behavior.
+and adjacent error contracts.
+
+Before this candidate shipped, the user explicitly selected current-only widget
+resources and removal of compatibility. This same-day override supersedes
+0044's old-URI preservation and this candidate's earlier 30-old-URI contract:
+retire old versioned aliases, obsolete bundles and compatibility-only tests.
+Preserve current resources and the eight legacy renderers still used by the
+current observation resource; they remain active functionality. Keep deployment
+backups, other worktrees and historical evidence. This changes release scope,
+not printer authority, private metadata, security or required shipping guards.
+
+The adopted cleanup target is 32 MCP resources reduced to current observation17
+and Camera13 only. Retire six compatibility HTML files and old camera-widget.html
+with its `/camera-widget` route; route active `/widget` to current MCP observation
+and remove duplicate widget.html plus its orphan vendor-injection pipeline.
+Pure compatibility show/get_u1_status tools may retire only when no current
+consumer depends on them. Adjust build-contract minimum inventory to current
+assets/routes while retaining hash/tamper, isolation, security, runtime-config
+preservation, rollback and every shipping guard. Final paths and inventories
+remain subject to author evidence; no eight-renderer rewrite belongs here.
 
 - Use a thin header containing icon/title/state, measured FPS and accepted frame
   time. Remove the Camera footer and Refresh button. The media spans the full
@@ -67,8 +85,10 @@ This diagnostic record causes no additional acquisition.
 Neutral acquisition-error skeletons, hidden stale media/telemetry and stable
 loading/error/recovery geometry remain required. Accepted decoded/presented
 frames alone support Live/FPS; timed callbacks do not. The prior generic Footer
-statusText proposal is not required. Planned Camera v13/observation v17 and shared
-consumer artifacts require final build/resource evidence before acceptance.
+statusText proposal is not required. Camera v13/observation v17 and the final
+current-only resource/build inventory require fresh affected evidence before
+acceptance; checks of the previous compatibility-preserving candidate do not
+accept removal of those resources.
 
 ## Consequences
 
@@ -89,7 +109,10 @@ Cover default Auto, quiet single-flight polling, valid/missing/malformed MCP
 bootstrap, hide/show, late results and disposal in real/synthetic service tests.
 Verify diagnostic retention through Auto, safe labels, reset/cancellation and
 unchanged timeout guards. Test actual current MCP resources and affected shared
-consumers, with old aliases bound to unchanged hashes.
+consumers, including all eight active legacy renderers. Verify tool metadata and
+resource inventory resolve only current assets, retired aliases are absent and
+obsolete bundles are not packaged; remove only compatibility-specific tests,
+retaining current functionality/security/lifecycle coverage.
 
 Rendered checks must cover narrow/desktop and enlarged text: 44px controls,
 88px Switch, readable bottom-left reason clear of controls, edge clipping and

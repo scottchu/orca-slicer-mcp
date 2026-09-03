@@ -14,11 +14,9 @@ HASH = re.compile(r"[0-9a-f]{64}\Z")
 SAFE_PATH = re.compile(r"[A-Za-z0-9_./@+\-]+\Z")
 VIEWS = ("overview", "progress", "thermals", "heads", "jobs", "job_history", "queue", "fans", "bed_mesh", "camera")
 FOCUSED_ASSETS = ("fans", "thermals", "heads", "queue", "camera")
-LEGACY_ASSET_FILES = {
-    "widget.html": "static-contract/widget.html",
-    "legacy-widget.html": "legacy-widget.html",
-    "camera-widget.html": "static-contract/camera-widget.html",
-    "legacy-camera-widget.html": "legacy-camera-widget.html",
+CURRENT_ASSET_FILES = {
+    "mcp-observation.html": "mcp-observation.html",
+    "mcp-camera.html": "mcp-camera.html",
     "status-dashboard-host.html": "static-contract/status-dashboard-host.html",
     "camera-dashboard-host.html": "static-contract/camera-dashboard-host.html",
 }
@@ -26,7 +24,6 @@ LEGACY_ASSET_FILES = {
 # public-isolation checks that were required before the framework migration.
 REQUIRED_ROLES = {
     "/widget": "both",
-    "/camera-widget": "dashboard",
     "/dashboard": "dashboard",
     "/dashboard/": "dashboard",
     "/dashboard/lab": "dashboard",
@@ -126,7 +123,7 @@ def read_build_manifest(directory):
         role = item["role"]
         if role not in ("public", "dashboard", "both"):
             raise ValueError("Invalid static route role")
-        if not item["file"].startswith(("static-contract/", "client/", "prerendered/")):
+        if not item["file"].startswith(("static-contract/", "client/", "prerendered/")) and not (route == "/widget" and item["file"] == "mcp-observation.html"):
             raise ValueError("Runtime code cannot be declared as a static route")
         if item["file"].startswith("client/") and route != "/" + item["file"][len("client/"):]:
             raise ValueError("Client asset route does not match its build path")
@@ -135,8 +132,10 @@ def read_build_manifest(directory):
             raise ValueError("Private static route cannot be public")
     if any(routes.get(route, {}).get("role") != role for route, role in REQUIRED_ROLES.items()):
         raise ValueError("Required static route or role missing")
-    if not set(LEGACY_ASSET_FILES.values()).issubset(files):
-        raise ValueError("Required legacy resource asset missing")
+    if routes["/widget"]["file"] != CURRENT_ASSET_FILES["mcp-observation.html"]:
+        raise ValueError("Widget route must serve the current observation resource")
+    if not set(CURRENT_ASSET_FILES.values()).issubset(files):
+        raise ValueError("Required current resource asset missing")
     expected_links = {f"/dashboard/{view}" for view in VIEWS}
     for route in ("/dashboard", "/dashboard/"):
         directory_links = DirectoryLinks()

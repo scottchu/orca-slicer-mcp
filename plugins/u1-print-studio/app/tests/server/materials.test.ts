@@ -200,7 +200,7 @@ describe("material inbound composition", () => {
       expect(reads).toBe(1);
       await client.callTool({ name: "refresh_printer_observation", arguments: { view: "heads" } }); expect(reads).toBe(1);
       expect((await client.listTools()).tools.map(tool => tool.name).sort()).toEqual([
-        "get_u1_camera_frame", "get_u1_status", "observe_printer", "open_printer_camera", "refresh_printer_observation", "show_u1_status",
+        "get_u1_camera_frame", "observe_printer", "open_printer_camera", "refresh_printer_observation",
       ]);
       expect((await client.callTool({ name: "observe_printer", arguments: { view: "filament_sync" } })).isError).toBe(true);
     } finally { await client.close(); await server.close(); }

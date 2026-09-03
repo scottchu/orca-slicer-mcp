@@ -43,9 +43,8 @@ large status dashboard.
 - For `camera`, call model-visible `open_printer_camera`. The camera widget owns
   snapshot refresh, Go Live, bounded signaling, Close, retry, and fallback; do
   not call its app-only helpers directly.
-- Do not use `show_u1_status` or `get_u1_status` as a substitute for a focused
-  request. If the current task has stale tool descriptors and the focused tool
-  is unavailable, report that mismatch instead of presenting the wrong view.
+- If the current task has stale tool descriptors and the focused tool is
+  unavailable, report that mismatch instead of presenting the wrong view.
 
 ## Evidence and authority
 

@@ -23,7 +23,7 @@ from u1_service import (
     private_dir, run, write_private,
 )
 from u1_build_contract import (
-    LEGACY_ASSET_FILES, read_build_manifest, route_path, static_contract as build_static_contract,
+    CURRENT_ASSET_FILES, read_build_manifest, route_path, static_contract as build_static_contract,
 )
 
 REPOSITORY = "scottchu/orca-slicer-mcp"
@@ -181,7 +181,7 @@ class Operations:
         self.command([str(self.bun), "--no-env-file", "--config=/dev/null", "run", "build:server", "--outdir", str(directory)], cwd=app)
         self.contract = static_contract(self.source, directory)
         self.build_manifest = read_build_manifest(directory)
-        for name, relative in LEGACY_ASSET_FILES.items():
+        for name, relative in CURRENT_ASSET_FILES.items():
             require(self.build_manifest["runtimeFiles"].get(relative) == digest(app / "public" / name), "Bundled public asset differs from source")
         self.git("diff", "--check")
 
@@ -230,7 +230,7 @@ class Operations:
         path, manifest = self.manager.verify_release(release)
         require(manifest["sourceRevision"] == merged and static_contract(source, path / "dist") == self.contract, "Staged source/static contract mismatch")
         require(self.build_manifest is not None and read_build_manifest(path / "dist") == self.build_manifest, "Staged complete build differs from the validated candidate")
-        for name, relative in LEGACY_ASSET_FILES.items():
+        for name, relative in CURRENT_ASSET_FILES.items():
             require(digest(path / "dist" / relative) == digest(source / APP / "public" / name), "Staged asset does not match merged source")
         return manifest
 

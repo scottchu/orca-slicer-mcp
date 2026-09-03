@@ -618,8 +618,6 @@ describe("personal OAuth discovery and boundary", () => {
     expect(toolsBody.result.tools.map((tool) => tool.name)).toEqual([
       "observe_printer",
       "refresh_printer_observation",
-      "show_u1_status",
-      "get_u1_status",
       "get_u1_camera_frame",
       "open_printer_camera",
       "open_u1_camera_stream",

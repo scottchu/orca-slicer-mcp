@@ -4,7 +4,21 @@ Current authority, 2026-09-03. Historical iteration checklists are not current
 completion claims. Source, deployed service and actual-device/printer evidence
 remain separate; routing integration does not complete widget product features.
 
-## Current work: edge-to-edge Camera, Auto/Live and safe failure overlay
+## Current work: current-only widgets and the Camera candidate
+
+The user's latest order retires old versioned widget aliases, obsolete bundles
+and compatibility-only tests. Keep only current widget resources. Preserve the
+eight legacy renderers still used by the current observation resource; they are
+active functionality, not old resource compatibility. Do not delete deployment
+backups or other worktrees. This supersedes the former 30-old-URI preservation
+contract. The unshipped `391303c` candidate is now an earlier validation baseline;
+cleanup needs its own affected checks, exact review and guarded release.
+The adopted target is two MCP resources (observation17/Camera13), retirement of
+six compatibility HTML files plus old camera-widget HTML/HTTP route, and `/widget`
+serving current MCP observation instead of duplicate widget.html/vendor injection.
+Retire pure compatibility status tools only after confirming no current consumer.
+Keep hash/tamper/isolation/security/config-preservation/rollback and ship guards;
+final removed paths, tool inventory and build counts await author evidence.
 
 The user-approved Camera candidate removes the footer and Refresh button. Keep a
 thin icon/title/state/FPS/time header; media fills the whole lower edge, with
@@ -28,11 +42,13 @@ On `codex/u1-camera-failure-stage` from `06e2a90`, service-owned sanitized
 lastLiveFailure persists through Auto; only its safe reason is visible in the
 media overlay. Timeouts/watchdogs stay unchanged. This improves diagnosability
 and presentation, without proving the phone failure's cause. The earlier footer/
-reserved-header proposals are superseded. Planned Camera v13/observation v17 and
-old-alias preservation await final shared-component build evidence.
+reserved-header proposals are superseded. Camera v13/observation v17 are the
+current candidate resource identities; final current-only resource inventory and
+build identities await cleanup evidence.
 
-Source validation, exact independent review and deployment remain pending;
-PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
+Earlier author checks and the failed first independent gate are recorded in
+VALIDATION; they do not accept the changed cleanup candidate. Cleanup validation,
+exact independent review and deployment remain pending; PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
 success/failure sequence; C08 reliability is unresolved. Screen Sharing stays paused.
 
 ## Current deployment: PR101 Camera open/cleanup repair
@@ -344,7 +360,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | C01 fullscreen video continuity | Delivered same-document native/CSS continuity; host fullscreen integration unfinished | Current code does not request host display mode; mobile whole-host fullscreen is not solved by local CSS/native fallback. Official host fullscreen API exists; this slice adds no implementation. Genuine phone/native PiP and physical stream acceptance remain separate |
 | C02 Camera in Lab and SvelteKit | Delivered PR69/71 | Does not imply latest service/status repair delivered |
 | C03 connecting/disconnected icons/red dot | Source-only separate checkpoint c6cfb4e | Integrate separately and independently verify;0042 removes historical repo cap blocker |
-| C04 consistent two/three status slots | New candidate: default Auto, Auto/Live only, 88px-wide/44px-high animated icon Switch; PR101 three-mode bytes remain deployed compatibility history | Remove single-Snapshot mode and Camera footer/Refresh UI; quiet polling, edge-to-edge lower media and bottom-left safe failure overlay; Camera-only0041 exception in0046, bounded initial-result/Auto recovery contract, exact validation and delivery pending; C08 reliability remains open |
+| C04 consistent two/three status slots | New candidate: default Auto, Auto/Live only, 88px-wide/44px-high animated icon Switch; PR101 three-mode release remains deployed history; current-only cleanup now required | Remove single-Snapshot mode and Camera footer/Refresh UI; quiet polling, edge-to-edge lower media and bottom-left safe failure overlay; Camera-only0041 exception in0046, bounded initial-result/Auto recovery contract; retire old aliases/bundles/compatibility-only tests; cleanup validation and delivery pending; C08 reliability remains open |
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
@@ -365,7 +381,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | X02 Current Job Svelte | Source-only PR79 / 48f2060 | Integrate/remeasure; filename/state grouping, not duplicate percent |
 | X03 History Svelte and record identity | Source-only 379c1e7 adapter | Basename/outcome/date/duration and bounded-list design |
 | X04 Overview Svelte/domain grouping | Source-only 1a3b4f4 adapter | Eight truthful domain summaries, no invented fields |
-| X05 no remaining legacy/MCP aliases | PR99 MCP Heads/Camera Svelte cutover independently accepted and deployed; eight other renderers and all 26 old aliases retained | Scoped postverification passes; actual-host acceptance remains separate; full retirement requires lossless removal acceptance |
+| X05 no remaining legacy/MCP aliases | Current-only retirement adopted; two-resource target, obsolete aliases/bundles/routes and compatibility-only tests/tools are being removed | Final removal/consumer inventory and validation pending. Preserve eight legacy renderers still used by current observation; their Svelte migration is separate unfinished work. No cleanup shipment or actual-host acceptance yet |
 | X06 material/profile/color sync | Decision pending | No unreviewed write/sync authority |
 | G01 focused/transitive tests rule | Delivered PR80 AGENTS | One frozen full-run owner, independent targeted checks, ship guards intact |
 | G02 role-separated delegation | Adopted AGENTS | Author cannot self-approve; disclose actual capacity limits |

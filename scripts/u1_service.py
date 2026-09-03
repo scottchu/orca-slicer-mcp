@@ -22,10 +22,10 @@ import tempfile
 import time
 import urllib.request
 
-from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, LEGACY_ASSET_FILES, read_build_manifest
+from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, CURRENT_ASSET_FILES, read_build_manifest
 
 LABELS = {"public": "com.scottchu.u1-print-studio", "dashboard": "com.scottchu.u1-print-studio-dashboard"}
-ASSETS = tuple(LEGACY_ASSET_FILES)
+ASSETS = tuple(CURRENT_ASSET_FILES)
 ID = re.compile(r"[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}\Z")
 HEALTH_KEYS = ("runtimeVersion", "toolSchemaVersion", "observationWidgetVersion", "cameraWidgetVersion")
 BOOTOUT_WAIT_ATTEMPTS = 300

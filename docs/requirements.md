@@ -218,8 +218,21 @@ printer environments support the described behavior.
   controls stay accessible at the media's bottom right. The current candidate uses only Auto / Live through generic
   common animated `Switch`, fixed at 88px wide and 44px high in the Camera media's
   bottom-right corner. Auto is the default for a new mount; remove the separate
-  single-Snapshot mode. Existing three-mode PR101 resources remain immutable
-  compatibility artifacts until the new candidate is independently shipped. Names appear only in tooltip/aria,
+  single-Snapshot mode. The latest user instruction supersedes old resource
+  compatibility: retire prior version aliases, obsolete widget bundles and
+  compatibility-only tests, and publish only current widget resources. Preserve
+  the eight legacy renderers still required by the current observation resource,
+  current behavior/security/lifecycle coverage, deployment backups and other
+  worktrees. Historical URI/hash preservation is prior evidence, not a current
+  requirement. The adopted target is two MCP resources (current observation17
+  and Camera13), removal of six compatibility HTML files plus old
+  camera-widget.html and `/camera-widget`, and active `/widget` serving current
+  MCP observation instead of duplicate widget.html/vendor injection. Retire
+  compatibility-only show/get_u1_status tools only if no current consumer remains.
+  Build-contract inventory follows current assets/routes; hash/tamper/isolation/
+  security/runtime-config-preservation/rollback and shipping guards remain.
+  Final removed paths/tool inventory and cleanup acceptance remain pending.
+  Names appear only in tooltip/aria,
   superseding visible text/full-width mode controls. Keep44px targets, keyboard
   selection/focus and reduced-motion behavior; the switch must not overlap
   fullscreen or other display controls. Live failure automatically selects Auto. The user-selected
@@ -697,7 +710,9 @@ durable-monitor claim.
   bounded missing/malformed delivery fails neutrally for explicit Refresh; the
   dashboard keeps request bootstrap. That PR99 behavior is historical;
   CAM-008/decision0046's current candidate supersedes Camera's snapshot-first/
-  manual-retry policy with default Auto and bounded automatic recovery.
+  manual-retry policy with default Auto and bounded automatic recovery, and the
+  latest current-only widget policy retires old aliases/bundles and their
+  compatibility-only tests. The current eight legacy renderers remain required.
   Independent simulated-host and exact served-resource evidence do not establish
   actual phone/plugin-host acceptance.
   See decisions0035/0044 and the active iteration for acceptance gates.

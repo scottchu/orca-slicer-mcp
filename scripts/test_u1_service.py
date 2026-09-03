@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import patch
 
 from u1_service import ASSETS, HEALTH_KEYS, LABELS, ServiceManager, digest, json_bytes
-from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, LEGACY_ASSET_FILES, REQUIRED_ROLES, VIEWS, read_build_manifest
+from u1_build_contract import BUILD_KIND, BUILD_MANIFEST, CURRENT_ASSET_FILES, REQUIRED_ROLES, VIEWS, read_build_manifest
 
 
 CONTRACT = dict(zip(HEALTH_KEYS, ("0.3.0", 5, "observation-v2", "camera-v4")))
@@ -23,7 +23,7 @@ def write_kit_build(directory):
                 "client/_app/immutable/start.fixture.js": "fixture client",
                 "prerendered/dashboard/fans.html": "<main>Neutral Fans fixture</main>",
                 "static-contract/fixture.html": "fixture compatibility page"}
-    contents.update({relative: name for name, relative in LEGACY_ASSET_FILES.items()})
+    contents.update({relative: name for name, relative in CURRENT_ASSET_FILES.items()})
     contents["static-contract/dashboard-index.html"] = "".join(f'<a href="/dashboard/{view}">{view}</a>' for view in VIEWS)
     for relative, content in contents.items():
         file = directory / relative
@@ -32,7 +32,7 @@ def write_kit_build(directory):
     files = {relative: digest(directory / relative) for relative in contents}
     routes = {}
     for route, role in REQUIRED_ROLES.items():
-        relative = {"/widget": "static-contract/widget.html", "/camera-widget": "static-contract/camera-widget.html", "/dashboard/fans": "prerendered/dashboard/fans.html", "/dashboard": "static-contract/dashboard-index.html", "/dashboard/": "static-contract/dashboard-index.html"}.get(route, "static-contract/fixture.html")
+        relative = {"/widget": "mcp-observation.html", "/dashboard/fans": "prerendered/dashboard/fans.html", "/dashboard": "static-contract/dashboard-index.html", "/dashboard/": "static-contract/dashboard-index.html"}.get(route, "static-contract/fixture.html")
         routes[route] = {"file": relative, "sha256": files[relative], "role": role}
     relative = "client/_app/immutable/start.fixture.js"
     routes["/_app/immutable/start.fixture.js"] = {"file": relative, "sha256": files[relative], "role": "dashboard"}
@@ -480,12 +480,31 @@ class BuildContractTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "directory links"):
                     read_build_manifest(self.directory)
 
-    def test_explicit_asset_paths_keep_both_legacy_resources_hashed(self):
+    def test_current_widget_route_cannot_substitute_another_asset(self):
+        relative = "static-contract/fixture.html"
+        self.manifest["staticRoutes"]["/widget"].update(
+            file=relative, sha256=self.manifest["runtimeFiles"][relative])
+        self.write_manifest()
+        with self.assertRaisesRegex(ValueError, "current observation resource"):
+            read_build_manifest(self.directory)
+
+    def test_mcp_resource_exception_cannot_expose_runtime_code(self):
+        for route, relative in [("/widget", "server.js"), ("/dashboard/overview", "mcp-camera.html")]:
+            with self.subTest(route=route):
+                original = dict(self.manifest["staticRoutes"][route])
+                self.manifest["staticRoutes"][route].update(
+                    file=relative, sha256=self.manifest["runtimeFiles"][relative])
+                self.write_manifest()
+                with self.assertRaisesRegex(ValueError, "Runtime code cannot"):
+                    read_build_manifest(self.directory)
+                self.manifest["staticRoutes"][route] = original
+
+    def test_explicit_asset_paths_keep_both_current_resources_hashed(self):
         read_build_manifest(self.directory)
-        for name in ("legacy-widget.html", "legacy-camera-widget.html"):
-            self.assertEqual(LEGACY_ASSET_FILES[name], name)
+        for name in ("mcp-observation.html", "mcp-camera.html"):
+            self.assertEqual(CURRENT_ASSET_FILES[name], name)
             self.assertEqual(self.manifest["runtimeFiles"][name], digest(self.directory / name))
-        (self.directory / "legacy-widget.html").write_text("tampered legacy resource")
+        (self.directory / "mcp-observation.html").write_text("tampered current resource")
         with self.assertRaisesRegex(ValueError, "hash mismatch"):
             read_build_manifest(self.directory)
 

@@ -11,16 +11,8 @@ import {
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import embeddedCameraWidgetFile from "../../../public/camera-widget.html" with { type: "file" };
-import embeddedLegacyCameraWidgetFile from "../../../public/legacy-camera-widget.html" with { type: "file" };
-import embeddedLegacyWidgetFile from "../../../public/legacy-widget.html" with { type: "file" };
-import embeddedWidgetFile from "../../../public/widget.html" with { type: "file" };
 import embeddedMcpObservationFile from "../../../public/mcp-observation.html" with { type: "file" };
 import embeddedMcpCameraFile from "../../../public/mcp-camera.html" with { type: "file" };
-import embeddedMcpObservationV15File from "../../../public/mcp-observation-v15.html" with { type: "file" };
-import embeddedMcpObservationV16File from "../../../public/mcp-observation-v16.html" with { type: "file" };
-import embeddedMcpCameraV11File from "../../../public/mcp-camera-v11.html" with { type: "file" };
-import embeddedMcpCameraV12File from "../../../public/mcp-camera-v12.html" with { type: "file" };
 
 import {
   createObservationPresentation,
@@ -41,14 +33,10 @@ import {
   readU1Environment,
   readU1CurrentJob,
   readU1JobHistory,
-  normalizedPrintState,
-  normalizedToolState,
   stripJpegMetadata,
   type U1CameraFrame,
-  type U1Status,
   type U1WidgetMetadata,
 } from "./u1-status.js";
-import { statusCardImageContent } from "./status-card-image.js";
 import type {
   CameraIceCandidate,
   CameraWebRtcSessionController,
@@ -71,64 +59,8 @@ const IS_COMPILED = currentDirectory.startsWith("/$bunfs/");
 export const WIDGET_URI = `ui://u1-print-studio/${U1_OBSERVATION_WIDGET_VERSION}.html`;
 export const CAMERA_WIDGET_URI =
   `ui://u1-print-studio/${U1_CAMERA_WIDGET_VERSION}.html`;
-export const LEGACY_CAMERA_WIDGET_URIS = [
-  "ui://u1-print-studio/camera-v3.html",
-  "ui://u1-print-studio/camera-v2.html",
-  "ui://u1-print-studio/camera-v1.html",
-] as const;
-export const LEGACY_FOCUSED_WIDGET_URIS = [
-  "ui://u1-print-studio/observation-v14.html",
-  "ui://u1-print-studio/observation-v13.html",
-  "ui://u1-print-studio/observation-v12.html",
-  "ui://u1-print-studio/observation-v11.html",
-  "ui://u1-print-studio/observation-v10.html",
-  "ui://u1-print-studio/observation-v9.html",
-  "ui://u1-print-studio/observation-v8.html",
-  "ui://u1-print-studio/observation-v7.html",
-  "ui://u1-print-studio/observation-v6.html",
-  "ui://u1-print-studio/observation-v5.html",
-  "ui://u1-print-studio/observation-v4.html",
-  "ui://u1-print-studio/observation-v3.html",
-  "ui://u1-print-studio/observation-v2.html",
-  "ui://u1-print-studio/observation-v1.html",
-] as const;
-export const LEGACY_WIDGET_URIS = [
-  "ui://u1-print-studio/status-v4.html",
-  "ui://u1-print-studio/status-v3.html",
-] as const;
-const WIDGET_PATH = path.join(ASSET_ROOT, "widget.html");
-const LEGACY_WIDGET_PATH = path.join(ASSET_ROOT, "legacy-widget.html");
-const CAMERA_WIDGET_PATH = path.join(ASSET_ROOT, "camera-widget.html");
-const LEGACY_CAMERA_WIDGET_PATH = path.join(
-  ASSET_ROOT,
-  "legacy-camera-widget.html"
-);
-export const readWidgetHtml = () =>
-  IS_COMPILED
-    ? readFileSync(embeddedWidgetFile as unknown as string, "utf8")
-    : readFileSync(WIDGET_PATH, "utf8");
-export const WIDGET_HTML = readWidgetHtml();
-export const readLegacyWidgetHtml = () =>
-  IS_COMPILED
-    ? readFileSync(embeddedLegacyWidgetFile as unknown as string, "utf8")
-    : readFileSync(LEGACY_WIDGET_PATH, "utf8");
-export const LEGACY_WIDGET_HTML = readLegacyWidgetHtml();
-export const readCameraWidgetHtml = () =>
-  IS_COMPILED
-    ? readFileSync(embeddedCameraWidgetFile as unknown as string, "utf8")
-    : readFileSync(CAMERA_WIDGET_PATH, "utf8");
-export const CAMERA_WIDGET_HTML = readCameraWidgetHtml();
 export const MCP_OBSERVATION_HTML = readFileSync(IS_COMPILED ? embeddedMcpObservationFile as unknown as string : path.join(ASSET_ROOT, 'mcp-observation.html'), 'utf8');
 export const MCP_CAMERA_HTML = readFileSync(IS_COMPILED ? embeddedMcpCameraFile as unknown as string : path.join(ASSET_ROOT, 'mcp-camera.html'), 'utf8');
-export const MCP_OBSERVATION_V15_HTML = readFileSync(IS_COMPILED ? embeddedMcpObservationV15File as unknown as string : path.join(ASSET_ROOT, 'mcp-observation-v15.html'), 'utf8');
-export const MCP_OBSERVATION_V16_HTML = readFileSync(IS_COMPILED ? embeddedMcpObservationV16File as unknown as string : path.join(ASSET_ROOT, 'mcp-observation-v16.html'), 'utf8');
-export const MCP_CAMERA_V11_HTML = readFileSync(IS_COMPILED ? embeddedMcpCameraV11File as unknown as string : path.join(ASSET_ROOT, 'mcp-camera-v11.html'), 'utf8');
-export const MCP_CAMERA_V12_HTML = readFileSync(IS_COMPILED ? embeddedMcpCameraV12File as unknown as string : path.join(ASSET_ROOT, 'mcp-camera-v12.html'), 'utf8');
-export const readLegacyCameraWidgetHtml = () =>
-  IS_COMPILED
-    ? readFileSync(embeddedLegacyCameraWidgetFile as unknown as string, "utf8")
-    : readFileSync(LEGACY_CAMERA_WIDGET_PATH, "utf8");
-export const LEGACY_CAMERA_WIDGET_HTML = readLegacyCameraWidgetHtml();
 
 export function observationPayload(
   snapshot: ObservationSnapshot,
@@ -144,89 +76,6 @@ export function observationPayload(
     }],
     structuredContent: presentation,
     _meta: {},
-  };
-}
-
-export function resultPayload(
-  status: U1Status,
-  metadata: U1WidgetMetadata,
-  options: { includeImageCard?: boolean } = {}
-) {
-  const publicState = status.reachable
-    ? normalizedPrintState(status.state)
-    : "offline";
-  const publicStatus: U1Status = {
-    schemaVersion: 1,
-    stateVersion: status.stateVersion,
-    observedAt: status.observedAt,
-    reachable: status.reachable,
-    state: publicState,
-    stateLabel: status.reachable
-      ? {
-          standby: "Ready",
-          printing: "Printing",
-          paused: "Paused",
-          complete: "Complete",
-          cancelled: "Cancelled",
-          error: "Error",
-          unknown: "Unknown",
-        }[publicState] ?? "Unknown"
-      : "Offline",
-    progressPercent: status.progressPercent,
-    currentLayer: status.currentLayer,
-    totalLayers: status.totalLayers,
-    elapsedSeconds: status.elapsedSeconds,
-    remainingSeconds: status.remainingSeconds,
-    refreshAfterSeconds: status.refreshAfterSeconds,
-    filename: status.filename,
-    activePhysicalTool: status.activePhysicalTool,
-    tools: status.tools.map((tool) => ({
-      physicalTool: tool.physicalTool,
-      temperature: tool.temperature,
-      target: tool.target,
-      state: tool.state === null ? null : normalizedToolState(tool.state),
-      active: tool.active,
-    })),
-    bed: {
-      temperature: status.bed.temperature,
-      target: status.bed.target,
-    },
-    storage: {
-      active: status.storage.active,
-      filePosition: status.storage.filePosition,
-      fileSize: status.storage.fileSize,
-    },
-    printerMessage: status.printerMessage
-      ? status.reachable
-        ? status.exception
-          ? "Printer reported an exception."
-          : "Printer reported a status message."
-        : "Printer unavailable"
-      : null,
-    exception: status.exception,
-    camera: {
-      available: status.camera.available,
-      service:
-        status.camera.service === "webrtc" ||
-          status.camera.service === "snapshot"
-          ? status.camera.service
-          : null,
-      targetFps: status.camera.targetFps,
-    },
-  };
-  const summary = publicStatus.reachable
-    ? publicStatus.progressPercent === null
-      ? `U1 is ${publicStatus.stateLabel.toLowerCase()}; progress is unknown.`
-      : `U1 is ${publicStatus.stateLabel.toLowerCase()} at ${publicStatus.progressPercent}%.`
-    : "U1 status is unavailable.";
-
-  return {
-    content: [
-      { type: "text" as const, text: summary },
-      ...(options.includeImageCard ? [statusCardImageContent(publicStatus)] : []),
-    ],
-    structuredContent: publicStatus,
-    _meta: sanitizeCameraMetadata(metadata),
   };
 }
 
@@ -396,140 +245,35 @@ export function createAppServer(
     ? { securitySchemes }
     : {};
 
-  const observationResources = [
-    { uri: WIDGET_URI, html: MCP_OBSERVATION_HTML, focused: true },
-    { uri: 'ui://u1-print-studio/observation-v16.html', html: MCP_OBSERVATION_V16_HTML, focused: true },
-    { uri: 'ui://u1-print-studio/observation-v15.html', html: MCP_OBSERVATION_V15_HTML, focused: true },
-    ...LEGACY_FOCUSED_WIDGET_URIS.map((uri) => ({
-      uri,
-      html: WIDGET_HTML,
-      focused: true,
-    })),
-    ...LEGACY_WIDGET_URIS.map((uri) => ({
-      uri,
-      html: LEGACY_WIDGET_HTML,
-      focused: false,
-    })),
-  ];
-  for (const [index, resource] of observationResources.entries()) {
-    const { uri: widgetUri, html, focused } = resource;
-    registerAppResource(
-      server,
-      index === 0 ? "u1-status-widget" : `u1-status-widget-legacy-${index}`,
-      widgetUri,
-      {},
-      async () => ({
-        contents: [
-          {
-            uri: widgetUri,
-            mimeType: RESOURCE_MIME_TYPE,
-            text: html,
-            _meta: {
-              ui: {
-                prefersBorder: false,
-                csp: {
-                  connectDomains: [],
-                  resourceDomains: [],
-                  frameDomains: [],
-                },
-              },
-              "openai/widgetDescription":
-                focused
-                  ? "A compact read-only Snapmaker U1 focused instrument strip."
-                  : "The preserved legacy read-only Snapmaker U1 status dashboard.",
-            },
-          },
-        ],
-      })
-    );
-  }
-
-  const cameraResources = [
+  const resources = [
     {
+      name: "u1-status-widget",
+      uri: WIDGET_URI,
+      html: MCP_OBSERVATION_HTML,
+      description: "A compact read-only Snapmaker U1 focused instrument strip.",
+    },
+    {
+      name: "u1-camera-widget",
       uri: CAMERA_WIDGET_URI,
       html: MCP_CAMERA_HTML,
-      version: U1_CAMERA_WIDGET_VERSION,
+      description: `A camera-only Snapmaker U1 view (${U1_CAMERA_WIDGET_VERSION}) with automatic snapshots, user-requested read-only live video, and automatic snapshot fallback.`,
     },
-    {
-      uri: "ui://u1-print-studio/camera-v12.html",
-      html: MCP_CAMERA_V12_HTML,
-      version: "camera-v12",
-    },
-    {
-      uri: "ui://u1-print-studio/camera-v11.html",
-      html: MCP_CAMERA_V11_HTML,
-      version: "camera-v11",
-    },
-    {
-      uri: "ui://u1-print-studio/camera-v10.html",
-      html: CAMERA_WIDGET_HTML,
-      version: "camera-v10",
-    },
-    {
-      uri: "ui://u1-print-studio/camera-v9.html",
-      html: CAMERA_WIDGET_HTML,
-      version: "camera-v9",
-    },
-    {
-      uri: "ui://u1-print-studio/camera-v8.html",
-      html: CAMERA_WIDGET_HTML,
-      version: "camera-v8",
-    },
-    {
-      uri: "ui://u1-print-studio/camera-v7.html",
-      html: CAMERA_WIDGET_HTML,
-      version: "camera-v7",
-    },
-    {
-      uri: "ui://u1-print-studio/camera-v6.html",
-      html: CAMERA_WIDGET_HTML,
-      version: "camera-v6",
-    },
-    {
-      uri: "ui://u1-print-studio/camera-v5.html",
-      html: CAMERA_WIDGET_HTML,
-      version: "camera-v5",
-    },
-    {
-      uri: "ui://u1-print-studio/camera-v4.html",
-      html: CAMERA_WIDGET_HTML,
-      version: "camera-v4",
-    },
-    ...LEGACY_CAMERA_WIDGET_URIS.map((uri) => ({
-      uri,
-      html: LEGACY_CAMERA_WIDGET_HTML,
-      version: uri.slice(uri.lastIndexOf("/") + 1, -".html".length),
-    })),
   ];
-  for (const [index, resource] of cameraResources.entries()) {
-    const { uri: widgetUri, html, version } = resource;
-    registerAppResource(
-      server,
-      index === 0 ? "u1-camera-widget" : `u1-camera-widget-legacy-${index}`,
-      widgetUri,
-      {},
-      async () => ({
-        contents: [
-          {
-            uri: widgetUri,
-            mimeType: RESOURCE_MIME_TYPE,
-            text: html,
-            _meta: {
-              ui: {
-                prefersBorder: false,
-                csp: {
-                  connectDomains: [],
-                  resourceDomains: [],
-                  frameDomains: [],
-                },
-              },
-              "openai/widgetDescription":
-                `A camera-only Snapmaker U1 view (${version}) with a relayed snapshot, user-requested read-only live video, and an automatic snapshot fallback.`,
-            },
+  for (const resource of resources) {
+    registerAppResource(server, resource.name, resource.uri, {}, async () => ({
+      contents: [{
+        uri: resource.uri,
+        mimeType: RESOURCE_MIME_TYPE,
+        text: resource.html,
+        _meta: {
+          ui: {
+            prefersBorder: false,
+            csp: { connectDomains: [], resourceDomains: [], frameDomains: [] },
           },
-        ],
-      })
-    );
+          "openai/widgetDescription": resource.description,
+        },
+      }],
+    }));
   }
 
   const observationViewSchema = z.enum(OBSERVATION_VIEWS);
@@ -591,65 +335,6 @@ export function createAppServer(
         await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" || view === "overview", includeMaterials: view === "heads" || view === "overview", includeQueue: view === "queue" || view === "overview", includeEnvironment: view === "thermals" || view === "fans" || view === "overview", includeCurrentJob: view === "jobs" || view === "overview", includeJobHistory: view === "job_history" || view === "overview" }),
         view
       );
-    }) as any
-  );
-
-  const legacyInputSchema = z.object({}).strict();
-  const legacyToolMeta = {
-    ...securityMetadata,
-    ui: {
-      visibility: ["app"],
-      resourceUri: LEGACY_WIDGET_URIS[0],
-    },
-    "openai/visibility": "private",
-    "openai/outputTemplate": LEGACY_WIDGET_URIS[0],
-  };
-  registerAppTool(
-    server,
-    "show_u1_status",
-    ({
-      title: "Show legacy U1 status",
-      description: "Temporary app-only compatibility alias for retained status cards.",
-      inputSchema: legacyInputSchema,
-      ...securityConfig,
-      annotations: {
-        readOnlyHint: true,
-        destructiveHint: false,
-        openWorldHint: false,
-        idempotentHint: true,
-      },
-      _meta: legacyToolMeta,
-    } as any),
-    (async () => {
-      const snapshot = await observations.current({ refresh: true });
-      return resultPayload(snapshot.status, snapshot.metadata, {
-        includeImageCard: true,
-      });
-    }) as any
-  );
-  registerAppTool(
-    server,
-    "get_u1_status",
-    ({
-      title: "Refresh legacy U1 status",
-      description: "Temporary app-only compatibility refresh for retained status cards.",
-      inputSchema: legacyInputSchema,
-      ...securityConfig,
-      annotations: {
-        readOnlyHint: true,
-        destructiveHint: false,
-        openWorldHint: false,
-        idempotentHint: true,
-      },
-      _meta: {
-        ...securityMetadata,
-        ui: { visibility: ["app"] },
-        "openai/visibility": "private",
-      },
-    } as any),
-    (async () => {
-      const snapshot = await observations.current({ refresh: true });
-      return resultPayload(snapshot.status, snapshot.metadata);
     }) as any
   );
 
@@ -911,38 +596,6 @@ export function createAppServer(
             required: ["view"],
             additionalProperties: false,
           },
-          annotations: readOnlyAnnotations,
-          securitySchemes,
-          _meta: {
-            securitySchemes,
-            ui: { visibility: ["app"] },
-            "openai/visibility": "private",
-          },
-        },
-        {
-          name: "show_u1_status",
-          title: "Show legacy U1 status",
-          description:
-            "Temporary app-only compatibility alias for retained status cards.",
-          inputSchema: emptyInputSchema,
-          annotations: readOnlyAnnotations,
-          securitySchemes,
-          _meta: {
-            securitySchemes,
-            ui: {
-              visibility: ["app"],
-              resourceUri: LEGACY_WIDGET_URIS[0],
-            },
-            "openai/visibility": "private",
-            "openai/outputTemplate": LEGACY_WIDGET_URIS[0],
-          },
-        },
-        {
-          name: "get_u1_status",
-          title: "Refresh legacy U1 status",
-          description:
-            "Temporary app-only compatibility refresh for retained status cards.",
-          inputSchema: emptyInputSchema,
           annotations: readOnlyAnnotations,
           securitySchemes,
           _meta: {
