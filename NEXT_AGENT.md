@@ -28,6 +28,27 @@ Source validation, exact independent review and deployment remain pending;
 PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
 success/failure sequence; C08 reliability is unresolved. Screen Sharing stays paused.
 
+## Current handoff: independently reviewed monitoring workflow
+
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
+reviewed decision0045/MON-001 source; consult the PR for merge identity. Exact
+`3ce5a8cf2975c2c38601ce9832fa49bc50900893` was approved after the decision-table
+repair. The conflict resolution retains approved skill bytes and incoming main
+`06e2a903` application bytes unchanged.
+
+Use the existing monitor independently or compose it after an observed authorized
+start. Preserve one owner, exact run binding, adaptive checks, bounded recovery,
+explicit limited request scope and all thumbnail/control gates. Stopping
+observation leaves the printer running. The primary remains available.
+
+Both skill validators and manual fictional lifecycle walkthroughs passed; these
+did not execute a model workflow or test actual host/printer behavior. This monitoring change adds no installed-plugin or service changes and no durable
+service/notification claim. Incoming Camera changes retain their own evidence. Follow maintained source for repository work. Any installed-plugin adoption
+or standardized one-shot observation tool is separate scope; do not install,
+deploy or change runtime under this documentation tail. Preserve concurrent
+Camera work and earlier acceptance gaps. Detailed retained identities and commands
+are in active VALIDATION/HANDOFF.
+
 ## Current handoff: PR101 deployed, phone Live still open
 
 PR101 `0710b4b` is deployed after exact `42cdaca` approval and BOTH restarts.

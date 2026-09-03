@@ -1,5 +1,28 @@
 # F0 dual-subsystem foundation brief
 
+## Active slice: standalone asynchronous print monitoring
+
+The selected standalone skill composition refines F0/I1 and MON-001 under
+[decision0045](../../decisions/0045-compose-print-with-standalone-asynchronous-monitoring.md).
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries the independently
+reviewed source; consult the PR for merge identity. Exact `3ce5a8cf` was approved,
+including the decision-index formatting repair.
+
+Accepted source scope: existing monitor/start skills, standalone and composed
+invocation, one delegated owner, run binding/deduplication, adaptive checks,
+meaningful updates/alerts, bounded recovery, identity-checked resumption and
+separate monitor/print outcomes. Limited preparation/upload/start-only scope and
+thumbnail/control gates remain intact.
+
+Validation is structural/source review with manual fictional lifecycle cases,
+not execution of an autonomous model, actual-host or real-printer tests.
+The merge resolution retains approved skills and incoming main `06e2a903`
+application identity; monitoring checks do not validate incoming Camera changes.
+No installed cache, service, durable-monitor or notification behavior changes;
+O1/O2 remain open. Installed-plugin adoption and standardized one-shot observation
+tools are separate work. This slice does not take ownership of concurrent Camera
+changes or imply application deployment.
+
 ## Delivered slice: PR99 MCP Camera and Heads
 
 Decision0044's bounded MCP cutover is deployed through PR99 `4787c02` after

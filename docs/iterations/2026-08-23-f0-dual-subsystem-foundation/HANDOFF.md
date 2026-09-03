@@ -28,6 +28,38 @@ Source validation, exact independent review and deployment remain pending;
 PR101 stays deployed. Preserve all 55 IDs, attempts 1–12 and the phone failure/
 success/failure sequence; C08 reliability is unresolved. Screen Sharing stays paused.
 
+## Current handoff: independently reviewed monitoring source
+
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
+reviewed source; consult the PR for merge identity. Original source base:
+`220190f05afd4f785f068254d43f1b0257e9af57`; incoming main incorporated during
+conflict resolution: `06e2a903f9ad2426f3580e77e72d65d98cc96d60`. Independent review approved
+`3ce5a8cf2975c2c38601ce9832fa49bc50900893`, tree
+`9136c5bb13d592c044c546205064baf2343caf4d`, after a decision-table separator repair.
+
+Source scope: monitor/start SKILL.md files; AGENTS routing; MON-001; decision0045
+and index; PROJECT_STATE/NEXT_AGENT and the iteration's BRIEF/VALIDATION/HANDOFF.
+Four continuity conflicts retain our monitoring prefix and the complete incoming
+Camera records. Requirements merged both contracts; decision0045 has no collision.
+Approved skill hashes are retained in VALIDATION. Against incoming main, this
+change remains documentation/skills only: application, dependencies, configuration,
+generated assets and shipping guards are byte-identical. Incoming application
+tree `ffc95dccafab2289959a934cc2630339cf5a2d2e` has its own evidence below;
+monitoring checks do not validate the Camera changes.
+
+The existing standalone workflow binds one print owner to adaptive observations,
+meaningful updates and immediate alerts, bounded recovery and verified outcomes.
+Composition begins after observed printing; limited request scope remains limited.
+Stopping monitoring does not control the printer. Structural validators and
+manual fictional lifecycle walkthroughs passed without executing a model workflow
+or using a real printer. No installed-plugin, actual-host or O1/O2 acceptance is
+inferred.
+
+Repository agents can follow the maintained source skill. Installed-plugin adoption
+and the proposed standardized one-shot observation tools remain separate scope.
+No application deployment, cache reinstall or runtime changes belong to this
+records-only tail. Preserve concurrent Camera work and earlier evidence gaps.
+
 ## Current handoff: PR101 Camera deadline repair deployed
 
 PR101 `0710b4bf55edc6908eef614df5fec48614044497` preserves independently

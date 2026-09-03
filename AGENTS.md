@@ -78,6 +78,21 @@ provisional architecture as an implementation commitment.
   and wait or ask the user how to proceed instead of performing the material
   work directly.
 
+### Print and monitoring workflows
+
+- For a broader print request, compose the maintained preparation, start and
+  monitoring skills in `plugins/u1-print-studio/skills/`. Preparation,
+  authorized upload/start and observed printing remain distinct; preserve all
+  existing artifact, thumbnail and authorization gates.
+- Independently invoke `u1-monitor-print/SKILL.md` from that directory for
+  monitoring requests. After observed printing, assign its standalone
+  asynchronous workflow to one read-only owner while the primary stays available.
+  Respect preparation-only, upload-only and explicit start-only scope. Do not
+  claim active monitoring before ownership and evidence are accepted.
+- Read the maintained repository skill for this workflow; an installed plugin
+  cache may be older and is not silently changed. Active-conversation monitoring
+  is not a durable daemon or external notification service. See decision 0045.
+
 ### Project review roles
 
 Use the project-scoped role matching the assigned question:
