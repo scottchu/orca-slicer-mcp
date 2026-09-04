@@ -6,14 +6,14 @@ The first v2 preview runtime was withdrawn after independent
 **REQUEST_CHANGES**: the generic fixture exposed dashboard routes and an omitted
 camera dependency could fall back to the real camera adapter. The reviewer did
 not invoke the camera. Cleanup removed only HTTPS 8451 and
-`com.openai.u1-composable-v2-preview`; 4200 is free, raw Serve/Funnel state is
-then restored at SHA-256 `d5e0f1b6…`. Later review found the v1 generic fixture
-likely shared the same fallback; the reviewer did not invoke it. Endpoint-only
+`com.openai.u1-composable-v2-preview`; 4200 was freed at that checkpoint, and
+raw Serve/Funnel state was then restored at SHA-256 `d5e0f1b6…`. Later review
+found that the v1 generic fixture likely shared the same fallback; the reviewer
+did not invoke it. Endpoint-only
 cleanup removed 8450 and `com.openai.u1-composable-preview`. At that cleanup
 checkpoint, ports 4199/4200, both preview labels and TCP/Web/Funnel 8450/8451
 were absent. Raw Serve/Funnel status was the exact pre-v1 `fab7b9df…` baseline;
-production jobs and TCP/Funnel
-443/10000 remain preserved.
+production jobs and TCP/Funnel 443/10000 remain preserved.
 
 The committed repair at source `ed504c7a9bbded66831ac35fb5cf2531a929d2cb`,
 tree `e33d56896994bd9571a6c0b2a73e3afbb9b8ea5e`, adds

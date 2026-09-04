@@ -15,8 +15,8 @@ released; the then-current raw Serve/Funnel state returned to its exact pre-v2 S
 the v1 4199/8450 Lab body remained SHA-256
 `30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`;
 and production jobs remained uninterrupted. No repaired runtime or Tailscale
-mapping has been launched. The withdrawn preview is failure evidence, not
-acceptance evidence.
+mapping had been launched at that point. The withdrawn preview is failure
+evidence, not acceptance evidence.
 
 ### Subsequent v1 safety cleanup
 
