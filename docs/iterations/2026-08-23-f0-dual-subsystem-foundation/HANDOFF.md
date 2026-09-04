@@ -1,5 +1,100 @@
 # F0 dual-subsystem foundation handoff
 
+## Current author candidate: content-owned temperature percentage surface
+
+Resume from the uncommitted 37-path application identity
+`5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
+The AST remains exactly `PercentageFill { child: HeadTemperature }`; no wire
+field or style escape was added. A new constrained common `PercentageSurface`
+composes the existing percentage primitive with fixed 12px inline/8px block
+inset and the existing inner-radius token. `Reading` keeps icon plus
+`minmax(0, 1fr)` content and a closed `reading | child` inset owner. Only the
+typed temperature leaf can select child ownership, so paint is confined to the
+content boundary while ordinary labels retain the same alignment. Icon and
+outer reserve stay unpainted; loading/error and invalid/nonpositive target stay
+neutral, while partial/ambiguous preserve a valid temperature tint.
+
+Changed application paths are:
+
+- `src/components/common/PercentageBackground.svelte`
+- `src/components/common/PercentageSurface.svelte`
+- `src/components/common/Reading.svelte`
+- `src/components/composable/HeadTemperature.svelte`
+- `src/components/composable/PresentationNode.svelte`
+- `src/lib/client/composable/presentation.test.ts`
+- `tests/browser/visual/composable-lab.spec.ts`
+- `scripts/component-contract.ts`
+- `scripts/serve-composable-preview.ts`
+- `tests/server/composable-preview.test.ts`
+- `public/mcp-composable-lab-v2.html`
+
+Independent review built the actual candidate and returned
+**REQUEST_CHANGES** because the immutable server still pinned the prior build
+manifest and hydration node. Its first isolated build overwrote only the
+ignored `build-kit-composable-v2`; the running 4200/8451 process had preloaded
+older bytes and was untouched. The author reproduced the exact
+`Composable preview artifact identity mismatch`, then pinned manifest
+`4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`
+and hydration node `/_app/immutable/nodes/1.BHy6paUx.js`. The focused guard
+requires the new node and rejects the superseded node.
+
+Renewed author gates pass 27/27 focused composable/common tests, 20/20
+server/MCP tests with 410 assertions, TypeScript, Svelte with zero diagnostics,
+component contracts, deterministic MCP verification and 6/6 Chrome cases at
+320/390/720 through the exact dedicated immutable server.
+Browser assertions cover content/icon/cell boundaries, exact 12px label inset,
+at least 8px icon gap, outer unpainted reserve, label alignment, 100%/200% text,
+all five evidence states, card/compact/larger, atomic unit, overflow, forced
+colors and reduced motion. The actual 115-file v2 build manifest is
+`4b4209f9…`, its Lab HTML is 51,180 bytes at SHA-256 `5c3f2731…`, and the v2 MCP
+resource is 146,166 bytes at SHA-256
+`f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+Exact commands, one component-contract repair, one Vite-only route-harness
+failure, screenshot paths/hashes and evidence limits are in VALIDATION.
+
+Screenshot-first design **APPROVES** exact HEAD `dca554a…` plus diff and the
+`5d6c4ea…`/`4b4209f9…`/`5c3f2731…`/`f865908e…` identity. Its fresh isolated
+immutable-server matrix measured 90 width/text/shape/state cases, 60 with a
+temperature surface: content/surface bounds, label drift and state-height drift
+were 0px; icon gap was at least 12px; reserve/insets/radius were exact; there
+was no overflow, cross-cell paint, Table/Row or atomic-unit failure. Tint and
+neutral/loading/error/reduced-motion/forced-color behavior all passed. The
+isolated server/browser were closed.
+
+Renewed independent verification **APPROVES** the same identity after fresh
+20/20 server/MCP tests with 410 assertions, 42/42 composable/shared-percentage/
+Thermals/Fans tests, TypeScript, Svelte/component contracts, deterministic MCP,
+6/6 exact immutable-server Chrome, byte-identical same-path build comparison,
+and focused 4/4 preview tests with 318 assertions. It verified the new hydration
+node succeeds, the old node fails, production registration remains negative,
+the live listener stayed untouched and no test child remained.
+
+The initial browser evidence used a task-owned Vite author harness. After the
+reviewer's actual isolated build, the renewed run used the checked-in dedicated
+immutable server with its exact CSP and negative routes on task-owned port 4184;
+no relaxed route/CSP branch remained. The server/browser children and port were
+released. Do not rewrite, restart or repoint the currently running preview
+while reviewing this source candidate.
+
+Process creation was initially blocked by six `EMFILE` failures. User-provided
+host evidence found 12–18-hour MCP helpers, cleanup from 185 to 115 descriptors,
+and active tasks respawning/stabilizing near 153/256; age-only killing risks
+loops. No process or setting was changed. Future ownership-aware archive/close
+reaping, server EOF/SIGTERM exits, warn/intervene thresholds near 180/220,
+4096 emergency headroom and optional lazy MCP start are hypotheses only. None
+is implemented or authorized in this repository.
+
+The live preview remains the older `c8c241…`/`70f99dc8…`/`e4be14ad…` identity
+with Serve/Funnel SHA-256 `d52d4444…`; v1 remains offline and production remains
+unchanged. Preserve the private-Lab-only percentage meaning and do not infer
+progress, heater authority, safety or attainment. The renewed identity has exact
+design and independent approval for the synthetic private Lab, but no
+real-printer, Camera, auth, Tailnet-candidate, phone/device, screen-reader,
+production, deployment or user-outcome evidence. This documentation tail does
+not change application/build/resource bytes or broaden those approvals. Preserve
+the exact committed candidate; do not PR, merge, deploy or repoint the preview
+without separate authorization and the applicable gates.
+
 ## Current accepted runtime: dedicated immutable v2 preview server
 
 The first v2 preview runtime was withdrawn after independent

@@ -1,5 +1,218 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-04 content-owned percentage surface author candidate
+
+### Acceptance and safety boundary
+
+This UI-003/F0 follow-up addresses the screenshot finding that the decorative
+temperature fill covered the full reading, including the icon column and outer
+geometry reserve. The AST is unchanged: only `PercentageFill` wrapping
+`HeadTemperature` can request the decoration. No style, color, inset, radius,
+percentage, expression, HTML, CSS or JavaScript input was added to the wire
+schema. The percentage remains a private-Lab-only decoration derived from
+validated T1 actual/target provenance; it does not mean progress, heater
+authority, safety margin or target attainment.
+
+`common/PercentageSurface.svelte` now composes the existing common percentage
+primitive with fixed `var(--u1-space-3)` 12px inline and
+`var(--u1-space-2)` 8px block inset plus `var(--u1-radius-inner)`. `Reading`
+retains the closed icon plus `minmax(0, 1fr)` content anatomy and accepts only a
+closed `reading | child` inset owner. All ordinary reading content keeps the
+same inset; only `HeadTemperature` selects child ownership when the renderer
+encounters the existing typed wrapper. The icon and outer 8px reading reserve
+remain outside the painted box. Missing/loading/unavailable or nonpositive-
+target evidence stays neutral; valid temperature evidence remains painted when
+an unrelated source is partial or ambiguous. No Table, Row or separator was
+introduced.
+
+### Descriptor interruption and ownership preflight
+
+Before editing, six consecutive process-creation attempts were blocked by
+`Too many open files (os error 24)`. No file or runtime was changed during that
+interruption. User-provided host evidence reported old MCP helpers persisting
+for 12–18 hours, descriptor cleanup from 185 to 115, and active tasks then
+respawning/stabilizing near 153 of the 256 soft limit. An age-only process killer
+could therefore kill active work and create respawn loops. After process
+creation recovered, a read-only preflight confirmed soft limit 256, task fixture
+port 4184 free, and the existing approved v2 preview as the only relevant
+worktree server. No process was killed, no limit/system setting was changed and
+the live 4200/8451 preview was not touched.
+
+Potential future host safeguards are recorded separately from this UI change:
+
+- task archive/close should EOF stdin, SIGTERM the owned process group, wait and
+  reap, then escalate only that owned group if still necessary;
+- task-owned servers should exit on EOF and SIGTERM;
+- ownership-aware descriptor monitoring could warn near 180 and intervene near
+  220 rather than using process age;
+- a 4096 soft limit could provide emergency headroom only, not replace cleanup;
+- MCP helpers could optionally start lazily.
+
+None of these host safeguards is implemented or authorized in this repository.
+
+### Author commands and results
+
+From `plugins/u1-print-studio/app`, commands actually run:
+
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable/presentation.test.ts src/lib/client/common/PercentageBackground.test.ts`
+  passed 2 files and 24 tests.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable src/lib/client/common/PercentageBackground.test.ts`
+  passed 3 files and 27 tests. It verifies that the percentage element is a
+  descendant of the temperature reading's content child and never its icon.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts`
+  passed 20 tests with 408 assertions, preserving strict schema/provenance,
+  neutral invalid ratios, isolated MCP inventory and immutable preview guards.
+- `bun --no-env-file --config=/dev/null run check` passed.
+- `bun --no-env-file --config=/dev/null run ui:check` initially failed only
+  because the strict component contract rejected render tags in a domain
+  composite and an unclassified new wrapper. The domain snippet was removed and
+  the zero-native-tag common surface was explicitly assigned to the common leaf
+  frontier. The final run passed with zero Svelte errors/warnings and passing
+  component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` and
+  `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passed.
+  The deterministic v2 resource is 146,166 bytes at SHA-256
+  `f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+- A temporary Vite-only author harness on loopback 4184 first passed all three
+  geometry/accessibility cases but failed three route cases because the dynamic
+  public dashboard route returns 500 without an application runtime rather than
+  the immutable preview server's 404. The harness-only negative expectation was
+  scoped to non-200, then
+  `COMPOSABLE_DEV_SERVER=1 bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed all 6 Chrome cases at 320/390/720. A renewed run after adding 200%-text
+  anatomy assertions also passed 6/6. Port 4184 was free before and after every
+  run; Playwright released its owned server/browser. The temporary Vite command
+  and relaxed route/CSP branches were removed, leaving the immutable-server
+  Playwright configuration and exact 404/CSP assertions unchanged.
+
+### Exact candidate build refusal and renewed pin validation
+
+Independent review built the actual candidate and returned
+**REQUEST_CHANGES** because the dedicated immutable server still pinned the
+previous v2 artifact and hydration node. Its first isolated build overwrote
+only the ignored `build-kit-composable-v2` directory. The reviewer disclosed
+that boundary explicitly: the already-running 4200/8451 process had preloaded
+the older bytes, so neither its process nor its served response changed. The
+reviewer did not restart, repoint or otherwise mutate that runtime.
+
+The author first ran
+`bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`
+against the actual build and reproduced the refusal: one test passed, three
+failed, and server construction raised exactly
+`Composable preview artifact identity mismatch`. This is retained as failure
+evidence. The server pin now names the actual 115-file manifest
+`4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`;
+the closed hydration addition is
+`/_app/immutable/nodes/1.BHy6paUx.js`. The focused test now also requires that
+exact node and rejects the superseded `1.BieyvGzI.js` node.
+
+Renewed author commands and results on those pins:
+
+- `bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`
+  passed 4 tests with 318 assertions.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts`
+  passed 20 tests with 410 assertions.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable src/lib/client/common/PercentageBackground.test.ts`
+  passed 3 files and 27 tests.
+- `bun --no-env-file --config=/dev/null run check` passed.
+- `bun --no-env-file --config=/dev/null run ui:check` passed with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passed
+  and reproduced the 146,166-byte resource.
+- With port 4184 confirmed free before the run,
+  `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed 6/6 exact Chrome cases through the dedicated immutable server. The
+  checked-in CSP and exact 404 conditions were used; there was no temporary
+  relaxed branch. Playwright released its owned server/browser and port 4184
+  was free afterward.
+
+The actual Lab HTML is 51,180 bytes at SHA-256
+`5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`.
+The 115-file canonical build manifest is the exact `4b4209f9…` value above.
+The v2 MCP resource remains 146,166 bytes at SHA-256
+`f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+
+### Exact review dispositions
+
+Screenshot-first design review **APPROVES** exact HEAD `dca554a…` plus the
+uncommitted diff, application manifest `5d6c4ea…`, build manifest `4b4209f9…`,
+51,180-byte HTML `5c3f2731…` and 146,166-byte MCP resource `f865908e…`. The
+reviewer used a fresh exact immutable server on isolated port 4187 and closed
+the server/browser afterward. Across 320/390/720, 100%/200% text,
+card/compact/larger and known/loading/error/partial/ambiguous, it measured 90
+states, including 60 temperature surfaces. Surface/content X and width differed
+by 0px; minimum icon gap was 12px; top/bottom reserve was 8px; inline/block
+inset was 12px/8px; radius was 16px; label and state-height drift were 0px; and
+right overrun, overflow, Table/Row and atomic-unit failures were zero. Known,
+partial and ambiguous kept valid tint; loading/error were neutral; loading
+animated, error stayed static, reduced motion removed animation, and forced
+colors removed the gradient while preserving the Card border.
+
+Representative design screenshot SHA-256 values are:
+
+- 320px known: `98f80d321b4eca719900f6fbda5413a939bb78169fdc4f5fdf0758eee061468c`
+- 720px/200% larger known: `14db7e66f26a668ceccaa05d672dad57df69724a1351518f167b2787b6bc6409`
+- loading: `e493ae3448ace27a62f0969eea4eecc6572ca1e2080ce0b29cafa8e749060882`
+- error: `99ef0d3bd0607579f675751439be2511c24209f8b1357d7d092c1f0a814f5b93`
+- partial: `08942b490679e18a99aecd96bb7791378a3e77e64b06ee33065b01d31038840f`
+- ambiguous: `646f5af3eb1e9d07c64921bcbe9b0cc72a7f3e224441d459e29a78bd3d878828`
+
+Renewed independent verification also **APPROVES** exact application manifest
+`5d6c4ea…`. It freshly passed 20/20 server/MCP tests with 410 assertions;
+42/42 combined composable, shared PercentageBackground, Thermals and Fans
+tests; TypeScript; Svelte with zero diagnostics and component contracts;
+deterministic 146,166-byte MCP reconstruction at `f865908e…`; and 6/6 exact
+immutable-server Chrome cases at 320/390/720 including 200% text, every state
+and shape, forced colors, reduced motion, topology and anatomy. Port 4184 was
+released. A same-path rebuild reproduced byte-identical 115-file build
+`4b4209f9…` with comparison exit 0 and 51,180-byte HTML `5c3f2731…`; the focused
+preview suite then passed 4/4 with 318 assertions. The new hydration node was
+served and the old node rejected. Fresh inspection of 390 known, 390 at 200%
+and larger error at 720/200% confirmed content-only paint, icon exclusion and
+neutral error. Production registration remained negative, the existing live
+listener was preserved and no reviewer-owned child remained.
+
+Both approvals are synthetic private-Lab evidence. Design did not cover
+iPhone/Safari, screen reader, a mounted ChatGPT host, real printer, Camera,
+auth, candidate Tailnet or user outcome. Independent review did not cover a
+candidate Tailnet runtime, phone/device, screen reader, live printer or
+Moonraker, Camera, auth, production, deployment or user outcome.
+
+The browser matrix proves at 100% and 200% text that the painted rectangle
+equals only the temperature content width, begins at least 8px after the icon,
+ends within its reading/grid cell, keeps 8px unpainted outer block reserve and
+places its edge 12px left of the label. All reading label offsets remain within
+1px. Known/loading/error/partial/ambiguous card, compact and larger shapes keep
+at most 1px state-height drift; the final measurements were 0px. Loading and
+error fill are neutral, error skeletons static, loading animation stops under
+reduced motion, partial/ambiguous keep valid temperature tint, forced colors
+remove the image, `220°\u00a0C` remains atomic, and no overflow or cross-cell
+paint was observed.
+
+Fresh synthetic screenshots are under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`:
+
+- `composition-known-320px.png` — `7dbfc086…`; 200% — `546bff8e…`
+- `composition-known-390px.png` — `02f01dac…`; 200% — `69f282bf…`
+- `composition-known-720px.png` — `534f70be…`; 200% — `91a7f673…`
+- larger 720px/200% known/loading/error/partial/ambiguous — respectively
+  `8d370a10…`, `69ec0799…`, `39a9b8f4…`, `dfff9e10…`, `576d39fa…`
+
+The renewed 37-path changed/new application-set manifest is
+`5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
+The screenshot-first design and renewed independent dispositions above accept
+this exact application/build/HTML/MCP identity for the private-Lab experiment.
+The running preview intentionally remains
+the older `c8c241…` application / `70f99dc8…` build / `e4be14ad…` HTML identity:
+a read-only local request still returned exact `e4be14ad…`, and raw Serve and
+Funnel status remain exact SHA-256 `d52d4444…`. Candidate Tailnet/runtime
+evidence is absent because the live preview was neither touched nor repointed.
+There is no real-printer, Moonraker/Klipper, Camera, auth, public-Internet,
+phone/device, screen-reader, production, deployment or user-outcome acceptance.
+This later documentation integration changes no application, test, dependency,
+configuration, build input or generated resource byte; it binds those retained
+approvals to the eventual documentation commit without extending their scope.
+
 ## 2026-09-04 authority-free v2 preview repair candidate
 
 ### Withdrawn preview and safety response

@@ -56,7 +56,7 @@ test('serves only the exact prerendered page and its referenced immutable asset 
   expect(response.status).toBe(200);
   expect(response.headers.get('content-security-policy')).toContain("default-src 'none'");
   expect(body).toEqual(expected);
-  expect(hash(body)).toBe('e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c');
+  expect(hash(body)).toBe('5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de');
 
   const head = await fetch(origin + COMPOSABLE_PREVIEW_PATH, { method: 'HEAD' });
   expect(head.status).toBe(200);
@@ -76,6 +76,8 @@ test('serves only the exact prerendered page and its referenced immutable asset 
     expect(assetHead.status, reference).toBe(200);
     expect(await assetHead.text()).toBe('');
   }
+  expect((await fetch(origin + '/_app/immutable/nodes/1.BHy6paUx.js')).status).toBe(200);
+  expect((await fetch(origin + '/_app/immutable/nodes/1.BieyvGzI.js')).status).toBe(404);
 });
 
 test('serves immutable bytes from the single validated construction snapshot', async () => {
@@ -149,7 +151,7 @@ test('denies every non-preview route, method and raw protocol variation without 
       expect(raw).not.toContain('<!doctype html>');
     }
     expect((await fetch(origin + '/_app/immutable/nodes/3.UeRTUa7r.js')).status).toBe(404);
-    expect((await fetch(origin + '/_app/immutable/nodes/1.BieyvGzI.js?cache=1')).status).toBe(404);
+    expect((await fetch(origin + '/_app/immutable/nodes/1.BHy6paUx.js?cache=1')).status).toBe(404);
     expect(outbound).toBe(0);
   } finally {
     if (previousMoonraker === undefined) delete process.env.MOONRAKER_BASE_URL;

@@ -1,5 +1,53 @@
 # Project state
 
+## Current reviewed experiment candidate: content-owned percentage surface
+
+The private-Lab AST remains unchanged: `PercentageFill` can wrap only
+`HeadTemperature`. The UI follow-up moves its typed actual/target paint into a
+closed common content surface, leaving the reading icon and outer structural
+reserve unpainted. Fixed 12px inline and 8px block inset, the existing inner
+radius token, neutral invalid/loading/error behavior and stable state topology
+remain code-owned; no style or expression field was added.
+
+Independent review built the actual v2 candidate and returned
+**REQUEST_CHANGES** because the dedicated immutable server still pinned the
+prior build manifest and hydration node. The reviewer disclosed that its first
+isolated build overwrote only the ignored `build-kit-composable-v2`; running
+4200/8451 had preloaded older bytes and remained untouched. The author
+reproduced `Composable preview artifact identity mismatch`, then updated only
+the fixed server manifest/hydration closure and their focused assertions.
+
+The renewed 37-path application manifest is
+`5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
+The actual 115-file v2 build manifest is
+`4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`;
+the 51,180-byte Lab HTML SHA-256 is
+`5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`,
+and the unchanged 146,166-byte MCP resource SHA-256 is `f865908e…`.
+Renewed author gates pass 27 client tests, 20 server/MCP tests with 410
+assertions, TypeScript, Svelte/component contracts, deterministic MCP
+verification and 6/6 exact dedicated-server Chrome cases. This renewed source
+identity has exact screenshot-first design and renewed independent approval for
+the synthetic private-Lab experiment.
+The live preview remains the older preloaded `c8c241…` / `70f99dc8…` /
+`e4be14ad…` identity with raw Serve/Funnel SHA-256 `d52d4444…` and was not
+restarted, repointed or modified.
+
+Design approval used a fresh isolated immutable server and measured 90
+320/390/720, 100%/200%, shape/state cases: all content/surface bounds, label
+alignment and state-height deltas were 0px; fixed inset/reserve/radius, icon gap,
+atomic unit, neutral/error/loading, reduced-motion and forced-color behavior
+passed with no overflow, cross-cell paint, Table or Row. Renewed independent
+verification freshly passed 20/20 server/MCP tests with 410 assertions, 42/42
+combined client/shared-consumer tests, TypeScript, Svelte/component contracts,
+deterministic MCP, 6/6 exact-server Chrome, byte-identical same-path build and
+4/4 focused preview tests with 318 assertions. It verified the new hydration
+node, old-node rejection and negative production registration. Both reviewers
+released their isolated resources. These approvals do not establish candidate
+Tailnet, iPhone/Safari, mounted host, screen-reader, printer/Moonraker, Camera,
+auth, production/deployment or user-outcome acceptance. The documentation-only
+integration changes no application/build/HTML/MCP byte.
+
 ## Current accepted experiment runtime: authority-free immutable v2 preview
 
 The first separately authorized v2 preview was withdrawn immediately after an

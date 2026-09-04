@@ -1,5 +1,46 @@
 # Next agent
 
+## Preserve the reviewed content-owned percentage candidate
+
+Preserve the reviewed 37-path application manifest
+`5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
+The AST is unchanged: only `PercentageFill { child: HeadTemperature }` owns the
+typed actual/target decoration. Its new constrained content surface leaves the
+icon and outer structural reserve unpainted and fixes 12px inline/8px block
+inset without accepting CSS, colors, values or expressions.
+
+Independent review first returned **REQUEST_CHANGES** after its isolated
+candidate build exposed stale immutable-server pins. That build overwrote only
+the ignored `build-kit-composable-v2`; the live process had preloaded the older
+bytes and stayed untouched. Author validation reproduced exact
+`Composable preview artifact identity mismatch`, then pinned the actual build
+manifest `4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`
+and hydration node `/_app/immutable/nodes/1.BHy6paUx.js`. The actual Lab HTML is
+51,180 bytes at SHA-256 `5c3f2731…`; the unchanged MCP resource is 146,166 bytes
+at `f865908e…`.
+
+Renewed author checks pass 27/27 client tests, 20/20 server/MCP tests with 410
+assertions, TypeScript, Svelte/component contracts, deterministic MCP
+verification and 6/6 Chrome cases through the exact dedicated immutable server.
+The refreshed focused test requires the new hydration node and rejects the old
+one. Screenshot-first design and renewed independent verification both
+**APPROVE** this exact application/build/HTML/MCP identity. Design measured 90
+width/text/shape/state cases with 0px content-bound, label and state-height
+drift, exact reserve/insets, no overflow/cross-cell paint and correct neutral,
+motion and forced-color behavior. Independent verification freshly passed the
+20/20 server/MCP, 42/42 combined shared-consumer, TypeScript, Svelte/contracts,
+deterministic MCP, 6/6 Chrome, byte-identical same-path build and 4/4 focused
+preview gates. No source review needs repeating unless application or build-
+input bytes change. Do not restart or repoint the live 4200/8451 preview:
+it intentionally remains the older preloaded `c8c241…` / `70f99dc8…` /
+`e4be14ad…` identity at raw Serve/Funnel SHA-256 `d52d4444…`.
+
+The acceptance is limited to the synthetic private Lab. There is no candidate
+Tailnet, iPhone/Safari, phone/device, mounted ChatGPT host, screen-reader, live
+printer/Moonraker, Camera, auth, production/deployment or user-outcome evidence.
+This documentation integration leaves application/build/HTML/MCP bytes
+unchanged and does not broaden the approvals.
+
 ## Preserve the approved authority-free v2 private preview
 
 The prior v2 runtime was withdrawn after independent review found that the

@@ -74,7 +74,11 @@ describe('composable renderer and host lifecycle', () => {
     expect(screen.queryByText('Reported part fan')).not.toBeInTheDocument();
     expect(rendered.container.querySelector('[role="cell"]')).toBeNull();
     expect(rendered.container.querySelector('[data-node-kind="Table"], [data-node-kind="Row"]')).toBeNull();
-    expect(Number(rendered.container.querySelector('[data-percentage-fill]')?.getAttribute('data-percentage-fill'))).toBeCloseTo(97.5454, 3);
+    const percentage = rendered.container.querySelector('[data-percentage-background]')!;
+    expect(Number(percentage.getAttribute('data-percentage-fill'))).toBeCloseTo(97.5454, 3);
+    expect(percentage.closest('[data-domain-reading]')).not.toBeNull();
+    expect(percentage.parentElement).toBe(percentage.closest('[data-domain-reading]')?.children[1]);
+    expect(percentage.closest('[data-domain-reading]')?.children[0].contains(percentage)).toBe(false);
   });
 
   test('keeps PercentageFill neutral when actual/target is not a valid percentage relation', async () => {

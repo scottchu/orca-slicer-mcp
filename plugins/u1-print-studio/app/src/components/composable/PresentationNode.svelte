@@ -4,7 +4,6 @@
   import Title from '../common/Title.svelte';
   import Stack from '../common/Stack.svelte';
   import Grid from '../common/Grid.svelte';
-  import PercentageBackground from '../common/PercentageBackground.svelte';
   import HeadStatus from './HeadStatus.svelte';
   import HeadTemperature from './HeadTemperature.svelte';
   import FilamentColor from './FilamentColor.svelte';
@@ -25,9 +24,7 @@
 {:else if node.type === 'Grid'}
   <Grid columns={node.columns} gap={node.gap} inset>{#each node.children as child}<PresentationNode node={child} {subjectLabel} {busy} />{/each}</Grid>
 {:else if node.type === 'PercentageFill'}
-  <PercentageBackground value={node.child.value.state === 'known' ? node.child.value.actual : null} max={node.child.value.state === 'known' ? node.child.value.target : null}>
-    <PresentationNode node={node.child} {subjectLabel} {busy} />
-  </PercentageBackground>
+  <HeadTemperature value={node.child.value} percentage />
 {:else if node.type === 'HeadStatus'}
   <HeadStatus value={node.value} />
 {:else if node.type === 'HeadTemperature'}
