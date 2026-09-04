@@ -1,20 +1,8 @@
-import type { PresentationField, PresentationNode, PresentationSpec } from './schema.js';
+import { elementRegistry, sourceForPresentationField } from './element-registry.js';
+import type { PresentationNode, PresentationSpec } from './schema.js';
+import { SOURCE_GROUPS, type PresentationField, type SourceGroup } from './value-contract.js';
 
-export const SOURCE_GROUPS = ['environment', 'materials', 'status'] as const;
-export type SourceGroup = (typeof SOURCE_GROUPS)[number];
-
-const fieldSource: Record<PresentationField, SourceGroup> = {
-  'head.status': 'status',
-  'head.temperature': 'status',
-  'filament.color': 'materials',
-  'head.fanRelation': 'environment',
-};
-const nodeField: Partial<Record<PresentationNode['type'], PresentationField>> = {
-  HeadStatus: 'head.status',
-  HeadTemperature: 'head.temperature',
-  FilamentColor: 'filament.color',
-  FanRelation: 'head.fanRelation',
-};
+export { SOURCE_GROUPS, type SourceGroup } from './value-contract.js';
 
 export type PresentationPlan = {
   subject: PresentationSpec['subject'];
@@ -25,11 +13,11 @@ export type PresentationPlan = {
 export const derivePresentationPlan = (spec: PresentationSpec): PresentationPlan => {
   const fields = new Set<PresentationField>();
   const visit = (node: PresentationNode): void => {
-    const field = nodeField[node.type];
+    const definition = elementRegistry[node.type];
+    const field = definition.field;
     if (field) fields.add(field);
     if (node.type === 'Card' && node.transform) fields.add('filament.color');
     if ('children' in node) node.children.forEach(visit);
-    if (node.type === 'PercentageFill') visit(node.child);
   };
   visit(spec.root);
   const orderedFields = [...fields].sort();
@@ -37,7 +25,7 @@ export const derivePresentationPlan = (spec: PresentationSpec): PresentationPlan
     subject: spec.subject,
     fields: orderedFields,
     dependencies: SOURCE_GROUPS.flatMap((source) => {
-      const grouped = orderedFields.filter((field) => fieldSource[field] === source);
+      const grouped = orderedFields.filter((field) => sourceForPresentationField(field) === source);
       return grouped.length ? [{ source, fields: grouped }] : [];
     }),
   };

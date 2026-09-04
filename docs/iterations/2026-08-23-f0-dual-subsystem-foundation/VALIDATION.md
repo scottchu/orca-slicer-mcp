@@ -1,5 +1,170 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-04 accepted build-time registry and temperature-fill retirement experiment
+
+### Acceptance and safety boundary
+
+This UI-003 follow-up implements decision0050 for the private synthetic Lab.
+Exactly eight element names are accepted at the strict wire boundary: common
+built-ins `Card`, `Title`, `Stack`, `Grid` and domain `HeadStatus`,
+`HeadTemperature`, `FilamentColor`, `FanRelation`. One pure TypeScript registry
+owns their roles, strict spec/resolved props, child policies and field/source
+metadata. A separate client registry statically imports exactly eight Svelte
+constructors. Registry child policies now construct the accepted spec and
+resolved tuple/array shape and cardinality. Each constructor is compile-checked
+for exact compatibility with an independently owned, resolved-node-derived prop
+map; the recursive dynamic boundary exposes only closed known props and no
+`any`. Planner and client placeholders obtain field/source mapping from the
+same pure registry. JSON has no component/module path, URL, runtime
+import/register, expression, HTML, CSS, JavaScript, arbitrary prop or style
+token.
+
+The prior `PercentageFill` name has no alias and fails strict v2 parsing before
+source acquisition. Canonical spec, resolved tree and generated MCP resource do
+not contain it. The experiment-only PercentageSurface and its temporary common
+escape props are removed; the original shared PercentageBackground remains for
+Thermals/Fans, and Card soft filament tint remains a separately declared,
+provenance-correlated transform. Metric, Badge and Swatch center real visible
+label/value or skeleton content within structural reserves rather than exposing
+painted reserve space or a wire alignment control.
+
+Schema/tool/resource version 2 remains because the Lab is private,
+provisional, production-unregistered and has no supported external v2 consumer.
+Only the isolated MCP implementation version changes to
+`0.0.3-provisional`. This does not accept production architecture, live
+Moonraker/printer mapping, Camera, auth, Tailscale, control, deployment or user
+outcome.
+
+### Author failures retained
+
+- The first static component renderer inferred the intersection of all eight
+  Svelte prop types and failed `svelte-check`. A typed registry lookup now
+  exposes the selected statically imported constructor to the renderer; the
+  final check has zero diagnostics.
+- The first component-registry source test constructed a transformed
+  `import.meta.url` that was not a file URL under Vitest. It now resolves the
+  checked-in path from the test workspace and passes.
+- The first 90-group visible-center browser run measured 2.492px drift for the
+  loading Badge skeleton. The common Badge skeleton now occupies the same pill
+  reserve as its visible known value. The renewed all-state run passes the 1px
+  limit at all three widths and both text sizes.
+- A first application-manifest shell loop used zsh's special `path` variable,
+  which removed command lookup inside the loop and produced unusable blank
+  hashes. No repository file changed. The renewed loop used a non-special
+  variable plus absolute `/usr/bin/shasum`/`awk` and produced the identity below.
+- Independent source review then found that the first candidate merely declared
+  child policies while spec/resolved schemas repeated their own array/tuple
+  rules, erased dynamic component props to `Record<string, any>`, derived its
+  component contract from the implementations themselves, repeated the client
+  field/source mapping, and omitted Fans/ObservationWidgets from the recorded
+  focused command. The author repair makes each authority executable, adds
+  adversarial/static-consumption checks, and renews all affected evidence below;
+  independent approval of these renewed bytes is still pending.
+- The first new synthetic child-policy test used cardinalities outside the
+  initial overly literal `ChildPolicy` type and produced three `svelte-check`
+  errors. Generalizing the build-time policy type while retaining the concrete
+  eight-entry registry values fixed the type contract; the renewed check has
+  zero diagnostics.
+- Renewed independent review found that the next candidate still left concrete
+  element-name branches and an all-optional dynamic prop surface in
+  `PresentationNode`. Each static registry entry now owns its constructor,
+  resolved-node-typed `getProps` adapter and role-constrained child reader.
+  `PresentationNode` contains no element name or `node.type` check and branches
+  only on the registered child-bearing roles. The sole uniform dynamic cast is
+  sealed inside the typed entry builder after constructor, independent props,
+  adapter and node type agree.
+- The first component check after that repair correctly rejected both
+  `registered.props` spreads under the pre-existing blanket spread rule. The
+  guard now permits only that exact registry-resolved member expression in the
+  registered renderer and still rejects arbitrary/other spreads; focused tests
+  cover both acceptance and rejection.
+
+### Commands actually run and current results
+
+From `plugins/u1-print-studio/app` unless noted:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 107 tests. This includes executable child-policy construction, registry-entry adapter/constructor compatibility, role-only generic rendering, exact guarded-spread drift checks, registry-owned source mapping, eight-entry parity and unchanged Thermals/Fans percentage consumers.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 20 tests / 405 assertions after the final MCP absence assertions. It covers rejection before acquisition, one call per source, timestamps/provenance, fan ambiguity, partial failures, immutable serving and production-negative inventory.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` then `verify:mcp-composable-lab` builds and reproduces the 145,152-byte resource at SHA-256 `c8de7c1aa94e2f8dfa11471d8e348d6f8ea7929b7c981f8c0fb816aad7cc0e09`; source/output contain no retired fill/surface name.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build` was run twice and reproduced the 113-file manifest `aaa9b6a36b4e8cfdf5ef2f13b9c71a9bc0e3762d39594866bb1665de216a48bc`. The Lab HTML is 49,994 bytes, SHA-256 `e85e3d1fc0673a0b86454f1616d043ed6d26708cd35403c070923493edafa28d`; hydration adds only exact node `/_app/immutable/nodes/1.KNtzM1Mp.js`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 6/6 Chrome cases through the dedicated immutable server. It covers 320/390/720px; 100/200% text; card/compact/larger; known/loading/error/partial/ambiguous; exact topology and <=1px height plus visible-center drift; atomic target/unit; no overflow, table, row, separator or composable percentage background; loading animation, static error, reduced motion and forced colors. Port 4184 and its owned browser/server were released.
+
+The sorted current/deleted 32-path application manifest, with `DELETED` as the
+explicit tombstone for PercentageSurface, is
+`af2099289ef1beefe59b6e10664a6933e89e2902fdacf68f50d65fc8f620ee2f`.
+Representative fresh screenshots:
+
+- `test-results/composable-lab-v2/composition-known-390px.png` — `6482e9858afefef456a1c3a30b36b6a441bf5754a55f7c457b81ebb215fdda5b`
+- `test-results/composable-lab-v2/composition-known-390px-200-percent.png` — `c8e27b2228bcad02295c194bba1191d03ae3a8c972a35278cd0412093fb316f4`
+- `test-results/composable-lab-v2/composition-known-320px.png` — `a352f1968170fee25dc21c3fb93bdb7403e0c66364c9f719e8d5b091b0fa2fef`
+- `test-results/composable-lab-v2/composition-known-720px.png` — `5766e1eeb9c28c9e21ab9e70a09d3272ccc594e2537a5074e142913189c39dc3`
+
+### Final attributed review
+
+Screenshot-first UI/UX review **APPROVES** exact application manifest
+`af2099289ef1beefe59b6e10664a6933e89e2902fdacf68f50d65fc8f620ee2f`,
+Kit `aaa9b6a3…`, Lab HTML `e85e3d1f…` and MCP resource `c8de7c1a…` for the
+isolated experiment. The supplied old Tailnet screenshot at SHA-256
+`cc6974e328b51ba8abe413ab18706b65e291c9ae83fa993b62c93faf380e41aa`
+showed the temperature fill excluding the icon, exposing structural reserve,
+visually biasing the content upward and creating progress ambiguity. The final
+author/design 390px capture at `6482e985…` removes that fill and shows all four
+reading groups with consistent visual centers, columns, spacing and hierarchy.
+Direct 320/390/720px and 390px/200% inspection found no clipping, overlap or
+horizontal overflow, kept `220° C` atomic, wrapped longer values sensibly and
+preserved the larger two-column Grid. Loading uses animated neutral skeletons;
+error uses static neutral skeletons at the same geometry with no stale
+telemetry. No Table, Row, separator or composable percentage surface appears.
+
+Independent exact-candidate review also **APPROVES** `af209928…`. It verified
+that `PresentationNode` has no concrete name or `node.type` dispatch; constructor,
+props and children come from registry entries; recursion is root/layout versus
+leaf by registered role; `getProps`/`getChildren` are typed; the sole uniform
+cast is private after agreement; and no all-optional union remains. Fresh
+results were 107/107 UI/shared tests, 20/20 server/MCP/preview tests with 405
+assertions, passing TypeScript and zero-diagnostic Svelte/component contracts,
+deterministic 145,152-byte MCP `c8de7c1a…`, 113-file Kit `aaa9b6a3…`, 49,994-byte
+HTML `e85e3d1f…`, and 6/6 Chrome. Its custom retired-fill plus component-path
+input rejected before acquisition with `readerCalls=0`; the exact eight-entry
+adapter walk and `0.0.3-provisional` version also passed.
+
+Independent review freshly ran the same exact UI, server, compiler and browser
+commands recorded above, plus:
+
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab && bun --no-env-file --config=/dev/null run verify:mcp-composable-lab && wc -c public/mcp-composable-lab-v2.html && /usr/bin/shasum -a 256 public/mcp-composable-lab-v2.html`
+- `bun --no-env-file --config=/dev/null -e "import { canonicalComposablePreviewManifest } from './scripts/serve-composable-preview.ts'; console.log('before', canonicalComposablePreviewManifest())"`
+- The final Kit rebuild command recorded above was run with its output captured in an ephemeral reviewer-owned log; no temporary pathname is durable evidence.
+- `bun --no-env-file --config=/dev/null -e "import { canonicalComposablePreviewManifest } from './scripts/serve-composable-preview.ts'; console.log('after', canonicalComposablePreviewManifest())"`
+- `find build-kit-composable-v2 -type f | wc -l`, `wc -c build-kit-composable-v2/prerendered/dashboard/lab/composition.html`, and `/usr/bin/shasum -a 256 build-kit-composable-v2/prerendered/dashboard/lab/composition.html`
+
+Its exact custom adversary/adapter command from the app directory was:
+
+```sh
+bun --no-env-file --config=/dev/null -e '
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
+import { createComposableLabMcpServer } from "./src/lib/server/composable-lab-mcp.ts";
+import { t1EntityCardSpec } from "./src/lib/composable/specs.ts";
+import { createPlaceholderPresentation } from "./src/lib/client/composable/presentation.ts";
+import { resolveRegisteredNode, componentRegistry } from "./src/components/composable/component-registry.ts";
+let calls=0; const count=async()=>{calls+=1; return {};}; const server=createComposableLabMcpServer({status:count,materials:count,environment:count}); const client=new Client({name:"final-independent",version:"1"}); const [ct,st]=InMemoryTransport.createLinkedPair();
+try { await Promise.all([server.connect(st),client.connect(ct)]); const spec=structuredClone(t1EntityCardSpec); spec.root.children[1].children=[{type:"PercentageFill",child:{type:"HeadTemperature"},componentPath:"https://example.invalid/evil.js"}]; const result=await client.callTool({name:"compose_u1_entity_card_v2",arguments:{spec}}); if(!result.isError||calls!==0) throw new Error(`boundary ${result.isError}/${calls}`); const seen=[]; const walk=(node)=>{ const resolved=resolveRegisteredNode(node,{subjectLabel:"Tool head T1",busy:true}); seen.push({type:node.type,role:resolved.role,props:Object.keys(resolved.props).sort(),children:resolved.children?.length??null}); for(const child of resolved.children??[]) walk(child); }; walk(createPlaceholderPresentation(t1EntityCardSpec,"loading").root); if(Object.keys(componentRegistry).length!==8||seen.length!==7) throw new Error("registry/tree count mismatch"); console.log(JSON.stringify({version:client.getServerVersion(),rejected:result.isError,readerCalls:calls,entries:Object.keys(componentRegistry),resolved:seen})); } finally { await client.close(); await server.close(); }
+'
+```
+
+The independent 390px run produced `452a10c5…`, while the author/design run is
+`6482e985…`; both are separately attributed nondeterministic browser-run
+evidence, not deterministic artifact identity. Design did not edit/build/restart
+or rerun tests; independent review did not edit or mutate external state. Port
+4184 was released. The existing 4200/8451 job still has earlier committed bytes
+preloaded and was not touched. No final-candidate Tailnet/iPhone/Safari, mounted
+ChatGPT, screen-reader, physical-printer or user-outcome evidence exists. No
+Tailscale/auth/production registration change occurred. The descriptor lifecycle
+plan (owned EOF/SIGTERM/reap, 180/220 monitoring, 4096 emergency headroom and
+lazy optional MCP start) remains unimplemented and unauthorized.
+
 ## 2026-09-04 content-owned percentage surface author candidate
 
 ### Acceptance and safety boundary

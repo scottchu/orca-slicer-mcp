@@ -1,5 +1,85 @@
 # F0 dual-subsystem foundation handoff
 
+## Current accepted experiment: build-time element registry, no temperature fill
+
+The latest user direction supersedes the percentage-surface candidate. Preserve
+the current branch commit based on `cdfb9ac35f3bbb3cbabe75490db3fa7b4498ca5b`
+and review decision0050. The candidate has a pure TypeScript registry with
+strict build-time definitions for exactly `Card`, `Title`, `Stack`, `Grid`,
+`HeadStatus`, `HeadTemperature`, `FilamentColor`, and `FanRelation`, plus one
+client-only registry with eight static Svelte imports and an exact parity test.
+The pure registry's child policies construct the strict wire/resolved tuple and
+array shape/cardinality; planner and client placeholders use its field/source
+metadata. The Svelte registry compile-checks every constructor against an
+independently owned, resolved-node-derived prop map and exposes no `any`
+component escape. Every entry also owns its resolved-node-typed prop adapter and
+role-constrained child reader. The renderer contains no concrete element-name
+dispatch: it obtains constructor, props and children from the entry and branches
+only on registered child-bearing roles. No runtime register,
+dynamic import, module path, URL, expression, arbitrary element or style input
+was added.
+
+`PercentageFill` is fully retired from accepted spec, plan, resolved model,
+composer, placeholder, fixture and renderer; `PercentageSurface` is deleted and
+the temporary `Reading.contentInset`/`PercentageBackground.surface` escape is
+removed. Old v2 fill input rejects before any reader. Shared Thermals/Fans
+percentage behavior and Card soft filament tint are preserved. Common Metric,
+Badge and Swatch own visible-content centering and keep neutral stable loading/
+error reserves. The isolated MCP implementation is `0.0.3-provisional`, with
+v2 tool/resource/schema names retained inside the private unsupported Lab.
+
+The renewed 32-path application manifest is
+`af2099289ef1beefe59b6e10664a6933e89e2902fdacf68f50d65fc8f620ee2f`.
+The reproducible 113-file Kit manifest is `aaa9b6a3…`; Lab HTML is 49,994 bytes
+at `e85e3d1f…`; the deterministic 145,152-byte MCP resource is `c8de7c1a…`.
+Author gates pass 107 client/shared-consumer tests, 20 server/MCP/preview tests
+with 405 assertions, TypeScript, zero-diagnostic Svelte/component checks and
+6/6 Chrome cases. The browser matrix covers 90 width/text/shape/state groups,
+no percentage background, at most 1px height/center drift, neutral motion/
+forced-colors and no tables, separators or overflow. Fresh evidence is under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`.
+
+Independent review requested changes on `17d4d42d…` because
+child policies were declarative but unused, component typing was erased and
+self-derived, the client repeated field/source mapping, and the focused record
+omitted Fans consumers. Renewed review then requested changes on `9ef2970a…`
+because its renderer still enumerated concrete types and widened required props
+at invocation. Both review rounds are addressed by the renewed registry-owned
+adapter/role-only renderer and evidence above. Screenshot-first UI/UX and
+independent exact-candidate review now both **APPROVE** `af209928…` within the
+synthetic private-Lab boundary.
+
+Design compared supplied old Tailnet screenshot SHA-256 `cc6974e3…`, where the
+temperature fill excluded the icon, exposed reserve, biased content upward and
+could be mistaken for progress, with author/design 390px screenshot
+`composition-known-390px.png` SHA-256 `6482e985…`. The final image has no
+temperature fill; all four reading groups share consistent visual centers,
+columns, spacing and hierarchy. Direct inspection at 320/390/720px and
+390px/200% found no clipping, overlap or horizontal overflow, preserved atomic
+`220° C`, sensible label/value wrapping and the larger two-column Grid. Loading
+uses animated neutral skeletons and error uses static neutral skeletons at the
+same geometry without stale telemetry; no Table, Row, separator or composable
+percentage surface appears.
+
+Independent review freshly passed 107/107 UI/shared tests, 20/20 server tests
+with 405 assertions, TypeScript, zero-diagnostic Svelte/component contracts,
+deterministic MCP and Kit reconstruction, and 6/6 Chrome. A custom retired-fill
+plus component-path adversary rejected before acquisition with `readerCalls=0`;
+the exact eight-entry adapter walk and `0.0.3-provisional` implementation version
+also passed. Its 390px screenshot was `452a10c5…`, while the author/design run
+was `6482e985…`; these are separately attributed nondeterministic browser-run
+captures, never deterministic artifact identity.
+
+Design did not edit/build/restart or rerun tests; independent review did not edit
+or mutate external state. Neither review supplies final-candidate live 4200/8451,
+Tailnet/iPhone/Safari, mounted ChatGPT, screen-reader, physical-printer or
+user-outcome evidence.
+The live 4200/8451 process has prior bytes preloaded and was not touched. No
+Tailscale/auth/printer/Camera/production registration, PR, merge or deployment
+change occurred. The user-provided MCP process-lifecycle plan remains recorded
+but wholly unimplemented: no monitor, descriptor limit, process cleanup or lazy
+server start was installed.
+
 ## Current reviewed committed candidate: content-owned temperature percentage surface
 
 Resume from the committed 37-path application identity

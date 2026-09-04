@@ -13,7 +13,7 @@ export const composableToolOutputSchema = composableEnvelopeSchema;
 
 /** Isolated protocol proof. Production createAppServer never constructs or registers this server. */
 export const createComposableLabMcpServer = (readers: ComposableReaders): McpServer => {
-  const server = new McpServer({ name: 'u1-composable-ui-experiment', version: '0.0.2-provisional' });
+  const server = new McpServer({ name: 'u1-composable-ui-experiment', version: '0.0.3-provisional' });
   registerAppResource(server, 'u1-composable-lab', COMPOSABLE_LAB_RESOURCE_URI, {}, async () => ({ contents: [{
     uri: COMPOSABLE_LAB_RESOURCE_URI,
     mimeType: RESOURCE_MIME_TYPE,

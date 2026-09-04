@@ -1,36 +1,17 @@
 <script lang="ts">
   import type { ResolvedNode } from '../../lib/composable/view-model';
-  import Card from '../common/Card.svelte';
-  import Title from '../common/Title.svelte';
-  import Stack from '../common/Stack.svelte';
-  import Grid from '../common/Grid.svelte';
-  import HeadStatus from './HeadStatus.svelte';
-  import HeadTemperature from './HeadTemperature.svelte';
-  import FilamentColor from './FilamentColor.svelte';
-  import FanRelation from './FanRelation.svelte';
+  import { resolveRegisteredNode } from './component-registry';
   import PresentationNode from './PresentationNode.svelte';
 
   let { node, subjectLabel = 'Tool head T1', busy = false }: { node: ResolvedNode; subjectLabel?: string; busy?: boolean } = $props();
+  const registered = $derived(resolveRegisteredNode(node, { subjectLabel, busy }));
+  const Component = $derived(registered.component);
 </script>
 
-{#if node.type === 'Card'}
-  <Card label={subjectLabel} {busy} tint={node.tint?.color ?? null} density={node.density}>
-    {#each node.children as child}<PresentationNode node={child} {subjectLabel} {busy} />{/each}
-  </Card>
-{:else if node.type === 'Title'}
-  <Title text={node.text} size={node.size} />
-{:else if node.type === 'Stack'}
-  <Stack gap={node.gap} inset composed>{#each node.children as child}<PresentationNode node={child} {subjectLabel} {busy} />{/each}</Stack>
-{:else if node.type === 'Grid'}
-  <Grid columns={node.columns} gap={node.gap} inset>{#each node.children as child}<PresentationNode node={child} {subjectLabel} {busy} />{/each}</Grid>
-{:else if node.type === 'PercentageFill'}
-  <HeadTemperature value={node.child.value} percentage />
-{:else if node.type === 'HeadStatus'}
-  <HeadStatus value={node.value} />
-{:else if node.type === 'HeadTemperature'}
-  <HeadTemperature value={node.value} />
-{:else if node.type === 'FilamentColor'}
-  <FilamentColor value={node.value} />
-{:else if node.type === 'FanRelation'}
-  <FanRelation value={node.value} />
+{#if registered.role === 'root' || registered.role === 'layout'}
+  <Component {...registered.props}>
+    {#each registered.children ?? [] as child}<PresentationNode node={child} {subjectLabel} {busy} />{/each}
+  </Component>
+{:else}
+  <Component {...registered.props} />
 {/if}

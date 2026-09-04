@@ -4,13 +4,13 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { fileURLToPath } from 'node:url';
 
 export const COMPOSABLE_PREVIEW_PATH = '/dashboard/lab/composition';
-export const COMPOSABLE_PREVIEW_MANIFEST = '4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38';
+export const COMPOSABLE_PREVIEW_MANIFEST = 'aaa9b6a36b4e8cfdf5ef2f13b9c71a9bc0e3762d39594866bb1665de216a48bc';
 
 const artifactName = 'build-kit-composable-v2';
 const artifactRoot = fileURLToPath(new URL(`../${artifactName}/`, import.meta.url));
 const pageRelativePath = 'prerendered/dashboard/lab/composition.html';
 const immutableAssetPattern = /^\/_app\/immutable\/(?:assets|chunks|entry|nodes)\/[A-Za-z0-9_.-]+\.(?:css|js)$/;
-const hydrationAssets = ['/_app/immutable/nodes/1.BHy6paUx.js'] as const;
+const hydrationAssets = ['/_app/immutable/nodes/1.KNtzM1Mp.js'] as const;
 
 export type ComposablePreviewSnapshot = ReadonlyMap<string, Buffer>;
 

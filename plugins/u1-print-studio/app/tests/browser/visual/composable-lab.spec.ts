@@ -6,30 +6,22 @@ const selectScenario = async (page: Page, scenario: string) => {
   await expect(page.locator('[data-value-state]').first()).toHaveAttribute('data-value-state', scenario === 'loading' ? 'loading' : scenario === 'error' ? 'unavailable' : 'known');
 };
 
-const assertPercentageAnatomy = async (stage: Locator) => {
-  const percentage = stage.locator('[data-percentage-background]');
-  const temperatureReading = percentage.locator('xpath=ancestor::*[@data-domain-reading]');
-  const temperatureChildren = temperatureReading.locator(':scope > *');
-  expect(await temperatureChildren.count()).toBe(2);
-  expect(await percentage.evaluate((element) => element.parentElement === element.closest('[data-domain-reading]')?.children[1])).toBe(true);
-  const percentageBox = await percentage.boundingBox();
-  const temperatureIconBox = await temperatureChildren.nth(0).boundingBox();
-  const temperatureContentBox = await temperatureChildren.nth(1).boundingBox();
-  const temperatureLabelBox = await percentage.locator('[data-node-kind="Metric"] .label').boundingBox();
-  const temperatureReadingBox = await temperatureReading.boundingBox();
-  expect(Math.abs((percentageBox?.x ?? 0) - (temperatureContentBox?.x ?? 0))).toBeLessThanOrEqual(1);
-  expect(Math.abs((percentageBox?.width ?? 0) - (temperatureContentBox?.width ?? 0))).toBeLessThanOrEqual(1);
-  expect((percentageBox?.x ?? 0) - ((temperatureIconBox?.x ?? 0) + (temperatureIconBox?.width ?? 0))).toBeGreaterThanOrEqual(8);
-  expect(Math.abs((temperatureLabelBox?.x ?? 0) - (percentageBox?.x ?? 0) - 12)).toBeLessThanOrEqual(1);
-  expect((percentageBox?.y ?? 0) - (temperatureReadingBox?.y ?? 0)).toBeGreaterThanOrEqual(7);
-  expect((temperatureReadingBox?.y ?? 0) + (temperatureReadingBox?.height ?? 0) - ((percentageBox?.y ?? 0) + (percentageBox?.height ?? 0))).toBeGreaterThanOrEqual(7);
-  expect((percentageBox?.x ?? 0) + (percentageBox?.width ?? 0)).toBeLessThanOrEqual((temperatureReadingBox?.x ?? 0) + (temperatureReadingBox?.width ?? 0) + 1);
+const assertReadingAnatomy = async (stage: Locator) => {
   const labelOffsets = await stage.locator('[data-domain-reading]').evaluateAll((readings) => readings.map((reading) => {
     const label = reading.querySelector('.label');
     if (!label) return null;
     return label.getBoundingClientRect().x - reading.getBoundingClientRect().x;
   }).filter((offset): offset is number => offset !== null));
   expect(Math.max(...labelOffsets) - Math.min(...labelOffsets)).toBeLessThanOrEqual(1);
+  const centerDeltas = await stage.locator('[data-domain-reading]').evaluateAll((readings) => readings.map((reading) => {
+    const icon = reading.children[0]?.getBoundingClientRect();
+    const label = reading.querySelector('.label')?.getBoundingClientRect();
+    const value = reading.querySelector('.current, [data-skeleton]')?.getBoundingClientRect();
+    if (!icon || !label || !value) return Number.POSITIVE_INFINITY;
+    const visibleCenter = (Math.min(label.top, value.top) + Math.max(label.bottom, value.bottom)) / 2;
+    return Math.abs(visibleCenter - (icon.top + icon.height / 2));
+  }));
+  expect(Math.max(...centerDeltas)).toBeLessThanOrEqual(1);
 };
 
 for (const width of [320, 390, 720]) {
@@ -77,7 +69,8 @@ for (const width of [320, 390, 720]) {
     await expect(card).toContainText('Configured filament color');
     await expect(page.locator('pre').first()).toContainText('"schemaVersion": 2');
     await expect(page.locator('pre').first()).toContainText('"type": "Stack"');
-    await expect(page.locator('pre').first()).toContainText('"type": "PercentageFill"');
+    await expect(page.locator('pre').first()).toContainText('"type": "HeadTemperature"');
+    await expect(page.locator('pre').first()).not.toContainText('"type": "PercentageFill"');
     await expect(page.locator('pre').first()).not.toContainText('"type": "Table"');
     await expect(page.locator('pre').first()).not.toContainText('"type": "Row"');
     await expect(page.locator('pre').first()).not.toContainText('<script>');
@@ -107,7 +100,7 @@ for (const width of [320, 390, 720]) {
           const box = await renderer.boundingBox();
           if (!box) throw new Error('Missing rendered composition');
           heights.push(box.height);
-          const topology = await renderer.locator('[data-node-kind], [data-percentage-background], [data-domain-reading], [data-presentation-status]').evaluateAll((nodes) => nodes.map((node) => node.hasAttribute('data-percentage-background') ? 'PercentageFill' : node.hasAttribute('data-domain-reading') ? 'DomainReading' : node.hasAttribute('data-presentation-status') ? 'StatusLine' : node.getAttribute('data-node-kind') ?? ''));
+          const topology = await renderer.locator('[data-node-kind], [data-domain-reading], [data-presentation-status]').evaluateAll((nodes) => nodes.map((node) => node.hasAttribute('data-domain-reading') ? 'DomainReading' : node.hasAttribute('data-presentation-status') ? 'StatusLine' : node.getAttribute('data-node-kind') ?? ''));
           if (expectedTopology === null) expectedTopology = topology;
           else expect(topology).toEqual(expectedTopology);
           if (scenario === 'loading') {
@@ -123,6 +116,7 @@ for (const width of [320, 390, 720]) {
             expect(await renderer.locator('[data-skeleton]:not([data-skeleton-static])').count()).toBe(0);
             expect(await renderer.locator('[data-skeleton-static]').first().evaluate((element) => getComputedStyle(element).animationName)).toBe('none');
           }
+          await assertReadingAnatomy(renderer);
           if (width === 720 && textPercent === 200 && variant === 'larger') {
             await page.screenshot({ path: `test-results/composable-lab-v2/composition-larger-${scenario}-720px-200-percent.png`, fullPage: true });
           }
@@ -142,8 +136,8 @@ for (const width of [320, 390, 720]) {
     for (const selector of ['[data-node-kind="Stack"]', '[data-domain-reading]']) {
       expect(await stage.locator(selector).first().evaluate((element) => [getComputedStyle(element).borderTopWidth, getComputedStyle(element).borderBottomWidth])).toEqual(['0px', '0px']);
     }
-    expect(Number(await stage.locator('[data-percentage-background]').getAttribute('data-percentage-fill'))).toBeGreaterThan(0);
-    await assertPercentageAnatomy(stage);
+    await expect(stage.locator('[data-percentage-background]')).toHaveCount(0);
+    await assertReadingAnatomy(stage);
     for (const reading of await stage.locator('[data-domain-reading]').all()) {
       const children = reading.locator(':scope > *');
       expect(await children.count()).toBe(2);
@@ -158,7 +152,7 @@ for (const width of [320, 390, 720]) {
     await assertStateGeometry(200);
     await page.getByLabel('Composition shape').selectOption('larger');
     await selectScenario(page, 'known');
-    await assertPercentageAnatomy(stage);
+    await assertReadingAnatomy(stage);
     const scaledSize = Number.parseFloat(await metric.evaluate((element) => getComputedStyle(element).fontSize));
     expect(scaledSize).toBeGreaterThanOrEqual(baseSize * 1.99);
     expect(await stage.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
@@ -193,16 +187,16 @@ for (const width of [320, 390, 720]) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await selectScenario(page, 'loading');
     expect(await stage.locator('[data-skeleton]').first().evaluate((element) => getComputedStyle(element).animationName)).toBe('none');
-    expect(await stage.locator('[data-percentage-background]').evaluate((element) => getComputedStyle(element).backgroundImage)).toBe('none');
+    await expect(stage.locator('[data-percentage-background]')).toHaveCount(0);
     await selectScenario(page, 'error');
-    expect(await stage.locator('[data-percentage-background]').evaluate((element) => getComputedStyle(element).backgroundImage)).toBe('none');
+    await expect(stage.locator('[data-percentage-background]')).toHaveCount(0);
     await selectScenario(page, 'partial');
-    expect(Number(await stage.locator('[data-percentage-background]').getAttribute('data-percentage-fill'))).toBeGreaterThan(0);
+    await expect(stage.locator('[data-percentage-background]')).toHaveCount(0);
     await selectScenario(page, 'ambiguous');
-    expect(Number(await stage.locator('[data-percentage-background]').getAttribute('data-percentage-fill'))).toBeGreaterThan(0);
+    await expect(stage.locator('[data-percentage-background]')).toHaveCount(0);
     await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
     await selectScenario(page, 'known');
-    expect(await stage.locator('[data-percentage-background]').evaluate((element) => getComputedStyle(element).backgroundImage)).toBe('none');
+    await expect(stage.locator('[data-percentage-background]')).toHaveCount(0);
     expect(await stage.locator('article').evaluate((element) => getComputedStyle(element).borderStyle)).toBe('solid');
   });
 }

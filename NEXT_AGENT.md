@@ -1,5 +1,44 @@
 # Next agent
 
+## Preserve the accepted build-time registry experiment
+
+The current commit on `codex/u1-composable-ui-experiment` descends from base
+`cdfb9ac35f3bbb3cbabe75490db3fa7b4498ca5b`. Decision0050 and the
+top sections of the active HANDOFF/VALIDATION describe the new candidate. Its
+32-path application manifest is `af2099289ef1beefe59b6e10664a6933e89e2902fdacf68f50d65fc8f620ee2f`,
+separate 113-file Kit manifest `aaa9b6a3…`, 49,994-byte Lab HTML SHA-256
+`e85e3d1fc0673a0b86454f1616d043ed6d26708cd35403c070923493edafa28d`,
+and 145,152-byte MCP resource SHA-256
+`c8de7c1aa94e2f8dfa11471d8e348d6f8ea7929b7c981f8c0fb816aad7cc0e09`.
+
+Screenshot-first UI/UX and independent exact-candidate review both **APPROVE**
+that application identity. The two earlier review rounds requested executable
+child-policy authority, independent component props, registry source mapping,
+complete Fans consumer coverage, and finally removal of concrete renderer
+dispatch/all-optional invocation. The accepted renderer now gets constructor,
+props and children from typed entries and recurses by registered role only.
+
+Design found that supplied old Tailnet screenshot `cc6974e3…` exposed a
+temperature reserve outside the icon, visually biased content upward and could
+imply progress. The accepted author/design 390px run `6482e985…` has no fill,
+centers all four groups and preserves consistent spacing/hierarchy. Its direct
+320/390/720 and 390/200% inspection found no clipping, overlap or overflow,
+atomic `220° C`, sensible wrapping, healthy larger Grid and stable neutral
+loading/error geometry without stale telemetry. Independent review freshly
+passed 107 UI/shared tests, 20 server tests/405 assertions, both compilers/
+component contracts, deterministic MCP and Kit reconstruction, 6/6 Chrome, a
+zero-reader retired-fill/component-path adversary and the exact eight-entry
+adapter walk. Its independent 390px run was `452a10c5…`; keep both PNG hashes as
+separately attributed run evidence rather than deterministic artifact identity.
+
+Do not restart or repoint the existing 4200/8451 preview without a new explicit
+execution step; it still serves the previous committed candidate.
+Do not alter production registration, printer, Camera, auth, Tailscale, open a
+PR, merge or deploy. The descriptor lifecycle safeguard plan remains a recorded
+future host change, not part of this candidate. Review did not provide a live
+final-candidate 4200/8451, Tailnet/iPhone/Safari, mounted ChatGPT, screen-reader,
+physical-printer or user-outcome result.
+
 ## Preserve the reviewed committed content-owned percentage candidate
 
 Preserve the reviewed 37-path application manifest

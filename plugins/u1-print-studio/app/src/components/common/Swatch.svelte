@@ -24,11 +24,11 @@
 <style>
   .swatch-cell { display: grid; gap: 3px; min-width: 0; }
   .label { color: var(--u1-muted); font-size: .8125rem; line-height: 1.35; }
-  .value-frame { display: grid; min-width: 0; font-size: 1.25rem; font-weight: var(--u1-weight-strong); font-variant-numeric: tabular-nums; line-height: var(--u1-line-value); }
+  .value-frame { display: grid; align-items: center; min-width: 0; font-size: 1.25rem; font-weight: var(--u1-weight-strong); font-variant-numeric: tabular-nums; line-height: var(--u1-line-value); }
   .value-frame > * { grid-area: 1 / 1; min-width: 0; }
   .value-frame { min-height: 1lh; }
   .value { display: inline-flex; align-items: center; gap: 8px; min-width: 0; font-size: 1.25rem; font-weight: var(--u1-weight-strong); font-variant-numeric: tabular-nums; line-height: var(--u1-line-value); }
-  .current, .skeleton-slot { align-self: start; }
-  .skeleton-slot { display: block; height: 0; }
+  .current, .skeleton-slot { align-self: center; }
+  .skeleton-slot { display: grid; align-items: center; min-height: 1lh; }
   .skeleton-slot :global([data-skeleton='value']) { width: min(8ch, 100%); height: 1lh; }
 </style>

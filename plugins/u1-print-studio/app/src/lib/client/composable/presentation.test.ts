@@ -74,21 +74,7 @@ describe('composable renderer and host lifecycle', () => {
     expect(screen.queryByText('Reported part fan')).not.toBeInTheDocument();
     expect(rendered.container.querySelector('[role="cell"]')).toBeNull();
     expect(rendered.container.querySelector('[data-node-kind="Table"], [data-node-kind="Row"]')).toBeNull();
-    const percentage = rendered.container.querySelector('[data-percentage-background]')!;
-    expect(Number(percentage.getAttribute('data-percentage-fill'))).toBeCloseTo(97.5454, 3);
-    expect(percentage.closest('[data-domain-reading]')).not.toBeNull();
-    expect(percentage.parentElement).toBe(percentage.closest('[data-domain-reading]')?.children[1]);
-    expect(percentage.closest('[data-domain-reading]')?.children[0].contains(percentage)).toBe(false);
-  });
-
-  test('keeps PercentageFill neutral when actual/target is not a valid percentage relation', async () => {
-    const invalidRatio: ComposableReaders = {
-      ...readers,
-      status: async () => ({ observedAt: '2026-09-03T16:20:00.000Z', receivedAt: '2026-09-03T16:20:00.100Z', heads: [{ id: 'T1', status: 'active', actualC: 50, targetC: 0 }] }),
-    };
-    const result = await composeEntityCard(t1EntityCardSpec, invalidRatio);
-    const rendered = render(PresentationRenderer, { presentation: result.viewModel });
-    expect(rendered.container.querySelector('[data-percentage-background]')).toHaveAttribute('data-percentage-fill', '0');
+    expect(rendered.container.querySelector('[data-percentage-background]')).toBeNull();
   });
 
   test('uses validated input spec for exact loading, ready, and error topology', async () => {

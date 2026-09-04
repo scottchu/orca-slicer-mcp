@@ -156,11 +156,6 @@ const resolveNode = (node: PresentationNode, acquired: Acquired): ResolvedNode =
     return { type: 'Grid', gap: node.gap, columns: node.columns, children: node.children.map((child) => resolveNode(child, acquired)) } as ResolvedNode;
   }
   if (node.type === 'Title') return { type: 'Title', text: titleText(node.content), size: node.size };
-  if (node.type === 'PercentageFill') {
-    const child = resolveNode(node.child, acquired);
-    if (child.type !== 'HeadTemperature') throw new Error('Invalid percentage fill resolver');
-    return { type: 'PercentageFill', child };
-  }
   if (node.type === 'HeadStatus') {
     const value = resolveField('head.status', acquired);
     if (value.kind !== 'text') throw new Error('Invalid status resolver');

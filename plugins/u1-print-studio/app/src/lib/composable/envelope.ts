@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { canonicalPresentationSha256 } from './hash.js';
 import { derivePresentationPlan, type SourceGroup } from './planner.js';
+import { elementRegistry } from './element-registry.js';
 import { presentationSpecSchema, titleText, type PresentationNode, type PresentationSpec } from './schema.js';
 import { composableViewModelSchema, type ComposableViewModel, type ResolvedNode } from './view-model.js';
 
@@ -10,13 +11,7 @@ export type ComposableEnvelope = {
   viewModel: ComposableViewModel;
 };
 
-const expectedSource = (node: PresentationNode): SourceGroup | null => node.type === 'HeadStatus' || node.type === 'HeadTemperature'
-  ? 'status'
-  : node.type === 'FilamentColor'
-    ? 'materials'
-    : node.type === 'FanRelation'
-      ? 'environment'
-      : null;
+const expectedSource = (node: PresentationNode): SourceGroup | null => elementRegistry[node.type].source;
 
 const correlateNode = (
   spec: PresentationNode,
@@ -46,7 +41,6 @@ const correlateNode = (
     if (spec.children.length !== resolved.children.length) { context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved child count diverges from specification' }); return; }
     spec.children.forEach((child, index) => correlateNode(child, resolved.children[index], sources, context));
   }
-  if (spec.type === 'PercentageFill' && resolved.type === 'PercentageFill') correlateNode(spec.child, resolved.child, sources, context);
   const sourceName = expectedSource(spec);
   if (!sourceName || !('value' in resolved)) return;
   const source = sources.get(sourceName);

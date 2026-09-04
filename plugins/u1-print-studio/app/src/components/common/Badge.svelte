@@ -16,11 +16,11 @@
 <style>
   .badge-cell { display: grid; gap: 5px; min-width: 0; }
   .label { color: var(--u1-muted); font-size: .8125rem; line-height: 1.35; }
-  .badge-frame { display: grid; min-width: 0; font-size: .875rem; font-weight: var(--u1-weight-name); line-height: 1.25; }
+  .badge-frame { display: grid; align-items: center; min-width: 0; font-size: .875rem; font-weight: var(--u1-weight-name); line-height: 1.25; }
   .badge-frame > * { grid-area: 1 / 1; min-width: 0; }
   .badge-frame { min-height: calc(1lh + 10px); }
   .badge { width: fit-content; max-width: 100%; padding: 4px 9px; border: 1px solid var(--u1-line); border-radius: 999px; background: var(--u1-canvas); overflow-wrap: anywhere; font-size: .875rem; font-weight: var(--u1-weight-name); line-height: 1.25; }
-  .current, .skeleton-slot { align-self: start; }
-  .skeleton-slot { display: block; height: 0; }
-  .skeleton-slot :global([data-skeleton='value']) { width: min(7ch, 100%); height: 1lh; }
+  .current, .skeleton-slot { align-self: center; }
+  .skeleton-slot { display: grid; align-items: center; min-height: calc(1lh + 10px); }
+  .skeleton-slot :global([data-skeleton='value']) { width: min(7ch, 100%); height: calc(1lh + 10px); border-radius: 999px; }
 </style>

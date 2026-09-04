@@ -14,7 +14,7 @@ export const t1EntityCardSpec: PresentationSpec = {
         gap: 'regular',
         children: [
           { type: 'HeadStatus' },
-          { type: 'PercentageFill', child: { type: 'HeadTemperature' } },
+          { type: 'HeadTemperature' },
           { type: 'FilamentColor' },
           { type: 'FanRelation' },
         ],
@@ -59,7 +59,7 @@ export const t1LargerCompositionSpec: PresentationSpec = {
         gap: 'relaxed',
         children: [
           { type: 'HeadStatus' },
-          { type: 'PercentageFill', child: { type: 'HeadTemperature' } },
+          { type: 'HeadTemperature' },
           { type: 'FilamentColor' },
           { type: 'FanRelation' },
         ],

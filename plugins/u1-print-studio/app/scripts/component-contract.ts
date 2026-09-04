@@ -37,7 +37,7 @@ export const leaves: Record<string, string[]> = {
   'common/Caption.svelte': ['span'], 'common/Timestamp.svelte': ['span', 'time'], 'common/DegreeValue.svelte': ['span'],
   'common/Inline.svelte': ['span'], 'common/ReadingList.svelte': ['div'], 'common/ReadingRow.svelte': ['div'],
   'common/Skeleton.svelte': ['span'], 'common/StateAnnouncement.svelte': ['span'], 'observation/StatePanel.svelte': ['p'],
-  'common/PercentageBackground.svelte': ['div'], 'common/PercentageSurface.svelte': [], 'common/Grid.svelte': ['div'],
+  'common/PercentageBackground.svelte': ['div'], 'common/Grid.svelte': ['div'],
   'common/Stack.svelte': ['div'], 'common/InfoPair.svelte': ['div', 'span'], 'common/MetricValue.svelte': ['span'],
   'common/FeedbackOverlay.svelte': ['div'], 'observation/ObservedMeta.svelte': ['span'],
   'common/Shell.svelte': ['article'], 'common/Body.svelte': ['div'],
@@ -90,12 +90,11 @@ const approvedImports: Record<string, string[]> = {
   'observation/QueueSummary.svelte': ['../../lib/client/live/queue-presentation', '../common/InfoPair.svelte', '../common/Caption.svelte', '../common/LoadingValue.svelte', '../../lib/client/observation/format'],
   'observation/DomainReceipt.svelte': ['../../lib/client/live/presentation', '../common/Caption.svelte', './ObservedMeta.svelte', '../../lib/client/observation/format'],
   'live/LiveQueueRoot.svelte': ['../common/LoadingValue.svelte', 'svelte', 'lucide-svelte', '../../lib/client/live/queue-controller', '../common/Shell.svelte', '../common/Header.svelte', '../common/Body.svelte', '../common/Footer.svelte', '../common/StateAnnouncement.svelte', '../common/StateSurface/StateSurface.svelte', '../common/Caption.svelte', '../common/Icon.svelte', '../common/Button.svelte', '../common/Skeleton.svelte', '../common/FeedbackOverlay.svelte', '../common/Stack.svelte', '../observation/DomainReceipt.svelte', '../observation/QueueSummary.svelte', '../observation/QueueRows.svelte', '../observation/QueueSkeleton.svelte'],
-  'common/PercentageSurface.svelte': ['svelte', './PercentageBackground.svelte'],
-  'composable/PresentationNode.svelte': ['../../lib/composable/view-model', '../common/Card.svelte', '../common/Title.svelte', '../common/Stack.svelte', '../common/Grid.svelte', './HeadStatus.svelte', './HeadTemperature.svelte', './FilamentColor.svelte', './FanRelation.svelte', './PresentationNode.svelte'],
+  'composable/PresentationNode.svelte': ['../../lib/composable/view-model', './component-registry', './PresentationNode.svelte'],
   'composable/PresentationRenderer.svelte': ['../../lib/composable/view-model', '../common/Stack.svelte', '../common/StatusLine.svelte', './PresentationNode.svelte'],
   'composable/ComposableMcpRoot.svelte': ['svelte', '../../lib/client/host/rpc', '../../lib/client/composable/host', '../../lib/client/composable/presentation', '../common/StatusLine.svelte', './PresentationRenderer.svelte'],
   'composable/HeadStatus.svelte': ['lucide-svelte', '../../lib/composable/view-model', '../common/Reading.svelte', '../common/Badge.svelte'],
-  'composable/HeadTemperature.svelte': ['lucide-svelte', '../../lib/composable/view-model', '../common/Reading.svelte', '../common/Metric.svelte', '../common/PercentageSurface.svelte'],
+  'composable/HeadTemperature.svelte': ['lucide-svelte', '../../lib/composable/view-model', '../common/Reading.svelte', '../common/Metric.svelte'],
   'composable/FilamentColor.svelte': ['lucide-svelte', '../../lib/composable/view-model', '../common/Reading.svelte', '../common/Swatch.svelte'],
   'composable/FanRelation.svelte': ['lucide-svelte', '../../lib/composable/view-model', '../common/Reading.svelte', '../common/Metric.svelte'],
   'observation/HeadsWidget.svelte': ['svelte', '../../lib/client/observation/types', '../../lib/client/observation/loading', '../../lib/client/live/copy-action', '../../lib/client/live/heads-presentation', '../../lib/client/common/clipboard', './HeadsPanel.svelte', '../../lib/client/observation/heads-loading'],
@@ -144,11 +143,21 @@ export function inspectComponent(source: string, strict: boolean, imports: strin
       if (specifier.type === 'ImportDefaultSpecifier') components.add(specifier.local.name);
     }
   });
+  if (imports.includes('./component-registry')) components.add('Component');
   if (strict && ast.css) violations.push('style block');
   visit(ast, (node) => {
     if (node.type === 'RegularElement') { tags.push(node.name!); if (strict) violations.push(`native ${node.name}`); }
     if (!strict) return;
-    if (node.type === 'HtmlTag' || node.type === 'RenderTag' || node.type === 'SpreadAttribute' || node.type?.startsWith('Svelte')) violations.push(`escape ${node.type}`);
+    const expression = node.expression as { type?: string; object?: { type?: string; name?: string }; property?: { type?: string; name?: string }; computed?: boolean } | undefined;
+    const closedRegistrySpread = node.type === 'SpreadAttribute'
+      && imports.includes('./component-registry')
+      && expression?.type === 'MemberExpression'
+      && expression.object?.type === 'Identifier'
+      && expression.object.name === 'registered'
+      && expression.property?.type === 'Identifier'
+      && expression.property.name === 'props'
+      && expression.computed === false;
+    if (node.type === 'HtmlTag' || node.type === 'RenderTag' || (node.type === 'SpreadAttribute' && !closedRegistrySpread) || node.type?.startsWith('Svelte')) violations.push(`escape ${node.type}`);
     if (node.type === 'ClassDirective' || node.type === 'StyleDirective' || (node.type === 'Attribute' && /^(class|style)$/.test(node.name!))) violations.push('styling escape');
     if (node.type === 'Component' && !components.has(node.name!)) violations.push(`unregistered component ${node.name}`);
     if (node.type === 'ImportExpression') violations.push('dynamic import');

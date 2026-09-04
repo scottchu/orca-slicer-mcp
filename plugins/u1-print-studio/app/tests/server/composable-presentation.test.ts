@@ -35,7 +35,6 @@ const values = (node: ResolvedNode, output = new Map<PresentationField, Resolved
     output.set(field, node.value);
   }
   if ('children' in node) node.children.forEach((child) => values(child, output));
-  if (node.type === 'PercentageFill') values(node.child, output);
   return output;
 };
 
@@ -46,6 +45,8 @@ describe('entity-bound composition acquisition and provenance', () => {
     await expect(composeEntityCard({ ...t1EntityCardSpec, css: 'body{}' }, { status: count, materials: count, environment: count })).rejects.toThrow();
     await expect(composeEntityCard({ ...t1EntityCardSpec, schemaVersion: 1 }, { status: count, materials: count, environment: count })).rejects.toThrow();
     await expect(composeEntityCard({ ...t1EntityCardSpec, root: { ...t1EntityCardSpec.root, children: [{ type: 'Title', text: 'Tool head T2', size: 'large' }, t1EntityCardSpec.root.children[1]] } }, { status: count, materials: count, environment: count })).rejects.toThrow();
+    const stack = t1EntityCardSpec.root.children[1];
+    await expect(composeEntityCard({ ...t1EntityCardSpec, root: { ...t1EntityCardSpec.root, children: [t1EntityCardSpec.root.children[0], { ...stack, children: [{ type: 'PercentageFill', child: { type: 'HeadTemperature' } }] }] } }, { status: count, materials: count, environment: count })).rejects.toThrow();
     expect(calls).toBe(0);
   });
 
@@ -75,22 +76,19 @@ describe('entity-bound composition acquisition and provenance', () => {
     await expect(composeEntityCard(t1EntityCardSpec, readers(), () => new Date(Number.NaN))).rejects.toThrow();
   });
 
-  test('binds PercentageFill only to the resolved T1 actual/target provenance', async () => {
+  test('binds the registered temperature leaf to resolved T1 actual/target provenance', async () => {
     const result = await composeEntityCard(t1EntityCardSpec, readers());
     const layout = result.viewModel.root.children[1];
-    const fill = layout.children.find((node) => node.type === 'PercentageFill');
-    expect(fill).toMatchObject({
-      type: 'PercentageFill',
-      child: {
-        type: 'HeadTemperature',
-        value: {
-          kind: 'temperature', state: 'known', actual: 214.6, target: 220,
-          provenance: { source: 'status', sourceObservedAt: statusObservedAt, receivedAt: statusReceivedAt },
-        },
+    const temperature = layout.children.find((node) => node.type === 'HeadTemperature');
+    expect(temperature).toMatchObject({
+      type: 'HeadTemperature',
+      value: {
+        kind: 'temperature', state: 'known', actual: 214.6, target: 220,
+        provenance: { source: 'status', sourceObservedAt: statusObservedAt, receivedAt: statusReceivedAt },
       },
     });
     const divergent = structuredClone(result) as any;
-    divergent.viewModel.root.children[1].children.find((node: any) => node.type === 'PercentageFill').child.value.provenance.receivedAt = materialReceivedAt;
+    divergent.viewModel.root.children[1].children.find((node: any) => node.type === 'HeadTemperature').value.provenance.receivedAt = materialReceivedAt;
     expect(composableEnvelopeSchema.safeParse(divergent).success).toBe(false);
   });
 
@@ -182,7 +180,7 @@ describe('entity-bound composition acquisition and provenance', () => {
     const statusSource = mixed.sources.find((source: any) => source.source === 'status');
     Object.assign(statusSource, { state: 'loading', observedAt: null, receivedAt: null });
     for (const node of mixed.root.children[1].children) {
-      const value = node.type === 'PercentageFill' ? node.child.value : node.value;
+      const value = node.value;
       if (value?.provenance.source !== 'status') continue;
       value.state = 'loading';
       value.provenance.sourceObservedAt = null;

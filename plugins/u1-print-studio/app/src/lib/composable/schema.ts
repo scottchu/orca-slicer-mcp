@@ -1,14 +1,21 @@
 import { z } from 'zod';
+import {
+  cardDensitySchema,
+  elementRegistry,
+  gridColumnsSchema,
+  layoutGapSchema,
+  registeredChildrenSchema,
+  softTintSchema,
+  titleContentSchema,
+  titleSizeSchema,
+  type TitleContent,
+} from './element-registry.js';
+import { presentationFieldSchema, type PresentationField } from './value-contract.js';
+
+export { presentationFieldSchema, type PresentationField } from './value-contract.js';
+export { cardDensitySchema, gridColumnsSchema, layoutGapSchema, titleContentSchema, titleSizeSchema, type TitleContent } from './element-registry.js';
 
 export const COMPOSABLE_SPEC_VERSION = 2 as const;
-
-export const presentationFieldSchema = z.enum([
-  'head.status',
-  'head.temperature',
-  'filament.color',
-  'head.fanRelation',
-]);
-export type PresentationField = z.infer<typeof presentationFieldSchema>;
 
 export const subjectSchema = z.object({
   kind: z.literal('toolHead'),
@@ -16,12 +23,6 @@ export const subjectSchema = z.object({
 }).strict();
 export type PresentationSubject = z.infer<typeof subjectSchema>;
 
-export const layoutGapSchema = z.enum(['compact', 'regular', 'relaxed']);
-export const gridColumnsSchema = z.enum(['one', 'two']);
-export const cardDensitySchema = z.enum(['compact', 'comfortable']);
-export const titleSizeSchema = z.enum(['medium', 'large']);
-export const titleContentSchema = z.enum(['subject', 'compactStatus', 'inspectionGroup', 'material', 'status']);
-export type TitleContent = z.infer<typeof titleContentSchema>;
 const titleTextByContent = {
   subject: 'Tool head T1',
   compactStatus: 'T1 compact status',
@@ -31,18 +32,12 @@ const titleTextByContent = {
 } as const;
 export const titleText = (content: TitleContent): typeof titleTextByContent[TitleContent] => titleTextByContent[content];
 
-const softTintSchema = z.object({
-  kind: z.literal('softFilamentTint'),
-  strength: z.literal('subtle'),
-}).strict();
-
 export type HeadTemperatureNode = { type: 'HeadTemperature' };
 export type DomainNode =
   | { type: 'HeadStatus' }
   | HeadTemperatureNode
   | { type: 'FilamentColor' }
-  | { type: 'FanRelation' }
-  | { type: 'PercentageFill'; child: HeadTemperatureNode };
+  | { type: 'FanRelation' };
 export type StackNode = { type: 'Stack'; gap: z.infer<typeof layoutGapSchema>; children: DomainNode[] };
 export type GridNode = { type: 'Grid'; columns: z.infer<typeof gridColumnsSchema>; gap: z.infer<typeof layoutGapSchema>; children: DomainNode[] };
 export type TitleNode = { type: 'Title'; content: TitleContent; size: z.infer<typeof titleSizeSchema> };
@@ -54,56 +49,42 @@ export type CardNode = {
 };
 export type PresentationNode = CardNode | TitleNode | StackNode | GridNode | DomainNode;
 
-const headStatusNodeSchema = z.object({ type: z.literal('HeadStatus') }).strict();
-const headTemperatureNodeSchema = z.object({ type: z.literal('HeadTemperature') }).strict();
-const filamentColorNodeSchema = z.object({ type: z.literal('FilamentColor') }).strict();
-const fanRelationNodeSchema = z.object({ type: z.literal('FanRelation') }).strict();
-const percentageFillNodeSchema = z.object({
-  type: z.literal('PercentageFill'),
-  child: headTemperatureNodeSchema,
-}).strict();
-const domainNodeSchema = z.discriminatedUnion('type', [
-  headStatusNodeSchema,
-  headTemperatureNodeSchema,
-  filamentColorNodeSchema,
-  fanRelationNodeSchema,
-  percentageFillNodeSchema,
-]);
-const stackNodeSchema: z.ZodType<StackNode> = z.object({
+const headStatusNodeSchema = elementRegistry.HeadStatus.specPropsSchema.extend({ type: z.literal('HeadStatus') });
+const headTemperatureNodeSchema = elementRegistry.HeadTemperature.specPropsSchema.extend({ type: z.literal('HeadTemperature') });
+const filamentColorNodeSchema = elementRegistry.FilamentColor.specPropsSchema.extend({ type: z.literal('FilamentColor') });
+const fanRelationNodeSchema = elementRegistry.FanRelation.specPropsSchema.extend({ type: z.literal('FanRelation') });
+const domainNodeSchemas = {
+  HeadStatus: headStatusNodeSchema,
+  HeadTemperature: headTemperatureNodeSchema,
+  FilamentColor: filamentColorNodeSchema,
+  FanRelation: fanRelationNodeSchema,
+};
+const stackNodeSchema: z.ZodType<StackNode> = elementRegistry.Stack.specPropsSchema.extend({
   type: z.literal('Stack'),
-  gap: layoutGapSchema,
-  children: z.array(domainNodeSchema).min(1).max(8),
-}).strict();
-const gridNodeSchema: z.ZodType<GridNode> = z.object({
+  children: registeredChildrenSchema(elementRegistry.Stack.children, domainNodeSchemas) as z.ZodType<DomainNode[]>,
+});
+const gridNodeSchema: z.ZodType<GridNode> = elementRegistry.Grid.specPropsSchema.extend({
   type: z.literal('Grid'),
-  columns: gridColumnsSchema,
-  gap: layoutGapSchema,
-  children: z.array(domainNodeSchema).min(1).max(8),
-}).strict();
-const titleNodeSchema: z.ZodType<TitleNode> = z.object({
+  children: registeredChildrenSchema(elementRegistry.Grid.children, domainNodeSchemas) as z.ZodType<DomainNode[]>,
+});
+const titleNodeSchema: z.ZodType<TitleNode> = elementRegistry.Title.specPropsSchema.extend({
   type: z.literal('Title'),
-  content: titleContentSchema,
-  size: titleSizeSchema,
-}).strict();
-const cardNodeSchema: z.ZodType<CardNode> = z.object({
+});
+const cardNodeSchema: z.ZodType<CardNode> = elementRegistry.Card.specPropsSchema.extend({
   type: z.literal('Card'),
-  density: cardDensitySchema,
-  transform: softTintSchema.optional(),
-  children: z.tuple([titleNodeSchema, z.union([stackNodeSchema, gridNodeSchema])]),
-}).strict();
+  children: registeredChildrenSchema(elementRegistry.Card.children, {
+    Title: titleNodeSchema,
+    Stack: stackNodeSchema,
+    Grid: gridNodeSchema,
+  }) as z.ZodType<[TitleNode, StackNode | GridNode]>,
+});
 
 export const presentationSpecSchema = z.object({
   schemaVersion: z.literal(COMPOSABLE_SPEC_VERSION),
   subject: subjectSchema,
   root: cardNodeSchema,
 }).strict().superRefine((spec, context) => {
-  const fields = spec.root.children[1].children.map((node): PresentationField => node.type === 'HeadStatus'
-    ? 'head.status'
-    : node.type === 'HeadTemperature' || node.type === 'PercentageFill'
-      ? 'head.temperature'
-      : node.type === 'FilamentColor'
-        ? 'filament.color'
-        : 'head.fanRelation');
+  const fields = spec.root.children[1].children.map((node): PresentationField => elementRegistry[node.type].field);
   if (new Set(fields).size !== fields.length) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Duplicate presentation field' });
 });
 export type PresentationSpec = z.infer<typeof presentationSpecSchema>;

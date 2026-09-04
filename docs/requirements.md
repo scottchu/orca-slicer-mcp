@@ -819,23 +819,40 @@ durable-monitor claim.
   `Table`, `Row`, `DataTable` and unknown fields. Card density, title size, gap
   and columns are closed tokens. Title content is also a closed T1-derived token;
   arbitrary text or a claim about another entity is invalid. A strict spec
-  rejects repeated presentation fields, including direct plus wrapped
-  temperature. Resolved validation must still require exact equality for any
+  rejects repeated presentation fields. Resolved validation must still require exact equality for any
   repeated field and between Card transform evidence, tint and visible
   FilamentColor under the same materials receipt. Global `error` permits only
   available or unavailable receipts and requires at least one unavailable;
   loading receipts and animated error skeletons are invalid while partial healthy
-  evidence remains visible. `PercentageFill` may wrap only the typed T1
-  temperature leaf and must derive decoration from validated actual/target
-  provenance through common `PercentageBackground`; invalid relations are
-  neutral and the AST accepts no arbitrary CSS, color, numeric percentage or
-  expression. Strict canonical hash/spec/plan/source/topology/provenance
+  evidence remains visible. Decision0050 supersedes the experiment's
+  `PercentageFill`: version-2 JSON containing it is invalid before acquisition,
+  and temperature renders without a dynamic fill. One pure TypeScript build-time
+  registry owns exactly `Card`, `Title`, `Stack`, `Grid`, `HeadStatus`,
+  `HeadTemperature`, `FilamentColor`, and `FanRelation`, their roles, strict
+  spec/resolved prop schemas, child policies and field/source metadata. Those
+  child policies directly construct accepted spec and resolved tuple/array
+  shape and cardinality rather than duplicating structural rules. A
+  client-only registry binds those exact names to statically imported Svelte
+  components with parity tests and exact compile-time compatibility against a
+  separately owned prop map derived from the resolved node model; the dynamic
+  rendering boundary is sealed behind registry-entry-owned typed props adapters
+  and role-constrained child readers. The recursive renderer must dispatch only
+  on child-bearing structural role, never on concrete element name; it may use
+  one uniform cast only inside typed entry construction after constructor,
+  adapter, required props and node agree, never an all-optional props surface.
+  There
+  is no runtime registration, dynamic
+  import, module path, URL, expression or style token in the wire contract;
+  common layout elements are built in and domain leaves remain outside common.
+  Strict canonical hash/spec/plan/source/topology/provenance
   correlation, deduplicated source readers, bounded values, `Unknown` for absent
   or ambiguous relations, input-shaped loading/error states, no arbitrary code
   or markup, and negative production-registration guards remain mandatory.
   Stable geometry reserves must be structural and may not embed sample status,
   telemetry, filament color, fan label, identifier, timestamp or private value
-  as hidden or accessible content. Generated-resource and source-level guards
+  as hidden or accessible content. Common value primitives center the visible
+  label/value or skeleton group against each reading icon while preserving the
+  same structural reserve across evidence states. Generated-resource and source-level guards
   must reject such evidence-like reserve content. Exact manifest `a6cfa40f…`
   and resource `170fb8f1…` have screenshot-first UI/UX, printer-domain and
   independent verification approval within this synthetic experiment boundary;
@@ -845,10 +862,8 @@ durable-monitor claim.
   Camera, live mappings, mounted-host/device acceptance, printer authority and
   deployment remain pending. DataTable is not implemented or admitted to this
   T1 vocabulary. It may be explored for Queue or History only through a separate
-  domain contract, ADR, implementation and review. Percentage fill remains
-  private-Lab-only: a production decoration requires a separate semantic
-  contract because it could otherwise be mistaken for print progress, heater
-  authority, safety margin or target attainment.
+  domain contract, ADR, implementation and review. The removed temperature
+  decoration supplies no production precedent or percentage semantic.
   Any hosted composition preview must use a dedicated immutable server that
   verifies the fixed build artifact's canonical manifest before listening and
   preloads a closed allowlist containing only the exact private Lab page and its

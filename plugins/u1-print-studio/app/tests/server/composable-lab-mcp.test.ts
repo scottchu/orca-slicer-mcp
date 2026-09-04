@@ -35,6 +35,7 @@ describe('isolated composable MCP proof', () => {
     expect(tools[0]._meta).toMatchObject({ ui: { resourceUri: COMPOSABLE_LAB_RESOURCE_URI }, 'openai/outputTemplate': COMPOSABLE_LAB_RESOURCE_URI });
     expect(tools[0].inputSchema).toMatchObject({ type: 'object', additionalProperties: false, required: ['spec'] });
     expect(tools[0].outputSchema).toMatchObject({ type: 'object', additionalProperties: false, required: ['canonicalSpec', 'canonicalSpecSha256', 'viewModel'] });
+    expect(JSON.stringify(tools[0].inputSchema)).not.toContain('PercentageFill');
 
     const resources = (await client.listResources()).resources;
     expect(resources.map((resource) => resource.uri)).toEqual([COMPOSABLE_LAB_RESOURCE_URI]);
@@ -46,11 +47,14 @@ describe('isolated composable MCP proof', () => {
     expect(COMPOSABLE_LAB_RESOURCE_HTML).not.toContain('#E89B3C');
     expect(COMPOSABLE_LAB_RESOURCE_HTML).not.toContain('−100.0° / 500.0°');
     expect(COMPOSABLE_LAB_RESOURCE_HTML).not.toContain('Reported part fan');
+    expect(COMPOSABLE_LAB_RESOURCE_HTML).not.toContain('PercentageFill');
+    expect(COMPOSABLE_LAB_RESOURCE_HTML).not.toContain('PercentageSurface');
 
     const result = await client.callTool({ name: 'compose_u1_entity_card_v2', arguments: { spec: t1EntityCardSpec } });
     expect(result.isError).not.toBe(true);
     expect(result.content).toEqual([{ type: 'text', text: 'Provisional T1 v2 composition ready.' }]);
     expect(result.structuredContent).toMatchObject({ canonicalSpec: t1EntityCardSpec, viewModel: { schemaVersion: 2, state: 'ready', subject: { kind: 'toolHead', id: 'T1' } } });
+    expect(JSON.stringify(result.structuredContent)).not.toContain('PercentageFill');
     expect(composableToolOutputSchema.safeParse(result.structuredContent).success).toBe(true);
     const rejected = await client.callTool({ name: 'compose_u1_entity_card_v2', arguments: { spec: { ...t1EntityCardSpec, javascript: 'alert(1)' } } });
     expect(rejected.isError).toBe(true);

@@ -52,11 +52,6 @@ const loadingNode = (node: ResolvedNode): ResolvedNode => {
   }
   if (node.type === 'Stack' || node.type === 'Grid') return { ...node, children: node.children.map(loadingNode) } as ResolvedNode;
   if (node.type === 'Title') return node;
-  if (node.type === 'PercentageFill') {
-    const child = loadingNode(node.child);
-    if (child.type !== 'HeadTemperature') throw new Error('Invalid percentage fill loading node');
-    return { type: 'PercentageFill', child };
-  }
   const value = loadingValue(node.value);
   if (node.type === 'HeadStatus' && value.kind === 'text') return { ...node, value };
   if (node.type === 'HeadTemperature' && value.kind === 'temperature') return { ...node, value };

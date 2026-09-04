@@ -1,15 +1,10 @@
-import { derivePresentationPlan, type SourceGroup } from '../../composable/planner';
+import { derivePresentationPlan } from '../../composable/planner';
+import { sourceForPresentationField } from '../../composable/element-registry';
 import { titleText, type PresentationField, type PresentationNode, type PresentationSpec } from '../../composable/schema';
 import type { ComposableViewModel, ResolvedNode, ResolvedValue, ValueEvidenceState } from '../../composable/view-model';
 
-const sourceFor = (field: PresentationField): SourceGroup => field === 'filament.color'
-  ? 'materials'
-  : field === 'head.fanRelation'
-    ? 'environment'
-    : 'status';
-
 const placeholderValue = (field: PresentationField, state: Extract<ValueEvidenceState, 'loading' | 'unavailable'>): ResolvedValue => {
-  const source = sourceFor(field);
+  const source = sourceForPresentationField(field);
   const provenance = { source, sourceObservedAt: null, receivedAt: null, detail: state === 'loading' ? 'loading' : 'sourceUnavailable' };
   if (field === 'head.temperature') return { kind: 'temperature', state, actual: null, target: null, unit: 'celsius', provenance };
   if (field === 'filament.color') return { kind: 'color', state, hex: null, provenance };
@@ -28,11 +23,6 @@ const placeholderNode = (node: PresentationNode, state: Extract<ValueEvidenceSta
   if (node.type === 'Stack') return { type: 'Stack', gap: node.gap, children: node.children.map((child) => placeholderNode(child, state)) } as ResolvedNode;
   if (node.type === 'Grid') return { type: 'Grid', columns: node.columns, gap: node.gap, children: node.children.map((child) => placeholderNode(child, state)) } as ResolvedNode;
   if (node.type === 'Title') return { type: 'Title', text: titleText(node.content), size: node.size };
-  if (node.type === 'PercentageFill') {
-    const child = placeholderNode(node.child, state);
-    if (child.type !== 'HeadTemperature') throw new Error('Invalid percentage fill placeholder');
-    return { type: 'PercentageFill', child };
-  }
   if (node.type === 'HeadStatus') {
     const value = placeholderValue('head.status', state);
     if (value.kind !== 'text') throw new Error('Invalid status placeholder');

@@ -80,6 +80,9 @@ describe('closed component/state contracts', () => {
     expect(inspectComponent(`${prefix}<X text="Tool 1" />`, true, allowed).violations).toEqual([]);
     for (const attribute of ['class="bad"', 'style="color:red"']) expect(inspectComponent(`${prefix}<X ${attribute} />`, true, allowed).violations).toContain('styling escape');
     expect(inspectComponent(`${prefix}<X {...{}} />`, true, allowed).violations).toContain('escape SpreadAttribute');
+    const registryPrefix = '<script>import { resolveRegisteredNode } from "./component-registry"; const registered = resolveRegisteredNode(); const Component = registered.component;</script>';
+    expect(inspectComponent(`${registryPrefix}<Component {...registered.props} />`, true, ['./component-registry']).violations).toEqual([]);
+    expect(inspectComponent(`${registryPrefix}<Component {...other.props} />`, true, ['./component-registry']).violations).toContain('escape SpreadAttribute');
     expect(inspectComponent('<script>let { content } = $props();</script>{@render content()}', true).violations).toContain('escape RenderTag');
   });
   test('registered tree obeys migration frontier', () => expect(checkComponents(resolve(process.cwd(), 'src/components'))).toEqual([]));

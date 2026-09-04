@@ -56,7 +56,7 @@ test('serves only the exact prerendered page and its referenced immutable asset 
   expect(response.status).toBe(200);
   expect(response.headers.get('content-security-policy')).toContain("default-src 'none'");
   expect(body).toEqual(expected);
-  expect(hash(body)).toBe('5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de');
+  expect(hash(body)).toBe('e85e3d1fc0673a0b86454f1616d043ed6d26708cd35403c070923493edafa28d');
 
   const head = await fetch(origin + COMPOSABLE_PREVIEW_PATH, { method: 'HEAD' });
   expect(head.status).toBe(200);
@@ -76,7 +76,7 @@ test('serves only the exact prerendered page and its referenced immutable asset 
     expect(assetHead.status, reference).toBe(200);
     expect(await assetHead.text()).toBe('');
   }
-  expect((await fetch(origin + '/_app/immutable/nodes/1.BHy6paUx.js')).status).toBe(200);
+  expect((await fetch(origin + '/_app/immutable/nodes/1.KNtzM1Mp.js')).status).toBe(200);
   expect((await fetch(origin + '/_app/immutable/nodes/1.BieyvGzI.js')).status).toBe(404);
 });
 
