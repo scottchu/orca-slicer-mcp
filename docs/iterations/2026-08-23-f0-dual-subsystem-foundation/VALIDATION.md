@@ -209,9 +209,13 @@ Funnel status remain exact SHA-256 `d52d4444…`. Candidate Tailnet/runtime
 evidence is absent because the live preview was neither touched nor repointed.
 There is no real-printer, Moonraker/Klipper, Camera, auth, public-Internet,
 phone/device, screen-reader, production, deployment or user-outcome acceptance.
-This later documentation integration changes no application, test, dependency,
-configuration, build input or generated resource byte; it binds those retained
-approvals to the eventual documentation commit without extending their scope.
+The reviewed application bytes were committed as
+`0f5a0d4c4e6a2ac6417b78365d0ac96c8cff60ca`, tree
+`fc6fdd48864e90a5d3ee9e808cf84f6a9a13236d`. Review remains historically bound
+to parent `dca554a18b18f1e34b3b03020bad7de695909f72` plus its uncommitted
+application diff. This subsequent documentation correction changes no
+application, test, dependency, configuration, build input or generated resource
+byte and does not extend the approvals' scope.
 
 ## 2026-09-04 authority-free v2 preview repair candidate
 

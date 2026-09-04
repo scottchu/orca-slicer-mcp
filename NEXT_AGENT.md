@@ -1,9 +1,13 @@
 # Next agent
 
-## Preserve the reviewed content-owned percentage candidate
+## Preserve the reviewed committed content-owned percentage candidate
 
 Preserve the reviewed 37-path application manifest
 `5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
+Review was bound to parent `dca554a18b18f1e34b3b03020bad7de695909f72`
+plus its uncommitted application diff; those exact bytes are committed as
+`0f5a0d4c4e6a2ac6417b78365d0ac96c8cff60ca`, tree
+`fc6fdd48864e90a5d3ee9e808cf84f6a9a13236d`.
 The AST is unchanged: only `PercentageFill { child: HeadTemperature }` owns the
 typed actual/target decoration. Its new constrained content surface leaves the
 icon and outer structural reserve unpainted and fixes 12px inline/8px block
@@ -38,7 +42,7 @@ it intentionally remains the older preloaded `c8c241…` / `70f99dc8…` /
 The acceptance is limited to the synthetic private Lab. There is no candidate
 Tailnet, iPhone/Safari, phone/device, mounted ChatGPT host, screen-reader, live
 printer/Moonraker, Camera, auth, production/deployment or user-outcome evidence.
-This documentation integration leaves application/build/HTML/MCP bytes
+This subsequent documentation correction leaves application/build/HTML/MCP bytes
 unchanged and does not broaden the approvals.
 
 ## Preserve the approved authority-free v2 private preview

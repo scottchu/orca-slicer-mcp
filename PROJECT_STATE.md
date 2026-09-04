@@ -1,6 +1,6 @@
 # Project state
 
-## Current reviewed experiment candidate: content-owned percentage surface
+## Current reviewed committed experiment: content-owned percentage surface
 
 The private-Lab AST remains unchanged: `PercentageFill` can wrap only
 `HeadTemperature`. The UI follow-up moves its typed actual/target paint into a
@@ -19,6 +19,10 @@ the fixed server manifest/hydration closure and their focused assertions.
 
 The renewed 37-path application manifest is
 `5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
+Review was bound to parent `dca554a18b18f1e34b3b03020bad7de695909f72`
+plus its uncommitted application diff; those exact reviewed bytes were committed
+as `0f5a0d4c4e6a2ac6417b78365d0ac96c8cff60ca`, tree
+`fc6fdd48864e90a5d3ee9e808cf84f6a9a13236d`.
 The actual 115-file v2 build manifest is
 `4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`;
 the 51,180-byte Lab HTML SHA-256 is
@@ -45,8 +49,8 @@ deterministic MCP, 6/6 exact-server Chrome, byte-identical same-path build and
 node, old-node rejection and negative production registration. Both reviewers
 released their isolated resources. These approvals do not establish candidate
 Tailnet, iPhone/Safari, mounted host, screen-reader, printer/Moonraker, Camera,
-auth, production/deployment or user-outcome acceptance. The documentation-only
-integration changes no application/build/HTML/MCP byte.
+auth, production/deployment or user-outcome acceptance. The subsequent
+documentation-only correction changes no application/build/HTML/MCP byte.
 
 ## Current accepted experiment runtime: authority-free immutable v2 preview
 

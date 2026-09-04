@@ -1,9 +1,13 @@
 # F0 dual-subsystem foundation handoff
 
-## Current author candidate: content-owned temperature percentage surface
+## Current reviewed committed candidate: content-owned temperature percentage surface
 
-Resume from the uncommitted 37-path application identity
+Resume from the committed 37-path application identity
 `5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
+Review was bound to parent `dca554a18b18f1e34b3b03020bad7de695909f72`
+plus its uncommitted application diff; those reviewed bytes were committed as
+`0f5a0d4c4e6a2ac6417b78365d0ac96c8cff60ca`, tree
+`fc6fdd48864e90a5d3ee9e808cf84f6a9a13236d`.
 The AST remains exactly `PercentageFill { child: HeadTemperature }`; no wire
 field or style escape was added. A new constrained common `PercentageSurface`
 composes the existing percentage primitive with fixed 12px inline/8px block
