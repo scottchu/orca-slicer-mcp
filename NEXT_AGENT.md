@@ -1,6 +1,6 @@
 # Next agent
 
-## Review the authority-free v2 preview server before any relaunch
+## Keep the authority-free v2 preview offline until runtime validation is authorized
 
 The prior v2 runtime was withdrawn after independent review found that the
 generic fixture exposed dashboard routes and could fall back to the real camera
@@ -40,8 +40,9 @@ separate build and four Chrome cases. Architecture and independent exact-source
 review approve the `c8c241…` application identity committed by `ed504c7…`.
 Those approvals do not cover a runtime relaunch or this later documentation
 tail. Keep 4200/8451 offline until a separately authorized runtime launch and
-fresh runtime acceptance;
-do not use `serve-kit-fixture.ts` for a hosted preview.
+fresh runtime/Tailnet/UI acceptance. If that launch is the authorized current
+task, use the exact committed authority-free server; do not repeat source review
+unless application bytes change, and do not use `serve-kit-fixture.ts`.
 
 ## Preserve the reviewed v2 presentation-AST private-Lab experiment
 

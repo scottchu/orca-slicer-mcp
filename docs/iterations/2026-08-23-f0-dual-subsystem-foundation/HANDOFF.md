@@ -42,8 +42,10 @@ the build manifest `70f99dc8…`, Lab HTML `e4be14ad…` and v2 MCP resource
 are in VALIDATION. Architecture and independent exact-source review approve the
 `c8c241…` application identity committed by `ed504c7…`; they do not approve this
 later documentation tail or a runtime relaunch. No repaired runtime/Tailscale
-listener was launched, and runtime acceptance remains pending. Do not relaunch using
-`serve-kit-fixture.ts`; first review this exact candidate.
+listener was launched, and runtime acceptance remains pending. If separately
+authorized as the current task, launch the exact committed authority-free server
+and obtain fresh runtime/Tailnet/UI acceptance. Do not repeat source review
+unless application bytes change, and never relaunch with `serve-kit-fixture.ts`.
 
 ## Current accepted experiment: v2 Card/Stack/Grid private-Lab refinement
 
