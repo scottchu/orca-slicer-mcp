@@ -69,17 +69,37 @@ reader calls, and its registry walk confirmed exactly eight typed entries.
 Its separate 390px capture was `452a10c5…`; that and `6482e985…` are attributed
 browser-run evidence, not deterministic artifact identities.
 
-The live 4200/8451 preview still has the prior build preloaded and was not
-restarted or repointed. No production registration, printer, Camera, auth,
-Tailscale, PR, merge or deployment state changed. The separately recorded MCP
-process-lifecycle safeguards (owned EOF/SIGTERM/reap, 180/220 monitoring,
-4096 emergency headroom and lazy optional start) remain unimplemented and
-unauthorized.
+Independent runtime review **APPROVES** the accepted experiment running from
+source `2ffc29b7…`, tree `dbdae72e…`, under the existing dedicated preview job.
+PID 90967 runs the exact committed-worktree immutable-server command with one
+loopback 4200 listener, no child or other TCP connection after probes, and no
+sensitive printer/Camera/auth/config descriptor. Local and existing Tailnet
+8451 each serve exact 49,994-byte HTML `e85e3d1f…` and 21 byte-identical closed
+assets. The runtime verifier passed 170 ordinary closed cases, 12 encoded/
+traversal/asset cases and eight CONNECT/TRACE/BREW/Upgrade cases. Serve/Funnel
+semantics did not change: the same JSON is `d52d4444…` with its terminal LF and
+`a255c74d…` without it; production PIDs 834/841 remain preserved.
 
-Review limits: design did not edit, build, restart or rerun tests; independent
-review did not edit or mutate external state. There is no final-candidate live
-4200/8451, Tailnet/iPhone/Safari, mounted ChatGPT, screen-reader, physical-printer
-or user-outcome evidence.
+Fresh Tailnet Chrome passed 24 cases at 390px: three shapes by four states at
+100%/200% text. State-height, overflow and label drift were 0; maximum visible-
+center drift was 0.0078125px; metric value text scaled 20px to 40px. Target/unit stayed
+atomic, fan ambiguity remained truthful `Unknown`, loading remained neutral and
+animated, error neutral and static, and no Table, Row or percentage background
+appeared. Scenario changes caused zero requests or page errors. A reviewer-owned
+ephemeral 102,274-byte screenshot at SHA-256 `1639ae595ae5e8cb5600e5a5cdc9cdeb49960d2640a99a53f39e2981f2d849d0`
+was visually centered and unclipped. Two preliminary harness expectations were
+false failures: compact intentionally contains only status and filament, not a
+fan reading or four skeletons; the corrected matrix passed.
+
+No production registration, printer, Camera, auth, Tailscale configuration, PR,
+merge or deployment state changed. The separately recorded MCP process-lifecycle
+safeguards (owned EOF/SIGTERM/reap, 180/220 monitoring, 4096 emergency headroom
+and lazy optional start) remain unimplemented and unauthorized.
+
+Review limits: design did not edit, build, restart or rerun tests; source review
+did not edit or mutate external state. Runtime evidence remains same-host private
+Tailnet synthetic evidence, not iPhone/Safari, mounted ChatGPT, screen-reader,
+public-Internet, physical-printer/Moonraker or user-outcome acceptance.
 
 ## Current reviewed committed experiment: content-owned percentage surface
 

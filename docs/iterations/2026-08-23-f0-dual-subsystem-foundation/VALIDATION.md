@@ -165,6 +165,54 @@ Tailscale/auth/production registration change occurred. The descriptor lifecycle
 plan (owned EOF/SIGTERM/reap, 180/220 monitoring, 4096 emergency headroom and
 lazy optional MCP start) remains unimplemented and unauthorized.
 
+### Accepted-candidate private runtime and independent approval
+
+The only runtime mutation was restarting the already configured dedicated job:
+
+- `launchctl kickstart -k "gui/$(id -u)/com.openai.u1-composable-v2-preview"`
+
+No Serve/Funnel configuration, production service, authentication, printer,
+Camera, MCP registration, source or artifact changed. Independent runtime review
+**APPROVES** the resulting private preview at exact source `2ffc29b729f1f3dba721eacee714f6937af9e890`,
+tree `dbdae72e5cdc9a2b63f203a8816a6721e602837e`. PID 90967 runs the exact
+committed-worktree Bun `--no-env-file --config=/dev/null` dedicated immutable-
+server command with one `127.0.0.1:4200` listener. After probe keepalive drained,
+it had zero child processes, other TCP connections or sensitive printer/Camera/
+auth/config file descriptors. Production PIDs 834 and 841 remained running.
+
+Local and existing Tailnet 8451 each returned HTTP 200 with exact 49,994-byte
+HTML SHA-256 `e85e3d1fc0673a0b86454f1616d043ed6d26708cd35403c070923493edafa28d`.
+All 21 closed hashed assets were byte-identical to the committed Kit build at
+both origins. Runtime negative checks passed 170 ordinary route/method cases,
+12 encoded/traversal/asset cases and eight CONNECT/TRACE/BREW/Upgrade cases.
+Serve/Funnel semantics remained unchanged. The exact same status JSON is SHA-256
+`d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`
+when hashed with its terminal LF and
+`a255c74d07083b5d2bdc98f78e67095affa0df83ce326895001b4fffe0f98a6f`
+when hashed without that LF; this is byte-framing nuance, not configuration
+drift.
+
+Fresh Tailnet Chrome passed 24 cases at 390px: three composition shapes by four
+states at both 100% and 200% root text. State-height drift, horizontal overflow
+and label drift were 0; maximum visible-center drift was 0.0078125px; computed
+metric value text scaled from 20px to 40px. Temperature target/unit remained atomic,
+ambiguous fan relation remained truthful `Unknown`, loading stayed neutral and
+animated, error neutral and static, and no Table, Row or percentage background
+appeared. Scenario changes caused zero network requests and zero page errors.
+A reviewer-owned ephemeral 102,274-byte screenshot at SHA-256
+`1639ae595ae5e8cb5600e5a5cdc9cdeb49960d2640a99a53f39e2981f2d849d0`
+was visually centered and unclipped; no ephemeral pathname is durable evidence.
+
+Two preliminary browser-harness failures are retained as false expectations,
+not product failures: compact intentionally contains status plus filament only,
+so it has neither a fan reading nor four skeletons. Correcting the harness to the
+registered compact topology produced the passing matrix above.
+
+Limits: this is same-host private Tailnet synthetic evidence. It does not cover
+iPhone/Safari, a mounted ChatGPT host, screen reader, public Internet, physical
+printer/Moonraker or user outcome. The process-lifecycle safeguard plan remains
+unimplemented and unauthorized.
+
 ## 2026-09-04 content-owned percentage surface author candidate
 
 ### Acceptance and safety boundary

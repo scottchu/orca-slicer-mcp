@@ -70,15 +70,34 @@ also passed. Its 390px screenshot was `452a10c5…`, while the author/design run
 was `6482e985…`; these are separately attributed nondeterministic browser-run
 captures, never deterministic artifact identity.
 
-Design did not edit/build/restart or rerun tests; independent review did not edit
-or mutate external state. Neither review supplies final-candidate live 4200/8451,
-Tailnet/iPhone/Safari, mounted ChatGPT, screen-reader, physical-printer or
-user-outcome evidence.
-The live 4200/8451 process has prior bytes preloaded and was not touched. No
-Tailscale/auth/printer/Camera/production registration, PR, merge or deployment
+Design did not edit/build/restart or rerun tests; source review did not edit or
+mutate external state. Independent runtime review subsequently **APPROVES** the
+existing private preview from exact source `2ffc29b7…`, tree `dbdae72e…`, PID
+90967. Its exact committed-worktree dedicated command has one loopback 4200
+listener, no child or other TCP connection after probes and no sensitive file
+descriptor. Local and Tailnet return exact 49,994-byte `e85e3d1f…` HTML plus 21
+byte-identical assets. The closed runtime matrix passed 170 ordinary cases, 12
+encoded/traversal/asset cases and eight CONNECT/TRACE/BREW/Upgrade cases.
+
+Serve/Funnel semantics are unchanged: the same raw JSON hashes as `d52d4444…`
+with terminal LF and `a255c74d…` without it. Production PIDs 834/841 remain
+preserved. Fresh Tailnet Chrome passed 24 cases at 390px covering three shapes,
+four states and 100%/200% text: 0 state-height/overflow/label drift, maximum
+0.0078125px visible-center drift, metric value text scaled 20px to 40px, atomic target/unit,
+truthful `Unknown`, animated neutral loading/static neutral error, no Table,
+Row or percentage background, and zero scenario requests/errors. A reviewer-
+owned ephemeral 102,274-byte screenshot SHA-256
+`1639ae595ae5e8cb5600e5a5cdc9cdeb49960d2640a99a53f39e2981f2d849d0`
+was centered and unclipped. Two preliminary harness failures were incorrect
+expectations: compact intentionally has status plus filament only, not fan or
+four skeletons; the corrected matrix passed.
+
+No Tailscale/auth/printer/Camera/production registration, PR, merge or deployment
 change occurred. The user-provided MCP process-lifecycle plan remains recorded
 but wholly unimplemented: no monitor, descriptor limit, process cleanup or lazy
-server start was installed.
+server start was installed. Runtime evidence is not iPhone/Safari, mounted
+ChatGPT, screen-reader, public-Internet, physical-printer/Moonraker or user-
+outcome acceptance.
 
 ## Current reviewed committed candidate: content-owned temperature percentage surface
 

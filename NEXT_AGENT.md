@@ -31,13 +31,28 @@ zero-reader retired-fill/component-path adversary and the exact eight-entry
 adapter walk. Its independent 390px run was `452a10c5…`; keep both PNG hashes as
 separately attributed run evidence rather than deterministic artifact identity.
 
-Do not restart or repoint the existing 4200/8451 preview without a new explicit
-execution step; it still serves the previous committed candidate.
-Do not alter production registration, printer, Camera, auth, Tailscale, open a
-PR, merge or deploy. The descriptor lifecycle safeguard plan remains a recorded
-future host change, not part of this candidate. Review did not provide a live
-final-candidate 4200/8451, Tailnet/iPhone/Safari, mounted ChatGPT, screen-reader,
-physical-printer or user-outcome result.
+Independent runtime review **APPROVES** the current accepted preview from source
+`2ffc29b7…`, tree `dbdae72e…`, PID 90967. Preserve the existing dedicated
+worktree command, one loopback 4200 listener and Tailnet 8451 proxy. Local and
+Tailnet serve exact 49,994-byte `e85e3d1f…` HTML and 21 byte-identical assets;
+170 ordinary, 12 encoded/traversal/asset and eight raw-protocol cases are closed.
+Serve/Funnel semantics are unchanged (`d52d4444…` including terminal LF,
+`a255c74d…` without it), and production PIDs 834/841 remain preserved.
+
+The fresh 24-case Tailnet Chrome matrix covered three shapes by four states at
+390px and 100%/200% text: 0 state-height/overflow/label drift, maximum 0.0078125px
+visible-center drift, metric value text scaled 20px to 40px, atomic target/unit, truthful
+`Unknown`, neutral animated loading/static error, no Table/Row/percentage
+background, and zero scenario requests/errors. A reviewer-owned ephemeral
+102,274-byte screenshot SHA-256 `1639ae595ae5e8cb5600e5a5cdc9cdeb49960d2640a99a53f39e2981f2d849d0`
+was centered and unclipped. Preserve the two preliminary harness false failures:
+compact intentionally shows status plus filament only, not fan or four skeletons.
+
+Do not restart/repoint this job or alter production registration, printer,
+Camera, auth, Tailscale, open a PR, merge or deploy without new authorization.
+The descriptor lifecycle safeguard plan remains a future host change. Runtime
+evidence is not iPhone/Safari, mounted ChatGPT, screen-reader, public-Internet,
+printer/Moonraker or user-outcome acceptance.
 
 ## Preserve the reviewed committed content-owned percentage candidate
 
