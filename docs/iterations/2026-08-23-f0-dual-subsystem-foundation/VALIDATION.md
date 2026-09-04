@@ -202,13 +202,6 @@ The renewed 37-path changed/new application-set manifest is
 `5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
 The screenshot-first design and renewed independent dispositions above accept
 this exact application/build/HTML/MCP identity for the private-Lab experiment.
-The running preview intentionally remains
-the older `c8c241…` application / `70f99dc8…` build / `e4be14ad…` HTML identity:
-a read-only local request still returned exact `e4be14ad…`, and raw Serve and
-Funnel status remain exact SHA-256 `d52d4444…`. Candidate Tailnet/runtime
-evidence is absent because the live preview was neither touched nor repointed.
-There is no real-printer, Moonraker/Klipper, Camera, auth, public-Internet,
-phone/device, screen-reader, production, deployment or user-outcome acceptance.
 The reviewed application bytes were committed as
 `0f5a0d4c4e6a2ac6417b78365d0ac96c8cff60ca`, tree
 `fc6fdd48864e90a5d3ee9e808cf84f6a9a13236d`. Review remains historically bound
@@ -216,6 +209,69 @@ to parent `dca554a18b18f1e34b3b03020bad7de695909f72` plus its uncommitted
 application diff. This subsequent documentation correction changes no
 application, test, dependency, configuration, build input or generated resource
 byte and does not extend the approvals' scope.
+
+### Authorized reviewed-byte runtime switch and independent approval
+
+Immediately before the runtime switch, the author verified clean source
+`c19e8adcae6e29a6179cb56d99f83ceb7d234374`, tree
+`4baf879caa2858d29e6e3c4276a718a572d37526`, application manifest
+`5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`,
+115-file build `4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`,
+51,180-byte HTML `5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`
+and 146,166-byte MCP resource
+`f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+The only mutation was restarting the existing job:
+
+- `launchctl kickstart -k "gui/$(id -u)/com.openai.u1-composable-v2-preview"`
+
+No Tailscale configuration, listener or plist changed. Local and Tailnet
+`GET /dashboard/lab/composition` then returned HTTP 200 and exact 51,180-byte
+`5c3f2731…` HTML. All 23 allowlisted immutable assets matched the build
+byte-for-byte at both origins. The author's 218-case ordinary local+Tailnet
+route/method/query/encoding/traversal matrix returned 404 throughout, including
+MCP, other dashboards, tools, fixture state, Camera, auth/OAuth, health, media,
+old hydration and queried-current-hydration routes.
+
+The dedicated process retained the pinned Bun 1.4.0 flags and exact server
+script, one loopback 4200 listener, zero child processes, zero other TCP
+connections after probes and zero sensitive printer/Camera/auth/config file
+descriptors. Production jobs remained running on their existing 8787/8788/8789
+listeners. The v1 label and 4199/8450 remained absent. Raw Serve and Funnel
+status remained exact SHA-256
+`d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`;
+8451 Funnel remained disabled.
+
+Fresh Tailnet Chrome at 390/720 and 100%/200% text covered all three shapes and
+five states. Surface/content X and width delta was 0px, icon gap 12px,
+top/bottom reserve 8px, label inset 12px, right overrun 0px and state-height
+drift 0px; scenario controls caused zero network requests. Atomic temperature
+unit, static neutral error and visual inspection passed. Screenshots are local
+test evidence under `plugins/u1-print-studio/app/test-results/composable-live-v2/`:
+
+- `tailnet-known-390px.png` — `21d53926dab6c2e09751aa3f6d49f3038c0d6c62e19d16c249d195ef8e3dec87`
+- `tailnet-known-390px-200-percent.png` — `69f282bf203149f2b9bd2c8493103f87d453ea83e2b2ce47ecebcaefbde0efe6`
+- `tailnet-error-390px-200-percent.png` — `3994183798cf82a15f19b141e2b20895e93dd5067c5c42cf32c8a175d2afa1df`
+- `tailnet-known-720px.png` — `29257e87f61fde99f7562b119df59cde16748ff704de706485646ac8dac82171`
+- `tailnet-known-720px-200-percent.png` — `8d370a10bf84f506533d2d16bfdcb9d20ff010061e6e1758175ab1c8e3af3be2`
+- `tailnet-error-720px-200-percent.png` — `39a9b8f44711da8a0dc23f6448f7babb16b0d68516692972a857c28519e3e40d`
+
+Independent runtime verification **APPROVES** this exact running identity. Its
+fresh 120-case local+Tailnet matrix, closed-asset checks, process/authority
+inspection and browser review found no authority or content escape. Its
+standard raw Upgrade probe, which wrote the complete request and waited,
+returned empty 404 locally and over Tailnet. Preserve the distinct author probe:
+an immediate `socket.end(request)` send-and-half-close returned empty local
+404/64 bytes and Tailnet proxy 502/84 bytes. Neither response included Lab or
+asset markers. The independent reviewer classified that narrower result as a
+fail-closed proxy transport artifact, not dedicated-server behavior or a safety
+blocker.
+
+The runtime approvals cover only this synthetic private Tailnet Lab. There is
+no iPhone/Safari, phone/device, mounted ChatGPT host, screen-reader, public-
+Internet, live printer/Moonraker/Klipper, Camera, auth-flow, production,
+deployment or user-outcome acceptance. All task-owned browsers/probes closed;
+the approved preview remains running. This records-only integration changes no
+application, test, dependency, configuration, build input or generated byte.
 
 ## 2026-09-04 authority-free v2 preview repair candidate
 

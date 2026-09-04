@@ -27,15 +27,20 @@ The actual 115-file v2 build manifest is
 `4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`;
 the 51,180-byte Lab HTML SHA-256 is
 `5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`,
-and the unchanged 146,166-byte MCP resource SHA-256 is `f865908e…`.
+and the unchanged 146,166-byte MCP resource SHA-256 is
+`f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
 Renewed author gates pass 27 client tests, 20 server/MCP tests with 410
 assertions, TypeScript, Svelte/component contracts, deterministic MCP
 verification and 6/6 exact dedicated-server Chrome cases. This renewed source
 identity has exact screenshot-first design and renewed independent approval for
-the synthetic private-Lab experiment.
-The live preview remains the older preloaded `c8c241…` / `70f99dc8…` /
-`e4be14ad…` identity with raw Serve/Funnel SHA-256 `d52d4444…` and was not
-restarted, repointed or modified.
+the synthetic private-Lab experiment. From clean source
+`c19e8adcae6e29a6179cb56d99f83ceb7d234374`, tree
+`4baf879caa2858d29e6e3c4276a718a572d37526`, the author restarted only the
+existing `com.openai.u1-composable-v2-preview` launchd job. No Tailscale
+configuration changed. The running local and Tailnet Lab now serve exact
+51,180-byte `5c3f2731…` HTML and all 23 closed assets byte-identically from
+build `4b4209f9…`; raw Serve/Funnel SHA-256 remains `d52d4444…`, with no 8451
+Funnel.
 
 Design approval used a fresh isolated immutable server and measured 90
 320/390/720, 100%/200%, shape/state cases: all content/surface bounds, label
@@ -49,8 +54,15 @@ deterministic MCP, 6/6 exact-server Chrome, byte-identical same-path build and
 node, old-node rejection and negative production registration. Both reviewers
 released their isolated resources. These approvals do not establish candidate
 Tailnet, iPhone/Safari, mounted host, screen-reader, printer/Moonraker, Camera,
-auth, production/deployment or user-outcome acceptance. The subsequent
-documentation-only correction changes no application/build/HTML/MCP byte.
+auth, production/deployment or user-outcome acceptance. Independent runtime
+review **APPROVES** the exact running identity after a fresh 120-case local and
+Tailnet matrix, process/authority checks and browser inspection. Standard raw
+Upgrade completed as an empty 404 at both origins. A separate author probe that
+immediately half-closed with `socket.end(request)` produced empty local 404/64
+bytes and Tailnet proxy 502/84 bytes with no Lab/asset marker; this is a
+fail-closed proxy transport artifact, not dedicated-server behavior or a safety
+blocker. The subsequent documentation-only correction changes no
+application/build/HTML/MCP byte.
 
 ## Current accepted experiment runtime: authority-free immutable v2 preview
 

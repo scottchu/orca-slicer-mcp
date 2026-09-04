@@ -88,16 +88,28 @@ reaping, server EOF/SIGTERM exits, warn/intervene thresholds near 180/220,
 4096 emergency headroom and optional lazy MCP start are hypotheses only. None
 is implemented or authorized in this repository.
 
-The live preview remains the older `c8c241…`/`70f99dc8…`/`e4be14ad…` identity
-with Serve/Funnel SHA-256 `d52d4444…`; v1 remains offline and production remains
-unchanged. Preserve the private-Lab-only percentage meaning and do not infer
-progress, heater authority, safety or attainment. The renewed identity has exact
-design and independent approval for the synthetic private Lab, but no
-real-printer, Camera, auth, Tailnet-candidate, phone/device, screen-reader,
-production, deployment or user-outcome evidence. This documentation tail does
-not change application/build/resource bytes or broaden those approvals. Preserve
-the exact committed candidate; do not PR, merge, deploy or repoint the preview
-without separate authorization and the applicable gates.
+The existing preview job was restarted once from clean source
+`c19e8adcae6e29a6179cb56d99f83ceb7d234374`, tree
+`4baf879caa2858d29e6e3c4276a718a572d37526`, with `launchctl kickstart -k`;
+no Tailscale mutation occurred. It now serves exact reviewed 51,180-byte
+`5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`
+HTML and all 23 closed assets locally and over Tailnet. Serve/Funnel remains
+`d52d4444…` with no 8451 Funnel; v1 remains
+offline and production jobs/listeners are unchanged. Independent runtime review
+**APPROVES** the exact source/application/build/HTML/MCP running identity after
+a fresh 120-case local+Tailnet matrix, process isolation and browser inspection.
+Standard Upgrade yielded empty 404 locally and over Tailnet. The author's
+separate immediate `socket.end(request)` half-close yielded empty local 404/64
+and Tailnet proxy 502/84 without a Lab or asset marker, a fail-closed transport
+artifact rather than dedicated-server behavior or a safety blocker.
+
+Preserve the private-Lab-only percentage meaning and do not infer progress,
+heater authority, safety or attainment. There is no real-printer, Camera, auth,
+iPhone/Safari, phone/device, screen-reader, public-Internet, production,
+deployment or user-outcome evidence. This documentation tail does not change
+application/build/resource bytes or broaden those approvals. Preserve the exact
+committed candidate; do not PR, merge, deploy or repoint the preview without
+separate authorization and the applicable gates.
 
 ## Current accepted runtime: dedicated immutable v2 preview server
 

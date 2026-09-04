@@ -20,8 +20,10 @@ bytes and stayed untouched. Author validation reproduced exact
 `Composable preview artifact identity mismatch`, then pinned the actual build
 manifest `4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`
 and hydration node `/_app/immutable/nodes/1.BHy6paUx.js`. The actual Lab HTML is
-51,180 bytes at SHA-256 `5c3f2731…`; the unchanged MCP resource is 146,166 bytes
-at `f865908e…`.
+51,180 bytes at SHA-256
+`5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`;
+the unchanged 146,166-byte MCP resource is
+`f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
 
 Renewed author checks pass 27/27 client tests, 20/20 server/MCP tests with 410
 assertions, TypeScript, Svelte/component contracts, deterministic MCP
@@ -36,12 +38,22 @@ motion and forced-color behavior. Independent verification freshly passed the
 deterministic MCP, 6/6 Chrome, byte-identical same-path build and 4/4 focused
 preview gates. No source review needs repeating unless application or build-
 input bytes change. Do not restart or repoint the live 4200/8451 preview:
-it intentionally remains the older preloaded `c8c241…` / `70f99dc8…` /
-`e4be14ad…` identity at raw Serve/Funnel SHA-256 `d52d4444…`.
+it now serves the reviewed 51,180-byte `5c3f2731…` HTML and all 23 assets from
+clean source `c19e8adcae6e29a6179cb56d99f83ceb7d234374`, tree
+`4baf879caa2858d29e6e3c4276a718a572d37526`, through the existing launchd job.
+The only runtime mutation was `launchctl kickstart -k` for that exact job; no
+Tailscale configuration changed, and raw Serve/Funnel SHA-256 remains
+`d52d4444…` with no 8451 Funnel.
 
-The acceptance is limited to the synthetic private Lab. There is no candidate
-Tailnet, iPhone/Safari, phone/device, mounted ChatGPT host, screen-reader, live
-printer/Moonraker, Camera, auth, production/deployment or user-outcome evidence.
+Independent runtime review **APPROVES** this exact running identity after its
+fresh 120-case local+Tailnet matrix. Standard Upgrade returned empty 404 at both
+origins. Preserve the narrower transport observation: immediate
+`socket.end(request)` half-close returned empty local 404/64 and Tailnet proxy
+502/84, with no Lab/asset marker; it is fail-closed proxy transport behavior,
+not a server safety blocker. Acceptance remains limited to the synthetic
+private Lab. There is no iPhone/Safari, phone/device, mounted ChatGPT host,
+screen-reader, live printer/Moonraker, Camera, auth, public-Internet,
+production/deployment or user-outcome evidence.
 This subsequent documentation correction leaves application/build/HTML/MCP bytes
 unchanged and does not broaden the approvals.
 
