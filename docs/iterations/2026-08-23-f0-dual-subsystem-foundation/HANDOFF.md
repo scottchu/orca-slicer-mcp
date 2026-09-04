@@ -14,7 +14,8 @@ both preview labels and TCP/Web/Funnel 8450/8451 are absent. Raw Serve/Funnel
 status is the exact pre-v1 `fab7b9df…` baseline; production jobs and TCP/Funnel
 443/10000 remain preserved.
 
-The current uncommitted repair adds
+The committed repair at source `ed504c7a929d2d3ba87583ff57c02b2fc6441622`,
+tree `e33d56896994bd9571a6c0b2a73e3afbb9b8ea5e`, adds
 `scripts/serve-composable-preview.ts` and
 `tests/server/composable-preview.test.ts`, and changes only the v2 Playwright
 server command. It verifies fixed `build-kit-composable-v2` manifest `70f99dc8…`
@@ -39,7 +40,7 @@ separate v2 build and 4/4 Chrome cases. The 35-path application manifest is
 the build manifest `70f99dc8…`, Lab HTML `e4be14ad…` and v2 MCP resource
 `170fb8f1…` remain unchanged. Exact commands and meaningful harness failures
 are in VALIDATION. No repaired runtime/Tailscale listener was launched and
-independent review remains pending. Do not relaunch using
+exact-commit independent review of `ed504c7…` remains pending. Do not relaunch using
 `serve-kit-fixture.ts`; first review this exact candidate.
 
 ## Current accepted experiment: v2 Card/Stack/Grid private-Lab refinement

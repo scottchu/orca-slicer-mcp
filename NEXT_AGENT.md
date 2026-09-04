@@ -13,8 +13,11 @@ and `com.openai.u1-composable-preview`. Ports 4199/4200, both preview labels,
 and TCP/Web/Funnel 8450/8451 are absent. Raw Serve/Funnel status is the exact
 pre-v1 `fab7b9df…` baseline; production jobs and TCP/Funnel 443/10000 remain.
 
-The current uncommitted repair is a dedicated manifest-verifying immutable
-server at `plugins/u1-print-studio/app/scripts/serve-composable-preview.ts`.
+The current committed repair is source
+`ed504c7a929d2d3ba87583ff57c02b2fc6441622`, tree
+`e33d56896994bd9571a6c0b2a73e3afbb9b8ea5e`. Its dedicated
+manifest-verifying immutable server is at
+`plugins/u1-print-studio/app/scripts/serve-composable-preview.ts`.
 It serves exact `GET`/`HEAD` for `/dashboard/lab/composition` and the closed set
 of required hashed assets only. It does not import production entrypoints,
 dashboard tools, MCP, observation/printer, camera, auth, configuration or child
@@ -33,8 +36,8 @@ The v2 build manifest `70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0
 Lab HTML `e4be14ad…`, and MCP resource `170fb8f1…` remain unchanged. Author
 checks pass 10 client tests, 20 server/MCP tests with 408 assertions,
 TypeScript/Svelte/component contracts, deterministic MCP verification, the
-separate build and four Chrome cases. Independent review of this repair is
-pending. Do not relaunch 4200/8451 until that exact candidate receives approval;
+separate build and four Chrome cases. Exact-commit independent review of
+`ed504c7…` is pending. Do not relaunch 4200/8451 until that exact commit receives approval;
 do not use `serve-kit-fixture.ts` for a hosted preview.
 
 ## Preserve the reviewed v2 presentation-AST private-Lab experiment
