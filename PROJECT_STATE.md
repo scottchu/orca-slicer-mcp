@@ -50,9 +50,12 @@ canonical 115-file v2 build manifest remains
 `70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0b35b34e`;
 the Lab HTML remains 51,156 bytes at SHA-256
 `e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c`,
-and the v2 MCP resource remains SHA-256 `170fb8f1…`. No repaired v2 runtime or
-Tailnet listener has been launched. Exact failures, commands and limits are in
-VALIDATION; renewed independent source/runtime approval remains pending.
+and the v2 MCP resource remains SHA-256 `170fb8f1…`. Architecture and independent
+exact-source validation approve the `c8c241…` application identity committed in
+`ed504c7a9bbded66831ac35fb5cf2531a929d2cb`. Those dispositions cover source and
+synthetic checks only, not this later documentation tail or any runtime launch.
+No repaired v2 runtime or Tailnet listener has been launched; runtime acceptance
+remains pending. Exact failures, commands and limits are in VALIDATION.
 
 ## Current accepted experiment: entity-bound presentation AST v2 private Lab
 

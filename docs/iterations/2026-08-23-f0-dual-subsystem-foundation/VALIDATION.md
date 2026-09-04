@@ -118,10 +118,15 @@ Renewed synthetic screenshots are under
 SHA-256 values are `edfb0d9a…` for known 320px, `e7614206…` for known 720px,
 `bb737e5f…` for known 320px/200%, and `524cd03f…` for known 720px/200%.
 
-This is author-side software/browser evidence only. Renewed independent source
-and runtime approval of this repair is pending. There is no relaunched preview,
-Tailnet, mounted host, public Internet, real printer, live Moonraker/Klipper,
-Camera, auth-flow, phone/device, screen-reader or user-outcome evidence.
+Architecture and independent exact-source validation approve application
+manifest `c8c241…` as committed in
+`ed504c7a9bbded66831ac35fb5cf2531a929d2cb`, tree
+`e33d56896994bd9571a6c0b2a73e3afbb9b8ea5e`. Those approvals cover the source
+and synthetic evidence above only. They do not approve this later documentation
+tail or a runtime relaunch. There is no relaunched preview, Tailnet, mounted
+host, public Internet, real printer, live Moonraker/Klipper, Camera, auth-flow,
+phone/device, screen-reader or user-outcome evidence; runtime acceptance remains
+pending.
 
 ## 2026-09-03 presentation AST v2 author candidate
 

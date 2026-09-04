@@ -14,7 +14,7 @@ and TCP/Web/Funnel 8450/8451 are absent. Raw Serve/Funnel status is the exact
 pre-v1 `fab7b9df…` baseline; production jobs and TCP/Funnel 443/10000 remain.
 
 The current committed repair is source
-`ed504c7a929d2d3ba87583ff57c02b2fc6441622`, tree
+`ed504c7a9bbded66831ac35fb5cf2531a929d2cb`, tree
 `e33d56896994bd9571a6c0b2a73e3afbb9b8ea5e`. Its dedicated
 manifest-verifying immutable server is at
 `plugins/u1-print-studio/app/scripts/serve-composable-preview.ts`.
@@ -36,8 +36,11 @@ The v2 build manifest `70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0
 Lab HTML `e4be14ad…`, and MCP resource `170fb8f1…` remain unchanged. Author
 checks pass 10 client tests, 20 server/MCP tests with 408 assertions,
 TypeScript/Svelte/component contracts, deterministic MCP verification, the
-separate build and four Chrome cases. Exact-commit independent review of
-`ed504c7…` is pending. Do not relaunch 4200/8451 until that exact commit receives approval;
+separate build and four Chrome cases. Architecture and independent exact-source
+review approve the `c8c241…` application identity committed by `ed504c7…`.
+Those approvals do not cover a runtime relaunch or this later documentation
+tail. Keep 4200/8451 offline until a separately authorized runtime launch and
+fresh runtime acceptance;
 do not use `serve-kit-fixture.ts` for a hosted preview.
 
 ## Preserve the reviewed v2 presentation-AST private-Lab experiment
