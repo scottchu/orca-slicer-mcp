@@ -37,8 +37,9 @@ proved Kit/HTML/MCP byte identity.
 Preserve the independently accepted live preview at source `f4a56bc…`, tree
 `ab3d4fec…`, PID 86363. It runs the exact dedicated Bun script with no children
 and only loopback 4200. Local and Tailnet 8451 serve 66,589-byte `b212f969…`
-HTML plus 23 exact assets; closure SHA-256 is `52e80455…`. Nine closed HTTP
-adversaries per origin pass. The observed Tailscale baseline is `2eb56116…`
+HTML plus 23 exact assets; closure SHA-256 is `52e80455…`. Nine focused HTTP
+cases per origin pass: one valid empty-body HEAD plus eight fail-closed 404
+adversaries. The observed Tailscale baseline is `2eb56116…`
 with LF / `063ecd46…` without it; earlier recorded hashes were stale, while 8451
 remained solely Tailnet HTTPS `/` to loopback 4200 with Funnel off. Production
 PIDs 834/841 and listeners 8787/8789 plus 8788 are unchanged.

@@ -64,7 +64,8 @@ restarted the existing launchd job from exact source `f4a56bc…`, tree
 children and listens only on `127.0.0.1:4200`. Local and existing Tailnet 8451
 serve exact 66,589-byte HTML `b212f969…` and all 23 byte-identical assets;
 the author-format closure is `52e80455…`. Independent runtime review
-**APPROVES** after nine closed HTTP adversaries per origin.
+**APPROVES** after nine focused HTTP cases per origin: one valid empty-body HEAD
+plus eight fail-closed 404 adversaries.
 
 The newly observed Serve/Funnel JSON baseline is `2eb56116…` including terminal
 LF and `063ecd46…` without it. The earlier durable raw hashes were stale; both

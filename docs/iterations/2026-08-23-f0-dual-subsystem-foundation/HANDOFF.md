@@ -49,7 +49,8 @@ from exact source `f4a56bc…`, tree `ab3d4fec…`: PID 90967 became 86363. Its
 exact dedicated Bun script has no children and only loopback 4200. Local and
 Tailnet 8451 return exact 66,589-byte `b212f969…` HTML and all 23 assets; the
 author-format closure is `52e80455…`. Independent runtime review **APPROVES**
-after nine closed HTTP adversaries per origin.
+after nine focused HTTP cases per origin: one valid empty-body HEAD plus eight
+fail-closed 404 adversaries.
 
 Fresh Serve/Funnel JSON hashes are `2eb56116…` with terminal LF and `063ecd46…`
 without. The prior durable hashes were stale, but both CLI paths agreed and 8451

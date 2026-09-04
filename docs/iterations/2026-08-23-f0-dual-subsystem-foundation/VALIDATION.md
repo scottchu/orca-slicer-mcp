@@ -121,6 +121,15 @@ printer/Moonraker or user-outcome acceptance. Repository, Tailscale, auth,
 printer and production state remained unchanged apart from the authorized
 isolated preview PID replacement.
 
+### Docs-tail wording review
+
+Independent documentation review returned **REQUEST_CHANGES** on rejected docs
+commit `61f94b7208b63673432078d2aad0cccef507ea4c` because three summaries called all
+nine HTTP cases adversaries. The evidence actually contains one valid empty-
+body HEAD plus eight fail-closed 404 adversaries per origin. This wording-only
+correction does not change application, artifact, runtime, Tailscale, auth,
+printer or production bytes/state.
+
 ## 2026-09-04 accepted build-time registry and temperature-fill retirement experiment
 
 ### Acceptance and safety boundary
