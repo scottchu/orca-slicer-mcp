@@ -1,6 +1,6 @@
 # Project state
 
-## Current candidate: authority-free immutable v2 preview server
+## Current accepted experiment runtime: authority-free immutable v2 preview
 
 The first separately authorized v2 preview was withdrawn immediately after an
 independent runtime review returned **REQUEST_CHANGES**. Its generic fixture
@@ -17,9 +17,9 @@ preview acceptance evidence.
 A later independent safety review found that the still-running v1 preview
 likely shared the same generic-fixture camera fallback. The reviewer did not
 invoke it. The author executed only `Tailscale serve --yes --https=8450 off`
-and `launchctl remove com.openai.u1-composable-preview`. Ports 4199/4200, both
-preview labels, and TCP/Web/Funnel 8450/8451 are now absent. Raw Serve and Funnel
-status both equal the exact pre-v1 SHA-256
+and `launchctl remove com.openai.u1-composable-preview`. At that cleanup
+checkpoint, ports 4199/4200, both preview labels, and TCP/Web/Funnel 8450/8451
+were absent. Raw Serve and Funnel status both equalled the exact pre-v1 SHA-256
 `fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`;
 production jobs and TCP/Funnel 443/10000 remain present. No generic composable
 fixture may be relaunched.
@@ -52,10 +52,31 @@ the Lab HTML remains 51,156 bytes at SHA-256
 `e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c`,
 and the v2 MCP resource remains SHA-256 `170fb8f1…`. Architecture and independent
 exact-source validation approve the `c8c241…` application identity committed in
-`ed504c7a9bbded66831ac35fb5cf2531a929d2cb`. Those dispositions cover source and
-synthetic checks only, not this later documentation tail or any runtime launch.
-No repaired v2 runtime or Tailnet listener has been launched; runtime acceptance
-remains pending. Exact failures, commands and limits are in VALIDATION.
+`ed504c7a9bbded66831ac35fb5cf2531a929d2cb`.
+
+A separately authorized runtime launch now serves those exact committed bytes
+at source head `c44f4c368848a17549dd94ae2a3383fa25420c6e` through the dedicated
+authority-free server only. Launchd label
+`com.openai.u1-composable-v2-preview` binds loopback `127.0.0.1:4200`, and
+Tailnet-only HTTPS 8451 proxies only its root; Funnel is not enabled for 8451.
+Local and Tailnet responses match the 51,156-byte `e4be14ad…` Lab HTML, and all
+23 closed hashed assets are byte-identical. The current raw Serve/Funnel status
+SHA-256 is `d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`;
+removing only the 8451 TCP/Web entries reproduces exact baseline `fab7b9df…`.
+The v1 4199/8450 preview remains offline, Funnel 443/10000 and production jobs
+are unchanged.
+
+Author runtime verification, screenshot-first design review and independent
+runtime verification each **APPROVE** this exact head/application/build/HTML
+identity for the synthetic private-Lab preview. The 23-asset inventory,
+forbidden-route/method/encoding and raw-protocol matrices, runtime process
+inspection, and fresh 320/720 browser checks at 200% text found no authority
+surface, no child/outbound/sensitive-file access, no scenario-triggered network
+request, no overflow and 0px state-height drift. This accepts only the running
+private preview, not this later records-only commit or production adoption.
+There is no real-printer, live Moonraker/Klipper, Camera invocation, auth-flow,
+public-Internet, phone/device, screen-reader or user-outcome acceptance. Exact
+commands, review scope and cleanup are in VALIDATION and HANDOFF.
 
 ## Current accepted experiment: entity-bound presentation AST v2 private Lab
 
@@ -180,8 +201,9 @@ to `d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`:
 canonical comparison after pruning only 8450 exactly equals the before state,
 the Funnel allowlist was unchanged and 8450 had no Funnel entry. The later
 endpoint-scoped safety cleanup restored the exact `fab7b9df…` baseline and
-removed the job; 4199/4200 and 8450/8451 remain absent while production jobs,
-443 and 10000 remain preserved.
+removed the v1 job. The v1 port 4199 and listener 8450 remain absent; the
+subsequently approved v2 runtime on 4200/8451 is described in the current
+section above. Production jobs, 443 and 10000 remain preserved.
 
 This is provisional private-lab learning, not production architecture or
 cutover. It binds only T1 status, actual/target temperature, configured filament
@@ -191,7 +213,7 @@ timestamps/provenance, `Unknown`, stable neutral state structure and explicit
 Lab/production isolation are accepted only in that scope. Synthetic evidence
 does not establish live mappings, printer truth, mounted-host/device behavior or
 user outcome. No production registration, service, printer, auth, PR, merge or
-deployment changed. No experiment runtime listener or job remains.
+deployment changed. No v1 experiment runtime listener or job remains.
 
 Decision0049 records the separate future Camera media-bottom-overlay direction.
 No Camera implementation belongs to this experiment; current Camera remains the

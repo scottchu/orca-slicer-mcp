@@ -121,12 +121,76 @@ SHA-256 values are `edfb0d9a…` for known 320px, `e7614206…` for known 720px,
 Architecture and independent exact-source validation approve application
 manifest `c8c241…` as committed in
 `ed504c7a9bbded66831ac35fb5cf2531a929d2cb`, tree
-`e33d56896994bd9571a6c0b2a73e3afbb9b8ea5e`. Those approvals cover the source
-and synthetic evidence above only. They do not approve this later documentation
-tail or a runtime relaunch. There is no relaunched preview, Tailnet, mounted
-host, public Internet, real printer, live Moonraker/Klipper, Camera, auth-flow,
-phone/device, screen-reader or user-outcome evidence; runtime acceptance remains
-pending.
+`e33d56896994bd9571a6c0b2a73e3afbb9b8ea5e`.
+
+### Authorized authority-free preview runtime and exact approvals
+
+Immediately before mutation, read-only guards confirmed clean source head
+`c44f4c368848a17549dd94ae2a3383fa25420c6e`, application manifest
+`c8c24103972ee7c0304b7b80c79206bc2eb65a14cde239224716480673a31148`,
+canonical v2 build manifest
+`70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0b35b34e`,
+51,156-byte Lab HTML SHA-256
+`e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c`,
+free loopback 4200, absent 8451 and exact raw Serve/Funnel baseline
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`.
+
+The author launched only the dedicated immutable server with pinned Bun 1.4.0,
+`--no-env-file --config=/dev/null`, exact v2 artifact directory and label
+`com.openai.u1-composable-v2-preview` on `127.0.0.1:4200`; the generic fixture
+was not used. The only Tailscale mutation was:
+
+- `Tailscale serve --yes --bg --https=8451 http://127.0.0.1:4200`
+
+Local and Tailnet `GET /dashboard/lab/composition` returned HTTP 200 and exact
+`e4be14ad…` HTML. All 23 required immutable hashed assets returned HTTP 200 and
+were byte-identical between origins. For each origin, 68 ordinary forbidden
+route/method cases returned 404, covering root, health, widget, MCP, OAuth,
+auth/enroll, media, other dashboards, tools/call, Camera, fixture state, query,
+trailing slash and GET/HEAD/POST/OPTIONS variants. Four encoded, dot, backslash
+or traversal targets per origin failed closed with 400/404. Bounded HTTP/1.1
+CONNECT and Upgrade probes at loopback and Tailnet returned 404 with neither
+page nor asset bytes. Parser-invalid requests remain permitted to 400/close at
+the Node protocol boundary; this is not claimed as an application 404.
+
+Process inspection matched the exact pinned Bun flags and dedicated server
+script, with zero child processes, one loopback-4200 listening socket, zero
+established or other TCP connections, and zero sensitive file descriptors for
+printer, Camera, OAuth, auth or local configuration. This runtime evidence is
+consistent with the source outbound canary's zero requests and establishes no
+printer authority.
+
+Fresh headless Chrome checks through the actual Tailnet endpoint covered 320
+and 720 widths at 200% root text for card/compact/larger across known, loading,
+error, partial and ambiguous states. Each shape had 0px renderer-height drift,
+no horizontal overflow or page error, and scenario changes caused zero network
+requests. Representative 320/720 screenshot SHA-256 values are
+`0eba1364d8356f5c0109eb498a87a99ea49875cf68ffd5c8a7cd291991cfce9a`
+and `2f693139a02398861fe4593ca92ae08446e3e6764e3c80768650056125ad2e47`;
+captures remained temporary and no private address or path is committed.
+
+Raw Serve and Funnel status after launch each have SHA-256
+`d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`.
+The only structural addition is the HTTPS 8451 TCP/Web root proxy; pruning
+exactly those entries reproduces baseline `fab7b9df…`. Funnel remains enabled
+only on existing 443/10000, never 8451. Both production jobs remain loaded and
+running with successful last-exit state and were not restarted. The v1 label,
+4199 and 8450 remain absent.
+
+Author runtime verification, screenshot-first design review and independent
+runtime verification each **APPROVE** this exact
+`c44f4c3…`/`c8c241…`/`70f99dc8…`/`e4be14ad…` running-preview identity. The
+approvals cover the synthetic private Tailnet Lab only and do not approve this
+later records-only commit. Evidence is from the same enrolled host; there is no
+public-Internet, phone/device, screen-reader, live Moonraker/Klipper, real-
+printer, Camera invocation, auth-flow, production-adoption or user-outcome
+acceptance.
+
+The preview was intentionally left running. Reversible endpoint-only cleanup,
+not executed during this records tail, is:
+
+- `Tailscale serve --yes --https=8451 off`
+- `launchctl remove com.openai.u1-composable-v2-preview`
 
 ## 2026-09-03 presentation AST v2 author candidate
 

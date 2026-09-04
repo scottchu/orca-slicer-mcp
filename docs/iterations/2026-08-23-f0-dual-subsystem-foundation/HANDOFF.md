@@ -1,6 +1,6 @@
 # F0 dual-subsystem foundation handoff
 
-## Current repair candidate: dedicated immutable v2 preview server
+## Current accepted runtime: dedicated immutable v2 preview server
 
 The first v2 preview runtime was withdrawn after independent
 **REQUEST_CHANGES**: the generic fixture exposed dashboard routes and an omitted
@@ -9,9 +9,10 @@ not invoke the camera. Cleanup removed only HTTPS 8451 and
 `com.openai.u1-composable-v2-preview`; 4200 is free, raw Serve/Funnel state is
 then restored at SHA-256 `d5e0f1b6…`. Later review found the v1 generic fixture
 likely shared the same fallback; the reviewer did not invoke it. Endpoint-only
-cleanup removed 8450 and `com.openai.u1-composable-preview`. Ports 4199/4200,
-both preview labels and TCP/Web/Funnel 8450/8451 are absent. Raw Serve/Funnel
-status is the exact pre-v1 `fab7b9df…` baseline; production jobs and TCP/Funnel
+cleanup removed 8450 and `com.openai.u1-composable-preview`. At that cleanup
+checkpoint, ports 4199/4200, both preview labels and TCP/Web/Funnel 8450/8451
+were absent. Raw Serve/Funnel status was the exact pre-v1 `fab7b9df…` baseline;
+production jobs and TCP/Funnel
 443/10000 remain preserved.
 
 The committed repair at source `ed504c7a9bbded66831ac35fb5cf2531a929d2cb`,
@@ -40,12 +41,37 @@ separate v2 build and 4/4 Chrome cases. The 35-path application manifest is
 the build manifest `70f99dc8…`, Lab HTML `e4be14ad…` and v2 MCP resource
 `170fb8f1…` remain unchanged. Exact commands and meaningful harness failures
 are in VALIDATION. Architecture and independent exact-source review approve the
-`c8c241…` application identity committed by `ed504c7…`; they do not approve this
-later documentation tail or a runtime relaunch. No repaired runtime/Tailscale
-listener was launched, and runtime acceptance remains pending. If separately
-authorized as the current task, launch the exact committed authority-free server
-and obtain fresh runtime/Tailnet/UI acceptance. Do not repeat source review
-unless application bytes change, and never relaunch with `serve-kit-fixture.ts`.
+`c8c241…` application identity committed by `ed504c7…`.
+
+The separately authorized runtime now runs exact source head
+`c44f4c368848a17549dd94ae2a3383fa25420c6e` under launchd label
+`com.openai.u1-composable-v2-preview`, bound only to `127.0.0.1:4200`. Tailnet-
+only HTTPS 8451 proxies its root; 8451 has no Funnel. Local and Tailnet Lab
+responses equal the 51,156-byte `e4be14ad…` HTML, and all 23 required hashed
+assets are byte-identical. Current raw Serve/Funnel status is `d52d4444…`, and
+removing only 8451 TCP/Web entries restores exact `fab7b9df…`. The v1 4199/8450
+preview remains offline; production jobs and Funnel 443/10000 are unchanged.
+
+Author runtime verification, screenshot-first design review and independent
+runtime verification each **APPROVE** the exact head/application/build/HTML
+identity. Forbidden ordinary routes/methods and encoded/traversal variants fail
+closed, and raw CONNECT/Upgrade receives neither page nor asset bytes. Process
+inspection found zero children, outbound connections or sensitive file
+descriptors. Browser checks through the Tailnet endpoint covered 320/720 at
+200% text and every client-local state with zero scenario network requests,
+zero overflow and 0px state-height drift. These dispositions cover only the
+synthetic private-Lab runtime, not this later documentation tail or production
+adoption. There is no real-printer, Moonraker/Klipper, Camera invocation, auth-
+flow, public-Internet, phone/device, screen-reader or user-outcome acceptance.
+
+Preserve the running preview unless cleanup is explicitly authorized. Exact
+endpoint-scoped cleanup is:
+
+- `Tailscale serve --yes --https=8451 off`
+- `launchctl remove com.openai.u1-composable-v2-preview`
+
+Do not repeat source review unless application bytes change and never relaunch
+with `serve-kit-fixture.ts`.
 
 ## Current accepted experiment: v2 Card/Stack/Grid private-Lab refinement
 
@@ -178,9 +204,10 @@ Pruning only the new HTTPS 8450 root proxy makes the after state canonically
 identical to before; the Funnel allowlist was unchanged and 8450 had no Funnel.
 After the later camera-fallback finding, endpoint-only cleanup executed
 `Tailscale serve --yes --https=8450 off` followed by
-`launchctl remove com.openai.u1-composable-preview`. Current raw Serve/Funnel
-status is the exact `fab7b9df…` pre-v1 baseline; 4199/4200, both preview labels
-and TCP/Web/Funnel 8450/8451 are absent. Production jobs and 443/10000 remain.
+`launchctl remove com.openai.u1-composable-preview`. Raw Serve/Funnel status
+after that cleanup was the exact `fab7b9df…` pre-v1 baseline. Port 4199, the v1
+label and 8450 remain absent; the separately approved v2 runtime now accounts
+for current 4200/8451 as described above. Production jobs and 443/10000 remain.
 Do not recommend or perform a generic-fixture relaunch.
 
 Decision0048 accepts only the isolated private-lab experiment: fixed T1, four
