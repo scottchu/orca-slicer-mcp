@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createAppServer } from '../../src/lib/server/app.js';
-import { t1EntityCardSpec } from '../../src/lib/composable/specs.js';
+import { t1BalancedCompositionSpec, t1EntityCardSpec } from '../../src/lib/composable/specs.js';
 import { COMPOSABLE_LAB_RESOURCE_HTML, COMPOSABLE_LAB_RESOURCE_URI, composableToolOutputSchema, createComposableLabMcpServer } from '../../src/lib/server/composable-lab-mcp.js';
 import { DASHBOARD_PAGES, routePolicy } from '../../src/lib/server/route-policy.js';
 
@@ -29,6 +29,7 @@ const connect = async (lab: boolean): Promise<Client> => {
 describe('isolated composable MCP proof', () => {
   test('explicit lab factory alone exposes one typed read-only tool and one closed resource', async () => {
     const client = await connect(true);
+    expect(client.getServerVersion()).toMatchObject({ name: 'u1-composable-ui-experiment', version: '0.0.4-provisional' });
     const tools = (await client.listTools()).tools;
     expect(tools.map((tool) => tool.name)).toEqual(['compose_u1_entity_card_v2']);
     expect(tools[0].annotations).toMatchObject({ readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true });
@@ -56,6 +57,9 @@ describe('isolated composable MCP proof', () => {
     expect(result.structuredContent).toMatchObject({ canonicalSpec: t1EntityCardSpec, viewModel: { schemaVersion: 2, state: 'ready', subject: { kind: 'toolHead', id: 'T1' } } });
     expect(JSON.stringify(result.structuredContent)).not.toContain('PercentageFill');
     expect(composableToolOutputSchema.safeParse(result.structuredContent).success).toBe(true);
+    const balanced = await client.callTool({ name: 'compose_u1_entity_card_v2', arguments: { spec: t1BalancedCompositionSpec } });
+    expect(balanced.isError).not.toBe(true);
+    expect(balanced.structuredContent).toMatchObject({ canonicalSpec: t1BalancedCompositionSpec, viewModel: { root: { tint: null, children: [{ type: 'Inline' }, { type: 'Grid', arrangement: 'lead' }] } } });
     const rejected = await client.callTool({ name: 'compose_u1_entity_card_v2', arguments: { spec: { ...t1EntityCardSpec, javascript: 'alert(1)' } } });
     expect(rejected.isError).toBe(true);
     const rejectedV1 = await client.callTool({ name: 'compose_u1_entity_card_v2', arguments: { spec: { ...t1EntityCardSpec, schemaVersion: 1 } } });

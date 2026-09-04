@@ -2,7 +2,7 @@ import { cleanup, render, screen } from '@testing-library/svelte';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import PresentationRenderer from '../../../components/composable/PresentationRenderer.svelte';
 import type { HostEvent, HostRpc } from '../host/rpc';
-import { t1CompactGridSpec, t1EntityCardSpec, t1LargerCompositionSpec } from '../../composable/specs';
+import { t1BalancedCompositionSpec, t1CompactGridSpec, t1EntityCardSpec, t1LargerCompositionSpec } from '../../composable/specs';
 import { composableViewModelSchema } from '../../composable/view-model';
 import { composeEntityCard, type ComposableReaders } from '../../server/composable-presentation';
 import { createComposableHost, eventComposableViewModel } from './host';
@@ -78,7 +78,7 @@ describe('composable renderer and host lifecycle', () => {
   });
 
   test('uses validated input spec for exact loading, ready, and error topology', async () => {
-    for (const spec of [t1EntityCardSpec, t1CompactGridSpec, t1LargerCompositionSpec]) {
+    for (const spec of [t1EntityCardSpec, t1CompactGridSpec, t1LargerCompositionSpec, t1BalancedCompositionSpec]) {
       const fixture = hostFixture();
       const host = createComposableHost(fixture.rpc);
       fixture.emit({ kind: 'input', value: { arguments: { spec } } });
@@ -101,6 +101,21 @@ describe('composable renderer and host lifecycle', () => {
       expect(topology(failed.state().presentation!.root)).toEqual(topology(spec.root));
       failed.dispose();
     }
+  });
+
+  test('renders the balanced header without a printer icon or empty reading slot', async () => {
+    const result = await composeEntityCard(t1BalancedCompositionSpec, readers);
+    const rendered = render(PresentationRenderer, { presentation: result.viewModel });
+    const inline = rendered.container.querySelector('[data-node-kind="Inline"]');
+    expect(inline).not.toBeNull();
+    expect(inline?.querySelector('[data-domain-reading]')).toBeNull();
+    expect(inline?.querySelector('svg')).toBeNull();
+    expect(inline).toHaveTextContent('Tool head T1');
+    expect(inline).toHaveTextContent('Active');
+    expect(result.viewModel.root.tint).toBeNull();
+    expect(result.viewModel.root.transformEvidence).toBeNull();
+    expect(rendered.container.querySelectorAll('[data-reading-appearance="hero"]')).toHaveLength(1);
+    expect(rendered.container.querySelectorAll('[data-reading-appearance="quiet"]')).toHaveLength(2);
   });
 
   test('strict output validation rejects semantic state, provenance, and timestamp contradictions', () => {

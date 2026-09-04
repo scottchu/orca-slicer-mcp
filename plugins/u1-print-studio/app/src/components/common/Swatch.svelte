@@ -2,14 +2,15 @@
   import ColorSwatch from './ColorSwatch.svelte';
   import Skeleton from './Skeleton.svelte';
   import StaticSkeleton from './StaticSkeleton.svelte';
-  let { label, color, display, state }: {
+  let { label, color, display, state, appearance = 'default' }: {
     label: string;
     color: string | null;
     display: string;
     state: 'known' | 'unknown' | 'unavailable' | 'loading';
+    appearance?: 'default' | 'quiet';
   } = $props();
 </script>
-<div class="swatch-cell" data-node-kind="Swatch" data-value-state={state}>
+<div class="swatch-cell" class:quiet={appearance === 'quiet'} data-node-kind="Swatch" data-value-state={state}>
   <span class="label">{label}</span>
   <span class="value-frame">
     {#if state === 'loading'}
@@ -28,6 +29,7 @@
   .value-frame > * { grid-area: 1 / 1; min-width: 0; }
   .value-frame { min-height: 1lh; }
   .value { display: inline-flex; align-items: center; gap: 8px; min-width: 0; font-size: 1.25rem; font-weight: var(--u1-weight-strong); font-variant-numeric: tabular-nums; line-height: var(--u1-line-value); }
+  .quiet .value-frame, .quiet .value { font-size: 1rem; }
   .current, .skeleton-slot { align-self: center; }
   .skeleton-slot { display: grid; align-items: center; min-height: 1lh; }
   .skeleton-slot :global([data-skeleton='value']) { width: min(8ch, 100%); height: 1lh; }

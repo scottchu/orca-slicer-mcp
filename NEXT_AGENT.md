@@ -1,5 +1,42 @@
 # Next agent
 
+## Preserve the reviewed additive balanced candidate
+
+Decision0051, screenshot-first design and independent source review **APPROVE**
+the 32-path application manifest
+`e225b0c4966177203461bb94685777898b39e4db014821ccfc5c9c3741aa0e95`,
+115-file Kit manifest `5c22955182f278d4c934be1cc3d6f5099bb556109353098bff8593d942f9fd13`,
+66,589-byte HTML `b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`,
+and 154,183-byte MCP resource
+`b1b3eb179fdafeff20c564db37f42873cfbae4ba7ac6168a9f70d23dbcf33890`.
+Initial author gates passed 111 UI/shared tests, 21 server tests with 432
+assertions, both compile/contract checks, deterministic MCP, twice-reproduced
+Kit and 9/9 Chrome. After review found stale title-only Card schema casts, the
+full Card child aliases now own both boundaries; a drift guard retains Inline.
+Renewed affected evidence passes 16 client tests, 17 server/MCP tests with 114
+assertions and TypeScript, with fresh MCP/Kit output byte-identical below.
+
+The exact ninth registered type is common layout `Inline`; its
+exact child order is `[Title, HeadStatus]`; Card slots, recursive duplicate
+fields, closed tokens and correlated normalized appearances reject adversarial
+inputs before readers. Confirm the balanced spec is neutral and additive, title
+and badge share a row at 390/720 100%, 200% wrapping starts cleanly, temperature
+is the full-width hero, secondary content collapses at 320 and 390/200%, and no
+icon placeholder, divider, tint, gradient, Table, Row, arbitrary span/breakpoint
+or renderer type branch exists. Existing A canonical hashes and rendering are
+unchanged. Independent adversaries reject path/style/reversed Inline/duplicate
+status before acquisition with zero reader calls, call all three readers once
+for valid balanced input, and reject resolved order/mode/provenance tampering.
+
+The independent visual disposition has no P0-P3 finding. Combined comparison
+SHA-256 `96870d17…`, implementation crop `b8bd858a…`, and 200% capture
+`01299e17…` remain attributed run evidence. No independent browser rerun or
+`ui:check` occurred after the runtime-erased cast fix; author reconstruction
+proved Kit/HTML/MCP byte identity. Do not restart/repoint 4200/8451, alter
+Tailscale, auth, printer, Camera or production registration, open a PR, merge or
+deploy without new authority. The lifecycle safeguard plan remains separate and
+unimplemented.
+
 ## Preserve the accepted build-time registry experiment
 
 The current commit on `codex/u1-composable-ui-experiment` descends from base

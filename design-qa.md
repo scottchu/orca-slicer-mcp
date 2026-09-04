@@ -1,3 +1,174 @@
+# Balanced composable Lab — author design QA
+
+## Inputs
+
+- Selected target: conversation-selected Option 1 visual, kept outside the repository
+- Target SHA-256: `34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`
+- Implementation card capture: `plugins/u1-print-studio/app/test-results/composable-lab-v2/composition-balanced-card-known-390px.png`
+- Implementation card SHA-256: `b8bd858af9a33fc90e19f49ec95269e5728299e98fde9beadc1c4a17e70e3182`
+- 200% full-page capture: `plugins/u1-print-studio/app/test-results/composable-lab-v2/composition-balanced-known-390px-200-percent.png`
+- 200% capture SHA-256: `01299e17c72392b317f15e6276531ca51c6018043deac13caa01afd347baeedc`
+
+These are author-owned, nondeterministic browser/image-run artifacts rather than
+build identities. The selected target is visual intent, not executable input.
+
+## Normalized comparison
+
+The author cropped the selected target to its card surface, normalized it to the
+374 CSS-pixel implementation card width, and placed it beside the fresh 390px
+implementation capture. The combined comparison is
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/comparison-balanced-target-vs-implementation.png`,
+764 by 336 pixels, SHA-256
+`96870d17fbd56d4023cde221aaa0f2583950319ba8806dec2515e2e2b76f2ef4`.
+
+The comparison confirms the selected hierarchy rather than pixel imitation:
+subject and status share the header, actual/target temperature is the full-width
+lead, and filament/fan readings form the secondary pair. The implementation
+uses existing product tokens and domain icons. It deliberately omits the target's
+printer icon and vertical divider because the approved B contract forbids a
+header icon/empty slot and separator. It also remains a neutral Card without
+tint or gradient. The known fixture truthfully displays `Part cooling`; unknown
+and ambiguous fixture states separately display `Unknown`.
+
+At 390px/100%, the title and status remain on one row, the temperature value is
+visibly dominant, and the secondary pair remains two columns. At 320px and
+390px/200%, the pair collapses through the code-owned font-relative intrinsic
+track minimum. At 390px/200%, the status wraps to the next line start, the target
+and unit remain atomic, and no content clips or overflows.
+
+## Iteration history
+
+1. The first balanced browser run exposed a zero-width header loading skeleton
+   and 4–16px state-height drift at 100%; the header badge received a structural
+   width and state-scaled reserve.
+2. The next run exposed 5–81px drift at 200%, caused by real header and hero text
+   exceeding one-line skeleton geometry. The common badge reserve became
+   line-height-aware, hero/quiet emphasis was bounded at a 1.5 ratio, and the
+   hero's two-line structural reserve was corrected.
+3. An initial auto-fit lead Grid admitted more than two columns at 720px. Its
+   intrinsic formula now caps the layout at two tracks while collapsing at
+   320px/100% and 390px/200%, without a wire breakpoint or span.
+4. The resulting nine-test Chrome matrix passed at 320, 390 and 720px. It covers
+   all four composition shapes, six balanced evidence states at 100% and 200%
+   root text, reduced motion, exact topology and responsive geometry.
+
+## Author findings
+
+- PASS: one-row 390/720 header at 100%; wrapped badge starts at the title edge
+  when the 390px/200% header wraps.
+- PASS: hero value text is at least 1.3 times quiet secondary value text.
+- PASS: all balanced state-height deltas are at most 1px at both text scales.
+- PASS: loading skeletons animate normally and stop under reduced motion; error
+  skeletons are static and neutral; partial state retains healthy evidence.
+- PASS: no Table, Row, divider, tint, percentage background, gradient, printer
+  icon, empty header slot, horizontal overflow, or scenario request appeared.
+- PASS: all three A canonical hashes remain unchanged and their default visual
+  modes remain unchanged.
+
+## Independent screenshot-first review
+
+Disposition: **APPROVE** exact application manifest
+`e225b0c4966177203461bb94685777898b39e4db014821ccfc5c9c3741aa0e95`
+within the synthetic private-Lab boundary. No actionable P0, P1 or P2 visual
+finding remains; no P3 correction is required for this gate.
+
+This disposition is renewed from the previously reviewed `83ea7b11...`
+application identity after inspecting the exact source-only repair. The two
+runtime-schema boundaries now cast through `CardNode['children']` and
+`ResolvedCardNode['children']` instead of stale title-only tuple spellings; the
+client test adds a source/type drift guard requiring `Inline` in both aliases.
+These are runtime-erased TypeScript authority changes plus test-only coverage:
+no Svelte component, style/token, renderer, balanced spec, fixture, route,
+dependency or configuration changed. Fresh identity checks reproduce the
+unchanged 115-file Kit manifest `5c22955182f278d4c934be1cc3d6f5099bb556109353098bff8593d942f9fd13`,
+66,589-byte HTML `b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`
+and 154,183-byte MCP resource
+`b1b3eb179fdafeff20c564db37f42873cfbae4ba7ac6168a9f70d23dbcf33890`.
+The normalized comparison `96870d17...`, card crop `b8bd858a...` and 200%
+capture `01299e17...` are byte-identical. The prior visual findings therefore
+bind to the renewed application identity without a new browser run.
+
+The reviewer opened the 853x1844 selected target, the 374x306 implementation
+card crop, the 764x336 normalized combined comparison and the 390x2310
+200%-text full-page capture directly. The implementation capture is from a 390
+CSS-pixel viewport at DPR 1; the generated target has no browser CSS/DPR
+identity, so its card was compared only after width normalization to 374
+pixels. The combined comparison is the primary evidence and is already a
+focused, readable card-region comparison; a further crop was unnecessary.
+
+Required fidelity surfaces:
+
+- **Fonts and typography:** the implementation retains the existing system
+  family and U1 weight/size tokens. Title, header badge, muted labels, hero
+  temperature and quiet secondary values keep the target's hierarchy; the hero
+  is visibly dominant without overpowering the subject title. The 200% capture
+  wraps the status, hero value and secondary readings cleanly, with `220° C`
+  remaining atomic and no truncation.
+- **Spacing and layout rhythm:** the 390px card keeps title/status inline, one
+  full-width temperature lead and a visually aligned two-column secondary row.
+  Icons are centered against their complete label/value groups. The
+  implementation card is taller than the normalized target because the known
+  `Part cooling` value wraps and code-owned stable reserves remain present;
+  this does not change hierarchy or interface density enough to constitute a
+  P2 mismatch. The 200% layout collapses to one column without overlap.
+- **Colors and visual tokens:** the candidate uses the established neutral
+  canvas/surface, line, shadow, muted-label and amber-swatch tokens. There is no
+  tint, gradient, percentage fill or decorative halo. Contrast remains clear
+  in the inspected captures.
+- **Image/icon fidelity:** the temperature, filament and fan marks are one
+  consistent Lucide stroke family, sharp at capture density and optically
+  quiet. Omitting the target's printer icon and empty slot is the accepted
+  architecture divergence; omitting its vertical divider and generated halo is
+  also deliberate. No image asset is replaced by placeholder, emoji or CSS
+  art.
+- **Copy and content:** the target shows `Unknown`, while the matched
+  implementation capture intentionally uses the known fixture and truthfully
+  shows `Part cooling`. This state mismatch prevents literal copy comparison,
+  but is not design drift: the same exact browser matrix separately requires
+  absent and ambiguous relations to render `Unknown`. Labels and subject copy
+  otherwise agree with the selected hierarchy.
+
+Responsive/state evidence was inspected at two levels. The actual 390px/100%
+and 390px/200% balanced captures show no clipping or horizontal overflow. The
+passed exact-candidate browser result covers balanced at 320, 390 and 720 CSS
+pixels, both text scales, and known/unknown/ambiguous/loading/error/partial
+states: topology is stable, state-height range is at most 1px, the 100% header
+centers within 1px with at least 8px separation, the secondary pair collapses
+at 320 and at 390/200%, and reduced-motion loading plus static error behavior
+pass. Current-candidate 720px loading/error screenshots of the shared leaves
+were also inspected: both preserve the same neutral slots and persistent status
+region, while only loading animates. The earlier zero-width skeleton, 4-16px
+100% drift, 5-81px 200% drift and over-expanded 720px Grid are therefore closed
+by post-fix evidence rather than waived.
+
+Implementation checklist: none for this bounded visual gate.
+
+Independent review limits: there is no direct saved balanced 320px or 720px
+screenshot, so those widths are geometry/assertion evidence rather than
+independent pixel inspection. No new browser was launched. iPhone/Safari,
+mounted ChatGPT, keyboard traversal beyond the recorded focus check, screen
+reader, physical printer/Moonraker, public Internet, production registration,
+live-preview replacement and user-outcome acceptance remain untested.
+
+final result: passed
+
+## Initial result and limits
+
+Author design QA: **PASS for independent screenshot-first review** of the
+synthetic private-Lab candidate. This report is not independent approval and may
+be revised by the assigned UI/UX reviewer.
+
+final result: passed
+
+The evidence does not cover iPhone/Safari, mounted ChatGPT, screen reader,
+physical printer/Moonraker, public Internet, production registration, runtime
+preview replacement, or user-outcome acceptance. The existing live 4200/8451
+preview was not changed or restarted.
+
+---
+
+# Historical design QA retained unchanged
+
 # U1 focused-widget presentation QA — 2026-08-31
 
 ## 2026-09-01 Svelte all-observation lab formal-review renewal

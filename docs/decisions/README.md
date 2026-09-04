@@ -55,6 +55,7 @@ silently changed.
 | [0048](0048-explore-entity-bound-presentation-ast-in-private-lab.md) | Explore an entity-bound presentation AST in a private lab | Accepted for isolated private-lab learning; not production architecture or cutover |
 | [0049](0049-place-future-camera-information-in-media-overlays.md) | Place future Camera information in media-bottom overlays | User-selected future direction; implementation and acceptance pending |
 | [0050](0050-use-a-build-time-registry-for-the-private-composable-lab.md) | Use a build-time registry for the private composable Lab | Accepted for isolated private-lab learning; not production architecture or cutover |
+| [0051](0051-add-a-balanced-private-lab-composition-variant.md) | Add a balanced private-Lab composition variant | Accepted additive experiment; not production architecture or cutover |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

@@ -1,5 +1,70 @@
 # Project state
 
+## Current reviewed candidate: additive balanced private-Lab composition
+
+Decision0051 adds the selected Option 1 `balanced` variant without changing the
+three accepted A specs or production. The closed pure TypeScript registry now
+has exactly nine entries: the existing eight plus common layout `Inline`.
+`Inline` accepts only `[Title, HeadStatus]` with closed gap/distribution tokens;
+Card accepts `Title | Inline` in its header and `Stack | Grid` in its body. A
+lead Grid plus `headerBadge`, `hero`, and `quiet` leaf appearances resolve to
+explicit correlated modes. Recursive field validation rejects duplicate status
+across header and body. Unknown elements, paths, URLs, CSS, invalid structure or
+appearance combinations reject before acquisition. The client registry retains
+nine static imports, exact independent prop compatibility, registry-owned
+adapters, and the role-only renderer.
+
+The Lab-only balanced spec is a neutral compact Card: split large subject title
+and status badge in one header row when space permits, then a two-column lead
+Grid with full-width hero temperature and adaptive quiet filament/fan readings.
+There is no printer icon, empty header slot, divider, tint, gradient, Table, Row,
+arbitrary span or caller breakpoint. Its loading/error/partial trees preserve
+the same input topology and deduplicated readers, timestamps/provenance and
+truthful `Unknown` fan semantics. The isolated MCP implementation is
+`0.0.4-provisional`; schema/tool names remain v2 and the versioned UI resource
+is `ui://u1-print-studio/experiments/composable-lab-v2-r2.html`.
+
+Initial author validation passed 8 files / 111 UI and shared-consumer tests, 21
+server/MCP/preview tests with 432 assertions, TypeScript, zero-diagnostic Svelte
+and component contracts, deterministic MCP reconstruction, a twice-reproduced
+Kit build, and 9/9 isolated Chrome cases. Independent review then found that
+Card's schema casts still named the old title-only tuple rather than owning the
+full Card child aliases. Both spec and resolved casts now use those aliases, and
+a source/type drift guard proves the Inline branch remains present. Renewed
+affected checks pass 16 client tests, 17 server/MCP tests with 114 assertions
+and TypeScript; fresh MCP and Kit reconstruction retain the exact output bytes
+below. The frozen 32-path application manifest is
+`e225b0c4966177203461bb94685777898b39e4db014821ccfc5c9c3741aa0e95`;
+the 115-file Kit manifest is
+`5c22955182f278d4c934be1cc3d6f5099bb556109353098bff8593d942f9fd13`;
+the 66,589-byte Lab HTML is
+`b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`;
+the 154,183-byte MCP resource is
+`b1b3eb179fdafeff20c564db37f42873cfbae4ba7ac6168a9f70d23dbcf33890`.
+
+The selected target is recorded in `design-qa.md`. The normalized target-versus-
+implementation comparison is 764x336 at SHA-256
+`96870d17fbd56d4023cde221aaa0f2583950319ba8806dec2515e2e2b76f2ef4`;
+the implementation card crop is 374x306 at
+`b8bd858af9a33fc90e19f49ec95269e5728299e98fde9beadc1c4a17e70e3182`.
+Independent screenshot-first design **APPROVES** manifest `e225b0c4…` with no
+P0-P3 finding. It inspected the selected target, card crop, normalized comparison
+and 200% capture; the type/test-only repair changed no visual/runtime bytes, so
+the previous findings bind without a new browser run. Independent source review
+also **APPROVES** after its earlier `REQUEST_CHANGES`. Fresh 16/16 client and
+17/17 server/MCP tests with 114 assertions plus TypeScript pass. Custom MCP
+adversaries reject path, style, reversed Inline and duplicate status with zero
+reader calls; valid balanced acquisition calls each of the three readers once;
+resolved Inline/Grid/appearance/provenance tampering rejects. The exact nine-
+entry adapter walk, A hashes, balanced hash and `0.0.4-provisional` version pass.
+
+The existing 4200/8451 preview was not changed or restarted. Review did not
+repeat the full browser matrix, `ui:check`, or write-producing MCP/Kit builds;
+the author's fresh deterministic reconstruction binds the unchanged artifacts.
+There is no iPhone/Safari, mounted ChatGPT, screen-reader, real-printer,
+production or user-outcome acceptance. The MCP process-lifecycle safeguards
+remain recorded but unimplemented.
+
 ## Current accepted experiment: closed build-time composable registry
 
 The user superseded the private-Lab temperature fill and selected build-time

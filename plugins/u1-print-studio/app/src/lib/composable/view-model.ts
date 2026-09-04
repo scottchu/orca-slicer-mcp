@@ -33,21 +33,22 @@ export {
 } from './value-contract.js';
 
 export type ResolvedDomainNode =
-  | { type: 'HeadStatus'; value: ResolvedTextValue }
-  | { type: 'HeadTemperature'; value: ResolvedTemperatureValue }
-  | { type: 'FilamentColor'; value: ResolvedColorValue }
-  | { type: 'FanRelation'; value: ResolvedFanRelationValue };
+  | { type: 'HeadStatus'; appearance: 'default' | 'headerBadge'; value: ResolvedTextValue }
+  | { type: 'HeadTemperature'; appearance: 'default' | 'hero'; value: ResolvedTemperatureValue }
+  | { type: 'FilamentColor'; appearance: 'default' | 'quiet'; value: ResolvedColorValue }
+  | { type: 'FanRelation'; appearance: 'default' | 'quiet'; value: ResolvedFanRelationValue };
 export type ResolvedTitleNode = { type: 'Title'; text: string; size: 'medium' | 'large' };
 export type ResolvedStackNode = { type: 'Stack'; gap: 'compact' | 'regular' | 'relaxed'; children: ResolvedDomainNode[] };
-export type ResolvedGridNode = { type: 'Grid'; columns: 'one' | 'two'; gap: 'compact' | 'regular' | 'relaxed'; children: ResolvedDomainNode[] };
+export type ResolvedGridNode = { type: 'Grid'; columns: 'one' | 'two'; gap: 'compact' | 'regular' | 'relaxed'; arrangement: 'uniform' | 'lead'; children: ResolvedDomainNode[] };
+export type ResolvedInlineNode = { type: 'Inline'; gap: 'compact' | 'regular'; distribution: 'packed' | 'split'; children: [ResolvedTitleNode, Extract<ResolvedDomainNode, { type: 'HeadStatus' }>] };
 export type ResolvedCardNode = {
   type: 'Card';
   density: 'compact' | 'comfortable';
   tint: { kind: 'softTint'; color: string; strength: 'subtle' } | null;
   transformEvidence: ResolvedColorValue | null;
-  children: [ResolvedTitleNode, ResolvedStackNode | ResolvedGridNode];
+  children: [ResolvedTitleNode | ResolvedInlineNode, ResolvedStackNode | ResolvedGridNode];
 };
-export type ResolvedNode = ResolvedCardNode | ResolvedTitleNode | ResolvedStackNode | ResolvedGridNode | ResolvedDomainNode;
+export type ResolvedNode = ResolvedCardNode | ResolvedTitleNode | ResolvedStackNode | ResolvedGridNode | ResolvedInlineNode | ResolvedDomainNode;
 
 export type ComposableViewModel = {
   schemaVersion: 2;
@@ -87,13 +88,21 @@ const resolvedGridNodeSchema: z.ZodType<ResolvedGridNode> = elementRegistry.Grid
   type: z.literal('Grid'),
   children: registeredChildrenSchema(elementRegistry.Grid.children, resolvedDomainNodeSchemas) as z.ZodType<ResolvedDomainNode[]>,
 });
+const resolvedInlineNodeSchema: z.ZodType<ResolvedInlineNode> = elementRegistry.Inline.resolvedPropsSchema.extend({
+  type: z.literal('Inline'),
+  children: registeredChildrenSchema(elementRegistry.Inline.children, {
+    Title: resolvedTitleNodeSchema,
+    HeadStatus: resolvedHeadStatusNodeSchema,
+  }) as z.ZodType<ResolvedInlineNode['children']>,
+});
 const resolvedCardNodeSchema: z.ZodType<ResolvedCardNode> = elementRegistry.Card.resolvedPropsSchema.extend({
   type: z.literal('Card'),
   children: registeredChildrenSchema(elementRegistry.Card.children, {
     Title: resolvedTitleNodeSchema,
+    Inline: resolvedInlineNodeSchema,
     Stack: resolvedStackNodeSchema,
     Grid: resolvedGridNodeSchema,
-  }) as z.ZodType<[ResolvedTitleNode, ResolvedStackNode | ResolvedGridNode]>,
+  }) as z.ZodType<ResolvedCardNode['children']>,
 });
 const sourceSchema = z.object({
   source: sourceGroupSchema,
@@ -160,6 +169,18 @@ export const composableViewModelSchema: z.ZodType<ComposableViewModel> = z.objec
     else if (!prior) resolvedFields.set(field, node.value);
   };
   visit(model.root);
+  const header = model.root.children[0];
+  if (header.type === 'Inline' && header.children[1].appearance !== 'headerBadge') context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved Inline status requires headerBadge appearance' });
+  const body = model.root.children[1];
+  body.children.forEach((node, index) => {
+    if (node.type === 'HeadStatus' && node.appearance === 'headerBadge') context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved headerBadge is valid only in Inline' });
+    if (node.type === 'HeadTemperature' && node.appearance === 'hero' && (body.type !== 'Grid' || body.arrangement !== 'lead' || index !== 0)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved hero temperature requires the lead Grid position' });
+    if ((node.type === 'FilamentColor' || node.type === 'FanRelation') && node.appearance === 'quiet' && (body.type !== 'Grid' || body.arrangement !== 'lead' || index === 0)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved quiet appearance requires a secondary lead Grid position' });
+  });
+  if (body.type === 'Grid' && body.arrangement === 'lead') {
+    const lead = body.children[0];
+    if (lead?.type !== 'HeadTemperature' || lead.appearance !== 'hero') context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved lead Grid requires a hero temperature first' });
+  }
   const transformEvidence = model.root.transformEvidence;
   const visibleColor = resolvedFields.get('filament.color');
   const expectedTint = transformEvidence?.state === 'known' && transformEvidence.hex

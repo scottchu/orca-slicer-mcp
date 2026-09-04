@@ -12,6 +12,7 @@ import {
 import type { ResolvedNode } from '../../lib/composable/view-model';
 import Card from '../common/Card.svelte';
 import Grid from '../common/Grid.svelte';
+import Inline from '../common/Inline.svelte';
 import Stack from '../common/Stack.svelte';
 import Title from '../common/Title.svelte';
 import FanRelation from './FanRelation.svelte';
@@ -27,6 +28,7 @@ type ActualComponentPropsByElement = {
   Title: ComponentProps<typeof Title>;
   Stack: ComponentProps<typeof Stack>;
   Grid: ComponentProps<typeof Grid>;
+  Inline: ComponentProps<typeof Inline>;
   HeadStatus: ComponentProps<typeof HeadStatus>;
   HeadTemperature: ComponentProps<typeof HeadTemperature>;
   FilamentColor: ComponentProps<typeof FilamentColor>;
@@ -99,6 +101,7 @@ export const componentRegistryContractChecks = {
   Title: true,
   Stack: true,
   Grid: true,
+  Inline: true,
   HeadStatus: true,
   HeadTemperature: true,
   FilamentColor: true,
@@ -115,11 +118,12 @@ export const componentRegistry = {
   }), (node) => node.children),
   Title: defineComponentEntry('Title', Title, (node) => ({ text: node.text, size: node.size }), null),
   Stack: defineComponentEntry('Stack', Stack, (node) => ({ gap: node.gap, inset: true, composed: true }), (node) => node.children),
-  Grid: defineComponentEntry('Grid', Grid, (node) => ({ columns: node.columns, gap: node.gap, inset: true }), (node) => node.children),
-  HeadStatus: defineComponentEntry('HeadStatus', HeadStatus, (node) => ({ value: node.value }), null),
-  HeadTemperature: defineComponentEntry('HeadTemperature', HeadTemperature, (node) => ({ value: node.value }), null),
-  FilamentColor: defineComponentEntry('FilamentColor', FilamentColor, (node) => ({ value: node.value }), null),
-  FanRelation: defineComponentEntry('FanRelation', FanRelation, (node) => ({ value: node.value }), null),
+  Grid: defineComponentEntry('Grid', Grid, (node) => ({ columns: node.columns, gap: node.gap, inset: true, arrangement: node.arrangement }), (node) => node.children),
+  Inline: defineComponentEntry('Inline', Inline, (node) => ({ gap: node.gap, distribution: node.distribution, inset: true, composed: true }), (node) => node.children),
+  HeadStatus: defineComponentEntry('HeadStatus', HeadStatus, (node) => ({ value: node.value, appearance: node.appearance }), null),
+  HeadTemperature: defineComponentEntry('HeadTemperature', HeadTemperature, (node) => ({ value: node.value, appearance: node.appearance }), null),
+  FilamentColor: defineComponentEntry('FilamentColor', FilamentColor, (node) => ({ value: node.value, appearance: node.appearance }), null),
+  FanRelation: defineComponentEntry('FanRelation', FanRelation, (node) => ({ value: node.value, appearance: node.appearance }), null),
 } as const satisfies { [Type in PresentationElementType]: RegisteredComponentEntry<Type> };
 
 export const resolveRegisteredNode = (

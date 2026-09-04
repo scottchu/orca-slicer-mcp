@@ -1,13 +1,14 @@
 <script lang="ts">
   import Skeleton from './Skeleton.svelte';
   import StaticSkeleton from './StaticSkeleton.svelte';
-  let { label, display, state }: {
+  let { label, display, state, appearance = 'reading' }: {
     label: string;
     display: string;
     state: 'known' | 'unknown' | 'unavailable' | 'loading';
+    appearance?: 'reading' | 'header';
   } = $props();
 </script>
-<div class="badge-cell" data-node-kind="Badge" data-value-state={state}>
+<div class="badge-cell" class:header={appearance === 'header'} aria-label={appearance === 'header' ? label : undefined} data-node-kind="Badge" data-value-state={state}>
   <span class="label">{label}</span>
   <span class="badge-frame">
     {#if state === 'loading'}<span class="skeleton-slot"><Skeleton shape="value" /></span>{:else if state === 'unavailable'}<span class="skeleton-slot"><StaticSkeleton shape="value" /></span>{:else}<span class="badge current">{display}</span>{/if}
@@ -20,6 +21,11 @@
   .badge-frame > * { grid-area: 1 / 1; min-width: 0; }
   .badge-frame { min-height: calc(1lh + 10px); }
   .badge { width: fit-content; max-width: 100%; padding: 4px 9px; border: 1px solid var(--u1-line); border-radius: 999px; background: var(--u1-canvas); overflow-wrap: anywhere; font-size: .875rem; font-weight: var(--u1-weight-name); line-height: 1.25; }
+  .header .label { display: none; }
+  .header .badge-frame { width: 5.5rem; max-width: 100%; min-height: max(44px, calc(1lh + 18px)); font-size: 1rem; }
+  .header .badge { padding: 8px 14px; font-size: 1rem; }
+  .header .skeleton-slot { min-height: max(44px, calc(1lh + 18px)); }
+  .header .skeleton-slot :global([data-skeleton='value']) { height: max(44px, calc(1lh + 18px)); }
   .current, .skeleton-slot { align-self: center; }
   .skeleton-slot { display: grid; align-items: center; min-height: calc(1lh + 10px); }
   .skeleton-slot :global([data-skeleton='value']) { width: min(7ch, 100%); height: calc(1lh + 10px); border-radius: 999px; }

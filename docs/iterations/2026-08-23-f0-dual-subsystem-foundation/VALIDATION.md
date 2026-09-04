@@ -1,5 +1,76 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-04 additive balanced private-Lab reviewed candidate
+
+### Boundary and retained failures
+
+Decision0051 is an additive UI-003 experiment only. It does not change the three
+A specs, production registration, printer/Camera/auth/Tailscale or the live
+4200/8451 preview. The first compile exposed an existing shared `Inline`
+consumer contract; the implementation was corrected additively with no consumer
+rewrite. Early browser runs found a zero-width header loading skeleton, 4–16px
+ready-state height drift, 5–81px 200%-text drift and a lead Grid growing beyond
+two columns at 720px. Stable line-height reserves and the bounded font-relative
+two-track rule repaired these findings; the renewed complete matrix passes.
+
+### Commands actually run and exact evidence
+
+From `plugins/u1-print-studio/app`:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 111 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 21 tests / 432 assertions.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` and `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` reproduce the 154,183-byte resource SHA-256 `b1b3eb179fdafeff20c564db37f42873cfbae4ba7ac6168a9f70d23dbcf33890`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build` ran twice and reproduced the 115-file manifest `5c22955182f278d4c934be1cc3d6f5099bb556109353098bff8593d942f9fd13`; Lab HTML is 66,589 bytes at `b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 9/9 isolated Chrome tests and releases port 4184.
+
+The sorted 32-path application manifest is
+`e225b0c4966177203461bb94685777898b39e4db014821ccfc5c9c3741aa0e95`.
+After independent review found stale title-only tuple casts at the Card schema
+boundaries, `schema.ts` now uses `z.ZodType<CardNode['children']>` and
+`view-model.ts` uses `z.ZodType<ResolvedCardNode['children']>`. The source/type
+drift guard requires each alias to retain Inline. On these renewed exact source
+bytes, the focused client command for schema-planner, presentation and component
+registry passes 3 files / 16 tests; the server command for composable
+presentation and MCP passes 17 tests / 114 assertions; TypeScript passes. Fresh
+MCP build/verify and the Kit build reproduce the same resource, HTML and Kit
+hashes recorded above. The broader 111/21/9 browser author matrix predates this
+type/test-only repair; no runtime output byte changed, and independent review of
+the renewed application manifest follows below.
+Tests cover exact nine-entry parity, A canonical stability, invalid Inline/Card/
+Grid/appearance/nesting/token cases, duplicate header/body status, resolved
+order/mode/provenance mismatch, zero-reader unknown path/URL/CSS rejection,
+deduplicated receipts and balanced state topology. Chrome covers balanced at
+320/390/720px, 100/200% root text and ready/unknown/ambiguous/loading/error/
+partial; height drift is at most 1px, header/hero/adaptive-grid/atomic-unit/
+neutral-motion/reduced-motion/no-overflow and forbidden-visual checks pass.
+
+The selected target SHA is
+`34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`.
+Author comparison is recorded in `design-qa.md`: 764x336 combined SHA
+`96870d17fbd56d4023cde221aaa0f2583950319ba8806dec2515e2e2b76f2ef4`;
+374x306 implementation crop SHA
+`b8bd858af9a33fc90e19f49ec95269e5728299e98fde9beadc1c4a17e70e3182`.
+Independent screenshot-first design **APPROVES** exact `e225b0c4…` with no
+P0-P3 finding after direct inspection of the selected target, crop, normalized
+comparison and 200% capture. The cast/test repair is visually runtime-erased, so
+the prior browser evidence binds without a new run. Independent source review
+also **APPROVES** after its initial `REQUEST_CHANGES`. It freshly passed the same
+16 client and 17 server/MCP tests with 114 assertions plus TypeScript. Its custom
+MCP adversaries rejected path, style, reversed Inline and duplicate status with
+`readerCalls=0`; valid balanced input called status/materials/environment once
+each; Inline distribution/order, Grid arrangement, hero/quiet appearance and
+provenance tampering all failed envelope validation. The exact nine-entry
+registry/adapter walk, unchanged three A hashes, balanced hash `dfbf87e3…` and
+implementation version `0.0.4-provisional` passed.
+
+Independent review did not repeat write-producing MCP/Kit builds, `ui:check` or
+the full browser matrix. Author reconstruction freshly establishes unchanged
+artifact bytes. Limits include no iPhone/Safari, mounted ChatGPT, screen reader,
+physical printer/Moonraker, public Internet, live-preview replacement or user
+outcome acceptance.
+
 ## 2026-09-04 accepted build-time registry and temperature-fill retirement experiment
 
 ### Acceptance and safety boundary

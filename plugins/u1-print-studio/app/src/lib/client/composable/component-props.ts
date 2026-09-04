@@ -4,7 +4,7 @@ import type { ResolvedNode } from '../../composable/view-model';
 type ResolvedNodeFor<Type extends ResolvedNode['type']> = Extract<ResolvedNode, { type: Type }>;
 
 /**
- * Independently owned client contracts for the eight registered constructors.
+ * Independently owned client contracts for the nine registered constructors.
  * Component implementations must conform to these props at build time.
  */
 export type PresentationComponentPropsByElement = {
@@ -30,11 +30,22 @@ export type PresentationComponentPropsByElement = {
     columns?: ResolvedNodeFor<'Grid'>['columns'];
     gap?: ResolvedNodeFor<'Grid'>['gap'];
     inset?: boolean;
+    arrangement?: ResolvedNodeFor<'Grid'>['arrangement'];
   };
-  HeadStatus: Pick<ResolvedNodeFor<'HeadStatus'>, 'value'>;
-  HeadTemperature: Pick<ResolvedNodeFor<'HeadTemperature'>, 'value'>;
-  FilamentColor: Pick<ResolvedNodeFor<'FilamentColor'>, 'value'>;
-  FanRelation: Pick<ResolvedNodeFor<'FanRelation'>, 'value'>;
+  Inline: {
+    children: Snippet;
+    align?: 'center' | 'baseline';
+    gap?: 'normal' | 'tight' | ResolvedNodeFor<'Inline'>['gap'];
+    shrink?: boolean;
+    label?: string;
+    distribution?: ResolvedNodeFor<'Inline'>['distribution'];
+    inset?: boolean;
+    composed?: boolean;
+  };
+  HeadStatus: { value: ResolvedNodeFor<'HeadStatus'>['value']; appearance?: ResolvedNodeFor<'HeadStatus'>['appearance'] };
+  HeadTemperature: { value: ResolvedNodeFor<'HeadTemperature'>['value']; appearance?: ResolvedNodeFor<'HeadTemperature'>['appearance'] };
+  FilamentColor: { value: ResolvedNodeFor<'FilamentColor'>['value']; appearance?: ResolvedNodeFor<'FilamentColor'>['appearance'] };
+  FanRelation: { value: ResolvedNodeFor<'FanRelation'>['value']; appearance?: ResolvedNodeFor<'FanRelation'>['appearance'] };
 };
 
 export type PresentationAdapterPropsByElement = {

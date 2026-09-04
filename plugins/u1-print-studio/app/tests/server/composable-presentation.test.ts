@@ -2,7 +2,7 @@ import { describe, expect, test } from 'bun:test';
 import { createHash } from 'node:crypto';
 import type { PresentationField } from '../../src/lib/composable/schema.js';
 import { composableEnvelopeSchema } from '../../src/lib/composable/envelope.js';
-import { t1CompactGridSpec, t1EntityCardSpec } from '../../src/lib/composable/specs.js';
+import { t1BalancedCompositionSpec, t1CompactGridSpec, t1EntityCardSpec } from '../../src/lib/composable/specs.js';
 import { composableViewModelSchema, resolvedValueSchema, type ResolvedNode, type ResolvedValue } from '../../src/lib/composable/view-model.js';
 import { composeEntityCard, type ComposableReaders } from '../../src/lib/server/composable-presentation.js';
 
@@ -47,6 +47,16 @@ describe('entity-bound composition acquisition and provenance', () => {
     await expect(composeEntityCard({ ...t1EntityCardSpec, root: { ...t1EntityCardSpec.root, children: [{ type: 'Title', text: 'Tool head T2', size: 'large' }, t1EntityCardSpec.root.children[1]] } }, { status: count, materials: count, environment: count })).rejects.toThrow();
     const stack = t1EntityCardSpec.root.children[1];
     await expect(composeEntityCard({ ...t1EntityCardSpec, root: { ...t1EntityCardSpec.root, children: [t1EntityCardSpec.root.children[0], { ...stack, children: [{ type: 'PercentageFill', child: { type: 'HeadTemperature' } }] }] } }, { status: count, materials: count, environment: count })).rejects.toThrow();
+    const balanced = structuredClone(t1BalancedCompositionSpec) as any;
+    const inline = balanced.root.children[0];
+    const grid = balanced.root.children[1];
+    for (const root of [
+      { ...balanced.root, children: [{ ...inline, children: [inline.children[1], inline.children[0]] }, grid] },
+      { ...balanced.root, children: [inline, { ...grid, children: [...grid.children, { type: 'HeadStatus' }] }] },
+      { ...balanced.root, children: [inline, { ...grid, children: [{ type: 'HeadTemperature' }, ...grid.children.slice(1)] }] },
+      { ...balanced.root, children: [inline, { ...grid, css: 'display:none' }] },
+      { ...balanced.root, children: [inline, { ...grid, componentPath: 'https://example.invalid/evil.js' }] },
+    ]) await expect(composeEntityCard({ ...balanced, root }, { status: count, materials: count, environment: count })).rejects.toThrow();
     expect(calls).toBe(0);
   });
 
@@ -63,6 +73,38 @@ describe('entity-bound composition acquisition and provenance', () => {
     count.status = 0; count.materials = 0; count.environment = 0;
     await composeEntityCard(t1CompactGridSpec, counting);
     expect(count).toEqual({ status: 1, materials: 1, environment: 0 });
+    count.status = 0; count.materials = 0; count.environment = 0;
+    await composeEntityCard(t1BalancedCompositionSpec, counting);
+    expect(count).toEqual({ status: 1, materials: 1, environment: 1 });
+  });
+
+  test('normalizes and correlates the balanced layout and appearance modes', async () => {
+    const result = await composeEntityCard(t1BalancedCompositionSpec, readers());
+    expect(result.viewModel.root).toMatchObject({
+      density: 'compact', tint: null, transformEvidence: null,
+      children: [
+        { type: 'Inline', gap: 'regular', distribution: 'split', children: [{ type: 'Title' }, { type: 'HeadStatus', appearance: 'headerBadge' }] },
+        { type: 'Grid', columns: 'two', gap: 'regular', arrangement: 'lead', children: [
+          { type: 'HeadTemperature', appearance: 'hero' },
+          { type: 'FilamentColor', appearance: 'quiet' },
+          { type: 'FanRelation', appearance: 'quiet' },
+        ] },
+      ],
+    });
+    const corruptions: Array<(candidate: any) => void> = [
+      (candidate) => { candidate.viewModel.root.children[0].distribution = 'packed'; },
+      (candidate) => { candidate.viewModel.root.children[0].children.reverse(); },
+      (candidate) => { candidate.viewModel.root.children[1].arrangement = 'uniform'; },
+      (candidate) => { candidate.viewModel.root.children[1].children[0].appearance = 'default'; },
+      (candidate) => { candidate.viewModel.root.children[1].children[1].appearance = 'default'; },
+      (candidate) => { candidate.viewModel.root.children[1].children.reverse(); },
+      (candidate) => { candidate.viewModel.root.children[0].children[1].value.provenance.receivedAt = materialReceivedAt; },
+    ];
+    for (const corrupt of corruptions) {
+      const candidate = structuredClone(result) as any;
+      corrupt(candidate);
+      expect(composableEnvelopeSchema.safeParse(candidate).success).toBe(false);
+    }
   });
 
   test('validates its output and keeps source, receive, and generation times distinct', async () => {
@@ -100,7 +142,9 @@ describe('entity-bound composition acquisition and provenance', () => {
     expect(first.viewModel.canonicalSpecSha256).toBe(createHash('sha256').update(JSON.stringify(first.canonicalSpec)).digest('hex'));
     const changed = structuredClone(t1EntityCardSpec);
     if (changed.root.type !== 'Card') throw new Error('Expected card fixture');
-    changed.root.children[0].content = 'inspectionGroup';
+    const header = changed.root.children[0];
+    if (header.type !== 'Title') throw new Error('Expected title fixture');
+    header.content = 'inspectionGroup';
     expect((await composeEntityCard(changed, readers())).viewModel.canonicalSpecSha256).not.toBe(first.viewModel.canonicalSpecSha256);
   });
 

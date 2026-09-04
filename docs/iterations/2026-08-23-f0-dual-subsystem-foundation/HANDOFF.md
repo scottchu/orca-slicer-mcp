@@ -1,5 +1,51 @@
 # F0 dual-subsystem foundation handoff
 
+## Current reviewed candidate: balanced B composition
+
+Decision0051 additively introduces Lab-only `balanced`; the three A specs and
+production are unchanged. The pure registry has exactly nine types after adding
+common layout `Inline`. Its exact `[Title, HeadStatus]` children and closed gap/
+distribution tokens, Card header/body slots, lead Grid and closed leaf
+appearances all participate in strict spec and resolved correlation. Recursive
+duplicate fields and every unknown path/URL/CSS/element or incompatible token/
+structure reject before acquisition. The client retains static constructors,
+independent exact props, registry adapters and role-only recursion.
+
+Balanced is a neutral compact Card with split large title/status header, hero
+temperature and adaptive quiet filament/fan content. It adds no printer icon,
+empty slot, divider, tint, gradient, Table, Row, arbitrary span or breakpoint.
+Stable input-shaped loading/error/partial and truthful fan `Unknown`, one read
+per source, timestamps and provenance remain. Private MCP is
+`0.0.4-provisional`; schema/tool stay v2 and its resource URI ends `v2-r2.html`.
+
+Frozen author evidence: application manifest `e225b0c4966177203461bb94685777898b39e4db014821ccfc5c9c3741aa0e95`
+(32 paths); Kit `5c22955182f278d4c934be1cc3d6f5099bb556109353098bff8593d942f9fd13`
+(115 files); HTML `b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`
+(66,589 bytes); MCP `b1b3eb179fdafeff20c564db37f42873cfbae4ba7ac6168a9f70d23dbcf33890`
+(154,183 bytes). Initial tests passed 111 UI/shared, 21 server with 432
+assertions, TypeScript, zero-diagnostic Svelte/contracts, deterministic MCP,
+twice-reproduced Kit and 9/9 Chrome. Review then caught stale title-only tuple
+casts at the spec/resolved Card boundaries. They now use `CardNode['children']`
+and `ResolvedCardNode['children']`; the drift test requires Inline in both
+aliases. Renewed affected checks pass 16 client, 17 server/MCP with 114
+assertions and TypeScript, and rebuilt MCP/Kit outputs are byte-identical.
+
+`design-qa.md` compares the selected target to the actual 390px candidate.
+Independent screenshot-first design **APPROVES** exact `e225b0c4…` with no
+P0-P3 finding; normalized comparison `96870d17…`, crop `b8bd858a…` and 200%
+capture `01299e17…` remain attributed run evidence. Independent source review
+also **APPROVES** after its earlier `REQUEST_CHANGES`: fresh 16 client and 17
+server/MCP tests with 114 assertions, TypeScript, exact nine-entry adapter walk,
+A/balanced hashes and `0.0.4-provisional` pass. Path, style, reversed Inline and
+duplicate status reject at zero reader calls; valid balanced input calls all
+three readers once; resolved Inline/Grid/appearance/provenance tampering rejects.
+
+The independent review did not repeat the full browser matrix, `ui:check` or
+write-producing builds; author reconstruction proves unchanged Kit/HTML/MCP
+bytes. Do not touch live 4200/8451, Tailscale, auth, printer, Camera, production,
+PR/merge/deploy without new authority. The MCP process-lifecycle safeguard plan
+remains unimplemented.
+
 ## Current accepted experiment: build-time element registry, no temperature fill
 
 The latest user direction supersedes the percentage-surface candidate. Preserve

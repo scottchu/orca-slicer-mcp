@@ -14,7 +14,7 @@
   <header class="intro">
     <p class="eyebrow">Provisional F0 / UI-003 experiment</p>
     <h1>Entity-bound composition lab v2</h1>
-    <p>T1 binds once. Card, Title, Stack, and Grid arrange closed status, temperature, filament color, and independently evidenced fan-relation nodes.</p>
+    <p>T1 binds once. Card, Title, Inline, Stack, and Grid arrange closed status, temperature, filament color, and independently evidenced fan-relation nodes.</p>
   </header>
 
   <section class="controls" aria-label="Composition controls">
@@ -33,11 +33,12 @@
         <option value="card">Entity card</option>
         <option value="compact">Compact grid</option>
         <option value="larger">Larger composition</option>
+        <option value="balanced">Balanced hierarchy</option>
       </select>
     </label>
   </section>
 
-  <section class:larger={variant === 'larger'} class="stage" aria-label="Rendered composition">
+  <section class:larger={variant === 'larger' || variant === 'balanced'} class="stage" aria-label="Rendered composition">
     <PresentationRenderer presentation={selected.viewModel} />
   </section>
 

@@ -90,11 +90,11 @@ for (const width of [320, 390, 720]) {
     await page.goto('/dashboard/lab/composition', { waitUntil: 'networkidle' });
     const stage = page.getByRole('region', { name: 'Rendered composition' });
     const assertStateGeometry = async (textPercent: 100 | 200) => {
-      for (const variant of ['card', 'compact', 'larger']) {
+      for (const variant of ['card', 'compact', 'larger', 'balanced']) {
         await page.getByLabel('Composition shape').selectOption(variant);
         const heights: number[] = [];
         let expectedTopology: string[] | null = null;
-        for (const scenario of ['known', 'loading', 'error', 'partial', 'ambiguous']) {
+        for (const scenario of ['known', 'unknown', 'ambiguous', 'loading', 'error', 'partial']) {
           await selectScenario(page, scenario);
           const renderer = stage.locator(':scope > div').first();
           const box = await renderer.boundingBox();
@@ -198,5 +198,94 @@ for (const width of [320, 390, 720]) {
     await selectScenario(page, 'known');
     await expect(stage.locator('[data-percentage-background]')).toHaveCount(0);
     expect(await stage.locator('article').evaluate((element) => getComputedStyle(element).borderStyle)).toBe('solid');
+  });
+
+  test(`balanced hierarchy preserves its closed responsive contract at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1500 });
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.goto('/dashboard/lab/composition', { waitUntil: 'networkidle' });
+    await page.getByLabel('Composition shape').selectOption('balanced');
+    const stage = page.getByRole('region', { name: 'Rendered composition' });
+    const card = stage.getByRole('article', { name: 'Tool head T1' });
+    const heights: number[] = [];
+    let topology: string[] | null = null;
+    for (const scenario of ['known', 'unknown', 'ambiguous', 'loading', 'error', 'partial']) {
+      await selectScenario(page, scenario);
+      const box = await card.boundingBox();
+      if (!box) throw new Error('Missing balanced card');
+      heights.push(box.height);
+      const current = await card.locator('[data-node-kind]').evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-node-kind') ?? ''));
+      if (topology === null) topology = current;
+      else expect(current).toEqual(topology);
+    }
+    expect(topology).toEqual(['Inline', 'Title', 'Badge', 'Grid', 'Metric', 'Swatch', 'Metric']);
+    expect(Math.max(...heights) - Math.min(...heights), `balanced 100% heights: ${heights.join(', ')}`).toBeLessThanOrEqual(1);
+
+    await selectScenario(page, 'known');
+    const inline = card.locator('[data-node-kind="Inline"]');
+    const title = inline.locator('[data-node-kind="Title"]');
+    const badge = inline.locator('[data-node-kind="Badge"]');
+    const [titleBox, badgeBox] = await Promise.all([title.boundingBox(), badge.boundingBox()]);
+    if (!titleBox || !badgeBox) throw new Error('Missing balanced header geometry');
+    expect(Math.abs((titleBox.y + titleBox.height / 2) - (badgeBox.y + badgeBox.height / 2))).toBeLessThanOrEqual(1);
+    expect(badgeBox.x - (titleBox.x + titleBox.width)).toBeGreaterThanOrEqual(8);
+    expect(await inline.locator('[data-domain-reading], svg').count()).toBe(0);
+    expect(await card.evaluate((element) => ({ tint: element.classList.contains('tinted'), background: getComputedStyle(element).backgroundImage }))).toEqual({ tint: false, background: 'none' });
+    await expect(card.locator('[data-node-kind="Table"], [data-node-kind="Row"], [data-percentage-background]')).toHaveCount(0);
+    await expect(card.locator('[data-reading-appearance="hero"]')).toHaveCount(1);
+    await expect(card.locator('[data-reading-appearance="quiet"]')).toHaveCount(2);
+    const heroSize = Number.parseFloat(await card.locator('[data-reading-appearance="hero"] [data-node-kind="Metric"] .value').evaluate((element) => getComputedStyle(element).fontSize));
+    const secondarySize = Number.parseFloat(await card.locator('[data-reading-appearance="quiet"] .value').first().evaluate((element) => getComputedStyle(element).fontSize));
+    expect(heroSize / secondarySize).toBeGreaterThanOrEqual(1.3);
+    const secondary = await card.locator('[data-reading-appearance="quiet"]').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().y));
+    if (width === 320) expect(Math.abs(secondary[0] - secondary[1])).toBeGreaterThan(1);
+    else expect(Math.abs(secondary[0] - secondary[1])).toBeLessThanOrEqual(1);
+    expect(await stage.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+
+    const temperatureValue = card.locator('[data-node-kind="Metric"] .current').filter({ hasText: '214.6°' });
+    expect(await temperatureValue.evaluate((element) => {
+      const text = element.textContent ?? '';
+      const start = text.lastIndexOf('220°');
+      const node = element.firstChild;
+      if (!(node instanceof Text) || start < 0) return false;
+      const range = document.createRange();
+      range.setStart(node, start);
+      range.setEnd(node, text.length);
+      return range.getClientRects().length === 1 && text.endsWith('220°\u00a0C');
+    })).toBe(true);
+
+    const textScale = await page.addStyleTag({ content: 'html { font-size: 32px !important; }' });
+    const scaledHeights: number[] = [];
+    for (const scenario of ['known', 'unknown', 'ambiguous', 'loading', 'error', 'partial']) {
+      await selectScenario(page, scenario);
+      const box = await card.boundingBox();
+      if (!box) throw new Error('Missing scaled balanced card');
+      scaledHeights.push(box.height);
+    }
+    expect(Math.max(...scaledHeights) - Math.min(...scaledHeights), `balanced 200% heights: ${scaledHeights.join(', ')}`).toBeLessThanOrEqual(1);
+    await selectScenario(page, 'known');
+    const [scaledTitle, scaledBadge] = await Promise.all([title.boundingBox(), badge.boundingBox()]);
+    if (!scaledTitle || !scaledBadge) throw new Error('Missing scaled balanced header geometry');
+    if (scaledBadge.y > scaledTitle.y + 1) expect(Math.abs(scaledBadge.x - scaledTitle.x)).toBeLessThanOrEqual(1);
+    const scaledSecondary = await card.locator('[data-reading-appearance="quiet"]').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().y));
+    if (width === 390 || width === 320) expect(Math.abs(scaledSecondary[0] - scaledSecondary[1])).toBeGreaterThan(1);
+    expect(await stage.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+    if (width === 390) await page.screenshot({ path: 'test-results/composable-lab-v2/composition-balanced-known-390px-200-percent.png', fullPage: true });
+    await textScale.evaluate((element) => element.parentNode?.removeChild(element));
+
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await selectScenario(page, 'loading');
+    expect(await card.locator('[data-skeleton]').first().evaluate((element) => getComputedStyle(element).animationName)).toBe('none');
+    await selectScenario(page, 'error');
+    expect(await card.locator('[data-skeleton-static]').count()).toBe(4);
+    expect(await card.locator('[data-skeleton]:not([data-skeleton-static])').count()).toBe(0);
+    expect(errors).toEqual([]);
+    if (width === 390) {
+      await selectScenario(page, 'known');
+      await page.evaluate(() => scrollTo(0, 0));
+      await card.screenshot({ path: 'test-results/composable-lab-v2/composition-balanced-card-known-390px.png' });
+      await page.screenshot({ path: 'test-results/composable-lab-v2/composition-balanced-known-390px.png', fullPage: true });
+    }
   });
 }

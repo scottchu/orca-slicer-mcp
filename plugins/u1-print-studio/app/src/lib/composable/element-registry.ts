@@ -9,7 +9,7 @@ import {
 } from './value-contract.js';
 
 export const PRESENTATION_ELEMENT_TYPES = [
-  'Card', 'Title', 'Stack', 'Grid',
+  'Card', 'Title', 'Stack', 'Grid', 'Inline',
   'HeadStatus', 'HeadTemperature', 'FilamentColor', 'FanRelation',
 ] as const;
 export type PresentationElementType = (typeof PRESENTATION_ELEMENT_TYPES)[number];
@@ -17,6 +17,9 @@ export type PresentationElementRole = 'root' | 'title' | 'layout' | 'domain';
 
 export const layoutGapSchema = z.enum(['compact', 'regular', 'relaxed']);
 export const gridColumnsSchema = z.enum(['one', 'two']);
+export const gridArrangementSchema = z.literal('lead');
+export const inlineGapSchema = z.enum(['compact', 'regular']);
+export const inlineDistributionSchema = z.enum(['packed', 'split']);
 export const cardDensitySchema = z.enum(['compact', 'comfortable']);
 export const titleSizeSchema = z.enum(['medium', 'large']);
 export const titleContentSchema = z.enum(['subject', 'compactStatus', 'inspectionGroup', 'material', 'status']);
@@ -61,7 +64,7 @@ export const elementRegistry = {
       tint: resolvedSoftTintSchema.nullable(),
       transformEvidence: resolvedColorValueSchema.nullable(),
     }).strict(),
-    children: { kind: 'tuple', positions: [['Title'], ['Stack', 'Grid']] },
+    children: { kind: 'tuple', positions: [['Title', 'Inline'], ['Stack', 'Grid']] },
   },
   Title: {
     type: 'Title', role: 'title', field: null, source: null,
@@ -80,32 +83,38 @@ export const elementRegistry = {
   },
   Grid: {
     type: 'Grid', role: 'layout', field: null, source: null,
-    specPropsSchema: z.object({ columns: gridColumnsSchema, gap: layoutGapSchema }).strict(),
-    resolvedPropsSchema: z.object({ columns: gridColumnsSchema, gap: layoutGapSchema }).strict(),
+    specPropsSchema: z.object({ columns: gridColumnsSchema, gap: layoutGapSchema, arrangement: gridArrangementSchema.optional() }).strict(),
+    resolvedPropsSchema: z.object({ columns: gridColumnsSchema, gap: layoutGapSchema, arrangement: z.enum(['uniform', 'lead']) }).strict(),
     children: domainChildren,
+  },
+  Inline: {
+    type: 'Inline', role: 'layout', field: null, source: null,
+    specPropsSchema: z.object({ gap: inlineGapSchema, distribution: inlineDistributionSchema }).strict(),
+    resolvedPropsSchema: z.object({ gap: inlineGapSchema, distribution: inlineDistributionSchema }).strict(),
+    children: { kind: 'tuple', positions: [['Title'], ['HeadStatus']] },
   },
   HeadStatus: {
     type: 'HeadStatus', role: 'domain', field: 'head.status', source: 'status',
-    specPropsSchema: z.object({}).strict(),
-    resolvedPropsSchema: z.object({ value: resolvedTextValueSchema }).strict(),
+    specPropsSchema: z.object({ appearance: z.literal('headerBadge').optional() }).strict(),
+    resolvedPropsSchema: z.object({ appearance: z.enum(['default', 'headerBadge']), value: resolvedTextValueSchema }).strict(),
     children: none,
   },
   HeadTemperature: {
     type: 'HeadTemperature', role: 'domain', field: 'head.temperature', source: 'status',
-    specPropsSchema: z.object({}).strict(),
-    resolvedPropsSchema: z.object({ value: resolvedTemperatureValueSchema }).strict(),
+    specPropsSchema: z.object({ appearance: z.literal('hero').optional() }).strict(),
+    resolvedPropsSchema: z.object({ appearance: z.enum(['default', 'hero']), value: resolvedTemperatureValueSchema }).strict(),
     children: none,
   },
   FilamentColor: {
     type: 'FilamentColor', role: 'domain', field: 'filament.color', source: 'materials',
-    specPropsSchema: z.object({}).strict(),
-    resolvedPropsSchema: z.object({ value: resolvedColorValueSchema }).strict(),
+    specPropsSchema: z.object({ appearance: z.literal('quiet').optional() }).strict(),
+    resolvedPropsSchema: z.object({ appearance: z.enum(['default', 'quiet']), value: resolvedColorValueSchema }).strict(),
     children: none,
   },
   FanRelation: {
     type: 'FanRelation', role: 'domain', field: 'head.fanRelation', source: 'environment',
-    specPropsSchema: z.object({}).strict(),
-    resolvedPropsSchema: z.object({ value: resolvedFanRelationValueSchema }).strict(),
+    specPropsSchema: z.object({ appearance: z.literal('quiet').optional() }).strict(),
+    resolvedPropsSchema: z.object({ appearance: z.enum(['default', 'quiet']), value: resolvedFanRelationValueSchema }).strict(),
     children: none,
   },
 } as const satisfies Record<PresentationElementType, ElementDefinition>;

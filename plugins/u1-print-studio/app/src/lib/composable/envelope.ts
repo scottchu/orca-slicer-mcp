@@ -36,7 +36,12 @@ const correlateNode = (
     }
   }
   if (spec.type === 'Stack' && resolved.type === 'Stack' && spec.gap !== resolved.gap) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved stack tokens diverge from specification' });
-  if (spec.type === 'Grid' && resolved.type === 'Grid' && (spec.gap !== resolved.gap || spec.columns !== resolved.columns)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved grid tokens diverge from specification' });
+  if (spec.type === 'Grid' && resolved.type === 'Grid' && (spec.gap !== resolved.gap || spec.columns !== resolved.columns || (spec.arrangement ?? 'uniform') !== resolved.arrangement)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved grid tokens diverge from specification' });
+  if (spec.type === 'Inline' && resolved.type === 'Inline' && (spec.gap !== resolved.gap || spec.distribution !== resolved.distribution)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved inline tokens diverge from specification' });
+  if (spec.type === 'HeadStatus' && resolved.type === 'HeadStatus' && (spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved status appearance diverges from specification' });
+  if (spec.type === 'HeadTemperature' && resolved.type === 'HeadTemperature' && (spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved temperature appearance diverges from specification' });
+  if (spec.type === 'FilamentColor' && resolved.type === 'FilamentColor' && (spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved filament appearance diverges from specification' });
+  if (spec.type === 'FanRelation' && resolved.type === 'FanRelation' && (spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved fan appearance diverges from specification' });
   if ('children' in spec && 'children' in resolved) {
     if (spec.children.length !== resolved.children.length) { context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved child count diverges from specification' }); return; }
     spec.children.forEach((child, index) => correlateNode(child, resolved.children[index], sources, context));

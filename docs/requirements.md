@@ -815,7 +815,8 @@ durable-monitor claim.
   production architecture or cutover. The exact version-2 private-Lab candidate
   keeps one fixed T1 subject and the four `HeadStatus`, `HeadTemperature`,
   `FilamentColor`, and `FanRelation` domain leaves, but restricts composition to
-  a root `Card` with `Title` and one `Stack` or `Grid`; it rejects version 1,
+  a root `Card` whose header is `Title` or `Inline` and whose body is one `Stack`
+  or `Grid`; it rejects version 1,
   `Table`, `Row`, `DataTable` and unknown fields. Card density, title size, gap
   and columns are closed tokens. Title content is also a closed T1-derived token;
   arbitrary text or a claim about another entity is invalid. A strict spec
@@ -827,7 +828,7 @@ durable-monitor claim.
   evidence remains visible. Decision0050 supersedes the experiment's
   `PercentageFill`: version-2 JSON containing it is invalid before acquisition,
   and temperature renders without a dynamic fill. One pure TypeScript build-time
-  registry owns exactly `Card`, `Title`, `Stack`, `Grid`, `HeadStatus`,
+  registry owns exactly `Card`, `Title`, `Stack`, `Grid`, `Inline`, `HeadStatus`,
   `HeadTemperature`, `FilamentColor`, and `FanRelation`, their roles, strict
   spec/resolved prop schemas, child policies and field/source metadata. Those
   child policies directly construct accepted spec and resolved tuple/array
@@ -844,6 +845,18 @@ durable-monitor claim.
   is no runtime registration, dynamic
   import, module path, URL, expression or style token in the wire contract;
   common layout elements are built in and domain leaves remain outside common.
+  Decision0051 adds only the private-Lab `balanced` composition. `Inline` has
+  exact children `[Title, HeadStatus]`, closed `compact | regular` gap and
+  `packed | split` distribution. A lead Grid and the leaf appearances
+  `headerBadge`, `hero`, and `quiet` are closed optional inputs that resolve to
+  explicit normalized modes and must remain structurally correlated. Lead layout
+  uses a code-owned font-relative intrinsic rule: no caller-provided span,
+  breakpoint, CSS, or sample-value reserve. Duplicate-field rejection traverses
+  both Card header and body. The balanced spec is a neutral compact Card with a
+  split title/status header, full-width hero temperature and adaptive secondary
+  filament/fan content; it has no empty icon slot, divider, tint, gradient,
+  Table, or Row. The existing card, compact and larger specs and default visuals
+  remain canonical and unchanged.
   Strict canonical hash/spec/plan/source/topology/provenance
   correlation, deduplicated source readers, bounded values, `Unknown` for absent
   or ambiguous relations, input-shaped loading/error states, no arbitrary code

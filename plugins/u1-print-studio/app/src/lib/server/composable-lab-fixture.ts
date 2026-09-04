@@ -1,5 +1,5 @@
 import type { ComposableViewModel, ResolvedNode, ResolvedValue } from '../composable/view-model.js';
-import { t1CompactGridSpec, t1EntityCardSpec, t1LargerCompositionSpec } from '../composable/specs.js';
+import { t1BalancedCompositionSpec, t1CompactGridSpec, t1EntityCardSpec, t1LargerCompositionSpec } from '../composable/specs.js';
 import { composeEntityCard, type ComposableReaders } from './composable-presentation.js';
 
 const sourceTime = {
@@ -9,7 +9,7 @@ const sourceTime = {
 } as const;
 const generatedAt = () => new Date('2026-09-03T16:20:00.500Z');
 export const COMPOSABLE_LAB_SCENARIOS = ['unknown', 'ambiguous', 'known', 'loading', 'partial', 'error'] as const;
-export const COMPOSABLE_LAB_VARIANTS = ['card', 'compact', 'larger'] as const;
+export const COMPOSABLE_LAB_VARIANTS = ['card', 'compact', 'larger', 'balanced'] as const;
 
 const readers = (scenario: 'unknown' | 'ambiguous' | 'known' | 'partial' | 'error'): ComposableReaders => {
   if (scenario === 'error') {
@@ -47,10 +47,16 @@ const loadingNode = (node: ResolvedNode): ResolvedNode => {
     if (transformEvidence && transformEvidence.kind !== 'color') throw new Error('Invalid transform loading evidence');
     const title = loadingNode(node.children[0]);
     const layout = loadingNode(node.children[1]);
-    if (title.type !== 'Title' || (layout.type !== 'Stack' && layout.type !== 'Grid')) throw new Error('Invalid card loading node');
+    if ((title.type !== 'Title' && title.type !== 'Inline') || (layout.type !== 'Stack' && layout.type !== 'Grid')) throw new Error('Invalid card loading node');
     return { ...node, tint: null, transformEvidence, children: [title, layout] };
   }
   if (node.type === 'Stack' || node.type === 'Grid') return { ...node, children: node.children.map(loadingNode) } as ResolvedNode;
+  if (node.type === 'Inline') {
+    const title = loadingNode(node.children[0]);
+    const status = loadingNode(node.children[1]);
+    if (title.type !== 'Title' || status.type !== 'HeadStatus') throw new Error('Invalid inline loading node');
+    return { ...node, children: [title, status] };
+  }
   if (node.type === 'Title') return node;
   const value = loadingValue(node.value);
   if (node.type === 'HeadStatus' && value.kind === 'text') return { ...node, value };
@@ -67,7 +73,7 @@ const asLoading = (viewModel: ComposableViewModel): ComposableViewModel => ({
 });
 
 export const createComposableLabData = async () => {
-  const specs = { card: t1EntityCardSpec, compact: t1CompactGridSpec, larger: t1LargerCompositionSpec } as const;
+  const specs = { card: t1EntityCardSpec, compact: t1CompactGridSpec, larger: t1LargerCompositionSpec, balanced: t1BalancedCompositionSpec } as const;
   const output: Record<string, Record<string, { canonicalSpec: unknown; viewModel: ComposableViewModel }>> = {};
   for (const scenario of COMPOSABLE_LAB_SCENARIOS) {
     output[scenario] = {};

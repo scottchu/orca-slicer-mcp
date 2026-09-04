@@ -138,7 +138,7 @@ const resolveNode = (node: PresentationNode, acquired: Acquired): ResolvedNode =
     if (color && color.kind !== 'color') throw new Error('Invalid card transform resolver');
     const title = resolveNode(node.children[0], acquired);
     const layout = resolveNode(node.children[1], acquired);
-    if (title.type !== 'Title' || (layout.type !== 'Stack' && layout.type !== 'Grid')) throw new Error('Invalid card resolver');
+    if ((title.type !== 'Title' && title.type !== 'Inline') || (layout.type !== 'Stack' && layout.type !== 'Grid')) throw new Error('Invalid card resolver');
     return {
       type: 'Card',
       density: node.density,
@@ -153,27 +153,33 @@ const resolveNode = (node: PresentationNode, acquired: Acquired): ResolvedNode =
     return { type: 'Stack', gap: node.gap, children: node.children.map((child) => resolveNode(child, acquired)) } as ResolvedNode;
   }
   if (node.type === 'Grid') {
-    return { type: 'Grid', gap: node.gap, columns: node.columns, children: node.children.map((child) => resolveNode(child, acquired)) } as ResolvedNode;
+    return { type: 'Grid', gap: node.gap, columns: node.columns, arrangement: node.arrangement ?? 'uniform', children: node.children.map((child) => resolveNode(child, acquired)) } as ResolvedNode;
+  }
+  if (node.type === 'Inline') {
+    const title = resolveNode(node.children[0], acquired);
+    const status = resolveNode(node.children[1], acquired);
+    if (title.type !== 'Title' || status.type !== 'HeadStatus') throw new Error('Invalid inline resolver');
+    return { type: 'Inline', gap: node.gap, distribution: node.distribution, children: [title, status] };
   }
   if (node.type === 'Title') return { type: 'Title', text: titleText(node.content), size: node.size };
   if (node.type === 'HeadStatus') {
     const value = resolveField('head.status', acquired);
     if (value.kind !== 'text') throw new Error('Invalid status resolver');
-    return { type: 'HeadStatus', value };
+    return { type: 'HeadStatus', appearance: node.appearance ?? 'default', value };
   }
   if (node.type === 'HeadTemperature') {
     const value = resolveField('head.temperature', acquired);
     if (value.kind !== 'temperature') throw new Error('Invalid temperature resolver');
-    return { type: 'HeadTemperature', value };
+    return { type: 'HeadTemperature', appearance: node.appearance ?? 'default', value };
   }
   if (node.type === 'FilamentColor') {
     const value = resolveField('filament.color', acquired);
     if (value.kind !== 'color') throw new Error('Invalid color resolver');
-    return { type: 'FilamentColor', value };
+    return { type: 'FilamentColor', appearance: node.appearance ?? 'default', value };
   }
   const value = resolveField('head.fanRelation', acquired);
   if (value.kind !== 'fanRelation') throw new Error('Invalid fan relation resolver');
-  return { type: 'FanRelation', value };
+  return { type: 'FanRelation', appearance: node.appearance ?? 'default', value };
 };
 
 const sourceSchemas = { status: statusSourceSchema, materials: materialsSourceSchema, environment: environmentSourceSchema } as const;

@@ -35,7 +35,7 @@ export const leaves: Record<string, string[]> = {
   'common/Icon.svelte': ['span'], 'common/Label.svelte': ['span'],
   'common/CircleLabel.svelte': ['span'], 'common/BoxLabel.svelte': ['span'], 'common/Name.svelte': ['span'],
   'common/Caption.svelte': ['span'], 'common/Timestamp.svelte': ['span', 'time'], 'common/DegreeValue.svelte': ['span'],
-  'common/Inline.svelte': ['span'], 'common/ReadingList.svelte': ['div'], 'common/ReadingRow.svelte': ['div'],
+  'common/Inline.svelte': ['div', 'span'], 'common/ReadingList.svelte': ['div'], 'common/ReadingRow.svelte': ['div'],
   'common/Skeleton.svelte': ['span'], 'common/StateAnnouncement.svelte': ['span'], 'observation/StatePanel.svelte': ['p'],
   'common/PercentageBackground.svelte': ['div'], 'common/Grid.svelte': ['div'],
   'common/Stack.svelte': ['div'], 'common/InfoPair.svelte': ['div', 'span'], 'common/MetricValue.svelte': ['span'],
@@ -50,7 +50,7 @@ export const leaves: Record<string, string[]> = {
   'common/Metric.svelte': ['div', 'span', 'span', 'span', 'span', 'span'], 'common/Row.svelte': ['div'],
   'common/Swatch.svelte': ['div', 'span', 'span', 'span', 'span', 'span', 'span'], 'common/Table.svelte': ['div'],
   'common/Title.svelte': ['h2'],
-  'common/Reading.svelte': ['div', 'div'], 'common/StatusLine.svelte': ['p', 'span'],
+  'common/Reading.svelte': ['div', 'div', 'span'], 'common/StatusLine.svelte': ['p', 'span'],
   'common/StaticSkeleton.svelte': ['span'],
 };
 // Untouched ready widgets, route chrome, and compatibility frame remain explicit
@@ -65,7 +65,7 @@ export const debt: Record<string, string[]> = {
   'observation/ObservationFrame.svelte': [],
   'lab/ObservationLab.svelte': ['div','main','section','section'], '../routes/+layout.svelte': [], '../routes/dashboard/fans/+page.svelte': [],
   '../routes/dashboard/thermals/+page.svelte': [], '../routes/dashboard/heads/+page.svelte': [], '../routes/dashboard/queue/+page.svelte': [],
-  '../routes/dashboard/lab/composition/+page.svelte': ['details', 'details', 'h1', 'header', 'label', 'label', 'main', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'p', 'p', 'p', 'pre', 'pre', 'section', 'section', 'section', 'select', 'select', 'summary', 'summary'],
+  '../routes/dashboard/lab/composition/+page.svelte': ['details', 'details', 'h1', 'header', 'label', 'label', 'main', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'p', 'p', 'p', 'pre', 'pre', 'section', 'section', 'section', 'select', 'select', 'summary', 'summary'],
 };
 
 export function exactTags(actual: string[], expected: string[]): boolean {

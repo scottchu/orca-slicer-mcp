@@ -67,3 +67,34 @@ export const t1LargerCompositionSpec: PresentationSpec = {
     ],
   },
 };
+
+export const t1BalancedCompositionSpec: PresentationSpec = {
+  schemaVersion: 2,
+  subject: { kind: 'toolHead', id: 'T1' },
+  root: {
+    type: 'Card',
+    density: 'compact',
+    children: [
+      {
+        type: 'Inline',
+        gap: 'regular',
+        distribution: 'split',
+        children: [
+          { type: 'Title', content: 'subject', size: 'large' },
+          { type: 'HeadStatus', appearance: 'headerBadge' },
+        ],
+      },
+      {
+        type: 'Grid',
+        columns: 'two',
+        gap: 'regular',
+        arrangement: 'lead',
+        children: [
+          { type: 'HeadTemperature', appearance: 'hero' },
+          { type: 'FilamentColor', appearance: 'quiet' },
+          { type: 'FanRelation', appearance: 'quiet' },
+        ],
+      },
+    ],
+  },
+};
