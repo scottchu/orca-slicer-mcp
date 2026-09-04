@@ -15,7 +15,7 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'PORT=4184 COMPOSABLE_KIT_FIXTURE_DIR=build-kit-composable-v2 bun --no-env-file --config=/dev/null run scripts/serve-kit-fixture.ts',
+    command: 'PORT=4184 bun --no-env-file --config=/dev/null run scripts/serve-composable-preview.ts',
     port: 4184,
     reuseExistingServer: false,
     timeout: 20_000,

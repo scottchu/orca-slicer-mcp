@@ -848,8 +848,24 @@ durable-monitor claim.
   domain contract, ADR, implementation and review. Percentage fill remains
   private-Lab-only: a production decoration requires a separate semantic
   contract because it could otherwise be mistaken for print progress, heater
-  authority, safety margin or target attainment. Existing
-  props/variants express visual/content differences. Domain compositions and
+  authority, safety margin or target attainment.
+  Any hosted composition preview must use a dedicated immutable server that
+  verifies the fixed build artifact's canonical manifest before listening and
+  preloads a closed allowlist containing only the exact private Lab page and its
+  required hashed assets. It must not import production entrypoints, dashboards,
+  tools, MCP, observation/printer, camera, auth, local configuration or process
+  authority, and must not fall back to another build. Manifest validation and
+  response loading must use one in-memory artifact snapshot, with no filesystem
+  reread after validation or while serving. Every ordinary parsed unlisted
+  origin-form route, query variant and method must return 404; CONNECT and
+  Upgrade must be explicitly denied, while parser-invalid traffic may return
+  400/close but must never expose preview/asset bytes or authority. Fixture state
+  and dashboard tool-call surfaces are forbidden. This is a private-Lab safety
+  requirement, not runtime, device or production acceptance. The generic
+  `serve-kit-fixture.ts` host must not be used to relaunch either composable
+  preview; historical v1 artifact hashes do not grant runtime authority.
+  Existing props/variants express visual/
+  content differences. Domain compositions and
   domain icon mappings remain outside common. Consolidate visual-only leaf
   variants without weakening AST/import guards or changing domain semantics;
   shared changes require all eight bundles and transitive-consumer coverage.

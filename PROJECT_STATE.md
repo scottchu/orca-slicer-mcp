@@ -1,5 +1,59 @@
 # Project state
 
+## Current candidate: authority-free immutable v2 preview server
+
+The first separately authorized v2 preview was withdrawn immediately after an
+independent runtime review returned **REQUEST_CHANGES**. Its generic fixture
+server exposed dashboard routes, and the dashboard-tools dependency defaulted an
+omitted camera reader to the real camera adapter. The reviewer did not call the
+camera tool. HTTPS 8451 and `com.openai.u1-composable-v2-preview` were removed;
+loopback 4200 was released, and the then-current raw Serve/Funnel state returned to SHA-256
+`d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`,
+the v1 preview body remained SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`,
+and production jobs remained uninterrupted. That withdrawn runtime is not
+preview acceptance evidence.
+
+A later independent safety review found that the still-running v1 preview
+likely shared the same generic-fixture camera fallback. The reviewer did not
+invoke it. The author executed only `Tailscale serve --yes --https=8450 off`
+and `launchctl remove com.openai.u1-composable-preview`. Ports 4199/4200, both
+preview labels, and TCP/Web/Funnel 8450/8451 are now absent. Raw Serve and Funnel
+status both equal the exact pre-v1 SHA-256
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`;
+production jobs and TCP/Funnel 443/10000 remain present. No generic composable
+fixture may be relaunched.
+
+The first architecture exact gate returned **REQUEST_CHANGES** on repaired
+manifest `15c19d9…` because it validated one filesystem collection and then reread the page
+and assets, leaving a construction-time validation/serving race. The renewed
+candidate collects one in-memory snapshot, hashes and validates that snapshot,
+then derives cloned page/asset response bytes only from it. It performs no
+filesystem read after validation or while serving.
+
+The dedicated immutable server serves only exact `GET`/`HEAD` requests for the
+v2 composition page and its required hashed assets. It has no production
+entrypoint, dashboard-tools, status-dashboard,
+MCP, observation-store, printer, camera, auth, local-config or child-process
+import. Root, fixture state, tools, camera, dashboard, health, widget, MCP,
+OAuth, auth, media, traversal/encoding variants, queries and every ordinary
+parsed non-allowlisted method or origin-form path return 404. CONNECT and
+Upgrade are explicitly denied; parser-invalid requests deterministically return
+400/close and can expose neither page nor asset bytes. The 35-path candidate
+application manifest is
+`c8c24103972ee7c0304b7b80c79206bc2eb65a14cde239224716480673a31148`.
+
+Author evidence passes 10 client tests, 20 server/MCP tests with 408 assertions,
+TypeScript, Svelte/component contracts, deterministic MCP verification, a
+separate v2 Kit build and four Chrome cases using the dedicated server. The
+canonical 115-file v2 build manifest remains
+`70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0b35b34e`;
+the Lab HTML remains 51,156 bytes at SHA-256
+`e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c`,
+and the v2 MCP resource remains SHA-256 `170fb8f1…`. No repaired v2 runtime or
+Tailnet listener has been launched. Exact failures, commands and limits are in
+VALIDATION; renewed independent source/runtime approval remains pending.
+
 ## Current accepted experiment: entity-bound presentation AST v2 private Lab
 
 The reviewed UI-003/F0 v2 candidate refines the isolated T1 experiment to
@@ -91,12 +145,12 @@ a separate semantic contract could misleadingly imply print progress, heater
 authority, safety margin or target attainment; this experiment accepts none of
 those meanings.
 
-The approved v1 preview below remains running from exact source `518c644`; its
-repository bytes, launchd job, loopback listener and tailnet-only Serve mapping
-were not changed by v2 authoring. No printer, auth, runtime/Tailscale,
-production-service, PR, merge or deployment action occurred.
+The reviewed v1 artifact below remains historical source evidence only. Its
+generic preview job and tailnet-only listener were removed after the camera-
+fallback safety finding. No printer, auth, production-service, PR, merge or
+deployment action occurred.
 
-## Current source and preview: entity-bound presentation AST private-lab experiment
+## Historical source and withdrawn preview: entity-bound presentation AST private-lab experiment
 
 Decision0048's exploratory T1 composition is frozen at source
 `518c6440db1d624361a1a804754590def3e330e2`, tree
@@ -112,18 +166,19 @@ project-scoped `printer_domain_expert`, acting as an independent read-only
 runtime verifier, APPROVES the exact source/tree above for this tailnet-only
 preview.
 
-The synthetic Lab is running separately as launchd job
-`com.openai.u1-composable-preview` on loopback `127.0.0.1:4199`. Tailnet-only
-HTTPS 8450 has exactly one `/` proxy to that loopback fixture. Local and Tailnet
-Lab requests return 200 with byte-identical body SHA-256
+The withdrawn synthetic Lab previously ran as launchd job
+`com.openai.u1-composable-preview` on loopback `127.0.0.1:4199`, with HTTPS
+8450 proxying one `/` route to it. Historical local and Tailnet responses were
+byte-identical at SHA-256
 `30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`.
-Serve/Funnel configuration changed from SHA-256
+That historical Serve/Funnel configuration changed from SHA-256
 `fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`
 to `d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`:
 canonical comparison after pruning only 8450 exactly equals the before state,
-the Funnel allowlist is unchanged and 8450 has no Funnel entry. Negative auth,
-OAuth and media probes expose no such routes; production jobs remained
-uninterrupted.
+the Funnel allowlist was unchanged and 8450 had no Funnel entry. The later
+endpoint-scoped safety cleanup restored the exact `fab7b9df…` baseline and
+removed the job; 4199/4200 and 8450/8451 remain absent while production jobs,
+443 and 10000 remain preserved.
 
 This is provisional private-lab learning, not production architecture or
 cutover. It binds only T1 status, actual/target temperature, configured filament
@@ -133,8 +188,7 @@ timestamps/provenance, `Unknown`, stable neutral state structure and explicit
 Lab/production isolation are accepted only in that scope. Synthetic evidence
 does not establish live mappings, printer truth, mounted-host/device behavior or
 user outcome. No production registration, service, printer, auth, PR, merge or
-deployment changed. The only runtime additions are the isolated job and the
-reversible tailnet-only 8450 Serve listener; they are not production rollout.
+deployment changed. No experiment runtime listener or job remains.
 
 Decision0049 records the separate future Camera media-bottom-overlay direction.
 No Camera implementation belongs to this experiment; current Camera remains the

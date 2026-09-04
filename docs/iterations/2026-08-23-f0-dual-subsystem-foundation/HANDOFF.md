@@ -1,5 +1,47 @@
 # F0 dual-subsystem foundation handoff
 
+## Current repair candidate: dedicated immutable v2 preview server
+
+The first v2 preview runtime was withdrawn after independent
+**REQUEST_CHANGES**: the generic fixture exposed dashboard routes and an omitted
+camera dependency could fall back to the real camera adapter. The reviewer did
+not invoke the camera. Cleanup removed only HTTPS 8451 and
+`com.openai.u1-composable-v2-preview`; 4200 is free, raw Serve/Funnel state is
+then restored at SHA-256 `d5e0f1b6…`. Later review found the v1 generic fixture
+likely shared the same fallback; the reviewer did not invoke it. Endpoint-only
+cleanup removed 8450 and `com.openai.u1-composable-preview`. Ports 4199/4200,
+both preview labels and TCP/Web/Funnel 8450/8451 are absent. Raw Serve/Funnel
+status is the exact pre-v1 `fab7b9df…` baseline; production jobs and TCP/Funnel
+443/10000 remain preserved.
+
+The current uncommitted repair adds
+`scripts/serve-composable-preview.ts` and
+`tests/server/composable-preview.test.ts`, and changes only the v2 Playwright
+server command. It verifies fixed `build-kit-composable-v2` manifest `70f99dc8…`
+before serving, preloads an exact page/hashed-asset map, and makes every ordinary
+parsed non-allowlisted origin-form path or method 404. Static import guards and an outbound canary establish the
+absence of production entrypoint, dashboard/MCP, printer/observation, camera,
+auth/config and child-process authority in this server graph.
+
+An architecture exact gate returned **REQUEST_CHANGES** on the first repair
+because manifest validation and response loading used different filesystem
+passes. The renewed server collects once, validates that exact in-memory
+snapshot and derives cloned response bytes only from it; it performs no
+post-validation filesystem read. The import guard now covers side-effect,
+dynamic and CommonJS imports. CONNECT/Upgrade are explicitly denied and invalid
+parser traffic returns deterministic 400/close; raw adversaries prove no 2xx,
+preview/asset bytes or outbound authority.
+
+Author gates pass 10 client tests, 20 server/MCP tests with 408 assertions,
+TypeScript, Svelte/component contracts, deterministic MCP verification, the
+separate v2 build and 4/4 Chrome cases. The 35-path application manifest is
+`c8c24103972ee7c0304b7b80c79206bc2eb65a14cde239224716480673a31148`;
+the build manifest `70f99dc8…`, Lab HTML `e4be14ad…` and v2 MCP resource
+`170fb8f1…` remain unchanged. Exact commands and meaningful harness failures
+are in VALIDATION. No repaired runtime/Tailscale listener was launched and
+independent review remains pending. Do not relaunch using
+`serve-kit-fixture.ts`; first review this exact candidate.
+
 ## Current accepted experiment: v2 Card/Stack/Grid private-Lab refinement
 
 The UI-003/F0 v2 experiment has three exact-identity approvals. Its 33-path
@@ -89,10 +131,10 @@ and renew affected review. DataTable is only a future Queue/History hypothesis
 pending a separate contract and ADR; do not implement DataTable, Queue, History
 or Camera in this slice.
 
-Preserve the separately approved v1 preview at source `518c644`, launchd label
-`com.openai.u1-composable-preview`, loopback 4199 and tailnet-only HTTPS 8450.
-The v2 build uses `build-kit-composable-v2`; do not overwrite v1 `build-kit`,
-restart the preview or mutate Serve. No printer, auth, runtime/Tailscale,
+Preserve the reviewed v1 bytes at source `518c644` as historical evidence only.
+Its generic preview is offline after the safety cleanup. The v2 build uses
+`build-kit-composable-v2`; do not overwrite v1 `build-kit` or relaunch either
+preview with `serve-kit-fixture.ts`. No printer, auth, runtime/Tailscale,
 production-service, PR, merge or deployment change is authorized.
 
 Evidence remains synthetic private-Lab learning. Three current Title tokens
@@ -100,7 +142,7 @@ were rendered and the other two source-inspected. No screen reader, mounted
 host, phone/device, public Internet, live Moonraker/Klipper, real printer, user
 outcome, production or full repository/browser regression was accepted.
 
-## Current source: approved tailnet-only presentation experiment preview
+## Historical source: withdrawn tailnet-only presentation experiment preview
 
 Frozen source `518c6440db1d624361a1a804754590def3e330e2`, tree
 `a79032b72e04cab6d4dc32a26c4db47024aad5c3`, has the 45-path application
@@ -121,19 +163,20 @@ full affected author renewal and the identity above. The same project-scoped
 `printer_domain_expert`, acting as independent read-only runtime verifier,
 APPROVES the exact source/tree for this tailnet-only preview.
 
-The synthetic Lab runs separately as `com.openai.u1-composable-preview` on
-`127.0.0.1:4199`, with tailnet-only HTTPS 8450 proxying only `/` to that origin.
-Local and Tailnet Lab requests pass 200 with byte-identical SHA-256
+The withdrawn synthetic Lab previously returned byte-identical local/Tailnet
+body SHA-256
 `30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`.
-Before/after Serve/Funnel hashes are respectively
+Its historical before/after Serve/Funnel hashes were respectively
 `fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`
 and `d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`.
 Pruning only the new HTTPS 8450 root proxy makes the after state canonically
-identical to before; the Funnel allowlist is unchanged, 8450 has no Funnel, and
-negative auth/OAuth/media probes expose no added surfaces. Production jobs were
-uninterrupted. Endpoint-only cleanup is
-`Tailscale serve --yes --https=8450 off`, followed by
-`launchctl remove com.openai.u1-composable-preview`.
+identical to before; the Funnel allowlist was unchanged and 8450 had no Funnel.
+After the later camera-fallback finding, endpoint-only cleanup executed
+`Tailscale serve --yes --https=8450 off` followed by
+`launchctl remove com.openai.u1-composable-preview`. Current raw Serve/Funnel
+status is the exact `fab7b9df…` pre-v1 baseline; 4199/4200, both preview labels
+and TCP/Web/Funnel 8450/8451 are absent. Production jobs and 443/10000 remain.
+Do not recommend or perform a generic-fixture relaunch.
 
 Decision0048 accepts only the isolated private-lab experiment: fixed T1, four
 closed domain leaves, common layout nodes, strict correlated envelopes,

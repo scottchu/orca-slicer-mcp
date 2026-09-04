@@ -1,5 +1,128 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-04 authority-free v2 preview repair candidate
+
+### Withdrawn preview and safety response
+
+The first authorized v2 preview used the generic `serve-kit-fixture.ts` host.
+Independent runtime review returned **REQUEST_CHANGES** because that server
+exposed dashboard routes and `dashboard-tools.ts` defaulted an omitted
+`readCameraFrame` dependency to the real camera adapter. The reviewer did not
+invoke the camera. The endpoint-scoped cleanup immediately disabled only HTTPS
+8451 and removed only `com.openai.u1-composable-v2-preview`. Loopback 4200 was
+released; the then-current raw Serve/Funnel state returned to its exact pre-v2 SHA-256
+`d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`;
+the v1 4199/8450 Lab body remained SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`;
+and production jobs remained uninterrupted. No repaired runtime or Tailscale
+mapping has been launched. The withdrawn preview is failure evidence, not
+acceptance evidence.
+
+### Subsequent v1 safety cleanup
+
+Independent review then found the pre-existing v1 preview likely shared the
+same generic-fixture real-camera fallback. The reviewer did not invoke it. The
+author executed only:
+
+- `Tailscale serve --yes --https=8450 off`
+- `launchctl remove com.openai.u1-composable-preview`
+
+Read-only verification found 4199/4200 free; both preview labels absent; and
+8450/8451 absent from TCP, Web and Funnel. Raw `Tailscale serve status --json`
+and `Tailscale funnel status --json` each returned the exact pre-v1 SHA-256
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`.
+Production jobs remained loaded/running with successful last-exit status, and
+TCP/Funnel 443/10000 remained present. No route or tool was invoked. The v1
+source/tree, application manifest, MCP resource and historical body hash below
+remain artifact evidence only; they do not authorize relaunching the generic
+server.
+
+### Dedicated server contract and author evidence
+
+`scripts/serve-composable-preview.ts` imports only Node crypto, filesystem,
+HTTP and URL modules. Before listening it verifies the fixed
+`build-kit-composable-v2` artifact against canonical manifest
+`70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0b35b34e`,
+then preloads a closed path-to-bytes map. Only exact `GET`/`HEAD` requests for
+`/dashboard/lab/composition`, its HTML-referenced hashed assets and the exact
+SvelteKit hydration node required by that page can succeed. There is no request
+path to filesystem join and no fallback build. Root, fixture state, tools,
+camera, every other dashboard, widget, health, MCP, OAuth, auth, media,
+query/trailing/encoded/dot/backslash variants and ordinary parsed unlisted
+methods return 404. CONNECT and Upgrade are explicitly denied with no body;
+parser-invalid requests deterministically return 400/close rather than being
+misrepresented as application routes.
+Static guards reject production entrypoint, dashboard-tools/status-dashboard,
+MCP, PrinterObservationStore, u1-status, camera, auth, local-config and
+child-process imports. An outbound canary receives zero requests even when the
+forbidden body names `get_u1_camera_frame`.
+
+The first architecture exact gate returned **REQUEST_CHANGES** on 35-path
+manifest `15c19d91724acdd0129b0e83e2d1b86875f37c1831da01985ed71248ec71e176`
+because the initial repair collected and validated the manifest, then reread artifact files
+and the page in separate passes. That time-of-check/time-of-use gap meant served
+bytes were not necessarily the validated bytes. The renewed implementation
+collects one safe-relative-path-to-Buffer snapshot, computes the durable
+manifest from that exact snapshot, validates it, and derives cloned page/asset
+responses only from the same snapshot. It makes no filesystem read after
+validation or while serving. A mutation adversary changes the caller-held
+snapshot after server construction: the server retains the validated bytes,
+while reconstructing from the changed snapshot fails the manifest gate.
+
+Independent raw-protocol probing of the earlier candidate also established
+that TRACE origin-form parsed to the application 404, while invalid `BREW`,
+CONNECT and some non-origin-form traffic were handled at Node's parser/protocol
+boundary. The renewed server explicitly handles CONNECT, Upgrade and
+`clientError`. Raw TRACE, OPTIONS `*`, CONNECT, Upgrade and invalid-method tests
+prove no 2xx response, preview body, asset body or outbound acquisition without
+claiming that parser-invalid traffic is an application 404.
+
+From `plugins/u1-print-studio/app`, commands actually run:
+
+- `bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`
+  first failed two manifest assertions because JavaScript `localeCompare` did
+  not reproduce the durable `LC_ALL=C` pathname order. A code-unit comparator
+  fixed the implementation. A second run had one test-harness failure because
+  `fetch` normalized a dot-segment URL before transmission; the adversary now
+  uses a raw HTTP request and proves the received target returns 404. The final
+  focused run passes 4 tests with 316 assertions after the snapshot and raw-
+  protocol adversaries were added.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts`
+  passes 20 tests with 408 assertions.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable`
+  passes 2 files and 10 tests.
+- `bun --no-env-file --config=/dev/null run check` passes.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passes
+  and reconstructs the exact 145,363-byte v2 resource.
+- With `$BUN` bound to the pinned Bun 1.4.0 executable,
+  `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 "$BUN" --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build`
+  passes; the canonical 115-file build manifest is unchanged at `70f99dc8…`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  first passed geometry but failed two hydration cases because the closed map
+  lacked the dynamically requested node `/_app/immutable/nodes/1.BieyvGzI.js`.
+  Adding that exact manifest-bound asset did not open a route family. The fresh
+  final run passes all 4 Chrome cases at 320/720, including 100%/200% text,
+  known/loading/error/partial/ambiguous geometry, forced colors and reduced
+  motion. The server and browser children and port 4184 were released.
+
+The repaired 35-path application-set manifest is
+`c8c24103972ee7c0304b7b80c79206bc2eb65a14cde239224716480673a31148`.
+The Lab HTML remains 51,156 bytes at SHA-256
+`e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c`;
+the v2 MCP resource remains 145,363 bytes at SHA-256
+`170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`.
+Renewed synthetic screenshots are under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`; representative
+SHA-256 values are `edfb0d9a…` for known 320px, `e7614206…` for known 720px,
+`bb737e5f…` for known 320px/200%, and `524cd03f…` for known 720px/200%.
+
+This is author-side software/browser evidence only. Renewed independent source
+and runtime approval of this repair is pending. There is no relaunched preview,
+Tailnet, mounted host, public Internet, real printer, live Moonraker/Klipper,
+Camera, auth-flow, phone/device, screen-reader or user-outcome evidence.
+
 ## 2026-09-03 presentation AST v2 author candidate
 
 ### Acceptance target and safety boundary
@@ -21,7 +144,8 @@ semantics, deduplicated readers, correlated provenance/timestamps, a private
 route and isolated v2 MCP factory/resource absent from production registration.
 No DataTable, Queue, History or Camera implementation; no printer, auth,
 runtime/Tailscale, production-service, PR, merge or deployment action is in
-scope. The running v1 preview is deliberately untouched.
+scope. The then-running v1 preview was initially untouched and was later removed
+by the endpoint-scoped safety cleanup above.
 
 ### Author implementation and focused evidence
 
@@ -366,13 +490,14 @@ worktree and endpoint-scoped cleanup. It returned **APPROVE** for the
 tailnet-only composable preview at exact source `518c644`, tree `a79032`. There
 is no separate review report artifact or hash.
 
-Reversible cleanup affects only this experiment:
+The later safety cleanup affected only this experiment and executed:
 
 - `Tailscale serve --yes --https=8450 off`
 - `launchctl remove com.openai.u1-composable-preview`
 
-Do not use Serve/Funnel reset. This approval is same-enrolled-host synthetic
-runtime evidence only: it does not establish browser/device visual behavior,
+Do not use Serve/Funnel reset or relaunch this generic fixture. The earlier
+approval is historical same-enrolled-host synthetic runtime evidence only: it
+does not establish browser/device visual behavior,
 public Internet access, a real printer, Camera, an auth flow or user outcome.
 
 ### Records-only tail verification
@@ -401,11 +526,10 @@ The MCP resource remains exactly 137,936 bytes at SHA-256
 `6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
 The documentation path allowlist, CURRENT files, decision0048/0049 unique-file,
 index and requirements references, private-identifier guard and whole-range
-`git diff --check HEAD^` all passed. A final read-only runtime recheck found the
-named job running, Serve and Funnel status still at the exact after hash, and
-local/Tailnet Lab responses still 200 with the body hash above. Under the
-documentation-only cadence, unchanged application bytes retain the affected
-author gate; no full application or browser suite was repeated for bookkeeping.
+`git diff --check HEAD^` all passed. That tail's final runtime recheck found the
+job and endpoint live at the historical after hash. The later safety finding and
+endpoint-only cleanup supersede that runtime state: current raw Serve/Funnel is
+the exact `fab7b9df…` pre-v1 baseline and no experiment listener/job remains.
 
 ### Evidence limits
 
@@ -415,8 +539,8 @@ accuracy/safety, actual-device usability, Camera behavior, recovery interaction,
 production suitability or user outcome. T1 is the only subject. The Lab MCP
 factory is an isolated proof and production inventory remains unchanged. No
 printer, production-service or auth action, PR, merge or deployment occurred.
-The only host/network additions are the separately named synthetic launchd job
-and endpoint-scoped tailnet-only 8450 Serve listener described above.
+No experiment host/network addition remains. Both composable previews are
+offline pending exact authority-free review.
 
 ## Current deployment: PR106 exact release and BOTH service restarts
 
