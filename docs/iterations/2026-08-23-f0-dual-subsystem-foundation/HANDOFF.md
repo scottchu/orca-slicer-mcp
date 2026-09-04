@@ -42,9 +42,29 @@ three readers once; resolved Inline/Grid/appearance/provenance tampering rejects
 
 The independent review did not repeat the full browser matrix, `ui:check` or
 write-producing builds; author reconstruction proves unchanged Kit/HTML/MCP
-bytes. Do not touch live 4200/8451, Tailscale, auth, printer, Camera, production,
-PR/merge/deploy without new authority. The MCP process-lifecycle safeguard plan
-remains unimplemented.
+bytes.
+
+Subsequent preview-only authorization restarted only the existing launchd job
+from exact source `f4a56bc…`, tree `ab3d4fec…`: PID 90967 became 86363. Its
+exact dedicated Bun script has no children and only loopback 4200. Local and
+Tailnet 8451 return exact 66,589-byte `b212f969…` HTML and all 23 assets; the
+author-format closure is `52e80455…`. Independent runtime review **APPROVES**
+after nine closed HTTP adversaries per origin.
+
+Fresh Serve/Funnel JSON hashes are `2eb56116…` with terminal LF and `063ecd46…`
+without. The prior durable hashes were stale, but both CLI paths agreed and 8451
+remained exclusively Tailnet HTTPS `/` to `127.0.0.1:4200` with Funnel off; no
+Tailscale config was rewritten. Production PIDs 834/841 and listeners 8787/
+8789 plus 8788 are unchanged.
+
+Independent 390x844 Chrome fallback inspected Known, Ambiguous, Loading and
+Error at identical 374x304.695 Card geometry with a 340x110.148 hero and paired
+164x100.547 secondary readings. Screenshots are `3c92d790…`, `8eb51e8f…`,
+`c2f7bc04…` and `760f4233…`; no overflow, page/scenario request or console issue
+appeared. Fan and loading/error semantics are truthful. Do not touch runtime,
+Tailscale, auth, printer, Camera, production, PR/merge/deploy without new
+authority. No Safari/iPhone, mounted ChatGPT, screen-reader, printer or user-
+outcome acceptance exists. The lifecycle safeguard plan remains unimplemented.
 
 ## Current accepted experiment: build-time element registry, no temperature fill
 

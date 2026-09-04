@@ -58,12 +58,31 @@ reader calls; valid balanced acquisition calls each of the three readers once;
 resolved Inline/Grid/appearance/provenance tampering rejects. The exact nine-
 entry adapter walk, A hashes, balanced hash and `0.0.4-provisional` version pass.
 
-The existing 4200/8451 preview was not changed or restarted. Review did not
-repeat the full browser matrix, `ui:check`, or write-producing MCP/Kit builds;
-the author's fresh deterministic reconstruction binds the unchanged artifacts.
-There is no iPhone/Safari, mounted ChatGPT, screen-reader, real-printer,
-production or user-outcome acceptance. The MCP process-lifecycle safeguards
-remain recorded but unimplemented.
+After those source/design approvals, the authorized preview-only activation
+restarted the existing launchd job from exact source `f4a56bc…`, tree
+`ab3d4fec…`: PID 90967 became 86363. The exact dedicated Bun script has no
+children and listens only on `127.0.0.1:4200`. Local and existing Tailnet 8451
+serve exact 66,589-byte HTML `b212f969…` and all 23 byte-identical assets;
+the author-format closure is `52e80455…`. Independent runtime review
+**APPROVES** after nine closed HTTP adversaries per origin.
+
+The newly observed Serve/Funnel JSON baseline is `2eb56116…` including terminal
+LF and `063ecd46…` without it. The earlier durable raw hashes were stale; both
+installed CLI paths agreed on the new observation, while scoped 8451 semantics
+remained solely Tailnet HTTPS `/` to `127.0.0.1:4200` with Funnel off. No
+Tailscale configuration was reconciled or rewritten. Production PIDs 834/841
+and listeners 8787/8789 plus 8788 remain preserved.
+
+Independent Chrome fallback inspection at 390x844 covers Known, Ambiguous,
+Loading and Error with identical 374x304.695 Card geometry, full-width
+340x110.148 temperature hero, paired 164x100.547 secondary readings and no
+horizontal overflow. Known says `Part cooling`, ambiguity says `Unknown`,
+loading is animated neutral and error is static neutral. Screenshot SHA-256s
+are `3c92d790…`, `8eb51e8f…`, `c2f7bc04…` and `760f4233…`, respectively.
+
+Review did not repeat `ui:check`; there is no Safari/iPhone, mounted ChatGPT,
+screen-reader, real-printer or user-outcome acceptance. The MCP process-
+lifecycle safeguards remain recorded but unimplemented.
 
 ## Current accepted experiment: closed build-time composable registry
 

@@ -32,10 +32,24 @@ The independent visual disposition has no P0-P3 finding. Combined comparison
 SHA-256 `96870d17…`, implementation crop `b8bd858a…`, and 200% capture
 `01299e17…` remain attributed run evidence. No independent browser rerun or
 `ui:check` occurred after the runtime-erased cast fix; author reconstruction
-proved Kit/HTML/MCP byte identity. Do not restart/repoint 4200/8451, alter
-Tailscale, auth, printer, Camera or production registration, open a PR, merge or
-deploy without new authority. The lifecycle safeguard plan remains separate and
-unimplemented.
+proved Kit/HTML/MCP byte identity.
+
+Preserve the independently accepted live preview at source `f4a56bc…`, tree
+`ab3d4fec…`, PID 86363. It runs the exact dedicated Bun script with no children
+and only loopback 4200. Local and Tailnet 8451 serve 66,589-byte `b212f969…`
+HTML plus 23 exact assets; closure SHA-256 is `52e80455…`. Nine closed HTTP
+adversaries per origin pass. The observed Tailscale baseline is `2eb56116…`
+with LF / `063ecd46…` without it; earlier recorded hashes were stale, while 8451
+remained solely Tailnet HTTPS `/` to loopback 4200 with Funnel off. Production
+PIDs 834/841 and listeners 8787/8789 plus 8788 are unchanged.
+
+At 390x844, independent Chrome fallback inspected Known `3c92d790…`, Ambiguous
+`8eb51e8f…`, Loading `c2f7bc04…` and Error `760f4233…`. Card/header/lead geometry
+is stable, no overflow occurs, fan ambiguity is truthful, and loading/error
+motion is correct. Do not alter 4200/8451, Tailscale, auth, printer, Camera,
+production registration, open a PR, merge or deploy without new authority. No
+Safari/iPhone, mounted ChatGPT, screen-reader, printer or user-outcome evidence
+exists. The lifecycle safeguard plan remains separate and unimplemented.
 
 ## Preserve the accepted build-time registry experiment
 

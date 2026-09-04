@@ -4,9 +4,10 @@
 
 ### Boundary and retained failures
 
-Decision0051 is an additive UI-003 experiment only. It does not change the three
-A specs, production registration, printer/Camera/auth/Tailscale or the live
-4200/8451 preview. The first compile exposed an existing shared `Inline`
+Decision0051 is an additive UI-003 experiment only. Its implementation does not
+change the three A specs, production registration, printer/Camera/auth/Tailscale.
+The subsequently authorized activation restarted only the existing private
+4200/8451 preview job, as recorded below. The first compile exposed an existing shared `Inline`
 consumer contract; the implementation was corrected additively with no consumer
 rewrite. Early browser runs found a zero-width header loading skeleton, 4–16px
 ready-state height drift, 5–81px 200%-text drift and a lead Grid growing beyond
@@ -70,6 +71,55 @@ the full browser matrix. Author reconstruction freshly establishes unchanged
 artifact bytes. Limits include no iPhone/Safari, mounted ChatGPT, screen reader,
 physical printer/Moonraker, public Internet, live-preview replacement or user
 outcome acceptance.
+
+### Authorized preview activation and independent runtime approval
+
+The only activation command was `launchctl kickstart -k` for the existing
+`com.openai.u1-composable-v2-preview` job. Exact source
+`f4a56bc6939904d7fb493e4ae4df6f0c6ea3f33f`, tree
+`ab3d4fec325e54dd438ab53c42dc008629a94423`, changed preview PID 90967 to
+86363. The old PID was reaped. The new exact worktree Bun script has no child
+and only `127.0.0.1:4200` after probes.
+
+Local and Tailnet 8451 each serve HTTP 200 with exact 66,589-byte HTML SHA-256
+`b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`.
+All 23 allowed assets match their source bytes, lengths and immutable-cache
+headers. The exact 2,371-byte author-format closure SHA-256 is
+`52e80455014196d63d431465657d8f2e5e7752aab531a316776282e669cff5f2`
+at both origins. Nine focused cases per origin pass: valid empty-body HEAD;
+POST, query, trailing slash, health, MCP, Camera, queried asset and absent asset
+all return closed 404 responses.
+
+The first activation preflight stopped without mutation because the earlier
+durable raw Tailscale hashes were stale. The coordinator adopted the freshly
+observed baseline only after both CLI paths agreed and scoped 8451 semantics
+were exact. Serve and Funnel JSON remain
+`2eb561166fa5b7f50e680f8a98b3bc4b59f03f3d9798b560745ed21a5afb6ba0`
+including terminal LF and
+`063ecd465901d269c63295bfd75acc7aed240455e3f21ca8550b1bae6bb784b3`
+without it. Port 8451 remains Tailnet-only HTTPS, solely `/` to
+`http://127.0.0.1:4200`, with Funnel disabled. No Tailscale config was changed.
+Production PIDs 834/841 and listeners 8787/8789 plus 8788 remain preserved.
+
+Independent runtime review **APPROVES**. At 390x844 Chrome fallback, Known,
+Ambiguous, Loading and Acquisition failure retain a 374x304.695 Card, 56px
+header, 372x246.695 lead Grid, 340x110.148 temperature hero and paired
+164x100.547 secondary readings. Document width is 390/390 with no overflow.
+Known displays `Part cooling`; ambiguity displays `Unknown`; loading uses
+animated neutral skeletons and error uses static neutral skeletons with the
+same topology and geometry. No page/scenario request, console warning or error
+appeared. Fresh screenshots are:
+
+- Known: 42,229 bytes, `3c92d790d676142f7efa7ad60e7a8fdf7f4546f8f3ad9d8e89d4b47cd7603d83`.
+- Ambiguous: 41,745 bytes, `8eb51e8ff24808080d5ebe97c77a95314c37f893fba9fa67a3a977650c4c8d23`.
+- Loading: 37,331 bytes, `c2f7bc04db3766f2ebb87f68a79f244f8930d8d3cfbdcb44b4d88277fa4a4bc8`.
+- Error: 38,015 bytes, `760f42332ab49ff82a225c156c8417dbd915bdced7906604bf1c6ecf783e7c3b`.
+
+The in-app browser was unavailable, so Chrome was used and then closed. This
+does not establish Safari/iPhone, mounted ChatGPT, screen-reader, physical
+printer/Moonraker or user-outcome acceptance. Repository, Tailscale, auth,
+printer and production state remained unchanged apart from the authorized
+isolated preview PID replacement.
 
 ## 2026-09-04 accepted build-time registry and temperature-fill retirement experiment
 
