@@ -19,18 +19,26 @@ export type ResolvedTemperatureValue = Extract<ResolvedValue, { kind: 'temperatu
 export type ResolvedColorValue = Extract<ResolvedValue, { kind: 'color' }>;
 export type ResolvedFanRelationValue = Extract<ResolvedValue, { kind: 'fanRelation' }>;
 
-export type ResolvedNode =
-  | { type: 'Card'; tint: { kind: 'softTint'; color: string; strength: 'subtle' } | null; transformEvidence: ResolvedColorValue | null; children: ResolvedNode[] }
-  | { type: 'Title'; text: string }
-  | { type: 'Table'; children: ResolvedNode[] }
-  | { type: 'Row'; children: ResolvedNode[] }
+export type ResolvedDomainNode =
   | { type: 'HeadStatus'; value: ResolvedTextValue }
   | { type: 'HeadTemperature'; value: ResolvedTemperatureValue }
   | { type: 'FilamentColor'; value: ResolvedColorValue }
-  | { type: 'FanRelation'; value: ResolvedFanRelationValue };
+  | { type: 'FanRelation'; value: ResolvedFanRelationValue }
+  | { type: 'PercentageFill'; child: { type: 'HeadTemperature'; value: ResolvedTemperatureValue } };
+export type ResolvedTitleNode = { type: 'Title'; text: string; size: 'medium' | 'large' };
+export type ResolvedStackNode = { type: 'Stack'; gap: 'compact' | 'regular' | 'relaxed'; children: ResolvedDomainNode[] };
+export type ResolvedGridNode = { type: 'Grid'; columns: 'one' | 'two'; gap: 'compact' | 'regular' | 'relaxed'; children: ResolvedDomainNode[] };
+export type ResolvedCardNode = {
+  type: 'Card';
+  density: 'compact' | 'comfortable';
+  tint: { kind: 'softTint'; color: string; strength: 'subtle' } | null;
+  transformEvidence: ResolvedColorValue | null;
+  children: [ResolvedTitleNode, ResolvedStackNode | ResolvedGridNode];
+};
+export type ResolvedNode = ResolvedCardNode | ResolvedTitleNode | ResolvedStackNode | ResolvedGridNode | ResolvedDomainNode;
 
 export type ComposableViewModel = {
-  schemaVersion: 1;
+  schemaVersion: 2;
   canonicalSpecSha256: string;
   state: 'ready' | 'error' | 'loading';
   generatedAt: string;
@@ -42,7 +50,7 @@ export type ComposableViewModel = {
     observedAt: string | null;
     receivedAt: string | null;
   }>;
-  root: ResolvedNode;
+  root: ResolvedCardNode;
 };
 
 const timestamp = z.string().datetime({ offset: true });
@@ -78,21 +86,34 @@ export const resolvedValueSchema = z.discriminatedUnion('kind', [
   resolvedColorValueSchema,
   resolvedFanRelationValueSchema,
 ]).superRefine((value, context) => { if (value.kind === 'fanRelation') validateFanRelation(value, context); });
-const resolvedNodeSchema: z.ZodType<ResolvedNode> = z.lazy(() => z.discriminatedUnion('type', [
-  z.object({
-    type: z.literal('Card'),
-    tint: z.object({ kind: z.literal('softTint'), color: z.string().regex(/^#[0-9A-F]{6}$/u), strength: z.literal('subtle') }).strict().nullable(),
-    transformEvidence: resolvedColorValueSchema.nullable(),
-    children: z.array(resolvedNodeSchema).min(1).max(24),
-  }).strict(),
-  z.object({ type: z.literal('Title'), text: z.string().min(1).max(80) }).strict(),
-  z.object({ type: z.literal('Table'), children: z.array(resolvedNodeSchema).min(1).max(12) }).strict(),
-  z.object({ type: z.literal('Row'), children: z.array(resolvedNodeSchema).min(1).max(6) }).strict(),
-  z.object({ type: z.literal('HeadStatus'), value: resolvedTextValueSchema }).strict(),
-  z.object({ type: z.literal('HeadTemperature'), value: resolvedTemperatureValueSchema }).strict(),
-  z.object({ type: z.literal('FilamentColor'), value: resolvedColorValueSchema }).strict(),
-  z.object({ type: z.literal('FanRelation'), value: resolvedFanRelationValueSchema }).strict(),
-]));
+const resolvedHeadStatusNodeSchema = z.object({ type: z.literal('HeadStatus'), value: resolvedTextValueSchema }).strict();
+const resolvedHeadTemperatureNodeSchema = z.object({ type: z.literal('HeadTemperature'), value: resolvedTemperatureValueSchema }).strict();
+const resolvedFilamentColorNodeSchema = z.object({ type: z.literal('FilamentColor'), value: resolvedColorValueSchema }).strict();
+const resolvedFanRelationNodeSchema = z.object({ type: z.literal('FanRelation'), value: resolvedFanRelationValueSchema }).strict();
+const resolvedPercentageFillNodeSchema = z.object({ type: z.literal('PercentageFill'), child: resolvedHeadTemperatureNodeSchema }).strict();
+const resolvedDomainNodeSchema: z.ZodType<ResolvedDomainNode> = z.discriminatedUnion('type', [
+  resolvedHeadStatusNodeSchema,
+  resolvedHeadTemperatureNodeSchema,
+  resolvedFilamentColorNodeSchema,
+  resolvedFanRelationNodeSchema,
+  resolvedPercentageFillNodeSchema,
+]);
+const resolvedTitleNodeSchema: z.ZodType<ResolvedTitleNode> = z.object({
+  type: z.literal('Title'), text: z.enum(['Tool head T1', 'T1 compact status', 'T1 inspection group', 'T1 material', 'T1 status']), size: z.enum(['medium', 'large']),
+}).strict();
+const resolvedStackNodeSchema: z.ZodType<ResolvedStackNode> = z.object({
+  type: z.literal('Stack'), gap: z.enum(['compact', 'regular', 'relaxed']), children: z.array(resolvedDomainNodeSchema).min(1).max(8),
+}).strict();
+const resolvedGridNodeSchema: z.ZodType<ResolvedGridNode> = z.object({
+  type: z.literal('Grid'), columns: z.enum(['one', 'two']), gap: z.enum(['compact', 'regular', 'relaxed']), children: z.array(resolvedDomainNodeSchema).min(1).max(8),
+}).strict();
+const resolvedCardNodeSchema: z.ZodType<ResolvedCardNode> = z.object({
+  type: z.literal('Card'),
+  density: z.enum(['compact', 'comfortable']),
+  tint: z.object({ kind: z.literal('softTint'), color: z.string().regex(/^#[0-9A-F]{6}$/u), strength: z.literal('subtle') }).strict().nullable(),
+  transformEvidence: resolvedColorValueSchema.nullable(),
+  children: z.tuple([resolvedTitleNodeSchema, z.union([resolvedStackNodeSchema, resolvedGridNodeSchema])]),
+}).strict();
 const sourceSchema = z.object({
   source: z.enum(['environment', 'materials', 'status']),
   state: z.enum(['available', 'unavailable', 'loading']),
@@ -101,7 +122,7 @@ const sourceSchema = z.object({
 }).strict();
 
 export const composableViewModelSchema: z.ZodType<ComposableViewModel> = z.object({
-  schemaVersion: z.literal(1),
+  schemaVersion: z.literal(2),
   canonicalSpecSha256: z.string().regex(/^[0-9a-f]{64}$/u),
   state: z.enum(['ready', 'error', 'loading']),
   generatedAt: timestamp,
@@ -111,7 +132,7 @@ export const composableViewModelSchema: z.ZodType<ComposableViewModel> = z.objec
     fields: z.array(z.enum(['head.status', 'head.temperature', 'filament.color', 'head.fanRelation'])).min(1).max(4),
   }).strict()).min(1).max(3),
   sources: z.array(sourceSchema).min(1).max(3),
-  root: resolvedNodeSchema,
+  root: resolvedCardNodeSchema,
 }).strict().superRefine((model, context) => {
   const dependencySources = model.dependencies.map(({ source }) => source);
   const sourceNames = model.sources.map(({ source }) => source);
@@ -122,6 +143,7 @@ export const composableViewModelSchema: z.ZodType<ComposableViewModel> = z.objec
   const expectedState = model.state === 'ready' ? 'available' : model.state === 'loading' ? 'loading' : null;
   if (expectedState && model.sources.some((source) => source.state !== expectedState)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Presentation state does not match sources' });
   if (model.state === 'error' && !model.sources.some((source) => source.state === 'unavailable')) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Error presentation has no unavailable source' });
+  if (model.state === 'error' && model.sources.some((source) => source.state === 'loading')) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Error presentation cannot carry loading sources' });
   for (const source of model.sources) {
     if ((source.observedAt === null) !== (source.receivedAt === null)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Source timestamps are incomplete' });
     const timed = source.observedAt !== null && source.receivedAt !== null;
@@ -143,15 +165,27 @@ export const composableViewModelSchema: z.ZodType<ComposableViewModel> = z.objec
       validateFanRelation(value, context);
     }
   };
+  const resolvedFields = new Map<PresentationField, ResolvedValue>();
   const visit = (node: ResolvedNode): void => {
     if ('children' in node) node.children.forEach(visit);
+    if (node.type === 'PercentageFill') visit(node.child);
     if (node.type === 'Card' && node.transformEvidence) validateValue(node.transformEvidence, 'materials');
     if (!('value' in node)) return;
     const field: PresentationField = node.type === 'HeadStatus' ? 'head.status' : node.type === 'HeadTemperature' ? 'head.temperature' : node.type === 'FilamentColor' ? 'filament.color' : 'head.fanRelation';
     const expectedSource: SourceGroup = field === 'filament.color' ? 'materials' : field === 'head.fanRelation' ? 'environment' : 'status';
     validateValue(node.value, expectedSource);
+    const prior = resolvedFields.get(field);
+    if (prior && JSON.stringify(prior) !== JSON.stringify(node.value)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Repeated field values diverge' });
+    else if (!prior) resolvedFields.set(field, node.value);
   };
   visit(model.root);
+  const transformEvidence = model.root.transformEvidence;
+  const visibleColor = resolvedFields.get('filament.color');
+  const expectedTint = transformEvidence?.state === 'known' && transformEvidence.hex
+    ? { kind: 'softTint', color: transformEvidence.hex, strength: 'subtle' }
+    : null;
+  if (JSON.stringify(model.root.tint) !== JSON.stringify(expectedTint)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Card tint diverges from transform evidence' });
+  if (transformEvidence && visibleColor && JSON.stringify(transformEvidence) !== JSON.stringify(visibleColor)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Card transform evidence diverges from visible filament color' });
 });
 
 // The client needs a strict envelope check before any node reaches the renderer.

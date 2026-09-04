@@ -1,5 +1,105 @@
 # F0 dual-subsystem foundation handoff
 
+## Current accepted experiment: v2 Card/Stack/Grid private-Lab refinement
+
+The UI-003/F0 v2 experiment has three exact-identity approvals. Its 33-path
+changed/new application manifest is
+`a6cfa40f0f23e62832fa7696a41472c10097b8bbc36141cd5f87af2a4deb2580`;
+the isolated 145,363-byte MCP resource SHA-256 is
+`170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`.
+Author checks pass 10 client tests, 16 server/MCP tests with 92 assertions,
+TypeScript/Svelte/component contracts, deterministic resource verification, a
+separate Kit build and four Chrome cases. VALIDATION records exact commands,
+harness failures, screenshot hashes and limits.
+
+The first exact-candidate design gate requested changes: known/loading/error/
+partial/ambiguous geometry diverged by 28–205px at 200% text, the larger 720px
+temperature could leave `C` alone, and the fixed-pixel Lab h1 became smaller
+than Card h2. The author repair uses font-relative structural reserve geometry
+for each closed domain value and the persistent status line, without fake
+domain/sample content; target and unit are nonbreaking; and the Lab h1 now scales
+in rem.
+Renewed Chrome asserts all five states for card/compact/larger at both 100% and
+200%, 320/720, with no more than 1px state delta.
+
+Independent exact-candidate review returned **REQUEST_CHANGES** on the
+superseded 36-path manifest `3bfe7a…` and 145,207-byte resource `6f8c92…` because
+the hidden `FilamentColor` reserve embedded `#E89B3C` as synthetic configured-
+color evidence. Its fresh MCP/server run was 13/14, invalidating the earlier
+14/14 author claim for that exact identity. The renewed candidate removes every
+domain/sample reserve value and hidden status reserve text, uses only closed
+structural sizing, and adds generated-resource exclusions plus static leaf/status
+reserve audits. That rejected identity remains historical evidence only.
+
+The next printer-domain exact gate returned **REQUEST_CHANGES** on superseded
+manifest `0d65c458…` and resource `b529a0b6…`. It demonstrated that arbitrary
+Title text could make the fixed T1 subject claim T2, duplicate resolved fields
+and transform/visible filament color could disagree under one receipt, and a
+global error could still carry a loading source. The renewed candidate replaces
+Title text with closed T1-derived content tokens, rejects duplicate fields at
+the strict spec boundary, enforces exact repeated-value and transform/tint/color
+correlation, and makes error sources only available or unavailable with at least
+one unavailable. Partial healthy values remain visible and all error skeletons
+are static.
+
+Screenshot-first UI/UX **APPROVES** exact manifest `a6cfa40f…` / resource
+`170fb8f1…`: all 60 width/text/shape/state groups measured 0px renderer-height
+drift and zero overflow, skeleton minimum was 64.58×17.5px, loading animated,
+error remained static, reduced motion removed animation, h1 56px exceeded h2
+44px, target/unit stayed atomic, only Card retained a border and forced colors
+were neutral. No reserve/sample sentinel remained. Design report SHA-256 is
+`64dfadbf482d6f10a85131404f5a354e3ce8ba18b99cdb1c91e1b34ab701c322`.
+
+The project-scoped `printer_domain_expert` **APPROVES** the same identity after
+fresh 16/16 server/MCP with 92 assertions and 10/10 client tests, including the
+title, duplicate, tint/color, error/loading, target-zero, fan, dedup, timestamp
+and partial-static-error adversaries. Independent verification **APPROVES** it
+after 27/27 composable/percentage tests, 16/16 server/MCP, TypeScript, Svelte
+0/0, component contracts, exact temporary MCP reconstruction and fresh Chrome.
+Production registration/imports stayed negative and the v1 resource/build/live
+response remained unchanged. One initial compact-partial browser expectation
+ignored that compact has no environment dependency; the corrected dependency-
+shaped assertion passed and owned children were cleaned.
+
+Changed application paths are the composable schema/planner/view-model/envelope,
+fixed specs, server acquisition/factory/fixture, client host placeholders,
+Svelte renderer and common Card/Title/Stack/Grid/Reading primitives, private Lab
+page, test-only separate Kit/fixture/Playwright configuration, MCP builder and
+focused client/server/browser tests. The new generated resource is
+`public/mcp-composable-lab-v2.html`; the v1 resource is unchanged.
+
+The v2 wire contract binds T1 once and requires `Card` + `Title` + one `Stack`
+or `Grid`. It rejects version 1, Table, Row, DataTable and arbitrary fields.
+Layout/density/title tokens are closed. `PercentageFill` wraps only
+`HeadTemperature` and derives decoration from its validated actual/target
+evidence through common `PercentageBackground`; invalid relations are neutral.
+Reader deduplication, exact envelope/provenance correlation, truthful fan
+Unknown/unavailable distinctions, partial failures and stable loading/error
+topology remain enforced. Production factory imports and inventory stay
+negative; only the explicit Lab factory exposes the v2 tool/resource.
+
+The percentage fill remains private-Lab-only and has no accepted production
+meaning. Reusing it in production could falsely imply progress, heater
+authority, safety margin or target attainment, so adoption needs a separate
+semantic contract and review.
+
+Next action, if requested, is user/product review or a separately scoped
+production decision. Recompute the source-set identity after any future change
+and renew affected review. DataTable is only a future Queue/History hypothesis
+pending a separate contract and ADR; do not implement DataTable, Queue, History
+or Camera in this slice.
+
+Preserve the separately approved v1 preview at source `518c644`, launchd label
+`com.openai.u1-composable-preview`, loopback 4199 and tailnet-only HTTPS 8450.
+The v2 build uses `build-kit-composable-v2`; do not overwrite v1 `build-kit`,
+restart the preview or mutate Serve. No printer, auth, runtime/Tailscale,
+production-service, PR, merge or deployment change is authorized.
+
+Evidence remains synthetic private-Lab learning. Three current Title tokens
+were rendered and the other two source-inspected. No screen reader, mounted
+host, phone/device, public Internet, live Moonraker/Klipper, real printer, user
+outcome, production or full repository/browser regression was accepted.
+
 ## Current source: approved tailnet-only presentation experiment preview
 
 Frozen source `518c6440db1d624361a1a804754590def3e330e2`, tree

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { canonicalizePresentationSpec, type PresentationField, type PresentationNode, type PresentationSpec } from '../composable/schema.js';
+import { canonicalizePresentationSpec, titleText, type PresentationField, type PresentationNode, type PresentationSpec } from '../composable/schema.js';
 import { derivePresentationPlan, type SourceGroup } from '../composable/planner.js';
 import { canonicalPresentationSha256 } from '../composable/hash.js';
 import { composableEnvelopeSchema, type ComposableEnvelope } from '../composable/envelope.js';
@@ -136,19 +136,31 @@ const resolveNode = (node: PresentationNode, acquired: Acquired): ResolvedNode =
   if (node.type === 'Card') {
     const color = node.transform ? resolveField('filament.color', acquired) : null;
     if (color && color.kind !== 'color') throw new Error('Invalid card transform resolver');
+    const title = resolveNode(node.children[0], acquired);
+    const layout = resolveNode(node.children[1], acquired);
+    if (title.type !== 'Title' || (layout.type !== 'Stack' && layout.type !== 'Grid')) throw new Error('Invalid card resolver');
     return {
       type: 'Card',
+      density: node.density,
       tint: color?.kind === 'color' && color.state === 'known' && color.hex
         ? { kind: 'softTint', color: color.hex, strength: 'subtle' }
         : null,
       transformEvidence: color,
-      children: node.children.map((child) => resolveNode(child, acquired)),
+      children: [title, layout],
     };
   }
-  if (node.type === 'Table' || node.type === 'Row') {
-    return { type: node.type, children: node.children.map((child) => resolveNode(child, acquired)) };
+  if (node.type === 'Stack') {
+    return { type: 'Stack', gap: node.gap, children: node.children.map((child) => resolveNode(child, acquired)) } as ResolvedNode;
   }
-  if (node.type === 'Title') return node;
+  if (node.type === 'Grid') {
+    return { type: 'Grid', gap: node.gap, columns: node.columns, children: node.children.map((child) => resolveNode(child, acquired)) } as ResolvedNode;
+  }
+  if (node.type === 'Title') return { type: 'Title', text: titleText(node.content), size: node.size };
+  if (node.type === 'PercentageFill') {
+    const child = resolveNode(node.child, acquired);
+    if (child.type !== 'HeadTemperature') throw new Error('Invalid percentage fill resolver');
+    return { type: 'PercentageFill', child };
+  }
   if (node.type === 'HeadStatus') {
     const value = resolveField('head.status', acquired);
     if (value.kind !== 'text') throw new Error('Invalid status resolver');
@@ -195,7 +207,7 @@ export const composeEntityCard = async (
       : { source, state: 'unavailable' as const, observedAt: null, receivedAt: null };
   });
   const viewModel = composableViewModelSchema.parse({
-    schemaVersion: 1,
+    schemaVersion: 2,
     canonicalSpecSha256,
     state: acquired.failures.size ? 'error' : 'ready',
     generatedAt: now().toISOString(),

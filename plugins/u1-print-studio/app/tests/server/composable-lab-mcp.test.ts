@@ -30,7 +30,7 @@ describe('isolated composable MCP proof', () => {
   test('explicit lab factory alone exposes one typed read-only tool and one closed resource', async () => {
     const client = await connect(true);
     const tools = (await client.listTools()).tools;
-    expect(tools.map((tool) => tool.name)).toEqual(['compose_u1_entity_card']);
+    expect(tools.map((tool) => tool.name)).toEqual(['compose_u1_entity_card_v2']);
     expect(tools[0].annotations).toMatchObject({ readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true });
     expect(tools[0]._meta).toMatchObject({ ui: { resourceUri: COMPOSABLE_LAB_RESOURCE_URI }, 'openai/outputTemplate': COMPOSABLE_LAB_RESOURCE_URI });
     expect(tools[0].inputSchema).toMatchObject({ type: 'object', additionalProperties: false, required: ['spec'] });
@@ -44,20 +44,25 @@ describe('isolated composable MCP proof', () => {
     expect(COMPOSABLE_LAB_RESOURCE_HTML).toContain('ui/initialize');
     expect(COMPOSABLE_LAB_RESOURCE_HTML).not.toContain(observedAt);
     expect(COMPOSABLE_LAB_RESOURCE_HTML).not.toContain('#E89B3C');
+    expect(COMPOSABLE_LAB_RESOURCE_HTML).not.toContain('−100.0° / 500.0°');
+    expect(COMPOSABLE_LAB_RESOURCE_HTML).not.toContain('Reported part fan');
 
-    const result = await client.callTool({ name: 'compose_u1_entity_card', arguments: { spec: t1EntityCardSpec } });
+    const result = await client.callTool({ name: 'compose_u1_entity_card_v2', arguments: { spec: t1EntityCardSpec } });
     expect(result.isError).not.toBe(true);
-    expect(result.content).toEqual([{ type: 'text', text: 'Provisional T1 composition ready.' }]);
-    expect(result.structuredContent).toMatchObject({ canonicalSpec: t1EntityCardSpec, viewModel: { schemaVersion: 1, state: 'ready', subject: { kind: 'toolHead', id: 'T1' } } });
+    expect(result.content).toEqual([{ type: 'text', text: 'Provisional T1 v2 composition ready.' }]);
+    expect(result.structuredContent).toMatchObject({ canonicalSpec: t1EntityCardSpec, viewModel: { schemaVersion: 2, state: 'ready', subject: { kind: 'toolHead', id: 'T1' } } });
     expect(composableToolOutputSchema.safeParse(result.structuredContent).success).toBe(true);
-    const rejected = await client.callTool({ name: 'compose_u1_entity_card', arguments: { spec: { ...t1EntityCardSpec, javascript: 'alert(1)' } } });
+    const rejected = await client.callTool({ name: 'compose_u1_entity_card_v2', arguments: { spec: { ...t1EntityCardSpec, javascript: 'alert(1)' } } });
     expect(rejected.isError).toBe(true);
+    const rejectedV1 = await client.callTool({ name: 'compose_u1_entity_card_v2', arguments: { spec: { ...t1EntityCardSpec, schemaVersion: 1 } } });
+    expect(rejectedV1.isError).toBe(true);
   });
 
   test('production factory inventory contains neither lab tool nor lab resource', async () => {
     const client = await connect(false);
-    expect((await client.listTools()).tools.map((tool) => tool.name)).not.toContain('compose_u1_entity_card');
+    expect((await client.listTools()).tools.map((tool) => tool.name)).not.toContain('compose_u1_entity_card_v2');
     expect((await client.listResources()).resources.map((resource) => resource.uri)).not.toContain(COMPOSABLE_LAB_RESOURCE_URI);
+    expect((await client.listResources()).resources.map((resource) => resource.uri)).not.toContain('ui://u1-print-studio/experiments/composable-lab-v1.html');
   });
 
   test('keeps route and imports private, dashboard-only, and without printer authority', () => {
@@ -80,5 +85,13 @@ describe('isolated composable MCP proof', () => {
     expect(experimentSources).not.toMatch(/(?:auth|tailscale|printer-command|start_print|cancel_print)/iu);
     expect(experimentSources).not.toContain('{@html');
     expect(experimentSources).not.toContain('<svelte:element');
+
+    const domainLeafSources = ['HeadStatus.svelte', 'HeadTemperature.svelte', 'FilamentColor.svelte', 'FanRelation.svelte']
+      .map((name) => readFileSync(new URL(`../../src/components/composable/${name}`, import.meta.url), 'utf8')).join('\n');
+    expect(domainLeafSources).not.toContain('reserveDisplay');
+    expect(domainLeafSources).not.toMatch(/#E89B3C|−100\.0°|500\.0°|Reported part fan/u);
+    expect(domainLeafSources).toContain('reserveLines={2}');
+    const statusLineSource = readFileSync(new URL('../../src/components/common/StatusLine.svelte', import.meta.url), 'utf8');
+    expect(statusLineSource).not.toMatch(/reserve(?:Text|Display)|data-reserve|content:\s*attr/iu);
   });
 });

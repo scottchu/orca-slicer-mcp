@@ -29,6 +29,7 @@ export const derivePresentationPlan = (spec: PresentationSpec): PresentationPlan
     if (field) fields.add(field);
     if (node.type === 'Card' && node.transform) fields.add('filament.color');
     if ('children' in node) node.children.forEach(visit);
+    if (node.type === 'PercentageFill') visit(node.child);
   };
   visit(spec.root);
   const orderedFields = [...fields].sort();

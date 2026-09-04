@@ -811,17 +811,44 @@ durable-monitor claim.
   routes in `src/routes`, with Bun retained. The former `src/lib/common` path is
   PR91 history. Native renderer coverage remains separately tracked; file moves
   alone do not complete it.
-  Decision0048 additionally accepts a provisional private-lab experiment, not
-  production architecture or cutover: one fixed T1 subject composes only
-  `HeadStatus`, `HeadTemperature`, `FilamentColor`, and `FanRelation` domain
-  leaves through common `Card`/`Title`/`Table`/`Row` layout nodes. Strict JSON
-  validation, canonical hash/spec/plan/source/topology/provenance correlation,
-  deduplicated source readers, bounded values, `Unknown` for absent or ambiguous
-  relations, input-shaped loading/error states, no arbitrary code or markup,
-  and negative production-registration guards are mandatory. The isolated Lab
-  route and MCP factory/resource prove only synthetic software/protocol behavior;
-  production adoption, Camera, live mappings, mounted-host/device acceptance,
-  printer authority and deployment remain pending. Existing
+  Decision0048 accepts a provisional version-1 private-lab experiment, not
+  production architecture or cutover. The exact version-2 private-Lab candidate
+  keeps one fixed T1 subject and the four `HeadStatus`, `HeadTemperature`,
+  `FilamentColor`, and `FanRelation` domain leaves, but restricts composition to
+  a root `Card` with `Title` and one `Stack` or `Grid`; it rejects version 1,
+  `Table`, `Row`, `DataTable` and unknown fields. Card density, title size, gap
+  and columns are closed tokens. Title content is also a closed T1-derived token;
+  arbitrary text or a claim about another entity is invalid. A strict spec
+  rejects repeated presentation fields, including direct plus wrapped
+  temperature. Resolved validation must still require exact equality for any
+  repeated field and between Card transform evidence, tint and visible
+  FilamentColor under the same materials receipt. Global `error` permits only
+  available or unavailable receipts and requires at least one unavailable;
+  loading receipts and animated error skeletons are invalid while partial healthy
+  evidence remains visible. `PercentageFill` may wrap only the typed T1
+  temperature leaf and must derive decoration from validated actual/target
+  provenance through common `PercentageBackground`; invalid relations are
+  neutral and the AST accepts no arbitrary CSS, color, numeric percentage or
+  expression. Strict canonical hash/spec/plan/source/topology/provenance
+  correlation, deduplicated source readers, bounded values, `Unknown` for absent
+  or ambiguous relations, input-shaped loading/error states, no arbitrary code
+  or markup, and negative production-registration guards remain mandatory.
+  Stable geometry reserves must be structural and may not embed sample status,
+  telemetry, filament color, fan label, identifier, timestamp or private value
+  as hidden or accessible content. Generated-resource and source-level guards
+  must reject such evidence-like reserve content. Exact manifest `a6cfa40f…`
+  and resource `170fb8f1…` have screenshot-first UI/UX, printer-domain and
+  independent verification approval within this synthetic experiment boundary;
+  that evidence does not amend decision0048 into a production commitment. The
+  isolated Lab route and versioned MCP factory/
+  resource prove only synthetic software/protocol behavior; production adoption,
+  Camera, live mappings, mounted-host/device acceptance, printer authority and
+  deployment remain pending. DataTable is not implemented or admitted to this
+  T1 vocabulary. It may be explored for Queue or History only through a separate
+  domain contract, ADR, implementation and review. Percentage fill remains
+  private-Lab-only: a production decoration requires a separate semantic
+  contract because it could otherwise be mistaken for print progress, heater
+  authority, safety margin or target attainment. Existing
   props/variants express visual/content differences. Domain compositions and
   domain icon mappings remain outside common. Consolidate visual-only leaf
   variants without weakening AST/import guards or changing domain semantics;

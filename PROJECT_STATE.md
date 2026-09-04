@@ -1,5 +1,101 @@
 # Project state
 
+## Current accepted experiment: entity-bound presentation AST v2 private Lab
+
+The reviewed UI-003/F0 v2 candidate refines the isolated T1 experiment to
+schema version 2. Its strict root is always `Card` with `Title` and exactly one
+`Stack` or `Grid`; `Table`, `Row`, schema version 1 and unknown fields are
+rejected. Card density, title size, layout gap and grid columns use closed
+tokens. The outer Card retains its border while title, layout and domain
+readings add no separators. `PercentageFill` can wrap only the typed
+`HeadTemperature` leaf and delegates actual/target decoration to the existing
+common `PercentageBackground`; missing, non-finite or non-positive target
+evidence remains neutral. No CSS, color, numeric percentage or expression is
+accepted from the composition JSON.
+
+The candidate preserves fixed T1 binding, status/materials/environment reader
+deduplication, correlated plan/source/value provenance and timestamps, truthful
+fan `Unknown` behavior, partial-source isolation, and input-shaped loading/error
+topology. It keeps the dashboard-private Lab route and an explicitly constructed
+v2-only MCP factory/tool/resource outside production registration. Domain-value
+geometry is reserved structurally with closed line-count/minimum-block rules;
+the resource does not embed sample status, telemetry, filament color, fan label,
+identifier, timestamp or private value as layout evidence. The 33-path
+changed/new application source-set manifest is
+`a6cfa40f0f23e62832fa7696a41472c10097b8bbc36141cd5f87af2a4deb2580`.
+The deterministic v2 MCP resource is 145,363 bytes at SHA-256
+`170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`.
+Focused author evidence passes 10 client tests, 16 server/MCP tests with 92
+assertions, Svelte/TypeScript/component checks, a separate Kit build, and four
+Chrome cases at 320/720 including state geometry, 200% text, reduced motion and
+forced colors. Exact commands and screenshot hashes are in VALIDATION.
+
+The first exact-candidate screenshot-first design gate blocked the earlier
+identity: at 200% text, card/compact/larger state heights drifted by 28–205px,
+the larger temperature could orphan its `C` unit, and the fixed-pixel Lab h1
+became smaller than the rem-scaled Card h2. The repaired candidate reserves each
+closed domain value and status line with font-relative structural geometry,
+keeps target temperature and unit nonbreaking, and makes the Lab h1 responsive
+in rem. Renewed author Playwright asserts at most 1px state drift for all three
+shapes and known/loading/error/partial/ambiguous at both 100% and 200% text at
+320/720.
+
+The independent exact-candidate review of the superseded 36-path
+`3bfe7a…`/resource `6f8c92…` identity returned **REQUEST_CHANGES**: the generated
+resource embedded `#E89B3C` solely as a hidden filament-color geometry reserve,
+which was synthetic configured-color evidence even though it was not accessible.
+That review's fresh MCP/server run was 13/14, so the prior 14/14 author claim for
+that identity is superseded and not acceptance evidence. The renewed candidate
+uses no domain/sample reserve values and no hidden status reserve text. This
+failure remains evidence against only that superseded identity.
+
+A printer-domain exact gate then returned **REQUEST_CHANGES** on superseded
+manifest `0d65c458…` and resource `b529a0b6…`: arbitrary Title text allowed a T1
+specification to claim T2; repeated resolved fields and Card transform/visible
+color could diverge; and global `error` admitted a loading source. The renewed
+contract replaces title text with a closed T1-derived content token, rejects
+duplicate presentation fields, correlates any repeated resolved value plus
+transform evidence/tint/visible filament color exactly, and requires error
+sources to be available or unavailable with at least one unavailable. Partial
+healthy evidence remains visible and error skeletons remain static.
+
+Three fresh exact-identity gates now **APPROVE** manifest `a6cfa40f…` and v2
+resource `170fb8f1…` for the private-Lab experiment only. Screenshot-first UI/UX
+measured all 60 width/text/shape/state groups at 0px renderer-height drift and
+zero overflow, with a 64.58×17.5px minimum skeleton, animated loading/static
+error/reduced-motion none, 56px h1 over 44px h2, atomic target/unit, Card-only
+border, neutral forced colors and no reserve sentinels; report SHA-256 is
+`64dfadbf482d6f10a85131404f5a354e3ce8ba18b99cdb1c91e1b34ab701c322`.
+The project-scoped `printer_domain_expert` passed the 16 server/MCP and 10 client
+tests plus the title/duplicate/color/error/zero-target/fan/dedup/provenance
+adversaries. Independent review passed 27 composable/percentage tests, the same
+16 server/MCP tests, TypeScript, Svelte/component contracts, a byte-exact
+temporary MCP rebuild and fresh Chrome matrix; production registration stayed
+negative and v1 resource/build/live response stayed unchanged. Its one initial
+browser assertion incorrectly expected a compact partial skeleton even though
+compact has no environment dependency; the dependency-shaped correction passed
+and task-owned children were cleaned. These approvals establish reviewed
+synthetic private-Lab learning, not production direction. DataTable is not part of
+this AST. A future hypothesis is that a separately contracted DataTable could
+fit Queue or History, but only after a distinct ADR and review. Queue, History,
+Camera and other subjects are not implemented here.
+
+Evidence remains synthetic and bounded. Only the three currently used Title
+tokens were rendered; the other two were source-inspected. There was no screen
+reader, mounted host, phone/device, public-Internet, live Moonraker/Klipper,
+real-printer, user-outcome, production or full-repository/browser-regression
+acceptance.
+
+The percentage decoration remains private-Lab-only. Production adoption without
+a separate semantic contract could misleadingly imply print progress, heater
+authority, safety margin or target attainment; this experiment accepts none of
+those meanings.
+
+The approved v1 preview below remains running from exact source `518c644`; its
+repository bytes, launchd job, loopback listener and tailnet-only Serve mapping
+were not changed by v2 authoring. No printer, auth, runtime/Tailscale,
+production-service, PR, merge or deployment action occurred.
+
 ## Current source and preview: entity-bound presentation AST private-lab experiment
 
 Decision0048's exploratory T1 composition is frozen at source

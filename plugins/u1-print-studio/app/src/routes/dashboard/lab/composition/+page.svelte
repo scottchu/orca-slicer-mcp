@@ -13,8 +13,8 @@
 <main>
   <header class="intro">
     <p class="eyebrow">Provisional F0 / UI-003 experiment</p>
-    <h1>Entity-bound composition lab</h1>
-    <p>T1 binds once. Closed presentation nodes project status, temperature, filament color, and an independently evidenced fan relation.</p>
+    <h1>Entity-bound composition lab v2</h1>
+    <p>T1 binds once. Card, Title, Stack, and Grid arrange closed status, temperature, filament color, and independently evidenced fan-relation nodes.</p>
   </header>
 
   <section class="controls" aria-label="Composition controls">
@@ -31,7 +31,7 @@
     <label>Composition shape
       <select bind:value={variant}>
         <option value="card">Entity card</option>
-        <option value="leaves">Separate leaves</option>
+        <option value="compact">Compact grid</option>
         <option value="larger">Larger composition</option>
       </select>
     </label>
@@ -52,14 +52,14 @@
     </details>
   </section>
 
-  <p class="boundary">Synthetic, read-only software evidence. No printer, camera, authentication, Tailscale, or action path is used.</p>
+  <p class="boundary">Synthetic, read-only software evidence. No printer, camera, authentication, remote acquisition, or action path is used.</p>
 </main>
 
 <style>
   main { width: min(100% - 24px, 880px); margin: 0 auto; padding: 28px 0 44px; }
   .intro { margin: 0 auto 20px; max-width: 700px; text-align: center; }
   .eyebrow { margin: 0 0 5px; color: var(--u1-focus); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-  h1 { margin: 0; font-size: clamp(26px, 7vw, 40px); letter-spacing: -.035em; }
+  h1 { margin: 0; font-size: clamp(1.75rem, 7vw, 2.5rem); line-height: 1.1; letter-spacing: -.035em; }
   .intro p:last-child { margin: 10px auto 0; color: var(--u1-muted); line-height: 1.55; }
   .controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0 auto 16px; max-width: 700px; padding: 14px; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-inner); background: var(--u1-surface); }
   label { display: grid; gap: 6px; color: var(--u1-muted); font-size: 13px; font-weight: 600; }

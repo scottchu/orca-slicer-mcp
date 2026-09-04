@@ -1,5 +1,67 @@
 # Next agent
 
+## Preserve the reviewed v2 presentation-AST private-Lab experiment
+
+The UI-003/F0 v2 candidate has three exact-identity approvals at its 33-path
+application source-set manifest
+`a6cfa40f0f23e62832fa7696a41472c10097b8bbc36141cd5f87af2a4deb2580`
+and isolated 145,363-byte v2 MCP resource SHA-256
+`170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`.
+Author checks pass 10 client tests, 16 server/MCP tests with 92 assertions,
+Svelte/TypeScript/component contracts, deterministic MCP verification, the
+separate Kit build and four Chrome cases.
+
+Screenshot-first UI/UX **APPROVES** the exact identity: all 60 combinations of
+320/720, 100%/200% text, card/compact/larger and known/loading/error/partial/
+ambiguous measured 0px renderer-height drift and zero overflow. Skeleton minimum
+was 64.58×17.5px; loading animated, error was static, reduced motion removed
+animation, h1 was 56px over h2 at 44px, target/unit remained atomic, only Card
+had a border, forced colors were neutral, and no reserve/sample sentinel was
+present. Design report SHA-256 is
+`64dfadbf482d6f10a85131404f5a354e3ce8ba18b99cdb1c91e1b34ab701c322`.
+
+The project-scoped `printer_domain_expert` **APPROVES** the same identity after
+fresh 16/16 server/MCP with 92 assertions and 10/10 client tests. It verified
+T1/T2-title rejection, duplicate/direct-plus-wrapped field rejection, exact
+tint/evidence/visible-color correlation, error/loading rejection, target-zero
+known with neutral fill, all fan truth states, one read per source, distinct
+timestamps, and partial healthy data with a static unavailable-fan skeleton.
+
+Independent verification **APPROVES** the same identity after 27/27 focused
+composable/percentage tests, 16/16 server/MCP, TypeScript, Svelte 0/0,
+component contracts, byte-exact temporary MCP reconstruction and a fresh Chrome
+matrix. It confirmed production-negative registration/imports and unchanged v1
+resource/build/live response. One initial browser assertion expected a compact
+partial skeleton despite compact not depending on environment; its corrected
+dependency-shaped assertion passed and task-owned children were cleaned.
+
+Earlier rejected manifests and failures remain in VALIDATION and must not be
+treated as approval evidence. The accepted boundary is synthetic private-Lab
+learning only. Three current Title tokens were rendered and two only
+source-inspected; there was no screen reader, mounted host, phone/device, public
+Internet, live Moonraker/Klipper, real printer, user outcome, production, or full
+repository/browser-regression acceptance.
+
+Keep scope fixed to T1 status, actual/target temperature, configured filament
+color and fan relation. `PercentageFill` accepts only the typed temperature
+leaf and derives decoration from validated actual/target evidence through the
+common percentage primitive; invalid relations stay neutral. Do not add
+arbitrary markup/style/value/expression inputs. Do not implement DataTable,
+Queue, History or Camera. DataTable is only a future Queue/History hypothesis
+pending its own contract and ADR.
+
+Treat the percentage background as Lab-only. A production fill would require a
+separate semantic contract because it could otherwise be mistaken for print
+progress, heater authority, safety margin or target attainment.
+
+The approved v1 synthetic preview remains a separate running artifact at source
+`518c644`, launchd label `com.openai.u1-composable-preview`, loopback 4199 and
+tailnet-only HTTPS 8450. Do not rebuild its `build-kit`, restart it or alter
+Serve. No printer, authentication, runtime/Tailscale, production, PR, merge or
+deployment action belongs to this experiment. The next action, if requested, is
+user/product review or a separately scoped production decision—not another
+silent expansion of this AST.
+
 ## Preserve the approved tailnet-only presentation experiment preview
 
 Resume from decision0048 and the active iteration records. The frozen

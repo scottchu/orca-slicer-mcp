@@ -7,4 +7,4 @@
   const display = $derived(value.state === 'known' ? value.primary ?? 'Unknown' : 'Unknown');
 </script>
 
-<Reading icon={Fan}><Metric label="Fan relation" {display} state={value.state} /></Reading>
+<Reading icon={Fan}><Metric label="Fan relation" {display} state={value.state} reserveLines={2} /></Reading>

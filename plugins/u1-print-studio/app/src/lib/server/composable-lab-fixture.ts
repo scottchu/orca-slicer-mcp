@@ -1,5 +1,5 @@
 import type { ComposableViewModel, ResolvedNode, ResolvedValue } from '../composable/view-model.js';
-import { t1EntityCardSpec, t1LargerCompositionSpec, t1LeafSpec } from '../composable/specs.js';
+import { t1CompactGridSpec, t1EntityCardSpec, t1LargerCompositionSpec } from '../composable/specs.js';
 import { composeEntityCard, type ComposableReaders } from './composable-presentation.js';
 
 const sourceTime = {
@@ -9,7 +9,7 @@ const sourceTime = {
 } as const;
 const generatedAt = () => new Date('2026-09-03T16:20:00.500Z');
 export const COMPOSABLE_LAB_SCENARIOS = ['unknown', 'ambiguous', 'known', 'loading', 'partial', 'error'] as const;
-export const COMPOSABLE_LAB_VARIANTS = ['card', 'leaves', 'larger'] as const;
+export const COMPOSABLE_LAB_VARIANTS = ['card', 'compact', 'larger'] as const;
 
 const readers = (scenario: 'unknown' | 'ambiguous' | 'known' | 'partial' | 'error'): ComposableReaders => {
   if (scenario === 'error') {
@@ -45,10 +45,18 @@ const loadingNode = (node: ResolvedNode): ResolvedNode => {
   if (node.type === 'Card') {
     const transformEvidence = node.transformEvidence ? loadingValue(node.transformEvidence) : null;
     if (transformEvidence && transformEvidence.kind !== 'color') throw new Error('Invalid transform loading evidence');
-    return { ...node, tint: null, transformEvidence, children: node.children.map(loadingNode) };
+    const title = loadingNode(node.children[0]);
+    const layout = loadingNode(node.children[1]);
+    if (title.type !== 'Title' || (layout.type !== 'Stack' && layout.type !== 'Grid')) throw new Error('Invalid card loading node');
+    return { ...node, tint: null, transformEvidence, children: [title, layout] };
   }
-  if (node.type === 'Table' || node.type === 'Row') return { ...node, children: node.children.map(loadingNode) };
+  if (node.type === 'Stack' || node.type === 'Grid') return { ...node, children: node.children.map(loadingNode) } as ResolvedNode;
   if (node.type === 'Title') return node;
+  if (node.type === 'PercentageFill') {
+    const child = loadingNode(node.child);
+    if (child.type !== 'HeadTemperature') throw new Error('Invalid percentage fill loading node');
+    return { type: 'PercentageFill', child };
+  }
   const value = loadingValue(node.value);
   if (node.type === 'HeadStatus' && value.kind === 'text') return { ...node, value };
   if (node.type === 'HeadTemperature' && value.kind === 'temperature') return { ...node, value };
@@ -60,11 +68,11 @@ const asLoading = (viewModel: ComposableViewModel): ComposableViewModel => ({
   ...viewModel,
   state: 'loading',
   sources: viewModel.sources.map((source) => ({ ...source, state: 'loading', observedAt: null, receivedAt: null })),
-  root: loadingNode(viewModel.root),
+  root: loadingNode(viewModel.root) as ComposableViewModel['root'],
 });
 
 export const createComposableLabData = async () => {
-  const specs = { card: t1EntityCardSpec, leaves: t1LeafSpec, larger: t1LargerCompositionSpec } as const;
+  const specs = { card: t1EntityCardSpec, compact: t1CompactGridSpec, larger: t1LargerCompositionSpec } as const;
   const output: Record<string, Record<string, { canonicalSpec: unknown; viewModel: ComposableViewModel }>> = {};
   for (const scenario of COMPOSABLE_LAB_SCENARIOS) {
     output[scenario] = {};

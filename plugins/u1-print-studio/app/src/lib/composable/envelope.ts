@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { canonicalPresentationSha256 } from './hash.js';
 import { derivePresentationPlan, type SourceGroup } from './planner.js';
-import { presentationSpecSchema, type PresentationNode, type PresentationSpec } from './schema.js';
+import { presentationSpecSchema, titleText, type PresentationNode, type PresentationSpec } from './schema.js';
 import { composableViewModelSchema, type ComposableViewModel, type ResolvedNode } from './view-model.js';
 
 export type ComposableEnvelope = {
@@ -25,8 +25,9 @@ const correlateNode = (
   context: z.RefinementCtx,
 ): void => {
   if (spec.type !== resolved.type) { context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved topology diverges from specification' }); return; }
-  if (spec.type === 'Title' && resolved.type === 'Title' && spec.text !== resolved.text) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved title diverges from specification' });
+  if (spec.type === 'Title' && resolved.type === 'Title' && (titleText(spec.content) !== resolved.text || spec.size !== resolved.size)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved title diverges from specification' });
   if (spec.type === 'Card' && resolved.type === 'Card') {
+    if (spec.density !== resolved.density) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved card density diverges from specification' });
     if (!spec.transform && (resolved.tint !== null || resolved.transformEvidence !== null)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Card without transform carries tint evidence' });
     if (spec.transform) {
       const source = sources.get('materials');
@@ -39,10 +40,13 @@ const correlateNode = (
       }
     }
   }
+  if (spec.type === 'Stack' && resolved.type === 'Stack' && spec.gap !== resolved.gap) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved stack tokens diverge from specification' });
+  if (spec.type === 'Grid' && resolved.type === 'Grid' && (spec.gap !== resolved.gap || spec.columns !== resolved.columns)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved grid tokens diverge from specification' });
   if ('children' in spec && 'children' in resolved) {
     if (spec.children.length !== resolved.children.length) { context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved child count diverges from specification' }); return; }
     spec.children.forEach((child, index) => correlateNode(child, resolved.children[index], sources, context));
   }
+  if (spec.type === 'PercentageFill' && resolved.type === 'PercentageFill') correlateNode(spec.child, resolved.child, sources, context);
   const sourceName = expectedSource(spec);
   if (!sourceName || !('value' in resolved)) return;
   const source = sources.get(sourceName);

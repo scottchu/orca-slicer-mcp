@@ -11,6 +11,6 @@
 </div>
 
 <style>
-  .reading { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; min-width: 0; min-height: 72px; padding: 10px var(--u1-card-x); }
+  .reading { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--u1-space-3); min-width: 0; min-height: 68px; padding: var(--u1-space-2) 0; }
   .content { min-width: 0; }
 </style>

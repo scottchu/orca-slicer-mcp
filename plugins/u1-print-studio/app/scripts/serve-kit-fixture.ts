@@ -6,12 +6,15 @@ import { createKitObservationFixture } from '../tests/fixtures/kit-observation-s
 import { loadKitHandler } from '../src/lib/server/kit-handler';
 
 const root = path.resolve(import.meta.dir, '..');
-const handlerFile = path.join(root, 'build-kit/handler.js');
+const kitOutput = process.env.COMPOSABLE_KIT_FIXTURE_DIR === 'build-kit-composable-v2'
+  ? 'build-kit-composable-v2'
+  : 'build-kit';
+const handlerFile = path.join(root, kitOutput, 'handler.js');
 const handler = await loadKitHandler(handlerFile);
 const list = (folder: string, prefix = ''): string[] => readdirSync(folder, { withFileTypes: true }).flatMap((entry) => entry.isDirectory() ? list(path.join(folder, entry.name), `${prefix}${entry.name}/`) : [`/${prefix}${entry.name}`]);
 const fixture = createKitObservationFixture();
 const { observations } = fixture;
-const transport = createUnifiedRequestHandler(handler, new Set(list(path.join(root, 'build-kit/client'))), null, null, { observations }, observations);
+const transport = createUnifiedRequestHandler(handler, new Set(list(path.join(root, kitOutput, 'client'))), null, null, { observations }, observations);
 const server = createServer(async (req, res) => {
   if (req.url === '/__fixture/state') {
     if (req.method === 'POST') {

@@ -2,7 +2,7 @@ import { cleanup, render, screen } from '@testing-library/svelte';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import PresentationRenderer from '../../../components/composable/PresentationRenderer.svelte';
 import type { HostEvent, HostRpc } from '../host/rpc';
-import { t1EntityCardSpec, t1LargerCompositionSpec, t1LeafSpec } from '../../composable/specs';
+import { t1CompactGridSpec, t1EntityCardSpec, t1LargerCompositionSpec } from '../../composable/specs';
 import { composableViewModelSchema } from '../../composable/view-model';
 import { composeEntityCard, type ComposableReaders } from '../../server/composable-presentation';
 import { createComposableHost, eventComposableViewModel } from './host';
@@ -26,7 +26,7 @@ const readers: ComposableReaders = {
   materials: async () => ({ observedAt: '2026-09-03T16:19:45.000Z', receivedAt: '2026-09-03T16:19:45.250Z', heads: [{ id: 'T1', color: '#E89B3C' }] }),
   environment: async () => ({ observedAt: '2026-09-03T16:19:30.000Z', receivedAt: '2026-09-03T16:19:30.500Z', relations: [{ headId: 'T1', fanId: 'part', label: 'Reported part fan', role: 'partCooling' }] }),
 };
-const topology = (node: { type: string; children?: Array<any> }): string[] => [node.type, ...(node.children?.flatMap(topology) ?? [])];
+const topology = (node: { type: string; children?: Array<any>; child?: any }): string[] => [node.type, ...(node.children?.flatMap(topology) ?? []), ...(node.child ? topology(node.child) : [])];
 
 describe('composable renderer and host lifecycle', () => {
   test('loading and error preserve node topology while error skeletons are neutral and inert', () => {
@@ -50,18 +50,45 @@ describe('composable renderer and host lifecycle', () => {
     expect(failed.container.querySelector('[role="cell"]')).toBeNull();
   });
 
+  test('partial error keeps healthy values visible and every unavailable skeleton static', async () => {
+    const result = await composeEntityCard(t1EntityCardSpec, {
+      ...readers,
+      environment: async () => { throw new Error('offline'); },
+    });
+    const rendered = render(PresentationRenderer, { presentation: result.viewModel });
+    expect(result.viewModel.state).toBe('error');
+    expect(screen.getByText('Active')).toBeInTheDocument();
+    expect(screen.getByText('#E89B3C')).toBeInTheDocument();
+    expect(rendered.container.querySelectorAll('[data-skeleton-static]')).toHaveLength(1);
+    expect(rendered.container.querySelectorAll('[data-skeleton]:not([data-skeleton-static])')).toHaveLength(0);
+  });
+
   test('renders closed domain labels and role-derived fan primary text', async () => {
     const result = await composeEntityCard(t1EntityCardSpec, readers);
     const rendered = render(PresentationRenderer, { presentation: result.viewModel });
     expect(screen.getByText('Actual / target')).toBeInTheDocument();
+    expect([...rendered.container.querySelectorAll('[data-node-kind="Metric"] .current')]
+      .find((element) => element.textContent?.startsWith('214.6°'))?.textContent).toBe('214.6° / 220°\u00a0C');
     expect(screen.getByText('Configured filament color')).toBeInTheDocument();
     expect(screen.getByText('Part cooling')).toBeInTheDocument();
     expect(screen.queryByText('Reported part fan')).not.toBeInTheDocument();
     expect(rendered.container.querySelector('[role="cell"]')).toBeNull();
+    expect(rendered.container.querySelector('[data-node-kind="Table"], [data-node-kind="Row"]')).toBeNull();
+    expect(Number(rendered.container.querySelector('[data-percentage-fill]')?.getAttribute('data-percentage-fill'))).toBeCloseTo(97.5454, 3);
+  });
+
+  test('keeps PercentageFill neutral when actual/target is not a valid percentage relation', async () => {
+    const invalidRatio: ComposableReaders = {
+      ...readers,
+      status: async () => ({ observedAt: '2026-09-03T16:20:00.000Z', receivedAt: '2026-09-03T16:20:00.100Z', heads: [{ id: 'T1', status: 'active', actualC: 50, targetC: 0 }] }),
+    };
+    const result = await composeEntityCard(t1EntityCardSpec, invalidRatio);
+    const rendered = render(PresentationRenderer, { presentation: result.viewModel });
+    expect(rendered.container.querySelector('[data-percentage-background]')).toHaveAttribute('data-percentage-fill', '0');
   });
 
   test('uses validated input spec for exact loading, ready, and error topology', async () => {
-    for (const spec of [t1EntityCardSpec, t1LeafSpec, t1LargerCompositionSpec]) {
+    for (const spec of [t1EntityCardSpec, t1CompactGridSpec, t1LargerCompositionSpec]) {
       const fixture = hostFixture();
       const host = createComposableHost(fixture.rpc);
       fixture.emit({ kind: 'input', value: { arguments: { spec } } });
@@ -91,9 +118,8 @@ describe('composable renderer and host lifecycle', () => {
     const corruptProvenance = (model: typeof baseline) => {
       const root = model.root;
       if (root.type !== 'Card') throw new Error('Expected card fixture');
-      const table = root.children.find((node) => node.type === 'Table');
-      const row = table?.type === 'Table' ? table.children.find((node) => node.type === 'Row') : undefined;
-      const value = row?.type === 'Row' ? row.children.find((node) => 'value' in node) : undefined;
+      const layout = root.children[1];
+      const value = layout.children.find((node) => 'value' in node);
       if (!value || !('value' in value)) throw new Error('Expected value fixture');
       value.value.provenance.source = 'materials';
     };
@@ -106,8 +132,8 @@ describe('composable renderer and host lifecycle', () => {
       mutate(model);
       expect(composableViewModelSchema.safeParse(model).success).toBe(false);
     }
-    const misleading = structuredClone(baseline) as unknown as { root: { children: Array<{ type: string; children?: Array<{ children?: Array<{ type: string }> }> }> } };
-    const status = misleading.root.children.flatMap((node) => node.children ?? []).flatMap((node) => node.children ?? []).find((node) => node.type === 'HeadStatus');
+    const misleading = structuredClone(baseline) as any;
+    const status = misleading.root.children[1].children.find((node: any) => node.type === 'HeadStatus');
     if (!status) throw new Error('Expected status fixture');
     status.type = 'FanRelation';
     expect(composableViewModelSchema.safeParse(misleading).success).toBe(false);

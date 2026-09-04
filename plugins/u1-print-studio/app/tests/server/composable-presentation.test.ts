@@ -2,7 +2,7 @@ import { describe, expect, test } from 'bun:test';
 import { createHash } from 'node:crypto';
 import type { PresentationField } from '../../src/lib/composable/schema.js';
 import { composableEnvelopeSchema } from '../../src/lib/composable/envelope.js';
-import { t1EntityCardSpec, t1LeafSpec } from '../../src/lib/composable/specs.js';
+import { t1CompactGridSpec, t1EntityCardSpec } from '../../src/lib/composable/specs.js';
 import { composableViewModelSchema, resolvedValueSchema, type ResolvedNode, type ResolvedValue } from '../../src/lib/composable/view-model.js';
 import { composeEntityCard, type ComposableReaders } from '../../src/lib/server/composable-presentation.js';
 
@@ -13,14 +13,14 @@ const materialReceivedAt = '2026-09-03T16:19:45.250Z';
 const environmentObservedAt = '2026-09-03T16:19:30.000Z';
 const environmentReceivedAt = '2026-09-03T16:19:30.500Z';
 const transformOnlySpec = {
-  schemaVersion: 1 as const,
+  schemaVersion: 2 as const,
   subject: { kind: 'toolHead' as const, id: 'T1' as const },
-  root: { type: 'Card' as const, transform: { kind: 'softFilamentTint' as const, strength: 'subtle' as const }, children: [{ type: 'Title' as const, text: 'T1 material' }] },
+  root: { type: 'Card' as const, density: 'comfortable' as const, transform: { kind: 'softFilamentTint' as const, strength: 'subtle' as const }, children: [{ type: 'Title' as const, content: 'material' as const, size: 'large' as const }, { type: 'Stack' as const, gap: 'regular' as const, children: [{ type: 'HeadStatus' as const }] }] },
 };
 const noTransformSpec = {
-  schemaVersion: 1 as const,
+  schemaVersion: 2 as const,
   subject: { kind: 'toolHead' as const, id: 'T1' as const },
-  root: { type: 'Card' as const, children: [{ type: 'Title' as const, text: 'T1 status' }, { type: 'HeadStatus' as const }] },
+  root: { type: 'Card' as const, density: 'comfortable' as const, children: [{ type: 'Title' as const, content: 'status' as const, size: 'large' as const }, { type: 'Stack' as const, gap: 'regular' as const, children: [{ type: 'HeadStatus' as const }] }] },
 };
 
 const readers = (relations: unknown[] = []): ComposableReaders => ({
@@ -35,6 +35,7 @@ const values = (node: ResolvedNode, output = new Map<PresentationField, Resolved
     output.set(field, node.value);
   }
   if ('children' in node) node.children.forEach((child) => values(child, output));
+  if (node.type === 'PercentageFill') values(node.child, output);
   return output;
 };
 
@@ -43,6 +44,8 @@ describe('entity-bound composition acquisition and provenance', () => {
     let calls = 0;
     const count = async () => { calls++; return {}; };
     await expect(composeEntityCard({ ...t1EntityCardSpec, css: 'body{}' }, { status: count, materials: count, environment: count })).rejects.toThrow();
+    await expect(composeEntityCard({ ...t1EntityCardSpec, schemaVersion: 1 }, { status: count, materials: count, environment: count })).rejects.toThrow();
+    await expect(composeEntityCard({ ...t1EntityCardSpec, root: { ...t1EntityCardSpec.root, children: [{ type: 'Title', text: 'Tool head T2', size: 'large' }, t1EntityCardSpec.root.children[1]] } }, { status: count, materials: count, environment: count })).rejects.toThrow();
     expect(calls).toBe(0);
   });
 
@@ -57,7 +60,7 @@ describe('entity-bound composition acquisition and provenance', () => {
     await composeEntityCard(t1EntityCardSpec, counting);
     expect(count).toEqual({ status: 1, materials: 1, environment: 1 });
     count.status = 0; count.materials = 0; count.environment = 0;
-    await composeEntityCard(t1LeafSpec, counting);
+    await composeEntityCard(t1CompactGridSpec, counting);
     expect(count).toEqual({ status: 1, materials: 1, environment: 0 });
   });
 
@@ -72,15 +75,34 @@ describe('entity-bound composition acquisition and provenance', () => {
     await expect(composeEntityCard(t1EntityCardSpec, readers(), () => new Date(Number.NaN))).rejects.toThrow();
   });
 
+  test('binds PercentageFill only to the resolved T1 actual/target provenance', async () => {
+    const result = await composeEntityCard(t1EntityCardSpec, readers());
+    const layout = result.viewModel.root.children[1];
+    const fill = layout.children.find((node) => node.type === 'PercentageFill');
+    expect(fill).toMatchObject({
+      type: 'PercentageFill',
+      child: {
+        type: 'HeadTemperature',
+        value: {
+          kind: 'temperature', state: 'known', actual: 214.6, target: 220,
+          provenance: { source: 'status', sourceObservedAt: statusObservedAt, receivedAt: statusReceivedAt },
+        },
+      },
+    });
+    const divergent = structuredClone(result) as any;
+    divergent.viewModel.root.children[1].children.find((node: any) => node.type === 'PercentageFill').child.value.provenance.receivedAt = materialReceivedAt;
+    expect(composableEnvelopeSchema.safeParse(divergent).success).toBe(false);
+  });
+
   test('hashes canonical semantic structure rather than input object key insertion order', async () => {
-    const reordered = { root: t1EntityCardSpec.root, subject: { id: 'T1', kind: 'toolHead' }, schemaVersion: 1 };
+    const reordered = { root: t1EntityCardSpec.root, subject: { id: 'T1', kind: 'toolHead' }, schemaVersion: 2 };
     const first = await composeEntityCard(t1EntityCardSpec, readers());
     const second = await composeEntityCard(reordered, readers());
     expect(first.viewModel.canonicalSpecSha256).toBe(second.viewModel.canonicalSpecSha256);
     expect(first.viewModel.canonicalSpecSha256).toBe(createHash('sha256').update(JSON.stringify(first.canonicalSpec)).digest('hex'));
     const changed = structuredClone(t1EntityCardSpec);
     if (changed.root.type !== 'Card') throw new Error('Expected card fixture');
-    changed.root.children = [...changed.root.children].reverse();
+    changed.root.children[0].content = 'inspectionGroup';
     expect((await composeEntityCard(changed, readers())).viewModel.canonicalSpecSha256).not.toBe(first.viewModel.canonicalSpecSha256);
   });
 
@@ -122,14 +144,53 @@ describe('entity-bound composition acquisition and provenance', () => {
       (candidate) => { candidate.viewModel.sources[2].observedAt = '2026-09-03T16:20:01.000Z'; },
       (candidate) => { values(candidate.viewModel.root).get('head.status')!.provenance.receivedAt = '2026-09-03T16:20:01.000Z'; },
       (candidate) => { values(candidate.viewModel.root).get('head.status')!.provenance.source = 'materials'; },
-      (candidate) => { candidate.canonicalSpec.root.children[0].text = 'Changed spec'; },
+      (candidate) => { candidate.canonicalSpec.root.children[0].content = 'inspectionGroup'; },
       (candidate) => { candidate.viewModel.root.children[0].text = 'Changed tree'; },
+      (candidate) => { candidate.viewModel.root.children[0].text = 'T1 status'; },
     ];
     for (const corrupt of corruptions) {
       const candidate = structuredClone(baseline) as any;
       corrupt(candidate);
       expect(composableEnvelopeSchema.safeParse(candidate).success).toBe(false);
     }
+  });
+
+  test('rejects divergent repeated fields and transform/color evidence', async () => {
+    const baseline = await composeEntityCard(t1EntityCardSpec, readers());
+    const divergentDuplicate = structuredClone(baseline.viewModel) as any;
+    const layout = divergentDuplicate.root.children[1];
+    const status = structuredClone(layout.children.find((node: any) => node.type === 'HeadStatus'));
+    status.value.text = 'Idle';
+    layout.children.push(status);
+    expect(composableViewModelSchema.safeParse(divergentDuplicate).success).toBe(false);
+
+    const divergentColor = structuredClone(baseline.viewModel) as any;
+    divergentColor.root.children[1].children.find((node: any) => node.type === 'FilamentColor').value.hex = '#ABCDEF';
+    expect(composableViewModelSchema.safeParse(divergentColor).success).toBe(false);
+
+    const divergentTint = structuredClone(baseline.viewModel) as any;
+    divergentTint.root.tint.color = '#000000';
+    expect(composableViewModelSchema.safeParse(divergentTint).success).toBe(false);
+  });
+
+  test('rejects global error combined with any loading receipt', async () => {
+    const failedEnvironment = await composeEntityCard(t1EntityCardSpec, {
+      ...readers(),
+      environment: async () => { throw new Error('offline'); },
+    });
+    const mixed = structuredClone(failedEnvironment.viewModel) as any;
+    const statusSource = mixed.sources.find((source: any) => source.source === 'status');
+    Object.assign(statusSource, { state: 'loading', observedAt: null, receivedAt: null });
+    for (const node of mixed.root.children[1].children) {
+      const value = node.type === 'PercentageFill' ? node.child.value : node.value;
+      if (value?.provenance.source !== 'status') continue;
+      value.state = 'loading';
+      value.provenance.sourceObservedAt = null;
+      value.provenance.receivedAt = null;
+      if (value.kind === 'text') value.text = null;
+      if (value.kind === 'temperature') { value.actual = null; value.target = null; }
+    }
+    expect(composableViewModelSchema.safeParse(mixed).success).toBe(false);
   });
 
   test('rejects render-bound status, temperature, and fan contradictions', async () => {
@@ -156,7 +217,7 @@ describe('entity-bound composition acquisition and provenance', () => {
       materials: async () => { calls.materials++; return base.materials(); },
       environment: async () => { calls.environment++; return base.environment(); },
     });
-    expect(calls).toEqual({ status: 0, materials: 1, environment: 0 });
+    expect(calls).toEqual({ status: 1, materials: 1, environment: 0 });
     expect(result.viewModel.root).toMatchObject({
       type: 'Card',
       tint: { kind: 'softTint', color: '#E89B3C', strength: 'subtle' },

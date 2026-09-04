@@ -1,5 +1,226 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-03 presentation AST v2 author candidate
+
+### Acceptance target and safety boundary
+
+This UI-003/F0 follow-up tests a smaller layout vocabulary: fixed T1 composes
+only through root `Card`, `Title`, and one `Stack` or `Grid`, with the existing
+four typed domain leaves. `Table`, `Row`, `DataTable`, schema version 1 and
+unknown fields must reject. Card density, title size, gaps and grid columns are
+closed tokens. Only `PercentageFill { child: HeadTemperature }` may request a
+percentage decoration; its renderer uses the validated T1 actual/target
+provenance and existing common `PercentageBackground`, remaining neutral when
+the ratio is invalid. The JSON accepts no arbitrary HTML, CSS, color, numeric
+percentage, expressions or remote content.
+
+Acceptance remains Lab-only software/protocol learning. It requires exact
+input-shaped loading/error topology, static error skeletons, reduced-motion
+loading, an outer Card border without reading/layout separators, truthful fan
+semantics, deduplicated readers, correlated provenance/timestamps, a private
+route and isolated v2 MCP factory/resource absent from production registration.
+No DataTable, Queue, History or Camera implementation; no printer, auth,
+runtime/Tailscale, production-service, PR, merge or deployment action is in
+scope. The running v1 preview is deliberately untouched.
+
+### Author implementation and focused evidence
+
+The candidate uses schema version 2 and the new isolated resource URI
+`ui://u1-print-studio/experiments/composable-lab-v2.html` with tool
+`compose_u1_entity_card_v2`. Source planning still deduplicates status,
+materials and environment groups, including the temperature wrapper. Envelope
+validation correlates canonical spec/hash, exact plan/source ledger, layout
+tokens/topology, transform evidence and every leaf's source receipt. Fan zero
+is `Unknown`/`notReported`, multiple is `Unknown`/`ambiguous`, and malformed or
+failed environment input is unavailable/`sourceUnavailable`; unrelated sources
+remain rendered. Known fill derives only from bounded temperature actual/target
+evidence; unknown, unavailable or invalid target produces neutral fill zero.
+
+From `plugins/u1-print-studio/app`, author checks actually run:
+
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable`
+  passed 2 files and 10 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts`
+  passed 16 tests with 92 assertions.
+- `bun --no-env-file --config=/dev/null run check` passed.
+- `bun --no-env-file --config=/dev/null run ui:check` passed with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` and
+  `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passed;
+  the generated v2 resource is 145,363 bytes at SHA-256
+  `170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`.
+  The existing v1 resource remains SHA-256
+  `6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build`
+  passed using a separate adapter output. The running preview's `build-kit`
+  manifest remained
+  `c14879a359062ff0d1ad73a4f697c14facf8ae425a24b0294013252b750d346c`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed 4 Chrome cases. Port 4184 was released afterward. At 320 and 720px,
+  card/compact/larger known/loading/error/partial/ambiguous renderers retained
+  identical node topology and at most 1px height drift at both 100% and 200%
+  root text. Card borders remained visible;
+  Title, Stack/Grid and readings had no separators or orphan row/cell roles.
+  Only loading animated, reduced-motion disabled it, error remained static,
+  forced colors removed the decorative fill, visible skeletons retained positive
+  bounds, and 200% root text did not cause stage horizontal overflow. The 720px
+  larger temperature keeps target and `C` in one rendered fragment, and the
+  responsive Lab h1 remains visibly larger than the Card h2. The private route
+  returned 200 under the built Kit CSP, its public counterpart returned 404,
+  and no nonlocal request occurred.
+
+The first browser attempt used a raw Vite development server and failed 2 of 4
+cases because that harness does not supply the SvelteKit transport CSP; no
+product assertion failed. A first separate-build harness then failed to start
+because `U1_KIT_FIXTURE_DIR` collided with SvelteKit's adapter env prefix. The
+author renamed the test-only selector to `COMPOSABLE_KIT_FIXTURE_DIR`, rebuilt
+separately and obtained the passing run above. One identity command also briefly
+overwrote zsh's special lowercase `path` array and could not locate `shasum`; it
+produced no artifact or state change. The corrected command uses
+`/usr/bin/shasum` and a non-reserved variable.
+
+The first screenshot-first design gate on manifest
+`23a736d717dc2487c59a2516ff20f92a0ec6d240305b35fd7e14ad1b59e7d5a4`
+returned request changes. Its fresh measurements found 200%-text state drift of
+205px at 320 card/larger, 109px at 720 card, 102px at 720 larger and 28px at 720
+compact; the larger temperature could orphan its `C`, and fixed 40px Lab h1 was
+smaller than the rem-scaled 44px Card h2. During repair, the first reserve-DOM
+attempt made hidden text visible to strict text queries. A later overlay attempt
+set zero line-height and collapsed visible skeletons; preserving inherited
+line-height restored visible skeletons without allowing them to affect reserved
+layout. A new unit-test matcher also
+failed only because Testing Library normalizes NBSP; exact `textContent` now
+asserts the nonbreaking source byte. Renewed focused checks above pass on the
+current identity. No independent design disposition has yet been issued for it.
+
+Independent exact-candidate review returned **REQUEST_CHANGES** on the
+superseded 36-path manifest
+`3bfe7a1702ad0acf810da3471847849a92dc871ff9d2471bf7a873e4b6c00be2`
+and 145,207-byte resource
+`6f8c92c46a883c11ab7c0c3d996a382059ef0eea668199ed75be5a90e1c70a06`.
+Its fresh MCP/server run failed 1 of 14 tests at the generated-resource exclusion:
+`FilamentColor.svelte` embedded `#E89B3C` as non-accessible reserve content.
+That was still synthetic configured-color evidence, so the earlier author 14/14
+claim for that identity is superseded. The repair removes every domain
+`reserveDisplay` sample and uses only closed structural line/minimum-block
+reserves. The renewed tests reject sample color, temperature and source-label
+content in the resource, audit the domain-leaf sources for `reserveDisplay`, and
+retain the exact browser geometry matrix. The audit also removed hidden
+`StatusLine` reserve text and replaced it with a neutral four-line structural
+minimum. Its first two-line minimum failed 1 of 4 browser cases because loading
+was 35.09375px shorter than the other card states at 320px/200%; the four-line
+structural minimum restored the passing ≤1px matrix without hidden content. A
+first author version of the generated-resource guard
+also rejected the text `Part cooling`; it failed because the closed output
+validator legitimately embeds that enum. The guard was corrected to reject the
+synthetic `Reported part fan` source label and directly inspect leaf reserve
+source. This was a test-design failure, not product acceptance evidence.
+
+The next project-scoped printer-domain exact gate returned
+**REQUEST_CHANGES** on superseded 33-path manifest
+`0d65c4585c4a5c0dd5066b1ba7d0895e2fb6abe79fe67466ea4ddda74eb21190`
+and 144,094-byte resource
+`b529a0b616bc92cd2eade9f713961bb511b18e29c5c89f7e3cd20638c8ac26bc`.
+It demonstrated three independently blocking contradictions: subject T1 could
+accept Title text `Tool head T2`; two HeadStatus occurrences could resolve to
+Active and Idle while sharing one receipt and transformed tint could disagree
+with the visible configured color; and global `error` could admit a loading
+source and therefore an animated skeleton. The renewed wire schema replaces
+arbitrary title text with one of five closed T1-derived content tokens, rejects
+duplicate presentation fields including direct/wrapped temperature, validates
+exact semantic equality for any repeated resolved field, and correlates
+transform evidence, tint and visible FilamentColor. Global error now rejects
+every loading receipt and requires at least one unavailable receipt; the
+renderer test proves partial healthy status/color remain visible while the
+unavailable fan alone uses a static skeleton. Existing zero-target testing still
+proves a neutral percentage fill, and the fan zero/one/multiple/malformed matrix
+is unchanged. The first TypeScript/Svelte check after introducing the title map
+failed because the object literal widened its return to `string`; adding a
+constant closed map fixed the type, and the renewed checks above pass.
+
+### Exact-candidate review dispositions
+
+Three role-separated gates **APPROVE** the exact 33-path manifest
+`a6cfa40f0f23e62832fa7696a41472c10097b8bbc36141cd5f87af2a4deb2580`
+and 145,363-byte resource
+`170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`
+for the synthetic private-Lab experiment only.
+
+Screenshot-first UI/UX reran 320/720 × 100%/200% text × card/compact/larger ×
+known/loading/error/partial/ambiguous. All 60 groups measured 0px renderer-
+height drift and zero overflow. Skeleton minimum was 64.58×17.5px; loading
+animated, error remained static, reduced motion removed animation, h1 was 56px
+over h2 at 44px, the target/unit fragment remained atomic, no text-reserve or
+sample sentinel remained, Card alone retained its border and forced colors were
+neutral. The design report SHA-256 is
+`64dfadbf482d6f10a85131404f5a354e3ce8ba18b99cdb1c91e1b34ab701c322`.
+Only the three current Title tokens were rendered; the other two were inspected
+in source. No screen-reader, device, printer, mounted-host or production check
+was part of this disposition.
+
+The project-scoped `printer_domain_expert` freshly passed the 16 server/MCP
+tests with 92 assertions and 10 client tests. Its adversaries confirmed T1/T2
+title rejection; duplicate and direct-plus-wrapped temperature rejection;
+transform evidence/tint/visible-color equality; global-error/loading rejection;
+known target zero with neutral fill; fan zero/notReported, one/typed,
+multiple/ambiguous and malformed/sourceUnavailable; exactly one read per source;
+distinct timestamps; and partial healthy data with only the unavailable fan's
+static skeleton. It approves truthful U1 semantics within the synthetic private
+Lab only, not live Moonraker/Klipper, a real printer, device or user outcome.
+Percentage fill has no accepted progress, heater-authority, safety-margin or
+target-attainment meaning.
+
+Independent verification freshly passed 27/27 focused composable/percentage
+tests, the same 16/16 server/MCP tests with 92 assertions, TypeScript, Svelte
+with zero errors/warnings, component contracts, and a deterministic temporary
+MCP reconstruction matching 145,363 bytes and the exact resource SHA above. A
+fresh Chrome 200% matrix measured 0px drift and confirmed atomic temperature
+unit, title hierarchy, no overflow/reserve/row roles, no animation in full
+error, and dependency-shaped partial states. Production factory/import inventory
+remained negative; the v1 MCP resource, v1 build and live preview response stayed
+unchanged. One first browser assertion incorrectly expected a compact partial
+skeleton even though compact has no environment dependency. The reviewer fixed
+only that expectation, its dependency-shaped form passed, and all task-owned
+children were cleaned. This was test-harness correction, not a waived product
+finding. Independent scope did not include a real printer, live Moonraker,
+mounted host, phone, public Internet, user outcome or full repository/browser
+regression.
+
+Percentage decoration remains a Lab-only hypothesis. These checks do not give
+the fill a production meaning; without a separate semantic contract it could be
+mistaken for print progress, heater authority, safety margin or target
+attainment.
+
+The sorted 33-path changed/new application set was hashed as one SHA-256 line
+per file and then hashed again. Candidate manifest SHA-256 is
+`a6cfa40f0f23e62832fa7696a41472c10097b8bbc36141cd5f87af2a4deb2580`.
+This is the independently accepted identity for the private-Lab experiment; it
+is not production architecture, deployment or user/device acceptance.
+
+Screenshots are local test evidence under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`:
+
+- `composition-known-320px.png` — `5211fb472a661f5e1106bd6a6390ca57467f6e7fb1db5678a3ee2eecde48b7b4`
+- `composition-known-720px.png` — `e761420614f1cb8183eed2da3bafbf97f0f932fa5b9d833e87811f8bc591677a`
+- `composition-known-320px-200-percent.png` — `bb737e5fc75769c97f28f57d1016fb4cb1c306239330dbbfa45c898d66c43c5e`
+- `composition-known-720px-200-percent.png` — `524cd03f731a4594af7690a1b7c66d81c5e8524473f616a270e7043809c7dc8a`
+- `composition-loading-720px.png` — `884d2024bb32d0e72c214e446f47fcd19964813ff81d9a8cce9484d9267b4689`
+- `composition-error-720px.png` — `15f12a886f297dd71c4337e699a3aaa67e3ed21624e48bc6fbe35f652510ddfd`
+- `composition-partial-720px.png` — `0c1b208fb066da99b777a5bb714fae82d91953b05c623ff181953bab662378ed`
+- `composition-ambiguous-720px.png` — `5ec91e9777548e2fad030efc0d632cd99701d000c921f82839e7e55db854fa97`
+- `composition-larger-known-720px-200-percent.png` — `6d4bee0a6853fab703a3845ad63c1fe638c218810ab4a287a93083652217561f`
+- `composition-larger-loading-720px-200-percent.png` — `c815547b67aad9890a5152a2f49fe305886d882b433c1d797c67924172b41267`
+- `composition-larger-error-720px-200-percent.png` — `7066bc503028f5ba3ee26601e1a7e9ade074ba0654f81910dcc4c2b774480a3f`
+- `composition-larger-partial-720px-200-percent.png` — `3266dea61164f95e0c9167a2786f57e97616513d1c073f98beaab552c3478eda`
+- `composition-larger-ambiguous-720px-200-percent.png` — `727671718f004e8321927eadc7bb51d1415597c8dcaa4af9e49a1100b5308ab0`
+
+No private or user image is stored. The screenshots are synthetic author-owned
+artifacts; the exact role-separated dispositions above independently bind their
+own evidence to the same candidate. Together they prove neither live
+Moonraker mapping, mounted MCP-host behavior, real-printer truth, actual-device
+usability, Queue/History/DataTable/Camera semantics, production suitability nor
+user outcome.
+
 ## 2026-09-03 entity-bound presentation AST experiment
 
 ### Acceptance and safety boundary
