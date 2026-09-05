@@ -87,10 +87,19 @@ cases, the valid one-Row case and 14 envelope tamper cases; it also verified the
 exact artifacts and production isolation. Independent screenshot-first review
 approves the exact source-valid visual evidence with no remaining P0-P2 finding.
 
-No PR, merge, deployment, preview activation or plugin installation is implied
-by the repository commit. Do not alter the existing 4200/8451 preview,
-production, printer, Camera,
-authentication or Tailscale; do not PR, merge, deploy or install a plugin. No
+After separate preview-only authorization, `launchctl kickstart -k` restarted
+only existing job `com.openai.u1-composable-v2-preview` from exact commit
+`79112a5`, tree `a2d068a`. PID 86363 was reaped; PID 73981 has no child and
+only loopback listener 4200. Local and existing Tailnet 8451 return identical
+101,404-byte HTML `243d84c6...`; all 23 allowed assets match committed Kit bytes
+and immutable headers. Nine closure cases per origin pass. Both installed
+Tailscale CLI paths return unchanged raw Serve/Funnel JSON `2eb56116...` with
+LF and `063ecd46...` without; no Tailscale state was written. Production PIDs
+834/841 and listeners 8787/8789 plus 8788 are unchanged.
+
+No PR, merge, deployment or plugin installation occurred. Preserve the current
+preview and do not alter production, printer, Camera, authentication or
+Tailscale. No
 Safari/iPhone, mounted ChatGPT, screen-reader, physical-printer or user-outcome
 acceptance exists. The separately recorded descriptor/lifecycle safeguard plan
 is still unimplemented.

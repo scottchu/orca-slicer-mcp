@@ -84,10 +84,19 @@ The full matrix covers Smart and Explicit at 320/390/720 and 100/200% text,
 plus states, reduced motion, forced colors and focus. The visual approval remains
 synthetic local evidence, not actual-device acceptance.
 
-The existing 4200/8451 preview was not restarted or modified. Production,
-printer, Camera, authentication and Tailscale remain untouched; no PR, merge,
-deployment or plugin installation occurred. The separately recorded MCP
-process-lifecycle safeguard plan remains unimplemented.
+After exact review and commit `79112a5`, preview-only authorization restarted
+only the existing `com.openai.u1-composable-v2-preview` job. PID 86363 was
+reaped and PID 73981 now runs the committed dedicated Bun script with no child
+and only `127.0.0.1:4200`. Local and existing Tailnet 8451 serve identical
+101,404-byte HTML `243d84c6...`; all 23 allowed immutable assets match the
+committed Kit source bytes. Nine HTTP closure cases per origin pass.
+Raw Serve/Funnel JSON remains byte-identical before/after and through both
+installed CLI paths at `2eb56116...` with terminal LF and `063ecd46...`
+without it; 8451 remains solely the existing Tailnet proxy with Funnel off.
+Production PIDs 834/841 and listeners 8787/8789 plus 8788 are preserved.
+Printer, Camera, authentication and Tailscale configuration remain untouched;
+no PR, merge, deployment or plugin installation occurred. The separately
+recorded MCP process-lifecycle safeguard plan remains unimplemented.
 
 ## Current reviewed candidate: additive balanced private-Lab composition
 

@@ -155,12 +155,46 @@ The selected target SHA remains
 its local location is intentionally not durable. Author visual result and exact
 independent screenshot-first review both PASS after the P2 and source corrections.
 
+### Authorized exact preview-only activation
+
+After commit `79112a57fd0f144a9cbbbb6b237cfe5ffe2a3ec3`, tree
+`a2d068af7b949a23e5e599fe9d20da3ef4592395`, the operator preflighted the
+existing `com.openai.u1-composable-v2-preview` launchd job, its exact worktree
+script, sole `127.0.0.1:4200` listener, production jobs/listeners and both raw
+Tailscale CLI views. The preflight local and Tailnet pages were identical old
+66,589-byte balanced HTML `b212f969...`. The only mutation was
+`launchctl kickstart -k gui/501/com.openai.u1-composable-v2-preview`; no
+launchd definition, Tailscale preference or other service was changed.
+
+Old preview PID 86363 was reaped. New PID 73981 runs the exact committed
+dedicated Bun command, has no child process and owns only the loopback 4200
+listener. Local and existing Tailnet 8451 each return HTTP 200 with exact
+101,404-byte HTML SHA-256
+`243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3`,
+byte-identical to each other and to the committed Kit artifact. All 23 allowed
+immutable assets from the page plus the fixed hydration node match the committed
+source bytes and immutable-cache headers at both origins. Nine closure cases
+per origin pass: valid HEAD plus POST, query, trailing slash, health, MCP,
+Camera, queried asset and absent asset returning 404.
+
+Before and after restart, both the application binary and installed wrapper
+returned byte-identical `serve status --json` and `funnel status --json` at
+SHA-256
+`2eb561166fa5b7f50e680f8a98b3bc4b59f03f3d9798b560745ed21a5afb6ba0`
+including terminal LF and
+`063ecd465901d269c63295bfd75acc7aed240455e3f21ca8550b1bae6bb784b3`
+without it. Existing 8451 remains Tailnet HTTPS `/` to loopback 4200 with no
+8451 Funnel. Production PIDs 834/841 and listeners 8787/8789 plus 8788 are
+unchanged. This is operator runtime evidence, not a new independent design or
+source review and not Safari/iPhone or mounted ChatGPT acceptance.
+
 ### Evidence limits
 
 These are synthetic software/protocol and local Chrome results. There is no
 iPhone/Safari, mounted ChatGPT, screen-reader, physical printer/Moonraker,
 public Internet or user-outcome acceptance. No live integration, runtime
-preview replacement, plugin installation, PR, merge or deployment occurred.
+plugin installation, PR, merge or production deployment occurred; only the
+existing isolated preview job was restarted under the explicit scope above.
 The descriptor monitor, 4096 limit, MCP process-group cleanup and lazy-start
 safeguards remain only a recorded future plan; none was installed or applied.
 

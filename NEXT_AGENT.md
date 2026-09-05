@@ -78,9 +78,13 @@ hashes are `d99581cf...` and `8bc2a4db...`.
 
 The isolated MCP must remain `0.0.5-provisional`, one tool and immutable
 resource `ui://u1-print-studio/experiments/composable-lab-v2-r3.html`, with a
-negative production factory/inventory test. Do not touch the existing 4200/8451
-preview, production, printer, Camera, authentication, Tailscale, open a PR,
-merge, deploy or install a plugin. No Safari/iPhone, mounted ChatGPT,
+negative production factory/inventory test. The subsequently authorized
+preview-only restart moved the existing job from PID 86363 to 73981 on committed
+source `79112a5`; local 4200 and existing Tailnet 8451 serve exact 101,404-byte
+`243d84c6...` HTML plus all 23 matching immutable assets. Serve/Funnel hashes
+remain `2eb56116...` with LF and `063ecd46...` without; production PIDs 834/841
+are unchanged. Preserve this runtime. Do not touch production, printer, Camera,
+authentication, Tailscale, open a PR, merge, deploy or install a plugin. No Safari/iPhone, mounted ChatGPT,
 screen-reader, real-printer or user-outcome evidence exists. The MCP lifecycle
 safeguard plan remains separate and unimplemented.
 
