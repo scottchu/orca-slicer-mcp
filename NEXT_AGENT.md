@@ -1,5 +1,43 @@
 # Next agent
 
+## Preserve the reviewed mobile alignment candidate
+
+Preserve, do not silently extend, the CSS-only candidate at 29-path application
+manifest `b98548ad5ac3a56388bda6ba12216a4f4dd0a63449d8fd3ea3b56044579d1279`.
+The exact compiled identities are 115-file Kit
+`300d0b95c2560addc40c2ada30dbfafe0d01dec1ebb5e4939791f69939b324be`,
+101,404-byte HTML `80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`
+and 167,441-byte MCP
+`8e37ea45b8e47d9652374cf4001908a39b220dd559d2562aecd7231396b31086`.
+The target-versus-fresh-Unknown normalized comparison is `47bf2cd6...`; the
+Smart/Explicit 390px Card crop is byte-identical at `513cf9e8...`.
+
+Independently verify hero/quiet Reading alone uses a 32px icon column, existing
+32/24px glyphs, 8px gap and zero content padding, while default Reading remains
+44px/12px/12px. Every hero/quiet local content anchor must be 40px. At 390px
+the two support Columns and direct Readings must have equal height; icon and
+complete-content center deltas are <=1px; glyph/copy is 8-12px and stays below
+20px sibling/group spacing. At 320px and 390px/200%, require exactly 20px
+between intrinsically sized stacked Reading boxes. Confirm 720px/100% remains
+3+3, identity gap remains 12px, Smart/Explicit geometry matches, state bounds
+remain within 1px, and loading/error motion semantics stay neutral/stable.
+
+Independent screenshot-first review **APPROVES** this exact identity with no
+actionable P0-P2 finding after reopening the normalized same-state comparison,
+state/responsive captures and production Heads precedent. `design-qa.md`
+preserves the superseded **BLOCKED** history beneath that final disposition.
+Independent source/protocol review also **APPROVES** and confirms no DSL,
+schema, view-model, data, MCP factory/registration or canonical-spec drift.
+Author evidence passes 114 UI tests, 23 server tests/474 assertions,
+TypeScript/Svelte, deterministic artifacts and 12/12 Chrome.
+
+Do not restart 4200/8451, commit, PR, merge, deploy or touch production,
+Tailscale, authentication, printer, Camera or plugin installation. Actual
+Safari/iPhone, mounted ChatGPT, screen-reader and user-outcome gates remain
+unproven. The user's final clarification was that this was both proximity and
+alignment: do not regress icon/copy grouping or rely on leaf reserve for
+between-item space while preserving only the shared centerline.
+
 ## Preserve the reviewed smart-grouping experiment
 
 Decision0052 and the 28-path private-Lab application on

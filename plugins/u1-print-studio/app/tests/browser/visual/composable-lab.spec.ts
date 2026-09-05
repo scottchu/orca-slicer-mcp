@@ -24,7 +24,129 @@ const assertReadingAnatomy = async (stage: Locator) => {
   expect(Math.max(...centerDeltas)).toBeLessThanOrEqual(1);
 };
 
-for (const width of [320, 390, 720]) {
+const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720, textPercent: 100 | 200) => {
+  const summary = card.locator('[data-group-relation="summary"]');
+  const rows = summary.locator(':scope > [data-node-kind="Row"]');
+  const heroReading = rows.nth(0).locator('[data-domain-reading]');
+  const supportColumns = rows.nth(1).locator(':scope > [data-node-kind="Column"]');
+  const supportReadings = supportColumns.locator(':scope > [data-domain-reading]');
+  const [heroIconX, heroContentX, supportIconXs, supportContentXs, rowBoxes, columnBoxes, readingBoxes, readingAnatomy] = await Promise.all([
+    heroReading.locator(':scope > .icon-frame').evaluate((element) => element.getBoundingClientRect().x),
+    heroReading.locator(':scope > .content').evaluate((element) => element.getBoundingClientRect().x),
+    supportReadings.locator(':scope > .icon-frame').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().x)),
+    supportReadings.locator(':scope > .content').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().x)),
+    rows.evaluateAll((nodes) => nodes.map((node) => {
+      const box = node.getBoundingClientRect();
+      return { x: box.x, y: box.y, width: box.width, height: box.height };
+    })),
+    supportColumns.evaluateAll((nodes) => nodes.map((node) => {
+      const box = node.getBoundingClientRect();
+      return { x: box.x, y: box.y, width: box.width, height: box.height };
+    })),
+    supportReadings.evaluateAll((nodes) => nodes.map((node) => {
+      const box = node.getBoundingClientRect();
+      return { x: box.x, y: box.y, width: box.width, height: box.height };
+    })),
+    card.locator('[data-domain-reading]').evaluateAll((nodes) => nodes.map((node) => {
+      const reading = node.getBoundingClientRect();
+      const iconFrame = node.querySelector(':scope > .icon-frame')?.getBoundingClientRect();
+      const glyph = node.querySelector(':scope > .icon-frame svg')?.getBoundingClientRect();
+      const content = node.querySelector(':scope > .content')?.getBoundingClientRect();
+      const label = node.querySelector(':scope > .content .label')?.getBoundingClientRect();
+      const value = node.querySelector(':scope > .content .value-frame')?.getBoundingClientRect();
+      if (!iconFrame || !glyph || !content || !label || !value) return null;
+      return {
+        contentOffset: content.x - reading.x,
+        frameOffset: iconFrame.x - reading.x,
+        frameWidth: iconFrame.width,
+        glyphWidth: glyph.width,
+        glyphToCopy: content.x - (glyph.x + glyph.width),
+        labelToValue: value.y - (label.y + label.height),
+      };
+    })),
+  ]);
+  expect(Math.abs(supportIconXs[0] - heroIconX)).toBeLessThanOrEqual(1);
+  expect(Math.abs(supportContentXs[0] - heroContentX)).toBeLessThanOrEqual(1);
+  expect(columnBoxes).toHaveLength(2);
+  expect(readingBoxes).toHaveLength(2);
+  expect(rowBoxes).toHaveLength(2);
+  expect(Math.abs(rowBoxes[1].y - (rowBoxes[0].y + rowBoxes[0].height) - 20)).toBeLessThanOrEqual(1);
+  if (readingAnatomy.some((anatomy) => anatomy === null)) throw new Error('Missing grouped reading anatomy');
+  expect(readingAnatomy).toHaveLength(3);
+  for (const anatomy of readingAnatomy as Array<{ contentOffset: number; frameOffset: number; frameWidth: number; glyphWidth: number; glyphToCopy: number; labelToValue: number }>) {
+    expect(Math.abs(anatomy.contentOffset - 40)).toBeLessThanOrEqual(1);
+    expect(Math.abs(anatomy.frameOffset)).toBeLessThanOrEqual(1);
+    expect(Math.abs(anatomy.frameWidth - 32)).toBeLessThanOrEqual(1);
+    expect(anatomy.labelToValue).toBeGreaterThanOrEqual(2);
+    expect(anatomy.labelToValue).toBeLessThanOrEqual(4);
+  }
+  const anatomy = readingAnatomy as Array<{ glyphWidth: number; glyphToCopy: number }>;
+  expect(anatomy.map((item) => item.glyphWidth)).toEqual([32, 24, 24]);
+  expect(anatomy.map((item) => Math.round(item.glyphToCopy))).toEqual([8, 12, 12]);
+  expect(Math.max(...anatomy.map((item) => item.glyphToCopy))).toBeLessThan(20);
+
+  const stacked = width === 320 || textPercent === 200;
+  if (stacked) {
+    expect(Math.abs(columnBoxes[0].y - columnBoxes[1].y)).toBeGreaterThan(1);
+    expect(Math.abs(readingBoxes[0].y - readingBoxes[1].y)).toBeGreaterThan(1);
+    for (let index = 0; index < 2; index += 1) {
+      expect(Math.abs(columnBoxes[index].height - readingBoxes[index].height)).toBeLessThanOrEqual(1);
+    }
+    expect(Math.abs(readingBoxes[1].y - (readingBoxes[0].y + readingBoxes[0].height) - 20)).toBeLessThanOrEqual(1);
+    return;
+  }
+
+  expect(Math.abs(columnBoxes[0].y - columnBoxes[1].y)).toBeLessThanOrEqual(1);
+  expect(Math.abs(columnBoxes[0].height - columnBoxes[1].height)).toBeLessThanOrEqual(1);
+  expect(Math.abs(readingBoxes[0].y - readingBoxes[1].y)).toBeLessThanOrEqual(1);
+  expect(Math.abs(readingBoxes[0].height - readingBoxes[1].height)).toBeLessThanOrEqual(1);
+  expect(Math.abs(columnBoxes[0].width - columnBoxes[1].width)).toBeLessThanOrEqual(1);
+  expect(Math.abs(columnBoxes[1].x - (columnBoxes[0].x + columnBoxes[0].width) - 20)).toBeLessThanOrEqual(1);
+
+  if (width === 390 && textPercent === 100) {
+    const centers = await supportReadings.evaluateAll((nodes) => nodes.map((node) => {
+      const icon = node.querySelector(':scope > .icon-frame')?.getBoundingClientRect();
+      const content = node.querySelector(':scope > .content')?.getBoundingClientRect();
+      if (!icon || !content) return null;
+      return {
+        icon: icon.y + icon.height / 2,
+        content: content.y + content.height / 2,
+      };
+    }));
+    if (centers.some((center) => center === null)) throw new Error('Missing direct support reading anatomy');
+    const [first, second] = centers as Array<{ icon: number; content: number }>;
+    expect(Math.abs(first.icon - second.icon)).toBeLessThanOrEqual(1);
+    expect(Math.abs(first.content - second.content)).toBeLessThanOrEqual(1);
+  }
+};
+
+const readTextLineGeometry = async (reading: Locator) => reading.evaluate((node) => {
+  const geometry = (selector: string) => {
+    const element = node.querySelector(selector);
+    if (!element) return null;
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    const fragments: DOMRect[] = [];
+    let textNode = walker.nextNode();
+    while (textNode) {
+      if (textNode.textContent?.trim()) {
+        const range = document.createRange();
+        range.selectNodeContents(textNode);
+        fragments.push(...Array.from(range.getClientRects()));
+      }
+      textNode = walker.nextNode();
+    }
+    const lines = fragments.reduce<Array<{ top: number; bottom: number }>>((result, fragment) => {
+      const line = result.find((candidate) => Math.abs(candidate.top - fragment.top) <= 1);
+      if (line) line.bottom = Math.max(line.bottom, fragment.bottom);
+      else result.push({ top: fragment.top, bottom: fragment.bottom });
+      return result;
+    }, []).sort((left, right) => left.top - right.top);
+    return { lineCount: lines.length, firstBaselineProxy: lines[0]?.bottom ?? 0, lastBaselineProxy: lines[lines.length - 1]?.bottom ?? 0 };
+  };
+  return { label: geometry('.label'), value: geometry('.current') };
+});
+
+for (const width of [320, 390, 720] as const) {
   test(`private composition lab is stable and reviewable at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1200 });
     const errors: string[] = [];
@@ -145,6 +267,22 @@ for (const width of [320, 390, 720]) {
     }
     await expect(stage.locator('[data-percentage-background]')).toHaveCount(0);
     await assertReadingAnatomy(stage);
+    const defaultReadingAnatomy = await stage.locator('[data-reading-appearance="default"]').first().evaluate((node) => {
+      const iconFrame = node.querySelector(':scope > .icon-frame');
+      const content = node.querySelector(':scope > .content');
+      if (!iconFrame || !content) return null;
+      return {
+        gridColumns: getComputedStyle(node).gridTemplateColumns,
+        gap: getComputedStyle(node).columnGap,
+        iconWidth: iconFrame.getBoundingClientRect().width,
+        contentPaddingLeft: getComputedStyle(content).paddingLeft,
+      };
+    });
+    expect(defaultReadingAnatomy).not.toBeNull();
+    expect(defaultReadingAnatomy?.gap).toBe('12px');
+    expect(defaultReadingAnatomy?.iconWidth).toBe(44);
+    expect(defaultReadingAnatomy?.contentPaddingLeft).toBe('12px');
+    expect(defaultReadingAnatomy?.gridColumns.startsWith('44px ')).toBe(true);
     for (const reading of await stage.locator('[data-domain-reading]').all()) {
       const children = reading.locator(':scope > *');
       expect(await children.count()).toBe(2);
@@ -335,6 +473,7 @@ for (const width of [320, 390, 720]) {
       if (!titleBox || !badgeBox) throw new Error('Missing grouped identity geometry');
       expect(badgeBox.x - (titleBox.x + titleBox.width)).toBeGreaterThanOrEqual(11);
       expect(badgeBox.x - (titleBox.x + titleBox.width)).toBeLessThanOrEqual(13);
+      if (width === 390) expect(Math.abs((titleBox.y + titleBox.height / 2) - (badgeBox.y + badgeBox.height / 2))).toBeLessThanOrEqual(1);
       expect(await card.evaluate((element) => ({ tint: element.classList.contains('tinted'), background: getComputedStyle(element).backgroundImage }))).toEqual({ tint: false, background: 'none' });
       await expect(card.locator('[data-node-kind="Table"], [data-percentage-background]')).toHaveCount(0);
       geometry[variant] = await card.locator('[data-node-kind="Row"], [data-node-kind="Column"], [data-domain-reading]').evaluateAll((nodes) => nodes.map((node) => {
@@ -344,6 +483,20 @@ for (const width of [320, 390, 720]) {
       const secondaryY = await card.locator('[data-reading-appearance="quiet"]').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().y));
       if (width === 320) expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeGreaterThan(1);
       else expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeLessThanOrEqual(1);
+      await assertGroupedLayoutGeometry(card, width, 100);
+      if (width === 720) {
+        await selectScenario(page, 'unknown');
+        const supportReadings = card.locator('[data-group-relation="summary"] > [data-node-kind="Row"]').nth(1).locator('[data-domain-reading]');
+        const [filamentLines, fanLines] = await Promise.all([
+          readTextLineGeometry(supportReadings.nth(0)),
+          readTextLineGeometry(supportReadings.nth(1)),
+        ]);
+        if (!filamentLines.label || !filamentLines.value || !fanLines.label || !fanLines.value) throw new Error('Missing support reading line geometry');
+        expect([filamentLines.label.lineCount, filamentLines.value.lineCount, fanLines.label.lineCount, fanLines.value.lineCount]).toEqual([1, 1, 1, 1]);
+        expect(Math.abs(filamentLines.label.firstBaselineProxy - fanLines.label.firstBaselineProxy)).toBeLessThanOrEqual(1);
+        expect(Math.abs(filamentLines.value.lastBaselineProxy - fanLines.value.lastBaselineProxy)).toBeLessThanOrEqual(1);
+        await selectScenario(page, 'known');
+      }
       await page.screenshot({ path: `test-results/composable-lab-v2/composition-${variant}-known-${width}px.png`, fullPage: true });
       if (width === 390) await card.screenshot({ path: `test-results/composable-lab-v2/composition-${variant}-card-known-390px.png` });
     }
@@ -355,6 +508,7 @@ for (const width of [320, 390, 720]) {
       await selectScenario(page, 'known');
       const secondaryY = await card.locator('[data-reading-appearance="quiet"]').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().y));
       if (width === 320 || width === 390) expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeGreaterThan(1);
+      await assertGroupedLayoutGeometry(card, width, 200);
       expect(await stage.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
       if (width === 390) await page.screenshot({ path: `test-results/composable-lab-v2/composition-${variant}-known-390px-200-percent.png`, fullPage: true });
     }
@@ -362,12 +516,37 @@ for (const width of [320, 390, 720]) {
 
     await page.getByLabel('Composition shape').selectOption('smart');
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await selectScenario(page, 'loading');
+    if (width === 390) {
+      const stableBounds: Array<{ scenario: string; card: { width: number; height: number }; support: { width: number; height: number } }> = [];
+      for (const scenario of ['unknown', 'known', 'ambiguous', 'partial', 'loading', 'error']) {
+        await selectScenario(page, scenario);
+        const [cardBox, supportBox] = await Promise.all([
+          card.boundingBox(),
+          card.locator('[data-group-relation="summary"] > [data-node-kind="Row"]').nth(1).boundingBox(),
+        ]);
+        if (!cardBox || !supportBox) throw new Error(`Missing ${scenario} grouped bounds`);
+        stableBounds.push({
+          scenario,
+          card: { width: cardBox.width, height: cardBox.height },
+          support: { width: supportBox.width, height: supportBox.height },
+        });
+        await assertGroupedLayoutGeometry(card, 390, 100);
+        if (['unknown', 'known', 'loading', 'error'].includes(scenario)) {
+          await page.screenshot({ path: `test-results/composable-lab-v2/composition-smart-${scenario}-390px.png`, fullPage: true });
+        }
+      }
+      for (const part of ['card', 'support'] as const) {
+        const widths = stableBounds.map((bounds) => bounds[part].width);
+        const heights = stableBounds.map((bounds) => bounds[part].height);
+        expect(Math.max(...widths) - Math.min(...widths), `${part} state widths: ${JSON.stringify(stableBounds)}`).toBeLessThanOrEqual(1);
+        expect(Math.max(...heights) - Math.min(...heights), `${part} state heights: ${JSON.stringify(stableBounds)}`).toBeLessThanOrEqual(1);
+      }
+    } else {
+      await selectScenario(page, 'loading');
+    }
     expect(await card.locator('[data-skeleton]').first().evaluate((element) => getComputedStyle(element).animationName)).toBe('none');
-    if (width === 390) await page.screenshot({ path: 'test-results/composable-lab-v2/composition-smart-loading-390px.png', fullPage: true });
     await selectScenario(page, 'error');
     expect(await card.locator('[data-skeleton-static]').count()).toBe(4);
-    if (width === 390) await page.screenshot({ path: 'test-results/composable-lab-v2/composition-smart-error-390px.png', fullPage: true });
     await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
     await selectScenario(page, 'known');
     expect(await card.evaluate((element) => getComputedStyle(element).borderStyle)).toBe('solid');

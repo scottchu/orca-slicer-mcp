@@ -1,5 +1,51 @@
 # F0 dual-subsystem foundation handoff
 
+## Current reviewed alignment/proximity correction
+
+The latest mobile screenshot reopened presentation layout only. The user's
+follow-up clarified that the issue included detached icon/copy grouping and
+unowned collapsed whitespace, not only vertical centering. The frozen candidate
+changes only
+common `Reading`, `Row`, and `Column` CSS, the compiled private MCP HTML, exact
+isolated preview pins, and focused browser/preview tests. Hero/quiet Reading now
+uses a 32px icon column, existing 32/24px glyphs, 8px gap and zero content
+padding; every local content anchor is 40px from its Reading start. Default
+Reading is unchanged. Row explicitly stretches its Columns and owns 20px
+column/row gaps; Column is a one-cell grid.
+
+Focused geometry proves the intended hierarchy: 2-4px label/value gap is less
+than 8-12px visible glyph/copy space, which is less than the 20px sibling/group
+rhythm. At 390px the direct support Columns/Readings share height and their icon
+and content centers are within 1px. At 320px and 390px/200% stacked Readings
+have exactly 20px between boxes without equal-height blank reserve; 720px/100%
+remains 3+3. Smart/Explicit remain geometry-identical and all six states retain
+Card/supporting-Row bounds within 1px.
+
+Frozen author identities:
+
+- 29-path inherited application manifest: `b98548ad5ac3a56388bda6ba12216a4f4dd0a63449d8fd3ea3b56044579d1279`
+- 115-file Kit manifest: `300d0b95c2560addc40c2ada30dbfafe0d01dec1ebb5e4939791f69939b324be`
+- 101,404-byte Lab HTML: `80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`
+- 167,441-byte MCP resource: `8e37ea45b8e47d9652374cf4001908a39b220dd559d2562aecd7231396b31086`
+- target-versus-Unknown 1134x438 comparison: `47bf2cd6e4196f4ea7931f041ef0d2f98981bbbfb69751f04657921d09206aca`
+- Smart/Explicit 390px Card crop: `513cf9e8eb511e1ed08e23d0f7a089105004c93ee2ee26f4908f46df0170d4e4`
+
+Author gates pass 114 UI/shared tests, 23 server/MCP/preview tests with
+474 assertions, TypeScript, zero-diagnostic Svelte/component contracts,
+deterministic MCP reconstruction, two identical Kit builds and 12/12 isolated
+Chrome. Independent screenshot-first review **APPROVES** this exact identity
+with no actionable P0-P2 finding; the superseded mobile **BLOCKED** disposition
+remains preserved below it in `design-qa.md`. Independent source/protocol review
+also **APPROVES** the exact manifest/artifacts and confirms no DSL/schema/
+view-model/data/factory/registration drift; canonical spec hashes remain
+unchanged.
+
+Do not restart the accepted prior 4200/8451 preview for review of uncommitted
+bytes. Do not touch production, printer, Camera, authentication, Tailscale,
+plugin installation, open a PR, merge or deploy. No actual-device/user outcome,
+mounted ChatGPT, accessible speech or manual keyboard evidence is established;
+the source phone raster does not establish its CSS viewport/DPR/text scale.
+
 ## Current reviewed experiment: smart grouping before placement
 
 Decision0052 implements the smallest additive UI-003 experiment requested after

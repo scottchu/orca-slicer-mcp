@@ -1,5 +1,110 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-05 reviewed mobile alignment and proximity candidate
+
+### Boundary and correction
+
+The latest phone screenshot reopened only the private Lab's common presentation
+layout. The supplied 590x1280 target is retained outside the repository at
+SHA-256 `6382cc44eb6783468822a1e29fa72127b0a911e7a2ff92fc023a51cbec732f0f`.
+The final screenshot-first design contract found detached icon/copy anatomy,
+unequal direct supporting-Reading height and no explicit collapsed sibling gap.
+The author correction is CSS-only: hero/quiet Reading uses a fixed 32px icon
+column, unchanged 32/24px glyphs, 8px grid gap and zero content padding; default
+Reading remains unchanged. Row explicitly stretches children and owns 20px
+column/row gaps; Column is a one-cell grid. No DSL, schema, resolved model,
+source acquisition, MCP factory/tool/resource registration, printer, Camera,
+authentication, Tailscale or production path changed. The immutable MCP HTML
+and isolated preview pins changed only because the compiled CSS bytes changed.
+
+The first height-only implementation followed the earlier incomplete design
+contract. Its focused compiler/component gates passed, and it provisionally
+produced Kit manifest `6d4b0683...`, 101,404-byte HTML `b716883d...` and
+166,981-byte MCP `9786f88e...`. The first Chrome run then failed two grouped
+cases because a new harness incorrectly required both supporting global x axes
+to equal the full-width temperature axis; only the first Column shares that
+global axis. After that test correction, a second run failed one 720px/200%
+case because the harness assumed content fit despite the focused 590px Card and
+640px intrinsic text-scale floor. Both were harness failures and were corrected
+without weakening the required local 40px anchors or 720px/100% 3+3 placement.
+The designer then superseded the incomplete height-only contract with the final
+proximity-and-spacing contract above, so those provisional artifacts are not a
+candidate.
+
+### Commands actually run and exact evidence
+
+From `plugins/u1-print-studio/app` on the final CSS bytes:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 114 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 23 tests / 474 assertions.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` plus `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` reconstructs the exact 167,441-byte resource at SHA-256 `8e37ea45b8e47d9652374cf4001908a39b220dd559d2562aecd7231396b31086`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null x vite build` ran twice on the final CSS and reproduced the 115-file manifest `300d0b95c2560addc40c2ada30dbfafe0d01dec1ebb5e4939791f69939b324be`; the 101,404-byte Lab HTML is `80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 12/12 isolated Chrome cases with one worker and releases port 4184 and browser/fixture resources.
+- `uv run --with pillow -` normalized the external Unknown-state phone Card and the fresh 390px Unknown Card to a side-by-side 1134x438 comparison, SHA-256 `47bf2cd6e4196f4ea7931f041ef0d2f98981bbbfb69751f04657921d09206aca`. The author opened this comparison and the fresh state/responsive captures rather than treating screenshot existence as visual inspection.
+
+The browser guard proves each hero/quiet content anchor is 40px from its local
+Reading start, glyph-to-copy gaps are 8/12/12px, label/value gap is 2-4px,
+sibling and summary Row gaps are 20px, and the packed identity gap remains 12px.
+At 390px both direct supporting Columns and Readings have equal height, and
+their icon and complete content centers differ by at most 1px. Equal-line-count
+Unknown fixtures keep label/value baseline proxies within 1px. At 320px and
+390px/200%, supporting Readings stack in source order with exactly 20px between
+their boxes and intrinsic individual heights; at 720px/100% they remain 3+3.
+Default/bordered Reading still has a 44px icon frame, 12px gap and 12px content
+padding. Smart/Explicit geometry remains identical. Known, Unknown, ambiguous,
+partial, loading and error Card/supporting-Row bounds remain within 1px; only
+loading animates, and error remains static neutral.
+
+Fresh ignored evidence hashes:
+
+- Smart/Explicit 390px Card crops, byte-identical:
+  `513cf9e8eb511e1ed08e23d0f7a089105004c93ee2ee26f4908f46df0170d4e4`
+- Smart Unknown/known/loading/error at 390px:
+  `2c1374eb874bc662fa1b788be28ee4f4721ab30ad4bbd947fb829ce84cbf2b86`,
+  `653f74b26eaf007456778823c1a9a625955968185c14e991958c1e8cdc0f4c56`,
+  `8b56a34c2bbb1c48803aeb3d2b8131847c5a06804dc90c6fca2bb22e5a73e12d`,
+  `715a34a5f071e94edcbdd10f9d17a377a9be76c22e58cf8dcf3fb89da5c290d9`
+- Smart 320/720 and Smart/Explicit 390px/200%:
+  `3bd29258d6d44f44aec803144927a318ed38fd19347b2efcd42371c1cfd2c4c5`,
+  `b036a3c34ae2147b3f184a3fb2e3add85831569db10d8b190a6ccb65e1afd1bc`,
+  `eaf23f560d69d6ff4448d9fb350a148499a02591b7ef8044bfc4c231882ced68`,
+  `d9c55384309403b0476f95f2712e1e32659e0add2fae5b8156009031cd0df4a4`
+
+The inherited changed/new application source set gains only `Reading.svelte`
+and is now 29 paths at manifest
+`b98548ad5ac3a56388bda6ba12216a4f4dd0a63449d8fd3ea3b56044579d1279`.
+The first manifest-shell attempt failed harmlessly because local zsh variable
+`path` shadows the executable search path; the renewed command used
+`file_item`, reproduced the preceding 28-path `bc992eac...` identity from
+commit `79112a5`, then produced the 29-path identity above. No file or runtime
+was changed by that failed read-only command.
+
+The frozen author evidence then received both exact independent gates.
+Screenshot-first design review **APPROVES** manifest `b98548ad...` with no
+actionable P0-P2 finding after reopening the source-versus-Unknown comparison,
+390 ready/Unknown/loading/error, 320/720 responsive, 390/200%, default/larger
+720/200% and production Heads precedent. It explicitly records that grouped
+720/200% has assertion/source evidence but no dedicated saved screenshot and
+that the source phone raster cannot establish CSS viewport, DPR or text scale.
+The prior **BLOCKED** mobile finding remains preserved underneath the final
+approval in `design-qa.md`.
+
+Independent source/protocol review also **APPROVES** the exact 29-path manifest
+and artifact pins. It confirms the application diff is limited to `Reading`,
+`Row`, `Column`, focused browser/preview coverage, compiled private HTML and
+exact preview pins; production factory/registration, DSL, schemas, view model,
+data/acquisition and canonical specs do not drift. Its one non-blocking record
+precision was applied here and in `PROJECT_STATE.md`: the default Reading
+component/resource bytes changed because the shared file was rebuilt, while
+its default CSS declarations and computed 44px icon / 12px gap / 12px content
+inset remain unchanged.
+
+No Safari/iPhone, mounted ChatGPT, screen-reader speech, manual keyboard,
+real-printer or user-outcome acceptance is claimed. The existing 4200/8451
+preview was not restarted and continues serving the earlier committed build.
+
 ## 2026-09-05 smart semantic grouping plus explicit six-track reviewed candidate
 
 ### Boundary, corrections and retained failures

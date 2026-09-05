@@ -16,7 +16,7 @@
 >{@render children()}</div>
 
 <style>
-  .column { min-width: 0; }
+  .column { display: grid; min-width: 0; }
   .span-1 { grid-column: span 1; }
   .span-2 { grid-column: span 2; }
   .span-3 { grid-column: span 3; }

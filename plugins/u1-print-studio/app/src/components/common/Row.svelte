@@ -10,6 +10,6 @@
 <div class="row" class:compact={columnGap === 'compact'} data-collapse={collapse} data-node-kind="Row">{@render children()}</div>
 
 <style>
-  .row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 16px; min-width: 0; }
+  .row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: stretch; column-gap: var(--u1-space-5); row-gap: var(--u1-space-5); min-width: 0; }
   .row.compact { column-gap: var(--u1-space-3); }
 </style>

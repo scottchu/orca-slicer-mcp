@@ -1,5 +1,54 @@
 # Project state
 
+## Current reviewed mobile alignment/proximity candidate
+
+The latest phone screenshot reopened only common presentation layout for the
+private Smart/Explicit Lab. The final designer contract is implemented without
+changing DSL, schemas, resolved trees, acquisition, MCP factory/tool/resource
+registration, data or production. The user's clarification made the visible
+problem broader than vertical centering: icon/copy proximity and collapsed
+sibling spacing also had to be owned explicitly. Hero/quiet Reading has a fixed
+32px icon column, unchanged 32/24px glyphs, 8px grid gap and zero content
+padding. Default Reading CSS declarations and computed 44px/12px/12px geometry
+are unchanged. Row explicitly stretches one-cell-grid Columns and owns 20px
+column/row gaps.
+
+Author browser evidence proves 40px local content anchors, 8/12/12px
+glyph-to-copy gaps, 2-4px label/value separation and 20px sibling/group rhythm.
+The 390px support pair has equal direct Column/Reading heights and <=1px icon/
+content center deltas. Intrinsic stacked states at 320px and 390px/200% retain
+individual stable reserves plus exactly 20px between Reading boxes; 720px/100%
+remains 3+3. Smart/Explicit geometry is identical, all six states keep Card and
+supporting-Row bounds within 1px, and default/bordered Reading geometry is
+unchanged.
+
+Final author checks pass 114 UI/shared tests, 23 server/MCP/preview tests with
+474 assertions, TypeScript, zero-diagnostic Svelte/component contracts,
+deterministic MCP, two identical Kit builds and 12/12 isolated Chrome. The
+uncommitted 29-path application manifest is
+`b98548ad5ac3a56388bda6ba12216a4f4dd0a63449d8fd3ea3b56044579d1279`;
+Kit `300d0b95c2560addc40c2ada30dbfafe0d01dec1ebb5e4939791f69939b324be`;
+101,404-byte HTML
+`80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`;
+167,441-byte MCP
+`8e37ea45b8e47d9652374cf4001908a39b220dd559d2562aecd7231396b31086`.
+The external-target/fresh-Unknown normalized comparison is `47bf2cd6...`.
+
+Independent screenshot-first review **APPROVES** the exact `b98548ad...`
+manifest with no actionable P0-P2 finding after reopening the same-state
+normalized comparison, responsive/state captures and production Heads
+precedent. Independent source/protocol review also **APPROVES** this exact
+identity and confirms the correction is restricted to the three common CSS
+primitives, focused tests, generated immutable resource and exact preview pins;
+the DSL/schema/view-model/data/factory/registration contracts and canonical
+spec hashes do not drift. `design-qa.md` retains the superseded **BLOCKED**
+history beneath the exact final approval.
+
+The accepted earlier 4200/8451 preview was not restarted. No production/
+Tailscale/auth/printer/Camera/plugin/PR/merge/deploy mutation or actual-device
+acceptance occurred. Screenshot review cannot prove accessible speech, manual
+keyboard traversal, mounted ChatGPT or actual iPhone/Safari behavior.
+
 ## Current reviewed experiment: semantic grouping before six-track placement
 
 Decision0052 is an additive private-Lab prototype on

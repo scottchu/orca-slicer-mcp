@@ -1,3 +1,245 @@
+# Smart-grouped composable Lab — final mobile proximity review
+
+Disposition: **APPROVE** the exact frozen uncommitted application manifest
+`b98548ad5ac3a56388bda6ba12216a4f4dd0a63449d8fd3ea3b56044579d1279`
+within the synthetic private-Lab boundary. No actionable P0, P1 or P2 design
+finding remains. Any application-byte change invalidates this disposition.
+
+## Exact screenshot evidence
+
+The reviewer reopened the user-supplied 590 by 1280 phone screenshot at
+SHA-256
+`6382cc44eb6783468822a1e29fa72127b0a911e7a2ff92fc023a51cbec732f0f`
+and the fresh 1134 by 438 normalized source-versus-Unknown comparison at
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/comparison-mobile-alignment-target-vs-implementation.png`,
+SHA-256
+`47bf2cd6e4196f4ea7931f041ef0d2f98981bbbfb69751f04657921d09206aca`.
+That single comparison input shows the same Tool head T1, temperature,
+configured color and Unknown fan state at equal card width. The source raster
+does not establish CSS viewport, DPR or text scale, so it is a normalized
+anatomy comparison rather than pixel identity.
+
+Fresh Smart 390px ready, Unknown, loading and error captures were reopened at
+`653f74b26eaf007456778823c1a9a625955968185c14e991958c1e8cdc0f4c56`,
+`2c1374eb874bc662fa1b788be28ee4f4721ab30ad4bbd947fb829ce84cbf2b86`,
+`8b56a34c2bbb1c48803aeb3d2b8131847c5a06804dc90c6fca2bb22e5a73e12d`
+and `715a34a5f071e94edcbdd10f9d17a377a9be76c22e58cf8dcf3fb89da5c290d9`.
+The 374 by 292 Smart and Explicit ready card crops were also reopened and are
+byte-identical at
+`513cf9e8eb511e1ed08e23d0f7a089105004c93ee2ee26f4908f46df0170d4e4`.
+
+Responsive inspection covered Smart 320px and 720px at
+`3bd29258d6d44f44aec803144927a318ed38fd19347b2efcd42371c1cfd2c4c5`
+and `b036a3c34ae2147b3f184a3fb2e3add85831569db10d8b190a6ccb65e1afd1bc`,
+plus Smart and Explicit 390px/200% at
+`eaf23f560d69d6ff4448d9fb350a148499a02591b7ef8044bfc4c231882ced68`
+and `d9c55384309403b0476f95f2712e1e32659e0add2fae5b8156009031cd0df4a4`.
+The reviewer also reopened the 720px/200% default and larger compositions at
+`548309d17be5acd401127a24ecc63d14c5411f4864b462ffb331ef1a01285e7c`
+and `adf24fc81487fa1370ec08f3656f6d23f9d25cfbe18f8fb79a009df778216d30`
+to check that the shared CSS did not visibly disturb their established reflow.
+
+For internal product consistency, the current production Heads 320, 390 and
+720px synthetic captures were reopened at
+`a7c5ac5db8f784357e5e4b11cd5eeb356341743a64232b0fc1b5a8ee94c4d126`,
+`cb4ada626608ae52cd2b1071ee35944d8b4015f5510dae555cbf43950896d0a3`
+and `4c255dd6e0463a289416fe4e826d29d3678550487babb4984ed2f1e79bda9688`.
+Production `HeadCard` uses `Inline gap="tight"` for 4px within-item proximity
+and `Stack` for 12px between items. It remains a precedent for relative
+proximity, not a requirement to copy its unlabeled inset-card anatomy.
+
+## Accepted visual contract
+
+- **Gestalt proximity:** in the fresh normalized comparison, the old detached
+  icon column is gone. The inspected source uses a 32px hero/quiet icon column,
+  unchanged 32/24px glyphs, an 8px content gap and zero content padding. The
+  resulting visible glyph-to-copy gaps are 8/12/12px. `Group` keeps the
+  label/value gap at 4px and `Row` keeps sibling/group separation at 20px.
+  This satisfies `4px label/value < 8–12px icon/copy < 20px between groups`
+  and visibly follows the production Heads proximity principle.
+- **Alignment and grouping:** temperature remains the full-width span-6 lead.
+  At 390px the filament and fan span-3 groups have equal Reading height; their
+  icons and complete label/value blocks share one optical center. All three
+  local content starts use the same 40px anchor. The swatch stays attached to
+  `#E89B3C`, and the fan icon stays attached to `Part cooling` or `Unknown`.
+- **Responsive behavior:** 320px and 390px/200% stack filament then fan with a
+  clear 20px between-item gap and no artificial equal-height blank block.
+  At 720px/100% the support pair remains 3+3 and the focused card does not grow
+  into an extra column. Smart and Explicit preserve the same visual geometry.
+  The exact browser matrix also exercises Smart/Explicit at 720px/200% and
+  asserts intrinsic stacking and local geometry; no dedicated grouped
+  720px/200% screenshot was saved, so that one state is assertion/source
+  evidence rather than independent pixel evidence.
+- **Header and copy:** Tool head T1 and Active remain one packed left identity
+  group with a 12px gap and matched optical center at 390px. At 200% the status
+  wraps from the same left edge. `Configured color` remains compact while its
+  full `Configured filament color` accessible name is covered by the recorded
+  browser assertion; screenshot review cannot verify spoken output.
+- **Stable states:** ready and Unknown retain the same card frame. Loading and
+  acquisition error preserve the same neutral reading slots; error contains no
+  visible old telemetry and uses static neutral skeletons, while loading alone
+  may animate. The persistent status remains below the card, not as an overlay.
+- **No visual regression:** no tint, gradient, percentage fill, divider, Table,
+  printer icon, extra asset, clipped copy or horizontal overflow appears in the
+  inspected grouped captures. Default Reading retains its bordered 44px icon
+  frame, 12px gap and 12px content inset in source, limiting the proximity
+  change to hero/quiet appearances.
+
+The exact associated author artifacts are the 115-file Kit manifest
+`300d0b95c2560addc40c2ada30dbfafe0d01dec1ebb5e4939791f69939b324be`,
+101,404-byte HTML
+`80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`
+and 167,441-byte isolated MCP resource
+`8e37ea45b8e47d9652374cf4001908a39b220dd559d2562aecd7231396b31086`.
+This design approval does not replace independent source/protocol identity
+review.
+
+No browser, server, runtime or application file was changed by this reviewer.
+Safari/iPhone, mounted ChatGPT, manual keyboard traversal, screen-reader speech,
+real printer/Moonraker, public Internet, production registration and user
+outcome remain untested. The prior BLOCKED section below is retained as the
+superseded design history that led to this correction.
+
+final result: APPROVE
+
+---
+
+# Smart-grouped composable Lab — mobile alignment correction required
+
+Disposition: **BLOCKED** by the latest user-observed mobile alignment. This is
+a CSS/layout correction request against the current reviewed Smart-grouped
+prototype; it does not reopen the DSL, MCP, schema, data or registry contract.
+
+## Current evidence and limits
+
+The reviewer opened the newly supplied 590 by 1280 phone screenshot at SHA-256
+`6382cc44eb6783468822a1e29fa72127b0a911e7a2ff92fc023a51cbec732f0f`.
+It shows the private composition Lab with `Unknown fan relation` and
+`Smart grouped summary`. The screenshot is kept outside the repository. Its
+browser chrome obscures the page top, and the underlying CSS viewport, DPR and
+text scale cannot be established from the raster alone.
+
+A fresh live capture was attempted through the available computer-use browser
+surfaces. The in-app and Chrome browser surfaces were unavailable and Safari
+had no capturable window, so the supplied phone screenshot is the only new
+live visual evidence in this iteration. Existing source/CSS was inspected, but
+no interaction, animation, keyboard or screen-reader claim is made.
+
+The reviewer also reopened the current production Heads implementation and its
+synthetic 320, 390 and 720px captures as the internal visual precedent. The
+390px capture is SHA-256
+`cb4ada626608ae52cd2b1071ee35944d8b4015f5510dae555cbf43950896d0a3`;
+the 320 and 720px captures are
+`a7c5ac5db8f784357e5e4b11cd5eeb356341743a64232b0fc1b5a8ee94c4d126`
+and `4c255dd6e0463a289416fe4e826d29d3678550487babb4984ed2f1e79bda9688`.
+`HeadCard.svelte` composes each spool/temperature item with
+`Inline gap="tight"`, which resolves to a 4px glyph-to-copy gap, and separates
+the two item rows with `Stack`'s 12px gap. `ActualTarget` also uses the 4px
+tight gap internally. This establishes the existing product hierarchy:
+within-item proximity is materially smaller than between-item spacing.
+
+## Findings
+
+- **P2 — each icon and its copy are visually detached.** The composable
+  Reading declares a 44px icon frame, then a 12px grid gap, while `.content`
+  adds another 12px inline inset. The resulting visible glyph-edge-to-copy gap
+  is about 30px for the 32px temperature icon and 34px for each 24px supporting
+  icon. In the supplied phone screenshot this reads as an icon column beside a
+  separate text column, not three atomic information items. The earlier claim
+  that horizontal anatomy was healthy is withdrawn.
+- **P2 — the two 3+3 supporting readings do not share one vertical center.**
+  The filament group sits visibly above the fan group. `Row` stretches the two
+  Columns, but a block `Column` does not stretch its sole Reading child. The fan
+  `Metric reserveLines={2}` therefore owns a taller child while the shorter
+  filament Reading remains top-aligned. This also amplifies the excess empty
+  space.
+- **P2 — collapsed siblings do not own an explicit between-item gap.** At the
+  intrinsic collapse, both span-3 Columns become separate rows inside the same
+  `Row`, whose CSS currently specifies only `column-gap`. Existing leaf reserve
+  happens to create air, but reserve height is not a spacing contract. The
+  stacked state needs the same deliberate between-item rhythm as the 3+3 state.
+
+Together these findings confirm that the screenshot issue is all three:
+icon-to-copy proximity, inconsistent cross-column anchors and excessive/uneven
+whitespace. The semantic smart grouping and explicit six-track placement remain
+correct; this is presentation CSS, not a DSL-data defect.
+
+## CSS-only implementation contract
+
+Use the production Heads proximity hierarchy with existing tokens, while
+retaining this Lab's labeled-reading hierarchy and larger temperature icon.
+Column stretch alone is necessary but not sufficient. The smallest coherent
+CSS repair affects only the existing `Reading`, `Row` and `Column` layout
+primitives:
+
+- In `Reading.svelte`, scope the compact anatomy to `hero` and `quiet` only.
+  Give both a 32px icon column (`--u1-space-8`), keep the current 32px hero and
+  24px quiet glyph sizes, use an 8px (`--u1-space-2`) icon-column-to-content
+  gap, and remove `.content` padding for those appearances. This produces one
+  shared content axis 40px from the Reading start, with 8px visible separation
+  for temperature and 12px for the centered supporting glyphs. Default Reading
+  remains unchanged.
+- In `Column.svelte`, keep `.column { display: grid; }` so the sole registered
+  Reading stretches to the Row track. In `Row.svelte`, keep
+  `align-items: stretch`, use 20px (`--u1-space-5`) between 3+3 siblings, and
+  add a 20px `row-gap` for the intrinsic stacked state. Do not use leaf reserve
+  height as spacing.
+- Retain `Group.svelte`'s 20px row rhythm and 4px label-to-value gap. This yields
+  the measurable Gestalt order `4px label/value < 8–12px visible icon/copy <
+  20px sibling/group separation`, following production Heads' established
+  `4px within < 12px between` relationship without copying its unlabeled
+  compact card verbatim.
+
+No fixed card or Reading height is added. Do not change leaf copy, data, schema,
+registry or DSL to repair CSS proximity and alignment.
+
+Required geometry at 390 CSS pixels, 100% text:
+
+- Card remains 16px inset under compact density. Identity-to-summary and
+  summary Row gaps remain 20px; supporting column and collapsed-row gaps are
+  20px. No new spacer, min-height or blank slot is allowed.
+- Identity remains packed left: Title then HeadStatus with 12px horizontal gap.
+  Their optical center-Y must differ by at most 1px; the pill's text is centered
+  within its own control rather than forced onto the title's typographic
+  baseline. Status must not move to the far edge.
+- Temperature stays one span-6 Row. Temperature, filament and fan icon-column
+  left edges and content left edges match within 1px. Each content edge is 40px
+  from its local Reading start; the glyph remains centered in the 32px column.
+- Filament and fan stay span3 plus span3. Both Column boxes and direct Reading
+  boxes must have equal height. Their icon center-Y and complete label/value
+  block center-Y must differ by at most 1px. Equal line-count fixtures also keep
+  corresponding label and value baselines within 1px.
+- Every Reading remains atomic: icon plus content move together; label/value
+  gap is 4px; visible glyph-to-copy separation is 8–12px and never exceeds the
+  20px sibling gap. The swatch stays with `#E89B3C`; temperature target/unit
+  remains non-breaking. `Configured color` may wrap to at most two visible
+  lines and retains its full accessible name.
+
+Responsive behavior:
+
+- At 320px/100% and 390px/200%, the intrinsic floor still stacks supporting
+  Columns in source order with exactly 20px between their Reading boxes.
+  Stretched-row alignment must not create equal-height blank stacked cards; each
+  stacked Reading uses its existing intrinsic stable reserve. Title/status wrap
+  from the same left edge at 200% with no clipping.
+- At 720px/100% and 720px/200% when content fits, keep the 3+3 Row and the same
+  icon/content axes. Do not introduce a third column or stretch the focused Card
+  beyond its current maximum width.
+- Known, ambiguous/Unknown, partial, loading and error must retain the same
+  Card/Row bounds within 1px at a given viewport/text scale. Loading alone may
+  animate; error remains a static neutral skeleton with no old telemetry.
+
+No gradient, tint, percentage fill, divider, Table, new icon/asset, arbitrary
+CSS input, MCP/schema/data change or printer/auth/Tailscale work belongs in this
+repair. Recapture Smart and Explicit at 320/390/720 and 390/200%, plus Smart
+Unknown/loading/error at 390. Measure the three local content axes, both support
+centers, 4/8–12/20px proximity hierarchy, collapse gap and state bounds before
+restoring design approval.
+
+final result: blocked
+
+---
+
 # Smart-grouped composable Lab — author design QA
 
 ## Inputs and normalized comparison
