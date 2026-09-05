@@ -21,8 +21,9 @@ files are restored exactly to `origin/main`; new common `LayoutInline` and
 and canonical data contracts did not change.
 
 Frozen application/artifact identities and the complete command record are in
-`VALIDATION.md`. Production registration, entrypoints and all seven current
-generated widget resources are byte-identical to `origin/main`. The exact source
+`VALIDATION.md`. Production registration, transport and entrypoint sources and
+all thirteen pre-existing public HTML artifacts are byte-identical to
+`origin/main`. The exact source
 graphs report zero changed repository input across 188 live-widget inputs and 25
 stdio inputs. Full repository, focused protocol and 12-case browser checks pass.
 

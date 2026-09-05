@@ -12,7 +12,8 @@ durable-record identity binding follows the application freeze.
 
 The hard preservation gate is exact, not visual inference: current production
 `Inline.svelte`, `Stack.svelte`, widget entrypoints, `app.ts` registration and all
-seven production widget resources must remain byte-identical to `origin/main`.
+thirteen pre-existing public HTML artifacts must remain byte-identical to
+`origin/main`.
 The private registry alone must import additive `LayoutInline.svelte` and
 `LayoutStack.svelte`; the Lab MCP factory/tool/resource must remain absent from
 production registration. Confirm the upload-receipt decision remains 0048 and

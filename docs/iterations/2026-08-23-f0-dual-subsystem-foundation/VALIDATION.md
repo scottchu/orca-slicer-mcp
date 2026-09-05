@@ -45,6 +45,17 @@ tracked `origin/main` bytes:
 - MCP observation `ff869c1e351d39d3dfc097995851d9caa222f9d7e776462254f3c6d6c9277d26`;
 - MCP Camera `87121885969f2f6d386e023939f9585a7a97b630c5bc76710ee7f9f44cf11353`.
 
+An exact post-commit comparison also covers all thirteen pre-existing public
+artifacts. In addition to the seven rebuilt resources above, dashboard index is
+`c2d3ab47c2abdc4f4570bbfab35f1216ddddef9d10aef8e969ac5747d2e806e1`, Camera
+host is `7f576efdc8464a0855863177e005810da50702b2062cc1b143ddddb933eb9d66`, status
+host is `7f8dd8acacab9150fa1c736e858a6610e08b282cf56ed2d2570fb214bffc4889`,
+observation Lab is `6a79f13b748c55d53d6791781a6096bfe3baadbcc801819c125265d32dcadec7`,
+bed-mesh Lab is `c23ef5cc4c20dd748396db012bc089a92a64ac207cca7d4ab399a5c720d484aa`,
+and Camera Lab is `a921f730715f6d235cdaa444918c2f8d8e84e7efe6cff9b56f4c9d3134e17af9`.
+Production `app.ts`, MCP HTTP and stdio transports, runtime contract, server
+entrypoint and stdio entrypoint are also byte-identical to `origin/main`.
+
 `git diff --exit-code origin/main` passes for production `app.ts`, all nine
 current live/MCP widget entrypoints, common `Inline`/`Stack`, and those seven
 resources. Build-graph comparison covers 188 distinct repository inputs across

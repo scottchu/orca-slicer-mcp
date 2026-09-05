@@ -43,7 +43,8 @@ Full repository validation passes on the integrated bytes: 646 UI tests, 274
 server tests with 3,286 assertions, 44 service-lifecycle tests and 28 shipping
 tests. Focused Lab evidence passes 114 UI tests, 23 server/MCP/preview tests with
 464 assertions and 12/12 isolated Chrome cases. Current production factories,
-entrypoints, registered resources and seven current HTML artifacts are exactly
+transports, entrypoints, registered resources and all thirteen pre-existing
+public HTML artifacts are exactly
 unchanged from `origin/main`; 188 repository inputs across four live-widget build
 graphs and 25 repository inputs in the stdio graph report zero changed inputs.
 The stdio and unified server bundles each reproduce byte-for-byte across two
