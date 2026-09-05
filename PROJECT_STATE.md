@@ -1,6 +1,47 @@
 # Project state
 
-## Current merge-only integration candidate
+## Current merged private Lab source; production widgets preserved
+
+PR109 merged the exact independently reviewed source head
+`532d87ec7a87dd76f9c349def714bd61d91ee9eb` to `main` as merge commit
+`7e968420b28e0c222f3e1ff1164929a8aa9064ce`, tree
+`3288cf576047df57898142ff4a4d15a6ccd4ee18`. Its ordered parents are prior
+`main` `6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and the reviewed PR head.
+The experiment branch was then advanced only by
+`git merge --ff-only origin/main` to the same merge commit and tree.
+
+This is source integration of the isolated Lab, not a widget rollout. The
+production registration/factory/entrypoint surface and all thirteen public HTML
+artifacts that existed at the prior `main` remain byte-identical through the
+reviewed tree; the two new composable Lab HTML files remain isolated. No current
+widget was replaced. No installation, deployment, service or preview restart,
+production registration, authentication, Tailscale, plugin, Camera, printer or
+printer-control change was performed for PR109.
+
+The required shipping program was consulted only in plan mode. The first actual
+invocation included a mistyped `--lk` option and exited 2 at argparse with
+`unrecognized arguments: --lk`; it caused no mutation. The corrected command
+exited 0 with `planOnly: true`, base `6f53a643...`, reviewed tree `3288cf57...`,
+Bun 1.4.0 at SHA-256 `539598c7...`, and operation
+`pr109-20260905T160547-8e22c2` in `preflight`; it reported `installed: false`,
+`merged: false` and rollback `not-needed`. `--execute` was intentionally not run
+because its merge/deploy/two-service-restart workflow exceeded the user's
+merge-only boundary.
+
+Fresh read-only observation after the merge finds the existing isolated
+`com.openai.u1-composable-v2-preview` still running as PID 20816 with its
+unchanged command and sole loopback listener 4200; the Lab route returns HTTP
+200 and 101,404 bytes. Production PIDs 834/841 still own listeners 8787/8789 and
+8788. This does not establish a restart or deployment, and it does not renew the
+prior exact asset/Tailnet acceptance. No Safari/iPhone, mounted ChatGPT,
+screen-reader speech, real-printer or user-outcome acceptance is claimed.
+
+The next repository action, if durable merge bookkeeping is desired on `main`,
+is an independently reviewed documentation-only PR containing only the four
+current project/iteration records. No application or build-input rerun is
+required while those bytes remain unchanged.
+
+## Historical merge-only integration candidate
 
 The user explicitly authorized one narrow delivery exception: push the exact
 reviewed private composable Lab branch, open its repository-required pull request,

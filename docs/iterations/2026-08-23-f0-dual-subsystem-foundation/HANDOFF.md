@@ -1,6 +1,41 @@
 # F0 dual-subsystem foundation handoff
 
-## Current handoff: merge-only private Lab integration
+## Current handoff: PR109 merged without current-widget replacement
+
+PR109 merged exact reviewed head
+`532d87ec7a87dd76f9c349def714bd61d91ee9eb` to `main` as
+`7e968420b28e0c222f3e1ff1164929a8aa9064ce`, tree
+`3288cf576047df57898142ff4a4d15a6ccd4ee18`; ordered parents are prior `main`
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` followed by that reviewed head.
+The feature branch now points to the same commit after the single
+`git merge --ff-only origin/main` integration command.
+
+The reviewed tree preserves production registration, factories, transports,
+entrypoints and every one of the thirteen HTML artifacts already public at the
+prior `main`. The new composable files remain private-Lab-only and no current
+widget was replaced. PR109 ended at verified Git merge: no install, deployment,
+production or preview restart, auth/Tailscale/plugin/Camera/printer mutation, or
+printer control occurred.
+
+One plan-only shipping probe first failed harmlessly at argparse because the
+actual command contained typo `--lk`; the corrected command returned exit 0,
+`planOnly: true`, operation `pr109-20260905T160547-8e22c2`, reviewed tree
+`3288cf57...`, Bun 1.4.0 / SHA-256 `539598c7...`, and no merge/install/rollback.
+`--execute` was not run because it would deploy and restart both production
+services outside this exception.
+
+Fresh read-only checks find the pre-existing private preview still running as
+PID 20816 on loopback 4200 and serving the Lab page at HTTP 200/101,404 bytes;
+production PIDs 834/841 and listeners 8787/8789/8788 remain present. This is not
+evidence of a merge-triggered rollout or renewed exact asset/Tailnet acceptance.
+Actual iPhone/Safari, mounted ChatGPT, assistive speech, real-printer and user
+outcomes remain unverified.
+
+Only a four-record documentation tail follows. It must be reviewed as unchanged
+application/build inputs and, if desired on `main`, delivered in a separate
+docs-only PR. Do not rerun unaffected full suites solely for this bookkeeping.
+
+## Historical handoff: merge-only private Lab integration
 
 The one-off user scope is source integration to `main` without replacing current
 widgets. The integrated branch combines pre-integration Lab head
