@@ -2,9 +2,10 @@
 
 ## Immediate: review the exact merge-only integration candidate
 
-Independently review the integration of `origin/main`
-`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` into the private Lab branch from
-pre-integration head `76bf955d583ad3ab98a20c80324c795be2c9da01`. Verify the merge has two parents,
+Independently review normal merge `1354f737a8535787afd69acd6cad6826911f200c`,
+tree `d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`. Its ordered parents are private
+Lab head `76bf955d583ad3ab98a20c80324c795be2c9da01` and `origin/main`
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a`. Verify the merge has those two parents,
 the 60-path application manifest remains
 `e5886589ff7dc60ba0fe867956b3e11e490f941d63cc0ccda3f09fb784307770`, and only
 durable-record identity binding follows the application freeze.

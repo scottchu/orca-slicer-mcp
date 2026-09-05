@@ -14,7 +14,10 @@ user's merge-only boundary.
 
 `origin/main` at `6f53a6435a3f38a92e4d2b4713ae025a97d7097a` is integrated into
 `codex/u1-composable-ui-experiment` from pre-integration head
-`76bf955d583ad3ab98a20c80324c795be2c9da01`. Five textual conflicts in current
+`76bf955d583ad3ab98a20c80324c795be2c9da01` by normal merge commit
+`1354f737a8535787afd69acd6cad6826911f200c`, tree
+`d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`, with those ordered parents. Five
+textual conflicts in current
 project/iteration records and the decision index preserve both histories. The
 unrelated upload-receipt decision remains 0048; the complete Lab decision series
 is renumbered in order to 0049 through 0053. No product meaning was combined.

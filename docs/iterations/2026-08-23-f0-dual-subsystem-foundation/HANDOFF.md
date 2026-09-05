@@ -5,7 +5,9 @@
 The one-off user scope is source integration to `main` without replacing current
 widgets. The integrated branch combines pre-integration Lab head
 `76bf955d583ad3ab98a20c80324c795be2c9da01` and `origin/main`
-`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` through a normal merge commit. No
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` through normal merge commit
+`1354f737a8535787afd69acd6cad6826911f200c`, tree
+`d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`, with those ordered parents. No
 rebase, force update, PR, push, install, deployment or runtime mutation belongs to
 this handoff.
 

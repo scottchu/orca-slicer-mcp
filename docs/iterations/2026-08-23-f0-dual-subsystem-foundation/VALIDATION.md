@@ -7,7 +7,10 @@
 The user explicitly authorized merging the reviewed private Lab source to main
 without replacing current widgets. The candidate integrates `origin/main`
 `6f53a6435a3f38a92e4d2b4713ae025a97d7097a` into pre-integration Lab head
-`76bf955d583ad3ab98a20c80324c795be2c9da01` with a normal merge. It does not
+`76bf955d583ad3ab98a20c80324c795be2c9da01` with normal merge commit
+`1354f737a8535787afd69acd6cad6826911f200c`, tree
+`d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`; its ordered parents are the Lab head
+and `origin/main`. It does not
 authorize a PR, push, deployment, install, production or preview restart,
 production registration, auth, Tailscale, plugin, Camera, printer or control
 change. `scripts/u1_ship.py --execute` was not run because its intentional
