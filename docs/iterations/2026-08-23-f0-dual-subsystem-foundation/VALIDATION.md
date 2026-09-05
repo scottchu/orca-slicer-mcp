@@ -1,6 +1,85 @@
 # F0 dual-subsystem foundation validation
 
-## 2026-09-05 merge-only private Lab integration candidate
+## 2026-09-05 PR109 merged-source and records-only tail
+
+### Exact remote result
+
+PR109 merged independently reviewed head
+`532d87ec7a87dd76f9c349def714bd61d91ee9eb` as remote `main`
+`7e968420b28e0c222f3e1ff1164929a8aa9064ce`, tree
+`3288cf576047df57898142ff4a4d15a6ccd4ee18`. `git show -s --format='%P'
+7e968420...` reports ordered parents
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and
+`532d87ec7a87dd76f9c349def714bd61d91ee9eb`; the reviewed head and merge have
+the same tree. From the clean experiment worktree, `git merge --ff-only
+origin/main` advanced the feature branch from `532d87ec...` to `7e968420...`
+without a new commit or conflict.
+
+The exact reviewed-tree production-isolation evidence therefore binds to the
+merge: production registration/factories/transports/entrypoints and the thirteen
+pre-existing public HTML artifacts remain unchanged from prior `main`; only the
+two isolated composable Lab HTML files are additive. No current widget was
+replaced.
+
+### Shipping-plan observations
+
+These commands actually ran before merge:
+
+- `uv run --no-project scripts/u1_ship.py --lk --pr 109 --reviewed-sha
+  532d87ec7a87dd76f9c349def714bd61d91ee9eb --bun
+  <ABSOLUTE_PINNED_BUN_1_4_0>` exited 2 with argparse
+  `error: unrecognized arguments: --lk`. It mutated nothing.
+- `uv run --no-project scripts/u1_ship.py --pr 109 --reviewed-sha
+  532d87ec7a87dd76f9c349def714bd61d91ee9eb --bun
+  <ABSOLUTE_PINNED_BUN_1_4_0>` exited 0 in plan-only mode.
+  It reported base `6f53a643...`, reviewed tree `3288cf57...`, Bun 1.4.0 with
+  SHA-256 `539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`,
+  operation `pr109-20260905T160547-8e22c2`, phase `preflight`,
+  `installed: false`, `merged: false` and rollback `not-needed`.
+
+Both invocations used the same absolute pinned Bun path. The durable record
+redacts that user-local prefix while retaining its exact Bun 1.4.0 version,
+binary hash, flags, exit statuses and reported results.
+
+The corrected plan listed the normal complete shipping workflow. `--execute`
+was intentionally not run because deployment and both production service
+restarts were outside the user's merge-only authorization.
+
+### Fresh read-only runtime observation
+
+`launchctl print gui/501/com.openai.u1-composable-v2-preview` reports the
+pre-existing submitted job running at PID 20816 with its unchanged Bun command.
+`lsof -nP -iTCP -sTCP:LISTEN` finds PID 20816 only on `127.0.0.1:4200`, while
+production PIDs 834/841 retain 8787/8789 and 8788. A bounded local GET to the
+Lab route returned HTTP 200, exact 101,404-byte HTML and SHA-256
+`80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`;
+`pgrep -P 20816` found no child. No job, process, listener, service or route was
+changed by these checks. This does not renew the prior exact asset closure or
+Tailnet evidence and does not prove Safari/iPhone, mounted ChatGPT, assistive
+speech, real-printer or user outcomes.
+
+### Records-only validation boundary
+
+This follow-up changes only `PROJECT_STATE.md`, `NEXT_AGENT.md`, this
+`VALIDATION.md` and `HANDOFF.md`. `git diff --name-only HEAD` reports exactly
+those four paths and `git diff --check` passes. `git diff --quiet HEAD --
+plugins/u1-print-studio/app src scripts package.json bun.lockb .github .agents`
+passes, proving no application, dependency, configuration, generated asset,
+shipping or agent build input changed relative merged `main`. A tree-derived
+list found exactly thirteen prior-`main` public HTML artifacts, and `git diff
+--quiet 6f53a643... 7e968420... -- <those-thirteen-paths>` passes. The merge and
+reviewed head both resolve to tree `3288cf57...`.
+
+No full application/build/browser suite was rerun because the accepted
+application and every relevant build input are unchanged. These checks bind the
+retained application evidence to this documentation-only tail without claiming
+new application validation.
+
+No deployment, installation, preview/production restart, current-widget
+replacement, production registration, authentication, Tailscale, plugin,
+Camera, printer or printer-control mutation occurred.
+
+## 2026-09-05 historical merge-only private Lab integration candidate
 
 ### Scope and ancestry
 

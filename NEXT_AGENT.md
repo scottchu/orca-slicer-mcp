@@ -1,6 +1,36 @@
 # Next agent
 
-## Immediate: review and deliver the exact merge-only integration candidate
+## Immediate: preserve merged private Lab isolation
+
+PR109 is merged. Remote `main` is merge commit
+`7e968420b28e0c222f3e1ff1164929a8aa9064ce`, tree
+`3288cf576047df57898142ff4a4d15a6ccd4ee18`, with ordered parents prior `main`
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and exact reviewed head
+`532d87ec7a87dd76f9c349def714bd61d91ee9eb`. The experiment branch was
+fast-forwarded to that commit with `git merge --ff-only origin/main`.
+
+Treat this as merged source for an isolated private Lab, not as permission to
+replace or register a current widget. Preserve the production factory,
+transports, entrypoints and the thirteen pre-existing public HTML artifacts.
+Do not install, deploy, restart preview or production, or change authentication,
+Tailscale, plugins, Camera, printer or printer-control state. The normal
+`u1_ship.py --execute` path remains required for a later authorized production
+release and was intentionally prohibited for this merge-only exception.
+
+The only optional immediate work is to review and deliver the four-file
+documentation-only merge record from this feature branch through a separate PR.
+Before doing so, prove the diff changes no application, dependency,
+configuration, generated asset or build input; do not rerun unaffected full
+application or browser suites solely for bookkeeping. Preserve the exact merged
+code tree and prior accepted evidence boundaries.
+
+Fresh read-only checks at this record tail found the existing isolated preview
+still at PID 20816 on loopback 4200 and HTTP 200/101,404 bytes, with production
+PIDs 834/841 on 8787/8789/8788. This is presence evidence only, not deployment,
+Tailnet, exact-asset, Safari/iPhone, mounted ChatGPT, assistive speech,
+real-printer or user-outcome acceptance.
+
+## Historical delivery instructions for the exact merge-only candidate
 
 Independently review normal merge `1354f737a8535787afd69acd6cad6826911f200c`,
 tree `d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`. Its ordered parents are private
