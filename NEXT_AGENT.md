@@ -1,6 +1,6 @@
 # Next agent
 
-## Immediate: review the exact merge-only integration candidate
+## Immediate: review and deliver the exact merge-only integration candidate
 
 Independently review normal merge `1354f737a8535787afd69acd6cad6826911f200c`,
 tree `d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`. Its ordered parents are private
@@ -19,12 +19,21 @@ The private registry alone must import additive `LayoutInline.svelte` and
 production registration. Confirm the upload-receipt decision remains 0048 and
 the Lab records are uniquely renumbered 0049-0053 without lost history.
 
+After independent approval binds the exact full branch-head SHA, fetch the remote
+and require `origin/main` to remain exactly
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and an ancestor of that head. Then push
+that exact head without force, open the repository-required PR to `main`, confirm
+the PR head matches the reviewed SHA, and use only
+`gh pr merge --merge --match-head-commit <reviewed-full-sha>`. Do not use admin
+bypass, auto-merge or branch deletion. Fetch after merge and verify the remote
+merge's first parent is the expected main, its second parent is the reviewed head,
+and its tree equals the reviewed tree. Stop on any base/head drift or failed guard.
+
 Do not run `scripts/u1_ship.py --execute`: it intentionally continues from merge
 through deployment and both production restarts, which the user's one-off
-merge-only authorization prohibits. Do not push, open a PR, install, deploy,
-restart production or preview, or mutate auth, Tailscale, plugin or printer state.
-The general shipping policy is not weakened; any later release returns to its
-normal guarded path.
+merge-only authorization prohibits. Do not install, deploy, restart production or
+preview, or mutate auth, Tailscale, plugin or printer state. The authorized action
+ends after verified Git merge; the general shipping policy is not weakened.
 
 ## Preserve the reviewed mobile alignment candidate
 

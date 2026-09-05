@@ -10,12 +10,38 @@ without replacing current widgets. The candidate integrates `origin/main`
 `76bf955d583ad3ab98a20c80324c795be2c9da01` with normal merge commit
 `1354f737a8535787afd69acd6cad6826911f200c`, tree
 `d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`; its ordered parents are the Lab head
-and `origin/main`. It does not
-authorize a PR, push, deployment, install, production or preview restart,
-production registration, auth, Tailscale, plugin, Camera, printer or control
-change. `scripts/u1_ship.py --execute` was not run because its intentional
-merge/deploy/restart sequence exceeds this one-off merge-only boundary. Its normal
-policy and guards are unchanged.
+and `origin/main`. The user's latest clarification authorizes pushing the exact
+reviewed branch, opening the repository-required PR to `main`, and merging that
+exact head without replacing current widgets. It does not authorize deployment,
+install, production or preview restart, production registration, auth, Tailscale,
+plugin, Camera, printer or control change. `scripts/u1_ship.py --execute` was not
+run because its intentional merge/deploy/restart sequence exceeds this one-off
+merge-only boundary. Its normal policy and guards are unchanged.
+
+The approved delivery procedure is not yet evidence of execution. First,
+independent review must bind the exact full PR-head SHA. A fresh fetch must then
+show `origin/main` still equals
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and is an ancestor of the reviewed
+head. The exact head may be pushed without force and opened as a PR to `main`.
+After confirming the PR head, merge only with
+`gh pr merge --merge --match-head-commit <reviewed-full-sha>`; admin bypass,
+auto-merge and branch deletion are outside authority. Fetch after merge and verify
+the expected first parent, reviewed head as second parent and reviewed tree. Base
+or head drift, or any failed guard, requires renewed integration/review. The
+workflow stops after verified Git merge with no rollout.
+
+### Authorization-record correction checks
+
+This documentation-only correction changes exactly `PROJECT_STATE.md`,
+`NEXT_AGENT.md`, this `VALIDATION.md`, and the active `HANDOFF.md`. `git diff
+--check` passes. `git diff --quiet HEAD -- plugins/u1-print-studio/app src
+scripts package.json bun.lockb` returns zero, so the frozen 60-path application
+manifest and every previously accepted build input remain unchanged. A scan of
+added lines finds no absolute user or temporary path, private hostname/IP,
+credential token or private-key marker. No build or browser suite was repeated:
+the application, dependencies, configuration and generated assets did not change.
+No push, PR, merge, deployment or runtime mutation was performed while correcting
+the authority record.
 
 Git reported five textual conflicts: `NEXT_AGENT.md`, `PROJECT_STATE.md`, the
 decision index, and the active iteration `HANDOFF.md` and `VALIDATION.md`. Both

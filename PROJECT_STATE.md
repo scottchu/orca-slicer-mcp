@@ -2,15 +2,25 @@
 
 ## Current merge-only integration candidate
 
-The user explicitly authorized one narrow delivery exception: merge the reviewed
-private composable Lab source to `main` while preserving every current widget.
-This authorization does not include a pull request, push, installation,
-deployment, service or preview restart, production registration, authentication,
-Tailscale, plugin, Camera, printer or printer-control change. The normal shipping
-policy remains unchanged for later releases. `scripts/u1_ship.py --execute` is
-prohibited for this exception because that guarded workflow intentionally couples
-merge to exact-build deployment and both production service restarts, outside the
-user's merge-only boundary.
+The user explicitly authorized one narrow delivery exception: push the exact
+reviewed private composable Lab branch, open its repository-required pull request,
+and merge it to `main` while preserving every current widget. This authorization
+does not include installation, deployment, service or preview restart, production
+registration, authentication, Tailscale, plugin, Camera, printer or
+printer-control change. The normal shipping policy remains unchanged for later
+releases. `scripts/u1_ship.py --execute` is prohibited for this exception because
+that guarded workflow intentionally couples merge to exact-build deployment and
+both production service restarts, outside the user's merge-only boundary.
+
+The permitted delivery edge is fail-closed: an independent reviewer must approve
+the exact full PR-head SHA; a fresh fetch must show `origin/main` still equals
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and is an ancestor of that head. Push
+must be non-force, and the PR must target `main`. Merge only with GitHub's normal
+merge method and `gh pr merge --merge --match-head-commit <reviewed-full-sha>`;
+do not use admin bypass, auto-merge or branch deletion. After merge, fetch again
+and verify the remote merge has the reviewed head as its second parent and exactly
+the reviewed tree. Any changed base/head or failed guard stops delivery for renewed
+integration and review. The authorized workflow ends there; do not deploy.
 
 `origin/main` at `6f53a6435a3f38a92e4d2b4713ae025a97d7097a` is integrated into
 `codex/u1-composable-ui-experiment` from pre-integration head

@@ -7,9 +7,10 @@ widgets. The integrated branch combines pre-integration Lab head
 `76bf955d583ad3ab98a20c80324c795be2c9da01` and `origin/main`
 `6f53a6435a3f38a92e4d2b4713ae025a97d7097a` through normal merge commit
 `1354f737a8535787afd69acd6cad6826911f200c`, tree
-`d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`, with those ordered parents. No
-rebase, force update, PR, push, install, deployment or runtime mutation belongs to
-this handoff.
+`d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`, with those ordered parents. The user
+now authorizes pushing the exact reviewed branch, opening the repository-required
+PR and merging it to `main`. No rebase, force update, install, deployment or
+runtime mutation belongs to this handoff.
 
 Five conflicts were durable-record/index conflicts only. Both current narratives
 were retained. The existing upload receipt record owns decision 0048; private Lab
@@ -27,12 +28,18 @@ all thirteen pre-existing public HTML artifacts are byte-identical to
 graphs report zero changed repository input across 188 live-widget inputs and 25
 stdio inputs. Full repository, focused protocol and 12-case browser checks pass.
 
-Independent source/integration review must bind the exact merge commit and confirm
-these preservation properties before `main` is advanced. A documentation-only
-identity tail may record that exact SHA/tree without rerunning unaffected builds.
+Independent source/integration review must bind the exact full PR-head SHA and
+confirm these preservation properties before `main` is advanced. A
+documentation-only identity tail may record that exact SHA/tree without rerunning
+unaffected builds. Before push, fetch and require `origin/main` to remain exactly
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and an ancestor of the reviewed head.
+Push without force, open a PR to `main`, confirm its head identity, and merge only
+with `gh pr merge --merge --match-head-commit <reviewed-full-sha>`. Do not use
+admin bypass, auto-merge or branch deletion. Fetch after merge and verify both
+ordered parents and exact reviewed tree; stop on any drift or failed guard.
 `scripts/u1_ship.py --execute` must not be used: its correct guarded behavior
 couples merge to deployment and both production restarts, while this explicit
-exception ends at merge. Do not weaken or add a bypass to shipping policy.
+exception ends after verified Git merge. Do not weaken shipping policy.
 
 No production or preview service, Tailscale route, authentication, installed
 plugin, printer or printer control was changed. Software/browser evidence does not
