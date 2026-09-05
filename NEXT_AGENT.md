@@ -31,7 +31,12 @@ schema, view-model, data, MCP factory/registration or canonical-spec drift.
 Author evidence passes 114 UI tests, 23 server tests/474 assertions,
 TypeScript/Svelte, deterministic artifacts and 12/12 Chrome.
 
-Do not restart 4200/8451, commit, PR, merge, deploy or touch production,
+Preserve the accepted private preview at clean documentation head `581c8b0` /
+application commit `73cc1b9d`, PID 20816. Local 4200 and existing Tailnet 8451
+serve exact 101,404-byte `80a495c9...` HTML plus 23 matching immutable assets;
+nine closure cases per origin pass. Raw Tailscale Serve/Funnel hashes remain
+`2eb56116...` with terminal LF / `063ecd46...` without; production PIDs 834/841
+remain unchanged. Do not restart, PR, merge, deploy or touch production,
 Tailscale, authentication, printer, Camera or plugin installation. Actual
 Safari/iPhone, mounted ChatGPT, screen-reader and user-outcome gates remain
 unproven. The user's final clarification was that this was both proximity and

@@ -101,9 +101,52 @@ component/resource bytes changed because the shared file was rebuilt, while
 its default CSS declarations and computed 44px icon / 12px gap / 12px content
 inset remain unchanged.
 
+### Authorized exact preview activation
+
+Separate preview-only authorization allowed one restart of the existing
+submitted launchd job `com.openai.u1-composable-v2-preview`. Preflight bound the
+operation to clean documentation head `581c8b0` / application commit
+`73cc1b9d`, unchanged dedicated Bun arguments, old PID 73981 and sole loopback
+4200 listener. Local and existing Tailnet 8451 were byte-identical at the prior
+101,404-byte HTML `243d84c6...`. Production PIDs 834/841 and listeners
+8787/8789 plus 8788 were present. Both the `/usr/local/bin/tailscale` wrapper
+and application binary returned identical raw Serve/Funnel JSON at
+`2eb561166fa5b7f50e680f8a98b3bc4b59f03f3d9798b560745ed21a5afb6ba0`
+with terminal LF and
+`063ecd465901d269c63295bfd75acc7aed240455e3f21ca8550b1bae6bb784b3`
+without it. The job is a launchctl-submitted definition rather than a retained
+LaunchAgent plist; before/after `launchctl print` showed the same exact
+arguments and no definition was written.
+
+The only runtime mutation was:
+
+- `launchctl kickstart -k "gui/$(id -u)/com.openai.u1-composable-v2-preview"`
+
+Old PID 73981 was reaped. New PID 20816 runs the exact existing Bun
+`--no-env-file --config=/dev/null` dedicated immutable-preview command, has no
+child process and, after probe keepalive drained, owns only `127.0.0.1:4200`.
+Local and existing Tailnet 8451 each return HTTP 200 with exact 101,404-byte
+HTML SHA-256
+`80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`.
+All 23 referenced immutable assets including the fixed hydration node are
+byte-identical to the committed Kit at both origins and retain immutable cache
+headers. Nine closure cases per origin pass: valid bodyless HEAD plus POST,
+query, trailing slash, health, MCP, Camera, queried asset and absent asset
+returning 404.
+
+The first inline postrestart verifier failed without external mutation because
+shell quoting removed the intended single quotes from its CSP substring. The
+same read-only verifier reran with a shell-safe CSP token and passed every page,
+asset and closure assertion above; this was verifier construction, not a service
+failure. After verification, both Tailscale binaries reproduced the exact
+preflight raw hashes for Serve and Funnel. Production PIDs 834/841 and their
+three listeners remain unchanged. No launchd definition, Tailscale preference,
+authentication, production service, printer, Camera, plugin or repository
+application byte changed during activation.
+
 No Safari/iPhone, mounted ChatGPT, screen-reader speech, manual keyboard,
-real-printer or user-outcome acceptance is claimed. The existing 4200/8451
-preview was not restarted and continues serving the earlier committed build.
+real-printer or user-outcome acceptance is claimed. The private preview is
+runtime evidence for the exact isolated committed build only.
 
 ## 2026-09-05 smart semantic grouping plus explicit six-track reviewed candidate
 

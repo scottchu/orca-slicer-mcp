@@ -40,13 +40,17 @@ also **APPROVES** the exact manifest/artifacts and confirms no DSL/schema/
 view-model/data/factory/registration drift; canonical spec hashes remain
 unchanged.
 
-The reviewed source is committed at `73cc1b9d` but has not been activated in
-the preview. Preserve the accepted prior 4200/8451 preview unless a separate
-explicit activation authorizes its restart to the exact committed build. Do
-not touch production, printer, Camera, authentication, Tailscale, plugin
-installation, open a PR, merge or deploy. No actual-device/user outcome,
-mounted ChatGPT, accessible speech or manual keyboard evidence is established;
-the source phone raster does not establish its CSS viewport/DPR/text scale.
+Separate preview-only authorization activated the reviewed application commit
+`73cc1b9d` from clean documentation head `581c8b0`. Preserve submitted launchd
+job `com.openai.u1-composable-v2-preview`, now PID 20816 with no child and only
+loopback listener 4200. Local and existing Tailnet 8451 serve exact 101,404-byte
+`80a495c9...` HTML plus all 23 matching committed assets; nine closure cases per
+origin pass. The launchd arguments and raw Tailscale Serve/Funnel identities
+remain unchanged, and production PIDs 834/841 are preserved. Do not touch
+production, printer, Camera, authentication, Tailscale, plugin installation,
+open a PR, merge or deploy. No actual-device/user outcome, mounted ChatGPT,
+accessible speech or manual keyboard evidence is established; the source phone
+raster does not establish its CSS viewport/DPR/text scale.
 
 ## Current reviewed experiment: smart grouping before placement
 

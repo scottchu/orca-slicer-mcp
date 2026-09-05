@@ -44,10 +44,20 @@ the DSL/schema/view-model/data/factory/registration contracts and canonical
 spec hashes do not drift. `design-qa.md` retains the superseded **BLOCKED**
 history beneath the exact final approval.
 
-The accepted earlier 4200/8451 preview was not restarted. No production/
-Tailscale/auth/printer/Camera/plugin/PR/merge/deploy mutation or actual-device
-acceptance occurred. Screenshot review cannot prove accessible speech, manual
-keyboard traversal, mounted ChatGPT or actual iPhone/Safari behavior.
+After separate preview-only authorization, the existing submitted launchd job
+`com.openai.u1-composable-v2-preview` was restarted once from clean documentation
+head `581c8b0` / application commit `73cc1b9d`. Old PID 73981 was reaped; PID
+20816 runs the unchanged dedicated Bun command with no child and only loopback
+listener 4200. Local and existing Tailnet 8451 return the exact 101,404-byte
+HTML `80a495c9...`; all 23 allowed immutable assets match the committed Kit and
+nine closure cases per origin pass. Both raw Tailscale Serve/Funnel views remain
+`2eb56116...` with terminal LF / `063ecd46...` without; production PIDs 834/841
+and listeners 8787/8789 plus 8788 are unchanged. No launchd definition,
+Tailscale/auth/printer/Camera/plugin/PR/merge/production mutation occurred.
+
+This runtime evidence is not actual-device acceptance. It cannot prove
+accessible speech, manual keyboard traversal, mounted ChatGPT or actual
+iPhone/Safari behavior.
 
 ## Current reviewed experiment: semantic grouping before six-track placement
 
