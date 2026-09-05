@@ -27,15 +27,19 @@ These commands actually ran before merge:
 
 - `uv run --no-project scripts/u1_ship.py --lk --pr 109 --reviewed-sha
   532d87ec7a87dd76f9c349def714bd61d91ee9eb --bun
-  /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun` exited 2 with argparse
+  <ABSOLUTE_PINNED_BUN_1_4_0>` exited 2 with argparse
   `error: unrecognized arguments: --lk`. It mutated nothing.
 - `uv run --no-project scripts/u1_ship.py --pr 109 --reviewed-sha
   532d87ec7a87dd76f9c349def714bd61d91ee9eb --bun
-  /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun` exited 0 in plan-only mode.
+  <ABSOLUTE_PINNED_BUN_1_4_0>` exited 0 in plan-only mode.
   It reported base `6f53a643...`, reviewed tree `3288cf57...`, Bun 1.4.0 with
   SHA-256 `539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`,
   operation `pr109-20260905T160547-8e22c2`, phase `preflight`,
   `installed: false`, `merged: false` and rollback `not-needed`.
+
+Both invocations used the same absolute pinned Bun path. The durable record
+redacts that user-local prefix while retaining its exact Bun 1.4.0 version,
+binary hash, flags, exit statuses and reported results.
 
 The corrected plan listed the normal complete shipping workflow. `--execute`
 was intentionally not run because deployment and both production service
