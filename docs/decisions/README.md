@@ -52,11 +52,12 @@ silently changed.
 | [0045](0045-compose-print-with-standalone-asynchronous-monitoring.md) | Compose print with standalone asynchronous monitoring | Accepted workflow direction; source review pending; no durable service claim |
 | [0046](0046-camera-auto-default-and-edge-to-edge-card.md) | Camera Auto default and edge-to-edge card | PR104 accepted/deployed at162dc68; scoped synthetic postverification PASS; phone reliability unresolved |
 | [0047](0047-use-host-acknowledged-fullscreen-with-persistent-media.md) | Use host-acknowledged fullscreen with persistent media | Shipped in PR106; installed-byte scoped checks PASS; actual-host acceptance pending |
-| [0048](0048-explore-entity-bound-presentation-ast-in-private-lab.md) | Explore an entity-bound presentation AST in a private lab | Accepted for isolated private-lab learning; not production architecture or cutover |
-| [0049](0049-place-future-camera-information-in-media-overlays.md) | Place future Camera information in media-bottom overlays | User-selected future direction; implementation and acceptance pending |
-| [0050](0050-use-a-build-time-registry-for-the-private-composable-lab.md) | Use a build-time registry for the private composable Lab | Accepted for isolated private-lab learning; not production architecture or cutover |
-| [0051](0051-add-a-balanced-private-lab-composition-variant.md) | Add a balanced private-Lab composition variant | Accepted additive experiment; not production architecture or cutover |
-| [0052](0052-resolve-semantic-groups-before-closed-layout-overrides.md) | Resolve semantic groups before closed layout overrides | Accepted additive experiment; not production architecture or cutover |
+| [0048](0048-guard-upload-with-content-bound-preparation-receipts.md) | Guard upload with content-bound preparation receipts | Proposed; pure-core source independently accepted, adapters pending |
+| [0049](0049-explore-entity-bound-presentation-ast-in-private-lab.md) | Explore an entity-bound presentation AST in a private lab | Accepted for isolated private-lab learning; not production architecture or cutover |
+| [0050](0050-place-future-camera-information-in-media-overlays.md) | Place future Camera information in media-bottom overlays | User-selected future direction; implementation and acceptance pending |
+| [0051](0051-use-a-build-time-registry-for-the-private-composable-lab.md) | Use a build-time registry for the private composable Lab | Accepted for isolated private-lab learning; not production architecture or cutover |
+| [0052](0052-add-a-balanced-private-lab-composition-variant.md) | Add a balanced private-Lab composition variant | Accepted additive experiment; not production architecture or cutover |
+| [0053](0053-resolve-semantic-groups-before-closed-layout-overrides.md) | Resolve semantic groups before closed layout overrides | Accepted additive experiment; not production architecture or cutover |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

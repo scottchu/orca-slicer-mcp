@@ -1,4 +1,4 @@
-# 0049 — Place future Camera information in media-bottom overlays
+# 0050 — Place future Camera information in media-bottom overlays
 
 - Status: user-selected future design direction; implementation and acceptance pending
 - Date: 2026-09-03

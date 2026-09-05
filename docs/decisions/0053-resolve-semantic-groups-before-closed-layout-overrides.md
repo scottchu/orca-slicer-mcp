@@ -1,4 +1,4 @@
-# 0052 — Resolve semantic groups before closed layout overrides
+# 0053 — Resolve semantic groups before closed layout overrides
 
 - Status: accepted for the isolated private-lab experiment; not accepted as production architecture or cutover
 - Date: 2026-09-05
@@ -7,7 +7,7 @@
 
 ## Context
 
-Decision0051 proved a balanced hierarchy with closed `Inline` and `Grid`
+Decision0052 proved a balanced hierarchy with closed `Inline` and `Grid`
 tokens, but those placement nodes could not express why title/status and the
 three T1 readings belong together. The visible result could satisfy a grid
 shape while retaining loose spacing and a split identity header. The user now
@@ -71,7 +71,7 @@ not a wire copy field or caller-controlled content. Default/A visible copy and
 type size remain unchanged; balanced B retains its spec/hash and shares this
 quiet-label presentation refinement.
 
-The three A specifications and Decision0051 balanced B specification remain
+The three A specifications and Decision0052 balanced B specification remain
 unchanged. Schema/tool version remains 2 because this is an unsupported private
 experiment. The isolated implementation becomes `0.0.5-provisional`, with
 immutable resource

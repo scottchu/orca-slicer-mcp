@@ -1,4 +1,4 @@
-# 0050 — Use a build-time registry for the private composable Lab
+# 0051 — Use a build-time registry for the private composable Lab
 
 - Status: accepted for the isolated private-lab experiment; not accepted as production architecture or cutover
 - Date: 2026-09-04

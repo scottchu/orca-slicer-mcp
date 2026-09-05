@@ -1,5 +1,52 @@
 # Project state
 
+## Current merge-only integration candidate
+
+The user explicitly authorized one narrow delivery exception: merge the reviewed
+private composable Lab source to `main` while preserving every current widget.
+This authorization does not include a pull request, push, installation,
+deployment, service or preview restart, production registration, authentication,
+Tailscale, plugin, Camera, printer or printer-control change. The normal shipping
+policy remains unchanged for later releases. `scripts/u1_ship.py --execute` is
+prohibited for this exception because that guarded workflow intentionally couples
+merge to exact-build deployment and both production service restarts, outside the
+user's merge-only boundary.
+
+`origin/main` at `6f53a6435a3f38a92e4d2b4713ae025a97d7097a` is integrated into
+`codex/u1-composable-ui-experiment` from pre-integration head
+`76bf955d583ad3ab98a20c80324c795be2c9da01`. Five textual conflicts in current
+project/iteration records and the decision index preserve both histories. The
+unrelated upload-receipt decision remains 0048; the complete Lab decision series
+is renumbered in order to 0049 through 0053. No product meaning was combined.
+
+The production-isolation audit found the pre-integration Lab had extended shared
+`Inline.svelte` and `Stack.svelte`, which are transitive inputs to current
+Heads/Fans/Thermals/Queue widgets. They are now byte-identical to `origin/main`.
+The closed DSL names remain `Inline` and `Stack`, while their static registry
+entries use additive generic `LayoutInline.svelte` and `LayoutStack.svelte`
+components. Existing canonical specs, acquisition, schemas and output semantics
+remain unchanged.
+
+The frozen 60-path application delta against `origin/main` has manifest
+`e5886589ff7dc60ba0fe867956b3e11e490f941d63cc0ccda3f09fb784307770`.
+The isolated Kit manifest is
+`d99b573a0d6041ba64620ff144ece6846abd712e6d4b00c8fc6d5e9c479c8399`;
+its 101,247-byte page is
+`90f36bc499e4b9ed71a241dbbefb6bbea8f80a6292626b1c30d6ca72cb11f933`.
+The 167,613-byte MCP Lab resource is
+`d2808f99513d57ac11daca175c7a88f22713fc25d04c181c72067a96acff084b`.
+
+Full repository validation passes on the integrated bytes: 646 UI tests, 274
+server tests with 3,286 assertions, 44 service-lifecycle tests and 28 shipping
+tests. Focused Lab evidence passes 114 UI tests, 23 server/MCP/preview tests with
+464 assertions and 12/12 isolated Chrome cases. Current production factories,
+entrypoints, registered resources and seven current HTML artifacts are exactly
+unchanged from `origin/main`; 188 repository inputs across four live-widget build
+graphs and 25 repository inputs in the stdio graph report zero changed inputs.
+The stdio and unified server bundles each reproduce byte-for-byte across two
+builds. These are static/software and simulated-browser results only; no runtime,
+mounted host, real printer, actual device or user-outcome acceptance is claimed.
+
 ## Current reviewed mobile alignment/proximity candidate
 
 The latest phone screenshot reopened only common presentation layout for the
@@ -61,7 +108,7 @@ iPhone/Safari behavior.
 
 ## Current reviewed experiment: semantic grouping before six-track placement
 
-Decision0052 is an additive private-Lab prototype on
+Decision0053 is an additive private-Lab prototype on
 `codex/u1-composable-ui-experiment`; independent source/protocol and
 screenshot-first design review approve the exact application identity below.
 The pure and Svelte registries now have exact twelve-entry
@@ -159,7 +206,7 @@ recorded MCP process-lifecycle safeguard plan remains unimplemented.
 
 ## Current reviewed candidate: additive balanced private-Lab composition
 
-Decision0051 adds the selected Option 1 `balanced` variant without changing the
+Decision0052 adds the selected Option 1 `balanced` variant without changing the
 three accepted A specs or production. The closed pure TypeScript registry now
 has exactly nine entries: the existing eight plus common layout `Inline`.
 `Inline` accepts only `[Title, HeadStatus]` with closed gap/distribution tokens;
@@ -247,7 +294,7 @@ lifecycle safeguards remain recorded but unimplemented.
 The user superseded the private-Lab temperature fill and selected build-time
 component separation. The branch candidate on
 `codex/u1-composable-ui-experiment` is based on
-`cdfb9ac35f3bbb3cbabe75490db3fa7b4498ca5b`. Decision0050 records one pure
+`cdfb9ac35f3bbb3cbabe75490db3fa7b4498ca5b`. Decision0051 records one pure
 TypeScript registry for exactly the four built-in common nodes `Card`, `Title`,
 `Stack`, `Grid` and four domain nodes `HeadStatus`, `HeadTemperature`,
 `FilamentColor`, `FanRelation`. It owns strict spec/resolved prop schemas,
@@ -583,7 +630,7 @@ deployment action occurred.
 
 ## Historical source and withdrawn preview: entity-bound presentation AST private-lab experiment
 
-Decision0048's exploratory T1 composition is frozen at source
+Decision0049's exploratory T1 composition is frozen at source
 `518c6440db1d624361a1a804754590def3e330e2`, tree
 `a79032b72e04cab6d4dc32a26c4db47024aad5c3`, and the 45-path manifest
 `7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
@@ -622,10 +669,70 @@ does not establish live mappings, printer truth, mounted-host/device behavior or
 user outcome. No production registration, service, printer, auth, PR, merge or
 deployment changed. No v1 experiment runtime listener or job remains.
 
-Decision0049 records the separate future Camera media-bottom-overlay direction.
+Decision0050 records the separate future Camera media-bottom-overlay direction.
 No Camera implementation belongs to this experiment; current Camera remains the
 baseline until a separately reviewed migration preserves all lifecycle/control/
 evidence semantics and gains visual/device acceptance.
+
+## Current candidate: deterministic pre-upload foundation ready for PR
+
+Combined documentation/skill candidate
+`eb38763fc92579563dcad28fa3f83494b28b591b`, tree
+`d2e9a0807deba19e7665543e570d31f550f0d763`, is independently APPROVED with no
+blocking or high-severity finding. It retains the accepted application source at
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`; exactly eleven documentation/skill
+files changed, while application source, tests and package inputs remained
+unchanged. The review renewed both skill validators, TypeScript, combined
+prepared-artifact fixtures, the observation-only inventory guard, source/test
+hashes, link resolution and diff/identity checks. Exact evidence is in
+VALIDATION.
+
+The sole full repository gate on that exact combined candidate passed once:
+627 Vitest tests/60 files, 251 Bun server tests/32 files/2,798 expects, 72 Python
+tests, Svelte zero errors/zero warnings and repository contract OK. The
+candidate remained clean with identity unchanged after the run. This
+records-only tail changes no accepted application, contract, test, dependency,
+configuration, generated asset or skill bytes, so the bound application and
+full-gate evidence need not be rerun solely for this bookkeeping.
+
+Next deliver this internal foundation through the normal PR route. Do not
+deploy services or contact a printer/network: no supported adapter, durable
+store, real uploader, target-parsed receipt, public mutation or start path
+exists. Durable stores and the first narrow trusted CLI adapter remain a later
+separately selected slice.
+
+## Current source slice: deterministic prepared-artifact upload guard
+
+The user selected the smallest deterministic preparation/handoff slice after
+the Laifen print retrospective. Proposed
+[decision 0048](docs/decisions/0048-guard-upload-with-content-bound-preparation-receipts.md)
+places pure `validatePreparedArtifact` in Orca Preparation and one guarded
+`uploadPreparedArtifact` coordinator at the peer-subsystem seam. Trusted
+content-bound settings/correspondence/validation receipts, target preflight,
+one-use authorization and idempotent action state remain separate.
+
+Exact `f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`, is independently APPROVED by the
+agentic architect and printer-domain reviewer. The core validates effective
+walls from a bound resolver receipt; tracks the first provable positive
+extrusion and its tool for thermal intent; bounds G-code/PNG parsing; resolves
+opaque IDs through injected trusted stores; snapshots runtime values; uses a
+trusted clock, one-use authority and idempotent action records; and normalizes
+all fake upload-port outcomes without duplicate effects.
+
+Author TypeScript passes, the combined source suites pass 32 tests/231
+assertions, and the focused MCP inventory guard passes one test/20 assertions.
+Independent architecture passes the focused preparation suite at 17/61 plus
+typecheck; domain review passes the combined 32/231, typecheck and a fresh tool
+matrix. Exact commands, identities and evidence limits are in VALIDATION.
+
+No durable store, supported skill/CLI adapter, real uploader, target-parsed
+post-upload receipt, public MCP mutation, printer/network/start action or
+deployment exists. Decision 0040's local source gate is accepted, but its
+end-to-end enforcement remains incomplete. The pure-core evidence does not
+establish real-printer safety, print quality or physical acceptance.
+
 
 ## Current deployment: PR106 host fullscreen and packaged body insets
 

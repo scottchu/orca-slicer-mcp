@@ -14,9 +14,9 @@ import Card from '../common/Card.svelte';
 import Column from '../common/Column.svelte';
 import Grid from '../common/Grid.svelte';
 import Group from '../common/Group.svelte';
-import Inline from '../common/Inline.svelte';
+import LayoutInline from '../common/LayoutInline.svelte';
 import Row from '../common/Row.svelte';
-import Stack from '../common/Stack.svelte';
+import LayoutStack from '../common/LayoutStack.svelte';
 import Title from '../common/Title.svelte';
 import FanRelation from './FanRelation.svelte';
 import FilamentColor from './FilamentColor.svelte';
@@ -29,9 +29,9 @@ type ResolvedNodeByElement = {
 type ActualComponentPropsByElement = {
   Card: ComponentProps<typeof Card>;
   Title: ComponentProps<typeof Title>;
-  Stack: ComponentProps<typeof Stack>;
+  Stack: ComponentProps<typeof LayoutStack>;
   Grid: ComponentProps<typeof Grid>;
-  Inline: ComponentProps<typeof Inline>;
+  Inline: ComponentProps<typeof LayoutInline>;
   Group: ComponentProps<typeof Group>;
   Row: ComponentProps<typeof Row>;
   Column: ComponentProps<typeof Column>;
@@ -126,9 +126,9 @@ export const componentRegistry = {
     density: node.density,
   }), (node) => node.children),
   Title: defineComponentEntry('Title', Title, (node) => ({ text: node.text, size: node.size }), null),
-  Stack: defineComponentEntry('Stack', Stack, (node) => ({ gap: node.gap, inset: true, composed: true }), (node) => node.children),
+  Stack: defineComponentEntry('Stack', LayoutStack, (node) => ({ gap: node.gap, inset: true, composed: true }), (node) => node.children),
   Grid: defineComponentEntry('Grid', Grid, (node) => ({ columns: node.columns, gap: node.gap, inset: true, arrangement: node.arrangement }), (node) => node.children),
-  Inline: defineComponentEntry('Inline', Inline, (node) => ({ gap: node.gap, distribution: node.distribution, inset: true, composed: true }), (node) => node.children),
+  Inline: defineComponentEntry('Inline', LayoutInline, (node) => ({ gap: node.gap, distribution: node.distribution, inset: true, composed: true }), (node) => node.children),
   Group: defineComponentEntry('Group', Group, (node) => ({ relation: node.relation, rowGap: node.rowGap, inset: true }), (node) => node.children),
   Row: defineComponentEntry('Row', Row, (node) => ({ columnGap: node.columnGap, collapse: node.collapse }), (node) => node.children),
   Column: defineComponentEntry('Column', Column, (node) => ({ colSpan: node.colSpan }), (node) => node.children),

@@ -1,5 +1,41 @@
 # F0 dual-subsystem foundation handoff
 
+## Current handoff: merge-only private Lab integration
+
+The one-off user scope is source integration to `main` without replacing current
+widgets. The integrated branch combines pre-integration Lab head
+`76bf955d583ad3ab98a20c80324c795be2c9da01` and `origin/main`
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` through a normal merge commit. No
+rebase, force update, PR, push, install, deployment or runtime mutation belongs to
+this handoff.
+
+Five conflicts were durable-record/index conflicts only. Both current narratives
+were retained. The existing upload receipt record owns decision 0048; private Lab
+records moved coherently to decisions 0049-0053. The application conflict audit
+then found an isolation problem outside Git's textual conflicts: Lab-only props
+on common `Inline` and `Stack` would alter current production build inputs. Both
+files are restored exactly to `origin/main`; new common `LayoutInline` and
+`LayoutStack` are statically registered only by the composable renderer. DSL names
+and canonical data contracts did not change.
+
+Frozen application/artifact identities and the complete command record are in
+`VALIDATION.md`. Production registration, entrypoints and all seven current
+generated widget resources are byte-identical to `origin/main`. The exact source
+graphs report zero changed repository input across 188 live-widget inputs and 25
+stdio inputs. Full repository, focused protocol and 12-case browser checks pass.
+
+Independent source/integration review must bind the exact merge commit and confirm
+these preservation properties before `main` is advanced. A documentation-only
+identity tail may record that exact SHA/tree without rerunning unaffected builds.
+`scripts/u1_ship.py --execute` must not be used: its correct guarded behavior
+couples merge to deployment and both production restarts, while this explicit
+exception ends at merge. Do not weaken or add a bypass to shipping policy.
+
+No production or preview service, Tailscale route, authentication, installed
+plugin, printer or printer control was changed. Software/browser evidence does not
+prove mounted ChatGPT, Safari/iPhone, assistive speech, real-printer or user-outcome
+acceptance.
+
 ## Current reviewed alignment/proximity correction
 
 The latest mobile screenshot reopened presentation layout only. The user's
@@ -54,7 +90,7 @@ raster does not establish its CSS viewport/DPR/text scale.
 
 ## Current reviewed experiment: smart grouping before placement
 
-Decision0052 implements the smallest additive UI-003 experiment requested after
+Decision0053 implements the smallest additive UI-003 experiment requested after
 the balanced card review. The private vocabulary has exactly twelve build-time
 registered entries: existing types plus common `Group`, `Row` and `Column`.
 `Group` is a semantic role and `Row`/`Column` are layout roles. Pure strict
@@ -158,7 +194,7 @@ is still unimplemented.
 
 ## Current reviewed candidate: balanced B composition
 
-Decision0051 additively introduces Lab-only `balanced`; the three A specs and
+Decision0052 additively introduces Lab-only `balanced`; the three A specs and
 production are unchanged. The pure registry has exactly nine types after adding
 common layout `Inline`. Its exact `[Title, HeadStatus]` children and closed gap/
 distribution tokens, Card header/body slots, lead Grid and closed leaf
@@ -227,7 +263,7 @@ outcome acceptance exists. The lifecycle safeguard plan remains unimplemented.
 
 The latest user direction supersedes the percentage-surface candidate. Preserve
 the current branch commit based on `cdfb9ac35f3bbb3cbabe75490db3fa7b4498ca5b`
-and review decision0050. The candidate has a pure TypeScript registry with
+and review decision0051. The candidate has a pure TypeScript registry with
 strict build-time definitions for exactly `Card`, `Title`, `Stack`, `Grid`,
 `HeadStatus`, `HeadTemperature`, `FilamentColor`, and `FanRelation`, plus one
 client-only registry with eight static Svelte imports and an exact parity test.
@@ -643,7 +679,7 @@ label and 8450 remain absent; the separately approved v2 runtime now accounts
 for current 4200/8451 as described above. Production jobs and 443/10000 remain.
 Do not recommend or perform a generic-fixture relaunch.
 
-Decision0048 accepts only the isolated private-lab experiment: fixed T1, four
+Decision0049 accepts only the isolated private-lab experiment: fixed T1, four
 closed domain leaves, common layout nodes, strict correlated envelopes,
 deduplicated source acquisition, per-value timestamps/provenance, `Unknown` for
 ambiguous fan relation, stable neutral error/loading structure, a private Lab
@@ -651,7 +687,7 @@ route, and a Lab-only MCP factory/tool/resource. Production registration remains
 negative and unchanged. Do not infer a general UI DSL, production cutover, live
 mapping, mounted-host behavior, printer truth, deployment, or user acceptance.
 
-Decision0049 preserves a user-selected future Camera direction: move current
+Decision0050 preserves a user-selected future Camera direction: move current
 top-right information plus loading/error messaging into bottom overlays within
 dynamic media. No Camera file changed. A separate screenshot-first candidate
 must preserve media/session/control/frame-evidence semantics and pass source,
@@ -663,6 +699,71 @@ change printer, authentication or unrelated Tailscale state. Evidence is from
 the same enrolled host and is not browser/device visual, public-Internet,
 real-printer, Camera, auth-flow or user-outcome acceptance. Any product adoption
 requires a new decision and fresh exact-candidate evidence.
+
+## Current handoff: independently accepted internal foundation; PR next
+
+Exact combined candidate `eb38763fc92579563dcad28fa3f83494b28b591b`, tree
+`d2e9a0807deba19e7665543e570d31f550f0d763`, is independently APPROVED with no
+blocking or high-severity finding. It retains exact accepted source
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`; only eleven documentation/skill
+files changed, with application source, tests and package inputs unchanged.
+
+Independent documentation/skill checks and the sole-owner full repository gate
+pass. The latter ran exactly once and covered 627 Vitest tests/60 files, 251 Bun
+server tests/32 files/2,798 expects, 72 Python tests, Svelte zero errors/zero
+warnings and repository contract OK. Post-run identities and the clean worktree
+were unchanged. VALIDATION records the exact command and retained evidence
+boundary.
+
+The next action is normal PR review and repository delivery of this internal
+foundation. This records-only evidence tail changes no application, tests,
+contracts, skills, dependency, configuration or generated asset, so it does not
+invalidate or require a repeat of the bound full gate. Do not deploy a service
+or contact a printer/network. Durable stores and the first narrow trusted CLI
+adapter remain a later selected slice, along with every real uploader,
+target-parsed receipt, public mutation and start path.
+
+## Accepted deterministic pre-upload contract
+
+The accepted pure-core work follows proposed
+[decision 0048](../../decisions/0048-guard-upload-with-content-bound-preparation-receipts.md):
+pure `validatePreparedArtifact` owns preparation validation and a shared
+`uploadPreparedArtifact` coordinator guards the explicit handoff to the
+printer-specific upload adapter. Correspondence and validation receipts are
+readonly/content-bound; guarded upload returns a distinct readonly result. None
+grants authority. Source contracts are in
+`plugins/u1-print-studio/app/src/lib/server/preparation/prepared-artifact.ts`
+and `plugins/u1-print-studio/app/src/lib/server/application/upload-prepared-artifact.ts`.
+A narrow CLI remains the first planned transport; neither it nor MCP is in this
+pure-core/injected-store/fake-port slice.
+
+The documentation and maintained preparation/start skills now describe the
+seam, explicit preview correspondence `PASS`/`FAIL`, local thumbnail validation
+before upload, target-parsed metadata before start, separate upload/start
+authorization, and no arbitrary-path/manual-upload success path. The skills
+cannot invoke source modules directly: they must report blocked until a
+supported adapter exposes the use cases.
+
+Exact `f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`, passes author TypeScript, combined
+32 tests/231 assertions and the focused one-test/20-assertion MCP inventory
+guard. Independent architecture APPROVES after 17 preparation tests/61
+assertions plus typecheck. Independent domain review APPROVES after the combined
+32/231, typecheck and fresh tool matrix. VALIDATION records exact identities,
+commands and limits.
+
+Next preserve this accepted core while separately deciding the durable-store
+and first narrow CLI-adapter slice. Any adapter must accept only opaque IDs,
+resolve and snapshot trusted records, and preserve the server-clock, one-use
+authorization, replay and zero/one-effect contract. It cannot add a raw-path or
+manual success route.
+
+Do not claim complete decision 0040 automated enforcement, target-parsed thumbnail
+behavior, real-printer safety, print quality or physical acceptance from policy,
+skill structure or local fixtures. No printer/network/upload/start, installed
+plugin, service deployment or external mutation belongs to this handoff.
+
 
 ## Current deployment: PR106 host fullscreen and packaged body insets
 

@@ -1,4 +1,4 @@
-# 0051 — Add a balanced private-Lab composition variant
+# 0052 — Add a balanced private-Lab composition variant
 
 - Status: accepted for the isolated private-lab experiment; not accepted as production architecture or cutover
 - Date: 2026-09-04
@@ -7,7 +7,7 @@
 
 ## Context
 
-Decision0050 closed the version-2 private composable Lab around eight build-time
+Decision0051 closed the version-2 private composable Lab around eight build-time
 registered elements and removed the misleading temperature fill. The accepted A
 examples prove uniform Stack and Grid composition, but they do not test a compact
 information hierarchy with status in the header, one lead reading, and two quiet

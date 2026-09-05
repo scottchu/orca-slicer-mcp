@@ -1,5 +1,29 @@
 # Next agent
 
+## Immediate: review the exact merge-only integration candidate
+
+Independently review the integration of `origin/main`
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` into the private Lab branch from
+pre-integration head `76bf955d583ad3ab98a20c80324c795be2c9da01`. Verify the merge has two parents,
+the 60-path application manifest remains
+`e5886589ff7dc60ba0fe867956b3e11e490f941d63cc0ccda3f09fb784307770`, and only
+durable-record identity binding follows the application freeze.
+
+The hard preservation gate is exact, not visual inference: current production
+`Inline.svelte`, `Stack.svelte`, widget entrypoints, `app.ts` registration and all
+seven production widget resources must remain byte-identical to `origin/main`.
+The private registry alone must import additive `LayoutInline.svelte` and
+`LayoutStack.svelte`; the Lab MCP factory/tool/resource must remain absent from
+production registration. Confirm the upload-receipt decision remains 0048 and
+the Lab records are uniquely renumbered 0049-0053 without lost history.
+
+Do not run `scripts/u1_ship.py --execute`: it intentionally continues from merge
+through deployment and both production restarts, which the user's one-off
+merge-only authorization prohibits. Do not push, open a PR, install, deploy,
+restart production or preview, or mutate auth, Tailscale, plugin or printer state.
+The general shipping policy is not weakened; any later release returns to its
+normal guarded path.
+
 ## Preserve the reviewed mobile alignment candidate
 
 Preserve, do not silently extend, the CSS-only candidate at 29-path application
@@ -45,7 +69,7 @@ between-item space while preserving only the shared centerline.
 
 ## Preserve the reviewed smart-grouping experiment
 
-Decision0052 and the 28-path private-Lab application on
+Decision0053 and the 28-path private-Lab application on
 `codex/u1-composable-ui-experiment` have independent source/protocol and
 screenshot-first design approval. Its exact application manifest is
 `bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`;
@@ -133,7 +157,7 @@ safeguard plan remains separate and unimplemented.
 
 ## Preserve the reviewed additive balanced candidate
 
-Decision0051, screenshot-first design and independent source review **APPROVE**
+Decision0052, screenshot-first design and independent source review **APPROVE**
 the 32-path application manifest
 `e225b0c4966177203461bb94685777898b39e4db014821ccfc5c9c3741aa0e95`,
 115-file Kit manifest `5c22955182f278d4c934be1cc3d6f5099bb556109353098bff8593d942f9fd13`,
@@ -186,7 +210,7 @@ exists. The lifecycle safeguard plan remains separate and unimplemented.
 ## Preserve the accepted build-time registry experiment
 
 The current commit on `codex/u1-composable-ui-experiment` descends from base
-`cdfb9ac35f3bbb3cbabe75490db3fa7b4498ca5b`. Decision0050 and the
+`cdfb9ac35f3bbb3cbabe75490db3fa7b4498ca5b`. Decision0051 and the
 top sections of the active HANDOFF/VALIDATION describe the new candidate. Its
 32-path application manifest is `af2099289ef1beefe59b6e10664a6933e89e2902fdacf68f50d65fc8f620ee2f`,
 separate 113-file Kit manifest `aaa9b6a3…`, 49,994-byte Lab HTML SHA-256
@@ -425,7 +449,7 @@ experiment.
 
 ## Preserve the historical v1 artifact and keep its preview offline
 
-Resume from decision0048 and the active iteration records. The frozen
+Resume from decision0049 and the active iteration records. The frozen
 source is `518c6440db1d624361a1a804754590def3e330e2`, tree
 `a79032b72e04cab6d4dc32a26c4db47024aad5c3`; its application source-set
 manifest is
@@ -459,7 +483,7 @@ and Lab-only MCP factory. Do not register it in production or infer live data,
 printer truth, a general DSL, cutover, mounted-host/device acceptance or user
 outcome. No PR, merge or deployment has been authorized for this experiment.
 
-Decision0049 preserves the user's future Camera direction but no Camera files
+Decision0050 preserves the user's future Camera direction but no Camera files
 changed: later move current top-right information plus loading/error messaging
 into bottom overlays within dynamic media through a separate screenshot-first,
 independently reviewed migration. Retain current media/session/control/
@@ -470,6 +494,59 @@ then a separately scoped decision for any production adoption. Current runtime
 evidence came from the same enrolled host and proves no browser/device visual,
 public Internet, real-printer, Camera, auth-flow or user outcome. Do not change
 printer, production service, authentication or other Tailscale state.
+
+## Immediate: deliver the accepted internal foundation through a PR
+
+Use combined candidate `eb38763fc92579563dcad28fa3f83494b28b591b`, tree
+`d2e9a0807deba19e7665543e570d31f550f0d763`. Independent documentation/skill
+review APPROVES it with no blocking or high-severity finding and confirms that
+application source remains exact `f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`,
+tree `c5be31e7c744c70826a4cd2d98904bc20b4259f9`. The sole-owner full repository
+gate passed exactly once with 627 Vitest tests/60 files, 251 Bun server tests/32
+files/2,798 expects, 72 Python tests, Svelte zero errors/zero warnings and
+repository contract OK. The worktree was clean and identities unchanged after
+the run; exact review and command evidence is in VALIDATION.
+
+The next action is PR review and repository delivery of this internal
+foundation. This records-only tail leaves application, tests, contracts, skills,
+dependencies, configuration and generated assets unchanged, so retain their
+bound evidence without another full run. Do not deploy services or contact a
+printer/network. Durable stores, a supported CLI/skill adapter, real uploader,
+target-parsed HANDOFF-007 evidence, public mutation and start remain later
+separately authorized work.
+
+## Accepted core to preserve in delivery
+
+The user selected the narrow deterministic seam proposed in
+[decision 0048](docs/decisions/0048-guard-upload-with-content-bound-preparation-receipts.md).
+The transport-independent `validatePreparedArtifact` and guarded
+`uploadPreparedArtifact` pure core is accepted at
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`. Preserve its exact trusted-receipt,
+opaque-ID, runtime-snapshot, server-clock, one-use authorization, idempotency,
+first-positive-extrusion/tool and truthful upload-outcome semantics.
+
+The preparation skill retains a matching-edition preview and explicit user
+correspondence `PASS`/`FAIL`. Local embedded-image verification remains before
+upload; target-parsed thumbnail verification remains after upload and before
+separately authorized start. Upload, start acknowledgement, observed printing,
+monitoring, telemetry completion, camera evidence and physical acceptance stay
+distinct.
+
+Author TypeScript, combined 32-test/231-assertion fixtures and the focused
+one-test/20-assertion MCP inventory guard pass. Independent architecture and
+domain reviews APPROVE the exact source; exact evidence is in VALIDATION.
+
+The next implementation slice after delivery needs its own user selection and
+decision: inject durable stores and expose the core through the first narrow
+trusted CLI adapter.
+It must accept only opaque IDs and must not add a raw path, caller-built gates,
+manual upload, public MCP mutation, generic printer transport or start action.
+No such adapter, real uploader or target-parsed HANDOFF-007 receipt exists now.
+Do not mark decision 0040 end-to-end enforcement complete, or infer printer,
+network, start, deployment, print-quality or physical acceptance from the
+accepted pure-core fixtures.
+
 
 ## Current deployment: PR106 host fullscreen and packaged body insets
 

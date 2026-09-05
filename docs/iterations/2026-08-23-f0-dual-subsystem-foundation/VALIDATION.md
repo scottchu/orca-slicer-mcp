@@ -1,5 +1,110 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-05 merge-only private Lab integration candidate
+
+### Scope and ancestry
+
+The user explicitly authorized merging the reviewed private Lab source to main
+without replacing current widgets. The candidate integrates `origin/main`
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` into pre-integration Lab head
+`76bf955d583ad3ab98a20c80324c795be2c9da01` with a normal merge. It does not
+authorize a PR, push, deployment, install, production or preview restart,
+production registration, auth, Tailscale, plugin, Camera, printer or control
+change. `scripts/u1_ship.py --execute` was not run because its intentional
+merge/deploy/restart sequence exceeds this one-off merge-only boundary. Its normal
+policy and guards are unchanged.
+
+Git reported five textual conflicts: `NEXT_AGENT.md`, `PROJECT_STATE.md`, the
+decision index, and the active iteration `HANDOFF.md` and `VALIDATION.md`. Both
+record histories were retained. The unrelated upload-receipt record remains
+decision 0048. The Lab decisions were renamed in sequence from 0048-0052 to
+0049-0053, with headings, index, cross-references and historical wording updated.
+
+### Production isolation correction
+
+The first full repository run stopped at `verify:live-fans`: pre-integration Lab
+extensions in shared `Inline.svelte` and `Stack.svelte` changed a current widget's
+compiled bytes. That failure demonstrated the user's preservation gate rather
+than a flaky bundle. Both files were restored byte-for-byte to `origin/main`.
+Their Lab-only capabilities moved unchanged into additive generic common
+`LayoutInline.svelte` and `LayoutStack.svelte`; only the static composable
+component registry imports them. Closed DSL type names, canonical spec hashes,
+schemas, renderer roles, acquisition and provenance remain unchanged.
+
+After correction, all seven current production resources rebuild exactly to the
+tracked `origin/main` bytes:
+
+- live Fans `070654727ed4dbe3c8b507987c431a29a937474947c952d60dc79688ea7e74b9`;
+- live Thermals `3a4cf32c0bc1482537914fd60baf1c8b450d5d4e8521dd37634f8eed2d8743a1`;
+- live Heads `e958485823017fa9764853270dc2d673d8dbc850239b261f6b2e7e5f51ca86a1`;
+- live Queue `882571bfea0b075dd3a7542344d1e4bc8388e9ce2a0a4fa95334b984908e3768`;
+- live Camera `cc7a086001a66c35a90eff741ccb934a2dcc57617f6711939b47dee182f90a04`;
+- MCP observation `ff869c1e351d39d3dfc097995851d9caa222f9d7e776462254f3c6d6c9277d26`;
+- MCP Camera `87121885969f2f6d386e023939f9585a7a97b630c5bc76710ee7f9f44cf11353`.
+
+`git diff --exit-code origin/main` passes for production `app.ts`, all nine
+current live/MCP widget entrypoints, common `Inline`/`Stack`, and those seven
+resources. Build-graph comparison covers 188 distinct repository inputs across
+live Fans/Thermals/Heads/Queue with zero changed inputs. Bun's stdio metafile
+covers 25 repository inputs with zero changed inputs. `app.ts` continues to own
+the exact current factory/tool/resource inventory; the isolated Lab factory is
+not imported or registered there.
+
+### Exact identities
+
+The sorted 60-path application delta against `origin/main` is
+`e5886589ff7dc60ba0fe867956b3e11e490f941d63cc0ccda3f09fb784307770`.
+The dedicated 113-file Kit build manifest is
+`d99b573a0d6041ba64620ff144ece6846abd712e6d4b00c8fc6d5e9c479c8399`.
+Its 101,247-byte private Lab page is
+`90f36bc499e4b9ed71a241dbbefb6bbea8f80a6292626b1c30d6ca72cb11f933`.
+The 167,613-byte isolated MCP Lab resource is
+`d2808f99513d57ac11daca175c7a88f22713fc25d04c181c72067a96acff084b`.
+Two stdio builds reproduce
+`36d66f516b5926a2950801d33dbc96044e2f3a5cebc5886bf524833a9024abaa`;
+two unified server builds reproduce
+`3cc06f9496122a890a1752cd3a0ab5fd114ab4007753ae3e49c589c8a0038a94`.
+
+### Commands actually run
+
+- `./scripts/check-repository.sh`: PASS after the isolation correction. It runs
+  zero-warning Svelte/component contracts, 63 UI files / 646 tests, all current
+  deterministic widget/resource checks, TypeScript, 35 server files / 274 tests
+  / 3,286 assertions, 44 service-lifecycle tests and 28 shipping tests; final
+  output is `repository contract: ok`.
+- Focused UI command over the eight composable/shared consumer files: PASS, 114
+  tests. Focused server/MCP/preview command: PASS, 23 tests / 464 assertions.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` followed by
+  `verify:mcp-composable-lab`: PASS and reproduces the exact resource above.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file
+  --config=/dev/null x vite build`: PASS. The first focused preview run correctly
+  failed stale immutable manifest/page/hydration pins after isolation changed the
+  Lab build; only those exact pins were renewed, after which all four preview
+  tests pass.
+- `bun --no-env-file --config=/dev/null x playwright test --config
+  playwright.composable.config.ts`: PASS, 12/12 with one worker; port 4184 and
+  browser/fixture resources released.
+- Focused `app`, production package, request-lifetime and Lab-production-negative
+  tests: PASS, 28 tests / 251 assertions.
+- Every `verify:live-*`, `verify:mcp-observation` and `verify:mcp-camera` command
+  passed twice (focused run and full repository run) against exact tracked bytes.
+  Stdio and unified server builds each reproduced the identical hashes above.
+- The first ad hoc stdio-metafile proof attempt failed before building because
+  zsh expanded an unquoted `[name]` pattern. The corrected quoted command built
+  normally and proved 25/25 repository graph inputs unchanged. No tracked file or
+  runtime changed from the failed harness invocation.
+- Decision/reference scans show one unique upload decision 0048 and the ordered
+  unique Lab series 0049-0053. `git diff --check` and the changed-line credential,
+  private-host/IP and temporary-path scan pass.
+
+### Evidence boundary
+
+This validates source integration, deterministic builds, production preservation,
+closed protocol behavior and synthetic Chrome layout. It does not prove a mounted
+ChatGPT host, Safari/iPhone, screen-reader speech, a running service, live network,
+real printer or user outcome. No production/preview process, installed plugin,
+Tailscale/auth state, printer or repository remote was changed.
+
 ## 2026-09-05 reviewed mobile alignment and proximity candidate
 
 ### Boundary and correction
@@ -152,9 +257,9 @@ runtime evidence for the exact isolated committed build only.
 
 ### Boundary, corrections and retained failures
 
-Decision0052 is additive to the private UI-003 Lab. It changes no production
+Decision0053 is additive to the private UI-003 Lab. It changes no production
 registration, printer/Camera/authentication/Tailscale path and does not restart
-the existing 4200/8451 preview. The three A specs and Decision0051 balanced B
+the existing 4200/8451 preview. The three A specs and Decision0052 balanced B
 remain byte-for-byte canonical. This is author evidence on uncommitted bytes;
 the exact application identity was subsequently approved by independent
 source/protocol and screenshot-first design review before the documentation-only
@@ -166,7 +271,7 @@ node. The author inspected the new closed build, updated only those exact pins,
 rebuilt again and reproduced the same artifact identity before the passing
 preview test. A later architecture check clarified that `Group` is a semantic
 role, not a layout role, and that code-owned default rules need stable versioned
-names. The source/tests/Decision0052 now consistently use semantic `Group` plus
+names. The source/tests/Decision0053 now consistently use semantic `Group` plus
 exact `identity-packed-v1` and `summary-grid6-v1`; the `-v1` literals prevent a
 future algorithm change from silently reinterpreting an existing resolved
 contract. Final visual inspection also found that the first 720px Smart stage
@@ -350,7 +455,7 @@ safeguards remain only a recorded future plan; none was installed or applied.
 
 ### Boundary and retained failures
 
-Decision0051 is an additive UI-003 experiment only. Its implementation does not
+Decision0052 is an additive UI-003 experiment only. Its implementation does not
 change the three A specs, production registration, printer/Camera/auth/Tailscale.
 The subsequently authorized activation restarted only the existing private
 4200/8451 preview job, as recorded below. The first compile exposed an existing shared `Inline`
@@ -480,7 +585,7 @@ printer or production bytes/state.
 
 ### Acceptance and safety boundary
 
-This UI-003 follow-up implements decision0050 for the private synthetic Lab.
+This UI-003 follow-up implements decision0051 for the private synthetic Lab.
 Exactly eight element names are accepted at the strict wire boundary: common
 built-ins `Card`, `Title`, `Stack`, `Grid` and domain `HeadStatus`,
 `HeadTemperature`, `FilamentColor`, `FanRelation`. One pure TypeScript registry
@@ -1399,8 +1504,8 @@ independent approval. Exact source
 `518c6440db1d624361a1a804754590def3e330e2`, tree
 `a79032b72e04cab6d4dc32a26c4db47024aad5c3`, is now independently approved for
 the tailnet-only preview described below.
-Decision0048 records this as provisional private-lab learning, not production
-architecture or cutover. Decision0049 separately records the user's future
+Decision0049 records this as provisional private-lab learning, not production
+architecture or cutover. Decision0050 separately records the user's future
 Camera media-bottom-overlay direction; no Camera file changed in this slice.
 
 ### Author implementation and focused verification
@@ -1555,7 +1660,7 @@ lines. The result remains
 `7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
 The MCP resource remains exactly 137,936 bytes at SHA-256
 `6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
-The documentation path allowlist, CURRENT files, decision0048/0049 unique-file,
+The documentation path allowlist, CURRENT files, decision0049/0050 unique-file,
 index and requirements references, private-identifier guard and whole-range
 `git diff --check HEAD^` all passed. That tail's final runtime recheck found the
 job and endpoint live at the historical after hash. The later safety finding and
@@ -1572,6 +1677,247 @@ factory is an isolated proof and production inventory remains unchanged. No
 printer, production-service or auth action, PR, merge or deployment occurred.
 No experiment host/network addition remains. Both composable previews are
 offline pending exact authority-free review.
+
+## 2026-09-03 combined deterministic pre-upload candidate
+
+Exact combined documentation/skill candidate
+`eb38763fc92579563dcad28fa3f83494b28b591b`, tree
+`d2e9a0807deba19e7665543e570d31f550f0d763`, is independently APPROVED with no
+blocking or high-severity finding. Its application source remains exact
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`. Exactly eleven documentation and
+maintained-skill files changed from that source candidate; application source,
+tests and package inputs were unchanged.
+
+The independent documentation/skill reviewer:
+
+- reran TypeScript and the combined prepared-artifact suites: passed 32 tests
+  with 231 assertions;
+- reran the focused observation-only inventory guard: passed one test with 20
+  assertions and 25 filtered;
+- reran Skill Creator `quick_validate.py` for both `u1-prepare-print` and
+  `u1-start-print`: both passed;
+- matched all four source/test SHA-256 identities recorded in the accepted
+  pure-core section below;
+- resolved 64 relative Markdown links with zero missing, passed
+  `git diff --check`, and confirmed a clean worktree; and
+- confirmed decision 0048 remains Proposed with adapters pending, decision
+  0040 remains incomplete end to end, both skills fail closed without minting
+  receipts or accepting raw/manual upload, and all durable, public and real
+  target actions remain pending.
+
+One owner then ran the full repository gate exactly once from repository root:
+
+- `PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH
+  ./scripts/check-repository.sh`: exited 0 with pinned Bun 1.4.0; 627 Vitest
+  tests/60 files, 251 Bun server tests/32 files/2,798 expects, 72 Python tests,
+  Svelte zero errors/zero warnings and repository contract OK.
+
+The post-run worktree was clean and both candidate identities were unchanged.
+This evidence tail changes only PROJECT_STATE, NEXT_AGENT and active-iteration
+continuity records. It does not change accepted source, tests, skills, contract
+documents, dependencies, configuration or generated assets; retain the exact
+application and full-gate evidence above without rerunning it solely for this
+documentation bookkeeping. No printer or network was contacted, and no upload,
+start, public mutation, installation or service deployment was performed.
+For this four-file tail, `git diff --check` passed and a read-only Ruby scan
+resolved 13 relative Markdown links with zero missing.
+
+## 2026-09-03 deterministic pre-upload slice — accepted pure core
+
+Milestone and boundary: P1/I1 through proposed decision 0048, PREP-005,
+PREP-007/PREP-008 and HANDOFF-007/HANDOFF-008. Exact source
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`, is independently APPROVED for the
+internal pure-core/injected-store/fake-upload-port slice.
+
+Exact source and test SHA-256:
+
+- `prepared-artifact.ts`:
+  `8b7ddb7a0658ff80599124e1af1c15a9df34708acea031ee1b93649e005bb555`;
+- `upload-prepared-artifact.ts`:
+  `7c36eba9cefa8cbfd0914fcc61d7c74f788c41e62d42fb97c63fbbba1faa35fa`;
+- `prepared-artifact-validation.test.ts`:
+  `863c752525b14b688d0b80761339e315ec3ee4f5e0e9bd1668bde951b172656b`;
+  and
+- `upload-prepared-artifact.test.ts`:
+  `6d5d72ddd4a183afc862c1c5152f18f25a8a996e2ffd8b871e8e73a853026316`.
+
+### Implemented contract
+
+- `validatePreparedArtifact` accepts only an internal snapshot of exact
+  spec/manifest/artifact bytes plus digest-bound resolved-settings and
+  challenge-bound correspondence receipts. Effective walls come from trusted
+  resolver evidence, never informational manifest claims.
+- The bounded G-code parser tracks absolute/relative extrusion, `G92 E`, active
+  tool and explicit inline tool. Thermal intent covers commands before the first
+  provable positive extrusion delta and binds that tool to explicit
+  heated/unheated and required/not-required wait intent. Unknown startup
+  semantics, ambiguous parameters and unprovable extrusion boundaries do not
+  pass. Shutdown after extrusion is outside the startup schedule.
+- Thumbnail parsing bounds artifact bytes, lines, line bytes, base64, PNG chunks,
+  compressed and decoded sizes. It rejects missing, corrupt, blank and
+  unexpected evidence. Layout correspondence stays an explicit user or fixture
+  review receipt bound to the same revision, challenge, artifact, manifest,
+  layout and thumbnail hashes; the core does not claim arbitrary pixel
+  understanding.
+- `uploadPreparedArtifact` accepts only opaque IDs and resolves records through
+  injected trusted stores. Runtime normalization snapshots plain data and
+  rejects accessors, polluted prototypes, cycles and malformed shapes before
+  authority or external effect. A trusted clock/deadline, digest/freshness
+  checks, atomic one-use authorization claim and idempotent action claim guard
+  the injected upload port.
+- Adapter outcomes preserve acknowledged, rejected, timeout, transport failure
+  and unknown separately. Stable replay uses the stored action record. Ambiguous
+  effects require verification and never trigger an automatic duplicate. The
+  model-visible result omits private remote artifact identity and trusted
+  authorization-consumption time.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`, author evidence:
+
+- `bun --no-env-file --config=/dev/null run check`: passed.
+- `bun --no-env-file --config=/dev/null test
+  tests/server/prepared-artifact-validation.test.ts
+  tests/server/upload-prepared-artifact.test.ts`: passed 32 tests with 231
+  assertions.
+- `bun --no-env-file --config=/dev/null test
+  ./tests/server/status-dashboard.test.ts -t "exposes only the widget's
+  read-only observation and camera calls"`: passed one test with 20 assertions;
+  25 tests were filtered. This is a focused no-MCP-inventory-change guard, not a
+  full status-dashboard run. Independent reviewers observed 31 tests in their
+  broader test contexts; that count is not substituted for this focused result.
+- `git diff --check`: passed on the source candidate.
+
+Independent architect evidence: exact `f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`
+APPROVE after `bun --no-env-file --config=/dev/null run check` and the focused
+`prepared-artifact-validation.test.ts` suite passed 17 tests/61 assertions.
+
+Independent printer-domain evidence: exact
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff` APPROVE after TypeScript, the
+combined 32-test/231-assertion source suites and a fresh tool/thermal matrix.
+This domain approval accepts effective-setting and truthful thermal semantics;
+it does not claim exact physical perimeter count or actual heater temperature.
+
+Documentation-tail validation from the repository root:
+
+- `uv run --no-project --with pyyaml
+  <skill-creator-root>/scripts/quick_validate.py
+  plugins/u1-print-studio/skills/u1-prepare-print`: passed with
+  `Skill is valid!`.
+- The same command for `plugins/u1-print-studio/skills/u1-start-print`: passed
+  with `Skill is valid!`.
+- `git diff --check`: passed.
+- A read-only Ruby scan resolved every relative Markdown link in the eleven
+  changed documentation and skill files.
+
+The environment-owned Skill Creator root is redacted from this durable record;
+the repository-relative targets and remaining arguments are exact.
+
+### Evidence boundary
+
+No durable store, supported skill/CLI adapter, real uploader, target-parsed
+post-upload receipt, public MCP mutation, printer/network/start action or
+deployment exists. No target was contacted. Static and fake-port evidence does
+not establish real upload, target parsing, printer safety, print quality,
+monitoring or physical user acceptance. Decision 0040's local source gate is
+accepted; end-to-end enforcement remains incomplete until a supported adapter,
+durable stores and separate target-parsed pre-start evidence are accepted.
+
+## Rejected early checkpoint — retained repair history
+
+Milestone and boundary: P1/I1 through proposed decision 0048, PREP-005,
+PREP-007/PREP-008 and HANDOFF-007/HANDOFF-008. The candidate makes local
+prepared-artifact validation and the upload-port call guard executable while
+keeping start, observed printing and physical outcome outside this evidence.
+
+Pure-core checkpoint: `fefedbd1d2b9050bd558b025ae88af54b6f31d8c`,
+tree `2fa8de6f4e4f1d42a85e9742f4905e61b67b9c7c`. Exact file SHA-256:
+
+- `prepared-artifact.ts`:
+  `86df99c3e488e6d31fe17f68aefa5cb54f1ddb81d4761306056943266bf1d59a`;
+- `upload-prepared-artifact.ts`:
+  `8479cae1d29b08e2561b0b3b373897a15bee8f9c32d0577c55f6dc7ae4adeae3`;
+  and
+- `prepared-artifact-validation.test.ts`:
+  `2d17887955df3e223d454f4f68de542b1d91dd07e78f198dbc772568aa701c99`.
+
+The seven non-user fixtures establish byte-for-byte repeatable readonly
+validation receipts and `validationId`; effective per-object wall checking;
+required versus not-required wait contracts; intentional unheated and shutdown
+zero; `unavailable` unknown heat/start macros; decoded nonblank PNG requirements;
+missing/corrupt-image rejection; exact artifact/manifest/layout/thumbnail
+correspondence-receipt binding; artifact-byte mutation invalidation; zero
+injected-port calls across the focused `blocked`/`unavailable` cases; and exactly
+one fake-port call for a fully bound authorized/preflight-passed input. The port
+receives exact bytes and hashes, not a path or generic transport.
+
+The different-layout fixture mutates the correspondence receipt's plate-layout
+hash. The core intentionally does not infer arbitrary real-image correspondence
+from pixels; production correspondence still requires the exact-bound user
+review receipt. The suite does not independently mutate every spec, manifest,
+target, review, schema and validator-semantic binding, or separately drive a
+malformed `error` through the upload guard. Those remain valid adversarial
+review targets; do not generalize beyond the exact cases above.
+
+Source contracts:
+
+- `plugins/u1-print-studio/app/src/lib/server/preparation/prepared-artifact.ts`
+  exports readonly preparation, manifest, correspondence, check and receipt
+  contracts plus pure `validatePreparedArtifact`; and
+- `plugins/u1-print-studio/app/src/lib/server/application/upload-prepared-artifact.ts`
+  exports readonly authorization, preflight, injected-port and result contracts
+  plus `uploadPreparedArtifact`.
+
+Commands and results from `plugins/u1-print-studio/app`:
+
+- `bun --no-env-file --config=/dev/null run check`: exited 0; TypeScript
+  `tsc --noEmit -p tsconfig.server.json` passed.
+- `bun --no-env-file --config=/dev/null test
+  tests/server/prepared-artifact-validation.test.ts`: exited 0 with seven tests,
+  42 assertions and zero failures.
+- An initial MCP-inventory command used the wrong `src/` path and exited 1 after
+  matching no test file. The corrected `bun --no-env-file --config=/dev/null
+  test ./tests/server/status-dashboard.test.ts -t "exposes only the widget's
+  read-only observation and camera calls"` exited 0 with one test/20 assertions,
+  zero failures and 25 filtered tests. This proves no MCP inventory change from
+  this slice; it is not a full status-dashboard suite.
+
+Commands and results from the repository root:
+
+- `uv run --no-project --with pyyaml
+  <skill-creator-root>/scripts/quick_validate.py
+  plugins/u1-print-studio/skills/u1-prepare-print`: exited 0 with
+  `Skill is valid!`.
+- The same command for `plugins/u1-print-studio/skills/u1-start-print`: exited
+  0 with `Skill is valid!`.
+
+The environment-owned Skill Creator root is redacted from this durable record;
+the repository-relative targets and remaining arguments are exact.
+
+The implementation author separately reports that the first TypeScript command
+could not run because locked dependencies were absent. `bun install
+--frozen-lockfile --ignore-scripts` completed with no lockfile change, after
+which TypeScript passed. The first focused test run had one assertion-shape-only
+failure, repaired before the final seven-test/42-assertion pass; its exact
+diagnostic was not retained, and it was not a product-semantic failure.
+
+This checkpoint was not accepted. Later source through `f90e0b5` repaired
+trusted receipt/store authority, server-clock expiry races, action replay,
+boundary snapshots and G-code/tool ambiguity, then renewed the exact independent
+review recorded above. No skill/CLI adapter, MCP inventory change or real
+uploader belonged to either checkpoint.
+
+Evidence limit: local static and fake-port fixtures cannot establish
+target-parsed thumbnail behavior, printer state, safe motion, upload to a real
+target, start, observed printing, monitoring continuity, print quality or
+physical user acceptance. No printer/network/upload/start, installed-plugin or
+service-deployment action is authorized or performed by this record. Decision
+0040 remains accepted workflow policy; local source enforcement exists, but
+end-to-end enforcement remains incomplete without a supported adapter and the
+separate target-parsed pre-start gate.
+
 
 ## Current deployment: PR106 exact release and BOTH service restarts
 

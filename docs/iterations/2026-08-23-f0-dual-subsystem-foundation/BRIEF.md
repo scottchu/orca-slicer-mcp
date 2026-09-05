@@ -1,5 +1,50 @@
 # F0 dual-subsystem foundation brief
 
+## Current: deterministic prepared-artifact upload guard
+
+The user selected a bounded P1/I1 implementation slice from the Laifen print
+retrospective: promote stable repeated checks into executable policy before any
+upload attempt. Proposed
+[decision 0048](../../decisions/0048-guard-upload-with-content-bound-preparation-receipts.md)
+defines `validatePreparedArtifact` inside Orca Preparation and a shared guarded
+`uploadPreparedArtifact` coordinator at the explicit handoff seam. Visual
+correspondence and validation produce immutable, content-bound receipts;
+guarded upload returns a separate readonly result. None grants authorization.
+The first planned transport is a narrow CLI over the same application use cases.
+MCP exposure remains deferred.
+
+The accepted pure core takes only trusted snapshots. It binds effective walls to
+a resolver receipt, review to a fresh challenge/digest receipt, and validation
+to an immutable deterministic receipt. Thermal analysis stops at the first
+provable positive extrusion delta and binds its active/inline tool. The guarded
+handoff resolves opaque IDs through injected stores, uses a trusted clock,
+atomically claims one-use authorization and idempotent action state, and
+normalizes acknowledged/rejected/timeout/transport-failed/unknown fake-port
+outcomes without duplicating an uncertain effect.
+
+Preserve the user's active validation role through a matching-edition preview,
+clear fixed/adjustable intent, and explicit correspondence `PASS`/`FAIL` bound
+to the exact revision. PREP-007 local image evidence stays before upload;
+HANDOFF-007 target-parsed image evidence stays after upload and before start.
+Start authorization, acknowledgement, observed printing, monitoring, printer
+completion, camera evidence and physical acceptance remain separate.
+
+Pure source is independently accepted at
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`, in
+`plugins/u1-print-studio/app/src/lib/server/preparation/prepared-artifact.ts`
+and `plugins/u1-print-studio/app/src/lib/server/application/upload-prepared-artifact.ts`.
+Author TypeScript and combined 32-test/231-assertion fixtures pass; the focused
+MCP inventory guard passes one test/20 assertions. Architecture and domain
+reviews APPROVE the exact source with their own focused/combined checks and tool
+matrix. Exact commands and limits are in VALIDATION.
+
+This F0 slice intentionally adds no durable store, supported skill/CLI adapter,
+MCP mutation tool, real uploader or target-parsed post-upload receipt. Decision
+0040 remains workflow policy whose end-to-end enforcement is incomplete until
+those later layers are separately accepted. No printer, network, upload, start,
+installed-plugin or service action was authorized or performed.
+
 ## Current deployment: PR106 host fullscreen and packaged body insets
 
 PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release

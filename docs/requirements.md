@@ -215,7 +215,7 @@ printer environments support the described behavior.
   compact header holds only icon/title/state/FPS/time. Decision0046 records this
   explicit user-approved Camera-only exception to decision0041's footer placement;
   other widgets retain their footer/Refresh/error contracts. Display/mode
-  controls stay accessible at the media's bottom right. Decision0049 preserves
+  controls stay accessible at the media's bottom right. Decision0050 preserves
   the current delivered layout as baseline but selects a future Camera-only
   placement refinement: move the current top-right information plus truthful
   loading/error messaging into bottom overlays inside dynamic media. That
@@ -657,9 +657,13 @@ durable-monitor claim.
   exact generated plate artifact, preparation manifest, and validation result
   without treating visual review as printer authorization.
 - **PREP-005:** User review identifies the slicer edition and version, plate,
-  project or artifact hash, and accepted or rejected revision. Reslicing,
-  changing support annotations, or changing any bound input creates a new
-  revision that requires renewed review.
+  project or artifact hash, and accepted or rejected revision. Correspondence
+  review records explicit `PASS` or `FAIL` for the exact selected objects,
+  orientation and arrangement, bound through a fresh challenge, reviewer class,
+  artifact/manifest/layout identities and thumbnail hashes. Missing review,
+  `FAIL`, stale challenge or any mismatch blocks prepared acceptance and upload.
+  Reslicing, changing support annotations, or changing any bound input creates
+  a new revision that requires renewed review.
 - **PREP-006:** Support intent distinguishes automatic support settings,
   support-enforcer or blocker geometry, painted mesh facets, and intentionally
   modeled breakaway geometry. Facet annotations remain bound to the exact mesh
@@ -674,6 +678,25 @@ durable-monitor claim.
   images from another revision do not satisfy the gate. Missing, invalid,
   incompatible, stale or unverified evidence blocks acceptance and upload.
   This visual identity check does not prove geometry, printability or safety.
+- **PREP-008:** One transport-independent `validatePreparedArtifact`
+  application use case consumes only trusted snapshots of the exact spec,
+  manifest, artifact bytes, digest-bound resolved-settings receipt and
+  challenge/digest-bound thumbnail-correspondence receipt. It emits a readonly
+  receipt carrying schema/validator/requirements versions, deterministic
+  validation identity, spec/manifest/artifact hashes, prepared-job revision,
+  target fingerprint, source receipt IDs/digests, decoded thumbnail evidence,
+  overall status and ordered rules. Required rules distinguish `passed`,
+  `blocked`, `unavailable` and `error`; only `passed` is upload eligible. A
+  skill or public transport accepts opaque IDs and resolves trusted records; it
+  cannot supply raw paths/evidence, mint receipts or reinterpret success.
+  Effective walls come from the bound resolver receipt, not manifest claims or
+  extrusion-line counts. Thermal validation covers the schedule before the
+  first provable positive extrusion delta, tracking extrusion mode, reset and
+  active/inline tool; it binds that tool to explicit heated/unheated and
+  required/not-required wait intent. Ambiguity is not success, shutdown after
+  extrusion is not a startup failure, and command targets are not actual
+  temperatures. Decision 0048's pure-core source is independently accepted;
+  trusted adapters remain pending.
 - **ORCA-001:** Every invocation records the exact OrcaSlicer edition and
   version, bounded inputs and outputs, exit result, and captured diagnostics.
 - **ORCA-002:** Invocation success, output creation, and output validation are
@@ -720,8 +743,26 @@ durable-monitor claim.
   upload acknowledgement alone is insufficient. Any artifact change, including
   embedding or replacing images, requires renewed local verification and
   identity/authorization binding before the changed artifact is uploaded.
-  Decision 0040 governs this workflow policy; automated enforcement remains
-  unimplemented.
+  Decision 0040 governs this workflow policy. Local source enforcement is
+  independently accepted under PREP-008/HANDOFF-008; a supported adapter and
+  target-parsed pre-start enforcement remain unimplemented.
+- **HANDOFF-008:** One shared `uploadPreparedArtifact` coordinator is the only
+  product upload seam. Its request contains opaque prepared-revision,
+  validation-receipt, authorization, target-preflight, idempotency and
+  correlation IDs. It snapshots records from trusted stores, reruns PREP-008,
+  checks exact bindings and freshness against a trusted runtime clock, atomically
+  claims one-use action-specific authority and action state, and invokes the
+  printer adapter at most once. Accessors, polluted prototypes, cycles, malformed
+  records, stale evidence, conflicts and cancellation before effect fail closed
+  with zero calls. Stable replays reuse the recorded action; uncertain effects
+  require verification and are never automatic retries. Acknowledged, rejected,
+  timeout, transport-failed and unknown outcomes remain distinct. Raw paths,
+  direct/manual transport and generic HTTP/Moonraker/G-code/admin passthrough
+  cannot report a successful product handoff. The guarded result is not
+  HANDOFF-007's target-parsed receipt and does not authorize start. Decision
+  0048's pure core and injected-store/fake-port tests are independently accepted;
+  durable stores, supported adapter, real uploader and target evidence remain
+  pending.
 
 ## Expansion
 
@@ -811,7 +852,7 @@ durable-monitor claim.
   routes in `src/routes`, with Bun retained. The former `src/lib/common` path is
   PR91 history. Native renderer coverage remains separately tracked; file moves
   alone do not complete it.
-  Decision0048 accepts a provisional version-1 private-lab experiment, not
+  Decision0049 accepts a provisional version-1 private-lab experiment, not
   production architecture or cutover. The exact version-2 private-Lab candidate
   keeps one fixed T1 subject and the four `HeadStatus`, `HeadTemperature`,
   `FilamentColor`, and `FanRelation` domain leaves, but restricts composition to
@@ -826,7 +867,7 @@ durable-monitor claim.
   FilamentColor under the same materials receipt. Global `error` permits only
   available or unavailable receipts and requires at least one unavailable;
   loading receipts and animated error skeletons are invalid while partial healthy
-  evidence remains visible. Decision0050 supersedes the experiment's
+  evidence remains visible. Decision0051 supersedes the experiment's
   `PercentageFill`: version-2 JSON containing it is invalid before acquisition,
   and temperature renders without a dynamic fill. One pure TypeScript build-time
   registry owns exactly `Card`, `Title`, `Stack`, `Grid`, `Inline`, `Group`,
@@ -847,7 +888,7 @@ durable-monitor claim.
   is no runtime registration, dynamic
   import, module path, URL, expression or style token in the wire contract;
   common layout elements are built in and domain leaves remain outside common.
-  Decision0051 adds only the private-Lab `balanced` composition. `Inline` has
+  Decision0052 adds only the private-Lab `balanced` composition. `Inline` has
   exact children `[Title, HeadStatus]`, closed `compact | regular` gap and
   `packed | split` distribution. A lead Grid and the leaf appearances
   `headerBadge`, `hero`, and `quiet` are closed optional inputs that resolve to
@@ -859,7 +900,7 @@ durable-monitor claim.
   filament/fan content; it has no empty icon slot, divider, tint, gradient,
   Table, or Row. The existing card, compact and larger specs and default visuals
   remain canonical and unchanged.
-  Decision0052 adds smart semantic grouping before placement. `identity` accepts
+  Decision0053 adds smart semantic grouping before placement. `identity` accepts
   exactly Title then HeadStatus and resolves to the code-owned packed header;
   `summary` accepts temperature, filament and fan exactly once, forbids caller
   appearances, and normalizes smart input to that stable affinity order. Its
@@ -898,7 +939,7 @@ durable-monitor claim.
   must reject such evidence-like reserve content. Exact manifest `a6cfa40f…`
   and resource `170fb8f1…` have screenshot-first UI/UX, printer-domain and
   independent verification approval within this synthetic experiment boundary;
-  that evidence does not amend decision0048 into a production commitment. The
+  that evidence does not amend decision0049 into a production commitment. The
   isolated Lab route and versioned MCP factory/
   resource prove only synthetic software/protocol behavior; production adoption,
   Camera, live mappings, mounted-host/device acceptance, printer authority and

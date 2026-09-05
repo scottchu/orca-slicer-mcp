@@ -1,4 +1,4 @@
-# 0048 — Explore an entity-bound presentation AST in a private lab
+# 0049 — Explore an entity-bound presentation AST in a private lab
 
 - Status: accepted for the isolated private-lab experiment; not accepted as production architecture or cutover
 - Date: 2026-09-03
@@ -64,7 +64,7 @@ or establish live data mapping, physical-printer truth, mounted-host behavior,
 user outcome, deployment, or cutover. Any production adoption requires a new
 decision and fresh exact-candidate review.
 
-Camera is intentionally excluded. Decision 0049 records its separate future
+Camera is intentionally excluded. Decision 0050 records its separate future
 composition direction without adding Camera nodes or changing Camera source in
 this experiment.
 
