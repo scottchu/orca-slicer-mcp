@@ -25,7 +25,7 @@ unchanged.
 Final author checks pass 114 UI/shared tests, 23 server/MCP/preview tests with
 474 assertions, TypeScript, zero-diagnostic Svelte/component contracts,
 deterministic MCP, two identical Kit builds and 12/12 isolated Chrome. The
-uncommitted 29-path application manifest is
+frozen committed 29-path application manifest is
 `b98548ad5ac3a56388bda6ba12216a4f4dd0a63449d8fd3ea3b56044579d1279`;
 Kit `300d0b95c2560addc40c2ada30dbfafe0d01dec1ebb5e4939791f69939b324be`;
 101,404-byte HTML
