@@ -48,6 +48,7 @@ lab(['/dashboard/lab', ...['overview', 'progress', 'thermals', 'heads', 'jobs', 
 lab(['/dashboard/lab/bed_mesh'], 'svelte-bed-mesh-lab.html');
 lab(['/dashboard/lab/camera'], 'svelte-camera-lab.html');
 for (const view of NATIVE_DASHBOARD_VIEWS) route(`/dashboard/${view}`, `prerendered/dashboard/${view}.html`);
+route('/dashboard/lab/composition', 'prerendered/dashboard/lab/composition.html');
 const files = (folder: string, prefix = ''): string[] => readdirSync(folder, { withFileTypes: true }).flatMap((entry) => {
   if (entry.isSymbolicLink()) throw new Error('Build output contains symlink');
   const name = prefix + entry.name;

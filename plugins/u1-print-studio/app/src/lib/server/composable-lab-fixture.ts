@@ -1,0 +1,111 @@
+import type { ComposableViewModel, ResolvedNode, ResolvedValue } from '../composable/view-model.js';
+import { t1BalancedCompositionSpec, t1CompactGridSpec, t1EntityCardSpec, t1ExplicitGroupedSummarySpec, t1LargerCompositionSpec, t1SmartGroupedSummarySpec } from '../composable/specs.js';
+import { composeEntityCard, type ComposableReaders } from './composable-presentation.js';
+
+const sourceTime = {
+  status: { observedAt: '2026-09-03T16:20:00.000Z', receivedAt: '2026-09-03T16:20:00.250Z' },
+  materials: { observedAt: '2026-09-03T16:19:45.000Z', receivedAt: '2026-09-03T16:19:45.300Z' },
+  environment: { observedAt: '2026-09-03T16:19:30.000Z', receivedAt: '2026-09-03T16:19:30.400Z' },
+} as const;
+const generatedAt = () => new Date('2026-09-03T16:20:00.500Z');
+export const COMPOSABLE_LAB_SCENARIOS = ['unknown', 'ambiguous', 'known', 'loading', 'partial', 'error'] as const;
+export const COMPOSABLE_LAB_VARIANTS = ['smart', 'explicit', 'card', 'compact', 'larger', 'balanced'] as const;
+
+const readers = (scenario: 'unknown' | 'ambiguous' | 'known' | 'partial' | 'error'): ComposableReaders => {
+  if (scenario === 'error') {
+    const fail = async (): Promise<never> => { throw new Error('synthetic acquisition failure'); };
+    return { status: fail, materials: fail, environment: fail };
+  }
+  const failEnvironment = async (): Promise<never> => { throw new Error('synthetic environment failure'); };
+  return {
+    status: async () => ({ ...sourceTime.status, heads: [{ id: 'T1', status: 'active', actualC: 214.6, targetC: 220 }] }),
+    materials: async () => ({ ...sourceTime.materials, heads: [{ id: 'T1', color: '#E89B3C' }] }),
+    environment: scenario === 'partial' ? failEnvironment : async () => ({
+      ...sourceTime.environment,
+      relations: scenario === 'known'
+        ? [{ headId: 'T1', fanId: 'part', label: 'Part cooling fan', role: 'partCooling' }]
+        : scenario === 'ambiguous'
+          ? [
+              { headId: 'T1', fanId: 'part-a', label: 'Part fan A', role: 'partCooling' },
+              { headId: 'T1', fanId: 'part-b', label: 'Part fan B', role: 'partCooling' },
+            ]
+          : [],
+    }),
+  };
+};
+
+const loadingValue = (value: ResolvedValue): ResolvedValue => {
+  const provenance = { ...value.provenance, sourceObservedAt: null, receivedAt: null, detail: 'loading' };
+  if (value.kind === 'text') return { ...value, state: 'loading', text: null, provenance };
+  if (value.kind === 'temperature') return { ...value, state: 'loading', actual: null, target: null, provenance };
+  if (value.kind === 'color') return { ...value, state: 'loading', hex: null, provenance };
+  return { ...value, state: 'loading', primary: null, sourceLabel: null, role: null, reason: null, provenance };
+};
+const loadingNode = (node: ResolvedNode): ResolvedNode => {
+  if (node.type === 'Card') {
+    const transformEvidence = node.transformEvidence ? loadingValue(node.transformEvidence) : null;
+    if (transformEvidence && transformEvidence.kind !== 'color') throw new Error('Invalid transform loading evidence');
+    const title = loadingNode(node.children[0]);
+    const layout = loadingNode(node.children[1]);
+    if ((title.type !== 'Title' && title.type !== 'Inline' && !(title.type === 'Group' && title.relation === 'identity'))
+      || (layout.type !== 'Stack' && layout.type !== 'Grid' && !(layout.type === 'Group' && layout.relation === 'summary'))) throw new Error('Invalid card loading node');
+    return { ...node, tint: null, transformEvidence, children: [title, layout] };
+  }
+  if (node.type === 'Stack' || node.type === 'Grid') return { ...node, children: node.children.map(loadingNode) } as ResolvedNode;
+  if (node.type === 'Inline') {
+    const title = loadingNode(node.children[0]);
+    const status = loadingNode(node.children[1]);
+    if (title.type !== 'Title' || status.type !== 'HeadStatus') throw new Error('Invalid inline loading node');
+    return { ...node, children: [title, status] };
+  }
+  if (node.type === 'Group') {
+    if (node.relation === 'identity') {
+      const title = loadingNode(node.children[0]);
+      const status = loadingNode(node.children[1]);
+      if (title.type !== 'Title' || status.type !== 'HeadStatus') throw new Error('Invalid identity loading group');
+      return { ...node, children: [title, status] };
+    }
+    const rows = node.children.map(loadingNode);
+    if (rows.some((row) => row.type !== 'Row')) throw new Error('Invalid summary loading group');
+    return { ...node, children: rows as Extract<ResolvedNode, { type: 'Row' }>[] };
+  }
+  if (node.type === 'Row') {
+    const columns = node.children.map(loadingNode);
+    if (columns.some((column) => column.type !== 'Column')) throw new Error('Invalid loading row');
+    return { ...node, children: columns as Extract<ResolvedNode, { type: 'Column' }>[] };
+  }
+  if (node.type === 'Column') {
+    const child = loadingNode(node.children[0]);
+    if (child.type !== 'HeadTemperature' && child.type !== 'FilamentColor' && child.type !== 'FanRelation') throw new Error('Invalid loading column');
+    return { ...node, children: [child] };
+  }
+  if (node.type === 'Title') return node;
+  const value = loadingValue(node.value);
+  if (node.type === 'HeadStatus' && value.kind === 'text') return { ...node, value };
+  if (node.type === 'HeadTemperature' && value.kind === 'temperature') return { ...node, value };
+  if (node.type === 'FilamentColor' && value.kind === 'color') return { ...node, value };
+  if (node.type === 'FanRelation' && value.kind === 'fanRelation') return { ...node, value };
+  throw new Error('Invalid composable loading node');
+};
+const asLoading = (viewModel: ComposableViewModel): ComposableViewModel => ({
+  ...viewModel,
+  state: 'loading',
+  sources: viewModel.sources.map((source) => ({ ...source, state: 'loading', observedAt: null, receivedAt: null })),
+  root: loadingNode(viewModel.root) as ComposableViewModel['root'],
+});
+
+export const createComposableLabData = async () => {
+  const specs = { smart: t1SmartGroupedSummarySpec, explicit: t1ExplicitGroupedSummarySpec, card: t1EntityCardSpec, compact: t1CompactGridSpec, larger: t1LargerCompositionSpec, balanced: t1BalancedCompositionSpec } as const;
+  const output: Record<string, Record<string, { canonicalSpec: unknown; viewModel: ComposableViewModel }>> = {};
+  for (const scenario of COMPOSABLE_LAB_SCENARIOS) {
+    output[scenario] = {};
+    for (const [variant, spec] of Object.entries(specs)) {
+      const result = await composeEntityCard(spec, readers(scenario === 'loading' ? 'unknown' : scenario), generatedAt);
+      output[scenario][variant] = {
+        canonicalSpec: result.canonicalSpec,
+        viewModel: scenario === 'loading' ? asLoading(result.viewModel) : result.viewModel,
+      };
+    }
+  }
+  return output;
+};

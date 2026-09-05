@@ -215,8 +215,15 @@ printer environments support the described behavior.
   compact header holds only icon/title/state/FPS/time. Decision0046 records this
   explicit user-approved Camera-only exception to decision0041's footer placement;
   other widgets retain their footer/Refresh/error contracts. Display/mode
-  controls stay accessible at the media's bottom right. The current candidate uses only Auto / Live through generic
-  common animated `Switch`, fixed at 88px wide and 44px high in the Camera media's
+  controls stay accessible at the media's bottom right. Decision0050 preserves
+  the current delivered layout as baseline but selects a future Camera-only
+  placement refinement: move the current top-right information plus truthful
+  loading/error messaging into bottom overlays inside dynamic media. That
+  migration is not implemented or visually/device accepted; it requires a
+  separate candidate and preserves Auto/Live, media/session/control, privacy,
+  fullscreen and frame-evidence semantics from decisions0046/0047. The current
+  candidate uses only Auto / Live through generic common animated `Switch`,
+  fixed at 88px wide and 44px high in the Camera media's
   bottom-right corner. Auto is the default for a new mount; remove the separate
   single-Snapshot mode. The latest user instruction supersedes old resource
   compatibility: retire prior version aliases, obsolete widget bundles and
@@ -844,8 +851,119 @@ durable-monitor claim.
   services/domain live in `src/lib`, server-only code in `lib/server` and real Kit
   routes in `src/routes`, with Bun retained. The former `src/lib/common` path is
   PR91 history. Native renderer coverage remains separately tracked; file moves
-  alone do not complete it. Existing
-  props/variants express visual/content differences. Domain compositions and
+  alone do not complete it.
+  Decision0049 accepts a provisional version-1 private-lab experiment, not
+  production architecture or cutover. The exact version-2 private-Lab candidate
+  keeps one fixed T1 subject and the four `HeadStatus`, `HeadTemperature`,
+  `FilamentColor`, and `FanRelation` domain leaves, but restricts composition to
+  a root `Card` whose header is `Title`, `Inline`, or the paired `identity`
+  `Group` and whose body is one `Stack`, `Grid`, or paired `summary` Group; Row
+  and Column are valid only inside an explicit summary override. It rejects
+  version 1, `Table`, `DataTable` and unknown fields. Card density, title size, gap
+  and columns are closed tokens. Title content is also a closed T1-derived token;
+  arbitrary text or a claim about another entity is invalid. A strict spec
+  rejects repeated presentation fields. Resolved validation must still require exact equality for any
+  repeated field and between Card transform evidence, tint and visible
+  FilamentColor under the same materials receipt. Global `error` permits only
+  available or unavailable receipts and requires at least one unavailable;
+  loading receipts and animated error skeletons are invalid while partial healthy
+  evidence remains visible. Decision0051 supersedes the experiment's
+  `PercentageFill`: version-2 JSON containing it is invalid before acquisition,
+  and temperature renders without a dynamic fill. One pure TypeScript build-time
+  registry owns exactly `Card`, `Title`, `Stack`, `Grid`, `Inline`, `Group`,
+  `Row`, `Column`, `HeadStatus`, `HeadTemperature`, `FilamentColor`, and
+  `FanRelation`, their roles, strict
+  spec/resolved prop schemas, child policies and field/source metadata. Those
+  child policies directly construct accepted spec and resolved tuple/array
+  shape and cardinality rather than duplicating structural rules. A
+  client-only registry binds those exact names to statically imported Svelte
+  components with parity tests and exact compile-time compatibility against a
+  separately owned prop map derived from the resolved node model; the dynamic
+  rendering boundary is sealed behind registry-entry-owned typed props adapters
+  and role-constrained child readers. The recursive renderer must dispatch only
+  on child-bearing structural role, never on concrete element name; it may use
+  one uniform cast only inside typed entry construction after constructor,
+  adapter, required props and node agree, never an all-optional props surface.
+  There
+  is no runtime registration, dynamic
+  import, module path, URL, expression or style token in the wire contract;
+  common layout elements are built in and domain leaves remain outside common.
+  Decision0052 adds only the private-Lab `balanced` composition. `Inline` has
+  exact children `[Title, HeadStatus]`, closed `compact | regular` gap and
+  `packed | split` distribution. A lead Grid and the leaf appearances
+  `headerBadge`, `hero`, and `quiet` are closed optional inputs that resolve to
+  explicit normalized modes and must remain structurally correlated. Lead layout
+  uses a code-owned font-relative intrinsic rule: no caller-provided span,
+  breakpoint, CSS, or sample-value reserve. Duplicate-field rejection traverses
+  both Card header and body. The balanced spec is a neutral compact Card with a
+  split title/status header, full-width hero temperature and adaptive secondary
+  filament/fan content; it has no empty icon slot, divider, tint, gradient,
+  Table, or Row. The existing card, compact and larger specs and default visuals
+  remain canonical and unchanged.
+  Decision0053 adds smart semantic grouping before placement. `identity` accepts
+  exactly Title then HeadStatus and resolves to the code-owned packed header;
+  `summary` accepts temperature, filament and fan exactly once, forbids caller
+  appearances, and normalizes smart input to that stable affinity order. Its
+  `summary-grid6-v1` rule resolves a six-track temperature Row followed by a
+  three-plus-three filament/fan Row. An optional strict grid override may
+  provide only six tracks, closed row/column gap tokens and one to six Rows;
+  each Row has one to six Columns, every Column owns exactly one summary leaf
+  and a closed one-through-six span, and each Row sums exactly to six. The
+  build-time registry owns distinct child policies for identity, smart summary,
+  explicit summary, and resolved summary so the first two retain exact tuple
+  cardinality while a legal single explicit Row is accepted. A one-Row
+  `2 + 2 + 2` override must preserve authored leaf order and still acquire
+  status, materials, and environment once each. The
+  resolver records `smart | explicit`, versioned rule, order, spans and
+  intrinsic collapse. Explicit layout changes only placement and cannot change
+  grouping, values, appearance, provenance, loading/error topology or the
+  readability floor. Smart and explicit keep paired secondary readings at
+  390/720 normal text and stack at 320 normal text or 390/200-percent text.
+  They add no holes, offsets, row span, overlap, caller breakpoint, style,
+  markup, executable content, tint, gradient, divider, Table or printer icon.
+  Resolved identity records `identity-packed-v1`; the two exact `-v1` rule
+  literals version their code-owned algorithms, so later behavior must use a
+  new registered literal rather than silently reinterpreting either rule.
+  The prior A specs, hashes and default rendering remain unchanged. Balanced B
+  keeps its spec/hash and shares the closed quiet-label refinement: visible
+  `Configured color` with accessible `Configured filament color`.
+  Strict canonical hash/spec/plan/source/topology/provenance
+  correlation, deduplicated source readers, bounded values, `Unknown` for absent
+  or ambiguous relations, input-shaped loading/error states, no arbitrary code
+  or markup, and negative production-registration guards remain mandatory.
+  Stable geometry reserves must be structural and may not embed sample status,
+  telemetry, filament color, fan label, identifier, timestamp or private value
+  as hidden or accessible content. Common value primitives center the visible
+  label/value or skeleton group against each reading icon while preserving the
+  same structural reserve across evidence states. Generated-resource and source-level guards
+  must reject such evidence-like reserve content. Exact manifest `a6cfa40f…`
+  and resource `170fb8f1…` have screenshot-first UI/UX, printer-domain and
+  independent verification approval within this synthetic experiment boundary;
+  that evidence does not amend decision0049 into a production commitment. The
+  isolated Lab route and versioned MCP factory/
+  resource prove only synthetic software/protocol behavior; production adoption,
+  Camera, live mappings, mounted-host/device acceptance, printer authority and
+  deployment remain pending. DataTable is not implemented or admitted to this
+  T1 vocabulary. It may be explored for Queue or History only through a separate
+  domain contract, ADR, implementation and review. The removed temperature
+  decoration supplies no production precedent or percentage semantic.
+  Any hosted composition preview must use a dedicated immutable server that
+  verifies the fixed build artifact's canonical manifest before listening and
+  preloads a closed allowlist containing only the exact private Lab page and its
+  required hashed assets. It must not import production entrypoints, dashboards,
+  tools, MCP, observation/printer, camera, auth, local configuration or process
+  authority, and must not fall back to another build. Manifest validation and
+  response loading must use one in-memory artifact snapshot, with no filesystem
+  reread after validation or while serving. Every ordinary parsed unlisted
+  origin-form route, query variant and method must return 404; CONNECT and
+  Upgrade must be explicitly denied, while parser-invalid traffic may return
+  400/close but must never expose preview/asset bytes or authority. Fixture state
+  and dashboard tool-call surfaces are forbidden. This is a private-Lab safety
+  requirement, not runtime, device or production acceptance. The generic
+  `serve-kit-fixture.ts` host must not be used to relaunch either composable
+  preview; historical v1 artifact hashes do not grant runtime authority.
+  Existing props/variants express visual/
+  content differences. Domain compositions and
   domain icon mappings remain outside common. Consolidate visual-only leaf
   variants without weakening AST/import guards or changing domain semantics;
   shared changes require all eight bundles and transitive-consumer coverage.

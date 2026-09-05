@@ -1,5 +1,1723 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-05 merge-only private Lab integration candidate
+
+### Scope and ancestry
+
+The user explicitly authorized merging the reviewed private Lab source to main
+without replacing current widgets. The candidate integrates `origin/main`
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` into pre-integration Lab head
+`76bf955d583ad3ab98a20c80324c795be2c9da01` with normal merge commit
+`1354f737a8535787afd69acd6cad6826911f200c`, tree
+`d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`; its ordered parents are the Lab head
+and `origin/main`. The user's latest clarification authorizes pushing the exact
+reviewed branch, opening the repository-required PR to `main`, and merging that
+exact head without replacing current widgets. It does not authorize deployment,
+install, production or preview restart, production registration, auth, Tailscale,
+plugin, Camera, printer or control change. `scripts/u1_ship.py --execute` was not
+run because its intentional merge/deploy/restart sequence exceeds this one-off
+merge-only boundary. Its normal policy and guards are unchanged.
+
+The approved delivery procedure is not yet evidence of execution. First,
+independent review must bind the exact full PR-head SHA. A fresh fetch must then
+show `origin/main` still equals
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and is an ancestor of the reviewed
+head. The exact head may be pushed without force and opened as a PR to `main`.
+After confirming the PR head, merge only with
+`gh pr merge --merge --match-head-commit <reviewed-full-sha>`; admin bypass,
+auto-merge and branch deletion are outside authority. Fetch after merge and verify
+the expected first parent, reviewed head as second parent and reviewed tree. Base
+or head drift, or any failed guard, requires renewed integration/review. The
+workflow stops after verified Git merge with no rollout.
+
+### Authorization-record correction checks
+
+This documentation-only correction changes exactly `PROJECT_STATE.md`,
+`NEXT_AGENT.md`, this `VALIDATION.md`, and the active `HANDOFF.md`. `git diff
+--check` passes. `git diff --quiet HEAD -- plugins/u1-print-studio/app src
+scripts package.json bun.lockb` returns zero, so the frozen 60-path application
+manifest and every previously accepted build input remain unchanged. A scan of
+added lines finds no absolute user or temporary path, private hostname/IP,
+credential token or private-key marker. No build or browser suite was repeated:
+the application, dependencies, configuration and generated assets did not change.
+No push, PR, merge, deployment or runtime mutation was performed while correcting
+the authority record.
+
+Git reported five textual conflicts: `NEXT_AGENT.md`, `PROJECT_STATE.md`, the
+decision index, and the active iteration `HANDOFF.md` and `VALIDATION.md`. Both
+record histories were retained. The unrelated upload-receipt record remains
+decision 0048. The Lab decisions were renamed in sequence from 0048-0052 to
+0049-0053, with headings, index, cross-references and historical wording updated.
+
+### Production isolation correction
+
+The first full repository run stopped at `verify:live-fans`: pre-integration Lab
+extensions in shared `Inline.svelte` and `Stack.svelte` changed a current widget's
+compiled bytes. That failure demonstrated the user's preservation gate rather
+than a flaky bundle. Both files were restored byte-for-byte to `origin/main`.
+Their Lab-only capabilities moved unchanged into additive generic common
+`LayoutInline.svelte` and `LayoutStack.svelte`; only the static composable
+component registry imports them. Closed DSL type names, canonical spec hashes,
+schemas, renderer roles, acquisition and provenance remain unchanged.
+
+After correction, all seven current production resources rebuild exactly to the
+tracked `origin/main` bytes:
+
+- live Fans `070654727ed4dbe3c8b507987c431a29a937474947c952d60dc79688ea7e74b9`;
+- live Thermals `3a4cf32c0bc1482537914fd60baf1c8b450d5d4e8521dd37634f8eed2d8743a1`;
+- live Heads `e958485823017fa9764853270dc2d673d8dbc850239b261f6b2e7e5f51ca86a1`;
+- live Queue `882571bfea0b075dd3a7542344d1e4bc8388e9ce2a0a4fa95334b984908e3768`;
+- live Camera `cc7a086001a66c35a90eff741ccb934a2dcc57617f6711939b47dee182f90a04`;
+- MCP observation `ff869c1e351d39d3dfc097995851d9caa222f9d7e776462254f3c6d6c9277d26`;
+- MCP Camera `87121885969f2f6d386e023939f9585a7a97b630c5bc76710ee7f9f44cf11353`.
+
+An exact post-commit comparison also covers all thirteen pre-existing public
+artifacts. In addition to the seven rebuilt resources above, dashboard index is
+`c2d3ab47c2abdc4f4570bbfab35f1216ddddef9d10aef8e969ac5747d2e806e1`, Camera
+host is `7f576efdc8464a0855863177e005810da50702b2062cc1b143ddddb933eb9d66`, status
+host is `7f8dd8acacab9150fa1c736e858a6610e08b282cf56ed2d2570fb214bffc4889`,
+observation Lab is `6a79f13b748c55d53d6791781a6096bfe3baadbcc801819c125265d32dcadec7`,
+bed-mesh Lab is `c23ef5cc4c20dd748396db012bc089a92a64ac207cca7d4ab399a5c720d484aa`,
+and Camera Lab is `a921f730715f6d235cdaa444918c2f8d8e84e7efe6cff9b56f4c9d3134e17af9`.
+Production `app.ts`, MCP HTTP and stdio transports, runtime contract, server
+entrypoint and stdio entrypoint are also byte-identical to `origin/main`.
+
+`git diff --exit-code origin/main` passes for production `app.ts`, all nine
+current live/MCP widget entrypoints, common `Inline`/`Stack`, and those seven
+resources. Build-graph comparison covers 188 distinct repository inputs across
+live Fans/Thermals/Heads/Queue with zero changed inputs. Bun's stdio metafile
+covers 25 repository inputs with zero changed inputs. `app.ts` continues to own
+the exact current factory/tool/resource inventory; the isolated Lab factory is
+not imported or registered there.
+
+### Exact identities
+
+The sorted 60-path application delta against `origin/main` is
+`e5886589ff7dc60ba0fe867956b3e11e490f941d63cc0ccda3f09fb784307770`.
+The dedicated 113-file Kit build manifest is
+`d99b573a0d6041ba64620ff144ece6846abd712e6d4b00c8fc6d5e9c479c8399`.
+Its 101,247-byte private Lab page is
+`90f36bc499e4b9ed71a241dbbefb6bbea8f80a6292626b1c30d6ca72cb11f933`.
+The 167,613-byte isolated MCP Lab resource is
+`d2808f99513d57ac11daca175c7a88f22713fc25d04c181c72067a96acff084b`.
+Two stdio builds reproduce
+`36d66f516b5926a2950801d33dbc96044e2f3a5cebc5886bf524833a9024abaa`;
+two unified server builds reproduce
+`3cc06f9496122a890a1752cd3a0ab5fd114ab4007753ae3e49c589c8a0038a94`.
+
+### Commands actually run
+
+- `./scripts/check-repository.sh`: PASS after the isolation correction. It runs
+  zero-warning Svelte/component contracts, 63 UI files / 646 tests, all current
+  deterministic widget/resource checks, TypeScript, 35 server files / 274 tests
+  / 3,286 assertions, 44 service-lifecycle tests and 28 shipping tests; final
+  output is `repository contract: ok`.
+- Focused UI command over the eight composable/shared consumer files: PASS, 114
+  tests. Focused server/MCP/preview command: PASS, 23 tests / 464 assertions.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` followed by
+  `verify:mcp-composable-lab`: PASS and reproduces the exact resource above.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file
+  --config=/dev/null x vite build`: PASS. The first focused preview run correctly
+  failed stale immutable manifest/page/hydration pins after isolation changed the
+  Lab build; only those exact pins were renewed, after which all four preview
+  tests pass.
+- `bun --no-env-file --config=/dev/null x playwright test --config
+  playwright.composable.config.ts`: PASS, 12/12 with one worker; port 4184 and
+  browser/fixture resources released.
+- Focused `app`, production package, request-lifetime and Lab-production-negative
+  tests: PASS, 28 tests / 251 assertions.
+- Every `verify:live-*`, `verify:mcp-observation` and `verify:mcp-camera` command
+  passed twice (focused run and full repository run) against exact tracked bytes.
+  Stdio and unified server builds each reproduced the identical hashes above.
+- The first ad hoc stdio-metafile proof attempt failed before building because
+  zsh expanded an unquoted `[name]` pattern. The corrected quoted command built
+  normally and proved 25/25 repository graph inputs unchanged. No tracked file or
+  runtime changed from the failed harness invocation.
+- Decision/reference scans show one unique upload decision 0048 and the ordered
+  unique Lab series 0049-0053. `git diff --check` and the changed-line credential,
+  private-host/IP and temporary-path scan pass.
+
+### Evidence boundary
+
+This validates source integration, deterministic builds, production preservation,
+closed protocol behavior and synthetic Chrome layout. It does not prove a mounted
+ChatGPT host, Safari/iPhone, screen-reader speech, a running service, live network,
+real printer or user outcome. No production/preview process, installed plugin,
+Tailscale/auth state, printer or repository remote was changed.
+
+## 2026-09-05 reviewed mobile alignment and proximity candidate
+
+### Boundary and correction
+
+The latest phone screenshot reopened only the private Lab's common presentation
+layout. The supplied 590x1280 target is retained outside the repository at
+SHA-256 `6382cc44eb6783468822a1e29fa72127b0a911e7a2ff92fc023a51cbec732f0f`.
+The final screenshot-first design contract found detached icon/copy anatomy,
+unequal direct supporting-Reading height and no explicit collapsed sibling gap.
+The author correction is CSS-only: hero/quiet Reading uses a fixed 32px icon
+column, unchanged 32/24px glyphs, 8px grid gap and zero content padding; default
+Reading remains unchanged. Row explicitly stretches children and owns 20px
+column/row gaps; Column is a one-cell grid. No DSL, schema, resolved model,
+source acquisition, MCP factory/tool/resource registration, printer, Camera,
+authentication, Tailscale or production path changed. The immutable MCP HTML
+and isolated preview pins changed only because the compiled CSS bytes changed.
+
+The first height-only implementation followed the earlier incomplete design
+contract. Its focused compiler/component gates passed, and it provisionally
+produced Kit manifest `6d4b0683...`, 101,404-byte HTML `b716883d...` and
+166,981-byte MCP `9786f88e...`. The first Chrome run then failed two grouped
+cases because a new harness incorrectly required both supporting global x axes
+to equal the full-width temperature axis; only the first Column shares that
+global axis. After that test correction, a second run failed one 720px/200%
+case because the harness assumed content fit despite the focused 590px Card and
+640px intrinsic text-scale floor. Both were harness failures and were corrected
+without weakening the required local 40px anchors or 720px/100% 3+3 placement.
+The designer then superseded the incomplete height-only contract with the final
+proximity-and-spacing contract above, so those provisional artifacts are not a
+candidate.
+
+### Commands actually run and exact evidence
+
+From `plugins/u1-print-studio/app` on the final CSS bytes:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 114 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 23 tests / 474 assertions.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` plus `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` reconstructs the exact 167,441-byte resource at SHA-256 `8e37ea45b8e47d9652374cf4001908a39b220dd559d2562aecd7231396b31086`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null x vite build` ran twice on the final CSS and reproduced the 115-file manifest `300d0b95c2560addc40c2ada30dbfafe0d01dec1ebb5e4939791f69939b324be`; the 101,404-byte Lab HTML is `80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 12/12 isolated Chrome cases with one worker and releases port 4184 and browser/fixture resources.
+- `uv run --with pillow -` normalized the external Unknown-state phone Card and the fresh 390px Unknown Card to a side-by-side 1134x438 comparison, SHA-256 `47bf2cd6e4196f4ea7931f041ef0d2f98981bbbfb69751f04657921d09206aca`. The author opened this comparison and the fresh state/responsive captures rather than treating screenshot existence as visual inspection.
+
+The browser guard proves each hero/quiet content anchor is 40px from its local
+Reading start, glyph-to-copy gaps are 8/12/12px, label/value gap is 2-4px,
+sibling and summary Row gaps are 20px, and the packed identity gap remains 12px.
+At 390px both direct supporting Columns and Readings have equal height, and
+their icon and complete content centers differ by at most 1px. Equal-line-count
+Unknown fixtures keep label/value baseline proxies within 1px. At 320px and
+390px/200%, supporting Readings stack in source order with exactly 20px between
+their boxes and intrinsic individual heights; at 720px/100% they remain 3+3.
+Default/bordered Reading still has a 44px icon frame, 12px gap and 12px content
+padding. Smart/Explicit geometry remains identical. Known, Unknown, ambiguous,
+partial, loading and error Card/supporting-Row bounds remain within 1px; only
+loading animates, and error remains static neutral.
+
+Fresh ignored evidence hashes:
+
+- Smart/Explicit 390px Card crops, byte-identical:
+  `513cf9e8eb511e1ed08e23d0f7a089105004c93ee2ee26f4908f46df0170d4e4`
+- Smart Unknown/known/loading/error at 390px:
+  `2c1374eb874bc662fa1b788be28ee4f4721ab30ad4bbd947fb829ce84cbf2b86`,
+  `653f74b26eaf007456778823c1a9a625955968185c14e991958c1e8cdc0f4c56`,
+  `8b56a34c2bbb1c48803aeb3d2b8131847c5a06804dc90c6fca2bb22e5a73e12d`,
+  `715a34a5f071e94edcbdd10f9d17a377a9be76c22e58cf8dcf3fb89da5c290d9`
+- Smart 320/720 and Smart/Explicit 390px/200%:
+  `3bd29258d6d44f44aec803144927a318ed38fd19347b2efcd42371c1cfd2c4c5`,
+  `b036a3c34ae2147b3f184a3fb2e3add85831569db10d8b190a6ccb65e1afd1bc`,
+  `eaf23f560d69d6ff4448d9fb350a148499a02591b7ef8044bfc4c231882ced68`,
+  `d9c55384309403b0476f95f2712e1e32659e0add2fae5b8156009031cd0df4a4`
+
+The inherited changed/new application source set gains only `Reading.svelte`
+and is now 29 paths at manifest
+`b98548ad5ac3a56388bda6ba12216a4f4dd0a63449d8fd3ea3b56044579d1279`.
+The first manifest-shell attempt failed harmlessly because local zsh variable
+`path` shadows the executable search path; the renewed command used
+`file_item`, reproduced the preceding 28-path `bc992eac...` identity from
+commit `79112a5`, then produced the 29-path identity above. No file or runtime
+was changed by that failed read-only command.
+
+The frozen author evidence then received both exact independent gates.
+Screenshot-first design review **APPROVES** manifest `b98548ad...` with no
+actionable P0-P2 finding after reopening the source-versus-Unknown comparison,
+390 ready/Unknown/loading/error, 320/720 responsive, 390/200%, default/larger
+720/200% and production Heads precedent. It explicitly records that grouped
+720/200% has assertion/source evidence but no dedicated saved screenshot and
+that the source phone raster cannot establish CSS viewport, DPR or text scale.
+The prior **BLOCKED** mobile finding remains preserved underneath the final
+approval in `design-qa.md`.
+
+Independent source/protocol review also **APPROVES** the exact 29-path manifest
+and artifact pins. It confirms the application diff is limited to `Reading`,
+`Row`, `Column`, focused browser/preview coverage, compiled private HTML and
+exact preview pins; production factory/registration, DSL, schemas, view model,
+data/acquisition and canonical specs do not drift. Its one non-blocking record
+precision was applied here and in `PROJECT_STATE.md`: the default Reading
+component/resource bytes changed because the shared file was rebuilt, while
+its default CSS declarations and computed 44px icon / 12px gap / 12px content
+inset remain unchanged.
+
+### Authorized exact preview activation
+
+Separate preview-only authorization allowed one restart of the existing
+submitted launchd job `com.openai.u1-composable-v2-preview`. Preflight bound the
+operation to clean documentation head `581c8b0` / application commit
+`73cc1b9d`, unchanged dedicated Bun arguments, old PID 73981 and sole loopback
+4200 listener. Local and existing Tailnet 8451 were byte-identical at the prior
+101,404-byte HTML `243d84c6...`. Production PIDs 834/841 and listeners
+8787/8789 plus 8788 were present. Both the `/usr/local/bin/tailscale` wrapper
+and application binary returned identical raw Serve/Funnel JSON at
+`2eb561166fa5b7f50e680f8a98b3bc4b59f03f3d9798b560745ed21a5afb6ba0`
+with terminal LF and
+`063ecd465901d269c63295bfd75acc7aed240455e3f21ca8550b1bae6bb784b3`
+without it. The job is a launchctl-submitted definition rather than a retained
+LaunchAgent plist; before/after `launchctl print` showed the same exact
+arguments and no definition was written.
+
+The only runtime mutation was:
+
+- `launchctl kickstart -k "gui/$(id -u)/com.openai.u1-composable-v2-preview"`
+
+Old PID 73981 was reaped. New PID 20816 runs the exact existing Bun
+`--no-env-file --config=/dev/null` dedicated immutable-preview command, has no
+child process and, after probe keepalive drained, owns only `127.0.0.1:4200`.
+Local and existing Tailnet 8451 each return HTTP 200 with exact 101,404-byte
+HTML SHA-256
+`80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`.
+All 23 referenced immutable assets including the fixed hydration node are
+byte-identical to the committed Kit at both origins and retain immutable cache
+headers. Nine closure cases per origin pass: valid bodyless HEAD plus POST,
+query, trailing slash, health, MCP, Camera, queried asset and absent asset
+returning 404.
+
+The first inline postrestart verifier failed without external mutation because
+shell quoting removed the intended single quotes from its CSP substring. The
+same read-only verifier reran with a shell-safe CSP token and passed every page,
+asset and closure assertion above; this was verifier construction, not a service
+failure. After verification, both Tailscale binaries reproduced the exact
+preflight raw hashes for Serve and Funnel. Production PIDs 834/841 and their
+three listeners remain unchanged. No launchd definition, Tailscale preference,
+authentication, production service, printer, Camera, plugin or repository
+application byte changed during activation.
+
+No Safari/iPhone, mounted ChatGPT, screen-reader speech, manual keyboard,
+real-printer or user-outcome acceptance is claimed. The private preview is
+runtime evidence for the exact isolated committed build only.
+
+## 2026-09-05 smart semantic grouping plus explicit six-track reviewed candidate
+
+### Boundary, corrections and retained failures
+
+Decision0053 is additive to the private UI-003 Lab. It changes no production
+registration, printer/Camera/authentication/Tailscale path and does not restart
+the existing 4200/8451 preview. The three A specs and Decision0052 balanced B
+remain byte-for-byte canonical. This is author evidence on uncommitted bytes;
+the exact application identity was subsequently approved by independent
+source/protocol and screenshot-first design review before the documentation-only
+commit tail.
+
+The first final preview test correctly failed after a Kit rebuild because the
+immutable server still pinned the preceding balanced manifest/HTML/hydration
+node. The author inspected the new closed build, updated only those exact pins,
+rebuilt again and reproduced the same artifact identity before the passing
+preview test. A later architecture check clarified that `Group` is a semantic
+role, not a layout role, and that code-owned default rules need stable versioned
+names. The source/tests/Decision0053 now consistently use semantic `Group` plus
+exact `identity-packed-v1` and `summary-grid6-v1`; the `-v1` literals prevent a
+future algorithm change from silently reinterpreting an existing resolved
+contract. Final visual inspection also found that the first 720px Smart stage
+was unnecessarily wide; its closed stage maximum was narrowed to the focused
+590px reading width and the complete browser evidence was renewed.
+
+Independent design review then **BLOCKED** application `988b90bc...` on one P2:
+the quiet filament label used three visible lines in the primary 390px 3+3 row.
+The generic Swatch now accepts separate visible and accessible labels. Quiet
+FilamentColor visibly renders truthful `Configured color` in two lines and
+retains `Configured filament color` as the sole assistive label. Default/A
+visible copy, type size, 3+3 placement, swatch/value atomicity and the wire
+contract remain unchanged. The first focused component run after this edit
+failed the migration frontier because an exploratory nested-label branch added
+two native spans. A later accessible-name assertion also proved the interim
+group lacked an actual name. The final common primitive retains its exact
+native-tag contract and adds only fixed `role="group"` plus `aria-label` when
+visible and accessible copy differ. Focused DOM and browser accessibility-name
+assertions now pass; default has neither alternate role nor label.
+
+Preliminary source review separately found that new nested schema locals could
+drift behind the outer Card child cast. Column, Row, identity Group, smart
+summary Group, explicit summary Group and both resolved Group variants now have
+direct exact `z.ZodType` annotations and alias-bound child schemas. A source/type
+drift test preserves every boundary and the semantic/layout roles; Column policy
+now accepts only temperature, filament and fan. The first renewed browser run
+then failed three grouped cases because its new visible-text helper removed both
+the assistive label and the intentionally `aria-hidden` visible label. The
+helper was corrected; this was a harness failure, not a UI failure. After the
+final ARIA implementation, another run exposed the top-level test's stale
+expectation that Smart visibly used the default label. It now distinguishes
+Smart's short visible/full accessible pair from Card's unchanged full visible
+label. The subsequent complete run passed 12/12. Independent design and source
+rereview remained pending on that renewed identity.
+
+Independent source rereview then **REQUESTED CHANGES** on application
+`8a9cb04a...`: a valid explicit summary with one Row of three span-2 Columns
+was rejected by the broad Group policy's inherited minimum of two children,
+before the relation validator's documented one-to-six Row rule could apply.
+The registry now owns relation-shaped executable child policies: identity stays
+the exact Title/HeadStatus tuple, smart summary stays an exact three-leaf tuple,
+and explicit/resolved summary accepts one to six Rows. Focused regression proves
+the one-Row `2 + 2 + 2` case is accepted, preserves authored fan/temperature/
+filament order, and calls status, materials, and environment once each. Empty
+and seven-Row explicit forms, one-child identity and two-child smart summary
+remain rejected. This correction does not alter rendered geometry; the full
+browser suite and author visual inspection were nevertheless renewed on the
+new candidate. At that checkpoint, independent design and source rereview were
+still pending.
+
+Both renewed exact gates then **APPROVED** application
+`bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`.
+Independent source/protocol review reran the eight focused UI/shared files for
+114 passes, the three server/MCP/preview files for 23 passes and 474 assertions,
+TypeScript and zero-diagnostic Svelte/component contracts. It exercised 22
+invalid inputs with `readerCalls=0`, accepted the one-Row `[2, 2, 2]` case with
+authored order and one read per source, rejected 14 envelope tamper cases,
+matched the exact Kit/HTML/MCP identities below and confirmed the Lab factory
+remains absent from production registration. Independent screenshot-first
+review reopened the target, normalized comparison and responsive/state captures
+and approved the same exact source-valid identity with no remaining P0-P2
+finding. The historical `988b90bc...` visual block and `8a9cb04a...` source
+request remain preserved rather than overwritten.
+
+After application freeze, the independent design record and final project,
+handoff, next-agent and validation status changed durable documentation only.
+The sorted 28-path application hash list compared byte-for-byte with the frozen
+list and still produces `bc992eac...`; `git diff --check` and the changed-line
+private-path/hostname/credential scan pass, and isolated port 4184 is released.
+
+### Commands actually run and exact evidence
+
+From `plugins/u1-print-studio/app`:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 114 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 23 tests / 474 assertions.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` followed by `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` reconstructs the exact 166,948-byte MCP resource, SHA-256 `ef6c06df914c9fc3c229a9de61421320f56f32376cbe460fee195b136715fb69`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null x vite build` ran twice and reproduced the 115-file manifest `ee08234a369fc24b5e588b165fdd211380c040e4e5b3c02cad96875722abdec8`; Lab HTML is 101,404 bytes at SHA-256 `243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 12/12 Chrome cases with one worker and releases its fixture/browser resources and port 4184.
+
+The browser matrix covers Smart and Explicit at 320, 390 and 720 CSS pixels,
+100% and 200% root text; known/loading/error/partial/unknown/ambiguous states;
+reduced motion, forced colors and visible focus. It requires exact Smart/
+Explicit semantic order and DOM geometry parity, packed 12px identity, six
+logical tracks, 3+3 at 390/720 normal text, intrinsic stacked readings at 320
+normal text and 390/200%, atomic temperature target/unit, no overflow, state
+height within 1px, animated loading, static neutral error and no tint, gradient,
+divider, Table or printer icon.
+The grouped cases additionally require the quiet visible filament label to use
+at most two lines at 390px, the full assistive label to remain present, and the
+default leaf to omit the alternate-label branch.
+
+Schema/server/MCP cases prove exact twelve-entry registry parity and static
+imports; relation-shaped Group child policies; strict Group/Row/Column
+relations, cardinality, spans and row sums; acceptance of one explicit Row with
+three span-2 Columns and preservation of its authored leaf order;
+and zero-reader rejection of invalid layout, role, appearance, start/offset,
+row-span, breakpoint, style, CSS/HTML/JavaScript, path and URL inputs. Valid
+Smart and Explicit each call status, materials and environment once. Envelope
+adversaries cover relation/layout source/default rule/order/span/gap/collapse/
+appearance/receipt/timestamp/provenance drift. Smart affinity order and explicit
+authored order produce the same final comparison geometry. Existing canonical
+hashes stay `7e9df2367d983587946dc5d5e708bb13d2b7172045390d5cbd8fe6e60c577a92`,
+`7bdc296385bd91f5d172c73b771b5f955b3d6204a747a83a5e5205091b685b1a`,
+`cd278ddf6c468f48dbfa437a36063b7c0bfd4408835ec58a6cc786322f53b243`
+and balanced
+`dfbf87e36102bfa21a97e266e0d1258c4b61399eb874886abffd637a1259ac56`;
+new Smart and Explicit
+hashes are `d99581cf7d73baff45f5861d7f527621dcff156efc4ef78f564905b07e0205d3`
+and `8bc2a4db09c4da45e44e577e208a8a41afad554b706f1d4a8fbaf9bd07b443fa`.
+
+The sorted 28-path changed/new application manifest, including the immutable
+resource and focused tests, is
+`bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`.
+`design-qa.md` records author inspection and exact independent approval. Current
+ignored visual evidence:
+
+- normalized target-versus-Smart comparison 764x338:
+  `c2a096aace24f385d38f86dc22cc70494e113d503d2172d1fd38edbdc14f06f4`
+- Smart/Explicit card 390, byte-identical:
+  `3752e0f48c41dd75a8cef662c803d1736932f4bc78d8deb476d119e0d8450747`
+- Smart 320/390/720: `0bacf99c300972264c3941d71c819aa17a094f633abde1fb8319ddfd07a52a40`,
+  `cf67f76e0d4b29a5a742210b01b9c8804296ad1884c08fb149c7d8841a809d32`,
+  `b633a34db4b939e479f23c0e71bb5275ecc90dc9b83b03f1196d099849db3e49`
+- Smart 390/200%: `60f53ab1a3952ebcc24f6a691b92e67d70e07ae723c2a6d9690dced4abfe6c6e`
+- Explicit 390: `0a8cad0012745fd77af7256325aea26c0f4a090e75016b1300d6aa6859e8a3f9`
+- Smart loading/error 390: `ac126a36553de55fe24d7cb8d4691a5ad55ac6147f7a52154258ded5302b6c2b`,
+  `9060f3f36ff21fa3e13234478cb272ddeb3c8a593b98c073090f01a724e14118`
+
+The selected target SHA remains
+`34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`;
+its local location is intentionally not durable. Author visual result and exact
+independent screenshot-first review both PASS after the P2 and source corrections.
+
+### Authorized exact preview-only activation
+
+After commit `79112a57fd0f144a9cbbbb6b237cfe5ffe2a3ec3`, tree
+`a2d068af7b949a23e5e599fe9d20da3ef4592395`, the operator preflighted the
+existing `com.openai.u1-composable-v2-preview` launchd job, its exact worktree
+script, sole `127.0.0.1:4200` listener, production jobs/listeners and both raw
+Tailscale CLI views. The preflight local and Tailnet pages were identical old
+66,589-byte balanced HTML `b212f969...`. The only mutation was
+`launchctl kickstart -k gui/501/com.openai.u1-composable-v2-preview`; no
+launchd definition, Tailscale preference or other service was changed.
+
+Old preview PID 86363 was reaped. New PID 73981 runs the exact committed
+dedicated Bun command, has no child process and owns only the loopback 4200
+listener. Local and existing Tailnet 8451 each return HTTP 200 with exact
+101,404-byte HTML SHA-256
+`243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3`,
+byte-identical to each other and to the committed Kit artifact. All 23 allowed
+immutable assets from the page plus the fixed hydration node match the committed
+source bytes and immutable-cache headers at both origins. Nine closure cases
+per origin pass: valid HEAD plus POST, query, trailing slash, health, MCP,
+Camera, queried asset and absent asset returning 404.
+
+Before and after restart, both the application binary and installed wrapper
+returned byte-identical `serve status --json` and `funnel status --json` at
+SHA-256
+`2eb561166fa5b7f50e680f8a98b3bc4b59f03f3d9798b560745ed21a5afb6ba0`
+including terminal LF and
+`063ecd465901d269c63295bfd75acc7aed240455e3f21ca8550b1bae6bb784b3`
+without it. Existing 8451 remains Tailnet HTTPS `/` to loopback 4200 with no
+8451 Funnel. Production PIDs 834/841 and listeners 8787/8789 plus 8788 are
+unchanged. This is operator runtime evidence, not a new independent design or
+source review and not Safari/iPhone or mounted ChatGPT acceptance.
+
+### Evidence limits
+
+These are synthetic software/protocol and local Chrome results. There is no
+iPhone/Safari, mounted ChatGPT, screen-reader, physical printer/Moonraker,
+public Internet or user-outcome acceptance. No live integration, runtime
+plugin installation, PR, merge or production deployment occurred; only the
+existing isolated preview job was restarted under the explicit scope above.
+The descriptor monitor, 4096 limit, MCP process-group cleanup and lazy-start
+safeguards remain only a recorded future plan; none was installed or applied.
+
+## 2026-09-04 additive balanced private-Lab reviewed candidate
+
+### Boundary and retained failures
+
+Decision0052 is an additive UI-003 experiment only. Its implementation does not
+change the three A specs, production registration, printer/Camera/auth/Tailscale.
+The subsequently authorized activation restarted only the existing private
+4200/8451 preview job, as recorded below. The first compile exposed an existing shared `Inline`
+consumer contract; the implementation was corrected additively with no consumer
+rewrite. Early browser runs found a zero-width header loading skeleton, 4–16px
+ready-state height drift, 5–81px 200%-text drift and a lead Grid growing beyond
+two columns at 720px. Stable line-height reserves and the bounded font-relative
+two-track rule repaired these findings; the renewed complete matrix passes.
+
+### Commands actually run and exact evidence
+
+From `plugins/u1-print-studio/app`:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 111 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 21 tests / 432 assertions.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` and `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` reproduce the 154,183-byte resource SHA-256 `b1b3eb179fdafeff20c564db37f42873cfbae4ba7ac6168a9f70d23dbcf33890`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build` ran twice and reproduced the 115-file manifest `5c22955182f278d4c934be1cc3d6f5099bb556109353098bff8593d942f9fd13`; Lab HTML is 66,589 bytes at `b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 9/9 isolated Chrome tests and releases port 4184.
+
+The sorted 32-path application manifest is
+`e225b0c4966177203461bb94685777898b39e4db014821ccfc5c9c3741aa0e95`.
+After independent review found stale title-only tuple casts at the Card schema
+boundaries, `schema.ts` now uses `z.ZodType<CardNode['children']>` and
+`view-model.ts` uses `z.ZodType<ResolvedCardNode['children']>`. The source/type
+drift guard requires each alias to retain Inline. On these renewed exact source
+bytes, the focused client command for schema-planner, presentation and component
+registry passes 3 files / 16 tests; the server command for composable
+presentation and MCP passes 17 tests / 114 assertions; TypeScript passes. Fresh
+MCP build/verify and the Kit build reproduce the same resource, HTML and Kit
+hashes recorded above. The broader 111/21/9 browser author matrix predates this
+type/test-only repair; no runtime output byte changed, and independent review of
+the renewed application manifest follows below.
+Tests cover exact nine-entry parity, A canonical stability, invalid Inline/Card/
+Grid/appearance/nesting/token cases, duplicate header/body status, resolved
+order/mode/provenance mismatch, zero-reader unknown path/URL/CSS rejection,
+deduplicated receipts and balanced state topology. Chrome covers balanced at
+320/390/720px, 100/200% root text and ready/unknown/ambiguous/loading/error/
+partial; height drift is at most 1px, header/hero/adaptive-grid/atomic-unit/
+neutral-motion/reduced-motion/no-overflow and forbidden-visual checks pass.
+
+The selected target SHA is
+`34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`.
+Author comparison is recorded in `design-qa.md`: 764x336 combined SHA
+`96870d17fbd56d4023cde221aaa0f2583950319ba8806dec2515e2e2b76f2ef4`;
+374x306 implementation crop SHA
+`b8bd858af9a33fc90e19f49ec95269e5728299e98fde9beadc1c4a17e70e3182`.
+Independent screenshot-first design **APPROVES** exact `e225b0c4…` with no
+P0-P3 finding after direct inspection of the selected target, crop, normalized
+comparison and 200% capture. The cast/test repair is visually runtime-erased, so
+the prior browser evidence binds without a new run. Independent source review
+also **APPROVES** after its initial `REQUEST_CHANGES`. It freshly passed the same
+16 client and 17 server/MCP tests with 114 assertions plus TypeScript. Its custom
+MCP adversaries rejected path, style, reversed Inline and duplicate status with
+`readerCalls=0`; valid balanced input called status/materials/environment once
+each; Inline distribution/order, Grid arrangement, hero/quiet appearance and
+provenance tampering all failed envelope validation. The exact nine-entry
+registry/adapter walk, unchanged three A hashes, balanced hash `dfbf87e3…` and
+implementation version `0.0.4-provisional` passed.
+
+Independent review did not repeat write-producing MCP/Kit builds, `ui:check` or
+the full browser matrix. Author reconstruction freshly establishes unchanged
+artifact bytes. Limits include no iPhone/Safari, mounted ChatGPT, screen reader,
+physical printer/Moonraker, public Internet, live-preview replacement or user
+outcome acceptance.
+
+### Authorized preview activation and independent runtime approval
+
+The only activation command was `launchctl kickstart -k` for the existing
+`com.openai.u1-composable-v2-preview` job. Exact source
+`f4a56bc6939904d7fb493e4ae4df6f0c6ea3f33f`, tree
+`ab3d4fec325e54dd438ab53c42dc008629a94423`, changed preview PID 90967 to
+86363. The old PID was reaped. The new exact worktree Bun script has no child
+and only `127.0.0.1:4200` after probes.
+
+Local and Tailnet 8451 each serve HTTP 200 with exact 66,589-byte HTML SHA-256
+`b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`.
+All 23 allowed assets match their source bytes, lengths and immutable-cache
+headers. The exact 2,371-byte author-format closure SHA-256 is
+`52e80455014196d63d431465657d8f2e5e7752aab531a316776282e669cff5f2`
+at both origins. Nine focused cases per origin pass: valid empty-body HEAD;
+POST, query, trailing slash, health, MCP, Camera, queried asset and absent asset
+all return closed 404 responses.
+
+The first activation preflight stopped without mutation because the earlier
+durable raw Tailscale hashes were stale. The coordinator adopted the freshly
+observed baseline only after both CLI paths agreed and scoped 8451 semantics
+were exact. Serve and Funnel JSON remain
+`2eb561166fa5b7f50e680f8a98b3bc4b59f03f3d9798b560745ed21a5afb6ba0`
+including terminal LF and
+`063ecd465901d269c63295bfd75acc7aed240455e3f21ca8550b1bae6bb784b3`
+without it. Port 8451 remains Tailnet-only HTTPS, solely `/` to
+`http://127.0.0.1:4200`, with Funnel disabled. No Tailscale config was changed.
+Production PIDs 834/841 and listeners 8787/8789 plus 8788 remain preserved.
+
+Independent runtime review **APPROVES**. At 390x844 Chrome fallback, Known,
+Ambiguous, Loading and Acquisition failure retain a 374x304.695 Card, 56px
+header, 372x246.695 lead Grid, 340x110.148 temperature hero and paired
+164x100.547 secondary readings. Document width is 390/390 with no overflow.
+Known displays `Part cooling`; ambiguity displays `Unknown`; loading uses
+animated neutral skeletons and error uses static neutral skeletons with the
+same topology and geometry. No page/scenario request, console warning or error
+appeared. Fresh screenshots are:
+
+- Known: 42,229 bytes, `3c92d790d676142f7efa7ad60e7a8fdf7f4546f8f3ad9d8e89d4b47cd7603d83`.
+- Ambiguous: 41,745 bytes, `8eb51e8ff24808080d5ebe97c77a95314c37f893fba9fa67a3a977650c4c8d23`.
+- Loading: 37,331 bytes, `c2f7bc04db3766f2ebb87f68a79f244f8930d8d3cfbdcb44b4d88277fa4a4bc8`.
+- Error: 38,015 bytes, `760f42332ab49ff82a225c156c8417dbd915bdced7906604bf1c6ecf783e7c3b`.
+
+The in-app browser was unavailable, so Chrome was used and then closed. This
+does not establish Safari/iPhone, mounted ChatGPT, screen-reader, physical
+printer/Moonraker or user-outcome acceptance. Repository, Tailscale, auth,
+printer and production state remained unchanged apart from the authorized
+isolated preview PID replacement.
+
+### Docs-tail wording review
+
+Independent documentation review returned **REQUEST_CHANGES** on rejected docs
+commit `61f94b7208b63673432078d2aad0cccef507ea4c` because three summaries called all
+nine HTTP cases adversaries. The evidence actually contains one valid empty-
+body HEAD plus eight fail-closed 404 adversaries per origin. This wording-only
+correction does not change application, artifact, runtime, Tailscale, auth,
+printer or production bytes/state.
+
+## 2026-09-04 accepted build-time registry and temperature-fill retirement experiment
+
+### Acceptance and safety boundary
+
+This UI-003 follow-up implements decision0051 for the private synthetic Lab.
+Exactly eight element names are accepted at the strict wire boundary: common
+built-ins `Card`, `Title`, `Stack`, `Grid` and domain `HeadStatus`,
+`HeadTemperature`, `FilamentColor`, `FanRelation`. One pure TypeScript registry
+owns their roles, strict spec/resolved props, child policies and field/source
+metadata. A separate client registry statically imports exactly eight Svelte
+constructors. Registry child policies now construct the accepted spec and
+resolved tuple/array shape and cardinality. Each constructor is compile-checked
+for exact compatibility with an independently owned, resolved-node-derived prop
+map; the recursive dynamic boundary exposes only closed known props and no
+`any`. Planner and client placeholders obtain field/source mapping from the
+same pure registry. JSON has no component/module path, URL, runtime
+import/register, expression, HTML, CSS, JavaScript, arbitrary prop or style
+token.
+
+The prior `PercentageFill` name has no alias and fails strict v2 parsing before
+source acquisition. Canonical spec, resolved tree and generated MCP resource do
+not contain it. The experiment-only PercentageSurface and its temporary common
+escape props are removed; the original shared PercentageBackground remains for
+Thermals/Fans, and Card soft filament tint remains a separately declared,
+provenance-correlated transform. Metric, Badge and Swatch center real visible
+label/value or skeleton content within structural reserves rather than exposing
+painted reserve space or a wire alignment control.
+
+Schema/tool/resource version 2 remains because the Lab is private,
+provisional, production-unregistered and has no supported external v2 consumer.
+Only the isolated MCP implementation version changes to
+`0.0.3-provisional`. This does not accept production architecture, live
+Moonraker/printer mapping, Camera, auth, Tailscale, control, deployment or user
+outcome.
+
+### Author failures retained
+
+- The first static component renderer inferred the intersection of all eight
+  Svelte prop types and failed `svelte-check`. A typed registry lookup now
+  exposes the selected statically imported constructor to the renderer; the
+  final check has zero diagnostics.
+- The first component-registry source test constructed a transformed
+  `import.meta.url` that was not a file URL under Vitest. It now resolves the
+  checked-in path from the test workspace and passes.
+- The first 90-group visible-center browser run measured 2.492px drift for the
+  loading Badge skeleton. The common Badge skeleton now occupies the same pill
+  reserve as its visible known value. The renewed all-state run passes the 1px
+  limit at all three widths and both text sizes.
+- A first application-manifest shell loop used zsh's special `path` variable,
+  which removed command lookup inside the loop and produced unusable blank
+  hashes. No repository file changed. The renewed loop used a non-special
+  variable plus absolute `/usr/bin/shasum`/`awk` and produced the identity below.
+- Independent source review then found that the first candidate merely declared
+  child policies while spec/resolved schemas repeated their own array/tuple
+  rules, erased dynamic component props to `Record<string, any>`, derived its
+  component contract from the implementations themselves, repeated the client
+  field/source mapping, and omitted Fans/ObservationWidgets from the recorded
+  focused command. The author repair makes each authority executable, adds
+  adversarial/static-consumption checks, and renews all affected evidence below;
+  independent approval of these renewed bytes is still pending.
+- The first new synthetic child-policy test used cardinalities outside the
+  initial overly literal `ChildPolicy` type and produced three `svelte-check`
+  errors. Generalizing the build-time policy type while retaining the concrete
+  eight-entry registry values fixed the type contract; the renewed check has
+  zero diagnostics.
+- Renewed independent review found that the next candidate still left concrete
+  element-name branches and an all-optional dynamic prop surface in
+  `PresentationNode`. Each static registry entry now owns its constructor,
+  resolved-node-typed `getProps` adapter and role-constrained child reader.
+  `PresentationNode` contains no element name or `node.type` check and branches
+  only on the registered child-bearing roles. The sole uniform dynamic cast is
+  sealed inside the typed entry builder after constructor, independent props,
+  adapter and node type agree.
+- The first component check after that repair correctly rejected both
+  `registered.props` spreads under the pre-existing blanket spread rule. The
+  guard now permits only that exact registry-resolved member expression in the
+  registered renderer and still rejects arbitrary/other spreads; focused tests
+  cover both acceptance and rejection.
+
+### Commands actually run and current results
+
+From `plugins/u1-print-studio/app` unless noted:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 107 tests. This includes executable child-policy construction, registry-entry adapter/constructor compatibility, role-only generic rendering, exact guarded-spread drift checks, registry-owned source mapping, eight-entry parity and unchanged Thermals/Fans percentage consumers.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 20 tests / 405 assertions after the final MCP absence assertions. It covers rejection before acquisition, one call per source, timestamps/provenance, fan ambiguity, partial failures, immutable serving and production-negative inventory.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` then `verify:mcp-composable-lab` builds and reproduces the 145,152-byte resource at SHA-256 `c8de7c1aa94e2f8dfa11471d8e348d6f8ea7929b7c981f8c0fb816aad7cc0e09`; source/output contain no retired fill/surface name.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build` was run twice and reproduced the 113-file manifest `aaa9b6a36b4e8cfdf5ef2f13b9c71a9bc0e3762d39594866bb1665de216a48bc`. The Lab HTML is 49,994 bytes, SHA-256 `e85e3d1fc0673a0b86454f1616d043ed6d26708cd35403c070923493edafa28d`; hydration adds only exact node `/_app/immutable/nodes/1.KNtzM1Mp.js`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 6/6 Chrome cases through the dedicated immutable server. It covers 320/390/720px; 100/200% text; card/compact/larger; known/loading/error/partial/ambiguous; exact topology and <=1px height plus visible-center drift; atomic target/unit; no overflow, table, row, separator or composable percentage background; loading animation, static error, reduced motion and forced colors. Port 4184 and its owned browser/server were released.
+
+The sorted current/deleted 32-path application manifest, with `DELETED` as the
+explicit tombstone for PercentageSurface, is
+`af2099289ef1beefe59b6e10664a6933e89e2902fdacf68f50d65fc8f620ee2f`.
+Representative fresh screenshots:
+
+- `test-results/composable-lab-v2/composition-known-390px.png` — `6482e9858afefef456a1c3a30b36b6a441bf5754a55f7c457b81ebb215fdda5b`
+- `test-results/composable-lab-v2/composition-known-390px-200-percent.png` — `c8e27b2228bcad02295c194bba1191d03ae3a8c972a35278cd0412093fb316f4`
+- `test-results/composable-lab-v2/composition-known-320px.png` — `a352f1968170fee25dc21c3fb93bdb7403e0c66364c9f719e8d5b091b0fa2fef`
+- `test-results/composable-lab-v2/composition-known-720px.png` — `5766e1eeb9c28c9e21ab9e70a09d3272ccc594e2537a5074e142913189c39dc3`
+
+### Final attributed review
+
+Screenshot-first UI/UX review **APPROVES** exact application manifest
+`af2099289ef1beefe59b6e10664a6933e89e2902fdacf68f50d65fc8f620ee2f`,
+Kit `aaa9b6a3…`, Lab HTML `e85e3d1f…` and MCP resource `c8de7c1a…` for the
+isolated experiment. The supplied old Tailnet screenshot at SHA-256
+`cc6974e328b51ba8abe413ab18706b65e291c9ae83fa993b62c93faf380e41aa`
+showed the temperature fill excluding the icon, exposing structural reserve,
+visually biasing the content upward and creating progress ambiguity. The final
+author/design 390px capture at `6482e985…` removes that fill and shows all four
+reading groups with consistent visual centers, columns, spacing and hierarchy.
+Direct 320/390/720px and 390px/200% inspection found no clipping, overlap or
+horizontal overflow, kept `220° C` atomic, wrapped longer values sensibly and
+preserved the larger two-column Grid. Loading uses animated neutral skeletons;
+error uses static neutral skeletons at the same geometry with no stale
+telemetry. No Table, Row, separator or composable percentage surface appears.
+
+Independent exact-candidate review also **APPROVES** `af209928…`. It verified
+that `PresentationNode` has no concrete name or `node.type` dispatch; constructor,
+props and children come from registry entries; recursion is root/layout versus
+leaf by registered role; `getProps`/`getChildren` are typed; the sole uniform
+cast is private after agreement; and no all-optional union remains. Fresh
+results were 107/107 UI/shared tests, 20/20 server/MCP/preview tests with 405
+assertions, passing TypeScript and zero-diagnostic Svelte/component contracts,
+deterministic 145,152-byte MCP `c8de7c1a…`, 113-file Kit `aaa9b6a3…`, 49,994-byte
+HTML `e85e3d1f…`, and 6/6 Chrome. Its custom retired-fill plus component-path
+input rejected before acquisition with `readerCalls=0`; the exact eight-entry
+adapter walk and `0.0.3-provisional` version also passed.
+
+Independent review freshly ran the same exact UI, server, compiler and browser
+commands recorded above, plus:
+
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab && bun --no-env-file --config=/dev/null run verify:mcp-composable-lab && wc -c public/mcp-composable-lab-v2.html && /usr/bin/shasum -a 256 public/mcp-composable-lab-v2.html`
+- `bun --no-env-file --config=/dev/null -e "import { canonicalComposablePreviewManifest } from './scripts/serve-composable-preview.ts'; console.log('before', canonicalComposablePreviewManifest())"`
+- The final Kit rebuild command recorded above was run with its output captured in an ephemeral reviewer-owned log; no temporary pathname is durable evidence.
+- `bun --no-env-file --config=/dev/null -e "import { canonicalComposablePreviewManifest } from './scripts/serve-composable-preview.ts'; console.log('after', canonicalComposablePreviewManifest())"`
+- `find build-kit-composable-v2 -type f | wc -l`, `wc -c build-kit-composable-v2/prerendered/dashboard/lab/composition.html`, and `/usr/bin/shasum -a 256 build-kit-composable-v2/prerendered/dashboard/lab/composition.html`
+
+Its exact custom adversary/adapter command from the app directory was:
+
+```sh
+bun --no-env-file --config=/dev/null -e '
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
+import { createComposableLabMcpServer } from "./src/lib/server/composable-lab-mcp.ts";
+import { t1EntityCardSpec } from "./src/lib/composable/specs.ts";
+import { createPlaceholderPresentation } from "./src/lib/client/composable/presentation.ts";
+import { resolveRegisteredNode, componentRegistry } from "./src/components/composable/component-registry.ts";
+let calls=0; const count=async()=>{calls+=1; return {};}; const server=createComposableLabMcpServer({status:count,materials:count,environment:count}); const client=new Client({name:"final-independent",version:"1"}); const [ct,st]=InMemoryTransport.createLinkedPair();
+try { await Promise.all([server.connect(st),client.connect(ct)]); const spec=structuredClone(t1EntityCardSpec); spec.root.children[1].children=[{type:"PercentageFill",child:{type:"HeadTemperature"},componentPath:"https://example.invalid/evil.js"}]; const result=await client.callTool({name:"compose_u1_entity_card_v2",arguments:{spec}}); if(!result.isError||calls!==0) throw new Error(`boundary ${result.isError}/${calls}`); const seen=[]; const walk=(node)=>{ const resolved=resolveRegisteredNode(node,{subjectLabel:"Tool head T1",busy:true}); seen.push({type:node.type,role:resolved.role,props:Object.keys(resolved.props).sort(),children:resolved.children?.length??null}); for(const child of resolved.children??[]) walk(child); }; walk(createPlaceholderPresentation(t1EntityCardSpec,"loading").root); if(Object.keys(componentRegistry).length!==8||seen.length!==7) throw new Error("registry/tree count mismatch"); console.log(JSON.stringify({version:client.getServerVersion(),rejected:result.isError,readerCalls:calls,entries:Object.keys(componentRegistry),resolved:seen})); } finally { await client.close(); await server.close(); }
+'
+```
+
+The independent 390px run produced `452a10c5…`, while the author/design run is
+`6482e985…`; both are separately attributed nondeterministic browser-run
+evidence, not deterministic artifact identity. Design did not edit/build/restart
+or rerun tests; independent review did not edit or mutate external state. Port
+4184 was released. The existing 4200/8451 job still has earlier committed bytes
+preloaded and was not touched. No final-candidate Tailnet/iPhone/Safari, mounted
+ChatGPT, screen-reader, physical-printer or user-outcome evidence exists. No
+Tailscale/auth/production registration change occurred. The descriptor lifecycle
+plan (owned EOF/SIGTERM/reap, 180/220 monitoring, 4096 emergency headroom and
+lazy optional MCP start) remains unimplemented and unauthorized.
+
+### Accepted-candidate private runtime and independent approval
+
+The only runtime mutation was restarting the already configured dedicated job:
+
+- `launchctl kickstart -k "gui/$(id -u)/com.openai.u1-composable-v2-preview"`
+
+No Serve/Funnel configuration, production service, authentication, printer,
+Camera, MCP registration, source or artifact changed. Independent runtime review
+**APPROVES** the resulting private preview at exact source `2ffc29b729f1f3dba721eacee714f6937af9e890`,
+tree `dbdae72e5cdc9a2b63f203a8816a6721e602837e`. PID 90967 runs the exact
+committed-worktree Bun `--no-env-file --config=/dev/null` dedicated immutable-
+server command with one `127.0.0.1:4200` listener. After probe keepalive drained,
+it had zero child processes, other TCP connections or sensitive printer/Camera/
+auth/config file descriptors. Production PIDs 834 and 841 remained running.
+
+Local and existing Tailnet 8451 each returned HTTP 200 with exact 49,994-byte
+HTML SHA-256 `e85e3d1fc0673a0b86454f1616d043ed6d26708cd35403c070923493edafa28d`.
+All 21 closed hashed assets were byte-identical to the committed Kit build at
+both origins. Runtime negative checks passed 170 ordinary route/method cases,
+12 encoded/traversal/asset cases and eight CONNECT/TRACE/BREW/Upgrade cases.
+Serve/Funnel semantics remained unchanged. The exact same status JSON is SHA-256
+`d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`
+when hashed with its terminal LF and
+`a255c74d07083b5d2bdc98f78e67095affa0df83ce326895001b4fffe0f98a6f`
+when hashed without that LF; this is byte-framing nuance, not configuration
+drift.
+
+Fresh Tailnet Chrome passed 24 cases at 390px: three composition shapes by four
+states at both 100% and 200% root text. State-height drift, horizontal overflow
+and label drift were 0; maximum visible-center drift was 0.0078125px; computed
+metric value text scaled from 20px to 40px. Temperature target/unit remained atomic,
+ambiguous fan relation remained truthful `Unknown`, loading stayed neutral and
+animated, error neutral and static, and no Table, Row or percentage background
+appeared. Scenario changes caused zero network requests and zero page errors.
+A reviewer-owned ephemeral 102,274-byte screenshot at SHA-256
+`1639ae595ae5e8cb5600e5a5cdc9cdeb49960d2640a99a53f39e2981f2d849d0`
+was visually centered and unclipped; no ephemeral pathname is durable evidence.
+
+Two preliminary browser-harness failures are retained as false expectations,
+not product failures: compact intentionally contains status plus filament only,
+so it has neither a fan reading nor four skeletons. Correcting the harness to the
+registered compact topology produced the passing matrix above.
+
+Limits: this is same-host private Tailnet synthetic evidence. It does not cover
+iPhone/Safari, a mounted ChatGPT host, screen reader, public Internet, physical
+printer/Moonraker or user outcome. The process-lifecycle safeguard plan remains
+unimplemented and unauthorized.
+
+## 2026-09-04 content-owned percentage surface author candidate
+
+### Acceptance and safety boundary
+
+This UI-003/F0 follow-up addresses the screenshot finding that the decorative
+temperature fill covered the full reading, including the icon column and outer
+geometry reserve. The AST is unchanged: only `PercentageFill` wrapping
+`HeadTemperature` can request the decoration. No style, color, inset, radius,
+percentage, expression, HTML, CSS or JavaScript input was added to the wire
+schema. The percentage remains a private-Lab-only decoration derived from
+validated T1 actual/target provenance; it does not mean progress, heater
+authority, safety margin or target attainment.
+
+`common/PercentageSurface.svelte` now composes the existing common percentage
+primitive with fixed `var(--u1-space-3)` 12px inline and
+`var(--u1-space-2)` 8px block inset plus `var(--u1-radius-inner)`. `Reading`
+retains the closed icon plus `minmax(0, 1fr)` content anatomy and accepts only a
+closed `reading | child` inset owner. All ordinary reading content keeps the
+same inset; only `HeadTemperature` selects child ownership when the renderer
+encounters the existing typed wrapper. The icon and outer 8px reading reserve
+remain outside the painted box. Missing/loading/unavailable or nonpositive-
+target evidence stays neutral; valid temperature evidence remains painted when
+an unrelated source is partial or ambiguous. No Table, Row or separator was
+introduced.
+
+### Descriptor interruption and ownership preflight
+
+Before editing, six consecutive process-creation attempts were blocked by
+`Too many open files (os error 24)`. No file or runtime was changed during that
+interruption. User-provided host evidence reported old MCP helpers persisting
+for 12–18 hours, descriptor cleanup from 185 to 115, and active tasks then
+respawning/stabilizing near 153 of the 256 soft limit. An age-only process killer
+could therefore kill active work and create respawn loops. After process
+creation recovered, a read-only preflight confirmed soft limit 256, task fixture
+port 4184 free, and the existing approved v2 preview as the only relevant
+worktree server. No process was killed, no limit/system setting was changed and
+the live 4200/8451 preview was not touched.
+
+Potential future host safeguards are recorded separately from this UI change:
+
+- task archive/close should EOF stdin, SIGTERM the owned process group, wait and
+  reap, then escalate only that owned group if still necessary;
+- task-owned servers should exit on EOF and SIGTERM;
+- ownership-aware descriptor monitoring could warn near 180 and intervene near
+  220 rather than using process age;
+- a 4096 soft limit could provide emergency headroom only, not replace cleanup;
+- MCP helpers could optionally start lazily.
+
+None of these host safeguards is implemented or authorized in this repository.
+
+### Author commands and results
+
+From `plugins/u1-print-studio/app`, commands actually run:
+
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable/presentation.test.ts src/lib/client/common/PercentageBackground.test.ts`
+  passed 2 files and 24 tests.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable src/lib/client/common/PercentageBackground.test.ts`
+  passed 3 files and 27 tests. It verifies that the percentage element is a
+  descendant of the temperature reading's content child and never its icon.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts`
+  passed 20 tests with 408 assertions, preserving strict schema/provenance,
+  neutral invalid ratios, isolated MCP inventory and immutable preview guards.
+- `bun --no-env-file --config=/dev/null run check` passed.
+- `bun --no-env-file --config=/dev/null run ui:check` initially failed only
+  because the strict component contract rejected render tags in a domain
+  composite and an unclassified new wrapper. The domain snippet was removed and
+  the zero-native-tag common surface was explicitly assigned to the common leaf
+  frontier. The final run passed with zero Svelte errors/warnings and passing
+  component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` and
+  `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passed.
+  The deterministic v2 resource is 146,166 bytes at SHA-256
+  `f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+- A temporary Vite-only author harness on loopback 4184 first passed all three
+  geometry/accessibility cases but failed three route cases because the dynamic
+  public dashboard route returns 500 without an application runtime rather than
+  the immutable preview server's 404. The harness-only negative expectation was
+  scoped to non-200, then
+  `COMPOSABLE_DEV_SERVER=1 bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed all 6 Chrome cases at 320/390/720. A renewed run after adding 200%-text
+  anatomy assertions also passed 6/6. Port 4184 was free before and after every
+  run; Playwright released its owned server/browser. The temporary Vite command
+  and relaxed route/CSP branches were removed, leaving the immutable-server
+  Playwright configuration and exact 404/CSP assertions unchanged.
+
+### Exact candidate build refusal and renewed pin validation
+
+Independent review built the actual candidate and returned
+**REQUEST_CHANGES** because the dedicated immutable server still pinned the
+previous v2 artifact and hydration node. Its first isolated build overwrote
+only the ignored `build-kit-composable-v2` directory. The reviewer disclosed
+that boundary explicitly: the already-running 4200/8451 process had preloaded
+the older bytes, so neither its process nor its served response changed. The
+reviewer did not restart, repoint or otherwise mutate that runtime.
+
+The author first ran
+`bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`
+against the actual build and reproduced the refusal: one test passed, three
+failed, and server construction raised exactly
+`Composable preview artifact identity mismatch`. This is retained as failure
+evidence. The server pin now names the actual 115-file manifest
+`4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`;
+the closed hydration addition is
+`/_app/immutable/nodes/1.BHy6paUx.js`. The focused test now also requires that
+exact node and rejects the superseded `1.BieyvGzI.js` node.
+
+Renewed author commands and results on those pins:
+
+- `bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`
+  passed 4 tests with 318 assertions.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts`
+  passed 20 tests with 410 assertions.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable src/lib/client/common/PercentageBackground.test.ts`
+  passed 3 files and 27 tests.
+- `bun --no-env-file --config=/dev/null run check` passed.
+- `bun --no-env-file --config=/dev/null run ui:check` passed with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passed
+  and reproduced the 146,166-byte resource.
+- With port 4184 confirmed free before the run,
+  `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed 6/6 exact Chrome cases through the dedicated immutable server. The
+  checked-in CSP and exact 404 conditions were used; there was no temporary
+  relaxed branch. Playwright released its owned server/browser and port 4184
+  was free afterward.
+
+The actual Lab HTML is 51,180 bytes at SHA-256
+`5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`.
+The 115-file canonical build manifest is the exact `4b4209f9…` value above.
+The v2 MCP resource remains 146,166 bytes at SHA-256
+`f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+
+### Exact review dispositions
+
+Screenshot-first design review **APPROVES** exact HEAD `dca554a…` plus the
+uncommitted diff, application manifest `5d6c4ea…`, build manifest `4b4209f9…`,
+51,180-byte HTML `5c3f2731…` and 146,166-byte MCP resource `f865908e…`. The
+reviewer used a fresh exact immutable server on isolated port 4187 and closed
+the server/browser afterward. Across 320/390/720, 100%/200% text,
+card/compact/larger and known/loading/error/partial/ambiguous, it measured 90
+states, including 60 temperature surfaces. Surface/content X and width differed
+by 0px; minimum icon gap was 12px; top/bottom reserve was 8px; inline/block
+inset was 12px/8px; radius was 16px; label and state-height drift were 0px; and
+right overrun, overflow, Table/Row and atomic-unit failures were zero. Known,
+partial and ambiguous kept valid tint; loading/error were neutral; loading
+animated, error stayed static, reduced motion removed animation, and forced
+colors removed the gradient while preserving the Card border.
+
+Representative design screenshot SHA-256 values are:
+
+- 320px known: `98f80d321b4eca719900f6fbda5413a939bb78169fdc4f5fdf0758eee061468c`
+- 720px/200% larger known: `14db7e66f26a668ceccaa05d672dad57df69724a1351518f167b2787b6bc6409`
+- loading: `e493ae3448ace27a62f0969eea4eecc6572ca1e2080ce0b29cafa8e749060882`
+- error: `99ef0d3bd0607579f675751439be2511c24209f8b1357d7d092c1f0a814f5b93`
+- partial: `08942b490679e18a99aecd96bb7791378a3e77e64b06ee33065b01d31038840f`
+- ambiguous: `646f5af3eb1e9d07c64921bcbe9b0cc72a7f3e224441d459e29a78bd3d878828`
+
+Renewed independent verification also **APPROVES** exact application manifest
+`5d6c4ea…`. It freshly passed 20/20 server/MCP tests with 410 assertions;
+42/42 combined composable, shared PercentageBackground, Thermals and Fans
+tests; TypeScript; Svelte with zero diagnostics and component contracts;
+deterministic 146,166-byte MCP reconstruction at `f865908e…`; and 6/6 exact
+immutable-server Chrome cases at 320/390/720 including 200% text, every state
+and shape, forced colors, reduced motion, topology and anatomy. Port 4184 was
+released. A same-path rebuild reproduced byte-identical 115-file build
+`4b4209f9…` with comparison exit 0 and 51,180-byte HTML `5c3f2731…`; the focused
+preview suite then passed 4/4 with 318 assertions. The new hydration node was
+served and the old node rejected. Fresh inspection of 390 known, 390 at 200%
+and larger error at 720/200% confirmed content-only paint, icon exclusion and
+neutral error. Production registration remained negative, the existing live
+listener was preserved and no reviewer-owned child remained.
+
+Both approvals are synthetic private-Lab evidence. Design did not cover
+iPhone/Safari, screen reader, a mounted ChatGPT host, real printer, Camera,
+auth, candidate Tailnet or user outcome. Independent review did not cover a
+candidate Tailnet runtime, phone/device, screen reader, live printer or
+Moonraker, Camera, auth, production, deployment or user outcome.
+
+The browser matrix proves at 100% and 200% text that the painted rectangle
+equals only the temperature content width, begins at least 8px after the icon,
+ends within its reading/grid cell, keeps 8px unpainted outer block reserve and
+places its edge 12px left of the label. All reading label offsets remain within
+1px. Known/loading/error/partial/ambiguous card, compact and larger shapes keep
+at most 1px state-height drift; the final measurements were 0px. Loading and
+error fill are neutral, error skeletons static, loading animation stops under
+reduced motion, partial/ambiguous keep valid temperature tint, forced colors
+remove the image, `220°\u00a0C` remains atomic, and no overflow or cross-cell
+paint was observed.
+
+Fresh synthetic screenshots are under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`:
+
+- `composition-known-320px.png` — `7dbfc086…`; 200% — `546bff8e…`
+- `composition-known-390px.png` — `02f01dac…`; 200% — `69f282bf…`
+- `composition-known-720px.png` — `534f70be…`; 200% — `91a7f673…`
+- larger 720px/200% known/loading/error/partial/ambiguous — respectively
+  `8d370a10…`, `69ec0799…`, `39a9b8f4…`, `dfff9e10…`, `576d39fa…`
+
+The renewed 37-path changed/new application-set manifest is
+`5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
+The screenshot-first design and renewed independent dispositions above accept
+this exact application/build/HTML/MCP identity for the private-Lab experiment.
+The reviewed application bytes were committed as
+`0f5a0d4c4e6a2ac6417b78365d0ac96c8cff60ca`, tree
+`fc6fdd48864e90a5d3ee9e808cf84f6a9a13236d`. Review remains historically bound
+to parent `dca554a18b18f1e34b3b03020bad7de695909f72` plus its uncommitted
+application diff. This subsequent documentation correction changes no
+application, test, dependency, configuration, build input or generated resource
+byte and does not extend the approvals' scope.
+
+### Authorized reviewed-byte runtime switch and independent approval
+
+Immediately before the runtime switch, the author verified clean source
+`c19e8adcae6e29a6179cb56d99f83ceb7d234374`, tree
+`4baf879caa2858d29e6e3c4276a718a572d37526`, application manifest
+`5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`,
+115-file build `4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`,
+51,180-byte HTML `5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`
+and 146,166-byte MCP resource
+`f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+The only mutation was restarting the existing job:
+
+- `launchctl kickstart -k "gui/$(id -u)/com.openai.u1-composable-v2-preview"`
+
+No Tailscale configuration, listener or plist changed. Local and Tailnet
+`GET /dashboard/lab/composition` then returned HTTP 200 and exact 51,180-byte
+`5c3f2731…` HTML. All 23 allowlisted immutable assets matched the build
+byte-for-byte at both origins. The author's 218-case ordinary local+Tailnet
+route/method/query/encoding/traversal matrix returned 404 throughout, including
+MCP, other dashboards, tools, fixture state, Camera, auth/OAuth, health, media,
+old hydration and queried-current-hydration routes.
+
+The dedicated process retained the pinned Bun 1.4.0 flags and exact server
+script, one loopback 4200 listener, zero child processes, zero other TCP
+connections after probes and zero sensitive printer/Camera/auth/config file
+descriptors. Production jobs remained running on their existing 8787/8788/8789
+listeners. The v1 label and 4199/8450 remained absent. Raw Serve and Funnel
+status remained exact SHA-256
+`d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`;
+8451 Funnel remained disabled.
+
+Fresh Tailnet Chrome at 390/720 and 100%/200% text covered all three shapes and
+five states. Surface/content X and width delta was 0px, icon gap 12px,
+top/bottom reserve 8px, label inset 12px, right overrun 0px and state-height
+drift 0px; scenario controls caused zero network requests. Atomic temperature
+unit, static neutral error and visual inspection passed. Screenshots are local
+test evidence under `plugins/u1-print-studio/app/test-results/composable-live-v2/`:
+
+- `tailnet-known-390px.png` — `21d53926dab6c2e09751aa3f6d49f3038c0d6c62e19d16c249d195ef8e3dec87`
+- `tailnet-known-390px-200-percent.png` — `69f282bf203149f2b9bd2c8493103f87d453ea83e2b2ce47ecebcaefbde0efe6`
+- `tailnet-error-390px-200-percent.png` — `3994183798cf82a15f19b141e2b20895e93dd5067c5c42cf32c8a175d2afa1df`
+- `tailnet-known-720px.png` — `29257e87f61fde99f7562b119df59cde16748ff704de706485646ac8dac82171`
+- `tailnet-known-720px-200-percent.png` — `8d370a10bf84f506533d2d16bfdcb9d20ff010061e6e1758175ab1c8e3af3be2`
+- `tailnet-error-720px-200-percent.png` — `39a9b8f44711da8a0dc23f6448f7babb16b0d68516692972a857c28519e3e40d`
+
+Independent runtime verification **APPROVES** this exact running identity. Its
+fresh 120-case local+Tailnet matrix, closed-asset checks, process/authority
+inspection and browser review found no authority or content escape. Its
+standard raw Upgrade probe, which wrote the complete request and waited,
+returned empty 404 locally and over Tailnet. Preserve the distinct author probe:
+an immediate `socket.end(request)` send-and-half-close returned empty local
+404/64 bytes and Tailnet proxy 502/84 bytes. Neither response included Lab or
+asset markers. The independent reviewer classified that narrower result as a
+fail-closed proxy transport artifact, not dedicated-server behavior or a safety
+blocker.
+
+The runtime approvals cover only this synthetic private Tailnet Lab. There is
+no iPhone/Safari, phone/device, mounted ChatGPT host, screen-reader, public-
+Internet, live printer/Moonraker/Klipper, Camera, auth-flow, production,
+deployment or user-outcome acceptance. All task-owned browsers/probes closed;
+the approved preview remains running. This records-only integration changes no
+application, test, dependency, configuration, build input or generated byte.
+
+## 2026-09-04 authority-free v2 preview repair candidate
+
+### Withdrawn preview and safety response
+
+The first authorized v2 preview used the generic `serve-kit-fixture.ts` host.
+Independent runtime review returned **REQUEST_CHANGES** because that server
+exposed dashboard routes and `dashboard-tools.ts` defaulted an omitted
+`readCameraFrame` dependency to the real camera adapter. The reviewer did not
+invoke the camera. The endpoint-scoped cleanup immediately disabled only HTTPS
+8451 and removed only `com.openai.u1-composable-v2-preview`. Loopback 4200 was
+released; the then-current raw Serve/Funnel state returned to its exact pre-v2 SHA-256
+`d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`;
+the v1 4199/8450 Lab body remained SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`;
+and production jobs remained uninterrupted. No repaired runtime or Tailscale
+mapping had been launched at that point. The withdrawn preview is failure
+evidence, not acceptance evidence.
+
+### Subsequent v1 safety cleanup
+
+Independent review then found the pre-existing v1 preview likely shared the
+same generic-fixture real-camera fallback. The reviewer did not invoke it. The
+author executed only:
+
+- `Tailscale serve --yes --https=8450 off`
+- `launchctl remove com.openai.u1-composable-preview`
+
+Read-only verification found 4199/4200 free; both preview labels absent; and
+8450/8451 absent from TCP, Web and Funnel. Raw `Tailscale serve status --json`
+and `Tailscale funnel status --json` each returned the exact pre-v1 SHA-256
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`.
+Production jobs remained loaded/running with successful last-exit status, and
+TCP/Funnel 443/10000 remained present. No route or tool was invoked. The v1
+source/tree, application manifest, MCP resource and historical body hash below
+remain artifact evidence only; they do not authorize relaunching the generic
+server.
+
+### Dedicated server contract and author evidence
+
+`scripts/serve-composable-preview.ts` imports only Node crypto, filesystem,
+HTTP and URL modules. Before listening it verifies the fixed
+`build-kit-composable-v2` artifact against canonical manifest
+`70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0b35b34e`,
+then preloads a closed path-to-bytes map. Only exact `GET`/`HEAD` requests for
+`/dashboard/lab/composition`, its HTML-referenced hashed assets and the exact
+SvelteKit hydration node required by that page can succeed. There is no request
+path to filesystem join and no fallback build. Root, fixture state, tools,
+camera, every other dashboard, widget, health, MCP, OAuth, auth, media,
+query/trailing/encoded/dot/backslash variants and ordinary parsed unlisted
+methods return 404. CONNECT and Upgrade are explicitly denied with no body;
+parser-invalid requests deterministically return 400/close rather than being
+misrepresented as application routes.
+Static guards reject production entrypoint, dashboard-tools/status-dashboard,
+MCP, PrinterObservationStore, u1-status, camera, auth, local-config and
+child-process imports. An outbound canary receives zero requests even when the
+forbidden body names `get_u1_camera_frame`.
+
+The first architecture exact gate returned **REQUEST_CHANGES** on 35-path
+manifest `15c19d91724acdd0129b0e83e2d1b86875f37c1831da01985ed71248ec71e176`
+because the initial repair collected and validated the manifest, then reread artifact files
+and the page in separate passes. That time-of-check/time-of-use gap meant served
+bytes were not necessarily the validated bytes. The renewed implementation
+collects one safe-relative-path-to-Buffer snapshot, computes the durable
+manifest from that exact snapshot, validates it, and derives cloned page/asset
+responses only from the same snapshot. It makes no filesystem read after
+validation or while serving. A mutation adversary changes the caller-held
+snapshot after server construction: the server retains the validated bytes,
+while reconstructing from the changed snapshot fails the manifest gate.
+
+Independent raw-protocol probing of the earlier candidate also established
+that TRACE origin-form parsed to the application 404, while invalid `BREW`,
+CONNECT and some non-origin-form traffic were handled at Node's parser/protocol
+boundary. The renewed server explicitly handles CONNECT, Upgrade and
+`clientError`. Raw TRACE, OPTIONS `*`, CONNECT, Upgrade and invalid-method tests
+prove no 2xx response, preview body, asset body or outbound acquisition without
+claiming that parser-invalid traffic is an application 404.
+
+From `plugins/u1-print-studio/app`, commands actually run:
+
+- `bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`
+  first failed two manifest assertions because JavaScript `localeCompare` did
+  not reproduce the durable `LC_ALL=C` pathname order. A code-unit comparator
+  fixed the implementation. A second run had one test-harness failure because
+  `fetch` normalized a dot-segment URL before transmission; the adversary now
+  uses a raw HTTP request and proves the received target returns 404. The final
+  focused run passes 4 tests with 316 assertions after the snapshot and raw-
+  protocol adversaries were added.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts`
+  passes 20 tests with 408 assertions.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable`
+  passes 2 files and 10 tests.
+- `bun --no-env-file --config=/dev/null run check` passes.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passes
+  and reconstructs the exact 145,363-byte v2 resource.
+- With `$BUN` bound to the pinned Bun 1.4.0 executable,
+  `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 "$BUN" --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build`
+  passes; the canonical 115-file build manifest is unchanged at `70f99dc8…`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  first passed geometry but failed two hydration cases because the closed map
+  lacked the dynamically requested node `/_app/immutable/nodes/1.BieyvGzI.js`.
+  Adding that exact manifest-bound asset did not open a route family. The fresh
+  final run passes all 4 Chrome cases at 320/720, including 100%/200% text,
+  known/loading/error/partial/ambiguous geometry, forced colors and reduced
+  motion. The server and browser children and port 4184 were released.
+
+The repaired 35-path application-set manifest is
+`c8c24103972ee7c0304b7b80c79206bc2eb65a14cde239224716480673a31148`.
+The Lab HTML remains 51,156 bytes at SHA-256
+`e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c`;
+the v2 MCP resource remains 145,363 bytes at SHA-256
+`170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`.
+Renewed synthetic screenshots are under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`; representative
+SHA-256 values are `edfb0d9a…` for known 320px, `e7614206…` for known 720px,
+`bb737e5f…` for known 320px/200%, and `524cd03f…` for known 720px/200%.
+
+Architecture and independent exact-source validation approve application
+manifest `c8c241…` as committed in
+`ed504c7a9bbded66831ac35fb5cf2531a929d2cb`, tree
+`e33d56896994bd9571a6c0b2a73e3afbb9b8ea5e`.
+
+### Authorized authority-free preview runtime and exact approvals
+
+Immediately before mutation, read-only guards confirmed clean source head
+`c44f4c368848a17549dd94ae2a3383fa25420c6e`, application manifest
+`c8c24103972ee7c0304b7b80c79206bc2eb65a14cde239224716480673a31148`,
+canonical v2 build manifest
+`70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0b35b34e`,
+51,156-byte Lab HTML SHA-256
+`e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c`,
+free loopback 4200, absent 8451 and exact raw Serve/Funnel baseline
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`.
+
+The author launched only the dedicated immutable server with pinned Bun 1.4.0,
+`--no-env-file --config=/dev/null`, exact v2 artifact directory and label
+`com.openai.u1-composable-v2-preview` on `127.0.0.1:4200`; the generic fixture
+was not used. The only Tailscale mutation was:
+
+- `Tailscale serve --yes --bg --https=8451 http://127.0.0.1:4200`
+
+Local and Tailnet `GET /dashboard/lab/composition` returned HTTP 200 and exact
+`e4be14ad…` HTML. All 23 required immutable hashed assets returned HTTP 200 and
+were byte-identical between origins. For each origin, 68 ordinary forbidden
+route/method cases returned 404, covering root, health, widget, MCP, OAuth,
+auth/enroll, media, other dashboards, tools/call, Camera, fixture state, query,
+trailing slash and GET/HEAD/POST/OPTIONS variants. Four encoded, dot, backslash
+or traversal targets per origin failed closed with 400/404. Bounded HTTP/1.1
+CONNECT and Upgrade probes at loopback and Tailnet returned 404 with neither
+page nor asset bytes. Parser-invalid requests remain permitted to 400/close at
+the Node protocol boundary; this is not claimed as an application 404.
+
+Process inspection matched the exact pinned Bun flags and dedicated server
+script, with zero child processes, one loopback-4200 listening socket, zero
+established or other TCP connections, and zero sensitive file descriptors for
+printer, Camera, OAuth, auth or local configuration. This runtime evidence is
+consistent with the source outbound canary's zero requests and establishes no
+printer authority.
+
+Fresh headless Chrome checks through the actual Tailnet endpoint covered 320
+and 720 widths at 200% root text for card/compact/larger across known, loading,
+error, partial and ambiguous states. Each shape had 0px renderer-height drift,
+no horizontal overflow or page error, and scenario changes caused zero network
+requests. Representative 320/720 screenshot SHA-256 values are
+`0eba1364d8356f5c0109eb498a87a99ea49875cf68ffd5c8a7cd291991cfce9a`
+and `2f693139a02398861fe4593ca92ae08446e3e6764e3c80768650056125ad2e47`;
+captures remained temporary and no private address or path is committed.
+
+Raw Serve and Funnel status after launch each have SHA-256
+`d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`.
+The only structural addition is the HTTPS 8451 TCP/Web root proxy; pruning
+exactly those entries reproduces baseline `fab7b9df…`. Funnel remains enabled
+only on existing 443/10000, never 8451. Both production jobs remain loaded and
+running with successful last-exit state and were not restarted. The v1 label,
+4199 and 8450 remain absent.
+
+Author runtime verification, screenshot-first design review and independent
+runtime verification each **APPROVE** this exact
+`c44f4c3…`/`c8c241…`/`70f99dc8…`/`e4be14ad…` running-preview identity. The
+approvals cover the synthetic private Tailnet Lab only and do not approve this
+later records-only commit. Evidence is from the same enrolled host; there is no
+public-Internet, phone/device, screen-reader, live Moonraker/Klipper, real-
+printer, Camera invocation, auth-flow, production-adoption or user-outcome
+acceptance.
+
+The preview was intentionally left running. Reversible endpoint-only cleanup,
+not executed during this records tail, is:
+
+- `Tailscale serve --yes --https=8451 off`
+- `launchctl remove com.openai.u1-composable-v2-preview`
+
+## 2026-09-03 presentation AST v2 author candidate
+
+### Acceptance target and safety boundary
+
+This UI-003/F0 follow-up tests a smaller layout vocabulary: fixed T1 composes
+only through root `Card`, `Title`, and one `Stack` or `Grid`, with the existing
+four typed domain leaves. `Table`, `Row`, `DataTable`, schema version 1 and
+unknown fields must reject. Card density, title size, gaps and grid columns are
+closed tokens. Only `PercentageFill { child: HeadTemperature }` may request a
+percentage decoration; its renderer uses the validated T1 actual/target
+provenance and existing common `PercentageBackground`, remaining neutral when
+the ratio is invalid. The JSON accepts no arbitrary HTML, CSS, color, numeric
+percentage, expressions or remote content.
+
+Acceptance remains Lab-only software/protocol learning. It requires exact
+input-shaped loading/error topology, static error skeletons, reduced-motion
+loading, an outer Card border without reading/layout separators, truthful fan
+semantics, deduplicated readers, correlated provenance/timestamps, a private
+route and isolated v2 MCP factory/resource absent from production registration.
+No DataTable, Queue, History or Camera implementation; no printer, auth,
+runtime/Tailscale, production-service, PR, merge or deployment action is in
+scope. The then-running v1 preview was initially untouched and was later removed
+by the endpoint-scoped safety cleanup above.
+
+### Author implementation and focused evidence
+
+The candidate uses schema version 2 and the new isolated resource URI
+`ui://u1-print-studio/experiments/composable-lab-v2.html` with tool
+`compose_u1_entity_card_v2`. Source planning still deduplicates status,
+materials and environment groups, including the temperature wrapper. Envelope
+validation correlates canonical spec/hash, exact plan/source ledger, layout
+tokens/topology, transform evidence and every leaf's source receipt. Fan zero
+is `Unknown`/`notReported`, multiple is `Unknown`/`ambiguous`, and malformed or
+failed environment input is unavailable/`sourceUnavailable`; unrelated sources
+remain rendered. Known fill derives only from bounded temperature actual/target
+evidence; unknown, unavailable or invalid target produces neutral fill zero.
+
+From `plugins/u1-print-studio/app`, author checks actually run:
+
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable`
+  passed 2 files and 10 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts`
+  passed 16 tests with 92 assertions.
+- `bun --no-env-file --config=/dev/null run check` passed.
+- `bun --no-env-file --config=/dev/null run ui:check` passed with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` and
+  `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passed;
+  the generated v2 resource is 145,363 bytes at SHA-256
+  `170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`.
+  The existing v1 resource remains SHA-256
+  `6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build`
+  passed using a separate adapter output. The running preview's `build-kit`
+  manifest remained
+  `c14879a359062ff0d1ad73a4f697c14facf8ae425a24b0294013252b750d346c`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed 4 Chrome cases. Port 4184 was released afterward. At 320 and 720px,
+  card/compact/larger known/loading/error/partial/ambiguous renderers retained
+  identical node topology and at most 1px height drift at both 100% and 200%
+  root text. Card borders remained visible;
+  Title, Stack/Grid and readings had no separators or orphan row/cell roles.
+  Only loading animated, reduced-motion disabled it, error remained static,
+  forced colors removed the decorative fill, visible skeletons retained positive
+  bounds, and 200% root text did not cause stage horizontal overflow. The 720px
+  larger temperature keeps target and `C` in one rendered fragment, and the
+  responsive Lab h1 remains visibly larger than the Card h2. The private route
+  returned 200 under the built Kit CSP, its public counterpart returned 404,
+  and no nonlocal request occurred.
+
+The first browser attempt used a raw Vite development server and failed 2 of 4
+cases because that harness does not supply the SvelteKit transport CSP; no
+product assertion failed. A first separate-build harness then failed to start
+because `U1_KIT_FIXTURE_DIR` collided with SvelteKit's adapter env prefix. The
+author renamed the test-only selector to `COMPOSABLE_KIT_FIXTURE_DIR`, rebuilt
+separately and obtained the passing run above. One identity command also briefly
+overwrote zsh's special lowercase `path` array and could not locate `shasum`; it
+produced no artifact or state change. The corrected command uses
+`/usr/bin/shasum` and a non-reserved variable.
+
+The first screenshot-first design gate on manifest
+`23a736d717dc2487c59a2516ff20f92a0ec6d240305b35fd7e14ad1b59e7d5a4`
+returned request changes. Its fresh measurements found 200%-text state drift of
+205px at 320 card/larger, 109px at 720 card, 102px at 720 larger and 28px at 720
+compact; the larger temperature could orphan its `C`, and fixed 40px Lab h1 was
+smaller than the rem-scaled 44px Card h2. During repair, the first reserve-DOM
+attempt made hidden text visible to strict text queries. A later overlay attempt
+set zero line-height and collapsed visible skeletons; preserving inherited
+line-height restored visible skeletons without allowing them to affect reserved
+layout. A new unit-test matcher also
+failed only because Testing Library normalizes NBSP; exact `textContent` now
+asserts the nonbreaking source byte. Renewed focused checks above pass on the
+current identity. No independent design disposition has yet been issued for it.
+
+Independent exact-candidate review returned **REQUEST_CHANGES** on the
+superseded 36-path manifest
+`3bfe7a1702ad0acf810da3471847849a92dc871ff9d2471bf7a873e4b6c00be2`
+and 145,207-byte resource
+`6f8c92c46a883c11ab7c0c3d996a382059ef0eea668199ed75be5a90e1c70a06`.
+Its fresh MCP/server run failed 1 of 14 tests at the generated-resource exclusion:
+`FilamentColor.svelte` embedded `#E89B3C` as non-accessible reserve content.
+That was still synthetic configured-color evidence, so the earlier author 14/14
+claim for that identity is superseded. The repair removes every domain
+`reserveDisplay` sample and uses only closed structural line/minimum-block
+reserves. The renewed tests reject sample color, temperature and source-label
+content in the resource, audit the domain-leaf sources for `reserveDisplay`, and
+retain the exact browser geometry matrix. The audit also removed hidden
+`StatusLine` reserve text and replaced it with a neutral four-line structural
+minimum. Its first two-line minimum failed 1 of 4 browser cases because loading
+was 35.09375px shorter than the other card states at 320px/200%; the four-line
+structural minimum restored the passing ≤1px matrix without hidden content. A
+first author version of the generated-resource guard
+also rejected the text `Part cooling`; it failed because the closed output
+validator legitimately embeds that enum. The guard was corrected to reject the
+synthetic `Reported part fan` source label and directly inspect leaf reserve
+source. This was a test-design failure, not product acceptance evidence.
+
+The next project-scoped printer-domain exact gate returned
+**REQUEST_CHANGES** on superseded 33-path manifest
+`0d65c4585c4a5c0dd5066b1ba7d0895e2fb6abe79fe67466ea4ddda74eb21190`
+and 144,094-byte resource
+`b529a0b616bc92cd2eade9f713961bb511b18e29c5c89f7e3cd20638c8ac26bc`.
+It demonstrated three independently blocking contradictions: subject T1 could
+accept Title text `Tool head T2`; two HeadStatus occurrences could resolve to
+Active and Idle while sharing one receipt and transformed tint could disagree
+with the visible configured color; and global `error` could admit a loading
+source and therefore an animated skeleton. The renewed wire schema replaces
+arbitrary title text with one of five closed T1-derived content tokens, rejects
+duplicate presentation fields including direct/wrapped temperature, validates
+exact semantic equality for any repeated resolved field, and correlates
+transform evidence, tint and visible FilamentColor. Global error now rejects
+every loading receipt and requires at least one unavailable receipt; the
+renderer test proves partial healthy status/color remain visible while the
+unavailable fan alone uses a static skeleton. Existing zero-target testing still
+proves a neutral percentage fill, and the fan zero/one/multiple/malformed matrix
+is unchanged. The first TypeScript/Svelte check after introducing the title map
+failed because the object literal widened its return to `string`; adding a
+constant closed map fixed the type, and the renewed checks above pass.
+
+### Exact-candidate review dispositions
+
+Three role-separated gates **APPROVE** the exact 33-path manifest
+`a6cfa40f0f23e62832fa7696a41472c10097b8bbc36141cd5f87af2a4deb2580`
+and 145,363-byte resource
+`170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`
+for the synthetic private-Lab experiment only.
+
+Screenshot-first UI/UX reran 320/720 × 100%/200% text × card/compact/larger ×
+known/loading/error/partial/ambiguous. All 60 groups measured 0px renderer-
+height drift and zero overflow. Skeleton minimum was 64.58×17.5px; loading
+animated, error remained static, reduced motion removed animation, h1 was 56px
+over h2 at 44px, the target/unit fragment remained atomic, no text-reserve or
+sample sentinel remained, Card alone retained its border and forced colors were
+neutral. The design report SHA-256 is
+`64dfadbf482d6f10a85131404f5a354e3ce8ba18b99cdb1c91e1b34ab701c322`.
+Only the three current Title tokens were rendered; the other two were inspected
+in source. No screen-reader, device, printer, mounted-host or production check
+was part of this disposition.
+
+The project-scoped `printer_domain_expert` freshly passed the 16 server/MCP
+tests with 92 assertions and 10 client tests. Its adversaries confirmed T1/T2
+title rejection; duplicate and direct-plus-wrapped temperature rejection;
+transform evidence/tint/visible-color equality; global-error/loading rejection;
+known target zero with neutral fill; fan zero/notReported, one/typed,
+multiple/ambiguous and malformed/sourceUnavailable; exactly one read per source;
+distinct timestamps; and partial healthy data with only the unavailable fan's
+static skeleton. It approves truthful U1 semantics within the synthetic private
+Lab only, not live Moonraker/Klipper, a real printer, device or user outcome.
+Percentage fill has no accepted progress, heater-authority, safety-margin or
+target-attainment meaning.
+
+Independent verification freshly passed 27/27 focused composable/percentage
+tests, the same 16/16 server/MCP tests with 92 assertions, TypeScript, Svelte
+with zero errors/warnings, component contracts, and a deterministic temporary
+MCP reconstruction matching 145,363 bytes and the exact resource SHA above. A
+fresh Chrome 200% matrix measured 0px drift and confirmed atomic temperature
+unit, title hierarchy, no overflow/reserve/row roles, no animation in full
+error, and dependency-shaped partial states. Production factory/import inventory
+remained negative; the v1 MCP resource, v1 build and live preview response stayed
+unchanged. One first browser assertion incorrectly expected a compact partial
+skeleton even though compact has no environment dependency. The reviewer fixed
+only that expectation, its dependency-shaped form passed, and all task-owned
+children were cleaned. This was test-harness correction, not a waived product
+finding. Independent scope did not include a real printer, live Moonraker,
+mounted host, phone, public Internet, user outcome or full repository/browser
+regression.
+
+Percentage decoration remains a Lab-only hypothesis. These checks do not give
+the fill a production meaning; without a separate semantic contract it could be
+mistaken for print progress, heater authority, safety margin or target
+attainment.
+
+The sorted 33-path changed/new application set was hashed as one SHA-256 line
+per file and then hashed again. Candidate manifest SHA-256 is
+`a6cfa40f0f23e62832fa7696a41472c10097b8bbc36141cd5f87af2a4deb2580`.
+This is the independently accepted identity for the private-Lab experiment; it
+is not production architecture, deployment or user/device acceptance.
+
+Screenshots are local test evidence under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`:
+
+- `composition-known-320px.png` — `5211fb472a661f5e1106bd6a6390ca57467f6e7fb1db5678a3ee2eecde48b7b4`
+- `composition-known-720px.png` — `e761420614f1cb8183eed2da3bafbf97f0f932fa5b9d833e87811f8bc591677a`
+- `composition-known-320px-200-percent.png` — `bb737e5fc75769c97f28f57d1016fb4cb1c306239330dbbfa45c898d66c43c5e`
+- `composition-known-720px-200-percent.png` — `524cd03f731a4594af7690a1b7c66d81c5e8524473f616a270e7043809c7dc8a`
+- `composition-loading-720px.png` — `884d2024bb32d0e72c214e446f47fcd19964813ff81d9a8cce9484d9267b4689`
+- `composition-error-720px.png` — `15f12a886f297dd71c4337e699a3aaa67e3ed21624e48bc6fbe35f652510ddfd`
+- `composition-partial-720px.png` — `0c1b208fb066da99b777a5bb714fae82d91953b05c623ff181953bab662378ed`
+- `composition-ambiguous-720px.png` — `5ec91e9777548e2fad030efc0d632cd99701d000c921f82839e7e55db854fa97`
+- `composition-larger-known-720px-200-percent.png` — `6d4bee0a6853fab703a3845ad63c1fe638c218810ab4a287a93083652217561f`
+- `composition-larger-loading-720px-200-percent.png` — `c815547b67aad9890a5152a2f49fe305886d882b433c1d797c67924172b41267`
+- `composition-larger-error-720px-200-percent.png` — `7066bc503028f5ba3ee26601e1a7e9ade074ba0654f81910dcc4c2b774480a3f`
+- `composition-larger-partial-720px-200-percent.png` — `3266dea61164f95e0c9167a2786f57e97616513d1c073f98beaab552c3478eda`
+- `composition-larger-ambiguous-720px-200-percent.png` — `727671718f004e8321927eadc7bb51d1415597c8dcaa4af9e49a1100b5308ab0`
+
+No private or user image is stored. The screenshots are synthetic author-owned
+artifacts; the exact role-separated dispositions above independently bind their
+own evidence to the same candidate. Together they prove neither live
+Moonraker mapping, mounted MCP-host behavior, real-printer truth, actual-device
+usability, Queue/History/DataTable/Camera semantics, production suitability nor
+user outcome.
+
+## 2026-09-03 entity-bound presentation AST experiment
+
+### Acceptance and safety boundary
+
+This UI-003/F0 experiment asks whether strict JSON can compose one T1 status,
+actual/target temperature, configured filament color and truthful typed fan
+relation from closed domain leaves and common layout primitives. Acceptance is
+limited to a dashboard-private Lab route and an explicitly constructed Lab MCP
+factory/tool/resource. Production registration must not import or expose the
+experiment. There is no arbitrary HTML/CSS/JavaScript, remote content, printer
+control, Camera implementation, authentication change, PR, merge or deployment.
+The later separately authorized preview adds only the reversible synthetic
+launchd job and tailnet-only Serve listener recorded below.
+
+The renewed 45-path application source candidate has manifest SHA-256
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+Its deterministic isolated MCP resource is 137,936 bytes, SHA-256
+`6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+This follows a whitespace-only source/generator cleanup after the prior
+independent approval. Exact source
+`518c6440db1d624361a1a804754590def3e330e2`, tree
+`a79032b72e04cab6d4dc32a26c4db47024aad5c3`, is now independently approved for
+the tailnet-only preview described below.
+Decision0049 records this as provisional private-lab learning, not production
+architecture or cutover. Decision0050 separately records the user's future
+Camera media-bottom-overlay direction; no Camera file changed in this slice.
+
+### Author implementation and focused verification
+
+The strict AST binds T1 once and exposes only `HeadStatus`, `HeadTemperature`,
+`FilamentColor`, `FanRelation`, `Card`, `Title`, `Table` and `Row`. Domain leaves
+own fixed icons, labels, formatters and source mappings. Source planning
+deduplicates readers; unreferenced readers receive zero calls. A strict envelope
+correlates canonical JSON and SHA-256, exact derived plan and source ledger,
+resolved topology, value provenance and source/receipt timestamps. Card tint is
+correlated to provenance-bearing configured-color evidence even when no color
+leaf is rendered. A zero/absent fan relation is `Unknown`/`notReported`; multiple
+relations are `Unknown`/`ambiguous`; a malformed environment relation or source
+is `unavailable`/`sourceUnavailable` with a static error skeleton. Partial source
+failure preserves unrelated values. Loading skeletons animate; error skeletons
+are static with distinct persistent status space.
+
+From `plugins/u1-print-studio/app`, with Bun environment/config autoload
+disabled where shown:
+
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable`
+  passed 8 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts`
+  passed 13 tests with 75 assertions. Coverage includes strict-schema escapes,
+  counting readers, partial failure, spec/hash/plan/source/topology/provenance
+  adversaries, bounded render values, fan zero/one/multiple/malformed cases,
+  tint divergence/tint-without-transform, a transform with no color leaf, and
+  neutral unknown/unavailable transform evidence.
+- `bun --no-env-file --config=/dev/null run check` passed TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passed with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` followed by
+  `verify:mcp-composable-lab` passed deterministically at the resource identity
+  above. `bun --no-env-file --config=/dev/null run build:server` passed with 62
+  files, 80 static routes and 62 hashes.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed four Chrome cases at 320/720 pixels. All card/leaves/larger compositions
+  preserve known/loading/error/partial topology with at most 1px height drift;
+  only loading animates, no orphan row/cell roles remain, focus contrast is
+  7.67:1, 20px value text becomes 40px at 200%, and no overflow was observed.
+
+Renewed synthetic screenshots are under
+`plugins/u1-print-studio/app/test-results/composable-lab/`:
+`composition-known-320px.png`, `composition-known-720px.png`, and the 720px
+`composition-ambiguous`, `composition-loading`, `composition-partial` and
+`composition-error` PNGs. No private or user image is stored.
+
+### Role-separated review history
+
+The project-scoped architecture review gave a conditional structural pass, not
+source acceptance. It identified missing strict-schema adversaries, counting
+reader/zero-call coverage, partial-failure and provenance-time checks, fan
+cardinality/malformed cases, stable state topology, private/public and Lab/
+production inventory proofs, and static authority/import guards. Filesystem
+process spawning was unavailable under EMFILE, so that role reviewed
+root-provided summaries and could not independently verify tests, documents or
+isolation. Its gaps drove author tests; final independent review supersedes it
+for acceptance.
+
+Screenshot-first UI/UX review initially failed visual-source checkpoint manifest
+`d0167fdcc237ce6482fa70bbb4bde765a93a14014a265ddd4696d1f6302cb29d`:
+generic leaves permitted misleading icon/label/value combinations, error
+skeletons pulsed without visible status, and ready/error geometry drifted. A
+fresh follow-up passed that same visual checkpoint; report SHA-256
+`5ae4a706d7e5b50717b89c122735d458a763b34bd085bcff2c8a54a35247b04`
+records 0px state delta across all shapes, static error, 7.67:1 focus contrast,
+20px-to-40px 200% scaling and no overflow. This is a visual-source checkpoint,
+not final application identity: later correlation-only source/resource changes
+were accepted by the independent domain reviewer and received renewed author
+Playwright evidence.
+
+The project-scoped `printer_domain_expert`, assigned independent source,
+protocol and domain review, requested changes twice. Manifest
+`3f742e2ff30ca42191a38096dc4b0d765d3d0752ad0d1bc202f84eef73658988`
+lacked end-to-end envelope/input correlation and sufficiently closed rendered
+values. Manifest
+`b73c90245132aeae733abc72f8fb2aa869270e916623205a426219af9df2466a`
+did not correlate `Card.transform` to its resolved tint. After both repair
+rounds, the reviewer verified exact frozen source-set identity
+`4437e4f9f032cfffef3405227b7775c3f40dfb3a9326858bee478b2a826115fc`,
+truthful U1 semantics and the final evidence above, and returned **APPROVE**.
+That approval remains semantic/source evidence for the prior candidate, not
+exact approval of the current identity. A later whole-range whitespace check
+found one generated trailing-whitespace line and four blank EOF lines. The
+generator now losslessly escapes its one Svelte-runtime whitespace literal
+before embedding, rejects trailing whitespace in inline assets, and the four
+source EOFs are clean. Renewed checks bind that formatting-only change to
+manifest
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+
+### Tailnet-only preview and independent runtime verification
+
+The author confirmed port 4199 and launchd label
+`com.openai.u1-composable-preview` were unused, then submitted a bounded job
+running the existing build-kit fixture on `127.0.0.1:4199` with pinned Bun 1.4.0,
+`--no-env-file --config=/dev/null`, from the exact source/tree above. No
+repository file or production process changed. The local Lab route returned 200
+and contained T1, Actual / target, Configured filament color and Fan relation.
+
+Before adding the listener, `Tailscale serve status --json` and
+`Tailscale funnel status --json` each had SHA-256
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`.
+The author added only tailnet HTTPS 8450 with one `/` proxy to
+`http://127.0.0.1:4199`. Afterward both status documents had SHA-256
+`d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`.
+A canonical structural comparison removed only `TCP[8450]` and the single Web
+listener ending in `:8450` from the after state and then exactly matched the
+before state. The Funnel allowlist is unchanged and contains no 8450 entry.
+Local HTTP and Tailnet HTTPS Lab responses both returned 200 and were
+byte-identical at SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`.
+
+The project-scoped `printer_domain_expert`, acting as an independent read-only
+runtime verifier, freshly inspected launchd/process/cwd/Bun flags, loopback and
+Tailnet response identity, complete before/after Serve/Funnel preservation,
+negative auth/OAuth/media routes, uninterrupted production jobs, clean
+worktree and endpoint-scoped cleanup. It returned **APPROVE** for the
+tailnet-only composable preview at exact source `518c644`, tree `a79032`. There
+is no separate review report artifact or hash.
+
+The later safety cleanup affected only this experiment and executed:
+
+- `Tailscale serve --yes --https=8450 off`
+- `launchctl remove com.openai.u1-composable-preview`
+
+Do not use Serve/Funnel reset or relaunch this generic fixture. The earlier
+approval is historical same-enrolled-host synthetic runtime evidence only: it
+does not establish browser/device visual behavior,
+public Internet access, a real printer, Camera, an auth flow or user outcome.
+
+### Records-only tail verification
+
+After adding decisions0048/0049 and synchronizing requirements, state, next-agent
+and iteration records, `git diff --check HEAD^` passed across the whole candidate. A
+focused static contract check confirmed `docs/iterations/CURRENT` resolves to
+existing VALIDATION/HANDOFF files, decisions0048/0049 each have exactly one
+record and one index row, and both decisions are referenced by requirements plus
+all four continuity records.
+
+After the whitespace repair and after the renewed Markdown tail, the sorted
+45-path changed/new application set was hashed as one line per `shasum -a 256`
+result and then hashed again. Both results equal
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+The affected client/server tests, UI/server checks, deterministic MCP build and
+verify, server build, and four-case Playwright suite were all renewed with the
+same counts above. The formatting cleanup changes resource identity only; it
+does not broaden the experiment's evidence boundary.
+
+For this runtime records-only tail, the same 45 application paths were hashed
+again with one `shasum -a 256` line per path and a final SHA-256 over those
+lines. The result remains
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+The MCP resource remains exactly 137,936 bytes at SHA-256
+`6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+The documentation path allowlist, CURRENT files, decision0049/0050 unique-file,
+index and requirements references, private-identifier guard and whole-range
+`git diff --check HEAD^` all passed. That tail's final runtime recheck found the
+job and endpoint live at the historical after hash. The later safety finding and
+endpoint-only cleanup supersede that runtime state: current raw Serve/Funnel is
+the exact `fab7b9df…` pre-v1 baseline and no experiment listener/job remains.
+
+### Evidence limits
+
+All values and browser scenarios are synthetic. These checks do not establish
+live Moonraker mappings, mounted MCP-host behavior, a real printer, physical
+accuracy/safety, actual-device usability, Camera behavior, recovery interaction,
+production suitability or user outcome. T1 is the only subject. The Lab MCP
+factory is an isolated proof and production inventory remains unchanged. No
+printer, production-service or auth action, PR, merge or deployment occurred.
+No experiment host/network addition remains. Both composable previews are
+offline pending exact authority-free review.
+
 ## 2026-09-03 combined deterministic pre-upload candidate
 
 Exact combined documentation/skill candidate
@@ -239,6 +1957,7 @@ service-deployment action is authorized or performed by this record. Decision
 0040 remains accepted workflow policy; local source enforcement exists, but
 end-to-end enforcement remains incomplete without a supported adapter and the
 separate target-parsed pre-start gate.
+
 
 ## Current deployment: PR106 exact release and BOTH service restarts
 

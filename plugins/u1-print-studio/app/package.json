@@ -27,6 +27,8 @@
     "verify:live-camera": "bun --no-env-file --config=/dev/null run scripts/build-live-camera.ts --check",
     "build:mcp-observation": "bun --no-env-file --config=/dev/null run scripts/build-mcp-observation.ts",
     "verify:mcp-observation": "bun --no-env-file --config=/dev/null run scripts/build-mcp-observation.ts --check",
+    "build:mcp-composable-lab": "bun --no-env-file --config=/dev/null run scripts/build-mcp-composable-lab.ts",
+    "verify:mcp-composable-lab": "bun --no-env-file --config=/dev/null run scripts/build-mcp-composable-lab.ts --check",
     "build:mcp-camera": "bun --no-env-file --config=/dev/null run scripts/build-live-camera.ts --mcp",
     "verify:mcp-camera": "bun --no-env-file --config=/dev/null run scripts/build-live-camera.ts --mcp --check",
     "preview": "vite preview",

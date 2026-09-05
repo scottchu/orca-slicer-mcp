@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { RuntimePort, RuntimeRequest } from './runtime-port.js';
-import { NATIVE_DASHBOARD_PATHS, routePolicy } from './route-policy.js';
+import { NATIVE_DASHBOARD_PATHS, NATIVE_LAB_PATHS, routePolicy } from './route-policy.js';
 import { createRequestLifetime } from './request-lifetime.js';
 
 export type KitHandler = ((req: IncomingMessage, res: ServerResponse, next?: () => void) => void | Promise<void>) & { close?: () => Promise<void> };
@@ -40,7 +40,7 @@ const serve: KitHandler = async (req, res) => {
   res.setHeader('cache-control', 'no-store');
   res.setHeader('referrer-policy', 'no-referrer');
   res.setHeader('x-content-type-options', 'nosniff');
-  if (NATIVE_DASHBOARD_PATHS.has(pathname)) res.setHeader('content-security-policy', "default-src 'none'; img-src data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");
+  if (NATIVE_DASHBOARD_PATHS.has(pathname) || NATIVE_LAB_PATHS.has(pathname)) res.setHeader('content-security-policy', "default-src 'none'; img-src data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");
   res.once('finish', () => { if (!req.complete) req.destroy(); });
   try { await handler(req, res, () => res.writeHead(404).end('Not Found')); }
   catch { if (!res.headersSent) res.writeHead(500).end('Internal server error'); else res.destroy(); }
