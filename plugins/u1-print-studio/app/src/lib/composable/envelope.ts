@@ -18,6 +18,7 @@ const correlateNode = (
   resolved: ResolvedNode,
   sources: Map<SourceGroup, ComposableViewModel['sources'][number]>,
   context: z.RefinementCtx,
+  groupedAppearance?: 'headerBadge' | 'hero' | 'quiet',
 ): void => {
   if (spec.type !== resolved.type) { context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved topology diverges from specification' }); return; }
   if (spec.type === 'Title' && resolved.type === 'Title' && (titleText(spec.content) !== resolved.text || spec.size !== resolved.size)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved title diverges from specification' });
@@ -38,10 +39,48 @@ const correlateNode = (
   if (spec.type === 'Stack' && resolved.type === 'Stack' && spec.gap !== resolved.gap) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved stack tokens diverge from specification' });
   if (spec.type === 'Grid' && resolved.type === 'Grid' && (spec.gap !== resolved.gap || spec.columns !== resolved.columns || (spec.arrangement ?? 'uniform') !== resolved.arrangement)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved grid tokens diverge from specification' });
   if (spec.type === 'Inline' && resolved.type === 'Inline' && (spec.gap !== resolved.gap || spec.distribution !== resolved.distribution)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved inline tokens diverge from specification' });
-  if (spec.type === 'HeadStatus' && resolved.type === 'HeadStatus' && (spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved status appearance diverges from specification' });
-  if (spec.type === 'HeadTemperature' && resolved.type === 'HeadTemperature' && (spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved temperature appearance diverges from specification' });
-  if (spec.type === 'FilamentColor' && resolved.type === 'FilamentColor' && (spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved filament appearance diverges from specification' });
-  if (spec.type === 'FanRelation' && resolved.type === 'FanRelation' && (spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved fan appearance diverges from specification' });
+  if (spec.type === 'Group' && resolved.type === 'Group') {
+    if (spec.relation !== resolved.relation) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved group relation diverges from specification' });
+    if (spec.relation === 'identity' && resolved.relation === 'identity') {
+      if (resolved.layoutSource !== 'smart' || resolved.defaultRule !== 'identity-packed-v1' || resolved.tracks !== null || resolved.rowGap !== 'regular' || resolved.columnGap !== 'regular') {
+        context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved identity policy diverges' });
+      }
+      correlateNode(spec.children[0], resolved.children[0], sources, context);
+      correlateNode(spec.children[1], resolved.children[1], sources, context, 'headerBadge');
+      return;
+    }
+    if (spec.relation === 'summary' && resolved.relation === 'summary') {
+      const explicitLayout = 'layout' in spec ? spec.layout : null;
+      const expectedSource = explicitLayout ? 'explicit' : 'smart';
+      const expectedRowGap = explicitLayout?.rowGap ?? 'regular';
+      const expectedColumnGap = explicitLayout?.columnGap ?? 'regular';
+      if (resolved.layoutSource !== expectedSource || resolved.defaultRule !== 'summary-grid6-v1' || resolved.tracks !== 6 || resolved.rowGap !== expectedRowGap || resolved.columnGap !== expectedColumnGap) {
+        context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved summary policy diverges' });
+      }
+      const resolvedSpans = resolved.children.map((row) => row.children.map((column) => column.colSpan));
+      const expectedSpans = explicitLayout
+        ? spec.children.map((row) => row.type === 'Row' ? row.children.map((column) => column.colSpan) : [])
+        : [[6], [3, 3]];
+      if (JSON.stringify(resolvedSpans) !== JSON.stringify(expectedSpans)
+        || resolved.children.some((row) => row.columnGap !== expectedColumnGap || row.collapse !== 'intrinsic')) {
+        context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved summary rows diverge from placement policy' });
+      }
+      const resolvedLeaves = resolved.children.flatMap((row) => row.children.map((column) => column.children[0]));
+      const specLeaves = explicitLayout
+        ? spec.children.flatMap((row) => row.type === 'Row' ? row.children.map((column) => column.children[0]) : [])
+        : [...spec.children].sort((left, right) => {
+            const rank = { HeadTemperature: 0, FilamentColor: 1, FanRelation: 2 } as const;
+            return rank[left.type as keyof typeof rank] - rank[right.type as keyof typeof rank];
+          });
+      if (specLeaves.length !== resolvedLeaves.length) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved summary member count diverges' });
+      specLeaves.forEach((leaf, index) => correlateNode(leaf, resolvedLeaves[index], sources, context, leaf.type === 'HeadTemperature' ? 'hero' : 'quiet'));
+      return;
+    }
+  }
+  if (spec.type === 'HeadStatus' && resolved.type === 'HeadStatus' && (groupedAppearance ?? spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved status appearance diverges from specification' });
+  if (spec.type === 'HeadTemperature' && resolved.type === 'HeadTemperature' && (groupedAppearance ?? spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved temperature appearance diverges from specification' });
+  if (spec.type === 'FilamentColor' && resolved.type === 'FilamentColor' && (groupedAppearance ?? spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved filament appearance diverges from specification' });
+  if (spec.type === 'FanRelation' && resolved.type === 'FanRelation' && (groupedAppearance ?? spec.appearance ?? 'default') !== resolved.appearance) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved fan appearance diverges from specification' });
   if ('children' in spec && 'children' in resolved) {
     if (spec.children.length !== resolved.children.length) { context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved child count diverges from specification' }); return; }
     spec.children.forEach((child, index) => correlateNode(child, resolved.children[index], sources, context));

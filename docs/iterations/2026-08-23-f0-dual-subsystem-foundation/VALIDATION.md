@@ -1,5 +1,169 @@
 # F0 dual-subsystem foundation validation
 
+## 2026-09-05 smart semantic grouping plus explicit six-track reviewed candidate
+
+### Boundary, corrections and retained failures
+
+Decision0052 is additive to the private UI-003 Lab. It changes no production
+registration, printer/Camera/authentication/Tailscale path and does not restart
+the existing 4200/8451 preview. The three A specs and Decision0051 balanced B
+remain byte-for-byte canonical. This is author evidence on uncommitted bytes;
+the exact application identity was subsequently approved by independent
+source/protocol and screenshot-first design review before the documentation-only
+commit tail.
+
+The first final preview test correctly failed after a Kit rebuild because the
+immutable server still pinned the preceding balanced manifest/HTML/hydration
+node. The author inspected the new closed build, updated only those exact pins,
+rebuilt again and reproduced the same artifact identity before the passing
+preview test. A later architecture check clarified that `Group` is a semantic
+role, not a layout role, and that code-owned default rules need stable versioned
+names. The source/tests/Decision0052 now consistently use semantic `Group` plus
+exact `identity-packed-v1` and `summary-grid6-v1`; the `-v1` literals prevent a
+future algorithm change from silently reinterpreting an existing resolved
+contract. Final visual inspection also found that the first 720px Smart stage
+was unnecessarily wide; its closed stage maximum was narrowed to the focused
+590px reading width and the complete browser evidence was renewed.
+
+Independent design review then **BLOCKED** application `988b90bc...` on one P2:
+the quiet filament label used three visible lines in the primary 390px 3+3 row.
+The generic Swatch now accepts separate visible and accessible labels. Quiet
+FilamentColor visibly renders truthful `Configured color` in two lines and
+retains `Configured filament color` as the sole assistive label. Default/A
+visible copy, type size, 3+3 placement, swatch/value atomicity and the wire
+contract remain unchanged. The first focused component run after this edit
+failed the migration frontier because an exploratory nested-label branch added
+two native spans. A later accessible-name assertion also proved the interim
+group lacked an actual name. The final common primitive retains its exact
+native-tag contract and adds only fixed `role="group"` plus `aria-label` when
+visible and accessible copy differ. Focused DOM and browser accessibility-name
+assertions now pass; default has neither alternate role nor label.
+
+Preliminary source review separately found that new nested schema locals could
+drift behind the outer Card child cast. Column, Row, identity Group, smart
+summary Group, explicit summary Group and both resolved Group variants now have
+direct exact `z.ZodType` annotations and alias-bound child schemas. A source/type
+drift test preserves every boundary and the semantic/layout roles; Column policy
+now accepts only temperature, filament and fan. The first renewed browser run
+then failed three grouped cases because its new visible-text helper removed both
+the assistive label and the intentionally `aria-hidden` visible label. The
+helper was corrected; this was a harness failure, not a UI failure. After the
+final ARIA implementation, another run exposed the top-level test's stale
+expectation that Smart visibly used the default label. It now distinguishes
+Smart's short visible/full accessible pair from Card's unchanged full visible
+label. The subsequent complete run passed 12/12. Independent design and source
+rereview remained pending on that renewed identity.
+
+Independent source rereview then **REQUESTED CHANGES** on application
+`8a9cb04a...`: a valid explicit summary with one Row of three span-2 Columns
+was rejected by the broad Group policy's inherited minimum of two children,
+before the relation validator's documented one-to-six Row rule could apply.
+The registry now owns relation-shaped executable child policies: identity stays
+the exact Title/HeadStatus tuple, smart summary stays an exact three-leaf tuple,
+and explicit/resolved summary accepts one to six Rows. Focused regression proves
+the one-Row `2 + 2 + 2` case is accepted, preserves authored fan/temperature/
+filament order, and calls status, materials, and environment once each. Empty
+and seven-Row explicit forms, one-child identity and two-child smart summary
+remain rejected. This correction does not alter rendered geometry; the full
+browser suite and author visual inspection were nevertheless renewed on the
+new candidate. At that checkpoint, independent design and source rereview were
+still pending.
+
+Both renewed exact gates then **APPROVED** application
+`bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`.
+Independent source/protocol review reran the eight focused UI/shared files for
+114 passes, the three server/MCP/preview files for 23 passes and 474 assertions,
+TypeScript and zero-diagnostic Svelte/component contracts. It exercised 22
+invalid inputs with `readerCalls=0`, accepted the one-Row `[2, 2, 2]` case with
+authored order and one read per source, rejected 14 envelope tamper cases,
+matched the exact Kit/HTML/MCP identities below and confirmed the Lab factory
+remains absent from production registration. Independent screenshot-first
+review reopened the target, normalized comparison and responsive/state captures
+and approved the same exact source-valid identity with no remaining P0-P2
+finding. The historical `988b90bc...` visual block and `8a9cb04a...` source
+request remain preserved rather than overwritten.
+
+After application freeze, the independent design record and final project,
+handoff, next-agent and validation status changed durable documentation only.
+The sorted 28-path application hash list compared byte-for-byte with the frozen
+list and still produces `bc992eac...`; `git diff --check` and the changed-line
+private-path/hostname/credential scan pass, and isolated port 4184 is released.
+
+### Commands actually run and exact evidence
+
+From `plugins/u1-print-studio/app`:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 114 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 23 tests / 474 assertions.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` followed by `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` reconstructs the exact 166,948-byte MCP resource, SHA-256 `ef6c06df914c9fc3c229a9de61421320f56f32376cbe460fee195b136715fb69`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null x vite build` ran twice and reproduced the 115-file manifest `ee08234a369fc24b5e588b165fdd211380c040e4e5b3c02cad96875722abdec8`; Lab HTML is 101,404 bytes at SHA-256 `243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 12/12 Chrome cases with one worker and releases its fixture/browser resources and port 4184.
+
+The browser matrix covers Smart and Explicit at 320, 390 and 720 CSS pixels,
+100% and 200% root text; known/loading/error/partial/unknown/ambiguous states;
+reduced motion, forced colors and visible focus. It requires exact Smart/
+Explicit semantic order and DOM geometry parity, packed 12px identity, six
+logical tracks, 3+3 at 390/720 normal text, intrinsic stacked readings at 320
+normal text and 390/200%, atomic temperature target/unit, no overflow, state
+height within 1px, animated loading, static neutral error and no tint, gradient,
+divider, Table or printer icon.
+The grouped cases additionally require the quiet visible filament label to use
+at most two lines at 390px, the full assistive label to remain present, and the
+default leaf to omit the alternate-label branch.
+
+Schema/server/MCP cases prove exact twelve-entry registry parity and static
+imports; relation-shaped Group child policies; strict Group/Row/Column
+relations, cardinality, spans and row sums; acceptance of one explicit Row with
+three span-2 Columns and preservation of its authored leaf order;
+and zero-reader rejection of invalid layout, role, appearance, start/offset,
+row-span, breakpoint, style, CSS/HTML/JavaScript, path and URL inputs. Valid
+Smart and Explicit each call status, materials and environment once. Envelope
+adversaries cover relation/layout source/default rule/order/span/gap/collapse/
+appearance/receipt/timestamp/provenance drift. Smart affinity order and explicit
+authored order produce the same final comparison geometry. Existing canonical
+hashes stay `7e9df2367d983587946dc5d5e708bb13d2b7172045390d5cbd8fe6e60c577a92`,
+`7bdc296385bd91f5d172c73b771b5f955b3d6204a747a83a5e5205091b685b1a`,
+`cd278ddf6c468f48dbfa437a36063b7c0bfd4408835ec58a6cc786322f53b243`
+and balanced
+`dfbf87e36102bfa21a97e266e0d1258c4b61399eb874886abffd637a1259ac56`;
+new Smart and Explicit
+hashes are `d99581cf7d73baff45f5861d7f527621dcff156efc4ef78f564905b07e0205d3`
+and `8bc2a4db09c4da45e44e577e208a8a41afad554b706f1d4a8fbaf9bd07b443fa`.
+
+The sorted 28-path changed/new application manifest, including the immutable
+resource and focused tests, is
+`bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`.
+`design-qa.md` records author inspection and exact independent approval. Current
+ignored visual evidence:
+
+- normalized target-versus-Smart comparison 764x338:
+  `c2a096aace24f385d38f86dc22cc70494e113d503d2172d1fd38edbdc14f06f4`
+- Smart/Explicit card 390, byte-identical:
+  `3752e0f48c41dd75a8cef662c803d1736932f4bc78d8deb476d119e0d8450747`
+- Smart 320/390/720: `0bacf99c300972264c3941d71c819aa17a094f633abde1fb8319ddfd07a52a40`,
+  `cf67f76e0d4b29a5a742210b01b9c8804296ad1884c08fb149c7d8841a809d32`,
+  `b633a34db4b939e479f23c0e71bb5275ecc90dc9b83b03f1196d099849db3e49`
+- Smart 390/200%: `60f53ab1a3952ebcc24f6a691b92e67d70e07ae723c2a6d9690dced4abfe6c6e`
+- Explicit 390: `0a8cad0012745fd77af7256325aea26c0f4a090e75016b1300d6aa6859e8a3f9`
+- Smart loading/error 390: `ac126a36553de55fe24d7cb8d4691a5ad55ac6147f7a52154258ded5302b6c2b`,
+  `9060f3f36ff21fa3e13234478cb272ddeb3c8a593b98c073090f01a724e14118`
+
+The selected target SHA remains
+`34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`;
+its local location is intentionally not durable. Author visual result and exact
+independent screenshot-first review both PASS after the P2 and source corrections.
+
+### Evidence limits
+
+These are synthetic software/protocol and local Chrome results. There is no
+iPhone/Safari, mounted ChatGPT, screen-reader, physical printer/Moonraker,
+public Internet or user-outcome acceptance. No live integration, runtime
+preview replacement, plugin installation, PR, merge or deployment occurred.
+The descriptor monitor, 4096 limit, MCP process-group cleanup and lazy-start
+safeguards remain only a recorded future plan; none was installed or applied.
+
 ## 2026-09-04 additive balanced private-Lab reviewed candidate
 
 ### Boundary and retained failures

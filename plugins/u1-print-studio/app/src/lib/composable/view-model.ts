@@ -41,14 +41,26 @@ export type ResolvedTitleNode = { type: 'Title'; text: string; size: 'medium' | 
 export type ResolvedStackNode = { type: 'Stack'; gap: 'compact' | 'regular' | 'relaxed'; children: ResolvedDomainNode[] };
 export type ResolvedGridNode = { type: 'Grid'; columns: 'one' | 'two'; gap: 'compact' | 'regular' | 'relaxed'; arrangement: 'uniform' | 'lead'; children: ResolvedDomainNode[] };
 export type ResolvedInlineNode = { type: 'Inline'; gap: 'compact' | 'regular'; distribution: 'packed' | 'split'; children: [ResolvedTitleNode, Extract<ResolvedDomainNode, { type: 'HeadStatus' }>] };
+export type ResolvedSummaryDomainNode = Extract<ResolvedDomainNode, { type: 'HeadTemperature' | 'FilamentColor' | 'FanRelation' }>;
+export type ResolvedColumnNode = { type: 'Column'; colSpan: 1 | 2 | 3 | 4 | 5 | 6; children: [ResolvedSummaryDomainNode] };
+export type ResolvedRowNode = { type: 'Row'; columnGap: 'compact' | 'regular'; collapse: 'intrinsic'; children: ResolvedColumnNode[] };
+export type ResolvedIdentityGroupNode = {
+  type: 'Group'; relation: 'identity'; layoutSource: 'smart'; defaultRule: 'identity-packed-v1'; tracks: null;
+  rowGap: 'regular'; columnGap: 'regular'; children: [ResolvedTitleNode, Extract<ResolvedDomainNode, { type: 'HeadStatus' }>];
+};
+export type ResolvedSummaryGroupNode = {
+  type: 'Group'; relation: 'summary'; layoutSource: 'smart' | 'explicit'; defaultRule: 'summary-grid6-v1'; tracks: 6;
+  rowGap: 'compact' | 'regular'; columnGap: 'compact' | 'regular'; children: ResolvedRowNode[];
+};
+export type ResolvedGroupNode = ResolvedIdentityGroupNode | ResolvedSummaryGroupNode;
 export type ResolvedCardNode = {
   type: 'Card';
   density: 'compact' | 'comfortable';
   tint: { kind: 'softTint'; color: string; strength: 'subtle' } | null;
   transformEvidence: ResolvedColorValue | null;
-  children: [ResolvedTitleNode | ResolvedInlineNode, ResolvedStackNode | ResolvedGridNode];
+  children: [ResolvedTitleNode | ResolvedInlineNode | ResolvedIdentityGroupNode, ResolvedStackNode | ResolvedGridNode | ResolvedSummaryGroupNode];
 };
-export type ResolvedNode = ResolvedCardNode | ResolvedTitleNode | ResolvedStackNode | ResolvedGridNode | ResolvedInlineNode | ResolvedDomainNode;
+export type ResolvedNode = ResolvedCardNode | ResolvedTitleNode | ResolvedStackNode | ResolvedGridNode | ResolvedInlineNode | ResolvedGroupNode | ResolvedRowNode | ResolvedColumnNode | ResolvedDomainNode;
 
 export type ComposableViewModel = {
   schemaVersion: 2;
@@ -95,14 +107,85 @@ const resolvedInlineNodeSchema: z.ZodType<ResolvedInlineNode> = elementRegistry.
     HeadStatus: resolvedHeadStatusNodeSchema,
   }) as z.ZodType<ResolvedInlineNode['children']>,
 });
+const resolvedSummaryDomainNodeSchemas = {
+  HeadTemperature: resolvedHeadTemperatureNodeSchema,
+  FilamentColor: resolvedFilamentColorNodeSchema,
+  FanRelation: resolvedFanRelationNodeSchema,
+};
+const resolvedColumnNodeSchema: z.ZodType<ResolvedColumnNode> = elementRegistry.Column.resolvedPropsSchema.extend({
+  type: z.literal('Column'),
+  children: registeredChildrenSchema(elementRegistry.Column.children, resolvedSummaryDomainNodeSchemas) as z.ZodType<ResolvedColumnNode['children']>,
+});
+const resolvedRowNodeSchema: z.ZodType<ResolvedRowNode> = elementRegistry.Row.resolvedPropsSchema.extend({
+  type: z.literal('Row'),
+  children: registeredChildrenSchema(elementRegistry.Row.children, { Column: resolvedColumnNodeSchema }) as z.ZodType<ResolvedRowNode['children']>,
+}).superRefine((row, context) => {
+  if (row.children.reduce((total: number, column: ResolvedColumnNode) => total + column.colSpan, 0) !== 6) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved row must fill exactly six tracks' });
+  }
+});
+const resolvedGroupChildSchemas = {
+  Title: resolvedTitleNodeSchema,
+  HeadStatus: resolvedHeadStatusNodeSchema,
+  HeadTemperature: resolvedHeadTemperatureNodeSchema,
+  FilamentColor: resolvedFilamentColorNodeSchema,
+  FanRelation: resolvedFanRelationNodeSchema,
+  Row: resolvedRowNodeSchema,
+};
+const resolvedIdentityGroupNodeSchema: z.ZodType<ResolvedIdentityGroupNode> = elementRegistry.Group.resolvedPropsSchema.extend({
+  type: z.literal('Group'), relation: z.literal('identity'), layoutSource: z.literal('smart'),
+  defaultRule: z.literal('identity-packed-v1'), tracks: z.null(), rowGap: z.literal('regular'), columnGap: z.literal('regular'),
+  children: registeredChildrenSchema(elementRegistry.Group.childPolicies.identity, {
+    ...resolvedGroupChildSchemas,
+  }) as z.ZodType<ResolvedIdentityGroupNode['children']>,
+}).superRefine((group, context) => {
+  if (group.children.length !== 2 || group.children[0]?.type !== 'Title' || group.children[1]?.type !== 'HeadStatus' || (group.children[1]?.type === 'HeadStatus' && group.children[1].appearance !== 'headerBadge')) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved identity group structure diverges' });
+  }
+});
+const resolvedSummaryGroupNodeSchema: z.ZodType<ResolvedSummaryGroupNode> = elementRegistry.Group.resolvedPropsSchema.extend({
+  type: z.literal('Group'), relation: z.literal('summary'), layoutSource: z.enum(['smart', 'explicit']),
+  defaultRule: z.literal('summary-grid6-v1'), tracks: z.literal(6),
+  children: registeredChildrenSchema(elementRegistry.Group.childPolicies.resolvedSummary, {
+    ...resolvedGroupChildSchemas,
+  }) as z.ZodType<ResolvedSummaryGroupNode['children']>,
+}).superRefine((group, context) => {
+  if (group.children.length < 1 || group.children.length > 6 || group.children.some((child) => child.type !== 'Row')) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved summary group structure diverges' });
+    return;
+  }
+  const leaves = group.children.flatMap((row) => row.children.map((column: ResolvedColumnNode) => column.children[0]));
+  if (JSON.stringify(leaves.map((leaf: ResolvedSummaryDomainNode) => leaf.type).sort()) !== JSON.stringify(['FanRelation', 'FilamentColor', 'HeadTemperature'])) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved summary members diverge' });
+  }
+  for (const leaf of leaves) {
+    const expected = leaf.type === 'HeadTemperature' ? 'hero' : 'quiet';
+    if (leaf.appearance !== expected) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved summary appearance diverges' });
+  }
+});
+const resolvedGroupNodeSchema: z.ZodType<ResolvedGroupNode> = z.union([
+  resolvedIdentityGroupNodeSchema,
+  resolvedSummaryGroupNodeSchema,
+]);
 const resolvedCardNodeSchema: z.ZodType<ResolvedCardNode> = elementRegistry.Card.resolvedPropsSchema.extend({
   type: z.literal('Card'),
   children: registeredChildrenSchema(elementRegistry.Card.children, {
     Title: resolvedTitleNodeSchema,
     Inline: resolvedInlineNodeSchema,
+    Group: resolvedGroupNodeSchema,
     Stack: resolvedStackNodeSchema,
     Grid: resolvedGridNodeSchema,
   }) as z.ZodType<ResolvedCardNode['children']>,
+}).superRefine((card, context) => {
+  const header = card.children[0];
+  const body = card.children[1];
+  const usesGroup = header.type === 'Group' || body.type === 'Group';
+  if (usesGroup && (header.type !== 'Group' || header.relation !== 'identity' || body.type !== 'Group' || body.relation !== 'summary')) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved grouped card slots diverge' });
+  }
+  if (usesGroup && (card.density !== 'compact' || card.tint !== null || card.transformEvidence !== null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved grouped card surface diverges' });
+  }
 });
 const sourceSchema = z.object({
   source: sourceGroupSchema,
@@ -172,14 +255,16 @@ export const composableViewModelSchema: z.ZodType<ComposableViewModel> = z.objec
   const header = model.root.children[0];
   if (header.type === 'Inline' && header.children[1].appearance !== 'headerBadge') context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved Inline status requires headerBadge appearance' });
   const body = model.root.children[1];
-  body.children.forEach((node, index) => {
-    if (node.type === 'HeadStatus' && node.appearance === 'headerBadge') context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved headerBadge is valid only in Inline' });
-    if (node.type === 'HeadTemperature' && node.appearance === 'hero' && (body.type !== 'Grid' || body.arrangement !== 'lead' || index !== 0)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved hero temperature requires the lead Grid position' });
-    if ((node.type === 'FilamentColor' || node.type === 'FanRelation') && node.appearance === 'quiet' && (body.type !== 'Grid' || body.arrangement !== 'lead' || index === 0)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved quiet appearance requires a secondary lead Grid position' });
-  });
-  if (body.type === 'Grid' && body.arrangement === 'lead') {
-    const lead = body.children[0];
-    if (lead?.type !== 'HeadTemperature' || lead.appearance !== 'hero') context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved lead Grid requires a hero temperature first' });
+  if (body.type !== 'Group') {
+    body.children.forEach((node, index) => {
+      if (node.type === 'HeadStatus' && node.appearance === 'headerBadge') context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved headerBadge is valid only in Inline' });
+      if (node.type === 'HeadTemperature' && node.appearance === 'hero' && (body.type !== 'Grid' || body.arrangement !== 'lead' || index !== 0)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved hero temperature requires the lead Grid position' });
+      if ((node.type === 'FilamentColor' || node.type === 'FanRelation') && node.appearance === 'quiet' && (body.type !== 'Grid' || body.arrangement !== 'lead' || index === 0)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved quiet appearance requires a secondary lead Grid position' });
+    });
+    if (body.type === 'Grid' && body.arrangement === 'lead') {
+      const lead = body.children[0];
+      if (lead?.type !== 'HeadTemperature' || lead.appearance !== 'hero') context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved lead Grid requires a hero temperature first' });
+    }
   }
   const transformEvidence = model.root.transformEvidence;
   const visibleColor = resolvedFields.get('filament.color');

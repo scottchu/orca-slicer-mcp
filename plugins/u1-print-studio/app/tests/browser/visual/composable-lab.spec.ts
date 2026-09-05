@@ -38,6 +38,9 @@ for (const width of [320, 390, 720]) {
     await expect(page.getByRole('heading', { name: 'Entity-bound composition lab v2' })).toBeVisible();
     const card = page.getByRole('article', { name: 'Tool head T1' });
     await expect(card).toBeVisible();
+    await expect(page.getByLabel('Composition shape')).toHaveValue('smart');
+    await expect(card.locator('[data-group-relation="identity"]')).toHaveCount(1);
+    await expect(card.locator('[data-group-relation="summary"]')).toHaveCount(1);
     await expect(card).toContainText('Unknown');
     await expect(page.getByText('Synthetic, read-only software evidence.')).toBeVisible();
 
@@ -66,7 +69,11 @@ for (const width of [320, 390, 720]) {
     await expect(card).toContainText('Part cooling');
     await expect(card).not.toContainText('Part cooling fan');
     await expect(card).toContainText('Actual / target');
+    await expect(card).toContainText('Configured color');
+    await expect(card.locator('[data-node-kind="Swatch"] .label')).toHaveAccessibleName('Configured filament color');
+    await page.getByLabel('Composition shape').selectOption('card');
     await expect(card).toContainText('Configured filament color');
+    await expect(card.locator('[data-node-kind="Swatch"] .label')).not.toHaveAttribute('aria-label');
     await expect(page.locator('pre').first()).toContainText('"schemaVersion": 2');
     await expect(page.locator('pre').first()).toContainText('"type": "Stack"');
     await expect(page.locator('pre').first()).toContainText('"type": "HeadTemperature"');
@@ -90,7 +97,7 @@ for (const width of [320, 390, 720]) {
     await page.goto('/dashboard/lab/composition', { waitUntil: 'networkidle' });
     const stage = page.getByRole('region', { name: 'Rendered composition' });
     const assertStateGeometry = async (textPercent: 100 | 200) => {
-      for (const variant of ['card', 'compact', 'larger', 'balanced']) {
+      for (const variant of ['smart', 'explicit', 'card', 'compact', 'larger', 'balanced']) {
         await page.getByLabel('Composition shape').selectOption(variant);
         const heights: number[] = [];
         let expectedTopology: string[] | null = null;
@@ -287,5 +294,83 @@ for (const width of [320, 390, 720]) {
       await card.screenshot({ path: 'test-results/composable-lab-v2/composition-balanced-card-known-390px.png' });
       await page.screenshot({ path: 'test-results/composable-lab-v2/composition-balanced-known-390px.png', fullPage: true });
     }
+  });
+
+  test(`smart grouping and explicit six-track override preserve semantic and geometry parity at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1500 });
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.goto('/dashboard/lab/composition', { waitUntil: 'networkidle' });
+    const stage = page.getByRole('region', { name: 'Rendered composition' });
+    const card = stage.getByRole('article', { name: 'Tool head T1' });
+    const geometry: Record<string, Array<{ x: number; y: number; width: number; height: number }>> = {};
+    for (const variant of ['smart', 'explicit']) {
+      await page.getByLabel('Composition shape').selectOption(variant);
+      await selectScenario(page, 'known');
+      await expect(card.locator('[data-group-relation="identity"]')).toHaveCount(1);
+      await expect(card.locator('[data-group-relation="summary"]')).toHaveCount(1);
+      await expect(card.locator('[data-node-kind="Row"]')).toHaveCount(2);
+      await expect(card.locator('[data-node-kind="Column"]')).toHaveCount(3);
+      expect(await card.locator('[data-node-kind="Column"]').evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-col-span')))).toEqual(['6', '3', '3']);
+      const readings = card.locator('[data-domain-reading]');
+      expect(await readings.evaluateAll((nodes) => nodes.map((node) => {
+        const visible = node.cloneNode(true) as HTMLElement;
+        return visible.textContent?.replace(/\s+/gu, ' ').trim();
+      }))).toEqual([
+        'Actual / target 214.6° / 220° C',
+        'Configured color #E89B3C',
+        'Fan relation Part cooling',
+      ]);
+      const filamentLabel = card.locator('[data-node-kind="Swatch"] .label');
+      await expect(filamentLabel).toHaveAccessibleName('Configured filament color');
+      await expect(filamentLabel).toHaveText('Configured color');
+      expect(await filamentLabel.evaluate((element) => {
+        const lineHeight = Number.parseFloat(getComputedStyle(element).lineHeight);
+        return Math.ceil(element.getBoundingClientRect().height / lineHeight);
+      })).toBeLessThanOrEqual(2);
+      const identity = card.locator('[data-group-relation="identity"]');
+      const title = identity.locator('[data-node-kind="Title"]');
+      const badge = identity.locator('[data-node-kind="Badge"]');
+      const [titleBox, badgeBox] = await Promise.all([title.boundingBox(), badge.boundingBox()]);
+      if (!titleBox || !badgeBox) throw new Error('Missing grouped identity geometry');
+      expect(badgeBox.x - (titleBox.x + titleBox.width)).toBeGreaterThanOrEqual(11);
+      expect(badgeBox.x - (titleBox.x + titleBox.width)).toBeLessThanOrEqual(13);
+      expect(await card.evaluate((element) => ({ tint: element.classList.contains('tinted'), background: getComputedStyle(element).backgroundImage }))).toEqual({ tint: false, background: 'none' });
+      await expect(card.locator('[data-node-kind="Table"], [data-percentage-background]')).toHaveCount(0);
+      geometry[variant] = await card.locator('[data-node-kind="Row"], [data-node-kind="Column"], [data-domain-reading]').evaluateAll((nodes) => nodes.map((node) => {
+        const box = node.getBoundingClientRect();
+        return { x: box.x, y: box.y, width: box.width, height: box.height };
+      }));
+      const secondaryY = await card.locator('[data-reading-appearance="quiet"]').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().y));
+      if (width === 320) expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeGreaterThan(1);
+      else expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeLessThanOrEqual(1);
+      await page.screenshot({ path: `test-results/composable-lab-v2/composition-${variant}-known-${width}px.png`, fullPage: true });
+      if (width === 390) await card.screenshot({ path: `test-results/composable-lab-v2/composition-${variant}-card-known-390px.png` });
+    }
+    expect(geometry.explicit).toEqual(geometry.smart);
+
+    const textScale = await page.addStyleTag({ content: 'html { font-size: 32px !important; }' });
+    for (const variant of ['smart', 'explicit']) {
+      await page.getByLabel('Composition shape').selectOption(variant);
+      await selectScenario(page, 'known');
+      const secondaryY = await card.locator('[data-reading-appearance="quiet"]').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().y));
+      if (width === 320 || width === 390) expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeGreaterThan(1);
+      expect(await stage.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+      if (width === 390) await page.screenshot({ path: `test-results/composable-lab-v2/composition-${variant}-known-390px-200-percent.png`, fullPage: true });
+    }
+    await textScale.evaluate((element) => element.parentNode?.removeChild(element));
+
+    await page.getByLabel('Composition shape').selectOption('smart');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await selectScenario(page, 'loading');
+    expect(await card.locator('[data-skeleton]').first().evaluate((element) => getComputedStyle(element).animationName)).toBe('none');
+    if (width === 390) await page.screenshot({ path: 'test-results/composable-lab-v2/composition-smart-loading-390px.png', fullPage: true });
+    await selectScenario(page, 'error');
+    expect(await card.locator('[data-skeleton-static]').count()).toBe(4);
+    if (width === 390) await page.screenshot({ path: 'test-results/composable-lab-v2/composition-smart-error-390px.png', fullPage: true });
+    await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
+    await selectScenario(page, 'known');
+    expect(await card.evaluate((element) => getComputedStyle(element).borderStyle)).toBe('solid');
+    expect(errors).toEqual([]);
   });
 }

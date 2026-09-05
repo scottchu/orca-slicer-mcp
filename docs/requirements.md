@@ -815,9 +815,10 @@ durable-monitor claim.
   production architecture or cutover. The exact version-2 private-Lab candidate
   keeps one fixed T1 subject and the four `HeadStatus`, `HeadTemperature`,
   `FilamentColor`, and `FanRelation` domain leaves, but restricts composition to
-  a root `Card` whose header is `Title` or `Inline` and whose body is one `Stack`
-  or `Grid`; it rejects version 1,
-  `Table`, `Row`, `DataTable` and unknown fields. Card density, title size, gap
+  a root `Card` whose header is `Title`, `Inline`, or the paired `identity`
+  `Group` and whose body is one `Stack`, `Grid`, or paired `summary` Group; Row
+  and Column are valid only inside an explicit summary override. It rejects
+  version 1, `Table`, `DataTable` and unknown fields. Card density, title size, gap
   and columns are closed tokens. Title content is also a closed T1-derived token;
   arbitrary text or a claim about another entity is invalid. A strict spec
   rejects repeated presentation fields. Resolved validation must still require exact equality for any
@@ -828,8 +829,9 @@ durable-monitor claim.
   evidence remains visible. Decision0050 supersedes the experiment's
   `PercentageFill`: version-2 JSON containing it is invalid before acquisition,
   and temperature renders without a dynamic fill. One pure TypeScript build-time
-  registry owns exactly `Card`, `Title`, `Stack`, `Grid`, `Inline`, `HeadStatus`,
-  `HeadTemperature`, `FilamentColor`, and `FanRelation`, their roles, strict
+  registry owns exactly `Card`, `Title`, `Stack`, `Grid`, `Inline`, `Group`,
+  `Row`, `Column`, `HeadStatus`, `HeadTemperature`, `FilamentColor`, and
+  `FanRelation`, their roles, strict
   spec/resolved prop schemas, child policies and field/source metadata. Those
   child policies directly construct accepted spec and resolved tuple/array
   shape and cardinality rather than duplicating structural rules. A
@@ -857,6 +859,33 @@ durable-monitor claim.
   filament/fan content; it has no empty icon slot, divider, tint, gradient,
   Table, or Row. The existing card, compact and larger specs and default visuals
   remain canonical and unchanged.
+  Decision0052 adds smart semantic grouping before placement. `identity` accepts
+  exactly Title then HeadStatus and resolves to the code-owned packed header;
+  `summary` accepts temperature, filament and fan exactly once, forbids caller
+  appearances, and normalizes smart input to that stable affinity order. Its
+  `summary-grid6-v1` rule resolves a six-track temperature Row followed by a
+  three-plus-three filament/fan Row. An optional strict grid override may
+  provide only six tracks, closed row/column gap tokens and one to six Rows;
+  each Row has one to six Columns, every Column owns exactly one summary leaf
+  and a closed one-through-six span, and each Row sums exactly to six. The
+  build-time registry owns distinct child policies for identity, smart summary,
+  explicit summary, and resolved summary so the first two retain exact tuple
+  cardinality while a legal single explicit Row is accepted. A one-Row
+  `2 + 2 + 2` override must preserve authored leaf order and still acquire
+  status, materials, and environment once each. The
+  resolver records `smart | explicit`, versioned rule, order, spans and
+  intrinsic collapse. Explicit layout changes only placement and cannot change
+  grouping, values, appearance, provenance, loading/error topology or the
+  readability floor. Smart and explicit keep paired secondary readings at
+  390/720 normal text and stack at 320 normal text or 390/200-percent text.
+  They add no holes, offsets, row span, overlap, caller breakpoint, style,
+  markup, executable content, tint, gradient, divider, Table or printer icon.
+  Resolved identity records `identity-packed-v1`; the two exact `-v1` rule
+  literals version their code-owned algorithms, so later behavior must use a
+  new registered literal rather than silently reinterpreting either rule.
+  The prior A specs, hashes and default rendering remain unchanged. Balanced B
+  keeps its spec/hash and shares the closed quiet-label refinement: visible
+  `Configured color` with accessible `Configured filament color`.
   Strict canonical hash/spec/plan/source/topology/provenance
   correlation, deduplicated source readers, bounded values, `Unknown` for absent
   or ambiguous relations, input-shaped loading/error states, no arbitrary code

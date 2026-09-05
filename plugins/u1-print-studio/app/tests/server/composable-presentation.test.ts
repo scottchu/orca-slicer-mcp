@@ -2,7 +2,7 @@ import { describe, expect, test } from 'bun:test';
 import { createHash } from 'node:crypto';
 import type { PresentationField } from '../../src/lib/composable/schema.js';
 import { composableEnvelopeSchema } from '../../src/lib/composable/envelope.js';
-import { t1BalancedCompositionSpec, t1CompactGridSpec, t1EntityCardSpec } from '../../src/lib/composable/specs.js';
+import { t1BalancedCompositionSpec, t1CompactGridSpec, t1EntityCardSpec, t1ExplicitGroupedSummarySpec, t1SmartGroupedSummarySpec } from '../../src/lib/composable/specs.js';
 import { composableViewModelSchema, resolvedValueSchema, type ResolvedNode, type ResolvedValue } from '../../src/lib/composable/view-model.js';
 import { composeEntityCard, type ComposableReaders } from '../../src/lib/server/composable-presentation.js';
 
@@ -57,6 +57,35 @@ describe('entity-bound composition acquisition and provenance', () => {
       { ...balanced.root, children: [inline, { ...grid, css: 'display:none' }] },
       { ...balanced.root, children: [inline, { ...grid, componentPath: 'https://example.invalid/evil.js' }] },
     ]) await expect(composeEntityCard({ ...balanced, root }, { status: count, materials: count, environment: count })).rejects.toThrow();
+    const smart = structuredClone(t1SmartGroupedSummarySpec) as any;
+    await expect(composeEntityCard({ ...smart, root: { ...smart.root, children: [
+      { ...smart.root.children[0], children: smart.root.children[0].children.slice(0, 1) },
+      smart.root.children[1],
+    ] } }, { status: count, materials: count, environment: count })).rejects.toThrow();
+    await expect(composeEntityCard({ ...smart, root: { ...smart.root, children: [
+      smart.root.children[0],
+      { ...smart.root.children[1], children: smart.root.children[1].children.slice(0, 2) },
+    ] } }, { status: count, materials: count, environment: count })).rejects.toThrow();
+    const explicit = structuredClone(t1ExplicitGroupedSummarySpec) as any;
+    const explicitSummary = explicit.root.children[1];
+    for (const summary of [
+      { ...explicitSummary, children: [] },
+      { ...explicitSummary, children: Array.from({ length: 7 }, () => explicitSummary.children[0]) },
+      { ...explicitSummary, layout: { ...explicitSummary.layout, css: 'grid-template-columns:repeat(6,1fr)' } },
+      { ...explicitSummary, layout: { ...explicitSummary.layout, breakpoint: 390 } },
+      { ...explicitSummary, layout: { ...explicitSummary.layout, tracks: 12 } },
+      { ...explicitSummary, children: [{ type: 'Row', children: [{ type: 'Column', colSpan: 5, children: [{ type: 'HeadTemperature' }] }] }, ...explicitSummary.children.slice(1)] },
+      { ...explicitSummary, children: [{ type: 'Row', children: [{ type: 'Column', colSpan: 6, start: 1, children: [{ type: 'HeadTemperature' }] }] }, ...explicitSummary.children.slice(1)] },
+      { ...explicitSummary, children: [{ type: 'Row', children: [{ type: 'Column', colSpan: 6, offset: 0, children: [{ type: 'HeadTemperature' }] }] }, ...explicitSummary.children.slice(1)] },
+      { ...explicitSummary, children: [{ type: 'Row', children: [{ type: 'Column', colSpan: 6, rowSpan: 2, children: [{ type: 'HeadTemperature' }] }] }, ...explicitSummary.children.slice(1)] },
+      { ...explicitSummary, children: [{ type: 'Row', overlap: true, children: [{ type: 'Column', colSpan: 6, children: [{ type: 'HeadTemperature' }] }] }, ...explicitSummary.children.slice(1)] },
+      { ...explicitSummary, children: [{ type: 'Row', children: [{ type: 'Column', colSpan: 6, children: [{ type: 'HeadTemperature', appearance: 'hero' }] }] }, ...explicitSummary.children.slice(1)] },
+      { ...explicitSummary, children: [{ type: 'Row', children: [{ type: 'Column', colSpan: 6, children: [{ type: 'HeadTemperature' }, { type: 'FanRelation' }] }] }, ...explicitSummary.children.slice(1)] },
+      { ...explicitSummary, children: [{ type: 'Row', children: [{ type: 'Column', colSpan: 6, children: [{ type: 'HeadStatus' }] }] }, ...explicitSummary.children.slice(1)] },
+      { ...explicitSummary, html: '<div>escape</div>' },
+      { ...explicitSummary, javascript: 'globalThis.location' },
+      { ...explicitSummary, componentUrl: 'https://example.invalid/row.js' },
+    ]) await expect(composeEntityCard({ ...explicit, root: { ...explicit.root, children: [explicit.root.children[0], summary] } }, { status: count, materials: count, environment: count })).rejects.toThrow();
     expect(calls).toBe(0);
   });
 
@@ -75,6 +104,77 @@ describe('entity-bound composition acquisition and provenance', () => {
     expect(count).toEqual({ status: 1, materials: 1, environment: 0 });
     count.status = 0; count.materials = 0; count.environment = 0;
     await composeEntityCard(t1BalancedCompositionSpec, counting);
+    expect(count).toEqual({ status: 1, materials: 1, environment: 1 });
+    for (const spec of [t1SmartGroupedSummarySpec, t1ExplicitGroupedSummarySpec]) {
+      count.status = 0; count.materials = 0; count.environment = 0;
+      await composeEntityCard(spec, counting);
+      expect(count).toEqual({ status: 1, materials: 1, environment: 1 });
+    }
+  });
+
+  test('resolves semantic grouping first and limits override to six-track placement', async () => {
+    const [smart, explicit] = await Promise.all([
+      composeEntityCard(t1SmartGroupedSummarySpec, readers()),
+      composeEntityCard(t1ExplicitGroupedSummarySpec, readers()),
+    ]);
+    const summary = (result: typeof smart) => {
+      const header = result.viewModel.root.children[0];
+      const body = result.viewModel.root.children[1];
+      if (header.type !== 'Group' || body.type !== 'Group' || body.relation !== 'summary') throw new Error('Expected grouped fixture');
+      return { header, body, leaves: body.children.flatMap((row) => row.children.map((column) => column.children[0])) };
+    };
+    const smartGroups = summary(smart);
+    const explicitGroups = summary(explicit);
+    expect(smartGroups.header).toMatchObject({ relation: 'identity', layoutSource: 'smart', defaultRule: 'identity-packed-v1', tracks: null, children: [{ type: 'Title' }, { type: 'HeadStatus', appearance: 'headerBadge' }] });
+    expect(smartGroups.body).toMatchObject({ layoutSource: 'smart', defaultRule: 'summary-grid6-v1', tracks: 6, rowGap: 'regular', columnGap: 'regular' });
+    expect(explicitGroups.body).toMatchObject({ layoutSource: 'explicit', defaultRule: 'summary-grid6-v1', tracks: 6, rowGap: 'regular', columnGap: 'regular' });
+    expect(smartGroups.body.children.map((row) => row.children.map((column) => column.colSpan))).toEqual([[6], [3, 3]]);
+    expect(explicitGroups.body.children.map((row) => row.children.map((column) => column.colSpan))).toEqual([[6], [3, 3]]);
+    expect(smartGroups.leaves.map((leaf) => [leaf.type, leaf.appearance])).toEqual([
+      ['HeadTemperature', 'hero'], ['FilamentColor', 'quiet'], ['FanRelation', 'quiet'],
+    ]);
+    expect(explicitGroups.leaves.map((leaf) => [leaf.type, leaf.appearance])).toEqual(smartGroups.leaves.map((leaf) => [leaf.type, leaf.appearance]));
+    expect(values(smart.viewModel.root)).toEqual(values(explicit.viewModel.root));
+
+    const corruptions: Array<(candidate: any) => void> = [
+      (candidate) => { candidate.viewModel.root.children[1].layoutSource = 'explicit'; },
+      (candidate) => { candidate.viewModel.root.children[1].defaultRule = 'identity-packed-v1'; },
+      (candidate) => { candidate.viewModel.root.children[1].children[0].children[0].colSpan = 5; },
+      (candidate) => { candidate.viewModel.root.children[1].children[1].children.reverse(); },
+      (candidate) => { candidate.viewModel.root.children[1].children[1].children[0].children[0].appearance = 'hero'; },
+      (candidate) => { candidate.viewModel.root.children[0].children[1].value.provenance.receivedAt = materialReceivedAt; },
+    ];
+    for (const corrupt of corruptions) {
+      const candidate = structuredClone(smart) as any;
+      corrupt(candidate);
+      expect(composableEnvelopeSchema.safeParse(candidate).success).toBe(false);
+    }
+  });
+
+  test('accepts one explicit six-track row, preserves authored order, and acquires each source once', async () => {
+    const oneRow = structuredClone(t1ExplicitGroupedSummarySpec) as any;
+    oneRow.root.children[1].children = [{
+      type: 'Row',
+      children: [
+        { type: 'Column', colSpan: 2, children: [{ type: 'FanRelation' }] },
+        { type: 'Column', colSpan: 2, children: [{ type: 'HeadTemperature' }] },
+        { type: 'Column', colSpan: 2, children: [{ type: 'FilamentColor' }] },
+      ],
+    }];
+    const count = { status: 0, materials: 0, environment: 0 };
+    const base = readers();
+    const result = await composeEntityCard(oneRow, {
+      status: async () => { count.status++; return base.status(); },
+      materials: async () => { count.materials++; return base.materials(); },
+      environment: async () => { count.environment++; return base.environment(); },
+    });
+    const body = result.viewModel.root.children[1];
+    if (body.type !== 'Group' || body.relation !== 'summary') throw new Error('Expected summary group');
+    expect(body.children).toHaveLength(1);
+    expect(body.children[0].children.map((column) => column.colSpan)).toEqual([2, 2, 2]);
+    expect(body.children[0].children.map((column) => column.children[0].type)).toEqual([
+      'FanRelation', 'HeadTemperature', 'FilamentColor',
+    ]);
     expect(count).toEqual({ status: 1, materials: 1, environment: 1 });
   });
 

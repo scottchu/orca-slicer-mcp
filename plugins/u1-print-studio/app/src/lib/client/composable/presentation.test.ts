@@ -2,7 +2,7 @@ import { cleanup, render, screen } from '@testing-library/svelte';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import PresentationRenderer from '../../../components/composable/PresentationRenderer.svelte';
 import type { HostEvent, HostRpc } from '../host/rpc';
-import { t1BalancedCompositionSpec, t1CompactGridSpec, t1EntityCardSpec, t1LargerCompositionSpec } from '../../composable/specs';
+import { t1BalancedCompositionSpec, t1CompactGridSpec, t1EntityCardSpec, t1ExplicitGroupedSummarySpec, t1LargerCompositionSpec, t1SmartGroupedSummarySpec } from '../../composable/specs';
 import { composableViewModelSchema } from '../../composable/view-model';
 import { composeEntityCard, type ComposableReaders } from '../../server/composable-presentation';
 import { createComposableHost, eventComposableViewModel } from './host';
@@ -70,6 +70,7 @@ describe('composable renderer and host lifecycle', () => {
     expect([...rendered.container.querySelectorAll('[data-node-kind="Metric"] .current')]
       .find((element) => element.textContent?.startsWith('214.6°'))?.textContent).toBe('214.6° / 220°\u00a0C');
     expect(screen.getByText('Configured filament color')).toBeInTheDocument();
+    expect(rendered.container.querySelector('[data-node-kind="Swatch"] .label')).not.toHaveAttribute('aria-label');
     expect(screen.getByText('Part cooling')).toBeInTheDocument();
     expect(screen.queryByText('Reported part fan')).not.toBeInTheDocument();
     expect(rendered.container.querySelector('[role="cell"]')).toBeNull();
@@ -78,19 +79,21 @@ describe('composable renderer and host lifecycle', () => {
   });
 
   test('uses validated input spec for exact loading, ready, and error topology', async () => {
-    for (const spec of [t1EntityCardSpec, t1CompactGridSpec, t1LargerCompositionSpec, t1BalancedCompositionSpec]) {
+    for (const spec of [t1EntityCardSpec, t1CompactGridSpec, t1LargerCompositionSpec, t1BalancedCompositionSpec, t1SmartGroupedSummarySpec, t1ExplicitGroupedSummarySpec]) {
       const fixture = hostFixture();
       const host = createComposableHost(fixture.rpc);
       fixture.emit({ kind: 'input', value: { arguments: { spec } } });
       expect(host.state().spec).toEqual(spec);
       expect(host.state().presentation?.state).toBe('loading');
-      expect(topology(host.state().presentation!.root)).toEqual(topology(spec.root));
+      const resolvedTopology = topology(host.state().presentation!.root);
+      if (spec.root.children[1].type === 'Group') expect(resolvedTopology).toContain('Column');
+      else expect(resolvedTopology).toEqual(topology(spec.root));
       const envelope = await composeEntityCard(spec, readers);
       expect(eventComposableViewModel({ kind: 'result', value: { structuredContent: envelope } })).toEqual(envelope.viewModel);
       expect(eventComposableViewModel({ kind: 'result', value: { structuredContent: { viewModel: envelope.viewModel } } })).toBeNull();
       fixture.emit({ kind: 'result', value: { structuredContent: envelope } });
       expect(host.state().failed).toBe(false);
-      expect(topology(host.state().presentation!.root)).toEqual(topology(spec.root));
+      expect(topology(host.state().presentation!.root)).toEqual(resolvedTopology);
       host.dispose();
 
       const failedFixture = hostFixture();
@@ -98,8 +101,25 @@ describe('composable renderer and host lifecycle', () => {
       failedFixture.emit({ kind: 'input', value: { arguments: { spec } } });
       failedFixture.emit({ kind: 'result', value: { structuredContent: { ...envelope, canonicalSpecSha256: 'f'.repeat(64) } } });
       expect(failed.state()).toMatchObject({ spec, failed: true, presentation: { state: 'error' } });
-      expect(topology(failed.state().presentation!.root)).toEqual(topology(spec.root));
+      expect(topology(failed.state().presentation!.root)).toEqual(resolvedTopology);
       failed.dispose();
+    }
+  });
+
+  test('renders smart and explicit grouping with identical semantic reading order and closed placement', async () => {
+    for (const spec of [t1SmartGroupedSummarySpec, t1ExplicitGroupedSummarySpec]) {
+      const result = await composeEntityCard(spec, readers);
+      const rendered = render(PresentationRenderer, { presentation: result.viewModel });
+      expect([...rendered.container.querySelectorAll('[data-group-relation]')].map((node) => node.getAttribute('data-group-relation'))).toEqual(['identity', 'summary']);
+      expect([...rendered.container.querySelectorAll('[data-col-span]')].map((node) => node.getAttribute('data-col-span'))).toEqual(['6', '3', '3']);
+      expect([...rendered.container.querySelectorAll('[data-domain-reading]')].map((node) => node.textContent)).toEqual(expect.arrayContaining([
+        expect.stringContaining('Actual / target'), expect.stringContaining('Configured color'), expect.stringContaining('Fan relation'),
+      ]));
+      const filamentLabel = rendered.container.querySelector('[data-node-kind="Swatch"] .label');
+      expect(filamentLabel).toHaveAccessibleName('Configured filament color');
+      expect(filamentLabel).toHaveTextContent('Configured color');
+      expect(result.viewModel.root.children[0]).toMatchObject({ type: 'Group', relation: 'identity', layoutSource: 'smart' });
+      cleanup();
     }
   });
 

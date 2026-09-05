@@ -4,7 +4,7 @@ import type { ResolvedNode } from '../../composable/view-model';
 type ResolvedNodeFor<Type extends ResolvedNode['type']> = Extract<ResolvedNode, { type: Type }>;
 
 /**
- * Independently owned client contracts for the nine registered constructors.
+ * Independently owned client contracts for the registered constructors.
  * Component implementations must conform to these props at build time.
  */
 export type PresentationComponentPropsByElement = {
@@ -41,6 +41,21 @@ export type PresentationComponentPropsByElement = {
     distribution?: ResolvedNodeFor<'Inline'>['distribution'];
     inset?: boolean;
     composed?: boolean;
+  };
+  Group: {
+    children: Snippet;
+    relation: ResolvedNodeFor<'Group'>['relation'];
+    rowGap?: ResolvedNodeFor<'Group'>['rowGap'];
+    inset?: boolean;
+  };
+  Row: {
+    children: Snippet;
+    columnGap?: ResolvedNodeFor<'Row'>['columnGap'];
+    collapse?: ResolvedNodeFor<'Row'>['collapse'];
+  };
+  Column: {
+    children: Snippet;
+    colSpan: ResolvedNodeFor<'Column'>['colSpan'];
   };
   HeadStatus: { value: ResolvedNodeFor<'HeadStatus'>['value']; appearance?: ResolvedNodeFor<'HeadStatus'>['appearance'] };
   HeadTemperature: { value: ResolvedNodeFor<'HeadTemperature'>['value']; appearance?: ResolvedNodeFor<'HeadTemperature'>['appearance'] };

@@ -1,4 +1,336 @@
-# Balanced composable Lab — author design QA
+# Smart-grouped composable Lab — author design QA
+
+## Inputs and normalized comparison
+
+- Selected target: conversation-selected Option 1 visual, kept outside the repository
+- Target SHA-256: `34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`
+- Smart card capture: `plugins/u1-print-studio/app/test-results/composable-lab-v2/composition-smart-card-known-390px.png`
+- Smart card SHA-256: `3752e0f48c41dd75a8cef662c803d1736932f4bc78d8deb476d119e0d8450747`
+- Normalized comparison: `plugins/u1-print-studio/app/test-results/composable-lab-v2/comparison-smart-target-vs-implementation.png`
+- Comparison SHA-256: `c2a096aace24f385d38f86dc22cc70494e113d503d2172d1fd38edbdc14f06f4`
+
+The 764 by 338 comparison places the previously normalized 374-pixel target
+card beside the fresh Smart grouped implementation at the same card width. The
+target is visual intent rather than executable input. Browser captures and the
+comparison are ignored author-run evidence, not deterministic build identities.
+
+The comparison confirms the intended information hierarchy: identity is one
+packed Title plus HeadStatus group; temperature is the full-width primary
+reading; filament and fan form the related secondary pair. The implementation
+intentionally omits the target's printer icon and divider under the current
+closed neutral-card contract. It uses no tint, gradient, percentage background,
+table or fixed empty icon slot.
+
+## Iteration history and findings
+
+1. The preceding balanced layout encoded visual placement but left identity
+   and summary relationships implicit. Its generic leaf reserves also produced
+   visibly loose vertical spacing in the current card.
+2. The additive resolver now groups semantics before placement. Identity is
+   exactly Title plus HeadStatus and stays packed with a 12px gap. Summary owns
+   temperature, filament and fan exactly once, with 20px group rhythm, 16px
+   column spacing, 12px icon-to-text spacing and 4px label-to-value spacing.
+3. Smart placement is code-owned: temperature spans all six logical tracks;
+   filament and fan each span three. The explicit comparison authors the same
+   Row/Column geometry. Pixel assertions confirm equal semantic order and equal
+   geometry, while the JSON inputs remain different.
+4. Group-local presentation removes the old fixed leaf height behavior without
+   weakening stable states. Known, loading and error keep the same resolved
+   topology and differ by at most 1px in the automated matrix.
+5. Final author inspection covered Smart at 320, 390 and 720 CSS pixels at 100%,
+   Smart at 390/200%, Explicit at 390/100%, and Smart loading/error at 390. The
+   720 stage was narrowed after inspection so the card keeps the same focused
+   reading width instead of stretching across the viewport.
+6. Independent design review then blocked manifest `988b90bc...` because
+   `Configured filament color` wrapped to three visible lines in the 390px 3+3
+   row. The generic Swatch now supports a distinct accessible label. Quiet
+   FilamentColor shows truthful `Configured color` in two lines while exposing
+   the full `Configured filament color` to assistive technology; default/A
+   rendering keeps its original full visible label. Type size, 3+3 placement,
+   swatch/value atomicity and the wire contract are unchanged.
+7. Independent source review later rejected application `8a9cb04a...`: the
+   broad Group child policy required at least two children before the explicit
+   relation validator could accept its documented one-Row form. Relation-shaped
+   registry policies now preserve exact identity/smart cardinality while
+   accepting explicit and resolved summaries with one to six Rows. This source
+   correction changes no presentation geometry. The complete browser matrix
+   was renewed, the Smart/Explicit card and comparison hashes remain identical,
+   and the author re-inspected the normalized comparison above.
+
+Author findings:
+
+- PASS: 390/720 retain the 3+3 secondary pair at 100%; 320/100% and 390/200%
+  collapse intrinsically to full-width stacked readings.
+- PASS: the accessibility floor wins over either Smart or Explicit placement;
+  the explicit override cannot suppress the collapse.
+- PASS: Title and HeadStatus remain one packed identity group and wrap from the
+  same left edge when needed.
+- PASS: Smart and Explicit retain exact temperature, filament and fan content,
+  order, spans and presentation appearances.
+- PASS: the quiet 390px filament label is now two visible lines in both Smart
+  and Explicit, while the full label remains the sole accessible label.
+- PASS: loading/error remain neutral and layout-stable; only loading animates,
+  and reduced motion stops that animation.
+- PASS: no P0-P3 author visual finding remains in this bounded private-Lab gate.
+
+Representative evidence SHA-256 values are `0bacf99c...` (Smart 320),
+`cf67f76e...` (Smart 390), `b633a34d...` (Smart 720), `60f53ab1...` (Smart
+390/200%), `0a8cad00...` (Explicit 390), `ac126a36...` (Smart loading 390) and
+`9060f3f...` (Smart error 390). The exact full hashes are preserved by the
+current iteration validation record.
+
+Author design QA: **PASS after the P2 correction**. The exact independent
+screenshot-first approval for `bc992eac...` is preserved below. Neither result
+cover iPhone/Safari, mounted ChatGPT,
+screen reader, physical printer/Moonraker, public Internet, production
+registration, live-preview replacement or user-outcome acceptance. The
+existing 4200/8451 preview was neither changed nor restarted.
+
+final result: passed
+
+---
+
+# Smart-grouped composable Lab — final independent screenshot-first review
+
+Disposition: **APPROVE** exact source-valid uncommitted application manifest
+`bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`
+within the synthetic private-Lab boundary. The preceding one-Row cardinality
+defect is repaired in this renewed source candidate. No actionable P0, P1 or P2
+design finding remains.
+
+## Renewed exact evidence
+
+The reviewer reopened the 853 by 1844 selected Option 1 target at SHA-256
+`34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`
+and the renewed 764 by 338 normalized target-versus-Smart comparison at
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/comparison-smart-target-vs-implementation.png`,
+SHA-256
+`c2a096aace24f385d38f86dc22cc70494e113d503d2172d1fd38edbdc14f06f4`.
+The generated target has no CSS-viewport or DPR authority, so its card is used
+only after width normalization. The comparison is both the full-card and
+focused readable-region evidence; another crop would add no information.
+
+Smart and Explicit 390px card captures are byte-identical 374 by 308 images at
+SHA-256
+`3752e0f48c41dd75a8cef662c803d1736932f4bc78d8deb476d119e0d8450747`.
+This directly proves visual parity of the inferred grouping and the equivalent
+explicit six-track Row/Column placement while their Lab selectors and canonical
+JSON remain intentionally different.
+
+The reviewer reopened Smart ready at 320, 390 and 720 CSS pixels
+(`0bacf99c300972264c3941d71c819aa17a094f633abde1fb8319ddfd07a52a40`,
+`cf67f76e0d4b29a5a742210b01b9c8804296ad1884c08fb149c7d8841a809d32`,
+`b633a34db4b939e479f23c0e71bb5275ecc90dc9b83b03f1196d099849db3e49`),
+Smart 390px/200%
+(`60f53ab1a3952ebcc24f6a691b92e67d70e07ae723c2a6d9690dced4abfe6c6e`),
+Explicit ready at 320, 390 and 720
+(`9c3d16af5a488c3cb4b5e9fef26e64568399e947a1c9e8a549bc617b5a00a5be`,
+`0a8cad0012745fd77af7256325aea26c0f4a090e75016b1300d6aa6859e8a3f9`,
+`6e3078dc301a6d8a123c2f4fbea1086eb90fc963dcd1c932745d6a6a7e2d5d2c`),
+Explicit 390px/200%
+(`c61d23c287d9d111b2282e8d85855b39f297e799c7e1e707269548c1954b5d03`),
+and Smart loading/error at 390
+(`ac126a36553de55fe24d7cb8d4691a5ad55ac6147f7a52154258ded5302b6c2b`,
+`9060f3f36ff21fa3e13234478cb272ddeb3c8a593b98c073090f01a724e14118`).
+The browser captures are DPR 1; full-page height is 1500 at 100% and 2241 at
+200%.
+
+## Accepted fidelity surfaces
+
+- **Grouping and layout:** Title and HeadStatus stay in one packed identity
+  group with the approved 12px relationship rather than opposite card edges.
+  At 390px/200% the badge wraps from the same left edge. Temperature remains the
+  full-width primary reading. Filament and fan remain a 3+3 supporting pair at
+  390/720 and collapse in source order at 320 and 390/200%, with no overlap,
+  clipping or horizontal overflow.
+- **Spacing and atomic readings:** the primary/supporting rhythm is compact and
+  legible. Each Lucide icon remains attached to one label/value group;
+  `214.6° / 220° C`, the amber swatch plus `#E89B3C`, and `Part cooling` stay
+  atomic within their reading. Smart and Explicit preserve the same ordering
+  and geometry.
+- **Typography and copy:** existing system family, weights, line heights and
+  hierarchy remain coherent. The corrected quiet label is visibly
+  `Configured color` in at most two lines at 390px/100% and one line when space
+  permits. Exact candidate source passes `Configured filament color` as the
+  label's distinct accessible name, and both component and browser assertions
+  require that full name; default/A presentation retains its original full
+  visible label. Text is neither shrunk nor truncated.
+- **Colors, surfaces, icons and image treatment:** neutral canvas/card, subtle
+  border/shadow, muted labels, dark values and amber swatch use the established
+  U1 tokens. There is no tint, gradient, percentage background, vertical
+  divider, Table or printer icon. Omitting the generated target's printer icon,
+  divider and halo remains an intentional accepted scope decision; no fake
+  image, emoji, CSS art or custom SVG replacement appears.
+- **States and accessibility:** ready, loading and acquisition-error captures
+  retain the same reading topology and Card bounds. Loading uses neutral
+  skeleton slots; error uses corresponding static neutral slots and the
+  persistent status below the card, with no old values or overlay. The author
+  12/12 browser run supplies the motion/reduced-motion, state-height and DOM
+  assertions that still screenshots cannot independently prove. Row/Column add
+  layout only and do not present a data-table interaction.
+
+## Comparison history and limits
+
+The earlier manifest `988b90bc...` was blocked for a three-line 390px filament
+label; the renewed compact visible label closes that P2 in the captures above.
+The later `8a9cb04a...` visual rereview remained blocked because independent
+source review invalidated its Explicit one-Row cardinality. This renewed
+`bc992eac...` source-valid manifest keeps the corrected visual bytes and closes
+that source blocker; neither earlier disposition is waived or rewritten.
+
+No browser, app code, server or runtime was changed by this reviewer. This
+approval does not prove Safari/iPhone, mounted ChatGPT, manual keyboard
+traversal, screen-reader speech, physical printer/Moonraker, public Internet,
+production registration or user-outcome acceptance. Ambiguous/partial and
+forced-colors behavior are browser-assertion rather than renewed independent
+pixel evidence.
+
+final result: passed
+
+---
+
+# Smart-grouped composable Lab — source-invalid visual rereview
+
+Disposition: **BLOCKED** for exact uncommitted application manifest
+`8a9cb04a839b8b4c7126bad1748e9b98477bddb5f8ce56f615f118db16a9daf8`.
+Independent source review invalidated this candidate for an Explicit one-Row
+cardinality defect before design approval was finalized. The visual evidence
+below is retained as historical post-P2 evidence only; it cannot approve a
+source-invalid exact candidate.
+
+The reviewer opened the renewed 764 by 338 normalized comparison at SHA-256
+`c2a096aace24f385d38f86dc22cc70494e113d503d2172d1fd38edbdc14f06f4`
+and the Smart and Explicit 374 by 308 card captures. Both card captures are
+byte-identical at SHA-256
+`3752e0f48c41dd75a8cef662c803d1736932f4bc78d8deb476d119e0d8450747`.
+The earlier visual P2 is corrected: at 390px/100% the quiet filament label is
+now `Configured color` on two visible lines, with the swatch and hex kept
+atomic. The author records the full `Configured filament color` accessible
+label, but that semantic claim requires renewed exact-source verification on
+the next valid candidate.
+
+Smart ready captures inspected at 320, 390 and 720 are `0bacf99c...`,
+`cf67f76e...` and `b633a34d...`; Smart 390px/200% is `60f53ab1...`.
+Explicit ready captures at 320, 390 and 720 are `9c3d16af...`, `0a8cad00...`
+and `6e3078dc...`; Explicit 390px/200% is `c61d23c2...`. Smart loading and
+error at 390 are `ac126a36...` and `9060f3f3...`.
+
+Within those screenshots, the packed identity stays close and wraps from the
+same left edge, temperature remains primary, supporting readings are 3+3 at
+390/720 and stack at 320 and 390/200%, and known/loading/error retain the same
+neutral Card anatomy. No tint, gradient, divider, Table or printer icon is
+visible. Those visual observations do not waive the source cardinality defect
+or bind to a future manifest.
+
+No app code, runtime or server was changed by this reviewer. A new frozen
+manifest requires fresh exact-source binding and renewed captures/comparison
+before approval. Safari/iPhone, mounted ChatGPT, keyboard, screen reader,
+reduced-motion animation, physical printer/Moonraker, public Internet,
+production and user-outcome evidence remain outside this review.
+
+final result: blocked
+
+---
+
+# Smart-grouped composable Lab — independent screenshot-first design review
+
+Disposition: **BLOCKED** for exact uncommitted application manifest
+`988b90bc38b504ef1391752052f63076ad6a5f5eeb53b63363d530e420af25bb`.
+The packed identity, semantic grouping, six-track behavior and state geometry
+are accepted, but one actionable P2 typography/grouping mismatch remains at the
+primary 390px mobile width.
+
+## Evidence inspected
+
+The reviewer opened the 853 by 1844 selected Option 1 target at SHA-256
+`34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`,
+the 764 by 345 normalized comparison
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/comparison-smart-target-vs-implementation.png`
+at SHA-256
+`13321a8679af3082b6f68b5cd9ab0b769ea89721b27d56333df5eb7735137539`,
+and its 374 by 315 Smart card crop at SHA-256
+`e6273661de00b8ccee4dfeb6992ac5132cbe95237c43fc5d43b6fd32facd03dc`.
+The comparison is the required same-input full-card and focused-region view;
+no further crop was needed because every label, value and icon is readable.
+The generated target has no CSS viewport or DPR identity, so only its card was
+width-normalized to the 374-pixel implementation card. It is visual intent, not
+runtime evidence.
+
+The reviewer also opened Smart ready captures at 320, 390 and 720 CSS pixels
+(`cd3a92bb281a4fec29adbe2ceca037266c63de4ae24a8a322e31abdb9319a64a`,
+`02459c62a18e57c200c586bfb4368978f1d2231beff415188374bccddbd7cd18`,
+`d489ae46068edc655e0bef59e9e3591970ee6bf765d2e76be49434bb3688795f`),
+Smart 390px/200% (`a45fcabc5d0cd47e547fde0283f87be1375f15397726d61ab13a8bde58733f87`),
+Explicit ready at 320, 390 and 720
+(`b354a3bc3951b1b32ca15c750e00fded4cf0dde1d83fb7bcb7e374b625531bb6`,
+`c56efee01c1ce8a0bc5363266220ea6aa6bbf1e75162ae20d1777683810fe165`,
+`f660cb9f0e28b50da581ed1003e564cc21c39fbe959ae6ac72e4123aeb83255b`),
+Explicit 390px/200%
+(`c95f8310e3f4a751c589a3c402b1864d13293a89210bf09b7076b06a061a59b0`),
+and Smart loading/error at 390
+(`d989b05d6fb96ddcefc9a00374fe3ac829107d89610ebeb52a759f26e635ccad`,
+`865397b2b6277dd24cebdf148c5e58418794ce181083cadd4036a8ce3f75dcdd`).
+These are DPR-1 browser captures with the CSS widths named in their filenames;
+full-page pixel heights are 1500 at 100% and 2276 at 200%.
+
+## Finding
+
+- **P2 — the 390px 3+3 supporting row breaks the filament label into three
+  lines.** In both Smart and Explicit 390px captures the visible label is
+  `Configured` / `filament` / `color`, while the fan side uses one label line
+  plus a two-line value. This exceeds the approved maximum two-line label and
+  makes the two related readings scan as unequal blocks. The normalized target
+  expresses the same relationship with a compact single-line label; literal
+  one-line fidelity is not required at mobile width, but three lines at the
+  primary viewport recreates the density/grouping problem the smart layer is
+  intended to solve. Use a registry-owned truthful quiet-label treatment such
+  as visible `Configured color` with the full `Configured filament color`
+  accessible name, or another closed treatment that reaches at most two visible
+  label lines without shrinking type, changing 3+3 placement or separating the
+  swatch/value. Recapture Smart and Explicit at 390px/100% and renew the combined
+  comparison.
+
+## Accepted surfaces
+
+- **Layout and spacing:** packed Title plus HeadStatus uses the approved 12px
+  relationship at 390 and 720; at 200% the badge wraps from the same left edge.
+  Temperature remains the span-6 primary reading. Supporting readings are 3+3
+  at 390/720 and collapse in source order at 320 and 390/200%. Smart and
+  Explicit card crops at 390 are byte-identical, proving exact visual parity;
+  no overlap or horizontal overflow is visible.
+- **Atomic readings and icons:** temperature target/unit, filament swatch/hex
+  and fan value remain attached to their label and Lucide-family icon. The icon
+  stroke, sizing and vertical alignment are consistent across inspected states.
+- **Typography:** title, badge, muted labels, dominant temperature and quiet
+  supporting values use the existing system scale and weights. The 200% view
+  preserves reading order, atomic units and unclipped values. The P2 label wrap
+  above is the only blocking typography issue.
+- **Colors, surfaces and assets:** neutral canvas/card, restrained line/shadow,
+  dark text, muted labels and amber swatch are coherent. There is no gradient,
+  tint, percentage fill, divider, Table or printer icon. Omitting the target's
+  printer icon/divider/halo remains an accepted scoped divergence; no raster or
+  custom CSS/SVG substitute was introduced.
+- **States and copy:** known content is truthful, loading uses neutral skeleton
+  slots and error uses the same static neutral slots with persistent status
+  below the card. Card topology and visible bounds remain stable. Motion and
+  reduced-motion behavior rely on the recorded browser checks; still images
+  alone cannot prove animation behavior.
+
+## Review limits
+
+No browser or runtime was launched or changed by this reviewer. The supplied
+captures do not prove Safari/iPhone, mounted ChatGPT, keyboard traversal,
+screen-reader output, reduced-motion animation, physical printer/Moonraker,
+public Internet, production registration or user-outcome acceptance. Ambiguous
+fan `Unknown`, partial state and forced-colors behavior were not present in the
+new Smart/Explicit screenshot set and remain assertion rather than independent
+pixel evidence.
+
+final result: blocked
+
+---
+
+# Balanced composable Lab — retained reviewed design QA
 
 ## Inputs
 

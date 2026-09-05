@@ -1,5 +1,89 @@
 # Next agent
 
+## Preserve the reviewed smart-grouping experiment
+
+Decision0052 and the 28-path private-Lab application on
+`codex/u1-composable-ui-experiment` have independent source/protocol and
+screenshot-first design approval. Its exact application manifest is
+`bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`;
+115-file Kit manifest
+`ee08234a369fc24b5e588b165fdd211380c040e4e5b3c02cad96875722abdec8`;
+101,404-byte HTML
+`243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3`;
+166,948-byte MCP
+`ef6c06df914c9fc3c229a9de61421320f56f32376cbe460fee195b136715fb69`.
+Author gates pass 114 UI/shared tests, 23 server/MCP/preview tests with 474
+assertions, both compiler/contract gates, deterministic MCP, twice-reproduced
+Kit and 12/12 isolated Chrome.
+
+Source rereview **REQUESTED CHANGES** on superseded application `8a9cb04a...`:
+its broad Group minimum rejected a valid one-Row explicit `2 + 2 + 2` layout.
+The renewed registry has distinct executable child policies for identity,
+smart summary, explicit summary and resolved summary. Verify exact two-child
+identity and three-child smart summary are unchanged, while explicit/resolved
+summary accepts one to six Rows. The focused regression must preserve authored
+fan/temperature/filament order and call each source once; empty/seven-Row and
+shortened identity/smart forms must reject before acquisition.
+
+The renewed exact `bc992eac...` candidate closes that finding. Independent
+source/protocol review approves fresh 114 UI tests, 23 server/MCP/preview tests
+with 474 assertions, TypeScript/Svelte contracts, 22 invalid zero-reader cases,
+the one-Row positive, 14 envelope tampers, exact artifact identities and
+production isolation. Independent screenshot-first design review also approves
+the exact source-valid candidate with no remaining P0-P2 finding. Preserve both
+earlier failed-candidate histories; they are not waived by the final approval.
+
+Preserve exact twelve-entry pure/client parity and static imports. `Group` must be
+the semantic role; `Row` and `Column` must be layout roles. Each needs strict
+spec/resolved props, executable child policy, independent exact Svelte props and
+a typed registry adapter. `PresentationNode.svelte` may branch only on
+registered root/semantic/layout roles, never concrete element names. The exact
+rule literals are `identity-packed-v1` and `summary-grid6-v1`; they intentionally
+version code-owned algorithms without changing schema version 2.
+Directly verify the exact typed nested schema boundaries: Column, Row,
+identity Group, smart-summary Group, explicit-summary Group and their resolved
+counterparts must each have `z.ZodType` annotations with child schemas bound to
+the corresponding alias. Column policy must accept only temperature, filament
+and fan leaves; the source/type drift test must retain these annotations and
+semantic/layout roles.
+
+Adversarially verify the two-stage resolver. Semantic grouping must run first:
+identity is exactly Title then HeadStatus and summary is temperature, filament
+and fan exactly once with no caller appearance. Smart input may reorder leaves
+but must normalize to temperature, filament, fan. Explicit placement may only
+be a six-track grid with one to six Rows/Columns, one leaf per Column, spans
+1..6 and every row summing to six. Reject holes, starts, offsets, row spans,
+overlap, caller breakpoints/style/CSS/HTML/JavaScript/path/URL before acquisition
+with `readerCalls=0`. Smart/Explicit must preserve semantic and geometry parity;
+all three valid readers are called once; envelope tampering with relation,
+layout source/rule, order, span, appearance, receipt, timestamp or provenance
+must fail.
+
+Inspect `design-qa.md` and the ignored combined comparison
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/comparison-smart-target-vs-implementation.png`
+(`c2a096aa...`). The preceding independent design review remains durably
+BLOCKED against superseded `988b90bc...`: it found a three-line quiet filament
+label. The renewed candidate shows `Configured color` in at most two lines at
+390px while an accessible `Configured filament color` names its fixed group.
+Confirm default/A still visibly
+renders the original full label, the shared Swatch contract change is exact,
+and no wire copy option exists. Smart and Explicit should keep Title/status packed left,
+temperature full-width, and filament/fan 3+3 at 390/720 normal text. Intrinsic
+readability must stack the pair at 320 normal text and 390/200%, including for
+Explicit. Known/loading/error/partial topology and height remain stable; loading
+alone animates. Confirm the neutral Card has no tint, gradient, divider, Table
+or printer icon. Existing A hashes (`7e9df236...`, `7bdc296...`, `cd278ddf...`)
+and balanced B (`dfbf87e3...`) must remain unchanged; new Smart and Explicit
+hashes are `d99581cf...` and `8bc2a4db...`.
+
+The isolated MCP must remain `0.0.5-provisional`, one tool and immutable
+resource `ui://u1-print-studio/experiments/composable-lab-v2-r3.html`, with a
+negative production factory/inventory test. Do not touch the existing 4200/8451
+preview, production, printer, Camera, authentication, Tailscale, open a PR,
+merge, deploy or install a plugin. No Safari/iPhone, mounted ChatGPT,
+screen-reader, real-printer or user-outcome evidence exists. The MCP lifecycle
+safeguard plan remains separate and unimplemented.
+
 ## Preserve the reviewed additive balanced candidate
 
 Decision0051, screenshot-first design and independent source review **APPROVE**

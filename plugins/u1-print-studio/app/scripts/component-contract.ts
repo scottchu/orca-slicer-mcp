@@ -47,6 +47,7 @@ export const leaves: Record<string, string[]> = {
   'common/HeightLegend.svelte': ['div', 'span', 'span', 'span', 'span'],
   'bed-mesh/BedMesh2D.svelte': ['canvas'], 'bed-mesh/BedMesh3D.svelte': ['div', 'span', 'div', 'div'],
   'common/Badge.svelte': ['div', 'span', 'span', 'span', 'span', 'span'], 'common/Card.svelte': ['article'],
+  'common/Group.svelte': ['section'], 'common/Column.svelte': ['div'],
   'common/Metric.svelte': ['div', 'span', 'span', 'span', 'span', 'span'], 'common/Row.svelte': ['div'],
   'common/Swatch.svelte': ['div', 'span', 'span', 'span', 'span', 'span', 'span'], 'common/Table.svelte': ['div'],
   'common/Title.svelte': ['h2'],
@@ -65,7 +66,7 @@ export const debt: Record<string, string[]> = {
   'observation/ObservationFrame.svelte': [],
   'lab/ObservationLab.svelte': ['div','main','section','section'], '../routes/+layout.svelte': [], '../routes/dashboard/fans/+page.svelte': [],
   '../routes/dashboard/thermals/+page.svelte': [], '../routes/dashboard/heads/+page.svelte': [], '../routes/dashboard/queue/+page.svelte': [],
-  '../routes/dashboard/lab/composition/+page.svelte': ['details', 'details', 'h1', 'header', 'label', 'label', 'main', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'p', 'p', 'p', 'pre', 'pre', 'section', 'section', 'section', 'select', 'select', 'summary', 'summary'],
+  '../routes/dashboard/lab/composition/+page.svelte': ['details', 'details', 'h1', 'header', 'label', 'label', 'main', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'option', 'p', 'p', 'p', 'pre', 'pre', 'section', 'section', 'section', 'select', 'select', 'summary', 'summary'],
 };
 
 export function exactTags(actual: string[], expected: string[]): boolean {

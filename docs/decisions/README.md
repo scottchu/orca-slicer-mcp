@@ -56,6 +56,7 @@ silently changed.
 | [0049](0049-place-future-camera-information-in-media-overlays.md) | Place future Camera information in media-bottom overlays | User-selected future direction; implementation and acceptance pending |
 | [0050](0050-use-a-build-time-registry-for-the-private-composable-lab.md) | Use a build-time registry for the private composable Lab | Accepted for isolated private-lab learning; not production architecture or cutover |
 | [0051](0051-add-a-balanced-private-lab-composition-variant.md) | Add a balanced private-Lab composition variant | Accepted additive experiment; not production architecture or cutover |
+| [0052](0052-resolve-semantic-groups-before-closed-layout-overrides.md) | Resolve semantic groups before closed layout overrides | Accepted additive experiment; not production architecture or cutover |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

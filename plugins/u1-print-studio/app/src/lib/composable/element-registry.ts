@@ -9,17 +9,28 @@ import {
 } from './value-contract.js';
 
 export const PRESENTATION_ELEMENT_TYPES = [
-  'Card', 'Title', 'Stack', 'Grid', 'Inline',
+  'Card', 'Title', 'Stack', 'Grid', 'Inline', 'Group', 'Row', 'Column',
   'HeadStatus', 'HeadTemperature', 'FilamentColor', 'FanRelation',
 ] as const;
 export type PresentationElementType = (typeof PRESENTATION_ELEMENT_TYPES)[number];
-export type PresentationElementRole = 'root' | 'title' | 'layout' | 'domain';
+export type PresentationElementRole = 'root' | 'title' | 'layout' | 'semantic' | 'domain';
 
 export const layoutGapSchema = z.enum(['compact', 'regular', 'relaxed']);
 export const gridColumnsSchema = z.enum(['one', 'two']);
 export const gridArrangementSchema = z.literal('lead');
 export const inlineGapSchema = z.enum(['compact', 'regular']);
 export const inlineDistributionSchema = z.enum(['packed', 'split']);
+export const groupRelationSchema = z.enum(['identity', 'summary']);
+export const groupLayoutGapSchema = z.enum(['compact', 'regular']);
+export const groupGridLayoutSchema = z.object({
+  kind: z.literal('grid'),
+  tracks: z.literal(6),
+  rowGap: groupLayoutGapSchema,
+  columnGap: groupLayoutGapSchema,
+}).strict();
+export const columnSpanSchema = z.union([
+  z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5), z.literal(6),
+]);
 export const cardDensitySchema = z.enum(['compact', 'comfortable']);
 export const titleSizeSchema = z.enum(['medium', 'large']);
 export const titleContentSchema = z.enum(['subject', 'compactStatus', 'inspectionGroup', 'material', 'status']);
@@ -49,6 +60,7 @@ type ElementDefinition = {
   specPropsSchema: z.AnyZodObject;
   resolvedPropsSchema: z.AnyZodObject;
   children: ChildPolicy;
+  childPolicies?: Readonly<Record<string, ChildPolicy>>;
 };
 
 /**
@@ -64,7 +76,7 @@ export const elementRegistry = {
       tint: resolvedSoftTintSchema.nullable(),
       transformEvidence: resolvedColorValueSchema.nullable(),
     }).strict(),
-    children: { kind: 'tuple', positions: [['Title', 'Inline'], ['Stack', 'Grid']] },
+    children: { kind: 'tuple', positions: [['Title', 'Inline', 'Group'], ['Stack', 'Grid', 'Group']] },
   },
   Title: {
     type: 'Title', role: 'title', field: null, source: null,
@@ -92,6 +104,52 @@ export const elementRegistry = {
     specPropsSchema: z.object({ gap: inlineGapSchema, distribution: inlineDistributionSchema }).strict(),
     resolvedPropsSchema: z.object({ gap: inlineGapSchema, distribution: inlineDistributionSchema }).strict(),
     children: { kind: 'tuple', positions: [['Title'], ['HeadStatus']] },
+  },
+  Group: {
+    type: 'Group', role: 'semantic', field: null, source: null,
+    specPropsSchema: z.object({ relation: groupRelationSchema, layout: groupGridLayoutSchema.optional() }).strict(),
+    resolvedPropsSchema: z.object({
+      relation: groupRelationSchema,
+      layoutSource: z.enum(['smart', 'explicit']),
+      defaultRule: z.enum(['identity-packed-v1', 'summary-grid6-v1']),
+      tracks: z.literal(6).nullable(),
+      rowGap: groupLayoutGapSchema,
+      columnGap: groupLayoutGapSchema,
+    }).strict(),
+    children: {
+      kind: 'array',
+      allowed: ['Title', 'HeadStatus', 'HeadTemperature', 'FilamentColor', 'FanRelation', 'Row'],
+      min: 1,
+      max: 6,
+    },
+    childPolicies: {
+      identity: { kind: 'tuple', positions: [['Title'], ['HeadStatus']] },
+      smartSummary: {
+        kind: 'tuple',
+        positions: [
+          ['HeadTemperature', 'FilamentColor', 'FanRelation'],
+          ['HeadTemperature', 'FilamentColor', 'FanRelation'],
+          ['HeadTemperature', 'FilamentColor', 'FanRelation'],
+        ],
+      },
+      explicitSummary: { kind: 'array', allowed: ['Row'], min: 1, max: 6 },
+      resolvedSummary: { kind: 'array', allowed: ['Row'], min: 1, max: 6 },
+    },
+  },
+  Row: {
+    type: 'Row', role: 'layout', field: null, source: null,
+    specPropsSchema: z.object({}).strict(),
+    resolvedPropsSchema: z.object({
+      columnGap: groupLayoutGapSchema,
+      collapse: z.literal('intrinsic'),
+    }).strict(),
+    children: { kind: 'array', allowed: ['Column'], min: 1, max: 6 },
+  },
+  Column: {
+    type: 'Column', role: 'layout', field: null, source: null,
+    specPropsSchema: z.object({ colSpan: columnSpanSchema }).strict(),
+    resolvedPropsSchema: z.object({ colSpan: columnSpanSchema }).strict(),
+    children: { kind: 'tuple', positions: [['HeadTemperature', 'FilamentColor', 'FanRelation']] },
   },
   HeadStatus: {
     type: 'HeadStatus', role: 'domain', field: 'head.status', source: 'status',

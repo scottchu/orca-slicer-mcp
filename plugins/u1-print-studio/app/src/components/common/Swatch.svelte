@@ -2,8 +2,9 @@
   import ColorSwatch from './ColorSwatch.svelte';
   import Skeleton from './Skeleton.svelte';
   import StaticSkeleton from './StaticSkeleton.svelte';
-  let { label, color, display, state, appearance = 'default' }: {
+  let { label, accessibleLabel, color, display, state, appearance = 'default' }: {
     label: string;
+    accessibleLabel?: string;
     color: string | null;
     display: string;
     state: 'known' | 'unknown' | 'unavailable' | 'loading';
@@ -11,7 +12,7 @@
   } = $props();
 </script>
 <div class="swatch-cell" class:quiet={appearance === 'quiet'} data-node-kind="Swatch" data-value-state={state}>
-  <span class="label">{label}</span>
+  <span class="label" role={accessibleLabel && accessibleLabel !== label ? 'group' : undefined} aria-label={accessibleLabel && accessibleLabel !== label ? accessibleLabel : undefined}>{label}</span>
   <span class="value-frame">
     {#if state === 'loading'}
       <span class="skeleton-slot"><Skeleton shape="value" /></span>

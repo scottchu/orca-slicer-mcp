@@ -56,7 +56,7 @@ test('serves only the exact prerendered page and its referenced immutable asset 
   expect(response.status).toBe(200);
   expect(response.headers.get('content-security-policy')).toContain("default-src 'none'");
   expect(body).toEqual(expected);
-  expect(hash(body)).toBe('b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509');
+  expect(hash(body)).toBe('243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3');
 
   const head = await fetch(origin + COMPOSABLE_PREVIEW_PATH, { method: 'HEAD' });
   expect(head.status).toBe(200);
@@ -76,8 +76,8 @@ test('serves only the exact prerendered page and its referenced immutable asset 
     expect(assetHead.status, reference).toBe(200);
     expect(await assetHead.text()).toBe('');
   }
-  expect((await fetch(origin + '/_app/immutable/nodes/1.KNtzM1Mp.js')).status).toBe(200);
-  expect((await fetch(origin + '/_app/immutable/nodes/1.BieyvGzI.js')).status).toBe(404);
+  expect((await fetch(origin + '/_app/immutable/nodes/1.BHy6paUx.js')).status).toBe(200);
+  expect((await fetch(origin + '/_app/immutable/nodes/1.KNtzM1Mp.js')).status).toBe(404);
 });
 
 test('serves immutable bytes from the single validated construction snapshot', async () => {

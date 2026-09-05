@@ -1,5 +1,100 @@
 # F0 dual-subsystem foundation handoff
 
+## Current reviewed experiment: smart grouping before placement
+
+Decision0052 implements the smallest additive UI-003 experiment requested after
+the balanced card review. The private vocabulary has exactly twelve build-time
+registered entries: existing types plus common `Group`, `Row` and `Column`.
+`Group` is a semantic role and `Row`/`Column` are layout roles. Pure strict
+schemas/child policies, static Svelte imports, independent exact prop contracts
+and typed adapters have exact parity. The recursive renderer branches only on
+registered root/semantic/layout roles and contains no element-name dispatch.
+
+The resolver always validates semantic groups before placement. Identity is
+exactly Title plus HeadStatus and resolves packed with `identity-packed-v1`.
+Summary is exactly temperature, filament and fan once each, with caller
+appearance forbidden. Smart input affinity orders those leaves and
+`summary-grid6-v1` creates a span-6 temperature row followed by a span-3 plus
+span-3 filament/fan row. Explicit input preserves authored rows/columns but is
+limited to six tracks, 1..6 Rows/Columns, one leaf per Column, spans 1..6 and a
+row sum of six. It cannot change membership, values, appearance, provenance or
+the intrinsic accessibility collapse. Resolved trees/envelopes correlate
+relation, layout source, versioned rules, order, spans, gaps, appearance,
+receipts, timestamps and provenance.
+
+Independent source rereview rejected the preceding `8a9cb04a...` application
+because the broad Group policy's minimum of two children incorrectly rejected a
+valid explicit one-Row `2 + 2 + 2` form. The registry now owns distinct child
+policies for identity, smart summary, explicit summary and resolved summary.
+Identity remains exactly two children, smart summary remains exactly three,
+while explicit/resolved summary accepts one to six Rows. A focused regression
+accepts the one-Row form, preserves authored fan/temperature/filament order and
+calls all three readers once; empty/seven-Row and shortened identity/smart
+forms reject. Independent source/protocol rereview approves the renewed exact
+candidate with fresh focused tests and artifact verification.
+
+The Lab defaults to Smart grouped summary and provides Explicit 6-column rows
+for comparison while preserving every legacy shape. At normal text the
+secondary pair remains 3+3 at 390/720 and intrinsically stacks at 320; it also
+stacks at 390/200%. Title/status are packed at 12px, group gap is 20px, column
+gap 16px, icon/text 12px and label/value 4px. Group-local composition removes
+the old loose fixed-height behavior. Stable neutral known/loading/error/partial
+topology remains within 1px, with no tint, gradient, divider, Table or printer
+icon. The three A specs/hashes/default rendering are unchanged. Balanced B's
+spec/hash is unchanged and shares the quiet visible-label refinement below.
+
+Independent design review blocked the first author manifest `988b90bc...` on a
+P2 three-line filament label at 390px. The generic common Swatch now accepts a
+separate accessible label: quiet FilamentColor visibly uses truthful
+`Configured color` in two lines, while assistive technology receives the full
+`Configured filament color`. Default/A visible copy, type size, 3+3 placement,
+swatch/value atomicity and the wire contract remain unchanged. Preliminary
+source review also found that the new nested schema locals lacked direct model
+annotations. Column, Row, each Group variant and their resolved counterparts
+now have exact `z.ZodType` boundaries and alias-bound children; source/type drift
+tests cover them and semantic/layout roles. Column child policy is narrowed to
+the three summary leaves. Independent source/protocol and screenshot-first
+design review both approve the renewed exact identity; both superseded blocked
+candidate histories remain preserved in the validation and design records.
+
+The isolated MCP is `0.0.5-provisional`, with one read-only composition tool and
+one immutable resource
+`ui://u1-print-studio/experiments/composable-lab-v2-r3.html`; production
+factory/inventory negatives pass. Each valid Smart/Explicit request reads
+status, materials and environment once. Invalid schemas reject before readers,
+fan absence/ambiguity stays `Unknown`, and source/receive/generation timestamps
+remain distinct.
+
+Exact author identity/evidence:
+
+- 28-path application manifest: `bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`
+- 115-file Kit manifest: `ee08234a369fc24b5e588b165fdd211380c040e4e5b3c02cad96875722abdec8`
+- 101,404-byte Lab HTML: `243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3`
+- 166,948-byte MCP resource: `ef6c06df914c9fc3c229a9de61421320f56f32376cbe460fee195b136715fb69`
+- Smart/Explicit canonical specs: `d99581cf7d73baff45f5861d7f527621dcff156efc4ef78f564905b07e0205d3`
+  and `8bc2a4db09c4da45e44e577e208a8a41afad554b706f1d4a8fbaf9bd07b443fa`
+- 764x338 normalized visual comparison: `c2a096aace24f385d38f86dc22cc70494e113d503d2172d1fd38edbdc14f06f4`
+
+Final author checks pass 114 UI/shared tests, 23 server/MCP/preview tests with
+474 assertions, TypeScript, zero-diagnostic Svelte/component contracts,
+deterministic MCP reconstruction, two identical Kit builds and 12/12 isolated
+Chrome. Full commands, first-run pin failure and evidence limits are in
+`VALIDATION.md`; author visual history is in `design-qa.md`.
+
+Independent source/protocol review reran 114 UI tests, 23 server/MCP/preview
+tests with 474 assertions, TypeScript/Svelte contracts, 22 invalid zero-reader
+cases, the valid one-Row case and 14 envelope tamper cases; it also verified the
+exact artifacts and production isolation. Independent screenshot-first review
+approves the exact source-valid visual evidence with no remaining P0-P2 finding.
+
+No PR, merge, deployment, preview activation or plugin installation is implied
+by the repository commit. Do not alter the existing 4200/8451 preview,
+production, printer, Camera,
+authentication or Tailscale; do not PR, merge, deploy or install a plugin. No
+Safari/iPhone, mounted ChatGPT, screen-reader, physical-printer or user-outcome
+acceptance exists. The separately recorded descriptor/lifecycle safeguard plan
+is still unimplemented.
+
 ## Current reviewed candidate: balanced B composition
 
 Decision0051 additively introduces Lab-only `balanced`; the three A specs and

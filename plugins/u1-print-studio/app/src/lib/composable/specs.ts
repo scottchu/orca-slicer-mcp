@@ -98,3 +98,72 @@ export const t1BalancedCompositionSpec: PresentationSpec = {
     ],
   },
 };
+
+export const t1SmartGroupedSummarySpec: PresentationSpec = {
+  schemaVersion: 2,
+  subject: { kind: 'toolHead', id: 'T1' },
+  root: {
+    type: 'Card',
+    density: 'compact',
+    children: [
+      {
+        type: 'Group',
+        relation: 'identity',
+        children: [
+          { type: 'Title', content: 'subject', size: 'large' },
+          { type: 'HeadStatus' },
+        ],
+      },
+      {
+        type: 'Group',
+        relation: 'summary',
+        // Deliberately listed out of visual order: smart grouping owns the
+        // stable temperature, filament, fan affinity order.
+        children: [
+          { type: 'FanRelation' },
+          { type: 'HeadTemperature' },
+          { type: 'FilamentColor' },
+        ],
+      },
+    ],
+  },
+};
+
+export const t1ExplicitGroupedSummarySpec: PresentationSpec = {
+  schemaVersion: 2,
+  subject: { kind: 'toolHead', id: 'T1' },
+  root: {
+    type: 'Card',
+    density: 'compact',
+    children: [
+      {
+        type: 'Group',
+        relation: 'identity',
+        children: [
+          { type: 'Title', content: 'subject', size: 'large' },
+          { type: 'HeadStatus' },
+        ],
+      },
+      {
+        type: 'Group',
+        relation: 'summary',
+        layout: { kind: 'grid', tracks: 6, rowGap: 'regular', columnGap: 'regular' },
+        children: [
+          {
+            type: 'Row',
+            children: [
+              { type: 'Column', colSpan: 6, children: [{ type: 'HeadTemperature' }] },
+            ],
+          },
+          {
+            type: 'Row',
+            children: [
+              { type: 'Column', colSpan: 3, children: [{ type: 'FilamentColor' }] },
+              { type: 'Column', colSpan: 3, children: [{ type: 'FanRelation' }] },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+};

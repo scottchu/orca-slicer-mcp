@@ -1,5 +1,94 @@
 # Project state
 
+## Current reviewed experiment: semantic grouping before six-track placement
+
+Decision0052 is an additive private-Lab prototype on
+`codex/u1-composable-ui-experiment`; independent source/protocol and
+screenshot-first design review approve the exact application identity below.
+The pure and Svelte registries now have exact twelve-entry
+parity after adding built-in common `Group`, `Row`, and `Column`. `Group` has the
+semantic role, while `Row` and `Column` have layout roles. Every entry owns
+strict spec/resolved props, child policy, a static Svelte import, an independent
+typed prop contract and adapter. The recursive renderer dispatches only on
+registered root/semantic/layout roles and never on a concrete element name.
+
+Grouped Cards resolve in two deterministic stages. Semantic membership is
+validated first: identity is exactly Title plus HeadStatus; summary is exactly
+temperature, filament and fan once each. Optional explicit layout can then
+change placement only. Smart input is normalized to temperature, filament, fan
+and resolves as six tracks followed by three plus three. Explicit input uses a
+strict six-track grid containing one to six Rows and Columns, exact integer
+spans from one through six, one leaf per Column and a row sum of six. There are
+no holes, starts, offsets, row spans, overlaps, caller breakpoints, style, CSS,
+HTML, JavaScript, paths or URLs. Resolved output records `layoutSource`, exact
+order/spans/gaps, intrinsic collapse, appearance and the versioned code-owned
+rules `identity-packed-v1` and `summary-grid6-v1`.
+
+The default Lab variant is Smart grouped summary, with Explicit 6-column rows
+as its comparison. Identity is packed left with a 12px gap; summary has a 20px
+row gap, 16px column gap, 12px icon/text gap and 4px label/value gap. The
+secondary pair remains 3+3 at 390/720 normal text and collapses to stacked at
+320 normal text and 390/200% through an intrinsic accessibility floor that the
+explicit override cannot suppress. The Card stays neutral with no tint,
+gradient, divider, table or printer icon. Known/loading/error/partial retain the
+same resolved topology. Existing A specs, hashes and default rendering remain
+unchanged. Balanced B's spec/hash remains unchanged and shares the same quiet
+visible-label refinement. Acquisition is still one read each for status, materials and
+environment with distinct timestamps/provenance and truthful `Unknown` for
+absent or ambiguous fan relations.
+
+Independent design review blocked the first author identity `988b90bc...` on
+one P2: quiet filament copy wrapped to three visible lines at 390px. The generic
+Swatch now supports a separate accessible label; quiet FilamentColor visibly
+uses truthful `Configured color` in two lines and retains the full
+`Configured filament color` for assistive technology. Default/A visible copy,
+type size, 3+3 placement, swatch/value atomicity and the wire contract remain
+unchanged. Preliminary source review also found untyped nested schema locals;
+all new Column/Row/identity/summary/union spec and resolved boundaries now have
+direct exact `z.ZodType` annotations plus alias-bound child schemas and drift
+tests. Column policy now permits only the three summary leaves. Independent
+rereview then rejected application `8a9cb04a...` because its broad Group policy
+required at least two children before the explicit validator could accept the
+documented one-Row form. The registry now owns distinct identity, smart-summary,
+explicit-summary and resolved-summary child policies. Exact identity/smart
+cardinality is retained; explicit/resolved summary accepts one to six Rows. A
+one-Row `2 + 2 + 2` regression preserves authored leaf order and reads status,
+materials and environment once. Independent source/protocol rereview approves
+the repair with 22 invalid zero-reader cases, the positive one-Row case, 14
+envelope tamper cases, exact artifact reconstruction and production negatives.
+
+Final author checks pass 114 UI/shared-consumer tests, 23 server/MCP/preview
+tests with 474 assertions, TypeScript, zero-diagnostic Svelte/component
+contracts, deterministic MCP reconstruction, a twice-reproduced separate Kit
+build, and 12/12 isolated Chrome cases. The frozen 28-path application manifest
+is `bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`.
+The 115-file Kit manifest is
+`ee08234a369fc24b5e588b165fdd211380c040e4e5b3c02cad96875722abdec8`;
+the 101,404-byte Lab HTML is
+`243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3`;
+the 166,948-byte MCP resource is
+`ef6c06df914c9fc3c229a9de61421320f56f32376cbe460fee195b136715fb69`.
+The isolated implementation is `0.0.5-provisional` at immutable resource
+`ui://u1-print-studio/experiments/composable-lab-v2-r3.html`; it still exposes
+one private read-only tool/resource and remains absent from production factory
+inventory.
+
+Author visual QA passes after the P2 correction. Independent screenshot-first
+design review also approves the exact source-valid application identity with no
+remaining P0-P2 finding.
+The 764x338 normalized comparison is
+`c2a096aace24f385d38f86dc22cc70494e113d503d2172d1fd38edbdc14f06f4`;
+the 390px Smart card crop is
+`3752e0f48c41dd75a8cef662c803d1736932f4bc78d8deb476d119e0d8450747`.
+The full matrix covers Smart and Explicit at 320/390/720 and 100/200% text,
+plus states, reduced motion, forced colors and focus. The visual approval remains
+synthetic local evidence, not actual-device acceptance.
+
+The existing 4200/8451 preview was not restarted or modified. Production,
+printer, Camera, authentication and Tailscale remain untouched; no PR, merge,
+deployment or plugin installation occurred. The separately recorded MCP
+process-lifecycle safeguard plan remains unimplemented.
+
 ## Current reviewed candidate: additive balanced private-Lab composition
 
 Decision0051 adds the selected Option 1 `balanced` variant without changing the

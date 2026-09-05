@@ -4,7 +4,7 @@
   import type { PageData } from './$types';
   let { data }: { data: PageData } = $props();
   let scenario = $state('unknown');
-  let variant = $state('card');
+  let variant = $state('smart');
   const selected = $derived(data.presentations[scenario][variant] as { canonicalSpec: unknown; viewModel: ComposableViewModel });
 </script>
 
@@ -14,7 +14,7 @@
   <header class="intro">
     <p class="eyebrow">Provisional F0 / UI-003 experiment</p>
     <h1>Entity-bound composition lab v2</h1>
-    <p>T1 binds once. Card, Title, Inline, Stack, and Grid arrange closed status, temperature, filament color, and independently evidenced fan-relation nodes.</p>
+    <p>T1 binds once. Smart semantic groups resolve first; an optional closed six-track Row and Column override can change placement without changing information.</p>
   </header>
 
   <section class="controls" aria-label="Composition controls">
@@ -30,6 +30,8 @@
     </label>
     <label>Composition shape
       <select bind:value={variant}>
+        <option value="smart">Smart grouped summary</option>
+        <option value="explicit">Explicit 6-column rows</option>
         <option value="card">Entity card</option>
         <option value="compact">Compact grid</option>
         <option value="larger">Larger composition</option>

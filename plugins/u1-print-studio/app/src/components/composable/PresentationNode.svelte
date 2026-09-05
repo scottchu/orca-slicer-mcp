@@ -8,7 +8,7 @@
   const Component = $derived(registered.component);
 </script>
 
-{#if registered.role === 'root' || registered.role === 'layout'}
+{#if registered.role === 'root' || registered.role === 'layout' || registered.role === 'semantic'}
   <Component {...registered.props}>
     {#each registered.children ?? [] as child}<PresentationNode node={child} {subjectLabel} {busy} />{/each}
   </Component>

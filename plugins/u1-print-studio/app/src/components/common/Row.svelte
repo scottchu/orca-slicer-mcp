@@ -1,8 +1,15 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  let { children }: { children: Snippet } = $props();
+  let { children, columnGap = 'regular', collapse = 'intrinsic' }: {
+    children: Snippet;
+    columnGap?: 'compact' | 'regular';
+    collapse?: 'intrinsic';
+  } = $props();
 </script>
-<div class="row" data-node-kind="Row">{@render children()}</div>
+
+<div class="row" class:compact={columnGap === 'compact'} data-collapse={collapse} data-node-kind="Row">{@render children()}</div>
+
 <style>
-  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); min-width: 0; }
+  .row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 16px; min-width: 0; }
+  .row.compact { column-gap: var(--u1-space-3); }
 </style>

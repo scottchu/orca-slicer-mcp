@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canonicalizePresentationSpec, titleText, type PresentationField, type PresentationNode, type PresentationSpec } from '../composable/schema.js';
+import { canonicalizePresentationSpec, titleText, type PresentationField, type PresentationNode, type PresentationSpec, type SummaryDomainNode } from '../composable/schema.js';
 import { derivePresentationPlan, type SourceGroup } from '../composable/planner.js';
 import { canonicalPresentationSha256 } from '../composable/hash.js';
 import { composableEnvelopeSchema, type ComposableEnvelope } from '../composable/envelope.js';
-import { composableViewModelSchema, type ComposableViewModel, type ResolvedNode, type ResolvedValue, type ValueProvenance } from '../composable/view-model.js';
+import { composableViewModelSchema, type ComposableViewModel, type ResolvedNode, type ResolvedRowNode, type ResolvedValue, type ValueProvenance } from '../composable/view-model.js';
 
 const timestamp = z.string().datetime({ offset: true });
 const statusSourceSchema = z.object({
@@ -138,7 +138,8 @@ const resolveNode = (node: PresentationNode, acquired: Acquired): ResolvedNode =
     if (color && color.kind !== 'color') throw new Error('Invalid card transform resolver');
     const title = resolveNode(node.children[0], acquired);
     const layout = resolveNode(node.children[1], acquired);
-    if ((title.type !== 'Title' && title.type !== 'Inline') || (layout.type !== 'Stack' && layout.type !== 'Grid')) throw new Error('Invalid card resolver');
+    if ((title.type !== 'Title' && title.type !== 'Inline' && !(title.type === 'Group' && title.relation === 'identity'))
+      || (layout.type !== 'Stack' && layout.type !== 'Grid' && !(layout.type === 'Group' && layout.relation === 'summary'))) throw new Error('Invalid card resolver');
     return {
       type: 'Card',
       density: node.density,
@@ -147,6 +148,58 @@ const resolveNode = (node: PresentationNode, acquired: Acquired): ResolvedNode =
         : null,
       transformEvidence: color,
       children: [title, layout],
+    };
+  }
+  if (node.type === 'Group') {
+    if (node.relation === 'identity') {
+      const title = resolveNode(node.children[0], acquired);
+      const value = resolveField('head.status', acquired);
+      if (title.type !== 'Title' || value.kind !== 'text') throw new Error('Invalid identity group resolver');
+      return {
+        type: 'Group', relation: 'identity', layoutSource: 'smart', defaultRule: 'identity-packed-v1', tracks: null,
+        rowGap: 'regular', columnGap: 'regular',
+        children: [title, { type: 'HeadStatus', appearance: 'headerBadge', value }],
+      };
+    }
+    const resolveSummaryLeaf = (leaf: SummaryDomainNode): Extract<ResolvedNode, { type: 'HeadTemperature' | 'FilamentColor' | 'FanRelation' }> => {
+      const resolved = resolveNode(leaf, acquired);
+      if (resolved.type === 'HeadTemperature') return { ...resolved, appearance: 'hero' };
+      if (resolved.type === 'FilamentColor' || resolved.type === 'FanRelation') return { ...resolved, appearance: 'quiet' };
+      throw new Error('Invalid summary leaf resolver');
+    };
+    const explicitLayout = 'layout' in node ? node.layout : null;
+    const layout = explicitLayout ?? { kind: 'grid' as const, tracks: 6 as const, rowGap: 'regular' as const, columnGap: 'regular' as const };
+    const rows: ResolvedRowNode[] = explicitLayout
+      ? node.children.map((row): ResolvedRowNode => {
+          if (row.type !== 'Row') throw new Error('Invalid explicit summary row');
+          return {
+            type: 'Row' as const,
+            columnGap: layout.columnGap,
+            collapse: 'intrinsic' as const,
+            children: row.children.map((column) => ({
+              type: 'Column' as const,
+              colSpan: column.colSpan,
+              children: [resolveSummaryLeaf(column.children[0])],
+            })),
+          };
+        })
+      : ((): ResolvedRowNode[] => {
+          const rank = { HeadTemperature: 0, FilamentColor: 1, FanRelation: 2 } as const;
+          const leaves = [...node.children]
+            .filter((child): child is SummaryDomainNode => child.type === 'HeadTemperature' || child.type === 'FilamentColor' || child.type === 'FanRelation')
+            .sort((left, right) => rank[left.type] - rank[right.type])
+            .map(resolveSummaryLeaf);
+          return [
+            { type: 'Row' as const, columnGap: layout.columnGap, collapse: 'intrinsic' as const, children: [{ type: 'Column' as const, colSpan: 6 as const, children: [leaves[0]] }] },
+            { type: 'Row' as const, columnGap: layout.columnGap, collapse: 'intrinsic' as const, children: [
+              { type: 'Column' as const, colSpan: 3 as const, children: [leaves[1]] },
+              { type: 'Column' as const, colSpan: 3 as const, children: [leaves[2]] },
+            ] },
+          ];
+        })();
+    return {
+      type: 'Group', relation: 'summary', layoutSource: explicitLayout ? 'explicit' : 'smart', defaultRule: 'summary-grid6-v1', tracks: 6,
+      rowGap: layout.rowGap, columnGap: layout.columnGap, children: rows,
     };
   }
   if (node.type === 'Stack') {
@@ -161,6 +214,7 @@ const resolveNode = (node: PresentationNode, acquired: Acquired): ResolvedNode =
     if (title.type !== 'Title' || status.type !== 'HeadStatus') throw new Error('Invalid inline resolver');
     return { type: 'Inline', gap: node.gap, distribution: node.distribution, children: [title, status] };
   }
+  if (node.type === 'Row' || node.type === 'Column') throw new Error('Rows and columns resolve only inside an explicit summary group');
   if (node.type === 'Title') return { type: 'Title', text: titleText(node.content), size: node.size };
   if (node.type === 'HeadStatus') {
     const value = resolveField('head.status', acquired);

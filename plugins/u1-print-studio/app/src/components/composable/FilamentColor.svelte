@@ -7,4 +7,4 @@
   const display = $derived(value.state === 'known' ? value.hex ?? 'Unknown' : 'Unknown');
 </script>
 
-<Reading icon={Spool} appearance={appearance === 'quiet' ? 'quiet' : 'default'}><Swatch label="Configured filament color" color={value.hex} {display} state={value.state} appearance={appearance === 'quiet' ? 'quiet' : 'default'} /></Reading>
+<Reading icon={Spool} appearance={appearance === 'quiet' ? 'quiet' : 'default'}><Swatch label={appearance === 'quiet' ? 'Configured color' : 'Configured filament color'} accessibleLabel={appearance === 'quiet' ? 'Configured filament color' : undefined} color={value.hex} {display} state={value.state} appearance={appearance === 'quiet' ? 'quiet' : 'default'} /></Reading>

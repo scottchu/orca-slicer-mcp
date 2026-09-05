@@ -11,8 +11,11 @@ import {
 } from '../../lib/composable/element-registry';
 import type { ResolvedNode } from '../../lib/composable/view-model';
 import Card from '../common/Card.svelte';
+import Column from '../common/Column.svelte';
 import Grid from '../common/Grid.svelte';
+import Group from '../common/Group.svelte';
 import Inline from '../common/Inline.svelte';
+import Row from '../common/Row.svelte';
 import Stack from '../common/Stack.svelte';
 import Title from '../common/Title.svelte';
 import FanRelation from './FanRelation.svelte';
@@ -29,6 +32,9 @@ type ActualComponentPropsByElement = {
   Stack: ComponentProps<typeof Stack>;
   Grid: ComponentProps<typeof Grid>;
   Inline: ComponentProps<typeof Inline>;
+  Group: ComponentProps<typeof Group>;
+  Row: ComponentProps<typeof Row>;
+  Column: ComponentProps<typeof Column>;
   HeadStatus: ComponentProps<typeof HeadStatus>;
   HeadTemperature: ComponentProps<typeof HeadTemperature>;
   FilamentColor: ComponentProps<typeof FilamentColor>;
@@ -48,7 +54,7 @@ type ContractChecks = {
 };
 type RoleFor<Type extends PresentationElementType> = (typeof elementRegistry)[Type]['role'];
 type ChildReader<Type extends PresentationElementType> =
-  RoleFor<Type> extends 'root' | 'layout'
+  RoleFor<Type> extends 'root' | 'layout' | 'semantic'
     ? (node: ResolvedNodeByElement[Type]) => readonly ResolvedNode[]
     : null;
 
@@ -102,6 +108,9 @@ export const componentRegistryContractChecks = {
   Stack: true,
   Grid: true,
   Inline: true,
+  Group: true,
+  Row: true,
+  Column: true,
   HeadStatus: true,
   HeadTemperature: true,
   FilamentColor: true,
@@ -120,6 +129,9 @@ export const componentRegistry = {
   Stack: defineComponentEntry('Stack', Stack, (node) => ({ gap: node.gap, inset: true, composed: true }), (node) => node.children),
   Grid: defineComponentEntry('Grid', Grid, (node) => ({ columns: node.columns, gap: node.gap, inset: true, arrangement: node.arrangement }), (node) => node.children),
   Inline: defineComponentEntry('Inline', Inline, (node) => ({ gap: node.gap, distribution: node.distribution, inset: true, composed: true }), (node) => node.children),
+  Group: defineComponentEntry('Group', Group, (node) => ({ relation: node.relation, rowGap: node.rowGap, inset: true }), (node) => node.children),
+  Row: defineComponentEntry('Row', Row, (node) => ({ columnGap: node.columnGap, collapse: node.collapse }), (node) => node.children),
+  Column: defineComponentEntry('Column', Column, (node) => ({ colSpan: node.colSpan }), (node) => node.children),
   HeadStatus: defineComponentEntry('HeadStatus', HeadStatus, (node) => ({ value: node.value, appearance: node.appearance }), null),
   HeadTemperature: defineComponentEntry('HeadTemperature', HeadTemperature, (node) => ({ value: node.value, appearance: node.appearance }), null),
   FilamentColor: defineComponentEntry('FilamentColor', FilamentColor, (node) => ({ value: node.value, appearance: node.appearance }), null),
