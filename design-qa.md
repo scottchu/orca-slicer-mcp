@@ -1,3 +1,97 @@
+# Merge-only integrated composable Lab — exact visual review
+
+Disposition: **APPROVE** documentation head
+`d9f51574ff1224b93c330525a426118dd5da516a`, tree
+`1e491d90f54e9e2f84df366da959798ed3532edb`, bound to merge/application
+commit `1354f737a8535787afd69acd6cad6826911f200c`, tree
+`d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`, and the sorted 60-path
+application manifest
+`e5886589ff7dc60ba0fe867956b3e11e490f941d63cc0ccda3f09fb784307770`.
+No actionable P0, P1 or P2 visual finding remains. Any application-byte change
+invalidates this disposition.
+
+## Fresh integrated evidence
+
+The integrated 12-case isolated-Chrome run completed on 2026-09-05 and saved
+fresh synthetic captures from the private `/dashboard/lab/composition` route.
+This reviewer opened the Smart and Explicit known states at 320, 390 and 720
+CSS pixels, both variants at 390px/200% root text, and Smart Unknown, loading
+and acquisition-error states at 390px. The relevant SHA-256 values are:
+
+- Smart/Explicit 320px:
+  `3bd29258d6d44f44aec803144927a318ed38fd19347b2efcd42371c1cfd2c4c5` /
+  `f31ef60ba0625000e1ba9b7d066350b6ab625bf6ba0b852624e373aa17772efd`;
+- Smart/Explicit 390px:
+  `653f74b26eaf007456778823c1a9a625955968185c14e991958c1e8cdc0f4c56` /
+  `98cc1387f0e29ee1042ca8efb5b3f73d1a58586b4160a8c3ba9bd59337de7bfb`;
+- Smart/Explicit 720px:
+  `b036a3c34ae2147b3f184a3fb2e3add85831569db10d8b190a6ccb65e1afd1bc` /
+  `da5cb955123ff59601d4d582af33dbbb4d22a53bde6585ebee2b9c9d65719c9f`;
+- Smart/Explicit 390px/200%:
+  `eaf23f560d69d6ff4448d9fb350a148499a02591b7ef8044bfc4c231882ced68` /
+  `d9c55384309403b0476f95f2712e1e32659e0add2fae5b8156009031cd0df4a4`;
+- Smart Unknown/loading/error 390px:
+  `2c1374eb874bc662fa1b788be28ee4f4721ab30ad4bbd947fb829ce84cbf2b86`,
+  `8b56a34c2bbb1c48803aeb3d2b8131847c5a06804dc90c6fca2bb22e5a73e12d`
+  and `715a34a5f071e94edcbdd10f9d17a377a9be76c22e58cf8dcf3fb89da5c290d9`.
+
+The 390px Smart and Explicit card crops are byte-identical at
+`513cf9e8eb511e1ed08e23d0f7a089105004c93ee2ee26f4908f46df0170d4e4`.
+The reviewer also reopened the user-supplied 590 by 1280 Unknown-state phone
+source at
+`6382cc44eb6783468822a1e29fa72127b0a911e7a2ff92fc023a51cbec732f0f`
+and the same-state normalized side-by-side comparison at
+`47bf2cd6e4196f4ea7931f041ef0d2f98981bbbfb69751f04657921d09206aca`.
+The source raster does not disclose its CSS viewport, DPR or text scale, so it
+remains anatomy/proximity evidence rather than pixel-identity evidence.
+
+## Integrated visual disposition
+
+- **No Smart/Explicit drift:** the two DSL choices retain one packed left
+  identity group, one full-width temperature reading and the same supporting
+  filament/fan geometry. At 320px and 390px/200% the supporting readings stack
+  in source order; at 390/720 normal text they retain the intended 3+3 row.
+- **Proximity and alignment remain accepted:** inspected source keeps 4px
+  label/value separation, a 32px icon column plus 8px layout gap (8-12px visible
+  glyph/copy separation), and 20px sibling/group rhythm. The fresh captures
+  visibly preserve the local icon-plus-copy units, equal support-row optical
+  centers and packed 12px Title/Active identity. There is no detached icon
+  rail, far-edge status, unowned collapsed whitespace or clipped atomic value.
+- **State anatomy is stable:** ready and Unknown use the same frame. Loading and
+  error keep all four neutral reading slots and the same Card/support row
+  geometry; acquisition error exposes no old telemetry and remains visually
+  static, while only loading owns animation. Persistent state copy remains in
+  its stable status region below the Card.
+- **Integration isolation introduces no visual regression:** the closed DSL
+  still names `Inline` and `Stack`, while only its private static registry maps
+  them to additive `LayoutInline.svelte` and `LayoutStack.svelte`. The fresh
+  integrated capture hashes above are identical to the previously accepted
+  mobile-alignment captures. The dedicated 113-file Kit manifest is
+  `d99b573a0d6041ba64620ff144ece6846abd712e6d4b00c8fc6d5e9c479c8399`;
+  its 101,247-byte page is
+  `90f36bc499e4b9ed71a241dbbefb6bbea8f80a6292626b1c30d6ca72cb11f933`,
+  and the 167,613-byte isolated MCP resource is
+  `d2808f99513d57ac11daca175c7a88f22713fc25d04c181c72067a96acff084b`.
+- **Current widgets remain unchanged:** an independent exact comparison against
+  `origin/main` passes for shared production `Inline.svelte`/`Stack.svelte` and
+  all thirteen pre-existing public HTML artifacts. The seven rebuilt live/MCP
+  resource hashes reproduce their recorded main identities. Production was not
+  recaptured in this review because its source and complete emitted HTML are
+  byte-identical; this proves no integrated software/render-byte drift, not a
+  new runtime, browser-host or device acceptance.
+
+The fresh browser matrix record also covers visible focus, forced colors,
+reduced motion and zero page errors. This screenshot-first review did not
+repeat interaction or assistive-technology operation and does not claim spoken
+accessible names, manual keyboard traversal, mounted ChatGPT, Safari/iPhone,
+real-printer/Moonraker, deployed-service or user-outcome acceptance. No browser,
+service, runtime, production, preview, Tailscale, auth, plugin or printer state
+was changed by this reviewer.
+
+final result: APPROVE
+
+---
+
 # Smart-grouped composable Lab — final mobile proximity review
 
 Disposition: **APPROVE** the exact frozen uncommitted application manifest
