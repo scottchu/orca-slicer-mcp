@@ -1,31 +1,31 @@
 # Next agent
 
-## Immediate task: complete approved maintenance before features
+## Immediate task: exact review and guarded maintenance delivery
 
-Read [current state](PROJECT_STATE.md), [requirements](docs/requirements.md),
-[active brief](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/BRIEF.md)
-and [handoff](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/HANDOFF.md).
-PR109 and PR110 are complete; do not create another PR for that bookkeeping.
+Local implementation, application/browser checks and bundle verification are
+complete. Read [current state](PROJECT_STATE.md), [requirements](docs/requirements.md),
+[brief](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/BRIEF.md) and the
+[single evidence record](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-05-maintenance.md).
+PR109/110 bookkeeping is complete. PR111 carries the maintenance candidate.
 
-1. Finish the scoped reliability, shared-use-case and CSS contract repairs;
-   preserve affected consumers and keep focused checks with their authors.
-2. Freeze the candidate, obtain independent source review and targeted/adversarial
-   verification, and assign one owner to required full candidate regression.
-3. Under standing widget delivery authorization, use the unchanged `u1-ship`
-   workflow for PR merge, exact merged-build deployment, BOTH service restarts,
-   health/integrity/security/preservation and meaningful changed behavior checks.
-   Stop on failed guards. Production remains recorded as PR106 until verified.
-4. Update status and links from the single maintenance evidence record; then
-   review the result with the user before returning to feature or Lab expansion.
+1. Bind the final source/test/records commit to the recorded manifests and obtain
+   independent approval of that exact SHA. The MCP-test-only tail renews type/MCP
+   evidence while unchanged application and broader browser evidence is retained.
+2. Under standing widget delivery authorization, use unchanged `u1-ship` for
+   required local gates, PR merge, exact merged-build deployment, BOTH service
+   restarts and health/integrity/security/preservation checks. Stop on failed guards.
+3. Verify meaningful changed-widget behavior from exact served bytes. Update the
+   evidence and concise current status with actual results; PR106 remains the
+   accepted deployment until that verification succeeds.
+4. Review the delivered result with the user before feature or Lab expansion.
 
 ## Preserve
 
-The private Lab stays unregistered. No printer controls, authentication,
+The Lab stays private and unregistered. No printer controls, authentication,
 Tailscale or plugin reinstallation belongs to this task. Do not adopt unrelated
-Camera planning from another worktree. C08 and actual-device/user outcomes stay
-open without matching evidence. Preserve every [delivery ID and gap](docs/widget-delivery.md),
-including unfinished Queue, Fans and Job History and deferred preparation adapters.
+Camera planning. C08 and actual-device/user outcomes stay open without matching
+evidence. Preserve every [delivery ID and gap](docs/widget-delivery.md), including
+unfinished Queue, Fans, Job History and deferred preparation adapters.
 
-[Validation index](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/VALIDATION.md)
-links actual commands/results once. [Historical records](docs/history/2026-09-05-pr110/README.md)
-are evidence, not present instructions or live runtime state.
+[Historical records](docs/history/2026-09-05-pr110/README.md) are preserved evidence,
+not current instructions. Completed bookkeeping must not become another next task.

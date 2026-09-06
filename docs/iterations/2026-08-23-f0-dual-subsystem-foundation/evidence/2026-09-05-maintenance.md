@@ -1,6 +1,14 @@
 # 2026-09-05 state and implementation maintenance evidence
 
-## Scope and baseline
+## Current disposition
+
+Local application, browser and bundle acceptance is complete for the identities
+in the final section. Exact final-commit review and guarded delivery remain next.
+PR106 is still the recorded deployed release; no new service/device acceptance is
+claimed. Earlier pending/failure statements below are dated checkpoints and are
+superseded only by their explicit correction or final acceptance section.
+
+## Historical scope and baseline checkpoint
 
 The user approved fixing the reviewed current-state issues before feature work.
 Baseline source is PR110 merge `8cc6eb18c44fb1ac0a3a92ead9a3a0e725bb50cc`.
@@ -64,7 +72,7 @@ This is preimplementation deployed-status observation, not scoped widget behavio
 new deployment, printer observation or actual-device acceptance. No printer or
 service mutation is attributed to these commands.
 
-## Application author evidence
+## Historical application author checkpoints
 
 Backend author `lab_reflection` implemented the 20,000 ms HTTP observation
 fetch/body deadline and disposal settlement, shared observation/snapshot use cases,
@@ -139,7 +147,7 @@ The subsequent Header hierarchy finding below reopens affected CSS acceptance.
 All author checks here are attributed software/synthetic evidence, not independent
 approval or physical-printer acceptance.
 
-## Independent review and candidate verification
+## Independent review checkpoints
 
 Independent reviewer `maintenance_review` did not author the application or
 records. Scoped documentation review independently verified fourteen archive files,
@@ -179,7 +187,7 @@ independently confirmed byte-identical; Unknown/error and responsive examples
 remained truthful/readable. Visual manifest:
 `98b73ac094b03b224a2a0068486f35e1834715764cc34257c3fdde9a9b361774`.
 
-**Open correction:** initial visual review called mixed Heading/Caption scaling
+**Historical correction, closed in the Header section below:** initial visual review called mixed Heading/Caption scaling
 an existing limitation. The coordinator challenged that classification; independent
 source tracing confirmed an introduced hierarchy inversion at 390px/root200%:
 baseline heading20/caption13 became heading20/caption26. The earlier nonblocking
@@ -203,7 +211,7 @@ ChatGPT host, real-printer safety or user benefit. C08 remains open. Continue th
 first unfinished step in [NEXT_AGENT.md](../../../../NEXT_AGENT.md); update current
 summaries with links to completed evidence, not duplicated narratives.
 
-## Full-validation owner: initial artifact and type-check attempt
+## Historical full-validation owner: initial artifact and type-check attempt
 
 The documentation author separately owns application artifact generation/full
 validation; this is not independent approval of their documentation. Backend and
@@ -360,3 +368,86 @@ runtime 0.4.13/schema 16/observation 19/Camera 15; private Lab r4/0.0.6-provisio
 Mandatory full repository, complete browser consumer coverage, runtime bundles,
 exact commit review and shipping acceptance are still pending for this identity.
 No production service or printer action was performed by the validation owner.
+
+## Final local acceptance and remaining release gate
+
+Source checkpoint `0a96c3671bc61b9cf094342b1df4218ab865ac27` binds the
+509-input full-gate manifest
+`e59e3c4e9bae4b9ad8bdf61d0898f91dcd2d662eaba818ae2bd472139753dbbe`.
+After independent review found the remaining MCP test's px/vw-only enlargement
+helper did not scale rem-based Heads text, the CSS author changed only
+`tests/browser/mcp/widgets.spec.ts` to the existing shared synthetic text helper
+and added measured title/name/caption/degree doubling assertions. Four enlarged
+Heads cases passed on an isolated fixture and independent review accepted the
+narrow test correction. No application, dependency, generated asset, shared helper
+or build configuration changed.
+
+The final 509-input manifest is
+`035e6d9576862a38cf103186df0fc6608ee84e2d8810f0b0aa0fc5960eac9d86`.
+Exactly 508 inputs match the full-gate manifest; only that MCP test differs.
+Manifest serialization is SHA-256 of UTF-8 concatenated lines sorted by
+repository-relative POSIX path: `<file-sha256>  <path>\n`, with two spaces and a
+real newline. It includes Git tracked/untracked non-ignored files under
+`plugins/u1-print-studio/app`, `scripts` and
+`plugins/u1-print-studio/.codex-plugin`; JSON storage formatting is not the digest
+input. All final 509 file hashes and all fifteen public HTML sizes/hashes were
+rechecked after validation and remain exact.
+
+Actual final validation-owner commands and results:
+
+| Command / scope | Result and boundary |
+| --- | --- |
+| Root `./scripts/check-repository.sh`, pinned Bun on PATH, on the full-gate identity above | PASS: zero-diagnostic Svelte/AST; 63 UI files/648 tests; 36 server files/283 tests/3,517 assertions; 44 lifecycle and 28 shipping tests; required deterministic package checks; `repository contract: ok` |
+| `bun --no-env-file --config=/dev/null x playwright test <every non-composable visual spec> --workers=1 --max-failures=1`, separate output | 345/345 PASS in 438.94 seconds; includes Header, native HTTP, current production consumers, Lab states, geometry, text stress, focus and recovery on synthetic fixtures |
+| `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts --max-failures=1`, separate output | 12/12 PASS in 16.0 seconds; exact private Lab fixture, three widths, states, semantic/geometry parity and root-text cases |
+| App-directory `bun --no-env-file --config=/dev/null x playwright test --config playwright.mcp.config.ts --max-failures=1`, separate output, after the final MCP test repair | 46/46 PASS in 1.1 minutes, including measured enlarged Heads and Camera consumers |
+| `bun --no-env-file --config=/dev/null run ui:check` after the final MCP test repair | PASS: zero Svelte errors/warnings and existing component contracts |
+| `bun --no-env-file --config=/dev/null run bundle`, `bundle:server`, `bundle:runtime` | All PASS; ad-hoc validation signing only, no distribution/notarization claim |
+| `codesign -vvv --verify dist/u1-print-studio`; `dist/u1-print-studio --help` | PASS, without printer/configuration operations |
+| Second `run bundle`; second `run build:server --outdir <EMPTY_TASK_OUTPUT>` | Reproduced identical stdio and complete server manifests; all declared files checked in both outputs |
+
+The unchanged application full gate and unaffected 345/12 browser evidence are
+retained across the MCP-test-only change; affected MCP behavior and type checking
+were renewed. This is not a claim that `./scripts/check-repository.sh` ran again
+on the test-tail head, or that the generic `test:browser` command passed. The
+existing shipping workflow must still execute every mandatory local gate.
+
+The first attempted final MCP invocation used the repository root by mistake.
+Bunx resolved/downloaded seven temporary cache dependencies, then exited 1 because
+`playwright.mcp.config.ts` was absent there, before tests or fixtures ran. No
+repository package/lockfile changed. The corrected app-directory command used
+the installed pinned Playwright 1.62.1 and produced the 46-case pass above.
+The failed invocation is retained; it supplies no acceptance evidence.
+
+Reproduced stdio SHA-256:
+`6392905541edee385fa36548a77b3a24ad326843bf37ef3146593b3ac4e15a75`.
+The identical server build manifests contain 62 runtime files and 80 static routes;
+manifest file SHA-256:
+`0933d2554c2300b306f2a8015b8a0bc46d592789c380a290338765b1b36bd13a`.
+Both complete file closures were hash-checked. Final registered MCP resources are
+observation 949,331 bytes /
+`1808af7d9002e80f7ced44392d06a288dc8e8fe4e877cd8cc8d341db3dceb93a`,
+and Camera 99,943 bytes /
+`d90d64a961efbab4e7a318ddb222b887f3dce3cffc0ba1c874ea796e097bbe0e`.
+The private composable v2 resource is 169,184 bytes /
+`8970d28e0429c78cbf39b7532163f7c25f5b3568f55616c63aeda3b483d9b310`.
+Its route/registration boundaries are unchanged. Source, generated artifacts and
+all tests remain fixed for the coordinator's next exact candidate commit.
+
+Task-owned browser/fixture processes exited; `lsof` found no listeners on
+4179/4181/4182/4184 after completion. No user browser, deployed service, printer,
+authentication or Tailscale state was changed by this validation owner. The
+coordinator owns exact-commit independent review, PR111 delivery and the unchanged
+`u1-ship` workflow. Actual-phone C08, mounted-host and user outcomes remain open.
+
+Final private log identities (actual command output retained outside Git):
+
+| Log | SHA-256 |
+| --- | --- |
+| `15-header-full-repository.log` | `d461057268805fba843784ef0cc1b7b70a5a3781eaea04d99a9d105a77496320` |
+| `16-final-browser.log` | `628b13fd2cf43793b7bc5b7139642e4dfce2afdd9682f61d5d2ca1a6187f65d3` |
+| `17-final-composable.log` | `e08f0a203b1141fb19d5cca1e39f950d56016861ca6ec3fe9718624ba7aeff98` |
+| `18-runtime-bundles.log` | `84dfc5d034894984dfc54732030569c7dacbe13dd242b1d74c2220035545f9d2` |
+| `19-final-mcp.log` | `1c06b858aeb4380670dfe4f4da95bab2f22a0d5beac5fa127e1681f0ca945b0f` |
+| `20-final-mcp-cwd-corrected.log` | `70af1e48dd20f30189d054f868474823a4c01238470e7900f1c2a41e34e88703` |
+| `21-final-mcp-typecheck.log` | `331d2197a0d6fef5efeed19c67e5a4521e8baa9c39ec7fc7a23355fc3482b4e5` |

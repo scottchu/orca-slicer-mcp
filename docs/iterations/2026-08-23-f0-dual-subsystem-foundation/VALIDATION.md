@@ -4,8 +4,8 @@
 
 [2026-09-05 maintenance evidence](evidence/2026-09-05-maintenance.md) is the single
 record for actual author checks, independent review/verification, frozen candidate
-identity and shipping results. Acceptance is pending until each attributed section
-records its completed gate. Do not claim an unrun test or infer deployed/device
+identity and shipping results. The final section records completed local application/browser/bundle acceptance;
+exact final-commit approval and guarded release remain pending. Do not claim an unrun test or infer deployed/device
 acceptance from source fixtures.
 
 Application and build-input changes invalidate affected evidence. Follow the

@@ -4,9 +4,9 @@
 
 The user approved maintenance before new features. [BRIEF.md](BRIEF.md) records
 scope and acceptance; [NEXT_AGENT.md](../../../NEXT_AGENT.md) owns execution order.
-The record reorganization is authored; application authors own scoped reliability,
-shared-use-case and CSS contract repairs. None of this candidate is accepted or
-shipped merely because the records exist.
+Record reorganization and scoped reliability/shared-use-case/CSS repairs are
+implemented. Local checks and bundles pass; exact final-commit approval and guarded
+release remain. No service or actual-device acceptance follows from source checks.
 
 ## Changed paths and evidence
 
@@ -22,11 +22,12 @@ Current summaries link it instead of copying its logs.
 
 ## Unresolved risks and next smallest action
 
-Header hierarchy and Bed clock corrections are independently accepted in scope.
-Affected assets/pins and integrated focused checks are renewed. Complete the
-renewed full candidate, broad consumer verification, exact review and guarded
-delivery. The prior full software pass belongs to pre-Header bytes; its broad
-browser run was stopped and is not acceptance. Shipping guards are unchanged.
+Final local software, synthetic visual/composable/MCP checks and deterministic
+bundles pass. The one-file MCP test tail renewed affected type/MCP checks; unchanged
+application evidence is explicitly bound in the final evidence section. Bind the
+next candidate commit to those identities, obtain exact independent approval and
+complete guarded delivery. Earlier failed/stopped attempts remain historical;
+shipping guards are unchanged.
 PR106 remains the recorded production release until new verification succeeds.
 C08 real-phone Camera reliability, mounted-host behavior and user benefit remain
 unaccepted; the maintenance slice cannot silently close them. Preparation pure-core

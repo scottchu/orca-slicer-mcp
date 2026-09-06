@@ -16,7 +16,7 @@ defines record ownership; [NEXT_AGENT.md](NEXT_AGENT.md) owns execution order.
 
 | Workstream | Current status | Next bounded action |
 | --- | --- | --- |
-| Maintenance | Header/Bed scoped repair independently accepted; final artifacts and focused checks pass | Complete renewed full verification, exact review and required release |
+| Maintenance | Local application/browser/bundle acceptance complete; final MCP test correction independently reviewed | Bind the final commit to evidence, obtain exact approval and deliver PR111 through u1-ship |
 | Production widgets | PR106 is the last accepted deployment | Preserve current coverage until exact maintenance release passes |
 | Private composable Lab | PR109/110 source integration complete; no production registration | Preserve isolation; return to a user walkthrough after maintenance |
 | Preparation handoff | Decision 0048 pure core independently accepted | Supported adapters, durable storage and actual upload remain deferred |
@@ -29,11 +29,11 @@ at the product-coverage layer described in the ledger.
 
 ## Acceptance state
 
-- **Static/software:** prior Lab and preparation pure-core acceptance is retained.
-  Maintenance passed a pre-Header full software gate; the Header correction
-  invalidates affected evidence, so current full acceptance remains pending.
-- **Protocol/simulator:** historical fixtures and scoped installed-byte checks
-  remain attributed to their original candidates; maintenance needs new evidence.
+- **Static/software:** maintenance full application/operator gates and deterministic
+  bundles pass; the MCP-test-only tail renewed affected type/browser checks.
+  Exact final-commit approval and mandatory shipping gates remain next.
+- **Protocol/simulator:** final synthetic visual, composable and MCP consumer
+  checks pass. These do not establish mounted-host or actual-device acceptance.
 - **Deployed service:** PR106 remains the accepted record; no new shipping result
   is claimed. Exact release checks and meaningful changed behavior are distinct.
 - **Real printer:** no new printer acceptance is claimed by maintenance.
@@ -42,7 +42,7 @@ at the product-coverage layer described in the ledger.
 
 ## Next action
 
-Complete the approved maintenance in [NEXT_AGENT.md](NEXT_AGENT.md), preserving
+Complete exact review and guarded delivery in [NEXT_AGENT.md](NEXT_AGENT.md), preserving
 existing authorization, role separation and mandatory `u1-ship` gates. Do not
 register the Lab, control the printer, change auth/Tailscale or reinstall plugins.
 
