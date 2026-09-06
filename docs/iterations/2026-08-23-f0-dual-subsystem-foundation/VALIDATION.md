@@ -4,8 +4,8 @@
 
 [2026-09-06 spacing evidence](evidence/2026-09-06-composition-spacing.md) records
 commands actually run, the final same-information geometry, regenerated assets,
-independent adversarial checks and acceptance limits. Required full regression
-and exact-candidate approval remain separate delivery gates.
+independent adversarial checks and acceptance limits. Exact-candidate approval and mandatory guarded release passed; independent installed
+synthetic native Lab behavior also passed, with its own bounded evidence.
 
 ## Delivered maintenance
 

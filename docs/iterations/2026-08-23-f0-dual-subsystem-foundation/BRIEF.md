@@ -1,7 +1,7 @@
 # F0 dual-subsystem foundation brief
 
 - Status: active
-- Current slice: compact composition spacing after maintenance and resource cleanup
+- Current slice: PR113 spacing delivered and verified; user layout review
 - Decision: [0054](../../decisions/0054-own-current-state-and-maintenance-evidence.md)
 
 ## Execution order
