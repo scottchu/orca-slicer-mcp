@@ -141,3 +141,35 @@ The maintenance resource advances to `composable-lab-v2-r4.html` and
 `0.0.6-provisional` because its immutable compiled bytes change. The r3 identity
 above records the earlier experiment; it is not reused for new bytes. Production
 registration and the canonical spec/schema contracts remain unchanged.
+
+## 2026-09-06 compact spacing correction
+
+The user identified excessive separation between attributes of the same subject.
+Smart's four-attribute composition is the before/after acceptance pair; Compact
+grid keeps its original two attributes and is not an equivalent content comparison.
+This supersedes the former uniform 20px vertical gap and 104px/64px compact
+hero/quiet reserve choices. Horizontal 20px separation, identity 12px, icon
+anatomy, label/value 4px, information and semantic ordering stay unchanged.
+
+Summary vertical gap is 8px, inset and stacked Row gaps are 12px; the compact
+summary gap variant is 4px. Card compact density reaches all registered leaves
+through the existing typed internal context, with no new spec or resolved field.
+Compact Reading owns its complete padding and a 44px minimum frame. Temperature
+retains two value lines because the existing numeric contract has no precision
+cap; valid values are not rounded, clamped or truncated. The closed quiet fan
+vocabulary uses a font-relative content-width threshold for its one/two-line
+reserve. Neither current nor cached telemetry selects a shorter frame.
+All states at each fixed width/text scale retain reading/card geometry within
+1px. Placement rules, spans, canonical hashes, provenance and wire vocabulary
+remain unchanged. Remove only the redundant 330px outer Lab stage floor; the
+renderer/state reserves and inspection margin remain intact.
+
+Immutable resource advances to composable-lab-v2-r5.html / 0.0.7-provisional.
+The accompanying release labels are coherent at runtime 0.4.14, observation-v20
+and camera-v16 because the shared host initialization version also changes
+compiled public bytes. Public behavior is otherwise unchanged. No production Lab
+registration or printer/authentication/network action is added.
+
+Candidate evidence is in the active iteration's
+[spacing record](../iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-composition-spacing.md).
+Independent approval, guarded delivery and user acceptance remain separate.

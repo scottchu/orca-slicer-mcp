@@ -20,7 +20,13 @@
 <style>
   .metric { display: grid; align-content: center; gap: var(--u1-reading-copy-gap); min-width: 0; }
   .metric.two-lines { min-height: calc(var(--u1-type-label) * var(--u1-line-label) + var(--u1-reading-copy-gap) + 2 * var(--u1-type-value) * var(--u1-line-value)); }
-  .metric.compact { gap: var(--u1-reading-copy-gap-compact); }
+  .metric.compact { --reserved-lines: 2; --reading-value-size: var(--u1-type-value); gap: var(--u1-reading-copy-gap-compact); }
+  .metric.compact.hero { --reading-value-size: var(--u1-type-value-hero); }
+  .metric.compact.quiet { --reading-value-size: var(--u1-type-value-quiet); }
+  /* Temperatures retain two lines: valid decimals have no precision cap.
+     Only the bounded quiet label vocabulary can reduce its width-aware slot. */
+  .metric.compact.two-lines { min-height: calc(var(--u1-type-label) * var(--u1-line-label) + var(--u1-reading-copy-gap-compact) + var(--reserved-lines) * var(--reading-value-size) * var(--u1-line-value)); }
+  @container reading-copy (min-width: 7rem) { .metric.compact.quiet.two-lines { --reserved-lines: 1; } }
   .label { color: var(--u1-muted); font-size: var(--u1-type-label); line-height: var(--u1-line-label); }
   .value-frame { display: grid; min-width: 0; font-size: var(--u1-type-value); font-weight: var(--u1-weight-strong); font-variant-numeric: tabular-nums; line-height: var(--u1-line-value); }
   .hero .value-frame { font-size: var(--u1-type-value-hero); }

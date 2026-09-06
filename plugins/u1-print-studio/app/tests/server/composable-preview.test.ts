@@ -56,7 +56,7 @@ test('serves only the exact prerendered page and its referenced immutable asset 
   expect(response.status).toBe(200);
   expect(response.headers.get('content-security-policy')).toContain("default-src 'none'");
   expect(body).toEqual(expected);
-  expect(hash(body)).toBe('93380af7efafc58c6368834422a641fffbea40e8a6fd5a215f6a3eb542b7f135');
+  expect(hash(body)).toBe('1b19a1ba785a3363c2afa7812c351c8b8e55f7fdb8b6e0bfa070a6d83ff9f71f');
 
   const head = await fetch(origin + COMPOSABLE_PREVIEW_PATH, { method: 'HEAD' });
   expect(head.status).toBe(200);

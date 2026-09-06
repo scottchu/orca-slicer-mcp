@@ -60,7 +60,7 @@ describe('static composable component registry', () => {
     expect(resolved.find(({ type }) => type === 'Inline')?.props).toMatchObject({ gap: 'regular', distribution: 'split', inset: true, composed: true });
     expect(resolved.find(({ type }) => type === 'Grid')?.props).toMatchObject({ arrangement: 'lead' });
     expect(resolved.find(({ type }) => type === 'HeadStatus')?.props).toMatchObject({ appearance: 'headerBadge' });
-    expect(resolved.find(({ type }) => type === 'HeadTemperature')?.props).toMatchObject({ appearance: 'hero', density: 'regular' });
+    expect(resolved.find(({ type }) => type === 'HeadTemperature')?.props).toMatchObject({ appearance: 'hero', density: 'compact' });
     expect(resolved.filter(({ type }) => type === 'FilamentColor' || type === 'FanRelation').every(({ props }) => props.appearance === 'quiet')).toBe(true);
   });
 

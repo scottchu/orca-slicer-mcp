@@ -6,7 +6,11 @@ The user approved maintenance before new features. [BRIEF.md](BRIEF.md) records
 scope and acceptance; [NEXT_AGENT.md](../../../NEXT_AGENT.md) owns execution order.
 Record reorganization and scoped reliability/shared-use-case/CSS repairs are
 implemented and delivered in PR111 after exact review and guarded release.
-The next task is user review; actual-device acceptance remains separate.
+The current correction reduces composition spacing while preserving all four Smart
+attributes. Next: freeze the candidate, obtain independent exact-source approval,
+then let one operator run the mandatory guarded release before user review.
+[Spacing evidence](evidence/2026-09-06-composition-spacing.md) owns changed components,
+actual checks, artifact identities and the existing extreme-decimal limitation.
 
 ## Changed paths and evidence
 
@@ -31,8 +35,9 @@ unaccepted; the maintenance slice cannot silently close them. Preparation pure-c
 acceptance does not implement its deferred adapters or authorize upload/start.
 Preserve Lab isolation, the 55-ID ledger, unrelated work and existing private state.
 
-Review the result with the user following [NEXT_AGENT.md](../../../NEXT_AGENT.md).
-This records-only tail requires no further deployment or bookkeeping task.
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the spacing candidate. Its new
+application bytes require the normal review and delivery gates; the earlier
+maintenance records-only tail did not require a deployment.
 Historical pending instructions are archived and must not be replayed. All previous
 paths, observations, failures and recovery evidence remain in the
 [PR110 snapshot](../../history/2026-09-05-pr110/README.md).

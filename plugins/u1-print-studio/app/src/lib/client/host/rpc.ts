@@ -90,7 +90,7 @@ export const createHostRpc = (host: HostWindow, options: {
   const start = (): Promise<void> => {
     if (disposed) return Promise.reject(new Error('Host disposed'));
     if (!initialized) initialized = request('ui/initialize', {
-      appInfo: { name: 'u1-observation', version: '0.4.13' }, appCapabilities: {}, protocolVersion: '2026-01-26'
+      appInfo: { name: 'u1-observation', version: '0.4.14' }, appCapabilities: {}, protocolVersion: '2026-01-26'
     }).then((value) => {
       if (disposed || !record(value)) throw new Error('Invalid host initialization');
       updateContext(record(value)?.hostContext);

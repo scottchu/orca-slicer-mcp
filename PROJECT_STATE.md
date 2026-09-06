@@ -18,9 +18,9 @@ defines record ownership; [NEXT_AGENT.md](NEXT_AGENT.md) owns execution order.
 | --- | --- | --- |
 | Maintenance | PR111 reviewed, merged and deployed through unchanged shipping guards | Review the delivered result with the user |
 | Production widgets | PR111 / 0.4.13 is deployed; health, integrity and exact assets verified | Preserve truthful coverage; accept actual-device outcomes separately |
-| Private composable Lab | PR109/110 source integration complete; no production registration | Preserve isolation; return to a user walkthrough after maintenance |
+| Private composable Lab | Spacing candidate preserves the same information and shortens compounded gaps; author focused checks pass | Independent exact-source review and targeted verification before guarded delivery |
 | Preparation handoff | Decision 0048 pure core independently accepted | Supported adapters, durable storage and actual upload remain deferred |
-| Camera C08 | Actual-phone Live reliability unresolved | Keep open; synthetic success or healthy services cannot close it |
+| Camera C08 | User reports Auto/Live working at home and outside use working well | Preserve this self-report; long-duration and mounted-host acceptance remain separate |
 | Remaining widget requests | [55-ID ledger](docs/widget-delivery.md) retains delivery and gaps | No new feature work during this maintenance slice |
 
 Unrelated Camera planning in another worktree is preserved and is not adopted
@@ -38,12 +38,15 @@ at the product-coverage layer described in the ledger.
 - **Deployed service:** PR111 is installed; both services restarted and passed
   health, integrity, exact assets, security and private-state preservation checks.
 - **Real printer:** no new printer acceptance is claimed by maintenance.
-- **User outcome:** phone Camera reliability, mounted-host behavior and the
-  composable Lab's usefulness remain separately unverified.
+- **User outcome:** user reports Camera Auto/Live working at home and outside use
+  working well. Duration, outside mode coverage and mounted-host behavior remain
+  separately unverified. The current Lab feedback concerns attribute spacing;
+  the candidate has not yet received user acceptance.
 
 ## Next action
 
-Review the delivered result with the user as described in [NEXT_AGENT.md](NEXT_AGENT.md),
+Review the [spacing candidate](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-composition-spacing.md)
+as described in [NEXT_AGENT.md](NEXT_AGENT.md),
 preserving evidence boundaries and existing release guards. Do not
 register the Lab, control the printer, change auth/Tailscale or reinstall plugins.
 
