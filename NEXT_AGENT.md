@@ -9,8 +9,8 @@ PR113 / 0.4.14 is independently approved and deployed as merged application
 `c61b82b74c484ed106d7c96247cf59e4d6fa9f33`. Both services and exact static assets
 passed guarded verification.
 
-1. Installed synthetic native Lab behavior passed. Complete the records-only
-   parity review; no new deployment is needed for unchanged application bytes.
+1. Installed synthetic native Lab behavior passed. No new deployment is needed
+   for the unchanged application bytes in this records-only tail.
 2. Review Smart with the user: the same four attributes, approximately 24px visible
    separation at 390px, and retained temperature wrapping. Do not compare its
    information density against Compact's two-field subset.

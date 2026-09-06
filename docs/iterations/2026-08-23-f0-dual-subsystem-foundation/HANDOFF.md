@@ -36,8 +36,8 @@ Preparation pure-core acceptance does not implement its deferred adapters or aut
 Preserve Lab isolation, the 55-ID ledger, unrelated work and existing private state.
 
 Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the spacing candidate. PR113 application
-bytes passed the normal review and delivery gates. This records-only tail needs
-parity review and no additional deployment.
+bytes passed the normal review and delivery gates. This records-only tail
+requires no additional deployment; the next task is user layout review.
 Historical pending instructions are archived and must not be replayed. All previous
 paths, observations, failures and recovery evidence remain in the
 [PR110 snapshot](../../history/2026-09-05-pr110/README.md).

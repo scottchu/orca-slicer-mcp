@@ -136,5 +136,5 @@ This is synthetic installed-native behavior, not real-printer acquisition or
 mounted ChatGPT acceptance. Owned browser resources were closed.
 
 This records-only tail retains the exact merged application inputs and requires
-no additional deployment under decision 0028. After its parity review, return to
-the user's layout review; do not start another bookkeeping cycle.
+no additional deployment under decision 0028. The next task is the user's layout
+review; do not start another bookkeeping cycle.
