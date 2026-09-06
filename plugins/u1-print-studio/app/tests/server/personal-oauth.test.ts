@@ -601,7 +601,7 @@ describe("personal OAuth discovery and boundary", () => {
       jsonrpc: "2.0",
       id: 1,
       result: {
-        serverInfo: { name: "u1-print-studio", version: "0.4.12" },
+        serverInfo: { name: "u1-print-studio", version: "0.4.13" },
       },
     });
 

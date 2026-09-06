@@ -1,3 +1,4 @@
+import { doubleSyntheticText } from '../helpers/text-scale';
 import { expect, test, type Page } from '@playwright/test';
 
 const regions = '[data-widget-shell], [data-widget-header], [data-widget-body], [data-widget-footer], [data-chart-frame]';
@@ -5,21 +6,7 @@ const bounds = (page: Page) => page.locator(regions).evaluateAll((nodes) => node
   const rect = node.getBoundingClientRect();
   return { x: rect.x + scrollX, y: rect.y + scrollY, width: rect.width, height: rect.height };
 }));
-const doubleText = (page: Page) => page.evaluate(() => {
-  for (const sheet of document.styleSheets) for (const rule of sheet.cssRules) {
-    const visit = (item: CSSRule): void => {
-      if ('cssRules' in item) for (const child of (item as CSSGroupingRule).cssRules) visit(child);
-      if (!(item instanceof CSSStyleRule)) return;
-      const size = item.style.getPropertyValue('font-size');
-      if (size) item.style.setProperty('font-size', size.replace(/([\d.]+)(px|vw)/g, (_, value, unit) => `${Number(value) * 2}${unit}`));
-      for (const token of ['--u1-type-label', '--u1-type-name', '--u1-type-value']) {
-        const value = item.style.getPropertyValue(token);
-        if (value.endsWith('px')) item.style.setProperty(token, `${Number.parseFloat(value) * 2}px`);
-      }
-    };
-    visit(rule);
-  }
-});
+const doubleText = doubleSyntheticText;
 const selectPhase = (page: Page, phase: string) => page.getByLabel('Preview state', { exact: true }).selectOption(phase);
 const countWebGL = (page: Page) => page.addInitScript(() => {
   const state = window as unknown as { testWebGLRequests: number };
@@ -65,7 +52,8 @@ for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) 
     await expect(retry).toHaveCSS('width', '44px');
     await expect(retry).toHaveCSS('height', '44px');
     const button = await retry.elementHandle();
-    await page.clock.install();
+    await page.clock.install({ time: new Date('2026-09-05T00:00:00Z') });
+    await page.clock.pauseAt(new Date('2026-09-05T00:00:01Z'));
     await retry.click();
     await expect(retry).toHaveAttribute('aria-disabled', 'true');
     await expect(retry).toBeFocused();

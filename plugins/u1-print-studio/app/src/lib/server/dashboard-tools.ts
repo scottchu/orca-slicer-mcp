@@ -1,4 +1,6 @@
-import { cameraFramePayload, cameraStreamPayload, observationPayload } from './app.js';
+import { cameraStreamPayload } from './camera-payload.js';
+import { observePrinter } from './application/observe-printer.js';
+import { refreshCameraFrame } from './application/refresh-camera-frame.js';
 import { OBSERVATION_VIEWS, type ObservationView } from './observation-presentation.js';
 import type { PrinterObservationStore } from './observation-store.js';
 import { readU1CameraFrame } from './u1-status.js';
@@ -38,29 +40,10 @@ export const callDashboardTool = async (
       ) {
         return reply(400, { error: "invalid_observation_view" });
       }
-      return reply(
-        200,
-        observationPayload(
-          await observations.current({
-            refresh: true,
-            includeBedMesh: view === "bed_mesh" || view === "overview",
-            includeMaterials: view === "heads" || view === "overview",
-            includeQueue: view === "queue" || view === "overview",
-            includeEnvironment: view === "thermals" || view === "fans" || view === "overview",
-            includeCurrentJob: view === "jobs" || view === "overview",
-            includeJobHistory: view === "job_history" || view === "overview"
-          }),
-          view as ObservationView
-        )
-      );
+      return reply(200, await observePrinter(observations, view as ObservationView));
     }
     if (name === "get_u1_camera_frame") {
-      const { frame, metadata } = await readCameraFrame();
-      const activation =
-        argumentsObject.authorizeLive === true && dependencies.cameraSessions
-          ? dependencies.cameraSessions.authorize()
-          : undefined;
-      return reply(200, cameraFramePayload(frame, metadata, activation));
+      return reply(200, await refreshCameraFrame(readCameraFrame, dependencies.cameraSessions, argumentsObject.authorizeLive === true));
     }
     if (name === "open_u1_camera_stream" && dependencies.cameraSessions) {
       const opened = await dependencies.cameraSessions.open(String(argumentsObject.activationToken ?? ''));

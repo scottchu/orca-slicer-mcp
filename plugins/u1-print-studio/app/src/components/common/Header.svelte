@@ -17,8 +17,8 @@
   .icon-tile { display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid var(--u1-line); border-radius: 14px; background: var(--u1-canvas); }
   .icon-tile :global(svg) { width: 22px; height: 22px; stroke-width: 1.8; }
   .header-copy { min-width: 0; }
-  h1 { margin: 0; font-size: 24px; font-weight: 640; line-height: 1.2; letter-spacing: -0.035em; }
-  .meta { margin-top: 5px; color: var(--u1-muted); font-size: 13px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+  h1 { margin: 0; font-size: var(--u1-type-heading); font-weight: 640; line-height: 1.2; letter-spacing: -0.035em; }
+  .meta { margin-top: 5px; color: var(--u1-muted); font-size: var(--u1-type-label); line-height: 1.4; font-variant-numeric: tabular-nums; }
   .aside { min-width: 0; text-align: right; }
   .wrap-aside { display: flex; flex-wrap: wrap; }
   .wrap-aside .icon-tile { flex: 0 0 auto; }
@@ -27,9 +27,9 @@
   @media (max-width: 420px) {
     .widget-header { grid-template-columns: 44px minmax(0, 1fr) auto; gap: 11px; padding-top: 18px; padding-bottom: 14px; }
     .icon-tile { width: 44px; height: 44px; border-radius: 12px; }
-    h1 { font-size: 20px; }
+    h1 { font-size: var(--u1-type-heading-mobile); }
   }
   .compact { grid-template-columns: 28px minmax(0, 1fr) auto; gap: 8px; padding: 10px 14px; }
   .compact .icon-tile { width: 28px; height: 28px; border: 0; border-radius: 0; background: transparent; }
-  .compact h1 { font-size: 18px; }
+  .compact h1 { font-size: var(--u1-type-heading-compact); }
 </style>

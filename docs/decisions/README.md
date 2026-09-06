@@ -58,6 +58,7 @@ silently changed.
 | [0051](0051-use-a-build-time-registry-for-the-private-composable-lab.md) | Use a build-time registry for the private composable Lab | Accepted for isolated private-lab learning; not production architecture or cutover |
 | [0052](0052-add-a-balanced-private-lab-composition-variant.md) | Add a balanced private-Lab composition variant | Accepted additive experiment; not production architecture or cutover |
 | [0053](0053-resolve-semantic-groups-before-closed-layout-overrides.md) | Resolve semantic groups before closed layout overrides | Accepted additive experiment; not production architecture or cutover |
+| [0054](0054-own-current-state-and-maintenance-evidence.md) | Own current state and maintenance evidence once | Accepted maintenance direction; implementation and release acceptance pending |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

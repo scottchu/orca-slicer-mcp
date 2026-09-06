@@ -89,7 +89,7 @@ for (const width of [320, 390, 590, 720])
       await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
       await expect(copy).toBeVisible();
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/observation-v18.html',
+        'ui://u1-print-studio/observation-v19.html',
       );
       const messages = await page.evaluate(() => (window as any).__mcpHost.state.messages);
       expect(messages.filter((message: any) => message.method === 'ui/initialize')).toHaveLength(1);
@@ -160,7 +160,7 @@ for (const width of [320, 390, 590, 720])
       await expect(frame.locator('img')).toHaveAttribute('aria-hidden', 'false');
       await expect(frame.locator('[data-media-feedback]')).toHaveCount(0);
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/camera-v14.html',
+        'ui://u1-print-studio/camera-v15.html',
       );
       await expect
         .poll(() => page.evaluate(() => (window as any).__mcpHost.state.sizes.length))

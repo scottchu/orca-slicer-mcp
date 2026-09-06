@@ -30,7 +30,7 @@ describe("private Svelte lab packages", () => {
   test("freezes the deterministic light observation artifact", () => {
 
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "6a79f13b748c55d53d6791781a6096bfe3baadbcc801819c125265d32dcadec7"
+      "559e550ed7115d59e9190b9abf56d584aa99148eef6aa1ba9494e45d65349c1c"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -49,7 +49,7 @@ describe("private Svelte lab packages", () => {
 
   test('freezes Bed Mesh as an isolated self-contained artifact', () => {
 
-    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('c23ef5cc4c20dd748396db012bc089a92a64ac207cca7d4ab399a5c720d484aa');
+    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('5ba57e92cdcfc2e2e4f56f545bd62891f46be7b79c0f82f06c4d169e56f5868c');
     expect(bedMeshHtml).toContain('data-height-legend');
     expect(bedMeshHtml).toContain('data-icon-segmented');
     for (const marker of ['Bed Mesh', '3D surface', '2D grid', 'data-chart-frame=""', 'WebGLRenderer', 'OrbitControls']) expect(bedMeshHtml).toContain(marker);
@@ -58,7 +58,7 @@ describe("private Svelte lab packages", () => {
   });
 
   test('keeps the synthetic Camera in a second isolated private artifact', () => {
-    expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('a921f730715f6d235cdaa444918c2f8d8e84e7efe6cff9b56f4c9d3134e17af9');
+    expect(createHash('sha256').update(cameraHtml).digest('hex')).toBe('c6b49974a68dd3dbd228d3d1a2426efa8bbf99ffea5adaf3b19f74695b8cbc57');
 
 
     for (const marker of ['U1 Camera', 'Simulated live', 'Camera state', 'Display capabilities', 'data-camera-media']) expect(cameraHtml).toContain(marker);

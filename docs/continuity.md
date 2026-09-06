@@ -46,8 +46,9 @@ Each iteration contains at least:
 
 - `BRIEF.md`: exact baseline, outcome, scope, non-goals, requirements, risks,
   and planned evidence;
-- `VALIDATION.md`: commands that actually ran, results, failures, environment,
-  and the acceptance layer each result supports;
+- `VALIDATION.md`: links the single evidence record for each bounded slice,
+  where actual attributed commands, results, failures, identities and acceptance
+  boundaries are recorded once;
 - `HANDOFF.md`: current status, changed paths, unresolved risks, and the next
   smallest action.
 
@@ -90,11 +91,19 @@ but it does not establish printer compatibility or physical behavior.
 
 ## Before pausing or handing off
 
-1. Update the active `VALIDATION.md` and `HANDOFF.md`.
-2. Update `PROJECT_STATE.md` to match the repository and observed environment.
-3. Update `NEXT_AGENT.md` with one precise immediate task.
-4. Verify `./scripts/check-repository.sh`.
+1. Append actual commands/results and boundaries to the active slice evidence
+   record and link it from `VALIDATION.md`; update `HANDOFF.md` with remaining work.
+2. Update `PROJECT_STATE.md` as a short current-state index, linking evidence.
+3. Update `NEXT_AGENT.md` with one precise immediate task, not completed bookkeeping.
+4. Follow `AGENTS.md` test strategy: required full candidate/release gates remain
+   mandatory; a documentation-only tail checks unchanged application/build inputs
+   and relevant documentation contracts without repeating unaffected full suites.
 5. Report acceptance and unknowns at all four evidence layers.
+
+[Decision 0054](decisions/0054-own-current-state-and-maintenance-evidence.md)
+owns this reporting refinement. Preserve superseded records in a source-bound
+archive with relative links intact; historical instructions are not current work.
+Do not duplicate evidence or introduce another workflow framework.
 
 Do not store raw chat transcripts or agent diaries. Summarize only durable
 facts, decisions, failures, evidence, and next actions.

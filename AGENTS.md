@@ -125,12 +125,15 @@ Before a substantial implementation change:
 
 Before stopping or handing off material work:
 
-1. Update the active iteration's `VALIDATION.md` with commands that actually
-   ran and the evidence boundary they support.
+1. Record commands that actually ran, results, identities and their evidence
+   boundaries once in the active slice's evidence record, linked by the active
+   iteration's `VALIDATION.md`.
 2. Update its `HANDOFF.md` with changed paths, unresolved risks, and the next
-   smallest action.
-3. Update `PROJECT_STATE.md` and `NEXT_AGENT.md` so another agent can resume
-   from repository files alone.
+   smallest action; link detailed evidence rather than duplicating it.
+3. Keep `PROJECT_STATE.md` as the current status index and `NEXT_AGENT.md` as
+   the current execution order so another agent can resume from repository files
+   alone. Preserve superseded history separately; completed record updates must
+   not remain pending next actions. See decision 0054.
 
 ## Test strategy
 

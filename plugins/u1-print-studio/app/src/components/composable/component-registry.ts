@@ -63,6 +63,7 @@ export type ResolvedRegisteredNode = {
   component: Component<Record<string, unknown>>;
   props: Record<string, unknown>;
   children: readonly ResolvedNode[] | null;
+  childContext: PresentationRenderContext;
 };
 
 type RegisteredComponentEntry<Type extends PresentationElementType> = {
@@ -82,6 +83,7 @@ const defineComponentEntry = <Type extends PresentationElementType>(
   component: Component<PresentationComponentPropsByElement[Type]>,
   getProps: RegisteredComponentEntry<Type>['getProps'],
   getChildren: ChildReader<Type>,
+  getChildContext?: (node: ResolvedNodeByElement[Type], context: PresentationRenderContext) => PresentationRenderContext,
 ): RegisteredComponentEntry<Type> => {
   const role = elementRegistry[type].role as RoleFor<Type>;
   const resolve = (candidate: ResolvedNode, context: PresentationRenderContext): ResolvedRegisteredNode => {
@@ -96,6 +98,7 @@ const defineComponentEntry = <Type extends PresentationElementType>(
       component: component as unknown as Component<Record<string, unknown>>,
       props: props as unknown as Record<string, unknown>,
       children,
+      childContext: getChildContext?.(node, context) ?? context,
     };
   };
   return { type, role, component, getProps, getChildren, resolve };
@@ -125,20 +128,22 @@ export const componentRegistry = {
     tint: node.tint?.color ?? null,
     density: node.density,
   }), (node) => node.children),
-  Title: defineComponentEntry('Title', Title, (node) => ({ text: node.text, size: node.size }), null),
+  Title: defineComponentEntry('Title', Title, (node, context) => ({ text: node.text, size: node.size, inset: context.group !== 'identity' }), null),
   Stack: defineComponentEntry('Stack', LayoutStack, (node) => ({ gap: node.gap, inset: true, composed: true }), (node) => node.children),
   Grid: defineComponentEntry('Grid', Grid, (node) => ({ columns: node.columns, gap: node.gap, inset: true, arrangement: node.arrangement }), (node) => node.children),
   Inline: defineComponentEntry('Inline', LayoutInline, (node) => ({ gap: node.gap, distribution: node.distribution, inset: true, composed: true }), (node) => node.children),
-  Group: defineComponentEntry('Group', Group, (node) => ({ relation: node.relation, rowGap: node.rowGap, inset: true }), (node) => node.children),
+  Group: defineComponentEntry('Group', Group, (node) => ({ relation: node.relation, label: node.relation === 'identity' ? 'Tool identity' : 'Tool summary', rowGap: node.rowGap, inset: true }), (node) => node.children, (node, context) => ({ ...context, group: node.relation })),
   Row: defineComponentEntry('Row', Row, (node) => ({ columnGap: node.columnGap, collapse: node.collapse }), (node) => node.children),
   Column: defineComponentEntry('Column', Column, (node) => ({ colSpan: node.colSpan }), (node) => node.children),
   HeadStatus: defineComponentEntry('HeadStatus', HeadStatus, (node) => ({ value: node.value, appearance: node.appearance }), null),
-  HeadTemperature: defineComponentEntry('HeadTemperature', HeadTemperature, (node) => ({ value: node.value, appearance: node.appearance }), null),
-  FilamentColor: defineComponentEntry('FilamentColor', FilamentColor, (node) => ({ value: node.value, appearance: node.appearance }), null),
-  FanRelation: defineComponentEntry('FanRelation', FanRelation, (node) => ({ value: node.value, appearance: node.appearance }), null),
+  HeadTemperature: defineComponentEntry('HeadTemperature', HeadTemperature, (node, context) => ({ value: node.value, appearance: node.appearance, density: context.group === 'summary' ? 'compact' : 'regular' }), null),
+  FilamentColor: defineComponentEntry('FilamentColor', FilamentColor, (node, context) => ({ value: node.value, appearance: node.appearance, density: context.group === 'summary' ? 'compact' : 'regular' }), null),
+  FanRelation: defineComponentEntry('FanRelation', FanRelation, (node, context) => ({ value: node.value, appearance: node.appearance, density: context.group === 'summary' ? 'compact' : 'regular' }), null),
 } as const satisfies { [Type in PresentationElementType]: RegisteredComponentEntry<Type> };
 
 export const resolveRegisteredNode = (
   node: ResolvedNode,
   context: PresentationRenderContext,
 ): ResolvedRegisteredNode => componentRegistry[node.type].resolve(node, context);
+
+export type { PresentationRenderContext };

@@ -1,3 +1,4 @@
+import { doubleSyntheticText, scaleRootText } from '../helpers/text-scale';
 import { expect, test, type Page } from '@playwright/test';
 import { liveFansResult } from '../fixtures/live-fans';
 
@@ -15,18 +16,32 @@ const navigate = async (page: Page, view: string) => {
   await page.locator('#fixture-navigation').click();
   await expect(page).toHaveURL(new RegExp(`/dashboard/${view}$`));
 };
-const doubleText = (page: Page) => page.evaluate(() => {
-  const visit = (rule: CSSRule): void => {
-    if ('cssRules' in rule) for (const child of (rule as CSSGroupingRule).cssRules) visit(child);
-    if (!(rule instanceof CSSStyleRule)) return;
-    const size = rule.style.getPropertyValue('font-size');
-    if (size) rule.style.setProperty('font-size', size.replace(/([\d.]+)(px|vw)/g, (_, value, unit) => `${Number(value) * 2}${unit}`));
-    for (const token of ['--u1-type-label', '--u1-type-name', '--u1-type-value']) {
-      const value = rule.style.getPropertyValue(token);
-      if (value.endsWith('px')) rule.style.setProperty(token, `${Number.parseFloat(value) * 2}px`);
-    }
-  };
-  for (const sheet of document.styleSheets) for (const rule of sheet.cssRules) visit(rule);
+const doubleText = doubleSyntheticText;
+
+test('native Heads shared typography follows root text preference', async ({ page, request }, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 1500 });
+  await request.post('/__fixture/state', { data: { reset: true } });
+  await page.goto('/dashboard/heads');
+  const shell = page.getByRole('article', { name: 'Heads & Filaments' });
+  await expect(shell).toContainText('#6F4C2F80');
+  const readings = shell.locator('[data-inset-card]').first();
+  const sizes = () => readings.locator('.name,.caption,.degree').evaluateAll((nodes) => nodes.map((node) => Number.parseFloat(getComputedStyle(node).fontSize)));
+  const normal = await sizes();
+  const title = shell.locator('[data-widget-header] h1');
+  const normalTitle = await title.evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+  expect(normal.length).toBeGreaterThan(2);
+  await shell.screenshot({ path: testInfo.outputPath('heads-390-root-text-100.png') });
+  const scale = await scaleRootText(page, 200);
+  try {
+    expect(await sizes()).toEqual(normal.map((size) => size * 2));
+    const enlargedTitle = await title.evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+    expect(enlargedTitle).toBe(normalTitle * 2);
+    const captionSizes = await shell.locator('.caption').evaluateAll((nodes) => nodes.map((node) => Number.parseFloat(getComputedStyle(node).fontSize)));
+    expect(captionSizes.length).toBeGreaterThan(0);
+    expect(enlargedTitle).toBeGreaterThan(Math.max(...captionSizes));
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await shell.screenshot({ path: testInfo.outputPath('heads-390-root-text-200.png') });
+  } finally { await scale.evaluate((element) => element.parentNode?.removeChild(element)); }
 });
 
 for (const { view, title, value, domain } of views) {

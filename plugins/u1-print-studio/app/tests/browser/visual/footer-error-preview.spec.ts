@@ -1,18 +1,7 @@
+import { doubleSyntheticText } from '../helpers/text-scale';
 import { expect, test, type Page } from '@playwright/test';
 
-const enlarge = (page: Page) => page.evaluate(() => {
-  const visit = (rule: CSSRule): void => {
-    if ('cssRules' in rule) [...(rule as CSSGroupingRule).cssRules].forEach(visit);
-    if (!(rule instanceof CSSStyleRule)) return;
-    const size = rule.style.getPropertyValue('font-size');
-    if (size) rule.style.setProperty('font-size', size.replace(/([\d.]+)(px|vw)/g, (_, value, unit) => `${Number(value) * 2}${unit}`));
-    for (const token of ['--u1-type-label', '--u1-type-name', '--u1-type-value']) {
-      const value = rule.style.getPropertyValue(token);
-      if (value.endsWith('px')) rule.style.setProperty(token, `${Number.parseFloat(value) * 2}px`);
-    }
-  };
-  for (const sheet of document.styleSheets) [...sheet.cssRules].forEach(visit);
-});
+const enlarge = doubleSyntheticText;
 const geometry = (page: Page) => page.locator('[data-widget-shell],[data-widget-header],[data-widget-body],[data-widget-footer],[data-inset-card]').evaluateAll((nodes) => nodes.map((node) => {
   const rect = node.getBoundingClientRect(); return [rect.x + scrollX, rect.y + scrollY, rect.width, rect.height];
 }));
