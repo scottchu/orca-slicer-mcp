@@ -22,12 +22,12 @@ Current summaries link it instead of copying its logs.
 
 ## Unresolved risks and next smallest action
 
-Final local software, synthetic visual/composable/MCP checks and deterministic
-bundles pass. The one-file MCP test tail renewed affected type/MCP checks; unchanged
-application evidence is explicitly bound in the final evidence section. Bind the
-next candidate commit to those identities, obtain exact independent approval and
-complete guarded delivery. Earlier failed/stopped attempts remain historical;
-shipping guards are unchanged.
+The first ship stopped before merge on an undeclared private Lab data artifact.
+The exact dashboard-only route repair passes fresh semantic build-contract,
+determinism, route-isolation and built-handler hydration checks. The latest evidence
+binds 510 inputs and preserves unchanged UI/browser evidence. Obtain exact approval
+of the repaired candidate and complete guarded delivery. Earlier failed attempts
+remain evidence; shipping guards are unchanged.
 PR106 remains the recorded production release until new verification succeeds.
 C08 real-phone Camera reliability, mounted-host behavior and user benefit remain
 unaccepted; the maintenance slice cannot silently close them. Preparation pure-core

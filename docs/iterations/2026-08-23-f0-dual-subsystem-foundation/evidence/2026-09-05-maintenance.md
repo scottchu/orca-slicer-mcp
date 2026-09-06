@@ -451,3 +451,69 @@ Final private log identities (actual command output retained outside Git):
 | `19-final-mcp.log` | `1c06b858aeb4380670dfe4f4da95bab2f22a0d5beac5fa127e1681f0ca945b0f` |
 | `20-final-mcp-cwd-corrected.log` | `70af1e48dd20f30189d054f868474823a4c01238470e7900f1c2a41e34e88703` |
 | `21-final-mcp-typecheck.log` | `331d2197a0d6fef5efeed19c67e5a4521e8baa9c39ec7fc7a23355fc3482b4e5` |
+
+## Latest checkpoint: pre-merge ship failure and narrow Kit route repair
+
+The coordinator's first guarded PR111 attempt on reviewed
+`9faaa999856d5b6b81ac425666547cf974e88a5e`, operation
+`pr111-20260905T234927-36e684`, stopped during validation with
+`Invalid or incomplete Kit build contract`. Merge and install were false;
+rollback was unnecessary. Fresh coordinator status confirmed both existing
+services healthy/integrity-verified at 0.4.12 / schema 16 / observation 18 /
+Camera 14; PR111 remained open. No deployment or authorization boundary changed.
+
+The unchanged `read_current_build_manifest` reproduced the precise error
+`Generated static file is missing its route` in both the failed fresh ship output
+and the earlier repeated bundle. Their identical `0933d255…` manifest included
+`prerendered/dashboard/lab/composition/__data.json` without a static route.
+Earlier full tests and byte/determinism checks had not called the semantic reader
+on their real output; they did not establish shipping-contract acceptance.
+Both failed outputs are preserved. The guard correctly stopped the release.
+
+The repair retains the legitimate SvelteKit server-load artifact and explicitly
+maps only `/dashboard/lab/composition/__data.json` to dashboard GET, separately
+from HTML pages. Its fixed synthetic six-scenario/six-variant body is 69,918 bytes,
+SHA-256 `1a6e9ff222a192136f202e1534fc61201b06f69f386860ccec4e8c1bfbd6b7fc`.
+Public requests remain 404, dashboard non-GET requests 405, and existing raw-target,
+prefix and neighboring-path isolation remains enforced. No generic data-route
+wildcard, file omission, production MCP registration or shipping-guard change was
+introduced. The CSS author owns the two source edits and new route test;
+the independent reviewer approved their scoped source/adversarial evidence.
+
+Validation owner commands on frozen repair inputs:
+
+| Actual check | Result and boundary |
+| --- | --- |
+| Pinned Bun `run build:server --outdir <EMPTY_TASK_A>` and a second empty output | PASS; two complete 62-file / 81-route manifests byte-identical |
+| `uv run --no-project` invoking unchanged `scripts.u1_build_contract.read_current_build_manifest` on both fresh outputs | PASS semantic contract, hashes and complete inventory; only `server.js` changed from failed output, all other 61 files and prior 80 route declarations identical |
+| Pinned Bun `test tests/server/kit-composable-route.test.ts tests/server/kit-native-observations.test.ts` after fresh build | PASS: 8 tests / 457 assertions; page/data bytes, GET/public/mutation/query/prefix/raw-target isolation, native consumers and zero acquisition |
+| Task-only Bun/Chrome integration loading the exact fresh `handler.js` on port 4218 | PASS direct SSR/hydration, six local scenarios/four shapes, exact data bytes, no page errors/nonlocal requests/observation reads; browser/server released in finally |
+| `uv run --no-project` source/output parity | PASS: 510 inputs, only build-server and route-policy changed plus one route test added; remaining 507 prior inputs and all 15 public HTML artifacts exact |
+
+The renewed canonical input identity is
+`ec863ddc22cb6b43278ce81ea63281f8ac98644dce5cd22e0fdad7ffe87f4106`
+(`route-repair-input-manifest.json`, the same sorted `sha256  path\n` serialization).
+Both repaired build manifest files hash to
+`eaedab7f794735b40a5e9f1fc3f4c5eafedb83e1b4fb1702d041585abf0c0ffe`.
+Unchanged UI/client/prerendered bytes retain the earlier 345 visual, 12 private Lab
+and 46 MCP evidence. No extra full suite was claimed for this route repair;
+the next guarded ship must execute every mandatory gate on the new exact candidate.
+Final exact-SHA approval, merge, deployment and served-behavior acceptance remain
+pending. Existing version identities and actual-device/C08 limits remain unchanged.
+
+Repair log identities (private outputs retained outside Git):
+
+| Log | SHA-256 |
+| --- | --- |
+| `22-failed-kit-contract-diagnosis.log` | `1d6c1c063ed5d4c8c27da4811befd4ea9978253315c5c8a452ff2cbc460440d6` |
+| `23-route-repair-build-a.log` | `de89ed69e79c6c8ff5492db3dd655c2b5ae1b9414d328114f14fbb9c9a63275a` |
+| `24-route-repair-build-b.log` | `231d7049c5894eff147f9f8b09140766c7a68fae112333122cdc25679f80c2f9` |
+| `25-route-repair-semantic-contract.log` | `5fb1f2fa9ef901800cc46ed843a4d02530b24943c4b87b16332cdb0783a1b125` |
+| `26-route-repair-built-hydration.log` | `58d879db6e0e4fffb02aa79e20cd61a7ef9c6c9960596d7c535be7c524b6a5f7` |
+| `27-route-repair-fresh-kit-tests.log` | `3c5fea46f41ebe9ce4cd1876820f23c60f3bd31c9174bd0e191d32fd7573590e` |
+| `28-route-repair-final-parity.log` | `c037ccf3d4782c73fac1a4e612dccef9f608d3242ccea7da5cd8c2090320f629` |
+
+Records-tail checks: `git diff --check` passed; `uv run --no-project` verified
+24 changed-record relative links and the frozen 510 input hashes. `lsof` found
+no remaining listener on task port 4218. No full suite or deployed request was
+run by this validation owner for this records tail.

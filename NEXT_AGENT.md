@@ -2,15 +2,15 @@
 
 ## Immediate task: exact review and guarded maintenance delivery
 
-Local implementation, application/browser checks and bundle verification are
-complete. Read [current state](PROJECT_STATE.md), [requirements](docs/requirements.md),
+The first ship stopped before merge; the narrow Lab build-contract repair and
+affected verification now pass. Read [current state](PROJECT_STATE.md), [requirements](docs/requirements.md),
 [brief](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/BRIEF.md) and the
 [single evidence record](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-05-maintenance.md).
 PR109/110 bookkeeping is complete. PR111 carries the maintenance candidate.
 
 1. Bind the final source/test/records commit to the recorded manifests and obtain
-   independent approval of that exact SHA. The MCP-test-only tail renews type/MCP
-   evidence while unchanged application and broader browser evidence is retained.
+   independent approval of that exact SHA. The latest 510-input repair identity
+   renews build/route evidence; unchanged UI assets retain broader browser evidence.
 2. Under standing widget delivery authorization, use unchanged `u1-ship` for
    required local gates, PR merge, exact merged-build deployment, BOTH service
    restarts and health/integrity/security/preservation checks. Stop on failed guards.

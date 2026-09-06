@@ -16,7 +16,7 @@ defines record ownership; [NEXT_AGENT.md](NEXT_AGENT.md) owns execution order.
 
 | Workstream | Current status | Next bounded action |
 | --- | --- | --- |
-| Maintenance | Local application/browser/bundle acceptance complete; final MCP test correction independently reviewed | Bind the final commit to evidence, obtain exact approval and deliver PR111 through u1-ship |
+| Maintenance | First ship stopped before merge on a private Lab build-contract gap; narrow repair and affected verification pass | Bind the repaired commit to evidence, obtain exact approval and deliver PR111 through unchanged u1-ship |
 | Production widgets | PR106 is the last accepted deployment | Preserve current coverage until exact maintenance release passes |
 | Private composable Lab | PR109/110 source integration complete; no production registration | Preserve isolation; return to a user walkthrough after maintenance |
 | Preparation handoff | Decision 0048 pure core independently accepted | Supported adapters, durable storage and actual upload remain deferred |
