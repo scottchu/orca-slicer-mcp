@@ -1,13 +1,13 @@
 # F0 dual-subsystem foundation brief
 
 - Status: active
-- Current slice: state and implementation maintenance, before feature work
+- Current slice: maintenance delivered in PR111; user review before feature work
 - Decision: [0054](../../decisions/0054-own-current-state-and-maintenance-evidence.md)
 
 ## Execution order
 
-The user approved maintenance after reviewing the current state. Follow this
-order before returning to new features:
+The user approved maintenance after reviewing the current state. Steps 1–4 below
+are complete with release evidence; step 5 is current before new feature work:
 
 1. Make current records concise and preserve historical evidence without loss.
 2. Repair scoped reliability, shared application-use-case and CSS contract issues

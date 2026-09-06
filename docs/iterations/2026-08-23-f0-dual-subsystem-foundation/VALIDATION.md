@@ -4,9 +4,9 @@
 
 [2026-09-05 maintenance evidence](evidence/2026-09-05-maintenance.md) is the single
 record for actual author checks, independent review/verification, frozen candidate
-identity and shipping results. The latest section records the first pre-merge ship
-failure and verified narrow Lab build-contract repair; exact repaired-commit approval
-and guarded release remain pending. Do not claim an unrun test or infer deployed/device
+identity and shipping results. The latest section records PR111 exact review,
+successful release and scoped installed-byte checks; the first pre-merge failure
+and repair remain preserved. Do not claim an unrun test or infer actual-device
 acceptance from source fixtures.
 
 Application and build-input changes invalidate affected evidence. Follow the
