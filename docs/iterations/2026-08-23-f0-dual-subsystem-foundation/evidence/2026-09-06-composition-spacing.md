@@ -24,12 +24,11 @@ changed. Quiet fan values retain the width-aware reserve for their closed vocabu
 ## Identity and boundaries
 
 Base: 0a5c43b70a64859fbab9af960cf28371333b78dc. Work branch:
-codex/u1-composition-spacing. Final candidate commit is supplied by the PR head;
-independent exact-SHA review and guarded delivery are required before release.
+codex/u1-composition-spacing. Reviewed candidate: 8e02ea9895981e8ad9c84c3d32e66b07f71c0cb9 (PR113).
+Merged application: c61b82b74c484ed106d7c96247cf59e4d6fa9f33.
 
 Candidate labels: runtime/host 0.4.14, schema 16, observation-v20, camera-v16;
-private composable resource r5 / 0.0.7-provisional. The previous deployed
-PR111 / 0.4.13 remains the service baseline until guarded delivery succeeds.
+private composable resource r5 / 0.0.7-provisional. PR113 / 0.4.14 is now deployed; PR111 / 0.4.13 is the preserved prior release.
 
 - Private HTML: 170052 bytes; SHA-256
   4bac5c3a3cd89748ab92f49de0b6b5e6ef056517d6bea707da7464d88d87f375.
@@ -69,10 +68,9 @@ to the approved compact intent. One new gap assertion queried ready-only text
 during loading; it now measures the shared value frame. Both failures were
 retained in author logs; neither was treated as application acceptance.
 
-No full 403-case suite or shipping regression ran as part of this design slice.
-Mandatory release checks remain the release operator's responsibility after
-independent exact-candidate approval. The evidence above is author verification,
-not independent review or actual-host/device/printer acceptance.
+The focused design checks above are author verification. After independent exact
+approval, one release operator ran the unchanged mandatory shipping validation;
+this is recorded below and does not establish actual-host/device/printer acceptance.
 
 ## User observations and remaining work
 
@@ -101,5 +99,42 @@ and strict manifest reading passed: 62 files / 81 routes, exact public hashes
 and dashboard-only private composition route. Application-input aggregate:
 9d216fa7199c5ff8b42f6e455b9306a486dec3016f15f68ca8f78fd38ada4aa4.
 
-Next: independent exact-source approval, then existing PR/ship guards. No broader
-formatting or numeric-domain decision is silently adopted.
+No broader formatting or numeric-domain decision is silently adopted.
+
+## Exact approval and guarded delivery
+
+The independent reviewer approved exact candidate
+8e02ea9895981e8ad9c84c3d32e66b07f71c0cb9 after source, focused adversarial,
+input-parity and documentation reconciliation. The coordinator reviewed the
+read-only plan and authorized the sole operator under the standing delivery scope.
+
+Actual command: `uv run --no-project scripts/u1_ship.py --pr 113
+--reviewed-sha 8e02ea9895981e8ad9c84c3d32e66b07f71c0cb9 --bun <pinned-bun>
+--execute`, with the existing Bun 1.4.0 executable (SHA-256
+539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf).
+The preceding identical command without `--execute` passed its read-only plan.
+
+The workflow exited 0: mandatory local repository/application/operator tests,
+production builds, identity guards, guarded merge, exact merged-source staging,
+install dry-run, install, explicit restart of both services and verification passed.
+Release: `20260906-c61b82b-pr113-20260906T160432-8102a0`. Both public and dashboard
+report loaded/healthy/integrity verified, runtime 0.4.14 / schema 16 / observation-v20
+/ camera-v16. All 82 static-asset and 84 security checks passed; preservation was
+true and rollback was not needed. Raw receipts remain private outside Git.
+
+Only the native private dashboard Lab is included in the installed route bundle.
+The private MCP HTML above is merged, protocol-tested source; it remains
+unregistered and is not an installed production resource.
+
+Independent installed native Lab verification passed against this exact release:
+390px / 100% and 320px / 200% root text, known → error → loading → unknown → known,
+same four attributes, zero slot/card height delta and no overflow in these fixtures.
+Error exposed no old values or loading animation; the stage has no minimum-height
+floor. All 44 observed static GET responses matched the installed manifest; page
+SHA-256 was 01290b53a6c4aee0d63e9b6d7e7efb9c229606b5340c3ace159bd6fecae7ad63.
+This is synthetic installed-native behavior, not real-printer acquisition or
+mounted ChatGPT acceptance. Owned browser resources were closed.
+
+This records-only tail retains the exact merged application inputs and requires
+no additional deployment under decision 0028. After its parity review, return to
+the user's layout review; do not start another bookkeeping cycle.

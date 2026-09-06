@@ -1,21 +1,21 @@
 # Next agent
 
-## Immediate task: finish the same-information spacing correction
+## Immediate task: review the delivered spacing correction
 
 Read [current state](PROJECT_STATE.md), [requirements](docs/requirements.md),
 the [brief](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/BRIEF.md) and
 [spacing evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-composition-spacing.md).
-PR111 / 0.4.13 remains deployed; the 0.4.14 spacing candidate is not a released
-or independently approved build merely because author tests pass.
+PR113 / 0.4.14 is independently approved and deployed as merged application
+`c61b82b74c484ed106d7c96247cf59e4d6fa9f33`. Both services and exact static assets
+passed guarded verification.
 
-1. Task-owned fixture/browser cleanup and the narrow spacing implementation are
-   complete. Review final Smart with the same four attributes; do not compare
-   its content density against Compact's two-field subset.
-2. Finish independent exact-candidate source review and targeted verification.
-   Keep the legal-decimal two-line regression covered.
-3. If approved, one release operator runs existing mandatory local/PR/ship guards,
-   deploys the exact merged build, restarts both services and verifies scoped
-   behavior. Do not duplicate a full regression merely for a reviewer handoff.
+1. Installed synthetic native Lab behavior passed. Complete the records-only
+   parity review; no new deployment is needed for unchanged application bytes.
+2. Review Smart with the user: the same four attributes, approximately 24px visible
+   separation at 390px, and retained temperature wrapping. Do not compare its
+   information density against Compact's two-field subset.
+3. Preserve the existing extreme-decimal 320px / 200% limitation in the evidence
+   record. Further formatting work requires its own bounded task.
 
 The user reports Camera Auto/Live worked at home and outside use worked well;
 record this bounded observation without claiming long-duration or mounted-host

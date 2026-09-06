@@ -7,8 +7,8 @@ scope and acceptance; [NEXT_AGENT.md](../../../NEXT_AGENT.md) owns execution ord
 Record reorganization and scoped reliability/shared-use-case/CSS repairs are
 implemented and delivered in PR111 after exact review and guarded release.
 The current correction reduces composition spacing while preserving all four Smart
-attributes. Next: freeze the candidate, obtain independent exact-source approval,
-then let one operator run the mandatory guarded release before user review.
+attributes. PR113 passed independent exact-source approval and the mandatory guarded release.
+Installed synthetic native Lab behavior passed; next is user layout review.
 [Spacing evidence](evidence/2026-09-06-composition-spacing.md) owns changed components,
 actual checks, artifact identities and the existing extreme-decimal limitation.
 
@@ -26,18 +26,18 @@ Current summaries link it instead of copying its logs.
 
 ## Unresolved risks and next smallest action
 
-PR111 / runtime 0.4.13 is the accepted deployed release. The single evidence record
+PR111 / runtime 0.4.13 is the preserved prior deployed release. The single evidence record
 binds the exact reviewed/merged commits, 510 application inputs, release receipt
 and scoped installed-byte verification. The first pre-merge failure and its narrow
 repair remain historical evidence. Shipping guards are unchanged.
-C08 real-phone Camera reliability, mounted-host behavior and user benefit remain
-unaccepted; the maintenance slice cannot silently close them. Preparation pure-core
-acceptance does not implement its deferred adapters or authorize upload/start.
+Camera Auto/Live home use and outside use have positive user self-reports; C08
+long-duration reliability and mounted-host behavior remain separately unaccepted.
+Preparation pure-core acceptance does not implement its deferred adapters or authorize upload/start.
 Preserve Lab isolation, the 55-ID ledger, unrelated work and existing private state.
 
-Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the spacing candidate. Its new
-application bytes require the normal review and delivery gates; the earlier
-maintenance records-only tail did not require a deployment.
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the spacing candidate. PR113 application
+bytes passed the normal review and delivery gates. This records-only tail needs
+parity review and no additional deployment.
 Historical pending instructions are archived and must not be replayed. All previous
 paths, observations, failures and recovery evidence remain in the
 [PR110 snapshot](../../history/2026-09-05-pr110/README.md).
