@@ -517,3 +517,72 @@ Records-tail checks: `git diff --check` passed; `uv run --no-project` verified
 24 changed-record relative links and the frozen 510 input hashes. `lsof` found
 no remaining listener on task port 4218. No full suite or deployed request was
 run by this validation owner for this records tail.
+
+## Released maintenance: PR111
+
+The coordinator ran `uv run --no-project scripts/u1_ship.py --pr 111
+--reviewed-sha 97e47625b6ac797a8e86a212766e74829ccbe904 --bun <PINNED_BUN>`
+first as the plan, then with `--execute`. The existing mandatory validation,
+guarded merge, exact staging, installation dry run, install, BOTH service restarts
+and verification passed. No skip or guard modification was used.
+
+- Reviewed commit: `97e47625b6ac797a8e86a212766e74829ccbe904`.
+- Merged source: `4dea3e2cced0d70060476cd641db4a795b865bb8` (PR111).
+- Operation: `pr111-20260906T000455-97f4aa`; installed release:
+  `20260906-4dea3e2-pr111-20260906T000455-97f4aa`.
+- Receipt: complete, merged/installed true, rollback not needed; SHA-256
+  `d9efd685f65f1f85f6581b25df594116bbf5efc8a1692190110559b0b5c41ea5`.
+- BOTH public and dashboard services: loaded, healthy, integrity verified,
+  runtime 0.4.13 / schema 16 / observation-v19 / camera-v15.
+- Exact served-asset verification: 82 checks; security/isolation: 84 checks;
+  private-state preservation true. The private Lab page/data remains dashboard-only
+  and unregistered as a production MCP widget.
+
+The first pre-merge failure above remains historical evidence. This receipt accepts
+release identity, deployed services and static/security checks; scoped installed-byte
+behavior is recorded separately below. It does not prove real-printer or actual-phone
+behavior. The records-only follow-up retains the exact application inputs and
+requires no further deployment under decision 0028.
+
+### Independent scoped installed-byte behavior
+
+The independent reviewer verified all 62 installed runtime files against the
+reviewed `eaedab7f…` build manifest before each browser launch. Actual task-only
+commands used pinned Bun with `--no-env-file --config=/dev/null`, running
+`postverification.ts`, `postverification-camera.ts` (twice), and
+`postverification-mcp-heads.ts`, each with its corresponding `--confirmed-receipt`
+configuration. Command/script/log/request-ledger and nine accepted image identities
+are bound by `postverification-acceptance.json`, SHA-256
+`f6f01c9f478274293307c0412ea83e047dca2313e0c313c0c63e3edfa890b530`.
+
+- Native Heads: all 27 real static GET response hashes matched installed bytes.
+  Synthetic known/Empty/color states, root 200% typography and responsive hierarchy,
+  20,001 ms stalled-refresh timeout, telemetry masking and explicit retry passed.
+- Installed observation-v19 in a synthetic MCP host: no duplicate initial
+  acquisition, exact color Copy/focus, same-view failure masking and recovery passed.
+- Installed camera-v15: missing optional activation preserved the snapshot source
+  through bounded Live failure masking; no new call at 1,499 ms, then one synthetic
+  Auto frame call restored the same visible snapshot at 1,500 ms. This proves
+  retained-image recovery, not uninterrupted visibility during failure.
+
+The first combined run failed its Camera recovery assertion because the Native
+fixture left the shared browser-context clock paused. A Camera-only run explicitly
+advanced that clock and passed every recovery assertion; no product change followed.
+Initial cropped MCP screenshots were retained as limited fixture evidence. Renewed
+captures adjusted only synthetic-host iframe fit, without widget CSS changes.
+The reviewer opened all 15 saved images; nine final accepted images show readable
+Native, MCP Heads and Camera states without clipping or overlap.
+
+All acquisition/tool/media/signaling requests were fulfilled or refused locally;
+zero such requests were forwarded. Peer/media/socket APIs were denied before widget
+scripts, with zero attempts in final ledgers. Browsers and pending routes were
+released in finally. This accepts meaningful behavior of exact installed bytes
+under synthetic data, separately from actual ChatGPT host, phone, upstream camera,
+printer or user outcomes. C08 remains open. No additional code fix is required;
+the next task is user review of the delivered maintenance result.
+
+Release-records tail: `git diff --check` passed. `uv run --no-project` verified
+exactly six documentation-only changes against merged `4dea3e2`, all 510 application
+input hashes unchanged, 29 current-record links, 14 exact archived files and current
+iteration/state contracts. Existing application/build/browser evidence is retained;
+no application test, build or deployment was repeated for this documentation tail.

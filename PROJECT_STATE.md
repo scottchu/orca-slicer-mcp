@@ -2,11 +2,11 @@
 
 ## Baseline
 
-Source baseline: PR109 private Lab and PR110 records are merged at
-`8cc6eb18c44fb1ac0a3a92ead9a3a0e725bb50cc`. The PR110 bookkeeping task is done.
-The accepted deployment record remains PR106, runtime 0.4.12, schema 16,
-observation 18 and Camera 14, until maintenance shipping is verified. These are
-recorded deployment facts, not a fresh live-health claim.
+PR111 maintenance is merged at `4dea3e2cced0d70060476cd641db4a795b865bb8`
+and deployed: runtime 0.4.13, schema 16, observation 19 and Camera 15.
+Both services passed restart, health, integrity and exact-asset verification.
+PR109/110 integration and bookkeeping are complete. These are recorded release
+observations, not a claim of continuous live monitoring.
 
 ## Active iteration
 
@@ -16,8 +16,8 @@ defines record ownership; [NEXT_AGENT.md](NEXT_AGENT.md) owns execution order.
 
 | Workstream | Current status | Next bounded action |
 | --- | --- | --- |
-| Maintenance | First ship stopped before merge on a private Lab build-contract gap; narrow repair and affected verification pass | Bind the repaired commit to evidence, obtain exact approval and deliver PR111 through unchanged u1-ship |
-| Production widgets | PR106 is the last accepted deployment | Preserve current coverage until exact maintenance release passes |
+| Maintenance | PR111 reviewed, merged and deployed through unchanged shipping guards | Review the delivered result with the user |
+| Production widgets | PR111 / 0.4.13 is deployed; health, integrity and exact assets verified | Preserve truthful coverage; accept actual-device outcomes separately |
 | Private composable Lab | PR109/110 source integration complete; no production registration | Preserve isolation; return to a user walkthrough after maintenance |
 | Preparation handoff | Decision 0048 pure core independently accepted | Supported adapters, durable storage and actual upload remain deferred |
 | Camera C08 | Actual-phone Live reliability unresolved | Keep open; synthetic success or healthy services cannot close it |
@@ -29,21 +29,22 @@ at the product-coverage layer described in the ledger.
 
 ## Acceptance state
 
-- **Static/software:** maintenance full application/operator gates and deterministic
-  bundles pass; the MCP-test-only tail renewed affected type/browser checks.
-  Exact final-commit approval and mandatory shipping gates remain next.
+- **Static/software:** independent exact review, required application/operator
+  gates, deterministic bundles and mandatory shipping validation pass.
 - **Protocol/simulator:** final synthetic visual, composable and MCP consumer
-  checks pass. These do not establish mounted-host or actual-device acceptance.
-- **Deployed service:** PR106 remains the accepted record; no new shipping result
-  is claimed. Exact release checks and meaningful changed behavior are distinct.
+  checks pass. Independent installed-byte Heads timeout/retry/typography, MCP
+  Copy/recovery and Camera snapshot recovery pass under synthetic data. These do
+  not establish actual ChatGPT host or device acceptance.
+- **Deployed service:** PR111 is installed; both services restarted and passed
+  health, integrity, exact assets, security and private-state preservation checks.
 - **Real printer:** no new printer acceptance is claimed by maintenance.
 - **User outcome:** phone Camera reliability, mounted-host behavior and the
   composable Lab's usefulness remain separately unverified.
 
 ## Next action
 
-Complete exact review and guarded delivery in [NEXT_AGENT.md](NEXT_AGENT.md), preserving
-existing authorization, role separation and mandatory `u1-ship` gates. Do not
+Review the delivered result with the user as described in [NEXT_AGENT.md](NEXT_AGENT.md),
+preserving evidence boundaries and existing release guards. Do not
 register the Lab, control the printer, change auth/Tailscale or reinstall plugins.
 
 [VALIDATION](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/VALIDATION.md)
