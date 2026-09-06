@@ -1,5 +1,6 @@
 import { expect, test, type Frame } from '@playwright/test';
 import { installCameraPeerFixture } from '../fixtures/live-camera';
+import { doubleSyntheticText } from '../helpers/text-scale';
 
 const frameOf = async (page: import('@playwright/test').Page) => {
   await expect
@@ -21,20 +22,7 @@ const bounds = (frame: Frame) =>
         return [box.x + scrollX, box.y + scrollY, box.width, box.height];
       }),
     );
-const enlarge = (frame: Frame) =>
-  frame.evaluate(() => {
-    const visit = (rule: CSSRule): void => {
-      if ('cssRules' in rule) for (const child of (rule as CSSGroupingRule).cssRules) visit(child);
-      if (!(rule instanceof CSSStyleRule)) return;
-      const size = rule.style.getPropertyValue('font-size');
-      if (size)
-        rule.style.setProperty(
-          'font-size',
-          size.replace(/([\d.]+)(px|vw)/g, (_, value, unit) => `${Number(value) * 2}${unit}`),
-        );
-    };
-    for (const sheet of document.styleSheets) for (const rule of sheet.cssRules) visit(rule);
-  });
+const enlarge = doubleSyntheticText;
 
 for (const width of [320, 390, 590, 720])
   for (const doubled of [false, true])
@@ -53,7 +41,18 @@ for (const width of [320, 390, 590, 720])
       await page.goto('/host?view=heads');
       const frame = await frameOf(page);
       await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
-      if (doubled) await enlarge(frame);
+      if (doubled) {
+        const samples = [
+          frame.locator('[data-widget-header] h1'),
+          frame.locator('[data-inset-card] .name').first(),
+          frame.locator('[data-inset-card] .caption').first(),
+          frame.locator('[data-inset-card] .degree').first(),
+        ];
+        const fontSizes = () => Promise.all(samples.map((sample) => sample.evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize))));
+        const normal = await fontSizes();
+        await enlarge(frame);
+        expect(await fontSizes()).toEqual(normal.map((size) => size * 2));
+      }
       expect(await frame.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
         width,
       );
@@ -89,7 +88,7 @@ for (const width of [320, 390, 590, 720])
       await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
       await expect(copy).toBeVisible();
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/observation-v18.html',
+        'ui://u1-print-studio/observation-v19.html',
       );
       const messages = await page.evaluate(() => (window as any).__mcpHost.state.messages);
       expect(messages.filter((message: any) => message.method === 'ui/initialize')).toHaveLength(1);
@@ -160,7 +159,7 @@ for (const width of [320, 390, 590, 720])
       await expect(frame.locator('img')).toHaveAttribute('aria-hidden', 'false');
       await expect(frame.locator('[data-media-feedback]')).toHaveCount(0);
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/camera-v14.html',
+        'ui://u1-print-studio/camera-v15.html',
       );
       await expect
         .poll(() => page.evaluate(() => (window as any).__mcpHost.state.sizes.length))

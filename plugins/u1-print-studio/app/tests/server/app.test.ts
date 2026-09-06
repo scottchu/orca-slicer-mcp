@@ -227,7 +227,7 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v18.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v19.html");
 
     expect(observe).toBeDefined();
     expect(observe?.annotations).toMatchObject({
@@ -309,7 +309,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(MCP_CAMERA_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v14.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v15.html");
   });
 
   test("lists only current resources and rejects every retired URI", async () => {

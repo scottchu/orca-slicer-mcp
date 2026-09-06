@@ -18,6 +18,7 @@ export type PresentationComponentPropsByElement = {
   Title: {
     text: ResolvedNodeFor<'Title'>['text'];
     size?: ResolvedNodeFor<'Title'>['size'];
+    inset?: boolean;
   };
   Stack: {
     children: Snippet;
@@ -45,6 +46,7 @@ export type PresentationComponentPropsByElement = {
   Group: {
     children: Snippet;
     relation: ResolvedNodeFor<'Group'>['relation'];
+    label: string;
     rowGap?: ResolvedNodeFor<'Group'>['rowGap'];
     inset?: boolean;
   };
@@ -58,9 +60,9 @@ export type PresentationComponentPropsByElement = {
     colSpan: ResolvedNodeFor<'Column'>['colSpan'];
   };
   HeadStatus: { value: ResolvedNodeFor<'HeadStatus'>['value']; appearance?: ResolvedNodeFor<'HeadStatus'>['appearance'] };
-  HeadTemperature: { value: ResolvedNodeFor<'HeadTemperature'>['value']; appearance?: ResolvedNodeFor<'HeadTemperature'>['appearance'] };
-  FilamentColor: { value: ResolvedNodeFor<'FilamentColor'>['value']; appearance?: ResolvedNodeFor<'FilamentColor'>['appearance'] };
-  FanRelation: { value: ResolvedNodeFor<'FanRelation'>['value']; appearance?: ResolvedNodeFor<'FanRelation'>['appearance'] };
+  HeadTemperature: { density?: 'regular' | 'compact'; value: ResolvedNodeFor<'HeadTemperature'>['value']; appearance?: ResolvedNodeFor<'HeadTemperature'>['appearance'] };
+  FilamentColor: { density?: 'regular' | 'compact'; value: ResolvedNodeFor<'FilamentColor'>['value']; appearance?: ResolvedNodeFor<'FilamentColor'>['appearance'] };
+  FanRelation: { density?: 'regular' | 'compact'; value: ResolvedNodeFor<'FanRelation'>['value']; appearance?: ResolvedNodeFor<'FanRelation'>['appearance'] };
 };
 
 export type PresentationAdapterPropsByElement = {
@@ -70,4 +72,5 @@ export type PresentationAdapterPropsByElement = {
 export type PresentationRenderContext = {
   subjectLabel: string;
   busy: boolean;
+  group?: 'identity' | 'summary';
 };

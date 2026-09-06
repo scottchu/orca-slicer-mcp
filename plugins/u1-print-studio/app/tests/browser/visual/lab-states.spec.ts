@@ -1,3 +1,4 @@
+import { doubleSyntheticText } from '../helpers/text-scale';
 import { expect, test, type Page } from '@playwright/test';
 
 const views = ['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans', 'bed_mesh'] as const;
@@ -5,21 +6,7 @@ const bounds = (page: Page) => page.locator('[data-widget-shell], [data-widget-h
   const rect = node.getBoundingClientRect();
   return { x: rect.x + scrollX, y: rect.y + scrollY, width: rect.width, height: rect.height };
 }));
-const doubleText = (page: Page) => page.evaluate(() => {
-  for (const sheet of document.styleSheets) for (const rule of sheet.cssRules) {
-    const visit = (item: CSSRule): void => {
-      if ('cssRules' in item) for (const child of (item as CSSGroupingRule).cssRules) visit(child);
-      if (!(item instanceof CSSStyleRule)) return;
-      const size = item.style.getPropertyValue('font-size');
-      if (size) item.style.setProperty('font-size', size.replace(/([\d.]+)(px|vw)/g, (_, value, unit) => `${Number(value) * 2}${unit}`));
-      for (const token of ['--u1-type-label', '--u1-type-name', '--u1-type-value']) {
-        const value = item.style.getPropertyValue(token);
-        if (value.endsWith('px')) item.style.setProperty(token, `${Number.parseFloat(value) * 2}px`);
-      }
-    };
-    visit(rule);
-  }
-});
+const doubleText = doubleSyntheticText;
 
 for (const width of [320, 390, 590, 720]) for (const enlarged of [false, true]) {
   test(`known empty structures preserve loading geometry at ${width}, enlarged=${enlarged}`, async ({ page }) => {

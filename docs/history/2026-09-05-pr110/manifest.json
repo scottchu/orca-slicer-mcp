@@ -1,0 +1,61 @@
+{
+  "sourceCommit": "8cc6eb18c44fb1ac0a3a92ead9a3a0e725bb50cc",
+  "files": {
+    "NEXT_AGENT.md": {
+      "sha256": "729491fde2ffa9b6d085e8a7039538d943d1c44a72442705cc1895273221e3d8",
+      "bytes": 156018
+    },
+    "PROJECT_STATE.md": {
+      "sha256": "b0c1b4ac5b0d3aac24cd1b40882b05abce164824ff039a58cb33bbbef64a0624",
+      "bytes": 194988
+    },
+    "docs/decisions/0040-require-embedded-print-thumbnails.md": {
+      "sha256": "e8c83a13f91d0c415547fa332d98306faff760629f8e87c180bafc86265bbd00",
+      "bytes": 2734
+    },
+    "docs/decisions/0044-connect-heads-and-camera-svelte-to-mcp-resources.md": {
+      "sha256": "d1dc800e0cfab8a2ae2f48268b5203b9b1a75abbd64033769cae44fb187c47b8",
+      "bytes": 10619
+    },
+    "docs/decisions/0045-compose-print-with-standalone-asynchronous-monitoring.md": {
+      "sha256": "f7c63d85fc84aceb094962040f7f2b197fae04a1cf770955ca8e7c94942c09a8",
+      "bytes": 4736
+    },
+    "docs/decisions/0048-guard-upload-with-content-bound-preparation-receipts.md": {
+      "sha256": "fd969f783af70dcb0a0a90e9f6f08e6c9fc454acd76ac642906255d15e362761",
+      "bytes": 7634
+    },
+    "docs/iterations/2026-08-23-f0-dual-subsystem-foundation/BRIEF.md": {
+      "sha256": "49f1143f625dc5072d90407b20c96d386af195e77403abdebe94088e0da735e1",
+      "bytes": 85191
+    },
+    "docs/iterations/2026-08-23-f0-dual-subsystem-foundation/HANDOFF.md": {
+      "sha256": "08030eda561dde584ac1f19273cfb615ea8a35311351f9ff714c91d1c234657b",
+      "bytes": 281506
+    },
+    "docs/iterations/2026-08-23-f0-dual-subsystem-foundation/VALIDATION.md": {
+      "sha256": "47fc8bdac49a740a2db2a4d58c82f45812c2e0e91ca9307d8b8058c9579542e8",
+      "bytes": 726940
+    },
+    "docs/knowledge/snapmaker-orca-cli-preparation.md": {
+      "sha256": "bc0a20f29d9fdcfeefef3e73f266f190db8db1457296ba53d030ace1b37ac19d",
+      "bytes": 9937
+    },
+    "docs/logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md": {
+      "sha256": "165e0d7f4159b3f18606fa308ea5bd1e053150d43208316e3a098d2199c8e134",
+      "bytes": 7477
+    },
+    "docs/logs/2026-08-25-snapmaker-u1-pla-print-repetitions.md": {
+      "sha256": "3801f5cd572cfada3dc07b70d3674d8612cec80d276a8f627971c1319a1755e0",
+      "bytes": 5210
+    },
+    "docs/widget-delivery.md": {
+      "sha256": "09757490bc6edc3249efa56264023aabde3055e0caf38954a9ea1436e56ad7df",
+      "bytes": 36412
+    },
+    "plugins/u1-print-studio/skills/u1-monitor-print/SKILL.md": {
+      "sha256": "2c6aef5df2507959c3b7ebe4eae2dcefba567b511adf543172e09cb480551e3d",
+      "bytes": 8783
+    }
+  }
+}

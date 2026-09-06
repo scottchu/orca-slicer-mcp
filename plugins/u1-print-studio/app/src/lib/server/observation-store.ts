@@ -1,3 +1,4 @@
+import { createDomainObservationCache, type DomainObservationCache } from "./application/domain-observation-cache.js";
 import type { U1Status, U1WidgetMetadata } from "./u1-status.js";
 import { BED_MESH_TTL_MS, unavailableBedMesh, type BedMeshObservation, type BedMeshReader } from "./application/bed-mesh-observation.js";
 import { MATERIAL_TTL_MS, unavailableMaterials, type MaterialObservation, type MaterialReader } from "./application/material-observation.js";
@@ -89,18 +90,12 @@ export class PrinterObservationStore {
   private observationVersion = 0;
   private connectionEpoch = 0;
   private previouslyReachable = false;
-  private bedMesh = unavailableBedMesh("not_requested");
-  private bedMeshInFlight: Promise<void> | null = null;
-  private materials = unavailableMaterials("not_requested");
-  private materialsInFlight: Promise<void> | null = null;
-  private queue = unavailableQueue("not_requested");
-  private queueInFlight: Promise<void> | null = null;
-  private environment = unavailableEnvironment("not_requested");
-  private environmentInFlight: Promise<void> | null = null;
-  private currentJob = unavailableCurrentJob("not_requested");
-  private currentJobInFlight: Promise<void> | null = null;
-  private jobHistory = unavailableJobHistory("not_requested");
-  private jobHistoryInFlight: Promise<void> | null = null;
+  private readonly bedMesh: DomainObservationCache<BedMeshObservation>;
+  private readonly materials: DomainObservationCache<MaterialObservation>;
+  private readonly queue: DomainObservationCache<QueueObservation>;
+  private readonly environment: DomainObservationCache<EnvironmentObservation>;
+  private readonly currentJob: DomainObservationCache<CurrentJobObservation>;
+  private readonly jobHistory: DomainObservationCache<JobHistoryObservation>;
 
   constructor(
     private readonly readStatus: StatusReader,
@@ -111,26 +106,61 @@ export class PrinterObservationStore {
     private readonly readEnvironment?: EnvironmentReader,
     private readonly readCurrentJob?: CurrentJobReader,
     private readonly readJobHistory?: JobHistoryReader
-  ) {}
+  ) {
+    const received = () => {
+      const version = ++this.observationVersion;
+      if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
+    };
+    this.bedMesh = createDomainObservationCache({
+      initial: unavailableBedMesh("not_requested"), read: this.readBedMesh,
+      ttlMs: BED_MESH_TTL_MS, unavailable: (checkedAt) => unavailableBedMesh("network", checkedAt),
+      now: this.now, received,
+    });
+    this.materials = createDomainObservationCache({
+      initial: unavailableMaterials("not_requested"), read: this.readMaterials,
+      ttlMs: MATERIAL_TTL_MS, unavailable: (checkedAt) => unavailableMaterials("network", checkedAt),
+      now: this.now, received,
+    });
+    this.queue = createDomainObservationCache({
+      initial: unavailableQueue("not_requested"), read: this.readQueue,
+      ttlMs: QUEUE_TTL_MS, unavailable: (checkedAt) => unavailableQueue("network", checkedAt),
+      now: this.now, received,
+    });
+    this.environment = createDomainObservationCache({
+      initial: unavailableEnvironment("not_requested"), read: this.readEnvironment,
+      ttlMs: ENVIRONMENT_TTL_MS, unavailable: (checkedAt) => unavailableEnvironment("network", checkedAt),
+      now: this.now, received,
+    });
+    this.currentJob = createDomainObservationCache({
+      initial: unavailableCurrentJob("not_requested"), read: this.readCurrentJob,
+      ttlMs: CURRENT_JOB_TTL_MS, unavailable: (checkedAt) => unavailableCurrentJob("network", checkedAt),
+      now: this.now, received,
+    });
+    this.jobHistory = createDomainObservationCache({
+      initial: unavailableJobHistory("not_requested"), read: this.readJobHistory,
+      ttlMs: JOB_HISTORY_TTL_MS, unavailable: (checkedAt) => unavailableJobHistory("network", checkedAt),
+      now: this.now, received,
+    });
+  }
 
   async current(options: { refresh?: boolean; includeBedMesh?: boolean; includeMaterials?: boolean; includeQueue?: boolean; includeEnvironment?: boolean; includeCurrentJob?: boolean; includeJobHistory?: boolean } = {}): Promise<ObservationSnapshot> {
     await Promise.all([
       this.currentStatus(options),
-      options.includeBedMesh ? this.currentBedMesh(options.refresh === true) : Promise.resolve(),
-      options.includeMaterials ? this.currentMaterials(options.refresh === true) : Promise.resolve(),
-      options.includeQueue ? this.currentQueue(options.refresh === true) : Promise.resolve(),
-      options.includeEnvironment ? this.currentEnvironment(options.refresh === true) : Promise.resolve(),
-      options.includeCurrentJob ? this.currentCurrentJob(options.refresh === true) : Promise.resolve(),
-      options.includeJobHistory ? this.currentJobHistory(options.refresh === true) : Promise.resolve(),
+      options.includeBedMesh ? this.bedMesh.current(options.refresh === true) : Promise.resolve(),
+      options.includeMaterials ? this.materials.current(options.refresh === true) : Promise.resolve(),
+      options.includeQueue ? this.queue.current(options.refresh === true) : Promise.resolve(),
+      options.includeEnvironment ? this.environment.current(options.refresh === true) : Promise.resolve(),
+      options.includeCurrentJob ? this.currentJob.current(options.refresh === true) : Promise.resolve(),
+      options.includeJobHistory ? this.jobHistory.current(options.refresh === true) : Promise.resolve(),
     ]);
     // A concurrent status or mesh receipt may have advanced the shared version.
     // Attach the latest independent domain instead of a captured older snapshot.
-    const bedMesh = this.bedMeshWithCurrentFreshness();
-    const materials = this.materialsWithCurrentFreshness();
-    const queue = this.queueWithCurrentFreshness();
-    const environment = this.environmentWithCurrentFreshness();
-    const currentJob = this.currentJobWithCurrentFreshness();
-    const jobHistory = this.jobHistoryWithCurrentFreshness();
+    const bedMesh = this.bedMesh.value();
+    const materials = this.materials.value();
+    const queue = this.queue.value();
+    const environment = this.environment.value();
+    const currentJob = this.currentJob.value();
+    const jobHistory = this.jobHistory.value();
     const snapshot = this.withCurrentFreshness(this.snapshot!);
     return { ...snapshot, bedMesh, materials, queue, environment, currentJob, jobHistory, capabilityEvidence: {
       ...snapshot.capabilityEvidence,
@@ -143,186 +173,6 @@ export class PrinterObservationStore {
       jobs: currentJob.sourceObservedAt !== null ? "observed" : currentJob.state === "unsupported" ? "unsupported" : "unknown",
       history: jobHistory.sourceObservedAt !== null ? "observed" : jobHistory.state === "unsupported" ? "unsupported" : "unknown",
     } };
-  }
-
-  private async currentCurrentJob(refresh: boolean): Promise<void> {
-    const checked = Date.parse(this.currentJob.checkedAt ?? "");
-    const due = !Number.isFinite(checked) || this.now().valueOf() - checked >= CURRENT_JOB_TTL_MS;
-    if (this.currentJob.checkedAt !== null && (!refresh || !due)) return;
-    if (!this.readCurrentJob) return;
-    if (!this.currentJobInFlight) {
-      this.currentJobInFlight = (async () => {
-        let result: CurrentJobObservation;
-        try { result = await this.readCurrentJob!(); }
-        catch { result = unavailableCurrentJob("network", this.now().toISOString()); }
-        if (result.state === "known") this.currentJob = result;
-        else if (this.currentJob.sourceObservedAt !== null) this.currentJob = {
-          ...this.currentJob, state: "stale", freshness: "stale",
-          checkedAt: result.checkedAt ?? this.now().toISOString(), reason: result.reason,
-        };
-        else this.currentJob = { ...result, checkedAt: result.checkedAt ?? this.now().toISOString() };
-        const version = ++this.observationVersion;
-        if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
-      })().finally(() => { this.currentJobInFlight = null; });
-    }
-    await this.currentJobInFlight;
-  }
-
-  private currentJobWithCurrentFreshness(): CurrentJobObservation {
-    if (this.currentJob.state !== "known") return this.currentJob;
-    const observed = Date.parse(this.currentJob.sourceObservedAt ?? "");
-    return !Number.isFinite(observed) || this.now().valueOf() - observed >= CURRENT_JOB_TTL_MS
-      ? { ...this.currentJob, state: "stale", freshness: "stale" } : this.currentJob;
-  }
-
-  private async currentJobHistory(refresh: boolean): Promise<void> {
-    const checked = Date.parse(this.jobHistory.checkedAt ?? "");
-    const due = !Number.isFinite(checked) || this.now().valueOf() - checked >= JOB_HISTORY_TTL_MS;
-    if (this.jobHistory.checkedAt !== null && (!refresh || !due)) return;
-    if (!this.readJobHistory) return;
-    if (!this.jobHistoryInFlight) {
-      this.jobHistoryInFlight = (async () => {
-        let result: JobHistoryObservation;
-        try { result = await this.readJobHistory!(); }
-        catch { result = unavailableJobHistory("network", this.now().toISOString()); }
-        if (result.state === "known") this.jobHistory = result;
-        else if (this.jobHistory.sourceObservedAt !== null) this.jobHistory = {
-          ...this.jobHistory, state: "stale", freshness: "stale",
-          checkedAt: result.checkedAt ?? this.now().toISOString(), reason: result.reason,
-        };
-        else this.jobHistory = { ...result, checkedAt: result.checkedAt ?? this.now().toISOString() };
-        const version = ++this.observationVersion;
-        if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
-      })().finally(() => { this.jobHistoryInFlight = null; });
-    }
-    await this.jobHistoryInFlight;
-  }
-
-  private jobHistoryWithCurrentFreshness(): JobHistoryObservation {
-    if (this.jobHistory.state !== "known") return this.jobHistory;
-    const observed = Date.parse(this.jobHistory.sourceObservedAt ?? "");
-    return !Number.isFinite(observed) || this.now().valueOf() - observed >= JOB_HISTORY_TTL_MS
-      ? { ...this.jobHistory, state: "stale", freshness: "stale" } : this.jobHistory;
-  }
-
-  private async currentEnvironment(refresh: boolean): Promise<void> {
-    const checked = Date.parse(this.environment.checkedAt ?? "");
-    const due = !Number.isFinite(checked) || this.now().valueOf() - checked >= ENVIRONMENT_TTL_MS;
-    if (this.environment.checkedAt !== null && (!refresh || !due)) return;
-    if (!this.readEnvironment) return;
-    if (!this.environmentInFlight) {
-      this.environmentInFlight = (async () => {
-        let result: EnvironmentObservation;
-        try { result = await this.readEnvironment!(); }
-        catch { result = unavailableEnvironment("network", this.now().toISOString()); }
-        if (result.state === "known") this.environment = result;
-        else if (this.environment.sourceObservedAt !== null) this.environment = {
-          ...this.environment, state: "stale", freshness: "stale",
-          checkedAt: result.checkedAt ?? this.now().toISOString(), reason: result.reason,
-        };
-        else this.environment = { ...result, checkedAt: result.checkedAt ?? this.now().toISOString() };
-        const version = ++this.observationVersion;
-        if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
-      })().finally(() => { this.environmentInFlight = null; });
-    }
-    await this.environmentInFlight;
-  }
-
-  private environmentWithCurrentFreshness(): EnvironmentObservation {
-    if (this.environment.state !== "known") return this.environment;
-    const observed = Date.parse(this.environment.sourceObservedAt ?? "");
-    return !Number.isFinite(observed) || this.now().valueOf() - observed >= ENVIRONMENT_TTL_MS
-      ? { ...this.environment, state: "stale", freshness: "stale" } : this.environment;
-  }
-
-  private async currentQueue(refresh: boolean): Promise<void> {
-    const checked = Date.parse(this.queue.checkedAt ?? "");
-    const due = !Number.isFinite(checked) || this.now().valueOf() - checked >= QUEUE_TTL_MS;
-    if (this.queue.checkedAt !== null && (!refresh || !due)) return;
-    if (!this.readQueue) return;
-    if (!this.queueInFlight) {
-      this.queueInFlight = (async () => {
-        let result: QueueObservation;
-        try { result = await this.readQueue!(); }
-        catch { result = unavailableQueue("network", this.now().toISOString()); }
-        if (result.state === "known") this.queue = result;
-        else if (this.queue.sourceObservedAt !== null) this.queue = {
-          ...this.queue, state: "stale", freshness: "stale",
-          checkedAt: result.checkedAt ?? this.now().toISOString(), reason: result.reason,
-        };
-        else this.queue = { ...result, checkedAt: result.checkedAt ?? this.now().toISOString() };
-        const version = ++this.observationVersion;
-        if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
-      })().finally(() => { this.queueInFlight = null; });
-    }
-    await this.queueInFlight;
-  }
-
-  private queueWithCurrentFreshness(): QueueObservation {
-    if (this.queue.state !== "known") return this.queue;
-    const observed = Date.parse(this.queue.sourceObservedAt ?? "");
-    return !Number.isFinite(observed) || this.now().valueOf() - observed >= QUEUE_TTL_MS
-      ? { ...this.queue, state: "stale", freshness: "stale" } : this.queue;
-  }
-
-  private async currentMaterials(refresh: boolean): Promise<void> {
-    const checked = Date.parse(this.materials.checkedAt ?? "");
-    const due = !Number.isFinite(checked) || this.now().valueOf() - checked >= MATERIAL_TTL_MS;
-    if (this.materials.checkedAt !== null && (!refresh || !due)) return;
-    if (!this.readMaterials) return;
-    if (!this.materialsInFlight) {
-      this.materialsInFlight = (async () => {
-        let result: MaterialObservation;
-        try { result = await this.readMaterials!(); }
-        catch { result = unavailableMaterials("network", this.now().toISOString()); }
-        if (result.state === "known") this.materials = result;
-        else if (this.materials.sourceObservedAt !== null) this.materials = {
-          ...this.materials, state: "stale", freshness: "stale",
-          checkedAt: result.checkedAt ?? this.now().toISOString(), reason: result.reason,
-        };
-        else this.materials = { ...result, checkedAt: result.checkedAt ?? this.now().toISOString() };
-        const version = ++this.observationVersion;
-        if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
-      })().finally(() => { this.materialsInFlight = null; });
-    }
-    await this.materialsInFlight;
-  }
-
-  private materialsWithCurrentFreshness(): MaterialObservation {
-    if (this.materials.state !== "known") return this.materials;
-    const observed = Date.parse(this.materials.sourceObservedAt ?? "");
-    return !Number.isFinite(observed) || this.now().valueOf() - observed >= MATERIAL_TTL_MS
-      ? { ...this.materials, state: "stale", freshness: "stale" } : this.materials;
-  }
-
-  private async currentBedMesh(refresh: boolean): Promise<void> {
-    const checked = Date.parse(this.bedMesh.checkedAt ?? "");
-    const due = !Number.isFinite(checked) || this.now().valueOf() - checked >= BED_MESH_TTL_MS;
-    if (this.bedMesh.checkedAt !== null && (!refresh || !due)) return;
-    if (!this.readBedMesh) return;
-    if (!this.bedMeshInFlight) {
-      this.bedMeshInFlight = (async () => {
-        let result: BedMeshObservation;
-        try { result = await this.readBedMesh!(); }
-        catch { result = unavailableBedMesh("network", this.now().toISOString()); }
-        if (result.state === "known") this.bedMesh = result;
-        else if (this.bedMesh.sourceObservedAt !== null) this.bedMesh = {
-          ...this.bedMesh, state: "stale", freshness: "stale",
-          checkedAt: result.checkedAt ?? this.now().toISOString(), reason: result.reason,
-        };
-        else this.bedMesh = { ...result, checkedAt: result.checkedAt ?? this.now().toISOString() };
-        const version = ++this.observationVersion;
-        if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
-      })().finally(() => { this.bedMeshInFlight = null; });
-    }
-    await this.bedMeshInFlight;
-  }
-
-  private bedMeshWithCurrentFreshness(): BedMeshObservation {
-    if (this.bedMesh.state !== "known") return this.bedMesh;
-    const observed = Date.parse(this.bedMesh.sourceObservedAt ?? "");
-    return !Number.isFinite(observed) || this.now().valueOf() - observed >= BED_MESH_TTL_MS
-      ? { ...this.bedMesh, state: "stale", freshness: "stale" } : this.bedMesh;
   }
 
   private async currentStatus(options: { refresh?: boolean } = {}): Promise<ObservationSnapshot> {

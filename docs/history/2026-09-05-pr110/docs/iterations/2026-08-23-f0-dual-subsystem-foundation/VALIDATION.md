@@ -1,0 +1,11665 @@
+# F0 dual-subsystem foundation validation
+
+## 2026-09-05 PR109 merged-source and records-only tail
+
+### Exact remote result
+
+PR109 merged independently reviewed head
+`532d87ec7a87dd76f9c349def714bd61d91ee9eb` as remote `main`
+`7e968420b28e0c222f3e1ff1164929a8aa9064ce`, tree
+`3288cf576047df57898142ff4a4d15a6ccd4ee18`. `git show -s --format='%P'
+7e968420...` reports ordered parents
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and
+`532d87ec7a87dd76f9c349def714bd61d91ee9eb`; the reviewed head and merge have
+the same tree. From the clean experiment worktree, `git merge --ff-only
+origin/main` advanced the feature branch from `532d87ec...` to `7e968420...`
+without a new commit or conflict.
+
+The exact reviewed-tree production-isolation evidence therefore binds to the
+merge: production registration/factories/transports/entrypoints and the thirteen
+pre-existing public HTML artifacts remain unchanged from prior `main`; only the
+two isolated composable Lab HTML files are additive. No current widget was
+replaced.
+
+### Shipping-plan observations
+
+These commands actually ran before merge:
+
+- `uv run --no-project scripts/u1_ship.py --lk --pr 109 --reviewed-sha
+  532d87ec7a87dd76f9c349def714bd61d91ee9eb --bun
+  <ABSOLUTE_PINNED_BUN_1_4_0>` exited 2 with argparse
+  `error: unrecognized arguments: --lk`. It mutated nothing.
+- `uv run --no-project scripts/u1_ship.py --pr 109 --reviewed-sha
+  532d87ec7a87dd76f9c349def714bd61d91ee9eb --bun
+  <ABSOLUTE_PINNED_BUN_1_4_0>` exited 0 in plan-only mode.
+  It reported base `6f53a643...`, reviewed tree `3288cf57...`, Bun 1.4.0 with
+  SHA-256 `539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`,
+  operation `pr109-20260905T160547-8e22c2`, phase `preflight`,
+  `installed: false`, `merged: false` and rollback `not-needed`.
+
+Both invocations used the same absolute pinned Bun path. The durable record
+redacts that user-local prefix while retaining its exact Bun 1.4.0 version,
+binary hash, flags, exit statuses and reported results.
+
+The corrected plan listed the normal complete shipping workflow. `--execute`
+was intentionally not run because deployment and both production service
+restarts were outside the user's merge-only authorization.
+
+### Fresh read-only runtime observation
+
+`launchctl print gui/501/com.openai.u1-composable-v2-preview` reports the
+pre-existing submitted job running at PID 20816 with its unchanged Bun command.
+`lsof -nP -iTCP -sTCP:LISTEN` finds PID 20816 only on `127.0.0.1:4200`, while
+production PIDs 834/841 retain 8787/8789 and 8788. A bounded local GET to the
+Lab route returned HTTP 200, exact 101,404-byte HTML and SHA-256
+`80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`;
+`pgrep -P 20816` found no child. No job, process, listener, service or route was
+changed by these checks. This does not renew the prior exact asset closure or
+Tailnet evidence and does not prove Safari/iPhone, mounted ChatGPT, assistive
+speech, real-printer or user outcomes.
+
+### Records-only validation boundary
+
+This follow-up changes only `PROJECT_STATE.md`, `NEXT_AGENT.md`, this
+`VALIDATION.md` and `HANDOFF.md`. `git diff --name-only HEAD` reports exactly
+those four paths and `git diff --check` passes. `git diff --quiet HEAD --
+plugins/u1-print-studio/app src scripts package.json bun.lockb .github .agents`
+passes, proving no application, dependency, configuration, generated asset,
+shipping or agent build input changed relative merged `main`. A tree-derived
+list found exactly thirteen prior-`main` public HTML artifacts, and `git diff
+--quiet 6f53a643... 7e968420... -- <those-thirteen-paths>` passes. The merge and
+reviewed head both resolve to tree `3288cf57...`.
+
+No full application/build/browser suite was rerun because the accepted
+application and every relevant build input are unchanged. These checks bind the
+retained application evidence to this documentation-only tail without claiming
+new application validation.
+
+No deployment, installation, preview/production restart, current-widget
+replacement, production registration, authentication, Tailscale, plugin,
+Camera, printer or printer-control mutation occurred.
+
+## 2026-09-05 historical merge-only private Lab integration candidate
+
+### Scope and ancestry
+
+The user explicitly authorized merging the reviewed private Lab source to main
+without replacing current widgets. The candidate integrates `origin/main`
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` into pre-integration Lab head
+`76bf955d583ad3ab98a20c80324c795be2c9da01` with normal merge commit
+`1354f737a8535787afd69acd6cad6826911f200c`, tree
+`d8ef89c425351c9a1b9ad25a881b5342b7c3f05a`; its ordered parents are the Lab head
+and `origin/main`. The user's latest clarification authorizes pushing the exact
+reviewed branch, opening the repository-required PR to `main`, and merging that
+exact head without replacing current widgets. It does not authorize deployment,
+install, production or preview restart, production registration, auth, Tailscale,
+plugin, Camera, printer or control change. `scripts/u1_ship.py --execute` was not
+run because its intentional merge/deploy/restart sequence exceeds this one-off
+merge-only boundary. Its normal policy and guards are unchanged.
+
+The approved delivery procedure is not yet evidence of execution. First,
+independent review must bind the exact full PR-head SHA. A fresh fetch must then
+show `origin/main` still equals
+`6f53a6435a3f38a92e4d2b4713ae025a97d7097a` and is an ancestor of the reviewed
+head. The exact head may be pushed without force and opened as a PR to `main`.
+After confirming the PR head, merge only with
+`gh pr merge --merge --match-head-commit <reviewed-full-sha>`; admin bypass,
+auto-merge and branch deletion are outside authority. Fetch after merge and verify
+the expected first parent, reviewed head as second parent and reviewed tree. Base
+or head drift, or any failed guard, requires renewed integration/review. The
+workflow stops after verified Git merge with no rollout.
+
+### Authorization-record correction checks
+
+This documentation-only correction changes exactly `PROJECT_STATE.md`,
+`NEXT_AGENT.md`, this `VALIDATION.md`, and the active `HANDOFF.md`. `git diff
+--check` passes. `git diff --quiet HEAD -- plugins/u1-print-studio/app src
+scripts package.json bun.lockb` returns zero, so the frozen 60-path application
+manifest and every previously accepted build input remain unchanged. A scan of
+added lines finds no absolute user or temporary path, private hostname/IP,
+credential token or private-key marker. No build or browser suite was repeated:
+the application, dependencies, configuration and generated assets did not change.
+No push, PR, merge, deployment or runtime mutation was performed while correcting
+the authority record.
+
+Git reported five textual conflicts: `NEXT_AGENT.md`, `PROJECT_STATE.md`, the
+decision index, and the active iteration `HANDOFF.md` and `VALIDATION.md`. Both
+record histories were retained. The unrelated upload-receipt record remains
+decision 0048. The Lab decisions were renamed in sequence from 0048-0052 to
+0049-0053, with headings, index, cross-references and historical wording updated.
+
+### Production isolation correction
+
+The first full repository run stopped at `verify:live-fans`: pre-integration Lab
+extensions in shared `Inline.svelte` and `Stack.svelte` changed a current widget's
+compiled bytes. That failure demonstrated the user's preservation gate rather
+than a flaky bundle. Both files were restored byte-for-byte to `origin/main`.
+Their Lab-only capabilities moved unchanged into additive generic common
+`LayoutInline.svelte` and `LayoutStack.svelte`; only the static composable
+component registry imports them. Closed DSL type names, canonical spec hashes,
+schemas, renderer roles, acquisition and provenance remain unchanged.
+
+After correction, all seven current production resources rebuild exactly to the
+tracked `origin/main` bytes:
+
+- live Fans `070654727ed4dbe3c8b507987c431a29a937474947c952d60dc79688ea7e74b9`;
+- live Thermals `3a4cf32c0bc1482537914fd60baf1c8b450d5d4e8521dd37634f8eed2d8743a1`;
+- live Heads `e958485823017fa9764853270dc2d673d8dbc850239b261f6b2e7e5f51ca86a1`;
+- live Queue `882571bfea0b075dd3a7542344d1e4bc8388e9ce2a0a4fa95334b984908e3768`;
+- live Camera `cc7a086001a66c35a90eff741ccb934a2dcc57617f6711939b47dee182f90a04`;
+- MCP observation `ff869c1e351d39d3dfc097995851d9caa222f9d7e776462254f3c6d6c9277d26`;
+- MCP Camera `87121885969f2f6d386e023939f9585a7a97b630c5bc76710ee7f9f44cf11353`.
+
+An exact post-commit comparison also covers all thirteen pre-existing public
+artifacts. In addition to the seven rebuilt resources above, dashboard index is
+`c2d3ab47c2abdc4f4570bbfab35f1216ddddef9d10aef8e969ac5747d2e806e1`, Camera
+host is `7f576efdc8464a0855863177e005810da50702b2062cc1b143ddddb933eb9d66`, status
+host is `7f8dd8acacab9150fa1c736e858a6610e08b282cf56ed2d2570fb214bffc4889`,
+observation Lab is `6a79f13b748c55d53d6791781a6096bfe3baadbcc801819c125265d32dcadec7`,
+bed-mesh Lab is `c23ef5cc4c20dd748396db012bc089a92a64ac207cca7d4ab399a5c720d484aa`,
+and Camera Lab is `a921f730715f6d235cdaa444918c2f8d8e84e7efe6cff9b56f4c9d3134e17af9`.
+Production `app.ts`, MCP HTTP and stdio transports, runtime contract, server
+entrypoint and stdio entrypoint are also byte-identical to `origin/main`.
+
+`git diff --exit-code origin/main` passes for production `app.ts`, all nine
+current live/MCP widget entrypoints, common `Inline`/`Stack`, and those seven
+resources. Build-graph comparison covers 188 distinct repository inputs across
+live Fans/Thermals/Heads/Queue with zero changed inputs. Bun's stdio metafile
+covers 25 repository inputs with zero changed inputs. `app.ts` continues to own
+the exact current factory/tool/resource inventory; the isolated Lab factory is
+not imported or registered there.
+
+### Exact identities
+
+The sorted 60-path application delta against `origin/main` is
+`e5886589ff7dc60ba0fe867956b3e11e490f941d63cc0ccda3f09fb784307770`.
+The dedicated 113-file Kit build manifest is
+`d99b573a0d6041ba64620ff144ece6846abd712e6d4b00c8fc6d5e9c479c8399`.
+Its 101,247-byte private Lab page is
+`90f36bc499e4b9ed71a241dbbefb6bbea8f80a6292626b1c30d6ca72cb11f933`.
+The 167,613-byte isolated MCP Lab resource is
+`d2808f99513d57ac11daca175c7a88f22713fc25d04c181c72067a96acff084b`.
+Two stdio builds reproduce
+`36d66f516b5926a2950801d33dbc96044e2f3a5cebc5886bf524833a9024abaa`;
+two unified server builds reproduce
+`3cc06f9496122a890a1752cd3a0ab5fd114ab4007753ae3e49c589c8a0038a94`.
+
+### Commands actually run
+
+- `./scripts/check-repository.sh`: PASS after the isolation correction. It runs
+  zero-warning Svelte/component contracts, 63 UI files / 646 tests, all current
+  deterministic widget/resource checks, TypeScript, 35 server files / 274 tests
+  / 3,286 assertions, 44 service-lifecycle tests and 28 shipping tests; final
+  output is `repository contract: ok`.
+- Focused UI command over the eight composable/shared consumer files: PASS, 114
+  tests. Focused server/MCP/preview command: PASS, 23 tests / 464 assertions.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` followed by
+  `verify:mcp-composable-lab`: PASS and reproduces the exact resource above.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file
+  --config=/dev/null x vite build`: PASS. The first focused preview run correctly
+  failed stale immutable manifest/page/hydration pins after isolation changed the
+  Lab build; only those exact pins were renewed, after which all four preview
+  tests pass.
+- `bun --no-env-file --config=/dev/null x playwright test --config
+  playwright.composable.config.ts`: PASS, 12/12 with one worker; port 4184 and
+  browser/fixture resources released.
+- Focused `app`, production package, request-lifetime and Lab-production-negative
+  tests: PASS, 28 tests / 251 assertions.
+- Every `verify:live-*`, `verify:mcp-observation` and `verify:mcp-camera` command
+  passed twice (focused run and full repository run) against exact tracked bytes.
+  Stdio and unified server builds each reproduced the identical hashes above.
+- The first ad hoc stdio-metafile proof attempt failed before building because
+  zsh expanded an unquoted `[name]` pattern. The corrected quoted command built
+  normally and proved 25/25 repository graph inputs unchanged. No tracked file or
+  runtime changed from the failed harness invocation.
+- Decision/reference scans show one unique upload decision 0048 and the ordered
+  unique Lab series 0049-0053. `git diff --check` and the changed-line credential,
+  private-host/IP and temporary-path scan pass.
+
+### Evidence boundary
+
+This validates source integration, deterministic builds, production preservation,
+closed protocol behavior and synthetic Chrome layout. It does not prove a mounted
+ChatGPT host, Safari/iPhone, screen-reader speech, a running service, live network,
+real printer or user outcome. No production/preview process, installed plugin,
+Tailscale/auth state, printer or repository remote was changed.
+
+## 2026-09-05 reviewed mobile alignment and proximity candidate
+
+### Boundary and correction
+
+The latest phone screenshot reopened only the private Lab's common presentation
+layout. The supplied 590x1280 target is retained outside the repository at
+SHA-256 `6382cc44eb6783468822a1e29fa72127b0a911e7a2ff92fc023a51cbec732f0f`.
+The final screenshot-first design contract found detached icon/copy anatomy,
+unequal direct supporting-Reading height and no explicit collapsed sibling gap.
+The author correction is CSS-only: hero/quiet Reading uses a fixed 32px icon
+column, unchanged 32/24px glyphs, 8px grid gap and zero content padding; default
+Reading remains unchanged. Row explicitly stretches children and owns 20px
+column/row gaps; Column is a one-cell grid. No DSL, schema, resolved model,
+source acquisition, MCP factory/tool/resource registration, printer, Camera,
+authentication, Tailscale or production path changed. The immutable MCP HTML
+and isolated preview pins changed only because the compiled CSS bytes changed.
+
+The first height-only implementation followed the earlier incomplete design
+contract. Its focused compiler/component gates passed, and it provisionally
+produced Kit manifest `6d4b0683...`, 101,404-byte HTML `b716883d...` and
+166,981-byte MCP `9786f88e...`. The first Chrome run then failed two grouped
+cases because a new harness incorrectly required both supporting global x axes
+to equal the full-width temperature axis; only the first Column shares that
+global axis. After that test correction, a second run failed one 720px/200%
+case because the harness assumed content fit despite the focused 590px Card and
+640px intrinsic text-scale floor. Both were harness failures and were corrected
+without weakening the required local 40px anchors or 720px/100% 3+3 placement.
+The designer then superseded the incomplete height-only contract with the final
+proximity-and-spacing contract above, so those provisional artifacts are not a
+candidate.
+
+### Commands actually run and exact evidence
+
+From `plugins/u1-print-studio/app` on the final CSS bytes:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 114 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 23 tests / 474 assertions.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` plus `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` reconstructs the exact 167,441-byte resource at SHA-256 `8e37ea45b8e47d9652374cf4001908a39b220dd559d2562aecd7231396b31086`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null x vite build` ran twice on the final CSS and reproduced the 115-file manifest `300d0b95c2560addc40c2ada30dbfafe0d01dec1ebb5e4939791f69939b324be`; the 101,404-byte Lab HTML is `80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 12/12 isolated Chrome cases with one worker and releases port 4184 and browser/fixture resources.
+- `uv run --with pillow -` normalized the external Unknown-state phone Card and the fresh 390px Unknown Card to a side-by-side 1134x438 comparison, SHA-256 `47bf2cd6e4196f4ea7931f041ef0d2f98981bbbfb69751f04657921d09206aca`. The author opened this comparison and the fresh state/responsive captures rather than treating screenshot existence as visual inspection.
+
+The browser guard proves each hero/quiet content anchor is 40px from its local
+Reading start, glyph-to-copy gaps are 8/12/12px, label/value gap is 2-4px,
+sibling and summary Row gaps are 20px, and the packed identity gap remains 12px.
+At 390px both direct supporting Columns and Readings have equal height, and
+their icon and complete content centers differ by at most 1px. Equal-line-count
+Unknown fixtures keep label/value baseline proxies within 1px. At 320px and
+390px/200%, supporting Readings stack in source order with exactly 20px between
+their boxes and intrinsic individual heights; at 720px/100% they remain 3+3.
+Default/bordered Reading still has a 44px icon frame, 12px gap and 12px content
+padding. Smart/Explicit geometry remains identical. Known, Unknown, ambiguous,
+partial, loading and error Card/supporting-Row bounds remain within 1px; only
+loading animates, and error remains static neutral.
+
+Fresh ignored evidence hashes:
+
+- Smart/Explicit 390px Card crops, byte-identical:
+  `513cf9e8eb511e1ed08e23d0f7a089105004c93ee2ee26f4908f46df0170d4e4`
+- Smart Unknown/known/loading/error at 390px:
+  `2c1374eb874bc662fa1b788be28ee4f4721ab30ad4bbd947fb829ce84cbf2b86`,
+  `653f74b26eaf007456778823c1a9a625955968185c14e991958c1e8cdc0f4c56`,
+  `8b56a34c2bbb1c48803aeb3d2b8131847c5a06804dc90c6fca2bb22e5a73e12d`,
+  `715a34a5f071e94edcbdd10f9d17a377a9be76c22e58cf8dcf3fb89da5c290d9`
+- Smart 320/720 and Smart/Explicit 390px/200%:
+  `3bd29258d6d44f44aec803144927a318ed38fd19347b2efcd42371c1cfd2c4c5`,
+  `b036a3c34ae2147b3f184a3fb2e3add85831569db10d8b190a6ccb65e1afd1bc`,
+  `eaf23f560d69d6ff4448d9fb350a148499a02591b7ef8044bfc4c231882ced68`,
+  `d9c55384309403b0476f95f2712e1e32659e0add2fae5b8156009031cd0df4a4`
+
+The inherited changed/new application source set gains only `Reading.svelte`
+and is now 29 paths at manifest
+`b98548ad5ac3a56388bda6ba12216a4f4dd0a63449d8fd3ea3b56044579d1279`.
+The first manifest-shell attempt failed harmlessly because local zsh variable
+`path` shadows the executable search path; the renewed command used
+`file_item`, reproduced the preceding 28-path `bc992eac...` identity from
+commit `79112a5`, then produced the 29-path identity above. No file or runtime
+was changed by that failed read-only command.
+
+The frozen author evidence then received both exact independent gates.
+Screenshot-first design review **APPROVES** manifest `b98548ad...` with no
+actionable P0-P2 finding after reopening the source-versus-Unknown comparison,
+390 ready/Unknown/loading/error, 320/720 responsive, 390/200%, default/larger
+720/200% and production Heads precedent. It explicitly records that grouped
+720/200% has assertion/source evidence but no dedicated saved screenshot and
+that the source phone raster cannot establish CSS viewport, DPR or text scale.
+The prior **BLOCKED** mobile finding remains preserved underneath the final
+approval in `design-qa.md`.
+
+Independent source/protocol review also **APPROVES** the exact 29-path manifest
+and artifact pins. It confirms the application diff is limited to `Reading`,
+`Row`, `Column`, focused browser/preview coverage, compiled private HTML and
+exact preview pins; production factory/registration, DSL, schemas, view model,
+data/acquisition and canonical specs do not drift. Its one non-blocking record
+precision was applied here and in `PROJECT_STATE.md`: the default Reading
+component/resource bytes changed because the shared file was rebuilt, while
+its default CSS declarations and computed 44px icon / 12px gap / 12px content
+inset remain unchanged.
+
+### Authorized exact preview activation
+
+Separate preview-only authorization allowed one restart of the existing
+submitted launchd job `com.openai.u1-composable-v2-preview`. Preflight bound the
+operation to clean documentation head `581c8b0` / application commit
+`73cc1b9d`, unchanged dedicated Bun arguments, old PID 73981 and sole loopback
+4200 listener. Local and existing Tailnet 8451 were byte-identical at the prior
+101,404-byte HTML `243d84c6...`. Production PIDs 834/841 and listeners
+8787/8789 plus 8788 were present. Both the `/usr/local/bin/tailscale` wrapper
+and application binary returned identical raw Serve/Funnel JSON at
+`2eb561166fa5b7f50e680f8a98b3bc4b59f03f3d9798b560745ed21a5afb6ba0`
+with terminal LF and
+`063ecd465901d269c63295bfd75acc7aed240455e3f21ca8550b1bae6bb784b3`
+without it. The job is a launchctl-submitted definition rather than a retained
+LaunchAgent plist; before/after `launchctl print` showed the same exact
+arguments and no definition was written.
+
+The only runtime mutation was:
+
+- `launchctl kickstart -k "gui/$(id -u)/com.openai.u1-composable-v2-preview"`
+
+Old PID 73981 was reaped. New PID 20816 runs the exact existing Bun
+`--no-env-file --config=/dev/null` dedicated immutable-preview command, has no
+child process and, after probe keepalive drained, owns only `127.0.0.1:4200`.
+Local and existing Tailnet 8451 each return HTTP 200 with exact 101,404-byte
+HTML SHA-256
+`80a495c99aa254757c22cd853c68f8c1dc7ba4d7950efbbc47b191d6698e1ea9`.
+All 23 referenced immutable assets including the fixed hydration node are
+byte-identical to the committed Kit at both origins and retain immutable cache
+headers. Nine closure cases per origin pass: valid bodyless HEAD plus POST,
+query, trailing slash, health, MCP, Camera, queried asset and absent asset
+returning 404.
+
+The first inline postrestart verifier failed without external mutation because
+shell quoting removed the intended single quotes from its CSP substring. The
+same read-only verifier reran with a shell-safe CSP token and passed every page,
+asset and closure assertion above; this was verifier construction, not a service
+failure. After verification, both Tailscale binaries reproduced the exact
+preflight raw hashes for Serve and Funnel. Production PIDs 834/841 and their
+three listeners remain unchanged. No launchd definition, Tailscale preference,
+authentication, production service, printer, Camera, plugin or repository
+application byte changed during activation.
+
+No Safari/iPhone, mounted ChatGPT, screen-reader speech, manual keyboard,
+real-printer or user-outcome acceptance is claimed. The private preview is
+runtime evidence for the exact isolated committed build only.
+
+## 2026-09-05 smart semantic grouping plus explicit six-track reviewed candidate
+
+### Boundary, corrections and retained failures
+
+Decision0053 is additive to the private UI-003 Lab. It changes no production
+registration, printer/Camera/authentication/Tailscale path and does not restart
+the existing 4200/8451 preview. The three A specs and Decision0052 balanced B
+remain byte-for-byte canonical. This is author evidence on uncommitted bytes;
+the exact application identity was subsequently approved by independent
+source/protocol and screenshot-first design review before the documentation-only
+commit tail.
+
+The first final preview test correctly failed after a Kit rebuild because the
+immutable server still pinned the preceding balanced manifest/HTML/hydration
+node. The author inspected the new closed build, updated only those exact pins,
+rebuilt again and reproduced the same artifact identity before the passing
+preview test. A later architecture check clarified that `Group` is a semantic
+role, not a layout role, and that code-owned default rules need stable versioned
+names. The source/tests/Decision0053 now consistently use semantic `Group` plus
+exact `identity-packed-v1` and `summary-grid6-v1`; the `-v1` literals prevent a
+future algorithm change from silently reinterpreting an existing resolved
+contract. Final visual inspection also found that the first 720px Smart stage
+was unnecessarily wide; its closed stage maximum was narrowed to the focused
+590px reading width and the complete browser evidence was renewed.
+
+Independent design review then **BLOCKED** application `988b90bc...` on one P2:
+the quiet filament label used three visible lines in the primary 390px 3+3 row.
+The generic Swatch now accepts separate visible and accessible labels. Quiet
+FilamentColor visibly renders truthful `Configured color` in two lines and
+retains `Configured filament color` as the sole assistive label. Default/A
+visible copy, type size, 3+3 placement, swatch/value atomicity and the wire
+contract remain unchanged. The first focused component run after this edit
+failed the migration frontier because an exploratory nested-label branch added
+two native spans. A later accessible-name assertion also proved the interim
+group lacked an actual name. The final common primitive retains its exact
+native-tag contract and adds only fixed `role="group"` plus `aria-label` when
+visible and accessible copy differ. Focused DOM and browser accessibility-name
+assertions now pass; default has neither alternate role nor label.
+
+Preliminary source review separately found that new nested schema locals could
+drift behind the outer Card child cast. Column, Row, identity Group, smart
+summary Group, explicit summary Group and both resolved Group variants now have
+direct exact `z.ZodType` annotations and alias-bound child schemas. A source/type
+drift test preserves every boundary and the semantic/layout roles; Column policy
+now accepts only temperature, filament and fan. The first renewed browser run
+then failed three grouped cases because its new visible-text helper removed both
+the assistive label and the intentionally `aria-hidden` visible label. The
+helper was corrected; this was a harness failure, not a UI failure. After the
+final ARIA implementation, another run exposed the top-level test's stale
+expectation that Smart visibly used the default label. It now distinguishes
+Smart's short visible/full accessible pair from Card's unchanged full visible
+label. The subsequent complete run passed 12/12. Independent design and source
+rereview remained pending on that renewed identity.
+
+Independent source rereview then **REQUESTED CHANGES** on application
+`8a9cb04a...`: a valid explicit summary with one Row of three span-2 Columns
+was rejected by the broad Group policy's inherited minimum of two children,
+before the relation validator's documented one-to-six Row rule could apply.
+The registry now owns relation-shaped executable child policies: identity stays
+the exact Title/HeadStatus tuple, smart summary stays an exact three-leaf tuple,
+and explicit/resolved summary accepts one to six Rows. Focused regression proves
+the one-Row `2 + 2 + 2` case is accepted, preserves authored fan/temperature/
+filament order, and calls status, materials, and environment once each. Empty
+and seven-Row explicit forms, one-child identity and two-child smart summary
+remain rejected. This correction does not alter rendered geometry; the full
+browser suite and author visual inspection were nevertheless renewed on the
+new candidate. At that checkpoint, independent design and source rereview were
+still pending.
+
+Both renewed exact gates then **APPROVED** application
+`bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`.
+Independent source/protocol review reran the eight focused UI/shared files for
+114 passes, the three server/MCP/preview files for 23 passes and 474 assertions,
+TypeScript and zero-diagnostic Svelte/component contracts. It exercised 22
+invalid inputs with `readerCalls=0`, accepted the one-Row `[2, 2, 2]` case with
+authored order and one read per source, rejected 14 envelope tamper cases,
+matched the exact Kit/HTML/MCP identities below and confirmed the Lab factory
+remains absent from production registration. Independent screenshot-first
+review reopened the target, normalized comparison and responsive/state captures
+and approved the same exact source-valid identity with no remaining P0-P2
+finding. The historical `988b90bc...` visual block and `8a9cb04a...` source
+request remain preserved rather than overwritten.
+
+After application freeze, the independent design record and final project,
+handoff, next-agent and validation status changed durable documentation only.
+The sorted 28-path application hash list compared byte-for-byte with the frozen
+list and still produces `bc992eac...`; `git diff --check` and the changed-line
+private-path/hostname/credential scan pass, and isolated port 4184 is released.
+
+### Commands actually run and exact evidence
+
+From `plugins/u1-print-studio/app`:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 114 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 23 tests / 474 assertions.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` followed by `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` reconstructs the exact 166,948-byte MCP resource, SHA-256 `ef6c06df914c9fc3c229a9de61421320f56f32376cbe460fee195b136715fb69`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null x vite build` ran twice and reproduced the 115-file manifest `ee08234a369fc24b5e588b165fdd211380c040e4e5b3c02cad96875722abdec8`; Lab HTML is 101,404 bytes at SHA-256 `243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 12/12 Chrome cases with one worker and releases its fixture/browser resources and port 4184.
+
+The browser matrix covers Smart and Explicit at 320, 390 and 720 CSS pixels,
+100% and 200% root text; known/loading/error/partial/unknown/ambiguous states;
+reduced motion, forced colors and visible focus. It requires exact Smart/
+Explicit semantic order and DOM geometry parity, packed 12px identity, six
+logical tracks, 3+3 at 390/720 normal text, intrinsic stacked readings at 320
+normal text and 390/200%, atomic temperature target/unit, no overflow, state
+height within 1px, animated loading, static neutral error and no tint, gradient,
+divider, Table or printer icon.
+The grouped cases additionally require the quiet visible filament label to use
+at most two lines at 390px, the full assistive label to remain present, and the
+default leaf to omit the alternate-label branch.
+
+Schema/server/MCP cases prove exact twelve-entry registry parity and static
+imports; relation-shaped Group child policies; strict Group/Row/Column
+relations, cardinality, spans and row sums; acceptance of one explicit Row with
+three span-2 Columns and preservation of its authored leaf order;
+and zero-reader rejection of invalid layout, role, appearance, start/offset,
+row-span, breakpoint, style, CSS/HTML/JavaScript, path and URL inputs. Valid
+Smart and Explicit each call status, materials and environment once. Envelope
+adversaries cover relation/layout source/default rule/order/span/gap/collapse/
+appearance/receipt/timestamp/provenance drift. Smart affinity order and explicit
+authored order produce the same final comparison geometry. Existing canonical
+hashes stay `7e9df2367d983587946dc5d5e708bb13d2b7172045390d5cbd8fe6e60c577a92`,
+`7bdc296385bd91f5d172c73b771b5f955b3d6204a747a83a5e5205091b685b1a`,
+`cd278ddf6c468f48dbfa437a36063b7c0bfd4408835ec58a6cc786322f53b243`
+and balanced
+`dfbf87e36102bfa21a97e266e0d1258c4b61399eb874886abffd637a1259ac56`;
+new Smart and Explicit
+hashes are `d99581cf7d73baff45f5861d7f527621dcff156efc4ef78f564905b07e0205d3`
+and `8bc2a4db09c4da45e44e577e208a8a41afad554b706f1d4a8fbaf9bd07b443fa`.
+
+The sorted 28-path changed/new application manifest, including the immutable
+resource and focused tests, is
+`bc992eac167d1119bdda2289a46ac9e34f4978dcdd0d18cd7cfe19d379cab04b`.
+`design-qa.md` records author inspection and exact independent approval. Current
+ignored visual evidence:
+
+- normalized target-versus-Smart comparison 764x338:
+  `c2a096aace24f385d38f86dc22cc70494e113d503d2172d1fd38edbdc14f06f4`
+- Smart/Explicit card 390, byte-identical:
+  `3752e0f48c41dd75a8cef662c803d1736932f4bc78d8deb476d119e0d8450747`
+- Smart 320/390/720: `0bacf99c300972264c3941d71c819aa17a094f633abde1fb8319ddfd07a52a40`,
+  `cf67f76e0d4b29a5a742210b01b9c8804296ad1884c08fb149c7d8841a809d32`,
+  `b633a34db4b939e479f23c0e71bb5275ecc90dc9b83b03f1196d099849db3e49`
+- Smart 390/200%: `60f53ab1a3952ebcc24f6a691b92e67d70e07ae723c2a6d9690dced4abfe6c6e`
+- Explicit 390: `0a8cad0012745fd77af7256325aea26c0f4a090e75016b1300d6aa6859e8a3f9`
+- Smart loading/error 390: `ac126a36553de55fe24d7cb8d4691a5ad55ac6147f7a52154258ded5302b6c2b`,
+  `9060f3f36ff21fa3e13234478cb272ddeb3c8a593b98c073090f01a724e14118`
+
+The selected target SHA remains
+`34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`;
+its local location is intentionally not durable. Author visual result and exact
+independent screenshot-first review both PASS after the P2 and source corrections.
+
+### Authorized exact preview-only activation
+
+After commit `79112a57fd0f144a9cbbbb6b237cfe5ffe2a3ec3`, tree
+`a2d068af7b949a23e5e599fe9d20da3ef4592395`, the operator preflighted the
+existing `com.openai.u1-composable-v2-preview` launchd job, its exact worktree
+script, sole `127.0.0.1:4200` listener, production jobs/listeners and both raw
+Tailscale CLI views. The preflight local and Tailnet pages were identical old
+66,589-byte balanced HTML `b212f969...`. The only mutation was
+`launchctl kickstart -k gui/501/com.openai.u1-composable-v2-preview`; no
+launchd definition, Tailscale preference or other service was changed.
+
+Old preview PID 86363 was reaped. New PID 73981 runs the exact committed
+dedicated Bun command, has no child process and owns only the loopback 4200
+listener. Local and existing Tailnet 8451 each return HTTP 200 with exact
+101,404-byte HTML SHA-256
+`243d84c6c237b3e4fb85c33b5c172b4a11bfe71c222adaebe97364ef8a754bb3`,
+byte-identical to each other and to the committed Kit artifact. All 23 allowed
+immutable assets from the page plus the fixed hydration node match the committed
+source bytes and immutable-cache headers at both origins. Nine closure cases
+per origin pass: valid HEAD plus POST, query, trailing slash, health, MCP,
+Camera, queried asset and absent asset returning 404.
+
+Before and after restart, both the application binary and installed wrapper
+returned byte-identical `serve status --json` and `funnel status --json` at
+SHA-256
+`2eb561166fa5b7f50e680f8a98b3bc4b59f03f3d9798b560745ed21a5afb6ba0`
+including terminal LF and
+`063ecd465901d269c63295bfd75acc7aed240455e3f21ca8550b1bae6bb784b3`
+without it. Existing 8451 remains Tailnet HTTPS `/` to loopback 4200 with no
+8451 Funnel. Production PIDs 834/841 and listeners 8787/8789 plus 8788 are
+unchanged. This is operator runtime evidence, not a new independent design or
+source review and not Safari/iPhone or mounted ChatGPT acceptance.
+
+### Evidence limits
+
+These are synthetic software/protocol and local Chrome results. There is no
+iPhone/Safari, mounted ChatGPT, screen-reader, physical printer/Moonraker,
+public Internet or user-outcome acceptance. No live integration, runtime
+plugin installation, PR, merge or production deployment occurred; only the
+existing isolated preview job was restarted under the explicit scope above.
+The descriptor monitor, 4096 limit, MCP process-group cleanup and lazy-start
+safeguards remain only a recorded future plan; none was installed or applied.
+
+## 2026-09-04 additive balanced private-Lab reviewed candidate
+
+### Boundary and retained failures
+
+Decision0052 is an additive UI-003 experiment only. Its implementation does not
+change the three A specs, production registration, printer/Camera/auth/Tailscale.
+The subsequently authorized activation restarted only the existing private
+4200/8451 preview job, as recorded below. The first compile exposed an existing shared `Inline`
+consumer contract; the implementation was corrected additively with no consumer
+rewrite. Early browser runs found a zero-width header loading skeleton, 4–16px
+ready-state height drift, 5–81px 200%-text drift and a lead Grid growing beyond
+two columns at 720px. Stable line-height reserves and the bounded font-relative
+two-track rule repaired these findings; the renewed complete matrix passes.
+
+### Commands actually run and exact evidence
+
+From `plugins/u1-print-studio/app`:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 111 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 21 tests / 432 assertions.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` and `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` reproduce the 154,183-byte resource SHA-256 `b1b3eb179fdafeff20c564db37f42873cfbae4ba7ac6168a9f70d23dbcf33890`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build` ran twice and reproduced the 115-file manifest `5c22955182f278d4c934be1cc3d6f5099bb556109353098bff8593d942f9fd13`; Lab HTML is 66,589 bytes at `b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 9/9 isolated Chrome tests and releases port 4184.
+
+The sorted 32-path application manifest is
+`e225b0c4966177203461bb94685777898b39e4db014821ccfc5c9c3741aa0e95`.
+After independent review found stale title-only tuple casts at the Card schema
+boundaries, `schema.ts` now uses `z.ZodType<CardNode['children']>` and
+`view-model.ts` uses `z.ZodType<ResolvedCardNode['children']>`. The source/type
+drift guard requires each alias to retain Inline. On these renewed exact source
+bytes, the focused client command for schema-planner, presentation and component
+registry passes 3 files / 16 tests; the server command for composable
+presentation and MCP passes 17 tests / 114 assertions; TypeScript passes. Fresh
+MCP build/verify and the Kit build reproduce the same resource, HTML and Kit
+hashes recorded above. The broader 111/21/9 browser author matrix predates this
+type/test-only repair; no runtime output byte changed, and independent review of
+the renewed application manifest follows below.
+Tests cover exact nine-entry parity, A canonical stability, invalid Inline/Card/
+Grid/appearance/nesting/token cases, duplicate header/body status, resolved
+order/mode/provenance mismatch, zero-reader unknown path/URL/CSS rejection,
+deduplicated receipts and balanced state topology. Chrome covers balanced at
+320/390/720px, 100/200% root text and ready/unknown/ambiguous/loading/error/
+partial; height drift is at most 1px, header/hero/adaptive-grid/atomic-unit/
+neutral-motion/reduced-motion/no-overflow and forbidden-visual checks pass.
+
+The selected target SHA is
+`34b6f2ebe00316c9acad8d67c0f0963b752d8c6a49389cda3b02a2cde50fd5d5`.
+Author comparison is recorded in `design-qa.md`: 764x336 combined SHA
+`96870d17fbd56d4023cde221aaa0f2583950319ba8806dec2515e2e2b76f2ef4`;
+374x306 implementation crop SHA
+`b8bd858af9a33fc90e19f49ec95269e5728299e98fde9beadc1c4a17e70e3182`.
+Independent screenshot-first design **APPROVES** exact `e225b0c4…` with no
+P0-P3 finding after direct inspection of the selected target, crop, normalized
+comparison and 200% capture. The cast/test repair is visually runtime-erased, so
+the prior browser evidence binds without a new run. Independent source review
+also **APPROVES** after its initial `REQUEST_CHANGES`. It freshly passed the same
+16 client and 17 server/MCP tests with 114 assertions plus TypeScript. Its custom
+MCP adversaries rejected path, style, reversed Inline and duplicate status with
+`readerCalls=0`; valid balanced input called status/materials/environment once
+each; Inline distribution/order, Grid arrangement, hero/quiet appearance and
+provenance tampering all failed envelope validation. The exact nine-entry
+registry/adapter walk, unchanged three A hashes, balanced hash `dfbf87e3…` and
+implementation version `0.0.4-provisional` passed.
+
+Independent review did not repeat write-producing MCP/Kit builds, `ui:check` or
+the full browser matrix. Author reconstruction freshly establishes unchanged
+artifact bytes. Limits include no iPhone/Safari, mounted ChatGPT, screen reader,
+physical printer/Moonraker, public Internet, live-preview replacement or user
+outcome acceptance.
+
+### Authorized preview activation and independent runtime approval
+
+The only activation command was `launchctl kickstart -k` for the existing
+`com.openai.u1-composable-v2-preview` job. Exact source
+`f4a56bc6939904d7fb493e4ae4df6f0c6ea3f33f`, tree
+`ab3d4fec325e54dd438ab53c42dc008629a94423`, changed preview PID 90967 to
+86363. The old PID was reaped. The new exact worktree Bun script has no child
+and only `127.0.0.1:4200` after probes.
+
+Local and Tailnet 8451 each serve HTTP 200 with exact 66,589-byte HTML SHA-256
+`b212f9696c4ed5d0236edd17d4b5b0a9fbc8e6226d4ac21f90c7fafea769e509`.
+All 23 allowed assets match their source bytes, lengths and immutable-cache
+headers. The exact 2,371-byte author-format closure SHA-256 is
+`52e80455014196d63d431465657d8f2e5e7752aab531a316776282e669cff5f2`
+at both origins. Nine focused cases per origin pass: valid empty-body HEAD;
+POST, query, trailing slash, health, MCP, Camera, queried asset and absent asset
+all return closed 404 responses.
+
+The first activation preflight stopped without mutation because the earlier
+durable raw Tailscale hashes were stale. The coordinator adopted the freshly
+observed baseline only after both CLI paths agreed and scoped 8451 semantics
+were exact. Serve and Funnel JSON remain
+`2eb561166fa5b7f50e680f8a98b3bc4b59f03f3d9798b560745ed21a5afb6ba0`
+including terminal LF and
+`063ecd465901d269c63295bfd75acc7aed240455e3f21ca8550b1bae6bb784b3`
+without it. Port 8451 remains Tailnet-only HTTPS, solely `/` to
+`http://127.0.0.1:4200`, with Funnel disabled. No Tailscale config was changed.
+Production PIDs 834/841 and listeners 8787/8789 plus 8788 remain preserved.
+
+Independent runtime review **APPROVES**. At 390x844 Chrome fallback, Known,
+Ambiguous, Loading and Acquisition failure retain a 374x304.695 Card, 56px
+header, 372x246.695 lead Grid, 340x110.148 temperature hero and paired
+164x100.547 secondary readings. Document width is 390/390 with no overflow.
+Known displays `Part cooling`; ambiguity displays `Unknown`; loading uses
+animated neutral skeletons and error uses static neutral skeletons with the
+same topology and geometry. No page/scenario request, console warning or error
+appeared. Fresh screenshots are:
+
+- Known: 42,229 bytes, `3c92d790d676142f7efa7ad60e7a8fdf7f4546f8f3ad9d8e89d4b47cd7603d83`.
+- Ambiguous: 41,745 bytes, `8eb51e8ff24808080d5ebe97c77a95314c37f893fba9fa67a3a977650c4c8d23`.
+- Loading: 37,331 bytes, `c2f7bc04db3766f2ebb87f68a79f244f8930d8d3cfbdcb44b4d88277fa4a4bc8`.
+- Error: 38,015 bytes, `760f42332ab49ff82a225c156c8417dbd915bdced7906604bf1c6ecf783e7c3b`.
+
+The in-app browser was unavailable, so Chrome was used and then closed. This
+does not establish Safari/iPhone, mounted ChatGPT, screen-reader, physical
+printer/Moonraker or user-outcome acceptance. Repository, Tailscale, auth,
+printer and production state remained unchanged apart from the authorized
+isolated preview PID replacement.
+
+### Docs-tail wording review
+
+Independent documentation review returned **REQUEST_CHANGES** on rejected docs
+commit `61f94b7208b63673432078d2aad0cccef507ea4c` because three summaries called all
+nine HTTP cases adversaries. The evidence actually contains one valid empty-
+body HEAD plus eight fail-closed 404 adversaries per origin. This wording-only
+correction does not change application, artifact, runtime, Tailscale, auth,
+printer or production bytes/state.
+
+## 2026-09-04 accepted build-time registry and temperature-fill retirement experiment
+
+### Acceptance and safety boundary
+
+This UI-003 follow-up implements decision0051 for the private synthetic Lab.
+Exactly eight element names are accepted at the strict wire boundary: common
+built-ins `Card`, `Title`, `Stack`, `Grid` and domain `HeadStatus`,
+`HeadTemperature`, `FilamentColor`, `FanRelation`. One pure TypeScript registry
+owns their roles, strict spec/resolved props, child policies and field/source
+metadata. A separate client registry statically imports exactly eight Svelte
+constructors. Registry child policies now construct the accepted spec and
+resolved tuple/array shape and cardinality. Each constructor is compile-checked
+for exact compatibility with an independently owned, resolved-node-derived prop
+map; the recursive dynamic boundary exposes only closed known props and no
+`any`. Planner and client placeholders obtain field/source mapping from the
+same pure registry. JSON has no component/module path, URL, runtime
+import/register, expression, HTML, CSS, JavaScript, arbitrary prop or style
+token.
+
+The prior `PercentageFill` name has no alias and fails strict v2 parsing before
+source acquisition. Canonical spec, resolved tree and generated MCP resource do
+not contain it. The experiment-only PercentageSurface and its temporary common
+escape props are removed; the original shared PercentageBackground remains for
+Thermals/Fans, and Card soft filament tint remains a separately declared,
+provenance-correlated transform. Metric, Badge and Swatch center real visible
+label/value or skeleton content within structural reserves rather than exposing
+painted reserve space or a wire alignment control.
+
+Schema/tool/resource version 2 remains because the Lab is private,
+provisional, production-unregistered and has no supported external v2 consumer.
+Only the isolated MCP implementation version changes to
+`0.0.3-provisional`. This does not accept production architecture, live
+Moonraker/printer mapping, Camera, auth, Tailscale, control, deployment or user
+outcome.
+
+### Author failures retained
+
+- The first static component renderer inferred the intersection of all eight
+  Svelte prop types and failed `svelte-check`. A typed registry lookup now
+  exposes the selected statically imported constructor to the renderer; the
+  final check has zero diagnostics.
+- The first component-registry source test constructed a transformed
+  `import.meta.url` that was not a file URL under Vitest. It now resolves the
+  checked-in path from the test workspace and passes.
+- The first 90-group visible-center browser run measured 2.492px drift for the
+  loading Badge skeleton. The common Badge skeleton now occupies the same pill
+  reserve as its visible known value. The renewed all-state run passes the 1px
+  limit at all three widths and both text sizes.
+- A first application-manifest shell loop used zsh's special `path` variable,
+  which removed command lookup inside the loop and produced unusable blank
+  hashes. No repository file changed. The renewed loop used a non-special
+  variable plus absolute `/usr/bin/shasum`/`awk` and produced the identity below.
+- Independent source review then found that the first candidate merely declared
+  child policies while spec/resolved schemas repeated their own array/tuple
+  rules, erased dynamic component props to `Record<string, any>`, derived its
+  component contract from the implementations themselves, repeated the client
+  field/source mapping, and omitted Fans/ObservationWidgets from the recorded
+  focused command. The author repair makes each authority executable, adds
+  adversarial/static-consumption checks, and renews all affected evidence below;
+  independent approval of these renewed bytes is still pending.
+- The first new synthetic child-policy test used cardinalities outside the
+  initial overly literal `ChildPolicy` type and produced three `svelte-check`
+  errors. Generalizing the build-time policy type while retaining the concrete
+  eight-entry registry values fixed the type contract; the renewed check has
+  zero diagnostics.
+- Renewed independent review found that the next candidate still left concrete
+  element-name branches and an all-optional dynamic prop surface in
+  `PresentationNode`. Each static registry entry now owns its constructor,
+  resolved-node-typed `getProps` adapter and role-constrained child reader.
+  `PresentationNode` contains no element name or `node.type` check and branches
+  only on the registered child-bearing roles. The sole uniform dynamic cast is
+  sealed inside the typed entry builder after constructor, independent props,
+  adapter and node type agree.
+- The first component check after that repair correctly rejected both
+  `registered.props` spreads under the pre-existing blanket spread rule. The
+  guard now permits only that exact registry-resolved member expression in the
+  registered renderer and still rejects arbitrary/other spreads; focused tests
+  cover both acceptance and rejection.
+
+### Commands actually run and current results
+
+From `plugins/u1-print-studio/app` unless noted:
+
+- `bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/composable/schema-planner.test.ts src/lib/client/composable/component-registry.test.ts src/lib/client/composable/presentation.test.ts src/lib/client/common/components.test.ts src/lib/client/common/PercentageBackground.test.ts src/lib/client/observation/ThermalReading.test.ts src/lib/client/observation/FansState.test.ts src/lib/client/observation/ObservationWidgets.test.ts` passes 8 files / 107 tests. This includes executable child-policy construction, registry-entry adapter/constructor compatibility, role-only generic rendering, exact guarded-spread drift checks, registry-owned source mapping, eight-entry parity and unchanged Thermals/Fans percentage consumers.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts` passes 20 tests / 405 assertions after the final MCP absence assertions. It covers rejection before acquisition, one call per source, timestamps/provenance, fan ambiguity, partial failures, immutable serving and production-negative inventory.
+- `bun --no-env-file --config=/dev/null run check` passes TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` then `verify:mcp-composable-lab` builds and reproduces the 145,152-byte resource at SHA-256 `c8de7c1aa94e2f8dfa11471d8e348d6f8ea7929b7c981f8c0fb816aad7cc0e09`; source/output contain no retired fill/surface name.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build` was run twice and reproduced the 113-file manifest `aaa9b6a36b4e8cfdf5ef2f13b9c71a9bc0e3762d39594866bb1665de216a48bc`. The Lab HTML is 49,994 bytes, SHA-256 `e85e3d1fc0673a0b86454f1616d043ed6d26708cd35403c070923493edafa28d`; hydration adds only exact node `/_app/immutable/nodes/1.KNtzM1Mp.js`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts` passes 6/6 Chrome cases through the dedicated immutable server. It covers 320/390/720px; 100/200% text; card/compact/larger; known/loading/error/partial/ambiguous; exact topology and <=1px height plus visible-center drift; atomic target/unit; no overflow, table, row, separator or composable percentage background; loading animation, static error, reduced motion and forced colors. Port 4184 and its owned browser/server were released.
+
+The sorted current/deleted 32-path application manifest, with `DELETED` as the
+explicit tombstone for PercentageSurface, is
+`af2099289ef1beefe59b6e10664a6933e89e2902fdacf68f50d65fc8f620ee2f`.
+Representative fresh screenshots:
+
+- `test-results/composable-lab-v2/composition-known-390px.png` — `6482e9858afefef456a1c3a30b36b6a441bf5754a55f7c457b81ebb215fdda5b`
+- `test-results/composable-lab-v2/composition-known-390px-200-percent.png` — `c8e27b2228bcad02295c194bba1191d03ae3a8c972a35278cd0412093fb316f4`
+- `test-results/composable-lab-v2/composition-known-320px.png` — `a352f1968170fee25dc21c3fb93bdb7403e0c66364c9f719e8d5b091b0fa2fef`
+- `test-results/composable-lab-v2/composition-known-720px.png` — `5766e1eeb9c28c9e21ab9e70a09d3272ccc594e2537a5074e142913189c39dc3`
+
+### Final attributed review
+
+Screenshot-first UI/UX review **APPROVES** exact application manifest
+`af2099289ef1beefe59b6e10664a6933e89e2902fdacf68f50d65fc8f620ee2f`,
+Kit `aaa9b6a3…`, Lab HTML `e85e3d1f…` and MCP resource `c8de7c1a…` for the
+isolated experiment. The supplied old Tailnet screenshot at SHA-256
+`cc6974e328b51ba8abe413ab18706b65e291c9ae83fa993b62c93faf380e41aa`
+showed the temperature fill excluding the icon, exposing structural reserve,
+visually biasing the content upward and creating progress ambiguity. The final
+author/design 390px capture at `6482e985…` removes that fill and shows all four
+reading groups with consistent visual centers, columns, spacing and hierarchy.
+Direct 320/390/720px and 390px/200% inspection found no clipping, overlap or
+horizontal overflow, kept `220° C` atomic, wrapped longer values sensibly and
+preserved the larger two-column Grid. Loading uses animated neutral skeletons;
+error uses static neutral skeletons at the same geometry with no stale
+telemetry. No Table, Row, separator or composable percentage surface appears.
+
+Independent exact-candidate review also **APPROVES** `af209928…`. It verified
+that `PresentationNode` has no concrete name or `node.type` dispatch; constructor,
+props and children come from registry entries; recursion is root/layout versus
+leaf by registered role; `getProps`/`getChildren` are typed; the sole uniform
+cast is private after agreement; and no all-optional union remains. Fresh
+results were 107/107 UI/shared tests, 20/20 server/MCP/preview tests with 405
+assertions, passing TypeScript and zero-diagnostic Svelte/component contracts,
+deterministic 145,152-byte MCP `c8de7c1a…`, 113-file Kit `aaa9b6a3…`, 49,994-byte
+HTML `e85e3d1f…`, and 6/6 Chrome. Its custom retired-fill plus component-path
+input rejected before acquisition with `readerCalls=0`; the exact eight-entry
+adapter walk and `0.0.3-provisional` version also passed.
+
+Independent review freshly ran the same exact UI, server, compiler and browser
+commands recorded above, plus:
+
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab && bun --no-env-file --config=/dev/null run verify:mcp-composable-lab && wc -c public/mcp-composable-lab-v2.html && /usr/bin/shasum -a 256 public/mcp-composable-lab-v2.html`
+- `bun --no-env-file --config=/dev/null -e "import { canonicalComposablePreviewManifest } from './scripts/serve-composable-preview.ts'; console.log('before', canonicalComposablePreviewManifest())"`
+- The final Kit rebuild command recorded above was run with its output captured in an ephemeral reviewer-owned log; no temporary pathname is durable evidence.
+- `bun --no-env-file --config=/dev/null -e "import { canonicalComposablePreviewManifest } from './scripts/serve-composable-preview.ts'; console.log('after', canonicalComposablePreviewManifest())"`
+- `find build-kit-composable-v2 -type f | wc -l`, `wc -c build-kit-composable-v2/prerendered/dashboard/lab/composition.html`, and `/usr/bin/shasum -a 256 build-kit-composable-v2/prerendered/dashboard/lab/composition.html`
+
+Its exact custom adversary/adapter command from the app directory was:
+
+```sh
+bun --no-env-file --config=/dev/null -e '
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
+import { createComposableLabMcpServer } from "./src/lib/server/composable-lab-mcp.ts";
+import { t1EntityCardSpec } from "./src/lib/composable/specs.ts";
+import { createPlaceholderPresentation } from "./src/lib/client/composable/presentation.ts";
+import { resolveRegisteredNode, componentRegistry } from "./src/components/composable/component-registry.ts";
+let calls=0; const count=async()=>{calls+=1; return {};}; const server=createComposableLabMcpServer({status:count,materials:count,environment:count}); const client=new Client({name:"final-independent",version:"1"}); const [ct,st]=InMemoryTransport.createLinkedPair();
+try { await Promise.all([server.connect(st),client.connect(ct)]); const spec=structuredClone(t1EntityCardSpec); spec.root.children[1].children=[{type:"PercentageFill",child:{type:"HeadTemperature"},componentPath:"https://example.invalid/evil.js"}]; const result=await client.callTool({name:"compose_u1_entity_card_v2",arguments:{spec}}); if(!result.isError||calls!==0) throw new Error(`boundary ${result.isError}/${calls}`); const seen=[]; const walk=(node)=>{ const resolved=resolveRegisteredNode(node,{subjectLabel:"Tool head T1",busy:true}); seen.push({type:node.type,role:resolved.role,props:Object.keys(resolved.props).sort(),children:resolved.children?.length??null}); for(const child of resolved.children??[]) walk(child); }; walk(createPlaceholderPresentation(t1EntityCardSpec,"loading").root); if(Object.keys(componentRegistry).length!==8||seen.length!==7) throw new Error("registry/tree count mismatch"); console.log(JSON.stringify({version:client.getServerVersion(),rejected:result.isError,readerCalls:calls,entries:Object.keys(componentRegistry),resolved:seen})); } finally { await client.close(); await server.close(); }
+'
+```
+
+The independent 390px run produced `452a10c5…`, while the author/design run is
+`6482e985…`; both are separately attributed nondeterministic browser-run
+evidence, not deterministic artifact identity. Design did not edit/build/restart
+or rerun tests; independent review did not edit or mutate external state. Port
+4184 was released. The existing 4200/8451 job still has earlier committed bytes
+preloaded and was not touched. No final-candidate Tailnet/iPhone/Safari, mounted
+ChatGPT, screen-reader, physical-printer or user-outcome evidence exists. No
+Tailscale/auth/production registration change occurred. The descriptor lifecycle
+plan (owned EOF/SIGTERM/reap, 180/220 monitoring, 4096 emergency headroom and
+lazy optional MCP start) remains unimplemented and unauthorized.
+
+### Accepted-candidate private runtime and independent approval
+
+The only runtime mutation was restarting the already configured dedicated job:
+
+- `launchctl kickstart -k "gui/$(id -u)/com.openai.u1-composable-v2-preview"`
+
+No Serve/Funnel configuration, production service, authentication, printer,
+Camera, MCP registration, source or artifact changed. Independent runtime review
+**APPROVES** the resulting private preview at exact source `2ffc29b729f1f3dba721eacee714f6937af9e890`,
+tree `dbdae72e5cdc9a2b63f203a8816a6721e602837e`. PID 90967 runs the exact
+committed-worktree Bun `--no-env-file --config=/dev/null` dedicated immutable-
+server command with one `127.0.0.1:4200` listener. After probe keepalive drained,
+it had zero child processes, other TCP connections or sensitive printer/Camera/
+auth/config file descriptors. Production PIDs 834 and 841 remained running.
+
+Local and existing Tailnet 8451 each returned HTTP 200 with exact 49,994-byte
+HTML SHA-256 `e85e3d1fc0673a0b86454f1616d043ed6d26708cd35403c070923493edafa28d`.
+All 21 closed hashed assets were byte-identical to the committed Kit build at
+both origins. Runtime negative checks passed 170 ordinary route/method cases,
+12 encoded/traversal/asset cases and eight CONNECT/TRACE/BREW/Upgrade cases.
+Serve/Funnel semantics remained unchanged. The exact same status JSON is SHA-256
+`d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`
+when hashed with its terminal LF and
+`a255c74d07083b5d2bdc98f78e67095affa0df83ce326895001b4fffe0f98a6f`
+when hashed without that LF; this is byte-framing nuance, not configuration
+drift.
+
+Fresh Tailnet Chrome passed 24 cases at 390px: three composition shapes by four
+states at both 100% and 200% root text. State-height drift, horizontal overflow
+and label drift were 0; maximum visible-center drift was 0.0078125px; computed
+metric value text scaled from 20px to 40px. Temperature target/unit remained atomic,
+ambiguous fan relation remained truthful `Unknown`, loading stayed neutral and
+animated, error neutral and static, and no Table, Row or percentage background
+appeared. Scenario changes caused zero network requests and zero page errors.
+A reviewer-owned ephemeral 102,274-byte screenshot at SHA-256
+`1639ae595ae5e8cb5600e5a5cdc9cdeb49960d2640a99a53f39e2981f2d849d0`
+was visually centered and unclipped; no ephemeral pathname is durable evidence.
+
+Two preliminary browser-harness failures are retained as false expectations,
+not product failures: compact intentionally contains status plus filament only,
+so it has neither a fan reading nor four skeletons. Correcting the harness to the
+registered compact topology produced the passing matrix above.
+
+Limits: this is same-host private Tailnet synthetic evidence. It does not cover
+iPhone/Safari, a mounted ChatGPT host, screen reader, public Internet, physical
+printer/Moonraker or user outcome. The process-lifecycle safeguard plan remains
+unimplemented and unauthorized.
+
+## 2026-09-04 content-owned percentage surface author candidate
+
+### Acceptance and safety boundary
+
+This UI-003/F0 follow-up addresses the screenshot finding that the decorative
+temperature fill covered the full reading, including the icon column and outer
+geometry reserve. The AST is unchanged: only `PercentageFill` wrapping
+`HeadTemperature` can request the decoration. No style, color, inset, radius,
+percentage, expression, HTML, CSS or JavaScript input was added to the wire
+schema. The percentage remains a private-Lab-only decoration derived from
+validated T1 actual/target provenance; it does not mean progress, heater
+authority, safety margin or target attainment.
+
+`common/PercentageSurface.svelte` now composes the existing common percentage
+primitive with fixed `var(--u1-space-3)` 12px inline and
+`var(--u1-space-2)` 8px block inset plus `var(--u1-radius-inner)`. `Reading`
+retains the closed icon plus `minmax(0, 1fr)` content anatomy and accepts only a
+closed `reading | child` inset owner. All ordinary reading content keeps the
+same inset; only `HeadTemperature` selects child ownership when the renderer
+encounters the existing typed wrapper. The icon and outer 8px reading reserve
+remain outside the painted box. Missing/loading/unavailable or nonpositive-
+target evidence stays neutral; valid temperature evidence remains painted when
+an unrelated source is partial or ambiguous. No Table, Row or separator was
+introduced.
+
+### Descriptor interruption and ownership preflight
+
+Before editing, six consecutive process-creation attempts were blocked by
+`Too many open files (os error 24)`. No file or runtime was changed during that
+interruption. User-provided host evidence reported old MCP helpers persisting
+for 12–18 hours, descriptor cleanup from 185 to 115, and active tasks then
+respawning/stabilizing near 153 of the 256 soft limit. An age-only process killer
+could therefore kill active work and create respawn loops. After process
+creation recovered, a read-only preflight confirmed soft limit 256, task fixture
+port 4184 free, and the existing approved v2 preview as the only relevant
+worktree server. No process was killed, no limit/system setting was changed and
+the live 4200/8451 preview was not touched.
+
+Potential future host safeguards are recorded separately from this UI change:
+
+- task archive/close should EOF stdin, SIGTERM the owned process group, wait and
+  reap, then escalate only that owned group if still necessary;
+- task-owned servers should exit on EOF and SIGTERM;
+- ownership-aware descriptor monitoring could warn near 180 and intervene near
+  220 rather than using process age;
+- a 4096 soft limit could provide emergency headroom only, not replace cleanup;
+- MCP helpers could optionally start lazily.
+
+None of these host safeguards is implemented or authorized in this repository.
+
+### Author commands and results
+
+From `plugins/u1-print-studio/app`, commands actually run:
+
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable/presentation.test.ts src/lib/client/common/PercentageBackground.test.ts`
+  passed 2 files and 24 tests.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable src/lib/client/common/PercentageBackground.test.ts`
+  passed 3 files and 27 tests. It verifies that the percentage element is a
+  descendant of the temperature reading's content child and never its icon.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts`
+  passed 20 tests with 408 assertions, preserving strict schema/provenance,
+  neutral invalid ratios, isolated MCP inventory and immutable preview guards.
+- `bun --no-env-file --config=/dev/null run check` passed.
+- `bun --no-env-file --config=/dev/null run ui:check` initially failed only
+  because the strict component contract rejected render tags in a domain
+  composite and an unclassified new wrapper. The domain snippet was removed and
+  the zero-native-tag common surface was explicitly assigned to the common leaf
+  frontier. The final run passed with zero Svelte errors/warnings and passing
+  component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` and
+  `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passed.
+  The deterministic v2 resource is 146,166 bytes at SHA-256
+  `f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+- A temporary Vite-only author harness on loopback 4184 first passed all three
+  geometry/accessibility cases but failed three route cases because the dynamic
+  public dashboard route returns 500 without an application runtime rather than
+  the immutable preview server's 404. The harness-only negative expectation was
+  scoped to non-200, then
+  `COMPOSABLE_DEV_SERVER=1 bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed all 6 Chrome cases at 320/390/720. A renewed run after adding 200%-text
+  anatomy assertions also passed 6/6. Port 4184 was free before and after every
+  run; Playwright released its owned server/browser. The temporary Vite command
+  and relaxed route/CSP branches were removed, leaving the immutable-server
+  Playwright configuration and exact 404/CSP assertions unchanged.
+
+### Exact candidate build refusal and renewed pin validation
+
+Independent review built the actual candidate and returned
+**REQUEST_CHANGES** because the dedicated immutable server still pinned the
+previous v2 artifact and hydration node. Its first isolated build overwrote
+only the ignored `build-kit-composable-v2` directory. The reviewer disclosed
+that boundary explicitly: the already-running 4200/8451 process had preloaded
+the older bytes, so neither its process nor its served response changed. The
+reviewer did not restart, repoint or otherwise mutate that runtime.
+
+The author first ran
+`bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`
+against the actual build and reproduced the refusal: one test passed, three
+failed, and server construction raised exactly
+`Composable preview artifact identity mismatch`. This is retained as failure
+evidence. The server pin now names the actual 115-file manifest
+`4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`;
+the closed hydration addition is
+`/_app/immutable/nodes/1.BHy6paUx.js`. The focused test now also requires that
+exact node and rejects the superseded `1.BieyvGzI.js` node.
+
+Renewed author commands and results on those pins:
+
+- `bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`
+  passed 4 tests with 318 assertions.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts`
+  passed 20 tests with 410 assertions.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable src/lib/client/common/PercentageBackground.test.ts`
+  passed 3 files and 27 tests.
+- `bun --no-env-file --config=/dev/null run check` passed.
+- `bun --no-env-file --config=/dev/null run ui:check` passed with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passed
+  and reproduced the 146,166-byte resource.
+- With port 4184 confirmed free before the run,
+  `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed 6/6 exact Chrome cases through the dedicated immutable server. The
+  checked-in CSP and exact 404 conditions were used; there was no temporary
+  relaxed branch. Playwright released its owned server/browser and port 4184
+  was free afterward.
+
+The actual Lab HTML is 51,180 bytes at SHA-256
+`5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`.
+The 115-file canonical build manifest is the exact `4b4209f9…` value above.
+The v2 MCP resource remains 146,166 bytes at SHA-256
+`f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+
+### Exact review dispositions
+
+Screenshot-first design review **APPROVES** exact HEAD `dca554a…` plus the
+uncommitted diff, application manifest `5d6c4ea…`, build manifest `4b4209f9…`,
+51,180-byte HTML `5c3f2731…` and 146,166-byte MCP resource `f865908e…`. The
+reviewer used a fresh exact immutable server on isolated port 4187 and closed
+the server/browser afterward. Across 320/390/720, 100%/200% text,
+card/compact/larger and known/loading/error/partial/ambiguous, it measured 90
+states, including 60 temperature surfaces. Surface/content X and width differed
+by 0px; minimum icon gap was 12px; top/bottom reserve was 8px; inline/block
+inset was 12px/8px; radius was 16px; label and state-height drift were 0px; and
+right overrun, overflow, Table/Row and atomic-unit failures were zero. Known,
+partial and ambiguous kept valid tint; loading/error were neutral; loading
+animated, error stayed static, reduced motion removed animation, and forced
+colors removed the gradient while preserving the Card border.
+
+Representative design screenshot SHA-256 values are:
+
+- 320px known: `98f80d321b4eca719900f6fbda5413a939bb78169fdc4f5fdf0758eee061468c`
+- 720px/200% larger known: `14db7e66f26a668ceccaa05d672dad57df69724a1351518f167b2787b6bc6409`
+- loading: `e493ae3448ace27a62f0969eea4eecc6572ca1e2080ce0b29cafa8e749060882`
+- error: `99ef0d3bd0607579f675751439be2511c24209f8b1357d7d092c1f0a814f5b93`
+- partial: `08942b490679e18a99aecd96bb7791378a3e77e64b06ee33065b01d31038840f`
+- ambiguous: `646f5af3eb1e9d07c64921bcbe9b0cc72a7f3e224441d459e29a78bd3d878828`
+
+Renewed independent verification also **APPROVES** exact application manifest
+`5d6c4ea…`. It freshly passed 20/20 server/MCP tests with 410 assertions;
+42/42 combined composable, shared PercentageBackground, Thermals and Fans
+tests; TypeScript; Svelte with zero diagnostics and component contracts;
+deterministic 146,166-byte MCP reconstruction at `f865908e…`; and 6/6 exact
+immutable-server Chrome cases at 320/390/720 including 200% text, every state
+and shape, forced colors, reduced motion, topology and anatomy. Port 4184 was
+released. A same-path rebuild reproduced byte-identical 115-file build
+`4b4209f9…` with comparison exit 0 and 51,180-byte HTML `5c3f2731…`; the focused
+preview suite then passed 4/4 with 318 assertions. The new hydration node was
+served and the old node rejected. Fresh inspection of 390 known, 390 at 200%
+and larger error at 720/200% confirmed content-only paint, icon exclusion and
+neutral error. Production registration remained negative, the existing live
+listener was preserved and no reviewer-owned child remained.
+
+Both approvals are synthetic private-Lab evidence. Design did not cover
+iPhone/Safari, screen reader, a mounted ChatGPT host, real printer, Camera,
+auth, candidate Tailnet or user outcome. Independent review did not cover a
+candidate Tailnet runtime, phone/device, screen reader, live printer or
+Moonraker, Camera, auth, production, deployment or user outcome.
+
+The browser matrix proves at 100% and 200% text that the painted rectangle
+equals only the temperature content width, begins at least 8px after the icon,
+ends within its reading/grid cell, keeps 8px unpainted outer block reserve and
+places its edge 12px left of the label. All reading label offsets remain within
+1px. Known/loading/error/partial/ambiguous card, compact and larger shapes keep
+at most 1px state-height drift; the final measurements were 0px. Loading and
+error fill are neutral, error skeletons static, loading animation stops under
+reduced motion, partial/ambiguous keep valid temperature tint, forced colors
+remove the image, `220°\u00a0C` remains atomic, and no overflow or cross-cell
+paint was observed.
+
+Fresh synthetic screenshots are under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`:
+
+- `composition-known-320px.png` — `7dbfc086…`; 200% — `546bff8e…`
+- `composition-known-390px.png` — `02f01dac…`; 200% — `69f282bf…`
+- `composition-known-720px.png` — `534f70be…`; 200% — `91a7f673…`
+- larger 720px/200% known/loading/error/partial/ambiguous — respectively
+  `8d370a10…`, `69ec0799…`, `39a9b8f4…`, `dfff9e10…`, `576d39fa…`
+
+The renewed 37-path changed/new application-set manifest is
+`5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`.
+The screenshot-first design and renewed independent dispositions above accept
+this exact application/build/HTML/MCP identity for the private-Lab experiment.
+The reviewed application bytes were committed as
+`0f5a0d4c4e6a2ac6417b78365d0ac96c8cff60ca`, tree
+`fc6fdd48864e90a5d3ee9e808cf84f6a9a13236d`. Review remains historically bound
+to parent `dca554a18b18f1e34b3b03020bad7de695909f72` plus its uncommitted
+application diff. This subsequent documentation correction changes no
+application, test, dependency, configuration, build input or generated resource
+byte and does not extend the approvals' scope.
+
+### Authorized reviewed-byte runtime switch and independent approval
+
+Immediately before the runtime switch, the author verified clean source
+`c19e8adcae6e29a6179cb56d99f83ceb7d234374`, tree
+`4baf879caa2858d29e6e3c4276a718a572d37526`, application manifest
+`5d6c4ea093bd41ac6abd0a433f03c66ff393caa535facf15da59a248e7698aad`,
+115-file build `4b4209f994a179709974fcc10094fa6075388d3e139fb843ed820c0ad4aa8f38`,
+51,180-byte HTML `5c3f2731223e7adbfeda48ba667826b49f02aa190a3dacb511dd2af71d30e6de`
+and 146,166-byte MCP resource
+`f865908ec6c0bbb3d9065cc843398528173ae34af1d4943e50a1657df34a501c`.
+The only mutation was restarting the existing job:
+
+- `launchctl kickstart -k "gui/$(id -u)/com.openai.u1-composable-v2-preview"`
+
+No Tailscale configuration, listener or plist changed. Local and Tailnet
+`GET /dashboard/lab/composition` then returned HTTP 200 and exact 51,180-byte
+`5c3f2731…` HTML. All 23 allowlisted immutable assets matched the build
+byte-for-byte at both origins. The author's 218-case ordinary local+Tailnet
+route/method/query/encoding/traversal matrix returned 404 throughout, including
+MCP, other dashboards, tools, fixture state, Camera, auth/OAuth, health, media,
+old hydration and queried-current-hydration routes.
+
+The dedicated process retained the pinned Bun 1.4.0 flags and exact server
+script, one loopback 4200 listener, zero child processes, zero other TCP
+connections after probes and zero sensitive printer/Camera/auth/config file
+descriptors. Production jobs remained running on their existing 8787/8788/8789
+listeners. The v1 label and 4199/8450 remained absent. Raw Serve and Funnel
+status remained exact SHA-256
+`d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`;
+8451 Funnel remained disabled.
+
+Fresh Tailnet Chrome at 390/720 and 100%/200% text covered all three shapes and
+five states. Surface/content X and width delta was 0px, icon gap 12px,
+top/bottom reserve 8px, label inset 12px, right overrun 0px and state-height
+drift 0px; scenario controls caused zero network requests. Atomic temperature
+unit, static neutral error and visual inspection passed. Screenshots are local
+test evidence under `plugins/u1-print-studio/app/test-results/composable-live-v2/`:
+
+- `tailnet-known-390px.png` — `21d53926dab6c2e09751aa3f6d49f3038c0d6c62e19d16c249d195ef8e3dec87`
+- `tailnet-known-390px-200-percent.png` — `69f282bf203149f2b9bd2c8493103f87d453ea83e2b2ce47ecebcaefbde0efe6`
+- `tailnet-error-390px-200-percent.png` — `3994183798cf82a15f19b141e2b20895e93dd5067c5c42cf32c8a175d2afa1df`
+- `tailnet-known-720px.png` — `29257e87f61fde99f7562b119df59cde16748ff704de706485646ac8dac82171`
+- `tailnet-known-720px-200-percent.png` — `8d370a10bf84f506533d2d16bfdcb9d20ff010061e6e1758175ab1c8e3af3be2`
+- `tailnet-error-720px-200-percent.png` — `39a9b8f44711da8a0dc23f6448f7babb16b0d68516692972a857c28519e3e40d`
+
+Independent runtime verification **APPROVES** this exact running identity. Its
+fresh 120-case local+Tailnet matrix, closed-asset checks, process/authority
+inspection and browser review found no authority or content escape. Its
+standard raw Upgrade probe, which wrote the complete request and waited,
+returned empty 404 locally and over Tailnet. Preserve the distinct author probe:
+an immediate `socket.end(request)` send-and-half-close returned empty local
+404/64 bytes and Tailnet proxy 502/84 bytes. Neither response included Lab or
+asset markers. The independent reviewer classified that narrower result as a
+fail-closed proxy transport artifact, not dedicated-server behavior or a safety
+blocker.
+
+The runtime approvals cover only this synthetic private Tailnet Lab. There is
+no iPhone/Safari, phone/device, mounted ChatGPT host, screen-reader, public-
+Internet, live printer/Moonraker/Klipper, Camera, auth-flow, production,
+deployment or user-outcome acceptance. All task-owned browsers/probes closed;
+the approved preview remains running. This records-only integration changes no
+application, test, dependency, configuration, build input or generated byte.
+
+## 2026-09-04 authority-free v2 preview repair candidate
+
+### Withdrawn preview and safety response
+
+The first authorized v2 preview used the generic `serve-kit-fixture.ts` host.
+Independent runtime review returned **REQUEST_CHANGES** because that server
+exposed dashboard routes and `dashboard-tools.ts` defaulted an omitted
+`readCameraFrame` dependency to the real camera adapter. The reviewer did not
+invoke the camera. The endpoint-scoped cleanup immediately disabled only HTTPS
+8451 and removed only `com.openai.u1-composable-v2-preview`. Loopback 4200 was
+released; the then-current raw Serve/Funnel state returned to its exact pre-v2 SHA-256
+`d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`;
+the v1 4199/8450 Lab body remained SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`;
+and production jobs remained uninterrupted. No repaired runtime or Tailscale
+mapping had been launched at that point. The withdrawn preview is failure
+evidence, not acceptance evidence.
+
+### Subsequent v1 safety cleanup
+
+Independent review then found the pre-existing v1 preview likely shared the
+same generic-fixture real-camera fallback. The reviewer did not invoke it. The
+author executed only:
+
+- `Tailscale serve --yes --https=8450 off`
+- `launchctl remove com.openai.u1-composable-preview`
+
+Read-only verification found 4199/4200 free; both preview labels absent; and
+8450/8451 absent from TCP, Web and Funnel. Raw `Tailscale serve status --json`
+and `Tailscale funnel status --json` each returned the exact pre-v1 SHA-256
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`.
+Production jobs remained loaded/running with successful last-exit status, and
+TCP/Funnel 443/10000 remained present. No route or tool was invoked. The v1
+source/tree, application manifest, MCP resource and historical body hash below
+remain artifact evidence only; they do not authorize relaunching the generic
+server.
+
+### Dedicated server contract and author evidence
+
+`scripts/serve-composable-preview.ts` imports only Node crypto, filesystem,
+HTTP and URL modules. Before listening it verifies the fixed
+`build-kit-composable-v2` artifact against canonical manifest
+`70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0b35b34e`,
+then preloads a closed path-to-bytes map. Only exact `GET`/`HEAD` requests for
+`/dashboard/lab/composition`, its HTML-referenced hashed assets and the exact
+SvelteKit hydration node required by that page can succeed. There is no request
+path to filesystem join and no fallback build. Root, fixture state, tools,
+camera, every other dashboard, widget, health, MCP, OAuth, auth, media,
+query/trailing/encoded/dot/backslash variants and ordinary parsed unlisted
+methods return 404. CONNECT and Upgrade are explicitly denied with no body;
+parser-invalid requests deterministically return 400/close rather than being
+misrepresented as application routes.
+Static guards reject production entrypoint, dashboard-tools/status-dashboard,
+MCP, PrinterObservationStore, u1-status, camera, auth, local-config and
+child-process imports. An outbound canary receives zero requests even when the
+forbidden body names `get_u1_camera_frame`.
+
+The first architecture exact gate returned **REQUEST_CHANGES** on 35-path
+manifest `15c19d91724acdd0129b0e83e2d1b86875f37c1831da01985ed71248ec71e176`
+because the initial repair collected and validated the manifest, then reread artifact files
+and the page in separate passes. That time-of-check/time-of-use gap meant served
+bytes were not necessarily the validated bytes. The renewed implementation
+collects one safe-relative-path-to-Buffer snapshot, computes the durable
+manifest from that exact snapshot, validates it, and derives cloned page/asset
+responses only from the same snapshot. It makes no filesystem read after
+validation or while serving. A mutation adversary changes the caller-held
+snapshot after server construction: the server retains the validated bytes,
+while reconstructing from the changed snapshot fails the manifest gate.
+
+Independent raw-protocol probing of the earlier candidate also established
+that TRACE origin-form parsed to the application 404, while invalid `BREW`,
+CONNECT and some non-origin-form traffic were handled at Node's parser/protocol
+boundary. The renewed server explicitly handles CONNECT, Upgrade and
+`clientError`. Raw TRACE, OPTIONS `*`, CONNECT, Upgrade and invalid-method tests
+prove no 2xx response, preview body, asset body or outbound acquisition without
+claiming that parser-invalid traffic is an application 404.
+
+From `plugins/u1-print-studio/app`, commands actually run:
+
+- `bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`
+  first failed two manifest assertions because JavaScript `localeCompare` did
+  not reproduce the durable `LC_ALL=C` pathname order. A code-unit comparator
+  fixed the implementation. A second run had one test-harness failure because
+  `fetch` normalized a dot-segment URL before transmission; the adversary now
+  uses a raw HTTP request and proves the received target returns 404. The final
+  focused run passes 4 tests with 316 assertions after the snapshot and raw-
+  protocol adversaries were added.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts tests/server/composable-preview.test.ts`
+  passes 20 tests with 408 assertions.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable`
+  passes 2 files and 10 tests.
+- `bun --no-env-file --config=/dev/null run check` passes.
+- `bun --no-env-file --config=/dev/null run ui:check` passes with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passes
+  and reconstructs the exact 145,363-byte v2 resource.
+- With `$BUN` bound to the pinned Bun 1.4.0 executable,
+  `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 "$BUN" --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build`
+  passes; the canonical 115-file build manifest is unchanged at `70f99dc8…`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  first passed geometry but failed two hydration cases because the closed map
+  lacked the dynamically requested node `/_app/immutable/nodes/1.BieyvGzI.js`.
+  Adding that exact manifest-bound asset did not open a route family. The fresh
+  final run passes all 4 Chrome cases at 320/720, including 100%/200% text,
+  known/loading/error/partial/ambiguous geometry, forced colors and reduced
+  motion. The server and browser children and port 4184 were released.
+
+The repaired 35-path application-set manifest is
+`c8c24103972ee7c0304b7b80c79206bc2eb65a14cde239224716480673a31148`.
+The Lab HTML remains 51,156 bytes at SHA-256
+`e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c`;
+the v2 MCP resource remains 145,363 bytes at SHA-256
+`170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`.
+Renewed synthetic screenshots are under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`; representative
+SHA-256 values are `edfb0d9a…` for known 320px, `e7614206…` for known 720px,
+`bb737e5f…` for known 320px/200%, and `524cd03f…` for known 720px/200%.
+
+Architecture and independent exact-source validation approve application
+manifest `c8c241…` as committed in
+`ed504c7a9bbded66831ac35fb5cf2531a929d2cb`, tree
+`e33d56896994bd9571a6c0b2a73e3afbb9b8ea5e`.
+
+### Authorized authority-free preview runtime and exact approvals
+
+Immediately before mutation, read-only guards confirmed clean source head
+`c44f4c368848a17549dd94ae2a3383fa25420c6e`, application manifest
+`c8c24103972ee7c0304b7b80c79206bc2eb65a14cde239224716480673a31148`,
+canonical v2 build manifest
+`70f99dc83b1c77dd8ef617848679dc2004bd0344474d16d0b6b88aff0b35b34e`,
+51,156-byte Lab HTML SHA-256
+`e4be14ad79a115932609ddb86aa470dc797aa53b31b3caf9edda25e348ca1e7c`,
+free loopback 4200, absent 8451 and exact raw Serve/Funnel baseline
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`.
+
+The author launched only the dedicated immutable server with pinned Bun 1.4.0,
+`--no-env-file --config=/dev/null`, exact v2 artifact directory and label
+`com.openai.u1-composable-v2-preview` on `127.0.0.1:4200`; the generic fixture
+was not used. The only Tailscale mutation was:
+
+- `Tailscale serve --yes --bg --https=8451 http://127.0.0.1:4200`
+
+Local and Tailnet `GET /dashboard/lab/composition` returned HTTP 200 and exact
+`e4be14ad…` HTML. All 23 required immutable hashed assets returned HTTP 200 and
+were byte-identical between origins. For each origin, 68 ordinary forbidden
+route/method cases returned 404, covering root, health, widget, MCP, OAuth,
+auth/enroll, media, other dashboards, tools/call, Camera, fixture state, query,
+trailing slash and GET/HEAD/POST/OPTIONS variants. Four encoded, dot, backslash
+or traversal targets per origin failed closed with 400/404. Bounded HTTP/1.1
+CONNECT and Upgrade probes at loopback and Tailnet returned 404 with neither
+page nor asset bytes. Parser-invalid requests remain permitted to 400/close at
+the Node protocol boundary; this is not claimed as an application 404.
+
+Process inspection matched the exact pinned Bun flags and dedicated server
+script, with zero child processes, one loopback-4200 listening socket, zero
+established or other TCP connections, and zero sensitive file descriptors for
+printer, Camera, OAuth, auth or local configuration. This runtime evidence is
+consistent with the source outbound canary's zero requests and establishes no
+printer authority.
+
+Fresh headless Chrome checks through the actual Tailnet endpoint covered 320
+and 720 widths at 200% root text for card/compact/larger across known, loading,
+error, partial and ambiguous states. Each shape had 0px renderer-height drift,
+no horizontal overflow or page error, and scenario changes caused zero network
+requests. Representative 320/720 screenshot SHA-256 values are
+`0eba1364d8356f5c0109eb498a87a99ea49875cf68ffd5c8a7cd291991cfce9a`
+and `2f693139a02398861fe4593ca92ae08446e3e6764e3c80768650056125ad2e47`;
+captures remained temporary and no private address or path is committed.
+
+Raw Serve and Funnel status after launch each have SHA-256
+`d52d4444f4dc878bc9165b30abb5dc57fbaf03211426a06f587c75e5123ebaab`.
+The only structural addition is the HTTPS 8451 TCP/Web root proxy; pruning
+exactly those entries reproduces baseline `fab7b9df…`. Funnel remains enabled
+only on existing 443/10000, never 8451. Both production jobs remain loaded and
+running with successful last-exit state and were not restarted. The v1 label,
+4199 and 8450 remain absent.
+
+Author runtime verification, screenshot-first design review and independent
+runtime verification each **APPROVE** this exact
+`c44f4c3…`/`c8c241…`/`70f99dc8…`/`e4be14ad…` running-preview identity. The
+approvals cover the synthetic private Tailnet Lab only and do not approve this
+later records-only commit. Evidence is from the same enrolled host; there is no
+public-Internet, phone/device, screen-reader, live Moonraker/Klipper, real-
+printer, Camera invocation, auth-flow, production-adoption or user-outcome
+acceptance.
+
+The preview was intentionally left running. Reversible endpoint-only cleanup,
+not executed during this records tail, is:
+
+- `Tailscale serve --yes --https=8451 off`
+- `launchctl remove com.openai.u1-composable-v2-preview`
+
+## 2026-09-03 presentation AST v2 author candidate
+
+### Acceptance target and safety boundary
+
+This UI-003/F0 follow-up tests a smaller layout vocabulary: fixed T1 composes
+only through root `Card`, `Title`, and one `Stack` or `Grid`, with the existing
+four typed domain leaves. `Table`, `Row`, `DataTable`, schema version 1 and
+unknown fields must reject. Card density, title size, gaps and grid columns are
+closed tokens. Only `PercentageFill { child: HeadTemperature }` may request a
+percentage decoration; its renderer uses the validated T1 actual/target
+provenance and existing common `PercentageBackground`, remaining neutral when
+the ratio is invalid. The JSON accepts no arbitrary HTML, CSS, color, numeric
+percentage, expressions or remote content.
+
+Acceptance remains Lab-only software/protocol learning. It requires exact
+input-shaped loading/error topology, static error skeletons, reduced-motion
+loading, an outer Card border without reading/layout separators, truthful fan
+semantics, deduplicated readers, correlated provenance/timestamps, a private
+route and isolated v2 MCP factory/resource absent from production registration.
+No DataTable, Queue, History or Camera implementation; no printer, auth,
+runtime/Tailscale, production-service, PR, merge or deployment action is in
+scope. The then-running v1 preview was initially untouched and was later removed
+by the endpoint-scoped safety cleanup above.
+
+### Author implementation and focused evidence
+
+The candidate uses schema version 2 and the new isolated resource URI
+`ui://u1-print-studio/experiments/composable-lab-v2.html` with tool
+`compose_u1_entity_card_v2`. Source planning still deduplicates status,
+materials and environment groups, including the temperature wrapper. Envelope
+validation correlates canonical spec/hash, exact plan/source ledger, layout
+tokens/topology, transform evidence and every leaf's source receipt. Fan zero
+is `Unknown`/`notReported`, multiple is `Unknown`/`ambiguous`, and malformed or
+failed environment input is unavailable/`sourceUnavailable`; unrelated sources
+remain rendered. Known fill derives only from bounded temperature actual/target
+evidence; unknown, unavailable or invalid target produces neutral fill zero.
+
+From `plugins/u1-print-studio/app`, author checks actually run:
+
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable`
+  passed 2 files and 10 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts`
+  passed 16 tests with 92 assertions.
+- `bun --no-env-file --config=/dev/null run check` passed.
+- `bun --no-env-file --config=/dev/null run ui:check` passed with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` and
+  `bun --no-env-file --config=/dev/null run verify:mcp-composable-lab` passed;
+  the generated v2 resource is 145,363 bytes at SHA-256
+  `170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`.
+  The existing v1 resource remains SHA-256
+  `6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+- `U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run node_modules/vite/bin/vite.js build`
+  passed using a separate adapter output. The running preview's `build-kit`
+  manifest remained
+  `c14879a359062ff0d1ad73a4f697c14facf8ae425a24b0294013252b750d346c`.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed 4 Chrome cases. Port 4184 was released afterward. At 320 and 720px,
+  card/compact/larger known/loading/error/partial/ambiguous renderers retained
+  identical node topology and at most 1px height drift at both 100% and 200%
+  root text. Card borders remained visible;
+  Title, Stack/Grid and readings had no separators or orphan row/cell roles.
+  Only loading animated, reduced-motion disabled it, error remained static,
+  forced colors removed the decorative fill, visible skeletons retained positive
+  bounds, and 200% root text did not cause stage horizontal overflow. The 720px
+  larger temperature keeps target and `C` in one rendered fragment, and the
+  responsive Lab h1 remains visibly larger than the Card h2. The private route
+  returned 200 under the built Kit CSP, its public counterpart returned 404,
+  and no nonlocal request occurred.
+
+The first browser attempt used a raw Vite development server and failed 2 of 4
+cases because that harness does not supply the SvelteKit transport CSP; no
+product assertion failed. A first separate-build harness then failed to start
+because `U1_KIT_FIXTURE_DIR` collided with SvelteKit's adapter env prefix. The
+author renamed the test-only selector to `COMPOSABLE_KIT_FIXTURE_DIR`, rebuilt
+separately and obtained the passing run above. One identity command also briefly
+overwrote zsh's special lowercase `path` array and could not locate `shasum`; it
+produced no artifact or state change. The corrected command uses
+`/usr/bin/shasum` and a non-reserved variable.
+
+The first screenshot-first design gate on manifest
+`23a736d717dc2487c59a2516ff20f92a0ec6d240305b35fd7e14ad1b59e7d5a4`
+returned request changes. Its fresh measurements found 200%-text state drift of
+205px at 320 card/larger, 109px at 720 card, 102px at 720 larger and 28px at 720
+compact; the larger temperature could orphan its `C`, and fixed 40px Lab h1 was
+smaller than the rem-scaled 44px Card h2. During repair, the first reserve-DOM
+attempt made hidden text visible to strict text queries. A later overlay attempt
+set zero line-height and collapsed visible skeletons; preserving inherited
+line-height restored visible skeletons without allowing them to affect reserved
+layout. A new unit-test matcher also
+failed only because Testing Library normalizes NBSP; exact `textContent` now
+asserts the nonbreaking source byte. Renewed focused checks above pass on the
+current identity. No independent design disposition has yet been issued for it.
+
+Independent exact-candidate review returned **REQUEST_CHANGES** on the
+superseded 36-path manifest
+`3bfe7a1702ad0acf810da3471847849a92dc871ff9d2471bf7a873e4b6c00be2`
+and 145,207-byte resource
+`6f8c92c46a883c11ab7c0c3d996a382059ef0eea668199ed75be5a90e1c70a06`.
+Its fresh MCP/server run failed 1 of 14 tests at the generated-resource exclusion:
+`FilamentColor.svelte` embedded `#E89B3C` as non-accessible reserve content.
+That was still synthetic configured-color evidence, so the earlier author 14/14
+claim for that identity is superseded. The repair removes every domain
+`reserveDisplay` sample and uses only closed structural line/minimum-block
+reserves. The renewed tests reject sample color, temperature and source-label
+content in the resource, audit the domain-leaf sources for `reserveDisplay`, and
+retain the exact browser geometry matrix. The audit also removed hidden
+`StatusLine` reserve text and replaced it with a neutral four-line structural
+minimum. Its first two-line minimum failed 1 of 4 browser cases because loading
+was 35.09375px shorter than the other card states at 320px/200%; the four-line
+structural minimum restored the passing ≤1px matrix without hidden content. A
+first author version of the generated-resource guard
+also rejected the text `Part cooling`; it failed because the closed output
+validator legitimately embeds that enum. The guard was corrected to reject the
+synthetic `Reported part fan` source label and directly inspect leaf reserve
+source. This was a test-design failure, not product acceptance evidence.
+
+The next project-scoped printer-domain exact gate returned
+**REQUEST_CHANGES** on superseded 33-path manifest
+`0d65c4585c4a5c0dd5066b1ba7d0895e2fb6abe79fe67466ea4ddda74eb21190`
+and 144,094-byte resource
+`b529a0b616bc92cd2eade9f713961bb511b18e29c5c89f7e3cd20638c8ac26bc`.
+It demonstrated three independently blocking contradictions: subject T1 could
+accept Title text `Tool head T2`; two HeadStatus occurrences could resolve to
+Active and Idle while sharing one receipt and transformed tint could disagree
+with the visible configured color; and global `error` could admit a loading
+source and therefore an animated skeleton. The renewed wire schema replaces
+arbitrary title text with one of five closed T1-derived content tokens, rejects
+duplicate presentation fields including direct/wrapped temperature, validates
+exact semantic equality for any repeated resolved field, and correlates
+transform evidence, tint and visible FilamentColor. Global error now rejects
+every loading receipt and requires at least one unavailable receipt; the
+renderer test proves partial healthy status/color remain visible while the
+unavailable fan alone uses a static skeleton. Existing zero-target testing still
+proves a neutral percentage fill, and the fan zero/one/multiple/malformed matrix
+is unchanged. The first TypeScript/Svelte check after introducing the title map
+failed because the object literal widened its return to `string`; adding a
+constant closed map fixed the type, and the renewed checks above pass.
+
+### Exact-candidate review dispositions
+
+Three role-separated gates **APPROVE** the exact 33-path manifest
+`a6cfa40f0f23e62832fa7696a41472c10097b8bbc36141cd5f87af2a4deb2580`
+and 145,363-byte resource
+`170fb8f1dc24cb2a6059b04cc22bce15fa018cbe823dea45f9f1945d94e897b4`
+for the synthetic private-Lab experiment only.
+
+Screenshot-first UI/UX reran 320/720 × 100%/200% text × card/compact/larger ×
+known/loading/error/partial/ambiguous. All 60 groups measured 0px renderer-
+height drift and zero overflow. Skeleton minimum was 64.58×17.5px; loading
+animated, error remained static, reduced motion removed animation, h1 was 56px
+over h2 at 44px, the target/unit fragment remained atomic, no text-reserve or
+sample sentinel remained, Card alone retained its border and forced colors were
+neutral. The design report SHA-256 is
+`64dfadbf482d6f10a85131404f5a354e3ce8ba18b99cdb1c91e1b34ab701c322`.
+Only the three current Title tokens were rendered; the other two were inspected
+in source. No screen-reader, device, printer, mounted-host or production check
+was part of this disposition.
+
+The project-scoped `printer_domain_expert` freshly passed the 16 server/MCP
+tests with 92 assertions and 10 client tests. Its adversaries confirmed T1/T2
+title rejection; duplicate and direct-plus-wrapped temperature rejection;
+transform evidence/tint/visible-color equality; global-error/loading rejection;
+known target zero with neutral fill; fan zero/notReported, one/typed,
+multiple/ambiguous and malformed/sourceUnavailable; exactly one read per source;
+distinct timestamps; and partial healthy data with only the unavailable fan's
+static skeleton. It approves truthful U1 semantics within the synthetic private
+Lab only, not live Moonraker/Klipper, a real printer, device or user outcome.
+Percentage fill has no accepted progress, heater-authority, safety-margin or
+target-attainment meaning.
+
+Independent verification freshly passed 27/27 focused composable/percentage
+tests, the same 16/16 server/MCP tests with 92 assertions, TypeScript, Svelte
+with zero errors/warnings, component contracts, and a deterministic temporary
+MCP reconstruction matching 145,363 bytes and the exact resource SHA above. A
+fresh Chrome 200% matrix measured 0px drift and confirmed atomic temperature
+unit, title hierarchy, no overflow/reserve/row roles, no animation in full
+error, and dependency-shaped partial states. Production factory/import inventory
+remained negative; the v1 MCP resource, v1 build and live preview response stayed
+unchanged. One first browser assertion incorrectly expected a compact partial
+skeleton even though compact has no environment dependency. The reviewer fixed
+only that expectation, its dependency-shaped form passed, and all task-owned
+children were cleaned. This was test-harness correction, not a waived product
+finding. Independent scope did not include a real printer, live Moonraker,
+mounted host, phone, public Internet, user outcome or full repository/browser
+regression.
+
+Percentage decoration remains a Lab-only hypothesis. These checks do not give
+the fill a production meaning; without a separate semantic contract it could be
+mistaken for print progress, heater authority, safety margin or target
+attainment.
+
+The sorted 33-path changed/new application set was hashed as one SHA-256 line
+per file and then hashed again. Candidate manifest SHA-256 is
+`a6cfa40f0f23e62832fa7696a41472c10097b8bbc36141cd5f87af2a4deb2580`.
+This is the independently accepted identity for the private-Lab experiment; it
+is not production architecture, deployment or user/device acceptance.
+
+Screenshots are local test evidence under
+`plugins/u1-print-studio/app/test-results/composable-lab-v2/`:
+
+- `composition-known-320px.png` — `5211fb472a661f5e1106bd6a6390ca57467f6e7fb1db5678a3ee2eecde48b7b4`
+- `composition-known-720px.png` — `e761420614f1cb8183eed2da3bafbf97f0f932fa5b9d833e87811f8bc591677a`
+- `composition-known-320px-200-percent.png` — `bb737e5fc75769c97f28f57d1016fb4cb1c306239330dbbfa45c898d66c43c5e`
+- `composition-known-720px-200-percent.png` — `524cd03f731a4594af7690a1b7c66d81c5e8524473f616a270e7043809c7dc8a`
+- `composition-loading-720px.png` — `884d2024bb32d0e72c214e446f47fcd19964813ff81d9a8cce9484d9267b4689`
+- `composition-error-720px.png` — `15f12a886f297dd71c4337e699a3aaa67e3ed21624e48bc6fbe35f652510ddfd`
+- `composition-partial-720px.png` — `0c1b208fb066da99b777a5bb714fae82d91953b05c623ff181953bab662378ed`
+- `composition-ambiguous-720px.png` — `5ec91e9777548e2fad030efc0d632cd99701d000c921f82839e7e55db854fa97`
+- `composition-larger-known-720px-200-percent.png` — `6d4bee0a6853fab703a3845ad63c1fe638c218810ab4a287a93083652217561f`
+- `composition-larger-loading-720px-200-percent.png` — `c815547b67aad9890a5152a2f49fe305886d882b433c1d797c67924172b41267`
+- `composition-larger-error-720px-200-percent.png` — `7066bc503028f5ba3ee26601e1a7e9ade074ba0654f81910dcc4c2b774480a3f`
+- `composition-larger-partial-720px-200-percent.png` — `3266dea61164f95e0c9167a2786f57e97616513d1c073f98beaab552c3478eda`
+- `composition-larger-ambiguous-720px-200-percent.png` — `727671718f004e8321927eadc7bb51d1415597c8dcaa4af9e49a1100b5308ab0`
+
+No private or user image is stored. The screenshots are synthetic author-owned
+artifacts; the exact role-separated dispositions above independently bind their
+own evidence to the same candidate. Together they prove neither live
+Moonraker mapping, mounted MCP-host behavior, real-printer truth, actual-device
+usability, Queue/History/DataTable/Camera semantics, production suitability nor
+user outcome.
+
+## 2026-09-03 entity-bound presentation AST experiment
+
+### Acceptance and safety boundary
+
+This UI-003/F0 experiment asks whether strict JSON can compose one T1 status,
+actual/target temperature, configured filament color and truthful typed fan
+relation from closed domain leaves and common layout primitives. Acceptance is
+limited to a dashboard-private Lab route and an explicitly constructed Lab MCP
+factory/tool/resource. Production registration must not import or expose the
+experiment. There is no arbitrary HTML/CSS/JavaScript, remote content, printer
+control, Camera implementation, authentication change, PR, merge or deployment.
+The later separately authorized preview adds only the reversible synthetic
+launchd job and tailnet-only Serve listener recorded below.
+
+The renewed 45-path application source candidate has manifest SHA-256
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+Its deterministic isolated MCP resource is 137,936 bytes, SHA-256
+`6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+This follows a whitespace-only source/generator cleanup after the prior
+independent approval. Exact source
+`518c6440db1d624361a1a804754590def3e330e2`, tree
+`a79032b72e04cab6d4dc32a26c4db47024aad5c3`, is now independently approved for
+the tailnet-only preview described below.
+Decision0049 records this as provisional private-lab learning, not production
+architecture or cutover. Decision0050 separately records the user's future
+Camera media-bottom-overlay direction; no Camera file changed in this slice.
+
+### Author implementation and focused verification
+
+The strict AST binds T1 once and exposes only `HeadStatus`, `HeadTemperature`,
+`FilamentColor`, `FanRelation`, `Card`, `Title`, `Table` and `Row`. Domain leaves
+own fixed icons, labels, formatters and source mappings. Source planning
+deduplicates readers; unreferenced readers receive zero calls. A strict envelope
+correlates canonical JSON and SHA-256, exact derived plan and source ledger,
+resolved topology, value provenance and source/receipt timestamps. Card tint is
+correlated to provenance-bearing configured-color evidence even when no color
+leaf is rendered. A zero/absent fan relation is `Unknown`/`notReported`; multiple
+relations are `Unknown`/`ambiguous`; a malformed environment relation or source
+is `unavailable`/`sourceUnavailable` with a static error skeleton. Partial source
+failure preserves unrelated values. Loading skeletons animate; error skeletons
+are static with distinct persistent status space.
+
+From `plugins/u1-print-studio/app`, with Bun environment/config autoload
+disabled where shown:
+
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/composable`
+  passed 8 tests.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-presentation.test.ts tests/server/composable-lab-mcp.test.ts`
+  passed 13 tests with 75 assertions. Coverage includes strict-schema escapes,
+  counting readers, partial failure, spec/hash/plan/source/topology/provenance
+  adversaries, bounded render values, fan zero/one/multiple/malformed cases,
+  tint divergence/tint-without-transform, a transform with no color leaf, and
+  neutral unknown/unavailable transform evidence.
+- `bun --no-env-file --config=/dev/null run check` passed TypeScript.
+- `bun --no-env-file --config=/dev/null run ui:check` passed with zero Svelte
+  errors/warnings and passing component contracts.
+- `bun --no-env-file --config=/dev/null run build:mcp-composable-lab` followed by
+  `verify:mcp-composable-lab` passed deterministically at the resource identity
+  above. `bun --no-env-file --config=/dev/null run build:server` passed with 62
+  files, 80 static routes and 62 hashes.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.composable.config.ts`
+  passed four Chrome cases at 320/720 pixels. All card/leaves/larger compositions
+  preserve known/loading/error/partial topology with at most 1px height drift;
+  only loading animates, no orphan row/cell roles remain, focus contrast is
+  7.67:1, 20px value text becomes 40px at 200%, and no overflow was observed.
+
+Renewed synthetic screenshots are under
+`plugins/u1-print-studio/app/test-results/composable-lab/`:
+`composition-known-320px.png`, `composition-known-720px.png`, and the 720px
+`composition-ambiguous`, `composition-loading`, `composition-partial` and
+`composition-error` PNGs. No private or user image is stored.
+
+### Role-separated review history
+
+The project-scoped architecture review gave a conditional structural pass, not
+source acceptance. It identified missing strict-schema adversaries, counting
+reader/zero-call coverage, partial-failure and provenance-time checks, fan
+cardinality/malformed cases, stable state topology, private/public and Lab/
+production inventory proofs, and static authority/import guards. Filesystem
+process spawning was unavailable under EMFILE, so that role reviewed
+root-provided summaries and could not independently verify tests, documents or
+isolation. Its gaps drove author tests; final independent review supersedes it
+for acceptance.
+
+Screenshot-first UI/UX review initially failed visual-source checkpoint manifest
+`d0167fdcc237ce6482fa70bbb4bde765a93a14014a265ddd4696d1f6302cb29d`:
+generic leaves permitted misleading icon/label/value combinations, error
+skeletons pulsed without visible status, and ready/error geometry drifted. A
+fresh follow-up passed that same visual checkpoint; report SHA-256
+`5ae4a706d7e5b50717b89c122735d458a763b34bd085bcff2c8a54a35247b04`
+records 0px state delta across all shapes, static error, 7.67:1 focus contrast,
+20px-to-40px 200% scaling and no overflow. This is a visual-source checkpoint,
+not final application identity: later correlation-only source/resource changes
+were accepted by the independent domain reviewer and received renewed author
+Playwright evidence.
+
+The project-scoped `printer_domain_expert`, assigned independent source,
+protocol and domain review, requested changes twice. Manifest
+`3f742e2ff30ca42191a38096dc4b0d765d3d0752ad0d1bc202f84eef73658988`
+lacked end-to-end envelope/input correlation and sufficiently closed rendered
+values. Manifest
+`b73c90245132aeae733abc72f8fb2aa869270e916623205a426219af9df2466a`
+did not correlate `Card.transform` to its resolved tint. After both repair
+rounds, the reviewer verified exact frozen source-set identity
+`4437e4f9f032cfffef3405227b7775c3f40dfb3a9326858bee478b2a826115fc`,
+truthful U1 semantics and the final evidence above, and returned **APPROVE**.
+That approval remains semantic/source evidence for the prior candidate, not
+exact approval of the current identity. A later whole-range whitespace check
+found one generated trailing-whitespace line and four blank EOF lines. The
+generator now losslessly escapes its one Svelte-runtime whitespace literal
+before embedding, rejects trailing whitespace in inline assets, and the four
+source EOFs are clean. Renewed checks bind that formatting-only change to
+manifest
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+
+### Tailnet-only preview and independent runtime verification
+
+The author confirmed port 4199 and launchd label
+`com.openai.u1-composable-preview` were unused, then submitted a bounded job
+running the existing build-kit fixture on `127.0.0.1:4199` with pinned Bun 1.4.0,
+`--no-env-file --config=/dev/null`, from the exact source/tree above. No
+repository file or production process changed. The local Lab route returned 200
+and contained T1, Actual / target, Configured filament color and Fan relation.
+
+Before adding the listener, `Tailscale serve status --json` and
+`Tailscale funnel status --json` each had SHA-256
+`fab7b9dfd4001784b7705fe2227cfc619ef58809586609ffb131282f117a535e`.
+The author added only tailnet HTTPS 8450 with one `/` proxy to
+`http://127.0.0.1:4199`. Afterward both status documents had SHA-256
+`d5e0f1b632d6e46581d6e1231fe9e9bdaee286a5ed8ef35820d93f308c0f1cc0`.
+A canonical structural comparison removed only `TCP[8450]` and the single Web
+listener ending in `:8450` from the after state and then exactly matched the
+before state. The Funnel allowlist is unchanged and contains no 8450 entry.
+Local HTTP and Tailnet HTTPS Lab responses both returned 200 and were
+byte-identical at SHA-256
+`30d2d4b471f5872252a18c2d564faef025f5417098caa739c29d8e300cb1a6f5`.
+
+The project-scoped `printer_domain_expert`, acting as an independent read-only
+runtime verifier, freshly inspected launchd/process/cwd/Bun flags, loopback and
+Tailnet response identity, complete before/after Serve/Funnel preservation,
+negative auth/OAuth/media routes, uninterrupted production jobs, clean
+worktree and endpoint-scoped cleanup. It returned **APPROVE** for the
+tailnet-only composable preview at exact source `518c644`, tree `a79032`. There
+is no separate review report artifact or hash.
+
+The later safety cleanup affected only this experiment and executed:
+
+- `Tailscale serve --yes --https=8450 off`
+- `launchctl remove com.openai.u1-composable-preview`
+
+Do not use Serve/Funnel reset or relaunch this generic fixture. The earlier
+approval is historical same-enrolled-host synthetic runtime evidence only: it
+does not establish browser/device visual behavior,
+public Internet access, a real printer, Camera, an auth flow or user outcome.
+
+### Records-only tail verification
+
+After adding decisions0048/0049 and synchronizing requirements, state, next-agent
+and iteration records, `git diff --check HEAD^` passed across the whole candidate. A
+focused static contract check confirmed `docs/iterations/CURRENT` resolves to
+existing VALIDATION/HANDOFF files, decisions0048/0049 each have exactly one
+record and one index row, and both decisions are referenced by requirements plus
+all four continuity records.
+
+After the whitespace repair and after the renewed Markdown tail, the sorted
+45-path changed/new application set was hashed as one line per `shasum -a 256`
+result and then hashed again. Both results equal
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+The affected client/server tests, UI/server checks, deterministic MCP build and
+verify, server build, and four-case Playwright suite were all renewed with the
+same counts above. The formatting cleanup changes resource identity only; it
+does not broaden the experiment's evidence boundary.
+
+For this runtime records-only tail, the same 45 application paths were hashed
+again with one `shasum -a 256` line per path and a final SHA-256 over those
+lines. The result remains
+`7e77c57543784bb223842b90ce57b9ae4555876b0a1f80225cc45c3e192578bd`.
+The MCP resource remains exactly 137,936 bytes at SHA-256
+`6103ba597d239299ed0845a704720f545ceee27802b7f1cfc4ae6d6f2aec9fe6`.
+The documentation path allowlist, CURRENT files, decision0049/0050 unique-file,
+index and requirements references, private-identifier guard and whole-range
+`git diff --check HEAD^` all passed. That tail's final runtime recheck found the
+job and endpoint live at the historical after hash. The later safety finding and
+endpoint-only cleanup supersede that runtime state: current raw Serve/Funnel is
+the exact `fab7b9df…` pre-v1 baseline and no experiment listener/job remains.
+
+### Evidence limits
+
+All values and browser scenarios are synthetic. These checks do not establish
+live Moonraker mappings, mounted MCP-host behavior, a real printer, physical
+accuracy/safety, actual-device usability, Camera behavior, recovery interaction,
+production suitability or user outcome. T1 is the only subject. The Lab MCP
+factory is an isolated proof and production inventory remains unchanged. No
+printer, production-service or auth action, PR, merge or deployment occurred.
+No experiment host/network addition remains. Both composable previews are
+offline pending exact authority-free review.
+
+## 2026-09-03 combined deterministic pre-upload candidate
+
+Exact combined documentation/skill candidate
+`eb38763fc92579563dcad28fa3f83494b28b591b`, tree
+`d2e9a0807deba19e7665543e570d31f550f0d763`, is independently APPROVED with no
+blocking or high-severity finding. Its application source remains exact
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`. Exactly eleven documentation and
+maintained-skill files changed from that source candidate; application source,
+tests and package inputs were unchanged.
+
+The independent documentation/skill reviewer:
+
+- reran TypeScript and the combined prepared-artifact suites: passed 32 tests
+  with 231 assertions;
+- reran the focused observation-only inventory guard: passed one test with 20
+  assertions and 25 filtered;
+- reran Skill Creator `quick_validate.py` for both `u1-prepare-print` and
+  `u1-start-print`: both passed;
+- matched all four source/test SHA-256 identities recorded in the accepted
+  pure-core section below;
+- resolved 64 relative Markdown links with zero missing, passed
+  `git diff --check`, and confirmed a clean worktree; and
+- confirmed decision 0048 remains Proposed with adapters pending, decision
+  0040 remains incomplete end to end, both skills fail closed without minting
+  receipts or accepting raw/manual upload, and all durable, public and real
+  target actions remain pending.
+
+One owner then ran the full repository gate exactly once from repository root:
+
+- `PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH
+  ./scripts/check-repository.sh`: exited 0 with pinned Bun 1.4.0; 627 Vitest
+  tests/60 files, 251 Bun server tests/32 files/2,798 expects, 72 Python tests,
+  Svelte zero errors/zero warnings and repository contract OK.
+
+The post-run worktree was clean and both candidate identities were unchanged.
+This evidence tail changes only PROJECT_STATE, NEXT_AGENT and active-iteration
+continuity records. It does not change accepted source, tests, skills, contract
+documents, dependencies, configuration or generated assets; retain the exact
+application and full-gate evidence above without rerunning it solely for this
+documentation bookkeeping. No printer or network was contacted, and no upload,
+start, public mutation, installation or service deployment was performed.
+For this four-file tail, `git diff --check` passed and a read-only Ruby scan
+resolved 13 relative Markdown links with zero missing.
+
+## 2026-09-03 deterministic pre-upload slice — accepted pure core
+
+Milestone and boundary: P1/I1 through proposed decision 0048, PREP-005,
+PREP-007/PREP-008 and HANDOFF-007/HANDOFF-008. Exact source
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`, is independently APPROVED for the
+internal pure-core/injected-store/fake-upload-port slice.
+
+Exact source and test SHA-256:
+
+- `prepared-artifact.ts`:
+  `8b7ddb7a0658ff80599124e1af1c15a9df34708acea031ee1b93649e005bb555`;
+- `upload-prepared-artifact.ts`:
+  `7c36eba9cefa8cbfd0914fcc61d7c74f788c41e62d42fb97c63fbbba1faa35fa`;
+- `prepared-artifact-validation.test.ts`:
+  `863c752525b14b688d0b80761339e315ec3ee4f5e0e9bd1668bde951b172656b`;
+  and
+- `upload-prepared-artifact.test.ts`:
+  `6d5d72ddd4a183afc862c1c5152f18f25a8a996e2ffd8b871e8e73a853026316`.
+
+### Implemented contract
+
+- `validatePreparedArtifact` accepts only an internal snapshot of exact
+  spec/manifest/artifact bytes plus digest-bound resolved-settings and
+  challenge-bound correspondence receipts. Effective walls come from trusted
+  resolver evidence, never informational manifest claims.
+- The bounded G-code parser tracks absolute/relative extrusion, `G92 E`, active
+  tool and explicit inline tool. Thermal intent covers commands before the first
+  provable positive extrusion delta and binds that tool to explicit
+  heated/unheated and required/not-required wait intent. Unknown startup
+  semantics, ambiguous parameters and unprovable extrusion boundaries do not
+  pass. Shutdown after extrusion is outside the startup schedule.
+- Thumbnail parsing bounds artifact bytes, lines, line bytes, base64, PNG chunks,
+  compressed and decoded sizes. It rejects missing, corrupt, blank and
+  unexpected evidence. Layout correspondence stays an explicit user or fixture
+  review receipt bound to the same revision, challenge, artifact, manifest,
+  layout and thumbnail hashes; the core does not claim arbitrary pixel
+  understanding.
+- `uploadPreparedArtifact` accepts only opaque IDs and resolves records through
+  injected trusted stores. Runtime normalization snapshots plain data and
+  rejects accessors, polluted prototypes, cycles and malformed shapes before
+  authority or external effect. A trusted clock/deadline, digest/freshness
+  checks, atomic one-use authorization claim and idempotent action claim guard
+  the injected upload port.
+- Adapter outcomes preserve acknowledged, rejected, timeout, transport failure
+  and unknown separately. Stable replay uses the stored action record. Ambiguous
+  effects require verification and never trigger an automatic duplicate. The
+  model-visible result omits private remote artifact identity and trusted
+  authorization-consumption time.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`, author evidence:
+
+- `bun --no-env-file --config=/dev/null run check`: passed.
+- `bun --no-env-file --config=/dev/null test
+  tests/server/prepared-artifact-validation.test.ts
+  tests/server/upload-prepared-artifact.test.ts`: passed 32 tests with 231
+  assertions.
+- `bun --no-env-file --config=/dev/null test
+  ./tests/server/status-dashboard.test.ts -t "exposes only the widget's
+  read-only observation and camera calls"`: passed one test with 20 assertions;
+  25 tests were filtered. This is a focused no-MCP-inventory-change guard, not a
+  full status-dashboard run. Independent reviewers observed 31 tests in their
+  broader test contexts; that count is not substituted for this focused result.
+- `git diff --check`: passed on the source candidate.
+
+Independent architect evidence: exact `f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`
+APPROVE after `bun --no-env-file --config=/dev/null run check` and the focused
+`prepared-artifact-validation.test.ts` suite passed 17 tests/61 assertions.
+
+Independent printer-domain evidence: exact
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff` APPROVE after TypeScript, the
+combined 32-test/231-assertion source suites and a fresh tool/thermal matrix.
+This domain approval accepts effective-setting and truthful thermal semantics;
+it does not claim exact physical perimeter count or actual heater temperature.
+
+Documentation-tail validation from the repository root:
+
+- `uv run --no-project --with pyyaml
+  <skill-creator-root>/scripts/quick_validate.py
+  plugins/u1-print-studio/skills/u1-prepare-print`: passed with
+  `Skill is valid!`.
+- The same command for `plugins/u1-print-studio/skills/u1-start-print`: passed
+  with `Skill is valid!`.
+- `git diff --check`: passed.
+- A read-only Ruby scan resolved every relative Markdown link in the eleven
+  changed documentation and skill files.
+
+The environment-owned Skill Creator root is redacted from this durable record;
+the repository-relative targets and remaining arguments are exact.
+
+### Evidence boundary
+
+No durable store, supported skill/CLI adapter, real uploader, target-parsed
+post-upload receipt, public MCP mutation, printer/network/start action or
+deployment exists. No target was contacted. Static and fake-port evidence does
+not establish real upload, target parsing, printer safety, print quality,
+monitoring or physical user acceptance. Decision 0040's local source gate is
+accepted; end-to-end enforcement remains incomplete until a supported adapter,
+durable stores and separate target-parsed pre-start evidence are accepted.
+
+## Rejected early checkpoint — retained repair history
+
+Milestone and boundary: P1/I1 through proposed decision 0048, PREP-005,
+PREP-007/PREP-008 and HANDOFF-007/HANDOFF-008. The candidate makes local
+prepared-artifact validation and the upload-port call guard executable while
+keeping start, observed printing and physical outcome outside this evidence.
+
+Pure-core checkpoint: `fefedbd1d2b9050bd558b025ae88af54b6f31d8c`,
+tree `2fa8de6f4e4f1d42a85e9742f4905e61b67b9c7c`. Exact file SHA-256:
+
+- `prepared-artifact.ts`:
+  `86df99c3e488e6d31fe17f68aefa5cb54f1ddb81d4761306056943266bf1d59a`;
+- `upload-prepared-artifact.ts`:
+  `8479cae1d29b08e2561b0b3b373897a15bee8f9c32d0577c55f6dc7ae4adeae3`;
+  and
+- `prepared-artifact-validation.test.ts`:
+  `2d17887955df3e223d454f4f68de542b1d91dd07e78f198dbc772568aa701c99`.
+
+The seven non-user fixtures establish byte-for-byte repeatable readonly
+validation receipts and `validationId`; effective per-object wall checking;
+required versus not-required wait contracts; intentional unheated and shutdown
+zero; `unavailable` unknown heat/start macros; decoded nonblank PNG requirements;
+missing/corrupt-image rejection; exact artifact/manifest/layout/thumbnail
+correspondence-receipt binding; artifact-byte mutation invalidation; zero
+injected-port calls across the focused `blocked`/`unavailable` cases; and exactly
+one fake-port call for a fully bound authorized/preflight-passed input. The port
+receives exact bytes and hashes, not a path or generic transport.
+
+The different-layout fixture mutates the correspondence receipt's plate-layout
+hash. The core intentionally does not infer arbitrary real-image correspondence
+from pixels; production correspondence still requires the exact-bound user
+review receipt. The suite does not independently mutate every spec, manifest,
+target, review, schema and validator-semantic binding, or separately drive a
+malformed `error` through the upload guard. Those remain valid adversarial
+review targets; do not generalize beyond the exact cases above.
+
+Source contracts:
+
+- `plugins/u1-print-studio/app/src/lib/server/preparation/prepared-artifact.ts`
+  exports readonly preparation, manifest, correspondence, check and receipt
+  contracts plus pure `validatePreparedArtifact`; and
+- `plugins/u1-print-studio/app/src/lib/server/application/upload-prepared-artifact.ts`
+  exports readonly authorization, preflight, injected-port and result contracts
+  plus `uploadPreparedArtifact`.
+
+Commands and results from `plugins/u1-print-studio/app`:
+
+- `bun --no-env-file --config=/dev/null run check`: exited 0; TypeScript
+  `tsc --noEmit -p tsconfig.server.json` passed.
+- `bun --no-env-file --config=/dev/null test
+  tests/server/prepared-artifact-validation.test.ts`: exited 0 with seven tests,
+  42 assertions and zero failures.
+- An initial MCP-inventory command used the wrong `src/` path and exited 1 after
+  matching no test file. The corrected `bun --no-env-file --config=/dev/null
+  test ./tests/server/status-dashboard.test.ts -t "exposes only the widget's
+  read-only observation and camera calls"` exited 0 with one test/20 assertions,
+  zero failures and 25 filtered tests. This proves no MCP inventory change from
+  this slice; it is not a full status-dashboard suite.
+
+Commands and results from the repository root:
+
+- `uv run --no-project --with pyyaml
+  <skill-creator-root>/scripts/quick_validate.py
+  plugins/u1-print-studio/skills/u1-prepare-print`: exited 0 with
+  `Skill is valid!`.
+- The same command for `plugins/u1-print-studio/skills/u1-start-print`: exited
+  0 with `Skill is valid!`.
+
+The environment-owned Skill Creator root is redacted from this durable record;
+the repository-relative targets and remaining arguments are exact.
+
+The implementation author separately reports that the first TypeScript command
+could not run because locked dependencies were absent. `bun install
+--frozen-lockfile --ignore-scripts` completed with no lockfile change, after
+which TypeScript passed. The first focused test run had one assertion-shape-only
+failure, repaired before the final seven-test/42-assertion pass; its exact
+diagnostic was not retained, and it was not a product-semantic failure.
+
+This checkpoint was not accepted. Later source through `f90e0b5` repaired
+trusted receipt/store authority, server-clock expiry races, action replay,
+boundary snapshots and G-code/tool ambiguity, then renewed the exact independent
+review recorded above. No skill/CLI adapter, MCP inventory change or real
+uploader belonged to either checkpoint.
+
+Evidence limit: local static and fake-port fixtures cannot establish
+target-parsed thumbnail behavior, printer state, safe motion, upload to a real
+target, start, observed printing, monitoring continuity, print quality or
+physical user acceptance. No printer/network/upload/start, installed-plugin or
+service-deployment action is authorized or performed by this record. Decision
+0040 remains accepted workflow policy; local source enforcement exists, but
+end-to-end enforcement remains incomplete without a supported adapter and the
+separate target-parsed pre-start gate.
+
+
+## Current deployment: PR106 exact release and BOTH service restarts
+
+PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6`, preserving reviewed
+`16bd3038295bbdf56ee5665e3655cbe55d230366` tree
+`31f79878d4aebede2538cc31cdf9a0c4e0385a25`. Independent
+`app/test-results/host-fullscreen-independent/DOCS-REVIEW.json`, SHA256
+`5b376002892266a9621281ea8a16ab220a83228ce4ed2a29a0c22e6007126686`,
+APPROVES that exact documentation head and binds the d999399 application gate
+below to all440 unchanged inputs without repeating unaffected application checks.
+
+Receipt `pr106-20260903T100036-471de8.json` in the private service shipments
+directory, SHA256
+`5ac62e217c016f3e42a5892962b48d1c09c5d01dab6b970820f96a866e4f03c1`,
+confirms complete/ok=true, merged/installed=true and rollback=not-needed. Release
+`20260903-0660a07-pr106-20260903T100036-471de8` has BOTH services restarted,
+loaded/healthy/integrity-verified at0.4.12/schema16/observation18/Camera14. All72
+static and74 security checks pass; preservation=true. Both served /widget hashes
+match observation `ff869c1e351d39d3dfc097995851d9caa222f9d7e776462254f3c6d6c9277d26`.
+
+The read-only plan `pr106-20260903T100018-d33671` passed. From repository root,
+`uv run --no-project scripts/u1_ship.py --pr 106 --reviewed-sha 16bd3038295bbdf56ee5665e3655cbe55d230366 --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute`
+exited0 through the Node child_process fallback (PID60016); the plan used the
+same command without --execute. No guard was bypassed. Existing historical
+failures below remain evidence with their original source boundaries.
+
+Installed-byte scoped postverification passes as recorded below. Actual phone
+fullscreen acceptance remains separate.
+C08 reliability and unchanged legacy Retry focus remain open. This root/docs-only
+rollout tail changes no app, scripts, dependencies, configuration or artifacts;
+it requires no repeated full regression/build/deployment.
+
+### Installed-byte scoped behavior and limits
+
+Independent `app/test-results/host-fullscreen-independent/POSTDEPLOY-REPORT.json`,
+SHA256 `936c6745abbeba2be4d56042b1d1658c9da517ad4201b52f4cf8d1524583e632`,
+passes against release0660a07. Installed schema2 manifest
+`05edf26a5f4d2f8ad5df63e91d7a8ef910d6bb370984cf082c229c490689d94f`
+verifies52 runtime files/71 routes. Public/dashboard loopback and dashboard HTTPS
+serve exact observation HTML at /widget and reject /camera-widget with404.
+All440 application inputs remain unchanged from the independently approved set.
+
+With pinned Bun1.4.0 and verified installed dist/widget hash environment values,
+`bun --no-env-file --config=/dev/null run node_modules/.bin/playwright test --config=test-results/host-fullscreen-independent/postdeploy.config.ts --grep "installed ACK-only|packaged Progress"`
+exited0 with two cases. Actual installed Camera/observation HTML was mounted in
+a synthetic MCP host, with resource-envelope and HTML hashes verified before
+rendering. Camera proves default Auto/one opening read/quiet polling, a synthetic
+Live peer, ACK-only fullscreen at320/390 with safe-area updates and44px Exit,
+bounded intrinsic resizing, same video/no extra open and host-driven inline exit.
+Progress at320px/200% text has no horizontal overflow and equal343.4375px ready/
+neutral-error/recovered bounds; keyboard Retry restores content/view. Retry focus
+remains the known baseline FALSE result. Neither that gap nor C08 is fixed.
+Postdeploy log SHA256:
+`3d97a781569d9610edd7c92b998cb497024303fa1772fad725aa2c05c07c316d`.
+
+Screenshots were inspected for safe-area containment, media letterboxing and body
+insets/wrapping with synthetic media/Unknown Progress. This is not an actual
+ChatGPT/phone resource fetch, fullscreen grant or physical Live connection test.
+All six read-only curl children, fixture browsers/server and routes closed;4181
+is free. No new build/full gate ran. An initial informational staticRoutes.length
+was undefined because routes are a mapping; Object.keys confirms71, with no guard
+or test failure. No user browser, deployed service, printer stream, auth or
+network configuration was changed by these postchecks.
+
+## Accepted source evidence: host fullscreen and body insets
+
+Frozen source `d99939986e185a55154d26a6243d62ca98ba8ecc`, tree
+`d670534663b51c10d3ebff391c4f60dfeabd6cf0`, has independent scope APPROVAL.
+The application evidence below predates the exact PR106 shipment recorded above;
+no actual ChatGPT/phone fullscreen acceptance is claimed.
+Author `app/test-results/host-fullscreen-author/REPORT.json`, SHA256
+`e9a7102beea5bdccf11bae7bc4b89780012d960fbeb6270767c8b93379ec82d6`,
+binds35 changed application inputs in `application-inputs.json`, SHA256
+`d65fda97621a30a1108059282beba285858f6bd249798ea6f6beb873a6432ffb`.
+The source is0.4.12/schema16 with only observation18/Camera14 resources.
+
+Bun1.4.0 commands ran from the app directory with dotenv/config autoload disabled:
+
+- `bun --no-env-file --config=/dev/null run ui:check` passes Svelte0 errors/
+  0 warnings and component guards. The report's exact12-file ui:test selection
+  passes118 focused UI tests; its eight affected server files pass71 tests.
+- `bun --no-env-file --config=/dev/null run test:mcp-widgets tests/browser/mcp/presentation-layout.spec.ts`
+  passes seven cases: one Camera host protocol/geometry/focus case and48 legacy
+  ready-to-error observations across eight views,320/390/1024 widths and100/200%
+  text. This verifies responsive inset tokens, no visible failed telemetry and
+  at most1px ready-to-error card-height change; it is not a full overflow or
+  recovery matrix. Renewed browser log SHA256:
+  `5b71a2af844bc8cda9873721b110988b7fcff134f592cf245c43e6913893f5ff`.
+- `bun --no-env-file --config=/dev/null run scripts/build-camera-harness.ts`
+  passes, followed by `bun --no-env-file --config=/dev/null node_modules/@playwright/test/cli.js test --config test-results/host-fullscreen-author/playwright.native.config.ts`:
+  21 cases pass for Camera Lab and standalone live Camera only.
+- Sequential build/verify commands listed in REPORT generate and verify ten
+  deterministic packages. Two separate `scripts/build-server.ts` runs for
+  payload-one/payload-two produce byte-identical schema2 build manifests,
+  52 runtime files/71 static routes, SHA256
+  `05edf26a5f4d2f8ad5df63e91d7a8ef910d6bb370984cf082c229c490689d94f`.
+
+Final observation HTML is948,867 bytes, SHA256
+`ff869c1e351d39d3dfc097995851d9caa222f9d7e776462254f3c6d6c9277d26`;
+Camera HTML is99,479 bytes, SHA256
+`87121885969f2f6d386e023939f9585a7a97b630c5bc76710ee7f9f44cf11353`.
+These are integrity/size reports, not repository byte caps. Before MCP and Lab
+screenshots use different synthetic DTOs: they establish spacing evidence only,
+not content parity. The selector repair addresses the specific unmatched
+`.u1-:host`/`.u1-body` cause; it does not implement Progress's deferred design
+or establish complete legacy layout cleanup.
+
+Preserve failures: initial diagnostic read srcdoc before the frame existed;
+bounded polling fixed that fixture. Two HostRpc typed doubles lacked presentation
+methods. Component guards caught direct document access and unregistered imports;
+browser access returned to runtime and only typed service imports were approved.
+The first40-test run passed with a nonreactive bind:this warning, fixed before
+final checks/builds. Initial layout assertions assumed fixed18px despite existing
+14/16px responsive tokens and supplied a domain DTO failure instead of RPC isError;
+fixture corrections preserved production geometry tolerances.
+
+Unified exec then failed before launch with CreateProcess EMFILE, including a
+login:false pwd attempt, despite completed author sessions. Node REPL execFile
+ran the same pinned Bun commands without changing system settings. Its first
+alternate launch referenced an unavailable process global and failed before
+launch; explicit minimal PATH/HOME fixed the runner. Records' two read-only exec
+attempts also failed before launch; Node filesystem access was used to update
+these root/docs files. This tooling failure is distinct from application tests.
+
+No author full regression, actual Camera/printer read, service restart or phone
+host validation occurred. All author child processes and isolated browsers
+completed;4182 was verified free and user sessions/services/streams were preserved.
+C08 intermittent phone Live remains unresolved. Deployment and actual-host
+entry/exit must retain separate evidence from these synthetic fixture checks.
+
+### Independent gate and retained accessibility gap
+
+Independent `app/test-results/host-fullscreen-independent/REPORT.json`, SHA256
+`fee91ea0ad62586cd33176bfd537ee4f2346ca789411a22efecdc47f9920c777`,
+APPROVES fullscreen and body-padding scope. Its440 non-Markdown app/scripts/policy
+inputs remain unchanged; manifest SHA256
+`01cd78fda3feb6abab486a3a1982364f0545040f57f09664f20b4926c104b851`.
+The reviewer verified author log/input hashes and both exact formal payloads.
+
+- From repository root, `PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH ./scripts/check-repository.sh`
+  exited0:627 UI/60 files,219 server/2567 assertions,44 service+28 ship tests,
+  Svelte0 errors/0 warnings, component/determinism/repository guards. Full log
+  SHA256 `d39afa4084747bc3e4fa2ed7dd206896da697332164c9142972e44b3a3219894`.
+  Node child_process ran the same pinned CLI after unified exec was unavailable.
+- Pinned Bun with `--no-env-file --config=/dev/null` ran the private
+  `adversaries.ts`: four PASS for timeout/late, disposal/listener cleanup,
+  error/dual envelope and native unavailable. The private Playwright config,
+  with exact Camera/observation hashes, passed five fullscreen cases.
+- The initial Playwright run exited1 on Progress's final Refresh-focus assertion;
+  its layout, neutral height and Retry content checks had passed. Two subsequent
+  diagnostic assertions initially read document.activeElement instead of the
+  shadow active element and failed. Corrected diagnostic fixtures and the
+  selected Progress case were renewed only; no full suite was repeated.
+- Renewed320px/200% Progress containment and ready/error/recovered geometry pass
+  at343.4375px. Shadow-aware v17/v18 comparisons both start with Retry focused,
+  then end on BODY after success: old Retry disconnected, new Refresh unfocused.
+  Legacy renderer JS is byte-identical. Focus recovery remains FALSE, retained
+  under U01; it is not reclassified PASS. Initial browser log SHA256
+  `11b3df378d49db082a35fc0771dbc7da6f70e080fe1568811062defa60735e5c`;
+  diagnostic failure log `024bf8c0fd3d0250ab977adf52cdd4590ceffbd9cabad0cf3809c372862f009c`;
+  scoped renewal log `6a83097fd8b9eec69a2b75ef61dc896ed027e65aa2ddc9bb4a883f1d606c80a5`.
+- Private `discovery.ts` confirms two current resources with exact HTML hashes,
+ 32 retired URIs and two retired tools rejected, with zero acquisitions. Both
+  schema2 payloads verify all52 runtime files/71 routes against the manifest above.
+
+All review processes, synthetic browsers/server and discovery connections closed;
+4181 is free. No deployed service, actual Camera/printer, auth/network or user
+browser changed. Synthetic host and selected synthetic Progress evidence do not
+prove actual phone fullscreen, real-print DTO parity or C08 reliability. The
+remaining documentation tail binds this retained application evidence to its
+exact reviewed head; no unaffected full build/browser rerun is required.
+
+## Latest user outcome and active verification scope
+
+After PR104, the user reports other delivered UI working, but fullscreen still
+fills only the widget. A new phone Progress image reports missing body insets
+while Lab appears correct. This is user outcome/screenshot evidence, not a fresh
+runtime reproduction, measured inset result, known CSS root cause or complete
+device/clipboard acceptance. General UI success does not establish reliable
+Camera Live; C08 remains open. No screenshot or raw private image is committed.
+
+The active slice from8b634a4 is host fullscreen plus actual packaged MCP/Lab layout
+parity. Observable acceptance: host-acknowledged entry/exit and truthful mode,
+no media/session reconnect, and matching intended body insets with stable
+failure/recovery geometry in the actual package. Host-owned composer/chrome may
+remain; no OS-screen guarantee follows. Preserve current app separation, two
+resources, private metadata and shipping guards. Reviewer contract adopted in
+0047: existing HostRpc ui/request-display-mode plus partial context subscription;
+presentation service owns the bounded pending request, Video renders actual
+acknowledged mode without DOM/session/timer replacement or focus stealing.
+Standalone native fullscreen requires document-state proof; no CSS-only host
+substitute. Source implementation and independent acceptance are recorded above; PR106 deployment is recorded separately and actual-host evidence remains pending.
+Progress redesign is no-action. Earlier PR104 evidence retains its original scope.
+
+The adopted display layout fixes media only after actual host fullscreen grant,
+suspends intrinsic card-size notifications while fullscreen is granted and
+resumes one update after actual inline return, preserving the same video element.
+The source plans0.4.12/schema16/observation18/Camera14 with two current resources
+and no old aliases. An interim author report records40 focused tests passing
+across HostRpc/presentation/controller-widget/observation dispatch; the final
+commands, source manifest and final report supersede that interim count above.
+The final48 observations cover ready-to-error inset geometry only, not complete
+overflow/recovery or actual-host grant acceptance.
+
+Author paired rendered capture at390px now reproduces the layout discrepancy:
+MCP body computed margin/padding is0 while Lab inset is18px. Source diagnosis is
+an unmatched legacy `.u1-:host` selector instead of `.u1-body`. Private captures
+are under `app/test-results/host-fullscreen-author/progress-*.png`; final report
+and final identities are recorded above. The implemented fix changes only the
+selector to the intended body using existing spacing tokens. It requires all
+eight active legacy consumers, stable failure/recovery and320px/200% coverage.
+This is author package/Lab evidence, not measured CSS from the user's phone or
+acceptance of a Progress redesign; other legacy layout debt is not closed.
+
+## Historical deployment: PR104 exact release and BOTH service restarts
+
+`PROFILE-DOCS-REVIEW.json` under `app/test-results/current-only-independent`,
+SHA256 `cd9a84fbf6fa51fdb0e262b1d40cff7d057aae54ea525fd12f09f961525780ea`,
+APPROVES `30e0649b91e27af23d5398242752c88161b3b18c`, tree
+`9d7f68fe47580a4a339ab13e0a8388f52a0351fa`. Its9-document tail preserves all437
+accepted application inputs; the b5a0d427 full/profile evidence below is bound
+to that exact reviewed head without repeating unaffected builds/browser suites.
+PR104 merged as `162dc68d0945feb4b3d2de7b638479560f2604d9` and shipped release
+`20260903-162dc68-pr104-20260903T084741-0ae7de`.
+
+Shipment receipt `pr104-20260903T084741-0ae7de.json`, under the private service
+shipments directory, has SHA256
+`fd978431ce9ed9187fa1e6f385d12d38d189964806dffa7304d4c92a1411fc22`.
+Read-only inspection confirms complete/ok=true, merged/installed=true and
+rollback=not-needed. BOTH services restarted and are loaded/healthy/integrity-
+verified at0.4.11/schema15/observation17/Camera13. All72 static and74 security
+checks pass; preservation=true. `/widget` on both services matches final
+observation SHA256 `df98a40784c7798a7f62f908dc999aac3b2c7be3b63567a5a9337e8c90581928`.
+Scoped installed-byte behavior passes with synthetic tools as recorded below;
+these results do not establish actual host/device behavior or reliable phone Live.
+
+Retain every earlier preflight result: draft-plan rejection and later plan PASS,
+then the historical-manifest merge-edge rejection below. After pushing30e0649,
+plan `pr104-20260903T084654-f94847` was rejected for PR-head mismatch without merge/
+install. Read-only GitHub PR head, remote branch and local head then all confirmed
+30e0649; plan `pr104-20260903T084711-6c1424` passed. The successful execution was
+operation `pr104-20260903T084741-0ae7de`, reviewed tree above, basebb7a1b3 and the
+same Bun1.4.0 hash already recorded below. No guard was bypassed.
+
+Actual successful command from repository root:
+`uv run --no-project scripts/u1_ship.py --pr 104 --reviewed-sha 30e0649b91e27af23d5398242752c88161b3b18c --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute`
+exited0. The successful plan used the same command without `--execute`.
+
+### Scoped postdeployment evidence and limits
+
+Independent `app/test-results/current-only-independent/POSTDEPLOY-REPORT.json`,
+SHA256 `90aba88ff5355bb95f6ba551e888db472dc6e28999c024ebf876eb3020813ef9`,
+reports PASS. Installed schema2 manifest
+`9e86c8124180c6e5d19da7258dd16c1c7fa4af5718f06a330288918db4ba9fc7`
+verifies52 runtime files/71 routes; all437 application inputs remain unchanged.
+Fresh BOTH-service status is healthy/verified. Public and dashboard loopback
+plus dashboard HTTPS all serve exact final observation HTML at `/widget` and
+reject `/camera-widget` with404. No retired public compatibility is restored.
+
+The reviewer read actual installed Camera/observation/dashboard-host HTML, matched
+its hashes to the reviewed payload and mounted it with isolated synthetic MCP
+tools. At320px, Camera starts Auto with one opening read, then polls; its two
+modes stay88px-by-44px with no footer/Refresh or automatic success feedback.
+Synthetic Live failure returns to Auto with the safe reason retained above and
+left of controls. Later Auto acquisition failure clears visible media without
+changing card bounds; recovery retains bounds and the Live-failure reason.
+Jobs uses the selected Current Job view with one initial read; failed Refresh
+clears visible time neutrally and retry recovers the same view.
+
+The first private Playwright invocation passed Jobs but its Camera assertion
+incorrectly required reason.top below the media midpoint. At320px the approved
+narrow layout places that row above the44px controls. Only the ignored fixture
+changed to left containment, an8–12px gap above controls and no collision;
+Camera renewal passed in5.6s (6.4s total). Its first failure screenshot followed
+finally blank-navigation and is not visual evidence. Logs are retained:
+`postdeploy-browser.log` SHA256
+`e5a3fae3c3eb90ef1726b112f51711b9523175b2bb561e8fb3ed9911f38f4e41`,
+and `postdeploy-camera-renew.log`
+`38f60c4340a3d17f0216391a981a496720fdd2283a7ba3455ec84f7cdbac0c09`.
+The command used `U1_REVIEW_INSTALLED_DIST=<verifiedrelease/dist>` with Bun1.4.0
+and `x playwright test --config test-results/current-only-independent/playwright.postdeploy.config.ts`;
+the renewal selected only installed Camera. Full arguments are in the report.
+
+Predeployment two-resource/30-retired-URI/two-retired-tool rejection evidence is
+retained by exact runtime identity; no actual ChatGPT metadata refresh or phone
+conversation was verified. No real Camera/printer read, auth/network/plugin
+change, rebuild or full-suite rerun occurred during postverification. Isolated
+browsers/MCP fixtures closed in finally and4181 has no listener; user browsers
+were preserved. C08 remains open. This Markdown-only rollout tail preserves all
+application inputs and requires no additional deployment under decision0028.
+
+## Accepted source: versioned deployment-manifest profiles
+
+Exact `b5a0d427bae1f28a900049bb5a2bcaa14d123a97`, tree
+`d137dd3879e372557368578e5e51eac97d17cee1`, is independently APPROVED after the
+required gate:617 UI/59 files,219 server/2,567 assertions,44 service/28 shipping
+Python tests, TypeScript/Svelte/component/determinism/repository checks PASS.
+Independent `app/test-results/current-only-independent/PROFILE-REPORT.json`,
+SHA256 `a1c4f70ba4cf65d8606ed6d5fdfabf3b1b57254057edf9fcac54500f237a4212`,
+binds that exact decision. The reviewer ran, from repository root,
+`PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH ./scripts/check-repository.sh`;
+full-log SHA256 `75f391197fd8e47a64af71a6306ba02bcf51aedc04f624c37836fe041331c659`.
+`uv run --no-project python plugins/u1-print-studio/app/test-results/current-only-independent/deployment_profiles.py`
+passes ten cases: nine rejection adversaries and one aggregate fake lifecycle
+covering pre-Kit/historical Kit/current Kit install/status/rollback, with route-
+manifest and old-asset rollback tampering rejected before stop. The renewed log
+SHA256 is `8a54429880a4a9f85835a781565b91055b7f458ba4294b4734ce1e1904ac8122`.
+ The437-input manifest is
+`3e540707572c1b242ca423ded7cb3e5eb6b7221affef4ac35a745d91472a19f4`.
+Guarded shipping is still pending; the earlier execution's rejection remains below.
+
+Author `app/test-results/deployment-profile-author/REPORT.json`, SHA256
+`06b95e77452868c189d604e49daed9f8e080893d69eca8975ae9f2fd07f6e318`,
+binds six changed inputs, manifest
+`22db8c711f3e311a37d1ad9eb8c4fecee70b3bb9e3274f4aa43bffc82f5e9200`.
+From repository root,
+`PYTHONPATH=scripts uv run --no-project python -m unittest scripts/test_u1_service.py scripts/test_u1_ship.py`
+passed72 focused tests. `ServiceManager.status()` through uv verified actual
+BOTH PR101 services loaded/healthy/integrity-verified at their original runtime
+0.4.10/schema14/observation16/Camera12. This read-only evidence used no restart,
+printer/camera read, auth/network or plugin change.
+
+The author ran Bun1.4.0 with dotenv/config disabled:
+`run scripts/build-server.ts --outdir test-results/deployment-profile-author/payload`.
+The new52-file/71-route schema2 payload passes the strict current reader and
+matches every runtime/artifact hash and route from aaaf0a56's schema1 payload;
+only build-manifest schema changes. New manifest SHA256:
+`9e86c8124180c6e5d19da7258dd16c1c7fa4af5718f06a330288918db4ba9fc7`.
+
+New stage/ship inputs must be schema2 with current `/widget` binding; no missing-
+manifest or pre-Kit fallback is accepted for staging. Installed verification and
+rollback accept only supported historical schema1 Kit/current schema2 profiles,
+with original complete hash/minimum/role/security checks. Pre-Kit release-schema1
+retains its distinct six-asset minimum. This preserves existing installed/backup
+release validation without restoring obsolete public widgets or bypassing guards.
+No runtime/UI/controller/bundle behavior changed; prior current-only browser
+acceptance is retained by exact hashes, not claimed as newly rerun. All author
+processes completed; no browser or live connection was opened for this repair.
+
+The independent reader also accepts the actual installed PR101 historical schema1
+profile and rejects that same build at strict current candidate entry. All six
+changed source paths and author log hashes match. The first profile fixture
+incorrectly required a historical Camera-specific file binding stronger than its
+original contract; it was replaced with actual outer-release manifest tampering.
+The next fixture omitted owner-only permissions, then was corrected to require
+the exact content-changed rejection. A separate inline identity attempt completed
+actual status verification but incorrectly passed unshipped aaaf's schema1/current
+layout to the historical reader; comparison was corrected using its previously
+verified manifest hash and all runtime/routes. All failed private evidence remains
+in PROFILE-REPORT; none is presented as product acceptance or silently discarded.
+Reviewer temporary fixtures were released, finite status reads left no persistent
+connection, and no browser/port was owned. C08/phone and installed widget behavior
+remain outside these profile checks.
+
+## Prior shipping failure: PR104 stopped before merge/install
+
+The first read-only plan, operation `pr104-20260903T083212-468d6b`, was rejected
+because the PR was still draft; no merge/install followed. After the coordinator
+marked PR104 ready, plan `pr104-20260903T083226-b8d949` passed. These plan outcomes
+are coordinator-recorded; only the execution below produced a shipment receipt.
+
+Execution `pr104-20260903T083329-bb9a8f` passed candidate validation but stopped at
+`merge-edge-guards`: Existing services must be healthy verified releases before
+shipping. Its receipt is under the local service `shipments` directory, SHA256
+`8b583dc6253a6355faedf70e44d752d056cfe9cfa97f0d7bc9a0df35f239c571`.
+Read-only receipt inspection confirms ok=false, merged=false, installed=false
+and rollback=not-needed. Candidate identity was
+`6d061db8a93dcec11c2c367db2509937c3c96fbc`, tree
+`5407366ac26e5aef26bc836fa4b1a6cabafbb3e9`, base
+`bb7a1b32a58f971bed1b6c1aa6540f4b6b4843b9`; Bun1.4.0 SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`.
+No deployment or restart occurred.
+
+Coordinator diagnosis: the new read_build_manifest current `/widget` binding
+check was applied to installed PR101's historical schema1 build. That exception
+prevented status from reading health and yielded false. Direct BOTH-service
+health and the original strict60-file/72-route manifest checks passed. These
+observations locate the shipping guard defect; they do not undo its rejection.
+
+The new repair separates explicit build profiles: schema2/current for staging
+and shipping; known historical schema1 Kit for installed status/rollback, with
+original hashes, minimums and roles enforced. Pre-Kit release-schema1 keeps its
+own six-asset minimum. No public alias/tool/route returns and no skip is added.
+The bounded repair is independently accepted at b5a0d427, as recorded above.
+The failed attempt remains a rejection; guarded shipping must still be renewed.
+All earlier candidate passes below retain their original scope.
+
+## Prior accepted source: Camera and current-only widget retirement
+
+Independent `app/test-results/current-only-independent/REPORT.json`, SHA256
+`b2194a3828ddefe5349be2ecc3efb1b16e2fc3046c2d54dbb1f608bdb1f6c022`,
+APPROVES `aaaf0a56a0df944a19384822decfc62712021c51`, tree
+`fe7d63f7c96349c960ee37d5f9606cb1eb410eab`. From repository root,
+`PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH ./scripts/check-repository.sh`
+exits0:617 UI/59 files,219 server/2,567 assertions,36 service/27 shipping Python,
+Svelte0 errors/0 warnings, TypeScript/component/determinism/repository contracts
+PASS. Full-log SHA256:
+`26af72823fa9a688d7c6100e9cb4eda7ec6cef94b343d90eade68b7f1643c546`.
+This is new candidate acceptance, separate from the superseded391303c gate below.
+Guarded shipment, BOTH restarts and installed-resource behavior remain pending.
+
+### Final scope and identity
+
+Source now exposes only observation17/Camera13, two model-visible and six app-only
+tools. Thirty old resource aliases, show/get_u1_status and `/camera-widget` are
+retired; active `/widget` uses current MCP observation. Eighteen files retire:
+eight obsolete HTML assets, five unused source/build leaves and five compatibility-
+only tests. The author report lists exact paths. Current eight legacy renderers
+remain. Camera keeps quiet Auto/Live,88px-by-44px controls, edge-to-edge media,
+persistent safe failure overlay, service-owned bootstrap and unchanged deadlines.
+
+Author `app/test-results/current-only-author/REPORT.json`, SHA256
+`7dfa0521ef5169b73222fd636a76b58c0754bb862a5f763f0c7cb7c5006316f8`,
+binds49 retirement input paths
+(`854f9c1955e608c093b27f0febcd166539526052be6f4654df7e756e38c9a936`)
+and91 aggregate paths from06e2a90
+(`e15f7c6079aea407b3715176dc72eb3dbb208732cce8ec4ab197668a9c6c471f`).
+The independent437-input manifest is
+`5e6bf243ef6d911c58bbe34928ce953369dd8b76575ef1a320100faf5183e9a5`.
+Both isolated complete payloads match52 runtime files/71 routes and build-manifest
+SHA256 `0ddf68159d97fd0702709cad7cbf601bf71dd57536999dc5b43698879259bf12`.
+Final observation HTML is948,325 bytes, SHA256
+`df98a40784c7798a7f62f908dc999aac3b2c7be3b63567a5a9337e8c90581928`;
+Camera HTML remains97,499 bytes, SHA256
+`5e894febd57368a6ff19f7d2696654c9cad0ff641fbe0f1c70d88a5feb2d0875`.
+These are reported sizes/integrity identities, not byte caps.
+
+### Author and independent behavior evidence
+
+Author commands in REPORT include `run check`, the11-file focused server selection
+(112 tests/1,584 assertions), `build:mcp-observation` and
+`verify:mcp-observation`, component guards, and two separate `scripts/build-server.ts`
+invocations for payload-one/two. With Bun1.4.0 and dotenv/config disabled,
+`x playwright test --config playwright.mcp.config.ts dashboard-current.spec.ts widgets.spec.ts`
+passes37 cases on final current artifacts: five dashboard bridges, eight active
+legacy renderers and responsive/enlarged-text Heads/Camera. From repository root,
+`PYTHONPATH=scripts uv run --no-project python -m unittest scripts/test_u1_service.py scripts/test_u1_ship.py`
+passes63 cases. Exact commands/cwds and all log hashes remain in the author report.
+
+Independent private `static_pair.py` run through `uv run --no-project python`
+accepts four exact widget file/route baselines and rejects four mutated pairs.
+The Bun `discovery.ts` fixture reads exactly two current resources matching final
+HTML, rejects30 retired resources/two retired tools, and makes zero acquisitions.
+Two fresh Playwright cases pass: Jobs `/widget` initial503 is immediately neutral,
+wrong-view child RPC is rejected without a read, manual retry recovers, and old
+Camera HTTP/status-tool paths reject with404/400 and zero fixture acquisitions.
+Independent `identity.py` through uv verifies both payloads, reported logs and
+source manifests. Full exact private command lines are in the independent report.
+The reviewer matched the author37 browser cases rather than repeating them all.
+Camera service bytes remain unchanged from391303c; its four HostRpc adversaries
+and six default/three MCP cases retain separate provenance.
+
+Retirement's first compile failed stale imports and then a leftover test block.
+Initial focused server results were106 PASS/4 FAIL, then109/1 while the skill
+inventory was corrected to two public/six app-only; final112/0. Initial Python
+invocation lacked PYTHONPATH and ran no actual tests; corrected61 passed, then
+63 with two new guards. Initial dashboard browser had3 PASS/2 FAIL: Progress's
+ready221.375/error219.375 difference came from a collapsed2px track margin omitted
+by body border-box measurement. Source now measures the actual header-bottom to
+footer-top flow span, without a hardcoded2px correction or weaker tolerance.
+Bed's initial failure assertion counted a hidden inert aria-hidden canvas;
+renewed checks distinguish visible/accessible data and prove WebGL context loss.
+Non-loading placeholders now dispose that renderer, controls, observer and GPU
+resources. One doubled-path private diagnostic failed before source mutation.
+These are focused current-route geometry/release fixes, not Progress design work.
+Earlier Camera/pin/reviewer-fixture failures remain below. Current independent
+mandatory gate and prepared fixtures passed their first execution.
+
+All owned author/reviewer processes, MCP clients, isolated browsers and temporary
+tamper payloads were released;4181/4182 have no owned listener. No actual Camera/
+printer read, phone reproduction, service restart, auth/network or plugin action
+was performed for these checks. C08 remains unresolved, host fullscreen remains
+unimplemented, and existing `.u1-:host` layout debt remains. Source acceptance
+never implies the deferred device/printer outcomes or completion of all55 IDs.
+
+## Latest C08 phone outcome: intermittent success after retries
+
+After the PR101 update/retry instructions, the user first reported the same
+failure, then reported connection after a couple of attempts, then reported
+another failure with about 10 s before fallback. The supplied phone
+screenshot shows the new Svelte compact icon Switch and Live/30 FPS over a mobile
+connection. Preserve the full sequence: failure, one Live success, then renewed
+failure. Reliability remains unresolved.
+This confirms new-generation UI visually, not the exact mounted resource URI;
+it does not establish repeated-start success or the latest
+failure's phase/root cause or complete device/clipboard acceptance. C08 remains
+open and Screen Sharing remains paused. The current open deadline is 40 s, while
+other stages retain 8–10 s bounds; the reported interval does not identify which
+stage failed. The bounded served-dashboard attempts below did not reproduce the
+phone failure. No screenshot or raw private content is committed.
+
+### Served-dashboard attempts 11 and 12
+
+Both probes use the deployed dashboard in isolated local Chromium with actual
+Camera signaling/video; they are separate from the phone/MCP host path. Attempt
+11 ended after 5.957 s with 41 decoded frames, so it undersampled the reported
+10-second failure window. The specifically authorized renewal, attempt 12,
+observed its first frame at 2.937 s and 442 decoded frames at 18.293 s: 15.356 s
+of decoded-frame observation while connected, without Auto fallback. One candidate
+ACK took 10.007 s and was accepted without interrupting that active stream.
+Cleanup completed at 18.357 s with the one owned session and browser closed.
+No phone root cause or sustained reliability follows from these two successes.
+
+Evidence under `app/test-results/c08-diagnosis`:
+
+- `served-attempt-11.json`: SHA256 `bd4d05cf73e7b049a1e9ef3a5dd2cbf84af73e41155b4a59f1ca17f5d6b63ce6`;
+  `.log`: `1229e4de8734eeb6c35e6956cf7360a4cad9cce33ddadc705a8c535292f60685`.
+- `served-attempt-12.json`: SHA256 `22f5a538e30c433fa056b81ebdbb17219d73018a30d02447febeb0675ee80bad`;
+  `.log`: `a7a3f63c55d1bc940b54673e7dfc2ab63ed4b03439a4ebe41ece07f84f755cb3`.
+
+### Adopted Camera contract: source accepted, not yet shipped
+
+Decision0046 records the user-approved Camera-only exception to0041: no footer
+or Refresh button, thin icon/title/state/FPS/time header, media edge to edge
+along the lower card with square top corners and outer-card bottom clipping.
+The short safe failure reason is a persistent bottom-left media overlay, clear
+of bottom-right controls; narrow layouts move it one row up within the media
+without increasing card height. This supersedes the intermediate header-slot proposal.
+Neutral failures, no stale telemetry and stable geometry remain required;
+other widgets retain their footer/error contracts.
+
+Default Auto uses only Auto/Live through the 88px-by-44px icon Switch. Automatic
+polling produces no success message or announcement. New mounts never restore/
+start Live; the same mounted card resumes its explicit mode after hide/show.
+A valid MCP opening result causes no extra initial read, then Auto polls 1.5s
+after completion. Missing initial delivery waits at most 15s. Private Camera
+frame/activation keys or the DTO mediaType/byteLength pair identify authoritative
+Camera delivery; malformed Camera delivery fails neutrally immediately. A bare
+isError: true opening-result notification also fails immediately without Camera
+fields. Only unrelated/unknown non-error delivery leaves the original waiter/
+deadline active. Immediate failure or expiry schedules Auto retry after 1.5s, with one
+acquisition at a time. These CAM-008 discriminators are included in the accepted
+source scope above; actual-host bootstrap acceptance remains separate.
+
+Service-owned lastLiveFailure retains the closed CAM-008 fields through Auto;
+only its short safe stage/outcome reason is visible. No timeout/watchdog change,
+raw details, new panel or extra acquisition from diagnostics. Prior generic
+Footer statusText/reserved-header proposals are superseded. Fullscreen discussion
+adds no host display-mode implementation or new acceptance claim.
+
+The latest user order supersedes old-URI preservation. The accepted source above
+retains only current widget resources and all eight active legacy renderers,
+while retiring old aliases/bundles/compatibility-only tests. Earlier391303c is
+unshipped and superseded; fresh aaaf0a56 acceptance covers cleanup. Deployment
+backups and worktrees remain. PR101 stays deployed until guarded shipment;
+presentation/diagnostics do not prove the phone failure's cause.
+
+### Earlier Camera candidate evidence before current-only cleanup
+
+Author `app/test-results/camera-failure-author/REPORT.json`, SHA256
+`502caf615c52097c175b240f9b01b993d804b137325fed2ee111bc4789354e52`,
+records the `5a2a474` candidate and the three-pin test-only renewal committed as
+`391303c`. Its 53-input manifest is
+`28dbdc6903ad1c662d3e2b5b8a721a68394c519173acc9a25b53296134e149d8`.
+The earlier runtime 0.4.11/schema15, Camera13/observation17 payload has 62 runtime
+files/72 routes; build-manifest SHA256
+`fea9fbf3a85b21d99199a4e4f7ed62298998809d517db1581f70bc5c4d505761`.
+Its 32-resource/30-old-URI parity is historical evidence, now superseded as an
+acceptance obligation. No shipment of this candidate occurred.
+
+Commands actually run by the author used Bun1.4.0 with
+`--no-env-file --config=/dev/null` from the app directory unless noted:
+
+- `run ui:test -- src/lib/client/camera src/lib/client/common src/lib/client/observation src/lib/client/bed-mesh src/lib/client/live`:
+  565 tests/52 files PASS before final Camera classifier refinement; unchanged
+  shared UI paths retain that evidence. Camera-only renewal passed99 tests/12
+  files; final controller/widget refinement passed18 tests.
+- `run ui:check`, `run check`, ten deterministic package checks and seven focused
+  server files passed (87 server tests); exact commands/log hashes are in REPORT.
+- `x playwright test --config playwright.mcp.config.ts --grep "MCP Camera"`:
+  nine actual MCP-artifact cases passed at320/390/590/720 and200% text. These
+  artifact bytes preceded the additive initial-envelope classifier; tested UI/
+  style paths were unchanged. Private author config passed27 Camera Lab/dashboard
+  cases and nine Camera-route cases; the latter used the final Lab artifact.
+- `run build:server --outdir test-results/camera-failure-author/payload-final`
+  produced the above payload. `run test-results/camera-failure-author/verify-compat.ts`
+  then passed32 resources/30 old URI hashes without acquisition. That check is
+  retained history, not a new compatibility requirement.
+- After the independent gate failure, from repository root Bun ran
+  `test plugins/u1-print-studio/app/tests/server/private-lab.test.ts`: seven
+  tests/75 assertions PASS after only three expected hashes changed. No rebuild,
+  UI/browser renewal or author full gate accompanied that test-only repair.
+
+Retain the earlier failures: five obsolete mode/assertions plus a test-edit typo;
+component guards needing exact new wrapper/status counts; a private Playwright
+relative-cwd module-not-found error; a hoisted mock cleanup spy recording zero
+calls; its optional type initialization; and a doubled relative compat-script
+path. The independent required gate on `5a2a474` then failed three omitted private
+Lab SHA pins (324 server PASS/3 FAIL). The pin renewal log SHA256 is
+`fd6e9fe22d3f8a63bd26d8a5168af710a0a38d33130945eefa1a8029ab39ca1e`.
+An independent private adversary fixture initially had a missing brace and ran
+zero tests; this is a fixture failure, not product acceptance. No independent
+full-pass claim for the current cleanup candidate follows from these records.
+Author-owned browsers/MCP clients/processes were closed; fixture4182 was released.
+These checks made no actual camera/printer probe, service restart or auth change.
+
+Independent `app/test-results/camera-failure-independent/SUPERSEDED-391303c.json`,
+SHA256 `bac34f22f12c91e0bb784970d6a0f05d5184640e453137b07a94eaef5f0efc7a`,
+records the renewed required gate PASS on
+`391303c757ed507d016a1a557bfc21c0691f3523`, tree
+`7f44d1e4ecf56473d72998119d6b792da2f3ef67`: 617 UI/59 files,
+327 server/3,983 assertions, 34 service/27 shipping Python tests, Svelte0/0 and
+component contracts. Full renewal log SHA256:
+`71b72df31088d0b2f1f2b65a18962d783b5de5af91b2a81328f63eb9d5f343ca`.
+Four fresh real-HostRpc/controller adversaries and nine scoped browser cases
+(six shared/default consumers plus three MCP cases) passed with synthetic data.
+The independent final MCP initial-error case renews that specific changed path;
+the earlier 45 author browser cases retain their stated pre-classifier/final-Lab
+boundaries, not an invented all-final-bundle run. The 454-input manifest SHA256 is
+`3cd88481fb9c70719688ff50d27dc0d25a2fd3c3fac8985fbc771edf7266c9fe`.
+Thirty old URI bodies matched in the then-32-resource inventory with zero
+acquisition. The user changed scope before approval: status is SUPERSEDED,
+with no APPROVE or shipment. All reviewer processes/fixtures were closed. These
+passing prior-candidate results do not validate current-only retirement bytes.
+
+
+## Standalone asynchronous monitor: independent source acceptance
+
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries independently
+reviewed source; consult the PR for merge identity. Independent source review
+approved `3ce5a8cf2975c2c38601ce9832fa49bc50900893`, tree
+`9136c5bb13d592c044c546205064baf2343caf4d`. The reviewer did not author the skill
+changes. Review of earlier `98aeaf3` found one index formatting defect: a blank
+line separated decision0045 from the table. The author removed that separator;
+the reviewer inspected the exact repair and attributed validation note.
+
+Commands actually run by the author and independently repeated for the unchanged
+skill bytes:
+
+- `uv run --no-project --with pyyaml "$SKILL_CREATOR/scripts/quick_validate.py" plugins/u1-print-studio/skills/u1-monitor-print` — exit0, Skill is valid.
+- The same command for `plugins/u1-print-studio/skills/u1-start-print` — exit0,
+  Skill is valid. SKILL_CREATOR denotes the installed system skill root; no
+  repository dependency or installed skill was modified.
+- `git diff --check`, clean-HEAD and scoped diff/identity checks — pass.
+- Base application tree from
+  `git rev-parse 220190f05afd4f785f068254d43f1b0257e9af57:plugins/u1-print-studio/app`
+  and approved source application tree both equal
+  `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
+
+The independent manual fictional walkthrough covered standalone unknown
+provenance, composed start acknowledgement, duplicate ownership, a repeated
+filename/new run or reset, stale terminal evidence, disconnect/recovery and its
+retry cap, stop-monitoring, explicit start-only, N/N while printing, camera loss,
+paused nonterminal state and complete/inactive/end checks. No source blocker
+remained. These were reasoned instruction/source cases, not executed model
+sessions, automated behavioral tests or actual host/printer evidence.
+
+Author read-only filesystem checks passed required nonempty repository/iteration
+records, exactly one active iteration, existing state headings/evidence layers,
+core requirement IDs, added local links and private-data exclusion. No full
+check-repository.sh application gate was run or modified for this slice.
+
+Retained SHA-256 skill identities across the documentation tail and main merge:
+
+- u1-monitor-print/SKILL.md:
+  `5adb6e7c71be436a5e803705a9cc6b409b474b30a0d61a2bc7d68cf6fa824a11`.
+- u1-start-print/SKILL.md:
+  `d28d4042d9b254d0cbb0115b55a45b1562271b2d96bf88f69e9ffcebfd477642`.
+- Original approved application tree: `b2bba34ba3a8f5bb912a03a5679f8099900f3fef`.
+- Incoming main `06e2a903f9ad2426f3580e77e72d65d98cc96d60` application tree:
+  `ffc95dccafab2289959a934cc2630339cf5a2d2e`.
+
+Conflict resolution incorporates main `06e2a903` without force-pushing history.
+Four continuity conflicts were combined by preserving our top monitoring section
+and every incoming Camera/deployment record below it. Requirements retain both
+MON-001 and incoming Camera refinements; incoming widget-ledger and application
+changes are preserved. No decision0045 collision exists.
+
+Resolution checks compare the candidate against incoming main: introduced scope
+remains eleven Markdown files; application/dependencies/configuration/generated
+assets and shipping guards are unchanged. Approved monitor/start skill hashes
+remain exact. Diff checks and incoming-record preservation checks pass. The
+incoming application tree differs from the original base; previous monitoring
+checks do not validate these new Camera bytes. Keep the incoming workstream
+evidence below separate rather than carrying the old application acceptance
+forward. No full application build/browser suite is repeated for this docs/skill
+resolution. This slice adds no installation, service deployment, durable monitor,
+external notification, real-printer or actual-device acceptance.
+
+## Current PR101: exact approval and guarded deployment
+
+Independent `app/test-results/camera-deadline-independent/REPORT.json`, SHA256
+`6cf2b959f40bb7513e8d0a30c8509847fc53bbfaff1bc9d72dffe0e0de7b48c0`,
+APPROVES `42cdaca78fb6af6c73e137d0106286a5b277d7ac`, tree
+`a8c14ede6edbfd4d02657a78955e897fe751176d`. Its 450-input manifest remains matched.
+`PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH ./scripts/check-repository.sh`
+exits 0: 594 UI/58 files, Svelte 0 errors/0 warnings and AST, 327 server tests/
+3,979 assertions, seven current packages plus private Lab determinism, 34 service/
+27 shipping Python tests and repository contract PASS. Full-log SHA256:
+`9625f3d903d0d18133c3b3e1260802bc2d43507f317152a234b25529e10bb55a`.
+
+Independent ignored Vitest fixtures pass four fresh real-HostRpc/session/controller
+adversaries: overlapping epochs, malformed late allocated lease after disposal,
+ordinary observation 15s isolation and a 54.999s response with bounded close.
+Three scoped browser cases pass: formal-payload-bound MCP Camera with a delayed 16s
+synthetic offer reaches rendered Live and closes once, MCP Heads failed Refresh/
+recovery and the private Camera persistent-media consumer. All 30 in-memory MCP
+resources are read with zero acquisition; all 28 old URI bytes match baseline.
+The 60-runtime-file/72-route formal payload matches tested resources. This is
+targeted transitive browser coverage, not a new complete browser-matrix run.
+
+Retain both independent fixture failures: the first resource check assumed an
+incorrect root payload path and failed ENOENT, then passed using `staticRoutes`;
+the first private browser grep selected no tests (zero ran), then one corrected
+selection passed. Neither changed candidate bytes. Earlier author failures and
+attempt 10 remain below; no failure was silently converted into a clean first run.
+
+Root's read-only plan and the following exact execution from repository root
+both exit 0:
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 101 --reviewed-sha 42cdaca78fb6af6c73e137d0106286a5b277d7ac --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute
+```
+
+PR101 merged as `0710b4bf55edc6908eef614df5fec48614044497` with the reviewed tree
+preserved. Release `20260903-0710b4b-pr101-20260903T071450-c913d0` explicitly
+restarts BOTH public/dashboard services: loaded/healthy/integrity PASS, runtime
+0.4.10/schema 14/observation-v16/camera-v12, 73 static/75 security checks,
+preservation true and no rollback. Receipt
+`service/shipments/pr101-20260903T071450-c913d0.json` SHA256 is
+`15608f1aad999ea793f9c50ccbd274ae29ea25328916ee712524efc0b0e60e9c`.
+Independent `app/test-results/camera-deadline-independent/POSTDEPLOY-REPORT.json`,
+SHA256 `f67a70be58f12f91fcd65e8de77b66f6e86a5d71c232cfc3b7e6982974a7f6ab`,
+records POSTDEPLOY PASS. All 60 installed runtime files match build manifest
+`e0c468dfde8db73b9f32e9bde3f84bcfbcf4ba135aa15e586f94dcdedab7a63f`;
+450 approved inputs remain unchanged. Fresh `uv run --no-project
+scripts/u1_service.py status` confirms BOTH loaded/healthy/integrity and versions.
+
+Pinned Bun `--no-env-file --config=/dev/null x playwright test --config
+test-results/camera-deadline-independent/playwright.postdeploy.config.ts` passes
+one case in 18.1 s. Exact installed Camera HTML, SHA256
+`00b8a16f74e4f01c87262a24e9f29b3af4aa1a512915a22bd875b4665c406c8a`,
+mounts in a synthetic local MCP host: a 16s delayed offer stays Connecting, then
+synthetic video renders Live, and Snapshot closes its lease once with no page
+errors. Log SHA256 `d48d27561e0ee89032566bfe7e09c407171527309b27a0d4038461e6337397b9`.
+This is installed-byte/software evidence, not HTTPS OAuth, ChatGPT phone or
+actual Camera connectivity. All postverification resources close; port 4183 is
+free. No real printer acquisition, auth/network change or user clipboard access.
+
+The new phone UI works per user; reliable phone Live and the original failure's
+cause remain unconfirmed. No actual phone/OAuth/clipboard or browser-to-printer
+Live acceptance follows from synthetic tests. Screen Sharing stays paused.
+Independent browsers/MCP pairs closed in finally; fixture ports 4179/4183 are
+closed and user resources preserved. This six-file Markdown tail retains app,
+dependency, configuration and generated bytes and requires no redeployment.
+
+Records checks: `git diff --check` and a `uv run --no-project python` comparison
+against merge `0710b4b` PASS: six owned Markdown files only, no untracked files,
+all 55 ledger IDs retained in order; application/dependency/config/generated
+bytes unchanged. No app tests/build/deployment were repeated for this tail.
+
+### Retained C08 diagnosis and pre-release repair contract
+
+The user reports on 2026-09-03 that the refreshed new plugin UI works on the phone,
+while selecting Live shows Connecting and frequently falls back. This is limited
+renderer adoption, not full phone/clipboard or reliable Live acceptance. Screen
+Sharing remains paused. The phone's failing connection phase is still unknown.
+
+Attempt 10 ran `uv run --no-project test-results/c08-diagnosis/run-comparison.py`
+with the active PR99 release's `bin/bun` and label
+`attempt-10-20260903-installed140`, under the outer 45 s cleanup bound. It exits
+0 in 1.472 s: offer 50 ms, upstream answer 130 ms, ICE connected 384 ms, peer
+connected 542 ms, first upstream RTP 1,143 ms, viewer offer 1,153 ms, then both
+peers close at 1,154 ms. No UDP EHOSTUNREACH was recorded. The four probed server
+sources match deployed `4787c02`. This isolated installed-Bun process is not the
+LaunchAgent or a browser: no downstream answer, decoded frame or phone Live was
+verified. Historical attempts 1–9 remain valid evidence of their earlier state;
+not reproducing that UDP error does not prove the permission change fixed it.
+
+`app/test-results/c08-diagnosis/attempt-10-20260903-installed140.json` SHA256:
+`71e173d1b8603671ebc86e7945e40c0fdb1b2c9c86d617d1c707805efaa8ee4e`;
+its `.log` SHA256:
+`8d7a312b48d5040158224ac08135adf01a877ade3d3d4711b44e41d09fa56610`.
+
+Source comparison identifies an independently actionable client mismatch: legacy
+Live open waits 40 s, while current Svelte session waits 10 s and shared HostRpc
+expires at 15 s, dropping later results before session-owned lease cleanup can
+see them. This is not established as the phone failure's cause. The current
+candidate on `codex/u1-camera-live-deadlines` changes only Live open to a 40 s
+user wait plus per-call 55 s RPC retention (40 s plus the 15 s unanswered lease
+window). Default HostRpc stays 15 s; activation/local answer/answer/candidate
+stay 10 s, first frame 8 s, stall 5 s and disconnect 3 s.
+
+Acceptance requires integrated HostRpc/session/controller timing checks for
+late success and abandoned-offer cleanup, without reviving disposed/switched
+state or changing other operation budgets. Candidate versions are observation
+v16, Camera v12, runtime 0.4.10/schema 14: 30 resources, preserving 28 old aliases
+including the PR99 v15/v11 snapshots byte for byte. These are frozen source-candidate
+contracts, not the deployed version. Author focused evidence below is complete;
+required frozen-candidate validation, exact independent approval and shipping
+remain pending.
+
+### Frozen C08 author evidence
+
+`app/test-results/camera-deadlines-author/AUTHOR-REPORT.json` SHA256
+`1ca20f617107d3477c4a60fc9acda05d75f539bc937e4157ebb1d0575bfe1277`
+binds 28 changed/new application inputs from `220190f`; input-manifest SHA256
+is `853888ce06f64af7bfa1694f0496467331cda68b6844f127f51b71eefc911134`.
+Exact pinned Bun commands and log hashes are in that report. Executed author
+checks: `run ui:test -- src/lib/client/live src/lib/client/camera src/lib/client/host
+src/lib/client/mcp src/lib/client/legacy` passes 273 tests/24 files; the integrated
+`host-deadlines.test.ts` renewal passes 7; `run ui:check` passes Svelte 0 errors/
+0 warnings and AST; seven affected server contract files pass 87 tests/1,395
+assertions. The current-resource MCP browser selection for Heads Refresh/Copy
+and Camera Switch/fallback at 320px passes two cases in 4.8 s with synthetic data.
+
+Seven affected bundles were rebuilt; `verify:mcp-observation` and
+`verify:mcp-camera` pass deterministic checks. `build:server -- --outdir
+test-results/camera-deadlines-author/payload` passes: 60 runtime files/72 static
+routes; build-manifest SHA256
+`e0c468dfde8db73b9f32e9bde3f84bcfbcf4ba135aa15e586f94dcdedab7a63f`.
+The current observation artifact is 947,796 bytes, SHA256
+`86ea2d1ab342d714a78d9850fe3b7fcaec6c958b4d3bf7bbdc2fd49d779b3427`;
+Camera is 96,802 bytes, SHA256
+`00b8a16f74e4f01c87262a24e9f29b3af4aa1a512915a22bd875b4665c406c8a`.
+The report binds every public asset and exact old-URI compatibility snapshots.
+
+Integrated real-HostRpc/session/controller tests cover 12/16s successful opens,
+40s Auto fallback followed by one 45s late-offer close, hide/disposal cleanup,
+55s absent-response cleanup and a 54s offer with hanging close released at 69s.
+The total disposed-request drain remains bounded at 70s. Default RPC and all
+other operation/frame guards are unchanged. This proves the software timing
+repair in fixtures, not the cause of the phone symptom or real Live acceptance.
+
+Retain `focused-first.log` (58 PASS/1 FAIL: old two-argument transport mock) and
+`ui-check.log` (nine type errors from circular inference in the new test fixture).
+The expectations/test typing were corrected; the final UI consumer run, 0/0
+typecheck and seven integrated cases pass. These are distinct attempts, not one
+clean initial run. All author exec sessions and isolated browser fixtures are
+closed; attempt 10 closed both peers in finally. No new runtime probe beyond
+attempt 10, full suite, auth/network change, restart or deployment was performed.
+
+Records verification: `git diff --check` and a `uv run --no-project python`
+ledger comparison against HEAD pass; all 55 IDs remain in order. Records changes
+are limited to six owned Markdown files; no app/build/test/commit action was
+performed by the records author.
+
+## Earlier PR99: exact approval and guarded deployment
+
+Independent `app/test-results/mcp-cutover-independent/REPORT-f782378.json`, SHA256
+`d52005544b2d414f09041044ea9213720bed2041ff91e763c61b269930641317`,
+APPROVES `f782378bb9bc38e75ed7a5b1f500c586a2f410ff`, tree
+`6c1c79e55ba78c0fccaffd874e2c061e7f573c4f`. All 447 reviewed inputs match.
+Required `./scripts/check-repository.sh` exits 0 in 55.663 s: 586 UI/57 files,
+327 server/33 files/3,975 assertions, ten deterministic packages, 34 service/
+27 shipping Python tests, Svelte 0 errors/0 warnings, AST and repository contracts
+PASS. Full-log SHA256 is
+`95507f091df8a702d2d3d631b968fa6c1387c305f3d9302fa231b36150c9b867`.
+
+Pinned Bun 1.4.0 `--no-env-file --config=/dev/null run test:browser` exits 0
+in 166.639 s: all 344 visual cases plus 32 actual-resource MCP fixture cases PASS;
+log SHA256 `75875e8342354a9b0b7fd11fe886caca2c32c8b9c830a71bf8b86dc649044e13`.
+Independent `actual-mcp.ts` adds four fresh synthetic adversaries: Heads error/
+height, legacy error envelopes, late contradictory input/Copy retirement and
+Camera fallback/private state. It reads all 28 resources, preserves 26 old aliases
+and verifies MIME/CSP, tool/result metadata and both canonical payload hashes.
+The unchanged two author payloads were rehashed, not rebuilt by the reviewer.
+
+Retain the earlier b911d9a rejection below. The first f782378 required attempt
+failed in an unchanged Thermal test's 5,000 ms Chrome startup before navigation/
+render assertions; `bun --no-env-file --config=/dev/null test
+tests/server/observation-widget.test.ts --test-name-pattern
+"Thermal rows render at no more than 64 pixels"` then passed
+its focused case/12 assertions in 1.749 s. The same SHA passed the full renewal,
+without changing source, timeout or guards. Log hashes remain in the independent
+report. The private MCP fixture also failed twice: unsettled body text included
+the inline bundle, then a generic main locator matched two elements. The ignored
+fixture was corrected to awaited `#widget-root` text and stale aria/title checks;
+the final four cases passed with tracked candidate bytes unchanged.
+
+Root ran the plan and then, from repository root:
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 99 --reviewed-sha f782378bb9bc38e75ed7a5b1f500c586a2f410ff --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute
+```
+
+Both exit 0. PR99 merged as `4787c02fd8f7ed8833e15d9127e7b9c78e9128ba` with the
+reviewed tree preserved. Release `20260902-4787c02-pr99-20260902T220944-0679a4`
+explicitly restarted BOTH public/dashboard services: loaded/healthy/integrity
+PASS, 73 static/75 security checks, preservation true and no rollback. Receipt
+`service/shipments/pr99-20260902T220944-0679a4.json` has SHA256
+`e3c3a7f7a0f93aece7293e2b02ad4a1125a7bb814b0cec4535f0538e9760d45e`.
+Both services advertise runtime 0.4.9, schema 13, observation-v15 and camera-v11.
+Independent `app/test-results/mcp-cutover-independent/POSTSHIP-REPORT.json`,
+SHA256 `e7bcf1c0e88b1838fb956db2becd917432b15503d9d8a0728ebaed00ba28f666`,
+records POSTSHIP PASS. It rehashes 61 installed files, all 58 runtime files
+against the canonical payload, and all 447 approved inputs. Fresh public/dashboard
+health reads return 200 with matching current versions.
+
+`bun --no-env-file --config=/dev/null test-results/mcp-cutover-independent/postship-mcp.ts`
+exits 0 in 3.91 s. Exact installed `server.js`/`handler.js` provide initialize,
+tools/list, resources/list and all 28 resource reads through an isolated HTTP
+fixture; every HTML matches the pre-ship source/canonical hash. No compiled
+`tools/call` or actual public OAuth endpoint is used. Two browser groups consume
+those resource bytes with synthetic host replies: Heads whole eight-digit Copy,
+neutral failed Refresh/stable height/recovery; Camera zero redundant initial
+frame request, 44px three-mode Switch, Live-to-Auto and the next accepted synthetic
+Auto frame. No real observation or Camera dependency is called. Owned browser,
+HTTP and MCP resources are closed; port 4181 has no listener.
+
+This is software/synthetic MCP and deployed-service evidence. Actual public OAuth,
+ChatGPT phone/native clipboard and real Live are not accepted. Eight non-Heads
+observation renderers remain legacy; no printer reads, controls, plugin reinstall
+or auth/network changes occurred. Reviewer fixtures 4179/4181/4182 have no listener;
+owned browser/MCP/HTTP resources were closed in finally and user apps preserved.
+This Markdown-only tail retains application bytes and needs no redeployment.
+
+Records-only tail checks: `git diff --check` and a `uv run --no-project python`
+comparison against merge `4787c02` PASS: nine changed Markdown files, no untracked
+files, all 55 ledger IDs retained in order, and no application/dependency/config/
+generated-asset changes. No build/test/deployment was rerun for this tail.
+
+### Rejected MCP candidate b911d9a: retained first required attempt
+
+The sole independent `./scripts/check-repository.sh` attempt on
+`b911d9a395ceacff1e6a2770fe62d6e214da3c28` stopped after 55.444 s at the server
+tests: 326 PASS / 1 FAIL / 3,974 assertions across 33 files. The sole failure was
+`tests/server/bed-mesh.test.ts:205`, which expected 26 resources after the two new
+versioned resources made the actual count 28. Earlier gate stages passed Svelte
+0 errors/0 warnings, AST, 586 UI tests in 57 files and all ten deterministic
+packages. Python and full-browser stages did not run; no full-gate, exact-review
+or shipping approval is claimed.
+
+Independent `app/test-results/mcp-cutover-independent/full-repository.log` has
+SHA256 `087767c5b32fc9106f65d3b904911065e7fffe6a9f51100d76b62936414d7880`.
+The author corrected only `bed-mesh.test.ts:205` from 26 to 28.
+`bun --no-env-file --config=/dev/null test tests/server/bed-mesh.test.ts` passes
+12 tests/141 assertions; `server-bed-mesh-followup.log` SHA256 is
+`115136c606dbbb193cf7c6da10127a3b0c1a2a7eddeb174b58c6cad9622477bb`.
+Production source/artifacts are unchanged; no author UI/browser/build was rerun.
+Corrected source/input identities below are frozen for a new commit and the
+mandatory required-gate renewal. The rejected attempt is retained.
+
+### Retained MCP author evidence before exact approval
+
+Author report `plugins/u1-print-studio/app/test-results/mcp-cutover-author/
+AUTHOR-REPORT.json` records exact commands, prior failures and scoped results.
+Its SHA256 is `9ad492c63dd24fb95da9d9dbc9f7919f3923c75a20f44f2e10e0e718da570cb3`.
+The 46 changed/new application-input manifest has SHA256
+`9e252c75065ae88a476e8d19fe74ad00f224b84ee4795ddbdeda518b011c6a3e`.
+Application bytes are frozen for the coordinator commit. This is author evidence;
+required full regression, exact independent approval, deployment and actual
+ChatGPT phone acceptance remain pending.
+
+| Executed check / log | Observed result and boundary |
+| --- | --- |
+| `vitest run src/lib/client/live src/lib/client/camera src/lib/client/host src/lib/client/mcp src/lib/client/legacy` / `ui-consumers.log` | 265 tests in 23 files PASS; shared live/Camera/RPC and new adapter consumers |
+| Focused server contract/role/package tests / `server-consumers.log` | 75 tests in 6 files, 1,250 assertions PASS; final exact package pins separately renewed by `mcp-pins.log`: 2 tests/20 assertions PASS |
+| `bun --no-env-file --config=/dev/null run ui:check` / `ui-check-final.log` | Svelte 0 errors/0 warnings, closed component AST contracts PASS |
+| `bun --no-env-file --config=/dev/null run scripts/build-mcp-observation.ts --check` / `verify-mcp-observation.log` | Deterministic self-contained MCP observation package PASS, 947,699 bytes |
+| `bun --no-env-file --config=/dev/null run scripts/build-live-camera.ts --mcp --check` / `verify-mcp-camera.log` | Deterministic MCP Camera package PASS, 96,643 bytes; distinct host-result entry |
+| `bun --no-env-file --config=/dev/null x playwright test --config playwright.mcp.config.ts` / `browser-formatted.log` | 32 cases PASS in 51.6 s on final formatted artifacts with synthetic MCP resources/media |
+| `bun --no-env-file --config=/dev/null test-results/mcp-cutover-author/dashboard-camera-smoke.ts` / `dashboard-camera-smoke.log` | PASS: one initial request, three 44px modes and explicit Refresh; shared dashboard request policy |
+| `bun --no-env-file --config=/dev/null run build:server -- --outdir test-results/mcp-cutover-author/payload-{one,two}` (two separate invocations) | Both PASS: 58 runtime entries, 72 static routes; all 59 physical payload files, including manifest, byte-identical |
+
+The 32-case renewal covers Heads Refresh/Copy, Camera icon Switch/fallback and
+initial-error Retry at 320/390/720 widths and enlarged text, the retained eight
+legacy views, result-first/compatibility replay, contradictory input, stale
+failure suppression, intrinsic height/init retry, and a synthetic Live lease
+released on nonpersisted pagehide. It is a complete scoped renewal after source
+formatting, not an aggregation with the earlier 2/9/14-case runs or the preceding
+32-case run. No actual printer Live, phone clipboard or real host acceptance is
+inferred from simulated media/RPC.
+
+Retain `camera-bootstrap-count.log`: the earlier wiring produced opening-tool
+plus duplicate `get_u1_camera_frame` acquisition (`frameNumber: 2`). Decision0044
+responds with the separate host-result entry and bounded explicit initial policy;
+the final 32-case renewal asserts one initial acquisition. Independent checks
+remain required. Earlier
+focused UI48/server30/browser2/9/14 and pre-format browser32 successes remain
+attributed to their earlier inputs, not the eventual frozen candidate.
+
+The two new artifacts are `mcp-camera.html` 96,643 bytes, SHA256
+`bcdd91b6646989639fa68c52536705ebf8b92b7a4dc15f8ae2d2e2b3c7134fe2`, and
+`mcp-observation.html` 947,699 bytes, SHA256
+`2838485ed47250f1c8dbc413227743981c7e2a2f5ea22b9c8acb8791b094edc4`.
+The four old resource HTML files are byte-identical to base `3e6a4d7`; exact
+hashes remain in the report. Five focused Svelte packages were rebuilt for
+shared RPC/Camera inputs; this slice does not claim all prior assets unchanged.
+The 59-file comparison manifest `payload-manifest.json` has SHA256
+`e2d36fcbc88b4a8db0a64ff6a98e32d2b84aa2c42fda213e9c415f9bdbfdf429`;
+this is distinct from the runtime build manifest. The actual
+`payload-one/build-manifest.json` file SHA256 is
+`5878d4327fd4e12c2ef87a413cba424b7bc78fbc338c931b9b392a6f7974fd19`.
+
+The author reports an earlier alias/current-URI expectation mismatch without a
+saved raw failure log; do not invent a missing log or treat all attempts as clean.
+Early source-review seams (error envelopes, contradictory input, initialized
+height/retry, safe-area ownership and overlapping initial decode generation) were
+repaired before freeze. Pre-freeze source review is not exact approval. All
+author browsers/processes were closed and port 4182 has no listener; user tabs,
+deployed runtimes and evidence logs were preserved. No author full required run,
+real printer/Camera reads, plugin reinstall, auth/network changes or deployment
+occurred.
+
+Staging caught three trailing-space blank lines omitted by the earlier untracked
+diff check. After removing only those spaces,
+`bun --no-env-file --config=/dev/null run --cwd plugins/u1-print-studio/app verify:mcp-observation`
+and `git diff --check 3e6a4d7` PASS, including the new files. The 947,699-byte
+observation artifact retains SHA256 `2838485ed47250f1c8dbc413227743981c7e2a2f5ea22b9c8acb8791b094edc4`;
+affected determinism was renewed and unchanged runtime evidence retained without
+repeating browser/full suites. The current report/input hashes above include
+this whitespace-only correction.
+
+### Initial MCP cutover scope checkpoint
+
+At base `3e6a4d713469e14a61f0da790c42b722901fc651` on
+`codex/u1-mcp-svelte-widgets`, read-only inspection of
+`plugins/u1-print-studio/app/src/lib/server/app.ts` confirms active MCP resource
+registration reads `widget.html` and `camera-widget.html`. PR97's native route
+acceptance below does not prove a shared Svelte renderer in the plugin host.
+The user-provided phone screenshots are evidence of the earlier presentation,
+not acceptance of this new cutover.
+
+This initial records checkpoint updates execution order and acceptance only.
+Its author ran no app build, full regression, browser, printer or Camera checks;
+implementation-owner focused evidence is pending and not claimed here. Source,
+deployment and actual-host acceptance for the new cutover remain pending. New application/resource changes require their affected
+checks; prior PR97 evidence remains attributed to its original bytes. Commands
+run for this records checkpoint: `git status --short`, `git branch --show-current`,
+`git rev-parse HEAD`, bounded `sed`/`/opt/homebrew/bin/rg` record and resource reads,
+`git diff --check`, and a `uv run --no-project python` comparison of ledger IDs
+against `git show HEAD:docs/widget-delivery.md`: PASS, all 55 IDs retained in
+order and all seven owned continuity files present. No application checks were
+run for this documentation-only initial scope update.
+
+## Earlier PR97: exact350fb6e approval and guarded deployment
+
+Independent `app/test-results/independent-350fb6e/REPORT.json`, SHA256
+`7f73feb0dd5b28f02bb42959daacda7736ace75ef05dd61c53881ffb961e9a78`,
+APPROVES `350fb6ead4931c784a9e61a0b9bcf96f7d96aad4`, tree
+`59698e929d029ed42e015200c93a028a8aaf1f76`. Required
+`./scripts/check-repository.sh` exits0 in46.325s:574 UI/55 files,325 server/32 files/
+3951 assertions, eight packages,34 service/27 ship Python tests, Svelte0errors/
+0warnings, AST and repository contracts PASS. Full-log SHA256 is
+`c9be993264dcb6fc4025b9f6b97611bce6375d5f67bcd7958ada3db3ab5383d0`.
+
+The independent operator adversary passed one scenario with three attempts:
+partial compiler failure, actual-reader symlink rejection, then a valid candidate.
+Distinct initially empty directories retained failed/existing output and the
+mandatory call sequence. Its SHA256 is
+`c1751ae11515af0b99228a10db662c54f6c17f8e2291e8b6291ee064dbdd4d83`;
+external commands were mocked, so this is source/fixture evidence, not a ship.
+No remaining source findings or guard changes were identified.
+
+All420 tracked application files (417 non-Markdown),15 public HTML files and the
+56-file/72-route formal payload match29e4f07. The exact seven canonical browser
+cases and manifest
+`a2a0afdb2db6402bb632ea212eeff09aed654d4e082c65553b1891f66e10f663`
+are retained by these identities; no new browser or extra `build:server` ran in
+this verification. The mutable full-gate build was not substituted for canonical
+payload evidence. Binding SHA256 is
+`0d18b6e1ccd7b8d7f5e6d942d307daa808ef572bef00d29aa2260d1db77e354f`.
+All prior import, fixture, artifact-selection and failed-ship evidence below remains.
+Verifier-owned processes exited,4179/4181/4182 were free and no printer reads ran.
+
+Guarded `u1-ship` execute operation `pr97-20260902T170641-88762e` completed,
+merging `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9` and installing release
+`20260902-aa85f4d-pr97-20260902T170641-88762e`. Receipt basename
+`pr97-20260902T170641-88762e.json` SHA256 is
+`ca57210aff1949c019a0894ac714747930d127873f55eb42bc1a16924249c316`.
+It binds reviewed350fb6e/tree59698e9 and Bun1.4.0 SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`.
+Mandatory local validation/bundles/codesign/exact-stage guards completed; BOTH
+services explicitly restarted and verified loaded/healthy/integral.73 static and
+75 security checks pass, preservation is true and rollback was not needed.
+Private installation paths are omitted. The earlier165630 failed operation remains
+separate and unchanged. Source approval and shipment are distinct from scoped
+served behavior and any actual-printer/device acceptance.
+
+Independent `app/test-results/postdeploy-pr97-independent/REPORT.json`, SHA256
+`e976d542da68e1627fec35ef941b17a22fc05c84112dbad283b230c8c78b2da5`,
+passes all four320px native pages with zero failures. The verifier ran
+`uv run --no-project plugins/u1-print-studio/app/test-results/postdeploy-pr97-independent/identity.py`
+and Bun1.4.0 `--no-env-file --config=/dev/null` on the colocated `served-native.ts`.
+The latter log SHA256 is
+`887fe2f047caab1590f53da84840aa55464835fd0df8ccc61c3d39cefbf5e402`.
+All Thermals/Heads/Queue/Fans pages have no iframe, select the correct view and
+issue one intercepted initial acquisition. Failed refresh removes prior synthetic
+values from text/title/ARIA, shows static neutral skeleton/footer beside Refresh,
+and preserves shell/header/body/footer geometry within1px. An exact duplicate
+successful receipt recovers the display. Heads keyboard Copy retains its44px
+target and passes the complete eight-digit hex to an isolated clipboard stub.
+
+The browser independently hashes33 unique actual HTTPS assets across88 static
+responses against the active payload; all four HTML pages preserve CSP/no-store.
+Twelve synthetic tool responses cause zero actual printer/Camera reads, zero
+user clipboard access and zero page/asset/unexpected-request errors. Both services
+match the release, remain loaded/healthy/integral, and all56 runtime files/72 static
+routes match a2a0afdb above. The73 static/75 security/preservation results are
+retained from the exact ship receipt, not rerun by this verifier. Browser/context
+closed in finally, no fixture server started, and4179/4181/4182 have no listeners.
+These are new scoped deployed-software checks, not physical/device/Live acceptance;
+C08, other native renderers and product backlog remain open.
+
+For this nine-file Markdown-only rollout tail, the docs author ran
+`git diff --check` and, through `uv run python`, the repository's documentation
+prefix,55-ID/order comparison, exact report hash and changed-path comparison
+against mergedaa85f4d: PASS. Application, scripts, assets, dependencies and
+configuration are unchanged. Under0028, this record update requires no repeated
+application/full/browser tests, build or service deployment.
+
+## Earlier:29e4f07 approved; PR97 validation rejected stale output; operator repair frozen
+
+Independent `app/test-results/independent-29e4f07/REPORT.json`, SHA256
+`a35a432cc741d5f101b7d51c331aac2880128476c5b628f46ab3086bf32dbde2`,
+APPROVES `29e4f07fb971e466e123590a95d3916323b22141`, tree
+`1f61da7a679f3ccae09cbf6a0dc2c8d8d55516ff`. Its
+`./scripts/check-repository.sh` exits0 in47.098s:574 UI/55 files,325 server/32 files/
+3951 assertions, eight deterministic packages,34 service/26 ship Python tests,
+Svelte0errors/0warnings, AST and repository contracts PASS. Full-log SHA256 is
+`c9a58d86ba19857f1b6589ef224f94bf632b834487885ab2e0685917519815a4`.
+The original77f023e failure and two-file import repair below remain unchanged.
+
+With Bun1.4.0 and `--no-env-file --config=/dev/null`, the verifier ran
+`node_modules/@playwright/test/cli.js test --config test-results/independent-29e4f07/playwright.config.ts`.
+The first six-pass/one-failure result used a private Heads material sentinel that
+collided with an existing public skeleton template; unique-sentinel single-case
+renewal passed in1.534s. Both records remain. The first run used mutable gate
+`build-kit`, whose route-node order, CSS order and public Intl date template differ
+from the formal Bun-built payload. Equal CSS rule multisets do not prove equal
+cascade behavior; source equality does not bind browser acceptance to those bytes.
+
+Independent `run build:server --outdir test-results/independent-29e4f07/server`
+passes in4.243s with the same complete author manifest
+`a2a0afdb2db6402bb632ea212eeff09aed654d4e082c65553b1891f66e10f663`,
+56 runtime files and72 static routes. All seven cases then pass in5.304s using
+`serve-exact-payload.ts` and the isolated bundled handler/client/prerender bytes.
+This is seven distinct cases, not14: five fresh cases plus two renewed Fans cases.
+They cover Queue row counts/resize/200%/empty/error geometry, Heads Copy retirement
+and hidden prior telemetry, Thermals stale-success versus failed acquisition, and
+Fans320/720 hydration/refresh recovery. Exact-payload browser log SHA256 is
+`d9a2dc603b0197452f84978a77e2ad893e50de6f114c70a02b33895bc7dbe986`.
+
+Author triage `app/test-results/native-observation-pages/build-command-triage/REPORT.json`,
+SHA256 `f34f055fc7a7a31d6787bc7a64228a61f684238481a4afbb5173b30a55314aac`,
+records an accidental `bun … run build --version` build during investigation.
+It overwrote mutable output, not tracked inputs; original gate output had been
+archived and the isolated formal payload/browser verification was unaffected.
+No new323-case full browser run, BFCache hit or actual-printer acceptance is claimed.
+All328 verifier outputs are hashed; owned browsers/processes/ports were released.
+
+The read-only ship plan first rejected the draft PR without mutation; after the
+PR became ready, planning passed. Execute operation
+`pr97-20260902T165630-1d4262` failed in validate with
+`Invalid or incomplete Kit build contract`. Receipt basename
+`pr97-20260902T165630-1d4262.json` SHA256 is
+`0ea30e370a8f8cf2849855b9fd80d899bb287ab49ca31e25868e2b9404170ae3`:
+merged=false, installed=false; no shipment or restart succeeded. PR95 remains deployed.
+
+Independent `app/test-results/independent-pr97-ship-contract-failure/REPORT.json`,
+SHA256 `236ec6ce139038eb3312bc11d72c2d877ca5c8b87a44857b396125e9bc35c379`,
+identifies fixed `test-results/ship-build` reuse:56 declared files versus70 actual,
+14 undeclared old hashed client assets and zero missing files. The unchanged
+closed inventory reader correctly rejects it and accepts the fresh56-file/72-route
+formal payload. No native-route mapping or guard relaxation is required.
+
+The operator repair changes only `scripts/u1_ship.py` and its test: every validation
+gets a unique empty `candidate-*` directory while previous successful/failed output
+is retained. `app/test-results/ship-candidate-isolation/REPORT.json` SHA256 is
+`f8c33ac7ebf2410b9e7eef2d2deb695659fc0fd9df1d866ba1e7176dfa490d3e`.
+Author command `uv run --no-project python -m unittest discover -s scripts -p test_u1_ship.py -v`
+passes27 tests; log SHA256
+`d1caf5f632e9b9b976adb8561b5339bcc26ff8c7c569d95c6b4e663f940a668d`.
+The new test first failed its directory assertion, then the refined fixture
+reproduced the original inventory error on old source; both failures remain.
+After repair it proves two distinct initially empty outputs with equal manifests,
+retention of original evidence bytes, and rejection/preservation of a third fresh
+output with an undeclared asset. Reader, service, identity/security and shipping
+gates remain unchanged; these are synthetic fixtures, not a real ship retry.
+
+All417 app inputs remain bound to b202a856 below, with zero app delta and all15
+public HTML files identical. No rebuild, full gate, merge, install or service
+operation ran during this repair. Test resources closed. The new operator candidate
+requires independent exact review and mandatory required regression before another
+u1-ship attempt;29e4f07 browser evidence needs explicit unchanged-input retention.
+
+Docs-only `git diff --check`, the repository documentation prefix through
+`uv run python`,55-ID/order comparison and report/source hash checks pass.
+Application diff against29e4f07 is empty. These nine Markdown updates ran no
+application test, full regression, browser or build; operator authorship and
+independent candidate acceptance remain separate.
+
+## Earlier candidate77f023e: required gate failed at test-import type checking
+
+Independent `./scripts/check-repository.sh` on
+`77f023e1b007d836651d862ca1cbcae4fa91f608`, tree
+`8000b9abb18990a886932d9b4d264345614c445a`, exits2 after28.779s.
+`app/test-results/independent-77f023e/full-repository-result.json` records the
+command/result; `full-repository.log` SHA256 is
+`276e36fb7fdc95db6c871be8ced668914903c5562022e15263f91e71aa82e3e9`.
+Independent `REPORT.json` SHA256
+`376b311ae219483bc47d83a5861e43a117ecb2e1b0562d1cb9eea820bc61876d`
+records CHANGES_REQUESTED. Svelte0errors/0warnings, AST,574 UI tests/55 files and
+all eight deterministic package checks pass. Server TypeScript checking then reports TS2835 for three
+imports in `tests/server/kit-native-observations.test.ts` without NodeNext `.js`
+suffixes. Server tests and both Python stages were not reached; independent targeted
+browser checks had not begun. This is not a full-repository pass or candidate
+approval.
+
+The author's first focused repair exposed five equivalent imports in shared
+`tests/fixtures/kit-observation-store.ts`; retain
+`app/test-results/native-observation-pages/import-repair/typecheck-first.log`.
+That first focused log SHA256 is
+`f1e5f0cdf61ab8794f93f95bdd4cc30436c857433fcdb198bac2d2d709841b0a`.
+The frozen repair adds eight `.js` suffixes in these two test/fixture headers;
+production/configuration/guards are unchanged. Author repair `REPORT.json` in
+that directory has SHA256
+`cc10869d018b8f0699f53132774076a887be363a8695e3f893ff9fe375e1aaf0`.
+
+Using Bun with `--no-env-file --config=/dev/null`, `run check` now passes;
+`test tests/server/kit-native-observations.test.ts` passes three/195 assertions.
+With `U1_BROWSER_REPORT=./import-repair/browser-fans.json` and
+`U1_BROWSER_KIT_PORT=4182`, the existing Playwright config and grep
+`Kit Fans hydrate once.*320` pass one scoped fixture-startup/hydration/error/
+recovery case. The report retains exact command/output arguments. Typecheck,
+server-test and browser log SHA256 values are respectively
+`b2f327a363ac2117e2d2dd2deb15c4faeef49c09c5bb46f62aeee4a0d65e7449`,
+`620dd88aeb30e302ef7f13156853a634c65892085c7bd8d1466749bf66935e81` and
+`8908ff0b286bca1975cf9fbd1eb416fd7531bc1514fa09836bfc1643b784c9f6`.
+
+The new417-file `app-inputs.json` SHA256 is
+`b202a856519c65ae3a8de47408a73ecf1dcde50869d0c894ef1177bc3e9e2688`.
+Parity evidence binds333 unchanged production inputs,15 unchanged public HTML
+files and56 retained payload files; manifest remains a2a0afdb below. No rebuild,
+full suite or broad browser renewal ran. Owned browser/fixture/processes closed
+and4182 is free; no printer, deployed service or user session was touched.
+Required regression and independent exact review must renew on the next frozen
+candidate; the original77f023e failure remains unchanged.
+
+The docs author renewed `git diff --check` and, through `uv run python`, the
+documentation-only contract prefix,55-ID comparison and report/input/repaired-file
+hash checks: PASS. Only four continuity Markdown files changed in this update;
+no application/full/browser/build check was repeated by the docs author.
+
+## Prior native observation page author evidence
+
+
+Author report `app/test-results/native-observation-pages/AUTHOR-REPORT.json`, SHA256
+`682fbcf027852d36cd5f079c1a643e23035f03a816bb6b3015879f2a3bf5598a`,
+binds source from mainb5329ad. Its417-file non-Markdown application inventory
+`app-inputs.json` has SHA256
+`5fe71e58fd27a2ad0dc5ffa8ab3169a0b4c3232687328b281c1eabb630550d37`.
+Thermals/Heads/Queue now have native prerendered/hydrated page source at existing
+URLs, joining Fans. Closed native-path mappings bind CSP and build routes; three
+new page compositions are explicitly registered without raw DOM allowances.
+Shared presentation/controller/HTTP port, Camera lifecycle and public widgets
+are unchanged. This is focused author evidence, not independent acceptance or
+shipment; PR95 remains deployed and C08/Screen Sharing stay paused until home.
+
+Commands below ran from the app root using Bun1.4.0 with
+`--no-env-file --config=/dev/null`. Logs are in the report directory; the report
+records every exact command/log hash and retains the initial failures.
+
+| Actual command or scoped invocation | Result and retained failure |
+| --- | --- |
+| `bun … run build:server --outdir test-results/native-observation-pages/server` | First failed because the three new routes were absent from explicit prerender entries; renewal PASS |
+| `bun … test tests/server/kit-native-observations.test.ts` | Three PASS/195 assertions: exact prerender bytes, SSR zero reads, selected domain, CSP/public denial of every emitted client asset, raw/encoded/trailing/HTML/data aliases and GET-only methods |
+| `U1_KIT_FIXTURE_PORT=4182 bun … node_modules/@playwright/test/cli.js test --config test-results/native-observation-pages/playwright.config.ts` | Initial fixture startup failed before cases ran because the name collided with the adapter env prefix; changed fixture namespace to `U1_BROWSER_KIT_PORT` |
+| Same browser command with `U1_BROWSER_KIT_PORT=4182` |19 PASS/one fixture failure: duplicate injected navigation anchor; failure retained |
+| Same corrected browser command with `--grep "native client navigation"` | One renewal PASS after fixture correction |
+| Same corrected browser command with `--grep "text200=true\|history restoration"` | Four renewed PASS: three actual doubled-font cases replace ineffective root-font fixtures, plus history request-count coverage |
+| Same corrected browser command with `--grep "wrong-view and malformed"` | One new representative Heads wrong-view/malformed refresh/recovery case PASS |
+| `bun … run ui:check` | First failed on browser fetch-mock typing, then types passed but AST rejected three unregistered pages; narrow route registrations renewed final Svelte0errors/0warnings and AST PASS |
+| `bun … run build:server --outdir test-results/native-observation-pages/server-final` | PASS; all56 runtime files and complete manifest match the first successful build |
+
+The21 distinct browser scopes consist of15 unchanged scopes retained from the
+initial run, five renewed scopes and one new case; this is not a new21-case full
+run. Coverage includes native/no-iframe and JavaScript-disabled zero acquisition
+for all three pages;320/390/720 widths and actual200% text; initial failure,
+failed refresh, pending retry and recovery with neutral geometry; Heads complete
+eight-digit hex Copy, rejected-copy feedback, focus and44px target; SPA navigation
+aborts the departing request and mounts each selected view once. History returned
+a fresh document with one mount; no BFCache hit was observed. All data are synthetic.
+
+The complete payload manifest SHA256 is
+`a2a0afdb2db6402bb632ea212eeff09aed654d4e082c65553b1891f66e10f663`
+with56 runtime files/72 static routes. All15 public HTML files match baseline;
+`public-parity.json` SHA256 is
+`d25360be8eb70da90617f49fa44ce5cb919c405c5febe771e827cffd552f4e79`.
+No widget regeneration occurred. Server-test/final-build/final-UI log SHA256 values
+are respectively
+`e6b62aa281342a69ffcb11e4c7763a1e8988beb3011a95449ae1750607bb5ee3`,
+`2494b610dee3d7f047056c89f43c138eb985f6f01c6d2c86ceaea49437714a3b` and
+`e2f4d99851a1a07a56fbfe7aefc65b3be581552ecafd441457287eb35bcc27c8`.
+Owned browser contexts, fixtures and build/test children exited;4182 is free.
+No user session, deployed service, printer, authentication or network setting
+was changed. Required frozen regression, independent exact review, guarded ship,
+BOTH restarts and scoped served verification remain next.
+
+The docs author ran `git diff --check` and, through `uv run python`, the
+repository checker's documentation-only prefix, exact55 ledger ID/order comparison
+and report/input/delta hash comparisons: PASS. Application delta bytes remain
+bound to the author report. No app test, full regression, browser or build was
+repeated for these nine Markdown updates.
+
+## Retained PR95: exact source approval and guarded Switch shipment
+
+Independent report `app/test-results/independent-37884de/REPORT.json`, SHA256
+`bfb5e591d302fb1d3ff0b534ac6b67b2947e5773bd4b5587401ec924fa94ab24`,
+APPROVES `fd642a5987bb8e35c9d5c272c73e4dce26ec882a`, tree
+`a132ed2e12e77fd023a30e671cd1450f6870fed4`. Its required
+`./scripts/check-repository.sh` run exits0 in46.865s:574 UI/55 files,
+Svelte0errors/0warnings and AST, eight deterministic packages, server types,
+322 server/31 files/3756 assertions,34 service/build-contract and26 shipping
+Python tests PASS. Full-log SHA256
+`a78eb5510b8720bbed96c561cf75b0478e53260f29ff305d2307144ba109fcdf`.
+Only requirements/ADR0032 Markdown differs from initial37884de:432 non-Markdown
+inputs are unchanged, so the reviewer binds that run to the exact final candidate.
+
+With `bun --no-env-file --config=/dev/null node_modules/@playwright/test/cli.js`,
+the verifier ran `test --config test-results/independent-37884de/playwright.config.ts`.
+The first run exits1 with34 passes/one failure in51.803s: a private Camera Lab
+case wrongly expected the production dialog instead of Lab's `.local-fullscreen`.
+Only the private selector was repaired; its failure trace/screenshot/log remain.
+The same command with `--project independent --grep 'Camera Lab' --output
+ test-results/independent-37884de/playwright-camera-renewal` renews one pass in1.125s.
+The resulting35 distinct cases are33 affected plus two fresh independent cases;
+no new full browser suite ran. Targeted/renewal log SHA256 values are
+`13329f9970f772d305da3acf309c2f535ce99c7d955be3ec45f3f1d9fa5561f4` and
+`96d9f8f14cd1e45fecea4c4261b8a617bcc7ef956e83f8883491814e6531fe74`.
+
+Another89 fully unaffected cases from eight browser files are explicitly retained
+by source/test/asset hashes; retention binding SHA256
+`35fcb7b155657d610387e12e88b5c55f67a626044dd99887453ca381df4ababf`.
+Other historical multi-consumer/Camera/Bed cases are not silently relabeled as
+fresh acceptance on changed CSS. The35 targeted cases cover track/Button parity,
+40px thumb/2px inset, mode widths, loading/ready/failure geometry, keyboard/focus,
+reduced motion, resize, forced colors and Bed renderer/URL retention. The three
+changed bundles each add147 bytes;12 other public files remain identical. No
+byte caps return. The review's geometry-documentation finding is resolved;
+Camera service/transport and C08 are unchanged.485 outputs are hashed,371 prior
+fixed files and32 new fixed screenshots retained; owned browsers/processes and
+fixture ports were released, with zero actual-printer probes by the verifier.
+
+PR95 merged as `44d4266634bbe2d102a056332726550cbfe068e8`. The completed guarded
+`u1-ship` execute receipt basename is `pr95-20260902T155815-e97e1c.json`, SHA256
+`7c289b6aeb708d41262e2e5b723d537c8db2d881762da0986f3f81679247b195`.
+It binds the reviewed SHA/tree above and Bun1.4.0 SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`
+to release `20260902-44d4266-pr95-20260902T155815-e97e1c`. Mandatory local,
+bundle/codesign and exact-stage gates completed; BOTH services explicitly
+restarted and verified loaded/healthy/integral.59 static and61 security checks
+pass; preservation is true and rollback was not needed. Private service paths
+are omitted. This receipt establishes deployment/preservation; served-widget
+behavior is verified separately below.
+
+Independent `app/test-results/postdeploy-pr95-independent/REPORT.json`, SHA256
+`5b13d1561114ab0eb41b9b0aed05a4157467a583882499ae68e16098d5fecb88`,
+passes three cases with no failures in1.129s. The verifier ran
+`bun --no-env-file --config=/dev/null run test-results/postdeploy-pr95-independent/served-switch.ts`
+with the release ID and active manifest argument; private manifest paths are omitted.
+Camera iframe, Camera Lab and Bed Lab at320px show44px track/Button parity,
+40px thumb and Camera132px/Bed88px widths. Loading/ready bounds are equal;
+Camera retains its three loading modes/footer skeleton, and Bed retains its inert
+loading control with no radio/thumb. Keyboard/Home/End and view selection pass.
+
+Four actual HTTPS paths (Camera host plus three changed bundles) match exact hashes
+and existing CSP;39 active runtime files and58 static routes bind manifest SHA256
+`86ec56a4bd53eaff43173d7c96c5aa26f0a48fb41594e8a729e8988d47a54758`.
+Both service entries match the active release and remain healthy/integral. The59
+static/61 security/preservation results are retained from the exact receipt, not
+repeated. Three tool/frame requests are intercepted with synthetic responses;
+there are zero printer reads or real Camera leases and no C08 repair/Live claim.
+All browser/context/child resources closed in finally; fixture ports are free.
+Eleven output files are bound by manifest SHA256
+`e77178cddb6f111bc1e107a3c3bb002f631a59acca7eb95e09f1300c9d804151`.
+
+Remote desktop access prevents the requested Local Network UI inspection.
+Bounded read-only `launchctl print`, `netstat -an -p tcp`, group-membership and
+fixed-window `/usr/bin/log show` queries confirmed the deployed Mac's Screen Sharing service
+and listener are active, the intended target matches and the account is allowed.
+Two existing server-log activities identify SRP authentication failure but provide
+no established root cause; nearby directory lookup failures and timeouts are not
+proof of ACL denial or an incorrect password. Client-side evidence from those
+existing attempts remains requested. No additional password attempt, credential/
+hash/TCC access, authentication/ACL/network setting change or daemon restart was
+performed by this diagnostic work. It is stopped and does not close C08.
+
+This six-file Markdown-only rollout tail retains the merged application,
+dependencies/configuration/scripts/generated assets. `git diff --check`, the
+repository checker documentation prefix and the unchanged55 ledger IDs pass;
+only the owned Markdown paths differ from merged44d4266. Under0028 this records
+update requires no repeated app/full/browser test, build or service deployment.
+
+## Current C08 diagnosis: remote UDP send fails; root cause unproven
+
+The designated application author's nine bounded attempts are frozen in
+`app/test-results/c08-diagnosis/REPORT.json`, SHA256
+`d0f8005d53abdfe2bdc37dbe5c65d4699c50b5b677d6348c1077bf149e5aeddc`.
+Attempt1 uses actual deployed HTTPS: activation snapshot200, open has no response
+before the12.112s Auto sample, and browser peer/ICE/decoded-frame counts remain0.
+Attempts2/3/4/6/7/9 use current Bun1.4.0 and produce no upstream RTP; attempts5/8
+use immutable PR89 Bun1.3.12 with the same current adapter source and reach upstream
+RTP plus a viewer offer. This is upstream protocol evidence, not browser decoding.
+
+Canonical attempts8/9 share trace SHA256
+`77468f1703bdab4343fd0f0a2ca5f4ec0f5ea0e59313e98c647725545bbb5535`.
+The author ran `uv run --no-project test-results/c08-diagnosis/run-comparison.py`
+with each runtime and its respective `attempt-8-bun1312-binding` /
+`attempt-9-bun140-binding` output stem; private binary paths are omitted here.
+Bun1.3.12 reaches upstream RTP at1157ms and viewer offer at1175ms with no UDP-send
+error. Bun1.4.0 receives external STUN responses but all10 printer ICE-send callbacks
+return `EHOSTUNREACH`; no selected pair/RTP appears before12.068s cleanup.
+The respective logs have SHA256
+`05a93115196d98af4b3fad1f80daa3c081afa89c2552dec83d4816ebdf2c469f` and
+`c503ed65c8de6e3d2b327524a92955709eb52bd659eeeb05491a97aaef4039b8`.
+
+Both use udp4 wildcard binding, the same advertised interfaces, configured printer
+IPv4 and kernel route. Synthetic authenticated STUN wire bytes match exactly
+(SHA256 `9263fcab17d321e727898f56d919a063e61ef5c98ae739299629dd8acafb7453`)
+and parse successfully; loopback and two own-interface UDP round trips pass on both.
+These local/synthetic checks do not prove remote-printer reachability. Signing
+identifier/Team/designated requirement match; executable UUIDs differ. A bounded
+OS log query returns0 entries, which does not determine permission state.
+
+Read-only primary-source research found no matching Bun regression issue.
+[Apple TN3179](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy)
+documents LAN UDP access rules, responsible-code/signature/UUID tracking and the
+LaunchAgent distinction; it does not identify this failure's cause. Neither macOS
+Local Network denial nor a Bun defect is established. The coordinator requested
+the user's visible Local Network entry state; no settings change is authorized.
+No production service source changed, no runtime rollback or repair was adopted,
+and current served Live remains unaccepted. All nine subprocesses and owned peers,
+the isolated browser and contexts are closed; user tabs and services are preserved.
+No printer controls, service restart or further real-camera probes were performed.
+
+## Earlier Switch44px source and synthetic consumer evidence
+
+The separate user-approved Switch geometry source is frozen in
+`app/test-results/camera-switch-height/AUTHOR-REPORT.json`, SHA256
+`64c76bd43f38847f6a498e7ed1bc2bfe72066b65638652c3406a7c79bcf5aab9`.
+Only `src/components/common/Switch.svelte` production CSS changes: its existing44px
+outer box is filled by the track; the40px thumb keeps2px inset; existing action-size
+tokens replace repeated sizes. DOM/state/loading policy is unchanged. Switch SHA256
+is `5cbc5d9d4c7a6b62025ee49512596153bb23e2933d1938b8657044bb466e962d`.
+Affected source consumers are CameraWidget, CameraLabWidget and BedMeshWidget;
+the three existing browser geometry files bind their revised assertions.
+
+`bun --no-env-file --config=/dev/null run ui:test -- src/lib/client/common/Switch.test.ts`
+passes26 tests. Five separate isolated build commands compile Camera Live, Camera
+Lab, Bed Lab and the two affected harnesses without modifying shared/public outputs.
+The source-producer copies preserve options and graph guards, changing only output/
+import paths; the state-harness copy selects only Switch. Exact commands and output
+hashes are in the report. Sizes94546/83945/636894 are isolated UI evidence only.
+
+The private4182 Playwright run initially passes10 Camera Lab cases, fails two Camera
+cases and interrupts one because a newly added assertion used a dialog label as
+the fullscreen button name. This fixture error and traces remain. Correcting only
+that selector, the targeted Camera/shared-Switch/Bed renewal passes23 cases in18.1s;
+33 distinct cases are covered through10 retained+23 renewed, not one clean full run.
+Evidence confirms Camera and Lab44px track/Button parity,40px thumb,132px three-mode
+width, stable loading/ready geometry, Bed88px two-mode width, keyboard/focus/URL and
+reduced-motion behavior at the recorded widths/text scales. These use synthetic
+media/tool data and do not prove C08 Live connectivity. The author inspected the
+packaged Camera Lab320 screenshot; independent exact/UI review remains separate.
+
+At this isolated UI checkpoint, all15 public HTML files were byte-identical to
+HEAD and no shared build/pins changed. The application author separately owns
+final CameraLive/CameraLab/BedLab regeneration and package-pin integration. All fixture/browser/runner handles closed,
+4182 is free, and `git diff --check` passes. No actual printer connection, full
+repository/browser run, commit or deployment was performed by the UI/records author.
+
+### Earlier integrated Switch packages: author source freeze
+
+The separate integration report
+`app/test-results/camera-switch-height/integrated/REPORT.json`, SHA256
+`88e527c53e69f340881b1fea3b8425ba489fed03aef2d93d10faf5945405df77`,
+binds the unchanged Switch source and three browser test files above, three rebuilt
+public packages and the two package-pin test files. All other12 public HTML files
+match HEAD. Camera service/transport/lifecycle, dependencies and runtime are unchanged.
+
+With `bun --no-env-file --config=/dev/null`, the author ran `run build:live-camera`,
+`run scripts/build-camera-lab.ts`, `run build:bed-mesh-lab`, then
+`run scripts/package-private-lab.ts`: all exit0. The focused
+`test tests/server/private-lab.test.ts tests/server/live-fans-package.test.ts`
+passes12 tests/130 assertions; log SHA256
+`548d5f5a1bb30022c13a83b174d08bb65230750bd180b9d93e1ec6c40251b676`.
+`run verify:live-camera` and `run scripts/package-private-lab.ts --check` pass.
+The report records each exact command and log hash.
+
+| Package | Bytes | SHA256 |
+| --- | ---: | --- |
+| Camera Live |94546|`4ccfa91f17d00ff33762ba0cd68b9288516ffe3ffbab6558cdb8f1bf30713535`|
+| Camera Lab |83945|`e3e1fadeb9aaf9aa416fe9950a9e49abdbd512124844de746913647078df5bf9`|
+| Bed Lab |636894|`d3b92ed3c854c6a1d39c9ff90c0a8894f116349add5ba0bebaa5e36454634a4e`|
+
+These equal the isolated consumer bytes supporting the retained26-unit/33-case
+mixed browser evidence; integration did not rerun those tests. Bounded design
+review and author checks do not replace independent exact candidate acceptance.
+All integration processes finished and owned resources are closed. The records
+pass preserves55 ledger IDs and passed `git diff --check`; it ran no app/full/browser
+suite. Next freeze a candidate for required validation, independent exact review
+and guarded Switch delivery. PR93 remains deployed and C08 remains unresolved;
+no current-runtime actual decoded-frame acceptance or service fix is claimed.
+
+## Deployed PR93 source approval and guarded shipment
+
+Independent exact review of `7a0d398c1652d1a7ae8aede8bf952f27bb3636cd`, tree
+`d8a34948e29a4b93b62125d4aef0100a1ddd9f04`, APPROVES the repaired candidate.
+`app/test-results/independent-7a0d398/REPORT.json` SHA256 is
+`ec7d870e660b277de0cdb38e5c0f9689cf2e361ee94b04624eb655e1410a8ce3`.
+`./scripts/check-repository.sh` ran once on this candidate, exit0 in45.595s:
+574 UI/55 files, Svelte0errors/0warnings and AST, eight deterministic packages,
+server types,322 server/31 files/3756 assertions,34 service/build-contract and
+26 shipping Python tests, repository contract PASS. Full log SHA256
+`33860fd8a2f312bd7b6f859ebcd38493b7072cadf436e8ab942b2fbd0403e484`.
+
+Browser coverage is323:321 widget/Lab cases retained from976's full run plus two
+renewed actual Kit Fans320/720 cases, not a second full browser run. Retention
+binding SHA256 `17533ceb41bae4a910c9f629e19cf5d1c8f4c94db0b816a2c254326195872600`
+binds all39 unchanged runtime files,58 routes/59 role checks and unchanged lease
+handler/source. Fresh synthetic `bundle:server`→`build:server` passes with eight
+ambient markers excluded, explicit process env preserved, an effective bunfig
+positive control and poisoned Kit-directory rejection. All18 changed paths were
+reviewed; three original findings are resolved. The976 failed report below remains
+failed. No software/protocol check here proves real Camera or device acceptance.
+
+PR93 merged as `60cab96747775fd5715b4c626f99726e68b3d85c`. Guarded `u1-ship`
+execute completed release `20260902-60cab96-pr93-20260902T142032-7f9bba` with
+Bun1.4.0 binary SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`.
+Shipment receipt basename `pr93-20260902T142032-7f9bba.json`, SHA256
+`1ea3f1b1cacaf78d2075cd3a31b8772cbea687bbba803fa60cb305835c21aa06`,
+records all mandatory local validation/bundle/codesign/exact merged-stage gates,
+explicit restarts of BOTH services, loaded/healthy/integrity-verified status,
+59 static/61 security checks and preserved state. Rollback was not needed.
+Private installation paths are intentionally omitted. This is deployed-service
+acceptance; scoped served-widget behavior remains a separate postverification.
+
+Independent postverification report
+`app/test-results/postdeploy-pr93-independent/REPORT.json`, SHA256
+`5ec6d156683ff5f5a933205cfced7c115cc69d4f9ce69604187f7202045b4ad6`,
+passes five served-UI cases with no failures. The exact deployed HTTPS HTML/JS/CSS
+matches39 active runtime files; separate checks cover eight bundles plus native
+Fans HTML, and all21 UI-observed response paths match hashes. BOTH services remain
+loaded/healthy/integrity-verified. The59 static/61 security/preservation results
+are retained from the exact shipment receipt, not a redundant security run.
+
+`bun --no-env-file --config=/dev/null run test-results/postdeploy-pr93-independent/served-ui.ts`
+exits0 in1.8s. Native Kit Fans320/720 each hydrates once, reaches ready, masks failed
+refresh telemetry with neutral anatomy/footer at stable height, and recovers.
+Heads retains the swatch/full hex and148×44 borderless Copy with synthetic keyboard
+clipboard behavior. Camera retains three44×44 icon targets, synthetic Live failure
+switches to Auto, Snapshot stops acquisition and fullscreen Escape works. Camera
+Lab's error/reset case passes. All13 tool responses were intercepted; Auto's five
+responses reuse one synthetic JPEG with new timestamps and a controlled clock.
+This does not establish fresh physical images, actual Live, phone/Safari or native
+clipboard acceptance. C08's intermittent real acquisition risk remains open.
+
+The report binds15 output files; output-manifest SHA256
+`738e6bc5008151924b360a356410ef9a3506d931d489089a52c686c27c8f9d5f`.
+All owned browser/context/child groups closed in finally; fixture ports are free,
+zero real-printer connections/leases were opened and user resources were preserved.
+For this Markdown-only tail, `git diff --check`, the checker documentation prefix,
+unchanged55 ledger IDs and a Git comparison against merged60cab967 confirm only
+Markdown changed: application, dependencies, configuration, scripts and generated
+assets are retained. Decision0028 requires no extra build, full suite or deployment.
+
+## Earlier976aa9f independent failure and focused repairs
+
+Independent report `app/test-results/independent-976aa9f/REPORT.json`, SHA256
+`67881024fe70a60287ded344ac7d1cc8a2ff6af062e29b46e6a1eed6a98b9701`, binds
+`976aa9ff9fcf8431934bb1826060828b42318d92`, tree
+`f18bd5f9df61b090799c03133bc38d096aedbe60`, and concludes CHANGES_REQUESTED.
+The required repository run passes574 UI/55 files, eight packages/types/AST but
+stops at315 server PASS/two FAIL/3710 assertions. Separately executed full browser
+passes323 cases in131.404s; Python lifecycle34 and shipping26 also ran and passed.
+Actual Kit completion-gap/normal/other-consumer/subsequent-request adversaries pass
+with zero printer acquisitions; canonical39-file/58-route/59-role/six-pin checks
+pass. These passing subsets do not turn the failed repository gate into a pass.
+The report retains the separate no-env build defect and all707 output hashes.
+
+The records author's two-fixture repair report is
+`app/test-results/widget-fixture-repair/REPORT.json`, SHA256
+`c31e320bd5606ae3bafeac972803fac05760c4fc367d0ed82f7ac3f99870448b`.
+`bun --no-env-file test tests/server/camera-widget.test.ts --test-name-pattern 'a remounted live intent restores once'`
+passes1/8 assertions after awaiting the observable answer request with a1s deadline
+and event-loop yields. A first two-file run passes88/fails2: strict process-error
+checks expose ETIMEDOUT in both Chrome CLI helpers even with complete DOM.
+The validator's prior16MiB experiment had confirmed Thermal stdout truncation at
+1114112 bytes versus a complete4333217-byte dump, but did not inspect process error;
+it cannot prove successful browser shutdown. Both failure stages remain recorded.
+
+The final two-file `bun --no-env-file test` invocation passes90 tests/1173 assertions
+in4.76s. Layout helpers now use existing Playwright with separate temporary profiles,
+bounded launch/navigation/result waits, a4096-character result bound and finally
+context/profile cleanup. Exact production HTML/CSS and all geometry assertions
+remain; no CLI timeout is tolerated. All15 public files match976 byte-for-byte.
+Camera test SHA256 is
+`d9f69b2216092d9f32e06893883c3eac643aa9db62aedddee922d57c6f008374`;
+observation test SHA256 is
+`6ba95f2270e9f76c6ffc6b5aa2202bd91ba59358a6b0b3324b3b426b37226d40`.
+Independent bounded source approval is `independent-976aa9f/fixture-source-review.json`,
+SHA256 `07a3423a8bc0d71875fc33f0f3765d0ef2414795ac7b5014e071e1f1dfb75c72`;
+it does not independently rerun the90 tests or approve the new whole candidate.
+
+The checker adds `--no-env-file --config=/dev/null` to its ten existing Bun gates,
+without changing order, fail-fast behavior or either Python gate. `bash -n` passes;
+a temporary command-recorder fixture confirms all12 commands and propagation of
+an injected exit29 before later gates. This executes no app/full/Python suites.
+Report `widget-fixture-repair/checker-no-env.json` SHA256
+`6602d1eeb4528cd03a5594e8189f2ce945ad41a1ab3653ebf8415e2cb46bae80`
+binds checker SHA256
+`eb4ce296b77c1244d555b6cce7a1da4c673dcd22e48b4139465ca436f68813fe`.
+The first recorder's wrong argument index was fixed only in the private probe;
+the actual checker was unchanged.
+
+The application author's frozen no-env report is
+`app/test-results/kit-env-repair/AUTHOR-REPORT.json`, SHA256
+`a4aabffce43c1c9ac306f9404f690d1b23d88b29acf9bfe1b754b48b2441fec8`.
+Its409 app/entry inputs, including the two repaired fixtures, bind SHA256
+`8c15774099c11c3328c45802cf4bc492cfd93aba73ad49caabb932816f1ee2ef`.
+`bun --no-env-file --config=/dev/null test tests/server/kit-env.test.ts tests/server/packaging.test.ts`
+passes8 tests/47 assertions. Server types, UI0/0 and AST, plus frozen install pass.
+`uv run --no-project plugins/u1-print-studio/app/test-results/kit-env-repair/build-adversary.py`
+passes two real package builds in isolated copies with distinct synthetic private/
+public markers: inner processes and payloads exclude markers/workspace paths.
+Their canonical manifest SHA256 is
+`ca8287a2f5b1cc33381c33ded522d33116912f38a548a8da21e84579ce00bb73`;
+symlinked fixture dependencies change chunk IDs, so this is not the release hash.
+The actual-root `bun --no-env-file --config=/dev/null run build:server --outdir test-results/kit-env-repair/production-payload`
+retains976's production manifest SHA256
+`3f484367dff7071a248fc4e4773cb7be761ee565291795a5c9a22fb0b1e78736`.
+`bun --no-env-file --config=/dev/null test-results/kit-env-repair/relocation.ts`
+passes116 checks with both SIGTERM exits0, source reads denied, empty external cwd
+and no node_modules. Exact command/log hashes and initial symlink-fixture failure
+are preserved in the report. The independent defect showed ambient Kit loading;
+no existing-payload secret leak was established. Explicit runtime process/env-file
+semantics remain unchanged. Kit's guarded `.gitkeep`-only source directory and
+flags at both outer/nested Bun boundaries prevent build autoload; no runtime
+payload depends on that directory. These are author repairs, not new exact approval.
+
+All owned fixture browsers, profiles/processes and temporary stubs are released. No app build/full regression,
+service change or printer call was performed by this repair author. Next renew
+necessary full validation and exact review on the repaired committed candidate;
+PR91 remains deployed and all ledger/no-action boundaries remain.
+
+## Earlier0043 application freeze: user Bun1.4.0 and body parity
+
+The application author's `app/test-results/unified-app/AUTHOR-REPORT.json`, SHA256
+`c5a0bba0e8957fc2239293cb7942728b38c0dbaf823fe88df9fc487c9bbd251e`, binds
+406 non-Markdown app/plugin-entry inputs in `source-inputs.json`, SHA256
+`3cb61b356e089bf1c75a6730d462a8a08d53d63d3fbe26a02ab44fdab57c8f40`.
+This is source-frozen author evidence, not independent whole-candidate acceptance.
+The user-installed Bun1.4.0 has revision
+`34cbb9a40b4bd1bd767d134a7065e66c2432a676`, binary SHA256
+`539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`.
+
+Actual final author commands/results under that runtime:
+
+- `bun test` on the report's11 named server files:105 PASS/1466 assertions.
+  `author-final-focused.log` SHA256
+  `0be67a704e5e8cdbf46680508a669d200d924bd74ba0a915fcb17a0f884e9d90`.
+- `bun run check`, `bun run ui:check`: PASS,0 errors/0 warnings and AST PASS.
+  `bun --no-env-file --config=/dev/null install --frozen-lockfile --ignore-scripts`
+  passes with no dependency changes.
+- `bun x playwright test --config playwright.kit.config.ts`: two native Fans
+  cases PASS at320/720. `verify:private-lab` and all five `verify:live-*` commands
+  pass all eight artifacts, byte-identical to the earlier UI freeze. Current
+  legacy vendor output was regenerated with `bundle:widget-vendor` for1.4.0.
+- Two separate `bun --no-env-file --config=/dev/null run build:server --outdir ...`
+  calls produce identical39-file/58-route manifests, SHA256
+  `3f484367dff7071a248fc4e4773cb7be761ee565291795a5c9a22fb0b1e78736`.
+  `bun test-results/unified-app/relocation-author.ts` passes116 route/role/asset
+  checks from an empty external cwd with source reads denied and no node_modules;
+  both service fixtures exit0 on SIGTERM. The root manifest/static-contract reader
+  passes39 files/58 routes/59 role checks. Exact command arguments and every log
+  hash are in the author report.
+
+Preserved failures include body padding/headerless parity, cloned-request hangs,
+Kit start-publication/fixture assertions, the1.3.12 late-offer disconnect failure,
+1.4.0 vendor mismatch and moved test-resource paths. Their fixes and final renewal
+are attributed in the report; none is silently relabeled a clean full run.
+Current source uses standard close/finish events without polling, address inspection
+or an end-method patch. Generic request lifetime releases newly created Camera
+leases on abort; HTTP finish transfers ownership without proving client receipt.
+The process-local `U1_KIT_BODY_SIZE_LIMIT=Infinity` is set before handler import;
+existing128KiB endpoint readers remain, with actual1MiB MCP ping and128KiB+1
+endpoint rejection covered by the final author run.
+
+The records author's separate official-runtime probe is
+`app/test-results/bun140-abort-probe/probe-s3sk7qw8/REPORT.json`, SHA256
+`473db4301a38a7453d2e4cf28f1002498c2b4be8d1a903aa7a66631915878a59`.
+Official darwin-aarch64 ZIP SHA256
+`c669e97f6164e1c96e0701748db98dfa77492908cbd8394c7557134a735de381`
+matches GitHub release metadata and official SHASUMS256; its extracted binary
+matches the user's installed hash above. The saved signature was not independently
+verified against a trusted signing key. Both runtimes ran `--no-env-file` with
+`original-probe.ts` and `lease-probe.ts` (exact arguments retained in the report).
+Bun1.3.12 loses response/socket close after completed POST and passes2/fails4
+cases;1.4.0 passes all six: late leases at5/100ms, held lease, normal finish,
+keepalive and SSE. The1.3 runs completed before the user's reinstall removed its
+old path; the agent did not restore or change global Bun. These are synthetic
+loopback probes with no polling/private handles, not real Camera acceptance.
+
+The body-parity report is
+`app/test-results/mcp-body-parity-probe/probe-gl7708p1/REPORT.json`, SHA256
+`536201545b96bab81dfe67e53d4fb174efa1f2d17f65253a06ef8bba8385bf6e`;
+input-manifest SHA256
+`6daa716d055cb1bfa8d46d4eae2036f71dbd35b7870a8e1d6e17246521999e48`.
+`bun --no-env-file test-results/mcp-body-parity-probe/probe-gl7708p1/probe.ts test-results/mcp-body-parity-probe/probe-gl7708p1/results.json`
+ran on user Bun1.4.0 and exited0. Source inspection binds baseline111470's exact
+SDK1.30/Hono streamable transport with no configured finite MCP cap; the separate
+legacy SSE transport's4MiB cap does not apply. Twelve synthetic initialize cases
+compare524288/524289/1048576 declared bytes and1048576 chunked bytes: baseline
+SDK/Hono and Kit Infinity all200; default Kit512KiB accepts only the exact boundary
+and returns400/-32700 for the three larger cases. This tests installed conversions,
+not a full baseline application/old-runtime replay or arbitrary-size practicality.
+
+All probe sockets/SDK transports/processes and4182 are released; the main author
+released4181 and its browsers. No actual printer request, user environment,
+LaunchAgent or deployed-service mutation occurred. Next bind the committed source
+and runtime to one required full repository/browser owner and independent exact
+review, then guarded shipment. PR91 remains deployed; all55 ledger IDs and C08,
+Progress no-action, reactive-class discussion and c6 boundaries remain unchanged.
+
+## Earlier0043 UI freeze and bounded shipping approval
+
+The six-file shipping group received independent bounded APPROVE in
+`app/test-results/independent-kit-script-review/renewal/REPORT.json`, SHA256
+`c95302dc20cfd4262a8d16d04488c282a316f95bbc85131cfa4214d1a28a0761`.
+It binds the renewed six hashes, actual39-file/58-route/59-check manifest, all six
+source pins and five rejected directory adversaries. Prior P1/P2 findings remain
+below. This is separate from whole-candidate review and full regression.
+
+The UI author's `app/test-results/ui-migration-builds/REPORT.json`, SHA256
+`25dbbc89fe5c85bd9e8ed8c95a53c8e98e3f548ac692a2e47c3c961f23579631`, binds
+287 UI/build/test inputs (`final-ui-inputs.json` SHA256
+`d567afd0b53c122d6d16642c6ac8891deba162ba40756dd1131e42d848f2aa81`),
+all eight artifact hashes, commands and logs. Pinned Bun1.3.12 ran `ui:check`
+(0 errors/0 warnings, AST PASS), focused `ui:test --` on five moved
+common/graph/Camera/Bed test files (70 PASS), and `bun test tests/server/private-lab.test.ts tests/server/live-fans-package.test.ts`
+(12 PASS/130 assertions). `verify:private-lab` plus all five `verify:live-*`
+commands pass after final graph/title repairs. Sizes are156852/636747/83798 for
+light/Bed/Camera Lab and86992/93059/96772/88512/94399 for
+Fans/Thermals/Heads/Queue/Live Camera; these are measurements, not byte caps.
+
+The dedicated4182 Playwright config ran29 cases:18 PASS/11 FAIL after an initial
+missing-harness collection failure. Eight failures exposed generic-first Lab
+titles; three tests assumed4179 instead of configured exact origin. Both were
+repaired without relaxing semantics. Affected renewal passes21 cases, plus one
+actual packaged CameraLab seven-state case; eight unaffected cases retain their
+unchanged artifact evidence. Thus30 distinct cases are covered, not one clean
+full run. All original logs/screenshots/traces remain ignored. No printer lease
+was opened; all owned fixture/browser/runner handles exited and4182 is empty.
+Current app/route/lifecycle work remains an uncommitted candidate awaiting frozen
+full regression and exact review. PR91 remains deployed; C08 and other backlog
+are unchanged. The README documents one app/root install and the precise native
+Fans versus Kit-served HTML boundary.
+
+The main application author additionally reports, and the log tails confirm,
+`app/test-results/unified-app/lifecycle-focused-renew.log`28PASS/200assertions
+(OAuth/Fans/Camera disposal), `kit-mcp-abort.log`5PASS/47assertions (actual Kit MCP
+GET SSE abort, DELETE/OPTIONS, negotiation and independent shared consumers),
+`kit-browser-renew3.log`2PASS (native Fans320/720 hydration, neutral failed refresh
+and recovery), and `http-port-unit-renew.log`2PASS. These are attributed author
+checks, not tests run by the records author or a combined full suite. These intermediate
+commands are superseded by the final attributed report above; no independent,
+deployment or actual-printer acceptance is implied.
+
+## Earlier0043 source pilot and shipping interface review
+
+The application author moved to the single app root and built39 runtime files/
+58 static routes. `tests/server/kit-fans.test.ts` renewed to3PASS/32assertions in
+`app/test-results/unified-app/fans-test-renew2.log`: actual Kit page navigation
+performs zero acquisitions, HTTP/MCP share the injected store, and focused raw
+target/method/UTF8/chunked-body checks pass. Earlier runs remain failed:
+`first-fans-test.log` passed2/failed1 because odd UTF8 padding produced131071
+instead of131072bytes; `fans-test-renew.log` passed2/failed1 because missing
+Content-Type made the adapter expose a null body. Renewal2 adds application/json
+and does not establish headerless parity. The author is repairing that actual
+compatibility gap; remaining routes and production MCP lifetimes are pending.
+
+The separate root script author ran `uv run --no-project scripts/test_u1_service.py`
+and `uv run --no-project scripts/test_u1_ship.py`: initial29/26PASS, renewed32/26PASS
+after schema2/legacy-rollback/tamper fixtures, plus script-scoped `git diff --check`.
+Evidence: `app/test-results/kit-shipping-scripts/SCRIPT-REPORT.json`, SHA256
+`b914203623172de232c789a6476af8593d74be5b31aecd091cd8854b19fe2279`, binds six
+script/helper/test hashes and logs. No full app/browser/deployment run occurred.
+The actual author build manifest SHA256
+`129e67018b01df5eab532666a8711f3e9f1616c2d2e78ee3b9aecfbd56d903ff` passes the
+read-only manifest parser's complete inventory/route-role checks (39 files,
+58 URLs/59 port checks), recorded in `actual-manifest.json` beside the script report.
+
+The first preliminary independent review found a P1 consumer/producer mismatch:
+shipping expected both legacy HTML assets in static-contract/, while the real build
+keeps them at dist top level for resource readers. The parser pass alone did not
+verify those six source-asset pins. It also found P2: replacing source parsing had
+lost the directory's exact closed-link guard; foreign/empty links with recomputed
+hashes still passed. Review report SHA256
+`812535acb21b8f2a8055cf6b5e5d9c7c68c4894a6d10340a0fc329e181ee6047` retains both
+findings and the adversarial evidence.
+
+The author renewed only this script group: an explicit six-asset path map preserves
+all source hashes, and both generated directory aliases require exactly ten closed
+relative focused links with no duplicates/omissions/foreign destinations. Focused
+tests now pass34 lifecycle/build-contract and26 shipping; script diff check passes.
+The same actual39-file/58-route manifest now also passes all six source pins and
+directory checks. `app/test-results/kit-shipping-scripts/SCRIPT-REVIEW-RENEWAL.json`
+SHA256 `a0a4dab13cf681ba0b8750b17ed6cc90785eb20033b74255f7cc14de254e6800`
+binds the new six source hashes, commands/logs and actual-output comparison. The
+group is refrozen for independent bounded renewal; initial failed review remains.
+No app build/full suite/runtime operation was performed here. Application/full/exact acceptance,
+relocation and shipment remain separate; PR91 is still deployed and C08 stays open.
+
+## Bounded0043 adapter probe
+
+The implementation author's isolated probe selects official adapter-node5.5.7
+handler under existing Bun1.3.12, with a thin raw-target/lifecycle HTTP bootstrap.
+This is author software/protocol evidence only; no tracked application/dependency
+change, browser/full suite, deployed service or printer request occurred in the
+probe. The app-root/Fans implementation and independent acceptance remain pending.
+
+Ignored evidence is `app/ui/test-results/kit-runtime-probe/probe-nQ5xHx/REPORT.md`.
+`PROBE-IDENTITIES.json` SHA256 is
+`da38074d48e5594927f298a3d966e820ced3255fd97586dfadbe1b97a52804a6`;
+`report-node-renew.json` SHA256 is
+`843b7ce361deada6c401596171a6b78f0dcb5bee51417462e2939f5f4bec2b0d`.
+The report binds stack, exact commands, source/build/evidence hashes and adapter
+package integrity. All commands ran only in the ignored fixture with pinned Bun:
+`bun install --ignore-scripts`, `bun --bun run build`, `bun run-probe.ts bun`,
+`bun run-raw.ts`, exact adapter-node install, then
+`PROBE_ADAPTER=node bun --bun run build` and `bun run-probe.ts node`/`node-renew`.
+
+Native adapter1.0.1 ran the Kit page/API/MCP/lifecycle fixture but normalized three
+traversal variants in both request and platform URLs, returning200 incorrectly;
+that failure and targeted follow-up are retained. The first node-handler fixture
+cancelled the body reader before returning413, destroying the socket and losing
+chunked rejections. Renewal responds first and cleans incomplete requests after
+response finish. It passes12 explicit checks and seven raw-path observations
+(valid Fans200, six invalid404): shared synthetic page/API service, exact128KiB
+body and plus-one rejection, complete/unterminated chunked413 cleanup, bounded
+JSON MCP POST initialize/tool handling with two opens/two closes, abort active
+count zero, and SIGTERM cleanup/exit0 within two seconds. All4181 servers exited.
+
+The probe's synthetic SSR acquisition is not product behavior; real navigation
+must not acquire printer telemetry. Buffered JSON fixture responses do not prove
+production MCP SSE/GET, full method/error/cancel parity, role isolation before
+static serving, OAuth/Camera ticket/header semantics or URL-prefix/origin behavior.
+Those are integration gates, alongside finite compatibility-route accounting,
+shared widget parity, release-manifest changes, exact review and required regression.
+PR91 source/ship/post evidence below remains the deployed baseline only.
+
+## PR91 exact source acceptance and guarded deployment
+
+Source reviewer and independent validator approved exact
+`2719e604229313494b6e32020cf500f74bcecf69`, tree
+`463f607adb357494d830b56e3f5548d827e83a19`; PR91 merged as
+`6a222a8ff66ca76cb3cac4682501a8cbb44fd5d6`. Independent input binding compares369
+author inputs and487 tracked files with zero mismatches.
+
+Independent `./scripts/check-repository.sh` passed in48.53s:565 UI tests/54files,
+zero Svelte errors/warnings, AST, five focused/three Lab deterministic packages,
+app TypeScript,304 app tests/28files/3645assertions,21 lifecycle/24 shipping.
+One pinned-Bun `bun run test:browser --output .../browser-full` run passed all321
+configured cases in130.57s. Three fresh adversarial scopes pass: Switch contraction/
+roving focus, Heads Copy/Refresh overlap, and Camera fullscreen mode/focus/lifecycle.
+The first adversarial run passed two and failed one because a private fixture's
+15-character sessionId correctly failed the production minimum16 requirement.
+Only that ignored fixture was corrected and the Camera scope rerun: one pass.
+The failed log/trace remains; no production gate or tracked test was weakened.
+
+The coordinator ran guarded `u1-ship` for operation
+`pr91-20260902T121040-666036`: merged/installed complete, release
+`20260902-6a222a8-pr91-20260902T121040-666036`. BOTH existing services explicitly
+restarted, loaded/healthy/integrity verified;31 static/32 security checks pass,
+preserved true, rollback not needed. Source/simulated evidence and this service
+receipt are distinct from the scoped meaningful postverification below.
+
+| Evidence under app/ui/test-results | SHA256 |
+| --- | --- |
+| independent-2719e60-20260903/REPORT.json | `ea3fea76b3823b4fdf63ddc9b6223701cc1bdb7a0f72dd31dfb6541a781e1f7e` |
+| independent-2719e60-20260903/repository-full.log | `922d0bd2c17c4e89a486e813dd4d0b26ccfed95951bc59564a9ca1fd7aeb9f08` |
+| independent-2719e60-20260903/browser-full.log | `9107dab0bf75e779dcdd614d3fa21406c260bdc9ec61678f1f3eb7222ebc31f8` |
+| ship-pr91-2719e60/execute.json | `c07c1b58d2fc24a5c4cf7a9cf5ec9108c829b68d26ef2e3d1a3fbfc1ffbf480d` |
+| postdeploy-pr91-independent/REPORT.json | `1cc1670cb02a2de133fee0d38d0c356a4551edf7a764da393d1b402f32ab9bde` |
+| postdeploy-pr91-independent output manifest | `480e11fa3aa73305b421f6503ded5133a48a00d301cf3732fbeb93b028b58ef5` |
+
+Independent postverification reports SCOPED_POSTDEPLOY_PASS. It ran
+`uv run --no-project scripts/u1_service.py status`, checked both exact release
+entrypoints/healthy loaded services, independently hashed15 manifest files and
+matched all eight HTTPS widget bundles to merged Git. All369 app inputs remain
+unchanged. Actual served HTML/CSP was retained; only tool data/clipboard/local
+canvas media were fixtures, with no UI substitution or actual printer connection.
+
+Pinned `bun x playwright test --config .../playwright.config.ts` passed five cases
+and failed the Camera Lab case before behavioral checks: the private helper used
+Live's `[data-media-actions]` instead of Lab's `[data-camera-actions]`. The original
+timeout/log/trace remains. Only that ignored helper was corrected; the separate
+Lab-renewal config with grep `HTTPS Camera Lab` passed one case. Six distinct
+accepted cases comprise Camera Lab320, focused Camera and Heads each at390 normal
+and320 at200% text, and Bed Lab390; this is five retained plus one renewal.
+They verify compact icon placement/44px targets, fullscreen roving focus and
+video identity, simulated Live failure→Auto, neutral footer/recovery, Heads
+RGBA/Copy padding, and Bed Switch state/URL/reduced motion. No full suite reran.
+Owned runners/browsers are closed,4179 has no listener, zero actual leases/images
+or recordings were acquired, and user apps/sessions/services were preserved.
+C08's prior unclassified real-camera acquisition risk remains open.
+
+The source validator released fixture4179 and owned runners/browser contexts,
+preserving user sessions/services; zero actual printer acquisitions occurred.
+This documentation tail changes no app/source/dependency/configuration/assets and
+runs no application tests/builds. Decision0028 requires no additional deployment.
+Decision0043 records the accepted next single-Kit-app/Bun direction, not an
+implemented route pilot or accepted adapter. C08, Progress, reactive-class and c6
+boundaries remain; no phone/native/real-printer acceptance is inferred.
+This records pass ran `git diff --check` and a read-only
+`uv run --no-project python` comparison: all55 ledger IDs/order preserved and
+tracked changes Markdown-only. The first comparison incorrectly excluded G IDs
+and counted47 in both versions; correcting the regex passed without changing IDs.
+
+## Historical author freeze: common UI, compact Camera overlay and decision0042
+
+The user authorized removal of individual/aggregate repository widget/package byte
+ceilings. This supersedes the previous cap-preservation requirement; no replacement
+ceiling or extra approval is required. These were repo guards, not OpenAI limits.
+Retain size reporting/normal production minification and clean readable source,
+plus integrity/hash pins, deterministic nonempty self-contained artifacts, schema/
+component/security/CSP and every required shipping review/lifecycle/preservation
+guard. Runtime/protocol bounds remain distinct and unchanged.
+
+The author froze application source based on431b5d4: common primitives and compact
+Camera overlay implemented; individual/aggregate byte ceilings removed from Lab,
+observation/live package contracts and corresponding tests. All eight artifacts/pins
+are rebuilt. Common Video now accepts domain labels/icons; service lifecycle and
+playback boundaries remain unchanged. Fullscreen focus wraps actual tabbable
+controls and respects Switch roving tabindex. Final Switch validation uses clear
+whole props; unnecessary plain-Icon wrapper/size-only LabControls experiment removed.
+
+Author evidence is under ignored `app/ui/test-results/camera-icon-overlay/`:
+
+| Evidence | SHA256 |
+| --- | --- |
+| AUTHOR-REPORT.json, exact commands/results/log hashes | `cdd008f69c6b3ee50bed8d9330fbfc95f97c823946b1a30b5a8f8ab9ef0c3cb8` |
+| final-inputs.json,369 non-Markdown app inputs | `6c9214e501d47e7c32323d8e28b26171ca67327b0cb1056e7fb80fdbc9fe4789` |
+| check-final.log | `e3460f6359f8619d0423663eec7b94936599113a6397cd7dbfe7a0113203c7b4` |
+| unit-final-affected.log | `5d5316d7b1a91b7349cc4635b9b800421c918f0249933fec8a5ec5a10072a59e` |
+| browser-final.log | `807c9f63a6da8f0ff578a98cc2e4a0553479ecd084391775abfb6c1e8fdd9ffa` |
+
+Actual author commands from UI: `bun run check` passed0errors/0warnings and AST;
+`bun run test -- src/lib/common/Switch.test.ts src/lib/camera/package.test.ts src/lib/camera/live-package.test.ts src/lib/live/graph-contract.test.ts`
+passed51 final affected tests. With146 unchanged tests retained from the earlier192
+run, this is197 distinct focused UI checks, not a new197-test full run.
+The final `bun x playwright test` command targeting camera-modes/live-camera/
+camera-route/icon-segmented specs (exact grep/output in report) passed24 cases via
+the standard fixture/final public assets. Four Heads cases retain identical final
+Heads SHA `f902508734871bb7d4392c9eb0a313ce70c1abc4eff2b7dcfd544def79245d9d`:
+28 distinct browser cases, not a final28-case run.
+
+`bun run build`, `bun run package:private-lab`, all five `build:live-*` commands
+and both harness builds pass. Final byte sizes are observation213413, Bed636807,
+Camera Lab83810 (private aggregate934030), Fans87001, Thermals93068, Heads96783,
+Queue88526 and Camera Live94413; these are observations, not caps. Exact artifact
+hashes are in the report and final-build-inventory.json. `bun test` against
+private-lab/live-fans-package passes12; the scoped status-dashboard served-asset
+command passes3 with23 filtered. Nonempty/schema/security/graph/pin gates remain.
+
+Required frozen full repository/browser verification, independent exact review and
+guarded two-service delivery are still pending. This documentation author ran no
+application tests/builds. PR89 remains deployed; C08 and all55 IDs stay open at their
+recorded scope. Author browsers/processes exited and fixture4179 was released;
+no new deployed service, real-printer or actual Safari/mobile acceptance is claimed.
+
+Additional attributed editing evidence, preceding final Switch-prop restoration
+and byte-cap removal: author renewed192 focused tests across19files through the
+correct repository `bun run test` runner, all PASS. The prior192-case run remains
+184PASS/8FAIL: six plain-Icon wrapper failures were repaired by reverting that
+wrapper without weakening Heads assertions; two disappeared under the correct
+runner with relevant Bed/Camera source unchanged. Do not reclassify that failed run.
+Author28 focused browser cases PASS, including Snapshot/Live/Auto fullscreen
+Tab/ShiftTab/Escape at320/390/720. UI/UX reviewed supplied narrow/200%, Heads RGBA
+Copy and Bed2D/3D screenshots and reported no new visual blocker; that reviewer
+did not run tests. Those checks alone did not accept later Switch/cap edits; the
+final affected renewal above binds their scoped retention. Earlier cap failures,
+including83493-byte rejection, and the first private-browser configuration cwd
+failure (no tests ran) remain failed historical evidence, not active cap blockers.
+
+## Earlier common UI checkpoint before decision0042
+
+Attributed editing evidence only: common/Button/Icon/Switch migration is implemented
+in source, not accepted/deployed. Author `bun run check` passes0errors/0warnings
+and strict AST. One390px synthetic `camera-modes` case passes; an initial-error
+screenshot matches the compact overlay. No broader browser, application, full
+regression or independent exact approval is established by these checks.
+
+Reported build measurements remain distinct: initial Camera Lab83901/80000,
+then83446/80000 after focused Switch/Icon simplification, still BLOCKED. Initial
+Live94479/100000 passes its cap. A LabControls experiment saved no bytes and was
+fully reverted, with no semantic change. No dependency, pipeline, service or cap
+change occurred. The preliminary source-derived UI/UX P1 concerning unselected
+radios in local-fullscreen tab trapping is being repaired, not accepted as fixed.
+Architect investigation remains scoped to legitimate common/Camera simplification;
+the failed guard does not establish that the accepted design cannot fit. Its
+read-only review found no wrong graph dependency or bounded justified saving of
+the remaining3446bytes while preserving requirements. All eight final package
+measurements/focused author evidence are needed before the next checkpoint; a
+cap change requires explicit user decision and no new threshold is proposed here.
+Further focused reports/screenshots, all-eight-consumer coverage and the assigned
+full/exact gates remain pending. This records author-reported results only; the
+documentation author ran no application tests or builds.
+
+Current branch `codex/u1-camera-icon-overlay`, starting at
+`431b5d40a761919d638a35e2950874e3a5a29519`, follows the user's latest compact
+icon-only Snapshot/Live/Auto direction. Reuse existing animated
+`IconSegmentedControl` behavior in generic common `Switch` inside the Camera
+image's bottom-right; labels only in
+tooltip/aria,44px targets, keyboard/focus/reduced motion and no fullscreen overlap.
+Error status remains beside footer Refresh; service lifecycle/fallback is unchanged.
+Required evidence will cover affected states,320/390/desktop and200% text, shared
+control consumers, overlay/media geometry, accessible selection and package caps.
+The adopted shared move consolidates generic primitives under `src/lib/common`,
+Button/Icon/Switch props/variants, with domain composition/icon mapping kept outside.
+Acceptance also requires preserved component/import guards, all shared consumers
+and all eight deterministic bundles, including package caps. Semantic-token,
+service/lifecycle, Progress/reactive-class and c6 changes are outside this scope.
+One assigned owner runs the required frozen-candidate regression; no repeat merely
+because authors/reviewers change. No build/test was run for this contract expansion.
+No application/browser/full gate ran in this documentation pass; author evidence
+and independent exact/full validation remain pending. PR89 evidence below does
+not accept changed bytes or close C08's intermittent acquisition risk. No new
+deployment, Progress/reactive-class/c6 work or cap change is claimed.
+The earlier icon-overlay-only documentation pass ran `git diff --check` and a read-only
+`uv run --no-project python` ledger-ID comparison: PASS, all55 IDs in original order.
+
+## PR89 source acceptance, guarded shipment and scoped postverification
+
+Independent exact source review approved
+`ce065866c61eba159075da9d3bcbf642e9bd404d`, tree
+`a96e57fab0a5289d30ce406c68d3d6023e049d3d`. PR89 merged as
+`f0d7c178e59e72a9d1ed6324577d2e131ffb0f91` with that same tree. The earlier
+e186c41/f0c5e41/092f84a failed runs below remain historical failed evidence.
+
+Independent source validation ran `./scripts/check-repository.sh` on clean
+ce06586: exit0 in48.16s, compiler/AST,559 UI/55files, five focused and three Lab
+deterministic packages, app TypeScript,304 app tests/3656assertions/28files,
+21 lifecycle and24 shipping tests PASS. Its report binds374 unchanged app files
+through the test-only delta and the previous type-only emitted-JS/15HTML/144-input
+binding. This retains317 browser cases (256 scope-retained+61 renewed, not one
+full317-case run), four independent controller and seven Camera adversaries.
+No new browser/real-printer operation occurred in that source validation.
+
+The coordinator's guarded `u1-ship` execution completed PR89 merge/deployment:
+operation `pr89-20260902T105400-686862`, release
+`20260902-f0d7c17-pr89-20260902T105400-686862`. BOTH existing public/dashboard
+services were explicitly restarted and are loaded, healthy and integrity-verified;
+31 static asset checks and32 security checks pass, preservation is true and no
+rollback was needed. Recovery snapshot `20260902T105502-26ca5c` is retained.
+This is attributed guarded ship evidence, distinct from the independent meaningful
+postverification below; health/assets alone do not establish Live or widget behavior.
+
+| Evidence under app/ui test-results | SHA256 |
+| --- | --- |
+| independent-ce06586-20260903/REPORT.json | `5f6b1ff3c93af89e53892daeedbd5c7ff72132bfccf81a3275d6f7603c448548` |
+| independent-ce06586-20260903/repository-full.log | `30ab07f08937640f13e7cdac758a4220139aaf57d75917874118661660c1772b` |
+| independent-ce06586-20260903/retention-binding.json | `129cbdd2305785181bab003664e98f03468be3348b93f869ede4fe8cf95e6c01` |
+| ship-pr89-ce06586/execute.json | `ec2c9e2fd4bf24a7d735de113cda58abd3f5c9da65dcc1ced87515493ef64698` |
+| postdeploy-pr89-independent/REPORT.json | `454352ba3a45d3dadd1670a69eacc7a3c5137a1b433c840ab8bbf75e3e5627b7` |
+
+Independent post result is `SCOPED_PASS_WITH_OPEN_CAMERA_RELIABILITY_RISK`.
+Both service identities match the merged release;15 manifest hashes,31 local HTTP
+routes and six public assets match exact merged bytes. Eight user-facing HTTPS
+served-byte/CSP cases pass for Fans/Thermals/Heads/Queue at390 normal and320/200%
+text, intercepting only tool results: static initial/failed-refresh skeletons,
+stale-data suppression,21s persistent footer status, pending Retry, duplicate RPC
+recovery/focus and geometry within1px. Heads keeps whole RGB/RGBA,44px target,
+16px glyph and8px balanced inset. These eight cases are synthetic widget behavior,
+not real printer telemetry or native clipboard acceptance.
+
+Actual HTTPS Camera used the exact89770-byte served UI without substitution.
+There were three Live attempts. The first acquisition failed, unclassified:
+open/answer were accepted but no FPS was observed; missing phase/rVFC/RTC history
+prevents classifying the cause. Preserve it as C08, not an inferred timeout type.
+The second20.122s observation window contained17.100s of advancing decoded samples
+(34 to547), video time18.081s at1920x1080 and connected ICE. Its later local
+`video.pause()` probe did not induce failure; that script's failed probe assertion
+is not a product defect or evidence of actual automatic fallback. The third clean
+20.123s observation contained17.102s of advancing decoded samples (1 to502),452
+presented callbacks, video time17.368s, readyState4/unpaused and connected ICE at
+1920x1080. Two successes do not explain the first failure or establish reliability
+on every attempt. Automatic Live-to-Auto behavior retains source/fixture evidence.
+
+Actual Auto/Snapshot passed: five frame requests/five unique receipts, including
+two new Auto reads; Snapshot remained quiet for4.5s with zero Live opens and
+geometry within1px. All three owned Live leases closed200; contexts/pages/browsers
+and runner processes exited, preserving user tabs/services. No camera images or
+video were saved. Detailed evidence remains local under `postdeploy-pr89-independent`:
+
+| Post evidence | SHA256 |
+| --- | --- |
+| served-fixtures.json | `8ded0564c64cb42aeb87774d01bdf8c99fd0ba6ff19913e8013391c46ed46b28` |
+| actual-camera.json (unclassified failed acquisition) | `b0a8e9bab9cac076b92c3fbc9be446da16995955a59fcf5506eeea294e06b817` |
+| actual-camera-detailed.json | `5d039c5afee0ae51cc2567aeb56fe50027a067c59466151ba840e528d8f618ca` |
+| actual-camera-confirmatory.json | `1a2ec7909b47227fb5cbd5e378d48c864065003f90cbd2cc15bd0ea12749e1c6` |
+| actual-auto-snapshot.json | `3a86ef5e2cabf92e6d5709f7f78be8ba61cc7046b4b325ca9a95a9dcc5cb08cd` |
+
+The rollout tail changes only PROJECT_STATE, NEXT_AGENT, HANDOFF, VALIDATION and
+widget-delivery from exact merged f0d7c17; application/test/dependency/configuration/
+generated bytes remain unchanged. Next diagnose the preserved C08 intermittent
+acquisition failure and retain the open delivery ledger. Decision0028 requires no repeated build/browser gate, service
+restart or deployment for this documentation-only tail. Source, ship, actual
+served behavior, actual-camera observations and phone/native/physical-print
+acceptance remain distinct; no printer control or plugin reinstall is implied.
+
+## 092f84a required-gate failure and test-only renewal
+
+Exact source-approved `092f84a9d5f0b3e282eaa4a30304e9c86cb0e132`, tree
+`fc9db1af454cbc206c2b4adf4d621ea8f25cd463`: independent
+`./scripts/check-repository.sh` exited1 after47.84s. Compiler/AST,559 UI/55files,
+five focused/three Lab packages and app TypeScript passed. App tests were301PASS/
+3FAIL of304 across28files,3632assertions; Python lifecycle/shipping were not reached.
+All three failures were obsolete `app.test.ts` contracts: two legacy hashes and
+an actions-only footer assertion. Preserve this failed gate.
+
+The author changed only `src/app.test.ts`, renewing actual legacy hashes plus
+adjacent footer status, role/status, escaped scoped aria-label and initial-error
+contracts. Pinned Bun1.3.12 `bun test src/app.test.ts`:29PASS/0FAIL/281assertions.
+Author `git diff --check` and `uv run --no-project python` before/after SHA256
+comparison passed;374 other tracked app files are unchanged. No runtime build,
+browser/full gate or deployment was performed for this test-only repair.
+
+Ignored reports under app/ui `test-results` bind these commands and limits:
+
+| Evidence | SHA256 |
+| --- | --- |
+| independent-092f84a-20260903/REPORT.json | `5eb2fa958c6bbfe22b9d1481cdeff5dabad9f6cdff43931c9747d41ff6dea705` |
+| independent-092f84a-20260903/repository-full.log | `d7733b124ab63c00fae84316ced2244944a461901ad1791ddb7023aae148832f` |
+| independent-092f84a-20260903/retention-binding.json | `2ef9cdfedd66a92580b4733337a46a1dc5c10dab283e24f853ddffab4cb76c1b` |
+| legacy-app-contract-repair-20260903/report.json | `fc79b0fa49ee783dc9432be1b86ffddb6dd1f8a3d7e01b183083c71e90842c17` |
+| legacy-app-contract-repair-20260903/app-focused.log | `beae90e0d5d5790de6837c330a06ac9da0c5bb92a4f5bfb6d5e9e2757f3ce44f` |
+
+Independent092f84a binding retains317 browser cases (256retained+61renewed,
+not one full run), four controller and seven Camera adversaries via15 unchanged
+HTML/144 test-build inputs and identical transpiled type-import output. Freeze
+the test-only repair/new records, then renew the full required gate and exact
+review; no ship gate is waived. PR87 remains deployed and no ledger item is
+newly complete. Owned runners exited; no browser was started for this repair.
+
+## f0c5e41 exact source approval, failed required gate and minimal type repair
+
+Exact candidate `f0c5e41be0ea6b01549717abe73ab8e0951cc4ec`, tree
+`9a6c8cbbcc699b7f06bd6613ef0a2efd4e7173b8`, received independent source APPROVE
+with no findings (coordinator-attributed), including the prior P1/P2 repairs.
+Independent validation did not accept the candidate. Its clean-input manifest
+and report are under app/ui `test-results/independent-f0c5e41-20260903`.
+
+- `./scripts/check-repository.sh`: exit2 after36.92s. Compiler/AST,559 UI tests
+  across55files, five focused deterministic packages and three private Lab package
+  checks passed. App TypeScript then failed: installed app `three`/`@types/three`
+  were absent, and the new app NodeNext consumer exposed type-only `./session`
+  without a `.js` suffix (TS2835 and six consequent implicit-any errors).
+  App tests and Python lifecycle/shipping gates were not reached. Preserve this
+  failed run; the later author fix does not relabel it passed.
+- Scoped Playwright renewal across `live-fans`, `live-heads`, `live-queue`,
+  `live-thermals`, `failed-retry-recovery`, `served-error-stability` and `bed-mesh`:
+  61PASS/0FAIL in39.49s. `browser-targeted.json` records the exact command/grep.
+  Per-case `retention.json` retains256 of the earlier301 passes, renews45 earlier
+  passes plus12 earlier failures and four new cases. Thus317 covered browser
+  cases means256 retained+61 renewed, not one317-case full run.
+- Four fresh private controller adversaries PASS: repeated duplicate recovery/
+  identity, newer failed notification superseding duplicate RPC, age-stale versus
+  explicit-timeout duplicate, and late settled request after disposal.
+- Seven prior independent Camera adversaries are retained against69 identical
+  Camera/media inputs, unchanged private tests/packages/build configuration and
+  dependency declarations. The pending type-only delta requires explicit renewed
+  binding before carrying this evidence to another exact candidate.
+
+| Independent evidence | SHA256 |
+| --- | --- |
+| REPORT.json | `04b2a845a6f45310bf23b96e6f56b664a08b12506b8f2b3fdb07c7207d921d65` |
+| inputs.json | `3274220b3b178d9e296fd17e2c9dd93e0b881246025926fa398bfc4335784f08` |
+| repository-full.log | `96a1f7c0fec7f0d1eed3c4db62acc446ee6b06c8ea479e6203bcf94088c5ca2f` |
+| browser-targeted.log | `3769145d635203cc8ef3df263a6ad02d3edfd27e6d4f79e15e17fef78a5aadac` |
+| browser-targeted.json | `69134e30d39c31a8ee36b2f87a6141c13981145aabaa78304cffc1568ccd2ce2` |
+| controller-adversarial.log | `d08259dee0e1f07be29ccc3c8a18d0b4cbe61a4c9b72d6ef49dd8276114c3724` |
+| retention.json | `43218b7b1987fc0972faf544107f86a05f852c5fb90a0b946bfa66fd051c320f` |
+
+The author then changed only `ui/src/lib/camera/transport.ts:1` from type-only
+`./session` to `./session.js`. Pinned Bun1.3.12 `bun install --frozen-lockfile` in
+app restored eight already-declared packages, including three0.185.1 and
+@types/three0.185.4. Package declarations, app/UI locks, caps and guards did not
+change. Actual focused author commands, recorded in
+`test-results/legacy-camera-type-repair-20260903/report.json`:
+
+- From app, `bun run check`: `tsc --noEmit` PASS.
+- From app, `bun test src/status-dashboard.test.ts --test-name-pattern 'actual dashboard acknowledgements'`:
+  1PASS/25filtered/1assertion through the actual HTTP handler, host and transport.
+- From app/ui, `bun run test src/lib/camera/transport.test.ts`:9PASS/1file.
+- From app/ui, `bun run verify:live-camera`: graph/cap/build/byte comparison PASS;
+ 89770bytes, SHA256 `79169b075e60fed17dad252c70ad583542d2daa1646fb7ae957c3a5274f4a938`.
+- Pinned Bun transpiler comparison: emitted JavaScript before/after is identical.
+  `uv run --no-project python` artifact/input comparison: all eight widget HTML
+  artifacts are byte-identical to f0c5e41; package and both lockfiles unchanged.
+  Author `git diff --check` PASS.
+
+| Minimal author repair evidence | SHA256 |
+| --- | --- |
+| report.json | `2a3316cd9751943483ccd0bc2c755b97aef3a1336f88b92fd353e8394c63b29b` |
+| transport.ts after repair | `8cfa05b7834f79dd41222940b3249769cafbab149322f94b6b19a6c37212db40` |
+| app-check.log | `8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92` |
+| artifacts-identical.json | `8184c03f99ac6854c8755ab56bde1e65065c2e006a8cdbf156ac2a3b239f89ef` |
+| transpiled-proof.json | `7ab1e017753c9e5868f1abbd9c9331ee228013891f95bf68f2b4e7389ae59df4` |
+| dashboard-ack.log | `86764a9bbb48700fbe84b92687df664f601c04f1005ea67bfbe627da78f965cc` |
+| transport-test.log | `31505f1592d780dd2cf72ce3c4f919540a27a1837f49661e5a6274374e1cc6c0` |
+
+The correction is not committed and has no new exact approval/full gate. Freeze
+the source and five continuity records, then renew the complete required
+repository gate and independent exact review. Retain browser/controller/Camera
+evidence only after scope/identity binding; no automatic full-browser repeat or
+`u1-ship` waiver is introduced. PR87 remains deployed, all55 ledger IDs remain
+open or delivered only as previously evidenced, and Progress stays no action.
+Validator and author processes/browsers exited;4179 has no validator listener.
+This documentation pass only reads attributed evidence and edits the five assigned
+records; it does not rerun application/browser gates or add private logs to Git.
+
+## e186c41 independent failures and focused author repair
+
+Candidate `e186c41c15d65070bf51d3d756c6b6c6d9e5d9ac`, tree
+`cfc4c6bd9b972652f06a8e5bda902a3c123f0a8e`, was not accepted. The independent
+report is preserved under app/ui `test-results/independent-e186c41-20260903`:
+
+- Required repository run: compiler/AST PASS,557 UI PASS /1 FAIL. The failure
+  selected the first polite live region instead of Bed chart-local feedback.
+  Package verification, private lab verification, app TypeScript/tests and Python
+  lifecycle/shipping gates did not run after that failure.
+- One full browser run:301 PASS /12 FAIL,313 total. Four Bed cases used a strict
+  unscoped live-region selector; eight Thermals cases expected visible stale
+  telemetry despite explicit environment timeout. Independent classification
+  found obsolete assertions, not a product regression in those12 cases.
+- Seven independent private Camera service adversaries PASS. They do not clear
+  the separate review findings or approve this candidate.
+
+| Preserved independent evidence | SHA256 |
+| --- | --- |
+| REPORT.json | `3bbc65a2173635b07a32fc38a83bfabc851e7afbf9a4eae2d945bddd6b98fbcf` |
+| inputs.json | `6168135f8250c2766a9dbaec340618d748d10ec3fce2673ef6d2d6495a31669c` |
+| repository-full.log | `999a1e2118b20517d67cce1f6f94c32170cb7cc1719549ebbf6fb10925184698` |
+| browser-full.log | `2d1db84365b9434b8a86a17d48fbf7da61b1cd00a092aa3c0ce04ac9f2978357` |
+
+The author then repaired two separate review findings: successful duplicate RPC
+after failed Retry left `phase=error`, and combined legacy initial-error Retry
+reset its persistent failure to animated loading. Direct/controller and packaged
+browser adversaries verify the fixes while preserving duplicate-notification
+semantics, observation identity, footer status, focus and geometry. Bed local
+feedback and separate phase announcements are both asserted. Thermals now tests
+successful age-stale receipts with null reason, then timeout/offline neutral
+failure and accepted fresh recovery.
+
+Actual focused commands from `plugins/u1-print-studio/app/ui`, Bun1.3.12:
+
+- `bun run test src/lib/live/controller.test.ts src/lib/live/thermals-controller.test.ts src/lib/live/heads-controller.test.ts src/lib/live/queue-controller.test.ts src/lib/bed-mesh/BedMeshWidget.test.ts`:
+  45 PASS /5 files (`unit.log`).
+- `bun run check`:0 errors /0 warnings; component AST PASS (`check.log`).
+- `bun run build:live-fans`, `bun run build:live-thermals`,
+  `bun run build:live-heads`, `bun run build:live-queue`:all PASS, unchanged guards
+  (`build-fans.log`, `build-thermals.log`, `build-heads.log`, `build-queue.log`).
+- `bun node_modules/@playwright/test/cli.js test tests/visual/failed-retry-recovery.spec.ts tests/visual/bed-mesh.spec.ts tests/visual/live-thermals.spec.ts tests/visual/served-error-stability.spec.ts --grep 'recovers a failed Retry|Bed Mesh preserves|real Thermals loading|combined status aliases' --output test-results/review-repair-e186c41/browser`:
+  14 PASS /8 FAIL (`browser.log`). Passed four duplicate-RPC consumer cases, four
+  Bed cases and six combined pending-Retry cases. The eight Thermals cases passed
+  the new timeout assertions, then reached another obsolete offline-success
+  assertion; source behavior correctly remained neutral.
+- `bun node_modules/@playwright/test/cli.js test tests/visual/live-thermals.spec.ts --grep 'real Thermals loading' --output test-results/review-repair-e186c41/thermals-renewal`:
+  7 PASS /1 FAIL (`thermals-renewal.log`). At320px /200% text the test compared an
+  offline failure with an earlier different ready header. The baseline was
+  corrected to the immediately preceding successful age-stale header.
+- The same Thermals command with output directory
+  `test-results/review-repair-e186c41/thermals-final`:8 PASS (`thermals-final.log`).
+  Four widths320/390/590/720 at normal/200% text cover independent receipts,
+  extremes, stale success, timeout/offline masking and fresh recovery.
+- From app, `bun test src/live-fans-package.test.ts`:5 PASS /59 assertions
+  (`package-unit.log`). `git diff --check` passed.
+
+This covers22 unique browser cases through14 retained and eight renewed passes,
+not a clean full run. Failed author logs remain preserved. Evidence is software /
+fixture evidence; no physical printer, deployment or device acceptance is added.
+The mandatory full required repository gate and independent exact-candidate
+review remain pending under their assigned owners. Do not silently carry changed
+four-live-consumer acceptance forward; retain unaffected Camera evidence by
+matching hashes and scope. No mandatory `u1-ship` gate is waived.
+
+All author logs are under app/ui `test-results/review-repair-e186c41`.
+`inputs-and-results.json` SHA256
+`643433a8b905014aa81b4628f172e2eabfd60ae274ce05493a94aa43576dc246`
+records final application/test inputs, all eight artifacts and log hashes;39
+Camera-scope inputs match the independent e186c41 manifest exactly.
+
+| Renewed evidence | SHA256 |
+| --- | --- |
+| unit.log | `aa81e5fd3fa0c0214f80710a046d14b734a9ad3712f3d02d9439d6fa3d5e0283` |
+| check.log | `e3460f6359f8619d0423663eec7b94936599113a6397cd7dbfe7a0113203c7b4` |
+| browser.log | `ae5ae6f047537b039d484da2e131fb13543d3719d168ec1b7ca3934ed35d4c8a` |
+| thermals-renewal.log | `6e83859dc5eeacdbd5505db390d032580d9c76fb7d894b243266b9e20c82336a` |
+| thermals-final.log | `94fb61234074569d4513259b845726ad32b018fc5e71f0911310a5b53dcffca3` |
+| package-unit.log | `154242393317bf661848465e4dd067034ae80601c09d4cc45899afba41fce36a` |
+
+| Final affected package | Bytes | SHA256 |
+| --- | ---: | --- |
+| Live Fans | 91362 | `88d658852e88b48fb6a08c5e114698531668a6bddd8c32bd82774994d03c3870` |
+| Live Thermals | 91973 | `02f7dd436cdcc4fdea0c39164a4170d23944c52a4fd2da446e99b646a7d2e774` |
+| Live Heads | 96944 | `aba510d7989647f0f0a3f303b23c8c505a06d56f04fe6b09189859bfeb7c274a` |
+| Live Queue | 92936 | `1afc55419fffe775d1ab945491e1874fe62ef836861307e2f39eefc2e2a91584` |
+
+Focused production aggregate is462985 bytes. Camera89770 and all three private
+lab artifacts retain their prior hashes; private aggregate928543. Caps,
+dependencies, configuration and shipping guards are unchanged. No Progress work
+or remaining delivery-ledger requirement is marked complete. Owned runners and
+isolated browsers exited, and fixture4179 is released.
+
+## Historical: Phase2 Camera source repair — author and mixed-runtime evidence
+
+Current uncommitted work continues checkpoint
+`f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`. The evidence below is attributed to
+the implementation authors, not independent acceptance. Final Camera renderer/
+geometry renewal and coherent pins now pass on source-frozen bytes; no full regression,
+exact review, merge or new deployment is claimed. PR87 remains deployed.
+
+The service author's final ignored report is `phase2-report.json` under
+`plugins/u1-print-studio/app/ui/test-results/legacy-camera-resume-20260902`.
+Its report/source hashes describe that author's handoff, not subsequently changed
+renderer bytes. Commands actually run from app/ui unless stated otherwise:
+
+- `bun run test src/lib/camera/transport.test.ts`:9 PASS; raw Dashboard versus
+  wrapped MCP acknowledgements, with frame/open validation unchanged.
+- `bun run test src/lib/camera/synthetic-session.test.ts src/lib/camera/session.test.ts src/lib/camera/transport.test.ts src/lib/camera/live-controller.test.ts src/lib/camera/peer.test.ts src/lib/media/playback.test.ts`:
+  55 PASS across6 files. After the synthetic observer changed,
+  `bun run test src/lib/camera/synthetic-session.test.ts` passed5. This retains52
+  cases and renews5, totaling57 covered cases; it is not a single57-test run.
+- From app, `bun test src/status-dashboard.test.ts --test-name-pattern 'actual dashboard acknowledgements'`:
+  1 PASS/25 filtered/1 assertion; actual HTTP-handler response crosses the
+  production host script in a VM and Camera transport for answer/candidates/close.
+- `bun test-results/legacy-camera-resume-20260902/diagnose-deployed.mjs`:
+  actual deployed baseline reproduced answer200 followed by client close3ms
+  later, without frames; fallback accepted successive snapshots about2s apart.
+- The same command with `--candidate`, then
+  `bun test-results/legacy-camera-resume-20260902/diagnose-detailed.mjs --candidate`:
+  acknowledgement-only candidate removed immediate close but still failed at the
+  candidate deadline. Detailed evidence showed connected ICE/DTLS, a nominated
+  pair, decoded frames1->178 and increasing RTP while candidate acknowledgement
+  waited about10s. These failed runs remain preserved, not counted as acceptance.
+- `bun test-results/legacy-camera-resume-20260902/diagnose-repaired.mjs --candidate`:
+  actual camera check stayed Live at20.4s,1920x1080,444 decoded frames,
+  video time15.235s and4799 RTP packets/4,287,623 bytes. The confirmed mDNS host
+  candidate took10,007ms; the srflx candidate took2ms. The repaired session stayed
+  live about8s beyond the candidate deadline. Own lease closed200 in teardown.
+
+The last actual check replaced only the Camera child response body in an isolated
+browser with a91,063-byte candidate UI, SHA256
+`383a4256550f0ac765faa76272d69867f2b1002ff91ead33380dca5b4a5caea7`.
+Dashboard host/backend were the unchanged deployed service. This proves actual
+media on that mixed path, not deployment or exact final-renderer acceptance. It
+does not establish actual-phone fullscreen/PiP, physical print or user acceptance.
+No server, authentication, Tailscale or network configuration was changed.
+
+The source repair preserves the10s candidate bound: only typed timeout with the
+same live epoch/session, observed connected state and an accepted frame received
+less than5s ago leaves healthy Live intact. Invalid/rejected acknowledgements
+still fail; first-frame8s/stall5s/disconnect3s and late-work ownership remain.
+The separate acknowledgement parser accepts only the two existing transport shapes
+for answer/candidates/close, with strict frame/open envelopes. See decision0041.
+
+| Service author evidence | SHA256 |
+| --- | --- |
+| `phase2-report.json` | `bd1188f404fa6ad035714a71ababc9067197dff4fdbb5a22225136ed395407d6` |
+| `phase2-services.log` | `9d8581cd377f41cd20d3a5f3305e0688673bf12df7b0b73dba20cbf94aa91368` |
+| `synthetic-final.log` | `5a2fca692d0f1be20c8556a26dd52899dc770e4c459bf1df7af9772da0814ae0` |
+| `dashboard-ack-integration.log` | `2081d42121497f0965031c0123c72a4ee9a59097c15cc7735cf60330366c39b7` |
+| `candidate-ack-diagnostic.json` | `83de0f6a8d1454ca4807af566cc75241e9ea711793d7353591fd842d610f9d41` |
+| `candidate-ack-detailed.json` | `8b23da1dcd54b97625ae6fd2c69371d58c9dd2be1e5d49220216304f1bac07a8` |
+| `candidate-live-repaired.json` | `24803046b7774fc3ee1a0e4aff798d106a6990fa9c55f7d7b4d8d69dba99dd83` |
+
+Renderer final report and manifest are `CAMERA-RENDERER-REPORT.md` and
+`camera-renderer-identities.json` under ignored `ui/test-results/camera-modes-author`.
+Author commands from app/ui, Bun1.3.12:
+
+- `bun run check`:0 errors/0 warnings and AST PASS.
+- `bun run scripts/build-camera-lab.ts`, `bun run build:live-camera`,
+  `bun run scripts/package-private-lab.ts`, the latter with `--check`, and
+  `bun run scripts/build-camera-harness.ts`:PASS.
+- `bun run test src/lib/ui/TextSegmentedControl.test.ts src/lib/camera/CameraWidget.test.ts`:
+  3 PASS/2 files.
+- `bun node_modules/@playwright/test/cli.js test tests/visual/camera-modes.spec.ts tests/visual/camera-route.spec.ts tests/visual/camera-lab.spec.ts --output test-results/camera-modes-author/browser-final`:
+  23 PASS. `bun node_modules/@playwright/test/cli.js test tests/visual/live-camera.spec.ts --grep '320, enlarged=true|390, enlarged=false' --output test-results/camera-modes-author/live-final`:
+  2 PASS, explicitly covering Live FPS -> failure -> recovery.
+- From app, `bun test src/private-lab.test.ts src/live-fans-package.test.ts`:
+  12 PASS/138 assertions.
+
+These25 browser cases supersede the earlier6 mode-browser passes and cover fixed
+controls, keyboard/focus,320/390/590/720 normal/200% text, static errors, periodic
+Auto/one-shot Snapshot, media identity and teardown. They are fixtures, separate
+from the actual-camera check above. Final packages: Camera Lab79375/80000,
+SHA256 `e985efca7d3c0e29b7ea036893874c4aca0b73817f422fbb1883762f63333de6`;
+Live89770/100000, SHA256
+`79169b075e60fed17dad252c70ad583542d2daa1646fb7ae957c3a5274f4a938`;
+private aggregate928543/980000 and focused production aggregate462929. The six
+non-Camera bundles retain phase1 identities in the renderer manifest. A dedicated
+synthetic service and Camera-only intrinsic static phase surface remove unneeded
+variable-widget allocation work; final geometry passes without changing caps.
+Earlier over-budget builds remain development evidence. Full/exact approval and
+final served Live verification remain required. Renderer processes/browsers closed;
+its fixture port4179 is free according to the author.
+
+Documentation author ran `uv run --no-project python` for read-only SHA256 checks:
+the final service report identity and all11 referenced log hashes match. No
+feature test was rerun for this records update. The final service report states
+all owned browsers, returned leases and processes were released in teardown;
+ignored diagnostics contain no camera images/video, SDP, tokens or IPs. No raw
+runtime data was copied into repository records. Preserve those local logs.
+This documentation tail is not independent review or validation of its own work.
+
+## Resumed phase1 focused evidence and bounded deployed Camera diagnosis
+
+Attributed author evidence on evolving, uncommitted changes from checkpoint
+`f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`. There is no frozen candidate,
+independent exact approval, full repository/browser regression, merge or new
+deployment. PR87 remains deployed. The coordinator reports four source-preflight
+findings repaired with focused author renewal; that preflight is not release
+approval. The latest user priority is actual Live diagnosis/repair now, retaining
+completed phase1 evidence and the final full/review/shipping gates.
+
+Svelte author commands used Bun1.3.12 from app/ui, unless noted:
+
+- `bun run check`: Svelte0errors/0warnings and strict AST PASS.
+- `bun run test src/lib/observation src/lib/live/controller.test.ts src/lib/live/heads-controller.test.ts src/lib/live/queue-controller.test.ts src/lib/live/thermals-controller.test.ts src/lib/bed-mesh/BedMeshState.test.ts src/lib/bed-mesh/retry-focus.test.ts src/lib/lab/observation-props.test.ts src/lib/ui/WidgetStateSurface`:
+  158PASS across17files.
+- Scoped Playwright `footer-error-preview`, `widget-error-stability`,
+  `bed-error-state`, `served-error-stability` with the author's anatomy grep:
+  43PASS/5FAIL. Two obsolete Bed locators and three real narrow Queue-growth
+  failures were repaired. Renewal on served-error/Bed/live-queue gave6PASS/3FAIL;
+  the remaining two Bed locators and one test resolver race were repaired,
+  followed by3PASS. This is49 unique cases via retained+renewed evidence, not a
+  clean full-suite pass. Initial prerequisite/interrupt failures remain recorded.
+  Coverage includes eight light Lab views at320/390/720 and200% text, Heads hover,
+  bounded Queue/History rows, font/width allocation and Bed renderer/focus.
+- `bun run build`, `bun run build:bed-mesh-lab`,
+  `bun run scripts/build-camera-lab.ts`, `bun run scripts/package-private-lab.ts`
+  and the four observation live builds produced phase1 light213926, Bed635242,
+  Camera77725, aggregate926893; Fans91348/Thermals91959/Heads96930/Queue92922.
+  Camera author's `bun run build:live-camera` produced88929. All caps unchanged.
+  The light rebuild required rebuilding cleared Bed/Camera build directories;
+  failed packaging is not acceptance. Final light bytes followed the Queue compact
+  repair; the frozen full run must cover the final packages.
+- From app, `bun test src/private-lab.test.ts src/live-fans-package.test.ts`:
+  12PASS/138assertions. `bun run scripts/package-private-lab.ts --check` PASS.
+
+Legacy/Camera author evidence, kept separate rather than summed with Svelte:
+
+- From app, `bun test src/observation-widget.test.ts src/camera-widget.test.ts`:
+  90PASS/1176assertions. Later legacy CSS/combined MutationObserver changes are
+  outside those app tests and have the scoped browser renewal below.
+- From app/ui, `bun run test src/lib/camera/session.test.ts src/lib/camera/controller.test.ts src/lib/camera/live-controller.test.ts src/lib/media/playback.test.ts`:
+  35PASS/4files, including failure presentation through Retry.
+- Initial legacy/combined/allocation browser18PASS retains only six generic
+  nine-route cases; later runs renew the rest. Camera/combined18cases gave
+  12PASS/6FAIL, retaining six modern Camera cases; legacy transition failures
+  were repaired. Next19cases gave15PASS/4FAIL; retained six legacy Camera, six
+  short-allocation/retry/recovery/font/viewport and one local-fullscreen case.
+  Four combined font failures were repaired with MutationObserver and all six
+  combined cases then passed. Camera Lab8cases gave6PASS/2FAIL from obsolete
+  hidden-status selectors; corrected terminal selectors then passed2/2. This is
+  six retained plus two renewed Lab passes, not a clean full run. No cumulative
+  browser total is inferred across overlapping suites.
+
+Local ignored evidence roots are `ui/test-results/footer-resume-svelte` and
+`ui/test-results/legacy-camera-resume-20260902` under the app. Author reports bind
+commands, retained scopes and limits; the Svelte JSON also binds source/artifacts.
+Documentation author verified all18 referenced log hashes without rerunning tests.
+The read-only `uv run --no-project python` report/hash and ledger checks passed;
+all55 ledger IDs remain in original order, and `git diff --check` passed. This
+records-only pass changed no application bytes and launched no test fixture.
+
+| Evidence | SHA256 |
+| --- | --- |
+| Svelte `PHASE1-SVELTE-REPORT.md` | `0c6772a0aaff31a65ebcd79f11d18643cefdbf631896fe07241647ccca73f2cc` |
+| Svelte `phase1-svelte-identities.json` | `6d490a2b9dd3b36bc2812332db6ddaf2000ac36b6432ee4e72adb0763fe3bb9e` |
+| Svelte `check-final.log` | `e3460f6359f8619d0423663eec7b94936599113a6397cd7dbfe7a0113203c7b4` |
+| Svelte `final-affected-unit.log` | `37e7f7da2edee5b0949e76089ef0d6794d9a0d5ba7131f1d8757ae1889db7bec` |
+| Svelte `browser-anatomy-renewal.log` | `f1fcaf9df886992e0478921495d33a20fb5b0e3eed5d47c9b05d13931492c302` |
+| Svelte `browser-queue-renewal.log` | `96a309b3ab1c614e8eb43c2a464696bb69722341e75f92d7a030a62dd75d76b8` |
+| Svelte `browser-last3.log` | `2ed284166a0971ce105c3292b668e41077beb3da5ba4b5b68448180106767900` |
+| Legacy/Camera `phase1-report.json` | `6f551161f3da8590a28a78137d16c6f5b4932c499b430f6fdedba83a85d62774` |
+| Legacy/Camera `app-final-focused.log` | `4d1dee66a57124cd6d435c2ee70dafd50a88cad589ec78e2ed037364e8cdfcd2` |
+| Legacy/Camera `unit-final.log` | `25b66355122d8f3d2f8502ac0d11756d47abd9556405d57454b75e35606a7492` |
+| Legacy/Camera `combined-resize-final.log` | `927f7921392f7cca01d7783dc962f481b8fa668fbb44167b226ecec3f6baaa24` |
+| Legacy/Camera `camera-lab-terminal-final.log` | `3a27639c7f58ad14c6f7c7527f759ee2d5677288ca18d3398f7213a1cacfb2f2` |
+| Legacy/Camera `deployed-diagnostic.json` | `9cf95bbaa0f119035c44653cfc0f2aa5e5f980549b0b10d876ff2aef9d4a39b3` |
+
+The Camera author's bounded actual deployed diagnostic observes open/answer200,
+then client Close3ms after answer; no media frame rendered. The author traced raw
+HTTP answer/candidate/close acknowledgements rejected by a transport expecting
+structuredContent. Its scoped adapter repair preserves strict frame/open validation;
+no accepted repair is claimed. Repeated accepted snapshots about every2seconds
+support the behavior behind the user-corrected Snapshot/Live/Auto labels; Auto is
+one word and does not claim continuous video. This is deployed-service/browser observation,
+not a synthetic reproduction, physical print acceptance, phone acceptance or proof
+that changed source is deployed. The sanitized local `deployed-diagnostic.json`
+records that trace and own-session cleanup200. Source phase1 tests above remain
+synthetic/static; no c6 checkpoint is imported. Camera changes must renew affected
+packages/pins and evidence before the final gates. Test fixtures/browsers were
+closed and4179 released; the later diagnostic used its own bounded session.
+
+## Resumed f9fe1eb — documentation reconciliation only
+
+Saved checkpoint `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c` on
+`codex/u1-footer-error-skeletons` is unvalidated WIP. The coordinator reports
+verified clean checkout and exact fetched branch; the user reports the prior
+worktree archived/unregistered. No new archive/cleanup, source acceptance,
+independent approval or deployment is claimed by this entry. The active records
+now follow the resumed order; the pack-up stop below is historical.
+
+The documentation author updated PROJECT_STATE, NEXT_AGENT, BRIEF, HANDOFF,
+this VALIDATION, requirements, widget-delivery, decisions0038/0039/0041 and only
+the UI/UX role's presentation guidance. Requirements explicitly reconcile0041
+with previous retained-display/overlay rules while preserving cache/ordering,
+successful empty/unknown/age-stale states, local-action feedback and lifecycle.
+
+Commands actually run by the documentation author:
+
+- `uv run --no-project scripts/test_project_agents.py`: PASS,3 tests. Only the
+  role's `developer_instructions` field changed; name/description and field
+  inventory are unchanged. No model or permission configuration was changed.
+- `git diff --check`: PASS on the then-current working diff.
+- `uv run --no-project python` with an inline read-only record check: PASS;
+  all55 ledger IDs remain in their original order versus HEAD, role TOML changes
+  only `developer_instructions`, and all five active continuity/ledger entry
+  sections contain the exact saved checkpoint identity.
+
+Initial shell process creation failed with `Too many open files (os error24)`;
+bounded reads resumed using non-login PTY commands. Two stalled task-owned `rg`
+command sessions were interrupted; absolute `/opt/homebrew/bin/rg --threads1`
+reads succeeded. No user application, deployed service or unrelated process was
+closed. The documentation author retains no running process or browser.
+
+These are documentation/role-contract checks, not application, browser, physical
+printer or device evidence. Concurrent source work requires its own focused
+results and exact frozen-candidate acceptance. No full regression was repeated
+for this records-only task.
+
+## Current footer/skeleton WIP checkpoint — preservation evidence only
+
+Branch `codex/u1-footer-error-skeletons`, accepted base `80280568589fb8cd2df7f8ab30c2f1faddcb3769`.
+The latest request is checkpoint, coordinator-verified push and recoverable
+cleanup; this record does not claim push/archive completed. Preparation used
+bounded `git status`, `git diff`, `git ls-files` inventory and `git diff --check`.
+An added-content scan of35 modified and5 new eligible files found no matching
+credential literals, private keys, absolute local paths, private IPv4 addresses
+or tailnet hosts; this heuristic is not an exhaustive security audit. Protected
+guidance, shipping/configuration and dependency inputs remain unchanged.
+Ignored evidence/dependency/build directories are excluded and preserved for
+coordinator-owned quarantine. No application tests/builds ran for preservation.
+The earlier commands below concern evolving WIP, not frozen acceptance.
+
+Commands used pinned Bun1.3.12. Dependency setup used `bun install --frozen-lockfile`
+in app and UI; no lockfile/dependency changes. A fresh-worktree Camera build
+initially lacked `.svelte-kit/tsconfig.json`; normal `bunx svelte-kit sync`
+resolved this setup prerequisite. It was not a product test failure.
+
+Completed actual commands from UI:
+
+- `bun run check`: final execution passed Svelte0errors/0warnings and strict
+  component AST checks after explicit leaf/import registration. Earlier AST
+  rejection of unregistered new leaves was corrected without loosening policy.
+- `bun run build:live-heads`: intermediate builds99,713 then95,223 and96,179
+  bytes after registry-free glyph and numeric allocation. Last96,179 is below
+  unchanged100,000 cap but predates the final49-byte footer-width CSS refinement.
+- `bun run scripts/build-camera-lab.ts`: intermediate76,089/77,331; latest
+ 77,380/80,000. `bun run build:live-camera`: latest88,576/100,000,
+  SHA256 `70058726553b8e693daee00d576a6b15d47b5a17349e0cf5da9af3abca4927d8`.
+- `bun run build`, `bun run build:bed-mesh-lab`,
+  `bun run scripts/build-camera-lab.ts`, `bun run scripts/package-private-lab.ts`:
+  latest light212,963, Bed634,915, Camera77,380; aggregate925,258/980,000 PASS.
+  These are evolving-source builds, not frozen/full/independent acceptance.
+- `bun node_modules/@playwright/test/cli.js test tests/visual/footer-error-preview.spec.ts --output test-results/footer-preview-20260902-1258`:
+  **2/2 PASS**, exit0. Actual isolated Chromium, packaged Lab390px normal and
+  computed200% text. Copy symmetric8px inset,16px glyph,44px target;2columns
+  normal/1column enlarged; static failed skeleton/no Copy/no floating overlay;
+  major/header/body/footer/card geometry within1px; status adjacent8px toRefresh.
+  Public status uses available width and normal390 message stays on one line.
+
+Local logs under `plugins/u1-print-studio/app/ui/test-results/`:
+`footer-preview-20260902-1248.log` has two test-selector timeouts (test incorrectly
+asked forT0; public fixture isT1). Its unique failure screenshots/traces remain.
+Corrected test-only run `footer-preview-20260902-1252.log` passed2/2; after the
+footer-width refinement, `footer-preview-20260902-1258.log` passed2/2.
+Each same-named output directory retains `heads-hover.png`, `heads-error.png`
+and attached geometry per normal/200% case. The author visually inspected the
+1252 normal pair; the coordinator also inspected it and requested the now-tested
+intrinsic-width refinement. No claim of physical phone/browser-native clipboard
+or real-printer validation is made.
+
+No Vitest/application/legacy-focused suite, full repository regression, full
+browser suite, final asset-pin verification, independent review or deployment
+ran for this WIP. Legacy edits made after the focused pair are unverified;
+other live bundles remain old and current artifacts are not a release manifest.
+Old retained-display/overlay tests are intentionally listed as pending renewal,
+not waived. Pack-up stopped code changes and released all owned processes,
+isolated browsers and fixture listener; preserved user sessions and evidence.
+
+## PR87 rollout — coordinator receipt
+
+Exact independently reviewed PR head
+`117907ceae9f96116d8348cc14cb3e2a143e4d0a` merged as
+`96e466e2ffefd75dc0b2c1fce92b40c7ec30555d`, retaining approved tree
+`37a232ad86069584b4ec32562d603e5c0d577530`.
+The coordinator reports unchanged `u1-ship` execution exit0, operation
+`pr87-20260902T081602-8bb576`, release
+`20260902-96e466e-pr87-20260902T081602-8bb576`.
+BOTH existing services were explicitly restarted, loaded, healthy and
+integrity-verified;31 static and32 security checks pass, preservation passes.
+Rollback was not needed; recovery snapshot `20260902T081703-ec53cc` is retained.
+This is attributed guarded deployment evidence, not a second author ship run.
+Independent meaningful postverification passes15/15 scoped cases using actual
+downloaded dashboard bytes, with BOTH service release/source/integrity checks,
+15 manifest files,10 unique dashboard HTTPS artifacts (eight Svelte artifacts,
+host and generic widget), and11 exact artifact hashes. Combined compatibility
+uses exact active-release manifest bytes, not a nonexistent HTTP route.
+Heads inline/quiet Copy, initial/static and retained errors, duplicate/older
+Retry evidence and selected legacy/combined behavior pass. These are scoped
+software/deployed-byte tests, not physical printer or actual-device acceptance.
+Attributed evidence in `u1-errors-heads-independent-validation`:
+`postdeploy-results.json` SHA256
+`075d3daecab0d7df08885cdf64d17fb09b65d62700c41f3da4ff6537a59553aa`;
+`postdeploy-static.json` SHA256
+`8389de5f305e183a3187995be1366a1111d4ad0a9ffa20b9605af06b1c792204`.
+All validator browsers/processes closed; no printer acquisition was performed.
+
+Read-only postverification identified an existing external routing limit:
+standard HTTPS root `/widget` returns502 because only `/health` and `/mcp`
+route to the public app there; the unmatched root routes elsewhere. Dashboard
+`/widget` and both local app endpoints return200 with exact871,780-byte content.
+Earlier retained validation already records this limitation. PR87 did not
+introduce or repair it; no routing, authentication or infrastructure change
+was made. Dashboard/package acceptance must not imply public-root reachability.
+
+This seven-record rollout-only branch starts at exact merged `96e466e`.
+No application, tests, dependencies, generated assets, policy, configuration
+or shipping inputs are changed. Author `git diff --check`, exact-base/protected
+path identity and relevant documentation-target existence checks pass.
+Decision0028 requires no repeat build/browser suite, deployment or service
+restart. Independent review of the exact docs head remains required before
+its PR merge; all author command sessions ended.
+
+## PR87 retained application and test evidence (predeployment)
+
+Application `88eb80fbb9a9fa2667b9123815b100feea95df4e`, tree
+`fc919112b0c1962e206d7829791e9f1faacd878d`; corrected-test checkpoint
+`3d8954c7881d0cc80f9a1e1e899d66d0d9a81b88`, tree
+`b1642909c722812a8d73ec8558cb91469852c8f6`. The latter differs only in two
+browser specs, not application/dependency/configuration/generated assets.
+Separate source review and independent targeted validation approve that head.
+This seven-document tail still requires exact final identity binding.
+
+Actual commands and results with pinned Bun1.3.12:
+
+- `./scripts/check-repository.sh`: exit0; compiler/AST,528 UI,303 app/3642
+  assertions, all eight reproducible package checks,21 lifecycle and24 shipping
+  tests pass. `stable-errors-full-repository.log` SHA256
+  `8465f6351c0a09197c9c76c536c4d3869da585fd69bae749c67b68ce4af4a5ff`.
+- `bun run test:browser`: exit1,263 passed/9 failed. Both independent roles
+  classified the nine failures as obsolete no-skeleton expectations in
+  lab-states and live-queue, not passing tests or proven product regressions.
+  `stable-errors-full-browser.log` SHA256
+  `f62c9e1b31dc350ac661f7d8c7875fc5d3a5819571650da1b847d16d922230bf`.
+- Scoped Playwright renewal: eight Lab cases pass on the corrected lab-states
+  bytes, retained unchanged through the final test head; Queue wrong-view
+  Retry/BFCache case passes on exact `3d8954c`. Both now require static/inert
+  public skeletons, no fake readings and full-region geometry within1px.
+  Public labels and strictly whitelisted aria-hidden nominal templates are
+  distinguished; initial empty-text assumptions failed and were corrected.
+  Log hashes: `stable-errors-adopted-browser-contracts.log`
+  `d98d4e4f0dfc0d6c7a521f952832e9d5cd10afe854dd23d52e7ab3010d53ff78`;
+  `stable-errors-queue-contract-renewed.log`
+  `aae257b99c2c15df0b2a39b7c7702a7bcd6b1d66b327b27547ab0df928ce8f84`.
+  This is263 retained successes plus9 renewed passes, **not** a clean full-suite
+  pass. Unaffected application checks were not repeated for test-only changes.
+- `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and compiled
+  `--help`: exit0 on unchanged application bytes.
+
+Logs are in ignored UI `test-results`. Original full-failure screenshots/traces
+were inspected independently, then lost when Playwright cleared its default
+output directory during renewal. They are not retained or claimed recoverable;
+the original text log remains. Later Queue attempts have unique output
+directories. Independent evidence is unaffected.
+
+Attributed independent validation:38 fresh intercepted packaged-browser cases
+(31 plus7 bounded continuation) covering four Svelte hosts, eight Labs, nine
+generic views, five actual legacy hosts, two combined layouts, retained-order
+adversaries and Heads boundary/clipboard semantics. Evidence report
+`u1-errors-heads-independent-validation/VALIDATION.md` SHA256
+`b449ab4f783fc45eb3a25dc6017a6297fc94eb20259584e7e670203e2207dffd`;
+test-head binding SHA256
+`5c17b1dc80ab101ddf07c29cd19f59d91ee614412464ef46c69ced3680c66e88`.
+JSON hashes:31-case `7942d368009b5cb1cd56e7cc1143fecb3d6af314ec41a3ac25383ced9ae82621`;
+7-case `189c3235eec89e9c0565a8ab1be2054b48da38fb9d151d847ed178bde38a89d7`.
+Private harness selector/route mismatches remain recorded separately, not
+claimed product defects. No duplicate independent full suite was run.
+
+PR87 is not deployed; Camera/Glyph is excluded and caps/security/shipping
+inputs are unchanged. No actual phone, native clipboard or printer evidence.
+All owned browsers/processes were closed and4179 released. Root's mandatory
+guarded shipping validation remains required; no skip or bypass was introduced.
+
+## Earlier editing evidence — observation errors and quiet inline Copy
+
+Based on accepted PR86 `8b995ee`; deployment remains PR84. Source scope and
+remaining Camera gaps are authoritative in [widget-delivery](../../widget-delivery.md).
+No Camera/Glyph checkpoint, package-cap increase, acquisition change or printer
+operation is included. New code is not independently accepted or deployed yet.
+
+Commands actually run during editing with pinned Bun1.3.12:
+
+- UI `bun run check`: zero errors/warnings and AST PASS. The obsolete unused
+  short `ObservationState` component was removed; no raw-feature allowance added.
+- Focused controller/HeadCard tests:44 PASS; loading/privacy/prop/quiet-button
+  tests:38 PASS. New retention cases cover same-epoch unavailable/unsupported,
+  newer failure ordering and explicit changed-epoch reset.
+- App focused observation/dashboard/package tests PASS; legacy observation plus
+  dashboard subset80 tests/1711 assertions PASS. Closed global unavailable Retry
+  reads once; startup unsupported remains distinct beyond15seconds.
+- Focused `served-error-stability` plus `widget-error-stability`:24 browser cases
+  PASS. Each matrix loops applicable routes at320/390/720 and normal/200% text:
+  eight light Labs, four actual Svelte hosts, nine generic legacy views and
+  active combined status. Initial loading/error/unavailable full-frame geometry
+  stays within1px; retained failures keep content/receipts. Persistent notices
+  survive21seconds initial and6seconds retained. No actual printer/device claim.
+- Heads widest RGB/A8cases, normal/enlarged boundary2cases, prior567/590/720
+  enlarged parity3cases and clipboard generations/busy/denial/focus1case PASS.
+  Whole color row is one44px-high button with16px glyph;390normal keeps two
+  158px cards. Each normal card is193.390625px tall. Public column transitions
+  are375px normal and553px enlarged, including existing shell inset change.
+- All five changed packages built below original caps: Fans88,956;
+  Thermals89,569; Heads98,938; Queue90,071; light Lab210,908. Bed632,808 and
+  current CameraLab79,776/Live90,900 are unchanged. Hash pins were renewed.
+
+Editing failures were not waived: old short-error/footer/string assertions were
+updated to the adopted static structure; Bed not-reported semantics were retained.
+An initial enlarged boundary expectation541px omitted the existing shell's12px
+inset increase; corrected553px was measured and passed, not a tolerance change.
+First candidate `8f7ea32` was rejected by independent source review: identical
+failed Retry responses could erase retained warnings; legacy same-epoch unknown
+data was incorrectly eligible for retention. Both are repaired. Pending/older
+RPC responses now preserve warning evidence until confirmed success. Renewed
+controller/Bed/observation focused tests total36 PASS; legacy56 tests/916
+assertions PASS. Four affected live packages were rebuilt and repinned.
+Renewed four-host browser matrix6/6 PASS at320/390/720 normal/200% text,
+including two identical failed explicit Retry responses per view, persistent
+warning, focus and full-frame/receipt preservation. Its first harness assertion
+incorrectly required literal `aria-disabled=false`; ready buttons omit that
+attribute. Corrected to reject `true`, without changing product behavior.
+
+The first full attempt is diagnostic only: repository UI522/525 found three
+superseded assertions (Bed-only retained-error scope and old Heads actions
+wrappers); they now assert global scope/noninteractive whole-row semantics.
+Browser execution was interrupted after source mutation; its partial results
+are mixed-byte diagnostics, not candidate acceptance. Both original logs are
+preserved as `stable-errors-first-diagnostic-{repository,browser}.log` in ignored
+UI test-results. No tolerance, privacy, byte cap or shipping guard was weakened.
+Renewed frozen-candidate regression and independent exact-head approval remain next.
+Owned focused fixtures/browsers closed after each run; no user tabs were closed.
+
+## Earlier evidence (historical)
+
+## Required print-thumbnail policy — independent approval and PR86
+
+Independent review approved exact policy commit
+`d08c88d8be9e70ae209664405119e3bc65d06838`, tree
+`7b118ec97a6d4d78c4d67c7109484d5b9ed7dadf`, with no findings. The separate
+reviewer reports 457 unchanged protected blobs, 43 valid local Markdown links,
+and passing privacy and ordered local/upload/start gate checks. These results
+are attributed independent documentation evidence; no runtime enforcement,
+printer operation or physical outcome is established.
+
+The coordinator opened [PR86](https://github.com/scottchu/orca-slicer-mcp/pull/86).
+This five-record continuity tail records completed approval and the existing
+PR; it changes no policy or application bytes. Author `git diff --check` and
+`uv run --no-project -` focused path/link/blob checks pass against `d08c88d8`.
+Final independent identity binding and PR86 merge verification remain pending.
+
+### Earlier author evidence, retained for unchanged policy and application bytes
+
+Base: `36ab3b21acd2ae6ff0bbb1b18e9ebd861197829f`. Decision 0040,
+PREP-007/HANDOFF-007 and the AGENTS/knowledge additions require local decoded
+embedded images before prepared acceptance/upload, then target-parsed metadata
+after upload before start. This is an agent workflow policy; this change
+implements no runtime enforcement and validates no user artifact or printer.
+
+Author checks actually ran:
+
+- `git diff --check`: PASS.
+- `uv run --no-project -` inline documentation/identity checker: PASS. It uses
+  `git diff --name-only` and `git ls-files --others --exclude-standard` against
+  an exact ten-path documentation allowlist, `git ls-tree -rz` at the base and
+  `git hash-object --stdin-paths` on current files to compare all 457 protected
+  tracked blobs, then checks local Markdown link targets, unique PREP-007 and
+  HANDOFF-007 definitions, and the active iteration pointer.
+- Protected base-tree record SHA256 (NUL-joined `ls-tree` records, excluding
+  the ten allowed paths):
+  `d6b44818f7af97124ba7b3a1f08a52669346ab58f808ed665bae726cf4a23cb7`.
+
+All application, tests, dependencies, configuration, generated assets, shipping
+guards and source plugin skills remain byte-identical to the base. The prior
+application evidence below is retained for those unchanged bytes, without
+extending it to thumbnail behavior. No application test, full build/browser
+suite, service operation, printer command or plugin installation was run by
+this documentation author. The independent policy review above is complete;
+PR86 delivery remains pending. Physical thumbnail display and printability are
+unverified.
+
+## Heads Copy PR84 rollout — delivery and independent postverification passed
+
+Reviewed PR head `dfc0857aa483e1fa3e86b71ad58805dae396c109` was independently
+source-approved and validated, then merged as
+`0fe54f34e43f97dd9376e5a17b06efd342726455` with the same approved tree
+`62af16d2dcc17bcf3c25e93c8fb7c4776a11c8db`. The coordinator reports the
+unchanged guarded workflow completed exact-build installation, explicit restart
+of BOTH public/dashboard services, loaded/healthy/integrity checks,31 static and
+32 security checks. Preservation passed; no rollback was needed.
+This docs author did not execute shipment or restart services.
+
+The separate validator reports its postdeployment command exited 0 and checked
+BOTH loaded/healthy services, integrity and all 15 manifest file hashes. Nine
+actual HTTPS routes (eight widget assets and Heads host) returned 200 with CSP
+and exact approved hashes. Downloaded HTML under actual response CSP passed
+15 isolated synthetic cases: six live width/text combinations, six Lab
+transitions, one clipboard/domain adversary group and two shared-consumer checks.
+Initial loading to widest RGB/RGBA at 567/590/720px with 200% text measured 0px;
+whole hex, coherent 44px Copy, focus and retained receipt checks passed.
+Independent evidence JSON SHA256:
+`1ecbc16b2a44d06c6111ebff530843e5692db653566a438706630825d8922224`.
+All validator resources were closed. These are attributed deployed-service and
+synthetic behavior results, not this author's tests or actual-phone, native
+clipboard/OS-focus or physical-printer acceptance. Failed-candidate history and
+the original 1px geometry limit remain below.
+
+The release-record branch starts at that exact accepted merge. Only the six
+continuity records change; application, assets, dependencies, configurations and
+shipping guards remain untouched. No full build/browser regression or second
+deployment is required for this docs-only update under decision0028.
+Independent exact documentation review precedes its separate PR merge.
+
+Documentation-only author checks actually ran: `git diff --check`, an exact
+six-record path allowlist, unchanged protected-input diff against the accepted
+merge, and a focused current-status/decision-link existence check. All passed.
+No application test, full build/browser run or deployment was repeated.
+
+## Heads Copy final frozen application — full author gates passed
+
+Frozen app `a8e3e7a728a366f7073e74385420039b3c1e5283`, tree
+`830393fee8202b1a51b20f6ad4d85977add867e0`. Required renewal actually ran:
+
+- Root `./scripts/check-repository.sh` with pinned Bun1.3.12 on PATH: PASS,
+  zero Svelte errors/warnings, AST guards,514UI,300app/3557 assertions,
+  21 lifecycle/24 shipping, all eight deterministic packages.
+- UI `bun run test:browser`:248/248 PASS (1.7m). This is the one renewed full
+  run after the actual wrap-policy repair; the rejected first run stays below.
+- App `bun run bundle && bun run bundle:server && bun run bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and
+  `dist/u1-print-studio --help`: PASS, no service/printer operation.
+
+Ignored full-log SHA256:
+repository `6c13238147e4c33d02f01367169bfff322ddf6099b067e405a727fb42e6da63c`;
+browser `a9d5f6e1e62ab2a6c383ae8b99d1e4544e700c7c346c707bc1a54ca2f1065aa4`.
+Logs are `app/ui/test-results/heads-copy-full-repository.log` and
+`heads-copy-full-browser.log`. All sessions exited; `lsof -nP -iTCP:4179
+-sTCP:LISTEN` shows no listener. No user app/profile/connection was closed.
+
+Independent roles report source review PASS and36 fresh targeted cases PASS
+on these exact bytes. Repaired567/590/720 actual200% wide-RGBA transitions all
+measure0px. Whole text, right44px Copy, clipboard denial/busy/focus, long Unicode
+material, empty/unknown and independent receipts pass. These are attributed
+synthetic software results, not author self-approval or physical-device claims.
+Exact final documentation-head binding remains required before shipment.
+
+Only Heads96660/hash63d9b108 and light209516/hash7ccb1028 change; all full hashes
+and unchanged six packages are enforced in the renewed package checks.
+Production453480 and Lab922100 stay within original limits; Camera79776 stays
+unchanged. The six-record final tail changes no application/dependency/config/
+asset/shipping input. Bind retained full evidence to its exact PR head without
+an unaffected build/browser rerun. Copy deployment is still pending.
+
+## Heads Copy wrap-parity repair — renewed focused checks passed
+
+Rejected candidate `c32f7f1` passed its repository gate (514UI,300app/3557,
+21 lifecycle/24 shipping), but full browser was244/245: inherited Heads320
+shell<850 and fixed-two-column assumptions contradicted the adopted one-column
+policy. Independent validation additionally measured loading-to-wide-RGBA
+height changes of26.78125px at567/200 and13.390625px at590/200. These are retained
+failures, not accepted results or threshold exceptions.
+
+The ColorValue subgroup now selects inline/stacked layout from the same public
+maximum hex width for loading and ready. Actual text remains naturally sized.
+Independent compactness-contract review adopted Heads-only row anatomy checks;
+other widgets retain850px. Card insets/gaps, two natural body rows, intrinsic
+header/footer,44px actions and row maxima are checked, not a larger arbitrary
+shell-height allowance. The unchanged1px transition gate remains.
+
+Actually renewed: `bun run check` zero errors/warnings and AST PASS; exact
+Heads/light builds and private packaging PASS; focused
+`bun x playwright test tests/visual/observation-lab.spec.ts
+tests/visual/live-heads.spec.ts --grep 'Heads'`:44/44 PASS (33.5s), including
+567/590/720 enlarged wide-RGBA parity and both sides of column boundaries.
+Heads96660 SHA256 `63d9b108c8f94c96b5574ec8200f692147aa692b0472703ab51a72b98d67d6a3`;
+light209516 SHA256 `7ccb1028e72346abf797bd6883a8e60ce6763552a145ea78f059366d2a4b56f5`.
+Six other packages remain unchanged; Lab922100, production453480, Camera79776.
+Renew the full gate on these changed application bytes before acceptance.
+
+Original ignored full logs are retained as
+`app/ui/test-results/heads-copy-c32f7f1-repository.log` and
+`heads-copy-c32f7f1-browser.log`; full screenshots/traces remain in
+`heads-copy-c32f7f1-playwright`, with the separate exact320 anatomy measurement
+in `heads-copy-compactness-measurement`. Four normal single-column cards measure
+193.390625px each (header36.390625, body52, footer53); intrinsic rows explain
+the1050.3125px shell. No evidence was deleted. All focused fixtures exited.
+
+## Heads Copy layout repair — focused author checks passed
+
+The independently measured policy is adopted in decision0039: scoped44px
+right action column, wrapping swatch/whole-natural-hex left group, and public
+font-relative minimum card width. ColorValue is a small DOM-owning leaf with
+runtime loading privacy validation; HeadCard remains zero-raw. Existing global
+Inline/LoadingValue and package caps are unchanged.
+
+Actually run with pinned Bun1.3.12 in app/ui:
+
+- `bun run check`: zero Svelte errors/warnings; AST contract PASS.
+- `bun x vitest run src/lib/ui/ColorValue.test.ts
+  src/lib/observation/HeadCard.test.ts
+  src/lib/observation/ObservationLoading.test.ts`:51 PASS.
+- `bun x playwright test tests/visual/live-heads.spec.ts`:34 PASS,
+  followed by the two added `--grep 'column boundary'` cases:2 PASS.
+  Four widths normal/200%, whole worst RGB/RGBA, exact44px right-side Copy,
+  clipping/overlap/row grouping, closed loading parity, success/rejection/busy
+  focus and retained refresh. Boundary388/389 normal and566/567 enlarged pass.
+- `bun run build:live-heads && bun run build && bun run package:private-lab`
+  passed twice deterministically. Heads96458 SHA256
+  `db1a487699468c3e697cfc009f7b9c2d7e8bb9d5f69d52da015c2f7da63f359a`;
+  lightLab209309 SHA256
+  `34a2ca0a1b96e30114c46935e200c59dc1548b72306e3e2c3c19d3fbb9b5b640`.
+  Other six packaged assets unchanged; Lab total921893, production453278.
+  Camera Lab79776 retains224bytes headroom without a cap change.
+
+The next gate is the single author-owned full frozen-candidate run, then
+separate exact source approval and targeted independent verification. No
+deployment/actual-device/user-outcome acceptance is claimed for Copy.
+Focused fixture/browser sessions have exited and released4179.
+
+### Setup and prior-base evidence
+
+Base `f949f4472937b6f9bd27aa1969200770465a0eaa` is the accepted Bed PR83
+merge. Read current repository guidance and contracts, confirmed canonical main
+clean and created a separate non-main branch. Source diagnosis: HeadCard's
+ready ten-character value reserve combines with the wrapping InsetCard footer
+to orphan Copy below swatch/hex. No UI changes or new test pass is claimed yet.
+Independent UI/UX sizing feedback precedes implementation; preserve44px targets,
+complete RGB/RGBA, loading privacy and unchanged package/security limits.
+The author's prior Bed source approval does not approve this new authored work.
+Bed deployment is coordinator-attributed. Independent final postverification
+reports15 manifest hashes, eight HTTPS assets,15 downloaded-byte browser cases
+and six policy adversaries PASS with zero geometry delta; BOTH services are
+healthy/integrity-verified. Real-phone/native-OS-focus acceptance is not claimed.
+No user/printer/service resource was acquired here. Author dependency setup:
+pinned Bun1.3.12 `bun install --frozen-lockfile` in app and UI passed with no
+tracked lockfile/dependency changes. `git diff --check` passes.
+
+## Bed Lab frozen candidate — full author gates passed
+
+Frozen application `1da084822fde1430c47aa58e332e50e453dbffad`, tree
+`5ed792d20873e254067997d3c236147ca6b62294`. Ordinary accepted-main merge
+`d139091` incorporates delivered Heads `55078ea`; focus source checkpoint
+`99b0846` follows the reproduced failure below. ADR0038 records the adopted
+independent UI/UX policy: conditional active-document-owned successful 2D Retry
+focus handoff to the selected radio, native-disabled Reset unchanged, no late
+focus stealing and unchanged 3D Reset ownership. Shared IconButton/segmented
+control changes require all consumer package/regression renewal, not Bed alone.
+
+Actually run with pinned Bun1.3.12, UI commands in `app/ui`:
+
+- Focused Vitest: `bun x vitest run src/lib/bed-mesh/retry-focus.test.ts
+  src/lib/ui/IconButton.test.ts src/lib/ui/IconSegmentedControl.test.ts
+  src/lib/bed-mesh/BedMeshWidget.test.ts`: 33 PASS before the test-only lease
+  teardown strengthening. The exact final tests are renewed by the full gate.
+- `bun x playwright test tests/visual/bed-error-state.spec.ts`: 21/21 PASS
+  (22.3s). Initial/retained errors, Enter/Space successful 2D handoff, 3D focus,
+  320px/200% target/ring/scroll checks, Tab/Shift+Tab/pointer/mode/phase/history
+  and synthetic window-blur no-reclaim cases. Normal and 200% here mean desktop
+  Chrome CSS text scaling, not actual phone Dynamic Type or OS window switching.
+- `bun run build && bun run package:private-lab && bun run build:live-fans &&
+  bun run build:live-thermals && bun run build:live-heads &&
+  bun run build:live-queue && bun run build:live-camera`: all eight PASS.
+- Root `./scripts/check-repository.sh`: PASS on frozen1da0848. Svelte zero
+  errors/warnings, composite AST guards, 504 UI tests, all eight deterministic
+  package verifications, app TypeScript, 300 app tests/3,557 assertions,
+  21 service lifecycle and24 shipping tests. No cap/guard/tolerance changed.
+  Ignored log: `app/ui/test-results/bed-error-full-repository.log`.
+- `bun run test:browser`: the one owned full frozen run, 235/235 PASS (1.7m).
+  Ignored log: `app/ui/test-results/bed-error-full-browser.log`.
+- Root `uv run --no-project scripts/test_project_agents.py`: 3/3 PASS.
+- App `bun run bundle && bun run bundle:server && bun run bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and
+  `dist/u1-print-studio --help`: PASS. Root `uv run --no-project
+  scripts/u1_ship.py --help` and `scripts/u1_service.py --help`: PASS;
+  no ship execution, service restart or printer acquisition was performed.
+
+Renewed package identities (SHA256; production total451603, Lab total920214):
+
+| Package | Bytes | SHA256 |
+| --- | ---: | --- |
+| live-fans | 88086 | `c1b1d04d8a51effdd1df08bca01a4e19fde47646721195469888a5ae4868f01a` |
+| live-thermals | 88662 | `a73f5d6833379a204f45fbca5afe2a8ece98aa24cffdde443e0172bc6453d85f` |
+| live-heads | 94783 | `22621770dd05285537b98f2cda0203e8675f563e11fab48907240aa4d0d5f90d` |
+| live-queue | 89172 | `e20108ffec78a961f79401d9f41a462aaddad5bad57bc0c6a2b896e9125c5215` |
+| live-camera | 90900 | `9ee881eb88a2019421bff68077af193866ae33bcb360a06689a1fffc611e9b19` |
+| observation-lab | 207630 | `980975278fe5e5f589bbfb9faecafc0580d79ae563379d46d3c45e5bd1c6bb82` |
+| bed-mesh-lab | 632808 | `89d002c114aaca37b3056969874af85d2eaae88c7476d03a7a02ca592f650166` |
+| camera-lab | 79776 | `85dd732e6a6f3a4df7ed96c5de4557e68e1ce62926ada9fe0e2af49454cc1bc2` |
+
+The separate validator reports14 targeted browser cases plus six fresh delayed
+policy adversaries PASS on exact1da0848/Bed632808/hash89d002c1. Six 2D/3D
+viewport/text-scale initial/retained frame comparisons have zero geometry delta;
+ownership, focus loss, phase/mode/unmount, and Heads/Fans consumer checks pass.
+Headless cross-page active-document simulation was unavailable, so blur evidence
+is explicitly event-level plus a pure `canRecoverFocus=false` adversary, not
+actual OS focus switching. Independent final-head source approval is pending.
+
+Failure history remains below: the original successful 2D Retry focus loss
+was reproduced, then repaired. An intermediate segmented-control unit test
+incorrectly merged old controlled props into a loading rerender; isolated loading
+render fixed that test. A compiler warning about nonreactive component refs was
+resolved with `$state`. Reviewer-requested lease-test `finally` cleanup is in the
+exact full504 test run. No assertion/size/accessibility guard was waived.
+
+The successful320px/200% focus screenshot was inspected: focus ring is visible
+and Reset stays disabled; inherited minimum/maximum/range summary crowding is
+still outside this slice. No whole-widget polish or physical acceptance claimed.
+All full-run sessions exited; browser/fixture teardown completed,4179 has no
+listener. Retain ignored evidence logs and failure trace; preserve user apps.
+
+The final six-record documentation tail retains these frozen application inputs;
+check its unchanged plugins/scripts/configuration/assets and diff, bind evidence
+to the final PR head, and obtain independent acceptance without an unaffected
+full-suite rerun. Guarded delivery remains a separate mandatory workflow.
+Tail checks actually pass: `git diff --check`; `git diff --exit-code
+1da084822fde1430c47aa58e332e50e453dbffad -- plugins scripts .agents .github
+.codex`; and a `uv run --no-project python -c` standard-library check of the exact
+six-record allowlist, CURRENT's unique active iteration and required continuity
+headings. The initial local check used case-sensitive acceptance labels instead
+of the repository's case-insensitive contract; corrected check passes without
+changing product files. Full-log SHA256 identities inspected independently:
+browser `6a8e6a064f7b7845ce0992194e796a60223c238c729a1df7815b3837f5218a01`,
+repository `374157050acfac4c0558dba4f3bc5478e8575dcf0cdb1544f6c662b9dbeaeeaa`.
+Next scoped order is Bed release, new Heads mobile color/Copy wrapping repair,
+then source-approved unshipped Camera retry1c6920e; none is silently mixed here.
+
+## Earlier targeted integration evidence (superseded by the frozen results)
+
+## Accepted-main integration — targeted renewal; known focus failure
+
+Ordinary merge target: accepted Heads/main
+`55078ea215768094bf1897b516726e2e4aa05bd8`. Additive conflicts preserve both
+sets of continuity records; the AST allows the Bed error composition and Heads
+loading helper together. The generated Bed artifact is rebuilt, not hand merged.
+Actually run on the combined source with pinned Bun1.3.12:
+
+- `bun run check`: zero Svelte errors/warnings and AST PASS.
+- `bun run build` and `bun run package:private-lab`: PASS. Light207111,
+  Bed631250, Camera79257; aggregate917618 within unchanged caps. Bed hash remains
+  `828350559ed1896466c4aff6d85e7a6f11cc5ba6abc4ae4b2a597eaa6d1607f1`.
+- The seven-file focused Vitest command listed in the previous checkpoint:
+  101 tests PASS on the combined source, including renewed Heads loading guards.
+- App `bun test src/private-lab.test.ts src/bed-mesh.test.ts`:19 PASS,
+  220 assertions.
+- `bun x playwright test tests/visual/bed-error-state.spec.ts -g 'Bed retained 2d'`:
+  1 FAIL, deliberately reproducing the independent-review concern. A new
+  successful-retry focus assertion observes the previously focused Retry button
+  become native-disabled Reset and lose focus after301ms. Earlier tests checked
+  only focus during retry. No tolerance was weakened or failure waived.
+  Failure screenshot/trace remains in ignored `ui/test-results/bed-retry-2d-focus-before-fix`.
+- `git diff --check`: PASS. The owned fixture and browser exited;4179 has no
+  listener. No full candidate/browser/runtime gate has yet run on this merge.
+
+Independent UI/UX focus policy and repair are next, followed by one full frozen
+candidate regression. No Bed deployment or real-printer/device acceptance.
+The coordinator's separate Heads postdeployment result is attributed in the
+current HANDOFF; it does not accept this changed candidate.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Bed Lab stable-error frame — focused author evidence, not release acceptance
+
+Application source `464d3e73d427e648a6b4c75be625eeaa49beaee9`, tree
+`e1bfbab6b4d75cf41c3bffae82204512cbfc8a86`, accepted base4e869d8.
+Impact: new controlled WidgetStateSurface leaf, Bed Lab composition/closed phase
+selection, existing chart/state regressions and private Bed artifact/hash. No
+production reader, auth/routing, sample normalization, media session or renderer
+implementation changes. Current evidence is synthetic/software only.
+
+Actually run (Bun1.3.12; UI commands in app/ui):
+
+- `bun run check`: Svelte zero errors/warnings; AST leaf registration and
+  unchanged ready-body raw-debt multiset PASS.
+- `bun x vitest run src/lib/ui/WidgetStateSurface/WidgetStateSurface.test.ts
+  src/lib/bed-mesh/BedMeshState.test.ts src/lib/bed-mesh/BedMeshWidget.test.ts
+  src/lib/bed-mesh/lab-controller.test.ts src/lib/lab/controller.test.ts
+  src/lib/observation/ObservationLoading.test.ts src/lib/ui/components.test.ts`:
+  88/88. Wrapper retains video/canvas/button/stream identity and focus; one
+  mount/dispose; no wrapper lifecycle or announcements. Bed failures retain
+  neutral structure without truthy telemetry or renderer; closed retained-error
+  phase is rejected by other observation-route parsers.
+- `bun run build && bun run package:private-lab`, then repeated
+  `bun run package:private-lab`: deterministic three-Lab graph/cap checks PASS.
+  Bed631250, Light204875, Camera78795; aggregate914920 below unchanged980000.
+  Bed SHA256 `828350559ed1896466c4aff6d85e7a6f11cc5ba6abc4ae4b2a597eaa6d1607f1`.
+  Against base, only Bed public asset changes; all five production plus other
+  two Lab assets are byte-identical. No complete eight-package renewal claimed.
+- App `bun test src/private-lab.test.ts src/bed-mesh.test.ts`:19/19,
+  220 assertions; exact private package pin, no acquisition primitives, closed
+  routes, reported/inactive/unknown/retained normalization unchanged.
+- Isolated Chrome via ignored local configuration with exclusive4187 (same
+  tracked Playwright config except port/output placement):
+  `bun x playwright test --config test-results/local-bed.config.ts
+  tests/visual/bed-error-state.spec.ts tests/visual/lab-states.spec.ts`:26/26.
+  Four320/390/590/720 widths normal/200%: identical major loading/error/
+  unavailable geometry; ready transition within unchanged1px tolerance; static
+  animation, false error busy, one overlay, no initial WebGL requests,44px
+  Retry, same action/focus, retained2D/3D renderer/context/receipt, canceled
+  retry, no requests. Existing other-route/known-empty state checks pass.
+- Earlier focused `bed-error-state.spec.ts bed-mesh.spec.ts`:14/14, including
+  four original XYZ/chart/pixel-coverage/4:3/mode tests. Final test-only addition
+  of explicit WebGL request counters is covered in the26/26 run above.
+- `git diff --check` PASS. Captures at320/200% and720/normal were inspected:
+  error notice is within chart and frame is retained. Existing enlarged
+  below-chart summary-label crowding remains; this is not whole-widget polish.
+
+Failure history: first new browser run9/10;2D test incorrectly selected a child
+canvas although the renderer itself is a canvas. Corrected only selector,
+then14/14 and final26/26 pass. No geometry/contrast/cap tolerance waived.
+No full repository/browser/runtime run or independent acceptance yet. Wait for
+accepted Heads PR81 ordinary integration before one owned full candidate run.
+No deployment, physical printer, phone or user-outcome evidence is claimed.
+
+## Accepted-main history (superseded by the current Bed integration)
+
+## Heads PR81 accepted-main integration — focused renewal
+
+Preserved repair records commit `8f66edc`; ordinary accepted-main merge
+`b1c9a8ced0cd5012cdcb9b895bf64a22b0af8ce5`, tree
+`cff0c0512e03d4fd1e16c7cbf2581ea6e2254aba`, incorporates PR82 main
+`707a018a3e3c64b885bc1ece13f2795ae2bb546d`. Five additive continuity conflicts
+retain both histories under current versus historical headings. The new main
+changes only project-agent configuration/routing, its guide/test and records;
+it was independently reviewed and merged, not native-runtime verified.
+
+Actually run on the integrated candidate:
+
+- UI pinned Bun `bun run test -- src/lib/observation/ObservationLoading.test.ts`:
+  29/29 PASS; ignored log `test-results/heads-main-integration-focused.log`.
+- `uv run --no-project scripts/test_project_agents.py`: 3/3 PASS.
+- `git diff --exit-code 1e2e387 HEAD -- plugins .agents .github`: PASS.
+- `git diff --exit-code c9d69cb HEAD -- plugins
+  ':!plugins/u1-print-studio/app/ui/src/lib/observation/ObservationLoading.test.ts'
+  .agents .github`: PASS. Runtime, browser tests/harnesses, dependencies,
+  application build inputs and all packaged assets are unchanged.
+- `git diff --exit-code 1e2e387 HEAD -- scripts/check-repository.sh
+  scripts/u1_ship.py scripts/u1_service.py`: PASS; shipping guards unchanged.
+- `git diff --exit-code 707a018 HEAD -- .codex AGENTS.md
+  docs/project-agents.md scripts/test_project_agents.py`: PASS; accepted role
+  definitions/configuration test are integrated exactly.
+- `git merge-base --is-ancestor 707a018 HEAD`: PASS.
+- One-off read-only Bun identity/docs check: PASS, exact 14-path delta from
+  `c9d69cb` (six continuity records, four roles, AGENTS, guide, new config test,
+  repaired ObservationLoading test), six valid record headings/no conflict
+  markers, current iteration, all eight exact asset hashes/lengths against the
+  earlier independent receipt. Retained full browser log still has SHA-256
+  `13bea3f380b5e62f243eafaa65a90ba2246f79f2ae160fdf5a2e0de8c52ec4e8`
+  and `214 passed (1.5m)`.
+- `git diff --check`: PASS; the merge checkpoint was clean before this
+  records-only evidence tail.
+
+No repeated full browser/build/repository run was needed for this config/docs
+integration. The complete repaired-test repository gate at `1e2e387` and the
+unchanged application/browser evidence at `c9d69cb` remain separately scoped;
+final independent identity binding and every mandatory u1-ship gate are still
+required. All owned command sessions exited; no browser, fixture, watcher,
+service restart or printer connection was started. This is source/static
+evidence, not deployed-service, native agent-loading, phone or printer acceptance.
+
+## PR81 local-gate repair — tests only
+
+Test checkpoint `1e2e387d8cbbada99a23dfa01ad9b94265834f8d`, tree
+`94f127adb482d90586d851b85d86b5bda08ec844`. The earlier ship operation
+`pr81-20260901T223907-478182` stopped before merge/install/restart. Its inherited
+ObservationLoading.test.ts reported 15 PASS/1 FAIL because a blanket text check
+forbade the accepted hidden public `Generic PLA` template.
+
+Only this test changes: approved leaves must be SPAN with exactly allowed
+attributes, aria-hidden, no child elements, the Spool/Caption/card structure and
+one of the two exact public strings. All remaining text and accessible labels
+retain forbidden-telemetry checks; non-Heads templates receive no exception.
+Private readings, arbitrary templates, visible/hidden stray labels, accessible
+labels, tabindex/contenteditable/href/role and button-tag adversaries are covered.
+
+Actual commands (pinned Bun 1.3.12):
+
+- UI `bun run test -- src/lib/observation/ObservationLoading.test.ts`: initial
+  editing 21/22 (overbroad rejection of Queue's existing skeleton), then 24/24
+  PASS after limiting the exception to Heads. No Queue/runtime change.
+- UI `bun run test`: 478/478 PASS on first repair `8e67cd2`.
+- First `./scripts/check-repository.sh`: deliberately interrupted after 478 UI
+  and five live package checks when independent review identified a missing
+  noninteractive-leaf assertion. It is not a complete gate PASS; log retained.
+- Focused renewal: 29/29 PASS; independent reviewer separately ran 29/29 on
+  final `1e2e387` after valid interactive-attribute adversary values were set.
+- Final `PATH=<pinned-bun-bin>:$PATH ./scripts/check-repository.sh`: exit0 on
+  `1e2e387`; compiler/AST zero errors/warnings, 483 UI, all eight deterministic
+  package checks, 300 app/3,557 assertions, 21 lifecycle and 24 shipping PASS.
+  No separate full browser/build command was run; required gate internals ran
+  unchanged, including their existing package builds and rendered-layout check.
+
+Ignored UI test-results logs: heads-ship-loading-focused.log,
+heads-ship-full-ui.log, heads-ship-repository.log (interrupted),
+heads-ship-loading-final-focused.log and heads-ship-final-repository.log (complete).
+`git diff --exit-code c9d69cb HEAD -- plugins/u1-print-studio/app` with only
+ObservationLoading.test.ts excluded passed; browser tests/harness/scripts,
+runtime, packages, configuration and dependencies are unchanged. Independent
+review also confirmed no other non-record changes after `6f487c8`. Retained
+214/214 browser evidence belongs to unchanged app inputs, subject to final
+independent head binding. This is software evidence, not deployment/device or
+physical-printer acceptance.
+
+All command sessions exited, including the deliberately interrupted gate. No
+author browser/fixture was started. A later read-only exec could not launch due
+to OS error24 (too many open files); it did not affect the completed final gate.
+
+## Heads material icon — frozen author application
+
+Source `c9d69cb894ad1d28278fb1e56b6b9617c11af5f9`, tree
+`3cca582bad7e2ff9d21b5f77f34fdc96aedcf266`; base accepted PR80
+`4e869d8e70aa1ee4d55295fc5a8d93ec4ee70258`. Later continuity edits do not
+change application/build/test inputs. Independent exact acceptance is pending.
+
+### Commands and actual results
+
+Pinned Bun 1.3.12; isolated browser permission confirmed by coordinator after
+the Browser skill was read and the in-app tool was unavailable. The explicitly
+approved repository Playwright path uses no user profile.
+
+- App/UI `bun install --frozen-lockfile`: PASS, lockfiles unchanged.
+- UI `bun run check`: PASS after final repair, Svelte zero errors/warnings and
+  strict migrated-composite zero-native-HTML contract.
+- Initial UI `vitest run src/lib/observation/HeadCard.test.ts
+  src/lib/live/heads-adapter.test.ts src/lib/live/heads-controller.test.ts
+  src/lib/observation/ObservationWidgets.test.ts src/lib/ui/components.test.ts
+  src/lib/ui/foundation.test.ts`: 106 PASS. Unchanged adapter/controller/leaf
+  behavior evidence remains applicable.
+- Enum editing added `src/lib/lab/heads-loading.test.ts` and
+  `src/lib/lab/controller.test.ts` to that focused set: 131 PASS.
+- Final affected renewal `vitest run src/lib/observation/HeadCard.test.ts
+  src/lib/observation/ObservationWidgets.test.ts src/lib/lab/controller.test.ts
+  src/lib/lab/heads-loading.test.ts`: 56 PASS. Twelve HeadCard cases include
+  ready+template rejection, arbitrary/sparse shape rejection, configured-but-empty
+  material, private loading, exact RGBA and Copy. The helper covers all 96 public
+  scenario/tool/material combinations without accepting a DTO.
+- UI `build:live-heads`, `build:live-fans`, `build:live-thermals`,
+  `build:live-queue`, `build:live-camera`, `build`,
+  `package:private-lab`: all eight transitive package graphs/budgets PASS.
+  Heads/light Lab were renewed after runtime repair; other six hashes remained
+  identical. Direct packaging after Vite build initially lacked cleared Bed/
+  Camera intermediates; standard `package:private-lab` rebuilt them and passed.
+- App `bun test src/live-fans-package.test.ts src/private-lab.test.ts`:
+  final 12 PASS / 138 assertions, exact hashes and self-contained boundaries.
+- Initial `playwright test tests/visual/live-heads.spec.ts`: 16/18 PASS.
+  320px normal Lab/Live had a genuine 32.75px material loading gap. Fixed public
+  TextSkeleton repair gave 18/18 PASS, unchanged <=1px geometry assertion.
+- First frozen app `6e13fe4`, `bun run test:browser`: 201/206 PASS, not waived.
+  Four old tests located a direct Caption and assumed one line; the new row
+  requires Spool-adjacent Caption and actual DOM Range line count. That focused
+  selector renewal passed 4/4. One genuine all-empty 320px Lab gap required
+  independent adoption of the closed loading-shape enum before runtime changes.
+- A component guard test initially failed because unused Svelte derived values
+  are lazy. Pre-render validation now rejects ready overrides; HeadCard 12/12 PASS.
+- Final `playwright test tests/visual/live-heads.spec.ts
+  tests/visual/lab-text-bounds.spec.ts tests/visual/observation-lab.spec.ts
+  --grep 'Heads|closed presets'`: 39/39 PASS. Includes all public empty/unknown/
+  mixed per-tool overrides at 320/390/590/720 normal/200%, original closed
+  presets, typography, preserved refresh/Copy/retry/BFCache and no remote fetch.
+- One renewed full `bun run test:browser`: 214/214 PASS (1.5 minutes) on frozen final bytes.
+  It is required because the earlier failed candidate's inputs changed, not a
+  discretionary repeat by another role.
+- `git diff --check`: PASS.
+- Documentation-tail identity: `git diff --exit-code c9d69cb -- plugins scripts
+  .agents .github`: PASS. Final package hashes match the table below; no
+  application/test/configuration/dependency/build input changed after the full run.
+- `lsof -nP -iTCP:4179 -sTCP:LISTEN`: no listener after Playwright teardown.
+
+DOM Range glyph rectangles and font-matched canvas space widths verify natural
+spacing, not merely marker presence. Actual 320px normal and 200% long-material
+screenshots were inspected. A finite public template only proves tested closed
+fixture geometry; arbitrary private initial 194-character height parity is not
+claimed. Ready long values are naturally wrapped, not truncated.
+
+### Final exact package inventory
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| live Fans | 87209 | 64f457273462b8440342343264f6192e3b9d83c11049faa52295a796b430e14f |
+| live Thermals | 87785 | 971307a7da0399f7cd6f6edf7a0a2940fe0972cd62200349f47919d9195f27b7 |
+| live Heads | 94264 | 0bb5b4a97eaa9efe02daa008fe43551545f2f4451e5d9f7eb527d6cacf4f5713 |
+| live Queue | 88295 | 982c55a74bc1f777295ef4cf111880ef8cfbd6aa8a076ad46f26a3da532d4613 |
+| live Camera | 90381 | 8e2020e8a3a745cd786dcce9193a9de75ce940765a2da90aa49174dd751445cd |
+| light Lab | 207111 | 417dc98bf4aac8663edea56251dcfbed6590d4dce5eba4b0d47154a1ae642466 |
+| Bed Lab | 638718 | d07b4f5ead3c40b3640d9a36f900f00177c052fc0620001314d21aedf3e0e814 |
+| Camera Lab | 79257 | 839f6847e398a0d5d8f4cb038253340a81edfa00e9cf3ddf8c032d92726bd18f |
+
+Production total447,934; labs925,086. Caps remain100k per ordinary production
+widget /1.55m aggregate, labs250k/700k/80k and980k aggregate. Camera headroom743;
+Spool adds462. PR79 separately has318 headroom, so later integration needs a
+real merged measurement. This is a predicted integration risk, not a measured
+merged artifact or permission to raise caps.
+
+Ignored evidence retains both earlier failed runs and the owned final run log.
+No camera recording, user model, private profile or runtime data is committed.
+Browser/fixture resources and all author command sessions are released. These are software
+and synthetic-protocol results, not deployed-service, real-printer or actual
+phone acceptance. No service, printer, hosted validation or user browser changed.
+## Earlier project-role candidate evidence (merged through PR82)
+
+## Project review roles — targeted configuration evidence
+
+Base: accepted PR80 `4e869d8e70aa1ee4d55295fc5a8d93ec4ee70258`.
+Four standalone role files use only `name`, `description` and
+`developer_instructions`, following the opened official OpenAI custom-agent
+documentation linked in `docs/project-agents.md`. They contain no model,
+permission, tool, MCP or global configuration overrides. The guide explicitly
+separates schema validation from native-client loading and simulated user
+feedback from real user research.
+
+Actually run by the author:
+
+- `uv run --no-project scripts/test_project_agents.py`: 3 tests PASS, covering
+  all four names/files, nonempty string fields, no added configuration keys,
+  role routing/guide links, repository context references, portable instructions
+  and resource cleanup clauses. File streams use context managers.
+- `git diff --check`: PASS.
+- `git diff --exit-code 4e869d8e70aa1ee4d55295fc5a8d93ec4ee70258 -- plugins .agents .github scripts/check-repository.sh scripts/u1_ship.py scripts/u1_service.py`:
+  PASS; application, assets, dependencies and existing shipping gates unchanged.
+
+This is static configuration/documentation evidence only. No full widget/build/
+browser suite, model invocation, named-agent runtime loading, screenshot audit,
+service restart, printer read/control or physical acceptance was run or claimed.
+Independent exact source/config review remains pending. No owned long-lived
+process, browser, fixture port or connection was started. All pending widget
+checkpoints remain separate; no earlier application evidence approves new bytes.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Test strategy policy — targeted docs-only author evidence
+
+Base: accepted PR78 `177d326d13e126d727be7d7431fbfc232e902bc3`.
+Only AGENTS and five current continuity records change; no application, test,
+dependency, configuration, asset, skill or shipping-script input changes.
+Targeted checks all PASS: `git diff --check`; `git diff --exit-code` against the base for
+`plugins scripts .agents .github`; a one-off Bun documentation-contract check
+of the exact six-file allowlist, required project/iteration files, unique active
+iteration, state/evidence headings, seven policy bullets and unchanged GitHub
+delivery section. These are policy/source-identity checks, not runtime evidence.
+No full repository/application/build/browser suite, deployment or printer test
+was run or claimed. Existing u1-ship gates remain unchanged and mandatory for
+future application releases. Independent documentation review remains pending.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Bed Mesh icon segmented toggle — complete author gates, unaccepted
+
+Exact application source: `80229841fced7307aaf3eba850a8e60ef688c26a`; tree
+`5dd9210ad01605cf4678da8a069ee8764333ef9f`; isolated accepted base4828ce04.
+Actually run:
+
+- UI `bun run check && bun run test`: zero compiler errors/warnings, registered
+  leaf/unchanged raw-debt AST,455 tests in41 files (16 new leaf cases).
+- Focused `bun x playwright test tests/visual/icon-segmented.spec.ts`:16/16.
+- Full `bun run test:browser`:198/198 in1.5m, including native Enter/Space/repeat,
+  one Tab stop, arrows/Home/End, option reorder/external focus, disabled/loading,
+  real animated intermediate transforms/reduced motion,44px targets/32px track,
+  chart/footer geometry, URL/back/forward/reset at320/390/590/720 normal/200%.
+  Existing all-matrix legend/XYZ/pixel/orbit/wheel/pinch/reset/reactive2D,
+  Camera/other-widget and zero-runtime-fetch suites remain passing.
+- `./scripts/check-repository.sh`:455 UI,300 app/3,557 assertions,21 lifecycle
+  and24 shipping tests PASS, including exact routes/CSP/no-store/path/method/
+  public isolation, source graphs and strict individual/aggregate budgets.
+- All `verify:live-fans`, `verify:live-thermals`, `verify:live-heads`,
+  `verify:live-queue`, `verify:live-camera`, `verify:private-lab` repeated
+  after the final source repair: all eight rebuilt hashes remain identical.
+- App `bun run bundle && bun run bundle:server && bun run bundle:runtime`
+  and `./dist/u1-print-studio --help` PASS; compiled runtime signature is valid.
+- `git diff --check` PASS. Against accepted base, only the Bed lab public
+  artifact differs; all five production, light lab and Camera lab are identical.
+
+| Artifact | UTF-8 bytes | SHA-256 |
+| --- | ---: | --- |
+| Fans | 86747 | af6a8ad6b892966099c399231384383a5a4abd499e677443ebe231e9ff156b61 |
+| Thermals | 87323 | 99aa65a13ba86acd07bc596f69e491c7319417eff5a6e06ebe5c5fbc917f6621 |
+| Heads | 92726 | c778ae8d951260464277d9873de6f9f3c12a6355db96ba316ff41766294f21f4 |
+| Queue | 87831 | ccaaca3ecf881d087f4f0188613055f64cb9c7184521c08d1cb4367098342c27 |
+| Camera | 89919 | b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10 |
+| Light lab | 204875 | 4665ccc4033c385f6234043195521002b30c6bf8bd121f1646ea9de1fe36b98a |
+| Bed lab | 638249 | 37a48c3baed18f2ffd25cae1b8c3d8a2e251b94dce4f9ece6782961902534ac2 |
+| Camera lab | 78795 | af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a |
+
+The three labs total921,919, below unchanged980,000; individual250,000/700,000/
+80,000 caps remain. Browser captures `ui/test-results/bed-icon-toggle-320-true.png`
+and `bed-icon-toggle-720-false.png` were inspected by author and coordinator.
+The connected control matches its adopted shape. Existing 320px/200% summary
+headings crowd and Observed-time spacing remains; neither was changed or waived.
+
+Failure/repair evidence: initial leaf units caught whitespace-only text-test
+assumptions and nonreactive ref binding; runtime refs now use reactive bindings.
+First focused browser12/16 exposed a real2px inline baseline shift only in the
+empty enlarged loading harness. Explicit `vertical-align:middle` fixes it with
+unchanged geometry assertions. A pre-final repository run reached an obsolete
+Bed hash assertion during package/pin renewal; the complete final run passes.
+No test tolerance, target dimension, production source or acceptance gate relaxed.
+
+Attributed previous PR77 deployed-service evidence is separate: accepted4828ce04
+release20260901-4828ce0-pr77-20260901T204905-260700 restarted BOTH services and
+passed31static/32security; independent postchecks verified15 hashes,13HTTPS,
+24raw path/method/isolation and8 downloaded-byte browser cases. Those checks do
+not accept this changed candidate. This turn used synthetic software only:
+no services, printer, auth, Tailscale or installed plugin were changed.
+
+## Earlier author and integrated baseline records
+
+## Slim vertical legend final author renewal — independent acceptance pending
+
+Accepted Queue `7882670778627128214d74bcee62fe20f5ddbf7a` was ordinarily merged
+as `910355e`; no copy/cherry-pick/rebase. Only the Bed lab public artifact
+differs from this base. Final raw UTF-8 bytes and SHA-256:
+
+| Lab artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| Light observation | 204875 | `4665ccc4033c385f6234043195521002b30c6bf8bd121f1646ea9de1fe36b98a` |
+| Bed Mesh | 634045 | `5127c3173393ab2237227694ce6d4fca7c6b02581a11aabb07e1c6a1729b1b5f` |
+| Camera | 78795 | `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a` |
+
+Lab aggregate is 917,715; all eight packages total 1,362,261. Five production
+packages remain byte-identical to Queue: Camera 89,919; Fans 86,747; Heads
+92,726; Queue 87,831; Thermals 87,323. All individual/aggregate caps are unchanged.
+
+Actually run on final application source: UI `bun run check`, focused
+`bun run test` for HeightLegend/BedMeshWidget (18), `bun run build`,
+`bun run package:private-lab`; root `./scripts/check-repository.sh` PASS with
+UI 439/40 files, app 300/3,556 assertions, lifecycle 21, shipping 24, compiler
+0 errors/0 warnings, AST/route/graph/cap and all eight exact package rebuilds.
+App `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`, local
+ad-hoc signature verification and compiled `--help` PASS. Final UI
+`bun run test:browser`: Chrome 182/182 PASS (1.6m), including all 174 inherited
+cases plus eight four-width/normal-200% legend cases. Focused Bed suite was
+26/26 before the final accessibility-markup-only repair.
+
+The first full renewal was 174 PASS/8 FAIL: a deliberately clipped sr-only
+chart description triggered the existing visible-glyph audit. Standard
+`hidden` description content referenced by `aria-describedby` fixes the source;
+accessible-description unit coverage passes and no audit exclusion or threshold
+was relaxed. The final 182-case renewal is green. Rendered gradient top/bottom,
+uniform flat midpoint, neutral loading, zero caption/surface overlap, actual
+mesh pixels excluding legend paint, fixed frame/mode/refresh/resize, supported
+orbit/zoom/reset and zero runtime fetch are tested.
+
+Author inspected final 320px/200% and 720px/normal 3D screenshots in the ignored
+Playwright test-results, plus the 320px/200% 2D capture. Rail and axes are clear.
+Unchanged below-chart Min/Max/Range labels remain crowded at 320px/200%; the
+inherited glyph-bounds checks do not establish complete visual polish. This is
+recorded for the separate real-Bed composition, not concealed or newly accepted.
+Port 4179 is released. This is software/synthetic evidence only: independent
+exact-SHA source review/validation, shipment and actual-device/printer evidence
+are not claimed. Earlier held experiments below remain historical evidence.
+
+## Historical author and integrated baseline records
+
+## Vertical legend author evidence — HELD, no PR or deployment
+
+Base is accepted main `ff577fcb`. Current artifacts are light199,819,
+Bed632,794 and Camera78,795 raw UTF-8 bytes, aggregate911,408. SHA256:
+light `080ad95276834fe560ccae2eb57e763969d891b5c65fa708babbca12667e6101`,
+Bed `7aef14f61bffde9bf682bfb516481ee1aed0a03f76ec6d9252441e8083474bf6`,
+Camera `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`.
+The exact private-package rebuild in final `./scripts/check-repository.sh`
+reproduced all three bytes. Git comparison with the base changes only the Bed
+lab public asset; all production and Camera/light artifacts remain identical.
+
+Actually run: UI `bun run check`, `bun run test` (344/344 in35files,0errors/
+0warnings/AST PASS); app `bun run check` and `bun test src/*.test.ts`
+(296/296,3,504assertions); final `./scripts/check-repository.sh` PASS including
+production package/source guards, graph/cap/private-route tests, three-lab
+determinism, lifecycle21/21 and shipping24/24. `bun run bundle`,
+`bun run bundle:server`, `bun run bundle:runtime` and compiled `--help` passed,
+including local ad-hoc signature verification. One intermediate repository
+renewal correctly failed the stale Bed artifact guard during a source change;
+the regenerated final artifact and exact guard passed the complete renewal.
+
+Browser command: `bun x playwright test tests/visual/bed-mesh-legend.spec.ts
+tests/visual/bed-mesh-rotation.spec.ts tests/visual/bed-mesh-zoom.spec.ts
+tests/visual/bed-mesh.spec.ts`. Final result24PASS/2FAIL in21.3s. Existing
+four-width normal coverage (320px75.9%width/43.7%height), all matrix/rotation/
+axis tests at normal200%, real colored surface, wheel/reverse/reset/pinch and
+canvas/orbit identity PASS. Pixel metrics now exclude the legend's own paint,
+so a color strip cannot falsely satisfy mesh coverage. New legend tests pass
+all normal widths and590/720 enlarged, including geometry/states/modes/resize/
+no-fetch and zero text-axis overlap. Failed cases320/390 enlarged report
+849/412 surface-colored pixels beneath fixed6ch legend text boxes. Those boxes
+overestimate actual short glyphs; the inspected320 enlarged capture shows a
+crowded title/surface boundary. This is a conservative unresolved clearance
+failure, not proof all reported pixels cover visible glyphs.
+
+Earlier wide-column experiment:6/8 initial tests failed on asynchronous
+ResizeObserver timing (fixed by two animation-frame settlement); its renewed
+legend8 passed but inherited320/200 surface area and pixel zoom failed.
+Narrow14px rail with left Z gave24/26 and3.23px endpoint clipping. The current
+opposite true Z silhouette repairs that clipping without changing default
+non-legend behavior, but does not resolve the final clearance hold. No full
+172-case browser renewal, independent approval, PR, shipment, phone or printer
+acceptance is claimed. Independent measured-glyph/surface-fit design is next.
+
+## Integrated Queue baseline records
+## Queue final author renewal — exact independent review still required
+
+Application source `5c53d05ec15d76b5b5f413471a2ae8dee3326296`, tree
+`155abfb5e436cf8e1cb344a6724fbc358feafc60`, ordinarily descends from accepted
+PR75 main `ff577fcb` through `a042be5`. The final shared leaf contract implements
+the independent design: bounded control-safe inert public template text uses
+native glyph metrics/word wrapping; numeric templates use tabular zero glyphs.
+Only lab Queue reads its closed synthetic layout. Production uses neutral
+templates and never passes a real filename/date to skeletons. Ready text is
+untruncated, no fixed card reserve is added, and<=1px geometry is unchanged.
+An initial lazy-derived ready-prop guard missed invalid DateTime loading-shape
+props; a focused unit failure caught it and the explicit ready guard fixed it.
+
+Actual commands used pinned Bun1.3.12 on PATH. From `app/ui`:
+`bun run check`, `bun run test`, production `build:live-fans`,
+`build:live-thermals`, `build:live-heads`, `build:live-queue`, `bun run build`,
+`bun run package:private-lab`; focused Playwright
+`lab-states.spec.ts` plus `lab-text-bounds.spec.ts`; and final
+`bun run test:browser`. From repository root: `./scripts/check-repository.sh`.
+From `app`: `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+`codesign --verify --strict --verbose=2 dist/u1-print-studio`, and
+`dist/u1-print-studio --help`. All completed successfully on the final source.
+The repository gate independently rebuilds and byte-compares every production
+and private-lab artifact; hashes below were rederived after the final run.
+
+Results: UI426/426 in38 files, app300/300 with3,555 assertions, lifecycle21/21,
+shipping24/24, compiler0 errors/0 warnings and exact leaf AST PASS. Focused
+geometry24/24 then Chrome174/174 in1.5m PASS. Every record is included in closed
+fixture geometry at320/390/590/720, normal and200% text. Full browser coverage
+includes Queue counts0/1/100/101/1000, duplicate/reordered160-character ASCII
+and Unicode records, extreme/nullable dates and durations, stale/empty/unknown,
+retained-refresh bounds/focus, true initial HTTP503-to-Retry-to-ready,
+wrong-view20s deadline, BFCache/one bridge and obsolete successful RPC16 after
+notification15. Existing Fans/Thermals/Heads/Camera and all lab controls remain
+green. Pre-execution fetch interception across every lab route/control reports
+zero runtime calls. Browser4179 was released immediately after completion.
+
+Author inspection of final320-enlarged and720-normal Queue screenshots confirms
+readable wrapping without clipping; the ready fixture intentionally reports
+machine queue state Loading, distinct from UI skeleton mode. No real printer,
+media acquisition, phone, service, auth, Tailscale or plugin operation occurred.
+These are authored software/synthetic-browser facts, not independent acceptance.
+
+| Artifact | Raw UTF-8 bytes | SHA256 |
+| --- | ---: | --- |
+| Fans |86747|`af6a8ad6b892966099c399231384383a5a4abd499e677443ebe231e9ff156b61`|
+| Thermals |87323|`99aa65a13ba86acd07bc596f69e491c7319417eff5a6e06ebe5c5fbc917f6621`|
+| Heads |92726|`c778ae8d951260464277d9873de6f9f3c12a6355db96ba316ff41766294f21f4`|
+| Queue |87831|`ccaaca3ecf881d087f4f0188613055f64cb9c7184521c08d1cb4367098342c27`|
+| Production Camera (unchanged) |89919|`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`|
+| Light lab |204875|`4665ccc4033c385f6234043195521002b30c6bf8bd121f1646ea9de1fe36b98a`|
+| Bed lab (unchanged) |629880|`02cea8092dc8b8915e0ac32e2f492c66a62b3913545a49af1139963640c646c9`|
+| Camera lab (unchanged) |78795|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+
+Current five focused production assets total444,546/1,550,000; the generic
+named inventory guard permits1..10 unique present widgets, never labs/host/index.
+The future closed ten-entry envelope is not claimed complete. Labs total
+913,550/980,000 within light250,000/Bed700,000/Camera80,000. No cap changed.
+Actual emitted CLIENT graph counts are Fans128, Thermals129, Heads133,
+Queue128 and light238. All emitted module IDs are checked (including zero-length
+rendered entries): production excludes fixtures/tests/lab/Camera/Bed/Three and
+other real-domain adapters; light excludes real adapters/controllers/host RPC.
+Exact path/method/CSP/no-store/public isolation and source-derived shipping
+inventory pass in the app/shipping tests. Shared controller regressions cover
+all four actual factories, including process restart without an intervening
+notification, duplicate/invalid notification and obsolete-success settlement.
+
+## Queue author renewal — superseded intermediate failures, not acceptance
+
+Accepted main `ff577fcb5cf506c5a1699ad3ecf118e43afca8cd` was ordinarily merged
+into the Queue branch as `a042be5`. The exact private Queue route, shared host
+failure forwarding, production packaging/ship inventory and the light-only lab
+integration are authored candidates, not deployed changes.
+
+Independent Progress source review exposed a shared controller defect: a
+refresh begun before an accepted notification could later overwrite that
+notification by claiming a higher version/later receipt. The candidate now gates
+RPC acceptance on the request's still-current arrival generation. Focused
+Vitest cases through the actual Fans/Thermals/Heads/Queue factories prove
+notification15 survives obsolete RPC16, busy settles, and retry17 succeeds;
+duplicate/wrong-view notifications and receipt-ordered process restart retain
+their separate semantics. Focused controller/graph50 and app37/949 assertions
+passed. An exploratory direct `bun test` invocation was the wrong runner for
+Vitest timer APIs; the supported `bun run test -- ...` rerun passed30/30 after
+renewing the old same-version-freshness expectation to match arrival ownership.
+
+With the initial shared repair, `./scripts/check-repository.sh` with pinned Bun1.3.12 on PATH
+passed UI415/415, app300/300 (3,555 assertions), lifecycle21/21, shipping24/24,
+compiler/AST and all production/private-package deterministic checks. The
+production Queue browser suite passed10/10 at320/390/590/720 normal/200% text,
+including true initial HTTP503/retry, wrong-view deadline, BFCache, stale-success
+RPC suppression, counts0/1/100/101/1000, duplicates, long sanitized names and
+retained refresh focus. These are synthetic local replies, not printer evidence.
+
+The subsequent full `bun run test:browser` was158PASS/16FAIL of174. All failures
+were Queue lab loading/ready geometry in `lab-states.spec.ts` and
+`lab-text-bounds.spec.ts`. Computed boxes isolated bare-name typography
+(18px loading versus19.59375px ready at normal text), a4.1875px loading index
+column versus the padded ready label, and differing locale-date line wrapping.
+The first Name experiment was initially repackaged without rebuilding the Kit
+light entry; that stale-build rerun repeated the16 failures and is not source
+validation. The full light build then confirmed the Name typography repair.
+
+Shared leaf experiments preserve all ready text and strict<=1px gates, without
+fixed card-height reserves. Name loading and numeric BoxLabel character shapes
+repair the corresponding boxes. A locale-token date skeleton passed10/12
+selected geometry cases, with only the tenth row at390/590 enlarged differing
+by one36.390625px caption line. A weighted locale-token variant subsequently
+passed21/24 full geometry cases but moved remaining failures to320: one
+18.1875px date line per normal row, and one39.1875px name line on the tenth
+enlarged row. At that checkpoint those failures were a HOLD pending independent
+bounded shape design; the final renewal above supersedes that hold, not the
+failure evidence. No shipment is claimed.
+Per-record bounds are now included alongside shell/header/body/footer bounds.
+Ignored Playwright screenshots/traces retain the failing cases; no browser
+server remains running from this intermediate check.
+
+All application assets then required regeneration and exact hashes/test
+assertion renewal after the shape decision; that renewal is now recorded above.
+Earlier green counts alone did not validate experimental leaf bytes. No service, printer, plugin, auth, Tailscale,
+MCP or backend operation was performed by this author renewal.
+
+## Three-artifact private-lab split — final author evidence
+
+Base `8c5756d` was split, then accepted/deployed Heads main `5ffca66` was
+ordinarily merged as `53cc313`. Exact application source `4a6c493` (tree
+`2eb0fc97b55e0da830f9af3e0add5fa5bac03fe6`) has deterministic outputs that
+measure light 199,819 bytes, Bed Mesh 629,880, Camera 78,795 and aggregate
+908,494. SHA-256 is light
+`080ad95276834fe560ccae2eb57e763969d891b5c65fa708babbca12667e6101`,
+Bed `02cea8092dc8b8915e0ac32e2f492c66a62b3913545a49af1139963640c646c9`
+and Camera
+`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`.
+Two complete private-package builds reproduced those hashes.
+
+Actually run author gates: `bun run check`, `bun run test` and two
+`bun run verify:private-lab` runs in `app/ui`; `bun run check`,
+`bun test src/*.test.ts`, `bun run bundle`, `bundle:server` and
+`bundle:runtime` in `app`; `uv run --no-project scripts/test_u1_service.py`,
+`uv run --no-project scripts/test_u1_ship.py`,
+`./scripts/check-repository.sh`; and `bun run test:browser`. Results: UI
+335/335, app 296/296 with 3,503 assertions, lifecycle 21/21, shipping 24/24,
+repository/signing PASS and Chrome 164/164 in 1.3 minutes. Browser coverage
+retains all four widths, normal/200%, Bed 4:3/zoom/pixels/labels/modes and Camera
+lifecycle. A pre-execution `fetch` monkeypatch exercised the directory link and
+every route/state/control/refresh with zero calls. No external request appeared.
+Independent cap review renewed limits to 250,000/700,000/80,000 and 980,000
+aggregate, leaving 50,181 light and 71,506 aggregate bytes. Its exact boundary
+matrix and finite Queue/Current Job/History/Progress/Overview scope are fixed in
+decision 0032; Console and thumbnails are excluded. This removes the capacity
+hold, not the need for exact-SHA validation/review. These are author software artifacts,
+not deployment, device, printer or user acceptance.
+
+## Heads repaired source — final author evidence, not independent acceptance
+
+Frozen application source `4d24446` (tree `48896cc`) passes final Chrome
+163/163 in4.7m. The first full162 renewal was161PASS/1FAIL: initial Heads HTTP
+failure remained Loading because the host forwarded initial errors only to Fans.
+The closed focused-widget route map now forwards initial errors for
+Fans/Thermals/Heads. Focused initial-error/retry2/2 and host23/23 PASS.
+
+The earlier mobile/empty failures below are preserved historical evidence, not
+remaining acceptance waivers. Focused Heads+Thermals18/18 PASS, then full161
+reported154PASS/7FAIL: three genuine all-empty/unknown geometry failures and
+four obsolete body min-height string expectations. The generic optional action
+slot repairs the geometry without adding empty buttons; actual material glyph
+height/zero padding replaces the obsolete style-string assertion. Renewed
+focused selection22/22 PASS at all four widths/normal200%, including loaded,
+empty and unknown presets, truthful skeletons, copy lifecycle, and readable
+194-character real metadata. These are local synthetic checks, not service or
+actual-device acceptance. Final repository contract PASS: UI335/335 in33 files,
+app294/294 with3,482 assertions, lifecycle21/21, shipping24/24, compiler/AST,
+six deterministic packages, runtime bundles, strict signing and `--help`.
+The temporary testing-library target-prop option collision was a test harness
+error, corrected with an explicit props wrapper; it was not an app defect.
+
+Current exact raw UTF-8 artifacts for the final combined renewal:
+
+| Artifact | Bytes | SHA256 |
+| --- | ---: | --- |
+| Observation lab |755217/756000|`c7ff57181e42cdd7231aabfe596f46e0cec6c3d69854bb2aecb96e0f733a1485`|
+| Camera lab |78795/80000|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+| Heads |91633/100000|`ddf531806391a5ab1a66400956f57d2d92d25765d7ff20ca8ec98a1e96f238a0`|
+| Thermals |86230/100000|`41933ec1a3649c1d90419f6385820944b09fb0a59f9668f56b6a80ea3c6417ba`|
+| Fans |85654/100000|`ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d`|
+| Camera |89919/100000|`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`|
+
+The exact two-lab sum is834012/836000; observation has783 bytes reserve.
+The retained Vite7.3.6/default esbuild/Kit inline flags are unchanged, without
+unsafe minification or new dependencies. Genuine browser Rollup graph235modules
+excludes real adapters/controllers/host RPC/Camera; production Heads excludes
+fixtures/lab/Camera/Three. Negative graph and +/-1/invalid byte cases are
+enforced. Graph reports remain ignored build evidence, never runtime assets.
+Thermals changed bytes intentionally for the one opt-in generic ActualTarget;
+its default hierarchy, semantics and all9 existing browser cases passed.
+
+Next: exact independent source review and validation, then guarded shipment.
+This is synthetic software/browser evidence, not deployed-service, phone,
+camera-stream or printer acceptance.
+
+## 2026-09-01 Heads implementation checkpoint — not acceptance
+
+Author branch explicitly merged accepted Thermals6325c87, then accepted
+Bed Mesh8c5756d as0bb9ef6. No service or printer acquisition was performed.
+Actual commands run in app/ui with pinned Bun1.3.12:
+
+- `bun run test -- src/lib/live/heads-adapter.test.ts src/lib/ui/color.test.ts`:
+  42 focused adapter/color cases PASS.
+- `bun run test -- src/lib/live/heads-controller.test.ts src/lib/observation/ObservationWidgets.test.ts`:
+  22PASS; async stale-copy/refresh generations and four-card semantics.
+- `bun run test -- src/lib/live/graph-contract.test.ts src/lib/camera/package.test.ts`:
+  19PASS before the additional production byte-boundary case was added.
+- `bun run check`: compiler0errors/0warnings and AST zero-raw contracts PASS.
+- `bun x playwright test tests/visual/live-heads.spec.ts --workers=1`: first
+  pass5PASS/4FAIL; second compact candidate6PASS/3FAIL. Remaining initial layout
+  differences320normal+26.19px and320/390200%−7.61px are held failures, not waived.
+  Copy rejection/busy focus/removed-action fallback and stale completion passed.
+- `bun test src/status-dashboard.test.ts` (app):22PASS/746assertions, including
+  exact Heads GET/CSP/no-store/path/method/public isolation and real projector DTO.
+- `uv run python scripts/test_u1_ship.py`:24ran; two expected inventory-count
+  assertions needed updating30→31 for Heads. Renewal is required after the edit.
+  An earlier module-style invocation failed import resolution and is not evidence.
+- `bun run build && bun run package:private-lab`: combined Bed+Heads measured
+  754,723 observation +78,795 Camera =833,518, under explicitly reviewed
+  756,000/80,000/836,000 bounds. Subsequent layout changes require remeasurement.
+- Build-only Rollup client graph has234modules before Bed integration, with no
+  real adapter/controller/host RPC/Camera in observation lab. Shared copy action
+  and tree-shaken Heads presentation are deliberate, not acquisition. Production
+  graph rejects fixtures/lab/Camera/Three; reports are ignored local evidence.
+
+Independently approved compact ActualTarget design keeps one generic component,
+defaultfalse and unchanged normal hierarchy/semantics. Regenerated Thermals
+86,230 bytes and Heads91,358 bytes are current author artifacts, not accepted
+hashes; final default Thermals regressions and deterministic renewal remain due.
+
+## 2026-09-01 PR73 zoom repair — final author evidence, not independent approval
+
+The held `85f89f9` remains rejected: its earlier green suite did not exercise
+wheel zoom. Explicit merge `f0e25ba` integrates independently accepted Thermals
+main `6325c87` without rebasing or replacing the existing Bed Mesh commits.
+The independently reviewed bounded design policy is recorded in decision0032.
+
+Actual commands used pinned Bun1.3.12 and normal Node PATH:
+
+- UI `bun run build`, `bun run package:private-lab` and
+  `bun run scripts/build-state-harness.ts`: PASS. Early combined pre-repair
+  observation output was749,446 bytes; final repaired output is749,560.
+- UI `bun x playwright test tests/visual/bed-mesh-zoom.spec.ts --workers=1`:
+  6/6 PASS. The final full suite also covers the added explicit pinch
+  canvas/control-identity assertion.
+- Repository `./scripts/check-repository.sh`: PASS; zero compiler warnings /
+  errors, zero-new-raw-debt AST contract,266 UI tests in28 files, all five
+  deterministic packages,290 app tests/3,400 assertions,21 lifecycle and24
+  shipping tests; `repository contract: ok`.
+- UI `bun run test:browser`:152/152 Chrome PASS on the combined reviewed
+  Camera/Fans/Thermals baseline and repaired Bed Mesh source. Existing default
+  coverage, all1x rotation/label containment, flat/negative/tiny/rectangular/
+  64×64 updates, actual surface pixels, reactive buffers and disposal, equal
+  2D/3D frame and 200% 3D-text tests are unchanged and pass. The six new cases
+  cover320/590 normal/enlarged wheel, actual packaged route and two-finger
+  browser touch input. Wheel-in increases both projected extent and colored
+  pixel count above1.2×; reverse restores1x;0.75/3.5 clamps hold. Data/resize
+  preserve zoom/orbit and actual canvas/control identity; reset restores1x and
+  default orientation. Two-finger separation/restoration changes extent above
+  1.4× and returns to1x without replacing controls/canvas. Deliberate detail
+  cropping is tested separately, not accepted as normal-view containment.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --deep --strict
+  dist/u1-print-studio`, and executable `--help`: PASS.
+- `git diff --check`: PASS. Author personally inspected final normal320 default,
+  enlarged320 reset,720 orbit and320/590 zoom screenshots: real surfaces/grid
+  remain visible; 1x labels are contained and intentional detail edges crop.
+  A brief reset feedback overlay is non-flow and does not change frame geometry.
+
+| Artifact | Raw UTF-8 bytes | SHA-256 |
+| --- | ---: | --- |
+| Observation lab |749,560|`f1a3328ac5a2f6179d41cc114f4faafdf57808790ba559d52e34bdfb1517ffcc`|
+| Camera lab |78,795|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+| Production Fans |85,654|`ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d`|
+| Production Thermals |86,140|`032fe53863f79e718b51ac5fd5cb43c3f73d79a4b25c196d1bd19a1309e1f22d`|
+| Production Camera |89,919|`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`|
+
+Lab aggregate828,355 remains below830,000; individual750,000/80,000 and
+separate production100,000 bounds are unchanged. All four non-observation
+artifacts retain exact accepted Thermals-main bytes. No new dependency or
+runtime asset is introduced. Test hooks remain test-only. Source/software and
+isolated Chrome evidence do not establish deployed Bed Mesh, real printer,
+iPhone/Safari, keyboard parity or automatic WebGL fallback acceptance.
+Fresh exact independent review/validation precedes guarded PR merge/deploy /
+BOTH restart and served-widget verification. No shipment was made by this author.
+
+## Current checkpoint: held Bed Mesh zoom renewal after delivered Thermals
+
+Thermals PR72 is delivered on independently accepted merge
+`6325c8792fc8cca1f1c73109aae717e774d87076`, tree
+`e9b286b6be673a1d88f04bd5b227a91f40c4cb5b`. The attributed operator receipt
+reports release `20260901-6325c87-pr72-20260901T172710-d336bd`, BOTH existing
+services explicitly restarted, loaded/healthy/integrity verified at
+runtime0.4.8/schema12/observation-v14/camera-v10,29 static/30 security checks
+PASS, preservation true and no rollback. Snapshot `20260901T172800-d68cec`
+is retained. Canonical main and8,689 ignored entries/recovery refs are preserved.
+Camera PR71 and Fans PR70 are also delivered; older pending claims below are
+historical. Independent Thermals postdeployment PASS verifies BOTH exact service
+identities, 15 manifest hashes, seven private HTTPS assets with exact hashes /
+no-store/CSP, 14 isolation/status probes and clean canonical main. Nine Chrome
+checks on actual downloaded host/child bytes and CSP use synthetic responses:
+four widths, normal/200% text, skeleton/retained refresh/time/focus, nullable and
+extreme values and independent Cavity receipt. The validator inspected enlarged
+320 and normal720 captures. External unmatched-root502 remains pre-existing and
+unaccepted; actual printer/phone and stale installed-connector identity remain
+unverified. These are attributed independent deployment/synthetic-browser facts,
+not new author acquisition or device checks. No extra runtime change was made.
+
+Bed Mesh PR73 candidate `85f89f9` is HELD despite137 passing browser cases:
+independent real wheel input showed projected width452.28→448.55 instead of
+the baseline461.84→628.30. Per-render frustum fitting canceled user zoom.
+The accepted renewal fits at neutral1x, then applies independent bounded
+0.75–3.5 detail zoom. Default/reset and all1x orbit containment gates remain
+unchanged; intentional greater-than1x detail viewing may crop geometry/labels
+at the fixed frame boundary. It must not silently refit the user's zoom away.
+After explicit accepted-main merge `f0e25ba`, the author renewal passes 266 UI
+units, 290 app tests/3,400 assertions, 21 lifecycle, 24 shipping and the full
+152-case Chrome suite. All five packages are deterministic and bounded; runtime
+bundles/signature/help and compiler/AST pass. Actual wheel/two-finger browser
+input, pixels, identity, data/resize and reset regressions pass while every 1x
+containment test remains unchanged. Observation lab is 749,560 bytes; its
+440-byte reserve is not permission to raise the cap. Fresh exact independent
+validation/source approval is still required before delivery.
+
+This remains private-lab-only. Production Bed Mesh/MCP, keyboard/Home,
+automatic WebGL-failure fallback and root-scaled2D labels remain open, as do
+all other named WIDGET_TRACKS. No service, printer, authentication, Tailscale
+or plugin action is part of this author repair.
+
+## Historical checkpoints (superseded where noted above)
+
+## 2026-09-01 Bed Mesh combined author gates — independent acceptance pending
+
+Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` was explicitly
+merged after preserving the narrow Bed Mesh checkpoint. Attributed operator
+receipt: Camera release `20260901-0aa83a0-pr71-20260901T170551-59206e`, tree
+`af970729c41d041533d5d6f6c909a3a43d49a21b`, BOTH services restarted and
+health/integrity verified. That prior shipment is not new author printer/device
+evidence and does not claim this Bed Mesh candidate has been deployed.
+
+Actual final commands, pinned Bun 1.3.12 and normal Node PATH:
+
+- Repository `./scripts/check-repository.sh`: PASS, 221 UI units in 23 files,
+  Svelte/TypeScript zero errors/warnings and AST contract pass, deterministic
+  production Fans/Camera and both private labs, 286 app tests / 3,345 assertions,
+  21 lifecycle and 24 shipping tests, `repository contract: ok`.
+- UI `bun run test:browser`: 137/137 Chrome PASS on the combined Camera/Fans/
+  Bed Mesh source and exact packaged bytes. This includes the eight expanded
+  Bed Mesh cases (320/390/590/720, normal and 200% root text): flat zero, flat
+  nonzero, all-negative 3×7, asymmetric rectangular 11×11, tiny-range 2×2 and
+  tilted 64×64 updates; seven quadrant/boundary azimuths at both supported
+  18°/74° polar limits; measured glyph containment/nonoverlap; reset; retained
+  camera/canvas and changed actual geometry/color buffers with disposal.
+  Each data fixture requires actual colored screenshot pixels, not merely an
+  invisible bounding element. The 2D switch retains the identical 4:3 frame;
+  changed data changes its pixels without resize. Surface colors are not
+  required to fill an impossible minimum area in edge-on flat rotations.
+- Four default packaged-route cases within that full suite retain at least
+  70% frame width and 42% height surface coverage, contained 12px axis labels,
+  equal 2D/3D frame DOMRects and no external request or console error.
+- Supplemental UI `bun x playwright test tests/visual/bed-mesh.spec.ts
+  --workers=1`: 4/4 PASS after the full run, same source/bytes. Measured default
+  coverage at 320/390/590/720 is respectively 81.1/84.8/90.5/92.4% width and
+  46.7/48.8/52.1/53.2% height, with exact mode frame equality in every case.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and `dist/u1-print-studio --help`: PASS.
+- `git diff --check`: PASS.
+
+Author personally inspected final default 320/720 full-page captures and the
+320 enlarged reset/orbit plus 720 normal orbit captures. The actual surface,
+floor and two rear grid walls remain visible; true outer-edge labels are
+readable and separated. Captures are local generated test evidence, not checked
+into Git, and the reference screenshots informed structure only, not theme or
+copied measurement values. Existing summaries and controls remain unchanged.
+
+Final raw UTF-8 artifacts (SHA-256):
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| Observation lab | 749,150 | `8233becb8f75a4d2bb48658cd82ecb1f2a59df80f42f6a1dcbb5080cf3a055e1` |
+| Camera lab, unchanged | 78,795 | `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a` |
+| Production Fans, unchanged | 85,315 | `b28ee10c695bb8d0296fa0d161b9962c578fdecabbd0f18ec1b525d408d23be1` |
+| Production Camera, unchanged | 89,919 | `b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10` |
+
+The two labs total 827,945 bytes; unchanged limits remain 750,000 observation,
+80,000 Camera and 830,000 aggregate. No new dependency, route, cap increase,
+unsafe minification or dropped feature was used to fit. The redundant surface
+edge overlay was removed; real grid/axis geometry remains.
+
+The first final repository run failed solely because `private-lab.test.ts`
+still pinned the prior artifact hash; its 285/286 pass is not counted as a full
+pass. The exact rebuilt hash was updated, then the complete gate above passed.
+Earlier real label-overlap/containment and test-harness failures below remain
+recorded and were corrected without weakening the expanded assertions.
+
+Evidence boundary: author static/software, local fixtures and Chrome only.
+Independent exact validation, formal source review, Bed Mesh merge/deployment/
+BOTH restart and served-behavior verification are still required. No actual
+printer, user phone/Safari, live Bed Mesh adapter or MCP cutover is accepted.
+All other migration and named feature tracks remain open.
+
+Preliminary independent source inspection identified existing parity debt,
+explicitly outside this bounded refinement: the lab has no focusable keyboard
+orbit/Home reset contract, no automatic fallback when WebGL creation fails,
+and the 2D canvas labels remain fixed 12px when root text is enlarged. The 200%
+label assertions above apply to projected 3D labels, not 2D canvas text. This
+candidate does not claim full decision-0030 interaction parity; the next live
+chart cutover must address and independently verify all three gaps.
+
+## 2026-09-01 Bed Mesh early author checkpoint — not acceptance
+
+The corrected test harness now exercises actual rendering. Normal320 passes its
+full data/orbit/pixel case. Enlarged320 correctly blocks the checkpoint for
+Z-endpoint collisions and a subsequent extreme-orbit label containment defect;
+measured numeric widths, endpoint offsets and bounded collision/frustum fitting
+are being corrected without weakening assertions. This checkpoint must not ship.
+
+Pinned Bun1.3.12, existing frozen UI/app lockfile installs; no dependency changes.
+Commands actually run: UI `bun run check` (0 errors/0 warnings, AST pass),
+`bun run test -- src/lib/bed-mesh` (16 pass), and `bun run test` (193 pass).
+The direct geometry test verifies exact sample-to-display round trips, topology,
+flat0/nonzero/negative/tiny/tilted/64×64 matrices, asymmetric bounds and14 grid
+uprights across quadrants. Renderer tests capture actual Three buffers and verify
+changed colors/positions, retained camera/canvas, reset-key-only behavior and
+replacement/final disposal; the2D test verifies reactive rectangular cell geometry.
+
+`bun run build`, `bun run package:private-lab` pass. Early observation bytes
+748,711, Camera unchanged78,795, aggregate827,506; these are checkpoint bytes,
+not a frozen candidate. Existing750,000/80,000/830,000 bounds are preserved.
+Four actual Chrome default checks pass at320/390/590/720: same4:3 mode bounds,
+contained12px labels, default surface81.9–92.8%width/47.2–53.4%height. Author
+personally inspected normal320/720 screenshots plus the supplied graph reference;
+subsequent axis-midpoint refinements require renewed visual evidence.
+
+An overbroad filename filter matched the worktree name and started129 tests.
+It was deliberately stopped at the first known new test-harness startup failure:
+114 existing tests passed, one new case timed out, three were interrupted and11
+did not run. The test-only hook incorrectly assumed WebGLRenderer.render lives
+on its prototype. It now captures BufferGeometry and OrbitControls instead.
+An attempted nonbrowser full repository gate later caught a Vitest imported-name
+collision in an arrow-property stub; importing testing-library render under a
+distinct alias fixes it and the focused renderer tests pass again. No failed or
+interrupted run is claimed as a full pass. Final expanded browser and exact full
+repository gates, independent review/validation and guarded delivery remain open.
+No service, printer, real camera, auth, Tailscale or user-device action occurred.
+
+## Current checkpoint: Thermals renewal after delivered Camera PR71
+
+Reviewed Camera main `0aa83a0f382574af1eb910d7cba61f2a28f88ace` is explicitly
+integrated in this PR72 merge. Additive source/record conflicts are resolved;
+renewed combined author gates PASS:256 UI,138 Chrome,290 app/3,400 assertions,
+21 lifecycle and24 shipping tests, compiler/AST, five deterministic packages,
+runtime bundles/signature/help. Exact independent validation/review is next;
+no Thermals acceptance or deployment is claimed.
+Fans PR70 and focused Camera PR71 are deployed. Thermals remains unshipped;
+seven other observation cutovers, generic MCP/legacy replacement and all named
+WIDGET_TRACKS remain open. Preserve existing widget-first execution order.
+
+PR71 independently accepted `c9311eb`, merged as `0aa83a0` with tree
+`af970729c41d041533d5d6f6c909a3a43d49a21b`, and shipped release
+`20260901-0aa83a0-pr71-20260901T170551-59206e`. Operator reports BOTH explicitly
+restarted, loaded/healthy/integrity verified at runtime0.4.8/schema12/obs14/camera10,
+28 static and29 security checks passed, preservation true, no rollback needed;
+snapshot `20260901T170638-b77ef9` retained. Canonical checkout/recovery refs and
+8,689 ignored entries were preserved. Camera artifact89,919 bytes has SHA256
+`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`.
+
+Independent `live_camera_exact_validation` postdeployment PASS covers BOTH
+service/plist identities,15 manifest hashes,6 exact private static routes with
+no-store/CSP, and fetched-byte synthetic host/media behavior (five probes and
+six hash checks). Public loopback rejects four private dashboard/lab routes.
+External unmatched-root routes still return502 from an unrelated unavailable
+upstream, including pre-existing widget routes: this is not a Camera-specific
+regression, but external-root availability/isolation remains unaccepted. No
+routing/auth changes were made. Actual phone/real-stream evidence remains
+pending. The separately stale installed-plugin connection still requires
+approval before reload/reinstallation; no such action occurred.
+
+
+## PR72 renewed author evidence on reviewed PR71 main
+
+Actual commands used pinned Bun1.3.12 on normal Node PATH:
+
+- UI `bun run check`, `bun run test`, all three `build:live-*` commands,
+  `bun run build`, `bun run package:private-lab`: PASS. Compiler/AST has
+  zero diagnostics and256 unit tests pass; no new raw-composite debt.
+- Repository `./scripts/check-repository.sh`: PASS; all five deterministic
+  artifact comparisons,290 app tests/3,400 assertions,21 service lifecycle and
+  24 shipping tests. Standalone `uv run --no-project scripts/test_u1_ship.py`
+  also passes24. Its first merge run identified one stale29-count assertion;
+  the corrected source-derived combined inventory is29 static/30 security.
+- UI `bun run test:browser`:138/138 PASS, including delivered Camera/Fans,
+  both labs, and all9 Thermals cases. Author inspected normal320 and enlarged720
+  extreme-value captures: readable values/units/receipts and unclipped focus.
+- App `bundle:widget-vendor`, `bundle`, `bundle:server`, `bundle:runtime`,
+  `codesign --verify --deep --strict dist/u1-print-studio` and executable
+  `--help`: PASS. `git diff --check`: PASS. No printer/media acquisition,
+  production service mutation, auth change or plugin reinstall occurred.
+
+| Artifact | UTF-8 bytes | SHA256 |
+| --- | ---: | --- |
+| Production Thermals | 86140 | `032fe53863f79e718b51ac5fd5cb43c3f73d79a4b25c196d1bd19a1309e1f22d` |
+| Production Fans | 85654 | `ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d` |
+| Production Camera | 89919 | `b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10` |
+| Observation lab | 749112 | `061fec9a18d12c0c9f4e7329fcb0a5ad169ec71fb47326a302352f44fcdd7fa0` |
+| Camera lab | 78795 | `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a` |
+
+Each production artifact remains under its separate100,000-byte limit.
+Two-lab aggregate827,907/830,000 leaves2,093 bytes; individual750,000/80,000
+limits remain intact. Camera production bytes and shared RPC/Camera/media
+source are identical to reviewed PR71 main. The integration does not change
+Camera acquisition/session interfaces or generic MCP aliases. This is author
+software/synthetic evidence; separate exact acceptance and guarded delivery
+must still precede any Thermals completion claim.
+
+## Historical author and delivery checkpoints (superseded where noted above)
+
+## 2026-09-01 LIVE Thermals final author gates
+
+Actual final commands used pinned Bun1.3.12 with normal Node PATH:
+
+- UI `bun run check`, `bun run test`, `bun run build`, `bun run
+  package:private-lab`, `bun run build:live-fans`, `bun run build:live-thermals`
+  and full `bun run test:browser`: PASS. Final228 UI unit tests and130 Chrome
+  cases include all existing lab/Fans/Camera regressions plus9 real Thermals
+  iframe cases. Compiler/AST/type gates preserve zero-raw feature composition.
+- Repository `./scripts/check-repository.sh`: PASS, including deterministic
+  comparisons of both labs and both production entries,285 app tests/3,356
+  assertions,21 lifecycle and24 ship tests, ending `repository contract: ok`.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and executable `--help`: PASS. `git diff --check`: PASS.
+
+The pure tests cover all finite status bounds, real Cavity bounds, independent
+nullable fields/evidence/receipts, exact heater-bed identity, wrong/malformed
+views, null/zero/overshoot and reported heater state. The shared controller keeps
+Fans ordering and superseded-rejection regressions, with equivalent Thermals
+cases. Real server projections and exact GET-only private/public-isolated routes
+are exercised through loopback fixtures, not device acquisition.
+
+Chrome covers320/390/590/720 normal/200% text: six structural rows, <=1px default
+loading/ready major bounds, retained refresh/error time/values/focus/geometry,
+independent stale Cavity/fresh status and the reverse, scientific extrema with
+full accessible values, glyph containment, neutral unknowns, retry, superseded
+RPC rejection and persisted page lifecycle. Author inspected normal narrow and
+enlarged extreme screenshots. The opt-in grouped-time metadata avoids separated
+AM/PM; default and grouped slots have unit coverage. False active now says
+Inactive, never inferred Idle; null stays neutral. Full tests reran after this
+final aria-only correction. The original expectation that an enabled button
+must have aria-disabled=false was corrected to the existing absent-attribute
+contract; no runtime busy guard was weakened. A stale package-hash assertion and
+an unsupported testing-library `exact` option were caught and corrected before
+the final passing gates.
+
+Final exact raw UTF-8 artifacts:
+
+| Artifact | Bytes / bound | SHA-256 |
+| --- | --- | --- |
+| Production Thermals |86,140 /100,000|`032fe53863f79e718b51ac5fd5cb43c3f73d79a4b25c196d1bd19a1309e1f22d`|
+| Production Fans |85,654 /100,000|`ecbebc4554a793d28ce3e1997bf4a6b7bd4a3a13979847b2c35fe4c64f31726d`|
+| Observation lab |749,112 /750,000|`061fec9a18d12c0c9f4e7329fcb0a5ad169ec71fb47326a302352f44fcdd7fa0`|
+| Camera lab |78,795 /80,000|`af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`|
+
+Lab aggregate827,907/830,000 leaves2,093 bytes. Against shipped PR70, observation
+adds296 bytes, Fans adds339 from shared validation/controller/metadata support,
+Camera is unchanged; Thermals is its own new86,140-byte production artifact.
+No cap was raised. Source-derived inventory adds one exact Thermals static hash
+and public404 probe, now28 static/29 security checks in software contracts.
+
+This is author software/synthetic-browser evidence only. Fresh exact independent
+validation and formal review, guarded shipment and deployed verification remain
+pending. No printer/camera acquisition, control, auth, plugin or running service
+change occurred. Reviewed baseline is `db1c926`; integrate any subsequent reviewed
+Camera main before acceptance, without copying unapproved branch contents.
+
+## 2026-09-01 actual PR70 rollout and independent postcheck
+
+Operator shipped independently accepted head
+`dbdfc390bdd96e038418cbbea9c0caec80129dd4`, tree
+`ccf7e91a867503ee554c4785e261c41b9963e567`, merged as
+`db1c926b3c8276e56911221a19b9b9300db53990`. Release
+`20260901-db1c926-pr70-20260901T162456-cc8038` explicitly restarted BOTH
+services: healthy/integrity runtime0.4.8/schema12/observation-v14/camera-v10;
+27 static and28 security checks PASS, preservation true. No rollback needed;
+snapshot `20260901T162541-5d87ef` retained. All8,689 ignored entries and recovery
+refs remained preserved.
+
+Independent `camera_exact_validation` postcheck PASS: both exact release/source
+identities and15 manifest hashes, actual tailnet host/Fans/both labs/index exact
+hashes with200/no-store/CSP, four public404 isolation probes; all11 real-iframe
+tests on fetched host/child/index bytes with synthetic tool replies. These are
+service/static and synthetic-browser acceptance, not actual-device acceptance.
+A separate model-visible Fans call returned a sparse historical placeholder
+shape that the current deployed producer cannot emit; connector runtime identity
+is unproven. Do not claim current real-data acceptance or coerce that old shape.
+Plugin reload/update needs its own authority; no plugin/auth change is included.
+
+## 2026-09-01 Thermals author start
+
+Read-only clean/ancestry checks confirmed the prior Fans branch was fully merged;
+created a new non-main Thermals branch at exact reviewed `db1c926`, preserving
+the old ref and existing worktree. Read source thermal projection/normalization,
+decision0034 and LIVE_PARITY. Initial focused unit run passes44 tests including
+22 real Thermals adapter cases plus unchanged Fans adapter/controller cases.
+No service, printer, camera or user-device action occurred. Further implementation
+and complete exact-candidate gates remain pending.
+## 2026-09-01 real Camera dashboard author gates
+
+Reviewed main `db1c926` is explicitly integrated; its shipped Fans/shared-RPC
+source is unchanged. With pinned Bun1.3.12 and normal Node PATH, actual commands:
+
+- Repository `./scripts/check-repository.sh`: PASS,211 UI units, Svelte/TS/AST
+  zero errors/warnings, exact deterministic Fans/Camera/two-lab packaging,
+  286 app tests/3,345 assertions,21 lifecycle24 shipping tests. This includes
+  the new UTF-8 byte/graph negative tests and exact private/public Camera routes.
+- UI `bun run build:live-camera`, `bun run check`, and
+  `bun run test -- src/lib/camera src/lib/media`: PASS,57 focused tests including
+  prior synthetic tests, real transport/session/peer/controller and playback.
+- UI `bun run test:browser`:129/129 Chrome PASS on the integrated candidate
+  before the final narrow loadedmetadata/playing capability-readiness listeners.
+- UI `bun x playwright test tests/visual/live-camera.spec.ts --workers=1`:
+  final8/8 PASS on current rebuilt bytes, including normal/200% text at
+  320/390/590/720, skeleton-to-ready geometry, snapshot-first host calls,
+  measured local-video FPS, native Chromium fullscreen, local fullscreen with
+  unchanged video/srcObject/track, non-flow snapshot feedback,5s stall fallback,
+  retry and one-time persisted-page restoration. Final cases additionally
+  exercise feature-detected native PiP entry or graceful rejection, emulated
+  Safari presentation API and rejected fullscreen without disconnecting.
+  Normal/enlarged390 screenshots were visually inspected for compact anatomy
+  and readable status. Fixture media is generated only in test source; it is
+  absent from the production graph and does not prove actual printer/device use.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and `dist/u1-print-studio --help`: PASS. Server/runtime/signature/help reran
+  after the final host and presentation source changes.
+- `git diff --check`: PASS.
+
+Final production Camera:89,919 raw UTF-8 bytes, SHA-256
+`b774fdfce6ec20a1732f2cef5cd5ec5dbbd93422810758c237eb9f7278423c10`.
+Independently reviewed cap100,000; one explicit compiled-Svelte entry and no
+runtime imports/assets. Existing Fans85,315 and two labs748,816 +78,795
+=827,611 are byte-unchanged from reviewed main. Their separate caps remain.
+
+One exploratory `bun test src` command selected UI Vitest files in Bun's
+non-DOM runner; it was discarded, not counted as a gate. An intermediate
+repository rerun caught asset mismatch while the author rebuilt mutable Camera
+bytes during its test process; it was also discarded. The final repository
+command above ran against stabilized source/artifact and passed all gates.
+
+Evidence boundary: author software/protocol/local Chrome only. Independent
+validation must run the full129 matrix against the final frozen pin, then formal
+review and guarded release remain mandatory. No real printer/camera acquisition,
+service restart or actual-user-device acceptance occurred in these author gates.
+
+## 2026-09-01 real Camera typed-port checkpoint
+
+On reviewed PR69 merge `ef5b239`, author ran from the app's ui directory using
+the pinned Bun1.3.12 installation and normal Node:
+
+- `bun run check`: Svelte/TypeScript zero errors/warnings, AST contracts pass.
+- `bun run test -- src/lib/camera/transport.test.ts src/lib/camera/session.test.ts src/lib/camera/peer.test.ts src/lib/media/playback.test.ts`:
+  38/38 pass (8 transport,19 session,6 peer,5 playback).
+
+The initial transport ceiling test exposed regex stack exhaustion at a4MiB
+frame. A flat bounded base64 validation scan fixes it; the full-byte-ceiling
+regression now passes. Other checks cover exact source time/JPEG bytes, strict
+downstream metadata/ICE/SDP bounds, invalid outgoing requests, malformed returned
+lease release, unchanged singleflight/deadline session behavior, peer/track
+ownership, stale callbacks and persistent-video playback recovery.
+
+This is author pure/mock-browser-port evidence only, not independent acceptance,
+production integration, actual browser rendering or real printer acquisition.
+No artifact or route changed. Next integrate reviewed shared HostRpc main before
+the end-to-end Camera presentation/build/route slice; full gates remain pending.
+
+## 2026-09-01 renewed PR70 combined-tree author gate PASS
+
+The refresh-rejection correction and explicit `ef5b239` merge have now been
+verified together. Commands actually rerun with pinned Bun 1.3.12 and normal
+Node PATH: UI `bun run build`, `bun run package:private-lab`,
+`bun run build:live-fans`, full `bun run test:browser`; repository
+`./scripts/check-repository.sh`; app vendor/stdio/server/runtime bundle scripts,
+`codesign --verify --verbose=2 dist/u1-print-studio`, executable `--help`, and
+`git diff --check`. All pass. Counts: 183 UI units, 121 Chrome cases, 281 app
+tests / 3,301 assertions, 21 lifecycle and 24 ship tests. Both deterministic lab
+rebuilds and the deterministic production rebuild pass their exact comparisons.
+
+The full browser matrix includes Camera state/capability/layout/media lifecycle,
+all earlier observation regressions and eleven live Fans iframe cases. The new
+case proves V12 → pending refresh → V15 notification → rejected old RPC retains
+V15/time/layout/focus, clears busy without stale feedback and permits a V16
+refresh. Two unit regressions also cover a same-version freshness supersession;
+both were demonstrated failing before the narrow finally-settlement fix. No
+clipping/geometry tolerance, composition guard or package limit was weakened.
+
+Renewed packaged artifacts:
+
+- Production Fans: 85,315 bytes, SHA-256
+  `b28ee10c695bb8d0296fa0d161b9962c578fdecabbd0f18ec1b525d408d23be1`,
+  below its 100,000-byte bound.
+- Observation lab: 748,816 bytes, SHA-256
+  `4ec4b2f03c26affbc89784ff3ea55e47b8be62be83cbc5d3054849eb0ef11840`,
+  +334 versus shipped PR69, 1,184 bytes below 750,000.
+- Camera lab: 78,795 bytes, SHA-256
+  `af0aa5bbdce1ece711efa97a3bd041ffddf04648df1f0b040ab7aa59712e1b5a`,
+  +107 from the shared generic busy button, 1,205 bytes below 80,000.
+- Two-lab aggregate: 827,611 bytes, 2,389 below 830,000. Production Fans is not
+  included in or substituted for that explicitly reviewed two-lab bound.
+
+The source-derived inventory tests now cover 27 static asset/routes and 28
+security checks, including both distinct Camera-lab and production-Fans assets.
+These are test counts, not actual deployment checks for PR70. Independent
+validation/review of the renewed immutable commit remains mandatory; the earlier
+held `e0e141a` must not ship. No running service, physical printer, real camera
+stream or actual-user device was used in these author gates.
+
+## 2026-09-01 actual PR69 Camera lab rollout and independent postcheck
+
+Attributed delivery-operator receipt: independently approved head
+`473cd000399aa0eb5d9f548b0f75e54dbbd0309f`, tree
+`f3399abfb25345fcf419e1ed9c37cb20c16cf842`, merged as
+`ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24` with identical tree. Guarded release
+`20260901-ef5b239-pr69-20260901T160906-8d7501` explicitly restarted BOTH
+existing services. Health/integrity, runtime 0.4.8/schema 12/observation-v14 /
+camera-v10, 26 static and 27 security checks passed; preservation=true, no
+rollback needed, snapshot `20260901T160950-ad9fec` retained. Canonical checkout's
+8,689 ignored entries and recovery refs were preserved.
+
+The distinct `camera_exact_validation` agent independently confirmed both running
+launchd/plist identities, active manifest and all 15 file hashes match the exact
+release/revision, with healthy/integrity status. Actual tailnet directory with
+and without slash, nine observation lab routes and Camera returned 200/no-store,
+restrictive CSP and exact approved artifacts: observation 748,482 bytes, SHA-256
+`bba36db142abc32eb11792265d7ba888f987ff43e502fa32ee50e93c29caec77`;
+Camera 78,688 bytes, SHA-256
+`de731c01ab92726e73be444fe70036f380d4df6172e895e5477db14ea8a87fba`.
+Downloaded Camera bytes with their real CSP passed nine independent Chrome
+probes / 56 state-width-text combinations, including native fullscreen/PiP and
+CSS fallback retaining media identity, with no network/device acquisition.
+Canonical checkout was clean at the merge. Detailed receipts remain private.
+
+This is independently attributed deployed-service/static and synthetic-browser
+evidence, not an iPhone, real printer stream or completed production Camera
+migration. The actual receipt is included with the next reviewed Fans source
+candidate; it does not request a documentation-only extra deployment/restart.
+
+## 2026-09-01 combined Camera baseline for renewed PR70
+
+Explicitly integrated reviewed main `ef5b239dddcc0fdf0b0bcc08daeeca2ef15dea24`
+(PR69), preserving Camera artifact routing, closed controls, source boundaries
+and the 750,000/80,000/830,000 private-lab limits. Conflict resolution combines
+the two route/registry/ship inventories and regenerates the deterministic HTML.
+The superseded-request fix remains confined to the live Fans controller.
+New full combined-tree gates are pending; prior `e0e141a` author green tests do
+not override its independent rejection or establish the integrated candidate.
+
+## 2026-09-01 PR70 superseded rejection — reproduced and narrowly corrected
+
+Independent review/validation held `e0e141a`: V12 → refresh → notification V15
+→ RPC rejection retained V15 but left refreshing=true after the flight ended.
+Two new author controller cases reproduced that exact failure, including the
+same-version freshness variant (eight prior tests passed, two new tests failed).
+The correction releases single-flight and clears busy in finally, even when the
+obsolete failure is intentionally suppressed. It preserves the accepted object,
+phase and feedback, and never publishes after disposal.
+
+Actual focused commands: UI `bun run test -- src/lib/live/controller.test.ts`
+passes all ten after the fix; `bun run build:live-fans` succeeds; and
+`bun run test:browser -- live-fans.spec.ts --grep 'superseded rejected RPC'`
+passes the real parent/iframe RPC error, retained V15 value/time/geometry/focus,
+re-enabled Refresh and successful subsequent V16 request. Pinned Bun 1.3.12,
+normal Node PATH, synthetic intercepted HTTP only; no printer/service change.
+The temporary renewed production artifact is 84,926 bytes, SHA-256
+`8f8595e944cdcb6111012affa8660391026023fdb0c5417fce05368df9fc52e1`.
+Full gates and independent exact acceptance must be repeated after the imminent
+reviewed Camera merge is explicitly integrated. This is not an approved release.
+
+## 2026-09-01 LIVE Fans exact-candidate author gates
+
+Actual final commands, pinned Bun 1.3.12 with normal Node PATH:
+
+- UI `bun run check`, focused `bun run test -- src/lib/live src/lib/host`,
+  `bun run build:live-fans`, `bun run build`, `bun run package:private-lab`,
+  focused `bun run test:browser -- live-fans.spec.ts`, then full
+  `bun run test:browser`: PASS. Full Chrome result is 104 cases, including ten
+  production-iframe cases and all existing Thermals/Fans/lab geometry regressions.
+- Repository `./scripts/check-repository.sh`: PASS, compiler/AST and 152 UI units,
+  deterministic production/lab rebuild checks, 280 app tests/3,265 assertions,
+  21 service-lifecycle and 24 ship tests, `repository contract: ok`.
+- App `bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign --verify --verbose=2 dist/u1-print-studio`
+  and executable `--help`: PASS. `git diff --check`: PASS.
+
+The production iframe uses the actual private route/CSP and parent bridge with
+intercepted synthetic tool responses, not a fake presentation setter. Four
+widths (320/390/590/720) × normal/200% text cover every fan at the real 1,000,000
+RPM bound, one-pixel loading/ready region parity, retained source time, values,
+focus and geometry during refresh, null/zero/fractional values, error/retry and
+no unexpected network requests. Persisted page lifecycle and actual browser
+back/forward retain or restore exactly one mounted widget/bridge. Author
+screenshots at normal and 200% text were inspected; no clipping was observed.
+
+Separate pre-review found duplicate result notifications invalidating a pending
+newer result and pagehide disposing BFCache state. Both now have regressions;
+same-version freshness notifications likewise cannot discard the newer response.
+Host navigation generations reject pre-reload initial notifications and request
+replies. A real existing-server projection test (injected no-device reader) proves
+the strict adapter accepts unavailable domain data without inventing readings.
+
+Packaging evidence: production Fans 84,884 bytes, SHA-256
+`f25bc9bd332e3fdd49a974db754ea2636ed099f065241bd373a9c0d4daa22605`, below
+its separate 100,000-byte bound. Shared leaf extraction/busy-state changes add
+334 bytes to the observation lab: 748,888 bytes, SHA-256
+`26a05eaf00188d26dd27e5f2700ae9172c8d4ba4491c785c9dffec1c38e56800`,
+leaving 1,112 bytes under the unchanged 750,000-byte lab cap. The two artifacts
+total 833,772 bytes; the production artifact is not a second lab payload or a
+silent relaxation of the lab bound. Import-graph and packaged-marker guards
+exclude lab producers/controls, test harnesses, Three and media acquisition.
+
+Static/private-route tests add exact GET/no-store/CSP, prohibited methods,
+encoded/traversal/suffix rejection and public 404 coverage. The source-derived
+ship inventory now has one additional static asset and security probe; this is
+tested inventory, not a claim that a release has occurred. Full browser startup
+once refused another agent's occupied port; it was rerun only after that agent's
+suite released it. No reused test server or weakened gate was used.
+
+All results above are author software/synthetic-host evidence. Fresh independent
+validation and formal review of the frozen commit must precede guarded merge,
+exact deployment, BOTH service restarts and post-verification. No actual printer,
+camera, user phone, auth, Tailscale or running service was changed or observed.
+
+## 2026-09-01 LIVE Fans current author checkpoint
+
+UI compiler/AST check and the focused adapter/controller/RPC unit run actually
+pass: 25 tests (12 adapter, eight controller, five bridge). Ten browser cases pass
+against the real packaged iframe/host with synthetic intercepted tool results:
+four widths, 200% text, all seven rows at 1,000,000 RPM, initial loading parity,
+retained refresh/time/focus, failure/retry, persisted lifecycle and back/forward.
+The new busy icon-button state preserves focus while suppressing duplicate
+activation; native disabling initially failed this test and was corrected.
+The package is 84,884 bytes, excludes lab producers/controls, Three and media,
+and has an explicit production import-graph guard. Seventeen dashboard tests pass,
+including actual existing server projection compatibility, static route isolation
+and pre-reload reply generations. Full gates and fresh independent acceptance
+remain pending; these tests do not establish printer or actual-device behavior.
+## 2026-09-01 synthetic Camera lab author validation
+
+The reviewed packaging/layout design is recorded in decision0032. Source builds
+two explicit self-contained entries: SvelteKit observation/directory and a
+compiled Svelte Camera entry. Current deterministic output identities:
+
+- Observation748,482 bytes, SHA-256
+  `bba36db142abc32eb11792265d7ba888f987ff43e502fa32ee50e93c29caec77`.
+- Camera78,688 bytes, SHA-256
+  `de731c01ab92726e73be444fe70036f380d4df6172e895e5477db14ea8a87fba`.
+- Aggregate827,170 bytes; limits750,000/80,000 and830,000 total are unchanged
+  from the explicit split decision. Both HTML comparisons and negative size/
+  asset tests are required. Camera's bundler checks no Three, host, observation,
+  bed-mesh or real session module and no dynamic/runtime imports.
+
+Actual commands with Bun1.3.12 and normal Node PATH:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser
+cd ../../../..
+./scripts/check-repository.sh
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign --verify --verbose=2 dist/u1-print-studio
+dist/u1-print-studio --help
+```
+
+Final source after PageLayout extraction passed155UI units, compiler/AST,
+277app tests/3,223 assertions,21lifecycle and24ship tests,110Chrome cases and
+the complete repository contract. `ui:verify` rebuilt both artifacts and matched
+their exact bytes. Bundles/signature/help and `git diff --check` passed on that
+final source. One incorrect Python module-style invocation failed
+to import the script sibling and named a nonexistent lifecycle file; the correct
+repository direct commands are `uv run --no-project scripts/test_u1_service.py`
+and `uv run --no-project scripts/test_u1_ship.py`. The first corrected run passed
+21lifecycle tests and exposed two stale26-security-count expectations; both now
+expect27 because the exact private Camera route adds one public-isolation check.
+
+Camera browser coverage includes seven states at320/390/590/720 normal and200%
+text (56combinations), real glyph containment/non-overlap, equal card/header/body/
+media geometry within a text setting, normal top-right status,44px actions,
+closedURL/reset/back-forward behavior and loading without an active stream.
+The7isolated media tests cover actual local presented-frame FPS, expiration,
+startup/stall deadlines, native/CSSfullscreen and PiP identity, simulated failures,
+single non-flow announcement and track cleanup under the exact restrictive CSP.
+The200%320px screenshot was visually inspected: title and right-aligned status
+no longer overlap. Other screenshots and exact bytes require independent review.
+
+All evidence is software or local synthetic Chrome. No actual printer, camera
+device, phone, deployed service or user acceptance is claimed by this candidate.
+
+## 2026-09-01 independent cleanup preservation and receipt-only checks
+
+The cleanup operator moved exactly ten approved redundant task worktrees intact
+with `git worktree move`; no force-removal, global clean/prune, branch deletion
+or permanent source deletion was used. The separately approved nested clone was
+quarantined intact; only its empty parent was removed using nonrecursive `rmdir`.
+
+Independent verification was performed by the receipt author, who did not
+perform these cleanup operations. An inline `uv run python -` read-only check
+used independent SHA-256/lstat/symlink traversal and tar-member inspection,
+plus `git worktree list --porcelain`, `git status --porcelain`, `git rev-parse`,
+`git merge-base --is-ancestor` and ignored-file enumeration. Actual result PASS:
+
+- Every current quarantined worktree exactly matches its before, fresh-pre-move
+  and after manifests for file bytes, types, modes and symlink targets. Only the
+  registered root Git pointer is excluded, because Git updates it during a move.
+- All ten old paths are absent and new registrations, HEADs and retained branch
+  refs match; both untracked independent diagnostic specs remain present.
+- Canonical checkout is clean `main` at `c924bf9`; the original action/recovery
+  refs match. All 8,689 current ignored entries match the pre/post-PR67 manifests;
+  the original 9,005-entry pre/post-main-switch manifests also match each other.
+- All 315 nested-clone entries match current quarantine and archive contents;
+  archive/patch checksums pass. The five historical original document files match
+  their safe archive-member allowlist and recorded hashes; archive/patch
+  checksums pass. No private paths, user-document contents or their hashes are
+  committed here.
+- Active lab, LIVE Fans, Camera and current-validator worktrees remain present
+  and registered. No claim of an independent byte-for-byte baseline comparison
+  for those actively changing excluded trees is made.
+
+This verifies recoverability, not runtime behavior. The independent check made
+no source, service, build, printer or quarantine mutation. Detailed recovery
+manifests remain private; do not empty the recoverable quarantine.
+
+Receipt-only author commands actually run: `git diff --check`,
+`git diff --quiet c924bf9 -- plugins scripts .agents AGENTS.md`, and
+`PATH=<pinned Bun 1.3.12 plus normal Node PATH> ./scripts/check-repository.sh`.
+All pass, including 126 UI units, 276 app tests/3,187 assertions, 21 lifecycle
+and 24 ship tests, ending `repository contract: ok`. Only five record files
+change; application/plugin/operator trees are identical to the deployed merge.
+Fresh independent docs review is still required; no second deploy/restart is
+appropriate for unchanged application bytes.
+
+## 2026-09-01 PR67 actual shipment and independent postcheck
+
+Attribution: the separate validator passed exact `07e1c144` (full compiler/AST,
+126 units, 94 Chrome cases, deterministic package, app/lifecycle/shipping gates,
+168 original clipping cases and 48 isolated adjacency cases). The latter showed
+exactly 2px number/unit spacing and zero loading-geometry difference across
+normal/200% text and all four widths. Formal review approved the same immutable
+head. Author results alone were not treated as approval; rejected `8663d93` and
+`befbbd5` were not deployed.
+
+The delivery operator actually ran the documented shipping help, read-only plan,
+then `uv run scripts/u1_ship.py --pr 67 --reviewed-sha
+07e1c144df9debbbb20b92c1bb0b2ad7b10bc03a --bun <pinned Bun 1.3.12> --execute`.
+This receipt intentionally omits machine-private paths. Result:
+
+- Merge `c924bf9a0e225f96a1b4163cdb90c83751545e6a`, exact reviewed tree
+  `9198918a05ddb08bf503369413125b8b4bc120cb`.
+- Release `20260901-c924bf9-pr67-20260901T153250-99a666`.
+- BOTH existing services explicitly restarted; loaded/healthy/integrity verified,
+  runtime 0.4.8, runtime schema 12, observation-v14 and camera-v10.
+- 25 static asset/route checks, 26 security checks and preservation checks pass.
+- No rollback needed; snapshot `20260901T153330-e4475a` retained.
+
+The separate post-deployment validator confirmed loaded launchd/plist/source
+identities match this release and merge. Actual tailnet lab directory plus nine
+routes returned 200/no-store with restrictive CSP and exact 748,554 bytes,
+SHA-256 `83146f52f61fd9225877e3bd4ef7ee08798745083fc7232fa9e932399b007a1a`.
+Isolated Chrome ran against fetched server bytes and passed all-nine controls,
+retained refresh/source times, skeletons without active content, one loading
+announcement, stable major geometry and no external requests. The detailed
+verification report remains private, not committed runtime data.
+
+These are attributed independent software, deployed-service and synthetic Chrome
+results. No actual-user-browser, iPhone, printer or camera acceptance is claimed.
+The receipt-only change does not alter deployed application bytes and needs no
+additional restart/deploy under decision 0028.
+
+## 2026-09-01 compact Progress metric — final renewed author checks
+
+Independent visual review of `befbbd5` rejected its separated `0 %` display
+despite automated checks passing. The percentage layout owner now sets inherited
+`text-align: end`; no shared leaf internals or other widget alignment are changed.
+Ready/loading slot bounds remain intact. The 4% regression uses a compiled
+test-only fixture; the public lab's closed choices are unchanged. The harness
+is served only by the local test server, never by application routes or bundles.
+
+Repeated actual commands: UI `bun run check`, `bun run build`,
+`bun run package:private-lab`, full `bun run test:browser`, repository
+`./scripts/check-repository.sh`, app `bun run bundle:widget-vendor`,
+`bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+`codesign --verify --verbose=2 dist/u1-print-studio`, executable `--help`, and
+`git diff --check`, all with pinned Bun and normal Node PATH. All pass: compiler/
+AST/types, 126 UI units, 94 Chrome cases, deterministic package, 276 app tests /
+3,187 assertions, 21 lifecycle and 24 ship tests, bundles/signature/help.
+
+The text-bound regression now includes 0/4/25/50/75/100 at every tested width
+and normal/200% text: 200 total preset combinations, including 48 adjacency
+checks. Number-to-unit glyph gap must be nonnegative and no greater than
+`max(4px, 0.2 * numeric font size)`, with original text containment and
+ready/loading one-pixel bounds unchanged. The final focused command
+`bun run test:browser -- lab-text-bounds.spec.ts` passed the stronger matrix;
+the final full run also includes the isolated 4% harness.
+Author screenshots of normal 390px/0% and 200%-text 390px/100% show joined,
+readable displays. Independent final rendering acceptance is still required;
+neither these tests nor screenshots are actual-device/printer evidence.
+
+Package: 748,554 bytes, SHA-256
+`83146f52f61fd9225877e3bd4ef7ee08798745083fc7232fa9e932399b007a1a`;
+21,458 bytes above deployed PR65 and 1,446 bytes below the unchanged cap.
+No live branch code, production route or printer acquisition is included.
+
+Later independent cleanup postcheck also passed, attributed to its validator:
+canonical main/ref equality, all 9,005 switch-manifest entries, 8,689 remaining
+ignored entries after the approved temporary clone removal, and all 315
+quarantined/archive entries matched. The ten other proposed worktree targets
+remain registered and unmoved. This does not alter runtime or feature acceptance.
+
+## 2026-09-01 PR67 renewal after independent rejection
+
+Independent validation of `8663d93` found 25 clipped-case groups in 168 closed
+preset/width/text-scale combinations, despite the earlier author suite passing.
+Progress percentages, Heads hex codes, Current Job labels/percent and Overview
+state text were visually confirmed clipped. Formal review also required a true
+mapped view/scenario/closed-values discriminated union. These were acceptance
+failures; the old head must not ship.
+
+The correction uses shared ready/loading text slots and font-aware grid/wrap
+rules, without truncation, smaller fonts, hidden telemetry or relaxed bounds.
+Overview separators are grid-owned so adaptive column counts retain seams.
+The controller now correlates each view, scenario and closed variable map;
+compile-negative cases reject wrong scenarios, keys, values and camera kinds.
+The committed `lab-text-bounds.spec.ts` adds all 168 regression combinations:
+visible text ranges must remain inside clipping ancestors within one pixel;
+major ready/loading regions retain the same one-pixel bound. Loading still has
+no action buttons, progress values or canvas.
+
+Actual renewed commands (pinned Bun 1.3.12, normal Node on PATH):
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser
+cd ../../../..
+./scripts/check-repository.sh
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign --verify --verbose=2 dist/u1-print-studio
+dist/u1-print-studio --help
+```
+
+Results: compiler zero errors/warnings, exact AST guards and type-negative
+checks pass; 126 UI units, all 94 Chrome cases, deterministic package, 276 app
+tests/3,187 assertions, 21 lifecycle and 24 ship tests pass. All four bundles,
+signature and executable help pass. The exact lab artifact is 748,539 bytes,
+SHA-256 `64f5fa2445b7ea0ec0213a4e5940434c65b1b9f8914a5d12442bd4b5a714c271`:
+21,443 bytes above deployed PR65, with 1,461 bytes below the unchanged 750,000
+cap. Seven legacy ready-shell native-tag multisets remain unchanged.
+`git diff --check` also passes after the renewal records were updated.
+
+These are renewed author software/synthetic-Chrome checks only. A new immutable
+head must independently pass and receive formal approval before guarded
+delivery. No production route, service, camera acquisition, printer or actual
+phone was exercised. Earlier green author evidence below remains historical,
+not evidence that the rejected head was acceptable.
+
+### Separately authorized workspace cleanup — attributed operator receipt
+
+The cleanup operator reports the canonical checkout is now clean `main` at
+`cb37e3e`. Before switching, a separate validator confirmed preservation of the
+five original uncommitted documents; a private binary patch and per-file hashes
+were archived. Original `actions` at `c18e6f3` and a recovery ref remain. The
+guarded reverse patch, no-overwrite-ignore switch and fast-forward-only pin
+preserved all 9,005 ignored entries (content, type, mode and symlink evidence).
+
+The separately approved stale nested source clone was then moved intact into
+private quarantine: all 315 manifest entries matched before/after, with a
+separate archive, one-line patch and HEAD recovery ref retained. Its empty
+temporary parent was removed non-recursively. No feature, runtime, service,
+printer or authentication change occurred. Ten proposed old task-worktree
+retirements remain pending; active/runtime/historical/Orca trees were untouched.
+These facts are attributed to the cleanup operator, not rerun by this author;
+final independent post-cleanup verification remains pending. Private paths and
+user-document hashes are deliberately not committed.
+
+## 2026-09-01 all-nine lab controls — completed author gate set
+
+Actual local commands, with pinned Bun 1.3.12 on PATH and normal Node available:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser
+cd ../../../..
+./scripts/check-repository.sh
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign --verify --verbose=2 dist/u1-print-studio
+dist/u1-print-studio --help
+git diff --check
+```
+
+Final results: compiler zero errors/warnings; exact AST composition guards pass;
+126 UI unit tests pass; 86 Chrome cases pass; deterministic package verification
+passes; 276 app tests with 3,187 assertions pass; 21 lifecycle and 24 shipping
+tests pass. Vendor/server/stdio/runtime bundles, macOS signature and runtime help
+pass. New browser cases cover all nine closed control docks at four widths,
+keyboard selection, reload/back/forward/reset, disabled-state rules, no external
+requests, default and known-empty loading geometry, retained refresh/source time,
+terminal states and document overflow. Major card/header/body/footer/list/chart
+bounds remain within one CSS pixel at 320/390/590/720 and 200% text. Existing
+gradient, fan, thermal, mesh, title/bootstrap and compatibility checks remain.
+
+The packaged lab is 748,478 bytes, SHA-256
+`596fb409bb336cb4ba147b4aaeb7f2472ab97be8b9f8784238f1a5a33cf0e348`:
+21,382 bytes above deployed PR65 and 1,522 bytes below the unchanged 750,000 cap.
+Camera is not included. No cap increase, production asset/transport change,
+external chunk, CSP change or acquisition was introduced.
+
+Failures found and corrected before this final pass: intrinsic empty-word slot
+sizing, proportional-font material wrapping, metadata wrapping, and queue field
+widths. Ready/loading now share the same layout/value owners; no hidden ready
+telemetry or fixture observation is mounted for loading. Overview's shared narrow
+layout places the metric below its label to avoid an enlarged-text auto-column
+collision. Two unit structure/whitespace assertions and four browser label
+locators were updated to match the new visible controls without relaxing checks.
+
+These are author software/synthetic-browser results, not independent review,
+deployment, actual phone, camera or printer evidence. Separate exact-candidate
+validation and formal approval are still required before guarded delivery.
+
+## 2026-09-01 resumed consolidation checkpoint
+
+The interrupted author processes completed; no lab Vite/Vitest/Playwright process
+remained on resume. Current committed base is `e5972f2`, which explicitly merged
+reviewed main `cb37e3e`; ongoing source changes are not yet frozen or approved.
+`bun run check` passed compiler (zero errors/warnings) and exact composition
+guards. `bun run test:browser -- lab-states.spec.ts` passed all eight cases:
+all nine views at 320/390/590/720, ordinary and 200% text, major ready/loading
+geometry within one pixel, retained refresh geometry/source time, terminal
+states and document overflow. These are synthetic Chrome checks, not device or
+deployment acceptance. The preceding unit run was 124/126; the two outdated
+structure/whitespace assertions were corrected but await a fresh full run.
+
+The user now prioritizes finishing existing work and migration/delivery/cleanup
+before new features. This checkpoint does not claim Camera integration, seven
+legacy ready-shell retirement or production route cutover. No service was
+restarted and no printer/camera acquisition occurred during these author checks.
+
+## 2026-09-01 visible lab state controls — work-in-progress author checkpoint
+
+Pinned Bun frozen installs, UI compiler/AST, all 110 unit tests, build and
+private-lab packaging ran. Compiler/AST and unit tests pass. Initial complete
+nine-view lifecycle build is 746,773 bytes before merging the tiny slope change;
+the 750,000 cap is unchanged and Camera must await a measured budget decision.
+Four-width controller browser tests reached working URL reload/back/forward/
+reset checks but fail the synthetic keyboard-select sequence; this is open,
+not browser acceptance. Major loading/ready geometry and enlarged-text gates
+have not yet completed. No live service, printer or camera acquisition occurred.
+
+The approved minimal design reuses the seven existing raw layout shells/CSS
+with a registered LoadingValue leaf. Loading receives no observation object,
+only bounded row-count structure, and Bed Mesh does not mount Three/WebGL.
+New state/skeleton wrappers are zero-raw; legacy exact raw-tag debts are not
+expanded and are not claimed fully migrated. This checkpoint is not a release.
+
+## 2026-09-01 PR65 guarded merge/deploy/BOTH restart verification
+
+Separate implementation, independent validation and independent formal review
+approved exact `f216c70b9844b9e536676c403546b3eb116805b2`, tree
+`1a3bc6fc10a2a12054ef9db32d7a120f1a3a906e`. The coordinator relayed approvals and
+the user's standing widget-release authorization. The reviewer subsequently
+acted as delivery operator; the independent validator remained separate.
+
+Actual commands from the clean, frozen candidate checkout:
+
+```text
+uv run --no-project scripts/u1_ship.py --help
+uv run --no-project scripts/u1_ship.py --pr 65 --reviewed-sha f216c70b9844b9e536676c403546b3eb116805b2 --bun <absolute-pinned-bun-1.3.12>
+uv run --no-project scripts/u1_ship.py --pr 65 --reviewed-sha f216c70b9844b9e536676c403546b3eb116805b2 --bun <absolute-pinned-bun-1.3.12> --execute
+```
+
+The verified Bun SHA-256 is
+`39e644cea4e6db24a3af36013695655d6f789b4b98f1f13bacb882ac6e5c3c18`; its local
+absolute path is intentionally omitted. Help/read-only preflight passed first.
+Execution passed identity, fetch-base, preflight, local validation, matching-head
+merge guards, exact merged-source isolation, stage, dry-run, install, explicit
+restart-both and final verification without bypass.
+
+- Merge: `6b9b3e7e09ccfad89ed542a52a69f5126407da4b`; exact reviewed tree preserved.
+- Operation: `pr65-20260901T142009-341331`; phase complete, ok true,
+  merged true, installed true.
+- Release: `20260901-6b9b3e7-pr65-20260901T142009-341331`.
+- BOTH public/dashboard: explicitly restarted, loaded true, healthy true,
+  integrity verified; runtime 0.4.8/schema 12/observation-v14/camera-v10.
+- Static asset/routes: 25 passing; security checks: 26 passing; configuration,
+  environment and routing preservation: true.
+- Lab artifact: 727,096 bytes, SHA-256
+  `2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`;
+  exact Thermals/Fans lab routes match. Existing production assets are unchanged.
+- Rollback: not needed; retained snapshot `20260901T142049-5cf038`.
+
+Independent postdeployment validation also reports PASS: actual tailnet Thermals
+and Fans lab routes each return 200 with `Cache-Control: no-store` and the exact
+727,096-byte approved content/hash. Independently inspected service status and
+selected plist/manifest identities confirm BOTH loaded/healthy/integrity states
+at the exact release and merged source above. No acquisition was performed.
+
+Independent predeployment software validation reported compiler/AST success,
+88 unit, 66 Chrome, 276 app/3,182 assertions, 21 lifecycle and 24 shipping tests,
+deterministic packaging, bundles/signature/help and clean source. Eight extra
+isolated Chrome cases at four widths and normal/200% text verified upper/lower
+ratio edges including fractional fills, unknown/zero/clamping, child identity,
+focus/events and geometry. A tall fixture's 3–6 red-channel vertical difference
+established genuine sloped tint rather than only a CSS-angle string. These are
+attributed independent fixture results, not this operator's new browser checks.
+
+This release establishes reviewed source plus exact service/static/security
+delivery, not actual phone rendering, live camera, physical printer or user
+acceptance. No printer acquisition, auth provisioning, Tailscale change or plugin
+reinstallation was performed. The separate rollout-record branch changes only
+documentation and needs no additional deployment when app bytes remain equal.
+
+Receipt-branch checks actually run: frozen Bun installs in app/UI, then the full
+`./scripts/check-repository.sh` with pinned Bun on PATH passed compiler/AST,
+88 UI unit tests, deterministic package verification, 276 app/3,182 assertions,
+21 lifecycle and 24 shipping tests. The first attempt in the new checkout stopped
+at missing `svelte-kit` before dependencies were installed; no source was changed
+to resolve it. `git diff --check` and `git diff --exit-code 6b9b3e7 -- plugins
+scripts .agents AGENTS.md` passed. Only the five current state/iteration receipt
+documents change. Plugin tree `5fcc4555140d5b8435bbeff05372704c0dae6ed4` and app
+tree `c77795604e025c6e3ea6229f5ef7ea01b7367bcc` remain equal to the shipped merge.
+Exact independent review is required before the documentation-only PR merge.
+
+## 2026-09-01 subtle percentage-gradient slope author evidence
+
+This isolated private-lab refinement uses 100-degree tint inside an exactly
+ratio-sized nonrepeating background rectangle. No public API, production
+widget, transport, auth or camera code changes. The larger lab-controls and
+synthetic Camera candidates remain in separate preserved branches.
+
+Commands actually run with pinned Bun 1.3.12: frozen app/UI installs; UI
+`bun run check`, `bun run test`, `bun run build`, `bun run package:private-lab`,
+focused `bun run test:browser -- percentage-background.spec.ts` then full
+`bun run test:browser`; repository `./scripts/check-repository.sh` with pinned
+Bun on PATH; app `bun run bundle:widget-vendor`, `bun run bundle`,
+`bun run bundle:server`, `bun run bundle:runtime`,
+`codesign -vvv --verify dist/u1-print-studio`, and `dist/u1-print-studio --help`.
+
+Compiler/AST and all 88 unit tests pass. Eight focused real-Chrome cases pass at
+320/390/590/720, including upper/lower-row pixel samples before/after the exact
+0/25/50/100-percent and over-target boundaries, neutral invalid ratios, 100-degree
+computed gradient, no repeat, unchanged child DOM identity/events/focus,
+unchanged geometry and forced-colors suppression. Thermals and Fans both use
+the same gradient leaf; existing seams and enlarged Thermals layout pass.
+
+The deterministic artifact is 727,096 bytes, SHA-256
+`2803af9d2ff5c8172305b6fdfa042192f2cfcde10a83dea1c8d1872e5b145a94`,
+only 38 bytes above shipped PR63 and 22,904 below the unchanged 750,000-byte
+hard cap. The already exceeded 720,000 soft target remains explicit review
+risk, not an implicit cap increase. Bundles, runtime signature/help pass.
+
+Full Chrome passes 66/66. The repository gate passes compiler/AST, 88 unit,
+deterministic package verification, 276 app tests/3,182 assertions, 21 lifecycle
+and 24 shipping tests. `git diff --check` passes; rebuilding production vendor
+assets introduces no production diff. Required records and remaining execution
+order are updated without changing those running surfaces.
+
+Evidence is author synthetic software/browser only, not independent approval,
+deployed-service, live-printer, actual-device or user acceptance. Exact
+independent review/validation precedes PR merge and guarded BOTH-service delivery.
+
+## 2026-09-01 PR63 guarded merge/deploy/BOTH restart verification
+
+Independent validation and formal review approved exact
+`0f78e6924cbaca5a576ee552c7e14e38cb9e1a92`, tree
+`402b9450cfe83faaa2f8e5b89c3884981131a260`, before execution. Root relayed both
+approvals and the user's scoped standing widget-release authorization. The
+implementation agent then acted as delivery operator, not as independent
+reviewer or validator.
+
+Actual commands from the frozen clean candidate checkout:
+
+```text
+uv run --no-project scripts/u1_ship.py --help
+uv run --no-project scripts/u1_ship.py --pr 63 --reviewed-sha 0f78e6924cbaca5a576ee552c7e14e38cb9e1a92 --bun <absolute-pinned-bun-1.3.12>
+uv run --no-project scripts/u1_ship.py --pr 63 --reviewed-sha 0f78e6924cbaca5a576ee552c7e14e38cb9e1a92 --bun <absolute-pinned-bun-1.3.12> --execute
+```
+
+The absolute local executable path is intentionally omitted from this
+repository record. Its verified Bun SHA-256 is
+`39e644cea4e6db24a3af36013695655d6f789b4b98f1f13bacb882ac6e5c3c18`.
+The fresh read-only plan passed before execution. The workflow then completed
+identity/fetch-base/preflight, required local validation, matching-head merge,
+exact merged-tree isolation, stage, dry-run, install, explicit restart-both and
+final verification, with no bypass or extra device acquisition.
+
+- Merge: `57a305b31ff408bbff4988fc3eeaa518d24b5411`; merged tree equals the
+  approved source tree.
+- Operation: `pr63-20260901T134952-9c86bd`; phase complete, ok true,
+  installed true, merged true.
+- Release: `20260901-57a305b-pr63-20260901T134952-9c86bd`.
+- BOTH public/dashboard: explicitly restarted, loaded true, healthy true,
+  integrity verified; runtime 0.4.8/schema 12/observation-v14/camera-v10.
+- Exact static asset/routes: 25 passing; security checks: 26 passing;
+  configuration/routing/environment preservation: true.
+- Private lab artifact: 727,058 bytes, SHA-256
+  `74ad17deadd33e8373402b3b2c204830bd686fa06e369f46fff0604cc01baa41`, including
+  exact served Fans/Thermals lab routes. Existing production assets are unchanged.
+- Rollback: not needed; retained snapshot `20260901T135032-d34949`.
+
+This establishes reviewed source delivery and exact deployed-service/static/
+security verification. The independent software suite separately passed 88 unit,
+66 Chrome, 276 app/3,182 assertions, 21 lifecycle and 24 shipping tests plus
+additional all-row maximum-RPM/mode/geometry checks. These are not real-device,
+live-camera, physical-printer or user-outcome acceptance. No printer, camera,
+auth provisioning, Tailscale change or plugin reinstallation was performed.
+
+Rollout-record changes are documentation-only and retain identical application
+bytes; no second deployment is required by decision 0028.
+
+Independent postdeployment validation subsequently reported PASS: tailnet
+`/dashboard/lab/fans` returned HTTP 200 with `Cache-Control: no-store` and the
+exact 727,058 bytes/hash above, compared byte-for-byte with approved source.
+The documented service-status command independently confirmed BOTH loaded,
+healthy, integrity-verified service contracts at the same runtime/schema/resource
+versions. This attributed independent checkpoint proves service/static rollout,
+not a new phone/user/printer observation.
+
+For this separate documentation-only branch, `git diff --check`, the exact
+five-file change list, and `git diff --exit-code <merge> -- plugins scripts
+.agents AGENTS.md` verify format/scope and unchanged application/operator bytes.
+Exact review of the documentation commit remains required before ordinary PR
+merge; the original reviewed application worktree remains clean and unchanged.
+
+## 2026-09-01 Fans & Air shared-background author evidence
+
+Commands actually run with pinned Bun 1.3.12: frozen app/UI installs; UI
+`bun run check`, `bun run test`, `bun run build`, `bun run package:private-lab`,
+focused `bun run test:browser -- fans-state.spec.ts` then full
+`bun run test:browser`; repository `./scripts/check-repository.sh` with pinned
+Bun on PATH; app `bun run bundle:widget-vendor`, `bun run bundle`,
+`bun run bundle:server`, `bun run bundle:runtime`,
+`codesign -vvv --verify dist/u1-print-studio`, `dist/u1-print-studio --help`;
+and `git diff --check`.
+
+- Compiler 0 errors/warnings and exact AST frontier pass. 88 unit tests cover
+  canonical fan structure, independent null/zero metrics, fractional percent
+  display versus raw gradient, 100,000 RPM, shared loading, refresh retention,
+  closed terminal states and all existing component/domain regressions.
+- Focused Chrome passes all four widths (320/390/590/720), normal and 200% text.
+  Every canonical purifier mode plus null retains exact loading/ready shell,
+  list and seven-row geometry. Static names/icons stay visible but loading has
+  no telemetry, fill or controls. Maximum RPM text ranges remain within their
+  metric/row bounds; whole metrics wrap when necessary. Real rendered gradient
+  pixels, neutral unknowns/zeros, frozen refresh source time, single overlay,
+  icon-only 44-pixel actions, reduced-motion and no external request pass.
+- Initial focused failures exposed a 320-pixel/enlarged metric-group overflow
+  and purifier-placeholder line-height mismatch. Bounded whole-metric wrapping,
+  shared minimum slots and InfoPair line-height resolved them. Test-only
+  geometry now uses document coordinates so click-induced browser scrolling is
+  not mistaken for layout shift. An initial unit fixture accidentally retained
+  both observation and state props; the test now uses the intended state API.
+- Repeated build and repository `ui:verify` reproduce 727,058 bytes, SHA-256
+  `74ad17deadd33e8373402b3b2c204830bd686fa06e369f46fff0604cc01baa41`.
+  This is +3,046 bytes from PR62, leaving 22,942 below the unchanged 750,000-byte
+  hard cap. The previously exceeded 720,000 soft target still needs explicit
+  reviewer disposition; it is not silently raised.
+- Full Chrome suite passes 66/66, including all 62 prior ready/state/Bed Mesh
+  cases and the four new multi-state Fans cases. Thermals' responsive columns,
+  seams, degree values, loading and enlarged-text geometry remain unchanged.
+- Repository gate, app 276/276 (3,182 assertions), lifecycle 21/21, shipping
+  24/24, production bundles, runtime
+  signature/help and diff checks pass. Only the private lab artifact changes;
+  generating production vendor assets introduces no production diff.
+
+Evidence is author synthetic-fixture/static/software only. Exact independent
+review, deployment and actual device/user acceptance are distinct later gates.
+No printer, camera, auth or live service was contacted by this implementation.
+
+## 2026-09-01 PercentageBackground / Thermals author evidence
+
+Executed with pinned Bun 1.3.12 after frozen installs in both app/UI:
+UI `bun run check`, `bun run test`, `bun run build`,
+`bun run package:private-lab`, `bun run test:browser`; repository
+`PATH=<pinned-bun>:$PATH ./scripts/check-repository.sh`; app
+`bun run bundle:widget-vendor`, `bun run bundle`, `bun run bundle:server`,
+`bun run bundle:runtime`, `codesign -vvv --verify dist/u1-print-studio`,
+`dist/u1-print-studio --help`, and `git diff --check`.
+
+- Compiler: 0 errors/warnings; exact AST frontier passes. 79/79 unit cases
+  include 17 new ratio/color/child-interaction cases, strict line-terminator
+  rejection, reactive values and preserved accessible child measurements.
+- Chrome: 62/62 cases include all prior 54, plus eight new four-width cases.
+  Coverage includes actual sampled blue-filled/transparent pixels, 0/25/50/
+  100/over-target/unknown ratios, unchanged child semantics, keyboard/pointer
+  action, no decorative layout/overflow/motion, forced-colors suppression,
+  normal/list seam parity and full-height peers at 200% text. Existing loading/
+  ready/frame/row geometry, 44-pixel actions, source-time, overlay, routes,
+  title, Bed Mesh and nonlocal-request checks remain green.
+- Initial author probes caught a 200% peer-row seam gap, resolved by list-owned
+  stretch; a generic test initially compared differently wrapping child text
+  against a fixed height, corrected to assert exact wrapper/child bounds.
+  Early color review caught terminal-line-break acceptance; explicit length and
+  negative cases now reject it. Initial app hash failure was the expected stale
+  prior artifact pin, renewed only after deterministic generation.
+- Repeated build plus repository `ui:verify` reproduces 724,012 bytes, SHA-256
+  `50d8297d169d1a3c65238a9042924f3e80ea684057ac68f5ce2dc5c078eec4e2`.
+  Delta from PR61 is +1,528 bytes, reserve 25,988 under the unchanged 750,000-byte
+  hard cap. The pre-existing 720,000 soft target remains exceeded and requires
+  explicit reviewer disposition, not a weakened limit.
+- App 276/276, 3,181 assertions; lifecycle 21/21; shipping 24/24; repository
+  contract, all bundles, runtime signature/help and diff checks pass. The
+  production generated vendor build introduces no changed production asset.
+
+This is author synthetic-fixture/static/software evidence only. It is not
+independent approval, deployment, live telemetry, actual-device, physical printer
+or user acceptance. No printer, camera, auth or live service was contacted.
+
+## 2026-09-01 component foundation / Thermals progressive-state author evidence
+
+Commands run from `plugins/u1-print-studio/app/ui` with pinned Bun `1.3.12`:
+`bun run check`, `bun run test`, two `bun run build` plus
+`bun run package:private-lab`, and `bun run test:browser --
+thermals-state.spec.ts observation-lab.spec.ts bed-mesh.spec.ts`. From the app
+and repository roots: app `ui:verify`, TypeScript/app tests,
+`uv run --no-project scripts/test_u1_service.py`,
+`uv run --no-project scripts/test_u1_ship.py`, `check-repository.sh`, and
+`git diff --check`.
+
+- Svelte check: 0 errors, 0 warnings; AST component frontier passes.
+- Vitest: 62/62. Coverage includes primitive formatting/ARIA/closed props,
+  degree null/zero/negative, actual-target order, source timestamp, invalid
+  WidgetState envelopes, six-row loading/no fake telemetry/no action, refresh
+  retention, stale-feedback invalidation and deliberate AST bypass fixtures.
+- Real Chrome: 54/54. Four progressive Thermals cases plus all prior 50 ready
+  lab/Bed Mesh cases pass at 320/390/590/720. Loading/ready header, shell and
+  row geometry match; six rows have no fake telemetry/control; reduced-motion,
+  forced-colors, refreshing retention, terminal states, 44-pixel action,
+  overflow and nonlocal-request gates pass. The exact state harness is test-only
+  and absent from packaged/static routes.
+- Two builds reproduce one 722,484-byte package with SHA-256
+  `dd4f727d615fc7730db76f96b1b33e1371338b046737afc82d87d12a086b3b67`.
+  This is 27,516 bytes below the 750,000-byte hard bound, but 2,484 above the
+  provisional 720,000-byte soft target; exact review must explicitly accept or
+  require a correction without weakening the required composition.
+- Full gates: app 276/276 with 3,178 assertions, lifecycle 21/21, shipping
+  24/24, and repository contract pass. `git diff --check` passes.
+
+This is synthetic fixture/static software evidence only. It is not independent
+approval, deployment, live telemetry, real-printer, actual-device or user
+acceptance. No service, printer, camera, auth or Tailscale surface was contacted.
+
+## 2026-09-01 asynchronous feedback-order renewal
+
+Formal review blocked exact `4e8788f`: Heads awaited the clipboard before
+announcing Copy, allowing an older completion to overwrite a newer Refresh.
+The correction stayed inside the synthetic private lab and contacted no service,
+device, auth or Tailscale surface.
+
+Commands actually run after correction:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser -- observation-lab.spec.ts bed-mesh.spec.ts
+
+cd ..
+bun run ui:verify
+bun run ui:verify
+bun run check
+bun run test
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_service.py
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes 0/0 and Vitest 25/25. Deferred-promise tests cover stale
+  clipboard resolve and reject after newer Refresh plus current Copy resolve and
+  reject after Refresh. Copy intent appears synchronously, stale completion is
+  ignored, and exactly one latest status node remains.
+- Real Chrome passes 50/50. A controlled clipboard verifies the same four order/
+  outcome cases at 320/390/590/720, one overlay and under-0.1-pixel card-height
+  delta. All title, accent/wash, readability, overflow, nonlocal-request and Bed
+  Mesh 4:3 checks remain green.
+- Two sequential verification builds reproduce one 713,802-byte self-contained
+  page, 36,198 bytes below 750 KB, SHA-256
+  `565c731ef6199c81e5df4f758837c6980fb33d7cc349905d7f16c4acbf17e2eb`.
+- Full gates pass 276 app tests/3,178 assertions, 21 lifecycle and 24 shipping
+  tests. The stdio bundle is 2,811,271 bytes (SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`),
+  the server bundle is 3,867,535 bytes (SHA-256
+  `481a146768225a110364b01533baf9224a6f8d632f5aca965a3d52bd1fa1c500`)
+  and the signed runtime is 65,229,648 bytes (SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`).
+  Signature and help checks pass. Production widget and host hashes remain
+  unchanged from the frozen values below.
+
+This is author static/software and synthetic-fixture browser evidence only. It
+does not prove independent approval, deployment, MCP cutover, live telemetry,
+camera/printer behavior, actual-device rendering or user acceptance.
+
+## 2026-09-01 latest-action and semantic-active renewal
+
+Formal review blocked exact `b3e0c7e`: Copy and Refresh rendered one overlay but
+retained two states, allowing stale Copy to mask newer Refresh; the active border
+also followed filament color instead of semantic state. The correction remained
+inside the synthetic private lab and contacted no service, device, auth or
+Tailscale surface.
+
+Commands actually run after correction:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+bun run test:browser -- observation-lab.spec.ts bed-mesh.spec.ts
+
+cd ..
+bun run ui:verify
+bun run ui:verify
+bun run check
+bun run test
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_service.py
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes 0/0 and Vitest 24/24. Component regressions exercise
+  Copy → Refresh and Refresh → Copy, require exactly one status node with the
+  latest message, and vary the active tool's canonical color independently.
+- Real Chrome passes 50/50. At 320/390/590/720, both action orders immediately
+  replace one feedback overlay and preserve card height within 0.1 pixel. A live
+  custom-property mutation changes the active card wash while its border remains
+  the exact computed semantic amber accent. All title, readability, overflow,
+  nonlocal-request and Bed Mesh 4:3 checks remain green.
+- Two sequential verification builds reproduce one 713,594-byte self-contained
+  page, 36,406 bytes below 750 KB, SHA-256
+  `097c9620af5125cb6ce65c820f6b3ce3e67e324d51c91115c6845cbab1878dd7`.
+- Full gates pass 276 app tests/3,178 assertions, 21 lifecycle and 24 shipping
+  tests. Bundles/signature/help pass: `dist/stdio.js` is 2,811,271 bytes/
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/server.js` is 3,867,324 bytes/
+  `0b92d73ad36ae29bac5fa981412a7b1e0ea401d10afde37498aab9f31063c4c7`;
+  `dist/u1-print-studio` is 65,229,648 bytes/
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`.
+  Existing production widget/camera/host hashes remain unchanged.
+
+This is author static/software and synthetic-fixture browser evidence only. It
+does not prove independent approval, deployment, MCP cutover, live telemetry,
+camera/printer behavior, actual-device rendering or user acceptance.
+
+## 2026-09-01 parser-title and Heads interaction renewal
+
+Re-review blocked exact `9dc6470`: child routes still mutated from generic
+`Observation Lab` to the canonical title during parsing, and Heads did not yet
+implement the already accepted six-percent RGBA-aware wash and bottom Copy
+interaction. No service, printer, camera, auth or Tailscale surface was
+contacted while correcting the static private lab.
+
+Commands actually run after the final correction:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+bun run build
+bun run package:private-lab
+
+cd ..
+bun run ui:verify
+bun run ui:verify
+bun run check
+bun run test
+bun run ui:test:browser
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_service.py
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes 0/0 and Vitest 24/24. The Heads component test proves
+  canonical RGBA reaches the card, only three valid colors expose Copy, Empty/
+  N/A does not, the exact normalized hex reaches `navigator.clipboard`, and
+  feedback is truthful.
+- Real Chrome passes 50/50. MutationObserver instrumentation from initial
+  parsing records exactly one non-empty canonical title for the directory and
+  all nine child routes, never generic-to-canonical mutation. At every frozen
+  width the computed Tool 3 wash exactly matches `color-mix` with the canonical
+  eight-digit color at six percent and differs from its opaque equivalent.
+  Copy actions are 44 pixels and Copy feedback changes card height by less than
+  0.1 pixel. All prior route/layout/readability and Bed Mesh 4:3 checks pass.
+- Two sequential verification builds reproduce one 713,867-byte self-contained
+  page, 36,133 bytes below 750 KB, SHA-256
+  `19ce12161bc169596035ddc92d0e914d4b4d3cfb0ced5ee6ccfd0682cc34299c`.
+- Full gates pass 276 app tests/3,178 assertions, 21 lifecycle and 24 shipping
+  tests. Bundles/signature/help pass: `dist/stdio.js` is 2,811,271 bytes/
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/server.js` is 3,867,597 bytes/
+  `74c8c00500c463b82f69249d004cd198e285ffef65fa334ad945ede955799787`;
+  `dist/u1-print-studio` is 65,229,648 bytes/
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`.
+  Existing production widget/camera/host hashes remain unchanged.
+
+This is renewed author static/software, synthetic-fixture browser and private-
+handler evidence. It does not prove independent approval, deployment, MCP
+cutover, live telemetry, camera/printer behavior, actual-device rendering or
+user acceptance.
+
+## 2026-09-01 all-observation Svelte formal-review renewal
+
+Formal review blocked exact `8a6df9b` on initial route rendering, raw traversal,
+RGBA compatibility, clock consistency, responsive readability and overbroad
+validator claims. No service, printer, camera, auth or Tailscale surface was
+contacted while correcting those findings.
+
+Commands actually run after the final correction:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+
+cd ..
+bun run ui:test:browser
+bun run ui:verify
+bun run ui:verify
+bun run check
+bun run test
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_service.py
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes 0/0 and Vitest 23/23. Validators accept bounded canonical
+  fixtures and reject the tested envelope, extra-key, enum, numeric, time,
+  shape, order, unsafe-label, contradictory-presence and malformed-color cases.
+  Heads normalizes six/eight-digit RGB/RGBA uppercase while retaining alpha;
+  this is not a claim about arbitrary untested inputs.
+- Raw TCP requests prove literal `/../`, once-encoded `%2e%2e` and twice-encoded
+  `%252e%252e` cannot normalize into an allowed route. Exact private GET/non-GET,
+  public isolation and zero-acquisition contracts remain green.
+- Real Chrome passes 40/40 at 320/390/590/720. Every direct route has its exact
+  canonical title and route marker, one visible panel, zero recorded layout
+  shift, and no required-text clipping, overflow, console error or nonlocal
+  request. Overview measures one/two columns, Heads two with `0px` material
+  min-height, Thermals labels are exact, feedback preserves geometry/time and
+  Bed Mesh retains paired 4:3 geometry and readable projection.
+- Two sequential builds reproduce one 713,119-byte self-contained page, 36,881
+  bytes below 750 KB, SHA-256
+  `7be3e2c912c04233299b2089bb9f368bed891e11e0c4d1a28f843b5fe93a14cc`.
+- Full gates pass 276 app tests/3,175 assertions, 21 lifecycle and 24 shipping
+  tests. Bundles/signature/help pass: `dist/stdio.js` is 2,811,271 bytes/
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/server.js` is 3,866,842 bytes/
+  `cac1816abc6c4dfc21f9dda2f25b59e1f91b407dbdf983a22f883c68f1de5541`;
+  `dist/u1-print-studio` is 65,229,648 bytes/
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`.
+  Existing production widget/camera/host hashes remain unchanged.
+
+This is renewed author static/software, synthetic-fixture browser and private-
+handler evidence. It does not prove independent approval, deployment, MCP
+cutover, live telemetry, camera/printer behavior, actual-device rendering or
+user acceptance.
+
+## 2026-09-01 compact widget density and camera continuity — PR58 deployed
+
+PR58 exact reviewed head `0b4f1d3` merged as `2cd7d96`. Guarded release
+`20260901-2cd7d96-pr58-20260901T073117-6df842` runs on BOTH explicitly
+restarted, loaded, healthy and integrity-verified services at runtime 0.4.8/
+schema 12/observation-v14/camera-v10. Twelve local-plus-tailnet dashboard route
+checks return 200 with byte-identical content, sixteen security checks pass and
+no rollback occurred.
+
+This is reviewed Git, release, service, health, integrity, security and static-
+route evidence. It does not establish printer, camera or actual-device
+acceptance; none of those surfaces was contacted or claimed.
+
+## 2026-09-01 all-observation Svelte private-lab author evidence
+
+Implementation ran only in the isolated
+`codex/u1-svelte-observation-lab` worktree from exact merged main `f44bd06`.
+No service, printer, camera, auth or Tailscale surface was contacted.
+
+Commands actually run:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun install --frozen-lockfile
+bun run check
+bun run test
+bun run test:browser
+
+cd ..
+bun install --frozen-lockfile
+bun run ui:verify
+bun run ui:verify
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+dist/u1-print-studio --help
+
+cd ../../..
+uv run --no-project scripts/test_u1_ship.py
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes with zero errors/warnings. Vitest passes 20/20 across
+  shared tokens/anatomy, Bed Mesh and all eight new components/strict bridge
+  validators. Adversarial cases reject extra identity/path fields, invalid
+  envelopes/times/enums/shapes, nonfinite/out-of-range numbers, unsafe material
+  text, contradictory empty-head metadata and reordered fixed domains.
+- Real Chrome passes 40/40 through the actual private handler at
+  320/390/590/720. The directory has nine links and unlinked Camera pending.
+  Every new view has one header/body/footer owner, exact shared inset, one
+  44-by-44 bottom Refresh, no overflow, console error or nonlocal request, and
+  overlay feedback changes neither card height nor observed timestamp. Bed Mesh
+  retains its paired exact 4:3 2D/3D frame and readability contract.
+- The actual captures were compared with the user-selected Progress and Heads
+  references. Progress retains the large lightweight percentage, continuous
+  8-pixel amber bar, layers/ETA and elapsed hierarchy without the reference's
+  unused whitespace. Heads preserves actual-color weak washes and makes Empty/
+  N/A neutral gray. Fans & Air is icon-led with restrained percent background
+  fill and compact right-aligned RPM; Overview is eight compact tiles.
+- The private handler returns identical bytes for the exact directory and nine
+  child routes with optional trailing slash (20 GET checks), restrictive CSP
+  and zero acquisition callbacks. Camera-lab, nested, encoded, traversal and
+  case variants return 404; all exact non-GETs return 405. Public/local normal
+  service routes return 404. Shipping derives the ten private paths and records
+  26 isolation checks without widening permitted read routes.
+- Two sequential verification builds reproduce one self-contained 717,295-byte
+  package, below the 750 KB bound, with SHA-256
+  `0842f9b316421886285e6be74b39a92700e508aa8cba48695b59a3446c1a2f5c`.
+  It contains no external asset, acquisition endpoint, Camera implementation or
+  generic embed.
+- The full repository gate passes 275 app tests/3,168 assertions, 21 lifecycle
+  tests, 24 shipping tests and repository policy. Bundles pass: `dist/stdio.js`
+  is 2,811,271 bytes/SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/server.js` is 3,870,447 bytes/SHA-256
+  `05e70250d26b8899bc5a82aa69b3d9cf477418a315dfcfa8dfdfc71c4c259509`;
+  `dist/u1-print-studio` is 65,229,648 bytes/SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`
+  and its required signature/help contract passes.
+- Existing production SHA-256 remains
+  `a01768e408f3566d6e93aea4ea208930dfcd9e21e71ba372a15f8e7a306450e9`
+  for `widget.html`,
+  `43e4d030dff321a8eb18d9794fe0e3e71f0ddce4b3027a8533f83db01b0f9405`
+  for `camera-widget.html`,
+  `4460ae500cd8e5fb04edeabc48af8462f40048c4e6494d3be8ef7f87bc487a0c`
+  for the status host and
+  `25c50f7ca45c76d7d914922d461b56fe009993aba99bed341dff2df0434926f2`
+  for the camera host.
+
+This proves author static/software, fixture-browser, bridge-validation,
+deterministic-package and private/public-isolation behavior. It does not prove
+independent approval, deployment, MCP-host behavior, live telemetry, camera,
+printer safety, actual-device rendering or user acceptance.
+
+## 2026-09-01 Svelte Bed Mesh canonical-profile renewal
+
+Formal review blocked exact candidate `a6363fd`: the Svelte bridge guarded
+profile length, trimming and C0 controls, but did not yet apply the established
+Moonraker adapter allowlist. The corrected guard uses Unicode
+`^[\p{L}\p{N} _.-]{1,80}$`, trims outer spaces and rejects empty, `.` and `..`.
+No runtime boundary changed and no deployed service, printer, camera, auth or
+Tailscale surface was contacted.
+
+Commands actually run:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+
+cd ..
+bun run ui:build
+bun run ui:verify
+bun run ui:verify
+bun run ui:test:browser
+
+cd ../../..
+./scripts/check-repository.sh
+
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+
+cd ../../..
+git diff --check
+```
+
+Results:
+
+- Svelte check passes with zero errors/warnings. Vitest passes 8/8. The six Bed
+  Mesh tests now reject traversal (`../../private/path`), URL, bidirectional-
+  override, markup, dot/dotdot, newline and tab profiles at the rendered
+  component bridge. Japanese and Cyrillic letters, numbers, internal spaces,
+  underscore, dot and hyphen remain accepted; allowed outer spaces normalize
+  to the trimmed canonical label.
+- Two sequential verification builds reproduce the same 669,506-byte self-
+  contained package with SHA-256
+  `7eaf7f211bed3466665b61bb3d483e6309b9f17f7519f39cf6de44484dcc24ec`.
+  The generic embed remains excluded.
+- Real Chrome remains 4/4 at 320/390/590/720 with the exact same 4:3 2D/3D
+  `ChartFrame` DOMRects, nine exact 12-pixel visible/in-frame/non-overlapping
+  labels, 91.9--92.5% by 53.4--53.7% projected surface coverage, 44-pixel
+  controls, no overflow, no console error and no nonlocal request.
+- The full repository gate passes TypeScript, 274 app tests with 2,974
+  assertions, 21 lifecycle tests, 24 shipping tests and the repository
+  contract. Private route/hash/CSP and public-lab denial checks remain green.
+- Renewed bundles pass: `dist/server.js` is 3,822,253 bytes with SHA-256
+  `f84cc4e54765a8edb38992a7daffd073485a9858f527e152775fa3deb60deb17`;
+  `dist/stdio.js` is 2,811,271 bytes with SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/u1-print-studio` is 65,229,648 bytes with SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`;
+  its required code signature verifies.
+
+This is renewed author static/software, bridge-security, deterministic-
+packaging, server-isolation and local real-browser fixture evidence. Exact-
+candidate formal and independent review remain required. Production cutover is
+still a separate reviewed slice.
+
+## 2026-09-01 Svelte Bed Mesh readability and bridge-contract renewal `a6363fd` — blocked by formal profile review
+
+Independent review blocked exact candidate `7aef4b5`: its 2D/3D frame equality
+was real, but the projected 3D surface remained a thin central strip and the
+perspective-scaled sprite labels were effectively 3--6 pixels. The renewed
+candidate keeps the exact private-lab and production-isolation boundary while
+correcting those defects and strengthening runtime prop validation. No deployed
+service, printer, camera, auth or Tailscale surface was contacted.
+
+Commands actually run:
+
+```text
+cd plugins/u1-print-studio/app/ui
+bun run check
+bun run test
+
+cd ..
+bun run ui:verify
+bun run ui:verify
+bun run ui:test:browser
+
+cd ../../..
+./scripts/check-repository.sh
+
+cd plugins/u1-print-studio/app
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+
+cd ../../..
+git diff --check
+```
+
+Results:
+
+- Svelte check passes with zero errors/warnings. Vitest passes 6/6: two shared-
+  foundation tests and four Bed Mesh component/bridge tests. Rejection coverage
+  includes invalid freshness, noncanonical/impossible source times, unsafe
+  profile metadata, malformed/non-finite matrices and supplied minimum/maximum/
+  range disagreement beyond `0.000001 mm`; within-tolerance input is normalized
+  to exact recomputed matrix values.
+- Two sequential clean static builds produce the same 669,454-byte self-
+  contained page with SHA-256
+  `682a32d24e1dbced9f3cd41d2db1a905583bd630e53a7234a8cc741d4cdec588`.
+  The generic embed remains absent from the production manifest/package.
+- Real Chrome through the actual private handler passes 4/4 at 320, 390, 590
+  and 720 pixels. Exact 3D and 2D `ChartFrame` DOMRects remain respectively
+  258x193.5 at x31/y134.375, 328x246 at x31/y134.375, 500x375 at
+  x45/y165.1875 and 630x472.5 at x45/y165.1875 CSS pixels. Each pair is equal
+  within 0.1 CSS pixel and 4:3.
+- The actual camera-projected surface bound is 237.109375x103.265625,
+  302.125x131.5625, 461.84375x201.125 and 582.578125x253.703125 CSS pixels at
+  those widths: 91.9--92.5% of frame width and 53.4--53.7% of frame height.
+  All nine exact X/Y/Z and bound/value labels compute to 12 pixels, remain
+  visible and in-frame, and have no pairwise overlap. The full grid/surface is
+  readable in paired captures; no overflow, console error or nonlocal request
+  occurs and controls remain 44 pixels.
+- The full repository gate passes TypeScript, 274 app tests with 2,974
+  assertions, 21 lifecycle tests, 24 shipping tests and the repository
+  contract. Private exact-route/static-byte/CSP tests and the explicit public-
+  lab denial remain green.
+- Renewed bundles pass: `dist/server.js` is 3,822,202 bytes with SHA-256
+  `30c476991cccf94fe79bf7766ffaf7a0071c6654dea05f60bc21ad06ea76e260`;
+  `dist/stdio.js` is 2,811,271 bytes with SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/u1-print-studio` is 65,229,648 bytes with SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`;
+  its required code signature verifies.
+- Existing production SHA-256 remains
+  `a01768e408f3566d6e93aea4ea208930dfcd9e21e71ba372a15f8e7a306450e9`
+  for `widget.html`,
+  `43e4d030dff321a8eb18d9794fe0e3e71f0ddce4b3027a8533f83db01b0f9405`
+  for `camera-widget.html`,
+  `4460ae500cd8e5fb04edeabc48af8462f40048c4e6494d3be8ef7f87bc487a0c`
+  for the status host and
+  `25c50f7ca45c76d7d914922d461b56fe009993aba99bed341dff2df0434926f2`
+  for the camera host.
+
+This is renewed author static/software, packaging, server-isolation and local
+real-browser fixture evidence. Exact-candidate independent review remains
+required. It does not establish deployed service behavior, live printer data,
+MCP-host rendering, touch/device behavior or user acceptance. Production
+focused cutover remains a separate reviewed slice.
+
+## 2026-09-01 Svelte Bed Mesh private lab package `7aef4b5` — blocked by independent visual review
+
+Implementation ran in an isolated worktree on branch
+`codex/u1-svelte-bed-mesh-foundation`. The branch merged exact current
+`origin/main` `2cd7d96b07d23002524c605259e8e27af4eeb198` normally, without
+rebasing, as merge commit `55ace2b`. No deployed service, printer, camera, auth
+or Tailscale surface was contacted.
+
+Commands actually run:
+
+```text
+cd plugins/u1-print-studio/app
+bun run ui:verify
+bun run ui:test:browser
+bun run check
+bun test src/status-dashboard.test.ts src/private-lab.test.ts
+uv run --no-project ../../../scripts/test_u1_ship.py
+bun run bundle:widget-vendor
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+
+cd ../../..
+./scripts/check-repository.sh
+git diff --check
+```
+
+Results:
+
+- Svelte check passes with zero errors/warnings and Vitest passes 4 component
+  tests. Two clean `adapter-static` builds package byte-identical output:
+  671,615 bytes with SHA-256
+  `744ce87b3510d425dec9248ee55a7770a97ef3f635ec8269d1d31279ea0ff680`.
+  The page is self-contained and the generic development embed is absent from
+  the production build, manifest and package.
+- One agent-only attempt to run two Vite builds concurrently in the same
+  checkout raced on `.svelte-kit` and failed with a missing generated manifest.
+  No repository workflow does this. Sequential clean builds were then run
+  twice and passed with the identical hash above; future verification must keep
+  UI builds sequential within one checkout.
+- The private handler serves only exact `/dashboard/lab/bed_mesh` and its
+  optional trailing slash. Tests prove the public service, nested/encoded/case
+  variants return 404; POST returns 405; private GET returns the exact packaged
+  bytes with restrictive CSP; and neither private nor public static handling
+  calls observation, camera or media acquisition hooks. The directory,
+  `/dashboard/bed_mesh`, MCP resources and production widget assets remain
+  unchanged. The candidate shipping contract has seventeen security checks
+  because it adds the explicit public-lab denial.
+- Real Chrome passes four private-handler geometry/screenshot cases at
+  320/390/590/720. Exact 3D and 2D `ChartFrame` DOMRects are respectively
+  258×193.5 at x31/y134.375, 328×246 at x31/y134.375, 500×375 at
+  x45/y165.1875 and 630×472.5 at x45/y165.1875 CSS pixels. Each pair is equal
+  within 0.1 CSS pixel and exactly 4:3. Controls are 44 pixels and there is no
+  horizontal overflow, console error or external request. Paired captures stay
+  under ignored `ui/test-results`.
+- The full repository gate passes TypeScript, 274 app tests with 2,974
+  assertions, 21 lifecycle tests and 24 shipping tests. Runtime, stdio and
+  private-server bundles build and the standalone runtime code signature is
+  valid.
+- Bundle evidence: `dist/server.js` is 3,824,340 bytes with SHA-256
+  `6dce49785d3f71241b3d7d39decec85c737bd218b30c8c6d91d15a9c3a63cf54`;
+  `dist/stdio.js` is 2,811,271 bytes with SHA-256
+  `a2e911646c79619858466035225cb51c4977ca9b8755727d75bbef4292f98660`;
+  `dist/u1-print-studio` is 65,229,648 bytes with SHA-256
+  `fa38b1f49ff740ce831460c6d52a7160ed0001a96957ec194095160d82de3102`.
+- Existing production asset SHA-256 remains `a01768e408f3566d6e93aea4ea208930dfcd9e21e71ba372a15f8e7a306450e9`
+  for `widget.html`, `43e4d030dff321a8eb18d9794fe0e3e71f0ddce4b3027a8533f83db01b0f9405`
+  for `camera-widget.html`, `4460ae500cd8e5fb04edeabc48af8462f40048c4e6494d3be8ef7f87bc487a0c`
+  for the status host and `25c50f7ca45c76d7d914922d461b56fe009993aba99bed341dff2df0434926f2`
+  for the camera host.
+
+This is author static/software, packaging, server-isolation and local real-
+browser fixture evidence. It does not establish independent review, deployed
+service behavior, live printer data, MCP-host rendering, touch/device behavior
+or user acceptance. Production focused cutover remains a separate reviewed
+slice.
+## 2026-09-01 compact widget density and camera continuity — author candidate
+
+The source candidate advances to runtime 0.4.8/schema 12/observation-v14/
+camera-v10 with 26 resources. Observation-v13 and camera-v9 remain readable
+current-asset aliases. Stable selectors, tools, acquisition, authorization and
+printer boundaries are unchanged; user-visible Queue is now Print Queue.
+
+Commands actually run from `plugins/u1-print-studio/app`:
+
+```text
+bun run bundle:widget-vendor
+bun run check
+bun test src/*.test.ts
+bun run bundle:runtime
+bun run bundle
+bun run bundle:server
+```
+
+Results: TypeScript passes; 271 tests/2,936 assertions pass; runtime, stdio and
+server bundles build; the standalone runtime satisfies its designated code-sign
+requirement. Deterministic coverage includes the 320/390/590/720 density
+contract, multiple listeners for one DOM event, hosted native/local fullscreen
+identity continuity with zero host display-mode or camera calls, same-peer
+pause/stall recovery, FPS reset/recovery, one bounded
+pagehide/pageshow restore and no intrinsic-height notification on FPS-only
+ticks. Headless Chromium additionally measures a non-zero camera and video box
+for local and native fullscreen at an exact 390 × 844 viewport, and thermal rows
+at no more than 64 pixels at 320/390/590/720. PiP makes zero host display-mode
+requests, native enter/exit preserve video/media/session/track/observer identity,
+and unsupported PiP is hidden without state mutation. Host-reported fullscreen
+or PiP never drives synthetic presentation state. Job History/Print Queue remain
+canonical card, host-document and iframe labels, nested panels have one inset
+owner, and 2D/3D Bed Mesh share one bounded chart-frame height.
+
+Frozen SHA-256:
+
+- `public/widget.html`: `a01768e408f3566d6e93aea4ea208930dfcd9e21e71ba372a15f8e7a306450e9`
+- `public/camera-widget.html`: `43e4d030dff321a8eb18d9794fe0e3e71f0ddce4b3027a8533f83db01b0f9405`
+- `src/widget-shared.css`: `111eae4226d62272d27972f66978455770677e5409ed0d714afd88fad361f7cb`
+- `public/dashboard-index.html`: `c2d3ab47c2abdc4f4570bbfab35f1216ddddef9d10aef8e969ac5747d2e806e1`
+- `public/status-dashboard-host.html`: `4460ae500cd8e5fb04edeabc48af8462f40048c4e6494d3be8ef7f87bc487a0c`
+- `public/camera-dashboard-host.html`: `25c50f7ca45c76d7d914922d461b56fe009993aba99bed341dff2df0434926f2`
+
+This is author static/software, simulator and automated local headless-Chromium
+layout evidence only. No service, network, auth, Tailscale, camera, printer,
+deployment or actual-device render/physical acceptance occurred. Independent
+validation and formal review remain required before merge or guarded delivery.
+
+## 2026-08-31 unified widget and camera reliability — PR56 deployed
+
+PR56 exact reviewed head
+`e2702dc7a39c45665aa14155e85d13011d50526b` merged as
+`cb7d06fdcc4de45f7fb5803fe2efee13364eba0f` with tree
+`dc290de12aceebe134b6e3ceb78aa2e8d8789f73`. The guarded workflow installed
+release `20260831-cb7d06f-pr56-20260831T234756-96fe19`, explicitly restarted
+BOTH services, and verified both loaded, healthy and integrity-matched at
+runtime 0.4.7/schema 12/observation-v13/camera-v9. Sixteen security checks
+passed. No rollback occurred.
+
+Exact served SHA-256:
+
+- observation widget:
+  `1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
+- camera widget:
+  `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`
+
+All ten dashboard routes returned HTTP 200 from both the local and tailnet
+origins. Independent postdeployment validation reports PASS for the exact
+release, health/integrity contract, security checks, served hashes and route
+matrix.
+
+This is Git/deployment/service/static-route evidence only. The browser runtime
+was unavailable, so no rendered browser or device check occurred. In
+particular, iPhone responsive layout, WebGL render/fallback, touch interaction
+and live-camera/fullscreen continuity remain pending visual acceptance. The
+verification made no camera-frame, live-stream or printer-observation request.
+It does not establish physical-printer behavior or user outcome.
+
+## 2026-08-31 unified widget and camera reliability — frozen author candidate
+
+The frozen source targets runtime 0.4.7/schema 12/observation-v13/camera-v9,
+retaining observation-v12 and camera-v8 as current-asset compatibility aliases
+for 24 total resources. The closed two-visible/eight-app-only tool surface,
+read-only boundary, routing and authorization are unchanged.
+
+Commands actually run from `plugins/u1-print-studio/app`:
+
+```text
+bun run bundle:widget-vendor
+bun run check
+bun test src/*.test.ts
+bun run bundle:runtime
+bun run bundle
+bun run bundle:server
+git diff --check
+```
+
+Results: TypeScript passes; 263 tests/2,734 assertions pass; runtime, stdio and
+server bundles build; the standalone runtime satisfies its designated code-sign
+requirement; generated Three.js/shared-CSS assets match their reproducible
+sources; the served vendor block retains the complete Three.js MIT copyright,
+permission and notice text; diff check is clean. Focused camera tests pass
+29/193, including the
+twelve-second acquisition/decode bound, one-in-flight and late response races,
+snapshot-before-one-remount-restore success/failure, measured FPS, persistent
+errors and fullscreen peer/track/node/observer identity with zero tool calls.
+
+Frozen SHA-256:
+
+- `public/widget.html`: `1d61271d773e532954f379c877ce58f54fad90ca996acda54e3ba4537504fb2c`
+- `public/camera-widget.html`: `03c3d3a96cec99eef630c444f31f8a9ff6f1caf56d89d83d61d5a60eabb89dd0`
+- `src/widget-shared.css`: `6f11808888df189fa83bac98169d85ab42bb10ef4c105037efa64cb7ccc9c1e2`
+
+This is static/software and simulator evidence only. Independent validation is
+in progress. No Git delivery, deployment, service restart, auth/Tailscale/
+printer contact, browser/device render or physical acceptance occurred here.
+
+## 2026-08-31 E compact Overview — PR54 deployed
+
+PR53 merged the reviewed application as `4541ff12`. Its guarded deployment
+reached verification but stopped when the exact private Overview static 200/hash
+check was followed by the stale private 404 security assertion. Verified rollback
+snapshot `20260831T195837-6233d9` restored both healthy services at runtime
+0.4.5. PR54 head `a9ad04a` corrected that verifier and merged as
+`aa9bd9d609dbdca7c1e0124b4f760d5eb8ddf2c5` at
+`2026-09-01T00:10:35Z`.
+
+Exact release `20260831-aa9bd9d-pr54-20260831T201019-d7aa8a` runs on BOTH
+explicitly restarted, loaded, healthy and integrity-verified services at runtime
+0.4.6/schema 12/observation-v12/camera-v8. Rollback snapshot
+`20260831T201038-575d7f` is retained and was not needed. Configuration, OAuth and
+routes were preserved. Sixteen security checks pass. Served widget/index/status-
+host hash prefixes are exactly `a8a4…`/`49a5…`/`008d…`; tailnet index and Overview
+return 200.
+
+Exactly one private Overview refresh returned complete coverage with all eight
+tiles known and every contributing receipt fresh and timestamped. This is
+sanitized telemetry and deployment evidence only: no raw payload, filename, job
+row, identifier, model/project identity or private path is recorded. It does not
+prove browser/device rendering, physical behavior or user acceptance, which
+remain unverified.
+
+## 2026-08-31 E Overview shipping-verifier correction
+
+The first guarded E delivery reached post-install verification, where it exposed
+a contradictory source check: the exact static contract required private
+`/dashboard/overview` on port 8788 to return 200 with the frozen host hash,
+while `check_security` separately hard-coded the same private route as 404. The
+guarded workflow rolled back and verified the prior services restored; no E
+deployment remained from that failed attempt. The security checker now derives every focused
+dashboard route from the contract only for public port 8787 isolation and no
+longer repeats a private Overview assertion. Private Overview remains covered
+by the exact static-asset verifier. This correction does not replace either
+boundary and does not add an acquisition, camera, tool-call, service, auth or
+printer request.
+
+`uv run --no-project scripts/test_u1_ship.py` passes **24 tests**. Regressions
+prove private Overview is called once by the scoped static check and never by
+the security checker; public Overview and Camera routes remain required 404s;
+public Overview exposure fails; body/hash mismatch fails the static check; the
+scoped Overview static check and security checker contact no acquisition,
+widget, camera-widget, observation or tool endpoint; and the dynamic
+security count is derived from the current dashboard inventory and equals 16
+for E. `./scripts/check-repository.sh` passes TypeScript, **253 app tests with
+3,559 assertions**, **21 lifecycle tests**, **24 shipping tests** and the
+repository contract.
+
+This correction is source and fixture evidence only. This role made no Git
+delivery or remote GitHub call and contacted no service, auth, Tailscale,
+printer or browser endpoint. The preceding failed
+shipment's rollback/restoration evidence belongs to the guarded workflow, not to
+these local tests. No corrected E deployment, loaded-runtime or visual/user-
+acceptance claim is made. A renewed reviewed delivery must rerun the full guarded
+verification.
+
+## 2026-08-31 E compact Overview — source-complete candidate
+
+The application candidate implements the frozen E contract without a new
+reader, cache, timer or normalizer. Explicit Overview demand reuses main status
+and all six independent optional stores concurrently, then produces only the
+eight privacy-minimized headline projections with their contributor receipts.
+The private index and `/dashboard/overview` route are implemented at runtime
+0.4.6/schema 12/observation-v12/camera-v8 with observation-v11 retained, 22
+resources and the unchanged two-visible/eight-app-only tools.
+
+`./scripts/check-repository.sh` passed TypeScript, **253 app tests with 3,559
+assertions**, **21 lifecycle tests**, **24 shipping tests** and the repository
+contract. Focused optional-domain regressions pass **48 tests/494 assertions**.
+All three bundles built; standalone `--help` and `codesign -vvv --verify`
+passed; six emitted HTML assets exactly match source. SHA-256 is
+`a8a4ac06c136cb2769c0c7c51db323fa61e5c4c47251f97804c80d93ad2c22b4`
+for `public/widget.html`,
+`49a523c56dc00963c2e060e3be23b608b9f866b92ff8e0f8d780716e638d40b4`
+for `public/dashboard-index.html`, and
+`9f5596444b47d4290d2f5425ebcba0251bec181945eda5f4dfe5b212dcc35754`
+for the validation-only signed runtime. Independent validation reports **926
+assertions** green with no remaining source finding. This includes hostile
+tile-state/receipt/headline mismatches, bounded mapped reasons, all 720 domain
+completion orders, and real store→projection→widget initial/retained-offline
+cases. Offline status-backed headlines are neutralized while independent stale
+or fresh cavity evidence remains renderable.
+
+This is static/software and local fixture evidence only. No Git delivery,
+service, auth, Tailscale, printer, mounted-host, browser/device visual or user
+acceptance is claimed.
+
+## 2026-08-31 E compact Overview — design/source checkpoint
+
+The design role inspected current repository contracts and exact source with
+read-only `git status`, `git rev-parse`, `cat`, `sed` and `rg` commands. Exact
+base was `e7262d7426ab94dca264e04a9d7a32276f287ea1`. Current source still projects
+Overview as deferred while already maintaining six independently timed domains
+for Materials, Environment, Queue, Bed Mesh, Current Job and Job History. This
+establishes the implementation gap and reuse boundary; it is not runtime proof.
+
+Decision 0021's completion addendum, decision 0029 and OBS-015 freeze explicit
+Overview fan-out to main status plus those six domains, exact reuse of the eight
+accepted projectors, per-domain receipts, privacy-minimized structured content,
+coverage-only complete/partial/none and one compact top-information/single-bottom-
+Refresh card. No new reader/cache/timer/normalizer, giant map, nested full card,
+camera/media, private job/Queue/mesh detail, navigation or control is accepted.
+Target is 0.4.6/schema 12/observation-v12/camera-v8, 22 resources with
+observation-v11 retained and unchanged two-visible/eight-app-only tools.
+
+No app/test/Git/service/printer/browser mutation occurred in this design pass.
+No E software, protocol, exact-SHA, deployment, live-printer, rendered visual or
+user acceptance is claimed. `git diff --check` is the only design-record gate;
+all later evidence must be recorded separately.
+
+## 2026-08-31 D Current Job/real History — PR51 deployed
+
+Exact PR51 head `30f1c7bb407d08d19d390acf2b5704a30eff010f` passed formal and
+independent approval. It merged as
+`23f07e37de668fcbf2677a9a9b27bf01448cc8e7` at
+`2026-08-31T23:10:43Z`. Guarded shipping installed exact release
+`20260831-23f07e3-pr51-resume-20260831T191106-be85c4` and created rollback
+snapshot `20260831T191118-908e33`; no rollback was required and no D deployment
+failure occurred. BOTH services were explicitly restarted and are loaded,
+healthy and integrity verified at **0.4.5/schema 11/observation-v11/camera-v8**.
+Sixteen security checks pass; configuration, OAuth and routes were preserved.
+Served widget/index SHA-256 prefixes are respectively `1830fa11…` and
+`e9847d7c…`. Tailnet index, Current Job and Job History each returned 200.
+
+Source gates pass **247 tests/3,402 assertions**, **21 lifecycle** and **22
+shipping** checks. The corrected independent matrix passes **197 assertions**,
+not the earlier provisional 213 count. Required bundles, signing and exact-asset
+checks pass.
+
+Exactly **one Current Job POST** returned known/fresh at
+`2026-08-31T23:11:46.006Z`: `printState=complete`, storage inactive and reported
+file position equal to reported file size. No filename, model/project identity or
+raw numeric runtime value is recorded. This proves only a last-reported terminal
+job with no active storage, not a currently active job or job outcome acceptance.
+
+Exactly **one Job History POST** returned known/fresh at
+`2026-08-31T23:11:46.255Z`: page count 20, with 17 Completed and 3 Cancelled rows
+in preserved returned order. No filename, job ID, row time, raw row or grand-
+total claim is recorded. This proves only the bounded returned-page projection at
+that instant. Browser/device visual evidence was unavailable; visual and user
+acceptance remain unverified. These rollout records are documentation-only and
+do not require another deployment.
+
+## 2026-08-31 D Current Job/real History — design/source checkpoint
+
+The design role read current repository contracts and exact source with these
+read-only commands:
+
+```sh
+git status --short
+git rev-parse HEAD
+cat AGENTS.md
+cat docs/iterations/CURRENT
+cat docs/decisions/0025-separate-current-job-and-job-history.md
+sed -n '1,180p' docs/decisions/0029-complete-white-read-only-widget-suite.md
+sed -n '1,150p' docs/requirements.md
+sed -n '225,290p' docs/requirements.md
+rg -n "job_history|Current Job|Job History|jobs" plugins/u1-print-studio/app/src
+```
+
+Exact base was `517f1de05c27d6ad32bc3c2a4d702ecf29b77033`. Current source
+projects `jobs` only from shared status filename/storage and hard-codes
+`job_history` as unknown/not implemented; it has no independent receipt or real
+history normalization. Queue already provides the bounded private filename
+pattern but not a shared Current/History reader. These findings define the gap;
+they are not implementation or runtime evidence.
+
+The official Moonraker History API, Printer query API and printer-object
+reference were inspected at their current documentation URLs. They establish:
+history `count` is rows returned, the fixed list parameters, seven statuses and
+the private/raw response fields; print_stats and virtual_sdcard field units and
+their persistence after pause/completion/error until reset or a new job. They do
+not establish the connected U1's current objects, history availability, data
+accuracy, printer health or physical acceptance.
+
+Decision 0025's addendum, decision 0029 and OBS-014 now freeze: exact fixed GETs,
+separate receipts/15-second attempt TTL/coalescing/stale retention/fixture
+isolation; safe-basename/private-field exclusion; contextual persisted-filename
+semantics; all current/history statuses; page-only count/order/duplicates; exact
+bounds/units and empty/partial/unsupported/unavailable states; and two compact
+top-information/single-bottom-Refresh cards with no controls. Target is 0.4.5/
+schema 11/observation-v11/camera-v8, 21 resources with observation-v10 retained
+and unchanged two-visible/eight-app-only tools.
+
+No app/test/Git/service/printer/browser mutation occurred in that design pass.
+Source, independent, exact-SHA, release and scoped live evidence subsequently
+completed in the rollout above; rendered visual and user acceptance remain
+separate and unverified. `git diff --check` was its only design-record gate.
+
+## 2026-08-31 C Fans & Chamber — PR49 deployed
+
+Exact PR49 head `c14e92cfc655d0b7a6e7d0138650d7937789d7d1` passed formal
+and independent approval without findings and merged as
+`3ab4ed7813a8f2ba45ac63b3093480183c428f28` at
+`2026-08-31T22:21:37Z`. Exact release
+`20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` and rollback snapshot
+`20260831T182614-2d2722` were produced with the actual pinned Bun 1.3.12 runtime.
+BOTH services were explicitly restarted and are loaded, healthy and integrity
+verified at **0.4.4/schema 10/observation-v10/camera-v8**. Sixteen security checks
+pass; configuration, OAuth and routing were preserved and no rollback occurred.
+Widget/index SHA-256 values are
+`af27b363c91934a69962e18f84f0a0cc16f231d3d5e93f51d1e652dea89d4f3d`
+and `7381f1d19a25ba139328013b9456949ddd4e9a62d860b484f1477859eeb6b4b9`.
+Tailnet index, Fans and Thermals each returned 200.
+
+Exactly **one Fans POST and one Thermals POST** shared
+`sourceObservedAt=2026-08-31T22:27:06.974Z`. Fans was known/fresh: Tool 1 speed
+1/RPM 9131.8476; Tools 2–4 speed 0/RPM 0; Cavity fan speed 0.698039/RPM
+2400.5964; purifier `powerDetected=false`, mode null, exhaust/inner fan rows
+`not_reported`. Thermals environment was known/fresh and Cavity was known at
+33°C. This proves only the bounded telemetry projection at that instant. It does
+not prove sensor/RPM accuracy, fan or purifier health, safety, installation or
+physical acceptance. Browser/device rendering and visual acceptance remain
+unverified.
+
+Deployment chronology preserves two non-installing failures. The ship wrapper,
+invoked after manual merge, refused preflight with `PR must be open...` and made
+no changes. A first post-merge stage selected an ASDF shim; dry-run failed
+`bun exit127`, made no install or rollback, and the old 0.4.3 services remained
+verified. Bad staged release
+`20260831-3ab4ed7-pr49-resume-20260831T182443-ab31ae` remained staged but
+inactive and was never installed. Retrying with the actual Bun 1.3.12 executable
+produced the successful release above.
+
+## 2026-08-31 C Fans & Chamber — frozen source evidence
+
+The design role read current contracts/source and inspected pinned primary
+sources without contacting the printer:
+
+```sh
+git clone --depth 1 --filter=blob:none https://github.com/Snapmaker/u1-klipper.git <TEMP>/u1-klipper
+git -C <TEMP>/u1-klipper sparse-checkout set config klippy/extras
+git -C <TEMP>/u1-klipper sparse-checkout add lava
+git -C <TEMP>/u1-klipper rev-parse HEAD
+```
+
+The resolved source was `10f2f69714c059f1dee0423db4f515b8a01f5388`.
+`lava/printer.cfg`, `klippy/extras/fan.py` and `purifier.py`, plus Moonraker's
+printer-object reference, ground decision 0029/OBS-013's exact fixed route,
+names, fields, units and purifier detection/mode semantics. This is public
+source/config evidence, not proof of the connected printer's current firmware,
+object availability, purifier installation, sensor accuracy, fan operation or
+physical safety. The temporary clone is outside the repository. Historical
+cavity/fan/purifier results below are not reused as current evidence.
+
+The source target was runtime 0.4.4/schema 10/observation-v10/camera-v8, twenty
+resources with observation-v9 retained and unchanged two-visible/eight-app-only
+tools. The design pass made no app/Git/service/printer mutation; source approval,
+release and scoped live evidence subsequently completed in the rollout above.
+Author gates passed 234 tests/3,263 assertions, TypeScript and the required
+build/signing checks. Independent validation passed 18 focused tests/1,134
+assertions including the exact production widget VM and 120 race orders, plus
+the repository, lifecycle, shipping, three-bundle/code-signing and six exact-
+asset gates. Formal and independent review approved the exact PR49 head recorded
+above without findings. Source validation used software fixtures only.
+The allowed browser remains unavailable; no screenshot, interaction, device or
+visual pass is claimed. `git diff --check` is the only design-record hygiene
+gate and will be recorded after initial freeze.
+
+## 2026-08-31 B Queue integration — PR47 deployed
+
+Formal review approved exact head `1068add` without findings. PR47 merged it as
+`6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; guarded shipping installed exact
+release `20260831-6d76f9a-pr47-20260831T172710-645971`. BOTH public/dashboard
+services were explicitly restarted and are loaded, healthy and integrity
+verified at **0.4.3/schema 9/observation-v9/camera-v8**. **Fourteen exact static
+and sixteen security checks pass**; configuration/authentication/routes were
+preserved and no rollback occurred. Installed widget/index match frozen hashes
+`76d356cc287f11e400f896640162134bcabf8ca8b0ce883a2e46ed1024564092`
+and `626348d296d8748e83c7a4e7732656694de3b1dc3ece259fb1e92bb1ce32c0b6`.
+Independent postdeployment verification confirms all **15 manifest files** and
+both service targets match merged source/release; both are loaded/healthy/
+integrity verified. **Three health and seven exact local/tailnet static checks**
+pass, including widget, directory and Queue host assets.
+
+Exactly **one** private Queue refresh returned a **known/fresh, paused, empty**
+Queue with source/checked time `2026-08-31T21:31:36.003Z`, total/displayed count
+zero, not truncated, at observation version 2. The exact served widget executed
+in a transient VM and verifies truthful current-empty/state/time semantics, no
+ETA, bounded rows, information above one bottom Refresh, and corrected grammar.
+No raw filename, job ID or payload was persisted/logged; no camera, mesh, other-
+view, control, service, auth, routing or file mutation occurred in this pass.
+Visual/browser/device acceptance remains unverified. This docs-only rollout
+record does not require another deployment.
+
+## 2026-08-31 B Queue integration — frozen source evidence
+
+The design role read current contracts and active records, then inspected the
+reviewed foundation using these actual read-only commands:
+
+```sh
+git show --stat 4fbb96c7201398c125006cafc5050b84a875af1e
+git show 4fbb96c:plugins/u1-print-studio/app/src/application/queue-observation.ts
+git show 4fbb96c:plugins/u1-print-studio/app/src/adapters/moonraker-queue.ts
+```
+
+Decision 0029's Queue addendum and OBS-012 now specify focused integration and
+software/protocol acceptance without broadening read authority. Foundation
+evidence below remains historical source/protocol evidence, not proof of the
+new integrated widget. The candidate contract is runtime 0.4.3/tool schema 9/
+observation-v9/camera-v8 with nineteen resources, retaining observation-v8 and
+prior aliases without adding tools. Author checks pass **223 app tests/3,150
+assertions**. Independent validation passes those repository suites plus **21
+lifecycle, 22 shipping and 15 focused tests/7,049 assertions**, TypeScript/diff
+checks, all three bundles/code signing and six exact emitted HTML assets. The
+three foundation files match `4fbb96c`. Frozen widget SHA-256 is
+`76d356cc287f11e400f896640162134bcabf8ca8b0ce883a2e46ed1024564092`;
+index is `626348d296d8748e83c7a4e7732656694de3b1dc3ece259fb1e92bb1ce32c0b6`.
+Formal review found the prior singular summary `1 jobs`; author changed only
+the widget and focused test to render `1 job is not displayed` while preserving
+the plural form. Focused author checks pass 44 tests/1,565 assertions; full
+223/3,150, TypeScript/diff, three-bundle and code-signing gates reran green.
+Focused test SHA-256 is
+`5448fa6d6b57f02c95e2f2381957751c85006e95143550ac807827437945b51f`.
+Renewed independent validation specifically covers singular 1, plural 2 and
+large-count 900 omission summaries, finds no issues, and made no runtime calls.
+Exact-SHA review and release receipts were pending at this source checkpoint
+and completed in the rollout above; no Queue acquisition, merge, service
+deployment/restart or visual/device pass is claimed by the source evidence alone.
+
+Historical predeployment boundary correction: during final contract inspection the validator ran the
+compiled `dist/u1-print-studio doctor --json`; that command unintentionally
+performed **one general read-only status observation** and reported reachable.
+It performed no Queue, camera or mesh read; no control, service, auth or config
+mutation; and retained no payload. Runtime commands stopped afterward. The
+source validation results above remain fixture-backed, and this event does not
+replace the one scoped postdeployment Queue observation completed in the PR47
+rollout record above.
+
+The coordinator reports fresh allowed-browser runtime URL selection failed and
+browser inventory was empty. Rendered/layout/keyboard/browser acceptance remains
+unverified. The user's standing exact-review/merge/deploy/BOTH-service restart/
+verification order allows their own visual review after delivery; software and
+deployed-byte evidence must stay separate from it. No raw Queue payload,
+private basename or local identifier is retained in repository records.
+
+## 2026-08-31 Heads reference refinement — PR45 deployed
+
+Independent formal review approved exact head
+`e369ca4d53867b1904af5326b38f4b92b82ea3b0` without findings, independently
+passing 41 widget tests/1,537 assertions. Guarded execution merged PR45 at
+`2026-08-31T19:27:56Z` as `90d9f9d353c7bca2c299ab7ae949ad81e7d4faca` and
+installed `20260831-90d9f9d-pr45-20260831T152746-190348`. Actual operator command
+(private pinned runtime path redacted):
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 45 --reviewed-sha e369ca4d53867b1904af5326b38f4b92b82ea3b0 --bun <ABSOLUTE_PINNED_BUN> --execute
+```
+
+Execution completed in 18.3 seconds. BOTH public/dashboard services were
+explicitly restarted and are loaded, healthy and integrity verified at
+**0.4.2/schema 8/observation-v8/camera-v8**. **Fourteen exact static and sixteen
+security checks pass**; configuration/authentication/routes were preserved,
+no rollback. Installed widget matches
+`419ec788ea4b9546e93c31a46419ed13b4490b57a64f337e7e7ccc6d8ad43214`;
+camera and index bytes are unchanged. Independent postdeployment verification
+passes, with actual read-only commands:
+
+```sh
+uv run --no-project scripts/u1_service.py status
+plutil -convert json -o - <PRIVATE_SERVICE_PLIST>
+tailscale serve status --json
+```
+
+The plist command ran for both existing services. Inline Node file/crypto
+checks independently hash all **fifteen manifest files per service** and confirm
+both selected releases/source match the merged identity above. Inline Node
+HTTP/HTTPS requests pass **three health checks** (both local services and private
+tailnet dashboard) and **seven exact static checks** (public widget, plus local/
+tailnet widget, directory and Heads route). No on-disk validation script/report
+was created.
+
+Exactly **one** private `POST /dashboard/tools/call` invoked
+`refresh_printer_observation` with `{view: heads}`: all **four physical heads**
+are known, status is fresh at `2026-08-31T19:30:19.879Z`, and material is
+independently known/fresh at `2026-08-31T19:30:20.028Z`. The exact served widget
+executed against that payload in an inline Node VM passes **35 assertions**:
+all four valid colors derive matching wash/swatch/hex/copy data, while physical
+identity, active state and independent freshness are retained. Calculated
+secondary-text contrast is at least **5.51:1**. This proves deployed bytes and
+production-script behavior against a real read-only payload, not browser layout
+or native clipboard behavior. No further acquisition, copy, camera/mesh/control,
+service/auth/routing mutation or file edit occurred in this independent pass;
+raw payload/palette never reached disk/log and were discarded from retained
+Node state. The user has the live Heads review link; browser/device visual and
+native clipboard acceptance remain unverified. These docs-only rollout records
+change no application bytes and require no new deployment.
+
+## 2026-08-31 Heads reference refinement — historical frozen source checkpoint
+
+The design role opened the exact selected 1554 × 1012 Heads image and read the
+current contract/iteration. Decision 0029's addendum and OBS-010 record the
+bounded actual-color wash/exact-hex-copy contract; no acquisition or controls
+are added. Source is 0.4.2/schema 8/observation-v8/camera-v8, eighteen resources,
+with observation-v7 retained as a current-asset alias. The coordinator
+reports fresh allowed-browser discovery returned no available browser. No
+implementation screenshot, matched comparison, browser interaction or console
+check exists for this refinement. Visual/device acceptance remains unverified.
+The user's standing reviewed merge/deploy/BOTH-service restart/verify order
+remains in effect. Actual design-role checks: Product Design's
+`user_context_preflight.py` ran through `uv run --no-project` and reported no
+saved context; `git diff --check` passed. Unified shell startup failed with
+`Too many open files`; read-only Node file/process access allowed these checks
+without changing service state.
+
+Author checks ran in the app directory with pinned Bun 1.3.12:
+
+```sh
+bun --no-env-file --config=/dev/null install --frozen-lockfile
+bun --no-env-file --config=/dev/null test src/observation-widget.test.ts src/app.test.ts src/bed-mesh.test.ts src/cli.test.ts src/status-dashboard.test.ts src/personal-oauth.test.ts
+bun --no-env-file --config=/dev/null run check
+git diff --check
+```
+
+All pass: **106 tests/2,290 assertions**, TypeScript and whitespace checks.
+The initial observation-v7 alias expectation was corrected, then the complete
+focused command reran. No dependency or lockfile change. Frozen widget SHA-256:
+`419ec788ea4b9546e93c31a46419ed13b4490b57a64f337e7e7ccc6d8ad43214`;
+focused test: `f3eae6a8a5fa36ec1c0117a1822604172b68a4f035421bca818f829480a8ce46`.
+Camera remains unchanged at
+`32c8038a4abe5d8f9277294a5fd50584930dd4a24ea2bfc2546af32d8c847f4e`;
+index, normalized acquisition, mapping, and shipping scripts are unchanged.
+Independent validation on those exact widget/test hashes passes:
+
+```sh
+bash scripts/check-repository.sh
+bun run bundle
+bun run bundle:server
+bun run bundle:runtime
+codesign -vvv --verify dist/u1-print-studio
+git diff --check
+```
+
+The repository command ran from root with pinned Bun 1.3.12 on PATH; bundle and
+signature commands ran from the app directory. Results: **200 app tests/2,855
+assertions, 21 lifecycle, 22 shipping**, TypeScript and repository contracts pass.
+All three bundles/signature checks pass; **six emitted HTML assets plus inlined
+index** compare exactly with source. Six non-widget public assets and Bed Mesh/
+Progress function blocks are byte-identical to baseline `8336c19`.
+
+Separately, the validator executed an inline `node:vm` production-script harness
+through `mcp__node_repl__js` (no on-disk fixture script): **seven scenario groups,
+86 fixtures/751 assertions** pass. Coverage includes 63 RGB/alpha combinations,
+16 invalid inputs, stale/presence/injection/physical slots, accessibility
+structure, and Copy success/rejection/unavailable/duplicate/detached/refresh
+behavior. Worst calculated text contrast is **5.5126:1**. Harness-only grid-regex
+and template-literal decoding corrections did not change product bytes. Initial
+formal source review reports no findings and independently passes **41 widget
+tests/1,537 assertions**; exact committed-candidate approval remains pending.
+These are source/VM/arithmetic checks, not browser or real-printer evidence.
+No Heads merge, deployment or restart is claimed by this source checkpoint.
+
+## 2026-08-31 F reported Bed Mesh surface — PR43 deployed
+
+Independent exact-head approval bound
+`41546d9e3ea841bdd23279694079719327f39f39`. The read-only shipping plan passed,
+then guarded execution merged PR43 at `2026-08-31T19:00:51Z` as
+`92a62c04c22600ee802d7be3c0b27285135f6d33` and installed exact release
+`20260831-92a62c0-pr43-20260831T150042-2e7c64`. Actual operator commands
+(the private pinned runtime path is deliberately redacted):
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 43 --reviewed-sha 41546d9e3ea841bdd23279694079719327f39f39 --bun <ABSOLUTE_PINNED_BUN>
+uv run --no-project scripts/u1_ship.py --pr 43 --reviewed-sha 41546d9e3ea841bdd23279694079719327f39f39 --bun <ABSOLUTE_PINNED_BUN> --execute
+```
+
+Execution completed: BOTH public/dashboard services were explicitly restarted,
+loaded, healthy and integrity verified at **0.4.1/schema 8/observation-v7/
+camera-v8**. **Fourteen exact static and sixteen security checks pass**.
+OAuth/environment/config/routes were preserved; no rollback was needed.
+Installed widget matches `c800447957bf8b7b386ddba7666941f625170db92107d31230c5f382378d77f6`;
+index matches `6e195671cee0ee8aad37a20aa9582472796a7cffff5ee8f88f455467600397af`;
+camera bytes are unchanged. Private receipts remain outside Git.
+
+Separate independent post-release verification passes. Actual read-only
+commands (private paths deliberately redacted):
+
+```sh
+uv run --no-project scripts/u1_service.py status
+uv run --no-project <PRIVATE_VALIDATION_DIR>/verify-live.py
+shasum -a 256 <PRIVATE_VALIDATION_DIR>/verify-live.py <PRIVATE_VALIDATION_DIR>/POSTSHIP_REPORT.json
+```
+
+Both services match the exact release/source above, with **fifteen installed
+manifest files per release** verified. **Fourteen local and thirteen tailnet
+exact static checks**, plus tailnet health, pass. Widget and unchanged camera
+bytes match the expected source. Exactly **one** private Bed Mesh refresh
+returns **known/fresh/active, 11 by 11, 121 vertices**, with its own receipt
+`2026-08-31T19:03:22.696Z` and valid bounds/summary. No raw matrix, labels,
+printer identity or private host is recorded. The validator made zero other
+printer/camera calls and no service/auth/routing writes; only private
+verification files were created outside Git. Redacted report SHA-256:
+`74360c0801ee0bc663fd7073a0ba0edcd1f57e9c72db93cdb864571bdfef1a58`;
+script SHA-256:
+`7c1ba838ba502df3037a0256be148e47193a185e2ad7bc954b95434f7a1b6710`.
+These checks establish deployed bytes and one read-only domain acquisition,
+not rendered chart behavior, calibration quality or device/visual acceptance.
+The user has the live Bed Mesh link for visual review; automated and actual-
+device visual acceptance remain unverified. No printer controls, calibration,
+profile mutation, auth/routing change or plugin reinstall occurred. These
+docs-only rollout records change no app bytes and require no new deployment.
+
+## 2026-08-31 F source checkpoint — historical predeployment evidence
+
+Decision 0030 and OBS-009 record the user's selected Fluidd surface interaction
+inside the delivered white card. Current order is A (deployed) → F → B → C →
+D → E; all other widget tracks remain active. F implementation
+targets 0.4.1/schema 8/observation-v7/camera-v8 with seventeen resources.
+The **P2 centroid-depth-sort occlusion defect is corrected**. On intermediate
+corrected widget `ae8df4d02fe9f2bd117262925c6201b1597252c7d9d79306dc4d7df8d980d34f`,
+formal review provisionally approved source, with independent
+per-point geometry checks reporting **1,134 scenes/26,185 overlapping points,
+zero wrong front faces**. The separate validator's sweep reports **810 scenes,
+115,560 points, 17,751 overlapping points, zero wrong front faces**, and the
+original reproducer passes. These are numerical/software checks, not browser
+captures or an exhaustive proof over all possible input data. Final corrected
+source validation is recorded below; exact-candidate-commit approval remains pending.
+No merge, deployment, service restart or real-printer result is established by
+this source checkpoint. The confirmed deployed baseline remains the release A
+receipt below; its evidence does not validate changed F bytes.
+
+### Final corrected source — independently validated, exact-commit review pending
+
+The final small correction places each reported point after its last incident
+face so point marks do not draw through nearer surface faces. Frozen widget
+SHA-256 is
+`c800447957bf8b7b386ddba7666941f625170db92107d31230c5f382378d77f6`;
+observation-widget test SHA-256 is
+`7cf184f1b356e39d6b67b5f35680ab2aad69486eb5d2f6b9d1363a10779977c6`.
+The author reports **35 widget tests/1,415 assertions**, TypeScript and
+`git diff --check` passing on this final freeze. The separate validator completed
+the final rerun on those exact widget/test hashes:
+
+- `PATH=<PINNED_BUN_DIR>:$PATH ./scripts/check-repository.sh`: **194 app tests/
+  2,731 assertions**, **21 lifecycle**, **22 shipping**, TypeScript and repository
+  checks pass.
+- The four private fixture test commands shown in the historical baseline
+  command block below were rerun unchanged: **22 tests/1,162 assertions** pass.
+  Geometry covers **810 scenes/115,560 probe points/17,751 overlapping points**
+  with **zero wrong front faces**; original P2 reproducer and independent
+  marker-last-incident-face order both pass. Also covered: 64 by 64 data
+  (**4,096 vertices/7,938 faces**), zero/nonzero flat grids, extreme/subnormal
+  bounds, local controls with zero acquisition calls, state and privacy.
+- All seventeen resources return exact bytes with empty external CSP and zero
+  acquisition. Two visible/eight app-only tools and 0.4.1/schema 8/observation-v7/
+  camera-v8 pass. Camera bytes remain unchanged.
+- All three bundle commands, compiled `--help`, offline doctor, `codesign`
+  verification and the private bundle verifier in the command block below were
+  rerun successfully. Six exact source/dist HTML comparisons and embedded-index
+  equality pass, as does `git diff --check`.
+- Before/after 62-file tracked app/script manifest is identical:
+  `5c4b01132e21c49672fcb778a22be0b2edc6c32ae48bfbd94419d95e57fe9620`.
+  Compiled runtime SHA-256:
+  `a348749a6f52aaa7cb801848e4a245c7bfad11a0e88277b278139692e77fe98f`;
+  server bundle:
+  `424a855bdeab500d11cb27efdb7433f6f91499c05383d49415e71352a68c59c9`;
+  stdio bundle:
+  `fb95d3f6775e55bf1d445758b4d171fdbbef71eb7d8c197baa565f486ac33d1b`.
+  Index remains `6e195671cee0ee8aad37a20aa9582472796a7cffff5ee8f88f455467600397af`;
+  camera remains `32c8038a4abe5d8f9277294a5fd50584930dd4a24ea2bfc2546af32d8c847f4e`.
+
+The independent reviewer provisionally approves final `c800447` source without
+blockers; its checks pass **75 tests/1,807 assertions**, with **1,134 scenes**
+and **884 strict marker/face-center checks**. Earlier intermediate overlapping-
+point checks are identified above; these are scoped runs, not additive totals.
+No unresolved software finding remains. Exact-commit review still must bind the
+committed candidate including these records. Validator private fixtures stay
+outside Git; no hardware, service, Git, authentication or routing mutation was
+performed by validation. Browser/design/device/live/deployment acceptance is
+not established. The earlier 99-test author run and pre-fix green counts below
+are historical only; they do not replace this final rerun.
+
+### Historical provisional evidence — occlusion defect subsequently corrected
+
+The author ran the following with the pinned runtime; the absolute runtime
+path is deliberately redacted. Working directory was `plugins/u1-print-studio/app`:
+
+```sh
+<ABSOLUTE_PINNED_BUN> --no-env-file --config=/dev/null test src/observation-widget.test.ts src/bed-mesh.test.ts src/app.test.ts src/cli.test.ts src/status-dashboard.test.ts src/personal-oauth.test.ts
+<ABSOLUTE_PINNED_BUN> --no-env-file --config=/dev/null run check
+git diff --check
+```
+
+Results: **99 tests/1,484 assertions**, TypeScript and diff check pass. These
+author checks do not resolve the subsequently identified occlusion defect and
+are not independent acceptance of the corrected candidate. Provisional hashes:
+
+- widget: `9bcf4cf0f952e6613819a2665c528b57fe1d33ae5fdcecbbccca12ff0d1c90dd`;
+- index: `6e195671cee0ee8aad37a20aa9582472796a7cffff5ee8f88f455467600397af`.
+
+Do not freeze or ship these bytes based on this passing test count. The separate
+validator subsequently reported a pre-fix baseline pass: **193 app tests/2,049
+assertions**, **21 lifecycle**, **22 shipping**, TypeScript/repository checks,
+**19 independent tests/1,133 assertions**, three bundles and ad-hoc signature.
+Its 62-file manifest was
+`602e7d2db11fea5ac33a5056d9b7a7b1c229fabdcaba279faa5d0cdbd4daec78`.
+This was provisional, not final acceptance: the centroid-order assertion did
+not establish correct per-point face occlusion. The added regression and
+post-fix geometry results above supersede that earlier claim.
+
+Actual independent baseline commands, with private paths redacted:
+
+```sh
+PATH=<PINNED_BUN_DIR>:$PATH ./scripts/check-repository.sh
+bun --no-env-file --config=/dev/null test <PRIVATE_VALIDATION_DIR>/independent-state.test.ts <PRIVATE_VALIDATION_DIR>/independent-math.test.ts <PRIVATE_VALIDATION_DIR>/independent-controls.test.ts <PRIVATE_VALIDATION_DIR>/independent-compatibility.test.ts
+# The three bundle commands ran from plugins/u1-print-studio/app.
+bun --no-env-file --config=/dev/null run bundle
+bun --no-env-file --config=/dev/null run bundle:server
+bun --no-env-file --config=/dev/null run bundle:runtime
+<COMPILED_RUNTIME> --help
+<COMPILED_RUNTIME> doctor --offline --config <PRIVATE_FIXTURE_CONFIG> --json
+codesign -vvv --verify <COMPILED_RUNTIME>
+bun --no-env-file --config=/dev/null run <PRIVATE_VALIDATION_DIR>/verify-bundles.ts
+git diff --check
+```
+
+The bundle verifier confirmed six exact assets and the embedded index. After
+adding the per-point occlusion assertion, the independent math run instead
+reported **6 pass/1 fail, 914 assertions** and reproduced a nearer surface
+being overdrawn by a farther surface. This failing regression supersedes the
+earlier passing depth-order claim. The subsequent correction passes this
+regression; neither source acceptance nor release follows from those historical
+green counts alone.
+
+Design-role actions actually completed: read the selected reference, current
+renderer/model/projection and decisions 0027/0029; record decision 0030 and
+update OBS-009/BRIEF/WIDGET_TRACKS. The Product Design saved-context preflight
+ran read-only through `uv run --no-project` and reported no saved context.
+This is design/source inspection, not implementation or independent validation.
+
+Validated software gates cover exact reported vertices/XY mapping, triangulation
+without resampling, true disclosed Z multiplier, finite projection/fitting,
+numerical axes/legend, asymmetric/flat/extreme/maximum-size fixtures,
+pointer/keyboard/reset/mode behavior, 2D fallback and unchanged acquisition,
+state/privacy/compatibility/camera boundaries. The separate validator's actual
+commands and frozen source hashes are recorded above; synthetic-DOM or
+production-script VM results are software evidence, not rendered-browser QA.
+
+The coordinator's fresh in-app browser selection failed and subsequent browser
+discovery returned none. Browser/design/device acceptance is **unverified**.
+The user's standing sequence permits exact-SHA review → PR merge → exact-build
+deploy → explicitly restart BOTH existing services → verify for their visual
+review without re-blocking on unavailable automated browser access. Preserve
+shipping guards and record actual operator/deployed behavior separately when
+performed. No F release evidence exists yet; no calibration, printer control,
+auth/routing change or plugin reinstall is authorized.
+
+## 2026-08-31 release A deployed — operator verification
+
+The user explicitly authorized merge → deploy → verify before automated browser
+QA to perform their own visual review. Only that ordering gate was changed;
+local tests, exact-SHA review, shipping guards and safety boundaries remained.
+The final reviewer approved `744f7d06607526a10997b926d91b18087c4030cf` for guarded
+shipping under this authority, confirming application/scripts unchanged from
+the independently tested source and matching the 62-file manifest below.
+
+An initial **read-only plan** stopped on an uncommitted BRIEF authority edit,
+before any external mutation. A scoped documentation commit and renewed
+exact-SHA review resolved the dirty-tree condition; no guard was bypassed.
+The final read-only plan passed before execution. Actual operator commands
+(the private pinned runtime path is deliberately a placeholder):
+
+```sh
+uv run --no-project scripts/u1_ship.py --pr 41 --reviewed-sha 744f7d06607526a10997b926d91b18087c4030cf --bun <ABSOLUTE_PINNED_BUN>
+uv run --no-project scripts/u1_ship.py --pr 41 --reviewed-sha 744f7d06607526a10997b926d91b18087c4030cf --bun <ABSOLUTE_PINNED_BUN> --execute
+```
+
+Execution completed successfully. PR41 merged at `2026-08-31T18:06:04Z` as
+`b6142de6241cb2e1b6ac70b509f2d0b0e836f1d8`; installed release
+`20260831-b6142de-pr41-20260831T140555-84d50f` reports **0.4.0/schema 8/
+observation-v6/camera-v8**. Both public/dashboard services were explicitly
+restarted and are loaded, healthy and integrity verified. **Fourteen static
+asset and sixteen security checks pass**. OAuth/environment/configuration/
+routes are preserved and no rollback was needed. Private receipts remain
+outside Git. No printer controls, auth/routing changes or plugin reinstall
+occurred. Application bytes are unchanged by the subsequent rollout records;
+those docs use a separate PR, not another service deployment.
+
+Independent live verification completed separately using
+`uv run --no-project scripts/u1_service.py status`, read-only plist/release
+verification and
+`bun --no-env-file --config=/dev/null run <PRIVATE_VERIFICATION_DIR>/verify-live.ts`.
+The private verifier path is deliberately redacted. Results:
+
+- Both services are loaded/healthy/integrity verified, with exact installed
+  release `20260831-b6142de-pr41-20260831T140555-84d50f` and merged source
+  `b6142de6241cb2e1b6ac70b509f2d0b0e836f1d8`. Both loopback health endpoints
+  return HTTP 200 and the current version contract.
+- All four user-facing tailnet directory/camera/progress/heads pages return
+  HTTP 200 HTML. Six source-defined assets match exact source bytes on both
+  loopback and tailnet: **twelve independent comparisons**, distinct from the
+  operator's fourteen static checks above.
+- The source-defined private `refresh_printer_observation` request with
+  `view: heads` returns HTTP 200, four physical slots, and **known/fresh**
+  materials observed at `2026-08-31T18:08:02.427Z`. Vendor/type/color/reported
+  presence are available for all four, subtype for one. No real labels,
+  colors, names, identities or raw rows are recorded.
+- The source-defined private `get_u1_camera_frame` request with empty arguments
+  returns HTTP 200, image/jpeg, **253,183 bytes**, **1920 × 1080**, observed at
+  `2026-08-31T18:08:02.952Z`, with valid structural markers. No JPEG was retained,
+  live session activated or printer control invoked. This proves snapshot
+  acquisition, not image quality, playback, browser/phone or physical acceptance.
+- The validator performed no service/auth/routing writes and left no background
+  process. Redacted private report SHA-256:
+  `989c72c510b92c5657c72184d254b7e85f22b84ddf77ce63b5577ebb5494870c`;
+  private script SHA-256:
+  `0fba7b6bf6f7594fb9d39bcea24dd94744cbd4203d318b08ecaa506ed86c008c`.
+
+HTML availability is not a rendered visual, camera playback or actual-device pass.
+The prior automated visual gate remains unverified, not retrospectively passed.
+
+## 2026-08-31 release A source checkpoint — historical predeployment evidence
+
+Latest local correction: `acdb2e38553418b395269bf71814ec3a5f21af04` changes
+percentage text to `#499e69`, computed contrast 3.293:1, and adds its regression
+test. Author reports **31 tests/448 assertions** and TypeScript passing.
+New focused HTML SHA-256:
+`3c97b730290f9b4f35065fd57bcd8f7dbe0680bc0d5339c79a8c6212537fbd9b`.
+Independent full revalidation of this exact commit passes:
+
+- `./scripts/check-repository.sh`: **190 app tests/1,761 assertions**, **21
+  lifecycle**, **22 shipping**, TypeScript and repository contract.
+- The same three isolated independent fixture files named below: **20 tests/
+  399 assertions**. All three bundles/signature, runtime help/offline doctor,
+  six source/dist HTML comparisons and diff check pass.
+- Actual CSS text contrast independently computes **3.292557043498492:1**.
+  The 62-file manifest is identical before/after:
+  `dca09a45ac122919bcc3621d2cfe182455bb4bfaf98375565d168ba5766e1ca0`.
+  Camera/directory hashes below are unchanged; focused widget uses the new
+  hash above. Compiled runtime SHA-256:
+  `5dde3102cb7859095c8d7b3d6146d37396b5586455eb898ba8a3e76ae652df20`.
+- Independent exact-SHA **source-only review approved**, no findings;
+  reviewer checks pass **31 tests/448 assertions**, including contrast.
+  Approval excludes uncommitted documentation changes, blocked visual QA and
+  exact-release approval. No browser/printer/service operation is inferred.
+
+At this predeployment checkpoint PR41's open/draft remote head was `acdb2e3`. The
+prior findings/test counts/manifest below are historical checkpoint evidence,
+not unresolved contrast findings or current-source hashes.
+
+### Historical prior A checkpoint, superseded by approved acdb2e3
+
+Committed/pushed checkpoint: `a8ac630550b4b193d1538810f45f5eb5aac7a56a`,
+[draft PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41). The coordinator
+confirmed `OPEN`, draft status and the exact remote head. Independent exact-SHA
+source review: **changes requested**, one P2 percentage-text contrast finding
+in `app/public/widget.html`: `#60b982` on white measures 2.397:1, below the 3:1
+large-text threshold. Reviewer synthetic checks pass **59 tests/671 assertions**
+(camera/observation 51/581, material normalization/store 8/90), and its 62-file
+manifest matches the frozen value below. No other bounded material/privacy/
+concurrency/compatibility blocker was found. Correct and re-review a new exact
+candidate; this is neither visual acceptance nor release approval.
+
+Source contract: runtime 0.4.0/tool schema 8/observation-v6/camera-v8, sixteen
+resources with retained aliases. Material read/store/Heads and white
+focused/camera/index/host presentation are implemented. Progress's lower row is
+elapsed-only because no other reference metric is projected; camera uses direct
+controls, truthful snapshot refresh feedback and card-level native fullscreen,
+with frame/FPS watcher semantics unchanged. This is not merged/deployed source.
+
+Author-reported software evidence: materials 23 tests/202 assertions, Heads
+4/40, app 14/120; UI 79/832 and TypeScript pass. Earlier independent exploratory
+passes were material 36/459 and UI 6/105. These are scoped runs, not additive
+full-suite counts and not browser/physical evidence.
+
+The independent validator ran on the frozen source:
+
+- `./scripts/check-repository.sh`: TypeScript, **189 app tests/1,757 assertions**,
+  **21 lifecycle tests**, **22 shipping tests**, and repository contract pass.
+- Separate isolated synthetic fixtures: **20 tests/399 assertions** pass via
+  `bun --no-env-file --config=/dev/null test <PRIVATE_VALIDATION_DIR>/independent-materials.test.ts <PRIVATE_VALIDATION_DIR>/independent-widget.test.ts <PRIVATE_VALIDATION_DIR>/independent-bundled-static.test.ts`.
+  The placeholder redacts actual private paths; generated results remain outside Git.
+- All three bundle commands, compiled-binary `codesign` verification, runtime
+  `--help`, `doctor --offline`, and six source/dist HTML byte comparisons
+  pass. App inventory tests establish the sixteen-resource contract.
+- Bundled HTTP checks cover thirteen exact asset routes, health and two
+  rejected routes (33 assertions), with zero status/material/mesh/camera
+  acquisitions. These are isolated static-route tests, not deployed behavior.
+- The 62 app/script-file frozen source manifest SHA-256 is
+  `59ee92a7b2180a225b451f13f9ff54db3721634a004437316594bb241bf157f0`.
+  It is identical before/after all runs. No formal exact-commit approval is
+  claimed here. Final source asset SHA-256 values:
+
+  - focused widget: `fc03a24c48ede9fea1ae22607e74fa31c5ca1c07cb92856efe7e1cc7e9c2bf2b`;
+  - camera: `32c8038a4abe5d8f9277294a5fd50584930dd4a24ea2bfc2546af32d8c847f4e`;
+  - directory: `0e0daa7448d981c0e4115c3f19871f2802bdaf7347f774d0e215f894273f301e`.
+
+### Shared observation and deployment boundaries
+
+Separate real-printer evidence: the fixed selected-fields `print_task_config`
+GET succeeded at `2026-08-31T17:28:34.793Z` with valid material metadata for all
+four physical heads. No real per-head labels/colors/raw payload are committed.
+This proves read-only data acquisition, not correct mounted-widget rendering,
+local Orca preset matching, loaded-spool compatibility or physical acceptance.
+
+Separate deployed baseline: coordinator checked both existing service health
+responses and both still report **0.3.5/schema 7/observation-v5/camera-v7**.
+No new deployment, restart, GitHub merge, authentication/routing change, printer
+control or plugin reinstall occurred during this checkpoint.
+
+The coordinator's browser runtime could not obtain `iab`; after troubleshooting
+the browser list was empty. Isolated headless permission was requested but is
+not granted. The validator's current `design-qa.md` explicitly says **blocked**.
+There are no current reference-to-render captures, browser interaction results,
+visual approval or actual-device acceptance. The combined muted camera
+state/FPS/time label still differs from the reference's differentiated text and
+vertical separators; visual QA must assess that fidelity gap. Direct controls
+are an allowed design choice, not a claim of exact visual identity.
+Draft PR41 records this software-only state; merge/ship must wait for required
+visual QA and exact-release review. Queue foundation is locally committed as
+`4fbb96c7201398c125006cafc5050b84a875af1e` on `feat/u1-queue-completion`:
+standalone adapter/model/tests, three files only. Independent bounded
+source/protocol review **approves**, closing the prior provider-shaped
+credential-basename P2 from `c4e0754`. Independently rerun TypeScript,
+**40 tests/461 assertions** and the unchanged six independent fixtures
+(**68 assertions**) pass; exact HEAD, clean worktree and diff check confirmed.
+The explicit provider-pattern checks run before filename truncation.
+
+Final adapter SHA-256: `416d6084ee81e052d12f2c53e87788a5d17e2f79ebbbc376579ce9d45d670f59`;
+test SHA-256: `fd9b9aeaa9714804523996e595207bfe89dd3f06d801ae497d282d908ab06596`;
+unchanged private fixture SHA-256:
+`7a67caa07842a26728b6bb7c51071a75178eb5aeae3053cdea261610384b4a28`.
+No store/projection/widget integration, visual/release/deployment or printer
+acceptance is implied. B–E source work may continue in stacked branches during A's visual
+permission wait; sequential independently reviewed release order is unchanged.
+
+## 2026-08-31 all-widget completion design checkpoint
+
+Design-role evidence only; no new implementation, independent review, merged
+source, deployment, restart or mounted-device acceptance is established here.
+
+- Read repository guidance/current state/requirements/iteration, roadmap,
+  bed-mesh adapter/store/projection and accepted decisions 0025/0027/0028.
+  `git log -3 --oneline` confirmed starting main `bf3eb26` and its policy merge.
+- Read Product Design image-to-code/router/critical/user-context instructions;
+  `uv run <PRODUCT_DESIGN_SKILL>/scripts/user_context_preflight.py` returned
+  no saved user context. Skill root is redacted here, not a repository artifact.
+  Opened both selected camera/progress references; retained genuine camera
+  media and froze white/header/continuous-progress anatomy in the track matrix.
+- Read pinned primary source through HTTPS: OrcaSlicer `82cedc0`
+  `SnapmakerPrinterAgent.cpp` and Snapmaker `761718a` `SSWCP.cpp` (decision 0029
+  links). Confirmed actual `filament_`-prefixed arrays, positional slots,
+  RRGGBBAA, and legacy integer low-24-bit color. This is source-contract
+  evidence, not a current firmware/version or spool observation.
+- Coordinator reports browser discovery found neither in-app nor Chrome
+  availability; isolated headless permission was requested. Visual capture,
+  interaction checks and new design-QA acceptance remain pending.
+- A separate read-only capability researcher reports at
+  `2026-08-31T17:24:39Z`: `GET /server/job_queue/status` succeeded with paused
+  state and zero rows; `GET /server/history/list?limit=3&start=0&order=desc`
+  returned three completed rows; fixed cavity/fan/purifier object queries
+  returned 25 C, zero speed/RPM and purifier power not detected respectively.
+  These are observed-data capability checks, not implemented widgets or
+  physical-print acceptance. No private row names/IDs/raw data are recorded.
+- `git diff --check` passed after the design records/requirements were updated.
+  This is whitespace hygiene only, not independent software or visual review.
+
+All new release gates in `WIDGET_TRACKS.md` are pending until their owning
+implementer, validator, reviewer and operator record commands actually run.
+
+## 2026-08-31 PR38 bottom-status/FPS deployment verification
+
+After the operator shipped reviewed head
+`a35c92c813d669bef696fefbbc87ee7bd5390630`, merged as
+`b565eecc30ec394137483f4619a523807b59e538`, and restarted both services, the
+independent validator ran
+`bun --no-env-file --config=/dev/null run verify-bottom-live.ts` from an
+outside-repository verification directory.
+
+- Both live health responses returned 200 with **runtime 0.3.5 / schema 7 /
+  observation v5 / camera v7**.
+- The private camera asset returned 200 and exact reviewed SHA-256
+  `1f706d665a5f811793160b2afb2cd620bb381903673bc5047e159c1948ba6cac`.
+  The existing private tailnet `/dashboard/camera` page also returned 200.
+- All four probes were health/static GETs. No tool, snapshot, stream, printer
+  operation, service mutation, or authentication/routing change was invoked.
+
+The redacted report remains outside Git, SHA-256
+`f407ec8f7fb4743c8d3c41b39f1db0b9aa4235242b186a62dc32af21a76e76f8`.
+This independently verifies deployed contract and exact asset availability.
+The native-browser regression below proves the software repair with synthetic
+local video; neither layer proves the user's currently mounted device has
+refreshed or that real-printer live FPS is visible there. Operator-owned full
+14-static/16-security, integrity and preservation checks are separate evidence.
+
+## 2026-08-31 Bottom camera status and native frame-observer regression
+
+The user's bottom-left camera information request is a camera-only layout
+exception. Observation-card anatomy is unchanged. The missing-FPS report was
+investigated with real browser media/frame callbacks, separately from the
+earlier manually supplied counter fixtures and without contacting the printer.
+
+### Reproduced mechanism and repair
+
+- The independent `capture-native.mjs` fixture used a local canvas video
+  stream with the browser's native `requestVideoFrameCallback` timestamps and
+  `presentedFrames` metadata. It did not override clocks, counters, video
+  playback state, or frame-callback scheduling. Only peer signaling and MCP
+  host replies were synthetic; no RTC network or printer media was used.
+- On the previous camera source, ordinary native playback correctly showed
+  about 30 FPS at 320/390/720 pixels. Repeating the same peer's `ontrack` event
+  reproduced missing FPS while video remained live. Actual callback metadata
+  showed duplicate counter pairs, for example 46/46, 47/47 through 55/55.
+  Multiple observer chains repeatedly invalidated the FPS baseline. This is
+  reproduced software-defect evidence, not proof of the user's phone cause.
+- On the final source, retiring the previous observer and generation-guarding
+  callbacks preserved FPS after the same repeated-track event. The native
+  regression displayed 31 FPS rather than losing the rate; normal runs were
+  approximately 30.2–30.4 presented frames per second and displayed 30 FPS.
+
+### Final independent gates
+
+- `./scripts/check-repository.sh`: **172 app tests / 2,253 assertions**, **21
+  lifecycle tests**, **22 shipping tests**, TypeScript and repository contract
+  passed. Source is **0.3.5 / schema 7 / observation v5 / camera v7**; camera
+  v6/v5/v4 remain current aliases, with fourteen total resource URIs.
+- App commands `bun --no-env-file --config=/dev/null run bundle`,
+  `run bundle:server`, `run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, and current camera source/dist
+  `cmp` passed. Observation HTML and both frozen legacy HTML assets remain
+  byte-identical to the merged baseline. `git diff --check` passed.
+- `node capture-native.mjs <FIXTURE_ORIGIN> --final` and the same command with
+  `--duplicate --final` passed on the frozen source. Six final review images
+  were opened: native live at 320/390/720, snapshot and rejected display mode
+  at 320, and repeated-track playback at 390. Native measured rates matched
+  the displayed rounded FPS; the complete timestamps, bottom-left status and
+  bottom-right 44-pixel controls had no overlap or horizontal overflow.
+  Narrow widths wrapped the information above the intact control cluster.
+- The additional `--fallback --final` run checked native live-to-fallback
+  behavior at 320 pixels in the actual DOM. Fallback kept its full snapshot
+  time, omitted FPS, and preserved all three 44-pixel controls without overlap.
+  All native runs reported zero external requests and zero page errors.
+- Browser contexts closed in `finally`. The exact owned fixture server was
+  identified and stopped after validation. No user browser profile, real
+  camera acquisition, service mutation, authentication/routing change or
+  printer command was involved. Actual user-device confirmation and exact
+  merged-build deployment remain separate gates.
+
+SHA-256 fingerprints (reports and images remain outside Git):
+
+- Final camera: `1f706d665a5f811793160b2afb2cd620bb381903673bc5047e159c1948ba6cac`
+- Native pre-fix reproduction: `57ca2da36c04df8099d770d8ec5d62f637332692b1ebcb9aa1b6181d2ce853e6`
+- Final native/layout report: `10749eadf74b25c0b8fe09e98eef8b12070f35542c5f19492fc9212ca22261a6`
+- Final repeated-track report: `a6d759172ed3ed1452509a236e2150dce7bd7cf9d3c1bc5c1b7293d4be5fcff0`
+- Final fallback DOM report: `e94291541f112d61bc09cc66fc5ee4fb962626db7db1795c8ab7283840bd7d56`
+
+## 2026-08-31 PR36 FPS deployment verification
+
+The operator's successful shipping workflow merged reviewed head
+`40d359bd81df3523a32726172f64b045ab027e86` as
+`3fc918e5c64b401f497f97144d9c81423877d852` and restarted both services.
+The independent validator then ran
+`bun --no-env-file --config=/dev/null run verify-live.ts` from the isolated
+outside-repository verification directory.
+
+- Both live health endpoints returned 200 and **runtime 0.3.4 / schema 7 /
+  observation v5 / camera v6**.
+- The private served camera widget returned 200 with exact reviewed SHA-256
+  `375bcbefbee47e1d01a958ad2441594e66b95ff65aa55242d5b058709dcc6182`.
+  The existing private tailnet `/dashboard/camera` page also returned 200.
+- An initial verification assumption expected the public camera-asset path to
+  be available; it correctly returned 404. The corrected verifier checks the
+  intended private camera asset. No runtime or routing change was needed.
+- Every probe was a health or static GET. No tool call, snapshot acquisition,
+  stream allocation, printer operation, authentication/configuration change,
+  or service mutation was performed by the validator.
+
+The redacted outside-repository report SHA-256 is
+`090530662d0aad25b86a16c620e5df539aab945df992ed206bfbf389a85511af`.
+This verifies deployed contract/asset availability, not real-camera FPS,
+live-video playback or mounted-phone behavior. The operator's complete
+14-static/16-security, integrity and preservation checks are separate evidence;
+the independent synthetic FPS checks below remain the measured display proof.
+
+## 2026-08-31 Independent live-camera FPS validation
+
+The user-requested FPS restoration was validated against the exact current
+camera source, using synthetic local frame counts and media only. This gate
+did not contact a real camera, mutate services, or establish phone/live-video
+acceptance. Network-path diagnostics remain absent from visible camera chrome.
+
+- Independent `./scripts/check-repository.sh` passed TypeScript, **170 app
+  tests / 2,247 assertions**, **21 lifecycle tests**, **22 shipping tests**, and
+  the repository contract. The source reports runtime **0.3.4**, schema **7**,
+  observation **v5**, camera **v6**, with camera-v5/v4 current aliases and
+  thirteen total resource URIs.
+- From the app directory, `bun --no-env-file --config=/dev/null run bundle`,
+  `run bundle:server`, `run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, and
+  `cmp public/camera-widget.html dist/camera-widget.html` passed. Current
+  observation HTML and both frozen legacy HTML files are unchanged from the
+  merged baseline. `git diff --check` passed.
+- The independent command `node capture.mjs <FIXTURE_ORIGIN>` captured **five
+  actual-widget images**, all opened by the validator, and passed **twelve
+  browser behavior cases**. The isolated host served exact production HTML;
+  its media and MCP replies were synthetic and no real peer network existed.
+  Screens covered snapshot at 320/dark, rVFC 29 FPS at 320/dark, rVFC 30 FPS at
+  390/light, fallback at 320/light and decoded-counter 30 FPS at 720/dark.
+- Controlled `presentedFrames` deltas produced 29 and rounded 30 FPS only
+  after the one-second measurement window. Both playback-quality and WebKit
+  decoded-counter fallbacks measured frame deltas, not four polling ticks per
+  second. Repeated counters did not fabricate new frames. Missing, reset,
+  invalid and backward counters/times cleared the estimate; missing rVFC
+  metadata never switched to an unrelated decoded-counter value.
+- The real 1.5-second no-frame expiry hid FPS without advancing the displayed
+  time or prematurely entering the existing stall fallback. Close/reopen
+  discarded the previous window, and a captured old-peer callback could not
+  relabel a newly opened session. Snapshot, loading, unavailable, fallback and
+  paused video showed no FPS. Selected ICE fixture stats deliberately included
+  `prflx`, `host` and `udp`; none appeared in the visible mode label.
+- Narrow screenshots retained the complete time and the existing bottom-right
+  44-pixel PiP/fullscreen/Live-or-Close controls without information/action
+  overlap or horizontal overflow. The browser report records **zero external
+  requests, zero unexpected fixture requests and zero page errors**. Browser
+  contexts closed in `finally`; the exact owned fixture server was stopped
+  after validation. No user browser profile was used.
+
+Camera HTML SHA-256:
+`375bcbefbee47e1d01a958ad2441594e66b95ff65aa55242d5b058709dcc6182`.
+Outside-repository browser report SHA-256:
+`0f6ac34282a2e1cfda0e419b0ccacff4576b3098c8dc572b3a8544f5f023d3f1`.
+These are source/software and synthetic-rendering results. Exact merged-build
+deployment and served-asset verification must be recorded separately; neither
+would prove real camera FPS or a mounted phone's display behavior.
+
+## 2026-08-31 PR34 deployed-source and real-observation verification
+
+After the authorized shipping workflow merged
+`7194361d4a8d7a2291bcc64f1d053eae51a8d99c`, installed that exact merged source
+and restarted both U1 services, the independent validator ran
+`bun --no-env-file --config=/dev/null run verify-bed-mesh-live.ts
+<CLEAN_MERGED_SOURCE> --authorized-postship` from an outside-repository
+verification directory. `<CLEAN_MERGED_SOURCE>` replaces the operator's exact
+private isolated source path; it was not the unmerged author worktree.
+
+- Both live health responses reported **0.3.3 / schema 7 / observation v5 /
+  camera v5**. All **14 static checks** matched the merged source byte-for-byte,
+  including both directory roots, focused hosts and current widgets.
+- All **16 security checks** passed: every public dashboard route remained
+  unavailable, public enrollment remained 404, unauthenticated public MCP
+  returned 401 with its challenge, both private listeners rejected MCP, and
+  private enrollment health remained available. Separate GET checks of the
+  existing private tailnet `/dashboard/` and `/dashboard/bed_mesh` links also
+  returned 200 with exact merged-source bytes.
+- Exactly one private `refresh_printer_observation(view="bed_mesh")` returned
+  **known, fresh, active** reported probe data: **11 × 11**, minimum
+  **-0.340833 mm**, maximum **0.066667 mm**, range **0.4075 mm**. Matrix dimensions,
+  finite values and ascending bounds were checked. This is a real read of the
+  printer's already reported grid, not a new probe, calibration, flatness
+  certification or physical-print acceptance. Its observation timestamp is
+  server receipt time, not the time that the grid was physically measured.
+- Exactly one `get_u1_camera_frame` call, without live authorization, returned
+  an available JPEG. The validator opened the image and confirmed a coherent
+  printer-interior snapshot. This does not prove live video, ICE/TURN, an
+  iPhone/ChatGPT-mounted widget, or user visual acceptance.
+- No printer-control, calibration/probe, plugin, authentication, configuration
+  or service mutation was performed by the validator. Operator-owned restart,
+  integrity and preservation evidence remains distinct from these independent
+  health/static/security/data checks.
+
+The redacted report and camera image remain outside Git; no profile name,
+printer identifier, private origin/path, full matrix or image was committed.
+Report SHA-256:
+`ed409fb9db4be681015dda94b35700beb22f079b743e0e20f40167407c00ec68`.
+These live results supersede the earlier pending-deployment boundary for
+Bed Mesh below; they do not change the paused/unimplemented Queue status.
+
+## 2026-08-31 Shipping build-scratch guard follow-up
+
+The operator's first authorized PR34 shipping attempt at reviewed head
+`5a73932476e93e271fd91c4e0f3611696a3c6337` passed its local gates, then stopped
+at the clean-tree merge-edge guard because the pinned Bun compiler left a
+generated runtime scratch copy in the app directory. The operator reported
+no merge or service mutation; this was a safe stop, not a deployment success.
+
+The follow-up ignores only that app-local compiler filename pattern:
+a dot, sixteen lowercase hexadecimal digits, a hyphen, eight hexadecimal
+digits, and `.bun-build`. It does not ignore unrelated files, similarly named
+files elsewhere, malformed names or tracked changes. The shipping script and
+its clean-tree guard are unchanged.
+
+- Independent `uv run --no-project scripts/test_u1_ship.py` passed **22 tests**,
+  including a real isolated Git regression for the precise ignore pattern and
+  retained dirty-tree rejection.
+- Independent `./scripts/check-repository.sh` passed again: **165 app tests /
+  2,200 assertions**, **21 lifecycle tests**, **22 shipping tests**, TypeScript
+  and the repository contract. Earlier 21-test shipping counts below record
+  the earlier frozen gate rather than this follow-up.
+- The implementation role separately reported a successful 594-module
+  `bundle:runtime` and signature check using the actual pinned release-local
+  Bun, with the generated scratch no longer appearing as unexpected Git dirt.
+  This does not claim that the next guarded shipping attempt has run.
+- Current SHA-256: `.gitignore`
+  `eca2c77db6f8af1b3ea42b87a58c97e09813b705bd610df35c3470b7dcebfbd6`;
+  shipping tests
+  `538029f89ca01614d91c821bdea77aef973b112109917545b28c938ac5298fc8`;
+  unchanged shipping script
+  `49448de3ca32ba52917ec900d478901e2ec3590c887fa5cabddf4e67c9254978`.
+
+## 2026-08-31 Independent reported Bed Mesh validation
+
+This gate validates the isolated Bed Mesh source slice on baseline `7b9c4d4`.
+The paused queue worktree was not tested or changed. Bed Mesh production
+deployment and real-printer acceptance are not inferred from these fixtures;
+the separate PR33 live check below concerns the previously deployed release.
+
+### Source, protocol and packaging
+
+- `./scripts/check-repository.sh` passed TypeScript, **165 app tests / 2,200
+  assertions**, **21 lifecycle tests**, **21 shipping-script tests**, and the
+  repository contract on the final source below.
+- The independent outside-repository command
+  `bun --no-env-file --config=/dev/null test independent.test.ts` passed
+  **24 tests / 228 assertions**. Six tests exercised the actual curl adapter
+  against an ephemeral loopback HTTP fixture: the exact probed-only GET,
+  receipt timestamps, no redirects, HTTP/auth/error classification, malformed
+  and oversized bodies, disconnection, the real six-second deadline, and
+  rejected origins. No printer or real camera was contacted.
+- Normalization checks covered asymmetric 2-by-3 orientation, valid all-zero
+  data, the complete no-active sentinel, absent versus malformed objects,
+  rejection of interpolated fallback, rectangular/finite/coordinate/64-by-64
+  limits, and omission of path/control/bidi/private profile information.
+- Application checks covered independent 15-second mesh versus 300-second
+  status TTL, no background acquisition, cache/coalescing, stale populated
+  and inactive retention without retimestamping, successful inactive clearing,
+  both cross-domain completion orders, projection isolation, and first-ever
+  thrown status failure with a successful fresh mesh.
+- Actual SDK calls and actual HTTP handlers verified selected-view acquisition,
+  absent-reader no-network behavior, and the production default shared-store
+  wiring across separate HTTP MCP app instances. The fixture process pinned
+  its only upstream origin to loopback. Two initial fixture failures were
+  corrected: the full ten-tool SDK inventory requires a camera-controller
+  stub, and Bun's `closeAllConnections()` stopped the timeout fixture listener
+  before the final suite. Neither correction changed product code.
+- `bun --no-env-file --config=/dev/null run bundle`, `run bundle:server`,
+  `run bundle:runtime`, `codesign -vvv --verify dist/u1-print-studio`, and both
+  current-widget source/dist `cmp` checks passed. Independent
+  `bun --no-env-file --config=/dev/null run packaging.ts` compared all six
+  distributed assets, decoded the HTTP bundle's embedded directory exactly,
+  and read all **12 resource URIs** through the SDK with zero acquisitions.
+  Observation v5/v4/v3/v2/v1, preserved status aliases, and all current/legacy
+  camera resources mapped to their expected source bytes.
+- Current camera HTML, both frozen legacy HTML assets, and `u1_service.py`
+  remained byte-identical to `7b9c4d4`. Runtime contract is **0.3.3 / schema 7 /
+  observation v5 / camera v5**, with two model-visible and eight app-only tools.
+
+### Actual isolated browser evidence
+
+`node capture.mjs <FIXTURE_ORIGIN>` loaded the exact source widget through an
+isolated synthetic bridge, not a mock replacement UI. Chrome 152 captured
+**nine images**, all opened by the validator, with **15 behavior checks** and
+**28 private/public/invalid route checks**. Widths 320/390/720 and light/dark
+states covered asymmetric normal, flat, stale, inactive, retained inactive,
+unsupported, malformed, hostile profile and extreme high-precision bounds.
+DOM-only cases additionally covered offline status with fresh mesh, the full
+4,096-cell grid, unknown and unavailable states.
+
+- Four distinct corner titles proved X increases rightward and Y increases
+  upward; min/max/range and the domain's own receipt time matched the fixture.
+  Flat grids had a uniform fill. Unknown/error states had no fabricated grid
+  or timestamp. Selected refresh called only `bed_mesh`; failed widget refresh
+  preserved the grid/time and placed the error in the header.
+- An actual narrow-screen failure exposed clipped long Y-axis labels. The
+  author changed visible axes to bounded compact labels while keeping complete
+  bounds in accessible text and precise per-cell titles. All nine final
+  captures passed axis bounding-box, no-overflow, information-top and
+  44-pixel bottom-action checks. The redundant visible explanatory paragraph
+  was removed; the receipt-versus-probe-time distinction remains accessible.
+- The final browser report records zero external requests, zero console/page
+  errors and zero status/mesh/camera/session-acquisition counters. The static
+  directory has nine links, with Bed Mesh implemented and Queue still not
+  implemented. This is not phone-mounted or physical-bed acceptance.
+- Browser contexts closed in `finally`; the exact owned fixture server was
+  identified and terminated successfully. Artifacts remain outside Git.
+  Intermittent shell process-limit errors were handled through the existing
+  isolated Node execution path, without killing unrelated processes.
+
+Frozen SHA-256 evidence:
+
+- Widget: `23cf86a83143ba7480521baf12c0e05ee7777faea350de29cde055fd63ffbce5`
+- Adapter: `c6522e0429f0b9338292a3c3f90d6be9936bd058754a75ab300bc553f4f2f9cb`
+- Store: `991ba530f1acb5fa65da3ae143ab3be939b781254bbe6e632b240af0c73aa995`
+- Directory: `66fda75a7f849febd35f09c6557027984a363fbbebbf996aaf3387e49b0424be`
+- Browser report: `c7c6409a6bd3c20f82c8c1033faee0991f806381dc5bc99e7dcd6b2158c88908`
+- Independent protocol fixture: `903435cd9eee64dfe6b300e53cdfa95fd69e8d757a61e58df5364e306e2f1df1`
+
+### Repository shipping workflow checks
+
+The final full gate above includes the shipping script's 21 fixture tests.
+The independent command `uv run --no-project ship_independent.py` additionally
+passed **seven method-level tests** outside the repository, rerun after the
+pinned-runtime fix. They invoked the actual `Operations.verify`, `restart`
+and `validate` methods with synthetic lower-level dependencies rather than
+only replacing the complete orchestration methods.
+
+These checks exercised each service's loaded/healthy/integrity/runtime/release
+identity, changed manifests and preserved-configuration rejection, static and
+security failure propagation, exactly both restart targets, and early stop at
+each of six local command failures. They parsed the actual source's **14 static
+assets/routes and 16 security checks**, injected failures at each boundary,
+and verified the HTTP helper's fixed ports/routes, disabled proxies/redirects,
+timeout and bounded response handling. No real GitHub, launchctl, service,
+printer or camera action was used in these fixtures.
+
+Skill Creator's structural check passed via
+`uv run --offline --no-project --with pyyaml
+<SKILL_CREATOR>/scripts/quick_validate.py .agents/skills/u1-ship`.
+`<SKILL_CREATOR>` substitutes for the installed local skill path. Structural
+validation is not a behavioral skill approval; the independent reviewer's
+forward scenarios are separate. The validator did not invoke `--execute`.
+
+Final SHA-256 fingerprints:
+
+- Shipping script: `49448de3ca32ba52917ec900d478901e2ec3590c887fa5cabddf4e67c9254978`
+- Shipping tests: `49c8924b48c6c0aa8c202f0304a0a0f1b074398d54d564088da61958420349a9`
+- Repository gate: `37f0d63ff5308dd0e84f65e2b95f690bf24cae3252da575de29fe3cf9f80f1ad`
+- Shipping skill: `b1d7547e5ccb46f1014be28b351883d5ec45deb2eb3371771e7926c6c9e557e8`
+
+## 2026-08-31 Independent PR33 live verification while Bed Mesh is in progress
+
+After the authorized operator deployed merged PR33 (`7b9c4d4`), the independent
+validator ran `bun --no-env-file --config=/dev/null run verify-pr33.ts` from
+an isolated, outside-repository verification directory. This was a read-only
+check of the already deployed Current Job/Job History release, not acceptance
+of the unmerged Bed Mesh implementation.
+
+- Both service health responses reported **0.3.2 / schema 6 / observation v4 /
+  camera v5**. Thirteen static responses matched the clean merged source
+  byte-for-byte: both directory roots, both current widget assets, and all nine
+  focused hosts.
+- Seven boundary checks passed: public directory, Job History and enrollment
+  routes rejected with 404; unauthenticated public MCP returned 401 with its
+  authentication challenge; private dashboard and enrollment MCP routes
+  returned 404; private enrollment health remained available.
+- One explicitly authorized read-only `get_u1_camera_frame` call through the
+  private dashboard bridge returned an available JPEG. `authorizeLive` was
+  omitted. The validator opened the saved image and confirmed a coherent
+  printer-interior snapshot. No live-view session, camera authorization token,
+  printer control, authentication change, or service mutation was performed.
+- The verifier, redacted report and camera image remain outside Git. The
+  report SHA-256 is
+  `918a39c438c989d9b2a460fe38e1f2af755d0ed32b02227d0902685f3529411a`.
+  Private origins, runtime identifiers and camera contents are not copied
+  into repository records.
+
+This proves the PR33 deployment's service/static/security boundaries and one
+real snapshot response. It does not prove a mounted iPhone/ChatGPT widget,
+live video, ICE/TURN connectivity, Bed Mesh acquisition, or physical-print
+acceptance. Operator-owned configuration/authentication/route-preservation
+evidence is separate from these independent probes.
+
+## 2026-08-31 Current Job and Job History split validation
+
+This source-only change preserves `jobs` as Current Job and adds the separate
+`job_history` view. History normalization remains unimplemented; a widget and
+route are not evidence that previous jobs were acquired. Information remains
+at the top and actions at the bottom. No service deployment, plugin change,
+real-printer observation, or hardware acceptance was performed in this gate.
+
+- Independent `./scripts/check-repository.sh` passed TypeScript, **148 app
+  tests / 2,011 assertions**, **21 lifecycle tests**, and the repository
+  contract. This includes current/history projection separation, explicit
+  unknown history provenance, missing-current-identity semantics, selected
+  refresh isolation, the closed route/tool inventory and compatibility
+  resources, plus existing segmented-progress and camera regressions.
+  Runtime reports are **0.3.2 / schema 6 / observation v4 / camera v5**;
+  observation v3/v2/v1 aliases remain readable. The inventory is eleven
+  resource URIs and two model-visible plus eight app-only tools.
+- `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, and both current-widget
+  source/dist `cmp` checks passed. A separate Bun assertion decoded the
+  HTTP bundle's embedded directory string and compared it exactly with its
+  source. The segmented layer-position/render/update block exactly matches
+  merge baseline `47bfd37`; current camera HTML and both frozen legacy HTML
+  files are unchanged against that baseline. `git diff --check` passed.
+- Skill validation initially reported missing `yaml` in the no-project
+  interpreter. The bounded offline retry succeeded without installation or
+  live plugin mutation, from `plugins/u1-print-studio/app`:
+  `uv run --offline --no-project --with pyyaml
+  <SKILL_CREATOR>/scripts/quick_validate.py
+  ../skills/u1-observe-printer`.
+  `<SKILL_CREATOR>` replaces the local installed skill path in this sanitized
+  command record.
+  The source routes current/active/unqualified Jobs requests to `jobs` and
+  previous-job/history requests to `job_history`.
+- The independent `jobs-server.ts` loopback fixture used the actual source
+  HTTP handler and exact production widget HTML. Its injected printer-status,
+  camera-frame and five camera-session operations throw if called; all seven
+  counters remained **zero**. Synthetic current-job data was passed through
+  the actual projection factory. The inspected fixture host supplied bridge
+  responses; it did not call an operations adapter or access printer media.
+- `node capture-jobs.mjs <loopback-fixture-origin>` passed **30 HTTP route
+  checks**: both directory roots return exact source with no-store/CSP;
+  POST on either root returns 405; all nine focused hosts return exact
+  production host HTML with hidden host chrome; both roots and all nine
+  focused routes return 404 from the public-disabled handler; six invalid
+  paths, including the unintroduced `current_job` alias, fail closed.
+- **Six actual screenshots**, all opened and visually inspected, cover
+  Current Job at 390/light, unknown current identity at 320/dark, Job History
+  at 390/light and 720/dark, and the nine-link directory at 320/light and
+  720/dark. Fresh isolated Chrome **152.0.7977.65**, Playwright **1.55.0**,
+  device scale 1, `en-GB` and UTC were used. All layouts fit without
+  horizontal overflow, and controls/links meet 44-pixel targets. History
+  displays “Not implemented yet” and an unavailable observation time, not
+  an empty-history success or the current job's filename.
+- **Nine additional checks** passed: three projection assertions; selected
+  refresh and foreign-view-result isolation for each of the two cards; and
+  complete nine-link keyboard order, visible focus and a stubbed history-link
+  destination at each directory width. The history module contains no
+  current-job data and has `unknown` / `not_implemented`, `not_observed`
+  provenance and null source time. Missing current identity remains unknown,
+  not “No active job”. Each click emits exactly its own selected-view refresh.
+  No initial observation-widget tool calls, external requests, or console/page
+  errors occurred in these fixtures. The shared observation envelope is not
+  claimed as proof that history was obtained.
+- Fresh browser contexts and the browser closed through the harness cleanup;
+  the exact validator-owned fixture process was terminated and its session
+  exited successfully. Repeated transient exec-spawn “Too many open files”
+  failures delayed validation, but no user process was killed. One initial
+  harness assertion incorrectly expected a `data-view` attribute; it was
+  corrected to exact host-source comparison. A literal bundle comparison
+  also needed JavaScript escape decoding. Neither was a production defect.
+  All required gates subsequently completed on the frozen source below.
+
+Artifact fingerprints (SHA-256; fixture files and captures remain outside Git):
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Current observation HTML | `96bc93a05960f8a9af1923d93ceda0db0a33814eac5a3ef1a5e8e5e42554b572` |
+| Observation projection | `2ec8a9b17c76d7d4d7d0ec6e3a995408a35c4855076fed173d0e124abbe63d7e` |
+| Directory HTML | `267acf63214c9ab23df92007a3fd3667b247d66f7d76fcb3c9116c1ed75acbc2` |
+| Unchanged current camera HTML | `0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483` |
+| Independent jobs capture report | `1f382ab0b7e211bf3c47ae31177fc9257d417f64e901ead7f904a6e46b16e1d8` |
+| Current Job, 390/light | `81bca4f7ec4ee524d5d866b82df1f2a293ee5b818ec72e08f74648b85f05c3dd` |
+| Unknown current identity, 320/dark | `fe9c66f89462f194c7601fce8033842b51f45c99cd95a2d6f736148257985438` |
+| Job History, 390/light | `0c36d9b334316c9375a0896bc62040a3e99304e99a40bd2de0ec4cdf5a9b91cd` |
+| Job History, 720/dark | `e344d9cc08a47bd37958b8612de2df578c7dc6888acf44ec72f7d2198366c077` |
+| Directory, 320/light | `3b4e7c6b472e020339ed9c6af6c603985c0b5c67fb5f9ff853e7f42dcfc19d32` |
+| Directory, 720/dark | `ca2eb4d29857496eb7c781c9b97b3131d784630d7f8d6e241a257a60cda68716` |
+
+## 2026-08-31 top-information and bottom-actions validation
+
+The user's newest direction supersedes the earlier bottom-timestamp placement:
+observation time, freshness and refresh errors now belong beneath the title;
+only actions remain in the footer. Camera information occupies a top stack,
+including loading/unavailable text and display feedback; its previously
+reviewed control cluster remains at bottom right. Earlier entries below record
+historical acceptance, not instructions to restore the superseded placement.
+
+- The independent `./scripts/check-repository.sh` run passed TypeScript,
+  **144 app tests / 1,931 assertions**, **21 lifecycle tests**, and the repository
+  contract. Existing segmented-layer and camera behavior regressions passed
+  alongside the new header/footer and loading-guidance structure tests.
+- All three bundle commands, standalone signature verification, and exact
+  source/bundled comparisons for both current widget assets passed. The
+  camera module script exactly matches `081929e`; both frozen legacy HTML
+  files remain unchanged. Current observation and camera HTML intentionally
+  changed, so their earlier whole-file hashes are not claimed unchanged.
+  `git diff --check` passed.
+- A reused, inspected loopback fixture served exact production HTML to fresh
+  isolated Chrome `152.0.7977.65` contexts through Playwright 1.55.0. Captures
+  used device scale factor 1, `en-GB`, UTC and selected light/dark themes.
+  Camera JPEG/canvas-video data and host signaling were synthetic; an RTC
+  substitute prevented real media-peer creation. Requests were restricted to
+  the loopback fixture/data URLs, with service workers and background
+  networking disabled. Zero external requests and console/page errors were
+  recorded.
+- **Ten screenshots** cover Progress at 390/light, Heads at 390/dark,
+  Thermals at 320/light, stale Progress at 720/dark, refresh failure at
+  320/dark, loading failure at 390/light, and camera Snapshot at 320, Live at
+  390, display rejection at 720 and unavailable state at 320. The validator
+  opened and inspected all ten actual captures. Every checked layout fits
+  without horizontal overflow; informational content precedes actions.
+- **Fourteen additional DOM/behavior cases passed.** Eight verify each
+  shared observation view independently: exactly one timestamp in its header,
+  refresh errors in the header, one action-only footer, 44-pixel controls,
+  and none of the removed read-only/current-reading/provenance copy. These
+  capture-only mounts made no tool calls.
+- The remaining six cases cover: a real 15-second loading deadline with
+  guidance above the Retry-only footer and recovery to supplied data;
+  pending/error resize preservation; camera Live-to-Close placement;
+  narrow display-rejection stacking; camera loading information at the top
+  without controls; and a complete missing-time camera label at the top.
+- The resize check inspects the **actual browser DOM**, not the VM test's
+  stand-in node. After an explicit synthetic refresh, 390-to-720 regrouping
+  preserved the disabled button and header time. After a supplied failure,
+  720-to-390 regrouping preserved the exact visible header error and time.
+  There was only the one explicitly requested fixture refresh.
+- Camera information and the three unchanged bottom controls do not overlap.
+  Display feedback flows below the top status pill at both 720 and 320 pixels.
+  At 320, `Snapshot · Time unavailable` remains fully visible at the top,
+  without clipping, with all three 44-pixel actions below it. Loading and
+  unavailable messages are top information; only the decorative empty-camera
+  icon remains centered.
+
+Actual commands were `bun --no-env-file --config=/dev/null run
+fixture-server.ts`, `U1_INFO_FIXTURE_ORIGIN=<loopback-fixture-origin> node
+capture-info-layout.mjs`, and the bounded supplementary
+`check-info-missing-time.mjs` command with the same origin. App checks used
+`bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+`codesign -vvv --verify dist/u1-print-studio`, and `cmp` for both HTML assets.
+An exact module-script extraction/comparison against Git confirmed camera
+JavaScript identity; `git diff --exit-code 081929e --` with the two legacy
+asset paths confirmed their identity. Reports and captures remain outside Git.
+All browser contexts and the fixture server were closed after verification.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Observation widget | `3fe2bb3460ddb8e75ddb19b363b396a859c64822601db9b2d6781b8cce6e4f2b` |
+| Camera widget | `0a66e1cc0c75e6769655d60cf92bc50ba80b2fc98ebb2ca6f23559fd07e0a483` |
+| Unchanged camera module script | `2d53b9ab7c30456f6ccfdc6519b05a442f92df2a5ab605fa859c5fe968b44811` |
+| Private logical information-layout report | `6d30d233c106079c12b3d759f3fc9bb70a486dd4c9610c41391d13d6114ccc78` |
+| `info-progress-fresh-390-light.png` | `403be51ca8072fb9c26e74b24aded1a11e3ff47aaa1deb4328d82ba9428d7eb3` |
+| `info-camera-snapshot-320.png` | `058577994e74208d7c13b23981d8a16a5aa680f4d8a50588d4ab9eae8ab38707` |
+| `info-progress-loading-failure-390-light.png` | `3fefde548ce8f0093acd18e7f225718c703a5179f49bfc1f5013e2b1c9066ad4` |
+
+This accepts source/software and rendered synthetic fixtures. Independent
+formal/design review owns its own verdict. No real printer, production service,
+live private URL, plugin, authentication state or routing was accessed or
+changed. Merge, deployment, actual mobile-host behavior and user acceptance
+remain separate for this newest PR32 refinement.
+
+## 2026-08-31 bottom camera-control cluster validation
+
+The independent validator checked the narrow presentation follow-up that
+moves PiP and fullscreen beside Live/Close. Only the current camera markup and
+styles change; exact module-script comparison against `ba09653` passed with
+the unchanged JavaScript hash recorded below. The segmented observation widget
+and both frozen legacy HTML files also matched `ba09653` exactly. This does
+not alter their previously recorded evidence or deploy either PR32 refinement.
+
+- `./scripts/check-repository.sh` passed TypeScript, **143 app tests / 1,865
+  assertions**, **21 lifecycle tests**, and the repository contract. The
+  independent rerun includes the author-added bottom-cluster regression plus
+  existing camera display, frame-time, live, fallback and visibility tests.
+- `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, and exact source/bundled camera
+  `cmp` passed. `git diff --check` passed.
+- The inspected existing isolated camera fixture served exact production
+  HTML with a synthetic JPEG and a synthetic canvas video track. An explicitly
+  substituted RTC adapter prevented peer/network media creation. Chrome
+  `152.0.7977.65`, Playwright 1.55.0, a fresh context, device scale factor 1,
+  `en-GB`, UTC and dark mode captured **five screenshots**: supported Snapshot
+  controls at 320/390/720 pixels, Live at 390, and rejected display mode at 320.
+  The validator opened all five actual captures for inspection.
+- All supported controls share the same bottom-right parent in PiP,
+  fullscreen, Live/Close order. Measured targets are at least 44 by 44 pixels,
+  with 8-pixel gaps; controls never shrink, wrap internally, overlap the status
+  pill, or leave the image. At 320 pixels the complete status pill stays on a
+  row above the right-aligned cluster. There are no remaining top controls,
+  document overflow, console/page errors, or external requests.
+- **Five focused behavior cases passed**: Live-to-Close retains the cluster;
+  host-bridge fullscreen/PiP each enter and exit through the relocated buttons;
+  genuinely unsupported controls remain hidden when both host and native
+  capabilities are absent in the fixture; rejected display feedback remains
+  above and separate from the bottom controls at 320; and the longer
+  `Snapshot · Time unavailable` pill stays fully visible without clipping,
+  ellipsis or control overlap at 320.
+- The host display responses are simulated grants and the video is synthetic.
+  These checks exercise the existing production handlers and browser layout;
+  they do not establish native phone PiP, actual fullscreen host behavior,
+  printer camera transport or physical acceptance.
+
+Actual commands were `bun --no-env-file --config=/dev/null run
+fixture-server.ts` and `U1_CAMERA_FIXTURE_ORIGIN=<loopback-fixture-origin>
+node capture-camera-controls.mjs`. Requests were restricted to the loopback
+fixture/data URLs, service workers were blocked, and background networking
+was disabled. Private fixture scripts, screenshots and the logical report
+remain outside Git. The browser/context and loopback fixture were stopped
+after the final pass. No production service, private live URL, plugin,
+authentication state, routing or printer was accessed or changed.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Camera widget | `c7691461c0500370f01d5d2a40bd88229045a3e9d1ad4b5a4b9f468ab233c526` |
+| Unchanged camera module script | `2d53b9ab7c30456f6ccfdc6519b05a442f92df2a5ab605fa859c5fe968b44811` |
+| Unchanged segmented observation widget | `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb` |
+| Private logical camera-control report | `38083b9e8e0bba3a93dbd37b4561fdb492566d17ecc7e753a70d82572af64b09` |
+| `camera-controls-320-snapshot.png` | `58b73851b532ed541ffd517f7477262fe88fbfe201bb036d1aaf87d132bc59cc` |
+| `camera-controls-720-snapshot.png` | `93233d2aa707c2048ad93826789925a32892b63267acf41a5dcd766f5ce9bed5` |
+| `camera-controls-320-rejection.png` | `851fed0a44e08a00ca217b58898021c022dbfee3cac094d91b8bc12ffcf9ee3d` |
+
+This accepts source/software and isolated synthetic rendering only. Independent
+formal/design review owns its separate verdict; merge, rollout, actual mounted
+mobile behavior and user acceptance remain separate for this follow-up.
+
+## 2026-08-31 segmented layer-progress validation
+
+The independent validator checked decision 0023's segmented-bar addendum
+against the actual current observation HTML, using synthetic observations on
+an isolated loopback host. The user's screenshot was opened as the reference;
+the requested delta is the bar, not a redesign of the card or footer. No
+production service, printer, camera, plugin, authentication or route was read
+or changed during this source slice. Previous PR30 rollout evidence below does
+not accept deployment of this later change.
+
+### Executed source and browser checks
+
+- `./scripts/check-repository.sh` passed TypeScript, **142 app tests / 1,849
+  assertions**, **21 lifecycle tests**, and the repository contract. The
+  author-added executable VM cases cover small and grouped totals, safe-integer
+  boundaries, zero/end positions, unavailable values, independent percentage,
+  accessible values and responsive regrouping. The validator reran that gate
+  independently after the author declared the source ready.
+- In the app directory, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, `codesign -vvv --verify dist/u1-print-studio`, and
+  `cmp public/widget.html dist/widget.html` passed. `git diff --check` passed.
+- `git diff --exit-code 16169c0 --` with the current camera and both frozen
+  legacy HTML paths passed. Their SHA-256 values remain unchanged; the slice
+  does not modify camera behavior or retained legacy resources.
+- Chrome `152.0.7977.65` with Playwright 1.55.0, a fresh isolated context,
+  device scale factor 1, `en-US` and `America/Toronto` captured **12 screenshots**
+  of exact production HTML. Service workers were blocked, background networking
+  disabled, and requests restricted to the synthetic loopback fixture/data
+  URLs. Every production-widget response was compared byte-for-byte with the
+  final source. There were zero external requests or console/page errors.
+- Captures cover partial 230/461, complete 461/461 and missing layers at
+  390 pixels in light and dark modes; zero and small totals at 390; partial and
+  complete at an 882-by-290 reference-sized viewport; and differing 126/461
+  layers versus 67.4-percent reported progress at 320/light and 720/dark.
+  Full iframe captures include its actual content height instead of clipping
+  the footer to the viewport. The validator opened the reference and actual
+  partial, complete, mobile, missing-data and fractional-bin images.
+- Every valid track retains 14-pixel height and 2-pixel gaps, has at most
+  24 narrow or 48 wide blocks, and exposes the exact layer count and grouping
+  through one accessible progressbar. Each block's fill was independently
+  checked using BigInt integer-bin boundaries; at most one bin is fractional,
+  without rounding ahead. Decorative blocks are hidden from assistive
+  technology. Zero is empty, 461/461 is full, and a small total has one block
+  per layer rather than a fixed number of decorative blocks.
+- **Eight additional browser cases** passed: differing percentage/layers,
+  invalid over-total layers, unknown percentage with known layers, widths
+  320/480/481/720, and a pending-refresh/error resize sequence. Missing or
+  invalid layers remain an unfilled neutral track with no current-value ARIA
+  attribute and an unavailable caption, even when percentage is known.
+- Resize from 390 to 720 preserved the disabled pending-refresh button and
+  observation time; resize back after a synthetic failure preserved the error
+  and time. Exactly one explicitly clicked fixture refresh occurred, with no
+  resize-triggered data request. All capture-only cases made zero tool calls.
+  Each checked card retained one bottom observation-time/refresh footer and
+  fitted its viewport without horizontal overflow.
+
+Actual private harness commands were `bun --no-env-file --config=/dev/null
+run layer-server.ts` and `U1_LAYER_ORIGIN=<loopback-fixture-origin> node
+capture-layers.mjs`. The final run included the reviewer's two requested
+fractional-bin captures. Private scripts, supplied screenshot, reports and
+captures remain outside Git. The isolated browser/context were closed and
+the fixture listener was stopped after validation. Independent formal/design
+review owns its separate verdict; these assertions alone do not establish it.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Observation widget | `974153b569af5ba4c9ec4e69454c91f62acd1f5cb0bb23fd0d993e36ea074dfb` |
+| Unchanged camera widget | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Unchanged frozen legacy status | `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437` |
+| Unchanged frozen legacy camera | `c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203` |
+| Private logical layer report | `4661992712cfc7bbf9c9506ede4be715ec339fbab1863e0a7fcd0848ef61996a` |
+| `layers-partial-882-dark.png` | `19e37ac5f4c2ffd3e4b910bd60bbfe742e6e2b7055fa67c1a53f7c27f00a5284` |
+| `layers-complete-882-dark.png` | `4b5133a8d66699e851c28113ac276b1fa02821a0c4e5166e51526f445f9f231f` |
+| `layers-mismatch-320-light.png` | `9f58b705425110e92e37e717ea240e0de15435d186d2f8578c24737d0f4044c2` |
+| `layers-mismatch-720-dark.png` | `c05f638ff5dd6857a79f4e17f0105686be5f9dbb6cef8a03474c53b9769de2f9` |
+
+This is static/software and rendered synthetic-host evidence only. Reported
+layer position is not proof of completed physical layers or a completed print.
+Merge, deployment, mounted-host behavior, real-printer data and user acceptance
+remain separate gates for this segmented-bar change.
+
+## 2026-08-31 authorized merged-service rollout validation
+
+The user authorized merging PR30 and deploying it through the two existing
+owner-scoped U1 services. The coordinator merged reviewed head
+`1113e05ba0027b80ea6f2cf375a64cfc1704ea47` as
+`48a106d2f17550bab8dc8648af1c7c247610a228` and verified equal source trees.
+The independent validator reran `./scripts/check-repository.sh` on the clean
+reviewed head: TypeScript, **135 app tests / 1,006 assertions**, **21 lifecycle
+tests**, and the repository contract passed. The operator separately staged,
+dry-ran and installed the merged release; this validator performed no lifecycle
+writes, authentication rotation, tool calls or printer acquisition.
+
+### Independently observed deployed result
+
+- Before installation, local public/private and their HTTPS health routes
+  reported runtime `0.3.0`, schema `5`, observation-v2 and camera-v4. The
+  private `/dashboard` returned 307 and `/dashboard/` returned 404. All eight
+  old focused hosts returned 200; old widget asset hashes did not match the
+  reviewed new source. This confirmed the user's screenshots showed the
+  deployed older presentation, not the corrected source awaiting rollout.
+- After the operator reported stable paired installation, the independent
+  check at **2026-08-31 14:02:22 UTC** found all four health responses at
+  runtime `0.3.1`, schema `5`, observation-v3 and camera-v5. Public auth stayed
+  `personal-oauth`; private auth stayed `local-only`.
+- Both private directory roots now returned **200 with exact reviewed HTML**,
+  including all eight fixed links. Each focused static host also returned 200
+  and exactly matched its reviewed observation or camera host. `/widget` and
+  `/camera-widget` were byte-identical to the reviewed quiet-footer and
+  image-only camera assets. `git diff --exit-code 48a106d --
+  plugins/u1-print-studio/app` verified the comparison source still matched
+  the merged application tree.
+- A fresh isolated Chrome browser opened only the deployed static directory
+  at 390 pixels/light and 720 pixels/dark. Both actual HTTPS response bodies
+  matched source; both screenshots showed the eight entries without overflow.
+  The browser recorded only two directory document requests, zero subrequests,
+  zero blocked requests and zero console/page errors. No focused widget,
+  iframe, image, video or tool was loaded. The validator inspected both saved
+  screenshots; this is deployed navigation evidence, not a new comprehensive
+  design review or mounted-phone/printer acceptance.
+- Unauthenticated public MCP remained **401**, public enrollment remained
+  **404**, and private enrollment health remained **200** over both loopback
+  and its existing private HTTPS origin. The public U1 process rejected both
+  directory roots and all eight focused paths with **404**.
+- The shared public HTTPS origin has a preexisting unrelated root handler:
+  `/dashboard` and `/dashboard/` there return its `text-to-cad` document with
+  **200**, not the U1 directory. That content hash was unchanged before/after.
+  Do not incorrectly report a public-edge 404 or rewrite the unrelated root.
+  The private dashboard port remains outside Funnel.
+- Independent before/after SHA-256 comparisons of the existing environment
+  file, OAuth state, local configuration and raw Tailscale Serve JSON were all
+  equal during this check. No values or credentials were printed or committed.
+  Existing Funnel-enabled ports and every Serve route were unchanged.
+
+Actual validation commands were `node check.mjs baseline`, `node check.mjs
+after`, and `node capture-live-directory.mjs` in the isolated validation
+directory. The static adapter used bounded `curl --noproxy '*'` GETs without
+redirects and hashed response bodies; file/Serve comparisons recorded hashes
+only. Private scripts, reports and screenshots remain outside Git. Browser
+contexts and the browser were closed after captures. Both prior loopback
+directory-fixture servers were also stopped; no test server remains running.
+
+| Deployed/check artifact | SHA-256 |
+| --- | --- |
+| Directory response | `1ffc53eefa9842d0741680f1e14d636bb8b2c84401a8382d8c222f39bc263d1b` |
+| Observation widget response | `86cf5f4a4e6e29f8aa99cb14c947d20992b7b022c91c75f08642eea0a09837d0` |
+| Camera widget response | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Private baseline report | `6564c1a6c4478e5f6f5db81d5096f0cbb08d0118a9221f41ad3b92d0ffde5d84` |
+| Private after report | `ffd4586cc234654277f0f313b80c43dcc93f3c3a3ccf5eae4d34da736c8da859` |
+| Private deployed-browser report | `91a065a4d2749d5fec7cae04227de9e0933cc766424682f59264d0275e3123cb` |
+| `deployed-directory-390-light.png` | `2ced4f5fc9ddad88edbab85a7818df20db485fb1dc6e7332ea14cc12a9fde672` |
+| `deployed-directory-720-dark.png` | `e92bcb4b066a65fac4085ce8b59e9335388226f258a4b67d9030987e55b6bdd4` |
+
+This accepts merged-source deployment, static assets, navigation rendering and
+preserved access boundaries. No local plugin reinstallation was performed.
+Actual mounted ChatGPT/iPhone hydration, native phone PiP, real-printer data,
+camera transport and physical/user acceptance remain separate. Queue, fans,
+bed mesh and other previously unmapped domains remain unimplemented; deployment
+does not expand their capability labels into measured data.
+
+## 2026-08-31 private widget directory validation
+
+Decision 0024's directory was checked against the exact production HTML and
+private HTTP handler, without production service, printer, camera, plugin,
+authentication, routing, merge, or deployment changes. Both private roots now
+serve navigation rather than acquiring observations or composing an overview.
+The isolated headless path continues the user's explicit approval recorded
+below; it does not establish deployed or mounted-phone acceptance.
+
+### Static routes and rendered interaction
+
+- The independent fixture ran the production `createRequestHandler` on an
+  ephemeral loopback listener. Injected status, frame, authorization, stream
+  open, answer, candidates and close functions counted and rejected any call.
+  Every acquisition counter remained **zero** through all checks.
+- Twenty independent route checks passed: both roots returned 200 with exact
+  source HTML, no redirect, `no-store`, and restrictive CSP; POST returned 405
+  with `Allow: GET`; six unknown/encoded/nested paths returned 404; and the
+  disabled/public handler rejected both roots and all eight focused paths.
+  This tests handler boundaries locally, not the production public edge.
+- Chrome `152.0.7977.65`, Playwright 1.55.0, fresh isolated contexts,
+  device scale factor 1, `en-GB` and UTC captured **six screenshots** at
+  320, 390 and 720 CSS pixels in light and dark modes. Only the fixture origin
+  and data URLs were allowed, service workers were blocked, and background
+  networking was disabled. No external page requests or console/page errors
+  were recorded.
+- All captures fit their viewport without horizontal overflow. Each page had
+  exactly eight ordinary same-tab links in the prescribed order; every anchor
+  was at least 44 by 44 CSS pixels. There were no scripts, iframes, buttons,
+  timestamps, removed permission/provenance copy, or automatic widget loads.
+- Twelve keyboard checks passed across the six cases: Tab reached the first
+  anchor with a visible outline, Enter navigated to its fixed path, and all
+  eight anchors were subsequently reached in order. Destination documents were
+  intercepted synthetic stubs, not live widget/printer pages. The independent
+  design verdict belongs to `design-qa.md`, not these layout assertions.
+
+### Repository and distribution checks
+
+- `./scripts/check-repository.sh` passed TypeScript, **135 app tests / 1,006
+  assertions**, **21 lifecycle tests**, and the repository contract. The
+  durable dashboard suite covers exact links/content, both roots, method and
+  private/public boundaries, focused routes, and zero acquisition.
+- In the app directory, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, and `codesign -vvv --verify dist/u1-print-studio`
+  all passed. `git diff --check` passed.
+- A second isolated fixture imported the actual HTTP bundle copied into a
+  release-shaped directory containing only the preexisting six public assets.
+  No `dashboard-index.html` file was supplied. Both roots still returned exact
+  source HTML, all eight focused static paths returned 200, and all acquisition
+  counters stayed zero. This proves the text import embeds the index in the
+  HTTP bundle rather than creating a new external runtime-file requirement.
+- `git diff --exit-code 00d2c95 -- scripts/u1_service.py
+  scripts/test_u1_service.py` passed. Lifecycle asset requirements and manifest
+  verification remain unchanged; the existing offline lifecycle suite passed.
+  No real old release or rollback was operated. The CLI/stdio runtime does not
+  serve HTTP routes, so its unchanged bytes do not need to include this index.
+- Current observation and camera source hashes remain unchanged from the
+  accepted quiet-footer/camera-overlay pass below. Directory work did not
+  restore removed chrome or change those widget behaviors.
+
+Actual harness command forms were `bun --no-env-file --config=/dev/null run
+directory-server.ts`, `U1_DIRECTORY_ORIGIN=<loopback-fixture-origin> node
+capture-directory.mjs`, and the same fixture with
+`U1_DIRECTORY_ENTRY=<isolated-http-bundle>`. A Node assertion checked the copied
+bundle's two exact root responses, eight focused paths and acquisition counts.
+Temporary adapters, reports and screenshots remain outside Git. Only logical
+names and fingerprints are retained here.
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Directory HTML | `1ffc53eefa9842d0741680f1e14d636bb8b2c84401a8382d8c222f39bc263d1b` |
+| HTTP bundle | `71277c30c02f56efce570b2cabf9ea72c29d5810d873b4604b4b22bd6cc7aa31` |
+| Unchanged stdio bundle | `aed5f6143babb067b0b9460d1d25fe3c1eb2fbbba32a27e7e73622bc115f58ce` |
+| Unchanged standalone CLI | `c6719c0844ca83f50168a2a1ba1ba4dfd5bc22ba4faf8d7a00b45b115019cb15` |
+| Private logical directory report | `985905efc0ac9a4436a22f7220b5949d28c2a7951291a0621583c70cc4c40aa3` |
+| `directory-320-light.png` | `a3744c3623f7be0e5eb0c15ca684ba80f8d58344311c89e698eb18a1a5b4de82` |
+| `directory-390-dark.png` | `02af7f5bed9ce11f7df650504908de592ab91b6f40facc805bc0cf50f302a33f` |
+| `directory-720-light.png` | `9f270609574295e446c6d37bcabb553826a5738323bf451073da050efbd1bb9d` |
+
+This accepts source/software and isolated rendered navigation only. The live
+dashboard remains on the prior release until separately authorized rollout;
+missing telemetry domains, the composed overview, real-printer behavior and
+the user's actual phone experience remain unimplemented or unaccepted as
+previously recorded.
+
+## 2026-08-31 authorized isolated headless-browser validation
+
+Source/evidence delivery is complete at commit
+`643b5dde19d55f6ebed8c572033f726d97599d32`. The coordinator verified the
+successful push, matching origin branch and PR30 head, `state: OPEN`, and
+`isDraft: true`; the source tree was clean after delivery. This records the
+actual source delivery check, not a claim that a later documentation-only
+commit has the same hash. Merge, deployment, and actual phone acceptance
+remain separately authorized gates.
+
+After the supported browser proved unavailable, the user explicitly approved
+an isolated headless-browser check. The validator used a temporary browser
+profile/context, the installed Chrome executable, Playwright 1.55.0 installed
+only in a temporary fixture directory, and a loopback-only ephemeral fixture
+server. Exact production HTML bytes were served unchanged. Request routing
+allowed only that fixture origin and data URLs; service workers were blocked,
+browser background networking was disabled, and no non-fixture page request
+was observed. No production service, printer, plugin, auth state, route, merge
+or deployment was changed.
+
+### Captures and behavioral evidence
+
+- Chrome reported `152.0.7977.65`; device scale factor 1, `en-GB`, UTC,
+  light/dark color schemes. All eight focused views were captured at 320,
+  390 and 720 CSS pixels, plus thermal boundary checks at 400 and 410 pixels.
+- Final evidence contains **91 raw screenshots**: 67 final observation
+  captures, 22 camera captures, and two additional keyboard/unavailable
+  captures. The final observation report records the same widget source hash
+  for every capture. Camera bytes remained unchanged throughout the check.
+- Every recorded document width fits its requested viewport. Visible controls
+  in the main capture matrix have at least 44-by-44-pixel targets. These checks
+  do not by themselves constitute a complete accessibility audit.
+- Actual browser behavior exercised fresh, stale, offline, missing time/data,
+  malformed delivery, refresh failure, a real 15-second loading deadline, and
+  retry recovery to a supplied 84-percent observation. Keyboard Tab focused
+  Refresh and Enter successfully invoked the selected-view refresh.
+- Synthetic JPEGs exercised the real browser image decoder. A synthetic canvas
+  stream exercised the production video element and rendered-frame callbacks;
+  an explicitly substituted RTC adapter prevented network peer creation. All
+  six width/theme camera cases advanced time only while frames arrived,
+  froze when frames stopped, and fell back to the accepted JPEG time. This is
+  real browser rendering of synthetic media, not real WebRTC/printer evidence.
+- Host-mode success, rejection and PiP-to-fullscreen coercion were exercised
+  through the fixture bridge. Separately, native Chrome fullscreen entered
+  with an actual non-null `document.fullscreenElement` and exited successfully.
+  Native phone PiP, floating windows and iPhone host behavior remain untested.
+- The recorded 16 explicit boolean interaction checks all passed. Final
+  capture runs reported zero page/console errors and zero external page
+  requests. The initial synthetic-live fixture failed because its cached
+  stream envelope omitted the required transport field; the fixture was
+  corrected and the entire camera matrix was rerun successfully. That failure
+  was not classified as a production defect.
+- Initial captures retained a 1000-pixel fixture viewport, producing blank
+  space below cards. Those originals remain separate. Accepted recaptures size
+  the iframe to the production main content and its padding; no production
+  layout was changed to compensate for a fixture artifact.
+
+The independent designer compared supplied source crops and rendered captures,
+then requested three bounded fixes: active-temperature contrast, internal Jobs
+copy, and warning/error contrast. The author made those changes. The validator
+recaptured the full observation matrix after the last fix. Final computed
+warning colors are `rgb(184, 50, 50)` on the light card and `rgb(255, 133, 133)`
+on the dark card. Paired visual comparisons and the design verdict belong to
+`design-qa.md`; the validator does not substitute assertions for that verdict.
+
+### Final commands and fingerprints
+
+Actual command forms below redact only temporary directory/port values. The
+one-off harness, reports, screenshots and supplied private attachments are
+retained outside Git; durable VM regressions remain in the app test suite.
+
+- In `<isolated-fixture-root>`, `npm install --ignore-scripts --no-audit --no-fund`
+  installed the pinned Playwright dependency without downloading a browser.
+- `bun run fixture-server.ts` started the allowlisted loopback fixture adapter.
+- `U1_FIXTURE_ORIGIN=<loopback-fixture-origin> node capture.mjs` ran the full
+  capture and synthetic-camera interaction matrix.
+- `U1_FIXTURE_ORIGIN=<loopback-fixture-origin> U1_OUTPUT_DIR=<final-capture-dir>
+  U1_OBSERVATIONS_ONLY=1 node capture.mjs` recaptured final observation bytes.
+- `node check-interactions.mjs` checked computed warning colors, keyboard
+  refresh and camera-unavailable behavior. `node make-manifest.mjs` recorded
+  logical screenshot names, pixel sizes and SHA-256 fingerprints.
+- Final `./scripts/check-repository.sh` passed TypeScript,
+  **134 app tests / 939 assertions**, **21 lifecycle tests**, and the repository
+  contract. `bun run bundle`, `bun run bundle:server`, `bun run bundle:runtime`,
+  `codesign -vvv --verify dist/u1-print-studio`, exact source/bundled-widget
+  `cmp` checks, and `git diff --check` passed after all three visual fixes.
+
+| Final artifact | SHA-256 |
+| --- | --- |
+| Observation widget | `86cf5f4a4e6e29f8aa99cb14c947d20992b7b022c91c75f08642eea0a09837d0` |
+| Camera widget | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Stdio bundle | `aed5f6143babb067b0b9460d1d25fe3c1eb2fbbba32a27e7e73622bc115f58ce` |
+| HTTP bundle | `30e1127a2d63292fd5141457753681ea4211f0d13c13464736e3b4871eeaaf78` |
+| Standalone validation runtime | `c6719c0844ca83f50168a2a1ba1ba4dfd5bc22ba4faf8d7a00b45b115019cb15` |
+| Private logical capture manifest | `0fd623f3138bcaf3e01dcea84677b87d24ecfe9e49cf4535c1a9ff3a1239a4c7` |
+| `heads-fresh-390-light.png` (390 by 534) | `83c2173063b0bcdf05cf00df94f57c57bc2e0ac4928850cd58fa60ceee6b81b9` |
+| `thermals-fresh-390-light.png` (390 by 899) | `42d9d934d30d7612b0b5d71c9de9e71f93b999ece30c8359ae6c7181e6020212` |
+| `jobs-fresh-320-light.png` (320 by 354) | `2524e4c3a7a0e2efbd6ff0ee88e4319513b65fbb98573b40bd80a368c0d20159` |
+| `progress-refresherror-390-light.png` (390 by 250) | `b50c19ba66be01523e2be4307dd2436f8ac8121096c89cf9922f035ace9c1ff2` |
+| `camera-fresh-390-light-live.png` (390 by 220) | `4066aff1f9ca0aa0740e1e9e23eaea5539f2b0889b05ca44968ef635e7be2b3c` |
+| `camera-fresh-390-light-fallback.png` (390 by 220) | `e51368ca36e5e456130cc1e5300a82848a4bc01e27438b332a340783c4dd59d0` |
+
+This accepts an isolated desktop rendering/fixture layer. Actual mobile MCP
+mounting, public camera transport, native phone PiP, installation and user
+acceptance remain separate gates. Unmapped printer domains remain unimplemented.
+
+## 2026-08-31 independent widget diagnosis and presentation validation
+
+### Baseline truth assessment
+
+The user's supplied phone screenshots show repeated generic waiting shells
+after requesting several focused cards. That is observed user-outcome failure,
+not evidence that every underlying measurement was fabricated. Independent
+read-only inspection of the deployed V2-connected MCP surface returned valid
+schema-2 selected-module results for all eight views. The calls shared
+observation version 4 and source time `2026-08-31T11:33:28.573Z`; the server
+reported reachable/fresh. No camera stream, printer control, authentication,
+service, or routing mutation was performed.
+
+| Focused view | Actual implemented data | Explicit missing implementation |
+| --- | --- | --- |
+| Progress | Real print state, percentage, layers and duration; this read returned 83 percent and layer 371 of 461 | Remaining time is an estimate; no preparation/session correlation |
+| Thermals | Four tool actual/target temperatures and bed actual/target; active tool 220/220 and bed 65/65 degrees C in this read | Cavity, heater power and complete heater-state semantics |
+| Heads and filaments | Four physical tool slots, actual/target temperatures, available head/active state | Filament material, color and sensor mapping |
+| Jobs | Current observed job identity and storage position/size | History and prepared-job correlation |
+| Queue | Named unknown-domain response | Queue acquisition/normalization; an empty array is not an observed empty queue |
+| Fans and purifier | Named unknown-domain response | Fan/purifier acquisition and semantics; no observed zero-speed claim |
+| Bed mesh | Named unknown-domain response | Grid/profile acquisition and normalization; no measured mesh |
+| Overview | Explicit unavailable/deferred response | Composition intentionally deferred until focused modules are accepted |
+
+Code evidence is `observation-presentation.ts` (`projectProgress`,
+`projectThermals`, `projectHeads`, `projectJobs`, `projectUnknown`, and
+`projectOverview`), `observation-store.ts`, and the fixed object-query boundary
+in `u1-status.ts`. The unimplemented mappings are hardcoded unknown/null/empty
+projections, not a finding that the printer cannot provide those domains.
+Private filenames, identifiers, images, and runtime paths are intentionally
+not retained in this record.
+
+### Independently reproduced loading defects
+
+Before production edits, the validator executed the exact inline observation
+script with `bun -e` and `node:vm` against a synthetic parent/DOM boundary.
+Three distinct baseline cases retained `Waiting for printer observation`:
+
+1. A cold mount emitted `ui/initialize` as a notification without a request ID
+   or protocol version, then announced initialized without an acknowledged
+   response. The camera used a request/response handshake instead.
+2. An empty `window.openai.toolOutput` masked a usable structured result in
+   `toolResponseMetadata.mcp_tool_result`.
+3. A later `openai:set_globals` event carrying metadata only was ignored.
+
+A valid preloaded queue result rendered the named Unknown card immediately.
+Thus unsupported domain rendering and the generic waiting shell are separate
+problems. The baseline also had no bounded loading failure or retry feedback.
+The standalone dashboard accepted the initialized notification even without a
+completed handshake, so that permissive fixture did not exercise the cold-host
+failure. These are demonstrated software defects; no device bridge log was
+captured, so the exact iPhone event path remains unproven.
+
+The baseline thermal SVG trace was a fixed decorative waveform, not sampled
+history, and its gray bed-mesh cells did not represent a normalized grid.
+Those data-like decorations are removed rather than counted as implemented
+telemetry.
+
+### Independent executable validation
+
+- `bun install --frozen-lockfile`: passed, 145 packages, no lockfile change.
+- `bun test src/observation-widget.test.ts`: passed 12 tests / 111 assertions
+  against the production inline script. The independent validator owns this
+  regression file; the production author owns the widget changes.
+- Covered: request/response initialization ordering, protocol version and ID;
+  direct/nested/metadata result shapes; empty-output and delayed-metadata
+  recovery; three isolated mounted-script instances; view isolation; foreign
+  and malformed results; finite waiting with reopen/retry guidance; selected
+  app-only retry; failed refresh retaining source time, values and stale label;
+  one footer per view; missing-time/offline semantics; absence of pseudo-charts.
+- Separate formal review found that a new metadata-only event could still be
+  masked by an older valid global output. The author prioritized the event
+  payload, and independent regressions for both metadata-envelope names prove
+  that an existing 42-percent card updates to a supplied 84-percent result.
+  This closes a warm-update defect beyond the original empty-output case.
+- An interim `bun run check` caught the expected observation-resource tuple
+  mismatch while alias/version updates were still in progress. Final full-tree
+  results are recorded below after the author hands off stable source.
+
+### Final source gate after warm-update and narrow-thermal repairs
+
+- From the app directory, `bun run check` passed, then
+  `bun test src/*.test.ts` initially passed 132 tests / 917 assertions before
+  the warm-update and JPEG receipt-time regressions were added. That count is
+  intermediate, not the final acceptance count.
+- From repository root, `./scripts/check-repository.sh` first passed TypeScript,
+  134 app tests / 929 assertions and 21 lifecycle tests after both added
+  regressions. Formal review then found a pre-existing narrow-screen selector
+  that hid the Actual thermal reading below 390 pixels. The author removed
+  that hiding rule and placed the identity above both Actual and Target cells.
+  This is a source-level layout repair, not rendered viewport acceptance.
+- The final repeated `./scripts/check-repository.sh` passed TypeScript,
+  **134 app tests / 931 assertions**, **21 lifecycle tests**, and
+  `repository contract: ok` after the narrow-screen repair and two additional
+  structural assertions. All three bundles and signature checks below were
+  rerun against those final bytes.
+- From the app directory, `bun run bundle`, `bun run bundle:server`,
+  `bun run bundle:runtime`, and `codesign -vvv --verify dist/u1-print-studio`
+  passed. Signing is local ad-hoc validation, not distribution signing.
+- `git diff --check` passed. The independent validator did not modify
+  production sources, installed plugins, services, OAuth state or routes.
+
+Validated SHA-256 fingerprints:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Current observation widget | `488d6b44faabed6884dbc214cb4f7b7ff3d7f7f0723b21b042ea1ec8ec3a1fd2` |
+| Current camera widget | `05634036e524693a2c9f9c0f817629968326175a22b98be85d3c28c484ee5e85` |
+| Independent observation VM tests | `c675f15364dbf0e675a25d079ce2600417b4a41304f130388469ef14c00075eb` |
+| Camera VM tests | `196e8097f0c2798058fe1ccfe2e9d6f8abbc2f52ae0376bd6acefec45ee15526` |
+| Frozen legacy status widget | `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437` |
+| Frozen legacy camera widget | `c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203` |
+| Stdio bundle | `aed5f6143babb067b0b9460d1d25fe3c1eb2fbbba32a27e7e73622bc115f58ce` |
+| HTTP bundle | `30e1127a2d63292fd5141457753681ea4211f0d13c13464736e3b4871eeaaf78` |
+| Standalone validation runtime | `4adcc4fc7c92e9435add3a1c5ca0e582f37d98fb9a8a3b632b1ed938d5e0a4d3` |
+
+These tests use deterministic VM, DOM and host fixtures. They do not emulate
+the actual ChatGPT mobile host, browser layout, accessibility tree, native
+fullscreen/PiP, or camera decoding. They are software/protocol evidence only.
+
+### Initial rendered and user-outcome boundary before authorized fallback
+
+At this initial stage the supported browser runtime reported no available browser. The root's
+supported discovery check returned an empty inventory; no raw browser bypass
+was attempted. Product Design comparison, phone-width screenshots, focus,
+overflow, console inspection, and mounted fullscreen/PiP were blocked.
+`design-qa.md` initially recorded `final result: blocked`. Supplied screenshots establish
+the old layout and failure, not acceptance of the new code. No release install,
+service restart, or live test of the changed assets is established here.
+
+### Source review and draft delivery
+
+- Independent formal reviewer verdict: **APPROVE, source-only**, with no
+  unresolved findings. Its targeted suite passed 59 tests / 415 assertions,
+  and the reviewer verified the exact final observation/camera fingerprints
+  above plus the independent 134-test/931-assertion and 21-lifecycle-test gate.
+- Source commit `db4e250` is pushed and delivered in
+  [draft PR30](https://github.com/scottchu/orca-slicer-mcp/pull/30).
+  At initial delivery, `gh pr view 30 --json url,isDraft,state,headRefOid`
+  returned an open draft at source commit `db4e250`; a documentation-only
+  follow-up does not change reviewed implementation bytes. This completes source delivery,
+  not merge, rendered acceptance, installation, or service rollout.
+- Next action is an authorized visual-validation path while the supported
+  browser remains unavailable, followed by separately scoped rollout after
+  acceptance. Unimplemented backend mappings remain unimplemented.
+- The delivery-record follow-up changes only `PROJECT_STATE.md`,
+  `NEXT_AGENT.md`, this validation record and the current `HANDOFF.md`;
+  `git diff --check` passes without changing accepted implementation bytes.
+
+## 2026-08-30 post-merge persistence rollout and restart repair
+
+### Delivery and installed plugin
+
+- PR28 merged as `2160492a4ce63d1409673786ea02b253d7cfaace`. This is the
+  deployed app revision; the subsequent repair changes only local lifecycle
+  tooling and does not require rebuilding or replacing that HTTP release.
+- `bun run bundle:runtime` and `codesign -vvv --verify` passed on the merged
+  source. A tracked-source archive was staged with its standalone executable
+  and the release `.mcp.json` descriptor. Existing personal source was moved
+  to recoverable local Trash before replacement; private backup paths are not
+  recorded here.
+- Plugin Creator `read_marketplace_name.py` returned `personal` and the
+  existing CLI inventory confirmed the intended local source. Its default
+  `update_plugin_cachebuster.py` helper preserved base `0.2.0` and generated
+  `0.2.0+codex.20260831033612`. `codex plugin add u1-print-studio@personal`
+  installed that version. No marketplace or installed-cache file was edited
+  by hand.
+- Source/stage/cache standalone SHA-256 is
+  `c4029f18678e1839c0b005e37bc7401bf84bcc6ed7ef3d19155286253c2f018b`.
+  All six production HTML files and five skill folders match merged source.
+  Plugin Creator validation and Skill Creator validation for the new observation
+  skill passed through the `uv` Python boundary. The installed ad-hoc signature
+  check passed separately through `codesign`.
+- An independent fresh installed-runtime MCP client verified exactly two
+  model-visible and eight app-only tools, all eight resource hashes, and the
+  new observation skill without invoking printer tools. This accepts the
+  installed descriptor/resources, not a host-mounted widget.
+
+### Service installation and observed restart failure
+
+- The operator ran `uv run --no-project scripts/u1_service.py stage`,
+  `install --dry-run`, and `install` with inspected absolute source/Bun paths
+  and local release identifiers. Both existing services initially passed
+  readiness from the immutable merged release, with copied pinned Bun.
+- Independent static checks accepted ten host/asset responses, the progress
+  redirect, health/version contracts, public/private route rejection, and
+  preserved explicit env/plist fields. No printer acquisition was part of
+  those service/static checks.
+- The first independent `uv run --no-project scripts/u1_service.py restart`
+  (defaulting to all services) failed public-service readiness. The public label disappeared
+  after `bootout`; the dashboard was not restarted. A separate explicit
+  `start --service public` recovered public readiness. This was a real
+  lifecycle defect; successful initial installation did not prove restart.
+- Cause: `launchctl bootout` can return before asynchronous job removal.
+  `start_one` saw the still-listed job, skipped bootstrap, and then the old job
+  disappeared. The repair waits for that exact label to become absent, bounded
+  to 30 seconds, before allowing a replacement bootstrap. Timeout fails
+  explicitly rather than claiming restart success.
+- `uv run --no-project scripts/test_u1_service.py` passed **21 lifecycle
+  tests**. Two new tests cover delayed removal and bounded timeout; replacing
+  the method with its original implementation fails the delayed-removal
+  regression. Independent review approved the narrowly scoped CLI repair.
+- Final `./scripts/check-repository.sh` passed TypeScript, **110 app tests /
+  759 assertions**, **21 lifecycle tests**, and `repository contract: ok`.
+  `git diff --check` passed. Independent final review approved the CLI repair
+  and bounded live persistence evidence. Reviewed script SHA-256 is
+  `869630f7bed0c2e82408a4b494e527f612ccb476d8b47375ed34fa5021c9e420`;
+  regression-test SHA-256 is
+  `5a367637bdf8dc0d2716b184ef63cb3841c40ba8ad5c875b8a51ff52670c19c3`.
+
+### Post-repair service and bounded printer evidence
+
+- `uv run --no-project scripts/u1_service.py restart` succeeded after the
+  repair: both services received replacement processes and reached the exact
+  runtime `0.3.0`, schema `5`, observation-v2, and camera-v4 health contracts.
+- The independent validator sent `SIGTERM` to only the exact existing dashboard
+  LaunchAgent with `launchctl kill`. KeepAlive replaced that process and
+  recovered readiness without any CLI start; the public process remained
+  unaffected. This accepts tested process-termination recovery, not reboot,
+  automatic login, sleep, arbitrary crash modes, or continuous availability.
+- Final `uv run --no-project scripts/u1_service.py status` reported both
+  services loaded, healthy, and release integrity verified. Ten static
+  host/asset responses matched merged bytes, `/dashboard` returned a 307
+  progress redirect, public dashboard routes returned 404, unauthenticated
+  public MCP returned 401, and private-dashboard MCP returned 404.
+- Independent before/after hashes for private env, OAuth state, owner config,
+  and Tailscale routing were unchanged; preserved plist fields matched the
+  recovery snapshot. No private values, identifiers, process IDs, or routing
+  hostnames are recorded here.
+- Separately authorized read-only checks posted only the allowlisted
+  `refresh_printer_observation` calls for progress and thermals plus one
+  `get_u1_camera_frame` call with empty arguments to the private bridge.
+  Progress and thermals reused one observation version/source time and
+  reported a reachable printer; cavity stayed explicitly unknown. One valid
+  JPEG snapshot was returned. No camera activation, live stream, or printer
+  control was requested, and no image bytes or job data were retained in Git.
+- A fresh installed MCP client listed/read descriptors and resources only.
+  Browser control was unavailable. Visible rendering, mounted Codex/ChatGPT,
+  mobile, live video/two-viewer fan-out, and user comprehension remain open.
+
+No upload, start-print, pause, resume, cancel, tuning, G-code, route/auth reset,
+Mac automatic login/power change, or mounted-browser acceptance is implied.
+
+## 2026-08-30 persistence integration — pre-rollout evidence
+
+- Milestone: F0. Decision 0022 addresses durable personal HTTP entry points,
+  process-scoped shared observations, and recoverable versioned deployment.
+- User authorization covers PR28 integration/merge and installed/server
+  rollout. Mac login/power, routing/auth changes, and printer controls remain
+  excluded. Existing unrelated canonical-checkout edits are preserved.
+- Read-only configuration inspection confirmed two existing owner LaunchAgents
+  with `RunAtLoad=true` and `KeepAlive=true`, both launching source TypeScript
+  through a pinned Bun. The private dashboard uses loopback 8788; protected MCP
+  defaults to 8787; private enrollment is configured on 8789. Secrets and local
+  printer identifiers were neither printed nor recorded.
+- Integrator ran `bun install --frozen-lockfile`, `bun run check`, and the full
+  Bun test suite after resolving PR27/PR28 conflicts: **105 tests, 606
+  assertions passed**. This is the pre-persistence combined baseline only.
+- Final `bun run check` and `bun test src/*.test.ts`: **110 tests, 759
+  assertions passed**. `bun run bundle` and `bun run bundle:runtime` passed;
+  the local standalone ad-hoc signature is valid. `bun run bundle:server`
+  emits the separate bundled HTTP entry and production assets.
+- `uv run --no-project scripts/test_u1_service.py`: **19 fixture tests
+  passed**. CLI `--help` and `stage --help` matched the documented flags.
+  Fixtures cover plist/env preservation, no-stop dry-run, hash/inventory/Bun
+  integrity rejection, owner-only/symlink/path checks, loaded-state reporting,
+  lifecycle locking, readiness versions, failed-install restoration, explicit
+  rollback recovery, stage copying/immutability, and Bun env precedence.
+- `./scripts/check-repository.sh`: passed TypeScript, the 110-test/759-assertion
+  app suite, all 19 lifecycle tests, and `repository contract: ok`.
+  `git diff --check`, plugin validation, and touched skill validation passed.
+- Independent final reviewer: **APPROVE**, no blocking findings. Independently
+  ran the repository check and verified the exact 10 bundled static host/asset
+  responses, progress redirect, and health in an isolated loopback smoke with
+  **zero synthetic printer-reader calls**. Verified real Bun explicit env-file
+  and plist environment precedence, no ambient dotenv loading, and rejection
+  of relative private auth/config paths. This is source/software and fixture
+  evidence, not an installed service or mounted-browser result.
+- Focused route tests prove the seven named views, public rejection, unknown
+  paths, and selected-route-only initialization/refresh. VM bridge tests prove
+  source/origin validation, no query-derived selectors, visible initial failure,
+  and explicit reload retry. Distinct sequential and concurrent HTTP MCP
+  requests share one due-aware snapshot/version; dashboard injection uses that
+  same store contract. Frozen status and camera hashes remain unchanged.
+- A cold `current()` still acquires the initial observation on demand. Only
+  subsequent plain reads are cache-only. Health/static requests never call it;
+  this source slice does not add acquisition at startup or a background loop.
+- Live deployment, controlled service restart, auth/routing preservation,
+  focused HTML/version readiness, mounted host, real printer, and user outcome
+  require separate results. Browser control is currently unavailable and no
+  visual acceptance is inferred from HTTP success.
+
+## 2026-08-27 post-merge app recovery and live read-only acceptance
+
+### Delivery and installed runtime
+
+- Pull request 20 merged the compatibility-resource repair as `4d4ea2f`.
+- Personal Marketplace version `0.2.0+codex.20260827215815` was release-staged,
+  validated, and installed. The staged and installed standalone executables
+  both had SHA-256
+  `2f9398965871c3eefbfac872e6829583ee37a54089a2450f2550d614b8011c12`;
+  the installed arm64 Mach-O passed ad-hoc signature verification.
+- `codex mcp get u1-print-studio` resolved the portable relative release
+  command from the exact installed plugin-root cwd. No user-specific absolute
+  path was introduced.
+- An exact installed-cache stdio client listed the four model-visible plus
+  three app-only read-only tools, listed and read both `status-v4.html` and
+  `status-v3.html` with identical content, observed standby status, obtained a
+  259,389-byte JPEG, opened one bounded camera offer with one ICE server, and
+  explicitly closed it.
+- The replaced personal source was moved to a recoverable Trash quarantine.
+  Its machine-local path is intentionally not recorded in the repository.
+
+### Deployed service and evidence boundary
+
+- The existing public service was restarted only after the merge. Its
+  LaunchAgent and the new separately supervised dashboard LaunchAgent both
+  reported `running`.
+- Public health, private dashboard page and health, and private enrollment
+  health each returned HTTP 200. Unauthenticated MCP returned 401 and public
+  enrollment returned 404.
+- The existing authenticated remote MCP connection remained usable after the
+  restart: it observed standby status and fresh snapshot metadata reporting an
+  available 255,860-byte `image/jpeg`.
+- The private dashboard bridge opened a real read-only camera session with a
+  981-byte SDP offer and one ICE server, then returned `closed: true` for the
+  explicit close.
+- Existing Tailscale handlers were inspected after deployment. Public 443
+  still maps only the prior exact public handlers, private 8444 maps to the
+  dashboard listener, private 8447 maps to the enrollment listener, and
+  unrelated 8445/8446 handlers remain present. This recovery did not mutate
+  routing.
+- The first dashboard LaunchAgent start failed because its restricted `PATH`
+  omitted the installed Tailscale CLI directory. Adding that fixed path and
+  re-bootstrapping the exact dashboard agent repaired the 502; the service now
+  listens on loopback and the private HTTPS dashboard returns 200.
+- No connected browser-control surface was available. Server-side
+  offer/session/close and snapshot transport are accepted, but visible mounted
+  video, FPS, UI-triggered Close, PiP, and fullscreen remain unaccepted
+  user-outcome evidence.
+- No upload, start, pause, resume, cancel, G-code, route mutation, credential
+  replacement, or other printer-control action ran.
+- `./scripts/check-repository.sh` reran after recording deployment evidence:
+  TypeScript passed, 61 tests with 329 assertions passed, and the repository
+  contract reported `ok`.
+- `git diff --check` passed after the same record update.
+
+## 2026-08-27 mounted-app recovery source validation
+
+### Acceptance and evidence boundary
+
+- Milestone: F0 dual-environment and contract discovery.
+- Keep current tool descriptors on `status-v4.html`, read the immediately
+  preceding `status-v3.html` URI for retained cards, and preserve empty external
+  CSP plus the exact four model-visible and three app-only read-only tools.
+- Keep the release runtime command relative to the installed plugin root. A
+  machine-specific absolute path is not an acceptable open-source packaging
+  repair.
+- Static/software and simulated MCP evidence do not prove mounted playback.
+  The private `:8444` standalone dashboard is a separately supervised developer
+  adapter and its 502 does not prove an MCP or printer failure.
+
+### Diagnosis and commands
+
+- The exact installed cache executable existed, was arm64 Mach-O, passed
+  `codesign -vvv --verify`, and printed help from both its plugin-root cwd and a
+  minimal clean environment.
+- `codex mcp list` resolved the current release command to the exact installed
+  plugin-root cwd. The failing task requested `status-v3.html`, identifying a
+  retained pre-upgrade task snapshot rather than a missing current executable.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 61 tests with 329 assertions. The new
+  regression lists and reads both resource URIs and proves identical widget
+  HTML, MCP Apps MIME type, and empty external CSP.
+- `bun run bundle` and `bun run bundle:runtime`: passed. The standalone runtime
+  passed signature verification and printed help.
+- An exact compiled stdio client launched the standalone runtime with `/tmp` as
+  its cwd, listed v4 and v3, read both resources at 52,470 bytes, and proved
+  their text identical.
+- Plugin Creator validation passed. Skill Creator validation passed for
+  `u1-monitor-print` and `u1-mobile-status-setup`. `git diff --check` passed.
+- No live service, OAuth state, Serve/Funnel route, printer, or installed plugin
+  was changed during source validation.
+
+## Environment
+
+- Working baseline: `32762dd`
+- OrcaSlicer environment: upstream OrcaSlicer `2.4.2` and Snapmaker Orca
+  `2.3.5` observed as local candidates; Snapmaker Orca was used for one pilot,
+  but the first product backend is not selected
+- Printer: redacted private-LAN Snapmaker U1 with Fluidd/Moonraker
+- Observed software: Moonraker `1.5.2`, API `1.4.0`, printer software
+  `1.5.2.13_20260722102206`
+- Validators: primary agent plus independent product and architecture agents
+
+## Commands and results
+
+- `bash -n scripts/check-repository.sh`: passed on 2026-08-23.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok` on
+  2026-08-23, including the single-active-iteration guard.
+- `git diff --check`: passed on 2026-08-23.
+- Relative Markdown link check using `perl` extraction plus filesystem checks:
+  passed on 2026-08-23.
+- Terminology scan excluding superseded decision 0001 and the historical M0
+  iteration found no authoritative single-subsystem or deferred-Orca framing.
+- Independent product consistency review: passed after all findings were
+  repaired.
+- Independent architecture and safety review: passed after mandatory managed
+  provenance and validation records were repaired.
+- `curl --connect-timeout 3 --max-time 8
+  "$PRINTER_BASE_URL/server/info"`: HTTP 200 on 2026-08-23; Klippy connected,
+  state `ready`, with no failed Moonraker components or warnings.
+- `curl --connect-timeout 3 --max-time 8
+  "$PRINTER_BASE_URL/printer/info"`: HTTP 200; printer reported `ready`.
+- `curl --connect-timeout 3 --max-time 8
+  "$PRINTER_BASE_URL/printer/objects/query?webhooks&print_stats&display_status&virtual_sdcard&extruder&heater_bed"`:
+  HTTP 200; standby state, zero progress, temperature telemetry, and inactive
+  virtual SD card were observed.
+- `curl --connect-timeout 3 --max-time 8
+  "$PRINTER_BASE_URL/server/webcams/list"`: HTTP 200; one enabled built-in
+  `webrtc-camerastreamer` camera advertised snapshot and WebRTC paths.
+- `curl --connect-timeout 3 --max-time 10
+  "$PRINTER_BASE_URL/webcam/snapshot.jpg"`: HTTP 200; valid `1920x1080` JPEG.
+  The temporary image was extremely dark and was not added to the repository.
+- `curl --connect-timeout 3 --max-time 8
+  "$PRINTER_BASE_URL/access/info"`: HTTP 200; the current LAN client reported
+  `trusted: true` and `login_required: false`.
+- `curl --connect-timeout 3 --max-time 8
+  "$PRINTER_BASE_URL/printer/objects/list"`: HTTP 200; loaded objects include
+  four extruders, job/session fields, motion, calibration, material sensors,
+  power-loss, defect-detection, and vendor-specific extensions.
+- `curl --connect-timeout 3 --max-time 8
+  "$PRINTER_BASE_URL/printer/gcode/help"`: HTTP 200; 217 command names were
+  advertised, including pause, resume, cancel, G-code offset, and velocity
+  limit. No command was executed.
+- A manual HTTP Upgrade request to `/websocket` with the printer origin returned
+  `101 Switching Protocols` and live JSON-RPC process-stat notifications.
+  Object subscription was not sent through this diagnostic client.
+- `bash -n scripts/check-repository.sh`: rerun after reconciling the discovery
+  records onto `ba18104` and passed on 2026-08-23.
+- `./scripts/check-repository.sh`: rerun with `repository contract: ok` after
+  decisions 0004 through 0006, ontology, and monitoring records were added.
+- `git diff --check`: rerun and passed after the same update.
+- Relative Markdown link check using `perl` extraction plus filesystem checks:
+  rerun and passed after the same update.
+- Authoritative terminology scan found no `Printer Management`, deferred-Orca,
+  or MCP-as-system framing in current Markdown records.
+- `bash -n scripts/check-repository.sh`: passed after hosted validation removal.
+- `./scripts/check-repository.sh`: passed locally with
+  `repository contract: ok` after hosted validation removal.
+- `git diff --check`: passed after hosted validation removal.
+- Repository scan for the removed automation terms, triggers, and job name:
+  returned no matches.
+- Plist inspection plus each executable's `--help`: upstream bundle and banner
+  reported `2.4.2`; Snapmaker bundle reported `2.3.5` and its CLI banner
+  reported `01.10.01.50`. Both help commands returned `0`.
+- Each executable's `--version`: both reported an invalid option and returned
+  `254`, confirming that discovery must not require a conventional version
+  flag.
+- `shasum -a 256` on both executables: recorded the fingerprints in
+  `docs/orca-preparation-findings.md`; `file` reported universal `arm64` and
+  `x86_64` Mach-O executables.
+- `jq` inspection of each bundled `profiles/Snapmaker.json`: both reported 19
+  model variants; upstream profile bundle version `02.04.00.07`, Snapmaker Orca
+  profile bundle version `02.02.50.02`.
+- `python3 .../gcode_tool.py discover`: found upstream OrcaSlicer at the
+  standard app-bundle path and did not discover Snapmaker Orca. This checks the
+  external helper only; it is not product runtime evidence.
+- Official v2.4.2 and v2.3.5 CLI source review confirmed macOS cannot rely on
+  the Linux-only progress pipe or `result.json`; source review also identified
+  support-enforcer and blocker volume types plus facet annotation serialization.
+- No input model was loaded, no slice was run, no generated artifact was
+  retained, and no printer request was issued during the initial Orca
+  discovery. A later user-authorized pilot is recorded below.
+- `bash -n scripts/check-repository.sh`: passed after recording Orca findings,
+  collaborative preview, support representations, and the execution-order
+  redirect.
+- `./scripts/check-repository.sh`: passed locally with
+  `repository contract: ok` after the same update.
+- `git diff --check`: passed after the same update.
+- Relative Markdown link extraction plus filesystem checks: passed after the
+  new Orca Preparation discovery record was linked into the documentation map.
+- Current-authority scan found no remaining print-session-as-product-center,
+  Printer-Operations-first, or Orca-environment-unknown regression.
+
+### Later user-authorized Snapmaker Orca pilot
+
+This evidence occurred after the initial non-mutating discovery. Private input
+files, resolved profiles, generated G-code, temporary paths, printer
+identifiers, and runtime data are intentionally not retained.
+
+- Direct private multi-plate 3MF attempts returned exits `232` and `253`; the
+  correctly formed `--allow-newer-file --slice 2` attempt crashed with exit
+  `139`.
+- Reduced-input probes returned exits `205`, `239`, `254`, `232`, and `139`
+  under different missing, incomplete, or invalid profile/export conditions.
+- A resolved process retaining `wipe_tower_filament: "0"` crashed with exit
+  `139`; removing or correcting it allowed this observed CLI path to proceed.
+  Reproduction with a non-user negative fixture is still pending.
+- Filament-slot profiles missing `filament_diameter` and
+  `filament_is_support` collapsed the resolved physical-extruder count to one
+  and selected `T0` despite explicit filament IDs.
+- Adding complete required fields to all four filament slots restored four
+  physical extruders and logical tool `T2` for physical extruder 3.
+- The successful Snapmaker Orca invocation used two isolated STL objects,
+  complete resolved machine/process settings, four complete filament profiles,
+  explicit filament IDs `3,3`, and an isolated output directory. It returned
+  exit `0`.
+- Static inspection confirmed `T2` and the accepted core process and
+  temperature settings before printer actions.
+- Generated G-code SHA-256:
+  `057f7e06d7d3da28329fe4588d1039c925c4bba74d23783573204448622d2d36`.
+- With explicit user authorization, upload, start acknowledgement, observed
+  printing, and completion were reached as distinct states. The printer
+  reported `22/22` layers, `827.288` seconds, and no printer errors.
+- The user later handled and assembled the physical parts. This proves a
+  physical output for the pilot, while separate fit and mechanism failures
+  prevent any CAD or mechanism acceptance claim.
+- One zsh diagnostic wrapper assigned to the read-only `status` parameter and
+  returned exit `1` even though its child slicer had completed. Future wrappers
+  must capture and report wrapper and child exits separately.
+- Full chronology: [pilot log](../../logs/2026-08-23-snapmaker-orca-u1-petg-print-pilot.md).
+- Derived, still-provisional guidance:
+  [Snapmaker Orca CLI preparation knowledge](../../knowledge/snapmaker-orca-cli-preparation.md).
+- A later user-authorized PLA job provided a second real-printer handoff
+  observation. The validated artifact was uploaded through direct LAN
+  Moonraker only after its backend port was observed reachable; the upload
+  response reported the complete artifact size, the start acknowledgement was
+  recorded separately, and a fresh object query then reported `printing` with
+  logical `T3`, corresponding to physical tool head 4, active. This remains
+  manual operational evidence, not reusable product code or proof of print
+  completion.
+- During that later handoff, the reverse-proxy route and a temporarily
+  unreachable direct backend produced misleading upload failures. Future
+  operational clients must distinguish route reachability, bytes fully
+  accepted, start acknowledgement, and observed printer state instead of
+  treating one failed route as a preparation failure.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok` after
+  adding the separate log, knowledge, current-state, validation, and handoff
+  records.
+- `git diff --check`: passed after the same update.
+- Current-authority scan found only explicitly historical initial-discovery
+  statements, not a current claim that no real slice or print occurred.
+- Privacy scan of the new log and knowledge records found no absolute user or
+  temporary paths and no private-LAN address literals.
+
+## Requirement evidence
+
+- `OBS-001`: partially supported for ready/standby state and temperature fields
+  through one live query; progress during a real print is untested.
+- `OBS-002`: not yet supported by product code; the source returned event time,
+  but no durable observation or stale-state implementation exists.
+- `OBS-003`: not tested; disconnect and reconnect behavior remain unknown.
+- `CAM-001`: transport is supported by prior snapshots and the current camera
+  advertisement. Host-rendered live view, session association, and timestamp
+  persistence are not validated.
+- `AUTH-001`: not supported by Moonraker trust alone. The current client is a
+  trusted LAN client, so application-level caller authorization is still
+  required before any control slice.
+- `API-001` through `API-004`, `ARCH-001` through `ARCH-003`, `ONTO-001` through
+  `ONTO-002`, `OBS-004` through `OBS-006`, and `CAM-003` are accepted as static
+  contracts. The narrow read-only status prototype does not prove their full
+  enforcement or behavior.
+- The later pilot partially supports `ORCA-001`, `ORCA-002`, `ORCA-005`,
+  `ORCA-006`, and the state separation in `HANDOFF-002`. It does not prove a
+  product implementation because no manifest, product adapter, review bundle,
+  authorization runtime, or session correlation exists.
+- Notification and control runtime requirements remain unvalidated. The user
+  outcome of obtaining two printed pieces was observed once; a repeatable
+  preparation product outcome remains unvalidated.
+- `PREP-004` through `PREP-006` and `ORCA-006` are accepted as static working
+  requirements. Local discovery partially supports the feasibility of multiple
+  explicit backends and Orca support representations, but no review bundle,
+  support round-trip, or user acceptance record exists.
+
+## Acceptance state
+
+- Static/software: dual-subsystem, ontology, surface, monitoring, collaborative
+  preparation review, and manual-support contracts are documented. Real
+  installed CLI help and source boundaries were inspected. One later real
+  Snapmaker Orca slice succeeded after multiple recorded crash and profile
+  failures. A read-only MCP Apps monitor prototype exists; no preparation,
+  control, or persistent-monitor runtime exists.
+- Protocol/simulator: live Moonraker HTTP response shapes, WebSocket upgrade,
+  and server notifications were observed; no fixture, simulator, object
+  subscription, or reconnect test exists.
+- Real printer: ready/standby telemetry, image transport, and three
+  user-authorized U1 jobs through reported completion were observed. Product
+  subscription, reconnect, command correlation, and safety behavior remain
+  untested.
+- User outcome: the PETG pieces were obtained once, and the first later PLA
+  output was physically accepted. The second PLA job is telemetry-complete but
+  awaits handling. The slow manual CLI debugging means the workflow itself is
+  not accepted.
+
+## Failures, repairs, and reruns
+
+- The first architecture review found authorization, provenance, dependency,
+  custom G-code, and evidence-taxonomy gaps. They were repaired and re-reviewed.
+- The first consistency review found two active iterations, combined
+  upload/start language, privacy omissions, and stale framing. They were
+  repaired and re-reviewed.
+- Node's built-in WebSocket client emitted a generic handshake error when it did
+  not send the Fluidd origin. A manual Upgrade request with the target origin
+  succeeded. This isolates the failure to client handshake compatibility, but a
+  full subscription client test is still required.
+- A later Moonraker branch changed the root guidance back to a print-session
+  central framing. The current update restores the accepted peer-subsystem
+  contract without removing the useful monitoring records.
+- The later Snapmaker Orca pilot repeatedly crashed or rejected incomplete
+  configurations before a complete resolved-profile path succeeded. Its
+  chronology and provisional guards are now preserved separately so the next
+  agent must reproduce them before implementing automation.
+
+## 2026-08-25 user-directed skill-first prototype
+
+- Two PLA repetitions are recorded in a redacted chronological journal. Both
+  reached `complete` with inactive virtual storage, full file progress, no
+  exception, parked tools, and heater targets at zero. The first was physically
+  accepted by the user; the second awaits handling.
+- The second repetition separately verified physical tool head 2 as logical
+  `T1`, three wall loops at global and object scope, support off, four objects,
+  `188` layers, `220 C` nozzle, and `55 C` bed. A first prepared artifact with
+  zero bed heat was uploaded for metadata inspection but was never started; the
+  corrected artifact was separately validated and authorized.
+- Direct multi-plate project slicing retained incompatible coordinates after
+  profile resolution. Isolating the exact selected mesh, preserving four
+  instances, and arranging them for the U1 produced a valid artifact.
+- Monitoring used a fresh full telemetry and camera observation at each
+  iteration, then chose the next check from state, recent progress, and
+  estimated remaining time. `188/188` was not accepted as completion while the
+  printer still reported `printing`.
+- Decision 0007 records the user's revised maturation order. At that stage, the
+  repo-local `u1-print-studio` plugin contained three thin skills and one visual
+  status-card template but no runtime; the later status-view section records the
+  explicitly authorized change.
+- `uv run --no-project --with pyyaml python .../quick_validate.py <skill>`:
+  passed for all three skills with `Skill is valid!`.
+- `uv run --no-project --with pyyaml python .../validate_plugin.py
+  plugins/u1-print-studio`: passed.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok`.
+- `git diff --check`: passed.
+- Relative Markdown link validation with a read-only Ruby scan: passed.
+- Privacy and placeholder scans found no retained printer address, private
+  model name, absolute user or temporary path, or unfinished plugin marker.
+
+## 2026-08-25 read-only status-view prototype
+
+- `bun install`: installed the MCP Apps, MCP SDK, TypeScript, and Node type
+  dependencies and wrote the tracked Bun lockfile.
+- `bun run check`: passed TypeScript compilation with no emit.
+- HTTP `initialize` returned server `u1-print-studio` version `0.2.0`; HTTP
+  `tools/list` returned only `show_u1_status` and `get_u1_status`, both marked
+  read-only, non-destructive, closed-world, and idempotent.
+- HTTP `tools/call` for `get_u1_status` returned a fresh real-printer
+  observation with `complete`, `100%`, `188/188`, physical tool 2, camera
+  availability, and no control action.
+- HTTP `resources/read` returned `ui://u1-print-studio/status-v1.html` as
+  `text/html;profile=mcp-app`, with the widget description and one runtime-only
+  printer origin in each connect, resource, and frame CSP list.
+- An MCP SDK stdio client launched the exact command represented by the plugin
+  `.mcp.json`, listed both tools, and called `get_u1_status`. It returned the
+  current complete state and camera availability.
+- Direct Bun and Node local-network probes failed on the validation host while
+  system `curl` succeeded. The implementation now calls `curl` without a shell,
+  with a fixed base, fixed read-only routes, and bounded timeouts.
+- Concurrent telemetry and webcam-list requests could contend. Serializing the
+  telemetry read before webcam discovery repaired the stdio observation.
+- Official Apps SDK reference material confirmed `requestDisplayMode` support
+  for inline, Picture in Picture, and fullscreen. The widget feature-detects the
+  host API and retains the MCP Apps bridge path.
+- Browser visual QA was attempted, but this Codex session reported no available
+  browser connection. Host rendering, camera load, live connection and close,
+  PiP, fullscreen, and mounted adaptive refresh remain unverified.
+
+### Same-day host-loop metadata repair
+
+- `bun test src/*.test.ts`: passed `4` tests and `25` assertions covering the
+  render-tool descriptor, read-only annotations, MCP App resource and CSP,
+  result metadata separation, and camera-first widget control paths.
+- `bun run check`: passed TypeScript compilation with the Bun test types.
+- `bun run bundle`: rebuilt the self-contained stdio deployment artifact.
+- `uv run --with pyyaml python .../validate_plugin.py
+  plugins/u1-print-studio`: passed.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok`; the
+  required local check now runs the U1 app TypeScript and Bun test suites.
+- `git diff --check`: passed.
+- The refreshed installed stdio bundle's `tools/list` advertised
+  `_meta.ui.resourceUri` and the descriptor-level compatibility
+  `openai/outputTemplate` on `show_u1_status`, while `get_u1_status` remained
+  data-only.
+- The same installed-bundle smoke test read the resource as
+  `text/html;profile=mcp-app`, returned current `complete` and `100%` telemetry,
+  and reported both camera routes without issuing a printer command.
+- Separate bounded read-only camera requests returned HTTP 200 for a valid
+  `1920x1080` JPEG snapshot and HTTP 200 for the advertised stream page.
+- The existing conversation exposed the plugin only through a programmatic
+  wrapper and did not mount the component after reinstall. Its stale tool
+  surface later returned a telemetry transport failure even though the exact
+  refreshed stdio bundle succeeded.
+- The in-app browser inventory was empty. Snapshot rendering, `Go Live`,
+  `Close`, PiP, fullscreen, and mounted adaptive refresh remain unverified and
+  require a new conversation with the refreshed plugin enabled.
+
+### Mobile layout and relayed-camera repair
+
+- Official OpenAI plugin documentation confirmed that plugins can be used in
+  ChatGPT Chat or Work on mobile, that inline cards can expand to the mobile
+  display area without nested scrolling, and that mobile PiP may be presented
+  as fullscreen. This is product-surface guidance, not evidence for this local
+  plugin on iOS.
+- The desktop component's direct private-LAN camera path was replaced by a
+  read-only `get_u1_camera_frame` MCP tool. The widget no longer receives
+  printer URLs or embeds a nested camera iframe; its CSP external origin lists
+  are empty.
+- `bun run check`: passed after the relay and responsive-layout change.
+- `bun test src/*.test.ts`: passed 10 tests and 52 assertions covering the MCP
+  render descriptor, three read-only tools, self-contained MCP App resource,
+  private frame metadata, same-origin and protocol rejection,
+  first-complete-JPEG stream extraction, relayed preview start/stop, mobile
+  breakpoints, safe areas, touch targets, and host display APIs.
+- `bun run bundle`: rebuilt the self-contained stdio artifact with widget URI
+  `ui://u1-print-studio/status-v2.html`.
+- A real read-only source call returned a valid JPEG data URL. The snapshot was
+  146,574 bytes in that observation; its base64 payload was not printed.
+- A bundled stdio MCP smoke called `get_u1_status` and
+  `get_u1_camera_frame` without calling `show_u1_status`. It returned current
+  `complete` telemetry and a valid relayed JPEG data URL of 148,023 bytes.
+- The camera snapshot endpoint timed out intermittently during repeated smoke
+  calls and sometimes kept a chunked JPEG response open after sending partial
+  bytes. The adapter now caches the printer-advertised same-origin route,
+  extracts the first complete JPEG without waiting for connection close, and
+  retries a frame at most once; the widget's 1.5-second loop never overlaps
+  calls.
+- The marketplace source and installed cache were validated after reinstall as
+  `0.2.0+codex.20260825142747`. An exact installed-cache stdio smoke listed all
+  three tools, served `status-v2` as `text/html;profile=mcp-app` with empty
+  external CSP lists, confirmed the mobile/relay source contracts, returned
+  reachable telemetry, and returned a valid 148,142-byte JPEG data URL in
+  widget-private metadata.
+- The in-app browser was unavailable. Two local headless-Chrome render attempts
+  also failed to produce screenshots and were stopped. Responsive source,
+  contracts, and valid JPEG transport do not prove desktop or iOS rendering.
+- No Secure MCP Tunnel, public endpoint, or iOS host was configured. Cross-device
+  connectivity and visual validation remain pending, and Moonraker was not
+  exposed.
+
+### LAN reachability and slow-camera repair
+
+- Read-only system-`curl` probes from the current laptop returned HTTP 200 for
+  the configured Moonraker `/server/info` and `/server/webcams/list` routes.
+  Route inspection selected the current Wi-Fi interface. No printer identifier
+  or private address is retained here.
+- The mounted card still reported offline through the current Codex MCP
+  connection, and that connection listed only `show_u1_status` and
+  `get_u1_status`. The refreshed contract requires the additional
+  `get_u1_camera_frame` tool, so this is stale host-process evidence rather than
+  a current LAN failure.
+- Webcam inventory advertised the built-in `webrtc-camerastreamer`, a
+  same-origin snapshot route, and a same-origin WebRTC route. A direct bounded
+  snapshot probe returned HTTP 200, `image/jpeg`, and 150,523 bytes in 12.9
+  seconds.
+- The camera relay now allows a 20-second first attempt and one 10-second retry;
+  `.mcp.json` allows 40 seconds. A test asserts that the MCP tool budget exceeds
+  webcam discovery plus both bounded frame attempts.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 12 tests with 54 assertions.
+- `bun run bundle`: rebuilt the self-contained stdio artifact.
+- A source-level real-camera call returned a valid 143,387-byte JPEG in 4.7
+  seconds without printing its payload.
+- `uv run --no-project --with pyyaml python .../validate_plugin.py
+  /Users/scottchu/plugins/u1-print-studio`: passed for the synchronized personal
+  marketplace source.
+- The cache-busted plugin was reinstalled as
+  `0.2.0+codex.20260825144906`. An exact installed-cache stdio smoke listed all
+  three tools, returned reachable `complete` status with camera availability,
+  and returned a valid 149,695-byte JPEG data URL in widget-private metadata.
+- `uv run --no-project --with pyyaml python .../validate_plugin.py
+  plugins/u1-print-studio`: passed for the durable repository source.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok` and
+  reran the 12 tests with 54 assertions.
+- `git diff --check`: passed.
+- A private-address scan across repository records and plugin source was clean.
+- The current thread cannot hot-reload its already-connected MCP process. A new
+  thread remains required to prove mounted desktop rendering. iOS additionally
+  requires an authenticated reachable MCP backend on an always-on host with a
+  private route to the printer; no such backend or tunnel was configured.
+
+### Personal mobile OAuth and setup skill
+
+- Decision 0010 records the selected personal-developer boundary: a dedicated
+  Tailscale Funnel HTTPS origin forwards to a loopback-only Streamable HTTP MCP
+  server. Moonraker and its camera are not Funnel targets.
+- OAuth tests cover the RFC 7636 PKCE vector, root and path-aware discovery,
+  approved and rejected dynamic registrations, unauthenticated challenges,
+  accepted signed tokens, wrong audiences, and missing scopes.
+- `bun run check` and `bun test src/*.test.ts` passed before the onboarding-skill
+  addition with 17 tests and 74 assertions. Final rerun evidence follows in the
+  delivery record.
+- The public health endpoint returned HTTP 200. Protected-resource metadata
+  named the exact `/mcp` resource and only `u1.monitor`; an unauthenticated MCP
+  initialize returned HTTP 401 with the expected `WWW-Authenticate` metadata
+  URL and scope.
+- Tailscale Funnel status showed an existing port-443 root proxy preserved and
+  the dedicated U1 port-8443 root proxy mapped only to `127.0.0.1:8787`.
+- The macOS LaunchAgent was running with umask `077`, using the ignored local
+  environment. OAuth state and the enrollment-link file were owner-only and
+  outside the repository.
+- The intended phone completed user-verified passkey enrollment. Local state
+  reported enrollment without displaying credential material, and the one-time
+  enrollment-link file was absent afterward.
+- `u1-mobile-status-setup` passed Skill Creator validation. The full plugin also
+  passed Plugin Creator validation with four skills.
+- ChatGPT Developer mode, authenticated connection, exact remote tool
+  discovery, and iOS card rendering remain user-interface evidence still to be
+  completed. The Codex iPhone Security and Plugins screens did not expose the
+  desktop/web developer controls.
+- Final local delivery rerun: `bun run bundle`, `bun run check`, and
+  `bun test src/*.test.ts` passed with 17 tests and 74 assertions;
+  `./scripts/check-repository.sh` passed with `repository contract: ok`; and
+  `git diff --check` passed.
+- Skill Creator validation passed for the installed
+  `u1-mobile-status-setup`; Plugin Creator validation passed for the personal
+  marketplace source. The plugin was reinstalled as
+  `0.2.0+codex.20260825200215`.
+- SHA-256 for the bundled stdio artifact matched across the repository,
+  personal marketplace source, and installed cache. This proves exact local
+  packaging, not authenticated remote or iOS behavior.
+
+### Standard-HTTPS OAuth discovery repair
+
+- ChatGPT's New Plugin form selected Server URL and OAuth for the correct
+  `:8443/mcp` endpoint, then failed before OAuth with `Cannot connect to host
+  ...:8443 ssl:default [None]`.
+- Public DNS returned Tailscale Funnel edge addresses. Direct TLS requests to
+  two public IPv4 edge addresses returned HTTP 200 for `/health`, proving the
+  failure was not general Funnel reachability.
+- Decision 0011 moves the personal endpoint to standard HTTPS port 443 while
+  preserving the existing root handler. Exact `/.well-known`, `/oauth`,
+  `/auth`, `/mcp`, and `/health` handlers route to the loopback U1 service.
+- The first path-handler configuration stripped the matched prefix and returned
+  the backend root or HTTP 404. Targets were corrected to retain each backend
+  prefix; this is preserved as setup-skill guidance rather than hidden repair.
+- Through a public Funnel edge on standard port 443, `/health` returned the
+  personal-OAuth marker; authorization-server metadata named the standard-port
+  issuer, endpoints, PKCE S256, and `u1.monitor`; protected-resource metadata
+  named the exact `/mcp` resource; and unauthenticated MCP returned HTTP 401
+  with the correct metadata URL and scope.
+- The unrelated root handler continued returning HTTP 200. The old port-8443
+  handler was removed only after the standard-port public checks passed.
+- The existing passkey remained enrolled because the relying-party ID hostname
+  did not change, and the one-time enrollment-link file remained absent.
+- After the user completed the standard-port registration and passkey flow, the
+  connected host exposed exactly `show_u1_status`, `get_u1_status`, and
+  `get_u1_camera_frame`. An authenticated `show_u1_status` call succeeded and
+  returned a fresh reachable `complete` observation at 100% (188/188 layers),
+  inactive storage at full file position, no exception, all four tools parked,
+  and zero heater targets. This proves the authenticated read-only tool path;
+  user-visible iOS layout and relayed-camera behavior remain separate visual
+  evidence.
+- Delivery rerun after recording that evidence: `bun run bundle`, `bun run
+  check`, and `bun test src/*.test.ts` passed with 17 tests and 74 assertions;
+  setup-skill validation passed; `./scripts/check-repository.sh` returned
+  `repository contract: ok`; repository and personal-source Plugin Creator
+  validation passed; and `git diff --check` passed.
+- The synchronized plugin was reinstalled as
+  `0.2.0+codex.20260825201641`. SHA-256 for `app/dist/stdio.js` matched the
+  repository, personal marketplace source, and installed cache at
+  `d259b492d097c55e7c0a56ff2adf27866c168dd593d4037611a44acb2dcc9944`.
+
+### Codex mobile image fallback
+
+- Decision 0012 records a host-compatible representation change rather than a
+  new dashboard: remote OAuth calls to `show_u1_status` include a self-contained
+  PNG generated from the same normalized observation in `structuredContent`.
+  Local stdio calls and remote `get_u1_status` refresh calls remain data-only.
+- The PNG renderer is dependency-free, emits only `IHDR`, compressed pixel
+  data, and `IEND`, and includes no printer URL, public image URL, camera bytes,
+  or control affordance.
+- A contract test decoded the remote render result, verified the standard PNG
+  signature, and read dimensions of 1200 by 1500. A separate contract test
+  proves the remote refresh result does not add an image.
+- A fresh real-printer observation was rendered locally and visually inspected.
+  It showed `complete`, 100%, 188/188 layers, inactive storage, the observed
+  parked tool and zero heater targets, elapsed time, file identity, observation
+  time, and camera availability. The generated inspection artifact was kept
+  outside the repository.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 19 tests with 83 assertions.
+- `bun run bundle`: rebuilt the self-contained stdio artifact.
+- `uv run --no-project --with pyyaml python .../quick_validate.py
+  ../skills/u1-mobile-status-setup`: passed with `Skill is valid!`.
+- `uv run --no-project --with pyyaml python .../validate_plugin.py ..`: passed
+  for the repository plugin source.
+- `./scripts/check-repository.sh`: passed with `repository contract: ok` and
+  reran the 19 tests with 83 assertions.
+- `git diff --check`: passed.
+- The LaunchAgent was restarted against the changed repository source and the
+  standard-HTTPS public health route returned the personal-OAuth marker. This
+  proves service restart and routing, not an authenticated remote image call.
+- Codex mobile image display remains user-visible host evidence. The current
+  local Codex tool connection intentionally follows the stdio path and returned
+  text plus the interactive-widget contract without a duplicate PNG.
+- Plugin Creator validation passed for the synchronized personal source and the
+  exact installed cache. The plugin was reinstalled as
+  `0.2.0+codex.20260825203920`.
+- SHA-256 for the bundled stdio artifact matched across the repository,
+  personal marketplace source, and installed cache at
+  `acba2fc887c68249a9552a485f3ae9995936ff015da808858d2dfd53fef2b522`.
+- An exact installed-cache stdio smoke listed only the three expected tools,
+  returned a fresh reachable `complete` observation, and returned only text in
+  `content`. This confirms the working local desktop path did not acquire a
+  duplicate PNG; it does not prove a new desktop host mounted the component.
+- The first Codex mobile PNG rendering was user-visible and visually accepted;
+  the user specifically liked the pixel style and requested that it be a little
+  larger. The follow-up portrait layout preserves that style while changing the
+  four metrics from one compact row to a larger 2-by-2 grid. The new layout
+  requires a fresh visual inspection and phone-host confirmation below.
+- A fresh real-printer observation was rendered through the revised 1200 by
+  1500 path and visually inspected. The larger state, percentage, progress bar,
+  two-row metrics, truncated file identity, observation timestamp, and refresh
+  hint all fit without clipping. This is local visual evidence; phone-host
+  sizing remains the user's next confirmation.
+- The loopback service was restarted against the revised source. The first
+  immediate public health probe returned a transient HTTP 502 during restart;
+  the next probe returned HTTP 200 with the personal-OAuth marker and the new
+  process remained running.
+- Plugin Creator validation passed for the repository source, synchronized
+  personal source, and exact installed cache. The portrait update was
+  reinstalled as `0.2.0+codex.20260825211428`.
+- SHA-256 for the rebuilt stdio bundle matched across all three locations at
+  `6dfa78e49bbf81775ca3e62bd518f7399fff1a2c494583aae4032cc5f3e9c49d`.
+- An exact installed-cache stdio smoke again listed only the three read-only
+  tools, returned reachable `complete` telemetry, and kept local content
+  text-only so the desktop widget path remains unchanged.
+
+### Renewable personal OAuth repair
+
+- A live Codex call failed before tool execution with `UNAUTHORIZED`,
+  `oauth_refresh_token_missing`, and a reauthentication action. The phone's
+  additional-access flow then reported that it could not connect to U1 Print
+  Studio.
+- Concurrent public probes still returned HTTP 200 for `/health`, protected
+  resource metadata, and authorization-server metadata. Unauthenticated `/mcp`
+  returned the expected HTTP 401 challenge. Source inspection then showed a
+  15-minute access token, authorization-code-only discovery, and no refresh
+  token in the token response. This supports a renewal failure, not a general
+  service, Funnel, printer, or camera outage.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 22 tests with 115 assertions. The added
+  contracts cover version-1 state migration, discovery and DCR metadata,
+  initial issuance, authorization-code replay, owner-only hashed persistence,
+  restart recovery, client/resource/scope binding, rotation, sequential and
+  concurrent replay, 30-day expiry, and MCP authentication with a refreshed
+  access token.
+- `bun run bundle`: rebuilt the self-contained stdio artifact; remote personal
+  OAuth remains an HTTP-service concern and did not alter the stdio tool bundle.
+- The setup skill, repository plugin source, synchronized personal source, and
+  exact installed cache passed their respective Skill Creator and Plugin
+  Creator validation. `./scripts/check-repository.sh` returned `repository
+  contract: ok`, and `git diff --check` passed.
+- The plugin cachebuster and reinstall flow produced
+  `0.2.0+codex.20260825234015`. SHA-256 for `app/dist/stdio.js` remained matched
+  across repository, personal source, and installed cache at
+  `6dfa78e49bbf81775ca3e62bd518f7399fff1a2c494583aae4032cc5f3e9c49d`.
+- Before restart, the live authorization state was version 1 with two registered
+  clients and an enrolled credential. An owner-only dated backup was created
+  outside the repository. Restart migrated the state to version 2 while
+  preserving the signing key identifier, both clients, and the credential.
+  No secret or private runtime path is recorded here.
+- Post-deployment public health and both discovery documents returned HTTP 200;
+  authorization-server metadata now advertises `authorization_code` and
+  `refresh_token`, PKCE S256, the standard-HTTPS issuer, and only `u1.monitor`.
+  The protected resource still names the exact `/mcp` audience, and
+  unauthenticated MCP still returns HTTP 401 with the expected challenge.
+- This satisfies static/software and public-protocol evidence for `AUTH-002`.
+  A pre-repair connection cannot gain a refresh token retroactively. After
+  deployment, the user confirmed that the repaired connection works
+  immediately. Another call after more than 15 minutes remains the separate
+  real-host renewal gate. No printer command was issued during diagnosis,
+  implementation, deployment, or validation.
+
+### Transport-independent image fallback and third PLA completion
+
+- A current-thread local stdio `show_u1_status` call returned fresh normalized
+  telemetry but only text content. Source inspection isolated the omission to
+  `includeImageCard: Boolean(securitySchemes)`: OAuth presence had been used as
+  a proxy for host iframe capability.
+- Decision 0012 was corrected so every `show_u1_status` result carries the
+  same-observation 1200 by 1500 PNG fallback. `get_u1_status` remains data-only
+  for mounted-widget refreshes.
+- Local and remote render contract tests passed with 9 tests and 56 assertions;
+  the local test now requires `image/png`. TypeScript validation passed after
+  restoring the personal source's locked dependencies.
+- Plugin Creator validation passed for the personal marketplace source. The
+  exact installed cache `0.2.0+codex.20260826003532` reran the 9 render tests
+  successfully. Existing conversations still do not hot-reload replaced MCP
+  processes; a new conversation remains the pickup boundary.
+- During the same read-only monitoring session, a user-authorized third PLA job
+  reached fresh telemetry-verified completion at 98/98 layers: state
+  `complete`, inactive virtual storage at full file position, no exception,
+  all four tools parked, and all heater targets zero. The strongest earlier
+  camera frame showed five attached upright objects without visible spaghetti.
+  The final frame was dark after the bed lowered and lights turned off, so no
+  unseen physical-result claim is made.
+
+### Continuous read-only camera relay
+
+- The moved diff and backup stash were inspected before editing. The stash
+  `move-u1-camera-media-relay-to-orca-worktree` remained untouched and was not
+  reapplied.
+- `bun install --frozen-lockfile` restored missing worktree dependencies without
+  changing `bun.lock`.
+- `bun run check`: passed after the final source-budget correction.
+- `bun test`: passed 29 tests with 144 assertions across application ticket and
+  lease policy, exact multipart HTTP routing, MCP result privacy, local and
+  remote PNG contracts, OAuth, widget fallback, and raw JPEG validation.
+- Skill Creator `quick_validate.py` passed for
+  `u1-mobile-status-setup` and `u1-monitor-print` using `uv run`.
+- `bun run bundle` produced the self-contained stdio artifact. Plugin Creator
+  validation passed for repository source, synchronized personal source, and
+  installed cache.
+- The plugin cachebuster helper replaced the prior suffix and the final
+  reinstall produced `0.2.0+codex.20260826005742`. Repository, personal-source,
+  and installed bundles share SHA-256
+  `6913657ebe92cbcfe372170023545080390953a2e96f9c65412a068e17b31fd1`.
+- An exact installed-cache stdio smoke listed the three local read-only tools,
+  returned a fresh reachable observation, and returned `text` plus a valid
+  1200 by 1500 PNG. The HTTP-only stream tool is intentionally absent from
+  stdio.
+- The first real-camera harness used a provisional 3-second plus 3-second frame
+  budget and did not deliver two frames within its 30-second lease. The
+  temporary harness was stopped. Reusing the established 20-second plus
+  10-second bounded source policy then delivered two complete JPEGs over one
+  multipart response in 1.9 seconds, HTTP 200, with the exact boundary and
+  430,390 transferred bytes. After abort-listener and backpressure-close
+  cleanup, the final synchronized source repeated the proof in 2.6 seconds with
+  428,954 bytes. No image was retained.
+- The live LaunchAgent was moved only from the canonical checkout to the
+  synchronized personal plugin source. Owner-only plist and OAuth-state backups
+  were created outside the repository, and OAuth state remained byte-for-byte
+  unchanged across restart.
+- Tailscale Funnel retained the unrelated root plus exact `/.well-known`,
+  `/auth`, `/health`, `/mcp`, and `/oauth` handlers. Deployment added only
+  `/media` mapped to the same loopback prefix.
+- Local and public health returned HTTP 200. Public OAuth metadata retained
+  authorization code, refresh token, PKCE S256, and only `u1.monitor`.
+  Unauthenticated MCP returned HTTP 401; exact media without a ticket returned
+  HTTP 401; an unknown media path returned HTTP 404; the unrelated root still
+  returned HTTP 200.
+- The current Codex conversation retained its pre-reinstall three-tool MCP
+  surface and later returned a stale offline observation. That is not treated
+  as current deployment or printer evidence. A new thread is required to prove
+  the remote four-tool inventory and mounted widget.
+- Static/software, exact public protocol, and real-printer JPEG evidence pass.
+  Mounted desktop and iOS continuous rendering, fallback behavior, Close, PiP,
+  fullscreen, and real-host OAuth renewal remain separate user-visible gates.
+- No printer control or G-code was implemented or invoked.
+
+### Standalone read-only status dashboard
+
+- `bun install --frozen-lockfile` restored this worktree's missing app
+  dependencies without changing `bun.lock`.
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 34 tests with 161 assertions. The added
+  contracts prove the production widget is hosted by the harness, only
+  status/snapshot/stream calls are accepted, a control-shaped call is rejected,
+  `/dashboard` is absent unless explicitly enabled, a derived external origin
+  must be a private MagicDNS HTTPS hostname on a dedicated non-443 port, and
+  the dashboard-only process returns 404 for the ordinary `/mcp` route.
+- A dedicated status-dashboard process stayed bound to `127.0.0.1:8788`
+  without changing or restarting the installed loopback 8787 service. Private
+  Tailscale Serve HTTPS on port 8444 proxies only the tailnet to that process;
+  the existing public port-443 Funnel routes were preserved and port 8444 has
+  no Funnel permission.
+- The user could not open the earlier raw tailnet-IP port. Tailscale reported
+  the iPhone online and active, but ping used DERP and did not establish a
+  direct connection. That observation motivated replacing the raw app bind
+  with loopback plus Tailscale Serve; it does not by itself prove whether the
+  failed TCP connection was an ACL, firewall, or path issue.
+- The exact private HTTPS `/dashboard` route returned the bridge host and live
+  reachable `complete` telemetry with camera available. A one-time HTTPS relay
+  delivered two multipart JPEG parts, HTTP 200, in 1.42 seconds with 144,083
+  transferred bytes. No image was saved.
+- The in-app browser runtime was unavailable, so the harness was not visually
+  inspected in this run. HTTP integration and real-printer camera evidence do
+  not prove browser layout quality or ChatGPT host rendering.
+- The dashboard is opt-in and read-only. The app remains on loopback, is absent
+  from the normal service, and its dedicated Tailscale Serve port must not be
+  Funnel-enabled. No printer control or G-code was implemented or invoked.
+- `bun run bundle` rebuilt the ignored local stdio artifact successfully.
+  Plugin Creator validation passed with its transient YAML dependency. No
+  cachebuster, marketplace edit, reinstall, or deployed-service replacement
+  was performed because the harness runs directly from the branch.
+
+### Icon controls, persistent grid, and component skeletons
+
+- Acceptance boundary: this refinement changes only the read-only widget UI.
+  It must not add a printer command, expand the standalone bridge tool allowlist,
+  or expose a camera URL to model-readable output.
+- `bun test src/*.test.ts`: passed 35 tests with 174 assertions, including the
+  icon-only control, persistent-grid, and component-loading-state contract.
+- `bun run check`: passed TypeScript validation.
+- Plugin Creator `validate_plugin.py` passed through
+  `uv run --with pyyaml`; the transient dependency did not change project
+  dependencies.
+- Loopback `GET /widget?standalone=1` served the new icon/grid/skeleton source.
+  Loopback and private Tailscale HTTPS `GET /dashboard` both returned HTTP 200.
+- Live read-only bridge calls completed, but the printer was offline at that
+  observation: status was `offline` with camera unavailable, and the camera
+  frame result was unavailable with zero bytes. This verifies the unavailable
+  state path, not live camera rendering or printer reachability.
+- No browser was connected to the in-app browser runtime, so visual layout,
+  animation quality, and live/snapshot transitions remain user-visible review
+  gates. No cachebuster, plugin reinstall, printer command, or G-code action was
+  performed.
+
+### Neutral camera indicator and explicit presentation mode
+
+- Acceptance boundary: the persistent camera grid remains unchanged; the
+  top-left camera icon has no state dot, slash, pulse, or state-dependent
+  color; and the bottom-right overlay is the sole visible camera-mode text.
+- Snapshot mode now reports `Snapshot` with the frame time, snapshot fallback
+  reports `Snapshot fallback`, and continuous mode reports `Live` with the
+  configured rate as an honest `up to 15 FPS` ceiling rather than measured FPS.
+  The old build-plate title and secure-snapshot caption were removed.
+- `bun test src/*.test.ts`: passed 36 tests with 185 assertions, including the
+  neutral-icon and bottom-right mode-label contract.
+- `bun run check`, `bun run bundle`, Plugin Creator validation through
+  `uv run --no-project --with pyyaml`, `./scripts/check-repository.sh`, and
+  `git diff --check`: passed.
+- The exact private HTTPS widget source contains the new mode labels and none
+  of the removed title, secure-snapshot caption, or camera-status dot. Private
+  HTTPS `/dashboard` returned HTTP 200, and its read-only status bridge returned
+  reachable `complete` telemetry with camera available and a configured target
+  of 15 FPS.
+- The browser-control runtime reported no available browser, so the refreshed
+  snapshot, fallback, and live layouts remain a user-visible review gate. No
+  cachebuster, plugin reinstall, printer command, or G-code action was
+  performed.
+
+### Snapmaker card theme
+
+- Acceptance boundary: this pass changes only the existing read-only card's
+  visual tokens. Layout, copy, camera relay behavior, bridge calls, tools, and
+  printer behavior remain unchanged.
+- A user-supplied Snapmaker U1 website screenshot established the palette:
+  charcoal and warm white form the base, Snapmaker yellow identifies the card,
+  orange is reserved for paused or attention state, and red remains reserved
+  for faults. The implementation applies yellow to the camera grid, live and
+  refresh actions, status treatment, progress fill, and the camera/content
+  divider in light and dark color schemes.
+- `bun test src/*.test.ts`: passed 37 tests with 192 assertions, including the
+  Snapmaker theme-token contract. `bun run check`, `bun run bundle`, Plugin
+  Creator validation through `uv run --no-project --with pyyaml`,
+  `./scripts/check-repository.sh`, and `git diff --check`: passed.
+- Private HTTPS `/dashboard?reload=5` returned HTTP 200. The exact served widget
+  contained the yellow and orange tokens plus branded divider and no legacy
+  green or lime token declarations.
+- Product Design QA is recorded in `design-qa.md` with `final result: blocked`.
+  The source reference was inspected, but the in-app browser runtime reported
+  no connected browser, so no implementation screenshot, visual comparison,
+  interaction check, or console check was available. No cachebuster, plugin
+  reinstall, printer command, or G-code action was performed.
+
+### Semantic camera modes and measured relay FPS
+
+- Acceptance boundary: camera mode status is left-aligned and the mode action
+  is right-aligned; snapshot/fallback displays a red disconnected-camera icon;
+  live displays a pulsing green dot; and the FPS label reflects observed frame
+  presentation rather than the configured relay ceiling. The camera remains
+  read-only and no printer-control surface is added.
+- The widget now fetches the exact one-time media URL permitted by the MCP
+  result, parses complete JPEG frames from the multipart byte stream, presents
+  them through the existing snapshot element, and computes FPS from frame
+  observations in a rolling five-second window. Until two frames arrive it
+  reports `Live · measuring FPS`.
+- The exact private relay delivered four complete frames at an observed 1.4 FPS
+  during the smoke check. This is transport/presentation evidence, not a claim
+  about the camera sensor's native frame rate.
+- `bun test src/*.test.ts`: passed 38 tests with 207 assertions.
+- `bun run check`, `bun run bundle`, and an independent parse of the inline
+  widget module: passed. Private HTTPS `/dashboard?reload=6` returned HTTP 200
+  and served the measured-FPS widget source.
+- Plugin Creator validation through `uv run --no-project --with pyyaml`,
+  `./scripts/check-repository.sh`, and `git diff --check`: passed.
+- The identity palette is grounded in the official Snapmaker U1 page stylesheet:
+  charcoal `#1c1e20`, `#1f1f1f`, and `#242424`; yellow `#ffcd00`; orange
+  `#ff5f28`; and warm white surfaces. Semantic green `#32c86e` and red
+  `#ff6161` are deliberately outside the brand palette and communicate
+  positive/connected versus negative/disconnected state.
+- Browser-rendered comparison and interaction QA remain blocked because the
+  configured browser-control runtime reported no connected browser. No plugin
+  reinstall, printer command, or G-code action was performed.
+
+### Actual WebRTC camera presentation
+
+- Acceptance boundary: `Go Live` must negotiate the printer's advertised
+  `webrtc-camerastreamer`; no repeated snapshot transport may be called live;
+  snapshots remain an explicitly labeled fallback; printer controls and a
+  generic proxy remain absent.
+- `bun run check` and `bun test src/*.test.ts`: passed 38 tests with 220
+  assertions. The contracts cover a real `<video>` element,
+  `RTCPeerConnection`, H264 offer handling, answer and ICE forwarding,
+  printer-peer-ID privacy, ticket replay rejection, bounded lease teardown,
+  CORS, and removal of the old MJPEG route and JPEG stream parser.
+- `bun run bundle`, Plugin Creator validation through
+  `uv run --no-project --with pyyaml`, `./scripts/check-repository.sh`, and
+  `git diff --check`: passed.
+- The private dashboard's exact ticketed signaling route returned an H264 offer
+  of 981 bytes plus the reference STUN server without exposing the printer peer ID, and session deletion
+  released the lease. A separate `aiortc` receiver reached `connected`, decoded
+  frames over the persistent peer connection, and closed the session without
+  retaining media. Software-decoder samples varied from 0.2 to 24.8 FPS; that
+  variability is not native-browser performance evidence.
+- Plugin `0.2.0+codex.20260826165531` was validated, reinstalled, and both the
+  protected service and private dashboard were restarted. Public
+  `/media/camera.mjpeg` returns 404, invalid WebRTC tickets return 401, and
+  private `/dashboard?reload=10` returns 200 while serving the WebRTC widget.
+- No connected browser was available to the control runtime, so visible native
+  playback, browser-measured FPS, and ChatGPT/iOS mounting remain separate
+  user-visible acceptance evidence. No printer control or G-code action ran.
+
+### Automatic-refresh icon cleanup
+
+- Removed the decorative status-dot pseudo-element from the automatic-refresh
+  button. Enabled and paused behavior, accessible labels, and icon color remain
+  unchanged.
+- `bun run check`, `bun test src/*.test.ts`, and `bun run bundle`: passed 38
+  tests with 222 assertions, including absence of both dot selectors.
+
+## Local-first connector and MCP Apps signaling bridge — 2026-08-26
+
+### Acceptance and safety boundary
+
+- Milestone: F0 dual-environment and contract discovery.
+- Open questions addressed: the first normal-user Printer Operations host and
+  network boundary, reuse of one application session service from MCP and
+  optional HTTP adapters, and the smallest packaging/onboarding evidence.
+- Decision 0016 and the active brief recorded acceptance criteria before code
+  implementation. Decision 0016 partially supersedes 0015 only for hosted
+  signaling transport.
+- This validation is read-only static/software and simulated protocol evidence.
+  It does not prove a mounted host, another machine, package installation,
+  physical-printer behavior, or user outcome.
+- No printer, installed plugin, marketplace, package registry, Homebrew tap,
+  OAuth state, Tailscale service, or other hosted service was accessed or
+  changed.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun run check`: passed.
+- `bun test src/*.test.ts`: passed 49 tests with 275 assertions across nine
+  files. Coverage includes empty hosted CSP, no widget `fetch(` call, MCP Apps
+  signaling tool names, app-only helper visibility, private session metadata,
+  snapshot fallback wiring, existing status/snapshot/PNG contracts, fixed HTTP
+  adapter routes, offer/answer/ICE bounds, expiry, concurrency, cumulative
+  candidate teardown, configuration permissions, and release packaging.
+- `bun run bundle`: passed and emitted ignored `dist/stdio.js` plus the embedded
+  `dist/widget.html` asset. An earlier run failed because the old `--outfile`
+  form cannot emit both files; the script now uses an explicit output directory
+  and deterministic entry/asset names.
+- `bun run bundle:runtime`: passed with Bun 1.3.12 and produced an ignored
+  macOS arm64 standalone executable. The builder disables automatic dotenv and
+  bunfig loading, embeds the widget, removes Bun's invalid emitted signature on
+  this macOS 26.5.2 host, applies an ad-hoc local signature, and verifies it.
+- `./dist/u1-print-studio --help`: passed without invoking a Bun executable.
+- `./dist/u1-print-studio setup --printer-url http://127.0.0.1:7125 --config
+  <temporary-directory>/config.json --json`: passed and wrote the temporary
+  configuration.
+- `./dist/u1-print-studio doctor --offline --config
+  <temporary-directory>/config.json --json`: passed with
+  `printerObservation: skipped-offline`; it did not contact hardware.
+- `stat -f '%Sp %N' <temporary-directory>/config.json`: reported `-rw-------`.
+- `codesign -vvv --verify ./dist/u1-print-studio`: reported valid on disk and
+  satisfied its designated requirement for the ad-hoc validation signature.
+
+From the repository root:
+
+- `uv run --no-project --with pyyaml python
+  /Users/scottchu/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py
+  plugins/u1-print-studio`: passed.
+- `git diff --check`: passed before final record updates.
+- `./scripts/check-repository.sh`: initially identified the required
+  `PROJECT_STATE.md` headings after that file was condensed. The headings were
+  restored. A subsequent run exposed a millisecond-boundary test flake where a
+  nominal 30-second lease displayed as 29 seconds; the presentation duration
+  now rounds up while the absolute expiry remains authoritative.
+- Final `./scripts/check-repository.sh`: passed, including TypeScript and all 49
+  tests with 275 assertions.
+- Final `git diff --check`: passed.
+
+### Independent pre-merge review
+
+- A pre-existing config file could retain broader permissions because the
+  creation mode passed to `writeFileSync` only applies when a file is created.
+  The writer now explicitly applies `0600` after every non-Windows write, and a
+  regression starts from an existing `0644` file.
+- A malformed camera stream envelope could contain a valid session ID but fail
+  validation before the widget retained it for teardown. The widget now retains
+  a valid ID before envelope validation, so snapshot fallback closes the
+  bounded session; a widget contract regression enforces that ordering.
+- `bun test src/local-config.test.ts src/app.test.ts`: passed 19 tests with 140
+  assertions.
+- `bun run bundle` and `bun run bundle:runtime`: passed; the regenerated macOS
+  arm64 executable remained valid on disk and satisfied its designated
+  requirement.
+- Plugin validation passed with `uv run --no-project --with pyyaml`, and
+  `git diff --check` passed before these record updates.
+
+### Packaging evidence boundary
+
+- `.mcp.release.json` invokes only the staged executable's `mcp` subcommand and
+  contains no Bun, env-file, Tailscale, DNS, or OAuth setup.
+- `PACKAGING.md` maps Marketplace, Homebrew, and npm to the same setup/doctor
+  contract. No channel metadata was published or installed.
+- The ephemeral macOS executable and all temporary configuration/build smoke
+  files were removed after validation. Source and manifests are the delivered
+  artifacts.
+- Developer ID signing, notarization, checksums, cross-platform builds,
+  installation, upgrades, rollback, owner-selected licensing and third-party
+  notices, and elimination of the platform `curl` dependency remain unverified
+  gates.
+
+### Delivery
+
+- Implementation commit: `3145a77` on non-main branch
+  `scottchu/local-first-rollout`.
+- Pull request: https://github.com/scottchu/orca-slicer-mcp/pull/15.
+- No hosted validation workflow was configured or awaited.
+
+## Post-merge personal Marketplace installation — 2026-08-27
+
+### Authorization and evidence boundary
+
+- The user explicitly authorized merge, install, and test after independent
+  review. Pull request 15 merged as `d5a734e65b04a5af9b458cc310f45cb40dcfbd40`.
+- This is same-machine installation plus real-printer read-only protocol
+  evidence. No upload, start, pause, resume, cancel, G-code, or other printer
+  control tool or action ran.
+- The current Codex task could not hot-reload the reinstalled plugin, so mounted
+  iframe rendering, Go Live playback, PiP, fullscreen, and fallback remain a
+  separate fresh-task user-outcome gate.
+
+### Release staging and installation
+
+- The merged plugin source was copied into the personal Marketplace source.
+  The standalone macOS arm64 executable was staged at
+  `app/runtime/u1-print-studio`.
+- Codex plugin validation requires the MCP descriptor at `.mcp.json`. The
+  release staging copy therefore replaced the developer descriptor with the
+  contents of `.mcp.release.json`; it did not install Bun or an environment-file
+  dependency.
+- Plugin validation passed, `--help` passed, and the plugin-creator cachebuster
+  advanced the staged version to `0.2.0+codex.20260827152101`.
+- `codex plugin add u1-print-studio@personal`: passed. `codex plugin list`
+  reported the new version installed and enabled.
+- The staged and installed executables had the same SHA-256
+  `624957b927e930bce975f714de1729381b20f67a598654010453dcbc9e1e8d52`.
+  The installed executable passed `codesign -vvv --verify`.
+- Installed-runtime setup and offline doctor passed against a temporary
+  loopback config; its mode was `0600`. The temporary smoke directory was moved
+  to Trash after validation.
+
+### Installed read-only smoke
+
+- Setup migrated the existing private printer origin into the default local
+  config without printing or persisting that identifier in the repository.
+- Installed-runtime `doctor --json`: passed with configuration, fixed
+  read-only allowlist, MCP Apps signaling, and external-widget-fetch checks all
+  healthy; `printerObservation` was `reachable`.
+- A direct MCP stdio client launched the exact installed standalone executable.
+  `tools/list` returned four model-visible tools and the three app-only bounded
+  signaling helpers.
+- `get_u1_status` returned a reachable printer and available camera;
+  `get_u1_camera_frame` returned relayed `image/jpeg` data;
+  `open_u1_camera_stream` returned an MCP Apps offer; and
+  `close_u1_camera_stream` confirmed explicit teardown.
+- The installer replaced the previous cache version; rollback requires
+  restaging a prior Git version rather than selecting an old cache directory.
+  A mistakenly resolved, unused staging copy was moved to a dated Trash
+  quarantine outside the repository rather than deleted.
+
+## Secure remote Monitor source slice — 2026-08-27
+
+### Acceptance and safety boundary
+
+- Milestone: F0 dual-environment and contract discovery.
+- Decision 0017 records the user-authorized slice: standard-HTTPS public OAuth
+  and Streamable HTTP MCP, a separate loopback enrollment listener for a
+  tailnet-only Serve origin, explicit bounded STUN, and preferred per-session
+  RFC5766 TURN REST credentials.
+- The public inventory remains exactly four model-visible read-only tools and
+  three app-only read-only signaling helpers. No upload, start, pause, resume,
+  cancel, G-code, generic proxy, Control, or Admin capability was added.
+- This run is static/software and simulated-protocol evidence only. It did not
+  restart or inspect the live process, alter the LaunchAgent, Tailscale Serve or
+  Funnel, OAuth state, installed plugin, or contact a printer. Coordinator
+  diagnostics were treated as pre-change constraints, not revalidated or
+  mutated deployment evidence.
+
+### Implemented contracts
+
+- Public `/auth/enroll` and descendants return 404. The enrollment-only handler
+  exposes only private `/health` plus exact enrollment routes; MCP, OAuth token,
+  media, widget, and unknown routes return 404.
+- `U1_ENROLLMENT_BASE_URL` must use the public OAuth hostname on a distinct
+  nonstandard HTTPS origin. Configuring it requires a distinct loopback
+  `U1_ENROLLMENT_PORT`. The listener remains bound after restart with an
+  existing credential: private health remains available and enrollment stays
+  404 until a local reset creates a new one-time flow.
+- Public OAuth is restricted to standard HTTPS port 443. Public MCP continues
+  to require audience- and scope-bound `u1.monitor` tokens; optional exact HTTP
+  signaling retains its single-use capability authentication.
+- ICE defaults empty. The standalone owner-only schema-2 config accepts and
+  preserves bounded repeatable `--stun-url` values; schema 1 reads with an empty
+  STUN migration. The HTTP server can use env ICE configuration without any
+  standalone config and fails if an existing optional config is malformed.
+- TURN configuration accepts bounded `turn:` and `turns:` URLs plus a
+  server-only shared secret and a 1800-to-3600-second TTL. Each camera request
+  derives `expiry:nonce` plus base64 HMAC-SHA1 credentials and gives the exact
+  same ephemeral ICE set to the printer offer and widget-private result
+  metadata. The shared secret never leaves the server; derived credentials,
+  sessions, printer URLs, and printer peer IDs remain outside model-readable
+  content and structured content.
+- Malformed ICE coverage rejects wrong schemes, empty TURN addresses,
+  credential-bearing URLs, unsupported query parameters, duplicate or
+  oversized lists, partial TURN configuration, invalid secret lengths, and
+  invalid or out-of-range TTLs and ports.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun install --frozen-lockfile`: passed and restored this worktree's missing
+  dependencies without changing the lockfile.
+- `bun run check`: passed TypeScript compilation with no emit.
+- `bun test src/*.test.ts`: passed 60 tests with 324 assertions across ten
+  files. Coverage includes the enrollment split and post-enrollment restart,
+  env-only HTTP compatibility, owner-config STUN preservation, malformed ICE
+  rejection, deterministic TURN REST derivation, exact printer/browser ICE
+  handoff, model-result privacy, authenticated four-plus-three tool inventory,
+  bounded sessions, fallback, PNG, packaging, and existing status contracts.
+- `bun run bundle`: passed and emitted the ignored stdio bundle plus widget.
+- `bun run bundle:runtime`: passed and produced the ignored macOS arm64
+  standalone executable; its ad-hoc validation signature verified.
+- Standalone `--help`: passed and advertised repeatable `--stun-url` setup.
+- Standalone `setup` against a temporary loopback printer origin with one
+  fixture STUN URL: passed and wrote schema 2. A second setup changed only the
+  fixture printer origin and preserved STUN. `doctor --offline --json` passed
+  with `iceTraversal: explicit-stun-only` and skipped printer observation.
+  The temporary config mode was `0600`; it contained no TURN setting or secret.
+  The temporary directory was removed after the smoke check.
+- `codesign -vvv --verify ./dist/u1-print-studio`: passed.
+
+From the repository root:
+
+- U1 mobile setup `quick_validate.py` through
+  `uv run --no-project --with pyyaml`: passed with `Skill is valid!`.
+- Plugin Creator `validate_plugin.py` through
+  `uv run --no-project --with pyyaml`: passed.
+- `./scripts/check-repository.sh`: passed, including TypeScript and all 60 Bun
+  tests with 324 assertions; final output was `repository contract: ok`.
+- `git diff --check`: passed.
+
+### Unverified later layers and blocker
+
+- No public-edge request was made, so standard-HTTPS discovery, public
+  enrollment rejection, private Serve health, preserved live handlers, and
+  unauthenticated public rejection remain deployment evidence gates.
+- No TURN service URL or shared secret was supplied. A real TURN allocation,
+  credential expiry/refresh behavior, bandwidth, and relay availability remain
+  externally blocked. Explicit STUN can be a compatibility deployment step but
+  does not prove reliable remote media.
+- No printer or mounted host was contacted. ChatGPT and Codex WebRTC playback,
+  snapshot fallback, Close, PiP, fullscreen, and user outcome remain
+  unobserved. No mounted-host success is claimed.
+
+## Post-merge secure remote deployment — 2026-08-27
+
+### Delivery and installation
+
+- Pull request 18 merged the secure source slice as `e298885`. Independent
+  reruns passed the repository contract with 60 Bun tests and 324 assertions,
+  both bundles, the setup skill validator, the plugin validator, signature
+  verification, and whitespace checks.
+- Personal Marketplace version `0.2.0+codex.20260827202019` was release-staged
+  and installed. Source, staged, and installed standalone runtimes shared
+  SHA-256 `d6f5f23f90c532e86acb0b3c7a0fc32f10d7deeede73bb267be66c13ec33fac1`.
+  The prior personal source is recoverable from Trash at
+  `u1-print-studio-personal-source-20260827T201915Z`.
+- The owner config migrated from schema 1 to schema 2 with mode `0600` and one
+  explicit STUN URL. Offline doctor reported `explicit-stun-only`; no printer
+  origin or credential was recorded here.
+
+### Live public and private boundaries
+
+- OAuth state SHA-256 was unchanged across the service reload. The LaunchAgent
+  now runs the merged repository app rather than the replaceable Marketplace
+  staging source; its previous plist is recoverable from Trash at
+  `com.scottchu.u1-print-studio.plist.20260827T202600Z`.
+- Loopback public and enrollment health returned 200 on ports 8787 and 8789.
+  Public standard-HTTPS health returned 200, public enrollment returned 404,
+  and unauthenticated public MCP returned 401 with `u1.monitor` resource
+  metadata. OAuth discovery published only standard-HTTPS endpoints.
+- Existing Serve/Funnel routes were preserved. Tailnet-only Serve port 8447
+  proxies only to the enrollment listener; private health returned 200 while
+  private MCP, token, media, widget, and enrolled-state enrollment routes all
+  returned 404. Funnel remained enabled only on port 443.
+
+### Installed and real-printer read-only evidence
+
+- An exact installed-cache stdio client listed seven tools: four model-visible
+  read-only tools and three app-only signaling helpers. Status reported the
+  printer reachable, a relayed JPEG observation reported 124,642 bytes, an
+  H264 offer included one configured ICE server, and explicit local session
+  close returned true. No printer-control tool or action ran.
+- A direct bounded printer offer confirmed the STUN config reached the printer,
+  but its SDP still contained only `host` candidates and no server-reflexive or
+  relay candidate. This does not prove internet-routable media.
+- Browser discovery returned no connected browser surface. Mounted ChatGPT and
+  Codex playback, fallback, PiP, fullscreen, and user-visible success therefore
+  remain unverified. No TURN REST service URL or shared secret was supplied, so
+  a real relay allocation and reliable arbitrary-network playback remain
+  externally blocked.
+
+## Camera-only presentation source validation — 2026-08-28
+
+### Static, software, and simulated protocol evidence
+
+- `bun run check`: passed.
+- `bun test src/app.test.ts src/status-dashboard.test.ts`: passed after the
+  final visual/lifecycle corrections with 30 focused tests.
+- `./scripts/check-repository.sh`: passed with 69 Bun tests and 398 assertions;
+  final output was `repository contract: ok`.
+- `git diff --check`: passed.
+- Both edited plugin skills passed Skill Creator `quick_validate.py` through
+  `uv run --no-project --with pyyaml`.
+- Plugin Creator `validate_plugin.py` passed through
+  `uv run --no-project --with pyyaml`.
+- `bun run bundle`: passed and emitted `camera-widget.html` as a distinct
+  embedded asset alongside `widget.html`.
+- `bun run bundle:runtime`: passed; the macOS arm64 standalone runtime was
+  ad-hoc signed and `codesign` reported it valid on disk and satisfying its
+  designated requirement.
+- A compiled-runtime stdio client listed exactly four model-visible tools
+  (`show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
+  `open_printer_camera`) plus four app-only helpers
+  (`open_u1_camera_stream`, answer, candidate, and close), listed
+  `camera-v1.html`, and read a camera-only embedded resource.
+- Regression tests prove `open_printer_camera` returns a snapshot without
+  opening a session, both MCP and `/dashboard/camera` serve the same HTML,
+  focused routes are absent from ordinary server mode, external CSP lists are
+  empty, the widget has no `fetch(` or caller-selected URL, camera markup is
+  exactly equal to the current status widget camera section, the module script
+  parses under strict semantics, and Live requires a rendered frame.
+
+### Private browser and real-printer read-only evidence
+
+- A separate source dashboard ran on loopback port 8791 without changing the
+  installed plugin, LaunchAgents, OAuth state, or Tailscale routes.
+- The in-app browser opened `/dashboard/camera`; the host reported its bridge
+  ready and the focused widget displayed a current real camera snapshot using
+  the exact existing camera component presentation.
+- One user-authorized read-only Go Live interaction negotiated successfully.
+  The widget did not label the connection Live until a rendered frame callback,
+  then reported an observed `Live · 23 FPS`. Close released the session and
+  returned the same component to Snapshot.
+- The temporary source server was stopped after the check.
+
+### Evidence boundary
+
+- The private loopback source dashboard proves this machine's test host,
+  bridge, real snapshot, rendered live path, and Close behavior. It does not
+  prove the not-yet-installed plugin, mounted Codex/ChatGPT resources, mobile
+  playback, arbitrary-network traversal, or snapshot fallback under a real
+  failure.
+- No TURN server is configured. No live TURN allocation or relay candidate was
+  observed, so robust remote mounted playback remains unproven.
+- No printer control, upload, start, pause, resume, cancel, G-code, generic
+  proxy, or Admin action ran.
+
+## Camera-only post-merge install and private deployment — 2026-08-28
+
+### Delivery and installation
+
+- Pull request 22 merged the source slice as `333bebe`.
+- Plugin Creator cache-busted and validated Personal Marketplace version
+  `0.2.0+codex.20260828194545`. Release staging came from the exact merged Git
+  tree, replaced the developer MCP descriptor with `.mcp.release.json`, and
+  embedded the validated standalone runtime. No `.env`, `node_modules`, or
+  `dist` directory entered the staged plugin.
+- The prior personal plugin source was moved, not deleted, to recoverable Trash
+  quarantine `u1-print-studio-personal-source-20260828T195024Z`.
+- `codex plugin add u1-print-studio@personal` installed the cache-busted
+  version. Staged and installed runtimes shared SHA-256
+  `b7c0151f01faaddf57aba04f884819ebef92c3254cdae74a09c7c88416af5be1`.
+  `codex mcp get u1-print-studio` resolved the portable relative runtime command
+  in the installed cache.
+- An exact installed-cache stdio client listed model-visible
+  `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
+  `open_printer_camera`; app-only stream open, answer, ICE, and close; and
+  status-v4, status-v3, and camera-v1 resources. The camera resource was 29,785
+  bytes and contained the rendered-frame gate without printer-status markup.
+
+### Existing-service restart and deployed private test
+
+- The canonical clean `main` checkout fast-forwarded to `333bebe`. Existing
+  `com.scottchu.u1-print-studio` and
+  `com.scottchu.u1-print-studio-dashboard` LaunchAgents were restarted with
+  their already loaded configuration; no plist, OAuth, enrollment, or
+  Tailscale command changed configuration.
+- Public health returned 200. Private `/dashboard/camera` and
+  `/camera-widget` returned 200. The Tailscale Serve/Funnel status SHA-256 was
+  `7dac599f0a80ff45802a7812dda5b67ac2042bc9f66121d18968a83c15d5eebe`
+  both before and after restart.
+- The deployed private camera host reported its bridge ready and displayed a
+  fresh real snapshot. Go Live reached the rendered-frame gate and reported
+  `Live · 25 FPS`; Close returned to Snapshot. The test used only read-only
+  camera calls.
+
+### Remaining evidence boundary
+
+- Installed-cache MCP contracts and the deployed private browser are verified.
+  A fresh Codex or ChatGPT task is still required to prove the new
+  `open_printer_camera` mounted resource in those hosts; this existing task
+  cannot hot-load the reinstalled descriptor.
+- No TURN server or relay allocation was added. The successful private browser
+  path does not prove arbitrary-network mounted playback, failure fallback, or
+  mobile playback.
+- No printer control, preparation, upload, start, pause, resume, cancel, G-code,
+  generic proxy, or Admin action ran.
+
+## Camera workflow repair source validation — 2026-08-28
+
+### Acceptance and safety boundary
+
+- Decision 0019 makes `open_printer_camera` the only model-visible camera
+  action. The complete inventory is three model-visible plus five app-only
+  read-only tools under the existing `u1.monitor` boundary.
+- A one-time widget-private activation is required before stream allocation;
+  stale direct stream calls fail before printer access or capacity use.
+- Unanswered offers release after 15 seconds. Answered sessions retain the
+  existing maximum duration and explicit Close behavior.
+- This section is source/software and simulated-protocol evidence only. It did
+  not mutate an installed plugin, LaunchAgent, OAuth state, Tailscale route, or
+  printer.
+
+### Commands and results
+
+- `bun install --frozen-lockfile`: restored worktree dependencies without
+  changing the lockfile.
+- `bun run check`: passed TypeScript compilation.
+- `bun test src/*.test.ts`: passed 71 tests with 417 assertions. Regressions
+  cover model/app visibility, private activation, rejection before allocation,
+  one-time replay failure, unanswered-session cleanup, v2/v1 resource parity,
+  widget Go Live flow, and runtime health schema.
+- `bun run bundle` and `bun run bundle:runtime`: passed. The standalone macOS
+  arm64 runtime received its validation-only ad-hoc signature.
+- `codesign -vvv --verify ./dist/u1-print-studio`: reported valid on disk and
+  satisfied its designated requirement.
+- Plugin Creator validation passed through `uv run --no-project --with
+  pyyaml`. Skill Creator validation passed for `u1-monitor-print` and
+  `u1-mobile-status-setup` through the same `uv` boundary.
+- `./scripts/check-repository.sh`: passed, including TypeScript and all 71 tests
+  with 417 assertions; final output was `repository contract: ok`.
+- `git diff --check`: passed.
+
+### Unverified later layers
+
+- Release staging, Personal Marketplace cache-busting/install, exact
+  installed-cache MCP, public health/OAuth, private dashboard, real-printer
+  snapshot/offer, mounted Codex/ChatGPT, and mobile behavior remain separate
+  gates until explicitly recorded.
+- No TURN server is configured, so arbitrary-network relay behavior remains
+  unproven. No printer control was added or invoked.
+
+## Camera workflow repair post-merge rollout — 2026-08-28
+
+### Delivery and installed runtime
+
+- Pull request 24 merged as `62acd4c`. Canonical `main` fast-forwarded to that
+  merge before release staging.
+- The exact merged source rebuilt and ad-hoc signed the standalone runtime.
+  Plugin Creator cache-busted the staged personal source to
+  `0.2.0+codex.20260828211031`; validation and standalone help passed before
+  replacement. The prior source moved to recoverable Trash quarantine
+  `u1-print-studio-personal-source-20260828T211017Z`.
+- `codex plugin add u1-print-studio@personal` installed and enabled the new
+  version. Source, stage, and cache executables share SHA-256
+  `74f5f654de2a52c21a33577ffd6520f1054eb71439668885986114177faa2398`;
+  the installed executable passed `codesign -vvv --verify`.
+- Exact installed `doctor --offline --json` reported runtime 0.2.0, tool schema
+  3, camera widget v2, valid owner configuration, explicit STUN, fixed
+  read-only operations, MCP Apps signaling, and disabled external widget fetch.
+
+### Installed-cache and real-printer read-only evidence
+
+- The exact installed standalone MCP listed model-visible
+  `show_u1_status`, `get_u1_status`, and `open_printer_camera`; app-only frame,
+  stream open, answer, ICE, and close helpers; and status-v4/status-v3 plus
+  camera-v2/camera-v1 resources. Camera-v2 read as 30,282 bytes.
+- Calling the old `open_u1_camera_stream` shape with empty arguments returned an
+  MCP error and allocated no session. A current app-only frame call then minted
+  an activation and returned a 135,547-byte real JPEG. Consuming the activation
+  produced one bounded MCP Apps offer with one ICE server; explicit Close
+  returned true. No token, session ID, credential, or SDP was printed.
+
+### Service restart and edge verification
+
+- Only the existing `com.scottchu.u1-print-studio` and
+  `com.scottchu.u1-print-studio-dashboard` LaunchAgents were restarted. Both
+  returned to `running`.
+- Loopback public health and dashboard health returned runtime 0.2.0, tool
+  schema 3, and camera widget v2. Public standard-HTTPS health returned the same
+  contract. Public enrollment returned 404, unauthenticated MCP returned 401,
+  private dashboard camera and widget returned 200, and private enrollment
+  health returned 200.
+- OAuth state SHA-256 was
+  `91072185057645f9fa776714b354638b2e4e5855ef48553c1dcaf5244c5a7df0`
+  before and after restart. Tailscale Serve/Funnel JSON SHA-256 was
+  `7dac599f0a80ff45802a7812dda5b67ac2042bc9f66121d18968a83c15d5eebe`
+  before and after restart. No OAuth, passkey, enrollment, LaunchAgent plist, or
+  Tailscale configuration was replaced.
+
+### Private browser evidence and remaining gates
+
+- The deployed private camera dashboard displayed a real Snapshot. One Go Live
+  click passed the browser-rendered-frame gate and reported `Live · 24 FPS`.
+  Close returned the same widget to Snapshot.
+- A later user screenshot of that still-deployed decision-0019 direct path
+  showed Snapshot, an incorrect immediate Fallback label during roughly three
+  seconds of ordinary ICE setup, and then rendered `Live · 28 FPS`. This is
+  additional real evidence that the current direct private path can render; it
+  is not decision-0020 fan-out acceptance. The source widgets now retain the
+  snapshot while labeling this pre-frame state `Connecting` and reserve
+  Fallback for an actual terminal failure or timeout. That UI repair remains
+  source-only until a later authorized rollout.
+- This proves the private dashboard host, real-printer read-only path, current
+  widget activation, rendered live media, and UI Close on this machine. It does
+  not prove mounted Codex/ChatGPT, mobile, a real TURN allocation, or arbitrary
+  network traversal; those require fresh separate tasks.
+- No upload, start, pause, resume, cancel, G-code, generic proxy, Control, or
+  Admin action ran.
+
+## Decision 0020 camera fan-out source validation — 2026-08-28
+
+### Acceptance and safety boundary
+
+- Camera v3 is the only current focused descriptor. Every explicit
+  `open_printer_camera` call produces a fresh presentation ID; camera v2 and v1
+  read the same current camera-only asset.
+- The connector owns one private H264 upstream and independent bounded
+  downstream viewers. Printer signaling and identity never cross the inbound
+  MCP/HTTP boundary. Each viewer has separate ICE credentials and Close; final
+  viewer release closes the upstream.
+- This is static/software and simulated-protocol evidence. No installed plugin,
+  LaunchAgent, OAuth/passkey/enrollment state, Tailscale route, public service,
+  real printer, mounted host, mobile client, or TURN server was contacted or
+  changed.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun install --frozen-lockfile`: passed with 152 installs across 146 packages
+  and no lockfile change.
+- `bun run check`: passed TypeScript.
+- `bun test src/*.test.ts`: passed 81 tests with 513 assertions across 12 files.
+- `bun run bundle`: passed; emitted a 2.72 MB `stdio.js`, 33.73 KB camera asset,
+  and 57.45 KB status asset from 588 modules.
+- `bun run bundle:runtime`: passed; compiled and ad-hoc signed the standalone
+  validation runtime.
+
+From the repository root:
+
+- `./plugins/u1-print-studio/app/dist/u1-print-studio --help`: passed and
+  reported the shared setup, doctor, and MCP commands.
+- `codesign -vvv --verify
+  ./plugins/u1-print-studio/app/dist/u1-print-studio`: reported valid on disk
+  and satisfied its designated requirement.
+- The standalone runtime was invoked through `env -i PATH=/usr/bin:/bin` for
+  `--help`, two `setup` calls against temporary loopback origins, and
+  `doctor --offline --json`. The second setup preserved the explicit fixture
+  STUN URL, doctor reported schema 4/camera-v3 with
+  `printerObservation: skipped-offline`, and the temporary schema-2 config was
+  mode `0600`. No Bun executable or printer access was used on that invocation
+  path; the temporary config was removed after validation.
+- Plugin Creator `validate_plugin.py` through `uv run --no-project --with
+  pyyaml`: passed for `plugins/u1-print-studio`.
+- Skill Creator `quick_validate.py` through the same `uv` boundary passed for
+  all four plugin skills: mobile setup, monitor, prepare, and authorized start.
+- `./scripts/check-repository.sh`: passed, including TypeScript and all 81 tests
+  with 513 assertions; final output was `repository contract: ok`.
+- `git diff --check`: passed.
+
+### Regression evidence
+
+- Fan-out fixtures prove two viewers share one upstream, receive different
+  downstream ICE credentials, close independently, and release the upstream
+  only after the final close. Capacity, 15-second unanswered cleanup, upstream
+  termination, and opaque HTTP ticket session IDs are bounded.
+- Runtime fixtures prove viewer capacity defaults to 16 and rejects values
+  outside 1 through 64. Only Tailscale CGNAT/IPv6 interface addresses are added
+  as explicit downstream host candidates.
+- The concrete adapter is H264-only, uses the exact negotiated codec/profile,
+  creates a dedicated forwarding track per viewer, and clones each RTP packet
+  header. No VP8 or transcoding path is advertised.
+- The exact HTTP adapter accepts only a branded
+  `server-terminated-fanout` session store. MCP and HTTP sentinel tests exclude
+  printer hostname/IP/MAC/device/peer identity, upstream SDP/ICE/credentials,
+  and raw upstream failures from public responses.
+- Status/tool/camera service fields use closed vocabularies. JPEG regression
+  tests remove APP0-APP15, COM, and trailing identity metadata before widget
+  `_meta`. Widget/dashboard failures use allowlisted public diagnostics.
+- Widget regressions prove an activation-time frame refresh retains the
+  existing snapshot as `Connecting`, not Fallback, in both camera-only and
+  status widgets. Both wait for a rendered frame before Live and enter Fallback
+  only through an explicit failure or the bounded no-frame timeout.
+- Final finisher review replaced public status/frame object spreads with exact
+  field projections. The privacy regression injects unexpected host, MAC,
+  route, and peer fields and proves they are absent alongside known-field and
+  JPEG sentinels. TypeScript, all tests, both bundles, standalone/offline
+  smoke, plugin/skill validators, the repository contract, and whitespace were
+  rerun after that repair.
+
+### Unverified later layers
+
+- No real U1 H264 offer was terminated by `werift`; codec/profile compatibility
+  and sustained packet forwarding remain unverified on hardware.
+- The 28 FPS screenshot belongs to the deployed direct-session predecessor and
+  does not prove the server-terminated fan-out or camera-v3 state machine.
+- No two real viewers, camera-v3 mounted host, tailnet-direct mobile candidate
+  selection, real STUN path, or TURN allocation was observed.
+- The bundled `werift` dependency adds no separate user install, but owner
+  license selection and third-party notice review remain publication gates.
+- No release cache-buster, install, service restart, merge, push, or public
+  rollout occurred in this validation.
+
+## Decision 0020 independent media-core repair validation — 2026-08-29
+
+### Acceptance and safety boundary
+
+- This follow-up addresses independent review findings without changing the
+  accepted connector-termination, camera-v3, read-only, or printer-identity
+  privacy boundary.
+- Software evidence must show downstream PLI feedback reaches the shared
+  upstream receiver without amplification, the first RTP payload type selects
+  one exact H264 fmtp, and peers that terminate during async opening never enter
+  the active session store.
+- All checks remained local and offline. No printer, installed plugin,
+  LaunchAgent, OAuth/passkey/enrollment state, Tailscale route, public edge,
+  mounted host, mobile client, STUN endpoint, or TURN endpoint was contacted or
+  changed.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun install --frozen-lockfile`: passed with 152 installs across 146 packages
+  and no change.
+- `bun run check`: passed TypeScript.
+- `bun test src/camera-fanout.test.ts`: passed 12 tests with 82 assertions.
+- `bun test src/*.test.ts`: passed 89 tests with 557 assertions across 12
+  files.
+- `bun run bundle`: passed from 588 modules; emitted a 2.73 MB `stdio.js`,
+  33.73 KB camera asset, and 57.45 KB status asset.
+- `bun run bundle:runtime`: passed, compiled the standalone runtime, and
+  applied its validation-only ad-hoc signature.
+
+From the repository root:
+
+- The standalone runtime passed `--help` and `codesign -vvv --verify`.
+- Through `env -i PATH=/usr/bin:/bin`, the standalone runtime completed two
+  `setup` calls against a temporary loopback fixture and `doctor --offline
+  --json`. The rewrite preserved explicit STUN, the config mode was `0600`, and
+  doctor reported schema 4/camera-v3 with `printerObservation:
+  skipped-offline`. The temporary config was removed.
+- Plugin Creator `validate_plugin.py` passed through `uv run --no-project
+  --with pyyaml` for `plugins/u1-print-studio`.
+- Skill Creator `quick_validate.py` passed through the same `uv` boundary for
+  all four plugin skills: mobile setup, monitor, prepare, and authorized start.
+- `./scripts/check-repository.sh`: passed, including TypeScript and all 89 tests
+  with 557 assertions; final output was `repository contract: ok`.
+- `git diff --check`: passed.
+
+### Regression evidence
+
+- A concrete werift adapter fixture negotiates two H264 payload types and sends
+  the first RTP packet on the second. The downstream source preserves that
+  payload type and its exact profile/fmtp; duplicate or non-H264 mappings fail
+  closed.
+- Two concrete downstream sender PLI events produce one immediate and one
+  coalesced upstream receiver PLI. Closing the first viewer unsubscribes only
+  its feedback path; the second viewer continues requesting keyframes and is
+  not closed. The production interval is 500 ms.
+- Deferred fixtures terminate the upstream while `openViewer` is awaiting and
+  return a viewer that already terminated during its awaited open. Explicit
+  generations/alive rechecks reject both, release leases, and close the shared
+  upstream once.
+- Invalid SDP and `sendAnswer` failure fixtures prove track and first-RTP event
+  subscriptions return to baseline. A direct 60-second track wait cancellation
+  also removes its subscription immediately rather than retaining its timer.
+- Actual-factory fixtures begin with an upstream already `failed` and a viewer
+  already `closed`, emit no later connection event, and prove both opens fail
+  without publishing a session. Each peer closes once, both leases release,
+  and every termination subscription is removed.
+
+### Unverified later layers
+
+- A real U1 may use different H264 payload/fmtp behavior; real receiver PLI,
+  sustained fan-out, peer failure, and reconnect remain unobserved.
+- No real two-viewer playback, mounted camera-v3 host, iPhone/mobile path,
+  tailnet-direct ICE selection, real STUN traversal, H264 browser decode, or
+  TURN allocation is accepted by these fixtures.
+- The deployed direct private-path screenshot remains evidence only for the
+  decision-0019 predecessor. It does not accept this fan-out repair.
+- No push, merge, release staging, install, service restart, route/auth change,
+  or printer control occurred.
+
+## Decision 0021 focused observation source validation — 2026-08-30
+
+### Acceptance and safety boundary
+
+- The source implements the selected Instrument Strips direction, exact two-
+  intent model-visible surface, shared explicit-refresh observation store,
+  selected-module projections, missing-value/provenance semantics, focused-view
+  inventory, and frozen compatibility resources.
+- Plain presentation calls are cache-only. Explicit due refreshes are the only
+  upstream reads, concurrent refreshes coalesce, and refresh failure retains
+  last reachable values as stale with the original source time. Overview stays
+  unavailable until all focused modules are accepted.
+- No printer, installed plugin, LaunchAgent, OAuth/passkey/enrollment state,
+  Tailscale route, public edge, mounted host, mobile client, STUN endpoint, or
+  TURN endpoint was contacted or changed.
+
+### Commands and results
+
+- From `plugins/u1-print-studio/app`, `bun run check` passed TypeScript;
+  `bun test src/*.test.ts` passed 101 tests with 594 assertions; `bun run bundle`
+  and `bun run bundle:runtime` passed.
+- `dist/stdio.js` is SHA-256
+  `be255f625137079a64b17031b36ffb5e2ba4a46264e6ac56679448bcb04fac16`;
+  the ad-hoc-signed macOS arm64 `dist/u1-print-studio` is SHA-256
+  `062e7cf9c826198db82457401ea8b28aae8eaa347b2485e245556fdc04971ddf`.
+  Standalone help and `codesign -vvv --verify` passed.
+- Current observation/camera assets are SHA-256
+  `128975091b192369a83476f5d8664da494d4d4fa968ef5e7fc29fe730fd51d3f`
+  and `2cc7c28f7d692ff7880bfc5cd400d2032b05765ce1bb142ea5dac205c349bc8b`.
+  Frozen status v4/v3 bytes remain 57,450 bytes at
+  `da9625f5832a4df4e34312999326d241299ed6de9bd4073a60d699d4478db437`;
+  frozen camera v3/v2/v1 bytes remain 33,725 bytes at
+  `c8ef35062ae004ac571501ed99f2810465aa0e12cddbe965918b84d30b476203`.
+- Plugin Creator validation and Skill Creator validation for all five plugin
+  skills passed through the repository's `uv` boundary.
+- `./scripts/check-repository.sh` passed, including TypeScript and all 101 tests
+  with 594 assertions; final output was `repository contract: ok`.
+- `git diff --check` passed. A focused consistency scan confirmed the exact
+  two-visible/eight-app-only inventory, required eight-view enum,
+  observation-v2/camera-v4 contract, frozen legacy resources, and deferred
+  overview across durable records.
+- Local browser fixture review at roughly 589 by 844 pixels accepted the focused
+  Progress, Thermals, Heads, and separate Camera presentations. Captures remain
+  outside the repository.
+
+### Unverified later layers
+
+- Live mappings remain unresolved for cavity, filament material/color and
+  sensors, jobs/history, queue, fans/purifier, and bed mesh. Their known-value
+  semantics are not accepted by static fixtures.
+- No fresh mounted Codex/ChatGPT task, mobile host, live normalized observation,
+  overview composition, accessibility audit, or user ten-second comprehension
+  gate is accepted by this source evidence.
+- No release staging, installation, service restart, route/auth mutation,
+  printer contact, printer control, merge, or publication occurred.
+## Standalone camera routing regression source validation — 2026-08-29
+
+### Acceptance and safety boundary
+
+- Milestone: F0 dual-environment and contract discovery. The open question is
+  whether a standalone "Open printer camera" request can ever be redirected to
+  the status workflow when the current camera descriptor is unavailable.
+- Acceptance requires both monitor and setup guidance to call only the
+  model-visible `open_printer_camera` tool for that intent. Missing tools or
+  resource-read failures must be reported as stale/unavailable connection state;
+  `show_u1_status`, `get_u1_status`, `get_u1_camera_frame`, and
+  `open_u1_camera_stream` are prohibited substitutes.
+- The inventory remains exactly three model-visible tools plus five app-only
+  helpers. Camera-v3, fan-out, privacy, OAuth, enrollment, ICE, and read-only
+  boundaries are unchanged.
+- This change is local source/software evidence only. It did not push, merge,
+  reinstall, restart, mutate a service or route, contact a printer, or verify a
+  mounted host.
+
+### Prior rollout and observed regression
+
+- Pull request 26 previously merged decision 0020 as `4f9041c`. Personal
+  Marketplace version `0.2.0+codex.20260830013924` was rebuilt from that merge
+  and installed; both existing services restarted on schema 4/camera-v3 while
+  OAuth state and Tailscale routing stayed unchanged.
+- A new conversation inside a Codex Desktop process started before that
+  reinstall still lacked `open_printer_camera`. It selected the monitor skill
+  and called `show_u1_status`, mounting the entire status card. This is
+  stale-host-process and guidance-regression evidence. It is not evidence that
+  the rebuilt camera-v3 resource includes status-card markup.
+- The packaging record now requires a fully new host process for upgrade
+  acceptance when the host predates installation. A new conversation alone is
+  not sufficient evidence.
+
+### Implemented contract
+
+- `u1-monitor-print` and `u1-mobile-status-setup` contain the same exclusive
+  routing guard and fail-closed reload guidance.
+- Mobile setup wording now names exactly three model-visible tools and five
+  app-only helpers; stale four-tool completion wording is absent.
+- Plugin Creator's supported `interface.defaultPrompt` array now has three
+  entries, within the schema's three-prompt limit, with `Open my printer
+  camera.` first. No unsupported manifest field was added.
+- `camera-routing-contract.test.ts` locks the exclusive routing text, failure
+  behavior, inventory, supported starter prompts, and fresh-host-process
+  packaging guidance.
+
+### Commands and results
+
+From `plugins/u1-print-studio/app`:
+
+- `bun install --frozen-lockfile`: passed with 145 packages installed and no
+  lockfile change.
+- `bun test src/camera-routing-contract.test.ts`: passed 4 tests with 12
+  assertions.
+- `bun run check`: passed TypeScript compilation.
+- `bun test src/*.test.ts`: passed 93 tests with 569 assertions across 13
+  files.
+- `bun run bundle`: passed from 588 modules and emitted the 2.73 MB stdio
+  bundle plus 33.73 KB camera and 57.45 KB status assets.
+- `bun run bundle:runtime`: passed and produced the validation-only ad-hoc
+  signed standalone runtime.
+- `codesign -vvv --verify ./dist/u1-print-studio`: reported valid on disk and
+  satisfied its designated requirement.
+
+From the repository root:
+
+- Plugin Creator validation through `uv run --no-project --with pyyaml`:
+  passed.
+- Skill Creator validation through the same `uv` boundary passed for both
+  touched skills: `u1-monitor-print` and `u1-mobile-status-setup`.
+
+- `./scripts/check-repository.sh`: passed on the exact documented tree,
+  including TypeScript and all 93 tests with 569 assertions; final output was
+  `repository contract: ok`.
+- `git diff --check`: passed on the same tree.
+
+### Unverified later layers
+
+- The exact source is independently approved but has not been merged,
+  release-staged, reinstalled, or loaded by a freshly relaunched host.
+- A full Codex Desktop quit/relaunch and an actual `open_printer_camera` call
+  remain the next mounted-host gate. Any status-card substitution is a failure.
+- Real U1 fan-out, two simultaneous viewers, mobile ICE, and TURN remain
+  separate evidence gates. No printer-control action is authorized.
+
+### Independent review
+
+- Role: independent code and documentation reviewer, separate from the
+  implementation role.
+- Exact reviewed commit:
+  `4045f352729720d51d46ad8aa308c7e84c47d33a`.
+- Verdict: **APPROVE**, with no findings.
+- The reviewer independently verified `bun run check`, the full 93-test and
+  569-assertion suite, `bun run bundle`, `bun run bundle:runtime`, standalone
+  `codesign` verification, Plugin Creator validation, both touched Skill
+  Creator validations, `./scripts/check-repository.sh`, and
+  `git diff --check`.
+- This approval accepts the source routing guard, manifest-supported prompt,
+  three-plus-five inventory wording, test contract, and durable records. It
+  does not accept mounted-host behavior, the live camera, a new installed
+  plugin, or user outcome. Those remain blocked on a full Codex Desktop quit
+  and relaunch followed by an observed `open_printer_camera` mount.

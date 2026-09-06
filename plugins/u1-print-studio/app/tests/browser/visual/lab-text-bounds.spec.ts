@@ -1,3 +1,4 @@
+import { doubleSyntheticText } from '../helpers/text-scale';
 import { expect, test, type Page } from '@playwright/test';
 
 const cases = [
@@ -13,21 +14,7 @@ const cases = [
   ['thermals', 'lab_actual=300&lab_target=0'], ['thermals', 'lab_scenario=unknown_targets'],
   ['bed_mesh', 'lab_scenario=flat'], ['bed_mesh', 'lab_scenario=tilted']
 ] as const;
-const doubleText = (page: Page) => page.evaluate(() => {
-  for (const sheet of document.styleSheets) for (const rule of sheet.cssRules) {
-    const visit = (item: CSSRule): void => {
-      if ('cssRules' in item) for (const child of (item as CSSGroupingRule).cssRules) visit(child);
-      if (!(item instanceof CSSStyleRule)) return;
-      const size = item.style.getPropertyValue('font-size');
-      if (size) item.style.setProperty('font-size', size.replace(/([\d.]+)(px|vw)/g, (_, value, unit) => `${Number(value) * 2}${unit}`));
-      for (const token of ['--u1-type-label', '--u1-type-name', '--u1-type-value']) {
-        const value = item.style.getPropertyValue(token);
-        if (value.endsWith('px')) item.style.setProperty(token, `${Number.parseFloat(value) * 2}px`);
-      }
-    };
-    visit(rule);
-  }
-});
+const doubleText = doubleSyntheticText;
 const clippedText = (page: Page) => page.locator('[data-widget-shell]').evaluate((shell) => {
   const findings: string[] = [];
   const walker = document.createTreeWalker(shell, NodeFilter.SHOW_TEXT);

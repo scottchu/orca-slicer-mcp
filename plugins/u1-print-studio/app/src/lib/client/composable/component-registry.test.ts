@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { componentRegistry, componentRegistryContractChecks, resolveRegisteredNode } from '../../../components/composable/component-registry';
 import { PRESENTATION_ELEMENT_TYPES } from '../../composable/element-registry';
 import { t1BalancedCompositionSpec, t1EntityCardSpec, t1ExplicitGroupedSummarySpec, t1SmartGroupedSummarySpec } from '../../composable/specs';
+import type { PresentationRenderContext } from './component-props';
 import type { ResolvedNode } from '../../composable/view-model';
 import { createPlaceholderPresentation } from './presentation';
 
@@ -48,10 +49,10 @@ describe('static composable component registry', () => {
   test('resolves the balanced tree while retaining exact twelve-entry registry parity', () => {
     const root = createPlaceholderPresentation(t1BalancedCompositionSpec, 'loading').root;
     const resolved: Array<{ type: string; role: string; props: Record<string, unknown> }> = [];
-    const visit = (node: ResolvedNode): void => {
-      const entry = resolveRegisteredNode(node, { subjectLabel: 'Tool head T1', busy: true });
+    const visit = (node: ResolvedNode, context: PresentationRenderContext = { subjectLabel: 'Tool head T1', busy: true }): void => {
+      const entry = resolveRegisteredNode(node, context);
       resolved.push({ type: node.type, role: entry.role, props: entry.props });
-      for (const child of entry.children ?? []) visit(child);
+      for (const child of entry.children ?? []) visit(child, entry.childContext);
     };
     visit(root);
     expect(Object.keys(componentRegistry)).toHaveLength(12);
@@ -59,7 +60,7 @@ describe('static composable component registry', () => {
     expect(resolved.find(({ type }) => type === 'Inline')?.props).toMatchObject({ gap: 'regular', distribution: 'split', inset: true, composed: true });
     expect(resolved.find(({ type }) => type === 'Grid')?.props).toMatchObject({ arrangement: 'lead' });
     expect(resolved.find(({ type }) => type === 'HeadStatus')?.props).toMatchObject({ appearance: 'headerBadge' });
-    expect(resolved.find(({ type }) => type === 'HeadTemperature')?.props).toMatchObject({ appearance: 'hero' });
+    expect(resolved.find(({ type }) => type === 'HeadTemperature')?.props).toMatchObject({ appearance: 'hero', density: 'regular' });
     expect(resolved.filter(({ type }) => type === 'FilamentColor' || type === 'FanRelation').every(({ props }) => props.appearance === 'quiet')).toBe(true);
   });
 
@@ -67,16 +68,19 @@ describe('static composable component registry', () => {
     for (const [spec, source] of [[t1SmartGroupedSummarySpec, 'smart'], [t1ExplicitGroupedSummarySpec, 'explicit']] as const) {
       const root = createPlaceholderPresentation(spec, 'loading').root;
       const resolved: Array<{ type: string; props: Record<string, unknown> }> = [];
-      const visit = (node: ResolvedNode): void => {
-        const entry = resolveRegisteredNode(node, { subjectLabel: 'Tool head T1', busy: true });
+      const visit = (node: ResolvedNode, context: PresentationRenderContext = { subjectLabel: 'Tool head T1', busy: true }): void => {
+        const entry = resolveRegisteredNode(node, context);
         resolved.push({ type: node.type, props: entry.props });
-        for (const child of entry.children ?? []) visit(child);
+        for (const child of entry.children ?? []) visit(child, entry.childContext);
       };
       visit(root);
       expect(resolved.map(({ type }) => type)).toEqual(['Card', 'Group', 'Title', 'HeadStatus', 'Group', 'Row', 'Column', 'HeadTemperature', 'Row', 'Column', 'FilamentColor', 'Column', 'FanRelation']);
       expect(root.children[1]).toMatchObject({ type: 'Group', relation: 'summary', layoutSource: source, defaultRule: 'summary-grid6-v1' });
       expect(resolved.filter(({ type }) => type === 'Row').every(({ props }) => props.collapse === 'intrinsic')).toBe(true);
       expect(resolved.filter(({ type }) => type === 'Column').map(({ props }) => props.colSpan)).toEqual([6, 3, 3]);
+      expect(resolved.filter(({ type }) => type === 'Group').map(({ props }) => props.label)).toEqual(['Tool identity', 'Tool summary']);
+      expect(resolved.find(({ type }) => type === 'Title')?.props.inset).toBe(false);
+      expect(resolved.filter(({ type }) => ['HeadTemperature', 'FilamentColor', 'FanRelation'].includes(type)).map(({ props }) => props.density)).toEqual(['compact', 'compact', 'compact']);
     }
   });
 });

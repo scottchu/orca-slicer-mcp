@@ -1,19 +1,8 @@
+import { doubleSyntheticText } from '../helpers/text-scale';
 import { expect, test, type Frame } from '@playwright/test';
 import { liveQueueResult } from '../fixtures/live-queue';
 
-const doubleText = (frame: Frame) => frame.evaluate(() => {
-  const visit = (rule: CSSRule): void => {
-    if ('cssRules' in rule) for (const child of (rule as CSSGroupingRule).cssRules) visit(child);
-    if (!(rule instanceof CSSStyleRule)) return;
-    const size = rule.style.getPropertyValue('font-size');
-    if (size) rule.style.setProperty('font-size', size.replace(/([\d.]+)(px|vw)/g, (_, value, unit) => `${Number(value) * 2}${unit}`));
-    for (const token of ['--u1-type-label', '--u1-type-name', '--u1-type-value']) {
-      const value = rule.style.getPropertyValue(token);
-      if (value.endsWith('px')) rule.style.setProperty(token, `${Number.parseFloat(value) * 2}px`);
-    }
-  };
-  for (const sheet of document.styleSheets) for (const rule of sheet.cssRules) visit(rule);
-});
+const doubleText = doubleSyntheticText;
 const bounds = (frame: Frame) => frame.locator('[data-widget-shell],[data-widget-header],[data-widget-body],[data-widget-footer],[data-record]').evaluateAll((nodes) => nodes.map((node) => {
   const box = node.getBoundingClientRect(); return [box.x + scrollX, box.y + scrollY, box.width, box.height];
 }));

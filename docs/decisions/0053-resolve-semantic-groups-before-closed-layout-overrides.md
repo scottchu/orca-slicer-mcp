@@ -59,8 +59,14 @@ broader Group minimum before relation-specific validation runs.
 Intrinsic readability remains code-owned and overrides placement when needed:
 three-plus-three remains paired at 390 and 720 pixels at normal text size, then
 stacks at 320 pixels and at 390 pixels with 200-percent text. No override can
-disable that floor. Group gaps are 20 pixels, column gap is 16 pixels,
-label/value gap is four pixels and icon/text gap is 12 pixels. The neutral Card
+disable that floor. The accepted mobile alignment refinement supersedes the
+initial 16-pixel column gap and uniform 12-pixel icon/text gap: regular group,
+row and column gaps are 20 pixels; compact column gap is 12 pixels. Hero/quiet
+Reading uses a 32-pixel icon track and eight-pixel track-to-content gap; centered
+32/24-pixel glyphs therefore have eight/twelve-pixel glyph-to-content gaps.
+Grouped label/value gap is four pixels. These values belong to this T1 variant,
+with their code ownership recorded in [the current design contract](../design-contract.md).
+The neutral Card
 has no tint, gradient, divider, table or printer icon. Loading, error and partial
 states retain the same resolved structure.
 
@@ -112,3 +118,26 @@ loading, static neutral error, reduced motion, forced colors, visible focus and
 absence of tint, gradient, divider, table or printer icon. Bind review to exact
 source, Kit, HTML, MCP resource and visual evidence identities. These remain
 synthetic software/protocol results, not mounted-host, device or printer proof.
+
+## Presentation ownership maintenance
+
+Group owns its layout and insets. Its common component receives an accessible
+label from the closed T1 client adapter; it contains no Tool-specific copy and
+does not override descendant Title, Reading, Metric or Swatch styles. The
+adapter passes an internal render context through registered structural entries:
+identity selects a Title without its own inset, and summary selects compact
+leaf density. This context is not a spec, schema, resolved-tree or wire field.
+Leaf variants own their complete anatomy; the twelve-entry vocabulary,
+canonical hashes, labels, default/balanced rendering and Smart/Explicit geometry
+remain unchanged. Inline/LayoutInline and Stack/LayoutStack remain deliberately
+isolated pending a separately scoped production-adoption decision.
+
+Shared semantic typography uses font-relative tokens with unchanged 16-pixel
+root-size appearance. Root text preference, synthetic doubled mixed-unit text,
+and browser zoom are distinct evidence modes; the first two use named shared
+test helpers. This does not claim browser/device accessibility acceptance.
+
+The maintenance resource advances to `composable-lab-v2-r4.html` and
+`0.0.6-provisional` because its immutable compiled bytes change. The r3 identity
+above records the earlier experiment; it is not reused for new bytes. Production
+registration and the canonical spec/schema contracts remain unchanged.

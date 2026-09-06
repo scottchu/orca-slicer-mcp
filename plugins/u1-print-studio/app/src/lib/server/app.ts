@@ -5,23 +5,20 @@ import { fileURLToPath } from "node:url";
 
 import {
   registerAppResource,
-  registerAppTool,
   RESOURCE_MIME_TYPE,
 } from "@modelcontextprotocol/ext-apps/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+import { createToolRegistration } from "./tool-registration.js";
 import embeddedMcpObservationFile from "../../../public/mcp-observation.html" with { type: "file" };
 import embeddedMcpCameraFile from "../../../public/mcp-camera.html" with { type: "file" };
 
 import {
-  createObservationPresentation,
   OBSERVATION_VIEWS,
   type ObservationView,
 } from "./observation-presentation.js";
 import {
   PrinterObservationStore,
-  type ObservationSnapshot,
 } from "./observation-store.js";
 
 import {
@@ -33,14 +30,10 @@ import {
   readU1Environment,
   readU1CurrentJob,
   readU1JobHistory,
-  stripJpegMetadata,
-  type U1CameraFrame,
-  type U1WidgetMetadata,
 } from "./u1-status.js";
 import type {
   CameraIceCandidate,
   CameraWebRtcSessionController,
-  OpenedCameraWebRtcSession,
 } from "./application/camera-webrtc.js";
 import { CameraWebRtcSessionError } from "./application/camera-webrtc.js";
 import { CameraRelayClaimError } from "./application/camera-relay.js";
@@ -48,7 +41,6 @@ import {
   U1_CAMERA_WIDGET_VERSION,
   U1_OBSERVATION_WIDGET_VERSION,
   U1_RUNTIME_VERSION,
-  U1_TOOL_SCHEMA_VERSION,
 } from "./runtime-contract.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -62,127 +54,13 @@ export const CAMERA_WIDGET_URI =
 export const MCP_OBSERVATION_HTML = readFileSync(IS_COMPILED ? embeddedMcpObservationFile as unknown as string : path.join(ASSET_ROOT, 'mcp-observation.html'), 'utf8');
 export const MCP_CAMERA_HTML = readFileSync(IS_COMPILED ? embeddedMcpCameraFile as unknown as string : path.join(ASSET_ROOT, 'mcp-camera.html'), 'utf8');
 
-export function observationPayload(
-  snapshot: ObservationSnapshot,
-  view: ObservationView
-) {
-  const presentation = createObservationPresentation(snapshot, view);
-  const module = view === "bed_mesh" ? "bed mesh" : view;
-  const state = presentation.module.state;
-  return {
-    content: [{
-      type: "text" as const,
-      text: `U1 ${module} observation is ${state}.`,
-    }],
-    structuredContent: presentation,
-    _meta: {},
-  };
-}
-
-function sanitizeCameraMetadata(metadata: U1WidgetMetadata): U1WidgetMetadata {
-  const dataUrl = metadata.cameraFrame?.dataUrl;
-  const prefix = "data:image/jpeg;base64,";
-  if (!dataUrl?.startsWith(prefix)) return {};
-  try {
-    const bytes = stripJpegMetadata(
-      Buffer.from(dataUrl.slice(prefix.length), "base64")
-    );
-    return {
-      cameraFrame: {
-        dataUrl: `${prefix}${bytes.toString("base64")}`,
-      },
-    };
-  } catch {
-    return {};
-  }
-}
-
+export { observationPayload } from './observation-payload.js';
+export { cameraFramePayload, cameraStreamPayload } from './camera-payload.js';
+import { cameraFramePayload, cameraStreamPayload } from './camera-payload.js';
+import { observePrinter } from './application/observe-printer.js';
+import { refreshCameraFrame } from './application/refresh-camera-frame.js';
 type StatusReader = typeof readU1Status;
 type CameraFrameReader = typeof readU1CameraFrame;
-
-export function cameraFramePayload(
-  frame: U1CameraFrame,
-  metadata: U1WidgetMetadata,
-  activation?: { token: string; expiresAt: string }
-) {
-  const publicMetadata = sanitizeCameraMetadata(metadata);
-  const sanitizedBytes = publicMetadata.cameraFrame
-    ? Buffer.from(
-        publicMetadata.cameraFrame.dataUrl.slice(
-          "data:image/jpeg;base64,".length
-        ),
-        "base64"
-      ).length
-    : 0;
-  const publicFrame: U1CameraFrame = {
-    schemaVersion: 1,
-    observedAt: frame.observedAt,
-    available: frame.available && sanitizedBytes > 0,
-    mediaType:
-      frame.available && sanitizedBytes > 0 ? "image/jpeg" as const : null,
-    byteLength: frame.available && sanitizedBytes > 0 ? sanitizedBytes : 0,
-    reason:
-      frame.available && sanitizedBytes > 0 ? null : "camera_unavailable",
-  };
-  return {
-    content: [
-      {
-        type: "text" as const,
-        text: publicFrame.available
-          ? "U1 camera frame refreshed."
-          : "U1 camera frame unavailable.",
-      },
-    ],
-    structuredContent: publicFrame,
-    _meta: {
-      ...publicMetadata,
-      ...(activation
-        ? {
-            cameraActivation: {
-              schemaVersion: U1_TOOL_SCHEMA_VERSION,
-              token: activation.token,
-              expiresAt: activation.expiresAt,
-            },
-          }
-        : {}),
-    },
-  };
-}
-
-export function cameraStreamPayload(opened: OpenedCameraWebRtcSession) {
-  const iceUrls = opened.iceServers.flatMap(({ urls }) =>
-    Array.isArray(urls) ? urls : [urls]
-  );
-  const iceMode = iceUrls.some((url) => /^turns?:/i.test(url))
-    ? "turn"
-    : iceUrls.some((url) => /^stuns?:/i.test(url))
-      ? "stun"
-      : "local";
-  return {
-    content: [
-      {
-        type: "text" as const,
-        text: "A short-lived read-only U1 camera relay session is ready.",
-      },
-    ],
-    structuredContent: {
-      schemaVersion: 2,
-      available: true,
-      expiresAt: opened.expiresAt,
-      maxDurationSeconds: opened.maxDurationSeconds,
-      iceMode,
-      reason: null,
-    },
-    _meta: {
-      cameraStream: {
-        transport: "mcp-apps-tools",
-        sessionId: opened.sessionId,
-        offer: { type: opened.type, sdp: opened.sdp },
-        iceServers: opened.iceServers,
-      },
-    },
-  };
-}
 
 function publicCameraFailure(error: unknown): string {
   if (error instanceof CameraRelayClaimError) {
@@ -205,7 +83,7 @@ async function safeCameraAction<T>(action: () => Promise<T>): Promise<T> {
   }
 }
 
-export function createAppServer(
+export const createAppServer = (
   dependencies: {
     readStatus?: StatusReader;
     readBedMesh?: typeof readU1BedMesh;
@@ -221,7 +99,7 @@ export function createAppServer(
   options: {
     oauthScopes?: string[];
   } = {}
-): McpServer {
+): McpServer => {
   const readStatus = dependencies.readStatus ?? readU1Status;
   const readCameraFrame =
     dependencies.readCameraFrame ?? readU1CameraFrame;
@@ -244,6 +122,8 @@ export function createAppServer(
   const securityMetadata = securitySchemes
     ? { securitySchemes }
     : {};
+
+  const tools = createToolRegistration(server, !!securitySchemes);
 
   const resources = [
     {
@@ -278,8 +158,7 @@ export function createAppServer(
 
   const observationViewSchema = z.enum(OBSERVATION_VIEWS);
   const observationInputSchema = z.object({ view: observationViewSchema }).strict();
-  registerAppTool(
-    server,
+  tools.register(
     "observe_printer",
     ({
       title: "Observe printer",
@@ -300,17 +179,13 @@ export function createAppServer(
         "openai/toolInvocation/invoking": "Reading U1 observation",
         "openai/toolInvocation/invoked": "U1 observation ready",
       },
-    } as any),
+    }),
     (async ({ view }: { view: ObservationView }) => {
-      return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" || view === "overview", includeMaterials: view === "heads" || view === "overview", includeQueue: view === "queue" || view === "overview", includeEnvironment: view === "thermals" || view === "fans" || view === "overview", includeCurrentJob: view === "jobs" || view === "overview", includeJobHistory: view === "job_history" || view === "overview" }),
-        view
-      );
-    }) as any
+      return observePrinter(observations, view);
+    })
   );
 
-  registerAppTool(
-    server,
+  tools.register(
     "refresh_printer_observation",
     ({
       title: "Refresh printer observation",
@@ -329,18 +204,14 @@ export function createAppServer(
         ui: { visibility: ["app"] },
         "openai/visibility": "private",
       },
-    } as any),
+    }),
     (async ({ view }: { view: ObservationView }) => {
-      return observationPayload(
-        await observations.current({ refresh: true, includeBedMesh: view === "bed_mesh" || view === "overview", includeMaterials: view === "heads" || view === "overview", includeQueue: view === "queue" || view === "overview", includeEnvironment: view === "thermals" || view === "fans" || view === "overview", includeCurrentJob: view === "jobs" || view === "overview", includeJobHistory: view === "job_history" || view === "overview" }),
-        view
-      );
-    }) as any
+      return observePrinter(observations, view);
+    })
   );
 
   if (dependencies.cameraSessions) {
-    registerAppTool(
-      server,
+    tools.register(
       "open_u1_camera_stream",
       ({
         title: "Open U1 camera stream",
@@ -363,11 +234,11 @@ export function createAppServer(
           "openai/toolInvocation/invoking": "Opening U1 camera relay",
           "openai/toolInvocation/invoked": "U1 camera relay ready",
         },
-      } as any),
+      }),
       (async ({ activationToken }: { activationToken: string }) =>
         cameraStreamPayload(await safeCameraAction(
           () => dependencies.cameraSessions!.open(activationToken)
-        ))) as any
+        )))
     );
 
     const privateToolMetadata = {
@@ -376,8 +247,7 @@ export function createAppServer(
       "openai/visibility": "private",
     };
     const sessionId = z.string().min(16).max(512);
-    registerAppTool(
-      server,
+    tools.register(
       "answer_u1_camera_stream",
       {
         title: "Answer U1 camera stream",
@@ -392,16 +262,15 @@ export function createAppServer(
           idempotentHint: true,
         },
         _meta: privateToolMetadata,
-      } as any,
+      },
       (async ({ sessionId, sdp }: { sessionId: string; sdp: string }) => ({
         content: [{ type: "text" as const, text: "Camera answer accepted." }],
         structuredContent: await safeCameraAction(
           () => dependencies.cameraSessions!.answer(sessionId, sdp)
         ),
-      })) as any
+      }))
     );
-    registerAppTool(
-      server,
+    tools.register(
       "add_u1_camera_ice_candidates",
       {
         title: "Add U1 camera ICE candidates",
@@ -424,7 +293,7 @@ export function createAppServer(
           idempotentHint: true,
         },
         _meta: privateToolMetadata,
-      } as any,
+      },
       (async ({ sessionId, candidates }: {
         sessionId: string;
         candidates: CameraIceCandidate[];
@@ -436,10 +305,9 @@ export function createAppServer(
             candidates
           )
         ),
-      })) as any
+      }))
     );
-    registerAppTool(
-      server,
+    tools.register(
       "close_u1_camera_stream",
       {
         title: "Close U1 camera stream",
@@ -454,7 +322,7 @@ export function createAppServer(
           idempotentHint: true,
         },
         _meta: privateToolMetadata,
-      } as any,
+      },
       (async ({ sessionId }: { sessionId: string }) => {
         try {
           return {
@@ -464,12 +332,11 @@ export function createAppServer(
         } catch {
           throw new Error("camera_stream_unavailable");
         }
-      }) as any
+      })
     );
   }
 
-  registerAppTool(
-    server,
+  tools.register(
     "get_u1_camera_frame",
     ({
       title: "Refresh U1 camera frame",
@@ -492,23 +359,13 @@ export function createAppServer(
         "openai/toolInvocation/invoking": "Refreshing U1 camera",
         "openai/toolInvocation/invoked": "U1 camera refreshed",
       },
-    } as any),
+    }),
     (async ({ authorizeLive = false }: { authorizeLive?: boolean }) => {
-      const { frame, metadata } = await readCameraFrame();
-      let activation: { token: string; expiresAt: string } | undefined;
-      if (authorizeLive && dependencies.cameraSessions) {
-        try {
-          activation = dependencies.cameraSessions.authorize();
-        } catch {
-          activation = undefined;
-        }
-      }
-      return cameraFramePayload(frame, metadata, activation);
-    }) as any
+      return refreshCameraFrame(readCameraFrame, dependencies.cameraSessions, authorizeLive);
+    })
   );
 
-  registerAppTool(
-    server,
+  tools.register(
     "open_printer_camera",
     {
       title: "Open printer camera",
@@ -543,223 +400,7 @@ export function createAppServer(
     }
   );
 
-  // The current MCP SDK preserves the compatibility mirror in `_meta` but
-  // omits the newer top-level field from tools/list. Remote plugin clients
-  // require both, so provide the exact descriptor list at the transport edge.
-  if (securitySchemes) {
-    const emptyInputSchema = {
-      type: "object" as const,
-      properties: {},
-      additionalProperties: false,
-    };
-    const readOnlyAnnotations = {
-      readOnlyHint: true,
-      destructiveHint: false,
-      openWorldHint: false,
-      idempotentHint: true,
-    };
-    server.server.setRequestHandler(ListToolsRequestSchema, async () => ({
-      tools: [
-        {
-          name: "observe_printer",
-          title: "Observe printer",
-          description:
-            "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs (current job only), job_history, queue, fans, or bed_mesh. Current Job and Job History are separate observations. Use open_printer_camera for camera viewing.",
-          inputSchema: {
-            type: "object",
-            properties: {
-              view: { type: "string", enum: [...OBSERVATION_VIEWS] },
-            },
-            required: ["view"],
-            additionalProperties: false,
-          },
-          annotations: readOnlyAnnotations,
-          securitySchemes,
-          _meta: {
-            securitySchemes,
-            ui: { resourceUri: WIDGET_URI },
-            "openai/outputTemplate": WIDGET_URI,
-            "openai/toolInvocation/invoking": "Reading U1 observation",
-            "openai/toolInvocation/invoked": "U1 observation ready",
-          },
-        },
-        {
-          name: "refresh_printer_observation",
-          title: "Refresh printer observation",
-          description:
-            "Use this only from the mounted observation widget to refresh its selected read-only instrument strip without opening another widget.",
-          inputSchema: {
-            type: "object",
-            properties: {
-              view: { type: "string", enum: [...OBSERVATION_VIEWS] },
-            },
-            required: ["view"],
-            additionalProperties: false,
-          },
-          annotations: readOnlyAnnotations,
-          securitySchemes,
-          _meta: {
-            securitySchemes,
-            ui: { visibility: ["app"] },
-            "openai/visibility": "private",
-          },
-        },
-        {
-          name: "get_u1_camera_frame",
-          title: "Refresh U1 camera frame",
-          description:
-            "Use this when the U1 dashboard needs a fresh read-only camera frame relayed through the printer operations boundary.",
-          inputSchema: {
-            type: "object",
-            properties: { authorizeLive: { type: "boolean" } },
-            additionalProperties: false,
-          },
-          annotations: readOnlyAnnotations,
-          securitySchemes,
-          _meta: {
-            securitySchemes,
-            ui: { visibility: ["app"] },
-            "openai/visibility": "private",
-            "openai/toolInvocation/invoking": "Refreshing U1 camera",
-            "openai/toolInvocation/invoked": "U1 camera refreshed",
-          },
-        },
-        {
-          name: "open_printer_camera",
-          title: "Open printer camera",
-          description:
-            "Open a new read-only, camera-only U1 widget. Use this for every explicit open, view, reopen, or additional printer-camera request, even when an earlier camera or status widget is already present. Do not substitute the full status dashboard. The widget begins with a snapshot and owns live video, close, retry, and automatic snapshot fallback.",
-          inputSchema: emptyInputSchema,
-          annotations: {
-            ...readOnlyAnnotations,
-            idempotentHint: false,
-          },
-          securitySchemes,
-          _meta: {
-            securitySchemes,
-            ui: { resourceUri: CAMERA_WIDGET_URI },
-            "openai/outputTemplate": CAMERA_WIDGET_URI,
-            "openai/toolInvocation/invoking": "Opening U1 camera",
-            "openai/toolInvocation/invoked": "U1 camera ready",
-          },
-        },
-        ...(dependencies.cameraSessions
-          ? [
-              {
-                name: "open_u1_camera_stream",
-                title: "Open U1 camera stream",
-                description:
-                  "Use this only from the camera widget after the user selects Go Live to start a bounded read-only relay session.",
-                inputSchema: {
-                  type: "object",
-                  properties: {
-                    activationToken: {
-                      type: "string",
-                      minLength: 16,
-                      maxLength: 512,
-                    },
-                  },
-                  required: ["activationToken"],
-                  additionalProperties: false,
-                },
-                annotations: {
-                  ...readOnlyAnnotations,
-                  idempotentHint: false,
-                },
-                securitySchemes,
-                _meta: {
-                  securitySchemes,
-                  ui: { visibility: ["app"] },
-                  "openai/visibility": "private",
-                  "openai/toolInvocation/invoking": "Opening U1 camera relay",
-                  "openai/toolInvocation/invoked": "U1 camera relay ready",
-                },
-              },
-              {
-                name: "answer_u1_camera_stream",
-                title: "Answer U1 camera stream",
-                description:
-                  "Use this only from the U1 dashboard to submit the bounded WebRTC answer for its active read-only camera session.",
-                inputSchema: {
-                  type: "object",
-                  properties: {
-                    sessionId: { type: "string", minLength: 16, maxLength: 512 },
-                    sdp: { type: "string", minLength: 1, maxLength: 96 * 1024 },
-                  },
-                  required: ["sessionId", "sdp"],
-                  additionalProperties: false,
-                },
-                annotations: readOnlyAnnotations,
-                securitySchemes,
-                _meta: {
-                  securitySchemes,
-                  ui: { visibility: ["app"] },
-                  "openai/visibility": "private",
-                },
-              },
-              {
-                name: "add_u1_camera_ice_candidates",
-                title: "Add U1 camera ICE candidates",
-                description:
-                  "Use this only from the U1 dashboard to add bounded ICE candidates to its active read-only camera session.",
-                inputSchema: {
-                  type: "object",
-                  properties: {
-                    sessionId: { type: "string", minLength: 16, maxLength: 512 },
-                    candidates: {
-                      type: "array",
-                      minItems: 1,
-                      maxItems: 16,
-                      items: {
-                        type: "object",
-                        properties: {
-                          candidate: { type: "string", minLength: 1, maxLength: 8 * 1024 },
-                          sdpMid: { type: ["string", "null"] },
-                          sdpMLineIndex: { type: ["integer", "null"], minimum: 0 },
-                          usernameFragment: { type: ["string", "null"] },
-                        },
-                        required: ["candidate"],
-                        additionalProperties: false,
-                      },
-                    },
-                  },
-                  required: ["sessionId", "candidates"],
-                  additionalProperties: false,
-                },
-                annotations: readOnlyAnnotations,
-                securitySchemes,
-                _meta: {
-                  securitySchemes,
-                  ui: { visibility: ["app"] },
-                  "openai/visibility": "private",
-                },
-              },
-              {
-                name: "close_u1_camera_stream",
-                title: "Close U1 camera stream",
-                description:
-                  "Use this only from the U1 dashboard to idempotently close its bounded read-only camera session.",
-                inputSchema: {
-                  type: "object",
-                  properties: {
-                    sessionId: { type: "string", minLength: 16, maxLength: 512 },
-                  },
-                  required: ["sessionId"],
-                  additionalProperties: false,
-                },
-                annotations: readOnlyAnnotations,
-                securitySchemes,
-                _meta: {
-                  securitySchemes,
-                  ui: { visibility: ["app"] },
-                  "openai/visibility": "private",
-                },
-              },
-            ]
-          : []),
-      ],
-    }));
-  }
+  tools.finish();
 
   return server;
-}
+};

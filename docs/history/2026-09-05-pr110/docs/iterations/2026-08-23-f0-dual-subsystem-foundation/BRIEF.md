@@ -1,0 +1,1290 @@
+# F0 dual-subsystem foundation brief
+
+## Current: deterministic prepared-artifact upload guard
+
+The user selected a bounded P1/I1 implementation slice from the Laifen print
+retrospective: promote stable repeated checks into executable policy before any
+upload attempt. Proposed
+[decision 0048](../../decisions/0048-guard-upload-with-content-bound-preparation-receipts.md)
+defines `validatePreparedArtifact` inside Orca Preparation and a shared guarded
+`uploadPreparedArtifact` coordinator at the explicit handoff seam. Visual
+correspondence and validation produce immutable, content-bound receipts;
+guarded upload returns a separate readonly result. None grants authorization.
+The first planned transport is a narrow CLI over the same application use cases.
+MCP exposure remains deferred.
+
+The accepted pure core takes only trusted snapshots. It binds effective walls to
+a resolver receipt, review to a fresh challenge/digest receipt, and validation
+to an immutable deterministic receipt. Thermal analysis stops at the first
+provable positive extrusion delta and binds its active/inline tool. The guarded
+handoff resolves opaque IDs through injected stores, uses a trusted clock,
+atomically claims one-use authorization and idempotent action state, and
+normalizes acknowledged/rejected/timeout/transport-failed/unknown fake-port
+outcomes without duplicating an uncertain effect.
+
+Preserve the user's active validation role through a matching-edition preview,
+clear fixed/adjustable intent, and explicit correspondence `PASS`/`FAIL` bound
+to the exact revision. PREP-007 local image evidence stays before upload;
+HANDOFF-007 target-parsed image evidence stays after upload and before start.
+Start authorization, acknowledgement, observed printing, monitoring, printer
+completion, camera evidence and physical acceptance remain separate.
+
+Pure source is independently accepted at
+`f90e0b54fe3a5e4fe9a1e62b9ad766afe615c2ff`, tree
+`c5be31e7c744c70826a4cd2d98904bc20b4259f9`, in
+`plugins/u1-print-studio/app/src/lib/server/preparation/prepared-artifact.ts`
+and `plugins/u1-print-studio/app/src/lib/server/application/upload-prepared-artifact.ts`.
+Author TypeScript and combined 32-test/231-assertion fixtures pass; the focused
+MCP inventory guard passes one test/20 assertions. Architecture and domain
+reviews APPROVE the exact source with their own focused/combined checks and tool
+matrix. Exact commands and limits are in VALIDATION.
+
+This F0 slice intentionally adds no durable store, supported skill/CLI adapter,
+MCP mutation tool, real uploader or target-parsed post-upload receipt. Decision
+0040 remains workflow policy whose end-to-end enforcement is incomplete until
+those later layers are separately accepted. No printer, network, upload, start,
+installed-plugin or service action was authorized or performed.
+
+## Current deployment: PR106 host fullscreen and packaged body insets
+
+PR106 merged as `0660a07fb1f14a67783e7474172bda3630d36ba6` and shipped release
+`20260903-0660a07-pr106-20260903T100036-471de8`. BOTH services restarted and
+verify loaded/healthy/integral at0.4.12/schema16/observation18/Camera14. All72
+static and74 security checks pass; preservation=true, rollback not needed.
+Exact review, receipt and scoped postverification are recorded in VALIDATION.
+
+The release implements host-acknowledged fullscreen with persistent media and
+corrects packaged legacy body insets using existing tokens. Installed-byte
+Camera fullscreen and selected Progress layout/recovery checks pass with a
+synthetic MCP host; actual phone fullscreen remains unverified.
+C08 Live reliability and baseline Retry→Refresh focus loss remain open. The
+selected Progress layout/recovery checks do not accept its deferred redesign.
+
+Preserve host-owned composer/chrome, no OS-screen promise,55 IDs, two current
+resources without aliases, eight active legacy renderers, monitor workflow,
+Progress no-action, F07 discussion, separate c6 and unfinished Queue/Fans/Job
+History. This rollout tail changes documentation only; no application rebuild,
+full regression or service deployment is required for the tail.
+
+## Historical deployment: PR104 Camera and current-only widgets
+
+PR104 merged as `162dc68d0945feb4b3d2de7b638479560f2604d9`, preserving exact
+reviewed `30e0649` tree, and is deployed. BOTH services restarted and verify
+loaded/healthy/integral at runtime0.4.11/schema15/observation17/Camera13;72 static
+and74 security checks pass, preservation is true and rollback was not needed.
+Scoped postverification passes on installed Camera/Jobs HTML with synthetic MCP
+data, plus exact served resources and retired-route rejection. This is not actual
+ChatGPT phone or real Camera acceptance. Evidence is in VALIDATION.
+
+Current resources are observation and Camera only, with two public/six app-only
+tools; retired aliases/assets/routes stay removed. Camera defaults to quiet Auto,
+uses Auto/Live with edge-to-edge media and the safe bottom-left failure reason.
+Known historical deployment profiles remain strictly verifiable without restoring
+public widget compatibility. All55 IDs, monitor workflow, eight active legacy
+views, Progress no-action, unfinished product work and existing layout debt remain.
+C08 phone reliability and host fullscreen are unresolved; Screen Sharing stays
+paused. The completed PR104 records-only tail changed no application bytes and
+needed no new deployment or full regression under decision0028.
+
+## Prior accepted slice: Camera/current-only source
+
+Decision0046's combined Camera and current-only source is independently accepted
+at `aaaf0a56a0df944a19384822decfc62712021c51`. Two current resources, two public/
+six app-only tools and52-file/71-route payload replace the old compatibility
+inventory; eight active legacy renderers remain. Camera uses quiet Auto/Live,
+edge-to-edge media and the safe persistent bottom-left reason. Scoped Progress
+allocation/Bed renderer-release fixes do not implement Progress's deferred design.
+
+Required and scoped evidence, prior failures and exact identities are in
+VALIDATION. At that earlier checkpoint, documentation-only exact review, guarded
+shipment, BOTH restarts and installed verification were next while PR101 remained
+deployed. PR104 completed those release steps as recorded above. Keep all55 IDs, monitoring scope, existing layout debt and shipping
+security/integrity/preservation guards. C08 and host fullscreen remain unresolved;
+no phone/printer acceptance follows from the synthetic checks.
+
+## Maintained workflow: standalone asynchronous print monitoring
+
+The selected standalone skill composition refines F0/I1 and MON-001 under
+[decision0045](../../decisions/0045-compose-print-with-standalone-asynchronous-monitoring.md).
+[PR102](https://github.com/scottchu/orca-slicer-mcp/pull/102) carries the independently
+reviewed source; consult the PR for merge identity. Exact `3ce5a8cf` was approved,
+including the decision-index formatting repair.
+
+Accepted source scope: existing monitor/start skills, standalone and composed
+invocation, one delegated owner, run binding/deduplication, adaptive checks,
+meaningful updates/alerts, bounded recovery, identity-checked resumption and
+separate monitor/print outcomes. Limited preparation/upload/start-only scope and
+thumbnail/control gates remain intact.
+
+Validation is structural/source review with manual fictional lifecycle cases,
+not execution of an autonomous model, actual-host or real-printer tests.
+The merge resolution retains approved skills and incoming main `06e2a903`
+application identity; monitoring checks do not validate incoming Camera changes.
+No installed cache, service, durable-monitor or notification behavior changes;
+O1/O2 remain open. Installed-plugin adoption and standardized one-shot observation
+tools are separate work. This slice does not take ownership of concurrent Camera
+changes or imply application deployment.
+
+## Delivered slice: PR99 MCP Camera and Heads
+
+Decision0044's bounded MCP cutover is deployed through PR99 `4787c02` after
+exact `f782378` approval, required gates and BOTH service restarts. It advances
+F01/F08/X05 without retiring the other eight observation renderers or old aliases.
+Scoped postdeployment behavior verification passes on installed resources
+with synthetic host data. Actual ChatGPT phone/
+OAuth/clipboard and real Camera Live remain separate acceptance layers.
+[Decision 0044](../../decisions/0044-connect-heads-and-camera-svelte-to-mcp-resources.md)
+owns the resource and compatibility contract; VALIDATION owns evidence.
+
+Acceptance:
+
+- New Camera v11 selects deterministic `mcp-camera.html`, a thin entry using
+  shared Svelte Camera presentation/service and host-result initial bootstrap.
+  Dashboard retains request bootstrap. The service validates/decodes the opening
+  tool result without another initial frame read; bounded missing/malformed
+  delivery becomes neutral error with explicit Refresh. New observation v15
+  retains one nine-view dispatcher and selects shared Svelte Heads only; its
+  other eight views retain the existing renderer. Tool and result metadata agree
+  on the new resources. Preserve all old URI assets byte for byte.
+- Keep deterministic, self-contained HTML/JS/CSS, one bridge/lifecycle, no
+  external asset fetch and no direct widget HTTP acquisition/signaling.
+- Refresh and failure/recovery preserve neutral skeleton/footer geometry; Heads
+  keeps swatch, whole hex and small borderless Copy inline with its hit target;
+  Camera uses the compact animated bottom-right icon Switch and truthful modes.
+- Legacy URI compatibility, validated result ordering, private metadata,
+  one-use activation and service-owned Camera connections/timers/disposal remain.
+- Required local validation and exact independent approval precede guarded PR
+  delivery and BOTH service restarts. Exact served resource and simulated host
+  evidence remain distinct from actual plugin-host Refresh/Copy/Switch acceptance.
+
+C08 Live connectivity and Screen Sharing stay paused. No real-printer reads or
+controls, authentication/network settings, Progress redesign, F07 reactive-class
+implementation, c6 integration or loading-policy change is part of this slice.
+Preserve all 55 request IDs and remaining product/native-renderer work.
+
+## Earlier deployment: PR97 native observation pages
+
+PR97 merged as `aa85f4d3cd253f5177de8304ae5fb2ed7d5739e9`, preserving independently
+approved350fb6e. Fans, Thermals, Heads and Queue now use native Kit pages at the
+existing URLs, without iframes or new domain behavior. Other dashboard/Lab
+renderers and unfinished product requirements remain in the delivery ledger.
+
+The required gate passes574 UI,325 server/3951 assertions, eight packages and
+34+27 Python tests. Seven formal-payload browser cases are retained by unchanged
+application/payload hashes. Guarded shipping explicitly restarted BOTH services:
+loaded/healthy/integrity,73 static/75 security checks and preservation pass, with
+no rollback. Independent postverification passes all four320px native pages:
+exact HTTPS assets, neutral failed-refresh geometry/footer, recovery and Heads
+keyboard Copy with synthetic responses. No real printer or user clipboard access.
+Detailed commands/hashes and all prior failures remain in VALIDATION, including
+77f023e imports,29e4f07 fixture/build differences and the rejected stale output.
+
+C08 and Screen Sharing stay paused until the user returns home; no Camera service
+repair, real Live, physical-printer, BFCache or actual-device acceptance is claimed.
+Keep all55 IDs, Progress no-action, F07 reactive-class discussion, separate c6 and
+unchanged loading policy. The MCP Camera/Heads cutover above is the active next
+slice; at-home Local Network inspection remains C08's external step. PR97's
+Markdown-only rollout record required no additional deployment under0028.
+
+### Retained PR95 source/deployment evidence
+
+PR95 is merged as `44d4266634bbe2d102a056332726550cbfe068e8`, preserving independently
+approved `fd642a5987bb8e35c9d5c272c73e4dce26ec882a` and tree
+`a132ed2e12e77fd023a30e671cd1450f6870fed4`. The generic Switch now visibly matches
+Button's44px action size, with a40px thumb/2px inset; Camera remains132px wide and
+Bed88px. Only three consumer packages changed; the other12 public HTML files,
+Camera lifecycle, dependencies and runtime are unchanged.
+
+Required regression passes574 UI,322 server/3756 assertions, eight deterministic
+packages and34+26 Python tests. Independent targeted browser evidence covers35
+distinct cases (33 affected plus two fresh); the first34-pass/one-fixture-failure
+run and single-case renewal are preserved. Another89 unaffected cases are retained
+by input hashes; this is not a new323-case full browser run.
+
+Guarded release `20260902-44d4266-pr95-20260902T155815-e97e1c` explicitly restarted
+BOTH services and verified loaded/healthy/integral status,59 static/61 security
+checks and preservation, with no rollback. Independent postverification passes
+three320px consumer cases using exact HTTPS assets and synthetic data: Camera,
+Camera Lab and Bed Lab retain44px geometry, loading/ready bounds and keyboard
+behavior. No actual printer or Live acquisition was performed in this verification.
+
+C08 remains unresolved: nine bounded attempts locate current Bun1.4 printer ICE
+UDP sends failing with `EHOSTUNREACH`, while the same adapter under immutable1.3
+reaches upstream RTP/offer. External STUN, local UDP and authenticated wire-byte
+comparisons pass. Neither a Bun defect nor macOS Local Network denial is proved;
+no Camera service repair was made. Actual probes have stopped.
+
+The user has paused remote desktop diagnosis until returning home. Existing
+client/server logs identify RSA-SRP failure; the user reports that interactive
+local Directory verification accepted the same input. This does not identify the
+Screen Sharing failure's cause. No Screen Sharing restart was executed by agents.
+At-home inspection remains the next C08 external step; no further auth attempts,
+settings changes or Camera probes are part of the native-page slice.
+
+Preserve compact icon modes, footer errors, service-owned Camera lifecycle and
+unchanged loading policy. All55 IDs, Progress no-action, F07 class discussion,
+separate c6 and native-renderer/product backlog remain. The completed PR95
+records-only tail retained application bytes without another deployment under0028.
+
+## Earlier deployed baseline: PR93 single-app integration
+
+This F0/UI-001/UI-003/0043 slice is merged and deployed as PR93 `60cab967`, matching
+independently approved7a0d398. Required574 UI/322 server/3756 assertions/eight
+packages/34+26 Python pass;323 browser cases are321 retained plus two renewed.
+Guarded shipment restarted BOTH services and passed health/integrity/preservation,
+59 static and61 security checks. Five independent HTTPS served-UI cases pass
+using synthetic tool/media data; actual-device/printer acceptance remains separate.
+
+The delivered application retains Bun1.4.0 and one SvelteKit root with generic
+`src/components/common`, pure TypeScript services in `src/lib`, server-private
+`lib/server` and real API/dashboard/Lab routes. Fans is the native Kit page;
+other UI routes serve packaged HTML/iframe. Existing URLs, roles/auth, shared
+controller/services, acquisition-free SSR, raw/body/abort/shutdown boundaries and
+service-owned Camera lifecycle remain. No-env isolation applies to both process
+and framework build loaders. Routing takeover is distinct from native UI migration.
+
+Incomplete renderers/product work remains in the ledger behind active C08 repair. Keep all55 IDs, Progress no-action, F07 class discussion and c6
+separate. Byte caps remain removed; all integrity/security/determinism/shipping
+guards remain. The completed PR93 records-only tail required no redeployment under0028.
+
+## Historical implementation: neutral failures and adjacent footer status
+
+The user has resumed saved checkpoint `f9fe1eb0d5455b4a30937954b4ae8ff4e4b8d05c`
+on `codex/u1-footer-error-skeletons`; the coordinator verified the clean checkout
+and exact fetched branch. The old worktree is archived/unregistered according to
+the user, and its pack-up stop is historical. Preserve existing work; no fresh
+cleanup or integration of the separate c6 Camera checkpoint is requested.
+This F0 slice addresses OBS-008/010/012/013/014, CAM-008 and UI-001/003/004 under
+decision0041. Phase1 now has attributed compiler/AST,158 Svelte unit,12 package
+and49 unique retained+renewed browser cases; this is not a clean full regression.
+Four source-preflight findings received focused repairs, without independent exact
+approval. Legacy/Camera has90 app tests/1176 assertions,35 unit tests and scoped
+route evidence; Camera Lab is six retained plus two renewed passes. Phase2 service
+repairs now have focused and mixed actual-camera evidence, while the candidate
+remains uncommitted. Final Camera renderer/package renewal now passes:3 UI,
+23+2 targeted browser,12 package tests/138 assertions, compiler/AST and package
+checks. Lab79375/Live89770/private aggregate928543 fit unchanged caps.
+
+The active order is: (1) record the source-frozen candidate commit for the
+service-owned Snapshot / Live / Auto modes; (2) validate the frozen
+candidate, complete required full regression and independent review/verification,
+then guarded PR merge/deployment. The two source repairs address raw HTTP
+acknowledgements rejected by the widget and a 10-second mDNS candidate timeout
+closing healthy Live. Only acknowledgement compatibility and the narrowly guarded
+typed-timeout exception change; deadlines, invalid-ack failure and frame/open
+validation remain. Author evidence is 52 retained service plus 5 renewed synthetic
+tests, one actual handler/host/transport integration, and a 20.4s actual-camera
+check with candidate UI/deployed backend reaching 444 decoded frames at1920x1080.
+That mixed check does not deploy or accept the final renderer. Connection lifecycle
+stays in the service; components subscribe/render. All byte caps remain repo
+guards, not OpenAI limits. Other requests remain open in the delivery ledger.
+
+The latest user request supersedes visible retained-error telemetry and floating
+acquisition-error notices. Initial and refresh failures must present static
+neutral skeletons, with a persistent error status beside the existing footer
+Refresh/Retry. Internal ordering/cache and mounted chart/media ownership remain
+unchanged. Local Copy/fullscreen/PiP rejection is not acquisition failure.
+All observation and Camera routes are in this presentation audit; the separate
+Camera feature checkpoint and its unapproved budget increase remain excluded.
+Heads Copy also receives balanced hover padding without separating its inline
+swatch, whole hex and small glyph. First measure Camera/package budgets, then
+implement and renew focused route/state tests before one frozen full regression.
+This is work in progress, not delivered evidence. PR87 below is the accepted
+deployment baseline. The latest Progress question is status-only; no Progress
+implementation starts in this slice.
+
+PR87 observation stable error anatomy and inline Heads quiet Copy are deployed.
+Camera remains separately blocked; Progress redesign is still unfinished.
+The complete current route/evidence matrix is
+[Widget delivery ledger](../../widget-delivery.md).
+PR87 merged as `96e466e2ffefd75dc0b2c1fce92b40c7ec30555d`, preserving the
+independently approved tree `37a232ad86069584b4ec32562d603e5c0d577530`.
+The coordinator's guarded receipt confirms BOTH services explicitly restarted,
+loaded and healthy/integrity-verified;31 static and32 security checks pass,
+preservation passes and rollback was not needed. Independent postverification
+passes15 scoped downloaded-byte browser cases and exact service/asset checks.
+The pre-existing public-root routing limitation remains open in the ledger;
+this does not establish actual-phone, native clipboard or printer acceptance.
+Source/test evidence and the263 retained plus9 renewed browser split remain
+in VALIDATION, including the38 independent cases and artifact-loss limits.
+Camera `c6cfb4e` remains source-only and blocked at81,989/80,000 bytes.
+PR86 merged as `8b995ee`; its thumbnail policy remains binding.
+This rollout-record change is documentation only: no additional application
+build, browser suite, deployment or service restart under decision0028.
+After independent review/merge of these records, continue the open ledger
+without declaring Camera, Progress or all migrations complete.
+Older sections below are historical, not current completion claims.
+
+## Current: require embedded thumbnails before print handoff
+
+The user's latest priority is a mandatory thumbnail rule for every prepared
+print artifact. This bounded F0 preparation/handoff policy slice addresses
+whether configured thumbnail settings are enough to accept output; they are
+not. PREP-007, HANDOFF-007 and decision 0040 are implemented as source/manual
+agent workflow policy. Independent review approved `d08c88d8` with no findings;
+delivery is through open [PR86](https://github.com/scottchu/orca-slicer-mcp/pull/86).
+Bind this continuity tail to that approval and verify delivery before resuming
+the previous unfinished widget order.
+
+Acceptance requires decoded, nonempty, backend-compatible embedded images
+matching the exact selected plate/layout and final artifact hash before
+prepared acceptance or upload. After upload, verify target-parsed thumbnail
+metadata against the local evidence before start. Missing, invalid, stale or
+unverified thumbnail evidence blocks the corresponding gate. This applies to
+the current unstarted job as well as future preparation; an earlier uploaded
+candidate is not start-ready merely because upload succeeded.
+
+This changes agent workflow policy, not runtime enforcement or widget thumbnail
+support, and proves no geometry, printability or physical outcome. Preserve
+the accepted Heads/Bed evidence and every unfinished widget track below; resume
+their existing order after this priority. No application build, service restart
+or plugin installation belongs to this documentation change.
+
+## Previous delivered widget checkpoint
+
+## Current: Heads Copy PR84 deployed and independently verified
+
+PR84 merged as `0fe54f34e43f97dd9376e5a17b06efd342726455`, with the
+independently approved tree `62af16d2dcc17bcf3c25e93c8fb7c4776a11c8db`.
+The coordinator's guarded delivery receipt confirms BOTH existing services were
+explicitly restarted, loaded and healthy/integrity-verified;31 static and32
+security checks passed, preservation passed and no rollback occurred.
+Independent postverification passed: 15 manifest hashes, nine HTTPS routes
+(eight exact widget assets and Heads host), and 15 downloaded-CSP synthetic
+behavior cases. Wide-RGBA transitions at 567/590/720px with 200% text remain
+0px; whole hex, right-side 44px Copy and shared consumers passed.
+
+The delivered Heads layout keeps44px Copy on the right, exact whole RGB/RGBA,
+and public-width-driven loading/ready wrap. Source evidence remains44 focused,
+514UI,300app/3557 assertions,21 lifecycle/24 shipping and248 browser PASS.
+Separate independent36 targeted cases plus four packaged-consumer checks pass;
+previous567/590/720 enlarged wide-RGBA transitions are0px. Failed first-candidate
+evidence and the unchanged1px gate are preserved in VALIDATION.
+This does not prove actual-phone typography, native OS focus or printer behavior.
+
+Heads96660 and lightLab209516 are the only changed widget packages; six others,
+all dependency/configuration/security/shipping inputs and caps are unchanged.
+Camera Lab79776 still has224bytes headroom. Bed PR83 remains accepted prior work.
+
+Next: integrate source-approved Camera retry checkpoint
+`1c6920ef49804cdec789df33e3be0221fdecc887` with accepted main, renew actual
+consumer packages/tests and obtain independent exact acceptance before release.
+That checkpoint is not integrated, rebuilt or deployed; current Camera assets
+must not be mistaken for its acceptance. Remaining all-widget error rollout,
+Bed grid/legend/summary work, fixed Lab dock, Current Job PR79, other migrations,
+Console/progress-thumbnail/widget-size features and recoverable cleanup stay open.
+This six-record rollout update changes documentation only; decision0028 requires
+no repeat build/browser suite, deployment or additional service restart.
+
+## Earlier Bed candidate handoff (superseded where noted above)
+
+Frozen application `1da084822fde1430c47aa58e332e50e453dbffad`, tree
+`5ed792d20873e254067997d3c236147ca6b62294`, ordinarily integrates accepted
+Heads/main `55078ea215768094bf1897b516726e2e4aa05bd8` via `d139091`.
+Bed Lab now keeps initial-error structure and retained-error data/renderer/
+receipt. Adopted independent UI/UX policy moves successful 2D Retry focus to
+the selected 2D radio only while the current retry owns active-document focus;
+Reset stays native-disabled. 3D keeps Reset focus. Blur, user focus movement,
+mode/phase changes, cancellation and unmount prevent late focus recovery.
+Shared leaf focus APIs own no connection/retry logic; ADR0038 records the policy.
+
+Author gates on these frozen bytes pass: 21 focused Bed browser cases; the
+single full browser run 235/235; required repository gate 504 UI, 300 app/
+3,557 assertions, 21 lifecycle and 24 shipping tests; eight deterministic
+packages and runtime bundles/signature/help. Independent targeted validation
+reports 14 browser cases plus six fresh delayed-policy adversaries PASS.
+Exact final-head source review/verification, PR and guarded deployment remain
+pending. No Bed service, phone, real-printer or user-outcome acceptance.
+
+All eight packages changed through shared leaf APIs; Lab sizes are
+207630/632808/79776, total920214, within unchanged caps. Camera Lab has only
+224 bytes headroom; later integration must remeasure, not raise its cap.
+Owned browser/fixture sessions are closed and4179 is free. Existing Bed
+320px/200% summary crowding and grid/legend redesign are outside this slice.
+
+Coordinator-attributed Heads PR81 final postverification passed BOTH services,
+15 manifest hashes, 11 HTTPS routes/eight unique assets and14 browser cases;
+this does not accept Bed. Next order: finish Bed exact-candidate delivery,
+then the newly reported mobile Heads color swatch/hex/Copy wrapping repair
+with focused layout regression, then source-approved but unshipped Camera
+retry checkpoint `1c6920e`. Keep Camera's old packaged assets distinct.
+Other widget error rollouts, fixed Lab dock, PR79, migrations/features and
+recoverable cleanup remain open; do not fold them into this frozen candidate.
+
+## Earlier checkpoints (superseded where noted above)
+
+## Current: bounded Bed Lab stable-error surface
+
+From accepted4e869d8, implement decision0038's controlled shared presentation
+foundation in Bed Lab only. Preserve chart/header/footer structure through
+initial loading/error/retry; retain known renderer/data/receipt on refresh
+failure. No whole-widget height guess, private skeleton template, cap increase,
+production acquisition, printer action or release is part of implementation.
+Source/unit/targeted browser and transitive packages precede frozen-candidate
+independent acceptance. Heads repair, Camera68259ead, remaining widget error
+rollout, fixed Lab dock and all earlier migration/feature tracks stay separate.
+
+## Accepted-main history (superseded by the current Bed integration)
+
+Current resumed order: finish Heads PR81 exact candidate acceptance and guarded
+delivery, then Bed Lab stable-error `c0323a4`, then Camera `4eb3106` retry repair
+and remaining validation. PR82's project roles are already merged at `707a018`
+with independent static acceptance; native role loading remains unverified.
+Ordinary main integration must preserve every unfinished checkpoint. Renew
+only affected test/config/docs evidence, bind unchanged application/browser
+inputs, and keep every mandatory shipping guard intact.
+
+## Earlier Heads repair scope
+
+Immediate bounded repair: finish PR81's failed local gate by correcting only
+ObservationLoading.test.ts. Permit only the accepted Heads public nominal/empty
+TextSkeleton leaves after exact noninteractive/hidden structural checks; retain
+all privacy and non-Heads checks and add adversaries. Application/browser bytes
+stay frozen. Renew required repository validation and exact independent approval
+before retrying guarded shipment; never alter shipping guards to mask a failure.
+
+Current bounded slice (OBS-010/UI-003): add the shared Spool icon beside the
+already-contiguous Heads material label, from accepted main PR80 `4e869d8`.
+Both live and lab use HeadCard; retain one naturally wrapping material string,
+independent material receipts, empty/unknown color semantics and loading privacy.
+No global LoadingValue redesign, network/adapter change or cap increase.
+Focused source/unit/compiler/consumer-package checks precede the one owned
+candidate regression and independent acceptance. Isolated browser use is approved.
+The adopted material loading repair reuses TextSkeleton with closed public
+`nominal | empty` shapes selecting `Generic PLA` / `—`, inside the identical
+Caption/icon/gap composition. Only validated Lab controls choose shapes; no
+private reading supplies a skeleton template. The closed-scenario <=1px parity
+gate does not promise arbitrary private-length initial parity. Long actual labels
+remain naturally wrapping, without a fixed reserve, truncation or layout redesign.
+
+All new additive priorities remain separate: fixed bottom Lab controls; Camera
+three fixed metadata slots, truthful state icons and thin lifecycle components;
+Progress local PercentageBackground/layer blocks and thumbnail feasibility;
+Bed stable framing with inset Z legend and in-chart extrema/range; all-widget
+loading/error frame preservation and non-flow feedback. PR79 remains untouched.
+Independent deployed-Lab UIUX and printer-information audits are complete as
+recommendations: state frames/fixed Lab dock first, then atomic typography/actions,
+Progress and Bed. This Heads slice does not implement those broader proposals.
+## Earlier project-role scope (completed by merged PR82)
+
+Latest user-directed priority: persist four project agents for UI/UX design,
+printer-domain review, agentic MCP/API architecture and a simulated maker user.
+This bounded F0 configuration slice addresses reusable role ownership without
+committing a new product architecture. Acceptance: four valid standalone TOMLs,
+clear role routing/examples, inherited settings, truthful compatibility limits,
+targeted static checks and independent review. No application implementation,
+real-printer acquisition, deployment or global configuration change belongs here.
+Preserve all unfinished widget checkpoints; see the newest PROJECT_STATE entry.
+
+## Earlier execution order (superseded where noted above)
+
+Latest user-directed priority: persist the test cadence and task-owned resource
+cleanup rules in `AGENTS.md`, as a bounded F0 docs-only policy change from
+accepted PR78 `177d326`. Acceptance is a concise authoritative policy, unchanged
+shipping safeguards and application/build inputs, targeted docs validation and
+independent documentation review. No new ADR, script, automation, browser run or
+service restart belongs to this slice. Current Job PR79 remains frozen; all
+other migration, feature and recoverable-cleanup tracks are preserved.
+
+## Earlier execution order (superseded where noted above)
+
+Latest additive user priority (UI-001/UI-002): replace Bed Mesh's separate mode
+buttons with one generic icon-only segmented control, isolated from accepted
+PR77 main `4828ce04`. Adopted independent design: two controlled radio options,
+88x44 outer/44x44 targets, centered 88x32 track, 40x28 thumb sliding 44px over
+180ms using transform only; reduced motion disables animation. Keyboard wrap,
+Home/End/Space/Enter, one Tab stop, no focus stealing, disabled and inert equal
+loading geometry are required. Preserve chart identity, mode semantics, reset,
+URL/history, legend, four-width/200% geometry and every mesh/zoom/pixel/no-fetch
+gate. Production bytes, routes, controllers and compact IconButton stay unchanged.
+Independent exact review/validation and guarded shipment remain required.
+Current Job is preserved at `5855223` (repository and focused49 pass, full207
+deferred); real Bed phase two `194ea79` and every prior backlog track stay open.
+Author application8022984 now passes455 UI,300 app,21 lifecycle,24 shipping,
+focused16/full198 browser and repeated eight-package/runtime/signature gates.
+Next is separate exact-source review/validation, then guarded PR delivery;
+author evidence is not independent approval or deployment.
+
+## Earlier execution order (superseded where noted above)
+
+Latest additive order: deliver the user-requested vertical Z(mm) legend inside
+the left edge of the shared Bed Mesh 4:3 chart as a bounded lab-only slice from
+accepted Queue main `7882670`, ordinarily merged as `910355e`. The reusable
+HeightLegend and optional ChartFrame
+leading slot must retain 2D/3D/skeleton geometry, real sample extrema, readable
+nonoverlapping labels at four widths/normal and 200% text, zoom and zero fetch.
+No production route/controller/service/printer change belongs to this slice.
+Full real-Bed phase two is preserved at `194ea79` and remains queued with its
+independent gates and accepted Queue-controller dependency. Other tracks remain open.
+Independent design now adopts one intrinsic Z(mm) caption plus a 6px rail, no
+duplicate chart endpoint numbers, with exact range on the chart's accessible
+description and existing visible Minimum/Maximum/Range facts below. Retain
+14px plot inset and all coverage/clearance/readability gates. This supersedes
+only the held duplicate-endpoint design; no source acceptance is implied.
+Author full browser 182 and repository/runtime/eight-package gates now pass;
+independent exact review and guarded delivery are next.
+
+## Integrated Queue baseline records
+Current order: PR75 is delivered at accepted main `ff577fcb`; finish the bounded
+Queue candidate and independently discovered shared stale-success RPC repair.
+Application source `5c53d05` incorporates independently designed intrinsic public
+text templates and passes full author gates: geometry24, Chrome174 and repository
+checks. Obtain independent exact-source review and validation before guarded
+merge/deploy/BOTH restart/verify. No cap/backend/MCP expansion.
+Queue then Current Job and History remain bounded migrations; Progress is held
+pending the shared repair, real Bed Mesh is separate and Overview last. All
+feature and recoverable-cleanup tracks remain open.
+
+## Historical execution-order checkpoints
+
+Current order: complete the three-artifact private-lab route/graph split on top
+of accepted/deployed Heads main `5ffca66`. The authored light/Bed/Camera outputs
+are 199,819/629,880/78,795 bytes (908,494 aggregate). Independently renewed caps
+are 250,000/700,000/80,000 and 980,000 aggregate. The finite light allowance
+covers Queue, Current Job, History, Progress and Overview only; Console and
+thumbnails are excluded. No printer, auth, public route, MCP or production
+widget behavior changes.
+
+Current order: Fans PR70, Camera PR71, Thermals PR72 and Bed Mesh renderer PR73
+are delivered. Accepted main8c5756d is explicitly integrated in Heads branch
+merge0bb9ef6. Heads mobile skeleton repairs pass focused22 cases, not delivered;
+finish exact combined tests/review and guarded ship.
+Then Queue, Current Job and History are separately bounded migrations; Progress
+is separate, real Bed Mesh adapter/shell follows renderer, Overview is last.
+Decision0032's reviewed finite Heads composition budget revision applies.
+All new-feature tracks and final cleanup remain open, after consolidation.
+
+## Historical checkpoints
+
+Current order: Fans PR70, Camera PR71 and Thermals PR72 are delivered; reviewed
+Thermals main `6325c87` is explicitly merged for this held PR73 renewal. Repair
+the independently reproduced canceled-wheel-zoom regression, retain every 1x
+axis/containment/data/pixel gate and renew exact tests/review before guarded
+delivery. The independently accepted policy separates neutral fit from bounded
+detail zoom; deliberate greater-than1x cropping is not an excuse to relax 1x
+containment. Heads migration is separately owned. All other WIDGET_TRACKS stay
+open. Historical parallel-candidate and delivery claims below are superseded.
+
+## Earlier refinement and execution checkpoints
+
+Current bounded parallel UI-001 refinement: correct the existing private-lab
+Bed Mesh renderer's projected visible-side axes, nondegenerate Z enclosure,
+reactive data updates and rectangular 2D projection. Decision0032's refinement
+records measurable coverage, containment, stable4:3 and disposal gates. This is
+an existing named obligation, not a production migration; Camera/Thermals remain
+separate candidates and exact reviewed integration precedes release. No printer,
+MCP, theme, route, dependency or package-cap expansion is authorized here.
+Current execution order (2026-09-01): PR70 real Fans and PR71 focused Camera are
+shipped; reviewed main is `0aa83a0`. Renew the bounded real Thermals cutover on
+that explicitly integrated baseline, then remaining seven observation migrations before queued
+feature refinements/cleanup. Decision0034 and LIVE_PARITY govern nullable
+thermal values, real heater-bed identity and independent Cavity evidence.
+No generic MCP switch or deletion of reachable legacy assets is authorized by
+this Thermals slice. Older Fans/Camera-pending notes below are historical.
+
+## Historical execution-order checkpoints
+
+Current migration sequence: PR67 controls/loading and PR68 receipt are delivered;
+complete decision 0034's real Fans adapter/shared host controller on a separate
+branch with reviewed main `2d30b01` integrated before its Fans-only acceptance.
+Camera's separate controller reuses the shared RPC. No new feature or backend
+rewrite is folded into either reviewed boundary.
+The remaining-eight lossless mapping/fixture gates are recorded in
+`LIVE_PARITY.md`; no missing lab metric may be fabricated from real data.
+
+- Iteration ID: `2026-08-23-f0-dual-subsystem-foundation`
+- Date opened: 2026-08-23
+- Working baseline: `32762dd`
+- Status: active
+- Latest user execution order: complete existing implementation, consolidate /
+  migrate, review and guarded merge/deploy/BOTH restart/verify, then cleanup.
+  Freeze the smallest complete existing all-nine controls/loading slice first;
+  do not start new features or silently include production cutover. Camera and
+  seven legacy ready-shell replacements plus production observation/camera
+  migrations remain explicit unfinished work, not accepted by a lab shipment.
+- Current priority: visible shared bottom lab controls for all nine observation
+  lifecycle/scenario/freshness/value examples, including structural loading;
+  then separate synthetic Camera integration with that same control system.
+  No production/printer/media transport change. Preserve frozen seven ready
+  debts, exact private route isolation and the unchanged 750,000-byte cap.
+
+- Latest shipped refinement: PR65 reviewed `f216c70`, merged `6b9b3e7`, guarded
+  release `20260901-6b9b3e7-pr65-20260901T142009-341331`. BOTH services explicitly
+  restarted and passed loaded/health/integrity, 25 exact asset/route and 26
+  security checks. Thermals/Fans share the 100-degree tint at exact ratio width.
+  Resume visible all-nine lab controls/loading, then synthetic Camera; remaining
+  refresh, size/API and widget tracks stay open. No actual-device acceptance.
+- Current bounded priority: gently sloped shared percentage tint (100 degrees
+  inside an exact ratio-wide rectangle), then visible all-nine lab controls /
+  structural loading and separate synthetic Camera. Smaller visual Refresh and
+  content-aware compact/medium/full with a later MCP size parameter stay queued
+  separately; no production, API, auth or acquisition change in this slice.
+- Latest shipped slice: PR63 reviewed `0f78e69`, merged `57a305b`, deployed as
+  `20260901-57a305b-pr63-20260901T134952-9c86bd`. BOTH services explicitly
+  restarted and passed integrity/health plus 25 exact static and 26 security
+  checks. Fans private-lab composition is delivered for feedback; no production
+  cutover, live device observation or user acceptance is claimed.
+- Current user-directed slice: Fans & Air adopts seven composed percentage
+  backgrounds, common 13-pixel metrics, 14-pixel names and geometry-matched
+  structural loading on merged PR62 `a3da16a`. No production/server/MCP migration;
+  independent exact-SHA review precedes the standing delivery workflow.
+- Current user-directed priority (2026-09-01): build PercentageBackground as a
+  reusable closed decoration leaf and compose private-lab Thermals from it,
+  after merged PR61 `e8edc38`. Preserve actual/target text, neutral invalid
+  ratios, safe configurable color, child interaction and shared layout/skeleton
+  geometry. Review/merge/deploy this bounded slice promptly; all-widget
+  skeletons, remaining ready migrations, Bed Mesh axes, Console, model progress,
+  Camera and production cutovers remain queued, not cancelled.
+- The next user-directed consumer is Fans & Air: reuse PercentageBackground
+  and shared compact row primitives with responsive/progressive tests after the
+  bounded Thermals release. This refinement does not implement Fans yet.
+- Current foundation slice (2026-09-01): decision 0033/UI-003 composes Thermals
+  from closed shared typed primitives with zero native feature/composite HTML,
+  frozen raw debt and loading/ready-refreshing/unavailable/error states. The
+  first slice ships separately for prompt user feedback; all-nine skeletons and
+  remaining ready migrations stay ordered follow-ons rather than silently
+  dropped scope. No production cutover or acquisition is included.
+- Subsystems and boundary: Orca Preparation, handoff boundary, and Printer Operations
+- Current presentation migration (2026-09-01): decision 0032 starts an
+  incremental Svelte 5/SvelteKit static lab without cutting over focused
+  production routes or MCP resources. The first deployable slice is shared
+  compact widget primitives plus a synthetic Bed Mesh page served only by the
+  private dashboard at `/dashboard/lab/bed_mesh`. Acceptance is one
+  bridge-injected, network-free component with the exact same 4:3 chart DOMRect
+  in 2D/3D at 320/390/590/720, 44-pixel icon controls, overlay feedback and
+  real-browser captures, deterministic self-contained packaging, exact private
+  route 200/public 404 isolation and no acquisition. The generic embed is not a
+  production artifact. Existing `/dashboard/bed_mesh`, tools/resources, auth
+  and Tailscale behavior remain untouched.
+- Current Svelte migration order now completes all nine observation candidates
+  in the private lab before any MCP cutover. Add `/dashboard/lab/` plus exact
+  overview/progress/thermals/heads/jobs/job_history/queue/fans/bed_mesh paths
+  from one deterministic bridge-only package, with strict synthetic fixtures,
+  shared compact anatomy and 320/390/590/720 browser evidence. Camera remains
+  explicitly pending a separate lifecycle migration. Production routes,
+  resources, auth, Tailscale and public HTTP do not change in this slice.
+- Independent review blocked candidate `7aef4b5`: stable geometry did not make
+  its thin 3D projection or 3–6 pixel sprite labels readable. Renewal requires
+  a surface covering at least 70% × 42% of the 4:3 frame, stable non-overlapping
+  HTML axis/value labels at 12 pixels or larger, and runtime bridge validation
+  that checks freshness/source/profile metadata and recomputes/verifies matrix
+  summary values within the decision-0032 tolerance.
+- The renewed author candidate meets those measurable gates at all four frozen
+  widths: 91.9--92.5% × 53.4--53.7% real projection coverage, nine 12-pixel
+  in-frame/non-overlapping labels, strict bridge rejection fixtures and a
+  deterministic private-only package. Independent exact-candidate review is
+  still required; production remains unchanged.
+- Formal review blocked exact candidate `a6363fd` on its remaining profile-
+  allowlist mismatch. The corrected bridge matches the adapter's Unicode
+  letters/numbers plus space/underscore/dot/hyphen rule, trims outer spaces and
+  rejects empty/dot/dotdot, traversal, URL, bidi, markup and controls. Renewed
+  exact-candidate review remains required.
+- Latest shipped refinement (2026-08-31): PR56 reviewed `e2702dc7`, merged
+  `cb7d06fd` (tree `dc290de1`) and guarded release
+  `20260831-cb7d06f-pr56-20260831T234756-96fe19` runs on BOTH explicitly
+  restarted, healthy and integrity-verified services at runtime 0.4.7/schema
+  12/observation-v13/camera-v9. Sixteen security checks, both exact served
+  widget hashes and all ten local-plus-tailnet dashboard routes pass;
+  independent postdeployment validation is PASS and no rollback occurred.
+  iPhone layout, WebGL render/fallback, touch interaction and live-camera/
+  fullscreen continuity remain visually unaccepted because the browser runtime
+  was unavailable. No camera or printer request was made during rollout.
+- Latest priority (2026-08-31): implement E compact Overview under decision
+  0021's completion addendum, decision 0029 and OBS-015. Explicit Overview
+  demand concurrently requests main status plus all six independent non-camera
+  domains through their existing readers, receipts, 15-second attempt TTLs,
+  coalescing, stale retention and fixture isolation. Compose the exact eight
+  accepted projectors into one privacy-minimized headline module; do not embed
+  full cards or rely on the renderer to hide filenames, rows, IDs, mesh samples
+  or metadata. Preserve per-tile source state/time/freshness/reason, status-only
+  header provenance, coverage-only complete/partial/none, one compact responsive
+  white card and exactly one bottom Refresh. No new adapter, cache, timer,
+  normalizer, camera/media, navigation or controls. Target 0.4.6/schema 12/
+  observation-v12/camera-v8, 22 resources with observation-v11 retained and
+  unchanged tools. Source/independent/exact review precedes guarded merge/deploy/
+  BOTH restart/scoped verification; visual QA remains unverified.
+- Previous shipped priority (2026-08-31): D Current Job/real History shipped in
+  PR51; exact release `20260831-23f07e3-pr51-resume-20260831T191106-be85c4`
+  runs on BOTH explicitly restarted services at 0.4.5/schema 11/observation-v11/
+  camera-v8. Exact sanitized evidence is recorded in VALIDATION; browser/device
+  visual acceptance remains unverified.
+- Previous design priority (2026-08-31): implement D Current Job/real History as two
+  independently timed demand-only domains under decision 0025's addendum,
+  decision 0029 and OBS-014. Use only the fixed bounded print_stats/
+  virtual_sdcard and latest-20 descending history reads. Preserve safe basenames,
+  page-only history count/order/duplicates, contextual persisted-filename copy,
+  all documented statuses plus nonraw Unknown, explicit partial/empty/stale/
+  unsupported/unavailable states and separate 15-second receipts. Each compact
+  white card keeps information above one bottom Refresh; no pagination, row
+  action or control. Target 0.4.5/schema 11/observation-v11/camera-v8, 21
+  resources with observation-v10 retained and unchanged tool inventory. Source/
+  independent/exact review precedes guarded merge/deploy/BOTH restart/scoped
+  verification; visual QA remains unverified. Preserve A/F/Heads/B/C; E follows.
+- Previous shipped priority (2026-08-31): C Fans & Chamber shipped in PR49 and
+  exact release `20260831-3ab4ed7-pr49-resume-20260831T182603-74d978` runs on
+  BOTH explicitly restarted services at 0.4.4/schema 10/observation-v10/
+  camera-v8. Exact scoped telemetry and evidence boundaries are recorded in
+  VALIDATION; browser/device visual acceptance remains unverified.
+- Previous shipped priority (2026-08-31): B Queue is shipped in PR47. Reviewed `1068add`
+  merged as `6d76f9ac1c1c6daded28f3b0b945c934e56504e0`; exact release
+  `20260831-6d76f9a-pr47-20260831T172710-645971` runs on BOTH explicitly restarted,
+  loaded/healthy/integrity-verified services at 0.4.3/schema 9/observation-v9/
+  camera-v8. Fourteen static and sixteen security checks pass; config/auth/routes
+  are preserved without rollback. Independent checks confirm 15 exact manifest
+  files, both service targets, three health/seven exact static checks, one known/
+  fresh paused-empty Queue observation and exact served-widget semantics.
+  Browser/device visual acceptance remains unverified.
+  Continue C fans/chamber → D Current Job/History → E overview.
+- Previous priority (2026-08-31): resume B Queue after PR46's merged Heads rollout
+  records. Decision 0029/OBS-012 define the smallest end-to-end slice: existing
+  fixed bounded Queue adapter → independent shared-store domain → safe focused
+  projection → white Queue card and truthful directory label. Acceptance covers
+  actual queue state/order/count, bounded safe filenames/omissions, independent
+  receipt/15-second attempt TTL/coalescing/failure retention and explicit empty,
+  stale, unknown, unsupported or unavailable outcomes. Information is above
+  bottom Refresh; no queue/file/printer controls. Source work and independent
+  validation/review target runtime 0.4.3/tool schema 9/observation-v9/camera-v8,
+  nineteen resources and a retained observation-v8 alias, then precede PR merge,
+  exact-build deploy, BOTH-service restart
+  and meaningful scoped verification for user review. Browser/device acceptance
+  remains unverified; A/F/Heads remain shipped and C/D/E remain active afterward.
+  Author checks pass 223 app tests/3,150 assertions. Independent validation
+  passes those plus 21 lifecycle, 22 shipping and 15 focused tests/7,049
+  assertions, TypeScript/diff checks, three bundles/code signing and six exact
+  emitted assets. Formal review's singular-summary grammar defect is corrected
+  in only widget/test bytes; renewed author and independent gates pass without
+  findings. Exact-candidate review remains open.
+- Previous shipped priority (2026-08-31): bounded Heads reference refinement before Queue,
+  under decision 0029/OBS-010. Preserve the white outer card; use soft 6% washes
+  from actual valid filament colors, exact swatch/hex and accessible Copy, real
+  tool/state/material/temperature, bottom Refresh and independent freshness.
+  Source 0.4.2/schema 8/observation-v8/camera-v8 (eighteen resources) passes
+  author 106 tests/2,290 assertions and TypeScript; independent 200 app/2,855,
+  21 lifecycle, 22 shipping, 86 fixtures/751 and bundles/exact assets pass.
+  PR45 reviewed `e369ca4` was approved and merged as `90d9f9d`; exact release
+  `20260831-90d9f9d-pr45-20260831T152746-190348` is deployed. BOTH services were
+  explicitly restarted and are loaded/healthy/integrity verified; fourteen
+  static and sixteen security checks pass, config/auth/routes preserved,
+  no rollback. Independent manifests/three health/seven static checks, one fresh
+  four-head/material read and 35 exact served-widget VM assertions pass. Order is now
+  A/F/Heads (deployed) → B → C → D → E; Queue integration is next. Browser/device
+  visual and native clipboard acceptance remain unverified. These docs-only
+  rollout records require no redeployment of unchanged application bytes.
+- Current result (2026-08-31): PR43 reviewed head `41546d9` merged as `92a62c0`
+  and shipped exact release `20260831-92a62c0-pr43-20260831T150042-2e7c64`.
+  BOTH services were explicitly restarted and are loaded/healthy/integrity
+  verified at 0.4.1/schema 8/observation-v7/camera-v8. Fourteen exact static and
+  sixteen security checks pass; OAuth/environment/config/routes are preserved
+  without rollback. Independent exact-release/manifest, fourteen local/thirteen
+  tailnet static and tailnet-health checks pass; one private refresh returns
+  a known/fresh active 11 by 11 mesh at `2026-08-31T19:03:22.696Z`.
+  Visual/device acceptance remains unverified. Next integrate Queue while the
+  user reviews F. These docs-only rollout records need no app redeployment.
+- Previous result (2026-08-31): PR41 reviewed head `744f7d0` merged as `b6142de`
+  and shipped via `u1-ship`, release `20260831-b6142de-pr41-20260831T140555-84d50f`.
+  BOTH public/dashboard services were explicitly restarted and are loaded,
+  healthy and integrity verified at 0.4.0/schema 8/observation-v6/camera-v8.
+  Fourteen static and sixteen security checks pass; OAuth/environment/config/
+  routes are preserved and no rollback was needed. The user explicitly
+  authorized merge → deploy → verify before automated browser QA so they can
+  visually review the result; visual/actual-device acceptance is not claimed.
+  Source validation and exact-SHA review were not waived. A preliminary plan
+  stopped on a dirty BRIEF edit without external mutation; a scoped commit,
+  renewed exact-SHA review and successful final read-only plan resolved it.
+  Independent verification confirms the exact installed release, twelve exact
+  asset comparisons, four user-facing pages, fresh four-head material metadata
+  and one structurally valid real JPEG; no visual/phone/live-video pass is claimed.
+- Authoritative current work (2026-08-31): complete all pending read-only U1
+  widgets and apply the selected white style. Decisions 0029/0030 and
+  `WIDGET_TRACKS.md` supersede prior Queue/progress deferrals and camera overlay
+  directions below. Release order: A materials + white cards/index + latest
+  camera + continuous progress (deployed), F interactive reported Bed Mesh
+  surface (deployed), B Queue, C fans/chamber, D Current Job/History, E composed overview.
+  The user's new Fluidd Bed Mesh reference prioritizes its orbitable XYZ
+  surface inside the existing white card; it does not request the dark
+  dashboard or printer/profile controls. Reuse the same reported grid/bounds,
+  explicit units/legend, disclosed bounded height exaggeration and 2D fallback;
+  preserve all existing freshness/inactive/flat states. Retain independent
+  invocation and truthful coverage labels. New feedback never silently cancels
+  outstanding tracks. [PR41](https://github.com/scottchu/orca-slicer-mcp/pull/41)
+  delivers A with sixteen resources. Progress lower
+  metrics are elapsed-only, never fabricated from the reference. Independent
+  software checks (190 app/1,761 assertions, 21 lifecycle, 22 shipping,
+  20 isolated/399 assertions) and source review resolve the prior contrast P2;
+  rendered visual QA remains unverified. Queue adapter/model/test foundation is
+  locally committed as `4fbb96c` on `feat/u1-queue-completion` (three files);
+  independent bounded source/protocol review approves, closing the prior P2.
+  TypeScript, 40/461 and independent six/68 pass. Queue store/widget integration
+  remains active after the bounded F enhancement. Stacked B–E source work may
+  continue during A's user visual-review wait; the current sequential reviewed
+  release order is A (deployed) → F → B → C → D → E.
+  Ship every accepted slice through the existing guarded PR/review/exact-build/
+  both-service restart and verification workflow. These docs-only rollout
+  records need no redeployment. Decision 0030's Bed Mesh surface is implemented
+  as 0.4.1/schema 8/observation-v7/camera-v8 with seventeen resources. The P2
+  face-occlusion defect is corrected; final source passes 194 app/2,731
+  assertions, 21 lifecycle, 22 shipping, 22 independent/1,162 assertions and
+  TypeScript/repository/bundles/exact assets. Exact head `41546d9` was approved
+  without blockers and shipped in PR43. Next complete Queue's integration.
+  Follow the standing merge → deploy → restart
+  BOTH → verify order for the user's visual review; unavailable automated browser
+  access remains an explicit unverified visual gate, not a new delivery block.
+  F0/O1 are not complete.
+- Historical checkpoints follow; they are not the current execution queue.
+- Current result and next action: bottom-left camera information and bottom-right
+  controls are implemented. Repeated same-peer track events reproducibly started
+  duplicate watchers and reset the FPS window; cancellation/generation guards
+  now prevent that defect. Author evidence: 83 tests/862 assertions and TypeScript.
+  Independent native-browser evidence: six captures and stable approximately
+  30/31 FPS after repeated tracks in synthetic playback. The user's device cause and actual printer
+  stream remain unverified. Source 0.3.5/schema 7/observation-v5/camera-v7
+  (v6/v5/v4 aliases, fourteen resources) is shipped in PR38 (`a35c92c` reviewed,
+  `b565eec` merged), release `20260831-b565eec-pr38-20260831T130407-2e3c85`.
+  Both services were restarted and are healthy/integrity verified; fourteen
+  static and sixteen security checks pass with private configuration/auth/routes
+  preserved, without rollback. Finish only the docs-only rollout-record merge;
+  source/tests are unchanged, so no redeployment. Queue/minimal-progress work
+  and actual user-device acceptance remain deferred.
+- Previous completed result: the measured live-FPS slice is reviewed and
+  shipped in PR36 (`40d359b` reviewed, `3fc918e` merged), release
+  `20260831-3fc918e-pr36-20260831T124701-e914a1`. Both U1 services were
+  explicitly restarted and verified at runtime 0.3.4/schema 7/observation-v5/
+  camera-v6. Fourteen static and sixteen security checks pass, private
+  configuration/authentication/routes are preserved, and no rollback was needed.
+  Its docs-only rollout record is merged without a second deployment for
+  unchanged app bytes. Actual phone/live-video acceptance and queue/minimal-
+  progress work remain separate pending tasks.
+- Previous completed result: PR34's exact reviewed head `97b5106` merged
+  as `7194361` and the repository shipping workflow completed deployment,
+  explicit restart of BOTH U1 services, and verification. Installed release
+  `20260831-7194361-pr34-20260831T121439-3ba53f` reports 0.3.3/schema 7/
+  observation-v5/camera-v5; both services are loaded, healthy and integrity
+  verified. Fourteen static and sixteen security checks pass with private
+  configuration/authentication/routing preserved. Independent live checks
+  confirm a known/fresh active 11 × 11 Bed Mesh (range 0.407500 mm) and a
+  visually inspected real JPEG snapshot. No calibration, printer control,
+  mounted-phone or live-video acceptance is claimed. Its docs-only rollout
+  record needed no second deployment. Queue WIP,
+  minimal-progress redesign and phone/live-video verification remain pending.
+- Historical first release attempt, resolved: PR34's shipping run stopped before
+  merge because Bun compilation left a generated hidden `.bun-build` app file.
+  Apply decision 0028's narrowly scoped ignore/regression repair, independently
+  approve the new exact head, then retry shipping. Do not relax other clean-tree
+  guards. No new deployment occurred; verified PR33 is still running.
+- Previous execution order (before successful PR34 shipment): the urgent rollout
+  of already-merged PR33 is complete. Both public and dashboard services run
+  release `20260831-7b9c4d4-widgets`, runtime 0.3.2/schema 6/observation-v4/
+  camera-v5, explicitly restarted and healthy/integrity verified; fourteen
+  static and six security checks pass. An independent follow-up also passes
+  thirteen exact static/seven security checks and visually verifies a real
+  JPEG snapshot; mounted-phone/live-video acceptance remains separate.
+  Decision 0028's repository shipping skill/script and decision 0027's real
+  read-only Bed Mesh slice are now implemented and software-validated, from a fixed operations-adapter query
+  through independently fresh shared-store state to a compact 2D focused view.
+  Preserve information above/actions below, distinguish inactive/missing/failed
+  data, and accept a valid all-zero reported grid. Validation passes 165 app
+  tests/2,200 assertions, 21 lifecycle and 21 shipping tests, 24 independent
+  focused tests/228 assertions, nine captures/fifteen browser checks/twenty-eight
+  routes, all three bundles/signatures/exact asset comparisons and TypeScript.
+  Seven independent shipping method checks and skill validation also pass.
+  Complete final independent exact-commit approval, then deliver/merge a new
+  PR. The user's subsequent explicit
+  authorization includes deploying that exact merged build, restarting BOTH
+  public and dashboard U1 services, and verifying loaded release integrity and
+  readiness. Preserve OAuth, configuration, and Tailscale routes; do not
+  reinstall the plugin or control the printer.
+  PR33 is already merged at `7b9c4d4`; runtime 0.3.3/schema 7/observation-v5 is
+  this slice's source target, not an installed release. Queue WIP remains
+  paused and excluded; the user's rejected progress styling and reported
+  mounted-phone/live-video behavior remain unresolved; real JPEG acquisition
+  is separately verified above.
+  The previous deployment/restart authority gap is superseded, but rollout
+  completion for Bed Mesh/the new operator workflow remains unverified until
+  performed. The earlier runtime 0.3.1 service check is superseded by the
+  completed PR33 rollout above, not evidence of Bed Mesh deployment.
+- Previous execution order, completed and merged in PR33: decision 0025's Current Job and
+  Job History widgets. Keep stable `jobs` for Current Job and add `job_history`
+  for independently callable history; directory entries become separate.
+  History remains explicitly unimplemented, without fabricated empty success
+  or acquisition time. Preserve information above/actions below and source
+  safety boundaries. Advance source to runtime 0.3.2/schema 6/observation-v4
+  while retaining old observation aliases and frozen resources. Independent
+  validation passes 148 app tests/2,011 assertions, 21 lifecycle tests,
+  TypeScript/repository/bundle/signature/asset checks and skill validation.
+  Six rendered captures, nine browser cases and thirty route checks pass with
+  zero external requests/errors/acquisitions. Independent code/visual review
+  approves without findings, with 30 tests/1,085 assertions and all six
+  captures checked. Deliver through a new PR, then merge the validated
+  slice under the user's latest merge-as-we-go authorization. PR32 is already
+  merged as `47bfd37`; do not reopen its delivery task. No deployment, plugin
+  install, service restart, auth/routing change, printer access or actual
+  history-backend integration is authorized by this presentation split.
+- Previous source slice, merged in PR32: apply the user's principle, information
+  above and actionable buttons below, across current observation and camera
+  widgets. Decision 0023's newest supersession and OBS-008/CAM-008 replace the
+  earlier timestamp-at-bottom requirement: observation time/freshness/errors
+  join the top title area; Refresh/Retry alone remain at the bottom right.
+  Camera state/time/feedback move to a top stack, while PiP/Fullscreen/Live
+  stay bottom right. Preserve all data, segmented-layer semantics and camera
+  media behavior. Independent validation passes 144 app tests/1,931 assertions,
+  21 lifecycle tests, repository/TypeScript/bundle/signature/asset checks and
+  ten browser captures. Independent code/visual review approves without
+  findings, with 71 tests/1,576 assertions passing. Update the same PR32.
+  No deployment, merge, plugin/service, auth/routing or printer action is
+  authorized by this layout refinement.
+- Previous source follow-up, delivered as `081929e`: group camera fullscreen and picture-in-picture
+  (its bottom status/time placement is superseded by the current principle)
+  beside Go Live/Close at the bottom right, per decision 0023's newest dated
+  refinement. Keep status/time left, accessible targets, responsive wrapping,
+  and existing media/display behavior; no runtime signaling change. Validate
+  and independently review this implemented layout-only follow-up in existing
+  PR32. Independent validation passes 143 app tests/1,865 assertions,
+  21 lifecycle tests, repository/TypeScript/bundle/signature checks and five
+  captures. Independent code/visual review approves without findings, with
+  51 tests/556 assertions passing. Camera JavaScript is byte-identical.
+  Preserve its already delivered segmented-progress source and tests. No
+  merge, deployment, plugin/service/auth/routing change or printer access is
+  authorized by this request.
+- Completed source baseline in PR32: the user's implemented segmented-layer progress
+  refinement under decision 0023's dated addendum. Keep the existing card,
+  reported percentage, and bottom timestamp/refresh footer; replace only the
+  continuous strip with truthful layer-position blocks, responsively grouping
+  large totals. Invalid or absent layers remain explicitly unavailable rather
+  than borrowing print percentage. Separate author, validation, and independent
+  review roles must verify source and rendered synthetic fixtures before PR
+  delivery. Independent validation passes 142 app tests/1,849 assertions,
+  21 lifecycle tests, repository/TypeScript/bundle/signature checks, twelve
+  screenshots and eight browser cases. Independent code/visual review approves
+  without blocking findings, with 58 tests/1,441 assertions independently passing.
+  PR30 merge and rollout are complete historical evidence: release
+  `20260831-48a106d-widgets` serves runtime `0.3.1`, schema `5`,
+  observation-v3/camera-v5, quiet footers and the private eight-link directory.
+  Do not repeat that rollout or treat its authorization as permission for this
+  new source slice. Merge, service deployment/restart, plugin installation,
+  authentication/routing changes, printer access/control, and missing-domain
+  mappings remain excluded. Actual-phone/PiP and user comprehension remain
+  separate gates. Orca Preparation discovery remains preserved and neither
+  subsystem becomes secondary.
+- Current evidence-maturation order: chronological journal, reviewed knowledge,
+  thin workflow skills, the explicitly requested read-only status-view
+  prototype, repeated host use and non-user fixtures, then a shared CLI only if
+  it proves useful
+
+## 2026-08-27 mounted-app recovery acceptance
+
+- Keep `status-v4.html` as the only URI advertised by current tool descriptors,
+  but serve `status-v3.html` as a compatibility resource for cards retained by
+  an older task.
+- Prove both resource URIs return the exact same self-contained widget and
+  preserve empty external CSP domains.
+- Keep the release executable path portable and relative to the installed
+  plugin root. Diagnose an old task separately from the current installed
+  runtime; plugin upgrade acceptance requires a new task.
+- Treat the private `:8444` standalone dashboard as a separately supervised
+  developer adapter. A 502 there must not be reported as an MCP, printer, or
+  mounted-widget failure.
+- For that mounted-app recovery slice, preserve exactly four model-visible and
+  three app-only read-only tools. Decision 0018 below supersedes the current
+  inventory with four app-only helpers. No printer control or media URL is
+  added.
+
+## 2026-08-28 camera-only presentation acceptance
+
+- Add `open_printer_camera` as the stable presentation intent and remove
+  `open_u1_camera_stream` from model visibility.
+- Mount one snapshot-first `camera-v1.html` resource; Go Live, bounded stream
+  signaling, Close, and automatic snapshot fallback stay inside the widget.
+- Serve the exact camera widget at `/dashboard/camera` only when the private
+  dashboard adapter is explicitly enabled.
+- Preserve exactly four model-visible and now four app-only read-only tools.
+  Do not add printer control or a direct media URL.
+- Treat focused route success, mounted-host playback, TURN allocation, and
+  user-visible success as separate evidence layers.
+
+## 2026-08-28 camera workflow repair acceptance
+
+- Keep exactly one model-visible camera command: `open_printer_camera`.
+  Snapshot refresh, activation, stream open, answer, ICE, and Close remain
+  app-only widget implementation details.
+- Require a one-time private activation minted only after explicit Go Live.
+  Stale direct stream calls must fail before printer access or lease allocation.
+- Release unanswered WebRTC offers within 15 seconds and retain the existing
+  explicit Close plus maximum-duration bounds for answered sessions.
+- Advertise `camera-v2.html`, retain v1 as a current-asset compatibility alias,
+  and expose tool schema 3 plus camera widget v2 from health and doctor.
+- Validate, merge, stage, install, and restart only the existing U1 services.
+  Preserve OAuth state and every Tailscale Serve/Funnel handler byte-for-byte,
+  and keep source/software, installed runtime, public edge, private dashboard,
+  mounted host, and user outcome as separate evidence.
+
+## 2026-08-29 composable observation acceptance
+
+- Follow decision 0021 and the user-selected Instrument Strips direction. The
+  camera is a separate focused strip in the same 720-pixel visual system; do
+  not build the rejected giant machine map.
+- Expose exactly two model-visible presentation intents:
+  `observe_printer`, with required enum values `overview`, `progress`,
+  `thermals`, `heads`, `jobs`, `queue`, `fans`, and `bed_mesh`; and
+  `open_printer_camera`. Keep refresh, camera frame, activation, signaling,
+  retry, and Close helpers app-only.
+- Use `u1-observe-printer` as the one user-facing observation skill. It routes
+  natural language to those exact intents and does not add runtime authority.
+- Project every non-camera view from one normalized current observation with
+  source time, freshness, connection epoch, session identity, provenance,
+  capability evidence, and domain values. Focused views must not own printer
+  calls, normalization, or independent refresh loops.
+- Treat camera acquisition time separately and preserve camera-v4
+  snapshot-first, explicit Go Live/Close, repeated-open, fan-out, and privacy
+  behavior. Camera v3/v2/v1 remain byte-preserving compatibility resources.
+- Accept implemented `progress`, `thermals`, and `heads` projections from
+  already normalized data and the aligned focused camera. Keep unnormalized
+  cavity, materials/color, history, queue, fans/purifier, and bed-mesh values
+  explicitly unknown until their live read-only source semantics are mapped.
+- Render `Unavailable`, `Unknown`, `Stale`, and `Offline` explicitly. Do not
+  turn missing fields into zero, infer filament color/material from a profile,
+  or treat advertised object presence as runtime acceptance.
+- Keep the exact former `status-v4.html` and `status-v3.html` bytes readable for
+  mounted tasks. The new `overview` remains unavailable until all focused
+  modules pass, then composes those exact projections with no second data path.
+- This source slice remains static/fixture-only. It does not authorize
+  live-printer contact, installation, service restart, routing/authentication
+  changes, printer control, or publication.
+
+## 2026-08-30 personal service persistence acceptance
+
+- Decision 0022 addresses F0's deployment-lifetime question: a temporary design
+  preview is not a persistent user entry point. Reuse the existing supervised
+  protected HTTP and private dashboard services, not a new root daemon.
+- Stage versioned bundled HTTP code/assets and copy the existing Bun runtime
+  into release-local `bin/bun`. Use `scripts/u1_service.py` through `uv run`
+  for stage/install/status/start/stop/restart/rollback; `install --dry-run`
+  validates the staged release and effective private paths before any stop.
+  Preserve private env configuration, OAuth state, exact labels, logs, and
+  current routes. Provide bounded local install/status/start/stop/restart and
+  rollback procedures; no MCP Admin surface or generic service manager.
+- Serve exact private focused paths for progress, thermals, heads, jobs, queue,
+  fans, bed mesh, and camera. Default `/dashboard` to progress; overview stays
+  deferred. Public `/dashboard*` remains unavailable.
+- Share one observation store across requests within each service process.
+  A cold store performs its first acquisition on demand; subsequent plain reads
+  use cached state and explicit due refreshes coalesce. Disable ambient
+  dotenv/bunfig loading while preserving the explicit existing env-file.
+  Do not claim cross-process/restart storage, subscriptions, background camera,
+  automatic log rotation, boot-before-login, or availability while asleep.
+- Repository/fixture acceptance precedes merge and authorized rollout. Local
+  readiness checks use health/static routes only, without printer status or
+  camera acquisition. Record deployed process, assets, route/auth preservation,
+  mounted host, real-printer, and user outcome as distinct evidence layers.
+
+## 2026-08-31 quiet focused-widget presentation acceptance
+
+- Follow decision 0023. Keep useful titles, content, and head cards; remove
+  visible read-only copy, duplicate provenance/current-reading lines, and
+  command/version chrome. Put source time and one refresh control in a shared
+  non-camera footer. Preserve explicit stale, offline, and unknown states.
+- Camera has no external header/footer, observation line, or refresh control.
+  Its image overlay carries Snapshot, Fallback, or Live with the accepted
+  image/frame time. Network/FPS debug is hidden; fullscreen and PiP remain
+  feature-detected presentation actions, never printer controls.
+- Snapshot time remains bound to the successfully displayed JPEG and uses
+  successful acquisition receipt time. Live time advances only with genuine
+  video-frame evidence, freezes on stall, and is not called printer capture
+  time. Failed refreshes must not retimestamp retained images.
+- Fix finite host initialization/result-delivery states without replacing
+  unknown/unavailable capabilities with demo values. A pending view must end
+  in data or actionable failure. Queue, fans, bed mesh, cavity, filament
+  identity, and job history are not accepted capabilities merely because a
+  view is registered.
+- Separate software/synthetic-host checks from rendered visual and mounted
+  iPhone acceptance. Browser inventory is currently unavailable; source and
+  HTTP checks cannot accept screenshots, fullscreen/PiP behavior, or the
+  user's visual outcome.
+
+## 2026-08-31 private widget-directory acceptance
+
+- Follow decision 0024 and updated DEPLOY-002: private `/dashboard` and
+  `/dashboard/` serve the same static directory, replacing only the earlier
+  root-to-Progress redirect. All eight focused URLs remain unchanged.
+- List Progress and Camera as implemented; Thermals, Heads & Filaments, and
+  Jobs as partial with their missing domains named; Queue, Fans, and Bed Mesh
+  as unimplemented data capabilities whose explanatory views remain openable.
+  These labels describe release coverage, never live printer health.
+- Use existing 720-pixel light/dark styling and compact keyboard-accessible
+  links. No giant map, embedded widget, refresh/observation/permission chrome,
+  search/filter system, external assets, or new client-side dependency.
+- Prove root/focused routing, public rejection, exact hrefs, zero directory
+  acquisition, no overflow at 320/390/720 pixels, and visible keyboard focus.
+  Preserve quiet focused-card footer and camera behavior regressions.
+- Source and synthetic browser evidence do not deploy the feature or prove
+  mobile-host, printer, missing-domain, or user-outcome acceptance. Separate
+  authorization remains necessary before merge or rollout.
+
+## Outcome
+
+Correct the durable product contract to two peer subsystems, then identify the
+first concrete OrcaSlicer and printer environments and a provisional handoff
+that can be validated without guessing.
+
+## Scope
+
+- supersede the single-boundary product decision;
+- align product, architecture, roadmap, requirements, and continuity records;
+- inventory the exact OrcaSlicer invocation and profile environment;
+- inventory the exact printer, camera, host, notification, and network
+  environment;
+- classify read-only Monitor, authorized Control, and unexposed Admin surfaces;
+- define direct-query, subscription, freshness, reconnect, and surface-neutral
+  application boundaries;
+- define preparation provenance and distinct upload/start/session states;
+- preserve authorization, privacy, and evidence boundaries.
+
+## Requirements
+
+Primary discovery targets: `PREP-001` through `PREP-007`, `ORCA-001` through
+`ORCA-006`, `HANDOFF-001` through `HANDOFF-007`, `SESSION-001`, `OBS-001`
+through `OBS-006`, `CAM-001` through `CAM-007`, `CTRL-001`, `SAFE-001`,
+`DATA-001` through `DATA-004`, `AUTH-001` through `AUTH-004`, `API-001` through `API-005`,
+`ARCH-001` through `ARCH-005`, `ONTO-001` through `ONTO-002`, and `PORT-001`
+in `docs/requirements.md`.
+
+## Acceptance criteria
+
+- current authoritative records describe the same two peer subsystems;
+- OrcaSlicer is an adapter inside Preparation, not a later Operations adapter;
+- prepared, uploaded, start acknowledged, and observed printing are distinct;
+- a new accepted ADR supersedes decision 0001 without erasing its history;
+- repository checks pass and a separate agent finds no unqualified old framing
+  outside the superseded decision;
+- Moonraker capabilities distinguish observed, advertised, and documented
+  behavior without treating command discovery as authorization;
+- MCP remains a replaceable surface around shared application use cases;
+- implementation and hardware acceptance remain explicitly unclaimed.
+- decision 0016 records the local-first bridge direction and supersedes only
+  decision 0015's requirement that a hosted widget signal through exact HTTP;
+- the hosted widget has no LAN, Tailscale, or media HTTP fetch path and declares
+  empty external connect, resource, and frame CSP allowlists;
+- the local connector reaches only fixed read-only status, snapshot, and
+  `webrtc-camerastreamer` operations through the Printer Operations adapter;
+- application-owned WebRTC sessions expose opaque session IDs and bounded
+  offer, answer, ICE-candidate, expiry, concurrency, and idempotent close
+  semantics without exposing the printer peer ID or a caller-selected URL;
+- the MCP Apps bridge is the hosted signaling path; the existing exact HTTP
+  adapter may remain for the standalone developer dashboard but is not a
+  normal-user dependency;
+- snapshot fallback still works, the existing status/snapshot tool contracts
+  remain read-only, and every `show_u1_status` result retains its 1200 by 1500
+  PNG fallback;
+- Marketplace, Homebrew, and npm packaging point to one setup and doctor
+  contract. Setup writes validated local configuration without manual
+  environment-file editing, and release packaging has a self-contained-runtime
+  direction so Bun is a build-time concern rather than a user prerequisite;
+- local tests prove the static/software and simulated protocol boundaries.
+  They do not claim physical-printer, mounted-host, package-installation, or
+  user-outcome evidence;
+- no upload, start, pause, resume, cancel, G-code, generic proxy, Control, or
+  Admin tool exists; no external package or service is published or changed.
+- decision 0017 records the separate private enrollment listener and
+  configurable authenticated TURN boundary without changing the four plus
+  three read-only tool inventory;
+- public enrollment routes reject, while a separate loopback listener serves
+  only enrollment and minimal health for a distinct tailnet-only Serve HTTPS
+  origin sharing the public OAuth hostname and WebAuthn RP ID;
+- public MCP and app signaling require OAuth `u1.monitor`, optional exact HTTP
+  media signaling retains short-lived single-use capability authentication,
+  and no generic public media route exists;
+- bounded explicitly configured STUN plus short-lived TURN REST credentials
+  reach the printer peer and only widget-private metadata; model-readable
+  content contains no TURN credential, shared secret, printer origin, peer ID,
+  or session capability;
+- local fixtures prove static/software and simulated protocol behavior only.
+  Public routing, TURN allocation, real-printer media, mounted ChatGPT/Codex
+  playback, and user outcome remain unclaimed.
+
+## Local-first safety boundary
+
+- This slice is Monitor-only and read-only with respect to printer and user
+  data. Signaling may create and tear down only bounded in-memory presentation
+  sessions.
+- Hosted widget code receives no printer URL, Tailscale URL, printer peer ID,
+  credential, or generic network target. Session capabilities stay in
+  widget-private tool metadata and expire automatically.
+- The connector accepts one validated private or loopback printer origin and a
+  fixed operation allowlist. It does not expose arbitrary HTTP, JSON-RPC, file,
+  shell, or G-code access.
+- Setup and doctor must not probe hardware during repository validation.
+  Physical-printer access requires fresh explicit authorization and remains a
+  separate evidence layer.
+- Packaging work ends at local manifests, scripts, and ephemeral validation
+  artifacts. Marketplace, npm, Homebrew, hosted services, OAuth state, and
+  installed plugins are not changed by this iteration slice.
+- Passkey enrollment is absent from the public handler even when a one-time
+  token exists. Its dedicated listener binds loopback and is safe to expose only
+  through a distinct non-Funnel Tailscale Serve HTTPS origin.
+- STUN and TURN configuration is supplied outside the repository and defaults
+  empty. Public STUN is an explicit privacy and availability dependency. The
+  TURN shared secret stays server-only; only bounded derived credentials may
+  enter the WebRTC protocol path to the printer peer and widget-private tool
+  metadata.
+
+## Initial explicit non-goals and later scope change
+
+- selecting a runtime or scaffolding either subsystem;
+- the original foundation pass excluded slicing user models and printer
+  actions; a later explicit user request authorized one narrow slice-and-print
+  pilot, now recorded separately without retaining private artifacts;
+- future printer actions remain excluded without fresh explicit authorization;
+- deciding upload/start ownership without observed environment evidence;
+- claiming that documentation proves software, protocol, or hardware behavior.
+
+## Risks and unknowns
+
+- actual OrcaSlicer automation capabilities may differ by edition and version;
+- upstream OrcaSlicer and Snapmaker Orca may accept the same CLI shape while
+  producing edition-specific output or interpreting vendor project data
+  differently;
+- profile inheritance, embedded project configuration, and custom G-code may
+  create safety or provenance conflicts;
+- facet-painted support data is tied to exact mesh triangle identity and may be
+  invalidated by remeshing;
+- printer protocols may couple upload/start behavior to one vendor;
+- a shared MCP facade could accidentally obscure subsystem ownership;
+- the current LAN client is trusted by Moonraker, so upstream access does not
+  establish product-level authorization;
+- WebSocket transport works, but object subscription and reconnect semantics
+  still need a compatible client test.
+
+## Planned evidence
+
+- repository contract and whitespace checks;
+- terminology scan for superseded product claims;
+- independent architecture and consistency reviews;
+- redacted real-tool and read-only protocol discovery recorded here;
+- local upstream OrcaSlicer and Snapmaker Orca capability discovery with
+  executable fingerprints and explicit unvalidated behavior;
+- `CAPABILITY_MATRIX.md` tied to the first printer protocol and evidence state;
+- ontology, API surface, and hybrid monitoring decisions with static checks.
+
+## Exit gate
+
+The documentation correction is complete only when current records agree and
+independent review passes. F0 discovery remains active until both concrete
+environments and the provisional handoff have observed evidence.
+
+## Decision 0020 fan-out acceptance addendum
+
+- Every explicit camera open or reopen links a fresh camera-v3 camera-only
+  presentation; camera v2 and v1 remain current-asset aliases.
+- The connector terminates exactly one private H264 printer upstream while one
+  or more bounded viewers are active. Each viewer has a separate downstream
+  peer, ICE credential set, answer deadline, candidate budget, lease, and
+  idempotent Close. Closing the last viewer releases the upstream.
+- Downstream forwarding clones RTP packet headers into a dedicated track and
+  advertises only the negotiated H264 profile. The slice does not transcode.
+- Discovered server Tailscale addresses are explicit downstream host
+  candidates. Direct tailnet ICE may succeed without TURN; optional TURN remains
+  a separately provisioned fallback.
+- No public or model-readable surface exposes printer identity, private routes,
+  upstream signaling/ICE/credentials/tickets, raw errors, or JPEG metadata.
+- Acceptance requires local contract proof and later separate real-printer,
+  two-viewer, mounted-host, mobile ICE, and optional TURN evidence. Source tests
+  do not authorize deployment or prove those later layers.

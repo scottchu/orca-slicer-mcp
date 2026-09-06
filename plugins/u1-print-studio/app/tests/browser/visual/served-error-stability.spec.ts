@@ -1,3 +1,4 @@
+import { doubleSyntheticText } from '../helpers/text-scale';
 import { expect, test, type Frame } from '@playwright/test';
 import { liveHeadsResult } from '../fixtures/live-heads';
 import { liveFansResult } from '../fixtures/live-fans';
@@ -12,18 +13,7 @@ const equal = (actual: number[][], expected: number[][]) => {
   expect(actual.length).toBe(expected.length);
   actual.forEach((row, index) => row.forEach((value, axis) => expect(Math.abs(value - expected[index][axis]), `region${index}/${axis}`).toBeLessThanOrEqual(1)));
 };
-const enlarge = (frame: Frame) => frame.evaluate(() => {
-  const visit = (rule: CSSRule): void => {
-    if ('cssRules' in rule) for (const child of (rule as CSSGroupingRule).cssRules) visit(child);
-    if (!(rule instanceof CSSStyleRule)) return;
-    const size = rule.style.getPropertyValue('font-size');
-    if (size) rule.style.setProperty('font-size', size.replace(/([\d.]+)(px|vw)/g, (_, value, unit) => `${Number(value) * 2}${unit}`));
-    for (const token of ['--u1-type-label', '--u1-type-name', '--u1-type-value']) {
-      const value = rule.style.getPropertyValue(token); if (value.endsWith('px')) rule.style.setProperty(token, `${Number.parseFloat(value) * 2}px`);
-    }
-  };
-  for (const sheet of document.styleSheets) for (const rule of sheet.cssRules) visit(rule);
-});
+const enlarge = doubleSyntheticText;
 const notify = (frame: Frame, result: unknown) => frame.parentFrame()!.evaluate(value => document.querySelector('iframe')!.contentWindow!.postMessage({ jsonrpc: '2.0', method: 'ui/notifications/tool-result', params: value }, location.origin), result);
 const unavailable = (view: keyof typeof factories, state: 'unavailable' | 'unsupported', epoch = 3) => {
   const result = factories[view]();

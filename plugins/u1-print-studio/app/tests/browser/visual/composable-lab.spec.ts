@@ -1,3 +1,4 @@
+import { scaleRootText } from '../helpers/text-scale';
 import { expect, test } from '@playwright/test';
 import type { Locator, Page } from '@playwright/test';
 
@@ -25,6 +26,18 @@ const assertReadingAnatomy = async (stage: Locator) => {
 };
 
 const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720, textPercent: 100 | 200) => {
+  // Exact dimensions belong to this T1 regression, not every future widget.
+  const dimensions = await card.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      groupGap: Number.parseFloat(style.getPropertyValue('--u1-group-gap')),
+      iconTrack: Number.parseFloat(style.getPropertyValue('--u1-reading-icon-track')),
+      iconGap: Number.parseFloat(style.getPropertyValue('--u1-reading-icon-gap')),
+      copyGap: Number.parseFloat(style.getPropertyValue('--u1-reading-copy-gap-compact')),
+    };
+  });
+  expect(dimensions).toEqual({ groupGap: 20, iconTrack: 32, iconGap: 8, copyGap: 4 });
+  expect(await card.locator('[data-domain-reading]').evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).minHeight))).toEqual(['104px', '64px', '64px']);
   const summary = card.locator('[data-group-relation="summary"]');
   const rows = summary.locator(':scope > [data-node-kind="Row"]');
   const heroReading = rows.nth(0).locator('[data-domain-reading]');
@@ -70,20 +83,20 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
   expect(columnBoxes).toHaveLength(2);
   expect(readingBoxes).toHaveLength(2);
   expect(rowBoxes).toHaveLength(2);
-  expect(Math.abs(rowBoxes[1].y - (rowBoxes[0].y + rowBoxes[0].height) - 20)).toBeLessThanOrEqual(1);
+  expect(Math.abs(rowBoxes[1].y - (rowBoxes[0].y + rowBoxes[0].height) - dimensions.groupGap)).toBeLessThanOrEqual(1);
   if (readingAnatomy.some((anatomy) => anatomy === null)) throw new Error('Missing grouped reading anatomy');
   expect(readingAnatomy).toHaveLength(3);
   for (const anatomy of readingAnatomy as Array<{ contentOffset: number; frameOffset: number; frameWidth: number; glyphWidth: number; glyphToCopy: number; labelToValue: number }>) {
-    expect(Math.abs(anatomy.contentOffset - 40)).toBeLessThanOrEqual(1);
+    expect(Math.abs(anatomy.contentOffset - (dimensions.iconTrack + dimensions.iconGap))).toBeLessThanOrEqual(1);
     expect(Math.abs(anatomy.frameOffset)).toBeLessThanOrEqual(1);
-    expect(Math.abs(anatomy.frameWidth - 32)).toBeLessThanOrEqual(1);
-    expect(anatomy.labelToValue).toBeGreaterThanOrEqual(2);
-    expect(anatomy.labelToValue).toBeLessThanOrEqual(4);
+    expect(Math.abs(anatomy.frameWidth - dimensions.iconTrack)).toBeLessThanOrEqual(1);
+    expect(anatomy.labelToValue).toBeGreaterThanOrEqual(dimensions.copyGap - 2);
+    expect(anatomy.labelToValue).toBeLessThanOrEqual(dimensions.copyGap);
   }
   const anatomy = readingAnatomy as Array<{ glyphWidth: number; glyphToCopy: number }>;
   expect(anatomy.map((item) => item.glyphWidth)).toEqual([32, 24, 24]);
-  expect(anatomy.map((item) => Math.round(item.glyphToCopy))).toEqual([8, 12, 12]);
-  expect(Math.max(...anatomy.map((item) => item.glyphToCopy))).toBeLessThan(20);
+  expect(anatomy.map((item) => Math.round(item.glyphToCopy))).toEqual(anatomy.map((item) => dimensions.iconGap + (dimensions.iconTrack - item.glyphWidth) / 2));
+  expect(Math.max(...anatomy.map((item) => item.glyphToCopy))).toBeLessThan(dimensions.groupGap);
 
   const stacked = width === 320 || textPercent === 200;
   if (stacked) {
@@ -92,7 +105,7 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
     for (let index = 0; index < 2; index += 1) {
       expect(Math.abs(columnBoxes[index].height - readingBoxes[index].height)).toBeLessThanOrEqual(1);
     }
-    expect(Math.abs(readingBoxes[1].y - (readingBoxes[0].y + readingBoxes[0].height) - 20)).toBeLessThanOrEqual(1);
+    expect(Math.abs(readingBoxes[1].y - (readingBoxes[0].y + readingBoxes[0].height) - dimensions.groupGap)).toBeLessThanOrEqual(1);
     return;
   }
 
@@ -101,7 +114,7 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
   expect(Math.abs(readingBoxes[0].y - readingBoxes[1].y)).toBeLessThanOrEqual(1);
   expect(Math.abs(readingBoxes[0].height - readingBoxes[1].height)).toBeLessThanOrEqual(1);
   expect(Math.abs(columnBoxes[0].width - columnBoxes[1].width)).toBeLessThanOrEqual(1);
-  expect(Math.abs(columnBoxes[1].x - (columnBoxes[0].x + columnBoxes[0].width) - 20)).toBeLessThanOrEqual(1);
+  expect(Math.abs(columnBoxes[1].x - (columnBoxes[0].x + columnBoxes[0].width) - dimensions.groupGap)).toBeLessThanOrEqual(1);
 
   if (width === 390 && textPercent === 100) {
     const centers = await supportReadings.evaluateAll((nodes) => nodes.map((node) => {
@@ -147,12 +160,12 @@ const readTextLineGeometry = async (reading: Locator) => reading.evaluate((node)
 });
 
 for (const width of [320, 390, 720] as const) {
-  test(`private composition lab is stable and reviewable at ${width}px`, async ({ page }) => {
+  test(`private composition lab is stable and reviewable at ${width}px`, async ({ page, baseURL }) => {
     await page.setViewportSize({ width, height: 1200 });
     const errors: string[] = [];
     const nonlocal: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
-    page.on('request', (request) => { if (new URL(request.url()).origin !== 'http://127.0.0.1:4184') nonlocal.push(request.url()); });
+    page.on('request', (request) => { if (new URL(request.url()).origin !== new URL(baseURL!).origin) nonlocal.push(request.url()); });
     const response = await page.goto('/dashboard/lab/composition', { waitUntil: 'networkidle' });
     expect(response?.status()).toBe(200);
     expect((await response?.allHeaders())?.['content-security-policy']).toContain("default-src 'none'");
@@ -293,7 +306,7 @@ for (const width of [320, 390, 720] as const) {
 
     const metric = stage.locator('[data-node-kind="Metric"] .value').first();
     const baseSize = Number.parseFloat(await metric.evaluate((element) => getComputedStyle(element).fontSize));
-    const textScale = await page.addStyleTag({ content: 'html { font-size: 32px !important; }' });
+    const textScale = await scaleRootText(page, 200);
     await assertStateGeometry(200);
     await page.getByLabel('Composition shape').selectOption('larger');
     await selectScenario(page, 'known');
@@ -400,7 +413,7 @@ for (const width of [320, 390, 720] as const) {
       return range.getClientRects().length === 1 && text.endsWith('220°\u00a0C');
     })).toBe(true);
 
-    const textScale = await page.addStyleTag({ content: 'html { font-size: 32px !important; }' });
+    const textScale = await scaleRootText(page, 200);
     const scaledHeights: number[] = [];
     for (const scenario of ['known', 'unknown', 'ambiguous', 'loading', 'error', 'partial']) {
       await selectScenario(page, scenario);
@@ -502,7 +515,7 @@ for (const width of [320, 390, 720] as const) {
     }
     expect(geometry.explicit).toEqual(geometry.smart);
 
-    const textScale = await page.addStyleTag({ content: 'html { font-size: 32px !important; }' });
+    const textScale = await scaleRootText(page, 200);
     for (const variant of ['smart', 'explicit']) {
       await page.getByLabel('Composition shape').selectOption(variant);
       await selectScenario(page, 'known');

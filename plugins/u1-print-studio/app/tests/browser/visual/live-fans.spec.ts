@@ -1,19 +1,8 @@
+import { doubleSyntheticText } from '../helpers/text-scale';
 import { expect, test, type Frame } from '@playwright/test';
 import { liveFansResult } from '../fixtures/live-fans';
 
-const doubleText = (frame: Frame) => frame.evaluate(() => {
-  const visit = (item: CSSRule): void => {
-    if ('cssRules' in item) for (const child of (item as CSSGroupingRule).cssRules) visit(child);
-    if (!(item instanceof CSSStyleRule)) return;
-    const size = item.style.getPropertyValue('font-size');
-    if (size) item.style.setProperty('font-size', size.replace(/([\d.]+)(px|vw)/g, (_, value, unit) => `${Number(value) * 2}${unit}`));
-    for (const token of ['--u1-type-label', '--u1-type-name', '--u1-type-value']) {
-      const value = item.style.getPropertyValue(token);
-      if (value.endsWith('px')) item.style.setProperty(token, `${Number.parseFloat(value) * 2}px`);
-    }
-  };
-  for (const sheet of document.styleSheets) for (const rule of sheet.cssRules) visit(rule);
-});
+const doubleText = doubleSyntheticText;
 const bounds = (frame: Frame) => frame.locator('[data-widget-shell],[data-widget-header],[data-widget-body],[data-widget-footer],[data-reading-list],[data-reading-row]').evaluateAll((nodes) => nodes.map((node) => {
   const rect = node.getBoundingClientRect(); return [rect.x + scrollX, rect.y + scrollY, rect.width, rect.height];
 }));
