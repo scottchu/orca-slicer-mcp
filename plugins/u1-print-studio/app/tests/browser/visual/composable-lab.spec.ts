@@ -37,7 +37,7 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
     };
   });
   expect(dimensions).toEqual({ groupGap: 20, iconTrack: 32, iconGap: 8, copyGap: 4 });
-  expect(await card.locator('[data-domain-reading]').evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).minHeight))).toEqual(['104px', '64px', '64px']);
+  // Compact reading frames follow width/text-aware content slots, not fixed hero/quiet heights.
   const summary = card.locator('[data-group-relation="summary"]');
   const rows = summary.locator(':scope > [data-node-kind="Row"]');
   const heroReading = rows.nth(0).locator('[data-domain-reading]');
@@ -83,7 +83,7 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
   expect(columnBoxes).toHaveLength(2);
   expect(readingBoxes).toHaveLength(2);
   expect(rowBoxes).toHaveLength(2);
-  expect(Math.abs(rowBoxes[1].y - (rowBoxes[0].y + rowBoxes[0].height) - dimensions.groupGap)).toBeLessThanOrEqual(1);
+  expect(Math.abs(rowBoxes[1].y - (rowBoxes[0].y + rowBoxes[0].height) - 8)).toBeLessThanOrEqual(1);
   if (readingAnatomy.some((anatomy) => anatomy === null)) throw new Error('Missing grouped reading anatomy');
   expect(readingAnatomy).toHaveLength(3);
   for (const anatomy of readingAnatomy as Array<{ contentOffset: number; frameOffset: number; frameWidth: number; glyphWidth: number; glyphToCopy: number; labelToValue: number }>) {
@@ -105,7 +105,7 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
     for (let index = 0; index < 2; index += 1) {
       expect(Math.abs(columnBoxes[index].height - readingBoxes[index].height)).toBeLessThanOrEqual(1);
     }
-    expect(Math.abs(readingBoxes[1].y - (readingBoxes[0].y + readingBoxes[0].height) - dimensions.groupGap)).toBeLessThanOrEqual(1);
+    expect(Math.abs(readingBoxes[1].y - (readingBoxes[0].y + readingBoxes[0].height) - 12)).toBeLessThanOrEqual(1);
     return;
   }
 
@@ -117,6 +117,14 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
   expect(Math.abs(columnBoxes[1].x - (columnBoxes[0].x + columnBoxes[0].width) - dimensions.groupGap)).toBeLessThanOrEqual(1);
 
   if (width === 390 && textPercent === 100) {
+    const visibleGap = await card.evaluate((element) => {
+      const readings = element.querySelectorAll('[data-domain-reading]');
+      const heroValue = readings[0].querySelector('.value-frame')!.getBoundingClientRect();
+      const nextLabel = readings[1].querySelector('.label')!.getBoundingClientRect();
+      return nextLabel.top - heroValue.bottom;
+    });
+    expect(visibleGap).toBeGreaterThanOrEqual(12);
+    expect(visibleGap).toBeLessThanOrEqual(25); // 24px plus subpixel rounding tolerance.
     const centers = await supportReadings.evaluateAll((nodes) => nodes.map((node) => {
       const icon = node.querySelector(':scope > .icon-frame')?.getBoundingClientRect();
       const content = node.querySelector(':scope > .content')?.getBoundingClientRect();
@@ -242,6 +250,14 @@ for (const width of [320, 390, 720] as const) {
           const box = await renderer.boundingBox();
           if (!box) throw new Error('Missing rendered composition');
           heights.push(box.height);
+          if (variant === 'compact' && scenario === 'known' && width === 390 && textPercent === 100) {
+            const compactGap = await renderer.evaluate((element) => {
+              const readings = element.querySelectorAll('[data-domain-reading]');
+              return readings[1].querySelector('.label')!.getBoundingClientRect().top - readings[0].querySelector('.current')!.getBoundingClientRect().bottom;
+            });
+            expect(compactGap).toBeGreaterThanOrEqual(8);
+            expect(compactGap).toBeLessThanOrEqual(12);
+          }
           const topology = await renderer.locator('[data-node-kind], [data-domain-reading], [data-presentation-status]').evaluateAll((nodes) => nodes.map((node) => node.hasAttribute('data-domain-reading') ? 'DomainReading' : node.hasAttribute('data-presentation-status') ? 'StatusLine' : node.getAttribute('data-node-kind') ?? ''));
           if (expectedTopology === null) expectedTopology = topology;
           else expect(topology).toEqual(expectedTopology);
@@ -564,5 +580,40 @@ for (const width of [320, 390, 720] as const) {
     await selectScenario(page, 'known');
     expect(await card.evaluate((element) => getComputedStyle(element).borderStyle)).toBe('solid');
     expect(errors).toEqual([]);
+  });
+}
+
+for (const { scale, widths, readingIndex, threshold } of [
+  { scale: 100, widths: [329, 331], readingIndex: 0, threshold: 240 },
+  { scale: 100, widths: [372, 376], readingIndex: 2, threshold: 112 },
+  { scale: 200, widths: [577, 579], readingIndex: 0, threshold: 480 },
+  { scale: 200, widths: [313, 315], readingIndex: 2, threshold: 224 },
+] as const) {
+  test(`compact reading state slots remain stable around ${threshold}px content at ${scale}%`, async ({ page }) => {
+    await page.goto('/dashboard/lab/composition', { waitUntil: 'networkidle' });
+    await scaleRootText(page, scale);
+    const card = page.getByRole('article', { name: 'Tool head T1' });
+    for (const width of widths) {
+      await page.setViewportSize({ width, height: 1000 });
+      const contentWidth = await card.locator('[data-domain-reading] > .content').nth(readingIndex).evaluate((node) => node.getBoundingClientRect().width);
+      expect(Math.abs(contentWidth - threshold)).toBe(1);
+      const frames: number[][] = [];
+      for (const scenario of ['error', 'loading', 'unknown', 'known', 'partial']) {
+        await selectScenario(page, scenario);
+        frames.push(await card.evaluate((node) => [node, ...node.querySelectorAll('[data-domain-reading]')].flatMap((element) => {
+          const box = element.getBoundingClientRect();
+          return [box.y - node.getBoundingClientRect().y, box.height];
+        })));
+        expect(await card.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
+        if (scenario === 'error') {
+          await expect(card.locator('.current')).toHaveCount(0);
+          await expect(card.locator('[data-skeleton]:not([data-skeleton-static])')).toHaveCount(0);
+        }
+      }
+      for (let index = 0; index < frames[0].length; index += 1) {
+        const values = frames.map((frame) => frame[index]);
+        expect(Math.max(...values) - Math.min(...values)).toBeLessThanOrEqual(1);
+      }
+    }
   });
 }

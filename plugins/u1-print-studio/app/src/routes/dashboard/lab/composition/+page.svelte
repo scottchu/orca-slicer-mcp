@@ -68,7 +68,7 @@
   label { display: grid; gap: 6px; color: var(--u1-muted); font-size: 13px; font-weight: 600; }
   select { min-width: 0; min-height: 44px; padding: 8px 34px 8px 10px; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-control); color: var(--u1-ink); background: var(--u1-canvas); font: inherit; }
   select:focus-visible, summary:focus-visible { outline: 3px solid #6f4d00; outline-offset: 2px; }
-  .stage { width: min(100%, 590px); min-height: 330px; margin: 0 auto; }
+  .stage { width: min(100%, 590px); margin: 0 auto; }
   .stage.larger { width: min(100%, 760px); }
   .inspect { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 22px; }
   details { min-width: 0; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-inner); background: var(--u1-surface); }

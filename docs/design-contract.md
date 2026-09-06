@@ -37,11 +37,16 @@ Paths below are relative to `plugins/u1-print-studio/app/`.
 
 The executable tokens `--u1-group-gap`, `--u1-reading-icon-track`,
 `--u1-reading-icon-gap` and `--u1-reading-copy-gap-compact` own the accepted
-20px group rhythm, 32px icon track, 8px track/copy gap and 4px label/value gap.
+20px horizontal group separation, 32px icon track, 8px track/copy gap and 4px label/value gap.
+The 2026-09-06 spacing correction uses 8px summary vertical gaps, 12px summary inset and
+12px stacked-row gaps; compact summary row gaps are 4px. These reuse existing
+spacing tokens and supersede the former uniform 20px vertical rhythm.
 Centered hero/quiet glyphs remain 32px/24px, so their visible glyph/copy gaps
 are 8px/12px. Title/status use the existing 12px identity gap. Default Reading
 retains its 44px icon frame and 12px gap/content inset; compact is an explicit
-client-only leaf prop, not caller CSS or a wire option.
+client-only leaf prop, not caller CSS or a wire option. Card compact intent now
+propagates through the typed render context; compact leaves own both outer and
+content padding, avoiding stacked insets. Comfortable/default anatomy is retained.
 
 The precise T1 regression remains scoped to this variant. Relative readability,
 atomic units, focus, semantic states and stable recovery remain independent
@@ -50,7 +55,14 @@ requirements. Do not infer a new universal card shape from these dimensions.
 Typography tokens are rem equivalents of the prior 13px label, 14px name and
 20px value at a 16px root; hero/quiet values share the same scale at 24px/16px.
 Structural text reserves use the label/value tokens and line-height rather than
-opaque precomputed decimal constants. Existing reserve behavior is retained.
+opaque precomputed decimal constants. Compact readings keep a 44px minimum
+frame. Temperature keeps two value lines because valid numeric precision is not
+bounded. Quiet fan readings reserve one or two lines according to their content
+container width and root-relative typography, with a 7rem threshold for the
+closed label vocabulary. These reserves are identical across evidence states; the
+current value and retained telemetry never choose a shorter frame. This replaces
+redundant 104px/64px compact hero/quiet floors without removing narrow/enlarged
+text wrapping or the <=1px fixed-viewport state geometry contract.
 
 ## Text scaling evidence
 

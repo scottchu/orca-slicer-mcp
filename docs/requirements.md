@@ -900,6 +900,12 @@ durable-monitor claim.
   filament/fan content; it has no empty icon slot, divider, tint, gradient,
   Table, or Row. The existing card, compact and larger specs and default visuals
   remain canonical and unchanged.
+  Decision 0053's 2026-09-06 spacing correction preserves information while
+  compact summary vertical gaps become 8px, insets/stacked-row gaps 12px, and
+  horizontal separation remains 20px. Internal typed density avoids compound
+  padding. Temperature keeps two structural lines for valid decimal precision;
+  the closed quiet vocabulary uses width/text-aware reserves. All evidence
+  states retain <=1px fixed-viewport geometry. No DSL field or acquisition is added.
   Decision0053 adds smart semantic grouping before placement. `identity` accepts
   exactly Title then HeadStatus and resolves to the code-owned packed header;
   `summary` accepts temperature, filament and fan exactly once, forbids caller

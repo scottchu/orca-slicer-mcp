@@ -25,7 +25,7 @@
   .group { min-width: 0; }
   .identity { display: flex; align-items: center; flex-wrap: wrap; gap: var(--u1-space-3); }
   .identity.inset { padding: var(--u1-composed-y, var(--u1-space-4)) var(--u1-composed-x, var(--u1-card-x)) 0; }
-  .summary { display: grid; gap: var(--u1-group-gap); container-type: inline-size; }
-  .summary.compact { gap: var(--u1-space-4); }
-  .summary.inset { padding: var(--u1-group-gap) var(--u1-composed-x, var(--u1-card-x)); }
+  .summary { display: grid; gap: var(--u1-space-2); container-type: inline-size; }
+  .summary.compact { gap: var(--u1-space-1); }
+  .summary.inset { padding: var(--u1-space-3) var(--u1-composed-x, var(--u1-card-x)); }
 </style>

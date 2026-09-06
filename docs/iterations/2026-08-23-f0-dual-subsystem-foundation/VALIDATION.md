@@ -1,6 +1,13 @@
 # F0 validation index
 
-## Current maintenance
+## Current spacing correction
+
+[2026-09-06 spacing evidence](evidence/2026-09-06-composition-spacing.md) records
+commands actually run, the final same-information geometry, regenerated assets,
+independent adversarial checks and acceptance limits. Required full regression
+and exact-candidate approval remain separate delivery gates.
+
+## Delivered maintenance
 
 [2026-09-05 maintenance evidence](evidence/2026-09-05-maintenance.md) is the single
 record for actual author checks, independent review/verification, frozen candidate

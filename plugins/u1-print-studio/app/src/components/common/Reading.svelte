@@ -24,7 +24,8 @@
   .reading.hero .icon-frame, .reading.quiet .icon-frame { width: var(--u1-reading-icon-track); }
   .reading.hero { min-height: 104px; }
   .reading.quiet { min-height: 64px; }
-  .reading.compact { padding: 0; }
+  .reading.compact { min-height: var(--u1-action-size); padding: 0; }
   .content { min-width: 0; padding: var(--u1-space-2) var(--u1-space-3); }
-  .reading.hero .content, .reading.quiet .content { padding: 0; }
+  .reading.hero .content, .reading.quiet .content, .content.compact { padding: 0; }
+  .content.compact { container: reading-copy / inline-size; }
 </style>

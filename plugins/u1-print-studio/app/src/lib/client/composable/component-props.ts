@@ -59,7 +59,7 @@ export type PresentationComponentPropsByElement = {
     children: Snippet;
     colSpan: ResolvedNodeFor<'Column'>['colSpan'];
   };
-  HeadStatus: { value: ResolvedNodeFor<'HeadStatus'>['value']; appearance?: ResolvedNodeFor<'HeadStatus'>['appearance'] };
+  HeadStatus: { density?: 'regular' | 'compact'; value: ResolvedNodeFor<'HeadStatus'>['value']; appearance?: ResolvedNodeFor<'HeadStatus'>['appearance'] };
   HeadTemperature: { density?: 'regular' | 'compact'; value: ResolvedNodeFor<'HeadTemperature'>['value']; appearance?: ResolvedNodeFor<'HeadTemperature'>['appearance'] };
   FilamentColor: { density?: 'regular' | 'compact'; value: ResolvedNodeFor<'FilamentColor'>['value']; appearance?: ResolvedNodeFor<'FilamentColor'>['appearance'] };
   FanRelation: { density?: 'regular' | 'compact'; value: ResolvedNodeFor<'FanRelation'>['value']; appearance?: ResolvedNodeFor<'FanRelation'>['appearance'] };
@@ -73,4 +73,5 @@ export type PresentationRenderContext = {
   subjectLabel: string;
   busy: boolean;
   group?: 'identity' | 'summary';
+  density?: 'regular' | 'compact';
 };
