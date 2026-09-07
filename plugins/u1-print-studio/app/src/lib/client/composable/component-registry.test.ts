@@ -74,10 +74,10 @@ describe('static composable component registry', () => {
         for (const child of entry.children ?? []) visit(child, entry.childContext);
       };
       visit(root);
-      expect(resolved.map(({ type }) => type)).toEqual(['Card', 'Group', 'Title', 'HeadStatus', 'Group', 'Row', 'Column', 'HeadTemperature', 'Row', 'Column', 'FilamentColor', 'Column', 'FanRelation']);
-      expect(root.children[1]).toMatchObject({ type: 'Group', relation: 'summary', layoutSource: source, defaultRule: 'summary-grid6-v1' });
+      expect(resolved.map(({ type }) => type)).toEqual(['Card', 'Group', 'Title', 'HeadStatus', 'Group', 'Row', 'Column', 'HeadTemperature', 'Row', 'Column', 'FilamentColor', ...(source === 'smart' ? ['Row'] : []), 'Column', 'FanRelation']);
+      expect(root.children[1]).toMatchObject({ type: 'Group', relation: 'summary', layoutSource: source, defaultRule: 'summary-stack-v2' });
       expect(resolved.filter(({ type }) => type === 'Row').every(({ props }) => props.collapse === 'intrinsic')).toBe(true);
-      expect(resolved.filter(({ type }) => type === 'Column').map(({ props }) => props.colSpan)).toEqual([6, 3, 3]);
+      expect(resolved.filter(({ type }) => type === 'Column').map(({ props }) => props.colSpan)).toEqual(source === 'smart' ? [6, 6, 6] : [6, 3, 3]);
       expect(resolved.filter(({ type }) => type === 'Group').map(({ props }) => props.label)).toEqual(['Tool identity', 'Tool summary']);
       expect(resolved.find(({ type }) => type === 'Title')?.props.inset).toBe(false);
       expect(resolved.filter(({ type }) => ['HeadTemperature', 'FilamentColor', 'FanRelation'].includes(type)).map(({ props }) => props.density)).toEqual(['compact', 'compact', 'compact']);

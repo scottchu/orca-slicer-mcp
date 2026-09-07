@@ -126,9 +126,9 @@ describe('entity-bound composition acquisition and provenance', () => {
     const smartGroups = summary(smart);
     const explicitGroups = summary(explicit);
     expect(smartGroups.header).toMatchObject({ relation: 'identity', layoutSource: 'smart', defaultRule: 'identity-packed-v1', tracks: null, children: [{ type: 'Title' }, { type: 'HeadStatus', appearance: 'headerBadge' }] });
-    expect(smartGroups.body).toMatchObject({ layoutSource: 'smart', defaultRule: 'summary-grid6-v1', tracks: 6, rowGap: 'regular', columnGap: 'regular' });
-    expect(explicitGroups.body).toMatchObject({ layoutSource: 'explicit', defaultRule: 'summary-grid6-v1', tracks: 6, rowGap: 'regular', columnGap: 'regular' });
-    expect(smartGroups.body.children.map((row) => row.children.map((column) => column.colSpan))).toEqual([[6], [3, 3]]);
+    expect(smartGroups.body).toMatchObject({ layoutSource: 'smart', defaultRule: 'summary-stack-v2', tracks: 6, rowGap: 'regular', columnGap: 'regular' });
+    expect(explicitGroups.body).toMatchObject({ layoutSource: 'explicit', defaultRule: 'summary-stack-v2', tracks: 6, rowGap: 'regular', columnGap: 'regular' });
+    expect(smartGroups.body.children.map((row) => row.children.map((column) => column.colSpan))).toEqual([[6], [6], [6]]);
     expect(explicitGroups.body.children.map((row) => row.children.map((column) => column.colSpan))).toEqual([[6], [3, 3]]);
     expect(smartGroups.leaves.map((leaf) => [leaf.type, leaf.appearance])).toEqual([
       ['HeadTemperature', 'hero'], ['FilamentColor', 'quiet'], ['FanRelation', 'quiet'],
@@ -140,7 +140,9 @@ describe('entity-bound composition acquisition and provenance', () => {
       (candidate) => { candidate.viewModel.root.children[1].layoutSource = 'explicit'; },
       (candidate) => { candidate.viewModel.root.children[1].defaultRule = 'identity-packed-v1'; },
       (candidate) => { candidate.viewModel.root.children[1].children[0].children[0].colSpan = 5; },
-      (candidate) => { candidate.viewModel.root.children[1].children[1].children.reverse(); },
+      (candidate) => { candidate.viewModel.root.children[1].children.reverse(); },
+      (candidate) => { candidate.viewModel.root.children[1].defaultRule = 'summary-grid6-v1'; },
+      (candidate) => { candidate.viewModel.root.children[1].children = structuredClone(explicitGroups.body.children); },
       (candidate) => { candidate.viewModel.root.children[1].children[1].children[0].children[0].appearance = 'hero'; },
       (candidate) => { candidate.viewModel.root.children[0].children[1].value.provenance.receivedAt = materialReceivedAt; },
     ];

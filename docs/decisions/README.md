@@ -60,6 +60,8 @@ silently changed.
 | [0053](0053-resolve-semantic-groups-before-closed-layout-overrides.md) | Resolve semantic groups before closed layout overrides | Accepted additive experiment; not production architecture or cutover |
 | [0054](0054-own-current-state-and-maintenance-evidence.md) | Own current state and maintenance evidence once | Accepted maintenance direction; implementation and release acceptance pending |
 
+| [0055](0055-use-consistent-rows-for-default-summary.md) | Use consistent rows for the default summary | Accepted isolated Lab direction; implementation acceptance pending |
+
 Decision 0026 is reserved for the paused queue work outside this source slice.
 
 Copy [the template](template.md) for new records. Accepted records should be

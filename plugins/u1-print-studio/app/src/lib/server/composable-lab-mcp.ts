@@ -7,13 +7,13 @@ import { composableEnvelopeSchema, composableEnvelopeWireSchema } from '../compo
 import { presentationSpecSchema } from '../composable/schema.js';
 import { composeEntityCardEnvelope, type ComposableReaders } from './composable-presentation.js';
 
-export const COMPOSABLE_LAB_RESOURCE_URI = 'ui://u1-print-studio/experiments/composable-lab-v2-r5.html';
+export const COMPOSABLE_LAB_RESOURCE_URI = 'ui://u1-print-studio/experiments/composable-lab-v2-r6.html';
 export const COMPOSABLE_LAB_RESOURCE_HTML = readFileSync(embeddedComposableLabFile as unknown as string, 'utf8');
 export const composableToolOutputSchema = composableEnvelopeSchema;
 
 /** Isolated protocol proof. Production createAppServer never constructs or registers this server. */
 export const createComposableLabMcpServer = (readers: ComposableReaders): McpServer => {
-  const server = new McpServer({ name: 'u1-composable-ui-experiment', version: '0.0.7-provisional' });
+  const server = new McpServer({ name: 'u1-composable-ui-experiment', version: '0.0.8-provisional' });
   registerAppResource(server, 'u1-composable-lab', COMPOSABLE_LAB_RESOURCE_URI, {}, async () => ({ contents: [{
     uri: COMPOSABLE_LAB_RESOURCE_URI,
     mimeType: RESOURCE_MIME_TYPE,

@@ -35,6 +35,11 @@ Paths below are relative to `plugins/u1-print-studio/app/`.
 
 ## Current T1 variant
 
+Decision0055 makes the default Smart summary three full-width rows in a single
+reading direction: temperature, configured color, then fan relation. It uses
+`summary-stack-v2`; explicit demo columns keep authored placement and intrinsic
+collapse. No common CSS or leaf anatomy changes are required.
+
 The executable tokens `--u1-group-gap`, `--u1-reading-icon-track`,
 `--u1-reading-icon-gap` and `--u1-reading-copy-gap-compact` own the accepted
 20px horizontal group separation, 32px icon track, 8px track/copy gap and 4px label/value gap.

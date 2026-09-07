@@ -55,16 +55,13 @@ const placeholderNode = (node: PresentationNode, state: Extract<ValueEvidenceSta
             .filter((child): child is SummaryDomainNode => child.type === 'HeadTemperature' || child.type === 'FilamentColor' || child.type === 'FanRelation')
             .sort((left, right) => rank[left.type] - rank[right.type])
             .map(placeholderSummaryLeaf);
-          return [
-            { type: 'Row' as const, columnGap: layout.columnGap, collapse: 'intrinsic' as const, children: [{ type: 'Column' as const, colSpan: 6 as const, children: [leaves[0]] }] },
-            { type: 'Row' as const, columnGap: layout.columnGap, collapse: 'intrinsic' as const, children: [
-              { type: 'Column' as const, colSpan: 3 as const, children: [leaves[1]] },
-              { type: 'Column' as const, colSpan: 3 as const, children: [leaves[2]] },
-            ] },
-          ];
+          return leaves.map((leaf) => ({
+            type: 'Row' as const, columnGap: layout.columnGap, collapse: 'intrinsic' as const,
+            children: [{ type: 'Column' as const, colSpan: 6 as const, children: [leaf] }],
+          }));
         })();
     return {
-      type: 'Group', relation: 'summary', layoutSource: explicitLayout ? 'explicit' : 'smart', defaultRule: 'summary-grid6-v1', tracks: 6,
+      type: 'Group', relation: 'summary', layoutSource: explicitLayout ? 'explicit' : 'smart', defaultRule: 'summary-stack-v2', tracks: 6,
       rowGap: layout.rowGap, columnGap: layout.columnGap, children: rows,
     };
   }

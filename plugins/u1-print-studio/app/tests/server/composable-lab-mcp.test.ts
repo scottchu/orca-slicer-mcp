@@ -29,7 +29,7 @@ const connect = async (lab: boolean): Promise<Client> => {
 describe('isolated composable MCP proof', () => {
   test('explicit lab factory alone exposes one typed read-only tool and one closed resource', async () => {
     const client = await connect(true);
-    expect(client.getServerVersion()).toMatchObject({ name: 'u1-composable-ui-experiment', version: '0.0.7-provisional' });
+    expect(client.getServerVersion()).toMatchObject({ name: 'u1-composable-ui-experiment', version: '0.0.8-provisional' });
     const tools = (await client.listTools()).tools;
     expect(tools.map((tool) => tool.name)).toEqual(['compose_u1_entity_card_v2']);
     expect(tools[0].annotations).toMatchObject({ readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true });
@@ -67,7 +67,7 @@ describe('isolated composable MCP proof', () => {
         canonicalSpec: spec,
         viewModel: { root: { tint: null, children: [
           { type: 'Group', relation: 'identity', layoutSource: 'smart', defaultRule: 'identity-packed-v1' },
-          { type: 'Group', relation: 'summary', layoutSource, defaultRule: 'summary-grid6-v1', tracks: 6 },
+          { type: 'Group', relation: 'summary', layoutSource, defaultRule: 'summary-stack-v2', tracks: 6 },
         ] } },
       });
     }

@@ -25,7 +25,7 @@ const assertReadingAnatomy = async (stage: Locator) => {
   expect(Math.max(...centerDeltas)).toBeLessThanOrEqual(1);
 };
 
-const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720, textPercent: 100 | 200) => {
+const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720, textPercent: 100 | 200, variant = 'smart') => {
   // Exact dimensions belong to this T1 regression, not every future widget.
   const dimensions = await card.evaluate((element) => {
     const style = getComputedStyle(element);
@@ -40,6 +40,20 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
   // Compact reading frames follow width/text-aware content slots, not fixed hero/quiet heights.
   const summary = card.locator('[data-group-relation="summary"]');
   const rows = summary.locator(':scope > [data-node-kind="Row"]');
+  if (variant === 'smart') {
+    await expect(rows).toHaveCount(3);
+    const boxes = await rows.evaluateAll((nodes) => nodes.map((node) => {
+      const box = node.getBoundingClientRect();
+      return { x: box.x, y: box.y, width: box.width, bottom: box.bottom };
+    }));
+    for (let index = 1; index < boxes.length; index += 1) {
+      expect(Math.abs(boxes[index].x - boxes[0].x)).toBeLessThanOrEqual(1);
+      expect(Math.abs(boxes[index].width - boxes[0].width)).toBeLessThanOrEqual(1);
+      expect(Math.abs(boxes[index].y - boxes[index - 1].bottom - 8)).toBeLessThanOrEqual(1);
+    }
+    await assertReadingAnatomy(card);
+    return;
+  }
   const heroReading = rows.nth(0).locator('[data-domain-reading]');
   const supportColumns = rows.nth(1).locator(':scope > [data-node-kind="Column"]');
   const supportReadings = supportColumns.locator(':scope > [data-domain-reading]');
@@ -181,7 +195,7 @@ for (const width of [320, 390, 720] as const) {
     await expect(page.getByRole('heading', { name: 'Entity-bound composition lab v2' })).toBeVisible();
     const card = page.getByRole('article', { name: 'Tool head T1' });
     await expect(card).toBeVisible();
-    await expect(page.getByLabel('Composition shape')).toHaveValue('smart');
+    await expect(page.getByLabel('Layout preview')).toHaveValue('smart');
     await expect(card.locator('[data-group-relation="identity"]')).toHaveCount(1);
     await expect(card.locator('[data-group-relation="summary"]')).toHaveCount(1);
     await expect(card).toContainText('Unknown');
@@ -214,7 +228,7 @@ for (const width of [320, 390, 720] as const) {
     await expect(card).toContainText('Actual / target');
     await expect(card).toContainText('Configured color');
     await expect(card.locator('[data-node-kind="Swatch"] .label')).toHaveAccessibleName('Configured filament color');
-    await page.getByLabel('Composition shape').selectOption('card');
+    await page.getByLabel('Layout preview').selectOption('card');
     await expect(card).toContainText('Configured filament color');
     await expect(card.locator('[data-node-kind="Swatch"] .label')).not.toHaveAttribute('aria-label');
     await expect(page.locator('pre').first()).toContainText('"schemaVersion": 2');
@@ -241,7 +255,7 @@ for (const width of [320, 390, 720] as const) {
     const stage = page.getByRole('region', { name: 'Rendered composition' });
     const assertStateGeometry = async (textPercent: 100 | 200) => {
       for (const variant of ['smart', 'explicit', 'card', 'compact', 'larger', 'balanced']) {
-        await page.getByLabel('Composition shape').selectOption(variant);
+        await page.getByLabel('Layout preview').selectOption(variant);
         const heights: number[] = [];
         let expectedTopology: string[] | null = null;
         for (const scenario of ['known', 'unknown', 'ambiguous', 'loading', 'error', 'partial']) {
@@ -284,7 +298,7 @@ for (const width of [320, 390, 720] as const) {
     };
     await assertStateGeometry(100);
 
-    await page.getByLabel('Composition shape').selectOption('card');
+    await page.getByLabel('Layout preview').selectOption('card');
     await selectScenario(page, 'known');
     await expect(stage.locator('[role="row"]')).toHaveCount(0);
     await expect(stage.locator('[role="cell"]')).toHaveCount(0);
@@ -324,7 +338,7 @@ for (const width of [320, 390, 720] as const) {
     const baseSize = Number.parseFloat(await metric.evaluate((element) => getComputedStyle(element).fontSize));
     const textScale = await scaleRootText(page, 200);
     await assertStateGeometry(200);
-    await page.getByLabel('Composition shape').selectOption('larger');
+    await page.getByLabel('Layout preview').selectOption('larger');
     await selectScenario(page, 'known');
     await assertReadingAnatomy(stage);
     const scaledSize = Number.parseFloat(await metric.evaluate((element) => getComputedStyle(element).fontSize));
@@ -344,7 +358,7 @@ for (const width of [320, 390, 720] as const) {
     const pageHeadingSize = Number.parseFloat(await page.getByRole('heading', { level: 1 }).evaluate((element) => getComputedStyle(element).fontSize));
     const cardHeadingSize = Number.parseFloat(await stage.getByRole('heading', { level: 2 }).evaluate((element) => getComputedStyle(element).fontSize));
     expect(pageHeadingSize).toBeGreaterThan(cardHeadingSize);
-    await page.getByLabel('Composition shape').selectOption('card');
+    await page.getByLabel('Layout preview').selectOption('card');
     await selectScenario(page, 'known');
     await page.screenshot({ path: `test-results/composable-lab-v2/composition-known-${width}px-200-percent.png`, fullPage: true });
     await textScale.evaluate((element) => element.parentNode?.removeChild(element));
@@ -379,7 +393,7 @@ for (const width of [320, 390, 720] as const) {
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
     await page.goto('/dashboard/lab/composition', { waitUntil: 'networkidle' });
-    await page.getByLabel('Composition shape').selectOption('balanced');
+    await page.getByLabel('Layout preview').selectOption('balanced');
     const stage = page.getByRole('region', { name: 'Rendered composition' });
     const card = stage.getByRole('article', { name: 'Tool head T1' });
     const heights: number[] = [];
@@ -463,7 +477,7 @@ for (const width of [320, 390, 720] as const) {
     }
   });
 
-  test(`smart grouping and explicit six-track override preserve semantic and geometry parity at ${width}px`, async ({ page }) => {
+  test(`smart uses consistent rows while explicit preserves authored placement at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1500 });
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
@@ -472,13 +486,13 @@ for (const width of [320, 390, 720] as const) {
     const card = stage.getByRole('article', { name: 'Tool head T1' });
     const geometry: Record<string, Array<{ x: number; y: number; width: number; height: number }>> = {};
     for (const variant of ['smart', 'explicit']) {
-      await page.getByLabel('Composition shape').selectOption(variant);
+      await page.getByLabel('Layout preview').selectOption(variant);
       await selectScenario(page, 'known');
       await expect(card.locator('[data-group-relation="identity"]')).toHaveCount(1);
       await expect(card.locator('[data-group-relation="summary"]')).toHaveCount(1);
-      await expect(card.locator('[data-node-kind="Row"]')).toHaveCount(2);
+      await expect(card.locator('[data-node-kind="Row"]')).toHaveCount(variant === 'smart' ? 3 : 2);
       await expect(card.locator('[data-node-kind="Column"]')).toHaveCount(3);
-      expect(await card.locator('[data-node-kind="Column"]').evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-col-span')))).toEqual(['6', '3', '3']);
+      expect(await card.locator('[data-node-kind="Column"]').evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-col-span')))).toEqual(variant === 'smart' ? ['6', '6', '6'] : ['6', '3', '3']);
       const readings = card.locator('[data-domain-reading]');
       expect(await readings.evaluateAll((nodes) => nodes.map((node) => {
         const visible = node.cloneNode(true) as HTMLElement;
@@ -510,10 +524,10 @@ for (const width of [320, 390, 720] as const) {
         return { x: box.x, y: box.y, width: box.width, height: box.height };
       }));
       const secondaryY = await card.locator('[data-reading-appearance="quiet"]').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().y));
-      if (width === 320) expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeGreaterThan(1);
+      if (variant === 'smart' || width === 320) expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeGreaterThan(1);
       else expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeLessThanOrEqual(1);
-      await assertGroupedLayoutGeometry(card, width, 100);
-      if (width === 720) {
+      await assertGroupedLayoutGeometry(card, width, 100, variant);
+      if (variant === 'explicit' && width === 720) {
         await selectScenario(page, 'unknown');
         const supportReadings = card.locator('[data-group-relation="summary"] > [data-node-kind="Row"]').nth(1).locator('[data-domain-reading]');
         const [filamentLines, fanLines] = await Promise.all([
@@ -529,21 +543,22 @@ for (const width of [320, 390, 720] as const) {
       await page.screenshot({ path: `test-results/composable-lab-v2/composition-${variant}-known-${width}px.png`, fullPage: true });
       if (width === 390) await card.screenshot({ path: `test-results/composable-lab-v2/composition-${variant}-card-known-390px.png` });
     }
-    expect(geometry.explicit).toEqual(geometry.smart);
+    expect(geometry.explicit.length).toBe(8);
+    expect(geometry.smart.length).toBe(9);
 
     const textScale = await scaleRootText(page, 200);
     for (const variant of ['smart', 'explicit']) {
-      await page.getByLabel('Composition shape').selectOption(variant);
+      await page.getByLabel('Layout preview').selectOption(variant);
       await selectScenario(page, 'known');
       const secondaryY = await card.locator('[data-reading-appearance="quiet"]').evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().y));
       if (width === 320 || width === 390) expect(Math.abs(secondaryY[0] - secondaryY[1])).toBeGreaterThan(1);
-      await assertGroupedLayoutGeometry(card, width, 200);
+      await assertGroupedLayoutGeometry(card, width, 200, variant);
       expect(await stage.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
       if (width === 390) await page.screenshot({ path: `test-results/composable-lab-v2/composition-${variant}-known-390px-200-percent.png`, fullPage: true });
     }
     await textScale.evaluate((element) => element.parentNode?.removeChild(element));
 
-    await page.getByLabel('Composition shape').selectOption('smart');
+    await page.getByLabel('Layout preview').selectOption('smart');
     await page.emulateMedia({ reducedMotion: 'reduce' });
     if (width === 390) {
       const stableBounds: Array<{ scenario: string; card: { width: number; height: number }; support: { width: number; height: number } }> = [];
@@ -591,6 +606,7 @@ for (const { scale, widths, readingIndex, threshold } of [
 ] as const) {
   test(`compact reading state slots remain stable around ${threshold}px content at ${scale}%`, async ({ page }) => {
     await page.goto('/dashboard/lab/composition', { waitUntil: 'networkidle' });
+    await page.getByLabel('Layout preview').selectOption('explicit');
     await scaleRootText(page, scale);
     const card = page.getByRole('article', { name: 'Tool head T1' });
     for (const width of widths) {

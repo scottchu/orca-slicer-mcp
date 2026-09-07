@@ -49,7 +49,7 @@ export type ResolvedIdentityGroupNode = {
   rowGap: 'regular'; columnGap: 'regular'; children: [ResolvedTitleNode, Extract<ResolvedDomainNode, { type: 'HeadStatus' }>];
 };
 export type ResolvedSummaryGroupNode = {
-  type: 'Group'; relation: 'summary'; layoutSource: 'smart' | 'explicit'; defaultRule: 'summary-grid6-v1'; tracks: 6;
+  type: 'Group'; relation: 'summary'; layoutSource: 'smart' | 'explicit'; defaultRule: 'summary-stack-v2'; tracks: 6;
   rowGap: 'compact' | 'regular'; columnGap: 'compact' | 'regular'; children: ResolvedRowNode[];
 };
 export type ResolvedGroupNode = ResolvedIdentityGroupNode | ResolvedSummaryGroupNode;
@@ -145,7 +145,7 @@ const resolvedIdentityGroupNodeSchema: z.ZodType<ResolvedIdentityGroupNode> = el
 });
 const resolvedSummaryGroupNodeSchema: z.ZodType<ResolvedSummaryGroupNode> = elementRegistry.Group.resolvedPropsSchema.extend({
   type: z.literal('Group'), relation: z.literal('summary'), layoutSource: z.enum(['smart', 'explicit']),
-  defaultRule: z.literal('summary-grid6-v1'), tracks: z.literal(6),
+  defaultRule: z.literal('summary-stack-v2'), tracks: z.literal(6),
   children: registeredChildrenSchema(elementRegistry.Group.childPolicies.resolvedSummary, {
     ...resolvedGroupChildSchemas,
   }) as z.ZodType<ResolvedSummaryGroupNode['children']>,

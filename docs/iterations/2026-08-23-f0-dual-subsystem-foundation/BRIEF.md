@@ -1,7 +1,7 @@
 # F0 dual-subsystem foundation brief
 
 - Status: active
-- Current slice: PR113 spacing delivered and verified; user layout review
+- Current slice: Default summary consistency correction after user layout review
 - Decision: [0054](../../decisions/0054-own-current-state-and-maintenance-evidence.md)
 
 ## Execution order
@@ -9,8 +9,10 @@
 PR111 maintenance is delivered. The user then prioritized cleanup followed by
 spacing: retain the same information and make adjacent attributes easier to read.
 Task-owned resources were released; the system-wide file-descriptor cause remains
-unresolved. The current order is spacing correction, independent visual/source
-review, guarded delivery, then user review before expanding the product.
+unresolved. The user clarified that the default switches from a full-width temperature row
+to paired color/fan columns without an evident relationship. The current order is
+a consistent three-row default, explicit demo labeling, focused verification,
+independent exact review and guarded delivery, then user review.
 See [spacing evidence](evidence/2026-09-06-composition-spacing.md).
 
 The completed maintenance sequence remains:

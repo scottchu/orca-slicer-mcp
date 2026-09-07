@@ -18,7 +18,7 @@ defines record ownership; [NEXT_AGENT.md](NEXT_AGENT.md) owns execution order.
 | --- | --- | --- |
 | Maintenance | PR111 reviewed, merged and deployed through unchanged shipping guards | Review the delivered result with the user |
 | Production widgets | PR113 / 0.4.14 is deployed; both services and exact assets verified | Preserve truthful coverage; accept actual-device outcomes separately |
-| Private composable Lab | PR113 spacing is independently approved and deployed, preserving the same four Smart attributes | Review the delivered layout with the user |
+| Private composable Lab | PR113 remains deployed; decision0055 three-row default correction is implemented with author checks | Independent exact review, guarded release and installed verification |
 | Preparation handoff | Decision 0048 pure core independently accepted | Supported adapters, durable storage and actual upload remain deferred |
 | Camera C08 | User reports Auto/Live working at home and outside use working well | Preserve this self-report; long-duration and mounted-host acceptance remain separate |
 | Remaining widget requests | [55-ID ledger](docs/widget-delivery.md) retains delivery and gaps | No new feature work during this maintenance slice |
@@ -42,11 +42,12 @@ at the product-coverage layer described in the ledger.
 - **User outcome:** user reports Camera Auto/Live working at home and outside use
   working well. Duration, outside mode coverage and mounted-host behavior remain
   separately unverified. The current Lab feedback concerns attribute spacing;
-  the final spacing has not yet received user acceptance.
+  the user then identified inconsistent row/column placement in the default.
+  Decision0055 addresses that follow-up; the new default is not yet accepted.
 
 ## Next action
 
-Review the [delivered spacing correction](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-composition-spacing.md)
+Verify and deliver the [consistent default correction](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-default-summary.md)
 as described in [NEXT_AGENT.md](NEXT_AGENT.md),
 preserving evidence boundaries and existing release guards. Do not
 register the Lab, control the printer, change auth/Tailscale or reinstall plugins.

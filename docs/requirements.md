@@ -910,8 +910,9 @@ durable-monitor claim.
   exactly Title then HeadStatus and resolves to the code-owned packed header;
   `summary` accepts temperature, filament and fan exactly once, forbids caller
   appearances, and normalizes smart input to that stable affinity order. Its
-  `summary-grid6-v1` rule resolves a six-track temperature Row followed by a
-  three-plus-three filament/fan Row. An optional strict grid override may
+  `summary-stack-v2` rule (decision0055) resolves three full-width span-6 Rows
+  in temperature, filament, fan order. The retired `summary-grid6-v1` literal
+  is rejected rather than reinterpreted. An optional strict grid override may
   provide only six tracks, closed row/column gap tokens and one to six Rows;
   each Row has one to six Columns, every Column owns exactly one summary leaf
   and a closed one-through-six span, and each Row sums exactly to six. The
@@ -923,11 +924,12 @@ durable-monitor claim.
   resolver records `smart | explicit`, versioned rule, order, spans and
   intrinsic collapse. Explicit layout changes only placement and cannot change
   grouping, values, appearance, provenance, loading/error topology or the
-  readability floor. Smart and explicit keep paired secondary readings at
-  390/720 normal text and stack at 320 normal text or 390/200-percent text.
+  readability floor. Smart remains three sequential full-width rows at every width/text scale.
+  The explicit paired demo keeps secondary readings together at 390/720 normal
+  text and stacks at 320 normal text or 390/200-percent text.
   They add no holes, offsets, row span, overlap, caller breakpoint, style,
   markup, executable content, tint, gradient, divider, Table or printer icon.
-  Resolved identity records `identity-packed-v1`; the two exact `-v1` rule
+  Resolved identity records `identity-packed-v1`; the exact rule
   literals version their code-owned algorithms, so later behavior must use a
   new registered literal rather than silently reinterpreting either rule.
   The prior A specs, hashes and default rendering remain unchanged. Balanced B
