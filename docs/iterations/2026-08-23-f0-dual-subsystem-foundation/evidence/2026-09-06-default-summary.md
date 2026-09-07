@@ -70,11 +70,10 @@ MCP resource SHA256: private887a5b8dfaa674ce181c931a2916b6cc351f84e9fcb82ecd53e4
 observation40bdd39aa5181bfa60afd2d64b968bfe15ce9ecd822c8e6ed3d4480f87498ebd;
 Camera19851dbf982727e95569f367e3b3d0717e39f1ed65628644f74e00eb28535252.
 
-## Acceptance still pending
+## Acceptance at initial candidate freeze
 
-Independent exact review/verification, mandatory guarded release with both
-service restarts and scoped installed-byte verification remain separate gates.
-No deployment or user acceptance of this candidate is claimed here.
+Independent review and guarded release were pending at the initial freeze.
+The completed outcomes below supersede that checkpoint; user acceptance remains separate.
 
 ## First guarded attempt and narrow repair
 
@@ -112,3 +111,44 @@ all required production/private deterministic package checks, TypeScript,
 288 server tests,44 service tests and28 shipping-operator tests. This is the
 captured diagnostic candidate gate; the maintained shipping operator must still
 repeat its mandatory validation after exact approval. `git diff --check` PASS.
+
+## Independent acceptance and guarded delivery
+
+Independent reviewer approved exact5971dc6d21552f2bab6411850d213f5201cefde2:
+31 source adversaries,42 synthetic browser states,8 targeted client tests and7
+package tests PASS; all7 production HTML changes are one exact host-version
+substitution. Fresh strict manifestdeb60f236beea349e242bdc05b01ccfa50e92391aeec84d50caf33aec8465319
+passed independently. Lab source/resource/preview identities retained the earlier
+visual evidence; no old placement algorithm was relabeled.
+
+Read-only plan then `uv run --no-project scripts/u1_ship.py --pr 115
+--reviewed-sha 5971dc6d21552f2bab6411850d213f5201cefde2 --bun <pinned Bun1.4.0>
+--execute` completed all mandatory local validation and unchanged guards.
+Merged7584f62168c8861e95b8904e22021b9eeaf300eb; operation
+pr115-20260906T211851-90adfd; installed release
+20260906-7584f62-pr115-20260906T211851-90adfd. Public and dashboard were explicitly
+restarted, loaded/healthy/integrity verified at runtime0.4.15/schema16/obs21/cam17.
+82 exact static assets and84 security checks passed; private state preserved;
+no rollback needed. The first pre-merge failure remains recorded above.
+
+The private MCP factory/resource remains unregistered and uninstalled; only
+native Lab delivery is claimed. Real printer, actual phone, long-duration Camera
+and actual ChatGPT mounted-host acceptance are not implied by this release.
+This records-only tail does not change application/build inputs and needs no redeployment.
+
+Independent installed native verification PASS on release7584f62:1440px/100%
+and320px/root200%,12 transitions through initial Unknown, error, loading, known,
+failed refresh and Unknown. Three aligned rows retained the same four fields,
+no stale accessible telemetry, and card-relative state geometry within1px.
+All22 actual responses matched the installed manifest;0 blocked requests and0
+page errors. Installed strict inventory remained62 files/81 routes,deb60f236b… .
+The first harness comparison used absolute y after screenshots had scrolled the
+page; correcting it to card-relative coordinates passed without app changes.
+Owned browser resources were closed. This is installed synthetic native evidence,
+not private MCP registration or actual-device acceptance.
+
+Records-only validation: changed-path inspection confirms exactly eight Markdown
+files, no application/dependency/configuration/generated-asset changes; all changed
+relative links resolve and `git diff --check` passes. Retain exact application
+and installed evidence on the records head; no further deployment or record-only
+follow-up is needed. Next action is user review of the delivered default.
