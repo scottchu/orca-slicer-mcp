@@ -12,7 +12,8 @@ rejected. Explicit authored order/spans and intrinsic collapse remain supported.
 
 Source changes: server resolver, client placeholders, resolved registry/schema,
 envelope correlation, Lab copy, focused server/client/browser expectations,
-immutable preview pins, runtime/resource version metadata and generated MCP HTML.
+immutable preview pins, runtime/resource version metadata and generated private
+MCP plus seven production HTML resources.
 Runtime/host0.4.15, schema16, observation21, Camera17, private r6/0.0.8-provisional.
 Only private composable behavior changes; public HTML changes because coherent
 host-version metadata changes. No printer/authentication/network/plugin or
@@ -74,3 +75,40 @@ Camera19851dbf982727e95569f367e3b3d0717e39f1ed65628644f74e00eb28535252.
 Independent exact review/verification, mandatory guarded release with both
 service restarts and scoped installed-byte verification remain separate gates.
 No deployment or user acceptance of this candidate is claimed here.
+
+## First guarded attempt and narrow repair
+
+Independent source/visual verification approved152754c71fff695975591b3a7c3424694aff2f67
+before the first guarded attempt. The operator stopped at validate, before merge
+or installation. A captured diagnostic `scripts/check-repository.sh` run showed
+647 client tests PASS and one stale presentation test expecting Smart to retain
+the former [6,3,3] spans. Corrected that assertion to require Smart [6,6,6] and
+Explicit [6,3,3]
+independently; no application, generated asset or guard bytes changed. This new
+candidate requires matching independent approval and the full mandatory operator
+gate again. No shipping retry or later phase is claimed by this repair record.
+
+The next diagnostic gate passed all648 client tests, then correctly rejected
+`verify:live-fans`: five transitive native live resources had not yet been rebuilt
+for the shared host version. Regenerated live fans/thermals/heads/queue/camera
+with their existing build scripts and regenerated private Lab packages. All
+seven production resources (those five plus MCP observation/Camera) match baseline
+exactly after one0.4.14-to0.4.15 replacement per file; private general Lab packages
+are byte-identical. The immutable composable preview rebuilt to the same manifest
+and page hash above. No common CSS, application logic or shipping guard changed.
+
+After all deterministic resource checks passed, the next diagnostic server gate
+reported282 PASS and six outdated artifact-hash pins. Updated exact SHA256 pins
+in live-fans-package.test.ts and mcp-widget-packages.test.ts from the rebuilt,
+metadata-only resources; all other package assertions remain. Targeted package
+checks then passed7 tests/75 assertions. Final current fresh-build strict reader
+passes62 runtime files/81 routes, manifest deb60f236beea349e242bdc05b01ccfa50e92391aeec84d50caf33aec8465319.
+The earlier674852ba manifest is superseded because the five native resources
+now carry the coherent host version. Private composable/preview identities and
+prior synthetic layout evidence are unchanged.
+
+Final `scripts/check-repository.sh` PASS: UI/component contracts,648 client tests,
+all required production/private deterministic package checks, TypeScript,
+288 server tests,44 service tests and28 shipping-operator tests. This is the
+captured diagnostic candidate gate; the maintained shipping operator must still
+repeat its mandatory validation after exact approval. `git diff --check` PASS.
