@@ -1,17 +1,16 @@
 # Next agent
 
-## Immediate task: verify and deliver consistent default summary
+## Immediate task: user review of the delivered default
 
-Read [current state](PROJECT_STATE.md), [requirements](docs/requirements.md),
-[decision0055](docs/decisions/0055-use-consistent-rows-for-default-summary.md) and
-[default summary evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-default-summary.md).
+PR115 / runtime0.4.15 is deployed at merged7584f62168c8861e95b8904e22021b9eeaf300eb.
+[Default summary evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-default-summary.md)
+owns exact review, required gates, release and scoped installed verification.
 
-1. Independently review and verify the exact candidate: Smart keeps three
-   full-width readings; Explicit remains an identified capability demo.
-2. After exact approval, use the unchanged mandatory u1-ship path with one owner,
-   both service restarts, exact assets and scoped installed behavior checks.
-3. Review the delivered default with the user; preserve the existing extreme-
-   decimal320px/200% limitation as separate formatting work.
+Review the default with the user: temperature, configured color and fan now read
+in one vertical direction, below the unchanged title/status identity. Other
+layouts are labeled Demo. Preserve the existing extreme-decimal320px/200%
+formatting limit as a separate task. Completed record updates are not another
+pending action; unchanged application bytes require no additional deployment.
 
 The user reports Camera Auto/Live worked at home and outside use worked well;
 record this bounded observation without claiming long-duration or mounted-host

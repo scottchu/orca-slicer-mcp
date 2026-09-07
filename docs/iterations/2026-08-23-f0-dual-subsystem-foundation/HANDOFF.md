@@ -4,8 +4,9 @@
 
 The user requested a consistent default after reviewing PR113. Decision0055
 and [default summary evidence](evidence/2026-09-06-default-summary.md) own the
-three-row Smart correction, changed paths and author validation. Independent
-exact review and guarded delivery are next; preserve the existing decimal limit.
+three-row Smart correction, changed paths and actual acceptance. PR115 passed
+independent exact review and guarded delivery; user layout review is next.
+Preserve the existing decimal limit.
 
 ## Delivered maintenance
 

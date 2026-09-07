@@ -1,6 +1,6 @@
 # 0055 — Use consistent rows for the default summary
 
-- Status: accepted direction for the isolated private Lab; implementation acceptance pending
+- Status: independently accepted and delivered in PR115 for the isolated private Lab; user acceptance pending
 - Date: 2026-09-06
 - Milestone: F0 / UI-003
 

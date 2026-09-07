@@ -3,7 +3,8 @@
 ## Current default summary correction
 
 [Default summary evidence](evidence/2026-09-06-default-summary.md) owns current
-author checks and pending independent/release acceptance.
+author checks, independent exact review, guarded PR115 release and independent
+installed native synthetic verification.
 
 ## Delivered spacing correction
 
