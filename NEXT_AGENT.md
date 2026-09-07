@@ -1,21 +1,17 @@
 # Next agent
 
-## Immediate task: review the delivered spacing correction
+## Immediate task: verify and deliver consistent default summary
 
 Read [current state](PROJECT_STATE.md), [requirements](docs/requirements.md),
-the [brief](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/BRIEF.md) and
-[spacing evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-composition-spacing.md).
-PR113 / 0.4.14 is independently approved and deployed as merged application
-`c61b82b74c484ed106d7c96247cf59e4d6fa9f33`. Both services and exact static assets
-passed guarded verification.
+[decision0055](docs/decisions/0055-use-consistent-rows-for-default-summary.md) and
+[default summary evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-default-summary.md).
 
-1. Installed synthetic native Lab behavior passed. No new deployment is needed
-   for the unchanged application bytes in this records-only tail.
-2. Review Smart with the user: the same four attributes, approximately 24px visible
-   separation at 390px, and retained temperature wrapping. Do not compare its
-   information density against Compact's two-field subset.
-3. Preserve the existing extreme-decimal 320px / 200% limitation in the evidence
-   record. Further formatting work requires its own bounded task.
+1. Independently review and verify the exact candidate: Smart keeps three
+   full-width readings; Explicit remains an identified capability demo.
+2. After exact approval, use the unchanged mandatory u1-ship path with one owner,
+   both service restarts, exact assets and scoped installed behavior checks.
+3. Review the delivered default with the user; preserve the existing extreme-
+   decimal320px/200% limitation as separate formatting work.
 
 The user reports Camera Auto/Live worked at home and outside use worked well;
 record this bounded observation without claiming long-duration or mounted-host

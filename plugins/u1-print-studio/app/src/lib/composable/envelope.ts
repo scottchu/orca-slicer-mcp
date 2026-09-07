@@ -54,13 +54,13 @@ const correlateNode = (
       const expectedSource = explicitLayout ? 'explicit' : 'smart';
       const expectedRowGap = explicitLayout?.rowGap ?? 'regular';
       const expectedColumnGap = explicitLayout?.columnGap ?? 'regular';
-      if (resolved.layoutSource !== expectedSource || resolved.defaultRule !== 'summary-grid6-v1' || resolved.tracks !== 6 || resolved.rowGap !== expectedRowGap || resolved.columnGap !== expectedColumnGap) {
+      if (resolved.layoutSource !== expectedSource || resolved.defaultRule !== 'summary-stack-v2' || resolved.tracks !== 6 || resolved.rowGap !== expectedRowGap || resolved.columnGap !== expectedColumnGap) {
         context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved summary policy diverges' });
       }
       const resolvedSpans = resolved.children.map((row) => row.children.map((column) => column.colSpan));
       const expectedSpans = explicitLayout
         ? spec.children.map((row) => row.type === 'Row' ? row.children.map((column) => column.colSpan) : [])
-        : [[6], [3, 3]];
+        : [[6], [6], [6]];
       if (JSON.stringify(resolvedSpans) !== JSON.stringify(expectedSpans)
         || resolved.children.some((row) => row.columnGap !== expectedColumnGap || row.collapse !== 'intrinsic')) {
         context.addIssue({ code: z.ZodIssueCode.custom, message: 'Resolved summary rows diverge from placement policy' });

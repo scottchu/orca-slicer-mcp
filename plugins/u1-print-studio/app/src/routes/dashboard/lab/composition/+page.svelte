@@ -14,7 +14,7 @@
   <header class="intro">
     <p class="eyebrow">Provisional F0 / UI-003 experiment</p>
     <h1>Entity-bound composition lab v2</h1>
-    <p>T1 binds once. Smart semantic groups resolve first; an optional closed six-track Row and Column override can change placement without changing information.</p>
+    <p>The default summary reads from top to bottom. Other layouts are capability demos, not recommended alternatives. All values here are synthetic.</p>
   </header>
 
   <section class="controls" aria-label="Composition controls">
@@ -28,14 +28,14 @@
         <option value="error">Acquisition failure</option>
       </select>
     </label>
-    <label>Composition shape
+    <label>Layout preview
       <select bind:value={variant}>
-        <option value="smart">Smart grouped summary</option>
-        <option value="explicit">Explicit 6-column rows</option>
-        <option value="card">Entity card</option>
-        <option value="compact">Compact grid</option>
-        <option value="larger">Larger composition</option>
-        <option value="balanced">Balanced hierarchy</option>
+        <option value="smart">Default: stacked summary</option>
+        <option value="explicit">Demo: custom columns</option>
+        <option value="card">Demo: entity card</option>
+        <option value="compact">Demo: compact grid</option>
+        <option value="larger">Demo: larger composition</option>
+        <option value="balanced">Demo: balanced hierarchy</option>
       </select>
     </label>
   </section>

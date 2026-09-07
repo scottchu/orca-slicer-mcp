@@ -111,7 +111,7 @@ describe('composable renderer and host lifecycle', () => {
       const result = await composeEntityCard(spec, readers);
       const rendered = render(PresentationRenderer, { presentation: result.viewModel });
       expect([...rendered.container.querySelectorAll('[data-group-relation]')].map((node) => node.getAttribute('data-group-relation'))).toEqual(['identity', 'summary']);
-      expect([...rendered.container.querySelectorAll('[data-col-span]')].map((node) => node.getAttribute('data-col-span'))).toEqual(['6', '3', '3']);
+      expect([...rendered.container.querySelectorAll('[data-col-span]')].map((node) => node.getAttribute('data-col-span'))).toEqual(spec === t1SmartGroupedSummarySpec ? ['6', '6', '6'] : ['6', '3', '3']);
       expect([...rendered.container.querySelectorAll('[data-domain-reading]')].map((node) => node.textContent)).toEqual(expect.arrayContaining([
         expect.stringContaining('Actual / target'), expect.stringContaining('Configured color'), expect.stringContaining('Fan relation'),
       ]));

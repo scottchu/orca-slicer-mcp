@@ -111,7 +111,7 @@ export const elementRegistry = {
     resolvedPropsSchema: z.object({
       relation: groupRelationSchema,
       layoutSource: z.enum(['smart', 'explicit']),
-      defaultRule: z.enum(['identity-packed-v1', 'summary-grid6-v1']),
+      defaultRule: z.enum(['identity-packed-v1', 'summary-stack-v2']),
       tracks: z.literal(6).nullable(),
       rowGap: groupLayoutGapSchema,
       columnGap: groupLayoutGapSchema,

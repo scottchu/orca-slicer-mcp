@@ -2,6 +2,13 @@
 
 ## Current work
 
+The user requested a consistent default after reviewing PR113. Decision0055
+and [default summary evidence](evidence/2026-09-06-default-summary.md) own the
+three-row Smart correction, changed paths and author validation. Independent
+exact review and guarded delivery are next; preserve the existing decimal limit.
+
+## Delivered maintenance
+
 The user approved maintenance before new features. [BRIEF.md](BRIEF.md) records
 scope and acceptance; [NEXT_AGENT.md](../../../NEXT_AGENT.md) owns execution order.
 Record reorganization and scoped reliability/shared-use-case/CSS repairs are
@@ -35,9 +42,9 @@ long-duration reliability and mounted-host behavior remain separately unaccepted
 Preparation pure-core acceptance does not implement its deferred adapters or authorize upload/start.
 Preserve Lab isolation, the 55-ID ledger, unrelated work and existing private state.
 
-Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the spacing candidate. PR113 application
-bytes passed the normal review and delivery gates. This records-only tail
-requires no additional deployment; the next task is user layout review.
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the new default-summary candidate.
+PR113 remains the previously delivered baseline; its completed record tail
+required no additional deployment.
 Historical pending instructions are archived and must not be replayed. All previous
 paths, observations, failures and recovery evidence remain in the
 [PR110 snapshot](../../history/2026-09-05-pr110/README.md).

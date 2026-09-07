@@ -1,6 +1,11 @@
 # F0 validation index
 
-## Current spacing correction
+## Current default summary correction
+
+[Default summary evidence](evidence/2026-09-06-default-summary.md) owns current
+author checks and pending independent/release acceptance.
+
+## Delivered spacing correction
 
 [2026-09-06 spacing evidence](evidence/2026-09-06-composition-spacing.md) records
 commands actually run, the final same-information geometry, regenerated assets,

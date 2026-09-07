@@ -4,10 +4,10 @@ import { readFileSync } from 'node:fs';
 import { assertFocusedProductionInventory } from '../../scripts/observation-graph-contract.js';
 
 for (const [view, title, hash] of [
-  ['fans', 'Fans & Air', '7e53dbe50cdc34d072c5f8ed30cf5254b6881adca382a70b19c4e6efcecc310c'],
-  ['thermals', 'Thermals', '2c16ff4f7e0c7199664096d02320cf649cdf94de5bf019feabc39586cf7dd42c'],
-  ['heads', 'Heads & Filaments', 'fa9459aa74bcf1d95d056cd475598b5bef8075e96f9f0f690f80c7b44649d792'],
-  ['queue', 'Print Queue', 'c109ab74e5650f42b16c539a0f3c497a391d0dc9bcaaec5ac5ef737c742b5dc1'],
+  ['fans', 'Fans & Air', '33eacd3e40f71fe660304ba3ee013b752ac874cf409d1249b66f02f352f87685'],
+  ['thermals', 'Thermals', 'dab5ffdccb8bc349c50fb30777a8766394201f08bada3b5a68aef0e4e027cc9a'],
+  ['heads', 'Heads & Filaments', '989f1fd41d58dcf0fad0ac3de6b43e12d7631715f50a823bbfe2e6951691f813'],
+  ['queue', 'Print Queue', '8b7fafae4620e623f5cff76b076d8aa705270dfc0dc7c96366200ee99629d284'],
 ]) test(`real ${title} is one deterministic private artifact without lab or acquisition code`, () => {
   const html = readFileSync(new URL(`../../public/svelte-live-${view}.html`, import.meta.url), 'utf8');
 
