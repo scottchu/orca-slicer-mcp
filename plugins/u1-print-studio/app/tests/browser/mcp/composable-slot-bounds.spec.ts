@@ -5,7 +5,7 @@ import { composeEntityCardEnvelope, type ComposableReaders } from '../../../src/
 import { scaleRootText } from '../helpers/text-scale';
 
 const html = readFileSync(new URL('../../../public/mcp-composable-lab-v2.html', import.meta.url), 'utf8');
-const resourceUri = 'ui://u1-print-studio/experiments/composable-lab-v2-r6.html';
+const resourceUri = 'ui://u1-print-studio/experiments/composable-lab-v2-r7.html';
 const readers = (actualC: number, targetC: number): ComposableReaders => ({
   status: async () => ({ observedAt: '2026-09-03T16:20:00.000Z', receivedAt: '2026-09-03T16:20:00.100Z', heads: [{ id: 'T1', status: 'active', actualC, targetC }] }),
   materials: async () => ({ observedAt: '2026-09-03T16:19:45.000Z', receivedAt: '2026-09-03T16:19:45.250Z', heads: [{ id: 'T1', color: '#E89B3C' }] }),

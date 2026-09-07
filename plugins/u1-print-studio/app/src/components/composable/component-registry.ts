@@ -132,13 +132,13 @@ export const componentRegistry = {
   Stack: defineComponentEntry('Stack', LayoutStack, (node) => ({ gap: node.gap, inset: true, composed: true }), (node) => node.children),
   Grid: defineComponentEntry('Grid', Grid, (node) => ({ columns: node.columns, gap: node.gap, inset: true, arrangement: node.arrangement }), (node) => node.children),
   Inline: defineComponentEntry('Inline', LayoutInline, (node) => ({ gap: node.gap, distribution: node.distribution, inset: true, composed: true }), (node) => node.children),
-  Group: defineComponentEntry('Group', Group, (node) => ({ relation: node.relation, label: node.relation === 'identity' ? 'Tool identity' : 'Tool summary', rowGap: node.rowGap, inset: true }), (node) => node.children, (node, context) => ({ ...context, group: node.relation })),
+  Group: defineComponentEntry('Group', Group, (node) => ({ relation: node.relation, label: node.relation === 'identity' ? 'Tool identity' : 'Tool summary', rowGap: node.rowGap, inset: true, reserveRows: node.relation === 'summary' && node.layoutSource === 'smart' ? ['double', 'single', 'single'] : [] }), (node) => node.children, (node, context) => ({ ...context, group: node.relation, sizing: node.relation === 'summary' && node.layoutSource === 'smart' ? 'natural' : 'reserved' })),
   Row: defineComponentEntry('Row', Row, (node) => ({ columnGap: node.columnGap, collapse: node.collapse }), (node) => node.children),
   Column: defineComponentEntry('Column', Column, (node) => ({ colSpan: node.colSpan }), (node) => node.children),
   HeadStatus: defineComponentEntry('HeadStatus', HeadStatus, (node, context) => ({ value: node.value, appearance: node.appearance, density: context.density ?? 'regular' }), null),
-  HeadTemperature: defineComponentEntry('HeadTemperature', HeadTemperature, (node, context) => ({ value: node.value, appearance: node.appearance, density: context.group === 'summary' ? 'compact' : context.density ?? 'regular' }), null),
-  FilamentColor: defineComponentEntry('FilamentColor', FilamentColor, (node, context) => ({ value: node.value, appearance: node.appearance, density: context.group === 'summary' ? 'compact' : context.density ?? 'regular' }), null),
-  FanRelation: defineComponentEntry('FanRelation', FanRelation, (node, context) => ({ value: node.value, appearance: node.appearance, density: context.group === 'summary' ? 'compact' : context.density ?? 'regular' }), null),
+  HeadTemperature: defineComponentEntry('HeadTemperature', HeadTemperature, (node, context) => ({ sizing: context.sizing ?? 'reserved', value: node.value, appearance: node.appearance, density: context.group === 'summary' ? 'compact' : context.density ?? 'regular' }), null),
+  FilamentColor: defineComponentEntry('FilamentColor', FilamentColor, (node, context) => ({ sizing: context.sizing ?? 'reserved', value: node.value, appearance: node.appearance, density: context.group === 'summary' ? 'compact' : context.density ?? 'regular' }), null),
+  FanRelation: defineComponentEntry('FanRelation', FanRelation, (node, context) => ({ sizing: context.sizing ?? 'reserved', value: node.value, appearance: node.appearance, density: context.group === 'summary' ? 'compact' : context.density ?? 'regular' }), null),
 } as const satisfies { [Type in PresentationElementType]: RegisteredComponentEntry<Type> };
 
 export const resolveRegisteredNode = (

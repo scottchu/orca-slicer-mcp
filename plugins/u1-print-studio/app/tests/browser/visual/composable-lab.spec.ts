@@ -39,7 +39,7 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
   expect(dimensions).toEqual({ groupGap: 20, iconTrack: 32, iconGap: 8, copyGap: 4 });
   // Compact reading frames follow width/text-aware content slots, not fixed hero/quiet heights.
   const summary = card.locator('[data-group-relation="summary"]');
-  const rows = summary.locator(':scope > [data-node-kind="Row"]');
+  const rows = summary.locator(variant === 'smart' ? ':scope > .summary-content > [data-node-kind="Row"]' : ':scope > [data-node-kind="Row"]');
   if (variant === 'smart') {
     await expect(rows).toHaveCount(3);
     const boxes = await rows.evaluateAll((nodes) => nodes.map((node) => {
@@ -51,6 +51,11 @@ const assertGroupedLayoutGeometry = async (card: Locator, width: 320 | 390 | 720
       expect(Math.abs(boxes[index].width - boxes[0].width)).toBeLessThanOrEqual(1);
       expect(Math.abs(boxes[index].y - boxes[index - 1].bottom - 8)).toBeLessThanOrEqual(1);
     }
+    const visibleGaps = await card.locator('[data-domain-reading]').evaluateAll((readings) => readings.slice(1).map((reading, index) => {
+      const previous = readings[index].querySelector('.current, .skeleton-slot')!.getBoundingClientRect();
+      return reading.querySelector('.label')!.getBoundingClientRect().top - previous.bottom;
+    }));
+    for (const gap of visibleGaps) expect(Math.abs(gap - 8)).toBeLessThanOrEqual(1);
     await assertReadingAnatomy(card);
     return;
   }
@@ -566,7 +571,7 @@ for (const width of [320, 390, 720] as const) {
         await selectScenario(page, scenario);
         const [cardBox, supportBox] = await Promise.all([
           card.boundingBox(),
-          card.locator('[data-group-relation="summary"] > [data-node-kind="Row"]').nth(1).boundingBox(),
+          card.locator('[data-group-relation="summary"] .summary-content > [data-node-kind="Row"]').nth(1).boundingBox(),
         ]);
         if (!cardBox || !supportBox) throw new Error(`Missing ${scenario} grouped bounds`);
         stableBounds.push({
@@ -579,7 +584,7 @@ for (const width of [320, 390, 720] as const) {
           await page.screenshot({ path: `test-results/composable-lab-v2/composition-smart-${scenario}-390px.png`, fullPage: true });
         }
       }
-      for (const part of ['card', 'support'] as const) {
+      for (const part of ['card'] as const) {
         const widths = stableBounds.map((bounds) => bounds[part].width);
         const heights = stableBounds.map((bounds) => bounds[part].height);
         expect(Math.max(...widths) - Math.min(...widths), `${part} state widths: ${JSON.stringify(stableBounds)}`).toBeLessThanOrEqual(1);

@@ -905,7 +905,10 @@ durable-monitor claim.
   horizontal separation remains 20px. Internal typed density avoids compound
   padding. Temperature keeps two structural lines for valid decimal precision;
   the closed quiet vocabulary uses width/text-aware reserves. All evidence
-  states retain <=1px fixed-viewport geometry. No DSL field or acquisition is added.
+  states retain <=1px fixed-viewport geometry except decision0056's Smart-only
+  natural readings: the Card frame stays stable, while internal reading positions
+  may reflow. Smart uses equal 1.25rem value fonts and 8px visible value-to-next-label spacing; empty structural
+  summary tracks place unused reserve at the tail. Other profiles are unchanged. No DSL field or acquisition is added.
   Decision0053 adds smart semantic grouping before placement. `identity` accepts
   exactly Title then HeadStatus and resolves to the code-owned packed header;
   `summary` accepts temperature, filament and fan exactly once, forbids caller

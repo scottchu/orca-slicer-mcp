@@ -1,7 +1,7 @@
 # F0 dual-subsystem foundation brief
 
 - Status: active
-- Current slice: PR115 consistent default delivered; user layout review
+- Current slice: existing-widget references and equivalent DSL comparison
 - Decision: [0054](../../decisions/0054-own-current-state-and-maintenance-evidence.md)
 
 ## Execution order
@@ -12,7 +12,13 @@ Task-owned resources were released; the system-wide file-descriptor cause remain
 unresolved. The user clarified that the default switches from a full-width
 temperature row to paired color/fan columns without an evident relationship.
 The three-row default, demo labeling, focused verification, independent exact
-review and guarded delivery are complete. User review is next. See
+review and guarded delivery are complete. User feedback now asks to inspect existing widgets, compose overlapping
+information with the closed DSL, and compare matched screenshots before more
+styling or release. Preserve the partial spacing/type implementation and
+decision0056 as provisional WIP; its 8px gap and 1.25rem font choices are not
+accepted outcomes. Report unsupported capabilities explicitly. The separate
+worktree/local checkpoint handoff is recorded in
+[transfer evidence](evidence/2026-09-06-dsl-widget-comparison-handoff.md). See
 [default summary evidence](evidence/2026-09-06-default-summary.md); the earlier
 [spacing evidence](evidence/2026-09-06-composition-spacing.md) remains historical.
 

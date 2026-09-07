@@ -1,6 +1,13 @@
 # F0 validation index
 
-## Current default summary correction
+## Current local handoff
+
+[DSL comparison handoff evidence](evidence/2026-09-06-dsl-widget-comparison-handoff.md)
+records actual file/hash/status checks, local branch/worktree migration and
+checkpoint-only scope. It contains no product-test or release acceptance for
+the transferred spacing/type WIP. Earlier evidence remains bound to its own bytes.
+
+## Delivered default summary correction
 
 [Default summary evidence](evidence/2026-09-06-default-summary.md) owns current
 author checks, independent exact review, guarded PR115 release and independent

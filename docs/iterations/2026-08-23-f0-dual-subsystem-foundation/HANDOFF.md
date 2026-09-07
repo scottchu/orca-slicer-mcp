@@ -2,11 +2,18 @@
 
 ## Current work
 
-The user requested a consistent default after reviewing PR113. Decision0055
-and [default summary evidence](evidence/2026-09-06-default-summary.md) own the
-three-row Smart correction, changed paths and actual acceptance. PR115 passed
-independent exact review and guarded delivery; user layout review is next.
-Preserve the existing decimal limit.
+The next task is a reference-first comparison of existing widgets with equivalent
+closed-DSL compositions, under matched synthetic data/state/viewport/text scale.
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md). The local branch
+`codex/u1-dsl-widget-comparison` preserves the unfinished spacing/type changes;
+no new acceptance, release or visible Desktop conversation is claimed.
+
+[Transfer evidence](evidence/2026-09-06-dsl-widget-comparison-handoff.md) records the
+33-file WIP preservation, separate Camera preservation, canonical-main restoration
+and evidence boundaries. Changed WIP includes common Reading/Metric/Group/Swatch,
+composable leaves/registry/props, affected tests, version pins and tracked widget
+HTML; decision0056 remains provisional. Inspect these before editing. Private
+recovery manifests retain the exact pre-transfer bytes and command log.
 
 ## Delivered maintenance
 
@@ -43,9 +50,9 @@ long-duration reliability and mounted-host behavior remain separately unaccepted
 Preparation pure-core acceptance does not implement its deferred adapters or authorize upload/start.
 Preserve Lab isolation, the 55-ID ledger, unrelated work and existing private state.
 
-Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the new default-summary candidate.
-PR113 remains the previously delivered baseline; its completed record tail
-required no additional deployment.
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the reference-first comparison.
+PR115 is the latest recorded deployed baseline; the new WIP checkpoint does not
+change the deployed release.
 Historical pending instructions are archived and must not be replayed. All previous
 paths, observations, failures and recovery evidence remain in the
 [PR110 snapshot](../../history/2026-09-05-pr110/README.md).
