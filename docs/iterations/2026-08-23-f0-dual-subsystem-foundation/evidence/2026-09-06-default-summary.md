@@ -137,8 +137,9 @@ and actual ChatGPT mounted-host acceptance are not implied by this release.
 This records-only tail does not change application/build inputs and needs no redeployment.
 
 Independent installed native verification PASS on release7584f62:1440px/100%
-and320px/root200%,12 transitions through initial Unknown, error, loading, known,
-failed refresh and Unknown. Three aligned rows retained the same four fields,
+and320px/root200%,12 scenario observations through initial Unknown, error, loading,
+known, a ready-to-error transition and Unknown. These use the synthetic scenario
+selector, not a Refresh action or API retry. Three aligned rows retained the same four fields,
 no stale accessible telemetry, and card-relative state geometry within1px.
 All22 actual responses matched the installed manifest;0 blocked requests and0
 page errors. Installed strict inventory remained62 files/81 routes,deb60f236b… .
