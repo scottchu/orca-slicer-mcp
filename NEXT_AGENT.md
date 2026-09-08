@@ -1,22 +1,21 @@
 # Next agent
 
-## Current order: Overview subview isolation repair
+## Current order after PR123 delivery
 
-PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
-assertion. The exact pin is corrected with focused tests passing; independent
-delta approval and one renewed mandatory operator run are next. No merge,
-install or restart occurred. The active repair evidence owns the original failure.
+The Overview isolation fix is delivered, and its current records are complete.
+[Repair evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md) owns exact review, mandatory gates,
+merge/deployment and installed-byte synthetic acceptance. Runtime0.4.19/schema18/
+observation22/Camera17 is the deployed baseline.
 
-1. Independently review the frozen author candidate and run targeted adversarial
-   verification; author checks are in [repair evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md).
-2. One operator owns mandatory local validation and guarded PR/merge/deployment
-   through unchanged u1-ship, both service restarts and meaningful installed-byte
-   synthetic verification under standing widget-release authorization.
-3. Record exact outcomes and review repaired host behavior separately with the user.
+Review the repaired Overview with the user; no further product work is specified.
+Actual repaired host/phone/physical acceptance is unobserved. Do not automatically
+call the printer or start monitoring. Upstream Job History malformed responses,
+parked UI/DSL work and preserved unrelated WIP remain outside this completed fix.
 
-The completed MCP handoff/cleanup/archive below must not be replayed. Do not
-operate the printer, alter auth/Tailscale/plugins, repair Job History adapters
-or resume private-DSL/UI redesign. Private WIP refs/evidence remain preserved.
+## Historical execution orders — do not replay
+
+All earlier handoff, cleanup/archive and PR123 shipping steps below are complete.
+They are preserved only as historical context, not outstanding work.
 
 ## Current MCP client handoff — 2026-09-08
 

@@ -1,23 +1,26 @@
 # Project state
 
-## Active Overview subview isolation repair — 2026-09-08
+## Delivered Overview subview isolation — PR123
 
-PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
-assertion. The exact pin is corrected with focused tests passing; independent
-delta approval and one renewed mandatory operator run are next. No merge,
-install or restart occurred. The active repair evidence owns the original failure.
+PR123 is merged at `71b007852f02cda291bbe41c598e93a63576ace5` and deployed as
+runtime0.4.19/schema18/observation22/Camera17. Independent exact review, mandatory
+shipping gates, both service restarts, health/integrity, exact assets and
+installed-byte synthetic behavior passed. A failed subview stays local while
+healthy Overview tiles remain readable; whole-request failures still mask old
+readings. [Repair evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md) owns commands and identities.
 
-Author implementation and focused synthetic validation are complete. The candidate
-is runtime0.4.19/schema18/observation22/Camera17; deployed baseline remains
-0.4.18/schema18/observation21/Camera17 until guarded release succeeds.
-A failed Overview subview now stays local; valid sibling headlines remain visible,
-while whole-request errors still mask old readings. Independent exact review and
-guarded delivery remain pending. [Repair evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md) owns details.
+Release and record updates are complete. Repaired actual-host, phone and physical
+acceptance remain unobserved; next action is review with the user, not another
+release. Upstream Job History malformed responses remain unresolved. No printer
+call or monitoring was started. UI redesign/private DSL and unrelated WIP stay
+parked. [NEXT_AGENT.md](NEXT_AGENT.md) owns current execution order.
 
-The MCP handoff cleanup/archive is complete; new-name tools were subsequently
-called. User screenshots show Overview failure and Camera Live, not phone or
-physical-print acceptance. No active monitoring. Older handoff instructions below
-are historical; [NEXT_AGENT.md](NEXT_AGENT.md) owns current execution order.
+## Historical records — superseded by the delivered state above
+
+The following handoff, catalog and prior-release paragraphs retain their original
+time scope. Their cleanup/archive and release steps are complete, never pending
+actions. New-name tools were subsequently called; the user's pre-fix screenshots
+show Overview failure and Camera Live. These do not accept repaired host behavior.
 
 ## Current MCP client handoff — 2026-09-08
 

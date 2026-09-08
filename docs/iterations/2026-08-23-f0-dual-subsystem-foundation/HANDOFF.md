@@ -1,23 +1,25 @@
 # F0 maintenance handoff
 
-## Current repair handoff
+## Current outcome: PR123 delivered
 
-PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
-assertion. The exact pin is corrected with focused tests passing; independent
-delta approval and one renewed mandatory operator run are next. No merge,
-install or restart occurred. The active repair evidence owns the original failure.
+Overview failure isolation is implemented, independently approved, merged and
+deployed. Both services and meaningful installed-byte synthetic cases passed.
+[Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns commands, identities, the two preserved
+release/probe failures and their corrections. Current record updates are complete.
 
-The author candidate isolates Overview tile failure at the legacy renderer gate,
-updates runtime/resource pins and the generated MCP observation HTML, and adds
-exact-resource browser regression coverage. Matching version tests and current
-records changed. [Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns commands, identities and
-known limits. Independent exact review, mandatory operator validation, guarded
-release and installed-byte behavior are still required.
+The next smallest action is user review of repaired Overview behavior. Actual
+host/phone/physical acceptance remains unobserved; no printer call or monitoring
+is authorized by this record. Upstream Job History malformed responses remain
+unresolved. Camera assets, private DSL and unrelated WIP remain preserved.
 
-The upstream Job History malformed-response cause remains unresolved. Repaired
-actual-host/phone/physical outcomes remain unaccepted. Camera and private WIP
-are unchanged, no monitor is active. Handoff cleanup/archive below is complete;
-never replay it. Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md).
+This closure changes only PROJECT_STATE, NEXT_AGENT, entrypoint, current
+BRIEF/HANDOFF/VALIDATION and the existing repair evidence. All511 application
+inputs match the shipped candidate; no additional deployment is required for
+this documentation-only tail under decision0028.
+
+## Historical handoffs — completed, not pending actions
+
+Do not replay any earlier cleanup/archive, review or release sequence below.
 
 ## Current MCP client handoff — 2026-09-08
 
