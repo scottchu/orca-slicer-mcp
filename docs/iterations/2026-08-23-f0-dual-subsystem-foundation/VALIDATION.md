@@ -1,18 +1,23 @@
 # F0 validation index
 
-## Overview subview isolation validation
+## Overview subview isolation accepted for delivery
 
-PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
-assertion. The exact pin is corrected with focused tests passing; independent
-delta approval and one renewed mandatory operator run are next. No merge,
-install or restart occurred. The active repair evidence owns the original failure.
+[Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns focused author checks, independent exact
+review and adversarial verification, the original gate stop and pin correction,
+successful PR123 mandatory shipping, both-service verification and nine
+installed-byte synthetic checks. The failed probe precondition and corrected
+result are both preserved. No repaired actual-host/phone/physical acceptance
+follows from these synthetic and deployed-service results.
 
-[Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns focused author commands/results, the two
-corrected test-authoring failures, application/resource identities and limits.
-Author checks pass; independent review, mandatory shipping and installed-byte
-verification remain pending. No repaired actual-host, phone or physical-printer
-acceptance follows from synthetic tests. The completed handoff records below
-remain historical and their cleanup/archive operations must not be repeated.
+The documentation-only closure verifies all511 application hashes unchanged,
+only the seven current Markdown files changed, valid relative-link targets and
+a clean documentation diff. It retains matching application evidence without
+repeating builds/tests or deploying unchanged bytes.
+
+## Historical validation entries — prior scopes only
+
+Earlier handoff/catalog/release restrictions below are historical. Current
+completed outcomes and evidence boundaries above take precedence.
 
 ## Current MCP client handoff — 2026-09-08
 

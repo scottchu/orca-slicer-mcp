@@ -1,15 +1,22 @@
 # F0 dual-subsystem foundation brief
 
-## Active slice: Overview subview isolation
+## Completed slice: Overview subview isolation
 
-F0 production-widget maintenance implements the user's requirement that a
-problematic subview cannot blank the entire Overview. OBS-015/decision0021
-already require independent domain presentation; UI-004 whole-request masking
-remains unchanged. [Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns observable acceptance,
-affected consumers and actual author checks. Implementation/author verification
-are complete; independent review and guarded release are next. No adapter,
-private-DSL, redesign or printer work is included. The previous handoff sequence
-below is complete and superseded by [NEXT_AGENT.md](../../../NEXT_AGENT.md).
+F0 production-widget maintenance under OBS-015/decision0021 is delivered through
+PR123. A problematic subview cannot blank healthy Overview siblings; UI-004
+whole-request masking remains intact. [Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns
+acceptance and actual verification, including the corrected pin-gate failure
+and the synthetic probe precondition failure. Both service and installed-byte
+synthetic acceptance passed. Current records are complete; review the repaired
+result with the user. No repaired host/phone/physical acceptance is claimed.
+
+No upstream adapter, private-DSL, redesign or printer work was added. Those
+workstreams remain parked or unresolved.
+
+## Historical briefs — superseded by the completed slice above
+
+The following handoff and earlier release orders are historical, completed steps.
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md), not those old execution orders.
 
 ## Current MCP client handoff — 2026-09-08
 

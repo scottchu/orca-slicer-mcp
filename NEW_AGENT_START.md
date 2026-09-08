@@ -1,16 +1,22 @@
 # 新 MCP client task 接手入口（2026-09-08）
 
-## 現行入口：Overview 子區塊故障隔離
+## 現行入口：PR123 已完成發布與記錄
 
-MCP handoff、指定舊樹清理與 caller 可恢復封存均已完成，以本機 receipts
-為準，不可重播下方歷史流程。新名稱工具已呼叫；使用者截圖顯示 Overview
-故障、Camera Live。這不是實體列印或 phone 驗收。
+Overview 子區塊故障隔離已合併與部署：runtime0.4.19/schema18/
+observation22/Camera17。獨立 exact review、mandatory gates、兩個服務重啟、
+health/integrity/exact assets 與 installed-byte synthetic 驗證均完成。
+[本輪證據](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md) 擁有實際命令與身份；
+[NEXT_AGENT.md](NEXT_AGENT.md) 擁有後续順序：與使用者檢視修復結果。
 
-本 task 在既有 worktree、分支 codex/overview-subview-isolation-20260908
-修復單一子區塊使整張 Overview 隱藏的問題。作者實作與聚焦驗證完成；
-依 [NEXT_AGENT.md](NEXT_AGENT.md) 接續獨立 review 與既有 guarded shipping。
-[本輪證據](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md) 記錄命令與界線。
-禁止重播 handoff、操作印表機或改動其他 WIP；下方內容完整保留為歷史。
+目前沒有新產品任務或待補的記錄更新。修復後 actual-host／phone／physical
+尚未驗收；無 printer call 或 active monitoring。上游 Job History malformed
+原因未修復；UI／private DSL 與其他 WIP 仍保留停工狀態。
+
+## 歷史 handoff 入口：已完成，禁止重播
+
+下方交接、精確舊樹清理及 caller 可恢復封存全部完成。新名稱工具後來已呼叫，
+使用者修復前截圖顯示 Overview 故障、Camera Live；不等於修復後驗收。
+以下歷史限制與執行命令不能取代上方現行狀態。
 
 請用繁體中文接手。這是真實新 CLI task 的新 worktree；不可再建立下一個。
 先讀使用者層級 `/Users/scottchu/.codex/skills/handoff/SKILL.md`，再讀 AGENTS、
