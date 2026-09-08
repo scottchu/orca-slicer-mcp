@@ -6,9 +6,11 @@
 authorization, decision0057, actual author checks and current identities.
 Author-focused verification passed132 server tests across13 affected files,
 then41 affected tests after two independent findings were corrected; final
-typecheck and all8 retained widget source/artifact checks pass. Independent exact
-review and guarded delivery remain pending; the sole full required validation
-owner is assigned through shipping. No active printer monitoring or deployment
+typecheck and all8 retained widget source/artifact checks pass. Independent
+exact-source and fresh targeted review approved
+`3d270f54547fd282c3450c497c6475802d6de497`; required full regression, PR merge and
+guarded delivery remain pending. The sole full-validation owner is assigned
+through shipping. No active printer monitoring or deployment
 acceptance is claimed. Changed inputs renew their affected evidence.
 
 ## Completed private Lab merge-only integration

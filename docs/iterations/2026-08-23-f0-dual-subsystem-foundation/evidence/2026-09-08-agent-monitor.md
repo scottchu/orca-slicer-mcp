@@ -13,7 +13,8 @@ model-visible camera evidence, and truthful monitoring session continuity and
 terminal rules through shared application use cases. Decision0057 adopts the architecture proposal with
 explicit observational binding, strict complete-file/controller checks and
 truthful cache receipts. Candidate implementation and author-focused checks are
-complete; separate independent review and guarded delivery remain pending. No durable daemon, external notification service, active monitoring,
+complete; exact-source and targeted review are now approved as recorded below.
+Mandatory full validation and guarded delivery remain pending. No durable daemon, external notification service, active monitoring,
 printer control or completed-print outcome is claimed. New UI/DSL capabilities,
 authentication, Tailscale and plugin changes are outside this slice.
 
@@ -163,8 +164,8 @@ not actual-host multimodal acceptance or physical-printer evidence.
 
 ## Remaining gates
 
-Freeze the candidate for independent exact-source review and fresh targeted
-verification. One owner performs the unchanged mandatory full validation in the
+The candidate is frozen and independently source/targeted approved below.
+One owner performs the unchanged mandatory full validation in the
 normal guarded shipping workflow; the author has not run a full repository or
 Operations.validate suite. Existing PR/merge/deployment/security/preservation
 checks remain mandatory. No current candidate deployment, active-monitor owner,
@@ -205,3 +206,45 @@ covering510 app files. Compared with the earlier manifest, only the monitor
 use case, output schema and monitor test changed; all retained public artifacts
 and dependencies remain identical. This is the author freeze identity, not an
 independent exact approval or a successful shipping gate.
+
+## Independent exact-source and targeted approval
+
+The separate reviewer/verifier approved application head
+`3d270f54547fd282c3450c497c6475802d6de497`, tree
+`5b120521bfae618517423f45a7e37833d534d3d2`, against base9d08702. Source review
+found no remaining implementation blocker after the two corrections above.
+The private `source-review-final.md` SHA256 is
+`9b6784dab79c3b8daebb4f2a3c81526291cc7687bc674b35eb5d2de9dc6cc84a`.
+This is approval to enter required shipping gates, not full validation or
+release acceptance.
+
+Independent actual targeted commands used pinned Bun with
+`--no-env-file --config=/dev/null run` on retained adversarial-probe,
+initial-reuse, receipt-race, terminal-egress, receipt-pair and jpeg-export
+TypeScript scripts. Original two failures and corrected results remain separate.
+Fresh checks passed for concurrent initial token reuse, older-camera/newer-peer
+receipt preservation, seven terminal unknown/conflict cases, monitor plus five
+legacy-projection privacy exclusions, and three concurrent consumers sharing
+one acquisition/version/evidence receipt. This verifies those store/use-case
+paths, not atomic native-printer run identity.
+
+The verifier ran `uv run --no-project --with pillow` and Image.load on the
+sanitized synthetic622-byte JPEG. It decoded as8×8 RGB, SHA256
+`d5bf296b98ac94b4dfb7f8528f0cc2aa46f39b98b918b5b7ce51cc8d989a42ce`.
+This proves the fixture image decodes; it is not actual-host multimodal or
+physical camera acceptance. The server sanitizer remains explicitly structural.
+
+Independent `uv run --no-project` identity/link checks plus Git status/show/
+diff checks confirmed all510 app hashes/modes match the final author manifest,
+all15 public files equal the base,107 relative links resolve, and exact HEAD is
+clean. Private `frozen-identity.json` retains the results. All reviewer scripts
+completed without leftover listeners/processes. No Operations.validate/full
+suite, build, printer call, service operation or UI action was performed by the
+independent review stage.
+
+The current tail only updates the six documentation records. It retains the
+approved510 application inputs and needs documentation-head approval retention;
+mandatory full local validation, PR identity/merge, guarded deployment and
+postverification are still pending the unchanged u1-ship workflow. No active
+monitoring, durable supervision, strict native-run or physical outcome claim is
+added by this approval.

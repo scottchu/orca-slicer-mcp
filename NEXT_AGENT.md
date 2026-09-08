@@ -12,8 +12,10 @@ new-conversation action is historical and is no longer pending.
 1. Follow the newly authorized [agent-monitor slice](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md):
    Decision0057 adopts the first shared use-case slice. Candidate0.4.17/schema17
    implements the tool-only snapshot/model image and observational continuity;
-   author-focused checks pass. Obtain independent exact review, then required
-   guarded PR/shipping delivery with one full-validation owner. Roles remain
+   author-focused checks and independent exact-source/targeted review pass on
+   `3d270f54547fd282c3450c497c6475802d6de497`. Retain approval on this documentation
+   head, then run mandatory full validation and guarded PR/shipping delivery
+   with one full-validation owner. Roles remain
    separated; cached source evidence does not prove deployment or active monitoring.
 2. Do not start monitoring the current printer merely because capability work
    is authorized. Do not claim durable background monitoring, active ownership,

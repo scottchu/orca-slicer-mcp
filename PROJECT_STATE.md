@@ -6,8 +6,9 @@ The user now authorizes implementing agent-readable observation and monitoring
 capabilities: a complete read-only snapshot, model-visible camera evidence, and
 truthful session continuity and terminal rules through shared application use
 cases. Decision0057 adopts the bounded first slice; implementation and author
-focused checks are complete on the candidate. Exact independent review and
-required guarded delivery remain pending. This request does not start monitoring the
+focused checks are complete. Independent exact-source and targeted review passed
+on `3d270f54547fd282c3450c497c6475802d6de497`. Mandatory full validation, PR merge
+and guarded delivery remain pending. This request does not start monitoring the
 current printer or establish a durable daemon. UI work remains parked.
 [Agent-monitor evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md) owns the new slice.
 
@@ -65,7 +66,7 @@ defines record ownership; [NEXT_AGENT.md](NEXT_AGENT.md) owns execution order.
 | Maintenance | PR111 reviewed, merged and deployed through unchanged shipping guards | Review the delivered result with the user |
 | Production widgets | PR115 / 0.4.15 is deployed; both services and exact assets verified | Preserve truthful coverage; accept actual-device outcomes separately |
 | Private composable Lab | PR117/118 integration and closure complete; UI work parked | Preserve private scope and known limits |
-| Agent observation/monitoring | Candidate0.4.17/schema17 implemented; author focused checks pass, no active printer monitoring | Independent exact review and required guarded delivery |
+| Agent observation/monitoring | Candidate0.4.17/schema17 exact-source/targeted review approved; no active printer monitoring | Retain exact approval on documentation head, then mandatory guarded PR/shipping gates |
 | Preparation handoff | Decision 0048 pure core independently accepted | Supported adapters, durable storage and actual upload remain deferred |
 | Camera C08 | User reports Auto/Live working at home and outside use working well | Preserve this self-report; long-duration and mounted-host acceptance remain separate |
 | Remaining widget requests | [55-ID ledger](docs/widget-delivery.md) retains delivery and gaps | No new feature work during this maintenance slice |
@@ -98,8 +99,8 @@ at the product-coverage layer described in the ledger.
 
 ## Next action
 
-Obtain independent exact review of the bounded agent-monitor candidate, then
-complete the existing guarded PR/shipping workflow. UI work remains parked. Follow
+Retain independent approval on the documentation head, then run the mandatory
+full validation and existing guarded PR/shipping workflow. UI work remains parked. Follow
 [NEXT_AGENT.md](NEXT_AGENT.md), preserving evidence boundaries and existing release guards. Do not
 register the Lab, control the printer, change auth/Tailscale or reinstall plugins.
 

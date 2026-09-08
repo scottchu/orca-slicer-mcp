@@ -6,8 +6,9 @@ The user now authorizes implementing agent-readable observation and monitoring
 capabilities: a complete read-only snapshot, model-visible camera evidence, and
 truthful session continuity and terminal rules through shared application use
 cases. Decision0057 adopts the bounded first slice; implementation and author
-focused checks are complete on the candidate. Exact independent review and
-required guarded delivery remain pending. This request does not start monitoring the
+focused checks are complete. Independent exact-source and targeted review passed
+on `3d270f54547fd282c3450c497c6475802d6de497`. Mandatory full validation, PR merge
+and guarded delivery remain pending. This request does not start monitoring the
 current printer or establish a durable daemon. UI work remains parked.
 [Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) owns current commands, decisions and remaining gates.
 
@@ -90,8 +91,8 @@ long-duration reliability and mounted-host behavior remain separately unaccepted
 Preparation pure-core acceptance does not implement its deferred adapters or authorize upload/start.
 Preserve Lab isolation, the 55-ID ledger, unrelated work and existing private state.
 
-Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for exact independent monitor
-candidate review and the existing guarded delivery. UI remains parked. Unknown badge
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for documentation-head approval
+retention and the mandatory full validation/guarded delivery. UI remains parked. Unknown badge
 wrapping still increases Card height by14px at390/100%, alongside the preserved
 extreme-decimal narrow-screen limit. The former private resource mismatch was
 resolved and independently validated in PR117.

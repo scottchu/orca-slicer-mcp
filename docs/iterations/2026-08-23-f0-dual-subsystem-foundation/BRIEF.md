@@ -10,8 +10,9 @@ The user now authorizes implementing agent-readable observation and monitoring
 capabilities: a complete read-only snapshot, model-visible camera evidence, and
 truthful session continuity and terminal rules through shared application use
 cases. Decision0057 adopts the bounded first slice; implementation and author
-focused checks are complete on the candidate. Exact independent review and
-required guarded delivery remain pending. This request does not start monitoring the
+focused checks are complete. Independent exact-source and targeted review passed
+on `3d270f54547fd282c3450c497c6475802d6de497`. Mandatory full validation, PR merge
+and guarded delivery remain pending. This request does not start monitoring the
 current printer or establish a durable daemon. UI work remains parked.
 [Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) owns contract, implementation and validation progress.
 
@@ -76,8 +77,8 @@ The new slice must define bounded agent-readable data/image contracts, preserve
 freshness and independent evidence times, bind monitor continuity to a verified
 run, and distinguish observed terminal outcomes from lost or stopped monitoring.
 Decision0057 defines the first-slice contract. Candidate implementation and
-author checks are complete; independent acceptance and guarded delivery are
-pending. No active-monitor, native-run or physical acceptance is claimed.
+author checks and independent source/targeted review are complete. Mandatory
+full validation, PR merge and guarded delivery remain pending. No active-monitor, native-run or physical acceptance is claimed.
 
 The following concept/comparison acceptance remains historical:
 
