@@ -1,5 +1,13 @@
 # F0 maintenance handoff
 
+## 新 worktree 交接
+
+使用者已授權新 worktree 接手並在核對與接手确认後清理舊 comparison tree。
+[繁中接手入口](../../../NEW_AGENT_START.md) 與
+[保存證據](evidence/2026-09-08-worktree-handoff.md) 記錄本次順序。
+PR117–120 已完成；目前只做本機保存與文件交接，沒有新產品工作、測試、部署
+或印表機操作。UI 停工，下一項產品需求尚未指定。
+
 ## Current work
 
 Decision0057's bounded first agent-monitor slice is delivered through PR119,
@@ -34,8 +42,8 @@ The reference-first comparison is complete: seven matched synthetic boards,
 screenshot-first findings and independent source/runtime verification are in
 [comparison evidence](evidence/2026-09-07-dsl-widget-comparison.md).
 The390px Unknown badge defect remains preserved for any future UI work;
-no repair or layout review is pending. Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md). The local branch
-`codex/u1-dsl-widget-comparison` preserves the unfinished spacing/type changes;
+no repair or layout review is pending. Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md). The original comparison branch and private preservation snapshot retain the
+unfinished spacing/type changes; current work is on the new handoff branch.
 no product-candidate acceptance or release is claimed.
 
 [Transfer evidence](evidence/2026-09-06-dsl-widget-comparison-handoff.md) records the
@@ -53,7 +61,8 @@ Record reorganization and scoped reliability/shared-use-case/CSS repairs are
 implemented and delivered in PR111 after exact review and guarded release.
 The current correction reduces composition spacing while preserving all four Smart
 attributes. PR113 passed independent exact-source approval and the mandatory guarded release.
-Installed synthetic native Lab behavior passed; next is user layout review.
+Installed synthetic native Lab behavior passed; later user feedback selected
+a concept direction and parked UI work. No layout review remains pending.
 [Spacing evidence](evidence/2026-09-06-composition-spacing.md) owns changed components,
 actual checks, artifact identities and the existing extreme-decimal limitation.
 

@@ -1,6 +1,10 @@
 # 0057: Expose bounded agent monitoring evidence through one shared use case
 
-Status: accepted first-slice direction, 2026-09-08; implementation acceptance pending.
+Status: accepted first-slice direction, 2026-09-08; implementation independently
+reviewed and delivered through PR119, with PR120 records closure complete.
+[Delivery evidence](../iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md)
+binds the software/service acceptance; host multimodal, physical outcome and
+complete O1/SESSION-001 acceptance remain separate.
 
 The user authorized agent-readable observation/image and monitoring capability
 work after PR117/118, while parking UI work. Existing focused widget projections

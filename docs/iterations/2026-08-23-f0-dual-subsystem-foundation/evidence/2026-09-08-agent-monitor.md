@@ -357,3 +357,11 @@ merged baseline, plus relative-link checks and `git diff --check`; application
 bytes and modes are unchanged. The separate reviewer will verify this exact
 closure head. Its bookkeeping PR has not yet merged; unchanged application bytes
 require no second deployment. No tests or builds were repeated by this author.
+
+## PR120 文件收尾完成（交接索引補正）
+
+上一節記錄的是 PR120 合併前的文件作者時點。PR120 現已合併為
+`2a3e280f2d634f3e4fbabbf7be307f524a3fd86b`，ordered parents 為 PR119
+merge825b381 與 reviewed documentation head01aaddc；tree 與已核對的文件 head
+相同。這是文件收尾，沒有第二次部署。後續本機移轉由
+[新 worktree 交接](2026-09-08-worktree-handoff.md) 記錄；不要重播已完成的 PR。

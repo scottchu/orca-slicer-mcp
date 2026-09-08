@@ -2,6 +2,10 @@
 
 ## Active continuation
 
+使用者已授權移轉至新 worktree；此指示優先於舊比較任務的固定目錄限制。
+接手入口：[NEW_AGENT_START.md](NEW_AGENT_START.md)。PR117–120 均已完成；
+本次只保存本機證據與交接，不新增產品功能或發布。
+
 Decision0057's bounded first agent-monitor slice is delivered through PR119,
 merged at `825b38135948574f832f94aa533d3bb58dd6e33a`. The unchanged shipping
 workflow completed mandatory validation, exact-build installation, both service
@@ -17,8 +21,8 @@ at `a6868fd8271489fbfef0025f95c3f7c0e1dc7e18`. The merge tree exactly matches
 the independently approved head. No deployment, restart or printer call occurred.
 UI work remains parked; existing simple widgets remain the product mainline and
 DSL remains a private experiment. PR118 completed its documentation closure at
-`9d08702a779c31d8aa3009d75b2beff5d5e8e9ff`. The subsequent user approval starts
-the agent-monitor implementation slice above. [Merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md)
+`9d08702a779c31d8aa3009d75b2beff5d5e8e9ff`. PR119 delivered the subsequent agent-monitor slice; PR120 completed its
+documentation closure at `2a3e280f2d634f3e4fbabbf7be307f524a3fd86b`. [Merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md)
 owns this execution and its boundaries.
 
 The user selected proposal1 as the visual direction, then requested revision of
@@ -38,9 +42,9 @@ not the next isolated implementation task.
 The comparison found a source/package mismatch; private packaging has now been
 regenerated, independently validated and merged through PR117.
 [Comparison evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-07-dsl-widget-comparison.md)
-owns findings, commands, identities and limits. Work continues on
-`codex/u1-dsl-widget-comparison`, based on main
-`acaaa7978f10b46642f8c29f56bab3ce4b82ae97`, in a separate worktree.
+owns findings, commands, identities and limits. The original comparison branch
+is historical; current work continues on `codex/u1-agent-handoff-20260908`,
+based on PR120 merge `2a3e280f2d634f3e4fbabbf7be307f524a3fd86b`.
 Transferred spacing/type source and decision0056 are provisional WIP, not an
 accepted release. [NEXT_AGENT.md](NEXT_AGENT.md) owns the new execution order;
 [handoff evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-dsl-widget-comparison-handoff.md)

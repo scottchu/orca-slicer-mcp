@@ -2,12 +2,17 @@
 
 ## Current task: agent observation/monitor capabilities; UI work remains parked
 
-The user explicitly created and started this task on2026-09-07 in the assigned
-comparison worktree, branch `codex/u1-dsl-widget-comparison`, checkpoint
-`ae80ecc76e95c5a7c37b478419b7d5c4ccc3e535`, based on main
-`acaaa7978f10b46642f8c29f56bab3ce4b82ae97`. Continue in this worktree. Keep the
-canonical checkout on main; never switch its branch. The09-06 transfer record's
-new-conversation action is historical and is no longer pending.
+使用者已授權移轉至新 worktree；此指示優先於舊比較任務的固定目錄限制。
+接手入口：[NEW_AGENT_START.md](NEW_AGENT_START.md)。PR117–120 均已完成；
+本次只保存本機證據與交接，不新增產品功能或發布。
+
+目前目錄為 `/Users/scottchu/.codex/worktrees/u1-agent-handoff-20260908`，
+分支 `codex/u1-agent-handoff-20260908`，基底 PR120 merge
+`2a3e280f2d634f3e4fbabbf7be307f524a3fd86b`。舊 branch/cwd/checkpoint 的
+限制僅是歷史；canonical checkout 維持 main。先讀交接入口和 required records，
+核對 private preservation manifest，再由獨立驗證者與新接手 agent 確認。
+只有 root 可在雙方確認後移除舊 comparison worktree；此刻未移除。
+可只讀重新 discover 本 session 的工具目錄；不要為確認工具而呼叫印表機。
 
 1. The [agent-monitor first slice](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md) is delivered through PR119 at
    `825b38135948574f832f94aa533d3bb58dd6e33a`, runtime0.4.17/schema17 with
@@ -22,7 +27,8 @@ new-conversation action is historical and is no longer pending.
    is authorized. Do not claim durable background monitoring, active ownership,
    print success, or deployment without corresponding evidence. No new UI, DSL
    capability, printer controls, authentication or Tailscale work is included.
-3. PR117 source integration and PR118 records closure are complete. Do not
+3. PR117 source integration, PR118 records closure, PR119 release and PR120
+   release-record closure are complete. Do not
    recreate those merges or rerun their full suites for bookkeeping. Preserve
    [merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md),
    comparison images and all historical records. Simple widgets remain the

@@ -1,5 +1,13 @@
 # F0 validation index
 
+## 新 worktree 交接
+
+使用者已授權新 worktree 接手並在核對與接手确认後清理舊 comparison tree。
+[繁中接手入口](../../../NEW_AGENT_START.md) 與
+[保存證據](evidence/2026-09-08-worktree-handoff.md) 記錄本次順序。
+PR117–120 已完成；目前只做本機保存與文件交接，沒有新產品工作、測試、部署
+或印表機操作。UI 停工，下一項產品需求尚未指定。
+
 ## Current agent observation/monitor slice
 
 [Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) owns author checks,
