@@ -2,11 +2,31 @@
 
 ## Current work
 
-The next task is a reference-first comparison of existing widgets with equivalent
-closed-DSL compositions, under matched synthetic data/state/viewport/text scale.
-Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md). The local branch
+The active task is private/unregistered Lab source integration through a PR,
+ending at verified Git merge. WIP is preserved, production bytes are isolated
+and private packaging is regenerated. Obtain fresh required local validation
+and exact independent review of the frozen candidate;
+no deployment, restart, production registration or UI refinement is authorized.
+[Merge-only evidence](evidence/2026-09-08-lab-merge.md) owns this new execution.
+
+The user selected proposal1 as the direction, then requested width and multi-card
+layout revision. Three contexts of the same refined direction are delivered:
+single card, two cards and narrow-screen stacking. The user accepts the layout
+direction for now and has parked UI work. No further exploration, layout review,
+implementation or isolated badge repair is pending; Lab-only merge is the new
+source-integration task. This direction acceptance is not product/runtime/physical/release
+acceptance. That completed concept round changed no app code, styling,
+build inputs or deployed service and created no HTML app.
+[Layout-context evidence](evidence/2026-09-07-smart-layout-contexts.md) owns the
+new concept artifacts and record tail; prior evidence remains byte-preserved.
+
+The reference-first comparison is complete: seven matched synthetic boards,
+screenshot-first findings and independent source/runtime verification are in
+[comparison evidence](evidence/2026-09-07-dsl-widget-comparison.md).
+The390px Unknown badge defect remains preserved for any future UI work;
+no repair or layout review is pending. Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md). The local branch
 `codex/u1-dsl-widget-comparison` preserves the unfinished spacing/type changes;
-no new acceptance, release or visible Desktop conversation is claimed.
+no product-candidate acceptance or release is claimed.
 
 [Transfer evidence](evidence/2026-09-06-dsl-widget-comparison-handoff.md) records the
 33-file WIP preservation, separate Camera preservation, canonical-main restoration
@@ -29,7 +49,16 @@ actual checks, artifact identities and the existing extreme-decimal limitation.
 
 ## Changed paths and evidence
 
-Current summaries: `PROJECT_STATE.md`, `NEXT_AGENT.md`, this iteration's brief,
+The current layout-context round adds its own evidence record and updates only
+the existing current-record indexes. Prior comparison/visual-direction evidence
+and all uncommitted records/application WIP remain preserved.
+
+The completed comparison changed only its evidence record, `PROJECT_STATE.md`,
+`NEXT_AGENT.md`, and this iteration's brief/handoff/validation index. Local
+generated screenshots, metrics, gallery and manifests remain private evidence;
+application/build inputs and tracked widget HTML are unchanged.
+
+Prior maintenance summaries: `PROJECT_STATE.md`, `NEXT_AGENT.md`, this iteration's brief,
 handoff and validation index, `docs/widget-delivery.md`, `docs/continuity.md`,
 `AGENTS.md` reporting instructions, and decision 0054/index. Complete prior records
 and their relative-link closure are under `docs/history/2026-09-05-pr110/`.
@@ -50,7 +79,10 @@ long-duration reliability and mounted-host behavior remain separately unaccepted
 Preparation pure-core acceptance does not implement its deferred adapters or authorize upload/start.
 Preserve Lab isolation, the 55-ID ledger, unrelated work and existing private state.
 
-Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the reference-first comparison.
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the merge-only task while UI
+remains parked. Unknown badge wrapping increases Card height by14px at390/100%;
+the tracked DSL resource also differs from current source-derived bytes. Both
+remain unresolved, alongside the preserved extreme-decimal narrow-screen limit.
 PR115 is the latest recorded deployed baseline; the new WIP checkpoint does not
 change the deployed release.
 Historical pending instructions are archived and must not be replayed. All previous
