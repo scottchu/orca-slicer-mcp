@@ -89,7 +89,7 @@ describe("queue inbound composition", () => {
       expect(reads).toBe(1);
       await client.callTool({ name: "refresh_printer_observation", arguments: { view: "queue" } }); expect(reads).toBe(1);
       expect((await client.listTools()).tools.map(tool => tool.name).sort()).toEqual([
-        "get_u1_camera_frame", "observe_printer", "open_printer_camera", "refresh_printer_observation",
+        "get_print_monitor_snapshot", "get_u1_camera_frame", "observe_printer", "open_printer_camera", "refresh_printer_observation",
       ]);
     } finally { await client.close(); await server.close(); }
   });

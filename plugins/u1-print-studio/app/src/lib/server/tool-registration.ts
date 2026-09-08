@@ -11,6 +11,7 @@ type ToolDeclaration<S extends InputSchema> = {
   title: string;
   description: string;
   inputSchema: S;
+  outputSchema?: z.AnyZodObject;
   annotations: ToolAnnotations;
   securitySchemes?: SecurityScheme[];
   _meta?: Record<string, unknown>;
@@ -23,7 +24,7 @@ const registerSdkTool = registerAppTool as unknown as (
 ) => void;
 
 // Preserve the existing OAuth catalog order independently of registration order.
-const compatibilityOrder = ['observe_printer', 'refresh_printer_observation', 'get_u1_camera_frame', 'open_printer_camera',
+const compatibilityOrder = ['get_print_monitor_snapshot', 'observe_printer', 'refresh_printer_observation', 'get_u1_camera_frame', 'open_printer_camera',
   'open_u1_camera_stream', 'answer_u1_camera_stream', 'add_u1_camera_ice_candidates', 'close_u1_camera_stream'];
 
 // The existing OAuth wire catalog represents constrained nullable primitives as
@@ -50,15 +51,24 @@ export const createToolRegistration = (server: McpServer, oauth: boolean) => {
   const register = <S extends InputSchema>(
     name: string,
     declaration: ToolDeclaration<S>,
-    handler: (args: Input<S>) => Promise<CallToolResult> | CallToolResult,
+    handler: (args: Input<S>, extra: { signal: AbortSignal }) => Promise<CallToolResult> | CallToolResult,
   ): void => {
     const schema = declaration.inputSchema instanceof z.ZodObject ? declaration.inputSchema : z.object(declaration.inputSchema);
     const convert = toJsonSchemaCompat as (schema: unknown) => Record<string, unknown>;
     const { $schema: _dialect, ...inputSchema } = convert(schema);
-    descriptors.push({ name, ...declaration, inputSchema: compatibilitySchema(inputSchema) });
+    const output = declaration.outputSchema ? convert(declaration.outputSchema) : undefined;
+    if (output) delete output.$schema;
+    descriptors.push({ name, ...declaration, inputSchema: compatibilitySchema(inputSchema),
+      ...(output ? { outputSchema: output } : {}) });
     // The pinned ext-apps/SDK generic spans Zod 3/4 and Standard Schema. The
     // concrete declaration/handler pair is checked above; erase only here.
-    registerSdkTool(server, name, declaration, handler);
+    if (declaration._meta?.ui) registerSdkTool(server, name, declaration, handler);
+    else {
+      // Tool-only intents have no Apps UI metadata. ext-apps 1.7.5 requires it;
+      // the same declaration goes directly to the standard SDK for these tools.
+      const registerPlain = server.registerTool.bind(server) as unknown as (name: string, declaration: unknown, handler: unknown) => void;
+      registerPlain(name, declaration, handler);
+    }
   };
   const finish = (): void => {
     if (!oauth) return;

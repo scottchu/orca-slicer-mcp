@@ -168,6 +168,19 @@ printer environments support the described behavior.
   are separate. Monitoring adds no printer control authority and makes no durable
   service or external-notification claim. Decision 0045 and the maintained
   u1-monitor-print skill own this active-conversation workflow.
+- **MON-002:** Decision0057 adds one bounded agent evidence acquisition use case,
+  not a durable monitor or complete SESSION-001/O1 acceptance. Initial fresh
+  active/paused job and start/progress evidence can establish explicitly
+  observational binding without a native run UUID. A process-local opaque token
+  detects known job/counter/source-clock/epoch changes and12-minute gaps; it is
+  not permission or native identity. Expected mismatch/uncertainty withholds
+  camera and never creates an automatic replacement binding. Cached receipt
+  reuse cannot extend continuity. Same-name replacement between polls remains
+  an explicit limitation. Reported terminal consistency requires fresh evidence;
+  complete additionally needs inactive execution, positive valid size and exact
+  consumed bytes, explicit no-exception, ready controller, known parked tools
+  and zero heater targets. Missing facts are unknown, not safe defaults;
+  boundRunVerified remains false and physical outcome remains separate.
 - **CAM-001:** An available camera can provide a timestamped on-demand snapshot
   associated with the relevant session.
 - **CAM-002:** Camera-derived diagnoses expose uncertainty and begin as advisory
@@ -476,6 +489,22 @@ printer environments support the described behavior.
   reported grid, with exact 2D geometry and a locally bundled, exact-pinned
   Three.js/OrbitControls 3D view; no runtime asset fetch or printer control is
   added.
+
+- **API-006:** Decision0057 adds model-visible tool-only
+  `get_print_monitor_snapshot` with strict camera omit/snapshot and nullable
+  expectedRunToken inputs, a real strict outputSchema and the same u1.monitor
+  enforcement. Current candidate inventory is three model-visible tools plus
+  six app-only helpers; API-005's two presentation intents and resource behavior
+  remain. Runtime target0.4.17/tool schema17 retains observation21/Camera17;
+  source target does not imply deployed acceptance. The shared due-read store
+  supplies presence-aware allowlisted status, connector receipt/source monotonic
+  time, independent progress facts and explicit derived estimates. Structured
+  content and JSON text contain no private exact-job key; optional sanitized
+  bounded JPEG is delivered as model-visible ImageContent, without widget
+  metadata, live activation or a new render resource. Camera and telemetry have
+  independent receipts and only same-request-window association. Receipt cache
+  state and response-time freshness remain truthful. A20-second consumer bound
+  and cooperative cancellation cannot abort peers' shared telemetry work.
 
 ## Architecture and ontology
 

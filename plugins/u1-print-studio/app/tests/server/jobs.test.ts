@@ -211,7 +211,7 @@ describe("Current Job and History inbound composition", () => {
         .toMatchObject({ view: "job_history", module: { state: "known", pageCount: 1 } });
       expect(currentReads).toBe(1); expect(historyReads).toBe(1);
       expect((await client.listTools()).tools.map(tool => tool.name).sort()).toEqual([
-        "get_u1_camera_frame", "observe_printer", "open_printer_camera",
+        "get_print_monitor_snapshot", "get_u1_camera_frame", "observe_printer", "open_printer_camera",
         "refresh_printer_observation",
       ]);
     } finally { await client.close(); await server.close(); }

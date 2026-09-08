@@ -191,7 +191,7 @@ describe("environment inbound composition", () => {
       expect(reads).toBe(1);
       const tools = (await client.listTools()).tools;
       expect(tools.map(tool => tool.name).sort()).toEqual([
-        "get_u1_camera_frame", "observe_printer", "open_printer_camera",
+        "get_print_monitor_snapshot", "get_u1_camera_frame", "observe_printer", "open_printer_camera",
         "refresh_printer_observation",
       ]);
     } finally { await client.close(); await server.close(); }

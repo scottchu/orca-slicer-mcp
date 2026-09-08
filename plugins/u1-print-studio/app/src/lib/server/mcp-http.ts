@@ -34,7 +34,7 @@ export const createMcpHttp = (
         return opened;
       }
     };
-    const server = createAppServer({ observations, ...(requestCamera ? { cameraSessions: requestCamera } : {}) }, oauth ? { oauthScopes: [MONITOR_SCOPE] } : {});
+    const server = createAppServer({ observations, requestSignal: signal, ...(requestCamera ? { cameraSessions: requestCamera } : {}) }, oauth ? { oauthScopes: [MONITOR_SCOPE] } : {});
     const transport = new WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
     let closed = false;
     const close = async (): Promise<void> => {

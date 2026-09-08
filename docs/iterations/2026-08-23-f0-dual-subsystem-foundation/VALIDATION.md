@@ -1,5 +1,16 @@
 # F0 validation index
 
+## Current agent observation/monitor slice
+
+[Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) records the new
+authorization, decision0057, actual author checks and current identities.
+Author-focused verification passed132 server tests across13 affected files,
+then41 affected tests after two independent findings were corrected; final
+typecheck and all8 retained widget source/artifact checks pass. Independent exact
+review and guarded delivery remain pending; the sole full required validation
+owner is assigned through shipping. No active printer monitoring or deployment
+acceptance is claimed. Changed inputs renew their affected evidence.
+
 ## Completed private Lab merge-only integration
 
 [Merge-only evidence](evidence/2026-09-08-lab-merge.md) owns preservation,
@@ -9,7 +20,8 @@ and PR117 merge `a6868fd8271489fbfef0025f95c3f7c0e1dc7e18` with ordered parents
 and exact tree verified. This final bookkeeping tail retains all503 application
 inputs; no new full build is needed solely for documentation. Deployment,
 restarts, UI redesign acceptance and printer/device behavior remain outside this
-evidence. The next product task is unspecified and UI work remains parked.
+evidence. PR118 completed this bookkeeping; the new agent-monitor slice above
+is separately authorized and UI work remains parked.
 
 ## Current selected-direction layout contexts
 
