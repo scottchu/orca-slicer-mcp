@@ -64,7 +64,7 @@ silently changed.
 
 | [0057](0057-expose-bounded-agent-monitor-evidence.md) | Expose bounded agent monitoring evidence | Accepted first-slice direction; implementation acceptance pending |
 
-| [0058](0058-name-printer-tools-by-result.md) | Name printer tools by their result | Accepted naming; implementation verification pending |
+| [0058](0058-name-printer-tools-by-result.md) | Name printer tools by their result | Accepted and delivered PR121 |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

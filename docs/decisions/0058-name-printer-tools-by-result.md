@@ -1,6 +1,6 @@
 # 0058: Name printer tools by their result
 
-- Status: accepted direction; implementation verification pending
+- Status: accepted and delivered through PR121
 - Date: 2026-09-08
 - Scope: API-005/API-006 and O1 agent observation; UI work remains parked
 
