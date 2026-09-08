@@ -2,6 +2,11 @@
 
 ## Current order: Overview subview isolation repair
 
+PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
+assertion. The exact pin is corrected with focused tests passing; independent
+delta approval and one renewed mandatory operator run are next. No merge,
+install or restart occurred. The active repair evidence owns the original failure.
+
 1. Independently review the frozen author candidate and run targeted adversarial
    verification; author checks are in [repair evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md).
 2. One operator owns mandatory local validation and guarded PR/merge/deployment

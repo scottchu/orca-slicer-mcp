@@ -2,6 +2,11 @@
 
 ## Overview subview isolation validation
 
+PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
+assertion. The exact pin is corrected with focused tests passing; independent
+delta approval and one renewed mandatory operator run are next. No merge,
+install or restart occurred. The active repair evidence owns the original failure.
+
 [Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns focused author commands/results, the two
 corrected test-authoring failures, application/resource identities and limits.
 Author checks pass; independent review, mandatory shipping and installed-byte

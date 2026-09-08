@@ -2,6 +2,11 @@
 
 ## Active Overview subview isolation repair — 2026-09-08
 
+PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
+assertion. The exact pin is corrected with focused tests passing; independent
+delta approval and one renewed mandatory operator run are next. No merge,
+install or restart occurred. The active repair evidence owns the original failure.
+
 Author implementation and focused synthetic validation are complete. The candidate
 is runtime0.4.19/schema18/observation22/Camera17; deployed baseline remains
 0.4.18/schema18/observation21/Camera17 until guarded release succeeds.

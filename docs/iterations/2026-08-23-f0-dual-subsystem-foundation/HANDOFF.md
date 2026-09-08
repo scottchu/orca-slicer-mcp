@@ -2,6 +2,11 @@
 
 ## Current repair handoff
 
+PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
+assertion. The exact pin is corrected with focused tests passing; independent
+delta approval and one renewed mandatory operator run are next. No merge,
+install or restart occurred. The active repair evidence owns the original failure.
+
 The author candidate isolates Overview tile failure at the legacy renderer gate,
 updates runtime/resource pins and the generated MCP observation HTML, and adds
 exact-resource browser regression coverage. Matching version tests and current

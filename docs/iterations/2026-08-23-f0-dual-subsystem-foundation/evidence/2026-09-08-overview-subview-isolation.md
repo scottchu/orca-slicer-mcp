@@ -21,8 +21,10 @@ runtime/observation resource version pins and matching test expectations.
 
 ## Status
 
-Implementation and focused author validation complete. Independent review, mandatory
-shipping gates, PR/merge/deployment and installed-byte verification remain pending.
+Implementation and focused author validation complete. Original candidate independent
+review passed; PR123 is open. Mandatory shipping stopped before merge/install
+on a stale artifact-hash assertion. The correction below needs independent delta
+approval and a renewed mandatory operator run; delivery is not complete.
 Baseline source main55a4e016; preserved handoff checkpoint361ccdd. Current branch
 is codex/overview-subview-isolation-20260908 in the existing task worktree.
 No physical-printer, phone, repaired actual-host or monitoring acceptance claimed.
@@ -73,3 +75,42 @@ Independent review and one operator's unchanged mandatory shipping workflow must
 accept the exact commit before delivery. This slice does not repair the upstream
 Job History adapter or complete parked Queue/Fans/History work; no physical print,
 phone, actual repaired host or active-monitor acceptance is claimed.
+
+## Mandatory gate stop and exact artifact-pin correction
+
+Independent review approved original candidate
+`a472576ec5a6d956cba41cd1c12168bee3c0876c`, including fresh synthetic adversarial
+checks of simultaneous retained-domain failures, main-status outage with healthy
+independent domains, whole errors and corrupt-order rejection/recovery.
+PR123 was opened. The sole shipping operator ran:
+
+`uv run --no-project scripts/u1_ship.py --pr 123 --reviewed-sha a472576ec5a6d956cba41cd1c12168bee3c0876c --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute`
+
+It exited1 at validate, before merge/install; rollback was unnecessary. No service
+restart or printer acquisition occurred. Its approved read-only diagnostic
+`PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH ./scripts/check-repository.sh`
+also exited1. Svelte reported0 errors/0 warnings;63 Vitest files/648 tests,
+TypeScript and live/MCP/private-Lab determinism passed. Server tests reached
+305 pass/1 fail with3913 assertions; Python operator gates were not reached.
+
+The sole failure was `tests/server/mcp-widget-packages.test.ts:20`,
+“mcp-observation is the registered, closed production artifact”: its expected
+SHA still named baseline40bdd39aa5181bfa60afd2d64b968bfe15ce9ecd822c8e6ed3d4480f87498ebd
+instead of the approved generated b47c918839be9378ada2ad7d2068ad14d25ce7d5abd1d3f3d8a8c9a3787e2558.
+The author missed this separate artifact identity expectation. Only that exact
+SHA literal is corrected; every closed-artifact check remains enforced.
+Original private shipping logs, receipt, manifest and approval remain preserved.
+
+The author ran only `bun --no-env-file --config=/dev/null test tests/server/mcp-widget-packages.test.ts`
+with pinned Bun1.4.0 from the app directory: exit0,2 tests PASS/20 assertions,51ms.
+No build, browser, full gate, push, merge or deployment was repeated by the author.
+
+The revised511-file manifest SHA256 is `b5aaf6450bc387061f6667270da1ba4aed7fbe76c288d4d1bb9e3e0914b0d6df`.
+Exact hash comparison to the original manifest finds510 unchanged inputs and
+only the artifact-test expectation changed. All production source, configuration,
+dependencies, build scripts, generated assets and browser tests are identical.
+Thus the27 author browser cases and independent adversarial browser evidence
+remain bound to unchanged application bytes, including observation HTML
+`b47c918839be9378ada2ad7d2068ad14d25ce7d5abd1d3f3d8a8c9a3787e2558`.
+This mapping does not waive the renewed independent exact approval or mandatory
+shipping gates. The new candidate remains unshipped until those pass.
