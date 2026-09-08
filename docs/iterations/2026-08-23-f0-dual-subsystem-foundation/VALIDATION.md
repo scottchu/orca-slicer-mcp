@@ -1,15 +1,15 @@
 # F0 validation index
 
-## Current private Lab merge-only candidate
+## Completed private Lab merge-only integration
 
 [Merge-only evidence](evidence/2026-09-08-lab-merge.md) owns preservation,
-production-isolation classification, fresh candidate checks and exact review/PR
-identities. The corrected application candidate
-`8959b99fe76f9fd42692634b7d420deb76dcdfe5` passed required local validation and
-independent source review. The current documentation-only tail retains those
-503 unchanged application inputs and awaits exact documentation-head approval.
-PR merge remains pending. Deployment, restarts and UI acceptance are outside
-this evidence boundary.
+production isolation, required validation on `8959b99fe76f9fd42692634b7d420deb76dcdfe5`,
+exact documentation-head approval on `132eeda98631a2f139e567ad1ab1506f806e8198`,
+and PR117 merge `a6868fd8271489fbfef0025f95c3f7c0e1dc7e18` with ordered parents
+and exact tree verified. This final bookkeeping tail retains all503 application
+inputs; no new full build is needed solely for documentation. Deployment,
+restarts, UI redesign acceptance and printer/device behavior remain outside this
+evidence. The next product task is unspecified and UI work remains parked.
 
 ## Current selected-direction layout contexts
 

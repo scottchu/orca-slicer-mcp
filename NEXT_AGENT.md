@@ -1,6 +1,6 @@
 # Next agent
 
-## Current task: private Lab merge only; UI work remains parked
+## Current state: private Lab merged; UI work remains parked
 
 The user explicitly created and started this task on2026-09-07 in the assigned
 comparison worktree, branch `codex/u1-dsl-widget-comparison`, checkpoint
@@ -14,23 +14,22 @@ new-conversation action is historical and is no longer pending.
    as recorded in
    [layout-context evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-07-smart-layout-contexts.md).
    There is no pending layout review, additional UI exploration or implementation.
-2. The user now authorizes merging the existing private/unregistered Lab through
-   a PR, without deployment or service restart. Checkpoint/WIP preservation,
-   production isolation and private packaging are complete. Required local validation
-   and independent source review passed on `8959b99fe76f9fd42692634b7d420deb76dcdfe5`.
-   Obtain documentation-only exact approval retention, then complete the guarded
-   PR merge. Follow
-   [merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md).
-   Do not generate more concepts, resume badge repair or run u1-ship --execute.
-   Guard PR head/base and verify the actual merged tree before stopping. Acceptance
-   of the direction for now is not implementation, runtime, physical or release
-   acceptance; the concept images do not establish current DSL capabilities.
+2. PR117 completed private/unregistered Lab source integration at
+   `a6868fd8271489fbfef0025f95c3f7c0e1dc7e18`. Ordered merge parents and the
+   exact approved tree were verified. No deployment, restart or printer call
+   occurred. [Merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md)
+   owns the completed outcome. This final bookkeeping tail changes documentation
+   only; it is not another application candidate or rollout.
+   The next product task is unspecified. Monitoring maturity questions did not
+   authorize monitoring implementation. Do not generate more concepts, resume
+   badge repair or run u1-ship --execute. Direction acceptance does not establish
+   implementation, runtime, physical or release acceptance.
 3. Preserve the transferred spacing/type WIP and provisional decision0056.
    The comparison used explicitly identified source-derived private HTML. The
    private bundle and preview pins are regenerated and independently validated
    on the approved application head. Simple widgets remain the product mainline.
 4. Preserve the completed [comparison evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-07-dsl-widget-comparison.md)
-   and prior uncommitted records. Unknown badge wrapping still increases the
+   and committed historical records. Unknown badge wrapping still increases the
    Card by14px at390/100%; it must be handled within the selected design, not
    forgotten or claimed fixed. Keep potential presentation changes distinct
    from current closed DSL capabilities. Do not repeat completed captures or
