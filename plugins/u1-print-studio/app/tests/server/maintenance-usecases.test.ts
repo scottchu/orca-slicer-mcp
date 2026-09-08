@@ -57,18 +57,18 @@ describe('shared maintenance use cases', () => {
         const { tools } = z.object({ tools: z.array(z.object({ name: z.string() }).passthrough()) }).parse(wire);
         const cameraTools = ['open_u1_camera_stream', 'answer_u1_camera_stream', 'add_u1_camera_ice_candidates', 'close_u1_camera_stream'];
         expect(tools.map(({ name }) => name)).toEqual(oauth
-          ? ['get_print_monitor_snapshot', 'observe_printer', 'refresh_printer_observation', 'get_u1_camera_frame', 'open_printer_camera', ...(camera ? cameraTools : [])]
-          : ['get_print_monitor_snapshot', 'observe_printer', 'refresh_printer_observation', ...(camera ? cameraTools : []), 'get_u1_camera_frame', 'open_printer_camera']);
+          ? ['get_printer_snapshot', 'open_printer_view', 'refresh_printer_observation', 'get_u1_camera_frame', 'open_printer_camera', ...(camera ? cameraTools : [])]
+          : ['get_printer_snapshot', 'open_printer_view', 'refresh_printer_observation', ...(camera ? cameraTools : []), 'get_u1_camera_frame', 'open_printer_camera']);
         for (const tool of tools) {
           expect(tool).toHaveProperty('annotations.readOnlyHint', true);
           if (oauth) expect(tool).toHaveProperty('securitySchemes', [{ type: 'oauth2', scopes: ['u1.monitor'] }]);
           else expect(tool).not.toHaveProperty('securitySchemes');
-          if (!['get_print_monitor_snapshot', 'observe_printer', 'open_printer_camera'].includes(tool.name)) expect(tool._meta).toHaveProperty('ui.visibility', ['app']);
+          if (!['get_printer_snapshot', 'open_printer_view', 'open_printer_camera'].includes(tool.name)) expect(tool._meta).toHaveProperty('ui.visibility', ['app']);
         }
         if (camera && oauth) expect(tools.find(({ name }) => name === 'add_u1_camera_ice_candidates')?.inputSchema).toHaveProperty(
           'properties.candidates.items.properties.sdpMLineIndex', { type: ['integer', 'null'], minimum: 0 });
         for (const args of [{ view: 'unknown' }, { view: 'heads', url: 'https://invalid.example' }]) {
-          expect((await client.callTool({ name: 'observe_printer', arguments: args })).isError).toBe(true);
+          expect((await client.callTool({ name: 'open_printer_view', arguments: args })).isError).toBe(true);
         }
         if (camera) expect((await client.callTool({ name: 'add_u1_camera_ice_candidates', arguments: { sessionId: 'fixture-session-token', candidates: [{ candidate: 'fixture', sdpMLineIndex: -1 }] } })).isError).toBe(true);
         expect(reads).toBe(0); expect(actions).toBe(0);
@@ -127,7 +127,7 @@ describe('shared maintenance use cases', () => {
       const [a, b] = InMemoryTransport.createLinkedPair();
       try {
         await server.connect(a); await client.connect(b);
-        const result = await client.callTool({ name: 'observe_printer', arguments: { view } });
+        const result = await client.callTool({ name: 'open_printer_view', arguments: { view } });
         const http = await callDashboardTool({ name: 'refresh_printer_observation', arguments: { view } }, dashboard.store, {});
         expect(http.status).toBe(200);
         expect(http.body).toEqual(result);

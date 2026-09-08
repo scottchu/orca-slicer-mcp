@@ -283,7 +283,7 @@ for (const delivery of ['result-first', 'compatibility'])
     const frame = await frameOf(page);
     await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
     expect((await (await request.get('/fixture/state')).json()).calls).toEqual([
-      { name: 'observe_printer', arguments: { view: 'heads' } },
+      { name: 'open_printer_view', arguments: { view: 'heads' } },
     ]);
     expect(await page.evaluate(() => (window as any).__mcpHost.state.calls)).toEqual([]);
   });

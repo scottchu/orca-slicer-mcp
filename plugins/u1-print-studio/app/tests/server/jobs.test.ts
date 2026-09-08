@@ -197,21 +197,21 @@ describe("Current Job and History inbound composition", () => {
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
     try {
       for (const view of ["progress", "thermals", "heads", "queue", "fans", "bed_mesh"] as const)
-        await client.callTool({ name: "observe_printer", arguments: { view } });
+        await client.callTool({ name: "open_printer_view", arguments: { view } });
       expect(currentReads).toBe(0); expect(historyReads).toBe(0);
-      const overview = (await client.callTool({ name: "observe_printer", arguments: { view: "overview" } })).structuredContent as
+      const overview = (await client.callTool({ name: "open_printer_view", arguments: { view: "overview" } })).structuredContent as
         { view: string; module: { tiles: Array<{ id: string }> } };
       expect(overview.view).toBe("overview");
       expect(overview.module.tiles.map(tile => tile.id)).toEqual(expect.arrayContaining(["jobs", "job_history"]));
       expect(currentReads).toBe(1); expect(historyReads).toBe(1);
-      expect((await client.callTool({ name: "observe_printer", arguments: { view: "jobs" } })).structuredContent)
+      expect((await client.callTool({ name: "open_printer_view", arguments: { view: "jobs" } })).structuredContent)
         .toMatchObject({ view: "jobs", module: { state: "known", filename: { value: "current.gcode" } } });
       expect(currentReads).toBe(1); expect(historyReads).toBe(1);
-      expect((await client.callTool({ name: "observe_printer", arguments: { view: "job_history" } })).structuredContent)
+      expect((await client.callTool({ name: "open_printer_view", arguments: { view: "job_history" } })).structuredContent)
         .toMatchObject({ view: "job_history", module: { state: "known", pageCount: 1 } });
       expect(currentReads).toBe(1); expect(historyReads).toBe(1);
       expect((await client.listTools()).tools.map(tool => tool.name).sort()).toEqual([
-        "get_print_monitor_snapshot", "get_u1_camera_frame", "observe_printer", "open_printer_camera",
+        "get_printer_snapshot", "get_u1_camera_frame", "open_printer_camera", "open_printer_view",
         "refresh_printer_observation",
       ]);
     } finally { await client.close(); await server.close(); }

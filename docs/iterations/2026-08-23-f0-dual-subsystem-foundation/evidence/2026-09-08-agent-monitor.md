@@ -357,3 +357,65 @@ merged baseline, plus relative-link checks and `git diff --check`; application
 bytes and modes are unchanged. The separate reviewer will verify this exact
 closure head. Its bookkeeping PR has not yet merged; unchanged application bytes
 require no second deployment. No tests or builds were repeated by this author.
+
+## PR120 文件收尾完成（交接索引補正）
+
+上一節記錄的是 PR120 合併前的文件作者時點。PR120 現已合併為
+`2a3e280f2d634f3e4fbabbf7be307f524a3fd86b`，ordered parents 為 PR119
+merge825b381 與 reviewed documentation head01aaddc；tree 與已核對的文件 head
+相同。這是文件收尾，沒有第二次部署。後續本機移轉由
+[新 worktree 交接](2026-09-08-worktree-handoff.md) 記錄；不要重播已完成的 PR。
+
+## 2026-09-08 authorized one-shot host snapshot smoke test
+
+After handoff, the user requested testing the new MCP snapshot and then a
+connection refresh. Source checkpoint remained1d490fad19be96442421bf9e21984b629eaa1113.
+The initial host catalog lacked the tool; the bounded connection diagnostic
+performed no MCP protocol or printer call. Installed plugin configuration only
+exposed stdio; no supported authenticated HTTP client was available to that
+diagnostic. It did not inspect credential stores or probe protected endpoints.
+
+The separate service owner ran
+`uv run --no-project scripts/u1_service.py status` (exit0): public and dashboard
+were loaded, healthy and integrity verified at0.4.17/schema17, observation21/
+Camera17. The installed manifest SHA256 still matched
+`2866f33a0767e639b789470ac7a1338eee6426098e5630f193d32dc97ecfa9da`.
+No service restart was needed or performed. Primary's client initialization
+attempts failed: app-server proxy initialization timed out, the documented
+WebSocket control connection hung up, and Computer Use denied Codex access.
+No reload request was sent. These failures remain private evidence and do not
+prove a product-server defect. The tool subsequently appeared in the host
+catalog; the cause of that change is unknown.
+
+Primary invoked the actual remote V2
+`mcp__codex_apps__u1_print_studio_get_print_monitor_snapshot` exactly once with
+`{camera:"snapshot", expectedRunToken:null}`. It returned isError=false, fresh/
+new/complete connector-receipt telemetry, a strict structured/text envelope and
+one JPEG. This was real one-shot observation, not a synthetic fixture. Primary
+received and visually inspected the image: interior/toolheads were visible,
+while the bed and printed parts were outside the visible evidence. The returned
+run remained unbound/no_active_run with null token and unknown artifact hash.
+The terminal checklist supported the reported state, while boundRunVerified
+remained false. No physical print-success or native-run verification follows.
+
+A separate verifier used the saved response, without further printer calls:
+
+- Pinned Bun1.4.0 with `--no-env-file --config=/dev/null run` executed a private
+  validation script importing the existing production input/output schemas.
+  Strict parsing, exactly one text and image block, parsed structured/text
+  equality, JPEG saved-file/content/declared-length equality and timestamp
+  ordering passed. Fresh/new/complete and unbound/null/unknown distinctions
+  passed. No build, dependency installation or full suite ran.
+- `sips -s format png` decoded the153786-byte JPEG;
+  `sips -g pixelWidth -g pixelHeight` on the resulting PNG returned1920×1080.
+  The verifier checked encoding and evidence consistency; primary owns visual
+  interpretation. Camera/telemetry association remains the same request time
+  window, not atomic acquisition.
+
+Raw response, JPEG/PNG, commands and diagnostic results stay in ignored private
+evidence; no filenames, temperatures, printer identifiers or image bytes enter
+tracked records. Only current documentation records changed. No reload, service
+restart, deployment, configuration/auth/Tailscale/plugin change, printer control
+or continuous polling occurred. No active monitoring, durable supervision,
+whole-print continuity, phone acceptance or physical completion is established.
+The one-shot request is complete; await the next user task.

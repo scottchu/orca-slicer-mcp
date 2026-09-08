@@ -197,8 +197,8 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.4.17",
-      toolSchemaVersion: 17,
+      runtimeVersion: "0.4.18",
+      toolSchemaVersion: 18,
       observationWidgetVersion: "observation-v21",
       cameraWidgetVersion: "camera-v17",
     });
@@ -655,7 +655,7 @@ describe("standalone status dashboard", () => {
           "mcp-protocol-version": "2025-06-18",
         },
         body: JSON.stringify({ jsonrpc: "2.0", id: view, method: "tools/call",
-          params: { name: "observe_printer", arguments: { view } } }),
+          params: { name: "open_printer_view", arguments: { view } } }),
       });
       expect(response.status).toBe(200);
       return (await response.json()).result.structuredContent;

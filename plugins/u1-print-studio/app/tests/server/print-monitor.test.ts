@@ -137,14 +137,22 @@ describe('shared monitor use case and camera', () => {
 });
 
 for (const oauth of [false, true]) test(`MCP strict tool-only input/output + genuine model image, OAuth mirror=${oauth}`, async () => {
-  const now = () => new Date(), store = new PrinterObservationStore(async () => monitorFixture(now().toISOString()), now);
+  let reads = 0;
+  const now = () => new Date(), store = new PrinterObservationStore(async () => { reads++; return monitorFixture(now().toISOString()); }, now);
   let images = 0;
   const server = createAppServer({ observations: store, readMonitorCamera: async () => { images++; return sanitizeMonitorCamera({ bytes: monitorJpeg, observedAt: now().toISOString() }); } }, oauth ? { oauthScopes: ['u1.monitor'] } : {});
   const client = new Client({ name: 'synthetic-monitor-client', version: '1' });
   const [ct, st] = InMemoryTransport.createLinkedPair();
   try {
     await Promise.all([server.connect(st), client.connect(ct)]);
-    const listed = (await client.listTools()).tools.find(t => t.name === 'get_print_monitor_snapshot')!;
+    const catalog = (await client.listTools()).tools;
+    for (const name of ['get_print_monitor_snapshot', 'observe_printer']) {
+      expect(catalog.some(tool => tool.name === name)).toBe(false);
+      const rejected = await client.callTool({ name, arguments: name === 'observe_printer' ? { view: 'overview' } : input });
+      expect(rejected.isError).toBe(true);
+    }
+    expect(reads).toBe(0); expect(images).toBe(0);
+    const listed = catalog.find(t => t.name === 'get_printer_snapshot')!;
     expect(listed.outputSchema?.type).toBe('object'); expect(listed.inputSchema.additionalProperties).toBe(false);
     expect(listed._meta?.['openai/outputTemplate']).toBeUndefined(); expect(listed._meta?.ui).toBeUndefined();
     const response = await client.callTool({ name: listed.name, arguments: { camera: 'snapshot', expectedRunToken: null } });
@@ -197,7 +205,7 @@ test('HTTP requests share observational token lifetime without another status ac
   const http = createMcpHttp(store, null);
   const request = async (expectedRunToken: string | null) => {
     const response = await http.handle(new Request('http://fixture.invalid/mcp', { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
-      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'get_print_monitor_snapshot', arguments: { camera: 'omit', expectedRunToken } } }) }));
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'get_printer_snapshot', arguments: { camera: 'omit', expectedRunToken } } }) }));
     expect(response.status).toBe(200); return await response.json() as any;
   };
   try {
@@ -218,7 +226,7 @@ test('HTTP requests share observational token lifetime without another status ac
   try {
     await Promise.all([server.connect(st), client.connect(ct)]);
     const controller = new AbortController();
-    const call = client.callTool({ name: 'get_print_monitor_snapshot', arguments: { camera: 'snapshot', expectedRunToken: null } }, undefined, { signal: controller.signal }).catch(() => null);
+    const call = client.callTool({ name: 'get_printer_snapshot', arguments: { camera: 'snapshot', expectedRunToken: null } }, undefined, { signal: controller.signal }).catch(() => null);
     await started; controller.abort(); await call;
     await new Promise(resolve => setTimeout(resolve, 0));
     expect(aborted).toBe(true); expect(activated).toBe(0);

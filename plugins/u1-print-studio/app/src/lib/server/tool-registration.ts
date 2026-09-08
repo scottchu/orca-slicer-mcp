@@ -24,7 +24,7 @@ const registerSdkTool = registerAppTool as unknown as (
 ) => void;
 
 // Preserve the existing OAuth catalog order independently of registration order.
-const compatibilityOrder = ['get_print_monitor_snapshot', 'observe_printer', 'refresh_printer_observation', 'get_u1_camera_frame', 'open_printer_camera',
+const compatibilityOrder = ['get_printer_snapshot', 'open_printer_view', 'refresh_printer_observation', 'get_u1_camera_frame', 'open_printer_camera',
   'open_u1_camera_stream', 'answer_u1_camera_stream', 'add_u1_camera_ice_candidates', 'close_u1_camera_stream'];
 
 // The existing OAuth wire catalog represents constrained nullable primitives as

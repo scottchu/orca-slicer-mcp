@@ -86,7 +86,7 @@ do not promise checks or alerts after execution has stopped.
 
 ## Each observation
 
-Use model-visible `get_print_monitor_snapshot` for routine agent evidence:
+Use model-visible `get_printer_snapshot` for routine agent evidence:
 `{ camera: "snapshot", expectedRunToken: null }` for initial inspection, then
 return its opaque token in subsequent calls. Choose `camera: "omit"` when no
 new visual evidence is needed. The tool returns complete allowlisted status
@@ -166,7 +166,7 @@ Take a final camera snapshot when available. If the lowered bed moves the parts 
 say so and preserve the strongest earlier visual evidence instead of claiming
 an unseen physical result.
 
-Use `observe_printer` with `view: "progress"` when a focused progress card
+Use `open_printer_view` with `view: "progress"` when a focused progress card
 is requested or useful for communication; use the data tool for routine polling. Use `view: "overview"` only when the user requests a general overview or
 the monitoring decision genuinely needs cross-domain state. Other focused
 views may be requested separately without reopening a large combined dashboard.

@@ -1,5 +1,26 @@
 # F0 dual-subsystem foundation brief
 
+## Active naming change — 2026-09-08
+
+The user approved `get_printer_snapshot` and `open_printer_view`;
+`open_printer_camera` is unchanged. This bounded catalog rename is now the next
+authorized task, superseding the earlier awaiting-task wording below. Source
+target is runtime0.4.18/schema18 with unchanged observation21/Camera17 assets;
+PR119 runtime0.4.17/schema17 remains the deployed baseline until guarded delivery.
+[Tool naming evidence](evidence/2026-09-08-printer-tool-names.md) owns actual checks, changed paths and remaining
+gates. Next: independent exact review, then one owner runs mandatory shipping
+validation and the existing guarded PR/release workflow. No active monitoring,
+UI work, printer controls, auth/Tailscale or plugin reinstall is authorized.
+
+
+## 新 worktree 交接
+
+使用者已授權新 worktree 接手並在核對與接手确认後清理舊 comparison tree。
+[繁中接手入口](../../../NEW_AGENT_START.md) 與
+[保存證據](evidence/2026-09-08-worktree-handoff.md) 記錄本次順序。
+PR117–120 與交接均已完成；後續明確授權的一次 snapshot MCP 實測亦已完成，
+詳見 monitor evidence。沒有新部署或 active monitoring；UI 停工，等待新任務。
+
 - Status: active
 - Current slice: agent-readable observation/monitor capabilities; UI work parked
 - Decision: [0054](../../decisions/0054-own-current-state-and-maintenance-evidence.md)

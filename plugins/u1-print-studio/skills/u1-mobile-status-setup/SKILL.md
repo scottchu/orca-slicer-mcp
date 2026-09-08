@@ -12,8 +12,8 @@ interactions that cannot be completed on their behalf.
 ## Safety and scope
 
 - Configure only the two model-visible read-only presentation tools:
-  `observe_printer` and `open_printer_camera`, plus the tool-only read-only
-  `get_print_monitor_snapshot` evidence capability. Focused observation refresh,
+  `open_printer_view` and `open_printer_camera`, plus the tool-only read-only
+  `get_printer_snapshot` evidence capability. Focused observation refresh,
   snapshot acquisition, one-time stream activation, and signaling are app-only
   widget helpers.
 - Keep upload, start, cancel, pause, resume, and printer commands out of this setup. Those require a separate implementation and a fresh per-action authorization boundary.
@@ -165,8 +165,8 @@ In the New Plugin form choose **Server URL**, not **Tunnel**. Choose **OAuth**, 
 After connection, verify that the authenticated model-visible inventory contains exactly:
 
 ```text
-get_print_monitor_snapshot
-observe_printer
+get_printer_snapshot
+open_printer_view
 open_printer_camera
 ```
 
@@ -205,7 +205,7 @@ progress, then open the printer camera separately. Verify, in order:
    component-capable hosts.
 
 An inline image is a static projection of one observation, not a degraded
-interactive dashboard. Refresh it with a new `observe_printer` call using the
+interactive dashboard. Refresh it with a new `open_printer_view` call using the
 same view. Do not expect camera pixels or controls inside a non-camera image.
 
 Record which checks were observed by the user. Do not infer visual acceptance from a successful MCP response or a desktop rendering.

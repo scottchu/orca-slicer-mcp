@@ -117,6 +117,13 @@ history, or full reconnect bootstrap; those remain later architecture gates.
 
 ## MCP interface
 
+Current naming is defined by [decision0058](decisions/0058-name-printer-tools-by-result.md):
+`get_printer_snapshot` obtains bounded evidence, `open_printer_view` opens a focused
+widget, and `open_printer_camera` opens Camera. Six app-only helpers remain.
+The following inventory and diagrams preserve the earlier architecture snapshot;
+its compatibility aliases and resource versions are historical, not the current
+registration contract. API-005/API-006 and runtime-contract own current details.
+
 The desktop-local and optional HTTP MCP surfaces expose exactly two
 model-visible presentation intents and eight hidden app-only helpers: one
 focused refresh, two frozen-status compatibility aliases, and five camera
