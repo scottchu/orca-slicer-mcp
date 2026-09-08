@@ -16,9 +16,10 @@ new-conversation action is historical and is no longer pending.
    There is no pending layout review, additional UI exploration or implementation.
 2. The user now authorizes merging the existing private/unregistered Lab through
    a PR, without deployment or service restart. Checkpoint/WIP preservation,
-   production isolation and private packaging are complete. Obtain fresh required
-   local validation and
-   independent approval of the exact candidate SHA. Follow
+   production isolation and private packaging are complete. Required local validation
+   and independent source review passed on `8959b99fe76f9fd42692634b7d420deb76dcdfe5`.
+   Obtain documentation-only exact approval retention, then complete the guarded
+   PR merge. Follow
    [merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md).
    Do not generate more concepts, resume badge repair or run u1-ship --execute.
    Guard PR head/base and verify the actual merged tree before stopping. Acceptance
@@ -26,8 +27,8 @@ new-conversation action is historical and is no longer pending.
    acceptance; the concept images do not establish current DSL capabilities.
 3. Preserve the transferred spacing/type WIP and provisional decision0056.
    The comparison used explicitly identified source-derived private HTML. The
-   private bundle and preview pins are now regenerated; required candidate
-   validation remains pending. Simple widgets remain the product mainline.
+   private bundle and preview pins are regenerated and independently validated
+   on the approved application head. Simple widgets remain the product mainline.
 4. Preserve the completed [comparison evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-07-dsl-widget-comparison.md)
    and prior uncommitted records. Unknown badge wrapping still increases the
    Card by14px at390/100%; it must be handled within the selected design, not

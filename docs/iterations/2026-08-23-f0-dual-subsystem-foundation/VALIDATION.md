@@ -4,11 +4,12 @@
 
 [Merge-only evidence](evidence/2026-09-08-lab-merge.md) owns preservation,
 production-isolation classification, fresh candidate checks and exact review/PR
-identities. Author-focused checks pass after private artifact regeneration;
-required full regression and exact independent acceptance remain pending.
-This is an application-changing candidate, not a documentation-only
-tail. Previous tests remain bound to their earlier bytes; no current acceptance
-or merge is claimed yet. Deployment and restarts are outside this task.
+identities. The corrected application candidate
+`8959b99fe76f9fd42692634b7d420deb76dcdfe5` passed required local validation and
+independent source review. The current documentation-only tail retains those
+503 unchanged application inputs and awaits exact documentation-head approval.
+PR merge remains pending. Deployment, restarts and UI acceptance are outside
+this evidence boundary.
 
 ## Current selected-direction layout contexts
 

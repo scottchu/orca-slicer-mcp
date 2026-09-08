@@ -4,8 +4,9 @@
 
 The active task is private/unregistered Lab source integration through a PR,
 ending at verified Git merge. WIP is preserved, production bytes are isolated
-and private packaging is regenerated. Obtain fresh required local validation
-and exact independent review of the frozen candidate;
+and private packaging is regenerated. Required local validation and independent
+source review passed on `8959b99fe76f9fd42692634b7d420deb76dcdfe5`. Retain exact
+approval on the documentation-only head, then complete the guarded PR merge;
 no deployment, restart, production registration or UI refinement is authorized.
 [Merge-only evidence](evidence/2026-09-08-lab-merge.md) owns this new execution.
 

@@ -7,8 +7,9 @@
 ## Execution order
 
 The user now authorizes a private/unregistered Lab merge only. WIP preservation,
-production isolation and private packaging are complete. Validate the frozen
-candidate locally, obtain exact independent review, and complete a
+production isolation and private packaging are complete. The frozen application
+candidate passed required local validation and independent review. Retain that
+evidence on the documentation-only head, then complete a
 guarded PR merge. Stop at verified Git integration: no rollout, restart,
 production registration or further UI implementation. See
 [merge-only evidence](evidence/2026-09-08-lab-merge.md).

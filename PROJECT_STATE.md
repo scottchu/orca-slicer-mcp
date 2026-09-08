@@ -7,7 +7,9 @@ through a reviewed PR, with no deployment or service restart. UI work remains
 parked; the selected concept is not being implemented. Existing simple widgets
 remain the product mainline; DSL remains a private experiment. WIP preservation,
 production isolation and private packaging are complete. Obtain the frozen
-candidate’s required local validation and exact independent review before merge. [Merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md)
+candidate’s documentation-only approval retention, then perform the guarded PR
+merge. Required local validation and independent source review passed on
+`8959b99fe76f9fd42692634b7d420deb76dcdfe5`; merge remains pending. [Merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md)
 owns this execution and its boundaries.
 
 The user selected proposal1 as the visual direction, then requested revision of
@@ -54,7 +56,7 @@ defines record ownership; [NEXT_AGENT.md](NEXT_AGENT.md) owns execution order.
 | --- | --- | --- |
 | Maintenance | PR111 reviewed, merged and deployed through unchanged shipping guards | Review the delivered result with the user |
 | Production widgets | PR115 / 0.4.15 is deployed; both services and exact assets verified | Preserve truthful coverage; accept actual-device outcomes separately |
-| Private composable Lab | UI work parked; user authorizes private/unregistered Lab merge only | Preserve/isolate candidate, validate locally, obtain exact review, then guarded PR merge without rollout |
+| Private composable Lab | UI work parked; user authorizes private/unregistered Lab merge only | Retain approved application evidence on the documentation head, then guarded PR merge without rollout |
 | Preparation handoff | Decision 0048 pure core independently accepted | Supported adapters, durable storage and actual upload remain deferred |
 | Camera C08 | User reports Auto/Live working at home and outside use working well | Preserve this self-report; long-duration and mounted-host acceptance remain separate |
 | Remaining widget requests | [55-ID ledger](docs/widget-delivery.md) retains delivery and gaps | No new feature work during this maintenance slice |
