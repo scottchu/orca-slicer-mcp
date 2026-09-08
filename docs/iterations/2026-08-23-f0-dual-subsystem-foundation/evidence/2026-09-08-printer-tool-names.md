@@ -52,11 +52,62 @@ not product failures. No browser/full suite, deployment or real-printer test was
 performed by the author. The sole shipping owner must run all required gates on
 the frozen independently approved candidate, including changed browser callers.
 
-## Remaining gates and boundaries
+## Author handoff boundary (subsequently completed below)
 
-Independent source/adversarial verification and exact-candidate approval,
-mandatory local regression, PR integration, exact-build delivery with both
-service restarts and installed synthetic verification remain pending. Retaining
+At author handoff, independent source/adversarial verification, mandatory local
+regression, PR integration, exact-build delivery and installed verification
+were pending. Retaining
 resource hashes does not prove refreshed host catalogs. The earlier real one-shot
 snapshot belongs to PR119; this rename has no new host, phone, physical completion
 or long-duration monitoring acceptance. There is no active monitoring.
+
+## Independent review and PR121 delivery
+
+Independent `rename_review` approved exact candidate
+`00ee8cb98d239b9602ef697fa3f298bf07356da9`:74 fresh protocol assertions,
+510 input hashes and15 unchanged public files. Its private review JSON records
+APPROVE, with the same author input-manifest hash above. It ran no full gate.
+
+Sole shipping owner `monitor_tool_inventory` ran the unchanged operator help,
+plan and execute workflow, all exit0, using `uv run --no-project scripts/u1_ship.py`
+with `--pr 121 --reviewed-sha 00ee8cb98d239b9602ef697fa3f298bf07356da9`
+and pinned Bun1.4.0; execute added `--execute` to the same plan arguments.
+Mandatory local validation passed. Plan operation was
+`pr121-20260908T130346-e81105`; release operation `pr121-20260908T130400-f3b687`.
+PR121 merge `070713ce856c06cd8e1c448bfee387efc5fc9fe6` has ordered parents
+PR120 `2a3e280f2d634f3e4fbabbf7be307f524a3fd86b` and reviewed00ee8cb;
+its tree `0ad361150eedc92789eea54a77a23b02745820ad` equals the approved tree.
+
+Release `20260908-070713c-pr121-20260908T130400-f3b687` explicitly restarted
+both public and dashboard services: loaded, healthy, integrity verified at
+0.4.18/schema18, observation21/Camera17. All82 static responses,84 security
+checks and private-state preservation passed; no rollback was needed. Receipt
+SHA256 `5f179bbc1c52028da8407067fdab37f72f2ee701d1a398ea082738f4ba771943`;
+installed manifest SHA256 `747e148faf09ae0d2a796d448b88da91d286bec5dfadb1ae66d385e1a58c3bf7`.
+
+The ship owner's installed-byte synthetic probe passed. Its initial inventory
+expectation incorrectly demanded all9 tools in a relay-disabled fixture; the
+actual configuration has3 model-visible tools and2 app-only helpers. That probe
+failure was retained and corrected, with no product change or repeated full run.
+Both retired names failed with zero fixture requests. New snapshot strict
+schema/text/image, token/cache continuity and mismatch withholding passed;
+new focused view, unchanged refresh and exact observation/Camera resource bytes
+passed. Only3 fixture GETs occurred (status, webcam discovery, synthetic JPEG).
+Client, fixture and child process teardown passed. Probe receipt SHA256
+`9c9cf2ae18d237eb22f560e9e4f614b45a70034e5f8f4d8bbcaabc23aae64e00`.
+
+The primary's post-deployment tool catalog still advertised the old names.
+Actual host catalog refresh and new-name host invocation therefore remain
+unaccepted. No further real-printer call, plugin reinstall or active monitoring
+occurred. Server installation and synthetic acceptance do not prove host refresh.
+Delivery records are complete; further product work is unspecified. A normal
+client refresh can be addressed separately without inferring printer authority.
+
+## Documentation-only closure
+
+The closure author verified all510 app inputs against the retained SHA256
+manifest and15 public files against the PR121 merge. Only Markdown records
+changed; code, dependencies, configuration, generated assets and maintained
+skills are unchanged. `git diff --check` and changed-document local-link checks
+passed. Retain PR121 application evidence for this documentation-only head;
+no repeated full build, browser suite or service deployment is needed.

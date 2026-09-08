@@ -1,16 +1,23 @@
 # Project state
 
-## Active naming change — 2026-09-08
+## Delivered naming change — PR121
 
-The user approved `get_printer_snapshot` and `open_printer_view`;
-`open_printer_camera` is unchanged. This bounded catalog rename is now the next
-authorized task, superseding the earlier awaiting-task wording below. Source
-target is runtime0.4.18/schema18 with unchanged observation21/Camera17 assets;
-PR119 runtime0.4.17/schema17 remains the deployed baseline until guarded delivery.
-[Tool naming evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-printer-tool-names.md) owns actual checks, changed paths and remaining
-gates. Next: independent exact review, then one owner runs mandatory shipping
-validation and the existing guarded PR/release workflow. No active monitoring,
-UI work, printer controls, auth/Tailscale or plugin reinstall is authorized.
+`get_printer_snapshot`, `open_printer_view` and unchanged `open_printer_camera`
+are delivered through PR121 merge `070713ce856c06cd8e1c448bfee387efc5fc9fe6`.
+Current deployed baseline is runtime0.4.18/schema18, observation21/Camera17.
+Independent exact review, mandatory shipping validation, both service restarts,
+health/integrity,82 static responses,84 security checks and preservation passed.
+Installed-byte synthetic checks passed. [Tool naming evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-printer-tool-names.md) owns
+actual commands, identities, the corrected probe precondition and limits.
+
+The primary host catalog still shows the retired names; client refresh and a
+new-name host call remain unaccepted. No extra printer call was made.
+No new host, phone, physical or long-duration monitoring acceptance is claimed;
+the earlier one-shot host test remains PR119 evidence. No active monitoring.
+Delivery records are complete; next product work is unspecified. UI stays parked;
+printer controls, auth/Tailscale and plugin reinstall remain outside scope.
+The older sections below preserve prior milestones and their evidence boundaries;
+PR119 runtime0.4.17 is historical, not the current deployed baseline.
 
 
 ## Active continuation
@@ -23,7 +30,7 @@ Decision0057's bounded first agent-monitor slice is delivered through PR119,
 merged at `825b38135948574f832f94aa533d3bb58dd6e33a`. The unchanged shipping
 workflow completed mandatory validation, exact-build installation, both service
 restarts, health/integrity,84 security checks and static-asset/preservation checks.
-The current runtime is0.4.17/schema17; observation21 and Camera17 client assets
+The PR119 runtime was0.4.17/schema17; observation21 and Camera17 client assets
 remain unchanged. The first failed inventory gate and its correction remain in
 the evidence record. No current-printer monitoring or durable daemon was started;
 UI work remains parked. Further product work has not been specified.
@@ -66,7 +73,7 @@ to main; unrelated Camera WIP remains separately preserved.
 
 ## Baseline
 
-PR119 is the current deployed runtime baseline:0.4.17/schema17, observation21
+PR119 was the preceding deployed runtime baseline:0.4.17/schema17, observation21
 and Camera17. Both services passed restart, health, integrity and exact-asset
 verification; detailed boundaries are in the agent-monitor evidence.
 

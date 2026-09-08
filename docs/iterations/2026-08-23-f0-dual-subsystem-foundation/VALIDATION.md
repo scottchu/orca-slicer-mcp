@@ -1,16 +1,21 @@
 # F0 validation index
 
-## Active naming change — 2026-09-08
+## Delivered naming change — PR121
 
-The user approved `get_printer_snapshot` and `open_printer_view`;
-`open_printer_camera` is unchanged. This bounded catalog rename is now the next
-authorized task, superseding the earlier awaiting-task wording below. Source
-target is runtime0.4.18/schema18 with unchanged observation21/Camera17 assets;
-PR119 runtime0.4.17/schema17 remains the deployed baseline until guarded delivery.
-[Tool naming evidence](evidence/2026-09-08-printer-tool-names.md) owns actual checks, changed paths and remaining
-gates. Next: independent exact review, then one owner runs mandatory shipping
-validation and the existing guarded PR/release workflow. No active monitoring,
-UI work, printer controls, auth/Tailscale or plugin reinstall is authorized.
+`get_printer_snapshot`, `open_printer_view` and unchanged `open_printer_camera`
+are delivered through PR121 merge `070713ce856c06cd8e1c448bfee387efc5fc9fe6`.
+Current deployed baseline is runtime0.4.18/schema18, observation21/Camera17.
+Independent exact review, mandatory shipping validation, both service restarts,
+health/integrity,82 static responses,84 security checks and preservation passed.
+Installed-byte synthetic checks passed. [Tool naming evidence](evidence/2026-09-08-printer-tool-names.md) owns
+actual commands, identities, the corrected probe precondition and limits.
+
+No new host, phone, physical or long-duration monitoring acceptance is claimed;
+the earlier one-shot host test remains PR119 evidence. No active monitoring.
+Delivery records are complete; next product work is unspecified. UI stays parked;
+printer controls, auth/Tailscale and plugin reinstall remain outside scope.
+The older sections below preserve prior milestones and their evidence boundaries;
+PR119 runtime0.4.17 is historical, not the current deployed baseline.
 
 
 ## 新 worktree 交接
