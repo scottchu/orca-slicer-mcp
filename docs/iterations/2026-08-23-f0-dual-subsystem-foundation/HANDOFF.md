@@ -2,20 +2,20 @@
 
 ## Current work
 
-The active task is private/unregistered Lab source integration through a PR,
-ending at verified Git merge. WIP is preserved, production bytes are isolated
-and private packaging is regenerated. Required local validation and independent
-source review passed on `8959b99fe76f9fd42692634b7d420deb76dcdfe5`. Retain exact
-approval on the documentation-only head, then complete the guarded PR merge;
-no deployment, restart, production registration or UI refinement is authorized.
-[Merge-only evidence](evidence/2026-09-08-lab-merge.md) owns this new execution.
+PR117 completed private/unregistered Lab source integration at
+`a6868fd8271489fbfef0025f95c3f7c0e1dc7e18`. The verified merge tree matches
+the independently approved head; WIP preservation and production isolation remain
+intact. No deployment, restart or printer call occurred. UI work is parked and
+the next product task is unspecified. Only this documentation bookkeeping tail
+remains to integrate; do not repeat application validation or merge PR117 again.
+[Merge-only evidence](evidence/2026-09-08-lab-merge.md) owns the completed outcome.
 
 The user selected proposal1 as the direction, then requested width and multi-card
 layout revision. Three contexts of the same refined direction are delivered:
 single card, two cards and narrow-screen stacking. The user accepts the layout
 direction for now and has parked UI work. No further exploration, layout review,
-implementation or isolated badge repair is pending; Lab-only merge is the new
-source-integration task. This direction acceptance is not product/runtime/physical/release
+implementation or isolated badge repair is pending; Lab-only source integration
+is complete. This direction acceptance is not product/runtime/physical/release
 acceptance. That completed concept round changed no app code, styling,
 build inputs or deployed service and created no HTML app.
 [Layout-context evidence](evidence/2026-09-07-smart-layout-contexts.md) owns the

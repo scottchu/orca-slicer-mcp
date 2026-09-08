@@ -1,17 +1,17 @@
 # F0 dual-subsystem foundation brief
 
 - Status: active
-- Current slice: private Lab merge-only integration; UI work parked
+- Current slice: PR117 Lab source integration complete; UI work parked
 - Decision: [0054](../../decisions/0054-own-current-state-and-maintenance-evidence.md)
 
 ## Execution order
 
-The user now authorizes a private/unregistered Lab merge only. WIP preservation,
-production isolation and private packaging are complete. The frozen application
-candidate passed required local validation and independent review. Retain that
-evidence on the documentation-only head, then complete a
-guarded PR merge. Stop at verified Git integration: no rollout, restart,
-production registration or further UI implementation. See
+PR117 completed private/unregistered Lab integration at
+`a6868fd8271489fbfef0025f95c3f7c0e1dc7e18`, with the exact reviewed tree and
+ordered merge parents verified. No deployment, restart, production registration
+or printer call occurred. UI work remains parked and the next product task is
+unspecified. The current documentation-only bookkeeping records this completed
+outcome; it does not reopen application work. See
 [merge-only evidence](evidence/2026-09-08-lab-merge.md).
 
 The user selected proposal1 from the previous three directions and then
