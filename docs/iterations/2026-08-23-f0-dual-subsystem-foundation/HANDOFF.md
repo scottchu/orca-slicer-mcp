@@ -7,8 +7,11 @@ capabilities: a complete read-only snapshot, model-visible camera evidence, and
 truthful session continuity and terminal rules through shared application use
 cases. Decision0057 adopts the bounded first slice; implementation and author
 focused checks are complete. Independent exact-source and targeted review passed
-on `3d270f54547fd282c3450c497c6475802d6de497`. Mandatory full validation, PR merge
-and guarded delivery remain pending. This request does not start monitoring the
+on `3d270f54547fd282c3450c497c6475802d6de497`. PR119's first shipping attempt
+stopped at local validation on a stale two-tool inventory test; no merge or
+installation occurred. The exact three-tool guard is corrected and the remaining
+25-file server subset passes172 tests. Renew exact review before retrying the
+unchanged mandatory shipping workflow. This request does not start monitoring the
 current printer or establish a durable daemon. UI work remains parked.
 [Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) owns current commands, decisions and remaining gates.
 

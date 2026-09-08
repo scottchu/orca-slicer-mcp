@@ -248,3 +248,48 @@ mandatory full local validation, PR identity/merge, guarded deployment and
 postverification are still pending the unchanged u1-ship workflow. No active
 monitoring, durable supervision, strict native-run or physical outcome claim is
 added by this approval.
+
+## PR119 first shipping attempt and inventory-test correction
+
+The independent shipping owner ran the unchanged operator on reviewed
+`be64145366db4cdb626097a87bd80e9afc0e5cb5`. Operation
+`pr119-20260908T074819-f6d7a3` stopped in `validate`: merged=false,
+installed=false, rollback=not-needed. Its retained failure receipt SHA256 is
+`bed0eae4cea1b0096804ef22ed8a8efe4eac3e55b839e6f03fb3cba4631a46be`.
+No merge, install, service restart or printer operation occurred. This is a
+failed required gate, not successful release evidence.
+
+The verifier's bounded server diagnostic stopped at10 pass/1 fail: bed-mesh's
+model-visible inventory still expected two tools after this slice adopted three.
+Separate `uv run` service and ship simulator diagnostics passed44 and28 tests.
+Their original logs and failure receipt remain preserved independently.
+
+The author changed only that test's inventory assertion to the exact sorted
+names `get_print_monitor_snapshot`, `observe_printer`, and
+`open_printer_camera`. Its existing model/app-only visibility filter and
+two-resource assertion remain intact. Explicit Homebrew rg searches of server
+tests found no other stale two-tool inventory expectation; unrelated resource,
+request and session counts were preserved. No operator, safety guard, runtime
+implementation, dependency or generated asset changed.
+
+The author alone ran the remaining25-file server subset, with pinned Bun1.4.0
+and its directory prepended to child PATH, from the app directory:
+
+```sh
+bun --no-env-file --config=/dev/null test --bail ./tests/server/bed-mesh.test.ts ./tests/server/camera-dashboard-host.test.ts ./tests/server/camera-fanout.test.ts ./tests/server/camera-ice-config.test.ts ./tests/server/camera-relay.test.ts ./tests/server/camera-runtime.test.ts ./tests/server/camera-webrtc-http.test.ts ./tests/server/camera-webrtc-session.test.ts ./tests/server/composable-lab-mcp.test.ts ./tests/server/composable-presentation.test.ts ./tests/server/composable-preview.test.ts ./tests/server/kit-composable-route.test.ts ./tests/server/kit-env.test.ts ./tests/server/kit-fans.test.ts ./tests/server/kit-native-observations.test.ts ./tests/server/live-fans-package.test.ts ./tests/server/local-config.test.ts ./tests/server/mcp-widget-packages.test.ts ./tests/server/observation-presentation.test.ts ./tests/server/packaging.test.ts ./tests/server/prepared-artifact-validation.test.ts ./tests/server/private-lab.test.ts ./tests/server/queue-foundation.test.ts ./tests/server/request-lifetime.test.ts ./tests/server/upload-prepared-artifact.test.ts
+```
+
+Result:172 pass,0 fail,2068 assertions,7.00 seconds. This focused author check
+does not replace the required operator retry. The retained command manifest
+SHA256 is `adb5b70c64919ab178ffdf2746a170d2339458de216802fec8564b9c618a068f`;
+log SHA256 is
+`60692b8d6525ee061792110b4d4f4cd61375cb65a202d8e5c0ec90a2bb4b6ed4`.
+
+A Node filesystem/SHA256 comparison checked all510 prior application inputs and
+modes. Only `tests/server/bed-mesh.test.ts` differs; all implementation and
+public artifact bytes remain unchanged. The new private input manifest SHA256
+is `b6568241cbc327266ee6738d38e0bcde8fc9fc44de9286660713d271745b11b0`.
+The prior manifest and application/source-targeted evidence remain preserved.
+Next: independent exact review of this test/documentation correction, then PR
+head verification and the unchanged mandatory shipping workflow. No full-run
+PASS, merge, deployment, physical outcome or active-monitoring claim is added.

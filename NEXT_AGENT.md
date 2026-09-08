@@ -13,9 +13,11 @@ new-conversation action is historical and is no longer pending.
    Decision0057 adopts the first shared use-case slice. Candidate0.4.17/schema17
    implements the tool-only snapshot/model image and observational continuity;
    author-focused checks and independent exact-source/targeted review pass on
-   `3d270f54547fd282c3450c497c6475802d6de497`. Retain approval on this documentation
-   head, then run mandatory full validation and guarded PR/shipping delivery
-   with one full-validation owner. Roles remain
+   `3d270f54547fd282c3450c497c6475802d6de497`. PR119 stopped at validation on a
+   stale inventory assertion, before merge/install. The three-tool guard is now
+   corrected and172 tests in the remaining25-file server subset pass. Obtain
+   exact review of this test/documentation candidate, update the PR head, then
+   retry unchanged mandatory shipping with the sole full-validation owner. Roles remain
    separated; cached source evidence does not prove deployment or active monitoring.
 2. Do not start monitoring the current printer merely because capability work
    is authorized. Do not claim durable background monitoring, active ownership,
