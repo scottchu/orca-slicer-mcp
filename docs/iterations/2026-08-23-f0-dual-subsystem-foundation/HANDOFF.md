@@ -2,17 +2,14 @@
 
 ## Current work
 
-The user now authorizes implementing agent-readable observation and monitoring
-capabilities: a complete read-only snapshot, model-visible camera evidence, and
-truthful session continuity and terminal rules through shared application use
-cases. Decision0057 adopts the bounded first slice; implementation and author
-focused checks are complete. Independent exact-source and targeted review passed
-on `3d270f54547fd282c3450c497c6475802d6de497`. PR119's first shipping attempt
-stopped at local validation on a stale two-tool inventory test; no merge or
-installation occurred. The exact three-tool guard is corrected and the remaining
-25-file server subset passes172 tests. Renew exact review before retrying the
-unchanged mandatory shipping workflow. This request does not start monitoring the
-current printer or establish a durable daemon. UI work remains parked.
+Decision0057's bounded first agent-monitor slice is delivered through PR119,
+merged at `825b38135948574f832f94aa533d3bb58dd6e33a`. The unchanged shipping
+workflow completed mandatory validation, exact-build installation, both service
+restarts, health/integrity,84 security checks and static-asset/preservation checks.
+The current runtime is0.4.17/schema17; observation21 and Camera17 client assets
+remain unchanged. The first failed inventory gate and its correction remain in
+the evidence record. No current-printer monitoring or durable daemon was started;
+UI work remains parked. Further product work has not been specified.
 [Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) owns current commands, decisions and remaining gates.
 
 PR117 completed private/unregistered Lab source integration at
@@ -94,13 +91,12 @@ long-duration reliability and mounted-host behavior remain separately unaccepted
 Preparation pure-core acceptance does not implement its deferred adapters or authorize upload/start.
 Preserve Lab isolation, the 55-ID ledger, unrelated work and existing private state.
 
-Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for documentation-head approval
-retention and the mandatory full validation/guarded delivery. UI remains parked. Unknown badge
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the completed delivery and
+unspecified next product task. UI remains parked. Unknown badge
 wrapping still increases Card height by14px at390/100%, alongside the preserved
 extreme-decimal narrow-screen limit. The former private resource mismatch was
 resolved and independently validated in PR117.
-PR115 is the latest recorded deployed baseline; the new WIP checkpoint does not
-change the deployed release.
+PR119 / runtime0.4.17 is the current deployed baseline; PR115 remains historical.
 Historical pending instructions are archived and must not be replayed. All previous
 paths, observations, failures and recovery evidence remain in the
 [PR110 snapshot](../../history/2026-09-05-pr110/README.md).

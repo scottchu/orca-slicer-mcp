@@ -2,20 +2,21 @@
 
 ## Current agent observation/monitor slice
 
-[Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) records the new
-authorization, decision0057, actual author checks and current identities.
-Author-focused verification passed132 server tests across13 affected files,
-then41 affected tests after two independent findings were corrected; final
-typecheck and all8 retained widget source/artifact checks pass. Independent
-exact-source and fresh targeted review approved
-`3d270f54547fd282c3450c497c6475802d6de497`. PR119 shipping then stopped at
-validation on a stale inventory assertion: diagnostic10 pass/1 fail; separate
-service/ship simulators44/28 pass. After its precise three-tool correction, the
-author's remaining25-file server subset passes172 tests/2068 assertions. Exact
-review of the correction and mandatory shipping retry remain pending; no merge
-or installation occurred. The sole full-validation owner remains assigned
-through shipping. No active printer monitoring or deployment
-acceptance is claimed. Changed inputs renew their affected evidence.
+[Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) owns author checks,
+independent source/adversarial review, the first failed shipping gate and its
+precise inventory-test repair, and successful PR119 delivery. The corrected
+reviewed head133ee94 passed the unchanged mandatory operator; merge825b381
+matches its tree. Both services run0.4.17/schema17 with unchanged observation21/
+Camera17 assets;82 exact static responses,84 security checks and preservation pass.
+
+Independent installed-byte HTTP MCP synthetic verification passed tool inventory,
+structured/text equality, decoded-fixture JPEG identity, token/cache continuity
+and mismatched-token camera withholding. Task-owned processes and fixtures were
+released. The initial nonexistent-CLI probe assumption is retained as a probe
+precondition error. No real printer/camera, active monitoring, phone or host
+multimodal acceptance follows. This conversation's catalog still omits the new
+tool; server capability and host refresh remain separate. No plugin reinstall
+was performed. This closure changes documentation only and requires no redeploy.
 
 ## Completed private Lab merge-only integration
 
