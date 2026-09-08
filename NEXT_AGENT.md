@@ -1,5 +1,18 @@
 # Next agent
 
+## Current order: Overview subview isolation repair
+
+1. Independently review the frozen author candidate and run targeted adversarial
+   verification; author checks are in [repair evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md).
+2. One operator owns mandatory local validation and guarded PR/merge/deployment
+   through unchanged u1-ship, both service restarts and meaningful installed-byte
+   synthetic verification under standing widget-release authorization.
+3. Record exact outcomes and review repaired host behavior separately with the user.
+
+The completed MCP handoff/cleanup/archive below must not be replayed. Do not
+operate the printer, alter auth/Tailscale/plugins, repair Job History adapters
+or resume private-DSL/UI redesign. Private WIP refs/evidence remain preserved.
+
 ## Current MCP client handoff — 2026-09-08
 
 PR121 release and PR122 record closure are complete. A new real CLI task is

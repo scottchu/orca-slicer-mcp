@@ -1,5 +1,17 @@
 # 新 MCP client task 接手入口（2026-09-08）
 
+## 現行入口：Overview 子區塊故障隔離
+
+MCP handoff、指定舊樹清理與 caller 可恢復封存均已完成，以本機 receipts
+為準，不可重播下方歷史流程。新名稱工具已呼叫；使用者截圖顯示 Overview
+故障、Camera Live。這不是實體列印或 phone 驗收。
+
+本 task 在既有 worktree、分支 codex/overview-subview-isolation-20260908
+修復單一子區塊使整張 Overview 隱藏的問題。作者實作與聚焦驗證完成；
+依 [NEXT_AGENT.md](NEXT_AGENT.md) 接續獨立 review 與既有 guarded shipping。
+[本輪證據](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md) 記錄命令與界線。
+禁止重播 handoff、操作印表機或改動其他 WIP；下方內容完整保留為歷史。
+
 請用繁體中文接手。這是真實新 CLI task 的新 worktree；不可再建立下一個。
 先讀使用者層級 `/Users/scottchu/.codex/skills/handoff/SKILL.md`，再讀 AGENTS、
 PROJECT_STATE、NEXT_AGENT、docs/requirements、CURRENT 指向的 BRIEF/HANDOFF/VALIDATION，

@@ -1,6 +1,6 @@
-export const U1_RUNTIME_VERSION = "0.4.18";
+export const U1_RUNTIME_VERSION = "0.4.19";
 export const U1_TOOL_SCHEMA_VERSION = 18;
-export const U1_OBSERVATION_WIDGET_VERSION = "observation-v21";
+export const U1_OBSERVATION_WIDGET_VERSION = "observation-v22";
 export const U1_CAMERA_WIDGET_VERSION = "camera-v17";
 
 export const runtimeHealth = (auth: "personal-oauth" | "local-only") => {

@@ -1,5 +1,19 @@
 # Project state
 
+## Active Overview subview isolation repair — 2026-09-08
+
+Author implementation and focused synthetic validation are complete. The candidate
+is runtime0.4.19/schema18/observation22/Camera17; deployed baseline remains
+0.4.18/schema18/observation21/Camera17 until guarded release succeeds.
+A failed Overview subview now stays local; valid sibling headlines remain visible,
+while whole-request errors still mask old readings. Independent exact review and
+guarded delivery remain pending. [Repair evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md) owns details.
+
+The MCP handoff cleanup/archive is complete; new-name tools were subsequently
+called. User screenshots show Overview failure and Camera Live, not phone or
+physical-print acceptance. No active monitoring. Older handoff instructions below
+are historical; [NEXT_AGENT.md](NEXT_AGENT.md) owns current execution order.
+
 ## Current MCP client handoff — 2026-09-08
 
 PR121 release and PR122 record closure are complete. A new real CLI task is

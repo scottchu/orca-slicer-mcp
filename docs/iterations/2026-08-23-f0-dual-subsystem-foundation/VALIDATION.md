@@ -1,5 +1,14 @@
 # F0 validation index
 
+## Overview subview isolation validation
+
+[Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns focused author commands/results, the two
+corrected test-authoring failures, application/resource identities and limits.
+Author checks pass; independent review, mandatory shipping and installed-byte
+verification remain pending. No repaired actual-host, phone or physical-printer
+acceptance follows from synthetic tests. The completed handoff records below
+remain historical and their cleanup/archive operations must not be repeated.
+
 ## Current MCP client handoff — 2026-09-08
 
 PR121 release and PR122 record closure are complete. A new real CLI task is

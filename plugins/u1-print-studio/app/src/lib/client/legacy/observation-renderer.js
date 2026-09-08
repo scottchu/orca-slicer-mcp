@@ -424,7 +424,8 @@ const invalidOverviewTile = (tile, title) => `<article class="overview-tile u1-d
 const renderOverview = data => {
   if (!validOverviewModule(data)) return `<section class="instrument u1-card">${header("Overview", true, null, "unknown", "Overview data could not be read.")}<div class="u1-body"><div class="empty-panel"><strong>Overview unavailable</strong>No current overview headlines are available.</div></div>${provenance()}</section>`;
   const [progress, thermals, heads, jobs, history, queue, fans, mesh] = data.tiles;
-  const valid = data.tiles.map(validOverviewTile);
+  const valid = data.tiles.map((tile, index) => validOverviewTile(tile, index) &&
+    ![tile, ...Object.values(tile.receipts ?? {})].some(failedRetainedReceipt));
   const time = seconds => seconds === null ? "Estimate unknown" : `About ${escapeHtml(formatDuration({ state: "known", value: seconds }))} left`;
   const statusLabel = value => ({ in_progress: "in progress", completed: "completed", cancelled: "cancelled", error: "error", klippy_shutdown: "Klippy shutdown", klippy_disconnect: "Klippy disconnected", interrupted: "interrupted", unknown: "unknown" })[value];
   const tiles = [
@@ -533,10 +534,12 @@ window.addEventListener('pageshow', show);
 const render = () => { if (!observation?.module) return; disposeMeshRenderer(); retainedPresentation = null; const view = VIEWS.includes(observation.view) ? observation.view : "overview"; modulesElement.innerHTML = renderers[view](observation.module); modulesElement.querySelectorAll(".refresh").forEach((button) => button.addEventListener("click", () => void refresh())); if (view === "bed_mesh") bindMeshControls(); if (view === "heads") bindMaterialCopy(); notifyHeight(); };
 const validObservation = (value) => value && VIEWS.includes(value.view) &&
   value.module?.kind === value.view && typeof value.module.state === "string";
+const failedRetainedReceipt = value => value?.state === 'stale' &&
+  ['unauthorized', 'http_error', 'timeout', 'network', 'malformed', 'too_large', 'not_configured', 'unsupported'].includes(value.reason);
 const failedDomain = (value, depth = 0) => {
   if (!value || typeof value !== 'object' || depth > 3) return false;
   if (['unavailable', 'unsupported'].includes(value.state)) return true;
-  if (value.state === 'stale' && ['unauthorized', 'http_error', 'timeout', 'network', 'malformed', 'too_large', 'not_configured', 'unsupported'].includes(value.reason)) return true;
+  if (failedRetainedReceipt(value)) return true;
   return [value.materials, value.environment, ...Object.values(value.receipts ?? {}), ...(Array.isArray(value.tiles) ? value.tiles : [])].some(child => child && failedDomain(child, depth + 1));
 };
 const applyResult = (result) => {
@@ -545,7 +548,13 @@ const applyResult = (result) => {
   if (!candidate || (selectedView && candidate.view !== selectedView)) return false;
 
   const previous = observation;
-  if (failedDomain(candidate.module)) {
+  // Overview composes independent domain receipts. A failed child belongs to
+  // its tile; only a rejected Overview envelope masks the entire composition.
+  // Focused views retain their existing whole-acquisition failure boundary.
+  const failed = candidate.view === "overview"
+    ? !validOverviewModule(candidate.module)
+    : failedDomain(candidate.module);
+  if (failed) {
     acceptedResult = true;
     // Geometry is not observation acceptance; preserve its numeric shape
     // even when an unknown result or a new epoch invalidates cached data.
