@@ -2,12 +2,24 @@
 
 ## Current work
 
+The user now authorizes implementing agent-readable observation and monitoring
+capabilities: a complete read-only snapshot, model-visible camera evidence, and
+truthful session continuity and terminal rules through shared application use
+cases. Decision0057 adopts the bounded first slice; implementation and author
+focused checks are complete. Independent exact-source and targeted review passed
+on `3d270f54547fd282c3450c497c6475802d6de497`. PR119's first shipping attempt
+stopped at local validation on a stale two-tool inventory test; no merge or
+installation occurred. The exact three-tool guard is corrected and the remaining
+25-file server subset passes172 tests. Renew exact review before retrying the
+unchanged mandatory shipping workflow. This request does not start monitoring the
+current printer or establish a durable daemon. UI work remains parked.
+[Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) owns current commands, decisions and remaining gates.
+
 PR117 completed private/unregistered Lab source integration at
 `a6868fd8271489fbfef0025f95c3f7c0e1dc7e18`. The verified merge tree matches
 the independently approved head; WIP preservation and production isolation remain
-intact. No deployment, restart or printer call occurred. UI work is parked and
-the next product task is unspecified. Only this documentation bookkeeping tail
-remains to integrate; do not repeat application validation or merge PR117 again.
+intact. No deployment, restart or printer call occurred. PR118 records closure is
+also complete; do not repeat application validation or merge either PR again.
 [Merge-only evidence](evidence/2026-09-08-lab-merge.md) owns the completed outcome.
 
 The user selected proposal1 as the direction, then requested width and multi-card
@@ -50,9 +62,11 @@ actual checks, artifact identities and the existing extreme-decimal limitation.
 
 ## Changed paths and evidence
 
-The current layout-context round adds its own evidence record and updates only
-the existing current-record indexes. Prior comparison/visual-direction evidence
-and all uncommitted records/application WIP remain preserved.
+The current monitor slice adds the shared use case/policy, same-query adapter
+evidence, strict MCP schema/registration, runtime version and affected tests;
+it updates maintained skill inventory and decision0057/requirements/current
+records. Existing client and widget bytes remain unchanged. Prior comparison,
+visual-direction and Lab-merge evidence remains preserved.
 
 The completed comparison changed only its evidence record, `PROJECT_STATE.md`,
 `NEXT_AGENT.md`, and this iteration's brief/handoff/validation index. Local
@@ -80,10 +94,11 @@ long-duration reliability and mounted-host behavior remain separately unaccepted
 Preparation pure-core acceptance does not implement its deferred adapters or authorize upload/start.
 Preserve Lab isolation, the 55-ID ledger, unrelated work and existing private state.
 
-Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for the merge-only task while UI
-remains parked. Unknown badge wrapping increases Card height by14px at390/100%;
-the tracked DSL resource also differs from current source-derived bytes. Both
-remain unresolved, alongside the preserved extreme-decimal narrow-screen limit.
+Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md) for documentation-head approval
+retention and the mandatory full validation/guarded delivery. UI remains parked. Unknown badge
+wrapping still increases Card height by14px at390/100%, alongside the preserved
+extreme-decimal narrow-screen limit. The former private resource mismatch was
+resolved and independently validated in PR117.
 PR115 is the latest recorded deployed baseline; the new WIP checkpoint does not
 change the deployed release.
 Historical pending instructions are archived and must not be replayed. All previous

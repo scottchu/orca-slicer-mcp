@@ -40,9 +40,9 @@ describe("standalone camera routing guidance", () => {
     }
   });
 
-  test("keeps the documented inventory at two model tools plus six app helpers", () => {
+  test("keeps the documented inventory at three model tools plus six app helpers", () => {
     expect(mobileSetupSkill).toContain(
-      "exactly two model-visible\n   tools and exactly six app-only helpers"
+      "exactly three model-visible\n   tools and exactly six app-only helpers"
     );
     expect(mobileSetupSkill).not.toContain("exactly the four read-only tools");
     expect(mobileSetupSkill).not.toContain("four-tool inventory");

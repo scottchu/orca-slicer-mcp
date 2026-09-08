@@ -12,7 +12,8 @@ interactions that cannot be completed on their behalf.
 ## Safety and scope
 
 - Configure only the two model-visible read-only presentation tools:
-  `observe_printer` and `open_printer_camera`. Focused observation refresh,
+  `observe_printer` and `open_printer_camera`, plus the tool-only read-only
+  `get_print_monitor_snapshot` evidence capability. Focused observation refresh,
   snapshot acquisition, one-time stream activation, and signaling are app-only
   widget helpers.
 - Keep upload, start, cancel, pause, resume, and printer commands out of this setup. Those require a separate implementation and a fresh per-action authorization boundary.
@@ -36,8 +37,8 @@ Report these separately:
 
 1. Local software evidence: server checks and tests pass on the Mac.
 2. Public-edge evidence: HTTPS health, OAuth discovery, and unauthenticated rejection work through Funnel.
-3. MCP evidence: the authenticated client discovers exactly two model-visible
-   tools and exactly six app-only helpers, eight tools total, all read-only.
+3. MCP evidence: the authenticated client discovers exactly three model-visible
+   tools and exactly six app-only helpers, nine tools total, all read-only.
 4. Printer evidence: returned telemetry and camera data came from the configured real printer.
 5. iOS evidence: the host visibly rendered either the interactive component or
    the inline PNG fallback; interactive controls are evidence only on hosts
@@ -164,6 +165,7 @@ In the New Plugin form choose **Server URL**, not **Tunnel**. Choose **OAuth**, 
 After connection, verify that the authenticated model-visible inventory contains exactly:
 
 ```text
+get_print_monitor_snapshot
 observe_printer
 open_printer_camera
 ```
@@ -171,7 +173,7 @@ open_printer_camera
 The six app-only helpers are `refresh_printer_observation`,
 `get_u1_camera_frame`, `open_u1_camera_stream`, `answer_u1_camera_stream`,
 `add_u1_camera_ice_candidates`, and `close_u1_camera_stream`. They remain hidden
-from model-visible inventory: two public plus six app-only equals eight total.
+from model-visible inventory: three public plus six app-only equals nine total.
 Each tool must be read-only and require `u1.monitor`. Stop if any control tool is present.
 
 For standalone camera requests, call only model-visible
@@ -230,8 +232,8 @@ TURN REST credential and mounted playback on each host are observed.
 ## Completion report
 
 Report the discovered MagicDNS hostname, standard-HTTPS MCP URL, preserved
-Funnel and Serve handlers, private enrollment health, the exact two
-model-visible plus six app-only inventory (eight tools total), ICE mode (local candidates,
+Funnel and Serve handlers, private enrollment health, the exact three
+model-visible plus six app-only inventory (nine tools total), ICE mode (local candidates,
 explicit STUN, or TURN REST), and each evidence boundary. Redact
 credentials and tokens. State that this self-hosted edition requires an
 always-on LAN agent per printer owner; it may run on a desktop, NAS, or small

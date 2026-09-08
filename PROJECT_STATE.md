@@ -2,12 +2,26 @@
 
 ## Active continuation
 
+The user now authorizes implementing agent-readable observation and monitoring
+capabilities: a complete read-only snapshot, model-visible camera evidence, and
+truthful session continuity and terminal rules through shared application use
+cases. Decision0057 adopts the bounded first slice; implementation and author
+focused checks are complete. Independent exact-source and targeted review passed
+on `3d270f54547fd282c3450c497c6475802d6de497`. PR119's first shipping attempt
+stopped at local validation on a stale two-tool inventory test; no merge or
+installation occurred. The exact three-tool guard is corrected and the remaining
+25-file server subset passes172 tests. Renew exact review before retrying the
+unchanged mandatory shipping workflow. This request does not start monitoring the
+current printer or establish a durable daemon. UI work remains parked.
+[Agent-monitor evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md) owns the new slice.
+
 Private, unregistered Lab source integration is complete through PR117, merged
 at `a6868fd8271489fbfef0025f95c3f7c0e1dc7e18`. The merge tree exactly matches
 the independently approved head. No deployment, restart or printer call occurred.
 UI work remains parked; existing simple widgets remain the product mainline and
-DSL remains a private experiment. The next product task is unspecified; the
-monitoring maturity discussion did not authorize implementation. [Merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md)
+DSL remains a private experiment. PR118 completed its documentation closure at
+`9d08702a779c31d8aa3009d75b2beff5d5e8e9ff`. The subsequent user approval starts
+the agent-monitor implementation slice above. [Merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md)
 owns this execution and its boundaries.
 
 The user selected proposal1 as the visual direction, then requested revision of
@@ -25,7 +39,7 @@ The ordinary390px Unknown badge wraps and increases the DSL Card by14px; this
 remains an unresolved defect to address within the selected visual direction,
 not the next isolated implementation task.
 The comparison found a source/package mismatch; private packaging has now been
-regenerated for the merge candidate, pending full candidate validation.
+regenerated, independently validated and merged through PR117.
 [Comparison evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-07-dsl-widget-comparison.md)
 owns findings, commands, identities and limits. Work continues on
 `codex/u1-dsl-widget-comparison`, based on main
@@ -47,14 +61,15 @@ observations, not a claim of continuous live monitoring.
 ## Active iteration
 
 [F0 maintenance brief](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/BRIEF.md)
-puts cleanup and spacing review before feature expansion. [Decision 0054](docs/decisions/0054-own-current-state-and-maintenance-evidence.md)
+now prioritizes the agent-readable observation/monitor contract and implementation. [Decision 0054](docs/decisions/0054-own-current-state-and-maintenance-evidence.md)
 defines record ownership; [NEXT_AGENT.md](NEXT_AGENT.md) owns execution order.
 
 | Workstream | Current status | Next bounded action |
 | --- | --- | --- |
 | Maintenance | PR111 reviewed, merged and deployed through unchanged shipping guards | Review the delivered result with the user |
 | Production widgets | PR115 / 0.4.15 is deployed; both services and exact assets verified | Preserve truthful coverage; accept actual-device outcomes separately |
-| Private composable Lab | PR117 source integration complete; private/unregistered, UI work parked | No new product task specified; preserve known limits and no-deployment boundary |
+| Private composable Lab | PR117/118 integration and closure complete; UI work parked | Preserve private scope and known limits |
+| Agent observation/monitoring | Candidate0.4.17/schema17 exact-source/targeted review approved; no active printer monitoring | Review the inventory-test correction, then retry mandatory guarded PR/shipping gates |
 | Preparation handoff | Decision 0048 pure core independently accepted | Supported adapters, durable storage and actual upload remain deferred |
 | Camera C08 | User reports Auto/Live working at home and outside use working well | Preserve this self-report; long-duration and mounted-host acceptance remain separate |
 | Remaining widget requests | [55-ID ledger](docs/widget-delivery.md) retains delivery and gaps | No new feature work during this maintenance slice |
@@ -87,7 +102,8 @@ at the product-coverage layer described in the ledger.
 
 ## Next action
 
-Prepare and deliver the reviewed private Lab merge-only candidate while UI work remains parked. Follow
+Obtain exact review of the inventory-test correction, then retry mandatory
+full validation and the existing guarded PR/shipping workflow. UI work remains parked. Follow
 [NEXT_AGENT.md](NEXT_AGENT.md), preserving evidence boundaries and existing release guards. Do not
 register the Lab, control the printer, change auth/Tailscale or reinstall plugins.
 

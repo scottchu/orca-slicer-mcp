@@ -1,17 +1,29 @@
 # F0 dual-subsystem foundation brief
 
 - Status: active
-- Current slice: PR117 Lab source integration complete; UI work parked
+- Current slice: agent-readable observation/monitor capabilities; UI work parked
 - Decision: [0054](../../decisions/0054-own-current-state-and-maintenance-evidence.md)
 
 ## Execution order
 
+The user now authorizes implementing agent-readable observation and monitoring
+capabilities: a complete read-only snapshot, model-visible camera evidence, and
+truthful session continuity and terminal rules through shared application use
+cases. Decision0057 adopts the bounded first slice; implementation and author
+focused checks are complete. Independent exact-source and targeted review passed
+on `3d270f54547fd282c3450c497c6475802d6de497`. PR119's first shipping attempt
+stopped at local validation on a stale two-tool inventory test; no merge or
+installation occurred. The exact three-tool guard is corrected and the remaining
+25-file server subset passes172 tests. Renew exact review before retrying the
+unchanged mandatory shipping workflow. This request does not start monitoring the
+current printer or establish a durable daemon. UI work remains parked.
+[Agent-monitor evidence](evidence/2026-09-08-agent-monitor.md) owns contract, implementation and validation progress.
+
 PR117 completed private/unregistered Lab integration at
 `a6868fd8271489fbfef0025f95c3f7c0e1dc7e18`, with the exact reviewed tree and
 ordered merge parents verified. No deployment, restart, production registration
-or printer call occurred. UI work remains parked and the next product task is
-unspecified. The current documentation-only bookkeeping records this completed
-outcome; it does not reopen application work. See
+or printer call occurred. PR118 completed the records closure. The subsequent
+agent-monitor authorization changes execution order as described above. See
 [merge-only evidence](evidence/2026-09-08-lab-merge.md).
 
 The user selected proposal1 from the previous three directions and then
@@ -30,7 +42,7 @@ boards and independent source/runtime verification. Its
 [evidence record](evidence/2026-09-07-dsl-widget-comparison.md) owns results.
 The comparison identified the ordinary390px Unknown badge wrap and14px Card increase;
 the source/packaged DSL mismatch was also explicit and is now repackaged for
-merge validation. The UI repair scope is recorded;
+the completed PR117 merge. The UI repair scope is recorded;
 there is no automatic release continuation. Preserve decision0056 and
 the extreme-decimal narrow-screen limitation. No repair has been implemented.
 
@@ -63,6 +75,15 @@ The completed maintenance sequence remains:
 5. Review the result with the user before expanding the product or private Lab.
 
 ## Observable acceptance
+
+The new slice must define bounded agent-readable data/image contracts, preserve
+freshness and independent evidence times, bind monitor continuity to a verified
+run, and distinguish observed terminal outcomes from lost or stopped monitoring.
+Decision0057 defines the first-slice contract. Candidate implementation and
+author checks and independent source/targeted review are complete. Mandatory
+full validation, PR merge and guarded delivery remain pending. No active-monitor, native-run or physical acceptance is claimed.
+
+The following concept/comparison acceptance remains historical:
 
 This round delivers three contexts of the same selected direction and a clear
 user-review step for width/composition. It separates current fixed-T1/four-leaf

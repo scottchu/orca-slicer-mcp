@@ -601,7 +601,7 @@ describe("personal OAuth discovery and boundary", () => {
       jsonrpc: "2.0",
       id: 1,
       result: {
-        serverInfo: { name: "u1-print-studio", version: "0.4.15" },
+        serverInfo: { name: "u1-print-studio", version: "0.4.17" },
       },
     });
 
@@ -616,6 +616,7 @@ describe("personal OAuth discovery and boundary", () => {
       result: { tools: Array<{ name: string; securitySchemes?: unknown }> };
     };
     expect(toolsBody.result.tools.map((tool) => tool.name)).toEqual([
+      "get_print_monitor_snapshot",
       "observe_printer",
       "refresh_printer_observation",
       "get_u1_camera_frame",
@@ -631,6 +632,7 @@ describe("personal OAuth discovery and boundary", () => {
       return !visibility || visibility.includes("model");
     });
     expect(modelVisible.map((tool) => tool.name)).toEqual([
+      "get_print_monitor_snapshot",
       "observe_printer",
       "open_printer_camera",
     ]);

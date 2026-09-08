@@ -9,6 +9,9 @@ import {
 } from "@modelcontextprotocol/ext-apps/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { monitorInputSchema, monitorOutputSchema } from "./print-monitor-schema.js";
+import { observePrintMonitor, type MonitorCameraReader } from "./application/observe-print-monitor.js";
+import { readMonitorCamera } from "./adapters/monitor-camera.js";
 import { createToolRegistration } from "./tool-registration.js";
 import embeddedMcpObservationFile from "../../../public/mcp-observation.html" with { type: "file" };
 import embeddedMcpCameraFile from "../../../public/mcp-camera.html" with { type: "file" };
@@ -94,6 +97,8 @@ export const createAppServer = (
     readJobHistory?: typeof readU1JobHistory;
     observations?: PrinterObservationStore;
     readCameraFrame?: CameraFrameReader;
+    readMonitorCamera?: MonitorCameraReader;
+    requestSignal?: AbortSignal;
     cameraSessions?: CameraWebRtcSessionController;
   } = {},
   options: {
@@ -155,6 +160,25 @@ export const createAppServer = (
       }],
     }));
   }
+
+  tools.register('get_print_monitor_snapshot', {
+    title: 'Get print monitoring evidence',
+    description: 'Assess or repeatedly observe the current print with one bounded read-only telemetry snapshot and optionally one model-readable camera image. Does not start background monitoring or control the printer. Run continuity is observational, not a durable printer-run identity. Use observe_printer or open_printer_camera when a focused widget is wanted.',
+    inputSchema: monitorInputSchema,
+    outputSchema: monitorOutputSchema,
+    ...securityConfig,
+    annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true },
+    ...(securitySchemes ? { _meta: securityMetadata } : {}),
+  }, async (input, extra) => {
+    const result = await observePrintMonitor(observations, input, {
+      readCamera: dependencies.readMonitorCamera ?? readMonitorCamera, issueToken: randomUUID, signal: dependencies.requestSignal ? AbortSignal.any([extra.signal, dependencies.requestSignal]) : extra.signal,
+    });
+    const structuredContent = monitorOutputSchema.parse(result.snapshot);
+    const text = JSON.stringify(structuredContent);
+    if (Buffer.byteLength(text, 'utf8') > 16 * 1024) throw new Error('Monitor output exceeded its bound');
+    return { isError: result.isError, structuredContent,
+      content: [{ type: 'text' as const, text }, ...(result.image ? [{ type: 'image' as const, mimeType: 'image/jpeg', data: Buffer.from(result.image).toString('base64') }] : [])] };
+  });
 
   const observationViewSchema = z.enum(OBSERVATION_VIEWS);
   const observationInputSchema = z.object({ view: observationViewSchema }).strict();

@@ -1,3 +1,4 @@
+import type { MonitorEvidence } from "./application/print-monitor-observation.js";
 import { createDomainObservationCache, type DomainObservationCache } from "./application/domain-observation-cache.js";
 import type { U1Status, U1WidgetMetadata } from "./u1-status.js";
 import { BED_MESH_TTL_MS, unavailableBedMesh, type BedMeshObservation, type BedMeshReader } from "./application/bed-mesh-observation.js";
@@ -50,6 +51,7 @@ export type ObservationSnapshot = {
 };
 
 type StatusReader = () => Promise<{
+  monitorEvidence?: MonitorEvidence;
   status: U1Status;
   metadata: U1WidgetMetadata;
 }>;
@@ -85,6 +87,8 @@ function capabilityEvidence(status: U1Status): ObservationSnapshot["capabilityEv
 
 export class PrinterObservationStore {
   private snapshot: ObservationSnapshot | null = null;
+  private statusAttempts = 0;
+  private monitorEvidence: MonitorEvidence | null = null;
   private lastReachableSnapshot: ObservationSnapshot | null = null;
   private inFlight: Promise<ObservationSnapshot> | null = null;
   private observationVersion = 0;
@@ -175,6 +179,30 @@ export class PrinterObservationStore {
     } };
   }
 
+  /** No force/read-through bypass: monitor and widgets share one due read. */
+  async currentMonitor() {
+    const previousReceipt = this.snapshot?.receivedAt;
+    const attempts = this.statusAttempts, waiting = this.inFlight !== null;
+    const snapshot = await this.current({ refresh: true });
+    return { snapshot, evidence: this.monitorEvidence,
+      acquisition: waiting || this.statusAttempts !== attempts || snapshot.receivedAt !== previousReceipt ? 'new' as const : 'cached' as const };
+  }
+
+  monitorFreshness(): Freshness {
+    if (!this.snapshot) return 'unknown';
+    const freshness = this.withCurrentFreshness(this.snapshot).freshness;
+    if (freshness !== 'fresh' || !this.monitorEvidence) return freshness;
+    const age = this.now().valueOf() - Date.parse(this.monitorEvidence.receivedAt);
+    return !Number.isFinite(age) || age < 0 ? 'unknown' :
+      age >= Math.max(15, this.snapshot.status.refreshAfterSeconds) * 1000 ? 'stale' : 'fresh';
+  }
+
+  monitorIdentity() {
+    return { receivedAt: this.monitorEvidence?.receivedAt ?? null,
+      jobKey: this.monitorEvidence?.exactJobKey ?? null,
+      epoch: this.snapshot?.connectionEpoch ?? null };
+  }
+
   private async currentStatus(options: { refresh?: boolean } = {}): Promise<ObservationSnapshot> {
     if (this.snapshot && (!options.refresh || !this.isDue(this.snapshot))) {
       return this.withCurrentFreshness(this.snapshot);
@@ -182,6 +210,8 @@ export class PrinterObservationStore {
     if (!this.inFlight) {
       this.inFlight = this.load()
         .catch((error: unknown) => {
+          this.monitorEvidence = null;
+          this.previouslyReachable = false;
           if (!this.snapshot) throw error;
           const stale = { ...this.snapshot, freshness: "stale" as const };
           this.snapshot = stale;
@@ -214,6 +244,7 @@ export class PrinterObservationStore {
   }
 
   private async load(): Promise<ObservationSnapshot> {
+    this.statusAttempts += 1;
     // A failed first status read must not discard an independently successful
     // mesh receipt. Normalize the absent status; never surface upstream errors.
     const result = await this.readStatus().catch((error: unknown) => {
@@ -232,6 +263,8 @@ export class PrinterObservationStore {
       metadata: {},
       };
     });
+    this.monitorEvidence = result.status.reachable && "monitorEvidence" in result
+      ? result.monitorEvidence ?? null : null;
     const reachableBasis = this.lastReachableSnapshot;
     const retainedOffline = !result.status.reachable && reachableBasis !== null;
     const status = retainedOffline

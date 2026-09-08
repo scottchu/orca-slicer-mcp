@@ -1,6 +1,6 @@
 # Next agent
 
-## Current state: private Lab merged; UI work remains parked
+## Current task: agent observation/monitor capabilities; UI work remains parked
 
 The user explicitly created and started this task on2026-09-07 in the assigned
 comparison worktree, branch `codex/u1-dsl-widget-comparison`, checkpoint
@@ -9,31 +9,29 @@ comparison worktree, branch `codex/u1-dsl-widget-comparison`, checkpoint
 canonical checkout on main; never switch its branch. The09-06 transfer record's
 new-conversation action is historical and is no longer pending.
 
-1. The user accepts the selected layout direction for now and explicitly stopped
-   further UI work. Single-card, two-card and narrow-stack concepts are delivered,
-   as recorded in
-   [layout-context evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-07-smart-layout-contexts.md).
-   There is no pending layout review, additional UI exploration or implementation.
-2. PR117 completed private/unregistered Lab source integration at
-   `a6868fd8271489fbfef0025f95c3f7c0e1dc7e18`. Ordered merge parents and the
-   exact approved tree were verified. No deployment, restart or printer call
-   occurred. [Merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md)
-   owns the completed outcome. This final bookkeeping tail changes documentation
-   only; it is not another application candidate or rollout.
-   The next product task is unspecified. Monitoring maturity questions did not
-   authorize monitoring implementation. Do not generate more concepts, resume
-   badge repair or run u1-ship --execute. Direction acceptance does not establish
-   implementation, runtime, physical or release acceptance.
-3. Preserve the transferred spacing/type WIP and provisional decision0056.
-   The comparison used explicitly identified source-derived private HTML. The
-   private bundle and preview pins are regenerated and independently validated
-   on the approved application head. Simple widgets remain the product mainline.
-4. Preserve the completed [comparison evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-07-dsl-widget-comparison.md)
-   and committed historical records. Unknown badge wrapping still increases the
-   Card by14px at390/100%; it must be handled within the selected design, not
-   forgotten or claimed fixed. Keep potential presentation changes distinct
-   from current closed DSL capabilities. Do not repeat completed captures or
-   full suites merely because this documentation/design round has begun.
+1. Follow the newly authorized [agent-monitor slice](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md):
+   Decision0057 adopts the first shared use-case slice. Candidate0.4.17/schema17
+   implements the tool-only snapshot/model image and observational continuity;
+   author-focused checks and independent exact-source/targeted review pass on
+   `3d270f54547fd282c3450c497c6475802d6de497`. PR119 stopped at validation on a
+   stale inventory assertion, before merge/install. The three-tool guard is now
+   corrected and172 tests in the remaining25-file server subset pass. Obtain
+   exact review of this test/documentation candidate, update the PR head, then
+   retry unchanged mandatory shipping with the sole full-validation owner. Roles remain
+   separated; cached source evidence does not prove deployment or active monitoring.
+2. Do not start monitoring the current printer merely because capability work
+   is authorized. Do not claim durable background monitoring, active ownership,
+   print success, or deployment without corresponding evidence. No new UI, DSL
+   capability, printer controls, authentication or Tailscale work is included.
+3. PR117 source integration and PR118 records closure are complete. Do not
+   recreate those merges or rerun their full suites for bookkeeping. Preserve
+   [merge-only evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-lab-merge.md),
+   comparison images and all historical records. Simple widgets remain the
+   product mainline; the private Lab remains unregistered.
+4. UI work stays parked. Preserve selected-direction concepts, provisional0056,
+   the390px Unknown badge/Card+14px defect and extreme-decimal narrow-screen
+   limitation. These are not fixes or accepted current UI behavior. Earlier
+   application evidence does not accept changed monitor implementation bytes.
 
 The current closed DSL is limited to the fixed T1 subject and HeadStatus,
 HeadTemperature, FilamentColor and FanRelation leaves. These do not establish

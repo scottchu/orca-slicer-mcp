@@ -457,6 +457,7 @@ describe("U1 status MCP App contract", () => {
       !visibility(tool) || visibility(tool)?.includes("model")
     );
     expect(modelVisible.map((tool) => tool.name)).toEqual([
+      "get_print_monitor_snapshot",
       "observe_printer",
       "open_printer_camera",
     ]);
@@ -546,7 +547,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 16,
+      schemaVersion: 17,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });

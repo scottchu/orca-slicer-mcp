@@ -62,6 +62,8 @@ silently changed.
 
 | [0055](0055-use-consistent-rows-for-default-summary.md) | Use consistent rows for the default summary | Independently accepted and delivered PR115; user acceptance pending |
 
+| [0057](0057-expose-bounded-agent-monitor-evidence.md) | Expose bounded agent monitoring evidence | Accepted first-slice direction; implementation acceptance pending |
+
 Decision 0026 is reserved for the paused queue work outside this source slice.
 
 Copy [the template](template.md) for new records. Accepted records should be

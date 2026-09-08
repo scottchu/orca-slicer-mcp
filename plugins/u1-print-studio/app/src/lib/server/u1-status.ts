@@ -1,3 +1,5 @@
+import { normalizeMonitorEvidence } from "./adapters/u1-monitor-evidence.js";
+import type { MonitorEvidence } from "./application/print-monitor-observation.js";
 import { execFile, spawn } from "node:child_process";
 import { promisify } from "node:util";
 
@@ -639,12 +641,14 @@ export async function readU1CameraFrame(): Promise<{
 
 export async function readU1Status(): Promise<{
   status: U1Status;
+  monitorEvidence?: MonitorEvidence;
   metadata: U1WidgetMetadata;
 }> {
   const observedAt = new Date().toISOString();
 
   try {
     const queryPayload = await fetchJson(QUERY_ROUTE);
+    const monitorEvidence = normalizeMonitorEvidence(queryPayload, new Date().toISOString());
     const webcamPayload = await fetchJson(WEBCAMS_ROUTE, 3).catch(
       (): JsonObject => ({})
     );
@@ -703,6 +707,7 @@ export async function readU1Status(): Promise<{
     }
 
     return {
+      monitorEvidence,
       status: {
         schemaVersion: 1,
         stateVersion: Date.now(),

@@ -5,7 +5,8 @@ description: Run a standalone asynchronous, read-only Snapmaker U1 print monitor
 
 # U1 Monitor Print
 
-Observe the active print until completion or failure is proven. Monitoring is
+Observe the active print through an evidenced reported outcome, preserving the
+strength and limitations of run binding. Monitoring is
 read-only: do not pause, resume, cancel, tune, or issue G-code without fresh
 authorization for that exact action.
 
@@ -39,6 +40,13 @@ Before reporting monitoring active, the owner accepts a private handoff with:
 A paused job can be monitored; pausing is not a terminal outcome. If a standalone
 request finds no identifiable active run, report current evidence and do not
 attach to a later job automatically. Never infer an artifact hash from a filename.
+
+Native session identity is used when exposed; its absence does not prohibit an
+explicit observational binding. With fresh active/paused filename and start/
+progress evidence, disclose that the service token is process-local continuity
+context, not a native run ID or printer authority. Same-name replacement between
+polls can escape detection even with increasing counters. Full SESSION-001/O1
+acceptance remains open. A single snapshot call does not itself enroll an owner.
 
 ## Asynchronous lifecycle
 
@@ -77,6 +85,27 @@ owner, report interruption and retain a private handoff for explicit resumption;
 do not promise checks or alerts after execution has stopped.
 
 ## Each observation
+
+Use model-visible `get_print_monitor_snapshot` for routine agent evidence:
+`{ camera: "snapshot", expectedRunToken: null }` for initial inspection, then
+return its opaque token in subsequent calls. Choose `camera: "omit"` when no
+new visual evidence is needed. The tool returns complete allowlisted status
+facts, a strict structured/text envelope and, when available, one model-visible
+JPEG. It creates no widget, stream activation, background task or printer action.
+The token has a12-minute observational window, extended only by a new consistent
+receipt; cached data is not a second observation. Read acquisition, observedAt,
+checkedAt, completeness and freshness together. Do not count cached receipts as
+fresh repeated evidence or override the store's due-refresh policy.
+
+Changed/uncertain/unknown token, source-clock regression, reconnect, observation
+gap or progress reset requires reporting the lost binding and explicit rebind;
+those expected-token calls neither mint a replacement token nor acquire camera.
+An initial null token can obtain camera without a native run UUID. Camera and
+telemetry are not atomic: association is only the same request time window,
+with independent receipt time. An unavailable/withheld image lowers visual
+confidence and cannot erase valid telemetry. If the tool is absent, report the
+capability unavailable; do not treat widget summaries or private metadata as
+complete agent evidence or silently replace the missing tool.
 
 Capture a timestamped complete snapshot of job state, exact filename, virtual
 storage activity and byte progress, current and total layers, elapsed time,
@@ -119,8 +148,14 @@ open the status card as a camera fallback.
 ## Terminal evidence
 
 Layer `N/N` is insufficient while state remains `printing`. Completion requires
-fresh telemetry showing `complete`, inactive virtual storage, full file
-position, no exception, parked tools, and heater targets returning to zero.
+fresh complete telemetry showing `complete`, inactive virtual storage, positive
+known file size with exactly equal valid file position, explicitly absent
+exception, explicitly parked tools, ready controller, and all heater targets
+zero. Missing evidence stays unknown. Target zero does not mean cold/safe to touch.
+The tool's `reported_consistent` means its checklist supports the printer's
+reported state; `boundRunVerified` remains false in this slice. Describe an
+observationally tracked reported completion with that limitation, not a proven
+native-bound or physical result. Do not close the broader SESSION/O1 gap from it.
 A failed or cancelled outcome requires fresh printer-reported terminal state
 for the bound run and inactive execution; report the reason when available.
 A concerning image alone remains an advisory failure observation. If terminal
@@ -131,8 +166,8 @@ Take a final camera snapshot when available. If the lowered bed moves the parts 
 say so and preserve the strongest earlier visual evidence instead of claiming
 an unseen physical result.
 
-Use `observe_printer` with `view: "progress"` for the routine focused progress
-card. Use `view: "overview"` only when the user requests a general overview or
+Use `observe_printer` with `view: "progress"` when a focused progress card
+is requested or useful for communication; use the data tool for routine polling. Use `view: "overview"` only when the user requests a general overview or
 the monitoring decision genuinely needs cross-domain state. Other focused
 views may be requested separately without reopening a large combined dashboard.
 

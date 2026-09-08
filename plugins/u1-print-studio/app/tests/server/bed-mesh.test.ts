@@ -204,7 +204,9 @@ describe("bed-mesh inbound composition", () => {
       expect(reads).toBe(1);
       expect((await client.listResources()).resources).toHaveLength(2);
       const tools = (await client.listTools()).tools;
-      expect(tools.filter(tool => (tool._meta?.ui as { visibility?: string[] })?.visibility?.includes("app") !== true)).toHaveLength(2);
+      expect(tools.filter(tool => (tool._meta?.ui as { visibility?: string[] })?.visibility?.includes("app") !== true).map(tool => tool.name)).toEqual([
+        "get_print_monitor_snapshot", "observe_printer", "open_printer_camera",
+      ]);
     } finally { await client.close(); await server.close(); }
   });
   test("private HTTP shares the mesh reader; static/other views acquire none", async () => {

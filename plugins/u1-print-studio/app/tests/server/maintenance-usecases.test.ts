@@ -57,13 +57,13 @@ describe('shared maintenance use cases', () => {
         const { tools } = z.object({ tools: z.array(z.object({ name: z.string() }).passthrough()) }).parse(wire);
         const cameraTools = ['open_u1_camera_stream', 'answer_u1_camera_stream', 'add_u1_camera_ice_candidates', 'close_u1_camera_stream'];
         expect(tools.map(({ name }) => name)).toEqual(oauth
-          ? ['observe_printer', 'refresh_printer_observation', 'get_u1_camera_frame', 'open_printer_camera', ...(camera ? cameraTools : [])]
-          : ['observe_printer', 'refresh_printer_observation', ...(camera ? cameraTools : []), 'get_u1_camera_frame', 'open_printer_camera']);
+          ? ['get_print_monitor_snapshot', 'observe_printer', 'refresh_printer_observation', 'get_u1_camera_frame', 'open_printer_camera', ...(camera ? cameraTools : [])]
+          : ['get_print_monitor_snapshot', 'observe_printer', 'refresh_printer_observation', ...(camera ? cameraTools : []), 'get_u1_camera_frame', 'open_printer_camera']);
         for (const tool of tools) {
           expect(tool).toHaveProperty('annotations.readOnlyHint', true);
           if (oauth) expect(tool).toHaveProperty('securitySchemes', [{ type: 'oauth2', scopes: ['u1.monitor'] }]);
           else expect(tool).not.toHaveProperty('securitySchemes');
-          if (!['observe_printer', 'open_printer_camera'].includes(tool.name)) expect(tool._meta).toHaveProperty('ui.visibility', ['app']);
+          if (!['get_print_monitor_snapshot', 'observe_printer', 'open_printer_camera'].includes(tool.name)) expect(tool._meta).toHaveProperty('ui.visibility', ['app']);
         }
         if (camera && oauth) expect(tools.find(({ name }) => name === 'add_u1_camera_ice_candidates')?.inputSchema).toHaveProperty(
           'properties.candidates.items.properties.sdpMLineIndex', { type: ['integer', 'null'], minimum: 0 });

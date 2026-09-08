@@ -197,8 +197,8 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.4.15",
-      toolSchemaVersion: 16,
+      runtimeVersion: "0.4.17",
+      toolSchemaVersion: 17,
       observationWidgetVersion: "observation-v21",
       cameraWidgetVersion: "camera-v17",
     });
