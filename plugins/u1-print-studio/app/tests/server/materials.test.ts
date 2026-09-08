@@ -185,14 +185,14 @@ describe("material inbound composition", () => {
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
     try {
-      for (const view of ["progress", "thermals", "bed_mesh", "jobs", "job_history", "queue", "fans"]) await client.callTool({ name: "observe_printer", arguments: { view } });
+      for (const view of ["progress", "thermals", "bed_mesh", "jobs", "job_history", "queue", "fans"]) await client.callTool({ name: "open_printer_view", arguments: { view } });
       expect(reads).toBe(0);
-      const overview = await client.callTool({ name: "observe_printer", arguments: { view: "overview" } });
+      const overview = await client.callTool({ name: "open_printer_view", arguments: { view: "overview" } });
       const overviewContent = overview.structuredContent as { view: string; module: { tiles: Array<{ id: string }> } };
       expect(overviewContent.view).toBe("overview");
       expect(overviewContent.module.tiles.map(tile => tile.id)).toContain("heads");
       expect(reads).toBe(1);
-      const result = await client.callTool({ name: "observe_printer", arguments: { view: "heads" } });
+      const result = await client.callTool({ name: "open_printer_view", arguments: { view: "heads" } });
       expect(result.structuredContent).toMatchObject({ view: "heads", module: { materials: { state: "known" } } });
       const module = (result.structuredContent as { module: { items: unknown[] } }).module;
       expect(module.items).toHaveLength(4);
@@ -200,9 +200,9 @@ describe("material inbound composition", () => {
       expect(reads).toBe(1);
       await client.callTool({ name: "refresh_printer_observation", arguments: { view: "heads" } }); expect(reads).toBe(1);
       expect((await client.listTools()).tools.map(tool => tool.name).sort()).toEqual([
-        "get_print_monitor_snapshot", "get_u1_camera_frame", "observe_printer", "open_printer_camera", "refresh_printer_observation",
+        "get_printer_snapshot", "get_u1_camera_frame", "open_printer_camera", "open_printer_view", "refresh_printer_observation",
       ]);
-      expect((await client.callTool({ name: "observe_printer", arguments: { view: "filament_sync" } })).isError).toBe(true);
+      expect((await client.callTool({ name: "open_printer_view", arguments: { view: "filament_sync" } })).isError).toBe(true);
     } finally { await client.close(); await server.close(); }
   });
 

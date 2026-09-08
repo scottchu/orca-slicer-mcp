@@ -1,10 +1,23 @@
 # Project state
 
+## Active naming change — 2026-09-08
+
+The user approved `get_printer_snapshot` and `open_printer_view`;
+`open_printer_camera` is unchanged. This bounded catalog rename is now the next
+authorized task, superseding the earlier awaiting-task wording below. Source
+target is runtime0.4.18/schema18 with unchanged observation21/Camera17 assets;
+PR119 runtime0.4.17/schema17 remains the deployed baseline until guarded delivery.
+[Tool naming evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-printer-tool-names.md) owns actual checks, changed paths and remaining
+gates. Next: independent exact review, then one owner runs mandatory shipping
+validation and the existing guarded PR/release workflow. No active monitoring,
+UI work, printer controls, auth/Tailscale or plugin reinstall is authorized.
+
+
 ## Active continuation
 
 使用者已授權移轉至新 worktree；此指示優先於舊比較任務的固定目錄限制。
 接手入口：[NEW_AGENT_START.md](NEW_AGENT_START.md)。PR117–120 均已完成；
-本次只保存本機證據與交接，不新增產品功能或發布。
+交接後已完成使用者授權的一次 snapshot MCP 實測；未新增產品功能或發布。
 
 Decision0057's bounded first agent-monitor slice is delivered through PR119,
 merged at `825b38135948574f832f94aa533d3bb58dd6e33a`. The unchanged shipping
@@ -90,9 +103,12 @@ at the product-coverage layer described in the ledger.
   continuity checks pass. Synthetic image decoding is not host rendering proof.
 - **Deployed service:** both services run0.4.17/schema17;82 static responses,
   84 security checks, integrity and private-state preservation pass.
-- **Host/physical:** this conversation's catalog has not refreshed to include the
-  new tool. No real-printer monitoring, physical completion, phone or host
-  multimodal acceptance is claimed. Next product work is unspecified.
+- **Host/real observation:** the new tool became available and one authorized
+  remote MCP call returned fresh complete telemetry plus a decoded JPEG visible
+  to the primary. Independent saved-response validation passed. The reported
+  terminal state is unbound; the bed/parts were not visible. This is one-shot
+  evidence, not physical completion, phone acceptance or active monitoring.
+  Refresh causality is unknown; no reload request or service restart occurred.
 
 ### Historical PR115 acceptance
 
@@ -118,9 +134,8 @@ at the product-coverage layer described in the ledger.
 
 ## Next action
 
-The first agent-monitor slice is delivered. Review its capability and evidence
-limits with the user; no further product implementation or monitoring task is
-specified. UI work remains parked. Follow
+The first agent-monitor slice and authorized one-shot snapshot smoke test are
+complete. Await the next user task; no ongoing monitoring is enrolled. UI work remains parked. Follow
 [NEXT_AGENT.md](NEXT_AGENT.md), preserving evidence boundaries and existing release guards. Do not
 register the Lab, control the printer, change auth/Tailscale or reinstall plugins.
 

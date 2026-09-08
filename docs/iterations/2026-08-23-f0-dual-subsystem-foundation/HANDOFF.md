@@ -1,14 +1,36 @@
 # F0 maintenance handoff
 
+## Active naming change — 2026-09-08
+
+The user approved `get_printer_snapshot` and `open_printer_view`;
+`open_printer_camera` is unchanged. This bounded catalog rename is now the next
+authorized task, superseding the earlier awaiting-task wording below. Source
+target is runtime0.4.18/schema18 with unchanged observation21/Camera17 assets;
+PR119 runtime0.4.17/schema17 remains the deployed baseline until guarded delivery.
+[Tool naming evidence](evidence/2026-09-08-printer-tool-names.md) owns actual checks, changed paths and remaining
+gates. Next: independent exact review, then one owner runs mandatory shipping
+validation and the existing guarded PR/release workflow. No active monitoring,
+UI work, printer controls, auth/Tailscale or plugin reinstall is authorized.
+
+
 ## 新 worktree 交接
 
 使用者已授權新 worktree 接手並在核對與接手确认後清理舊 comparison tree。
 [繁中接手入口](../../../NEW_AGENT_START.md) 與
 [保存證據](evidence/2026-09-08-worktree-handoff.md) 記錄本次順序。
-PR117–120 已完成；目前只做本機保存與文件交接，沒有新產品工作、測試、部署
-或印表機操作。UI 停工，下一項產品需求尚未指定。
+PR117–120 與交接均已完成；後續明確授權的一次 snapshot MCP 實測亦已完成，
+詳見下方 monitor evidence。沒有新部署或 active monitoring；UI 停工，等待新任務。
 
 ## Current work
+
+The authorized one-shot host snapshot test is complete. The new remote MCP tool
+returned real telemetry and a model-visible JPEG; independent saved-response
+checks passed. No additional printer call, reload, restart or deployment followed.
+The unbound reported terminal state and unseen bed/parts do not prove physical
+success. No monitor is active; await the next user task. Changed records are
+PROJECT_STATE, NEXT_AGENT, this HANDOFF/VALIDATION and the existing monitor
+evidence; private response/image/check artifacts remain ignored.
+
 
 Decision0057's bounded first agent-monitor slice is delivered through PR119,
 merged at `825b38135948574f832f94aa533d3bb58dd6e33a`. The unchanged shipping

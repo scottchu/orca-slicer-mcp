@@ -446,16 +446,18 @@ printer environments support the described behavior.
 - **API-004:** File, queue, database, webcam-configuration, account, service,
   update, and power mutations are classified as writes even when they do not
   immediately move or heat the printer.
-- **API-005:** The source remote Monitor inventory contains exactly two
-  model-visible presentation intents: `observe_printer`, with one required
+- **API-005:** The remote inventory contains exactly two
+  model-visible presentation intents: `open_printer_view`, with one required
   closed `view` enum, and `open_printer_camera`. The enum is exactly `overview`,
   `progress`, `thermals`, `heads`, `jobs`, `job_history`, `queue`, `fans`, and
   `bed_mesh`; `jobs` remains the stable Current Job selector while
   `job_history` independently selects Job History. Their selected modules do
   not combine current-job and history fields. Current Job and History retain
   independent acquisition, receipts and projections;
-  unknown values and generic selector fields fail closed. Exactly eight
-  app-only calls remain hidden: `refresh_printer_observation`, the temporary
+  unknown values and generic selector fields fail closed. The following
+  runtime0.4.8 inventory/resource details are historical and superseded by
+  API-006 and the current-only resource policy. At that time eight
+  app-only calls remained hidden: `refresh_printer_observation`, the temporary
   `show_u1_status` and `get_u1_status` compatibility aliases, and the five
   camera frame/signaling helpers. All observation tools are read-only and
   require `u1.monitor` where remote OAuth applies. `observation-v14` is the
@@ -491,11 +493,13 @@ printer environments support the described behavior.
   added.
 
 - **API-006:** Decision0057 adds model-visible tool-only
-  `get_print_monitor_snapshot` with strict camera omit/snapshot and nullable
+  `get_printer_snapshot` with strict camera omit/snapshot and nullable
   expectedRunToken inputs, a real strict outputSchema and the same u1.monitor
   enforcement. Current candidate inventory is three model-visible tools plus
   six app-only helpers; API-005's two presentation intents and resource behavior
-  remain. Runtime target0.4.17/tool schema17 retains observation21/Camera17;
+  remain. Decision0058 renames only the public catalog, rejects both retired
+  names without acquisition, and adds no aliases or authority. Runtime
+  target0.4.18/tool schema18 retains observation21/Camera17;
   source target does not imply deployed acceptance. The shared due-read store
   supplies presence-aware allowlisted status, connector receipt/source monotonic
   time, independent progress facts and explicit derived estimates. Structured

@@ -174,7 +174,7 @@ describe("U1 status MCP App contract", () => {
     );
     const client = await connectClient({ observations: store });
     const [first, second] = await Promise.all([1, 2].map(() => client.callTool({
-      name: "observe_printer", arguments: { view: "overview" },
+      name: "open_printer_view", arguments: { view: "overview" },
     })));
     expect(counts).toEqual({ status: 1, mesh: 1, materials: 1, queue: 1,
       environment: 1, current: 1, history: 1 });
@@ -184,7 +184,7 @@ describe("U1 status MCP App contract", () => {
         { id: "job_history" }, { id: "queue" }, { id: "fans" }, { id: "bed_mesh" },
       ] },
     });
-    await client.callTool({ name: "observe_printer", arguments: { view: "progress" } });
+    await client.callTool({ name: "open_printer_view", arguments: { view: "progress" } });
     await client.listResources();
     expect(counts).toEqual({ status: 1, mesh: 1, materials: 1, queue: 1,
       environment: 1, current: 1, history: 1 });
@@ -194,7 +194,7 @@ describe("U1 status MCP App contract", () => {
       isolatedReads++; return { status, metadata };
     }, () => new Date(receipt));
     const isolatedClient = await connectClient({ observations: isolated });
-    const isolatedResult = await isolatedClient.callTool({ name: "observe_printer", arguments: { view: "overview" } });
+    const isolatedResult = await isolatedClient.callTool({ name: "open_printer_view", arguments: { view: "overview" } });
     expect(isolatedReads).toBe(1);
     expect(isolatedResult.structuredContent).toMatchObject({
       module: { kind: "overview", coverage: "partial", tiles: expect.arrayContaining([
@@ -219,7 +219,7 @@ describe("U1 status MCP App contract", () => {
   test("advertises one focused observation tool and app-only refresh", async () => {
     const client = await connectClient();
     const listed = await client.listTools();
-    const observe = listed.tools.find((tool) => tool.name === "observe_printer");
+    const observe = listed.tools.find((tool) => tool.name === "open_printer_view");
     const refresh = listed.tools.find(
       (tool) => tool.name === "refresh_printer_observation"
     );
@@ -261,11 +261,11 @@ describe("U1 status MCP App contract", () => {
   test("fails closed for unknown views and generic selector fields", async () => {
     const client = await connectClient();
     const unknown = await client.callTool({
-      name: "observe_printer",
+      name: "open_printer_view",
       arguments: { view: "camera" },
     });
     const generic = await client.callTool({
-      name: "observe_printer",
+      name: "open_printer_view",
       arguments: { view: "progress", selector: "printer.objects.query" },
     });
 
@@ -346,7 +346,7 @@ describe("U1 status MCP App contract", () => {
   test("returns focused model-readable observations without a large PNG card", async () => {
     const client = await connectClient();
     const result = await client.callTool({
-      name: "observe_printer",
+      name: "open_printer_view",
       arguments: { view: "thermals" },
     });
     expect(result.structuredContent).toMatchObject({
@@ -403,11 +403,11 @@ describe("U1 status MCP App contract", () => {
     let reads = 0;
     const client = await connectClient({ onStatusRead: () => { reads += 1; } });
     const progress = await client.callTool({
-      name: "observe_printer",
+      name: "open_printer_view",
       arguments: { view: "progress" },
     });
     const thermals = await client.callTool({
-      name: "observe_printer",
+      name: "open_printer_view",
       arguments: { view: "thermals" },
     });
     const refreshed = await client.callTool({
@@ -457,8 +457,8 @@ describe("U1 status MCP App contract", () => {
       !visibility(tool) || visibility(tool)?.includes("model")
     );
     expect(modelVisible.map((tool) => tool.name)).toEqual([
-      "get_print_monitor_snapshot",
-      "observe_printer",
+      "get_printer_snapshot",
+      "open_printer_view",
       "open_printer_camera",
     ]);
     expect(
@@ -495,7 +495,7 @@ describe("U1 status MCP App contract", () => {
     expect(openCamera?.description).toContain("every explicit open");
     expect(openCamera?.description).toContain("camera-only");
     expect(
-      listed.tools.find((tool) => tool.name === "observe_printer")?.description
+      listed.tools.find((tool) => tool.name === "open_printer_view")?.description
     ).toContain("focused");
 
     const legacyShow = await client.callTool({
@@ -547,7 +547,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 17,
+      schemaVersion: 18,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });
@@ -650,7 +650,7 @@ describe("U1 status MCP App contract", () => {
     });
 
     const statusResult = await client.callTool({
-      name: "observe_printer",
+      name: "open_printer_view",
       arguments: { view: "overview" },
     });
     const cameraResult = await client.callTool({

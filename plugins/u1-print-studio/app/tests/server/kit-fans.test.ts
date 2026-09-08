@@ -94,7 +94,7 @@ test('actual Kit Fans page is acquisition-free and HTTP/MCP share one injected s
   try {
     const response = await fetch(`${origin}/mcp`, {
       method: 'POST', headers: { accept: 'application/json, text/event-stream', 'content-type': 'application/json' },
-      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'observe_printer', arguments: { view: 'fans' } } })
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'open_printer_view', arguments: { view: 'fans' } } })
     });
     expect(response.status).toBe(200);
     expect(reads).toBe(1);

@@ -1,6 +1,12 @@
 # 新 agent 接手入口（2026-09-08）
 
-請用繁體中文接手。先核對現況並保留所有既有資料，不要開始新的 UI、監控或發布。
+請用繁體中文接手。先核對現況並保留所有既有資料。
+
+後續使用者已接受 MCP 命名變更：`get_printer_snapshot`、`open_printer_view`，
+`open_printer_camera` 不變。目前依 [NEXT_AGENT.md](NEXT_AGENT.md) 執行該有界
+變更、獨立驗證及既有 guarded release；以下原始交接限制與版本是歷史 checkpoint，
+不可重播清理或將其「只讀交接」當成目前命名工作的禁止令。UI 仍停工，沒有 active monitoring。
+已完成的一次 host snapshot 驗收見 monitor evidence，不能推論完整列印驗收。
 
 ## 目前位置與順序
 

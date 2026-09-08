@@ -190,14 +190,14 @@ describe("bed-mesh inbound composition", () => {
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
     try {
-      for (const view of ["progress", "thermals", "heads", "jobs", "job_history", "queue", "fans"]) await client.callTool({ name: "observe_printer", arguments: { view } });
+      for (const view of ["progress", "thermals", "heads", "jobs", "job_history", "queue", "fans"]) await client.callTool({ name: "open_printer_view", arguments: { view } });
       expect(reads).toBe(0);
-      const overview = (await client.callTool({ name: "observe_printer", arguments: { view: "overview" } })).structuredContent as
+      const overview = (await client.callTool({ name: "open_printer_view", arguments: { view: "overview" } })).structuredContent as
         { view: string; module: { tiles: Array<{ id: string }> } };
       expect(overview.view).toBe("overview");
       expect(overview.module.tiles.map(tile => tile.id)).toContain("bed_mesh");
       expect(reads).toBe(1);
-      const result = await client.callTool({ name: "observe_printer", arguments: { view: "bed_mesh" } });
+      const result = await client.callTool({ name: "open_printer_view", arguments: { view: "bed_mesh" } });
       expect(result.structuredContent).toMatchObject({ view: "bed_mesh", module: { status: "active", state: "known" } });
       expect(reads).toBe(1);
       await client.callTool({ name: "refresh_printer_observation", arguments: { view: "bed_mesh" } });
@@ -205,7 +205,7 @@ describe("bed-mesh inbound composition", () => {
       expect((await client.listResources()).resources).toHaveLength(2);
       const tools = (await client.listTools()).tools;
       expect(tools.filter(tool => (tool._meta?.ui as { visibility?: string[] })?.visibility?.includes("app") !== true).map(tool => tool.name)).toEqual([
-        "get_print_monitor_snapshot", "observe_printer", "open_printer_camera",
+        "get_printer_snapshot", "open_printer_view", "open_printer_camera",
       ]);
     } finally { await client.close(); await server.close(); }
   });

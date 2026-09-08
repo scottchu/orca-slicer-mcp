@@ -23,8 +23,8 @@
     <script type="module">
       const frame = document.querySelector('iframe');
       const query = new URLSearchParams(location.search);
-      const toolName = query.get('tool') ?? 'observe_printer';
-      const args = toolName === 'observe_printer' ? { view: query.get('view') ?? 'heads' } : {};
+      const toolName = query.get('tool') ?? 'open_printer_view';
+      const args = toolName === 'open_printer_view' ? { view: query.get('view') ?? 'heads' } : {};
       const post = (message) =>
         frame.contentWindow.postMessage({ jsonrpc: '2.0', ...message }, '*');
       const state = { calls: [], messages: [], sizes: [], ready: false, result: null, uri: null, displayMode: 'inline', displayRequests: [] };

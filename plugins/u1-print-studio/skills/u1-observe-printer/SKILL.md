@@ -37,7 +37,7 @@ large status dashboard.
 
 ## Route the presentation
 
-- For a non-camera view, call model-visible `observe_printer` with exactly one
+- For a non-camera view, call model-visible `open_printer_view` with exactly one
   required `view` value from the list above. The mounted widget owns refresh
   through its app-only helper; do not call that helper directly.
 - For `camera`, call model-visible `open_printer_camera`. The camera widget owns

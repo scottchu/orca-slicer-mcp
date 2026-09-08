@@ -1,5 +1,18 @@
 # Next agent
 
+## Active naming change — 2026-09-08
+
+The user approved `get_printer_snapshot` and `open_printer_view`;
+`open_printer_camera` is unchanged. This bounded catalog rename is now the next
+authorized task, superseding the earlier awaiting-task wording below. Source
+target is runtime0.4.18/schema18 with unchanged observation21/Camera17 assets;
+PR119 runtime0.4.17/schema17 remains the deployed baseline until guarded delivery.
+[Tool naming evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-printer-tool-names.md) owns actual checks, changed paths and remaining
+gates. Next: independent exact review, then one owner runs mandatory shipping
+validation and the existing guarded PR/release workflow. No active monitoring,
+UI work, printer controls, auth/Tailscale or plugin reinstall is authorized.
+
+
 ## Current task: agent observation/monitor capabilities; UI work remains parked
 
 使用者已授權移轉至新 worktree；此指示優先於舊比較任務的固定目錄限制。
@@ -11,8 +24,9 @@
 `2a3e280f2d634f3e4fbabbf7be307f524a3fd86b`。舊 branch/cwd/checkpoint 的
 限制僅是歷史；canonical checkout 維持 main。先讀交接入口和 required records，
 核對 private preservation manifest，再由獨立驗證者與新接手 agent 確認。
-只有 root 可在雙方確認後移除舊 comparison worktree；此刻未移除。
-可只讀重新 discover 本 session 的工具目錄；不要為確認工具而呼叫印表機。
+舊 comparison worktree 清理已完成，以本機 cleanup receipt 的 completed 記錄為準；
+保全資料與其他 worktrees 維持原狀，不重播清理。
+後續明確授權的一次 snapshot MCP 實測已完成；目前等待新指令，不追加輪詢。
 
 1. The [agent-monitor first slice](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md) is delivered through PR119 at
    `825b38135948574f832f94aa533d3bb58dd6e33a`, runtime0.4.17/schema17 with
@@ -20,9 +34,10 @@
    restarts/verification completed. Review the delivered capability and limits
    with the user; the next product task is not specified. Do not replay the
    completed implementation, review, merge or deployment as a pending action.
-   This conversation's catalog still lacks the new tool; installed capability
-   does not establish host refresh or multimodal acceptance. Do not reinstall
-   plugins or start real-printer monitoring to close that evidence gap.
+   The new tool is now available; the authorized one-shot remote snapshot test
+   and independent saved-response checks passed. No reload request was sent;
+   refresh causality is unknown. Await the next user task. Do not infer active
+   monitoring, physical completion or phone acceptance from this single sample.
 2. Do not start monitoring the current printer merely because capability work
    is authorized. Do not claim durable background monitoring, active ownership,
    print success, or deployment without corresponding evidence. No new UI, DSL

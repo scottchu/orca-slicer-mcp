@@ -161,9 +161,9 @@ export const createAppServer = (
     }));
   }
 
-  tools.register('get_print_monitor_snapshot', {
-    title: 'Get print monitoring evidence',
-    description: 'Assess or repeatedly observe the current print with one bounded read-only telemetry snapshot and optionally one model-readable camera image. Does not start background monitoring or control the printer. Run continuity is observational, not a durable printer-run identity. Use observe_printer or open_printer_camera when a focused widget is wanted.',
+  tools.register('get_printer_snapshot', {
+    title: 'Get printer snapshot',
+    description: 'Get one bounded read-only printer telemetry snapshot and optionally one model-readable camera image. Does not start background monitoring or control the printer. Run continuity is observational, not a durable printer-run identity. Use open_printer_view or open_printer_camera when a focused widget is wanted.',
     inputSchema: monitorInputSchema,
     outputSchema: monitorOutputSchema,
     ...securityConfig,
@@ -183,9 +183,9 @@ export const createAppServer = (
   const observationViewSchema = z.enum(OBSERVATION_VIEWS);
   const observationInputSchema = z.object({ view: observationViewSchema }).strict();
   tools.register(
-    "observe_printer",
+    "open_printer_view",
     ({
-      title: "Observe printer",
+      title: "Open printer view",
       description:
         "Open one focused read-only U1 observation strip. Choose overview, progress, thermals, heads, jobs (current job only), job_history, queue, fans, or bed_mesh. Current Job and Job History are separate observations. Use open_printer_camera for camera viewing.",
       inputSchema: observationInputSchema,

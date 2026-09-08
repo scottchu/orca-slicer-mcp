@@ -1,12 +1,25 @@
 # F0 validation index
 
+## Active naming change — 2026-09-08
+
+The user approved `get_printer_snapshot` and `open_printer_view`;
+`open_printer_camera` is unchanged. This bounded catalog rename is now the next
+authorized task, superseding the earlier awaiting-task wording below. Source
+target is runtime0.4.18/schema18 with unchanged observation21/Camera17 assets;
+PR119 runtime0.4.17/schema17 remains the deployed baseline until guarded delivery.
+[Tool naming evidence](evidence/2026-09-08-printer-tool-names.md) owns actual checks, changed paths and remaining
+gates. Next: independent exact review, then one owner runs mandatory shipping
+validation and the existing guarded PR/release workflow. No active monitoring,
+UI work, printer controls, auth/Tailscale or plugin reinstall is authorized.
+
+
 ## 新 worktree 交接
 
 使用者已授權新 worktree 接手並在核對與接手确认後清理舊 comparison tree。
 [繁中接手入口](../../../NEW_AGENT_START.md) 與
 [保存證據](evidence/2026-09-08-worktree-handoff.md) 記錄本次順序。
-PR117–120 已完成；目前只做本機保存與文件交接，沒有新產品工作、測試、部署
-或印表機操作。UI 停工，下一項產品需求尚未指定。
+PR117–120 與交接均已完成；後續明確授權的一次 snapshot MCP 實測亦已完成，
+詳見下方 monitor evidence。沒有新部署或 active monitoring；UI 停工，等待新任務。
 
 ## Current agent observation/monitor slice
 
@@ -21,10 +34,12 @@ Independent installed-byte HTTP MCP synthetic verification passed tool inventory
 structured/text equality, decoded-fixture JPEG identity, token/cache continuity
 and mismatched-token camera withholding. Task-owned processes and fixtures were
 released. The initial nonexistent-CLI probe assumption is retained as a probe
-precondition error. No real printer/camera, active monitoring, phone or host
-multimodal acceptance follows. This conversation's catalog still omits the new
-tool; server capability and host refresh remain separate. No plugin reinstall
-was performed. This closure changes documentation only and requires no redeploy.
+precondition error. Those synthetic checks alone establish no real-printer result.
+The later authorized one-shot host test returned real telemetry and a visible
+JPEG; independent strict-schema, structured/text, image-byte and decode checks
+passed. The appended agent-monitor evidence owns exact commands and boundaries.
+No active monitoring, physical completion or phone acceptance follows. No reload
+request, service restart or plugin reinstall occurred; no redeploy is required.
 
 ## Completed private Lab merge-only integration
 
