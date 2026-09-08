@@ -9,16 +9,15 @@ comparison worktree, branch `codex/u1-dsl-widget-comparison`, checkpoint
 canonical checkout on main; never switch its branch. The09-06 transfer record's
 new-conversation action is historical and is no longer pending.
 
-1. Follow the newly authorized [agent-monitor slice](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md):
-   Decision0057 adopts the first shared use-case slice. Candidate0.4.17/schema17
-   implements the tool-only snapshot/model image and observational continuity;
-   author-focused checks and independent exact-source/targeted review pass on
-   `3d270f54547fd282c3450c497c6475802d6de497`. PR119 stopped at validation on a
-   stale inventory assertion, before merge/install. The three-tool guard is now
-   corrected and172 tests in the remaining25-file server subset pass. Obtain
-   exact review of this test/documentation candidate, update the PR head, then
-   retry unchanged mandatory shipping with the sole full-validation owner. Roles remain
-   separated; cached source evidence does not prove deployment or active monitoring.
+1. The [agent-monitor first slice](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md) is delivered through PR119 at
+   `825b38135948574f832f94aa533d3bb58dd6e33a`, runtime0.4.17/schema17 with
+   unchanged observation21/Camera17 assets. Mandatory shipping and both service
+   restarts/verification completed. Review the delivered capability and limits
+   with the user; the next product task is not specified. Do not replay the
+   completed implementation, review, merge or deployment as a pending action.
+   This conversation's catalog still lacks the new tool; installed capability
+   does not establish host refresh or multimodal acceptance. Do not reinstall
+   plugins or start real-printer monitoring to close that evidence gap.
 2. Do not start monitoring the current printer merely because capability work
    is authorized. Do not claim durable background monitoring, active ownership,
    print success, or deployment without corresponding evidence. No new UI, DSL
@@ -37,12 +36,11 @@ The current closed DSL is limited to the fixed T1 subject and HeadStatus,
 HeadTemperature, FilamentColor and FanRelation leaves. These do not establish
 complete Heads or Thermals widget parity; preserve the recorded overlap limits.
 
-PR115 / runtime0.4.15 remains the recorded deployed baseline. The local0.4.16,
-observation22 and Camera18 WIP is preserved outside this candidate; production
-inputs and public artifacts are restored to main. Private-Lab revision7 remains
-unpublished experimental work.
-Earlier tests do not accept these changed bytes. No product tests or deployment
-were run as part of the handoff; see the
+PR119 / runtime0.4.17 is now deployed; PR115 / runtime0.4.15 is historical.
+The unrelated local0.4.16, observation22 and Camera18 WIP remains preserved
+outside the delivered slice. Private-Lab revision7 is still experimental and
+unregistered. The original transfer performed no product tests or deployment;
+that historical boundary is recorded in the
 [transfer evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-06-dsl-widget-comparison-handoff.md).
 
 ## Preserve

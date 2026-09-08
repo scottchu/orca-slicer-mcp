@@ -2,17 +2,14 @@
 
 ## Active continuation
 
-The user now authorizes implementing agent-readable observation and monitoring
-capabilities: a complete read-only snapshot, model-visible camera evidence, and
-truthful session continuity and terminal rules through shared application use
-cases. Decision0057 adopts the bounded first slice; implementation and author
-focused checks are complete. Independent exact-source and targeted review passed
-on `3d270f54547fd282c3450c497c6475802d6de497`. PR119's first shipping attempt
-stopped at local validation on a stale two-tool inventory test; no merge or
-installation occurred. The exact three-tool guard is corrected and the remaining
-25-file server subset passes172 tests. Renew exact review before retrying the
-unchanged mandatory shipping workflow. This request does not start monitoring the
-current printer or establish a durable daemon. UI work remains parked.
+Decision0057's bounded first agent-monitor slice is delivered through PR119,
+merged at `825b38135948574f832f94aa533d3bb58dd6e33a`. The unchanged shipping
+workflow completed mandatory validation, exact-build installation, both service
+restarts, health/integrity,84 security checks and static-asset/preservation checks.
+The current runtime is0.4.17/schema17; observation21 and Camera17 client assets
+remain unchanged. The first failed inventory gate and its correction remain in
+the evidence record. No current-printer monitoring or durable daemon was started;
+UI work remains parked. Further product work has not been specified.
 [Agent-monitor evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md) owns the new slice.
 
 Private, unregistered Lab source integration is complete through PR117, merged
@@ -52,8 +49,12 @@ to main; unrelated Camera WIP remains separately preserved.
 
 ## Baseline
 
-PR115 consistent default is merged at `7584f62168c8861e95b8904e22021b9eeaf300eb`
-and deployed: runtime 0.4.15, schema 16, observation 21 and Camera 17.
+PR119 is the current deployed runtime baseline:0.4.17/schema17, observation21
+and Camera17. Both services passed restart, health, integrity and exact-asset
+verification; detailed boundaries are in the agent-monitor evidence.
+
+Historical PR115 consistent default was merged at `7584f62168c8861e95b8904e22021b9eeaf300eb`
+and deployed as runtime 0.4.15, schema 16, observation 21 and Camera 17.
 Both services passed restart, health, integrity and exact-asset verification.
 PR109/110 integration and bookkeeping are complete. These are recorded release
 observations, not a claim of continuous live monitoring.
@@ -61,15 +62,15 @@ observations, not a claim of continuous live monitoring.
 ## Active iteration
 
 [F0 maintenance brief](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/BRIEF.md)
-now prioritizes the agent-readable observation/monitor contract and implementation. [Decision 0054](docs/decisions/0054-own-current-state-and-maintenance-evidence.md)
+records the delivered first agent-monitor slice; the next product task is unspecified. [Decision 0054](docs/decisions/0054-own-current-state-and-maintenance-evidence.md)
 defines record ownership; [NEXT_AGENT.md](NEXT_AGENT.md) owns execution order.
 
 | Workstream | Current status | Next bounded action |
 | --- | --- | --- |
 | Maintenance | PR111 reviewed, merged and deployed through unchanged shipping guards | Review the delivered result with the user |
-| Production widgets | PR115 / 0.4.15 is deployed; both services and exact assets verified | Preserve truthful coverage; accept actual-device outcomes separately |
+| Production widgets | PR119 runtime0.4.17 deployed with unchanged observation21/Camera17 assets | Preserve truthful coverage; accept actual-device outcomes separately |
 | Private composable Lab | PR117/118 integration and closure complete; UI work parked | Preserve private scope and known limits |
-| Agent observation/monitoring | Candidate0.4.17/schema17 exact-source/targeted review approved; no active printer monitoring | Review the inventory-test correction, then retry mandatory guarded PR/shipping gates |
+| Agent observation/monitoring | PR119 first slice deployed; no active printer monitoring | Review delivered capability and limits with the user; next product task unspecified |
 | Preparation handoff | Decision 0048 pure core independently accepted | Supported adapters, durable storage and actual upload remain deferred |
 | Camera C08 | User reports Auto/Live working at home and outside use working well | Preserve this self-report; long-duration and mounted-host acceptance remain separate |
 | Remaining widget requests | [55-ID ledger](docs/widget-delivery.md) retains delivery and gaps | No new feature work during this maintenance slice |
@@ -78,7 +79,18 @@ Unrelated Camera planning in another worktree is preserved and is not adopted
 by this maintenance candidate. Queue, Fans and Job History remain unfinished
 at the product-coverage layer described in the ledger.
 
-## Acceptance state — PR115 baseline
+## Acceptance state — PR119 current baseline
+
+- **Software/protocol:** independent exact review and unchanged mandatory shipping
+  validation pass; installed-byte synthetic MCP inventory, data/image and
+  continuity checks pass. Synthetic image decoding is not host rendering proof.
+- **Deployed service:** both services run0.4.17/schema17;82 static responses,
+  84 security checks, integrity and private-state preservation pass.
+- **Host/physical:** this conversation's catalog has not refreshed to include the
+  new tool. No real-printer monitoring, physical completion, phone or host
+  multimodal acceptance is claimed. Next product work is unspecified.
+
+### Historical PR115 acceptance
 
 - **Static/software:** independent exact review, required application/operator
   gates, deterministic bundles and mandatory shipping validation pass.
@@ -102,8 +114,9 @@ at the product-coverage layer described in the ledger.
 
 ## Next action
 
-Obtain exact review of the inventory-test correction, then retry mandatory
-full validation and the existing guarded PR/shipping workflow. UI work remains parked. Follow
+The first agent-monitor slice is delivered. Review its capability and evidence
+limits with the user; no further product implementation or monitoring task is
+specified. UI work remains parked. Follow
 [NEXT_AGENT.md](NEXT_AGENT.md), preserving evidence boundaries and existing release guards. Do not
 register the Lab, control the printer, change auth/Tailscale or reinstall plugins.
 

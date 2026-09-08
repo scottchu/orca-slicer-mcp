@@ -293,3 +293,67 @@ The prior manifest and application/source-targeted evidence remain preserved.
 Next: independent exact review of this test/documentation correction, then PR
 head verification and the unchanged mandatory shipping workflow. No full-run
 PASS, merge, deployment, physical outcome or active-monitoring claim is added.
+
+## PR119 completed guarded delivery and installed-byte verification
+
+The independent reviewer approved corrected head
+`133ee94eb1959d8260a1c3c6b834fbe819447264`; its correction report SHA256 is
+`95b10e8e30e716069ff87b59f908366740a3133876ae75c431be4182408fd10d`.
+The root updated the PR head. The sole shipping owner then ran
+`uv run --no-project scripts/u1_ship.py --pr 119 --reviewed-sha 133ee94eb1959d8260a1c3c6b834fbe819447264 --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun`
+for a passing plan, then the same command with `--execute` (exit0). The
+unchanged mandatory validator passed on this corrected candidate, followed by
+guarded merge, exact-source staging, install dry-run, installation, explicit
+restart of both services and verification. No required gate was skipped. The
+operator does not export nested successful test counts; none are inferred here.
+
+Successful operation `pr119-20260908T080317-9cbe3e` merged
+`825b38135948574f832f94aa533d3bb58dd6e33a`. Its ordered parents are base9d08702
+and reviewed133ee94; tree `6dc4173f351664f42ff297ea2fe3da47ea3c38fc`
+exactly equals the reviewed tree. Installed release is
+`20260908-825b381-pr119-20260908T080317-9cbe3e`; rollback was not needed.
+Both public/dashboard services are loaded, healthy and integrity verified at
+runtime0.4.17/schema17, observation21/Camera17. All82 static-asset responses and
+84 security checks pass; private configuration/OAuth/routing preservation passes.
+The canonical checkout remains main; the root fetched and fast-forwarded only
+the task branch to the merged commit. The first failed attempt above remains
+preserved and did not perform those external mutations.
+
+The successful receipt SHA256 is
+`fe779262b91483c41b81be001202c9a10807f4d532f2d01889bdda9efd6dccf6`;
+installed manifest SHA256 is
+`2866f33a0767e639b789470ac7a1338eee6426098e5630f193d32dc97ecfa9da`.
+The independent shipping/installed verification report SHA256 is
+`5d11819fa6a587e014a94367b8375efaf7c898a20b2f153e37abd92a94669539`.
+Full receipts and logs remain private; this record owns the durable outcome.
+
+The verifier matched actual installed Bun and server.js to the installed
+manifest, then ran the retained installed-synthetic TypeScript probe with pinned
+Bun `--no-env-file --config=/dev/null run`. A separate loopback HTTP child used
+an ephemeral port and explicit synthetic configuration, without deployed OAuth
+or service settings. Exact three-tool inventory, strict tool-only schema,
+structured/text equality, safe filename, observational token semantics and
+622-byte sanitized JPEG identity passed. The JPEG matches the earlier decoded
+8×8 RGB fixture. Cached expected-token and repeated initial inspections preserve
+the token; an unknown expected token returns none and withholds image acquisition.
+Only three fixture GETs occurred: query, webcam discovery and synthetic JPEG.
+Connections, child and fixture were closed in finally. Result SHA256 is
+`2c6f0d5d936bc5a5bdca3046dd894321649e40bff7bb30c0940bdab1fd46cca0`.
+An initial probe assumed an absent deployed CLI and failed ENOENT before starting
+any fixture/child. Its retained precondition error led to the actual installed
+Bun/server HTTP entrypoint; it was not a product failure or another deployment.
+
+This proves installed software behavior against synthetic data, not real-printer
+state, active monitoring, physical completion, phone UI or host multimodal
+rendering. No real telemetry/camera was called. The root observed that this
+existing conversation's tool catalog still omits the new tool; deployed server
+capability and host refresh remain separate. No plugin reinstall or application
+relaunch was attempted. UI remains parked, the Lab unregistered,0056 provisional
+and known limitations preserved. Further product work is unspecified.
+
+This delivery closure changes only six documentation records. The author used
+Node filesystem/SHA256 checks against the prior510-input manifest and Git's
+merged baseline, plus relative-link checks and `git diff --check`; application
+bytes and modes are unchanged. The separate reviewer will verify this exact
+closure head. Its bookkeeping PR has not yet merged; unchanged application bytes
+require no second deployment. No tests or builds were repeated by this author.
