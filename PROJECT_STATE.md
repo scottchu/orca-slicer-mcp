@@ -1,5 +1,42 @@
 # Project state
 
+## Active Overview subview isolation repair — 2026-09-08
+
+PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
+assertion. The exact pin is corrected with focused tests passing; independent
+delta approval and one renewed mandatory operator run are next. No merge,
+install or restart occurred. The active repair evidence owns the original failure.
+
+Author implementation and focused synthetic validation are complete. The candidate
+is runtime0.4.19/schema18/observation22/Camera17; deployed baseline remains
+0.4.18/schema18/observation21/Camera17 until guarded release succeeds.
+A failed Overview subview now stays local; valid sibling headlines remain visible,
+while whole-request errors still mask old readings. Independent exact review and
+guarded delivery remain pending. [Repair evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md) owns details.
+
+The MCP handoff cleanup/archive is complete; new-name tools were subsequently
+called. User screenshots show Overview failure and Camera Live, not phone or
+physical-print acceptance. No active monitoring. Older handoff instructions below
+are historical; [NEXT_AGENT.md](NEXT_AGENT.md) owns current execution order.
+
+## Current MCP client handoff — 2026-09-08
+
+PR121 release and PR122 record closure are complete. A new real CLI task is
+requested to refresh the host catalog, using new worktree
+`/Users/scottchu/.codex/worktrees/u1-mcp-client-handoff-20260908` and branch
+`codex/u1-mcp-client-handoff-20260908` from PR122 merge55a4e016.
+[New entrypoint](NEW_AGENT_START.md) and
+[handoff evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-mcp-client-handoff.md) own exact identities, preservation and order.
+The successor must verify preservation and accept intake before removing only
+the prior u1-agent-handoff worktree, preserving its branch, and reversibly
+archiving caller01a0811e-4b1b-7721-84ee-b823e38a40be. The NEW private cleanup
+receipt owns actual outcomes; earlier completed cleanup/archive is not repeated.
+Then inspect the actual MCP tool catalog read-only and wait. No printer call,
+product test, deployment or monitoring is included. Current server remains
+0.4.18/schema18, observation21/Camera17; old-task catalog still showed old names.
+All previous records below retain their historical scope and limits.
+
+
 ## Delivered naming change — PR121
 
 `get_printer_snapshot`, `open_printer_view` and unchanged `open_printer_camera`

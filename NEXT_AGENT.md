@@ -1,5 +1,41 @@
 # Next agent
 
+## Current order: Overview subview isolation repair
+
+PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
+assertion. The exact pin is corrected with focused tests passing; independent
+delta approval and one renewed mandatory operator run are next. No merge,
+install or restart occurred. The active repair evidence owns the original failure.
+
+1. Independently review the frozen author candidate and run targeted adversarial
+   verification; author checks are in [repair evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-overview-subview-isolation.md).
+2. One operator owns mandatory local validation and guarded PR/merge/deployment
+   through unchanged u1-ship, both service restarts and meaningful installed-byte
+   synthetic verification under standing widget-release authorization.
+3. Record exact outcomes and review repaired host behavior separately with the user.
+
+The completed MCP handoff/cleanup/archive below must not be replayed. Do not
+operate the printer, alter auth/Tailscale/plugins, repair Job History adapters
+or resume private-DSL/UI redesign. Private WIP refs/evidence remain preserved.
+
+## Current MCP client handoff — 2026-09-08
+
+PR121 release and PR122 record closure are complete. A new real CLI task is
+requested to refresh the host catalog, using new worktree
+`/Users/scottchu/.codex/worktrees/u1-mcp-client-handoff-20260908` and branch
+`codex/u1-mcp-client-handoff-20260908` from PR122 merge55a4e016.
+[New entrypoint](NEW_AGENT_START.md) and
+[handoff evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-mcp-client-handoff.md) own exact identities, preservation and order.
+The successor must verify preservation and accept intake before removing only
+the prior u1-agent-handoff worktree, preserving its branch, and reversibly
+archiving caller01a0811e-4b1b-7721-84ee-b823e38a40be. The NEW private cleanup
+receipt owns actual outcomes; earlier completed cleanup/archive is not repeated.
+Then inspect the actual MCP tool catalog read-only and wait. No printer call,
+product test, deployment or monitoring is included. Current server remains
+0.4.18/schema18, observation21/Camera17; old-task catalog still showed old names.
+All previous records below retain their historical scope and limits.
+
+
 ## Delivered naming change — PR121
 
 `get_printer_snapshot`, `open_printer_view` and unchanged `open_printer_camera`

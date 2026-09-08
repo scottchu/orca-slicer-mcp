@@ -1,5 +1,42 @@
 # F0 maintenance handoff
 
+## Current repair handoff
+
+PR123 remains open after the mandatory gate stopped on an outdated artifact-hash
+assertion. The exact pin is corrected with focused tests passing; independent
+delta approval and one renewed mandatory operator run are next. No merge,
+install or restart occurred. The active repair evidence owns the original failure.
+
+The author candidate isolates Overview tile failure at the legacy renderer gate,
+updates runtime/resource pins and the generated MCP observation HTML, and adds
+exact-resource browser regression coverage. Matching version tests and current
+records changed. [Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns commands, identities and
+known limits. Independent exact review, mandatory operator validation, guarded
+release and installed-byte behavior are still required.
+
+The upstream Job History malformed-response cause remains unresolved. Repaired
+actual-host/phone/physical outcomes remain unaccepted. Camera and private WIP
+are unchanged, no monitor is active. Handoff cleanup/archive below is complete;
+never replay it. Follow [NEXT_AGENT.md](../../../NEXT_AGENT.md).
+
+## Current MCP client handoff — 2026-09-08
+
+PR121 release and PR122 record closure are complete. A new real CLI task is
+requested to refresh the host catalog, using new worktree
+`/Users/scottchu/.codex/worktrees/u1-mcp-client-handoff-20260908` and branch
+`codex/u1-mcp-client-handoff-20260908` from PR122 merge55a4e016.
+[New entrypoint](../../../NEW_AGENT_START.md) and
+[handoff evidence](evidence/2026-09-08-mcp-client-handoff.md) own exact identities, preservation and order.
+The successor must verify preservation and accept intake before removing only
+the prior u1-agent-handoff worktree, preserving its branch, and reversibly
+archiving caller01a0811e-4b1b-7721-84ee-b823e38a40be. The NEW private cleanup
+receipt owns actual outcomes; earlier completed cleanup/archive is not repeated.
+Then inspect the actual MCP tool catalog read-only and wait. No printer call,
+product test, deployment or monitoring is included. Current server remains
+0.4.18/schema18, observation21/Camera17; old-task catalog still showed old names.
+All previous records below retain their historical scope and limits.
+
+
 ## Delivered naming change — PR121
 
 `get_printer_snapshot`, `open_printer_view` and unchanged `open_printer_camera`
