@@ -35,8 +35,10 @@ Private `preservation-manifest.json` SHA256：
 共23,585 entries：23,566 regular files、19 symlinks、384,711,360 bytes；另有
 2,402 directories。逐檔記錄 source/destination、hash/mode 或 link target。
 清單包含 old→new prefix relocation map；歷史 metadata 的舊絕對路徑依此解讀，
-不得把舊命令改写成新位置。只有 Vitest cache 的 `_svelte_metadata.json` 留有舊
-prefix；它是 preserved cache，不是新 tree 的驗收結果，也不是 runtime authority。
+不得把舊命令改寫成新位置。在受檢的四個 generated build/runtime/cache 範圍
+（`.svelte-kit`、`build-kit`、`dist`、`node_modules/.vite`）中，僅 Vitest 的
+`_svelte_metadata.json` 含舊 prefix；歷史證據與腳本依原樣及 prefix map 解讀。
+Preserved cache 不是新 tree 的驗收結果，也不是 runtime authority。
 全部19 symlinks 是完整保留且沒有 dangling 或指回舊 tree 的 target。
 
 圖片、比較 gallery/metrics、依賴、build outputs、各輪失敗與成功 logs、exact-input
