@@ -47,7 +47,7 @@ export const leaves: Record<string, string[]> = {
   'common/HeightLegend.svelte': ['div', 'span', 'span', 'span', 'span'],
   'bed-mesh/BedMesh2D.svelte': ['canvas'], 'bed-mesh/BedMesh3D.svelte': ['div', 'span', 'div', 'div'],
   'common/Badge.svelte': ['div', 'span', 'span', 'span', 'span', 'span'], 'common/Card.svelte': ['article'],
-  'common/Group.svelte': ['section'], 'common/Column.svelte': ['div'],
+  'common/Group.svelte': ['div', 'div', 'section', 'span'], 'common/Column.svelte': ['div'],
   'common/Metric.svelte': ['div', 'span', 'span', 'span', 'span', 'span'], 'common/Row.svelte': ['div'],
   'common/Swatch.svelte': ['div', 'span', 'span', 'span', 'span', 'span', 'span'], 'common/Table.svelte': ['div'],
   'common/Title.svelte': ['h2'],

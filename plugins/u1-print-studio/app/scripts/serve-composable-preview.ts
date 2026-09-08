@@ -4,7 +4,7 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { fileURLToPath } from 'node:url';
 
 export const COMPOSABLE_PREVIEW_PATH = '/dashboard/lab/composition';
-export const COMPOSABLE_PREVIEW_MANIFEST = '67adf17bbb98cc40138d0e32f71a0dc6fe67c2f719ff7f68b485615de7c725ac';
+export const COMPOSABLE_PREVIEW_MANIFEST = 'a26f8e6925173d95806aa0eddc3efe9dfa76a695172a74b025a2bd8dee38cc26';
 
 const artifactName = 'build-kit-composable-v2';
 const artifactRoot = fileURLToPath(new URL(`../${artifactName}/`, import.meta.url));

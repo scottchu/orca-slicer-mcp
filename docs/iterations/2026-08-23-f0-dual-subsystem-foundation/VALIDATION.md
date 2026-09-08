@@ -1,6 +1,55 @@
 # F0 validation index
 
-## Current default summary correction
+## Current private Lab merge-only candidate
+
+[Merge-only evidence](evidence/2026-09-08-lab-merge.md) owns preservation,
+production-isolation classification, fresh candidate checks and exact review/PR
+identities. The corrected application candidate
+`8959b99fe76f9fd42692634b7d420deb76dcdfe5` passed required local validation and
+independent source review. The current documentation-only tail retains those
+503 unchanged application inputs and awaits exact documentation-head approval.
+PR merge remains pending. Deployment, restarts and UI acceptance are outside
+this evidence boundary.
+
+## Current selected-direction layout contexts
+
+[Layout-context evidence](evidence/2026-09-07-smart-layout-contexts.md) records
+proposal1 as selected and three delivered same-design width/layout contexts.
+Design and separate independent content review accept single-card/two-card/
+narrow-stack intent only, not CSS, runtime or new DSL capability. The user now
+accepts the direction for now and has parked further UI work; no layout review
+remains pending and no implementation/runtime/physical/release acceptance follows.
+This round has no app code, build, styling or release. Earlier image-selection
+status below belongs to its completed historical round.
+
+## Completed Smart visual proposals
+
+[Visual-direction evidence](evidence/2026-09-07-smart-visual-directions.md)
+records the user's rejection of the overall appearance and changed order:
+exactly three image proposals were delivered for user selection. The subsequent
+selection of1 and layout request are recorded above. That round had no application
+change, build, styling or release. Concept images do not extend the DSL or
+prove runtime behavior. The completed comparison below remains preserved.
+
+## Current synthetic widget comparison
+
+[2026-09-07 comparison evidence](evidence/2026-09-07-dsl-widget-comparison.md)
+owns seven matched screenshot boards, source/package identities, actual scoped
+build commands, independent source review and targeted runtime verification.
+At comparison time Heads/Thermals package checks passed and the DSL tracked
+package differed from source; the merge candidate now repackages the private DSL.
+Unknown badge wrapping and a14px Card increase remain open findings, not fixes.
+That comparison round left application bytes unchanged; no full regression, release or printer/device
+acceptance is claimed. The records-only tail retains this bounded evidence.
+
+## Current local handoff
+
+[DSL comparison handoff evidence](evidence/2026-09-06-dsl-widget-comparison-handoff.md)
+records actual file/hash/status checks, local branch/worktree migration and
+checkpoint-only scope. It contains no product-test or release acceptance for
+the transferred spacing/type WIP. Earlier evidence remains bound to its own bytes.
+
+## Delivered default summary correction
 
 [Default summary evidence](evidence/2026-09-06-default-summary.md) owns current
 author checks, independent exact review, guarded PR115 release and independent
