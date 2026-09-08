@@ -1,75 +1,51 @@
-# 新 agent 接手入口（2026-09-08）
+# 新 MCP client task 接手入口（2026-09-08）
 
-請用繁體中文接手。先核對現況並保留所有既有資料。
+請用繁體中文接手。這是真實新 CLI task 的新 worktree；不可再建立下一個。
+先讀使用者層級 `/Users/scottchu/.codex/skills/handoff/SKILL.md`，再讀 AGENTS、
+PROJECT_STATE、NEXT_AGENT、docs/requirements、CURRENT 指向的 BRIEF/HANDOFF/VALIDATION，
+以及 [本次保存證據](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-mcp-client-handoff.md)。
 
-後續 MCP 命名變更已由 PR121 完成：`get_printer_snapshot`、`open_printer_view`，
-`open_printer_camera` 不變。現行部署為 **0.4.18 / schema18 / observation21 / Camera17**。
-獨立 review、mandatory validation、兩個服務重啟與 installed-byte synthetic 均通過。
-詳見 [NEXT_AGENT.md](NEXT_AGENT.md) 與 naming evidence。下一項產品工作未指定。
-以下原始交接版本與只讀限制是歷史 checkpoint；勿重播建立、清理、封存或部署。
-UI 仍停工，沒有 active monitoring；先前一次 host snapshot 證據屬於 PR119，
-本次更名沒有新增 host、手機或完整實機列印驗收。
+## 精確位置與身份
 
-## 目前位置與順序
+- 新目錄：`/Users/scottchu/.codex/worktrees/u1-mcp-client-handoff-20260908`
+- 新分支：`codex/u1-mcp-client-handoff-20260908`
+- 原始 HEAD：`55a4e016675901db76bf8c99432c3700c2794f49`（PR122 merge）
+- 唯一待清理舊目錄：`/Users/scottchu/.codex/worktrees/u1-agent-handoff-20260908`
+- 唯一待封存原 task：`01a0811e-4b1b-7721-84ee-b823e38a40be`，由原主 agent 的 CODEX_THREAD_ID 精確取得。
+- 本 task ID 必須來自本身可信 CLI runtime；不可把 subagent ID 當作本 task。
 
-- 工作目錄：`/Users/scottchu/.codex/worktrees/u1-agent-handoff-20260908`
-- 分支：`codex/u1-agent-handoff-20260908`
-- 起點：PR120 merge `2a3e280f2d634f3e4fbabbf7be307f524a3fd86b`
-- 使用者的新移轉授權優先於舊比較任務的 fixed cwd/branch 指示。主 repository
-  維持 main；不要修改其他 worktree。
-- 先讀 [AGENTS.md](AGENTS.md)、[PROJECT_STATE.md](PROJECT_STATE.md)、
-  [NEXT_AGENT.md](NEXT_AGENT.md)、[requirements](docs/requirements.md)，再依
-  [CURRENT](docs/iterations/CURRENT) 讀該 iteration 的 BRIEF/HANDOFF/VALIDATION。
-- 核對本次 [保存證據](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-worktree-handoff.md)
-  和本機 private preservation manifest，向 root 回報已接手。舊 worktree 只有在
-  獨立驗證及新 agent 接受後由 root 移除；作者沒有執行清理。
-  實際清理狀態以本機 `tmp/worktree-handoff-20260908/cleanup-receipt.json`
-  為準：root 會在操作後記 actual command/result。先看 receipt，勿重播清理。
+## 接手、清理、封存與續做順序
 
-## 已完成與未驗收邊界
+1. 核對 cwd/branch/HEAD、clean index，以及新 private dir
+   `tmp/mcp-client-handoff-20260908/preservation-manifest.json`、獨立 review 與
+   `cleanup-receipt.json`。所有舊樹項目（除了 Git 行政 pointer）已完整保存；
+   原 tracked bytes 在 source-tracked，現行 tracked 文件只有本次交接更新。
+   manifest 擁有 hashes、modes、links 和 old→new prefix map；歷史證據原文不改。
+2. 獨立保全驗證通過且本 task 接受交接後，只清理上列精確舊 task worktree，
+   保留其 branch/checkpoint refs。Receipt 已完成項目勿重播；缺資料先停下保全。
+3. 正式 CLI `codex archive 01a0811e-4b1b-7721-84ee-b823e38a40be` 已獲明確授權，
+   身份核對後執行；記 actual command/result。只封存，不 delete/kill 或修改 history database。
+   CLI 拒絕時報實際失敗、不繞過。清理和封存是分開結果，均寫 receipt。
+4. 僅唯讀檢查實際可用 MCP catalog 是否出現 `get_printer_snapshot`、
+   `open_printer_view`、`open_printer_camera`；不要呼叫印表機或開始監控。
+   報告 server 已發布與本 task 工具可用性之差異，回傳本 task 可點 deeplink 後等待。
 
-PR117 為 private Lab source integration，PR118 是其文件收尾；PR119 已完成
-agent-readable monitor 第一 slice 的獨立 review、mandatory gates、PR merge、
-exact-build 安裝、兩個服務明確重啟與驗證。PR120 是文件收尾，不重複部署。
-目前 runtime **0.4.17 / schema17 / observation21 / Camera17**。成功 release 綁定
-PR119 merge `825b38135948574f832f94aa533d3bb58dd6e33a`；完整成功與首次 gate
-失敗在 [monitor evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-08-agent-monitor.md)。
+## 現行產品與邊界
 
-已部署 tool 為 `get_print_monitor_snapshot`，可傳回 presence-aware structured/text
-證據及可供模型讀取的 JPEG。Installed-byte synthetic 檢查通過，並非真實印表機、
-手機或 host multimodal 驗收。舊 session catalog 仍沒有新 tool；可先只讀重新
-搜尋/discover 工具目錄，不呼叫印表機、不重裝 plugin、不改 auth/Tailscale。
-重新 discover 成功也不等於影像判讀或 active monitoring 已驗收。
+PR121 rename 與 PR122 records closure 已完成。已部署 **0.4.18/schema18，
+observation21/Camera17**，兩個服務重啟、mandatory gates、獨立 review、installed-byte
+synthetic 均通過。舊 task 的實際 catalog 仍顯示舊名稱，這是此次移轉目的；
+新 task tool discovery 不等於 real-host 呼叫、圖片判讀或 physical acceptance。
+原 PR119 一次 snapshot 實測保留，不是新版名稱或完整列印驗收。
+沒有 active monitoring；下一項產品工作未指定，禁止自行追加產品工作。
 
-沒有正在監控本機印表機，也沒有 durable daemon、notifications 或歷史 join。
-Token 只代表 process-local observational continuity，不是 authorization/native run
-proof；12 分鐘 gap、source clock/epoch/counters/job 改變可能要求重新綁定。
-同名工作在兩次 poll 之間替換仍有不可辨識限制；報告一致終態不等於 physical success。
-O1/SESSION-001 完整能力仍 open。下一項產品工作未指定。
+UI 停工；DSL private/unregistered 僅 T1 四 leaves。保留 provisional0056、
+390px Unknown Card+14px、extreme-decimal limitation，以及未發布0.4.16/obs22/cam18
+WIP refs 與全部 private evidence。不要採用舊 WIP 為已部署版本。
 
-## UI、DSL 與 WIP
-
-UI 已停工。使用者暫時接受方向1與 single/two-card/narrow-stack 概念，沒有授權
-繼續 styling。圖片不是 CSS responsive 驗收。Closed DSL 僅 **T1** 與
-**HeadStatus、HeadTemperature、FilamentColor、FanRelation**，private/unregistered；
-不可宣稱完整 Heads/Thermals parity。普通390px/100% Unknown badge 斷字使 Card
-增加14px、extreme-decimal narrow-screen limitation、provisional decision0056 均保留。
-
-WIP 保留 ref：`codex/preserve-u1-lab-wip-20260908T102420Z`，指向
-`ae80ecc76e95c5a7c37b478419b7d5c4ccc3e535`。原 local0.4.16、observation22、
-Camera18 與 private-Lab revision7 的 preserved bytes 仍在本機保存資料中；不要將
-歷史未發布 WIP 誤套回目前已部署版本。原始比較、圖片、metrics、gallery、失敗與
-修正 logs、各 input manifest、dependencies 和 symlinks 均已複製，private 清單
-提供 old→new prefix 與逐檔 destination。歷史 metadata 不改寫、不偽造舊執行路徑。
-
-## 工作方式
-
-Shell 搜尋一律用 `/opt/homebrew/bin/rg`；Python 與 dependency 操作用 `uv run`。
-不要使用 Orca IDE skills/hooks。不要操作印表機、服務、auth/Tailscale、plugin、
-其他 worktree、使用者 session 或 Codex chat-history database。
-
-主 agent 只協調；material design、implementation、validation、independent review
-依 AGENTS.md 有界委派且角色分離。新的 code 變更用 focused checks；完整昂貴 gates
-只給一個 owner 跑在 frozen candidate 上。文件交接只核 unchanged inputs、links、
-diff 和保存清單，不因換 agent 重跑已驗收完整 suite。所有 shipping guards 保持不變。
-本交接只需要本機 branch commit，沒有新的 PR、release 或 deployment。
+先前 comparison worktree 及 task `01a07a0a-b1f4-7ab3-91ea-b2bb84cf3380`
+已完成清理/封存，其 nested receipts 是歷史完成記錄，不得重做。
+Canonical `/Users/scottchu/Projects/personal/orca-slicer-mcp` 與 main、其他
+worktrees、services、plugins、auth/Tailscale、使用者 session 均不得修改。
+不使用 Orca IDE skills/hooks。Shell 搜尋僅 `/opt/homebrew/bin/rg`；Python 僅 `uv run`。
+本輪沒有產品測試、PR/push、部署或 printer call；只做交接與上述已授權收尾。
