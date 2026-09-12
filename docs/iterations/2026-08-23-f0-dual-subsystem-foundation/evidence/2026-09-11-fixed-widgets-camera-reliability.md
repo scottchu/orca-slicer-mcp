@@ -8,10 +8,12 @@ covers Camera and all nine fixed observation views, including already-native
 Heads. Fans/Thermals/Queue first and the remaining five adapters afterwards is
 implementation order, not separate releases. Source and affected independent
 verification are complete; the corrected candidate is
-`6a84e3552d88d99ab69095f64c185d6a0382e482`. The first mandatory shipping
-validation stopped before merge, installation or service restarts. Its type-only
-NodeNext correction is independently checked with unchanged emitted JavaScript
-and packages; browser evidence is retained. Renewed exact-head approval and the
+`6b29d2f8de33e258166e5c301f4137e9ad2fb40b`. Two mandatory shipping attempts
+stopped before merge, installation or service restarts, first on a type-only
+NodeNext import and then on the compiled Kit route inventory. Both corrections
+are independently checked; the actual compiled router passes 14 browser cases
+and the unchanged 100-file/114-route validator. UI/Camera packages remain
+unchanged, retaining prior UI evidence. Renewed exact-head approval and the
 complete unchanged guarded shipping workflow remain pending. See the final History closure below for the
 complete 431-pass/3-failure collection and subsequent 90-pass/18-pass closure.
 Native renderer adoption does not close unrelated feature gaps.
@@ -1445,3 +1447,77 @@ from that source. All seven current-section relative links resolve;
 `git diff --check` passes. No build, browser run or service change was performed
 for this documentation-only update. The PR description draft was renewed with
 the same failed-gate/correction boundary.
+
+
+## Corrected exact-head approval and production route-inventory gate failure
+
+Independent reviewer `/root/domain_review` approved `2e72dace38d99ea1774765b2d7fe65b07d570b67` after verifying a clean worktree, five Markdown-only changes after the independently checked type-import source `6a84e3552d88d99ab69095f64c185d6a0382e482`, and unchanged packages/browser inputs. The fresh read-only `u1_ship.py` plan passed with tree `c024156391e28ab65620b2f99d85669687ce05ab`. The reviewer ran the complete unchanged command with `--pr 125 --reviewed-sha 2e72dace38d99ea1774765b2d7fe65b07d570b67 --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute`.
+
+This attempt passed the full mandatory repository/app/TypeScript/operator gate and production bundle/signing stages, then stopped at the newly generated candidate's strict static build contract: `Invalid or incomplete Kit build contract`. Result remains `merged=false`, `installed=false`, rollback `not-needed`; no service restart or deployment occurred. Later phases are not claimed. The operator was not bypassed or blindly retried.
+
+Read-only invocation of `read_current_build_manifest()` on this exact generated output exposed `ValueError: Generated static file is missing its route`. The five unserved generated files are `prerendered/dashboard/{bed_mesh,job_history,jobs,overview,progress}.html`. Source review traced this to the incomplete production cutover: `build-server.ts` still maps these five route names to the former static dashboard host, while `NATIVE_DASHBOARD_VIEWS` in `route-policy.ts` still lists only four earlier native views. Its `DASHBOARD_PAGES` widget allowlist also omits the five new `_widget` paths. Existing fixture and packaged-component successes do not establish correctness of this production router mapping; this remains a blocking production integration defect.
+
+The author received a bounded correction request to bind all nine native pages and exact ten widget paths through the central production policy/build inventory, retire the five superseded host mappings, and renew actual production route/compiled manifest/security tests. It must preserve the complete-output validator, private/public boundary, methods and all shipping guards. Deleting generated native pages or weakening inventory checks is not an acceptable closure. Frontend/browser evidence may be retained only if its exact inputs remain unchanged; production server/build-policy evidence must be renewed before a new exact-head approval and complete unchanged shipping invocation.
+
+Private stopped-operator log SHA-256 `864e40452ff2ae7890f330d8928f77ef83c4acecd3f5349224be5f4b771efd8b`; rejected manifest SHA-256 `3d43846432fd42e84647debe033d783a1d865e60bd5e12ae49f6b0b0fd38fb05`. Existing services and actual printer/device evidence remain unchanged.
+
+
+## Production route inventory and compiled build correction
+
+The second mandatory shipping attempt stopped at the unchanged static build completeness guard before merge or installation. The build contained five newly prerendered native pages, while its producer still mapped their URLs to the legacy host HTML. Production `NATIVE_DASHBOARD_VIEWS` also retained only the prior four views, and the widget route allowlist omitted the new five. Prior MCP fixture success did not cover this production policy mismatch.
+
+The bounded correction derives the nine native views from the existing exact ten dashboard views by excluding Camera, uses the same ten-view list for the widget allowlist and build producer, and removes the five obsolete host mappings. Every native page now maps to its actual prerendered HTML. No shipping validator, service, authority, route method, CSP or manifest completeness requirement changed.
+
+`tests/server/compiled-dashboard-routes.test.ts` is a new production integration regression. It invokes the actual build producer into an isolated output, imports that output's compiled server and handler, and injects a synthetic observation store through the existing production dispatcher. Explicit nine-native/ten-widget expected inventories prevent silent route expansion. It checks all generated static files are routed and hashed, exact served bytes and hashes, native pages without iframe hosts, public denial, method denial, invalid aliases/raw targets, and zero observation acquisition. Sockets, transports, child process and owned temporary outputs are released in `finally`; the test does not call `startServer` or access printer/Tailscale settings.
+
+Author commands actually run from the app directory, using pinned Bun 1.4.0 with `--no-env-file --config=/dev/null`:
+
+- `bun x tsc --noEmit -p tsconfig.server.json`: pass.
+- `bun test tests/server/compiled-dashboard-routes.test.ts`: 1 test, 487 assertions pass against a real freshly compiled output.
+- `bun run ui:check`: zero Svelte errors/warnings; existing component contracts pass.
+- `bun run build:server`: producer completed with 99 files, 114 static routes and 99 file hashes. This intermediate output was subsequently rejected by the independent unchanged Python validator because the schema still requires the immutable host resource even with no native routes pointing to it. It is not an accepted final build; all valid prerenders were retained.
+- `bun run build:composable-preview`: pass. Its manifest `1c245ee21587982716ea5e9fb0006194e2c9d93aef190b370af2d2b6b49f436f`, page and hydration bytes remain unchanged, so no pins changed.
+- `bun test tests/server/kit-native-observations.test.ts tests/server/kit-fans.test.ts tests/server/status-dashboard.test.ts`: 42 tests, 1342 assertions pass.
+- `bun test tests/server/composable-preview.test.ts`: 4 tests, 323 assertions pass.
+- `git diff --exit-code HEAD -- public`: pass, all widget packages including Camera are unchanged; no full browser suite was run by the author.
+
+Rejected intermediate compiled manifest SHA-256 is `9f0054183409a433768a0a6cca97cc65f2e4fb08bade345fd2b199a55172d9bf`, compiled server `307b54cf036552daaebb811d41f208d61d7e2f5c3c6f8a69aa4bbfc364197708`, and handler `0ee881df64429e90efa5b6643286ad379def3729269c7eda5f5c6749bda41080`. The 360-file source/build-input fingerprint is `ef4309994205653ae93c6dd8c90640633e9ba67183a3aa8a34acb92ff59f4b71` under the existing sorted path/NUL/file-SHA/newline method. Source identities are route-policy `482bebc9b6d5e8e99ada1f5be8bf0bdfe1ade32bcbe1b8597b75f13eb0cd002f`, build-server `a359de81dcb47679d7e7b02fdae55251e31539c06177c518ddb600714dce45f7`, and new compiled regression `b3a7af1f87d727fade815c62391440a889eef983d0e0103a7026b35295b89a21`.
+
+The exact clean staging output is retained privately for the independent operator's unchanged Python manifest validator and compiled-browser review; it is not substituted with the incremental dist directory. Author fixture ports 4181/4182/4183 were confirmed free after checks. Independent exact-SHA approval, unchanged mandatory shipping validation, deployment verification and actual-device acceptance remain separate gates.
+
+
+### Required immutable resource preservation and final producer check
+
+The independent unchanged Python schema check rejected the intermediate 99-file output above because `static-contract/status-dashboard-host.html` remains a required schema resource. The producer now copies that immutable resource with an empty URL list. All nine native routes still point to their actual prerenders; no legacy route mapping was restored and the shipping schema/validator remains unchanged.
+
+The new compiled regression now invokes `uv run --no-project python` to call the actual `scripts/u1_build_contract.py::read_current_build_manifest` on its generated output. It also verifies the required host resource matches the committed public bytes and has no route. Its generated-file completeness assertion follows the existing schema's client/prerender rule; it no longer incorrectly requires every immutable schema resource to have a URL.
+
+Final author commands/results: `bun --no-env-file --config=/dev/null test tests/server/compiled-dashboard-routes.test.ts` passes 1 test / 475 assertions, including the unchanged Python validator and actual compiled dispatcher. `bun --no-env-file --config=/dev/null run build:server` produces 100 files / 114 static routes / 100 hashes. A separate `uv run --no-project python` invocation imports `read_current_build_manifest` from the unchanged scripts directory and validates this final clean staging output successfully. No incremental dist extras were passed to the closed-output validator.
+
+Final manifest SHA-256 `183c58faaae1378cd0dada90182e4c3631736f66bf10368d1d37c23717fe6ec0` supersedes rejected `9f005418…`. Compiled server `307b54cf036552daaebb811d41f208d61d7e2f5c3c6f8a69aa4bbfc364197708` and handler `0ee881df64429e90efa5b6643286ad379def3729269c7eda5f5c6749bda41080` remain identical between those two outputs because the final correction preserves a required static resource only. Final build-server source SHA is `2726e21915876174cca3750322761d0e59223aec968203fea6ac327ec634a207`, compiled regression SHA is `3ad02dd88500969fce370c896b3fc47e17cb42ed68e713a19ac6d18f48c6b4fb`, and the 360-file source/build-input fingerprint is `6507ea69ef7ac716949304c2fe7c027b84766912dac9202024f48aefb00efb15`. The route-policy source and all packaged UI, Camera and dedicated preview identities from the preceding section remain unchanged.
+
+The final clean output was handed to the independent reviewer for direct schema recheck and compiled-production browser validation. Exact-candidate approval and the next complete mandatory shipping validation still remain required; author tests do not substitute for either.
+
+
+## Independent production router closure — 6b29d2f8
+
+Reviewer `/root/domain_review` independently approves corrected source `6b29d2f8de33e258166e5c301f4137e9ad2fb40b`, binding the reviewed source diff and fresh compiled-output verification below. The only application/build changes since the previous candidate are central nine-native/ten-widget route derivation and the build producer's exact mapping/resource-copy correction; the new maintained test exercises the real compiled dispatcher and unchanged shipping validator. Public denial, method restrictions, raw-target rejection and shipping schema remain intact. The required former host resource remains an immutable unserved asset; its five superseded route bindings are removed. All frontend/widget/Camera packages are unchanged.
+
+The reviewer called unchanged `read_current_build_manifest()` on the exact clean staging output with manifest SHA-256 `183c58faaae1378cd0dada90182e4c3631736f66bf10368d1d37c23717fe6ec0`: **pass**, 100 files / 114 static routes. Compiled server SHA-256 `307b54cf036552daaebb811d41f208d61d7e2f5c3c6f8a69aa4bbfc364197708`; handler `0ee881df64429e90efa5b6643286ad379def3729269c7eda5f5c6749bda41080`. This closes both generated-route completeness and required-resource preservation under the original operator validator.
+
+A fresh independent private browser harness imported that actual compiled `server.js` export and compiled `handler.js`, injected the existing synthetic observation store, and served the real production dispatcher on owned loopback ports. It did not use the source-only MCP/static fixture dispatcher, start the production server environment, read a printer or change auth. Browser tool responses were synthetic and intercepted at the documented dashboard tool boundary. Commands used pinned Bun 1.4.0 `run tmp/domain-widget-review-20260911/compiled-route-host.ts <exact-staging-output>` then `run tmp/domain-widget-review-20260911/compiled-native-matrix.ts`.
+
+Compiled native browser result: **14/14 pass**, zero page errors, zero iframes in every native page, ready/error height deltas exactly zero. It covers all nine views at 390px normal and the five newly routed views at 320px actual computed text doubled; ready/failure/Retry/unknown/age-stale and applicable empty/unsupported/Overview isolation/Bed latest-reason/profile/Jobs large-value scenarios pass. Current compiled Progress, History and Bed screenshots at 320px enlarged text were inspected; necessary values remain readable and previous geometry fixes persist. Private host/script/result/log hashes are `76504d8083ef012adf52d9333d6c9b8e5b37e0cefd268b8418f3f0fd8933ac4c`, `3bba5a3a7851d00fd92272a23d07730ccdbbf0d1e732a46d89b579605bfba509`, `21069e2445e0713c703b3f7b64846acae8f0057de50ca744b958ef77248671b5`, `5b3942ec11bb2d04ecd78b287bb18ce38bd08c446a85f15691eac7dbb45ddb8f`.
+
+The reviewer inspected the new 475-assertion compiled integration test and its actual author result, covering exact native/widget bytes and hashes, public denial, method/alias/traversal rejection, no SSR acquisitions and cleanup. It is additional maintained coverage, with no replaced or weakened earlier tests. The independent host was gracefully stopped and both owned 4181/4183 listeners released; all other user services were preserved. Prior unchanged UI and Camera evidence is retained explicitly; the affected production dispatcher/build evidence is newly established here. Final documentation-head binding and another complete unchanged mandatory `u1-ship` invocation remain required. No deployment or actual-device acceptance is claimed by this closure.
+
+Documentation production-route retry tail: PROJECT_STATE, NEXT_AGENT, HANDOFF,
+VALIDATION, this evidence scope and the PR draft now identify independently
+checked source `6b29d2f8de33e258166e5c301f4137e9ad2fb40b`. They preserve both
+pre-merge shipping stops, the renewed compiled-route proof, unchanged UI/Camera
+evidence and pending fresh exact-head approval/full mandatory shipping workflow.
+Actual `uv run --no-project python` checks of `git diff --name-only HEAD`,
+`git ls-files --others --exclude-standard` and current relative links passed:
+five Markdown-only diffs, no untracked files or application/configuration/
+dependency/package changes, seven valid links. `git diff --check` passed.
+No application edit, build, test or service action was performed for this tail.

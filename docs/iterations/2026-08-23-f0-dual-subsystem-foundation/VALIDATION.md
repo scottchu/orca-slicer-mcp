@@ -5,11 +5,13 @@
 [Current slice evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns commands, exact identities,
 author checks, independent review, collection failures and affected closure.
 The corrected candidate is runtime0.4.20/schema18/observation23/Camera18 at
-`6a84e3552d88d99ab69095f64c185d6a0382e482`. The first mandatory shipping
-validation stopped on a NodeNext type-only import before merge, installation or
-service restarts. The one-import correction passes independent TypeScript and
-identical-emitted-JavaScript checks; packages are unchanged, so prior browser
-evidence is retained. Renewed exact-head approval and the complete unchanged
+`6b29d2f8de33e258166e5c301f4137e9ad2fb40b`. Two guarded shipping attempts
+stopped before merge, installation or service restarts: first at the type-only
+NodeNext import, then at the production Kit route inventory after the repository
+and production-build gates passed. Both corrections are independently checked.
+The compiled production router now passes 14 browser cases and the unchanged
+100-file/114-route validator; UI and Camera packages are unchanged, retaining
+prior UI evidence. Renewed exact-head approval and the complete unchanged
 mandatory shipping workflow remain pending. The complete 434-case browser
 collection ran with 431 passes and three History Lab failures sharing one
 text-wrapping cause. The narrow correction then passed all 90 affected cases
