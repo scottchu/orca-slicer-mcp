@@ -7,8 +7,12 @@ adopt fixed Lab widgets through live adapters. One integrated release candidate
 covers Camera and all nine fixed observation views, including already-native
 Heads. Fans/Thermals/Queue first and the remaining five adapters afterwards is
 implementation order, not separate releases. Source and affected independent
-verification are complete at `7ca0c8cd4625939eccb3a514acbe2f9fd759e95f`;
-guarded shipment remains pending. See the final History closure below for the
+verification are complete; the corrected candidate is
+`6a84e3552d88d99ab69095f64c185d6a0382e482`. The first mandatory shipping
+validation stopped before merge, installation or service restarts. Its type-only
+NodeNext correction is independently checked with unchanged emitted JavaScript
+and packages; browser evidence is retained. Renewed exact-head approval and the
+complete unchanged guarded shipping workflow remain pending. See the final History closure below for the
 complete 431-pass/3-failure collection and subsequent 90-pass/18-pass closure.
 Native renderer adoption does not close unrelated feature gaps.
 Preserve 55 ledger IDs and existing authority gates. Earlier planning language
@@ -1398,3 +1402,46 @@ relative links. `git diff --check` passed. No build or browser suite was rerun
 for this documentation-only tail. Final documentation-head review and every
 mandatory shipping gate remain required; release outcomes will be appended
 when observed.
+
+
+## Exact documentation-head approval and first guarded ship failure
+
+Independent reviewer `/root/domain_review` approved exact documentation head `6a48e4855dc66d910192bbd9f44b5b5dab21c579` after verifying clean HEAD and that its diff from approved source `7ca0c8cd` contains only eight Markdown records. Application source, browser tests, configuration, dependencies and packages were unchanged; current records preserve the failed full-collection history and successful affected closure honestly. `git diff --check` passed.
+
+The reviewer read the maintained `u1-ship` skill and invoked `uv run --no-project scripts/u1_ship.py --help`, then the read-only plan with `--pr 125 --reviewed-sha 6a48e4855dc66d910192bbd9f44b5b5dab21c579 --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun`. Plan passed with reviewed tree `ff592696452dbe5b8b4dfcb2c86003ffec2af87c`, base `7bcf99939d2f24f0e4b82fc164d9dfcecf6f2c44`, Bun 1.4.0 / SHA-256 `539598c775882420b9d8deb7dc14d845f20f7d26f5600c50ab067dde6ac3f3bf`.
+
+The same command with `--execute` stopped at mandatory `validate`: `Local repository/app/TypeScript/operator test gate failed`. Result: `ok=false`, `merged=false`, `installed=false`, rollback `not-needed`. No merge, deployment or service restart occurred. The operator did not bypass the gate or retry an external mutation.
+
+To expose the child failure hidden by the guarded operator, the reviewer ran only the original local diagnostic command `PATH=/Users/scottchu/.asdf/installs/bun/1.4.0/bin:$PATH ./scripts/check-repository.sh` with a private log. It exited 2 at `tsc --noEmit -p tsconfig.server.json`: `src/lib/client/live/observation-port.ts(1,30)` TS2835 requires explicit `.js` in its type-only HostRpc import under NodeNext, and the unresolved type causes TS7006 at `(12,43)` for `event`. Earlier phases passed: Svelte zero errors/warnings, component guards, 68 Vitest files / 729 tests, and all deterministic native/MCP/private package checks. Later gate phases did not run and are not claimed. The author received a bounded type-import correction request; configuration and shipping guards must remain unchanged. A corrected exact candidate requires independent binding and a fresh complete unchanged operator invocation.
+
+Private ship/diagnostic log SHA-256: `cf3d4c8e6ad034e4e2622aba11224c4f68505cf9e7269f97da522b98f1de03b8` / `047334acbdac09f555cf3583849ec3bd62ec4eb3bf582c52ebef8a9f264da391`. These are local software/operator failure results; existing deployed services and actual printer/device acceptance are unchanged.
+
+
+## NodeNext type-only import correction after mandatory validation stopped
+
+The mandatory shipping validation on `6a48e4855dc66d910192bbd9f44b5b5dab21c579` stopped before merge, installation or service changes. Its server TypeScript check rejected the extensionless `HostRpc` type import in `src/lib/client/live/observation-port.ts` (TS2835); the consequent unresolved callback type produced TS7006. The bounded correction adds `.js` to that one type-only import. It does not change `tsconfig`, callback behavior, contracts, dependencies, package versions or required gates.
+
+Author commands actually run from the app directory with pinned Bun 1.4.0:
+
+- `bun --no-env-file --config=/dev/null run check` and the operator's exact `bun --no-env-file --config=/dev/null x tsc --noEmit -p tsconfig.server.json`: pass with no diagnostics.
+- `bun --no-env-file --config=/dev/null run ui:check`: zero Svelte errors/warnings and component contracts pass.
+- `bun --no-env-file --config=/dev/null x vitest run src/lib/client/live/controller.test.ts src/lib/client/live/http-observation-port.test.ts src/lib/client/live/graph-contract.test.ts src/lib/client/live/fans-adapter.test.ts`: 4 files / 62 tests pass, covering controller lifecycle, HTTP port and source graph boundaries.
+- A `Bun.Transpiler({loader: "ts", target: "browser"})` comparison of the exact old/new module source emitted identical JavaScript, SHA-256 `0200df3ffcb2af5e4d8c9d222ec4bc3f5d713d21b9ae1d2d785e97a0d4e832f0`. This confirms type erasure for this edit; it is not a claim that a new full build ran.
+- `git diff --exit-code HEAD -- plugins/u1-print-studio/app/public`: pass, all committed packaged assets unchanged. No packages were regenerated and no full browser suite was run by the author.
+
+Changed source SHA-256 is `ec1b6042003cd1ead97f34ceda77d67ac015a85019bfa69e9fbe3cf1151025ed`; the 360-file production source/build-input fingerprint is now `cbd0656936068c00879f6a979780a75a8cc72c605842e1bc1d42b269d6072864` under the same sorted app-relative path/NUL/file-SHA/newline method. Independent approval must bind to the new commit, and the shipping operator must rerun all mandatory validation unchanged. Prior browser evidence can be assessed against this exact type-only diff and unchanged artifact bytes; this author evidence does not grant independent approval or deployment acceptance. No owned fixture processes or ports remain.
+
+
+Independent reviewer `/root/domain_review` verified the NodeNext correction is exactly the type-only import suffix, with source SHA-256 `ec1b6042003cd1ead97f34ceda77d67ac015a85019bfa69e9fbe3cf1151025ed`. A fresh pinned Bun.Transpiler comparison of the approved predecessor and corrected file produced identical JavaScript, SHA-256 `0200df3ffcb2af5e4d8c9d222ec4bc3f5d713d21b9ae1d2d785e97a0d4e832f0`. The reviewer independently reran pinned Bun `x tsc --noEmit -p tsconfig.server.json`: pass. Public generated artifacts have no diff. The correction changes type resolution only, so the preceding exact browser/Camera evidence is retained; a fresh exact-head approval and complete unchanged mandatory shipping workflow remain required. No browser guard or shipping phase is skipped by this reasoning.
+
+Documentation retry tail: current PROJECT_STATE, NEXT_AGENT, HANDOFF, VALIDATION
+and this evidence now identify corrected source
+`6a84e3552d88d99ab69095f64c185d6a0382e482`, the pre-merge shipping stop, retained
+browser evidence and pending renewed exact-head/all-mandatory shipment checks.
+`uv run --no-project python` checked `git diff --name-only HEAD` and
+`git ls-files --others --exclude-standard`: exactly five Markdown-only diffs,
+no untracked files and no application/configuration/dependency/package changes
+from that source. All seven current-section relative links resolve;
+`git diff --check` passes. No build, browser run or service change was performed
+for this documentation-only update. The PR description draft was renewed with
+the same failed-gate/correction boundary.

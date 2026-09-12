@@ -11,9 +11,13 @@ not its cause. Camera reliability comes first; fixed-widget adoption follows.
 PR123 runtime0.4.19/schema18/observation22/Camera17 remains the baseline.
 Coordinator read-only service status found both services loaded, healthy and
 integrity-verified; this does not establish Camera media or phone reliability.
-Source and packages at runtime0.4.20/schema18/observation23/Camera18 are
-independently verified for guarded shipment at source commit
-`7ca0c8cd4625939eccb3a514acbe2f9fd759e95f`. The complete 434-case browser
+The corrected candidate is runtime0.4.20/schema18/observation23/Camera18 at
+`6a84e3552d88d99ab69095f64c185d6a0382e482`. The first mandatory shipping
+validation stopped on a NodeNext type-only import before merge, installation or
+service restarts. The one-import correction passes independent TypeScript and
+identical-emitted-JavaScript checks; packages are unchanged, so prior browser
+evidence is retained. Renewed exact-head approval and the complete unchanged
+mandatory shipping workflow remain pending. The complete 434-case browser
 collection ran with 431 passes and three History Lab failures sharing one
 text-wrapping cause. The narrow correction then passed all 90 affected cases
 and a fresh 18-case native matrix; unchanged evidence is retained explicitly.
