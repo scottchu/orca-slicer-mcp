@@ -10,7 +10,7 @@ for (const [view, title, hash] of [
   ['queue', 'Print Queue', 'a1858663df6f97200d956bc146d591f04f205669d14d2b7692fc0545e5e8b5e5'],
   ['progress', 'Print Progress', '4acad1be4350618cdfa900e993c2bc4e198a7484b6ee3f17659cca5d7212a3a4'],
   ['jobs', 'Current Job', 'a2a39f8628e40394b7c1d99d214783c6f8d11a18ec67119c6585e3bba2398b5a'],
-  ['job_history', 'Job History', 'ef389c65d0fe150352913b6d95bd7d7dc219eaebaef258330f5743c1b188cc1a'],
+  ['job_history', 'Job History', '08eb659f5bda1d2a14a14e58d1c8e0c0c25e57cc2509a76ee23f2f1c330f1746'],
   ['overview', 'Overview', 'ead65b392a9820c9efee6213225c8fa25dedebe21b0433da474594457bef9ced'],
   ['bed_mesh', 'Bed Mesh', '5b255499505463e8dfdbc5b1b608ed1b0f519fd91f3c684cd03d4b0112eebeac'],
 ]) test(`real ${title} is one deterministic private artifact with the closed host bridge`, () => {
@@ -32,7 +32,7 @@ test('current focused production inventory retains exact artifact size measureme
     view,
     bytes: Buffer.byteLength(readFileSync(new URL(`../../public/svelte-live-${view}.html`, import.meta.url), 'utf8')),
   }));
-  expect(entries.map(({ bytes }) => bytes)).toEqual([88864, 94932, 98644, 90384, 83307, 88644, 86801, 96932, 652480, 100096]);
-  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(1481084);
+  expect(entries.map(({ bytes }) => bytes)).toEqual([88864, 94932, 98644, 90384, 83307, 88644, 86889, 96932, 652480, 100096]);
+  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(1481172);
   expect(() => assertFocusedProductionInventory(entries)).not.toThrow();
 });

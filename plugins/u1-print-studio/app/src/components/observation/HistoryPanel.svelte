@@ -45,7 +45,8 @@
   .live-row > span { flex: none; }
   .history-status :global(svg) { width: 19px; height: 19px; color: var(--u1-muted); }
   .history-status :global(svg.completed) { color: var(--u1-positive); }
-  .history-status div { display: grid; gap: 2px; overflow-wrap: anywhere; }
+  .history-status div { display: grid; gap: 2px; }
+  .live-row .history-status div { overflow-wrap: anywhere; }
   .history-status strong { font-size: 14px; font-weight: 600; }
   .history-status span, .history-row > span { color: var(--u1-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
 </style>

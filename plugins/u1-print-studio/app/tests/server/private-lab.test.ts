@@ -30,7 +30,7 @@ describe("private Svelte lab packages", () => {
   test("freezes the deterministic light observation artifact", () => {
 
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "59d5de025124fc5c87bc9be7a62bda824bbb5c8b1d9aa022116e40fa50d8cdce"
+      "0f0d7e0e1b9b6bc23168f666517dc6fa4350a3cd8897a16c16d723bcd27dbbcb"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
