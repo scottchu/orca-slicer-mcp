@@ -1,47 +1,41 @@
 # F0 maintenance handoff
 
-## Active handoff — Camera reliability and fixed live widgets
+## Delivered fixed live widgets and Camera recovery — PR125
 
-The user stopped dynamic/composable expansion on 2026-09-11, requested existing
-fixed Lab widgets in live use, and reported Camera dropping after about three
-minutes followed by repeated crash/reload behavior. The screenshots show `Live
-reply timed out` then `Could not load camera`; they establish visible failure,
-not its cause. Camera reliability comes first; fixed-widget adoption follows.
+PR125 is merged at `1716867af057d55b2e170215126dff429f4d000f` and deployed as
+runtime0.4.20/schema18/observation23/Camera18. Independently reviewed head
+`373e4e05994284d84d578fa28bf9784bdb949bf0` passed the unchanged mandatory
+shipping workflow. Release `20260912-1716867-pr125-20260912T005903-cfae3d`
+was installed; both existing services were explicitly restarted and verified
+loaded, healthy and integrity-matched. Exact assets, 115 static checks,
+117 security checks and preservation passed; no rollback occurred.
 
-The candidate targets Camera and all nine fixed observation views in one
-release. MCP Fans/Thermals/Queue use existing live adapters, Heads is already
-native, and Progress/Current Job/History/Overview/Bed Mesh add live adapters.
-The earlier first-three/remaining-five sequence is implementation order only.
-The corrected candidate is runtime0.4.20/schema18/observation23/Camera18 at
-`6b29d2f8de33e258166e5c301f4137e9ad2fb40b`. Two guarded shipping attempts
-stopped before merge, installation or service restarts: first at the type-only
-NodeNext import, then at the production Kit route inventory after the repository
-and production-build gates passed. Both corrections are independently checked.
-The compiled production router now passes 14 browser cases and the unchanged
-100-file/114-route validator; UI and Camera packages are unchanged, retaining
-prior UI evidence. Renewed exact-head approval and the complete unchanged
-mandatory shipping workflow remain pending. The complete 434-case browser
-collection ran with 431 passes and three History Lab failures sharing one
-text-wrapping cause. The narrow correction then passed all 90 affected cases
-and a fresh 18-case native matrix; unchanged evidence is retained explicitly.
-This is not a second complete 434-case green run. Mandatory shipping gates,
-exact documentation-head binding, guarded merge/deployment, both service
-restarts and installed widget verification remain pending. Actual-phone
-reliability and the reported crash cause remain unverified; C08 stays open.
+All nine fixed observations now use real adapters and native components on
+live dashboard/MCP routes alongside Camera. The installed dashboard synthetic
+matrix passed all nine views with zero page errors and stable failure geometry.
+One bounded real read-only Overview request returned eight tiles with one local
+failure, preserving available sibling tiles. One explicit real Camera Live session in
+local Chromium ran 210.148 seconds with advancing playback frames/media time, the same video
+element and no reload, navigation or page error; pagehide released its media
+and viewer. This local browser/actual-printer result does not establish iPhone
+reliability or resolve the reported Camera crash cause; C08 remains open.
 
-[Release evidence and package identities](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns the actual author and independent commands, failures, correction closure and evidence limits.
+[Release evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns the actual commands, source/package identities,
+failed attempts, corrections and scoped installed/real observations. Changed
+application areas include Camera lifecycle/backoff, fixed live adapters/roots,
+production-safe panels, MCP/native routing, compiled route inventory and
+transitive contracts. Application implementation and shipping are complete.
 
-Changed application areas include fixed live roots/adapters, production-safe
-panels, MCP/native dashboard routing, Camera lifecycle/backoff, required package
-checks, generated packages and focused/browser/server contracts. The same record
-owns exact paths and attributed results. Follow
-[NEXT_AGENT](../../../NEXT_AGENT.md) for the next smallest action.
+Current indices, iteration, ledger and decision status are reconciled. The next
+smallest action is user review of the repaired experience, as recorded in
+[NEXT_AGENT](../../../NEXT_AGENT.md). No redundant deployment is needed for
+this documentation-only tail; earlier unchanged application evidence remains
+bound to the merge and final documentation head.
 
-Preserve the stopped dynamic experiment privately/unregistered and keep synthetic
-producers isolated while adopting fixed components through real adapters.
-Preserve PR123 Overview failure isolation, upstream History malformed-response
-risk, 55 ledger IDs, unrelated WIP, private state and all shipping guards.
-No printer controls, auth/Tailscale changes or plugin reinstallation is included.
+Dynamic expansion stays stopped and its source/history private and unregistered.
+Preserve all 55 delivery IDs and separate Queue/Fans/History product gaps,
+upstream History malformed-response uncertainty and unrelated WIP. No printer
+controls, auth/Tailscale changes or plugin reinstallation were included.
 
 ## Prior handoffs — historical; superseded as execution instructions
 

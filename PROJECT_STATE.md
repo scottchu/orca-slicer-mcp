@@ -1,46 +1,38 @@
 # Project state
 
-## Active work — fixed live widgets and Camera reliability
+## Delivered fixed live widgets and Camera recovery — PR125
 
-The user stopped dynamic/composable expansion on 2026-09-11, requested existing
-fixed Lab widgets in live use, and reported Camera dropping after about three
-minutes followed by repeated crash/reload behavior. The screenshots show `Live
-reply timed out` then `Could not load camera`; they establish visible failure,
-not its cause. Camera reliability comes first; fixed-widget adoption follows.
+PR125 is merged at `1716867af057d55b2e170215126dff429f4d000f` and deployed as
+runtime0.4.20/schema18/observation23/Camera18. Independently reviewed head
+`373e4e05994284d84d578fa28bf9784bdb949bf0` passed the unchanged mandatory
+shipping workflow. Release `20260912-1716867-pr125-20260912T005903-cfae3d`
+was installed; both existing services were explicitly restarted and verified
+loaded, healthy and integrity-matched. Exact assets, 115 static checks,
+117 security checks and preservation passed; no rollback occurred.
 
-PR123 runtime0.4.19/schema18/observation22/Camera17 remains the baseline.
-Coordinator read-only service status found both services loaded, healthy and
-integrity-verified; this does not establish Camera media or phone reliability.
-The corrected candidate is runtime0.4.20/schema18/observation23/Camera18 at
-`6b29d2f8de33e258166e5c301f4137e9ad2fb40b`. Two guarded shipping attempts
-stopped before merge, installation or service restarts: first at the type-only
-NodeNext import, then at the production Kit route inventory after the repository
-and production-build gates passed. Both corrections are independently checked.
-The compiled production router now passes 14 browser cases and the unchanged
-100-file/114-route validator; UI and Camera packages are unchanged, retaining
-prior UI evidence. Renewed exact-head approval and the complete unchanged
-mandatory shipping workflow remain pending. The complete 434-case browser
-collection ran with 431 passes and three History Lab failures sharing one
-text-wrapping cause. The narrow correction then passed all 90 affected cases
-and a fresh 18-case native matrix; unchanged evidence is retained explicitly.
-This is not a second complete 434-case green run. Mandatory shipping gates,
-exact documentation-head binding, guarded merge/deployment, both service
-restarts and installed widget verification remain pending. Actual-phone
-reliability and the reported crash cause remain unverified; C08 stays open.
+All nine fixed observations now use real adapters and native components on
+live dashboard/MCP routes alongside Camera. The installed dashboard synthetic
+matrix passed all nine views with zero page errors and stable failure geometry.
+One bounded real read-only Overview request returned eight tiles with one local
+failure, preserving available sibling tiles. One explicit real Camera Live session in
+local Chromium ran 210.148 seconds with advancing playback frames/media time, the same video
+element and no reload, navigation or page error; pagehide released its media
+and viewer. This local browser/actual-printer result does not establish iPhone
+reliability or resolve the reported Camera crash cause; C08 remains open.
 
-One release candidate covers Camera recovery and all nine fixed observation
-views. Fans/Thermals/Queue reuse existing live adapters, Heads is already native,
-and Progress/Current Job/History/Overview/Bed Mesh add real presentation adapters.
-The first-three/remaining-five sequence was implementation order. All known review findings have verified corrections and regenerated packages;
-no author implementation remains pending. Preserve PR123's local
-subview failure isolation and all 55 ledger IDs; native renderer adoption does not complete
-unrelated feature gaps or establish actual-device acceptance.
+[Release evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns exact review, two stopped shipping attempts,
+subsequent corrections, successful shipment and scoped behavior results. The
+complete browser collection remains 431 passes/3 failures followed by verified
+affected closure; no second complete 434-case green run is claimed.
 
-[Decision 0059](docs/decisions/0059-prioritize-camera-reliability-and-fixed-live-widgets.md) owns direction;
-[NEXT_AGENT.md](NEXT_AGENT.md) owns order; [release evidence and exact package identities](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns the latest corrections and focused checks.
-The stopped experiment stays private/unregistered. Fixed components may enter
-live routes through real adapters; synthetic Lab producers remain isolated.
-No printer controls, auth/Tailscale changes or plugin reinstallation is included.
+Release records are complete. Review the repaired experience with the user;
+no additional deployment is needed for this unchanged-application documentation
+tail. [NEXT_AGENT.md](NEXT_AGENT.md) owns the remaining user-review boundary.
+
+Dynamic expansion stays stopped and its source/history private and unregistered.
+Preserve all 55 delivery IDs and separate Queue/Fans/History product gaps,
+upstream History malformed-response uncertainty and unrelated WIP. No printer
+controls, auth/Tailscale changes or plugin reinstallation were included.
 
 ## Prior state — historical, superseded as execution instructions
 

@@ -1,6 +1,6 @@
 # F0 dual-subsystem foundation brief
 
-## Active slice — Camera reliability and fixed live widgets
+## Delivered slice — Camera recovery and fixed live widgets
 
 The user stopped dynamic/composable expansion on 2026-09-11, requested existing
 fixed Lab widgets in live use, and reported Camera dropping after about three
@@ -9,12 +9,12 @@ reply timed out` then `Could not load camera`; they establish visible failure,
 not its cause. Camera reliability comes first; fixed-widget adoption follows.
 
 F0 / CAM-008, UI-003, UI-004 and OBS-011 are addressed by
-[decision0059](../../decisions/0059-prioritize-camera-reliability-and-fixed-live-widgets.md). One release candidate includes Camera and all nine fixed observation
+[decision0059](../../decisions/0059-prioritize-camera-reliability-and-fixed-live-widgets.md). PR125 delivers Camera and all nine fixed observation
 views. MCP Fans/Thermals/Queue reuse existing live adapters; Heads is already
 native. Progress/Current Job/History/Overview/Bed Mesh add live presentation
 adapters. This sequence is implementation order, not separate releases.
-Source and affected independent verification are complete; guarded shipment
-remains pending. No synthetic DTO casts or null-to-zero substitutions; preserve PR123's local Overview failure isolation and distinguish
+Independent review, required shipping, both-service restarts and scoped
+installed verification are complete at runtime0.4.20/schema18/observation23/Camera18. No synthetic DTO casts or null-to-zero substitutions; preserve PR123's local Overview failure isolation and distinguish
 native renderer adoption from unfinished product-feature coverage.
 
 Acceptance: Camera survives sustained-use cases beyond the reported three-minute

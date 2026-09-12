@@ -2,23 +2,23 @@
 
 ## Scope and baseline
 
-Decision0059 owns direction: stop dynamic expansion, repair Camera first, then
-adopt fixed Lab widgets through live adapters. One integrated release candidate
-covers Camera and all nine fixed observation views, including already-native
-Heads. Fans/Thermals/Queue first and the remaining five adapters afterwards is
-implementation order, not separate releases. Source and affected independent
-verification are complete; the corrected candidate is
-`6b29d2f8de33e258166e5c301f4137e9ad2fb40b`. Two mandatory shipping attempts
-stopped before merge, installation or service restarts, first on a type-only
-NodeNext import and then on the compiled Kit route inventory. Both corrections
-are independently checked; the actual compiled router passes 14 browser cases
-and the unchanged 100-file/114-route validator. UI/Camera packages remain
-unchanged, retaining prior UI evidence. Renewed exact-head approval and the
-complete unchanged guarded shipping workflow remain pending. See the final History closure below for the
-complete 431-pass/3-failure collection and subsequent 90-pass/18-pass closure.
-Native renderer adoption does not close unrelated feature gaps.
-Preserve 55 ledger IDs and existing authority gates. Earlier planning language
-elsewhere in the dated author log retains its historical execution context.
+Decision0059's fixed-widget direction is delivered through PR125: Camera recovery
+and all nine fixed observation views ship together at runtime0.4.20/schema18/
+observation23/Camera18. Reviewed head `373e4e05994284d84d578fa28bf9784bdb949bf0`
+merged as `1716867af057d55b2e170215126dff429f4d000f`; release
+`20260912-1716867-pr125-20260912T005903-cfae3d` passed mandatory shipment,
+explicit restarts of both services, integrity/exact assets/security and scoped
+installed verification. The final sections own exact commands and outcomes,
+including nine installed synthetic views, one real Overview observation and a
+210.148-second real Camera Live check from local desktop Chrome.
+
+Two pre-merge shipping stops and the original 431-pass/3-failure full browser
+collection remain recorded alongside their verified corrections and affected
+closure. No second complete 434-case green run is claimed. Preserve all 55
+ledger IDs and separate product gaps; actual iPhone recovery and the original
+crash cause remain unverified. Dynamic expansion is stopped, its source/history
+private and unregistered. Earlier planning and pending-status paragraphs below
+retain their dated execution context; release and record closure are complete.
 
 Initial inspection found an older checkout at acaaa7978f10b46642f8c29f56bab3ce4b82ae97.
 Before edits, the coordinator fast-forwarded to origin/main/PR124 at
@@ -40,7 +40,7 @@ The user reports Camera dropping after about three minutes and repeatedly
 crashing/reloading. Two phone screenshots show `Live reply timed out` then
 neutral placeholders with `Could not load camera`. Visible failures are image
 evidence; duration/repetition are user reports. Root cause, exact failing
-resource, browser-process crash and successful repair are unverified. Private
+resource, browser-process crash and successful actual-phone repair are unverified. Private
 attachments are not copied into the repository. Earlier positive home/outside
 reports remain historical and do not close this newer C08 report.
 
@@ -1521,3 +1521,54 @@ Actual `uv run --no-project python` checks of `git diff --name-only HEAD`,
 five Markdown-only diffs, no untracked files or application/configuration/
 dependency/package changes, seven valid links. `git diff --check` passed.
 No application edit, build, test or service action was performed for this tail.
+
+
+## Successful guarded release and installed behavior — PR125
+
+Independent reviewer/operator `/root/domain_review` approved exact final head `373e4e05994284d84d578fa28bf9784bdb949bf0` after verifying clean HEAD, five Markdown-only changes after approved source `6b29d2f8`, unchanged application/build/test/package inputs, accurate retained-evidence boundaries, and `git diff --check`. The fresh read-only plan passed with reviewed tree `00e6ebc85d7ea8206822a0262d9c8b8310b8eb98`.
+
+The reviewer ran `uv run --no-project scripts/u1_ship.py --pr 125 --reviewed-sha 373e4e05994284d84d578fa28bf9784bdb949bf0 --bun /Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --execute`. **PASS, phase complete**: every unchanged mandatory repository/app/TypeScript/operator test, production bundle/signing and exact build-contract phase ran; guarded merge, isolated exact merged source, stage, install dry-run, installation, explicit restart of BOTH existing services and final verification passed. No skip, cache bypass or manual service mutation was used. The two earlier failed attempts remain recorded above.
+
+PR125 merged as `1716867af057d55b2e170215126dff429f4d000f`. Installed release `20260912-1716867-pr125-20260912T005903-cfae3d`; operator receipt identity `pr125-20260912T005903-cfae3d`. Both public and dashboard services are loaded, healthy and integrity-verified at runtime0.4.20 / schema18 / observation-v23 / camera-v18. **115 served static-asset checks and 117 security checks pass**, preservation verified, rollback not-needed. The public and dashboard `/widget` bytes both match MCP observation `874684492c770c976c3706ca2c2d9860403380a5a01580c8283ca29bcf526e87`; all native pages and widget assets match the exact validated build. Private operator log/summary SHA-256 `8510d1d2ca4a8d140551fc5fb841be5ef8de85b0c440893266dbdd14754a1c42` / `77ad561e947a572f03e6a17a45eb56facd9003512d03190dfc9f43c6e4d97f86`.
+
+Postdeployment meaningful browser verification used the actual installed dashboard URLs on the existing local service with only tool responses intercepted as synthetic. All nine native views passed ready→failure/masking→Retry, unknown, age-stale and applicable unsupported/empty/Overview isolation/Bed profile and reason/Jobs large-value behavior at 390px: **9/9 pass**, no page errors and every ready/error height delta zero. This verifies installed widget behavior, not physical telemetry. Pinned Bun ran `deployed-native-matrix.ts`; private script/result/log hashes `6903537f1c5c2bf9fb3584a48e8ca1c33aa879eb448470cfc27b6963212f94aa`, `4d440bd9876410bffc8f82bc329ea10e83ba6e8c9a856b55633d8df9f38effb9`, `c4c5b2e78d365a363771a0f59d7aaa653bf27ca7169e9cabcd8a5f8862510aa1`. Its isolated browser was closed; it did not send printer controls or change authentication/routing.
+
+## Bounded real observation and explicit Live camera acceptance
+
+Under the coordinator's explicit bounded read-only authorization, the reviewer opened the deployed local dashboard in isolated Chrome. One real Overview request rendered its eight domain tiles; one tile remained locally unavailable. No private telemetry values were retained, and this does not establish every domain as available or healthy. The first Camera visit remained in the product's default **Auto** mode: 16 snapshot tool requests and zero page errors, with no Live request. Its lack of decoded video was a missing explicit-Live test precondition, not a product Live failure. An earlier duplicate-variable parse error prevented script execution entirely; neither reviewer-harness issue changed application source. All those initial browser handles were closed. Auto/Overview result SHA-256 `5742be9b52b51341fdd7387518c28ca282adeebea5330203a3c3ff59d6145e8e`.
+
+The reviewer then ran only the explicit Live camera check, selecting the existing Live radio through the installed application. The real printer-camera transport established **1920×1080 video** and ran for **210148ms** after the first decoded playback sample, crossing the reported three-minute boundary. Fifteen samples show media time **0.113→210.237 seconds**, playback-quality `totalVideoFrames` **8→6298**, readyState4 throughout, a live media track, the same video element, **zero frame navigations/reloads and zero page errors**. Exactly one open-stream request, one answer request, two ICE-candidate requests and one close-stream request were observed; there was no second stream-open attempt. This is real camera transport evidence from local desktop Chrome, separate from the earlier synthetic delayed-answer/backoff tests.
+
+Teardown used the existing application pagehide lifecycle: the owned video source was cleared and its captured media track reached `ended`; the close-stream request was observed once, then the isolated browser/context closed. No camera image/recording, private identifier, SDP or token was saved or committed. The check sent no printer-control command, auth change, routing change or service mutation. Pinned Bun ran `deployed-real-live-camera.ts`; private script/result/log SHA-256 `679699623d20c14c51097447399bc562f1a845139fa714ff08b982212569bdbb`, `18e4ad65c88155d180f3fea31aa6110151e4d1ad12c8f563603fc80fb8c99e9f`, `07971ecabba1ff55ab4a00c87264cc0082751bb4c1942f807ed19cc104b3059b`.
+
+This successful 3.5-minute run does not identify the original phone crash cause or establish iPhone/ChatGPT-host acceptance; C08's actual-device boundary remains open. Service health, synthetic protocol coverage, installed synthetic behavior, real Overview partial availability, real desktop camera playback and actual phone outcomes remain separate evidence layers. The remaining work is documentation-only release closure and exact unchanged-input review, with no further deployment required for unchanged application bytes.
+
+## Final durable release-record closure
+
+The documentation owner reconciled PROJECT_STATE, NEXT_AGENT, NEW_AGENT_START,
+active BRIEF/HANDOFF/VALIDATION, decision0059 and its index, the 55-ID widget
+ledger and this evidence. Current records distinguish reviewed head, merged
+source and installed release; retain both shipping failures and affected
+browser closure; and record the completed release, both-service verification,
+installed synthetic behavior and bounded real observations. No completed
+implementation, shipping, test or record-update task remains in current next
+actions. Actual iPhone retest and explicit future feature choices remain open;
+local desktop Live success does not close C08 or the original crash cause.
+
+Actual documentation checks used `uv run --no-project python` with
+`git ls-files -z`, `git diff --name-only HEAD`,
+`git ls-files --others --exclude-standard` and file SHA-256 comparisons:
+all **585 tracked non-Markdown inputs** remain identical to deployed merge
+`1716867af057d55b2e170215126dff429f4d000f`, including application, dependency,
+configuration, tests and generated artifacts. Their sorted path/NUL/file-SHA/
+newline fingerprint is
+`e0091fc4d1fbe029cd2b579808ab5ce1d9e8163945b72387e656d62c66a62bc6`.
+Exactly ten Markdown files changed, no untracked files remained, all 55 ledger
+IDs retained their sequence and all 72 current-section relative links resolved.
+`git diff --check` passed. The concise records-only PR description is prepared.
+
+This tail runs no application build, test suite, printer operation or service
+mutation. Matching released application evidence is retained for independent
+binding to the final documentation commit; decision0028 requires no additional
+deployment for unchanged application bytes. All requested durable records are
+complete, with detailed evidence kept in this single record.
