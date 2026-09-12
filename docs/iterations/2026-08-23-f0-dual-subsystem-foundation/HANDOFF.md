@@ -14,8 +14,8 @@ All nine fixed observations now use real adapters and native components on
 live dashboard/MCP routes alongside Camera. The installed dashboard synthetic
 matrix passed all nine views with zero page errors and stable failure geometry.
 One bounded real read-only Overview request returned eight tiles with one local
-failure, preserving healthy siblings. One explicit real Camera Live session in
-local Chromium ran 210.148 seconds with advancing decoded frames, the same video
+failure, preserving available sibling tiles. One explicit real Camera Live session in
+local Chromium ran 210.148 seconds with advancing playback frames/media time, the same video
 element and no reload, navigation or page error; pagehide released its media
 and viewer. This local browser/actual-printer result does not establish iPhone
 reliability or resolve the reported Camera crash cause; C08 remains open.
