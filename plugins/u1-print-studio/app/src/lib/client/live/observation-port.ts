@@ -1,4 +1,4 @@
-import type { HostRpc } from '../host/rpc';
+import type { HostRpc } from '../host/rpc.js';
 export type ObservationPort = {
   start: () => Promise<void>;
   refresh: () => Promise<unknown>;
