@@ -1,49 +1,36 @@
 # Next agent
 
-## Current order — Camera reliability, then fixed Lab widgets live
+## Current order after PR125 delivery
 
-The user stopped dynamic/composable expansion on 2026-09-11, requested existing
-fixed Lab widgets in live use, and reported Camera dropping after about three
-minutes followed by repeated crash/reload behavior. The screenshots show `Live
-reply timed out` then `Could not load camera`; they establish visible failure,
-not its cause. Camera reliability comes first; fixed-widget adoption follows.
+PR125 is merged at `1716867af057d55b2e170215126dff429f4d000f` and deployed as
+runtime0.4.20/schema18/observation23/Camera18. Independently reviewed head
+`373e4e05994284d84d578fa28bf9784bdb949bf0` passed the unchanged mandatory
+shipping workflow. Release `20260912-1716867-pr125-20260912T005903-cfae3d`
+was installed; both existing services were explicitly restarted and verified
+loaded, healthy and integrity-matched. Exact assets, 115 static checks,
+117 security checks and preservation passed; no rollback occurred.
 
-The corrected candidate is runtime0.4.20/schema18/observation23/Camera18 at
-`6b29d2f8de33e258166e5c301f4137e9ad2fb40b`. Two guarded shipping attempts
-stopped before merge, installation or service restarts: first at the type-only
-NodeNext import, then at the production Kit route inventory after the repository
-and production-build gates passed. Both corrections are independently checked.
-The compiled production router now passes 14 browser cases and the unchanged
-100-file/114-route validator; UI and Camera packages are unchanged, retaining
-prior UI evidence. Renewed exact-head approval and the complete unchanged
-mandatory shipping workflow remain pending. The complete 434-case browser
-collection ran with 431 passes and three History Lab failures sharing one
-text-wrapping cause. The narrow correction then passed all 90 affected cases
-and a fresh 18-case native matrix; unchanged evidence is retained explicitly.
-This is not a second complete 434-case green run. Mandatory shipping gates,
-exact documentation-head binding, guarded merge/deployment, both service
-restarts and installed widget verification remain pending. Actual-phone
-reliability and the reported crash cause remain unverified; C08 stays open.
+[Release evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns all completed review, correction, shipping and
+scoped behavior results. The two failed shipping attempts and full-browser
+failure/affected-closure history remain recorded; do not replay completed gates
+or describe the release as still pending.
 
-1. Bind the documentation-only tail to the independently reviewed application
-   source and complete every unchanged mandatory `u1-ship` gate. Do not replay
-   unaffected full browser suites solely for bookkeeping.
-2. Complete the guarded PR/merge/exact-build shipment, restart both existing
-   services and verify health, integrity, exact served assets and meaningful
-   installed widget behavior.
-3. Record the release and scoped behavior results, then review the repaired
-   experience with the user. Native renderer adoption does not close unrelated
-   feature gaps, C08, or actual-device acceptance.
+Review the fixed live widgets and Camera recovery with the user. The installed
+nine-view synthetic matrix, one real Overview observation and one 210.148-second
+local Chromium/actual-printer Live session passed their scoped checks. Actual
+phone reliability and the reported crash cause remain unresolved; C08 stays open.
+No new product task or active monitoring is started by this record. Preserve
+separate Queue/Fans/History gaps and source/physical/user acceptance boundaries.
 
-[Release evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md)
-owns exact commands, full-collection failures, affected closure, identities and
-shipment outcomes when performed.
+Current release records are complete. This documentation-only closure changes
+no application inputs and needs no additional service deployment under
+decision0028. Retain the exact unchanged-application evidence when binding the
+final documentation commit.
 
-Keep dynamic source/history private and unregistered; stop its expansion.
-Synthetic Lab isolation does not prohibit fixed components on live routes.
-Preserve all 55 delivery IDs and evidence layers. No printer controls,
-auth/Tailscale changes or plugin reinstallation is authorized. Existing host
-bridge and tools/schemas remain; no new tool catalog is required.
+Dynamic expansion stays stopped and its source/history private and unregistered.
+Preserve all 55 delivery IDs and separate Queue/Fans/History product gaps,
+upstream History malformed-response uncertainty and unrelated WIP. No printer
+controls, auth/Tailscale changes or plugin reinstallation were included.
 
 ## Prior orders — historical; do not replay or treat as blockers
 

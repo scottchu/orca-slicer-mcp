@@ -1,19 +1,25 @@
-# 新 MCP client task 接手入口（2026-09-08）
+# U1 接手入口
 
-## 現行任務：固定 live widgets 與 Camera 穩定性（2026-09-11）
+## 現行狀態：固定 live widgets 與 Camera recovery 已發布 PR125
 
-使用者已停止 dynamic/composable 擴展，要求既有固定 Lab widgets 接上真實資料，
-並回報 Camera 約三分鐘後失敗、反覆重載。Source 與 affected independent
-verification 已完成，guarded shipment 尚待完成；單一 release candidate 包含 Camera 及全部九個固定 observation views。先處理三個
-既有 adapter、再完成其餘五個 adapter 是實作順序，不是分開發布。Heads 已 native。
-Native renderer adoption 不代表既有 feature gaps 或實際手機結果已驗收。
+PR125 已合併為 `1716867af057d55b2e170215126dff429f4d000f`，部署版本為
+runtime0.4.20/schema18/observation23/Camera18。獨立 exact review、完整
+mandatory shipping、兩個服務明確重啟、health/integrity/exact assets/security
+及 installed-byte 九個 native views 的 synthetic 驗證均完成。
 
 先讀 [PROJECT_STATE.md](PROJECT_STATE.md)、[NEXT_AGENT.md](NEXT_AGENT.md)、
-requirements 與 CURRENT 指向的 iteration，依 NEXT_AGENT 的發布順序繼續。
-[現行證據](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md)
-記錄實際命令、身份與驗證邊界。保留全部 55 delivery IDs、private Lab/source/history、
-printer-control/auth/Tailscale/plugin 邊界及既有 shipping guards。下方歷史交接與
-PR123 完成記錄不再是現行執行指示；不要重播舊清理、封存或「沒有新任務」狀態。
+requirements 與 CURRENT 指向的 iteration。
+[發布證據](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md)
+保留兩次發布 gate 失敗、修復、實際命令與各層驗證結果。現行發布與記錄已完成；
+下一步是與使用者檢視修復結果，不重播發布、清理或舊交接。
+一次 real Overview 觀測及 local Chromium 連接實際 Camera 的 210.148 秒 Live
+檢查已通過；同一 video 持續解碼、無 reload，離開後資源清理完成。這不等於
+使用者 iPhone 驗收；actual phone reliability 與原 crash 原因仍未確認，C08 open。
+
+Dynamic/composable 擴展保持停止，source/history 與 synthetic Lab 保留 private、
+unregistered。保留全部 55 delivery IDs 及 Queue/Fans/History 其他 feature gaps。
+無新增 printer controls、auth/Tailscale、plugin reinstall 或 active monitoring。
+本次 records-only closure 不改 application bytes，不需要額外部署。
 
 ## 先前入口：歷史，已由上方現行任務取代
 

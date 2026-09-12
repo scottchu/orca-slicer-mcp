@@ -66,7 +66,7 @@ silently changed.
 
 | [0058](0058-name-printer-tools-by-result.md) | Name printer tools by their result | Accepted and delivered PR121 |
 
-| [0059](0059-prioritize-camera-reliability-and-fixed-live-widgets.md) | Prioritize Camera reliability and fixed live widgets | User-selected direction; implementation and acceptance pending |
+| [0059](0059-prioritize-camera-reliability-and-fixed-live-widgets.md) | Prioritize Camera reliability and fixed live widgets | Implemented/released PR125; scoped software/service verification complete, actual-phone acceptance open |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

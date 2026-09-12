@@ -1,6 +1,6 @@
 # 0059 — Prioritize Camera reliability and fixed live widgets
 
-- Status: user-selected direction; implementation and acceptance pending
+- Status: implemented and released in PR125; scoped software/service verification complete, actual-phone acceptance open
 - Date: 2026-09-11
 - Milestone: F0 / CAM-008, UI-003, UI-004, OBS-011
 
@@ -22,8 +22,8 @@ adapters for Progress/Current Job/History/Overview/Bed Mesh. Never cast fixture
 DTOs into live input or replace null with zero. Preserve PR123's local Overview
 failure isolation and all 55 delivery IDs, including unfinished product coverage.
 This is implementation order within one release candidate covering Camera and
-all nine fixed observation views, including already-native Heads. Integration
-and review are underway; a first-three-only release is not the planned endpoint.
+all nine fixed observation views, including already-native Heads. PR125 delivers
+that integrated scope; the sequence does not imply separate releases.
 Native renderer adoption does not close unrelated product-feature gaps or
 actual-device acceptance.
 
