@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { NATIVE_DASHBOARD_VIEWS } from '../src/lib/server/route-policy';
+import { DASHBOARD_VIEWS, NATIVE_DASHBOARD_VIEWS } from '../src/lib/server/route-policy';
 
 const root = path.resolve(import.meta.dir, '..');
 const argument = process.argv.indexOf('--outdir');
@@ -40,9 +40,10 @@ const staticPage = (urls: string[], file: string, role: StaticRoute['role'] = 'd
 };
 route('/widget', 'mcp-observation.html', 'both');
 staticPage(['/dashboard', '/dashboard/'], 'dashboard-index.html');
-staticPage(['overview', 'progress', 'jobs', 'job_history', 'bed_mesh'].map((view) => `/dashboard/${view}`), 'status-dashboard-host.html');
+// Retain the schema-required immutable host resource without routing native pages to it.
+staticPage([], 'status-dashboard-host.html');
 staticPage(['/dashboard/camera'], 'camera-dashboard-host.html');
-for (const view of ['fans', 'thermals', 'heads', 'queue', 'progress', 'jobs', 'job_history', 'overview', 'bed_mesh', 'camera']) staticPage([`/dashboard/${view}_widget`], `svelte-live-${view}.html`);
+for (const view of DASHBOARD_VIEWS) staticPage([`/dashboard/${view}_widget`], `svelte-live-${view}.html`);
 const lab = (urls: string[], file: string): void => staticPage(urls.flatMap((url) => [url, `${url}/`]), file);
 lab(['/dashboard/lab', ...['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans'].map((view) => `/dashboard/lab/${view}`)], 'svelte-observation-lab.html');
 lab(['/dashboard/lab/bed_mesh'], 'svelte-bed-mesh-lab.html');
