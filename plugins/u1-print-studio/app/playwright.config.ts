@@ -2,6 +2,8 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/browser/visual',
+  // The private composition uses its pinned immutable preview, never the static Lab host.
+  testIgnore: '**/composable-lab.spec.ts',
   outputDir: './test-results/playwright',
   fullyParallel: false,
   reporter: [['list']],

@@ -52,6 +52,8 @@ for (const width of [320, 390, 1024]) {
         await page.goto(`/host?view=${view}`);
         const frame = page.frameLocator('iframe');
         await expect(frame.locator('[data-widget-shell]')).toHaveCount(1);
+        // Measure the settled opening result, not an earlier loading allocation.
+        await expect(frame.locator('[data-widget-state-surface]')).toHaveAttribute('data-widget-state-surface', 'ready');
         const body = frame.locator('[data-widget-body]');
         if (enlarged) await body.evaluate(node => {
           const elements = [node, ...node.querySelectorAll('*')];

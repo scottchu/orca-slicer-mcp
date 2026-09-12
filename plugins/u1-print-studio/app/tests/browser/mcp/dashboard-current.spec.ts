@@ -32,6 +32,7 @@ for (const [view, title] of Object.entries(views)) {
       { name: 'refresh_printer_observation', arguments: { view } },
       { name: 'refresh_printer_observation', arguments: { view } },
     ]);
+    await expect(frame.locator('[data-widget-state-surface]')).toHaveAttribute('data-widget-state-surface', 'ready');
     const before = await frame.locator('[data-widget-shell]').boundingBox();
         const previousTimes = (await frame.locator('[data-widget-shell]').innerText()).match(/\b\d{1,2}:\d{2}:\d{2}\b/g) ?? [];
         if (view === 'progress' || view === 'overview') expect(previousTimes.length).toBeGreaterThan(0);

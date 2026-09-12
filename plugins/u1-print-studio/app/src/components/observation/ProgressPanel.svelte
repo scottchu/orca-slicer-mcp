@@ -30,6 +30,7 @@
   .progress-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
   .progress-top.live { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, max(8em, calc(50% - 8px))), 1fr)); }
   .progress-top.live .percent { min-width: 0; max-width: 100%; flex-wrap: wrap; justify-content: flex-end; overflow-wrap: anywhere; }
+  .progress-detail.live { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12em), 1fr)); }
   .progress-detail.live > span { flex-wrap: wrap; min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
   .loading::before { visibility: hidden; }
   .loading-unit { visibility: hidden; }

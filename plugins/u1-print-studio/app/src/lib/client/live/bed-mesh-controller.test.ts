@@ -49,19 +49,19 @@ describe('live Bed Mesh shared controller and native presentation', () => {
     try {
       const view = render(LiveBedMeshRoot, { controller: app.controller });
       app.notify(liveBedMeshResult(12, undefined, { profile: 'Reported profile' })); await tick();
-      const kicker = view.container.querySelector('.mesh-kicker');
-      expect(kicker).toHaveTextContent('Reported profile');
+      const profile = view.container.querySelector('[data-text-viewport]');
+      expect(profile).toHaveTextContent('Profile: Reported profile');
       const retainedMesh = app.controller.getState().observation?.mesh;
       app.notify(liveBedMeshResult(13, '2026-09-01T12:00:20.000Z', unavailableBedMesh('unsupported'))); await tick();
       expect(app.controller.getState().observation?.mesh).toBe(retainedMesh);
       expect(view.container.querySelector('[data-footer-status]')).toHaveTextContent('Endpoint unsupported');
-      expect(kicker).not.toHaveTextContent('Reported profile');
+      expect(profile).not.toHaveTextContent('Reported profile');
       app.notify(liveBedMeshResult(14, '2026-09-01T12:00:21.000Z', unavailableBedMesh('not_reported'))); await tick();
       expect(app.controller.getState().observation?.mesh).toBe(retainedMesh);
       expect(view.container.querySelector('[data-footer-status]')).toHaveTextContent('Object not reported');
-      expect(kicker).not.toHaveTextContent('Reported profile');
+      expect(profile).not.toHaveTextContent('Reported profile');
       app.notify(liveBedMeshResult(15, '2026-09-01T12:00:22.000Z')); await tick();
-      expect(kicker).not.toHaveTextContent('Reported profile');
+      expect(profile).not.toHaveTextContent('Reported profile');
       expect(app.controller.getState().failureReason).toBeNull();
     } finally { app.controller.dispose(); }
   });

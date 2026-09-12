@@ -122,6 +122,7 @@ if [[ -d "$plugin_app_root" ]]; then
     bun --no-env-file --config=/dev/null run verify:mcp-camera
     bun --no-env-file --config=/dev/null run ui:verify
     bun --no-env-file --config=/dev/null run check
+    bun --no-env-file --config=/dev/null run build:composable-preview
     bun --no-env-file --config=/dev/null run test:server
   )
 fi

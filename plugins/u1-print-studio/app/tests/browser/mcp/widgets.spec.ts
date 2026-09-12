@@ -347,7 +347,9 @@ test('MCP native failed Refresh cannot render a retained successful DTO', async 
   );
   await frame.getByRole('button', { name: 'Refresh Thermals', exact: true }).click();
   await expect(frame.locator('[data-widget-state-surface="error"]')).toBeVisible();
-  await expect(frame.locator('[data-footer-status]')).toHaveText('Could not load Thermals');
+  await expect(frame.locator('[data-footer-status]')).toBeVisible();
+  await expect(frame.locator('[data-footer-status]')).toHaveText('Could not load');
+  await expect(frame.locator('[data-footer-status]')).toHaveAttribute('aria-label', 'Could not load Thermals');
   await expect(frame.getByText('220°', { exact: true })).toHaveCount(0);
 });
 

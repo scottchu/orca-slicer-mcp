@@ -3,6 +3,7 @@ import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createAppServer, MCP_OBSERVATION_HTML } from '../src/lib/server/app.js';
 import { createKitObservationFixture } from '../tests/fixtures/kit-observation-store.js';
 import { readFileSync } from 'node:fs';
+import { dashboardPage } from '../src/lib/server/status-dashboard.js';
 
 const fixture = createKitObservationFixture();
 let image = '';
@@ -61,18 +62,17 @@ const html = readFileSync(
   new URL('../tests/fixtures/mcp-widget-host.html', import.meta.url),
   'utf8',
 );
-const dashboardHtml = readFileSync(
-  new URL('../public/status-dashboard-host.html', import.meta.url), 'utf8',
-);
-const dashboardViews = new Set(['overview', 'progress', 'jobs', 'job_history', 'bed_mesh']);
+const dashboardPaths = new Set(['overview', 'progress', 'jobs', 'job_history', 'bed_mesh']
+  .flatMap(view => [`/dashboard/${view}`, `/dashboard/${view}_widget`]));
 const server = Bun.serve({
   hostname: '127.0.0.1',
   port: Number(process.env.U1_MCP_FIXTURE_PORT ?? 4182),
   fetch: async (request) => {
     const url = new URL(request.url);
     try {
-      if (request.method === 'GET' && dashboardViews.has(url.pathname.replace('/dashboard/', '')) && url.pathname.startsWith('/dashboard/')) {
-        return new Response(dashboardHtml, { headers: { 'content-type': 'text/html' } });
+      if (dashboardPaths.has(url.pathname)) {
+        const page = dashboardPage(url.pathname, request.method);
+        if (page) return page;
       }
       if (request.method === 'GET' && url.pathname === '/widget') {
         return new Response(MCP_OBSERVATION_HTML, { headers: { 'content-type': 'text/html' } });

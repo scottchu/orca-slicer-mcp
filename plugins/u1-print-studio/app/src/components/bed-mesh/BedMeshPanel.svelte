@@ -15,6 +15,7 @@
   import Shell from '../common/Shell.svelte';
   import StateSurface from '../common/StateSurface/StateSurface.svelte';
   import LoadingValue from '../common/LoadingValue.svelte';
+  import TextViewport from '../common/TextViewport.svelte';
   import Skeleton from '../common/Skeleton.svelte';
   import RetainedLayer from '../common/RetainedLayer.svelte';
   import StateAnnouncement from '../common/StateAnnouncement.svelte';
@@ -81,7 +82,8 @@
     </Header>
     <Body>
       {#snippet children()}
-        <div class="mesh-kicker" data-record>Reported probe grid · <LoadingValue loading={placeholder} text={!placeholder && mesh ? `${mesh.summary.columns} × ${mesh.summary.rows}` : undefined} />{#if mesh?.profile}{' · Profile: '}<LoadingValue loading={placeholder} text={!placeholder ? mesh.profile : undefined} />{/if}{@render attribution?.()}</div>
+        <div class="mesh-kicker" data-record>Reported probe grid · <LoadingValue loading={placeholder} text={!placeholder && mesh ? `${mesh.summary.columns} × ${mesh.summary.rows}` : undefined} />{@render attribution?.()}</div>
+        <TextViewport label="Bed mesh profile" loading={loading || !!failure || retrying} text={placeholder || !mesh?.profile ? undefined : `Profile: ${mesh.profile}`} />
         <ChartFrame label={!placeholder && mesh ? `Bed mesh ${mode === '3d' ? '3D surface' : '2D grid'}, ${mesh.summary.minimum.toFixed(3)} to ${mesh.summary.maximum.toFixed(3)} millimetres` : loading ? 'Loading bed mesh' : 'Bed mesh unavailable'} description={!placeholder && mesh ? `Z height in millimetres; top ${mesh.summary.maximum}, bottom ${mesh.summary.minimum}` : 'Z height in millimetres; range unavailable'} overlay={!notice && feedback ? feedbackOverlay : undefined}>
           {#snippet leading()}<HeightLegend minimum={!placeholder ? mesh?.summary.minimum ?? null : null} maximum={!placeholder ? mesh?.summary.maximum ?? null : null} palette={meshPalette} orientation="vertical" placement="start" showEndpoints={false} />{/snippet}
           {#if placeholder}<Skeleton shape="chart" />{/if}

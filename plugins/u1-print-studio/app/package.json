@@ -42,7 +42,7 @@
     "verify:live-thermals": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --thermals --check",
     "build:live-queue": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --queue",
     "verify:live-queue": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --queue --check",
-    "test:browser": "bun --no-env-file --config=/dev/null run build && bun --no-env-file --config=/dev/null run scripts/build-state-harness.ts && bun --no-env-file --config=/dev/null run scripts/build-camera-harness.ts && playwright test && playwright test --config playwright.mcp.config.ts",
+    "test:browser": "bun --no-env-file --config=/dev/null run build && bun --no-env-file --config=/dev/null run build:composable-preview && bun --no-env-file --config=/dev/null run scripts/build-state-harness.ts && bun --no-env-file --config=/dev/null run scripts/build-camera-harness.ts && playwright test && playwright test --config playwright.composable.config.ts && playwright test --config playwright.mcp.config.ts",
     "build:server": "bun --no-env-file --config=/dev/null run scripts/build-server.ts",
     "build": "vite build",
     "test:server": "bun --no-env-file --config=/dev/null run build && bun --no-env-file --config=/dev/null test tests/server",
@@ -56,7 +56,8 @@
     "build:live-overview": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --overview",
     "verify:live-overview": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --overview --check",
     "build:live-bed_mesh": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --bed_mesh",
-    "verify:live-bed_mesh": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --bed_mesh --check"
+    "verify:live-bed_mesh": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --bed_mesh --check",
+    "build:composable-preview": "U1_COMPOSABLE_KIT_OUT=build-kit-composable-v2 bun --no-env-file --config=/dev/null run build"
   },
   "dependencies": {
     "@modelcontextprotocol/ext-apps": "1.7.5",
