@@ -8,26 +8,31 @@ minutes followed by repeated crash/reload behavior. The screenshots show `Live
 reply timed out` then `Could not load camera`; they establish visible failure,
 not its cause. Camera reliability comes first; fixed-widget adoption follows.
 
-The Camera recovery and all nine fixed observation views are authored in one
-frozen candidate: runtime0.4.20/schema18/observation23/Camera18. The earlier
-first-three/remaining-five sequence was implementation order, not separate
-releases. The known text-scaling/source-parity corrections and package regeneration are
-complete; independent verification remains pending. No author implementation
-remains pending unless further review finds an issue.
+Source and packages at runtime0.4.20/schema18/observation23/Camera18 are
+independently verified for guarded shipment at source commit
+`7ca0c8cd4625939eccb3a514acbe2f9fd759e95f`. The complete 434-case browser
+collection ran with 431 passes and three History Lab failures sharing one
+text-wrapping cause. The narrow correction then passed all 90 affected cases
+and a fresh 18-case native matrix; unchanged evidence is retained explicitly.
+This is not a second complete 434-case green run. Mandatory shipping gates,
+exact documentation-head binding, guarded merge/deployment, both service
+restarts and installed widget verification remain pending. Actual-phone
+reliability and the reported crash cause remain unverified; C08 stays open.
 
-1. Finish independent source/targeted verification on the final frozen bytes,
-   bind it to the exact candidate commit, and resolve any new findings before
-   acceptance. Preserve null/unknown evidence and PR123 subview isolation.
-2. Let the sole full-regression owner complete the full required candidate
-   checks. Do not duplicate expensive runs or carry changed-byte evidence
-   forward; unchanged `u1-ship` gates remain mandatory.
-3. After independent acceptance and required validation, complete the guarded
-   PR/merge/exact-build shipment, restart both services and verify meaningful
-   installed widget behavior. Record those outcomes separately from physical
-   media and actual-phone acceptance. Native renderer adoption does not close
-   unrelated feature gaps, C08, or actual-device acceptance.
+1. Bind the documentation-only tail to the independently reviewed application
+   source and complete every unchanged mandatory `u1-ship` gate. Do not replay
+   unaffected full browser suites solely for bookkeeping.
+2. Complete the guarded PR/merge/exact-build shipment, restart both existing
+   services and verify health, integrity, exact served assets and meaningful
+   installed widget behavior.
+3. Record the release and scoped behavior results, then review the repaired
+   experience with the user. Native renderer adoption does not close unrelated
+   feature gaps, C08, or actual-device acceptance.
 
-[Final author evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md#bed-text-scaling-correction-and-current-record-handoff) owns the latest package identities and focused results; the same record owns independent and shipment outcomes when performed.
+[Release evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md)
+owns exact commands, full-collection failures, affected closure, identities and
+shipment outcomes when performed.
+
 Keep dynamic source/history private and unregistered; stop its expansion.
 Synthetic Lab isolation does not prohibit fixed components on live routes.
 Preserve all 55 delivery IDs and evidence layers. No printer controls,

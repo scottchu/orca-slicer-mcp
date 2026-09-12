@@ -12,15 +12,19 @@ The candidate targets Camera and all nine fixed observation views in one
 release. MCP Fans/Thermals/Queue use existing live adapters, Heads is already
 native, and Progress/Current Job/History/Overview/Bed Mesh add live adapters.
 The earlier first-three/remaining-five sequence is implementation order only.
-Source and packages are authored and frozen at runtime0.4.20/schema18/
-observation23/Camera18, including all known text-scaling and source-parity corrections. No author
-implementation remains pending unless further review finds an issue. Earlier
-checks remain scoped to their exact bytes. Final independent exact review,
-the full required regression and
-guarded shipment remain pending. Phone root cause and recovery remain unverified;
-native renderer adoption does not close unrelated product-feature gaps or C08.
+Source and packages at runtime0.4.20/schema18/observation23/Camera18 are
+independently verified for guarded shipment at source commit
+`7ca0c8cd4625939eccb3a514acbe2f9fd759e95f`. The complete 434-case browser
+collection ran with 431 passes and three History Lab failures sharing one
+text-wrapping cause. The narrow correction then passed all 90 affected cases
+and a fresh 18-case native matrix; unchanged evidence is retained explicitly.
+This is not a second complete 434-case green run. Mandatory shipping gates,
+exact documentation-head binding, guarded merge/deployment, both service
+restarts and installed widget verification remain pending. Actual-phone
+reliability and the reported crash cause remain unverified; C08 stays open.
 
-[Final author evidence and package identities](evidence/2026-09-11-fixed-widgets-camera-reliability.md#bed-text-scaling-correction-and-current-record-handoff) owns the latest Bed corrections, actual commands and renewed pins; preceding sections own Camera and other fixed-widget source/build work.
+[Release evidence and package identities](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns the actual author and independent commands, failures, correction closure and evidence limits.
+
 Changed application areas include fixed live roots/adapters, production-safe
 panels, MCP/native dashboard routing, Camera lifecycle/backoff, required package
 checks, generated packages and focused/browser/server contracts. The same record

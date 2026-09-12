@@ -3,13 +3,13 @@
 ## 現行任務：固定 live widgets 與 Camera 穩定性（2026-09-11）
 
 使用者已停止 dynamic/composable 擴展，要求既有固定 Lab widgets 接上真實資料，
-並回報 Camera 約三分鐘後失敗、反覆重載。目前整合與獨立審查進行中；單一
-release candidate 包含 Camera 及全部九個固定 observation views。先處理三個
+並回報 Camera 約三分鐘後失敗、反覆重載。Source 與 affected independent
+verification 已完成，guarded shipment 尚待完成；單一 release candidate 包含 Camera 及全部九個固定 observation views。先處理三個
 既有 adapter、再完成其餘五個 adapter 是實作順序，不是分開發布。Heads 已 native。
 Native renderer adoption 不代表既有 feature gaps 或實際手機結果已驗收。
 
 先讀 [PROJECT_STATE.md](PROJECT_STATE.md)、[NEXT_AGENT.md](NEXT_AGENT.md)、
-requirements 與 CURRENT 指向的 iteration，依目前 review findings 繼續。
+requirements 與 CURRENT 指向的 iteration，依 NEXT_AGENT 的發布順序繼續。
 [現行證據](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md)
 記錄實際命令、身份與驗證邊界。保留全部 55 delivery IDs、private Lab/source/history、
 printer-control/auth/Tailscale/plugin 邊界及既有 shipping guards。下方歷史交接與

@@ -13,8 +13,8 @@ F0 / CAM-008, UI-003, UI-004 and OBS-011 are addressed by
 views. MCP Fans/Thermals/Queue reuse existing live adapters; Heads is already
 native. Progress/Current Job/History/Overview/Bed Mesh add live presentation
 adapters. This sequence is implementation order, not separate releases.
-Integration and review remain underway. No synthetic DTO casts or null-to-zero
-substitutions; preserve PR123's local Overview failure isolation and distinguish
+Source and affected independent verification are complete; guarded shipment
+remains pending. No synthetic DTO casts or null-to-zero substitutions; preserve PR123's local Overview failure isolation and distinguish
 native renderer adoption from unfinished product-feature coverage.
 
 Acceptance: Camera survives sustained-use cases beyond the reported three-minute

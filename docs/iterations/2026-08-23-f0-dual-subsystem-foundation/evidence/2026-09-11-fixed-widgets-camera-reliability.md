@@ -6,8 +6,11 @@ Decision0059 owns direction: stop dynamic expansion, repair Camera first, then
 adopt fixed Lab widgets through live adapters. One integrated release candidate
 covers Camera and all nine fixed observation views, including already-native
 Heads. Fans/Thermals/Queue first and the remaining five adapters afterwards is
-implementation order, not separate releases. Integration and independent review
-are underway; native renderer adoption does not close unrelated feature gaps.
+implementation order, not separate releases. Source and affected independent
+verification are complete at `7ca0c8cd4625939eccb3a514acbe2f9fd759e95f`;
+guarded shipment remains pending. See the final History closure below for the
+complete 431-pass/3-failure collection and subsequent 90-pass/18-pass closure.
+Native renderer adoption does not close unrelated feature gaps.
 Preserve 55 ledger IDs and existing authority gates. Earlier planning language
 elsewhere in the dated author log retains its historical execution context.
 
@@ -1022,3 +1025,376 @@ pending. No author implementation remains pending unless review finds an issue.
 | svelte-observation-lab | 172936 | `019118d2e002763acd9c4c5dc03fd57c0f35329fd1017e4fbe5f09173ed8da47` |
 | svelte-bed-mesh-lab | 639207 | `0915e02d7ba74ced59b89269e67b745460ff15f9f8da138bbaf1955cabcf5520` |
 | svelte-camera-lab | 83798 | `c6b49974a68dd3dbd228d3d1a2426efa8bbf99ffea5adaf3b19f74695b8cbc57` |
+
+
+### Independent final source closure and eighteen-case package matrix
+
+The closed audit's remaining Overview layer/ETA restrictions were corrected.
+Progress and Overview also preserve temporarily disagreeing current/total layer
+fields independently rather than rejecting the entire observation. The optional
+Bed profile is normalized after trimming; unusable labels are omitted while the
+valid measured matrix remains available. A fresh reviewer stdin Bun probe using
+the actual source projector/adapters passed3M/2M independent layers, finite1e30
+ETA, and four invalid optional Bed labels with an observed all-zero active grid.
+No source-semantic blocker remains from the bounded audit. Wider numeric client
+validation already disclosed above remains a limit; no new source capability,
+printer read/control or hardware claim is implied.
+
+The independent reviewer then ran `bun --no-env-file --config=/dev/null
+tmp/domain-widget-review-20260911/accepted-matrix.ts` from repository root
+against immutable MCP observation760877 bytes, SHA-256
+`1a6c3c727a6d02cae654a0876f3f1fb73add9df08b8ee6c477d4ebee92310b18`.
+All18 configurations passed the full applicable state matrix described above,
+with zero page errors and no visible failed-state profile/filename leakage.
+Seventeen ready/error shell-height differences were0px; normal Progress was1px.
+The nine320px screenshots use actual computed text doubled per element, and
+all nine390px screenshots use normal text. Final Progress, Current Job stress,
+Bed and Overview enlarged glyph screenshots were inspected against the earlier
+reported collisions: those blockers are closed. The remaining six views retain
+the previously inspected readable layout. Iframe height is now synchronized
+before capture. All owned browsers, contexts and fixture4184 were released.
+
+| Final local review artifact | SHA-256 |
+| --- | --- |
+| accepted-matrix.ts | `763cfa91a75f8cbcae19ef4fdbddf6a015ffb36bad672e1c9999590c566807ca` |
+| accepted-matrix.json | `1aa9cac71897533c0642fcfb9439f49d6d8e900bc94497e2d33fe11dc8bf001f` |
+| accepted-matrix.log | `846e58d359d844f9c658193db342983416718f71addd31a22daedb5f1292b3ea` |
+| accepted-progress-320-2x-ready.png | `f7bfb68dc06b96a428931f62fc25dcc3e9bd33234cdc41504535a2a5f2ca8376` |
+| accepted-jobs-320-2x-stress.png | `aeb89ea59463123bb8f0f449c45766ea6cd268ebad4bbf1c06b156b2709fb74b` |
+| accepted-bed_mesh-320-2x-ready.png | `a4ee10ff32b83b3a52b44dd64087893a11d934fecc0158ed299b654418f67373` |
+
+These filenames identify local reviewer artifacts, not release approval. Exact
+committed-head binding, the complete affected browser suites and all unchanged
+mandatory shipping gates remain pending at this paragraph. This is synthetic
+software/browser evidence, not actual iPhone repair acceptance or real media.
+
+
+### Independent frozen-head full-browser attempt: bbee9bd, blocked
+
+The reviewer bound the affected browser regression to committed application head
+`bbee9bd12022e9a56267b0576bc7ff4269958507`. The original Playwright inventories
+were read with `bun --no-env-file --config=/dev/null x playwright test --list`
+and the same command with `--config playwright.mcp.config.ts --list`:361 visual
+tests in30 files and61 MCP tests in8 files. All103 files below the original tests
+directory were recorded before execution; canonical inventory SHA-256
+`af5225ca779f734f278d52bf4b24586d0913ac191ec79bce791349f3e2a2928b`.
+
+An unrelated user CAD playground already owned4179 and was preserved. The
+reviewer made a temporary same-depth full tests copy and visual config using
+4197, original fixture4181, and workers1. Exactly five request-origin guard
+literals in bed-mesh-legend, fans-state, live-heads, percentage-background and
+thermals-state changed from4179 to4197; their same-origin rejection assertions
+were preserved. The only config differences were testDir, outputDir and the
+private fixture's port/baseURL. reuseExistingServer:false remained unchanged.
+An initial driver preflight expected four literals and stopped before any build
+or test; inspecting the complete inventory found the fifth existing guard in
+live-heads. The driver then asserted the exact five filenames/counts. No original
+test or application file was modified by this allocation.
+
+Actual wrapper invocation from repository root was `uv run --no-project python
+tmp/domain-widget-review-20260911/run-full-browser.py
+bbee9bd12022e9a56267b0576bc7ff4269958507`. The wrapper executed the following
+from the app using pinned Bun1.4.0 with `--no-env-file --config=/dev/null`:
+
+- `run build`: PASS,6.006s.
+- `run scripts/build-state-harness.ts`: PASS,6.633s.
+- `run scripts/build-camera-harness.ts`: PASS,1.415s.
+- `x playwright test --config .review-playwright.config.ts --workers=1`: deliberately stopped by graceful SIGINT of the owned Playwright process after the repeated wrong-fixture failures were diagnosed; exit130 after251.023s. Final report:60 passed,18 failed,1 interrupted,282 did not run. This is not a complete visual-suite pass.
+- After owned visual teardown, the reviewer separately ran original `x playwright test --config playwright.mcp.config.ts --workers=1`:53 passed,8 failed in1.9min. All61 MCP cases ran.
+
+The closed actionable set from this attempt is:
+
+1. Twelve Bed visual failures are real initial loading/error→ready geometry changes: six bed-error-state cases at line67 and six bed-mesh-legend cases at line108. Shell height differs18.1875px at narrow normal text and36.390625px with enlarged text. Existing≤1px requirements remain; the added optional Profile kicker is under author diagnosis.
+2. Six completed composable visual failures (and one interrupted case) came from the existing aggregate visual config aiming `/dashboard/lab/composition` at the static private-Lab fixture, which responds404. The maintained dedicated immutable composable preview/config is the required target; generic Kit returning200 is not an acceptable replacement under the requirements. The author must route the preserved tests through that dedicated fixture, not remove them.
+3. Six MCP dashboard cases failed because the MCP fixture serves the dashboard host but omits the newly requested native `*_widget` routes. Trace evidence shows404 for those assets. Production dashboardPage already has those mappings. The fixture must exercise those actual packaged routes while retaining its host/tool-call assertions.
+4. MCP presentation-layout at1024px/normal text reports a22px Progress ready→error height difference at line82. The author must distinguish an early measurement race from an actual layout allocation defect and preserve the geometry requirement.
+5. The Thermals hostile isError-with-retained-DTO test expects visible `Could not load Thermals`; the existing Footer intentionally displays `Could not load` with the complete domain message in aria-label/title. The test should assert both real visible and accessible contracts without changing the product's established compact wording or losing its retained-DTO rejection assertion.
+
+The reviewer released4197/4181/4182 and removed only the owned temporary test
+copy/config in finally. The full original test inventory remained byte-identical;
+HEAD remained bbee9bd. All failure traces/screenshots were copied into private
+review storage before author reruns could overwrite them. Source/package edit
+lock was released only after both collection phases ended. No release approval,
+shipping execution or deployed/real-printer acceptance is granted by this attempt.
+Camera source/packages remained unchanged and its prior synthetic210-second
+proof remains bound to their hashes, independent of these failed gates.
+
+| Private review artifact | SHA-256 |
+| --- | --- |
+| full-browser.json | `40351d821f6a6fbb73352a2eef414386d8c6a6e25d5a9a760963c08d08bfbee5` |
+| full-browser.log | `39010b0456abdfd00dcbcb9a20fa9d59febcf294a4f1486ae292c71c1c81e7ea` |
+| full-mcp-bbee9bd.log | `4d04193a3da57b463ce69e70172a285cb344b19d83c1d3983719b0c9d533305c` |
+| run-full-browser.py | `017b4c20187f5f58ca542dbe1bb22dc5d0857c444f13787b5a207874f19b178c` |
+| original-visual-inventory.txt | `5a23e8598404926cc9de03adcaee086a0b40ca202dd5ab48f0dde4fa42a54fed` |
+| original-mcp-inventory.txt | `c7e3e47b0dddbfedb6809001626ffa5f17f7ba32b6049f19da0862b1d8036d7f` |
+| bbee9bd-failure-artifact-manifest.json (137 artifacts) | `0c3ae6832871933b1b4f4007ab59c695e4a36233c0307cdf9019d34c897fe8d1` |
+
+
+## Bed initial geometry and profile viewport correction
+
+The frozen-candidate visual regression found a shared cause in Bed initial
+failure/retry and legend geometry tests: the optional profile appeared only on
+ready, adding one caption line after an initial loading/error state. Ready-to-
+retained-error geometry and renderer/focus tests did not exercise that missing
+initial structure. The author made no source/package edits while that regression
+held its edit lock; the coordinator released the lock for this bounded repair.
+
+The grid/dimensions caption and Lab attribution retain their original grouping.
+The profile now occupies a permanent generic TextViewport slot, at least44px or
+one line of text, whichever is larger. Ready values contain the exact full
+validated profile with a Profile label. Long values scroll horizontally without
+ellipsis, with a directional cue, native touch scrolling, and keyboard access
+only when actual content overflows. Arrow keys/Home/End scroll that region;
+Tab remains untrapped. Absent profiles leave a blank inert/aria-hidden slot;
+initial/loading/error uses only a generic skeleton. Retained failure removes the
+actual value and its accessible metadata rather than keeping private text as a
+layout reserve. Resize observation recalculates overflow and is disconnected on
+unmount. No whole-card clipping, sample profile reserve or synthetic identity was
+introduced.
+
+One local, documented Svelte a11y_no_noninteractive_tabindex annotation explains
+why an overflowing read-only region must support keyboard scrolling; runtime
+focus is removed when content fits. No global checker or shipping guard was
+weakened and no false button/textbox role was used. The first integrated type
+check rejected aria-description in the pinned Svelte HTML props; the final
+implementation uses supported aria-describedby pointing only to static public
+scrolling instructions. No dependency was changed.
+
+Actual author validation from repository root:
+
+`/Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --no-env-file --config=/dev/null run --cwd plugins/u1-print-studio/app ui:test src/lib/client/common/TextViewport.test.ts src/lib/client/bed-mesh/BedMeshWidget.test.ts src/lib/client/bed-mesh/BedMeshState.test.ts src/lib/client/live/bed-mesh-controller.test.ts src/lib/client/bed-mesh/retry-focus.test.ts`
+
+Final result: PASS33 tests in five files, including common exact-content,
+overflow/keyboard behavior, absent/loading privacy, accessible description and
+observer cleanup, plus existing Bed consumer/state/focus checks. An initial
+common assertion counted public inter-element whitespace as nonempty; it was
+corrected to test absence of actual content. Root `git diff --check` passed.
+
+The maintained MCP Bed file retains its original two state cases and adds12
+initial→error→ready→retained-error cases: absent/short/80-code-point astral
+profiles at320/390 px and normal/true200% text. They assert exact region bounds,
+full accessible value, overflow-only focus, last-character visibility after End,
+Home/arrow scrolling, no ellipsis, blank absence, no stale error value and
+unchanged2D recovery checks. This increases the complete MCP inventory from61
+to73; no original case was removed. The independent reviewer owns executing
+these changed browser cases and the renewed full candidate regression. This
+author has not yet run the newly added browser matrix or any full suite.
+
+Author source identities for this correction (diagnostic, not independent
+approval):
+
+| Path under application | SHA-256 |
+| --- | --- |
+| src/components/common/TextViewport.svelte | `909b0671f1841a4ce3246ed4bd2f0c6c38b1124ac58fa31b35cc06b12770ae6a` |
+| src/components/bed-mesh/BedMeshPanel.svelte | `e75be20c0746775c6017544a47a0556cba9a43c35b5de62b6cea74d61ba52caf` |
+| src/lib/client/common/TextViewport.test.ts | `39805ed46f6531221787da56d49995123442c51bddff02087a174e27197a1e4e` |
+| tests/browser/mcp/bed-mesh-states.spec.ts | `dc4848428ad8d84bb0084675d886c79713d7b542c162a1e387f1d71d5109a779` |
+
+Affected package generation, exact guard entries and preview/fixture corrections
+remain architect-owned. Their final pins are renewed after the single build;
+earlier artifact acceptance is not carried across changed bytes. No printer,
+real-media, actual-phone or deployment acceptance follows from these checks.
+
+## Full-regression correction batch — integration author
+
+The independent full-run closure above invalidated the prior freeze. The author
+kept all existing cases while correcting their fixture routing:
+
+- The default visual config excludes only `composable-lab.spec.ts`; the full
+  browser command explicitly runs its existing dedicated config once, alongside
+  the general visual and MCP configs. Composition still uses the dedicated
+  immutable preview server, not the generic Kit host. `build:composable-preview`
+  generates its existing dedicated Kit output, and both the full-browser command
+  and required repository check supply that prerequisite. No existing gate was
+  removed or bypassed.
+- The MCP fixture delegates only the five existing focused dashboard paths and
+  their exact `_widget` child paths to production `dashboardPage`. This preserves
+  exact assets, CSP and method policy while leaving all tool acquisition inside
+  the synthetic fixture and its existing call log. No broad route fallback or
+  production acquisition was introduced.
+- Thermals' regression now asserts the established visible `Could not load`
+  text plus its full accessible `Could not load Thermals` label. The original
+  retained-reading exclusion remains. Geometry checks explicitly wait for the
+  ready opening result before measuring.
+
+Waiting for ready did not fix the Progress1024/100% failure: the focused rerun
+still measured22px growth. A separate isolated browser measurement established
+that header94px, footer75px and progress header64.59px stayed fixed, while the
+layer/ETA detail group grew from17px to39px when blank flex children wrapped.
+The Panel now allocates those logical groups with a font-relative auto-fit grid.
+A temporary CSS probe confirmed equal386.59px shell heights; the subsequent
+compiled-package regression below confirms the actual source fix. No global
+StateSurface rewrite, hidden observed text or sample-value reserve was used.
+
+The new generic TextViewport is registered with exactly two div and three span
+native nodes. Existing feature debt limits remain unchanged. An integrated
+compiler check caught unsupported `aria-description` typing; the Bed author
+replaced it with supported `aria-describedby` referencing constant public help
+text, and the affected packages were rebuilt. Its private-value, keyboard,
+resize and cleanup evidence is recorded under the Bed author.
+
+Actual integration checks and builds:
+
+- Before and after config edits, `bun --no-env-file --config=/dev/null x playwright test --list --reporter=json`, and the corresponding command with `--config playwright.composable.config.ts`, captured actual discovered case identities. A read-only Python set comparison run through `uv run --no-project python` proved361 original visual cases =345 general +16 dedicated, with empty intersection and no omitted or added case. The canonical original inventory SHA-256 is `dcb43ff55c7f41e9584493787d61ddc9597573419b26353d4457aa645fee1706`.
+- The MCP `--list --config playwright.mcp.config.ts --reporter=json` inventory contains73 cases. Comparing its file/title identities to the independent completed61-case run proved every original case remains, with exactly12 additional initial-profile geometry cases. The full command therefore schedules434 cases:345 +16 +73.
+- All nine observation `build:live-*` scripts, `build:mcp-observation`, `ui:build`, `build:server` and `build:composable-preview` ran successfully after the supported accessibility correction. The integrated server contains100 runtime files and114 static routes. Camera artifacts remain unchanged.
+- The dedicated preview was regenerated from current source; its explicit manifest pin is `d5165f7103ecf3170ee784a6fbe089b1522d66b0296ff5ad5ad1f79cfef9c73a`, exact page hash is `b64043e67d4971ad2541261c7ee4153821b0182527df07a3b0089d511ec81ff2`, and its required observed hydration asset is `nodes/1.rPLmEOf4.js`. No automatic repinning or relaxed manifest acceptance was added.
+- `bun --no-env-file --config=/dev/null test tests/server/composable-preview.test.ts`: the first run exposed one remaining old hydration-asset literal in the test; after updating that exact pin, PASS4 tests/323 assertions. Snapshot immutability, tamper rejection, closed routes/methods/protocol variants and no authority fallback remain covered.
+- `bun --no-env-file --config=/dev/null x playwright test --config playwright.mcp.config.ts --grep 'fixed native body padding and neutral geometry 1024 100%|MCP Bed |dashboard current MCP|MCP native failed Refresh|dashboard Overview refresh'`: PASS22 in23.0 seconds on final generated bytes. This includes all14 Bed state/profile cases, five native dashboard flows, Overview dashboard isolation, Progress1024 geometry and Thermals failure privacy. The task-owned4182 fixture and browser closed afterward.
+- Final integrated `x svelte-check --tsconfig ./tsconfig.json`: zero errors/warnings; `run scripts/check-components.ts`, root `bash -n scripts/check-repository.sh` and `git diff --check`: PASS. No author full browser run or dedicated16-case browser repeat was performed; the independent owner runs the complete434-case candidate regression.
+
+Final production source/build-input diagnostic fingerprint, with the same
+algorithm and now360 files including TextViewport:
+`52c458a5ef872d10c1771957398b547084bc839831755970b10423c279c89111`.
+The eight-file browser orchestration fingerprint is
+`80f4617af4403b79944d269ceadb0ee1a6be5c50cfe1c57dcbfe9c9edcb2f93b`:
+repository-relative sorted path/NUL/file-hash/LF records for app package.json,
+the three Playwright configs, both preview/MCP fixture scripts, preview server
+test and root check-repository.sh. The integrated local server build-manifest
+hash is `169b2b74548beec6a7b91046bb282516227b42d59443d8f25cdde1aa801b4338`.
+Final MCP observation is763760 bytes with SHA-256
+`17c37f227ca76e880a6f62179c97176a52705f4a6de30a8a5bbca0f35615b7b8`.
+The contract author records final package pins/table next. These diagnostic
+identities supersede prior author fingerprints and do not replace exact-SHA
+independent approval or shipping validation. No deployment, printer or actual
+phone validation was performed by this author; no task-owned resources remain.
+
+
+### Final viewport candidate artifact pins
+
+Source candidate `2048925f9848c11ef5d1824be5b358bddb274a58` contains the
+viewport/fixture corrections, maintained original tests and all renewed pins.
+The contract author used `uv run python` to calculate actual artifact identities
+and updated only the five changed pins plus the native inventory total. From
+repository root,
+`/Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --no-env-file --config=/dev/null test plugins/u1-print-studio/app/tests/server/live-fans-package.test.ts plugins/u1-print-studio/app/tests/server/mcp-widget-packages.test.ts plugins/u1-print-studio/app/tests/server/private-lab.test.ts`
+passed19 tests/218 assertions. The architect separately records22 focused MCP
+passes, including all14 Bed cases; this is not this author's independent review.
+The reviewer owns the renewed434-case browser regression and final exact review.
+No application mutation or build was performed during that frozen run.
+
+The following15 artifact identities supersede earlier pin tables. Native
+artifacts total1,481,084 bytes. All three Camera hashes remain unchanged.
+These are integrity measurements, not byte caps or device/release acceptance.
+The four current status tops link this correction, mark all known source work
+and packages authored/frozen, and leave independent final review, the full
+required regression and guarded shipment pending. No author implementation or
+record-update task remains outstanding unless review finds another issue.
+
+| Final artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| svelte-live-fans | 88864 | `045406518f2ef1c2e23bbb2e954c34c4c179d06f6c5649a350dfd9cc9f3f528b` |
+| svelte-live-thermals | 94932 | `330896db8327d766052f66f3daf3fb4a00022beec9b4ac5cfd0ce4f27e9d1658` |
+| svelte-live-heads | 98644 | `b74e1cb8b9750dcb47cfb901cd0da673036ec4e34b2fe233f3329658857afc05` |
+| svelte-live-queue | 90384 | `a1858663df6f97200d956bc146d591f04f205669d14d2b7692fc0545e5e8b5e5` |
+| svelte-live-progress | 83307 | `4acad1be4350618cdfa900e993c2bc4e198a7484b6ee3f17659cca5d7212a3a4` |
+| svelte-live-jobs | 88644 | `a2a39f8628e40394b7c1d99d214783c6f8d11a18ec67119c6585e3bba2398b5a` |
+| svelte-live-job_history | 86801 | `ef389c65d0fe150352913b6d95bd7d7dc219eaebaef258330f5743c1b188cc1a` |
+| svelte-live-overview | 96932 | `ead65b392a9820c9efee6213225c8fa25dedebe21b0433da474594457bef9ced` |
+| svelte-live-bed_mesh | 652480 | `5b255499505463e8dfdbc5b1b608ed1b0f519fd91f3c684cd03d4b0112eebeac` |
+| svelte-live-camera | 100096 | `1bed20ce48f74c6ebc89d488e0eedb6be33a89095034d10d4cd1c00d60754e97` |
+| mcp-observation | 763760 | `17c37f227ca76e880a6f62179c97176a52705f4a6de30a8a5bbca0f35615b7b8` |
+| mcp-camera | 100154 | `c983e7b0e4f7da8c7b913e6b45516df87fb1ca176fc157159bf8167fc42871b7` |
+| svelte-observation-lab | 173052 | `59d5de025124fc5c87bc9be7a62bda824bbb5c8b1d9aa022116e40fa50d8cdce` |
+| svelte-bed-mesh-lab | 641969 | `cd3f033f0add582039e92745f49d2e6cd7d3390741d79fa5f65353b4484edda3` |
+| svelte-camera-lab | 83798 | `c6b49974a68dd3dbd228d3d1a2426efa8bbf99ffea5adaf3b19f74695b8cbc57` |
+
+Final documentation verification: current relative links/evidence anchors and `git diff --check` pass; only the five current Markdown records differ from the frozen source commit. No application bytes changed for this record tail.
+
+
+## History Lab typography scope correction after complete 434-case collection
+
+The independent frozen `2048925f9848c11ef5d1824be5b358bddb274a58` browser collection completed with 431 passing cases and three History Lab failures at 320px with actual computed text doubled. This is a failed candidate result, not full acceptance. The retained-error trace localized one-record geometry to body 140→107px and shell 509.15625→476.15625px, with header 278.5625px and footer 88.59375px unchanged. Four and twenty records reproduced the same 33px per-row difference.
+
+The sole application correction scopes the newly introduced `overflow-wrap: anywhere` rule in `HistoryPanel.svelte` to `.live-row .history-status div`. The Lab selector returns to its prior display/grid/gap behavior; production live wrapping remains. No DTO, lifecycle, shared allocation, test expectation, fixture authority, dependency, version or Camera source changes accompany this correction. The original three failing browser specifications remain intact for independent closure.
+
+Author commands actually run from the app directory, in this order, with pinned Bun 1.4.0 and `--no-env-file --config=/dev/null`:
+
+- `bun run ui:check`: Svelte diagnostics zero errors/warnings; existing component contracts pass.
+- `bun run build:live-job_history`, `bun run build:mcp-observation`, `bun run ui:build`, `bun run build:composable-preview`, and `bun run build`: all pass. Other existing native packages remain unchanged; the private packaging rebuild retains Bed and Camera byte identities.
+- The dedicated immutable preview manifest was explicitly renewed to `1c245ee21587982716ea5e9fb0006194e2c9d93aef190b370af2d2b6b49f436f`, page hash to `871e6f56f71c09581ceaa9abfc3a90b8dee6a47d03d76d533a35659802e42710`; the hydration path remains `nodes/1.rPLmEOf4.js`. No route, CSP, import, method or snapshot guard changed.
+- `bun test tests/server/composable-preview.test.ts`: 4 pass, 323 assertions, including immutable snapshot, tamper denial and authority isolation.
+- `bun run build:server`: pass, 100 files / 114 static routes / 100 hashes.
+
+Author source identity: HistoryPanel SHA-256 `d9abdd0a4c8fb80ee3a590549af7994e0acd31913697c996d283fc5c79e39378`; 360-file production source/build-input fingerprint `d1b8004d492d5f6df0706cf90235005a4d751145039d0c3d0d8962d310871bb6` using the preceding section's sorted app-relative path/NUL/file-SHA/newline method. The three affected packaged outputs are native History `08eb659f5bda1d2a14a14e58d1c8e0c0c25e57cc2509a76ee23f2f1c330f1746` (86889 bytes), MCP observation `874684492c770c976c3706ca2c2d9860403380a5a01580c8283ca29bcf526e87` (763848 bytes), and private observation Lab `0f0d7e0e1b9b6bc23168f666517dc6fa4350a3cd8897a16c16d723bcd27dbbcb` (173140 bytes).
+
+The author ran no duplicate full browser suite and owns no fixture listener. Independent affected History/consumer closure and fresh observation matrix, exact-candidate review, mandatory shipping gates, deployment and actual-device acceptance remain separate pending evidence.
+
+
+### Final History scope-correction artifact contracts
+
+After the architect's single-selector History correction and regeneration, the
+contract author verified the actual three affected artifact sizes/hashes and
+updated only `tests/server/live-fans-package.test.ts`,
+`tests/server/mcp-widget-packages.test.ts` and `tests/server/private-lab.test.ts`.
+The native inventory sum is now1,481,172 bytes. The other12 artifacts match the
+preceding full viewport-candidate table exactly, including all three Camera
+packages; this was checked against actual public bytes with `uv run python`.
+
+From repository root,
+`/Users/scottchu/.asdf/installs/bun/1.4.0/bin/bun --no-env-file --config=/dev/null test plugins/u1-print-studio/app/tests/server/live-fans-package.test.ts plugins/u1-print-studio/app/tests/server/mcp-widget-packages.test.ts plugins/u1-print-studio/app/tests/server/private-lab.test.ts`
+passed19 tests/218 assertions. `git diff --check` passed. This author performed
+no application edits, builds, preview-pin edits, browser runs or deployments in
+this tail. The architect owns the actual selector/build/preview results; exact
+candidate acceptance and required regression remain coordinator/reviewer-owned.
+
+The following rows supersede only their corresponding rows in the preceding
+15-artifact table. Other measurements and Camera identities remain unchanged.
+
+| Artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| svelte-live-job_history | 86889 | `08eb659f5bda1d2a14a14e58d1c8e0c0c25e57cc2509a76ee23f2f1c330f1746` |
+| mcp-observation | 763848 | `874684492c770c976c3706ca2c2d9860403380a5a01580c8283ca29bcf526e87` |
+| svelte-observation-lab | 173140 | `0f0d7e0e1b9b6bc23168f666517dc6fa4350a3cd8897a16c16d723bcd27dbbcb` |
+
+
+## Independent complete frozen browser collection and History closure boundary
+
+Reviewer `/root/domain_review` completed the exact `2048925f9848c11ef5d1824be5b358bddb274a58` candidate collection before releasing the edit lock. All 434 browser cases ran: default visual **342 pass / 3 fail**, dedicated immutable composition **16 pass**, and MCP **73 pass**; total **431 pass / 3 fail**, with no skipped or interrupted cases. This is a failed full candidate result. All three failures are the History Lab 320px / actual computed-text 200% geometry cases identified above: `footer-error-preview.spec.ts`, `lab-states.spec.ts`, and `lab-text-bounds.spec.ts`, respectively 33px per row, 132px for four rows, and 660px for twenty rows. The live/MCP suite had no failure.
+
+The reviewer ran `uv run --no-project python tmp/domain-widget-review-20260911/run-candidate-browser.py 2048925f9848c11ef5d1824be5b358bddb274a58`. The private wrapper used pinned Bun 1.4.0, `--no-env-file --config=/dev/null`, and from the app directory ran `run build`, `run build:composable-preview`, `run scripts/build-state-harness.ts`, `run scripts/build-camera-harness.ts`, then `x playwright test --config .review-playwright.config.ts --workers=1`, `x playwright test --config playwright.composable.config.ts --workers=1`, and `x playwright test --config playwright.mcp.config.ts --workers=1`. Four build/harness phases passed (5.661s, 5.631s, 6.112s, 1.403s). Browser phases completed in 433.341s, 17.841s and 90.312s.
+
+The default fixture allocation preserved the pre-existing user-owned port 4179 process. A temporary same-depth full test copy changed only five exact origin literals from 4179 to owned port 4197: `bed-mesh-legend`, `fans-state`, `live-heads`, `percentage-background`, and `thermals-state`. Assertions were unchanged. Its temporary config changed only testDir, outputDir and port/baseURL; `reuseExistingServer: false`, all guards and the dedicated immutable preview host remained intact. The 103-file original test inventory SHA-256 was `f4f1662f777157eac3e9d8aeea4ac31fc6c85e87bcd715060728596c90623302`; original/default-copy config hashes were `20e6ee1ce0acda8aec779ae070ec7df16b5361c30d152efd3a20d2b5b24e5728` / `7254410c426c22e51ca1ee84bb827fc98dd71edb79dac9376d25c4d6e4504f16`. Exact inventory comparison proves 361 original visual cases = 345 default + 16 dedicated, with zero overlap or omissions; MCP preserves all original 61 plus the 12 new Bed initial-profile cases. The wrapper verified unchanged original tests and HEAD, removed its temporary config/test copy in finally, and released 4197/4181/4182/4184. The user-owned 4179 service remained intact.
+
+Private reproducibility identities (synthetic artifacts only, not committed): wrapper SHA-256 `7103a852dfe2cd47b90888791fa9a841dfd4a6e81e499d128385d75b9202805c`; metadata `99a602ca70f97faadd3a8129a4e431963d073c39cf7b94b153b67531cfe23c84`; complete log `3eba75099dba551a120a900953e0563196a203e54ed18e223a8f906db80f6a43`; inventory proof `30cbc176749f9459126dbe8a34c53aed2df994cfa8f645ac002959893ed99aec`; 189-file screenshot/trace/result manifest `03b8c2813201170a07a704d25a376c63c6fca5855e080ccf7eeffff7ba9a2c77`.
+
+Before that collection, the independently owned immutable `17c37f...` MCP matrix passed 18/18 (nine views × 390px normal / 320px every computed font doubled), with zero page errors, stable ready/error geometry, visible unknown/empty/reason distinctions, retained-value masking, Retry, age-only stale, Overview tile isolation and Jobs long-value stress. Script/result/log SHA-256: `09921a7e43d9c45980ea5a6404fb76c117817bcb4f28ed40ff31f8b392e5ce02`, `4e314ddf4271ed2c2710d360f649534482e5645298544f532bbb65800fb696b5`, `629cd528aa95e6c8719a7ef2d7b41fc577a20a742f742b4ce8f47b63cd6b04f8`. Current Progress and Bed screenshots at both scales were inspected for readable full values and restored geometry. This successful native matrix did not supersede the separate Lab failures.
+
+Independent source review of the subsequent narrow History correction confirms the only application change scopes the existing wrapping rule to `.live-row`; DTOs, lifecycle, shared primitives, source contracts and Camera are unchanged. Preview/security/package-test differences renew exact identities only. Under the repository test cadence, closure will renew all affected History/shared browser consumers plus the fresh nine-view matrix, retaining unaffected frozen collection evidence explicitly. A second complete 434-case run is not implied; all mandatory `u1-ship` guards still must run unchanged. No release approval, deployment, real-printer or actual-phone acceptance is claimed by this collection.
+
+
+## Independent final History closure and source acceptance — 7ca0c8cd
+
+Reviewer `/root/domain_review` approves the application/source candidate `7ca0c8cd4625939eccb3a514acbe2f9fd759e95f` after independent source review and affected verification. The exact nine-file diff from the complete-collection candidate consists of one application selector correction, its three generated packages, and exact preview/package integrity pins. No browser test, dependency, source contract, lifecycle, shared primitive or Camera implementation changed. This approval is local software acceptance; final documentation-head identity review and unchanged mandatory shipping gates remain required.
+
+Actual command: `uv run --no-project python tmp/domain-widget-review-20260911/run-history-closure.py 7ca0c8cd4625939eccb3a514acbe2f9fd759e95f`. Pinned Bun 1.4.0 with `--no-env-file --config=/dev/null` ran four sequential Playwright commands, all `--workers=1`: temporary equivalent visual config with complete `footer-error-preview`, `lab-states`, `lab-text-bounds`, `widget-error-stability`, `lab-controls`, `lab-runtime-isolation` specifications (**50 pass**, 147.264s); the same config with `observation-lab` and `header-typography`, `--grep '[Hh]istory'` (**7 pass**, 5.519s); unchanged `playwright.composable.config.ts` (**16 pass**, 17.841s); unchanged `playwright.mcp.config.ts` with `presentation-layout`, `dashboard-current`, `widgets`, `overview-isolation`, `--grep 'fixed native body|job_history|Overview|overview'` (**17 pass**, 29.799s). Total **90/90 pass**, no skip/failure. All three original failures passed inside their complete unchanged specifications, including 320px actual doubled text and the full closed record-count/preset matrix. The later History filter selects additional affected cases, not omissions from those three specifications.
+
+The same documented 4197 fixture allocation and five exact origin substitutions preserved all authority assertions. The temporary copies/config were removed in finally; original tests and HEAD were unchanged. Source test inventory hash `858efba94ddd2b18dc9e4de402ec6e7ca4e26452d3daf7965d8729c1d464a151`; private wrapper/metadata/log SHA-256 `4d8173f33156ac3579621059000d41d982d0e1b827e57f3cbd428f35e11f61f4`, `289762ff29e06f19b8dab6cf040064ab20526816675b9c8f2a4906704e6161f8`, `cfb3123c5bd50588f88b388230b69bddcb499a1c195fb3af34896ff8244b1310`.
+
+Fresh independent immutable MCP `874684492c770c976c3706ca2c2d9860403380a5a01580c8283ca29bcf526e87` matrix: **18/18 pass**, zero page errors, all ready/error height deltas exactly zero. Nine views at 390px normal and 320px every computed font doubled cover ready, acquisition failure/masking, Retry, unknown, age-only stale, applicable unsupported/empty, latest Bed reason, visible safe profile, Jobs long filename/large finite metrics, and Overview failed-tile isolation. Command: pinned Bun `run tmp/domain-widget-review-20260911/874684-matrix.ts`. Script/result/log hashes: `d29a10a9a8b0bc13089fc71882b4d5874cd54c7b765feb12e9c4e1390037f347`, `77ffbd7300e45ae184cde9c9630fc512cc5e1541a474b6352cf3c4ba2f219854`, `6a41e9a8d933a85adbbd7780b51910ecf3e6d46f2455dfedfcaba2bb30d7796f`.
+
+The matrix command's extra Lab screenshot appendix initially failed because per-node inline font overrides disappear when Lab replaces nodes; this does not invalidate its completed 18 native records, and its nonzero exit is preserved. The reviewer reran only that appendix using the maintained CSSOM `doubleSyntheticText` helper (`run .../874684-lab-screenshots.ts`): pass, exact Lab ready/error shell 296×740.15625px at 320px actual doubled text. Both screenshots were inspected: complete status/time/duration text remains readable, error neutralizes the actual values, and outer allocation is identical. Screenshot hashes `90a0937da5628538fb985b81a370fb5d77ca5ae8f88bca6870e6ac583d070216` / `b87b524393a0b67a55918a67182f340dc7af1228456c81b607d12f827065e00f`; appendix script/log hashes `f660b2c2f1a73a11b55f5e34907e6ae18d85da83e51c6c9d58bc4553329d3e83` / `524e27d1258f44971aa1ccbaf16e2550f82d6b5c55f59562e2ef60afc972e031`. No application or maintained-test change was made for this harness correction.
+
+Affected source and transitive consumers are closed. Retained evidence is the original complete 434-case collection on `2048925f` with its three explicitly failed cases, plus this fresh 90-case closure and 18-case final matrix on the narrow corrected candidate; this is not a claim that another complete 434-case run passed. Unchanged Camera source/package identities retain the independent 210-second synthetic decoded-media soak and cleanup/backoff evidence. All task-owned fixtures and browsers were released; user resources were preserved. Actual printer streams, deployment and the user's iPhone remain separate from these results.
+
+## Pre-shipment documentation closure
+
+After the independent final History closure above, the documentation author
+updated the current tops of PROJECT_STATE, NEXT_AGENT, NEW_AGENT_START, active
+BRIEF/HANDOFF/VALIDATION and this evidence, plus directly stale native-delivery
+wording in `docs/widget-delivery.md`. The records now distinguish independently
+verified source from pending guarded shipment. They preserve the original full
+431-pass/3-failure collection and subsequent affected closure; no second full
+434-case green run is claimed. All 55 ledger IDs, separate Queue/Fans/History
+product gaps, actual-phone uncertainty and existing authority gates remain.
+
+Actual checks: `git diff --name-only HEAD` and `git ls-files --others
+--exclude-standard`, checked through `uv run --no-project python`, confirmed
+exactly eight changed Markdown files, no untracked files and no application,
+configuration, dependency or generated-asset changes from reviewed source
+`7ca0c8cd4625939eccb3a514acbe2f9fd759e95f`. The same check compared the ledger
+ID sequence against HEAD (55 unchanged) and resolved all 15 current-section
+relative links. `git diff --check` passed. No build or browser suite was rerun
+for this documentation-only tail. Final documentation-head review and every
+mandatory shipping gate remain required; release outcomes will be appended
+when observed.

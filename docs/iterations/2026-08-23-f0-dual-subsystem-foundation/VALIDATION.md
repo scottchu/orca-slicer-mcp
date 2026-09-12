@@ -2,20 +2,23 @@
 
 ## Active Camera reliability and fixed live widgets
 
-[Current slice evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns this report,
-source/input identities, actual author commands, independent review/verification
-and guarded shipment when performed. Source and packages for the integrated
-Camera/all-nine-observation candidate are authored and frozen at runtime0.4.20/
-schema18/observation23/Camera18, including all known text-scaling and source-parity corrections. The [final author correction and contract evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md#bed-text-scaling-correction-and-current-record-handoff) records the latest focused source/browser checks and exact package identities.
-The known text-scaling/source-parity corrections and package regeneration are complete;
-independent verification remains pending. Earlier package identities and checks
-remain scoped to their bytes. No author implementation remains pending unless
-further review finds an issue.
-Final independent review, the full required regression and guarded shipment
-remain pending; author checks are not candidate acceptance. Timed synthetic
-cases, decoded live media, deployed service and actual-phone outcomes require
-separate evidence. Native renderer adoption does not close unrelated feature
-gaps, C08, or actual-device acceptance.
+[Current slice evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns commands, exact identities,
+author checks, independent review, collection failures and affected closure.
+Source and packages at runtime0.4.20/schema18/observation23/Camera18 are
+independently verified for guarded shipment at source commit
+`7ca0c8cd4625939eccb3a514acbe2f9fd759e95f`. The complete 434-case browser
+collection ran with 431 passes and three History Lab failures sharing one
+text-wrapping cause. The narrow correction then passed all 90 affected cases
+and a fresh 18-case native matrix; unchanged evidence is retained explicitly.
+This is not a second complete 434-case green run. Mandatory shipping gates,
+exact documentation-head binding, guarded merge/deployment, both service
+restarts and installed widget verification remain pending. Actual-phone
+reliability and the reported crash cause remain unverified; C08 stays open.
+
+Software/simulator, deployed-service, decoded physical media and actual-phone
+outcomes remain separate. Native renderer adoption does not close unrelated
+feature gaps. The earlier failed collection remains visible in the evidence;
+only matching unaffected evidence is retained.
 
 ## Overview subview isolation accepted for delivery
 
