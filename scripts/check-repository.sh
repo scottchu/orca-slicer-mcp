@@ -112,11 +112,17 @@ if [[ -d "$plugin_app_root" ]]; then
     bun --no-env-file --config=/dev/null run verify:live-thermals
     bun --no-env-file --config=/dev/null run verify:live-heads
     bun --no-env-file --config=/dev/null run verify:live-queue
+    bun --no-env-file --config=/dev/null run verify:live-progress
+    bun --no-env-file --config=/dev/null run verify:live-jobs
+    bun --no-env-file --config=/dev/null run verify:live-job_history
+    bun --no-env-file --config=/dev/null run verify:live-overview
+    bun --no-env-file --config=/dev/null run verify:live-bed_mesh
     bun --no-env-file --config=/dev/null run verify:live-camera
     bun --no-env-file --config=/dev/null run verify:mcp-observation
     bun --no-env-file --config=/dev/null run verify:mcp-camera
     bun --no-env-file --config=/dev/null run ui:verify
     bun --no-env-file --config=/dev/null run check
+    bun --no-env-file --config=/dev/null run build:composable-preview
     bun --no-env-file --config=/dev/null run test:server
   )
 fi

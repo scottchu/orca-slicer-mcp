@@ -1,5 +1,50 @@
 # F0 maintenance handoff
 
+## Active handoff — Camera reliability and fixed live widgets
+
+The user stopped dynamic/composable expansion on 2026-09-11, requested existing
+fixed Lab widgets in live use, and reported Camera dropping after about three
+minutes followed by repeated crash/reload behavior. The screenshots show `Live
+reply timed out` then `Could not load camera`; they establish visible failure,
+not its cause. Camera reliability comes first; fixed-widget adoption follows.
+
+The candidate targets Camera and all nine fixed observation views in one
+release. MCP Fans/Thermals/Queue use existing live adapters, Heads is already
+native, and Progress/Current Job/History/Overview/Bed Mesh add live adapters.
+The earlier first-three/remaining-five sequence is implementation order only.
+The corrected candidate is runtime0.4.20/schema18/observation23/Camera18 at
+`6b29d2f8de33e258166e5c301f4137e9ad2fb40b`. Two guarded shipping attempts
+stopped before merge, installation or service restarts: first at the type-only
+NodeNext import, then at the production Kit route inventory after the repository
+and production-build gates passed. Both corrections are independently checked.
+The compiled production router now passes 14 browser cases and the unchanged
+100-file/114-route validator; UI and Camera packages are unchanged, retaining
+prior UI evidence. Renewed exact-head approval and the complete unchanged
+mandatory shipping workflow remain pending. The complete 434-case browser
+collection ran with 431 passes and three History Lab failures sharing one
+text-wrapping cause. The narrow correction then passed all 90 affected cases
+and a fresh 18-case native matrix; unchanged evidence is retained explicitly.
+This is not a second complete 434-case green run. Mandatory shipping gates,
+exact documentation-head binding, guarded merge/deployment, both service
+restarts and installed widget verification remain pending. Actual-phone
+reliability and the reported crash cause remain unverified; C08 stays open.
+
+[Release evidence and package identities](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns the actual author and independent commands, failures, correction closure and evidence limits.
+
+Changed application areas include fixed live roots/adapters, production-safe
+panels, MCP/native dashboard routing, Camera lifecycle/backoff, required package
+checks, generated packages and focused/browser/server contracts. The same record
+owns exact paths and attributed results. Follow
+[NEXT_AGENT](../../../NEXT_AGENT.md) for the next smallest action.
+
+Preserve the stopped dynamic experiment privately/unregistered and keep synthetic
+producers isolated while adopting fixed components through real adapters.
+Preserve PR123 Overview failure isolation, upstream History malformed-response
+risk, 55 ledger IDs, unrelated WIP, private state and all shipping guards.
+No printer controls, auth/Tailscale changes or plugin reinstallation is included.
+
+## Prior handoffs — historical; superseded as execution instructions
+
 ## Current outcome: PR123 delivered
 
 Overview failure isolation is implemented, independently approved, merged and

@@ -7,9 +7,10 @@ export const assertObservationLabModule = (id: string): void => {
   assertWidgetClientModule(id);
   if (/\/lib\/client\/live\/(?:(?:[\w-]+-)?(?:adapter|controller)|observation-port|host-rpc)\./.test(id) || /\/(?:components|lib\/client)\/(?:camera|host)\//.test(id)) throw new Error(`Observation lab imported a live or Camera module: ${id}`);
 };
-export const assertLiveObservationModule = (id: string, view?: 'fans' | 'thermals' | 'heads' | 'queue'): void => {
+export const assertLiveObservationModule = (id: string, view?: Exclude<FocusedProductionView, 'camera'>): void => {
   assertWidgetClientModule(id);
-  if (/\.(?:test|spec)\.[cm]?[jt]sx?$|\/(?:tests|(?:components|lib\/client)\/lab|lib\/client\/fixtures)\/|\/(?:components|lib\/client)\/observation\/(?:fixtures|controller)\.|\/(?:components|lib\/client)\/(?:camera|bed-mesh)\/|\/three\//.test(id)) throw new Error(`Live observation imported nonproduction source: ${id}`);
+  if (/\.(?:test|spec)\.[cm]?[jt]sx?$|\/(?:tests|(?:components|lib\/client)\/lab|lib\/client\/fixtures)\/|\/(?:components|lib\/client)\/observation\/(?:fixtures|controller)\.|\/(?:components|lib\/client)\/camera\//.test(id) || (view !== 'bed_mesh' && /\/(?:components|lib\/client)\/bed-mesh\/|\/three\//.test(id))) throw new Error(`Live observation imported nonproduction source: ${id}`);
+  if (/\/(?:components\/bed-mesh\/BedMesh(?:LabRoot|Widget)|lib\/client\/bed-mesh\/lab-[\w-]+)\./.test(id)) throw new Error(`Live observation imported synthetic mesh source: ${id}`);
   if (view) {
     for (const other of ['fans', 'thermals', 'heads', 'queue'] as const) {
       if (other !== view && new RegExp(`/lib/client/live/${other}-(?:adapter|controller|presentation)\\.`).test(id)) {

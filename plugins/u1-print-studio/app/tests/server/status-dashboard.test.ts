@@ -197,10 +197,10 @@ describe("standalone status dashboard", () => {
     expect(await (await fetch(`http://127.0.0.1:${port}/health`)).json()).toEqual({
       ok: true,
       auth: "local-only",
-      runtimeVersion: "0.4.19",
+      runtimeVersion: "0.4.20",
       toolSchemaVersion: 18,
-      observationWidgetVersion: "observation-v22",
-      cameraWidgetVersion: "camera-v17",
+      observationWidgetVersion: "observation-v23",
+      cameraWidgetVersion: "camera-v18",
     });
   });
 
@@ -255,8 +255,9 @@ describe("standalone status dashboard", () => {
       expect(html).toBe(expected);
       expect([...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1]))
         .toEqual(routes.map((view) => `/dashboard/${view}`));
-      expect(html.match(/>Implemented<\/span>/g)).toHaveLength(9);
-      expect(html.match(/>Partial<\/span>/g)).toHaveLength(1);
+      expect(html.match(/>Live view<\/span>/g)).toHaveLength(9);
+      expect(html.match(/>Auto \/ Live<\/span>/g)).toHaveLength(1);
+      expect(html).not.toContain('>Implemented</span>');
       expect(html.match(/>Not implemented<\/span>/g)).toBeNull();
       for (const label of ["Overview", "Print Progress", "U1 Camera", "Thermals", "Heads &amp; Filaments", "Current Job", "Job History", "Print Queue", "Fans &amp; Air", "Bed Mesh"]) {
         expect(html).toContain(`<h2>${label}</h2>`);
@@ -265,7 +266,7 @@ describe("standalone status dashboard", () => {
       expect(html).not.toContain("min-height: 150px");
       expect(html).not.toContain("min-height: 110px");
       expect(html).toContain("Up to 20 latest returned jobs");
-      expect(html).toContain("Availability describes this release, not printer status.");
+      expect(html).toContain("Each view shows its own observation time and availability.");
       expect(html).not.toMatch(/<script|<iframe|<img|<video|<audio|<form|<button|fetch\(|setInterval|setTimeout|target=|Read.only|Current reading|Printer telemetry|Observed/i);
     }
     for (const route of ["/dashboard", "/dashboard/"]) {
@@ -347,7 +348,7 @@ describe("standalone status dashboard", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
-    expect(html).toContain('const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget" })');
+    expect(html).toContain('const focusedWidgets = Object.freeze({ fans: "/dashboard/fans_widget", thermals: "/dashboard/thermals_widget", heads: "/dashboard/heads_widget", queue: "/dashboard/queue_widget", progress: "/dashboard/progress_widget", jobs: "/dashboard/jobs_widget", job_history: "/dashboard/job_history_widget", overview: "/dashboard/overview_widget", bed_mesh: "/dashboard/bed_mesh_widget" })');
     expect(html).toContain('const widgetSource = focusedWidget ?? `/widget?standalone=1&view=${selectedView}`');
     expect(html).toContain('message.method === "tools/call"');
     expect(html).toContain('frame.title = selected?.[1] ?? "View unavailable"');
@@ -399,7 +400,7 @@ describe("standalone status dashboard", () => {
     expect(reads).toBe(1);
   });
 
-  for (const view of ['thermals', 'heads']) test(`serves only the exact private ${view} asset with no acquisition`, async () => {
+  for (const view of ['thermals', 'heads', 'progress', 'jobs', 'job_history', 'overview', 'bed_mesh']) test(`serves only the exact private ${view} asset with no acquisition`, async () => {
     let reads = 0;
     const origin = await startFixture(() => { reads += 1; });
     const response = await fetch(`${origin}/dashboard/${view}_widget`);
@@ -409,7 +410,10 @@ describe("standalone status dashboard", () => {
     const artifact = readFileSync(new URL(`../../public/svelte-live-${view}.html`, import.meta.url), "utf8");
     expect(await response.text()).toBe(artifact);
 
-    for (const marker of ["lab_scenario", "Lab fixture", "RTCPeerConnection", "Three.js"]) expect(artifact).not.toContain(marker);
+    for (const marker of ["lab_scenario", "Lab fixture", "RTCPeerConnection", "data-lab-controls"]) expect(artifact).not.toContain(marker);
+    if (view === 'bed_mesh') {
+      for (const marker of ['3D surface', '2D grid', 'data-chart-frame', 'WebGLRenderer', 'OrbitControls']) expect(artifact).toContain(marker);
+    } else expect(artifact).not.toContain('Three.js');
     for (const method of ["POST", "PUT", "DELETE", "HEAD", "OPTIONS"]) {
       const rejected = await fetch(`${origin}/dashboard/${view}_widget`, { method });
       expect(rejected.status).toBe(405); expect(rejected.headers.get("allow")).toBe("GET");
@@ -745,7 +749,7 @@ describe("focused dashboard host bridge", () => {
       expect(host.title.textContent).toBe(label);
       expect(host.document.title).toBe(`U1 · ${label}`);
       expect(host.frame.title).toBe(label);
-      expect(host.frame.src).toBe(view === "fans" ? "/dashboard/fans_widget" : view === "thermals" ? "/dashboard/thermals_widget" : view === "heads" ? "/dashboard/heads_widget" : view === "queue" ? "/dashboard/queue_widget" : `/widget?standalone=1&view=${view}`);
+      expect(host.frame.src).toBe(`/dashboard/${view}_widget`);
     }
   });
 

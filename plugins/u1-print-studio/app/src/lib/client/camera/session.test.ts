@@ -280,6 +280,62 @@ describe('injected real-camera session ownership (no host, device or network)', 
     expect(vi.getTimerCount()).toBe(0);
   });
 
+  it.each(['unconnected', 'no-frame', 'rejected'] as const)('does not waive answer %s failure', async kind => {
+    const app = setup(); const answer = deferred<void>(); app.transport.answer.mockReturnValueOnce(answer.promise);
+    try {
+      const opening = app.session.goLive(); await flush(); const events = app.peers[0].events;
+      if (kind !== 'unconnected') events.connection('connected');
+      for (let count = 1; count <= 10; count++) {
+        if (kind !== 'no-frame') events.frame({ kind: 'presented', count, at: count * 1000 });
+        if (kind === 'rejected' && count === 10) answer.reject(new Error('private rejected answer'));
+        await vi.advanceTimersByTimeAsync(1000);
+      }
+      await opening;
+      expect(app.session.state().lastLiveFailure).toMatchObject({ stage: 'answer', outcome: kind === 'rejected' ? 'rejected' : 'timeout' });
+      expect(app.transport.close).toHaveBeenCalledOnce();
+    } finally { app.session.dispose(); await flush(); }
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('keeps the stall guard while an answer reply is pending', async () => {
+    const app = setup(); app.transport.answer.mockReturnValueOnce(deferred<void>().promise);
+    try {
+      const opening = app.session.goLive(); await flush(); const events = app.peers[0].events;
+      events.connection('connected'); events.frame({ kind: 'presented', count: 1, at: 0 });
+      await vi.advanceTimersByTimeAsync(5000); await opening;
+      expect(app.session.state().lastLiveFailure).toMatchObject({ stage: 'playback', outcome: 'timeout' });
+      expect(app.transport.close).toHaveBeenCalledOnce();
+    } finally { app.session.dispose(); await flush(); }
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('backs off repeated Auto failures through three minutes and restores healthy cadence after decode', async () => {
+    const app = setup(); app.transport.frame.mockRejectedValue(new Error('fixture unavailable'));
+    try {
+      await app.session.refreshSnapshot('automatic');
+      for (const delay of [1500, 3000, 6000, 12000, 24000, 30000, 30000, 30000, 30000]) {
+        const before = app.transport.frame.mock.calls.length;
+        await vi.advanceTimersByTimeAsync(delay - 1);
+        expect(app.transport.frame).toHaveBeenCalledTimes(before);
+        await vi.advanceTimersByTimeAsync(1);
+        expect(app.transport.frame).toHaveBeenCalledTimes(before + 1);
+        expect(app.session.state()).toMatchObject({ mode: 'auto', phase: 'error', refreshing: false, snapshot: null });
+      }
+      await vi.advanceTimersByTimeAsync(13500);
+      expect(app.transport.frame).toHaveBeenCalledTimes(10);
+      expect(app.transport.open).not.toHaveBeenCalled();
+      app.transport.frame.mockResolvedValue({ snapshot });
+      await vi.advanceTimersByTimeAsync(16500);
+      expect(app.session.state()).toMatchObject({ phase: 'snapshot', failure: null });
+      const before = app.transport.frame.mock.calls.length;
+      await vi.advanceTimersByTimeAsync(1499); expect(app.transport.frame).toHaveBeenCalledTimes(before);
+      await vi.advanceTimersByTimeAsync(1); expect(app.transport.frame).toHaveBeenCalledTimes(before + 1);
+      app.session.pageHide(); await vi.advanceTimersByTimeAsync(60000);
+      expect(app.transport.frame).toHaveBeenCalledTimes(before + 1);
+    } finally { app.session.dispose(); await flush(); }
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
   it.each(['unobserved', 'rejected'] as const)('does not waive candidate %s failure without proven connectivity', async kind => {
     const app = setup(); const candidate = deferred<void>(); app.transport.candidates.mockReturnValue(candidate.promise);
     await app.session.goLive(); const events = app.peers[0].events;

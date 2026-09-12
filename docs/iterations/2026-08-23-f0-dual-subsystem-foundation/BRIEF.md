@@ -1,5 +1,42 @@
 # F0 dual-subsystem foundation brief
 
+## Active slice — Camera reliability and fixed live widgets
+
+The user stopped dynamic/composable expansion on 2026-09-11, requested existing
+fixed Lab widgets in live use, and reported Camera dropping after about three
+minutes followed by repeated crash/reload behavior. The screenshots show `Live
+reply timed out` then `Could not load camera`; they establish visible failure,
+not its cause. Camera reliability comes first; fixed-widget adoption follows.
+
+F0 / CAM-008, UI-003, UI-004 and OBS-011 are addressed by
+[decision0059](../../decisions/0059-prioritize-camera-reliability-and-fixed-live-widgets.md). One release candidate includes Camera and all nine fixed observation
+views. MCP Fans/Thermals/Queue reuse existing live adapters; Heads is already
+native. Progress/Current Job/History/Overview/Bed Mesh add live presentation
+adapters. This sequence is implementation order, not separate releases.
+Source and affected independent verification are complete; guarded shipment
+remains pending. No synthetic DTO casts or null-to-zero substitutions; preserve PR123's local Overview failure isolation and distinguish
+native renderer adoption from unfinished product-feature coverage.
+
+Acceptance: Camera survives sustained-use cases beyond the reported three-minute
+boundary, delayed replies, failed snapshot acquisition and lifecycle cleanup
+without overlapping sessions or recovery loops. A delayed answer timeout must
+not close connected freshly presented video. Failed Auto snapshots use bounded
+1.5/3/6/12/24/30-second backoff, reset after an accepted frame; healthy cadence
+stays unchanged. Live-media claims require decoded/presented-frame evidence.
+Each fixed widget preserves receipts, freshness, unknown/zero/stale/failure
+semantics, focus and stable failure geometry through real adapters.
+
+Use independent exact review, a single required-regression owner and every
+existing shipping guard, both-service restart and scoped behavior verification.
+Static/software, simulator, deployed-service, printer and actual-phone evidence
+remain separate. Keep all 55 ledger IDs and product gaps. Dynamic expansion
+stops; its source/history and synthetic Lab stay private and unregistered while
+fixed components may enter live routes. No printer controls, auth/Tailscale
+changes or plugin reinstallation. [Current evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md)
+owns commands and outcomes; [NEXT_AGENT](../../../NEXT_AGENT.md) owns order.
+
+## Prior briefs — historical; superseded as execution instructions
+
 ## Completed slice: Overview subview isolation
 
 F0 production-widget maintenance under OBS-015/decision0021 is delivered through

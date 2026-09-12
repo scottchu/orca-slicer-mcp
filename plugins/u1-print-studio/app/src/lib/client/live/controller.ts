@@ -13,12 +13,15 @@ export const acquisitionFailure = (observation: OrderedObservation): Acquisition
   if (observation.state === 'unsupported' || observation.state === 'unavailable') return observation.state;
   if (observation.freshness === 'offline') return 'error';
   for (const receipt of [observation.receipt, observation.materials, observation.environment]) {
+    if (receipt?.state === 'stale' && receipt.reason === 'not_reported') return 'error';
     if (receipt?.reason && failedReasons.has(receipt.reason)) return receipt.reason === 'unsupported' ? 'unsupported' : 'error';
   }
   return null;
 };
-export type LiveState<T> = { observation: T | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string; failure?: AcquisitionFailure | null };
-export const createObservationController = <T extends OrderedObservation>(port: ObservationPort, adapt: (value: unknown) => T, title: string, timeoutMs = 20_000) => {
+// Independently acquired domains remain usable when the status connection fails.
+export const domainAcquisitionFailure = (observation: OrderedObservation): AcquisitionFailure | null => acquisitionFailure({ ...observation, freshness: 'unknown' });
+export type LiveState<T> = { observation: T | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string; failure?: AcquisitionFailure | null; failureReason?: string | null };
+export const createObservationController = <T extends OrderedObservation>(port: ObservationPort, adapt: (value: unknown) => T, title: string, timeoutMs = 20_000, failureOf: (observation: T) => AcquisitionFailure | null = acquisitionFailure) => {
   let state: LiveState<T> = { observation: null, phase: 'loading', refreshing: false, feedback: '' };
   let disposed = false, started = false, generation = 0;
   let flight: Promise<void> | null = null;
@@ -26,7 +29,7 @@ export const createObservationController = <T extends OrderedObservation>(port: 
   let latest: T | null = null;
   const listeners = new Set<(state: LiveState<T>) => void>();
   const publish = (next: LiveState<T>) => { if (!disposed) { state = next; for (const listener of listeners) listener(state); } };
-  const failure = () => publish({ ...state, phase: state.observation ? 'ready' : 'error', refreshing: false, failure: 'error', feedback: `Could not load ${title}` });
+  const failure = () => publish({ ...state, phase: state.observation ? 'ready' : 'error', refreshing: false, failure: 'error', failureReason: null, feedback: `Could not load ${title}` });
   const accept = (result: unknown, notification = false): 'accepted' | 'duplicate' | 'older' | 'invalid' => {
     try {
       const observation = adapt(resultObservation(result));
@@ -35,12 +38,15 @@ export const createObservationController = <T extends OrderedObservation>(port: 
       const retainedFailure = (observation.state === 'unavailable' || observation.state === 'unsupported') &&
         previous && (previous.state === 'known' || previous.state === 'stale') &&
         observation.connectionEpoch !== null && observation.connectionEpoch === previous.connectionEpoch;
-      const failureKind = acquisitionFailure(observation);
+      const failureKind = failureOf(observation);
+      // Failed resource retention keeps the last display observation, while the
+      // safe reason belongs to this latest accepted acquisition.
+      const failureReason = failureKind ? observation.receipt?.reason ?? null : null;
       const retainedFeedback = failureKind === 'error' ? `Could not load ${title}` : failureKind ? `${title} ${failureKind === 'unsupported' ? 'endpoint unsupported' : 'unavailable'}` : '';
       if (latest && JSON.stringify(observation) === JSON.stringify(latest)) {
         // A duplicate explicit response confirms only its own state. A failed
         // receipt must not clear the persistent last-success warning.
-        if (!notification) publish({ ...state, phase: 'ready', failure: failureKind, feedback: retainedFeedback });
+        if (!notification) publish({ ...state, phase: 'ready', failure: failureKind, failureReason, feedback: retainedFeedback });
         return 'duplicate';
       }
       // Server receipt orders events across process-local version resets. A
@@ -55,11 +61,11 @@ export const createObservationController = <T extends OrderedObservation>(port: 
       // superseded evidence. A new/unknown epoch never borrows prior data.
       if (retainedFailure) {
         publish({ observation: previous, phase: 'ready', refreshing: notification && !!flight,
-          failure: failureKind, feedback: retainedFeedback });
+          failure: failureKind, failureReason, feedback: retainedFeedback });
         return 'accepted';
       }
       // Arrival/generation orders this mounted session, not process-local version.
-      publish({ observation, phase: 'ready', refreshing: notification && !!flight, failure: failureKind, feedback: retainedFeedback });
+      publish({ observation, phase: 'ready', refreshing: notification && !!flight, failure: failureKind, failureReason, feedback: retainedFeedback });
       return 'accepted';
     } catch { return 'invalid'; }
   };

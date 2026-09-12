@@ -1,11 +1,12 @@
-import type { HostRpc } from '../host/rpc';
+import type { HostRpc } from '../host/rpc.js';
 export type ObservationPort = {
   start: () => Promise<void>;
   refresh: () => Promise<unknown>;
   subscribe: (listener: (result: unknown) => void) => () => void;
   dispose: () => void;
 };
-export const observationPort = (rpc: HostRpc, view: 'fans' | 'thermals' | 'heads' | 'queue'): ObservationPort => ({
+export type LiveObservationView = 'overview' | 'progress' | 'jobs' | 'job_history' | 'fans' | 'thermals' | 'heads' | 'queue' | 'bed_mesh';
+export const observationPort = (rpc: HostRpc, view: LiveObservationView): ObservationPort => ({
   start: rpc.start,
   refresh: () => rpc.callTool('refresh_printer_observation', { view }),
   subscribe: (listener) => rpc.subscribe((event) => { if (event.kind === 'result') listener(event.value); }),

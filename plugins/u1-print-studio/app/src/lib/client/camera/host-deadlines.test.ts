@@ -31,7 +31,7 @@ const flush = async () => {
   for (let index = 0; index < 40; index++) await Promise.resolve();
 };
 const cleanups: Array<() => void> = [];
-const setup = (hangClose = false) => {
+const setup = (hangClose = false, hangAnswer = false) => {
   const host = new EventTarget() as EventTarget & {
     parent: Window;
     openai: { toolOutput: unknown; toolResponseMetadata: unknown };
@@ -55,6 +55,7 @@ const setup = (hangClose = false) => {
       calls.push({ id: message.id, ...message.params });
       if (message.params.name === 'open_u1_camera_stream') return;
       if (message.params.name === 'close_u1_camera_stream' && hangClose) return;
+      if (message.params.name === 'answer_u1_camera_stream' && hangAnswer) return;
       queueMicrotask(() => reply(message.id, message.params.name === 'get_u1_camera_frame'
         ? frame
         : { structuredContent: { accepted: true, candidateCount: 1, closed: true } }));
@@ -190,6 +191,30 @@ describe('Camera opening deadlines through the real HostRpc and service', () => 
     expect(app.disposeRpc).not.toHaveBeenCalled();
     await vi.advanceTimersByTimeAsync(1);
     expect(app.disposeRpc).toHaveBeenCalledOnce();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('retains one proven live peer beyond three minutes when only the answer reply is lost', async () => {
+    const app = setup(false, true);
+    try {
+      const { flight } = await startLive(app);
+      app.respondToOpen(); await flush();
+      const events = app.peers[0]; events.connection('connected');
+      for (let second = 0; second <= 210; second++) {
+        events.frame({ kind: 'presented', count: second * 30 + 1, at: second * 1000 });
+        await vi.advanceTimersByTimeAsync(1000);
+        expect(app.controller.state().camera).toMatchObject({ mode: 'live', phase: 'live', lastLiveFailure: null });
+      }
+      await flight;
+      expect(app.peers).toHaveLength(1);
+      expect(app.calls.filter(call => call.name === 'answer_u1_camera_stream')).toHaveLength(1);
+      expect(app.calls.filter(call => call.name === 'get_u1_camera_frame')).toHaveLength(1);
+      expect(app.calls.filter(call => call.name === 'close_u1_camera_stream')).toHaveLength(0);
+      events.connection('disconnected');
+      await vi.advanceTimersByTimeAsync(3000);
+      expect(app.controller.state().camera.lastLiveFailure).toMatchObject({ stage: 'connection', outcome: 'timeout' });
+      expect(app.calls.filter(call => call.name === 'close_u1_camera_stream')).toHaveLength(1);
+    } finally { app.controller.dispose(); await flush(); }
     expect(vi.getTimerCount()).toBe(0);
   });
 });

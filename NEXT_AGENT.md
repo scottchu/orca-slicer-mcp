@@ -1,5 +1,52 @@
 # Next agent
 
+## Current order — Camera reliability, then fixed Lab widgets live
+
+The user stopped dynamic/composable expansion on 2026-09-11, requested existing
+fixed Lab widgets in live use, and reported Camera dropping after about three
+minutes followed by repeated crash/reload behavior. The screenshots show `Live
+reply timed out` then `Could not load camera`; they establish visible failure,
+not its cause. Camera reliability comes first; fixed-widget adoption follows.
+
+The corrected candidate is runtime0.4.20/schema18/observation23/Camera18 at
+`6b29d2f8de33e258166e5c301f4137e9ad2fb40b`. Two guarded shipping attempts
+stopped before merge, installation or service restarts: first at the type-only
+NodeNext import, then at the production Kit route inventory after the repository
+and production-build gates passed. Both corrections are independently checked.
+The compiled production router now passes 14 browser cases and the unchanged
+100-file/114-route validator; UI and Camera packages are unchanged, retaining
+prior UI evidence. Renewed exact-head approval and the complete unchanged
+mandatory shipping workflow remain pending. The complete 434-case browser
+collection ran with 431 passes and three History Lab failures sharing one
+text-wrapping cause. The narrow correction then passed all 90 affected cases
+and a fresh 18-case native matrix; unchanged evidence is retained explicitly.
+This is not a second complete 434-case green run. Mandatory shipping gates,
+exact documentation-head binding, guarded merge/deployment, both service
+restarts and installed widget verification remain pending. Actual-phone
+reliability and the reported crash cause remain unverified; C08 stays open.
+
+1. Bind the documentation-only tail to the independently reviewed application
+   source and complete every unchanged mandatory `u1-ship` gate. Do not replay
+   unaffected full browser suites solely for bookkeeping.
+2. Complete the guarded PR/merge/exact-build shipment, restart both existing
+   services and verify health, integrity, exact served assets and meaningful
+   installed widget behavior.
+3. Record the release and scoped behavior results, then review the repaired
+   experience with the user. Native renderer adoption does not close unrelated
+   feature gaps, C08, or actual-device acceptance.
+
+[Release evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md)
+owns exact commands, full-collection failures, affected closure, identities and
+shipment outcomes when performed.
+
+Keep dynamic source/history private and unregistered; stop its expansion.
+Synthetic Lab isolation does not prohibit fixed components on live routes.
+Preserve all 55 delivery IDs and evidence layers. No printer controls,
+auth/Tailscale changes or plugin reinstallation is authorized. Existing host
+bridge and tools/schemas remain; no new tool catalog is required.
+
+## Prior orders — historical; do not replay or treat as blockers
+
 ## Current order after PR123 delivery
 
 The Overview isolation fix is delivered, and its current records are complete.

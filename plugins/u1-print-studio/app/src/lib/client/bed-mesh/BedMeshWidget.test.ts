@@ -17,7 +17,8 @@ describe('Bed Mesh Svelte candidate', () => {
     expect(container.querySelector('[data-height-legend] .endpoint,[data-height-legend] [title]')).toBeNull();
     expect(container.querySelector('[data-chart-frame]')).toHaveAccessibleDescription(`Z height in millimetres; top ${bedMeshLabFixture.summary.maximum}, bottom ${bedMeshLabFixture.summary.minimum}`);
     expect(container.querySelector('[data-chart-frame] > span[hidden]')).toHaveTextContent(`Z height in millimetres; top ${bedMeshLabFixture.summary.maximum}, bottom ${bedMeshLabFixture.summary.minimum}`);
-    expect(container).toHaveTextContent('Reported probe grid · 11 × 11 · Lab fixture');
+    expect(container.querySelector('.mesh-kicker')).toHaveTextContent('Reported probe grid · 11 × 11 · Lab fixture');
+    expect(container.querySelector('[data-text-viewport]')).toHaveTextContent('Profile: Lab fixture');
     expect(container).not.toHaveTextContent('Height exaggerated');
     expect(container).not.toHaveTextContent('Drag');
     expect(container).not.toHaveTextContent('Surface connects');

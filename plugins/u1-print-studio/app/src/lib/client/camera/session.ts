@@ -66,6 +66,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
   let resumeAfterShow: CameraMode | null = null;
   let epoch = 0;
   let snapshotGeneration = 0;
+  let snapshotFailures = 0;
   let peer: CameraPeer | null = null;
   let sessionId: string | null = null;
   let refreshFlight: Promise<void> | null = null;
@@ -93,6 +94,8 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     ports.changed(state);
   };
   const isCurrent = (token: number) => !disposed && !hidden && liveIntent && epoch === token;
+  const hasFreshLiveVideo = (token: number) => isCurrent(token) && connected && !disconnected && state.phase === 'live'
+    && lastFrame !== null && scheduler.now() - lastFrameReceived < 5000;
   const closeSession = (id: string) => { void Promise.resolve().then(() => transport.close(id)).catch(() => {}); };
   const cancelPending = (pending: Set<() => void>) => { [...pending].forEach((cancel) => cancel()); };
   const bounded = <T>(operation: () => Promise<T>, milliseconds: number, pending: Set<() => void>, late?: (value: T) => void): Promise<T> =>
@@ -154,13 +157,17 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     try { decoded = await bounded(() => ports.decode(result.snapshot!), 1500, snapshotPending); } catch { return false; }
     if (!decoded || disposed || hidden || generation !== snapshotGeneration) return false;
     // Commit source time only together with a successfully decoded image.
+    snapshotFailures = 0;
     publish({ snapshot: Object.freeze({ ...result.snapshot }), failure: null });
     return true;
   };
   const scheduleFallback = () => {
     fallbackTimer?.(); fallbackTimer = null;
     if (!disposed && !hidden && state.mode === 'auto') {
-      fallbackTimer = scheduler.after(1500, () => { fallbackTimer = null; void refreshSnapshot('automatic'); });
+      // Healthy polling stays quiet and prompt; repeated failures must not
+      // hammer the host/camera while it is unavailable. The counter is bounded.
+      const delay = Math.min(30000, 1500 * 2 ** Math.max(0, snapshotFailures - 1));
+      fallbackTimer = scheduler.after(delay, () => { fallbackTimer = null; void refreshSnapshot('automatic'); });
     }
   };
   const refreshSnapshot = (cause: CameraRefreshCause = 'manual'): Promise<void> => {
@@ -176,6 +183,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     publish({ refreshing: true });
     const finishRefresh = (accepted: boolean) => {
       if (disposed || hidden || generation !== snapshotGeneration) return;
+      if (!accepted) snapshotFailures = Math.min(6, snapshotFailures + 1);
       publish({
         phase: liveIntent ? state.phase : accepted ? 'snapshot' : 'error',
         failure: accepted ? null : 'snapshot',
@@ -274,7 +282,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
               // A supplemental candidate may spend its deadline resolving mDNS
               // after another pair already carries fresh video. Keep that
               // proven stream; first-frame, disconnect and stall guards remain.
-              if (isCurrent(token) && sessionId === offer.sessionId && error instanceof CameraOperationTimeout && connected && state.phase === 'live' && !disconnected && lastFrame && scheduler.now() - lastFrameReceived < 5000) return;
+              if (sessionId === offer.sessionId && error instanceof CameraOperationTimeout && hasFreshLiveVideo(token)) return;
               fallback(token, 'candidate', error instanceof CameraOperationTimeout ? 'timeout' : 'rejected');
             });
           },
@@ -298,7 +306,13 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
         stage = 'answer';
         await bounded(() => transport.answer(offer.sessionId, sdp), 10000, livePending);
         if (isCurrent(token) && state.phase !== 'live') firstFrameTimer = scheduler.after(8000, () => fallback(token, 'first-frame', 'timeout'));
-      } catch (error) { fallback(token, stage, error instanceof CameraOperationTimeout ? 'timeout' : 'rejected'); }
+      } catch (error) {
+        // An answer can already be applied while its host reply is lost. Fresh
+        // connected video is direct playback evidence; do not tear it down only
+        // for the missing reply. Rejection and all playback guards still apply.
+        if (stage === 'answer' && error instanceof CameraOperationTimeout && hasFreshLiveVideo(token)) return;
+        fallback(token, stage, error instanceof CameraOperationTimeout ? 'timeout' : 'rejected');
+      }
       finally { if (epoch === token) liveFlight = null; }
     })();
     liveFlight = flight;
@@ -318,6 +332,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
     initialFrameUnavailable: () => {
       if (!disposed && !hidden && !state.snapshot) {
         cancelSnapshot();
+        snapshotFailures = Math.min(6, snapshotFailures + 1);
         publish({ phase: 'error', failure: 'snapshot', refreshing: false });
         scheduleFallback();
       }
@@ -330,6 +345,7 @@ export const createCameraSession = (ports: CameraSessionPorts) => {
       publish({ refreshing: true });
       const accepted = await acceptSnapshot(result, generation);
       if (disposed || hidden || generation !== snapshotGeneration) return false;
+      if (!accepted) snapshotFailures = Math.min(6, snapshotFailures + 1);
       publish({ phase: liveIntent ? state.phase : accepted ? 'snapshot' : 'error', refreshing: false, failure: accepted ? null : 'snapshot' });
       scheduleFallback();
       return accepted;

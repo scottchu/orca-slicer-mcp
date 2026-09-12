@@ -219,6 +219,13 @@ printer environments support the described behavior.
   shared printer upstream closes when the last viewer closes or fails. TURN is
   a fallback, not a prerequisite when a direct server host candidate is
   reachable.
+- **CAM-008 current reliability amendment (decision0059):** A delayed answer
+  timeout must not close connected video with fresh presented-frame evidence.
+  Failed Auto snapshot acquisitions back off at 1.5/3/6/12/24/30 seconds,
+  resetting after an accepted frame. Healthy acquisition cadence is unchanged.
+  Existing session/lifecycle/privacy boundaries remain; verify sustained cases
+  beyond the reported three minutes. This direction does not establish the
+  reported phone failure's root cause or acceptance of its repair.
 - **CAM-008:** The independently accepted Camera source has a thin white header
   with icon/title and state/measured FPS/frame time. Its media extends edge to
   edge across the whole lower card, with square top media corners and bottom
@@ -803,6 +810,23 @@ durable-monitor claim.
   affects safety or command meaning.
 
 ## Requirement changes
+
+- **Current UI-003/UI-004 direction (2026-09-11, decision0059):** Stop dynamic/
+  composable expansion; preserve its source/history privately and unregistered.
+  Repair Camera sustained-use/recovery first, then adopt existing fixed Lab
+  widgets through live dashboard/MCP adapters. Synthetic Lab producers remain
+  isolated; fixed-component adoption is authorized. The historical dynamic
+  contracts below constrain preserved code, not pending production work.
+  First MCP Fans/Thermals/Queue reuse existing live adapters; Heads is native.
+  Progress/Current Job/History/Overview/Bed Mesh require live presentation
+  adapters with no fixture casting or null-to-zero substitution. This is
+  implementation order within one release candidate covering Camera and all
+  nine fixed observation views, not separate first-three/remaining-five releases.
+  Native renderer adoption does not close unrelated feature gaps. Preserve
+  PR123 Overview failure isolation and all 55 delivery IDs. No implementation,
+  route coverage, long-duration reliability or actual-device outcome is accepted
+  by this direction amendment.
+
 
 - **UI-005:** The real Camera Svelte migration first replaces only the private
   `/dashboard/camera` child with `/dashboard/camera_widget`, using the reviewed

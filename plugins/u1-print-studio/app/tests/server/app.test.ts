@@ -227,7 +227,7 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v22.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v23.html");
 
     expect(observe).toBeDefined();
     expect(observe?.annotations).toMatchObject({
@@ -309,7 +309,7 @@ describe("U1 status MCP App contract", () => {
       },
     });
     expect("text" in resource ? resource.text : "").toBe(MCP_CAMERA_HTML);
-    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v17.html");
+    expect(CAMERA_WIDGET_URI).toBe("ui://u1-print-studio/camera-v18.html");
   });
 
   test("lists only current resources and rejects every retired URI", async () => {
@@ -317,8 +317,8 @@ describe("U1 status MCP App contract", () => {
     const listed = await client.listResources();
     expect(listed.resources.map(({ uri }) => uri)).toEqual([WIDGET_URI, CAMERA_WIDGET_URI]);
     const retired = [
-      ...Array.from({ length: 16 }, (_, index) => `observation-v${index + 1}`),
-      ...Array.from({ length: 12 }, (_, index) => `camera-v${index + 1}`),
+      ...Array.from({ length: 22 }, (_, index) => `observation-v${index + 1}`),
+      ...Array.from({ length: 17 }, (_, index) => `camera-v${index + 1}`),
       "status-v3", "status-v4",
     ];
     for (const version of retired) {

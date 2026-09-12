@@ -1,14 +1,14 @@
 export type RouteKind = 'general' | 'page' | 'data' | 'tools' | 'oauth' | 'mcp' | 'camera';
 export type RoutePolicy = { kind: RouteKind; methods: readonly string[]; deniedMethod: 404 | 405 };
 export const DASHBOARD_VIEWS = ['overview', 'progress', 'thermals', 'heads', 'jobs', 'job_history', 'queue', 'fans', 'bed_mesh', 'camera'] as const;
-export const NATIVE_DASHBOARD_VIEWS = ['fans', 'thermals', 'heads', 'queue'] as const;
+export const NATIVE_DASHBOARD_VIEWS = DASHBOARD_VIEWS.filter((view) => view !== 'camera');
 export const NATIVE_DASHBOARD_PATHS = new Set<string>(NATIVE_DASHBOARD_VIEWS.map((view) => `/dashboard/${view}`));
 export const NATIVE_LAB_PATHS = new Set(['/dashboard/lab/composition']);
 export const NATIVE_LAB_DATA_PATHS = new Set(['/dashboard/lab/composition/__data.json']);
 export const DASHBOARD_PAGES = new Set([
   '/dashboard', '/dashboard/',
   ...DASHBOARD_VIEWS.map((view) => `/dashboard/${view}`),
-  ...['fans', 'thermals', 'heads', 'queue', 'camera'].map((view) => `/dashboard/${view}_widget`),
+  ...DASHBOARD_VIEWS.map((view) => `/dashboard/${view}_widget`),
   ...['/dashboard/lab', ...DASHBOARD_VIEWS.map((view) => `/dashboard/lab/${view}`)].flatMap((route) => [route, route + '/']),
   ...NATIVE_LAB_PATHS,
 ]);
