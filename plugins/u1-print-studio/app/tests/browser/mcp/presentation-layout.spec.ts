@@ -44,15 +44,15 @@ test('actual Camera resource honors host grant/Exit, safe area, sizing and pendi
 
 for (const width of [320, 390, 1024]) {
   for (const enlarged of [false, true]) {
-    test(`active legacy body padding and neutral geometry ${width} ${enlarged ? '200%' : '100%'}`, async ({ page, request }, info) => {
+    test(`fixed native body padding and neutral geometry ${width} ${enlarged ? '200%' : '100%'}`, async ({ page, request }, info) => {
       await page.setViewportSize({ width, height: 1200 });
       for (const view of ['overview', 'progress', 'thermals', 'jobs', 'job_history', 'queue', 'fans', 'bed_mesh']) {
         await page.unroute('**/fixture/call');
         await request.post('/fixture/configure', { data: { reset: true, bedMesh: true } });
         await page.goto(`/host?view=${view}`);
         const frame = page.frameLocator('iframe');
-        await expect(frame.locator('.instrument')).toHaveCount(1);
-        const body = frame.locator('.u1-body');
+        await expect(frame.locator('[data-widget-shell]')).toHaveCount(1);
+        const body = frame.locator('[data-widget-body]');
         if (enlarged) await body.evaluate(node => {
           const elements = [node, ...node.querySelectorAll('*')];
           const sizes = elements.map(element => Number.parseFloat(getComputedStyle(element).fontSize));
@@ -60,21 +60,25 @@ for (const width of [320, 390, 1024]) {
         });
         const insets = await body.evaluate(node => {
           const style = getComputedStyle(node);
-          return { left: parseFloat(style.marginLeft), right: parseFloat(style.marginRight), bottom: parseFloat(style.paddingBottom), expectedX: parseFloat(style.getPropertyValue('--u1-card-x')), expectedBottom: parseFloat(style.getPropertyValue('--u1-body-bottom')) };
+          return { left: parseFloat(style.paddingLeft), right: parseFloat(style.paddingRight), bottom: parseFloat(style.paddingBottom), expectedX: parseFloat(style.getPropertyValue('--u1-card-x')), expectedBottom: 18 };
         });
         expect(insets.expectedX).toBeGreaterThan(0);
         expect(insets.left).toBe(insets.expectedX);
         expect(insets.right).toBe(insets.expectedX);
         expect(insets.bottom).toBe(insets.expectedBottom);
-        const before = await frame.locator('.instrument').boundingBox();
+        const before = await frame.locator('[data-widget-shell]').boundingBox();
+        const previousTimes = (await frame.locator('[data-widget-shell]').innerText()).match(/\b\d{1,2}:\d{2}:\d{2}\b/g) ?? [];
+        if (view === 'progress' || view === 'overview') expect(previousTimes.length).toBeGreaterThan(0);
         if (view === 'progress' && width === 390 && !enlarged) {
           await page.screenshot({ path: info.outputPath('progress-padding-current.png'), fullPage: true });
         }
         await page.route('**/fixture/call', route => route.fulfill({ json: { isError: true } }));
-        await frame.getByRole('button', { name: 'Refresh observation', exact: true }).click();
-        await expect(frame.locator('[data-observation-placeholder="error"]')).toBeVisible();
+        await frame.getByRole('button', { name: /Refresh|Retry/i }).click();
+        await expect(frame.locator('[data-widget-state-surface="error"]')).toBeVisible();
         await expect(frame.locator('canvas:visible,time:visible,[aria-valuenow]:visible')).toHaveCount(0);
-        const after = await frame.locator('.instrument:not([data-retained-observation])').boundingBox();
+        for (const timestamp of previousTimes) await expect(frame.locator('[data-widget-shell]')).not.toContainText(timestamp);
+        await expect(frame.locator('[data-widget-header]')).not.toContainText(/Observed|fresh|stale|\b\d{1,2}:\d{2}/i);
+        const after = await frame.locator('[data-widget-shell]').boundingBox();
         expect(Math.abs(after!.height - before!.height), view).toBeLessThanOrEqual(1);
       }
     });

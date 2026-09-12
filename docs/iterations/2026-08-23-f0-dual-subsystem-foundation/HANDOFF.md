@@ -1,5 +1,40 @@
 # F0 maintenance handoff
 
+## Active handoff — Camera reliability and fixed live widgets
+
+The user stopped dynamic/composable expansion on 2026-09-11, requested existing
+fixed Lab widgets in live use, and reported Camera dropping after about three
+minutes followed by repeated crash/reload behavior. The screenshots show `Live
+reply timed out` then `Could not load camera`; they establish visible failure,
+not its cause. Camera reliability comes first; fixed-widget adoption follows.
+
+The candidate targets Camera and all nine fixed observation views in one
+release. MCP Fans/Thermals/Queue use existing live adapters, Heads is already
+native, and Progress/Current Job/History/Overview/Bed Mesh add live adapters.
+The earlier first-three/remaining-five sequence is implementation order only.
+Source and packages are authored and frozen at runtime0.4.20/schema18/
+observation23/Camera18, including all known text-scaling and source-parity corrections. No author
+implementation remains pending unless further review finds an issue. Earlier
+checks remain scoped to their exact bytes. Final independent exact review,
+the full required regression and
+guarded shipment remain pending. Phone root cause and recovery remain unverified;
+native renderer adoption does not close unrelated product-feature gaps or C08.
+
+[Final author evidence and package identities](evidence/2026-09-11-fixed-widgets-camera-reliability.md#bed-text-scaling-correction-and-current-record-handoff) owns the latest Bed corrections, actual commands and renewed pins; preceding sections own Camera and other fixed-widget source/build work.
+Changed application areas include fixed live roots/adapters, production-safe
+panels, MCP/native dashboard routing, Camera lifecycle/backoff, required package
+checks, generated packages and focused/browser/server contracts. The same record
+owns exact paths and attributed results. Follow
+[NEXT_AGENT](../../../NEXT_AGENT.md) for the next smallest action.
+
+Preserve the stopped dynamic experiment privately/unregistered and keep synthetic
+producers isolated while adopting fixed components through real adapters.
+Preserve PR123 Overview failure isolation, upstream History malformed-response
+risk, 55 ledger IDs, unrelated WIP, private state and all shipping guards.
+No printer controls, auth/Tailscale changes or plugin reinstallation is included.
+
+## Prior handoffs — historical; superseded as execution instructions
+
 ## Current outcome: PR123 delivered
 
 Overview failure isolation is implemented, independently approved, merged and

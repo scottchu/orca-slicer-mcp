@@ -30,7 +30,7 @@ describe("private Svelte lab packages", () => {
   test("freezes the deterministic light observation artifact", () => {
 
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "559e550ed7115d59e9190b9abf56d584aa99148eef6aa1ba9494e45d65349c1c"
+      "019118d2e002763acd9c4c5dc03fd57c0f35329fd1017e4fbe5f09173ed8da47"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -49,7 +49,7 @@ describe("private Svelte lab packages", () => {
 
   test('freezes Bed Mesh as an isolated self-contained artifact', () => {
 
-    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('5ba57e92cdcfc2e2e4f56f545bd62891f46be7b79c0f82f06c4d169e56f5868c');
+    expect(createHash('sha256').update(bedMeshHtml).digest('hex')).toBe('0915e02d7ba74ced59b89269e67b745460ff15f9f8da138bbaf1955cabcf5520');
     expect(bedMeshHtml).toContain('data-height-legend');
     expect(bedMeshHtml).toContain('data-icon-segmented');
     for (const marker of ['Bed Mesh', '3D surface', '2D grid', 'data-chart-frame=""', 'WebGLRenderer', 'OrbitControls']) expect(bedMeshHtml).toContain(marker);

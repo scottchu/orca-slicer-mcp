@@ -1,0 +1,15 @@
+import type { Capability, Evidence, Freshness, Provenance } from './presentation';
+export type PrintState = 'standby' | 'printing' | 'paused' | 'complete' | 'error' | 'cancelled' | 'unknown';
+export type Receipt = { state: Evidence; sourceObservedAt: string | null; receivedAt: string | null; checkedAt: string | null; freshness: 'fresh' | 'stale' | 'unknown'; reason: string | null };
+export type FocusedBase = { version: number; connectionEpoch: number | null; sourceObservedAt: string | null; receivedAt: string; freshness: Freshness; reachable: boolean; printerState: string; state: Evidence; capability: Capability; provenance: Provenance };
+export type Field<T> = { state: Evidence; value: T | null };
+export type ProgressPresentation = FocusedBase & { kind: 'progress'; fields: { percent: Field<number>; currentLayer: Field<number>; totalLayers: Field<number>; elapsedSeconds: Field<number>; estimatedRemainingSeconds: Field<number>; filename: Field<string> } };
+export type Reported<T> = { reported: boolean; value: T | null };
+export type JobsPresentation = FocusedBase & { kind: 'jobs'; receipt: Receipt; printState: Reported<PrintState>; filename: Reported<string>; storageActive: Reported<boolean>; filePositionBytes: Reported<number>; fileSizeBytes: Reported<number>; totalDurationSeconds: Reported<number>; printDurationSeconds: Reported<number>; filamentUsedMillimeters: Reported<number> };
+export const historyStatuses = ['in_progress', 'completed', 'cancelled', 'error', 'klippy_shutdown', 'klippy_disconnect', 'interrupted', 'unknown'] as const;
+export type HistoryStatus = typeof historyStatuses[number];
+export type HistoryRecord = { position: number; filename: string; status: HistoryStatus; startTime: string | null; endTime: string | null; printDurationSeconds: number | null; totalDurationSeconds: number | null; filamentUsedMillimeters: number | null };
+export type HistoryPresentation = FocusedBase & { kind: 'job_history'; receipt: Receipt; items: HistoryRecord[]; pageCount: number | null };
+export type OverviewReceipt = { state: Evidence; sourceObservedAt: string | null; freshness: Freshness; reason: string | null };
+export type OverviewTile = { id: 'progress' | 'thermals' | 'heads' | 'jobs' | 'job_history' | 'queue' | 'fans' | 'bed_mesh'; state: Evidence; valid: boolean; primary: string; secondary: string; receipts: { label: string; value: OverviewReceipt }[] };
+export type OverviewPresentation = FocusedBase & { kind: 'overview'; coverage: 'complete' | 'partial' | 'none'; tiles: OverviewTile[] };

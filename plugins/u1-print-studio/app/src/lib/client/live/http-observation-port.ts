@@ -1,11 +1,11 @@
-import type { ObservationPort } from './observation-port';
+import type { ObservationPort, LiveObservationView } from './observation-port';
 
 // Match the observation controller's initial acquisition bound; this also owns
 // refresh and response-body time, independently of the host RPC transport.
 export const HTTP_OBSERVATION_TIMEOUT_MS = 20_000;
 
 export const httpObservationPort = (
-  view: 'fans' | 'thermals' | 'heads' | 'queue',
+  view: LiveObservationView,
   request: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response> = (...args) => fetch(...args),
   timeoutMs = HTTP_OBSERVATION_TIMEOUT_MS,
 ): ObservationPort => {

@@ -1,5 +1,38 @@
 # Project state
 
+## Active work — fixed live widgets and Camera reliability
+
+The user stopped dynamic/composable expansion on 2026-09-11, requested existing
+fixed Lab widgets in live use, and reported Camera dropping after about three
+minutes followed by repeated crash/reload behavior. The screenshots show `Live
+reply timed out` then `Could not load camera`; they establish visible failure,
+not its cause. Camera reliability comes first; fixed-widget adoption follows.
+
+PR123 runtime0.4.19/schema18/observation22/Camera17 remains the baseline.
+Coordinator read-only service status found both services loaded, healthy and
+integrity-verified; this does not establish Camera media or phone reliability.
+Source and packages are authored and frozen at runtime0.4.20/schema18/
+observation23/Camera18, including all known text-scaling and source-parity corrections. Final
+independent review, the full required regression and guarded shipment remain
+pending. No release or actual-device acceptance is claimed; C08 remains open.
+
+One release candidate covers Camera recovery and all nine fixed observation
+views. Fans/Thermals/Queue reuse existing live adapters, Heads is already native,
+and Progress/Current Job/History/Overview/Bed Mesh add real presentation adapters.
+The first-three/remaining-five sequence was implementation order. Current review
+findings have author corrections and regenerated packages; no implementation
+remains pending unless further review finds an issue. Preserve PR123's local
+subview failure isolation and all 55 ledger IDs; native renderer adoption does not complete
+unrelated feature gaps or establish actual-device acceptance.
+
+[Decision 0059](docs/decisions/0059-prioritize-camera-reliability-and-fixed-live-widgets.md) owns direction;
+[NEXT_AGENT.md](NEXT_AGENT.md) owns order; [final author evidence and package identities](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md#bed-text-scaling-correction-and-current-record-handoff) owns the latest corrections and focused checks.
+The stopped experiment stays private/unregistered. Fixed components may enter
+live routes through real adapters; synthetic Lab producers remain isolated.
+No printer controls, auth/Tailscale changes or plugin reinstallation is included.
+
+## Prior state — historical, superseded as execution instructions
+
 ## Delivered Overview subview isolation — PR123
 
 PR123 is merged at `71b007852f02cda291bbe41c598e93a63576ace5` and deployed as

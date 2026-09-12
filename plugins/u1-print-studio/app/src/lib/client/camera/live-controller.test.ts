@@ -157,14 +157,14 @@ describe('real Camera host/controller lifecycle without printer requests', () =>
     expect(vi.getTimerCount()).toBe(0);
   });
 
-  it('failed Auto resume waits the full poll interval instead of immediately retrying', async () => {
+  it('failed Auto resume preserves backoff from missing host delivery', async () => {
     const app = setup(undefined, 'host-result');
     app.controller.start(); await vi.advanceTimersByTimeAsync(15000);
     app.controller.pageHide();
     app.rpc.callTool.mockRejectedValue(new Error('Synthetic failure'));
     await app.controller.pageShow();
     expect(app.rpc.callTool).toHaveBeenCalledTimes(1);
-    await vi.advanceTimersByTimeAsync(1499);
+    await vi.advanceTimersByTimeAsync(2999);
     expect(app.rpc.callTool).toHaveBeenCalledTimes(1);
     await vi.advanceTimersByTimeAsync(1);
     expect(app.rpc.callTool).toHaveBeenCalledTimes(2);

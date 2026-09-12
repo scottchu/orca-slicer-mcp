@@ -46,7 +46,17 @@
     "build:server": "bun --no-env-file --config=/dev/null run scripts/build-server.ts",
     "build": "vite build",
     "test:server": "bun --no-env-file --config=/dev/null run build && bun --no-env-file --config=/dev/null test tests/server",
-    "test:mcp-widgets": "playwright test --config playwright.mcp.config.ts"
+    "test:mcp-widgets": "playwright test --config playwright.mcp.config.ts",
+    "build:live-progress": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --progress",
+    "verify:live-progress": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --progress --check",
+    "build:live-jobs": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --jobs",
+    "verify:live-jobs": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --jobs --check",
+    "build:live-job_history": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --job_history",
+    "verify:live-job_history": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --job_history --check",
+    "build:live-overview": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --overview",
+    "verify:live-overview": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --overview --check",
+    "build:live-bed_mesh": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --bed_mesh",
+    "verify:live-bed_mesh": "bun --no-env-file --config=/dev/null run scripts/build-live-fans.ts --bed_mesh --check"
   },
   "dependencies": {
     "@modelcontextprotocol/ext-apps": "1.7.5",

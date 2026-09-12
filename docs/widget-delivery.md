@@ -1,11 +1,17 @@
 # Widget delivery ledger
 
-Current scope index, 2026-09-05. Preserve all 55 request IDs below. Their retained
+Current scope index, 2026-09-11. Preserve all 55 request IDs below. Their retained
 status text records accepted work and explicit gaps; it is not a new runtime or
 actual-device observation. [PROJECT_STATE.md](../PROJECT_STATE.md) owns workstream
-status and [NEXT_AGENT.md](../NEXT_AGENT.md) owns maintenance-first execution order.
+status and [NEXT_AGENT.md](../NEXT_AGENT.md) owns current execution order.
 
-## Deployment and maintenance
+The current candidate integrates Camera reliability and all nine fixed native
+observation views in one release. Implementation and independent review are
+underway. Native renderer adoption does not mark any separate requested feature,
+real-printer behavior or actual-phone outcome complete. Existing ID rows and
+feature gaps below remain unchanged by this scope index.
+
+## Prior deployment and maintenance — historical
 
 PR106 remains the last accepted deployed release (runtime 0.4.12/schema 16,
 observation 18/Camera 14) until exact maintenance shipping is verified. PR109 and
@@ -55,7 +61,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | C05 Unsupported wording | Source-only display fallback clarification | Browser capability is not printer/camera offline |
 | C06 connection lifecycle service | PR89 real/synthetic Camera service separation deployed | Service owns modes/connections/timers; components subscribe/render; no c6 source mixing |
 | C07 same-live explicit Retry | Source-only c6cfb4e; author86 UI/12 Chrome | Independent/final integrated acceptance pending;0042 removes historical repo cap blocker |
-| C08 served Camera still old | PR101 phone failure, one Live/30 FPS success after retries, then another failure with about 10 s before fallback. Reliability unresolved; exact URI/phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–12 and user-reported Bun permission allowance; local served-dashboard success did not reproduce phone failure. Safe failure-stage diagnostics/Auto presentation shipped PR104 with scoped synthetic postverification; actual phone reliability remains unresolved. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
+| C08 served Camera still old | 2026-09-11 user reports drops after about three minutes and repeated crash/reload; screenshots show live-reply timeout then load failure. New repair pending under decision0059.  PR101 phone failure, one Live/30 FPS success after retries, then another failure with about 10 s before fallback. Reliability unresolved; exact URI/phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–12 and user-reported Bun permission allowance; local served-dashboard success did not reproduce phone failure. Safe failure-stage diagnostics/Auto presentation shipped PR104 with scoped synthetic postverification; actual phone reliability remains unresolved. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
 | P03 object layer-gradient rendering | Decision pending | Distinguish illustrative image fill from actual Z/layer geometry |

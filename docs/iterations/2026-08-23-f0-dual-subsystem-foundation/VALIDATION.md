@@ -1,5 +1,22 @@
 # F0 validation index
 
+## Active Camera reliability and fixed live widgets
+
+[Current slice evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns this report,
+source/input identities, actual author commands, independent review/verification
+and guarded shipment when performed. Source and packages for the integrated
+Camera/all-nine-observation candidate are authored and frozen at runtime0.4.20/
+schema18/observation23/Camera18, including all known text-scaling and source-parity corrections. The [final author correction and contract evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md#bed-text-scaling-correction-and-current-record-handoff) records the latest focused source/browser checks and exact package identities.
+The known text-scaling/source-parity corrections and package regeneration are complete;
+independent verification remains pending. Earlier package identities and checks
+remain scoped to their bytes. No author implementation remains pending unless
+further review finds an issue.
+Final independent review, the full required regression and guarded shipment
+remain pending; author checks are not candidate acceptance. Timed synthetic
+cases, decoded live media, deployed service and actual-phone outcomes require
+separate evidence. Native renderer adoption does not close unrelated feature
+gaps, C08, or actual-device acceptance.
+
 ## Overview subview isolation accepted for delivery
 
 [Repair evidence](evidence/2026-09-08-overview-subview-isolation.md) owns focused author checks, independent exact

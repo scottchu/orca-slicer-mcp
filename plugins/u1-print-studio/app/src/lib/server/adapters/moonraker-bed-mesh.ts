@@ -49,9 +49,9 @@ export function normalizeBedMeshResponse(payload: unknown, observedAt: string): 
   const min = Math.min(...values); const max = Math.max(...values);
   result.summary = { rows: matrix.length, columns, min, max, range: max - min };
   // Never pass paths, URLs, multiline text or directional controls to a card.
-  if (typeof mesh.profile_name === "string" && /^[\p{L}\p{N} _.-]{1,80}$/u.test(mesh.profile_name) &&
-      mesh.profile_name.trim() && mesh.profile_name !== "." && mesh.profile_name !== "..") {
-    result.profile = mesh.profile_name.trim();
+  const profile = typeof mesh.profile_name === "string" ? mesh.profile_name.trim() : "";
+  if (/^[\p{L}\p{N} _.-]{1,80}$/u.test(profile) && profile !== "." && profile !== "..") {
+    result.profile = profile;
   }
   return result;
 }

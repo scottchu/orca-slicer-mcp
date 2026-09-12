@@ -1,4 +1,5 @@
 import type { Evidence, Provenance } from './presentation.js';
+import type { LiveObservationView } from './observation-port.js';
 export const record = (value: unknown): Record<string, unknown> => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Invalid observation');
   return value as Record<string, unknown>;
@@ -34,7 +35,7 @@ export const provenance = (value: unknown): Provenance => {
   const data = record(value); exact(data, ['source', 'sourceObservedAt', 'detail']);
   return { source: choice(data.source, ['moonraker', 'derived', 'not_observed']), sourceObservedAt: time(data.sourceObservedAt), detail: string(data.detail) };
 };
-export const observationEnvelope = (value: unknown, view: 'fans' | 'thermals' | 'heads' | 'queue') => {
+export const observationEnvelope = (value: unknown, view: LiveObservationView) => {
   const envelope = record(value);
   exact(envelope, ['schemaVersion', 'view', 'observationVersion', 'sourceObservedAt', 'receivedAt', 'freshness', 'connectionEpoch', 'reachable', 'printerState', 'printerStateLabel', 'refreshAfterSeconds', 'session', 'module']);
   if (envelope.schemaVersion !== 2 || envelope.view !== view) throw new Error('Wrong observation view');

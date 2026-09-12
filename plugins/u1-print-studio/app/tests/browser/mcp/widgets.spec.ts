@@ -88,7 +88,7 @@ for (const width of [320, 390, 590, 720])
       await expect(frame.getByRole('status')).toHaveText('Heads & Filaments loaded');
       await expect(copy).toBeVisible();
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/observation-v22.html',
+        'ui://u1-print-studio/observation-v23.html',
       );
       const messages = await page.evaluate(() => (window as any).__mcpHost.state.messages);
       expect(messages.filter((message: any) => message.method === 'ui/initialize')).toHaveLength(1);
@@ -159,7 +159,7 @@ for (const width of [320, 390, 590, 720])
       await expect(frame.locator('img')).toHaveAttribute('aria-hidden', 'false');
       await expect(frame.locator('[data-media-feedback]')).toHaveCount(0);
       expect(await page.evaluate(() => (window as any).__mcpHost.state.uri)).toBe(
-        'ui://u1-print-studio/camera-v17.html',
+        'ui://u1-print-studio/camera-v18.html',
       );
       await expect
         .poll(() => page.evaluate(() => (window as any).__mcpHost.state.sizes.length))
@@ -249,7 +249,7 @@ for (const [view, title] of Object.entries({
   fans: 'Fans & Air',
   bed_mesh: 'Bed Mesh',
 }))
-  test(`MCP retained ${view} renderer and Refresh`, async ({ page, request }) => {
+  test(`MCP fixed ${view} renderer and Refresh`, async ({ page, request }) => {
     await request.post('/fixture/configure', { data: { reset: true } });
     await page.setViewportSize({ width: 390, height: 1200 });
     const errors: string[] = [];
@@ -257,9 +257,10 @@ for (const [view, title] of Object.entries({
     await page.goto(`/host?view=${view}`);
     const frame = await frameOf(page);
     await expect(frame.getByRole('heading', { name: title, exact: true })).toBeVisible();
-    await expect(frame.locator('.instrument')).toHaveCount(1);
+    await expect(frame.locator('[data-widget-shell]')).toHaveCount(1);
+    await expect(frame.locator('.instrument')).toHaveCount(0);
     const refresh = frame.getByRole('button', {
-      name: /Refresh observation|Retry loading observation/,
+      name: /Refresh|Retry/i,
     });
     await expect(refresh).toBeEnabled();
     await refresh.click();
@@ -332,7 +333,7 @@ test('MCP canonical input rejects another view and contradictory late input reti
   await expect(frame.getByText('#FFFFFFFF', { exact: true })).toHaveCount(0);
 });
 
-test('MCP legacy failed Refresh cannot render a retained successful DTO', async ({
+test('MCP native failed Refresh cannot render a retained successful DTO', async ({
   page,
   request,
 }) => {
@@ -344,9 +345,9 @@ test('MCP legacy failed Refresh cannot render a retained successful DTO', async 
   await page.route('**/fixture/call', (route) =>
     route.fulfill({ json: { isError: true, ...result } }),
   );
-  await frame.getByRole('button', { name: 'Refresh observation', exact: true }).click();
-  await expect(frame.locator('[data-observation-placeholder="error"]')).toBeVisible();
-  await expect(frame.locator('.refresh-error')).toHaveText('Could not load');
+  await frame.getByRole('button', { name: 'Refresh Thermals', exact: true }).click();
+  await expect(frame.locator('[data-widget-state-surface="error"]')).toBeVisible();
+  await expect(frame.locator('[data-footer-status]')).toHaveText('Could not load Thermals');
   await expect(frame.getByText('220°', { exact: true })).toHaveCount(0);
 });
 

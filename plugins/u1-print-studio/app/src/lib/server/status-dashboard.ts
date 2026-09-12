@@ -18,6 +18,11 @@ import liveThermalsHtml from "../../../public/svelte-live-thermals.html" with { 
 import liveHeadsHtml from "../../../public/svelte-live-heads.html" with { type: "text" };
 import liveQueueHtml from "../../../public/svelte-live-queue.html" with { type: "text" };
 import liveCameraHtml from "../../../public/svelte-live-camera.html" with { type: "text" };
+import liveProgressHtml from "../../../public/svelte-live-progress.html" with { type: "text" };
+import liveJobsHtml from "../../../public/svelte-live-jobs.html" with { type: "text" };
+import liveJobHistoryHtml from "../../../public/svelte-live-job_history.html" with { type: "text" };
+import liveOverviewHtml from "../../../public/svelte-live-overview.html" with { type: "text" };
+import liveBedMeshHtml from "../../../public/svelte-live-bed_mesh.html" with { type: "text" };
 import cameraLabHtml from "../../../public/svelte-camera-lab.html" with { type: "text" };
 
 import {
@@ -182,7 +187,8 @@ const pageResponse = (html: unknown, csp: string): Response => new Response(html
 export const dashboardPage = (pathname: string, method = 'GET'): Response | null => {
   const normalized = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
   const live = new Map([[LIVE_FANS_WIDGET_PATH, liveFansHtml], [LIVE_THERMALS_WIDGET_PATH, liveThermalsHtml],
-    [LIVE_HEADS_WIDGET_PATH, liveHeadsHtml], [LIVE_QUEUE_WIDGET_PATH, liveQueueHtml]]);
+    [LIVE_HEADS_WIDGET_PATH, liveHeadsHtml], [LIVE_QUEUE_WIDGET_PATH, liveQueueHtml],
+    ["/dashboard/progress_widget", liveProgressHtml], ["/dashboard/jobs_widget", liveJobsHtml], ["/dashboard/job_history_widget", liveJobHistoryHtml], ["/dashboard/overview_widget", liveOverviewHtml], ["/dashboard/bed_mesh_widget", liveBedMeshHtml]]);
   const isLab = OBSERVATION_LAB_PATHS.has(normalized) || normalized === BED_MESH_LAB_PATH || normalized === CAMERA_LAB_PATH;
   const isIndex = pathname === DASHBOARD_PATH || pathname === DASHBOARD_PATH + '/';
   const isFocused = FOCUSED_DASHBOARD_PATHS.has(pathname) || pathname === CAMERA_DASHBOARD_PATH;

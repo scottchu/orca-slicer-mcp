@@ -15,6 +15,7 @@ composites.push('mcp/ObservationRoot.svelte');
 composites.push('observation/QueueWidget.svelte', 'observation/QueueRow.svelte', 'observation/QueueRows.svelte', 'observation/QueueSummary.svelte', 'observation/QueueSkeleton.svelte', 'observation/DomainReceipt.svelte', 'live/LiveQueueRoot.svelte');
 composites.push('composable/PresentationNode.svelte', 'composable/PresentationRenderer.svelte', 'composable/ComposableMcpRoot.svelte', 'composable/HeadStatus.svelte', 'composable/HeadTemperature.svelte', 'composable/FilamentColor.svelte', 'composable/FanRelation.svelte');
 export const leaves: Record<string, string[]> = {
+  'common/Frame.svelte': [],
   'common/Mount.svelte': ['div'],
   'common/RetainedLayer.svelte': ['div'],
   'common/StateSurface/StateSurface.svelte': ['div'],
@@ -130,6 +131,44 @@ approvedImports['camera/CameraLabWidget.svelte'].push('lucide-svelte', '../commo
 
 for (const name of ['observation/FanReading.svelte', 'observation/FansSkeleton.svelte', 'observation/ThermalReading.svelte']) approvedImports[name].push('../../lib/client/observation/icons');
 for (const name of ['live/LiveObservationRoot.svelte', 'live/LiveThermalsRoot.svelte', 'live/LiveQueueRoot.svelte']) approvedImports[name].push('../../lib/client/observation/icons');
+
+// Fixed renderer cutover: move existing DOM debt, never expand the native-tag frontier.
+debt['observation/ProgressPanel.svelte'] = debt['observation/ProgressWidget.svelte'];
+delete debt['observation/ProgressWidget.svelte'];
+composites.push('observation/ProgressWidget.svelte');
+debt['observation/JobsPanel.svelte'] = debt['observation/CurrentJobWidget.svelte'];
+delete debt['observation/CurrentJobWidget.svelte'];
+composites.push('observation/CurrentJobWidget.svelte');
+debt['observation/HistoryPanel.svelte'] = debt['observation/JobHistoryWidget.svelte'];
+delete debt['observation/JobHistoryWidget.svelte'];
+composites.push('observation/JobHistoryWidget.svelte');
+debt['observation/OverviewPanel.svelte'] = debt['observation/OverviewWidget.svelte'];
+delete debt['observation/OverviewWidget.svelte'];
+composites.push('observation/OverviewWidget.svelte');
+debt['bed-mesh/BedMeshPanel.svelte'] = debt['bed-mesh/BedMeshWidget.svelte'];
+delete debt['bed-mesh/BedMeshWidget.svelte'];
+composites.push('bed-mesh/BedMeshWidget.svelte');
+approvedImports["mcp/ObservationRoot.svelte"] = ["svelte", "../../lib/client/host/rpc", "../../lib/client/mcp/observation-host", "../../lib/client/mcp/heads", "../../lib/client/live/controller", "../../lib/client/live/thermals-controller", "../../lib/client/live/queue-controller", "../../lib/client/live/observation-port", "../../lib/client/live/focused-controllers", "../../lib/client/live/bed-mesh-controller", "../live/LiveHeadsRoot.svelte", "../live/LiveObservationRoot.svelte", "../live/LiveThermalsRoot.svelte", "../live/LiveQueueRoot.svelte", "../live/LiveProgressRoot.svelte", "../live/LiveJobsRoot.svelte", "../live/LiveHistoryRoot.svelte", "../live/LiveOverviewRoot.svelte", "../live/LiveBedMeshRoot.svelte", "../common/PageLayout.svelte", "../common/Shell.svelte", "../common/Header.svelte", "../common/Body.svelte", "../common/Footer.svelte", "../common/Icon.svelte", "../common/Skeleton.svelte", "../common/StateAnnouncement.svelte", "lucide-svelte"];
+approvedImports["observation/ProgressWidget.svelte"] = ["../../lib/client/observation/types", "../../lib/client/observation/loading", "./ProgressPanel.svelte", "../common/Caption.svelte", "./ObservedMeta.svelte"];
+approvedImports["observation/CurrentJobWidget.svelte"] = ["../../lib/client/observation/types", "../../lib/client/observation/loading", "./JobsPanel.svelte", "../common/Caption.svelte", "./ObservedMeta.svelte"];
+approvedImports["observation/JobHistoryWidget.svelte"] = ["../../lib/client/observation/types", "../../lib/client/observation/loading", "./HistoryPanel.svelte", "../common/Caption.svelte", "./ObservedMeta.svelte"];
+approvedImports["observation/OverviewWidget.svelte"] = ["../../lib/client/observation/types", "../../lib/client/observation/loading", "./OverviewPanel.svelte", "../common/Caption.svelte", "./ObservedMeta.svelte"];
+approvedImports["bed-mesh/BedMeshWidget.svelte"] = ["svelte", "./BedMeshPanel.svelte"];
+composites.push('live/LiveProgressRoot.svelte');
+approvedImports["live/LiveProgressRoot.svelte"] = ["svelte", "../../lib/client/live/focused-controllers", "../observation/ProgressPanel.svelte"];
+composites.push('live/LiveJobsRoot.svelte');
+approvedImports["live/LiveJobsRoot.svelte"] = ["svelte", "../../lib/client/live/focused-controllers", "../observation/JobsPanel.svelte", "../observation/DomainReceipt.svelte"];
+composites.push('live/LiveHistoryRoot.svelte');
+approvedImports["live/LiveHistoryRoot.svelte"] = ["svelte", "../../lib/client/live/focused-controllers", "../observation/HistoryPanel.svelte", "../observation/DomainReceipt.svelte"];
+composites.push('live/LiveOverviewRoot.svelte');
+approvedImports["live/LiveOverviewRoot.svelte"] = ["svelte", "../../lib/client/live/focused-controllers", "../observation/OverviewPanel.svelte"];
+composites.push('live/LiveBedMeshRoot.svelte');
+approvedImports["live/LiveBedMeshRoot.svelte"] = ["svelte", "lucide-svelte", "../../lib/client/live/bed-mesh-controller", "../bed-mesh/BedMeshPanel.svelte", "../observation/DomainReceipt.svelte", "../common/Button.svelte", "../common/Skeleton.svelte"];
+debt['../routes/dashboard/progress/+page.svelte'] = [];
+debt['../routes/dashboard/jobs/+page.svelte'] = [];
+debt['../routes/dashboard/job_history/+page.svelte'] = [];
+debt['../routes/dashboard/overview/+page.svelte'] = [];
+debt['../routes/dashboard/bed_mesh/+page.svelte'] = [];
 
 export function inspectComponent(source: string, strict: boolean, imports: string[] = []): { tags: string[]; violations: string[] } {
   const ast = parse(source, { modern: true });

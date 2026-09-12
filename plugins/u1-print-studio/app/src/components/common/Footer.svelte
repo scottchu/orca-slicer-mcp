@@ -2,13 +2,13 @@
   import type { Snippet } from 'svelte';
   // undefined preserves the default; an empty message reserves public status
   // geometry without hiding an observation or a private error as a template.
-  let { leading, actions, message }: { leading?: Snippet; actions: Snippet; message?: string } = $props();
+  let { leading, actions, message, visibleMessage = 'Could not load' }: { leading?: Snippet; actions: Snippet; message?: string; visibleMessage?: string } = $props();
 </script>
 
 <footer class="widget-footer" data-widget-footer>
   <div class="leading">{#if leading}{@render leading()}{/if}</div>
   <div class="actions">
-    {#if message !== undefined}<span class="status" data-footer-status aria-label={message || undefined} title={message || undefined} aria-hidden={!message} class:quiet={!message}>Could not load</span>{/if}
+    {#if message !== undefined}<span class="status" data-footer-status aria-label={message || undefined} title={message || undefined} aria-hidden={!message} class:quiet={!message}>{visibleMessage}</span>{/if}
     {@render actions()}
   </div>
 </footer>
