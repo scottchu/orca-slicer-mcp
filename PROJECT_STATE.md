@@ -1,5 +1,18 @@
 # Project state
 
+## Existing server refresh completed — 2026-09-21
+
+Both existing U1 services were restarted through the supported lifecycle
+command. The installed PR125 release remains runtime 0.4.20 / schema 18 /
+observation 23 / Camera 18; latest main changes only documentation, so no new
+application build or installation was needed.
+
+[Refresh evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-runtime-refresh.md) owns actual commands, identities,
+verification and limits. Draft PR127 remains an isolated offline experiment.
+No printer controls, authentication, Tailscale changes or plugin reinstallation
+were included. ChatGPT reconnect and external reachability are separate from
+this service refresh; [NEXT_AGENT.md](NEXT_AGENT.md) owns the next action.
+
 ## Delivered fixed live widgets and Camera recovery — PR125
 
 PR125 is merged at `1716867af057d55b2e170215126dff429f4d000f` and deployed as

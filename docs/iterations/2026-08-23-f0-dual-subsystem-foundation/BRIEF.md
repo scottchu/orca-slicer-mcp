@@ -1,5 +1,18 @@
 # F0 dual-subsystem foundation brief
 
+## Completed maintenance slice — existing runtime refresh
+
+On 2026-09-21 the user explicitly requested a server refresh. Both existing
+services were restarted through their supported lifecycle command while
+retaining the installed PR125 release. Main differs only in documentation;
+there was no rebuild, application deployment or draft PR127 integration.
+
+[Refresh evidence](evidence/2026-09-21-runtime-refresh.md) owns commands and
+results. Acceptance is scoped to service restart, health, identity, exact
+assets and preservation. ChatGPT reconnection, external reachability, real
+printer and actual-device outcomes remain separate. No product architecture
+change, authentication, Tailscale change or printer control is included.
+
 ## Delivered slice — Camera recovery and fixed live widgets
 
 The user stopped dynamic/composable expansion on 2026-09-11, requested existing
