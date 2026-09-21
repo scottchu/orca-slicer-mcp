@@ -1,25 +1,23 @@
 # Project state
 
-## Active implementation — current-G-code Progress
+## Current release — G-code Progress delivered
 
-The user accepted the offline real-file preview and explicitly requested
-design, implementation and shipment in the existing Progress card.
-[Decision0060](docs/decisions/0060-render-current-gcode-in-progress.md) selects
-bounded cached geometry, metadata-correlated current-file binding, verified
-reported-layer mapping and visible active-print updates through one shared
-15-second due-read policy. The isolated implementation and focused independent
-software/browser checks pass on application commit `a759ee89f9548caffaebdc34ac1dbd36fa8c3bba`
-(runtime 0.4.21 / schema 19 / observation 24 / Camera 18). The documentation
-tail preserves those application bytes. Mandatory shipping and deployment
-remain pending; installed services are still the prior 0.4.20 release. The
-first shipping attempt stopped safely on stale artifact pins; measured pin
-corrections pass independent review and await the renewed full gate.
+PR130 merged at `d1d72ff593f6444fb2bc5c82957f7693ab558e18` and shipped
+runtime 0.4.21 / schema 19 / observation 24 / Camera 18. Both existing services
+were explicitly restarted and verified. Progress now renders bounded cached
+G-code paths for the reported file, with verified reported-layer mapping and
+15-second visible printing/paused updates through the shared observation store.
 
-[Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-live-gcode-progress.md) owns implementation identities, actual
-checks and limits. No printer controls, authentication or network changes are
-included. The earlier connection repair is accepted at the user-report layer:
-the user confirmed reconnection. That follow-up is complete, not a next action.
-[NEXT_AGENT.md](NEXT_AGENT.md) owns current execution order.
+[Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-live-gcode-progress.md) owns the stopped first gate, corrected
+exact review, successful mandatory shipment, preservation and independent
+installed-byte rendering checks. The final record tail changes documentation
+only and requires no deployment. Metadata correlation is not execution-byte
+identity or measured deposition; actual active-print/ChatGPT/phone outcome
+remains separate from software and installed-fixture acceptance.
+
+P03's bounded slice is delivered; P02 thumbnails and unrelated gaps remain
+separate. The earlier ChatGPT reconnection follow-up is complete by user report.
+[NEXT_AGENT.md](NEXT_AGENT.md) owns the next observation opportunity.
 
 ## Prior operational status — historical evidence
 

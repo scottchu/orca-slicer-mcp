@@ -1,24 +1,24 @@
 # F0 maintenance handoff
 
-## Current-G-code Progress — implementation in progress
+## Current-G-code Progress — delivered PR130
 
-[Decision0060](../../decisions/0060-render-current-gcode-in-progress.md) and
-[active evidence](evidence/2026-09-21-live-gcode-progress.md) own the agreed
-contract, module ownership, commands and acceptance. The next smallest action
-is independent corrected-tail review followed by a renewed mandatory
-shipping run after the stale-pin validation stop. Application/assets are frozen and focused independent checks are
-bound to their exact identities in the evidence record. Source completion
-is not deployment acceptance.
+[Decision0060](../../decisions/0060-render-current-gcode-in-progress.md) owns the
+bounded contract; [release evidence](evidence/2026-09-21-live-gcode-progress.md)
+owns commands, exact identities, the stopped first validation and successful
+shipment. Both existing services run 0.4.21 / schema 19 / observation 24 /
+Camera 18. Independent checks used the actual served Progress bytes and
+simulated telemetry; no physical deposition or actual-host acceptance follows.
 
-Changed boundaries include Operations file acquisition, shared observation
-cadence/cache, parser, private transport envelope, decoder/controller and native
-Progress composition. Records cover current indices, requirements, ADR/index
-and the P03 ledger. Independent probes and responsive screenshots are recorded
-in the linked evidence; mandatory shipment and installed behavior remain pending.
-The implementation owner owns application/tests/generated assets; the primary
-coordinates integration and release. Preserve unrelated work and draft PR127.
-No printer controls, authentication or network changes are included. The user
-confirmed ChatGPT reconnection, so no old reconnect follow-up remains pending.
+Changed application boundaries are Operations file acquisition, shared cache
+and due-read policy, parser, private transport envelope, decoder/controller
+and native Progress. This closure changes only current indices, decision
+status, P03 ledger and evidence; application/dependencies/config/generated
+bytes stay deployed and need no further release. Current records are complete.
+
+The next smallest check is a read-only view during a real active print in the
+user's ChatGPT/phone host. Preserve metadata-correlation limits, unsupported
+and stale fallbacks, unrelated work and draft PR127. No printer control, auth
+or network work is pending. Earlier reconnection was confirmed by the user.
 
 ## Public route recovery — 2026-09-21
 

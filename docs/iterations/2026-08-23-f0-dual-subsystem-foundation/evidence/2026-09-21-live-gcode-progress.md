@@ -52,12 +52,13 @@ receipts are committed.
 
 ## Acceptance state
 
-Application commit `a759ee89f9548caffaebdc34ac1dbd36fa8c3bba` is frozen at
-runtime 0.4.21 / schema 19 / observation 24 / Camera 18. Focused author checks
-and independent exact-application probes/source review pass. The documentation
-tail retains unchanged application bytes. Mandatory full shipping validation,
-PR merge, deployment and installed-widget verification remain pending. No physical-print or actual ChatGPT/phone acceptance is claimed.
-The validation index links this record; mandatory shipping guards are unchanged.
+PR130 is merged and installed at runtime 0.4.21 / schema 19 / observation 24 /
+Camera 18. Independent exact application review, mandatory shipping, explicit
+both-service restart and independent meaningful installed-byte checks pass.
+The final documentation-only closure preserves the delivered application.
+Actual active-print, physical deposition and ChatGPT/phone outcomes remain
+separate; no such acceptance is claimed by synthetic telemetry. Historical
+pre-freeze and stopped-gate evidence below retains its original boundaries.
 
 ## Previous connection-recovery user outcome
 
@@ -211,3 +212,52 @@ parser/cache/browser evidence carries forward on unchanged production bytes.
 The independent identity check and `git diff --name-only` verify that boundary.
 The corrected combined candidate still requires exact review and a renewed
 full mandatory shipping run; no failed gate is skipped or weakened.
+
+## Successful delivery and installed-byte verification
+
+- PR: [130](https://github.com/scottchu/orca-slicer-mcp/pull/130).
+- Reviewed candidate: `3b91eb6f3ec68abb1ffa3a04df3b91294469aabd`.
+- Merge: `d1d72ff593f6444fb2bc5c82957f7693ab558e18`.
+- Release: `20260921-d1d72ff-pr130-20260921T175022-a5d03f`.
+
+The operator ran this read-only plan and then the same command with
+`--execute`; the placeholder omits only the private path of the existing
+pinned Bun 1.4.0 executable:
+
+`uv run --no-project scripts/u1_ship.py --pr 130 --reviewed-sha 3b91eb6f3ec68abb1ffa3a04df3b91294469aabd --bun <existing-absolute-pinned-Bun>`
+
+The renewed full mandatory local validation passed. The guarded workflow
+merged PR130, installed its exact build and explicitly restarted both existing
+services. The operator then ran
+`uv run --no-project scripts/u1_service.py status`: both were loaded, healthy
+and integrity-verified at 0.4.21 / schema 19 / observation 24 / Camera 18.
+The successful receipt records 123 static checks, 125 security checks and
+preservation=true, with no rollback. Existing configuration, stable OAuth and
+passkey identity, service definitions and routes were preserved. No printer
+control, camera acquisition, authentication or network change was performed
+for this feature release.
+
+At 21:53 UTC the independent reviewer ran
+`/usr/bin/curl --fail --silent --show-error --max-time 5 http://127.0.0.1:8788/dashboard/progress_widget`.
+The actual focused Progress resource was 99,325 bytes and matched SHA-256
+`6c9f1ecda84618a6b6411ebff88b58453e3160fdb528d67ac30980b04b55d95a`
+exactly. A private `installed-browser.mjs` probe, executed with Bun
+`--no-env-file --config=/dev/null`, used those served bytes with the existing
+private geometry and simulated telemetry. The 320/390/600-width, light/dark
+preference, 200-percent text, reduced-motion, keyboard, stale/terminal/failure/
+standby and visible/hidden/page lifecycle matrix passed. There was no horizontal
+overflow or page error; canvas identity remained stable, failures masked
+geometry/filename/numbers, and hidden demand stopped. The reviewer inspected
+the final tight card screenshot. Owned browser/server resources were closed
+in finally; these checks made no printer calls.
+
+This establishes meaningful behavior of the installed resource, beyond health
+or a static hash. It still uses simulated layer/progress telemetry and a
+fixture host. The next smallest outcome check is the user's Progress view
+during a real active print in ChatGPT or on the phone. It does not require
+another deployment, print start, authentication reset or network repair.
+
+The final closure updates records and delivered P03/decision status only.
+Application, dependencies, configuration and generated resources remain the
+merged release. Unaffected builds/browser suites are not repeated and no
+additional service deployment is needed for this documentation-only tail.

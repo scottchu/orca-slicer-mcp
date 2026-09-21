@@ -1,11 +1,17 @@
 # Widget delivery ledger
 
-Current scope index, 2026-09-12. Preserve all 55 request IDs below. Their retained
+Current scope index, 2026-09-21. Preserve all 55 request IDs below. Their retained
 status text records accepted work and explicit gaps; it is not a new runtime or
 actual-device observation. [PROJECT_STATE.md](../PROJECT_STATE.md) owns workstream
 status and [NEXT_AGENT.md](../NEXT_AGENT.md) owns current execution order.
 
-PR125 delivers Camera recovery and all nine fixed native observation views at
+PR130 delivers the bounded P03 G-code Progress slice at runtime 0.4.21 / schema
+19 / observation 24 / Camera 18. Exact review, mandatory shipment, both-service
+restarts and independent installed-byte synthetic checks pass; actual active
+print and ChatGPT/phone acceptance remain separate. [Progress evidence](iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-live-gcode-progress.md)
+owns those boundaries.
+
+PR125 delivered Camera recovery and all nine fixed native observation views at
 runtime0.4.20/schema18/observation23/Camera18. Independent review, required
 shipment, both-service restarts and installed-byte synthetic verification are
 complete. [Release evidence](iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-11-fixed-widgets-camera-reliability.md)
@@ -66,7 +72,7 @@ IDs preserve the independent history audit; acceptance/next action is explicit.
 | C08 served Camera still old | 2026-09-11 user reports drops after about three minutes and repeated crash/reload; screenshots show live-reply timeout then load failure. PR125 runtime0.4.20 service-owned healthy-video timeout and bounded recovery repair is independently verified under decision0059; guarded shipment and both-service verification passed. One local Chromium/actual-printer Live check passed 210.148 seconds with advancing frames, no reload and cleanup; this does not prove iPhone recovery. PR101 phone failure, one Live/30 FPS success after retries, then another failure with about 10 s before fallback. Reliability unresolved; exact URI/phase/root cause unconfirmed | PR101 bounded open/late-cleanup repair is independently accepted and deployed; scoped synthetic postverification passes; actual phone Live remains open. Retain attempts 1–12 and user-reported Bun permission allowance; local served-dashboard success did not reproduce phone failure. Safe failure-stage diagnostics/Auto presentation shipped PR104 with scoped synthetic postverification; actual phone reliability remains unresolved. Screen Sharing stays paused; require service-owned repair, decoded-frame proof and exact release gates before Live closure |
 | P01 Progress local gradient/layer bricks | Not started | Adopt latest visual contract; no full-card tint or stale strip spec |
 | P02 exact active-Gcode thumbnail | Not started | Bounded identity-correlated genuine image; no arbitrary URL fetch |
-| P03 object layer-gradient rendering | Candidate finalization under [decision0060](decisions/0060-render-current-gcode-in-progress.md): cached current-file nominal geometry with verified reported-layer mapping | Exact application review/probes/screenshots pass; documentation-tail review and guarded shipment pending. Metadata correlation is not execution-byte identity or physical deposition. P02 thumbnail remains separate |
+| P03 object layer-gradient rendering | Delivered in PR130 under [decision0060](decisions/0060-render-current-gcode-in-progress.md): cached reported-file nominal geometry and mapped layer highlight | Exact review, mandatory ship and installed-byte synthetic checks pass; actual active-print/ChatGPT/phone outcome remains separate. Metadata correlation is not execution-byte identity or physical deposition. P02 thumbnail remains separate |
 | P04 required embedded thumbnail gates | Policy delivered PR86 | Local decoded/hash/plate proof, then target metadata; runtime enforcement open |
 | B01 reported 3D surface/projected axes | Lab delivered; PR125 runtime0.4.20 live adapter and native renderer independently verified against reported probe grids | Guarded shipment and scoped installed-byte verification passed; preserve reported samples and units. Real mobile/WebGL acceptance remains unverified |
 | B02 equal 2D/3D frame | Delivered Lab | Preserve 4:3 mode/resize/loading parity; legacy separately checked |

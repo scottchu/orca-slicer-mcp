@@ -1,9 +1,10 @@
 # F0 dual-subsystem foundation brief
 
-## Active slice — current-G-code Progress
+## Delivered slice — current-G-code Progress
 
 - Milestone: F0 / widget P03, OBS-016, API-007.
-- Direction: user-requested implementation and shipment; exact acceptance pending.
+- Status: PR130 merged and shipped; software and installed-byte acceptance pass.
+- Runtime: 0.4.21 / schema 19 / observation 24 / Camera 18.
 
 [Decision0060](../../decisions/0060-render-current-gcode-in-progress.md) selects
 one bounded current-file read/compile cache with component-private geometry
@@ -12,10 +13,10 @@ printing/paused view uses the shared coalesced 15-second due-read policy; idle
 and standalone-monitor cadence remain unchanged. Services own all effects;
 views subscribe/render. Ordinary Progress remains usable on preview failure.
 
-Acceptance requires identity/race/privacy/bounds tests, efficient cache reuse,
-correct supported geometry/layer mapping, affected transport and lifecycle
-coverage, independent review, unchanged mandatory shipping and meaningful
-installed behavior. Static/software, protocol/simulator, real printer and
+Identity/race/privacy/bounds checks, cache reuse, supported geometry/layer
+mapping, affected transport/lifecycle coverage, independent review, mandatory
+shipping and meaningful installed-byte behavior have passed. Actual active
+print and ChatGPT/phone outcomes remain separate. Static/software, protocol/simulator, real printer and
 actual-host/user outcomes stay separate. No control/auth/network change is
 included. [Evidence](evidence/2026-09-21-live-gcode-progress.md) owns actual results.
 
