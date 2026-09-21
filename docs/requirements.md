@@ -155,6 +155,26 @@ printer environments support the described behavior.
   embed full cards, lists, charts, mesh surfaces, navigation, pagination,
   controls, Camera/media, filenames, projects, IDs, raw rows or metadata.
   Decision 0021 fixes the projection and presentation boundary.
+- **OBS-016:** Decision0060 selects a bounded current-G-code preview in focused
+  Progress. One shared application service obtains only the reported current
+  file through the Operations adapter, checks metadata before/after a bounded
+  read and hashes exact bytes for versioned geometry caching. Binding remains
+  metadata-correlated unless a trusted execution-time artifact link exists;
+  filename identity and download hashes never prove the bytes executing.
+  Strict supported G-code yields nominal extrusion centerlines, not CAD or
+  measured deposition. Reported layers map only through verified artifact
+  layer commands; missing mapping is unknown, never percent-derived height.
+  Changed job/epoch, rollback, stale acquisition and late replies cannot attach
+  an old model to current progress. Preview failure remains local to the model;
+  failed overall acquisition follows0041. Age-only stale accepted geometry may
+  remain labeled Last reported without a live highlight or new artifact work.
+  The first slice bounds input, geometry, decoding, cache and compiler lifetime
+  as0060 specifies, with explicit unsupported/too-large/unavailable outcomes.
+  A visible mounted Progress service requests one shared coalesced due read
+  every15seconds while printing/paused; no read-through bypass is introduced.
+  Hidden/unmounted demand stops; idle and standalone-monitor cadence is
+  unchanged. Source/privacy, transport, UI, deployed-service, real-printer and
+  user acceptance remain separate gates.
 - **MON-001:** A standalone asynchronous monitoring workflow can attach to an
   evidenced current print and compose after observed printing for a broader
   print request. Preparation-only, upload-only and explicit start-only requests
@@ -516,6 +536,19 @@ printer environments support the described behavior.
   independent receipts and only same-request-window association. Receipt cache
   state and response-time freshness remain truthful. A20-second consumer bound
   and cooperative cancellation cannot abort peers' shared telemetry work.
+
+- **API-007:** Decision0060 extends the existing focused Progress contract
+  with versioned component-private _meta.progressToolpath. Geometry is absent
+  from model-visible structuredContent/content. Existing app-only
+  refresh_printer_observation accepts optional knownToolpathId only with
+  view=progress to omit unchanged geometry; it is a cache hint, not a file
+  selector or authorization. Old inputs remain valid. Shared application policy
+  serves MCP, private HTTP and CLI; remote u1.monitor and transport access
+  enforcement remain unchanged. This explicitly authorizes only the reported
+  current-file metadata/read needed for the preview, not file browsing,
+  arbitrary URL/path fetch, generic G-code access or any mutation. Server-only
+  paths, source bytes/comments, printer identity and upstream errors never
+  enter public results; geometry is private user data even in component _meta.
 
 ## Architecture and ontology
 

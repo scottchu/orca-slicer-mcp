@@ -1,5 +1,25 @@
 # F0 maintenance handoff
 
+## Current-G-code Progress — implementation in progress
+
+[Decision0060](../../decisions/0060-render-current-gcode-in-progress.md) and
+[active evidence](evidence/2026-09-21-live-gcode-progress.md) own the agreed
+contract, module ownership, commands and acceptance. The next smallest action
+is independent documentation-tail review followed by mandatory guarded
+delivery. Application/assets are frozen and focused independent checks are
+bound to their exact identities in the evidence record. Source completion
+is not deployment acceptance.
+
+Changed boundaries include Operations file acquisition, shared observation
+cadence/cache, parser, private transport envelope, decoder/controller and native
+Progress composition. Records cover current indices, requirements, ADR/index
+and the P03 ledger. Independent probes and responsive screenshots are recorded
+in the linked evidence; mandatory shipment and installed behavior remain pending.
+The implementation owner owns application/tests/generated assets; the primary
+coordinates integration and release. Preserve unrelated work and draft PR127.
+No printer controls, authentication or network changes are included. The user
+confirmed ChatGPT reconnection, so no old reconnect follow-up remains pending.
+
 ## Public route recovery — 2026-09-21
 
 [Recovery evidence](evidence/2026-09-21-connection-recovery.md) records both

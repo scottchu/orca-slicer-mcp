@@ -1,5 +1,26 @@
 # Project state
 
+## Active implementation — current-G-code Progress
+
+The user accepted the offline real-file preview and explicitly requested
+design, implementation and shipment in the existing Progress card.
+[Decision0060](docs/decisions/0060-render-current-gcode-in-progress.md) selects
+bounded cached geometry, metadata-correlated current-file binding, verified
+reported-layer mapping and visible active-print updates through one shared
+15-second due-read policy. The isolated implementation and focused independent
+software/browser checks pass on application commit `a759ee89f9548caffaebdc34ac1dbd36fa8c3bba`
+(runtime 0.4.21 / schema 19 / observation 24 / Camera 18). The documentation
+tail preserves those application bytes. Mandatory shipping and deployment
+remain pending; installed services are still the prior 0.4.20 release.
+
+[Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-live-gcode-progress.md) owns implementation identities, actual
+checks and limits. No printer controls, authentication or network changes are
+included. The earlier connection repair is accepted at the user-report layer:
+the user confirmed reconnection. That follow-up is complete, not a next action.
+[NEXT_AGENT.md](NEXT_AGENT.md) owns current execution order.
+
+## Prior operational status — historical evidence
+
 ## Public U1 route recovered — ChatGPT confirmation pending
 
 The user-requested connection repair restored public DNS answers across the
