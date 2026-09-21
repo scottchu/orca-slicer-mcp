@@ -1,5 +1,11 @@
 # F0 validation index
 
+## Progress layout refinement
+
+[2026-09-21 evidence](evidence/2026-09-21-progress-layout.md) owns the requested layout, affected
+consumers, actual focused checks, correction and pending release acceptance.
+
+
 ## Current-G-code Progress — released and independently checked
 
 [Slice evidence](evidence/2026-09-21-live-gcode-progress.md) owns exact reviewed

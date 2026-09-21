@@ -15,15 +15,19 @@
   const progress = $derived(failure ? null : accepted);
 </script>
 
-<ObservationFrame title="Print Progress" icon={Printer} observedAt={progress?.sourceObservedAt ?? null} freshness={progress?.freshness ?? 'unknown'} stateKind={failure ?? (pending ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing} {lab} {meta} {actionLabel} {feedback} {failureMessage}>
-  {#if !lab}<ToolpathPreview preview={live?.preview} filename={live?.fields.filename.value} masked={loading} />{/if}
+{#snippet summary()}
   <div class="progress-top" class:live={!lab}>
     <span class="observation-status" class:loading><LoadingValue {loading} text={loading ? undefined : (progress ? titleCase(progress.state) : undefined)} words={lab ? [9] : undefined} /></span>
-    <div class="percent"><LoadingValue {loading} text={loading ? undefined : (progress?.percent == null ? 'Unknown' : Math.round(progress.percent))} size="short" words={lab ? [3] : undefined} /><span class:loading-unit={loading} aria-hidden={loading ? true : undefined}>{progress?.percent == null && !loading ? '' : '%'}</span></div>
+    <div class="percent" class:unknown={!loading && progress?.percent == null}><LoadingValue {loading} text={loading ? undefined : (progress?.percent == null ? 'Unknown' : Math.round(progress.percent))} size="short" words={lab ? [3] : undefined} /><span class:loading-unit={loading} aria-hidden={loading ? true : undefined}>{progress?.percent == null && !loading ? '' : '%'}</span></div>
   </div>
   <div class="progress-track" role={loading || progress?.percent == null ? undefined : 'progressbar'} aria-hidden={loading || progress?.percent == null ? true : undefined} aria-label={loading ? undefined : 'Print progress'} aria-valuenow={progress?.percent ?? undefined} aria-valuemin={loading ? undefined : 0} aria-valuemax={loading ? undefined : 100}>
     <div class="progress-fill" style={`width:${progress?.percent ?? 0}%`}></div>
   </div>
+{/snippet}
+
+<ObservationFrame title="Print Progress" icon={Printer} observedAt={progress?.sourceObservedAt ?? null} freshness={progress?.freshness ?? 'unknown'} stateKind={failure ?? (pending ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing} {lab} {meta} {actionLabel} {feedback} {failureMessage}>
+  {#if !lab}<ToolpathPreview preview={live?.preview} filename={live?.fields.filename.value} masked={loading} {summary} />{/if}
+  {#if lab}{@render summary()}{/if}
   <div class="progress-detail" class:live={!lab}><span>Layer <strong><LoadingValue {loading} text={loading ? undefined : (progress?.currentLayer ?? 'Unknown')} size="short" /></strong> / <LoadingValue {loading} text={loading ? undefined : (progress?.totalLayers ?? 'Unknown')} size="short" /></span><span><Clock3 aria-hidden="true" /> <LoadingValue {loading} text={loading ? undefined : (progress?.etaSeconds == null ? 'Estimate unknown' : `About ${formatDuration(progress.etaSeconds)} left`)} words={lab ? [5, 2, 3, 4] : undefined} size="long" /></span></div>
   <div class="elapsed"><Clock3 aria-hidden="true" /><div><span class="observation-label">Elapsed</span><strong><LoadingValue {loading} text={loading ? undefined : (progress?.elapsedSeconds == null ? 'Unknown' : formatDuration(progress.elapsedSeconds))} words={lab ? [3, 3] : undefined} /></strong></div></div>
 </ObservationFrame>
@@ -31,7 +35,9 @@
 <style>
   .progress-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
   .progress-top.live { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, max(8em, calc(50% - 8px))), 1fr)); }
-  .progress-top.live .percent { min-width: 0; max-width: 100%; flex-wrap: wrap; justify-content: flex-end; overflow-wrap: anywhere; }
+  .progress-top.live .percent { min-width: 0; max-width: 100%; flex-wrap: nowrap; justify-content: flex-end; white-space: nowrap; }
+  .progress-top.live .percent { font-size: clamp(42px, 12vw, 48px); }
+  .progress-top.live .percent.unknown { font-size: 1.5rem; letter-spacing: -.02em; white-space: normal; overflow-wrap: anywhere; }
   .progress-detail.live { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12em), 1fr)); }
   .progress-detail.live > span { flex-wrap: wrap; min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
   .loading::before { visibility: hidden; }

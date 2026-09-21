@@ -1,5 +1,13 @@
 # F0 dual-subsystem foundation brief
 
+## Active refinement — Progress layout
+
+F0 / P03 and OBS-011/016: reuse the Camera common Switch for 3D/Top, remove cramped
+icon/text buttons, and place the existing single percentage/bar in an in-flow
+summary at the bottom of the model panel. Preserve 4:3 model space, accessible
+progress semantics, unknown/failure masking and 44px keyboard controls.
+Acquisition/cache/provenance/layer/cadence contracts remain unchanged.
+
 ## Delivered slice — current-G-code Progress
 
 - Milestone: F0 / widget P03, OBS-016, API-007.
