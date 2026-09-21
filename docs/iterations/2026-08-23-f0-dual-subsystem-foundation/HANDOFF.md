@@ -1,5 +1,18 @@
 # F0 maintenance handoff
 
+## Existing runtime refresh complete — 2026-09-21
+
+Both current services were restarted without installing application bytes.
+[Refresh evidence](evidence/2026-09-21-runtime-refresh.md) owns exact identities,
+operator and independent checks, preservation and remaining boundaries.
+
+This documentation closure changes PROJECT_STATE, NEXT_AGENT, current
+BRIEF/HANDOFF/VALIDATION and the linked refresh evidence only. Current record
+updates are complete; no repeated build or deployment is needed. The next
+smallest action is user confirmation of the refreshed experience. Public DNS
+and ChatGPT reconnect remain separate unresolved outcomes; draft PR127 stays
+isolated and no live preview integration is adopted.
+
 ## Delivered fixed live widgets and Camera recovery — PR125
 
 PR125 is merged at `1716867af057d55b2e170215126dff429f4d000f` and deployed as

@@ -1,5 +1,19 @@
 # Next agent
 
+## Current order after the existing runtime refresh
+
+The user-requested restart of both existing services is complete. Preserve the
+installed PR125 release and do not repeat the restart or deploy draft PR127.
+[Refresh evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-runtime-refresh.md) owns source/release identities and
+scoped service verification. Current documentation closure changes no
+application inputs and requires no additional deployment.
+
+The next smallest action is user confirmation of the refreshed experience.
+ChatGPT reconnect and the separately observed public DNS problem are not
+resolved by a local service restart. Diagnose or repair network/authentication
+configuration only within separately authorized scope. The offline toolpath
+preview and proposed live progress integration remain outside this refresh.
+
 ## Current order after PR125 delivery
 
 PR125 is merged at `1716867af057d55b2e170215126dff429f4d000f` and deployed as

@@ -1,5 +1,15 @@
 # F0 validation index
 
+## Existing runtime refresh — 2026-09-21
+
+[Refresh evidence](evidence/2026-09-21-runtime-refresh.md) owns the supported
+both-service restart, exact deployed identity, static/security checks and
+private-state preservation. Application bytes remain those of PR125; no new
+full build or regression pass is claimed. Documentation checks and independent
+service verification are recorded with their limits in that evidence. No
+ChatGPT reconnect, live widget behavior or physical-printer acceptance follows
+from service health alone.
+
 ## Fixed live widgets and Camera recovery — released PR125
 
 [Release evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns all commands and exact identities.
