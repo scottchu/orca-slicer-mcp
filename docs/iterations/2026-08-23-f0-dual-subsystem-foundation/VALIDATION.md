@@ -1,9 +1,12 @@
 # F0 validation index
 
-## Progress canvas toggle
+## Progress canvas controls and timing — delivered
 
-[Correction evidence](evidence/2026-09-21-progress-canvas-toggle.md) owns affected
-consumers, actual checks, independent review and release identity.
+[Correction evidence](evidence/2026-09-21-progress-canvas-toggle.md) owns affected consumers, focused checks, independent
+exact review, successful mandatory shipment and installed acceptance. Runtime
+0.4.23 / schema 19 / observation 26 / Camera 18 is delivered. The documentation
+tail preserves deployed application bytes; physical and actual-host outcomes
+remain separate.
 
 ## Progress layout refinement
 
