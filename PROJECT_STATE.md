@@ -1,5 +1,26 @@
 # Project state
 
+## Offline G-code preview ready for user review — 2026-09-21
+
+The user-approved exploratory F0 / P03 preview is implemented and independently
+checked within its offline scope. Reusable code lives in
+`experiments/gcode-preview/`; private input and rendered outputs stay outside
+Git. The 13 author tests and 15 independent parser cases pass, and scoped
+desktop/narrow/dark browser checks pass.
+
+[Experiment evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-gcode-preview.md) owns exact source/output hashes, commands,
+review findings and limits. The full repository check was attempted but failed
+with missing `svelte-kit` in the fresh worktree; it is not a passing full suite.
+Fresh native Orca comparison remains unavailable; the historical comparator is
+a custom toolpath witness, not native slicer evidence.
+
+Next action is user review of the offline result. P02/P03 production delivery,
+live telemetry/session linkage and architecture adoption remain deferred. This
+is a draft experimental candidate with no production input changes, merge or
+deployment acceptance. Historical deployed baseline remains PR125 / 0.4.20;
+this experiment does not reverify it. [NEXT_AGENT.md](NEXT_AGENT.md) owns current
+order. Earlier orders below are historical.
+
 ## Delivered fixed live widgets and Camera recovery — PR125
 
 PR125 is merged at `1716867af057d55b2e170215126dff429f4d000f` and deployed as

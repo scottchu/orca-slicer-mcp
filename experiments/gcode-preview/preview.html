@@ -1,0 +1,116 @@
+<div id="planned-toolpath-preview">
+  <h3>Planned toolpath</h3>
+  <div class="viz-row text-small text-muted"><span>Layer preview · offline</span><span data-summary></span></div>
+  <canvas role="img" aria-label="Rotatable three-dimensional planned extrusion paths. Earlier layers solid, preview layer highlighted, later layers faint.">Planned extrusion paths from sliced G-code.</canvas>
+  <div class="viz-row text-small" data-legend><span><i data-key="earlier"></i>Earlier layers</span><span><i data-key="selected"></i>Preview layer</span><span><i data-key="later"></i>Later layers</span></div>
+  <label class="form-label" for="planned-layer">Preview layer <output class="tabular-nums" data-layer aria-live="polite"></output></label>
+  <input class="form-range" id="planned-layer" type="range" min="1" step="1">
+  <div class="viz-controls">
+    <label class="form-label">View <select class="form-select" data-view><option value="orbit">3D</option><option value="top">Top</option><option value="side">Side</option></select></label>
+    <label class="form-check"><input class="form-check-input" type="checkbox" data-only><span class="form-check-label">Only preview layer</span></label>
+  </div>
+  <div class="text-small text-muted" data-note>Drag to rotate · nominal extrusion centerlines, not a solid model</div>
+  <details class="text-small"><summary>Source and limits</summary><div data-receipt></div><div>Startup, end routines and non-extruding travel excluded. Printer macro motion is not expanded. Planned geometry assumes those macros restore slicer coordinates; this is not live or observed print progress.</div></details>
+</div>
+<style>
+#planned-toolpath-preview { width:100%; color:var(--foreground); }
+#planned-toolpath-preview canvas { display:block; width:100%; height:330px; touch-action:pan-y; }
+#planned-toolpath-preview [data-legend] { gap:16px; margin-bottom:12px; }
+#planned-toolpath-preview [data-legend] span { display:inline-flex; align-items:center; gap:6px; }
+#planned-toolpath-preview [data-key] { display:inline-block; width:18px; height:3px; background:var(--foreground); }
+#planned-toolpath-preview [data-key="selected"] { background:var(--viz-series-1); height:5px; }
+#planned-toolpath-preview [data-key="later"] { opacity:0.25; }
+#planned-toolpath-preview [data-receipt] { overflow-wrap:anywhere; margin:8px 0; }
+#planned-toolpath-preview details { margin-top:12px; }
+#planned-toolpath-preview [data-note] { margin-top:8px; }
+</style>
+<script>
+(() => {
+  const root = document.getElementById('planned-toolpath-preview');
+  const data = __TOOLPATH_DATA__;
+  const canvas = root.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+  const slider = root.querySelector('input[type="range"]');
+  const output = root.querySelector('[data-layer]');
+  const view = root.querySelector('[data-view]');
+  const only = root.querySelector('[data-only]');
+  const center = data.bounds.map(([a,b]) => (a+b)/2);
+  const span = Math.max(...data.bounds.map(([a,b]) => b-a), 1);
+  let yaw = -0.55, pitch = 0.67, drag = null, selected = Math.ceil(data.layers.length/2)-1;
+  slider.max = String(data.layers.length);
+  slider.value = String(selected+1);
+  root.querySelector('[data-summary]').textContent = `${data.layers.length} layers · Z ${data.layers.at(-1).z} mm · G-code T${data.paths[0].tool}`;
+  root.querySelector('[data-receipt]').textContent = `SHA-256 ${data.sha256} · ${data.bytes.toLocaleString()} bytes · ${data.vertices.toLocaleString()} vertices. Unexpanded macros: ${data.opaqueMacros.join(', ') || 'none'}.`;
+  const color = (token) => {
+    const probe = document.createElement('span');
+    probe.style.color = `var(${token})`;
+    root.append(probe);
+    const resolved = getComputedStyle(probe).color;
+    probe.remove();
+    return resolved;
+  };
+  const draw = () => {
+    const width = canvas.getBoundingClientRect().width;
+    if (!width) return;
+    const height = 330, dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width*dpr); canvas.height = height*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const scale = Math.min(width-34, height-42)/span/1.18;
+    const project = (point) => {
+      const [x,y,z] = point.map((value,i) => value-center[i]);
+      const horizontal = x*Math.cos(yaw)-y*Math.sin(yaw);
+      const depth = x*Math.sin(yaw)+y*Math.cos(yaw);
+      return [width/2+horizontal*scale, height/2+(-depth*Math.sin(pitch)-z*Math.cos(pitch))*scale];
+    };
+    const neutral = color('--foreground'), accent = color('--viz-series-1');
+    const stroke = (path) => {
+      ctx.beginPath();
+      path.points.forEach((point,i) => { const [x,y] = project(point); i ? ctx.lineTo(x,y) : ctx.moveTo(x,y); });
+      ctx.stroke();
+    };
+    for (const group of ['later','earlier','selected']) {
+      if (only.checked && group !== 'selected') continue;
+      ctx.strokeStyle = group === 'selected' ? accent : neutral;
+      ctx.globalAlpha = group === 'later' ? 0.09 : group === 'earlier' ? 0.6 : 1;
+      ctx.lineWidth = group === 'selected' ? 1.7 : group === 'later' ? 0.55 : 0.8;
+      for (const path of data.paths) {
+        if ((group === 'later' && path.layer > selected) || (group === 'earlier' && path.layer < selected) || (group === 'selected' && path.layer === selected)) stroke(path);
+      }
+    }
+    ctx.globalAlpha = 1;
+    output.textContent = `${selected+1} / ${data.layers.length} · Z ${data.layers[selected].z} mm`;
+    root.querySelector('[data-note]').textContent = view.value === 'top' ? 'Top view: +X right, +Y up · nominal extrusion centerlines' : view.value === 'side' ? 'Side view: +X right, +Z up · nominal extrusion centerlines' : 'Drag to rotate · nominal extrusion centerlines, not a solid model';
+    slider.setAttribute('aria-valuetext', `Layer ${selected+1} of ${data.layers.length}, Z ${data.layers[selected].z} millimeters`);
+    canvas.setAttribute('aria-label', `Planned extrusion paths, preview layer ${selected+1} of ${data.layers.length}, Z ${data.layers[selected].z} millimeters. Not observed printing.`);
+  };
+  const save = () => window.openai?.setWidgetState?.({modelContent:{previewLayer:selected+1,sourceSha256:data.sha256},privateContent:{yaw,pitch,only:only.checked,view:view.value}})?.catch(() => {});
+  const restore = (state) => {
+    if (state?.modelContent?.sourceSha256 !== data.sha256) return;
+    const layer = state.modelContent.previewLayer;
+    if (Number.isInteger(layer) && layer >= 1 && layer <= data.layers.length) { selected=layer-1; slider.value=String(layer); }
+    const saved = state.privateContent;
+    if (saved && Number.isFinite(saved.yaw) && Number.isFinite(saved.pitch)) { yaw=saved.yaw; pitch=saved.pitch; }
+    if (saved && ['orbit','top','side'].includes(saved.view)) view.value=saved.view;
+    only.checked = saved?.only === true;
+    draw();
+  };
+  slider.addEventListener('input', () => { selected=Number(slider.value)-1; draw(); });
+  slider.addEventListener('change', save);
+  only.addEventListener('change', () => { draw(); save(); });
+  view.addEventListener('change', () => { yaw=view.value === 'orbit' ? -0.55 : 0; pitch=view.value === 'top' ? Math.PI/2 : view.value === 'side' ? 0 : 0.67; draw(); save(); });
+  canvas.addEventListener('pointerdown', (event) => { drag=[event.clientX,event.clientY]; canvas.setPointerCapture(event.pointerId); });
+  canvas.addEventListener('pointermove', (event) => {
+    if (!drag) return;
+    yaw += (event.clientX-drag[0])*0.008; pitch=Math.max(0,Math.min(Math.PI/2,pitch+(event.clientY-drag[1])*0.008));
+    drag=[event.clientX,event.clientY]; view.value='orbit'; draw();
+  });
+  canvas.addEventListener('pointerup', () => { drag=null; save(); });
+  canvas.addEventListener('pointercancel', () => { drag=null; });
+  new ResizeObserver(draw).observe(canvas);
+  new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['class','style','data-theme']});
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',draw);
+  window.addEventListener('openai:set_globals', event => restore(event.detail?.globals?.widgetState));
+  restore(window.openai?.widgetState);
+  draw();
+})();
+</script>

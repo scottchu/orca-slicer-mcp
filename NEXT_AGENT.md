@@ -1,5 +1,25 @@
 # Next agent
 
+## Current order — review offline G-code preview, 2026-09-21
+
+Show the user the completed offline F0 / P03 toolpath preview and layer slider.
+The result is ready for user review after targeted author and independent
+parser/browser checks. [Experiment evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-gcode-preview.md) owns identities, actual
+commands, findings and acceptance limits; these completed record updates are
+not a pending user task.
+
+Fresh native Orca visual comparison remains unavailable. Historical comparison
+is only against a custom toolpath witness and does not close that gap. The
+full repository check failed on missing `svelte-kit`; only recorded targeted
+checks passed. Treat this as a draft experimental candidate, with no production
+acceptance, merge or deployment claim.
+
+Keep private inputs and rendered output outside Git. Do not connect telemetry,
+alter production Progress, close P02/P03 or adopt an ADR. Later live integration
+requires an explicit artifact to session identity contract and a separately
+bounded task. Prior PR125 release stays delivered; earlier execution orders
+below do not supersede this preview review.
+
 ## Current order after PR125 delivery
 
 PR125 is merged at `1716867af057d55b2e170215126dff429f4d000f` and deployed as

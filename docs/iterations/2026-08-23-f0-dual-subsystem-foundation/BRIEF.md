@@ -1,5 +1,31 @@
 # F0 dual-subsystem foundation brief
 
+## Active slice — offline planned-toolpath user review, 2026-09-21
+
+- Status: implementation and targeted independent verification complete; user
+  review pending. Exploratory F0 / P03, no architecture adoption.
+- User outcome: inspect a real sliced artifact as 3D planned extrusion and
+  move a layer slider to understand how its shape is built.
+- Open question: does artifact-derived geometry communicate the job more
+  usefully than an illustrative percentage fill?
+
+The offline experiment under `experiments/gcode-preview/` preserves supported
+layer/Z and tool attribution from exact artifact bytes. Earlier/later preview
+layers are not observed printed/unprinted material. Toolpaths do not recover
+source CAD or establish physical deposition.
+
+[Experiment evidence](evidence/2026-09-21-gcode-preview.md) owns source/output
+hashes, 13 author tests, 15 independent parser cases, scoped browser checks
+and the failed full repository check due to missing `svelte-kit`. A fresh
+native Orca comparison remains unavailable; historical custom toolpath witness
+agreement is a separate, narrower result.
+
+Present the result for user review as a draft experiment. Private artifact paths,
+names, geometry and rendered output stay outside Git. Production routes, shared
+application inputs, telemetry, printer access, upload/start, deployment, auth
+and network configuration remain unchanged. P02/P03 remain product gaps; no
+ADR is adopted. Earlier slices retain historical evidence, not current order.
+
 ## Delivered slice — Camera recovery and fixed live widgets
 
 The user stopped dynamic/composable expansion on 2026-09-11, requested existing

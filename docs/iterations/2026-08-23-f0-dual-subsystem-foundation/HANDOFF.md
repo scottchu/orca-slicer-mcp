@@ -1,5 +1,28 @@
 # F0 maintenance handoff
 
+## Offline G-code preview ready for user review — 2026-09-21
+
+The experimental candidate contains five reusable files under
+`experiments/gcode-preview/`, plus PROJECT_STATE, NEXT_AGENT, this iteration's
+BRIEF/HANDOFF/VALIDATION and [experiment evidence](evidence/2026-09-21-gcode-preview.md).
+Base is `d5cc3bda8c86b3ae93dc398fdc7db33db1841a56`; branch is
+`codex/gcode-progress-preview-20260921`. Exact file hashes in the evidence
+record bind the source and private rendered outputs without exposing geometry.
+
+Author and independent targeted checks are complete. The 13 author tests and
+15 independent parser cases pass; desktop/narrow/dark browser checks show
+keyboard layer selection, correct layer/Z, distinct rendering and no page
+errors/external/printer requests. Reviewer-owned browsers were closed. The full
+repository check failed on missing `svelte-kit`, not a claimed full pass.
+
+Next smallest action is user review of the offline preview. Fresh native Orca
+comparison remains unavailable; the historical custom witness is not native
+slicer evidence. Unsupported G-code and nominal visual stroke widths limit
+geometry claims; commands do not establish physical deposition. Live session
+correlation, production integration and P02/P03 acceptance remain deferred.
+Preserve private outputs outside Git, prior release evidence and unrelated work.
+This is a draft experimental candidate with no merge/deployment acceptance.
+
 ## Delivered fixed live widgets and Camera recovery — PR125
 
 PR125 is merged at `1716867af057d55b2e170215126dff429f4d000f` and deployed as

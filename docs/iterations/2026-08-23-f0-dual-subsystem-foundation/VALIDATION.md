@@ -1,5 +1,19 @@
 # F0 validation index
 
+## Offline G-code preview — targeted checks complete, 2026-09-21
+
+[Experiment evidence](evidence/2026-09-21-gcode-preview.md) owns the F0 / P03
+contract, exact source/output identities, actual commands and failures. The
+13 author tests and 15 independent parser cases pass. Scoped desktop, 320px and
+dark 600px browser checks pass; the reviewer closed owned browsers.
+
+The full `./scripts/check-repository.sh` attempt failed with exit127 because
+`svelte-kit` is absent in the fresh worktree; no full-repository pass is claimed.
+Production input bytes are unchanged. Fresh native slicer comparison remains
+unavailable; the historical custom toolpath witness is narrower evidence.
+No protocol, live telemetry, physical-printer, production merge or deployment
+acceptance is claimed. The offline result is ready for user review.
+
 ## Fixed live widgets and Camera recovery — released PR125
 
 [Release evidence](evidence/2026-09-11-fixed-widgets-camera-reliability.md) owns all commands and exact identities.
