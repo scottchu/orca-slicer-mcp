@@ -1,9 +1,10 @@
 import type { Capability, Evidence, Freshness, Provenance } from './presentation';
+import type { DecodedToolpath } from '../../toolpath';
 export type PrintState = 'standby' | 'printing' | 'paused' | 'complete' | 'error' | 'cancelled' | 'unknown';
 export type Receipt = { state: Evidence; sourceObservedAt: string | null; receivedAt: string | null; checkedAt: string | null; freshness: 'fresh' | 'stale' | 'unknown'; reason: string | null };
 export type FocusedBase = { version: number; connectionEpoch: number | null; sourceObservedAt: string | null; receivedAt: string; freshness: Freshness; reachable: boolean; printerState: string; state: Evidence; capability: Capability; provenance: Provenance };
 export type Field<T> = { state: Evidence; value: T | null };
-export type ProgressPresentation = FocusedBase & { kind: 'progress'; fields: { percent: Field<number>; currentLayer: Field<number>; totalLayers: Field<number>; elapsedSeconds: Field<number>; estimatedRemainingSeconds: Field<number>; filename: Field<string> } };
+export type ProgressPresentation = FocusedBase & { kind: 'progress'; preview?: DecodedToolpath | null; refreshAfterSeconds?: number; fields: { percent: Field<number>; currentLayer: Field<number>; totalLayers: Field<number>; elapsedSeconds: Field<number>; estimatedRemainingSeconds: Field<number>; filename: Field<string> } };
 export type Reported<T> = { reported: boolean; value: T | null };
 export type JobsPresentation = FocusedBase & { kind: 'jobs'; receipt: Receipt; printState: Reported<PrintState>; filename: Reported<string>; storageActive: Reported<boolean>; filePositionBytes: Reported<number>; fileSizeBytes: Reported<number>; totalDurationSeconds: Reported<number>; printDurationSeconds: Reported<number>; filamentUsedMillimeters: Reported<number> };
 export const historyStatuses = ['in_progress', 'completed', 'cancelled', 'error', 'klippy_shutdown', 'klippy_disconnect', 'interrupted', 'unknown'] as const;

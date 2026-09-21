@@ -1,5 +1,27 @@
 # F0 dual-subsystem foundation brief
 
+## Active slice — current-G-code Progress
+
+- Milestone: F0 / widget P03, OBS-016, API-007.
+- Direction: user-requested implementation and shipment; exact acceptance pending.
+
+[Decision0060](../../decisions/0060-render-current-gcode-in-progress.md) selects
+one bounded current-file read/compile cache with component-private geometry
+and a truthful reported-layer overlay in the existing Progress card. A visible
+printing/paused view uses the shared coalesced 15-second due-read policy; idle
+and standalone-monitor cadence remain unchanged. Services own all effects;
+views subscribe/render. Ordinary Progress remains usable on preview failure.
+
+Acceptance requires identity/race/privacy/bounds tests, efficient cache reuse,
+correct supported geometry/layer mapping, affected transport and lifecycle
+coverage, independent review, unchanged mandatory shipping and meaningful
+installed behavior. Static/software, protocol/simulator, real printer and
+actual-host/user outcomes stay separate. No control/auth/network change is
+included. [Evidence](evidence/2026-09-21-live-gcode-progress.md) owns actual results.
+
+The previous connection recovery is complete at its user-report gate: the user
+confirmed reconnection. Earlier pending-reconnect text below is historical.
+
 ## Current maintenance slice — public route recovered
 
 The user explicitly requested repair of the existing ChatGPT connection.

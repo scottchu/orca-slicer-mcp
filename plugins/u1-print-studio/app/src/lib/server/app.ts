@@ -33,6 +33,7 @@ import {
   readU1Environment,
   readU1CurrentJob,
   readU1JobHistory,
+  u1ToolpathReader,
 } from "./u1-status.js";
 import type {
   CameraIceCandidate,
@@ -114,12 +115,19 @@ export const createAppServer = (
     dependencies.readQueue ?? (readStatus === readU1Status ? readU1Queue : undefined),
     dependencies.readEnvironment ?? (readStatus === readU1Status ? readU1Environment : undefined),
     dependencies.readCurrentJob ?? (readStatus === readU1Status ? readU1CurrentJob : undefined),
-    dependencies.readJobHistory ?? (readStatus === readU1Status ? readU1JobHistory : undefined)
+    dependencies.readJobHistory ?? (readStatus === readU1Status ? readU1JobHistory : undefined),
+    readStatus === readU1Status ? u1ToolpathReader : undefined
   );
   const server = new McpServer({
     name: "u1-print-studio",
     version: U1_RUNTIME_VERSION,
   });
+  // Shared HTTP stores belong to the runtime; a standalone stdio server owns
+  // its own acquisition jobs and releases them on close.
+  if (!dependencies.observations) {
+    const close = server.close.bind(server);
+    server.close = async () => { observations.dispose(); await close(); };
+  }
   const securitySchemes = options.oauthScopes
     ? [{ type: "oauth2" as const, scopes: options.oauthScopes }]
     : undefined;
@@ -182,6 +190,7 @@ export const createAppServer = (
 
   const observationViewSchema = z.enum(OBSERVATION_VIEWS);
   const observationInputSchema = z.object({ view: observationViewSchema }).strict();
+  const refreshInputSchema = z.object({ view: observationViewSchema, knownToolpathId: z.string().regex(/^[a-f0-9]{64}$/).optional() }).strict();
   tools.register(
     "open_printer_view",
     ({
@@ -215,7 +224,7 @@ export const createAppServer = (
       title: "Refresh printer observation",
       description:
         "Use this only from the mounted observation widget to refresh its selected read-only instrument strip without opening another widget.",
-      inputSchema: observationInputSchema,
+      inputSchema: refreshInputSchema,
       ...securityConfig,
       annotations: {
         readOnlyHint: true,
@@ -229,8 +238,9 @@ export const createAppServer = (
         "openai/visibility": "private",
       },
     }),
-    (async ({ view }: { view: ObservationView }) => {
-      return observePrinter(observations, view);
+    (async ({ view, knownToolpathId }: { view: ObservationView; knownToolpathId?: string }) => {
+      if (knownToolpathId !== undefined && view !== 'progress') throw new Error('Invalid observation preview hint');
+      return observePrinter(observations, view, knownToolpathId);
     })
   );
 

@@ -1,4 +1,6 @@
 import type { MonitorEvidence } from "./application/print-monitor-observation.js";
+import { createProgressToolpathService, type ToolpathContext } from './application/progress-toolpath.js';
+import { exactArtifactPath, type ToolpathReader } from './adapters/moonraker-toolpath.js';
 import { createDomainObservationCache, type DomainObservationCache } from "./application/domain-observation-cache.js";
 import type { U1Status, U1WidgetMetadata } from "./u1-status.js";
 import { BED_MESH_TTL_MS, unavailableBedMesh, type BedMeshObservation, type BedMeshReader } from "./application/bed-mesh-observation.js";
@@ -51,6 +53,7 @@ export type ObservationSnapshot = {
 };
 
 type StatusReader = () => Promise<{
+  artifactPath?: string | null;
   monitorEvidence?: MonitorEvidence;
   status: U1Status;
   metadata: U1WidgetMetadata;
@@ -86,6 +89,8 @@ function capabilityEvidence(status: U1Status): ObservationSnapshot["capabilityEv
 }
 
 export class PrinterObservationStore {
+  private artifactPath: string | null = null;
+  private readonly toolpath: ReturnType<typeof createProgressToolpathService>;
   private snapshot: ObservationSnapshot | null = null;
   private statusAttempts = 0;
   private monitorEvidence: MonitorEvidence | null = null;
@@ -109,8 +114,10 @@ export class PrinterObservationStore {
     private readonly readQueue?: QueueReader,
     private readonly readEnvironment?: EnvironmentReader,
     private readonly readCurrentJob?: CurrentJobReader,
-    private readonly readJobHistory?: JobHistoryReader
+    private readonly readJobHistory?: JobHistoryReader,
+    toolpathReader?: ToolpathReader,
   ) {
+    this.toolpath = createProgressToolpathService(toolpathReader);
     const received = () => {
       const version = ++this.observationVersion;
       if (this.snapshot) this.snapshot = { ...this.snapshot, observationVersion: version };
@@ -147,7 +154,7 @@ export class PrinterObservationStore {
     });
   }
 
-  async current(options: { refresh?: boolean; includeBedMesh?: boolean; includeMaterials?: boolean; includeQueue?: boolean; includeEnvironment?: boolean; includeCurrentJob?: boolean; includeJobHistory?: boolean } = {}): Promise<ObservationSnapshot> {
+  async current(options: { refresh?: boolean; interactiveProgress?: boolean; includeBedMesh?: boolean; includeMaterials?: boolean; includeQueue?: boolean; includeEnvironment?: boolean; includeCurrentJob?: boolean; includeJobHistory?: boolean } = {}): Promise<ObservationSnapshot> {
     await Promise.all([
       this.currentStatus(options),
       options.includeBedMesh ? this.bedMesh.current(options.refresh === true) : Promise.resolve(),
@@ -203,8 +210,19 @@ export class PrinterObservationStore {
       epoch: this.snapshot?.connectionEpoch ?? null };
   }
 
-  private async currentStatus(options: { refresh?: boolean } = {}): Promise<ObservationSnapshot> {
-    if (this.snapshot && (!options.refresh || !this.isDue(this.snapshot))) {
+  async progressToolpath(snapshot: ObservationSnapshot, known?: string) {
+    const active = ['printing', 'paused'].includes(snapshot.status.state);
+    const fresh = snapshot.freshness === 'fresh' && (!active || this.now().valueOf() - Date.parse(snapshot.receivedAt) < 15_000);
+    const context: ToolpathContext = { filename: this.artifactPath, observationVersion: snapshot.observationVersion,
+      connectionEpoch: snapshot.connectionEpoch, observedAt: snapshot.sourceObservedAt, receipt: snapshot.receivedAt, fresh,
+      state: snapshot.status.state, layer: snapshot.status.currentLayer, totalLayers: snapshot.status.totalLayers, elapsed: snapshot.status.elapsedSeconds };
+    return this.toolpath.current(context, () => this.snapshot?.receivedAt === snapshot.receivedAt && this.snapshot.connectionEpoch === snapshot.connectionEpoch && this.artifactPath === context.filename && this.withCurrentFreshness(this.snapshot).freshness === 'fresh' && (!active || this.now().valueOf() - Date.parse(snapshot.receivedAt) < 15_000), known);
+  }
+
+  dispose() { this.toolpath.dispose(); }
+
+  private async currentStatus(options: { refresh?: boolean; interactiveProgress?: boolean } = {}): Promise<ObservationSnapshot> {
+    if (this.snapshot && (!options.refresh || !this.isDue(this.snapshot, options.interactiveProgress))) {
       return this.withCurrentFreshness(this.snapshot);
     }
     if (!this.inFlight) {
@@ -224,10 +242,10 @@ export class PrinterObservationStore {
     return this.inFlight;
   }
 
-  private isDue(snapshot: ObservationSnapshot): boolean {
+  private isDue(snapshot: ObservationSnapshot, interactiveProgress = false): boolean {
     const received = Date.parse(snapshot.receivedAt);
     if (!Number.isFinite(received)) return true;
-    const minimumSeconds = Math.max(15, snapshot.status.refreshAfterSeconds);
+    const minimumSeconds = interactiveProgress && ['printing', 'paused'].includes(snapshot.status.state) ? 15 : Math.max(15, snapshot.status.refreshAfterSeconds);
     return this.now().valueOf() - received >= minimumSeconds * 1_000;
   }
 
@@ -277,6 +295,9 @@ export class PrinterObservationStore {
         }
       : result.status;
     const metadata = retainedOffline ? reachableBasis.metadata : result.metadata;
+    const artifactPath = status.reachable && 'artifactPath' in result ? exactArtifactPath(result.artifactPath) : null;
+    if (artifactPath !== this.artifactPath || !status.reachable || (this.snapshot?.status.elapsedSeconds != null && status.elapsedSeconds != null && status.elapsedSeconds < this.snapshot.status.elapsedSeconds)) this.toolpath.invalidate();
+    this.artifactPath = artifactPath;
     const receivedAt = this.now().toISOString();
     if (status.reachable && !this.previouslyReachable) this.connectionEpoch += 1;
     this.previouslyReachable = status.reachable;

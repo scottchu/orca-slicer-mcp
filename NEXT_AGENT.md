@@ -1,5 +1,26 @@
 # Next agent
 
+## Current order — implement and ship real G-code Progress
+
+1. Confirm the corrected combined candidate and documentation tail. Exact
+   application review/probes and independent artifact-pin delta checks pass;
+   production bytes remain those of `a759ee89f9548caffaebdc34ac1dbd36fa8c3bba`.
+2. The implementation owner runs the single unchanged mandatory full shipping
+   validation again on the corrected clean candidate after the safely stopped
+   stale-pin attempt. Preserve the accepted application/asset
+   identities; do not duplicate unaffected full suites for record ownership.
+3. Complete the PR and unchanged guarded shipping workflow, restart both
+   services, verify exact assets and meaningful installed Progress behavior,
+   and record actual-printer/host/user evidence separately.
+
+[Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-live-gcode-progress.md) owns commands and acceptance. P03 is active;
+P02 thumbnails, broader CAD/byte-position rendering and unrelated product gaps
+remain separate. No printer controls, authentication or network repair is
+included. The user already confirmed ChatGPT reconnection; do not repeat that
+completed gate. Draft PR127 remains preserved as the offline experiment.
+
+## Prior operational orders — completed or superseded
+
 ## Current order — confirm ChatGPT reconnect after route recovery
 
 The bounded public-route recovery and independent public-edge checks are

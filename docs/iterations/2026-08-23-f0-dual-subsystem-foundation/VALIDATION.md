@@ -1,5 +1,20 @@
 # F0 validation index
 
+## Current-G-code Progress — exact application checks pass; shipment pending
+
+[Slice evidence](evidence/2026-09-21-live-gcode-progress.md) owns actual source
+identities, command results and the independent review/release boundary.
+[Decision0060](../../decisions/0060-render-current-gcode-in-progress.md) lists
+observable acceptance, including cache/identity/privacy/transport races and
+shared cadence/lifecycle consumer coverage. Baseline health is not new-feature
+acceptance. One frozen-input owner runs mandatory shipping validation;
+independent targeted checks and affected browser cases remain separate. The
+linked evidence records completed pre-freeze adversarial and browser probes;
+final source/asset binding now passes. Mandatory shipping and installed
+acceptance remain pending. The first mandatory attempt stopped on stale
+artifact pins without deployment; independently verified identity corrections
+require a renewed full gate.
+
 ## Public connection recovery — 2026-09-21
 
 [Recovery evidence](evidence/2026-09-21-connection-recovery.md) owns actual

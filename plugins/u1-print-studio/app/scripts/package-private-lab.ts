@@ -24,7 +24,9 @@ assertSelfContained(packaged);
 assertSelfContained(bedMesh);
 assertSelfContained(camera);
 assertLabSizes(Buffer.byteLength(packaged), Buffer.byteLength(bedMesh), Buffer.byteLength(camera));
-for (const forbidden of ['data-chart-frame', 'WebGLRenderer', 'OrbitControls', 'bed-mesh-fixture']) {
+// ChartFrame is shared with the lightweight G-code preview; prohibit the
+// actual Bed Mesh renderer rather than its generic framing primitive.
+for (const forbidden of ['WebGLRenderer', 'OrbitControls', 'bed-mesh-fixture']) {
   if (packaged.includes(forbidden)) throw new Error(`Light observation lab contains Bed Mesh implementation: ${forbidden}`);
 }
 for (const marker of ['Bed Mesh', '3D surface', '2D grid', 'data-chart-frame']) {

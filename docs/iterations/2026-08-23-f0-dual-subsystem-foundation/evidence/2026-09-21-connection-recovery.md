@@ -117,3 +117,10 @@ six files with zero missing targets. Application, dependency, configuration
 and generated assets remain unchanged from the documentation source base;
 no unaffected build, full regression or deployment was repeated. Exact
 documentation review is a separate delivery gate.
+
+## Subsequent user confirmation
+
+The user later reported successful ChatGPT reconnection. The earlier pending
+user-outcome gate is complete at the self-report layer; the primary then
+received a separate request to implement live G-code Progress. This adds no
+new OAuth operation or network/protocol verification.

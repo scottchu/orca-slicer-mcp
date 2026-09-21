@@ -46,6 +46,7 @@ import {
   readU1Environment,
   readU1CurrentJob,
   readU1JobHistory,
+  u1ToolpathReader,
 } from "../lib/server/u1-status.js";
 import { runtimeHealth } from "../lib/server/runtime-contract.js";
 import { PrinterObservationStore } from "../lib/server/observation-store.js";
@@ -101,7 +102,8 @@ export function createRequestHandler(
       statusDashboard?.readQueue ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1Queue : undefined),
       statusDashboard?.readEnvironment ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1Environment : undefined),
       statusDashboard?.readCurrentJob ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1CurrentJob : undefined),
-      statusDashboard?.readJobHistory ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1JobHistory : undefined)
+      statusDashboard?.readJobHistory ?? (!statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? readU1JobHistory : undefined),
+      !statusDashboard?.readStatus || statusDashboard.readStatus === readU1Status ? u1ToolpathReader : undefined
     )
 ) {
   let loaded: Promise<KitHandler> | undefined;
@@ -182,7 +184,7 @@ export const createUnifiedRequestHandler = (
     page: (pathname, method) => dashboardPage(pathname, method) ?? new Response('Not Found', { status: 404 }),
     oauth: async (request, url) => await oauth?.handleRequest(request, url) ?? new Response('Not Found', { status: 404 }),
     camera: async (request, lifetime) => camera ? camera(request, new URL(request.url), lifetime?.signal, lifetime) : new Response('Not Found', { status: 404 }),
-    mcp: mcp.handle, close: async () => { cameraRelay?.close?.(); await mcp.close(); }
+    mcp: mcp.handle, close: async () => { observations.dispose(); cameraRelay?.close?.(); await mcp.close(); }
   };
   return createKitTransport(kit, runtime, clientPaths);
 };
@@ -230,7 +232,7 @@ export async function startServer() {
     : null;
   const observations = new PrinterObservationStore(
     readU1Status, undefined, readU1BedMesh, readU1Materials, readU1Queue,
-    readU1Environment, readU1CurrentJob, readU1JobHistory
+    readU1Environment, readU1CurrentJob, readU1JobHistory, u1ToolpathReader
   );
   const outputRoot = new URL('./', import.meta.url);
   const manifest = JSON.parse(readFileSync(new URL('build-manifest.json', outputRoot), 'utf8')) as {

@@ -7,6 +7,7 @@
   import LoadingValue from '../common/LoadingValue.svelte';
   import { type FailureProps } from '../../lib/client/observation/loading';
   import type { ProgressPresentation } from '../../lib/client/live/focused-presentation';
+  import ToolpathPreview from './ToolpathPreview.svelte';
   type Props = FailureProps & { lab?: boolean; meta?: Snippet; actionLabel?: string; feedback?: string; failureMessage?: string } & ({ observation: ProgressObservation; live?: never; loading?: false; refreshing?: boolean } | { live: ProgressPresentation; observation?: never; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; live?: never; refreshing?: never });
   let { observation, live, loading: pending = false, refreshing = false, failure, onretry, lab = true, meta, actionLabel, feedback, failureMessage }: Props = $props();
   const loading = $derived(pending || !!failure);
@@ -15,6 +16,7 @@
 </script>
 
 <ObservationFrame title="Print Progress" icon={Printer} observedAt={progress?.sourceObservedAt ?? null} freshness={progress?.freshness ?? 'unknown'} stateKind={failure ?? (pending ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing} {lab} {meta} {actionLabel} {feedback} {failureMessage}>
+  {#if !lab}<ToolpathPreview preview={live?.preview} filename={live?.fields.filename.value} masked={loading} />{/if}
   <div class="progress-top" class:live={!lab}>
     <span class="observation-status" class:loading><LoadingValue {loading} text={loading ? undefined : (progress ? titleCase(progress.state) : undefined)} words={lab ? [9] : undefined} /></span>
     <div class="percent"><LoadingValue {loading} text={loading ? undefined : (progress?.percent == null ? 'Unknown' : Math.round(progress.percent))} size="short" words={lab ? [3] : undefined} /><span class:loading-unit={loading} aria-hidden={loading ? true : undefined}>{progress?.percent == null && !loading ? '' : '%'}</span></div>

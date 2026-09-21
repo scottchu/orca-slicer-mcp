@@ -21,7 +21,7 @@ export const acquisitionFailure = (observation: OrderedObservation): Acquisition
 // Independently acquired domains remain usable when the status connection fails.
 export const domainAcquisitionFailure = (observation: OrderedObservation): AcquisitionFailure | null => acquisitionFailure({ ...observation, freshness: 'unknown' });
 export type LiveState<T> = { observation: T | null; phase: 'loading' | 'ready' | 'error'; refreshing: boolean; feedback: string; failure?: AcquisitionFailure | null; failureReason?: string | null };
-export const createObservationController = <T extends OrderedObservation>(port: ObservationPort, adapt: (value: unknown) => T, title: string, timeoutMs = 20_000, failureOf: (observation: T) => AcquisitionFailure | null = acquisitionFailure) => {
+export const createObservationController = <T extends OrderedObservation>(port: ObservationPort, adapt: (value: unknown) => T, title: string, timeoutMs = 20_000, failureOf: (observation: T) => AcquisitionFailure | null = acquisitionFailure, equal: (a: T, b: T) => boolean = (a, b) => JSON.stringify(a) === JSON.stringify(b)) => {
   let state: LiveState<T> = { observation: null, phase: 'loading', refreshing: false, feedback: '' };
   let disposed = false, started = false, generation = 0;
   let flight: Promise<void> | null = null;
@@ -43,7 +43,7 @@ export const createObservationController = <T extends OrderedObservation>(port: 
       // safe reason belongs to this latest accepted acquisition.
       const failureReason = failureKind ? observation.receipt?.reason ?? null : null;
       const retainedFeedback = failureKind === 'error' ? `Could not load ${title}` : failureKind ? `${title} ${failureKind === 'unsupported' ? 'endpoint unsupported' : 'unavailable'}` : '';
-      if (latest && JSON.stringify(observation) === JSON.stringify(latest)) {
+      if (latest && equal(observation, latest)) {
         // A duplicate explicit response confirms only its own state. A failed
         // receipt must not clear the persistent last-success warning.
         if (!notification) publish({ ...state, phase: 'ready', failure: failureKind, failureReason, feedback: retainedFeedback });

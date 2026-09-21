@@ -4,15 +4,15 @@ import { readFileSync } from 'node:fs';
 import { assertFocusedProductionInventory } from '../../scripts/observation-graph-contract.js';
 
 for (const [view, title, hash] of [
-  ['fans', 'Fans & Air', '045406518f2ef1c2e23bbb2e954c34c4c179d06f6c5649a350dfd9cc9f3f528b'],
-  ['thermals', 'Thermals', '330896db8327d766052f66f3daf3fb4a00022beec9b4ac5cfd0ce4f27e9d1658'],
-  ['heads', 'Heads & Filaments', 'b74e1cb8b9750dcb47cfb901cd0da673036ec4e34b2fe233f3329658857afc05'],
-  ['queue', 'Print Queue', 'a1858663df6f97200d956bc146d591f04f205669d14d2b7692fc0545e5e8b5e5'],
-  ['progress', 'Print Progress', '4acad1be4350618cdfa900e993c2bc4e198a7484b6ee3f17659cca5d7212a3a4'],
-  ['jobs', 'Current Job', 'a2a39f8628e40394b7c1d99d214783c6f8d11a18ec67119c6585e3bba2398b5a'],
-  ['job_history', 'Job History', '08eb659f5bda1d2a14a14e58d1c8e0c0c25e57cc2509a76ee23f2f1c330f1746'],
-  ['overview', 'Overview', 'ead65b392a9820c9efee6213225c8fa25dedebe21b0433da474594457bef9ced'],
-  ['bed_mesh', 'Bed Mesh', '5b255499505463e8dfdbc5b1b608ed1b0f519fd91f3c684cd03d4b0112eebeac'],
+  ['fans', 'Fans & Air', 'fbaf288f9459cd66fd47314bd784a42d448aea28ae676848626b5d1d8d67705b'],
+  ['thermals', 'Thermals', 'a8b412efb4a54490881ee594114c6e82e624c883df00ccdd03d87251a492d890'],
+  ['heads', 'Heads & Filaments', '368cc460cb49b3b480c4e5223a10489c9a7e89ac7e0ecfef363c0d87f7b1b31d'],
+  ['queue', 'Print Queue', 'b211ebfa6c03dd54b8c340767841461d5756f7398663bf162cf2e5f1d059e60a'],
+  ['progress', 'Print Progress', '6c9f1ecda84618a6b6411ebff88b58453e3160fdb528d67ac30980b04b55d95a'],
+  ['jobs', 'Current Job', 'da7dd12f7dce1066a8bb4e7f0b43d3a4217521ae323282567851c0890ce6e6e9'],
+  ['job_history', 'Job History', '5417554e126ce9db06e5262dd6e633548d54b2ea6121e27eb926c170c3772bb0'],
+  ['overview', 'Overview', '3471b1ca32aae9a3a97d65c1e550dcd8a482e0a3a985cd7f702b69e99a48c6b1'],
+  ['bed_mesh', 'Bed Mesh', 'af3639c59af641061ec294198e61b754be2ec771d57f8d12ebc1d1fa5e6dac3f'],
 ]) test(`real ${title} is one deterministic private artifact with the closed host bridge`, () => {
   const html = readFileSync(new URL(`../../public/svelte-live-${view}.html`, import.meta.url), 'utf8');
 
@@ -32,7 +32,7 @@ test('current focused production inventory retains exact artifact size measureme
     view,
     bytes: Buffer.byteLength(readFileSync(new URL(`../../public/svelte-live-${view}.html`, import.meta.url), 'utf8')),
   }));
-  expect(entries.map(({ bytes }) => bytes)).toEqual([88864, 94932, 98644, 90384, 83307, 88644, 86889, 96932, 652480, 100096]);
-  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(1481172);
+  expect(entries.map(({ bytes }) => bytes)).toEqual([88879, 94947, 98659, 90399, 99325, 88659, 86904, 96947, 652495, 100096]);
+  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(1497310);
   expect(() => assertFocusedProductionInventory(entries)).not.toThrow();
 });

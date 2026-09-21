@@ -1,4 +1,5 @@
 import { normalizeMonitorEvidence } from "./adapters/u1-monitor-evidence.js";
+import { createMoonrakerToolpathReader, exactArtifactPath } from './adapters/moonraker-toolpath.js';
 import type { MonitorEvidence } from "./application/print-monitor-observation.js";
 import { execFile, spawn } from "node:child_process";
 import { promisify } from "node:util";
@@ -204,6 +205,8 @@ function printerBaseUrl(): URL {
     readLocalConfig().printer.baseUrl;
   return new URL(normalizePrinterBaseUrl(raw));
 }
+
+export const u1ToolpathReader = createMoonrakerToolpathReader(printerBaseUrl);
 
 export async function readU1BedMesh(): Promise<BedMeshObservation> {
   try { return await readMoonrakerBedMesh(printerBaseUrl()); }
@@ -640,6 +643,7 @@ export async function readU1CameraFrame(): Promise<{
 }
 
 export async function readU1Status(): Promise<{
+  artifactPath?: string | null;
   status: U1Status;
   monitorEvidence?: MonitorEvidence;
   metadata: U1WidgetMetadata;
@@ -708,6 +712,7 @@ export async function readU1Status(): Promise<{
 
     return {
       monitorEvidence,
+      artifactPath: exactArtifactPath(printStats.filename),
       status: {
         schemaVersion: 1,
         stateVersion: Date.now(),
