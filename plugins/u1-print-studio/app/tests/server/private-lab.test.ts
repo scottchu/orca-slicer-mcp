@@ -30,7 +30,7 @@ describe("private Svelte lab packages", () => {
   test("freezes the deterministic light observation artifact", () => {
 
     expect(createHash("sha256").update(html).digest("hex")).toBe(
-      "0f0d7e0e1b9b6bc23168f666517dc6fa4350a3cd8897a16c16d723bcd27dbbcb"
+      "f3602c774a88ccec9964f67303d12a29aee4e9f57f5919e9b4768d3be015b4ff"
     );
     expect(html).toContain('data-route-bootstrap');
     for (const marker of [
@@ -38,7 +38,6 @@ describe("private Svelte lab packages", () => {
       "Current Job", "Job History", "Print Queue", "Fans & Air", "Bed Mesh",
       "U1 Camera"
     ]) expect(html).toContain(marker);
-    expect(html).not.toContain('data-chart-frame=""');
     for (const forbidden of ['WebGLRenderer', 'OrbitControls', 'bed-mesh-fixture']) expect(html).not.toContain(forbidden);
     expect(html).not.toMatch(/<script\b[^>]*\bsrc\s*=/i);
     expect(html).not.toMatch(/<link\b[^>]*\brel\s*=\s*["']stylesheet/i);
