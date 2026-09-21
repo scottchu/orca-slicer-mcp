@@ -1,5 +1,17 @@
 # Project state
 
+## Current work — Progress canvas controls
+
+Latest user steering: place Layer with percentage/bar in the render summary;
+group Elapsed and Remaining in one responsive time row below. Preserve unknown
+and estimated-time semantics; remove the mixed Layer/ETA and isolated Elapsed rows.
+
+The user requests the existing 3D/Top switch inside the rendering viewport,
+matching Camera’s bottom-right 10px control inset. F0 / P03, OBS-011/016;
+keep the current bottom status/percentage/bar and all acquisition semantics.
+Implementation, independent review and guarded release are in progress.
+[Evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-progress-canvas-toggle.md) owns this bounded correction.
+
 ## Current release — refined Progress panel delivered
 
 PR132 merged at `9c94bd1e48efe4f00dd066f63aba2928b882a286` and shipped

@@ -1,5 +1,16 @@
 # Next agent
 
+## Current order — put the Progress toggle inside its canvas
+
+Latest user steering: place Layer with percentage/bar in the render summary;
+group Elapsed and Remaining in one responsive time row below. Preserve unknown
+and estimated-time semantics; remove the mixed Layer/ETA and isolated Elapsed rows.
+
+Match the existing Camera control overlay, preserving the common Switch and
+accessible image semantics. Verify responsive/fallback/keyboard states, freeze
+the exact candidate for independent review, then ship through unchanged guards
+and explicitly restart both services. No printer, auth or network change.
+
 ## Current order — review the refined Progress panel
 
 PR132 is merged and deployed at runtime 0.4.22 / schema 19 / observation 25 /

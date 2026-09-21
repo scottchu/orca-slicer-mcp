@@ -1,5 +1,15 @@
 # F0 maintenance handoff
 
+## Active correction — Progress canvas toggle
+
+Latest user steering: place Layer with percentage/bar in the render summary;
+group Elapsed and Remaining in one responsive time row below. Preserve unknown
+and estimated-time semantics; remove the mixed Layer/ETA and isolated Elapsed rows.
+
+ToolpathFrame and ToolpathPreview move the switch into the viewport; common
+components and data/layer/cache/cadence remain unchanged. Required release and
+independent exact review are pending. [Evidence](evidence/2026-09-21-progress-canvas-toggle.md) owns commands and results.
+
 ## Progress layout — delivered PR132
 
 Changed ProgressPanel, ToolpathPreview, the domain-only ToolpathFrame, component

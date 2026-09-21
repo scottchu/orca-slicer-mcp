@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { MCP_CAMERA_HTML, MCP_OBSERVATION_HTML } from '../../src/lib/server/app.js';
 
 for (const [name, html, sha256] of [
-  ['mcp-observation', MCP_OBSERVATION_HTML, '2f875c5adc652992cb615fc8fff260a30a80630964b4c83e2deae46f13bdad04'],
+  ['mcp-observation', MCP_OBSERVATION_HTML, '88c0e4d1e10f498f97c72ad9a161e133951ab2c690081c5447ed3496e0493d7c'],
   ['mcp-camera', MCP_CAMERA_HTML, 'c983e7b0e4f7da8c7b913e6b45516df87fb1ca176fc157159bf8167fc42871b7'],
 ]) {
   test(`${name} is the registered, closed production artifact`, () => {

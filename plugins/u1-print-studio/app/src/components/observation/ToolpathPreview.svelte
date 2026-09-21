@@ -17,18 +17,17 @@
   const message = $derived(masked ? 'Preview unavailable' : preview?.state === 'loading' ? 'Preparing G-code preview' : preview?.reason === 'no_current_job' ? 'No active print' : preview?.state === 'unsupported' ? 'Preview unavailable for this G-code' : preview?.reason === 'too_large' ? 'Preview unavailable for this file size' : 'G-code preview unavailable');
   const description = $derived(geometry ? preview?.reason === 'stale' ? 'Last reported · layer unavailable' : layer === null ? 'Planned paths · layer unavailable' : `Planned paths · printer-reported layer ${layer + 1}` : message);
 </script>
-{#snippet unavailableOverlay()}{message}{/snippet}
 {#snippet controls()}
   <Switch label="Toolpath view" options={viewOptions} value={view} disabled={!geometry} onchange={(next) => { view = next; }} />
-  <Caption>{description}</Caption>
 {/snippet}
 
 <Stack>
   {#if !masked && filename}<Name text={filename} />{:else}<Caption>G-code preview</Caption>{/if}
-  <ToolpathFrame {summary} {controls}>
-    <ChartFrame label="G-code preview" {description} overlay={!geometry ? unavailableOverlay : undefined}>
+  <ToolpathFrame {summary} {controls} status={!geometry ? message : undefined}>
+    <ChartFrame label="G-code preview" {description}>
       <ToolpathCanvas {geometry} {layer} {view} />
     </ChartFrame>
   </ToolpathFrame>
+  {#if geometry && (preview?.reason === 'stale' || layer === null)}<Caption>{description}</Caption>{/if}
   {#if geometry}<Caption>Reported file · planned paths, not camera footage.{geometry.opaqueMacros ? ' Macro motion is not shown.' : ''}</Caption>{/if}
 </Stack>
