@@ -1,5 +1,15 @@
 # F0 validation index
 
+## Public connection recovery — 2026-09-21
+
+[Recovery evidence](evidence/2026-09-21-connection-recovery.md) owns actual
+route commands, exact final configuration preservation and independent
+valid-TLS checks through both public relays. The final bounded check found
+DNS answers across the checked resolvers. ChatGPT reconnect remains a
+user-outcome gate.
+No application, full-suite, widget or real-printer acceptance is added by
+this operational and documentation-only slice.
+
 ## Existing runtime refresh — 2026-09-21
 
 [Refresh evidence](evidence/2026-09-21-runtime-refresh.md) owns the supported

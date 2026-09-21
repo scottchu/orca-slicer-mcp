@@ -1,5 +1,18 @@
 # F0 dual-subsystem foundation brief
 
+## Current maintenance slice — public route recovered
+
+The user explicitly requested repair of the existing ChatGPT connection.
+A single reviewed publication transition preserved all final configuration
+and restored public DNS answers across the checked resolvers. Independent
+valid-TLS checks passed through both returned public relays; actual ChatGPT
+reconnect remains a separate pending outcome.
+
+[Recovery evidence](evidence/2026-09-21-connection-recovery.md) owns commands,
+identities and results. The next action is user confirmation of Reconnect.
+No application architecture change, preview deployment or printer control
+is included. Earlier service-refresh evidence retains its original scope.
+
 ## Completed maintenance slice — existing runtime refresh
 
 On 2026-09-21 the user explicitly requested a server refresh. Both existing

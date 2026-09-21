@@ -1,5 +1,16 @@
 # Project state
 
+## Public U1 route recovered — ChatGPT confirmation pending
+
+The user-requested connection repair restored public DNS answers across the
+checked resolvers and verified U1 HTTPS endpoints through both returned public
+relays with valid TLS. Actual ChatGPT reconnect remains unaccepted.
+
+[Recovery evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-connection-recovery.md) owns exact actions, preservation and
+independent public-edge results. The installed PR125 application, OAuth
+identity, unrelated routes and private dashboard were preserved. Draft PR127
+remains isolated. [NEXT_AGENT.md](NEXT_AGENT.md) owns the user confirmation gate.
+
 ## Existing server refresh completed — 2026-09-21
 
 Both existing U1 services were restarted through the supported lifecycle
