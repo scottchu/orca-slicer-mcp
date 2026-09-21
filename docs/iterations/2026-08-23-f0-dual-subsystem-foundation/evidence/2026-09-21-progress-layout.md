@@ -60,3 +60,22 @@ Independent exact candidate approval, unchanged mandatory shipping validation,
 PR merge, exact installation, explicit restart of both services and meaningful
 installed-byte verification are pending. Real active-print and actual ChatGPT/
 phone outcomes remain separate; no print was started for this layout task.
+
+## Stopped first shipping gate
+
+Exact c58b8de8dd26a598e23db274b6c378b43d719502 received independent approval.
+PR132 plan passed. The unchanged --execute command stopped in local validation
+before merge/install (operation pr132-20260921T182300-7c34f2); rollback was not
+needed. A captured pinned-Bun server diagnostic passed325 tests and failed3
+composable-preview artifact-identity checks. The isolated preview's aggregate
+Kit manifest still pinned earlier generated output. Its measured canonical
+manifest is now b2a69562f1780fbf79572eb499b07f26af8db3c8a3aae512ebd7e8c34570f96a.
+Only the exact identity constant changes; the guard, routes and behavior remain
+unchanged. This transitive generated-build consumer is included in final review.
+
+The focused correction exposed the corresponding prerendered composition-page
+hash pin; it was also remeasured as
+41ccf1677c267671a2c6a5364adbaacd47f0aa6f47c01fad7f4f7f7c40f32957.
+The subsequent focused composable-preview suite passed4 tests/328 assertions,
+including immutable snapshot and denied-route behavior. Live/MCP/Lab assets and
+application source are unchanged from the independently verified candidate.
