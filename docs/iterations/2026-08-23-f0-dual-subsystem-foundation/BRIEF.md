@@ -1,5 +1,21 @@
 # F0 dual-subsystem foundation brief
 
+## Current slice — selected prior-job preview ready for review
+
+The requested F0 / P03 offline prior-job example is implemented and independently
+checked. The original 200,000 processed-vertex cap rejected the larger input as
+designed; the extension admits at most 500,000 processed vertices while
+retaining 20,000,000 input bytes and inline output below 1,000,000 bytes.
+Versioned deterministic compression preserves normalized 1e-5 mm coordinates
+without dropping paths or points; browser decoding is bounded to 16,000,000 bytes.
+
+[Extension evidence](evidence/2026-09-21-gcode-preview.md#actual-job-extension--targeted-checks-complete) owns final identities, actual checks and limits. Current file
+metadata matches the selected historical entry, with no historical digest to
+prove exact old bytes. Read-only acquisition, offline rendering and physical
+outcome are separate evidence. User review is next; no live telemetry, production
+architecture, merge or deployment is adopted. Earlier small-artifact evidence
+below retains its historical scope.
+
 ## Active slice — offline planned-toolpath user review, 2026-09-21
 
 - Status: implementation and targeted independent verification complete; user

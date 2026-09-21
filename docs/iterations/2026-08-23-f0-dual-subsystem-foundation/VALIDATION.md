@@ -1,5 +1,20 @@
 # F0 validation index
 
+## Actual-job extension — targeted verification complete
+
+[Extension evidence](evidence/2026-09-21-gcode-preview.md#actual-job-extension--targeted-checks-complete) owns the final contract, exact identities and actual commands.
+All 16 author tests, 12 independent codec checks, two independent output checks
+and 21 browser adversarial cases pass. Local first/middle/final, keyboard,
+Top/only-layer, 320 px and dark browser checks pass without page errors or
+network requests. Exact decoded geometry/metadata equality passes; owned
+browsers are closed. Independent approval is for the offline draft only.
+
+Read-only history/file acquisition establishes metadata correlation, not
+historical byte identity or physical outcome. Native slicer and actual host/
+device acceptance remain unavailable. The full repository check's earlier
+missing-`svelte-kit` failure remains below; no rerun or full pass is claimed.
+Production inputs are unchanged. User review of the new result remains next.
+
 ## Offline G-code preview — targeted checks complete, 2026-09-21
 
 [Experiment evidence](evidence/2026-09-21-gcode-preview.md) owns the F0 / P03

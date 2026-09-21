@@ -4,10 +4,10 @@
   <canvas role="img" aria-label="Rotatable three-dimensional planned extrusion paths. Earlier layers solid, preview layer highlighted, later layers faint.">Planned extrusion paths from sliced G-code.</canvas>
   <div class="viz-row text-small" data-legend><span><i data-key="earlier"></i>Earlier layers</span><span><i data-key="selected"></i>Preview layer</span><span><i data-key="later"></i>Later layers</span></div>
   <label class="form-label" for="planned-layer">Preview layer <output class="tabular-nums" data-layer aria-live="polite"></output></label>
-  <input class="form-range" id="planned-layer" type="range" min="1" step="1">
+  <input class="form-range" id="planned-layer" type="range" min="1" step="1" disabled>
   <div class="viz-controls">
-    <label class="form-label">View <select class="form-select" data-view><option value="orbit">3D</option><option value="top">Top</option><option value="side">Side</option></select></label>
-    <label class="form-check"><input class="form-check-input" type="checkbox" data-only><span class="form-check-label">Only preview layer</span></label>
+    <label class="form-label">View <select class="form-select" data-view disabled><option value="orbit">3D</option><option value="top">Top</option><option value="side">Side</option></select></label>
+    <label class="form-check"><input class="form-check-input" type="checkbox" data-only disabled><span class="form-check-label">Only preview layer</span></label>
   </div>
   <div class="text-small text-muted" data-note>Drag to rotate · nominal extrusion centerlines, not a solid model</div>
   <details class="text-small"><summary>Source and limits</summary><div data-receipt></div><div>Startup, end routines and non-extruding travel excluded. Printer macro motion is not expanded. Planned geometry assumes those macros restore slicer coordinates; this is not live or observed print progress.</div></details>
@@ -25,15 +25,71 @@
 #planned-toolpath-preview [data-note] { margin-top:8px; }
 </style>
 <script>
-(() => {
+(async () => {
   const root = document.getElementById('planned-toolpath-preview');
-  const data = __TOOLPATH_DATA__;
+  const packed = __TOOLPATH_DATA__;
+  const fail = (message) => { throw new Error(message); };
+  root.querySelector('[data-summary]').textContent = 'Loading planned geometry…';
+  if (typeof DecompressionStream !== 'function') fail('This browser cannot decode the preview. Gzip decompression support is required.');
+  if (packed.encoding !== 'gzip-delta-1e5-v1' || !Number.isInteger(packed.decodedBytes) || packed.decodedBytes < 1 || packed.decodedBytes > 16000000 || typeof packed.body !== 'string' || packed.body.length > 1000000) fail('Invalid or oversized preview payload.');
+  const compressed = Uint8Array.from(atob(packed.body), character => character.charCodeAt(0));
+  const reader = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip')).getReader();
+  const chunks = [];
+  let decodedBytes = 0;
+  try {
+    while (true) {
+      const next = await reader.read();
+      if (next.done) break;
+      decodedBytes += next.value.byteLength;
+      if (decodedBytes > 16000000 || decodedBytes > packed.decodedBytes) fail('Decoded preview exceeds its byte budget.');
+      chunks.push(next.value);
+    }
+  } catch (error) {
+    await reader.cancel().catch(() => {});
+    throw error;
+  } finally { reader.releaseLock(); }
+  if (decodedBytes !== packed.decodedBytes) fail('Preview byte count does not match.');
+  const data = JSON.parse(await new Blob(chunks).text());
+  if (!data || !Array.isArray(data.paths) || !data.paths.length || data.paths.length > 250000 || !Array.isArray(data.layers) || !data.layers.length || data.layers.length > 500000 || !Number.isSafeInteger(data.vertices) || data.vertices < 2 || data.vertices > 500000 || !/^[a-f0-9]{64}$/.test(data.sha256) || !Number.isSafeInteger(data.bytes) || data.bytes < 1 || data.bytes > 20000000) fail('Invalid preview geometry schema.');
+  if (data.layers.some(layer => !layer || !Number.isFinite(layer.z) || Math.abs(layer.z) > 10000 || !Number.isSafeInteger(layer.paths) || layer.paths < 0)) fail('Invalid preview layers.');
+  if (!Array.isArray(data.bounds) || data.bounds.length !== 3 || data.bounds.some(pair => !Array.isArray(pair) || pair.length !== 2 || !pair.every(Number.isFinite) || pair[0] > pair[1])) fail('Invalid preview bounds.');
+  if (!Array.isArray(data.opaqueMacros) || data.opaqueMacros.some(name => !['TIMELAPSE_TAKE_FRAME','DEFECT_DETECTION_DETECT'].includes(name))) fail('Invalid preview macro receipt.');
+  let vertexCount = 0;
+  const layerCounts = data.layers.map(() => 0);
+  const actualBounds = [[Infinity,-Infinity],[Infinity,-Infinity],[Infinity,-Infinity]];
+  for (const path of data.paths) {
+    if (!path || !Number.isInteger(path.layer) || path.layer < 0 || path.layer >= data.layers.length || !Number.isSafeInteger(path.tool) || path.tool < 0 || !Array.isArray(path.d) || path.d.length < 6 || path.d.length % 3) fail('Invalid preview path.');
+    layerCounts[path.layer] += 1;
+    vertexCount += path.d.length / 3;
+    if (vertexCount > 500000 || vertexCount > data.vertices) fail('Preview exceeds its vertex budget.');
+    const prior = [0,0,0], points = [];
+    for (let i = 0; i < path.d.length; i += 3) {
+      const point = [];
+      for (let axis = 0; axis < 3; axis++) {
+        const delta = path.d[i+axis];
+        if (!Number.isSafeInteger(delta) || !Number.isSafeInteger(prior[axis]+delta)) fail('Invalid coordinate delta.');
+        prior[axis] += delta;
+        const value = prior[axis]/100000;
+        if (value < data.bounds[axis][0]-0.00001 || value > data.bounds[axis][1]+0.00001) fail('Coordinate outside preview bounds.');
+        actualBounds[axis][0] = Math.min(actualBounds[axis][0], value);
+        actualBounds[axis][1] = Math.max(actualBounds[axis][1], value);
+        point.push(value);
+      }
+      points.push(point);
+    }
+    path.points = points;
+    delete path.d;
+  }
+  if (vertexCount !== data.vertices) fail('Preview vertex count does not match.');
+  if (data.layers.some((layer,i) => layer.paths !== layerCounts[i])) fail('Preview layer path count does not match.');
+  if (actualBounds.some((pair,i) => pair.some((value,j) => value !== data.bounds[i][j]))) fail('Preview bounds do not match.');
   const canvas = root.querySelector('canvas');
   const ctx = canvas.getContext('2d');
   const slider = root.querySelector('input[type="range"]');
   const output = root.querySelector('[data-layer]');
   const view = root.querySelector('[data-view]');
   const only = root.querySelector('[data-only]');
+  for (const control of [slider,view,only]) control.disabled = false;
   const center = data.bounds.map(([a,b]) => (a+b)/2);
   const span = Math.max(...data.bounds.map(([a,b]) => b-a), 1);
   let yaw = -0.55, pitch = 0.67, drag = null, selected = Math.ceil(data.layers.length/2)-1;
@@ -112,5 +168,13 @@
   window.addEventListener('openai:set_globals', event => restore(event.detail?.globals?.widgetState));
   restore(window.openai?.widgetState);
   draw();
-})();
+})().catch(() => {
+  const root = document.getElementById('planned-toolpath-preview');
+  const status = root.querySelector('[data-summary]');
+  status.textContent = typeof DecompressionStream !== 'function' ? 'Preview unavailable: this browser needs gzip decompression support.' : 'Preview unavailable: invalid or oversized geometry data.';
+  status.setAttribute('role','alert');
+  root.querySelectorAll('input,select').forEach(control => { control.disabled = true; });
+  const canvas = root.querySelector('canvas');
+  canvas.getContext('2d')?.clearRect(0,0,canvas.width,canvas.height);
+});
 </script>

@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import base64
+import gzip
 import hashlib
 import json
 import math
@@ -9,7 +11,8 @@ from pathlib import Path
 import re
 
 MAX_BYTES = 20_000_000
-MAX_VERTICES = 200_000
+MAX_VERTICES = 500_000
+MAX_DECODED_BYTES = 16_000_000
 NUMBER = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)"
 WORDS = re.compile(rf"([A-Z])({NUMBER})")
 # These commands do not alter the nominal slicer coordinate interpretation.
@@ -180,11 +183,33 @@ def parse(raw: bytes) -> dict:
     return {"sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw), "layers": layers, "paths": paths, "bounds": bounds, "opaqueMacros": sorted(opaque), "depositionArcs": arc_count, "vertices": sum(len(p["points"]) for p in paths)}
 
 
+def pack(data: dict) -> dict:
+    """Losslessly encode the already-normalized 1e-5 mm path coordinates."""
+    compact = {key: value for key, value in data.items() if key != "paths"}
+    compact["paths"] = []
+    for path in data["paths"]:
+        previous = [0, 0, 0]
+        deltas = []
+        for point in path["points"]:
+            current = [round(value * 100_000) for value in point]
+            if any(abs(value) > 9_007_199_254_740_991 or abs(value - old) > 9_007_199_254_740_991 for value, old in zip(current, previous)):
+                raise Unsupported("Coordinate exceeds safe integer delta range")
+            if any(value / 100_000 != original for value, original in zip(current, point)):
+                raise Unsupported("Coordinate cannot round-trip at parser precision")
+            deltas.extend(value - old for value, old in zip(current, previous))
+            previous = current
+        compact["paths"].append({**{key: value for key, value in path.items() if key != "points"}, "d": deltas})
+    expanded = json.dumps(compact, separators=(",", ":")).encode()
+    if len(expanded) > MAX_DECODED_BYTES:
+        raise Unsupported("Decoded geometry exceeds 16,000,000 bytes")
+    return {"encoding": "gzip-delta-1e5-v1", "decodedBytes": len(expanded), "body": base64.b64encode(gzip.compress(expanded, mtime=0)).decode("ascii")}
+
+
 def generate(source: Path, output: Path) -> dict:
     with source.open("rb") as stream:
         data = parse(stream.read(MAX_BYTES + 1))
     template = Path(__file__).with_name("preview.html").read_text()
-    fragment = template.replace("__TOOLPATH_DATA__", json.dumps(data, separators=(",", ":")).replace("<", "\\u003c"))
+    fragment = template.replace("__TOOLPATH_DATA__", json.dumps(pack(data), separators=(",", ":")))
     if len(fragment.encode()) >= 1_000_000:
         raise Unsupported("Inline preview exceeds 1 MB")
     output.parent.mkdir(parents=True, exist_ok=True)

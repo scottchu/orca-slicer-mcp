@@ -1,5 +1,19 @@
 # Project state
 
+## Offline prior-job preview — ready for user review
+
+The F0 / P03 offline extension in draft PR127 now renders the selected prior-job
+artifact with every normalized layer, path and vertex retained. Author tests
+and independent codec, adversarial and local browser checks pass on frozen
+source/output identities. The current artifact is correlated to reported
+historical metadata; no historical digest proves the exact bytes printed then.
+
+[Extension evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-gcode-preview.md#actual-job-extension--targeted-checks-complete) owns commands, identities, review and limits. Next action is
+user review of the new offline result. Current records are complete; this is
+not a production Progress change, live mapping, merge or deployment acceptance.
+The earlier small-artifact results below remain historical. The prior full
+repository check failed on missing `svelte-kit`; no full-suite pass is claimed.
+
 ## Offline G-code preview ready for user review — 2026-09-21
 
 The user-approved exploratory F0 / P03 preview is implemented and independently

@@ -1,5 +1,21 @@
 # Next agent
 
+## Current order — review the selected prior-job preview
+
+Present the independently checked offline prior-job result for user review.
+Implementation and scoped verification are complete: every normalized layer,
+path and vertex is preserved under explicit input, processed-vertex, encoded
+output and decoded-byte budgets. The latest completed history entry was a
+stated default selection, not an explicit user choice of that entry.
+
+[Extension evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-gcode-preview.md#actual-job-extension--targeted-checks-complete) owns final identities, commands and boundaries. Explain that
+current metadata correlation does not prove historical byte identity, and
+planned geometry does not measure printing or physical quality. Native slicer
+comparison and actual host/device acceptance remain unobserved. Keep PR127 a
+draft with private inputs/outputs outside Git; no live mapping, production
+integration, adoption, merge or deployment is included. Earlier instructions
+below apply only to the historical smaller candidate. Record closure is done.
+
 ## Current order — review offline G-code preview, 2026-09-21
 
 Show the user the completed offline F0 / P03 toolpath preview and layer slider.

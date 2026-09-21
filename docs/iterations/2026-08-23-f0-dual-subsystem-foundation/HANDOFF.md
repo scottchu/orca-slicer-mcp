@@ -1,5 +1,21 @@
 # F0 maintenance handoff
 
+## Offline prior-job extension — ready for user review
+
+Draft PR127 extends `dcaa1199ee29f064c178384d1ccf03d74c1ef94f` with changes
+to `experiments/gcode-preview/{preview.py,preview.html,test_preview.py,README.md}`
+and the six current records. The standalone template and all production inputs
+are unchanged. Author and independent targeted checks passed on the frozen
+identities in [extension evidence](evidence/2026-09-21-gcode-preview.md#actual-job-extension--targeted-checks-complete).
+
+Next smallest action is user review of the completed offline prior-job result.
+Current records are complete. Private input/output and raw history remain
+outside Git. Historical metadata correlation does not prove exact printed
+bytes; embedded-thumbnail silhouette agreement does not replace native slicer
+toolpath comparison. Live session mapping, actual host/device and physical
+acceptance remain open. The prior missing-`svelte-kit` full-check failure is
+preserved; no production, merge or deployment acceptance is claimed.
+
 ## Offline G-code preview ready for user review — 2026-09-21
 
 The experimental candidate contains five reusable files under

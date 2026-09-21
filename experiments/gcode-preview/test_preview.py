@@ -1,8 +1,12 @@
 """Synthetic contract tests; contain no user geometry or printer data."""
 import hashlib
+import base64
+import gzip
+import json
 import unittest
+from unittest.mock import patch
 
-from preview import parse, Unsupported
+from preview import parse, pack, Unsupported
 
 
 def fixture(commands, modes="G90\nM83"):
@@ -73,6 +77,36 @@ class ParserTests(unittest.TestCase):
     def test_input_budget(self):
         with self.assertRaises(Unsupported):
             parse(b" " * 20_000_001)
+
+
+    def test_lossless_deterministic_compaction(self):
+        source = parse(fixture("G1 X1.12345 E1\nG1 X2.34567 Y-3.45678 E1\nG1 X3\nG1 Y-4 E1"))
+        payload = pack(source)
+        self.assertEqual(payload, pack(source))
+        compact = json.loads(gzip.decompress(base64.b64decode(payload["body"])))
+        for path in compact["paths"]:
+            prior = [0, 0, 0]
+            points = []
+            deltas = path.pop("d")
+            for i in range(0, len(deltas), 3):
+                prior = [old + delta for old, delta in zip(prior, deltas[i:i+3])]
+                points.append([value / 100_000 for value in prior])
+            path["points"] = points
+        self.assertEqual(compact, source)
+
+    def test_compact_and_vertex_budgets(self):
+        data = parse(fixture("G1 X1 E1"))
+        with patch("preview.MAX_DECODED_BYTES", 1), self.assertRaises(Unsupported):
+            pack(data)
+        with patch("preview.MAX_VERTICES", 1), self.assertRaises(Unsupported):
+            parse(fixture("G1 X1 E1"))
+
+    def test_compaction_rejects_new_rounding_and_unsafe_integer(self):
+        for value in [1.123456, 100_000_000_000]:
+            data = parse(fixture("G1 X1 E1"))
+            data["paths"][0]["points"][0][0] = value
+            with self.subTest(value=value), self.assertRaises(Unsupported):
+                pack(data)
 
 
 if __name__ == "__main__":

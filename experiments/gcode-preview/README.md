@@ -25,7 +25,19 @@ G17 incremental-I/J G2/G3 arcs (0.02 mm maximum chord error, <=10 degree steps),
 and Orca `LAYER_CHANGE`/`Z` annotations. Absolute E requires a sliced-region G92 E
 baseline. Tool identity must be declared before deposition; changing tools in
 the sliced region is rejected. This is deliberately a single-tool experiment.
-Input is bounded to 20 MB and 200,000 processed vertices; inline output to 1 MB.
+Input is bounded to 20,000,000 bytes and 500,000 processed vertices, including
+vertices coalesced into prior paths; inline output must be under 1,000,000 bytes.
+The raised vertex budget supports the selected larger printer file and remains
+an enforced offline experiment limit.
+
+Path-local signed integer deltas at the parser's existing 0.00001 mm precision
+are deterministically gzip-compressed and base64-embedded. Encoding verifies
+exact numeric round-trip and JavaScript safe-integer limits; it does not round
+further, simplify or drop geometry. Native DecompressionStream is required by
+both inline and standalone views. The decoder caps cumulative expanded bytes
+at 16,000,000 while reading, validates schema, counts and coordinate bounds, and
+keeps controls disabled until ready. Unsupported decoding, malformed data or
+exceeded budgets show an unavailable state with no geometry.
 
 Startup before the first layer and end routines from PRINT_END are excluded.
 Travel, retraction and stationary extrusion do not become deposited paths.
