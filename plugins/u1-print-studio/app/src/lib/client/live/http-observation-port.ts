@@ -14,7 +14,7 @@ export const httpObservationPort = (
   const listeners = new Set<(result: unknown) => void>();
   let disposed = false;
   let started: Promise<void> | undefined;
-  const refresh = async (): Promise<unknown> => {
+  const refresh = async (knownToolpathId?: string): Promise<unknown> => {
     if (disposed) throw new Error('Observation port disposed');
     const abort = new AbortController();
     requests.add(abort);
@@ -28,7 +28,7 @@ export const httpObservationPort = (
       const acquisition = async () => {
         const response = await request('/dashboard/tools/call', {
           method: 'POST', headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ name: 'refresh_printer_observation', arguments: { view } }), signal: abort.signal
+          body: JSON.stringify({ name: 'refresh_printer_observation', arguments: { view, ...(view === 'progress' && knownToolpathId ? { knownToolpathId } : {}) } }), signal: abort.signal
         });
         if (abort.signal.aborted) throw new Error('Observation request aborted');
         if (!response.ok) throw new Error('Observation request failed');

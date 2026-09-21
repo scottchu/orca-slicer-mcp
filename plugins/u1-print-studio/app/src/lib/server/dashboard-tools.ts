@@ -36,11 +36,12 @@ export const callDashboardTool = async (
       const view = argumentsObject.view;
       if (
         !OBSERVATION_VIEWS.includes(view as ObservationView) ||
-        Object.keys(argumentsObject).some((key) => key !== "view")
+        Object.keys(argumentsObject).some((key) => key !== 'view' && key !== 'knownToolpathId') ||
+        (argumentsObject.knownToolpathId !== undefined && (view !== 'progress' || typeof argumentsObject.knownToolpathId !== 'string' || !/^[a-f0-9]{64}$/.test(argumentsObject.knownToolpathId)))
       ) {
         return reply(400, { error: "invalid_observation_view" });
       }
-      return reply(200, await observePrinter(observations, view as ObservationView));
+      return reply(200, await observePrinter(observations, view as ObservationView, argumentsObject.knownToolpathId as string | undefined));
     }
     if (name === "get_u1_camera_frame") {
       return reply(200, await refreshCameraFrame(readCameraFrame, dependencies.cameraSessions, argumentsObject.authorizeLive === true));

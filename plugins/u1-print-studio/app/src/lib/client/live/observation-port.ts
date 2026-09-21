@@ -1,14 +1,14 @@
 import type { HostRpc } from '../host/rpc.js';
 export type ObservationPort = {
   start: () => Promise<void>;
-  refresh: () => Promise<unknown>;
+  refresh: (knownToolpathId?: string) => Promise<unknown>;
   subscribe: (listener: (result: unknown) => void) => () => void;
   dispose: () => void;
 };
 export type LiveObservationView = 'overview' | 'progress' | 'jobs' | 'job_history' | 'fans' | 'thermals' | 'heads' | 'queue' | 'bed_mesh';
 export const observationPort = (rpc: HostRpc, view: LiveObservationView): ObservationPort => ({
   start: rpc.start,
-  refresh: () => rpc.callTool('refresh_printer_observation', { view }),
+  refresh: (knownToolpathId) => rpc.callTool('refresh_printer_observation', { view, ...(view === 'progress' && knownToolpathId ? { knownToolpathId } : {}) }),
   subscribe: (listener) => rpc.subscribe((event) => { if (event.kind === 'result') listener(event.value); }),
   dispose: rpc.dispose
 });

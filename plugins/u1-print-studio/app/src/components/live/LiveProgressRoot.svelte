@@ -2,6 +2,7 @@
   import { onMount, untrack } from 'svelte';
   import type { createProgressController } from '../../lib/client/live/focused-controllers';
   import ProgressWidget from '../observation/ProgressPanel.svelte';
+  import { mountProgressRefresh } from '../../lib/client/live/progress-controller';
 
   let { controller }: { controller: ReturnType<typeof createProgressController> } = $props();
   let current = $state(untrack(() => controller.getState()));
@@ -10,7 +11,8 @@
   const refresh = () => { void controller.refresh(); };
   onMount(() => {
     const unsubscribe = controller.subscribe(state => { current = state; }); controller.start();
-    return () => { unsubscribe(); controller.dispose(); };
+    const stopRefresh = mountProgressRefresh(controller);
+    return () => { stopRefresh(); unsubscribe(); controller.dispose(); };
   });
 </script>
 
@@ -19,4 +21,3 @@
 {:else}
   <ProgressWidget loading lab={false} {failure} failureMessage={current.feedback} onretry={refresh} />
 {/if}
-

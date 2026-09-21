@@ -43,6 +43,7 @@ import {
   readU1Environment,
   readU1CurrentJob,
   readU1JobHistory,
+  u1ToolpathReader,
 } from "./u1-status.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -155,7 +156,8 @@ export function createStatusDashboardHandler(
     dependencies.readQueue ?? (readStatus === readU1Status ? readU1Queue : undefined),
     dependencies.readEnvironment ?? (readStatus === readU1Status ? readU1Environment : undefined),
     dependencies.readCurrentJob ?? (readStatus === readU1Status ? readU1CurrentJob : undefined),
-    dependencies.readJobHistory ?? (readStatus === readU1Status ? readU1JobHistory : undefined)
+    dependencies.readJobHistory ?? (readStatus === readU1Status ? readU1JobHistory : undefined),
+    readStatus === readU1Status ? u1ToolpathReader : undefined
   );
 
   return async (req: IncomingMessage, res: ServerResponse, pathname: string): Promise<boolean> => {

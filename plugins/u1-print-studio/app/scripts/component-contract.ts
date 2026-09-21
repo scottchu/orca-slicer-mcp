@@ -157,6 +157,10 @@ approvedImports["observation/OverviewWidget.svelte"] = ["../../lib/client/observ
 approvedImports["bed-mesh/BedMeshWidget.svelte"] = ["svelte", "./BedMeshPanel.svelte"];
 composites.push('live/LiveProgressRoot.svelte');
 approvedImports["live/LiveProgressRoot.svelte"] = ["svelte", "../../lib/client/live/focused-controllers", "../observation/ProgressPanel.svelte"];
+approvedImports['live/LiveProgressRoot.svelte'].push('../../lib/client/live/progress-controller');
+composites.push('observation/ToolpathPreview.svelte');
+approvedImports['observation/ToolpathPreview.svelte'] = ['lucide-svelte', '../../lib/toolpath', '../common/Stack.svelte', '../common/Caption.svelte', '../common/Name.svelte', '../common/Inline.svelte', '../common/Button.svelte', '../common/ChartFrame.svelte', './ToolpathCanvas.svelte'];
+leaves['observation/ToolpathCanvas.svelte'] = ['canvas'];
 composites.push('live/LiveJobsRoot.svelte');
 approvedImports["live/LiveJobsRoot.svelte"] = ["svelte", "../../lib/client/live/focused-controllers", "../observation/JobsPanel.svelte", "../observation/DomainReceipt.svelte"];
 composites.push('live/LiveHistoryRoot.svelte');

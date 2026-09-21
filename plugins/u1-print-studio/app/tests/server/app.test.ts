@@ -227,7 +227,7 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v23.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v24.html");
 
     expect(observe).toBeDefined();
     expect(observe?.annotations).toMatchObject({
@@ -547,7 +547,7 @@ describe("U1 status MCP App contract", () => {
       arguments: { authorizeLive: true },
     });
     expect(activationResult._meta?.cameraActivation).toEqual({
-      schemaVersion: 18,
+      schemaVersion: 19,
       token: "private-activation-token",
       expiresAt: "2026-08-25T13:21:32.688Z",
     });
