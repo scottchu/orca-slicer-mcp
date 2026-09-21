@@ -175,3 +175,11 @@ and [Moonraker metadata/file download](https://moonraker.readthedocs.io/en/lates
 
 [Slice evidence](../iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-live-gcode-progress.md)
 owns actual commands, identities and acceptance as implementation proceeds.
+
+## Presentation refinement — 2026-09-21
+
+The user requested the Camera common Switch for local 3D/Top selection and
+percentage/bar integration into the model panel. Use a normal-flow bottom
+summary outside the chart image semantics, keeping one accessible progressbar
+and atomic numeric percentage. This changes layout only; every acquisition,
+identity, cache, layer and authority boundary above remains unchanged.

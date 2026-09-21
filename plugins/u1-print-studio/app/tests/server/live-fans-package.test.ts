@@ -8,7 +8,7 @@ for (const [view, title, hash] of [
   ['thermals', 'Thermals', 'a8b412efb4a54490881ee594114c6e82e624c883df00ccdd03d87251a492d890'],
   ['heads', 'Heads & Filaments', '368cc460cb49b3b480c4e5223a10489c9a7e89ac7e0ecfef363c0d87f7b1b31d'],
   ['queue', 'Print Queue', 'b211ebfa6c03dd54b8c340767841461d5756f7398663bf162cf2e5f1d059e60a'],
-  ['progress', 'Print Progress', '6c9f1ecda84618a6b6411ebff88b58453e3160fdb528d67ac30980b04b55d95a'],
+  ['progress', 'Print Progress', 'f17974cbae059bd80dd2a1bf52d27806ed93bc5b33bab956b12b56c9307334db'],
   ['jobs', 'Current Job', 'da7dd12f7dce1066a8bb4e7f0b43d3a4217521ae323282567851c0890ce6e6e9'],
   ['job_history', 'Job History', '5417554e126ce9db06e5262dd6e633548d54b2ea6121e27eb926c170c3772bb0'],
   ['overview', 'Overview', '3471b1ca32aae9a3a97d65c1e550dcd8a482e0a3a985cd7f702b69e99a48c6b1'],
@@ -32,7 +32,7 @@ test('current focused production inventory retains exact artifact size measureme
     view,
     bytes: Buffer.byteLength(readFileSync(new URL(`../../public/svelte-live-${view}.html`, import.meta.url), 'utf8')),
   }));
-  expect(entries.map(({ bytes }) => bytes)).toEqual([88879, 94947, 98659, 90399, 99325, 88659, 86904, 96947, 652495, 100096]);
-  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(1497310);
+  expect(entries.map(({ bytes }) => bytes)).toEqual([88879, 94947, 98659, 90399, 104443, 88659, 86904, 96947, 652495, 100096]);
+  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(1502428);
   expect(() => assertFocusedProductionInventory(entries)).not.toThrow();
 });

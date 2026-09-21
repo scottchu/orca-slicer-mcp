@@ -1,5 +1,11 @@
 # Project state
 
+## Current work — Progress layout refinement
+
+The requested Camera-style view switch and integrated model-panel progress
+summary are implemented for review. Acquisition/cache/layer semantics remain
+unchanged. [Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-progress-layout.md) owns acceptance, corrections and release gates.
+
 ## Current release — G-code Progress delivered
 
 PR130 merged at `d1d72ff593f6444fb2bc5c82957f7693ab558e18` and shipped

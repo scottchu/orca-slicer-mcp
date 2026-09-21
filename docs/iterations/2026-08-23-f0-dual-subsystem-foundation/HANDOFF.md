@@ -1,5 +1,13 @@
 # F0 maintenance handoff
 
+## Current slice — Progress layout
+
+Changed ProgressPanel, ToolpathPreview, the domain-only ToolpathFrame, component
+registration, runtime/observation versions and three generated consumers.
+[Evidence](evidence/2026-09-21-progress-layout.md) owns actual checks and the corrected Unknown clipping
+finding. Next: independent exact review, guarded shipment and installed behavior.
+No changes to acquisition/cache/layers, auth/network or printer controls.
+
 ## Current-G-code Progress — delivered PR130
 
 [Decision0060](../../decisions/0060-render-current-gcode-in-progress.md) owns the

@@ -1,5 +1,13 @@
 # Next agent
 
+## Current order — refine Progress layout
+
+Implement the requested Camera-style view switch and integrate status, percentage
+and bar into the bottom of the rendering panel. Preserve acquisition, cache,
+layer mapping and failure semantics. Verify responsive/keyboard/masking behavior,
+obtain independent exact review, then ship through the unchanged guarded workflow.
+No printer control, authentication or network changes are included.
+
 ## Current order — observe the delivered Progress slice
 
 PR130 is merged and deployed at runtime 0.4.21 / schema 19 / observation 24 /
