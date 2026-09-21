@@ -1,16 +1,17 @@
 # Project state
 
-## Current work — Progress canvas controls
+## Current release — Progress canvas controls and timing delivered
 
-Latest user steering: place Layer with percentage/bar in the render summary;
-group Elapsed and Remaining in one responsive time row below. Preserve unknown
-and estimated-time semantics; remove the mixed Layer/ETA and isolated Elapsed rows.
+PR134 merged at `43389ab3b64cfcfbf13368c2af0c3e986e5cbc5f` and shipped
+runtime 0.4.23 / schema 19 / observation 26 / Camera 18. The common 3D/Top
+switch now sits inside the render viewport at Camera’s bottom-right inset.
+Layer joins percentage/bar; Elapsed and Remaining share a responsive time group.
+Both existing services restarted and passed identity, health and preservation.
 
-The user requests the existing 3D/Top switch inside the rendering viewport,
-matching Camera’s bottom-right 10px control inset. F0 / P03, OBS-011/016;
-keep the current bottom status/percentage/bar and all acquisition semantics.
-Implementation, independent review and guarded release are in progress.
-[Evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-progress-canvas-toggle.md) owns this bounded correction.
+[Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-progress-canvas-toggle.md) owns independent review, required shipping and
+installed verification. Actual active-print and revised phone/ChatGPT outcomes
+remain separate. Current records are complete; this unchanged-application tail
+requires no additional deployment. [NEXT_AGENT.md](NEXT_AGENT.md) owns next action.
 
 ## Current release — refined Progress panel delivered
 

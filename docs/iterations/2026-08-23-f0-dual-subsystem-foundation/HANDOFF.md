@@ -1,14 +1,16 @@
 # F0 maintenance handoff
 
-## Active correction — Progress canvas toggle
+## Progress canvas controls and time grouping — delivered PR134
 
-Latest user steering: place Layer with percentage/bar in the render summary;
-group Elapsed and Remaining in one responsive time row below. Preserve unknown
-and estimated-time semantics; remove the mixed Layer/ETA and isolated Elapsed rows.
+Changed ToolpathFrame, ToolpathPreview and ProgressPanel; common primitives,
+Camera and acquisition contracts are unchanged. Measured generated consumers,
+version pins and immutable preview identities were updated. [Evidence](evidence/2026-09-21-progress-canvas-toggle.md)
+owns corrections, exact review, guarded release and installed verification.
+Both services run 0.4.23 / schema 19 / observation 26 / Camera 18.
 
-ToolpathFrame and ToolpathPreview move the switch into the viewport; common
-components and data/layer/cache/cadence remain unchanged. Required release and
-independent exact review are pending. [Evidence](evidence/2026-09-21-progress-canvas-toggle.md) owns commands and results.
+All records are closed. Next is user review in their normal host and a read-only
+active-print opportunity; no physical/phone acceptance follows from fixture tests.
+This final documentation-only tail requires no application build or redeployment.
 
 ## Progress layout — delivered PR132
 
