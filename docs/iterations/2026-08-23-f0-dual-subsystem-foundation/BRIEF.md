@@ -1,5 +1,16 @@
 # F0 dual-subsystem foundation brief
 
+## Active correction — Progress canvas toggle
+
+Latest user steering: place Layer with percentage/bar in the render summary;
+group Elapsed and Remaining in one responsive time row below. Preserve unknown
+and estimated-time semantics; remove the mixed Layer/ETA and isolated Elapsed rows.
+
+F0 / P03 and OBS-011/016: move the existing common Switch inside the 4:3
+render viewport at Camera’s bottom-right 10px inset. Keep it a sibling of the
+image-semantic chart and retain the bottom progress summary. No broader design
+or data contract changes. [Evidence](evidence/2026-09-21-progress-canvas-toggle.md) owns acceptance.
+
 ## Delivered refinement — Progress layout
 
 F0 / P03 and OBS-011/016: PR132 delivers the requested Camera common Switch

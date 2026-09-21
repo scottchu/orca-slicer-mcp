@@ -23,13 +23,18 @@
   <div class="progress-track" role={loading || progress?.percent == null ? undefined : 'progressbar'} aria-hidden={loading || progress?.percent == null ? true : undefined} aria-label={loading ? undefined : 'Print progress'} aria-valuenow={progress?.percent ?? undefined} aria-valuemin={loading ? undefined : 0} aria-valuemax={loading ? undefined : 100}>
     <div class="progress-fill" style={`width:${progress?.percent ?? 0}%`}></div>
   </div>
+  <span class="progress-detail" class:live={!lab}><span>Layer <strong><LoadingValue {loading} text={loading ? undefined : (progress?.currentLayer ?? 'Unknown')} size="short" /></strong> / <LoadingValue {loading} text={loading ? undefined : (progress?.totalLayers ?? 'Unknown')} size="short" /></span></span>
 {/snippet}
 
 <ObservationFrame title="Print Progress" icon={Printer} observedAt={progress?.sourceObservedAt ?? null} freshness={progress?.freshness ?? 'unknown'} stateKind={failure ?? (pending ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing} {lab} {meta} {actionLabel} {feedback} {failureMessage}>
   {#if !lab}<ToolpathPreview preview={live?.preview} filename={live?.fields.filename.value} masked={loading} {summary} />{/if}
   {#if lab}{@render summary()}{/if}
-  <div class="progress-detail" class:live={!lab}><span>Layer <strong><LoadingValue {loading} text={loading ? undefined : (progress?.currentLayer ?? 'Unknown')} size="short" /></strong> / <LoadingValue {loading} text={loading ? undefined : (progress?.totalLayers ?? 'Unknown')} size="short" /></span><span><Clock3 aria-hidden="true" /> <LoadingValue {loading} text={loading ? undefined : (progress?.etaSeconds == null ? 'Estimate unknown' : `About ${formatDuration(progress.etaSeconds)} left`)} words={lab ? [5, 2, 3, 4] : undefined} size="long" /></span></div>
-  <div class="elapsed"><Clock3 aria-hidden="true" /><div><span class="observation-label">Elapsed</span><strong><LoadingValue {loading} text={loading ? undefined : (progress?.elapsedSeconds == null ? 'Unknown' : formatDuration(progress.elapsedSeconds))} words={lab ? [3, 3] : undefined} /></strong></div></div>
+
+  <div class="timing">
+    {#each [{ label: 'Elapsed', value: progress?.elapsedSeconds == null ? 'Unknown' : formatDuration(progress.elapsedSeconds) }, { label: 'Remaining', value: progress?.etaSeconds == null ? 'Estimate unknown' : `About ${formatDuration(progress.etaSeconds)}` }] as time}
+      <div class="elapsed"><Clock3 aria-hidden="true" /><div><span class="observation-label">{time.label}</span><strong><LoadingValue {loading} text={loading ? undefined : time.value} words={lab ? [3, 3] : undefined} /></strong></div></div>
+    {/each}
+  </div>
 </ObservationFrame>
 
 <style>
@@ -38,8 +43,8 @@
   .progress-top.live .percent { min-width: 0; max-width: 100%; flex-wrap: nowrap; justify-content: flex-end; white-space: nowrap; }
   .progress-top.live .percent { font-size: clamp(42px, 12vw, 48px); }
   .progress-top.live .percent.unknown { font-size: 1.5rem; letter-spacing: -.02em; white-space: normal; overflow-wrap: anywhere; }
-  .progress-detail.live { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12em), 1fr)); }
-  .progress-detail.live > span { flex-wrap: wrap; min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+  .progress-detail.live { display: flex; }
+  .progress-detail.live > span { flex: 1 1 100%; flex-wrap: wrap; min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
   .loading::before { visibility: hidden; }
   .loading-unit { visibility: hidden; }
   .percent { display: flex; flex: none; align-items: baseline; text-align: end; padding-inline-end: .08em; color: var(--u1-positive); font-size: clamp(42px, 13vw, 68px); font-weight: 380; line-height: .95; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
@@ -50,9 +55,10 @@
   .progress-detail span { display: inline-flex; align-items: center; gap: 6px; }
   .progress-detail :global(svg) { width: 17px; height: 17px; }
   .progress-detail strong { color: #b27e00; font-weight: 650; }
-  .elapsed { display: flex; align-items: center; gap: 10px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--u1-line); }
+  .timing { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9em), 1fr)); gap: 16px; padding-top: 16px; border-top: 1px solid var(--u1-line); }
+  .elapsed { display: flex; align-items: center; min-width: 0; gap: 10px; overflow-wrap: anywhere; }
   .elapsed > :global(svg) { width: 20px; height: 20px; color: var(--u1-muted); }
-  .elapsed div { display: grid; gap: 3px; }
+  .elapsed div { display: grid; min-width: 0; gap: 3px; }
   .elapsed strong { font-size: 19px; font-weight: 560; font-variant-numeric: tabular-nums; }
   @media (max-width: 360px) { .progress-detail { font-size: 12px; } }
 </style>

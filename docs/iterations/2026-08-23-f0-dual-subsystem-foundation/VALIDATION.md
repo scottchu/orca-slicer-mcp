@@ -1,5 +1,10 @@
 # F0 validation index
 
+## Progress canvas toggle
+
+[Correction evidence](evidence/2026-09-21-progress-canvas-toggle.md) owns affected
+consumers, actual checks, independent review and release identity.
+
 ## Progress layout refinement
 
 [2026-09-21 evidence](evidence/2026-09-21-progress-layout.md) owns the requested layout, affected
