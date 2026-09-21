@@ -1,5 +1,19 @@
 # F0 maintenance handoff
 
+## Public route recovery — 2026-09-21
+
+[Recovery evidence](evidence/2026-09-21-connection-recovery.md) records both
+route operations, the first non-recovery, subsequent partial DNS publication,
+independent public-edge checks and exact configuration preservation. Public
+endpoint checks pass and DNS resolves across the checked resolvers. Actual
+ChatGPT reconnect is not yet accepted; the next action is the user's outcome.
+
+This closure changes only PROJECT_STATE, NEXT_AGENT, current BRIEF/HANDOFF/
+VALIDATION and the linked recovery evidence. Application bytes, OAuth identity,
+unrelated routes, private dashboard and draft PR127 remain preserved. Current
+record updates are complete; no rebuild, deployment, network reset or plugin
+reinstallation is a pending bookkeeping task.
+
 ## Existing runtime refresh complete — 2026-09-21
 
 Both current services were restarted without installing application bytes.

@@ -1,5 +1,19 @@
 # Next agent
 
+## Current order — confirm ChatGPT reconnect after route recovery
+
+The bounded public-route recovery and independent public-edge checks are
+complete. Do not repeat the publication transition or application restart.
+The next smallest action is the user's existing ChatGPT Reconnect flow and
+normal sign-in, followed by its observed outcome. Public DNS now resolves
+across the checked resolvers; a remaining failure needs fresh bounded
+evidence rather than speculative OAuth reset or plugin reinstallation.
+
+[Recovery evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-connection-recovery.md) owns actual execution and limits.
+Preserve existing registration, passkeys, unrelated routes and the private
+dashboard. No application deployment or draft PR127 integration is pending
+for this documentation-only closure. Earlier refresh-only orders are history.
+
 ## Current order after the existing runtime refresh
 
 The user-requested restart of both existing services is complete. Preserve the
