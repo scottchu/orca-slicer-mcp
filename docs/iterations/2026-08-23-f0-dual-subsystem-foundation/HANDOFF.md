@@ -5,8 +5,8 @@
 [Decision0060](../../decisions/0060-render-current-gcode-in-progress.md) and
 [active evidence](evidence/2026-09-21-live-gcode-progress.md) own the agreed
 contract, module ownership, commands and acceptance. The next smallest action
-is independent documentation-tail review followed by mandatory guarded
-delivery. Application/assets are frozen and focused independent checks are
+is independent corrected-tail review followed by a renewed mandatory
+shipping run after the stale-pin validation stop. Application/assets are frozen and focused independent checks are
 bound to their exact identities in the evidence record. Source completion
 is not deployment acceptance.
 

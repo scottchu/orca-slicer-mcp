@@ -11,7 +11,9 @@ reported-layer mapping and visible active-print updates through one shared
 software/browser checks pass on application commit `a759ee89f9548caffaebdc34ac1dbd36fa8c3bba`
 (runtime 0.4.21 / schema 19 / observation 24 / Camera 18). The documentation
 tail preserves those application bytes. Mandatory shipping and deployment
-remain pending; installed services are still the prior 0.4.20 release.
+remain pending; installed services are still the prior 0.4.20 release. The
+first shipping attempt stopped safely on stale artifact pins; measured pin
+corrections pass independent review and await the renewed full gate.
 
 [Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-live-gcode-progress.md) owns implementation identities, actual
 checks and limits. No printer controls, authentication or network changes are

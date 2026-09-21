@@ -179,3 +179,32 @@ the frozen application reports no application, dependency, configuration or
 generated-asset changes in this tail. Focused application evidence is retained
 on those unchanged bytes; the documentation owner did not rerun full builds
 solely for bookkeeping.
+
+## Stopped shipping attempt and identity-pin correction
+
+The authorized `u1_ship.py --execute` attempt
+`pr130-20260921T174350-72baef` stopped during local validation. It did not
+merge, install or mutate either service; no rollback was required. The author
+diagnosed 328 server tests: 313 passed and 15 failed against stale deterministic
+artifact hashes/sizes and the generic ChartFrame assertion. Earlier focused
+checks did not cover these old pins; their pass was not a full-gate claim.
+
+Correction `054fc1991c52bd61f9544e3e25a6b7622ca01331` changes four package/preview
+test files and the isolated composable-preview manifest/hydration pins only.
+Production source, generated resources and dependencies remain unchanged. The
+author ran pinned Bun with `--no-env-file --config=/dev/null test tests/server`
+for the diagnostic. The correction command used the same executable/flags with
+`test tests/server/live-fans-package.test.ts tests/server/private-lab.test.ts tests/server/mcp-widget-packages.test.ts tests/server/composable-preview.test.ts`:
+23 tests pass with 545 assertions.
+The independent reviewer recomputed all nine focused resource identities and
+sizes, MCP/Lab hashes, the canonical composable manifest and page hash, and
+confirmed the named hydration asset exists. All corrected pins match the
+actual build. Strict manifest equality and route allowlisting remain; removing
+the shared ChartFrame marker does not remove the WebGLRenderer, OrbitControls
+or bed-mesh-fixture guards. No blocking delta finding remains.
+
+The Progress resource retains the 99,325-byte hash recorded above, so its exact
+parser/cache/browser evidence carries forward on unchanged production bytes.
+The independent identity check and `git diff --name-only` verify that boundary.
+The corrected combined candidate still requires exact review and a renewed
+full mandatory shipping run; no failed gate is skipped or weakened.

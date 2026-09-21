@@ -2,11 +2,12 @@
 
 ## Current order — implement and ship real G-code Progress
 
-1. Review the documentation tail independently and confirm the combined
-   candidate retains application commit `a759ee89f9548caffaebdc34ac1dbd36fa8c3bba`
-   bytes. Exact application source review and focused independent probes pass.
+1. Confirm the corrected combined candidate and documentation tail. Exact
+   application review/probes and independent artifact-pin delta checks pass;
+   production bytes remain those of `a759ee89f9548caffaebdc34ac1dbd36fa8c3bba`.
 2. The implementation owner runs the single unchanged mandatory full shipping
-   validation on the clean candidate. Preserve the accepted application/asset
+   validation again on the corrected clean candidate after the safely stopped
+   stale-pin attempt. Preserve the accepted application/asset
    identities; do not duplicate unaffected full suites for record ownership.
 3. Complete the PR and unchanged guarded shipping workflow, restart both
    services, verify exact assets and meaningful installed Progress behavior,

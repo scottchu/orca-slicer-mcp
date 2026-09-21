@@ -11,7 +11,9 @@ acceptance. One frozen-input owner runs mandatory shipping validation;
 independent targeted checks and affected browser cases remain separate. The
 linked evidence records completed pre-freeze adversarial and browser probes;
 final source/asset binding now passes. Mandatory shipping and installed
-acceptance remain pending.
+acceptance remain pending. The first mandatory attempt stopped on stale
+artifact pins without deployment; independently verified identity corrections
+require a renewed full gate.
 
 ## Public connection recovery — 2026-09-21
 
