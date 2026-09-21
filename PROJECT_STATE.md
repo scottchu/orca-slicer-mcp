@@ -1,10 +1,18 @@
 # Project state
 
-## Current work — Progress layout refinement
+## Current release — refined Progress panel delivered
 
-The requested Camera-style view switch and integrated model-panel progress
-summary are implemented for review. Acquisition/cache/layer semantics remain
-unchanged. [Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-progress-layout.md) owns acceptance, corrections and release gates.
+PR132 merged at `9c94bd1e48efe4f00dd066f63aba2928b882a286` and shipped
+runtime 0.4.22 / schema 19 / observation 25 / Camera 18. Both existing services were
+explicitly restarted and verified. Progress now uses the common Camera-style
+3D/Top switch and places status, percentage and bar in the model panel's bottom.
+Unknown values remain readable; acquisition/cache/layer semantics are unchanged.
+
+[Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-progress-layout.md) owns the correction, exact review,
+mandatory shipping, preservation and installed verification. The record tail
+changes documentation only and needs no additional deployment. Actual active
+print and ChatGPT/phone acceptance remain separate. [NEXT_AGENT.md](NEXT_AGENT.md)
+owns the next user review opportunity.
 
 ## Current release — G-code Progress delivered
 

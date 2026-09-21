@@ -1,12 +1,15 @@
 # F0 dual-subsystem foundation brief
 
-## Active refinement — Progress layout
+## Delivered refinement — Progress layout
 
-F0 / P03 and OBS-011/016: reuse the Camera common Switch for 3D/Top, remove cramped
-icon/text buttons, and place the existing single percentage/bar in an in-flow
-summary at the bottom of the model panel. Preserve 4:3 model space, accessible
-progress semantics, unknown/failure masking and 44px keyboard controls.
-Acquisition/cache/provenance/layer/cadence contracts remain unchanged.
+F0 / P03 and OBS-011/016: PR132 delivers the requested Camera common Switch
+for 3D/Top and one status/percentage/bar summary in the model panel's bottom.
+The model retains its 4:3 viewport and accessibility semantics. Unknown text,
+44px keyboard controls and preview-local versus whole-card failure states
+were verified; acquisition/cache/layer/cadence contracts are unchanged.
+Runtime0.4.22 / schema 19 / observation 25 / Camera 18 is installed, with both
+services restarted and verified. [Evidence](evidence/2026-09-21-progress-layout.md) owns release acceptance.
+Actual-host and active-print outcomes remain separate from synthetic checks.
 
 ## Delivered slice — current-G-code Progress
 

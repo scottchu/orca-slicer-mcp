@@ -3,7 +3,8 @@
 ## Progress layout refinement
 
 [2026-09-21 evidence](evidence/2026-09-21-progress-layout.md) owns the requested layout, affected
-consumers, actual focused checks, correction and pending release acceptance.
+consumers, actual focused checks, corrected exact review, required shipment
+and installed acceptance.
 
 
 ## Current-G-code Progress — released and independently checked

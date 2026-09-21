@@ -1,12 +1,18 @@
 # F0 maintenance handoff
 
-## Current slice — Progress layout
+## Progress layout — delivered PR132
 
 Changed ProgressPanel, ToolpathPreview, the domain-only ToolpathFrame, component
-registration, runtime/observation versions and three generated consumers.
-[Evidence](evidence/2026-09-21-progress-layout.md) owns actual checks and the corrected Unknown clipping
-finding. Next: independent exact review, guarded shipment and installed behavior.
-No changes to acquisition/cache/layers, auth/network or printer controls.
+registration, runtime/observation versions and generated consumer identities.
+[Evidence](evidence/2026-09-21-progress-layout.md) owns the Unknown correction, stopped first gate,
+exact review, guarded shipment and installed-byte verification. Runtime0.4.22 /
+schema 19 / observation 25 / Camera 18 is delivered; both services restarted.
+
+The next smallest action is user review of the refined card in the normal host.
+Real active-print and ChatGPT/phone outcomes remain unaccepted by fixture tests.
+Acquisition/cache/layers, auth/network and printer controls were unchanged.
+All current record updates are complete. This documentation-only tail changes
+no application inputs and requires no rebuild or service deployment.
 
 ## Current-G-code Progress — delivered PR130
 
