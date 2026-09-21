@@ -186,14 +186,17 @@ The authorized `u1_ship.py --execute` attempt
 `pr130-20260921T174350-72baef` stopped during local validation. It did not
 merge, install or mutate either service; no rollback was required. The author
 diagnosed 328 server tests: 313 passed and 15 failed against stale deterministic
-artifact hashes/sizes and the generic ChartFrame assertion. Earlier focused
+artifact hashes/sizes and composable manifest pins. The generic ChartFrame
+assertion was hidden behind an earlier hash failure and was corrected during
+the follow-up; it was not separately observed among those 15 failures. Earlier focused
 checks did not cover these old pins; their pass was not a full-gate claim.
 
 Correction `054fc1991c52bd61f9544e3e25a6b7622ca01331` changes four package/preview
 test files and the isolated composable-preview manifest/hydration pins only.
 Production source, generated resources and dependencies remain unchanged. The
 author ran pinned Bun with `--no-env-file --config=/dev/null test tests/server`
-for the diagnostic. The correction command used the same executable/flags with
+for the diagnostic. The targeted correction used `bun` from PATH (also 1.4.0)
+with the same flags and
 `test tests/server/live-fans-package.test.ts tests/server/private-lab.test.ts tests/server/mcp-widget-packages.test.ts tests/server/composable-preview.test.ts`:
 23 tests pass with 545 assertions.
 The independent reviewer recomputed all nine focused resource identities and
