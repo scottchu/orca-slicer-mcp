@@ -1,6 +1,6 @@
 # 0060 — Render current G-code in Progress
 
-- Status: selected implementation direction; independent acceptance and release pending
+- Status: accepted and shipped in PR130; physical-print and actual-host outcomes remain separate
 - Date: 2026-09-21
 - Milestone: F0 / widget P03, OBS-011, OBS-016, API-007
 

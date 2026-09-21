@@ -68,7 +68,7 @@ silently changed.
 
 | [0059](0059-prioritize-camera-reliability-and-fixed-live-widgets.md) | Prioritize Camera reliability and fixed live widgets | Implemented/released PR125; scoped software/service verification complete, actual-phone acceptance open |
 
-| [0060](0060-render-current-gcode-in-progress.md) | Render current G-code in Progress | Selected implementation direction; independent acceptance and release pending |
+| [0060](0060-render-current-gcode-in-progress.md) | Render current G-code in Progress | Accepted and shipped in PR130; physical-print and actual-host outcomes remain separate |
 
 Decision 0026 is reserved for the paused queue work outside this source slice.
 

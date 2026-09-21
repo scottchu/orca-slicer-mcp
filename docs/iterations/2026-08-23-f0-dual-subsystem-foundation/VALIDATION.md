@@ -1,19 +1,17 @@
 # F0 validation index
 
-## Current-G-code Progress — exact application checks pass; shipment pending
+## Current-G-code Progress — released and independently checked
 
-[Slice evidence](evidence/2026-09-21-live-gcode-progress.md) owns actual source
-identities, command results and the independent review/release boundary.
-[Decision0060](../../decisions/0060-render-current-gcode-in-progress.md) lists
-observable acceptance, including cache/identity/privacy/transport races and
-shared cadence/lifecycle consumer coverage. Baseline health is not new-feature
-acceptance. One frozen-input owner runs mandatory shipping validation;
-independent targeted checks and affected browser cases remain separate. The
-linked evidence records completed pre-freeze adversarial and browser probes;
-final source/asset binding now passes. Mandatory shipping and installed
-acceptance remain pending. The first mandatory attempt stopped on stale
-artifact pins without deployment; independently verified identity corrections
-require a renewed full gate.
+[Slice evidence](evidence/2026-09-21-live-gcode-progress.md) owns exact reviewed
+and merged identities, actual commands, corrected stale artifact pins, the
+successful full mandatory gate, both-service restarts and preservation.
+Independent installed-resource checks confirm the exact Progress hash and
+meaningful responsive/state/lifecycle behavior using simulated telemetry.
+
+Runtime 0.4.21 / schema 19 / observation 24 / Camera 18 is installed. Software,
+installed-fixture, real-printer and actual ChatGPT/phone outcomes remain
+distinct; the latter two are not inferred. The final documentation-only tail
+retains all application evidence on unchanged bytes and needs no redeployment.
 
 ## Public connection recovery — 2026-09-21
 
