@@ -1,13 +1,17 @@
 # Next agent
 
-## Active correction — semantic Progress states
 
-User phone feedback rejects the oversized empty Standby canvas and irrelevant
-unknown metrics. F0 / P03, OBS-003/008/011/016: implement explicit compact idle,
-unknown and offline anatomy; retain useful active/terminal job facts and preserve
-masked failure geometry. Validate each semantic state and transition visually,
-then independently review and ship through all existing guards. No printer,
-authentication, network or plugin changes. Earlier orders below are historical.
+## Current order — review the repaired Progress states
+
+PR136 is merged and deployed at runtime 0.4.24 / schema 19 / observation 27 /
+Camera 18. Semantic state repair, required shipping, both-service restarts and
+scoped installed checks are complete; [evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-progress-states.md) owns identities and limits.
+
+Next is the user's normal-host review and, when naturally available, observation
+of an actual active print. No print start, authentication/network change or
+plugin reinstall is pending. Current record updates are complete; this final
+Markdown tail preserves deployed application inputs and needs no extra build or
+deployment. Earlier execution orders below are historical.
 
 ## Current order — review the delivered Progress grouping
 

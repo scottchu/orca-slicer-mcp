@@ -1,13 +1,16 @@
 # F0 dual-subsystem foundation brief
 
-## Active correction — semantic Progress states
 
-User phone feedback rejects the oversized empty Standby canvas and irrelevant
-unknown metrics. F0 / P03, OBS-003/008/011/016: implement explicit compact idle,
-unknown and offline anatomy; retain useful active/terminal job facts and preserve
-masked failure geometry. Validate each semantic state and transition visually,
-then independently review and ship through all existing guards. No printer,
-authentication, network or plugin changes. Earlier orders below are historical.
+## Delivered correction — Progress semantic states
+
+F0 / P03, OBS-003/008/011/016: PR136 delivers compact Standby and distinct
+unknown/offline, preview-local failure, terminal and masked acquisition-failure
+states. Runtime 0.4.24 / schema 19 / observation 27 / Camera 18 is installed;
+both services restarted and passed the unchanged shipping guards.
+[Evidence](evidence/2026-09-21-progress-states.md) owns exact identities, independent
+state checks and limits. Current record updates are complete. Next is normal-host
+user review; actual active-print/phone acceptance stays separate from simulated
+telemetry. This Markdown-only record tail requires no new deployment.
 
 ## Delivered correction — Progress canvas toggle and time grouping
 
