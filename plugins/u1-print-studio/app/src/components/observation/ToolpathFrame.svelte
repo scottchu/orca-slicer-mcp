@@ -1,20 +1,24 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  let { children, summary, controls, status }: { children: Snippet; summary: Snippet; controls: Snippet; status?: string } = $props();
+  let { children, summary, controls, status, compact = false, masked = false }: { children: Snippet; summary: Snippet; controls: Snippet; status?: string; compact?: boolean; masked?: boolean } = $props();
 </script>
 
-<div class="preview-panel">
+<div class="preview-panel" class:compact class:masked>
   <div class="preview-viewport">
-    {@render children()}
+    {#if !compact}{@render children()}{/if}
     <div class="preview-controls">
-      {#if status}<div class="preview-status" aria-live="polite">{status}</div>{/if}
-      <div class="preview-actions">{@render controls()}</div>
+      {#if status}<div class="preview-status" aria-live={masked ? undefined : "polite"} aria-hidden={masked ? true : undefined}>{status}</div>{/if}
+      <div class="preview-actions">{#if !compact}{@render controls()}{/if}</div>
     </div>
   </div>
   <div class="preview-summary">{@render summary()}</div>
 </div>
 
 <style>
+  .masked .preview-status { visibility: hidden; }
+  .compact .preview-controls { position: static; padding: 16px 12px; }
+  .compact .preview-status { position: static; padding: 0; color: var(--u1-muted); background: none; font-size: 14px; line-height: 1.4; max-width: none; }
+  .compact .preview-actions { display: none; }
   .preview-panel { overflow: hidden; border: 1px solid var(--u1-line); border-radius: var(--u1-radius-inner); }
   .preview-viewport { position: relative; }
   .preview-panel :global([data-chart-frame]) { border: 0; border-radius: 0; }

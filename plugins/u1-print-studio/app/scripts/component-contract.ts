@@ -159,7 +159,7 @@ composites.push('live/LiveProgressRoot.svelte');
 approvedImports["live/LiveProgressRoot.svelte"] = ["svelte", "../../lib/client/live/focused-controllers", "../observation/ProgressPanel.svelte"];
 approvedImports['live/LiveProgressRoot.svelte'].push('../../lib/client/live/progress-controller');
 composites.push('observation/ToolpathPreview.svelte');
-approvedImports['observation/ToolpathPreview.svelte'] = ['svelte', 'lucide-svelte', '../../lib/toolpath', '../common/Stack.svelte', '../common/Caption.svelte', '../common/Name.svelte', '../common/Switch.svelte', '../common/ChartFrame.svelte', './ToolpathCanvas.svelte', './ToolpathFrame.svelte'];
+approvedImports['observation/ToolpathPreview.svelte'] = ['../common/TextSkeleton.svelte', 'svelte', 'lucide-svelte', '../../lib/toolpath', '../common/Stack.svelte', '../common/Caption.svelte', '../common/Name.svelte', '../common/Switch.svelte', '../common/ChartFrame.svelte', './ToolpathCanvas.svelte', './ToolpathFrame.svelte'];
 // Domain-only frame keeps controls and progress semantics outside the chart image.
 leaves['observation/ToolpathFrame.svelte'] = ['div', 'div', 'div', 'div', 'div', 'div'];
 leaves['observation/ToolpathCanvas.svelte'] = ['canvas'];

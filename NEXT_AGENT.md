@@ -1,5 +1,14 @@
 # Next agent
 
+## Active correction — semantic Progress states
+
+User phone feedback rejects the oversized empty Standby canvas and irrelevant
+unknown metrics. F0 / P03, OBS-003/008/011/016: implement explicit compact idle,
+unknown and offline anatomy; retain useful active/terminal job facts and preserve
+masked failure geometry. Validate each semantic state and transition visually,
+then independently review and ship through all existing guards. No printer,
+authentication, network or plugin changes. Earlier orders below are historical.
+
 ## Current order — review the delivered Progress grouping
 
 PR134 is merged and deployed at runtime 0.4.23 / schema 19 / observation 26 /

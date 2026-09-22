@@ -1,5 +1,11 @@
 # F0 maintenance handoff
 
+## Active Progress semantic repair
+
+[Evidence](evidence/2026-09-21-progress-states.md) owns state acceptance, actual
+commands, corrections and limits. Complete independent exact review, all shipping
+guards and installed state verification; no physical print is authorized.
+
 ## Progress canvas controls and time grouping — delivered PR134
 
 Changed ToolpathFrame, ToolpathPreview and ProgressPanel; common primitives,
