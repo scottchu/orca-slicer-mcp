@@ -1,10 +1,16 @@
 # F0 validation index
 
-## Active Progress semantic repair
 
-[Evidence](evidence/2026-09-21-progress-states.md) owns state acceptance, actual
-commands, corrections and limits. Complete independent exact review, all shipping
-guards and installed state verification; no physical print is authorized.
+## Delivered correction — Progress semantic states
+
+F0 / P03, OBS-003/008/011/016: PR136 delivers compact Standby and distinct
+unknown/offline, preview-local failure, terminal and masked acquisition-failure
+states. Runtime 0.4.24 / schema 19 / observation 27 / Camera 18 is installed;
+both services restarted and passed the unchanged shipping guards.
+[Evidence](evidence/2026-09-21-progress-states.md) owns exact identities, independent
+state checks and limits. Current record updates are complete. Next is normal-host
+user review; actual active-print/phone acceptance stays separate from simulated
+telemetry. This Markdown-only record tail requires no new deployment.
 
 ## Progress canvas controls and timing — delivered
 
