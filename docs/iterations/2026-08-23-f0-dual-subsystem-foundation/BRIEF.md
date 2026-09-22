@@ -1,5 +1,14 @@
 # F0 dual-subsystem foundation brief
 
+## Active correction — semantic Progress states
+
+User phone feedback rejects the oversized empty Standby canvas and irrelevant
+unknown metrics. F0 / P03, OBS-003/008/011/016: implement explicit compact idle,
+unknown and offline anatomy; retain useful active/terminal job facts and preserve
+masked failure geometry. Validate each semantic state and transition visually,
+then independently review and ship through all existing guards. No printer,
+authentication, network or plugin changes. Earlier orders below are historical.
+
 ## Delivered correction — Progress canvas toggle and time grouping
 
 F0 / P03, OBS-011/016: PR134 delivers the common Switch inside the render

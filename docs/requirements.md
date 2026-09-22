@@ -93,6 +93,12 @@ printer environments support the described behavior.
   requires reviewed source, guarded shipment, both-service restart and scoped
   meaningful verification under decision 0028; earlier evidence is not reused
   as acceptance of changed bytes.
+  Progress fresh reachable Standby is a compact no-active-print message without
+  job metrics or disabled model controls. Unknown/offline and age-stale idle stay
+  distinct. Active missing/unsupported geometry uses a compact local explanation
+  beside valid reported facts; zero percent or missing filename never implies
+  idle. Terminal jobs are labeled last reported, retain reported values and omit
+  Remaining. Acquisition failure preserves the accepted semantic anatomy under0041.
 - **OBS-012:** Queue is an independently timed, read-only application-store
   domain acquired only by focused Queue demand through the fixed bounded
   operations-adapter endpoint. Retain the 15-second attempt TTL, coalescing,

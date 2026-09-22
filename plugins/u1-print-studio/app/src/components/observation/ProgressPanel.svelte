@@ -7,17 +7,29 @@
   import LoadingValue from '../common/LoadingValue.svelte';
   import { type FailureProps } from '../../lib/client/observation/loading';
   import type { ProgressPresentation } from '../../lib/client/live/focused-presentation';
+  import Stack from '../common/Stack.svelte';
+  import Name from '../common/Name.svelte';
+  import Caption from '../common/Caption.svelte';
+  import TextSkeleton from '../common/TextSkeleton.svelte';
   import ToolpathPreview from './ToolpathPreview.svelte';
   type Props = FailureProps & { lab?: boolean; meta?: Snippet; actionLabel?: string; feedback?: string; failureMessage?: string } & ({ observation: ProgressObservation; live?: never; loading?: false; refreshing?: boolean } | { live: ProgressPresentation; observation?: never; loading?: false; refreshing?: boolean } | { loading: true; observation?: never; live?: never; refreshing?: never });
   let { observation, live, loading: pending = false, refreshing = false, failure, onretry, lab = true, meta, actionLabel, feedback, failureMessage }: Props = $props();
   const loading = $derived(pending || !!failure);
   const accepted = $derived(live ? { sourceObservedAt: live.sourceObservedAt, freshness: live.freshness, state: live.printerState, percent: live.fields.percent.value, currentLayer: live.fields.currentLayer.value, totalLayers: live.fields.totalLayers.value, elapsedSeconds: live.fields.elapsedSeconds.value, etaSeconds: live.fields.estimatedRemainingSeconds.value } : (pending ? null : observation ?? null));
   const progress = $derived(failure ? null : accepted);
+  // Retain the accepted anatomy during acquisition failure while masking its values.
+  const hasJobFacts = $derived(!!live && Object.values(live.fields).some(field => field.value !== null));
+  const compact = $derived(!lab && !!live && (!live.reachable || live.printerState === 'standby' || (live.printerState === 'unknown' && !hasJobFacts)));
+  const terminal = $derived(!!accepted && ['complete', 'cancelled', 'error'].includes(accepted.state));
+  const stale = $derived(live?.freshness !== 'fresh');
+  const compactTitle = $derived(!live?.reachable ? 'Printer unavailable' : live.printerState === 'standby' ? (stale ? 'Last reported: no active print' : 'No active print') : 'Print status unknown');
+  const compactDetail = $derived(!live?.reachable ? 'Current print status is unavailable.' : live.printerState === 'standby' ? (stale ? 'Refresh to check the current printer status.' : 'Progress will appear when the printer reports a job.') : 'The printer has not reported a print state.');
+  const statusText = $derived(progress ? `${!lab && stale ? 'Last reported: ' : ''}${progress.state === 'unknown' ? 'Print status unknown' : titleCase(progress.state)}` : undefined);
 </script>
 
 {#snippet summary()}
   <div class="progress-top" class:live={!lab}>
-    <span class="observation-status" class:loading><LoadingValue {loading} text={loading ? undefined : (progress ? titleCase(progress.state) : undefined)} words={lab ? [9] : undefined} /></span>
+    <span class="observation-status" class:loading><LoadingValue {loading} text={loading ? undefined : statusText} words={lab ? [9] : undefined} /></span>
     <div class="percent" class:unknown={!loading && progress?.percent == null}><LoadingValue {loading} text={loading ? undefined : (progress?.percent == null ? 'Unknown' : Math.round(progress.percent))} size="short" words={lab ? [3] : undefined} /><span class:loading-unit={loading} aria-hidden={loading ? true : undefined}>{progress?.percent == null && !loading ? '' : '%'}</span></div>
   </div>
   <div class="progress-track" role={loading || progress?.percent == null ? undefined : 'progressbar'} aria-hidden={loading || progress?.percent == null ? true : undefined} aria-label={loading ? undefined : 'Print progress'} aria-valuenow={progress?.percent ?? undefined} aria-valuemin={loading ? undefined : 0} aria-valuemax={loading ? undefined : 100}>
@@ -27,14 +39,21 @@
 {/snippet}
 
 <ObservationFrame title="Print Progress" icon={Printer} observedAt={progress?.sourceObservedAt ?? null} freshness={progress?.freshness ?? 'unknown'} stateKind={failure ?? (pending ? 'loading' : 'ready')} placeholder={loading} {onretry} {refreshing} {lab} {meta} {actionLabel} {feedback} {failureMessage}>
-  {#if !lab}<ToolpathPreview preview={live?.preview} filename={live?.fields.filename.value} masked={loading} {summary} />{/if}
+  {#if compact}
+    <Stack>
+      {#if loading}<Name loading shape={compactTitle} />{:else}<Name text={compactTitle} />{/if}
+      <Caption>{#if loading}<TextSkeleton shape={compactDetail} />{:else}{compactDetail}{/if}</Caption>
+    </Stack>
+  {:else}
+  {#if !lab}<ToolpathPreview preview={live?.preview} filename={live?.fields.filename.value} masked={loading} terminal={terminal} reserveCanvas={!live || !!live.preview?.geometry} {summary} />{/if}
   {#if lab}{@render summary()}{/if}
 
   <div class="timing">
-    {#each [{ label: 'Elapsed', value: progress?.elapsedSeconds == null ? 'Unknown' : formatDuration(progress.elapsedSeconds) }, { label: 'Remaining', value: progress?.etaSeconds == null ? 'Estimate unknown' : `About ${formatDuration(progress.etaSeconds)}` }] as time}
+    {#each [{ label: terminal ? 'Print time' : 'Elapsed', value: progress?.elapsedSeconds == null ? 'Unknown' : formatDuration(progress.elapsedSeconds) }, ...(!terminal ? [{ label: 'Remaining', value: progress?.etaSeconds == null ? 'Unknown' : `About ${formatDuration(progress.etaSeconds)}` }] : [])] as time}
       <div class="elapsed"><Clock3 aria-hidden="true" /><div><span class="observation-label">{time.label}</span><strong><LoadingValue {loading} text={loading ? undefined : time.value} words={lab ? [3, 3] : undefined} /></strong></div></div>
     {/each}
   </div>
+  {/if}
 </ObservationFrame>
 
 <style>
