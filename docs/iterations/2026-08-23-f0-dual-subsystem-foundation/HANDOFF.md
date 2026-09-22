@@ -1,5 +1,50 @@
 # F0 maintenance handoff
 
+## Active handoff — offline gallery ready for visual review
+
+Changed source: seven files under
+[experiments/u1-design-system-gallery](../../../experiments/u1-design-system-gallery/README.md).
+Current entrypoint/state/order, this iteration's BRIEF/HANDOFF/VALIDATION,
+[design proposal](../../design-system-review.md) and
+[gallery evidence](evidence/2026-09-22-design-system-gallery.md) record the result.
+Earlier audit and transfer evidence/history are preserved.
+
+The gallery is implemented and scoped author/UX checks are complete. Exact
+candidate/source/graph identities, independent verification and retained-versus-
+renewed checks are linked in the evidence. The task-owned loopback preview remains
+available for requested review; its private receipt owns process/location details.
+Browsers and replaced preview instances were closed. No production source,
+dependency, configuration, public artifact or deployed service changed.
+
+Next smallest action: user visual selection of No target, receipt placement and
+duration precision. The imported-component baseline is not an exact shipped-widget
+reproduction; synthetic text scaling is not device zoom, and modeled state changes
+are not production-controller recovery. No broad migration or provisional API
+adoption follows from this readiness. Runtime 0.4.24 and prior release evidence
+remain intact; no extra deployment/restart or record catch-up is pending.
+
+
+## Active handoff — design-system audit and proposal
+
+Transfer acceptance, independent preservation verification and supported caller
+archival are complete. Canonical-checkout removal is excluded; no worktree was
+removed. [Transfer evidence](evidence/2026-09-21-design-system-handoff.md) retains
+the actual boundaries; operational identities and complete receipts stay private.
+
+Changed records are NEW_AGENT_START, PROJECT_STATE, NEXT_AGENT, this iteration's
+BRIEF/HANDOFF/VALIDATION, transfer evidence, new [audit evidence](evidence/2026-09-22-design-system-audit.md)
+and [design-system proposal](../../design-system-review.md). Application source,
+telemetry, authentication and deployed services are unchanged. Runtime 0.4.24
+and existing release acceptance remain attributed to their original evidence.
+
+Independent source/evidence/documentation review passed. The next smallest
+action is to make the bounded thermal/observation-time gallery reviewable for
+visual selection before broad migration. Progress duration precision and Cavity no-target wording remain
+open. Camera supplies a contract comparison, not a migration target. Selected
+synthetic baseline captures do not prove a full state/size matrix, the proposed
+gallery, real printer behavior or actual-phone acceptance. No completed intake,
+archive or prior release action remains pending.
+
 
 ## Delivered correction — Progress semantic states
 

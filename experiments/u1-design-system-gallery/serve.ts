@@ -1,0 +1,13 @@
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { createServer } from 'node:http';
+const output = process.argv[2];
+if (!output?.startsWith('/')) throw Error('Pass absolute artifact directory');
+const manifest = JSON.parse(readFileSync(`${output}/manifest.json`, 'utf8'));
+const names = ['index.html','gallery.js','gallery.css'];
+if (Object.keys(manifest.files).sort().join() !== [...names].sort().join()) throw Error('Invalid allowlist');
+const snapshot = new Map(names.map(name => { const bytes = readFileSync(`${output}/${name}`); if (createHash('sha256').update(bytes).digest('hex') !== manifest.files[name]) throw Error(`Integrity: ${name}`); return [name === 'index.html' ? '/' : `/${name}`, bytes]; }));
+const server = createServer((req, res) => { const bytes = req.method === 'GET' ? snapshot.get(req.url ?? '') : undefined; res.writeHead(bytes ? 200 : 404, { 'Content-Type': req.url === '/' ? 'text/html; charset=utf-8' : req.url === '/gallery.js' ? 'text/javascript; charset=utf-8' : 'text/css; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'none'; img-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" }); res.end(bytes ?? 'Not found'); });
+server.on('upgrade', (_req, socket) => socket.end('HTTP/1.1 404 Not Found\r\nConnection: close\r\n\r\n'));
+server.on('connect', (_req, socket) => socket.end('HTTP/1.1 404 Not Found\r\nConnection: close\r\n\r\n'));
+server.listen(Number(process.argv[3] ?? 0), '127.0.0.1', () => console.log(`Gallery http://127.0.0.1:${(server.address() as { port: number }).port}/`));

@@ -1,5 +1,42 @@
 # Project state
 
+## Active work — gallery ready for visual selection
+
+The isolated [component gallery](experiments/u1-design-system-gallery/README.md)
+is implemented. It compares imported current thermal primitives with explicit
+No target and source-associated receipt groups, compares actual Progress/common
+duration formatting, and includes a Camera contract reference/common Switch.
+The baseline is a bounded imported-component composition, not the exact shipped
+Thermals widget. Gallery APIs/layout remain proposals.
+
+Scoped author checks and screenshot-first UX review support review readiness;
+[gallery evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-22-design-system-gallery.md)
+records exact output versions and independent verification. User visual selection
+is next: no-target treatment, receipt placement and duration precision.
+Production source, common components, dependencies and public assets are unchanged;
+runtime 0.4.24 remains delivered. [NEXT_AGENT.md](NEXT_AGENT.md) owns the current
+order. Earlier audit/proposal records follow as history.
+
+
+## Active work — design-system audit and review proposal
+
+The accepted hierarchy is foundations, primitives, small composed values,
+domain components, widgets and pages. Transfer acceptance, independent
+preservation verification and exact caller archival are complete. The canonical
+checkout and other worktrees/services/evidence remain preserved; intake is not a
+pending action.
+
+The [review proposal](docs/design-system-review.md) maps existing common
+components, state contracts and a bounded gallery plan. Its
+[audit evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-22-design-system-audit.md)
+separates source findings from selected fresh synthetic captures. The proposed
+first slice is temperature/current-target/no-target plus independent observation
+time, with a Progress time-group comparison and Camera contract reference.
+Visual direction and implementation remain unaccepted. No application source or
+runtime behavior changes are claimed; runtime 0.4.24 remains delivered.
+[NEXT_AGENT.md](NEXT_AGENT.md) owns the current execution order. Earlier sections
+below are historical.
+
 
 ## Current release — Progress semantic states repaired
 

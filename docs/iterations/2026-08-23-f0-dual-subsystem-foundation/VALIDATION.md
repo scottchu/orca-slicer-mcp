@@ -1,5 +1,24 @@
 # F0 validation index
 
+## Current gallery evidence
+
+[Gallery evidence](evidence/2026-09-22-design-system-gallery.md) owns the implemented
+offline experiment's exact inputs/outputs, source/graph isolation, staged author
+checks, independent verification and screenshot-first UX review. Evidence from
+earlier candidates is explicitly retained only for unchanged scope; final
+footer/assets were rechecked. This is readiness for user visual selection, not
+production adoption, deployment, actual-device or printer acceptance.
+
+
+## Current design-system audit and proposal
+
+[Audit evidence](evidence/2026-09-22-design-system-audit.md) owns source identities,
+selected synthetic capture scope, actual checks and limitations.
+[The proposal](../../design-system-review.md) is not implementation acceptance or
+an adopted visual direction. [Transfer evidence](evidence/2026-09-21-design-system-handoff.md)
+records completed intake/preservation/archival separately. No real-printer,
+actual-phone or new deployed-service acceptance is claimed by this work.
+
 
 ## Delivered correction — Progress semantic states
 

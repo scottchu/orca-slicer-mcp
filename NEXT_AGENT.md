@@ -1,5 +1,49 @@
 # Next agent
 
+## Active order — user visual selection of the offline gallery
+
+The [gallery](experiments/u1-design-system-gallery/README.md) is implemented;
+[gallery evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-22-design-system-gallery.md)
+owns output identities, actual scoped checks and review limits. Completed build,
+validation and record work must not remain pending next actions.
+
+1. Review the local gallery and choose the proposed Cavity No target treatment,
+   receipt placement and duration precision. Current/proposed specimens are
+   synthetic; the imported-component baseline is not the exact shipped widget.
+2. Keep source delivery as a draft PR for review. No merge, production migration
+   or deployment precedes the user's visual choice. After selection, scope the
+   smallest adopted slice with transitive-consumer coverage, separate authorship/
+   verification/review and the existing application shipping gates.
+
+The review preview is task-owned and loopback-only; operational location and
+process ownership remain in private evidence. Use the README to regenerate or
+restart it if needed. Do not restart public/dashboard services for this experiment.
+Runtime 0.4.24 remains delivered. Earlier orders below are completed or superseded;
+intake, archival and prior releases must not be replayed.
+
+
+## Active order — review the first design-system composition
+
+The [proposal](docs/design-system-review.md) and [audit evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-22-design-system-audit.md)
+have independent source/evidence/documentation approval. This does not adopt the
+visual direction or accept an implementation.
+
+1. Make the proposed temperature/current-target/no-target and observation-time
+   gallery visually reviewable, using existing primitives and explicit synthetic
+   fixtures. Compare one Progress elapsed/remaining group; use Camera as a contract
+   reference, with no migration. Cover the scoped semantic cases at 320/390px and
+   normal/200% text. Ask for visual-direction selection before broad migration.
+2. After selection, assign the smallest adopted end-to-end slice to separate
+   implementation, verification and independent-review owners. Preserve shared
+   consumer coverage and every existing release gate for application changes.
+
+Transfer acceptance, independent preservation verification and exact caller
+archival are complete; do not replay them. The canonical checkout, all other
+trees, services and evidence remain preserved. The adopted hierarchy does not
+approve arbitrary restyling, a wholesale rewrite, dynamic Lab expansion or
+changed telemetry semantics. No printer operation, auth/network change, plugin
+reinstall or repeat deployment is included. This order supersedes older orders.
+
 
 ## Current order — review the repaired Progress states
 
