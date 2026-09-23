@@ -192,3 +192,43 @@ placement and duration precision. Source delivery may proceed as a draft PR;
 no merge, widget migration, production deployment or service restart precedes
 that visual choice. Later adopted application work retains every existing
 consumer, independent-review and shipping gate.
+
+
+## Later user-requested private tailnet access
+
+The user separately authorized private Tailscale access to the completed gallery.
+The operator snapshotted existing Serve configuration, then ran the supported
+`tailscale serve --bg --https=<new-private-port> <loopback-backend>` command
+(exit 0). Removing only the new TCP/Web proxy entries from the resulting
+configuration reproduced the original exactly, including the existing Funnel
+allowance. No public Funnel was added; existing routes, authentication and
+production U1 services were preserved. Exact command values, URL, configuration
+snapshots and process identity remain in private operational receipts.
+
+The original preview process had stopped. An attempted detached launch did not
+persist, and an early loopback request failed. The shell continued to create the
+proxy before its upstream was working. The operator then restarted the exact
+immutable gallery using the existing `serve.ts` invocation under retained
+execution, with no rebuild. Subsequent operator checks passed HTTP 200 and the
+final manifest's three asset hashes on both loopback HTTP and valid-TLS private
+HTTPS. This records the recovered result without treating the earlier failed
+request as success.
+
+Independent verification passed: a fresh `tailscale serve status --json` matched
+the operator's resulting configuration; all 20 existing TCP/Web routes and the
+existing AllowFunnel entry were preserved, with no Funnel enabled on the new route.
+All three private HTTPS assets returned 200 and matched the final manifest hashes
+with default certificate/hostname validation enabled. This establishes private
+access and preservation, not actual-phone or user visual acceptance. The access
+change adds no application build or production deployment.
+The loopback backend remains task-owned and must stay running for the proxy to
+work; no durable-daemon behavior is claimed. The next product step remains user
+visual selection. Documentation changes are limited to current order, handoff,
+validation index and this operational evidence; all private operational details
+remain outside repository records.
+
+The records owner ran `git diff --check` and a focused
+`uv run --no-project python -` check: all eight links in current sections/evidence
+resolve, new content has no private operational pointers, and the experiment plus
+production-input diff against HEAD is empty. These are documentation/preservation
+checks only. The private independent receipt owns exact final-document approval.

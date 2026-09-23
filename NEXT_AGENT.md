@@ -15,9 +15,12 @@ validation and record work must not remain pending next actions.
    smallest adopted slice with transitive-consumer coverage, separate authorship/
    verification/review and the existing application shipping gates.
 
-The review preview is task-owned and loopback-only; operational location and
-process ownership remain in private evidence. Use the README to regenerate or
-restart it if needed. Do not restart public/dashboard services for this experiment.
+The task-owned review backend remains loopback-bound, with a separately
+user-authorized private tailnet HTTPS proxy for review; no public Funnel was
+added. Its URL, configuration and process ownership remain in private receipts.
+The preview depends on its local process, not a durable daemon. Use the README
+to regenerate/restart the backend if needed; preserve the proxy and existing
+routes. Do not restart public/dashboard services for this experiment.
 Runtime 0.4.24 remains delivered. Earlier orders below are completed or superseded;
 intake, archival and prior releases must not be replayed.
 

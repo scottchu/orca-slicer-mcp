@@ -7,7 +7,9 @@ offline experiment's exact inputs/outputs, source/graph isolation, staged author
 checks, independent verification and screenshot-first UX review. Evidence from
 earlier candidates is explicitly retained only for unchanged scope; final
 footer/assets were rechecked. This is readiness for user visual selection, not
-production adoption, deployment, actual-device or printer acceptance.
+production adoption, deployment, actual-device or printer acceptance. The same
+evidence records the later user-requested private tailnet proxy, exact asset
+checks and existing-route preservation separately from gallery visual acceptance.
 
 
 ## Current design-system audit and proposal

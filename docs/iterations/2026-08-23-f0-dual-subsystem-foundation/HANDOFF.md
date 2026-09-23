@@ -11,10 +11,13 @@ Earlier audit and transfer evidence/history are preserved.
 
 The gallery is implemented and scoped author/UX checks are complete. Exact
 candidate/source/graph identities, independent verification and retained-versus-
-renewed checks are linked in the evidence. The task-owned loopback preview remains
-available for requested review; its private receipt owns process/location details.
-Browsers and replaced preview instances were closed. No production source,
-dependency, configuration, public artifact or deployed service changed.
+renewed checks are linked in the evidence. A separately user-authorized private
+tailnet HTTPS proxy now reaches the task-owned loopback preview; no public Funnel
+was added. The private receipts own URL/configuration/process details and recovery
+history. The backend remains process-dependent; this is not a durable service.
+Browsers and replaced preview instances were closed. Production source,
+dependencies, application configuration, public artifacts and deployed U1 services
+remain unchanged; the scoped gallery Serve entry is the only access addition.
 
 Next smallest action: user visual selection of No target, receipt placement and
 duration precision. The imported-component baseline is not an exact shipped-widget
