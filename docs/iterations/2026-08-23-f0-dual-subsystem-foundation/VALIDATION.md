@@ -3,7 +3,8 @@
 ## Current pre-reformat preservation evidence
 
 [Preservation evidence](evidence/2026-09-29-reformat-preservation.md) records the
-new source-preservation integration and local/private inventory scope. Its
+completed PR138 source-preservation merge, exact imported PR127 files and
+local/private inventory scope. Its
 acceptance layers are remote Git source, private off-machine backup, worktree
 retirement and later runtime recovery. None substitutes for another; no backup
 or removal pass is claimed from the plan. Prior gallery source/UX evidence stays

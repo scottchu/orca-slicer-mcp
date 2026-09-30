@@ -10,9 +10,12 @@ knowledge from private backup. [Current evidence](evidence/2026-09-29-reformat-p
 owns identities, commands and verified dispositions without publishing local
 operational identifiers.
 
-Next smallest actions: reviewed source-preservation PR integration and private
-inventory reconciliation. Off-machine backup awaits the user's destination;
-no backup, worktree removal or remote-main integration is claimed here yet.
+Source integration is complete: PR138 merged at
+`5d210d4bc5859a0aa871ea1eedbe7a44a3fc69f8`; exact source and PR127 preservation
+were verified, and PR127 is closed as superseded. Next smallest action is the
+user's off-machine backup destination, followed by verified private preservation
+and inventory reconciliation. Local disk pressure limits staging. No off-machine
+backup or worktree removal is claimed.
 Preserve canonical checkout, runtime dependencies, original private snapshots
 and evidence until their verified disposition is recorded. Earlier preview and
 release checks establish their original observations only, not current liveness.

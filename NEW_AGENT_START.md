@@ -6,8 +6,10 @@ This authorizes source-preservation merge independently of the pending visual
 choice; it does not adopt gallery APIs/layout or authorize deployment. Read
 [NEXT_AGENT.md](NEXT_AGENT.md), [recovery checklist](docs/reformat-recovery.md) and
 [current evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-29-reformat-preservation.md).
-Off-machine private backup and removal require verified outcomes; neither is
-claimed by this entrypoint. Earlier transfer actions below remain complete.
+PR138 source preservation merged to verified main at
+`5d210d4bc5859a0aa871ea1eedbe7a44a3fc69f8`; PR127 closed after exact preservation
+verification. Off-machine private backup and removal still require verified
+outcomes; neither is claimed by this entrypoint. Earlier transfer actions below remain complete.
 
 Transfer intake is accepted, independent preservation verification passed, and
 the exact caller conversation was reversibly archived through the supported CLI.
