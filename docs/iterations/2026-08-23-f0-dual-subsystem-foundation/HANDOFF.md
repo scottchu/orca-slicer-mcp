@@ -1,5 +1,22 @@
 # F0 maintenance handoff
 
+## Active handoff — pre-reformat preservation
+
+Current user authority is completed-source/knowledge merge to main and safe
+worktree retirement. Gallery source preservation no longer waits for visual
+selection; its proposed APIs/layout still have no adoption or deployment approval.
+The [recovery checklist](../../reformat-recovery.md) separates durable repository
+knowledge from private backup. [Current evidence](evidence/2026-09-29-reformat-preservation.md)
+owns identities, commands and verified dispositions without publishing local
+operational identifiers.
+
+Next smallest actions: reviewed source-preservation PR integration and private
+inventory reconciliation. Off-machine backup awaits the user's destination;
+no backup, worktree removal or remote-main integration is claimed here yet.
+Preserve canonical checkout, runtime dependencies, original private snapshots
+and evidence until their verified disposition is recorded. Earlier preview and
+release checks establish their original observations only, not current liveness.
+
 ## Active handoff — offline gallery ready for visual review
 
 Changed source: seven files under

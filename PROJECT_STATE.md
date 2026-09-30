@@ -1,5 +1,19 @@
 # Project state
 
+## Active work — pre-reformat source and knowledge preservation
+
+The user requests completed work and durable knowledge on main, with no dangling
+worktrees before reformat. Source-preservation merge of the isolated gallery is
+now authorized; the prior draft-only restriction is superseded for that purpose.
+Visual adoption and production migration remain pending, with no deployment.
+
+[Recovery checklist](docs/reformat-recovery.md) maps repository source, private
+backup necessities and unresolved design choices. [Current evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-29-reformat-preservation.md)
+owns actual integration/preservation results. Remote-main merge, verified
+off-machine private backup and worktree retirement are not yet claimed. The
+backup destination still needs the user's selection. [NEXT_AGENT.md](NEXT_AGENT.md)
+owns the active order; prior gallery and release records remain historical evidence.
+
 ## Active work — gallery ready for visual selection
 
 The isolated [component gallery](experiments/u1-design-system-gallery/README.md)

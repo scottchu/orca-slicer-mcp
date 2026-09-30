@@ -1,5 +1,25 @@
 # F0 dual-subsystem foundation brief
 
+## Active scope — preserve completed work before reformat
+
+The user changed execution order to main-branch source/knowledge preservation
+and safe worktree retirement before computer reformat. Merge of completed offline
+gallery source and sanitized records is authorized independently of visual
+adoption. This supersedes earlier draft-only/no-merge wording for this bounded
+purpose, not for production migration or deployment.
+
+Acceptance: exact remote-main source ancestry is verified; unique local work and
+private knowledge have an explicit disposition; off-machine backup is copied
+and hash/restore-verified once the user chooses its destination; eligible worktrees
+are retired only after their content and runtime dependencies are preserved.
+Canonical checkout and service-owned material require explicit treatment. A
+same-disk snapshot, clean Git status or merged PR cannot satisfy private backup.
+No preservation/removal outcome is inferred from this plan.
+
+[Recovery checklist](../../reformat-recovery.md) and [current evidence](evidence/2026-09-29-reformat-preservation.md)
+own current scope, dependencies and actual results. Design selection remains
+pending after preservation; all application shipping gates remain unchanged.
+
 ## Active scope — implemented offline gallery awaiting visual selection
 
 F0 / UI-001/003/004, F02/F04/U01. The user-authorized bounded

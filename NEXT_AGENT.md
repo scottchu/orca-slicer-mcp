@@ -1,5 +1,32 @@
 # Next agent
 
+## Active order — preserve completed source before computer reformat
+
+The user now authorizes merging completed work and durable knowledge to main,
+then resolving dangling worktrees. This supersedes the earlier draft-only /
+no-merge-before-visual-selection order for **source preservation**. Gallery visual
+adoption, production migration and deployment remain unapproved.
+
+1. Integrate the completed isolated gallery and sanitized recovery knowledge
+   through its reviewed PR. Verify the final remote-main identity and source
+   ancestry; a local commit or open PR alone is not remote preservation.
+2. Complete the private worktree/ref/file inventory. Preserve unique tracked,
+   untracked and ignored work and service dependencies before retiring any tree.
+   Retain canonical checkout; no force removal or dependency-breaking cleanup.
+3. Choose an off-machine private backup destination with the user, copy the
+   necessary private recovery material, then verify hashes and restoration.
+   Destination and off-machine backup are pending; same-disk snapshots do not
+   protect against reformat. Never upload private material into this repository.
+4. Record actual retained/removed trees and unresolved preservation blockers.
+   After recovery, resume user selection of No target, receipt placement and
+   duration precision before production migration.
+
+[Recovery checklist](docs/reformat-recovery.md) separates Git source from private
+backup requirements; [preservation evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-29-reformat-preservation.md)
+records actual outcomes. No merge, off-machine backup or removal is claimed yet.
+No production deployment, printer control, authentication or network change is
+included in this order. Earlier orders below are historical.
+
 ## Active order — user visual selection of the offline gallery
 
 The [gallery](experiments/u1-design-system-gallery/README.md) is implemented;

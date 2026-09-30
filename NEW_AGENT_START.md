@@ -1,5 +1,14 @@
 # Active entrypoint: U1 design system — primitives and composition
 
+Current order changed on 2026-09-29: preserve completed source and sanitized
+knowledge on main before reformat, then retire eligible worktrees safely.
+This authorizes source-preservation merge independently of the pending visual
+choice; it does not adopt gallery APIs/layout or authorize deployment. Read
+[NEXT_AGENT.md](NEXT_AGENT.md), [recovery checklist](docs/reformat-recovery.md) and
+[current evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-29-reformat-preservation.md).
+Off-machine private backup and removal require verified outcomes; neither is
+claimed by this entrypoint. Earlier transfer actions below remain complete.
+
 Transfer intake is accepted, independent preservation verification passed, and
 the exact caller conversation was reversibly archived through the supported CLI.
 The canonical checkout is excluded from removal. All other worktrees, services,
