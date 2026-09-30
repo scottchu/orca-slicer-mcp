@@ -1,3 +1,40 @@
+# Active entrypoint: U1 design system — primitives and composition
+
+Current order changed on 2026-09-29: preserve completed source and sanitized
+knowledge on main before reformat, then retire eligible worktrees safely.
+This authorizes source-preservation merge independently of the pending visual
+choice; it does not adopt gallery APIs/layout or authorize deployment. Read
+[NEXT_AGENT.md](NEXT_AGENT.md), [recovery checklist](docs/reformat-recovery.md) and
+[current evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-29-reformat-preservation.md).
+Off-machine private backup and removal require verified outcomes; neither is
+claimed by this entrypoint. Earlier transfer actions below remain complete.
+
+Transfer intake is accepted, independent preservation verification passed, and
+the exact caller conversation was reversibly archived through the supported CLI.
+The canonical checkout is excluded from removal. All other worktrees, services,
+releases, snapshots and evidence remain preserved. These completed actions must
+not be replayed; exact operational identities remain in private receipts.
+
+Read [PROJECT_STATE.md](PROJECT_STATE.md), [NEXT_AGENT.md](NEXT_AGENT.md),
+[requirements](docs/requirements.md), and the iteration named by
+[CURRENT](docs/iterations/CURRENT). The [handoff evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-21-design-system-handoff.md)
+records transfer boundaries. The [design-system proposal](docs/design-system-review.md)
+and implemented [offline gallery](experiments/u1-design-system-gallery/README.md)
+own the current scoped design work. [Gallery evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-22-design-system-gallery.md)
+records exact builds and scoped review; the next step is user visual selection
+before production migration. Prior [audit evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-22-design-system-audit.md)
+retains its original boundaries.
+
+The adopted hierarchy is foundations → primitives → small composed values →
+domain components → widgets → pages. Visual direction and a broad migration are
+not adopted. Acquisition stays outside presentational components. Continue with
+role-separated design, implementation, validation and independent review.
+Runtime 0.4.24 remains delivered; no deployment or printer operation is pending
+from intake. Earlier entrypoints below are historical.
+
+
+---
+
 # U1 接手入口
 
 ## 現行狀態：固定 live widgets 與 Camera recovery 已發布 PR125

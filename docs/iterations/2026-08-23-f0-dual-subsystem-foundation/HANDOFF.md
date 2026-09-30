@@ -1,5 +1,70 @@
 # F0 maintenance handoff
 
+## Active handoff — pre-reformat preservation
+
+Current user authority is completed-source/knowledge merge to main and safe
+worktree retirement. Gallery source preservation no longer waits for visual
+selection; its proposed APIs/layout still have no adoption or deployment approval.
+The [recovery checklist](../../reformat-recovery.md) separates durable repository
+knowledge from private backup. [Current evidence](evidence/2026-09-29-reformat-preservation.md)
+owns identities, commands and verified dispositions without publishing local
+operational identifiers.
+
+Next smallest actions: reviewed source-preservation PR integration and private
+inventory reconciliation. Off-machine backup awaits the user's destination;
+no backup, worktree removal or remote-main integration is claimed here yet.
+Preserve canonical checkout, runtime dependencies, original private snapshots
+and evidence until their verified disposition is recorded. Earlier preview and
+release checks establish their original observations only, not current liveness.
+
+## Active handoff — offline gallery ready for visual review
+
+Changed source: seven files under
+[experiments/u1-design-system-gallery](../../../experiments/u1-design-system-gallery/README.md).
+Current entrypoint/state/order, this iteration's BRIEF/HANDOFF/VALIDATION,
+[design proposal](../../design-system-review.md) and
+[gallery evidence](evidence/2026-09-22-design-system-gallery.md) record the result.
+Earlier audit and transfer evidence/history are preserved.
+
+The gallery is implemented and scoped author/UX checks are complete. Exact
+candidate/source/graph identities, independent verification and retained-versus-
+renewed checks are linked in the evidence. A separately user-authorized private
+tailnet HTTPS proxy now reaches the task-owned loopback preview; no public Funnel
+was added. The private receipts own URL/configuration/process details and recovery
+history. The backend remains process-dependent; this is not a durable service.
+Browsers and replaced preview instances were closed. Production source,
+dependencies, application configuration, public artifacts and deployed U1 services
+remain unchanged; the scoped gallery Serve entry is the only access addition.
+
+Next smallest action: user visual selection of No target, receipt placement and
+duration precision. The imported-component baseline is not an exact shipped-widget
+reproduction; synthetic text scaling is not device zoom, and modeled state changes
+are not production-controller recovery. No broad migration or provisional API
+adoption follows from this readiness. Runtime 0.4.24 and prior release evidence
+remain intact; no extra deployment/restart or record catch-up is pending.
+
+
+## Active handoff — design-system audit and proposal
+
+Transfer acceptance, independent preservation verification and supported caller
+archival are complete. Canonical-checkout removal is excluded; no worktree was
+removed. [Transfer evidence](evidence/2026-09-21-design-system-handoff.md) retains
+the actual boundaries; operational identities and complete receipts stay private.
+
+Changed records are NEW_AGENT_START, PROJECT_STATE, NEXT_AGENT, this iteration's
+BRIEF/HANDOFF/VALIDATION, transfer evidence, new [audit evidence](evidence/2026-09-22-design-system-audit.md)
+and [design-system proposal](../../design-system-review.md). Application source,
+telemetry, authentication and deployed services are unchanged. Runtime 0.4.24
+and existing release acceptance remain attributed to their original evidence.
+
+Independent source/evidence/documentation review passed. The next smallest
+action is to make the bounded thermal/observation-time gallery reviewable for
+visual selection before broad migration. Progress duration precision and Cavity no-target wording remain
+open. Camera supplies a contract comparison, not a migration target. Selected
+synthetic baseline captures do not prove a full state/size matrix, the proposed
+gallery, real printer behavior or actual-phone acceptance. No completed intake,
+archive or prior release action remains pending.
+
 
 ## Delivered correction — Progress semantic states
 

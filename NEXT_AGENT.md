@@ -1,5 +1,79 @@
 # Next agent
 
+## Active order — preserve completed source before computer reformat
+
+The user now authorizes merging completed work and durable knowledge to main,
+then resolving dangling worktrees. This supersedes the earlier draft-only /
+no-merge-before-visual-selection order for **source preservation**. Gallery visual
+adoption, production migration and deployment remain unapproved.
+
+1. Integrate the completed isolated gallery and sanitized recovery knowledge
+   through its reviewed PR. Verify the final remote-main identity and source
+   ancestry; a local commit or open PR alone is not remote preservation.
+2. Complete the private worktree/ref/file inventory. Preserve unique tracked,
+   untracked and ignored work and service dependencies before retiring any tree.
+   Retain canonical checkout; no force removal or dependency-breaking cleanup.
+3. Choose an off-machine private backup destination with the user, copy the
+   necessary private recovery material, then verify hashes and restoration.
+   Destination and off-machine backup are pending; same-disk snapshots do not
+   protect against reformat. Never upload private material into this repository.
+4. Record actual retained/removed trees and unresolved preservation blockers.
+   After recovery, resume user selection of No target, receipt placement and
+   duration precision before production migration.
+
+[Recovery checklist](docs/reformat-recovery.md) separates Git source from private
+backup requirements; [preservation evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-29-reformat-preservation.md)
+records actual outcomes. No merge, off-machine backup or removal is claimed yet.
+No production deployment, printer control, authentication or network change is
+included in this order. Earlier orders below are historical.
+
+## Active order — user visual selection of the offline gallery
+
+The [gallery](experiments/u1-design-system-gallery/README.md) is implemented;
+[gallery evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-22-design-system-gallery.md)
+owns output identities, actual scoped checks and review limits. Completed build,
+validation and record work must not remain pending next actions.
+
+1. Review the local gallery and choose the proposed Cavity No target treatment,
+   receipt placement and duration precision. Current/proposed specimens are
+   synthetic; the imported-component baseline is not the exact shipped widget.
+2. Keep source delivery as a draft PR for review. No merge, production migration
+   or deployment precedes the user's visual choice. After selection, scope the
+   smallest adopted slice with transitive-consumer coverage, separate authorship/
+   verification/review and the existing application shipping gates.
+
+The task-owned review backend remains loopback-bound, with a separately
+user-authorized private tailnet HTTPS proxy for review; no public Funnel was
+added. Its URL, configuration and process ownership remain in private receipts.
+The preview depends on its local process, not a durable daemon. Use the README
+to regenerate/restart the backend if needed; preserve the proxy and existing
+routes. Do not restart public/dashboard services for this experiment.
+Runtime 0.4.24 remains delivered. Earlier orders below are completed or superseded;
+intake, archival and prior releases must not be replayed.
+
+
+## Active order — review the first design-system composition
+
+The [proposal](docs/design-system-review.md) and [audit evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-22-design-system-audit.md)
+have independent source/evidence/documentation approval. This does not adopt the
+visual direction or accept an implementation.
+
+1. Make the proposed temperature/current-target/no-target and observation-time
+   gallery visually reviewable, using existing primitives and explicit synthetic
+   fixtures. Compare one Progress elapsed/remaining group; use Camera as a contract
+   reference, with no migration. Cover the scoped semantic cases at 320/390px and
+   normal/200% text. Ask for visual-direction selection before broad migration.
+2. After selection, assign the smallest adopted end-to-end slice to separate
+   implementation, verification and independent-review owners. Preserve shared
+   consumer coverage and every existing release gate for application changes.
+
+Transfer acceptance, independent preservation verification and exact caller
+archival are complete; do not replay them. The canonical checkout, all other
+trees, services and evidence remain preserved. The adopted hierarchy does not
+approve arbitrary restyling, a wholesale rewrite, dynamic Lab expansion or
+changed telemetry semantics. No printer operation, auth/network change, plugin
+reinstall or repeat deployment is included. This order supersedes older orders.
+
 
 ## Current order — review the repaired Progress states
 

@@ -1,5 +1,63 @@
 # F0 dual-subsystem foundation brief
 
+## Active scope — preserve completed work before reformat
+
+The user changed execution order to main-branch source/knowledge preservation
+and safe worktree retirement before computer reformat. Merge of completed offline
+gallery source and sanitized records is authorized independently of visual
+adoption. This supersedes earlier draft-only/no-merge wording for this bounded
+purpose, not for production migration or deployment.
+
+Acceptance: exact remote-main source ancestry is verified; unique local work and
+private knowledge have an explicit disposition; off-machine backup is copied
+and hash/restore-verified once the user chooses its destination; eligible worktrees
+are retired only after their content and runtime dependencies are preserved.
+Canonical checkout and service-owned material require explicit treatment. A
+same-disk snapshot, clean Git status or merged PR cannot satisfy private backup.
+No preservation/removal outcome is inferred from this plan.
+
+[Recovery checklist](../../reformat-recovery.md) and [current evidence](evidence/2026-09-29-reformat-preservation.md)
+own current scope, dependencies and actual results. Design selection remains
+pending after preservation; all application shipping gates remain unchanged.
+
+## Active scope — implemented offline gallery awaiting visual selection
+
+F0 / UI-001/003/004, F02/F04/U01. The user-authorized bounded
+[gallery](../../../experiments/u1-design-system-gallery/README.md) is implemented
+outside production inputs. Actual common primitives/current tokens support
+isolated proposed wrappers. The thermal comparison shows explicit Cavity No
+target and independent receipt groups; Progress compares actual minute/detailed
+duration policies; Camera remains a static contract reference plus common Switch.
+No production APIs, visual direction or broad widget migration are adopted.
+
+[Gallery evidence](evidence/2026-09-22-design-system-gallery.md) records the scoped
+320/390px and normal/200% synthetic-text checks, modeled state transitions,
+independent verification and screenshot-first review with exact candidate
+attribution. It does not claim actual phones or production-controller recovery.
+User visual selection is the next acceptance boundary. Gallery source may be
+reviewed through a draft PR; no production merge/deployment is pending or
+included. Runtime 0.4.24 remains the delivered application.
+
+
+## Active scope — design-system audit and component contracts
+
+F0 / UI-001, UI-003, UI-004; delivery tracks F02, F04 and open U01. The user
+adopted foundations → primitives → small composed values → domain components →
+widgets → pages. [The proposed review slice](../../design-system-review.md)
+starts with existing temperature/current-target/no-target and observation-time
+composition, compares Progress duration reuse, and references Camera contracts.
+Acquisition and printer semantics remain outside presentation. The audit and
+proposal do not adopt a visual theme or broad migration and close no milestone.
+
+Acceptance for the next gallery: known zero, missing and inapplicable values
+remain distinguishable; independent observation clocks survive; loading,
+successful unknown/stale and acquisition failure retain distinct meanings;
+320/390px at normal/200% text are reviewable with accessible units and labels.
+Existing tokens/components are reused where their contracts fit. Domain/local
+failure exceptions and lifecycle remain intact. The [audit evidence](evidence/2026-09-22-design-system-audit.md)
+records what was actually observed, separately from proposed acceptance.
+No application implementation or new deployment is included in this record slice.
+
 
 ## Delivered correction — Progress semantic states
 

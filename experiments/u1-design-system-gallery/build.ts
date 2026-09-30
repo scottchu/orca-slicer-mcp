@@ -1,0 +1,18 @@
+import { resolve, dirname } from 'node:path';
+import { createRequire } from 'node:module';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+const root = dirname(import.meta.path);
+const app = resolve(root, '../../plugins/u1-print-studio/app');
+const require = createRequire(`${app}/package.json`);
+const { build } = await import(require.resolve('vite'));
+const { svelte } = await import(require.resolve('@sveltejs/vite-plugin-svelte'));
+const output = process.argv[2];
+if (!output || !output.startsWith('/')) throw Error('Pass an absolute private output directory');
+mkdirSync(output, { recursive: true });
+await build({ configFile: false, root, plugins: [svelte({ configFile: false }), { name: 'record-gallery-graph', generateBundle() { writeFileSync(`${output}/module-graph.json`, JSON.stringify([...this.getModuleIds()].sort(), null, 2)); } }], resolve: { alias: { '@common': `${app}/src/components/common`, '@observation': `${app}/src/components/observation`, 'svelte/internal/disclose-version': require.resolve('svelte/internal/disclose-version'), 'svelte/internal/flags/legacy': require.resolve('svelte/internal/flags/legacy'), 'svelte/internal/client': require.resolve('svelte/internal/client'), svelte: `${dirname(require.resolve('svelte/package.json'))}/src/index-client.js`, 'lucide-svelte': dirname(require.resolve('lucide-svelte/package.json')) } }, build: { outDir: output, emptyOutDir: false, lib: { entry: `${root}/main.ts`, formats: ['iife'], name: 'Gallery', cssFileName: 'gallery', fileName: () => 'gallery.js' }, rollupOptions: { output: { assetFileNames: 'gallery.[ext]' } } } });
+const html = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>U1 · Primitives and composition</title><link rel="stylesheet" href="/gallery.css"></head><body><div id="app"></div><script src="/gallery.js"></script></body></html>';
+writeFileSync(`${output}/index.html`, html);
+const files = Object.fromEntries(['index.html','gallery.js','gallery.css'].map(name => [name, createHash('sha256').update(readFileSync(`${output}/${name}`)).digest('hex')]));
+writeFileSync(`${output}/manifest.json`, JSON.stringify({ files }, null, 2));
+console.log(JSON.stringify({ output, files }));
