@@ -8,13 +8,15 @@ gallery source and sanitized records is authorized independently of visual
 adoption. This supersedes earlier draft-only/no-merge wording for this bounded
 purpose, not for production migration or deployment.
 
-Acceptance: exact remote-main source ancestry is verified; unique local work and
-private knowledge have an explicit disposition; off-machine backup is copied
+Source-preservation acceptance is complete: PR138 merged to verified main
+`5d210d4bc5859a0aa871ea1eedbe7a44a3fc69f8`, including the exact imported PR127
+source/evidence; PR127 closed as superseded. Remaining acceptance: unique local
+work and private knowledge have an explicit disposition; off-machine backup is copied
 and hash/restore-verified once the user chooses its destination; eligible worktrees
 are retired only after their content and runtime dependencies are preserved.
 Canonical checkout and service-owned material require explicit treatment. A
 same-disk snapshot, clean Git status or merged PR cannot satisfy private backup.
-No preservation/removal outcome is inferred from this plan.
+No private-backup or worktree-removal outcome is inferred from the source merge.
 
 [Recovery checklist](../../reformat-recovery.md) and [current evidence](evidence/2026-09-29-reformat-preservation.md)
 own current scope, dependencies and actual results. Design selection remains

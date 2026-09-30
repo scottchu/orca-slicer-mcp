@@ -7,23 +7,25 @@ then resolving dangling worktrees. This supersedes the earlier draft-only /
 no-merge-before-visual-selection order for **source preservation**. Gallery visual
 adoption, production migration and deployment remain unapproved.
 
-1. Integrate the completed isolated gallery and sanitized recovery knowledge
-   through its reviewed PR. Verify the final remote-main identity and source
-   ancestry; a local commit or open PR alone is not remote preservation.
-2. Complete the private worktree/ref/file inventory. Preserve unique tracked,
-   untracked and ignored work and service dependencies before retiring any tree.
-   Retain canonical checkout; no force removal or dependency-breaking cleanup.
-3. Choose an off-machine private backup destination with the user, copy the
-   necessary private recovery material, then verify hashes and restoration.
-   Destination and off-machine backup are pending; same-disk snapshots do not
-   protect against reformat. Never upload private material into this repository.
-4. Record actual retained/removed trees and unresolved preservation blockers.
+PR138 source preservation is complete on main at
+`5d210d4bc5859a0aa871ea1eedbe7a44a3fc69f8`; exact reviewed source and imported
+PR127 files were verified. PR127 is closed as superseded. Do not repeat the merge.
+
+1. Choose an off-machine private backup destination with the user. Local disk
+   pressure prevents treating local staging as a recovery solution. Preserve
+   the 24 local-only branch commits and three stashes/nine related commits,
+   private files and runtime dependencies; verify destination hashes/restoration.
+2. Reconcile the private worktree/ref/file inventory against that backup before
+   retiring any tree. Retain canonical checkout; no force removal or
+   dependency-breaking cleanup. Do not upload private material into Git.
+3. Record actual retained/removed trees and unresolved preservation blockers.
    After recovery, resume user selection of No target, receipt placement and
    duration precision before production migration.
 
 [Recovery checklist](docs/reformat-recovery.md) separates Git source from private
 backup requirements; [preservation evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-29-reformat-preservation.md)
-records actual outcomes. No merge, off-machine backup or removal is claimed yet.
+records the completed merge. Off-machine backup and worktree removal remain
+unverified; no removal is claimed.
 No production deployment, printer control, authentication or network change is
 included in this order. Earlier orders below are historical.
 

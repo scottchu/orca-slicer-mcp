@@ -9,9 +9,11 @@ Visual adoption and production migration remain pending, with no deployment.
 
 [Recovery checklist](docs/reformat-recovery.md) maps repository source, private
 backup necessities and unresolved design choices. [Current evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-09-29-reformat-preservation.md)
-owns actual integration/preservation results. Remote-main merge, verified
-off-machine private backup and worktree retirement are not yet claimed. The
-backup destination still needs the user's selection. [NEXT_AGENT.md](NEXT_AGENT.md)
+owns actual integration/preservation results. PR138 merged to main at
+`5d210d4bc5859a0aa871ea1eedbe7a44a3fc69f8`; exact reviewed source and preserved
+PR127 files were verified, and PR127 closed as superseded. Off-machine private
+backup and worktree retirement remain incomplete. The backup destination still
+needs the user's selection; local disk pressure limits staging. [NEXT_AGENT.md](NEXT_AGENT.md)
 owns the active order; prior gallery and release records remain historical evidence.
 
 ## Active work — gallery ready for visual selection

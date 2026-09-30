@@ -1,6 +1,7 @@
 # Pre-reformat source and knowledge preservation — 2026-09-29
 
-Status: authorized integration/preservation work in progress. The user's new
+Status: source-preservation merge complete; private backup and worktree retirement
+remain incomplete. The user's new
 order is completed work and durable knowledge on main, with dangling worktrees
 resolved before computer reformat. This supersedes draft-only/no-merge-before-
 visual-choice restrictions for **source preservation**. It does not adopt gallery
@@ -90,8 +91,9 @@ three stashes retain nine local-only commits. Preserve these in a verified
 private Git bundle alongside file-level private material; merging completed
 experiments to main cannot substitute for that backup.
 
-The verifier is preparing private bundle staging; no off-machine destination,
-transfer or restoration pass is claimed. Private-bearing worktrees remain until
+Private bundle staging is deferred until a suitable destination and capacity are
+available; no bundle was created. No off-machine destination, transfer or
+restoration pass is claimed. Private-bearing worktrees remain until
 their backup gate is satisfied. Exact ref identities, file inventories and
 bundle paths stay in private receipts rather than public records.
 
@@ -127,10 +129,10 @@ for the transient failure; the later success does not erase its evidence.
 
 ## Outstanding acceptance layers
 
-- Source: independent review and actual remote-main integration/ancestry
-  verification are pending. A local candidate or PR alone is not completion.
-- Private backup: destination awaits user selection. No off-machine copy,
-  integrity check or restore test is claimed. A same-disk snapshot is insufficient.
+- Source: completed as recorded below; no repeat merge is pending.
+- Private backup: destination awaits user selection and local disk pressure
+  limits staging. No off-machine copy, integrity check or restore test is claimed.
+  A same-disk snapshot is insufficient.
 - Worktrees: private inventory and dependency/disposition verification are being
   coordinated separately. No removal or final no-dangling-tree result is claimed.
 - Runtime/user: existing historical runtime 0.4.24 evidence remains unchanged.
@@ -141,3 +143,36 @@ Actual validation/integration and disposition results will be recorded by their
 owners. Exact local inventory and backup-location details remain in private
 receipts; sanitized completion facts belong here. No production deployment is
 required for unchanged application inputs plus isolated experiment preservation.
+
+
+## Completed source-preservation integration
+
+PR138 merged reviewed candidate `95dd1a8` as
+`5d210d4bc5859a0aa871ea1eedbe7a44a3fc69f8`. The operator read PR state, fetched
+origin, and verified remote main, merge parents (prior main `0314985` plus the
+reviewed candidate), and exact reviewed tree equality. All five PR127 experiment
+files plus its evidence matched their preserved source exactly before PR127 was
+closed as superseded. Source branches remain preserved. The canonical checkout
+and current task branch were fast-forwarded to the verified merged main. Exact
+commands/results and candidate approval remain in private delivery receipts.
+
+The validation owner also reported a fresh 16-test G-code unit pass using
+`uv run --no-project python -m unittest discover -s experiments/gcode-preview -p 'test_*.py'`
+and a fresh gallery build reproducing all three recorded final asset hashes.
+That gallery build used shell Bun 1.4.2; the eight mandatory steps above used
+pinned Bun 1.4.0. No fresh gallery browser matrix is claimed. This preserves the
+actual focused results separately from historical PR127 checks.
+
+Remote preservation of completed source does not preserve the remaining 24
+local-only branch commits, three stashes/nine related commits, private evidence,
+credentials or ignored files. Local disk pressure and the missing user-selected
+off-machine destination prevent backup/removal closure. No worktree removal,
+off-machine backup, reformat, production deployment or visual adoption occurred
+as part of this source integration. The next action is private backup destination
+selection and verified preservation before retirement.
+
+Postmerge record closure passed `git diff --check` and a focused
+`uv run --no-project python -` check of 18 current-section/evidence links,
+new-content privacy and unchanged experiment/production inputs against merged
+HEAD. No build or browser suite was repeated for this documentation-only tail;
+the private independent receipt owns exact final-document approval.
