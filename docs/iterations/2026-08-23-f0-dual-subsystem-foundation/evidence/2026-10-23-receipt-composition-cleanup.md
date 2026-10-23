@@ -139,13 +139,60 @@ no user tab was changed.
 The independent reviewer retracted an initial baseline/candidate DOM comparison
 claim after a nonempty sentinel failed: empty captures could have explained
 the zero-difference result. That result is not acceptance and no source
-regression follows from the harness failure. Corrected independent comparison,
-reactive checks and exact-candidate review remain pending.
+regression follows from the harness failure. The harness had resolved Svelte's
+server entry, where flushSync was a no-op; it was repaired to resolve the client
+entry and require actual nonempty receipt DOM plus a final Cavity sentinel.
+
+The corrected independent check approved the exact clean source checkpoint
+`4e3cf3bf15ac3f6a0e084a07b8e249e3ad368034`, with no correctness/regression
+findings within this scope. Its external harness ran through
+`bun --no-env-file --config=/dev/null run` with existing Bun 1.4.2, installed
+Svelte 5.57.0 and jsdom, without a browser or server. **4,212 valid-source
+initial DOM comparisons and 48 reactive checkpoints passed, zero differences**.
+Comparisons covered exact text nodes/whitespace, attributes, tree shape, slot
+widths and loading accessibility; compiler comments were excluded.
+Evidence-state/freshness/reason/time/loading combinations, absent source
+objects, Cavity fallback and unchanged existing-receipt defaults were included.
+Malformed present-source objects without required state were excluded from the
+adapter-valid matrix. A mandatory nonempty sentinel verified the exact Cavity
+fallback/reason text. The original 4,884 comparison claim remains invalid and
+must not be used as acceptance.
+
+The reviewer inspected all 15 committed files, all default receipt callers,
+shared leaves, masking/lifecycle expressions and six-channel adapter validation;
+`git diff --check` against the baseline passed. This is independent source
+and diagnostic software approval, not generated-package, browser geometry,
+release or deployed-service acceptance.
 
 Tracked generated package builds and hash/version updates are **pending** the
 pinned-runtime decision. The current source checkpoint is intentionally not a
-shipping candidate: existing packages still represent the baseline. No PR,
+shipping candidate: existing packages still represent the baseline. No
 mandatory full shipping gate, deployment, service restart, real-printer or
 actual-device acceptance is claimed. Missing pinned runtime and existing
 deployment target block delivery; the coordinator owns resolving those
 prerequisites without weakening shipping guards.
+
+## Preservation and current endpoint
+
+[Draft PR140](https://github.com/scottchu/orca-slicer-mcp/pull/140) preserves the
+source checkpoint. `git push --set-upstream origin design-system-cleanup-20261023`
+and `gh pr create --draft` succeeded; remote branch and PR head/base/draft
+readback matched the exact source checkpoint and main. Hosted validation is
+not configured or awaited, following repository policy. No merge occurred.
+
+This records-only tail retains the reviewed app subtree
+`acf0328fc9254b1e866ca16741104b10b94f7fc6`. Source, author tests, guards,
+dependency declarations/lockfile, build inputs, configuration, generated
+packages and runtime identities in that subtree remain unchanged from the
+reviewed checkpoint; only authoritative Markdown records change. Relevant
+local links and the final diff are checked before committing the tail; affected
+application evidence is retained on that explicit unchanged-byte basis.
+
+The active task worktree, ignored declared dependencies and generated SvelteKit
+configuration are retained for pinned-runtime regeneration and further
+verification; no unrelated worktree or private material was removed. Temporary
+design/review raw outputs remain private until the coordinator finishes evidence
+reconciliation. Their servers/writers have stopped; the uncertain empty browser
+tab is not automatically manipulated through another surface. Continuing source
+work can resume from repository records alone. The deployment prerequisite
+decision and generated package acceptance remain open, so this task is incomplete.

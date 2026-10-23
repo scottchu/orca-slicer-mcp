@@ -5,8 +5,11 @@
 [Receipt composition evidence](evidence/2026-10-23-receipt-composition-cleanup.md)
 owns current intent, source/consumer map, exact-preservation acceptance,
 prerequisite observations and actual checks. Source cleanup, 85 focused tests
-and component/import checks pass diagnostically; generated package updates,
-independent exact review and mandatory shipping remain pending. Nonpinned checks,
+and component/import checks pass diagnostically; exact checkpoint `4e3cf3bf`
+has independent source approval with 4,212 initial DOM comparisons and 48
+reactive checkpoints. The initial invalid harness result is explicitly retracted.
+Generated package updates, renewed exact release review and mandatory shipping
+remain pending. Nonpinned checks,
 software acceptance, deployment and actual-device/printer outcomes stay
 separate. Older evidence retains its original candidate and scope.
 

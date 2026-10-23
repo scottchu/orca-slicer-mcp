@@ -7,10 +7,12 @@ six-layer hierarchy. It supersedes preservation-first execution for this task;
 it does not adopt the gallery's proposed visuals or authorize unrelated cleanup.
 
 1. Source receipt consolidation and focused diagnostic checks are complete:
-   85 tests and component/import checks pass with Bun 1.4.2. Preserve the source
-   checkpoint; it is not a shipping candidate while generated packages are stale.
+   85 tests and component/import checks pass with Bun 1.4.2. Exact checkpoint
+   `4e3cf3bf` has independent source approval and is preserved in draft PR140;
+   it is not a shipping candidate while generated packages are stale.
 2. Complete affected package builds/hash/version updates with the declared
-   runtime, freeze a candidate, then obtain independent review/verification.
+   runtime, freeze a new candidate, then obtain renewed independent exact
+   review/verification for changed packages and build identities.
    Use one owner for mandatory
    full candidate regression. [Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-23-receipt-composition-cleanup.md)
    owns the detailed plan, source inventory and actual results.
