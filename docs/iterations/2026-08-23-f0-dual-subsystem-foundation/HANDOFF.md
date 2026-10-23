@@ -1,5 +1,26 @@
 # F0 maintenance handoff
 
+## Active handoff — receipt composition cleanup
+
+The latest user order is code/design cleanup, beginning with behavior-preserving
+receipt composition in Fans, Heads Materials and Thermals Cavity. The
+[slice evidence](evidence/2026-10-23-receipt-composition-cleanup.md) owns source
+inventory, accepted prop scope, planned paths/checks and prerequisite limits.
+Current state/order and this iteration are reconciled; previous preservation
+history remains retained without making backup work part of this cleanup.
+
+Four Svelte source files and three component-import allowlists implement the
+bounded cleanup. Two test files add 31 cases; focused checks pass 85 tests and
+component/import validation diagnostically. Design ownership is recorded in
+design-contract/design-system-review. Next is pinned-runtime package regeneration,
+hash/version reconciliation and independent exact-candidate review. Existing
+tracked packages still represent the baseline; this is a source checkpoint,
+not a shipping candidate.
+Missing declared Bun 1.4.0 and existing supported U1 service target block full
+shipping acceptance; no installation/provisioning, deployment or live liveness
+is claimed. Existing gallery visual choices remain unresolved. No printer,
+auth/network or unrelated cleanup authority is added.
+
 ## Active handoff — pre-reformat preservation
 
 Current user authority is completed-source/knowledge merge to main and safe

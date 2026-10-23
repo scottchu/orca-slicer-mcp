@@ -26,6 +26,7 @@ Paths below are relative to `plugins/u1-print-studio/app/`.
 | Responsibility | Owner |
 | --- | --- |
 | Shared spacing, semantic typography, action sizes, colors | `src/components/common/tokens.css` |
+| Observation receipt time, state/reason suffix composition and closed field fallback | `src/components/observation/DomainReceipt.svelte`; callers retain source association, grouping and reason policy |
 | Reading icon frame, content inset and regular/compact reserve | `src/components/common/Reading.svelte` |
 | Label/value spacing, value typography and structural line reserve | `src/components/common/Metric.svelte`, `Swatch.svelte` |
 | Semantic group layout/inset, six-track placement | `src/components/common/Group.svelte`, `Row.svelte`, `Column.svelte` |

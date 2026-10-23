@@ -1,5 +1,30 @@
 # Next agent
 
+## Active order — clean receipt composition without visual changes
+
+The latest user request prioritizes code and design cleanup under the accepted
+six-layer hierarchy. It supersedes preservation-first execution for this task;
+it does not adopt the gallery's proposed visuals or authorize unrelated cleanup.
+
+1. Source receipt consolidation and focused diagnostic checks are complete:
+   85 tests and component/import checks pass with Bun 1.4.2. Preserve the source
+   checkpoint; it is not a shipping candidate while generated packages are stale.
+2. Complete affected package builds/hash/version updates with the declared
+   runtime, freeze a candidate, then obtain independent review/verification.
+   Use one owner for mandatory
+   full candidate regression. [Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-23-receipt-composition-cleanup.md)
+   owns the detailed plan, source inventory and actual results.
+3. Resolve absent declared Bun 1.4.0 and existing U1 deployment target before
+   the unchanged guarded shipping workflow. Bun 1.4.2 checks are diagnostic,
+   not a gate bypass. No service provisioning, runtime installation, auth or
+   network change is inferred. Full delivery remains incomplete until PR,
+   exact review, mandatory checks, guarded shipment, both-service restarts and
+   meaningful installed behavior are verified.
+
+No printer reads/controls, visual relocation, Cavity wording/duration selection,
+private-Lab expansion or pre-reformat backup work is included. Earlier orders
+below retain their historical evidence and unresolved concerns.
+
 ## Active order — preserve completed source before computer reformat
 
 The user now authorizes merging completed work and durable knowledge to main,

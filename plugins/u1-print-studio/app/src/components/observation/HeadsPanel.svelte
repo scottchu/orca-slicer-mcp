@@ -2,7 +2,6 @@
   import { Layers3, RefreshCw } from 'lucide-svelte';
   import type { Freshness } from '../../lib/client/live/presentation';
   import type { HeadCardValue, HeadId, HeadsPresentation } from '../../lib/client/live/heads-presentation';
-  import { titleCase } from '../../lib/client/observation/format';
   import HeadCards from './HeadCards.svelte';
   import HeadsSkeleton from './HeadsSkeleton.svelte';
   import Shell from '../common/Shell.svelte';
@@ -12,6 +11,7 @@
   import StateAnnouncement from '../common/StateAnnouncement.svelte';
   import StateSurface from '../common/StateSurface/StateSurface.svelte';
   import ObservedMeta from './ObservedMeta.svelte';
+  import DomainReceipt from './DomainReceipt.svelte';
   import Caption from '../common/Caption.svelte';
   import Icon from '../common/Icon.svelte';
   import Button from '../common/Button.svelte';
@@ -43,7 +43,7 @@
       <Stack>
         <InfoPair>
           {#snippet label()}<Label text="Materials" tone="muted" />{/snippet}
-          {#snippet value()}<Caption><ObservedMeta observedAt={materials?.sourceObservedAt ?? null} freshness={materials?.freshness ?? 'unknown'} loading={placeholder} groupedTime />{#if !placeholder}{#if materials && materials.state !== 'known' && materials.state !== 'stale'} · {titleCase(materials.state)}{/if}{#if materials?.reason} · {titleCase(materials.reason)}{/if}{/if}</Caption>{/snippet}
+          {#snippet value()}<DomainReceipt observedAt={materials?.sourceObservedAt ?? null} freshness={materials?.freshness ?? 'unknown'} state={materials?.state} reason={materials?.reason} loading={placeholder} includeNotRequestedReason />{/snippet}
         </InfoPair>
         {#if items && !placeholder}<HeadCards {items} {copying} {oncopy} />{:else}<HeadsSkeleton materialShapes={shapes} />{/if}
       </Stack>

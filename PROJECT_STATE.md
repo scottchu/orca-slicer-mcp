@@ -1,5 +1,22 @@
 # Project state
 
+## Active work — behavior-preserving code and design cleanup
+
+The user now prioritizes cleanup under the accepted six-layer design system.
+The first bounded slice consolidates receipt composition for Fans, Heads
+Materials and Thermals Cavity in the existing domain component. Copy, placement,
+source association, loading geometry and consumer-specific policies stay fixed;
+gallery visual adoption and broad migration remain pending.
+
+[Current evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-23-receipt-composition-cleanup.md)
+owns scope, consumer inventory, acceptance and actual checks. Source cleanup and
+85 focused diagnostic tests pass; generated packages and independent exact
+acceptance remain pending. The host lacks the declared Bun 1.4.0 and
+the supported existing U1 service root, so delivery remains blocked; historical
+runtime 0.4.24 is not a fresh liveness claim. [NEXT_AGENT.md](NEXT_AGENT.md)
+owns execution order. Older preservation orders below are superseded for this
+task, with their unresolved backup concerns retained separately.
+
 ## Active work — pre-reformat source and knowledge preservation
 
 The user requests completed work and durable knowledge on main, with no dangling
