@@ -12,9 +12,12 @@ migration is selected.
 [Slice evidence](evidence/2026-10-23-receipt-composition-cleanup.md) owns source
 inventory, bounded acceptance and actual results. Separate authorship,
 verification/review and required full-regression ownership remain mandatory.
-Declared Bun 1.4.0 and the existing supported U1 deployment target are absent;
-diagnostic Bun 1.4.2 checks cannot authorize shipping. No application delivery,
-runtime liveness or device/printer acceptance is inferred.
+The user adopts existing Bun 1.4.2 for the source candidate while keeping full
+validation/deployment explicitly paused. [Runtime-pin evidence](evidence/2026-10-24-bun-runtime-pin.md)
+owns the bounded declaration/current-record changes and focused checks.
+Generated packages and full runtime compatibility remain pending, and the
+existing deployment target is absent. No application delivery, runtime liveness
+or device/printer acceptance is inferred.
 
 ## Active scope — preserve completed work before reformat
 

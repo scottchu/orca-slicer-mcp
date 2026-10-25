@@ -2,6 +2,13 @@
 
 ## Active order — clean receipt composition without visual changes
 
+The user now selects preserving the code candidate and pausing full validation,
+then explicitly adopts the existing Bun 1.4.2. Update only the runtime pin and
+current records, run focused identity/operator checks and retain draft PR140.
+Full regression, package regeneration, merge and deployment remain paused.
+[Runtime-pin evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-bun-runtime-pin.md)
+owns the current bounded scope and results.
+
 The latest user request prioritizes code and design cleanup under the accepted
 six-layer hierarchy. It supersedes preservation-first execution for this task;
 it does not adopt the gallery's proposed visuals or authorize unrelated cleanup.
@@ -10,18 +17,17 @@ it does not adopt the gallery's proposed visuals or authorize unrelated cleanup.
    85 tests and component/import checks pass with Bun 1.4.2. Exact checkpoint
    `4e3cf3bf` has independent source approval and is preserved in draft PR140;
    it is not a shipping candidate while generated packages are stale.
-2. Complete affected package builds/hash/version updates with the declared
-   runtime, freeze a new candidate, then obtain renewed independent exact
-   review/verification for changed packages and build identities.
-   Use one owner for mandatory
-   full candidate regression. [Slice evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-23-receipt-composition-cleanup.md)
-   owns the detailed plan, source inventory and actual results.
-3. Resolve absent declared Bun 1.4.0 and existing U1 deployment target before
-   the unchanged guarded shipping workflow. Bun 1.4.2 checks are diagnostic,
-   not a gate bypass. No service provisioning, runtime installation, auth or
-   network change is inferred. Full delivery remains incomplete until PR,
-   exact review, mandatory checks, guarded shipment, both-service restarts and
-   meaningful installed behavior are verified.
+2. The exact packageManager declaration now adopts installed Bun 1.4.2; current
+   records, metadata/lock identity checks and five selected operator fixtures
+   are complete. Obtain independent exact review and preserve the updated
+   source candidate in the same draft PR.
+3. Keep full candidate regression, affected package/hash/version regeneration,
+   merge and deployment paused until the user resumes them. The existing
+   deployment target remains absent. No service provisioning, runtime installation,
+   auth or network change is inferred. After resumption, all unchanged shipping
+   guards, renewed exact release review, both-service restarts and meaningful
+   installed behavior remain necessary for delivery; version adoption grants
+   no skipped gate.
 
 No printer reads/controls, visual relocation, Cavity wording/duration selection,
 private-Lab expansion or pre-reformat backup work is included. Earlier orders

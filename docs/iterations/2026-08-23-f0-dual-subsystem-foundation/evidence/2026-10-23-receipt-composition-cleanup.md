@@ -1,5 +1,10 @@
 # Receipt composition cleanup
 
+This records the 2026-10-23 source checkpoint. The subsequent
+[Bun 1.4.2 amendment](2026-10-24-bun-runtime-pin.md) supersedes its missing-runtime
+next step and records the user's explicit pause of full validation/deployment.
+Original observations and checks below retain their original candidate scope.
+
 ## Intent, baseline and accepted scope
 
 The user prioritizes code and design cleanup after adopting foundations,

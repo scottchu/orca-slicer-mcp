@@ -1,5 +1,14 @@
 # F0 validation index
 
+## Current runtime-pin evidence
+
+[Bun 1.4.2 adoption evidence](evidence/2026-10-24-bun-runtime-pin.md) records
+the explicit user runtime selection, installed identity/tag correspondence,
+unchanged dependency/guard scope and focused checks. Full regression, package
+regeneration, merge and deployment remain user-paused. Previous nonpinned
+receipt checks keep their original scope; adoption does not retroactively
+establish full runtime compatibility.
+
 ## Current receipt cleanup evidence
 
 [Receipt composition evidence](evidence/2026-10-23-receipt-composition-cleanup.md)

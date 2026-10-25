@@ -12,9 +12,12 @@ gallery visual adoption and broad migration remain pending.
 owns scope, consumer inventory, acceptance and actual checks. Source cleanup and
 85 focused diagnostic tests pass; checkpoint `4e3cf3bf` has independent source
 approval and is preserved in [draft PR140](https://github.com/scottchu/orca-slicer-mcp/pull/140).
-Generated packages and release acceptance remain pending. The host lacks the declared Bun 1.4.0 and
-the supported existing U1 service root, so delivery remains blocked; historical
-runtime 0.4.24 is not a fresh liveness claim. [NEXT_AGENT.md](NEXT_AGENT.md)
+The user now adopts installed Bun 1.4.2 for the source candidate and explicitly
+keeps full validation/deployment paused. [Runtime-pin evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-bun-runtime-pin.md)
+owns that amendment and focused identity/fixture results. Generated packages
+and release acceptance remain pending; the supported existing U1 service root
+is absent. Historical runtime 0.4.24 is not a fresh liveness claim.
+[NEXT_AGENT.md](NEXT_AGENT.md)
 owns execution order. Older preservation orders below are superseded for this
 task, with their unresolved backup concerns retained separately.
 
