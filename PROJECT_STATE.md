@@ -17,8 +17,11 @@ Runtime-pin checkpoint `d3445b0` has independent source approval.
 [Package-acceptance evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-receipt-package-acceptance.md)
 owns renewed packages, version identities and required verification. Nine
 affected packages and measured pins are regenerated; 85 client and 20 package/CLI
-checks pass. Full independent local-gate/release acceptance remains pending;
-the supported existing U1 service
+checks pass. Frozen `fa9a6e4` failed the independent mandatory ui:test gate;
+two representative failures also reproduce on unchanged original-main source
+under Bun-hosted Vitest. A supported Node test runner is absent; the requested
+development-only runtime experiment awaits user authorization. Full gate/release
+acceptance remains incomplete; the supported existing U1 service
 root is absent. Historical runtime 0.4.24 is not a fresh liveness claim.
 [NEXT_AGENT.md](NEXT_AGENT.md)
 owns execution order. Older preservation orders below are superseded for this

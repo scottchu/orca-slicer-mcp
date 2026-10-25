@@ -5,7 +5,11 @@
 [Package-acceptance evidence](evidence/2026-10-24-receipt-package-acceptance.md)
 owns the resumed order, affected build inputs/consumers, exact runtime/output
 identities and actual checks. One independent owner runs the full frozen local
-gate; authorship and exact review remain separate. Prior paused/source-only
+gate; its first attempt on `fa9a6e4` stopped at ui:test (5 failed files/3 tests,
+750 passed, 4 unhandled errors), after ui:check passed. The bounded two-suite
+original-main reproduction and missing supported Node test-runtime prerequisite
+are recorded there; no later gate phase or full acceptance is claimed.
+Authorship and exact review remain separate. Prior paused/source-only
 evidence stays scoped to its original checkpoint. Deployed-service and visual/
 device/printer acceptance remain separate and unclaimed.
 

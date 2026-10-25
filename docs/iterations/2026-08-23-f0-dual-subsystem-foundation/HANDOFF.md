@@ -8,8 +8,15 @@ selection; the former pause described below is historical.
 owns current regeneration, frozen independent-regression/review ownership and
 delivery gates. Candidate runtime0.4.25/observation28 preserves schema19/Camera18.
 Nine affected packages/pins are regenerated; author checks pass 85 client and
-20 package/CLI tests. Next is the frozen independent full local gate and exact
-candidate review. Earlier source-only/pause paragraphs below retain their
+20 package/CLI tests. Frozen `fa9a6e4` failed the independent mandatory ui:test
+gate; source and original-main two-suite reproduction identify an unresolved
+test-toolchain prerequisite, not an established cleanup-source defect. Next is
+the user's pending decision on a temporary development-only Node experiment,
+then two targeted checks before any full-gate retry. No runtime installation,
+test/mock weakening or affected dependent phase is authorized by silence.
+The records-only tail retains app subtree
+`e1ebd7eb94c35654433a14d65664769e10bb353c` and unchanged operators.
+Earlier source-only/pause paragraphs below retain their
 historical checkpoint scope and are superseded as current execution order.
 The existing service target is still absent; do not provision or bypass it.
 

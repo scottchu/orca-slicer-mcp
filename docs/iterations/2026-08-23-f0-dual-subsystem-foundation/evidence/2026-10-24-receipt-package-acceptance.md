@@ -113,3 +113,55 @@ Focused author checks using that same executable and flags:
 No author full regression, browser, shipping execute, merge, deployment or service
 restart ran. The candidate is ready to freeze for the separate full local-gate
 owner and independent review; those required outcomes remain pending.
+
+## Frozen candidate and stopped independent full gate
+
+The author froze and pushed `fa9a6e4585ea65a309b4daeac3906b21f02c2ccf`,
+app subtree `e1ebd7eb94c35654433a14d65664769e10bb353c`. Draft PR140 and
+remote branch readback matched that exact head, main base and draft state.
+
+The separate full-gate owner invoked the maintained Operations.validate local
+sequence on those bytes. It **stopped at check-repository's ui:test gate**:
+ui:check passed with zero errors/warnings and intact component/import guards,
+then ui:test reported **5 failed files, 3 failed tests, 750 passed tests and
+4 unhandled errors**. Three composable suites fail collection because the named
+Zod export is undefined inside the Vitest loader; three Bed Mesh cases and four
+unhandled errors reach an actual WebGL renderer despite the existing component
+mocks. No later deterministic verifiers, server/transport/operator tests,
+production bundles, signatures or build-contract phases ran. The full required
+gate is failed, not accepted.
+
+The author then ran only schema-planner and BedMeshState through
+`bun --no-env-file --config=/dev/null x --no-install vitest run`. The same
+two suites fail on both current candidate source and a separate original-main
+`d13a52d5ec3599a0728214b611bb6cd2654e02de` source export with the same
+installed dependencies and generated SvelteKit configuration: schema collection
+fails at z.enum; BedMeshState has two failed/two passed tests with the same
+WebGL precision error. Five relevant test/config/value-contract inputs were
+verified byte-identical. This is a bounded reused-toolchain baseline comparison,
+not a pristine reinstall or a second full baseline run.
+
+No Node executable is on PATH or at the inspected standard Homebrew/asdf/nvm/
+volta/mise locations. Vitest's installed binary uses an env-node shebang; the
+current Bun invocation hosts it without that runtime. Installed package engines
+declare Node `^18.0.0 || ^20.0.0 || >=22.0.0` for Vitest 3.2.7 and
+`^20.19.0 || >=22.12.0` for Vite 7.3.6. A direct Bun import exposes Zod's
+named export correctly. Missing supported test-runtime prerequisites are
+confirmed; Bun-hosted Vitest loader/mock incompatibility is a supported
+hypothesis, not a proven sole cause or guarantee that Node resolves all errors.
+The unchanged baseline failure does not establish a cleanup-source regression.
+
+No source remediation, expanded WebGL mocks, altered assertions, skip flag or
+guard change was made. The coordinator has requested authorization for a
+task-temporary development-only Node 22.23.4 experiment; authorization is pending.
+No Node runtime was downloaded or installed. If authorized, first run the same
+two tests under that supported runner, then resume the unchanged full gate only
+if they pass. Production/app execution remains pinned Bun 1.4.2. The absent
+service target remains a separate delivery prerequisite.
+
+This records-only tail preserves the exact frozen app subtree above and
+unchanged operator scripts. Author package-generation/pin evidence remains
+valid for those bytes; it does not supply required full-suite, runtime transport,
+release, visual/device or installed acceptance. Active worktree, dependencies
+and private author/full-owner logs remain retained for the pending experiment.
+PR140 remains draft; no merge, shipping execute or service action occurred.

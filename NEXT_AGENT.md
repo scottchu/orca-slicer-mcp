@@ -19,10 +19,15 @@ it does not adopt the gallery's proposed visuals or authorize unrelated cleanup.
    focused/MCP/private packages, measured pins and candidate version contracts
    are regenerated: runtime0.4.25/observation28, unchanged schema19/Camera18.
    Author focused checks pass 85 client and 20 package/CLI tests.
-3. Freeze application bytes for the assigned independent full required local
-   regression/review owner. Preserve all runtime body/disconnect/
-   lifetime, graph, signature, integrity and shipping guards. Do not obtain the
-   prior blocked gallery capture through another surface.
+3. Frozen candidate `fa9a6e4` stopped at the independent mandatory ui:test gate:
+   5 failed files/3 tests, 750 passed and 4 unhandled errors. The same two
+   representative suites fail on unchanged original-main source under Bun-hosted
+   Vitest; supported Node test-runner prerequisites are absent. Await the pending
+   user decision for a task-temporary development-only Node 22.23.4 experiment.
+   Do not download/install before authorization. If authorized, first rerun those
+   two suites, then the unchanged full gate only if they pass. Preserve every
+   body/disconnect/lifetime, graph, signature, integrity and shipping guard.
+   Do not obtain the prior blocked gallery capture through another surface.
 4. The existing deployment target remains absent. No service provisioning,
    runtime installation, auth or network change is inferred. Merge/shipping
    requires all gates and an existing recoverable target, then both-service

@@ -15,9 +15,12 @@ verification/review and required full-regression ownership remain mandatory.
 The user adopts existing Bun 1.4.2 and now resumes cleanup acceptance.
 [Package-acceptance evidence](evidence/2026-10-24-receipt-package-acceptance.md)
 owns regeneration, candidate runtime0.4.25/observation28, independent frozen
-regression/review and unchanged release guards. Generated packages and full
-runtime compatibility remain pending; the existing deployment target is absent.
-No application delivery, runtime liveness or device/printer acceptance is inferred.
+regression/review and unchanged release guards. Nine affected packages/pins are
+regenerated; the full gate stopped at ui:test. Two representative failures also
+reproduce on unchanged original-main source under Bun-hosted Vitest. A temporary
+development-only supported Node experiment awaits user authorization. Full
+runtime compatibility and delivery remain incomplete; the deployment target is
+absent. No runtime liveness or device/printer acceptance is inferred.
 
 ## Active scope — preserve completed work before reformat
 
