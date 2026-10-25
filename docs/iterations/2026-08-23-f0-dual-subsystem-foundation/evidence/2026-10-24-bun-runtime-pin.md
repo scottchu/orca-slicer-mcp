@@ -114,3 +114,10 @@ not provisioned or changed.
 Independent exact-candidate runtime-pin review and draft PR readback follow
 the candidate freeze. The prior receipt source approval remains scoped to its
 unchanged components; this runtime selection does not replace release approval.
+
+The first independent runtime-pin review found one current-handoff wording issue:
+the previous records-only tail's unchanged app-tree statement needed an explicit
+`df6b3e6` historical scope because packageManager configuration now changes.
+That statement is corrected; application source/generated-byte preservation is
+kept separate from the new runtime declaration. No code or runtime-identity
+finding was reported; final exact-head approval is still pending.
