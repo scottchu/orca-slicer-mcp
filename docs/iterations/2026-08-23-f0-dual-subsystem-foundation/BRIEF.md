@@ -1,5 +1,27 @@
 # F0 dual-subsystem foundation brief
 
+## Active scope — code and design cleanup
+
+The latest user request prioritizes cleanup under the adopted six-layer
+hierarchy. F0 / UI-003 and F02/F04/U01 start with receipt composition:
+DomainReceipt replaces duplicated Fans, Heads Materials and Thermals Cavity
+markup while preserving current copy, slots, state/reason policies, masking,
+placement and independent timestamps. No gallery visual/API direction or broad
+migration is selected.
+
+[Slice evidence](evidence/2026-10-23-receipt-composition-cleanup.md) owns source
+inventory, bounded acceptance and actual results. Separate authorship,
+verification/review and required full-regression ownership remain mandatory.
+The user adopts existing Bun 1.4.2 and now resumes cleanup acceptance.
+[Package-acceptance evidence](evidence/2026-10-24-receipt-package-acceptance.md)
+owns regeneration, candidate runtime0.4.25/observation28, independent frozen
+regression/review and unchanged release guards. Nine affected packages/pins are
+regenerated; the full gate stopped at ui:test. Two representative failures also
+reproduce on unchanged original-main source under Bun-hosted Vitest. A temporary
+development-only supported Node experiment awaits user authorization. Full
+runtime compatibility and delivery remain incomplete; the deployment target is
+absent. No runtime liveness or device/printer acceptance is inferred.
+
 ## Active scope — preserve completed work before reformat
 
 The user changed execution order to main-branch source/knowledge preservation

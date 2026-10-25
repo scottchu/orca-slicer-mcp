@@ -9,8 +9,12 @@ remains open. PR97 shipping passes73 static/75 security checks; scoped served-UI
 behavior is recorded separately in active VALIDATION. Prior failed validation
 and the operator's output-isolation repair remain there.
 
-Bun1.4.0 native close/finish events preserve generic request lease ownership without
-polling. MCP body parity,128KiB endpoint limits, role/auth and URL contracts remain.
+The original Bun1.4.0 acceptance used native close/finish events for generic
+request lease ownership without polling. The current source adopts Bun1.4.2
+under decision0043's runtime amendment; cleanup acceptance has resumed, with
+full current-candidate compatibility/deployment still unverified.
+MCP body parity,128KiB endpoint limits, role/auth and URL
+contracts remain required and are not waived by version adoption.
 The table records routing shipment, not real-printer, phone or onboarding acceptance.
 It does not add/remove widget ledger IDs or complete all native widget migrations.
 

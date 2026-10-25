@@ -1,5 +1,59 @@
 # F0 maintenance handoff
 
+## Active handoff — receipt composition cleanup
+
+The latest user instruction resumes full cleanup acceptance after the Bun1.4.2
+selection; the former pause described below is historical.
+[Package-acceptance evidence](evidence/2026-10-24-receipt-package-acceptance.md)
+owns current regeneration, frozen independent-regression/review ownership and
+delivery gates. Candidate runtime0.4.25/observation28 preserves schema19/Camera18.
+Nine affected packages/pins are regenerated; author checks pass 85 client and
+20 package/CLI tests. Frozen `fa9a6e4` failed the independent mandatory ui:test
+gate; source and original-main two-suite reproduction identify an unresolved
+test-toolchain prerequisite, not an established cleanup-source defect. Next is
+the user's pending decision on a temporary development-only Node experiment,
+then two targeted checks before any full-gate retry. No runtime installation,
+test/mock weakening or affected dependent phase is authorized by silence.
+The records-only tail retains app subtree
+`e1ebd7eb94c35654433a14d65664769e10bb353c` and unchanged operators.
+Earlier source-only/pause paragraphs below retain their
+historical checkpoint scope and are superseded as current execution order.
+The existing service target is still absent; do not provision or bypass it.
+
+The latest user order is code/design cleanup, beginning with behavior-preserving
+receipt composition in Fans, Heads Materials and Thermals Cavity. The
+[slice evidence](evidence/2026-10-23-receipt-composition-cleanup.md) owns source
+inventory, accepted prop scope, planned paths/checks and prerequisite limits.
+Current state/order and this iteration are reconciled; previous preservation
+history remains retained without making backup work part of this cleanup.
+
+Four Svelte source files and three component-import allowlists implement the
+bounded cleanup. Two test files add 31 cases; focused checks pass 85 tests and
+component/import validation diagnostically. Design ownership is recorded in
+design-contract/design-system-review. Independent source review approves exact
+checkpoint `4e3cf3bf`, preserved in draft PR140; corrected independent software
+checks pass 4,212 DOM comparisons and 48 reactive checkpoints with zero differences.
+The user now adopts installed Bun 1.4.2 and keeps full validation/deployment
+paused. The bounded runtime declaration/current-record amendment and five
+selected operator fixtures are complete; next is independent exact source review.
+[Runtime-pin evidence](evidence/2026-10-24-bun-runtime-pin.md) owns focused check
+results. Package regeneration, hash/version reconciliation
+and renewed release-candidate review wait for explicit resumption. Existing
+tracked packages still represent the baseline; this is a source checkpoint,
+not a shipping candidate.
+The prior `df6b3e6` records-only tail retained reviewed app subtree
+`acf0328fc9254b1e866ca16741104b10b94f7fc6` at that checkpoint. The current
+runtime amendment changes packageManager configuration and documentation;
+application source/tests, dependency resolutions, operator/build algorithms and
+generated packages remain unchanged from that checkpoint. The task worktree, dependencies and
+generated SvelteKit config stay available for active verification. Private raw
+review/design artifacts remain with the coordinator for final reconciliation;
+no source recovery depends on them.
+The existing supported U1 service target remains absent; full shipping acceptance
+is paused and incomplete. No installation/provisioning, deployment or live liveness
+is claimed. Existing gallery visual choices remain unresolved. No printer,
+auth/network or unrelated cleanup authority is added.
+
 ## Active handoff — pre-reformat preservation
 
 Current user authority is completed-source/knowledge merge to main and safe

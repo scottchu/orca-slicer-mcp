@@ -1,5 +1,40 @@
 # F0 validation index
 
+## Resumed receipt package acceptance
+
+[Package-acceptance evidence](evidence/2026-10-24-receipt-package-acceptance.md)
+owns the resumed order, affected build inputs/consumers, exact runtime/output
+identities and actual checks. One independent owner runs the full frozen local
+gate; its first attempt on `fa9a6e4` stopped at ui:test (5 failed files/3 tests,
+750 passed, 4 unhandled errors), after ui:check passed. The bounded two-suite
+original-main reproduction and missing supported Node test-runtime prerequisite
+are recorded there; no later gate phase or full acceptance is claimed.
+Authorship and exact review remain separate. Prior paused/source-only
+evidence stays scoped to its original checkpoint. Deployed-service and visual/
+device/printer acceptance remain separate and unclaimed.
+
+## Current runtime-pin evidence
+
+[Bun 1.4.2 adoption evidence](evidence/2026-10-24-bun-runtime-pin.md) records
+the explicit user runtime selection, installed identity/tag correspondence,
+unchanged dependency/guard scope and focused checks. Full regression, package
+regeneration, merge and deployment remain user-paused. Previous nonpinned
+receipt checks keep their original scope; adoption does not retroactively
+establish full runtime compatibility.
+
+## Current receipt cleanup evidence
+
+[Receipt composition evidence](evidence/2026-10-23-receipt-composition-cleanup.md)
+owns current intent, source/consumer map, exact-preservation acceptance,
+prerequisite observations and actual checks. Source cleanup, 85 focused tests
+and component/import checks pass diagnostically; exact checkpoint `4e3cf3bf`
+has independent source approval with 4,212 initial DOM comparisons and 48
+reactive checkpoints. The initial invalid harness result is explicitly retracted.
+Generated package updates, renewed exact release review and mandatory shipping
+remain pending. Nonpinned checks,
+software acceptance, deployment and actual-device/printer outcomes stay
+separate. Older evidence retains its original candidate and scope.
+
 ## Current pre-reformat preservation evidence
 
 [Preservation evidence](evidence/2026-09-29-reformat-preservation.md) records the

@@ -2,7 +2,6 @@
   import { onMount, untrack } from 'svelte';
   import { RefreshCw } from 'lucide-svelte';
   import type { createThermalsController } from '../../lib/client/live/thermals-controller';
-  import { titleCase } from '../../lib/client/observation/format';
   import ThermalReadings from '../observation/ThermalReadings.svelte';
   import ThermalsSkeleton from '../observation/ThermalsSkeleton.svelte';
   import Shell from '../common/Shell.svelte';
@@ -12,6 +11,7 @@
   import StateAnnouncement from '../common/StateAnnouncement.svelte';
   import StateSurface from '../common/StateSurface/StateSurface.svelte';
   import ObservedMeta from '../observation/ObservedMeta.svelte';
+  import DomainReceipt from '../observation/DomainReceipt.svelte';
   import Caption from '../common/Caption.svelte';
   import Icon from '../common/Icon.svelte';
   import { observationIcons } from '../../lib/client/observation/icons';
@@ -47,7 +47,7 @@
       <Stack>
         <InfoPair>
           {#snippet label()}<Label text="Cavity" tone="muted" />{/snippet}
-          {#snippet value()}<Caption><ObservedMeta observedAt={environment?.sourceObservedAt ?? null} freshness={environment?.freshness ?? 'unknown'} loading={placeholder} groupedTime />{#if !placeholder}{#if environment && environment.state !== 'known' && environment.state !== 'stale'} · {titleCase(environment.state)}{:else if observation?.readings[5].reportedState === 'not_reported'} · Not reported{/if}{#if environment?.reason} · {titleCase(environment.reason)}{/if}{/if}</Caption>{/snippet}
+          {#snippet value()}<DomainReceipt observedAt={environment?.sourceObservedAt ?? null} freshness={environment?.freshness ?? 'unknown'} state={environment?.state} reason={environment?.reason} loading={placeholder} includeNotRequestedReason fallbackState={observation?.readings[5].reportedState === 'not_reported' ? 'not_reported' : undefined} />{/snippet}
         </InfoPair>
         {#if observation && !placeholder}<ThermalReadings readings={observation.readings} />{:else}<ThermalsSkeleton />{/if}
       </Stack>

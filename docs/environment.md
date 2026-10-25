@@ -78,6 +78,19 @@ Remaining operating and product authorization boundaries are incomplete.
 
 ## Operations host
 
+- Current source runtime selection: user-adopted Bun `1.4.2`, revision
+  `744846f844374847c902b5e7fd59b4342a51ef99`; installed macOS arm64 binary
+  SHA256 `35d20dd0263e5c950194434b925454fdfa9ba6e4467da960410fa05b08a7a5b5`.
+  Cleanup acceptance has resumed; full current-candidate compatibility and
+  deployment remain unverified. This does not update historical installed-service
+  acceptance. See decision0043's runtime amendment.
+- Development test toolchain: installed Vitest 3.2.7 uses an env-node shebang,
+  and installed Vite 7.3.6 declares Node `^20.19.0 || >=22.12.0`. No supported
+  Node executable was found on the current host's PATH or inspected standard
+  locations. Bun-hosted Vitest fails two representative unchanged baseline
+  suites; a temporary development-only Node experiment awaits authorization.
+  This is separate from the production Bun runtime and grants no new install.
+
 - Host type and operating system: personal macOS Mac Mini for the current
   developer deployment; broader supported hosts remain unknown
 - Always-on expectation: the current self-hosted mobile path requires the Mac

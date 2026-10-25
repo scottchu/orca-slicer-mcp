@@ -81,10 +81,17 @@ task separately.
 
 ## Source development
 
-The current source is one SvelteKit application with user-adopted Bun 1.4.0, one
+The current source is one SvelteKit application with user-adopted Bun 1.4.2, one
 `package.json`, and one frozen `bun.lock`. PR93 independently validated and
 deployed the unified routing/runtime; only Fans is a native Kit page, as below.
 There is no nested `ui` dependency installation.
+
+The 1.4.2 runtime selection updates the current source candidate; PR93's Bun
+1.4.0 acceptance remains historical. The user has resumed cleanup acceptance;
+full current-candidate validation and deployment remain unverified.
+Preserve existing exact executable/hash and shipping
+guards; the locked Bun type declarations remain separate dependency versions.
+See the [runtime amendment](../../../docs/decisions/0043-unify-sveltekit-application-with-bun.md).
 
 - `src/components/common` contains shared generic UI primitives; other
   component folders compose domain views. CSS lives with components.

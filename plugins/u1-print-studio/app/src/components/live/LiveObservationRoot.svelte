@@ -11,8 +11,7 @@
   import Footer from '../common/Footer.svelte';
   import StateAnnouncement from '../common/StateAnnouncement.svelte';
   import StateSurface from '../common/StateSurface/StateSurface.svelte';
-  import ObservedMeta from '../observation/ObservedMeta.svelte';
-  import Caption from '../common/Caption.svelte';
+  import DomainReceipt from '../observation/DomainReceipt.svelte';
   import Icon from '../common/Icon.svelte';
   import { observationIcons } from '../../lib/client/observation/icons';
   import Button from '../common/Button.svelte';
@@ -39,7 +38,7 @@
 <Shell label="Fans & Air" busy={current.phase === 'loading' || current.refreshing}>
   <Header title="Fans & Air">
     {#snippet icon()}<Icon icon={observationIcons.fan} />{/snippet}
-    {#snippet meta()}<Caption><ObservedMeta observedAt={observation?.receipt.sourceObservedAt ?? null} freshness={observation?.receipt.freshness ?? 'unknown'} loading={placeholder} />{#if !placeholder && observation && observation.state !== 'known' && observation.state !== 'stale'} · {titleCase(observation.state)}{/if}</Caption>{/snippet}
+    {#snippet meta()}<DomainReceipt observedAt={observation?.receipt.sourceObservedAt ?? null} freshness={observation?.receipt.freshness ?? 'unknown'} state={observation?.state} loading={placeholder} groupedTime={false} />{/snippet}
   </Header>
   <Body>
     {#if observation && !placeholder}

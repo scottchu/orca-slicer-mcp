@@ -1,5 +1,32 @@
 # Project state
 
+## Active work — behavior-preserving code and design cleanup
+
+The user now prioritizes cleanup under the accepted six-layer design system.
+The first bounded slice consolidates receipt composition for Fans, Heads
+Materials and Thermals Cavity in the existing domain component. Copy, placement,
+source association, loading geometry and consumer-specific policies stay fixed;
+gallery visual adoption and broad migration remain pending.
+
+[Current evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-23-receipt-composition-cleanup.md)
+owns scope, consumer inventory, acceptance and actual checks. Source cleanup and
+85 focused diagnostic tests pass; checkpoint `4e3cf3bf` has independent source
+approval and is preserved in [draft PR140](https://github.com/scottchu/orca-slicer-mcp/pull/140).
+The user adopts installed Bun 1.4.2 and has now resumed full cleanup acceptance.
+Runtime-pin checkpoint `d3445b0` has independent source approval.
+[Package-acceptance evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-receipt-package-acceptance.md)
+owns renewed packages, version identities and required verification. Nine
+affected packages and measured pins are regenerated; 85 client and 20 package/CLI
+checks pass. Frozen `fa9a6e4` failed the independent mandatory ui:test gate;
+two representative failures also reproduce on unchanged original-main source
+under Bun-hosted Vitest. A supported Node test runner is absent; the requested
+development-only runtime experiment awaits user authorization. Full gate/release
+acceptance remains incomplete; the supported existing U1 service
+root is absent. Historical runtime 0.4.24 is not a fresh liveness claim.
+[NEXT_AGENT.md](NEXT_AGENT.md)
+owns execution order. Older preservation orders below are superseded for this
+task, with their unresolved backup concerns retained separately.
+
 ## Active work — pre-reformat source and knowledge preservation
 
 The user requests completed work and durable knowledge on main, with no dangling

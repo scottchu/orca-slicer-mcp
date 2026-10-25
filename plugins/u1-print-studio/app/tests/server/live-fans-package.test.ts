@@ -4,15 +4,15 @@ import { readFileSync } from 'node:fs';
 import { assertFocusedProductionInventory } from '../../scripts/observation-graph-contract.js';
 
 for (const [view, title, hash] of [
-  ['fans', 'Fans & Air', 'fbaf288f9459cd66fd47314bd784a42d448aea28ae676848626b5d1d8d67705b'],
-  ['thermals', 'Thermals', 'a8b412efb4a54490881ee594114c6e82e624c883df00ccdd03d87251a492d890'],
-  ['heads', 'Heads & Filaments', '368cc460cb49b3b480c4e5223a10489c9a7e89ac7e0ecfef363c0d87f7b1b31d'],
-  ['queue', 'Print Queue', 'b211ebfa6c03dd54b8c340767841461d5756f7398663bf162cf2e5f1d059e60a'],
+  ['fans', 'Fans & Air', '8276bf4d596e2dc8cae22191799780a015ce73a7b8f7c0b877f48f68c3984e2d'],
+  ['thermals', 'Thermals', 'bd714ed65af2ba561b8dbca13f6f39190d7d2a5a54796bd621cc36f9d21a632f'],
+  ['heads', 'Heads & Filaments', 'b4dce56daae40e35a13ada2aacc7feee58a058b1ae632a02799ed01834edd2eb'],
+  ['queue', 'Print Queue', 'c5fad6b4c21360986ebbf14692b6b6adcda6e8842d6247e35f79f9dccd81f67d'],
   ['progress', 'Print Progress', '9febe6d639b14e30b5cf6b344f9092ccb3eac4f976c17dc0d7bce1a1e9ea47ed'],
-  ['jobs', 'Current Job', 'da7dd12f7dce1066a8bb4e7f0b43d3a4217521ae323282567851c0890ce6e6e9'],
-  ['job_history', 'Job History', '5417554e126ce9db06e5262dd6e633548d54b2ea6121e27eb926c170c3772bb0'],
+  ['jobs', 'Current Job', 'fe77647027ed7a0fc9742d175d173295832753fb5b71d0e6a5af880a8ca1c3bb'],
+  ['job_history', 'Job History', '91be7daacec093696cde83f393b24cc9efa1a6720d97635c2836b30822f85692'],
   ['overview', 'Overview', '3471b1ca32aae9a3a97d65c1e550dcd8a482e0a3a985cd7f702b69e99a48c6b1'],
-  ['bed_mesh', 'Bed Mesh', 'af3639c59af641061ec294198e61b754be2ec771d57f8d12ebc1d1fa5e6dac3f'],
+  ['bed_mesh', 'Bed Mesh', '00abd88fc8faa2bf73eb38c787d2b3d0ce60ab13487338a588a71000bbf5e593'],
 ]) test(`real ${title} is one deterministic private artifact with the closed host bridge`, () => {
   const html = readFileSync(new URL(`../../public/svelte-live-${view}.html`, import.meta.url), 'utf8');
 
@@ -32,7 +32,7 @@ test('current focused production inventory retains exact artifact size measureme
     view,
     bytes: Buffer.byteLength(readFileSync(new URL(`../../public/svelte-live-${view}.html`, import.meta.url), 'utf8')),
   }));
-  expect(entries.map(({ bytes }) => bytes)).toEqual([88879,94947,98659,90399,108006,88659,86904,96947,652495,100096]);
-  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(1505991);
+  expect(entries.map(({ bytes }) => bytes)).toEqual([89442,95369,99042,90591,108006,88851,87096,96947,652691,100096]);
+  expect(entries.reduce((total, { bytes }) => total + bytes, 0)).toBe(1508131);
   expect(() => assertFocusedProductionInventory(entries)).not.toThrow();
 });

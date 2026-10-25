@@ -1,5 +1,43 @@
 # Next agent
 
+## Active order — clean receipt composition without visual changes
+
+The user now resumes acceptance of the code/design cleanup under adopted
+Bun 1.4.2. The earlier validation pause is superseded.
+[Package-acceptance evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-receipt-package-acceptance.md)
+owns affected inputs, ownership, actual checks and remaining delivery prerequisites.
+
+The latest user request prioritizes code and design cleanup under the accepted
+six-layer hierarchy. It supersedes preservation-first execution for this task;
+it does not adopt the gallery's proposed visuals or authorize unrelated cleanup.
+
+1. Source receipt consolidation and focused diagnostic checks are complete:
+   85 tests and component/import checks pass with Bun 1.4.2. Exact checkpoint
+   `4e3cf3bf` has independent source approval and is preserved in draft PR140;
+   it is not a shipping candidate while generated packages are stale.
+2. Runtime-pin candidate `d3445b0` is independently approved. Nine affected
+   focused/MCP/private packages, measured pins and candidate version contracts
+   are regenerated: runtime0.4.25/observation28, unchanged schema19/Camera18.
+   Author focused checks pass 85 client and 20 package/CLI tests.
+3. Frozen candidate `fa9a6e4` stopped at the independent mandatory ui:test gate:
+   5 failed files/3 tests, 750 passed and 4 unhandled errors. The same two
+   representative suites fail on unchanged original-main source under Bun-hosted
+   Vitest; supported Node test-runner prerequisites are absent. Await the pending
+   user decision for a task-temporary development-only Node 22.23.4 experiment.
+   Do not download/install before authorization. If authorized, first rerun those
+   two suites, then the unchanged full gate only if they pass. Preserve every
+   body/disconnect/lifetime, graph, signature, integrity and shipping guard.
+   Do not obtain the prior blocked gallery capture through another surface.
+4. The existing deployment target remains absent. No service provisioning,
+   runtime installation, auth or network change is inferred. Merge/shipping
+   requires all gates and an existing recoverable target, then both-service
+   restarts and meaningful installed verification. Delivery remains incomplete
+   while that prerequisite is missing.
+
+No printer reads/controls, visual relocation, Cavity wording/duration selection,
+private-Lab expansion or pre-reformat backup work is included. Earlier orders
+below retain their historical evidence and unresolved concerns.
+
 ## Active order — preserve completed source before computer reformat
 
 The user now authorizes merging completed work and durable knowledge to main,

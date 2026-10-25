@@ -86,5 +86,5 @@
     "vitest": "3.2.7",
     "@sveltejs/adapter-node": "5.5.7"
   },
-  "packageManager": "bun@1.4.0"
+  "packageManager": "bun@1.4.2"
 }

@@ -7,6 +7,30 @@ presentation/controller/service boundaries without new domain behavior. Final
 alongside the earlier rejected stale build output and its operator repair.
 Remaining native-renderer work and actual-device/printer acceptance stay separate.
 
+## Runtime amendment — 2026-10-24
+
+The user adopts the already installed Bun **1.4.2** for the current source
+candidate. The app's packageManager pins that exact version. Its reported
+revision is `744846f844374847c902b5e7fd59b4342a51ef99`, matching the official
+bun-v1.4.2 tag; the observed macOS arm64 binary SHA256 is
+`35d20dd0263e5c950194434b925454fdfa9ba6e4467da960410fa05b08a7a5b5`.
+These are revision/local-identity observations, not official binary-checksum or
+application-compatibility acceptance.
+
+Preserve the existing absolute-executable/hash/PATH and release-integrity guards.
+Locked @types/bun/bun-types 1.4.0 remain compiler declarations, not a runtime pin.
+No runtime installation, dependency upgrade or shipping-guard change follows.
+The user initially paused full validation and deployment; adoption alone did
+not resume them. A subsequent instruction resumes cleanup acceptance, recorded
+in the [package evidence](../iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-receipt-package-acceptance.md).
+Body-limit, request-lifetime/disconnect and response-finish contracts remain
+required, with full 1.4.2 compatibility acceptance pending.
+[Current evidence](../iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-bun-runtime-pin.md)
+owns actual focused checks and limitations. The original Bun 1.4.0 decision and
+1.3.12 failure evidence below retain their historical identities.
+
+## Original routing and runtime decision
+
 Use one SvelteKit application at `plugins/u1-print-studio/app`, retaining Bun for
 runtime/tooling. This is a repository choice, not a requirement to remove Bun,
 adopt Node or introduce another framework. The nested `app/ui` project is not the

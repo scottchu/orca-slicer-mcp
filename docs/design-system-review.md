@@ -1,5 +1,11 @@
 # U1 design system — primitives and composition
 
+The latest code/design cleanup begins with behavior-preserving receipt
+composition, separately from the gallery's pending visual selection.
+[Current slice evidence](iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-23-receipt-composition-cleanup.md)
+records its accepted scope, source checks and delivery limits. No receipt
+relocation, Cavity target wording or duration precision is adopted by that cleanup.
+
 Status: **offline gallery implemented and ready for user visual selection**.
 The user authorized the bounded review artifact; its [source and run instructions](../experiments/u1-design-system-gallery/README.md)
 reuse current primitives/tokens with isolated proposed wrappers. The layered
