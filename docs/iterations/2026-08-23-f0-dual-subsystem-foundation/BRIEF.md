@@ -12,12 +12,12 @@ migration is selected.
 [Slice evidence](evidence/2026-10-23-receipt-composition-cleanup.md) owns source
 inventory, bounded acceptance and actual results. Separate authorship,
 verification/review and required full-regression ownership remain mandatory.
-The user adopts existing Bun 1.4.2 for the source candidate while keeping full
-validation/deployment explicitly paused. [Runtime-pin evidence](evidence/2026-10-24-bun-runtime-pin.md)
-owns the bounded declaration/current-record changes and focused checks.
-Generated packages and full runtime compatibility remain pending, and the
-existing deployment target is absent. No application delivery, runtime liveness
-or device/printer acceptance is inferred.
+The user adopts existing Bun 1.4.2 and now resumes cleanup acceptance.
+[Package-acceptance evidence](evidence/2026-10-24-receipt-package-acceptance.md)
+owns regeneration, candidate runtime0.4.25/observation28, independent frozen
+regression/review and unchanged release guards. Generated packages and full
+runtime compatibility remain pending; the existing deployment target is absent.
+No application delivery, runtime liveness or device/printer acceptance is inferred.
 
 ## Active scope — preserve completed work before reformat
 

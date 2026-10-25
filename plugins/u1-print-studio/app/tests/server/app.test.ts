@@ -227,7 +227,7 @@ describe("U1 status MCP App contract", () => {
       (tool) => tool.name === "get_u1_camera_frame"
     );
 
-    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v27.html");
+    expect(WIDGET_URI).toBe("ui://u1-print-studio/observation-v28.html");
 
     expect(observe).toBeDefined();
     expect(observe?.annotations).toMatchObject({

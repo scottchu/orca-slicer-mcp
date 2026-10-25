@@ -81,8 +81,9 @@ Remaining operating and product authorization boundaries are incomplete.
 - Current source runtime selection: user-adopted Bun `1.4.2`, revision
   `744846f844374847c902b5e7fd59b4342a51ef99`; installed macOS arm64 binary
   SHA256 `35d20dd0263e5c950194434b925454fdfa9ba6e4467da960410fa05b08a7a5b5`.
-  Full compatibility validation/deployment are paused; this does not update
-  historical installed-service acceptance. See decision0043's runtime amendment.
+  Cleanup acceptance has resumed; full current-candidate compatibility and
+  deployment remain unverified. This does not update historical installed-service
+  acceptance. See decision0043's runtime amendment.
 
 - Host type and operating system: personal macOS Mac Mini for the current
   developer deployment; broader supported hosts remain unknown

@@ -1,5 +1,14 @@
 # F0 validation index
 
+## Resumed receipt package acceptance
+
+[Package-acceptance evidence](evidence/2026-10-24-receipt-package-acceptance.md)
+owns the resumed order, affected build inputs/consumers, exact runtime/output
+identities and actual checks. One independent owner runs the full frozen local
+gate; authorship and exact review remain separate. Prior paused/source-only
+evidence stays scoped to its original checkpoint. Deployed-service and visual/
+device/printer acceptance remain separate and unclaimed.
+
 ## Current runtime-pin evidence
 
 [Bun 1.4.2 adoption evidence](evidence/2026-10-24-bun-runtime-pin.md) records

@@ -2,12 +2,10 @@
 
 ## Active order — clean receipt composition without visual changes
 
-The user now selects preserving the code candidate and pausing full validation,
-then explicitly adopts the existing Bun 1.4.2. Update only the runtime pin and
-current records, run focused identity/operator checks and retain draft PR140.
-Full regression, package regeneration, merge and deployment remain paused.
-[Runtime-pin evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-bun-runtime-pin.md)
-owns the current bounded scope and results.
+The user now resumes acceptance of the code/design cleanup under adopted
+Bun 1.4.2. The earlier validation pause is superseded.
+[Package-acceptance evidence](docs/iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-receipt-package-acceptance.md)
+owns affected inputs, ownership, actual checks and remaining delivery prerequisites.
 
 The latest user request prioritizes code and design cleanup under the accepted
 six-layer hierarchy. It supersedes preservation-first execution for this task;
@@ -17,17 +15,19 @@ it does not adopt the gallery's proposed visuals or authorize unrelated cleanup.
    85 tests and component/import checks pass with Bun 1.4.2. Exact checkpoint
    `4e3cf3bf` has independent source approval and is preserved in draft PR140;
    it is not a shipping candidate while generated packages are stale.
-2. The exact packageManager declaration now adopts installed Bun 1.4.2; current
-   records, metadata/lock identity checks and five selected operator fixtures
-   are complete. Obtain independent exact review and preserve the updated
-   source candidate in the same draft PR.
-3. Keep full candidate regression, affected package/hash/version regeneration,
-   merge and deployment paused until the user resumes them. The existing
-   deployment target remains absent. No service provisioning, runtime installation,
-   auth or network change is inferred. After resumption, all unchanged shipping
-   guards, renewed exact release review, both-service restarts and meaningful
-   installed behavior remain necessary for delivery; version adoption grants
-   no skipped gate.
+2. Runtime-pin candidate `d3445b0` is independently approved. Nine affected
+   focused/MCP/private packages, measured pins and candidate version contracts
+   are regenerated: runtime0.4.25/observation28, unchanged schema19/Camera18.
+   Author focused checks pass 85 client and 20 package/CLI tests.
+3. Freeze application bytes for the assigned independent full required local
+   regression/review owner. Preserve all runtime body/disconnect/
+   lifetime, graph, signature, integrity and shipping guards. Do not obtain the
+   prior blocked gallery capture through another surface.
+4. The existing deployment target remains absent. No service provisioning,
+   runtime installation, auth or network change is inferred. Merge/shipping
+   requires all gates and an existing recoverable target, then both-service
+   restarts and meaningful installed verification. Delivery remains incomplete
+   while that prerequisite is missing.
 
 No printer reads/controls, visual relocation, Cavity wording/duration selection,
 private-Lab expansion or pre-reformat backup work is included. Earlier orders

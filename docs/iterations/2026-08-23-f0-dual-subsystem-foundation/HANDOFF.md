@@ -2,6 +2,17 @@
 
 ## Active handoff — receipt composition cleanup
 
+The latest user instruction resumes full cleanup acceptance after the Bun1.4.2
+selection; the former pause described below is historical.
+[Package-acceptance evidence](evidence/2026-10-24-receipt-package-acceptance.md)
+owns current regeneration, frozen independent-regression/review ownership and
+delivery gates. Candidate runtime0.4.25/observation28 preserves schema19/Camera18.
+Nine affected packages/pins are regenerated; author checks pass 85 client and
+20 package/CLI tests. Next is the frozen independent full local gate and exact
+candidate review. Earlier source-only/pause paragraphs below retain their
+historical checkpoint scope and are superseded as current execution order.
+The existing service target is still absent; do not provision or bypass it.
+
 The latest user order is code/design cleanup, beginning with behavior-preserving
 receipt composition in Fans, Heads Materials and Thermals Cavity. The
 [slice evidence](evidence/2026-10-23-receipt-composition-cleanup.md) owns source

@@ -20,9 +20,11 @@ application-compatibility acceptance.
 Preserve the existing absolute-executable/hash/PATH and release-integrity guards.
 Locked @types/bun/bun-types 1.4.0 remain compiler declarations, not a runtime pin.
 No runtime installation, dependency upgrade or shipping-guard change follows.
-The user separately paused full validation and deployment; adoption does not
-resume them. Body-limit, request-lifetime/disconnect and response-finish contracts
-remain required, with full 1.4.2 compatibility acceptance pending.
+The user initially paused full validation and deployment; adoption alone did
+not resume them. A subsequent instruction resumes cleanup acceptance, recorded
+in the [package evidence](../iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-receipt-package-acceptance.md).
+Body-limit, request-lifetime/disconnect and response-finish contracts remain
+required, with full 1.4.2 compatibility acceptance pending.
 [Current evidence](../iterations/2026-08-23-f0-dual-subsystem-foundation/evidence/2026-10-24-bun-runtime-pin.md)
 owns actual focused checks and limitations. The original Bun 1.4.0 decision and
 1.3.12 failure evidence below retain their historical identities.

@@ -1,5 +1,9 @@
 # Adopt the existing Bun 1.4.2 runtime
 
+This records the bounded runtime adoption and pause at that checkpoint.
+[Subsequent package acceptance](2026-10-24-receipt-package-acceptance.md) records
+the user's later resumption; historical check results below retain their scope.
+
 ## User decision and bounded acceptance
 
 The user first selected preserving the code candidate while pausing full

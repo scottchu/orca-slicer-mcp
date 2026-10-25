@@ -11,8 +11,9 @@ and the operator's output-isolation repair remain there.
 
 The original Bun1.4.0 acceptance used native close/finish events for generic
 request lease ownership without polling. The current source adopts Bun1.4.2
-under decision0043's runtime amendment; full compatibility validation/deployment
-remain user-paused. MCP body parity,128KiB endpoint limits, role/auth and URL
+under decision0043's runtime amendment; cleanup acceptance has resumed, with
+full current-candidate compatibility/deployment still unverified.
+MCP body parity,128KiB endpoint limits, role/auth and URL
 contracts remain required and are not waived by version adoption.
 The table records routing shipment, not real-printer, phone or onboarding acceptance.
 It does not add/remove widget ledger IDs or complete all native widget migrations.
